@@ -80,4 +80,20 @@ export const CUSTOME_IMG = {
     label: i18n.t('compute.os.nfs'),
     url: 'nfs',
   },
+  uos: {
+    label: 'UOS',
+    url: 'uos',
+  },
+  android: {
+    label: 'Android',
+    url: 'android',
+  },
+  vmware: {
+    label: 'VMWare',
+    url: 'vmware',
+  },
+  cirros: {
+    label: 'CirrOS',
+    url: 'cirros',
+  },
 }

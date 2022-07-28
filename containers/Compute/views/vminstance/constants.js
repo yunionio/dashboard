@@ -16,7 +16,7 @@ const DISK_USED_PERCENT = {
 const BASIC_MEM_USED_PERCENT = {
   name: 'mem',
   label: i18n.t('compute.text_518'),
-  seleteItem: 'used_percent',
+  seleteItem: '',
   fromItem: 'vm_mem',
   unit: '%',
   transfer: 1,

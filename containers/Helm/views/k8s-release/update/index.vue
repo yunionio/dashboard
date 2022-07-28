@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('helm.text_87')" />
-    <page-body>
+    <page-body needMarginBottom>
       <div>
         <template v-if="!chartDetail.metadata">
           <loading-block :layout="loadingLayout" />

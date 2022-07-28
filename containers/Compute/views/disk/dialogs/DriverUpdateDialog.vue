@@ -134,7 +134,7 @@ export default {
       const { guests, id: disk_id } = this.params.data[0]
       const { id } = guests[0]
       if (id) {
-        const drivers = await new this.$Manager('guestdisks', 'v2').list({ params: { server: id } })
+        const drivers = await new this.$Manager('guestdisks', 'v2').list({ params: { server: id, scope: this.scope } })
         const { data = [] } = drivers.data
         const current = data.filter(item => {
           return item.disk_id === disk_id
@@ -179,6 +179,10 @@ export default {
           server: this.form.fd.guest_id,
           disk: this.form.fd.disk_id,
           cache_mode: values.cache_mode,
+        }
+        if (!params.server || !params.disk) {
+          this.loading = false
+          return
         }
         await this.doUpdate(params)
         this.loading = false

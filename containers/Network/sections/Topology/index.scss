@@ -74,7 +74,7 @@
   }
   .res-container {
     width: 150px;
-    height: 200px;
+    min-height: 200px;
     border-top: 2px solid #2D3A4D;
     position: relative;
     .line {
@@ -129,7 +129,7 @@
   }
   .res-container-host{
     width: 300px;
-    height: 220px;
+    min-height: 320px;
     .line{
       left: 119px;
     }
@@ -189,9 +189,13 @@
       max-width: 100%;
       border: solid 1px #2D3A4D;
     }
+
+    .storage-tag {
+      border-radius: 10px;
+    }
   }
   .tag-list-limit {
-    max-height: 124px;
+    max-height: 140px;
     overflow: hidden;
     .tag {
       overflow: hidden;

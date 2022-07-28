@@ -49,12 +49,12 @@ export function filterUserTag ({
       value = JSON.parse(value)
     } catch (err) { }
 
-    if (R.is(String, value)) {
-      values.push(value)
-    } else if (R.is(Array, value)) {
+    if (R.is(Array, value)) {
       value.map(item => {
         values.push(item)
       })
+    } else {
+      values.push(value)
     }
     values.map(item => {
       arr.push({
@@ -98,12 +98,12 @@ export function filterExtTag ({
       value = JSON.parse(value)
     } catch (err) { }
 
-    if (R.is(String, value)) {
-      values.push(value)
-    } else if (R.is(Array, value)) {
+    if (R.is(Array, value)) {
       value.map(item => {
         values.push(item)
       })
+    } else {
+      values.push(value)
     }
     values.map(item => {
       arr.push({
@@ -134,7 +134,7 @@ export function getTagTitle (key, value) {
   if (str === 'cloud_default') {
     str = i18n.t('common_736')
   }
-  if (value === 'cloud_default') {
+  if (value === 'cloud_default' || val === '___no_value__') {
     val = i18n.t('common_736')
   }
   if (val) str += `:${val}`
@@ -143,7 +143,7 @@ export function getTagTitle (key, value) {
 
 export function getTagValue (value) {
   let val = value
-  if (value === 'cloud_default') {
+  if (value === 'cloud_default' || val === '___no_value__') {
     val = i18n.t('common_736')
   }
   return val

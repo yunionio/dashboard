@@ -344,12 +344,12 @@
   "system.text_355": "Certificate",
   "system.text_356": "Monitor",
   "system.text_357": "Server Group",
-  "system.text_358": "Server",
+  "system.text_358": "Host",
   "system.text_359": "Scheduler Tag",
   "system.text_360": "GPU transparent transmission",
   "system.text_361": "Routing Table",
   "system.text_362": "Gateway",
-  "system.text_363": "Virtual Routing",
+  "system.text_363": "L2 Network",
   "system.text_364": "IP Subnet",
   "system.text_365": "Reserved IP",
   "system.text_366": "Domain Name Service",
@@ -748,6 +748,10 @@
       "label": "External Syslog Server URL",
       "desc": "Export audit log to external syslog server, address format is proto://<ip>:<port>@idstr, e.g. tcp://192.168.2.100:514@cloud"
     },
+    "yunionapi$enable_syslog_webservice": {
+      "label": "Enable Syslog WebService",
+      "desc": "Enable Syslog WebService, external audit system can fetch audit logs from this web service"
+    },
     "common$enable_tls_migration": {
       "label": "Enable TLS migration",
       "desc": "When enabled, KVM virtual machine hot migration will use TLS to encrypt data."
@@ -921,5 +925,6 @@
   "iam.help": "help",
   "iam.get_params_help": "Get related parameters",
   "iam.notifyconfig.sender_address_extra": "The sender email address should be consistent with the username email address in general, if the mailbox has other configurations, please fill in according to the actual situation",
-  "system.common_log_filter_tip": "Search by ID by default, and automatically match IP filter items"
+  "system.common_log_filter_tip": "Search by ID by default, and automatically match IP filter items",
+  "iam.policy_search_placeholder": "Enter policy to search"
 }

@@ -151,6 +151,8 @@ export default {
       type: Object,
     },
     showExtTags: Boolean,
+    // 是否在每一个里增加未归类
+    showNoValue: Boolean,
   },
   data () {
     return {
@@ -259,8 +261,8 @@ export default {
       }
     },
     genTags (data) {
-      const userRet = []
-      const extRet = []
+      let userRet = []
+      let extRet = []
       for (let i = 0, len = data.length; i < len; i++) {
         const item = data[i]
         const isUserKey = item.key.startsWith('user:')
@@ -285,6 +287,20 @@ export default {
             temp.push({ key: item.key, value: [] })
           }
         }
+      }
+      if (this.showNoValue) {
+        userRet = userRet.map(item => {
+          return {
+            ...item,
+            value: [...item.value, '___no_value__'],
+          }
+        })
+        extRet = extRet.map(item => {
+          return {
+            ...item,
+            value: [...item.value, '___no_value__'],
+          }
+        })
       }
       const sortByKeyCaseInsensitive = R.sortBy(R.compose(R.toLower, R.prop('key')))
       this.userTags = sortByKeyCaseInsensitive(userRet)

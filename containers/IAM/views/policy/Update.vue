@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('system.text_188', [$t('dictionary.policy')])" />
-    <page-body>
+    <page-body need-margin-bottom>
       <template v-if="loading">
         <div class="text-center">
           <a-icon type="loading" />
@@ -45,7 +45,7 @@ export default {
       permissions: {},
       submiting: false,
       POLICY_GROUPS: genPolicyGroups(),
-      editType: 'yaml',
+      editType: 'checkbox',
       policyLoading: false,
     }
   },
@@ -121,6 +121,7 @@ export default {
       try {
         const data = await this.$refs.policyForm.getData()
         data.tag_update_policy = 'replace'
+        data.tags_action = 'replace'
         await this.$http.patch(`/v1/auth/policies/${this.policy.id}`, data)
         this.$router.push('/policy')
       } catch (error) {

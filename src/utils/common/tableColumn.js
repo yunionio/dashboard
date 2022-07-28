@@ -441,12 +441,13 @@ export const getTimeTableColumn = ({
   title = i18n.t('table.title.create_time'),
   sortable = true,
   fromNow = false,
+  minWidth = 180,
   vm = {},
 } = {}) => {
   return {
     field,
     title,
-    width: 160,
+    minWidth: minWidth,
     sortable,
     slots: {
       default: ({ row }, h) => {
@@ -464,7 +465,7 @@ export const getTimeRangeColumn = ({
   end_field = 'end_time',
   title = i18n.t('table.title.create_time'),
   sortable = false,
-  format = 'YYYY-MM-DD hh:mm:ss',
+  format = 'YYYY-MM-DD HH:mm:ss',
 } = {}) => {
   return {
     field,

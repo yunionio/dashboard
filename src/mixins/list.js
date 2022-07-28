@@ -1,6 +1,7 @@
 import * as R from 'ramda'
 
 export default {
+  inject: ['inBaseSidePage'],
   computed: {
     cloudEnvEmpty () {
       return R.isEmpty(this.cloudEnvOptions && this.cloudEnvOptions.filter(v => !!v.key))
@@ -8,12 +9,15 @@ export default {
     isPreLoad () {
       return this.list?.isPreLoad
     },
+    isOperateInSidepage () {
+      return this.inBaseSidePage
+    },
   },
   watch: {
     'list.params': {
       handler: function (val) {
         if (val) {
-          this.$bus.$emit('ListParamsChange', val)
+          !this.isOperateInSidepage && this.$bus.$emit('ListParamsChange', val)
         }
       },
       deep: true,
@@ -24,7 +28,7 @@ export default {
       return this.list.onManager(...arguments)
     },
     refresh () {
-      this.$bus.$emit('ListParamsChange', { ...arguments })
+      !this.isOperateInSidepage && this.$bus.$emit('ListParamsChange', { ...arguments })
       return this.list.refresh(...arguments)
     },
     singleRefresh () {

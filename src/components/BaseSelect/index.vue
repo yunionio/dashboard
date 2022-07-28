@@ -388,14 +388,20 @@ export default {
         if (this.remoteFn) {
           params = { ...params, ...this.remoteFn(query) }
         } else {
-          if (params.filter) {
-            if (R.is(Array, params.filter)) {
-              params.filter = [...params.filter, `${this.searchKey}.contains(${query})`]
-            } else {
-              params.filter = [params.filter, `${this.searchKey}.contains(${query})`]
-            }
+          // 进行查询信息检测，如果符合ip地址规则进行ip地址匹配
+          if (/^[0-9]{1,3}\./.test(query) && !/[a-zA-Z]+/.test(query)) {
+            const ipSearchKey = 'ip_addr'
+            params[ipSearchKey] = query
           } else {
-            params.filter = `${this.searchKey}.contains(${query})`
+            if (params.filter) {
+              if (R.is(Array, params.filter)) {
+                params.filter = [...params.filter, `${this.searchKey}.contains(${query})`]
+              } else {
+                params.filter = [params.filter, `${this.searchKey}.contains(${query})`]
+              }
+            } else {
+              params.filter = `${this.searchKey}.contains(${query})`
+            }
           }
         }
       }

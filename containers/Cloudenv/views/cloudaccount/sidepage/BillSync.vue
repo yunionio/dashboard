@@ -46,7 +46,7 @@ export default {
           minWidth: 200,
           showOverflow: 'title',
           formatter: ({ row }) => {
-            return row.created_at ? this.$moment(row.created_at).format('YYYY-MM-DD hh:mm:ss') : '-'
+            return row.created_at ? this.$moment(row.created_at).format('YYYY-MM-DD HH:mm:ss') : '-'
           },
         },
         {
@@ -55,7 +55,7 @@ export default {
           minWidth: 200,
           showOverflow: 'title',
           formatter: ({ row }) => {
-            return row.updated_at ? this.$moment(row.updated_at).format('YYYY-MM-DD hh:mm:ss') : '-'
+            return row.updated_at ? this.$moment(row.updated_at).format('YYYY-MM-DD HH:mm:ss') : '-'
           },
         },
       ],

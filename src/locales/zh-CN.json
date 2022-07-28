@@ -2926,7 +2926,22 @@
       "input": "请输入{0}",
       "optional_input": "选填，请输入{0}"
     },
-    "adv_config": "高级配置"
+    "adv_config": "高级配置",
+    "date_time": {
+      "week": "本周",
+      "last_week": "上周",
+      "month": "本月",
+      "last_month": "上月",
+      "quarter": "本季度",
+      "last_quarter": "上季度",
+      "year": "本年",
+      "last_year": "去年",
+      "last": "最近",
+      "quick": "快捷",
+      "custom": "自定义",
+      "advanced": "高级",
+      "please_select": "请选择"
+    }
   },
   "navbar": {
     "view": {
@@ -2997,8 +3012,10 @@
   "scope.title.encrypt_key": "加密密钥",
   "scope.encrypt_key.title.id": "密钥ID",
   "scope.encrypt_key.title.name": "密钥名称",
+  "scope.encrypt_value.title.name": "密钥",
   "scope.encrypt_key.title.alg": "密钥算法",
   "scope.encrypt_key.require_name.prompt": "请输入密钥名称",
+  "scope.encrypt_value.require_name.prompt": "请输入密钥名称",
   "scope.encrypt_key.require_alg.prompt": "请选择密钥加密算法",
   "scope.text_14": "确定",
   "scope.text_15": "是否启用",
@@ -5203,5 +5220,6 @@
   "common.remote_control": "远程控制",
   "common.default_search_key": "默认为{0}搜索",
   "common.theme.color.lake_blue": "湖水蓝",
-  "common.table.overview": "概览"
+  "common.table.overview": "概览",
+  "common.auth.bindsecret.andriod": "打开应用商店搜索OneLogin Project下载应用，或下载应用宝搜索OneLogin Project下载应用"
 }

@@ -52,6 +52,13 @@ export default {
         },
       },
       {
+        field: 'iops',
+        title: i18n.t('compute.max_iops'),
+        formatter: ({ row }) => {
+          return row.iops || '-'
+        },
+      },
+      {
         field: 'disk_format',
         title: i18n.t('table.title.disk_format'),
         width: 70,

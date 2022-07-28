@@ -284,8 +284,8 @@ export default {
         },
       },
       editTypeOptions: [
-        { key: 'yaml', label: this.$t('system.policy_edit_type_yaml') },
         { key: 'checkbox', label: this.$t('system.policy_edit_type_checkbox') },
+        { key: 'yaml', label: this.$t('system.policy_edit_type_yaml') },
       ],
       yamlPolicy: initialYamlPolicyValue,
       checkboxPolicy: initialCheckboxPolicyValue,
@@ -367,6 +367,8 @@ export default {
             get: { '*': 'allow' },
             list: { '*': 'allow' },
           }
+          // 自定义处理
+          this.customPolicy(policy)
           data = {
             type: name,
             policy: {
@@ -461,6 +463,13 @@ export default {
     },
     handleObjectTagsUpdate (tags) {
       this.objectTagsArray = tags
+    },
+    customPolicy (policy) {
+      // 勾选迁移权限后就同时支持冷、热迁移
+      const migrate = policy.compute.servers.perform.migrate
+      if (migrate) {
+        policy.compute.servers.perform['live-migrate'] = migrate
+      }
     },
   },
 }

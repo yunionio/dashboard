@@ -40,6 +40,7 @@
 
 <script>
 import * as R from 'ramda'
+import XLSX from 'xlsx'
 import { download, getRequestT } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -55,6 +56,12 @@ export default {
         return !hidden()
       }
       return !hidden
+    }).map(item => {
+      return {
+        key: item.key || item.field,
+        label: item.label || item.title,
+        ...item,
+      }
     })
     let allExportKeys = exportOptionItems.map(item => item.key)
     const exportTags = (this.params.showTagColumns && this.params.config.showTagKeys) || []
@@ -100,6 +107,7 @@ export default {
       currentExportType: 'custom',
       indeterminate: false,
       checkAll: true,
+      selectedExportKeys: allExportKeys,
     }
   },
   computed: {
@@ -108,6 +116,9 @@ export default {
         return this.params.resource
       }
       return this.params.resource.resource.substr(0, this.params.resource.resource.length - 1)
+    },
+    downloadType () {
+      return this.params.options.downloadType === 'local' ? 'local' : 'remote'
     },
   },
   methods: {
@@ -166,7 +177,16 @@ export default {
           }
         }
       }
-      if (params.limit) delete params.limit
+      if (this.downloadType === 'local') {
+        params.limit = params.export_limit
+        params.details = true
+        delete params.export
+        delete params.export_keys
+        delete params.export_texts
+        delete params.export_limit
+      } else {
+        if (params.limit) delete params.limit
+      }
       if (params.offset) delete params.offset
       delete params.paging_marker
       if (this.params.options.transformParams) {
@@ -192,22 +212,31 @@ export default {
         const resource = this.params.options.resource || this.params.resource
         const total = this.params.options.resource && await this.getResourceTotal(resource)
         const params = this.genParams(values, total)
-        const response = await this.$http({
-          methods: 'GET',
-          url: `/${this.params.apiVersion}/${resource}`,
-          params,
-          responseType: 'blob',
-          headers: {
-            'X-Export-Keys': true,
-          },
-        })
-        const contentDisposition = response.headers['content-disposition']
-        let fileName = 'unknown'
-        if (contentDisposition) {
-          const fileNameMatch = contentDisposition.match(/filename="(.+)"/)
-          if (fileNameMatch.length === 2) fileName = fileNameMatch[1]
+        if (this.downloadType === 'remote') {
+          const response = await this.$http({
+            methods: 'GET',
+            url: `/${this.params.apiVersion}/${resource}`,
+            params,
+            responseType: 'blob',
+            headers: {
+              'X-Export-Keys': true,
+            },
+          })
+          const contentDisposition = response.headers['content-disposition']
+          let fileName = 'unknown'
+          if (contentDisposition) {
+            const fileNameMatch = contentDisposition.match(/filename="(.+)"/)
+            if (fileNameMatch.length === 2) fileName = fileNameMatch[1]
+          }
+          download(response.data, fileName, response.headers['content-type'])
+        } else {
+          const { data: res = {} } = await new this.$Manager(resource, this.params.apiVersion).list({
+            params,
+          })
+          const data = res.data || []
+          // 生成数据
+          this.localExport(this.exportOptionItems, data)
         }
-        download(response.data, fileName, response.headers['content-type'])
         this.cancelDialog()
       } catch (error) {
         throw error
@@ -218,9 +247,11 @@ export default {
     handleExportTypeChange (e) {
       this.currentExportType = e.target.value
     },
-    handleSelectedChange (val) {
+    async handleSelectedChange (val) {
       this.indeterminate = !!val.length && val.length < this.allExportKeys.length
       this.checkAll = val.length === this.allExportKeys.length
+      await this.$nextTick()
+      this.selectedExportKeys = this.form.fc.getFieldValue('selected')
     },
     handleCheckAllChange (e) {
       this.form.fc.setFieldsValue({
@@ -249,6 +280,63 @@ export default {
           resolve(0)
         })
       })
+    },
+    localExport (cols, list) {
+      const columns = cols.filter(item => this.selectedExportKeys.includes(item.key))
+      // 标题行
+      const titles = columns.map(item => item.label)
+      // 每列宽度
+      const colWidthList = columns.map(item => {
+        return { wch: item.width }
+      })
+      const filename = `${this.params.options.exportTitle || this.params.title}.xlsx`
+      const wb = XLSX.utils.book_new()
+      const allLength = list.length
+      const sheetMaxLen = 60000 // 每个sheet最多多少条
+      let sheetIdx = 1
+      let sheetDatas = []
+      // 生成sheet
+      for (let i = 1; i < allLength + 1; i++) {
+        const idx = Math.ceil(i / sheetMaxLen)
+        if (idx !== sheetIdx) {
+          // 保存旧表
+          const ws_name = 'sheet' + sheetIdx
+          const ws = XLSX.utils.aoa_to_sheet([titles, ...sheetDatas])
+          XLSX.utils.book_append_sheet(wb, ws, ws_name)
+          // 插入新表
+          sheetIdx = idx
+          sheetDatas = []
+        } else if (i === allLength) { // 尾表
+          const row = []
+          columns.map(column => {
+            let colData = ''
+            if (column.formatter) {
+              colData = column.formatter({ row: list[i - 1] })
+            } else {
+              colData = list[i - 1][column.key] || ''
+            }
+            row.push(colData)
+          })
+          sheetDatas.push(row)
+          const ws_name = 'sheet' + sheetIdx
+          const ws = XLSX.utils.aoa_to_sheet([titles, ...sheetDatas])
+          ws['!cols'] = colWidthList
+          XLSX.utils.book_append_sheet(wb, ws, ws_name)
+        }
+        // 生成单行数据
+        const row = []
+        columns.map(column => {
+          let colData = ''
+          if (column.formatter) {
+            colData = column.formatter({ row: list[i - 1] })
+          } else {
+            colData = list[i - 1][column.key] || ''
+          }
+          row.push(colData)
+        })
+        sheetDatas.push(row)
+      }
+      XLSX.writeFile(wb, filename)
     },
   },
 }

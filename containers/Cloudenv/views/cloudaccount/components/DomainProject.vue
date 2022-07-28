@@ -29,7 +29,7 @@
         </a-select>
         <a @click="fetchProjectsHandle"><a-icon :spin="projectLoading" type="sync" class="ml-2" /></a>
       </div>
-      <div class="d-flex">
+      <div class="d-flex" v-if="showAutoCreateProject">
         <div class="flex-shrink-0 flex-grow-0">
           <template v-if="isOpenstack">
             <a-tooltip :title="$t('cloudenv.text_494')">
@@ -73,6 +73,10 @@ export default {
     formLayout: Object,
     provider: {
       type: String,
+    },
+    showAutoCreateProject: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {

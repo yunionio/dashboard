@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('network.text_724')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
-    <page-body>
+    <page-body needMarginBottom>
       <a-form
         :form="form.fc">
         <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" v-bind="formItemLayout" class="mb-0">

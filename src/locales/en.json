@@ -2904,7 +2904,22 @@
       "input": "Please enter {0}",
       "optional_input": "Optional, Please enter {0}"
     },
-    "adv_config": "Advanced configuration"
+    "adv_config": "Advanced configuration",
+    "date_time": {
+      "week": "This Week",
+      "last_week": "Last Week",
+      "month": "This Month",
+      "last_month": "Last Month",
+      "quarter": "This Quarter",
+      "last_quarter": "Last Quarter",
+      "year": "This Year",
+      "last_year": "Last Year",
+      "last": "Last",
+      "quick": "Quick",
+      "custom": "Custom",
+      "advanced": "Advanced",
+      "please_select": "Please Select"
+    }
   },
   "navbar": {
     "view": {
@@ -2975,8 +2990,10 @@
   "scope.title.encrypt_key": "Encryption Keys",
   "scope.encrypt_key.title.id": "Key ID",
   "scope.encrypt_key.title.name": "Key Name",
+  "scope.encrypt_value.title.name": "Key",
   "scope.encrypt_key.title.alg": "Algorithm",
   "scope.encrypt_key.require_name.prompt": "Please specify encryption key name",
+  "scope.encrypt_value.require_name.prompt": "Please specify encryption key",
   "scope.encrypt_key.require_alg.prompt": "Please select encryption key algorithm",
   "scope.text_14": "OK",
   "scope.text_15": "Whether to enable",
@@ -5181,5 +5198,6 @@
   "common.remote_control": "Remote Control",
   "common.default_search_key": "Default is {0} search",
   "common.theme.color.lake_blue": "Lake Blue",
-  "common.table.overview": "Overview"
+  "common.table.overview": "Overview",
+  "common.auth.bindsecret.andriod": "Open the app store and search for OneLogin Project to download the app, or download the app store to search for OneLogin Project to download the app"
 }
