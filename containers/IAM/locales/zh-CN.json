@@ -751,6 +751,14 @@
       "label": "开启Syslog WebService",
       "desc": "开启Syslog Webservice，使得外部审计系统可以从该Web Service获取系统日志，用于外部审计"
     },
+    "yunionapi$syslog_webservice_username": {
+      "label": "Syslog WebService账号",
+      "desc": "开启Syslog WebService后，需填写Syslog WebService账号"
+    },
+    "yunionapi$syslog_webservice_password": {
+      "label": "Syslog WebService密码",
+      "desc": "开启Syslog WebService后，需填写Syslog WebService密码"
+    },
     "common$enable_tls_migration": {
       "label": "启用 tls 迁移",
       "desc": "启用后，KVM私有云虚拟机热迁移时使会启用 tls 加密数据。"
