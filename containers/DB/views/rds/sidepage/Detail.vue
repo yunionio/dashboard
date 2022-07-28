@@ -190,6 +190,15 @@ export default {
                 },
               },
             },
+            {
+              field: 'iops',
+              title: 'IOPS',
+              slots: {
+                default: ({ row }) => {
+                  return row.iops || '-'
+                },
+              },
+            },
           ],
         },
         {
@@ -288,7 +297,9 @@ export default {
               title: this.$t('db.text_116'),
               slots: {
                 default: ({ row }) => {
-                  return this.$t('db.text_178', [row.disk_size_gb])
+                  const { disk_size_gb = 0, disk_size_used_mb = 0 } = row
+                  const used = sizestr(disk_size_used_mb, 'M', 1024)
+                  return `${this.$t('db.text_178', [disk_size_gb])} (${this.$t('db.used', [used])})`
                 },
               },
             },

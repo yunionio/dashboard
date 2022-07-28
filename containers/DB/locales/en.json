@@ -410,5 +410,6 @@
   "db.zone_multi": "Multiple zones",
   "db.intranet_ip": "Intranet Ip",
   "db.max_connections": "Max connections",
-  "db.max_ip_bandwidth": "Max private network bandwidth"
+  "db.max_ip_bandwidth": "Max private network bandwidth",
+  "db.used": "Used：{0}"
 }
