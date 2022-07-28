@@ -85,7 +85,7 @@ export default {
               //   </div>
               // )
               return [
-                <list-body-cell-wrap hide-field copy message={value}>
+                <list-body-cell-wrap field='value' row={{ value }} hide-field copy message={value}>
                   {title} : <span>{ value || '-' }</span>
                 </list-body-cell-wrap>,
               ]
@@ -94,7 +94,7 @@ export default {
               connection(i18n.t('db.text_153'), pri),
               connection(i18n.t('db.text_154'), pub),
               ...ip_addrs.map(ip => {
-                return (<list-body-cell-wrap hide-field copy message={ip}><span>IP: {ip}</span></list-body-cell-wrap>)
+                return (<list-body-cell-wrap hide-field field='ip' row={{ ip }} copy message={ip}><span>IP: {ip}</span></list-body-cell-wrap>)
               }),
             ]
           },
