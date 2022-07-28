@@ -41,6 +41,7 @@ const actionEableMap = {
       ecloud: ['ready'],
       nutanix: ['ready'],
       bingocloud: false,
+      incloudsphere: ['ready'],
     },
   },
   stop: {
@@ -67,6 +68,7 @@ const actionEableMap = {
       ecloud: ['running'],
       nutanix: ['running'],
       bingocloud: false,
+      incloudsphere: ['running'],
     },
   },
   restart: {
@@ -93,6 +95,7 @@ const actionEableMap = {
       ecloud: ['running', 'stop_fail'],
       nutanix: ['running', 'stop_fail'],
       bingocloud: false,
+      incloudsphere: ['running', 'stop_fail'],
     },
   },
   rebuildRoot: {
@@ -141,6 +144,7 @@ const actionEableMap = {
       apsara: ['running'],
       nutanix: false,
       bingocloud: false,
+      incloudsphere: ['running'],
     },
   },
   bindKeyPair: {
@@ -213,6 +217,7 @@ const actionEableMap = {
       apsara: ['ready'],
       nutanix: ['ready'],
       bingocloud: false,
+      incloudsphere: ['ready'],
     },
   },
   vnc: {
