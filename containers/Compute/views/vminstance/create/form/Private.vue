@@ -254,7 +254,7 @@ export default {
         enabled: true,
         ...this.scopeParams,
       }
-      if (this.form.fd.hypervisor === 'nutanix') {
+      if (this.form.fd.hypervisor === 'nutanix' || this.form.fd.hypervisor === 'incloudsphere') {
         params.is_on_premise = true
         params.usable = false
       } else {
