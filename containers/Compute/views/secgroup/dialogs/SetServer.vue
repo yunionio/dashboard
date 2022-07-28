@@ -4,8 +4,8 @@
     <div slot="body">
       <dialog-selected-tips :name="$t('dictionary.secgroup')" :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="columns" />
-      <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item :label="$t('dictionary.server')" v-bind="formItemLayout">
+      <a-form :form="form.fc" v-bind="formItemLayout" hideRequiredMark>
+        <!-- <a-form-item :label="$t('dictionary.server')" v-bind="formItemLayout">
           <base-select
             class="w-100"
             @update:options="onServerSucceed"
@@ -19,6 +19,15 @@
               placeholder: $t('compute.text_1022', [$t('dictionary.server')]),
               mode: 'multiple', defaultValue,
             }" />
+        </a-form-item> -->
+        <a-form-item
+          :label="$t('dictionary.server')">
+          <list-select
+            v-decorator="decorators.servers"
+            :list-props="serverListProps"
+            :formatter="v => v.name"
+            :placeholder="$t('compute.text_1022', [$t('dictionary.server')])"
+            :dialog-params="{ title: $t('dictionary.server'), width: 1060 }" />
         </a-form-item>
       </a-form>
     </div>
@@ -38,10 +47,15 @@ import {
 } from '@/utils/common/tableColumn'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import ListSelect from '@/sections/ListSelect'
+import ResourceProps from '../mixins/serverListPropsForSetServer'
 
 export default {
   name: 'SetServerDialog',
-  mixins: [DialogMixin, WindowsMixin],
+  components: {
+    ListSelect,
+  },
+  mixins: [DialogMixin, WindowsMixin, ResourceProps],
   data () {
     // const validateServers = (rule, value, callback) => {
     //   let minError = '最少关联一个'
@@ -57,13 +71,10 @@ export default {
         fc: this.$form.createForm(this),
       },
       decorators: {
-        sergroups: [
-          'sergroups',
+        servers: [
+          'servers',
           {
             validateFirst: true,
-            rules: [
-              // { validator: validateServers, trigger: 'change' },
-            ],
           },
         ],
       },
@@ -116,17 +127,9 @@ export default {
     },
   },
   created () {
-    // this.fetchBindedServers()
+    this.fetchBindedServers()
   },
   methods: {
-    mapperServers (data) {
-      data = data.concat(this.bindServers)
-      data = R.uniqBy(item => item.id, data)
-      return data
-    },
-    onServerSucceed () {
-      this.fetchBindedServers()
-    },
     async fetchBindedServers () {
       const manager = new this.$Manager('servers')
       try {
@@ -134,7 +137,7 @@ export default {
           scope: this.scope,
           filter: 'hypervisor.notin(container, baremetal)',
           limit: 0,
-          secgroup: `!${this.params.data[0].id}`,
+          secgroup: `${this.params.data[0].id}`,
         }
         if (this.isAdminMode) {
           params.project_domain = this.userInfo.projectDomain
@@ -144,7 +147,7 @@ export default {
         this.bindServers = data
         this.bindServersLoaded = true
         this.$nextTick(() => {
-          this.form.fc.setFieldsValue({ sergroups: data.map(item => item.id) })
+          this.form.fc.setFieldsValue({ servers: data.map(item => item.id) })
         })
       } catch (error) {
         console.error(error)
@@ -160,7 +163,7 @@ export default {
         const data = {
           secgroup_ids: [this.params.data[0].id],
         }
-        ids = JSON.parse(JSON.stringify(values.sergroups))
+        ids = JSON.parse(JSON.stringify(values.servers))
         this.bindServers.forEach((item, idx) => {
           bindServers.push(item.id)
         })
