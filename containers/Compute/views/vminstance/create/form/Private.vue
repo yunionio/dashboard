@@ -80,6 +80,7 @@
           :image-params="imageParams"
           :cacheImageParams="cacheImageParams"
           :cloudproviderParamsExtra="cloudproviderParamsExtra"
+          :ignoreOptions="ignoreImageOptions"
           @updateImageMsg="updateFi" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_49')" class="mb-0">
@@ -280,6 +281,7 @@ export default {
         filter: 'server_type.notin(ipmi, pxe)',
         usable: true,
         zone: _.get(this.form, 'fd.zone.key'),
+        show_emulated: true,
         ...this.scopeParams,
       }
       return params
@@ -346,6 +348,12 @@ export default {
     },
     systemDiskTypeDisabled () {
       return this.form.fd.hypervisor === HYPERVISORS_MAP.nutanix.key
+    },
+    ignoreImageOptions () {
+      if (this.isInCloudSphere) {
+        return ['standard', 'customize']
+      }
+      return []
     },
   },
   methods: {

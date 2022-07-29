@@ -62,7 +62,6 @@ export default {
     //   { rules: [{ validator: this.validateSecgroups }] },
     // )
     return {
-      types: SECGROUP_OPTIONS_MAP,
       isBind: this.decorators.type[1].initialValue === SECGROUP_OPTIONS_MAP.bind.key,
       loading: false,
       disabled: false,
@@ -73,6 +72,13 @@ export default {
     }
   },
   computed: {
+    types () {
+      const types = SECGROUP_OPTIONS_MAP
+      if (this.isInCloudSphere) {
+        delete types.bind
+      }
+      return types
+    },
     params () {
       const params = {
         limit: 0,
@@ -85,6 +91,9 @@ export default {
     href () {
       const url = this.$router.resolve('/secgroup')
       return url.href
+    },
+    isInCloudSphere () {
+      return this.hypervisor.toLowerCase() === HYPERVISORS_MAP.incloudsphere.hypervisor.toLowerCase()
     },
     isAzure () {
       return this.hypervisor.toLowerCase() === HYPERVISORS_MAP.azure.hypervisor.toLowerCase()
