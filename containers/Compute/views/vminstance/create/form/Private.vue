@@ -281,7 +281,6 @@ export default {
         filter: 'server_type.notin(ipmi, pxe)',
         usable: true,
         zone: _.get(this.form, 'fd.zone.key'),
-        show_emulated: true,
         ...this.scopeParams,
       }
       return params
