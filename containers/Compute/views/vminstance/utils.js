@@ -120,6 +120,7 @@ const actionEableMap = {
       apsara: ['running', 'ready'],
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   resetPassword: {
@@ -169,6 +170,7 @@ const actionEableMap = {
       apsara: ['running'],
       nutanix: false,
       bingocloud: false,
+      incloudsphere: ['running'],
     },
   },
   unBindKeyPair: {
@@ -193,6 +195,7 @@ const actionEableMap = {
       apsara: ['running'],
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   adjustConfig: {
@@ -320,6 +323,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   createBackup: {
@@ -344,6 +348,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   transfer: {
@@ -368,6 +373,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   assignSecgroup: {
@@ -392,6 +398,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   insertiso: {
@@ -415,6 +422,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   ejectiso: {
@@ -438,6 +446,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   bindEip: {
@@ -462,6 +471,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   unbindEip: {
@@ -486,6 +496,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   acttachGpu: {
@@ -494,6 +505,7 @@ const actionEableMap = {
       onecloud: ['ready'],
       vmware: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   acttachUsb: {
@@ -502,6 +514,7 @@ const actionEableMap = {
       onecloud: ['ready', 'running'],
       vmware: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   publicIpToEip: {
@@ -512,6 +525,7 @@ const actionEableMap = {
       google: false,
       aws: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
 }
