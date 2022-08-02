@@ -5042,5 +5042,7 @@
   "common.permission_tip": "权限提示",
   "common.permission_no_dashboard": "您无权访问控制台",
   "common.password_no_equal": "新旧密码不能一致",
-  "common.default_search_key": "默认为{0}搜索"
+  "common.default_search_key": "默认为{0}搜索",
+  "common.login_tip": "登录提示",
+  "common.token_exp_tip": "您的登录信息将在{0}过期，请及时登录！"
 }

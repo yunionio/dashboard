@@ -5028,5 +5028,7 @@
   "common.permission_tip": "Permission prompt",
   "common.permission_no_dashboard": "You do not have permission to access the console",
   "common.password_no_equal": "Old and new passwords cannot be consistent",
-  "common.default_search_key": "Default is {0} search"
+  "common.default_search_key": "Default is {0} search",
+  "common.login_tip": "Login tooltip",
+  "common.token_exp_tip": "Your login information will expire on {0}. Please login in time!"
 }
