@@ -5224,5 +5224,8 @@
   "common.table.overview": "概览",
   "common.auth.bindsecret.andriod": "打开应用商店搜索OneLogin Project下载应用，或下载应用宝搜索OneLogin Project下载应用",
   "common.login_tip": "登录提示",
-  "common.token_exp_tip": "您的登录信息将在{0}过期，请及时登录！"
+  "common.token_exp_tip": "您的登录信息将在{0}过期，请及时登录！",
+  "common.choose.host": "请选择宿主机",
+  "common.choose.server": "请选择虚拟机",
+  "common.choose.server.label": "指定虚拟机"
 }

@@ -5202,5 +5202,8 @@
   "common.table.overview": "Overview",
   "common.auth.bindsecret.andriod": "Open the app store and search for OneLogin Project to download the app, or download the app store to search for OneLogin Project to download the app",
   "common.login_tip": "Login tooltip",
-  "common.token_exp_tip": "Your login information will expire on {0}. Please login in time!"
+  "common.token_exp_tip": "Your login information will expire on {0}. Please login in time!",
+  "common.choose.host": "Please choose a host",
+  "common.choose.server": "Please select a virtual machine",
+  "common.choose.server.label": "Specify a virtual machine"
 }
