@@ -104,18 +104,6 @@
         <a-input class="w-100" v-decorator="decorators.un_usage_label" />
       </a-form-item>
     </a-form-item>
-    <a-form-item :label="colorLabel || $t('dashboard.color.scheme')" class="mb-0" v-if="isRing">
-      <a-select
-        @change="colorChange"
-        v-decorator="decorators.color">
-        <a-select-option v-for="item in colors" :key="item.key" :value="item.key">
-          <div>
-            <a-progress :show-info="false" :stroke-color="{ '60%': item.percent60, '80%': item.percent80, '100%': item.percent100}" :percent="100" />
-          </div>
-          <div class="text-color-help">{{ item.label }}</div>
-        </a-select-option>
-      </a-select>
-    </a-form-item>
   </div>
 </template>
 
@@ -127,7 +115,6 @@ import { USAGE_CONFIG, getMetricDocs } from '@Dashboard/constants'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { usageMap } from '@/constants/generalUsage'
 import UsageSelect from './UsageSelect'
-import { chartColors } from '@/constants'
 
 export default {
   name: 'QuotaConfig',
@@ -170,29 +157,6 @@ export default {
       translateUsage: this.$t('usage'),
       totalUsageOptions: [],
       partUsageOptions: [],
-      colors: [
-        {
-          key: 'blue',
-          percent60: chartColors[0],
-          percent80: chartColors[0],
-          percent100: chartColors[0],
-          label: this.$t('dashboard.color.scheme.blue'),
-        },
-        {
-          key: 'default',
-          percent60: chartColors[3],
-          percent80: chartColors[1],
-          percent100: chartColors[2],
-          label: this.$t('dashboard.color.scheme.default'),
-        },
-        {
-          key: 'reverse',
-          percent60: chartColors[2],
-          percent80: chartColors[1],
-          percent100: chartColors[3],
-          label: this.$t('dashboard.color.scheme.reverse'),
-        },
-      ],
       metricDoc: getMetricDocs(this.$store.getters.scope),
     }
   },
