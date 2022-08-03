@@ -45,6 +45,9 @@
           </a-col>
         </a-row>
       </a-form-item>
+      <a-form-item :label="$t('common.choose.server.label')" v-bind="formItemLayout" v-if="isIDC">
+        <host-server v-decorator="decorators.server" />
+      </a-form-item>
       <a-form-item v-if="enableEncryption" v-bind="formItemLayout" :label="$t('compute.disk.encryption')" :extra="$t('compute.disk.encryption.extra')">
         <encrypt-keys :decorators="decorators.encrypt_keys" />
       </a-form-item>
@@ -94,6 +97,7 @@ import BottomBar from './components/BottomBar'
 import { HYPERVISORS_MAP } from '../../../../../src/constants'
 import * as CommonConstants from '../../../constants'
 import EncryptKeys from '@Compute/sections/encryptkeys'
+import HostServer from './components/HostServer'
 
 export default {
   name: 'DiskCreate',
@@ -103,6 +107,7 @@ export default {
     BottomBar,
     Tag,
     EncryptKeys,
+    HostServer,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -233,6 +238,7 @@ export default {
             'encrypt_key_id',
           ],
         },
+        server: ['server'],
       },
       formItemLayout: {
         wrapperCol: {
@@ -393,6 +399,9 @@ export default {
       if (R.isEmpty(this.instanceCapabilitieStorage)) return []
       return this.instanceCapabilitieStorage.data_disk
     },
+    isIDC () {
+      return this.cloudEnv === 'onpremise'
+    },
   },
   watch: {
     cloudEnv (val) {
@@ -439,9 +448,9 @@ export default {
               }
             })
             if (this.diskType === 'onpremise') {
-              this.storageOpts = this.storageOpts.filter((item) => {
-                return !item.value.includes('local')
-              })
+              // this.storageOpts = this.storageOpts.filter((item) => {
+              //   return !item.value.includes('local')
+              // })
             } else if (this.diskType === 'private') {
               this.storageOpts = this.storageOpts.filter((item) => {
                 return !item.value.includes('nova')
@@ -460,9 +469,9 @@ export default {
             }
             this.form.fc.setFieldsValue({ backend: '' })
             if (this.storageOpts.length > 0) {
-              if (this.cloudEnv === 'onpremise') {
-                this.storageOpts = this.storageOpts.filter(item => { return !item.value.includes('local') })
-              }
+              // if (this.cloudEnv === 'onpremise') {
+              //   this.storageOpts = this.storageOpts.filter(item => { return !item.value.includes('local') })
+              // }
               this.form.fc.setFieldsValue({ backend: this.storageOpts[0].value })
               this.__newStorageChange(this.storageOpts[0].value)
             }
