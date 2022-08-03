@@ -648,7 +648,13 @@ export default {
       })
     },
     handleOpenOverview () {
-      window.open('/overview', '_blank')
+      const { companyInfo } = this.$store.state.app
+
+      if (companyInfo.monitor_dashboard_style === 'overview-private2') {
+        window.open('/overview-private', '_blank')
+      } else {
+        window.open('/overview', '_blank')
+      }
     },
     cronjobFetchAlerts () { // 定时5分钟请求一次
       const userInfo = this.$store.getters.userInfo
