@@ -299,6 +299,7 @@ const actionEableMap = {
       ecloud: false,
       nutanix: ['running'],
       bingocloud: false,
+      incloudsphere: ['running'],
     },
   },
   createSnapshot: {

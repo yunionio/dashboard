@@ -223,7 +223,7 @@ export default {
           }
           if (obj.nics) {
             obj.nics.map(nic => {
-              if (obj.provider === 'OneCloud' || obj.vpc_id === 'default') {
+              if (obj.provider === 'OneCloud' || obj.vpc_id === 'default' || obj.provider === 'InCloudSphere') {
                 ipInfoList.push({
                   actionType: 'IP SSH',
                   ipType: 'nicIP',
