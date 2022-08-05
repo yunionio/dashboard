@@ -5,28 +5,8 @@
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1127')" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
-        <!-- 强制迁移 -->
-        <a-form-item :label="$t('compute.text_1261')" v-if="isSingle" :extra="$t('compute.text_1262')">
-          <a-switch
-            :checkedChildren="$t('compute.text_115')"
-            :unCheckedChildren="$t('compute.text_116')"
-            v-decorator="decorators.rescue_mode"
-            @change="rescueModeChangeHandle" />
-        </a-form-item>
-        <!-- 自动启动 -->
-        <a-form-item :label="$t('compute.text_494')" v-if="isSingle && firstData.status === 'ready'" :extra="$t('compute.text_1263')">
-          <a-switch
-            :checkedChildren="$t('compute.text_115')"
-            :unCheckedChildren="$t('compute.text_116')"
-            v-decorator="decorators.auto_start" />
-        </a-form-item>
-        <!-- 跳过CPU检查 -->
-        <a-form-item :label="$t('compute.live_migrate.skip_cpu_check')" v-if="firstData.status === 'running'" :extra="$t('compute.live_migrate.skip_cpu_check.explain')">
-          <a-switch
-            :checkedChildren="$t('compute.text_115')"
-            :unCheckedChildren="$t('compute.text_116')"
-            v-decorator="decorators.skip_cpu_check"
-            @change="skipCpuCheckChangeHandle" />
+        <a-form-item :label="$t('compute.v2vtransfer.type')">
+          <a-radio v-decorator="decorators.type">{{ $t('compute.v2vtransfer.kvm') }} <help-tooltip name="v2vTransferType" /></a-radio>
         </a-form-item>
         <a-form-item
           :label="$t('compute.text_111')"
@@ -52,13 +32,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { typeClouds } from '@/utils/common/hypervisor'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import ListSelect from '@/sections/ListSelect'
 import ResourceProps from '../mixins/resourceProps'
 
 export default {
-  name: 'VmTransferDialog',
+  name: 'VmV2vTransferDialog',
   components: {
     ListSelect,
   },
@@ -69,37 +50,22 @@ export default {
       form: {
         fc: this.$form.createForm(this),
       },
-      forcastData: null,
       hosts: [],
       message: '',
       decorators: {
+        type: [
+          'type',
+          {
+            initialValue: true,
+            valuePropName: 'checked',
+          },
+        ],
         host: [
           'host',
           {
             rules: [
               { required: false, message: this.$t('compute.text_314'), trigger: 'change' },
             ],
-          },
-        ],
-        rescue_mode: [
-          'rescue_mode',
-          {
-            initialValue: false,
-            valuePropName: 'checked',
-          },
-        ],
-        auto_start: [
-          'auto_start',
-          {
-            initialValue: true,
-            valuePropName: 'checked',
-          },
-        ],
-        skip_cpu_check: [
-          'skip_cpu_check',
-          {
-            initialValue: false,
-            valuePropName: 'checked',
           },
         ],
       },
@@ -122,18 +88,14 @@ export default {
       return this.params.data.length === 1
     },
     hostsParams () {
-      let hostType = 'hypervisor'
       const hostIds = this.forcastData?.filtered_candidates?.map(v => v.id) || []
 
-      if (this.firstData.hypervisor !== 'kvm') {
-        hostType = this.firstData.hypervisor
-      }
       const ret = {
         scope: this.scope,
-        host_type: hostType,
         limit: 10,
         enabled: 1,
         host_status: 'online',
+        brand: typeClouds.brandMap.OneCloud.brand,
         server_id_for_network: this.firstData.id,
         os_arch: this.firstData.os_arch,
       }
@@ -187,50 +149,47 @@ export default {
     this.queryHosts()
   },
   methods: {
+    queryForcastData () {
+      this.doForecast().then((res) => {
+        this.forcastData = res.data
+      }).catch((err) => {
+        console.log(err)
+        throw err
+      })
+    },
+    doForecast () {
+      const manager = new this.$Manager('servers')
+
+      return manager.performAction({
+        id: this.firstData.id,
+        action: 'migrate-forecast',
+        data: {
+          convert_to_kvm: true,
+        },
+      })
+    },
     doSingleTransfer (ids, values) {
-      let action = 'migrate'
       const data = {
         prefer_host: values.host,
-      }
-      if (this.firstData.status === 'ready') {
-        data.auto_start = values.auto_start
-      }
-      if (this.firstData.status !== 'running') {
-        action = 'migrate'
-      } else {
-        action = 'live-migrate'
-        if (values.skip_cpu_check) {
-          data.skip_cpu_check = true
-          data.skip_kernel_check = true
-        }
-      }
-      if (values.rescue_mode) {
-        action = 'migrate'
-        data.rescue_mode = true
       }
       return this.params.onManager('performAction', {
         id: this.firstData.id,
         steadyStatus: ['running', 'ready'],
         managerArgs: {
-          action,
+          action: 'convert-to-kvm',
           data,
         },
       })
     },
     doBatchTransfer (ids, values) {
       const data = {
-        guest_ids: ids,
         prefer_host: values.host,
       }
-      if (values.skip_cpu_check) {
-        data.skip_cpu_check = true
-        data.skip_kernel_check = true
-      }
-      return this.params.onManager('performClassAction', {
+      return this.params.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: ['running', 'ready'],
         managerArgs: {
-          action: 'batch-migrate',
+          action: 'convert-to-kvm',
           data,
         },
       })
@@ -249,44 +208,6 @@ export default {
       } finally {
         this.loading = false
       }
-    },
-    doForecast (live_migrate = true, skip_cpu_check = false, prefer_host_id) {
-      const manager = new this.$Manager('servers')
-      const params = {
-        live_migrate,
-        skip_cpu_check,
-      }
-      if (prefer_host_id) {
-        params.prefer_host_id = prefer_host_id
-      }
-      return manager.performAction({
-        id: this.params.data[0].id,
-        action: 'migrate-forecast',
-        data: params,
-      })
-    },
-    queryForcastData (skip_cpu_check, prefer_host_id) {
-      const live_migrate = this.firstData.status === 'running'
-      this.doForecast(live_migrate, skip_cpu_check, prefer_host_id).then((res) => {
-        this.forcastData = res.data
-      }).catch((err) => {
-        console.log(err)
-        throw err
-      })
-    },
-    rescueModeChangeHandle (v) {
-      this.form.fc.setFieldsValue({ host: '' })
-      if (v) {
-        this.forcastData = null
-      } else {
-        this.queryForcastData(false)
-      }
-    },
-    skipCpuCheckChangeHandle (v) {
-      const rescue_mode = this.form.fc.getFieldValue('rescue_mode')
-      if (rescue_mode) return
-      if (!this.isSingle) return
-      this.queryForcastData(v)
     },
     queryHosts () {
       const hostsManager = new this.$Manager('hosts')
