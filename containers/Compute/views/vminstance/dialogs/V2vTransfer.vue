@@ -88,9 +88,11 @@ export default {
       return this.params.data.length === 1
     },
     hostsParams () {
+      const hostIds = this.forcastData?.filtered_candidates?.map(v => v.id) || []
+
       const ret = {
         scope: this.scope,
-        limit: 20,
+        limit: 10,
         enabled: 1,
         host_status: 'online',
         brand: typeClouds.brandMap.OneCloud.brand,
@@ -99,6 +101,9 @@ export default {
       }
       if (this.isAdminMode && this.isSingle) {
         ret.project_domain = this.params.data[0].domain_id
+      }
+      if (hostIds && hostIds.length > 0) {
+        ret.filter = `id.notin(${hostIds.join(',')})`
       }
       return ret
     },

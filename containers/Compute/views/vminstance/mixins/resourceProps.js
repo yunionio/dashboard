@@ -26,7 +26,7 @@ export default {
               label: 'IP',
             },
           },
-          fetchDataCb: this.fetchDataCb,
+          // fetchDataCb: this.fetchDataCb,
         }),
         columns: [
           getNameDescriptionTableColumn({

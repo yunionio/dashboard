@@ -1511,7 +1511,7 @@ export default {
                       ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
-                    ret.validate = true
+                    ret.validate = cloudEnabled('transfer', obj)
                     ret.tooltip = cloudUnabledTip('transfer', obj)
                     return ret
                   },
