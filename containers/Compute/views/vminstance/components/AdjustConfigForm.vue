@@ -448,8 +448,8 @@ export default {
         }
       }
       if (this.type === SERVER_TYPE.private) {
-        // nutanix vmware
-        if (this.selectedItem && this.selectedItem.provider === HYPERVISORS_MAP.nutanix.provider) {
+        // nutanix vmware incloudshpere
+        if (this.selectedItem && (this.selectedItem.provider === HYPERVISORS_MAP.nutanix.provider || this.selectedItem.provider === HYPERVISORS_MAP.incloudsphere.provider)) {
           params['provider.0'] = HYPERVISORS_MAP.kvm.provider
         } else {
           params.cloudregion_id = this.selectedItem.cloudregion_id
