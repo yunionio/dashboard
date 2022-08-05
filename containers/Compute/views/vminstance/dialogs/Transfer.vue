@@ -123,13 +123,15 @@ export default {
     },
     hostsParams () {
       let hostType = 'hypervisor'
+      const hostIds = this.forcastData?.filtered_candidates?.map(v => v.id) || []
+
       if (this.firstData.hypervisor !== 'kvm') {
         hostType = this.firstData.hypervisor
       }
       const ret = {
         scope: this.scope,
         host_type: hostType,
-        limit: 20,
+        limit: 10,
         enabled: 1,
         host_status: 'online',
         server_id_for_network: this.firstData.id,
@@ -137,6 +139,9 @@ export default {
       }
       if (this.isAdminMode && this.isSingle) {
         ret.project_domain = this.params.data[0].domain_id
+      }
+      if (hostIds && hostIds.length > 0) {
+        ret.filter = `id.notin(${hostIds.join(',')})`
       }
       return ret
     },

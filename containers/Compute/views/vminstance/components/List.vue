@@ -1040,6 +1040,8 @@ export default {
                         ret.tooltip = this.$t('compute.v2vtransfer.same_brand')
                         return ret
                       }
+                      ret.validate = cloudEnabled('transfer', this.list.selectedItems)
+                      ret.tooltip = cloudUnabledTip('transfer', this.list.selectedItems)
                       return ret
                     },
                     hidden: () => !(hasSetupKey(['onecloud', 'openstack', 'esxi'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
