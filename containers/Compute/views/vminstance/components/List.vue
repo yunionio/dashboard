@@ -990,6 +990,8 @@ export default {
                         ret.validate = false
                         return ret
                       }
+                      ret.validate = cloudEnabled('transfer', this.list.selectedItems)
+                      ret.tooltip = cloudUnabledTip('transfer', this.list.selectedItems)
                       return ret
                     },
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
