@@ -707,7 +707,7 @@
       "label": "全局代理开关",
       "desc": "如果开启，在下载套餐、下载公有云镜像列表、下载费率、镜像市场列表展示、通过URL导入镜像、拉取公共镜像列表时将使用全局代理"
     },
-    "websocket$force_single_session_login": {
+    "yunionapi$force_single_session_login": {
       "label": "单session登录开关",
       "desc": "单session登录开关关闭后，同一用户可在多个浏览器同时登录，开启后，只能在一个浏览器同时登录"
     },

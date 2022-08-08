@@ -708,7 +708,7 @@
       "label": "Global Proxy",
       "desc": "If enabled, the global proxy will be used for the following scenarios: downloading configuration and rate data, downloading public images, importing image from Image market, uploading image from URL, etc."
     },
-    "websocket$force_single_session_login": {
+    "yunionapi$force_single_session_login": {
       "label": "Single session login switch",
       "desc": "After the single session login switch is turned off, the same user can log in in multiple browsers at the same time. After it is turned on, they can only log in in one browser at the same time."
     },
