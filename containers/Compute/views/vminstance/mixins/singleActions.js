@@ -85,7 +85,7 @@ export default {
               }
 
               const fetchWebconsoleAddr = async (port) => {
-                if (ipInfo.vpcId === 'default' || ipInfo.ipType === 'eip') {
+                if (ipInfo.vpcId === 'default' || ipInfo.ipType === 'eip' || ipInfo.provider === 'InCloudSphere') {
                   return {
                     ipAddr: ipAddr,
                     port: port,
@@ -223,7 +223,7 @@ export default {
           }
           if (obj.nics) {
             obj.nics.map(nic => {
-              if (obj.provider === 'OneCloud' || obj.vpc_id === 'default' || obj.provider === 'InCloudSphere') {
+              if ((obj.provider === 'OneCloud' || obj.vpc_id === 'default' || obj.provider === 'InCloudSphere') && nic.ip_addr) {
                 ipInfoList.push({
                   actionType: 'IP SSH',
                   ipType: 'nicIP',
