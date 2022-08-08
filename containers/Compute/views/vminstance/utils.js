@@ -247,6 +247,7 @@ const actionEableMap = {
       ecloud: ['running'],
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   'EIP SSH': {
