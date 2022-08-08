@@ -32,7 +32,7 @@ export default {
     return {
       type: 'challenge',
       challangeParams: {},
-      expText: '',
+      expText: 3,
       timer: null,
     }
   },
