@@ -96,10 +96,10 @@ export default {
       dashboardParams: {},
       layout: [],
       layoutInit: [],
-      colNum: 56,
-      rowHeight: 65,
-      colMargin: [5, 5],
-      maxRows: 34,
+      colNum: 80,
+      rowHeight: 30,
+      colMargin: [15, 15],
+      maxRows: 164,
       defaultGridW: 2,
       defaultGridH: 2,
       currentOption: null,
@@ -524,7 +524,7 @@ export default {
   left: 0;
   z-index: 0;
   overflow: hidden;
-  background-color: rgb(250, 250, 250);
+  background-color: #f3f3f3;
   padding: 15px;
 }
 .edit-header {
