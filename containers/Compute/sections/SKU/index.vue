@@ -10,18 +10,26 @@
     <vxe-grid
       row-id="id"
       ref="tableRef"
+      min-height="260"
       resizable
-      max-height="400"
-      @radio-change="skuChange"
-      @cell-click="skuChange"
       :columns="tableColumn"
       :data="skuResults"
-      :radio-config="{ reserve: true }">
+      :radio-config="{ reserve: true }"
+      @cell-click="skuChange"
+      @radio-change="skuChange">
       <template v-slot:empty>
         <loader :loading="skuLoading || !canSkuShow" />
       </template>
     </vxe-grid>
-    <div class="mt-1" v-if="selectedTip">{{$t('compute.text_171', [ selectedTip ])}}</div>
+    <div class="sku-pagebar">
+      <vxe-pager
+        :current-page.sync="skuPage.currentPage"
+        :page-size.sync="skuPage.pageSize"
+        :total="skuPage.totalResult"
+        :layouts="['PrevJump', 'PrevPage', 'Jump', 'PageCount', 'NextPage', 'NextJump', 'Total']"
+        @page-change="skuPageChangeHandle" />
+      <div class="mt-1" v-if="selectedTip">{{$t('compute.text_171', [ selectedTip ])}}</div>
+    </div>
   </div>
 </template>
 
@@ -103,6 +111,12 @@ export default {
       skuLoading: false,
       selectedSkuData: {},
       skuType: ALL_SKU_CATEGORY_OPT.key,
+      skuPage: {
+        currentPage: 1,
+        pageSize: 10,
+        totalResult: 0,
+      },
+      skuTypes: [],
     }
   },
   computed: {
@@ -182,7 +196,7 @@ export default {
         categoryOptions[item] = {
           label: this.getI18NValue(`skuCategoryOptions.${type}.${item}`, item),
           key: item,
-          disabled: true,
+          disabled: !this.skuTypes.includes(item),
         }
       })
       const skuOptions = {
@@ -201,9 +215,6 @@ export default {
         const category = item.instance_type_category
         if (!skuOptions[key]) {
           skuOptions[key] = []
-          if (categoryOptions[key]) {
-            categoryOptions[key].disabled = false
-          }
         }
         let hypervisor = this.hypervisor
         if (this.isPublic) {
@@ -262,6 +273,7 @@ export default {
       handler (val, oldV) {
         if (!R.isEmpty(val)) {
           if (!R.equals(val, oldV)) {
+            this.resetPageInfo()
             this.fetchData()
           }
         } else {
@@ -290,6 +302,7 @@ export default {
   },
   methods: {
     fetchData () {
+      this.fetchSkuTypes()
       this.fetchSkuList().then(this.fetchCloudSkuRatesList)
     },
     getFormatPrice (price) {
@@ -302,6 +315,7 @@ export default {
       this.setSku(row, true)
     },
     skuTypeChange () {
+      this.fetchData()
       if (this.skuResults && this.skuResults.length) {
         this.setSku(this.skuResults[0], true)
       }
@@ -340,19 +354,39 @@ export default {
     async fetchSkuList () {
       try {
         this.skuLoading = true
-        const params = { ...this.skuParams }
-        params.enabled = true
-        let { data: { data = [] } } = await this.skusM.list({ params: params })
-        this.skuLoading = false
-        if (typeof this.skuFilter === 'function') {
-          data = this.skuFilter(data)
+        this.skuList = []
+        if (this.skuParams.cpu_core_count === 0) {
+          delete this.skuParams.cpu_core_count
         }
+        if (this.skuParams.memory_size_mb === 0) {
+          delete this.skuParams.memory_size_mb
+        }
+        const params = {
+          ...this.skuParams,
+          limit: this.skuPage.pageSize,
+          offset: (this.skuPage.currentPage - 1) * this.skuPage.pageSize,
+          '@local_category': this.skuType,
+          prepaid_status: 'available',
+        }
+        if (this.skuType === 'all') {
+          delete params['@local_category']
+        }
+        params.enabled = true
+        let { data } = await this.skusM.list({ params: params })
+        this.skuPage.pageSize = data.limit || 10
+        this.skuPage.totalResult = data.total || 0
+
+        if (typeof this.skuFilter === 'function') {
+          data = this.skuFilter(data.data)
+        }
+
         if (this.skuParams && !R.isEmpty(this.skuParams)) { // 防止网络延迟导致 skuParams 已经为空了，但却赋值了
           this.skuList = data
           if (this.skuList && this.skuList.length) {
             this.setSku(this.skuResults[0])
           }
         }
+        this.skuLoading = false
         return data
       } catch (error) {
         this.skuLoading = false
@@ -409,6 +443,51 @@ export default {
       }
       return true
     },
+    skuPageChangeHandle ({ currentPage = 1, pageSize = 10 }) {
+      this.skuPage = {
+        ...this.skuPage,
+        currentPage,
+        pageSize,
+      }
+      this.fetchData()
+    },
+    async fetchSkuTypes () {
+      try {
+        const params = {
+          ...this.skuParams,
+          field: 'local_category',
+          postpaid_status: 'available',
+        }
+        delete params.limit
+        delete params.offset
+        delete params['@local_category']
+        if (this.skuParams.cpu_core_count === 0) {
+          delete params.cpu_core_count
+        }
+        if (this.skuParams.memory_size_mb === 0) {
+          delete params.memory_size_mb
+        }
+        const { data } = await this.skusM.get({ id: 'distinct-field', params })
+        this.skuTypes = data[params.field]
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    resetPageInfo () {
+      this.skuPage = {
+        currentPage: 1,
+        pageSize: 10,
+        totalResult: 0,
+      }
+    },
   },
 }
 </script>
+<style lang="scss" scoped>
+.sku-pagebar {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+}
+</style>

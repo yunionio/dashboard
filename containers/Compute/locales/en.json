@@ -1527,5 +1527,6 @@
   "compute.vpc_extrnal_id": "VPC Extrnal ID",
   "compute.mainternance_in_disabled_tip": "The number of virtual machines on the host is 0",
   "compute.num_queues": "Num Queues",
-  "compute.update_network.alert": "Take effect after restarting the virtual machine"
+  "compute.update_network.alert": "Take effect after restarting the virtual machine",
+  "compute.unlimited": "ALL"
 }
