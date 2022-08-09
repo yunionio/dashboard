@@ -114,7 +114,7 @@ export default {
             label: i18n.t('dictionary.vpc_network'),
             t: 'dictionary.vpc_network',
             hidden: () => {
-              if (store.getters.isProjectMode) return true
+              if (store.getters.isProjectMode || isScopedPolicyMenuHidden('sub_hidden_menus.vpc_network')) return true
               return !hasSetupKey(['aliyun', 'qcloud'])
             },
           },
@@ -134,7 +134,7 @@ export default {
             permission: 'vpc_peering_connections_list',
             t: 'dictionary.vpc_peer_connect',
             hidden: () => {
-              if (store.getters.isProjectMode) return true
+              if (store.getters.isProjectMode || isScopedPolicyMenuHidden('sub_hidden_menus.vpc_peerconnect')) return true
               return !hasSetupKey(['qcloud', 'huawei', 'aws'])
             },
           },
