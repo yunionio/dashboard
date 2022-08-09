@@ -27,6 +27,11 @@ export default {
         }
         if (val) {
           this.initTimeout(val)
+        } else {
+          if (this.timeout) {
+            clearTimeout(this.timeout)
+            this.timeout = null
+          }
         }
       },
       immediate: true,
@@ -38,6 +43,7 @@ export default {
         } else {
           if (this.timer) {
             clearInterval(this.timer)
+            this.timer = null
           }
         }
       },
@@ -64,7 +70,7 @@ export default {
             })
             clearTimeout(this.timeout)
             this.timeout = null
-          }, time - 5 * 60 * 1000 < 0 ? 0 : time - 5 * 60 * 1000)
+          }, time - 3 * 60 * 1000 < 0 ? 0 : time - 3 * 60 * 1000)
         }
       }
     },

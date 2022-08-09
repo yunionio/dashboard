@@ -5220,5 +5220,6 @@
   "common.table.overview": "概览",
   "common.auth.bindsecret.andriod": "打开应用商店搜索OneLogin Project下载应用，或下载应用宝搜索OneLogin Project下载应用",
   "common.login_tip": "登录提示",
-  "common.token_exp_tip": "您的登录信息将在{0}过期，请及时登录！"
+  "common.token_exp_tip": "您的登录信息将会在{0}分钟后失效，请重新输入账号密码登录（重新登录不会刷新页面），否则将到期退出。",
+  "common.token_eip_tip2": "您的登录信息已失效，请重新输入账号密码登录（重新登录不会刷新页面）。"
 }
