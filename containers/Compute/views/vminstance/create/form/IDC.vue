@@ -55,10 +55,10 @@
         <gpu :decorators="decorators.gpu" :gpu-options="gpuOptions" @change="gpuChange" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1058')" class="mb-0">
-        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
+        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :showUnlimited="true" @change="cpuChange" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_369')" class="mb-0">
-        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" />
+        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :showUnlimited="true" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_109')" v-if="showSku">
         <sku
