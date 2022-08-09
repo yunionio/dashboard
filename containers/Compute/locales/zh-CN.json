@@ -1608,5 +1608,6 @@
   "compute.v2vtransfer.type": "迁移类型",
   "compute.v2vtransfer.kvm": "迁移至KVM平台",
   "compute.v2vtransfer.same_brand": "请选择同平台的机器",
-  "compute.max_bandwidth": "最大带宽"
+  "compute.max_bandwidth": "最大带宽",
+  "compute.unlimited": "不限"
 }

@@ -1,6 +1,7 @@
 <template>
   <a-form-item :extra="extra">
     <a-radio-group v-decorator="decorator" :disabled="disabled">
+      <a-radio-button v-show="showUnlimited" :key="0" :value="0">{{ $t('compute.unlimited') }}</a-radio-button>
       <a-radio-button v-for="item in options" :value="item" :key="item" :disabled="disableOptionHandle(item)">{{ item | format }}</a-radio-button>
     </a-radio-group>
   </a-form-item>
@@ -36,6 +37,10 @@ export default {
     extra: {
       type: String,
       default: '',
+    },
+    showUnlimited: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {
