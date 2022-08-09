@@ -2,11 +2,13 @@ import { mapState } from 'vuex'
 import store from '@/store'
 import router from '@/router'
 import { genReferRouteQuery } from '@/utils/utils'
+import { decodeToken } from '@/utils/auth'
 export default {
   data () {
     return {
       isTimerOpen: false,
       timer: null,
+      timeout: null,
       lastActionTime: 0,
     }
   },
@@ -22,6 +24,9 @@ export default {
           if (this.timer) {
             clearInterval(this.timer)
           }
+        }
+        if (val) {
+          this.initTimeout(val)
         }
       },
       immediate: true,
@@ -40,6 +45,30 @@ export default {
     },
   },
   methods: {
+    // token过期检测
+    initTimeout (token) {
+      if (this.timeout) {
+        try {
+          clearTimeout(this.timeout)
+          this.timeout = null
+        } catch (err) { }
+      }
+      const tokenObj = decodeToken(token)
+      const { exp } = tokenObj
+      if (exp) {
+        const time = new Date(exp).getTime() - new Date().getTime()
+        if (time > 0) {
+          this.timeout = setTimeout(() => {
+            this.createDialog('LoginDialog', {
+              tokenExpTime: exp,
+            })
+            clearTimeout(this.timeout)
+            this.timeout = null
+          }, time - 5 * 60 * 1000 < 0 ? 0 : time - 5 * 60 * 1000)
+        }
+      }
+    },
+    // 无操作退出
     initInterval () {
       if (this.timer) {
         try {

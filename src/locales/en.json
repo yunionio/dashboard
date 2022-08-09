@@ -5196,5 +5196,7 @@
   "common.default_search_key": "Default is {0} search",
   "common.theme.color.lake_blue": "Lake Blue",
   "common.table.overview": "Overview",
-  "common.auth.bindsecret.andriod": "Open the app store and search for OneLogin Project to download the app, or download the app store to search for OneLogin Project to download the app"
+  "common.auth.bindsecret.andriod": "Open the app store and search for OneLogin Project to download the app, or download the app store to search for OneLogin Project to download the app",
+  "common.login_tip": "Login tooltip",
+  "common.token_exp_tip": "Your login information will expire on {0}. Please login in time!"
 }

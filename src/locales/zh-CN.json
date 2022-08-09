@@ -5218,5 +5218,7 @@
   "common.default_search_key": "默认为{0}搜索",
   "common.theme.color.lake_blue": "湖水蓝",
   "common.table.overview": "概览",
-  "common.auth.bindsecret.andriod": "打开应用商店搜索OneLogin Project下载应用，或下载应用宝搜索OneLogin Project下载应用"
+  "common.auth.bindsecret.andriod": "打开应用商店搜索OneLogin Project下载应用，或下载应用宝搜索OneLogin Project下载应用",
+  "common.login_tip": "登录提示",
+  "common.token_exp_tip": "您的登录信息将在{0}过期，请及时登录！"
 }
