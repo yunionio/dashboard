@@ -1608,5 +1608,6 @@
   "compute.v2vtransfer.type": "Transfer Type",
   "compute.v2vtransfer.kvm": "Migrate to KVM platform",
   "compute.v2vtransfer.same_brand": "Please select a machine of the same platform",
-  "compute.max_bandwidth": "Max Bandwidth"
+  "compute.max_bandwidth": "Max Bandwidth",
+  "compute.unlimited": "ALL"
 }
