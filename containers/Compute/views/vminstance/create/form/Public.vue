@@ -70,10 +70,10 @@
           @update:item="cloudproviderSelected" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1058')" class="mb-0">
-        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
+        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :showUnlimited="true" @change="cpuChange" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_369')" class="mb-0">
-        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" />
+        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :showUnlimited="true" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_109')">
         <sku
@@ -333,7 +333,7 @@ export default {
       const params = {
         public_cloud: true,
         limit: 0,
-        cpu_core_count: this.form.fd.vcpu || this.decorators.vcpu[1].initialValue,
+        cpu_core_count: this.form.fd.vcpu,
         memory_size_mb: this.form.fd.vmem,
         usable: true,
         enabled: true,

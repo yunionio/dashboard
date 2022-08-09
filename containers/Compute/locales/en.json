@@ -1599,5 +1599,6 @@
   "compute.num_queues": "Num Queues",
   "compute.update_network.alert": "Take effect after restarting the virtual machine",
   "compute.max_iops": "Max IOPS",
-  "compute.max_bandwidth": "Max Bandwidth"
+  "compute.max_bandwidth": "Max Bandwidth",
+  "compute.unlimited": "ALL"
 }

@@ -1599,5 +1599,6 @@
   "compute.add_tap_flow": "添加镜像源",
   "compute.update_network.alert": "重启虚拟机后生效",
   "compute.max_iops": "最大IOPS",
-  "compute.max_bandwidth": "最大带宽"
+  "compute.max_bandwidth": "最大带宽",
+  "compute.unlimited": "不限"
 }
