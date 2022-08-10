@@ -104,18 +104,6 @@
         <a-input class="w-100" v-decorator="decorators.un_usage_label" />
       </a-form-item>
     </a-form-item>
-    <a-form-item :label="colorLabel || $t('dashboard.color.scheme')" class="mb-0" v-if="isRing">
-      <a-select
-        @change="colorChange"
-        v-decorator="decorators.color">
-        <a-select-option v-for="item in colors" :key="item.key" :value="item.key">
-          <div>
-            <a-progress :show-info="false" :stroke-color="{ '60%': item.percent60, '80%': item.percent80, '100%': item.percent100}" :percent="100" />
-          </div>
-          <div class="text-color-help">{{ item.label }}</div>
-        </a-select-option>
-      </a-select>
-    </a-form-item>
   </div>
 </template>
 
@@ -169,29 +157,6 @@ export default {
       translateUsage: this.$t('usage'),
       totalUsageOptions: [],
       partUsageOptions: [],
-      colors: [
-        {
-          key: 'blue',
-          percent60: '#ADD1F3',
-          percent80: '#ADD1F3',
-          percent100: '#ADD1F3',
-          label: this.$t('dashboard.color.scheme.blue'),
-        },
-        {
-          key: 'default',
-          percent60: '#ADE4B6',
-          percent80: '#F3CBAD',
-          percent100: '#F3ADB2',
-          label: this.$t('dashboard.color.scheme.default'),
-        },
-        {
-          key: 'reverse',
-          percent60: '#F3ADB2',
-          percent80: '#F3CBAD',
-          percent100: '#ADE4B6',
-          label: this.$t('dashboard.color.scheme.reverse'),
-        },
-      ],
       metricDoc: getMetricDocs(this.$store.getters.scope),
     }
   },
