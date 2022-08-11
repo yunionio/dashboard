@@ -21,7 +21,7 @@
         :usages="usages"
         @change="usageChange" />
       <div slot="extra">
-        <i18n :path="usageLabel?'metricConfig.create_form.metric_extra':'metricsConfig.create_form.usage_extra'">
+        <i18n :path="usageLabel?'metricConfig.create_form.metric_extra':'metricConfig.create_form.usage_extra'">
           <template #link>
             <help-link :href="metricDoc">{{$t('metricConfig.create_form.usage_link')}}</help-link>
           </template>

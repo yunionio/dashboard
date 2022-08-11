@@ -1,3 +1,5 @@
+import { chartColors } from '@/constants'
+
 export default {
   props: {
     options: {
@@ -14,6 +16,33 @@ export default {
       default: false,
     },
     type: String,
+  },
+  data () {
+    return {
+      ringColors: [
+        {
+          key: 'blue',
+          percent60: chartColors[0],
+          percent80: chartColors[0],
+          percent100: chartColors[0],
+          label: this.$t('dashboard.color.scheme.blue'),
+        },
+        {
+          key: 'default',
+          percent60: chartColors[3],
+          percent80: chartColors[1],
+          percent100: chartColors[2],
+          label: this.$t('dashboard.color.scheme.default'),
+        },
+        {
+          key: 'reverse',
+          percent60: chartColors[2],
+          percent80: chartColors[1],
+          percent100: chartColors[3],
+          label: this.$t('dashboard.color.scheme.reverse'),
+        },
+      ],
+    }
   },
   methods: {
     setDefaultName (usage) {
