@@ -17,6 +17,7 @@ import * as R from 'ramda'
 import { mapGetters, mapState } from 'vuex'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import enUS from 'ant-design-vue/es/locale/en_US'
+import WindowsMixin from '@/mixins/windows'
 import LogoutMixin from '@/mixins/logout'
 import DefaultLayout from '@/layouts/Default'
 import FullScreenLayout from '@/layouts/FullScreen'
@@ -46,7 +47,7 @@ export default {
     SidePageManager,
     WindowResizeListener,
   },
-  mixins: [LogoutMixin],
+  mixins: [WindowsMixin, LogoutMixin],
   data () {
     return {
       locale: antdLocales[this.$store.getters.setting.language],
