@@ -144,7 +144,6 @@
 import * as R from 'ramda'
 import { mapState } from 'vuex'
 import { Base64 } from 'js-base64'
-import { aesEncrypt } from '@/utils/crypto'
 import { setLoginDomain, getLoginDomain } from '@/utils/common/cookie'
 // import { removeQueryKeys } from '@/utils/utils'
 import EditForm from '@/components/Edit/Form'
@@ -325,9 +324,6 @@ export default {
         const fd = this.formDataMapper ? this.formDataMapper({ ...this.fd }) : { ...this.fd }
         data.username = fd.username
         data.password = Base64.encode(fd.password)
-        if (this.regions.encrypt_passwd) {
-          data.password = aesEncrypt(fd.password)
-        }
         if (fd.captcha) data.captcha = fd.captcha
         if (fd.region) {
           data.region = fd.region
