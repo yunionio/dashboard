@@ -274,5 +274,7 @@
   "dashbaord.panel_shared_tip": "After sharing, everyone's default panel will be updated to the current one, please be careful!",
   "dashboard.chart_type": "Chart type",
   "dashboard.ring": "Ring",
-  "dashboard.liquidfill": "LiquidFill"
+  "dashboard.liquidfill": "LiquidFill",
+  "dashboard.trend": "Trend",
+  "dashboard.monitor.time": "Time"
 }
