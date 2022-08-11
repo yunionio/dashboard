@@ -1082,7 +1082,7 @@
   "compute.text_1099": "自动创建快照",
   "compute.text_1100": "调整配置",
   "compute.text_1101": "以下",
-  "compute.text_1102": "{0}台",
+  "compute.text_1102": "{0}CPU插槽",
   "compute.text_1103": "虚拟机将进行调整配置",
   "compute.text_1104": "请选择要调整的配置",
   "compute.text_1105": "请输入申请原因",

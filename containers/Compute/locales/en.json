@@ -1082,7 +1082,7 @@
   "compute.text_1099": " create snapshot automatically",
   "compute.text_1100": "Change Configuration",
   "compute.text_1101": "Following",
-  "compute.text_1102": "{0} stations",
+  "compute.text_1102": "{0} CPU Nodes",
   "compute.text_1103": "The server is about to change configuration",
   "compute.text_1104": "Please select the configuration to change",
   "compute.text_1105": "Please enter the reason for application",
