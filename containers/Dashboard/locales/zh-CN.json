@@ -274,5 +274,7 @@
   "dashbaord.panel_shared_tip": "共享后，所有人的默认面板都会被更新为当前面板，请谨慎操作！",
   "dashboard.chart_type": "图表类型",
   "dashboard.ring": "环形图",
-  "dashboard.liquidfill": "水球图"
+  "dashboard.liquidfill": "水球图",
+  "dashboard.trend": "趋势图",
+  "dashboard.monitor.time": "监控范围"
 }
