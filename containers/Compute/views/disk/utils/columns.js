@@ -6,7 +6,6 @@ export const getUnusedTableColumn = ({ hidden, vm = {} } = {}) => {
     field: 'unused',
     title: i18n.t('table.title.disk_mounted'),
     width: 70,
-    sortable: true,
     slots: {
       default: ({ row }, h) => {
         if (vm.isPreLoad && row.guest_count === undefined) return [<data-loading />]
