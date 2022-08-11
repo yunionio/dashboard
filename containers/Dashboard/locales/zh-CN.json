@@ -276,5 +276,6 @@
   "dashboard.ring": "环形图",
   "dashboard.liquidfill": "水球图",
   "dashboard.trend": "趋势图",
+  "dashboard.icon": "指标图",
   "dashboard.monitor.time": "监控范围"
 }
