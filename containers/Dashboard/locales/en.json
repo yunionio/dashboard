@@ -276,5 +276,6 @@
   "dashboard.ring": "Ring",
   "dashboard.liquidfill": "LiquidFill",
   "dashboard.trend": "Trend",
+  "dashboard.icon": "Icon",
   "dashboard.monitor.time": "Time"
 }
