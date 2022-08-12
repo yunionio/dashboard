@@ -3,4 +3,7 @@ export const CHANEL_FEATURE = {
   UUCLOUD: {
     version: 'v1.0',
   },
+  GZYUN: {
+    version: 'v1.0',
+  },
 }
