@@ -5,21 +5,6 @@
       <dialog-selected-tips :name="$t('dictionary.secgroup')" :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" v-bind="formItemLayout" hideRequiredMark>
-        <!-- <a-form-item :label="$t('dictionary.server')" v-bind="formItemLayout">
-          <base-select
-            class="w-100"
-            @update:options="onServerSucceed"
-            remote
-            v-decorator="decorators.sergroups"
-            resource="servers"
-            :mapper="mapperServers"
-            :params="requestParams"
-            :select-props="{
-              allowClear: true,
-              placeholder: $t('compute.text_1022', [$t('dictionary.server')]),
-              mode: 'multiple', defaultValue,
-            }" />
-        </a-form-item> -->
         <a-form-item
           :label="$t('dictionary.server')">
           <list-select
@@ -57,13 +42,6 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin, ResourceProps],
   data () {
-    // const validateServers = (rule, value, callback) => {
-    //   let minError = '最少关联一个'
-    //   if (!value || value.length < 1) {
-    //     return callback(minError)
-    //   }
-    //   return callback()
-    // }
     return {
       loading: false,
       scope: this.$store.getters.scope,
@@ -97,15 +75,6 @@ export default {
       'isDomainMode',
       'userInfo',
     ]),
-    requestParams () {
-      return {
-        limit: 0,
-        offset: 0,
-        filter: 'hypervisor.notin(container, baremetal, esxi)',
-        scope: this.$store.getters.scope,
-        secgroup: `!${this.params.data[0].id}`,
-      }
-    },
     columns () {
       return [
         getNameDescriptionTableColumn({
@@ -125,6 +94,9 @@ export default {
         getProjectTableColumn(),
       ]
     },
+    selectedResource () {
+      return this.params.data[0]
+    },
   },
   created () {
     this.fetchBindedServers()
@@ -137,7 +109,8 @@ export default {
           scope: this.scope,
           filter: 'hypervisor.notin(container, baremetal)',
           limit: 0,
-          secgroup: `${this.params.data[0].id}`,
+          secgroup: `${this.selectedResource.id}`,
+          project_id: this.selectedResource.tenant_id,
         }
         if (this.isAdminMode) {
           params.project_domain = this.userInfo.projectDomain
@@ -161,7 +134,7 @@ export default {
         const bindServers = []
         const removeServers = []
         const data = {
-          secgroup_ids: [this.params.data[0].id],
+          secgroup_ids: [this.selectedResource.id],
         }
         ids = JSON.parse(JSON.stringify(values.servers))
         this.bindServers.forEach((item, idx) => {
