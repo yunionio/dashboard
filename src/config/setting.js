@@ -10,4 +10,5 @@ export default {
   theme: storage.get('__oc_theme__') || process.env.THEME || 'dark',
   brand: process.env.BRAND || { 'zh-CN': '云联壹云', en: 'YunionCloud' },
   l2MenuVisible: !R.isNil(_l2MenuVisible) && !R.isNil(_l2MenuVisible) ? _l2MenuVisible : true,
+  oemVersion: process.env.OEM_VERSION || '',
 }
