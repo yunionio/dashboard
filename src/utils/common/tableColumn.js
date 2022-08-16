@@ -266,11 +266,13 @@ export const getCopyWithContentTableColumn = ({
   }
 }
 
-export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {} } = {}) => {
+export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {}, sortable = false } = {}) => {
   return {
     field,
     title,
     width: '180px',
+    sortBy: 'order_by_ip',
+    sortable,
     slots: {
       default: ({ row }, h) => {
         if (!row.eip && !row.ips && !row.vips) {

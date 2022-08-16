@@ -126,8 +126,15 @@ export default {
           },
         },
       },
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.columns, tipName: this.$t('dictionary.server') }),
-      getIpsTableColumn({ field: 'ip', title: 'IP', vm: this }),
+      getTagTableColumn({
+        onManager: this.onManager,
+        needExt: true,
+        resource: 'server',
+        columns: () => this.columns,
+        tipName: this.$t('dictionary.server'),
+        editCheck: (row) => row.hypervisor !== typeClouds.hypervisorMap.bingocloud.key,
+      }),
+      getIpsTableColumn({ field: 'ips', title: 'IP', vm: this, sortable: true }),
       {
         field: 'macs',
         title: 'MAC',
