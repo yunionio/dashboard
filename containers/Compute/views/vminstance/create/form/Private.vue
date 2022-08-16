@@ -58,10 +58,10 @@
         <a-input-number v-decorator="decorators.count" @blur="countBlur" :min="1" :max="100" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1058')" class="mb-0">
-        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
+        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :showUnlimited="true" @change="cpuChange" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_369')" class="mb-0">
-        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" />
+        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :showUnlimited="true" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_109')" v-if="showSku">
         <sku
@@ -80,6 +80,7 @@
           :image-params="imageParams"
           :cacheImageParams="cacheImageParams"
           :cloudproviderParamsExtra="cloudproviderParamsExtra"
+          :ignoreOptions="ignoreImageOptions"
           @updateImageMsg="updateFi" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_49')" class="mb-0">
@@ -254,7 +255,7 @@ export default {
         enabled: true,
         ...this.scopeParams,
       }
-      if (this.form.fd.hypervisor === 'nutanix') {
+      if (this.form.fd.hypervisor === 'nutanix' || this.form.fd.hypervisor === 'incloudsphere') {
         params.is_on_premise = true
         params.usable = false
       } else {
@@ -346,6 +347,12 @@ export default {
     },
     systemDiskTypeDisabled () {
       return this.form.fd.hypervisor === HYPERVISORS_MAP.nutanix.key
+    },
+    ignoreImageOptions () {
+      if (this.isInCloudSphere) {
+        return ['standard', 'customize']
+      }
+      return []
     },
   },
   methods: {

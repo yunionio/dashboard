@@ -26,7 +26,7 @@ export default {
               label: 'IP',
             },
           },
-          fetchDataCb: this.fetchDataCb,
+          // fetchDataCb: this.fetchDataCb,
         }),
         columns: [
           getNameDescriptionTableColumn({
@@ -164,7 +164,7 @@ export default {
           const obj = data[key].data
           if (hostIds.includes(obj.id)) {
             delete data[obj.id]
-            this.resourceProps.list.total--
+            --this.resourceProps.list.total
           }
         }
       }

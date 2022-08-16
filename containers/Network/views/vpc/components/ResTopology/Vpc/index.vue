@@ -8,12 +8,6 @@
         <template v-if="classic">
           <li class="item d-flex" v-for="(wire, nidx) in wires" :key="nidx">
               <res-wire :physical="physical" :dataSource="wire" />
-              <template>
-                <res-share-storage
-                  v-for="storage of getShareStorages(wire)"
-                  :key="storage.id"
-                  :dataSource="storage" />
-              </template>
               <div v-for="(obj, idx) in getHost(wire)" :key="idx">
                 <res-common
                   v-if="!obj.hidden"
@@ -23,6 +17,20 @@
                   :schedTagColorsMap="schedTagColorsMap"
                   :showStorageTag="true" />
               </div>
+          </li>
+          <li class="item d-flex" v-for="(item, sid) of getShareStorages(wires)" :key="sid">
+            <res-share-storage
+              :key="item.storage.id"
+              :dataSource="item.storage" />
+            <div v-for="(obj, idx) in getHosts(wires, item.storage.id)" :key="idx">
+              <res-common
+                v-if="!obj.hidden"
+                :type="RES_ICON_MAP[obj.host_type] || obj.host_type"
+                :dataSource="obj"
+                :isExist="true"
+                :schedTagColorsMap="schedTagColorsMap"
+                :showStorageTag="true" />
+            </div>
           </li>
         </template>
         <template v-else>
@@ -43,6 +51,7 @@
 </template>
 
 <script>
+import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import ResCommon from '@Network/sections/Topology/ResCommon'
 import { RES_ICON_MAP } from '@Network/sections/Topology/constants'
 import ResMixin from '@Network/sections/Topology/ResMixin'
@@ -170,23 +179,42 @@ export default {
 
       return isExist
     },
-    getShareStorages (wire) {
+    getShareStoragesAndHosts (wires) {
       const shareStorages = []
+      const storageHosts = []
 
-      if (wire.hosts && wire.hosts.length > 0) {
-        for (const host of wire.hosts) {
-          if (host.storages && host.storages.length > 0) {
-            for (const storage of host.storages) {
-              const isExsit = shareStorages.find(item => item.id === storage.id)
-              if (!isExsit && storage.storage_type !== 'local') {
-                shareStorages.push(storage)
+      for (const wire of wires) {
+        if (wire.hosts && wire.hosts.length > 0) {
+          const hosts = []
+          for (const host of wire.hosts) {
+            if (host.storages && host.storages.length > 0) {
+              for (const storage of host.storages) {
+                const isExsit = shareStorages.find(item => item.storage.id === storage.id)
+                if (KVM_SHARE_STORAGES.includes(storage.storage_type)) {
+                  hosts.push(host)
+                  storageHosts.push({ key: storage.id, value: hosts })
+                  !isExsit && shareStorages.push({ storage })
+                }
               }
             }
           }
         }
       }
 
-      return shareStorages
+      return [shareStorages, storageHosts]
+    },
+    getShareStorages (wires) {
+      return this.getShareStoragesAndHosts(wires)[0]
+    },
+    getHosts (wires, storageId) {
+      const storageHosts = this.getShareStoragesAndHosts(wires)[1]
+      const originHosts = []
+      const hosts = storageHosts.filter(item => item.key === storageId).map(item => item.value).flat()
+      hosts.forEach(item => {
+        const isExist = originHosts.find(v => v.id === item.id)
+        !isExist && originHosts.push(item)
+      })
+      return originHosts
     },
   },
 }

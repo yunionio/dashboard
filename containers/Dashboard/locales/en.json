@@ -271,5 +271,11 @@
   "dashborad.server_domain_numbers": "Distribution of the number of hosts in each domain",
   "dashborad.server_project_numbers": "The distribution of the number of hosts for each project",
   "dashboard.group_by": "Group By",
-  "dashbaord.panel_shared_tip": "After sharing, everyone's default panel will be updated to the current one, please be careful!"
+  "dashbaord.panel_shared_tip": "After sharing, everyone's default panel will be updated to the current one, please be careful!",
+  "dashboard.chart_type": "Chart type",
+  "dashboard.ring": "Ring",
+  "dashboard.liquidfill": "LiquidFill",
+  "dashboard.trend": "Trend",
+  "dashboard.icon": "Icon",
+  "dashboard.monitor.time": "Time"
 }

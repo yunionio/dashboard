@@ -8,8 +8,8 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
           y: 0,
         },
@@ -22,9 +22,9 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 5,
+          h: 6,
+          w: 20,
+          x: 20,
           y: 0,
         },
         params: {
@@ -36,9 +36,9 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 10,
+          h: 6,
+          w: 20,
+          x: 40,
           y: 0,
         },
         params: {
@@ -50,9 +50,9 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 15,
+          h: 6,
+          w: 20,
+          x: 60,
           y: 0,
         },
         params: {
@@ -64,10 +64,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
-          y: 2,
+          y: 6,
         },
         params: {
           name: i18n.t('dashboard.text_122'),
@@ -78,10 +78,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 5,
-          y: 2,
+          h: 6,
+          w: 20,
+          x: 20,
+          y: 6,
         },
         params: {
           name: i18n.t('dashboard.text_127'),
@@ -92,10 +92,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 10,
-          y: 2,
+          h: 6,
+          w: 20,
+          x: 40,
+          y: 6,
         },
         params: {
           name: i18n.t('dashboard.text_123'),
@@ -106,10 +106,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 15,
-          y: 2,
+          h: 6,
+          w: 20,
+          x: 60,
+          y: 6,
         },
         params: {
           name: i18n.t('dashboard.text_158'),
@@ -120,10 +120,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
-          y: 4,
+          y: 12,
         },
         params: {
           all_usage_key: 'hosts.cpu',
@@ -138,10 +138,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 5,
-          y: 4,
+          h: 6,
+          w: 20,
+          x: 20,
+          y: 12,
         },
         params: {
           all_usage_key: 'hosts.memory',
@@ -156,10 +156,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 10,
-          y: 4,
+          h: 6,
+          w: 20,
+          x: 40,
+          y: 12,
         },
         params: {
           all_usage_key: 'storages',
@@ -174,10 +174,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 15,
-          y: 4,
+          h: 6,
+          w: 20,
+          x: 60,
+          y: 12,
         },
         params: {
           all_usage_key: 'isolated_devices',
@@ -192,10 +192,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
-          y: 7,
+          y: 18,
         },
         params: {
           all_usage_key: 'all.eip.floating_ip',
@@ -210,10 +210,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 5,
-          y: 7,
+          h: 6,
+          w: 20,
+          x: 20,
+          y: 18,
         },
         params: {
           all_usage_key: 'all.ports',
@@ -228,10 +228,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 10,
-          y: 7,
+          h: 6,
+          w: 20,
+          x: 40,
+          y: 18,
         },
         params: {
           all_usage_key: 'all.servers',
@@ -246,10 +246,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 15,
-          y: 7,
+          h: 6,
+          w: 20,
+          x: 60,
+          y: 18,
         },
         params: {
           all_usage_key: 'all.disks.count',
@@ -264,10 +264,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
+          h: 8,
+          w: 20,
           x: 0,
-          y: 10,
+          y: 24,
         },
         params: {
           brand: '',
@@ -282,10 +282,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
-          x: 5,
-          y: 10,
+          h: 8,
+          w: 20,
+          x: 20,
+          y: 24,
         },
         params: {
           brand: '',
@@ -300,10 +300,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
-          x: 10,
-          y: 10,
+          h: 8,
+          w: 20,
+          x: 40,
+          y: 24,
         },
         params: {
           brand: '',
@@ -318,10 +318,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
-          x: 15,
-          y: 10,
+          h: 8,
+          w: 20,
+          x: 60,
+          y: 24,
         },
         params: {
           brand: '',
@@ -343,8 +343,8 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
           y: 0,
         },
@@ -357,9 +357,9 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 5,
+          h: 6,
+          w: 20,
+          x: 20,
           y: 0,
         },
         params: {
@@ -371,9 +371,9 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 10,
+          h: 6,
+          w: 20,
+          x: 40,
           y: 0,
         },
         params: {
@@ -385,9 +385,9 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 15,
+          h: 6,
+          w: 20,
+          x: 60,
           y: 0,
         },
         params: {
@@ -399,10 +399,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
-          y: 2,
+          y: 6,
         },
         params: {
           all_usage_key: 'domain.servers',
@@ -417,10 +417,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 5,
-          y: 2,
+          h: 6,
+          w: 20,
+          x: 20,
+          y: 6,
         },
         params: {
           all_usage_key: 'domain.disks.count',
@@ -435,10 +435,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 10,
-          y: 2,
+          h: 6,
+          w: 20,
+          x: 40,
+          y: 6,
         },
         params: {
           all_usage_key: 'domain.ports',
@@ -453,10 +453,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 15,
-          y: 2,
+          h: 6,
+          w: 20,
+          x: 60,
+          y: 6,
         },
         params: {
           all_usage_key: 'domain.eip.floating_ip',
@@ -471,10 +471,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
+          h: 8,
+          w: 20,
           x: 0,
-          y: 5,
+          y: 12,
         },
         params: {
           brand: '',
@@ -489,10 +489,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
-          x: 5,
-          y: 5,
+          h: 8,
+          w: 20,
+          x: 20,
+          y: 12,
         },
         params: {
           brand: '',
@@ -507,10 +507,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
-          x: 10,
-          y: 5,
+          h: 8,
+          w: 20,
+          x: 40,
+          y: 12,
         },
         params: {
           brand: '',
@@ -525,10 +525,10 @@ export default {
       {
         layout: {
           component: 'UserInfo',
-          h: 5,
-          w: 5,
-          x: 15,
-          y: 5,
+          h: 8,
+          w: 20,
+          x: 60,
+          y: 12,
         },
         params: {
           name: i18n.t('dashboard.userinfo'),
@@ -544,8 +544,8 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
           y: 0,
         },
@@ -558,9 +558,9 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 5,
+          h: 6,
+          w: 20,
+          x: 20,
           y: 0,
         },
         params: {
@@ -572,9 +572,9 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 10,
+          h: 6,
+          w: 20,
+          x: 40,
           y: 0,
         },
         params: {
@@ -586,9 +586,9 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 15,
+          h: 6,
+          w: 20,
+          x: 60,
           y: 0,
         },
         params: {
@@ -600,10 +600,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
-          y: 2,
+          y: 6,
         },
         params: {
           all_usage_key: 'servers',
@@ -618,10 +618,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 5,
-          y: 2,
+          h: 6,
+          w: 20,
+          x: 20,
+          y: 6,
         },
         params: {
           all_usage_key: 'disks.count',
@@ -636,10 +636,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 10,
-          y: 2,
+          h: 6,
+          w: 20,
+          x: 40,
+          y: 6,
         },
         params: {
           all_usage_key: 'ports',
@@ -654,10 +654,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 15,
-          y: 2,
+          h: 6,
+          w: 20,
+          x: 60,
+          y: 6,
         },
         params: {
           all_usage_key: 'eip.floating_ip',
@@ -672,10 +672,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
+          h: 8,
+          w: 20,
           x: 0,
-          y: 5,
+          y: 12,
         },
         params: {
           brand: '',
@@ -690,10 +690,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
-          x: 5,
-          y: 5,
+          h: 8,
+          w: 20,
+          x: 20,
+          y: 12,
         },
         params: {
           brand: '',
@@ -708,10 +708,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
-          x: 10,
-          y: 5,
+          h: 8,
+          w: 20,
+          x: 40,
+          y: 12,
         },
         params: {
           brand: '',
@@ -726,10 +726,10 @@ export default {
       {
         layout: {
           component: 'UserInfo',
-          h: 5,
-          w: 5,
-          x: 15,
-          y: 5,
+          h: 8,
+          w: 20,
+          x: 60,
+          y: 12,
         },
         params: {
           name: i18n.t('dashboard.userinfo'),

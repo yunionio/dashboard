@@ -130,9 +130,14 @@ export default {
       return this.$route.query.source === 'servertemplate'
     },
     loginTypes () { // 主机模板隐藏手工输入密码
-      const maps = R.clone(LOGIN_TYPES_MAP)
+      let maps = R.clone(LOGIN_TYPES_MAP)
       if (this.isWindows) {
         delete maps.keypair
+      }
+      if (this.isInCloudSphere) {
+        maps = {
+          image: LOGIN_TYPES_MAP.image,
+        }
       }
       const loginTypes = Object.keys(maps)
       // if (this.isServertemplate) {
@@ -242,7 +247,7 @@ export default {
         manager_id: this.form.fd.cloudprovider,
         ...this.scopeParams,
       }
-      if (this.isZStack) {
+      if (this.isZStack || this.isInCloudSphere) {
         params.show_emulated = true
       }
       if (zone) {
@@ -288,6 +293,9 @@ export default {
     },
     isZStack () {
       return this.form.fd.hypervisor === HYPERVISORS_MAP.zstack.key
+    },
+    isInCloudSphere () {
+      return this.form.fd.hypervisor === HYPERVISORS_MAP.incloudsphere.key
     },
     isHCSO () {
       return this.form.fd.hypervisor === HYPERVISORS_MAP.hcso.key

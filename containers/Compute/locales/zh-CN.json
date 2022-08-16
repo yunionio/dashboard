@@ -1082,7 +1082,7 @@
   "compute.text_1099": "自动创建快照",
   "compute.text_1100": "调整配置",
   "compute.text_1101": "以下",
-  "compute.text_1102": "{0}台",
+  "compute.text_1102": "{0}CPU插槽",
   "compute.text_1103": "虚拟机将进行调整配置",
   "compute.text_1104": "请选择要调整的配置",
   "compute.text_1105": "请输入申请原因",
@@ -1344,7 +1344,7 @@
   "compute.text_1358": "VMware暂不支持创建硬盘快照",
   "compute.text_1359": "线路类型",
   "compute.text_1360": "网络计费方式",
-  "compute.text_1361": "存储池默认挂载点：{0}",
+  "compute.text_1361": "默认为存储池挂载点{0}，可根据实际用途修改",
   "compute.public_ip_tooltip": "已分配公有IP的虚拟机不支持绑定/解绑弹性公网IP",
   "compute.rule": "规则",
   "compute.norule": "暂无规则",
@@ -1604,5 +1604,10 @@
   "compute.custom_data_file_limit": "只能上传json文件，且大小不超过32KB",
   "compute.custom_data_error1": "内容格式错误",
   "compute.custom_data_temp": "文本或文件格式模板遵循：[{\"action\":\"取值为create或append\",\"path\":\"虚拟机内路径如：/root/usr\",\"content\":\"内容\"}]",
-  "compute.max_iops": "最大IOPS"
+  "compute.max_iops": "最大IOPS",
+  "compute.v2vtransfer.type": "迁移类型",
+  "compute.v2vtransfer.kvm": "迁移至KVM平台",
+  "compute.v2vtransfer.same_brand": "请选择同平台的机器",
+  "compute.max_bandwidth": "最大带宽",
+  "compute.unlimited": "不限"
 }

@@ -994,7 +994,10 @@ export default {
                     label: this.$t('compute.text_1127'),
                     permission: 'server_perform_migrate,server_perform_live_migrate',
                     action: () => {
-                      this.createDialog('VmTransferDialog', {
+                      const dialog = this.list.selectedItems[0].hypervisor === typeClouds.hypervisorMap.esxi.key
+                        ? 'VmV2vTransferDialog' : 'VmTransferDialog'
+
+                      this.createDialog(dialog, {
                         data: this.list.selectedItems,
                         columns: this.columns,
                         onManager: this.onManager,
@@ -1008,6 +1011,11 @@ export default {
                       let isOk = this.list.selectedItems.every((item) => {
                         return ['running', 'ready', 'unknown'].includes(item.status)
                       })
+                      const hypervisors = new Set()
+                      this.list.selectedItems.forEach(item => {
+                        hypervisors.add(item.hypervisor)
+                      })
+
                       if (isOk) {
                         isOk = this.list.selectedItems.every((item) => {
                           if (item.backup_host_id) {
@@ -1027,13 +1035,16 @@ export default {
                         ret.validate = false
                         return ret
                       }
-                      if (this.list.selectedItems.some(item => item.hypervisor !== 'kvm' && item.hypervisor !== 'openstack')) {
+                      if (hypervisors.size > 1) {
                         ret.validate = false
+                        ret.tooltip = this.$t('compute.v2vtransfer.same_brand')
                         return ret
                       }
+                      ret.validate = cloudEnabled('transfer', this.list.selectedItems)
+                      ret.tooltip = cloudUnabledTip('transfer', this.list.selectedItems)
                       return ret
                     },
-                    hidden: () => !(hasSetupKey(['onecloud', 'openstack'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
+                    hidden: () => !(hasSetupKey(['onecloud', 'openstack', 'esxi'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
                   },
                 ],
               },

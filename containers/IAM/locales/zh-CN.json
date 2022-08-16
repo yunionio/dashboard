@@ -707,7 +707,7 @@
       "label": "全局代理开关",
       "desc": "如果开启，在下载套餐、下载公有云镜像列表、下载费率、镜像市场列表展示、通过URL导入镜像、拉取公共镜像列表时将使用全局代理"
     },
-    "websocket$force_single_session_login": {
+    "yunionapi$force_single_session_login": {
       "label": "单session登录开关",
       "desc": "单session登录开关关闭后，同一用户可在多个浏览器同时登录，开启后，只能在一个浏览器同时登录"
     },
@@ -746,6 +746,18 @@
     "log$syslog_url": {
       "label": "外部日志服务地址",
       "desc": "以syslog协议实时将操作日志导出到外部syslog日志服务器，地址格式为：proto://<ip>:<port>@idstr，例如：tcp://192.168.2.100:514@cloud"
+    },
+    "yunionapi$enable_syslog_webservice": {
+      "label": "开启Syslog WebService",
+      "desc": "开启Syslog Webservice，使得外部审计系统可以从该Web Service获取系统日志，用于外部审计"
+    },
+    "yunionapi$syslog_webservice_username": {
+      "label": "Syslog WebService账号",
+      "desc": "开启Syslog WebService后，需填写Syslog WebService账号"
+    },
+    "yunionapi$syslog_webservice_password": {
+      "label": "Syslog WebService密码",
+      "desc": "开启Syslog WebService后，需填写Syslog WebService密码"
     },
     "common$enable_tls_migration": {
       "label": "启用 tls 迁移",
@@ -893,7 +905,8 @@
   "system.companyinfo.font_color": "字体颜色",
   "system.companyinfo.monitor_dashboard_style": "监控大屏类型",
   "system.companyinfo.monitor_dashboard_style.overview": "云管",
-  "system.companyinfo.monitor_dashboard_style.overview_private": "私有云",
+  "system.companyinfo.monitor_dashboard_style.overview_private": "私有云-1",
+  "system.companyinfo.monitor_dashboard_style.overview_private2": "私有云-2",
   "system.companyinfo.monitor_dashboard_style.overview_custom": "默认",
   "system.robot.shared": "被共享的机器人不支持该操作",
   "system.displayname_tip": "请输入显示名",
@@ -924,5 +937,6 @@
   "iam.help": "点击查看帮助",
   "iam.get_params_help": "获取相关参数",
   "iam.notifyconfig.sender_address_extra": "发件人邮箱一般情况下应与用户名邮箱地址保持一致，如邮箱有其他配置，请按实际情况填写",
-  "system.common_log_filter_tip": "默认按ID搜索，自动匹配IP筛选项"
+  "system.common_log_filter_tip": "默认按ID搜索，自动匹配IP筛选项",
+  "iam.policy_search_placeholder": "输入权限名称搜索"
 }

@@ -1157,7 +1157,7 @@ export class GenCreateData {
       data[loginValueKey.key] = loginValueKey.value
     }
     // 安全组
-    if (this.fd.secgroup_type === SECGROUP_OPTIONS_MAP.bind.key) {
+    if (this.fd.secgroup_type && this.fd.secgroup_type === SECGROUP_OPTIONS_MAP.bind.key) {
       data.secgroups = this.fd.secgroup
     }
     // 如果设置了调度策略则拼装调度所需数据 或者 通过云账号过滤镜像

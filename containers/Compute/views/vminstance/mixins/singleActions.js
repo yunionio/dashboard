@@ -85,7 +85,7 @@ export default {
               }
 
               const fetchWebconsoleAddr = async (port) => {
-                if (ipInfo.vpcId === 'default' || ipInfo.ipType === 'eip') {
+                if (ipInfo.vpcId === 'default' || ipInfo.ipType === 'eip' || ipInfo.provider === 'InCloudSphere') {
                   return {
                     ipAddr: ipAddr,
                     port: port,
@@ -223,7 +223,7 @@ export default {
           }
           if (obj.nics) {
             obj.nics.map(nic => {
-              if (obj.provider === 'OneCloud' || obj.vpc_id === 'default') {
+              if ((obj.provider === 'OneCloud' || obj.vpc_id === 'default' || obj.provider === 'InCloudSphere') && nic.ip_addr) {
                 ipInfoList.push({
                   actionType: 'IP SSH',
                   ipType: 'nicIP',
@@ -1478,7 +1478,10 @@ export default {
                   label: i18n.t('compute.text_1127'),
                   permission: 'server_perform_migrate,server_perform_live_migrate',
                   action: () => {
-                    this.createDialog('VmTransferDialog', {
+                    const dialog = obj.hypervisor === typeClouds.hypervisorMap.esxi.key
+                      ? 'VmV2vTransferDialog' : 'VmTransferDialog'
+
+                    this.createDialog(dialog, {
                       data: [obj],
                       columns: this.columns,
                       onManager: this.onManager,
@@ -1502,15 +1505,17 @@ export default {
                       ret.tooltip = i18n.t('migration.project.error')
                       return ret
                     }
-                    if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key && obj.hypervisor !== typeClouds.hypervisorMap.openstack.key) {
+                    if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key &&
+                      obj.hypervisor !== typeClouds.hypervisorMap.esxi.key &&
+                      obj.hypervisor !== typeClouds.hypervisorMap.openstack.key) {
                       ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
-                    ret.validate = true
+                    ret.validate = cloudEnabled('transfer', obj)
                     ret.tooltip = cloudUnabledTip('transfer', obj)
                     return ret
                   },
-                  hidden: () => !(hasSetupKey(['openstack', 'onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
+                  hidden: () => !(hasSetupKey(['openstack', 'onecloud', 'esxi'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
                 },
               ],
             },

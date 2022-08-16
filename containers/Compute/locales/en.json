@@ -1082,7 +1082,7 @@
   "compute.text_1099": " create snapshot automatically",
   "compute.text_1100": "Change Configuration",
   "compute.text_1101": "Following",
-  "compute.text_1102": "{0} stations",
+  "compute.text_1102": "{0} CPU Nodes",
   "compute.text_1103": "The server is about to change configuration",
   "compute.text_1104": "Please select the configuration to change",
   "compute.text_1105": "Please enter the reason for application",
@@ -1344,7 +1344,7 @@
   "compute.text_1358": "VMware does not currently support creating disk snapshots",
   "compute.text_1359": "Line type",
   "compute.text_1360": "Billing type",
-  "compute.text_1361": "The default mount point of the storage pool: {0}",
+  "compute.text_1361": "The default is the storage pool mount point {0}, which can be modified according to the actual use",
   "compute.public_ip_tooltip": "Servers that have been assigned a public IP do not support binding/unbinding an elastic public IP",
   "compute.rule": "rule",
   "compute.norule": "No Rules",
@@ -1604,5 +1604,10 @@
   "compute.custom_data_file_limit": "Only JSON files can be uploaded, and the size is no more than 32KB",
   "compute.custom_data_error1": "Content format error",
   "compute.custom_data_temp": "Text or file format templates follow：[{\"action\":\"create or append\",\"path\":\"The path in the virtual machine is as follows:：/root/usr\",\"content\":\"content\"}]",
-  "compute.max_iops": "Max IOPS"
+  "compute.max_iops": "Max IOPS",
+  "compute.v2vtransfer.type": "Transfer Type",
+  "compute.v2vtransfer.kvm": "Migrate to KVM platform",
+  "compute.v2vtransfer.same_brand": "Please select a machine of the same platform",
+  "compute.max_bandwidth": "Max Bandwidth",
+  "compute.unlimited": "ALL"
 }

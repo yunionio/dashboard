@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('system.text_188', [$t('dictionary.policy')])" />
-    <page-body>
+    <page-body need-margin-bottom>
       <template v-if="loading">
         <div class="text-center">
           <a-icon type="loading" />
@@ -45,7 +45,7 @@ export default {
       permissions: {},
       submiting: false,
       POLICY_GROUPS: genPolicyGroups(),
-      editType: 'yaml',
+      editType: 'checkbox',
       policyLoading: false,
     }
   },

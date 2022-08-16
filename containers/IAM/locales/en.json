@@ -708,7 +708,7 @@
       "label": "Global Proxy",
       "desc": "If enabled, the global proxy will be used for the following scenarios: downloading configuration and rate data, downloading public images, importing image from Image market, uploading image from URL, etc."
     },
-    "websocket$force_single_session_login": {
+    "yunionapi$force_single_session_login": {
       "label": "Single session login switch",
       "desc": "After the single session login switch is turned off, the same user can log in in multiple browsers at the same time. After it is turned on, they can only log in in one browser at the same time."
     },
@@ -747,6 +747,18 @@
     "log$syslog_url": {
       "label": "External Syslog Server URL",
       "desc": "Export audit log to external syslog server, address format is proto://<ip>:<port>@idstr, e.g. tcp://192.168.2.100:514@cloud"
+    },
+    "yunionapi$enable_syslog_webservice": {
+      "label": "Enable Syslog WebService",
+      "desc": "Enable Syslog WebService, external audit system can fetch audit logs from this web service"
+    },
+    "yunionapi$syslog_webservice_username": {
+      "label": "Syslog WebService Account",
+      "desc": "After Syslog WebService is enabled，you need to add Syslog WebService account"
+    },
+    "yunionapi$syslog_webservice_password": {
+      "label": "Syslog WebService Password",
+      "desc": "After Syslog WebService is enabled，you need to add Syslog WebService password"
     },
     "common$enable_tls_migration": {
       "label": "Enable TLS migration",
@@ -890,7 +902,8 @@
   "system.companyinfo.font_color": "Font Color",
   "system.companyinfo.monitor_dashboard_style": "Big Screen Types",
   "system.companyinfo.monitor_dashboard_style.overview": "Cloud Management",
-  "system.companyinfo.monitor_dashboard_style.overview_private": "Private Cloud",
+  "system.companyinfo.monitor_dashboard_style.overview_private": "Private Cloud 1",
+  "system.companyinfo.monitor_dashboard_style.overview_private2": "Private Cloud 2",
   "system.companyinfo.monitor_dashboard_style.overview_custom": "Default",
   "system.robot.shared": "The shared robot does not support this operation",
   "system.displayname_tip": "Please enter a displayname",
@@ -921,5 +934,6 @@
   "iam.help": "help",
   "iam.get_params_help": "Get related parameters",
   "iam.notifyconfig.sender_address_extra": "The sender email address should be consistent with the username email address in general, if the mailbox has other configurations, please fill in according to the actual situation",
-  "system.common_log_filter_tip": "Search by ID by default, and automatically match IP filter items"
+  "system.common_log_filter_tip": "Search by ID by default, and automatically match IP filter items",
+  "iam.policy_search_placeholder": "Enter policy to search"
 }

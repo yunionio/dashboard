@@ -27,6 +27,8 @@
       :on-manager="onManager"
       :show-create-action="false"
       :isPageDestroyed="isPageDestroyed"
+      :hiddenColumns="hiddenColumns"
+      :hiddenSingleActions="hiddenSingleActions"
       @refresh="refresh"
       @single-refresh="singleRefresh"
       @tab-change="handleTabChange" />
@@ -36,11 +38,13 @@
 <script>
 import * as R from 'ramda'
 // import HostList from '@Compute/views/host/components/List'
-import NetworkListForVmInstanceSidepage from './Network'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 import { hasPermission } from '@/utils/auth'
+import GpuList from '@Compute/views/gpu/components/List'
+import ScheduledtasksList from '@Cloudenv/views/scheduledtask/components/List'
+import NetworkListForVmInstanceSidepage from './Network'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import { cloudEnabled, cloudUnabledTip } from '../utils'
@@ -50,7 +54,6 @@ import VmInstanceAlertSidepage from './Alert'
 import VmSnapshotSidepage from './Snapshot'
 import SecgroupList from './Secgroup'
 import DiskListForVmInstanceSidepage from './DiskList'
-import GpuList from '@Compute/views/gpu/components/List'
 // import DiskSnapshotListForVmInstanceSidepage from '@Compute/views/snapshot/components/List'
 // import InstanceSnapshotListForVmInstanceSidepage from '@Compute/views/snapshot-instance/components/List'
 // import EipListForVmInstanceSidepage from './EipList'
@@ -70,6 +73,7 @@ export default {
     VmInstanceAlertSidepage,
     VmSnapshotSidepage,
     GpuList,
+    ScheduledtasksList,
     // EipListForVmInstanceSidepage,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -87,6 +91,7 @@ export default {
       { label: this.$t('compute.text_113'), key: 'gpu-list' },
       { label: this.$t('compute.text_608'), key: 'vm-instance-monitor-sidepage' },
       { label: this.$t('compute.text_1301'), key: 'vm-instance-alert-sidepage' },
+      { label: this.$t('cloudenv.text_431'), key: 'scheduledtasks-list' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
     ]
     if (!hasPermission({ key: 'guestsecgroups_list' })) {
@@ -139,6 +144,11 @@ export default {
       if (this.params.windowData.currentTab === 'gpu-list') {
         return {
           guest_id: this.data.id,
+        }
+      }
+      if (this.params.windowData.currentTab === 'scheduledtasks-list') {
+        return {
+          label: this.data.id,
         }
       }
       return null
@@ -197,6 +207,8 @@ export default {
           return 'EventListForVminstanceSidepage'
         case 'gpu-list':
           return 'GpuListForVminstanceSidePage'
+        case 'scheduledtasks-list':
+          return 'ScheduledtasksListForVminstancesidePage'
         // case 'eip-list-for-vm-instance-sidepage':
         //   return 'EipListForVmInstanceSidepage'
         default:
@@ -205,6 +217,15 @@ export default {
     },
     componentData () {
       return Object.assign({}, this.detailData, { agent_status: this.agent_status, agent_fail_reason: this.agent_fail_reason, agent_fail_code: this.agent_fail_code })
+    },
+    hiddenColumns () {
+      if (this.params.windowData.currentTab === 'scheduledtasks-list') {
+        return ['resource_type', 'labels']
+      }
+      return []
+    },
+    hiddenSingleActions () {
+      return this.params.windowData.currentTab === 'scheduledtasks-list'
     },
   },
   created () {

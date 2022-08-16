@@ -41,6 +41,7 @@ const actionEableMap = {
       ecloud: ['ready'],
       nutanix: ['ready'],
       bingocloud: false,
+      incloudsphere: ['ready'],
     },
   },
   stop: {
@@ -67,6 +68,7 @@ const actionEableMap = {
       ecloud: ['running'],
       nutanix: ['running'],
       bingocloud: false,
+      incloudsphere: ['running'],
     },
   },
   restart: {
@@ -93,6 +95,7 @@ const actionEableMap = {
       ecloud: ['running', 'stop_fail'],
       nutanix: ['running', 'stop_fail'],
       bingocloud: false,
+      incloudsphere: ['running', 'stop_fail'],
     },
   },
   rebuildRoot: {
@@ -117,6 +120,7 @@ const actionEableMap = {
       apsara: ['running', 'ready'],
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   resetPassword: {
@@ -141,6 +145,7 @@ const actionEableMap = {
       apsara: ['running'],
       nutanix: false,
       bingocloud: false,
+      incloudsphere: ['running'],
     },
   },
   bindKeyPair: {
@@ -165,6 +170,7 @@ const actionEableMap = {
       apsara: ['running'],
       nutanix: false,
       bingocloud: false,
+      incloudsphere: ['running'],
     },
   },
   unBindKeyPair: {
@@ -189,6 +195,7 @@ const actionEableMap = {
       apsara: ['running'],
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   adjustConfig: {
@@ -213,6 +220,7 @@ const actionEableMap = {
       apsara: ['ready'],
       nutanix: ['ready'],
       bingocloud: false,
+      incloudsphere: ['ready'],
     },
   },
   vnc: {
@@ -239,6 +247,7 @@ const actionEableMap = {
       ecloud: ['running'],
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   'EIP SSH': {
@@ -291,6 +300,7 @@ const actionEableMap = {
       ecloud: false,
       nutanix: ['running'],
       bingocloud: false,
+      incloudsphere: ['running'],
     },
   },
   createSnapshot: {
@@ -315,6 +325,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   createBackup: {
@@ -339,6 +350,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   transfer: {
@@ -350,7 +362,7 @@ const actionEableMap = {
       aws: false,
       onecloud: ['running', 'ready', 'unknown'],
       cloudpods: ['running', 'ready', 'unknown'],
-      vmware: false,
+      vmware: ['ready'],
       baremetal: false,
       huawei: false,
       hcso: false,
@@ -363,6 +375,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   assignSecgroup: {
@@ -387,6 +400,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   insertiso: {
@@ -410,6 +424,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   ejectiso: {
@@ -433,6 +448,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   bindEip: {
@@ -457,6 +473,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   unbindEip: {
@@ -481,6 +498,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   acttachGpu: {
@@ -489,6 +507,7 @@ const actionEableMap = {
       onecloud: ['ready'],
       vmware: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   acttachUsb: {
@@ -497,6 +516,7 @@ const actionEableMap = {
       onecloud: ['ready', 'running'],
       vmware: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
   publicIpToEip: {
@@ -507,6 +527,7 @@ const actionEableMap = {
       google: false,
       aws: false,
       bingocloud: false,
+      incloudsphere: false,
     },
   },
 }

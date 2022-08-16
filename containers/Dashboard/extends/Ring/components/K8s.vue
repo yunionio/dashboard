@@ -8,9 +8,10 @@
         </div>
       </div>
       <div class="dashboard-card-body align-items-center">
-        <a-progress type="circle" :percent="percent" :strokeWidth="12" :status="status" :strokeColor="percentColor">
+        <a-progress v-if="isRing" type="circle" :percent="percent" :strokeWidth="12" :status="status" :strokeColor="percentColor">
           <template v-slot:format><span class="percent-tips" :style="{ color: '#000' }">{{ percentTips }}</span></template>
         </a-progress>
+        <liquid-fill v-else :value="decimalPercent" />
         <div class="flex-fill ml-4">
           <div class="d-flex bottomborder-box align-items-end">
             <div class="label-unit">{{ useLabel }}</div>
@@ -40,6 +41,24 @@
           <a-input v-decorator="decorators.name" />
         </a-form-item>
         <k8s-config :fc="form.fc" :fd="form.fd" :decorators="decorators" />
+        <a-form-item :label="$t('dashboard.chart_type')">
+          <a-radio-group v-decorator="decorators.chart_type" @change="chartTypeChange">
+            <a-radio-button value="ring">{{ $t('dashboard.ring') }}</a-radio-button>
+            <a-radio-button value="liquidfill">{{ $t('dashboard.liquidfill') }}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item v-if="isRing" :label="colorLabel || $t('dashboard.color.scheme')" class="mb-0">
+          <a-select
+            @change="colorChange"
+            v-decorator="decorators.color">
+            <a-select-option v-for="item in ringColors" :key="item.key" :value="item.key">
+              <div>
+                <a-progress :show-info="false" :stroke-color="{ '60%': item.percent60, '80%': item.percent80, '100%': item.percent100}" :percent="100" />
+              </div>
+              <div class="text-color-help">{{ item.label }}</div>
+            </a-select-option>
+          </a-select>
+        </a-form-item>
       </a-form>
     </base-drawer>
   </div>
@@ -53,6 +72,8 @@ import { load } from '@Dashboard/utils/cache'
 import { getRequestT } from '@/utils/utils'
 import K8sConfig from '@Dashboard/sections/K8sConfig'
 import mixin from './mixin'
+import { numerify } from '@/filters'
+import { chartColors } from '@/constants'
 
 export default {
   name: 'RingK8s',
@@ -68,11 +89,12 @@ export default {
     const initialColorValue = ((this.params && this.params.type !== 'k8s') && this.params.color) || 'default'
     const initialUsageLabelValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_label && this.params.usage_label.length > 0) ? this.params.usage_label : this.$t('dashboard.text_33')
     const initialUnUsageLabelValue = ((this.params && this.params.type !== 'k8s') && this.params.un_usage_label && this.params.un_usage_label.length > 0) ? this.params.un_usage_label : this.$t('dashboard.text_34')
+    const initialChartTypeValue = ((this.params && this.params.type !== 'k8s') && this.params.chart_type) || 'ring'
     return {
       data: {},
       loading: false,
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, { onValuesChange: this.onValuesChange }),
         fd: {
           name: initialNameValue,
           all_usage_key: initialAllUsageKeyValue,
@@ -80,6 +102,7 @@ export default {
           usage_label: initialUsageLabelValue,
           un_usage_label: initialUnUsageLabelValue,
           color: initialColorValue,
+          chart_type: initialChartTypeValue,
         },
       },
       decorators: {
@@ -134,10 +157,19 @@ export default {
             ],
           },
         ],
+        chart_type: [
+          'chart_type',
+          {
+            initialValue: initialChartTypeValue,
+          },
+        ],
       },
     }
   },
   computed: {
+    isRing () {
+      return this.form.fd.chart_type === 'ring'
+    },
     allUsageNumber () {
       return (this.data && _.get(this.data, this.form.fd.all_usage_key)) || 0
     },
@@ -199,22 +231,40 @@ export default {
         unit: ret.toString().split(' ')[1] || this.usage.unit,
       }
     },
-    percent () {
+    decimalPercent () {
       if (this.usageNumber === 0 || this.allUsageNumber === 0) return 0
-      return parseInt((this.usageNumber / this.allUsageNumber) * 100)
+      return numerify(this.usageNumber / this.allUsageNumber, '0.00')
+    },
+    percent () {
+      return numerify(this.decimalPercent * 100, 0.00)
     },
     percentTips () {
       return `${this.percent} %`
     },
+    colorConfig () {
+      return (this.params && this.params.color) || 'blue'
+    },
     percentColor () {
-      // if (this.percent < 80) {
-      //   return '#52c41a'
-      // }
-      // if (this.percent < 100) {
-      //   return '#faad14'
-      // }
-      // return '#f5222d'
-      return '#1890ff'
+      switch (this.colorConfig) {
+        case 'default':
+          if (this.percent < 60) {
+            return chartColors[3]
+          }
+          if (this.percent < 80) {
+            return chartColors[1]
+          }
+          return chartColors[2]
+        case 'reverse':
+          if (this.percent < 60) {
+            return chartColors[2]
+          }
+          if (this.percent < 80) {
+            return chartColors[1]
+          }
+          return chartColors[3]
+        default:
+          return chartColors[0]
+      }
     },
     status () {
       let ret = 'normal'
@@ -250,12 +300,23 @@ export default {
     },
   },
   created () {
-    // if (this.params && this.params.type === 'k8s') {
-    //   this.form.fd = this.params
-    // }
-    // this.$emit('update', this.options.i, this.form.fd)
+    if (this.params && this.params.type === 'k8s') {
+      this.form.fd = { chart_type: 'ring', ...this.params }
+    }
+    this.$emit('update', this.options.i, this.form.fd)
   },
   methods: {
+    onValuesChange (props, values) {
+      Object.keys(values).forEach((key) => {
+        this.form.fd[key] = values[key]
+      })
+    },
+    colorChange (color) {
+      this.$emit('update:color', color)
+    },
+    chartTypeChange (type) {
+      this.$emit('update:chart_type', type)
+    },
     refresh () {
       return this.fetchUsage()
     },

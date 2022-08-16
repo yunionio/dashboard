@@ -9,8 +9,8 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
           y: 0,
         },
@@ -22,9 +22,9 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 5,
+          h: 6,
+          w: 20,
+          x: 20,
           y: 0,
         },
         params: {
@@ -35,9 +35,9 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 10,
+          h: 6,
+          w: 20,
+          x: 40,
           y: 0,
         },
         params: {
@@ -48,9 +48,9 @@ export default {
       {
         layout: {
           component: 'Notify',
-          h: 4,
-          w: 5,
-          x: 15,
+          h: 12,
+          w: 20,
+          x: 60,
           y: 0,
         },
         params: {
@@ -60,10 +60,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
-          y: 2,
+          y: 6,
         },
         params: {
           name: i18n.t('dashboard.text_122'),
@@ -73,10 +73,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 5,
-          y: 2,
+          h: 6,
+          w: 20,
+          x: 20,
+          y: 6,
         },
         params: {
           name: i18n.t('dashboard.text_127'),
@@ -86,10 +86,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 10,
-          y: 2,
+          h: 6,
+          w: 20,
+          x: 40,
+          y: 6,
         },
         params: {
           name: i18n.t('dashboard.text_123'),
@@ -99,10 +99,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
+          h: 5,
+          w: 20,
           x: 0,
-          y: 4,
+          y: 12,
         },
         params: {
           all_usage_key: 'all.servers',
@@ -115,10 +115,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 5,
-          y: 4,
+          h: 5,
+          w: 20,
+          x: 20,
+          y: 12,
         },
         params: {
           all_usage_key: 'all.disks.count',
@@ -132,10 +132,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 10,
-          y: 4,
+          h: 5,
+          w: 20,
+          x: 40,
+          y: 12,
         },
         params: {
           all_usage_key: 'all.ports',
@@ -146,10 +146,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 15,
-          y: 4,
+          h: 5,
+          w: 20,
+          x: 60,
+          y: 12,
         },
         params: {
           all_usage_key: 'all.eip.floating_ip',
@@ -161,10 +161,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
+          h: 8,
+          w: 20,
           x: 0,
-          y: 7,
+          y: 17,
         },
         params: {
           limit: 5,
@@ -178,10 +178,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
-          x: 5,
-          y: 7,
+          h: 8,
+          w: 20,
+          x: 20,
+          y: 17,
         },
         params: {
           limit: 5,
@@ -195,10 +195,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
-          x: 10,
-          y: 7,
+          h: 8,
+          w: 20,
+          x: 40,
+          y: 17,
         },
         params: {
           limit: 5,
@@ -212,47 +212,23 @@ export default {
       {
         layout: {
           component: 'Log',
-          h: 5,
-          w: 5,
-          x: 15,
-          y: 7,
+          h: 8,
+          w: 20,
+          x: 60,
+          y: 17,
         },
         params: {
           limit: 5,
           name: i18n.t('dashboard.text_131'),
         },
       },
-      // {
-      //   layout: {
-      //     component: 'ResourceHistoryLine',
-      //     h: 5,
-      //     w: 10,
-      //     x: 0,
-      //     y: 12,
-      //   },
-      //   params: {
-      //     name: i18n.t('dashboard.text_137'),
-      //   },
-      // },
-      // {
-      //   layout: {
-      //     component: 'BillHistoryLine',
-      //     h: 5,
-      //     w: 10,
-      //     x: 10,
-      //     y: 12,
-      //   },
-      //   params: {
-      //     name: i18n.t('dashboard.text_138'),
-      //   },
-      // },
       {
         layout: {
           component: 'Quota',
-          h: 7,
-          w: 5,
+          h: 12,
+          w: 20,
           x: 0,
-          y: 12,
+          y: 25,
         },
         params: {
           name: i18n.t('dashboard.text_139'),
@@ -264,10 +240,10 @@ export default {
       {
         layout: {
           component: 'Quota',
-          h: 7,
-          w: 5,
-          x: 5,
-          y: 12,
+          h: 12,
+          w: 20,
+          x: 20,
+          y: 25,
         },
         params: {
           name: i18n.t('dashboard.text_140'),
@@ -279,10 +255,10 @@ export default {
       {
         layout: {
           component: 'Quota',
-          h: 7,
-          w: 5,
-          x: 10,
-          y: 12,
+          h: 12,
+          w: 20,
+          x: 40,
+          y: 25,
         },
         params: {
           name: i18n.t('dashboard.text_141'),
@@ -294,10 +270,10 @@ export default {
       {
         layout: {
           component: 'Quota',
-          h: 7,
-          w: 5,
-          x: 15,
-          y: 12,
+          h: 12,
+          w: 20,
+          x: 60,
+          y: 25,
         },
         params: {
           name: i18n.t('dashboard.text_142'),
@@ -309,10 +285,10 @@ export default {
       {
         layout: {
           component: 'Quota',
-          h: 7,
-          w: 5,
+          h: 12,
+          w: 20,
           x: 0,
-          y: 19,
+          y: 37,
         },
         params: {
           name: i18n.t('dashboard.text_143'),
@@ -324,10 +300,10 @@ export default {
       {
         layout: {
           component: 'Quota',
-          h: 7,
-          w: 5,
-          x: 5,
-          y: 19,
+          h: 12,
+          w: 20,
+          x: 20,
+          y: 37,
         },
         params: {
           name: i18n.t('dashboard.text_144'),
@@ -339,10 +315,10 @@ export default {
       {
         layout: {
           component: 'Quota',
-          h: 7,
-          w: 5,
-          x: 10,
-          y: 19,
+          h: 12,
+          w: 20,
+          x: 40,
+          y: 37,
         },
         params: {
           name: i18n.t('dashboard.text_145'),
@@ -354,10 +330,10 @@ export default {
       {
         layout: {
           component: 'Quota',
-          h: 7,
-          w: 5,
-          x: 15,
-          y: 19,
+          h: 12,
+          w: 20,
+          x: 60,
+          y: 37,
         },
         params: {
           name: i18n.t('dashboard.text_146'),
@@ -376,8 +352,8 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
           y: 0,
         },
@@ -389,9 +365,9 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 5,
+          h: 6,
+          w: 20,
+          x: 20,
           y: 0,
         },
         params: {
@@ -402,9 +378,9 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 10,
+          h: 6,
+          w: 20,
+          x: 40,
           y: 0,
         },
         params: {
@@ -415,9 +391,9 @@ export default {
       {
         layout: {
           component: 'Notify',
-          h: 4,
-          w: 5,
-          x: 15,
+          h: 12,
+          w: 20,
+          x: 60,
           y: 0,
         },
         params: {
@@ -427,10 +403,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
-          y: 2,
+          y: 6,
         },
         params: {
           name: i18n.t('dashboard.text_159'),
@@ -440,10 +416,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 5,
-          y: 2,
+          h: 6,
+          w: 20,
+          x: 20,
+          y: 6,
         },
         params: {
           name: i18n.t('dashboard.text_155'),
@@ -453,10 +429,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 10,
-          y: 2,
+          h: 6,
+          w: 20,
+          x: 40,
+          y: 6,
         },
         params: {
           name: i18n.t('dashboard.text_153'),
@@ -466,10 +442,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
-          y: 4,
+          y: 12,
         },
         params: {
           name: i18n.t('dashboard.text_158'),
@@ -479,10 +455,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 5,
-          y: 4,
+          h: 6,
+          w: 20,
+          x: 20,
+          y: 12,
         },
         params: {
           name: i18n.t('dashboard.text_150'),
@@ -492,10 +468,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 10,
-          y: 4,
+          h: 6,
+          w: 20,
+          x: 40,
+          y: 12,
         },
         params: {
           name: i18n.t('dashboard.text_154'),
@@ -505,10 +481,10 @@ export default {
       {
         layout: {
           component: 'SuggestsysAlertsOverview',
-          h: 5,
-          w: 5,
-          x: 15,
-          y: 4,
+          h: 12,
+          w: 20,
+          x: 60,
+          y: 12,
         },
         params: {
           currency: i18n.t('dashboard.currency_name'),
@@ -518,10 +494,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
-          y: 6,
+          y: 18,
         },
         params: {
           all_usage_key: 'domain.servers',
@@ -534,10 +510,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 5,
-          y: 6,
+          h: 6,
+          w: 20,
+          x: 20,
+          y: 18,
         },
         params: {
           all_usage_key: 'domain.disks.count',
@@ -551,10 +527,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 10,
-          y: 6,
+          h: 6,
+          w: 20,
+          x: 40,
+          y: 18,
         },
         params: {
           all_usage_key: 'domain.eip.floating_ip',
@@ -566,10 +542,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
+          h: 8,
+          w: 20,
           x: 0,
-          y: 9,
+          y: 24,
         },
         params: {
           limit: 5,
@@ -583,10 +559,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
-          x: 5,
-          y: 9,
+          h: 8,
+          w: 20,
+          x: 20,
+          y: 24,
         },
         params: {
           limit: 5,
@@ -600,10 +576,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
-          x: 10,
-          y: 9,
+          h: 8,
+          w: 20,
+          x: 40,
+          y: 24,
         },
         params: {
           limit: 5,
@@ -617,47 +593,23 @@ export default {
       {
         layout: {
           component: 'Log',
-          h: 5,
-          w: 5,
-          x: 15,
-          y: 9,
+          h: 8,
+          w: 20,
+          x: 60,
+          y: 24,
         },
         params: {
           limit: 4,
           name: i18n.t('dashboard.text_17'),
         },
       },
-      // {
-      //   layout: {
-      //     component: 'ResourceHistoryLine',
-      //     h: 5,
-      //     w: 10,
-      //     x: 0,
-      //     y: 14,
-      //   },
-      //   params: {
-      //     name: i18n.t('dashboard.text_90'),
-      //   },
-      // },
-      // {
-      //   layout: {
-      //     component: 'BillHistoryLine',
-      //     h: 5,
-      //     w: 10,
-      //     x: 10,
-      //     y: 14,
-      //   },
-      //   params: {
-      //     name: i18n.t('dashboard.text_88'),
-      //   },
-      // },
       {
         layout: {
           component: 'Quota',
-          h: 7,
-          w: 5,
+          h: 12,
+          w: 20,
           x: 0,
-          y: 14,
+          y: 32,
         },
         params: {
           field: 'cpu',
@@ -669,10 +621,10 @@ export default {
       {
         layout: {
           component: 'Quota',
-          h: 7,
-          w: 5,
-          x: 5,
-          y: 14,
+          h: 12,
+          w: 20,
+          x: 20,
+          y: 32,
         },
         params: {
           field: 'memory',
@@ -684,10 +636,10 @@ export default {
       {
         layout: {
           component: 'Quota',
-          h: 7,
-          w: 5,
-          x: 10,
-          y: 14,
+          h: 12,
+          w: 20,
+          x: 40,
+          y: 32,
         },
         params: {
           field: 'storage',
@@ -699,10 +651,10 @@ export default {
       {
         layout: {
           component: 'Quota',
-          h: 7,
-          w: 5,
-          x: 15,
-          y: 14,
+          h: 12,
+          w: 20,
+          x: 60,
+          y: 32,
         },
         params: {
           field: 'eip',
@@ -714,10 +666,10 @@ export default {
       {
         layout: {
           component: 'Quota',
-          h: 7,
-          w: 5,
+          h: 12,
+          w: 20,
           x: 0,
-          y: 21,
+          y: 44,
         },
         params: {
           field: 'port',
@@ -729,10 +681,10 @@ export default {
       {
         layout: {
           component: 'Quota',
-          h: 7,
-          w: 5,
-          x: 5,
-          y: 21,
+          h: 12,
+          w: 20,
+          x: 20,
+          y: 44,
         },
         params: {
           field: 'isolated_device',
@@ -744,10 +696,10 @@ export default {
       {
         layout: {
           component: 'Quota',
-          h: 7,
-          w: 5,
-          x: 10,
-          y: 21,
+          h: 12,
+          w: 20,
+          x: 40,
+          y: 44,
         },
         params: {
           field: 'image',
@@ -759,10 +711,10 @@ export default {
       {
         layout: {
           component: 'Quota',
-          h: 7,
-          w: 5,
-          x: 15,
-          y: 21,
+          h: 12,
+          w: 20,
+          x: 60,
+          y: 44,
         },
         params: {
           field: 'snapshot',
@@ -781,8 +733,8 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
           y: 0,
         },
@@ -794,9 +746,9 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 5,
+          h: 6,
+          w: 20,
+          x: 20,
           y: 0,
         },
         params: {
@@ -807,9 +759,9 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 10,
+          h: 6,
+          w: 20,
+          x: 40,
           y: 0,
         },
         params: {
@@ -820,9 +772,9 @@ export default {
       {
         layout: {
           component: 'Notify',
-          h: 4,
-          w: 5,
-          x: 15,
+          h: 12,
+          w: 20,
+          x: 60,
           y: 0,
         },
         params: {
@@ -832,10 +784,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
-          y: 2,
+          y: 6,
         },
         params: {
           name: i18n.t('dashboard.text_159'),
@@ -845,10 +797,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 5,
-          y: 2,
+          h: 6,
+          w: 20,
+          x: 20,
+          y: 6,
         },
         params: {
           name: i18n.t('dashboard.text_155'),
@@ -858,10 +810,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 10,
-          y: 2,
+          h: 6,
+          w: 20,
+          x: 40,
+          y: 6,
         },
         params: {
           name: i18n.t('dashboard.text_153'),
@@ -871,10 +823,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
-          y: 4,
+          y: 12,
         },
         params: {
           name: i18n.t('dashboard.text_148'),
@@ -884,10 +836,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 5,
-          y: 4,
+          h: 6,
+          w: 20,
+          x: 20,
+          y: 12,
         },
         params: {
           name: i18n.t('dashboard.text_158'),
@@ -897,10 +849,10 @@ export default {
       {
         layout: {
           component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 10,
-          y: 4,
+          h: 6,
+          w: 20,
+          x: 40,
+          y: 12,
         },
         params: {
           name: i18n.t('dashboard.text_150'),
@@ -910,10 +862,10 @@ export default {
       {
         layout: {
           component: 'SuggestsysAlertsOverview',
-          h: 5,
-          w: 5,
-          x: 15,
-          y: 4,
+          h: 12,
+          w: 20,
+          x: 60,
+          y: 12,
         },
         params: {
           currency: i18n.t('dashboard.currency_name'),
@@ -923,10 +875,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
-          y: 6,
+          y: 18,
         },
         params: {
           all_usage_key: 'servers',
@@ -939,10 +891,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 5,
-          y: 6,
+          h: 6,
+          w: 20,
+          x: 20,
+          y: 18,
         },
         params: {
           all_usage_key: 'disks.count',
@@ -956,10 +908,10 @@ export default {
       {
         layout: {
           component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 10,
-          y: 6,
+          h: 6,
+          w: 20,
+          x: 40,
+          y: 18,
         },
         params: {
           all_usage_key: 'eip.floating_ip',
@@ -971,10 +923,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
+          h: 8,
+          w: 20,
           x: 0,
-          y: 9,
+          y: 24,
         },
         params: {
           limit: 5,
@@ -988,10 +940,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
-          x: 5,
-          y: 9,
+          h: 8,
+          w: 20,
+          x: 20,
+          y: 24,
         },
         params: {
           limit: 5,
@@ -1005,10 +957,10 @@ export default {
       {
         layout: {
           component: 'Top5',
-          h: 5,
-          w: 5,
-          x: 10,
-          y: 9,
+          h: 8,
+          w: 20,
+          x: 40,
+          y: 24,
         },
         params: {
           limit: 5,
@@ -1022,47 +974,23 @@ export default {
       {
         layout: {
           component: 'Log',
-          h: 5,
-          w: 5,
-          x: 15,
-          y: 9,
+          h: 8,
+          w: 20,
+          x: 60,
+          y: 24,
         },
         params: {
           limit: 4,
           name: i18n.t('dashboard.text_131'),
         },
       },
-      // {
-      //   layout: {
-      //     component: 'ResourceHistoryLine',
-      //     h: 5,
-      //     w: 10,
-      //     x: 0,
-      //     y: 14,
-      //   },
-      //   params: {
-      //     name: i18n.t('dashboard.text_90'),
-      //   },
-      // },
-      // {
-      //   layout: {
-      //     component: 'BillHistoryLine',
-      //     h: 5,
-      //     w: 10,
-      //     x: 10,
-      //     y: 14,
-      //   },
-      //   params: {
-      //     name: i18n.t('dashboard.text_88'),
-      //   },
-      // },
       {
         layout: {
           component: 'ProjectQuota',
-          h: 3,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
-          y: 14,
+          y: 32,
         },
         params: {
           all_usage_key: 'cpu',
@@ -1074,10 +1002,10 @@ export default {
       {
         layout: {
           component: 'ProjectQuota',
-          h: 3,
-          w: 5,
-          x: 5,
-          y: 14,
+          h: 6,
+          w: 20,
+          x: 20,
+          y: 32,
         },
         params: {
           all_usage_key: 'memory',
@@ -1089,10 +1017,10 @@ export default {
       {
         layout: {
           component: 'ProjectQuota',
-          h: 3,
-          w: 5,
-          x: 10,
-          y: 14,
+          h: 6,
+          w: 20,
+          x: 40,
+          y: 32,
         },
         params: {
           all_usage_key: 'storage',
@@ -1104,10 +1032,10 @@ export default {
       {
         layout: {
           component: 'ProjectQuota',
-          h: 3,
-          w: 5,
-          x: 15,
-          y: 14,
+          h: 6,
+          w: 20,
+          x: 60,
+          y: 32,
         },
         params: {
           all_usage_key: 'eip',
@@ -1119,10 +1047,10 @@ export default {
       {
         layout: {
           component: 'ProjectQuota',
-          h: 3,
-          w: 5,
+          h: 6,
+          w: 20,
           x: 0,
-          y: 17,
+          y: 38,
         },
         params: {
           all_usage_key: 'port',
@@ -1134,10 +1062,10 @@ export default {
       {
         layout: {
           component: 'ProjectQuota',
-          h: 3,
-          w: 5,
-          x: 5,
-          y: 17,
+          h: 6,
+          w: 20,
+          x: 20,
+          y: 38,
         },
         params: {
           all_usage_key: 'isolated_device',
@@ -1149,10 +1077,10 @@ export default {
       {
         layout: {
           component: 'ProjectQuota',
-          h: 3,
-          w: 5,
-          x: 10,
-          y: 17,
+          h: 6,
+          w: 20,
+          x: 40,
+          y: 38,
         },
         params: {
           all_usage_key: 'image',
@@ -1164,10 +1092,10 @@ export default {
       {
         layout: {
           component: 'ProjectQuota',
-          h: 3,
-          w: 5,
-          x: 15,
-          y: 17,
+          h: 6,
+          w: 20,
+          x: 60,
+          y: 38,
         },
         params: {
           all_usage_key: 'snapshot',

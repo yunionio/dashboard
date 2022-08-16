@@ -67,5 +67,7 @@ export default {
     billResourceSharedTip: '启用后，将包年包月的资源费用账单分摊到具体使用日期，分摊后总费用 = 按量付费费用 + 包年包月分摊后费用',
     secgroupAdminGuestCnt: '作为管理安全组绑定虚拟机数量',
     secgroupSystemGuestCnt: '安全组绑定作为系统资源的虚拟机数量',
+    v2vTransferType: '迁移成功后自动新建1台同配置KVM虚拟机，IP会迁移至新实例上，原实例会保留',
+    billCostConversionRateTip: '资源价格系数是针对该产品的官网价',
   },
 }

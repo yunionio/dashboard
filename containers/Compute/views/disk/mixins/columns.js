@@ -46,6 +46,7 @@ export default {
       {
         field: 'disk_size',
         title: i18n.t('table.title.disk_size'),
+        sortable: true,
         minWidth: 50,
         formatter: ({ cellValue }) => {
           return sizestr(cellValue, 'M', 1024)
@@ -78,6 +79,7 @@ export default {
         title: this.$t('res.server'),
         minWidth: 100,
         showOverflow: 'ellipsis',
+        sortable: true,
         slots: {
           default: ({ row }, h) => {
             if (this.isPreLoad && !row.guest) return [<data-loading />]
