@@ -3,9 +3,10 @@ import { STORAGE_TYPES } from '@Storage/constants'
 
 export const getUnusedTableColumn = ({ hidden, vm = {} } = {}) => {
   return {
-    field: 'unused',
+    field: 'guest_count',
     title: i18n.t('table.title.disk_mounted'),
     width: 70,
+    sortable: true,
     slots: {
       default: ({ row }, h) => {
         if (vm.isPreLoad && row.guest_count === undefined) return [<data-loading />]
