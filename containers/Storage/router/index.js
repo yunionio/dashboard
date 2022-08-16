@@ -109,6 +109,9 @@ export default {
             label: i18n.t('dictionary.tablestore'),
             permission: 'tablestores_list',
             hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.table_storage')) {
+                return true
+              }
               if (store.getters.isProjectMode) return true
               return !hasSetupKey(['apsara', 'aliyun'])
             },
@@ -195,6 +198,9 @@ export default {
             label: i18n.t('dictionary.backup_storage'),
             permission: 'backupstorages_list',
             hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.backup_storage')) {
+                return true
+              }
               if (store.getters.isProjectMode) return true
               return !hasSetupKey(['onestack'])
             },
