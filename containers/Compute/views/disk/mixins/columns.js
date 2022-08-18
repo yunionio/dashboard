@@ -80,6 +80,7 @@ export default {
         minWidth: 100,
         showOverflow: 'ellipsis',
         sortable: true,
+        sortBy: 'order_by_server',
         slots: {
           default: ({ row }, h) => {
             if (this.isPreLoad && !row.guest) return [<data-loading />]
