@@ -7,6 +7,7 @@ export const getUnusedTableColumn = ({ hidden, vm = {} } = {}) => {
     title: i18n.t('table.title.disk_mounted'),
     width: 70,
     sortable: true,
+    sortBy: 'order_by_guest_count',
     slots: {
       default: ({ row }, h) => {
         if (vm.isPreLoad && row.guest_count === undefined) return [<data-loading />]
