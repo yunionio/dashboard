@@ -1315,6 +1315,10 @@ export const PERMISSION = {
   tapflows_create: ['compute', 'tap_flows', 'create'],
 
   tablestores_list: ['compute', 'tablestores', 'list'],
+
+  shieldbills_list: ['meter', 'shield_bills', 'list'],
+  shieldbills_create: ['meter', 'shield_bills', 'create'],
+  shieldbills_delete: ['meter', 'shield_bills', 'delete'],
 }
 
 // 已声明权限的资源

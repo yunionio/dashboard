@@ -916,3 +916,13 @@ export const getDomainColumn = ({ vm }) => {
     hidden: () => store.getters.isProjectMode,
   }
 }
+
+export const getCloudEnvTableColumn = ({ field = 'cloud_env', title = i18n.t('common.cloud_env') } = {}) => {
+  return {
+    field,
+    title,
+    formatter: ({ row }) => {
+      return i18n.te(`cloud_env.${row[field]}`) ? i18n.t(`cloud_env.${row[field]}`) : i18n.t('cloud_env.onpremise')
+    },
+  }
+}
