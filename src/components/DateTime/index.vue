@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import i18n from '@/locales'
 import CustomDate from './CustomDate'
 
@@ -79,7 +80,7 @@ export default {
     formatter: {
       type: Function,
       default: (time) => {
-        return this.$moment(time).format('YYYYMMDD')
+        return moment(time).format('YYYYMMDD')
       },
     },
   },
