@@ -163,16 +163,14 @@ export default {
     },
     config () {
       const ret = []
-      const { gpu, gpuCount, vcpu, vmem } = this.fd
+      const { gpu, gpuCount, vcpu, vmem, sku = {} } = this.fd
       if (this.fd.gpuEnable) {
         ret.push(this.$t('compute.text_1134', [gpuCount, gpu]))
       }
-      if (this.isPublic) {
-        if (!R.isNil(this.fd.spec) && !R.isEmpty(this.fd.spec)) {
-          ret.push(this.$t('compute.text_292', [this.fd.spec.vcpu_count]))
-          ret.push(this.$t('compute.text_1135', [this.fd.spec.vmem_size]))
-        }
-      } else {
+      if (sku.cpu_core_count && sku.memory_size_mb) {
+        ret.push(this.$t('compute.text_292', [sku.cpu_core_count]))
+        ret.push(this.$t('compute.text_293', [sizestrWithUnit(sku.memory_size_mb, 'M', 1024)]))
+      } else if (vcpu && vmem) {
         ret.push(this.$t('compute.text_292', [vcpu]))
         ret.push(this.$t('compute.text_293', [sizestrWithUnit(vmem, 'M', 1024)]))
       }
