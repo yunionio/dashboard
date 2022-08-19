@@ -34,6 +34,7 @@ import DashboardHeader from './components/Header'
 import DashboardContent from './components/Content'
 import storage from '@/utils/storage'
 import { addClass, removeClass, hasClass } from '@/utils/dom'
+import { generateFitLayout } from '@Dashboard/utils/fit'
 
 // option
 // [{ id: 'xxx', name: 'xxx', index: 2, hidden: true, type: 'default' }]
@@ -126,7 +127,8 @@ export default {
       this.currentOption = option
       // 按scope维度记录选择的面板信息
       storage.set(this.optionStorageKey, option)
-      this.dashboard = await this.getDashboard()
+      const dashboard = await this.getDashboard()
+      this.dashboard = generateFitLayout(dashboard)
     },
     // 获取自定义面板配置
     async getCustomOptions () {

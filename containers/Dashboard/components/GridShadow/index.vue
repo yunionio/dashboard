@@ -31,7 +31,7 @@ export default {
 .grid-edit-container {
   position: relative;
   min-height: 2245px;
-  min-width: 1024px;
+  min-width: 1366px;
   // background: url('../../assets/grid-shadow.png') repeat 0 0;
 }
 .resolutionguide {
