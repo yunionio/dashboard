@@ -106,7 +106,9 @@ export const findPlatform = (provider, type = 'brand') => {
 export const getCloudEnvOptions = (capabilityBrandKey, ignoreAll) => {
   const orderKeys = ['onpremise', 'private', 'public']
   let ret = !ignoreAll ? [{ key: '', label: i18n.t('common_95') }] : []
-  const brands = store.getters.capability[capabilityBrandKey] || store.getters.capability.brands || []
+  const normalBrands = store.getters.capability[capabilityBrandKey] || store.getters.capability.brands || []
+  const readOnlyBrands = ignoreAll ? [] : (store.getters.capability[`read_only_${capabilityBrandKey}`] || [])
+  const brands = [...normalBrands, ...readOnlyBrands]
   for (let i = 0, len = brands.length; i < len; i++) {
     const key = _.get(typeClouds.brandMap, `[${brands[i]}].cloud_env`)
     const data = R.find(R.propEq('key', key))(ret)
