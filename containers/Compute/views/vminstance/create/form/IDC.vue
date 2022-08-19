@@ -302,7 +302,7 @@ export default {
       return params
     },
     showSku () {
-      if (this.form.fd.hypervisor && this.form.fd.vcpu && this.form.fd.vmem) {
+      if (this.form.fd.hypervisor) {
         return true
       }
       return false
@@ -312,7 +312,7 @@ export default {
         limit: 0,
         public_cloud: false,
         postpaid_status: 'available',
-        cpu_core_count: this.form.fd.vcpu || this.decorators.vcpu[1].initialValue,
+        cpu_core_count: this.form.fd.vcpu,
         memory_size_mb: this.form.fd.vmem,
         cloudregion: _.get(this.form, 'fd.cloudregion.key'),
         provider: 'OneCloud',
