@@ -20,6 +20,7 @@ export default {
           resource: 'servers',
           getParams: {
             filter: 'hypervisor.notin(baremetal,container)',
+            project_id: this.params.data[0].tenant_id,
           },
           filterOptions: {
             name: getNameFilter(),
