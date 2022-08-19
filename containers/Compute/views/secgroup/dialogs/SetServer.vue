@@ -110,7 +110,6 @@ export default {
           filter: 'hypervisor.notin(container, baremetal)',
           limit: 0,
           secgroup: `${this.selectedResource.id}`,
-          project_id: this.selectedResource.tenant_id,
         }
         if (this.isAdminMode) {
           params.project_domain = this.userInfo.projectDomain
