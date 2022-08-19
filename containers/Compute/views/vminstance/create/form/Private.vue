@@ -239,16 +239,13 @@ export default {
       return params
     },
     showSku () {
-      if (this.form.fd.vcpu && this.form.fd.vmem) {
-        return true
-      }
-      return false
+      return true
     },
     skuParam () {
       const params = {
         limit: 0,
         postpaid_status: 'available',
-        cpu_core_count: this.form.fd.vcpu || this.decorators.vcpu[1].initialValue,
+        cpu_core_count: this.form.fd.vcpu,
         memory_size_mb: this.form.fd.vmem,
         usable: true,
         enabled: true,
