@@ -79,6 +79,7 @@ import ExtendGallery from '@Dashboard/sections/ExtendGallery'
 import { clear as clearCache } from '@Dashboard/utils/cache'
 import { uuid } from '@/utils/utils'
 import storage from '@/utils/storage'
+import { generateFitLayout } from '@Dashboard/utils/fit'
 
 export default {
   name: 'DashboardEdit',
@@ -445,7 +446,8 @@ export default {
       }, data)
       this.dashboardParams = dashboardParams
       this.layoutInit = R.clone(layout)
-      this.layout = layout
+      console.log(layout)
+      this.layout = generateFitLayout(layout)
     },
     // 生成需要存储到配置中的data
     genData () {
