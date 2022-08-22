@@ -12,7 +12,7 @@
           <!-- 报警级别 -->
           {{$t('compute.text_738')}}: {{ levelMaps[obj.level] ? levelMaps[obj.level].label : obj.level }}<br />
           <!-- 触发条件 -->
-          {{$t('monitor.condition')}}: {{obj.alert_rule.metric}} {{obj.alert_rule.comparator}} {{obj.alert_rule.threshold}}<br />
+          {{$t('monitor.condition')}}: {{ getMetircAlert(obj, 'alert_rule') }}<br />
           <!-- 资源数量 -->
           {{$t('cloudenv.text_417')}}：1<br />
           <!-- 资源名称 -->
@@ -34,6 +34,7 @@ import moment from 'moment'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { levelMaps } from '@Monitor/constants'
+import { getMetircAlertUtil } from '@Monitor/views/commonalert/utils'
 
 export default {
   name: 'MonitorAlertNotifyDialog',
@@ -79,6 +80,10 @@ export default {
     clearTimeout(this.timer)
   },
   methods: {
+    getMetircAlert (row, field) {
+      const results = getMetircAlertUtil(row, field, true)
+      return results?.split('：')[1] || '-'
+    },
     async handleConfirm () {
       this.cancelDialog()
       this.$router.push('/alertrecord')
