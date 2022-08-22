@@ -138,7 +138,7 @@ export const rolesColumn = roleList => ({
   },
 })
 
-export function getMetircAlertUtil (row, field) {
+export function getMetircAlertUtil (row, field, condition) {
   let strategy = '-'
   const filters = []
   if (row[field] && ((R.type(row[field]) === 'Array') || R.type(row[field]) === 'Object') && !R.isEmpty(row[field])) {
@@ -169,11 +169,11 @@ export function getMetircAlertUtil (row, field) {
     if (detail.condition_type === 'nodata_query') { // 系统上报数据为空
       strategy = i18n.t('monitor.text_108', [alert_duration])
     }
+    if (condition) return strategy // 只要触发条件信息
     if (preiod) {
       preiod = preiod.replace(i18n.t('monitor.text_103'), '')
       strategy += `${i18n.t('monitor.text_102', [preiod])}`
     }
-
     const silent_period = row.silent_period || row[field].silent_period
     if (silent_period) {
       let p = silent_period
