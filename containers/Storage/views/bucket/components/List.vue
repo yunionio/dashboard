@@ -2,20 +2,20 @@
   <page-list
     show-tag-columns
     show-tag-filter
+    show-tag-config
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :tag-config-params="tagConfigParams" />
 </template>
 
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import { ACL_TYPE } from '@Storage/constants/index.js'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -23,6 +23,8 @@ import { getNameFilter, getTenantFilter, getBrandFilter, getStatusFilter, getAcc
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'BucketStorageList',
@@ -254,6 +256,10 @@ export default {
           },
         },
       ],
+      tagConfigParams: {
+        resource: 'buckets',
+        queryTreeId: 'project-tag-value-tree',
+      },
     }
   },
   computed: {

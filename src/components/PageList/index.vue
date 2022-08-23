@@ -223,7 +223,10 @@ export default {
     tableOverviewIndexs: {
       type: Array,
     },
-    showNoValue: Boolean,
+    showNoValue: {
+      type: Boolean,
+      default: true,
+    },
   },
   provide: {
     // 声明在List中
