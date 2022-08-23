@@ -2,21 +2,20 @@
   <page-list
     show-tag-columns
     show-tag-filter
+    show-tag-config
     :list="list"
     :columns="columns"
     :single-actions="singleActions"
     :group-actions="groupActions"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :tag-config-params="tagConfigParams" />
 </template>
 
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import { validateEnabled, validateDisable } from '../utils'
 import { surpportLb } from '@Network/views/lb/constants'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
@@ -26,6 +25,9 @@ import expectStatus from '@/constants/expectStatus'
 import { PROVIDER_MAP } from '@/constants'
 import { changeToArr } from '@/utils/utils'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import { validateEnabled, validateDisable } from '../utils'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'LbList',
@@ -107,6 +109,10 @@ export default {
           { label: this.$t('common_715'), key: 'user_tags' },
           { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
+      },
+      tagConfigParams: {
+        resource: 'loadbalancers',
+        queryTreeId: 'project-tag-value-tree',
       },
     }
   },
