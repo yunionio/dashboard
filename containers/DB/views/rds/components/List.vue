@@ -2,6 +2,7 @@
   <page-list
     show-tag-columns
     show-tag-filter
+    show-tag-config
     :columns="columns"
     :group-actions="groupActions"
     :list="list"
@@ -9,12 +10,11 @@
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
     :defaultSearchKey="defaultSearchKey"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :tag-config-params="tagConfigParams" />
 </template>
 <script>
 
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getFilter, getTenantFilter, getDomainFilter, getStatusFilter, getBrandFilter, getCloudProviderFilter, getAccountFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
@@ -24,6 +24,8 @@ import globalSearchMixins from '@/mixins/globalSearch'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import { HYPERVISORS_MAP } from '@/constants'
 import regexp from '@/utils/regexp'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'RDSList',
@@ -322,6 +324,10 @@ export default {
           },
         },
       ],
+      tagConfigParams: {
+        resource: 'dbinstances',
+        queryTreeId: 'project-tag-value-tree',
+      },
     }
   },
   created () {
