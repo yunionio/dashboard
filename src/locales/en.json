@@ -5216,5 +5216,6 @@
   "common.token_exp_tip2": "Your login information has expired. Please re-enter your account and password to login (re login will not refresh the page).",
   "common.choose.host": "Please choose a host",
   "common.choose.server": "Please select a virtual machine",
-  "common.choose.server.label": "Specify a virtual machine"
+  "common.choose.server.label": "Specify a virtual machine",
+  "common.cloud_env": "Cloud environment"
 }
