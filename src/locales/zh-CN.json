@@ -5240,5 +5240,6 @@
   "common.token_eip_tip2": "您的登录信息已失效，请重新输入账号密码登录（重新登录不会刷新页面）。",
   "common.choose.host": "请选择宿主机",
   "common.choose.server": "请选择虚拟机",
-  "common.choose.server.label": "指定虚拟机"
+  "common.choose.server.label": "指定虚拟机",
+  "common.cloud_env": "云环境"
 }
