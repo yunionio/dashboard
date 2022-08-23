@@ -132,7 +132,7 @@ export default {
         resource: 'server',
         columns: () => this.columns,
         tipName: this.$t('dictionary.server'),
-        editCheck: (row) => row.hypervisor !== typeClouds.hypervisorMap.bingocloud.key,
+        // editCheck: (row) => row.hypervisor !== typeClouds.hypervisorMap.bingocloud.key,
       }),
       getIpsTableColumn({ field: 'ips', title: 'IP', vm: this, sortable: true }),
       {
