@@ -95,7 +95,7 @@ router.beforeEach(async (to, from, next) => {
     !hasProfile && await store.dispatch('profile/get')
     !hasStats && await store.dispatch('auth/getStats')
     !hasScopePolicy && await store.dispatch('scopedPolicy/get', {
-      category: ['sub_hidden_menus'],
+      category: ['sub_hidden_menus', 'document_configured_callback_address'],
     })
     !hasGlobalConfig && await store.dispatch('common/fetchGlobalConfig')
     !hasGlobalServices && await store.dispatch('common/fetchGlobalServices')

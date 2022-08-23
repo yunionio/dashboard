@@ -62,7 +62,9 @@ export default {
       if (item.key === 'setting') return
       const newWindow = item.key.startsWith('http')
       if (newWindow) {
-        window.open(item.key)
+        this.$openNewWindowForMenuHook('document_configured_callback_address.product_manual_callback_address', () => {
+          window.open(item.key)
+        })
       } else {
         this.$router.push(item.key)
       }
