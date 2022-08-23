@@ -59,6 +59,12 @@ export default {
               textStyle: {
                 fontSize: 20,
               },
+              formatter: (row) => {
+                const value = parseFloat(row.value)
+                if (value > 0 && value < 0.01) {
+                  return '< 1%'
+                }
+              },
             },
           }],
           backgroundStyle: {
