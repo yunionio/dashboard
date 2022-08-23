@@ -74,6 +74,7 @@ import { getRequestT } from '@/utils/utils'
 import K8sConfig from '@Dashboard/sections/K8sConfig'
 import { numerify } from '@/filters'
 import { chartColors } from '@/constants'
+import mixin from './mixin'
 
 export default {
   name: 'RingK8s',
@@ -231,14 +232,26 @@ export default {
         unit: ret.toString().split(' ')[1] || this.usage.unit,
       }
     },
+
     decimalPercent () {
-      if (this.usageNumber === 0 || this.allUsageNumber === 0) return 0
+      if (this.usageNumber === 0 || this.allUsageNumber === 0) return '0'
+      const percent = this.usageNumber / this.allUsageNumber
+      if (percent > 0 && percent < 0.01) {
+        return '0.004'
+      }
       return numerify(this.usageNumber / this.allUsageNumber, '0.00')
     },
     percent () {
-      return numerify(this.decimalPercent * 100, 0.00)
+      const data = parseFloat(this.decimalPercent)
+      if (data > 0 && data < 0.01) {
+        return 0.4
+      }
+      return numerify(data * 100, 0.0)
     },
     percentTips () {
+      if (this.percent < 1) {
+        return '< 1%'
+      }
       return `${this.percent} %`
     },
     colorConfig () {
