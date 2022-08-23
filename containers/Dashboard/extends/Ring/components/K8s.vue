@@ -74,7 +74,6 @@ import { getRequestT } from '@/utils/utils'
 import K8sConfig from '@Dashboard/sections/K8sConfig'
 import { numerify } from '@/filters'
 import { chartColors } from '@/constants'
-import mixin from './mixin'
 
 export default {
   name: 'RingK8s',
