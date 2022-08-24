@@ -46,11 +46,14 @@
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import ServerConfig from '@K8S/sections/serverConfig'
+import { IMAGES_TYPE_MAP } from '@/constants/compute'
+import { HYPERVISORS_MAP } from '@/constants'
 import { KUBE_PROVIDER, hyperOpts } from '@K8S/views/cluster/constants'
 import { isWithinRange, isRequired } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
+import i18n from '@/locales'
 
 function checkIpInSegment (i, networkData) {
   return (rule, value, _callback) => {
@@ -194,6 +197,35 @@ export default {
               initialValue: 'controlplane',
             },
           ],
+          imageOS: i => [
+            `imageOS[${i}]`,
+            {
+              os: [
+                `os[${i}]`,
+                {
+                  initialValue: '',
+                  rules: [
+                    { required: true, message: i18n.t('compute.text_153') },
+                  ],
+                },
+              ],
+              image: [
+                `image[${i}]`,
+                {
+                  initialValue: { key: '', label: '' },
+                  rules: [
+                    { validator: isRequired(), message: i18n.t('compute.text_214') },
+                  ],
+                },
+              ],
+              imageType: [
+                `imageType[${i}]`,
+                {
+                  initialValue: IMAGES_TYPE_MAP.standard.key,
+                },
+              ],
+            },
+          ],
         },
       },
       formItemLayout: {
@@ -292,6 +324,13 @@ export default {
           if (data.systemDiskSchedtag[key] && data.systemDiskPolicy[key]) {
             disks[0].schedtags = [{ id: data.systemDiskSchedtag[key], strategy: data.systemDiskPolicy[key] }]
           }
+        }
+        if ((this.hypervisor === HYPERVISORS_MAP.kvm.key || this.hypervisor === HYPERVISORS_MAP.cloudpods.key) && disks[0].backend.indexOf('local') !== -1) {
+          disks[0].medium = disks[0].backend.split('-')[1]
+          disks[0].backend = disks[0].backend.split('-')[0]
+        }
+        if (data.image && data.image[key]) {
+          disks[0].image_id = data.image[key].key
         }
         const machinesItem = {
           vm: {
