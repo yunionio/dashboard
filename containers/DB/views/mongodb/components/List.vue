@@ -1,5 +1,6 @@
 <template>
   <page-list
+    show-tag-config
     :columns="columns"
     :group-actions="groupActions"
     :list="list"
@@ -7,7 +8,8 @@
     :showGroupActions="showGroupActions"
     :export-data-options="exportDataOptions"
     :show-tag-columns="true"
-    :show-tag-filter="true" />
+    :show-tag-filter="true"
+    :tag-config-params="tagConfigParams" />
 </template>
 
 <script>
@@ -166,6 +168,10 @@ export default {
           },
         },
       ],
+      tagConfigParams: {
+        resource: 'mongodbs',
+        queryTreeId: 'project-tag-value-tree',
+      },
     }
   },
   created () {
