@@ -4,6 +4,7 @@
     :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo"
+    :name-rules="[{ required: true, message: $t('compute.text_210') }]"
     resource="hosts"
     status-module="host" />
 </template>
