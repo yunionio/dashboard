@@ -2,13 +2,15 @@
   <page-list
     show-tag-columns
     show-tag-filter
+    show-tag-config
     :columns="columns"
     :group-actions="groupActions"
     :list="list"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :tag-config-params="tagConfigParams" />
 </template>
 
 <script>
@@ -361,6 +363,10 @@ export default {
           },
         },
       ],
+      tagConfigParams: {
+        resource: 'elasticcaches',
+        queryTreeId: 'project-tag-value-tree',
+      },
     }
   },
   created () {

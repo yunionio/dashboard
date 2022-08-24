@@ -8,14 +8,15 @@
       <data-empty v-if="!loading && !treeData.length" />
       <div :style="contentStyle">
         <a-tree
-        v-if="treeData.length"
-        default-expand-all
-        show-line
-        :selectedKeys.sync="selectedKeys"
-        :treeData="treeData"
-        @select="handleTreeNodeSelect"
-        style="padding:10px 0">
-          <a-icon slot="switcherIcon" type="down" />
+          v-if="treeData.length"
+          default-expand-all
+          show-icon
+          :selectedKeys.sync="selectedKeys"
+          :treeData="treeData"
+          @select="handleTreeNodeSelect"
+          style="padding:10px 0">
+          <a-icon slot="switcherIcon" type="caret-down" style="font-size: 16px;color:#999" />
+          <icon slot="organization" style="font-size: 14px;color:#999" type="organization" />
         </a-tree>
       </div>
     </div>
@@ -145,11 +146,11 @@ export default {
         treeNode.title = `${this.$t('common_737')}(${treeNode.count})`
       } else if (treeNode.value === '___no_value__') {
         treeNode.title = (
-          <div><span class="tag-title-budge">{treeNode.tag.replace('user:', '')}:</span>{`${this.$t('common_736')}(${treeNode.count})`}</div>
+          <span><span class="tag-title-budge">{treeNode.tag.replace('user:', '')}:</span>{`${this.$t('common_736')}(${treeNode.count})`}</span>
         )
       } else {
         treeNode.title = (
-          <div><span class="tag-title-budge">{treeNode.tag.replace('user:', '')}:</span>{`${treeNode.value}(${treeNode.count})`}</div>
+          <span><span class="tag-title-budge">{treeNode.tag.replace('user:', '')}:</span>{`${treeNode.value}(${treeNode.count})`}</span>
         )
       }
       treeNode.key = uuid()
@@ -160,6 +161,7 @@ export default {
       } else {
         treeNode.isLeaf = true
       }
+      treeNode.slots = { icon: 'organization' }
       return treeNode
     },
     genProjectTagFilter (data) {
@@ -219,7 +221,7 @@ export default {
   font-size: 12px;
   box-sizing: border-box;
   display: inline-block;
-  color: rgba(0,0,0,0.3);
+  color: #999;
   margin-right: 5px;
 }
 </style>
