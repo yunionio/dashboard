@@ -87,19 +87,19 @@ router.beforeEach(async (to, from, next) => {
   const hasMonitorResourceAlerts = !R.isNil(store.state.monitor.monitorResourceAlerts)
 
   try {
-    !hasRoles && store.dispatch('auth/getInfo')
+    !hasRoles && await store.dispatch('auth/getInfo')
     !hasCapability && await store.dispatch('auth/getCapabilities')
     !hasPermission && await store.dispatch('auth/getPermission')
-    !hasScopeResource && store.dispatch('auth/getScopeResource')
-    !hasGlobalSettings && store.dispatch('globalSetting/getFetchGlobalSetting')
-    !hasProfile && store.dispatch('profile/get')
-    !hasStats && store.dispatch('auth/getStats')
-    !hasScopePolicy && store.dispatch('scopedPolicy/get', {
+    !hasScopeResource && await store.dispatch('auth/getScopeResource')
+    !hasGlobalSettings && await store.dispatch('globalSetting/getFetchGlobalSetting')
+    !hasProfile && await store.dispatch('profile/get')
+    !hasStats && await store.dispatch('auth/getStats')
+    !hasScopePolicy && await store.dispatch('scopedPolicy/get', {
       category: ['sub_hidden_menus', 'document_configured_callback_address'],
     })
-    !hasGlobalConfig && store.dispatch('common/fetchGlobalConfig')
-    !hasGlobalServices && store.dispatch('common/fetchGlobalServices')
-    !hasMonitorResourceAlerts && store.dispatch('monitor/loadMonitorResourceAlerts')
+    !hasGlobalConfig && await store.dispatch('common/fetchGlobalConfig')
+    !hasGlobalServices && await store.dispatch('common/fetchGlobalServices')
+    !hasMonitorResourceAlerts && await store.dispatch('monitor/loadMonitorResourceAlerts')
   } catch (error) {
     throw error
   } finally {
