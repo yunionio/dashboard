@@ -88,8 +88,8 @@ router.beforeEach(async (to, from, next) => {
 
   try {
     !hasRoles && store.dispatch('auth/getInfo')
-    !hasCapability && store.dispatch('auth/getCapabilities')
-    !hasPermission && store.dispatch('auth/getPermission')
+    !hasCapability && await store.dispatch('auth/getCapabilities')
+    !hasPermission && await store.dispatch('auth/getPermission')
     !hasScopeResource && store.dispatch('auth/getScopeResource')
     !hasGlobalSettings && store.dispatch('globalSetting/getFetchGlobalSetting')
     !hasProfile && store.dispatch('profile/get')
