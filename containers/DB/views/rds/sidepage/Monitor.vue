@@ -185,14 +185,19 @@ export default {
           })
         }, val.tags)
       }
+      const model = {
+        measurement: val.fromItem,
+        select,
+        tags,
+      }
+      // azure sqlserver 增加groupby
+      if (this.data.brand === 'Azure' && (this.data.engine || '').indexOf('SQLServer') !== -1) {
+        model.groupBy = [{ type: 'tag', params: ['database'] }]
+      }
       const data = {
         metric_query: [
           {
-            model: {
-              measurement: val.fromItem,
-              select,
-              tags,
-            },
+            model,
           },
         ],
         scope: this.$store.getters.scope,
