@@ -22,10 +22,10 @@
 <script>
 import BaseMonitor from '@Compute/sections/monitor/BaseMonitor'
 import AgentMonitor from '@Compute/sections/monitor/AgentMonitor.vue'
-import InstallAgentFormVisible from '../../vminstance/components/InstallAgentFormVisible'
 import { ONECLOUD_MONITOR, VMWARE_MONITOR, OTHER_MONITOR } from '@Compute/views/vminstance/constants'
 import { HYPERVISORS_MAP } from '@/constants'
 import WindowsMixin from '@/mixins/windows'
+import InstallAgentFormVisible from '../../vminstance/components/InstallAgentFormVisible'
 
 export default {
   name: 'VminstanceMonitorSidepage',
@@ -64,7 +64,14 @@ export default {
       } else if (this.hypervisor === HYPERVISORS_MAP.kvm.key) {
         return ONECLOUD_MONITOR
       } else {
-        return OTHER_MONITOR
+        // aliyun apsara 虚拟机磁盘使用率增加groupBy: device
+        const otherMonitor = OTHER_MONITOR.map(item => {
+          if (['Aliyun', 'Apsara'].includes(this.data.brand) && item.fromItem === 'vm_disk') {
+            item.groupBy = ['device']
+          }
+          return item
+        })
+        return otherMonitor
       }
     },
     serverId () {
