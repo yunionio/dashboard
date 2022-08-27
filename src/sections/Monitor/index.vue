@@ -127,7 +127,11 @@ export default {
                 if (groupByKey.length !== 0) {
                   row.name = groupByKey
                 } else {
-                  row.name = column
+                  if (val.constants.groupBy && val.constants.groupBy.length !== 0) {
+                    row.name = serie.raw_name || serie.name || ''
+                  } else {
+                    row.name = column
+                  }
                 }
                 row.yData.push(numerify(point[i], format))
               }
