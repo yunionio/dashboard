@@ -54,6 +54,12 @@ export default {
       }
       return ''
     },
+    engine () {
+      if (this.data.engine) {
+        return this.data.engine.toLowerCase()
+      }
+      return ''
+    },
     hadMonitor () {
       const brand = this.data.brand.toLowerCase()
       const surportBrand = [HYPERVISORS_MAP.aliyun.key, HYPERVISORS_MAP.huawei.key, HYPERVISORS_MAP.hcso.key, HYPERVISORS_MAP.qcloud.key, HYPERVISORS_MAP.jdcloud.key, HYPERVISORS_MAP.azure.key]
@@ -61,7 +67,17 @@ export default {
     },
     monitorConstants () {
       const brand = this.brand
-      return RDS_MONITOR_OPTS[brand] || []
+      return (RDS_MONITOR_OPTS[brand] || []).filter(item => {
+        if (!this.engine) {
+          return true
+        }
+        if (item.tags && item.tags.tag && ['mysql', 'sqlserver'].includes(item.tags.tag)) {
+          if (this.engine.indexOf(item.tags.tag) === -1) {
+            return false
+          }
+        }
+        return true
+      })
     },
     dbId () {
       return this.data.id
