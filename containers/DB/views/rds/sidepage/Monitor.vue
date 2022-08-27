@@ -76,6 +76,10 @@ export default {
     async fetchData () {
       this.loading = true
       const resList = []
+      const extraConstants = {}
+      if (this.data.brand === 'Azure' && (this.data.engine || '').indexOf('SQLServer') !== -1) {
+        extraConstants.groupBy = [{ type: 'tag', params: ['database'] }]
+      }
       for (let idx = 0; idx < this.monitorConstants.length; idx++) {
         const val = this.monitorConstants[idx]
         try {
@@ -86,7 +90,7 @@ export default {
               data: this.genQueryData(val),
               params: { $t: getRequestT() },
             })
-          resList.push({ title: val.label, constants: val, series: data.series })
+          resList.push({ title: val.label, constants: { ...val, ...extraConstants }, series: data.series })
           if (idx === this.monitorConstants.length - 1) {
             this.loading = false
             this.getMonitorList(resList)
@@ -116,9 +120,11 @@ export default {
         const { unit, transfer } = result.constants
         const isSizestrUnit = UNITS.includes(unit)
         let series = result.series
+        console.log('series', series)
         if (!series) series = []
         if (isSizestrUnit || unit === 'bps') {
           series = series.map(serie => {
+            console.log('serie', serie)
             return autoComputeUnit(serie, unit, transfer)
           })
         }
