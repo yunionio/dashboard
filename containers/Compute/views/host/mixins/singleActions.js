@@ -417,6 +417,17 @@ export default {
                 },
               },
               {
+                label: this.$t('compute.host.cpu.revert.resource'),
+                action: obj => {
+                  this.createDialog('SetHostCpuReserveResourceDialog', {
+                    onManager: this.onManager,
+                    data: [obj],
+                    columns: this.columns,
+                    refresh: this.refresh,
+                  })
+                },
+              },
+              {
                 label: i18n.t('compute.setup_passthrough_reserve'),
                 permission: 'hosts_perform_set_reserved_resource_for_isolated_device',
                 action: obj => {
