@@ -136,6 +136,7 @@ export default {
           domain,
           international_mobile,
           enabled_contact_types,
+          force_verified: true,
         }
         await this.manager.update({
           id: this.params.data[0].id,
