@@ -170,6 +170,7 @@ export default {
           international_mobile,
           domain,
           enabled_contact_types,
+          force_verified: true,
         }
         await this.manager.create({
           data,

@@ -10,7 +10,12 @@
       <!-- login form -->
       <div class="flex-fill position-relative">
         <div class="login-content-wrap h-100 w-100" style="overflow-x:hidden">
-          <h4 class="text-center">{{ title }}</h4>
+          <div :style="{ margin: '16px' }">
+            <a-radio-group v-model="loginMode" @change="onSwitchLoginMode">
+              <a-radio-button value="account">{{ title }}</a-radio-button>
+              <a-radio-button value="mobile" v-if="isMobleCodeAuthEnabled">{{ $t('auth.mobile') }}</a-radio-button>
+            </a-radio-group>
+            </div>
           <transition-page>
             <router-view />
           </transition-page>
@@ -32,6 +37,7 @@ export default {
     return {
       prevHeight: 0,
       regionsLoading: false,
+      loginMode: 'account',
     }
   },
   computed: {
@@ -44,6 +50,9 @@ export default {
     isForgetLoginUser () {
       return this.regions.is_forget_login_user
     },
+    isMobleCodeAuthEnabled () {
+      return this.regions.enable_mobile_code_auth
+    },
     title () {
       if (this.$route.name === 'Auth') {
         return this.$t('auth.login')
@@ -51,7 +60,7 @@ export default {
       if (this.$route.name === 'LoginChooser') {
         return this.$t('auth.chooser')
       }
-      return '-'
+      return this.$t('auth.login')
     },
     loginDomain () {
       if (this.$route.query.domain) {
@@ -123,7 +132,6 @@ export default {
     } catch (error) {
       this.regionsLoading = true
     }
-    const data = Object.entries(this.loggedUsers)
     // 查看SSO登录跳转回来后的query信息，是否有error
     const { query, path } = this.$route
     const { result, error_class } = query
@@ -142,19 +150,7 @@ export default {
       })
       return false
     }
-    // 判断是否禁用用户名回填
-    // 如果包含历史账号，则显示历史账号
-    if (!R.isEmpty(data) && !this.isForgetLoginUser) {
-      this.$router.replace({
-        path: '/auth/login/chooser',
-        query,
-      })
-    } else {
-      this.$router.replace({
-        path: '/auth/login',
-        query,
-      })
-    }
+    this.switchLoginMode()
   },
   methods: {
     gethost (str) {
@@ -168,6 +164,33 @@ export default {
     },
     getI18nVal,
     getI18nColorVal,
+    switchLoginMode () {
+      const { query } = this.$route
+      // 判断是否禁用用户名回填
+      // 如果包含历史账号，则显示历史账号
+      if (this.loginMode === 'account') {
+        const data = Object.entries(this.loggedUsers)
+        if (!R.isEmpty(data) && !this.isForgetLoginUser) {
+          this.$router.replace({
+            path: '/auth/login/chooser',
+            query,
+          })
+        } else {
+          this.$router.replace({
+            path: '/auth/login',
+            query,
+          })
+        }
+      } else {
+        this.$router.replace({
+          path: '/auth/login/mobile',
+          query,
+        })
+      }
+    },
+    onSwitchLoginMode (e) {
+      this.switchLoginMode()
+    },
   },
 }
 </script>
