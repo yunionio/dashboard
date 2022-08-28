@@ -293,10 +293,12 @@ export default {
         }
         await commit('SET_SCOPE', newCurrentHistoryUserStorageValue.scope)
         await commit('SET_TENANT', newCurrentHistoryUserStorageValue.tenant)
-        await commit('UPDATE_HISTORY_USERS', {
-          key: data.username,
-          value: newCurrentHistoryUserStorageValue,
-        })
+        if (data.username) {
+          await commit('UPDATE_HISTORY_USERS', {
+            key: data.username,
+            value: newCurrentHistoryUserStorageValue,
+          })
+        }
         await commit('scopedPolicy/DEL_DATA', {
           name: 'sub_hidden_menus',
         })
