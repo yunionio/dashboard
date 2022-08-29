@@ -10,11 +10,16 @@
       <!-- login form -->
       <div class="flex-fill position-relative">
         <div class="login-content-wrap h-100 w-100" style="overflow-x:hidden">
-          <div :style="{ margin: '16px' }">
-            <a-radio-group v-model="loginMode" @change="onSwitchLoginMode">
-              <a-radio-button value="account">{{ title }}</a-radio-button>
-              <a-radio-button value="mobile" v-if="isMobleCodeAuthEnabled">{{ $t('auth.mobile') }}</a-radio-button>
-            </a-radio-group>
+          <div class="login-mode-group d-flex">
+             <a class="login-mode login-mode-account"
+              :class="{ 'active': loginMode === 'account' }"
+              href="javascript:;"
+              @click="onSwitchLoginMode('account')">{{ title }}</a>
+             <a v-if="isMobleCodeAuthEnabled"
+              class="login-mode login-mode-mobile"
+              :class="{ 'active': loginMode === 'mobile' }"
+              href="javascript:;"
+              @click="onSwitchLoginMode('mobile')">{{ $t('auth.mobile') }}</a>
             </div>
           <transition-page>
             <router-view />
@@ -30,14 +35,17 @@ import * as R from 'ramda'
 import { mapGetters, mapState } from 'vuex'
 import { getLoginDomain } from '@/utils/common/cookie'
 import { getI18nVal, getI18nColorVal } from '@/utils/i18n'
+import { getLoginModeInStorage } from '@/utils/auth'
 
 export default {
   name: 'AccountIndex',
   data () {
+    const { mode } = getLoginModeInStorage()
+
     return {
       prevHeight: 0,
       regionsLoading: false,
-      loginMode: 'account',
+      loginMode: mode || 'account',
     }
   },
   computed: {
@@ -188,7 +196,8 @@ export default {
         })
       }
     },
-    onSwitchLoginMode (e) {
+    onSwitchLoginMode (mode) {
+      this.loginMode = mode
       this.switchLoginMode()
     },
   },
@@ -247,6 +256,29 @@ export default {
   overflow: hidden;
   img {
     height: 60%;
+  }
+}
+
+.login-mode-group {
+  padding-bottom: 30px;
+
+  .login-mode {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 16px;
+    color: rgb(24, 24, 24);
+    vertical-align: middle;
+    cursor: pointer;
+    &.active {
+      border-bottom: 2px solid #1890ff;
+      color: #1890ff;
+    }
+  }
+  .login-mode-mobile {
+    margin-left: 34px;
   }
 }
 </style>
