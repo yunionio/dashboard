@@ -10,6 +10,7 @@ const ONECLOUD_AUTH_KEY = 'yunionauth'
 const HISTORY_USERS_STORAGE_KEY = '__oc_history_users__'
 const LOGGED_USERS_STORAGE_KEY = '__oc_logged_users__'
 const ENABLE_SETUP_STORAGE_KEY = '__oc_enable_setup__'
+const LOGIN_MODE = '__oc_login_mode___'
 
 export function getTokenFromCookie () {
   return Cookies.get(ONECLOUD_AUTH_KEY)
@@ -107,6 +108,14 @@ export function decodeToken (token) {
     }
   }
   return null
+}
+
+export function setLoginModeInStorage (data) {
+  return storage.set(LOGIN_MODE, data)
+}
+
+export function getLoginModeInStorage (data) {
+  return storage.get(LOGIN_MODE)
 }
 
 // export function isLogged () {
