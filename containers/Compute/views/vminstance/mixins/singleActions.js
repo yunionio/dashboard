@@ -236,6 +236,25 @@ export default {
           }
           const sshActions = mapIpActions(ipInfoList)
           ret = ret.concat(sshActions)
+          if (obj.provider === 'OneCloud') {
+            ret.push({
+              label: i18n.t('compute.show_vnc_info'),
+              action: (obj) => {
+                this.createDialog('VmVncInfoDialog', {
+                  data: [obj],
+                  onManager: this.onManager,
+                })
+              },
+              meta: (obj) => {
+                const ret = { validate: true }
+                if (obj.status !== 'running') {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.text_1130')
+                }
+                return ret
+              },
+            })
+          }
           return ret
         },
         meta: (obj) => {
