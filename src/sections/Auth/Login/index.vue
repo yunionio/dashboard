@@ -40,7 +40,7 @@ import { getLoginModeInStorage } from '@/utils/auth'
 export default {
   name: 'AccountIndex',
   data () {
-    const { mode } = getLoginModeInStorage()
+    const { mode } = getLoginModeInStorage() || {}
 
     return {
       prevHeight: 0,
