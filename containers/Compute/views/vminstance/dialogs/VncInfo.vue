@@ -37,10 +37,10 @@ export default {
       loading: false,
       action: this.$t('compute.show_vnc_info'),
       form: {
-        vnc_type: 'spice',
-        ip: '10.127.100.213',
-        port: 8090,
-        password: 'kqwoeinaf',
+        vnc_type: '',
+        ip: '',
+        port: '',
+        password: '',
       },
     }
   },
