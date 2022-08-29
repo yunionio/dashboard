@@ -73,6 +73,7 @@
 <script>
 import * as R from 'ramda'
 import { mapState } from 'vuex'
+import { getLoginModeInStorage } from '@/utils/auth'
 
 const maxSendSmsCount = 300
 
@@ -199,6 +200,9 @@ export default {
     }
     this.fetchCaptcha()
   },
+  mounted () {
+    this.initMobile()
+  },
   destroyed () {
     this.clearTimer()
   },
@@ -289,6 +293,7 @@ export default {
         data.uid = this.uid
         data.verify_code = fd.verify
         data.contact_type = 'mobile'
+        data.mobile = fd.mobile
         if (fd.captcha) data.captcha = fd.captcha
         if (fd.region) {
           data.region = fd.region
@@ -324,6 +329,13 @@ export default {
     },
     inputBlur (item) {
       this.passwordReadonly = true
+    },
+    initMobile () {
+      const { mode, content } = getLoginModeInStorage()
+      if (mode === 'mobile') {
+        this.fd.mobile = content
+        this.$refs.form.validateField('mobile')
+      }
     },
   },
 }
