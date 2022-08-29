@@ -1600,5 +1600,6 @@
   "compute.update_network.alert": "Take effect after restarting the virtual machine",
   "compute.max_iops": "Max IOPS",
   "compute.max_bandwidth": "Max Bandwidth",
-  "compute.unlimited": "ALL"
+  "compute.unlimited": "ALL",
+  "compute.show_vnc_info": "View remote information"
 }
