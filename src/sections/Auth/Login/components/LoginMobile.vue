@@ -331,7 +331,7 @@ export default {
       this.passwordReadonly = true
     },
     initMobile () {
-      const { mode, content } = getLoginModeInStorage()
+      const { mode, content } = getLoginModeInStorage() || {}
       if (mode === 'mobile') {
         this.fd.mobile = content
         this.$refs.form.validateField('mobile')
