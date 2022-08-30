@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import { statisticsRes } from '@/constants/statisticsRes'
 
 export default {
   computed: {
@@ -12,12 +13,17 @@ export default {
       const listId = this.list?.id
       return listId && listId.endsWith('Sidepage')
     },
+    isStatisticsRes () {
+      return statisticsRes.includes(this.list.resource)
+    },
   },
   watch: {
     'list.params': {
       handler: function (val) {
         if (val) {
-          !this.isOperateInSidepage && this.$bus.$emit('ListParamsChange', val)
+          this.isStatisticsRes &&
+            !this.isOperateInSidepage &&
+            this.$bus.$emit('ListParamsChange', val)
         }
       },
       deep: true,
@@ -28,7 +34,9 @@ export default {
       return this.list.onManager(...arguments)
     },
     refresh () {
-      !this.isOperateInSidepage && this.$bus.$emit('ListParamsChange', { ...arguments })
+      this.isStatisticsRes &&
+        !this.isOperateInSidepage &&
+        this.$bus.$emit('ListParamsChange', { ...arguments })
       return this.list.refresh(...arguments)
     },
     singleRefresh () {
