@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import {
@@ -111,8 +112,18 @@ export default {
     }
   },
   computed: {
+    selectedItems () {
+      return this.params.data
+    },
+    selectedItem () {
+      return this.selectedItems[0]
+    },
+    isSingle () {
+      return this.selectedItems?.length === 1
+    },
     hostCpus () {
-      return this.params.data[0].cpu_count
+      const cpuCounts = this.selectedItems.map(item => item.cpu_count)
+      return Math.max(...cpuCounts)
     },
   },
   created () {
@@ -120,12 +131,14 @@ export default {
   },
   methods: {
     init () {
-      const reserved_cpus_info = JSON.parse(this.params.data[0].metadata.reserved_cpus_info || '{}')
-      const cpus = (reserved_cpus_info?.cpus || '').split(',')
-
+      const cpuArr = this.selectedItems.map(item => {
+        const reserved_cpus_info = JSON.parse(item.metadata.reserved_cpus_info || '{}')
+        const cpus = (reserved_cpus_info?.cpus || '').split(',').map(v => parseInt(v))
+        return cpus
+      })
       this.$nextTick(() => {
         this.form.fc.setFieldsValue({
-          cpus: cpus.map(item => parseInt(item)),
+          cpus: _.intersection(...cpuArr),
         })
       })
     },
@@ -134,14 +147,25 @@ export default {
       const ids = this.params.data.map(item => item.id)
       const params = { cpus: cpus.join(',') }
 
-      return this.params.onManager('performAction', {
-        id: ids[0],
-        steadyStatus: ['ready'],
-        managerArgs: {
-          action: 'reserve-cpus',
-          data: params,
-        },
-      })
+      if (this.isSingle) {
+        return this.params.onManager('performAction', {
+          id: ids[0],
+          steadyStatus: ['ready'],
+          managerArgs: {
+            action: 'reserve-cpus',
+            data: params,
+          },
+        })
+      } else {
+        return this.params.onManager('batchPerformAction', {
+          id: ids,
+          steadyStatus: ['ready'],
+          managerArgs: {
+            action: 'reserve-cpus',
+            data: params,
+          },
+        })
+      }
     },
     async handleConfirm () {
       this.loading = true
