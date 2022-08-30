@@ -376,6 +376,11 @@ export default {
                       ret.tooltip = this.$t('compute.text_515')
                       return ret
                     }
+                    const isSomeRunning = this.list.selectedItems.some(item => item.running_guests > 0)
+                    if (isSomeRunning) {
+                      ret.tooltip = this.$t('compute.host.cpu.revert.running_guest_tooltip')
+                      return ret
+                    }
                     return {
                       validate: true,
                     }

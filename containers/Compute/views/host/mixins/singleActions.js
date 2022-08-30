@@ -439,6 +439,10 @@ export default {
                     ret.tooltip = i18n.t('compute.text_515')
                     return ret
                   }
+                  if (obj.running_guests > 0) {
+                    ret.tooltip = i18n.t('compute.host.cpu.revert.running_guest_tooltip')
+                    return ret
+                  }
                   return {
                     validate: true,
                   }

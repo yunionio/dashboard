@@ -1613,5 +1613,6 @@
   "compute.host.cpu.revert.resource": "Set host reserved resources",
   "compute.host.cpu.revert.resource.message": "The host reservation function supports reserving part of the CPU for other processes and no longer allocates it to virtual machines",
   "compute.show_vnc_info": "View remote information",
-  "compute.host.cpu.revert.share": "The shared host does not support this operation"
+  "compute.host.cpu.revert.share": "The shared host does not support this operation",
+  "compute.host.cpu.revert.running_guest_tooltip": "Some virtual machines are running. Please shut down all virtual machines and try again！"
 }
