@@ -84,6 +84,9 @@ export default {
     if (this.tooltip) {
       action = <a-tooltip title={ this.tooltip } placement='left' destroyTooltipOnHide>{ action }</a-tooltip>
     }
+    if (this.item.render) {
+      action = this.item.render(this.row, { style: this.buttonStyle, block: this.buttonClock, size: this.buttonSize, type: this.meta.buttonType || this.buttonType, disabled: this.disabled, onClick: this.handleClick })
+    }
     v.push(action)
     return v
   },

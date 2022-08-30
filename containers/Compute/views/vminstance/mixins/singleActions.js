@@ -2,7 +2,6 @@ import { mapGetters } from 'vuex'
 import { Base64 } from 'js-base64'
 import qs from 'qs'
 import protocolCheck from 'custom-protocol-detection'
-import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip } from '../utils'
 import { SERVER_TYPE } from '@Compute/constants'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
@@ -10,8 +9,13 @@ import i18n from '@/locales'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
 import { PROVIDER_MAP } from '@/constants'
 import { hasSetupKey } from '@/utils/auth'
+import VncInfoFetcher from '@Compute/sections/VncInfoFetcher'
+import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip } from '../utils'
 
 export default {
+  components: {
+    VncInfoFetcher,
+  },
   computed: {
     ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo', 'auth']),
     enableMFA () {
@@ -26,7 +30,7 @@ export default {
         permission: 'server_get_vnc',
         actions: obj => {
           let ret = []
-          ret.push({
+          const vncRemote = {
             label: i18n.t('compute.text_1274'),
             action: () => {
               const success = () => {
@@ -64,7 +68,13 @@ export default {
               }
               return ret
             },
-          })
+          }
+          if (obj.provider === 'OneCloud' && obj.status === 'running') {
+            vncRemote.render = (obj, params) => {
+              return <vnc-info-fetcher onManager={this.onManager} row={obj} buttonText={i18n.t('compute.text_1274')} buttonProps={params} />
+            }
+          }
+          ret.push(vncRemote)
           const mapIpActions = (ipInfoList) => {
             const options = []
             ipInfoList.forEach(ipInfo => {
@@ -236,25 +246,6 @@ export default {
           }
           const sshActions = mapIpActions(ipInfoList)
           ret = ret.concat(sshActions)
-          if (obj.provider === 'OneCloud') {
-            ret.push({
-              label: i18n.t('compute.show_vnc_info'),
-              action: (obj) => {
-                this.createDialog('VmVncInfoDialog', {
-                  data: [obj],
-                  onManager: this.onManager,
-                })
-              },
-              meta: (obj) => {
-                const ret = { validate: true }
-                if (obj.status !== 'running') {
-                  ret.validate = false
-                  ret.tooltip = i18n.t('compute.text_1130')
-                }
-                return ret
-              },
-            })
-          }
           return ret
         },
         meta: (obj) => {
