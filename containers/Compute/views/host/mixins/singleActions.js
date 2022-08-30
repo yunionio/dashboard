@@ -426,6 +426,23 @@ export default {
                     refresh: this.refresh,
                   })
                 },
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  if (ownerDomain) {
+                    ret.tooltip = this.$t('compute.host.cpu.revert.share')
+                    return ret
+                  }
+                  if (obj.provider !== typeClouds.providerMap.OneCloud.key) {
+                    ret.tooltip = i18n.t('compute.text_515')
+                    return ret
+                  }
+                  return {
+                    validate: true,
+                  }
+                },
               },
               {
                 label: i18n.t('compute.setup_passthrough_reserve'),
