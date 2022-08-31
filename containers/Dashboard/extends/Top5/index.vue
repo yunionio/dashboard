@@ -150,7 +150,7 @@ export default {
     }
     const initialOrderValue = (this.params && this.params.order) || 'TOP'
     const initialLimit = (this.params && this.params.limit) || 5
-    const initialTime = (this.params && this.params.time) || 24 * 60 * 60 * 60
+    const initialTime = (this.params && this.params.time) || 24 * 60
     return {
       data: [],
       visible: false,
