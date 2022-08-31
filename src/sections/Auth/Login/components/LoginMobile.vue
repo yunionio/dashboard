@@ -162,7 +162,7 @@ export default {
       return !this.regions.return_full_domains
     },
     enableSendSmsCode () {
-      return this.mobileValid && this.captchaValid && !this.startCountDown
+      return this.mobileValid && this.captchaValid
     },
     allowSubmit () {
       return this.uid && this.uid.length > 0 && this.fd.verify && this.fd.verify.length === 6
@@ -266,6 +266,7 @@ export default {
       }
     },
     async getWebSmsCode () {
+      if (this.startCountDown) return
       try {
         const data = {}
         const fd = this.formDataMapper ? this.formDataMapper({ ...this.fd }) : { ...this.fd }
