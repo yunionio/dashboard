@@ -96,4 +96,8 @@ export const CUSTOME_IMG = {
     label: 'CirrOS',
     url: 'cirros',
   },
+  neokylin: {
+    label: 'neokylin',
+    url: 'neokylin',
+  },
 }

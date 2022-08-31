@@ -1614,5 +1614,6 @@
   "compute.host.cpu.revert.resource.message": "宿主机预留功能支持将部分 CPU 预留给其他进程使用，不再分配给虚拟机使用",
   "compute.show_vnc_info": "查看远程信息",
   "compute.host.cpu.revert.share": "共享宿主机不支持该操作",
-  "compute.host.cpu.revert.running_guest_tooltip": "部分虚拟机处于运行中状态，请将虚拟机全部关机后重试！"
+  "compute.host.cpu.revert.running_guest_tooltip": "部分虚拟机处于运行中状态，请将虚拟机全部关机后重试！",
+  "compute.os.neokylin": "中标麒麟"
 }
