@@ -1,5 +1,5 @@
 <template>
-  <base-monitor :data="data" :constants="monitorConstants" :resId="serverId" idKey="node_id" />
+  <base-monitor :data="data" :constants="monitorConstants" :resId="serverId" idKey="cluster_id" />
 </template>
 
 <script>
@@ -7,7 +7,7 @@ import { NODE_MONITOR_MAP } from '@K8S/constants'
 import BaseMonitor from '@Compute/sections/monitor/BaseMonitor'
 
 export default {
-  name: 'K8sNodeMonitor',
+  name: 'K8sClusterMonitor',
   components: { BaseMonitor },
   props: {
     data: { // listItemData
@@ -24,7 +24,12 @@ export default {
       return this.data.hypervisor
     },
     monitorConstants () {
-      return NODE_MONITOR_MAP.aliyun
+      return NODE_MONITOR_MAP.aliyun.map(item => {
+        return {
+          ...item,
+          groupBy: ['node'],
+        }
+      })
     },
     serverId () {
       return this.data.id
