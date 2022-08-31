@@ -70,4 +70,7 @@ export default {
     v2vTransferType: 'After the migration is successful, a new KVM virtual machine with the same configuration will be created automatically, the IP will be migrated to the new instance, and the original instance will be retained',
     billCostConversionRateTip: 'The resource price coefficient is the official website price of the product',
   },
+  notify: {
+    TooManyRequests: 'TooManyRequests',
+  },
 }
