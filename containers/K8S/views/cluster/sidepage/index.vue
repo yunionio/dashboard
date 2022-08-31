@@ -30,24 +30,27 @@
 </template>
 
 <script>
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
 import KubeMachineList from '@K8S/views/kube-machines/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import K8sClusterMonitor from './Monitor'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'K8SClusterSidePage',
   components: {
     Actions,
     KubeMachineList,
+    K8sClusterMonitor,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
         { label: this.$t('k8s.text_21'), key: 'kube-machine-list' },
+        { label: this.$t('k8s.text_414'), key: 'k8s-cluster-monitor' },
         { label: this.$t('k8s.text_202'), key: 'event-drawer' },
       ],
     }
