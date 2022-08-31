@@ -70,4 +70,7 @@ export default {
     v2vTransferType: '迁移成功后自动新建1台同配置KVM虚拟机，IP会迁移至新实例上，原实例会保留',
     billCostConversionRateTip: '资源价格系数是针对该产品的官网价',
   },
+  notify: {
+    TooManyRequests: '发送验证码频率太高，请稍后再试',
+  },
 }
