@@ -181,13 +181,13 @@ export default {
         host: hostUsageOptions,
       },
       timeOptions: [
-        { label: this.$t('timeselect.hour', [1]), key: 60 * 60 * 60 },
-        { label: this.$t('timeselect.hours', [6]), key: 360 * 60 * 60 },
-        { label: this.$t('timeselect.hours', [12]), key: 12 * 60 * 60 * 60 },
-        { label: this.$t('timeselect.days', [1]), key: 24 * 60 * 60 * 60 },
-        { label: this.$t('timeselect.days', [7]), key: 7 * 24 * 60 * 60 * 60 },
-        { label: this.$t('timeselect.days', [14]), key: 14 * 24 * 60 * 60 * 60 },
-        { label: this.$t('timeselect.months', [1]), key: 30 * 24 * 60 * 60 * 60 },
+        { label: this.$t('timeselect.hour', [1]), key: 60 * 60 },
+        { label: this.$t('timeselect.hours', [6]), key: 360 * 60 },
+        { label: this.$t('timeselect.hours', [12]), key: 12 * 60 * 60 },
+        { label: this.$t('timeselect.days', [1]), key: 24 * 60 * 60 },
+        { label: this.$t('timeselect.days', [7]), key: 7 * 24 * 60 * 60 },
+        { label: this.$t('timeselect.days', [14]), key: 14 * 24 * 60 * 60 },
+        { label: this.$t('timeselect.months', [1]), key: 30 * 24 * 60 * 60 },
       ],
       decorators: {
         name: [
@@ -456,7 +456,7 @@ export default {
       const brandKey = 'brand'
       const brand = this.form.fd.brand
       const usageKeys = fd.usage.split(',')
-      const min = fd.time / 60 / 60
+      const min = fd.time / 60
       const condition = this.getDomainOrProjectQuery()
       const brandTags = brand.map(key => {
         return {
