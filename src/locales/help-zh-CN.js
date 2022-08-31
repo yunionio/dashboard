@@ -68,4 +68,7 @@ export default {
     secgroupAdminGuestCnt: '作为管理安全组绑定虚拟机数量',
     secgroupSystemGuestCnt: '安全组绑定作为系统资源的虚拟机数量',
   },
+  notify: {
+    TooManyRequests: '发送验证码频率太高，请稍后再试',
+  },
 }

@@ -162,7 +162,7 @@ export default {
       return !this.regions.return_full_domains
     },
     enableSendSmsCode () {
-      return this.mobileValid && this.captchaValid
+      return this.mobileValid && this.captchaValid && !this.startCountDown
     },
     allowSubmit () {
       return this.uid && this.uid.length > 0 && this.fd.verify && this.fd.verify.length === 6
