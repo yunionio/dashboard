@@ -254,6 +254,9 @@ const classDriver = (errorMsg, h) => {
         </div>
       )
     },
+    TooManyRequests: () => {
+      return null
+    },
   }
   if (Maps[className]) return Maps[className]() // 采用策略模式，命中则执行对应的driver
   return desc

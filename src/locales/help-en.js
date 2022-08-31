@@ -68,4 +68,7 @@ export default {
     secgroupAdminGuestCnt: 'Number of virtual machines bound as management security group',
     secgroupSystemGuestCnt: 'Number of virtual machines bound by security group as system resources',
   },
+  notify: {
+    TooManyRequests: 'TooManyRequests',
+  },
 }

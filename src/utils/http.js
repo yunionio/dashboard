@@ -115,7 +115,7 @@ const resolveError = error => {
 }
 const errors = {}
 const showErrorNotify = ({ errorMsg, reqMsg }) => {
-  const message = R.is(Array, errorMsg) ? i18n.t('common.text00123') : errorMsg.class
+  const message = R.is(Array, errorMsg) ? i18n.t('common.text00123') : (i18n.te(`notify.${errorMsg.class}`) ? i18n.t(`notify.${errorMsg.class}`) : errorMsg.class)
   const key = `notification-${uuid(32)}`
   const options = {
     key,
