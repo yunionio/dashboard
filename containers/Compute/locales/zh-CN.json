@@ -1601,5 +1601,6 @@
   "compute.max_iops": "最大IOPS",
   "compute.max_bandwidth": "最大带宽",
   "compute.unlimited": "不限",
-  "compute.show_vnc_info": "查看远程信息"
+  "compute.show_vnc_info": "查看远程信息",
+  "compute.os.neokylin": "中标麒麟"
 }
