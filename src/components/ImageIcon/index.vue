@@ -21,6 +21,7 @@ const uos = require('./assets/uos.svg')
 const android = require('./assets/android.png')
 const vmware = require('./assets/vmware.png')
 const cirros = require('./assets/cirros.png')
+const neokylin = require('./assets/neokylin.png')
 
 export default {
   name: 'ImageIcon',
@@ -127,6 +128,9 @@ export default {
             break
           case 'cirros':
             curImg = cirros
+            break
+          case 'neokylin':
+            curImg = neokylin
             break
           default:
             break
