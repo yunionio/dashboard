@@ -221,6 +221,7 @@ export default {
         { text: 'SUSE Linux', value: 'SUSE Linux' },
         { text: 'Ubuntu', value: 'Ubuntu' },
         { text: this.$t('compute.os.kylin'), value: 'Kylin' },
+        { text: this.$t('compute.os.neokylin'), value: 'NeoKylin' },
         { text: this.$t('compute.os.nfs'), value: 'nfs' },
         { text: this.$t('compute.text_151'), value: 'Other' },
       ],

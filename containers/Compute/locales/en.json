@@ -1601,5 +1601,6 @@
   "compute.max_iops": "Max IOPS",
   "compute.max_bandwidth": "Max Bandwidth",
   "compute.unlimited": "ALL",
-  "compute.show_vnc_info": "View remote information"
+  "compute.show_vnc_info": "View remote information",
+  "compute.os.neokylin": "Neokylin"
 }
