@@ -371,6 +371,9 @@ export default {
         if (this.skuType === 'all') {
           delete params['@local_category']
         }
+        if (!this.skuParams.zone_id) {
+          params.distinct = true
+        }
         params.enabled = true
         let { data } = await this.skusM.list({ params: params })
         this.skuPage.pageSize = data.limit || 10
