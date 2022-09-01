@@ -90,6 +90,7 @@
 </template>
 
 <script>
+import { getNotifyDocsUrl } from '../../utils/docs'
 export default {
   name: 'smsaliyun',
   props: {
@@ -152,6 +153,7 @@ export default {
           'errorCodeEn',
         ],
       },
+      docUrl: getNotifyDocsUrl('mobile_aliyun'),
     }
   },
 }

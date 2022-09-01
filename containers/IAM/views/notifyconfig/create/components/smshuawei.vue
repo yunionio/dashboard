@@ -151,6 +151,7 @@
 </template>
 
 <script>
+import { getNotifyDocsUrl } from '../../utils/docs'
 export default {
   name: 'smshuawei',
   props: {
@@ -239,6 +240,7 @@ export default {
           'errorCodeEnChannel',
         ],
       },
+      docUrl: getNotifyDocsUrl('mobile_huawei'),
     }
   },
 }

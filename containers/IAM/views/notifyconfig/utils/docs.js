@@ -7,6 +7,12 @@ export const getNotifyDocsUrl = (type) => {
     case 'mobile':
       baseUrl += '/#阿里云获取短信参数步骤'
       break
+    case 'mobile_aliyun':
+      baseUrl += '/#阿里云获取短信参数步骤'
+      break
+    case 'mobile_huawei':
+      baseUrl += '/#华为云获取短信参数步骤'
+      break
     case 'dingtalk':
       baseUrl += '/#钉钉平台获取参数步骤'
       break
