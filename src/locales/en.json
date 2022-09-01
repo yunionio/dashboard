@@ -5041,5 +5041,10 @@
   "common.default_search_key": "Default is {0} search",
   "common.login_tip": "Login tooltip",
   "common.token_exp_tip": "Your login information will be invalid in {0} minutes. Please re-enter your account and password to login (re login will not refresh the page), otherwise you will exit due to expiration.",
-  "common.token_exp_tip2": "Your login information has expired. Please re-enter your account and password to login (re login will not refresh the page)."
+  "common.token_exp_tip2": "Your login information has expired. Please re-enter your account and password to login (re login will not refresh the page).",
+  "common.mfa.qr_code_andriod_1": "mobile app store search onelogin protect",
+  "common.mfa.qr_code_andriod_2": "download app store, open and search onelogin protect",
+  "common.mfa.qr_code_andriod_3": "offline package download address",
+  "common.mfa.qr_code_chrome_1": "add Google browser extension, go to",
+  "common.mfa.qr_code_chrome_2": "add"
 }
