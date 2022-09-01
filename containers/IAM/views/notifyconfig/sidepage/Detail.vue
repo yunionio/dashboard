@@ -91,6 +91,20 @@ export default {
             title: this.$t('system.text_255'),
             items: [
               {
+                field: 'sms_driver',
+                title: this.$t('notify.configs.sms_driver'),
+                formatter: ({ row }) => {
+                  if (row.content && row.content.sms_driver) {
+                    if (row.content.sms_driver === 'smsaliyun') {
+                      return this.$t('providers.aliyun')
+                    } else if (row.content.sms_driver === 'smshuawei') {
+                      return this.$t('providers.huawei')
+                    }
+                  }
+                  return '-'
+                },
+              },
+              {
                 field: 'access_key_id',
                 title: 'Access Key ID',
                 formatter: ({ row }) => {
