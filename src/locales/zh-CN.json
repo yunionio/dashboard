@@ -5247,5 +5247,10 @@
   "common.choose.host": "请选择宿主机",
   "common.choose.server": "请选择虚拟机",
   "common.choose.server.label": "指定虚拟机",
-  "common.cloud_env": "云环境"
+  "common.cloud_env": "云环境",
+  "common.mfa.qr_code_andriod_1": "手机应用商店搜索OneLogin Protect",
+  "common.mfa.qr_code_andriod_2": "下载应用宝商店，打开搜索OneLogin Protect",
+  "common.mfa.qr_code_andriod_3": "离线包下载地址",
+  "common.mfa.qr_code_chrome_1": "添加谷歌浏览器扩展插件，去",
+  "common.mfa.qr_code_chrome_2": "添加"
 }

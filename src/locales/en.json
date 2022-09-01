@@ -5223,5 +5223,10 @@
   "common.choose.host": "Please choose a host",
   "common.choose.server": "Please select a virtual machine",
   "common.choose.server.label": "Specify a virtual machine",
-  "common.cloud_env": "Cloud environment"
+  "common.cloud_env": "Cloud environment",
+  "common.mfa.qr_code_andriod_1": "mobile app store search onelogin protect",
+  "common.mfa.qr_code_andriod_2": "download app store, open and search onelogin protect",
+  "common.mfa.qr_code_andriod_3": "offline package download address",
+  "common.mfa.qr_code_chrome_1": "add Google browser extension, go to",
+  "common.mfa.qr_code_chrome_2": "add"
 }
