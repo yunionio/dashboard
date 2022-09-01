@@ -17,9 +17,18 @@
               <div class="d-flex flex-column align-items-center">
                 <!-- <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${oneloginprotectAppQrAndroid})` }" /> -->
                 <div class="qr-code-bg-wrap qr-code-andriod">
-                  {{ $t('common.auth.bindsecret.andriod') }}
+                  1、{{ $t('common.mfa.qr_code_andriod_1') }} <br />
+                  2、{{ $t('common.mfa.qr_code_andriod_2') }} <br />
+                  3、{{ $t('common.mfa.qr_code_andriod_3') }} <copy message="https://yunioniso.oss-cn-beijing.aliyuncs.com/OneLogin%20Protect_v4.7.0_apkpure.com.apk" />
                 </div>
                 <div class="mt-1"><a-icon type="android" theme="filled" style="font-size: 20px" /></div>
+              </div>
+              <div class="d-flex flex-column align-items-center">
+                <!-- <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${oneloginprotectAppQrAndroid})` }" /> -->
+                <div class="qr-code-bg-wrap qr-code-chrome">
+                  {{ $t('common.mfa.qr_code_chrome_1') }}<help-link href="https://chrome.google.com/webstore/detail/authenticator/bhghoamapcdpbohphigoooaddinpkbai?hl=zh-CN">{{ $t('common.mfa.qr_code_chrome_2') }}</help-link>
+                </div>
+                <div class="mt-1"><icon type="chrome" style="font-size: 20px;" /></div>
               </div>
             </div>
             <!-- <div class="qr-tip">{{$t('common_85')}}</div> -->
@@ -176,17 +185,17 @@ export default {
   > div {
     height: 100%;
     &:first-child {
-      margin-right: 30px;
+      margin-right: 10px;
     }
     > img {
       width: 150px;
     }
     .qr-code-bg-wrap {
-      width: 90px;
-      height: 90px;
+      width: 100px;
+      height: 120px;
       background-repeat: no-repeat;
       background-size: contain;
-      background-position: center;
+      // background-position: center;
       > div {
         height: 100%;
         width: 100%;
@@ -199,10 +208,13 @@ export default {
         cursor: pointer;
       }
     }
-    .qr-code-andriod {
+    .qr-code-andriod, .qr-code-chrome {
       color: #000;
       font-size: 10px;
-      transform: scale(0.8) translateY(-10px);
+      transform: scale(0.9) translateY(-6px);
+    }
+    .qr-code-andriod {
+      width: 120px;
     }
     > p {
       color: #666;
