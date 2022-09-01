@@ -19,7 +19,7 @@
 <script>
 import _ from 'lodash'
 import * as R from 'ramda'
-import { REDIS_MONITOR_OPTS } from '@DB/constants'
+import { REDIS_MONITOR_ALL_OPTS } from '@DB/constants'
 import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
 import Monitor from '@/sections/Monitor'
 import WindowsMixin from '@/mixins/windows'
@@ -49,13 +49,18 @@ export default {
   computed: {
     hadMonitor () {
       const brand = this.data.brand.toLowerCase()
-      const surportBrand = [HYPERVISORS_MAP.aliyun.key, HYPERVISORS_MAP.huawei.key, HYPERVISORS_MAP.qcloud.key, HYPERVISORS_MAP.azure.key]
+      const surportBrand = [HYPERVISORS_MAP.aliyun.key, HYPERVISORS_MAP.huawei.key, HYPERVISORS_MAP.qcloud.key, HYPERVISORS_MAP.azure.key, HYPERVISORS_MAP.apsara.key, HYPERVISORS_MAP.aws.key]
       return surportBrand.includes(brand)
     },
     monitorConstants () {
       if (this.data.brand) {
         const brand = this.data.brand.toLowerCase()
-        return REDIS_MONITOR_OPTS[brand] || []
+        return REDIS_MONITOR_ALL_OPTS.filter(item => {
+          return item.supportBrands.includes(brand)
+        }).map(item => {
+          delete item.supportBrands
+          return item
+        })
       }
       return []
     },

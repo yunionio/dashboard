@@ -20,7 +20,7 @@
 <script>
 import _ from 'lodash'
 import * as R from 'ramda'
-import { RDS_MONITOR_OPTS } from '@DB/constants'
+import { RDS_MONITOR_ALL_OPTS } from '@DB/constants'
 import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
 import Monitor from '@/sections/Monitor'
 import WindowsMixin from '@/mixins/windows'
@@ -67,16 +67,11 @@ export default {
     },
     monitorConstants () {
       const brand = this.brand
-      return (RDS_MONITOR_OPTS[brand] || []).filter(item => {
-        if (!this.engine) {
-          return true
-        }
-        if (item.tags && item.tags.tag && ['mysql', 'sqlserver'].includes(item.tags.tag)) {
-          if (this.engine.indexOf(item.tags.tag) === -1) {
-            return false
-          }
-        }
-        return true
+      return RDS_MONITOR_ALL_OPTS.filter(item => {
+        return item.supportBrands.includes(brand)
+      }).map(item => {
+        delete item.supportBrands
+        return item
       })
     },
     dbId () {
