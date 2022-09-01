@@ -5239,5 +5239,10 @@
   "common.auth.bindsecret.andriod": "打开应用商店搜索OneLogin Project下载应用，或下载应用宝搜索OneLogin Project下载应用",
   "common.login_tip": "登录提示",
   "common.token_exp_tip": "您的登录信息将会在{0}分钟后失效，请重新输入账号密码登录（重新登录不会刷新页面），否则将到期退出。",
-  "common.token_eip_tip2": "您的登录信息已失效，请重新输入账号密码登录（重新登录不会刷新页面）。"
+  "common.token_eip_tip2": "您的登录信息已失效，请重新输入账号密码登录（重新登录不会刷新页面）。",
+  "common.mfa.qr_code_andriod_1": "手机应用商店搜索OneLogin Protect",
+  "common.mfa.qr_code_andriod_2": "下载应用宝商店，打开搜索OneLogin Protect",
+  "common.mfa.qr_code_andriod_3": "离线包下载地址",
+  "common.mfa.qr_code_chrome_1": "添加谷歌浏览器扩展插件，去",
+  "common.mfa.qr_code_chrome_2": "添加"
 }
