@@ -411,5 +411,11 @@
   "db.intranet_ip": "Intranet Ip",
   "db.max_connections": "Max connections",
   "db.max_ip_bandwidth": "Max private network bandwidth",
-  "db.used": "Used：{0}"
+  "db.used": "Used：{0}",
+  "db.disk_read_io": "Disk read IO",
+  "db.disk_write_io": "Disk write IO",
+  "db.query_qps": "QPS",
+  "db.trans_qps": "TPS",
+  "db.innodb_read_io": "innodb read IO",
+  "db.innodb_write_io": "innodb write IO"
 }
