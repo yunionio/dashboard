@@ -194,7 +194,7 @@ export default {
       Promise.all([commonForm, typeForm]).then(async values => {
         const [common, content] = values
         const { scope, domain, name, type } = common
-        const { verifiyCode, alertsCode, errorCode, verifiyCodeUn, alertsCodeUn, errorCodeUn, ...rest } = content
+        const { verifiyCode, alertsCode, errorCode, verifiyCodeChannel, alertsCodeChannel, errorCodeChannel, verifiyCodeEn, alertsCodeEn, errorCodeEn, verifiyCodeEnChannel, alertsCodeEnChannel, errorCodeEnChannel, ...rest } = content
         this.loading = true
         await this.manager.create({
           data: {
@@ -205,7 +205,14 @@ export default {
             project_domain_id: domain,
           },
         })
-        if (type === 'mobile') this.doCreateMobileTpl(verifiyCode, alertsCode, errorCode, verifiyCodeUn, alertsCodeUn, errorCodeUn)
+        if (type === 'mobile') {
+          this.doCreateMobileTpl(
+            verifiyCode, alertsCode, errorCode,
+            verifiyCodeChannel, alertsCodeChannel, errorCodeChannel,
+            verifiyCodeEn, alertsCodeEn, errorCodeEn,
+            verifiyCodeEnChannel, alertsCodeEnChannel, errorCodeEnChannel,
+          )
+        }
         this.$router.push('/notifyconfig')
         this.loading = false
       }).catch((err) => {
@@ -266,44 +273,51 @@ export default {
         console.error(err)
       }
     },
-    async doCreateMobileTpl (verifiyCode, alertsCode, errorCode, verifiyCodeUn, alertsCodeUn, errorCodeUn) {
+    async doCreateMobileTpl (verifiyCode, alertsCode, errorCode, verifiyCodeChannel, alertsCodeChannel, errorCodeChannel, verifiyCodeEn, alertsCodeEn, errorCodeEn, verifiyCodeEnChannel, alertsCodeEnChannel, errorCodeEnChannel) {
       try {
         await this.notifytemplatesManager.create({
           data: {
             contact_type: 'mobile',
             force: true,
-            templates: this.generateTemplates(verifiyCode, alertsCode, errorCode, verifiyCodeUn, alertsCodeUn, errorCodeUn),
+            templates: this.generateTemplates(verifiyCode, alertsCode, errorCode, verifiyCodeChannel, alertsCodeChannel, errorCodeChannel, verifiyCodeEn, alertsCodeEn, errorCodeEn, verifiyCodeEnChannel, alertsCodeEnChannel, errorCodeEnChannel),
           },
         })
       } catch (err) {
         console.error(err)
       }
     },
-    generateTemplates (verifiyCode, alertsCode, errorCode, verifiyCodeUn, alertsCodeUn, errorCodeUn) {
+    channelCodeContent (code, channel) {
+      if (channel) {
+        return channel + '/' + code
+      } else {
+        return code
+      }
+    },
+    generateTemplates (verifiyCode, alertsCode, errorCode, verifiyCodeChannel, alertsCodeChannel, errorCodeChannel, verifiyCodeEn, alertsCodeEn, errorCodeEn, verifiyCodeEnChannel, alertsCodeEnChannel, errorCodeEnChannel) {
       const tpls = [{
         lang: 'cn',
         topic: 'VERIFY',
-        content: verifiyCode,
+        content: this.channelCodeContent(verifiyCode, verifiyCodeChannel),
       }, {
         lang: 'cn',
         topic: 'MONITOR',
-        content: alertsCode,
+        content: this.channelCodeContent(alertsCode, alertsCodeChannel),
       }, {
         lang: 'cn',
         topic: 'USER_LOGIN_EXCEPTION',
-        content: errorCode,
+        content: this.channelCodeContent(errorCode, errorCodeChannel),
       }, {
         lang: 'en',
         topic: 'VERIFY',
-        content: verifiyCodeUn,
+        content: this.channelCodeContent(verifiyCodeEn, verifiyCodeEnChannel),
       }, {
         lang: 'en',
         topic: 'MONITOR',
-        content: alertsCodeUn,
+        content: this.channelCodeContent(alertsCodeEn, alertsCodeEnChannel),
       }, {
         lang: 'en',
         topic: 'USER_LOGIN_EXCEPTION',
-        content: errorCodeUn,
+        content: this.channelCodeContent(errorCodeEn, errorCodeEnChannel),
       }]
       return tpls.map(v => {
         return {
