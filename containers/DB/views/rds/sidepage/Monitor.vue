@@ -69,9 +69,6 @@ export default {
       const brand = this.brand
       return RDS_MONITOR_ALL_OPTS.filter(item => {
         return item.supportBrands.includes(brand)
-      }).map(item => {
-        delete item.supportBrands
-        return item
       })
     },
     dbId () {
