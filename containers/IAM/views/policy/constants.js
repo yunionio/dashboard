@@ -353,7 +353,7 @@ export const RESOURCES_MAP = {
     i18n: 'dictionary.instancegroup',
   },
   dbinstances: {
-    i18n: 'system.text_410',
+    i18n: 'system.text_98',
   },
   dbinstanceaccounts: {
     i18n: 'common_574',
