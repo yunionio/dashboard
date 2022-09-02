@@ -876,7 +876,7 @@
   "system.notify.name.snapshot_policy_execute": "Send message for snapshot policy to take effect",
   "system.notify.name.scheduled_task_execute": "Send message for resource timed power on/off and reboot",
   "system.notify.name.scaling_policy_execute": "Send message for scaling strategy to take effect",
-  "system.notify.name.resource_update": "Send message for resource password changes",
+  "system.notify.name.resource_update": "Send message for resource attribute changes (including password changes)",
   "system.notify.name.resource_release_due_3_day": "Send message for resource expiration 3 days in advance",
   "system.notify.name.resource_release_due_1_day": "Send message for resource expiration 1 days in advance",
   "system.notify.name.resource_release_due_n_day": "Send message for resource expiration {0} days in advance",

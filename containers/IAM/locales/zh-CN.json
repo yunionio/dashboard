@@ -875,7 +875,7 @@
   "system.notify.name.snapshot_policy_execute": "自动快照策略生效发送通知",
   "system.notify.name.scheduled_task_execute": "资源定时开关机、重启发送通知",
   "system.notify.name.scaling_policy_execute": "伸缩策略生效发送通知",
-  "system.notify.name.resource_update": "资源密码变更发送通知",
+  "system.notify.name.resource_update": "资源属性变更(含密码变更)发送通知",
   "system.notify.name.resource_release_due_3_day": "资源（含包年包月）到期释放前3天发送通知",
   "system.notify.name.resource_release_due_1_day": "资源（含包年包月）到期释放前1天发送通知",
   "system.notify.name.resource_release_due_n_day": "资源（含包年包月）到期释放前{0}天发送通知",
