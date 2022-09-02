@@ -66,7 +66,7 @@ const RESOURCES_LOAD = {
 const RESOURCES_OTHER = {
   externalprojects: {},
   buckets: {},
-  rds: {},
+  dbinstances: {},
   elasticcaches: {},
 }
 
@@ -208,7 +208,7 @@ export default {
           component: BucketStorageList,
           params: {},
         },
-        rds: {
+        dbinstances: {
           component: RDSList,
           params: {},
         },
