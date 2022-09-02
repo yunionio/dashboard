@@ -30,7 +30,7 @@
                 <div class="mt-1"><icon type="chrome" style="font-size: 20px;" /></div>
               </div>
             </div>
-            <div class="qr-tip">{{$t('common_85')}}</div>
+            <!-- <div class="qr-tip">{{$t('common_85')}}</div> -->
           </div>
           <div class="setup-tip">
             <div>
