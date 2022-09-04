@@ -2346,9 +2346,9 @@
     ]
   },
   "idpTmplTitles": {
-    "msad_one_domain": "微软AD导入单@:dictionary.domain",
-    "msad_multi_domain": "微软AD导入多个@:dictionary.domain",
-    "openldap_one_domain": "OpenLDAP/FreeIPA导入单@:dictionary.domain",
+    "msad_one_domain": "微软AD导入单 @:dictionary.domain",
+    "msad_multi_domain": "微软AD导入多个 @:dictionary.domain",
+    "openldap_one_domain": "OpenLDAP/FreeIPA导入单 @:dictionary.domain",
     "dex_oidc": "通用OIDC",
     "oidc": "通用OIDC",
     "github_oidc": "Github",
