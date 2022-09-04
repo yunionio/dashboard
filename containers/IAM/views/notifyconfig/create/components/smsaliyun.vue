@@ -24,7 +24,7 @@
       </template>
       <a-input v-decorator="decorators.signature" />
     </a-form-item>
-    <a-collapse :border="false">
+    <a-collapse :border="false" v-model="activeKey">
       <a-collapse-panel key="1" :header="$t('system.mobile_cn_tpl')">
         <a-form-item :label="$t('system.text_295')">
           <template v-slot:extra>
@@ -109,6 +109,7 @@ export default {
     return {
       submiting: false,
       testLoding: false,
+      activeKey: ['1'],
       decorators: {
         access_key_id: [
           'access_key_id',
@@ -136,6 +137,11 @@ export default {
         ],
         verifiyCode: [
           'verifiyCode',
+          {
+            rules: [
+              { required: true, message: this.$t('notify.smshuawei.verify_code_channel.prompt') },
+            ],
+          },
         ],
         alertsCode: [
           'alertsCode',

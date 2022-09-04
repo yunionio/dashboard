@@ -32,6 +32,7 @@ export const NOTIFY_TOPIC_NAMES_MAP = {
   'system exception event': i18n.t('iam.system_error_notify'),
   'user lock': i18n.t('iam.user_lock_notify'),
   'checksum test failed': i18n.t('iam.checksum_error_notify'),
+  'action log exceed count': i18n.t('iam.action_log_exceed_count'),
 }
 
 export const NOTIFY_ROLE_SCOPES = [

@@ -274,16 +274,19 @@ export default {
       }
     },
     async doCreateMobileTpl (verifiyCode, alertsCode, errorCode, verifiyCodeChannel, alertsCodeChannel, errorCodeChannel, verifiyCodeEn, alertsCodeEn, errorCodeEn, verifiyCodeEnChannel, alertsCodeEnChannel, errorCodeEnChannel) {
-      try {
-        await this.notifytemplatesManager.create({
-          data: {
-            contact_type: 'mobile',
-            force: true,
-            templates: this.generateTemplates(verifiyCode, alertsCode, errorCode, verifiyCodeChannel, alertsCodeChannel, errorCodeChannel, verifiyCodeEn, alertsCodeEn, errorCodeEn, verifiyCodeEnChannel, alertsCodeEnChannel, errorCodeEnChannel),
-          },
-        })
-      } catch (err) {
-        console.error(err)
+      const tpls = this.generateTemplates(verifiyCode, alertsCode, errorCode, verifiyCodeChannel, alertsCodeChannel, errorCodeChannel, verifiyCodeEn, alertsCodeEn, errorCodeEn, verifiyCodeEnChannel, alertsCodeEnChannel, errorCodeEnChannel)
+      if (tpls) {
+        try {
+          await this.notifytemplatesManager.create({
+            data: {
+              contact_type: 'mobile',
+              force: true,
+              templates: tpls,
+            },
+          })
+        } catch (err) {
+          console.error(err)
+        }
       }
     },
     channelCodeContent (code, channel) {
@@ -294,31 +297,55 @@ export default {
       }
     },
     generateTemplates (verifiyCode, alertsCode, errorCode, verifiyCodeChannel, alertsCodeChannel, errorCodeChannel, verifiyCodeEn, alertsCodeEn, errorCodeEn, verifiyCodeEnChannel, alertsCodeEnChannel, errorCodeEnChannel) {
-      const tpls = [{
-        lang: 'cn',
-        topic: 'VERIFY',
-        content: this.channelCodeContent(verifiyCode, verifiyCodeChannel),
-      }, {
-        lang: 'cn',
-        topic: 'MONITOR',
-        content: this.channelCodeContent(alertsCode, alertsCodeChannel),
-      }, {
-        lang: 'cn',
-        topic: 'USER_LOGIN_EXCEPTION',
-        content: this.channelCodeContent(errorCode, errorCodeChannel),
-      }, {
-        lang: 'en',
-        topic: 'VERIFY',
-        content: this.channelCodeContent(verifiyCodeEn, verifiyCodeEnChannel),
-      }, {
-        lang: 'en',
-        topic: 'MONITOR',
-        content: this.channelCodeContent(alertsCodeEn, alertsCodeEnChannel),
-      }, {
-        lang: 'en',
-        topic: 'USER_LOGIN_EXCEPTION',
-        content: this.channelCodeContent(errorCodeEn, errorCodeEnChannel),
-      }]
+      const tpls = []
+      let cont = this.channelCodeContent(verifiyCode, verifiyCodeChannel)
+      if (cont) {
+        tpls.push({
+          lang: 'cn',
+          topic: 'VERIFY',
+          content: cont,
+        })
+      }
+      cont = this.channelCodeContent(alertsCode, alertsCodeChannel)
+      if (cont) {
+        tpls.push({
+          lang: 'cn',
+          topic: 'MONITOR',
+          content: cont,
+        })
+      }
+      cont = this.channelCodeContent(errorCode, errorCodeChannel)
+      if (cont) {
+        tpls.push({
+          lang: 'cn',
+          topic: 'USER_LOGIN_EXCEPTION',
+          content: cont,
+        })
+      }
+      cont = this.channelCodeContent(verifiyCodeEn, verifiyCodeEnChannel)
+      if (cont) {
+        tpls.push({
+          lang: 'en',
+          topic: 'VERIFY',
+          content: cont,
+        })
+      }
+      cont = this.channelCodeContent(alertsCodeEn, alertsCodeEnChannel)
+      if (cont) {
+        tpls.push({
+          lang: 'en',
+          topic: 'MONITOR',
+          content: cont,
+        })
+      }
+      cont = this.channelCodeContent(errorCodeEn, errorCodeEnChannel)
+      if (cont) {
+        tpls.push({
+          lang: 'en',
+          topic: 'USER_LOGIN_EXCEPTION',
+          content: cont,
+        })
+      }
       return tpls.map(v => {
         return {
           ...v,
