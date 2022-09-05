@@ -1388,7 +1388,7 @@
   "compute.host_convert": "未探测到磁盘，无法转换成宿主机",
   "compute.physicalmachine_add": "在添加物理机之前，请确保已经在平台创建物理机所需要的IPMI类型的IP子网和Baremetal类型的IP子网",
   "compute.text_1382": "新建标签",
-  "compute.live_migrate.skip_cpu_check": "跳过CPU检查",
+  "compute.live_migrate.skip_cpu_check": "跳过CPU内核检查",
   "compute.live_migrate.skip_cpu_check.explain": "不做宿主机CPU兼容性检查，如果不跳过，则要求源和目标宿主机的CPU型号和微码完全一致。如果选择跳过检查，则会尽力而为地进行热迁移。迁移完成后，虚拟机可能在目标宿主机无法正常运行。",
   "compute.detach_network": "卸载",
   "compute.detach_network_title": "卸载网卡",
