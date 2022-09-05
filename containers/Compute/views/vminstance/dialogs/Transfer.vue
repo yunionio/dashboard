@@ -6,13 +6,13 @@
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
         <!-- 强制迁移 -->
-        <a-form-item :label="$t('compute.text_1261')" v-if="isSingle" :extra="$t('compute.text_1262')">
+        <!-- <a-form-item :label="$t('compute.text_1261')" v-if="isSingle" :extra="$t('compute.text_1262')">
           <a-switch
             :checkedChildren="$t('compute.text_115')"
             :unCheckedChildren="$t('compute.text_116')"
             v-decorator="decorators.rescue_mode"
             @change="rescueModeChangeHandle" />
-        </a-form-item>
+        </a-form-item> -->
         <!-- 自动启动 -->
         <a-form-item :label="$t('compute.text_494')" v-if="isSingle && firstData.status === 'ready'" :extra="$t('compute.text_1263')">
           <a-switch
