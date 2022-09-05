@@ -3,7 +3,7 @@
     <a-form-item label="Application Key">
       <template v-slot:extra>
         <div>
-          {{$t('notify.smshuawei.application_key.prompt')}}
+          {{$t('notify.smshuawei.application_key.example')}}
           {{ $t('iam.help') }} <help-link :href="docUrl">{{ $t('common_386') }}</help-link>
         </div>
         <div class="mb-0">{{ $t('notify.smshuawei.application_key.guid') }}</div>
@@ -12,33 +12,33 @@
     </a-form-item>
     <a-form-item label="Application Secret">
       <template v-slot:extra>
-        <div>{{$t('notify.smshuawei.application_secret.prompt')}}</div>
+        <div>{{$t('notify.smshuawei.application_secret.example')}}</div>
         <div class="mb-0">{{ $t('notify.smshuawei.application_secret.guid') }}</div>
       </template>
       <a-input-password v-decorator="decorators.access_key_secret" />
     </a-form-item>
     <a-form-item :label="$t('notify.smshuawei.app_access_url')">
       <template v-slot:extra>
-        <div>{{$t('notify.smshuawei.service_url.prompt')}}</div>
+        <div>{{$t('notify.smshuawei.service_url.example')}}</div>
         <div class="mb-0">{{$t('notify.smshuawei.service_url.guid')}}</div>
       </template>
       <a-input v-decorator="decorators.service_url" />
     </a-form-item>
     <a-form-item :label="$t('system.text_288')">
       <template v-slot:extra>
-        <div>{{$t('notify.smshuawei.signature.prompt')}}</div>
+        <div>{{$t('notify.smshuawei.signature.example')}}</div>
         <div class="mb-0">{{$t('notify.smshuawei.signature.guid')}}</div>
       </template>
       <a-input v-decorator="decorators.signature" />
     </a-form-item>
-    <a-collapse :border="false">
+    <a-collapse :border="false" v-model="activeKey">
       <a-collapse-panel key="1" :header="$t('system.mobile_cn_tpl')">
         <a-form-item :label="$t('system.text_295')">
           <template v-slot:extra>
-            <div>{{ $t('system.verify_code_tpl_extra_1') }}</div>
+            <div>{{ $t('notify.smshuawei.template.verify_code.example') }}</div>
             <div>{{ $t('notify.smshuawei.template.verify_code.guid') }}</div>
             <div>{{ $t('system.verify_code_tpl_extra_3') }}</div>
-            <div>{{ $t('system.verify_code_tpl_extra_4') }}</div>
+            <div>{{ $t('notify.smshuawei.template.verify_code.template') }}</div>
           </template>
           <a-input-group>
             <a-row :gutter="8">
@@ -53,10 +53,10 @@
         </a-form-item>
         <a-form-item :label="$t('system.alert_tpl')">
           <template v-slot:extra>
-            <div>{{ $t('system.alert_tpl_extra_1') }}</div>
+            <div>{{ $t('notify.smshuawei.template.alarm_message.example') }}</div>
             <div>{{ $t('notify.smshuawei.template.alarm_message.guid') }}</div>
             <div>{{ $t('system.alert_tpl_extra_3') }}</div>
-            <div>{{ $t('system.alert_tpl_extra_4') }}</div>
+            <div>{{ $t('notify.smshuawei.template.alarm_message.template') }}</div>
           </template>
           <a-input-group>
             <a-row :gutter="8">
@@ -71,10 +71,10 @@
         </a-form-item>
         <a-form-item :label="$t('system.error_login_tpl')">
           <template v-slot:extra>
-            <div>{{ $t('system.error_login_tpl_extra_1') }}</div>
+            <div>{{ $t('notify.smshuawei.template.abnormal_login.example') }}</div>
             <div>{{ $t('notify.smshuawei.template.abnormal_login.guid') }}</div>
             <div>{{ $t('system.error_login_tpl_extra_3') }}</div>
-            <div>{{ $t('system.error_login_tpl_extra_4') }}</div>
+            <div>{{ $t('notify.smshuawei.template.abnormal_login.template') }}</div>
           </template>
           <a-input-group>
             <a-row :gutter="8">
@@ -93,10 +93,10 @@
       <a-collapse-panel key="1" :header="$t('system.mobile_en_tpl')">
         <a-form-item :label="$t('system.text_295')">
           <template v-slot:extra>
-            <div>{{ $t('system.verify_code_tpl_extra_1') }}</div>
+            <div>{{ $t('notify.smshuawei.template.verify_code.en.example') }}</div>
             <div>{{ $t('notify.smshuawei.template.verify_code.en.guid') }}</div>
             <div>{{ $t('system.verify_code_tpl_extra_3') }}</div>
-            <div>{{ $t('system.verify_code_tpl_extra_4') }}</div>
+            <div>{{ $t('notify.smshuawei.template.verify_code.en.template') }}</div>
           </template>
           <a-input-group>
             <a-row :gutter="8">
@@ -111,10 +111,10 @@
         </a-form-item>
         <a-form-item :label="$t('system.alert_tpl')">
           <template v-slot:extra>
-            <div>{{ $t('system.alert_tpl_extra_1') }}</div>
+            <div>{{ $t('notify.smshuawei.template.alarm_message.en.example') }}</div>
             <div>{{ $t('notify.smshuawei.template.alarm_message.en.guid') }}</div>
             <div>{{ $t('system.alert_tpl_extra_3') }}</div>
-            <div>{{ $t('system.alert_tpl_extra_4') }}</div>
+            <div>{{ $t('notify.smshuawei.template.alarm_message.en.template') }}</div>
           </template>
           <a-input-group>
             <a-row :gutter="8">
@@ -129,10 +129,10 @@
         </a-form-item>
         <a-form-item :label="$t('system.error_login_tpl')">
           <template v-slot:extra>
-            <div>{{ $t('system.error_login_tpl_extra_1') }}</div>
+            <div>{{ $t('notify.smshuawei.template.abnormal_login.en.example') }}</div>
             <div>{{ $t('notify.smshuawei.template.abnormal_login.en.guid') }}</div>
             <div>{{ $t('system.error_login_tpl_extra_3') }}</div>
-            <div>{{ $t('system.error_login_tpl_extra_4') }}</div>
+            <div>{{ $t('notify.smshuawei.template.abnormal_login.en.template') }}</div>
           </template>
           <a-input-group>
             <a-row :gutter="8">
@@ -170,6 +170,7 @@ export default {
     return {
       submiting: false,
       testLoding: false,
+      activeKey: ['1'],
       decorators: {
         access_key_id: [
           'access_key_id',
@@ -205,9 +206,19 @@ export default {
         ],
         verifiyCode: [
           'verifiyCode',
+          {
+            rules: [
+              { required: true, message: this.$t('notify.smshuawei.verify_code_channel.prompt') },
+            ],
+          },
         ],
         verifiyCodeChannel: [
           'verifiyCodeChannel',
+          {
+            rules: [
+              { required: true, message: this.$t('notify.smshuawei.verify_code_channel.prompt') },
+            ],
+          },
         ],
         alertsCode: [
           'alertsCode',
