@@ -46,6 +46,7 @@ import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import regexp from '@/utils/regexp'
 import { hasSetupKey } from '@/utils/auth'
+import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import { cloudEnabled, cloudUnabledTip, commonEnabled } from '../utils'
@@ -1045,6 +1046,42 @@ export default {
                       return ret
                     },
                     hidden: () => !(hasSetupKey(['onecloud', 'openstack', 'esxi'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
+                  },
+                  {
+                    label: this.$t('compute.server.quick.recovery'),
+                    action: () => {
+                      this.createDialog('VmQuickRecoveryDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: true,
+                        tooltip: '',
+                      }
+                      const isAllOneCloud = this.list.selectedItems.every((item) => { return item.hypervisor === typeClouds.hypervisorMap.kvm.key })
+                      if (!isAllOneCloud) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1125')
+                        return ret
+                      }
+                      const isAllHostOffline = this.list.selectedItems.every((item) => { return item.host_status === 'offline' })
+                      if (!isAllHostOffline) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.quick.recovery.validate.host_status_tooltip')
+                        return ret
+                      }
+                      const allStorages = R.flatten(this.list.selectedItems.map(item => item.disks_info || []))
+                      const isAllKVMShareStorages = allStorages.every(item => KVM_SHARE_STORAGES.includes(item.storage_type))
+                      if (!isAllKVMShareStorages) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.quick.recovery.validate.host_status_tooltip')
+                        return ret
+                      }
+                      return ret
+                    },
                   },
                 ],
               },
