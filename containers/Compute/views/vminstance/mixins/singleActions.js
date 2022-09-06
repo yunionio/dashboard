@@ -10,6 +10,7 @@ import { HOST_CPU_ARCHS } from '@/constants/compute'
 import { PROVIDER_MAP } from '@/constants'
 import { hasSetupKey } from '@/utils/auth'
 import VncInfoFetcher from '@Compute/sections/VncInfoFetcher'
+import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip } from '../utils'
 
 export default {
@@ -1521,6 +1522,39 @@ export default {
                     return ret
                   },
                   hidden: () => !(hasSetupKey(['openstack', 'onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
+                },
+                {
+                  label: this.$t('compute.server.quick.recovery'),
+                  action: () => {
+                    this.createDialog('VmQuickRecoveryDialog', {
+                      data: [obj],
+                      columns: this.columns,
+                      onManager: this.onManager,
+                    })
+                  },
+                  meta: () => {
+                    const ret = {
+                      validate: true,
+                      tooltip: '',
+                    }
+                    if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                      ret.validate = false
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[obj.provider].label])
+                      return ret
+                    }
+                    if (obj.host_status !== 'offline') {
+                      ret.validate = false
+                      ret.tooltip = this.$t('compute.quick.recovery.validate.host_status_tooltip')
+                      return ret
+                    }
+                    const isAllKVMShareStorages = obj.disks_info.every(item => KVM_SHARE_STORAGES.includes(item.storage_type))
+                    if (!isAllKVMShareStorages) {
+                      ret.validate = false
+                      ret.tooltip = this.$t('compute.quick.recovery.validate.host_status_tooltip')
+                      return ret
+                    }
+                    return ret
+                  },
                 },
               ],
             },

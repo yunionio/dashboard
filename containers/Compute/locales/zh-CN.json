@@ -1602,5 +1602,7 @@
   "compute.max_bandwidth": "最大带宽",
   "compute.unlimited": "不限",
   "compute.show_vnc_info": "查看远程信息",
-  "compute.os.neokylin": "中标麒麟"
+  "compute.os.neokylin": "中标麒麟",
+  "compute.server.quick.recovery": "快速恢复",
+  "compute.quick.recovery.validate.host_status_tooltip": "只有使用共享存储且宿主机离线时才可用"
 }
