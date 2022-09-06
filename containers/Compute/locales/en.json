@@ -1602,5 +1602,7 @@
   "compute.max_bandwidth": "Max Bandwidth",
   "compute.unlimited": "ALL",
   "compute.show_vnc_info": "View remote information",
-  "compute.os.neokylin": "Neokylin"
+  "compute.os.neokylin": "Neokylin",
+  "compute.server.quick.recovery": "Quick Recovery",
+  "compute.quick.recovery.validate.host_status_tooltip": "Available only when shared storage is used and the host is offline"
 }
