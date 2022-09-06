@@ -1615,5 +1615,7 @@
   "compute.show_vnc_info": "查看远程信息",
   "compute.host.cpu.revert.share": "共享宿主机不支持该操作",
   "compute.host.cpu.revert.running_guest_tooltip": "部分虚拟机处于运行中状态，请将虚拟机全部关机后重试！",
-  "compute.os.neokylin": "中标麒麟"
+  "compute.os.neokylin": "中标麒麟",
+  "compute.server.quick.recovery": "快速恢复",
+  "compute.quick.recovery.validate.host_status_tooltip": "只有使用共享存储且宿主机离线时才可用"
 }
