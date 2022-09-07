@@ -29,7 +29,7 @@ export const K8S_HYPERVISORS_MAP = {
 
 function getDocsClusterPath (scope) {
   const docsUrl = getDocsUrl(scope)
-  return `${docsUrl}k8s/pre_env/`
+  return `${docsUrl}function_principle/k8s/pre_env/`
 }
 
 export function getClusterDocs (scope) {

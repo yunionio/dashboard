@@ -1,7 +1,7 @@
 import { getDocsUrl } from '@/utils/utils'
 
 export const getNotifyDocsUrl = (type) => {
-  let baseUrl = getDocsUrl() + 'auth_security/notify/tutorial/mailconfig/config'
+  let baseUrl = getDocsUrl() + 'web_ui/iam/notify/mailconfig'
 
   switch (type) {
     case 'mobile':

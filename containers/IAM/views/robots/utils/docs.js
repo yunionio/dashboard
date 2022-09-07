@@ -1,7 +1,7 @@
 import { getDocsUrl } from '@/utils/utils'
 
 export const getWebhookDocsUrl = (type) => {
-  let baseUrl = getDocsUrl() + 'auth_security/notify/tutorial/bot/webhook'
+  let baseUrl = getDocsUrl() + 'web_ui/iam/notify/bot'
 
   switch (type) {
     case 'dingtalk':
