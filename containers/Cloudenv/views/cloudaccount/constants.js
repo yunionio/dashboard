@@ -1,5 +1,5 @@
 import { typeClouds } from '@/utils/common/hypervisor'
-import { getDocsUrl, isCE } from '@/utils/utils'
+import { getDocsUrl } from '@/utils/utils'
 import i18n from '@/locales'
 const providerMap = typeClouds.getProviderlowcase()
 const aliyunLogo = require('../../../../src/assets/images/providers/aliyun.svg')
@@ -27,10 +27,7 @@ const bingocloudLogo = require('../../../../src/assets/images/providers/bingoclo
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
-  if (isCE()) {
-    return `${docsUrl}multicloud/cloudaccounts`
-  }
-  return `${docsUrl}/user/multiplecloud/cloudaccount/cloudaccount/`
+  return `${docsUrl}web_ui/multiplecloud/cloudaccount/cloudaccount`
 }
 
 export const CLOUDACCOUNT_TYPES = {
@@ -211,11 +208,15 @@ export function getCloudaccountDocs (scope) {
     nutanix: i18n.t('cloudenv.create_nutanix', [docs_path]),
     bingocloud: i18n.t('cloudenv.create_bingocloud', [docs_path]),
   }
-  if (isCE()) {
-    Object.keys(docs).forEach(v => {
-      docs[v] = `${docs_path}/tutorial/create`
-    })
-  }
+  // if (isCE()) {
+  //   Object.keys(docs).forEach(v => {
+  //     docs[v] = `${docs_path}/tutorial/create`
+  //   })
+  // } else {
+  //   Object.keys(docs).forEach(v => {
+  //     docs[v] = `${docs_path}/tutorial/create`
+  //   })
+  // }
   return docs
 }
 
@@ -547,10 +548,7 @@ export function getBillBucketUrlDocs (scope) {
 }
 
 export function getSamlUserDocs (scope) {
-  const docsUrl = getDocsCloudaccountPath(scope)
-  if (isCE) {
-    return `${docsUrl}/tutorial/cloudsso/cloudsso/`
-  }
+  const docsUrl = getDocsCloudaccountPath(scope) + '/tutorial/cloudsso/cloudsso/'
   return i18n.t('cloudenv.dentity_provider', [docsUrl])
 }
 
