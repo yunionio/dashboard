@@ -829,6 +829,7 @@
   "system.feishu_oauth2_doc": "新建飞书认证源",
   "system.dingtalk_oauth2_doc": "新建钉钉认证源",
   "system.qywechat_oauth2_doc": "新建企业微信认证源",
+  "system.oauth2_doc": "新建OAuth2认证协议的认证源",
   "system.three_level_permission_description": "三级权限使用说明",
   "system.bill_budgets": "预算",
   "system.field.username": "用户名字段",

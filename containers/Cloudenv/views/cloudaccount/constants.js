@@ -1,5 +1,5 @@
 import { typeClouds } from '@/utils/common/hypervisor'
-import { getDocsUrl, isCE } from '@/utils/utils'
+import { getDocsUrl } from '@/utils/utils'
 import i18n from '@/locales'
 const providerMap = typeClouds.getProviderlowcase()
 const aliyunLogo = require('../../../../src/assets/images/providers/aliyun.svg')
@@ -28,7 +28,7 @@ const incloudsphereLogo = require('../../../../src/assets/images/providers/inclo
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
-  return `${docsUrl}multicloud/cloudaccounts`
+  return `${docsUrl}web_ui/multiplecloud/cloudaccount/cloudaccount`
 }
 
 export const CLOUDACCOUNT_TYPES = {
@@ -220,15 +220,15 @@ export function getCloudaccountDocs (scope) {
     bingocloud: i18n.t('cloudenv.create_bingocloud', [docs_path]),
     incloudsphere: i18n.t('cloudenv.create_incloudsphere', [docs_path]),
   }
-  if (isCE()) {
-    Object.keys(docs).forEach(v => {
-      docs[v] = `${docs_path}/tutorial/create`
-    })
-  } else {
-    Object.keys(docs).forEach(v => {
-      docs[v] = `${docs_path}/tutorial/create`
-    })
-  }
+  // if (isCE()) {
+  //   Object.keys(docs).forEach(v => {
+  //     docs[v] = `${docs_path}/tutorial/create`
+  //   })
+  // } else {
+  //   Object.keys(docs).forEach(v => {
+  //     docs[v] = `${docs_path}/tutorial/create`
+  //   })
+  // }
   return docs
 }
 
@@ -563,7 +563,7 @@ export const keySecretFields = {
 }
 
 export function getBillBucketUrlDocs (scope) {
-  const docsUrl = getDocsCloudaccountPath(scope) + '/tutorial/billinfo'
+  const docsUrl = getDocsCloudaccountPath(scope)
   return {
     aliyun: i18n.t('cloudenv.text_164', [docsUrl]),
     aws: i18n.t('cloudenv.text_165', [docsUrl]),
@@ -573,12 +573,12 @@ export function getBillBucketUrlDocs (scope) {
 }
 
 export function getSamlUserDocs (scope) {
-  const docsUrl = getDocsCloudaccountPath(scope) + '/tutorial/cloudsso/cloudsso/'
+  const docsUrl = getDocsCloudaccountPath(scope)
   return i18n.t('cloudenv.dentity_provider', [docsUrl])
 }
 
 export function getEnrollmentNumberDocs (scope) {
-  const docsUrl = getDocsCloudaccountPath(scope) + '/tutorial/billinfo'
+  const docsUrl = getDocsCloudaccountPath(scope)
   return docsUrl + i18n.t('cloudenv.text_219')
 }
 
