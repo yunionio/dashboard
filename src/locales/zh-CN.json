@@ -160,7 +160,9 @@
       "restart_network": "正在重启网卡",
       "restart_network_failed": "重启网卡失败",
       "sync_isolated_device_failed": "同步透传设备失败",
-      "start_instance_backup": "开始创建备份"
+      "start_instance_backup": "开始创建备份",
+      "qga_set_password": "重置密码中",
+      "qga_command_executing": "QGA执行中"
     },
     "network": {
       "init": "初始化",
