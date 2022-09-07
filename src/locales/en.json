@@ -160,7 +160,9 @@
       "restart_network": "Restart Network",
       "restart_network_failed": "Restart Network Failed",
       "sync_isolated_device_failed": "Sync isolated device failed",
-      "start_instance_backup": "Start Instance Backup"
+      "start_instance_backup": "Start Instance Backup",
+      "qga_set_password": "QGA set password",
+      "qga_command_executing": "QGA command executing"
     },
     "network": {
       "init": "Initialize",

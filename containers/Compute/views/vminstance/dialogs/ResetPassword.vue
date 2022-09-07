@@ -2,13 +2,18 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('compute.text_276')}}</div>
     <div slot="body">
+      <a-alert class="mb-2" type="warning">
+        <div slot="message">
+          {{ $t('compute.qga.alert01') }}（<help-link :href="qgaDoc">{{ $t('compute.qga.alert02') }}</help-link>），{{ $t('compute.qga.alert03') }}
+        </div>
+      </a-alert>
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_276')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item :label="$t('compute.text_308')">
           <server-password :decorator="decorators.loginConfig" :login-types="loginTypes" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_1229')">
+        <a-form-item v-if="enbaleAutoStart" :label="$t('compute.text_494')" :extra="$t('compute.text_1229')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_start" :disabled="form.fi.disableAutoStart" />
         </a-form-item>
         <template v-if="enableMFA">
@@ -31,6 +36,7 @@ import { LOGIN_TYPES_MAP } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { typeClouds } from '@/utils/common/hypervisor'
+import { getDoc, DOC_MAP } from '@/utils/docs'
 
 const hypervisorMap = typeClouds.hypervisorMap
 export default {
@@ -97,11 +103,21 @@ export default {
           span: 4,
         },
       },
+      qgaDoc: getDoc(this.$language, DOC_MAP.QGA),
     }
   },
   computed: {
     enableMFA () {
       return this.$store.getters.userInfo.enable_mfa && this.$store.state.auth.auth.system_totp_on
+    },
+    selectedItems () {
+      return this.params.data
+    },
+    selectedItem () {
+      return this.selectedItems[0]
+    },
+    enbaleAutoStart () {
+      return !this.selectedItems.every(item => item.status === 'running')
     },
   },
   methods: {
@@ -119,7 +135,7 @@ export default {
           })
         }
         delete values.mfa
-        const ids = this.params.data.map(item => item.id)
+        const ids = this.selectedItems.map(item => item.id)
         const data = { reset_password: true, auto_start: values.auto_start }
         if (values.loginType === LOGIN_TYPES_MAP.password.key) {
           data.password = values.password
@@ -128,10 +144,11 @@ export default {
           id: ids,
           steadyStatus: ['running', 'ready'],
           managerArgs: {
-            action: 'deploy',
+            action: 'set-password',
             data,
           },
         })
+        this.$message.success(this.$t('message.exec_success'))
         this.cancelDialog()
       } finally {
         this.loading = false
