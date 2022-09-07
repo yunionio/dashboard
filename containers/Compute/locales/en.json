@@ -1617,5 +1617,9 @@
   "compute.host.cpu.revert.running_guest_tooltip": "Some virtual machines are running. Please shut down all virtual machines and try again！",
   "compute.os.neokylin": "Neokylin",
   "compute.server.quick.recovery": "Quick Recovery",
-  "compute.quick.recovery.validate.host_status_tooltip": "Available only when shared storage is used and the host is offline"
+  "compute.quick.recovery.validate.host_status_tooltip": "Available only when shared storage is used and the host is offline",
+  "compute.qga.alert01": "QGA is not installed",
+  "compute.qga.alert02": "What is QGA",
+  "compute.qga.alert03": "Please install and try again!",
+  "compute.qga.action.validate": "Please select a virtual machine in the same state for operation"
 }

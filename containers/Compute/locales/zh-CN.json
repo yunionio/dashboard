@@ -1617,5 +1617,9 @@
   "compute.host.cpu.revert.running_guest_tooltip": "部分虚拟机处于运行中状态，请将虚拟机全部关机后重试！",
   "compute.os.neokylin": "中标麒麟",
   "compute.server.quick.recovery": "快速恢复",
-  "compute.quick.recovery.validate.host_status_tooltip": "只有使用共享存储且宿主机离线时才可用"
+  "compute.quick.recovery.validate.host_status_tooltip": "只有使用共享存储且宿主机离线时才可用",
+  "compute.qga.alert01": "未安装QGA",
+  "compute.qga.alert02": "什么是QGA",
+  "compute.qga.alert03": "请安装后重试！",
+  "compute.qga.action.validate": "请选择同状态的虚拟机进行操作"
 }

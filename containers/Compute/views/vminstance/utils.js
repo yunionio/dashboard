@@ -130,7 +130,7 @@ const actionEableMap = {
       qcloud: ['ready'],
       aliyun: ['ready'],
       aws: false,
-      onecloud: ['ready'],
+      onecloud: ['running', 'ready'],
       cloudpods: ['ready'],
       vmware: ['ready'],
       baremetal: ['ready', 'admin'],
