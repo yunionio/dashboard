@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('compute.text_276')}}</div>
     <div slot="body">
-      <a-alert class="mb-2" type="warning">
+      <a-alert v-if="enableQgaAlert" class="mb-2" type="warning">
         <div slot="message">
           {{ $t('compute.qga.alert01') }}（<help-link :href="qgaDoc">{{ $t('compute.qga.alert02') }}</help-link>），{{ $t('compute.qga.alert03') }}
         </div>
@@ -10,10 +10,13 @@
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_276')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item :label="$t('compute.text_308')">
+        <a-form-item v-if="isSingle" :label="$t('common_312')">
+          <a-input v-decorator="decorators.username" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.qga.password')">
           <server-password :decorator="decorators.loginConfig" :login-types="loginTypes" />
         </a-form-item>
-        <a-form-item v-if="enbaleAutoStart" :label="$t('compute.text_494')" :extra="$t('compute.text_1229')">
+        <a-form-item v-if="enableAutoStart" :label="$t('compute.text_494')" :extra="$t('compute.text_1229')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_start" :disabled="form.fi.disableAutoStart" />
         </a-form-item>
         <template v-if="enableMFA">
@@ -61,6 +64,11 @@ export default {
         disableAutoStart = true
       }
     }
+    const login_account = firstData.metadata.login_account
+    const userName = {
+      Linux: 'root',
+      Windows: 'Administrator',
+    }
     return {
       loading: false,
       loginTypes: [LOGIN_TYPES_MAP.random.key, LOGIN_TYPES_MAP.password.key],
@@ -71,6 +79,12 @@ export default {
         },
       },
       decorators: {
+        username: [
+          'username',
+          {
+            initialValue: login_account || userName[firstData.os_type],
+          },
+        ],
         loginConfig: {
           loginType: [
             'loginType',
@@ -116,8 +130,14 @@ export default {
     selectedItem () {
       return this.selectedItems[0]
     },
-    enbaleAutoStart () {
-      return !this.selectedItems.every(item => item.status === 'running')
+    enableAutoStart () {
+      return this.selectedItems.some(item => item.status === 'ready')
+    },
+    enableQgaAlert () {
+      return this.selectedItems.some(item => item.status === 'running')
+    },
+    isSingle () {
+      return this.selectedItems?.length === 1
     },
   },
   methods: {
@@ -139,6 +159,9 @@ export default {
         const data = { reset_password: true, auto_start: values.auto_start }
         if (values.loginType === LOGIN_TYPES_MAP.password.key) {
           data.password = values.password
+        }
+        if (this.isSingle && values.username) {
+          data.username = values.username
         }
         await this.params.onManager('batchPerformAction', {
           id: ids,
