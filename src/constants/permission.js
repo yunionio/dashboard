@@ -1319,6 +1319,9 @@ export const PERMISSION = {
   shieldbills_list: ['meter', 'shield_bills', 'list'],
   shieldbills_create: ['meter', 'shield_bills', 'create'],
   shieldbills_delete: ['meter', 'shield_bills', 'delete'],
+
+  msp_customers_list: ['meter', 'msp_customers', 'list'],
+  msp_customers_update: ['meter', 'msp_customers', 'update'],
 }
 
 // 已声明权限的资源
