@@ -160,11 +160,13 @@ export default {
       for (const key in data) {
         if (data.hasOwnProperty(key)) {
           const item = data[key]
-          ret.push({
-            ...item,
-            key: `vendor=${item.vendor}:${item.model}`,
-            label: `${item.vendor}/${item.model}`,
-          })
+          if (item.dev_type.startsWith('GPU')) {
+            ret.push({
+              ...item,
+              key: `vendor=${item.vendor}:${item.model}`,
+              label: `${item.vendor}/${item.model}`,
+            })
+          }
         }
       }
       return ret
