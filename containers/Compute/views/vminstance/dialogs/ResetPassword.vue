@@ -64,7 +64,7 @@ export default {
         disableAutoStart = true
       }
     }
-    const login_account = firstData.metadata.login_account
+    const login_account = firstData.metadata?.login_account
     const userName = {
       Linux: 'root',
       Windows: 'Administrator',
