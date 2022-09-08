@@ -1618,8 +1618,9 @@
   "compute.os.neokylin": "Neokylin",
   "compute.server.quick.recovery": "Quick Recovery",
   "compute.quick.recovery.validate.host_status_tooltip": "Available only when shared storage is used and the host is offline",
-  "compute.qga.alert01": "QGA is not installed",
+  "compute.qga.alert01": "Reset password of running virtual machine through GQA",
   "compute.qga.alert02": "What is QGA",
-  "compute.qga.alert03": "Please install and try again!",
-  "compute.qga.action.validate": "Please select a virtual machine in the same state for operation"
+  "compute.qga.alert03": "Please confirm the installation before operation, otherwise the operation will fail!",
+  "compute.qga.action.validate": "Please select a virtual machine in the same state for operation",
+  "compute.qga.password": "Password"
 }
