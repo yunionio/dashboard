@@ -814,16 +814,6 @@ export default {
                         ret.tooltip = this.$t('compute.text_277')
                         return ret
                       }
-                      const isOneCloud = this.list.selectedItems.every(item => item.brand === 'OneCloud')
-                      if (isOneCloud) {
-                        const isAllSameStatus = this.list.selectedItems.every(item => item.status === 'running') ||
-                          this.list.selectedItems.every(item => item.status === 'ready')
-                        if (!isAllSameStatus) {
-                          ret.validate = false
-                          ret.tooltip = this.$t('compute.qga.action.validate')
-                          return ret
-                        }
-                      }
                       return {
                         validate: cloudEnabled('resetPassword', this.list.selectedItems),
                         tooltip: cloudUnabledTip('resetPassword', this.list.selectedItems),
