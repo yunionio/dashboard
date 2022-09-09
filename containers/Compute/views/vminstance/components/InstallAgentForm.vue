@@ -27,6 +27,7 @@
 <script>
 // import _ from 'lodash'
 import WindowsMixin from '@/mixins/windows'
+import { getDocsUrl } from '@/utils/utils'
 
 export default {
   name: 'InstallAgentForm',
@@ -95,12 +96,8 @@ export default {
       return this.agent_install_status === 'install_failed' && this.install_failed_code === 'NoReachInfluxdb'
     },
     peHelpLink () {
-      const lang = this.$store.getters.setting.language
-      if (lang === 'zh-CN') {
-        return '/docs/zh/docs/user/network/ssh/sshproxy/'
-      } else {
-        return '/docs/en/docs/user/network/ssh/sshproxy/'
-      }
+      const docsUrl = getDocsUrl(this.$store.getters.scope)
+      return docsUrl + 'web_ui/network/ssh/sshproxy'
     },
     install_failed_code () {
       return this.agent_install_status === 'install_failed' && this.data.agent_fail_code
