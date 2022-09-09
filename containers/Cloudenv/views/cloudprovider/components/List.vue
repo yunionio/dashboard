@@ -7,13 +7,13 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
-import { getStatusFilter, getEnabledFilter, getTenantFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getEnabledFilter, getTenantFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'CloudproviderList',
@@ -47,6 +47,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
+          description: getDescriptionFilter(),
           status: getStatusFilter('cloudaccount'),
           enabled: getEnabledFilter(),
           account: {
