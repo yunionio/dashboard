@@ -672,11 +672,18 @@ export const createVmDecorators = type => {
         initialValue: 'input',
       },
     ],
+    deploy_telegraf: [
+      'deploy_telegraf',
+      {
+        valuePropName: 'checked',
+        initialValue: true,
+      },
+    ],
   }
 }
 
 const decoratorGroup = {
-  idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch', 'hostName', 'encrypt_keys', 'custom_data_type'],
+  idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch', 'hostName', 'encrypt_keys', 'custom_data_type', 'deploy_telegraf'],
   public: ['domain', 'project', 'name', 'description', 'count', 'imageOS', 'reason', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType', 'tag', 'servertemplate', 'duration', 'cloudprovider', 'hostName'],
   private: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'duration', 'tag', 'servertemplate', 'cloudprovider', 'hostName'],
 }
@@ -1230,6 +1237,12 @@ export class GenCreateData {
     // 自定义数据
     if (this.fd.custom_data_type) {
       data.custom_data_type = this.fd.custom_data_type
+    }
+    // 安装监控 agent
+    if (this.fd.hypervisor === HYPERVISORS_MAP.kvm.key) {
+      if (!this.isWindows() && this.fd.deploy_telegraf) {
+        data.deploy_telegraf = this.fd.deploy_telegraf
+      }
     }
     return data
   }
