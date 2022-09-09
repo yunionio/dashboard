@@ -2,7 +2,7 @@
   <div class="position-relative h-100 w-100 overflow-auto dashboard_box">
     <template v-for="(item, key) of data">
       <div
-        v-if="item.layout.component !== 'Quota' || (['Quota', 'ProjectQuota'].includes(item.layout.component) && globalConfig.enable_quota_check)"
+        v-if="!['Quota', 'ProjectQuota'].includes(item.layout.component) || (['Quota', 'ProjectQuota'].includes(item.layout.component) && globalConfig.enable_quota_check)"
         class="item"
         :key="key"
         :style="getItemStyles(item.layout)">
