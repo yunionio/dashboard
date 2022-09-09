@@ -1609,5 +1609,8 @@
   "compute.qga.alert02": "What is QGA",
   "compute.qga.alert03": "Please confirm the installation before operation, otherwise the operation will fail!",
   "compute.qga.action.validate": "Please select a virtual machine in the same state for operation",
-  "compute.qga.password": "Password"
+  "compute.qga.password": "Password",
+  "compute.agent.label": "Monitoring agent",
+  "compute.agent.install.plugin": "Install monitoring agent plugin",
+  "compute.agent.extra": "Support detailed monitoring of CPU, memory, disk and other metrics"
 }

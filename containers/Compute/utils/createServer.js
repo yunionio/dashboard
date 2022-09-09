@@ -666,11 +666,18 @@ export const createVmDecorators = type => {
         'encrypt_key_id',
       ],
     },
+    deploy_telegraf: [
+      'deploy_telegraf',
+      {
+        valuePropName: 'checked',
+        initialValue: true,
+      },
+    ],
   }
 }
 
 const decoratorGroup = {
-  idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch', 'hostName', 'encrypt_keys'],
+  idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch', 'hostName', 'encrypt_keys', 'deploy_telegraf'],
   public: ['domain', 'project', 'name', 'description', 'count', 'imageOS', 'reason', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType', 'tag', 'servertemplate', 'duration', 'cloudprovider', 'hostName'],
   private: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'duration', 'tag', 'servertemplate', 'cloudprovider', 'hostName'],
 }
@@ -1220,6 +1227,12 @@ export class GenCreateData {
       data.encrypt_key_new = true
       data.encrypt_key_alg = this.fd.encrypt_key_alg
       data.encrypt_key_user_id = store.getters.userInfo.id
+    }
+    // 安装监控 agent
+    if (this.fd.hypervisor === HYPERVISORS_MAP.kvm.key) {
+      if (!this.isWindows() && this.fd.deploy_telegraf) {
+        data.deploy_telegraf = this.fd.deploy_telegraf
+      }
     }
     return data
   }
