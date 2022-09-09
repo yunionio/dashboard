@@ -34,6 +34,7 @@
                 :use-css-transforms="true">
                 <template v-for="item in layout">
                   <grid-item
+                    v-if="!['Quota', 'ProjectQuota'].includes(item.component) || (['Quota', 'ProjectQuota'].includes(item.component) && globalConfig.enable_quota_check)"
                     class="edit-grid-item"
                     :x="item.x"
                     :y="item.y"
@@ -108,7 +109,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scope']),
+    ...mapGetters(['scope', 'globalConfig']),
     id () {
       return this.$route.query.id
     },
