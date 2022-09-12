@@ -162,11 +162,11 @@ export default {
       try {
         const response = await manager.list({
           params: {
-            type: ['common', 'meter', 'identity'],
+            type: ['yunionapi', 'meter', 'identity'],
           },
         })
         const resData = response?.data?.data
-        const commonId = resData.find(v => v.type === 'common')?.id || ''
+        const commonId = resData.find(v => v.type === 'yunionapi')?.id || ''
         if (commonId) {
           const configResponse = await manager.getSpecific({
             id: commonId,
