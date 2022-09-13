@@ -8,7 +8,7 @@
             v-model="formData.start"
             :disabled-date="disabledStartDate"
             :disabled-time="disabledDateTime"
-            format="YYYY-MM-DD"
+            :format="showFormat"
             :open="startOpen"
             :placeholder="$t('common.text00119')"
             @openChange="handleStartOpenChange" />
@@ -18,7 +18,7 @@
             v-model="formData.end"
             :disabled-date="disabledEndDate"
             :disabled-time="disabledDateTime"
-            format="YYYY-MM-DD"
+            :format="showFormat"
             :placeholder="$t('common.text00120')"
             :open="endOpen"
             @openChange="handleEndOpenChange" />
@@ -59,6 +59,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    showFormat: String,
   },
   data () {
     return {
