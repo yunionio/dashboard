@@ -83,6 +83,9 @@
           :cloudproviderParamsExtra="cloudproviderParamsExtra"
           @updateImageMsg="updateFi" />
       </a-form-item>
+      <a-form-item v-if="isKvm && !isWindows" :label="$t('compute.agent.label')" :extra="$t('compute.agent.extra')">
+        <a-checkbox v-decorator="decorators.deploy_telegraf">{{ $t('compute.agent.install.plugin') }}</a-checkbox>
+      </a-form-item>
       <a-form-item :label="$t('compute.text_49')" class="mb-0">
         <system-disk
           v-if="form.fd.hypervisor"
@@ -251,6 +254,7 @@ import Vdi from '@Compute/sections/VDI'
 import Vga from '@Compute/sections/VGA'
 import Machine from '@Compute/sections/Machine'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
+import CustomData from '../components/CustomData'
 import mixin from './mixin'
 
 export default {

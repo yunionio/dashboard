@@ -1609,5 +1609,8 @@
   "compute.qga.alert02": "什么是QGA",
   "compute.qga.alert03": "操作之前请确认已安装，否则会操作失败！",
   "compute.qga.action.validate": "请选择同状态的虚拟机进行操作",
-  "compute.qga.password": "密码"
+  "compute.qga.password": "密码",
+  "compute.agent.label": "监控agent",
+  "compute.agent.install.plugin": "安装监控agent插件",
+  "compute.agent.extra": "支持对CPU、内存、磁盘等指标的详细监控"
 }
