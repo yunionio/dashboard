@@ -644,7 +644,7 @@
       "label": "Web console session timeout",
       "desc": "After the user has no operation in the current period of time, the login information will be invalid and needs to be logged in again. Zero means detection is not turned on."
     },
-    "common$is_forget_login_user": {
+    "yunionapi$is_forget_login_user": {
       "label": "Log out and clear user information",
       "desc": "After enabled, logging out will clear the logged in user information. To log in again, you need to re-enter your user name and password."
     },
@@ -760,11 +760,11 @@
       "label": "Syslog WebService Password",
       "desc": "After Syslog WebService is enabled，you need to add Syslog WebService password"
     },
-    "common$enable_tls_migration": {
+    "compute$enable_tls_migration": {
       "label": "Enable TLS migration",
       "desc": "When enabled, KVM virtual machine hot migration will use TLS to encrypt data."
     },
-    "common$enable_organization": {
+    "yunionapi$enable_organization": {
       "label": "Organizational structure switch",
       "desc": "After enabling, you can customize the level to control the permissions of the project, and support filtering and viewing in the resource list."
     },
