@@ -25,6 +25,7 @@ import {
   getAccountFilter,
   getRegionFilter,
   getDescriptionFilter,
+  getGuestStatusFilter,
 } from '@/utils/common/tableFilter'
 import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import expectStatus from '@/constants/expectStatus'
@@ -32,10 +33,10 @@ import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
 import { PROVIDER_MAP } from '@/constants'
+import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import { MEDIUM_MAP } from '../../../constants'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 
 export default {
   name: 'DiskList',
@@ -251,6 +252,7 @@ export default {
           return { label: MEDIUM_MAP[k], key: k }
         }),
       },
+      guest_status: getGuestStatusFilter(),
     }
     for (let i = 0, len = this.hiddenFilterOptions.length; i < len; i++) {
       delete filterOptions[this.hiddenFilterOptions[i]]
