@@ -366,6 +366,7 @@ export const getTagTableColumn = ({
   width = 50,
   customTitle = '',
   list = {},
+  params = {}, // 请求已有标签传入参数
   editCheck = (row) => true,
 } = {}) => {
   return {
@@ -404,6 +405,7 @@ export const getTagTableColumn = ({
               ignorePrefix,
               customTitle,
               list,
+              tagParams: params,
               canEdit: editCheck(row),
             },
           }),
