@@ -33,13 +33,11 @@
             :isDefaultSelect="true"
             :params="recipientParams"
             :select-props="{ placeholder: $t('system.text_232', [$t('system.notify.subscriber.type.receiver')]), allowClear: false, mode: 'multiple' }">
-            <template #optionTemplate="{ options }">
-              <a-select-option v-for="item in options" :key="item.id" :value="item.id" :label="item.name">
-                <a-row>
-                  <a-col span="9">{{ item.name }}</a-col>
-                  <a-col><p class="text-right text-color-secondary mr-2">{{ $t('common_624', [$t('dictionary.domain')]) }}: {{ item.project_domain }}</p></a-col>
-                </a-row>
-              </a-select-option>
+            <template #optionLabelTemplate="{ item }">
+              <a-row>
+                <a-col span="9">{{ item.name }}</a-col>
+                <a-col><p class="text-right text-color-secondary mr-2">{{ $t('common_624', [$t('dictionary.domain')]) }}: {{ item.project_domain }}</p></a-col>
+              </a-row>
             </template>
           </base-select>
         </a-form-item>
@@ -89,10 +87,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { NOTIFY_SUBSCRIBER_TYPES, NOTIFY_ROLE_SCOPES } from '../../../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import ScopeRadio from '@/sections/ScopeRadio'
+import { NOTIFY_SUBSCRIBER_TYPES, NOTIFY_ROLE_SCOPES } from '../../../constants'
 
 export default {
   name: 'SetupNotifyReceiverDialog',
