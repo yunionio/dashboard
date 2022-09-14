@@ -19,11 +19,17 @@
           <span v-else-if="loadMoreClicked && noMoreData" class="text-color-secondary pt-2 pb-1">{{$t('common_640')}}</span>
         </div>
       </div>
-      <slot name="optionTemplate" v-bind:options="resOpts">
+      <slot v-if="!$scopedSlots.optionLabelTemplate" name="optionTemplate" v-bind:options="resOpts">
         <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :label="getLabel(item)" :disabled="item.__disabled">
           <option-label :nameKey="nameKey" :labelFormat="labelFormat" :data="item" :resource="resource" :applyOptionLabel="applyOptionLabel" />
         </a-select-option>
       </slot>
+      <template v-else>
+        <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :label="getLabel(item)" :disabled="item.__disabled">
+          <option-label-prefix :nameKey="nameKey" :data="item" />
+          <slot name="optionLabelTemplate" v-bind:item="item" />
+        </a-select-option>
+      </template>
     </a-select>
     <a-icon v-if="showSync" type="sync" class="ml-2 primary-color" :spin="loading" @click="refresh" />
   </div>
@@ -36,6 +42,7 @@ import { Manager } from '@/utils/manager'
 import { arrayToObj } from '@/utils/utils'
 import i18n from '@/locales'
 import OptionLabel from './OptionLabel'
+import OptionLabelPrefix from './OptionLabelPrefix'
 
 const del$t = value => {
   if (!R.is(Object, value)) return {}
@@ -48,6 +55,7 @@ export default {
   name: 'BaseSelect',
   components: {
     OptionLabel,
+    OptionLabelPrefix,
     VNodes: {
       functional: true,
       render: (h, ctx) => ctx.props.vnodes,
