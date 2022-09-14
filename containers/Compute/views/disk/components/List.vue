@@ -27,6 +27,7 @@ import {
   getDomainFilter,
   getAccountFilter,
   getRegionFilter,
+  getGuestStatusFilter,
 } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -234,6 +235,7 @@ export default {
           return { label: MEDIUM_MAP[k], key: k }
         }),
       },
+      guest_status: getGuestStatusFilter(),
     }
     for (let i = 0, len = this.hiddenFilterOptions.length; i < len; i++) {
       delete filterOptions[this.hiddenFilterOptions[i]]
