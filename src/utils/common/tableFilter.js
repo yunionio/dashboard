@@ -465,3 +465,18 @@ export function getDescriptionFilter (params = {}) {
     },
   }
 }
+
+export function getGuestStatusFilter () {
+  return {
+    label: i18n.t('compute.guest.status'),
+    dropdown: true,
+    multiple: true,
+    distinctField: {
+      type: 'extra_field',
+      key: 'guest_status',
+    },
+    mapper: data => {
+      return mapperStatusToItems(data, 'server')
+    },
+  }
+}
