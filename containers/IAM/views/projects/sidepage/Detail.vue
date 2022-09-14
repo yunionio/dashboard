@@ -112,8 +112,8 @@ export default {
         { required: true, message: this.$t('system.text_168') },
       ],
       baseInfo: [
-        getUserTagColumn({ onManager: this.onManager, resource: 'domain', columns: () => this.columns, tipName: this.$t('dictionary.project') }),
-        getExtTagColumn({ onManager: this.onManager, resource: 'domain', columns: () => this.columns, tipName: this.$t('dictionary.project') }),
+        getUserTagColumn({ onManager: this.onManager, resource: 'domain', params: { service: 'identity' }, columns: () => this.columns, tipName: this.$t('dictionary.project') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'domain', params: { service: 'identity' }, columns: () => this.columns, tipName: this.$t('dictionary.project') }),
         {
           field: 'group_count',
           title: this.$t('system.text_457'),

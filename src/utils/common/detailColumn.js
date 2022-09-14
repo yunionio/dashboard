@@ -18,6 +18,7 @@ const getTagColumn = ({
   tipName,
   ignorePrefix,
   hidden,
+  params,
   editCheck = (row) => true,
 }) => {
   return {
@@ -41,6 +42,7 @@ const getTagColumn = ({
               columns,
               tipName,
               ignorePrefix,
+              tagParams: params,
               canEdit: editCheck(row),
             },
           }),
@@ -62,6 +64,7 @@ export const getUserTagColumn = ({
   tipName,
   ignorePrefix,
   showEdit = true,
+  params = {},
   editCheck = (row) => true,
 } = {}) => {
   return getTagColumn({
@@ -77,6 +80,7 @@ export const getUserTagColumn = ({
     columns,
     tipName,
     ignorePrefix,
+    params,
     editCheck,
   })
 }
@@ -92,6 +96,7 @@ export const getExtTagColumn = ({
   columns,
   tipName,
   ignorePrefix,
+  params = {},
   editCheck = (row) => true,
 } = {}) => {
   return getTagColumn({
@@ -106,6 +111,7 @@ export const getExtTagColumn = ({
     columns,
     tipName,
     ignorePrefix,
+    params,
     hidden: (data) => {
       if (R.isNil(data.metadata) || R.isEmpty(data.metadata)) {
         return true
