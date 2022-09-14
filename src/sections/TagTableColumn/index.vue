@@ -74,6 +74,10 @@ export default {
       type: Object,
     },
     canEdit: Boolean,
+    tagParams: {
+      type: Object,
+      default: () => { return {} },
+    },
   },
   inject: {
     // 是否处于BaseDialog中
@@ -112,7 +116,7 @@ export default {
       return this.tags.length <= 0 ? 'text-color-help' : 'primary-color'
     },
     params () {
-      return { resources: this.resource }
+      return { resources: this.resource, ...this.tagParams }
     },
     isPermission () {
       return this.canEdit && hasPermission({ key: `${this.resource}_perform_set_user_metadata` })

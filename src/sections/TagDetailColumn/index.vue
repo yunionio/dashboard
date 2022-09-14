@@ -59,6 +59,10 @@ export default {
     },
     customTitle: String,
     canEdit: Boolean,
+    tagParams: {
+      type: Object,
+      default: () => { return {} },
+    },
   },
   inject: {
     // 是否处于BaseDialog中
@@ -101,7 +105,7 @@ export default {
       return ret
     },
     params () {
-      return { resources: this.resource }
+      return { resources: this.resource, ...this.tagParams }
     },
     isPermission () {
       return this.canEdit && hasPermission({ key: `${this.resource}_perform_set_user_metadata` })
