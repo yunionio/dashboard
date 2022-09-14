@@ -1528,5 +1528,6 @@
   "compute.mainternance_in_disabled_tip": "宿主机上的虚拟机数量为0",
   "compute.num_queues": "队列数量",
   "compute.update_network.alert": "重启虚拟机后生效",
-  "compute.unlimited": "不限"
+  "compute.unlimited": "不限",
+  "compute.guest.status": "虚拟机状态"
 }
