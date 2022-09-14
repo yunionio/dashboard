@@ -133,8 +133,11 @@ export default {
     enableAutoStart () {
       return this.selectedItems.some(item => item.status === 'ready')
     },
+    isAllKvm () {
+      return this.selectedItems.every(item => item.hypervisor === hypervisorMap.kvm.key)
+    },
     enableQgaAlert () {
-      return this.selectedItems.some(item => item.status === 'running')
+      return this.isAllKvm && this.selectedItems.some(item => item.status === 'running')
     },
     isSingle () {
       return this.selectedItems?.length === 1
