@@ -254,7 +254,6 @@ import Vdi from '@Compute/sections/VDI'
 import Vga from '@Compute/sections/VGA'
 import Machine from '@Compute/sections/Machine'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
-import CustomData from '../components/CustomData'
 import mixin from './mixin'
 
 export default {
