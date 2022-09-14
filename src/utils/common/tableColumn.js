@@ -362,6 +362,7 @@ export const getTagTableColumn = ({
   width = 50,
   customTitle = '',
   list = {},
+  params = {}, // 请求已有标签传入参数
 } = {}) => {
   return {
     field,
@@ -383,6 +384,7 @@ export const getTagTableColumn = ({
               ignorePrefix,
               customTitle,
               list,
+              tagParams: params,
             },
           }),
         ]
