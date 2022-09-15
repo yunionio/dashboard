@@ -516,4 +516,8 @@ export default {
   tablestore: {
     success: ['running'],
   },
+  modelarts: {
+    success: ['running'],
+    info: ['creating'],
+  },
 }

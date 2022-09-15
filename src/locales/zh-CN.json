@@ -1139,6 +1139,14 @@
     },
     "tablestore": {
       "running": "运行中"
+    },
+    "modelarts": {
+      "running": "运行中",
+      "abnomal": "异常",
+      "creating": "创建中",
+      "deleting": "正在删除",
+      "error": "错误",
+      "unknow": "未知"
     }
   },
   "skuCategoryOptions": {
