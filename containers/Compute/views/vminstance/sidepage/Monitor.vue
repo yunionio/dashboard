@@ -69,6 +69,10 @@ export default {
           if (['Aliyun', 'Apsara'].includes(this.data.brand) && item.fromItem === 'vm_disk') {
             item.groupBy = ['device']
           }
+          // azure windows 虚拟机磁盘使用率增加groupBy: device
+          if (['Azure'].includes(this.data.brand) && item.fromItem === 'vm_disk' && this.data.os_type === 'Windows') {
+            item.groupBy = ['device']
+          }
           return item
         })
         return otherMonitor

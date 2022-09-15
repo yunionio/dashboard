@@ -98,17 +98,13 @@ export default {
           })
           return vals.join(' ')
         }
-        let groupByKey = ''
-        val.series.forEach(item => {
-          const tags = item.tags
-
-          if (val.constants.groupBy && val.constants.groupBy.length !== 0) {
-            groupByKey = getGroupByKey(tags, val.constants.groupBy)
-          }
-        })
 
         const { series = [] } = val // series长度取决于metric_query长度
         series.map(serie => {
+          let groupByKey = ''
+          if (val.constants.groupBy && val.constants.groupBy.length) {
+            groupByKey = getGroupByKey(serie.tags, val.constants.groupBy)
+          }
           const { points = [] } = serie
           columns.map((column, i) => {
             const row = {
