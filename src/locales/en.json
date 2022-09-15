@@ -1124,6 +1124,14 @@
     },
     "tablestore": {
       "running": "Running"
+    },
+    "modelarts": {
+      "running": "Running",
+      "abnomal": "Abnomal",
+      "creating": "Creating",
+      "deleting": "Deleting",
+      "error": "Error",
+      "unknow": "Unknow"
     }
   },
   "skuCategoryOptions": {

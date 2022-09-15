@@ -42,6 +42,8 @@ import Schedpolicy from '@Cloudenv/views/schedpolicy'
 import Dynamicschedtag from '@Cloudenv/views/dynamicschedtag'
 import TapService from '@Compute/views/tap-service'
 import TapServiceCreate from '@Compute/views/tap-service/create'
+import ModelArts from '@Compute/views/modelarts'
+import ModelArtsCreate from '@Compute/views/modelarts/create'
 
 import store from '@/store'
 import Layout from '@/layouts/RouterView'
@@ -222,6 +224,25 @@ export default {
               name: 'WebApp',
               path: '',
               component: WebApp,
+            },
+          ],
+        },
+        {
+          path: '/modelarts',
+          meta: {
+            label: 'ModelArts',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'ModelArts',
+              path: '',
+              component: ModelArts,
+            },
+            {
+              name: 'ModelArtsCreate',
+              path: 'create',
+              component: ModelArtsCreate,
             },
           ],
         },

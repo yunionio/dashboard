@@ -1613,5 +1613,15 @@
   "compute.agent.label": "Monitoring agent",
   "compute.agent.install.plugin": "Install monitoring agent plugin",
   "compute.agent.extra": "Support detailed monitoring of CPU, memory, disk and other metrics",
-  "compute.guest.status": "Guest Status"
+  "compute.guest.status": "Guest Status",
+  "compute.modelarts.create": "New ModelArts",
+  "compute.modelarts.work_type": "Job Type",
+  "compute.modelarts.spec_arch": "Spec Type",
+  "compute.modelarts.zone": "Availability Zone",
+  "compute.modelarts.bill_type": "Billing Model",
+  "compute.modelarts.notebook": "Development Environment",
+  "compute.modelarts.train": "Training Jobs",
+  "compute.modelarts.infer": "Inference Service",
+  "compute.modelarts.random": "Random assignment",
+  "compute.modelarts.postpaid": "Pay as you go"
 }
