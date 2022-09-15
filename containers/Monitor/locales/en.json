@@ -290,5 +290,7 @@
   "monitor.text_134": "Total Number Of Packets Accepted By Network Interface",
   "monitor.text_135": "Total Number Of Packets lost By Network Interface",
   "monitor.notification_type": "Notify Type",
-  "monitor.role": "Role"
+  "monitor.role": "Role",
+  "monitor.instance_engine": "Engine",
+  "monitor.tag_key": "Tag key: "
 }

@@ -344,6 +344,8 @@ export const metric_zh = {
   'Storage utilization rate': i18n.t('monitor.storage_utilization_rate'),
   'cost_alert': i18n.t('monitor_metric_99'),
   'amount': i18n.t('monitor_metric_100'),
+  'Guest disk': i18n.t('monitor_metric_59'),
+  'Used vm disk rate': i18n.t('monitor_metric_22'),
 }
 
 export const filterKeyMap = {
@@ -363,6 +365,12 @@ export const filterKeyMap = {
   elb_ip: i18n.t('common_722'),
   cloudaccount_name: i18n.t('dictionary.cloudaccount'),
   disk_type: i18n.t('dictionary.disktype'),
+  paltform: i18n.t('common.brand'),
+  account: i18n.t('common.account'),
+  database: i18n.t('db.text_28'),
+  engine: i18n.t('monitor.instance_engine'),
+  server_type: i18n.t('db.text_119'),
+  rds_name: i18n.t('db.text_60'),
 }
 
 export const MONITOR_MAX_POINTERS = 30
