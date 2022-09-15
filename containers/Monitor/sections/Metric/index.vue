@@ -90,7 +90,6 @@ export default {
   computed: {
     metricTypeOpts () {
       return this.res_types.map(val => {
-        console.log(val, this.$t(`dictionary.${val}`))
         // let label = val
         // if (this.$te(`dictionary.${val}`)) label = this.$t(`dictionary.${val}`)
         const label = this.$t(`dictionary.${val}`)
