@@ -1623,5 +1623,12 @@
   "compute.modelarts.train": "训练作业",
   "compute.modelarts.infer": "推理服务",
   "compute.modelarts.random": "随机分配",
-  "compute.modelarts.postpaid": "按量付费"
+  "compute.modelarts.postpaid": "按量付费",
+  "compute.modelarts.monitor.gpu.usage_percent": "GPU使用率",
+  "compute.modelarts.monitor.gpu_mem.usage_percent": "GPU内存使用率",
+  "compute.modelarts.monitor.npu.usage_percent": "NPU使用率",
+  "compute.modelarts.monitor.npu_mem.usage_percent": "NPU内存使用率",
+  "compute.modelarts.monitor.disk.available_capacity": "磁盘可用容量",
+  "compute.modelarts.monitor.disk.capacity": "磁盘容量",
+  "compute.modelarts.monitor.disk.usage_percent": "磁盘使用率"
 }

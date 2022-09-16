@@ -46,6 +46,16 @@ export const metricItems = {
   write_bps: { key: 'write_bps', label: i18n.t('compute.text_766'), unit: '%' },
   // 'bps_recv': { key: 'bps_recv', label: '网络入流量(bps_recv)', unit: '%' },
   // 'bps_sent': { key: 'bps_sent', label: '网络出流量(bps_sent)', unit: '%' },
+  // ModelArts
+  'modelarts_pool_cpu.usage_percent': { key: 'modelarts_pool_cpu.usage_percent', label: i18n.t('compute.text_753'), unit: '%', rules: [{ max: 100, type: 'integer', message: i18n.t('compute.text_754') }] },
+  'modelarts_pool_cpu_mem.usage_percent': { key: 'modelarts_pool_cpu_mem.usage_percent', label: i18n.t('compute.text_755'), unit: '%', rules: [{ max: 100, type: 'integer', message: i18n.t('compute.text_754') }] },
+  'modelarts_pool_gpu.usage_percent': { key: 'modelarts_pool_gpu.usage_percent', label: i18n.t('compute.modelarts.monitor.gpu.usage_percent'), unit: '%', rules: [{ max: 100, type: 'integer', message: i18n.t('compute.text_754') }] },
+  'modelarts_pool_gpu_mem.usage_percent': { key: 'modelarts_pool_gpu_mem.usage_percent', label: i18n.t('compute.modelarts.monitor.gpu_mem.usage_percent'), unit: '%', rules: [{ max: 100, type: 'integer', message: i18n.t('compute.text_754') }] },
+  'modelarts_pool_npu.usage_percent': { key: 'modelarts_pool_npu.usage_percent', label: i18n.t('compute.modelarts.monitor.npu.usage_percent'), unit: '%', rules: [{ max: 100, type: 'integer', message: i18n.t('compute.text_754') }] },
+  'modelarts_pool_npu_mem.usage_percent': { key: 'modelarts_pool_npu_mem.usage_percent', label: i18n.t('compute.modelarts.monitor.npu_mem.usage_percent'), unit: '%', rules: [{ max: 100, type: 'integer', message: i18n.t('compute.text_754') }] },
+  'modelarts_pool_disk.available_capacity': { key: 'modelarts_pool_disk.available_capacity', label: i18n.t('compute.modelarts.monitor.disk.available_capacity'), unit: 'G' },
+  'modelarts_pool_disk.capacity': { key: 'modelarts_pool_disk.available_capacity', label: i18n.t('compute.modelarts.monitor.disk.capacity'), unit: 'G' },
+  'modelarts_pool_disk.usage_percent': { key: 'modelarts_pool_disk.usage_percent', label: i18n.t('compute.text_533'), unit: '%', rules: [{ max: 100, type: 'integer', message: i18n.t('compute.text_754') }] },
 }
 
 export const TIME_CN = {
