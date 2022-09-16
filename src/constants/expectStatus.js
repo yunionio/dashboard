@@ -518,6 +518,5 @@ export default {
   },
   modelarts: {
     success: ['running'],
-    info: ['creating'],
   },
 }
