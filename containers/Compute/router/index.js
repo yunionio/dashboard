@@ -231,6 +231,9 @@ export default {
           path: '/modelarts',
           meta: {
             label: 'ModelArts',
+            hidden: () => {
+              return !hasSetupKey(['huawei'])
+            },
           },
           component: Layout,
           children: [

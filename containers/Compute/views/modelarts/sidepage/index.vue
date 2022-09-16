@@ -33,11 +33,13 @@ import Actions from '@/components/PageList/Actions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import Detail from './Detail'
+import ModelArtsMonitorSidepage from './Monitor'
 
 export default {
   name: 'ModelArtsSidePage',
   components: {
     Detail,
+    ModelArtsMonitorSidepage,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -45,6 +47,7 @@ export default {
     return {
       detailTabs: [
         { label: this.$t('compute.text_238'), key: 'detail' },
+        { label: this.$t('compute.text_608'), key: 'model-arts-monitor-sidepage' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
