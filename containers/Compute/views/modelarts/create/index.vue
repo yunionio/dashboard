@@ -6,6 +6,17 @@
         <a-form-item class="mb-0" :label="$t('compute.text_297', [$t('dictionary.project')])">
           <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
         </a-form-item>
+        <area-selects
+          class="mb-0"
+          ref="areaSelects"
+          :wrapperCol="formItemLayout.wrapperCol"
+          :labelCol="formItemLayout.labelCol"
+          :names="['provider', 'cloudregion']"
+          :cloudregionParams="cloudregionParams"
+          :isRequired="true"
+          :providerParams="providerParams"
+          filterBrandResource="modelarts_pools"
+          @change="handleRegionChange" />
         <a-form-item :label="$t('compute.text_15')">
           <base-select
             resource="cloudproviders"
@@ -86,6 +97,7 @@ import DomainProject from '@/sections/DomainProject'
 import { sizestr } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
 import NameRepeated from '@/sections/NameRepeated'
+import AreaSelects from '@/sections/AreaSelects'
 import {
   SPECS,
   SPEC_MAP,
@@ -103,6 +115,7 @@ export default {
   components: {
     DomainProject,
     NameRepeated,
+    AreaSelects,
   },
   data () {
     return {
@@ -193,6 +206,7 @@ export default {
         }),
         fd: {
           name: '',
+          cloudprovider: '',
           spec: 'x86',
           arch: 'CPU',
         },
@@ -212,6 +226,16 @@ export default {
       cloudproviderParams: {},
       skuOptions: [],
       skuLoading: false,
+      cloudregionParams: {
+        usable: true,
+        cloud_env: 'public',
+      },
+      providerParams: {
+        cloud_env: 'public',
+        brand: 'Huawei',
+      },
+      regionProvider: '',
+      regionId: '',
     }
   },
   computed: {
@@ -219,10 +243,23 @@ export default {
       return this.SPEC_ARCH_MAP[this.form.fd.spec]
     },
   },
+  watch: {
+    'form.fd.cloudprovider' (val) {
+      this.fetchSkus()
+    },
+  },
   created () {
     this.fetchSkus()
   },
   methods: {
+    handleRegionChange (data) {
+      const { cloudregion } = data
+      if (cloudregion) {
+        const { provider } = cloudregion.value
+        this.regionProvider = provider
+        this.regionId = cloudregion.id
+      }
+    },
     getArch (item, arch) {
       const memory = sizestr(item.memory, 'M', 1024)
       if (arch === ARCH_MAP.CPU.key) {
@@ -240,11 +277,19 @@ export default {
       this.form.fc.setFieldsValue({ sku })
     },
     async fetchSkus (arch = 'CPU') {
+      if (!this.regionId || !this.form.fd.cloudprovider) return
       try {
         this.clearSku()
         this.skuLoading = true
         const manager = new Manager('modelarts_pool_skus')
-        const { data } = await manager.list({ params: { filter: `name.like(%${arch}%)`, details: true } })
+        const { data } = await manager.list({
+          params: {
+            cloudregion: this.regionId,
+            manager: this.form.fd.cloudprovider,
+            filter: `name.like(%${arch}%)`,
+            details: true,
+          },
+        })
         this.skuOptions = data.data.map(item => {
           return {
             key: item.name,
