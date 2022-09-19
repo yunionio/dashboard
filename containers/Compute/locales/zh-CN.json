@@ -1626,22 +1626,5 @@
   "compute.agent.label": "监控agent",
   "compute.agent.install.plugin": "安装监控agent插件",
   "compute.agent.extra": "支持对CPU、内存、磁盘等指标的详细监控",
-  "compute.guest.status": "虚拟机状态",
-  "compute.modelarts.create": "新建ModelArts",
-  "compute.modelarts.work_type": "作业类型",
-  "compute.modelarts.spec_arch": "规格类型",
-  "compute.modelarts.zone": "可用区",
-  "compute.modelarts.bill_type": "计费模式",
-  "compute.modelarts.notebook": "开发环境",
-  "compute.modelarts.train": "训练作业",
-  "compute.modelarts.infer": "推理服务",
-  "compute.modelarts.random": "随机分配",
-  "compute.modelarts.postpaid": "按量付费",
-  "compute.modelarts.monitor.gpu.usage_percent": "GPU使用率",
-  "compute.modelarts.monitor.gpu_mem.usage_percent": "GPU内存使用率",
-  "compute.modelarts.monitor.npu.usage_percent": "NPU使用率",
-  "compute.modelarts.monitor.npu_mem.usage_percent": "NPU内存使用率",
-  "compute.modelarts.monitor.disk.available_capacity": "磁盘可用容量",
-  "compute.modelarts.monitor.disk.capacity": "磁盘容量",
-  "compute.modelarts.monitor.disk.usage_percent": "磁盘使用率"
+  "compute.guest.status": "虚拟机状态"
 }
