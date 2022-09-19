@@ -28,8 +28,9 @@ export default {
   },
   data () {
     let ok = _.get(this.data, ['metadata', 'sys:monitor_agent']) || _.get(this.data, ['metadata', '__monitor_agent'])
-    if (this.data.hasOwnProperty('agent_status')) {
-      ok = this.data.agent_status === 'succeed'
+    const deploy = _.get(this.data, ['metadata', 'telegraf_deployed'])
+    if (this.data.hasOwnProperty('agent_status') || deploy) {
+      ok = this.data.agent_status === 'succeed' || deploy
     }
     // const visible = this.data.status === 'running' && !ok
     return {
