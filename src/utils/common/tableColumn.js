@@ -834,8 +834,9 @@ export const getServerMonitorAgentInstallStatus = ({
     slots: {
       default: function ({ row }, h) {
         const status = _.get(row, ['metadata', 'sys:monitor_agent']) || _.get(row, ['metadata', '__monitor_agent'])
-        if (row.hasOwnProperty('agent_status')) {
-          if (row.agent_status === 'succeed') {
+        const deploy = _.get(row, ['metadata', 'telegraf_deployed'])
+        if (row.hasOwnProperty('agent_status') || deploy) {
+          if (row.agent_status === 'succeed' || deploy) {
             return i18n.t('compute.monitor.agent.install_status.installed')
           } else if (row.agent_status === 'applying') {
             return (<div>{i18n.t('compute.monitor.agent.install_status.installing')}<a-icon style="margin-left:5px" type="loading" /></div>)
