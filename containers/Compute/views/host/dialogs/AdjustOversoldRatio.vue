@@ -14,7 +14,7 @@
           <div style="font-size:12px" class="add-desc">{{$t('compute.text_544')}}</div>
         </a-form-item>
         <a-form-item :label="$t('compute.memory_reserve_gb')" v-bind="formItemLayout">
-          <a-input-number v-decorator="decorators.mem_reserved" :min="1" :max="32" :step="1" />
+          <a-input-number v-decorator="decorators.mem_reserved" :min="1" :step="1" />
         </a-form-item>
       </a-form>
     </div>
@@ -57,7 +57,7 @@ export default {
           'mem_cmtbound',
           {
             validateFirst: true,
-            initialValue: this.params.data[0].mem_commint_bound,
+            initialValue: this.params.data[0].mem_commit_bound,
             rules: [
               {
                 required: true,
