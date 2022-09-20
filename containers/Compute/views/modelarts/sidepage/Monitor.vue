@@ -96,7 +96,7 @@ export default {
           seleteItem: 'available_capacity',
           fromItem: 'modelarts_pool_disk',
           unit: 'G',
-          transfer: 1,
+          transfer: 1024,
           metric: metricItems['modelarts_pool_disk.available_capacity'].key, // 报警指标
         },
         // 磁盘容量
@@ -106,7 +106,7 @@ export default {
           seleteItem: 'available_capacity',
           fromItem: 'modelarts_pool_disk',
           unit: 'G',
-          transfer: 1,
+          transfer: 1024,
           metric: metricItems['modelarts_pool_disk.capacity'].key, // 报警指标
         },
         // 磁盘使用率
