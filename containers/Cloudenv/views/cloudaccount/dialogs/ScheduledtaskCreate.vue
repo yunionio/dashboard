@@ -7,6 +7,9 @@
       <a-form :form="form.fc" v-bind="formItemLayout" hideRequiredMark>
         <a-form-item :label="$t('cloudenv.text_95')">
           <a-input :placeholder="$t('cloudenv.text_190')" v-decorator="decorators.name" />
+          <template v-slot:extra>
+            <name-repeated res="scheduledtasks" :name="form.fd.name" />
+          </template>
         </a-form-item>
         <a-form-item :label="$t('cloudenv.text_360')">
           {{ $t('cloudenv.sync_account') }}
@@ -65,11 +68,15 @@ import {
   getStatusTableColumn,
   getEnabledTableColumn,
 } from '@/utils/common/tableColumn'
+import NameRepeated from '@/sections/NameRepeated'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'ScheduledtaskCreateDialog',
+  components: {
+    NameRepeated,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -141,7 +148,16 @@ export default {
         ],
       },
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              this.form.fd[key] = values[key]
+            })
+          },
+        }),
+        fd: {
+          name: '',
+        },
       },
       columns: [
         {
@@ -178,7 +194,7 @@ export default {
         label_type: 'id',
         labels: [this.params.resId],
         operation: 'sync',
-        name: values.name,
+        generate_name: values.name,
       }
       if (values.cycleTimer.cycle_type === 'one') {
         params.scheduled_type = 'timing'
@@ -208,7 +224,7 @@ export default {
         })
       } else {
         // 未设置有效时间时，有效时间为 今天-100年
-        params.cycle_timer = {}
+        params.cycle_timer = { ...values.cycleTimer }
         params.cycle_timer.startTime = this.$moment()
         params.cycle_timer.endTime = this.$moment().add('year', 100)
       }
