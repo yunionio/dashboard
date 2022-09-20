@@ -8,6 +8,9 @@
         </a-form-item>
         <a-form-item :label="$t('cloudenv.text_95')">
           <a-input :placeholder="$t('cloudenv.text_190')" v-decorator="decorators.name" />
+          <template v-slot:extra>
+            <name-repeated res="scheduledtasks" :name="form.fd.name" :default-text="$t('compute.text_893')" />
+          </template>
         </a-form-item>
         <a-form-item :label="$t('common.description')">
           <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
@@ -90,11 +93,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ResourcePropsMixin from '../mixins/resourceProps'
 import Tag from '@/sections/Tag'
 import DomainProject from '@/sections/DomainProject'
 import ListSelect from '@/sections/ListSelect'
 import validateForm, { isRequired } from '@/utils/validate'
+import NameRepeated from '@/sections/NameRepeated'
+import ResourcePropsMixin from '../mixins/resourceProps'
 
 export default {
   name: 'ScheduledtaskCreateIndex',
@@ -102,6 +106,7 @@ export default {
     DomainProject,
     Tag,
     ListSelect,
+    NameRepeated,
   },
   mixins: [ResourcePropsMixin],
   data () {
@@ -234,11 +239,17 @@ export default {
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              this.form.fd[key] = values[key]
+            })
             if (values.hasOwnProperty('project')) {
               this.resourceProps.list.getParams.tenant = values.project && values.project.key
             }
           },
         }),
+        fd: {
+          name: '',
+        },
       },
       formItemLayout: {
         wrapperCol: {
@@ -333,7 +344,9 @@ export default {
         })
       } else {
         // 未设置有效时间时，有效时间为 今天-100年
-        params.cycle_timer = {}
+        params.cycle_timer = {
+          ...cycleTimer,
+        }
         params.cycle_timer.startTime = this.$moment()
         params.cycle_timer.endTime = this.$moment().add('year', 100)
       }
