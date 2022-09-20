@@ -223,7 +223,6 @@ export default {
           xxl: { span: 4 },
         },
       },
-      cloudproviderParams: {},
       skuOptions: [],
       skuLoading: false,
       cloudregionParams: {
@@ -239,12 +238,20 @@ export default {
     }
   },
   computed: {
+    cloudproviderParams () {
+      return {
+        cloudregion: this.regionId,
+      }
+    },
     archOpts () {
       return this.SPEC_ARCH_MAP[this.form.fd.spec]
     },
   },
   watch: {
     'form.fd.cloudprovider' (val) {
+      this.fetchSkus()
+    },
+    'regionId' (val) {
       this.fetchSkus()
     },
   },
@@ -306,8 +313,9 @@ export default {
     },
     generateValues (values) {
       const data = {
-        name: values.name,
+        generate_name: values.name,
         manager_id: values.cloudprovider,
+        cloudregion: this.regionId,
         instance_type: values.sku,
         work_type: values.work_type.join(','),
         cpu_arch: values.spec,
