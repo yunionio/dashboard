@@ -781,6 +781,33 @@ export default {
                   },
                   hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_disk_speed'),
                 },
+                // 更换块存储
+                {
+                  label: i18n.t('compute.vminstance.change_disk_storage'),
+                  action: () => {
+                    this.createDialog('VmChangeBlockStorageDialog', {
+                      data: [obj],
+                      columns: this.columns,
+                      onManager: this.onManager,
+                      refresh: this.refresh,
+                    })
+                  },
+                  meta: () => {
+                    const provider = obj.provider
+                    const ret = {
+                      validate: true,
+                    }
+                    if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                      ret.validate = false
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
+                      return ret
+                    }
+                    return {
+                      validate: cloudEnabled('changeBlockStorage', obj),
+                      tooltip: cloudUnabledTip('changeBlockStorage', obj),
+                    }
+                  },
+                },
                 {
                   label: this.$t('compute.bind_physical_cpu'),
                   permission: 'server_get_cpuset_cores',
