@@ -1613,5 +1613,6 @@
   "compute.agent.label": "Monitoring agent",
   "compute.agent.install.plugin": "Install monitoring agent plugin",
   "compute.agent.extra": "Support detailed monitoring of CPU, memory, disk and other metrics",
-  "compute.guest.status": "Guest Status"
+  "compute.guest.status": "Guest Status",
+  "compute.vminstance.change_disk_storage": "Change Disk Storage"
 }

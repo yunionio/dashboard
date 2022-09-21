@@ -162,7 +162,8 @@
       "sync_isolated_device_failed": "同步透传设备失败",
       "start_instance_backup": "开始创建备份",
       "qga_set_password": "重置密码中",
-      "qga_command_executing": "QGA执行中"
+      "qga_command_executing": "QGA执行中",
+      "disk_change_storage": "磁盘更换存储中"
     },
     "network": {
       "init": "初始化",

@@ -509,6 +509,12 @@ const actionEableMap = {
       bingocloud: false,
     },
   },
+  changeBlockStorage: {
+    cn: i18n.t('compute.vminstance.change_disk_storage'),
+    brand: {
+      onecloud: ['ready', 'running'],
+    },
+  },
 }
 
 export const commonEnabled = (value, statusArr = ['ready']) => {
