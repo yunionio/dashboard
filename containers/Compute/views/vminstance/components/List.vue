@@ -1058,7 +1058,7 @@ export default {
                         ret.tooltip = this.$t('compute.text_1125')
                         return ret
                       }
-                      const isAllHostOffline = this.list.selectedItems.every((item) => { return item.host_status === 'offline' })
+                      const isAllHostOffline = this.list.selectedItems.every((item) => { return item.host_service_status === 'offline' })
                       if (!isAllHostOffline) {
                         ret.validate = false
                         ret.tooltip = this.$t('compute.quick.recovery.validate.host_status_tooltip')
