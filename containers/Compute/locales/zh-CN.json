@@ -1626,5 +1626,6 @@
   "compute.agent.label": "监控agent",
   "compute.agent.install.plugin": "安装监控agent插件",
   "compute.agent.extra": "支持对CPU、内存、磁盘等指标的详细监控",
-  "compute.guest.status": "虚拟机状态"
+  "compute.guest.status": "虚拟机状态",
+  "compute.vminstance.change_disk_storage": "更换块存储"
 }
