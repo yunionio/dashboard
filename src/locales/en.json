@@ -162,7 +162,8 @@
       "sync_isolated_device_failed": "Sync isolated device failed",
       "start_instance_backup": "Start Instance Backup",
       "qga_set_password": "QGA set password",
-      "qga_command_executing": "QGA command executing"
+      "qga_command_executing": "QGA command executing",
+      "disk_change_storage": "Disk Change Storage"
     },
     "network": {
       "init": "Initialize",
