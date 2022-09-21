@@ -1569,7 +1569,7 @@ export default {
                       ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[obj.provider].label])
                       return ret
                     }
-                    if (obj.host_status !== 'offline') {
+                    if (obj.host_service_status !== 'offline') {
                       ret.validate = false
                       ret.tooltip = this.$t('compute.quick.recovery.validate.host_status_tooltip')
                       return ret
