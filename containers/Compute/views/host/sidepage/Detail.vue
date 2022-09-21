@@ -338,11 +338,11 @@ export default {
               },
             },
             {
-              field: 'mem_commint_bound',
+              field: 'mem_commit_bound',
               title: this.$t('compute.text_594'),
               slots: {
                 default: ({ row }, h) => {
-                  if (row.mem_commint_bound) return [<a class="mem-edit-item" onClick={this.openHostAdjustOversoldRatioDialog}>{row.mem_commint_bound}<a class="edit-icon"><a-icon type='edit' /></a></a>]
+                  if (row.mem_commit_bound) return [<a class="mem-edit-item" onClick={this.openHostAdjustOversoldRatioDialog}>{row.mem_commit_bound}<a class="edit-icon"><a-icon type='edit' /></a></a>]
                   return '-'
                 },
               },
