@@ -209,7 +209,7 @@ export function getCloudaccountDocs (scope) {
 
 export const ACCESS_URL = {
   huawei: {
-    InternationalCloud: i18n.t('cloudenv.text_139'),
+    // InternationalCloud: i18n.t('cloudenv.text_139'),
     ChinaCloud: i18n.t('cloudenv.text_140'),
   },
   aws: {
