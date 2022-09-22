@@ -72,5 +72,7 @@ export default {
   },
   notify: {
     TooManyRequests: '发送验证码频率太高，请稍后再试',
+    NotFoundError: '资源不存在',
+    FindUserByMobile: '该手机号未注册',
   },
 }
