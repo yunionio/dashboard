@@ -1,7 +1,7 @@
 // import { message } from 'ant-design-vue'
 import * as R from 'ramda'
 import Vue from 'vue'
-import ERROR_INFO from '@/constants/error'
+import ERROR_INFO, { DETAIL_ERRMSG } from '@/constants/error'
 import i18n from '@/locales'
 import store from '@/store'
 import windowsMixin from '@/mixins/windows'
@@ -10,6 +10,11 @@ import { hasPermission } from '@/utils/auth'
 const WindowVue = Vue.extend({
   mixins: [windowsMixin],
 })
+
+const getDetailInfo = (data) => {
+  const details = data.split(':') || []
+  return DETAIL_ERRMSG[details[0]] || data
+}
 
 export const getErrorBody = data => {
   if (R.is(String, data)) {
@@ -57,7 +62,7 @@ export const getHttpErrorMessage = (err, isErrorBody = false) => {
     }
   }
   // 默认为错误的元信息
-  const ret = errorBody.details
+  const ret = getDetailInfo(errorBody.details)
   // 查到对应的class翻译信息
   const errorClass = ERROR_INFO[errorBody.class]
   // if (errorClass) {
