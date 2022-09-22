@@ -42,7 +42,7 @@ import ListSelect from '@/sections/ListSelect'
 import ResourceProps from '../mixins/resourceProps'
 
 export default {
-  name: 'VmTransferDialog',
+  name: 'VmQuickRecoveryDialog',
   components: {
     ListSelect,
   },
