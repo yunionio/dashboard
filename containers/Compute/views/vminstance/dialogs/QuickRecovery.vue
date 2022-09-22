@@ -204,10 +204,10 @@ export default {
         this.loading = false
       }
     },
-    doForecast (live_migrate = true, prefer_host_id) {
+    doForecast (prefer_host_id) {
       const manager = new this.$Manager('servers')
       const params = {
-        live_migrate,
+        live_migrate: false,
       }
       if (prefer_host_id) {
         params.prefer_host_id = prefer_host_id
@@ -219,8 +219,7 @@ export default {
       })
     },
     queryForcastData (prefer_host_id) {
-      const live_migrate = this.firstData.status === 'running'
-      this.doForecast(live_migrate, prefer_host_id).then((res) => {
+      this.doForecast(prefer_host_id).then((res) => {
         this.forcastData = res.data
       }).catch((err) => {
         console.log(err)
