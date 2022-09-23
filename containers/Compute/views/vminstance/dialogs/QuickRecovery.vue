@@ -208,6 +208,7 @@ export default {
       const manager = new this.$Manager('servers')
       const params = {
         live_migrate: false,
+        is_rescue_mode: true,
       }
       if (prefer_host_id) {
         params.prefer_host_id = prefer_host_id
