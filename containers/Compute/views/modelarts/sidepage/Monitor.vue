@@ -32,7 +32,7 @@ export default {
           unit: '%',
           transfer: 1,
           metric: metricItems['modelarts_pool_cpu.usage_percent'].key, // 报警指标
-          arch: [ARCH_MAP.CPU.key],
+          // arch: [ARCH_MAP.CPU.key],
         },
         // 内存使用率
         {
@@ -43,7 +43,7 @@ export default {
           unit: '%',
           transfer: 1,
           metric: metricItems['modelarts_pool_cpu_mem.usage_percent'].key, // 报警指标
-          arch: [ARCH_MAP.CPU.key],
+          // arch: [ARCH_MAP.CPU.key],
         },
         // GPU使用率
         {
@@ -54,7 +54,7 @@ export default {
           unit: '%',
           transfer: 1,
           metric: metricItems['modelarts_pool_gpu.usage_percent'].key, // 报警指标
-          arch: [ARCH_MAP.GPU.key],
+          // arch: [ARCH_MAP.GPU.key],
         },
         // GPU内存使用率
         {
@@ -65,11 +65,11 @@ export default {
           unit: '%',
           transfer: 1,
           metric: metricItems['modelarts_pool_gpu_mem.usage_percent'].key, // 报警指标
-          arch: [ARCH_MAP.GPU.key],
+          // arch: [ARCH_MAP.GPU.key],
         },
         // NPU使用率
         {
-          name: 'cpu',
+          name: 'npu',
           label: this.$t('compute.modelarts.monitor.npu.usage_percent'),
           seleteItem: 'usage_percent',
           fromItem: 'modelarts_pool_npu',
@@ -80,7 +80,7 @@ export default {
         },
         // NPU内存使用率
         {
-          name: 'mem',
+          name: 'npu_mem',
           label: this.$t('compute.modelarts.monitor.npu_mem.usage_percent'),
           seleteItem: 'usage_percent',
           fromItem: 'modelarts_pool_npu_mem',
