@@ -164,11 +164,14 @@ export default {
                 })
               },
               meta: () => {
-                const provider = obj.provider.toLowerCase()
-                return {
-                  validate: diskCreateSnapshotConfig[provider](obj).validate,
-                  tooltip: diskCreateSnapshotConfig[provider](obj).tooltip,
+                const ret = { validate: true }
+                const provider = obj.provider?.toLowerCase()
+                if (provider) {
+                  const { validate, tooltip } = diskCreateSnapshotConfig[provider](obj)
+                  ret.validate = validate
+                  ret.tooltip = tooltip
                 }
+                return ret
               },
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
@@ -177,6 +180,35 @@ export default {
                 })
               },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_create_snapshot'),
+            },
+            {
+              label: i18n.t('compute.vminstance.change_disk_storage'),
+              action: () => {
+                this.createDialog('DiskChangeBlockStorageDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              meta: () => {
+                const guestStatus = ['running', 'ready']
+                const ret = {
+                  validate: true,
+                }
+                if (obj.brand !== BRAND_MAP.OneCloud.key) {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.text_1287', [BRAND_MAP[obj.brand]?.label])
+                }
+                if (!obj.guest) {
+                  ret.validate = false
+                } else {
+                  if (!guestStatus.includes(obj.guest_status)) {
+                    ret.validate = false
+                  }
+                }
+                return ret
+              },
             },
             {
               label: i18n.t('compute.create_disk_backup'),
