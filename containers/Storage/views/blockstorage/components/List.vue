@@ -38,6 +38,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    cloudEnv: String,
   },
   data () {
     const groupActions = [
@@ -164,7 +165,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'storages',
-        getParams: this.getParams,
+        getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.blockstorage).flat(),
         filterOptions: {
           id: {
@@ -241,7 +242,7 @@ export default {
         this.sidePageTriggerHandle(this, 'BlockStorageSidePage', {
           id: row.id,
           resource: 'storages',
-          getParams: this.getParams,
+          getParams: this.getParam,
         }, {
           list: this.list,
           tab,
@@ -249,12 +250,30 @@ export default {
       },
     }
   },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
+  },
   created () {
     this.list.fetchData()
     this.initSidePageTab('detail')
     this.$bus.$on('BlockStorageListSingleUpdate', args => {
       this.list.singleUpdate(...args)
     }, this)
+  },
+  methods: {
+    getParam () {
+      const ret = {
+        details: true,
+        with_meta: true,
+        ...this.getParams,
+        is_baremetal: this.cloudEnv === 'baremetal',
+      }
+      return ret
+    },
   },
 }
 </script>
