@@ -224,7 +224,6 @@ export default {
         })
       } else {
         // 未设置有效时间时，有效时间为 今天-100年
-        params.cycle_timer = { ...values.cycleTimer }
         params.cycle_timer.startTime = this.$moment()
         params.cycle_timer.endTime = this.$moment().add('year', 100)
       }
