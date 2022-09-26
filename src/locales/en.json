@@ -163,7 +163,9 @@
       "start_instance_backup": "Start Instance Backup",
       "qga_set_password": "QGA set password",
       "qga_command_executing": "QGA command executing",
-      "disk_change_storage": "Disk Change Storage"
+      "disk_change_storage": "Disk migration storage",
+      "disk_change_stor_fail": "Disk migration storage failed",
+      "live_migrating": "Migrating"
     },
     "network": {
       "init": "Initialize",
