@@ -162,11 +162,11 @@ export default {
       try {
         const response = await manager.list({
           params: {
-            type: ['yunionapi', 'meter', 'identity'],
+            type: ['common', 'yunionapi', 'meter', 'identity'],
           },
         })
         const resData = response?.data?.data
-        const commonId = resData.find(v => v.type === 'yunionapi')?.id || ''
+        const commonId = resData.find(v => v.type === 'common')?.id || ''
         if (commonId) {
           const configResponse = await manager.getSpecific({
             id: commonId,
@@ -174,6 +174,14 @@ export default {
           })
           const config = (configResponse.data.config && configResponse.data.config.default) || {}
           commit('SET_GLOBAL_CONFIG', config)
+        }
+        const yunionapiId = resData.find(v => v.type === 'yunionapi')?.id || ''
+        if (yunionapiId) {
+          const configResponse = await manager.getSpecific({
+            id: yunionapiId,
+            spec: 'config',
+          })
+          const config = (configResponse.data.config && configResponse.data.config.default) || {}
           commit('projectTags/SET_DATA', { name: 'enableOrganization', data: config.enable_organization }, { root: true })
         }
         const mneterId = resData.find(v => v.type === 'meter')?.id || ''
