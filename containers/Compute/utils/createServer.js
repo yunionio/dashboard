@@ -1240,8 +1240,10 @@ export class GenCreateData {
     }
     // 安装监控 agent
     if (this.fd.hypervisor === HYPERVISORS_MAP.kvm.key) {
-      if (this.fd.os_arch === HOST_CPU_ARCHS.x86.key && this.fd.deploy_telegraf) {
-        data.deploy_telegraf = this.fd.deploy_telegraf
+      if ((this.isWindows() && this.fd.os_arch !== HOST_CPU_ARCHS.arm.key) || !this.isWindows()) {
+        if (this.fd.deploy_telegraf) {
+          data.deploy_telegraf = this.fd.deploy_telegraf
+        }
       }
     }
     return data
