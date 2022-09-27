@@ -13,7 +13,6 @@
             version="v1"
             v-decorator="decorators.image_id"
             resource="images"
-            search-key="search"
             :params="imageParams"
             :select-props="{ placeholder: $t('compute.text_1219') }" />
         </a-form-item>
