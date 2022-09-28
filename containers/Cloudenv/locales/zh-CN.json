@@ -768,5 +768,7 @@
   "cloudenv.scheduled_settings_title": "定时同步任务设置（可选）",
   "cloudenv.range_picker_help": "支持为空，不选择代表长期有效",
   "cloudenv.incloudsphere": "InCloudSphere",
-  "cloudenv.console_url": "控制台地址"
+  "cloudenv.console_url": "控制台地址",
+  "cloudenv.auth_url_label": "链接地址",
+  "cloudenv.auth_url_extra": "请输入外部数据链接地址，需保证该平台与目标地址网络互通"
 }

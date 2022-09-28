@@ -42,6 +42,7 @@ const actionEableMap = {
       nutanix: ['ready'],
       bingocloud: false,
       incloudsphere: ['ready'],
+      remotefile: false,
     },
   },
   stop: {
@@ -69,6 +70,7 @@ const actionEableMap = {
       nutanix: ['running'],
       bingocloud: false,
       incloudsphere: ['running'],
+      remotefile: false,
     },
   },
   restart: {
@@ -96,6 +98,7 @@ const actionEableMap = {
       nutanix: ['running', 'stop_fail'],
       bingocloud: false,
       incloudsphere: ['running', 'stop_fail'],
+      remotefile: false,
     },
   },
   rebuildRoot: {
@@ -121,6 +124,7 @@ const actionEableMap = {
       nutanix: false,
       bingocloud: false,
       incloudsphere: false,
+      remotefile: false,
     },
   },
   resetPassword: {
@@ -146,6 +150,7 @@ const actionEableMap = {
       nutanix: false,
       bingocloud: false,
       incloudsphere: ['running'],
+      remotefile: false,
     },
   },
   bindKeyPair: {
@@ -171,6 +176,7 @@ const actionEableMap = {
       nutanix: false,
       bingocloud: false,
       incloudsphere: ['running'],
+      remotefile: false,
     },
   },
   unBindKeyPair: {
@@ -196,6 +202,7 @@ const actionEableMap = {
       nutanix: false,
       bingocloud: false,
       incloudsphere: false,
+      remotefile: false,
     },
   },
   adjustConfig: {
@@ -221,6 +228,7 @@ const actionEableMap = {
       nutanix: ['ready'],
       bingocloud: false,
       incloudsphere: ['ready'],
+      remotefile: false,
     },
   },
   vnc: {
@@ -248,6 +256,7 @@ const actionEableMap = {
       nutanix: false,
       bingocloud: false,
       incloudsphere: false,
+      remotefile: false,
     },
   },
   'EIP SSH': {
@@ -274,6 +283,7 @@ const actionEableMap = {
       ecloud: ['running'],
       nutanix: ['running'],
       bingocloud: false,
+      remotefile: false,
     },
   },
   'IP SSH': {
@@ -301,6 +311,7 @@ const actionEableMap = {
       nutanix: ['running'],
       bingocloud: false,
       incloudsphere: ['running'],
+      remotefile: false,
     },
   },
   createSnapshot: {
@@ -326,6 +337,7 @@ const actionEableMap = {
       nutanix: false,
       bingocloud: false,
       incloudsphere: false,
+      remotefile: false,
     },
   },
   createBackup: {
@@ -351,6 +363,7 @@ const actionEableMap = {
       nutanix: false,
       bingocloud: false,
       incloudsphere: false,
+      remotefile: false,
     },
   },
   transfer: {
@@ -376,6 +389,7 @@ const actionEableMap = {
       nutanix: false,
       bingocloud: false,
       incloudsphere: false,
+      remotefile: false,
     },
   },
   assignSecgroup: {
@@ -401,6 +415,7 @@ const actionEableMap = {
       nutanix: false,
       bingocloud: false,
       incloudsphere: false,
+      remotefile: false,
     },
   },
   insertiso: {
@@ -425,6 +440,7 @@ const actionEableMap = {
       nutanix: false,
       bingocloud: false,
       incloudsphere: false,
+      remotefile: false,
     },
   },
   ejectiso: {
@@ -449,6 +465,7 @@ const actionEableMap = {
       nutanix: false,
       bingocloud: false,
       incloudsphere: false,
+      remotefile: false,
     },
   },
   bindEip: {
@@ -474,6 +491,7 @@ const actionEableMap = {
       nutanix: false,
       bingocloud: false,
       incloudsphere: false,
+      remotefile: false,
     },
   },
   unbindEip: {
@@ -499,6 +517,7 @@ const actionEableMap = {
       nutanix: false,
       bingocloud: false,
       incloudsphere: false,
+      remotefile: false,
     },
   },
   acttachGpu: {
@@ -508,6 +527,7 @@ const actionEableMap = {
       vmware: false,
       bingocloud: false,
       incloudsphere: false,
+      remotefile: false,
     },
   },
   acttachUsb: {
@@ -517,6 +537,7 @@ const actionEableMap = {
       vmware: false,
       bingocloud: false,
       incloudsphere: false,
+      remotefile: false,
     },
   },
   publicIpToEip: {
@@ -528,12 +549,14 @@ const actionEableMap = {
       aws: false,
       bingocloud: false,
       incloudsphere: false,
+      remotefile: false,
     },
   },
   changeBlockStorage: {
     cn: i18n.t('compute.vminstance.change_disk_storage'),
     brand: {
       onecloud: ['ready', 'running'],
+      remotefile: false,
     },
   },
 }
