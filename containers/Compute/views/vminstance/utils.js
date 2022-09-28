@@ -41,6 +41,7 @@ const actionEableMap = {
       ecloud: ['ready'],
       nutanix: ['ready'],
       bingocloud: false,
+      remotefile: false,
     },
   },
   stop: {
@@ -67,6 +68,7 @@ const actionEableMap = {
       ecloud: ['running'],
       nutanix: ['running'],
       bingocloud: false,
+      remotefile: false,
     },
   },
   restart: {
@@ -93,6 +95,7 @@ const actionEableMap = {
       ecloud: ['running', 'stop_fail'],
       nutanix: ['running', 'stop_fail'],
       bingocloud: false,
+      remotefile: false,
     },
   },
   rebuildRoot: {
@@ -117,6 +120,7 @@ const actionEableMap = {
       apsara: ['running', 'ready'],
       nutanix: false,
       bingocloud: false,
+      remotefile: false,
     },
   },
   resetPassword: {
@@ -141,6 +145,7 @@ const actionEableMap = {
       apsara: ['running'],
       nutanix: false,
       bingocloud: false,
+      remotefile: false,
     },
   },
   bindKeyPair: {
@@ -165,6 +170,7 @@ const actionEableMap = {
       apsara: ['running'],
       nutanix: false,
       bingocloud: false,
+      remotefile: false,
     },
   },
   unBindKeyPair: {
@@ -189,6 +195,7 @@ const actionEableMap = {
       apsara: ['running'],
       nutanix: false,
       bingocloud: false,
+      remotefile: false,
     },
   },
   adjustConfig: {
@@ -213,6 +220,7 @@ const actionEableMap = {
       apsara: ['ready'],
       nutanix: ['ready'],
       bingocloud: false,
+      remotefile: false,
     },
   },
   vnc: {
@@ -239,6 +247,7 @@ const actionEableMap = {
       ecloud: ['running'],
       nutanix: false,
       bingocloud: false,
+      remotefile: false,
     },
   },
   'EIP SSH': {
@@ -265,6 +274,7 @@ const actionEableMap = {
       ecloud: ['running'],
       nutanix: ['running'],
       bingocloud: false,
+      remotefile: false,
     },
   },
   'IP SSH': {
@@ -291,6 +301,7 @@ const actionEableMap = {
       ecloud: false,
       nutanix: ['running'],
       bingocloud: false,
+      remotefile: false,
     },
   },
   createSnapshot: {
@@ -315,6 +326,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      remotefile: false,
     },
   },
   createBackup: {
@@ -339,6 +351,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      remotefile: false,
     },
   },
   transfer: {
@@ -363,6 +376,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      remotefile: false,
     },
   },
   assignSecgroup: {
@@ -387,6 +401,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      remotefile: false,
     },
   },
   insertiso: {
@@ -410,6 +425,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      remotefile: false,
     },
   },
   ejectiso: {
@@ -433,6 +449,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      remotefile: false,
     },
   },
   bindEip: {
@@ -457,6 +474,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      remotefile: false,
     },
   },
   unbindEip: {
@@ -481,6 +499,7 @@ const actionEableMap = {
       apsara: false,
       nutanix: false,
       bingocloud: false,
+      remotefile: false,
     },
   },
   acttachGpu: {
@@ -489,6 +508,7 @@ const actionEableMap = {
       onecloud: ['ready'],
       vmware: false,
       bingocloud: false,
+      remotefile: false,
     },
   },
   acttachUsb: {
@@ -497,6 +517,7 @@ const actionEableMap = {
       onecloud: ['ready', 'running'],
       vmware: false,
       bingocloud: false,
+      remotefile: false,
     },
   },
   publicIpToEip: {
@@ -507,12 +528,14 @@ const actionEableMap = {
       google: false,
       aws: false,
       bingocloud: false,
+      remotefile: false,
     },
   },
   changeBlockStorage: {
     cn: i18n.t('compute.vminstance.change_disk_storage'),
     brand: {
       onecloud: ['ready', 'running'],
+      remotefile: false,
     },
   },
 }

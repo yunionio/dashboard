@@ -24,6 +24,7 @@ const cloudpodsLogo = require('../../../../src/assets/images/providers/cloudpods
 const hcsoLogo = require('../../../../src/assets/images/providers/hcso.svg')
 const nutanixLogo = require('../../../../src/assets/images/providers/nutanix.svg')
 const bingocloudLogo = require('../../../../src/assets/images/providers/bingocloud.svg')
+const remotefileLogo = require('../../../../src/assets/images/providers/remotefile.svg')
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
@@ -151,6 +152,12 @@ export const CLOUDACCOUNT_TYPES = {
       logoStyle: {
         width: '100px',
       },
+    },
+    remotefile: {
+      name: providerMap.remotefile.label,
+      logo: remotefileLogo,
+      component: 'RemoteFileCreate',
+      provider: providerMap.remotefile.key,
     },
   },
   storage: {
@@ -570,4 +577,5 @@ export const notSupportSelectRegion = [
   providerMap.apsara.key,
   providerMap.cloudpods.key,
   providerMap.hcso.key,
+  providerMap.remotefile.key,
 ]
