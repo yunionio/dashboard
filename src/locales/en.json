@@ -1136,6 +1136,9 @@
       "deleting": "Deleting",
       "error": "Error",
       "unknow": "Unknow"
+    },
+    "remotefile": {
+      "running": "Running"
     }
   },
   "skuCategoryOptions": {
