@@ -766,5 +766,7 @@
   "cloudenv.resource_add_cnt": "Add",
   "cloudenv.resource_del_cnt": "Delete",
   "cloudenv.scheduled_settings_title": "Scheduled sync task settings (optional)",
-  "cloudenv.range_picker_help": "Support is empty, no selection means long-term validity"
+  "cloudenv.range_picker_help": "Support is empty, no selection means long-term validity",
+  "cloudenv.auth_url_label": "Link URL",
+  "cloudenv.auth_url_extra": "Please enter the external data link address, it is necessary to ensure that the platform is connected to the target address network"
 }

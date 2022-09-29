@@ -17,6 +17,7 @@ export const HYPERVISORS = [
   { key: 'hcso', label: i18n.t('cloudPrvidersMap.HCSO'), provider: 'HCSO', brand: 'HCSO', host_type: 'hcso', hypervisor: 'hcso', env: 'private', cloud_env: 'private' },
   { key: 'nutanix', label: i18n.t('scopeCloudPrvidersMap.Nutanix'), provider: 'Nutanix', brand: 'Nutanix', host_type: 'nutanix', hypervisor: 'nutanix', env: 'private', cloud_env: 'private' },
   { key: 'bingocloud', label: i18n.t('scopeCloudPrvidersMap.BingoCloud'), provider: 'BingoCloud', brand: 'BingoCloud', host_type: 'bingocloud', hypervisor: 'bingocloud', env: 'private', cloud_env: 'private' },
+  { key: 'remotefile', label: i18n.t('cloudPrvidersMap.RemoteFile'), provider: 'RemoteFile', brand: 'RemoteFile', host_type: 'remotefile', hypervisor: 'remotefile', env: 'private', cloud_env: 'private' },
   // Public
   { key: 'aliyun', label: i18n.t('scopeCloudPrvidersMap.Aliyun'), provider: 'Aliyun', brand: 'Aliyun', host_type: 'aliyun', hypervisor: 'aliyun', env: 'public', cloud_env: 'public' },
   { key: 'azure', label: 'Azure', provider: 'Azure', brand: 'Azure', host_type: 'azure', hypervisor: 'azure', env: 'public', cloud_env: 'public' },
