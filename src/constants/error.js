@@ -3,6 +3,8 @@ import i18n from '@/locales'
 export default {
   ForbiddenError: i18n.t('error_title.ForbiddenError'),
   NotFoundError: i18n.t('notify.NotFoundError'),
+  IncrrectUsernameOrPassword: i18n.t('notify.IncrrectUsernameOrPassword'),
+  InvalidCredentialError: i18n.t('notify.InvalidCredentialError'),
 }
 
 export const DETAIL_ERRMSG = {

@@ -74,5 +74,7 @@ export default {
     TooManyRequests: 'TooManyRequests',
     NotFoundError: 'The resource does not exist',
     FindUserByMobile: 'The mobile phone number is not registered',
+    IncrrectUsernameOrPassword: 'IncrrectUsernameOrPassword',
+    InvalidCredentialError: 'InvalidCredentialError',
   },
 }
