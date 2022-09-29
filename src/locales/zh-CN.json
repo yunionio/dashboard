@@ -1149,6 +1149,9 @@
       "deleting": "正在删除",
       "error": "错误",
       "unknow": "未知"
+    },
+    "remotefile": {
+      "running": "运行中"
     }
   },
   "skuCategoryOptions": {

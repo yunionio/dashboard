@@ -519,4 +519,7 @@ export default {
   modelarts: {
     success: ['running'],
   },
+  remotefile: {
+    success: ['running'],
+  },
 }
