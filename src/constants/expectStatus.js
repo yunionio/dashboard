@@ -135,7 +135,7 @@ export default {
     info: ['unknown', 'unavailable'],
   },
   eip: {
-    success: ['ready'],
+    success: ['ready', 'running'],
     danger: ['allocate_fail', 'deallocate_fail', 'associate_fail', 'dissociate_fail'],
     info: ['unknown'],
   },
