@@ -8,7 +8,7 @@ export default {
   },
   server: {
     success: ['running'],
-    info: ['ready', 'deallocated', 'unknown', 'suspend', 'converted'],
+    info: ['ready', 'deallocated', 'unknown', 'suspend', 'converted', 'stopped'],
     // danger: [new RegExp('fail')] // 这条会在 base组件 中默认存在
   },
   serversshable: {
