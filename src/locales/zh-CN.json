@@ -487,7 +487,8 @@
       "change_bandwidth": "修改带宽",
       "init": "初始化",
       "syncing": "同步中",
-      "sync_status": "同步中"
+      "sync_status": "同步中",
+      "running": "可用"
     },
     "snapshot": {
       "init": "初始化",
