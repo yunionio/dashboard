@@ -120,6 +120,10 @@ export default {
       if (R.equals(val, oldVal)) return
       this.fetchs(['cloudregion', 'zone'])
     },
+    'form.fd.billType' (val, oldVal) {
+      if (R.equals(val, oldVal)) return
+      this.fetchs()
+    },
   },
   created () {
     this.fetchs()
