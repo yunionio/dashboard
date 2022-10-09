@@ -346,13 +346,13 @@ export function getRegionFilter () {
   }
 }
 
-export function distinctFieldFilter ({ service = '', field = '', multiple = true } = {}) {
+export function distinctFieldFilter ({ service = '', label = '', field = '', multiple = true, type = 'field' } = {}) {
   return {
-    label: i18n.t(`${service}.title.${field}`),
+    label: label || i18n.t(`${service}.title.${field}`),
     dropdown: true,
     multiple: multiple,
     distinctField: {
-      type: 'field',
+      type,
       key: `${field}`,
     },
   }
