@@ -855,14 +855,19 @@ class CreateList {
         ...params,
         ...this.genFilterParams(params),
       }
-      const response = await this.onManager('get', {
-        managerArgs: {
-          id: 'distinct-field',
-          params: {
-            ...params,
+      let response = { data: {} }
+      if (item.fetchMethod) {
+        response = await item.fetchMethod(params)
+      } else {
+        response = await this.onManager('get', {
+          managerArgs: {
+            id: 'distinct-field',
+            params: {
+              ...params,
+            },
           },
-        },
-      })
+        })
+      }
       let options = []
       const values = response.data[item.distinctField.key] || []
       if (
