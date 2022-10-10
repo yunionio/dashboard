@@ -337,7 +337,7 @@ export default {
         memory_size_mb: this.form.fd.vmem,
         usable: true,
         enabled: true,
-        manager: this.form.fd.cloudprovider,
+        // manager: this.form.fd.cloudprovider,
         ...this.scopeParams,
       }
       if (this.form.fd.cloudregion) params.cloudregion = this.form.fd.cloudregion
