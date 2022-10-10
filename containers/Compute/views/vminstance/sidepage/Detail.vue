@@ -262,10 +262,11 @@ export default {
               hideField: true,
               slotCallback: row => {
                 if (!row.cdrom) return '-'
-                const idx = row.cdrom.indexOf('(')
-                const id = row.cdrom.substring(idx + 1, row.cdrom.indexOf('/'))
+                const cdrom = `${row.cdrom}`
+                const idx = cdrom.indexOf('(')
+                const id = cdrom.substring(idx + 1, cdrom.indexOf('/'))
                 return [
-                  <side-page-trigger permission='images_get' name='SystemImageSidePage' id={id} vm={this}>{ row.cdrom.substring(0, idx) || '-' }</side-page-trigger>,
+                  <side-page-trigger permission='images_get' name='SystemImageSidePage' id={id} vm={this}>{ cdrom.substring(0, idx) || '-' }</side-page-trigger>,
                 ]
               },
             }),
