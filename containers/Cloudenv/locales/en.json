@@ -375,6 +375,7 @@
   "cloudenv.text_331": "Description",
   "cloudenv.text_332": "User Group on the Cloud",
   "cloudenv.text_333": "Only Azure platform supports this operation",
+  "cloudenv.text_333_1": "This operation is only supported for azure international cloud accounts",
   "cloudenv.text_334": "Enable",
   "cloudenv.text_335": "Disable",
   "cloudenv.text_336": "If {1} is modified at the same time when {0} is changed, the {2} to which this subscription belongs will be modified as well",
