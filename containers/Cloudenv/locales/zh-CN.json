@@ -375,6 +375,7 @@
   "cloudenv.text_331": "描述",
   "cloudenv.text_332": "云上用户组",
   "cloudenv.text_333": "仅Azure平台支持此操作",
+  "cloudenv.text_333_1": "仅Azure国际区云账号支持此操作",
   "cloudenv.text_334": "启用",
   "cloudenv.text_335": "禁用",
   "cloudenv.text_336": "更改{0}时若同时修改{1}，该订阅所属{2}会同步修改",

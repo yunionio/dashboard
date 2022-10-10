@@ -73,8 +73,8 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
-              validate: this.data.brand === 'Azure',
-              tooltip: this.data.brand !== 'Azure' && this.$t('cloudenv.text_333'),
+              validate: this.data.brand === 'Azure' && this.data.access_url === 'AzurePublicCloud',
+              tooltip: !(this.data.brand === 'Azure' && this.data.access_url === 'AzurePublicCloud') && this.$t('cloudenv.text_333_1'),
             }
           },
         },
