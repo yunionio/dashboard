@@ -366,7 +366,7 @@ export default {
           limit: this.skuPage.pageSize,
           offset: (this.skuPage.currentPage - 1) * this.skuPage.pageSize,
           '@local_category': this.skuType,
-          prepaid_status: 'available',
+          // prepaid_status: 'available',
         }
         if (this.skuType === 'all') {
           delete params['@local_category']
@@ -459,7 +459,7 @@ export default {
         const params = {
           ...this.skuParams,
           field: 'local_category',
-          postpaid_status: 'available',
+          // postpaid_status: 'available',
         }
         delete params.limit
         delete params.offset
