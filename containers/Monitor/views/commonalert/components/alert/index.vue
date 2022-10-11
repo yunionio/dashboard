@@ -212,7 +212,7 @@ export default {
         const { fd, monitorParams } = await this.$refs.alertFormRef.validate()
         const data = {
           scope: fd.scope,
-          interval: this.timeGroup,
+          // interval: this.timeGroup,
           alert_duration: fd.alert_duration,
           generate_name: fd.name,
           period: fd.period,
@@ -251,13 +251,12 @@ export default {
 
         if (fd.domain || fd.domain_id) data.domain_id = (fd.domain || fd.domain_id)
         if (fd.project) data.project_id = fd.project
-        if (this.time === 'custom') { // 自定义时间
-          if (this.customTime && this.customTime.from && this.customTime.to) {
-            data.from = this.customTime.from
-            data.to = this.customTime.to
-          }
+        const periodNum = parseInt(fd.period)
+        const unit = fd.period.split('').pop()
+        if (unit === 'm' && periodNum * fd.alert_duration < 10) {
+          data.from = '10m'
         } else {
-          data.from = this.time
+          data.from = (periodNum * fd.alert_duration) + unit
         }
         this.$emit('update:loading', true)
         if (this.isUpdate) {
