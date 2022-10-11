@@ -358,6 +358,7 @@ export default {
       sysdisk: {},
       pricesList: [],
       dataDiskType: '',
+      dataDiskInterval: null,
     }
   },
   computed: {
@@ -728,6 +729,9 @@ export default {
       }
     })
   },
+  beforeDestroy () {
+    clearInterval(this.dataDiskInterval)
+  },
   methods: {
     skuFilter (items) {
       if (!items) return []
@@ -777,11 +781,15 @@ export default {
         this.diskLoaded = true
         this.form.fc.setFieldsValue({ vcpu: this.form.fd.vcpu_count, vmem: this.form.fd.vmem })
 
-        setTimeout(() => {
-          this.form.fd.datadisks.forEach((v, i) => {
-            this.$refs.dataDiskRef.add({ size: v.value, min: v.value, diskType: v.type, disabled: true, sizeDisabled: true, medium: dataDiskMedium, ...v })
-          })
-        }, 2000)
+        this.dataDiskInterval = setInterval(() => {
+          if (this.isRenderDataDisk) {
+            this.form.fd.datadisks.forEach((v, i) => {
+              this.$refs.dataDiskRef.add({ size: v.value, min: v.value, diskType: v.type, disabled: true, sizeDisabled: true, medium: dataDiskMedium, ...v })
+            })
+            clearInterval(this.dataDiskInterval)
+            this.dataDiskInterval = null
+          }
+        }, 500)
       })
     },
     maxConfig () {
