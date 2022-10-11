@@ -1,5 +1,5 @@
 <template>
-  <a-steps :current="value.currentStep" :style="{ width: `${value.steps.length * 300}px` }">
+  <a-steps :current="value.currentStep" labelPlacement="vertical">
     <a-step v-for="(item, idx) in value.steps" :title="item.title" :key="idx" @click="stepItemClick(idx, item)">
       <a-icon v-if="item.iconType" :type="item.iconType" slot="icon" />
       <span v-if="item.description" slot="description">{{ item.description }}</span>
