@@ -114,11 +114,12 @@ export default {
     disableTips () {
       if (this.data?.os_type === 'Windows') {
         if (this.data.status !== 'ready') {
+          return this.$t('compute.vminstance.monitor.agent_install_tooltip')
+        }
+      } else {
+        if (this.data.status !== 'running') {
           return this.$t('compute.text_1397')
         }
-      }
-      if (this.data.status !== 'running') {
-        return this.$t('compute.text_1397')
       }
       return ''
     },
