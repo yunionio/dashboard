@@ -337,7 +337,8 @@ export default {
         if (
           !R.isEmpty(this.defaultDomain) &&
           !R.isEmpty(this.defaultProject) &&
-          this.defaultProject.domain_id === this.defaultDomain.id
+          this.defaultProject.domain_id === this.defaultDomain.id &&
+          this.domain === this.defaultDomain.id
         ) {
           const isFind = R.find(R.propEq('id', this.defaultProject.id))(this.projects)
           if (!isFind) {
@@ -376,7 +377,7 @@ export default {
       try {
         const response = await new this.$Manager('role_assignments', 'v1').objectRpc({
           methodname: 'GetProjectRole',
-          objId: this.defaultProject.id,
+          objId: this.project,
           params,
         })
         const data = response.data.data || []
