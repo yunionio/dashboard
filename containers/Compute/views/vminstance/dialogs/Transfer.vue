@@ -41,7 +41,7 @@
             :dialog-params="{ title: $t('compute.text_111'), width: 1060 }"
             @change="hostChangeHandle" />
         </a-form-item>
-        <a-form-item :label="$t('compute.vinstance.transfer.max_brand_width')">
+        <a-form-item :label="$t('compute.vminstance.transfer.max_brand_width')">
           <migration-bandwidth :decorators="decorators" :form="form" />
         </a-form-item>
         <a-form-item :label="$t('compute.vminstance.transfer.quickly_finish')">
