@@ -76,5 +76,6 @@ export default {
     FindUserByMobile: '该手机号未注册',
     IncorrectUsernameOrPassword: '用户名或者密码不正确',
     InvalidCredentialError: '无效的认证信息',
+    TooManyFailedAttempts: '尝试失败次数过多',
   },
 }
