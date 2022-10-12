@@ -184,7 +184,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.vpc')) {
                 return true
               }
-              return !hasSetupKey(['openstack', 'onestack', 'zstack', 'dstack', 'public', 'baremetal', 'apsara', 'hcso', 'bingocloud'])
+              return !hasSetupKey(['openstack', 'onestack', 'zstack', 'dstack', 'public', 'baremetal', 'apsara', 'hcso', 'hcs', 'bingocloud'])
             },
           },
           component: Layout,
@@ -357,7 +357,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.nat')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'huawei', 'hcso'])
+              return !hasSetupKey(['aliyun', 'huawei', 'hcso', 'hcs'])
             },
           },
           component: Layout,
@@ -548,7 +548,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.lb')) {
                 return true
               }
-              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara', 'hcso', 'azure', 'google'])
+              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara', 'hcso', 'hcs', 'azure', 'google'])
             },
           },
           component: Layout,
@@ -584,7 +584,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.lbacl')) {
                 return true
               }
-              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'hcso', 'azure', 'google'])
+              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'hcso', 'hcs', 'azure', 'google'])
             },
           },
           component: Layout,
@@ -605,7 +605,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.lbcert')) {
                 return true
               }
-              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara', 'hcso', 'azure', 'google'])
+              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara', 'hcso', 'hcs', 'azure', 'google'])
             },
           },
           component: Layout,

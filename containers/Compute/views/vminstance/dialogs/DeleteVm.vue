@@ -76,7 +76,7 @@ import WindowsMixin from '@/mixins/windows'
 import WorkflowMixin from '@/mixins/workflow'
 import { findPlatform } from '@/utils/common/hypervisor'
 
-const canDeleteBrandList = ['OneCloud', 'VMware', 'OpenStack', 'ZStack', 'DStack', 'Aliyun', 'Huawei', 'Qcloud', 'Aws', 'Azure', 'Google', 'HCSO']
+const canDeleteBrandList = ['OneCloud', 'VMware', 'OpenStack', 'ZStack', 'DStack', 'Aliyun', 'Huawei', 'Qcloud', 'Aws', 'Azure', 'Google', 'HCSO', 'HCS']
 const deleteEipLimit = {
   VMware: {
     support: false,
@@ -95,6 +95,10 @@ const deleteSnapshotLimit = {
   HCSO: {
     mustDeleteOnBrand: true,
     tip: i18n.t('compute.disable_delete_snapshot_by_brand_tooltip', [i18n.t('providers.hcso')]),
+  },
+  HCS: {
+    mustDeleteOnBrand: true,
+    tip: i18n.t('compute.disable_delete_snapshot_by_brand_tooltip', [i18n.t('providers.hcs')]),
   },
   VMware: {
     mustDeleteOnBrand: true,

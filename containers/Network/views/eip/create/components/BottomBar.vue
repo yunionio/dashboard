@@ -59,6 +59,10 @@ export default {
       required: false,
       default: false,
     },
+    isHCS: {
+      required: false,
+      default: false,
+    },
     cloudAccountId: String,
   },
   data () {
@@ -174,7 +178,7 @@ export default {
         values.domain = values.domain?.key
         values.tenant = values.project.key
         Reflect.deleteProperty(values, 'project')
-        if (this.cloudEnv === 'private' && !this.isHCSO) {
+        if (this.cloudEnv === 'private' && !this.isHCSO && !this.isHCS) {
           delete values.charge_type
           values.bandwidth = 0
           if (values.ip_addr) {

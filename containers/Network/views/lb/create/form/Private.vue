@@ -44,18 +44,18 @@
         </a-col>
       </a-row>
     </a-form-item>
-    <a-form-item :label="$t('network.text_16')" v-if="isHCSO">
+    <a-form-item :label="$t('network.text_16')" v-if="isHCSO || isHCS">
       <a-radio-group v-decorator="decorators.address_type">
         <a-radio-button value="internet">{{$t('network.text_270')}}</a-radio-button>
         <a-radio-button value="intranet">{{$t('network.text_271')}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label="$t('network.text_273')" v-if="isHCSO">
+    <a-form-item :label="$t('network.text_273')" v-if="isHCSO || isHCS">
       <a-radio-group v-decorator="decorators.ip">
         <a-radio-button value="ipv4">IPv4</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label="$t('network.text_221')" v-if="isHCSO && form.fd.address_type === 'internet'">
+    <a-form-item :label="$t('network.text_221')" v-if="(isHCSO || isHCS) && form.fd.address_type === 'internet'">
       <base-select
         v-decorator="decorators.eip"
         resource="eips"
@@ -115,6 +115,12 @@ export default {
       }
       return false
     },
+    isHCS () {
+      if (this.zoneObj) {
+        return this.zoneObj.provider === HYPERVISORS_MAP.hcs.provider
+      }
+      return false
+    },
   },
   methods: {
     async submit () {
@@ -130,7 +136,7 @@ export default {
           __meta__: values.__meta__,
         }
 
-        if (this.isHCSO) {
+        if (this.isHCSO || this.isHCS) {
           data.zone = values.zone.key
           data.cloudregion = values.cloudregion.key
           data.address_type = values.address_type

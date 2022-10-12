@@ -886,7 +886,7 @@ export default {
         provider: this.selectedItem.provider === HYPERVISORS_MAP.esxi.provider ? HYPERVISORS_MAP.kvm.provider : this.selectedItem.provider,
       }
       if (this.type === SERVER_TYPE.private) {
-        if (this.selectedItem && this.selectedItem.provider === HYPERVISORS_MAP.hcso.provider) {
+        if (this.selectedItem && (this.selectedItem.provider === HYPERVISORS_MAP.hcso.provider || this.selectedItem.provider === HYPERVISORS_MAP.hcs.provider)) {
           params.cloudregion_id = this.selectedItem.cloudregion_id
         } else {
           params.provider = HYPERVISORS_MAP.kvm.provider

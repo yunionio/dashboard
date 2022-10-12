@@ -921,7 +921,7 @@ export default {
                       }
                       return ret
                     },
-                    hidden: () => !(hasSetupKey(['onestack', 'onecloud', 'public', 'openstack', 'dstack', 'zstack', 'apsara', 'cloudpods', 'hcso'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_secgroup'),
+                    hidden: () => !(hasSetupKey(['onestack', 'onecloud', 'public', 'openstack', 'dstack', 'zstack', 'apsara', 'cloudpods', 'hcso', 'hcs'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_secgroup'),
                   },
                   {
                     label: this.$t('compute.text_1121'),
@@ -1166,7 +1166,7 @@ export default {
       return true
     },
     isSameArch () {
-      if (this.list.selectedItems[0] && this.list.selectedItems[0].hypervisor.toLowerCase() === 'hcso') {
+      if (this.list.selectedItems[0] && (this.list.selectedItems[0].hypervisor.toLowerCase() === 'hcso' || this.list.selectedItems[0].hypervisor.toLowerCase() === 'hcs')) {
         const instancetype = this.list.selectedItems[0].instance_type || ''
         const isArm = instancetype.startsWith('k')
         return this.list.selectedItems.every(item => item.instance_type && item.instance_type.startsWith('k') === isArm)

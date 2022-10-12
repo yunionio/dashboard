@@ -15,6 +15,7 @@ import Google from './components/Google'
 import Apsara from './components/Apsara'
 import Cloudpods from './components/Cloudpods'
 import HCSO from './components/HCSO'
+import HCS from './components/HCS'
 import Nutanix from './components/Nutanix'
 import BingoCloud from './components/BingoCloud'
 import InCloudSphere from './components/InCloudSphere'
@@ -43,6 +44,7 @@ export default {
     JDcloudCreate: Aliyun,
     CloudpodsCreate: Cloudpods,
     HCSOCreate: HCSO,
+    HCSCreate: HCS,
     NutanixCreate: Nutanix,
     BingoCloudCreate: BingoCloud,
     InCloudSphereCreate: InCloudSphere,

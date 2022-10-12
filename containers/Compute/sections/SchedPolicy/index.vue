@@ -187,7 +187,7 @@ export default {
           return true
         }
       }
-      return this.provider === HYPERVISORS_MAP.hcso.provider
+      return this.provider === HYPERVISORS_MAP.hcso.provider || this.provider === HYPERVISORS_MAP.hcs.provider
     },
     disabledCloudproviders () {
       return this.allCloudproviders.filter(val => !this.usableCloudproviderMaps[val.id]).map(val => val.id)

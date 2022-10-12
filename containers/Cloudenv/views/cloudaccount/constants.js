@@ -22,6 +22,7 @@ const ecloudLogo = require('../../../../src/assets/images/providers/ecloud.svg')
 const jdcloudLogo = require('../../../../src/assets/images/providers/jdcloud.svg')
 const cloudpodsLogo = require('../../../../src/assets/images/providers/cloudpods.svg')
 const hcsoLogo = require('../../../../src/assets/images/providers/hcso.svg')
+const hcsLogo = require('../../../../src/assets/images/providers/huawei.svg')
 const nutanixLogo = require('../../../../src/assets/images/providers/nutanix.svg')
 const bingocloudLogo = require('../../../../src/assets/images/providers/bingocloud.svg')
 const incloudsphereLogo = require('../../../../src/assets/images/providers/incloudsphere.svg')
@@ -138,6 +139,12 @@ export const CLOUDACCOUNT_TYPES = {
       component: 'HCSOCreate',
       provider: providerMap.hcso.key,
     },
+    hcs: {
+      name: providerMap.hcs.label,
+      logo: hcsLogo,
+      component: 'HCSCreate',
+      provider: providerMap.hcs.key,
+    },
     nutanix: {
       name: providerMap.nutanix.label,
       logo: nutanixLogo,
@@ -223,6 +230,7 @@ export function getCloudaccountDocs (scope) {
     jdcloud: i18n.t('cloudenv.create_jdcloud', [docs_path]),
     cloudpods: i18n.t('cloudenv.create_cloudpods', [docs_path]),
     hcso: i18n.t('cloudenv.create_hcso', [docs_path]),
+    hcs: i18n.t('cloudenv.create_hcs', [docs_path]),
     nutanix: i18n.t('cloudenv.create_nutanix', [docs_path]),
     bingocloud: i18n.t('cloudenv.create_bingocloud', [docs_path]),
     incloudsphere: i18n.t('cloudenv.create_incloudsphere', [docs_path]),
@@ -489,6 +497,19 @@ export const keySecretFields = {
       s: i18n.t('cloudenv.text_147'),
     },
   },
+  hcs: {
+    k: 'access_key_id',
+    s: 'access_key_secret',
+    text: i18n.t('cloudPrvidersMap.HCS'),
+    placeholder: {
+      k: i18n.t('cloudenv.text_144'),
+      s: i18n.t('cloudenv.text_145'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_146'),
+      s: i18n.t('cloudenv.text_147'),
+    },
+  },
   ecloud: {
     k: 'access_key_id',
     s: 'access_key_secret',
@@ -602,6 +623,7 @@ export const notSupportSelectRegion = [
   providerMap.apsara.key,
   providerMap.cloudpods.key,
   providerMap.hcso.key,
+  providerMap.hcs.key,
   providerMap.incloudsphere.key,
   providerMap.remotefile.key,
 ]

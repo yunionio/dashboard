@@ -27,7 +27,7 @@
           :decorator="decorators.cloudregionZone"
           filterBrandResource="compute_engine" />
       </a-form-item>
-      <a-form-item :label="$t('compute.text_15')" v-if="isHCSO">
+      <a-form-item :label="$t('compute.text_15')" v-if="isHCSO || isHCS">
         <base-select
           resource="cloudproviders"
           v-decorator="decorators.cloudprovider"
@@ -283,11 +283,14 @@ export default {
       return params
     },
     instanceSpecParmas () {
-      if (this.form.fd.hypervisor === HYPERVISORS_MAP.hcso.hypervisor) {
+      if (this.form.fd.hypervisor === HYPERVISORS_MAP.hcso.hypervisor || this.form.fd.hypervisor === HYPERVISORS_MAP.hcs.hypervisor) {
         const params = {
           usable: true,
           enabled: true,
           provider: HYPERVISORS_MAP.hcso.provider,
+        }
+        if (this.form.fd.hypervisor === HYPERVISORS_MAP.hcs.hypervisor) {
+          params.provider = HYPERVISORS_MAP.hcs.provider
         }
 
         if (this.cloudregionZoneParams.cloudregion) {

@@ -9,6 +9,7 @@
     "JDcloud": "JD Cloud",
     "Apsara": "Apsara",
     "HCSO": "HCSO",
+    "HCS": "HCS",
     "Ecloud": "mCloud",
     "Nutanix": "Nutanix"
   },
@@ -28,6 +29,7 @@
     "jdcloud": "JD Cloud",
     "ucloud": "UCloud",
     "HCSO": "HCSO",
+    "HCS": "HCS",
     "ecloud": "mCloud",
     "nutanix": "Nutanix"
   }

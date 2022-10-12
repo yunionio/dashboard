@@ -415,7 +415,7 @@ export const DISK_TYPES = {
 }
 
 // 支持自定义的存储类型
-export const CUSTOM_STORAGE_TYPES = ['openstack', 'kvm']
+export const CUSTOM_STORAGE_TYPES = ['openstack', 'kvm', 'hcs']
 // 公有云存储类型 + 私有云存储类型
 export const STORAGE_TYPES = {
   aliyun: {
