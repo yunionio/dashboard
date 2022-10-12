@@ -97,12 +97,19 @@ export default {
         statusModule: 'server',
         slotCallback: row => {
           const log = <side-page-trigger class="ml-1" name='VmInstanceSidePage' id={row.id} tab='event-drawer' vm={this} init>{ i18nLocale.t('common.view_logs') }</side-page-trigger>
+          const cancel = <a class="ml-1"
+            onClick={ () => this.createDialog('VmLiveMigrateCancelDialog', {
+              data: [row],
+              columns: this.columns,
+              onManager: this.onManager,
+            }) }>{ this.$t('common.cancel') }</a>
 
           return [
             <div class='d-flex align-items-center text-truncate'>
               <status status={ row.status } statusModule='server' process={ row.progress } />
               { row.metadata && getToolTip(row) }
               { row.status?.includes('fail') ? log : null }
+              { row.status === 'live_migrating' ? cancel : null }
             </div>,
           ]
         },
