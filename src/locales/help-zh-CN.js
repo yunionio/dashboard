@@ -72,7 +72,7 @@ export default {
     TooManyRequests: '发送验证码频率太高，请稍后再试',
     NotFoundError: '资源不存在',
     FindUserByMobile: '该手机号未注册',
-    IncrrectUsernameOrPassword: '用户名或者密码不正确',
+    IncorrectUsernameOrPassword: '用户名或者密码不正确',
     InvalidCredentialError: '无效的认证信息',
   },
 }
