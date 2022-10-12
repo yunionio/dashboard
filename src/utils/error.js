@@ -13,6 +13,9 @@ const WindowVue = Vue.extend({
 
 const getDetailInfo = (data) => {
   const details = data.split(':') || []
+  if (data.includes('TooManyFailedAttempts')) {
+    return DETAIL_ERRMSG.TooManyFailedAttempts
+  }
   return DETAIL_ERRMSG[details[0]] || data
 }
 
