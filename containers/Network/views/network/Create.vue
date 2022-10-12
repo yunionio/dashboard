@@ -630,7 +630,7 @@ export default {
       }
     },
     vpcLabelFormat (item) {
-      if (this.cloudEnv === 'public' || this.regionProvider === HYPERVISORS_MAP.hcso.provider) {
+      if (this.cloudEnv === 'public' || this.regionProvider === HYPERVISORS_MAP.hcso.provider || this.regionProvider === HYPERVISORS_MAP.hcs.provider) {
         if (item.manager) {
           if (item.cidr_block) {
             return (<div>{ item.name }<span v-if="item.cidr_block">（{ item.cidr_block }）</span><span class="ml-2 text-color-secondary">{ this.$t('common.cloudprovider_1var', [item.manager]) }</span></div>)

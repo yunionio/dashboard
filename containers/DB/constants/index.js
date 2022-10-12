@@ -37,7 +37,7 @@ export const RDS_MONITOR_ALL_OPTS = [
     as: i18n.t('db.text_11'),
     unit: '%',
     transfer: 1,
-    supportBrands: ['huawei', 'hcso', 'aliyun', 'apsara', 'azure', 'jdcloud', 'qcloud', 'aws'],
+    supportBrands: ['huawei', 'hcso', 'hcs', 'aliyun', 'apsara', 'azure', 'jdcloud', 'qcloud', 'aws'],
   },
   {
     name: 'mem',
@@ -47,7 +47,7 @@ export const RDS_MONITOR_ALL_OPTS = [
     as: i18n.t('db.text_12'),
     unit: '%',
     transfer: 1,
-    supportBrands: ['huawei', 'hcso', 'aliyun', 'apsara', 'azure', 'jdcloud', 'qcloud'],
+    supportBrands: ['huawei', 'hcso', 'hcs', 'aliyun', 'apsara', 'azure', 'jdcloud', 'qcloud'],
   },
   {
     name: 'bps_recv',
@@ -57,7 +57,7 @@ export const RDS_MONITOR_ALL_OPTS = [
     as: i18n.t('db.text_19'),
     unit: 'bps',
     transfer: 1024,
-    supportBrands: ['huawei', 'hcso', 'aliyun', 'apsara', 'azure', 'jdcloud', 'qcloud', 'aws'],
+    supportBrands: ['huawei', 'hcso', 'hcs', 'aliyun', 'apsara', 'azure', 'jdcloud', 'qcloud', 'aws'],
   },
   {
     name: 'bps_sent',
@@ -67,7 +67,7 @@ export const RDS_MONITOR_ALL_OPTS = [
     fromItem: 'rds_netio',
     unit: 'bps',
     transfer: 1024,
-    supportBrands: ['huawei', 'hcso', 'aliyun', 'apsara', 'azure', 'jdcloud', 'qcloud', 'aws'],
+    supportBrands: ['huawei', 'hcso', 'hcs', 'aliyun', 'apsara', 'azure', 'jdcloud', 'qcloud', 'aws'],
   },
   {
     name: 'disk',
@@ -77,7 +77,7 @@ export const RDS_MONITOR_ALL_OPTS = [
     fromItem: 'rds_disk',
     unit: '%',
     transfer: 1,
-    supportBrands: ['huawei', 'hcso', 'aliyun', 'apsara', 'azure', 'jdcloud', 'qcloud'],
+    supportBrands: ['huawei', 'hcso', 'hcs', 'aliyun', 'apsara', 'azure', 'jdcloud', 'qcloud'],
   },
   {
     name: 'read_bps',
@@ -87,7 +87,7 @@ export const RDS_MONITOR_ALL_OPTS = [
     as: i18n.t('db.disk_read_io'),
     unit: 'bps',
     transfer: 1024,
-    supportBrands: ['huawei', 'hcso'],
+    supportBrands: ['huawei', 'hcso', 'hcs'],
   },
   {
     name: 'write_bps',
@@ -97,7 +97,7 @@ export const RDS_MONITOR_ALL_OPTS = [
     as: i18n.t('db.disk_write_io'),
     unit: 'bps',
     transfer: 1024,
-    supportBrands: ['huawei', 'hcso'],
+    supportBrands: ['huawei', 'hcso', 'hcs'],
   },
   {
     name: 'diskio',
@@ -118,7 +118,7 @@ export const RDS_MONITOR_ALL_OPTS = [
     unit: '',
     selectType: 'last',
     transfer: 1,
-    supportBrands: ['huawei', 'hcso', 'aws', 'qcloud'],
+    supportBrands: ['huawei', 'hcso', 'hcs', 'aws', 'qcloud'],
   },
   {
     name: 'active_count',
@@ -158,7 +158,7 @@ export const RDS_MONITOR_ALL_OPTS = [
     fromItem: 'rds_qps',
     unit: '',
     transfer: 1,
-    supportBrands: ['huawei', 'hcso', 'qcloud'],
+    supportBrands: ['huawei', 'hcso', 'hcs', 'qcloud'],
   },
   {
     name: 'tps',
@@ -168,7 +168,7 @@ export const RDS_MONITOR_ALL_OPTS = [
     fromItem: 'rds_tps',
     unit: '',
     transfer: 1,
-    supportBrands: ['huawei', 'hcso', 'qcloud'],
+    supportBrands: ['huawei', 'hcso', 'hcs', 'qcloud'],
   },
   {
     name: 'innodb_read_bps',
@@ -178,7 +178,7 @@ export const RDS_MONITOR_ALL_OPTS = [
     fromItem: 'rds_innodb',
     unit: 'bps',
     transfer: 1024,
-    supportBrands: ['huawei', 'hcso', 'qcloud'],
+    supportBrands: ['huawei', 'hcso', 'hcs', 'qcloud'],
   },
   {
     name: 'innodb_write_bps',
@@ -188,7 +188,7 @@ export const RDS_MONITOR_ALL_OPTS = [
     fromItem: 'rds_innodb',
     unit: 'bps',
     transfer: 1024,
-    supportBrands: ['huawei', 'hcso', 'qcloud'],
+    supportBrands: ['huawei', 'hcso', 'hcs', 'qcloud'],
   },
 ]
 

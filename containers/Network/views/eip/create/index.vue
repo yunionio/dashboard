@@ -43,7 +43,7 @@
             :showIpConfig="cloudEnv !== 'public'"
             :helplink="{ipSubnetHelp: $t('network.eip.tip'), ipSubnetHref: '/network/create'}" />
         </template>
-        <template v-if="cloudEnv !== 'private' || isHCSO">
+        <template v-if="cloudEnv !== 'private' || isHCSO || isHCS">
           <a-form-item :label="$t('network.text_192')" v-bind="formItemLayout">
             <a-radio-group v-decorator="decorators.charge_type" @change="chargeTypeChange">
               <a-radio-button v-for="item in chargeTypeOptions" :value="item.value" :key="item.value">
@@ -67,7 +67,7 @@
             </div>
           </a-form-item>
         </template>
-        <a-form-item :label="$t('compute.text_15')" v-bind="formItemLayout" v-if="cloudEnv === 'public' || isHCSO" key="manager">
+        <a-form-item :label="$t('compute.text_15')" v-bind="formItemLayout" v-if="cloudEnv === 'public' || isHCSO || isHCS" key="manager">
           <base-select
             :remote="true"
             v-decorator="decorators.manager"
@@ -87,7 +87,7 @@
       </a-form>
     </page-body>
     <bottom-bar
-      :isHCSO="isHCSO"
+      :isHCSO="isHCSO || isHCS"
       :current-cloudregion="selectedRegionItem"
       :size="bandwidth"
       :bgp-type="bgp_type"
@@ -264,11 +264,17 @@ export default {
       }
       return false
     },
+    isHCS () {
+      if (this.selectedRegionItem) {
+        return this.selectedRegionItem.provider === HYPERVISORS_MAP.hcs.provider
+      }
+      return false
+    },
     providerParams () {
       const params = {
         enabled: 1,
         details: true,
-        public_cloud: !this.isHCSO,
+        public_cloud: !this.isHCSO && !this.isHCS,
         scope: this.$store.getters.scope,
         usable: true,
       }
@@ -387,6 +393,7 @@ export default {
     },
     showIpSubnet () {
       if (this.selectedRegionItem.provider === HYPERVISORS_MAP.hcso.provider) return false
+      if (this.selectedRegionItem.provider === HYPERVISORS_MAP.hcs.provider) return false
       if (this.providerC === 'zstack' || this.providerC === 'openstack') return true
       if (this.cloudEnv === 'onpremise' && this.selectedRegionItem && this.selectedRegionItem.id) return true
       if (this.cloudEnv === 'private' && this.selectedRegionItem && this.selectedRegionItem.id) return true
@@ -433,7 +440,7 @@ export default {
       this.$nextTick(() => {
         this.form.fc.getFieldDecorator('charge_type', { initialValue: newValue === 'onpremise' ? 'bandwidth' : 'traffic' })
       })
-      this.bandwidth = newValue === 'private' && !this.isHCSO ? 0 : 30
+      this.bandwidth = newValue === 'private' && !this.isHCSO && !this.isHCS ? 0 : 30
     },
   },
   provide () {

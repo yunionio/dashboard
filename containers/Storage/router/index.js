@@ -70,7 +70,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.bucket')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'aws', 'azure', 'huawei', 'qcloud', 'google', 'storage', 'hcso', 'apsara'])
+              return !hasSetupKey(['aliyun', 'aws', 'azure', 'huawei', 'qcloud', 'google', 'storage', 'hcso', 'hcs', 'apsara'])
             },
           },
           component: Layout,

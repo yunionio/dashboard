@@ -63,7 +63,7 @@ export default {
     let component = lbDetail.brand.toLowerCase()
     if (component === 'aws') {
       component += `-${lbDetail.loadbalancer_spec}`
-    } else if (component === 'hcso') {
+    } else if (component === 'hcso' || component === 'hcs') {
       component = 'Huawei'
     }
     return {

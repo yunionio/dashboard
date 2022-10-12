@@ -39,8 +39,8 @@
           <a-switch v-decorator="decorators.external_access_mode" :disabled="!isAws" />
           <template v-slot:extra>{{ $t('network.external_access_mode_extra') }}</template>
         </a-form-item>
-        <template v-if="cloudEnv === 'public' || isHCSO">
-          <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-show="cloudEnv === 'public' || isHCSO">
+        <template v-if="cloudEnv === 'public' || isHCSO || isHCS">
+          <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-show="cloudEnv === 'public' || isHCSO || isHCS">
             <base-select
               class="w-50"
               v-decorator="decorators.cloudprovider"
@@ -277,6 +277,12 @@ export default {
     isHCSO () {
       if (this.currentCloudregion) {
         return this.currentCloudregion.provider === HYPERVISORS_MAP.hcso.provider
+      }
+      return false
+    },
+    isHCS () {
+      if (this.currentCloudregion) {
+        return this.currentCloudregion.provider === HYPERVISORS_MAP.hcs.provider
       }
       return false
     },

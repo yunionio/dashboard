@@ -35,7 +35,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.rds')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'huawei', 'google', 'aws', 'qcloud', 'apsara', 'azure', 'hcso'])
+              return !hasSetupKey(['aliyun', 'huawei', 'google', 'aws', 'qcloud', 'apsara', 'azure', 'hcso', 'hcs'])
             },
           },
           children: [

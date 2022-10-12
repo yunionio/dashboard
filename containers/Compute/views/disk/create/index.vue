@@ -55,7 +55,7 @@
         <tag
           v-decorator="decorators.__meta__" />
       </a-form-item>
-      <a-collapse :bordered="false" v-if="cloudEnv === 'public' || isHCSO">
+      <a-collapse :bordered="false" v-if="cloudEnv === 'public' || isHCSO || isHCS">
         <a-collapse-panel :header="$t('compute.text_309')" key="1">
           <a-form-item :label="$t('compute.text_15')" v-bind="formItemLayout">
             <base-select
@@ -281,6 +281,12 @@ export default {
     isHCSO () {
       if (this.currentCloudregion) {
         return this.currentCloudregion.provider === HYPERVISORS_MAP.hcso.provider
+      }
+      return false
+    },
+    isHCS () {
+      if (this.currentCloudregion) {
+        return this.currentCloudregion.provider === HYPERVISORS_MAP.hcs.provider
       }
       return false
     },

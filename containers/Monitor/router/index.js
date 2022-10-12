@@ -54,7 +54,7 @@ export default {
 
               return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
-                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso', 'hcs'],
               }) : false
             },
           },
@@ -84,7 +84,7 @@ export default {
 
               return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
-                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso', 'hcs'],
               }) : false
             },
           },
@@ -118,7 +118,7 @@ export default {
 
               return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
-                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso', 'hcs'],
               }) : false
             },
           },
@@ -153,7 +153,7 @@ export default {
               }
               return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
-                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso', 'hcs'],
               }) : false
             },
           },
@@ -181,7 +181,7 @@ export default {
 
               return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
-                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso', 'hcs'],
               }) : false
             },
           },

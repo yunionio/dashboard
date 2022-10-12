@@ -14,6 +14,7 @@ export const schedulerProviderMaps = {
   qcloud: [schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
   huawei: [schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
   hcso: [schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
+  hcs: [schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
   aws_network: [schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
   aws_application: [schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
   openstack: [schedulerMaps.rr, schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
@@ -32,6 +33,7 @@ export const healthCheckTypeProviderMaps = {
   qcloud: [healthCheckTypeMaps.http],
   huawei: [healthCheckTypeMaps.tcp, healthCheckTypeMaps.http, healthCheckTypeMaps.udp],
   hcso: [healthCheckTypeMaps.tcp, healthCheckTypeMaps.http, healthCheckTypeMaps.udp],
+  hcs: [healthCheckTypeMaps.tcp, healthCheckTypeMaps.http, healthCheckTypeMaps.udp],
   aws_network: [healthCheckTypeMaps.tcp, healthCheckTypeMaps.http, healthCheckTypeMaps.https],
   aws_application: [healthCheckTypeMaps.http, healthCheckTypeMaps.https],
   openstack: [healthCheckTypeMaps.tcp, healthCheckTypeMaps.http, healthCheckTypeMaps.udp],
@@ -55,6 +57,7 @@ export const healthCheckHttpCode = (() => {
     qcloud: onecloud,
     huawei: onecloud,
     hcso: onecloud,
+    hcs: onecloud,
     aws_network: onecloud,
     aws_application: [
       { key: 'http_2xx', label: 'http_2xx' },

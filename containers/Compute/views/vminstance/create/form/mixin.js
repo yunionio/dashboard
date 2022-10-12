@@ -302,6 +302,9 @@ export default {
     isHCSO () {
       return this.form.fd.hypervisor === HYPERVISORS_MAP.hcso.key
     },
+    isHCS () {
+      return this.form.fd.hypervisor === HYPERVISORS_MAP.hcs.key
+    },
     showServerAccount () {
       return this.form.fd.loginType !== LOGIN_TYPES_MAP.image.key
     },

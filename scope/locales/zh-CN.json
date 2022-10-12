@@ -9,6 +9,7 @@
     "JDcloud": "京东云",
     "Apsara": "飞天",
     "HCSO": "HCSO",
+    "HCS": "HCS",
     "Ecloud": "移动云",
     "Cloudpods": "Cloudpods"
   },
@@ -29,6 +30,7 @@
     "ucloud": "UCloud",
     "ecloud": "移动云",
     "HCSO": "HCSO",
+    "HCS": "HCS",
     "cloudpods": "Cloudpods"
   }
 }

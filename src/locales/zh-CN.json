@@ -1790,6 +1790,7 @@
     "Azure": "Azure",
     "Ctyun": "天翼云",
     "HCSO": "HCSO",
+    "HCS": "HCS",
     "Apsara": "飞天",
     "Nutanix": "Nutanix",
     "BingoCloud": "BingoCloud",
@@ -2093,6 +2094,7 @@
     "huawei": "华为云",
     "ucloud": "UCloud",
     "hcso": "HCSO",
+    "hcs": "HCS",
     "nutanix": "Nutanix",
     "bingocloud": "BingoCloud"
   },
@@ -5160,6 +5162,7 @@
   "license.provider.apsara": "@:cloudPrvidersMap.Apsara",
   "license.provider.cloudpods": "@:scopeProviders.cloudpods",
   "license.provider.hcso": "@:cloudPrvidersMap.HCSO",
+  "license.provider.hcs": "@:cloudPrvidersMap.HCS",
   "license.provider.nutanix": "@:cloudPrvidersMap.Nutanix",
   "license.provider.bingocloud": "@:cloudPrvidersMap.BingoCloud",
   "license.provider.incloudsphere": "@:cloudPrvidersMap.IncloudSphere",

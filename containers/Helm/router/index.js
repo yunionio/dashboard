@@ -102,7 +102,7 @@ export default {
               }
               return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
-                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso', 'hcs'],
               }) : false
             },
             // invisible: () => true,
@@ -161,7 +161,7 @@ export default {
               }
               return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
-                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso', 'hcs'],
               }) : false
             },
             // invisible: () => true,
@@ -191,7 +191,7 @@ export default {
               }
               return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
-                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso', 'hcs'],
               }) : false
             },
             // invisible: () => true,
