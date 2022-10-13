@@ -36,7 +36,7 @@ export default {
         ...this.scopeParams.scopeParams,
         usable: true,
         enabled: true,
-        limit: 0,
+        limit: 20,
         postpaid_status: 'available',
         $t: getRequestT(),
       }
@@ -53,9 +53,9 @@ export default {
         }
       }
       if (env === 'public') {
-        if (!p.cloudregion || !p.zone) return {}
+        if (!p.cloudregion || !p.zone) return { limit: 20 }
       }
-      if (!p.provider) return {}
+      if (!p.provider) return { limit: 20 }
       return p
     },
   },
