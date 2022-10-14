@@ -5267,5 +5267,6 @@
   "common.mfa.qr_code_chrome_2": "添加",
   "common.choose.host": "请选择宿主机",
   "common.choose.server": "请选择虚拟机",
-  "common.choose.server.label": "指定虚拟机"
+  "common.choose.server.label": "指定虚拟机",
+  "common.manage.ak_sk": "管理访问密钥"
 }

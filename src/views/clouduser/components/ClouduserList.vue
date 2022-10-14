@@ -14,6 +14,7 @@ import { getBrandTableColumn } from '@/utils/common/tableColumn'
 import { getNameFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'ClouduserListForUser',
@@ -47,6 +48,20 @@ export default {
             this.createDialog('CloudgroupListForClouduserForUserDialog', {
               data: [obj],
             })
+          },
+        },
+        {
+          label: this.$t('common.manage.ak_sk'),
+          action: (obj) => {
+            this.sidePageTriggerHandle(this, 'ClouduserSidePage', {
+              id: obj.id,
+              resource: 'cloudusers',
+              getParams: {},
+            })
+            this.initSidePageTab('ak-sk-list')
+          },
+          hidden: (obj) => {
+            return obj.provider !== HYPERVISORS_MAP.huawei.provider
           },
         },
       ],

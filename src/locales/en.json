@@ -5244,5 +5244,6 @@
   "common.mfa.qr_code_chrome_2": "add",
   "common.choose.host": "Please choose a host",
   "common.choose.server": "Please select a virtual machine",
-  "common.choose.server.label": "Specify a virtual machine"
+  "common.choose.server.label": "Specify a virtual machine",
+  "common.manage.ak_sk": "Manage Access Keys"
 }
