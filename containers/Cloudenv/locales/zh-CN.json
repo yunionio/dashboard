@@ -773,5 +773,8 @@
   "cloudenv.incloudsphere": "InCloudSphere",
   "cloudenv.console_url": "控制台地址",
   "cloudenv.auth_url_label": "链接地址",
-  "cloudenv.auth_url_extra": "请输入外部数据链接地址，需保证该平台与目标地址网络互通"
+  "cloudenv.auth_url_extra": "请输入外部数据链接地址，需保证该平台与目标地址网络互通",
+  "cloudenv.aksk": "访问密钥",
+  "cloudenv.aksk.add": "新增访问密钥",
+  "cloudenv.aksk.placeholder": "请输入访问密钥信息。"
 }
