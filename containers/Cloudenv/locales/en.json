@@ -773,5 +773,8 @@
   "cloudenv.incloudsphere": "InCloudSphere",
   "cloudenv.console_url": "Console Url",
   "cloudenv.auth_url_label": "Link URL",
-  "cloudenv.auth_url_extra": "Please enter the external data link address, it is necessary to ensure that the platform is connected to the target address network"
+  "cloudenv.auth_url_extra": "Please enter the external data link address, it is necessary to ensure that the platform is connected to the target address network",
+  "cloudenv.aksk": "Access Key",
+  "cloudenv.aksk.add": "Add access key",
+  "cloudenv.aksk.placeholder": "Please enter access key information."
 }

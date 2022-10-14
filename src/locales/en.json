@@ -5252,5 +5252,6 @@
   "common.mfa.qr_code_andriod_2": "download app store, open and search onelogin protect",
   "common.mfa.qr_code_andriod_3": "offline package download address",
   "common.mfa.qr_code_chrome_1": "add Google browser extension, go to",
-  "common.mfa.qr_code_chrome_2": "add"
+  "common.mfa.qr_code_chrome_2": "add",
+  "common.manage.ak_sk": "Manage Access Keys"
 }
