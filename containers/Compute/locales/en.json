@@ -1614,5 +1614,10 @@
   "compute.agent.install.plugin": "Install monitoring agent plugin",
   "compute.agent.extra": "Support detailed monitoring of CPU, memory, disk and other metrics",
   "compute.guest.status": "Guest Status",
-  "compute.vminstance.change_disk_storage": "Change Disk Storage"
+  "compute.vminstance.change_disk_storage": "Change Disk Storage",
+  "compute.vminstance.monitor.agent_install_tooltip": "The windows host only supports this operation when it is running",
+  "compute.vinstance.transfer.max_brand_width": "Transfer Max Brand",
+  "compute.vinstance.transfer.quickly_finish": "Quickly converges",
+  "compute.vminstance.transfer.cancel_migration": "Cancel migration",
+  "compute.vminstance.transfer.max_brand_width.required": "Please enter a bandwidth value"
 }
