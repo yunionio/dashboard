@@ -43,9 +43,14 @@ export default {
                     return true
                   }
                 }
+                const params = {}
+                if (obj.hypervisor === typeClouds.hypervisorMap.openstack.key) {
+                  params.origin = true
+                }
                 this.webconsoleManager.performAction({
                   id: 'server',
                   action: obj.id,
+                  params,
                 }).then(({ data }) => {
                   if (isValidURL(data.connect_params)) {
                     this.open(obj, data.connect_params)
