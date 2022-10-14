@@ -50,7 +50,7 @@ export default {
                 this.webconsoleManager.performAction({
                   id: 'server',
                   action: obj.id,
-                  params,
+                  data: params,
                 }).then(({ data }) => {
                   if (isValidURL(data.connect_params)) {
                     this.open(obj, data.connect_params)
