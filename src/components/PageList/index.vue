@@ -40,6 +40,7 @@
       @tag-filter-change="tagFilterChange"
       @filter-change="filterChange"
       @treeToggleClick="treeToggleClick">
+      <slot name="group-actions-prepend" slot="group-actions-prepend" />
       <slot name="group-actions-append" slot="group-actions-append" />
       <slot name="right-tools-prepend" slot="right-tools-prepend" />
     </page-list-header>
