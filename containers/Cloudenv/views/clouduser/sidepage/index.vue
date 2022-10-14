@@ -28,14 +28,17 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ClouduserDetail from './Detail'
 import CloudgroupList from './CloudgroupList'
+import AkSkList from './AkSkList'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'ClouduserSidePage',
   components: {
     ClouduserDetail,
+    AkSkList,
     CloudgroupList,
     Actions,
   },
@@ -43,14 +46,23 @@ export default {
   data () {
     return {
       cloudaccount: {},
-      detailTabs: [
-        { label: this.$t('sidepage.tab.label.detail'), key: 'clouduser-detail' },
-        { label: this.$t('dictionary.cloudgroup'), key: 'cloudgroup-list' },
-        { label: this.$t('dictionary.actions'), key: 'event-drawer' },
-      ],
     }
   },
   computed: {
+    isHuawei () {
+      return this.detailData?.provider === HYPERVISORS_MAP.huawei.provider
+    },
+    detailTabs () {
+      const detailTabs = [
+        { label: this.$t('sidepage.tab.label.detail'), key: 'clouduser-detail' },
+        { label: this.$t('dictionary.cloudgroup'), key: 'cloudgroup-list' },
+        { label: this.$t('dictionary.actions'), key: 'event-drawer' },
+      ]
+      if (this.isHuawei) {
+        detailTabs.splice(1, 0, { label: this.$t('cloudenv.aksk'), key: 'ak-sk-list' })
+      }
+      return detailTabs
+    },
     getParams () {
       if (
         this.params.windowData.currentTab === 'cloudgroup-list'
