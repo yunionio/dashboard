@@ -235,7 +235,7 @@ const actionEableMap = {
       apsara: ['ready'],
       nutanix: ['ready'],
       bingocloud: false,
-      incloudsphere: ['ready'],
+      incloudsphere: ['ready', 'running'],
       remotefile: false,
     },
   },
