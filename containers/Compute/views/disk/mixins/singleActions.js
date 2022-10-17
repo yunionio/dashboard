@@ -271,6 +271,10 @@ export default {
               action: () => {
                 this.createDialog('DiskDriverUpdateDialog', {
                   data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  resource: 'disks',
+                  name: i18n.t('compute.text_100'),
                 })
               },
               meta: () => {
@@ -296,8 +300,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
-                  resource: 'disks',
-                  name: i18n.t('compute.text_100'),
+                  refresh: this.refresh,
                 })
               },
               meta: () => {

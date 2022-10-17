@@ -466,4 +466,8 @@ export default {
   instanceBackup: {
     success: ['ready'],
   },
+  disk_is_ssd: {
+    success: [true],
+    info: [false],
+  },
 }

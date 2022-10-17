@@ -1056,6 +1056,11 @@
       "recovery": "正在回滚",
       "snapshot_failed": "快照创建失败",
       "sync_status": "同步状态"
+      "running": "运行中"
+    },
+    "disk_is_ssd": {
+      "true": "SSD",
+      "false": "HDD"
     }
   },
   "skuCategoryOptions": {
