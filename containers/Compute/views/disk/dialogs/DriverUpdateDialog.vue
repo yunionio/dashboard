@@ -6,6 +6,9 @@
       <a-form
         :form="form.fc" v-bind="formItemLayout" hideRequiredMark>
         <dialog-table :data="dataList" :columns="columns" />
+        <a-form-item label="SSD">
+          <a-switch v-model="is_ssd" />
+        </a-form-item>
         <a-form-item :label="$t('compute.cache_mode')">
           <a-select v-decorator="decorators.cache_mode">
             <a-select-option v-for="item in cacheModesOpts" :key="item.value">
@@ -76,6 +79,7 @@ export default {
           },
         ],
       },
+      is_ssd: false,
       formItemLayout: {
         wrapperCol: {
           span: 21,
@@ -84,12 +88,6 @@ export default {
           span: 3,
         },
       },
-      driversOpts: [
-        { label: 'virtio', value: 'virtio' },
-        { label: 'ide', value: 'ide' },
-        { label: 'scsi', value: 'scsi' },
-        { label: 'pvscsi', value: 'pvscsi' },
-      ],
       cacheModesOpts: [
         { label: 'none', value: 'none' },
         { label: 'writethrough', value: 'writethrough' },
@@ -125,13 +123,35 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'isDomainMode', 'scope']),
+    driversOpts () {
+      if (this.is_ssd) {
+        return [{ label: 'scsi', value: 'scsi' }]
+      }
+      return [
+        { label: 'virtio', value: 'virtio' },
+        { label: 'ide', value: 'ide' },
+        { label: 'scsi', value: 'scsi' },
+        { label: 'pvscsi', value: 'pvscsi' },
+      ]
+    },
+  },
+  watch: {
+    is_ssd: {
+      handler: function (val) {
+        if (val) {
+          this.form.fc.setFieldsValue({
+            driver: 'scsi',
+          })
+        }
+      },
+    },
   },
   created () {
     this.fetchDrivers()
   },
   methods: {
     async fetchDrivers () {
-      const { guests, id: disk_id } = this.params.data[0]
+      const { guests, id: disk_id, is_ssd } = this.params.data[0]
       const { id } = guests[0]
       if (id) {
         const drivers = await new this.$Manager('guestdisks', 'v2').list({ params: { server: id, scope: this.scope } })
@@ -146,6 +166,7 @@ export default {
             driver: current[0].driver,
             cache_mode: current[0].cache_mode,
           })
+          this.is_ssd = is_ssd
         }
       }
     },
@@ -160,12 +181,20 @@ export default {
         })
       })
     },
-    doUpdate (data) {
-      return new this.$Manager('guestdisks', 'v2').jointUpdate({
+    async doUpdate (data) {
+      await new this.$Manager('guestdisks', 'v2').jointUpdate({
         joints: [{ resource: 'servers', id: data.server }, { resource: 'disks', id: data.disk }],
         data: {
           driver: data.driver,
           cache_mode: data.cache_mode,
+        },
+      })
+      await this.params.onManager('update', {
+        id: data.disk,
+        managerArgs: {
+          data: {
+            is_ssd: data.is_ssd,
+          },
         },
       })
     },
@@ -179,12 +208,13 @@ export default {
           server: this.form.fd.guest_id,
           disk: this.form.fd.disk_id,
           cache_mode: values.cache_mode,
+          is_ssd: this.is_ssd,
         }
         if (!params.server || !params.disk) {
           this.loading = false
           return
         }
-        await this.doUpdate(params)
+        this.doUpdate(params)
         this.loading = false
         this.$message.success(this.$t('common.success'))
         this.cancelDialog()
