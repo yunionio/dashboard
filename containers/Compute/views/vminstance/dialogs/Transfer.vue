@@ -41,12 +41,15 @@
             :dialog-params="{ title: $t('compute.text_111'), width: 1060 }"
             @change="hostChangeHandle" />
         </a-form-item>
-        <a-form-item :label="$t('compute.vminstance.transfer.max_brand_width')">
-          <migration-bandwidth :decorators="decorators" :form="form" />
-        </a-form-item>
-        <a-form-item :label="$t('compute.vminstance.transfer.quickly_finish')">
-          <a-checkbox v-decorator="decorators.quickly_finish" />
-        </a-form-item>
+        <template v-if="isAllRunning">
+          <a-form-item :label="$t('compute.vminstance.transfer.max_brand_width')">
+            <migration-bandwidth :decorators="decorators" :form="form" />
+          </a-form-item>
+          <a-form-item :label="$t('compute.vminstance.transfer.quickly_finish')"
+            :extra="$t('compute.vminstance.transfer.quickly_finish.extra')">
+            <a-checkbox v-decorator="decorators.quickly_finish" />
+          </a-form-item>
+        </template>
       </a-form>
     </div>
     <div slot="footer">
@@ -216,6 +219,9 @@ export default {
         const { field } = item
         return fields.indexOf(field) > -1
       })
+    },
+    isAllRunning () {
+      return this.params.data.every(item => item.status === 'running')
     },
   },
   created () {
