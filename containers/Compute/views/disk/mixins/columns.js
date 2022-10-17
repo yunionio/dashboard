@@ -73,6 +73,12 @@ export default {
           return cellValue === 'sys' ? i18n.t('compute.text_49') : i18n.t('compute.text_50')
         },
       },
+      getStatusTableColumn({
+        field: 'is_ssd',
+        title: 'SSD',
+        statusModule: 'disk_is_ssd',
+        width: 30,
+      }),
       getUnusedTableColumn({ vm: this }),
       {
         field: 'guest',

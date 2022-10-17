@@ -522,4 +522,8 @@ export default {
   remotefile: {
     success: ['running'],
   },
+  disk_is_ssd: {
+    success: [true],
+    info: [false],
+  },
 }

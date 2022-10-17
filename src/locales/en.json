@@ -1139,6 +1139,10 @@
     },
     "remotefile": {
       "running": "Running"
+    },
+    "disk_is_ssd": {
+      "true": "SSD",
+      "false": "HDD"
     }
   },
   "skuCategoryOptions": {
