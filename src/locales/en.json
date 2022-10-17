@@ -1041,7 +1041,8 @@
       "deleting": "Deleting",
       "recovery": "Recovery",
       "snapshot_failed": "Fail to snapshot",
-      "sync_status": "Sync Status"
+      "sync_status": "Sync Status",
+      "running": "Running"
     },
     "disk_is_ssd": {
       "true": "SSD",
