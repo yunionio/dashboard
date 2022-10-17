@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('network.text_606')" style="margin-bottom: 7px;" />
-    <page-body>
+    <page-body needMarginBottom>
       <a-form class="mt-3" :form="form.fc">
         <a-divider orientation="left">{{$t('network.text_397')}}</a-divider>
         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">

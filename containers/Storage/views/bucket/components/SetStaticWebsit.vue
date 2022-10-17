@@ -2,7 +2,7 @@
 <template>
   <div>
     <page-header :title="$t('storage.text_183')" />
-    <page-body>
+    <page-body needMarginBottom>
       <dialog-selected-tips :name="$t('storage.text_18')" :count="1" :action="$t('storage.text_183')" />
       <dialog-table class="mb-2" :data="currentItem" :columns="bucketColumns" />
       <a-divider />

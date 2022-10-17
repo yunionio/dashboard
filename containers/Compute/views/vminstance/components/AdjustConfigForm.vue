@@ -12,7 +12,7 @@
       </template>
       <dialog-table :data="params.data" :columns="columns" />
     </a-card>
-    <page-body>
+    <page-body needMarginBottom>
       <div class="form-wrapper">
         <a-form
           v-bind="formItemLayout"
