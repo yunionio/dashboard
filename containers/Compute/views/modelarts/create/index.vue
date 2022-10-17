@@ -295,6 +295,9 @@ export default {
             manager: this.form.fd.cloudprovider,
             filter: `name.like(%${arch}%)`,
             details: true,
+            'order_by.0': 'cpu_count',
+            'order_by.1': 'memory',
+            order: 'asc',
           },
         })
         this.skuOptions = data.data.map(item => {
