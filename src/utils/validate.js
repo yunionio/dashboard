@@ -397,7 +397,7 @@ const ipToInt = (ip) => {
  */
 export const isWithinRange = (ip, lowerBound, upperBound) => {
   const size = ipToInt(ip)
-  return size > ipToInt(lowerBound) && size < ipToInt(upperBound)
+  return size >= ipToInt(lowerBound) && size <= ipToInt(upperBound)
 }
 
 /**
