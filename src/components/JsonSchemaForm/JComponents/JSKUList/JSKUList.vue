@@ -32,13 +32,18 @@ export default {
     params () {
       const hyper = this.formFd.fd.hypervisor
       const env = findPlatform(hyper)
+      const mustParams = {
+        limit: 20,
+        order_by: 'cpu_core_count',
+        order: 'asc',
+      }
       const p = {
         ...this.scopeParams.scopeParams,
         usable: true,
         enabled: true,
-        limit: 20,
         postpaid_status: 'available',
         $t: getRequestT(),
+        ...mustParams,
       }
       if (hyper) {
         const onecloudProviders = [HYPERVISORS_MAP.kvm.key, HYPERVISORS_MAP.esxi.key, HYPERVISORS_MAP.zstack.key, HYPERVISORS_MAP.openstack.key]
@@ -53,9 +58,9 @@ export default {
         }
       }
       if (env === 'public') {
-        if (!p.cloudregion || !p.zone) return { limit: 20 }
+        if (!p.cloudregion || !p.zone) return { ...mustParams }
       }
-      if (!p.provider) return { limit: 20 }
+      if (!p.provider) return { ...mustParams }
       return p
     },
   },
