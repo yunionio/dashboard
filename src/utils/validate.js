@@ -377,6 +377,17 @@ export const validate = (value, regexpItem) => {
   }
 }
 
+const ipToInt = (ip) => {
+  var REG = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
+  const result = REG.exec(ip)
+  if (!result) return -1
+  const ret = (parseInt(result[1]) << 24 |
+    parseInt(result[2]) << 16 |
+    parseInt(result[3]) << 8 |
+    parseInt(result[4])) >>> 0
+  return ret
+}
+
 /**
  * Checks if an IP address is within range of 2 other IP addresses
  * @param  {String}  ip         IP to validate
@@ -385,30 +396,8 @@ export const validate = (value, regexpItem) => {
  * @return {Boolean}            True or false
  */
 export const isWithinRange = (ip, lowerBound, upperBound) => {
-  if (!lowerBound || !upperBound) return false // 没有起始IP或结束IP
-  // Put all IPs into one array for iterating and split all into their own
-  // array of segments
-  var ips = [ip.split('.'), lowerBound.split('.'), upperBound.split('.')]
-
-  // Convert all IPs to ints
-  for (var i = 0; i < ips.length; i++) {
-    // Typecast all segments of all ips to ints
-    for (var j = 0; j < ips[i].length; j++) {
-      ips[i][j] = parseInt(ips[i][j])
-    }
-
-    // Bit shift each segment to make it easier to compare
-    ips[i] =
-      (ips[i][0] << 24) +
-      (ips[i][1] << 16) +
-      (ips[i][2] << 8) +
-      (ips[i][3])
-  }
-
-  // Do comparisons
-  if (ips[0] >= ips[1] && ips[0] <= ips[2]) return true
-
-  return false
+  const size = ipToInt(ip)
+  return size > ipToInt(lowerBound) && size < ipToInt(upperBound)
 }
 
 /**
