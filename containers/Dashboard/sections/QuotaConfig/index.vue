@@ -36,6 +36,7 @@
       <a-radio-group v-decorator="decorators.regionAccountType" @change="regionAccountTypeChange">
         <a-radio-button value="region">{{$t('dashboard.text_101')}}</a-radio-button>
         <a-radio-button value="account">{{$t('dashboard.text_102')}}</a-radio-button>
+        <a-radio-button value="schedtag">{{ $t('dictionary.schedtag') }}</a-radio-button>
       </a-radio-group>
       <a-form-item :wrapperCol="{ span: 24 }" v-if="regionAccountType === 'region'">
         <a-select
@@ -45,7 +46,8 @@
           v-decorator="decorators.region"
           :placeholder="$t('dashboard.text_99')"
           @change="regionChange"
-          :filterOption="filterOption">
+          :filterOption="filterOption"
+          :loading="regionLoading">
           <a-select-option v-for="item of regions" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
         </a-select>
       </a-form-item>
@@ -57,8 +59,22 @@
           v-decorator="decorators.account"
           :placeholder="$t('dashboard.text_99')"
           @change="accountChange"
-          :filterOption="filterOption">
+          :filterOption="filterOption"
+          :loading="accountLoading">
           <a-select-option v-for="item of accounts" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item :wrapperCol="{ span: 24 }" v-if="regionAccountType === 'schedtag'">
+        <a-select
+          allowClear
+          class="w-100"
+          :labelInValue="labelInValue"
+          v-decorator="decorators.schedtag"
+          :placeholder="$t('dashboard.text_99')"
+          @change="schedtagChange"
+          :filterOption="filterOption"
+          :loading="schedtagLoading">
+          <a-select-option v-for="item of schedtags" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
         </a-select>
       </a-form-item>
     </a-form-item>
@@ -158,6 +174,8 @@ export default {
       totalUsageOptions: [],
       partUsageOptions: [],
       metricDoc: getMetricDocs(this.$store.getters.scope),
+      schedtags: [],
+      schedtagLoading: false,
     }
   },
   computed: {
@@ -186,6 +204,7 @@ export default {
     })
     this.am = new this.$Manager('cloudaccounts')
     this.rm = new this.$Manager('cloudregions')
+    this.sm = new this.$Manager('schedtags')
     this.fetchCloudEnvs()
     this.$watch('regionAccountType', {
       handler (val) {
@@ -198,6 +217,9 @@ export default {
         }
         if (val === 'account') {
           this.fetchAccounts()
+        }
+        if (val === 'schedtag') {
+          this.fetchSchedtags()
         }
       },
       immediate: true,
@@ -392,6 +414,9 @@ export default {
         if (this.regionAccountType === 'account') {
           this.fetchAccounts()
         }
+        if (this.regionAccountType === 'schedtag') {
+          this.fetchSchedtags()
+        }
         this.$emit('update:env', cloudEnvId)
       } else {
         this.fc.setFieldsValue({
@@ -551,6 +576,50 @@ export default {
         }
       }
       return ret
+    },
+    async fetchSchedtags () {
+      this.schedtagLoading = true
+      try {
+        const params = {
+          scope: this.scope,
+        }
+        if (this.cloudEnv) params.cloud_env = this.cloudEnv
+        if (this.brand) params.brand = this.brand
+        const response = await this.sm.list({ params })
+        const data = response.data.data
+        this.schedtags = data.map(val => ({ ...val, key: val.id, label: val.name })) || []
+        let defaultData
+        const initialValue = _.get(this.decorators, 'account[1].initialValue')
+        if (initialValue) {
+          const findInitValue = this.schedtags.find(val => val.key === (initialValue.key || initialValue))
+          if (findInitValue) {
+            defaultData = { key: findInitValue.key, label: findInitValue.label }
+          }
+        }
+        this.schedtagChange(defaultData || {})
+        this._setInitSchedtag()
+      } catch (error) {
+        throw error
+      } finally {
+        this.schedtagLoading = false
+      }
+    },
+    schedtagChange (schedtag) {
+      const schedtagId = R.is(Object, schedtag) ? schedtag.key : schedtag
+      this.$emit('update:schedtag', schedtagId)
+    },
+    _setInitSchedtag (schedtag) {
+      if (!R.isNil(schedtag) && !R.isEmpty(schedtag)) {
+        if (this.labelInValue) {
+          this.fc.setFieldsValue({
+            schedtag: { key: schedtag.key, label: schedtag.label },
+          })
+        } else {
+          this.fc.setFieldsValue({
+            schedtag: schedtag.key,
+          })
+        }
+      }
     },
   },
 }
