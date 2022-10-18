@@ -77,6 +77,8 @@ export default {
         fd: {
           name: initialNameValue,
           usage_key: initialUsageKeyValue,
+          regionAccountType: initialRegionAccountType,
+          schedtag: '',
         },
         fi: {
           nameTouched: false,
@@ -137,6 +139,7 @@ export default {
             initialValue: initUnitValue,
           },
         ],
+        schedtag: ['schedtag'], 
       },
       showDebuggerInfo: false,
       unitOpts: [
@@ -238,22 +241,29 @@ export default {
         params.range_id = fd.account
       }
       if (fd.brand) params.brand = fd.brand
+      if (fd.schedtag) params.schedtag = fd.schedtag
       return params
     },
     async fetchUsage () {
       this.loading = true
       try {
         const params = this.genUsageParams()
-        const data = await load({
-          res: 'usages',
-          action: 'rpc',
-          actionArgs: {
-            methodname: 'getGeneralUsage',
-            params,
-          },
-          resPath: 'data',
-        })
-        this.data = data
+        const { regionAccountType, schedtag } = this.params
+        if (regionAccountType === 'schedtag' && schedtag) {
+          const { data } = await new this.$Manager(`usages/schedtags/${schedtag}`).list({ params })
+          this.data = data
+        } else {
+          const data = await load({
+            res: 'usages',
+            action: 'rpc',
+            actionArgs: {
+              methodname: 'getGeneralUsage',
+              params,
+            },
+            resPath: 'data',
+          })
+          this.data = data
+        }
       } finally {
         this.loading = false
       }
