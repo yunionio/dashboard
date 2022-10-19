@@ -57,7 +57,7 @@ make_manifest_image() {
     docker manifest push $img_name
 }
 
-#build_src
+build_src
 img_name="$REGISTRY/web:$TAG"
 
 set -x
