@@ -76,5 +76,7 @@ export default {
     FindUserByMobile: 'The mobile phone number is not registered',
     IncorrectUsernameOrPassword: 'IncorrectUsernameOrPassword',
     InvalidCredentialError: 'InvalidCredentialError',
+    InputParameterError: 'InputParameterError',
+    WrongCaptchaLength: 'wrong captcha length',
   },
 }
