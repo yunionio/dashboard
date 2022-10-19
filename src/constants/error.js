@@ -6,9 +6,11 @@ export default {
   IncorrectUsernameOrPassword: i18n.t('notify.IncorrectUsernameOrPassword'),
   InvalidCredentialError: i18n.t('notify.InvalidCredentialError'),
   TooManyFailedAttempts: i18n.t('notify.TooManyFailedAttempts'),
+  InputParameterError: i18n.t('notify.InputParameterError'),
 }
 
 export const DETAIL_ERRMSG = {
   findUserByMobile: i18n.t('notify.FindUserByMobile'),
   TooManyFailedAttempts: i18n.t('notify.TooManyFailedAttempts'),
+  WrongCaptchaLength: i18n.t('notify.WrongCaptchaLength'),
 }
