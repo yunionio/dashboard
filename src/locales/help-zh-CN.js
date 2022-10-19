@@ -75,5 +75,7 @@ export default {
     IncorrectUsernameOrPassword: '用户名或者密码不正确',
     InvalidCredentialError: '无效的认证信息',
     TooManyFailedAttempts: '尝试失败次数过多',
+    InputParameterError: '参数错误',
+    WrongCaptchaLength: '验证码长度不正确',
   },
 }

@@ -125,7 +125,8 @@ const showErrorNotify = ({ errorMsg, reqMsg }) => {
     icon: h => <a-icon type="info-circle" class="error-color" />,
     btn: h => {
       const id = `ErrorDialog-${uuid(32)}`
-      return h('a-button', {
+      const isLoginView = router.currentRoute.path.startsWith('/auth/login')
+      return isLoginView ? null : h('a-button', {
         props: {
           type: 'link',
           size: 'small',
