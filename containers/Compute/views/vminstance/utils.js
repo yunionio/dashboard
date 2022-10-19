@@ -264,7 +264,7 @@ const actionEableMap = {
       ecloud: ['running'],
       nutanix: false,
       bingocloud: false,
-      incloudsphere: false,
+      incloudsphere: ['running'],
       remotefile: false,
     },
   },
