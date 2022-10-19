@@ -785,6 +785,10 @@
     "compute$default_admin_security_group_id": {
       "label": "Admin Security ID",
       "desc": "If set, the machine created by the local IDC will be bound to the specified management security group by default. If the previous virtual machine is not bound to any management security group, it will be bound to the security group after the next system restart. The management security group is not visible to ordinary users."
+    },
+    "yunionapi$hide_web_error_details": {
+      "label": "Error details view switch",
+      "desc": "After opening, you can view the detailed information of the operation, but you cannot view it after closing it!"
     }
   },
   "user": {
