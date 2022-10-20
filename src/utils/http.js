@@ -125,8 +125,8 @@ const showErrorNotify = ({ errorMsg, reqMsg }) => {
     icon: h => <a-icon type="info-circle" class="error-color" />,
     btn: h => {
       const id = `ErrorDialog-${uuid(32)}`
-      const { hide_web_error_details = true } = store.getters.auth.regions || {}
-      return !hide_web_error_details ? null : h('a-button', {
+      const { hide_web_error_details = false } = store.getters.auth.regions || {}
+      return hide_web_error_details ? null : h('a-button', {
         props: {
           type: 'link',
           size: 'small',
