@@ -7,8 +7,8 @@ export default {
     danger: ['create_failed', 'delete_failed', 'update_tags_fail'],
   },
   server: {
-    success: ['running'],
-    info: ['ready', 'deallocated', 'unknown', 'suspend', 'converted', 'stopped'],
+    success: ['running', 'on'],
+    info: ['ready', 'deallocated', 'unknown', 'suspend', 'converted', 'stopped', 'off'],
     // danger: [new RegExp('fail')] // 这条会在 base组件 中默认存在
   },
   serversshable: {

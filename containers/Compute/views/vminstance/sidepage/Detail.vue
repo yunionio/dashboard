@@ -25,6 +25,7 @@ import {
   getOsArch,
   getIpsTableColumn,
   getServerMonitorAgentInstallStatus,
+  getStatusTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
@@ -49,6 +50,27 @@ export default {
   data () {
     return {
       baseInfo: [
+        getStatusTableColumn({
+          field: 'power_status',
+          title: this.$t('compute.power_status'),
+          statusModule: 'server',
+        }),
+        {
+          field: 'project_domain',
+          title: this.$t('dictionary.domain'),
+          formatter: ({ row }) => {
+            if (!row.domain_id) return '-'
+            return <side-page-trigger permission="domains_get" name="DomainSidePage" id={row.domain_id} vm={this}>{ row.project_domain }</side-page-trigger>
+          },
+        },
+        {
+          field: 'tenant',
+          title: this.$t('dictionary.project'),
+          formatter: ({ row }) => {
+            if (!row.tenant_id) return '-'
+            return <side-page-trigger permission="projects_get" name="ProjectSidePage" id={row.tenant_id} vm={this}>{ row.tenant }</side-page-trigger>
+          },
+        },
         {
           field: 'hostname',
           title: this.$t('common_388'),

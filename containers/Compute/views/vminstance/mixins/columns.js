@@ -114,6 +114,11 @@ export default {
           ]
         },
       }),
+      getStatusTableColumn({
+        field: 'power_status',
+        title: this.$t('compute.power_status'),
+        statusModule: 'server',
+      }),
       {
         field: 'is_gpu',
         title: i18nLocale.t('table.title.type'),
