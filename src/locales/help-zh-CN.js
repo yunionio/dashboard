@@ -79,5 +79,6 @@ export default {
     TooManyFailedAttempts: '尝试失败次数过多',
     InputParameterError: '参数错误',
     WrongCaptchaLength: '验证码长度不正确',
+    UserLocked: '用户锁定',
   },
 }
