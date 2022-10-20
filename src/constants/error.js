@@ -7,6 +7,7 @@ export default {
   InvalidCredentialError: i18n.t('notify.InvalidCredentialError'),
   TooManyFailedAttempts: i18n.t('notify.TooManyFailedAttempts'),
   InputParameterError: i18n.t('notify.InputParameterError'),
+  UserLocked: i18n.t('notify.UserLocked'),
 }
 
 export const DETAIL_ERRMSG = {
