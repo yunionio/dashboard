@@ -78,5 +78,6 @@ export default {
     InvalidCredentialError: 'InvalidCredentialError',
     InputParameterError: 'InputParameterError',
     WrongCaptchaLength: 'wrong captcha length',
+    UserLocked: 'UserLocked',
   },
 }
