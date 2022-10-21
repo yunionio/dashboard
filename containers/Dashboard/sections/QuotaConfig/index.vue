@@ -36,7 +36,7 @@
       <a-radio-group v-decorator="decorators.regionAccountType" @change="regionAccountTypeChange">
         <a-radio-button value="region">{{$t('dashboard.text_101')}}</a-radio-button>
         <a-radio-button value="account">{{$t('dashboard.text_102')}}</a-radio-button>
-        <a-radio-button value="schedtag">{{ $t('dictionary.schedtag') }}</a-radio-button>
+        <a-radio-button v-if="showTag" value="schedtag">{{ $t('dictionary.schedtag') }}</a-radio-button>
       </a-radio-group>
       <a-form-item :wrapperCol="{ span: 24 }" v-if="regionAccountType === 'region'">
         <a-select
@@ -64,7 +64,7 @@
           <a-select-option v-for="item of accounts" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item :wrapperCol="{ span: 24 }" v-if="regionAccountType === 'schedtag'">
+      <a-form-item :wrapperCol="{ span: 24 }" v-if="showTag && regionAccountType === 'schedtag'">
         <a-select
           allowClear
           class="w-100"
@@ -78,6 +78,9 @@
         </a-select>
       </a-form-item>
     </a-form-item>
+    <a-form-model-item :label="$t('iam.project_tag')" prop="__meta__" v-if="showTag">
+      <pairs-tag v-decorator="decorators.tags" />
+    </a-form-model-item>
     <a-form-item :label="$t('dashboard.text_96')" class="mb-0" v-if="decorators.all_usage_key">
       <a-form-item :wrapperCol="{ span: 24 }">
         <usage-select
@@ -131,11 +134,13 @@ import { USAGE_CONFIG, getMetricDocs } from '@Dashboard/constants'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { usageMap } from '@/constants/generalUsage'
 import UsageSelect from './UsageSelect'
+import PairsTag from '@/sections/PairsTag'
 
 export default {
   name: 'QuotaConfig',
   components: {
     UsageSelect,
+    PairsTag,
   },
   props: {
     labelInValue: {
@@ -157,6 +162,10 @@ export default {
     },
     colorLabel: {
       type: String,
+    },
+    showTag: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
