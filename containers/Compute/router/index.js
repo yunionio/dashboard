@@ -232,6 +232,9 @@ export default {
           meta: {
             label: 'ModelArts',
             hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.modelarts')) {
+                return true
+              }
               return !hasSetupKey(['huawei'])
             },
           },
