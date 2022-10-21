@@ -166,7 +166,9 @@
       "disk_change_storage": "Disk migration storage",
       "disk_change_stor_fail": "Disk migration storage failed",
       "live_migrating": "Migrating",
-      "stopped": "Stopped"
+      "stopped": "Stopped",
+      "on": "On",
+      "off": "Off"
     },
     "network": {
       "init": "Initialize",

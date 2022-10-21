@@ -166,7 +166,9 @@
       "disk_change_storage": "磁盘迁移存储中",
       "disk_change_storage_fail": "磁盘迁移存储失败",
       "live_migrating": "迁移中",
-      "stopped": "关机"
+      "stopped": "关机",
+      "on": "运行中",
+      "off": "关机"
     },
     "network": {
       "init": "初始化",
