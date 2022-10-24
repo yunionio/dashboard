@@ -99,7 +99,7 @@ export default {
               },
               meta: row => {
                 return {
-                  validate: row.provider === 'OpenStack',
+                  validate: row.provider === 'OpenStack' || row.provider === 'HCS',
                 }
               },
               extraMeta: obj => {
