@@ -20,13 +20,13 @@
     </a-form-item>
      <a-form-item :label="$t('db.text_271')" v-bind="formItemLayout">
       <a-radio-group v-decorator="decorators.nodeType || ['node_type']" @change="getPerformanceTypes">
-         <a-radio-button :key="item" :value="item" v-for="item in node_types">{{NODE_TYPE[item]}}</a-radio-button>
+         <a-radio-button :key="item" :value="item" v-for="item in node_types">{{NODE_TYPE[item] || item}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
      <a-form-item :label="$t('db.text_272')" v-bind="formItemLayout">
       <a-radio-group v-decorator="decorators.performance_type || ['performance_type', { initialValue: 'standard' }]">
         <template v-for="item in performance_types">
-           <a-radio-button v-if="item" :key="item" :value="item">{{PERFORMANCE_TYPE[item]}}</a-radio-button>
+           <a-radio-button v-if="item" :key="item" :value="item">{{PERFORMANCE_TYPE[item] || item}}</a-radio-button>
         </template>
       </a-radio-group>
     </a-form-item>
@@ -40,7 +40,7 @@
 </template>
 <script>
 import * as R from 'ramda'
-import { ENGINE_ARCH, NODE_TYPE, PERFORMANCE_TYPE_KEYS, PERFORMANCE_TYPE, ENGINE_KEYS, NODE_KEYS } from '@DB/views/redis/constants'
+import { ENGINE_ARCH, NODE_TYPE, PERFORMANCE_TYPE } from '@DB/views/redis/constants'
 import { sizestr } from '@/utils/utils'
 export default {
   name: 'SkuFilters',
@@ -72,7 +72,6 @@ export default {
       NODE_TYPE,
       ENGINE_ARCH,
       PERFORMANCE_TYPE,
-      PERFORMANCE_TYPE_KEYS,
       sizestr,
       engines: [],
       engine_versions: [],
@@ -161,9 +160,6 @@ export default {
       const engine = target.value || this.getFieldValue('engine')
       this.engine_versions = R.keys(this.filterItems[engine])
         .sort((a, b) => a - b)
-        .filter((v) => {
-          return v !== '3.0'
-        })
       this.setInitValue('engine_version', () => {
         this.getArcha()
       })
@@ -173,10 +169,7 @@ export default {
       const keys = ['engine', 'engine_version']
       const data = this.FC.getFieldsValue(keys)
       data.engine_version = target.value || data.engine_version
-      const arr = R.keys(R.pathOr({}, R.values(data), this.filterItems))
-      this.local_categorys = ENGINE_KEYS.filter((k) => {
-        return arr.indexOf(k) > -1
-      })
+      this.local_categorys = R.keys(R.pathOr({}, R.values(data), this.filterItems))
       this.setInitValue('local_category', () => {
         this.getNodeTypes()
       })
@@ -186,10 +179,7 @@ export default {
       const keys = ['engine', 'engine_version', 'local_category']
       const data = this.FC.getFieldsValue(keys)
       data.local_category = target.value || data.local_category
-      const arr = R.keys(R.pathOr({}, R.values(data), this.filterItems))
-      this.node_types = NODE_KEYS.filter((k) => {
-        return arr.indexOf(k) > -1
-      })
+      this.node_types = R.keys(R.pathOr({}, R.values(data), this.filterItems))
       this.setInitValue('node_type', () => {
         this.getPerformanceTypes()
       })
@@ -199,10 +189,7 @@ export default {
       const keys = ['engine', 'engine_version', 'local_category', 'node_type']
       const data = this.FC.getFieldsValue(keys)
       data.node_type = target.value || data.node_type
-      const arr = R.pathOr([], R.values(data), this.filterItems)
-      this.performance_types = PERFORMANCE_TYPE_KEYS.filter(k => {
-        return arr.indexOf(k) > -1
-      })
+      this.performance_types = R.pathOr([], R.values(data), this.filterItems)
       this.setInitValue('performance_type', () => {})
     },
     archPoints (type) {
@@ -214,7 +201,7 @@ export default {
         cluster: this.$t('db.text_275'),
         rwsplit: this.$t('db.text_276'),
       }
-      return points[type]
+      return points[type] || type
     },
     async fetchSpecs (params) {
       const instanceSpecsManager = new this.$Manager('elasticcacheskus/instance-specs')

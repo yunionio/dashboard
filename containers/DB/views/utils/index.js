@@ -57,7 +57,7 @@ function isInstanceSupportSecgroup (obj, service, supportProviders) {
   return null
 }
 
-export const checkSecgroup = (val, service = 'rds', supportProviders = ['Huawei', 'Qcloud', 'Aliyun']) => {
+export const checkSecgroup = (val, service = 'rds', supportProviders = ['Huawei', 'Qcloud', 'Aliyun', 'HCS']) => {
   let objs = val
   if (!Array.isArray(val)) {
     objs = [val]
