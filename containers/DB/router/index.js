@@ -10,7 +10,7 @@ import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 import MongoDB from '@DB/views/mongodb'
 
 export default {
-  index: 60,
+  index: 58,
   meta: {
     label: i18n.t('db.text_28'),
     icon: 'menu-db',

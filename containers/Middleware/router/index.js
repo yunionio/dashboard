@@ -6,7 +6,7 @@ import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 
 export default {
-  index: 58,
+  index: 60,
   meta: {
     label: i18n.t('middleware'),
     icon: 'menu-middleware',
