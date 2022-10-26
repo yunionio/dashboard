@@ -9,6 +9,7 @@ export const WORKFLOW_TYPES = {
   APPLY_SERVER_CHANGECONFIG: 'apply-server-changeconfig',
   APPLY_SERVER_DELETE: 'apply-server-delete',
   CUSTOMER_SERVICE: 'customer-service',
+  APPLY_INTERNAL_RESOURCE: 'apply-internal-resource',
 }
 
 export const PROCESS_TYPES_OPTS = [
@@ -36,6 +37,10 @@ export const PROCESS_TYPES_OPTS = [
   {
     name: i18n.t('common.text00036'),
     value: WORKFLOW_TYPES.CUSTOMER_SERVICE,
+  },
+  {
+    name: i18n.t('common.apply_internal_resource'),
+    value: WORKFLOW_TYPES.APPLY_INTERNAL_RESOURCE,
   },
 ]
 
