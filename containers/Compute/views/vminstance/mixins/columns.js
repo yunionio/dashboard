@@ -115,8 +115,8 @@ export default {
         },
       }),
       getStatusTableColumn({
-        field: 'power_status',
-        title: this.$t('compute.power_status'),
+        field: 'power_states',
+        title: this.$t('compute.power_states'),
         statusModule: 'server',
       }),
       {

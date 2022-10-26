@@ -91,7 +91,7 @@ export default {
         label: 'IP',
       },
       status: getStatusFilter('server'),
-      power_status: getStatusFilter({ title: this.$t('compute.power_status'), statusModule: 'server', field: 'power_status' }),
+      power_states: getStatusFilter({ title: this.$t('compute.power_states'), statusModule: 'server', field: 'power_states' }),
       os_type: {
         label: this.$t('table.title.os'),
         dropdown: true,
@@ -160,7 +160,7 @@ export default {
         filter,
         filterOptions,
         responseData: this.responseData,
-        hiddenColumns: ['is_gpu', 'metadata', 'instance_type', 'os_type', 'vpc', 'host', 'account', 'created_at', 'macs', 'os_arch', 'vcpu_count', 'vmem_size', 'disk', 'power_status'],
+        hiddenColumns: ['is_gpu', 'metadata', 'instance_type', 'os_type', 'vpc', 'host', 'account', 'created_at', 'macs', 'os_arch', 'vcpu_count', 'vmem_size', 'disk', 'power_states'],
       }),
       exportDataOptions: {
         items: [
@@ -186,7 +186,7 @@ export default {
           { label: this.$t('table.title.memory_mb'), key: 'vmem_size' },
           { label: this.$t('table.title.disk_mb'), key: 'disk' },
           { label: this.$t('common.createdAt'), key: 'created_at' },
-          { label: this.$t('compute.power_status'), key: 'power_status' },
+          { label: this.$t('compute.power_states'), key: 'power_states' },
         ],
       },
       groupActions: [

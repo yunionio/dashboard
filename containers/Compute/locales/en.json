@@ -1466,12 +1466,12 @@
   "compute.webapp.instance_type": "Instance Type",
   "compute.webapp.instance_number": "Instance Number",
   "compute.disk.detach": "Delete the hard disk at the same time",
-  "compute.image.export":  "Export as",
-  "compute.image.export.file":  "File",
-  "compute.image.export.url":  "URL",
-  "compute.image.export.url.title":  "URL Information",
-  "compute.image.export.url.title.tips":  "Image URL(Validity period is 24 hours):",
-  "compute.image.export.url.confirm":  "Copy&Close",
+  "compute.image.export": "Export as",
+  "compute.image.export.file": "File",
+  "compute.image.export.url": "URL",
+  "compute.image.export.url.title": "URL Information",
+  "compute.image.export.url.title.tips": "Image URL(Validity period is 24 hours):",
+  "compute.image.export.url.confirm": "Copy&Close",
   "compute.perform_image_probe": "Probe image setting",
   "compute.image_probe_prompt": "Invalid status",
   "compute.text_1387": "Please select a cloud subscription",
@@ -1634,5 +1634,5 @@
   "compute.vminstance.transfer.cancel_migration": "Cancel migration",
   "compute.vminstance.transfer.max_brand_width.required": "Please enter a bandwidth value",
   "compute.vminstance.transfer.quickly_finish.extra": "Adjust the downtime of the virtual machine after the live migration memory has been synchronized for a period of time to achieve the migration complete state",
-  "compute.power_status": "Power Status"
+  "compute.power_states": "Power Status"
 }
