@@ -24,6 +24,7 @@ import ProcessHistory from '@/views/workflow/components/ProcessHistory'
 import ProcessList from '@/views/workflow/components/ProcessList'
 import ServerConfigList from '@/views/workflow/components/ServerConfig'
 import DeleteServers from '@/views/workflow/components/DeleteServers'
+import ApplyInternalResourceInfo from '@/views/workflow/components/ApplyInternalResource'
 import {
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
@@ -139,6 +140,9 @@ export default {
       case WORKFLOW_TYPES.APPLY_SERVER_DELETE:
         await this.getDeleteServerData(that.variables.ids)
         await this.initDeleteServerInfo()
+        break
+      case WORKFLOW_TYPES.APPLY_INTERNAL_RESOURCE:
+        await this.initApplyInternalResourceInfo(that.paramter)
         break
     }
     if (this.isDomainMode || this.isAdminMode) {
@@ -297,6 +301,20 @@ export default {
         .catch(() => {
           this.deleteServers = []
         })
+    },
+    initApplyInternalResourceInfo () {
+      const applyInternalResourceInfo = {
+        title: this.$t('common_376'),
+        field: 'applyInternalResourceInfo',
+        slots: {
+          default: ({ row }, h) => {
+            return [
+              <ApplyInternalResourceInfo variables={ this.variables } />,
+            ]
+          },
+        },
+      }
+      this.extraInfo.push(applyInternalResourceInfo)
     },
   },
 }

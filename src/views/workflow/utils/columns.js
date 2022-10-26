@@ -25,7 +25,7 @@ export const getResourceNameTableColumn = ({ field = 'resource_name', title = i1
     slots: {
       default: ({ row }, h) => {
         if (!row.variables) return '-'
-        const paramter = row.variables['server-create-paramter'] || row.variables.parameter
+        const paramter = row.variables['server-create-paramter'] || row.variables.paramter
         const rs = paramter ? JSON.parse(paramter) : {}
         let name = rs.generate_name || rs.name
         if (Array.isArray(rs)) {
@@ -33,6 +33,10 @@ export const getResourceNameTableColumn = ({ field = 'resource_name', title = i1
         }
         if (!name) {
           name = '-'
+        }
+        if (row.process_definition_key === 'apply-internal-resource' || (row.process_definition_id || '').indexOf('apply-internal-resource') !== -1) {
+          const { unitInfo = {} } = rs
+          name = (row.process_definition_name || i18n.t('wz_workflow_form.workflow_type')) + '-' + (unitInfo.contact_name || '')
         }
         return [
           <list-body-cell-wrap copy row={row} hideField={ true } message={ name }>

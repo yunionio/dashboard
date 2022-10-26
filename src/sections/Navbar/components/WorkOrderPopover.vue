@@ -60,6 +60,13 @@
               <li @click="customeServiceHandle" v-if="customerServiceEnabled">{{$t('navbar.button.work_order_support')}}</li>
               <li @click="applyProjectQuotaHandle" v-if="isProjectMode && projectQuotaEnabled">{{$t('navbar.button.work_order_apply_project_quota')}}</li>
               <li @click="applyDomainQuotaHandle" v-if="isDomainMode && domainQuotaEnabled">{{$t('navbar.button.work_order_apply_domain_quota')}}</li>
+              <li @click="applyInternalResourceHandle" v-if="internalResourceEnabled">{{$t('navbar.button.work_order_apply_internal_resource')}}</li>
+            </ul>
+          </template>
+          <template v-if="isAdminMode && (isShowWorkflow || customerServiceEnabled)">
+            <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="plus" /><span class="ml-2">{{$t('common_204')}}</span></div>
+            <ul class="work-list">
+              <li @click="applyInternalResourceHandle" v-if="internalResourceEnabled">{{$t('navbar.button.work_order_apply_internal_resource')}}</li>
             </ul>
           </template>
         </div>
@@ -120,6 +127,9 @@ export default {
       if (this.workflowEnabledKeys?.length === 0) return false
       return this.workflowEnabledKeys.some(v => v !== WORKFLOW_TYPES.CUSTOMER_SERVICE)
     },
+    internalResourceEnabled () {
+      return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_INTERNAL_RESOURCE)
+    },
   },
   methods: {
     goHistoricProcess () {
@@ -155,6 +165,14 @@ export default {
     },
     applyDomainQuotaHandle () {
       this.createDialog('ApplyDomainQuotaDialog', {})
+    },
+    applyInternalResourceHandle () {
+      this.$router.push({
+        path: '/workflow-apply-internal-resource/create',
+        query: {
+          type: 'approval-start',
+        },
+      })
     },
     copyHotline () {
       this.$copyText(this.companyInfo.hotline)

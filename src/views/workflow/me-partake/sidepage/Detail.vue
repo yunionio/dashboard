@@ -29,6 +29,7 @@ import {
 } from '@/utils/common/tableColumn'
 import { getWorkflowType, WORKFLOW_TYPES } from '@/constants/workflow'
 import { HYPERVISORS_GROUP } from '@/constants'
+import ApplyInternalResourceInfo from '@/views/workflow/components/ApplyInternalResource'
 
 export default {
   name: 'MePartakeDetail',
@@ -139,6 +140,9 @@ export default {
       case WORKFLOW_TYPES.APPLY_SERVER_DELETE:
         await this.getDeleteServerData(that.variables.ids)
         await this.initDeleteServerInfo()
+        break
+      case WORKFLOW_TYPES.APPLY_INTERNAL_RESOURCE:
+        await this.initApplyInternalResourceInfo(that.paramter)
         break
     }
     if (this.isDomainMode || this.isAdminMode) {
@@ -297,6 +301,21 @@ export default {
         .catch(() => {
           this.deleteServers = []
         })
+    },
+
+    initApplyInternalResourceInfo () {
+      const applyInternalResourceInfo = {
+        title: this.$t('common_376'),
+        field: 'applyInternalResourceInfo',
+        slots: {
+          default: ({ row }, h) => {
+            return [
+              <ApplyInternalResourceInfo variables={ this.variables } />,
+            ]
+          },
+        },
+      }
+      this.extraInfo.push(applyInternalResourceInfo)
     },
   },
 }
