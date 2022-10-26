@@ -73,7 +73,7 @@ export const getWorkflowType = function (pdk) {
   return pdkObj
 }
 
-export const MULTIPLE_APPROVAL_PROCESS = [WORKFLOW_TYPES.APPLY_MACHINE, WORKFLOW_TYPES.APPLY_SERVER_DELETE]
+export const MULTIPLE_APPROVAL_PROCESS = [WORKFLOW_TYPES.APPLY_MACHINE, WORKFLOW_TYPES.APPLY_SERVER_DELETE, WORKFLOW_TYPES.APPLY_INTERNAL_RESOURCE]
 
 export const PRIORITY_OPTS = [
   { key: 'minor', value: i18n.t('common.workflow_priority_minor') },
