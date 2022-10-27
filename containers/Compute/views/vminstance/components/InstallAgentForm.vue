@@ -12,8 +12,8 @@
         <template slot="title" v-if="disableTips">
           {{ disableTips }}
         </template>
-        <a-button class="ml-2" type="link" @click="handleInstallAgent" :disabled="disable" v-show="showInstallButton">
-          {{ $t('compute.vminstance.monitor.install_agent') }}
+        <a-button class="ml-2" type="link" @click="handleInstallAgent" :disabled="disable">
+          {{ buttonText }}
         </a-button>
       </a-tooltip>
     </div>
@@ -110,6 +110,13 @@ export default {
         return this.data.status !== 'ready'
       }
       return this.data.status !== 'running'
+    },
+    buttonText () {
+      if (this.showInstallButton) {
+        return this.$t('compute.vminstance.monitor.install_agent')
+      } else {
+        return this.$t('compute.vminstance.monitor.reinstall_agent')
+      }
     },
     disableTips () {
       if (this.data?.os_type === 'Windows') {
