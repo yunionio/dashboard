@@ -1417,6 +1417,7 @@
   "compute.vminstance.monitor.install_agent.tips_failed.no_reach_influxdb": "安装失败，暂无可用的PE, 什么是",
   "compute.vminstance.monitor.install_agent.tips_failed.server_not_sshable": "安装失败，主机不可免密登录",
   "compute.vminstance.monitor.install_agent": "安装Agent",
+  "compute.vminstance.monitor.reinstall_agent": "重新安装Agent",
   "compute.vminstance.monitor.install_agent.installing": "Agent插件安装中,该过程可能时间较长，可稍后查看",
   "compute.vminstance.monitor.install_agent.installed": "Agent安装成功",
   "compute.secgroup.source.placeholder": "支持手动输入IP、选择CIDR或安全组",

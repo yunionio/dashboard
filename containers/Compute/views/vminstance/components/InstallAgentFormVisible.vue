@@ -1,6 +1,6 @@
 <template>
-    <div v-if="visible">
-      <a-alert class="mb-2" :type="alertType" v-if="visible">
+    <div>
+      <a-alert class="mb-2" :type="alertType">
         <install-agent-form slot="message" :data="data" :serverColumns="serverColumns" :isPageDestroyed="isPageDestroyed" @onInstall="handleInstallResult" />
       </a-alert>
     </div>
