@@ -25,7 +25,7 @@
 </template>
 
 <script>
-// import _ from 'lodash'
+import _ from 'lodash'
 import WindowsMixin from '@/mixins/windows'
 import { getDocsUrl } from '@/utils/utils'
 
@@ -45,7 +45,10 @@ export default {
   },
   data () {
     let agent_install_status
-    if (this.data.hasOwnProperty('agent_status')) {
+    const deploy = _.get(this.data, ['metadata', 'telegraf_deployed'])
+    if (deploy) {
+      agent_install_status = 'installed'
+    } else if (this.data.hasOwnProperty('agent_status')) {
       const { agent_status } = this.data
       if (agent_status === 'succeed') {
         agent_install_status = 'installed'
