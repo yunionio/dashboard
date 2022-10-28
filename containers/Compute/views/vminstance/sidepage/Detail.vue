@@ -324,6 +324,13 @@ export default {
                 },
               },
             },
+            {
+              field: 'monitor_url',
+              title: this.$t('compute.monitor_url.prompt'),
+              formatter: ({ row }) => {
+                return row.monitor_url
+              },
+            },
           ],
         },
         {
