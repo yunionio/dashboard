@@ -1,5 +1,5 @@
 <template>
-  <div class="tip-wrapper mt-2 mb-2">
+  <div class="tip-wrapper mt-2 mb-2" :class="resourceType === 'whole' ? 'yellow-bg' : ''">
     <div class="tip">{{tipTitle}}</div>
     <template v-for="(item, index) in tipList">
       <div class="tip" :key="index">
@@ -74,11 +74,16 @@ export default {
 <style lang="less" scoped>
 .tip-wrapper {
   padding: 5px;
+  border-radius: 5px;
   .tip {
     height: 30px;
     line-height: 30px;
     font-size: 14px;
     color: gray;
   }
+}
+.yellow-bg {
+  background: rgba(255, 223, 37, 1);
+  padding: 24px;
 }
 </style>

@@ -6,7 +6,7 @@
       border
       :columns="columns"
       :data="dataList" />
-    <a-button type="link" @click="handleAddData">{{$t('wz_workflow_form.actions.add_line')}}</a-button>
+    <a-button class="mt-2" type="link" @click="handleAddData">{{$t('wz_workflow_form.actions.add_line')}}</a-button>
   </div>
 </template>
 

@@ -66,15 +66,6 @@
 </template>
 
 <script>
-// country: '区县',
-//           group_name: '集团名称',
-//           group_code: '集团编号',
-//           contact_name: '联系人',
-//           contact_phone: '联系方式',
-//           email: '电子邮件',
-//           fill_form_date: '填表日期',
-//           customer_name: '客户/项目经理',
-//           customer_phone: '客户/项目经理联系方式',
 import WorkflowLabel from '../WorkflowLabel'
 import { COUNTRYS, getPlaceholder } from '../../constants'
 

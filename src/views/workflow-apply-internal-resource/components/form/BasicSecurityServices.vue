@@ -6,20 +6,17 @@
       border
       :columns="columns"
       :data="dataList" />
-    <a-button type="link" @click="handleAddData">{{$t('wz_workflow_form.actions.add_line')}}</a-button>
-    <workflow-tips resourceType="basicSecurityServices" />
+    <a-button class="mt-2" type="link" @click="handleAddData">{{$t('wz_workflow_form.actions.add_line')}}</a-button>
   </div>
 </template>
 
 <script>
 import WindowsMixin from '@/mixins/windows'
 import { COLUMNS_MAP } from '../../constants'
-import WorkflowTips from '../WorkflowTips'
 
 export default {
   name: 'WorkflowApplyInternalBssInfo',
   components: {
-    WorkflowTips,
   },
   mixins: [WindowsMixin],
   props: {

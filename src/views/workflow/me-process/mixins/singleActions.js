@@ -21,6 +21,30 @@ export default {
           }
         },
       },
+      {
+        label: i18n.t('wz_workflow_form.actions.re_apply'),
+        action: obj => {
+          const { paramter } = obj.variables
+          let data = {}
+          if (paramter) {
+            try {
+              const form = JSON.parse(paramter)
+              if (form.unitInfo) {
+                data = form
+              }
+            } catch (err) {}
+          }
+          this.$router.push({
+            name: 'WorkflowApplyInternalResourceCreate',
+            params: {
+              formData: data,
+            },
+          })
+        },
+        hidden: (obj) => {
+          return !(obj.variables.audit_status === 'refused' && obj.process_definition_key === 'apply-internal-resource')
+        },
+      },
     ]
   },
 }
