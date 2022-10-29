@@ -1610,6 +1610,7 @@
   "compute.v2vtransfer.kvm": "Migrate to KVM platform",
   "compute.v2vtransfer.same_brand": "Please select a machine of the same platform",
   "compute.max_bandwidth": "Max Bandwidth",
+  "compute.monitor_url.prompt": "Monitor URL",
   "compute.unlimited": "ALL",
   "compute.host.cpu.revert.resource": "Set host reserved resources",
   "compute.host.cpu.revert.resource.message": "The host reservation function supports reserving part of the CPU for other processes and no longer allocates it to virtual machines",
