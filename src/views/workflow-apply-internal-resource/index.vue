@@ -12,42 +12,52 @@
         :model="form"
         :rules="rules"
         style="max-width:1400px;">
-        <a-card>
-          <workflow-tips resourceType="whole" />
-        </a-card>
-        <a-card class="mt-4" :title="$t('wz_workflow_form.titles.unit_info')">
+        <workflow-tips resourceType="whole" />
+        <a-card class="mt-4 gray-bg">
+          <div class="section-title">{{this.$t('wz_workflow_form.titles.unit_info')}}</div>
           <unit-info :form="form" />
         </a-card>
-        <a-card class="mt-4" :title="$t('wz_workflow_form.titles.project_info')">
+        <a-card class="mt-4 gray-bg">
+          <div class="section-title">{{this.$t('wz_workflow_form.titles.project_info')}}</div>
           <project-info :form="form" />
         </a-card>
-        <a-card class="mt-4" :title="$t('wz_workflow_form.titles.contractor_info')">
+        <a-card class="mt-4 gray-bg">
+          <div class="section-title">{{this.$t('wz_workflow_form.titles.contractor_info')}}</div>
           <contractor-info :form="form" />
         </a-card>
-        <a-card class="mt-4" :title="$t('wz_workflow_form.titles.cloud_resource_info')">
-          <a-card class="mt-4" :title="$t('wz_workflow_form.titles.ecs')">
+        <a-card class="mt-4 gray-bg">
+          <div class="section-title">{{this.$t('wz_workflow_form.titles.cloud_resource_info')}}</div>
+          <a-card>
+            <div class="section-title2">{{this.$t('wz_workflow_form.titles.ecs')}}</div>
             <ecs :form="form.cloudResourceInfo" />
           </a-card>
-          <a-card class="mt-4" :title="$t('wz_workflow_form.titles.rds')">
+          <a-card class="mt-4">
+            <div class="section-title2">{{this.$t('wz_workflow_form.titles.rds')}}</div>
             <rds :form="form.cloudResourceInfo" />
           </a-card>
-          <a-card class="mt-4" :title="$t('wz_workflow_form.titles.server')">
+          <a-card class="mt-4">
+            <div class="section-title2">{{this.$t('wz_workflow_form.titles.server')}}</div>
             <server :form="form.cloudResourceInfo" />
           </a-card>
           <workflow-tips resourceType="cloudResource" />
         </a-card>
-        <a-card class="mt-4" :title="$t('wz_workflow_form.titles.cloud_security_info')">
-          <a-card class="mt-4" :title="$t('wz_workflow_form.titles.basic_security_services')">
+        <a-card class="mt-4 gray-bg">
+          <div class="section-title">{{this.$t('wz_workflow_form.titles.cloud_security_info')}}</div>
+          <a-card>
+            <div class="section-title2">{{this.$t('wz_workflow_form.titles.basic_security_services')}}</div>
             <basic-security-services :form="form.cloudSecurityInfo" />
           </a-card>
-          <a-card class="mt-4" :title="$t('wz_workflow_form.titles.cloud_security_table')">
+          <workflow-tips resourceType="basicSecurityServices" />
+          <a-card class="mt-4">
+            <div class="section-title2">{{this.$t('wz_workflow_form.titles.cloud_security_table')}}</div>
             <cloud-security-table :form="form.cloudSecurityInfo" />
           </a-card>
+          <workflow-tips resourceType="cloudSecurityTable" />
         </a-card>
       </a-form-model>
     </page-body>
     <div class="page-footer">
-      <a-button class="mr-3" type="primary" :loading="loading" @click="handleConfirm">{{ $t('dialog.ok') }}</a-button>
+      <a-button class="mr-3" type="primary" :loading="loading" @click="handleConfirm">{{ $t('wz_workflow_form.actions.submit_workflow') }}</a-button>
       <a-button class="mr-2" @click="skipStep">{{this.$t('dialog.cancel')}}</a-button>
     </div>
   </div>
@@ -94,6 +104,12 @@ export default {
       return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_INTERNAL_RESOURCE)
     },
   },
+  created () {
+    const { formData = {} } = this.$route.params
+    if (!R.isEmpty(formData)) {
+      this.form = R.clone(formData)
+    }
+  },
   methods: {
     async handleConfirm () {
       this.loading = true
@@ -127,10 +143,12 @@ export default {
 .section-title {
   font-size: 18px;
   font-weight: bold;
+  margin-bottom: 20px;
 }
 .section-title2 {
   font-size: 16px;
   font-weight: bold;
+  margin-bottom: 20px;
 }
 .page-footer {
   z-index: 10;
@@ -144,5 +162,9 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+.gray-bg {
+  background: rgba(0,0,0,0.05);
+  border-radius: 5px;
 }
 </style>

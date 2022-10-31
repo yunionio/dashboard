@@ -92,12 +92,12 @@ export const WORKFLOW_ITEM_MAP = {
   },
   start_date: {
     type: 'date',
-    required: true,
+    required: false,
     label: i18n.t('wz_workflow_form.labels.start_date'),
   },
   end_date: {
     type: 'date',
-    required: true,
+    required: false,
     label: i18n.t('wz_workflow_form.labels.end_date'),
   },
   contractor_name: {
@@ -239,6 +239,11 @@ export const WORKFLOW_ITEM_MAP = {
     required: true,
     label: i18n.t('wz_workflow_form.labels.anti_ddos'),
   },
+  host_protection: {
+    type: 'input',
+    required: true,
+    label: i18n.t('wz_workflow_form.labels.host_protection'),
+  },
   website_monitoring: {
     type: 'input',
     required: true,
@@ -362,6 +367,7 @@ export const INIT_BASIC_SECURITY_SERVICES = {
 }
 
 export const INIT_CLOUD_SECURITY_TABLE = {
+  host_protection: 1,
   website_monitoring: 1,
   website_vulnerability_scanning: 1,
   webpage_tamper_proof: 1,
@@ -393,6 +399,19 @@ export const INIT_APPLY_INTERNAL_RESOURCE_DATA = {
   },
 }
 
+export const PROJECTINFO_SELECT_OPTIONS = {
+  network_type: [
+    { id: 'network', name: i18n.t('wz_workflow_form.networkTypes.network') },
+    { id: 'government_extranet', name: i18n.t('wz_workflow_form.networkTypes.government_extranet') },
+    { id: 'government_extranet', name: i18n.t('wz_workflow_form.networkTypes.private_business_network') },
+  ],
+  level: [
+    { id: 'level_three', name: i18n.t('wz_workflow_form.levels.level_three') },
+    { id: 'level_two', name: i18n.t('wz_workflow_form.levels.level_two') },
+    { id: 'none', name: i18n.t('wz_workflow_form.levels.none') },
+  ],
+}
+
 export const ECS_SELECT_OPTIONS = {
   cpu: [{ id: '1c', name: '1c' }, { id: '2c', name: '2c' }],
   mem: [{ id: 100, name: '100' }],
@@ -406,41 +425,41 @@ export const RDS_SELECT_OPTIONS = {
   max_connects: [{ id: 100, name: '100' }],
 }
 
+export const ALL_SELECT_OPTIONS = { ...PROJECTINFO_SELECT_OPTIONS, ...ECS_SELECT_OPTIONS, ...RDS_SELECT_OPTIONS }
+
+export const getWorkflowShowCol = (key) => {
+  const col = {
+    field: key,
+    title: WORKFLOW_ITEM_MAP[key]?.label || key,
+    minWidth: '100px',
+  }
+  if (ALL_SELECT_OPTIONS.hasOwnProperty(key)) {
+    col.formatter = ({ row }) => {
+      const targetList = ALL_SELECT_OPTIONS[key].filter(item => item.id === row[key])
+      if (targetList[0]) {
+        return targetList[0].name
+      }
+      return row[key]
+    }
+  }
+  return col
+}
+
 export const COLUMNS_MAP = {
   ecs: Object.keys(INIT_ECS).map(key => {
-    return {
-      field: key,
-      title: WORKFLOW_ITEM_MAP[key]?.label || key,
-      minWidth: '100px',
-    }
+    return getWorkflowShowCol(key)
   }),
   rds: Object.keys(INIT_RDS).map(key => {
-    return {
-      field: key,
-      title: WORKFLOW_ITEM_MAP[key]?.label || key,
-      minWidth: '100px',
-    }
+    return getWorkflowShowCol(key)
   }),
   server: Object.keys(INIT_SERVER).map(key => {
-    return {
-      field: key,
-      title: WORKFLOW_ITEM_MAP[key]?.label || key,
-      minWidth: '100px',
-    }
+    return getWorkflowShowCol(key)
   }),
   basicSecurityServices: Object.keys(INIT_BASIC_SECURITY_SERVICES).map(key => {
-    return {
-      field: key,
-      title: WORKFLOW_ITEM_MAP[key]?.label || key,
-      minWidth: '100px',
-    }
+    return getWorkflowShowCol(key)
   }),
   cloudSecurityTable: Object.keys(INIT_CLOUD_SECURITY_TABLE).map(key => {
-    return {
-      field: key,
-      title: WORKFLOW_ITEM_MAP[key]?.label || key,
-      minWidth: '100px',
-    }
+    return getWorkflowShowCol(key)
   }),
 }
 

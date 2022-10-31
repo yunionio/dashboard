@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="position: relative;">
     <!-- 1 -->
     <div class="mt-2">基础信息</div>
     <template v-for="(item, index) in unitInfoList">
@@ -64,7 +64,7 @@
 
 <script>
 // import
-import { WORKFLOW_ITEM_MAP, INIT_UNIT_INFO, INIT_PROJECT_INFO, INIT_CONTRACTOR_INFO, COLUMNS_MAP } from '@/views/workflow-apply-internal-resource/constants'
+import { WORKFLOW_ITEM_MAP, INIT_UNIT_INFO, INIT_PROJECT_INFO, INIT_CONTRACTOR_INFO, COLUMNS_MAP, ALL_SELECT_OPTIONS } from '@/views/workflow-apply-internal-resource/constants'
 export default {
   name: 'ApplyInternalResourceInfo',
   props: {
@@ -100,6 +100,12 @@ export default {
         const item = { field: key }
         item.title = WORKFLOW_ITEM_MAP[key].label
         item.value = projectInfo[key] || '-'
+        if (ALL_SELECT_OPTIONS.hasOwnProperty(key)) {
+          const targetList = ALL_SELECT_OPTIONS[key].filter(l => l.id === item.value)
+          if (targetList[0]) {
+            item.value = targetList[0].name
+          }
+        }
         ret.push(item)
       })
       return ret

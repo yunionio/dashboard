@@ -179,6 +179,12 @@
         </template>
         <template v-if="params.resourceType === 'cloudSecurityTable'">
           <a-row>
+            <workflow-label field="host_protection" />
+            <a-form-model-item prop="host_protection">
+              <a-input-number :min="1" class="w-100" v-model="form.host_protection" :placeholder="getPlaceholder('host_protection')" />
+            </a-form-model-item>
+          </a-row>
+          <a-row>
             <workflow-label field="website_monitoring" />
             <a-form-model-item prop="website_monitoring">
               <a-input-number :min="1" class="w-100" v-model="form.website_monitoring" :placeholder="getPlaceholder('website_monitoring')" />

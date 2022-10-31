@@ -5307,6 +5307,8 @@
       "group_code": "集团编号",
       "contact_name": "联系人",
       "contact_phone": "联系方式",
+      "apply_people": "申请人",
+      "apply_time": "申请时间",
       "email": "电子邮件",
       "fill_form_date": "填表日期",
       "customer_name": "客户/项目经理",
@@ -5344,6 +5346,7 @@
       "active_vulnerability_scanning": "主动漏洞扫描（套）",
       "intrusion_prevention": "入侵防御（套）",
       "anti_ddos": "抗DDOS（套）",
+      "host_protection": "主机防护（台）",
       "website_monitoring": "网站监测（个站点）",
       "website_vulnerability_scanning": "网站漏洞扫描（套）",
       "webpage_tamper_proof": "网页防篡改（套）",
@@ -5369,7 +5372,9 @@
       "none": "未定级"
     },
     "actions": {
-      "add_line": "添加一行"
+      "add_line": "添加一行",
+      "re_apply": "重新发起流程",
+      "submit_workflow": "提交工单"
     },
     "resourceTypes": {
       "ecs": "ECS云主机",
