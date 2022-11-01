@@ -771,6 +771,7 @@
   "compute.text_778": "Management NIC IP",
   "compute.text_779": "The management NIC IP of the baremetal host will be set according to the entered IP subnet or IP address. If no suitable IP subnet found, go to ",
   "compute.text_780": "Only register the baremetal host but do not reboot the host",
+  "compute.no_bmc": "No BMC",
   "compute.text_781": "The management NIC IP of the baremetal host will be set according to the entered IP subnet or IP address. Leave it blank to use the IP automatically assigned by DHCP as the management NIC IP, if no suitable IP subnet found, go to ",
   "compute.text_782": "If it is left empty, the system defaults to {0}; otherwise, the input information is used. It is recommended to leave it blank for new hosts, and enter the original password for old hosts",
   "compute.text_783": "Please enter the MAC address of the management NIC of baremetal host, usually eth0",
