@@ -210,6 +210,12 @@ export default {
             valuePropName: 'checked',
           },
         ],
+        no_bmc: [
+          'no_bmc',
+          {
+            valuePropName: 'checked',
+          },
+        ],
         access_mac: [
           'access_mac',
         ],
@@ -282,25 +288,31 @@ export default {
   methods: {
     // 预注册单条录入
     doPreSingleAdd () {
-      const data = [
-        this.form.fd.mac,
-        this.form.fd.name,
-        this.form.fd.description,
-        this.form.fd.ipmi_ip_addr,
-        this.form.fd.ipmi_username,
-        this.form.fd.ipmi_password,
-        this.form.fd.__meta__,
-      ]
-      const params = {
-        hosts: data.join(','),
+      const data = {
+        mac: this.form.fd.mac,
+        access_mac: this.form.fd.mac,
+        name: this.form.fd.name,
+        description: this.form.fd.description,
+        ipmi_ip_addr: this.form.fd.ipmi_ip_addr,
+        ipmi_username: this.form.fd.ipmi_username,
+        ipmi_password: this.form.fd.ipmi_password,
+        __meta__: this.form.fd.__meta__,
         no_probe: true,
+        no_bmc: this.form.fd.no_bmc,
       }
       if (this.form.fd.project_domain && this.isAdminMode) {
-        params.project_domain = this.form.fd.project_domain
+        data.project_domain = this.form.fd.project_domain
       }
-      return this.hm.rpc({
-        methodname: 'DoBatchRegister',
-        params,
+      if (this.form.fd.net) {
+        if (this.form.fd.net.access_net && !this.form.fd.net.access_ip) {
+          data.access_net = this.form.fd.net.access_net.id
+        }
+        if (this.form.fd.net.access_net && this.form.fd.net.access_ip) {
+          data.access_ip = this.form.fd.net.access_ip
+        }
+      }
+      return this.hm.create({
+        data,
       })
     },
     // 预注册批量录入
