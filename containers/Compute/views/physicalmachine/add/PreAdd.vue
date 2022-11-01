@@ -11,15 +11,28 @@
       <a-form-item :label="$t('common.description')">
         <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
       </a-form-item>
-      <a-form-item :label="$t('compute.text_774')" :extra="$t('compute.text_784')">
-        <a-input v-decorator="decorators.ipmi_ip_addr" />
+      <a-form-item :wrapper-col="offsetWrapperCol">
+        <a-checkbox v-decorator="decorators.no_bmc">{{$t('compute.no_bmc')}}</a-checkbox>
       </a-form-item>
-      <a-form-item :label="$t('compute.text_776')" :extra="$t('compute.text_785')">
-        <a-input v-decorator="decorators.ipmi_username" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_777')" :extra="$t('compute.text_782', [ ipmiPassword ])">
-        <a-input-password v-decorator="decorators.ipmi_password" />
-      </a-form-item>
+      <template v-if="!noBMC">
+        <a-form-item :label="$t('compute.text_774')" :extra="$t('compute.text_784')">
+          <a-input v-decorator="decorators.ipmi_ip_addr" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_776')" :extra="$t('compute.text_785')">
+          <a-input v-decorator="decorators.ipmi_username" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_777')" :extra="$t('compute.text_782', [ ipmiPassword ])">
+          <a-input-password v-decorator="decorators.ipmi_password" />
+        </a-form-item>
+      </template>
+      <template v-if="noBMC">
+        <a-form-item :label="$t('compute.text_778')">
+          <net-select v-decorator="decorators.net" :project-domain="fd.project_domain" />
+          <template #extra>
+            {{ $t('compute.text_779') }} <help-link href="/network/create">{{$t('common.create')}}</help-link>
+          </template>
+        </a-form-item>
+      </template>
       <a-form-item :label="$t('common.text00012')" class="mb-0">
         <tag
           v-decorator="decorators.__meta__" />
@@ -60,6 +73,7 @@
 <script>
 import ModeSelect from '../components/ModeSelect'
 import FileSelect from '../components/FileSelect'
+import NetSelect from '../components/NetSelect'
 import Tag from '@/sections/Tag'
 
 export default {
@@ -67,6 +81,7 @@ export default {
   components: {
     ModeSelect,
     FileSelect,
+    NetSelect,
     Tag,
   },
   inject: ['form'],
@@ -102,6 +117,9 @@ export default {
     total () {
       const lines = (this.fd.content && this.fd.content.split(/\r*\n/).filter((item) => item.length > 0)) || []
       return lines.length || 0
+    },
+    noBMC () {
+      return this.fd.no_bmc
     },
   },
   created () {

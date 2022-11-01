@@ -771,6 +771,7 @@
   "compute.text_778": "管理口IP",
   "compute.text_779": "会根据输入的IP子网或者IP地址设置物理机的管理口IP，没有想要的IP子网，前往",
   "compute.text_780": "只注册不引导",
+  "compute.no_bmc": "无BMC控制器",
   "compute.text_781": "会根据输入的IP子网或者IP地址设置物理机的管理口IP，留空则使用DHCP自动分配的IP作为管理口IP，没有想要的IP子网，前往",
   "compute.text_782": "为空时，系统默认使用 {0}；不为空时，则使用用户输入信息。新机器建议留空，老机器建议输入旧密码",
   "compute.text_783": "请输入物理机管理口的MAC地址，一般为eth0",
