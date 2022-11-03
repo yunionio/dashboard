@@ -280,6 +280,16 @@ export default {
       },
       immediate: true,
     },
+    singleActions: {
+      handler (val, oldVal) {
+        if (!R.equals(val, oldVal)) {
+          this.$nextTick(() => {
+            this.tableColumns = this.genTableColumns()
+          })
+        }
+      },
+      immediate: true,
+    },
     limit (val, oldVal) {
       this.finalLimit = this.getLimit()
     },
