@@ -2,7 +2,7 @@
 export default {
   // 通用状态
   common: {
-    success: ['available'],
+    success: ['available', 'running', 'ready'],
     info: ['unknown'],
     danger: ['create_failed', 'delete_failed', 'update_tags_fail'],
   },
