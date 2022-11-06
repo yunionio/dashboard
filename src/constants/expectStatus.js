@@ -2,8 +2,8 @@
 export default {
   // 通用状态
   common: {
-    success: ['available', 'running'],
-    info: ['unknown', 'ready'],
+    success: ['available'],
+    info: ['unknown'],
     danger: ['create_failed', 'delete_failed', 'update_tags_fail'],
   },
   server: {
