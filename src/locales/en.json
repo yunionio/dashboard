@@ -9,9 +9,7 @@
       "available": "Available",
       "unknown": "Unknown",
       "update_tags": "Update tag",
-      "update_tags_fail": "Failed to update tag",
-      "running": "Running",
-      "ready": "Ready"
+      "update_tags_fail": "Failed to update tag"
     },
     "monitorresources": {
       "init": "No alarm is set",
