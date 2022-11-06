@@ -23,7 +23,8 @@ export default {
           id: 'DiskStoragesListForChangeBlockStorageDialog',
           resource: 'storages',
           getParams: {
-            host_id: this.selectedItemsGuestHostIds[0],
+            server_id: this.selectedItemsGuestIds[0],
+            enabled: true,
             filter: `id.notin(${this.selectedItemsStorageIds.join(',')})`,
           },
           filterOptions: {

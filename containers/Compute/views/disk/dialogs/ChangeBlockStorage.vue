@@ -76,17 +76,6 @@ export default {
     selectedItemsDiskIds () {
       return this.selectedItems.map(item => item.id)
     },
-    selectedItemsGuestHostIds () {
-      const hostIds = []
-      this.selectedItems.forEach(item => {
-        if (item.guests) {
-          item.guests.forEach(v => {
-            hostIds.push(v.host_id)
-          })
-        }
-      })
-      return hostIds
-    },
     selectedItemsGuestIds () {
       const guestIds = []
       this.selectedItems.forEach(item => {
