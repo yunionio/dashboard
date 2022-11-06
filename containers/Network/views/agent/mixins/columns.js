@@ -24,7 +24,7 @@ export default {
       {
         field: 'ha_state',
         title: i18n.t('network.text_22'),
-        width: 70,
+        width: 90,
       },
       {
         field: 'hb_last_seen',
@@ -37,7 +37,7 @@ export default {
       {
         field: 'ip',
         title: 'IP',
-        width: 120,
+        width: 140,
       },
       {
         field: 'version',
