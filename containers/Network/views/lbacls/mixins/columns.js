@@ -67,7 +67,7 @@ export default {
       {
         field: 'updated_at',
         title: i18n.t('network.text_314'),
-        width: 150,
+        width: 180,
         formatter: ({ cellValue }) => {
           return this.$moment(cellValue).format()
         },
