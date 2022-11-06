@@ -200,6 +200,10 @@ export default {
                   ret.validate = false
                   ret.tooltip = i18n.t('compute.text_1287', [BRAND_MAP[obj.brand]?.label])
                 }
+                if (this.isProjectMode) {
+                  ret.tooltip = this.$t('compute.text_1279', [this.$t('dictionary.domain')])
+                  ret.validate = false
+                }
                 if (!obj.guest) {
                   ret.validate = false
                 } else {
