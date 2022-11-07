@@ -1,8 +1,19 @@
 <template>
   <a-popover v-model="visible" trigger="click" placement="left">
     <template slot="content">
-      <a-icon type="sync" spin v-if="loading" />
-      <div v-else class="info-wrapper">
+      <div v-if="mfaShow" class="wrap-inner">
+        <h5 class="auth-base-title text-center">{{ $t('auth.secret.verify.title') }}</h5>
+        <div class="verify-tip">{{ $t('auth.secret.reset.prefix1') }}</div>
+        <div class="code-wrap d-flex justify-content-center">
+          <security-code ref="security-code" is-small v-model="securityCode" :error="error" @completed="onValid" @clear="onClear" blurOnComplete />
+        </div>
+        <div class="status-tip">
+          <div v-if="error" class="error">{{ $t('auth.secret.validate') }}</div>
+          <div v-if="mfaLoading" class="loading"><a-icon type="sync" spin />{{ $t('auth.secret.loading') }}</div>
+        </div>
+      </div>
+      <a-icon type="sync" spin v-else-if="infoShow && loading" />
+      <div v-else-if="infoShow && !loading" class="info-wrapper">
         <div>
           <span class="label inline-block">{{$t('compute.text_1017')}}：</span>
           <span class="inline-block"><list-body-cell-wrap copy alwaysShowCopyBtn field="vnc_type" :row="form" /></span>
@@ -33,8 +44,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import WindowsMixin from '@/mixins/windows'
+
 export default {
   name: 'VncInfoFetcher',
+  mixins: [WindowsMixin],
   props: {
     onManager: Function,
     row: Object,
@@ -43,7 +58,11 @@ export default {
   },
   data () {
     return {
+      securityCode: '',
+      error: false,
       visible: false,
+      mfaShow: false,
+      infoShow: false,
       loading: false,
       form: {
         vnc_type: '',
@@ -52,6 +71,19 @@ export default {
         password: '',
       },
     }
+  },
+  computed: {
+    ...mapGetters(['userInfo', 'auth']),
+    enableMFA () {
+      return this.userInfo.enable_mfa && this.auth.auth.system_totp_on
+    },
+  },
+  watch: {
+    securityCode (val) {
+      if (val.length < 6) {
+        this.error = false
+      }
+    },
   },
   methods: {
     handleWrapClick (e) {
@@ -67,25 +99,53 @@ export default {
       })
     },
     handleKeyClick () {
-      this.visible = !this.visible
-      this.$nextTick(async () => {
-        if (this.visible === false) return
-        this.loading = true
-        try {
-          const { data = {} } = await new this.$Manager('servers', 'v2').getSpecific({
-            id: this.row.id,
-            spec: 'vnc',
-          })
-          this.form.vnc_type = data.protocol || '-'
-          this.form.ip = data.host || '-'
-          this.form.port = data.port || '-'
-          this.form.password = data.password || '-'
-          this.loading = false
-        } catch (err) {
-          this.loading = false
-          throw err
-        }
-      })
+      if (this.visible) return
+      if (this.enableMFA) {
+        this.mfaShow = true
+        this.visible = true
+      } else {
+        this.visible = true
+        this.fetchInfo()
+      }
+    },
+    async fetchInfo () {
+      this.loading = true
+      this.infoShow = true
+      this.mfaShow = false
+      this.securityCode = ''
+      try {
+        const { data = {} } = await new this.$Manager('servers', 'v2').getSpecific({
+          id: this.row.id,
+          spec: 'vnc',
+        })
+        this.form.vnc_type = data.protocol || '-'
+        this.form.ip = data.host || '-'
+        this.form.port = data.port || '-'
+        this.form.password = data.password || '-'
+        this.loading = false
+      } catch (err) {
+        this.loading = false
+        throw err
+      }
+    },
+
+    async onValid () {
+      this.mfaLoading = true
+      try {
+        await this.$store.dispatch('auth/validPasscode', {
+          passcode: this.securityCode,
+        })
+        this.mfaLoading = false
+        await this.$store.commit('auth/UPDATE_AUTH')
+        this.fetchInfo()
+      } catch (error) {
+        this.error = true
+        this.mfaLoading = false
+      }
+    },
+    onClear () {
+      this.error = false
+      this.$refs['security-code'].focusInput(1)
     },
   },
 }
@@ -104,5 +164,39 @@ export default {
 }
 .inline-block {
   display: inline-block;
+}
+
+.wrap {
+  width: 810px;
+  position: relative;
+}
+.wrap-inner {
+  padding: 10px 20px 0 20px;
+}
+.code-wrap {
+  margin-top: 15px;
+}
+
+.status-tip {
+  font-size: 12px;
+  margin-top: 15px;
+  text-align: center;
+  .error {
+    color: #DD2727;
+  }
+  .loading {
+    i {
+      margin-right: 5px;
+    }
+  }
+}
+.verify-tip {
+  color: #A6AEBC;
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 20px;
+  .reset-secret-btn {
+    margin-left: 10px;
+  }
 }
 </style>
