@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
@@ -92,7 +93,8 @@ export default {
       if (obj.disk_format === IMAGES_TYPE_MAP.iso.key) {
         type = obj.disk_format
       } else {
-        type = obj.is_standard ? IMAGES_TYPE_MAP.standard.key : IMAGES_TYPE_MAP.customize.key
+        const { is_standard } = obj
+        type = (R.is(String, is_standard) && is_standard === 'true') || is_standard ? IMAGES_TYPE_MAP.standard.key : IMAGES_TYPE_MAP.customize.key
       }
       this.$router.push({
         path: '/vminstance/create',
