@@ -1,42 +1,46 @@
 <template>
   <a-row>
-    <a-col :span="6" class="mr-2" v-if="isAdminMode">
-      <a-select
-        show-search
-        allow-clear
-        v-model="host"
-        :disabled="!isHostLoaded"
-        :loading="isHostLoading"
-        :filter-option="false"
-        :placeholder="$t('common.choose.host')"
-        @search="handleHostSearch"
-        @change="hostSelectChange">
-        <a-select-option
-          v-for="item of hosts"
-          :key="item.id"
-          :value="item.id">
-          {{ item.name }}
-        </a-select-option>
-      </a-select>
+    <a-col :span="6" class="mr-2" v-show="!isProjectMode">
+      <a-form-item>
+        <a-select
+          show-search
+          allow-clear
+          v-decorator="decorators.host"
+          :disabled="!isHostLoaded"
+          :loading="isHostLoading"
+          :filter-option="false"
+          :placeholder="$t('common.choose.host')"
+          @search="handleHostSearch"
+          @change="hostSelectChange">
+          <a-select-option
+            v-for="item of hosts"
+            :key="item.id"
+            :value="item.id">
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
+      </a-form-item>
     </a-col>
     <a-col :span="6">
-      <a-select
-        show-search
-        allow-clear
-        v-model="server"
-        :disabled="!isServerLoaded"
-        :loading="isServerLoading"
-        :filter-option="false"
-        :placeholder="$t('common.choose.server')"
-        @search="handleServerSearch"
-        @change="serverSelectChange">
-        <a-select-option
-          v-for="item of servers"
-          :key="item.id"
-          :value="item.id">
-          {{ item.name }}
-        </a-select-option>
-      </a-select>
+      <a-form-item>
+        <a-select
+          show-search
+          allow-clear
+          v-decorator="decorators.server"
+          :disabled="!isServerLoaded"
+          :loading="isServerLoading"
+          :filter-option="false"
+          :placeholder="$t('common.choose.server')"
+          @search="handleServerSearch"
+          @change="serverSelectChange">
+          <a-select-option
+            v-for="item of servers"
+            :key="item.id"
+            :value="item.id">
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
+      </a-form-item>
     </a-col>
   </a-row>
 </template>
@@ -49,9 +53,8 @@ import { Manager } from '@/utils/manager'
 export default {
   name: 'HostServer',
   props: {
-    value: {
-      type: String,
-    },
+    form: Object,
+    decorators: Object,
     cloudEnv: {
       type: String,
       default: 'onpremise',
@@ -61,30 +64,25 @@ export default {
     return {
       isHostLoading: false,
       isHostLoaded: true,
-      host: undefined,
       hosts: [],
       isServerLoading: false,
       isServerLoaded: true,
-      server: this.value,
       servers: [],
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode', 'scope']),
-  },
-  watch: {
-    value (val) {
-      if (val) {
-        this.server = val
-      }
-    },
+    ...mapGetters(['isProjectMode', 'scope']),
   },
   created () {
     this.hostManager = new Manager('hosts')
     this.serverManager = new Manager('servers')
     this.fetchHosts = _.debounce(this._fetchHosts, 500)
     this.fetchServers = _.debounce(this._fetchServers, 500)
-    this.fetchHosts()
+    if (!this.isProjectMode) {
+      this.fetchHosts()
+    } else {
+      this.fetchServers({})
+    }
   },
   methods: {
     async _fetchHosts (query) {
@@ -108,7 +106,12 @@ export default {
             name: item.name,
           }
         })
-        // this.host = this.hosts[0]?.id
+        if (this.hosts[0]) {
+          this.form.fc.setFieldsValue({
+            host: this.hosts[0].id,
+          })
+          this.fetchServers({ joint_filter: `hosts.id(host_id).name.contains(${this.hosts[0].name})` })
+        }
         this.isHostLoaded = true
       } catch (error) {
         console.log(error)
@@ -141,8 +144,12 @@ export default {
             host_id: item.host_id,
           }
         })
-        this.server = this.servers[0]?.id
-        this.$emit('change', this.server)
+        // if (this.servers[0]) {
+        //   this.form.fc.setFieldsValue({
+        //     host: this.servers[0].host_id,
+        //     server: this.servers[0].id,
+        //   })
+        // }
         this.isServerLoaded = true
       } catch (error) {
         console.log(error)
@@ -152,18 +159,25 @@ export default {
     },
     hostSelectChange (v) {
       if (v) {
-        this.host = v
         const curHost = this.hosts.find(item => item.id === v)
         this.fetchServers({ joint_filter: `hosts.id(host_id).name.contains(${curHost.name})` })
       } else {
-        this.server = undefined
         this.servers = []
+        this.form.fc.setFieldsValue({
+          server: undefined,
+        })
       }
     },
     serverSelectChange (v) {
       const curServer = this.servers.find(item => item.id === v)
-      this.host = curServer.host_id
-      this.$emit('change', v)
+      this.form.fc.setFieldsValue({
+        server: v,
+      })
+      if (this.isProjectMode) {
+        this.form.fc.setFieldsValue({
+          host: curServer ? curServer.host_id : '',
+        })
+      }
     },
     handleHostSearch (v) {
       this.fetchHosts({ filter: `name.contains('${v}')` })
