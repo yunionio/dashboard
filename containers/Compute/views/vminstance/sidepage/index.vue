@@ -5,7 +5,7 @@
     icon="res-vminstance"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
-    :tabs="detailTabs"
+    :tabs="filterDetailTabs"
     :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
@@ -226,6 +226,17 @@ export default {
     },
     hiddenSingleActions () {
       return this.params.windowData.currentTab === 'scheduledtasks-list'
+    },
+    filterDetailTabs () {
+      return this.detailTabs.map(item => {
+        if (!this.detailData.id) {
+          return {
+            ...item,
+            disabled: true,
+          }
+        }
+        return item
+      })
     },
   },
   created () {

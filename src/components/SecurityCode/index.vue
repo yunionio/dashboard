@@ -1,5 +1,5 @@
 <template>
-  <div class="security-code-box" :class="{ 'has-error': error }">
+  <div class="security-code-box" :class="{ 'has-error': error, 'security-code-box-small': isSmall }">
     <div class="security-code-box-inner">
       <div class="security-code-field" v-for="n in securityCodeLength" :key="n">
         <input
@@ -40,6 +40,7 @@ export default {
       default: 6,
     },
     error: Boolean,
+    isSmall: Boolean,
   },
   data () {
     return {
@@ -245,6 +246,29 @@ export default {
         }
       }
     }
+  }
+}
+.security-code-box-small {
+  width: 310px;
+  .security-code-box-inner {
+    .security-code-field {
+      margin-right: 10px;
+      .form-control {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+      }
+      &:nth-child(3) {
+        margin-right: 25px;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+  .clear-btn {
+    right: -25px;
+    margin-top: -18px;
   }
 }
 </style>
