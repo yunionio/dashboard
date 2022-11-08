@@ -5,7 +5,7 @@
     icon="res-vminstance"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
-    :tabs="detailTabs"
+    :tabs="filterDetailTabs"
     :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
@@ -205,6 +205,17 @@ export default {
     },
     componentData () {
       return Object.assign({}, this.detailData, { agent_status: this.agent_status, agent_fail_reason: this.agent_fail_reason, agent_fail_code: this.agent_fail_code })
+    },
+    filterDetailTabs () {
+      return this.detailTabs.map(item => {
+        if (!this.detailData.id) {
+          return {
+            ...item,
+            disabled: true,
+          }
+        }
+        return item
+      })
     },
   },
   created () {

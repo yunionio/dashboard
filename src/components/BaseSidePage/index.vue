@@ -41,7 +41,7 @@
             v-for="item of tabs"
             :key="item.key"
             :tab="item.label"
-            :disabled="hasError" />
+            :disabled="hasError || item.disabled" />
         </a-tabs>
       </div>
     </div>
