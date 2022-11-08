@@ -42,6 +42,20 @@ export default {
         }),
       },
       {
+        label: i18n.t('compute.create_disk'),
+        permission: 'disks_create',
+        action: obj => {
+          this.createDialog('SnapshotCreateDiskDialog', {
+            data: [obj],
+            columns: this.columns,
+            refresh: this.refresh,
+          })
+        },
+        hidden: (obj) => {
+          return obj.cloud_env !== 'onpremise'
+        },
+      },
+      {
         label: i18n.t('compute.perform_delete'),
         permission: 'snapshots_delete',
         action: obj => {

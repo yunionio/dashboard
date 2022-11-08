@@ -1623,5 +1623,6 @@
   "compute.vminstance.transfer.quickly_finish": "快速收敛",
   "compute.vminstance.transfer.cancel_migration": "取消迁移",
   "compute.vminstance.transfer.max_brand_width.required": "请输入带宽值",
-  "compute.vminstance.transfer.quickly_finish.extra": "热迁移内存同步一段时间后调整虚拟机downtime，以达到迁移完成状态"
+  "compute.vminstance.transfer.quickly_finish.extra": "热迁移内存同步一段时间后调整虚拟机downtime，以达到迁移完成状态",
+  "compute.create_disk": "创建硬盘"
 }
