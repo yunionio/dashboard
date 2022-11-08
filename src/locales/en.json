@@ -482,7 +482,8 @@
       "change_bandwidth": "Change Bandwidth",
       "init": "Initialize",
       "syncing": "Syncing",
-      "sync_status": "Syncing"
+      "sync_status": "Syncing",
+      "stopped": "Stopped"
     },
     "snapshot": {
       "init": "Initialize",
@@ -1143,6 +1144,18 @@
     "disk_is_ssd": {
       "true": "SSD",
       "false": "HDD"
+    },
+    "oss": {
+      "ready": "Ready"
+    },
+    "dbAudit": {
+      "running": "Running"
+    },
+    "fortressAircraft": {
+      "running": "Running"
+    },
+    "wtps": {
+      "running": "Running"
     }
   },
   "skuCategoryOptions": {
