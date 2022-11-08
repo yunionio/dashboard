@@ -41,8 +41,8 @@ export default {
       },
       {
         field: 'version',
-        title: i18n.t('network.text_25'),
-        width: 250,
+        title: i18n.t('network.version'),
+        width: 300,
       },
       {
         field: 'cluster',

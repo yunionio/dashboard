@@ -61,6 +61,10 @@ export default {
           },
         },
         {
+          field: 'version',
+          title: this.$t('network.version'),
+        },
+        {
           field: 'zone',
           title: this.$t('network.text_24'),
         },
