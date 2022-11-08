@@ -14,110 +14,125 @@ import expectStatus from '@/constants/expectStatus'
 const appendOutherResources = ['servers', 'hosts', 'disks', 'storages', 'vpcs', 'wires', 'networks', 'natgateways', 'snapshots', 'eips', 'dbinstances', 'elasticcaches', 'servertemplates', 'buckets', 'networkinterfaces', 'lbs', 'nats', 'nas', 'kafkas', 'elasticsearchs', 'webapps', 'cdn_domains', 'inter_vpc_networks', 'route_tables', 'vpc_peering_connections', 'ipv6_gateways', 'tablestores', 'modelarts_pools']
 
 const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
-  const outher = [
-    {
-      field: 'region',
-      title: i18n.t('res.region'),
-      slots: {
-        default: ({ row }) => {
-          if (!row.region_id) return row.region || '-'
-          const p = hasPermission({ key: 'cloudregions_get' })
-          let node
-          if (p) {
-            node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='region' title={ row.region } hideField={ true }>
-                <side-page-trigger permission='areas_get' name='CloudregionSidePage' id={row.region_id} vm={vm}>{ row.region }</side-page-trigger>
-              </list-body-cell-wrap>
-            )
-          } else {
-            node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='region' title={ row.region } />
-            )
-          }
-          return [
-            <div class='text-truncate'>{ node }</div>,
-          ]
+  const outher = []
+  if (data.region) {
+    outher.push(
+      {
+        field: 'region',
+        title: i18n.t('res.region'),
+        slots: {
+          default: ({ row }) => {
+            if (!row.region_id) return row.region || '-'
+            const p = hasPermission({ key: 'cloudregions_get' })
+            let node
+            if (p) {
+              node = (
+                <list-body-cell-wrap copy row={ data } onManager={ onManager } field='region' title={ row.region } hideField={ true }>
+                  <side-page-trigger permission='areas_get' name='CloudregionSidePage' id={row.region_id} vm={vm}>{ row.region }</side-page-trigger>
+                </list-body-cell-wrap>
+              )
+            } else {
+              node = (
+                <list-body-cell-wrap copy row={ data } onManager={ onManager } field='region' title={ row.region } />
+              )
+            }
+            return [
+              <div class='text-truncate'>{ node }</div>,
+            ]
+          },
         },
       },
-    },
-    {
-      field: 'zone',
-      title: i18n.t('res.zone'),
-      slots: {
-        default: ({ row }) => {
-          if (!row.zone_id) return row.zone || '-'
-          const p = hasPermission({ key: 'zones_get' })
-          let node
-          if (p) {
-            node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='zone' title={ row.zone } hideField={ true }>
-                <side-page-trigger permission='zones_get' name='ZoneSidePage' id={row.zone_id} vm={vm}>{ row.zone }</side-page-trigger>
-              </list-body-cell-wrap>
-            )
-          } else {
-            node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='zone' title={ row.zone } />
-            )
-          }
-          return [
-            <div class='text-truncate'>{ node }</div>,
-          ]
+    )
+  }
+  if (data.zone) {
+    outher.push(
+      {
+        field: 'zone',
+        title: i18n.t('res.zone'),
+        slots: {
+          default: ({ row }) => {
+            if (!row.zone_id) return row.zone || '-'
+            const p = hasPermission({ key: 'zones_get' })
+            let node
+            if (p) {
+              node = (
+                <list-body-cell-wrap copy row={ data } onManager={ onManager } field='zone' title={ row.zone } hideField={ true }>
+                  <side-page-trigger permission='zones_get' name='ZoneSidePage' id={row.zone_id} vm={vm}>{ row.zone }</side-page-trigger>
+                </list-body-cell-wrap>
+              )
+            } else {
+              node = (
+                <list-body-cell-wrap copy row={ data } onManager={ onManager } field='zone' title={ row.zone } />
+              )
+            }
+            return [
+              <div class='text-truncate'>{ node }</div>,
+            ]
+          },
         },
       },
-    },
-    {
-      field: 'account',
-      title: i18n.t('res.cloudaccount'),
-      slots: {
-        default: ({ row }) => {
-          if (!row.account_id) return row.account || '-'
-          const p = hasPermission({ key: 'cloudaccounts_get' })
-          let node
-          if (p) {
-            node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='account' title={ row.account } hideField={ true }>
-                <side-page-trigger permission='cloudaccounts_get' name='CloudaccountSidePage' id={row.account_id} vm={vm}>{ row.account }</side-page-trigger>
-              </list-body-cell-wrap>
-            )
-          } else {
-            node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='account' title={ row.account } />
-            )
-          }
-          return [
-            <div class='text-truncate'>{ node }</div>,
-          ]
+    )
+  }
+  if (data.account && !store.getters.isProjectMode) {
+    outher.push(
+      {
+        field: 'account',
+        title: i18n.t('res.cloudaccount'),
+        slots: {
+          default: ({ row }) => {
+            if (!row.account_id) return row.account || '-'
+            const p = hasPermission({ key: 'cloudaccounts_get' })
+            let node
+            if (p) {
+              node = (
+                <list-body-cell-wrap copy row={ data } onManager={ onManager } field='account' title={ row.account } hideField={ true }>
+                  <side-page-trigger permission='cloudaccounts_get' name='CloudaccountSidePage' id={row.account_id} vm={vm}>{ row.account }</side-page-trigger>
+                </list-body-cell-wrap>
+              )
+            } else {
+              node = (
+                <list-body-cell-wrap copy row={ data } onManager={ onManager } field='account' title={ row.account } />
+              )
+            }
+            return [
+              <div class='text-truncate'>{ node }</div>,
+            ]
+          },
         },
+        hidden: () => store.getters.isProjectMode,
       },
-      hidden: () => store.getters.isProjectMode,
-    },
-    {
-      field: 'manager',
-      title: i18n.t('res.cloudprovider'),
-      slots: {
-        default: ({ row }) => {
-          if (!row.manager_id) return row.manager || '-'
-          const p = hasPermission({ key: 'cloudproviders_get' })
-          let node
-          if (p) {
-            node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='manager' title={ row.manager } hideField={ true }>
-                <side-page-trigger permission='cloudproviders_get' name='CloudproviderSidePage' id={row.manager_id} vm={vm}>{ row.manager }</side-page-trigger>
-              </list-body-cell-wrap>
-            )
-          } else {
-            node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='manager' title={ row.manager } />
-            )
-          }
-          return [
-            <div class='text-truncate'>{ node }</div>,
-          ]
+    )
+  }
+  if (data.manager && !store.getters.isProjectMode) {
+    outher.push(
+      {
+        field: 'manager',
+        title: i18n.t('res.cloudprovider'),
+        slots: {
+          default: ({ row }) => {
+            if (!row.manager_id) return row.manager || '-'
+            const p = hasPermission({ key: 'cloudproviders_get' })
+            let node
+            if (p) {
+              node = (
+                <list-body-cell-wrap copy row={ data } onManager={ onManager } field='manager' title={ row.manager } hideField={ true }>
+                  <side-page-trigger permission='cloudproviders_get' name='CloudproviderSidePage' id={row.manager_id} vm={vm}>{ row.manager }</side-page-trigger>
+                </list-body-cell-wrap>
+              )
+            } else {
+              node = (
+                <list-body-cell-wrap copy row={ data } onManager={ onManager } field='manager' title={ row.manager } />
+              )
+            }
+            return [
+              <div class='text-truncate'>{ node }</div>,
+            ]
+          },
         },
+        hidden: () => store.getters.isProjectMode,
       },
-      hidden: () => store.getters.isProjectMode,
-    },
-  ]
+    )
+  }
   let ret = [
     {
       field: 'created_at',
@@ -141,33 +156,42 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
 }
 
 const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, onManager }) => {
-  return [
-    {
-      field: 'external_id',
-      title: i18n.t('table.title.external_id'),
-      slots: {
-        default: ({ row }) => {
-          return [
-            <div class='text-truncate'>
-              <list-body-cell-wrap copy row={ data } field='external_id' title={ row.external_id } />
-            </div>,
-          ]
+  const ret = []
+  if (data.external_id) {
+    ret.push(
+      {
+        field: 'external_id',
+        title: i18n.t('table.title.external_id'),
+        slots: {
+          default: ({ row }) => {
+            return [
+              <div class='text-truncate'>
+                <list-body-cell-wrap copy row={ data } field='external_id' title={ row.external_id } />
+              </div>,
+            ]
+          },
         },
       },
-    },
-    {
-      field: idKey,
-      title: 'ID',
-      slots: {
-        default: ({ row }) => {
-          return [
-            <div class='text-truncate'>
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field={ idKey } title={ row[idKey] } />
-            </div>,
-          ]
+    )
+  }
+  if (data.id) {
+    ret.push(
+      {
+        field: idKey,
+        title: 'ID',
+        slots: {
+          default: ({ row }) => {
+            return [
+              <div class='text-truncate'>
+                <list-body-cell-wrap copy row={ data } onManager={ onManager } field={ idKey } title={ row[idKey] } />
+              </div>,
+            ]
+          },
         },
       },
-    },
+    )
+  }
+  ret.push(
     {
       field: statusKey,
       title: i18n.t('common.status'),
@@ -180,61 +204,70 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
         },
       },
     },
-    {
-      field: 'project_domain',
-      title: i18n.t('res.domain'),
-      slots: {
-        default: ({ row }) => {
-          const domain = row.project_domain || row.domain
-          if (!row.domain_id) return domain || '-'
-          if (!domain) return '-'
-          const p = hasPermission({ key: 'domains_get' })
-          let node
-          if (p) {
-            node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='project_domain' title={ row.project_domain } message={domain} hideField={ true }>
-                <side-page-trigger permission='domains_get' name='DomainSidePage' id={row.project_domain} vm={vm}>{ domain }</side-page-trigger>
-              </list-body-cell-wrap>
-            )
-          } else {
-            node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='project_domain' title={ row.project_domain } message={domain} />
-            )
-          }
-          return [
-            <div class='text-truncate'>{ node }</div>,
-          ]
+  )
+  if (data.project_domain && !store.getters.isProjectMode) {
+    ret.push(
+      {
+        field: 'project_domain',
+        title: i18n.t('res.domain'),
+        slots: {
+          default: ({ row }) => {
+            const domain = row.project_domain || row.domain
+            if (!row.domain_id) return domain || '-'
+            if (!domain) return '-'
+            const p = hasPermission({ key: 'domains_get' })
+            let node
+            if (p) {
+              node = (
+                <list-body-cell-wrap copy row={ data } onManager={ onManager } field='project_domain' title={ row.project_domain } message={domain} hideField={ true }>
+                  <side-page-trigger permission='domains_get' name='DomainSidePage' id={row.project_domain} vm={vm}>{ domain }</side-page-trigger>
+                </list-body-cell-wrap>
+              )
+            } else {
+              node = (
+                <list-body-cell-wrap copy row={ data } onManager={ onManager } field='project_domain' title={ row.project_domain } message={domain} />
+              )
+            }
+            return [
+              <div class='text-truncate'>{ node }</div>,
+            ]
+          },
+        },
+        hidden: () => store.getters.isProjectMode,
+      },
+    )
+  }
+  if (data.tenant) {
+    ret.push(
+      {
+        field: 'tenant',
+        title: i18n.t('res.project'),
+        slots: {
+          default: ({ row }) => {
+            if (!row.tenant_id) return row.tenant || '-'
+            if (!row.tenant) return '-'
+            const p = hasPermission({ key: 'projects_get' })
+            let node
+            if (p) {
+              node = (
+                <list-body-cell-wrap copy row={ data } onManager={ onManager } field='tenant' title={ row.tenant } hideField={ true }>
+                  <side-page-trigger permission='projects_get' name='ProjectSidePage' id={row.tenant_id} vm={vm}>{ row.tenant }</side-page-trigger>
+                </list-body-cell-wrap>
+              )
+            } else {
+              node = (
+                <list-body-cell-wrap copy row={ data } onManager={ onManager } field='tenant' title={ row.tenant } />
+              )
+            }
+            return [
+              <div class='text-truncate'>{ node }</div>,
+            ]
+          },
         },
       },
-      hidden: () => store.getters.isProjectMode,
-    },
-    {
-      field: 'tenant',
-      title: i18n.t('res.project'),
-      slots: {
-        default: ({ row }) => {
-          if (!row.tenant_id) return row.tenant || '-'
-          if (!row.tenant) return '-'
-          const p = hasPermission({ key: 'projects_get' })
-          let node
-          if (p) {
-            node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='tenant' title={ row.tenant } hideField={ true }>
-                <side-page-trigger permission='projects_get' name='ProjectSidePage' id={row.tenant_id} vm={vm}>{ row.tenant }</side-page-trigger>
-              </list-body-cell-wrap>
-            )
-          } else {
-            node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='tenant' title={ row.tenant } />
-            )
-          }
-          return [
-            <div class='text-truncate'>{ node }</div>,
-          ]
-        },
-      },
-    },
-  ]
+    )
+  }
+  return ret
 }
 
 export default {
@@ -311,6 +344,7 @@ export default {
         resource: this.resource,
       })
       // 与传递进来的baseInfo比较，去除在baseInfo中已有字段
+      /*
       for (let i = 0; i < this.baseInfo.length; i++) {
         for (let j = 0; j < defaultTopBaseInfo.length; j++) {
           if (this.baseInfo[i].field === defaultTopBaseInfo[j].field || this.baseInfo[i].title === defaultTopBaseInfo[j].title) {
@@ -323,7 +357,20 @@ export default {
           }
         }
       }
-      let baseInfo = defaultTopBaseInfo.concat(this.baseInfo).concat(defaultLastBaseInfo)
+      */
+      const exists = {}
+      let baseInfo = []
+      const infoSets = [defaultTopBaseInfo, this.baseInfo, defaultLastBaseInfo]
+      for (let k = 0; k < infoSets.length; k++) {
+        const infos = infoSets[k]
+        for (let i = 0; i < infos.length; i++) {
+          if (!(infos[i].field in exists)) {
+            baseInfo.push(infos[i])
+            exists[infos[i].field] = 1
+          }
+        }
+      }
+      // defaultTopBaseInfo.concat(this.baseInfo).concat(defaultLastBaseInfo)
       baseInfo = R.uniqBy(item => item.field && item.title, baseInfo)
         .filter(child => {
           if (this.hiddenKeys && this.hiddenKeys.length) {
