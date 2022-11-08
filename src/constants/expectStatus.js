@@ -137,7 +137,7 @@ export default {
   eip: {
     success: ['ready', 'running'],
     danger: ['allocate_fail', 'deallocate_fail', 'associate_fail', 'dissociate_fail'],
-    info: ['unknown'],
+    info: ['unknown', 'stopped'],
   },
   snapshot: {
     success: ['ready'],
@@ -525,5 +525,17 @@ export default {
   disk_is_ssd: {
     success: [true],
     info: [false],
+  },
+  oss: {
+    success: ['ready'],
+  },
+  dbAudit: {
+    success: ['running'],
+  },
+  fortressAircraft: {
+    success: ['running'],
+  },
+  wtps: {
+    success: ['running'],
   },
 }

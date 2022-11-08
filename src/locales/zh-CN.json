@@ -491,7 +491,8 @@
       "init": "初始化",
       "syncing": "同步中",
       "sync_status": "同步中",
-      "running": "可用"
+      "running": "可用",
+      "stopped": "已停用"
     },
     "snapshot": {
       "init": "初始化",
@@ -1161,6 +1162,18 @@
     "disk_is_ssd": {
       "true": "SSD",
       "false": "HDD"
+    },
+    "oss": {
+      "ready": "可用"
+    },
+    "dbAudit": {
+      "running": "运行中"
+    },
+    "fortressAircraft": {
+      "running": "运行中"
+    },
+    "wtps": {
+      "running": "运行中"
     }
   },
   "skuCategoryOptions": {
