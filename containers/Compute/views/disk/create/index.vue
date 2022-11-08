@@ -26,7 +26,7 @@
       <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
         <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
       </a-form-item>
-      <a-form-item :label="$t('compute.text_100')" required v-bind="formItemLayout" :extra="extra">
+      <a-form-item :label="$t('compute.text_100')" required v-bind="formItemLayout">
         <a-row>
           <a-col :span="6" class="mr-2">
             <a-select v-decorator="decorators.backend" @change="__newStorageChange">
@@ -45,8 +45,8 @@
           </a-col>
         </a-row>
       </a-form-item>
-      <a-form-item :label="$t('common.choose.server.label')" v-bind="formItemLayout" v-if="isIDC">
-        <host-server v-decorator="decorators.server" />
+      <a-form-item :label="$t('common.choose.server.label')" v-bind="formItemLayout" v-if="isIDC && isLocalDisk">
+        <host-server :form="form" :decorators="decorators" />
       </a-form-item>
       <a-form-item v-if="enableEncryption" v-bind="formItemLayout" :label="$t('compute.disk.encryption')" :extra="$t('compute.disk.encryption.extra')">
         <encrypt-keys :decorators="decorators.encrypt_keys" />
@@ -238,6 +238,7 @@ export default {
             'encrypt_key_id',
           ],
         },
+        host: ['host'],
         server: ['server'],
       },
       formItemLayout: {
@@ -388,9 +389,6 @@ export default {
     project_domain () {
       return this.form.fd.domain ? this.form.fd.domain : this.userInfo.projectDomainId
     },
-    extra () {
-      return this.cloudEnv === 'onpremise' ? this.$t('compute.text_1353') : ''
-    },
     instanceCapabilitieStorage () {
       if (R.isEmpty(this.instance_capabilities)) return {}
       return this.instance_capabilities[0].storages
@@ -401,6 +399,12 @@ export default {
     },
     isIDC () {
       return this.cloudEnv === 'onpremise'
+    },
+    isLocalDisk () {
+      if (this.storageItem && this.storageItem.value && this.storageItem.value.toLowerCase().startsWith('local_')) {
+        return true
+      }
+      return false
     },
   },
   watch: {
