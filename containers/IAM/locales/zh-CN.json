@@ -788,6 +788,10 @@
     "yunionapi$hide_web_error_details": {
       "label": "错误详情隐藏开关",
       "desc": "关闭后，可以查看操作操作的详细信息，开启后无法查看！"
+    },
+    "cloudmon$disable_ping_probe": {
+      "label": "网络ping探测",
+      "desc": "默认开启，允许自动探测经典网络中已使用的ip，并将ip放置到预留ip中，关闭后无法自动探测。"
     }
   },
   "user": {

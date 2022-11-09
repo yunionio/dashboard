@@ -789,6 +789,10 @@
     "yunionapi$hide_web_error_details": {
       "label": "Error details hide switch",
       "desc": "After opening, you can hide the detailed information of the operation, but you cannot hide it after closing it!"
+    },
+    "cloudmon$disable_ping_probe": {
+      "label": "Network ping detection",
+      "desc": "It is enabled by default, allowing automatic detection of the used IP in the classic network, and placing the IP in the reserved IP. When it is closed, it cannot be automatically detected."
     }
   },
   "user": {
