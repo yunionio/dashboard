@@ -542,7 +542,7 @@ const actionEableMap = {
   acttachGpu: {
     cn: i18n.t('compute.text_1304'),
     brand: {
-      onecloud: ['ready'],
+      onecloud: ['ready', 'running'],
       vmware: false,
       bingocloud: false,
       incloudsphere: false,
