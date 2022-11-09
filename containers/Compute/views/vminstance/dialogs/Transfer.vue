@@ -47,7 +47,7 @@
           </a-form-item>
           <a-form-item :label="$t('compute.vminstance.transfer.quickly_finish')"
             :extra="$t('compute.vminstance.transfer.quickly_finish.extra')">
-            <a-checkbox v-decorator="decorators.quickly_finish" />
+            <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.quickly_finish" />
           </a-form-item>
         </template>
       </a-form>
