@@ -274,10 +274,16 @@ export default {
       }).then(res => {
         if (res.data.data && res.data.data.length) {
           const updateInfo = res.data.data[0]
+          const v = updateInfo.current_version.slice(1, 4)
+          let baseURL = `https://iso.yunion.cn/${v}/rpms`
           if (updateInfo && updateInfo.current_version) {
-            const v = updateInfo.current_version.slice(1, 4)
+            if (v.length === 3 && v[0] === '3') {
+              if (parseInt(v[2]) >= 9) {
+                baseURL = `https://yunioniso.oss-cn-beijing.aliyuncs.com/iso/${v}/rpms`
+              }
+            }
             this.form.fc.setFieldsValue({
-              repo_base_url: `https://iso.yunion.cn/${v}/rpms`,
+              repo_base_url: baseURL,
             })
           }
         }
