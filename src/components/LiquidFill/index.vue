@@ -18,7 +18,9 @@ export default {
   computed: {
     dataList () {
       let dataList = []
-      if (this.value >= 0.8) {
+      if (this.value >= 1) {
+        dataList = [1, 0.9, 0.8]
+      } else if (this.value >= 0.8) {
         dataList = [this.value, this.value - 0.15, this.value - 0.3, this.value - 0.45]
       } else if (this.value >= 0.6) {
         dataList = [this.value, this.value - 0.1, this.value - 0.2, this.value - 0.3]
