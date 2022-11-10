@@ -49,7 +49,7 @@ export default {
   computed: {
     version () {
       if (setting.oemVersion) {
-        return `v${setting.oemVersion}`
+        return `v${setting.oemVersion.replace(/^[v]/, '')}`
       }
       return '-'
     },
