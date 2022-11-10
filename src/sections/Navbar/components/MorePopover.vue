@@ -7,7 +7,7 @@
         </div>
       </a-tooltip>
       <a-menu slot="overlay" @click="handleDropdownClick">
-        <a-menu-item key="/guide" v-if="isAdminMode">{{$t('navbar.button.feature_select')}}</a-menu-item>
+        <a-menu-item key="/guide" v-if="isAdminMode && !isCE()">{{$t('navbar.button.feature_select')}}</a-menu-item>
         <a-menu-item :key="docsUrl">{{$t('navbar.button.docs')}}</a-menu-item>
         <a-menu-item key="/licenses">
           <span>{{$t('navbar.button.about')}}</span>
@@ -21,13 +21,14 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import { getDocsUrl } from '../../../utils/utils'
+import { isCE, getDocsUrl } from '../../../utils/utils'
 
 export default {
   name: 'HelpPopover',
   data () {
     return {
       updateAvailable: false,
+      isCE,
     }
   },
   computed: {

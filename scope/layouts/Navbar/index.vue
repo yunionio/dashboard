@@ -120,10 +120,18 @@
     <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
     <!-- cloudshell -->
     <cloud-shell v-if="isAdminMode" class="navbar-item-icon primary-color-hover" />
+    <!-- 更多 -->
+    <slot name="morePopover">
+      <more-popover class="navbar-item-icon primary-color-hover" />
+    </slot>
     <div class="navbar-item">
       <a-dropdown :trigger="['click']">
-        <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
+        <!-- <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
           <icon type="navbar-user" style="font-size: 24px;" />
+        </div> -->
+        <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
+          <a-avatar style="color: #fff;" class="primary-color-bg">{{ firstNameWord }}</a-avatar>
+          <span class="ml-2 text-truncate" style="max-width: 100px;">{{ username }}</span>
         </div>
         <a-menu slot="overlay" @click="userMenuClick">
           <a-sub-menu key="language">
@@ -152,6 +160,7 @@ import Alertresource from '@/sections/Navbar/components/Alertresource'
 import { setLanguage } from '@/utils/common/cookie'
 import CloudShell from '@/sections/Navbar/components/CloudShell'
 import NotifyPopover from '@/sections/Navbar/components/NotifyPopover'
+import MorePopover from '@/sections/Navbar/components/MorePopover'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -160,6 +169,7 @@ export default {
     CloudShell,
     Alertresource,
     NotifyPopover,
+    MorePopover,
   },
   mixins: [WindowsMixin],
   props: {
@@ -187,6 +197,13 @@ export default {
       alertresource: state => state.alertresource,
       alertrecords: state => state.alertrecords,
     }),
+    username () {
+      return this.userInfo.displayname || this.userInfo.name || 'OneCloud'
+    },
+    firstNameWord () {
+      const word = this.username.split('')[0]
+      return word && word.toUpperCase()
+    },
     products () {
       if (this.userInfo.menus && this.userInfo.menus.length > 0) {
         const menus = this.userInfo.menus.map(item => {
@@ -254,6 +271,7 @@ export default {
           if ((R.isNil(val.projects) || R.isEmpty(val.projects)) && (R.isNil(val.projectId) || R.isEmpty(val.projectId))) {
             this.$router.push('/no-project')
           }
+          this.fetchOEM(val)
         }
       },
       immediate: true,
@@ -409,6 +427,11 @@ export default {
         }
       } catch (error) {
         throw error
+      }
+    },
+    fetchOEM (val) {
+      if (val) {
+        this.$store.dispatch('app/fetchOEM')
       }
     },
   },
