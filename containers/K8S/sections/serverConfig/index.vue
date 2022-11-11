@@ -356,7 +356,8 @@ export default {
     },
     getImageParams () {
       return {
-        distributions: ['centos'],
+        distributions: ['CentOS', 'Kylin'],
+        distribution_precise_match: true,
       }
     },
     getCacheImageParams () {
