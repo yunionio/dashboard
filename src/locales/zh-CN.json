@@ -2699,7 +2699,15 @@
     "apsara": "飞天",
     "tap_service": "流量镜像",
     "tap_flow": "镜像源",
-    "tablestore": "表格存储"
+    "tablestore": "表格存储",
+    "irs_orders": "IRS工单",
+    "irs_reports": "IRS报表",
+    "vulnerabilities": "漏洞清单",
+    "irs_billing_reports": "资源清单",
+    "dept_billing_report": "部门账单",
+    "misc_resources": "外部数据",
+    "shield_bills": "账单配置",
+    "msp_customers": "运营管理"
   },
   "res": {
     "role": "@:dictionary.role",
@@ -3040,7 +3048,10 @@
     "monitor": "监控告警",
     "yunionconf": "配置",
     "cloudevent": "云上日志",
-    "suggestion": "优化建议"
+    "suggestion": "优化建议",
+    "report": "报表",
+    "irs": "IRS",
+    "msp": "MSP"
   },
   "scope.text_1": "实例列表",
   "scope.text_2": "用户信息",

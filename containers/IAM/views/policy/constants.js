@@ -43,6 +43,15 @@ export const SERVICES_MAP = {
   suggestion: {
     i18n: 'service.suggestion',
   },
+  report: {
+    i18n: 'service.report',
+  },
+  irs: {
+    i18n: 'service.irs',
+  },
+  msp: {
+    i18n: 'service.msp',
+  },
 }
 // 定义资源的映射
 export const RESOURCES_MAP = {
@@ -696,6 +705,30 @@ export const RESOURCES_MAP = {
   },
   waf_instances: {
     i18n: 'dictionary.waf_instance',
+  },
+  irs_orders: {
+    i18n: 'dictionary.irs_orders',
+  },
+  reports: {
+    i18n: 'dictionary.irs_reports',
+  },
+  vulnerabilities: {
+    i18n: 'dictionary.vulnerabilities',
+  },
+  irs_billing_reports: {
+    i18n: 'dictionary.irs_billing_reports',
+  },
+  dept_billing_report: {
+    i18n: 'dictionary.dept_billing_report',
+  },
+  misc_resources: {
+    i18n: 'dictionary.misc_resources',
+  },
+  shield_bills: {
+    i18n: 'dictionary.shield_bills',
+  },
+  msp_customers: {
+    i18n: 'dictionary.msp_customers',
   },
 }
 

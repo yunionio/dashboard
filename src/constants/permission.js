@@ -1,5 +1,19 @@
 import _ from 'lodash'
 
+const requireComponent = require.context('@scope', true, /permission\.(js)$/)
+const keys = requireComponent.keys().filter(item => {
+  console.log('require item ', item)
+  const arr = item.split('/')
+  return arr[1] === 'constants' && /\.(js)$/.test(arr[2])
+})
+let extraPermissions = {}
+keys.forEach(fileName => {
+  // 获取组件配置
+  const componentConfig = requireComponent(fileName)
+  const { PERMISSION = {} } = componentConfig
+  extraPermissions = { ...extraPermissions, ...PERMISSION }
+})
+
 /**
  * [0] 服务名称
  * [1] 资源名称
@@ -1320,8 +1334,7 @@ export const PERMISSION = {
   shieldbills_create: ['meter', 'shield_bills', 'create'],
   shieldbills_delete: ['meter', 'shield_bills', 'delete'],
 
-  msp_customers_list: ['meter', 'msp_customers', 'list'],
-  msp_customers_update: ['meter', 'msp_customers', 'update'],
+  ...extraPermissions,
 }
 
 // 已声明权限的资源
