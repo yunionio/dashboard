@@ -1506,6 +1506,8 @@
   "compute.text_1401": "USB设备",
   "compute.text_1402": "只能关联与主机出于同一宿主机的USB设备，且已经被使用的USB设备不可选择",
   "compute.text_1403": "请选择USB设备",
+  "compute.esxi.sync_ips_outofrange": "",
+  "compute.esxi.sync_ips_outofrange_alert": "该IP地址无归属IP子网！请添加包含该IP地址的IP子网并重新同步云账号",
   "compute.title.encryption": "加密",
   "compute.title.encryption_key": "加密密钥",
   "compute.title.encrypt_alg": "密钥算法",
