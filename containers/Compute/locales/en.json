@@ -1506,6 +1506,8 @@
   "compute.text_1401": "USB Device",
   "compute.text_1402": "You can only associate a USB device that is a unified host with the host, and the USB device that has been used cannot be selected",
   "compute.text_1403": "Please select USB devices",
+  "compute.esxi.sync_ips_outofrange": "",
+  "compute.esxi.sync_ips_outofrange_alert": "No IP network for this IP, please add a IP network containing this IP and re-synchronize the managed cloud account",
   "compute.title.encryption": "Encryption",
   "compute.title.encryption_key": "Encryption Key",
   "compute.title.encrypt_alg": "Key Algorithm",
