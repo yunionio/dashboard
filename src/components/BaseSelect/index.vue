@@ -222,6 +222,10 @@ export default {
       const ret = {}
       if (this.dropdownItemWordWrap) {
         ret.dropdownClassName = 'dropdown-item-word-wrap'
+        const { dropdownClassName = '' } = this.selectProps
+        if (dropdownClassName) {
+          ret.dropdownClassName = ret.dropdownClassName + ' ' + dropdownClassName
+        }
       }
       return ret
     },
