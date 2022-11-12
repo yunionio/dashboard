@@ -252,6 +252,7 @@
       "init": "初始化",
       "connected": "已连接",
       "disconnected": "连接断开",
+      "sync_network": "探测网络",
       "start_sync": "开始同步",
       "syncing": "正在同步",
       "sync_status": "同步中",
