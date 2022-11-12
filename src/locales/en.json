@@ -250,6 +250,7 @@
       "init": "Initialize",
       "connected": "Connected",
       "disconnected": "Disconnected",
+      "sync_network": "Probing network",
       "start_sync": "Start sync",
       "syncing": "Syncing",
       "sync_status": "Syncing",
