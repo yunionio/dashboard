@@ -68,6 +68,24 @@ export default {
         field: 'type',
         title: i18n.t('k8s.text_34'),
       },
+      {
+        field: 'nodePort',
+        title: 'nodePort',
+        slots: {
+          default: ({ row }) => {
+            if (row.internalEndpoint && row.internalEndpoint.ports && row.internalEndpoint.ports.length) {
+              return row.internalEndpoint.ports.map(v => {
+                let p = v.nodePort
+                if (p === 0) {
+                  p = '-'
+                }
+                return <div> { `${p}` } </div>
+              })
+            }
+            return '-'
+          },
+        },
+      },
       getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
     ]
   },
