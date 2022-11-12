@@ -55,6 +55,9 @@ export default {
     SET_ALERTRECORDS (state, payload) {
       state.alertrecords = payload
     },
+    SET_OEM (state, payload) {
+      state.oem = payload
+    },
   },
   actions: {
     fetchCompayInfo ({ commit, state }) {
@@ -70,7 +73,15 @@ export default {
       return Promise.resolve()
     },
     fetchOEM ({ commit }, payload) {
-      return Promise.resolve()
+      return new Promise((resolve, reject) => {
+        http.get('/v1/infos/copyright').then(response => {
+          const data = response.data || {}
+          commit('SET_OEM', data)
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
     /**
      * @description 获取oem信息
