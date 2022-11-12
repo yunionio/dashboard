@@ -7,6 +7,8 @@ import SecretVerify from '@/sections/Auth/SecretVerify'
 import BindSecret from '@/sections/Auth/BindSecret'
 import SetSecretQuestion from '@/sections/Auth/SetSecretQuestion'
 import ResetSecretQuestion from '@/sections/Auth/ResetSecretQuestion'
+import Licenses from '@scope/views/licenses'
+import Layout from '@/layouts/RouterView'
 
 const routes = [
   { name: 'Home', path: '/', redirect: '/dashboard' },
@@ -69,6 +71,19 @@ const routes = [
         path: 'resetsecretquestion',
         component: ResetSecretQuestion,
         meta: { layout: 'full-screen', auth: false, authPage: true },
+      },
+    ],
+  },
+
+  {
+    path: '/licenses',
+    meta: {},
+    component: Layout,
+    children: [
+      {
+        name: 'Licenses',
+        path: '',
+        component: Licenses,
       },
     ],
   },
