@@ -1,10 +1,24 @@
 <template>
   <div class="d-flex">
     <a-form-item>
-      <a-input :addonBefore="$t('k8s.text_88')" v-decorator="decorators.port" type="number" style="width: 200px;" />
+      <a-input v-decorator="decorators.port" type="number" style="width: 200px;">
+        <template slot="addonBefore">
+          <span>{{$t('k8s.service_port')}}</span>
+          <a-tooltip :title="$t('k8s.service_port.desc')">
+            <a-icon type="info-circle" />
+          </a-tooltip>
+        </template>
+      </a-input>
     </a-form-item>
     <a-form-item>
-      <a-input :addonBefore="$t('k8s.text_89')" v-decorator="decorators.targetPort" type="number" style="width: 200px;" />
+      <a-input v-decorator="decorators.targetPort" type="number" style="width: 200px;">
+        <template slot="addonBefore">
+          <span>{{$t('k8s.target_port')}}</span>
+          <a-tooltip :title="$t('k8s.target_port.desc')">
+            <a-icon type="info-circle" />
+          </a-tooltip>
+        </template>
+      </a-input>
     </a-form-item>
     <a-form-item>
       <a-input-group compact>
