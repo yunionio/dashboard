@@ -42,6 +42,7 @@ import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 import PortMapping from '@K8S/sections/PortMapping'
 import k8sCreateMixin from '@K8S/mixins/create'
+import { getServiceCreateParams } from '@K8S/utils'
 
 export default {
   name: 'K8sServiceCreate',
@@ -125,6 +126,15 @@ export default {
                 ],
               },
             ],
+            nodePort: i => [
+              `nodePorts[${i}]`,
+              {
+                initialValue: 30000,
+                rules: [
+                  { required: true, message: this.$t('k8s.input_node_port') },
+                ],
+              },
+            ],
             protocol: i => [
               `protocols[${i}]`,
               {
@@ -177,7 +187,7 @@ export default {
     async doCreate () {
       try {
         const values = await this.validateForm()
-        const params = {
+        let params = {
           name: values.name,
           cluster: values.cluster,
           namespace: values.namespace,
@@ -185,19 +195,8 @@ export default {
             app: values.selector,
           },
         }
-        if (values.serviceType !== 'none') {
-          params.isExternal = (values.serviceType === 'external')
-          if (values.loadBalancerNetwork) params.loadBalancerNetwork = values.loadBalancerNetwork
-          if (values.loadBalancerCluster) params.loadBalancerCluster = values.loadBalancerCluster
-          const portMappings = Object.keys(values.ports).map(key => {
-            return {
-              port: +values.ports[key],
-              targetPort: +values.targetPorts[key],
-              protocol: values.protocols[key],
-            }
-          })
-          params.portMappings = portMappings
-        }
+        const service = getServiceCreateParams(values)
+        params = { ...params, ...service }
         await this._doCreate(params)
         this.$message.success(this.$t('k8s.text_46'))
       } catch (error) {

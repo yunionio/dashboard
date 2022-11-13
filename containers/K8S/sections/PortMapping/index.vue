@@ -5,6 +5,7 @@
         <a-radio-button v-if="!ignoreNone" value="none">{{$t('k8s.text_75')}}</a-radio-button>
         <a-radio-button value="internal">{{$t('k8s.text_92')}}</a-radio-button>
         <a-radio-button value="external">{{$t('k8s.text_93')}}</a-radio-button>
+        <a-radio-button value="nodePort">{{$t('k8s.node_port')}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
     <lb-network
@@ -15,7 +16,7 @@
       :decorator="decorators.loadBalancerCluster" />
     <div class="mt-3" v-if="form.fc.getFieldValue(decorators.serviceType[0]) !== 'none'">
       <div class="d-flex" v-for="(item, i) in portList" :key="item.key">
-        <port :decorators="getDecorators(item)" :protocolDisabled="getProtocolDisabled(i)" @protocolChange="protocolChange" />
+        <port :decorators="getDecorators(item)" :protocolDisabled="getProtocolDisabled(i)" :serviceType="getServiceType()" @protocolChange="protocolChange" />
         <a-button v-if="portList.length > 1" type="danger" shape="circle" icon="delete" @click="del(item)" class="mt-1 ml-2" />
       </div>
       <a-button type="primary" icon="plus" @click="add">{{$t('k8s.text_94')}}</a-button>
@@ -94,6 +95,9 @@ export default {
         return true
       }
       return false
+    },
+    getServiceType () {
+      return this.form.fc.getFieldValue(this.decorators.serviceType[0])
     },
     protocolChange (val) {
       this.currentProtocol = val
