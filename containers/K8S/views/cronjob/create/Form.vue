@@ -54,7 +54,7 @@ import ImageSecret from '@K8S/sections/ImageSecret'
 import RestartPolicySelect from '@K8S/sections/RestartPolicySelect'
 import Labels from '@K8S/sections/Labels'
 import SpecContainer from '@K8S/sections/SpecContainer'
-import { getSpecContainerParams, getLabels, getCreateDecorators } from '@K8S/utils'
+import { getSpecContainerParams, getLabels, getCreateDecorators, getServiceCreateParams } from '@K8S/utils'
 import k8sCreateMixin from '@K8S/mixins/create'
 
 export default {
@@ -111,22 +111,7 @@ export default {
         const spec = getSpecContainerParams(values, this.containerPanes)
         const labels = getLabels(values, 'labelKeys', 'labelValues')
         const annotations = getLabels(values, 'annotationsKeys', 'annotationsValues')
-        const service = {}
-        if (values.serviceType !== 'none' && values.ports) {
-          service.isExternal = (values.serviceType === 'external')
-          const portMappings = Object.keys(values.ports).map(key => {
-            return {
-              port: +values.ports[key],
-              targetPort: +values.targetPorts[key],
-              protocol: values.protocols[key],
-            }
-          })
-          service.portMappings = portMappings
-          if (service.isExternal) {
-            if (values.loadBalancerCluster) service.loadBalancerCluster = values.loadBalancerCluster
-            if (values.loadBalancerNetwork) service.loadBalancerNetwork = values.loadBalancerNetwork
-          }
-        }
+        const service = getServiceCreateParams(values)
         const template = {
           spec: {
             volumes: spec.volumes,
