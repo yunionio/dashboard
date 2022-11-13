@@ -2,7 +2,6 @@ import _ from 'lodash'
 
 const requireComponent = require.context('@scope', true, /permission\.(js)$/)
 const keys = requireComponent.keys().filter(item => {
-  console.log('require item ', item)
   const arr = item.split('/')
   return arr[1] === 'constants' && /\.(js)$/.test(arr[2])
 })

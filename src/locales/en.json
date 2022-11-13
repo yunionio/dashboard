@@ -2718,14 +2718,7 @@
     "scopedpolicies": "Scoped policies",
     "samluser": "SAML user",
     "samlusers": "SAML users",
-    "irs_orders": "IRS工单",
-    "irs_reports": "IRS Report",
-    "vulnerabilities": "Resource List",
-    "irs_billing_reports": "Billing Report",
-    "dept_billing_report": "Department List",
-    "misc_resources": "Misc Resources",
-    "shield_bills": "Billing Config",
-    "msp_customers": "Operation Management"
+    "shield_bills": "Billing Config"
   },
   "table": {
     "title": {
@@ -3025,10 +3018,7 @@
     "monitor": "Monitor",
     "yunionconf": "Configuration",
     "cloudevent": "Cloud Log",
-    "suggestion": "Recommendation",
-    "report": "Report",
-    "irs": "IRS",
-    "msp": "MSP"
+    "suggestion": "Recommendation"
   },
   "scope.text_1": "Instance List",
   "scope.text_2": "User Profile",
