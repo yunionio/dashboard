@@ -1,4 +1,20 @@
 import i18n from '@/locales'
+
+const requireComponent = require.context('@scope', true, /policyConfig\.(js)$/)
+const keys = requireComponent.keys().filter(item => {
+  const arr = item.split('/')
+  return arr[1] === 'constants' && /\.(js)$/.test(arr[2])
+})
+let extraServices = {}
+let extraResources = {}
+keys.forEach(fileName => {
+  // 获取组件配置
+  const componentConfig = requireComponent(fileName)
+  const { SERVICES_MAP = {}, RESOURCES_MAP = {} } = componentConfig
+  extraServices = { ...extraServices, ...SERVICES_MAP }
+  extraResources = { ...extraResources, ...RESOURCES_MAP }
+})
+
 // 定义服务的映射
 export const SERVICES_MAP = {
   compute: {
@@ -43,6 +59,7 @@ export const SERVICES_MAP = {
   suggestion: {
     i18n: 'service.suggestion',
   },
+  ...extraServices,
 }
 // 定义资源的映射
 export const RESOURCES_MAP = {
@@ -697,6 +714,10 @@ export const RESOURCES_MAP = {
   waf_instances: {
     i18n: 'dictionary.waf_instance',
   },
+  shield_bills: {
+    i18n: 'dictionary.shield_bills',
+  },
+  ...extraResources,
 }
 
 export const DEFAULT_ACTIONS_KEY = ['list', 'get', 'update', 'create', 'delete', 'perform']

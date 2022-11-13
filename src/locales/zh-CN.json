@@ -2700,7 +2700,8 @@
     "apsara": "飞天",
     "tap_service": "流量镜像",
     "tap_flow": "镜像源",
-    "tablestore": "表格存储"
+    "tablestore": "表格存储",
+    "shield_bills": "账单配置"
   },
   "res": {
     "role": "@:dictionary.role",

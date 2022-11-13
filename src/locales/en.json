@@ -2718,7 +2718,8 @@
     "scopedpolicy": "Scoped policy",
     "scopedpolicies": "Scoped policies",
     "samluser": "SAML user",
-    "samlusers": "SAML users"
+    "samlusers": "SAML users",
+    "shield_bills": "Billing Config"
   },
   "table": {
     "title": {
