@@ -165,6 +165,15 @@ export function getCreateDecorators (resource) {
             ],
           },
         ],
+        nodePort: i => [
+          `nodePorts[${i}]`,
+          {
+            initialValue: 30000,
+            rules: [
+              { required: true, message: this.$t('k8s.input_node_port') },
+            ],
+          },
+        ],
         protocol: i => [
           `protocols[${i}]`,
           {
@@ -306,4 +315,32 @@ export function getCreateDecorators (resource) {
       ],
     },
   }
+}
+
+export function getServiceCreateParams (values) {
+  const service = {}
+  if (values.serviceType !== 'none') {
+    service.isExternal = (values.serviceType === 'external')
+    if (service.isExternal) {
+      if (values.loadBalancerCluster) service.loadBalancerCluster = values.loadBalancerCluster
+      if (values.loadBalancerNetwork) service.loadBalancerNetwork = values.loadBalancerNetwork
+    }
+    const isNodePort = values.serviceType === 'nodePort'
+    if (isNodePort) {
+      service.type = 'NodePort'
+    }
+    const portMappings = Object.keys(values.ports).map(key => {
+      const portMap = {
+        port: +values.ports[key],
+        targetPort: +values.targetPorts[key],
+        protocol: values.protocols[key],
+      }
+      if (isNodePort) {
+        portMap.nodePort = values.nodePorts[key]
+      }
+      return portMap
+    })
+    service.portMappings = portMappings
+  }
+  return service
 }
