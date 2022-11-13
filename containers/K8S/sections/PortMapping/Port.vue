@@ -20,6 +20,16 @@
         </template>
       </a-input>
     </a-form-item>
+    <a-form-item v-if="isNodePort">
+      <a-input-number :min="30000" :max="32767" v-decorator="decorators.nodePort" type="number" style="width: 200px;">
+        <template slot="addonBefore">
+          <span>{{$t('k8s.node_port')}}</span>
+          <a-tooltip :title="$t('k8s.node_port.desc')">
+            <a-icon type="info-circle" />
+          </a-tooltip>
+        </template>
+      </a-input-number>
+    </a-form-item>
     <a-form-item>
       <a-input-group compact>
         <div class="d-flex">
@@ -46,6 +56,15 @@ export default {
     protocolDisabled: {
       type: Boolean,
       default: false,
+    },
+    serviceType: {
+      type: String,
+      required: true,
+    },
+  },
+  computed: {
+    isNodePort () {
+      return this.serviceType === 'nodePort'
     },
   },
   methods: {
