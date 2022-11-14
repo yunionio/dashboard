@@ -54,7 +54,7 @@ export default {
             this.createDialog('ReservedIpCreateDialog', {
               title: this.$t('network.text_26'),
               onManager: this.onManager,
-              refresh: this.refresh,
+              refresh: this.refreshData,
               network: this.data,
             })
           },
@@ -77,7 +77,7 @@ export default {
             this.createDialog('ReservedIPFreedDialog', {
               title: this.$t('network.text_666'),
               onManager: this.onManager,
-              refresh: this.refresh,
+              refresh: this.refreshData,
               columns: this.columns,
               data: this.list.selectedItems,
               name: this.$t('network.text_651'),
@@ -108,6 +108,10 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    refreshData () {
+      this.$emit('refresh')
+      this.refresh()
+    },
     getParam () {
       const ret = {
         details: true,
