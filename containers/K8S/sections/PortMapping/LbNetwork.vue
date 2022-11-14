@@ -17,12 +17,17 @@ export default {
       type: Array,
       required: true,
     },
+    vpcId: {
+      type: String,
+      required: true,
+    },
   },
   data () {
     return {
       params: {
         cloudregion: 'default',
         scope: this.$store.getters.scope,
+        vpc_id: this.vpcId,
       },
     }
   },

@@ -5,7 +5,7 @@
         <a-input :placeholder="$t('k8s.text_60')" v-decorator="decorators.name" />
       </a-form-item>
       <a-form-item :label="$t('k8s.text_19')">
-        <cluster-select v-decorator="decorators.cluster" @input="setCluster" />
+        <cluster-select v-decorator="decorators.cluster" @input="setCluster" :clusterObj.sync="clusterObj" />
       </a-form-item>
       <a-form-item :label="$t('k8s.text_23')">
         <namespace-select v-decorator="decorators.namespace" @input="setNamespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
@@ -31,7 +31,8 @@
         <port-mapping
           :form="form"
           ignore-none
-          :decorators="decorators.portMappings" />
+          :decorators="decorators.portMappings"
+          :cluster-obj="clusterObj" />
       </a-form-item>
     </a-form>
   </div>
@@ -155,6 +156,7 @@ export default {
           },
         ],
       },
+      clusterObj: {},
       namespaceObj: {},
     }
   },
