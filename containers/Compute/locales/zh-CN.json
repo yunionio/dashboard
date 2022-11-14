@@ -1610,7 +1610,7 @@
   "compute.os.neokylin": "中标麒麟",
   "compute.server.quick.recovery": "快速恢复",
   "compute.quick.recovery.validate.host_status_tooltip": "只有使用共享存储且宿主机离线时才可用",
-  "compute.qga.alert01": "运行状态虚拟机重置密码通过GQA 实现",
+  "compute.qga.alert01": "运行状态虚拟机重置密码通过QGA 实现",
   "compute.qga.alert02": "什么是QGA",
   "compute.qga.alert03": "操作之前请确认已安装，否则会操作失败！",
   "compute.qga.action.validate": "请选择同状态的虚拟机进行操作",

@@ -117,7 +117,7 @@ export default {
           span: 4,
         },
       },
-      qgaDoc: getDoc(this.$language, DOC_MAP.QGA),
+      qgaDoc: getDoc(DOC_MAP.QGA),
     }
   },
   computed: {
