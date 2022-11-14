@@ -102,14 +102,17 @@ export default {
           action: () => {
             this.createDialog('AkSkCreateDialog', {
               cloudaccountId: this.resId,
-              callback: () => {
+              callback: (data) => {
+                this.createDialog('AkskDownloadDialog', {
+                  data: data,
+                })
                 this.list.fetchData()
               },
             })
           },
           meta: () => {
             return {
-              validate: true,
+              validate: this.list.total < 2,
               buttonType: 'primary',
             }
           },
