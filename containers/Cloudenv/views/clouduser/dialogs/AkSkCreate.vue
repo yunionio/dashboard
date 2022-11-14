@@ -60,7 +60,7 @@ export default {
       try {
         const manager = new this.$Manager('cloudusers')
         const values = await this.form.fc.validateFields()
-        await manager.performAction({
+        const res = await manager.performAction({
           id: this.params.cloudaccountId,
           action: 'create-access-key',
           data: {
@@ -69,7 +69,7 @@ export default {
           },
         })
         this.cancelDialog()
-        this.params.callback()
+        this.params.callback(res.data)
       } finally {
         this.loading = false
       }

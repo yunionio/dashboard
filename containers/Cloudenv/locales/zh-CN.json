@@ -776,5 +776,7 @@
   "cloudenv.auth_url_extra": "请输入外部数据链接地址，需保证该平台与目标地址网络互通",
   "cloudenv.aksk": "访问密钥",
   "cloudenv.aksk.add": "新增访问密钥",
-  "cloudenv.aksk.placeholder": "请输入访问密钥信息。"
+  "cloudenv.aksk.placeholder": "请输入访问密钥信息。",
+  "cloudenv.aksk.download": "下载",
+  "cloudenv.aksk.download_tip": "访问密钥创建成功，请及时下载保存，弹窗关闭后将无法再次获取该密钥信息，但您可重新创建新的密钥。"
 }
