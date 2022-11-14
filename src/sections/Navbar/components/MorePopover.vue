@@ -41,8 +41,10 @@ export default {
     this.manager = null
   },
   created () {
-    this.manager = new this.$Manager('updates', 'v1')
-    this.getUpdateInfo()
+    if (!this.isCE()) {
+      this.manager = new this.$Manager('updates', 'v1')
+      this.getUpdateInfo()
+    }
   },
   methods: {
     getUpdateInfo () {
