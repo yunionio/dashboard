@@ -24,7 +24,7 @@
         <port-mapping
           :form="form"
           :decorators="decorators.portMappings"
-          :is-import-cluster="isImportCluster" />
+          :cluster-obj="clusterObj" />
       </a-form-item>
       <a-form-item :label="$t('k8s.text_221')">
         <restart-policy-select
@@ -91,14 +91,6 @@ export default {
       clusterObj: {},
       namespaceObj: {},
     }
-  },
-  computed: {
-    isImportCluster () {
-      if (this.clusterObj.mode === 'import') { // 导入的集群新建外部服务时不能选择网络
-        return true
-      }
-      return false
-    },
   },
   methods: {
     validateForm () {
