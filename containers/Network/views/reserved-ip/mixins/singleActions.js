@@ -13,7 +13,7 @@ export default {
             columns: this.columns,
             onManager: this.onManager,
             name: i18n.t('network.text_651'),
-            refresh: this.refresh,
+            refresh: this.refreshData,
             query: this.getParams,
           })
         },
