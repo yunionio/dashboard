@@ -75,9 +75,6 @@ export default {
     },
     data: {
       type: Array,
-      default () {
-        return []
-      },
     },
     resource: {
       type: String,
@@ -156,7 +153,7 @@ export default {
     },
     data: {
       handler (newVal) {
-        let resArr = newVal
+        let resArr = newVal || []
         if (this.formatter) {
           resArr = resArr.map(v => this.formatter(v))
         }
