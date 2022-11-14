@@ -73,15 +73,7 @@ export default {
       return Promise.resolve()
     },
     fetchOEM ({ commit }, payload) {
-      return new Promise((resolve, reject) => {
-        http.get('/v1/infos/copyright').then(response => {
-          const data = response.data || {}
-          commit('SET_OEM', data)
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
+      return Promise.resolve()
     },
     /**
      * @description 获取oem信息
