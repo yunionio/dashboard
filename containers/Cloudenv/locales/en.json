@@ -773,5 +773,7 @@
   "cloudenv.auth_url_extra": "Please enter the external data link address, it is necessary to ensure that the platform is connected to the target address network",
   "cloudenv.aksk": "Access Key",
   "cloudenv.aksk.add": "Add access key",
-  "cloudenv.aksk.placeholder": "Please enter access key information."
+  "cloudenv.aksk.placeholder": "Please enter access key information.",
+  "cloudenv.aksk.download": "Download",
+  "cloudenv.aksk.download_tip": "The access key is created successfully. Please download and save it in time. After the pop-up window is closed, you will not be able to obtain the key information again, but you can re create a new key."
 }
