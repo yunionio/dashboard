@@ -8,12 +8,12 @@
         <a-radio-button value="nodePort">{{$t('k8s.node_port')}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <lb-network
-      v-if="!isImportCluster && form.fc.getFieldValue(decorators.serviceType[0]) === 'external'"
-      :decorator="decorators.loadBalancerNetwork" />
     <lb-cluster
       v-if="!isImportCluster && form.fc.getFieldValue(decorators.serviceType[0]) === 'external' && isAdminMode"
       :decorator="decorators.loadBalancerCluster" />
+    <lb-network
+      v-if="!isImportCluster && form.fc.getFieldValue(decorators.serviceType[0]) === 'external'"
+      :decorator="decorators.loadBalancerNetwork" :vpc-id="vpcId" />
     <div class="mt-3" v-if="form.fc.getFieldValue(decorators.serviceType[0]) !== 'none'">
       <div class="d-flex" v-for="(item, i) in portList" :key="item.key">
         <port :decorators="getDecorators(item)" :protocolDisabled="getProtocolDisabled(i)" :serviceType="getServiceType()" @protocolChange="protocolChange" />
@@ -49,9 +49,9 @@ export default {
       required: true,
       validator: val => val.fc,
     },
-    isImportCluster: {
-      type: Boolean,
-      default: false,
+    clusterObj: {
+      type: Object,
+      required: true,
     },
     ignoreNone: {
       type: Boolean,
@@ -68,6 +68,15 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode']),
+    isImportCluster () {
+      if (this.clusterObj.mode === 'import') { // 导入的集群新建外部服务时不能选择网络
+        return true
+      }
+      return false
+    },
+    vpcId () {
+      return this.clusterObj.vpc_id
+    },
   },
   methods: {
     add () {
