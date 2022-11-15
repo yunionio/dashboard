@@ -24,6 +24,9 @@ export default {
         id: {
           label: 'ID',
         },
+        external_id: {
+          label: this.$t('table.title.external_id'),
+        },
       },
     }
   },
