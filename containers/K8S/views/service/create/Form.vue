@@ -14,6 +14,7 @@
         <a-radio-group v-model="form.fd.selectorType">
           <a-radio-button value="deployments">{{$t('k8s.text_4')}}</a-radio-button>
           <a-radio-button value="statefulsets">{{$t('k8s.text_5')}}</a-radio-button>
+          <a-radio-button value="daemonsets">{{$t('k8s.text_6')}}</a-radio-button>
         </a-radio-group>
         <a-form-item>
           <base-select
@@ -21,6 +22,7 @@
             :resource="form.fd.selectorType"
             version="v1"
             idKey="name"
+            :item.sync="selectedObj"
             :need-params="true"
             :isDefaultSelect="true"
             :params="resParams"
@@ -54,6 +56,7 @@ export default {
   mixins: [k8sCreateMixin],
   data () {
     return {
+      selectedObj: {},
       form: {
         fc: this.$form.createForm(this),
         fd: {
@@ -164,7 +167,9 @@ export default {
       if (this.cluster && this.namespaceObj.name) {
         params.cluster = this.cluster
         params.limit = 0
-        params.namespace = this.namespaceObj.name
+        params.namespace = this.namespaceObj.id
+        params.scope = this.$store.getters.scope
+        params.details = true
       }
       return params
     },
@@ -191,9 +196,7 @@ export default {
           name: values.name,
           cluster: values.cluster,
           namespace: values.namespace,
-          selector: {
-            app: values.selector,
-          },
+          selector: this.selectedObj.selector,
         }
         const service = getServiceCreateParams(values)
         params = { ...params, ...service }
