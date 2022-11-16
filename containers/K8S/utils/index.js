@@ -2,6 +2,8 @@ import * as R from 'ramda'
 import { RESTART_POLICY_OPTS } from '@K8S/constants'
 import store from '@/store'
 import i18n from '@/locales'
+import validateForm from '@/utils/validate'
+import { checkIpInSegment } from '@Compute/utils/createServer'
 
 const validateValidPath = (rule, value, callback) => {
   if (value.startsWith('/')) {
@@ -80,8 +82,87 @@ export const getLabels = (fd, key, value) => {
   return obj
 }
 
+export function getServiceConfigDecorators () {
+  return {
+    portMappings: {
+      serviceType: [
+        'serviceType',
+        {
+          initialValue: 'internal',
+        },
+      ],
+      loadBalancerCluster: [
+        'loadBalancerCluster',
+      ],
+      loadBalancerNetwork: [
+        'loadBalancerNetwork',
+      ],
+      loadBalancerAddress: (ip, network) => {
+        return [
+          'loadBalancerAddress',
+          {
+            validateFirst: true,
+            validateTrigger: ['blur', 'change'],
+            rules: [
+              {
+                required: true,
+                message: i18n.t('compute.text_218'),
+              },
+              {
+                validator: validateForm('IPv4'),
+              },
+              {
+                validator: checkIpInSegment(ip, network),
+              },
+            ],
+          },
+        ]
+      },
+      ports: {
+        port: i => [
+          `ports[${i}]`,
+          {
+            initialValue: 1,
+            rules: [
+              { required: true, message: i18n.t('k8s.text_134') },
+            ],
+          },
+        ],
+        targetPort: i => [
+          `targetPorts[${i}]`,
+          {
+            initialValue: 1,
+            rules: [
+              { required: true, message: i18n.t('k8s.text_135') },
+            ],
+          },
+        ],
+        nodePort: i => [
+          `nodePorts[${i}]`,
+          {
+            initialValue: 30000,
+            rules: [
+              { required: true, message: i18n.t('k8s.input_node_port') },
+            ],
+          },
+        ],
+        protocol: i => [
+          `protocols[${i}]`,
+          {
+            initialValue: 'TCP',
+            rules: [
+              { required: true, message: i18n.t('k8s.text_136') },
+            ],
+          },
+        ],
+      },
+    },
+  }
+}
+
 export function getCreateDecorators (resource) {
   return {
+    ...getServiceConfigDecorators(),
     name: [
       'name',
       {
@@ -132,58 +213,6 @@ export function getCreateDecorators (resource) {
           ],
         },
       ],
-    },
-    portMappings: {
-      serviceType: [
-        'serviceType',
-        {
-          initialValue: 'none',
-        },
-      ],
-      loadBalancerNetwork: [
-        'loadBalancerNetwork',
-      ],
-      loadBalancerCluster: [
-        'loadBalancerCluster',
-      ],
-      ports: {
-        port: i => [
-          `ports[${i}]`,
-          {
-            initialValue: 1,
-            rules: [
-              { required: true, message: i18n.t('k8s.text_134') },
-            ],
-          },
-        ],
-        targetPort: i => [
-          `targetPorts[${i}]`,
-          {
-            initialValue: 1,
-            rules: [
-              { required: true, message: i18n.t('k8s.text_135') },
-            ],
-          },
-        ],
-        nodePort: i => [
-          `nodePorts[${i}]`,
-          {
-            initialValue: 30000,
-            rules: [
-              { required: true, message: this.$t('k8s.input_node_port') },
-            ],
-          },
-        ],
-        protocol: i => [
-          `protocols[${i}]`,
-          {
-            initialValue: 'TCP',
-            rules: [
-              { required: true, message: i18n.t('k8s.text_136') },
-            ],
-          },
-        ],
-      },
     },
     restartPolicy: [
       'restartPolicy',
@@ -324,6 +353,7 @@ export function getServiceCreateParams (values) {
     if (service.isExternal) {
       if (values.loadBalancerCluster) service.loadBalancerCluster = values.loadBalancerCluster
       if (values.loadBalancerNetwork) service.loadBalancerNetwork = values.loadBalancerNetwork
+      if (values.loadBalancerAddress) service.loadBalancerAddress = values.loadBalancerAddress
     }
     const isNodePort = values.serviceType === 'nodePort'
     if (isNodePort) {

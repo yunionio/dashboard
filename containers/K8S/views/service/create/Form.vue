@@ -45,7 +45,7 @@ import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 import PortMapping from '@K8S/sections/PortMapping'
 import k8sCreateMixin from '@K8S/mixins/create'
-import { getServiceCreateParams } from '@K8S/utils'
+import { getServiceConfigDecorators, getServiceCreateParams } from '@K8S/utils'
 
 export default {
   name: 'K8sServiceCreate',
@@ -69,6 +69,7 @@ export default {
         wrapperCol: { span: 20 },
       },
       decorators: {
+        ...getServiceConfigDecorators(),
         name: [
           'name',
           {
@@ -98,58 +99,6 @@ export default {
             ],
           },
         ],
-        portMappings: {
-          serviceType: [
-            'serviceType',
-            {
-              initialValue: 'internal',
-            },
-          ],
-          loadBalancerNetwork: [
-            'loadBalancerNetwork',
-          ],
-          loadBalancerCluster: [
-            'loadBalancerCluster',
-          ],
-          ports: {
-            port: i => [
-              `ports[${i}]`,
-              {
-                initialValue: 1,
-                rules: [
-                  { required: true, message: this.$t('k8s.text_134') },
-                ],
-              },
-            ],
-            targetPort: i => [
-              `targetPorts[${i}]`,
-              {
-                initialValue: 1,
-                rules: [
-                  { required: true, message: this.$t('k8s.text_135') },
-                ],
-              },
-            ],
-            nodePort: i => [
-              `nodePorts[${i}]`,
-              {
-                initialValue: 30000,
-                rules: [
-                  { required: true, message: this.$t('k8s.input_node_port') },
-                ],
-              },
-            ],
-            protocol: i => [
-              `protocols[${i}]`,
-              {
-                initialValue: 'TCP',
-                rules: [
-                  { required: true, message: this.$t('k8s.text_136') },
-                ],
-              },
-            ],
-          },
-        },
         selector: [
           'selector',
           {
