@@ -279,7 +279,7 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {}, sortab
     sortable,
     slots: {
       default: ({ row }, h) => {
-        if (!row.eip && !row.ips && !row.vips && !row.metadata.sync_ips) {
+        if (!row.eip && !row.ips && !row.vips && (!row.metadata || !row.metadata.sync_ips)) {
           if (row.hypervisor === typeClouds.hypervisorMap.esxi.key && ['ready', 'running'].includes(row.status)) {
             return [
               h(IpSupplement, {
@@ -328,7 +328,7 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {}, sortab
           })
           ret = ret.concat(ips)
         }
-        if (row.metadata.sync_ips) {
+        if (row.metadata && row.metadata.sync_ips) {
           const iparr = row.metadata.sync_ips.split(',')
           const ips = iparr.map(ip => {
             return <list-body-cell-wrap copy row={{ ip }} hide-field field="ip">{ ip }<span class="text-color-help">({i18n.t('compute.esxi.sync_ips_outofrange')}<a-icon class="ml-1" style="color:red" type="warning" title={ i18n.t('compute.esxi.sync_ips_outofrange_alert') } />)</span></list-body-cell-wrap>
