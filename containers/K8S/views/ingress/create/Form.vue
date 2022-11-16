@@ -10,9 +10,25 @@
       <a-form-item :label="$t('k8s.text_23')">
         <namespace-select v-decorator="decorators.namespace" :cluster="cluster" @input="setNamespace" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
+      <a-form-item :label="$t('k8s.ingress.className')">
+        <a-input v-decorator="decorators.className" :placeholder="$t('k8s.ingress.className.input')" @change="inputClassNameChange" />
+      </a-form-item>
       <a-form-item :label="$t('k8s.text_14')" required>
         <ingress-rule :decorators="decorators.rule" :namespace="namespaceObj.name" :cluster="cluster"  />
       </a-form-item>
+      <div v-if="isNginxClass()">
+        <a-form-item :label="$t('network.text_379')">
+          <a-switch :disabled="disabled" v-decorator="decorators.stickySession.enabled" @change="stickySessionChange" />
+        </a-form-item>
+        <div v-if="stickySessionEnabled">
+          <a-form-item :label="$t('k8s.ingress.nginx.session-cookie-name')">
+            <a-input  v-decorator="decorators.stickySession.name" />
+          </a-form-item>
+          <a-form-item :label="$t('k8s.ingress.nginx.session-cookie-expires')">
+            <a-input  v-decorator="decorators.stickySession.cookieExpires" type="number" />
+          </a-form-item>
+        </div>
+      </div>
     </a-form>
   </div>
 </template>
@@ -42,6 +58,8 @@ export default {
   mixins: [k8sCreateMixin],
   data () {
     return {
+      inputClassName: 'nginx',
+      stickySessionEnabled: false,
       form: {
         fc: this.$form.createForm(this),
       },
@@ -81,12 +99,21 @@ export default {
             ],
           },
         ],
+        className: [
+          'className',
+          {
+            initialValue: 'nginx',
+            rules: [
+              { required: true, message: this.$t('k8s.ingress.className.input'), trigger: 'blur' },
+            ],
+          },
+        ],
         rule: {
           host: i => [
             `hosts[${i}]`,
             {
               rules: [
-                { required: true, message: this.$t('k8s.text_205'), trigger: 'blur' },
+                { required: false, message: this.$t('k8s.text_205'), trigger: 'blur' },
               ],
             },
           ],
@@ -119,11 +146,44 @@ export default {
             ],
           }),
         },
+        stickySession: {
+          enabled: [
+            'stickySession.enabled',
+            {
+              valuePropName: 'checked',
+            },
+          ],
+          name: [
+            'stickySession.name',
+            {
+              initialValue: 'stickounet',
+            },
+          ],
+          cookieExpires: [
+            'stickySession.cookieExpires',
+            {
+              initialValue: 1000,
+              normalize: v => Number(v),
+              rules: [
+                { type: 'integer', min: 60, message: this.$t('k8s.ingress.nginx.session-cookie-expires'), trigger: 'blur' },
+              ],
+            },
+          ],
+        },
       },
       namespaceObj: {},
     }
   },
   methods: {
+    inputClassNameChange (e) {
+      this.inputClassName = e.target.value
+    },
+    isNginxClass () {
+      return this.inputClassName === 'nginx'
+    },
+    stickySessionChange (val) {
+      this.stickySessionEnabled = val
+    },
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFieldsAndScroll({ scroll: { alignWithTop: true, offsetTop: 100 } }, (err, values) => {
@@ -162,6 +222,8 @@ export default {
           name: values.name,
           cluster: values.cluster,
           namespace: values.namespace,
+          ingressClassName: values.className,
+          stickySession: values.stickySession,
           rules,
         }
         await this._doCreate(params)
