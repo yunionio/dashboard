@@ -13,7 +13,9 @@
       :decorator="decorators.loadBalancerCluster" />
     <lb-network
       v-if="!isImportCluster && form.fc.getFieldValue(decorators.serviceType[0]) === 'external'"
-      :decorator="decorators.loadBalancerNetwork" :vpc-id="vpcId" />
+      :decorator="decorators.loadBalancerNetwork"
+      :addr-decorator="decorators.loadBalancerAddress"
+      :vpc-id="vpcId" />
     <div class="mt-3" v-if="form.fc.getFieldValue(decorators.serviceType[0]) !== 'none'">
       <div class="d-flex" v-for="(item, i) in portList" :key="item.key">
         <port :decorators="getDecorators(item)" :protocolDisabled="getProtocolDisabled(i)" :serviceType="getServiceType()" @protocolChange="protocolChange" />
@@ -28,16 +30,16 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import Port from './Port'
-import LbNetwork from './LbNetwork'
 import LbCluster from './LbCluster'
+import LbNetwork from './LbNetwork'
 import { uuid } from '@/utils/utils'
 
 export default {
   name: 'K8SPortMapping',
   components: {
     Port,
-    LbNetwork,
     LbCluster,
+    LbNetwork,
   },
   props: {
     decorators: {
