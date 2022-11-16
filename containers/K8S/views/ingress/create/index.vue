@@ -17,7 +17,7 @@
 import FormCreate from './Form'
 
 export default {
-  name: 'K8SCronJobCreate',
+  name: 'K8SIngressCreate',
   components: {
     FormCreate,
   },
