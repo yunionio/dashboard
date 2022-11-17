@@ -56,6 +56,12 @@
 <script>
 export default {
   name: 'ScheduledSettings',
+  props: {
+    account: {
+      type: Object,
+      default: () => { return {} },
+    },
+  },
   data () {
     return {
       loading: false,
@@ -66,6 +72,7 @@ export default {
         name: [
           'name',
           {
+            initialValue: this.account.name ? `aoto-sync-${this.account.name}-${this.$moment().format('YYYYMMDD')}` : '',
             rules: [
               { required: true, message: `${this.$t('common.placeholder')}${this.$t('common.name')}` },
             ],
@@ -102,7 +109,7 @@ export default {
         hourMinute: [
           'hourMinute',
           {
-            // initialValue: [1],
+            initialValue: this.$moment().startOf('day').add(2, 'h'),
             rules: [
               { required: true, message: this.$t('cloudenv.text_446') },
             ],
@@ -149,7 +156,7 @@ export default {
         label_type: 'id',
         labels: [resId],
         operation: 'sync',
-        name: values.name,
+        generate_name: values.name,
       }
       if (values.cycleTimer.cycle_type === 'one') {
         params.scheduled_type = 'timing'
