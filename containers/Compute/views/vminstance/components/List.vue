@@ -1024,10 +1024,6 @@ export default {
                         ret.validate = false
                         return ret
                       }
-                      if (!this.isAdminMode) {
-                        ret.validate = false
-                        return ret
-                      }
                       if (this.list.selectedItems.some(item => item.hypervisor !== 'kvm' && item.hypervisor !== 'openstack')) {
                         ret.validate = false
                         return ret
