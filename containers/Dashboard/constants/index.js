@@ -1789,6 +1789,6 @@ export const PROJECT_QUOTA_CONFIG = {
 }
 
 export function getMetricDocs (scope) {
-  const docsUrl = `${getDocsUrl(scope)}web_ui/dashboard/`
+  const docsUrl = `${getDocsUrl(scope)}web_ui/intro/dashboard/`
   return docsUrl + i18n.t('dashboard.text_184')
 }
