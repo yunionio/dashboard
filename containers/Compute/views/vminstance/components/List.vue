@@ -1034,10 +1034,6 @@ export default {
                         ret.validate = false
                         return ret
                       }
-                      if (!this.isAdminMode) {
-                        ret.validate = false
-                        return ret
-                      }
                       if (hypervisors.size > 1) {
                         ret.validate = false
                         ret.tooltip = this.$t('compute.v2vtransfer.same_brand')
