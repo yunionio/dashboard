@@ -124,6 +124,12 @@ export default {
         }
       }
       &.active {
+        // background-color: @primary-1 !important;
+        > a {
+          color: @sidebar-light-active-text-color;
+        }
+      }
+      &.ant-popover-open {
         background-color: @primary-1 !important;
         > a {
           color: @sidebar-light-active-text-color;
@@ -162,6 +168,12 @@ export default {
     background-color: @primary-7 !important;
     > a {
       color: @sidebar-dark-active-text-color;
+    }
+  }
+  &.ant-popover-open {
+    background-color: @primary-color;
+    > a {
+      color: @sidebar-dark-hover-text-color;
     }
   }
 }
