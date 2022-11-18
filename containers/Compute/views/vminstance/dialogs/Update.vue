@@ -15,14 +15,14 @@
           </a-radio-group>
         </a-form-item> -->
         <template v-if="isKvm">
-          <a-form-item :label="$t('compute.text_1269')" v-bind="formItemLayout">
+          <!-- <a-form-item :label="$t('compute.text_1269')" v-bind="formItemLayout">
             <a-radio-group v-decorator="decorators.boot_order">
               <a-radio-button
                 v-for="item of bootOrderOptions"
                 :key="item.key"
                 :value="item.key">{{ item.label }}</a-radio-button>
             </a-radio-group>
-          </a-form-item>
+          </a-form-item> -->
           <a-form-item :label="$t('compute.text_1155')" v-bind="formItemLayout">
             <bios :decorator="decorators.bios" :isArm="isArm" />
           </a-form-item>
@@ -84,14 +84,14 @@ export default {
             ],
           },
         ],
-        boot_order: [
-          'boot_order',
-          {
-            rules: [
-              { required: true, message: this.$t('compute.text_1271') },
-            ],
-          },
-        ],
+        // boot_order: [
+        //   'boot_order',
+        //   {
+        //     rules: [
+        //       { required: true, message: this.$t('compute.text_1271') },
+        //     ],
+        //   },
+        // ],
         bios: [
           'bios',
           {
@@ -207,7 +207,7 @@ export default {
           disable_delete: data.disable_delete,
         }
         if (this.isKvm) {
-          updateObj.boot_order = data.boot_order
+          // updateObj.boot_order = data.boot_order
           updateObj.bios = data.bios || (this.isArm ? 'UEFI' : 'BIOS')
           updateObj.vdi = data.vdi ? data.vdi : 'vnc'
           updateObj.vga = data.vga ? data.vga : 'std'

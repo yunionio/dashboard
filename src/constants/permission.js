@@ -380,6 +380,7 @@ export const PERMISSION = {
   server_perform_restart: ['compute', 'servers', 'perform', 'restart'],
   server_perform_rebuild_root: ['compute', 'servers', 'perform', 'rebuild-root'],
   server_perform_change_config: ['compute', 'servers', 'perform', 'change-config'],
+  server_perform_set_boot_index: ['compute', 'servers', 'perform', 'set-boot-index'],
   server_perform_syncstatus: ['compute', 'servers', 'perform', 'syncstatus'],
   server_perform_change_owner: ['compute', 'servers', 'perform', 'change-owner'],
   server_perform_deploy: ['compute', 'servers', 'perform', 'deploy'],

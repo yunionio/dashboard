@@ -492,6 +492,26 @@ export default {
                   hidden: (row) => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_update'),
                 },
                 {
+                  label: i18n.t('compute.change_boot_index'),
+                  permission: 'server_perform_set_boot_index',
+                  action: () => {
+                    this.createDialog('VmChangeBootIndexDialog', {
+                      data: [obj],
+                      columns: this.columns,
+                      onManager: this.onManager,
+                    })
+                  },
+                  meta: (row) => {
+                    const isOneCloud = row.brand === 'OneCloud'
+                    const provider = obj.provider
+                    return {
+                      validate: isOneCloud,
+                      tooltip: !isOneCloud && i18n.t('compute.text_473', [PROVIDER_MAP[provider].label]),
+                    }
+                  },
+                  hidden: (row) => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_boot_index'),
+                },
+                {
                   label: i18n.t('compute.text_357'),
                   permission: 'server_perform_rebuild_root',
                   action: () => {
