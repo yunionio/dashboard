@@ -1642,5 +1642,6 @@
   "compute.power_states": "Power Status",
   "compute.create_disk": "Create Disk",
   "compute.boot_index": "Boot Index",
-  "compute.change_boot_index": "Set Boot Index"
+  "compute.change_boot_index": "Set Boot Index",
+  "compute.keep_origin_disk": "Whether to delete the origin disk"
 }

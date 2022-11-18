@@ -14,6 +14,9 @@
             :placeholder="$t('compute.text_1351')"
             :dialog-params="{ title: $t('compute.text_99'), width: 1060 }" />
         </a-form-item>
+        <a-form-item :label="$t('compute.keep_origin_disk')">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.keep_origin_disk" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -51,13 +54,20 @@ export default {
             ],
           },
         ],
+        keep_origin_disk: [
+          'keep_origin_disk',
+          {
+            valuePropName: 'checked',
+            initialValue: false,
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 20,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
       action: this.$t('compute.vminstance.change_disk_storage'),
@@ -107,6 +117,7 @@ export default {
       const data = {
         target_storage_id: values.storage,
         disk_id: this.selectedItemsDiskIds[0],
+        keep_origin_disk: values.keep_origin_disk,
       }
       return this.params.onManager('performAction', {
         id: this.selectedItems[0].id,

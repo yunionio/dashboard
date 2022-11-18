@@ -1642,5 +1642,6 @@
   "compute.power_states": "电源状态",
   "compute.create_disk": "创建硬盘",
   "compute.boot_index": "启动顺序",
-  "compute.change_boot_index": "修改启动顺序"
+  "compute.change_boot_index": "修改启动顺序",
+  "compute.keep_origin_disk": "是否删除源磁盘"
 }
