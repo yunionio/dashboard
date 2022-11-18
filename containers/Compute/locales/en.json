@@ -1626,5 +1626,6 @@
   "compute.vminstance.transfer.cancel_migration": "Cancel migration",
   "compute.vminstance.transfer.max_brand_width.required": "Please enter a bandwidth value",
   "compute.vminstance.transfer.quickly_finish.extra": "Adjust the downtime of the virtual machine after the live migration memory has been synchronized for a period of time to achieve the migration complete state",
-  "compute.create_disk": "Create Disk"
+  "compute.create_disk": "Create Disk",
+  "compute.keep_origin_disk": "Whether to delete the origin disk"
 }
