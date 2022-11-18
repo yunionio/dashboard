@@ -812,6 +812,7 @@ export default {
                       tooltip: cloudUnabledTip('changeBlockStorage', obj),
                     }
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_change_disk_storage'),
                 },
                 {
                   label: this.$t('compute.bind_physical_cpu'),

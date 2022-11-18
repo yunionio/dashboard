@@ -213,6 +213,7 @@ export default {
                 }
                 return ret
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_change_disk_storage'),
             },
             {
               label: i18n.t('compute.create_disk_backup'),
