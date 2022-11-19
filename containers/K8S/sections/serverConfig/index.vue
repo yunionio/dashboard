@@ -42,7 +42,7 @@
                 :select-props="{ allowClear: true, placeholder: $t('k8s.text_122') }" />
             </a-form-item>
           </a-col>
-          <!--<a-col :span="10" v-if="item.ipShow">
+          <a-col :span="10" v-if="item.ipShow">
             <a-form-item class="mb-0 mr-2" :wrapperCol="{ span: 24 }">
               <a-input
                 :placeholder="$t('k8s.text_123')"
@@ -53,7 +53,7 @@
           <a-col :span="2">
             <a-button v-if="item.ipShow" type="link" class="mr-1 mt-1" @click="hideIp(item)">{{$t('k8s.text_410')}}</a-button>
             <a-button v-else type="link" class="mr-1 mt-1" @click="showIp(item)">{{$t('k8s.text_124')}}</a-button>
-          </a-col>-->
+          </a-col>
         </a-row>
       </a-form-item>
       <a-form-item>
@@ -97,7 +97,7 @@
         </a-radio-group>
       </a-form-item>
 
-      <a-form-item :label="$t('k8s.text_125')" v-bind="formItemLayout" :extra="$t('k8s.text_126')">
+      <a-form-item v-show="!item.ipShow" :label="$t('k8s.text_125')" v-bind="formItemLayout" :extra="$t('k8s.text_126')">
         <a-input-number v-decorator="decorator.num(item.key)" :min="1" :max="item.ipShow ? 1 : 10"  :parser="v => parser(v, '', '1')" />
       </a-form-item>
     </a-card>

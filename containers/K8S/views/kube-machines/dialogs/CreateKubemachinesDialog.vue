@@ -189,6 +189,9 @@ export default {
             `num[${i}]`,
             {
               initialValue: 1,
+              rules: [
+                { required: true, message: this.$t('k8s.text_170') },
+              ],
             },
           ],
           role: i => [
