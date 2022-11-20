@@ -70,7 +70,7 @@ export default {
           'domain_tree_dn',
           {
             rules: [
-              { required: true, message: this.$t('common_529', [this.$t('dictionary.domain')]) },
+              { required: false, message: this.$t('common_529', [this.$t('dictionary.domain')]) },
             ],
           },
         ],
