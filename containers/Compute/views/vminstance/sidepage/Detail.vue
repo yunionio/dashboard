@@ -279,13 +279,44 @@ export default {
                 const obj = {}
                 const ids = {}
                 gpuArr.forEach(val => {
-                  if (!obj[val.model]) {
-                    obj[val.model] = 1
-                  } else {
-                    obj[val.model] += 1
+                  if (val.dev_type === 'GPU-HPC') {
+                    if (!obj[val.model]) {
+                      obj[val.model] = 1
+                    } else {
+                      obj[val.model] += 1
+                    }
+                    ids[val.model] = val.id
                   }
-                  ids[val.model] = val.id
                 })
+                if (Object.keys(obj).length === 0) {
+                  return '-'
+                }
+                return Object.keys(obj).map(k => {
+                  return <side-page-trigger permission='isolated_devices_get' name='GpuSidePage' id={ids[k]} vm={this}>{this.$t('compute.text_370', [obj[k], k])}</side-page-trigger>
+                })
+              },
+            },
+            {
+              field: 'isolated_devices',
+              title: 'USB',
+              formatter: ({ row }) => {
+                if (!row.isolated_devices) return '-'
+                const gpuArr = row.isolated_devices
+                const obj = {}
+                const ids = {}
+                gpuArr.forEach(val => {
+                  if (val.dev_type === 'USB') {
+                    if (!obj[val.model]) {
+                      obj[val.model] = 1
+                    } else {
+                      obj[val.model] += 1
+                    }
+                    ids[val.model] = val.id
+                  }
+                })
+                if (Object.keys(obj).length === 0) {
+                  return '-'
+                }
                 return Object.keys(obj).map(k => {
                   return <side-page-trigger permission='isolated_devices_get' name='GpuSidePage' id={ids[k]} vm={this}>{this.$t('compute.text_370', [obj[k], k])}</side-page-trigger>
                 })
