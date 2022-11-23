@@ -45,6 +45,7 @@ export default {
       type: Object,
     },
     cloudAccountId: String,
+    provider: String,
   },
   data () {
     return {
@@ -69,11 +70,8 @@ export default {
       ]
       return ret
     },
-    provider () {
-      return this.form.fd.provider || ''
-    },
     isPrivate () {
-      return findPlatform(this.provider.toLowerCase(), 'provider') === SERVER_TYPE.private
+      return findPlatform((this.provider || '').toLowerCase(), 'provider') === SERVER_TYPE.private
     },
   },
   methods: {
