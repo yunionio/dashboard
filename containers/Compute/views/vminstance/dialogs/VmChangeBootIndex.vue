@@ -139,32 +139,23 @@ export default {
   margin-bottom: 10px;
   background: #eee;
   ::v-deep {
-    .drag-icon {
-      visibility: hidden;
-    }
     .checkbox-property {
       padding-right: 15px;
     }
   }
-  &:hover {
-    ::v-deep {
-      &.drag-icon {
-        visibility: visible;
-      }
-    }
-  }
   .type-label {
-    flex: 0 0 90px;
+    flex: 0 0 80px;
     background: var(--antd-wave-shadow-color);
     color: #fff;
     text-align: center;
-    height: 30px;
-    line-height: 30px;
-    max-height: 30px;
-    margin: 0 8px;
+    height: 25px;
+    line-height: 25px;
+    max-height: 25px;
+    margin: 0 5px;
+    font-size: 12px;
   }
   .type-name {
-    line-height: 30px;
+    line-height: 25px;
     padding-right: 20px;
     white-space: wrap;
     word-break: wrap;
