@@ -1,4 +1,9 @@
 export default {
+  data () {
+    return {
+      provider: '',
+    }
+  },
   async created () {
     const capability = ['engine', 'engine_version', 'category', 'storage_type']
     const specs = ['vcpu_count', 'vmem_size_mb', 'zones']
@@ -45,6 +50,9 @@ export default {
       this.form.fd = {
         ...this.form.fd,
         ...changedFields,
+      }
+      if (changedFields.hasOwnProperty('provider')) {
+        this.provider = changedFields.provider
       }
       await this.$nextTick()
       Object.keys(changedFields).forEach(field => {
