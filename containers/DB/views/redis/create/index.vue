@@ -49,7 +49,7 @@
         <a-form-item :label="$t('table.title.tag')">
           <tag v-decorator="decorators.__meta__" />
         </a-form-item>
-        <bottom-bar :values="form.fc.getFieldsValue()" :cloudAccountId="cloudAccountId" />
+        <bottom-bar :provider="provider" :values="form.fc.getFieldsValue()" :cloudAccountId="cloudAccountId" />
       </a-form>
     </page-body>
   </div>
