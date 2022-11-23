@@ -2,6 +2,11 @@ import { getInitialValue } from '@/utils/common/ant'
 import { SKU_PARAMS, CAPABILIT_PARAMS, SPECS_PARAMS, DECORATORS } from '../constants'
 
 export default {
+  data () {
+    return {
+      provider: '',
+    }
+  },
   computed: {
     form () {
       const fc = this.$form.createForm(this, { onValuesChange: this.handleValuesChange })
@@ -106,6 +111,9 @@ export default {
       this.form.fd = {
         ...this.form.fd,
         ...changedFields,
+      }
+      if (changedFields.hasOwnProperty('provider')) {
+        this.provider = changedFields.provider
       }
       await this.$nextTick()
       const changedFieldsKey = Object.keys(changedFields)
