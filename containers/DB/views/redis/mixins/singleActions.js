@@ -145,8 +145,8 @@ export default {
                   validate: isRunning && !isPrepaid && !isQcloud,
                   tooltip: notRunninTip || (isPrepaid ? i18n.t('db.text_307') : '') || (isQcloud ? i18n.t('db.text_352') : ''),
                 }
-                // aws 和 azure禁用
-                if ((obj.brand === HYPERVISORS_MAP.aws.brand || obj.brand === HYPERVISORS_MAP.azure.brand) && ret.validate) {
+                // aws 和 azure, hcs禁用
+                if ((obj.brand === HYPERVISORS_MAP.aws.brand || obj.brand === HYPERVISORS_MAP.azure.brand || obj.brand === HYPERVISORS_MAP.hcs.brand) && ret.validate) {
                   ret.validate = false
                   ret.tooltip = this.$t('db.text_384', [obj.brand])
                 }
