@@ -99,7 +99,8 @@ export default {
     eipParams () {
       let params = {}
       if (this.form.fd.cloudregion && !R.isEmpty(this.scopeParams)) {
-        params = { ...this.scopeParams, usable: true, region: this.form.fd.cloudregion }
+        const region = R.is(Object, this.form.fd.cloudregion) ? this.form.fd.cloudregion.key : this.form.fd.cloudregion
+        params = { ...this.scopeParams, usable: true, region: region }
         if (this.isAdminMode || this.isDomainMode) {
           params.project = this.form.fd.project
         }
