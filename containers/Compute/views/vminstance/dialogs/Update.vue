@@ -2,6 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('compute.text_247')}}</div>
     <div slot="body">
+      <a-alert class="mb-2" :message="$t('compute.need_reboot_prompt')" banner />
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_247')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
@@ -40,7 +41,6 @@
           </a-form-item>
         </template>
       </a-form>
-      <a-alert :message="$t('compute.need_reboot_prompt')" banner />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
