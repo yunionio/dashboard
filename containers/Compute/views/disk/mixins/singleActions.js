@@ -100,6 +100,12 @@ export default {
                 })
               },
               meta: () => {
+                if (obj.status === 'unknown') {
+                  return {
+                    validate: true,
+                    tooltip: '',
+                  }
+                }
                 if (obj.brand) {
                   const brand = obj.brand.toLowerCase()
                   if (brand === 'vmware' && obj.disk_type === 'data') {
