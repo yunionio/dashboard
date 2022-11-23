@@ -73,7 +73,7 @@ export default {
           'user_tree_dn',
           {
             rules: [
-              { required: true, message: this.$t('system.text_240') },
+              { required: false, message: this.$t('system.text_240') },
             ],
           },
         ],
@@ -81,7 +81,7 @@ export default {
           'group_tree_dn',
           {
             rules: [
-              { required: true, message: this.$t('system.text_241') },
+              { required: false, message: this.$t('system.text_241') },
             ],
           },
         ],

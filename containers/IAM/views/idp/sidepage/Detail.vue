@@ -341,16 +341,20 @@ export default {
           title: this.$t('system.text_173'),
           items: [
             {
+              field: 'domain_count',
+              title: this.$t('dictionary.domain'),
+            },
+            {
+              field: 'project_count',
+              title: this.$t('dictionary.project'),
+            },
+            {
               field: 'group_count',
               title: this.$t('dictionary.group'),
             },
             {
               field: 'user_count',
               title: this.$t('dictionary.user'),
-            },
-            {
-              field: 'project_count',
-              title: this.$t('dictionary.project'),
             },
             {
               field: 'role_count',
