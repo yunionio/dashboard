@@ -538,4 +538,8 @@ export default {
   wtps: {
     success: ['running'],
   },
+  unifiedIds: {
+    success: ['available'],
+    danger: ['unsign'],
+  },
 }
