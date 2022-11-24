@@ -1,0 +1,18 @@
+{
+  "network.cdn.domain": "指定域",
+  "network.cdn.cloudprovider": "指定云订阅",
+  "network.cdn.origin_type": "源站协议",
+  "network.cdn.origin": "源站",
+  "network.cdn.area_require_message": "请选择加速区域",
+  "network.cdn.origin_require_message": "请输入源站地址",
+  "network.cdn.port_require_message": "请输入端口",
+  "network.cdn.priority_require_message": "请输入权重",
+  "network.cdn.service_type_web": "CDN网页小文件",
+  "network.cdn.service_type_download": "CDN下载大文件",
+  "network.cdn.service_type_media": "CDN音视频点播",
+  "network.cdn.service_type_hybrid": "ECDN动静加速",
+  "network.cdn.service_type_dynamic": "ECDN动态加速",
+  "network.cdn.origin_type_domain": "自有源",
+  "network.cdn.origin_type_cos": "COS源",
+  "network.cdn.origin_protocol_follow": "协议追随"
+}
