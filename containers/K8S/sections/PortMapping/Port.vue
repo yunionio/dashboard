@@ -21,14 +21,14 @@
       </a-input>
     </a-form-item>
     <a-form-item v-if="isNodePort">
-      <a-input-number :min="30000" :max="32767" v-decorator="decorators.nodePort" type="number" style="width: 200px;">
+      <a-input :min="30000" :max="32767" v-decorator="decorators.nodePort" type="number" style="width: 200px;">
         <template slot="addonBefore">
           <span>{{$t('k8s.node_port')}}</span>
           <a-tooltip :title="$t('k8s.node_port.desc')">
             <a-icon type="info-circle" />
           </a-tooltip>
         </template>
-      </a-input-number>
+      </a-input>
     </a-form-item>
     <a-form-item>
       <a-input-group compact>
@@ -51,7 +51,7 @@ export default {
     decorators: {
       type: Object,
       required: true,
-      validator: val => val.port && val.targetPort && val.protocol,
+      validator: val => val.port && val.targetPort && val.nodePort && val.protocol,
     },
     protocolDisabled: {
       type: Boolean,

@@ -143,6 +143,15 @@ export function getServiceConfigDecorators () {
             initialValue: 30000,
             rules: [
               { required: true, message: i18n.t('k8s.input_node_port') },
+              {
+                validator: (rule, val, cb) => {
+                  if ((val < 30000) || (val > 32767)) {
+                    cb(new Error(i18n.t('k8s.node_port.desc')))
+                  } else {
+                    cb()
+                  }
+                },
+              },
             ],
           },
         ],
