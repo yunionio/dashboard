@@ -9,11 +9,11 @@ export const AREAS = [
 export const AREA_MAP = arrayToObj(AREAS, 'key')
 
 export const SERVICE_TYPES = [
-  { key: 'web', label: i18n.$t('network.cdn.service_type_web') }, // CDN网页小文件
-  { key: 'download', label: i18n.$t('network.cdn.service_type_download') }, // CDN下载大文件
-  { key: 'media', label: i18n.$t('network.cdn.service_type_media') }, // CDN音视频点播
-  { key: 'hybrid', label: i18n.$t('network.cdn.service_type_hybrid') }, // ECDN动静加速
-  { key: 'dynamic', label: i18n.$t('network.cdn.service_type_dynamic') }, // ECDN动态加速
+  { key: 'web', label: i18n.t('network.cdn.service_type_web') }, // CDN网页小文件
+  { key: 'download', label: i18n.t('network.cdn.service_type_download') }, // CDN下载大文件
+  { key: 'media', label: i18n.t('network.cdn.service_type_media') }, // CDN音视频点播
+  { key: 'hybrid', label: i18n.t('network.cdn.service_type_hybrid') }, // ECDN动静加速
+  { key: 'dynamic', label: i18n.t('network.cdn.service_type_dynamic') }, // ECDN动态加速
 ]
 export const SERVICE_TYPE_MAP = arrayToObj(SERVICE_TYPES, 'key')
 
