@@ -277,5 +277,18 @@
   "dashboard.liquidfill": "LiquidFill",
   "dashboard.trend": "Trend",
   "dashboard.icon": "Icon",
-  "dashboard.monitor.time": "Time"
+  "dashboard.monitor.time": "Time",
+  "dashboard.all.running_servers_rate": "Virtual machine running rate",
+  "dashboard.all.no_running_servers": "Not running",
+  "dashboard.all.running_servers": "Running",
+  "dashboard.memory_use_rate_top5": "Memory usage rate TOP5",
+  "dashboard.disk_use_rate_top5": "Disk usage rate TOP5",
+  "dashboard.server_gpu_num": "Number of virtual machine GPU cards",
+  "dashboard.server_memory_num": "Virtual machine memory capacity",
+  "dashboard.server_cpu_num": "Virtual machine CPU number",
+  "dashboard.server_disk_num": "Virtual machine disk capacity",
+  "dashboard.host_total_num": "Total number of hosts",
+  "dashboard.snapshot_num": "Number of snapshots",
+  "dashboard.gpu_num": "Number of GPU cards",
+  "dashboard.disk_num": "Number of disks"
 }
