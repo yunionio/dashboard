@@ -5,1105 +5,996 @@ export default {
     options: [
       { id: 'dashboard-system-default', name: i18n.t('dashboard.text_121') },
     ],
-    'dashboard-system-default': [
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 0,
-          y: 0,
-        },
-        params: {
-          name: i18n.t('dashboard.text_130'),
-          usage_key: 'all.servers',
-        },
+    'dashboard-system-default': [{
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 0,
+        y: 0,
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 20,
-          y: 0,
-        },
-        params: {
-          name: i18n.t('dashboard.text_136'),
-          usage_key: 'hosts',
-        },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_cpu',
+        name: i18n.t('dashboard.text_130'),
+        regionAccountType: 'region',
+        usage_key: 'all.servers',
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 40,
-          y: 0,
-        },
-        params: {
-          name: i18n.t('dashboard.text_134'),
-          usage_key: 'baremetals',
-        },
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 20,
+        y: 0,
       },
-      {
-        layout: {
-          component: 'Notify',
-          h: 12,
-          w: 20,
-          x: 60,
-          y: 0,
-        },
-        params: {
-          name: i18n.t('dashboard.text_124'),
-        },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_tenant',
+        name: i18n.t('dashboard.text_136'),
+        regionAccountType: 'region',
+        usage_key: 'hosts',
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 0,
-          y: 6,
-        },
-        params: {
-          name: i18n.t('dashboard.text_122'),
-          usage_key: 'all.servers.cpu',
-        },
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 40,
+        y: 0,
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 20,
-          y: 6,
-        },
-        params: {
-          name: i18n.t('dashboard.text_127'),
-          usage_key: 'all.servers.memory',
-        },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_baremetal',
+        name: i18n.t('dashboard.text_134'),
+        regionAccountType: 'region',
+        usage_key: 'baremetals',
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 40,
-          y: 6,
-        },
-        params: {
-          name: i18n.t('dashboard.text_123'),
-          usage_key: 'all.servers.disk',
-        },
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 0,
+        y: 6,
       },
-      {
-        layout: {
-          component: 'Ring',
-          h: 5,
-          w: 20,
-          x: 0,
-          y: 12,
-        },
-        params: {
-          all_usage_key: 'all.servers',
-          name: i18n.t('dashboard.text_151'),
-          usage_key: 'all.ready_servers',
-          usage_label: i18n.t('dashboard.shutdown'),
-          un_usage_label: i18n.t('dashboard.not_shutdown'),
-        },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_ram',
+        name: i18n.t('dashboard.text_122'),
+        regionAccountType: 'region',
+        usage_key: 'all.servers.cpu',
       },
-      {
-        layout: {
-          component: 'Ring',
-          h: 5,
-          w: 20,
-          x: 20,
-          y: 12,
-        },
-        params: {
-          all_usage_key: 'all.disks.count',
-          name: i18n.t('dashboard.text_147'),
-          usage_key: 'all.disks.mounted.count',
-          usage_label: i18n.t('dashboard.mounted'),
-          un_usage_label: i18n.t('dashboard.not_mounted'),
-          color: 'reverse',
-        },
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 20,
+        y: 6,
       },
-      {
-        layout: {
-          component: 'Ring',
-          h: 5,
-          w: 20,
-          x: 40,
-          y: 12,
-        },
-        params: {
-          all_usage_key: 'all.ports',
-          name: i18n.t('dashboard.text_152'),
-          usage_key: 'all.nics',
-        },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_baremetal',
+        name: i18n.t('dashboard.text_127'),
+        regionAccountType: 'region',
+        usage_key: 'all.servers.memory',
       },
-      {
-        layout: {
-          component: 'Ring',
-          h: 5,
-          w: 20,
-          x: 60,
-          y: 12,
-        },
-        params: {
-          all_usage_key: 'all.eip.floating_ip',
-          name: i18n.t('dashboard.text_156'),
-          usage_key: 'all.eip.floating_ip.used',
-          color: 'reverse',
-        },
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 40,
+        y: 6,
       },
-      {
-        layout: {
-          component: 'Top5',
-          h: 8,
-          w: 20,
-          x: 0,
-          y: 17,
-        },
-        params: {
-          limit: 5,
-          name: i18n.t('dashboard.text_126'),
-          order: 'TOP',
-          resType: 'server',
-          time: 108000,
-          usage: 'usage_active,vm_cpu',
-        },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_cpu',
+        name: i18n.t('dashboard.text_123'),
+        regionAccountType: 'region',
+        usage_key: 'all.servers.disk',
       },
-      {
-        layout: {
-          component: 'Top5',
-          h: 8,
-          w: 20,
-          x: 20,
-          y: 17,
-        },
-        params: {
-          limit: 5,
-          name: i18n.t('dashboard.text_133'),
-          order: 'TOP',
-          resType: 'server',
-          time: 108000,
-          usage: 'read_bps,vm_diskio',
-        },
+    }, {
+      layout: {
+        component: 'Ring',
+        h: 5,
+        w: 20,
+        x: 0,
+        y: 12,
       },
-      {
-        layout: {
-          component: 'Top5',
-          h: 8,
-          w: 20,
-          x: 40,
-          y: 17,
-        },
-        params: {
-          limit: 5,
-          name: i18n.t('dashboard.text_125'),
-          order: 'TOP',
-          resType: 'server',
-          time: 108000,
-          usage: 'write_bps,vm_diskio',
-        },
+      params: {
+        all_usage_key: 'all.servers',
+        chart_type: 'liquidfill',
+        name: i18n.t('dashboard.all.running_servers_rate'),
+        regionAccountType: 'region',
+        un_usage_label: i18n.t('dashboard.all.no_running_servers'),
+        usage_key: 'all.running_servers',
+        usage_label: i18n.t('dashboard.all.running_servers'),
       },
-      {
-        layout: {
-          component: 'Log',
-          h: 8,
-          w: 20,
-          x: 60,
-          y: 17,
-        },
-        params: {
-          limit: 5,
-          name: i18n.t('dashboard.text_131'),
-        },
+    }, {
+      layout: {
+        component: 'Ring',
+        h: 5,
+        w: 20,
+        x: 20,
+        y: 12,
       },
-      {
-        layout: {
-          component: 'Quota',
-          h: 12,
-          w: 20,
-          x: 0,
-          y: 25,
-        },
-        params: {
-          name: i18n.t('dashboard.text_139'),
-          field: 'cpu',
-          titleKey: 'domain',
-          resource: 'quotas',
-        },
+      params: {
+        all_usage_key: 'all.disks.count',
+        chart_type: 'liquidfill',
+        name: i18n.t('dashboard.text_147'),
+        regionAccountType: 'region',
+        un_usage_label: i18n.t('dashboard.not_mounted'),
+        usage_key: 'all.disks.mounted.count',
+        usage_label: i18n.t('dashboard.mounted'),
       },
-      {
-        layout: {
-          component: 'Quota',
-          h: 12,
-          w: 20,
-          x: 20,
-          y: 25,
-        },
-        params: {
-          name: i18n.t('dashboard.text_140'),
-          field: 'memory',
-          titleKey: 'domain',
-          resource: 'quotas',
-        },
+    }, {
+      layout: {
+        component: 'Ring',
+        h: 5,
+        w: 20,
+        x: 40,
+        y: 12,
       },
-      {
-        layout: {
-          component: 'Quota',
-          h: 12,
-          w: 20,
-          x: 40,
-          y: 25,
-        },
-        params: {
-          name: i18n.t('dashboard.text_141'),
-          field: 'storage',
-          titleKey: 'domain',
-          resource: 'quotas',
-        },
+      params: {
+        all_usage_key: 'all.ports',
+        chart_type: 'liquidfill',
+        name: i18n.t('dashboard.text_152'),
+        regionAccountType: 'region',
+        un_usage_label: i18n.t('dashboard.text_34'),
+        usage_key: 'all.nics',
+        usage_label: i18n.t('dashboard.text_33'),
       },
-      {
-        layout: {
-          component: 'Quota',
-          h: 12,
-          w: 20,
-          x: 60,
-          y: 25,
-        },
-        params: {
-          name: i18n.t('dashboard.text_142'),
-          field: 'eip',
-          titleKey: 'domain',
-          resource: 'region_quotas',
-        },
+    }, {
+      layout: {
+        component: 'Ring',
+        h: 5,
+        w: 20,
+        x: 60,
+        y: 12,
       },
-      {
-        layout: {
-          component: 'Quota',
-          h: 12,
-          w: 20,
-          x: 0,
-          y: 37,
-        },
-        params: {
-          name: i18n.t('dashboard.text_143'),
-          field: 'port',
-          titleKey: 'domain',
-          resource: 'region_quotas',
-        },
+      params: {
+        all_usage_key: 'all.eip.floating_ip',
+        chart_type: 'liquidfill',
+        name: i18n.t('dashboard.text_156'),
+        regionAccountType: 'region',
+        un_usage_label: i18n.t('dashboard.text_34'),
+        usage_key: 'all.eip.floating_ip.used',
+        usage_label: i18n.t('dashboard.text_33'),
       },
-      {
-        layout: {
-          component: 'Quota',
-          h: 12,
-          w: 20,
-          x: 20,
-          y: 37,
-        },
-        params: {
-          name: i18n.t('dashboard.text_144'),
-          field: 'isolated_device',
-          titleKey: 'domain',
-          resource: 'quotas',
-        },
+    }, {
+      layout: {
+        component: 'Top5',
+        h: 8,
+        w: 20,
+        x: 0,
+        y: 17,
       },
-      {
-        layout: {
-          component: 'Quota',
-          h: 12,
-          w: 20,
-          x: 40,
-          y: 37,
-        },
-        params: {
-          name: i18n.t('dashboard.text_145'),
-          field: 'image',
-          titleKey: 'domain',
-          resource: 'image_quotas',
-        },
+      params: {
+        brand: '',
+        dimensionId: 'vm_id',
+        limit: 5,
+        name: i18n.t('dashboard.text_126'),
+        order: 'TOP',
+        resType: 'server',
+        time: 108000,
+        usage: 'usage_active,vm_cpu',
       },
-      {
-        layout: {
-          component: 'Quota',
-          h: 12,
-          w: 20,
-          x: 60,
-          y: 37,
-        },
-        params: {
-          name: i18n.t('dashboard.text_146'),
-          field: 'snapshot',
-          titleKey: 'domain',
-          resource: 'region_quotas',
-        },
+    }, {
+      layout: {
+        component: 'Top5',
+        h: 8,
+        w: 20,
+        x: 20,
+        y: 17,
       },
-    ],
+      params: {
+        brand: '',
+        dimensionId: 'vm_id',
+        limit: 5,
+        name: i18n.t('dashboard.memory_use_rate_top5'),
+        order: 'TOP',
+        resType: 'server',
+        time: 604800,
+        usage: 'used_percent,vm_mem',
+      },
+    }, {
+      layout: {
+        component: 'Top5',
+        h: 8,
+        w: 20,
+        x: 40,
+        y: 17,
+      },
+      params: {
+        brand: '',
+        dimensionId: 'vm_id',
+        limit: 5,
+        name: i18n.t('dashboard.disk_use_rate_top5'),
+        order: 'TOP',
+        resType: 'server',
+        time: 604800,
+        usage: 'used_percent,vm_disk',
+      },
+    }, {
+      layout: {
+        component: 'Log',
+        h: 8,
+        w: 20,
+        x: 60,
+        y: 17,
+      },
+      params: {
+        limit: 5,
+        name: i18n.t('dashboard.text_17'),
+      },
+    }, {
+      layout: {
+        component: 'Quota',
+        h: 12,
+        w: 20,
+        x: 0,
+        y: 25,
+      },
+      params: {
+        field: 'cpu',
+        name: i18n.t('dashboard.text_139'),
+        resource: 'quotas',
+        titleKey: 'domain',
+      },
+    }, {
+      layout: {
+        component: 'Quota',
+        h: 12,
+        w: 20,
+        x: 20,
+        y: 25,
+      },
+      params: {
+        field: 'memory',
+        name: i18n.t('dashboard.text_140'),
+        resource: 'quotas',
+        titleKey: 'domain',
+      },
+    }, {
+      layout: {
+        component: 'Quota',
+        h: 12,
+        w: 20,
+        x: 40,
+        y: 25,
+      },
+      params: {
+        field: 'storage',
+        name: i18n.t('dashboard.text_141'),
+        resource: 'quotas',
+        titleKey: 'domain',
+      },
+    }, {
+      layout: {
+        component: 'Quota',
+        h: 12,
+        w: 20,
+        x: 60,
+        y: 25,
+      },
+      params: {
+        field: 'eip',
+        name: i18n.t('dashboard.text_142'),
+        resource: 'region_quotas',
+        titleKey: 'domain',
+      },
+    }, {
+      layout: {
+        component: 'Quota',
+        h: 12,
+        w: 20,
+        x: 0,
+        y: 37,
+      },
+      params: {
+        field: 'port',
+        name: i18n.t('dashboard.text_143'),
+        resource: 'region_quotas',
+        titleKey: 'domain',
+      },
+    }, {
+      layout: {
+        component: 'Quota',
+        h: 12,
+        w: 20,
+        x: 20,
+        y: 37,
+      },
+      params: {
+        field: 'isolated_device',
+        name: i18n.t('dashboard.text_144'),
+        resource: 'quotas',
+        titleKey: 'domain',
+      },
+    }, {
+      layout: {
+        component: 'Quota',
+        h: 12,
+        w: 20,
+        x: 40,
+        y: 37,
+      },
+      params: {
+        field: 'image',
+        name: i18n.t('dashboard.text_145'),
+        resource: 'image_quotas',
+        titleKey: 'domain',
+      },
+    }, {
+      layout: {
+        component: 'Quota',
+        h: 12,
+        w: 20,
+        x: 60,
+        y: 37,
+      },
+      params: {
+        field: 'snapshot',
+        name: i18n.t('dashboard.text_146'),
+        resource: 'region_quotas',
+        titleKey: 'domain',
+      },
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 60,
+        y: 6,
+      },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_tenant',
+        name: i18n.t('dashboard.server_gpu_num'),
+        regionAccountType: 'region',
+        usage_key: 'all.servers.isolated_devices',
+      },
+    }, {
+      layout: {
+        component: 'UserInfo',
+        h: 6,
+        w: 20,
+        x: 60,
+        y: 0,
+      },
+      params: {
+        name: i18n.t('dashboard.userinfo'),
+      },
+    }],
   },
   domain: {
     options: [
       { id: 'dashboard-domain-default', name: i18n.t('dashboard.text_121') },
     ],
-    'dashboard-domain-default': [
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 0,
-          y: 0,
-        },
-        params: {
-          name: i18n.t('dashboard.text_160'),
-          usage_key: 'domain.servers',
-        },
+    'dashboard-domain-default': [{
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 0,
+        y: 0,
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 20,
-          y: 0,
-        },
-        params: {
-          name: i18n.t('dashboard.text_149'),
-          usage_key: 'domain.servers.cpu',
-        },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_cpu',
+        name: i18n.t('dashboard.text_160'),
+        regionAccountType: 'region',
+        usage_key: 'domain.servers',
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 40,
-          y: 0,
-        },
-        params: {
-          name: i18n.t('dashboard.text_157'),
-          usage_key: 'domain.servers.memory',
-        },
+    }, {
+      layout: {
+        component: 'Top5',
+        h: 10,
+        w: 20,
+        x: 0,
+        y: 17,
       },
-      {
-        layout: {
-          component: 'Notify',
-          h: 12,
-          w: 20,
-          x: 60,
-          y: 0,
-        },
-        params: {
-          name: i18n.t('dashboard.text_19'),
-        },
+      params: {
+        brand: '',
+        dimensionId: 'vm_id',
+        limit: 5,
+        name: i18n.t('dashboard.text_126'),
+        order: 'TOP',
+        resType: 'server',
+        time: 604800,
+        usage: 'usage_active,vm_cpu',
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 0,
-          y: 6,
-        },
-        params: {
-          name: i18n.t('dashboard.text_159'),
-          usage_key: 'domain.disks',
-        },
+    }, {
+      layout: {
+        component: 'Top5',
+        h: 10,
+        w: 20,
+        x: 20,
+        y: 17,
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 20,
-          y: 6,
-        },
-        params: {
-          name: i18n.t('dashboard.text_155'),
-          usage_key: 'domain.nics',
-        },
+      params: {
+        brand: '',
+        dimensionId: 'vm_id',
+        limit: 5,
+        name: i18n.t('dashboard.memory_use_rate_top5'),
+        order: 'TOP',
+        resType: 'server',
+        time: 604800,
+        usage: 'used_percent,vm_mem',
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 40,
-          y: 6,
-        },
-        params: {
-          name: i18n.t('dashboard.text_153'),
-          usage_key: 'domain.servers.isolated_devices',
-        },
+    }, {
+      layout: {
+        component: 'Top5',
+        h: 10,
+        w: 20,
+        x: 40,
+        y: 17,
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 0,
-          y: 12,
-        },
-        params: {
-          name: i18n.t('dashboard.text_158'),
-          usage_key: 'domain.bucket_bytes',
-        },
+      params: {
+        brand: '',
+        dimensionId: 'vm_id',
+        limit: 5,
+        name: i18n.t('dashboard.disk_use_rate_top5'),
+        order: 'TOP',
+        resType: 'server',
+        time: 604800,
+        usage: 'used_percent,vm_disk',
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 20,
-          y: 12,
-        },
-        params: {
-          name: i18n.t('dashboard.text_150'),
-          usage_key: 'domain.bucket_objects',
-        },
+    }, {
+      layout: {
+        component: 'Log',
+        h: 10,
+        w: 20,
+        x: 60,
+        y: 17,
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 40,
-          y: 12,
-        },
-        params: {
-          name: i18n.t('dashboard.text_154'),
-          usage_key: 'domain.buckets',
-        },
+      params: {
+        limit: 4,
+        name: i18n.t('dashboard.text_17'),
       },
-      {
-        layout: {
-          component: 'SuggestsysAlertsOverview',
-          h: 12,
-          w: 20,
-          x: 60,
-          y: 12,
-        },
-        params: {
-          currency: i18n.t('dashboard.currency_name'),
-          name: i18n.t('dashboard.text_54'),
-        },
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 20,
+        y: 6,
       },
-      {
-        layout: {
-          component: 'Ring',
-          h: 6,
-          w: 20,
-          x: 0,
-          y: 18,
-        },
-        params: {
-          all_usage_key: 'domain.servers',
-          name: i18n.t('dashboard.text_151'),
-          usage_key: 'domain.ready_servers',
-          usage_label: i18n.t('dashboard.shutdown'),
-          un_usage_label: i18n.t('dashboard.not_shutdown'),
-        },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_baremetal',
+        name: i18n.t('dashboard.server_memory_num'),
+        regionAccountType: 'region',
+        unit: 'auto',
+        usage_key: 'domain.servers.memory',
       },
-      {
-        layout: {
-          component: 'Ring',
-          h: 6,
-          w: 20,
-          x: 20,
-          y: 18,
-        },
-        params: {
-          all_usage_key: 'domain.disks.count',
-          name: i18n.t('dashboard.text_147'),
-          usage_key: 'domain.disks.mounted.count',
-          usage_label: i18n.t('dashboard.mounted'),
-          un_usage_label: i18n.t('dashboard.not_mounted'),
-          color: 'reverse',
-        },
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 60,
+        y: 6,
       },
-      {
-        layout: {
-          component: 'Ring',
-          h: 6,
-          w: 20,
-          x: 40,
-          y: 18,
-        },
-        params: {
-          all_usage_key: 'domain.eip.floating_ip',
-          name: i18n.t('dashboard.text_156'),
-          usage_key: 'domain.eip.floating_ip.used',
-          color: 'reverse',
-        },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_tenant',
+        name: i18n.t('dashboard.server_gpu_num'),
+        regionAccountType: 'region',
+        usage_key: 'domain.servers.isolated_devices',
       },
-      {
-        layout: {
-          component: 'Top5',
-          h: 8,
-          w: 20,
-          x: 0,
-          y: 24,
-        },
-        params: {
-          limit: 5,
-          name: i18n.t('dashboard.text_126'),
-          order: 'TOP',
-          resType: 'server',
-          time: 108000,
-          usage: 'usage_active,vm_cpu',
-        },
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 40,
+        y: 0,
       },
-      {
-        layout: {
-          component: 'Top5',
-          h: 8,
-          w: 20,
-          x: 20,
-          y: 24,
-        },
-        params: {
-          limit: 5,
-          name: i18n.t('dashboard.text_133'),
-          order: 'TOP',
-          resType: 'server',
-          time: 108000,
-          usage: 'read_bps,vm_diskio',
-        },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_baremetal',
+        name: i18n.t('dashboard.text_134'),
+        regionAccountType: 'region',
+        usage_key: 'domain.baremetals',
       },
-      {
-        layout: {
-          component: 'Top5',
-          h: 8,
-          w: 20,
-          x: 40,
-          y: 24,
-        },
-        params: {
-          limit: 5,
-          name: i18n.t('dashboard.text_125'),
-          order: 'TOP',
-          resType: 'server',
-          time: 108000,
-          usage: 'write_bps,vm_diskio',
-        },
+    }, {
+      layout: {
+        component: 'Ring',
+        h: 5,
+        w: 20,
+        x: 0,
+        y: 12,
       },
-      {
-        layout: {
-          component: 'Log',
-          h: 8,
-          w: 20,
-          x: 60,
-          y: 24,
-        },
-        params: {
-          limit: 4,
-          name: i18n.t('dashboard.text_17'),
-        },
+      params: {
+        all_usage_key: 'domain.servers',
+        chart_type: 'liquidfill',
+        name: i18n.t('dashboard.all.running_servers_rate'),
+        regionAccountType: 'region',
+        un_usage_label: i18n.t('dashboard.all.no_running_servers'),
+        usage_key: 'domain.running_servers',
+        usage_label: i18n.t('dashboard.all.running_servers'),
       },
-      {
-        layout: {
-          component: 'Quota',
-          h: 12,
-          w: 20,
-          x: 0,
-          y: 32,
-        },
-        params: {
-          field: 'cpu',
-          name: i18n.t('dashboard.text_170'),
-          resource: 'quotas',
-          titleKey: 'tenant',
-        },
+    }, {
+      layout: {
+        component: 'Ring',
+        h: 5,
+        w: 20,
+        x: 20,
+        y: 12,
       },
-      {
-        layout: {
-          component: 'Quota',
-          h: 12,
-          w: 20,
-          x: 20,
-          y: 32,
-        },
-        params: {
-          field: 'memory',
-          name: i18n.t('dashboard.text_171'),
-          resource: 'quotas',
-          titleKey: 'tenant',
-        },
+      params: {
+        all_usage_key: 'domain.disks.count',
+        chart_type: 'liquidfill',
+        name: i18n.t('dashboard.text_147'),
+        regionAccountType: 'region',
+        un_usage_label: i18n.t('dashboard.not_mounted'),
+        usage_key: 'domain.disks.mounted.count',
+        usage_label: i18n.t('dashboard.mounted'),
       },
-      {
-        layout: {
-          component: 'Quota',
-          h: 12,
-          w: 20,
-          x: 40,
-          y: 32,
-        },
-        params: {
-          field: 'storage',
-          name: i18n.t('dashboard.text_172'),
-          resource: 'quotas',
-          titleKey: 'tenant',
-        },
+    }, {
+      layout: {
+        component: 'Ring',
+        h: 5,
+        w: 20,
+        x: 60,
+        y: 12,
       },
-      {
-        layout: {
-          component: 'Quota',
-          h: 12,
-          w: 20,
-          x: 60,
-          y: 32,
-        },
-        params: {
-          field: 'eip',
-          name: i18n.t('dashboard.text_173'),
-          resource: 'region_quotas',
-          titleKey: 'tenant',
-        },
+      params: {
+        all_usage_key: 'domain.eip.floating_ip',
+        chart_type: 'liquidfill',
+        name: i18n.t('dashboard.text_156'),
+        regionAccountType: 'region',
+        un_usage_label: i18n.t('dashboard.text_34'),
+        usage_key: 'domain.eip.floating_ip.used',
+        usage_label: i18n.t('dashboard.text_33'),
       },
-      {
-        layout: {
-          component: 'Quota',
-          h: 12,
-          w: 20,
-          x: 0,
-          y: 44,
-        },
-        params: {
-          field: 'port',
-          name: i18n.t('dashboard.text_174'),
-          resource: 'region_quotas',
-          titleKey: 'tenant',
-        },
+    }, {
+      layout: {
+        component: 'Ring',
+        h: 5,
+        w: 20,
+        x: 40,
+        y: 12,
       },
-      {
-        layout: {
-          component: 'Quota',
-          h: 12,
-          w: 20,
-          x: 20,
-          y: 44,
-        },
-        params: {
-          field: 'isolated_device',
-          name: i18n.t('dashboard.text_175'),
-          resource: 'quotas',
-          titleKey: 'tenant',
-        },
+      params: {
+        all_usage_key: 'domain.ports',
+        chart_type: 'liquidfill',
+        name: i18n.t('dashboard.text_152'),
+        regionAccountType: 'region',
+        un_usage_label: i18n.t('dashboard.text_34'),
+        usage_key: 'domain.nics',
+        usage_label: i18n.t('dashboard.text_33'),
       },
-      {
-        layout: {
-          component: 'Quota',
-          h: 12,
-          w: 20,
-          x: 40,
-          y: 44,
-        },
-        params: {
-          field: 'image',
-          name: i18n.t('dashboard.text_176'),
-          resource: 'image_quotas',
-          titleKey: 'tenant',
-        },
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 0,
+        y: 6,
       },
-      {
-        layout: {
-          component: 'Quota',
-          h: 12,
-          w: 20,
-          x: 60,
-          y: 44,
-        },
-        params: {
-          field: 'snapshot',
-          name: i18n.t('dashboard.text_170'),
-          resource: 'region_quotas',
-          titleKey: 'tenant',
-        },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_ram',
+        name: i18n.t('dashboard.server_cpu_num'),
+        regionAccountType: 'region',
+        usage_key: 'domain.servers.cpu',
       },
-    ],
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 20,
+        y: 0,
+      },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_tenant',
+        name: i18n.t('dashboard.host_total_num'),
+        regionAccountType: 'region',
+        usage_key: 'domain.hosts',
+      },
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 40,
+        y: 6,
+      },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_cpu',
+        name: i18n.t('dashboard.server_disk_num'),
+        regionAccountType: 'region',
+        unit: 'auto',
+        usage_key: 'domain.servers.disk',
+      },
+    }, {
+      layout: {
+        component: 'UserInfo',
+        h: 6,
+        w: 20,
+        x: 60,
+        y: 0,
+      },
+      params: {
+        name: i18n.t('dashboard.userinfo'),
+      },
+    }],
   },
   project: {
     options: [
       { id: 'dashboard-project-default', name: i18n.t('dashboard.text_121') },
     ],
-    'dashboard-project-default': [
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 0,
-          y: 0,
-        },
-        params: {
-          name: i18n.t('dashboard.text_160'),
-          usage_key: 'servers',
-        },
+    'dashboard-project-default': [{
+      layout: {
+        component: 'Ring',
+        h: 5,
+        w: 20,
+        x: 0,
+        y: 12,
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 20,
-          y: 0,
-        },
-        params: {
-          name: i18n.t('dashboard.text_149'),
-          usage_key: 'servers.cpu',
-        },
+      params: {
+        all_usage_key: 'servers',
+        chart_type: 'liquidfill',
+        name: i18n.t('dashboard.all.running_servers_rate'),
+        regionAccountType: 'region',
+        un_usage_label: i18n.t('dashboard.all.no_running_servers'),
+        usage_key: 'running_servers',
+        usage_label: i18n.t('dashboard.all.running_servers'),
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 40,
-          y: 0,
-        },
-        params: {
-          name: i18n.t('dashboard.text_157'),
-          usage_key: 'servers.memory',
-        },
+    }, {
+      layout: {
+        component: 'Ring',
+        h: 5,
+        w: 20,
+        x: 20,
+        y: 12,
       },
-      {
-        layout: {
-          component: 'Notify',
-          h: 12,
-          w: 20,
-          x: 60,
-          y: 0,
-        },
-        params: {
-          name: i18n.t('dashboard.text_19'),
-        },
+      params: {
+        all_usage_key: 'disks.count',
+        chart_type: 'liquidfill',
+        name: i18n.t('dashboard.text_147'),
+        regionAccountType: 'region',
+        un_usage_label: i18n.t('dashboard.not_mounted'),
+        usage_key: 'disks.mounted.count',
+        usage_label: i18n.t('dashboard.mounted'),
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 0,
-          y: 6,
-        },
-        params: {
-          name: i18n.t('dashboard.text_159'),
-          usage_key: 'disks',
-        },
+    }, {
+      layout: {
+        component: 'Ring',
+        h: 5,
+        w: 20,
+        x: 60,
+        y: 12,
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 20,
-          y: 6,
-        },
-        params: {
-          name: i18n.t('dashboard.text_155'),
-          usage_key: 'nics',
-        },
+      params: {
+        all_usage_key: 'eip.floating_ip',
+        chart_type: 'liquidfill',
+        name: i18n.t('dashboard.text_156'),
+        regionAccountType: 'region',
+        un_usage_label: i18n.t('dashboard.text_34'),
+        usage_key: 'eip.floating_ip.used',
+        usage_label: i18n.t('dashboard.text_33'),
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 40,
-          y: 6,
-        },
-        params: {
-          name: i18n.t('dashboard.text_153'),
-          usage_key: 'servers.isolated_devices',
-        },
+    }, {
+      layout: {
+        component: 'Top5',
+        h: 8,
+        w: 20,
+        x: 0,
+        y: 17,
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 0,
-          y: 12,
-        },
-        params: {
-          name: i18n.t('dashboard.text_148'),
-          usage_key: 'eip.floating_ip',
-        },
+      params: {
+        brand: '',
+        dimensionId: 'vm_id',
+        limit: 5,
+        name: i18n.t('dashboard.text_126'),
+        order: 'TOP',
+        resType: 'server',
+        time: 604800,
+        usage: 'usage_active,vm_cpu',
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 20,
-          y: 12,
-        },
-        params: {
-          name: i18n.t('dashboard.text_158'),
-          usage_key: 'bucket_bytes',
-        },
+    }, {
+      layout: {
+        component: 'Top5',
+        h: 8,
+        w: 20,
+        x: 20,
+        y: 17,
       },
-      {
-        layout: {
-          component: 'NumberCard',
-          h: 6,
-          w: 20,
-          x: 40,
-          y: 12,
-        },
-        params: {
-          name: i18n.t('dashboard.text_150'),
-          usage_key: 'bucket_objects',
-        },
+      params: {
+        brand: '',
+        dimensionId: 'vm_id',
+        limit: 5,
+        name: i18n.t('dashboard.memory_use_rate_top5'),
+        order: 'TOP',
+        resType: 'server',
+        time: 604800,
+        usage: 'used_percent,vm_mem',
       },
-      {
-        layout: {
-          component: 'SuggestsysAlertsOverview',
-          h: 12,
-          w: 20,
-          x: 60,
-          y: 12,
-        },
-        params: {
-          currency: i18n.t('dashboard.currency_name'),
-          name: i18n.t('dashboard.text_54'),
-        },
+    }, {
+      layout: {
+        component: 'Top5',
+        h: 8,
+        w: 20,
+        x: 40,
+        y: 17,
       },
-      {
-        layout: {
-          component: 'Ring',
-          h: 6,
-          w: 20,
-          x: 0,
-          y: 18,
-        },
-        params: {
-          all_usage_key: 'servers',
-          name: i18n.t('dashboard.text_151'),
-          usage_key: 'ready_servers',
-          usage_label: i18n.t('dashboard.shutdown'),
-          un_usage_label: i18n.t('dashboard.not_shutdown'),
-        },
+      params: {
+        brand: '',
+        dimensionId: 'vm_id',
+        limit: 5,
+        name: i18n.t('dashboard.disk_use_rate_top5'),
+        order: 'TOP',
+        resType: 'server',
+        time: 18000,
+        usage: 'used_percent,vm_disk',
       },
-      {
-        layout: {
-          component: 'Ring',
-          h: 6,
-          w: 20,
-          x: 20,
-          y: 18,
-        },
-        params: {
-          all_usage_key: 'disks.count',
-          name: i18n.t('dashboard.text_147'),
-          usage_key: 'disks.mounted.count',
-          usage_label: i18n.t('dashboard.mounted'),
-          un_usage_label: i18n.t('dashboard.not_mounted'),
-          color: 'reverse',
-        },
+    }, {
+      layout: {
+        component: 'Log',
+        h: 8,
+        w: 20,
+        x: 60,
+        y: 17,
       },
-      {
-        layout: {
-          component: 'Ring',
-          h: 6,
-          w: 20,
-          x: 40,
-          y: 18,
-        },
-        params: {
-          all_usage_key: 'eip.floating_ip',
-          name: i18n.t('dashboard.text_156'),
-          usage_key: 'eip.floating_ip.used',
-          color: 'reverse',
-        },
+      params: {
+        limit: 4,
+        name: i18n.t('dashboard.text_17'),
       },
-      {
-        layout: {
-          component: 'Top5',
-          h: 8,
-          w: 20,
-          x: 0,
-          y: 24,
-        },
-        params: {
-          limit: 5,
-          name: i18n.t('dashboard.text_126'),
-          order: 'TOP',
-          resType: 'server',
-          time: 108000,
-          usage: 'usage_active,vm_cpu',
-        },
+    }, {
+      layout: {
+        component: 'ProjectQuota',
+        h: 6,
+        w: 20,
+        x: 0,
+        y: 25,
       },
-      {
-        layout: {
-          component: 'Top5',
-          h: 8,
-          w: 20,
-          x: 20,
-          y: 24,
-        },
-        params: {
-          limit: 5,
-          name: i18n.t('dashboard.text_133'),
-          order: 'TOP',
-          resType: 'server',
-          time: 108000,
-          usage: 'read_bps,vm_diskio',
-        },
+      params: {
+        all_usage_key: 'cpu',
+        name: i18n.t('dashboard.cpu_quota'),
+        type: 'project-quota-common',
+        usage_key: 'usage.cpu',
       },
-      {
-        layout: {
-          component: 'Top5',
-          h: 8,
-          w: 20,
-          x: 40,
-          y: 24,
-        },
-        params: {
-          limit: 5,
-          name: i18n.t('dashboard.text_125'),
-          order: 'TOP',
-          resType: 'server',
-          time: 108000,
-          usage: 'write_bps,vm_diskio',
-        },
+    }, {
+      layout: {
+        component: 'ProjectQuota',
+        h: 6,
+        w: 20,
+        x: 20,
+        y: 25,
       },
-      {
-        layout: {
-          component: 'Log',
-          h: 8,
-          w: 20,
-          x: 60,
-          y: 24,
-        },
-        params: {
-          limit: 4,
-          name: i18n.t('dashboard.text_131'),
-        },
+      params: {
+        all_usage_key: 'memory',
+        name: i18n.t('dashboard.memory_quota'),
+        type: 'project-quota-common',
+        usage_key: 'usage.memory',
       },
-      {
-        layout: {
-          component: 'ProjectQuota',
-          h: 6,
-          w: 20,
-          x: 0,
-          y: 32,
-        },
-        params: {
-          all_usage_key: 'cpu',
-          name: i18n.t('dashboard.cpu_quota'),
-          type: 'project-quota-common',
-          usage_key: 'usage.cpu',
-        },
+    }, {
+      layout: {
+        component: 'ProjectQuota',
+        h: 6,
+        w: 20,
+        x: 40,
+        y: 25,
       },
-      {
-        layout: {
-          component: 'ProjectQuota',
-          h: 6,
-          w: 20,
-          x: 20,
-          y: 32,
-        },
-        params: {
-          all_usage_key: 'memory',
-          name: i18n.t('dashboard.memory_quota'),
-          type: 'project-quota-common',
-          usage_key: 'usage.memory',
-        },
+      params: {
+        all_usage_key: 'storage',
+        name: i18n.t('dashboard.storage_quota'),
+        type: 'project-quota-common',
+        usage_key: 'usage.storage',
       },
-      {
-        layout: {
-          component: 'ProjectQuota',
-          h: 6,
-          w: 20,
-          x: 40,
-          y: 32,
-        },
-        params: {
-          all_usage_key: 'storage',
-          name: i18n.t('dashboard.storage_quota'),
-          type: 'project-quota-common',
-          usage_key: 'usage.storage',
-        },
+    }, {
+      layout: {
+        component: 'ProjectQuota',
+        h: 6,
+        w: 20,
+        x: 60,
+        y: 25,
       },
-      {
-        layout: {
-          component: 'ProjectQuota',
-          h: 6,
-          w: 20,
-          x: 60,
-          y: 32,
-        },
-        params: {
-          all_usage_key: 'eip',
-          name: i18n.t('dashboard.eip_quota'),
-          type: 'project-quota-region',
-          usage_key: 'usage.eip',
-        },
+      params: {
+        all_usage_key: 'eip',
+        name: i18n.t('dashboard.eip_quota'),
+        type: 'project-quota-region',
+        usage_key: 'usage.eip',
       },
-      {
-        layout: {
-          component: 'ProjectQuota',
-          h: 6,
-          w: 20,
-          x: 0,
-          y: 38,
-        },
-        params: {
-          all_usage_key: 'port',
-          name: i18n.t('dashboard.port_quota'),
-          type: 'project-quota-region',
-          usage_key: 'usage.port',
-        },
+    }, {
+      layout: {
+        component: 'ProjectQuota',
+        h: 6,
+        w: 20,
+        x: 0,
+        y: 31,
       },
-      {
-        layout: {
-          component: 'ProjectQuota',
-          h: 6,
-          w: 20,
-          x: 20,
-          y: 38,
-        },
-        params: {
-          all_usage_key: 'isolated_device',
-          name: i18n.t('dashboard.gpu_quota'),
-          type: 'project-quota-common',
-          usage_key: 'usage.isolated_device',
-        },
+      params: {
+        all_usage_key: 'port',
+        name: i18n.t('dashboard.port_quota'),
+        type: 'project-quota-region',
+        usage_key: 'usage.port',
       },
-      {
-        layout: {
-          component: 'ProjectQuota',
-          h: 6,
-          w: 20,
-          x: 40,
-          y: 38,
-        },
-        params: {
-          all_usage_key: 'image',
-          name: i18n.t('dashboard.image_quota'),
-          type: 'project-quota-image',
-          usage_key: 'usage.image',
-        },
+    }, {
+      layout: {
+        component: 'ProjectQuota',
+        h: 6,
+        w: 20,
+        x: 20,
+        y: 31,
       },
-      {
-        layout: {
-          component: 'ProjectQuota',
-          h: 6,
-          w: 20,
-          x: 60,
-          y: 38,
-        },
-        params: {
-          all_usage_key: 'snapshot',
-          name: i18n.t('dashboard.snapshot_quota'),
-          type: 'project-quota-region',
-          usage_key: 'usage.snapshot',
-        },
+      params: {
+        all_usage_key: 'isolated_device',
+        name: i18n.t('dashboard.gpu_quota'),
+        type: 'project-quota-common',
+        usage_key: 'usage.isolated_device',
       },
-    ],
+    }, {
+      layout: {
+        component: 'ProjectQuota',
+        h: 6,
+        w: 20,
+        x: 40,
+        y: 31,
+      },
+      params: {
+        all_usage_key: 'image',
+        name: i18n.t('dashboard.image_quota'),
+        type: 'project-quota-image',
+        usage_key: 'usage.image',
+      },
+    }, {
+      layout: {
+        component: 'ProjectQuota',
+        h: 6,
+        w: 20,
+        x: 60,
+        y: 31,
+      },
+      params: {
+        all_usage_key: 'snapshot',
+        name: i18n.t('dashboard.snapshot_quota'),
+        type: 'project-quota-region',
+        usage_key: 'usage.snapshot',
+      },
+    }, {
+      layout: {
+        component: 'Ring',
+        h: 5,
+        w: 20,
+        x: 40,
+        y: 12,
+      },
+      params: {
+        all_usage_key: 'ports',
+        chart_type: 'liquidfill',
+        name: i18n.t('dashboard.text_152'),
+        regionAccountType: 'region',
+        un_usage_label: i18n.t('dashboard.text_34'),
+        usage_key: 'nics',
+        usage_label: i18n.t('dashboard.text_33'),
+      },
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 20,
+        y: 6,
+      },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_baremetal',
+        name: i18n.t('dashboard.text_127'),
+        regionAccountType: 'region',
+        unit: 'auto',
+        usage_key: 'servers.memory',
+      },
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 0,
+        y: 0,
+      },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_cpu',
+        name: i18n.t('dashboard.text_130'),
+        regionAccountType: 'region',
+        usage_key: 'servers',
+      },
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 0,
+        y: 6,
+      },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_ram',
+        name: i18n.t('dashboard.server_cpu_num'),
+        regionAccountType: 'region',
+        usage_key: 'servers.cpu',
+      },
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 40,
+        y: 6,
+      },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_cpu',
+        name: i18n.t('dashboard.text_123'),
+        regionAccountType: 'region',
+        unit: 'auto',
+        usage_key: 'servers.disk',
+      },
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 40,
+        y: 0,
+      },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_baremetal',
+        name: i18n.t('dashboard.snapshot_num'),
+        regionAccountType: 'region',
+        usage_key: 'snapshot',
+      },
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 60,
+        y: 6,
+      },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_tenant',
+        name: i18n.t('dashboard.gpu_num'),
+        regionAccountType: 'region',
+        usage_key: 'servers.isolated_devices',
+      },
+    }, {
+      layout: {
+        component: 'NumberCard',
+        h: 6,
+        w: 20,
+        x: 20,
+        y: 0,
+      },
+      params: {
+        chart_type: 'icon',
+        icon: 'icon_tenant',
+        name: i18n.t('dashboard.disk_num'),
+        regionAccountType: 'region',
+        usage_key: 'disks.count',
+      },
+    }, {
+      layout: {
+        component: 'UserInfo',
+        h: 6,
+        w: 20,
+        x: 60,
+        y: 0,
+      },
+      params: {
+        name: i18n.t('dashboard.userinfo'),
+      },
+    }],
   },
 }

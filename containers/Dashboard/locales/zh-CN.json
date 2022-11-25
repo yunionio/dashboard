@@ -277,5 +277,18 @@
   "dashboard.liquidfill": "水球图",
   "dashboard.trend": "趋势图",
   "dashboard.icon": "指标图",
-  "dashboard.monitor.time": "监控范围"
+  "dashboard.monitor.time": "监控范围",
+  "dashboard.all.running_servers_rate": "虚拟机运行率",
+  "dashboard.all.no_running_servers": "未运行",
+  "dashboard.all.running_servers": "运行中",
+  "dashboard.memory_use_rate_top5": "内存使用率TOP5",
+  "dashboard.disk_use_rate_top5": "磁盘使用率TOP5",
+  "dashboard.server_gpu_num": "虚拟机GPU卡数量",
+  "dashboard.server_memory_num": "虚拟机内存容量",
+  "dashboard.server_cpu_num": "虚拟机CPU数量",
+  "dashboard.server_disk_num": "虚拟机磁盘容量",
+  "dashboard.host_total_num": "宿主机总量",
+  "dashboard.snapshot_num": "快照数量",
+  "dashboard.gpu_num": "GPU卡数量",
+  "dashboard.disk_num": "磁盘数量"
 }
