@@ -36,7 +36,8 @@ import AgentForm from '@Network/views/agent/form'
 import Layout from '@/layouts/RouterView'
 import Cloudregion from '@Cloudenv/views/cloudregion'
 import Zone from '@Cloudenv/views/zone'
-import DomainList from '@Network/views/cdn'
+import CdnList from '@Network/views/cdn'
+import CdnCreate from '@Network/views/cdn/create'
 
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
@@ -698,9 +699,14 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'DomainList',
+              name: 'CdnList',
               path: '',
-              component: DomainList,
+              component: CdnList,
+            },
+            {
+              name: 'CdnCreate',
+              path: 'create',
+              component: CdnCreate,
             },
           ],
         },

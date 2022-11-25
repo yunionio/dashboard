@@ -92,6 +92,20 @@ export default {
       },
       groupActions: [
         {
+          label: this.$t('common.create'),
+          action: () => {
+            this.$router.push({
+              path: '/cdn/create',
+            })
+          },
+          meta: () => {
+            return {
+              buttonType: 'primary',
+              validate: true,
+            }
+          },
+        },
+        {
           label: this.$t('network.text_201'),
           permission: 'cdn_domains_perform_syncstatus',
           action: () => {
