@@ -110,7 +110,7 @@ export default {
     const initialColorValue = ((this.params && this.params.type !== 'k8s') && this.params.color) || 'default'
     const initialUsageLabelValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_label && this.params.usage_label.length > 0) ? this.params.usage_label : this.$t('dashboard.text_33')
     const initialUnUsageLabelValue = ((this.params && this.params.type !== 'k8s') && this.params.un_usage_label && this.params.un_usage_label.length > 0) ? this.params.un_usage_label : this.$t('dashboard.text_34')
-    const initialChartTypeValue = ((this.params && this.params.type !== 'k8s') && this.params.chart_type) || 'ring'
+    const initialChartTypeValue = ((this.params && this.params.type !== 'k8s') && this.params.chart_type) || 'liquidfill'
     return {
       data: {},
       loading: false,
