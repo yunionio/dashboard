@@ -103,7 +103,7 @@ import { getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
 import { getMetricDocs } from '@Dashboard/constants'
 import setting from '@/config/setting'
-import { usageConfig } from './constants'
+import { usageConfig, serverUsageOptions, hostUsageOptions } from './constants'
 
 export default {
   name: 'Top5',
@@ -119,25 +119,6 @@ export default {
     edit: Boolean,
   },
   data () {
-    const serverUsageOptions = [
-      { label: this.$t('dashboard.text_61'), key: 'usage_active,vm_cpu' },
-      { label: this.$t('dashboard.text_61_agent'), key: 'usage_active,agent_cpu' },
-      { label: this.$t('monitor_metric_85'), key: 'used_percent,vm_mem' },
-      { label: this.$t('monitor_metric_85_agent'), key: 'used_percent,agent_mem' },
-      { label: this.$t('monitor.metrics_disk_used_percent'), key: 'used_percent,vm_disk' },
-      { label: this.$t('monitor.metrics_disk_used_percent_agent'), key: 'used_percent,agent_disk' },
-      { label: this.$t('dashboard.text_62'), key: 'read_bps,vm_diskio' },
-      { label: this.$t('dashboard.text_63'), key: 'write_bps,vm_diskio' },
-      { label: this.$t('dashboard.text_64'), key: 'bps_recv,vm_netio' },
-      { label: this.$t('dashboard.text_65'), key: 'bps_sent,vm_netio' },
-    ]
-    const hostUsageOptions = [
-      { label: this.$t('dashboard.text_61'), key: 'usage_active,cpu' },
-      { label: this.$t('dashboard.text_46'), key: 'used_percent,mem' },
-      { label: this.$t('dashboard.text_64'), key: 'bps_recv,net' },
-      { label: this.$t('dashboard.text_65'), key: 'bps_sent,net' },
-    ]
-    const initialNameValue = (this.params && this.params.name) || 'TOP5'
     const initialBrandValue = (this.params && this.params.brand && R.split(',', this.params.brand)) || []
     const initialResTypeValue = (this.params && this.params.resType) || 'server'
     const initialDimensionId = (this.params && this.params.dimensionId) || (initialResTypeValue === 'server' ? 'vm_id' : 'host_id')
@@ -150,6 +131,7 @@ export default {
         initialUsage = hostUsageOptions[0].key
       }
     }
+    const initialNameValue = (this.params && this.params.name) || `${serverUsageOptions[0].label}TOP5`
     const initialOrderValue = (this.params && this.params.order) || 'TOP'
     const initialLimit = (this.params && this.params.limit) || 5
     const initialTime = (this.params && this.params.time) || 24 * 60
@@ -351,6 +333,7 @@ export default {
       this.$nextTick(() => {
         this.fetchData()
       })
+      // this.changeName(val)
     },
     'form.fd.resType' (val) {
       if (this.dimentions.filter(item => item.id === this.form.fd.dimensionId).length === 0) {
@@ -358,6 +341,14 @@ export default {
           dimensionId: this.dimentions[0].id,
         })
       }
+      this.changeName(val, this.form.fd.usage)
+    },
+    'form.fd.usage': {
+      handler (val) {
+        this.changeName(this.form.fd.resType, val)
+      },
+      deep: true,
+      immediate: true,
     },
   },
   created () {
@@ -718,6 +709,18 @@ export default {
     },
     goPage () {
       this.$router.push('./monitoroverview')
+    },
+    changeName (resType, usage) {
+      let usage_label = ''
+      if (resType === 'server') {
+        usage_label = serverUsageOptions.find(item => item.key === usage)?.label
+      }
+      if (resType === 'host') {
+        usage_label = hostUsageOptions.find(item => item.key === usage)?.label
+      }
+      this.form.fc.setFieldsValue({
+        name: `${usage_label}TOP5`,
+      })
     },
   },
 }
