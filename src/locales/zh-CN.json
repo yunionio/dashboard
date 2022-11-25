@@ -1175,6 +1175,10 @@
     },
     "wtps": {
       "running": "运行中"
+    },
+    "unifiedIds": {
+      "avalable": "正常",
+      "unsign": "异常"
     }
   },
   "skuCategoryOptions": {
