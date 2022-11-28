@@ -5427,5 +5427,6 @@
       "whole3": "3. 温州移动政务云售后热线：13606870000",
       "commit_success": "申请自跑工单流程已提交"
     }
-  }
+  },
+  "cloudenv.zstack.auth_url_extra": "http|https://192.168.1.1:8080(注意增加端口,zstack默认API端口是8080)"
 }
