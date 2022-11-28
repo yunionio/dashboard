@@ -1,0 +1,30 @@
+{
+  "allowJs": true,
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true, 
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["./src/*"],
+      "@/*": ["./src/*"],
+      "~~/*": ["./*"],
+      "@@/*": ["./*"],
+      "@scope/*": ["./scope/*"],
+      "@Cloudenv/*": ["./containers/Cloudenv/*"],
+      "@Compute/*": ["./containers/Compute/*"],
+      "@Dashboard/*": ["./containers/Dashboard/*"],
+      "@DB/*": ["./containers/DB/*"],
+      "@Helm/*": ["./containers/Helm/*"],
+      "@IAM/*": ["./containers/IAM/*"],
+      "@K8S/*": ["./containers/K8S/*"],
+      "@Middleware/*": ["./containers/Middleware/*"],
+      "@Monitor/*": ["./containers/Monitor/*"],
+      "@Network/*": ["./containers/Network/*"],
+      "@Storage/*": ["./containers/Storage/*"]
+    }
+  },
+  "include": [
+    "./src/**/*",
+    "./containers/**/*"
+  ],
+  "exclude": ["node_modules", "dist"]
+}
