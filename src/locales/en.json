@@ -5404,5 +5404,6 @@
       "whole3": "3. Wenzhou Mobile Government Cloud After-sales Hotline: 13606870000",
       "commit_success": "The process of applying for a internal resource work order has been submitted"
     }
-  }
+  },
+  "cloudenv.zstack.auth_url_extra": "http|https://192.168.1.1:8080(Note the addition of port, zstack default API port is 8080)"
 }

@@ -10,8 +10,14 @@
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_253')">
         <a-input v-decorator="decorators.auth_url" />
-        <span slot="extra">
-          {{isOpenstack ? $t('common_569') : $t('common_570')}}
+        <span slot="extra" v-if="isOpenstack">
+          {{$t('common_569')}}
+        </span>
+        <span slot="extra" v-else-if="isZStack">
+          {{$t('cloudenv.zstack.auth_url_extra')}}
+        </span>
+        <span slot="extra" v-else>
+          {{$t('common_570')}}
         </span>
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
@@ -75,6 +81,9 @@ export default {
         return this.$t('cloudenv.text_256')
       }
       return this.$t('cloudenv.text_257')
+    },
+    isZStack () {
+      return this.provider.toLowerCase() === 'zstack'
     },
   },
   deactivated () {
