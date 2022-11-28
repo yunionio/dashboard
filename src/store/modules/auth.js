@@ -276,7 +276,9 @@ export default {
           }
         }
         if (matchedUser) {
-          _data.username = `${matchedUser.tenant}/${_data.username}`
+          if (matchedUser.tenant) {
+            _data.username = `${matchedUser.tenant}/${_data.username}`
+          }
           if (matchedUser.tenant) {
             await commit('SET_TENANT', matchedUser.tenant)
           }
