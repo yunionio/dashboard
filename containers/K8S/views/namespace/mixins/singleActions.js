@@ -31,8 +31,7 @@ export default {
         action: async obj => {
           const manager = new this.$Manager('namespaces', 'v1')
           async function fetchData () {
-            const { cluster, namespace } = obj
-            const { data } = await manager.getSpecific({ id: obj.id, spec: 'rawdata', params: { cluster, namespace } })
+            const { data } = await manager.getSpecific({ id: obj.id, spec: 'rawdata' })
             return data
           }
           const configText = await fetchData()
