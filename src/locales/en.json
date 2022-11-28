@@ -5263,5 +5263,6 @@
   "common.choose.host": "Please choose a host",
   "common.choose.server": "Please select a virtual machine",
   "common.choose.server.label": "Specify a virtual machine",
-  "common.manage.ak_sk": "Manage Access Keys"
+  "common.manage.ak_sk": "Manage Access Keys",
+  "cloudenv.zstack.auth_url_extra": "http|https://192.168.1.1:8080(Note the addition of port, zstack default API port is 8080)"
 }
