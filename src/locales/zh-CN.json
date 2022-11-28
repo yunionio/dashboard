@@ -5286,5 +5286,6 @@
   "common.choose.host": "请选择宿主机",
   "common.choose.server": "请选择虚拟机",
   "common.choose.server.label": "指定虚拟机",
-  "common.manage.ak_sk": "管理访问密钥"
+  "common.manage.ak_sk": "管理访问密钥",
+  "cloudenv.zstack.auth_url_extra": "http|https://192.168.1.1:8080(注意增加端口,zstack默认API端口是8080)"
 }
