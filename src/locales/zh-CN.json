@@ -5067,5 +5067,6 @@
   "common.mfa.qr_code_andriod_2": "下载应用宝商店，打开搜索OneLogin Protect",
   "common.mfa.qr_code_andriod_3": "离线包下载地址",
   "common.mfa.qr_code_chrome_1": "添加谷歌浏览器扩展插件，去",
-  "common.mfa.qr_code_chrome_2": "添加"
+  "common.mfa.qr_code_chrome_2": "添加",
+  "cloudenv.zstack.auth_url_extra": "http|https://192.168.1.1:8080(注意增加端口,zstack默认API端口是8080)"
 }
