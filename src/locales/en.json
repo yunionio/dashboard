@@ -5051,5 +5051,6 @@
   "common.mfa.qr_code_andriod_2": "download app store, open and search onelogin protect",
   "common.mfa.qr_code_andriod_3": "offline package download address",
   "common.mfa.qr_code_chrome_1": "add Google browser extension, go to",
-  "common.mfa.qr_code_chrome_2": "add"
+  "common.mfa.qr_code_chrome_2": "add",
+  "cloudenv.zstack.auth_url_extra": "http|https://192.168.1.1:8080(Note the addition of port, zstack default API port is 8080)"
 }
