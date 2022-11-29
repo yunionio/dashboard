@@ -82,7 +82,7 @@ export default {
         {
           title: this.$t('compute.text_629'),
           items: [
-            getOsArch(),
+            getOsArch({ field: 'properties.os_arch' }),
             {
               field: 'disk_format',
               title: this.$t('compute.text_630'),
