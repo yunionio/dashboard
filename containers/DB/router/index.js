@@ -90,7 +90,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.redis')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'apsara'])
+              return !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'apsara', 'hcs'])
             },
           },
           component: Layout,

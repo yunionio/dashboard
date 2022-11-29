@@ -136,7 +136,7 @@ export default {
             t: 'dictionary.vpc_peer_connect',
             hidden: () => {
               if (store.getters.isProjectMode || isScopedPolicyMenuHidden('sub_hidden_menus.vpc_peerconnect')) return true
-              return !hasSetupKey(['qcloud', 'huawei', 'aws'])
+              return !hasSetupKey(['qcloud', 'huawei', 'aws', 'hcs'])
             },
           },
           component: Layout,
@@ -209,7 +209,7 @@ export default {
             permission: 'route_tables_list',
             hidden: () => {
               if (store.getters.isProjectMode) return true
-              return !hasSetupKey(['aliyun', 'qcloud', 'huawei', 'aws'])
+              return !hasSetupKey(['aliyun', 'qcloud', 'huawei', 'aws', 'hcs'])
             },
           },
           component: Layout,
