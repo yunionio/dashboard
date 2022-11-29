@@ -101,7 +101,7 @@ export const RollbackDiskValidate = {
     return ret
   },
   hcs (obj) {
-    const ret = RollbackDiskValidate.base(obj)
+    const ret = { validate: true }
     if (obj.disk_type === 'data') {
       if (obj.guest) {
         ret.validate = false
