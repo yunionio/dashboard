@@ -805,6 +805,9 @@ export const getOsArch = ({
     title,
     formatter: ({ row }) => {
       let arch = _.get(row, field)
+      if (!arch && field !== 'os_arch') {
+        arch = _.get(row, 'os_arch')
+      }
       if (arch === HOST_CPU_ARCHS.arm.capabilityKey) arch = HOST_CPU_ARCHS.arm.key
       if (arch === HOST_CPU_ARCHS.x86.capabilityKey) arch = HOST_CPU_ARCHS.x86.key
       if (arch) {
