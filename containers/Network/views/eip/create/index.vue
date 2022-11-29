@@ -336,6 +336,9 @@ export default {
         scope: this.scope,
         cloudregion_id: this.selectedRegionItem.id,
       }
+      if (this.selectedRegionItem.provider === 'HCS') {
+        params['@external_access_mode'] = 'eip'
+      }
       if (this.isAdminMode) {
         params.project_domain = this.domain_id
         delete params.scope
@@ -393,7 +396,7 @@ export default {
     },
     showIpSubnet () {
       if (this.selectedRegionItem.provider === HYPERVISORS_MAP.hcso.provider) return false
-      if (this.selectedRegionItem.provider === HYPERVISORS_MAP.hcs.provider) return false
+      if (this.selectedRegionItem.provider === HYPERVISORS_MAP.hcs.provider) return true
       if (this.providerC === 'zstack' || this.providerC === 'openstack') return true
       if (this.cloudEnv === 'onpremise' && this.selectedRegionItem && this.selectedRegionItem.id) return true
       if (this.cloudEnv === 'private' && this.selectedRegionItem && this.selectedRegionItem.id) return true
