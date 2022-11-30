@@ -34,7 +34,7 @@
             <a-select-option v-for="item in serviceTypeOpts" :key="item.key">{{ item.label }}</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item :label="$t('network.cdn.origin_type')">
+        <a-form-item :label="$t('network.cdn.origin_types')">
           <a-radio-group v-decorator="decorators.origin_type">
             <a-radio-button v-for="item in originTypeOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
           </a-radio-group>
