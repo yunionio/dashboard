@@ -1,7 +1,7 @@
 {
   "network.cdn.domain": "Specified domain",
   "network.cdn.cloudprovider": "Specify Cloud Subscription",
-  "network.cdn.origin_type": "Origin Protocol",
+  "network.cdn.origin_types": "Origin Protocol",
   "network.cdn.origin": "Origin",
   "network.cdn.area_require_message": "Please select an acceleration area",
   "network.cdn.origin_require_message": "Please enter the origin site address",
