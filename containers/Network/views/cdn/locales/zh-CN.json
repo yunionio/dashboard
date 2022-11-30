@@ -1,7 +1,7 @@
 {
   "network.cdn.domain": "指定域",
   "network.cdn.cloudprovider": "指定云订阅",
-  "network.cdn.origin_type": "源站协议",
+  "network.cdn.origin_types": "源站协议",
   "network.cdn.origin": "源站",
   "network.cdn.area_require_message": "请选择加速区域",
   "network.cdn.origin_require_message": "请输入源站地址",
