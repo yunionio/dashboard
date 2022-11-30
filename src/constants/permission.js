@@ -178,6 +178,7 @@ export const PERMISSION = {
   vpc_peering_connections_delete: ['compute', 'vpc_peering_connections', 'delete'],
   vpc_peering_connections_perform_syncstatus: ['compute', 'vpc_peering_connections', 'perform', 'syncstatus'],
   vpc_peering_connections_perform_set_user_metadata: ['compute', 'vpc_peering_connections', 'perform', 'set-user-metadata'],
+  vpc_peering_connections_create: ['compute', 'vpc_peering_connections', 'create'],
   // 服务器
   hosts_list: ['compute', 'hosts', 'list'],
   hosts_create: ['compute', 'hosts', 'create'],

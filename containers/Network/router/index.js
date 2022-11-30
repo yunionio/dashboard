@@ -38,6 +38,7 @@ import Cloudregion from '@Cloudenv/views/cloudregion'
 import Zone from '@Cloudenv/views/zone'
 import CdnList from '@Network/views/cdn'
 import CdnCreate from '@Network/views/cdn/create'
+import VpcPeerConnectCreate from '@Network/views/vpc-peer-connect/create'
 
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
@@ -145,6 +146,11 @@ export default {
               name: 'VpcPeerConnect',
               path: '',
               component: VpcPeerConnect,
+            },
+            {
+              name: 'VpcPeerConnectCreate',
+              path: 'create',
+              component: VpcPeerConnectCreate,
             },
           ],
         },

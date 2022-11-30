@@ -28,3 +28,8 @@ export const TYPES = [
 ]
 
 export const TYPES_MAP = arrayToObj(TYPES, 'key')
+
+export const VPC_PEER_BRANDS = [
+  { key: 'Huawei', label: i18n.t('scopeCloudPrvidersMap.Huawei') },
+  { key: 'HCS', label: i18n.t('cloudPrvidersMap.HCS') },
+]
