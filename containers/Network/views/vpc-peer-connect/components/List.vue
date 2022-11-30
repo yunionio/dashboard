@@ -68,6 +68,21 @@ export default {
       },
       groupActions: [
         {
+          label: this.$t('common.create'),
+          permission: 'vpc_peering_connections_create',
+          action: () => {
+            this.$router.push({
+              name: 'VpcPeerConnectCreate',
+            })
+          },
+          meta: () => {
+            return {
+              buttonType: 'primary',
+              validate: true,
+            }
+          },
+        },
+        {
           label: this.$t('table.action.set_tag'),
           permission: 'vpc_peering_connections_perform_set_user_metadata',
           action: () => {
