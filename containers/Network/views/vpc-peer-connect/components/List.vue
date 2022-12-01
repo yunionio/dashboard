@@ -16,7 +16,7 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import {
   getStatusFilter,
-  getInBrandFilter,
+  getBrandFilter,
   getDomainFilter,
   getAccountFilter,
   getCloudProviderFilter,
@@ -54,7 +54,7 @@ export default {
           },
           description: getDescriptionFilter(),
           status: getStatusFilter('vpcPeerConnect'),
-          brand: getInBrandFilter('brands', ['Aliyun', 'Qcloud']),
+          brand: getBrandFilter('vpc_peer_brands'),
           project_domains: getDomainFilter(),
           cloudaccount: getAccountFilter(),
           manager: getCloudProviderFilter(),
