@@ -338,6 +338,7 @@ export default {
       }
       if (this.selectedRegionItem.provider === 'HCS') {
         params['@external_access_mode'] = 'eip'
+        params.show_emulated = true
       }
       if (this.isAdminMode) {
         params.project_domain = this.domain_id
