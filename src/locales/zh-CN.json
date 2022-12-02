@@ -1818,7 +1818,8 @@
     "Apsara": "飞天",
     "Nutanix": "Nutanix",
     "BingoCloud": "BingoCloud",
-    "RemoteFile": "外部数据"
+    "RemoteFile": "外部数据",
+    "Proxmox": "Proxmox"
   },
   "shareScope": {
     "system": "系统",
@@ -5194,6 +5195,7 @@
   "license.provider.bingocloud": "@:cloudPrvidersMap.BingoCloud",
   "license.provider.incloudsphere": "@:cloudPrvidersMap.IncloudSphere",
   "license.provider.remotefile": "@:cloudPrvidersMap.RemoteFile",
+  "license.provider.proxmox": "@:cloudPrvidersMap.Proxmox",
   "license.provider.s3": "S3",
   "license.provider.ceph": "Ceph",
   "license.provider.xsky": "XSKY",
