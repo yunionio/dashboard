@@ -27,6 +27,7 @@ const nutanixLogo = require('../../../../src/assets/images/providers/nutanix.svg
 const bingocloudLogo = require('../../../../src/assets/images/providers/bingocloud.svg')
 const incloudsphereLogo = require('../../../../src/assets/images/providers/incloudsphere.svg')
 const remotefileLogo = require('../../../../src/assets/images/providers/remotefile.svg')
+const proxmoxLogo = require('../../../../src/assets/images/providers/proxmox.svg')
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
@@ -177,6 +178,12 @@ export const CLOUDACCOUNT_TYPES = {
       component: 'RemoteFileCreate',
       provider: providerMap.remotefile.key,
     },
+    proxmox: {
+      name: providerMap.proxmox.label,
+      logo: proxmoxLogo,
+      component: 'ProxmoxCreate',
+      provider: providerMap.proxmox.key,
+    },
   },
   storage: {
     s3: {
@@ -234,6 +241,7 @@ export function getCloudaccountDocs (scope) {
     nutanix: i18n.t('cloudenv.create_nutanix', [docs_path]),
     bingocloud: i18n.t('cloudenv.create_bingocloud', [docs_path]),
     incloudsphere: i18n.t('cloudenv.create_incloudsphere', [docs_path]),
+    proxmox: i18n.t('cloudenv.create_proxmox', [docs_path]),
   }
   // if (isCE()) {
   //   Object.keys(docs).forEach(v => {
@@ -586,6 +594,19 @@ export const keySecretFields = {
     label: {
       k: i18n.t('scope.encrypt_key.title.name'),
       s: i18n.t('scope.encrypt_value.title.name'),
+    },
+  },
+  proxmox: {
+    k: 'username',
+    s: 'password',
+    text: 'Proxmox',
+    placeholder: {
+      k: i18n.t('cloudenv.text_151'),
+      s: i18n.t('cloudenv.text_150'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_94'),
+      s: i18n.t('cloudenv.text_147'),
     },
   },
 }

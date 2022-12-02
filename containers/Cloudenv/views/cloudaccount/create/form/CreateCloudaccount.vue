@@ -9,6 +9,7 @@ import Azure from './components/Azure'
 import Qcloud from './components/Qcloud'
 import Ucloud from './components/Ucloud'
 import VMware from './components/VMware'
+import Proxmox from './components/Proxmox'
 import OpenstackZstack from './components/OpenstackZstack'
 import S3CephXsky from './components/S3CephXsky'
 import Google from './components/Google'
@@ -49,6 +50,7 @@ export default {
     BingoCloudCreate: BingoCloud,
     InCloudSphereCreate: InCloudSphere,
     RemoteFileCreate: RemoteFile,
+    ProxmoxCreate: Proxmox,
   },
   props: {
     currentItem: {
