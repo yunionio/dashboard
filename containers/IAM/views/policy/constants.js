@@ -59,6 +59,9 @@ export const SERVICES_MAP = {
   suggestion: {
     i18n: 'service.suggestion',
   },
+  report: {
+    i18n: 'service.report',
+  },
   ...extraServices,
 }
 // 定义资源的映射
@@ -716,6 +719,12 @@ export const RESOURCES_MAP = {
   },
   shield_bills: {
     i18n: 'dictionary.shield_bills',
+  },
+  report_elements: {
+    i18n: 'dictionary.report_elements',
+  },
+  report_settings: {
+    i18n: 'dictionary.report_settings',
   },
   ...extraResources,
 }
