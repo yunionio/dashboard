@@ -2706,7 +2706,9 @@
     "tap_service": "流量镜像",
     "tap_flow": "镜像源",
     "tablestore": "表格存储",
-    "shield_bills": "账单配置"
+    "shield_bills": "账单配置",
+    "report_settings": "报表模板",
+    "report_elements": "报表字段"
   },
   "res": {
     "role": "@:dictionary.role",
@@ -3047,7 +3049,8 @@
     "monitor": "监控告警",
     "yunionconf": "配置",
     "cloudevent": "云上日志",
-    "suggestion": "优化建议"
+    "suggestion": "优化建议",
+    "report": "报表"
   },
   "scope.text_1": "实例列表",
   "scope.text_2": "用户信息",
