@@ -1335,6 +1335,17 @@ export const PERMISSION = {
   shieldbills_create: ['meter', 'shield_bills', 'create'],
   shieldbills_delete: ['meter', 'shield_bills', 'delete'],
 
+  // 报表
+  report_settings_list: ['report', 'report_settings', 'list'],
+  report_settings_create: ['report', 'report_settings', 'create'],
+  report_settings_delete: ['report', 'report_settings', 'delete'],
+  report_settings_perform_add_elements: ['report', 'report_settings', 'perform', 'add-elements'],
+  report_settings_perform_generate_report: ['report', 'report_settings', 'perform', 'generate_report'],
+
+  report_elements_list: ['report', 'report_elements', 'list'],
+  report_elements_create: ['report', 'report_elements', 'create'],
+  report_elements_delete: ['report', 'report_elements', 'delete'],
+
   ...extraPermissions,
 }
 

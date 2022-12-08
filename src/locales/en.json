@@ -2724,7 +2724,9 @@
     "scopedpolicies": "Scoped policies",
     "samluser": "SAML user",
     "samlusers": "SAML users",
-    "shield_bills": "Billing Config"
+    "shield_bills": "Billing Config",
+    "report_settings": "Report Template",
+    "report_elements": "Report Fields"
   },
   "table": {
     "title": {
@@ -3024,7 +3026,8 @@
     "monitor": "Monitor",
     "yunionconf": "Configuration",
     "cloudevent": "Cloud Log",
-    "suggestion": "Recommendation"
+    "suggestion": "Recommendation",
+    "report": "Report"
   },
   "scope.text_1": "Instance List",
   "scope.text_2": "User Profile",
