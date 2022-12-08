@@ -82,7 +82,7 @@ export const RESOURCES_MAP = {
       { action: 'perform', label: i18n.t('cloudenv.text_517'), value: 'rebuild-root' },
       { action: 'perform', label: i18n.t('cloudenv.text_518'), value: 'change-config' },
       { action: 'perform', label: i18n.t('cloudenv.text_519'), value: 'change-owner' },
-      { action: 'perform', label: i18n.t('cloudenv.text_520'), value: 'create-snapshot' },
+      // { action: 'perform', label: i18n.t('cloudenv.text_520'), value: 'create-snapshot' },
       { action: 'perform', label: i18n.t('compute.create_snapshot_backup'), value: 'instance-backup' },
       { action: 'create', label: i18n.t('cloudenv.text_521'), value: '*' }, // 创建相同配置 同 create
       { action: 'perform', label: i18n.t('compute.set_usb_gpu'), value: 'set-isolated-device' },
@@ -102,14 +102,18 @@ export const RESOURCES_MAP = {
       { action: 'perform', label: i18n.t('cloudenv.text_535'), value: 'add-secgroup' },
       { action: 'perform', label: i18n.t('cloudenv.text_536'), value: 'create-eip' },
       { action: 'perform', label: i18n.t('cloudenv.text_537'), value: 'dissociate-eip' },
-      { action: 'perform', label: i18n.t('cloudenv.text_538'), value: 'public-ip-to-eip' },
+      { action: 'perform', label: i18n.t('cloudenv.text_538'), value: 'publicip-to-eip' },
       { action: 'perform', label: i18n.t('cloudenv.text_539'), value: 'modify-src-check' },
       { action: 'perform', label: i18n.t('cloudenv.text_540'), value: 'create-backup' },
       { action: 'perform', label: i18n.t('cloudenv.text_541'), value: 'delete-backup' },
       { action: 'perform', label: i18n.t('cloudenv.text_542'), value: 'migrate' },
+      { action: 'perform', label: i18n.t('compute.change_boot_index'), value: 'set-boot-index' },
       { action: 'perform', label: i18n.t('common_105'), value: 'set-user-metadata' },
       { action: 'perform', label: i18n.t('compute.text_674'), value: '*' },
     ],
+  },
+  images: {
+    i18n: 'dictionary.image',
   },
   disks: {
     i18n: 'system.text_352',
@@ -206,9 +210,6 @@ export const RESOURCES_MAP = {
   },
   schedpolicies: {
     i18n: 'system.text_373',
-  },
-  images: {
-    i18n: 'dictionary.image',
   },
   pods: {
     i18n: 'system.text_374',
