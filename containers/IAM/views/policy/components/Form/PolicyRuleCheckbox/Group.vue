@@ -36,6 +36,7 @@
 // import * as R from 'ramda'
 import yaml from 'js-yaml'
 import { SCOPES_MAP } from '@/constants'
+import { POLICY_RES_NAME_KEY_MAP } from '@/constants/policy'
 import Item from './Item'
 
 export default {
@@ -147,6 +148,9 @@ export default {
         if (resource.isDomainRes || resource.isSystemRes) show = false
       } else if (this.scope === SCOPES_MAP.domain.key) {
         if (resource.isSystemRes) show = false
+      }
+      if (Object.values(POLICY_RES_NAME_KEY_MAP).find(item => item.resource === resource.resource)) {
+        show = false
       }
       return show
     },
