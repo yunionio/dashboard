@@ -22,6 +22,7 @@ const ecloudLogo = require('../../../../src/assets/images/providers/ecloud.svg')
 const jdcloudLogo = require('../../../../src/assets/images/providers/jdcloud.svg')
 const cloudpodsLogo = require('../../../../src/assets/images/providers/cloudpods.svg')
 const hcsoLogo = require('../../../../src/assets/images/providers/hcso.svg')
+const hcsopLogo = require('../../../../src/assets/images/providers/hcsop.svg')
 const hcsLogo = require('../../../../src/assets/images/providers/hcs.svg')
 const nutanixLogo = require('../../../../src/assets/images/providers/nutanix.svg')
 const bingocloudLogo = require('../../../../src/assets/images/providers/bingocloud.svg')
@@ -140,6 +141,12 @@ export const CLOUDACCOUNT_TYPES = {
       component: 'HCSOCreate',
       provider: providerMap.hcso.key,
     },
+    hcsop: {
+      name: providerMap.hcsop.label,
+      logo: hcsopLogo,
+      component: 'HCSOPCreate',
+      provider: providerMap.hcsop.key,
+    },
     hcs: {
       name: providerMap.hcs.label,
       logo: hcsLogo,
@@ -237,6 +244,7 @@ export function getCloudaccountDocs (scope) {
     jdcloud: i18n.t('cloudenv.create_jdcloud', [docs_path]),
     cloudpods: i18n.t('cloudenv.create_cloudpods', [docs_path]),
     hcso: i18n.t('cloudenv.create_hcso', [docs_path]),
+    hcsop: i18n.t('cloudenv.create_hcsop', [docs_path]),
     hcs: i18n.t('cloudenv.create_hcs', [docs_path]),
     nutanix: i18n.t('cloudenv.create_nutanix', [docs_path]),
     bingocloud: i18n.t('cloudenv.create_bingocloud', [docs_path]),
@@ -505,6 +513,19 @@ export const keySecretFields = {
       s: i18n.t('cloudenv.text_147'),
     },
   },
+  hcsop: {
+    k: 'username',
+    s: 'password',
+    text: i18n.t('cloudPrvidersMap.HCSOP'),
+    placeholder: {
+      k: i18n.t('cloudenv.text_151'),
+      s: i18n.t('cloudenv.text_150'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_94'),
+      s: i18n.t('cloudenv.text_147'),
+    },
+  },
   hcs: {
     k: 'access_key_id',
     s: 'access_key_secret',
@@ -644,6 +665,7 @@ export const notSupportSelectRegion = [
   providerMap.apsara.key,
   providerMap.cloudpods.key,
   providerMap.hcso.key,
+  providerMap.hcsop.key,
   providerMap.hcs.key,
   providerMap.incloudsphere.key,
   providerMap.remotefile.key,
