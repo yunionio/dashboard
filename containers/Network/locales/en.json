@@ -1075,5 +1075,7 @@
   "network.lb_monitor_bout": "Load balancing outflow",
   "network.eip_bind_server_tip": "Classic network virtual machine does not support to be bound with EIP",
   "network.request.vpc": "Requester VPC",
-  "network.receive.vpc": "Receive VPC"
+  "network.receive.vpc": "Receive VPC",
+  "network.rt": "Response Time",
+  "network.unreachable_rate": "Unreachable Rate"
 }
