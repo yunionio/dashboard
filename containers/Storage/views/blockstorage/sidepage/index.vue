@@ -44,6 +44,7 @@ import CachedImages from '@Storage/views/blockstorage/sidepage/CachedImages'
 import { getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
+import Monitor from './Monitor'
 import Actions from '@/components/PageList/Actions'
 import { STORAGE_TYPES } from '@Storage/constants/index.js'
 
@@ -55,6 +56,7 @@ export default {
     DiskList,
     DiskRecoveryList,
     HostList,
+    Monitor,
     CachedImages,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -66,6 +68,7 @@ export default {
         { label: this.$t('storage.text_82'), key: 'disk-list' },
         { label: this.$t('storage.text_83'), key: 'disk-recovery-list' },
         { label: this.$t('storage.text_84'), key: 'cached-images' },
+        { label: this.$t('compute.text_608'), key: 'monitor' },
         { label: this.$t('storage.text_85'), key: 'event-drawer' },
       ],
     }
