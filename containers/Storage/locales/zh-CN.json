@@ -324,5 +324,7 @@
   "storage.nfs_host_check_reqiure": "必须输入NFS Host",
   "storage.nfs_host_check_valid": "请输入合法的NFS Host，例如： 192.168.1.1,192.168.1.2",
   "storage.spec": "规格",
-  "storage.instance_model": "实例模型"
+  "storage.instance_model": "实例模型",
+  "storage.free": "剩余容量",
+  "storage.usage_active": "存储使用率"
 }
