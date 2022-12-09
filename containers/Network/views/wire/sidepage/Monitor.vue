@@ -1,0 +1,179 @@
+<template>
+  <monitor
+    :time.sync="time"
+    :timeGroup.sync="timeGroup"
+    :monitorList="monitorList"
+    :singleActions="singleActions"
+    :loading="loading"
+    @refresh="fetchData" />
+</template>
+
+<script>
+import _ from 'lodash'
+import { WIRE_MONITOR_OPTS } from '../constants'
+import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
+import Monitor from '@/sections/Monitor'
+import WindowsMixin from '@/mixins/windows'
+import { getSignature } from '@/utils/crypto'
+
+export default {
+  name: 'WireMonitorSidepage',
+  components: {
+    Monitor,
+  },
+  mixins: [WindowsMixin],
+  props: {
+    data: { // listItemData
+      type: Object,
+      required: true,
+    },
+  },
+  data () {
+    return {
+      singleActions: [
+      ],
+      loading: false,
+      time: '168h',
+      timeGroup: '30m',
+      monitorList: [],
+    }
+  },
+  computed: {
+    monitorConstants () {
+      return WIRE_MONITOR_OPTS
+    },
+    wireId () {
+      return this.data.id
+    },
+  },
+  created () {
+    this.fetchData()
+    this.fetchDataDebounce = _.debounce(this.fetchData, 500)
+    this.baywatch(['time', 'timeGroup', 'data.id'], this.fetchDataDebounce)
+  },
+  methods: {
+    async fetchData () {
+      this.loading = true
+      const resList = []
+      for (let idx = 0; idx < this.monitorConstants.length; idx++) {
+        const val = this.monitorConstants[idx]
+        try {
+          const { data } = await new this.$Manager('unifiedmonitors', 'v1')
+            .performAction({
+              id: 'query',
+              action: '',
+              data: this.genQueryData(val),
+              params: { $t: getRequestT() },
+            })
+          resList.push({ title: val.label, constants: val, series: data.series })
+          if (idx === this.monitorConstants.length - 1) {
+            this.loading = false
+            this.getMonitorList(resList)
+          }
+        } catch (error) {
+          this.loading = false
+          throw error
+        }
+      }
+    },
+    baywatch (props, watcher) {
+      const iterator = function (prop) {
+        this.$watch(prop, watcher)
+      }
+      props.forEach(iterator, this)
+    },
+    getMonitorList (resList) {
+      const lineConfig = {
+        tooltip: {
+          confine: true,
+        },
+        grid: {
+          top: '20%',
+        },
+      }
+      this.monitorList = resList.map(result => {
+        const { unit, transfer } = result.constants
+        const isSizestrUnit = UNITS.includes(unit)
+        let series = result.series
+        if (!series) series = []
+        if (isSizestrUnit || unit === 'bps') {
+          series = series.map(serie => {
+            return autoComputeUnit(serie, unit, transfer)
+          })
+        }
+        return {
+          title: result.title,
+          series,
+          constants: result.constants,
+          lineConfig,
+        }
+      })
+    },
+    genQueryData (val) {
+      let select = []
+      if (val.as) {
+        const asItems = val.as.split(',')
+        select = val.seleteItem.split(',').map((val, i) => {
+          return [
+            {
+              type: 'field',
+              params: [val],
+            },
+            { // 对应 mean(val.seleteItem)
+              type: 'mean',
+              params: [],
+            },
+            { // 确保后端返回columns有 val.label 的别名
+              type: 'alias',
+              params: [asItems[i]],
+            },
+          ]
+        })
+      } else {
+        select = val.seleteItem.split(',').map((val, i) => {
+          return [
+            {
+              type: 'field',
+              params: [val],
+            },
+            { // 对应 mean(val.seleteItem)
+              type: 'mean',
+              params: [],
+            },
+            { // 确保后端返回columns有 val.label 的别名
+              type: 'alias',
+              params: [val],
+            },
+          ]
+        })
+      }
+      const data = {
+        metric_query: [
+          {
+            model: {
+              measurement: val.fromItem,
+              select,
+              group_by: [
+                { type: 'tag', params: ['id'] },
+              ],
+              tags: [
+                {
+                  key: 'id',
+                  value: this.wireId,
+                  operator: '=',
+                },
+              ],
+            },
+          },
+        ],
+        scope: this.$store.getters.scope,
+        from: this.time,
+        interval: this.timeGroup,
+        unit: true,
+      }
+      data.signature = getSignature(data)
+      return data
+    },
+  },
+}
+</script>

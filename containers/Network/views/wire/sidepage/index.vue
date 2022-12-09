@@ -39,6 +39,7 @@ import Dashboard from './Dashboard'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Topology from './Topology'
+import Monitor from './Monitor'
 import Actions from '@/components/PageList/Actions'
 
 export default {
@@ -49,6 +50,7 @@ export default {
     HostsList,
     Dashboard,
     Actions,
+    Monitor,
     NetworkList,
     Topology,
   },
@@ -62,6 +64,7 @@ export default {
         { label: this.$t('network.text_70'), key: 'hosts-list' },
         { label: this.$t('network.text_710'), key: 'dashboard' },
         { label: this.$t('network.topology'), key: 'topology' },
+        { label: this.$t('compute.text_608'), key: 'monitor' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
