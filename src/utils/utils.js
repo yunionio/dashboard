@@ -288,13 +288,15 @@ export const autoComputeUnit = (series, sourceUnit = 'bps', base = 1000) => { //
   let valueArr = deleteTimeValues.reduce((a, b) => a.concat(b))
   valueArr = valueArr.filter(val => val) // 过滤掉 0
   const maxValue = Math.max.apply(null, valueArr)
-  if (maxValue >= 1000 && valueArr && valueArr.length > 0) {
-    const maxValueStr = sizestr(maxValue, 'B', base)
+  if (maxValue >= base && valueArr && valueArr.length > 0) {
+    const maxValueStr = sizestr(maxValue, sourceUnit.charAt(0), base)
     unit = maxValueStr.slice(-1) // 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'
-    let scaleIndex = UNITS.findIndex(val => val === unit.charAt(0))
-    scaleIndex = scaleIndex || UNITS[UNITS.length - 1]
-    scaleIndex = scaleIndex < 0 ? 0 : scaleIndex
-    const scale = Math.pow(base, scaleIndex)
+    const originIndex = UNITS.findIndex(val => val === sourceUnit.charAt(0))
+    let targetIndex = UNITS.findIndex(val => val === unit.charAt(0))
+    targetIndex = targetIndex || UNITS[UNITS.length - 1]
+    targetIndex = targetIndex < 0 ? 0 : targetIndex
+    const scaleLen = targetIndex - originIndex
+    const scale = Math.pow(base, scaleLen)
     points = points.map(arr => {
       return arr.map((item, i) => {
         if (i === timeColumnIndex) { // time
