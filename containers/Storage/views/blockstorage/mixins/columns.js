@@ -37,8 +37,7 @@ export default {
         slots: {
           default: ({ row }, h) => {
             const capacity = sizestr(row.capacity, 'M', 1024)
-            const allowedBrands = ['VMware', 'OneCloud']
-            const actual_capacity_used = allowedBrands.includes(row.brand) ? sizestr(row.actual_capacity_used, 'M', 1024) : '-'
+            const actual_capacity_used = sizestr(row.actual_capacity_used, 'M', 1024) || '-'
             return [<div>
               <div>{this.$t('storage.text_178', [actual_capacity_used])}</div>
               <div>{this.$t('storage.text_180', [capacity])}</div>
