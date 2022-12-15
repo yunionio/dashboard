@@ -94,9 +94,9 @@ export default {
         const data = { disks: {}, cdroms: {} }
         this.boots.map((item, index) => {
           if (item.type === 'cdrom') {
-            data.cdroms[`"${item.ordinal}"`] = index
+            data.cdroms[item.ordinal + ''] = index
           } else {
-            data.disks[`"${item.index}"`] = index
+            data.disks[item.index + ''] = index
           }
         })
         await this.params.onManager('performAction', {
