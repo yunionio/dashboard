@@ -15,7 +15,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import { getNameFilter, getEnabledFilter, getStatusFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getEnabledSwitchActions } from '@/utils/common/tableActions'
+import { getEnabledSwitchActions, getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'ProjectMappingList',
@@ -83,6 +83,13 @@ export default {
                     }
                   },
                 ],
+              }),
+              getSetPublicAction(this, {
+                name: this.$t('cloudenv.text_580'),
+                scope: 'domain',
+                resource: 'project_mappings',
+              }, {
+                permission: 'project_mappings_perform_public',
               }),
               {
                 label: this.$t('cloudenv.text_108'),

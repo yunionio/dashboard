@@ -780,5 +780,7 @@
   "cloudenv.aksk.placeholder": "Please enter access key information.",
   "cloudenv.aksk.download": "Download",
   "cloudenv.aksk.download_tip": "The access key is created successfully. Please download and save it in time. After the pop-up window is closed, you will not be able to obtain the key information again, but you can re create a new key.",
-  "cloudenv.create_proxmox": "{0}#create-proxmox-account"
+  "cloudenv.create_proxmox": "{0}#create-proxmox-account",
+  "cloudenv.tag_key": "Tag key",
+  "cloudenv.add_rule_tip": "Please add a rule"
 }
