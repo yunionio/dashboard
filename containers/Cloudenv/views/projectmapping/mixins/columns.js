@@ -5,6 +5,7 @@ import {
   getStatusTableColumn,
   getEnabledTableColumn,
   getTimeTableColumn,
+  getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 import { getTagColor, getTagTitle } from '@/utils/common/tag'
@@ -56,7 +57,7 @@ export default {
                 slots: {
                   default: ({ row }) => {
                     if (!row.tags) return '-'
-                    return [<div>{row.condition === 'or' ? i18n.t('cloudenv.text_587') : i18n.t('cloudenv.text_588')}</div>, <div>{
+                    return [<div>{this.getRuleCondition(row)}</div>, <div>{
                       row.tags.map(item => {
                         const rgb = getTagColor(item.key, item.value, 'rgb')
                         const strRgb = rgb.join(',')
@@ -116,8 +117,21 @@ export default {
           },
         },
       },
+      getPublicScopeTableColumn({ vm: this }),
       getProjectDomainTableColumn({ sortable: false }),
       getTimeTableColumn(),
     ]
+  },
+  methods: {
+    getRuleCondition (data) {
+      const { condition } = data
+      if (condition === 'or') {
+        return i18n.t('cloudenv.text_587')
+      } else if (data.hasOwnProperty('project_id')) {
+        return i18n.t('cloudenv.text_588')
+      } else {
+        return i18n.t('cloudenv.match_by_resource_tag')
+      }
+    },
   },
 }
