@@ -1,5 +1,5 @@
 import { mapGetters } from 'vuex'
-import { getEnabledSwitchActions } from '@/utils/common/tableActions'
+import { getEnabledSwitchActions, getSetPublicAction } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 export default {
   computed: {
@@ -64,6 +64,13 @@ export default {
                   return ret
                 },
               ],
+            }),
+            getSetPublicAction(this, {
+              name: this.$t('cloudenv.text_580'),
+              scope: 'domain',
+              resource: 'project_mappings',
+            }, {
+              permission: 'project_mappings_perform_public',
             }),
             // 删除
             {

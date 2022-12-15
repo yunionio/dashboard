@@ -4,34 +4,14 @@
     <div slot="body">
       <dialog-selected-tips :name="$t('cloudenv.text_580')" :count="params.data.length" :action="$t('cloudenv.text_459')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <a-form
+      <a-form-model
         v-bind="formItemLayout"
-        :form="form.fc">
-        <!-- 应用账号 -->
-        <!-- <a-form-item :label="$t('cloudenv.text_589')" v-bind="formItemLayout">
-          <a-select v-decorator="decorators.accounts" dropdownClassName="oc-select-dropdown" :showSearch="true" mode="multiple" option-filter-prop="children" :placeholder="$t('cloudenv.text_284', [$t('cloudenv.text_589')])" allowClear>
-            <a-select-option v-for="item in accountOptions" :key="item.id" :value="item.id" :disabled="disabledFilter(item.project_mapping, item.id)">
-              <a-tooltip :title="disabledFilter(item.project_mapping, item.id)?$t('cloudenv.text_603'):''" placement="topLeft" arrow-point-at-center>
-                <a-row>
-                <a-col :span="16">
-                  <div>{{ item.name }}</div>
-                </a-col>
-                <a-col :span="8" align="right">
-                  <div class="text-color-secondary option-show" style="text-align: right;display:none">
-                    {{ item.brand }}
-                  </div>
-                </a-col>
-                </a-row>
-              </a-tooltip>
-            </a-select-option>
-          </a-select>
-        </a-form-item> -->
+        ref="ruleForm" :model="formData" :rules="rules">
         <!-- 应用范围 -->
         <application-scope
-          :decorators="decorators"
-          :form="form"
+          :formData="formData"
           :params="{ project_domains: projectDomainId, filter: 'project_mapping_id.isnullorempty()', brand: ['Aws', 'Azure', 'Aliyun', 'Qcloud', 'Huawei', 'Google'] }"  />
-      </a-form>
+      </a-form-model>
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -64,12 +44,6 @@ export default {
         return item.id
       })
       applicationScope = 1
-      // initAccountsOptions = this.params.data[0].accounts.map(item => {
-      //   return {
-      //     id: item.id,
-      //     name: item.name,
-      //   }
-      // })
     }
     if (this.params.data[0].managers) {
       initCloudprovidersValue = this.params.data[0].managers.map(item => {
@@ -79,42 +53,14 @@ export default {
     }
     return {
       loading: false,
-      form: {
-        fc: this.$form.createForm(this, {
-          onValuesChange: (props, values) => {
-            Object.keys(values).forEach((key) => {
-              this.form.fd[key] = values[key]
-            })
-          },
-        }),
-        fd: {
-          applicationScope: applicationScope,
-        },
+      formData: {
+        application_scope: applicationScope,
+        accounts: initAccountsValue,
+        cloudproviders: initCloudprovidersValue,
       },
-      decorators: {
-        applicationScope: [
-          'applicationScope',
-          {
-            initialValue: applicationScope,
-          },
-        ],
-        accounts: [
-          'accounts',
-          {
-            initialValue: initAccountsValue,
-            rules: [
-              { required: false, message: this.$t('cloudenv.text_284', [this.$t('cloudenv.text_589')]) },
-            ],
-          },
-        ],
-        cloudproviders: [
-          'cloudproviders',
-          {
-            initialValue: initCloudprovidersValue,
-            rules: [
-              { required: false, message: this.$t('cloudenv.text_284', [this.$t('cloudenv.project_mapping_use_cloudprovider')]) },
-            ],
-          },
+      rules: {
+        application_scope: [
+          { required: true },
         ],
       },
       // accountOptions: initAccountsOptions,
@@ -230,15 +176,16 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        const values = await this.form.fc.validateFields()
-        const { applicationScope } = this.form.fd
+        const validate = await this.$refs.ruleForm.validate()
+        if (!validate) return
+        const { application_scope } = this.formData
         const { accounts, managers } = this.params.data[0]
-        if (applicationScope === 1) {
-          await this.doBindAccounts(values)
+        if (application_scope === 1) {
           managers && await this.doUnBindAllCloudProviders(managers.map(v => v.id))
-        } else if (applicationScope === 2) {
-          await this.doBindCloudproviders(values)
+          await this.doBindAccounts(this.formData)
+        } else if (application_scope === 2) {
           accounts && await this.doUnBindAllAccounts(accounts.map(v => v.id))
+          await this.doBindCloudproviders(this.formData)
         }
         this.loading = false
         this.cancelDialog()
