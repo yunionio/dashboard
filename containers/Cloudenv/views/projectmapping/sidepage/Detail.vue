@@ -11,6 +11,7 @@ import {
 // getCopyWithContentTableColumn,
 // getPublicScopeTableColumn,
   getEnabledTableColumn,
+  getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -28,6 +29,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getPublicScopeTableColumn(),
         getEnabledTableColumn(),
         {
           title: i18n.t('cloudenv.text_582'),

@@ -721,6 +721,7 @@
   "cloudenv.text_586": "添加规则",
   "cloudenv.text_587": "匹配以下至少一个标签时：",
   "cloudenv.text_588": "全部匹配以下标签时：",
+  "cloudenv.match_by_resource_tag": "根据资源标签匹配：",
   "cloudenv.text_589": "应用账号",
   "cloudenv.text_590": "管理规则",
   "cloudenv.text_591": "按住后可以上下拖动排序！",
@@ -780,5 +781,7 @@
   "cloudenv.aksk.placeholder": "请输入访问密钥信息。",
   "cloudenv.aksk.download": "下载",
   "cloudenv.aksk.download_tip": "访问密钥创建成功，请及时下载保存，弹窗关闭后将无法再次获取该密钥信息，但您可重新创建新的密钥。",
-  "cloudenv.create_proxmox": "{0}#新建proxmox云账号"
+  "cloudenv.create_proxmox": "{0}#新建proxmox云账号",
+  "cloudenv.tag_key": "标签key",
+  "cloudenv.add_rule_tip": "请添加规则"
 }

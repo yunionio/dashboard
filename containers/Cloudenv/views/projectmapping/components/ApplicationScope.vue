@@ -1,26 +1,26 @@
 <template>
   <div>
-    <a-form-item :label="$t('cloudenv.text_503')">
-      <a-radio-group v-decorator="decorators.applicationScope">
+    <a-form-model-item :label="$t('cloudenv.text_503')">
+      <a-radio-group v-model="formData.application_scope">
         <a-radio-button v-for="v in applicationScopeOptions" :key="v.key" :value="v.key">{{ v.label }}</a-radio-button>
       </a-radio-group>
-    </a-form-item>
+    </a-form-model-item>
     <!-- 应用账号 -->
-    <a-form-item v-show="form.fd.applicationScope === 1" :label="$t('cloudenv.text_589')">
+    <a-form-model-item v-show="formData.application_scope === 1" :label="$t('cloudenv.text_589')">
       <list-select
-        v-decorator="decorators.accounts"
+        v-model="formData.accounts"
         :list-props="accountsProps"
         :multiple="true"
         :formatter="v => v.name" />
-    </a-form-item>
+    </a-form-model-item>
     <!-- 应用订阅 -->
-    <a-form-item v-show="form.fd.applicationScope === 2" :label="$t('cloudenv.project_mapping_use_cloudprovider')">
+    <a-form-model-item v-show="formData.application_scope === 2" :label="$t('cloudenv.project_mapping_use_cloudprovider')">
       <list-select
-        v-decorator="decorators.cloudproviders"
+        v-model="formData.cloudproviders"
         :list-props="cloudprovidersProps"
         :multiple="true"
         :formatter="v => v.name" />
-    </a-form-item>
+    </a-form-model-item>
   </div>
 </template>
 
@@ -36,10 +36,7 @@ export default {
   },
   mixins: [AccountPropsMixin, CloudprovidersPropsMixin],
   props: {
-    decorators: {
-      type: Object,
-    },
-    form: {
+    formData: {
       type: Object,
     },
     params: {
@@ -58,12 +55,12 @@ export default {
     }
   },
   methods: {
-    applicationScopeChangeHandle () {
-      this.form.fc.setFieldsValue({
-        accounts: [],
-        cloudproviders: [],
-      })
-    },
+    // applicationScopeChangeHandle () {
+    //   this.form.fc.setFieldsValue({
+    //     accounts: [],
+    //     cloudproviders: [],
+    //   })
+    // },
   },
 }
 </script>

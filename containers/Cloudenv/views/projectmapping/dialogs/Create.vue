@@ -1,102 +1,71 @@
 <template>
   <base-dialog :width="1000" @cancel="cancelDialog">
     <div slot="header">{{$t('cloudenv.text_583')}}</div>
-    <div slot="body">
-      <a-form
-        v-bind="formLayout"
-        :form="form.fc">
+    <div slot="body" style="max-height:calc(100vh - 320px);overflow-y:auto">
+      <a-form-model ref="ruleForm" :model="formData" :rules="rules" v-bind="layout">
         <!-- 域 -->
-        <a-form-item :label="$t('dictionary.domain')" v-bind="formLayout">
-          <domain-select v-if="isAdminMode && l3PermissionEnable" v-decorator="decorators.project_domain_id" :params="domainParams" @change="handleDomainChange" />
+        <a-form-model-item :label="$t('dictionary.domain')" prop="project_domain_id">
+          <domain-select v-model="formData.project_domain_id" v-if="isAdminMode && l3PermissionEnable" :params="domainParams" />
           <template v-else> {{userInfo.domain.name}} </template>
-        </a-form-item>
+        </a-form-model-item>
         <!-- 名称 -->
-        <a-form-item :label="$t('cloudenv.text_95')">
-          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
-        </a-form-item>
-        <a-form-item :label="$t('common.description')">
-          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
-        </a-form-item>
+        <a-form-model-item :label="$t('cloudenv.text_95')" prop="name">
+          <a-input v-model="formData.name" :placeholder="$t('validator.resourceName')" />
+        </a-form-model-item>
+        <a-form-model-item :label="$t('common.description')">
+          <a-textarea v-model="formData.description" :rows="1" :auto-size="{ minRows: 1, maxRows: 3 }" :placeholder="$t('common_367')" />
+        </a-form-model-item>
         <!-- 规则 -->
-        <a-form-item :label="$t('cloudenv.text_582')">
-          <div v-for="(item,index) in form.fc.getFieldValue('rules')" :key="item" :value="item" class="d-flex align-items-center">
-            <a-card v-if="item !== -1" class="mb-3" style="flex: 1 1 auto">
-              <!-- 匹配条件 -->
-              <a-form-item :label="$t('cloudenv.text_22')" v-bind="formLayout">
-                <a-select v-decorator="[
-                  `matchs[${item}]`,
-                  {
-                    initialValue: 'or',
-                    rules: [
-                      {
-                        required: true,
-                        message: $t('cloudenv.text_284', [$t('cloudenv.text_22')]),
-                      },
-                    ],
-                  }
-                ]">
-                  <a-select-option v-for="item in resourceAndTagOptions" :value="item.value" :key="item.value">
+        <a-form-model-item :label="$t('cloudenv.text_582')" :rules="rules.rules" prop="rules">
+          <div v-for="(item,index) in formData.rules" :key="index" class="d-flex align-items-center">
+            <a-card class="mb-3" style="flex: 1 1 auto">
+              <!-- 条件 -->
+              <a-form-model-item :label="$t('cloudenv.text_22')" v-bind="layout" :rules="rules.condition" :prop="`rules.${index}.condition`">
+                <a-select v-model="item.condition">
+                  <a-select-option v-for="item in resourceAndTagOptions" :value="item.value" :key="item.value" :disabled="item.value === 'and_copy' && isSecAndcopy(index)">
                     {{item.name}}
                   </a-select-option>
                 </a-select>
-                <div slot="extra" class="d-flex">
-                  {{$t('cloudenv.text_585')}}
-                </div>
-              </a-form-item>
-              <!-- 标签 -->
-              <a-form-item :label="$t('cloudenv.text_16')" v-bind="formLayout">
-                <tag v-decorator="[
-                  `tags[${item}]`,
-                  {
-                    rules: [
-                      {
-                        required: true,
-                        message: $t('cloudenv.text_602'),
-                        validator: tagsLengthValidate
-                      },
-                    ],
-                  }
-                ]" />
-              </a-form-item>
-              <!-- 资源映射 -->
-              <a-form-item :label="$t('cloudenv.text_584')" v-bind="formLayout">
-                <a-select v-decorator="[
-                  `maps[${item}]`,
-                  {
-                    rules: [
-                      {
-                        required: true,
-                        message: $t('cloudenv.text_284', [$t('cloudenv.text_584')]),
-                      },
-                    ],
-                  }
-                ]"
-                show-search
-                option-filter-prop="children"
-                :filter-option="filterOption">
-                  <a-select-option v-for="item in projectOptions" :key="item.id" :value="item.id">
-                    {{item.name}}
-                  </a-select-option>
-                </a-select>
-                <div slot="extra" class="d-flex">
-                  {{$t('cloudenv.text_592')}}
-                </div>
-              </a-form-item>
+              </a-form-model-item>
+              <!-- 标签key -->
+              <template v-if="item.condition === 'and_copy'">
+                <a-form-model-item :label="$t('cloudenv.tag_key')" v-bind="layout" :rules="rules.tag_key" :prop="`rules.${index}.tag_key`">
+                  <a-input v-model="item.tag_key" />
+                </a-form-model-item>
+              </template>
+              <template v-else>
+                <!-- 标签 -->
+                <a-form-model-item :label="$t('cloudenv.text_16')" v-bind="layout" :rules="rules.tags" :prop="`rules.${index}.tags`">
+                  <tag v-model="item.tags" @change="(val) => handleTagChange(val, index)" />
+                </a-form-model-item>
+                <!-- 项目 -->
+                <a-form-model-item :label="$t('cloudenv.text_584')" :extra="$t('cloudenv.text_592')" v-bind="layout" :rules="rules.project_id" :prop="`rules.${index}.project_id`">
+                  <a-select v-model="item.project_id" show-search option-filter-prop="children" :filter-option="filterOption">
+                    <a-select-option v-for="item in projectOptions" :key="item.id" :value="item.id">
+                      {{item.name}}
+                    </a-select-option>
+                  </a-select>
+                </a-form-model-item>
+              </template>
             </a-card>
-            <a-button v-if="item !== -1" style="flex: 0 0 24px;margin-left: 20px" shape="circle" icon="minus" size="small" @click="deleteRule(item,index)" />
+            <a-button style="flex: 0 0 24px;margin-left: 20px" shape="circle" icon="minus" size="small" @click="deleteRule(item,index)" />
           </div>
-          <!-- 添加 -->
           <div class="d-flex align-items-center">
             <a-button type="primary" shape="circle" icon="plus" size="small" @click="addRule" />
             <a-button type="link" @click="addRule">{{$t('cloudenv.text_586')}}</a-button>
           </div>
-        </a-form-item>
+        </a-form-model-item>
         <!-- 应用范围 -->
         <application-scope
-          :decorators="decorators"
-          :form="form"
+          :formData="formData"
           :params="{ project_domains: projectDomainId, filter: 'project_mapping_id.isnullorempty()', brand: ['Aws', 'Azure', 'Aliyun', 'Qcloud', 'Huawei', 'Google'] }" />
-      </a-form>
+        <a-form-model-item :label="$t('cloudenv.text_282')" prop="public_scope">
+          <a-radio-group v-model="formData.public_scope">
+            <a-radio-button value="none">{{$t('cloudenv.text_285')}}</a-radio-button>
+            <a-radio-button value="system">{{$t('cloudenv.global_share')}}</a-radio-button>
+          </a-radio-group>
+        </a-form-model-item>
+      </a-form-model>
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -116,7 +85,6 @@ import WindowsMixin from '@/mixins/windows'
 import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 const brandMap = typeClouds.getBrand()
 
-let id = 0
 export default {
   name: 'ProjectMappingCreateDialog',
   components: {
@@ -129,63 +97,42 @@ export default {
     const projectDomainInitialValue = (this.params.domain && this.params.domain.key) || this.$store.getters.userInfo.projectDomainId
     return {
       loading: false,
-      form: {
-        fc: this.$form.createForm(this, {
-          onValuesChange: (props, values) => {
-            Object.keys(values).forEach((key) => {
-              this.form.fd[key] = values[key]
-            })
-          },
-        }),
-        fd: {
-          applicationScope: 1,
-        },
+      formData: {
+        project_domain_id: projectDomainInitialValue,
+        name: '',
+        description: '',
+        application_scope: 1,
+        rules: [],
+        public_scope: 'none',
       },
-      decorators: {
+      rules: {
         name: [
-          'name',
-          {
-            validateFirst: true,
-            rules: [
-              { required: true, message: this.$t('cloudenv.text_190') },
-              { validator: this.$validate('resourceName') },
-            ],
-          },
+          { required: true, message: this.$t('cloudenv.text_190') },
+          { validator: this.$validate('resourceName') },
         ],
-        description: ['description'],
         project_domain_id: [
-          'project_domain_id',
-          {
-            initialValue: projectDomainInitialValue,
-            rules: [
-              { required: true, message: this.$t('cloudenv.text_284', [this.$t('dictionary.domain')]) },
-            ],
-          },
+          { required: true, message: this.$t('cloudenv.text_284', [this.$t('dictionary.domain')]) },
         ],
-        applicationScope: [
-          'applicationScope',
-          {
-            initialValue: 1,
-          },
+        rules: [
+          { required: true, validator: this.validateRules },
         ],
-        accounts: [
-          'accounts',
-          {
-            rules: [
-              { required: false, message: this.$t('cloudenv.text_284', [this.$t('cloudenv.text_589')]) },
-            ],
-          },
+        condition: [
+          { required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.text_22')]) },
         ],
-        cloudproviders: [
-          'cloudproviders',
-          {
-            rules: [
-              { required: false, message: this.$t('cloudenv.text_284', [this.$t('cloudenv.project_mapping_use_cloudprovider')]) },
-            ],
-          },
+        tags: [
+          { required: true, validator: this.validateTags },
+        ],
+        tag_key: [
+          { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.tag_key')]) },
+        ],
+        project_id: [
+          { required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.text_584')]) },
+        ],
+        public_scope: [
+          { required: true },
         ],
       },
-      formLayout: {
+      layout: {
         wrapperCol: {
           span: 20,
         },
@@ -193,7 +140,7 @@ export default {
           span: 4,
         },
       },
-      offsetFormLayout: {
+      offsetLayout: {
         wrapperCol: {
           span: 18,
           offset: 6,
@@ -213,6 +160,11 @@ export default {
           id: 2,
           name: this.$t('cloudenv.text_588'),
           value: 'and',
+        },
+        {
+          id: 3,
+          name: this.$t('cloudenv.match_by_resource_tag'),
+          value: 'and_copy',
         },
       ],
       projectOptions: [],
@@ -235,21 +187,11 @@ export default {
     },
   },
   mounted () {
-    this.form.fc.getFieldDecorator('rules', { initialValue: [], preserve: true })
   },
   methods: {
-    handleDomainChange (id) {
-      this.form.fc.setFieldsValue({
-        project_domain_id: id,
-      })
-      this.projectDomainId = id
-    },
     async fetchCloudAccount () {
       this.$d = new this.$Manager('cloudaccounts')
       this.accountOptions = undefined
-      this.form.fc.setFieldsValue({
-        accounts: [],
-      })
       try {
         const params = {
           scope: this.$store.getters.scope,
@@ -278,10 +220,6 @@ export default {
     async fetchProject () {
       this.$p = new this.$Manager('projects', 'v1')
       this.projectOptions = undefined
-      this.form.fc.setFieldsValue({
-        maps: [],
-        rules: [],
-      })
       try {
         const params = {
           scope: this.$store.getters.scope,
@@ -294,7 +232,6 @@ export default {
             id: item.id,
             name: item.name,
             value: item.name,
-            // brand: this.$t('dashboard.text_98') + ': ' + item.brand,
           }
         })
       } catch (err) {
@@ -324,16 +261,17 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        const values = await this.form.fc.validateFields()
-        const { applicationScope } = this.form.fd
+        const validate = await this.$refs.ruleForm.validate()
+        if (!validate) return
+        const { application_cope } = this.formData
         // 获取参数
-        const params = this.getCreateParams(values)
+        const params = this.getCreateParams()
         const createResult = await this.doCreate(params)
         const { id } = createResult.data
-        if (applicationScope === 1 && values.accounts?.length > 0) {
-          await this.doBindByAccount({ accountIds: values.accounts, project_mapping_id: id })
-        } else if (applicationScope === 2 && values.cloudproviders?.length > 0) {
-          await this.doBindByCloudProvider({ cloudproviderIds: values.cloudproviders, project_mapping_id: id })
+        if (application_cope === 1 && this.formData.accounts?.length > 0) {
+          await this.doBindByAccount({ accountIds: this.formData.accounts, project_mapping_id: id })
+        } else if (application_cope === 2 && this.formData.cloudproviders?.length > 0) {
+          await this.doBindByCloudProvider({ cloudproviderIds: this.formData.cloudproviders, project_mapping_id: id })
         }
         this.cancelDialog()
         this.params.success && this.params.success()
@@ -344,19 +282,27 @@ export default {
         this.loading = false
       }
     },
-    getCreateParams ({ project_domain_id, name, description, rules, tags, matchs, maps }) {
+    getCreateParams () {
+      const { project_domain_id, name, description, public_scope, rules = [] } = this.formData
       const result = {
         project_domain_id,
         name,
         description,
         rules: [],
+        public_scope,
       }
       result.rules = rules.map((item, index) => {
-        if (item !== -1 && tags[item] && matchs[item] && maps[item]) {
+        if (item.condition === 'and_copy') {
           return {
-            condition: matchs[item],
-            project_id: maps[item],
-            tags: this.getTagValue(tags[item]),
+            condition: 'and',
+            tags: [{ key: item.tag_key }],
+            auto_create_project: true,
+          }
+        } else {
+          return {
+            condition: item.condition,
+            project_id: item.project_id,
+            tags: this.getTagValue(item.tags),
           }
         }
       }).filter(item => {
@@ -375,43 +321,48 @@ export default {
       })
       return result
     },
+    handleTagChange (val, index) {
+      this.formData.rules[index].tags = val
+    },
     addRule () {
-      const { form } = this
-      const keys = form.fc.getFieldValue('rules')
-      const nextKeys = keys.concat(id++)
-      // const matchs = form.fc.getFieldValue('maps') || []
-      // const nextMatchs = matchs.concat(this.projectOptions.length ? this.projectOptions[0].id : '')
-      form.fc.setFieldsValue({
-        rules: nextKeys,
-        // maps: nextMatchs,
+      this.formData.rules.push({
+        condition: 'or',
+        tags: {},
+        tag_key: '',
+        project_id: '',
       })
     },
     deleteRule (item, idx) {
-      const { form } = this
-      const rules = form.fc.getFieldValue('rules')
-      const nextRules = rules.map(rule => {
-        if (rule === item) {
-          return -1
-        }
-        return rule
-      })
-      form.fc.setFieldsValue({
-        rules: nextRules,
-      })
+      this.formData.rules = this.formData.rules.filter((item, index) => index !== idx)
     },
-    tagsLengthValidate (rule, value, callback) {
+    validateRules (rule, value, callback) {
+      if (!this.formData.rules.length) {
+        callback(new Error(this.$t('cloudenv.add_rule_tip')))
+      }
+      callback()
+    },
+    validateTags (rule, value, callback) {
       if (value) {
         const keys = Object.keys(value)
-        if (keys.length > 20) {
-        // eslint-disable-next-line
-        callback(false)
+        if (!keys.length) {
+          callback(new Error(this.$t('common.tips.select', [this.$t('cloudenv.text_16')])))
+        } else if (keys.length > 20) {
+          callback(new Error(this.$t('cloudenv.text_602')))
         } else {
           callback()
         }
       } else {
-        // eslint-disable-next-line
-        callback(false)
+        callback(new Error(this.$t('common.tips.select', [this.$t('cloudenv.text_16')])))
       }
+    },
+    isSecAndcopy (index) {
+      let has = false
+      this.formData.rules.map((item, idx) => {
+        if (item.condition === 'and_copy' && index !== idx) {
+          has = true
+        }
+      })
+      return has
     },
     filterOption (input, option) {
       return (
