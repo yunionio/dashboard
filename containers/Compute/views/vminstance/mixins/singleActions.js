@@ -1500,6 +1500,10 @@ export default {
                       ret.tooltip = i18n.t('migration.project.error')
                       return ret
                     }
+                    if (!cloudEnabled('addBackup', obj)) {
+                      ret.tooltip = cloudUnabledTip('addBackup', obj)
+                      return ret
+                    }
                     ret.validate = true
                     return ret
                   },

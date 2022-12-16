@@ -1164,6 +1164,11 @@
     "unifiedIds": {
       "available": "Available",
       "unsign": "Unsign"
+    },
+    "backup_sync": {
+      "ready": "Data synchronization ready",
+      "failed": "Data synchronization failed",
+      "inprogress": "Inprogress"
     }
   },
   "skuCategoryOptions": {
