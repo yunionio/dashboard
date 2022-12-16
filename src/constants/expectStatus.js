@@ -538,4 +538,8 @@ export default {
   wtps: {
     success: ['running'],
   },
+  backup_sync: {
+    success: ['ready'],
+    danger: ['failed'],
+  },
 }

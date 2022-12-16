@@ -17,6 +17,13 @@
             :disabled-items="disabledItems"
             :select-props="{ placeholder: $t('compute.text_314') }" />
         </a-form-item>
+        <!-- 自动启动 -->
+        <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_495')">
+          <a-switch
+            :checkedChildren="$t('compute.text_115')"
+            :unCheckedChildren="$t('compute.text_116')"
+            v-decorator="decorators.auto_start" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -52,6 +59,13 @@ export default {
             rules: [
               { required: false, message: this.$t('compute.text_1165'), trigger: 'blur' },
             ],
+          },
+        ],
+        auto_start: [
+          'auto_start',
+          {
+            initialValue: false,
+            valuePropName: 'checked',
           },
         ],
       },

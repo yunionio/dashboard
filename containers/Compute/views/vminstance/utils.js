@@ -538,6 +538,12 @@ const actionEableMap = {
       remotefile: false,
     },
   },
+  addBackup: {
+    cn: i18n.t('compute.text_1162'),
+    brand: {
+      onecloud: ['ready'],
+    },
+  },
 }
 
 export const commonEnabled = (value, statusArr = ['ready']) => {
