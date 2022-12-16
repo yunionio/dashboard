@@ -61,7 +61,7 @@ export default {
           },
           meta: () => {
             return {
-              validate: (this.$store.getters.isAdminMode || get(this.cloudaccount, 'domain_id') === this.$store.getters.userInfo.projectDomainId) && this.isNormalStatus(),
+              validate: (this.$store.getters.isAdminMode || get(this.cloudaccount, 'domain_id') === this.$store.getters.userInfo.projectDomainId),
               buttonType: 'primary',
             }
           },
