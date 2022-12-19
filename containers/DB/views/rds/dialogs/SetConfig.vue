@@ -48,6 +48,9 @@ export default {
       const { getFieldDecorator, getFieldValue, getFieldsValue, setFieldsValue } = fc
       return {
         fc,
+        fd: {
+          provider: this.params.data[0].provider,
+        },
         getFieldDecorator,
         getFieldValue,
         getFieldsValue,
@@ -85,7 +88,7 @@ export default {
       scopeParams: this.scopeParams,
     }
   },
-  async created () {
+  async mounted () {
     this.form.fc.getFieldDecorator('provider', { preserve: true })
     this.form.fc.getFieldDecorator('zones', { preserve: true })
     this.form.fc.getFieldDecorator('cloudregion_id', { preserve: true })
