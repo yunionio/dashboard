@@ -144,6 +144,69 @@ export default {
       }
     },
     extraInfo () {
+      const backupInfo = []
+      if (this.data.backup_host_name) {
+        backupInfo.push({
+          title: this.$t('compute.backup_setting'),
+          items: [
+            {
+              field: 'backup_host_name',
+              title: this.$t('compute.text_1163'),
+              slots: {
+                default: ({ row }) => {
+                  if (!row.backup_host_name) return '-'
+                  return [
+                    <side-page-trigger permission='hosts_get' name='HostSidePage' id={row.backup_host_id} vm={this}>{row.backup_host_name}</side-page-trigger>,
+                  ]
+                },
+              },
+              hidden: () => this.$store.getters.isProjectMode,
+            },
+            getStatusTableColumn({
+              field: 'backup_host_status',
+              title: this.$t('compute.backup_host_status'),
+              statusModule: 'host',
+              hidden: () => this.$store.getters.isProjectMode,
+            }),
+            {
+              field: 'backup_guest_status',
+              title: this.$t('compute.backup_status'),
+              slots: {
+                default: ({ row }) => {
+                  return [
+                    <div class='d-flex'>
+                      <div class='text-truncate'>
+                        <status status={ row.backup_guest_status } statusModule={ 'server' } />
+                      </div>
+                      <div>
+                        <a-button type='link' style="height: 14px" disabled={row.backup_guest_status !== 'ready'} onClick={this.startBackup}><icon type='start' style="transform:translateX(4px)" />{this.$t('compute.start_backup')}</a-button>
+                      </div>
+                    </div>,
+                  ]
+                },
+              },
+            },
+            {
+              field: 'backup_sync_status',
+              title: this.$t('compute.backup_sync_status'),
+              slots: {
+                default: ({ row }) => {
+                  return [
+                    <div class='d-flex'>
+                      <div class='text-truncate'>
+                        <status status={ row.backup_guest_sync_status } statusModule={ 'backup_sync' } />
+                      </div>
+                      <div>
+                        <a-button type='link' style="height: 14px" disabled={row.backup_guest_sync_status !== 'ready'} onClick={this.switchBackup}><icon type='switch' style="transform:translateX(4px)" />{this.$t('compute.switch_backup')}</a-button>
+                      </div>
+                    </div>,
+                  ]
+                },
+              },
+            },
+          ],
+        })
+      }
       const infos = [
         {
           title: this.$t('compute.text_368'),
@@ -323,19 +386,6 @@ export default {
               },
             },
             {
-              field: 'backup_host_name',
-              title: this.$t('compute.text_1163'),
-              slots: {
-                default: ({ row }) => {
-                  if (!row.backup_host_name) return '-'
-                  return [
-                    <side-page-trigger permission='hosts_get' name='HostSidePage' id={row.backup_host_id} vm={this}>{row.backup_host_name}</side-page-trigger>,
-                  ]
-                },
-              },
-              hidden: () => this.$store.getters.isProjectMode,
-            },
-            {
               field: 'is_daemon',
               title: this.$t('compute.is_daemon'),
               formatter: ({ row }) => {
@@ -406,6 +456,7 @@ export default {
             },
           ],
         },
+        ...backupInfo,
         {
           title: this.$t('compute.text_371'),
           items: [
@@ -425,14 +476,14 @@ export default {
         },
       ]
       if (this.isKvm && this.cmdline) {
-        infos[infos.length - 1].items.push({
+        infos[1].items.push({
           field: 'metadata',
           title: this.$t('compute.qemu_cmdline'),
           slots: {
             default: ({ row }, h) => {
               return [
                 <a-button type="link" class="mb-2" style="height: 21px;padding:0" onclick={this.viewCmdline}>{ this.showCmdline ? this.$t('table.title.off') : this.$t('compute.text_958') }</a-button>,
-                <code-mirror style={{ visibility: this.showCmdline ? 'visible' : 'hidden' }} value={this.cmdline} view-height="300px" options={this.cmOptions} />]
+                <code-mirror style={this.showCmdline ? { } : { visibility: 'hidden', height: '16px' }} value={this.cmdline} view-height="300px" options={this.cmOptions} />]
             },
           },
         })
@@ -513,6 +564,20 @@ export default {
       } catch (err) {
         console.error(err)
       }
+    },
+    switchBackup () {
+      this.createDialog('VmSwitchBackup2Dialog', {
+        data: [this.data],
+        onManager: this.onManager,
+        columns: this.serverColumns,
+      })
+    },
+    startBackup () {
+      this.createDialog('VmStartBackupDialog', {
+        data: [this.data],
+        onManager: this.onManager,
+        columns: this.serverColumns,
+      })
     },
   },
 }

@@ -1627,5 +1627,15 @@
   "compute.vminstance.transfer.max_brand_width.required": "请输入带宽值",
   "compute.vminstance.transfer.quickly_finish.extra": "热迁移内存同步一段时间后调整虚拟机downtime，以达到迁移完成状态",
   "compute.create_disk": "创建硬盘",
-  "compute.keep_origin_disk": "是否删除源磁盘"
+  "compute.boot_index": "启动顺序",
+  "compute.change_boot_index": "修改启动顺序",
+  "compute.keep_origin_disk": "是否删除源磁盘",
+  "compute.backup_setting": "主备机设置",
+  "compute.backup_host_status": "备份机的宿主机状态",
+  "compute.backup_status": "备份机状态",
+  "compute.backup_sync_status": "备份机同步状态",
+  "compute.start_backup": "启动备份机",
+  "compute.switch_backup": "切换备份机",
+  "compute.guest_switch_to_backup": "主备切换",
+  "compute.start_buckup": "启动备份机"
 }

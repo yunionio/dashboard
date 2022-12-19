@@ -1172,6 +1172,11 @@
     },
     "wtps": {
       "running": "运行中"
+    },
+    "backup_sync": {
+      "ready": "数据同步就绪",
+      "failed": "数据同步失败",
+      "inprogress": "同步中"
     }
   },
   "skuCategoryOptions": {
