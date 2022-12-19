@@ -1643,5 +1643,13 @@
   "compute.create_disk": "Create Disk",
   "compute.boot_index": "Boot Index",
   "compute.change_boot_index": "Set Boot Index",
-  "compute.keep_origin_disk": "Whether to delete the origin disk"
+  "compute.keep_origin_disk": "Whether to delete the origin disk",
+  "compute.backup_setting": "Active and standby machine settings",
+  "compute.backup_host_status": "Host status of the backup machine",
+  "compute.backup_status": "Backup machine status",
+  "compute.backup_sync_status": "Backup machine synchronization status",
+  "compute.start_backup": "Start the backup machine",
+  "compute.switch_backup": "Switch the backup machine",
+  "compute.guest_switch_to_backup": "Active/standby switching",
+  "compute.start_buckup": "Start the backup machine"
 }

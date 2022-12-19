@@ -542,4 +542,8 @@ export default {
     success: ['available'],
     danger: ['unsign'],
   },
+  backup_sync: {
+    success: ['ready'],
+    danger: ['failed'],
+  },
 }
