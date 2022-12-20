@@ -8,19 +8,19 @@ import Actions from '../constants/actions'
 export default {
   computed: {
     ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo', 'auth']),
-    enableMFA() {
+    enableMFA () {
       return this.userInfo.enable_mfa && this.auth.auth.system_totp_on
     },
   },
-  created() {
+  created () {
     this.webconsoleManager = new this.$Manager('webconsole', 'v1')
     this.singleActions = Actions.getSingleActions.call(this)
   },
-  destroyed() {
+  destroyed () {
     this.webconsoleManager = null
   },
   methods: {
-    openWebConsole(obj, data) {
+    openWebConsole (obj, data) {
       let connectParams = qs.parse(data.connect_params)
       if (!connectParams.access_token) {
         connectParams = {
@@ -43,7 +43,7 @@ export default {
       const href = `${this.$store.getters.auth.regions.api_server}/web-console/?${qs.stringify(query)}`
       window.open(href)
     },
-    open(obj, url) {
+    open (obj, url) {
       if (obj.hypervisor === typeClouds.hypervisorMap.esxi.key) {
         protocolCheck(url, () => {
           this.createDialog('VmrcDownload', {
