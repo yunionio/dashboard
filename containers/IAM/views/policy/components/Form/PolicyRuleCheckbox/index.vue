@@ -9,7 +9,7 @@
       <a-input class="ml-2" v-model="searchString" :placeholder="$t('iam.policy_search_placeholder')" style="max-width:200px" allow-clear />
     </div>
     <a-divider orientation="left">
-      资源权限
+      {{ $t('iam.res_policy') }}
     </a-divider>
     <a-tabs v-model="currentPolicyResTab" tab-position="left">
       <a-tab-pane v-for="item of policyResList" :key="item.key" :tab="item.label">
@@ -48,7 +48,7 @@
       </a-tab-pane>
     </a-tabs>
     <a-divider orientation="left">
-      其他权限
+      {{ $t('iam.other_policy') }}
     </a-divider>
     <div class="mt-1">
       <template v-for="(item, idx) of options">
