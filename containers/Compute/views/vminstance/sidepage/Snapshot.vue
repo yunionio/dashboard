@@ -45,12 +45,13 @@ export default {
       }
     },
     tabs () {
-      const ret = [
-        {
+      const ret = []
+      if (!isScopedPolicyMenuHidden('sub_hidden_menus.disk_snapshot') && hasSetupKey(['onestack', 'private', 'public'])) {
+        ret.push({
           key: 'DiskSnapshotList',
           label: this.$t('compute.text_101'),
-        },
-      ]
+        })
+      }
       if (!isScopedPolicyMenuHidden('sub_hidden_menus.instance_snapshot') && hasSetupKey(['onestack', 'vmware'])) {
         ret.push({
           key: 'InstanceSnapshotList',
