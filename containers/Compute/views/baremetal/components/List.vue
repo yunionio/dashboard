@@ -227,9 +227,12 @@ export default {
                         tooltip: this.$t('compute.text_277'),
                       }
                     }
+                    const items = this.list.selectedItems.map(item => {
+                      return { ...item, brand: 'baremetal' }
+                    })
                     return {
-                      validate: cloudEnabled('resetPassword', this.list.selectedItems),
-                      tooltip: cloudUnabledTip('resetPassword', this.list.selectedItems),
+                      validate: cloudEnabled('resetPassword', items),
+                      tooltip: cloudUnabledTip('resetPassword', items),
                     }
                   }
                   return {
