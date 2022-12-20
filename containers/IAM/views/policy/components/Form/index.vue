@@ -60,7 +60,7 @@
       <template v-if="editType === 'checkbox'">
         <template v-if="showPolicyCheckbox">
           <a-form-model-item :label="$t('system.text_327', [$t('dictionary.policy')])">
-            <policy-rule-checkbox :check-all-disabled="checkAllDisabled" :data="policyRuleOptions" :permissions="permissions" :scope="model.scope" :policy="checkboxPolicy" />
+            <policy-rule-checkbox :check-all-disabled="checkAllDisabled" :data="policyRuleOptions" :permissions="permissions" :scope="model.scope" :policy="checkboxPolicy" @checkMenuOptionsChange="checkMenuOptionsChange" />
           </a-form-model-item>
         </template>
       </template>
@@ -87,6 +87,8 @@ import { genPolicyGroups } from '../../utils'
 import { DEFAULT_ACTIONS_KEY } from '../../constants'
 import ScopeSelect from './ScopeSelect'
 import PolicyRuleCheckbox from './PolicyRuleCheckbox'
+import { getPolicyResCheckedList } from '@/utils/policy/policy-res-list'
+import { POLICY_WHITE_LIST } from '@/constants/policy'
 
 // 权限级别
 const policyLevel = {
@@ -298,6 +300,7 @@ export default {
         mode: 'text/x-yaml',
       },
       showPolicyCheckbox: this.editType === 'checkbox',
+      policyResCheckedList: getPolicyResCheckedList(this.policy?.policy),
     }
   },
   computed: {
@@ -418,9 +421,10 @@ export default {
           if (!isContinue) continue
           const resKey = resource.resource
           ret[service][resKey] = {}
+          const policyCheckedActions = this.getPolicyActionsByServiceAndReskey(service, resKey)
           for (let k = 0, klen = DEFAULT_ACTIONS_KEY.length; k < klen; k++) {
             const action = DEFAULT_ACTIONS_KEY[k]
-            if (resource.checked.includes(action)) {
+            if (resource.checked.includes(action) || policyCheckedActions.includes(action)) {
               ret[service][resKey][action] = {
                 '*': 'allow',
               }
@@ -439,7 +443,16 @@ export default {
               if (extras && extras.length > 0) {
                 for (let m = 0, mlen = extras.length; m < mlen; m++) {
                   const extra = extras[m]
-                  if (resource.checked.includes(extra.action)) {
+                  const checkAction = ((extra) => {
+                    let action = extra.action
+                    if (extra.parent === 'perform') {
+                      action = extra.extraAction === '*' ? extra.parent : extra.extraAction
+                    } else {
+                      action = extra.parent || extra.action
+                    }
+                    return action
+                  })(extra)
+                  if (resource.checked.includes(extra.action) || policyCheckedActions.includes(checkAction)) {
                     ret[service][resKey][action][extra.extraAction] = 'allow'
                   } else {
                     ret[service][resKey][action][extra.extraAction] = 'deny'
@@ -470,6 +483,20 @@ export default {
       if (migrate) {
         policy.compute.servers.perform['live-migrate'] = migrate
       }
+    },
+    checkMenuOptionsChange (v) {
+      this.policyResCheckedList = v
+    },
+    getPolicyActionsByServiceAndReskey (service, resKey) {
+      const policyResCheckedList = Object.values(this.policyResCheckedList)
+      const currentRes = policyResCheckedList.find(item => item.service === service && item.resource === resKey)
+      const permisArr = [...POLICY_WHITE_LIST]
+      if (currentRes) {
+        currentRes.options.forEach(item => {
+          permisArr.push(item)
+        })
+      }
+      return Array.from(new Set(permisArr))
     },
   },
 }
