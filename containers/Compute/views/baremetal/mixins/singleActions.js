@@ -156,13 +156,13 @@ export default {
                       ret.validate = false
                       return ret
                     }
-                    if (obj.status !== 'ready') {
+                    if (obj.status !== 'ready' && obj.status !== 'admin') {
                       ret.tooltip = i18n.t('compute.text_358')
                       return ret
                     }
                     if (commonUnabled(obj)) return ret
-                    ret.validate = cloudEnabled('rebuildRoot', obj)
-                    ret.tooltip = cloudUnabledTip('rebuildRoot', obj)
+                    ret.validate = cloudEnabled('rebuildRoot', { ...obj, brand: 'baremetal' })
+                    ret.tooltip = cloudUnabledTip('rebuildRoot', { ...obj, brand: 'baremetal' })
                     return ret
                   },
                 },
@@ -246,8 +246,8 @@ export default {
                       ret.tooltip = i18n.t('compute.text_277')
                       return ret
                     }
-                    ret.validate = cloudEnabled('resetPassword', obj)
-                    ret.tooltip = cloudUnabledTip('resetPassword', obj)
+                    ret.validate = cloudEnabled('resetPassword', { ...obj, brand: 'baremetal' })
+                    ret.tooltip = cloudUnabledTip('resetPassword', { ...obj, brand: 'baremetal' })
                     return ret
                   },
                 },

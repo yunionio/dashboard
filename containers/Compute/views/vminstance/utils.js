@@ -114,7 +114,7 @@ const actionEableMap = {
       onecloud: ['ready', 'running'],
       cloudpods: ['running', 'ready'],
       vmware: ['ready'],
-      baremetal: ['ready'],
+      baremetal: ['ready', 'admin'],
       huawei: ['ready', 'rebuild_root_fail'],
       hcso: ['ready', 'rebuild_root_fail'],
       hcs: ['ready', 'rebuild_root_fail'],
