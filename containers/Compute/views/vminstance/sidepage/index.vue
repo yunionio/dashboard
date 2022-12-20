@@ -51,6 +51,7 @@ import VmSnapshotSidepage from './Snapshot'
 import SecgroupList from './Secgroup'
 import DiskListForVmInstanceSidepage from './DiskList'
 import GpuList from '@Compute/views/gpu/components/List'
+import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 // import DiskSnapshotListForVmInstanceSidepage from '@Compute/views/snapshot/components/List'
 // import InstanceSnapshotListForVmInstanceSidepage from '@Compute/views/snapshot-instance/components/List'
 // import EipListForVmInstanceSidepage from './EipList'
@@ -100,6 +101,9 @@ export default {
     }
     if (!hasPermission({ key: 'eip_list' })) {
       detailTabs = R.remove(R.findIndex(R.propEq('key', 'eip-list-for-vm-instance-sidepage'))(detailTabs), 1, detailTabs)
+    }
+    if (isScopedPolicyMenuHidden('sub_hidden_menus.disk_snapshot') && isScopedPolicyMenuHidden('sub_hidden_menus.instance_snapshot')) {
+      detailTabs = R.remove(R.findIndex(R.propEq('key', 'vm-snapshot-sidepage'))(detailTabs), 1, detailTabs)
     }
     return {
       detailTabs,
