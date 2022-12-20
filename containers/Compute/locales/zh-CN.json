@@ -357,7 +357,7 @@
   "compute.text_355": "只有@:brand主机支持此操作",
   "compute.text_356": "实例设置",
   "compute.text_357": "重装系统",
-  "compute.text_358": "仅在虚拟机状态为【关机】下可以进行该操作",
+  "compute.text_358": "仅在虚拟机状态为【关机,维护中】下可以进行该操作",
   "compute.text_359": "创建相同配置",
   "compute.text_360": "密码密钥",
   "compute.text_361": "绑定密钥",
