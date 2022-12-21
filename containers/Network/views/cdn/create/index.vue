@@ -21,7 +21,7 @@
             :showSync="true"
             :select-props="{ placeholder: $t('compute.text_149') }" />
         </a-form-item>
-        <a-form-item :label="$t('network.cdn.domain')">
+        <a-form-item :label="$t('network.cdn.accelerated_domain')">
           <a-input v-decorator="decorators.domain" />
         </a-form-item>
         <a-form-item :label="$t('network.cdn.area')">

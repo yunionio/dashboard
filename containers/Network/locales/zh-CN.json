@@ -981,7 +981,7 @@
   "network.cdn.service_type.download": "下载加速",
   "network.cdn.service_type.media": "流媒体点播加速",
   "network.cdn.cname": "CNAME",
-  "network.cdn.domain": "加速域名",
+  "network.cdn.domain": "指定域",
   "network.cdn.source_station": "源站信息",
   "network.cdn.source_type": "源站类型",
   "network.cdn.source_server_name": "回源HOST",
