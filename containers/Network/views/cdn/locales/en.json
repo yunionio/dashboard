@@ -1,5 +1,5 @@
 {
-  "network.cdn.domain": "Specified domain",
+  "network.cdn.accelerated_domain": "Accelerated Domain",
   "network.cdn.cloudprovider": "Specify Cloud Subscription",
   "network.cdn.origin_types": "Origin Protocol",
   "network.cdn.origin": "Origin",

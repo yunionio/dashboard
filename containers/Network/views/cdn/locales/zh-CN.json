@@ -1,5 +1,5 @@
 {
-  "network.cdn.domain": "指定域",
+  "network.cdn.accelerated_domain": "加速域名",
   "network.cdn.cloudprovider": "指定云订阅",
   "network.cdn.origin_types": "源站协议",
   "network.cdn.origin": "源站",
