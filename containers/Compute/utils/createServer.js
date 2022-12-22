@@ -423,6 +423,16 @@ export const createVmDecorators = type => {
             ],
           },
         ],
+        devices: i => [
+          `networkDevices[${i}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+            rules: [{
+              required: true,
+              message: this.$t('compute.sriov_device_tips'),
+            }],
+          },
+        ],
       },
       networkSchedtag: {
         schedtags: i => [
@@ -903,6 +913,12 @@ export class GenCreateData {
           const exit = this.fd.networkExits[key]
           if (exit) {
             obj.exit = true
+          }
+        }
+        if (this.fd.networkDevices) {
+          const device = this.fd.networkDevices[key]
+          if (device) {
+            obj.srive_device = { model: device }
           }
         }
         ret.push(obj)
