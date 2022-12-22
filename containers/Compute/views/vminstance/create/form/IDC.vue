@@ -149,7 +149,8 @@
           :serverCount="form.fd.count"
           :vpcResourceMapper="vpcResourceMapper"
           :networkResourceMapper="networkResourceMapper"
-          :showMacConfig="form.fd.hypervisor === 'kvm'" />
+          :showMacConfig="form.fd.hypervisor === 'kvm'"
+          :showDeviceConfig="form.fd.hypervisor === 'kvm'" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag

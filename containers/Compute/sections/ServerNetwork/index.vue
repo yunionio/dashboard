@@ -26,7 +26,8 @@
         :limit="form.fi.capability.max_nic_count"
         :show-vpc="showVpc"
         :is-dialog="isDialog"
-        :showMacConfig="showMacConfig" />
+        :showMacConfig="showMacConfig"
+        :showDeviceConfig="showDeviceConfig" />
     </a-form-item>
     <a-form-item v-if="networkComponent === 'schedtag'">
       <network-schedtag
@@ -123,6 +124,10 @@ export default {
       default: false,
     },
     showMacConfig: {
+      type: Boolean,
+      default: false,
+    },
+    showDeviceConfig: {
       type: Boolean,
       default: false,
     },

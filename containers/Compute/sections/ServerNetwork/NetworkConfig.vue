@@ -99,6 +99,18 @@
           <a-button type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowMac(item)">{{$t('compute.mac_config')}}</a-button>
         </a-tooltip>
       </template>
+      <template v-if="showDeviceConfig">
+        <template v-if="item.deviceShow">
+          <a-form-item class="mb-0"  :wrapperCol="{ span: 24 }">
+            <oc-select
+              v-decorator="decorator.devices(item.key)"
+              :data="gpuOptions"
+              :placeholder="$t('compute.sriov_device_tips')" />
+          </a-form-item>
+          <a-button type="link" class="mt-1" @click="triggerShowDevice(item)">{{$t('compute.text_135')}}</a-button>
+        </template>
+        <a-button v-else type="link" class="mr-1 mt-1" @click="triggerShowDevice(item)">{{ $t('compute.config_sriov_net') }}</a-button>
+      </template>
       <a-button shape="circle" icon="minus" size="small" v-if="i !== 0" @click="decrease(item.key, i)" class="mt-2" />
     </div>
     <div class="d-flex align-items-center" v-if="networkCountRemaining > 0">
@@ -176,6 +188,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    showDeviceConfig: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -199,6 +215,24 @@ export default {
     },
     ipBtnTooltip () {
       return this.ipsDisabled ? this.$t('common_718') : null
+    },
+    gpuOptions () {
+      const specs = this.form.fi.capability.specs || {}
+      const data = specs.isolated_devices || {}
+      const ret = []
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          const item = data[key]
+          if (item.dev_type.startsWith('NIC')) {
+            ret.push({
+              ...item,
+              key: `${item.model}`,
+              label: `${item.vendor}/${item.model}`,
+            })
+          }
+        }
+      }
+      return ret
     },
   },
   watch: {
@@ -248,6 +282,7 @@ export default {
         vpc: {},
         ipShow: false,
         macShow: false,
+        deviceShow: false,
         key: uid,
       }
       if (this.vpcObj) {
@@ -269,6 +304,9 @@ export default {
       console.log(item)
       item.macShow = !item.macShow
     },
+    triggerShowDevice (item, i) {
+      item.deviceShow = !item.deviceShow
+    },
     decrease (uid, index) {
       this.networkList.splice(index, 1)
     },
@@ -279,6 +317,7 @@ export default {
       }
       this.$set(this.networkList[0], 'ipShow', false)
       this.$set(this.networkList[0], 'macShow', false)
+      this.$set(this.networkList[0], 'deviceShow', false)
       this.ipsDisabled = ipsDisabled
     },
     networkChange (val, item) {
