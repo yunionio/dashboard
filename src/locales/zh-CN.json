@@ -1470,7 +1470,7 @@
     "hosts.cpu.total": "宿主机CPU核数总量",
     "hosts.memory": "宿主机内存容量(不含预留内存容量)",
     "hosts.memory.virtual": "宿主机内存虚拟容量",
-    "hosts.memory.total": "宿主机内容总容量",
+    "hosts.memory.total": "宿主机内存总容量",
     "isolated_devices": "GPU卡总量",
     "networks": "IP子网总量",
     "nics": "当前项目已分配IP总量",
