@@ -1,5 +1,5 @@
 <template>
-  <base-dialog @cancel="cancelDialog">
+  <base-dialog @cancel="cancelDialog" :width="1200">
     <div slot="header">{{params.title}}</div>
     <div slot="body">
       <!-- <a-alert class="mb-2" type="warning" :message="message" /> -->
@@ -16,7 +16,9 @@
           :vpcParams="vpcParams"
           :vpcResource="vpcResource"
           :vpcObj="vpcObj"
-          :is-dialog="true" />
+          :is-dialog="true"
+          :showMacConfig="isKvm"
+          :showDeviceConfig="isKvm" />
       </a-form>
     </div>
     <div slot="footer">
@@ -32,6 +34,10 @@ import { checkIpInSegment } from '@Compute/utils/createServer'
 import expectStatus from '@/constants/expectStatus'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import validateForm from '@/utils/validate'
+import { typeClouds } from '@/utils/common/hypervisor'
+
+const hypervisorMap = typeClouds.hypervisorMap
 
 export default {
   name: 'VmSetNetworkDialog',
@@ -44,6 +50,9 @@ export default {
       loading: false,
       form: {
         fc: this.$form.createForm(this),
+        fi: {
+          capability: {}, // 可用区下的可用资源
+        },
       },
       formItemLayout: {
         wrapperCol: {
@@ -96,6 +105,32 @@ export default {
             ],
           },
         ],
+        macs: (i, networkData) => [
+          `networkMacs[${i}]`,
+          {
+            validateFirst: true,
+            validateTrigger: ['blur', 'change'],
+            rules: [
+              {
+                required: true,
+                message: this.$t('compute.text_806'),
+              },
+              {
+                validator: validateForm('mac'),
+              },
+            ],
+          },
+        ],
+        devices: i => [
+          `networkDevices[${i}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+            rules: [{
+              required: true,
+              message: this.$t('compute.sriov_device_tips'),
+            }],
+          },
+        ],
       },
       vpcObj: {
         id: this.params.data[0].vpc_id,
@@ -137,13 +172,44 @@ export default {
     vpcResource () {
       return `cloudregions/${this.params.data[0].cloudregion_id}/vpcs`
     },
+    curResData () {
+      return this.params.data[0]
+    },
+    isKvm () {
+      return this.curResData.hypervisor === hypervisorMap.kvm.key
+    },
+  },
+  created () {
+    this.fetchCapability()
   },
   methods: {
+    fetchCapability () {
+      const params = {
+        show_emulated: true,
+        resource_type: 'shared',
+      }
+      let id = this.curResData.cloudregion
+      let resource = 'cloudregions'
+      if (this.curResData.zone) {
+        id = this.curResData.zone
+        resource = 'zones'
+      }
+      const capabilityParams = { id, spec: 'capability', params }
+      if (!id) return
+      if (R.equals(this.capabilityParams, capabilityParams)) return // 和已有的参数一样则不发请求
+      this.capabilityParams = capabilityParams
+      new this.$Manager(resource).getSpecific(this.capabilityParams)
+        .then(({ data }) => {
+          this.form.fi.capability = {
+            ...data,
+          }
+        })
+    },
     async handleConfirm () {
       this.loading = true
       try {
         const nets = []
-        const { networks, networkIps } = await this.form.fc.validateFields()
+        const { networks, networkIps, networkMacs, networkDevices } = await this.form.fc.validateFields()
         if (!networks || R.isEmpty(networks)) {
           this.cancelDialog()
           return false
@@ -154,6 +220,14 @@ export default {
           }
           if (networkIps && networkIps[key]) {
             o.address = networkIps[key]
+          }
+          if (networkMacs && networkMacs[key]) {
+            o.mac = networkMacs[key]
+          }
+          if (networkDevices && networkDevices[key]) {
+            o.sriov_device = {
+              model: networkDevices[key],
+            }
           }
           nets.push(o)
         }

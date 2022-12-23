@@ -40,11 +40,19 @@ export default {
                 })
               },
               meta: () => {
+                const ret = { validate: true }
                 const isOneCloud = this.data.brand === 'OneCloud'
-                return {
-                  validate: isOneCloud,
-                  tooltip: !isOneCloud && i18n.t('compute.text_391'),
+
+                if (obj.driver === 'vfio-pci') {
+                  ret.validate = false
+                  return ret
                 }
+                if (!isOneCloud) {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.text_391')
+                  return ret
+                }
+                return ret
               },
               hidden: () => !hasSetupKey(['onecloud']),
             },
