@@ -21,6 +21,7 @@ import {
   getTimeTableColumn,
   getProjectDomainTableColumn,
   getStatusTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 import { HYPERVISORS_MAP } from '@/constants'
 import expectStatus from '@/constants/expectStatus'
@@ -228,6 +229,13 @@ export default {
           },
         },
         getStatusTableColumn({ statusModule: 'externalproject' }),
+        getTagTableColumn({
+          onManager: this.onManager,
+          needExt: true,
+          resource: 'externalprojects',
+          columns: () => this.columns,
+          tipName: this.$t('cloudenv.text_386'),
+        }),
         getProjectDomainTableColumn(),
         projectColumn,
         getTimeTableColumn({

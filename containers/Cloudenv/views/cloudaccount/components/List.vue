@@ -199,6 +199,22 @@ export default {
                   }
                 },
               },
+              {
+                label: this.$t('cloudenv.set_project_mapping'),
+                permission: 'cloudaccounts_perform_project_mapping',
+                action: () => {
+                  this.createDialog('CloudaccountSetPojectmappingDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: !!this.list.selectedItems.length,
+                  }
+                },
+              },
               ...getEnabledSwitchActions(this, undefined, ['cloudaccounts_perform_enable', 'cloudaccounts_perform_disable'], {
                 actions: [
                   async (obj) => {
