@@ -31,10 +31,10 @@ export default {
         fc: this.$form.createForm(this),
       },
       decorators: {
-        delete_backup: [
-          'delete_backup',
+        auto_start: [
+          'auto_start',
           {
-            initialValue: true,
+            initialValue: false,
             valuePropName: 'checked',
           },
         ],
@@ -47,7 +47,6 @@ export default {
           span: 3,
         },
       },
-      purge_backup: false,
     }
   },
   computed: {
@@ -68,29 +67,8 @@ export default {
     },
   },
   created () {
-    this.fetchHosts(this.params.data[0])
   },
   methods: {
-    async fetchHosts (data) {
-      this.loading = true
-      try {
-        const manager = new this.$Manager('hosts')
-        const response = await manager.get({ id: data.host_id })
-        if (response.data.host_status !== 'online') {
-          this.form.fc.setFieldsValue({
-            delete_backup: true,
-          })
-          this.purge_backup = true
-        } else {
-          this.form.fc.setFieldsValue({
-            delete_backup: false,
-          })
-          this.purge_backup = false
-        }
-      } finally {
-        this.loading = false
-      }
-    },
     async handleConfirm () {
       this.loading = true
       try {
