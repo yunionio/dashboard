@@ -25,6 +25,7 @@ import {
   getOsArch,
   getIpsTableColumn,
   getServerMonitorAgentInstallStatus,
+  getStatusTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
