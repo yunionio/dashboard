@@ -27,26 +27,6 @@ export default {
         label: i18n.t('cloudenv.text_311'),
         actions: obj => {
           return [
-            // 修改
-            {
-              label: i18n.t('cloudenv.text_554'),
-              permission: 'projectmappings_update',
-              action: () => {
-                this.createDialog('ProjectMappingUpdateDialog', {
-                  data: [obj],
-                  columns: this.columns,
-                  success: (res) => {
-                    this.list.fetchData()
-                  },
-                })
-              },
-              meta: () => {
-                const ret = {
-                  validate: !!obj.can_update,
-                }
-                return ret
-              },
-            },
             // 启用禁用
             ...getEnabledSwitchActions(this, obj, ['projectmappings_perform_enable', 'projectmappings_perform_disable'], {
               resourceName: this.$t('cloudenv.text_580'),

@@ -48,3 +48,37 @@ export const getColumns = (row) => {
   }
   return []
 }
+
+export const getTargetColumns = (type) => {
+  if (type === 'accounts') {
+    return [
+      getCopyWithContentTableColumn({
+        field: 'id',
+        title: 'ID',
+        minWidth: 140,
+      }),
+      getCopyWithContentTableColumn({
+        field: 'name',
+        title: i18n.t('cloudenv.text_95'),
+      }),
+      getAccessUrlTableColumn(),
+      getBrandTableColumn(),
+    ]
+  }
+  if (type === 'providers') {
+    return [
+      getCopyWithContentTableColumn({
+        field: 'id',
+        title: 'ID',
+        minWidth: 140,
+      }),
+      getCopyWithContentTableColumn({
+        field: 'name',
+        title: i18n.t('cloudenv.text_95'),
+      }),
+      getBrandTableColumn(),
+      getAccountTableColumn(),
+    ]
+  }
+  return []
+}
