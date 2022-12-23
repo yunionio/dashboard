@@ -14,9 +14,16 @@ export default {
           })
         },
         meta: obj => {
-          return {
-            validate: !obj.guest_id,
+          const ret = { validate: true }
+          if (obj.dev_type === 'NIC') {
+            ret.validate = false
+            ret.tooltip = this.$t('compute.sriov_device_nic_notsupport')
+            return ret
           }
+          if (obj.guest_id) {
+            ret.validate = false
+          }
+          return ret
         },
       },
       {
@@ -31,30 +38,34 @@ export default {
           })
         },
         meta: obj => {
-          if (!obj.guest_id) {
-            return {
-              validate: false,
-              tooltip: this.$t('compute.text_487', [this.$t('dictionary.server')]),
-            }
+          const ret = { validate: true }
+
+          if (obj.dev_type === 'NIC') {
+            ret.validate = false
+            ret.tooltip = this.$t('compute.sriov_device_nic_notsupport')
+            return ret
           }
+
+          if (!obj.guest_id) {
+            ret.validate = false
+            ret.tooltip = this.$t('compute.text_487', [this.$t('dictionary.server')])
+            return ret
+          }
+
           if (obj.dev_type === 'USB') {
             if (obj.guest_status !== 'ready' && obj.guest_status !== 'running') {
-              return {
-                validate: false,
-                tooltip: this.$t('compute.text_489', [this.$t('dictionary.server')]),
-              }
+              ret.validate = false
+              ret.tooltip = this.$t('compute.text_489', [this.$t('dictionary.server')])
+              return ret
             }
           } else {
             if (obj.guest_status !== 'ready') {
-              return {
-                validate: false,
-                tooltip: this.$t('compute.text_489_1', [this.$t('dictionary.server')]),
-              }
+              ret.validate = false
+              ret.tooltip = this.$t('compute.text_489_1', [this.$t('dictionary.server')])
+              return ret
             }
           }
-          return {
-            validate: true,
-          }
+          return ret
         },
       },
       {
