@@ -112,6 +112,17 @@ export default {
         label: i18n.t('cloudenv.text_311'),
         actions: obj => {
           return [
+            {
+              label: this.$t('cloudenv.set_project_mapping'),
+              permission: 'cloudproviders_perform_project_mapping',
+              action: () => {
+                this.createDialog('CloudproviderSetPojectmappingDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+            },
             ...getEnabledSwitchActions(this, obj, ['cloudproviders_perform_enable', 'cloudproviders_perform_disable'], {
               actions: [
                 async (obj) => {

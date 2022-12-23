@@ -44,15 +44,17 @@ export default {
             showOverflow: 'title',
             slots: {
               default: ({ row }) => {
+                const ret = []
                 if (row.auto_create_project) {
-                  return [
-                    <span class='mr-2'>{ this.$t('cloudenv.text_493') }</span>,
-                    <help-tooltip name='cloudaccountAutoCreateProject' />,
-                  ]
+                  ret.push(<span class='mr-2'>{this.$t('cloudenv.text_493')}</span>)
+                  ret.push(<help-tooltip name='cloudaccountAutoCreateProject' />)
+                } else {
+                  ret.push(<list-body-cell-wrap copy field='tenant' row={row} />)
                 }
-                return [
-                  <list-body-cell-wrap copy field='tenant' row={row} />,
-                ]
+                if (row.project_mapping) {
+                  ret.push(<list-body-cell-wrap copy field='project_mapping' row={row} hideField>{this.$t('cloudenv.text_580')}：{row.project_mapping}</list-body-cell-wrap>)
+                }
+                return ret
               },
             },
           },

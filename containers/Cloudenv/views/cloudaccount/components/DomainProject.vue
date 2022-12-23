@@ -13,9 +13,14 @@
         <a-select-option v-for="item of domains" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
       </a-select>
     </a-form-item>
-    <a-form-item :label="$t('scope.text_573', [$t('dictionary.project')])" v-bind="formLayout" :extra="$t('cloudenv.text_91', [$t('dictionary.project'),$t('dictionary.project'),$t('dictionary.project')])">
-      <div class="d-flex align-items-center">
-        <a-select
+    <a-form-item :label="$t('cloudenv.resource_map_type')" :extra="resourceMapExtra">
+      <a-radio-group v-decorator="extraDecorators.resource_map_type" @change="resourceMapTypeChange">
+        <a-radio-button value="target_project">{{$t('cloudenv.target_project')}}</a-radio-button>
+        <a-radio-button v-if="showAutoCreateProject" value="auto_create_project">{{$t('cloudenv.map_by_cloudproject')}}</a-radio-button>
+      </a-radio-group>
+    </a-form-item>
+    <a-form-item :label="resourceMapType === 'target_project' ? $t('scope.text_573', [$t('dictionary.project')]) : $t('cloudenv.map_project_is_no_cloudproject')">
+      <a-select
         :disabled="disableProjectSelect || isOpenstack"
         :allowClear="allowClear"
         :labelInValue="labelInValue"
@@ -26,24 +31,28 @@
         :filterOption="filterOption"
         showSearch>
           <a-select-option v-for="item of projects" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
-        </a-select>
-        <a @click="fetchProjectsHandle"><a-icon :spin="projectLoading" type="sync" class="ml-2" /></a>
-      </div>
-      <div class="d-flex" v-if="showAutoCreateProject">
-        <div class="flex-shrink-0 flex-grow-0">
-          <template v-if="isOpenstack">
-            <a-tooltip :title="$t('cloudenv.text_494')">
-              <a-checkbox v-decorator="decorators.auto_create_project" @change="handleAutoCreateProjectChange" disabled>{{$t('cloudenv.text_92', [$t('dictionary.project')])}}</a-checkbox>
-            </a-tooltip>
-          </template>
-          <template v-else>
-            <a-checkbox v-decorator="decorators.auto_create_project" @change="handleAutoCreateProjectChange">{{$t('cloudenv.text_92', [$t('dictionary.project')])}}</a-checkbox>
-          </template>
-        </div>
-        <div class="flex-shrink-0 flex-grow-0 ml-1">
-          <help-tooltip name="cloudaccountAutoCreateProject" />
-        </div>
-      </div>
+      </a-select>
+    </a-form-item>
+    <a-form-item :label="$t('cloudenv.text_580')">
+      <a-switch v-decorator="extraDecorators.is_open_project_mapping" :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" @change="openProjectMappingChange" />
+      <a-form-item>
+        <base-select
+          v-if="openProjectMapping"
+          v-decorator="extraDecorators.project_mapping_id"
+          resource="project_mappings"
+          showSync
+          :select-props="{ placeholder: $t('common.tips.select', [$t('cloudenv.text_580')]) }" />
+          <div v-if="openProjectMapping" slot="extra">
+            {{$t('cloudenv.no_project_mapping')}}
+            <help-link :href="href">{{$t('cloudenv.go_create')}}</help-link>
+          </div>
+      </a-form-item>
+    </a-form-item>
+    <a-form-item v-if="openProjectMapping" :label="$t('cloudenv.project_mapping_effective_scope')">
+      <a-radio-group v-decorator="extraDecorators.effective_scope">
+        <a-radio-button value="resource">{{$t('cloudenv.resource_tag')}}</a-radio-button>
+        <a-radio-button value="project">{{$t('cloudenv.project_tag')}}</a-radio-button>
+      </a-radio-group>
     </a-form-item>
   </div>
 </template>
@@ -87,6 +96,31 @@ export default {
       projects: [],
       projectLoading: false,
       disableProjectSelect: false,
+      extraDecorators: {
+        resource_map_type: [
+          'resource_map_type',
+          {
+            initialValue: 'target_project',
+          },
+        ],
+        is_open_project_mapping: [
+          'is_open_project_mapping',
+          {
+            initialValue: false,
+          },
+        ],
+        project_mapping_id: [
+          'project_mapping_id',
+        ],
+        effective_scope: [
+          'effective_scope',
+          {
+            initialValue: 'resource',
+          },
+        ],
+      },
+      resourceMapType: 'target_project',
+      openProjectMapping: false,
     }
   },
   computed: {
@@ -96,6 +130,26 @@ export default {
         return this.provider.toLowerCase() === 'openstack'
       }
       return false
+    },
+    resourceMapExtra () {
+      if (this.resourceMapType === 'target_project') {
+        if (this.openProjectMapping) {
+          return this.$t('cloudenv.resource_map_project_mapping_target_project')
+        } else {
+          return this.$t('cloudenv.resource_map_target_project')
+        }
+      } else if (this.resourceMapType === 'auto_create_project') {
+        if (this.openProjectMapping) {
+          return this.$t('cloudenv.resource_map_project_mapping_cloudproject')
+        } else {
+          return this.$t('cloudenv.resource_map_cloudproject')
+        }
+      }
+      return ''
+    },
+    href () {
+      const url = this.$router.resolve('/projectmapping')
+      return url.href
     },
   },
   mounted () {
@@ -108,6 +162,12 @@ export default {
     }
   },
   methods: {
+    resourceMapTypeChange (e) {
+      this.resourceMapType = e.target.value
+    },
+    openProjectMappingChange (e) {
+      this.openProjectMapping = e
+    },
     filterOption (input, option) {
       return (
         option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0

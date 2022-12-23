@@ -256,6 +256,7 @@ export const PERMISSION = {
   buckets_list: ['compute', 'buckets', 'list'],
   // 云账号
   cloudaccounts_list: ['compute', 'cloudaccounts', 'list'],
+  cloudaccounts_perform_project_mapping: ['compute', 'cloudaccounts', 'perform', 'project-mapping'],
   // 代理
   proxysettings_list: ['compute', 'proxysettings', 'list'],
   // CDN
@@ -865,6 +866,7 @@ export const PERMISSION = {
   cloudproviders_perform_sync: ['compute', 'cloudproviders', 'perform', 'sync'],
   cloudproviders_perform_enable: ['compute', 'cloudproviders', 'perform', 'enable'],
   cloudproviders_perform_disable: ['compute', 'cloudproviders', 'perform', 'disable'],
+  cloudproviderss_perform_project_mapping: ['compute', 'cloudproviders', 'perform', 'project-mapping'],
   /**
    * cloudaccounts 相关操作
    */

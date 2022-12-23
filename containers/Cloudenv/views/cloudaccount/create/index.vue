@@ -211,9 +211,19 @@ export default {
       delete data.domain
       delete data.project
       if (!this.isAdminMode || !this.l3PermissionEnable) delete data.domain_id
-      if (data.auto_create_project) {
-        delete data.tenant
+      if (data.resource_map_type === 'auto_create_project') {
+        data.auto_create_project = true
       }
+      if (data.project_mapping_id) {
+        if (data.effective_scope === 'resource') {
+          data.enable_resource_sync = true
+        } else if (data.effective_scope === 'project') {
+          data.enable_project_sync = true
+        }
+      }
+      delete data.effective_scope
+      delete data.is_open_project_mapping
+      delete data.resource_map_type
     },
     _providerDiff (data) {
       const brand = this.currentItem.provider.toLowerCase()
@@ -235,6 +245,7 @@ export default {
         data.sync_interval_seconds = formData.sync_interval_seconds * 60 // 转换为秒
       }
       this._addDomainProject(data)
+      console.log(data)
       this._providerDiff(data)
       const ret = await this.cloudaccountsM.create({ data })
       if (this.$store.getters.auth.stats.cloudaccounts === 0) {
