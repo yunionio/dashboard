@@ -83,6 +83,22 @@ export default {
           label: this.$t('common.batchAction'),
           actions: obj => {
             return [
+              {
+                label: this.$t('cloudenv.set_project_mapping'),
+                permission: 'cloudproviders_perform_project_mapping',
+                action: () => {
+                  this.createDialog('CloudproviderSetPojectmappingDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: !!this.list.selectedItems.length,
+                  }
+                },
+              },
               ...getEnabledSwitchActions(this, undefined, ['cloudproviders_perform_enable', 'cloudproviders_perform_disable'], {
                 actions: [
                   async (obj) => {

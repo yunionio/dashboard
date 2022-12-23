@@ -6,7 +6,7 @@
         <!-- 域 -->
         <a-form-model-item :label="$t('dictionary.domain')" prop="project_domain_id">
           <domain-select v-model="formData.project_domain_id" v-if="isAdminMode && l3PermissionEnable" :params="domainParams" />
-          <template v-else> {{userInfo.domain.name}} </template>
+          <template v-else> {{userInfo.projectDomain}} </template>
         </a-form-model-item>
         <!-- 名称 -->
         <a-form-model-item :label="$t('cloudenv.text_95')" prop="name">
@@ -55,10 +55,6 @@
             <a-button type="link" @click="addRule">{{$t('cloudenv.text_586')}}</a-button>
           </div>
         </a-form-model-item>
-        <!-- 应用范围 -->
-        <application-scope
-          :formData="formData"
-          :params="{ project_domains: projectDomainId, filter: 'project_mapping_id.isnullorempty()', brand: ['Aws', 'Azure', 'Aliyun', 'Qcloud', 'Huawei', 'Google'] }" />
         <a-form-model-item :label="$t('cloudenv.text_282')" prop="public_scope">
           <a-radio-group v-model="formData.public_scope">
             <a-radio-button value="none">{{$t('cloudenv.text_285')}}</a-radio-button>
@@ -78,19 +74,15 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import Tag from '../components/Tag'
-import ApplicationScope from '../components/ApplicationScope'
 import DomainSelect from '@/sections/DomainSelect'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
-const brandMap = typeClouds.getBrand()
 
 export default {
   name: 'ProjectMappingCreateDialog',
   components: {
     DomainSelect,
     Tag,
-    ApplicationScope,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -101,7 +93,6 @@ export default {
         project_domain_id: projectDomainInitialValue,
         name: '',
         description: '',
-        application_scope: 1,
         rules: [],
         public_scope: 'none',
       },
@@ -163,12 +154,11 @@ export default {
         },
         {
           id: 3,
-          name: this.$t('cloudenv.match_by_resource_tag'),
+          name: this.$t('cloudenv.match_by_tag_key'),
           value: 'and_copy',
         },
       ],
       projectOptions: [],
-      accountOptions: [],
       projectDomainId: projectDomainInitialValue,
     }
   },
@@ -189,34 +179,6 @@ export default {
   mounted () {
   },
   methods: {
-    async fetchCloudAccount () {
-      this.$d = new this.$Manager('cloudaccounts')
-      this.accountOptions = undefined
-      try {
-        const params = {
-          scope: this.$store.getters.scope,
-          project_domain_id: this.projectDomainId,
-        }
-        const { data } = await this.$d.list({ params })
-        const cloudAccounts = data.data || []
-        const accountOptions = []
-        cloudAccounts.map(item => {
-          const isPublic = findPlatform(item.brand.toLowerCase()) === 'public'
-          if (isPublic) {
-            accountOptions.push({
-              id: item.id,
-              name: item.name,
-              brand: this.$t('cloudenv.text_102') + ': ' + brandMap[item.brand].label,
-              project_mapping: item.project_mapping || false,
-            })
-          }
-        })
-        this.accountOptions = accountOptions
-      } catch (err) {
-        throw err
-      } finally {
-      }
-    },
     async fetchProject () {
       this.$p = new this.$Manager('projects', 'v1')
       this.projectOptions = undefined
@@ -263,16 +225,9 @@ export default {
       try {
         const validate = await this.$refs.ruleForm.validate()
         if (!validate) return
-        const { application_cope } = this.formData
         // 获取参数
         const params = this.getCreateParams()
-        const createResult = await this.doCreate(params)
-        const { id } = createResult.data
-        if (application_cope === 1 && this.formData.accounts?.length > 0) {
-          await this.doBindByAccount({ accountIds: this.formData.accounts, project_mapping_id: id })
-        } else if (application_cope === 2 && this.formData.cloudproviders?.length > 0) {
-          await this.doBindByCloudProvider({ cloudproviderIds: this.formData.cloudproviders, project_mapping_id: id })
-        }
+        await this.doCreate(params)
         this.cancelDialog()
         this.params.success && this.params.success()
         this.$message.success(this.$t('cloudenv.text_381'))

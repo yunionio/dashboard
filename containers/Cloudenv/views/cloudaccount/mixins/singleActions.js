@@ -277,6 +277,17 @@ export default {
                 }
               },
             },
+            {
+              label: this.$t('cloudenv.set_project_mapping'),
+              permission: 'cloudaccounts_perform_project_mapping',
+              action: (obj) => {
+                this.createDialog('CloudaccountSetPojectmappingDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+            },
             ...getEnabledSwitchActions(this, obj, ['cloudaccounts_perform_enable', 'cloudaccounts_perform_disable'], {
               actions: [
                 async (obj) => {

@@ -1,4 +1,4 @@
-import { getColumns, getResource } from '../utils'
+import { getTargetColumns } from '../utils'
 import {
   getNameDescriptionTableColumn,
   getProjectDomainTableColumn,
@@ -91,29 +91,45 @@ export default {
         field: 'account',
         slots: {
           default: ({ row }) => {
-            const data = row.accounts || row.managers
-            if (!data) return '-'
-            const header = row.accounts?.length > 0 ? this.$t('cloudenv.text_589') : this.$t('cloudenv.project_mapping_use_cloudprovider')
-            const resIds = data.map(v => v.id)
-            const columns = getColumns(row)
-            const resource = getResource(row)
-            return [
-              <a onClick={() => {
+            const ret = []
+            if (row.accounts && row.accounts.length) {
+              const resIds = row.accounts.map(v => v.id)
+              ret.push(<div><a onClick={() => {
                 this.createDialog('CommonDialog', {
                   hiddenCancel: true,
-                  header,
+                  header: this.$t('cloudenv.text_589'),
                   body: () => {
                     return (
                       <dialog-table
                         vxeGridProps={{ showOverflow: 'title' }}
-                        resource={ resource }
-                        params={{ filter: `id.in(${resIds.join(',')})` }}
-                        columns={ columns } />
+                        resource='cloudaccounts'
+                        params={{ scope: this.$store.getters.scope, filter: `id.in(${resIds.join(',')})` }}
+                        columns={getTargetColumns('accounts')} />
                     )
                   },
                 })
-              }}>{ data.length }</a>,
-            ]
+              }}>{row.accounts.length}</a>{' (' + this.$t('cloudenv.project_mapping_account') + ')'}</div>)
+            }
+            if (row.managers && row.managers.length) {
+              const resIds = row.managers.map(v => v.id)
+              ret.push(<div><a onClick={() => {
+                this.createDialog('CommonDialog', {
+                  hiddenCancel: true,
+                  header: this.$t('cloudenv.project_mapping_use_cloudprovider'),
+                  body: () => {
+                    return (
+                      <dialog-table
+                        vxeGridProps={{ showOverflow: 'title' }}
+                        resource='cloudproviders'
+                        params={{ scope: this.$store.getters.scope, filter: `id.in(${resIds.join(',')})` }}
+                        columns={getTargetColumns('providers')} />
+                    )
+                  },
+                })
+              }}>{row.managers.length}</a>{' (' + this.$t('cloudenv.project_mapping_cloudprovider') + ')'}</div>)
+            }
+            if (!ret.length) return '-'
+            return ret
           },
         },
       },
@@ -130,7 +146,7 @@ export default {
       } else if (data.hasOwnProperty('project_id')) {
         return i18n.t('cloudenv.text_588')
       } else {
-        return i18n.t('cloudenv.match_by_resource_tag')
+        return i18n.t('cloudenv.match_by_tag_key')
       }
     },
   },
