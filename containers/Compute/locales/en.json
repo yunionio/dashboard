@@ -1653,5 +1653,6 @@
   "compute.guest_switch_to_backup": "Active/standby switching",
   "compute.start_buckup": "Start the backup machine",
   "compute.config_sriov_net": "Configure SR-IOV network card",
-  "compute.sriov_device_tips": "Please select a device model"
+  "compute.sriov_device_tips": "Please select a device model",
+  "compute.sriov_device_nic_notsupport": "The NIC device type does not support this operation"
 }
