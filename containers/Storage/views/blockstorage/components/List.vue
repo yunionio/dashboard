@@ -106,6 +106,25 @@ export default {
                 })
               },
             },
+            {
+              label: this.$t('compute.text_540'),
+              permission: 'storages_update',
+              action: () => {
+                this.createDialog('BlockStorageUpdateTagsDialog', {
+                  data: this.list.selectedItems,
+                  columns: this.columns,
+                  title: this.$t('compute.text_540'),
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  rows: this.list.selectedItems,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
+            },
             getDomainChangeOwnerAction(this, {
               name: this.$t('dictionary.storages'),
               resource: 'storages',
