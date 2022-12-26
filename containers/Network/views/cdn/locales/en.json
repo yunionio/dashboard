@@ -14,5 +14,7 @@
   "network.cdn.service_type_dynamic": "ECDN dynamic acceleration",
   "network.cdn.origin_type_domain": "Own Origin",
   "network.cdn.origin_type_cos": "COS origin",
-  "network.cdn.origin_protocol_follow": "Protocol Follow"
+  "network.cdn.origin_protocol_follow": "Protocol Follow",
+  "network.cdn.origin_repeat_validate": "The currently added IP address of the origin site is repeated!",
+  "network.cdn.priority_validate": "The weight cannot be configured for a single origin site!"
 }
