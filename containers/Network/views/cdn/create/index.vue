@@ -283,7 +283,7 @@ export default {
     add () {
       const { form } = this
       const keys = form.fc.getFieldValue('keys')
-      const nextKeys = keys.concat(id++)
+      const nextKeys = keys.concat(++id)
       form.fc.setFieldsValue({
         keys: nextKeys,
       })
