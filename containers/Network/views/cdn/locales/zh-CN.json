@@ -14,5 +14,7 @@
   "network.cdn.service_type_dynamic": "ECDN动态加速",
   "network.cdn.origin_type_domain": "自有源",
   "network.cdn.origin_type_cos": "COS源",
-  "network.cdn.origin_protocol_follow": "协议追随"
+  "network.cdn.origin_protocol_follow": "协议追随",
+  "network.cdn.origin_repeat_validate": "当前所添加的源站IP地址重复!",
+  "network.cdn.priority_validate": "单个源站不能配置权重!"
 }
