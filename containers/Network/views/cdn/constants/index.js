@@ -19,7 +19,7 @@ export const SERVICE_TYPE_MAP = arrayToObj(SERVICE_TYPES, 'key')
 
 export const ORIGIN_TYPES = [
   { key: 'domain', label: i18n.t('network.cdn.origin_type_domain') },
-  { key: 'cos', label: i18n.t('network.cdn.origin_type_cos') },
+  // { key: 'cos', label: i18n.t('network.cdn.origin_type_cos') },
 ]
 
 // 回源协议
