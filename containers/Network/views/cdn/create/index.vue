@@ -197,7 +197,10 @@ export default {
           scope: this.$store.getters.scope,
           limit: 0,
         },
-        cloudprovider: {},
+        cloudprovider: {
+          scope: this.$store.getters.scope,
+          brand: 'Qcloud',
+        },
       },
       formItemLayout: {
         wrapperCol: {
