@@ -347,7 +347,10 @@ export default {
               hideField: true,
               slotCallback: row => {
                 if (!row.cdrom) return '-'
-                const cdrom = `${row.cdrom}`
+                let cdrom = `${row.cdrom}`
+                if (Array.isArray(row.cdrom) && row.cdrom.length > 0) {
+                  cdrom = row.cdrom[0].detail
+                }
                 const idx = cdrom.indexOf('(')
                 const id = cdrom.substring(idx + 1, cdrom.indexOf('/'))
                 return [
