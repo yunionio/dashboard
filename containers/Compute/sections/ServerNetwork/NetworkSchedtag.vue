@@ -3,6 +3,18 @@
     <div class="d-flex align-items-start mb-2" v-for="(item, i) in schedtagList" :key="item.key">
       <a-tag color="blue" class="mr-1 mt-2">{{ isBonding ? 'bond' : $t('compute.text_193')}}{{i}}</a-tag>
       <schedtag-policy :form="form" :decorators="genDecorator(item.key)" :schedtag-params="schedtagParams" :policyReactInSchedtag="false" />
+      <template v-if="showDeviceConfig">
+        <template v-if="item.deviceShow">
+          <a-form-item class="mb-0 ml-1"  :wrapperCol="{ span: 24 }">
+            <oc-select
+              v-decorator="decorator.devices(item.key)"
+              :data="gpuOptions"
+              :placeholder="$t('compute.sriov_device_tips')" />
+          </a-form-item>
+          <a-button type="link" class="mt-1" @click="triggerShowDevice(item)">{{$t('compute.text_135')}}</a-button>
+        </template>
+        <a-button v-else type="link" class="mr-1 mt-1" @click="triggerShowDevice(item)">{{ $t('compute.config_sriov_net') }}</a-button>
+      </template>
       <a-button shape="circle" icon="minus" size="small" @click="decrease(item.key, i)" class="mt-2" />
     </div>
     <div class="d-flex align-items-center" v-if="schedtagCountRemaining > 0">
@@ -46,6 +58,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    showDeviceConfig: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -57,6 +73,24 @@ export default {
     schedtagCountRemaining () {
       return this.limit - this.schedtagList.length
     },
+    gpuOptions () {
+      const specs = this.form.fi.capability.specs || {}
+      const data = specs.isolated_devices || {}
+      const ret = []
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          const item = data[key]
+          if (item.dev_type.startsWith('NIC')) {
+            ret.push({
+              ...item,
+              key: `${item.model}`,
+              label: `${item.vendor}/${item.model}`,
+            })
+          }
+        }
+      }
+      return ret
+    },
   },
   created () {
     this.add()
@@ -66,6 +100,7 @@ export default {
       const uid = uuid()
       this.schedtagList.push({
         key: uid,
+        deviceShow: false,
       })
     },
     decrease (uid, index) {
@@ -76,6 +111,9 @@ export default {
         schedtag: this.decorator.schedtags(key),
         policy: this.decorator.policys(key),
       }
+    },
+    triggerShowDevice (item, i) {
+      item.deviceShow = !item.deviceShow
     },
   },
 }
