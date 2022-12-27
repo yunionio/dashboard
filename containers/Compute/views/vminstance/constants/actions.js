@@ -63,12 +63,7 @@ const getSingleActions = function () {
         }
         if (obj.provider === 'OneCloud' && obj.status === 'running') {
           vncRemote.render = (obj, params, h) => {
-            return h(VncInfoFetcher, {
-              onManager: this.onManager,
-              row: obj,
-              buttonText: i18n.t('compute.text_1274'),
-              buttonProps: params,
-            })
+            return <VncInfoFetcher onManager={this.onManager} row={obj} buttonText={i18n.t('compute.text_1274')} buttonProps={params} />
           }
         }
         ret.push(vncRemote)
