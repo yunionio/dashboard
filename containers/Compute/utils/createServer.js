@@ -429,7 +429,7 @@ export const createVmDecorators = type => {
             validateTrigger: ['change', 'blur'],
             rules: [{
               required: true,
-              message: this.$t('compute.sriov_device_tips'),
+              message: i18n.t('compute.sriov_device_tips'),
             }],
           },
         ],
