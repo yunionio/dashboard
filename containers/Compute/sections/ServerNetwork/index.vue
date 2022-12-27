@@ -35,7 +35,8 @@
         :decorator="decorator.networkSchedtag"
         :isBonding="isBonding"
         :schedtag-params="schedtagParams"
-        :limit="form.fi.capability.max_nic_count" />
+        :limit="form.fi.capability.max_nic_count"
+        :showDeviceConfig="showDeviceConfig" />
     </a-form-item>
   </div>
 </template>
