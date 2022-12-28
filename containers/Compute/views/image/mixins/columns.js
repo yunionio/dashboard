@@ -32,9 +32,13 @@ export default {
         slots: {
           default: ({ row }, h) => {
             const fileProcess = row.status === 'saving' ? <FileProcess size={ row.size }></FileProcess> : null
+            const log = <side-page-trigger class="ml-1" onTrigger={ () => this.handleOpenSidepage(row, 'event-drawer') }>{ this.$t('common.view_logs') }</side-page-trigger>
             return [
               <div class='text-truncate'>
-                <status status={ row.status } statusModule={ 'image' } process={ row.progress } />
+                <div class="d-flex align-items-center">
+                  <status status={ row.status } statusModule={ 'image' } process={ row.progress } />
+                  { row.status?.includes('fail') ? log : null }
+                </div>
                 { fileProcess }
               </div>,
             ]

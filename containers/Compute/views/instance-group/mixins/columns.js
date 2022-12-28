@@ -20,7 +20,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'instanceGroup' }),
+      getStatusTableColumn({ statusModule: 'instanceGroup', vm: this }),
       getEnabledTableColumn(),
       {
         field: 'force_dispersion',

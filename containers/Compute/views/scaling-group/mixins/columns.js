@@ -13,7 +13,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'scalinggroup', minWidth: 130 }),
+      getStatusTableColumn({ statusModule: 'scalinggroup', minWidth: 130, vm: this }),
       getEnabledTableColumn(),
       getCopyWithContentTableColumn({
         field: 'guest_template',
