@@ -509,13 +509,14 @@ export default {
       }
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'HostSidePage', {
         id: row.id,
         resource: 'hosts',
         getParams: this.getParam,
       }, {
         list: this.list,
+        tab,
       })
     },
     defaultSearchKey (search) {
