@@ -31,7 +31,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'servertemplate' }),
+      getStatusTableColumn({ statusModule: 'servertemplate', vm: this }),
       getOsArch({ field: 'content.os_arch' }),
       {
         field: 'instance_type',

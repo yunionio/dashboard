@@ -198,7 +198,15 @@ export default {
       })
     }
   },
+  mounted () {
+    this.initChangeTab()
+  },
   methods: {
+    initChangeTab () {
+      if (this.params.tab) {
+        this.handleTabChange(this.params.tab)
+      }
+    },
     cancelSidePage () {
       if (this.params && R.is(Function, this.params.cancel)) {
         this.params.cancel()
