@@ -22,8 +22,8 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'snapshot' }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'instance_snapshot', columns: () => this.columns }),
+      getStatusTableColumn({ statusModule: 'snapshot', vm: this }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'instance_snapshots', columns: () => this.columns }),
       {
         field: 'rules',
         title: i18n.t('table.title.sub_snapshot'),

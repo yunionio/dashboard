@@ -226,7 +226,7 @@ export default {
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'SecGroupSidePage', {
         id: row.id,
         resource: 'secgroups',
@@ -236,6 +236,7 @@ export default {
         hiddenSidepageTabs: this.hiddenSidepageTabs,
         hiddenColumns: this.hiddenColumns,
         hiddenActions: this.hiddenActions,
+        tab,
       })
     },
     async loadRules ({ row }) {

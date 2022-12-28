@@ -106,7 +106,7 @@ export default {
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'SnapshotPolicySidePage', {
         id: row.id,
         resource: 'snapshotpolicies',
@@ -115,6 +115,7 @@ export default {
       }, {
         list: this.list,
         type: this.type,
+        tab,
       })
     },
   },

@@ -158,7 +158,7 @@ export default {
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'InstanceBackupSidePage', {
         id: row.id,
         resource: 'instancebackups',
@@ -166,6 +166,7 @@ export default {
         steadyStatus: this.list.steadyStatus,
       }, {
         list: this.list,
+        tab,
       })
     },
   },
