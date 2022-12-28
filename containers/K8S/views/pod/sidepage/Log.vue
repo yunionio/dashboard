@@ -59,7 +59,7 @@ export default {
       const { data: { containers } } = await this.manager.get({
         id: this.data.id,
         params: {
-          cluster: this.data.clusterID,
+          cluster: this.data.cluster_id,
           namespace: this.data.namespace,
         },
       })
@@ -69,7 +69,7 @@ export default {
     },
     async fetchUrl (container) {
       const params = {
-        cluster: this.data.cluster,
+        cluster: this.data.cluster_id,
         namespace: this.data.namespace,
         name: this.data.name,
         container,
