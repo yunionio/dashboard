@@ -56,6 +56,7 @@ export default {
       getStatusTableColumn({
         statusModule: 'host',
         minWidth: 100,
+        vm: this,
       }),
       getEnabledTableColumn(),
       getStatusTableColumn({

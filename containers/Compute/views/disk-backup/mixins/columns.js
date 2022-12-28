@@ -28,7 +28,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'diskBackup' }),
+      getStatusTableColumn({ statusModule: 'diskBackup', vm: this }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'diskbackups', columns: () => this.columns }),
       getDiskTypeTableColumn(),
       getDiskNameTableColumn(),
