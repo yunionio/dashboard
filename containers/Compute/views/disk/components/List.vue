@@ -314,7 +314,7 @@ export default {
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.initSidePageTab('disk-detail')
       this.sidePageTriggerHandle(this, 'DiskSidePage', {
         id: row.id,
@@ -327,6 +327,7 @@ export default {
       }, {
         list: this.list,
         hiddenColumns: this.hiddenColumns,
+        tab,
       })
     },
     beforeShowMenu () {

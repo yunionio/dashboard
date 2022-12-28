@@ -330,7 +330,7 @@ export default {
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'PhysicalmachineSidePage', {
         id: row.id,
         resource: 'hosts',
@@ -340,6 +340,7 @@ export default {
         },
       }, {
         list: this.list,
+        tab,
       })
     },
     defaultSearchKey (search) {

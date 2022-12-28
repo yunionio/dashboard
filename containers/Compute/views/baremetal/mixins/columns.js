@@ -18,7 +18,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'server' }),
+      getStatusTableColumn({ statusModule: 'server', vm: this }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.columns }),
       getIpsTableColumn({ field: 'ip', title: 'IP' }),
       {

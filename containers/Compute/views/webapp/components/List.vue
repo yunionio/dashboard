@@ -123,13 +123,14 @@ export default {
       }
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'WebAppSidePage', {
         id: row.id,
         resource: 'webapps',
         getParams: this.getParam,
       }, {
         list: this.list,
+        tab,
       })
     },
   },
