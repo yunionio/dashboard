@@ -78,6 +78,9 @@ export default {
                 field: 'project_name',
                 title: i18n.t('cloudenv.text_584'),
                 formatter: ({ row }) => {
+                  if (row.condition === 'and' && !row.hasOwnProperty('project_id')) {
+                    return i18n.t('cloudenv.project_same_as_tag_value')
+                  }
                   return row.project ? row.project : '-'
                 },
               },
@@ -108,7 +111,7 @@ export default {
                     )
                   },
                 })
-              }}>{row.accounts.length}</a>{' (' + this.$t('cloudenv.project_mapping_account') + ')'}</div>)
+              }}>{row.accounts.length}</a><span class="text-color-secondary">{' (' + this.$t('cloudenv.project_mapping_account') + ')'}</span></div>)
             }
             if (row.managers && row.managers.length) {
               const resIds = row.managers.map(v => v.id)
@@ -126,7 +129,7 @@ export default {
                     )
                   },
                 })
-              }}>{row.managers.length}</a>{' (' + this.$t('cloudenv.project_mapping_cloudprovider') + ')'}</div>)
+              }}>{row.managers.length}</a><span class="text-color-secondary">{' (' + this.$t('cloudenv.project_mapping_cloudprovider') + ')'}</span></div>)
             }
             if (!ret.length) return '-'
             return ret
