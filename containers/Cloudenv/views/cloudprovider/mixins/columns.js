@@ -68,11 +68,6 @@ export default {
         field: 'project_domain',
         title: i18n.t('cloudenv.text_355', [i18n.t('dictionary.domain')]),
       }),
-      getCopyWithContentTableColumn({
-        field: 'tenant',
-        title: i18n.t('cloudenv.text_356', [i18n.t('dictionary.project')]),
-        minWidth: 140,
-      }),
       {
         field: 'tenant',
         title: i18n.t('cloudenv.text_356', [i18n.t('dictionary.project')]),
@@ -83,7 +78,7 @@ export default {
             const ret = []
             ret.push(<list-body-cell-wrap copy field='tenant' row={row} />)
             if (row.project_mapping) {
-              ret.push(<list-body-cell-wrap copy field='project_mapping' row={row} hideField>{this.$t('cloudenv.text_580')}：{row.project_mapping}</list-body-cell-wrap>)
+              ret.push(<list-body-cell-wrap copy field='project_mapping' row={row} hideField><span class="text-color-secondary">{this.$t('cloudenv.text_580')}：{row.project_mapping}</span></list-body-cell-wrap>)
             }
             return ret
           },
