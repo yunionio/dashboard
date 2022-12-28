@@ -104,7 +104,7 @@ export default {
       getBrandTableColumn(),
       getRegionTableColumn({ vm: this }),
       getBillingTypeTableColumn(),
-      getStatusTableColumn({ statusModule: 'disk' }),
+      getStatusTableColumn({ statusModule: 'disk', vm: this }),
       getProjectTableColumn(),
       getAccountTableColumn({ vm: this }),
       {

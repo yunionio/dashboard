@@ -125,13 +125,14 @@ export default {
       }
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'InstanceGroupSidePage', {
         id: row.id,
         resource: 'instancegroups',
         getParams: this.getParam,
       }, {
         list: this.list,
+        tab,
       })
     },
   },

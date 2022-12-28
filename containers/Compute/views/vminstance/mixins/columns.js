@@ -95,7 +95,7 @@ export default {
         minWidth: 180,
         statusModule: 'server',
         slotCallback: row => {
-          const log = <side-page-trigger class="ml-1" name='VmInstanceSidePage' id={row.id} tab='event-drawer' vm={this} init>{ i18nLocale.t('common.view_logs') }</side-page-trigger>
+          const log = <side-page-trigger class="ml-1" onTrigger={ () => this.handleOpenSidepage(row, 'event-drawer') }>{ this.$t('common.view_logs') }</side-page-trigger>
 
           return [
             <div class='d-flex align-items-center text-truncate'>

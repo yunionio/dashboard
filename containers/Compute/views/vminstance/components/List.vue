@@ -1096,7 +1096,7 @@ export default {
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'VmInstanceSidePage', {
         id: row.id,
         resource: 'servers',
@@ -1104,6 +1104,7 @@ export default {
         steadyStatus: Object.values(expectStatus.server).flat(),
       }, {
         list: this.list,
+        tab,
       })
     },
     beforeShowMenu () {
