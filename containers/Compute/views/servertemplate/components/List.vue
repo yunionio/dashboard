@@ -173,13 +173,14 @@ export default {
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'ServertemplateSidePage', {
         id: row.id,
         resource: 'servertemplates',
         getParams: this.getParam,
       }, {
         list: this.list,
+        tab,
       })
     },
   },

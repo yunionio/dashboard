@@ -239,7 +239,7 @@ export default {
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'HostImageSidePage', {
         id: row.id,
         resource: 'guestimages',
@@ -248,6 +248,7 @@ export default {
         steadyStatus: Object.values(expectStatus.image).flat(),
       }, {
         list: this.list,
+        tab,
       })
     },
   },

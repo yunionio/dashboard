@@ -23,7 +23,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'snapshot' }),
+      getStatusTableColumn({ statusModule: 'snapshot', vm: this }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'instance_snapshots', columns: () => this.columns }),
       {
         field: 'rules',
