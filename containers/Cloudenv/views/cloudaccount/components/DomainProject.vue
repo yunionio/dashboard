@@ -48,8 +48,8 @@
           </div>
       </a-form-item>
     </a-form-item>
-    <a-form-item v-if="openProjectMapping" :label="$t('cloudenv.project_mapping_effective_scope')">
-      <a-radio-group v-decorator="extraDecorators.effective_scope">
+    <a-form-item v-if="openProjectMapping" :label="$t('cloudenv.project_mapping_effective_scope')" :extra="effectiveScopeExtra">
+      <a-radio-group v-decorator="extraDecorators.effective_scope" @change="effectiveScopeChange">
         <a-radio-button value="resource">{{$t('cloudenv.resource_tag')}}</a-radio-button>
         <a-radio-button value="project">{{$t('cloudenv.project_tag')}}</a-radio-button>
       </a-radio-group>
@@ -121,6 +121,7 @@ export default {
       },
       resourceMapType: 'target_project',
       openProjectMapping: false,
+      effectiveScope: 'resource',
     }
   },
   computed: {
@@ -147,6 +148,12 @@ export default {
       }
       return ''
     },
+    effectiveScopeExtra () {
+      if (this.effectiveScope === 'resource') {
+        return this.$t('cloudenv.resource_tag_tip')
+      }
+      return this.$t('cloudenv.project_tag_tip')
+    },
     href () {
       const url = this.$router.resolve('/projectmapping')
       return url.href
@@ -164,6 +171,9 @@ export default {
   methods: {
     resourceMapTypeChange (e) {
       this.resourceMapType = e.target.value
+    },
+    effectiveScopeChange (e) {
+      this.effectiveScope = e.target.value
     },
     openProjectMappingChange (e) {
       this.openProjectMapping = e
