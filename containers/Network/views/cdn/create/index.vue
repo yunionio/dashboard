@@ -241,7 +241,7 @@ export default {
       const data = {
         project_domain_id: values.project_domain_id,
         cloudprovider_id: values.cloudprovider,
-        generate_name: values.domain,
+        name: values.domain,
         area: values.area,
         service_type: values.service_type,
       }
