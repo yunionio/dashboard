@@ -15,7 +15,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'tablestore' }),
+      getStatusTableColumn({ statusModule: 'tablestore', vm: this }),
       // {
       //   field: 'spec',
       //   title: i18n.t('storage.spec'),

@@ -20,7 +20,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'blockstorage' }),
+      getStatusTableColumn({ statusModule: 'blockstorage', vm: this }),
       getEnabledTableColumn(),
       getTagTableColumn({
         onManager: this.onManager,
