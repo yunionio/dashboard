@@ -197,13 +197,14 @@ export default {
       }
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'FileSystemSidePage', {
         id: row.id,
         resource: 'file_systems',
         getParams: this.getParam,
       }, {
         list: this.list,
+        tab,
       })
     },
   },

@@ -107,7 +107,7 @@ export default {
       }
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'TablestoreSidePage', {
         id: row.id,
         resource: 'tablestores',
@@ -115,6 +115,7 @@ export default {
         steadyStatus: this.list.steadyStatus,
       }, {
         list: this.list,
+        tab,
       })
     },
   },
