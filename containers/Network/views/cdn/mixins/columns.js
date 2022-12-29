@@ -86,8 +86,8 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'cdnDomain' }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'cdn_domain', columns: () => this.columns }),
+      getStatusTableColumn({ statusModule: 'cdnDomain', vm: this }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'cdn_domains', columns: () => this.columns }),
       getAreaColumn({}),
       getCnameTableColumn({}),
       getServiceTypeColumn({}),

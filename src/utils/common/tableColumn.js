@@ -120,7 +120,7 @@ export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t
         const val = _.get(row, field) || false
         if (R.isNil(val) || !_.get(row, field)) return '-'
         const log = <side-page-trigger class="ml-1" onTrigger={ () => vm.handleOpenSidepage(row, 'event-drawer') }>{ i18n.t('common.view_logs') }</side-page-trigger>
-        const isError = ['invalid', 'unknown'].includes(row.status) || /failed|fail$/.test(row.status)
+        const isError = ['invalid', 'unknown'].includes(val) || /failed|fail$/.test(val)
         return [
           <div class='d-flex align-items-center text-truncate'>
             <status status={ val } statusModule={ statusModule } />

@@ -23,8 +23,8 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'globalVpc' }),
-      getTagTableColumn({ onManager: this.onManager, resource: 'globalvpc', columns: () => this.columns, tipName: this.$t('dictionary.globalvpc') }),
+      getStatusTableColumn({ statusModule: 'globalVpc', vm: this }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'network_globalvpcs', columns: () => this.columns, tipName: this.$t('dictionary.globalvpc') }),
       getBrandTableColumn(),
       {
         field: 'vpc_count',

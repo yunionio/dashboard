@@ -28,8 +28,8 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'lb', title: i18n.t('network.text_27') }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'loadbalancer', columns: () => this.columns }),
+      getStatusTableColumn({ statusModule: 'lb', title: i18n.t('network.text_27'), vm: this }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'lb_loadbalancers', columns: () => this.columns }),
       {
         field: 'address',
         title: i18n.t('network.text_248'),

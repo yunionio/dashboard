@@ -23,8 +23,8 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'eip' }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.columns }),
+      getStatusTableColumn({ statusModule: 'eip', vm: this }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'eips', columns: () => this.columns }),
       {
         field: 'ip_addr',
         title: 'IP',
