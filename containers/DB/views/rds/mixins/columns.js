@@ -21,7 +21,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'rds' }),
+      getStatusTableColumn({ statusModule: 'rds', vm: this }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'rds_dbinstances', columns: () => this.columns }),
       {
         field: 'category',
