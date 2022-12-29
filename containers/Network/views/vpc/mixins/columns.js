@@ -24,8 +24,14 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'vpc' }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'vpc', columns: () => this.columns }),
+      getStatusTableColumn({ statusModule: 'vpc', vm: this }),
+      getTagTableColumn({
+        onManager: this.onManager,
+        needExt: true,
+        resource: 'vpcs',
+        columns: () => this.columns,
+        editCheck: (row) => (row.provider || '').toLowerCase() !== 'bingocloud',
+      }),
       getCopyWithContentTableColumn({
         field: 'cidr_block',
         title: i18n.t('network.text_244'),

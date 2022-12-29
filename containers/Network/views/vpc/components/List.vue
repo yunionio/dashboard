@@ -269,7 +269,7 @@ export default {
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'VpcSidePage', {
         id: row.id,
         resource: 'vpcs',
@@ -278,6 +278,7 @@ export default {
         list: this.list,
         hiddenActions: this.hiddenActions,
         hiddenColumns: this.hiddenColumns,
+        tab,
       })
     },
     defaultSearchKey (search) {

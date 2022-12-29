@@ -291,13 +291,14 @@ export default {
       }
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'WireSidePage', {
         id: row.id,
         resource: 'wires',
         getParams: this.getParam,
       }, {
         list: this.list,
+        tab,
       })
     },
   },

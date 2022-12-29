@@ -50,8 +50,14 @@ export default {
           },
         },
       },
-      getStatusTableColumn({ statusModule: 'network' }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'network', columns: () => this.columns }),
+      getStatusTableColumn({ statusModule: 'network', vm: this }),
+      getTagTableColumn({
+        onManager: this.onManager,
+        needExt: true,
+        resource: 'networks',
+        columns: () => this.columns,
+        editCheck: (row) => (row.provider || '').toLowerCase() !== 'bingocloud',
+      }),
       {
         field: 'server_type',
         title: i18n.t('network.text_249'),
