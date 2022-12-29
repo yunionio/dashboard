@@ -602,7 +602,7 @@ export default {
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'NetworkSidePage', {
         id: row.id,
         resource: 'networks',
@@ -611,6 +611,7 @@ export default {
         list: this.list,
         hiddenActions: this.hiddenActions,
         hiddenColumns: this.hiddenColumns,
+        tab,
       })
     },
     defaultSearchKey (search) {

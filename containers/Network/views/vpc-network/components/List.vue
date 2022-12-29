@@ -147,13 +147,14 @@ export default {
       }
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'VpcNetworkSidePage', {
         id: row.id,
         resource: 'inter_vpc_networks',
         getParams: this.getParam,
       }, {
         list: this.list,
+        tab,
       })
     },
   },
