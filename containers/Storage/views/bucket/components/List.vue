@@ -273,7 +273,7 @@ export default {
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'BucketStorageSidePage', {
         id: row.id,
         resource: 'buckets',
@@ -283,6 +283,7 @@ export default {
         cancel: () => {
           this.list.singleRefresh(row.id, Object.values(expectStatus.bucket).flat())
         },
+        tab,
       })
     },
   },
