@@ -23,7 +23,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'ipv6_gateway', title: i18n.t('network.text_27') }),
+      getStatusTableColumn({ statusModule: 'ipv6_gateway', title: i18n.t('network.text_27'), vm: this }),
       {
         field: 'vpc',
         title: 'VPC',

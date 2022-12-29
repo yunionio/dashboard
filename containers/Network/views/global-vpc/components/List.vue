@@ -202,13 +202,14 @@ export default {
       }
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'globalVpcSidePage', {
         id: row.id,
         resource: 'globalvpcs',
         getParams: this.getParam,
       }, {
         list: this.list,
+        tab,
       })
     },
   },
