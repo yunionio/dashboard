@@ -183,7 +183,7 @@ export default {
       }
       return status
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'MongoDBSidePage', {
         id: row.id,
         resource: 'mongodbs',
@@ -193,6 +193,7 @@ export default {
         steadyStatus: Object.values(expectStatus.mongodb).flat(),
       }, {
         list: this.list,
+        tab,
       })
     },
     booleanTransfer (val) {

@@ -318,7 +318,7 @@ export default {
       }
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'RDSSidePage', {
         id: row.id,
         resource: 'dbinstances',
@@ -328,6 +328,7 @@ export default {
         steadyStatus: Object.values(expectStatus.rds).flat(),
       }, {
         list: this.list,
+        tab,
       })
     },
     refresh () {

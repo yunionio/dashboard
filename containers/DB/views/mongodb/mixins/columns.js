@@ -18,8 +18,8 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'mongodb' }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'mongodb', columns: () => this.columns }),
+      getStatusTableColumn({ statusModule: 'mongodb', vm: this }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'mongodbs', columns: () => this.columns }),
       {
         field: 'instance_type',
         title: this.$t('cloudenv.text_459'),
