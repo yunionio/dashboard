@@ -93,7 +93,7 @@ export default {
       }
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'Ipv6GatewaySidePage', {
         id: row.id,
         resource: 'ipv6_gateways',
@@ -104,6 +104,7 @@ export default {
       }, {
         row: row,
         list: this.list,
+        tab,
       })
     },
   },

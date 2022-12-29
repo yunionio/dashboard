@@ -172,12 +172,13 @@ export default {
     }, false)
   },
   methods: {
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'DnsZoneSidePage', {
         id: row.id,
         resource: 'dns_zones',
       }, {
         list: this.list,
+        tab,
       })
     },
   },
