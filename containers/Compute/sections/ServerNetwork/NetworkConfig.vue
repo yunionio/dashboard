@@ -227,7 +227,7 @@ export default {
             ret.push({
               ...item,
               key: `${item.model}`,
-              label: `${item.vendor}/${item.model}`,
+              label: `${item.model}`,
             })
           }
         }
