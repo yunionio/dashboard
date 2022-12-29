@@ -134,6 +134,7 @@ export default {
         refresh: this.refresh,
       }, {
         list: this.list,
+        tab,
       })
       this.initSidePageTab(tab)
     },

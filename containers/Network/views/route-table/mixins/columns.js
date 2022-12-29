@@ -22,7 +22,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'routeTable' }),
+      getStatusTableColumn({ statusModule: 'routeTable', vm: this }),
       getVpcTableColumn(this),
       getBrandTableColumn({
         hidden: () => this.hiddenColumns.includes('brand'),

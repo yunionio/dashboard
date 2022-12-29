@@ -46,7 +46,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'nat' }),
+      getStatusTableColumn({ statusModule: 'nat', vm: this }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'natgateways', columns: () => this.columns }),
       getNatSpecColumn({}),
       getBillingTableColumn({ vm: this }),

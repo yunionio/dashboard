@@ -375,7 +375,7 @@ export default {
       }
       return false
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'LbSidePage', {
         id: row.id,
         resource: 'loadbalancers',
@@ -386,6 +386,7 @@ export default {
       }, {
         row: row,
         list: this.list,
+        tab,
       })
     },
   },
