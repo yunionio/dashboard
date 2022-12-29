@@ -928,7 +928,7 @@ export class GenCreateData {
         if (this.fd.networkDevices) {
           const device = this.fd.networkDevices[key]
           if (device) {
-            obj.srive_device = { model: device }
+            obj.sriov_device = { model: device }
           }
         }
         ret.push(obj)
@@ -948,7 +948,7 @@ export class GenCreateData {
         if (this.fd.networkDevices) {
           const device = this.fd.networkDevices[key]
           if (device) {
-            obj.srive_device = { model: device }
+            obj.sriov_device = { model: device }
           }
         }
         ret.push({
