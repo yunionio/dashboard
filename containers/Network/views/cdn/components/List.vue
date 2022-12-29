@@ -202,13 +202,14 @@ export default {
       }
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'CDNSidePage', {
         id: row.id,
         resource: 'cdn_domains',
         getParams: this.getParam,
       }, {
         list: this.list,
+        tab,
       })
     },
   },
