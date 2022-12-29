@@ -50,7 +50,7 @@ export default {
           },
         },
       },
-      getStatusTableColumn({ statusModule: 'network' }),
+      getStatusTableColumn({ statusModule: 'network', vm: this }),
       getTagTableColumn({
         onManager: this.onManager,
         needExt: true,

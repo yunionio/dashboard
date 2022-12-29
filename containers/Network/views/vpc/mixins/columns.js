@@ -24,7 +24,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'vpc' }),
+      getStatusTableColumn({ statusModule: 'vpc', vm: this }),
       getTagTableColumn({
         onManager: this.onManager,
         needExt: true,
