@@ -23,7 +23,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'globalVpc' }),
+      getStatusTableColumn({ statusModule: 'globalVpc', vm: this }),
       getTagTableColumn({ onManager: this.onManager, resource: 'network_globalvpcs', columns: () => this.columns, tipName: this.$t('dictionary.globalvpc') }),
       getBrandTableColumn(),
       {

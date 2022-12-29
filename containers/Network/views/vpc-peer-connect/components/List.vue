@@ -156,13 +156,14 @@ export default {
       }
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'VpcPeerConnectSidePage', {
         id: row.id,
         resource: 'vpc_peering_connections',
         getParams: this.getParam,
       }, {
         list: this.list,
+        tab,
       })
     },
   },
