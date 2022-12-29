@@ -136,13 +136,14 @@ export default {
       }
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'AccessGroupSidePage', {
         id: row.id,
         resource: 'access_groups',
         getParams: this.getParam,
       }, {
         list: this.list,
+        tab,
       })
     },
   },
