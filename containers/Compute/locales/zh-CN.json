@@ -1654,5 +1654,6 @@
   "compute.start_buckup": "启动备份机",
   "compute.config_sriov_net": "配置SR-IOV网卡",
   "compute.sriov_device_tips": "请选择设备型号",
-  "compute.sriov_device_nic_notsupport": "NIC设备类型不支持该操作"
+  "compute.sriov_device_nic_notsupport": "NIC设备类型不支持该操作",
+  "compute.ceph_rbd": "Ceph分布式存储"
 }
