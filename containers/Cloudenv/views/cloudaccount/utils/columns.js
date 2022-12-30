@@ -164,7 +164,11 @@ export const getResourceMatchProjectTableColumn = () => {
         const ret = []
         if (row.auto_create_project) {
           ret.push(<span class='mr-2'>{i18n.t('cloudenv.text_493')}</span>)
-          ret.push(<help-tooltip name='cloudaccountAutoCreateProject' />)
+          let helpText = i18n.t('help.cloudaccountAutoCreateProject')
+          if (row.tenant) {
+            helpText += i18n.t('cloudenv.no_match_cloudproject', [row.tenant])
+          }
+          ret.push(<help-tooltip text={helpText} />)
         } else {
           ret.push(<list-body-cell-wrap copy field='tenant' row={row} />)
         }

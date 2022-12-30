@@ -5,6 +5,7 @@
     :base-info="baseInfo"
     :extra-info="extraInfo"
     :nameRules="[{ required: true, message: this.$t('common.text00042') }]"
+    :hiddenKeys="['tenant']"
     status-module="cloudaccount" />
 </template>
 
