@@ -1615,7 +1615,7 @@
   "compute.max_bandwidth": "Max Bandwidth",
   "compute.monitor_url.prompt": "Monitor URL",
   "compute.unlimited": "ALL",
-  "compute.host.cpu.revert.resource": "Set host reserved resources",
+  "compute.host.cpu.revert.resource": "Set cpu reserved resources",
   "compute.host.cpu.revert.resource.message": "The host reservation function supports reserving part of the CPU for other processes and no longer allocates it to virtual machines",
   "compute.show_vnc_info": "View remote information",
   "compute.host.cpu.revert.share": "The shared host does not support this operation",
