@@ -347,7 +347,10 @@ export default {
               hideField: true,
               slotCallback: row => {
                 if (!row.cdrom) return '-'
-                const cdrom = `${row.cdrom}`
+                let cdrom = `${row.cdrom}`
+                if (Array.isArray(row.cdrom) && row.cdrom.length > 0) {
+                  cdrom = row.cdrom[0].detail
+                }
                 const idx = cdrom.indexOf('(')
                 const id = cdrom.substring(idx + 1, cdrom.indexOf('/'))
                 return [
@@ -498,14 +501,14 @@ export default {
         },
       ]
       if (this.isKvm && this.cmdline) {
-        infos[1].items.push({
+        infos[infos.length - 1].items.unshift({
           field: 'metadata',
           title: this.$t('compute.qemu_cmdline'),
           slots: {
             default: ({ row }, h) => {
               return [
                 <a-button type="link" class="mb-2" style="height: 21px;padding:0" onclick={this.viewCmdline}>{ this.showCmdline ? this.$t('table.title.off') : this.$t('compute.text_958') }</a-button>,
-                <code-mirror style={this.showCmdline ? { } : { visibility: 'hidden', height: '16px' }} value={this.cmdline} view-height="300px" options={this.cmOptions} />]
+                <code-mirror style={this.showCmdline ? { } : { visibility: 'hidden', height: '0px' }} value={this.cmdline} view-height="300px" options={this.cmOptions} />]
             },
           },
         })

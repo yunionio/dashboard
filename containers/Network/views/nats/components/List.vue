@@ -371,13 +371,14 @@ export default {
       }
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'NatSidePage', {
         id: row.id,
         resource: 'natgateways',
         getParams: this.getParam,
       }, {
         list: this.list,
+        tab,
       })
     },
   },

@@ -106,6 +106,25 @@ export default {
                 })
               },
             },
+            {
+              label: this.$t('compute.text_540'),
+              permission: 'storages_update',
+              action: () => {
+                this.createDialog('BlockStorageUpdateTagsDialog', {
+                  data: this.list.selectedItems,
+                  columns: this.columns,
+                  title: this.$t('compute.text_540'),
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  rows: this.list.selectedItems,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
+            },
             getDomainChangeOwnerAction(this, {
               name: this.$t('dictionary.storages'),
               resource: 'storages',
@@ -289,16 +308,6 @@ export default {
           { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
-      handleOpenSidepage (row, tab) {
-        this.sidePageTriggerHandle(this, 'BlockStorageSidePage', {
-          id: row.id,
-          resource: 'storages',
-          getParams: this.getParam,
-        }, {
-          list: this.list,
-          tab,
-        })
-      },
     }
   },
   watch: {
@@ -324,6 +333,16 @@ export default {
         is_baremetal: this.cloudEnv === 'baremetal',
       }
       return ret
+    },
+    handleOpenSidepage (row, tab) {
+      this.sidePageTriggerHandle(this, 'BlockStorageSidePage', {
+        id: row.id,
+        resource: 'storages',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+        tab,
+      })
     },
   },
 }

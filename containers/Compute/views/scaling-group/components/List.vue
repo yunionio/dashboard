@@ -156,5 +156,17 @@ export default {
   created () {
     this.list.fetchData()
   },
+  methods: {
+    handleOpenSidepage (row, tab) {
+      this.sidePageTriggerHandle(this, 'ScalingGroupSidePage', {
+        id: row.id,
+        resource: 'scalinggroups',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+        tab,
+      })
+    },
+  },
 }
 </script>

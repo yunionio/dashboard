@@ -130,7 +130,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: this.$t('network.text_522') },
+              { required: true, message: this.$t('common.tips.input', [this.$t('network.cdn.accelerated_domain')]) },
               { validator: this.checkDomainHandle },
             ],
           },
@@ -169,16 +169,18 @@ export default {
               validateTrigger: ['change', 'blur'],
               rules: [
                 { required: true, message: this.$t('network.cdn.origin_require_message') },
+                { validator: this.validateIpOrDomain },
+                { validator: this.validateOriginRepeat },
               ],
             },
           ],
           port: i => [
             `port[${i}]`,
             {
-              validateTrigger: ['change', 'blur'],
-              rules: [
-                { required: true, message: this.$t('network.cdn.port_require_message') },
-              ],
+              // validateTrigger: ['change', 'blur'],
+              // rules: [
+              //   { required: true, message: this.$t('network.cdn.port_require_message') },
+              // ],
             },
           ],
           priority: i => [
@@ -186,7 +188,8 @@ export default {
             {
               validateTrigger: ['change', 'blur'],
               rules: [
-                { required: true, message: this.$t('network.cdn.priority_require_message') },
+                // { required: true, message: this.$t('network.cdn.priority_require_message') },
+                { validator: this.validatePriority },
               ],
             },
           ],
@@ -197,7 +200,10 @@ export default {
           scope: this.$store.getters.scope,
           limit: 0,
         },
-        cloudprovider: {},
+        cloudprovider: {
+          scope: this.$store.getters.scope,
+          brand: 'Qcloud',
+        },
       },
       formItemLayout: {
         wrapperCol: {
@@ -235,7 +241,7 @@ export default {
       const data = {
         project_domain_id: values.project_domain_id,
         cloudprovider_id: values.cloudprovider,
-        generate_name: values.domain,
+        name: values.domain,
         area: values.area,
         service_type: values.service_type,
       }
@@ -246,7 +252,7 @@ export default {
           port: values.port[key],
           priority: values.priority[key],
           protocol: values.origin_protocol,
-          type: values.origin_type,
+          type: this.getType(values.origin[key]),
         })
       })
       data.origins = origins
@@ -280,26 +286,72 @@ export default {
     add () {
       const { form } = this
       const keys = form.fc.getFieldValue('keys')
-      const nextKeys = keys.concat(id++)
+      const nextKeys = keys.concat(++id)
       form.fc.setFieldsValue({
         keys: nextKeys,
       })
+      form.fc.validateFields(['origin', 'priority'], { force: true })
     },
     remove (k) {
       const { form } = this
       const keys = form.fc.getFieldValue('keys')
+      const orgins = form.fc.getFieldValue('origin')
+
       if (keys.length === 1) {
         return
       }
-
       form.fc.setFieldsValue({
         keys: keys.filter(key => key !== k),
+        origin: orgins.filter(origin => origin !== orgins[k]),
       })
+      form.fc.validateFields(['origin', 'priority'], { force: true })
     },
     goBack () {
       this.$router.push({
         name: 'CdnList',
       })
+    },
+    validateOriginRepeat (rule, value, callback) {
+      const { form } = this
+      this.$nextTick(() => {
+        const orgins = form.fc.getFieldValue('origin')
+        const isRepeat = orgins.filter(item => item === value).length > 1
+
+        if (value && orgins.length > 1 && isRepeat) {
+          // eslint-disable-next-line standard/no-callback-literal
+          callback(this.$t('network.cdn.origin_repeat_validate'))
+        } else {
+          callback()
+        }
+      })
+    },
+    validatePriority (rule, value, callback) {
+      const { form } = this
+      this.$nextTick(() => {
+        const prioritys = form.fc.getFieldValue('priority')
+        if (value && prioritys.length === 1) {
+          // eslint-disable-next-line standard/no-callback-literal
+          callback(this.$t('network.cdn.priority_validate'))
+        } else {
+          callback()
+        }
+      })
+    },
+    validateIpOrDomain (rule, value, callback) {
+      if (/^[a-zA-Z]/.test(value)) {
+        return this.$validate('domain')(rule, value, callback)
+      } else if (/^[0-9]/.test(value)) {
+        return this.$validate('IPv4')(rule, value, callback)
+      }
+      callback()
+    },
+    getType (value) {
+      if (/^[0-9]/.test(value) && validate(value, 'IPv4')) {
+        return 'ip'
+      } else if (/^[a-zA-Z]/.test(value) && validate(value, 'domain')) {
+        return 'domain'
+      }
+      return ''
     },
   },
 }

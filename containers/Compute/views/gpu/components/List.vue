@@ -107,6 +107,13 @@ export default {
             }
             const validateGuestStatus = item.every(item => item.guest_id && (item.guest_status === 'ready' || item.guest_status === 'running'))
             const validateGuestId = item.every(item => item.guest_id)
+            const someNicDevice = item.some(v => v.dev_type === 'NIC')
+            if (someNicDevice) {
+              return {
+                validate: !someNicDevice,
+                tooltip: this.$t('compute.sriov_device_nic_notsupport'),
+              }
+            }
             if (!validateGuestId) {
               return {
                 validate: false,

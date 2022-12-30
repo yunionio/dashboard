@@ -429,7 +429,7 @@ export const createVmDecorators = type => {
             validateTrigger: ['change', 'blur'],
             rules: [{
               required: true,
-              message: this.$t('compute.sriov_device_tips'),
+              message: i18n.t('compute.sriov_device_tips'),
             }],
           },
         ],
@@ -449,6 +449,16 @@ export const createVmDecorators = type => {
           `networkPolicys[${i}]`,
           {
             validateTrigger: ['blur', 'change'],
+          },
+        ],
+        devices: i => [
+          `networkDevices[${i}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+            rules: [{
+              required: true,
+              message: i18n.t('compute.sriov_device_tips'),
+            }],
           },
         ],
       },
@@ -918,7 +928,7 @@ export class GenCreateData {
         if (this.fd.networkDevices) {
           const device = this.fd.networkDevices[key]
           if (device) {
-            obj.srive_device = { model: device }
+            obj.sriov_device = { model: device }
           }
         }
         ret.push(obj)
@@ -934,6 +944,12 @@ export class GenCreateData {
         const strategy = this.fd.networkPolicys[key]
         if (strategy) {
           obj.strategy = strategy
+        }
+        if (this.fd.networkDevices) {
+          const device = this.fd.networkDevices[key]
+          if (device) {
+            obj.sriov_device = { model: device }
+          }
         }
         ret.push({
           schedtags: [obj],

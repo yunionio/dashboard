@@ -1,13 +1,15 @@
 <template>
-  <div class="oc-term-box" id="oc-term-box" v-if="openCloudShell">
-    <div class="oc-term-resize" title="term resize" v-dragging="handleResize">
-      <div class="mask">一</div>
-      <div class="oc-term-close" @click="closeCloudShell">
-        <a-icon class="close" type="close" />
+  <div v-cloudshellDragResize="handleResize" v-if="openCloudShell">
+    <div class="cloudshell-wrapper">
+      <div class="cloudshell-header">
+        <div class="header-resize-btn">一</div>
+        <div class="cloudshell-close" @click="closeCloudShell">
+          <a-icon class="close" type="close" />
+        </div>
       </div>
-    </div>
-    <div class="oc-term-content">
-      <xterm ref="xterm" :connectParams="connectParams" class="w-100 h-100" @close="onCloudShellClose" />
+      <div class="cloudshell-content">
+        <xterm ref="xterm" :connectParams="connectParams" class="w-100 h-100" @close="onCloudShellClose" />
+      </div>
     </div>
   </div>
 </template>
@@ -17,27 +19,6 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'OcTerm',
-  directives: {
-    dragging (el, binding) {
-      const current = el
-      const targetDiv = document.getElementById('oc-term-box')
-      current.onmousedown = (e) => {
-        document.onmousemove = (e) => {
-          let th = document.body.clientHeight - e.clientY
-          if (th < 100) {
-            th = 100
-          }
-          targetDiv.style.height = th + 'px'
-          binding.value()
-        }
-        document.onmouseup = (e) => {
-          document.onmousemove = null
-          document.onmouseup = null
-        }
-        return false
-      }
-    },
-  },
   data () {
     return {
       connectParams: '',
@@ -77,7 +58,9 @@ export default {
       this.$store.commit('common/SET_OPEN_CLOUDSHELL', false)
     },
     handleResize () {
-      this.$refs.xterm.term.fit()
+      if (this.$refs.xterm) {
+        this.$refs.xterm.term.fit()
+      }
     },
     onCloudShellClose () {
       console.log('cloudshell close!!!')
@@ -90,15 +73,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.oc-term-box {
+.cloudshell-wrapper {
   position: fixed;
-  bottom: 0;
-  height: 200px;
+  top: calc(100vh - 300px);
+  height: 300px;
+  width: 100vw;
   left: 0;
-  right: 0;
   z-index: 999;
+  background: #000;
 }
-.oc-term-resize {
+.cloudshell-header {
   position: absolute;
   top: 0;
   left: 0;
@@ -108,43 +92,44 @@ export default {
   color: #fff;
   &:hover {
     color: #eaeaea;
-    .mask {
-      color: blue;
-    }
   }
-  .mask {
+  .header-resize-btn {
     position: absolute;
-    width: 98%;
-    left: 0;
+    width: 20px;
+    left: 50%;
     top: 0;
+    transform: translateX(-50%);
     z-index: 999;
     color: red;
     text-align: center;
-    cursor: row-resize;
-  }
-}
-.oc-term-close {
-  position: absolute;
-  right: 0px;
-  top: 0px;
-  width: 25px;
-  height: 20px;
-  z-index: 99;
-  text-align: center;
-  cursor: pointer;
-  .close {
-    color: rgba(0,0,0,0.45);
-  }
-  &:hover{
-    .close{
+    &:hover{
       color: blue;
+      cursor: row-resize;
+    }
+  }
+  .cloudshell-close {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 25px;
+    height: 20px;
+    z-index: 99;
+    text-align: center;
+    cursor: pointer;
+    .close {
+      color: rgba(0,0,0,0.45);
+    }
+    &:hover{
+      .close{
+        color: blue;
+      }
     }
   }
 }
-.oc-term-content {
+.cloudshell-content {
   position: absolute;
   top: 20px;
-  bottom: 0;
+  bottom: 10px;
   left: 0;
   right: 0;
   background: #000;
@@ -155,7 +140,8 @@ export default {
       min-height: auto !important;
     }
     .xterm-viewport {
-      height: 100% !important;
+      height: 100%!important;
+      overflow-y: auto;
     }
   }
 }

@@ -61,7 +61,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'accessGroup' }),
+      getStatusTableColumn({ statusModule: 'accessGroup', vm: this }),
       getPublicScopeTableColumn({ vm: this, resource: 'access_groups' }),
       getProjectDomainTableColumn(),
       getTimeTableColumn(),
