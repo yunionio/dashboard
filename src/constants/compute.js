@@ -700,4 +700,5 @@ export const HOST_CPU_ARCHS = {
 
 export const DISK_LABEL_MAP = {
   GPSSD: i18n.t('compute.disk.rotate_gpssd'),
+  'Ceph RBD': i18n.t('compute.ceph_rbd'),
 }
