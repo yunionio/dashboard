@@ -4,6 +4,7 @@
     :onManager="onManager"
     :base-info="baseInfo"
     :extra-info="extraInfo"
+    :hiddenKeys="['tenant']"
     status-module="cloudaccount" />
 </template>
 

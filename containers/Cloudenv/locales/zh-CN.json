@@ -803,5 +803,6 @@
   "cloudenv.go_create": "去新建",
   "cloudenv.project_same_as_tag_value": "标签值同名项目",
   "cloudenv.resource_project_mapping": "资源同步策略",
-  "cloudenv.project_project_mapping": "项目同步策略"
+  "cloudenv.project_project_mapping": "项目同步策略",
+  "cloudenv.no_match_cloudproject": "无云上项目资源归属到：{0}"
 }
