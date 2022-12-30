@@ -13,13 +13,18 @@
 export default {
   name: 'HelpTooltip',
   props: {
+    text: {
+      type: String,
+    },
     name: {
       type: String,
-      required: true,
     },
   },
   computed: {
     content () {
+      if (this.text) {
+        return this.text
+      }
       return this.$t(`help.${this.name}`)
     },
   },
