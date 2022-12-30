@@ -2,6 +2,17 @@ import i18n from '@/locales'
 import { getTagColor, getTagTitle } from '@/utils/common/tag'
 import Actions from '@/components/PageList/Actions'
 
+const getRuleCondition = (data) => {
+  const { condition } = data
+  if (condition === 'or') {
+    return i18n.t('cloudenv.text_587')
+  } else if (data.hasOwnProperty('project_id')) {
+    return i18n.t('cloudenv.text_588')
+  } else {
+    return i18n.t('cloudenv.match_by_tag_key')
+  }
+}
+
 const getResourceRuleTableColumn = ({
   field = 'name',
   title = i18n.t('cloudenv.text_582'),
@@ -22,7 +33,7 @@ const getResourceRuleTableColumn = ({
             { getTagTitle('user:' + item.key, item.value) }
           </span>)
         })
-        return [<div>{ row.condition === 'and' ? i18n.t('cloudenv.text_588') : i18n.t('cloudenv.text_587') }</div>, <div>{ ...tags }</div>]
+        return [<div>{ getRuleCondition(row) }</div>, <div>{ ...tags }</div>]
       },
       header: ({ column }, h) => {
         return [<span>{title}</span>]
@@ -46,6 +57,9 @@ export default {
           field: 'accounts',
           slots: {
             default: ({ row }, h) => {
+              if (row.condition === 'and' && !row.hasOwnProperty('project_id')) {
+                return i18n.t('cloudenv.project_same_as_tag_value')
+              }
               return [
                 <span class="text-color-secondary">{ row.project || '-'}</span>]
             },
@@ -109,11 +123,12 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('cloudenv.text_593'),
-        permission: 'proxysettings_update',
+        permission: 'projectmappings_update',
         action: (row) => {
-          this.createDialog('ProjectMappingRuleUpdateDialog', {
+          this.createDialog('ProjectMappingRuleEditDialog', {
             id: this.data.id,
             rules: this.data.rules || [],
+            editType: 'edit',
             data: [row],
             columns: this.columns,
             title: i18n.t('cloudenv.text_598'),
@@ -140,13 +155,16 @@ export default {
           this.checkedRecords = [row]
           this.deleteProjectMappingRules()
         },
-        meta: () => {
+        meta: (row) => {
           const ret = {
             validate: true,
           }
           if (!(this.isAdminMode || this.data.domain_id === this.userInfo.projectDomainId)) {
             ret.validate = false
             ret.tooltip = this.$t('cloudenv.text_597')
+          }
+          if (this.data && this.data.rules.length <= 1) {
+            ret.validate = false
           }
           return ret
         },
@@ -161,6 +179,18 @@ export default {
         this.dragColumn.width = 1
       }
       return [this.checkColumn, this.dragColumn, ...this.normalColmns]
+    },
+  },
+  methods: {
+    getRuleCondition (data) {
+      const { condition } = data
+      if (condition === 'or') {
+        return i18n.t('cloudenv.text_587')
+      } else if (data.hasOwnProperty('project_id')) {
+        return i18n.t('cloudenv.text_588')
+      } else {
+        return i18n.t('cloudenv.match_by_tag_key')
+      }
     },
   },
 }

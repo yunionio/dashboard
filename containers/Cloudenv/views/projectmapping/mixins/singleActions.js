@@ -57,7 +57,7 @@ export default {
               label: i18n.t('cloudenv.text_108'),
               permission: 'projectmappings_delete',
               action: () => {
-                this.createDialog('DeleteProjectMappingDialog', {
+                this.createDialog('DeleteResDialog', {
                   data: [obj],
                   columns: this.columns,
                   title: this.$t('resourceowner_delete'),

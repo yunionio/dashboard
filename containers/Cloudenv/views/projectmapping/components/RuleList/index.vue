@@ -36,10 +36,10 @@
 import Sortable from 'sortablejs'
 import XEUtils from 'xe-utils'
 import { mapGetters } from 'vuex'
-import ColumnsMixin from './columns'
 import Actions from '@/components/PageList/Actions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import ColumnsMixin from './columns'
 
 export default {
   name: 'ProjectMappingList',
@@ -73,9 +73,10 @@ export default {
           permission: 'projectmappings_update',
           group: true,
           action: () => {
-            this.createDialog('ProjectMappingRuleCreateDialog', {
+            this.createDialog('ProjectMappingRuleEditDialog', {
               id: this.data.id,
               projectDomainId: this.data.domain_id,
+              editType: 'create',
               rules: this.data.rules,
               success: (res) => {
                 this.$bus.$emit('ProjectMappingRuleUpdate', res)
@@ -109,7 +110,7 @@ export default {
               ret.validate = false
               ret.tooltip = this.$t('cloudenv.text_597')
             }
-            if (!this.checkedRecords.length) {
+            if (!this.checkedRecords.length || this.checkedRecords.length === (this.data.rules || []).length) {
               ret.validate = false
             }
             return ret

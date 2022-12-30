@@ -13,7 +13,8 @@
           <base-select
             v-model="fd.project_mapping_id"
             resource="project_mappings"
-            :select-props="{ placeholder: $t('common.tips.select', [$t('cloudenv.text_580')]), allowClear: true }" />
+            :select-props="{ placeholder: $t('common.tips.select', [$t('cloudenv.text_580')]), allowClear: true }"
+            :params="projectMappingParams" />
         </a-form-model-item>
         <a-form-model-item :label="$t('cloudenv.effective_scope')" prop="effective_scope" :extra="effectiveScopeExtra">
           <a-radio-group v-model="fd.effective_scope">
@@ -80,6 +81,17 @@ export default {
         return this.$t('cloudenv.project_tag_tip')
       }
       return ''
+    },
+    projectMappingParams () {
+      const ret = {
+        scope: this.$store.getters.scope,
+      }
+      if (this.params.data.length === 1) {
+        return {
+          project_domain: this.params.data[0].domain_id,
+        }
+      }
+      return ret
     },
   },
   created () {
