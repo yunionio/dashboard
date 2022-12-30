@@ -803,5 +803,6 @@
   "cloudenv.go_create": "Go to New",
   "cloudenv.project_same_as_tag_value": "The project same as tag value",
   "cloudenv.resource_project_mapping": "Resource sync policy",
-  "cloudenv.project_project_mapping": "Project sync policy"
+  "cloudenv.project_project_mapping": "Project sync policy",
+  "cloudenv.no_match_cloudproject": "No cloud project resources belong to: {0}"
 }
