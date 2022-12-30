@@ -1615,7 +1615,7 @@
   "compute.max_bandwidth": "最大带宽",
   "compute.monitor_url.prompt": "监控地址",
   "compute.unlimited": "不限",
-  "compute.host.cpu.revert.resource": "设置宿主机预留资源",
+  "compute.host.cpu.revert.resource": "设置CPU预留资源",
   "compute.host.cpu.revert.resource.message": "宿主机预留功能支持将部分 CPU 预留给其他进程使用，不再分配给虚拟机使用",
   "compute.show_vnc_info": "查看远程信息",
   "compute.host.cpu.revert.share": "共享宿主机不支持该操作",
