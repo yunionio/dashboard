@@ -14,6 +14,7 @@ import {
   getGuestCountTableColumn,
   getHostCountTableColumn,
   getPublicScopeTableColumn,
+  getResourceMatchProjectTableColumn,
 } from '../utils/columns'
 
 export default {
@@ -80,33 +81,7 @@ export default {
       },
       getPublicScopeTableColumn({ vm: this, resource: 'cloudaccounts' }),
       getProjectDomainTableColumn(),
-      {
-        field: 'tenant',
-        title: i18n.t('scope.text_573', [i18n.t('dictionary.project')]),
-        minWidth: 120,
-        showOverflow: 'title',
-        slots: {
-          default: ({ row }) => {
-            const ret = []
-            if (row.auto_create_project) {
-              ret.push(<span class='mr-2'>{this.$t('cloudenv.text_493')}</span>)
-              ret.push(<help-tooltip name='cloudaccountAutoCreateProject' />)
-            } else {
-              ret.push(<list-body-cell-wrap copy field='tenant' row={row} />)
-            }
-            if (row.project_mapping) {
-              let label = ''
-              if (row.enable_resource_sync) {
-                label = i18n.t('cloudenv.resource_project_mapping')
-              } else if (row.enable_project_sync) {
-                label = i18n.t('cloudenv.project_project_mapping')
-              }
-              ret.push(<list-body-cell-wrap copy field='project_mapping' row={row} hideField><span class="text-color-secondary">{label || this.$t('cloudenv.text_580')}：{row.project_mapping}</span></list-body-cell-wrap>)
-            }
-            return ret
-          },
-        },
-      },
+      getResourceMatchProjectTableColumn(),
       getTimeTableColumn(),
     ]
   },

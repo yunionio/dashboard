@@ -41,7 +41,8 @@
           v-decorator="extraDecorators.project_mapping_id"
           resource="project_mappings"
           showSync
-          :select-props="{ placeholder: $t('common.tips.select', [$t('cloudenv.text_580')]) }" />
+          :select-props="{ placeholder: $t('common.tips.select', [$t('cloudenv.text_580')]) }"
+          :params="projectMappingParams" />
           <div v-if="openProjectMapping" slot="extra">
             {{$t('cloudenv.no_project_mapping')}}
             <help-link :href="href">{{$t('cloudenv.go_create')}}</help-link>
@@ -91,6 +92,7 @@ export default {
   data () {
     return {
       domains: [],
+      domainId: '',
       domainLoading: false,
       projectData: {},
       projects: [],
@@ -157,6 +159,17 @@ export default {
     href () {
       const url = this.$router.resolve('/projectmapping')
       return url.href
+    },
+    projectMappingParams () {
+      if (this.isAdminMode) {
+        return {
+          scope: this.scope,
+          project_domain: this.domainId || this.userInfo.projectDomainId,
+        }
+      }
+      return {
+        scope: this.scope,
+      }
     },
   },
   mounted () {
@@ -315,6 +328,7 @@ export default {
         })
         this.projects = []
       }
+      this.domainId = domainId
     },
     projectChange (project) {
       this.projectData = project
