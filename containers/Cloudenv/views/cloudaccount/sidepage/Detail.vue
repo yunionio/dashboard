@@ -80,6 +80,19 @@ export default {
           },
         },
         {
+          field: 'account_id',
+          title: this.$t('cloudenv.text_94') + 'ID',
+          slots: {
+            default: ({ row }) => {
+              return [
+                <div class='text-truncate'>
+                  <list-body-cell-wrap copy row={ row } field='account_id' title={ row.account_id } />
+                </div>,
+              ]
+            },
+          },
+        },
+        {
           field: 'proxy_setting.name',
           title: this.$t('cloudenv.text_14'),
           slots: {
