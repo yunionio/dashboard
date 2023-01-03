@@ -14,7 +14,7 @@
         :cloud-env="cloudEnv"
         :cloudEnvOptions="cloudEnvOptions"
         :filterParams="filterParams"
-        statusRes="rds"
+        statusResKey="rds"
         @refresh="refreshHandle" />
     </page-body>
   </div>

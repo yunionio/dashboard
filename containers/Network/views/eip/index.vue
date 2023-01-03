@@ -14,7 +14,7 @@
         :cloud-env="cloudEnv"
         :cloudEnvOptions="cloudEnvOptions"
         :filterParams="filterParams"
-        statusRes="eip" />
+        statusResKey="eip" />
     </page-body>
   </div>
 </template>
