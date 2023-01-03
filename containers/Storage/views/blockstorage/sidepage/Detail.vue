@@ -68,6 +68,17 @@ export default {
             },
           },
         },
+        {
+          field: 'schedtags',
+          title: this.$t('compute.text_541'),
+          formatter: ({ cellValue, row }) => {
+            if (row.schedtags && row.schedtags.length > 0) {
+              const schedtags = row.schedtags.map(v => v.name)
+              return schedtags.join('，')
+            }
+            return '-'
+          },
+        },
       ],
     }
   },
