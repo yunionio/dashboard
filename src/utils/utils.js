@@ -290,10 +290,9 @@ export const autoComputeUnit = (series, sourceUnit = 'bps', base = 1000) => { //
   const maxValue = Math.max.apply(null, valueArr)
   if (maxValue >= base && valueArr && valueArr.length > 0) {
     const maxValueStr = sizestr(maxValue, sourceUnit.charAt(0), base)
-    unit = maxValueStr.slice(-1) // 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'
-    const originIndex = UNITS.findIndex(val => val === sourceUnit.charAt(0))
+    unit = maxValueStr.slice(-1) // 'B', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'
+    const originIndex = UNITS.findIndex(val => val === sourceUnit.charAt(0).toUpperCase())
     let targetIndex = UNITS.findIndex(val => val === unit.charAt(0))
-    targetIndex = targetIndex || UNITS[UNITS.length - 1]
     targetIndex = targetIndex < 0 ? 0 : targetIndex
     const scaleLen = targetIndex - originIndex
     const scale = Math.pow(base, scaleLen)
