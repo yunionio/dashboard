@@ -13,7 +13,7 @@
         :id="listId"
         :cloud-env="cloudEnv"
         :filterParams="filterParams"
-        statusRes="snapshot" />
+        statusResKey="snapshot" />
     </page-body>
   </div>
 </template>
