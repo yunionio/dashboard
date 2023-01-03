@@ -12,7 +12,7 @@
       <mongodb-list
         :id="listId"
         :filterParams="filterParams"
-        statusRes="mongodb" />
+        statusResKey="mongodb" />
     </page-body>
   </div>
 </template>

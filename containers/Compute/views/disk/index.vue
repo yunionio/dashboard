@@ -15,7 +15,7 @@
         :cloud-env="cloudEnv"
         :cloudEnvOptions="cloudEnvOptions"
         :filterParams="filterParams"
-        statusRes="disk" />
+        statusResKey="disk" />
     </page-body>
   </div>
 </template>
