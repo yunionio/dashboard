@@ -12,7 +12,7 @@
       <domain-list
         :id="listId"
         :filterParams="filterParams"
-        statusRes="cdnDomain" />
+        statusResKey="cdnDomain" />
     </page-body>
   </div>
 </template>

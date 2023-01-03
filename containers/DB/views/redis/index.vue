@@ -14,7 +14,7 @@
         :cloud-env="cloudEnv"
         :cloudEnvOptions="cloudEnvOptions"
         :filterParams="filterParams"
-        statusRes="redis"
+        statusResKey="redis"
         @refresh="refreshHandle" />
     </page-body>
   </div>

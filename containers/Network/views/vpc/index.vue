@@ -15,7 +15,7 @@
       :get-params="getParams"
       :cloudEnvOptions="cloudEnvOptions"
       :filterParams="filterParams"
-      statusRes="vpc" />
+      statusResKey="vpc" />
    </page-body>
   </div>
 </template>

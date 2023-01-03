@@ -14,7 +14,7 @@
         :cloud-env="cloudEnv"
         :cloudEnvOptions="cloudEnvOptions"
         :filterParams="filterParams"
-        statusRes="network" />
+        statusResKey="network" />
     </page-body>
   </div>
 </template>
