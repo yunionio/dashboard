@@ -14,7 +14,7 @@
       :cloud-env="cloudEnv"
       :cloudEnvOptions="cloudEnvOptions"
       :filterParams="filterParams"
-      statusRes="wire" />
+      statusResKey="wire" />
     </page-body>
   </div>
 </template>

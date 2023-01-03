@@ -41,10 +41,6 @@ export default {
     frontSingleActions: {
       type: Function,
     },
-    filterParams: {
-      type: Object,
-      default: () => ({}),
-    },
     hiddenFilterOptions: {
       type: Array,
       default: () => ([]),
