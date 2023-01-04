@@ -1528,10 +1528,7 @@ const getSingleActions = function () {
                 label: i18n.t('compute.text_1127'),
                 permission: 'server_perform_migrate,server_perform_live_migrate',
                 action: () => {
-                  const dialog = obj.hypervisor === typeClouds.hypervisorMap.esxi.key
-                    ? 'VmV2vTransferDialog' : 'VmTransferDialog'
-
-                  this.createDialog(dialog, {
+                  this.createDialog('VmTransferDialog', {
                     data: [obj],
                     columns: this.columns,
                     onManager: this.onManager,
@@ -1565,7 +1562,44 @@ const getSingleActions = function () {
                   ret.tooltip = cloudUnabledTip('transfer', obj)
                   return ret
                 },
-                hidden: () => !(hasSetupKey(['openstack', 'onecloud', 'esxi'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
+                hidden: () => !(hasSetupKey(['openstack', 'onecloud', 'vmware'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
+              },
+              {
+                label: i18n.t('compute.v2vtransfer.label'),
+                permission: 'server_perform_migrate',
+                action: () => {
+                  this.createDialog('VmV2vTransferDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  if (obj.backup_host_id) {
+                    ret.tooltip = i18n.t('compute.text_1299')
+                    return ret
+                  }
+                  if (obj.is_gpu) {
+                    ret.tooltip = i18n.t('compute.text_1300')
+                    return ret
+                  }
+                  if (!this.isAdminMode && !this.isDomainMode) {
+                    ret.tooltip = i18n.t('migration.project.error')
+                    return ret
+                  }
+                  if (obj.hypervisor !== typeClouds.hypervisorMap.esxi.key) {
+                    ret.tooltip = i18n.t('compute.brand_support', [typeClouds.hypervisorMap.esxi.label])
+                    return ret
+                  }
+                  ret.validate = cloudEnabled('v2vTransfer', obj)
+                  ret.tooltip = cloudUnabledTip('v2vTransfer', obj)
+                  return ret
+                },
+                hidden: () => !(hasSetupKey(['vmware'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
               },
               {
                 label: i18n.t('compute.server.quick.recovery'),
