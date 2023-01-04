@@ -18,4 +18,5 @@ export const statisticsRes = [
   'mongodbs',
   'cdn_domains',
   'loadbalancers',
+  'buckets',
 ]

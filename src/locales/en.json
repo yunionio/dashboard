@@ -5418,5 +5418,15 @@
       "commit_success": "The process of applying for a internal resource work order has been submitted"
     }
   },
-  "cloudenv.zstack.auth_url_extra": "http|https://192.168.1.1:8080(Note the addition of port, zstack default API port is 8080)"
+  "cloudenv.zstack.auth_url_extra": "http|https://192.168.1.1:8080(Note the addition of port, zstack default API port is 8080)",
+  "common.staticstics.status.total": "Total",
+  "common.staticstics.status.disabled": "Disabled",
+  "common.staticstics.status.enable": "Enable",
+  "common.staticstics.status.available": "Available",
+  "common.staticstics.status.partially_available": "Partially Available",
+  "common.staticstics.status.error": "Operation failed",
+  "common.staticstics.status.other": "Other",
+  "common.staticstics.status.online": "Online",
+  "common.staticstics.status.offline": "Offline",
+  "common.staticstics.status.unmount": "To be mounted"
 }
