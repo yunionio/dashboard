@@ -408,7 +408,7 @@ class CreateList {
         }
       }
       if (R.is(Function, this.fetchDataCb)) {
-        this.fetchDataCb()
+        this.fetchDataCb(response)
       }
       if (!showDetails && this.total > 0 && !response.data.marker_field) {
         setTimeout(() => {
