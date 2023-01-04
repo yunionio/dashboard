@@ -2,7 +2,7 @@
   <div class="d-flex flex-row-reverse mb-3 res-status-tab">
     <ul class="res-status-list d-flex">
       <li v-for="(obj, idx) in statusOpts" :key="idx" @click="statusClickHandle(obj)" :style="{'padding-right': obj.type === 'error' ? '20px' : 0}">
-        <i :class="obj.type" />
+        <i :class="obj.class || obj.type" />
         <span :title="obj.title" class="title">{{ obj.title }}</span>
         <data-loading v-if="loading" />
         <span v-if="!loading" class="num">{{ obj.num }}</span>
@@ -60,10 +60,10 @@ export default {
         &.total {
           background-color: #409eff;
         }
-        &.running, &.available, &.online, &.active, &.enabled {
+        &.running, &.available, &.online, &.active, &.enabled, &.success {
           background-color: #52c41a;
         }
-        &.ready, &.offline, &.disabled {
+        &.ready, &.offline, &.disabled, &.info {
           background-color: #d9d9d9;
         }
         &.error {
