@@ -8,7 +8,7 @@ export default {
   created () {
     this.columns = [
       getCopyWithContentTableColumn({ field: 'name', title: i18n.t('compute.text_228') }),
-      getStatusTableColumn({ statusModule: 'image' }),
+      getStatusTableColumn({ statusModule: 'image', hiddenLogView: true }),
       {
         field: 'disk_format',
         title: i18n.t('compute.text_398'),
