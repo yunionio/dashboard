@@ -800,5 +800,9 @@
   "cloudenv.resource_map_cloudproject": "The resource will be synchronized with the local project with the same name as the cloud project. If the resource has no cloud project attribute, it will belong to the specified project.",
   "cloudenv.resource_map_project_mapping_cloudproject": "Resources will be attributed to the project according to the synchronization strategy. If the synchronization strategy cannot be matched, resources will be synchronized to the local project with the same name as the cloud project. If the resource has no cloud project attribute, it will be attributed to the specified project.",
   "cloudenv.no_project_mapping": "No desired sync policy?",
-  "cloudenv.go_create": "Go to New"
+  "cloudenv.go_create": "Go to New",
+  "cloudenv.project_same_as_tag_value": "The project same as tag value",
+  "cloudenv.resource_project_mapping": "Resource sync policy",
+  "cloudenv.project_project_mapping": "Project sync policy",
+  "cloudenv.no_match_cloudproject": "No cloud project resources belong to: {0}"
 }

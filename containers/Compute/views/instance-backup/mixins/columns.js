@@ -28,7 +28,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'instanceBackup' }),
+      getStatusTableColumn({ statusModule: 'instanceBackup', vm: this }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'instancebackups', columns: () => this.columns }),
       getBackupStorageNameTableColumn(),
       getSizeMbTableColumn(),

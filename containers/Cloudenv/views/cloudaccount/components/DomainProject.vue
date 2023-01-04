@@ -41,15 +41,16 @@
           v-decorator="extraDecorators.project_mapping_id"
           resource="project_mappings"
           showSync
-          :select-props="{ placeholder: $t('common.tips.select', [$t('cloudenv.text_580')]) }" />
+          :select-props="{ placeholder: $t('common.tips.select', [$t('cloudenv.text_580')]) }"
+          :params="projectMappingParams" />
           <div v-if="openProjectMapping" slot="extra">
             {{$t('cloudenv.no_project_mapping')}}
             <help-link :href="href">{{$t('cloudenv.go_create')}}</help-link>
           </div>
       </a-form-item>
     </a-form-item>
-    <a-form-item v-if="openProjectMapping" :label="$t('cloudenv.project_mapping_effective_scope')">
-      <a-radio-group v-decorator="extraDecorators.effective_scope">
+    <a-form-item v-if="openProjectMapping" :label="$t('cloudenv.project_mapping_effective_scope')" :extra="effectiveScopeExtra">
+      <a-radio-group v-decorator="extraDecorators.effective_scope" @change="effectiveScopeChange">
         <a-radio-button value="resource">{{$t('cloudenv.resource_tag')}}</a-radio-button>
         <a-radio-button value="project">{{$t('cloudenv.project_tag')}}</a-radio-button>
       </a-radio-group>
@@ -91,6 +92,7 @@ export default {
   data () {
     return {
       domains: [],
+      domainId: '',
       domainLoading: false,
       projectData: {},
       projects: [],
@@ -121,6 +123,7 @@ export default {
       },
       resourceMapType: 'target_project',
       openProjectMapping: false,
+      effectiveScope: 'resource',
     }
   },
   computed: {
@@ -147,9 +150,26 @@ export default {
       }
       return ''
     },
+    effectiveScopeExtra () {
+      if (this.effectiveScope === 'resource') {
+        return this.$t('cloudenv.resource_tag_tip')
+      }
+      return this.$t('cloudenv.project_tag_tip')
+    },
     href () {
       const url = this.$router.resolve('/projectmapping')
       return url.href
+    },
+    projectMappingParams () {
+      if (this.isAdminMode) {
+        return {
+          scope: this.scope,
+          project_domain: this.domainId || this.userInfo.projectDomainId,
+        }
+      }
+      return {
+        scope: this.scope,
+      }
     },
   },
   mounted () {
@@ -164,6 +184,9 @@ export default {
   methods: {
     resourceMapTypeChange (e) {
       this.resourceMapType = e.target.value
+    },
+    effectiveScopeChange (e) {
+      this.effectiveScope = e.target.value
     },
     openProjectMappingChange (e) {
       this.openProjectMapping = e
@@ -305,6 +328,7 @@ export default {
         })
         this.projects = []
       }
+      this.domainId = domainId
     },
     projectChange (project) {
       this.projectData = project

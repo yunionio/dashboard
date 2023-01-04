@@ -13,6 +13,7 @@
         :getParams="getParams"
         :id="listId"
         :filterParams="filterParams"
+        statusResKey="host"
         @refresh="refreshHandle" />
     </page-body>
   </div>

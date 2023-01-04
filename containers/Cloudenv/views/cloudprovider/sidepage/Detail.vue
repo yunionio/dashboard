@@ -4,6 +4,7 @@
     :onManager="onManager"
     :base-info="baseInfo"
     :extra-info="extraInfo"
+    :hiddenKeys="['tenant']"
     status-module="cloudaccount" />
 </template>
 
@@ -13,6 +14,9 @@ import {
   getEnabledTableColumn,
   getBrandTableColumn,
 } from '@/utils/common/tableColumn'
+import {
+  getResourceMatchProjectTableColumn,
+} from '../utils/columns'
 export default {
   name: 'CloudproviderDetail',
   props: {
@@ -28,6 +32,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getResourceMatchProjectTableColumn(),
         getBrandTableColumn({ field: 'provider' }),
         {
           field: 'account',

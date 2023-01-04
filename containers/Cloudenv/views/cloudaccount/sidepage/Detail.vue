@@ -5,10 +5,12 @@
     :base-info="baseInfo"
     :extra-info="extraInfo"
     :nameRules="[{ required: true, message: this.$t('common.text00042') }]"
+    :hiddenKeys="['tenant']"
     status-module="cloudaccount" />
 </template>
 
 <script>
+import XLSX from 'xlsx'
 import { getBrandTableColumn, getEnabledTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 import { findPlatform } from '@/utils/common/hypervisor'
 import WindowsMixin from '@/mixins/windows'
@@ -19,6 +21,7 @@ import {
   getGuestCountTableColumn,
   getHostCountTableColumn,
   getPublicScopeTableColumn,
+  getResourceMatchProjectTableColumn,
 } from '../utils/columns'
 
 export default {
@@ -64,6 +67,7 @@ export default {
         },
       ],
       baseInfo: [
+        getResourceMatchProjectTableColumn(),
         getPublicScopeTableColumn({ vm: this, resource: 'cloudaccounts' }),
         getBrandTableColumn(),
         {
@@ -74,6 +78,19 @@ export default {
               return [
                 <div class='text-truncate'>
                   <list-body-cell-wrap copy row={ row } field='account' title={ row.account } />
+                </div>,
+              ]
+            },
+          },
+        },
+        {
+          field: 'account_id',
+          title: this.$t('cloudenv.text_94') + 'ID',
+          slots: {
+            default: ({ row }) => {
+              return [
+                <div class='text-truncate'>
+                  <list-body-cell-wrap copy row={ row } field='account_id' title={ row.account_id } />
                 </div>,
               ]
             },
@@ -147,7 +164,8 @@ export default {
               field: 'action',
               slots: {
                 default: ({ row }, h) => {
-                  return [<a-button type="link" style="height:21px;padding: 0" disabled={!this.lakeOfPermissionsData.length} loading={this.clearPermissionsLoading} onClick={this.clearPermissions.bind(this)}>{this.$t('cloudenv.clear_lake_of_permissions')}</a-button>]
+                  return [<a-button type="link" style="height:21px;padding: 0" disabled={!this.lakeOfPermissionsData.length} loading={this.clearPermissionsLoading} onClick={this.clearPermissions.bind(this)}>{this.$t('cloudenv.clear_lake_of_permissions')}</a-button>,
+                    <a-button type="link" class="ml-3" style="height:21px;padding: 0" disabled={!this.lakeOfPermissionsData.length} onClick={this.exportPermissions.bind(this)}>{this.$t('table.action.export')}</a-button>]
                 },
               },
             },
@@ -194,6 +212,18 @@ export default {
       } finally {
         this.clearPermissionsLoading = false
       }
+    },
+    exportPermissions () {
+      const data = [[this.$t('cloudenv.Service'), this.$t('cloudenv.lake_of_permissions')]]
+      this.lakeOfPermissionsData.map(item => {
+        data.push([item.name, item.permissions.join(',')])
+      })
+      const filename = `${this.data.name}${this.$t('cloudenv.lake_of_permissions')}.xlsx`
+      const ws_name = 'Sheet1'
+      const wb = XLSX.utils.book_new()
+      const ws = XLSX.utils.aoa_to_sheet(data)
+      XLSX.utils.book_append_sheet(wb, ws, ws_name)
+      XLSX.writeFile(wb, filename)
     },
     async fetchDiscount () {
       if (!hasMeterService()) return

@@ -18,7 +18,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'redis' }),
+      getStatusTableColumn({ statusModule: 'redis', vm: this }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'redis_elasticcaches', columns: () => this.columns }),
       {
         field: 'arch_type',

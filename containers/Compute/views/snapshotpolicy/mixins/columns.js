@@ -19,7 +19,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'snapshotpolicy' }),
+      getStatusTableColumn({ statusModule: 'snapshotpolicy', vm: this }),
       {
         field: 'binding_disk_count',
         title: i18n.t('table.title.bind_disk_count'),

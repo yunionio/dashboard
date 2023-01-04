@@ -169,7 +169,7 @@ export default {
               validateTrigger: ['change', 'blur'],
               rules: [
                 { required: true, message: this.$t('network.cdn.origin_require_message') },
-                { validator: this.$validate('IPv4') },
+                { validator: this.validateIpOrDomain },
                 { validator: this.validateOriginRepeat },
               ],
             },
@@ -241,7 +241,7 @@ export default {
       const data = {
         project_domain_id: values.project_domain_id,
         cloudprovider_id: values.cloudprovider,
-        generate_name: values.domain,
+        name: values.domain,
         area: values.area,
         service_type: values.service_type,
       }
@@ -252,7 +252,7 @@ export default {
           port: values.port[key],
           priority: values.priority[key],
           protocol: values.origin_protocol,
-          type: values.origin_type,
+          type: this.getType(values.origin[key]),
         })
       })
       data.origins = origins
@@ -336,6 +336,22 @@ export default {
           callback()
         }
       })
+    },
+    validateIpOrDomain (rule, value, callback) {
+      if (/^[a-zA-Z]/.test(value)) {
+        return this.$validate('domain')(rule, value, callback)
+      } else if (/^[0-9]/.test(value)) {
+        return this.$validate('IPv4')(rule, value, callback)
+      }
+      callback()
+    },
+    getType (value) {
+      if (/^[0-9]/.test(value) && validate(value, 'IPv4')) {
+        return 'ip'
+      } else if (/^[a-zA-Z]/.test(value) && validate(value, 'domain')) {
+        return 'domain'
+      }
+      return ''
     },
   },
 }
