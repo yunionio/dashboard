@@ -5441,5 +5441,15 @@
       "commit_success": "申请自跑工单流程已提交"
     }
   },
-  "cloudenv.zstack.auth_url_extra": "http|https://192.168.1.1:8080(注意增加端口,zstack默认API端口是8080)"
+  "cloudenv.zstack.auth_url_extra": "http|https://192.168.1.1:8080(注意增加端口,zstack默认API端口是8080)",
+  "common.staticstics.status.total": "总数",
+  "common.staticstics.status.disabled": "禁用",
+  "common.staticstics.status.enable": "启用",
+  "common.staticstics.status.available": "可用",
+  "common.staticstics.status.partially_available": "部分可用",
+  "common.staticstics.status.error": "操作失败",
+  "common.staticstics.status.other": "其它",
+  "common.staticstics.status.online": "在线",
+  "common.staticstics.status.offline": "离线",
+  "common.staticstics.status.unmount": "待挂载"
 }
