@@ -21,7 +21,7 @@
             v-decorator="decorators.auto_start" />
         </a-form-item>
         <!-- 跳过CPU检查 -->
-        <a-form-item :label="$t('compute.live_migrate.skip_cpu_check')" v-if="firstData.status === 'running'" :extra="$t('compute.live_migrate.skip_cpu_check.explain')">
+        <a-form-item :label="$t('compute.live_migrate.skip_cpu_check')" v-if="isKvm && firstData.status === 'running'" :extra="$t('compute.live_migrate.skip_cpu_check.explain')">
           <a-switch
             :checkedChildren="$t('compute.text_115')"
             :unCheckedChildren="$t('compute.text_116')"
@@ -41,7 +41,7 @@
             :dialog-params="{ title: $t('compute.text_111'), width: 1060 }"
             @change="hostChangeHandle" />
         </a-form-item>
-        <template v-if="isAllRunning">
+        <template v-if="isKvm && isAllRunning">
           <a-form-item :label="$t('compute.vminstance.transfer.max_brand_width')">
             <migration-bandwidth :decorators="decorators" :form="form" />
           </a-form-item>
@@ -160,11 +160,14 @@ export default {
     isSingle () {
       return this.params.data.length === 1
     },
+    isKvm () {
+      return this.firstData.hypervisor === 'kvm'
+    },
     hostsParams () {
       let hostType = 'hypervisor'
       const hostIds = this.forcastData?.filtered_candidates?.map(v => v.id) || []
 
-      if (this.firstData.hypervisor !== 'kvm') {
+      if (!this.isKvm) {
         hostType = this.firstData.hypervisor
       }
       const ret = {

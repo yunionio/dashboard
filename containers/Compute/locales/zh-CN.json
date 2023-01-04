@@ -1609,8 +1609,10 @@
   "compute.custom_data_error1": "内容格式错误",
   "compute.custom_data_temp": "文本或文件格式模板遵循：[{\"action\":\"取值为create或append\",\"path\":\"虚拟机内路径如：/root/usr\",\"content\":\"内容\"}]",
   "compute.max_iops": "最大IOPS",
+  "compute.v2vtransfer.label": "V2V迁移",
   "compute.v2vtransfer.type": "迁移类型",
   "compute.v2vtransfer.kvm": "迁移至KVM平台",
+  "compute.v2vtransfer.vmware": "迁移至VMware其他宿主机",
   "compute.v2vtransfer.same_brand": "请选择同平台的机器",
   "compute.max_bandwidth": "最大带宽",
   "compute.monitor_url.prompt": "监控地址",
@@ -1655,5 +1657,6 @@
   "compute.config_sriov_net": "配置SR-IOV网卡",
   "compute.sriov_device_tips": "请选择设备型号",
   "compute.sriov_device_nic_notsupport": "NIC设备类型不支持该操作",
-  "compute.ceph_rbd": "Ceph分布式存储"
+  "compute.ceph_rbd": "Ceph分布式存储",
+  "compute.brand_support": "目前只有{0}支持该操作"
 }
