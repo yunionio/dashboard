@@ -5428,5 +5428,16 @@
   "common.staticstics.status.other": "Other",
   "common.staticstics.status.online": "Online",
   "common.staticstics.status.offline": "Offline",
-  "common.staticstics.status.unmount": "To be mounted"
+  "common.staticstics.status.unmount": "To be mounted",
+  "common.rangescope.system": "System overall data",
+  "common.rangescope.any_domain": "Data for each domain",
+  "common.rangescope.domain": "Specify domain data",
+  "common.rangescope.domain.all": "Domain overall data",
+  "common.rangescope.any_project": "Data for each project",
+  "common.rangescope.any_project_in_domain": "All project data under the specified domain",
+  "common.rangescope.project": "Specify project data",
+  "common.rangescope.project.all": "Project overall data",
+  "common.billing_scope": "Billing data scope",
+  "common.notify_type": "Notify Type",
+  "common.notify_type.receiver": "Subscription receiver"
 }
