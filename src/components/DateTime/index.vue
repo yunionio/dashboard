@@ -2,7 +2,7 @@
   <div>
     <a-radio-group v-model="time.dateMode" @change="handleDateModeChange">
       <a-radio-button v-for="item in timeOpts" :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
-      <custom-date :customDate.sync="customDate" :time.sync="time.dateMode" :customTimeLabel="customTimeLabel" :showFormat="showFormat" :canSelectTodayAfter="canSelectTodayAfter" />
+      <custom-date :customDate.sync="customDate" :time.sync="time.dateMode" :customTimeLabel="customTimeLabel" :showFormat="customTimeFormat" :canSelectTodayAfter="canSelectTodayAfter" />
     </a-radio-group>
   </div>
 </template>
@@ -10,7 +10,10 @@
 <script>
 import moment from 'moment'
 import i18n from '@/locales'
+import storage from '@/utils/storage'
 import CustomDate from './CustomDate'
+
+const localTimeKey = '__oc_date_time_'
 
 const TIME_SIZE = {
   week: 'day',
@@ -77,24 +80,52 @@ export default {
       type: Boolean,
       default: false,
     },
-    formatter: {
+    // 添加到参数中的日期格式
+    paramTimeFormatter: {
+      type: String,
+      default: 'YYYYMMDD',
+    },
+    // 添加到参数中的日期格式方法
+    timeFormatter: {
       type: Function,
       default: (time) => {
         return moment(time).format('YYYYMMDD')
       },
     },
-    showFormat: {
+    // 自定义 展示格式
+    customTimeFormat: {
       type: String,
       default: 'YYYY-MM-DD',
     },
+    // 是否禁用从本地存储取时间值
+    disableLocalTime: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
+    let initDateMode = this.hasDefaultTime ? this.defaultDateMode : ''
+    let initCustomDate = this.defaultTime
+    if (!this.disableLocalTime) {
+      const localTime = storage.get(localTimeKey, {})
+      const { dateMode, time = { } } = localTime
+      if (dateMode && this.timeOpts.some(item => item.key === dateMode)) {
+        initDateMode = dateMode
+      }
+      if (dateMode === 'custom' && time.start && time.end) {
+        initDateMode = dateMode
+        initCustomDate = {
+          start: this.$moment(time.start),
+          end: this.$moment(time.end),
+        }
+      }
+    }
     return {
       time: {
-        dateMode: this.hasDefaultTime ? this.defaultDateMode : '',
+        dateMode: initDateMode,
         date: [],
       },
-      customDate: this.defaultTime,
+      customDate: initCustomDate,
       customTimeLabel: '',
     }
   },
@@ -107,7 +138,7 @@ export default {
     },
   },
   created () {
-    if (this.hasDefaultTime) {
+    if (this.hasDefaultTime || !this.disableLocalTime) {
       this.handleDateModeChange()
       this.$emit('update:dateMode', this.time.dateMode)
     }
@@ -161,6 +192,7 @@ export default {
       this.$emit('update:getParams', params)
       this.$emit('update:dateMode', this.time.dateMode)
       this.$emit('refresh')
+      this.setLocalTime()
       this.updateCustomTimeLabel(this.time.dateMode, params)
     },
     handleDateChange () {
@@ -183,14 +215,34 @@ export default {
     updateCustomTimeLabel (type, date) {
       try {
         if (type === 'custom') {
-          const start = this.$moment(date[this.start].replace('TZ', '')).format(this.showFormat)
-          const end = this.$moment(date[this.end].replace('TZ', '')).format(this.showFormat)
+          const start = this.$moment(date[this.start].replace('TZ', '')).format(this.customTimeFormat)
+          const end = this.$moment(date[this.end].replace('TZ', '')).format(this.customTimeFormat)
           this.customTimeLabel = ` (${start} - ${end})`
         } else {
           this.customTimeLabel = ''
         }
       } catch (err) {
         this.customTimeLabel = ''
+      }
+    },
+    formatter (date) {
+      if (this.paramTimeFormatter === 'YYYYMMDD') {
+        return this.$moment(date).format('YYYYMMDD')
+      }
+      if (this.paramTimeFormatter === 'YYYY-MM-DDTZ') {
+        return this.$moment(date).format('YYYY-MM-DD') + 'TZ'
+      }
+      if (this.timeFormatter) {
+        return this.timeFormatter(date)
+      }
+      return this.$moment(date).format('YYYY-MM-DD')
+    },
+    setLocalTime () {
+      if (!this.disableLocalTime) {
+        storage.set(localTimeKey, {
+          dateMode: this.time.dateMode,
+          time: this.time.dateMode === 'custom' ? this.customDate : { },
+        })
       }
     },
   },
