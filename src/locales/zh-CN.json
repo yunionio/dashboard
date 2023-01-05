@@ -5451,5 +5451,16 @@
   "common.staticstics.status.other": "其它",
   "common.staticstics.status.online": "在线",
   "common.staticstics.status.offline": "离线",
-  "common.staticstics.status.unmount": "待挂载"
+  "common.staticstics.status.unmount": "待挂载",
+  "common.rangescope.system": "系统整体数据",
+  "common.rangescope.any_domain": "各域数据",
+  "common.rangescope.domain": "指定域数据",
+  "common.rangescope.domain.all": "域整体数据",
+  "common.rangescope.any_project": "各项目数据",
+  "common.rangescope.any_project_in_domain": "指定域下全部项目数据",
+  "common.rangescope.project": "指定项目数据",
+  "common.rangescope.project.all": "项目整体数据",
+  "common.billing_scope": "账单数据范围",
+  "common.notify_type": "通知类型",
+  "common.notify_type.receiver": "订阅接收人"
 }
