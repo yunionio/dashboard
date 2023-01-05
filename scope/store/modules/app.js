@@ -93,7 +93,7 @@ export default {
     fetchAlertingrecords ({ commit, rootGetters }, payload) {
       const params = { scope: rootGetters.scope, limit: 20, alerting: true, $t: getRequestT() }
       return new Promise((resolve, reject) => {
-        http.get('/v1/alertrecords', { params }).then(response => {
+        http.get('/v1/monitorresourcealerts', { params }).then(response => {
           const data = response.data || {}
           commit('SET_ALERTRECORDS', data)
           resolve(data)
