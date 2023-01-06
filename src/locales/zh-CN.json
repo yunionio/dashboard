@@ -5462,5 +5462,7 @@
   "common.rangescope.project.all": "项目整体数据",
   "common.billing_scope": "数据范围",
   "common.notify_type": "通知类型",
-  "common.notify_type.receiver": "订阅接收人"
+  "common.notify_type.receiver": "订阅接收人",
+  "common.data_range.any_domain_extra": "向接收人或角色分别发送每个域的账单",
+  "common.data_range.any_project_extra": "向接收人或角色分别发送每个项目的账单"
 }
