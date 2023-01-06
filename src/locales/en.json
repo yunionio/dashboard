@@ -5437,7 +5437,7 @@
   "common.rangescope.any_project_in_domain": "All project data under the specified domain",
   "common.rangescope.project": "Specify project data",
   "common.rangescope.project.all": "Project overall data",
-  "common.billing_scope": "Billing data scope",
+  "common.billing_scope": "Data scope",
   "common.notify_type": "Notify Type",
   "common.notify_type.receiver": "Subscription receiver"
 }
