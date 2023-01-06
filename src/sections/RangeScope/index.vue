@@ -47,6 +47,7 @@
 <script>
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
+import { getRangeScopeOptions } from '@/utils/rangeScope'
 
 export default {
   name: 'RangeScope',
@@ -76,17 +77,13 @@ export default {
   computed: {
     ...mapGetters(['l3PermissionEnable', 'scope', 'isAdminMode', 'userInfo']),
     rangeScopeOptions () {
-      const domainLabel = this.subscriptionScope === 'domain' ? this.$t('common.rangescope.domain.all') : this.$t('common.rangescope.domain')
-      const projectLabel = this.subscriptionScope === 'project' ? this.$t('common.rangescope.project.all') : this.$t('common.rangescope.project')
-      const options = [
-        { label: this.$t('common.rangescope.system'), value: 'system', scope: ['system'] },
-        { label: this.$t('common.rangescope.any_domain'), value: 'any_domain', scope: ['system'] },
-        { label: domainLabel, value: 'domain', scope: ['system', 'domain'] },
-        { label: this.$t('common.rangescope.any_project'), value: 'any_project', scope: ['system', 'domain'] },
-        { label: this.$t('common.rangescope.any_project_in_domain'), value: 'any_project_in_domain', scope: ['system'] },
-        { label: projectLabel, value: 'project', scope: ['system', 'domain', 'project'] },
-      ]
-      return options.filter(item => item.scope.includes(this.subscriptionScope))
+      const options = getRangeScopeOptions.call(this, this.subscriptionScope)
+      return options.filter(item => {
+        if (this.l3PermissionEnable) {
+          return item.scope.includes(this.subscriptionScope)
+        }
+        return item.scope.includes(this.subscriptionScope) && !['any_domain', 'domain', 'any_project_in_domain'].includes(item.value)
+      })
     },
     isShowDomainSelect () {
       return this.l3PermissionEnable &&
@@ -104,8 +101,14 @@ export default {
       this.project_id = val.project_id
     },
     subscriptionScope (val) {
-      this.range_scope = val
-      this.triggerChange({ range_scope: val })
+      let range_scope = val
+      if (this.l3PermissionEnable) {
+        range_scope = this.subscriptionScope === 'domain' ? 'any_project' : val
+      } else {
+        range_scope = val
+      }
+      this.range_scope = range_scope
+      this.triggerChange({ range_scope: range_scope })
     },
   },
   created () {
