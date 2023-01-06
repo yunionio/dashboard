@@ -101,14 +101,9 @@ export default {
       this.project_id = val.project_id
     },
     subscriptionScope (val) {
-      let range_scope = val
-      if (this.l3PermissionEnable) {
-        range_scope = this.subscriptionScope === 'domain' ? 'any_project' : val
-      } else {
-        range_scope = val
-      }
+      const range_scope = val
       this.range_scope = range_scope
-      this.triggerChange({ range_scope: range_scope })
+      this.triggerChange({ range_scope })
     },
   },
   created () {
