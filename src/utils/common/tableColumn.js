@@ -118,7 +118,7 @@ export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t
         }
         if (!statusModule) return 'status module undefined'
         const val = _.get(row, field) || false
-        if (R.isNil(val) || !_.get(row, field)) return '-'
+        if (R.isNil(val) || _.get(row, field) === undefined) return '-'
         const log = <side-page-trigger class="ml-1" onTrigger={ () => vm.handleOpenSidepage(row, 'event-drawer') }>{ i18n.t('common.view_logs') }</side-page-trigger>
         const isError = field === 'status' ? !hiddenLogView && (['invalid', 'unknown'].includes(val) || /failed|fail$/.test(val)) : false
         return [
