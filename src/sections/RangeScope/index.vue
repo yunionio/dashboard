@@ -59,6 +59,12 @@ export default {
       type: String,
       default: 'system',
     },
+    hiddenScope: {
+      type: Array,
+      default () {
+        return []
+      },
+    },
   },
   data () {
     const value = this.value || {}
@@ -77,7 +83,8 @@ export default {
   computed: {
     ...mapGetters(['l3PermissionEnable', 'scope', 'isAdminMode', 'userInfo']),
     rangeScopeOptions () {
-      const options = getRangeScopeOptions.call(this, this.subscriptionScope)
+      let options = getRangeScopeOptions.call(this, this.subscriptionScope)
+      options = this.hiddenScope.length > 0 ? options.filter(item => !this.hiddenScope.includes(item.value)) : options
       return options.filter(item => {
         if (this.l3PermissionEnable) {
           return item.scope.includes(this.subscriptionScope)
