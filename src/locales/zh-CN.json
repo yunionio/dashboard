@@ -5460,7 +5460,7 @@
   "common.rangescope.any_project_in_domain": "指定域下全部项目数据",
   "common.rangescope.project": "指定项目数据",
   "common.rangescope.project.all": "项目整体数据",
-  "common.billing_scope": "账单数据范围",
+  "common.billing_scope": "数据范围",
   "common.notify_type": "通知类型",
   "common.notify_type.receiver": "订阅接收人"
 }
