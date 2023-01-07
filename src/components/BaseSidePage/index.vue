@@ -162,6 +162,16 @@ export default {
     handleTabChange (key) {
       this.$emit('tab-change', key)
     },
+    refreshDetailHandler () {
+      this.refreshDetail = true
+      const idx = this.tabs.findIndex(item => item.key === this.currentTab)
+      if (idx === 0) {
+        this.$bus.$emit('refresh-detail')
+      }
+      setTimeout(() => {
+        this.refreshDetail = false
+      }, 500)
+    },
   },
 }
 </script>
