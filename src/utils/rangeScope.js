@@ -7,8 +7,8 @@ export function getRangeScopeOptions (subscriptionScope) {
     { label: this.$t('common.rangescope.system'), value: 'system', scope: ['system'] },
     { label: this.$t('common.rangescope.any_domain'), value: 'any_domain', scope: ['system'] },
     { label: domainLabel, value: 'domain', scope: ['system', 'domain'] },
-    { label: this.$t('common.rangescope.any_project'), value: 'any_project', scope: ['system', 'domain'] },
-    { label: this.$t('common.rangescope.any_project_in_domain'), value: 'any_project_in_domain', scope: ['system'] },
+    { label: this.$t('common.rangescope.any_project'), value: 'any_project', scope: ['system'] },
+    { label: this.$t('common.rangescope.any_project_in_domain'), value: 'any_project_in_domain', scope: ['system', 'domain'] },
     { label: projectLabel, value: 'project', scope: ['system', 'domain', 'project'] },
   ]
   return options

@@ -118,6 +118,17 @@ export default {
       return ret.filter(v => !this.hiddenScope.includes(v.key))
     },
   },
+  watch: {
+    project: {
+      handler (val) {
+        this.form.fc.setFieldsValue({
+          domain: val.domain_id,
+        })
+      },
+      immediate: true,
+      deep: true,
+    },
+  },
   created () {
     const formScopeInit = _.get(this.decorators, 'scope[1].initialValue')
     const isValid = !!this.scopeOptions.find(val => val.key === formScopeInit)
@@ -138,6 +149,9 @@ export default {
       }
       if (field === 'projectId') {
         value.project_id = val
+        this.form.fc.setFieldsValue({
+          domain: this.project.domain_id,
+        })
       }
       this.$emit('change', value)
     },

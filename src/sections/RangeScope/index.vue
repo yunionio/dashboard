@@ -65,6 +65,9 @@ export default {
         return []
       },
     },
+    domain: {
+      type: String,
+    },
   },
   data () {
     const value = this.value || {}
@@ -111,6 +114,17 @@ export default {
       const range_scope = val
       this.range_scope = range_scope
       this.triggerChange({ range_scope })
+    },
+    domain (val) {
+      this.project_id = ''
+      this.initProjectData((data) => {
+        if (data && data.length > 0) {
+          this.projectOptions = data
+          const project_id = data[0].value
+          this.project_id = project_id
+          this.triggerChange({ project_id })
+        }
+      })
     },
   },
   created () {
@@ -166,6 +180,9 @@ export default {
 
       try {
         const params = { limit: 0, scope: this.scope }
+        if (this.subscriptionScope === 'domain' && this.domain) {
+          params.project_domain = this.domain
+        }
         const response = await this.pm.list({ params })
         const projectOptions = response.data.data.map(item => {
           return {
