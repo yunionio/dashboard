@@ -197,6 +197,10 @@ export default {
         }
       })
     }
+    this.$bus.$off('refresh-detail')
+    this.$bus.$on('refresh-detail', () => {
+      this.id && this.singleRefresh(this.id)
+    })
   },
   mounted () {
     this.initChangeTab()
