@@ -71,7 +71,7 @@ export default {
         time: 1,
         timeMode: 'month',
       },
-      isAdvancedView: false, // 是否展示高级窗口
+      isAdvancedView: true, // 是否展示高级窗口
       confirmView: false, // 确认状态下的是否展示高级窗口
       visible: false,
       startOpen: false,
@@ -81,9 +81,9 @@ export default {
         wrapperCol: { span: 16 },
       },
       timeMode: [
-        { key: 'month', label: this.$t('common.date_time.month') },
-        { key: 'quarter', label: this.$t('common.date_time.quarter') },
-        { key: 'year', label: this.$t('common.date_time.year') },
+        { key: 'month', label: this.$t('common_13') },
+        { key: 'quarter', label: this.$t('common_13_1') },
+        { key: 'year', label: this.$t('common_14') },
       ],
       rules: {
         start: [
