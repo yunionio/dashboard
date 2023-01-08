@@ -59,6 +59,15 @@ export default {
       type: String,
       default: 'system',
     },
+    hiddenScope: {
+      type: Array,
+      default () {
+        return []
+      },
+    },
+    domain: {
+      type: String,
+    },
   },
   data () {
     const value = this.value || {}
@@ -77,7 +86,8 @@ export default {
   computed: {
     ...mapGetters(['l3PermissionEnable', 'scope', 'isAdminMode', 'userInfo']),
     rangeScopeOptions () {
-      const options = getRangeScopeOptions.call(this, this.subscriptionScope)
+      let options = getRangeScopeOptions.call(this, this.subscriptionScope)
+      options = this.hiddenScope.length > 0 ? options.filter(item => !this.hiddenScope.includes(item.value)) : options
       return options.filter(item => {
         if (this.l3PermissionEnable) {
           return item.scope.includes(this.subscriptionScope)
@@ -101,14 +111,20 @@ export default {
       this.project_id = val.project_id
     },
     subscriptionScope (val) {
-      let range_scope = val
-      if (this.l3PermissionEnable) {
-        range_scope = this.subscriptionScope === 'domain' ? 'any_project' : val
-      } else {
-        range_scope = val
-      }
+      const range_scope = val
       this.range_scope = range_scope
-      this.triggerChange({ range_scope: range_scope })
+      this.triggerChange({ range_scope })
+    },
+    domain (val) {
+      this.project_id = ''
+      this.initProjectData((data) => {
+        if (data && data.length > 0) {
+          this.projectOptions = data
+          const project_id = data[0].value
+          this.project_id = project_id
+          this.triggerChange({ project_id })
+        }
+      })
     },
   },
   created () {
@@ -164,6 +180,9 @@ export default {
 
       try {
         const params = { limit: 0, scope: this.scope }
+        if (this.subscriptionScope === 'domain' && this.domain) {
+          params.project_domain = this.domain
+        }
         const response = await this.pm.list({ params })
         const projectOptions = response.data.data.map(item => {
           return {

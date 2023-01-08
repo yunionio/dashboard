@@ -5438,7 +5438,9 @@
   "common.rangescope.any_project_in_domain": "All project data under the specified domain",
   "common.rangescope.project": "Specify project data",
   "common.rangescope.project.all": "Project overall data",
-  "common.billing_scope": "Billing data scope",
+  "common.billing_scope": "Data scope",
   "common.notify_type": "Notify Type",
-  "common.notify_type.receiver": "Subscription receiver"
+  "common.notify_type.receiver": "Subscription receiver",
+  "common.data_range.any_domain_extra": "Bill recipients or roles separately for each domain",
+  "common.data_range.any_project_extra": "Send a separate bill for each project to a recipient or role"
 }
