@@ -122,7 +122,7 @@ export default {
           this.projectOptions = data
           const project_id = data[0].value
           this.project_id = project_id
-          this.triggerChange({ project_id })
+          this.triggerChange({ domain_id: val, project_id })
         }
       })
     },
@@ -145,9 +145,9 @@ export default {
       this.initProjectData((data) => {
         if (data && data.length > 0) {
           this.projectOptions = data
-          const project_id = this.userInfo.projectId
+          const { projectId: project_id, projectDomainId: domain_id } = this.userInfo
           this.project_id = project_id
-          this.triggerChange({ project_id })
+          this.triggerChange({ domain_id, project_id })
         }
       })
     },
@@ -189,6 +189,7 @@ export default {
             label: item.name,
             value: item.id,
             project_domain: item.project_domain,
+            domain_id: item.domain_id,
           }
         })
         this.projectLoaded = true
@@ -204,9 +205,9 @@ export default {
         this.initProjectData((data) => {
           if (data && data.length > 0) {
             this.projectOptions = data
-            const project_id = data[0].value
+            const { value: project_id, domain_id } = data[0]
             this.project_id = project_id
-            this.triggerChange({ project_id })
+            this.triggerChange({ domain_id, project_id })
           }
         })
       } else if (e.target.value === 'domain') {
@@ -225,7 +226,8 @@ export default {
       this.triggerChange({ domain_id })
     },
     projectChangeHandler (project_id) {
-      this.triggerChange({ project_id })
+      const curProject = this.projectOptions.find(item => item.value === project_id)
+      this.triggerChange({ domain_id: curProject.domain_id, project_id })
     },
     triggerChange (changedValue) {
       this.$emit('change', Object.assign({}, _.pick(this.$data, ['range_scope', 'domain_id', 'project_id']), changedValue))
