@@ -363,7 +363,7 @@ const actionEableMap = {
       aws: false,
       onecloud: ['running', 'ready', 'unknown'],
       cloudpods: ['running', 'ready', 'unknown'],
-      vmware: false,
+      vmware: ['running', 'ready'],
       baremetal: false,
       huawei: false,
       hcso: false,
