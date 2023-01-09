@@ -163,6 +163,12 @@ export default {
     hostsParams () {
       let hostType = 'hypervisor'
       const hostIds = this.forcastData?.filtered_candidates?.map(v => v.id) || []
+      const managerIds = []
+      this.params.data.map(item => {
+        if (item.manager_id && !managerIds.includes(item.manager_id)) {
+          managerIds.push(item.manager_id)
+        }
+      })
 
       if (this.firstData.hypervisor !== 'kvm') {
         hostType = this.firstData.hypervisor
@@ -180,7 +186,10 @@ export default {
         ret.project_domain = this.params.data[0].domain_id
       }
       if (hostIds && hostIds.length > 0) {
-        ret.filter = `id.notin(${hostIds.join(',')})`
+        ret.filter = [`id.notin(${hostIds.join(',')})`]
+      }
+      if (managerIds.length) {
+        ret.filter = [...(ret.filter || []), `manager_id.in(${managerIds.join(',')})`]
       }
       return ret
     },
