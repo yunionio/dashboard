@@ -3,25 +3,11 @@
     <template v-slot:icon><i /></template>
     <template v-slot:title class="pl-0">
       <a-form-model hideRequiredMark v-if="isAdvancedView" ref="ruleForm" :model="formData" :rules="rules" v-bind="layout">
-        <a-form-model-item :label="$t('common.text00119')" prop="start">
-          <a-date-picker
-            v-model="formData.start"
-            :disabled-date="disabledStartDate"
-            :disabled-time="disabledDateTime"
+        <a-form-model-item :label="$t('common.date_range')" prop="date_range">
+          <a-range-picker
+            v-model="formData.date_range"
             :format="showFormat"
-            :open="startOpen"
-            :placeholder="$t('common.text00119')"
-            @openChange="handleStartOpenChange" />
-        </a-form-model-item>
-        <a-form-model-item :label="$t('common.text00120')" prop="end">
-          <a-date-picker
-            v-model="formData.end"
-            :disabled-date="disabledEndDate"
-            :disabled-time="disabledDateTime"
-            :format="showFormat"
-            :placeholder="$t('common.text00120')"
-            :open="endOpen"
-            @openChange="handleEndOpenChange" />
+            :disabled-time="disabledDate" />
         </a-form-model-item>
       </a-form-model>
       <div class="mb-3 d-flex align-items-center" v-else>
@@ -45,14 +31,13 @@
 
 <script>
 import moment from 'moment'
-import * as R from 'ramda'
 
 export default {
   name: 'CustomDate',
   props: {
-    endTime: {
+    customDate: {
       type: Object,
-      default: () => moment(),
+      default: () => [moment(), moment()],
     },
     customTimeLabel: String,
     canSelectTodayAfter: {
@@ -64,38 +49,41 @@ export default {
   data () {
     return {
       formData: {
-        start: null,
-        end: this.endTime,
+        date_range: [this.customDate.start, this.customDate.end],
       },
       shortcutData: {
         time: 1,
         timeMode: 'month',
       },
-      isAdvancedView: false, // 是否展示高级窗口
-      confirmView: false, // 确认状态下的是否展示高级窗口
+      isAdvancedView: true, // 是否展示高级窗口
+      confirmView: true, // 确认状态下的是否展示高级窗口
       visible: false,
-      startOpen: false,
-      endOpen: false,
       layout: {
-        labelCol: { span: 8 },
-        wrapperCol: { span: 16 },
+        labelCol: { span: 5 },
+        wrapperCol: { span: 19 },
       },
       timeMode: [
-        { key: 'month', label: this.$t('common.date_time.month') },
-        { key: 'quarter', label: this.$t('common.date_time.quarter') },
-        { key: 'year', label: this.$t('common.date_time.year') },
+        { key: 'month', label: this.$t('common.whole_month') },
+        { key: 'quarter', label: this.$t('common.whole_quarter') },
+        { key: 'year', label: this.$t('common.whole_year') },
       ],
       rules: {
-        start: [
-          { required: true, message: this.$t('common.date_time.please_select') },
-        ],
-        end: [
-          { required: true, message: this.$t('common.date_time.please_select') },
+        date_range: [
+          { required: true, validator: this.dateRangeValidate },
         ],
       },
     }
   },
   methods: {
+    dateRangeValidate (rule, value, callback) {
+      if (value && value[0] && value[1]) {
+        if (!this.canSelectTodayAfter && value[1] > this.$moment().endOf('day')) {
+          callback(new Error(this.$t('common.select_time_little_current')))
+        }
+        callback()
+      }
+      callback(new Error(this.$t('common.tips.select', [this.$t('common.date_range')])))
+    },
     timeModeChange (val) {
       if (val === 'year' || val === 'quarter') {
         if (this.shortcutData.time > 4) {
@@ -114,7 +102,7 @@ export default {
     },
     getCustomTime () {
       if (this.isAdvancedView) {
-        return R.clone(this.formData)
+        return { start: this.formData.date_range[0], end: this.formData.date_range[1] }
       } else {
         const { time, timeMode } = this.shortcutData
         let end = this.$moment().subtract(1, timeMode).endOf(timeMode)
@@ -144,46 +132,6 @@ export default {
         this.visible = true
         throw error
       }
-    },
-    disabledStartDate (start) {
-      const end = this.formData.end
-      if (!end || !start) {
-        return this.canSelectTodayAfter ? false : (start && (start > this.$moment().endOf('day')))
-      }
-      // 开始和结束可选择同一天
-      if (start && end && start.format('YYYY-MM-DD') === end.format('YYYY-MM-DD')) {
-        return false
-      }
-      return this.canSelectTodayAfter ? (start.valueOf() > end.valueOf()) : (start && (start > this.$moment().endOf('day'))) || (start.valueOf() > end.valueOf())
-    },
-    disabledEndDate (end) {
-      const start = this.formData.start
-      if (!start || !end) {
-        return this.canSelectTodayAfter ? false : (end && (end > this.$moment().endOf('day')))
-      }
-      // 开始和结束可选择同一天
-      if (start && end && start.format('YYYY-MM-DD') === end.format('YYYY-MM-DD')) {
-        return false
-      }
-      return this.canSelectTodayAfter ? (start.valueOf() >= end.valueOf()) : (end && (end > this.$moment().endOf('day'))) || (start.valueOf() >= end.valueOf())
-    },
-    handleStartOpenChange (open) {
-      this.startOpen = open
-    },
-    handleEndOpenChange (open) {
-      this.endOpen = open
-    },
-    disabledDateTime () {
-      return {
-        disabledSeconds: () => this._range(1, 60),
-      }
-    },
-    _range (start, end) {
-      const result = []
-      for (let i = start; i < end; i++) {
-        result.push(i)
-      }
-      return result
     },
   },
 }
