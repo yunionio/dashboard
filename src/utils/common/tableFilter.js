@@ -127,7 +127,7 @@ export function getTenantFilter () {
   }
 }
 
-export function getAccountFilter ({ label = i18n.t('res.cloudaccount'), distinctType = 'extra_field', field = 'account', formatter } = {}) {
+export function getAccountFilter ({ label = i18n.t('res.cloudaccount'), distinctType = 'extra_field', field = 'account', formatter, getParams } = {}) {
   const options = {
     label,
     dropdown: true,
@@ -149,6 +149,9 @@ export function getAccountFilter ({ label = i18n.t('res.cloudaccount'), distinct
   if (formatter) {
     options.filter = true
     options.formatter = formatter
+  }
+  if (getParams) {
+    options.distinctField.getParams = getParams
   }
   return options
 }
@@ -491,6 +494,7 @@ export function getDistinctFieldFilter ({
   mapper,
   filter = false,
   formatter,
+  getParams,
 } = {}) {
   const ret = {
     label: label || i18n.t(`${service}.title.${field}`),
@@ -510,5 +514,6 @@ export function getDistinctFieldFilter ({
     }
   }
   if (formatter) ret.formatter = formatter
+  if (getParams) ret.getParams = getParams
   return ret
 }
