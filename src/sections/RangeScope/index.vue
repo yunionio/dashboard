@@ -200,6 +200,25 @@ export default {
       }
     },
     billingScopeChangeHandler (e) {
+      if (e.target.value === 'project') {
+        this.initProjectData((data) => {
+          if (data && data.length > 0) {
+            this.projectOptions = data
+            const project_id = data[0].value
+            this.project_id = project_id
+            this.triggerChange({ project_id })
+          }
+        })
+      } else if (e.target.value === 'domain') {
+        this.initDomainData((data) => {
+          if (data && data.length > 0) {
+            this.domainOptions = data
+            const domain_id = data[0].value
+            this.domain_id = domain_id
+            this.triggerChange({ domain_id })
+          }
+        })
+      }
       this.triggerChange({ range_scope: e.target.value })
     },
     domainChangeHandler (domain_id) {
