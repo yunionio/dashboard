@@ -1024,7 +1024,7 @@ export default {
                         ret.validate = false
                         return ret
                       }
-                      if (this.list.selectedItems.some(item => item.hypervisor !== 'kvm' && item.hypervisor !== 'openstack')) {
+                      if (this.list.selectedItems.some(item => item.hypervisor !== 'kvm' && item.hypervisor !== 'openstack' && item.hypervisor !== 'esxi')) {
                         ret.validate = false
                         return ret
                       }
@@ -1032,7 +1032,7 @@ export default {
                       ret.tooltip = cloudUnabledTip('transfer', this.list.selectedItems)
                       return ret
                     },
-                    hidden: () => !(hasSetupKey(['onecloud', 'openstack'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
+                    hidden: () => !(hasSetupKey(['onecloud', 'openstack', 'vmware'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
                   },
                   {
                     label: this.$t('compute.server.quick.recovery'),

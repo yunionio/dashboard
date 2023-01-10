@@ -1550,7 +1550,7 @@ export default {
                       ret.tooltip = i18n.t('migration.project.error')
                       return ret
                     }
-                    if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key && obj.hypervisor !== typeClouds.hypervisorMap.openstack.key) {
+                    if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key && obj.hypervisor !== typeClouds.hypervisorMap.openstack.key && obj.hypervisor !== typeClouds.hypervisorMap.esxi.key) {
                       ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
@@ -1558,7 +1558,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('transfer', obj)
                     return ret
                   },
-                  hidden: () => !(hasSetupKey(['openstack', 'onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
+                  hidden: () => !(hasSetupKey(['openstack', 'onecloud', 'vmware'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
                 },
                 {
                   label: this.$t('compute.server.quick.recovery'),
