@@ -1077,5 +1077,15 @@
   "network.request.vpc": "Requester VPC",
   "network.receive.vpc": "Receive VPC",
   "network.rt": "Response Time",
-  "network.unreachable_rate": "Unreachable Rate"
+  "network.unreachable_rate": "Unreachable Rate",
+  "network.mac_ip.mapping_table": "Mapping Table",
+  "network.mac_ip.import_mapping_table": "Import mapping table",
+  "network.mac_ip.create_mapping_table": "Create a new MAC mapping table",
+  "network.mac_ip.edit_mapping_table": "Update a new MAC mapping table",
+  "network.import_tpl_tips": "Please download the template first, edit the information according to the template",
+  "network.download_tpl": "Download Template",
+  "network.drag_file_area": "Click or drag files into this area",
+  "network.file_type_validate": "Only upload xlsx files, and no more than 200MB",
+  "network.import_tpl_file": "Please select a template file to import",
+  "network.mapping_table_tpl": "Mapping table import template"
 }
