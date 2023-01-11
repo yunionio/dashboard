@@ -6,7 +6,6 @@ import NoProject from '@/views/no-project'
 import NoProjectStatus from '@/views/no-project/Status'
 import Workflow from '@/views/workflow'
 import WorkflowTechnicalSupport from '@/views/workflow-technical-support'
-import WorkflowApplyInternalResourceCreate from '@/views/workflow-apply-internal-resource'
 import Clouduser from '@/views/clouduser'
 import WorkflowSuccess from '@/views/workflow/success'
 import WorkflowError from '@/views/workflow/error'
@@ -36,18 +35,6 @@ const routes = [
         name: 'WorkflowTechnicalSupportBrowse',
         path: 'browse',
         component: WorkflowTechnicalSupportBrowse,
-      },
-    ],
-  },
-  {
-    name: 'WorkflowApplyInternalResource',
-    path: '/workflow-apply-internal-resource',
-    component: Layout,
-    children: [
-      {
-        name: 'WorkflowApplyInternalResourceCreate',
-        path: 'create',
-        component: WorkflowApplyInternalResourceCreate,
       },
     ],
   },
