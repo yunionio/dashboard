@@ -63,8 +63,8 @@
 </template>
 
 <script>
-// import
-import { WORKFLOW_ITEM_MAP, INIT_UNIT_INFO, INIT_PROJECT_INFO, INIT_CONTRACTOR_INFO, COLUMNS_MAP, ALL_SELECT_OPTIONS } from '@/views/workflow-apply-internal-resource/constants'
+import * as R from 'ramda'
+
 export default {
   name: 'ApplyInternalResourceInfo',
   props: {
@@ -72,7 +72,12 @@ export default {
   },
   data () {
     return {
-      COLUMNS_MAP,
+      WORKFLOW_ITEM_MAP: {},
+      INIT_UNIT_INFO: {},
+      INIT_PROJECT_INFO: {},
+      INIT_CONTRACTOR_INFO: {},
+      COLUMNS_MAP: {},
+      ALL_SELECT_OPTIONS: {},
     }
   },
   computed: {
@@ -82,26 +87,33 @@ export default {
     },
     unitInfoList () {
       const ret = []
-      const keys = Object.keys(INIT_UNIT_INFO)
-      const { unitInfo } = this.resourceData
+      if (R.isEmpty(this.INIT_UNIT_INFO)) return []
+      const keys = Object.keys(this.INIT_UNIT_INFO)
+      const { unitInfo, process_id, process_type } = this.resourceData
+      ret.push({
+        field: 'process_type',
+        title: this.WORKFLOW_ITEM_MAP.process_type.label,
+        value: process_id ? process_id + '-' + process_type.name : process_type.name,
+      })
       keys.map(key => {
         const item = { field: key }
-        item.title = WORKFLOW_ITEM_MAP[key].label
-        item.value = unitInfo[key] || '-'
+        item.title = this.WORKFLOW_ITEM_MAP[key].label
+        item.value = unitInfo[key].name || unitInfo[key] || '-'
         ret.push(item)
       })
       return ret
     },
     projectInfoList () {
       const ret = []
-      const keys = Object.keys(INIT_PROJECT_INFO)
+      if (R.isEmpty(this.INIT_UNIT_INFO)) return []
+      const keys = Object.keys(this.INIT_PROJECT_INFO)
       const { projectInfo } = this.resourceData
       keys.map(key => {
         const item = { field: key }
-        item.title = WORKFLOW_ITEM_MAP[key].label
-        item.value = projectInfo[key] || '-'
-        if (ALL_SELECT_OPTIONS.hasOwnProperty(key)) {
-          const targetList = ALL_SELECT_OPTIONS[key].filter(l => l.id === item.value)
+        item.title = this.WORKFLOW_ITEM_MAP[key].label
+        item.value = projectInfo[key].name || projectInfo[key] || '-'
+        if (this.ALL_SELECT_OPTIONS.hasOwnProperty(key)) {
+          const targetList = this.ALL_SELECT_OPTIONS[key].filter(l => l.id === item.value)
           if (targetList[0]) {
             item.value = targetList[0].name
           }
@@ -112,12 +124,13 @@ export default {
     },
     contractorInfoList () {
       const ret = []
-      const keys = Object.keys(INIT_CONTRACTOR_INFO)
+      if (R.isEmpty(this.INIT_UNIT_INFO)) return []
+      const keys = Object.keys(this.INIT_CONTRACTOR_INFO)
       const { contractorInfo } = this.resourceData
       keys.map(key => {
         const item = { field: key }
-        item.title = WORKFLOW_ITEM_MAP[key].label
-        item.value = contractorInfo[key] || '-'
+        item.title = this.WORKFLOW_ITEM_MAP[key].label
+        item.value = contractorInfo[key].name || contractorInfo[key] || '-'
         ret.push(item)
       })
       return ret
@@ -128,6 +141,31 @@ export default {
       const { basicSecurityServices = [], cloudSecurityTable = [] } = cloudSecurityInfo
       return { ecs, rds, server, basicSecurityServices, cloudSecurityTable }
     },
+  },
+  created () {
+    try {
+      if (!this.$store.getters.workflow.enableApplyInternalResource) return
+      const requireComponent = require.context('@scope', true, /constants\.(js)$/)
+      const keys = requireComponent.keys().filter(item => {
+        const arr = item.split('/')
+        return arr.includes('workflow-apply-internal-resource') && arr.includes('constants.js')
+      })
+      keys.forEach(fileName => {
+        // 获取组件配置
+        const componentConfig = requireComponent(fileName)
+        const { WORKFLOW_ITEM_MAP = {}, INIT_UNIT_INFO = {}, INIT_PROJECT_INFO = {}, INIT_CONTRACTOR_INFO = {}, COLUMNS_MAP = {}, ALL_SELECT_OPTIONS = {} } = componentConfig
+        if (!R.isEmpty(WORKFLOW_ITEM_MAP)) {
+          this.WORKFLOW_ITEM_MAP = WORKFLOW_ITEM_MAP
+          this.INIT_UNIT_INFO = INIT_UNIT_INFO
+          this.INIT_PROJECT_INFO = INIT_PROJECT_INFO
+          this.INIT_CONTRACTOR_INFO = INIT_CONTRACTOR_INFO
+          this.COLUMNS_MAP = COLUMNS_MAP
+          this.ALL_SELECT_OPTIONS = ALL_SELECT_OPTIONS
+        }
+      })
+    } catch (err) {
+      console.error(err)
+    }
   },
 }
 </script>
