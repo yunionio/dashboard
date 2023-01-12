@@ -1078,6 +1078,7 @@
   "network.rt": "响应时间",
   "network.unreachable_rate": "不可达比率",
   "network.mac_ip.mapping_table": "映射表",
+  "network.mac_ip.mac_mapping_table": "MAC映射表",
   "network.mac_ip.import_mapping_table": "导入映射表",
   "network.mac_ip.create_mapping_table": "新建MAC映射表",
   "network.mac_ip.edit_mapping_table": "修改MAC映射表",

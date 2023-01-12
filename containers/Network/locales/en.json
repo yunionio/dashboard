@@ -1079,6 +1079,7 @@
   "network.rt": "Response Time",
   "network.unreachable_rate": "Unreachable Rate",
   "network.mac_ip.mapping_table": "Mapping Table",
+  "network.mac_ip.mac_mapping_table": "MAC Mapping Table",
   "network.mac_ip.import_mapping_table": "Import mapping table",
   "network.mac_ip.create_mapping_table": "Create a new MAC mapping table",
   "network.mac_ip.edit_mapping_table": "Update a new MAC mapping table",

@@ -58,7 +58,7 @@ export default {
           ip: i => [
             `ip[${i}]`,
             {
-              initialValue: this.params.editData[i].ip_addr || undefined,
+              initialValue: this.params.editData?.[i].ip_addr || undefined,
               validateTrigger: ['change', 'blur'],
               validateFirst: true,
               rules: [
@@ -70,7 +70,7 @@ export default {
           mac: i => [
             `mac[${i}]`,
             {
-              initialValue: this.params.editData[i].mac_addr || undefined,
+              initialValue: this.params.editData?.[i].mac_addr || undefined,
               validateTrigger: ['change', 'blur'],
               validateFirst: true,
               rules: [
