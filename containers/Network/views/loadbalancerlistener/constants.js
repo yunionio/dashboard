@@ -25,12 +25,13 @@ export const healthCheckTypeMaps = {
   http: { key: 'http', label: 'HTTP' },
   udp: { key: 'udp', label: 'UDP' },
   https: { key: 'https', label: 'HTTPS' },
+  ping: { key: 'ping', label: 'PING' },
 }
 
 export const healthCheckTypeProviderMaps = {
   onecloud: [healthCheckTypeMaps.tcp, healthCheckTypeMaps.http, healthCheckTypeMaps.udp],
   aliyun: [healthCheckTypeMaps.tcp, healthCheckTypeMaps.http],
-  qcloud: [healthCheckTypeMaps.http],
+  qcloud: [healthCheckTypeMaps.ping, healthCheckTypeMaps.tcp, healthCheckTypeMaps.http],
   huawei: [healthCheckTypeMaps.tcp, healthCheckTypeMaps.http, healthCheckTypeMaps.udp],
   hcso: [healthCheckTypeMaps.tcp, healthCheckTypeMaps.http, healthCheckTypeMaps.udp],
   hcs: [healthCheckTypeMaps.tcp, healthCheckTypeMaps.http, healthCheckTypeMaps.udp],
