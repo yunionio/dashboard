@@ -5346,5 +5346,6 @@
   "common.select_time_little_current": "请选择小于当前时间的时间",
   "common.whole_month": "整月",
   "common.whole_quarter": "整季度",
-  "common.whole_year": "整年"
+  "common.whole_year": "整年",
+  "common.not_support_validate_tips": "{0}不支持该操作"
 }
