@@ -144,8 +144,14 @@ export default {
       immediate: true,
     },
     params: {
-      handler (v) {
-        if (v && !this.data) {
+      handler (v, old) {
+        let isChangeValue = false
+        Object.keys(v).forEach(k => {
+          if (v?.[k] !== old?.[k]) {
+            isChangeValue = true
+          }
+        })
+        if (v && isChangeValue && !this.data) {
           this.fetchResourceData(v)
         }
       },
