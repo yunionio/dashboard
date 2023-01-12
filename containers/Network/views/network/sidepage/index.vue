@@ -65,7 +65,7 @@ export default {
         // { label: '宿主机IP', key: 'host-machineip' },
         // { label: '主机IP', key: 'host-ip' },
         { label: this.$t('network.text_651'), key: 'reserved-ip-list' },
-        { label: this.$t('network.mac_ip.mapping_table'), key: 'network-ip-macs' },
+        { label: this.$t('network.mac_ip.mac_mapping_table'), key: 'network-ip-macs' },
         // { label: '负载均衡IP', key: 'lb-ip' },
         // { label: '弹性网卡IP', key: 'flex-ip' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },

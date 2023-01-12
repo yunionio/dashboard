@@ -7,8 +7,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import { PROVIDER_MAP } from '@/constants'
 
 export default {
   name: 'NetworkIpMacs',
@@ -52,6 +54,15 @@ export default {
               },
             })
           },
+          meta: (obj) => {
+            if (!this.isPower(this.data)) {
+              return {
+                validate: false,
+                tooltip: this.$t('network.text_627'),
+              }
+            }
+            return { validate: true }
+          },
         },
         {
           label: this.$t('common.delete'),
@@ -66,16 +77,19 @@ export default {
             })
           },
           meta: (obj) => {
+            if (!this.isPower(this.data)) {
+              return {
+                validate: false,
+                tooltip: this.$t('network.text_627'),
+              }
+            }
             if (!this.$getDeleteResult(obj).validate) {
               return {
                 validate: false,
                 tooltip: this.$getDeleteResult(obj).tooltip,
               }
             }
-            return {
-              validate: true,
-              tooltip: '',
-            }
+            return { validate: true }
           },
         },
       ],
@@ -92,6 +106,20 @@ export default {
             })
           },
           meta: () => {
+            const isOneCloud = this.data.brand === 'OneCloud'
+            const provider = this.data.provider
+            if (!isOneCloud) {
+              return {
+                validate: false,
+                tooltip: !isOneCloud && this.$t('common.not_support_validate_tips', [PROVIDER_MAP[provider].label]),
+              }
+            }
+            if (!this.isPower(this.data)) {
+              return {
+                validate: false,
+                tooltip: this.$t('network.text_627'),
+              }
+            }
             return {
               buttonType: 'primary',
               validate: true,
@@ -108,6 +136,25 @@ export default {
               },
             })
           },
+          meta: () => {
+            const isOneCloud = this.data.brand === 'OneCloud'
+            const provider = this.data.provider
+            if (!isOneCloud) {
+              return {
+                validate: false,
+                tooltip: !isOneCloud && this.$t('common.not_support_validate_tips', [PROVIDER_MAP[provider].label]),
+              }
+            }
+            if (!this.isPower(this.data)) {
+              return {
+                validate: false,
+                tooltip: this.$t('network.text_627'),
+              }
+            }
+            return {
+              validate: true,
+            }
+          },
         },
         {
           label: this.$t('common.delete'),
@@ -122,6 +169,12 @@ export default {
             })
           },
           meta: () => {
+            if (!this.isPower(this.data)) {
+              return {
+                validate: false,
+                tooltip: this.$t('network.text_627'),
+              }
+            }
             return {
               validate: this.list.allowDelete(),
             }
@@ -130,8 +183,18 @@ export default {
       ],
     }
   },
+  computed: {
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'isProjectMode', 'userInfo']),
+  },
   created () {
     this.list.fetchData()
+  },
+  methods: {
+    isPower (obj) {
+      if (this.isAdminMode) return true
+      if (this.isDomainMode) return obj.domain_id === this.userInfo.projectDomainId
+      return obj.tenant_id === this.userInfo.projectId
+    },
   },
 }
 </script>
