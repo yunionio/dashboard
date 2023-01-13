@@ -59,6 +59,15 @@
       border
       :columns="COLUMNS_MAP.cloudSecurityTable"
       :data="listData.cloudSecurityTable" />
+    <template v-if="listData.resources.length">
+      <div class="mt-4 mb-2">{{$t('wz_workflow_form.open_resource_list')}}</div>
+      <vxe-grid
+        ref="opTable"
+        size="mini"
+        border
+        :columns="COLUMNS_MAP.openResource"
+        :data="listData.resources" />
+    </template>
   </div>
 </template>
 
@@ -136,10 +145,11 @@ export default {
       return ret
     },
     listData () {
-      const { cloudResourceInfo = {}, cloudSecurityInfo = {} } = this.resourceData
+      const { cloudResourceInfo = {}, cloudSecurityInfo = {}, openResourceInfo = {} } = this.resourceData
       const { ecs = [], rds = [], server = [] } = cloudResourceInfo
       const { basicSecurityServices = [], cloudSecurityTable = [] } = cloudSecurityInfo
-      return { ecs, rds, server, basicSecurityServices, cloudSecurityTable }
+      const { resources = [] } = openResourceInfo
+      return { ecs, rds, server, basicSecurityServices, cloudSecurityTable, resources }
     },
   },
   created () {
