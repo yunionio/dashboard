@@ -3031,7 +3031,7 @@
       "work_order_support": "申请技术支持",
       "work_order_apply_project_quota": "申请@:dictionary.project配额",
       "work_order_apply_domain_quota": "申请@:dictionary.domain配额",
-      "work_order_apply_internal_resource": "申请内跑工单"
+      "work_order_apply_internal_resource": "申请内部工单"
     },
     "tips": {
       "service_message": "服务消息",
@@ -4066,7 +4066,7 @@
   "common.text00035": "主机删除",
   "common.text00036": "技术支持",
   "common.text00037": "配额申请",
-  "common.apply_internal_resource": "内跑工单",
+  "common.apply_internal_resource": "内部工单",
   "common.text00038": "申请",
   "common.text00039": "加入",
   "common.text00040": "已选",
