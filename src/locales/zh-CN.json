@@ -168,7 +168,8 @@
       "live_migrating": "迁移中",
       "stopped": "关机",
       "on": "运行中",
-      "off": "关机"
+      "off": "关机",
+      "qga_exec_command_failed": "QGA执行失败"
     },
     "network": {
       "init": "初始化",
