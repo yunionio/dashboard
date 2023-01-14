@@ -235,9 +235,12 @@ export default {
     isAllRunning () {
       return this.params.data.every(item => item.status === 'running')
     },
+    isExistManager () {
+      return this.params.data[0].manager_id
+    },
   },
   created () {
-    this.isSingle && this.queryForcastData()
+    this.isSingle && !this.isExistManager && this.queryForcastData()
     this.queryHosts()
   },
   methods: {
