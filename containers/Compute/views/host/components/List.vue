@@ -363,7 +363,7 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
-                    if (ownerDomain) {
+                    if (!ownerDomain) {
                       ret.tooltip = this.$t('compute.host.cpu.revert.share')
                       return ret
                     }
