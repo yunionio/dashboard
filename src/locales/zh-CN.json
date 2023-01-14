@@ -5303,5 +5303,7 @@
   "common.staticstics.status.other": "其它",
   "common.staticstics.status.online": "在线",
   "common.staticstics.status.offline": "离线",
-  "common.staticstics.status.unmount": "待挂载"
+  "common.staticstics.status.unmount": "待挂载",
+  "common.res_group_opts.vpcs.classic": "经典网络",
+  "common.res_group_opts.vpcs.virtual": "虚拟网络"
 }

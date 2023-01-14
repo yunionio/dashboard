@@ -27,6 +27,7 @@
           v-if="i === 0"
           v-decorator="decorator.vpcs(item.key)"
           show-status
+          show-group
           :status-desc="$t('compute.vpc_status_desc')"
           :resource="vpcResource"
           :formatter="vpcFormatter"
