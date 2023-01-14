@@ -986,5 +986,10 @@
   "system.common_log_filter_tip": "默认按ID搜索，自动匹配IP筛选项",
   "iam.policy_search_placeholder": "输入权限名称搜索",
   "iam.res_policy": "资源权限",
-  "iam.other_policy": "其它权限"
+  "iam.other_policy": "其它权限",
+  "system.notify.name.password_expire_due_1_day": "密码过期1天",
+  "system.notify.name.password_expire_due_7_day": "密码过期7天",
+  "system.notify.name.net_out_of_sync": "网络拓扑信息不同步",
+  "system.notify.name.mysql_out_of_sync": "数据库主备不同步",
+  "system.notify.name.cloud_account_sync_status": "云账号同步异常"
 }
