@@ -73,6 +73,7 @@
 
 <script>
 import * as R from 'ramda'
+import { getWorkflowParamter } from '@/utils/utils'
 
 export default {
   name: 'ApplyInternalResourceInfo',
@@ -91,8 +92,7 @@ export default {
   },
   computed: {
     resourceData () {
-      const { paramter } = this.variables
-      return JSON.parse(paramter)
+      return getWorkflowParamter(this.variables)
     },
     unitInfoList () {
       const ret = []
@@ -106,9 +106,9 @@ export default {
       })
       keys.map(key => {
         const item = { field: key }
-        item.title = this.WORKFLOW_ITEM_MAP[key].label
-        item.value = unitInfo[key].name || unitInfo[key] || '-'
-        ret.push(item)
+        item.title = this.WORKFLOW_ITEM_MAP[key]?.label
+        item.value = unitInfo[key]?.name || unitInfo[key]?.id || unitInfo[key] || '-'
+        if (item.title) ret.push(item)
       })
       return ret
     },
