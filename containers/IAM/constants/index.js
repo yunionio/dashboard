@@ -33,6 +33,11 @@ export const NOTIFY_TOPIC_NAMES_MAP = {
   'user lock': i18n.t('iam.user_lock_notify'),
   'checksum test failed': i18n.t('iam.checksum_error_notify'),
   'action log exceed count': i18n.t('iam.action_log_exceed_count'),
+  'password expire due 1 day': i18n.t('system.notify.name.password_expire_due_1_day'),
+  'password expire due 7 day': i18n.t('system.notify.name.password_expire_due_7_day'),
+  'net out of sync': i18n.t('system.notify.name.net_out_of_sync'),
+  'mysql out of sync': i18n.t('system.notify.name.mysql_out_of_sync'),
+  'cloud account sync status': i18n.t('system.notify.name.cloud_account_sync_status'),
 }
 
 export const NOTIFY_ROLE_SCOPES = [
