@@ -456,7 +456,7 @@ export default {
           key: brandKey,
           value: key,
           operator: '=',
-          condition: 'or',
+          condition: 'and',
         }
       })
       if (this.brandEnvs.length && this.brandEnvs.every(env => env === 'public')) {
