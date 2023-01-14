@@ -5347,5 +5347,7 @@
   "common.whole_month": "整月",
   "common.whole_quarter": "整季度",
   "common.whole_year": "整年",
-  "common.not_support_validate_tips": "{0}不支持该操作"
+  "common.not_support_validate_tips": "{0}不支持该操作",
+  "common.res_group_opts.vpcs.classic": "经典网络",
+  "common.res_group_opts.vpcs.virtual": "虚拟网络"
 }
