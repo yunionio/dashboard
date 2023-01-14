@@ -6,6 +6,7 @@
 
 import { mapGetters } from 'vuex'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
+import { getWorkflowParamterParams } from '@/utils/utils'
 
 export default {
   data () {
@@ -29,9 +30,14 @@ export default {
     async createWorkflow (variables) {
       if (!this.$appConfig.isPrivate) return Promise.reject(new Error('no workflow'))
       try {
+        let params = variables
+        if (variables.paramter && variables.length > 4000) {
+          const paramterParams = getWorkflowParamterParams(variables.paramter)
+          params = { ...params, ...paramterParams }
+        }
         const response = new this.$Manager('process-instances', 'v1').create({
           data: {
-            variables,
+            variables: params,
           },
         })
         this.$store.dispatch('app/fetchWorkflowStatistics')
