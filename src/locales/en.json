@@ -5280,5 +5280,7 @@
   "common.staticstics.status.other": "Other",
   "common.staticstics.status.online": "Online",
   "common.staticstics.status.offline": "Offline",
-  "common.staticstics.status.unmount": "To be mounted"
+  "common.staticstics.status.unmount": "To be mounted",
+  "common.res_group_opts.vpcs.classic": "classic",
+  "common.res_group_opts.vpcs.virtual": "virtual"
 }
