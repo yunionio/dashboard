@@ -1039,3 +1039,38 @@ export function getColorByCache () {
   }
   return colorArr
 }
+
+export const getWorkflowParamter = (variables = {}, defaultValue = {}) => {
+  const keys = Object.keys(variables)
+  const p_list = keys.filter(key => key.startsWith('paramter_'))
+  const paramterList = p_list.length ? p_list : ['paramter']
+  paramterList.sort()
+  let paramter = ''
+  paramterList.map(key => {
+    paramter += variables[key] || ''
+  })
+  try {
+    return paramter ? JSON.parse(paramter) : defaultValue
+  } catch (err) {
+    console.warn(err)
+    return defaultValue
+  }
+}
+
+export const getWorkflowParamterParams = (paramter) => {
+  const len = 3999
+  const ret = {}
+  const p_str_list = []
+  for (let i = 0; i < paramter.length; i += len) {
+    p_str_list.push(paramter.slice(i, i + len))
+  }
+  if (p_str_list.length > 1) {
+    ret.paramter = ''
+    p_str_list.map((str, idx) => {
+      ret[`paramter_${idx}`] = str
+    })
+  } else {
+    ret.paramter = p_str_list[0]
+  }
+  return ret
+}
