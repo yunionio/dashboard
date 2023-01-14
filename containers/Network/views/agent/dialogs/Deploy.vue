@@ -274,12 +274,13 @@ export default {
       }).then(res => {
         if (res.data.data && res.data.data.length) {
           const updateInfo = res.data.data[0]
-          const v = updateInfo.current_version.slice(1, 4)
-          let baseURL = `https://iso.yunion.cn/${v}/rpms`
+          const v = updateInfo.current_version.slice(1).split('.')
+          const majorV = `${v[0]}.${v[1]}`
+          let baseURL = `https://iso.yunion.cn/${majorV}/rpms`
           if (updateInfo && updateInfo.current_version) {
-            if (v.length === 3 && v[0] === '3') {
-              if (parseInt(v[2]) >= 9) {
-                baseURL = `https://yunioniso.oss-cn-beijing.aliyuncs.com/iso/${v}/rpms`
+            if (v.length >= 3 && v[0] === '3') {
+              if (parseInt(v[1]) >= 9) {
+                baseURL = `https://yunioniso.oss-cn-beijing.aliyuncs.com/iso/${majorV}/rpms`
               }
             }
             this.form.fc.setFieldsValue({
