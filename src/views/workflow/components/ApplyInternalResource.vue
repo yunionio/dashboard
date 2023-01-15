@@ -22,51 +22,74 @@
         <div class="detail-item-value">{{item.value}}</div>
       </div>
     </template>
-    <!-- 4 -->
-    <div class="mt-4 mb-2">{{$t('wz_workflow_form.titles.ecs')}}</div>
-    <vxe-grid
-      ref="ecsTable"
-      size="mini"
-      border
-      :columns="COLUMNS_MAP.ecs"
-      :data="listData.ecs" />
-    <div class="mt-4 mb-2">{{$t('wz_workflow_form.titles.rds')}}</div>
-    <vxe-grid
-      ref="rdsTable"
-      size="mini"
-      border
-      :columns="COLUMNS_MAP.rds"
-      :data="listData.rds" />
-    <div class="mt-4 mb-2">{{$t('wz_workflow_form.titles.server')}}</div>
-    <vxe-grid
-      ref="serverTable"
-      size="mini"
-      border
-      :columns="COLUMNS_MAP.server"
-      :data="listData.server" />
-    <!-- 5 -->
-    <div class="mt-4 mb-2">{{$t('wz_workflow_form.titles.basic_security_services')}}</div>
-    <vxe-grid
-      ref="bssTable"
-      size="mini"
-      border
-      :columns="COLUMNS_MAP.basicSecurityServices"
-      :data="listData.basicSecurityServices" />
-    <div class="mt-4 mb-2">{{$t('wz_workflow_form.titles.cloud_security_table')}}</div>
-    <vxe-grid
-      ref="cstTable"
-      size="mini"
-      border
-      :columns="COLUMNS_MAP.cloudSecurityTable"
-      :data="listData.cloudSecurityTable" />
-    <template v-if="listData.resources.length">
-      <div class="mt-4 mb-2">{{$t('wz_workflow_form.open_resource_list')}}</div>
+    <!-- 申请单 -->
+    <template v-if="processType === '1'">
+      <!-- 4 -->
+      <div class="mt-4 mb-2">{{$t('wz_workflow_form.titles.ecs')}}</div>
       <vxe-grid
-        ref="opTable"
+        ref="ecsTable"
         size="mini"
         border
-        :columns="COLUMNS_MAP.openResource"
-        :data="listData.resources" />
+        :columns="COLUMNS_MAP.ecs"
+        :data="listData.ecs" />
+      <div class="mt-4 mb-2">{{$t('wz_workflow_form.titles.rds')}}</div>
+      <vxe-grid
+        ref="rdsTable"
+        size="mini"
+        border
+        :columns="COLUMNS_MAP.rds"
+        :data="listData.rds" />
+      <div class="mt-4 mb-2">{{$t('wz_workflow_form.titles.server')}}</div>
+      <vxe-grid
+        ref="serverTable"
+        size="mini"
+        border
+        :columns="COLUMNS_MAP.server"
+        :data="listData.server" />
+      <!-- 5 -->
+      <div class="mt-4 mb-2">{{$t('wz_workflow_form.titles.basic_security_services')}}</div>
+      <vxe-grid
+        ref="bssTable"
+        size="mini"
+        border
+        :columns="COLUMNS_MAP.basicSecurityServices"
+        :data="listData.basicSecurityServices" />
+      <div class="mt-4 mb-2">{{$t('wz_workflow_form.titles.cloud_security_table')}}</div>
+      <vxe-grid
+        ref="cstTable"
+        size="mini"
+        border
+        :columns="COLUMNS_MAP.cloudSecurityTable"
+        :data="listData.cloudSecurityTable" />
+      <template v-if="listData.openResources.length">
+        <div class="mt-4 mb-2">{{$t('wz_workflow_form.open_resource_list')}}</div>
+        <vxe-grid
+          ref="opTable"
+          size="mini"
+          border
+          :columns="COLUMNS_MAP.openResource"
+          :data="listData.resources" />
+      </template>
+    </template>
+    <!-- 升降配 -->
+    <template v-else-if="processType === '11'">
+      <div class="mt-4 mb-2">{{$t('wz_workflow_form.change_resource_list')}}</div>
+      <vxe-grid
+        ref="chTable"
+        size="mini"
+        border
+        :columns="COLUMNS_MAP.changeResource"
+        :data="listData.changeResources" />
+    </template>
+    <!-- 释放 -->
+    <template v-else-if="processType === '21'">
+      <div class="mt-4 mb-2">{{$t('wz_workflow_form.delete_resource_list')}}</div>
+      <vxe-grid
+        ref="delTable"
+        size="mini"
+        border
+        :columns="COLUMNS_MAP.deleteResource"
+        :data="listData.deleteResources" />
     </template>
   </div>
 </template>
@@ -93,6 +116,10 @@ export default {
   computed: {
     resourceData () {
       return getWorkflowParamter(this.variables)
+    },
+    processType () {
+      const { process_type } = this.resourceData
+      return process_type.id
     },
     unitInfoList () {
       const ret = []
@@ -145,11 +172,13 @@ export default {
       return ret
     },
     listData () {
-      const { cloudResourceInfo = {}, cloudSecurityInfo = {}, openResourceInfo = {} } = this.resourceData
+      const { cloudResourceInfo = {}, cloudSecurityInfo = {}, openResourceInfo = {}, changeResourceInfo = {}, deleteResourceInfo = {} } = this.resourceData
       const { ecs = [], rds = [], server = [] } = cloudResourceInfo
       const { basicSecurityServices = [], cloudSecurityTable = [] } = cloudSecurityInfo
-      const { resources = [] } = openResourceInfo
-      return { ecs, rds, server, basicSecurityServices, cloudSecurityTable, resources }
+      const { resources: openResources = [] } = openResourceInfo
+      const { resources: changeResources = [] } = changeResourceInfo
+      const { resources: deleteResources = [] } = deleteResourceInfo
+      return { ecs, rds, server, basicSecurityServices, cloudSecurityTable, openResources, changeResources, deleteResources }
     },
   },
   created () {
