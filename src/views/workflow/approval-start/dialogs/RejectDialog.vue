@@ -54,8 +54,8 @@ export default {
         },
       },
       columns: [
-        getProcessDefinitionNameTableColumn({ field: 'process_instance.process_definition_name', title: this.$t('common_186') }),
-        getResourceNameTableColumn({ title: this.$t('common_357') }),
+        getProcessDefinitionNameTableColumn({ field: 'process_instance.process_definition_name' }),
+        getResourceNameTableColumn(),
         getInitiatorTableColumn({ field: 'process_instance.start_user_name' }),
         getCommentTableColumn({ title: this.$t('common_157'), field: 'process_instance.comment' }),
       ],
