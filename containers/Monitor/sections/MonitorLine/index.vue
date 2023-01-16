@@ -240,6 +240,9 @@ export default {
     yMax () {
       this.showThreshold()
     },
+    pager (val) {
+      this.curPager = Object.assign({}, val || { seriesIndex: 0, total: 0, limit: 10, page: 0 })
+    },
   },
   created () {
     this.colorHash = new ColorHash({
