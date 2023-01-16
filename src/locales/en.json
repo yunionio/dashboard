@@ -5326,5 +5326,6 @@
   "common.whole_year": "Whole year",
   "common.not_support_validate_tips": "{0} does not support the operation",
   "common.res_group_opts.vpcs.classic": "classic",
-  "common.res_group_opts.vpcs.virtual": "virtual"
+  "common.res_group_opts.vpcs.virtual": "virtual",
+  "common.workflow_detail": "Workflow Detail"
 }

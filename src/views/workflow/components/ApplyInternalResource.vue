@@ -31,7 +31,7 @@
         size="mini"
         border
         :columns="COLUMNS_MAP.ecs"
-        :data="listData.ecs" />
+        :data="[...listData.ecs, ...listData.eip]" />
       <div class="mt-4 mb-2">{{$t('wz_workflow_form.titles.rds')}}</div>
       <vxe-grid
         ref="rdsTable"
@@ -68,7 +68,7 @@
           size="mini"
           border
           :columns="COLUMNS_MAP.openResource"
-          :data="listData.resources" />
+          :data="listData.openResources" />
       </template>
     </template>
     <!-- 升降配 -->
@@ -173,12 +173,12 @@ export default {
     },
     listData () {
       const { cloudResourceInfo = {}, cloudSecurityInfo = {}, openResourceInfo = {}, changeResourceInfo = {}, deleteResourceInfo = {} } = this.resourceData
-      const { ecs = [], rds = [], server = [] } = cloudResourceInfo
+      const { ecs = [], rds = [], server = [], eip = [] } = cloudResourceInfo
       const { basicSecurityServices = [], cloudSecurityTable = [] } = cloudSecurityInfo
       const { resources: openResources = [] } = openResourceInfo
       const { resources: changeResources = [] } = changeResourceInfo
       const { resources: deleteResources = [] } = deleteResourceInfo
-      return { ecs, rds, server, basicSecurityServices, cloudSecurityTable, openResources, changeResources, deleteResources }
+      return { ecs, eip, rds, server, basicSecurityServices, cloudSecurityTable, openResources, changeResources, deleteResources }
     },
   },
   created () {

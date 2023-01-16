@@ -305,7 +305,7 @@ export default {
 
     initApplyInternalResourceInfo () {
       const applyInternalResourceInfo = {
-        title: this.$t('common_376'),
+        title: this.$t('common.workflow_detail'),
         field: 'applyInternalResourceInfo',
         slots: {
           default: ({ row }, h) => {
