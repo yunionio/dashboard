@@ -16,9 +16,10 @@ export default {
         minWidth: 100,
         slots: {
           default: ({ row }) => {
+            const val = NOTIFY_TOPIC_NAMES_MAP[row.name] || row.name
             return [
-              <list-body-cell-wrap copy row={row} field='name' list={this.list} hideField addLock={ false } addBackup={ false }>
-                <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ NOTIFY_TOPIC_NAMES_MAP[row.name] || row.name }</side-page-trigger>
+              <list-body-cell-wrap copy row={row} field='name' message={ val } list={this.list} hideField addLock={ false } addBackup={ false }>
+                <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ val }</side-page-trigger>
               </list-body-cell-wrap>,
             ]
           },
