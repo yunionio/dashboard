@@ -34,6 +34,24 @@ const Control = {
     if (definition.decorator) {
       const id = this.getDecoratorId(path)
       const decorator = [id].concat(definition.decorator)
+      // telegraf 增加默认值
+      const pathUrl = path.join('.')
+      if (pathUrl === 'virtualMachine.ansiblePlaybook.telegraf.influxdbName') {
+        if (inputProps.props &&
+          inputProps.props.schema &&
+          !inputProps.props.schema.default) {
+          inputProps.props.schema.default = 'telegraf'
+          decorator[1].initialValue = 'telegraf'
+        }
+      }
+      if (pathUrl === 'virtualMachine.ansiblePlaybook.telegraf.influxdbUrl') {
+        if (inputProps.props &&
+          inputProps.props.schema &&
+          !inputProps.props.schema.default) {
+          inputProps.props.schema.default = this.influxdbUrl
+          decorator[1].initialValue = this.influxdbUrl
+        }
+      }
       inputProps.directives = [
         {
           name: 'decorator',

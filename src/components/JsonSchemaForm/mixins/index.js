@@ -9,6 +9,7 @@ export default {
         return []
       },
     },
+    influxdbUrl: String,
   },
   computed: {
     form () {
@@ -23,6 +24,7 @@ export default {
     'form',
     'formDefinition',
     'model',
+    'influxdbUrl',
   ],
   methods: {
     getFieldDefaultValue (key) {
