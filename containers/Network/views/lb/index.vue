@@ -1,12 +1,21 @@
 <template>
   <div>
-    <page-header :title="$t('network.text_714')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-header :title="$t('network.text_714')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv">
+      <div slot="res-status-tab" style="position: absolute; right: 0; top: 14px;">
+        <res-status-tab
+          :loading="statisticsLoading"
+          :status-opts="statusOpts"
+          @click="statusClickHandle" />
+      </div>
+    </page-header>
     <page-body>
       <list
         :id="listId"
         :get-params="getParams"
         :cloud-env="cloudEnv"
-        :cloudEnvOptions="cloudEnvOptions" />
+        :cloudEnvOptions="cloudEnvOptions"
+        :filterParams="filterParams"
+        statusResKey="lb" />
     </page-body>
   </div>
 </template>
@@ -14,12 +23,14 @@
 <script>
 import List from './components/List'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
+import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
 
 export default {
   name: 'LbIndex',
   components: {
     List,
   },
+  mixins: [ResStatisticsMixin],
   data () {
     return {
       listId: 'LbList',
@@ -28,7 +39,30 @@ export default {
       getParams: {
         details: true,
       },
+      resStaticsResource: 'loadbalancers',
     }
+  },
+  methods: {
+    getStatusOpts (data) {
+      const { enabled = {}, disabled = {} } = data
+      // 统计
+      let total = 0
+      let other = 0
+      for (const k in data) {
+        total += data[k].total_count
+        if (!['enabled', 'disabled'].includes(k)) {
+          this.otherFilterStatus.push(k)
+          other += data[k].total_count
+        }
+      }
+      const statusOpts = [
+        { title: this.$t('compute.text_576'), type: 'total', num: total },
+        { title: this.$t('status.enabled.true'), type: 'enabled', num: enabled?.total_count || 0 },
+        { title: this.$t('status.enabled.false'), type: 'disabled', num: disabled?.total_count || 0 },
+        { title: this.$t('compute.text_674'), type: 'other', num: other },
+      ]
+      return statusOpts
+    },
   },
 }
 </script>

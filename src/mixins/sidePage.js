@@ -197,8 +197,20 @@ export default {
         }
       })
     }
+    this.$bus.$off('refresh-detail')
+    this.$bus.$on('refresh-detail', () => {
+      this.id && this.singleRefresh(this.id)
+    })
+  },
+  mounted () {
+    this.initChangeTab()
   },
   methods: {
+    initChangeTab () {
+      if (this.params.tab) {
+        this.handleTabChange(this.params.tab)
+      }
+    },
     cancelSidePage () {
       if (this.params && R.is(Function, this.params.cancel)) {
         this.params.cancel()

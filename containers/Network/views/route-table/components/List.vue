@@ -101,13 +101,14 @@ export default {
       }
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'RouteTableSidePage', {
         id: row.id,
         resource: 'route_tables',
         getParams: this.getParam,
       }, {
         list: this.list,
+        tab,
       })
     },
   },

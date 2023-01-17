@@ -26,6 +26,7 @@
             <div class="d-flex mt-2 w-100 align-items-center">
               <h5 class="text-truncate mb-0" style="min-width: 0;">{{ resName }}</h5>
               <template v-if="loaded && !hasError">
+                <icon class="ml-2" type="refresh" :spin="refreshDetail" @click="refreshDetailHandler()" />
                 <div class="ml-3 flex-shrink-0 flex-shrink-0 d-flex pr-2">
                   <div class="pr-4"><slot name="actions" /></div>
                 </div>
@@ -54,7 +55,10 @@
           <template v-if="hasError">
             <data-empty :description="errorInfo.detail" />
           </template>
-          <template v-else><slot /></template>
+          <template v-else>
+            <a-skeleton v-if="refreshDetail" active :paragraph="{ rows: 6 }" />
+            <slot v-else />
+          </template>
         </template>
       </div>
     </div>
@@ -109,6 +113,7 @@ export default {
         [13, 9],
       ],
       wrapStyle: { left: '300px' },
+      refreshDetail: false,
     }
   },
   provide: {
@@ -161,6 +166,16 @@ export default {
     },
     handleTabChange (key) {
       this.$emit('tab-change', key)
+    },
+    refreshDetailHandler () {
+      this.refreshDetail = true
+      const idx = this.tabs.findIndex(item => item.key === this.currentTab)
+      if (idx === 0) {
+        this.$bus.$emit('refresh-detail')
+      }
+      setTimeout(() => {
+        this.refreshDetail = false
+      }, 500)
     },
   },
 }

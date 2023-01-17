@@ -41,7 +41,7 @@ export default {
               return `name.contains(${val})`
             },
           },
-          project_domain: getProjectDomainFilter(),
+          project_domains: getProjectDomainFilter(),
           created_at: getCreatedAtFilter(),
         },
       }),

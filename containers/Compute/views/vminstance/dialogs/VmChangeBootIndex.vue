@@ -106,15 +106,8 @@ export default {
             data,
           },
         })
-        // await this.params.onManager('batchPerformAction', {
-        //   id: [this.params.data[0].id],
-        //   managerArgs: {
-        //     action: 'set-boot-index',
-        //     data,
-        //   },
-        // })
         this.loading = false
-        // this.cancelDialog()
+        this.cancelDialog()
       } catch (error) {
         this.loading = false
       }

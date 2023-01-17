@@ -173,6 +173,13 @@ export default {
           type: 'approval-start',
         },
       })
+      // const routeUrl = this.$router.resolve({
+      //   path: '/workflow-apply-internal-resource/create',
+      //   query: {
+      //     type: 'approval-start',
+      //   },
+      // })
+      // window.open(routeUrl.href, '_blank')
     },
     copyHotline () {
       this.$copyText(this.companyInfo.hotline)

@@ -397,7 +397,7 @@ export default {
       }
       return status
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'RedisSidePage', {
         id: row.id,
         resource: 'elasticcaches',
@@ -407,6 +407,7 @@ export default {
         steadyStatus: Object.values(expectStatus.redis).flat(),
       }, {
         list: this.list,
+        tab,
       })
     },
   },

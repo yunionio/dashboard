@@ -37,6 +37,7 @@ import HostIp from './HostIp'
 import LbIp from './LbIp'
 import FlexIp from './FlexIp'
 import IPList from './IPList'
+import NetworkIpMacs from './NetworkIpMacs'
 import ReservedIpList from '@Network/views/reserved-ip/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
@@ -53,6 +54,7 @@ export default {
     FlexIp,
     Actions,
     IPList,
+    NetworkIpMacs,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -63,6 +65,7 @@ export default {
         // { label: '宿主机IP', key: 'host-machineip' },
         // { label: '主机IP', key: 'host-ip' },
         { label: this.$t('network.text_651'), key: 'reserved-ip-list' },
+        { label: this.$t('network.mac_ip.mac_mapping_table'), key: 'network-ip-macs' },
         // { label: '负载均衡IP', key: 'lb-ip' },
         // { label: '弹性网卡IP', key: 'flex-ip' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },

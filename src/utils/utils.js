@@ -290,10 +290,9 @@ export const autoComputeUnit = (series, sourceUnit = 'bps', base = 1000) => { //
   const maxValue = Math.max.apply(null, valueArr)
   if (maxValue >= base && valueArr && valueArr.length > 0) {
     const maxValueStr = sizestr(maxValue, sourceUnit.charAt(0), base)
-    unit = maxValueStr.slice(-1) // 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'
-    const originIndex = UNITS.findIndex(val => val === sourceUnit.charAt(0))
+    unit = maxValueStr.slice(-1) // 'B', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'
+    const originIndex = UNITS.findIndex(val => val === sourceUnit.charAt(0).toUpperCase())
     let targetIndex = UNITS.findIndex(val => val === unit.charAt(0))
-    targetIndex = targetIndex || UNITS[UNITS.length - 1]
     targetIndex = targetIndex < 0 ? 0 : targetIndex
     const scaleLen = targetIndex - originIndex
     const scale = Math.pow(base, scaleLen)
@@ -1039,4 +1038,39 @@ export function getColorByCache () {
     colorArr = initColors
   }
   return colorArr
+}
+
+export const getWorkflowParamter = (variables = {}, defaultValue = {}) => {
+  const keys = Object.keys(variables)
+  const p_list = keys.filter(key => key.startsWith('paramter_'))
+  const paramterList = p_list.length ? p_list : ['paramter']
+  paramterList.sort()
+  let paramter = ''
+  paramterList.map(key => {
+    paramter += variables[key] || ''
+  })
+  try {
+    return paramter ? JSON.parse(paramter) : defaultValue
+  } catch (err) {
+    console.warn(err)
+    return defaultValue
+  }
+}
+
+export const getWorkflowParamterParams = (paramter) => {
+  const len = 3999
+  const ret = {}
+  const p_str_list = []
+  for (let i = 0; i < paramter.length; i += len) {
+    p_str_list.push(paramter.slice(i, i + len))
+  }
+  if (p_str_list.length > 1) {
+    ret.paramter = ''
+    p_str_list.map((str, idx) => {
+      ret[`paramter_${idx}`] = str
+    })
+  } else {
+    ret.paramter = p_str_list[0]
+  }
+  return ret
 }

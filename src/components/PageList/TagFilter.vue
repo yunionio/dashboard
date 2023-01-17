@@ -58,7 +58,7 @@ export default {
   computed: {
     params () {
       const ret = {
-        with_cloud_meta: true,
+        with_cloud_meta: this.showExtTags,
         ...this.extTagParams,
       }
       if (R.is(String, this.resource)) {

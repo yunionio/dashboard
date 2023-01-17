@@ -997,10 +997,7 @@ export default {
                     label: this.$t('compute.text_1127'),
                     permission: 'server_perform_migrate,server_perform_live_migrate',
                     action: () => {
-                      const dialog = this.list.selectedItems[0].hypervisor === typeClouds.hypervisorMap.esxi.key
-                        ? 'VmV2vTransferDialog' : 'VmTransferDialog'
-
-                      this.createDialog(dialog, {
+                      this.createDialog('VmTransferDialog', {
                         data: this.list.selectedItems,
                         columns: this.columns,
                         onManager: this.onManager,
@@ -1043,7 +1040,58 @@ export default {
                       ret.tooltip = cloudUnabledTip('transfer', this.list.selectedItems)
                       return ret
                     },
-                    hidden: () => !(hasSetupKey(['onecloud', 'openstack', 'esxi'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
+                    hidden: () => !(hasSetupKey(['onecloud', 'openstack', 'vmware'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
+                  },
+                  {
+                    label: this.$t('compute.v2vtransfer.label'),
+                    permission: 'server_perform_migrate',
+                    action: () => {
+                      this.createDialog('VmV2vTransferDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: true,
+                        tooltip: null,
+                      }
+                      let isOk = this.list.selectedItems.every((item) => {
+                        return ['ready'].includes(item.status)
+                      })
+                      const hypervisors = new Set()
+                      this.list.selectedItems.forEach(item => {
+                        hypervisors.add(item.hypervisor)
+                      })
+
+                      if (isOk) {
+                        isOk = this.list.selectedItems.every((item) => {
+                          if (item.backup_host_id) {
+                            return false
+                          }
+                          return true
+                        })
+                      }
+                      if (!isOk) {
+                        ret.validate = false
+                        return ret
+                      }
+                      if (hypervisors.size > 1) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.v2vtransfer.same_brand')
+                        return ret
+                      }
+                      if (this.list.selectedItems[0]?.hypervisor !== typeClouds.hypervisorMap.esxi.key) {
+                        ret.tooltip = this.$t('compute.brand_support', [typeClouds.hypervisorMap.esxi.label])
+                        ret.validate = false
+                        return ret
+                      }
+                      ret.validate = cloudEnabled('v2vTransfer', this.list.selectedItems)
+                      ret.tooltip = cloudUnabledTip('v2vTransfer', this.list.selectedItems)
+                      return ret
+                    },
+                    hidden: () => !(hasSetupKey(['vmware'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
                   },
                   {
                     label: this.$t('compute.server.quick.recovery'),
@@ -1206,7 +1254,7 @@ export default {
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'VmInstanceSidePage', {
         id: row.id,
         resource: 'servers',
@@ -1214,6 +1262,7 @@ export default {
         steadyStatus: Object.values(expectStatus.server).flat(),
       }, {
         list: this.list,
+        tab,
       })
     },
     beforeShowMenu () {

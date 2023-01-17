@@ -5,6 +5,7 @@ import {
   getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import { getResourceMatchProjectTableColumn } from '../utils/columns'
 
 export default {
   created () {
@@ -68,27 +69,7 @@ export default {
         field: 'project_domain',
         title: i18n.t('cloudenv.text_355', [i18n.t('dictionary.domain')]),
       }),
-      getCopyWithContentTableColumn({
-        field: 'tenant',
-        title: i18n.t('cloudenv.text_356', [i18n.t('dictionary.project')]),
-        minWidth: 140,
-      }),
-      {
-        field: 'tenant',
-        title: i18n.t('cloudenv.text_356', [i18n.t('dictionary.project')]),
-        minWidth: 120,
-        showOverflow: 'title',
-        slots: {
-          default: ({ row }) => {
-            const ret = []
-            ret.push(<list-body-cell-wrap copy field='tenant' row={row} />)
-            if (row.project_mapping) {
-              ret.push(<list-body-cell-wrap copy field='project_mapping' row={row} hideField>{this.$t('cloudenv.text_580')}：{row.project_mapping}</list-body-cell-wrap>)
-            }
-            return ret
-          },
-        },
-      },
+      getResourceMatchProjectTableColumn(),
     ]
   },
 }

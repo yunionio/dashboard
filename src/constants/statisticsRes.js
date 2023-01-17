@@ -17,4 +17,6 @@ export const statisticsRes = [
   'elasticcaches',
   'mongodbs',
   'cdn_domains',
+  'loadbalancers',
+  'buckets',
 ]

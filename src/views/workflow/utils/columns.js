@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import i18n from '@/locales'
 import { PRIORITY_MAP } from '@/constants/workflow'
+import { getWorkflowParamter } from '@/utils/utils'
 
 export const getProcessDefinitionNameTableColumn = ({ field = 'process_definition_name', title = i18n.t('common_375') } = {}) => {
   return {
@@ -9,8 +10,25 @@ export const getProcessDefinitionNameTableColumn = ({ field = 'process_definitio
     minWidth: 80,
     showOverflow: 'title',
     slots: {
-      default: ({ row }) => {
-        return _.get(row, field, '-')
+      default: ({ row }, h) => {
+        if (row.process_definition_key === 'apply-internal-resource' || (row.process_definition_id || '').indexOf('apply-internal-resource') !== -1) {
+          const paramter = row.variables['server-create-paramter'] || row.variables.paramter
+          const rs = paramter ? JSON.parse(paramter) : {}
+          const { process_id } = rs
+          const ret = []
+          if (process_id) {
+            ret.push(
+              <list-body-cell-wrap copy row={{ process_id }} field="process_id" hideField={true}>
+                {i18n.t('system.irs_orders')}-{process_id}
+              </list-body-cell-wrap>,
+            )
+          } else {
+            ret.push(<div>{i18n.t('wz_workflow_form.type')}</div>)
+          }
+          return ret
+        } else {
+          return _.get(row, field, '-')
+        }
       },
     },
   }
@@ -26,7 +44,7 @@ export const getResourceNameTableColumn = ({ field = 'resource_name', title = i1
       default: ({ row }, h) => {
         if (!row.variables) return '-'
         const paramter = row.variables['server-create-paramter'] || row.variables.paramter
-        const rs = paramter ? JSON.parse(paramter) : {}
+        let rs = paramter ? JSON.parse(paramter) : {}
         let name = rs.generate_name || rs.name
         if (Array.isArray(rs)) {
           name = rs.map((item) => item.name).join(',')
@@ -34,15 +52,19 @@ export const getResourceNameTableColumn = ({ field = 'resource_name', title = i1
         if (!name) {
           name = '-'
         }
+        const ret = []
         if (row.process_definition_key === 'apply-internal-resource' || (row.process_definition_id || '').indexOf('apply-internal-resource') !== -1) {
-          const { unitInfo = {} } = rs
-          name = (row.process_definition_name || i18n.t('wz_workflow_form.workflow_type')) + '-' + (unitInfo.contact_name || '')
+          rs = getWorkflowParamter(row.variables)
+          const { process_type = {}, unitInfo = {} } = rs
+          ret.push(<div>{i18n.t(`system_process_type.${process_type.id}`)} - {unitInfo.contact_name}</div>)
+        } else {
+          ret.push(
+            <list-body-cell-wrap copy row={row} hideField={true} message={name}>
+              {name}
+            </list-body-cell-wrap>,
+          )
         }
-        return [
-          <list-body-cell-wrap copy row={row} hideField={ true } message={ name }>
-            { name }
-          </list-body-cell-wrap>,
-        ]
+        return ret
       },
     },
   }
@@ -56,7 +78,11 @@ export const getResourceProjectTableColumn = ({ field = 'resource_project_name',
     showOverflow: 'title',
     slots: {
       default: ({ row }, h) => {
-        const project = _.get(row, field, '-')
+        let f = field
+        if (row.process_instance?.process_definition_key === 'apply-internal-resource') {
+          f = 'variables.project_name'
+        }
+        const project = _.get(row, f, '-')
         return [
           <list-body-cell-wrap copy row={row} hideField={ true } message={ project }>
             { project }

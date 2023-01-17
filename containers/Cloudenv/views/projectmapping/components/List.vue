@@ -10,12 +10,12 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import { getNameFilter, getEnabledFilter, getStatusFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getEnabledSwitchActions, getSetPublicAction } from '@/utils/common/tableActions'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'ProjectMappingList',
@@ -95,7 +95,7 @@ export default {
                 label: this.$t('cloudenv.text_108'),
                 permission: 'projectmappings_delete',
                 action: () => {
-                  this.createDialog('DeleteProjectMappingDialog', {
+                  this.createDialog('DeleteResDialog', {
                     vm: this,
                     data: this.list.selectedItems,
                     columns: this.columns,

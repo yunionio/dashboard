@@ -1,4 +1,5 @@
 import i18n from '@/locales'
+import { getWorkflowParamter } from '@/utils/utils'
 export default {
   created () {
     this.singleActions = [
@@ -24,15 +25,10 @@ export default {
       {
         label: i18n.t('wz_workflow_form.actions.re_apply'),
         action: obj => {
-          const { paramter } = obj.variables
+          const form = getWorkflowParamter(obj.variables)
           let data = {}
-          if (paramter) {
-            try {
-              const form = JSON.parse(paramter)
-              if (form.unitInfo) {
-                data = form
-              }
-            } catch (err) {}
+          if (form.unitInfo) {
+            data = form
           }
           this.$router.push({
             name: 'WorkflowApplyInternalResourceCreate',

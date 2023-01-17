@@ -1076,5 +1076,16 @@
   "network.request.vpc": "请求方VPC",
   "network.receive.vpc": "接收方VPC",
   "network.rt": "响应时间",
-  "network.unreachable_rate": "不可达比率"
+  "network.unreachable_rate": "不可达比率",
+  "network.mac_ip.mapping_table": "映射表",
+  "network.mac_ip.mac_mapping_table": "MAC映射表",
+  "network.mac_ip.import_mapping_table": "导入映射表",
+  "network.mac_ip.create_mapping_table": "新建MAC映射表",
+  "network.mac_ip.edit_mapping_table": "修改MAC映射表",
+  "network.import_tpl_tips": "请先下载模板，按照模板，编辑信息",
+  "network.download_tpl": "下载模板",
+  "network.drag_file_area": "单击或拖动文件到该区域",
+  "network.file_type_validate": "只能上传xlsx文件，且不超过200MB",
+  "network.import_tpl_file": "请选择导入模版文件",
+  "network.mapping_table_tpl": "映射表导入模版"
 }

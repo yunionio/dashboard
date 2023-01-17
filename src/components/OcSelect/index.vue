@@ -35,15 +35,30 @@
         </template>
         <!-- 单列居左排布 -->
         <template v-else>
-          <a-select-option v-for="obj of resOpts" :key="obj.key" :value="obj.key" :title="obj.label" :label="label ? undefined : obj.label" :disabled="obj.disabled">
-            <div class="d-flex">
-              <a-badge v-if="showStatus" :status="obj.disabled ? 'default' : 'success'" />
-              <span class="text-truncate flex-fill mr-2" :title="obj.label">
-                <span v-if="label" class="text-color-secondary option-prefix">{{ label }}: </span>{{ obj.label }}
-              </span>
-              <span style="color: #8492a6; font-size: 13px">{{ obj.rightLabel }}</span>
-            </div>
-          </a-select-option>
+          <template v-if="isShowGroup">
+            <a-select-opt-group v-for="(resOpts, key) in resGroupOptObj" :key="key" :label="$t(`common.res_group_opts.vpcs.${key}`)">
+              <a-select-option v-for="obj of resOpts" :key="obj.key" :value="obj.key" :title="obj.label" :label="label ? undefined : obj.label" :disabled="obj.disabled">
+                <div class="d-flex">
+                  <a-badge v-if="showStatus" :status="obj.disabled ? 'default' : 'success'" />
+                  <span class="text-truncate flex-fill mr-2" :title="obj.label">
+                    <span v-if="label" class="text-color-secondary option-prefix">{{ label }}: </span>{{ obj.label }}
+                  </span>
+                  <span style="color: #8492a6; font-size: 13px">{{ obj.rightLabel }}</span>
+                </div>
+              </a-select-option>
+            </a-select-opt-group>
+          </template>
+          <template v-else>
+            <a-select-option v-for="obj of resOpts" :key="obj.key" :value="obj.key" :title="obj.label" :label="label ? undefined : obj.label" :disabled="obj.disabled">
+              <div class="d-flex">
+                <a-badge v-if="showStatus" :status="obj.disabled ? 'default' : 'success'" />
+                <span class="text-truncate flex-fill mr-2" :title="obj.label">
+                  <span v-if="label" class="text-color-secondary option-prefix">{{ label }}: </span>{{ obj.label }}
+                </span>
+                <span style="color: #8492a6; font-size: 13px">{{ obj.rightLabel }}</span>
+              </div>
+            </a-select-option>
+          </template>
         </template>
       </template>
       <slot v-else name="optTpl" :resOpts="resOpts" />
@@ -122,6 +137,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    showGroup: {
+      type: Boolean,
+      default: false,
+    },
+    groupKey: {
+      type: String,
+      default: 'is_default',
+    },
   },
   data () {
     this.fetchResourceData = debounce(this.fetchResourceData, 300)
@@ -134,6 +157,24 @@ export default {
       dataVal: this.value,
     }
   },
+  computed: {
+    resGroupOptObj () {
+      const groupOptObj = {}
+      this.resOpts.forEach(item => {
+        if (item[this.groupKey]) {
+          if (!groupOptObj.classic) groupOptObj.classic = []
+          groupOptObj.classic.push(item)
+        } else {
+          if (!groupOptObj.virtual) groupOptObj.virtual = []
+          groupOptObj.virtual.push(item)
+        }
+      })
+      return groupOptObj
+    },
+    isShowGroup () {
+      return this.showGroup && Object.keys(this.resGroupOptObj).length >= 1
+    },
+  },
   watch: {
     resource: {
       handler (v) {
@@ -144,8 +185,14 @@ export default {
       immediate: true,
     },
     params: {
-      handler (v) {
-        if (v && !this.data) {
+      handler (v, old) {
+        let isChangeValue = false
+        Object.keys(v).forEach(k => {
+          if (v?.[k] !== old?.[k]) {
+            isChangeValue = true
+          }
+        })
+        if (v && isChangeValue && !this.data) {
           this.fetchResourceData(v)
         }
       },

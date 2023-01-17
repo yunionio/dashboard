@@ -9,7 +9,7 @@ export default {
   created () {
     this.columns = [
       getCopyWithContentTableColumn({ field: 'name', title: i18n.t('compute.text_228'), sortable: true }),
-      getStatusTableColumn({ statusModule: 'server' }),
+      getStatusTableColumn({ statusModule: 'server', hiddenLogView: true }),
       getIpsTableColumn({ field: 'ips', title: 'IP' }),
       {
         field: 'instance_type',

@@ -58,7 +58,7 @@
         <a-form-model-item :label="$t('cloudenv.text_282')" prop="public_scope">
           <a-radio-group v-model="formData.public_scope">
             <a-radio-button value="none">{{$t('cloudenv.text_285')}}</a-radio-button>
-            <a-radio-button value="system">{{$t('cloudenv.global_share')}}</a-radio-button>
+            <a-radio-button v-if="isAdminMode" value="system">{{$t('cloudenv.global_share')}}</a-radio-button>
           </a-radio-group>
         </a-form-model-item>
       </a-form-model>

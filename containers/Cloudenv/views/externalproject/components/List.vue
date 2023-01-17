@@ -1,6 +1,7 @@
 <template>
   <page-list
     ref="EXTERNAL"
+    show-tag-filter
     :list="list"
     :columns="columns"
     :group-actions="groupActions"

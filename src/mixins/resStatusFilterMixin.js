@@ -1,6 +1,6 @@
 export default {
   props: {
-    statusRes: {
+    statusResKey: {
       type: String,
       default: 'server',
     },
@@ -28,7 +28,7 @@ export default {
               if (!isExist) {
                 statusArrTem.push({
                   key: item,
-                  label: this.$t(`status.${this.statusRes}.${item}`),
+                  label: this.$t(`status.${this.statusResKey}.${item}`),
                 })
               }
             })

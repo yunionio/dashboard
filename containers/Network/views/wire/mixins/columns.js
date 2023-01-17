@@ -24,7 +24,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'wire' }),
+      getStatusTableColumn({ statusModule: 'wire', vm: this }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'wires', columns: () => this.columns }),
       getBandwidthTableColumn(),
       getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC', sortable: true }),

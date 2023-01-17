@@ -26,7 +26,7 @@ export default {
       }
       column = [
         getCopyWithContentTableColumn({ field: 'name', title: i18n.t('compute.text_228') }),
-        getStatusTableColumn({ statusModule: 'disk' }),
+        getStatusTableColumn({ statusModule: 'disk', hiddenLogView: true }),
         {
           field: 'disk_type',
           title: i18n.t('compute.text_175'),

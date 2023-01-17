@@ -308,16 +308,6 @@ export default {
           { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
-      handleOpenSidepage (row, tab) {
-        this.sidePageTriggerHandle(this, 'BlockStorageSidePage', {
-          id: row.id,
-          resource: 'storages',
-          getParams: this.getParam,
-        }, {
-          list: this.list,
-          tab,
-        })
-      },
     }
   },
   watch: {
@@ -343,6 +333,16 @@ export default {
         is_baremetal: this.cloudEnv === 'baremetal',
       }
       return ret
+    },
+    handleOpenSidepage (row, tab) {
+      this.sidePageTriggerHandle(this, 'BlockStorageSidePage', {
+        id: row.id,
+        resource: 'storages',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+        tab,
+      })
     },
   },
 }

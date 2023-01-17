@@ -41,10 +41,6 @@ export default {
     frontSingleActions: {
       type: Function,
     },
-    filterParams: {
-      type: Object,
-      default: () => ({}),
-    },
     hiddenFilterOptions: {
       type: Array,
       default: () => ([]),
@@ -367,7 +363,7 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
-                    if (ownerDomain) {
+                    if (!ownerDomain) {
                       ret.tooltip = this.$t('compute.host.cpu.revert.share')
                       return ret
                     }
@@ -543,13 +539,14 @@ export default {
       }
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'HostSidePage', {
         id: row.id,
         resource: 'hosts',
         getParams: this.getParam,
       }, {
         list: this.list,
+        tab,
       })
     },
     defaultSearchKey (search) {

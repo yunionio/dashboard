@@ -12,7 +12,7 @@
       <host-image-list
         :id="listId"
         :filterParams="filterParams"
-        statusRes="image" />
+        statusResKey="image" />
     </page-body>
   </div>
 </template>

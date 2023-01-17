@@ -1609,13 +1609,15 @@
   "compute.custom_data_error1": "Content format error",
   "compute.custom_data_temp": "Text or file format templates follow：[{\"action\":\"create or append\",\"path\":\"The path in the virtual machine is as follows:：/root/usr\",\"content\":\"content\"}]",
   "compute.max_iops": "Max IOPS",
+  "compute.v2vtransfer.label": "V2V Transfer",
   "compute.v2vtransfer.type": "Transfer Type",
   "compute.v2vtransfer.kvm": "Migrate to KVM platform",
+  "compute.v2vtransfer.vmware": "Migrate to others VMware host",
   "compute.v2vtransfer.same_brand": "Please select a machine of the same platform",
   "compute.max_bandwidth": "Max Bandwidth",
   "compute.monitor_url.prompt": "Monitor URL",
   "compute.unlimited": "ALL",
-  "compute.host.cpu.revert.resource": "Set host reserved resources",
+  "compute.host.cpu.revert.resource": "Set cpu reserved resources",
   "compute.host.cpu.revert.resource.message": "The host reservation function supports reserving part of the CPU for other processes and no longer allocates it to virtual machines",
   "compute.show_vnc_info": "View remote information",
   "compute.host.cpu.revert.share": "The shared host does not support this operation",
@@ -1654,5 +1656,7 @@
   "compute.start_buckup": "Start the backup machine",
   "compute.config_sriov_net": "Configure SR-IOV network card",
   "compute.sriov_device_tips": "Please select a device model",
-  "compute.sriov_device_nic_notsupport": "The NIC device type does not support this operation"
+  "compute.sriov_device_nic_notsupport": "The NIC device type does not support this operation",
+  "compute.ceph_rbd": "Ceph RBD",
+  "compute.brand_support": "Only the {0} platform is currently supported"
 }

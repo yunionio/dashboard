@@ -1,13 +1,5 @@
 <template>
   <div>
-    <div class="d-flex align-items-center">
-      <a-checkbox
-      :checked="checkAll"
-      @change="handleCheckAllChange"
-      :indeterminate="isIndeterminate"
-      :disabled="checkAllDisabled">{{$t('system.text_321', [$t('dictionary.policy')])}}</a-checkbox>
-      <a-input class="ml-2" v-model="searchString" :placeholder="$t('iam.policy_search_placeholder')" style="max-width:200px" allow-clear />
-    </div>
     <a-divider orientation="left">
       {{ $t('iam.res_policy') }}
     </a-divider>
@@ -50,6 +42,14 @@
     <a-divider orientation="left">
       {{ $t('iam.other_policy') }}
     </a-divider>
+    <div class="d-flex align-items-center">
+      <a-checkbox
+      :checked="checkAll"
+      @change="handleCheckAllChange"
+      :indeterminate="isIndeterminate"
+      :disabled="checkAllDisabled">{{$t('system.text_321', [$t('dictionary.policy')])}}</a-checkbox>
+      <a-input class="ml-2" v-model="searchString" :placeholder="$t('iam.policy_search_placeholder')" style="max-width:200px" allow-clear />
+    </div>
     <div class="mt-1">
       <template v-for="(item, idx) of options">
         <group
