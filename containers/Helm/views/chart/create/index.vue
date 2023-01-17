@@ -45,7 +45,7 @@
             </template>
             <a-collapse v-model="activeKey">
               <a-collapse-panel :header="$t('helm.text_46')" key="jsonschema">
-                <json-schema-form v-if="isJsonSchema" :schema="schema" :extendFd="form.fd" :definition="definition" :hide-reset="false" ref="formRef" />
+                <json-schema-form v-if="isJsonSchema" :schema="schema" :extendFd="form.fd" :definition="definition" :hide-reset="false" :influxdbUrl="influxdbUrl" ref="formRef" />
                 <form-yaml
                   v-else
                   :decorators="decorators"
@@ -113,6 +113,7 @@ export default {
       activeKey: ['jsonschema', 'desc', 'yaml'],
       formActiveTab: 'form',
       isJsonSchema: false,
+      influxdbUrl: '',
       versions: [],
       previewFiles: [],
       loading: false,
@@ -271,6 +272,7 @@ export default {
   created () {
     this.chartsM = new this.$Manager('charts', 'v1')
     this.releaseM = new this.$Manager('releases', 'v1')
+    this.endpointM = new this.$Manager('endpoints', 'v1')
     this.fetchChartData()
   },
   methods: {
@@ -339,6 +341,16 @@ export default {
           repo: repo,
         },
       })
+      const ret = await this.endpointM.list({
+        params: {
+          service: 'influxdb',
+          interface: 'public',
+        },
+      })
+      const ends = ret.data.data || []
+      if (ends.length) {
+        this.influxdbUrl = ends[0].url
+      }
       if (data) {
         this.chartDetail = data
         this.previewFiles = data.files
