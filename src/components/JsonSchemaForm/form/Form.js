@@ -53,6 +53,7 @@ export default {
     definition: Array,
     defaultValue: [Object, Array],
     extendFd: Object,
+    influxdbUrl: String,
   },
   data () {
     return {
@@ -106,6 +107,7 @@ export default {
       defaultValue: this.defaultValue,
       model: this.model,
       scopeParams: this.formScopeparams,
+      influxdbUrl: this.influxdbUrl,
     }
   },
   created () {
