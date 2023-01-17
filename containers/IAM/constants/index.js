@@ -38,6 +38,7 @@ export const NOTIFY_TOPIC_NAMES_MAP = {
   'net out of sync': i18n.t('system.notify.name.net_out_of_sync'),
   'mysql out of sync': i18n.t('system.notify.name.mysql_out_of_sync'),
   'cloud account sync status': i18n.t('system.notify.name.cloud_account_sync_status'),
+  'service abnormal': i18n.t('system.notify.name.service_abnormal'),
 }
 
 export const NOTIFY_ROLE_SCOPES = [

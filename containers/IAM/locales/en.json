@@ -988,5 +988,6 @@
   "system.notify.name.password_expire_due_7_day": "password expire due 7 day",
   "system.notify.name.net_out_of_sync": "net out of sync",
   "system.notify.name.mysql_out_of_sync": "mysql out of sync",
-  "system.notify.name.cloud_account_sync_status": "cloud account sync status"
+  "system.notify.name.cloud_account_sync_status": "cloud account sync status",
+  "system.notify.name.service_abnormal": "service abnormal"
 }
