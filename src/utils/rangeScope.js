@@ -1,8 +1,10 @@
 import { arrayToObj } from '@/utils/utils'
+import store from '@/store'
 
 export function getRangeScopeOptions (subscriptionScope) {
-  const domainLabel = subscriptionScope === 'domain' ? this.$t('common.rangescope.domain.all') : this.$t('common.rangescope.domain')
-  const projectLabel = subscriptionScope === 'project' ? this.$t('common.rangescope.project.all') : this.$t('common.rangescope.project')
+  const scope = store.getters.scope
+  const domainLabel = [subscriptionScope, scope].every(item => item === 'domain') ? this.$t('common.rangescope.domain.all') : this.$t('common.rangescope.domain')
+  const projectLabel = [subscriptionScope, scope].every(item => item === 'project') ? this.$t('common.rangescope.project.all') : this.$t('common.rangescope.project')
   const options = [
     { label: this.$t('common.rangescope.system'), value: 'system', scope: ['system'] },
     { label: this.$t('common.rangescope.any_domain'), value: 'any_domain', scope: ['system'] },
