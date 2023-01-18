@@ -90,7 +90,6 @@ export default {
         IMAGES_TYPE_MAP.iso.key,
         IMAGES_TYPE_MAP.host.key,
         IMAGES_TYPE_MAP.snapshot.key,
-        IMAGES_TYPE_MAP.vmware.key,
       ],
       formItemLayout: {
         wrapperCol: {
@@ -125,7 +124,9 @@ export default {
       return []
     },
     imageType () {
-      if (this.type === SERVER_TYPE.public) {
+      if (this.type === SERVER_TYPE.idc && this.hypervisor === HYPERVISORS_MAP.esxi.key) {
+        return IMAGES_TYPE_MAP.vmware.key
+      } else if (this.type === SERVER_TYPE.public) {
         return IMAGES_TYPE_MAP.public.key
       } else if (this.type === SERVER_TYPE.private) {
         return IMAGES_TYPE_MAP.private.key
@@ -249,6 +250,7 @@ export default {
       }
       if (this.hypervisor === HYPERVISORS_MAP.esxi.key) {
         params.image_type = 'system'
+        params.manager = this.params.data[0].manager_id
       }
       return params
     },
