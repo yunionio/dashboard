@@ -253,6 +253,7 @@
       "connected": "Connected",
       "disconnected": "Disconnected",
       "sync_network": "Probing network",
+      "sync_net_failed": "Probe network failed",
       "start_sync": "Start sync",
       "syncing": "Syncing",
       "sync_status": "Syncing",

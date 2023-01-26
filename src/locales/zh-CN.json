@@ -253,6 +253,7 @@
       "connected": "已连接",
       "disconnected": "连接断开",
       "sync_network": "探测网络",
+      "sync_net_failed": "探测网络失败",
       "start_sync": "开始同步",
       "syncing": "正在同步",
       "sync_status": "同步中",
