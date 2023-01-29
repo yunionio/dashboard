@@ -48,6 +48,9 @@ export default {
               if (row.isolated_device_count) {
                 ret.push(<a-tooltip title={i18n.t('compute.text_113')}><icon class='ml-2' type='passthrough' /></a-tooltip>)
               }
+              if (row.page_size_kb > 4) {
+                ret.push(<a-tooltip title={i18n.t('compute.large_page_memory_tips')}><icon class='ml-2' type='large-page-memory' /></a-tooltip>)
+              }
               return ret
             },
           }
