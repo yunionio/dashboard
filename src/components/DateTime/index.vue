@@ -169,7 +169,7 @@ export default {
         end = this.customDate.end
       }
       if (['week', 'month', 'quarter', 'year'].includes(this.time.dateMode) && this.timeToEnd) {
-        end = this.$moment().endOf(this.time.timeMode)
+        end = this.$moment().endOf(this.time.dateMode)
       }
       this.time.date = [start, end]
       const params = {
