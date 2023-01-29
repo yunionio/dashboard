@@ -3,7 +3,6 @@ import {
   getNameDescriptionTableColumn,
   getRegionTableColumn,
   getStatusTableColumn,
-  getProjectTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -44,7 +43,6 @@ export default {
         },
       },
       getRegionTableColumn(),
-      getProjectTableColumn(),
     ]
   },
 }
