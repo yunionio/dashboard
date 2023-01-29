@@ -3,8 +3,6 @@ import { LB_SCHEDULER_MAP } from '@Network/constants/lb'
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
-  getProjectTableColumn,
-  getBrandTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -27,7 +25,6 @@ export default {
           },
         }),
         getStatusTableColumn({ statusModule: 'lb' }),
-        getBrandTableColumn(),
         {
           field: 'listener_type&listener_port',
           title: i18n.t('network.text_472'),
@@ -67,7 +64,6 @@ export default {
         }),
         getStatusTableColumn({ minWidth: 100, statusModule: 'lbAcl', field: 'acl_status', title: i18n.t('network.text_142') }),
         getStatusTableColumn({ minWidth: 100, statusModule: 'lbRedirect', field: 'redirect', title: i18n.t('network.text_368') }),
-        getProjectTableColumn(),
       ]
       if (this.data.provider && this.data.provider.toUpperCase() !== 'onecloud') arr.splice(7, 1)
       if (this.data.provider && (this.data.provider.toLowerCase() === 'azure' || this.data.provider.toLowerCase() === 'google')) {

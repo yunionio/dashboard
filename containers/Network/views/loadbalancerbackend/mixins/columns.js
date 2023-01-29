@@ -2,7 +2,6 @@ import LbListCell from '@Network/views/lb/components/LbListCell'
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
-  getProjectTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -38,7 +37,6 @@ export default {
         title: i18n.t('network.text_166'),
         minWidth: 50,
       },
-      getProjectTableColumn(),
     ]
   },
 }
