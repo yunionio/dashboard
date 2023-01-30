@@ -804,5 +804,10 @@
   "cloudenv.project_same_as_tag_value": "The project same as tag value",
   "cloudenv.resource_project_mapping": "Resource sync policy",
   "cloudenv.project_project_mapping": "Project sync policy",
-  "cloudenv.no_match_cloudproject": "No cloud project resources belong to: {0}"
+  "cloudenv.no_match_cloudproject": "No cloud project resources belong to: {0}",
+  "cloudenv.action_group.set_status": "Status Setting",
+  "cloudenv.action_group.set_props": "property settings",
+  "cloudenv.action_group.set_fee": "Fee Setting",
+  "cloudenv.action.update_account": "Update account",
+  "cloudenv.action.update_credential": "Update Credential"
 }
