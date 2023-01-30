@@ -5,6 +5,7 @@ import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 import { findPlatform, getDisabledProvidersActionMeta, typeClouds } from '@/utils/common/hypervisor'
 import { hasMeterService } from '@/utils/auth'
+import { BRAND_MAP, CLOUD_ENVS } from '@/constants'
 
 const steadyStatus = {
   status: Object.values(expectStatus.cloudaccount).flat(),
@@ -109,8 +110,20 @@ export default {
                 })
               },
               meta: obj => {
+                const supportBrands = [
+                  BRAND_MAP.Aws.key,
+                  BRAND_MAP.Aliyun.key,
+                  BRAND_MAP.Google.key,
+                  BRAND_MAP.Huawei.key,
+                  BRAND_MAP.Azure.key,
+                  BRAND_MAP.Qcloud,
+                  BRAND_MAP.JDcloud.key,
+                ]
+
                 return {
-                  validate: this.$appConfig.isPrivate && ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure', 'Qcloud', 'JDcloud'].indexOf(obj.brand) > -1 && ownerDomain,
+                  validate: this.$appConfig.isPrivate &&
+                  (supportBrands.indexOf(obj.brand) > -1 || obj.cloud_env === CLOUD_ENVS.private) &&
+                  ownerDomain,
                 }
               },
               hidden: !this.$appConfig.isPrivate,
