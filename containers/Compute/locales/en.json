@@ -1659,5 +1659,5 @@
   "compute.sriov_device_nic_notsupport": "The NIC device type does not support this operation",
   "compute.ceph_rbd": "Ceph RBD",
   "compute.brand_support": "Only the {0} platform is currently supported",
-  "compute.large_page_memory_tips": "Opened large page content"
+  "compute.large_page_memory_tips": "Opened large page memory"
 }
