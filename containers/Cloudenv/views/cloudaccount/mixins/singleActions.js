@@ -296,6 +296,7 @@ export default {
                   },
                   meta: obj => {
                     const supportBrands = [
+                      BRAND_MAP.VMware.key,
                       BRAND_MAP.Aws.key,
                       BRAND_MAP.Aliyun.key,
                       BRAND_MAP.Google.key,
