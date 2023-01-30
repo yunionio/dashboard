@@ -1659,5 +1659,5 @@
   "compute.sriov_device_nic_notsupport": "NIC设备类型不支持该操作",
   "compute.ceph_rbd": "Ceph分布式存储",
   "compute.brand_support": "目前只有{0}支持该操作",
-  "compute.large_page_memory_tips": "已开启大页内容"
+  "compute.large_page_memory_tips": "已开启大页内存"
 }
