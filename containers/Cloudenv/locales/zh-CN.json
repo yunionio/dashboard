@@ -804,5 +804,10 @@
   "cloudenv.project_same_as_tag_value": "标签值同名项目",
   "cloudenv.resource_project_mapping": "资源同步策略",
   "cloudenv.project_project_mapping": "项目同步策略",
-  "cloudenv.no_match_cloudproject": "无云上项目资源归属到：{0}"
+  "cloudenv.no_match_cloudproject": "无云上项目资源归属到：{0}",
+  "cloudenv.action_group.set_status": "状态设置",
+  "cloudenv.action_group.set_props": "属性设置",
+  "cloudenv.action_group.set_fee": "费用设置",
+  "cloudenv.action.update_account": "更新账号",
+  "cloudenv.action.update_credential": "更新账单"
 }
