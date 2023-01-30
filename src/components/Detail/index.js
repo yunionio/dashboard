@@ -155,7 +155,7 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
   return ret
 }
 
-const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, onManager }) => {
+const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, onManager, resource }) => {
   const ret = []
   if (data.external_id) {
     ret.push(
@@ -247,10 +247,26 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
             if (!row.tenant_id) return row.tenant || '-'
             if (!row.tenant) return '-'
             const p = hasPermission({ key: 'projects_get' })
+            const customEditCallback = () => {
+              vm.createDialog('ChangeOwenrDialog', {
+                data: [row],
+                onManager: onManager,
+                name: i18n.t(`dictionary.${resource.substring(0, resource.length - 1)}`),
+                resource: resource,
+              })
+            }
             let node
             if (p) {
               node = (
-                <list-body-cell-wrap copy row={ data } onManager={ onManager } field='tenant' title={ row.tenant } hideField={ true }>
+                <list-body-cell-wrap copy
+                  row={ data }
+                  onManager={ onManager }
+                  field='tenant'
+                  title={ row.tenant }
+                  hideField={ true }
+                  edit={ true }
+                  customEdit={ true }
+                  customEditCallback={ customEditCallback } >
                   <side-page-trigger permission='projects_get' name='ProjectSidePage' id={row.tenant_id} vm={vm}>{ row.tenant }</side-page-trigger>
                 </list-body-cell-wrap>
               )
@@ -337,6 +353,7 @@ export default {
         statusModule: this.statusModule,
         data: this.data,
         onManager: this.onManager,
+        resource: this.resource,
       })
       const defaultLastBaseInfo = getDefaultLastBaseInfo(this, this.$createElement, {
         onManager: this.onManager,
