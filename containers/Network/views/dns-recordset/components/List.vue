@@ -10,11 +10,11 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'DnsRecordSetList',
@@ -40,10 +40,17 @@ export default {
         },
         filterOptions: {
           name: {
-            label: this.$t('network.text_21'),
+            label: this.$t('common_664'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
+            },
+          },
+          dns_value: {
+            label: this.$t('network.text_152'),
+            filter: true,
+            formatter: val => {
+              return `dns_value.contains("${val}")`
             },
           },
         },
