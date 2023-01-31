@@ -138,7 +138,7 @@ export default {
               title: this.$t('network.text_87'),
             },
             {
-              field: 'params.vrrp.priority',
+              field: 'priority',
               title: this.$t('network.text_81'),
             },
             {
@@ -149,7 +149,7 @@ export default {
               },
             },
             {
-              field: 'params.vrrp.interface',
+              field: 'interface',
               title: this.$t('network.text_89'),
             },
             {
