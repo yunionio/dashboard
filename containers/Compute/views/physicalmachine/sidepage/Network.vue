@@ -115,11 +115,12 @@ export default {
         data: [obj],
         columns: this.columns,
         list: this.list,
-        saveHostInfo: this.saveHostInfo,
+        callback: () => {
+          setTimeout(() => {
+            this.$bus.$emit('refresh-detail')
+          }, 1000)
+        },
       })
-    },
-    saveHostInfo (v) {
-      this.hostInfo = v
     },
   },
 }
