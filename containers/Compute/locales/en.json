@@ -355,7 +355,7 @@
   "compute.text_353": "Instance Status",
   "compute.text_354": "Reset",
   "compute.text_355": "Only @:brand host supports this operation",
-  "compute.text_356": "Instance Settings",
+  "compute.text_356": "Property Settings",
   "compute.text_357": "Rebuild System",
   "compute.text_358": "This operation can only be performed when the server status is [Shutdown,Maintenance mode]",
   "compute.text_359": "Create the same configuration",

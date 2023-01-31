@@ -355,7 +355,7 @@
   "compute.text_353": "实例状态",
   "compute.text_354": "重置",
   "compute.text_355": "只有@:brand主机支持此操作",
-  "compute.text_356": "实例设置",
+  "compute.text_356": "属性设置",
   "compute.text_357": "重装系统",
   "compute.text_358": "仅在虚拟机状态为【关机,维护中】下可以进行该操作",
   "compute.text_359": "创建相同配置",
@@ -1659,5 +1659,7 @@
   "compute.sriov_device_nic_notsupport": "NIC设备类型不支持该操作",
   "compute.ceph_rbd": "Ceph分布式存储",
   "compute.brand_support": "目前只有{0}支持该操作",
-  "compute.large_page_memory_tips": "已开启大页内存"
+  "compute.large_page_memory_tips": "已开启大页内存",
+  "compute.group_action.update_config": "配置修改",
+  "compute.group_action.mirror_disk": "镜像与磁盘"
 }
