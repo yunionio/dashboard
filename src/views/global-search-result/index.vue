@@ -56,6 +56,7 @@ import BlockStorageList from '@Storage/views/blockstorage/components/List'
 import BucketStorageList from '@Storage/views/bucket/components/List'
 import NatList from '@Network/views/nats/components/List'
 import DnsZoneList from '@Network/views/dns-zone/components/List'
+import DnsRecordSetList from '@Network/views/dns-recordset/components/List'
 import LbList from '@Network/views/lb/components/List'
 import LbaclsList from '@Network/views/lbacls/components/List'
 import LbcertList from '@Network/views/lbcerts/components/List'
@@ -105,6 +106,7 @@ export default {
     PolicyList,
     NatList,
     DnsZoneList,
+    DnsRecordSetList,
     LbList,
     LbaclsList,
     LbcertList,
