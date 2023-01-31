@@ -30,16 +30,16 @@
           <ul class="list-unstyled view-list-wrap" style="max-height: 60vh; overflow-y: auto;">
             <!-- 管理后台 -->
             <template v-if="systemProjects && systemProjects.length">
-              <li v-if="systemProjects.length === 1" class="item-link" @click="() => projectChange(systemProjects[0].id, 'system')">
+              <!-- <li v-if="systemProjects.length === 1" class="item-link" @click="() => projectChange(systemProjects[0].id, 'system')">
                 <div class="d-flex h-100 align-items-center">
                   <div class="flex-fill text-truncate">{{ $t('navbar.view.system_manager') }}</div>
                   <div style="width: 20px;" class="ml-1">
                     <a-icon v-show="scope === 'system' && systemProjects[0].id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
                   </div>
                 </div>
-              </li>
-              <li v-else>
-                <div>{{ $t('navbar.view.system_manager') }}</div>
+              </li> -->
+              <li>
+                <div class="item-section-title">{{ $t('navbar.view.system_manager') }}</div>
                 <ul class="list-unstyled">
                   <template v-for="item of systemProjects">
                     <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'system')">
@@ -57,7 +57,7 @@
             <!-- 域管理后台 -->
             <template v-if="domainProjects && domainProjects.length">
               <li>
-                <div>{{ domainManagerTitle }}</div>
+                <div class="item-section-title">{{ domainManagerTitle }}</div>
                 <ul class="list-unstyled">
                   <template v-for="item of domainProjects">
                     <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'domain')">
@@ -76,7 +76,7 @@
             <!-- 项目 -->
             <template v-if="projects && projects.length">
               <li>
-                <div>{{$t('navbar.view.project')}}</div>
+                <div class="item-section-title">{{$t('navbar.view.project')}}</div>
                 <ul class="list-unstyled">
                   <template v-for="item of projects">
                     <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'project')">
@@ -772,6 +772,10 @@ export default {
     &:hover {
       color: @link-color;
     }
+  }
+  .item-section-title {
+    // font-weight: bold;
+    color: #989fa8;
   }
 }
 .global-map-btn {
