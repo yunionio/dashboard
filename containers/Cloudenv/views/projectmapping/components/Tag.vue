@@ -98,6 +98,11 @@ export default {
         ],
         value: [
           'value',
+          {
+            rules: [
+              { required: true, whitespace: true, message: this.$t('common.tips.input', [this.$t('common_113')]) },
+            ],
+          },
         ],
       },
       checkedInfo,
