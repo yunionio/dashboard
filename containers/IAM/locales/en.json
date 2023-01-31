@@ -782,6 +782,10 @@
       "desc": "When the cloud account is synchronized, the virtual machine with the set system tag will not be synchronized",
       "dialog_desc": "Please enter the tag key manually. Multiple tag keys are separated by ',' in English, such as tagkey1 and tagkey2"
     },
+    "compute$disable_sync_cloud_event": {
+      "label": "On-cloud log synchronization switch",
+      "desc": "It is off by default. When it is on, the operation logs on the public cloud will be synchronized."
+    },
     "compute$default_admin_security_group_id": {
       "label": "Admin Security ID",
       "desc": "If set, the machine created by the local IDC will be bound to the specified management security group by default. If the previous virtual machine is not bound to any management security group, it will be bound to the security group after the next system restart. The management security group is not visible to ordinary users."
