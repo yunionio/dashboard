@@ -11,7 +11,17 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="data.id" :id="listId" :data="detailData" :columns="columns" :on-manager="onManager" :refresh="refresh" :getParams="getParams"  @tab-change="handleTabChange" />
+    <component
+      :is="params.windowData.currentTab"
+      :res-id="data.id"
+      :id="listId"
+      :data="detailData"
+      :hostInfo="detailData"
+      :columns="columns"
+      :on-manager="onManager"
+      :refresh="refresh"
+      :getParams="getParams"
+      @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
@@ -22,7 +32,7 @@ import ColumnsMixin from '../mixins/columns'
 import HostDetail from './Detail'
 import Dashboard from './Dashboard'
 // import Alert from './Alert'
-import NetworkList from './Network'
+import NetworkList from '@Compute/views/physicalmachine/sidepage/Network'
 import StorageList from './Storage'
 // import GpuList from './Gpu'
 import Monitor from './Monitor'
