@@ -84,7 +84,6 @@ export default {
       })
     },
     async handleConfirm (add) {
-      this.loading = true
       try {
         this.loading = true
         if (add) {
@@ -93,18 +92,11 @@ export default {
         } else {
           await this.unsetWire()
         }
-        this.loading = false
+        this.params.callback && this.params.callback()
         this.cancelDialog()
-        this.$nextTick(
-          () => {
-            this.fetchHost().then(
-              (host) => {
-                this.params.saveHostInfo(host.data)
-              },
-            )
-          },
-        )
       } catch (error) {
+        throw error
+      } finally {
         this.loading = false
       }
     },
