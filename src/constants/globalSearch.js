@@ -644,6 +644,26 @@ export const getSearchMaps = (searchRes = {}) => {
       },
       resData: {},
     },
+    dns_recordsets: {
+      menu_key: 'dns_recordsets',
+      res_name: 'dns_recordsets',
+      label: i18n.t('dictionary.dns_recordsets'),
+      id: 'dns_recordsets',
+      component: 'DnsRecordSetList',
+      hasPermission: hasPermission({ key: 'dns_recordsets_list' }),
+      params: {
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        id: {
+          id: searchRes.id,
+        },
+      },
+      resData: {},
+    },
     loadbalancers: {
       menu_key: 'lb',
       res_name: 'loadbalancers',
