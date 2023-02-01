@@ -9,9 +9,9 @@ export default {
   },
   created () {
     this.singleActions = [
-      {
+      /* {
         label: i18n.t('network.text_41'),
-        permission: 'lb_loadbalanceragents_update',
+        permission: 'lb_loadbalanceragents_perform_deploy',
         action: (obj) => {
           this.createDialog('AgentDeployDialog', {
             title: i18n.t('network.text_41'),
@@ -68,7 +68,7 @@ export default {
             validate: true,
           }
         },
-      },
+      }, */
       {
         label: i18n.t('network.text_129'),
         permission: 'lb_loadbalanceragents_update',
