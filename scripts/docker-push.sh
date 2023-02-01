@@ -43,6 +43,12 @@ docker_buildx() {
 }
 
 build_src
+
+if [[ "$DRY_RUN" == "true" ]]; then
+    echo "[$(readlink -f ${BASH_SOURCE}):${LINENO} ${FUNCNAME[0]}] return for DRY_RUN"
+    exit 0
+fi
+
 img_name="$REGISTRY/web:$TAG"
 
 case $ARCH in
