@@ -134,7 +134,11 @@ export default {
       keys.map(key => {
         const item = { field: key }
         item.title = this.WORKFLOW_ITEM_MAP[key]?.label
-        item.value = unitInfo[key]?.name || unitInfo[key]?.id || unitInfo[key] || '-'
+        if (this.WORKFLOW_ITEM_MAP[key] && this.WORKFLOW_ITEM_MAP[key].valueFormatter) {
+          item.value = this.WORKFLOW_ITEM_MAP[key].valueFormatter(unitInfo[key])
+        } else {
+          item.value = unitInfo[key]?.name || unitInfo[key]?.id || unitInfo[key] || '-'
+        }
         if (item.title) ret.push(item)
       })
       return ret
@@ -147,11 +151,25 @@ export default {
       keys.map(key => {
         const item = { field: key }
         item.title = this.WORKFLOW_ITEM_MAP[key].label
-        item.value = projectInfo[key].name || projectInfo[key] || '-'
-        if (this.ALL_SELECT_OPTIONS.hasOwnProperty(key)) {
-          const targetList = this.ALL_SELECT_OPTIONS[key].filter(l => l.id === item.value)
-          if (targetList[0]) {
-            item.value = targetList[0].name
+        if (this.WORKFLOW_ITEM_MAP[key] && this.WORKFLOW_ITEM_MAP[key].valueFormatter) {
+          item.value = this.WORKFLOW_ITEM_MAP[key].valueFormatter(projectInfo[key])
+        } else {
+          item.value = projectInfo[key].name || projectInfo[key] || '-'
+        }
+        if (this.ALL_SELECT_OPTIONS.hasOwnProperty(key) && !(this.WORKFLOW_ITEM_MAP[key] && this.WORKFLOW_ITEM_MAP[key].valueFormatter)) {
+          if (this.WORKFLOW_ITEM_MAP && this.WORKFLOW_ITEM_MAP[key] && this.WORKFLOW_ITEM_MAP[key].multiple) { // 多选
+            const originList = R.is(Array, projectInfo[key]) ? projectInfo[key] : [projectInfo[key]]
+            originList.map((o, idx) => {
+              const targetList = this.ALL_SELECT_OPTIONS[key].filter(l => l.id === o.id)
+              if (targetList[0]) {
+                item.value = (idx === 0 || item.value === '-') ? targetList[0].name : (item.value + ', ' + targetList[0].name)
+              }
+            })
+          } else {
+            const targetList = this.ALL_SELECT_OPTIONS[key].filter(l => l.id === item.value)
+            if (targetList[0]) {
+              item.value = targetList[0].name
+            }
           }
         }
         ret.push(item)
