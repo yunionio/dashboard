@@ -3,6 +3,17 @@ export default {
   created () {
     this.singleActions = [
       {
+        label: i18n.t('network.text_130'),
+        action: (obj) => {
+          this.$router.push({
+            name: 'LBClusterUpdate',
+            query: {
+              id: obj.id,
+            },
+          })
+        },
+      },
+      {
         label: i18n.t('network.text_131'),
         permission: 'lb_loadbalancerclusters_delete',
         action: (obj) => {
