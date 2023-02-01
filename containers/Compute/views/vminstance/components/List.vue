@@ -190,6 +190,7 @@ export default {
         ],
       },
       groupActions: [
+        // 新建
         {
           label: this.$t('compute.perform_create'),
           permission: 'server_create',
@@ -212,6 +213,7 @@ export default {
           },
           hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_create'),
         },
+        // 开机
         {
           label: this.$t('compute.text_272'),
           permission: 'server_perform_start',
@@ -246,6 +248,7 @@ export default {
           },
           hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_start'),
         },
+        // 关机
         {
           label: this.$t('compute.text_273'),
           permission: 'server_perform_stop',
@@ -277,6 +280,7 @@ export default {
           },
           hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_stop'),
         },
+        // 重启
         {
           label: this.$t('compute.text_274'),
           permission: 'server_perform_restart',
@@ -308,14 +312,16 @@ export default {
           },
           hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_restart'),
         },
+        /* 批量操作 */
         {
           label: this.$t('compute.text_275'),
           actions: () => {
             return [
               {
-                /* 实例状态 */
+                // * 实例状态
                 label: this.$t('compute.text_353'),
                 submenus: [
+                  // 同步状态
                   {
                     label: this.$t('compute.perform_sync_status'),
                     permission: 'server_perform_syncstatus',
@@ -329,8 +335,9 @@ export default {
                     },
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_syncstatus'),
                   },
+                  // 挂起
                   {
-                    label: this.$t('compute.text_1128'), // 挂起
+                    label: this.$t('compute.text_1128'),
                     permission: 'server_perform_suspend',
                     action: () => {
                       this.createDialog('VmSuspendDialog', {
@@ -359,10 +366,11 @@ export default {
                       ret.validate = true
                       return ret
                     },
-                    hidden: () => !hasSetupKey(['vmware', 'onecloud']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_suspend'),
+                    hidden: () => !hasSetupKey(['vmware']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_suspend'),
                   },
+                  // 恢复
                   {
-                    label: this.$t('compute.text_478'), // 恢复
+                    label: this.$t('compute.text_478'),
                     permission: 'server_perform_resume',
                     action: () => {
                       this.createDialog('VmResumeDialog', {
@@ -391,10 +399,11 @@ export default {
                       ret.validate = true
                       return ret
                     },
-                    hidden: () => !hasSetupKey(['vmware', 'onecloud']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_resume'),
+                    hidden: () => !hasSetupKey(['vmware']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_resume'),
                   },
+                  // 推送配置
                   {
-                    label: this.$t('compute.sync_config'), // 推送配置
+                    label: this.$t('compute.sync_config'),
                     permission: 'server_perform_sync_config',
                     action: () => {
                       this.createDialog('VmSyncConfigDialog', {
@@ -428,9 +437,10 @@ export default {
                 ],
               },
               {
-                /* 实例设置 */
+                // * 属性设置
                 label: this.$t('compute.text_356'),
                 submenus: [
+                  // 修改属性
                   {
                     label: this.$t('compute.text_247'),
                     permission: 'server_update',
@@ -450,6 +460,221 @@ export default {
                     },
                     hidden: () => !hasSetupKey(['onecloud']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_update'),
                   },
+                  // 更改项目
+                  {
+                    label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
+                    permission: 'server_perform_change_owner',
+                    action: () => {
+                      this.createDialog('ChangeOwenrDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        name: this.$t('dictionary.server'),
+                        resource: 'servers',
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: true,
+                        tooltip: null,
+                      }
+                      if (!this.isAdminMode && !this.isDomainMode) {
+                        ret.validate = false
+                        ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
+                        return ret
+                      }
+                      const domains = this.list.selectedItems.map(item => item.domain_id)
+                      if (R.uniq(domains).length !== 1) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_280', [this.$t('dictionary.domain')])
+                        return ret
+                      }
+                      return ret
+                    },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_change_owner'),
+                  },
+                  // 到期释放
+                  {
+                    label: this.$t('compute.text_1132'),
+                    permission: 'server_perform_cancel_expire',
+                    action: () => {
+                      this.createDialog('SetDurationDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        refresh: this.refresh,
+                        alert: this.$t('compute.text_1391'),
+                      })
+                    },
+                    meta: () => {
+                      let ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      // 包年包月机器，不支持此操作
+                      const isSomePrepaid = this.list.selectedItems.some((item) => {
+                        return item.billing_type === 'prepaid'
+                      })
+                      if (isSomePrepaid) {
+                        ret.tooltip = this.$t('compute.text_285')
+                        return ret
+                      }
+                      // 某些云不支持
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
+                      if (!unenableCloudCheck.validate) {
+                        ret = unenableCloudCheck
+                        return ret
+                      }
+                      // 暂只支持同时操作已设置到期或未设置到期释放的机器
+                      const isSomeExpired = this.list.selectedItems.some((item) => {
+                        return item.expired_at
+                      })
+                      const isSomeNotExpired = this.list.selectedItems.some((item) => {
+                        return !item.expired_at
+                      })
+                      if (isSomeExpired && isSomeNotExpired) {
+                        ret.tooltip = this.$t('compute.text_1133')
+                        return ret
+                      }
+                      ret.validate = true
+                      return ret
+                    },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_cancel_expire'),
+                  },
+                  // 主机克隆
+                  {
+                    label: this.$t('compute.text_1208'),
+                    permission: 'server_perform_snapshot_and_clone',
+                    action: () => {
+                      this.$openNewWindowForMenuHook('vminstance_configured_callback_address.host_clone_callback_address', () => {
+                        this.createDialog('VmCloneDeepDialog', {
+                          data: this.list.selectedItems,
+                          columns: this.columns,
+                          onManager: this.onManager,
+                          refresh: this.refresh,
+                        })
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: true,
+                        tooltip: null,
+                      }
+                      for (const obj of this.list.selectedItems) {
+                        if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                          ret.validate = false
+                          ret.tooltip = this.$t('compute.text_355')
+                          break
+                        }
+                        if (!['running', 'ready'].includes(obj.status)) {
+                          ret.validate = false
+                          ret.tooltip = this.$t('compute.text_1126')
+                          break
+                        }
+                        if (obj.backup_host_id) {
+                          ret.validate = false
+                          ret.tooltip = this.$t('compute.text_1283')
+                          break
+                        }
+                      }
+                      return ret
+                    },
+                    hidden: () => !hasSetupKey(['onecloud']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_clone'),
+                  },
+                  // 续费
+                  {
+                    label: this.$t('compute.text_1117'),
+                    permission: 'server_perform_renew',
+                    action: () => {
+                      this.createDialog('VmResourceFeeDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: true,
+                        tooltip: null,
+                      }
+                      const isAllPublic = this.list.selectedItems.every(item => findPlatform(item.hypervisor) === SERVER_TYPE.public)
+                      const isAllPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
+                      if (!isAllPublic) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1118')
+                      }
+                      if (!isAllPrepaid) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1119')
+                      }
+                      return ret
+                    },
+                    hidden: () => !hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'ecloud', 'jdcloud', 'ctyun']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_Renew'),
+                  },
+                  // 自动续费设置
+                  {
+                    label: this.$t('compute.text_1120'),
+                    permission: 'server_perform_aet_auto_renew',
+                    action: () => {
+                      this.createDialog('VmResourceRenewFeeDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        refresh: this.refresh,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: true,
+                        tooltip: null,
+                      }
+                      const isAllPublic = this.list.selectedItems.every(item => findPlatform(item.hypervisor) === SERVER_TYPE.public)
+                      const isAllPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
+                      if (!isAllPublic) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1118')
+                      }
+                      if (!isAllPrepaid) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1119')
+                      }
+                      return ret
+                    },
+                    hidden: () => !(hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'ecloud', 'jdcloud', 'ctyun'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_auto_renewal'),
+                  },
+                  // 编辑标签
+                  {
+                    label: this.$t('compute.text_283'),
+                    permission: 'server_perform_set_user_metadata',
+                    action: () => {
+                      this.createDialog('SetTagDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        params: {
+                          resources: 'server',
+                        },
+                        mode: 'add',
+                      })
+                    },
+                    meta: () => {
+                      let ret = { validate: true }
+                      // 某些云不支持
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
+                      if (!unenableCloudCheck.validate) {
+                        ret = unenableCloudCheck
+                        return ret
+                      }
+                      return ret
+                    },
+                  },
+                ],
+              },
+              {
+                // * 配置修改
+                label: this.$t('compute.group_action.update_config'),
+                submenus: [
+                  // 重装系统
                   {
                     label: this.$t('compute.text_357'),
                     permission: 'server_perform_rebuild_root',
@@ -483,6 +708,7 @@ export default {
                     },
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_rebuild_root'),
                   },
+                  // 调整配置
                   {
                     label: this.$t('compute.text_1100'),
                     permission: 'server_perform_change_config',
@@ -540,110 +766,7 @@ export default {
                     },
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_change_config'),
                   },
-                  {
-                    label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
-                    permission: 'server_perform_change_owner',
-                    action: () => {
-                      this.createDialog('ChangeOwenrDialog', {
-                        data: this.list.selectedItems,
-                        columns: this.columns,
-                        onManager: this.onManager,
-                        name: this.$t('dictionary.server'),
-                        resource: 'servers',
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: true,
-                        tooltip: null,
-                      }
-                      if (!this.isAdminMode && !this.isDomainMode) {
-                        ret.validate = false
-                        ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
-                        return ret
-                      }
-                      const domains = this.list.selectedItems.map(item => item.domain_id)
-                      if (R.uniq(domains).length !== 1) {
-                        ret.validate = false
-                        ret.tooltip = this.$t('compute.text_280', [this.$t('dictionary.domain')])
-                        return ret
-                      }
-                      return ret
-                    },
-                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_change_owner'),
-                  },
-                  {
-                    label: this.$t('compute.text_283'),
-                    permission: 'server_perform_set_user_metadata',
-                    action: () => {
-                      this.createDialog('SetTagDialog', {
-                        data: this.list.selectedItems,
-                        columns: this.columns,
-                        onManager: this.onManager,
-                        params: {
-                          resources: 'server',
-                        },
-                        mode: 'add',
-                      })
-                    },
-                    meta: () => {
-                      let ret = { validate: true }
-                      // 某些云不支持
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
-                      if (!unenableCloudCheck.validate) {
-                        ret = unenableCloudCheck
-                        return ret
-                      }
-                      return ret
-                    },
-                  },
-                  {
-                    label: this.$t('compute.text_1132'),
-                    permission: 'server_perform_cancel_expire',
-                    action: () => {
-                      this.createDialog('SetDurationDialog', {
-                        data: this.list.selectedItems,
-                        columns: this.columns,
-                        onManager: this.onManager,
-                        refresh: this.refresh,
-                        alert: this.$t('compute.text_1391'),
-                      })
-                    },
-                    meta: () => {
-                      let ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      // 包年包月机器，不支持此操作
-                      const isSomePrepaid = this.list.selectedItems.some((item) => {
-                        return item.billing_type === 'prepaid'
-                      })
-                      if (isSomePrepaid) {
-                        ret.tooltip = this.$t('compute.text_285')
-                        return ret
-                      }
-                      // 某些云不支持
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
-                      if (!unenableCloudCheck.validate) {
-                        ret = unenableCloudCheck
-                        return ret
-                      }
-                      // 暂只支持同时操作已设置到期或未设置到期释放的机器
-                      const isSomeExpired = this.list.selectedItems.some((item) => {
-                        return item.expired_at
-                      })
-                      const isSomeNotExpired = this.list.selectedItems.some((item) => {
-                        return !item.expired_at
-                      })
-                      if (isSomeExpired && isSomeNotExpired) {
-                        ret.tooltip = this.$t('compute.text_1133')
-                        return ret
-                      }
-                      ret.validate = true
-                      return ret
-                    },
-                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_cancel_expire'),
-                  },
+                  // 设置GPU卡
                   {
                     label: this.$t('compute.text_1112'),
                     permission: 'attach-isolated-device,server_perform_detach_isolated_device,server_perform_set_isolated_device',
@@ -691,110 +814,13 @@ export default {
                     },
                     hidden: () => !hasSetupKey(['onecloud']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_gpu'),
                   },
-                  {
-                    label: this.$t('compute.text_1208'),
-                    permission: 'server_perform_snapshot_and_clone',
-                    action: () => {
-                      this.$openNewWindowForMenuHook('vminstance_configured_callback_address.host_clone_callback_address', () => {
-                        this.createDialog('VmCloneDeepDialog', {
-                          data: this.list.selectedItems,
-                          columns: this.columns,
-                          onManager: this.onManager,
-                          refresh: this.refresh,
-                        })
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: true,
-                        tooltip: null,
-                      }
-                      for (const obj of this.list.selectedItems) {
-                        if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                          ret.validate = false
-                          ret.tooltip = this.$t('compute.text_355')
-                          break
-                        }
-                        if (!['running', 'ready'].includes(obj.status)) {
-                          ret.validate = false
-                          ret.tooltip = this.$t('compute.text_1126')
-                          break
-                        }
-                        if (obj.backup_host_id) {
-                          ret.validate = false
-                          ret.tooltip = this.$t('compute.text_1283')
-                          break
-                        }
-                      }
-                      return ret
-                    },
-                    hidden: () => !hasSetupKey(['onecloud']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_clone'),
-                  },
-                  {
-                    label: this.$t('compute.text_1117'),
-                    permission: 'server_perform_renew',
-                    action: () => {
-                      this.createDialog('VmResourceFeeDialog', {
-                        data: this.list.selectedItems,
-                        columns: this.columns,
-                        onManager: this.onManager,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: true,
-                        tooltip: null,
-                      }
-                      const isAllPublic = this.list.selectedItems.every(item => findPlatform(item.hypervisor) === SERVER_TYPE.public)
-                      const isAllPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
-                      if (!isAllPublic) {
-                        ret.validate = false
-                        ret.tooltip = this.$t('compute.text_1118')
-                      }
-                      if (!isAllPrepaid) {
-                        ret.validate = false
-                        ret.tooltip = this.$t('compute.text_1119')
-                      }
-                      return ret
-                    },
-                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_Renew'),
-                  },
-                  {
-                    label: this.$t('compute.text_1120'),
-                    permission: 'server_perform_aet_auto_renew',
-                    action: () => {
-                      this.createDialog('VmResourceRenewFeeDialog', {
-                        data: this.list.selectedItems,
-                        columns: this.columns,
-                        onManager: this.onManager,
-                        refresh: this.refresh,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: true,
-                        tooltip: null,
-                      }
-                      const isAllPublic = this.list.selectedItems.every(item => findPlatform(item.hypervisor) === SERVER_TYPE.public)
-                      const isAllPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
-                      if (!isAllPublic) {
-                        ret.validate = false
-                        ret.tooltip = this.$t('compute.text_1118')
-                      }
-                      if (!isAllPrepaid) {
-                        ret.validate = false
-                        ret.tooltip = this.$t('compute.text_1119')
-                      }
-                      return ret
-                    },
-                    hidden: () => !(hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'ecloud', 'jdcloud', 'ctyun'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_auto_renewal'),
-                  },
                 ],
               },
               {
-                /* 密码密钥 */
+                // * 密码密钥
                 label: this.$t('compute.text_360'),
                 submenus: [
+                  // 重置密码
                   {
                     label: this.$t('compute.text_276'),
                     permission: 'server_perform_deploy',
@@ -823,7 +849,7 @@ export default {
                     },
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_deploy'),
                   },
-                  /* 设置免密登录 */
+                  // 设置免密登录
                   {
                     label: this.$t('compute.vminstance.actions.setup_ssh_authentication'),
                     permission: 'server_perform_setup_ssh_proxy',
@@ -872,7 +898,7 @@ export default {
                     },
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_setup_ssh_proxy'),
                   },
-                  /* 探测免密登录 */
+                  // 探测免密登录
                   {
                     label: this.$t('compute.vminstance.actions.detect_ssh_authentication'),
                     permission: 'server_perform_detect_ssh_proxy',
@@ -902,9 +928,10 @@ export default {
                 ],
               },
               {
-                /* 网络安全 */
+                // * 网络安全
                 label: this.$t('compute.text_1290'),
                 submenus: [
+                  // 关联安全组
                   {
                     label: this.$t('compute.text_1116'),
                     permission: 'server_perform_add_secgroup',
@@ -925,6 +952,7 @@ export default {
                     },
                     hidden: () => !(hasSetupKey(['onestack', 'onecloud', 'public', 'openstack', 'dstack', 'zstack', 'apsara', 'cloudpods', 'hcso', 'hcs'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_secgroup'),
                   },
+                  // 公网IP转EIP
                   {
                     label: this.$t('compute.text_1121'),
                     permission: 'server_perform_publicip_to_eip',
@@ -958,6 +986,7 @@ export default {
                     },
                     hidden: () => !(hasSetupKey(['aliyun', 'qcloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_public_ip_to_eip'),
                   },
+                  // 设置源/目标检查
                   {
                     label: this.$t('compute.text_1124'),
                     permission: 'server_perform_modify_src_check',
@@ -990,9 +1019,10 @@ export default {
                 ],
               },
               {
-                /* 高可用 */
+                // * 高可用
                 label: this.$t('compute.text_1295'),
                 submenus: [
+                  // 迁移
                   {
                     label: this.$t('compute.text_1127'),
                     permission: 'server_perform_migrate,server_perform_live_migrate',
@@ -1042,6 +1072,7 @@ export default {
                     },
                     hidden: () => !(hasSetupKey(['onecloud', 'openstack', 'vmware'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
                   },
+                  // V2V迁移
                   {
                     label: this.$t('compute.v2vtransfer.label'),
                     permission: 'server_perform_migrate',
@@ -1093,6 +1124,7 @@ export default {
                     },
                     hidden: () => !(hasSetupKey(['vmware'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
                   },
+                  // 快速恢复
                   {
                     label: this.$t('compute.server.quick.recovery'),
                     action: () => {
@@ -1128,13 +1160,15 @@ export default {
                       }
                       return ret
                     },
+                    hidden: () => !hasSetupKey(['onecloud']),
                   },
                 ],
               },
               {
-                /* 删除 */
+                // * 删除
                 label: this.$t('compute.perform_delete'),
                 submenus: [
+                  // 设置删除保护
                   disableDeleteAction(Object.assign(this, {
                     permission: 'server_update',
                   }), {
@@ -1146,6 +1180,7 @@ export default {
                     },
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_set_delete_protection'),
                   }),
+                  // 删除
                   {
                     label: this.$t('compute.perform_delete'),
                     permission: 'server_delete',
