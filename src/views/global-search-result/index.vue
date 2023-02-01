@@ -12,6 +12,7 @@
       <page-header :title="currentTabMsg.label" />
       <page-body>
         <components
+          :id="currentTabMsg.component"
           :is="currentTabMsg.component"
           :get-params="currentTabParams"
           :show-group-actions="false"

@@ -1087,5 +1087,6 @@
   "network.drag_file_area": "单击或拖动文件到该区域",
   "network.file_type_validate": "只能上传xlsx文件，且不超过200MB",
   "network.import_tpl_file": "请选择导入模版文件",
-  "network.mapping_table_tpl": "映射表导入模版"
+  "network.mapping_table_tpl": "映射表导入模版",
+  "network.owner_dns_zone": "归属域名"
 }

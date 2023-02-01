@@ -1,15 +1,15 @@
 import {
-  getDnsTypeTableColumns,
-  getDnsValueTableColumns,
-  getTrafficPoliciesTableColumns,
-  getTtlTableColumns,
-} from '../utils/columns'
-import {
   getNameDescriptionTableColumn,
   getEnabledTableColumn,
   getTagTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import {
+  getDnsTypeTableColumns,
+  getDnsValueTableColumns,
+  getTrafficPoliciesTableColumns,
+  getTtlTableColumns,
+} from '../utils/columns'
 
 export default {
   created () {
@@ -30,12 +30,16 @@ export default {
           )
         },
       }),
+      getEnabledTableColumn(),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'dns_recordsets', columns: () => this.columns }),
       getDnsTypeTableColumns(),
       getDnsValueTableColumns(),
       getTrafficPoliciesTableColumns(),
       getTtlTableColumns(),
-      getEnabledTableColumn(),
+      {
+        title: i18n.t('network.owner_dns_zone'),
+        field: 'dns_zone',
+      },
     ]
   },
 }
