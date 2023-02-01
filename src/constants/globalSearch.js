@@ -661,6 +661,9 @@ export const getSearchMaps = (searchRes = {}) => {
         id: {
           id: searchRes.id,
         },
+        ip: {
+          filter: `dns_value.contains("${searchRes.ip}")`,
+        },
       },
       resData: {},
     },
