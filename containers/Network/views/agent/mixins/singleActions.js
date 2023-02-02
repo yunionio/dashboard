@@ -70,6 +70,16 @@ export default {
         },
       }, */
       {
+        label: i18n.t('network.associated_cluster'),
+        action: (obj) => {
+          this.createDialog('AssociatedClusterDialog', {
+            data: [obj],
+            columns: this.columns,
+            onManager: this.onManager,
+          })
+        },
+      },
+      {
         label: i18n.t('network.text_129'),
         permission: 'lb_loadbalanceragents_update',
         actions: (obj) => {
