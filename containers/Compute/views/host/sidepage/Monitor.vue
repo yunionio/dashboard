@@ -2,6 +2,7 @@
   <monitor
     :time.sync="time"
     :timeGroup.sync="timeGroup"
+    :customTime.sync="customTime"
     :monitorList="monitorList"
     :singleActions="singleActions"
     :loading="loading"
@@ -67,6 +68,7 @@ export default {
       loading: false,
       time: '168h',
       timeGroup: '30m',
+      customTime: null,
       monitorList: [],
     }
   },
@@ -87,7 +89,7 @@ export default {
   created () {
     this.fetchData()
     this.fetchDataDebounce = _.debounce(this.fetchData, 500)
-    this.baywatch(['time', 'timeGroup', 'data.id'], this.fetchDataDebounce)
+    this.baywatch(['time', 'timeGroup', 'data.id', 'customTime'], this.fetchDataDebounce)
   },
   methods: {
     async fetchData () {
@@ -208,6 +210,10 @@ export default {
         from: this.time,
         interval: this.timeGroup,
         unit: true,
+      }
+      if (this.time === 'custom' && this.customTime && this.customTime.from && this.customTime.to) {
+        data.from = this.customTime.from
+        data.to = this.customTime.to
       }
       data.signature = getSignature(data)
       return data

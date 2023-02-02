@@ -1,7 +1,7 @@
 import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
 
-function genServerQueryData (vmId, val, scope, from, interval, idKey) {
+function genServerQueryData (vmId, val, scope, from, interval, idKey, customTime) {
   const model = {
     measurement: val.fromItem,
     select: [
@@ -65,6 +65,10 @@ function genServerQueryData (vmId, val, scope, from, interval, idKey) {
     interval: interval,
     unit: false,
   }
+  if (from === 'custom' && customTime && customTime.from && customTime.to) {
+    data.from = customTime.from
+    data.to = customTime.to
+  }
   data.signature = getSignature(data)
   return data
 }
@@ -75,15 +79,15 @@ export class MonitorHelper {
     this.scope = scope
   }
 
-  genServerQueryData (vmId, val, from, interval, idKey) {
-    return genServerQueryData(vmId, val, this.scope, from, interval, idKey)
+  genServerQueryData (vmId, val, from, interval, idKey, customTime) {
+    return genServerQueryData(vmId, val, this.scope, from, interval, idKey, customTime)
   }
 
-  async fetchData (srvId, val, from, interval, idKey) {
+  async fetchData (srvId, val, from, interval, idKey, customTime) {
     const params = {
       id: 'query',
       action: '',
-      data: this.genServerQueryData(srvId, val, from, interval, idKey),
+      data: this.genServerQueryData(srvId, val, from, interval, idKey, customTime),
       params: { $t: getRequestT() },
     }
     try {
@@ -94,9 +98,9 @@ export class MonitorHelper {
     }
   }
 
-  async fetchFormatData (srvId, val, from, interval, idKey = 'vm_id') {
+  async fetchFormatData (srvId, val, from, interval, idKey = 'vm_id', customTime) {
     try {
-      const data = await this.fetchData(srvId, val, from, interval, idKey)
+      const data = await this.fetchData(srvId, val, from, interval, idKey, customTime)
       return {
         title: val.label,
         constants: val,

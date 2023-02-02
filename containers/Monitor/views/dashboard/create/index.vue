@@ -27,7 +27,7 @@
               :showTimegroup="false"
               @refresh="fetchAllData">
             <template v-slot:radio-button-append>
-              <custom-date :time.sync="time" :customTime.sync="customTime" />
+              <custom-date :time.sync="time" :customTime.sync="customTime" :showCustomTimeText="time==='custom'" />
             </template>
           </monitor-header>
           <div v-for="(item, i) in seriesList" :key="i">

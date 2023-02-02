@@ -17,7 +17,7 @@
         <slot name="header">Dialog default header</slot>
       </div>
     </template>
-    <div class="base-dialog-body">
+    <div class="base-dialog-body scroll-dialog-body">
       <slot name="body">
         Dialog default body
       </slot>
@@ -45,7 +45,7 @@
         <slot name="header">Dialog default header</slot>
       </div>
     </template>
-    <div class="base-dialog-body">
+    <div class="base-dialog-body scroll-dialog-body">
       <slot name="body">
         Dialog default body
       </slot>
