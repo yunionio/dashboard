@@ -1088,5 +1088,6 @@
   "network.file_type_validate": "只能上传xlsx文件，且不超过200MB",
   "network.import_tpl_file": "请选择导入模版文件",
   "network.mapping_table_tpl": "映射表导入模版",
-  "network.owner_dns_zone": "归属域名"
+  "network.owner_dns_zone": "归属域名",
+  "network.update_cluster": "修改集群"
 }

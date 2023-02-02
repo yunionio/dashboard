@@ -27,6 +27,7 @@ import LbListenerCreate from '@Network/views/loadbalancerlistener/create'
 import LbaclsList from '@Network/views/lbacls'
 import LbcertsList from '@Network/views/lbcerts'
 import LoadbalancerclusterList from '@Network/views/loadbalancercluster'
+import LBClusterUpdate from '@Network/views/loadbalancercluster/update'
 import SshProxyList from '@Network/views/ssh-proxy'
 import SshProxyCreate from '@Network/views/ssh-proxy/form'
 import SshAgentList from '@Network/views/ssh-agent'
@@ -653,6 +654,11 @@ export default {
               name: 'LoadbalancerclusterList',
               path: '',
               component: LoadbalancerclusterList,
+            },
+            {
+              name: 'LBClusterUpdate',
+              path: 'update',
+              component: LBClusterUpdate,
             },
           ],
         },
