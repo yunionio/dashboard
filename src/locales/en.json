@@ -4291,6 +4291,8 @@
   "common_165": "(IP can be filled)",
   "common_166": "Time Granularity",
   "common_167": "Last 1 hour",
+  "common_nearly_num_hours": "Last {0} hours",
+  "common_num_hours": "{0} minutes",
   "common_168": "1 minute",
   "common_169": "5 minutes",
   "common_170": "Last 1 day",

@@ -6,6 +6,7 @@
       :timeOpts="timeOpts"
       @update:time="updateTime"
       @update:timeGroup="updateTimeGroup"
+      @update:customTime="updateCustomTime"
       @refresh="refresh" />
     <monitor-list
       :single-actions="singleActions"
@@ -164,6 +165,9 @@ export default {
     },
     updateTimeGroup (timeGroup) {
       this.$emit('update:timeGroup', timeGroup)
+    },
+    updateCustomTime (customTime) {
+      this.$emit('update:customTime', customTime)
     },
   },
 }
