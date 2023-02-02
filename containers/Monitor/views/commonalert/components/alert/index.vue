@@ -20,7 +20,7 @@
         :showTimegroup="false"
         @refresh="fetchData">
         <template v-slot:radio-button-append>
-          <custom-date :time.sync="time" :customTime.sync="customTime" />
+          <custom-date :time.sync="time" :customTime.sync="customTime" :showCustomTimeText="time==='custom'" />
         </template>
       </monitor-header>
       <div>
