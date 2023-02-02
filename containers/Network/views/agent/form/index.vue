@@ -1,15 +1,15 @@
 <template>
   <a-spin :spinning="loading">
-    <page-header :title="title" />
+    <page-header :title="$t('network.text_722')" />
     <page-body>
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item :label="$t('network.text_21')">
           <a-input :disabled="!!lbAgentId" v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
-        <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
+        <a-form-item :label="$t('common.description')">
           <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
         </a-form-item>
-        <a-form-item :label="$t('network.text_19')" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_19')">
           <base-select
             :disabled="!!lbAgentId"
             v-decorator="decorators.cluster_id"
@@ -21,35 +21,8 @@
           <p slot="extra">{{$t('network.text_80')}}<a-button type="link" size="small" @click="createCluster">{{$t('network.text_26')}}</a-button>
           </p>
         </a-form-item>
-        <a-form-item :label="$t('network.text_81')" :extra="$t('network.text_82')">
-          <a-tooltip :title="$t('network.text_81')">
-            <a-input-number v-decorator="decorators.vrrp_priority" :max="255" :min="1" />
-          </a-tooltip>
-        </a-form-item>
-        <a-form-item :label="$t('network.text_83')" :extra="$t('network.text_84')">
-          <a-switch :checkedChildren="$t('network.text_85')" :unCheckedChildren="$t('network.text_86')" v-decorator="decorators.vrrp_preempt" />
-        </a-form-item>
-        <a-form-item :label="$t('network.text_87')" :extra="$t('network.text_88')">
-          <a-input-number v-decorator="decorators.virtual_router_id" :max="255" :min="1" />
-        </a-form-item>
-        <a-form-item :label="$t('network.text_89')" :extra="$t('network.text_90')">
-          <a-input v-decorator="decorators.vrrp_interface" :placeholder="$t('network.text_91')" />
-        </a-form-item>
-        <a-form-item :label="$t('network.text_92')" :extra="$t('network.text_93')">
-          <a-input v-decorator="decorators.vrrp_advert_int" type="number" :addonAfter="$t('network.text_76')" />
-        </a-form-item>
-        <a-form-item v-if="!lbAgentId" :label="$t('common.text00012')" class="mb-0">
-          <tag
-            v-decorator="decorators.__meta__" />
-        </a-form-item>
         <a-collapse :bordered="false">
          <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
-            <a-form-item :label="$t('network.text_95')" :extra="$t('network.text_96')">
-              <a-input v-decorator="decorators.vrrp_pass" />
-            </a-form-item>
-            <a-form-item v-if="!lbAgentId" :label="$t('network.text_75')">
-              <a-input v-decorator="decorators.hb_timeout" type="Number" :addonAfter="$t('network.text_76')" />
-            </a-form-item>
             <a-collapse @change="handleCollapseChange">
               <a-collapse-panel key="telegraf" :header="$t('network.text_97')" forceRender>
                 <a-form-item :label="$t('network.text_98')" :extra="$t('network.text_99')">
@@ -116,14 +89,10 @@
 <script>
 import workflowMixin from '@/mixins/workflow'
 import WindowsMixin from '@/mixins/windows'
-import Tag from '@/sections/Tag'
-import validateForm from '@/utils/validate'
 
 export default {
   name: 'AgentCreate',
-  components: {
-    Tag,
-  },
+  components: {},
   mixins: [WindowsMixin, workflowMixin],
   data () {
     return {
@@ -155,14 +124,6 @@ export default {
           },
         ],
         description: ['description'],
-        __meta__: [
-          '__meta__',
-          {
-            rules: [
-              { validator: validateForm('tagName') },
-            ],
-          },
-        ],
         cluster_id: [
           'cluster_id',
           {
@@ -170,66 +131,6 @@ export default {
               { required: true, message: this.$t('network.text_79') },
             ],
           },
-        ],
-        hb_timeout: [
-          'hb_timeout',
-          {
-            normalize: v => Number(v),
-            initialValue: 3600,
-            rules: [
-              { type: 'integer', min: 600, max: 3600, message: this.$t('network.text_77'), trigger: 'blur' },
-            ],
-          },
-        ],
-        vrrp_priority: [
-          'vrrp.priority',
-          {
-            initialValue: 1,
-            rules: [
-              { required: true, message: this.$t('network.text_117') },
-            ],
-          },
-        ],
-        virtual_router_id: [
-          'vrrp.virtual_router_id',
-          {
-            initialValue: 1,
-            rules: [
-              { required: true, message: this.$t('network.text_118') },
-            ],
-          },
-        ],
-        vrrp_interface: [
-          'vrrp.interface',
-          {
-            rules: [
-              { required: true, message: this.$t('network.text_119') },
-            ],
-          },
-        ],
-        vrrp_preempt: [
-          'vrrp.preempt',
-          {
-            valuePropName: 'checked',
-            initialValue: false,
-            rules: [
-              { required: true, message: this.$t('network.text_120') },
-            ],
-          },
-        ],
-        vrrp_advert_int: [
-          'vrrp.advert_int',
-          {
-            normalize: v => Number(v),
-            initialValue: 1,
-            rules: [
-              { required: true, message: this.$t('network.text_121') },
-              { type: 'integer', min: 1, max: 255, message: this.$t('network.text_122'), trigger: 'blur' },
-            ],
-          },
-        ],
-        vrrp_pass: [
-          'vrrp.pass',
         ],
         telegraf_influx_db_output_url: [
           'telegraf.influx_db_output_url',
@@ -321,16 +222,11 @@ export default {
     lbAgentId () {
       return this.$route.query.id
     },
-    title () {
-      return this.lbAgentId ? this.$t('network.text_722') : this.$t('network.text_78')
-    },
   },
   created () {
     this.manager = new this.$Manager('loadbalanceragents')
     if (this.lbAgentId) {
       this.getFetchLbAgent()
-    } else {
-      this.getFetchDefaultParams()
     }
   },
   methods: {
@@ -378,24 +274,23 @@ export default {
         values.haproxy.global_log = logConfs.join(' ')
         delete values.global_log_path
       }
-      const { name, cluster_id, ...params } = values
+      const { name, cluster_id, ...rest } = values
       if (this.lbAgentId) {
         return {
           name,
           cluster_id,
-          ...params,
+          params: {
+            ...rest,
+          },
         }
       }
       return {
         name,
         cluster_id,
-        params,
+        params: {
+          ...rest,
+        },
       }
-    },
-    doCreate (values) {
-      return this.manager.create({
-        data: this.formatValues(values),
-      })
     },
     doUpdate (values) {
       return this.manager.performAction({
@@ -446,8 +341,6 @@ export default {
         const values = await this.form.fc.validateFields()
         if (this.lbAgentId) {
           await this.doUpdate(values)
-        } else {
-          await this.doCreate(values)
         }
         this.handleCancel()
       } catch (error) {
