@@ -88,20 +88,20 @@ export default {
         ],
       },
       groupActions: [
-        {
-          label: this.$t('network.text_26'),
-          permission: 'lb_loadbalanceragents_create',
-          action: () => {
-            this.$router.push({
-              name: 'AgentForm',
-            })
-          },
-          meta: () => {
-            return {
-              buttonType: 'primary',
-            }
-          },
-        },
+        // {
+        //   label: this.$t('network.text_26'),
+        //   permission: 'lb_loadbalanceragents_create',
+        //   action: () => {
+        //     this.$router.push({
+        //       name: 'AgentForm',
+        //     })
+        //   },
+        //   meta: () => {
+        //     return {
+        //       buttonType: 'primary',
+        //     }
+        //   },
+        // },
         {
           label: this.$t('table.action.set_tag'),
           permission: 'lb_loadbalanceragents_perform_set_user_metadata',
