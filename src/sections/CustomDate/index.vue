@@ -28,7 +28,7 @@
         </a-form-model-item>
       </a-form-model>
     </template>
-    <a-radio-button value="custom">{{ $t('common.text00121') }}</a-radio-button>
+    <a-radio-button value="custom">{{ $t('common.text00121') }}{{customTimeText}}</a-radio-button>
   </a-popconfirm>
 </template>
 
@@ -56,6 +56,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    showCustomTimeText: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -80,6 +84,15 @@ export default {
       },
       diffHours: 1,
     }
+  },
+  computed: {
+    customTimeText () {
+      const { startValue, endValue } = this.formData
+      if (startValue && endValue && this.showCustomTimeText) {
+        return ` (${this.$moment(startValue).format('YYYY-MM-DD HH:mm')} ~ ${this.$moment(endValue).format('YYYY-MM-DD HH:mm')})`
+      }
+      return ''
+    },
   },
   watch: {
     customTime (val) {

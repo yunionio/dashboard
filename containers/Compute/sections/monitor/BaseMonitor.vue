@@ -3,6 +3,7 @@
     <monitor
       :time.sync="time"
       :timeGroup.sync="timeGroup"
+      :customTime.sync="customTime"
       :monitorList="monitorList"
       :singleActions="singleActions"
       :loading="loading"
@@ -89,6 +90,7 @@ export default {
       loading: false,
       time: '168h',
       timeGroup: '30m',
+      customTime: null,
       monitorList: [],
     }
   },
@@ -101,7 +103,7 @@ export default {
     this.helper = new MonitorHelper(this.$Manager, this.$store.getters.scope)
     this.fetchData()
     this.fetchDataDebounce = _.debounce(this.fetchData, 500)
-    this.baywatch(['time', 'timeGroup', 'data.id'], this.fetchDataDebounce)
+    this.baywatch(['time', 'timeGroup', 'data.id', 'customTime'], this.fetchDataDebounce)
   },
   methods: {
     async fetchData () {
@@ -110,7 +112,7 @@ export default {
       for (let idx = 0; idx < this.constants.length; idx++) {
         const val = this.constants[idx]
         try {
-          const data = await this.helper.fetchFormatData(this.serverId, val, this.time, this.timeGroup, this.idKey)
+          const data = await this.helper.fetchFormatData(this.serverId, val, this.time, this.timeGroup, this.idKey, this.customTime)
           resList.push(data)
           if (idx === this.constants.length - 1) {
             this.loading = false
