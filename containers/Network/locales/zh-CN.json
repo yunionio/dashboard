@@ -1089,5 +1089,6 @@
   "network.import_tpl_file": "请选择导入模版文件",
   "network.mapping_table_tpl": "映射表导入模版",
   "network.owner_dns_zone": "归属域名",
-  "network.update_cluster": "修改集群"
+  "network.update_cluster": "修改集群",
+  "network.associated_cluster": "关联集群"
 }
