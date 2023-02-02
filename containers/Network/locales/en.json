@@ -1089,5 +1089,6 @@
   "network.file_type_validate": "Only upload xlsx files, and no more than 200MB",
   "network.import_tpl_file": "Please select a template file to import",
   "network.mapping_table_tpl": "Mapping table import template",
+  "network.owner_dns_zone": "Owner domain",
   "network.update_cluster": "Update Cluster"
 }
