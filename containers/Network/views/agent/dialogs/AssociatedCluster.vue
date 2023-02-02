@@ -15,6 +15,7 @@
           <base-select
             v-decorator="decorators.cluster_id"
             resource="loadbalancerclusters"
+            :params="clusterParams"
             remote
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
             showSync
@@ -82,6 +83,13 @@ export default {
         },
       },
     }
+  },
+  computed: {
+    clusterParams () {
+      return {
+        region: this.params.data[0].region,
+      }
+    },
   },
   methods: {
     createCluster () {

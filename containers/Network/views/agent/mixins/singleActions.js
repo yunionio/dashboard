@@ -1,11 +1,7 @@
 import i18n from '@/locales'
 export default {
   data () {
-    return {
-      okButtonProps: {
-        disabled: true,
-      },
-    }
+    return {}
   },
   created () {
     this.singleActions = [
@@ -116,15 +112,9 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   alert: i18n.t('network.text_132'),
-                  content: () => {
-                    const change = (bool) => {
-                      this.okButtonProps.disabled = !bool
-                    }
-                    return <a-checkbox value={this.isDelete} onInput={ change }>{ this.$t('network.text_736') }</a-checkbox>
-                  },
-                  okButtonProps: this.okButtonProps,
                 })
               },
+              meta: obj => this.$getDeleteResult(obj),
             },
           ]
         },
