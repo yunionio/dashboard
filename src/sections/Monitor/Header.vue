@@ -151,7 +151,7 @@ export default {
     },
     showGroupFunc: {
       type: Boolean,
-      defualt: true,
+      default: true,
     },
   },
   data () {
