@@ -4,9 +4,11 @@
       :time="time"
       :timeGroup="timeGroup"
       :timeOpts="timeOpts"
+      :groupFunc="groupFunc"
       @update:time="updateTime"
       @update:timeGroup="updateTimeGroup"
       @update:customTime="updateCustomTime"
+      @update:groupFunc="updateGroupFunc"
       @refresh="refresh" />
     <monitor-list
       :single-actions="singleActions"
@@ -36,6 +38,9 @@ export default {
     timeGroup: {
       type: String,
       required: true,
+    },
+    groupFunc: {
+      type: String,
     },
     timeOpts: {
       type: Object,
@@ -168,6 +173,9 @@ export default {
     },
     updateCustomTime (customTime) {
       this.$emit('update:customTime', customTime)
+    },
+    updateGroupFunc (groupBy) {
+      this.$emit('update:groupFunc', groupBy)
     },
   },
 }

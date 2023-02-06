@@ -3,6 +3,7 @@
     <monitor-header
       :time.sync="time"
       :showTimegroup="false"
+      :showGroupFunc="false"
       :loading="loading"
       :timeOpts="timeOpts"
       @refresh="refresh">

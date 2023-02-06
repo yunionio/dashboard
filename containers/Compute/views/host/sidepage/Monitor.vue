@@ -3,6 +3,7 @@
     :time.sync="time"
     :timeGroup.sync="timeGroup"
     :customTime.sync="customTime"
+    :groupFunc.sync="groupFunc"
     :monitorList="monitorList"
     :singleActions="singleActions"
     :loading="loading"
@@ -11,11 +12,11 @@
 
 <script>
 import _ from 'lodash'
-import { KVM_MONITOR_OPTS, VMWARE_MONITOR_OPTS } from '../constants'
 import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
 import Monitor from '@/sections/Monitor'
 import WindowsMixin from '@/mixins/windows'
 import { getSignature } from '@/utils/crypto'
+import { KVM_MONITOR_OPTS, VMWARE_MONITOR_OPTS } from '../constants'
 
 export default {
   name: 'VminstanceMonitorSidepage',
@@ -69,6 +70,7 @@ export default {
       time: '168h',
       timeGroup: '30m',
       customTime: null,
+      groupFunc: 'mean',
       monitorList: [],
     }
   },
@@ -89,14 +91,14 @@ export default {
   created () {
     this.fetchData()
     this.fetchDataDebounce = _.debounce(this.fetchData, 500)
-    this.baywatch(['time', 'timeGroup', 'data.id', 'customTime'], this.fetchDataDebounce)
+    this.baywatch(['time', 'timeGroup', 'data.id', 'customTime', 'groupFunc'], this.fetchDataDebounce)
   },
   methods: {
     async fetchData () {
       this.loading = true
       const resList = []
       for (let idx = 0; idx < this.monitorConstants.length; idx++) {
-        const val = this.monitorConstants[idx]
+        const val = { ...this.monitorConstants[idx], groupFunc: this.groupFunc }
         try {
           const { data } = await new this.$Manager('unifiedmonitors', 'v1')
             .performAction({
@@ -150,6 +152,7 @@ export default {
       })
     },
     genQueryData (val) {
+      const opt = val
       let select = []
       if (val.as) {
         const asItems = val.as.split(',')
@@ -160,7 +163,7 @@ export default {
               params: [val],
             },
             { // 对应 mean(val.seleteItem)
-              type: 'mean',
+              type: opt.groupFunc || 'mean',
               params: [],
             },
             { // 确保后端返回columns有 val.label 的别名
@@ -177,7 +180,7 @@ export default {
               params: [val],
             },
             { // 对应 mean(val.seleteItem)
-              type: 'mean',
+              type: opt.groupFunc || 'mean',
               params: [],
             },
             { // 确保后端返回columns有 val.label 的别名
