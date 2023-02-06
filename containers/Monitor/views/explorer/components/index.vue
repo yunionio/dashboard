@@ -9,6 +9,7 @@
         :timeOpts="timeOpts"
         :time.sync="time"
         :showTimegroup="false"
+        :showGroupFunc="false"
         @refresh="fetchAllData">
         <template v-slot:radio-button-append>
           <custom-date :time.sync="time" :customTime.sync="customTime" :showCustomTimeText="time==='custom'" />
