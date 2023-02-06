@@ -12,7 +12,7 @@
         <div class="ant-form-item-label">
           <label :title="$t('common_166')">{{$t('common_166')}}</label>
         </div>
-        <a-select :value="timeGroup" @change="timeGroupChange">
+        <a-select class="mr-2" :value="timeGroup" @change="timeGroupChange">
           <a-select-option v-for="item in timeGroupOpts" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
         </a-select>
       </template>
@@ -23,10 +23,18 @@
         <a-select v-model="customTimeNumber" style="width:70px">
           <a-select-option v-for="item in customTimeNumberOpts" :key="item.key" :value="item.key">{{item.label}}</a-select-option>
         </a-select>
-        <a-select v-model="customTimeUnit" style="width:70px;border-left:none">
+        <a-select v-model="customTimeUnit" class="mr-2" style="width:70px;border-left:none">
           <a-select-option v-for="item in customTimeUnitOpts" :key="item.key" :value="item.key">{{item.label}}</a-select-option>
         </a-select>
       </template>
+    </template>
+    <template v-if="showGroupFunc">
+      <div class="ant-form-item-label">
+        <label :title="$t('common.group_by')">{{$t('common.group_by')}}</label>
+      </div>
+      <a-select v-model="groupFunc" @change="groupFuncChange" style="width:80px">
+        <a-select-option v-for="item in groupFuncOpts" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
+      </a-select>
     </template>
   </div>
 </template>
@@ -49,6 +57,10 @@ export default {
     },
     timeGroup: {
       type: String,
+    },
+    groupFunc: {
+      type: String,
+      default: 'mean',
     },
     loading: {
       type: Boolean,
@@ -137,6 +149,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    showGroupFunc: {
+      type: Boolean,
+      defualt: true,
+    },
   },
   data () {
     return {
@@ -153,6 +169,11 @@ export default {
         { key: 'm', label: this.$t('common_time.minute') },
         { key: 'h', label: this.$t('common_time.hour') },
         { key: 'd', label: this.$t('common_time.day') },
+      ],
+      groupFuncOpts: [
+        { key: 'min', label: this.$t('common.min') },
+        { key: 'max', label: this.$t('common.max') },
+        { key: 'mean', label: this.$t('common.mean') },
       ],
     }
   },
@@ -205,6 +226,9 @@ export default {
       } else {
         this.$emit('update:timeGroup', val)
       }
+    },
+    groupFuncChange (val) {
+      this.$emit('update:groupFunc', val)
     },
   },
 }

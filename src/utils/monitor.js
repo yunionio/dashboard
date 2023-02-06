@@ -11,7 +11,7 @@ function genServerQueryData (vmId, val, scope, from, interval, idKey, customTime
           params: [val.seleteItem],
         },
         { // 对应 mean(val.seleteItem)
-          type: val.selectFunction || 'mean',
+          type: val.groupFunc || val.selectFunction || 'mean',
           params: [],
         },
         { // 确保后端返回columns有 val.label 的别名

@@ -18,6 +18,7 @@
         :timeOpts="timeOpts"
         :time.sync="time"
         :showTimegroup="false"
+        :showGroupFunc="false"
         @refresh="fetchData">
         <template v-slot:radio-button-append>
           <custom-date :time.sync="time" :customTime.sync="customTime" :showCustomTimeText="time==='custom'" />
@@ -42,13 +43,13 @@
 <script>
 import * as R from 'ramda'
 import _ from 'lodash'
-import AlertForm from './form'
 import MonitorLine from '@Monitor/sections/MonitorLine'
 import CustomDate from '@/sections/CustomDate'
 import MonitorHeader from '@/sections/Monitor/Header'
 import { getSignature } from '@/utils/crypto'
 import { timeOpts } from '@/constants/monitor'
 import { MONITOR_MAX_POINTERS } from '@Monitor/constants'
+import AlertForm from './form'
 
 export default {
   name: 'Commonalert',
