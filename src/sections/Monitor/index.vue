@@ -5,6 +5,7 @@
       :timeGroup="timeGroup"
       :timeOpts="timeOpts"
       :groupFunc="groupFunc"
+      :customTime="customTime"
       @update:time="updateTime"
       @update:timeGroup="updateTimeGroup"
       @update:customTime="updateCustomTime"
@@ -38,6 +39,9 @@ export default {
     timeGroup: {
       type: String,
       required: true,
+    },
+    customTime: {
+      type: Object,
     },
     groupFunc: {
       type: String,
