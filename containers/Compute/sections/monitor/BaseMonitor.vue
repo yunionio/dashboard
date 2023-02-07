@@ -17,13 +17,14 @@ import _ from 'lodash'
 import { MonitorHelper } from '@/utils/monitor'
 import Monitor from '@/sections/Monitor'
 import WindowsMixin from '@/mixins/windows'
+import MonitorTimeMixin from '@/mixins/monitorTime'
 
 export default {
   name: 'BaseMonitor',
   components: {
     Monitor,
   },
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, MonitorTimeMixin],
   props: {
     data: { // listItemData
       type: Object,
@@ -125,6 +126,7 @@ export default {
           throw error
         }
       }
+      this.saveMonitorConfig()
     },
     baywatch (props, watcher) {
       const iterator = function (prop) {

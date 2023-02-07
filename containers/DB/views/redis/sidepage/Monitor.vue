@@ -27,13 +27,14 @@ import Monitor from '@/sections/Monitor'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
 import { getSignature } from '@/utils/crypto'
+import MonitorTimeMixin from '@/mixins/monitorTime'
 
 export default {
   name: 'RedisMonitorSidepage',
   components: {
     Monitor,
   },
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, MonitorTimeMixin],
   props: {
     data: { // listItemData
       type: Object,
@@ -98,6 +99,7 @@ export default {
           throw error
         }
       }
+      this.saveMonitorConfig()
     },
     baywatch (props, watcher) {
       const iterator = function (prop) {

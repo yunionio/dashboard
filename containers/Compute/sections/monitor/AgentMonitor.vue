@@ -3,7 +3,9 @@
     :data="data"
     :constants="constants"
     :resId="resId"
-    :idKey="idKey" />
+    :idKey="idKey"
+    :monitorType="monitorType"
+    :currentMonitorType="currentMonitorType" />
 </template>
 
 <script>
@@ -30,6 +32,8 @@ export default {
     idKey: {
       type: String,
     },
+    monitorType: String,
+    currentMonitorType: String,
   },
 }
 </script>
