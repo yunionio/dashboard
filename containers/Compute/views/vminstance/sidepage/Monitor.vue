@@ -1,8 +1,8 @@
 <template>
   <div>
-    <a-tabs default-active-key="basic" @change="handleTabChange">
+    <a-tabs @change="handleTabChange">
       <a-tab-pane key="basic" :tab="$t('compute.monitor.basic')">
-        <base-monitor :data="data" :constants="monitorConstants" />
+        <base-monitor :data="data" :constants="monitorConstants" monitorType="basic" :currentMonitorType="currentMonitorType" />
       </a-tab-pane>
       <a-tab-pane key="agent" :tab="$t('compute.monitor.agent')">
         <div>
@@ -12,6 +12,8 @@
             :isPageDestroyed="isPageDestroyed" />
           <agent-monitor
             :data="data"
+            :currentMonitorType="currentMonitorType"
+            monitorType="agent"
             key="monitor-agent" />
         </div>
       </a-tab-pane>
@@ -48,6 +50,7 @@ export default {
   },
   data () {
     return {
+      currentMonitorType: 'basic',
       alertType: 'warning',
       time: '1h',
       timeGroup: '1m',
@@ -84,6 +87,7 @@ export default {
   },
   methods: {
     handleTabChange (tab) {
+      this.currentMonitorType = tab
     },
   },
 }
