@@ -353,10 +353,12 @@ export default {
       let value = (e.target.value && e.target.value.split(this.keySeparator)) || []
       value = (value[1] && value[1].split(this.valueSeparator)) || value[0]
       if (this.isDropdown && !this.isDate) {
+        const searchValue = ((e.target.value && e.target.value.split(this.keySeparator)) || [])[1] || ''
         if (!value) {
           this.selectKey = null
           return
         }
+        this.dropdownSearch = searchValue
         this.selectValue = value.map(item => {
           const op = R.find(R.propEq('label', item))(this.config.items)
           if (op) return op.key
