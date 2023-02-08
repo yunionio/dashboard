@@ -122,6 +122,7 @@ export default {
     tagParams () {
       const ret = {
         with_user_meta: true,
+        with_cloud_meta: true,
         limit: 0,
         scope: this.scope,
       }
