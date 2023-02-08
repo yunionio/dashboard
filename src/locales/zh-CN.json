@@ -2716,7 +2716,9 @@
     "tablestore": "表格存储",
     "shield_bills": "账单配置",
     "report_settings": "报表模板",
-    "report_elements": "报表字段"
+    "report_elements": "报表字段",
+    "diskbackup": "硬盘备份",
+    "instancebackup": "主机备份"
   },
   "res": {
     "role": "@:dictionary.role",

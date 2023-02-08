@@ -19,6 +19,13 @@ export default {
       type: Boolean,
       default: true,
     },
+    customEdit: {
+      type: Boolean,
+      default: false,
+    },
+    customEditCallback: {
+      type: Function,
+    },
   },
   data () {
     return {
@@ -51,12 +58,14 @@ export default {
   },
   render (h) {
     const { default: customForm } = this.$slots
+    const popoverComp = <a-popover v-model={ this.visible } title={ this.title } trigger="click" destroyTooltipOnHide={true}>
+      <a-icon type='edit' class='primary-color' />
+      { customForm ? <customForm slot="content" onSubmit={this.submit} /> : <edit-form slot="content" { ...{ attrs: this.$attrs, props: this.$props } } onSubmit={this.submit} onCancel={ this.hideForm } /> }
+    </a-popover>
+
     return (
       <div class='edit-icon mini-text'>
-        <a-popover v-model={ this.visible } title={ this.title } trigger="click" destroyTooltipOnHide={true}>
-          <a-icon type='edit' class='primary-color' />
-          { customForm ? <customForm slot="content" onSubmit={this.submit} /> : <edit-form slot="content" { ...{ attrs: this.$attrs, props: this.$props } } onSubmit={this.submit} onCancel={ this.hideForm } /> }
-        </a-popover>
+        { this.customEdit && this.customEditCallback ? <a-icon type='edit' class='primary-color' onClick={ this.customEditCallback } /> : popoverComp }
       </div>
     )
   },

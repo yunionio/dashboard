@@ -6,7 +6,7 @@
         <a-alert :message="params.alertMessage" banner class="mb-2" />
       </template>
       <dialog-selected-tips :count="params.data.length" :action="`${$t('common.text00078')}${$t('dictionary.project')}`" :name="params.name || $t('common.text00006')" />
-      <dialog-table :data="params.data" :columns="columns" />
+      <dialog-table v-if="columns" :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
         <a-form-item :label="params.projectLabel || $t('dictionary.project')" v-bind="formItemLayout">
