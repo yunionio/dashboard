@@ -24,7 +24,9 @@
       :formRules="formRulesComputer"
       :visible.sync="editVisible"
       :defaultValue="defaultValue"
-      :showSuccessMessage="showSuccessMessage" />
+      :showSuccessMessage="showSuccessMessage"
+      :customEdit="customEdit"
+      :customEditCallback="customEditCallback" />
     <copy
       slot="copy"
       class="ml-1"
@@ -99,6 +101,13 @@ export default {
     overflow: {
       type: String,
       default: 'ellipsis',
+    },
+    customEdit: {
+      type: Boolean,
+      default: false,
+    },
+    customEditCallback: {
+      type: Function,
     },
   },
   inject: {
