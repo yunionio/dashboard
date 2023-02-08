@@ -2692,7 +2692,9 @@
     "fatal": "Fatal",
     "ipv6_gateway": "IPv6 Gateway",
     "apsara": "Apsara",
-    "tablestore": "Table Storage"
+    "tablestore": "Table Storage",
+    "diskbackup": "Disk Backup",
+    "instancebackup": "Instance Backup"
   },
   "res": {
     "role": "Role",
