@@ -182,6 +182,7 @@ export const getNameDescriptionTableColumn = ({
   minWidth = 100,
   message,
   addEncrypt,
+  label,
 } = {}) => {
   return {
     field,
@@ -209,6 +210,7 @@ export const getNameDescriptionTableColumn = ({
               addEncrypt,
               addBackup,
               formRules,
+              label,
             },
             scopedSlots: {
               default: () => slotCallback ? slotCallback(row, h) : null,
