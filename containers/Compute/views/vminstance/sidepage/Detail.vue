@@ -26,6 +26,7 @@ import {
   getIpsTableColumn,
   getServerMonitorAgentInstallStatus,
   getStatusTableColumn,
+  getNameDescriptionTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
@@ -71,10 +72,15 @@ export default {
             return <side-page-trigger permission="projects_get" name="ProjectSidePage" id={row.tenant_id} vm={this}>{ row.tenant }</side-page-trigger>
           },
         },
-        {
+        getNameDescriptionTableColumn({
+          onManager: this.onManager,
           field: 'hostname',
           title: this.$t('common_388'),
-        },
+          label: this.$t('common_388'),
+          showDesc: false,
+          resource: 'servers',
+          formRules: [{ required: true, message: this.$t('common.tips.input', [this.$t('common_388')]) }],
+        }),
         getOsArch(),
         getUserTagColumn({
           onManager: this.onManager,
