@@ -160,6 +160,7 @@ export default {
       if (this.alwaysShowEditBtn) return true
       if (this.editVisible) return true
       if (this.edit && this.showBtn) return true
+      if (this.customEdit && this.showBtn) return true
       return false
     },
     showAppendActions () {

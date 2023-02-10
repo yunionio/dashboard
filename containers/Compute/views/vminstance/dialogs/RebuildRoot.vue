@@ -7,8 +7,10 @@
           {{ tips }}
         </div>
       </a-alert>
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
-      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <template v-if="isShowColumns">
+        <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
+        <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
+      </template>
       <a-form
         v-bind="formItemLayout"
         :form="form.fc">
@@ -335,6 +337,9 @@ export default {
         }
       }
       return 0
+    },
+    isShowColumns () {
+      return this.params.columns?.length > 0
     },
   },
   // watch: {
