@@ -114,7 +114,7 @@ export default {
         field: 'machines',
         title: i18n.t('k8s.text_191'),
       },
-      getStatusTableColumn({ statusModule: 'kubecluster', minWidth: 40 }),
+      getStatusTableColumn({ vm: this, statusModule: 'kubecluster', minWidth: 40 }),
       {
         field: 'sync_status',
         title: i18n.t('common.text00043'),
