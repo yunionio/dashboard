@@ -11,13 +11,13 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import { getNameFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'KubeclusterList',
@@ -75,7 +75,10 @@ export default {
       const ret = { ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams) }
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
+      if (tab) {
+        this.initSidePageTab(tab)
+      }
       this.sidePageTriggerHandle(this, 'K8SClusterSidePage', {
         id: row.id,
         resource: 'kubeclusters',
