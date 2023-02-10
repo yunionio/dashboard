@@ -26,7 +26,7 @@
             <div class="d-flex mt-2 w-100 align-items-center">
               <h5 class="text-truncate mb-0" style="min-width: 0;">{{ resName }}</h5>
               <template v-if="loaded && !hasError">
-                <icon class="ml-2" type="refresh" :spin="refreshDetail" @click="refreshDetailHandler()" />
+                <icon v-if="!isBillSidepage" class="ml-2" type="refresh" :spin="refreshDetail" @click="refreshDetailHandler()" />
                 <div class="ml-3 flex-shrink-0 flex-shrink-0 d-flex pr-2">
                   <div class="pr-4"><slot name="actions" /></div>
                 </div>
@@ -140,6 +140,9 @@ export default {
     },
     iconType () {
       return this.isFirstSidePage ? 'close' : 'left'
+    },
+    isBillSidepage () {
+      return this.windowId.startsWith('Bill')
     },
   },
   watch: {
