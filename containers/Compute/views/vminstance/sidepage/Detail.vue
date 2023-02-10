@@ -33,6 +33,7 @@ import { findPlatform } from '@/utils/common/hypervisor'
 import { BRAND_MAP, HYPERVISORS_MAP } from '@/constants'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { sizestr, sizestrWithUnit } from '@/utils/utils'
+import { hasPermission } from '@/utils/auth'
 
 export default {
   name: 'VmInstanceDetail',
@@ -262,7 +263,7 @@ export default {
               title: this.$t('compute.text_97'),
               hideField: true,
               message: this.diskInfos.image,
-              customEdit: true,
+              customEdit: hasPermission({ key: 'server_perform_rebuild_root' }),
               customEditCallback: (row) => {
                 this.createDialog('VmRebuildRootDialog', {
                   data: [row],
