@@ -262,6 +262,14 @@ export default {
               title: this.$t('compute.text_97'),
               hideField: true,
               message: this.diskInfos.image,
+              customEdit: true,
+              customEditCallback: (row) => {
+                this.createDialog('VmRebuildRootDialog', {
+                  data: [row],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
               slotCallback: (row) => {
                 if (!this.diskInfos.image || this.diskInfos.image === '-') return '-'
                 if (!this.imageExist) return this.diskInfos.image

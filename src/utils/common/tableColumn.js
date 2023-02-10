@@ -253,6 +253,8 @@ export const getCopyWithContentTableColumn = ({
   hidden,
   minWidth = 100,
   vm = {},
+  customEdit = false,
+  customEditCallback = () => {},
 } = {}) => {
   return {
     field,
@@ -265,7 +267,7 @@ export const getCopyWithContentTableColumn = ({
         if (vm.isPreLoad && !row[field]) return [<data-loading />]
         const text = (message && R.type(message) === 'Function') ? message(row) : (message || (row[field] && row[field].toString()) || '-')
         return [
-          <list-body-cell-wrap copy field={field} row={row} hideField={hideField} message={text}>
+          <list-body-cell-wrap copy field={field} row={row} hideField={hideField} message={text} customEdit={customEdit} customEditCallback={() => customEditCallback(row)}>
             { slotCallback ? slotCallback(row) : null }
           </list-body-cell-wrap>,
         ]
