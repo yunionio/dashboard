@@ -33,6 +33,32 @@ export default {
         label: i18n.t('network.text_129'),
         actions: (obj) => {
           return [
+            {
+              label: i18n.t('network.text_225', [i18n.t('dictionary.project')]),
+              permission: 'cdn_domains_perform_change_owner',
+              action: () => {
+                this.createDialog('ChangeOwenrDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  name: this.$t('dictionary.cdn_domain'),
+                  onManager: this.onManager,
+                  resource: 'cdn_domains',
+                })
+              },
+              meta: () => {
+                const ret = {
+                  validate: false,
+                  tooltip: '',
+                }
+                if (this.isProjectMode) {
+                  ret.tooltip = i18n.t('common_601')
+                  return ret
+                }
+                return {
+                  validate: true,
+                }
+              },
+            },
             disableDeleteAction(Object.assign(this, {
               permission: 'cdn_domains_update',
             }), {
