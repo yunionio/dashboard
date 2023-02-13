@@ -264,6 +264,7 @@ export const PERMISSION = {
   cdn_domains_update: ['compute', 'cdn_domains', 'update'],
   cdn_domains_delete: ['compute', 'cdn_domains', 'delete'],
   cdn_domains_perform_syncstatus: ['compute', 'cdn_domains', 'perform', 'syncstatus'],
+  cdn_domains_perform_change_owner: ['compute', 'cdn_domains', 'perform', 'change-owner'],
   cdn_domains_perform_set_user_metadata: ['compute', 'cdn_domains', 'perform', 'set-user-metadata'],
   // 域
   domains_list: ['identity', 'domains', 'list'],

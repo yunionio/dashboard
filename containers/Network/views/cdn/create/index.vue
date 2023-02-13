@@ -3,14 +3,11 @@
     <page-header :title="$t('common_628', [$t('dictionary.cdn_domain')])" />
     <page-body needMarginBottom>
       <a-form :form="form.fc" class="mt-3" v-bind="formItemLayout" hideRequiredMark>
-        <a-form-item :label="$t('network.cdn.domain')">
-          <base-select
-            v-decorator="decorators.project_domain_id"
-            resource="domains"
-            version="v1"
-            :params="params.domain"
-            @change="domainChange"
-            filterable />
+        <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" class="mb-0">
+          <domain-project
+            :fc="form.fc"
+            :form-layout="formItemLayout"
+            :decorators="{ project: decorators.project, domain: decorators.domain }" />
         </a-form-item>
         <a-form-item :label="$t('network.cdn.cloudprovider')">
           <base-select
@@ -22,7 +19,7 @@
             :select-props="{ placeholder: $t('compute.text_149') }" />
         </a-form-item>
         <a-form-item :label="$t('network.cdn.accelerated_domain')">
-          <a-input v-decorator="decorators.domain" />
+          <a-input v-decorator="decorators.accelerated_domain" />
         </a-form-item>
         <a-form-item :label="$t('network.cdn.area')">
           <a-radio-group v-decorator="decorators.area">
@@ -92,15 +89,18 @@
 </template>
 
 <script>
-import { validate } from '@/utils/validate'
+import { validate, isRequired } from '@/utils/validate'
 import { Manager } from '@/utils/manager'
+import DomainProject from '@/sections/DomainProject'
 import { AREAS, SERVICE_TYPES, ORIGIN_TYPES, ORIGIN_PROTOCOLS } from '../constants'
 
 let id = 0
 export default {
   name: 'CdnCreate',
+  components: {
+    DomainProject,
+  },
   data () {
-    const projectDomainId = this.$store.getters.userInfo.projectDomainId
     return {
       areaOpts: AREAS,
       serviceTypeOpts: SERVICE_TYPES,
@@ -108,13 +108,20 @@ export default {
       originProtocols: ORIGIN_PROTOCOLS,
       loading: false,
       decorators: {
-        project_domain_id: [
-          'project_domain_id',
+        domain: [
+          'domain',
           {
             rules: [
-              { required: true, message: this.$t('k8s.text_413') },
+              { validator: isRequired(), message: this.$t('rules.domain'), trigger: 'change' },
             ],
-            initialValue: projectDomainId,
+          },
+        ],
+        project: [
+          'project',
+          {
+            rules: [
+              { validator: isRequired(), message: this.$t('dictionary.project'), trigger: 'change' },
+            ],
           },
         ],
         cloudprovider: [
@@ -125,8 +132,8 @@ export default {
             ],
           },
         ],
-        domain: [
-          'domain',
+        accelerated_domain: [
+          'accelerated_domain',
           {
             validateFirst: true,
             rules: [
@@ -166,6 +173,7 @@ export default {
           origin: i => [
             `origin[${i}]`,
             {
+              validateFirst: true,
               validateTrigger: ['change', 'blur'],
               rules: [
                 { required: true, message: this.$t('network.cdn.origin_require_message') },
@@ -227,9 +235,7 @@ export default {
     }
   },
   beforeCreate () {
-    const projectDomainId = this.$store.getters.userInfo.projectDomainId
     this.form = {}
-    this.form.fd = { project_domain_id: projectDomainId }
     this.form.fc = this.$form.createForm(this, { name: 'cdn_create_form' })
     this.form.fc.getFieldDecorator('keys', { initialValue: [id], preserve: true })
   },
@@ -239,9 +245,10 @@ export default {
     },
     generateValues (values) {
       const data = {
-        project_domain_id: values.project_domain_id,
+        domain: values.domain.key,
+        tenant: values.project.key,
         cloudprovider_id: values.cloudprovider,
-        name: values.domain,
+        name: values.accelerated_domain,
         area: values.area,
         service_type: values.service_type,
       }
@@ -273,9 +280,6 @@ export default {
       } finally {
         this.loading = false
       }
-    },
-    domainChange (val) {
-      this.form.fd.project_domain_id = val
     },
     checkDomainHandle (rule, value, callback) {
       if (validate(value, 'domain') === false || validate(value, 'domain').result === false) {
