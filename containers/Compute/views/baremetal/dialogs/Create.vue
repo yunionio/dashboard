@@ -329,7 +329,8 @@ export default {
         const raidAdapter = this.diskData[raidType]
         this.params.diskOptionsDate.forEach(item => {
           const adapterKey = item.diskInfo[1]
-          raidAdapter[adapterKey].forEach(disks => {
+          const raidAdapters = raidAdapter[adapterKey] || []
+          raidAdapters.forEach(disks => {
             if (disks.type === item.type && sizestr(disks.size, 'M', 1024) === item.unitSize) {
               disks.count = disks.count - item.count
               disks.start_index = disks.start_index + item.count
