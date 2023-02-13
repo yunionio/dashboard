@@ -5,7 +5,7 @@ import {
   getAccountTableColumn,
   getTimeTableColumn,
   getPublicScopeTableColumn,
-  getProjectDomainTableColumn,
+  getProjectTableColumn,
   getTagTableColumn,
 } from '@/utils/common/tableColumn'
 
@@ -94,7 +94,7 @@ export default {
       getBrandTableColumn(),
       getAccountTableColumn(),
       getPublicScopeTableColumn({ vm: this, resource: 'cdn_domains' }),
-      getProjectDomainTableColumn(),
+      getProjectTableColumn(),
       getTimeTableColumn(),
     ]
   },
