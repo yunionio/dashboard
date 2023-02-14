@@ -302,7 +302,7 @@ export default {
                       BRAND_MAP.Google.key,
                       BRAND_MAP.Huawei.key,
                       BRAND_MAP.Azure.key,
-                      BRAND_MAP.Qcloud,
+                      BRAND_MAP.Qcloud.key,
                       BRAND_MAP.JDcloud.key,
                     ]
 
