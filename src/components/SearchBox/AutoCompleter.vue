@@ -9,6 +9,12 @@
       @keydown.delete="handleInputDelete"
       @input="handleInput" />
     <div class="auto-completer-wrap" v-show="show" :style="completerWrapStyle">
+      <a-input-search
+        v-if="isDropdown && config.items"
+        id="dropdownSearchInput"
+        class="dropdown-search-input"
+        :placeholder="$t('common.search')"
+        @change="onSearch" />
       <ul class="auto-completer-items">
         <li v-show="!isDropdown && !isDate">
           <span class="empty text-weak">{{ $t('common.text00014') }}</span>
@@ -16,11 +22,6 @@
         <template v-if="isDropdown">
           <!-- 如果有配置项则渲染 -->
           <template v-if="config.items">
-            <a-input-search
-              id="dropdownSearchInput"
-              class="dropdown-search-input"
-              :placeholder="$t('common.search')"
-              @change="onSearch" />
             <li
               v-for="item of getItems()"
               :key="item.key">
