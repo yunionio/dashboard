@@ -144,6 +144,23 @@ export default {
             const isOwner = this.list.selectedItems.every(item => this.isOwner(item))
             return [
               {
+                label: this.$t('network.text_225', [this.$t('dictionary.project')]),
+                action: () => {
+                  this.createDialog('ChangeOwenrDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    name: this.$t('dictionary.cdn_domain'),
+                    resource: 'cdn_domains',
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: this.list.selectedItems.length,
+                  }
+                },
+              },
+              {
                 label: this.$t('compute.text_283'),
                 permission: 'cdn_domains_perform_set_user_metadata',
                 action: () => {
