@@ -379,22 +379,19 @@ export default {
             this.doCreateServertemplate(data)
           } else if (this.isOpenWorkflow) { // 提交工单
             await this.checkCreateData(data)
-            this.doForecast(genCreteData, data)
-              .then(() => {
-                this.doCreateWorkflow(data)
-              })
+            await this.doForecast(genCreteData, data)
+            await this.doCreateWorkflow(data)
           } else { // 创建主机
             await this.checkCreateData(data)
-            this.doForecast(genCreteData, data)
-              .then((data) => {
-                this.createServer(data)
-              })
-            this.submiting = false
+            await this.doForecast(genCreteData, data)
+            await this.createServer(data)
           }
         })
         .catch(error => {
-          this.submiting = false
           throw error
+        })
+        .finally(() => {
+          this.submiting = false
         })
     },
     doCreateServertemplate (data) {
@@ -407,14 +404,12 @@ export default {
           ...rest,
         },
       }
-      this.submiting = true
       this.servertemplateM.create({ data: templateData })
         .then(() => {
           this.$message.success(i18n.t('compute.text_423'))
           this.$router.push('/servertemplate')
         })
         .catch((error) => {
-          this.submiting = false
           throw error
         })
     },
@@ -428,7 +423,6 @@ export default {
         price: this.price,
       }
       this._getProjectDomainInfo(variables)
-      this.submiting = true
       new this.$Manager('process-instances', 'v1')
         .create({ data: { variables } })
         .then(() => {
@@ -436,21 +430,13 @@ export default {
           this.$router.push('/workflow')
         })
         .catch((error) => {
-          this.submiting = false
           throw error
         })
     },
     async checkCreateData (data) {
-      try {
-        const res = new this.$Manager('servers').performAction({ id: 'check-create-data', action: '', data })
-        return res
-      } catch (error) {
-        this.submiting = false
-        throw error
-      }
+      return new this.$Manager('servers').performAction({ id: 'check-create-data', action: '', data })
     },
     doForecast (genCreateData, data) {
-      this.submiting = true
       return new Promise((resolve, reject) => {
         this.schedulerM.rpc({ methodname: 'DoForecast', params: data })
           .then(res => {
@@ -458,13 +444,11 @@ export default {
               resolve(data)
             } else {
               this.errors = genCreateData.getForecastErrors(res.data)
-              this.submiting = false
               reject(this.errors)
             }
           })
           .catch(err => {
             this.$message.error(i18n.t('compute.text_321', [err]))
-            this.submiting = false
             reject(err)
           })
       })
@@ -487,7 +471,6 @@ export default {
           this.$router.push('/vminstance')
         })
         .catch(error => {
-          this.submiting = false
           throw error
         })
     },
