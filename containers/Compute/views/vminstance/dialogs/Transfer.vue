@@ -322,6 +322,9 @@ export default {
       if (prefer_host_id) {
         params.prefer_host_id = prefer_host_id
       }
+      if (live_migrate && skip_cpu_check) {
+        params.skip_kernel_check = true
+      }
       return manager.performAction({
         id: this.params.data[0].id,
         action: 'migrate-forecast',
