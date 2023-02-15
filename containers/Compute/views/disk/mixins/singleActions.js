@@ -389,6 +389,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
+                  resource: 'disks',
                 })
               },
               meta: () => {
