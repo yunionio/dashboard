@@ -36,7 +36,7 @@
         <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1042')" />
       </a-form-item>
       <a-form-item class="mb-0" :label="$t('compute.text_498')">
-        <bill :decorators="decorators.bill" :form="form" :provider-list="form.fi.providerList" :disabledBillType="disabledBillType" />
+        <bill :decorators="decorators.bill" :form="form" :provider-list="form.fi.providerList" />
       </a-form-item>
       <a-form-item v-if="form.fd.billType === 'quantity' && !isServertemplate" :label="$t('compute.text_1132')">
         <duration :decorators="decorators.duration" :form="form" />
@@ -466,14 +466,6 @@ export default {
     },
     hideCloudaccountSched () {
       return !!this.form.fd.prefer_manager
-    },
-    disabledBillType () {
-      if (this.form.fd.sku && this.form.fd.sku.provider) {
-        if (this.form.fd.sku.provider === PROVIDER_MAP.Google.key) { // 谷歌云不支持包年包月
-          return 'package'
-        }
-      }
-      return ''
     },
     policycloudproviderParams () {
       const params = {
