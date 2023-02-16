@@ -38,7 +38,7 @@ export default {
           })
         },
         hidden: (obj) => {
-          return !(obj.variables.audit_status === 'refused' && obj.process_definition_key === 'apply-internal-resource')
+          return !((obj.variables.audit_status === 'refused' || obj.state === 'EXTERNALLY_TERMINATED') && obj.process_definition_key === 'apply-internal-resource')
         },
       },
     ]
