@@ -68,7 +68,7 @@ export default {
   computed: {
     uploadTo () {
       const { resItem, prefix } = this.params
-      return `oss://${resItem.name}/${prefix}`
+      return `${resItem.name}/${prefix}`
     },
     uploadConfig () {
       return {
