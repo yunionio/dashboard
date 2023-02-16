@@ -1,118 +1,122 @@
 <template>
   <div class="network-config">
-    <div class="d-flex align-items-start mb-2" v-for="(item, i) in networkList" :key="item.key">
-      <a-tag color="blue" class="mr-1" style="margin-top: 10px;">{{ isBonding ? 'bond' : $t('compute.text_193')}}{{i + count}}</a-tag>
-      <a-form-item
-        v-show="showVpc"
-        :wrapperCol="{ span: 24 }"
-        class="mb-0 mr-1">
-        <!-- <base-select
-          v-if="i === 0"
-          class="w-100"
-          style="width: 200px;"
-          v-decorator="decorator.vpcs(item.key)"
-          :resource="vpcResource"
-          remote
-          :label-format="vpcLabelFormat"
-          :isDefaultSelect="i === 0"
-          :item.sync="item.vpc"
-          :need-params="true"
-          :params="vpcParams"
-          :mapper="vpcResourceMapper"
-          :remote-fn="q => ({ search: q })"
-          @change="v => vpcChange(v, i)"
-          :disabled="vpcObj && !!vpcObj.id"
-          :select-props="{ allowClear: true, placeholder: $t('compute.text_194') }" /> -->
-        <oc-select
-          v-if="i === 0"
-          v-decorator="decorator.vpcs(item.key)"
-          show-status
-          show-group
-          :status-desc="$t('compute.vpc_status_desc')"
-          :resource="vpcResource"
-          :formatter="vpcFormatter"
-          :params="vpcParams"
-          :mapper="vpcResourceMapper"
-          :sort="(arr) => arr.sort((a, b) => a.network_count > b.network_count ? -1 : 1)"
-          :placeholder="$t('compute.text_194')"
-          @selectChange="(curObjArr) => vpcSelectChange(curObjArr, i, item)"
-          @fetchSuccess="(data) => fetchVpcSuccessHandle(data, item)" />
-        <a-tag v-else color="blue" class="w-100 mr-1">{{ getVpcTag(networkList[0].vpc) }}</a-tag>
-      </a-form-item>
-      <a-form-item
-        :wrapperCol="{ span: 24 }"
-        :style="isDialog ? { flex: 1 } : ''"
-        class="mb-0 mr-1 network-item">
-        <base-select
-          class="w-100"
-          v-decorator="decorator.networks(item.key)"
-          resource="networks"
-          remote
-          show-sync
-          :item.sync="item.network"
-          :isDefaultSelect="i === 0"
-          :need-params="true"
-          :params="{ ...networkParamsC, $t: item.key }"
-          :mapper="networkResourceMapper"
-          :remote-fn="q => ({ search: q })"
-          :beforeDefaultSelectCallBack="beforeDefaultSelectCallBack"
-          @change="v => networkChange(v, item)"
-          :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }"
-          :min-width="isDialog ? '200px' : '500px'" />
-        <!-- <oc-select
-          v-decorator="decorator.networks(item.key)"
-          :data="networkOpts"
-          width="100%"
-          layout="between"
-          :loading="networkLoading"
-          :formatter="networkFormatter"
-          :sort="(arr) => arr.sort((a, b) => (a.ports - a.ports_used) > (b.ports - b.ports_used) ? -1 : 1)"
-          @selectChange="(curObjArr) => networkSelectChange(curObjArr, item)"
-          @fetchSuccess="(data) => fetchNetworkSuccessHandle(data, item)" /> -->
-          <div slot="extra" v-if="i === 0">{{$t('compute.text_196')}}<help-link href="/network2">{{$t('compute.perform_create')}}</help-link>
-          </div>
-      </a-form-item>
-      <template v-if="item.ipShow">
-        <a-form-item class="mb-0"  :wrapperCol="{ span: 24 }">
-          <a-input
-            style="width: 200px"
-            :placeholder="$t('compute.text_197')"
-            @change="e => ipChange(e, i)"
-            v-decorator="decorator.ips(item.key, item.network)" />
+    <div class="mb-2" v-for="(item, i) in networkList" :key="item.key">
+      <div class="d-flex">
+        <a-tag color="blue" class="mr-1" style="height: 20px; margin-top: 10px;">{{ isBonding ? 'bond' : $t('compute.text_193')}}{{i + count}}</a-tag>
+        <a-form-item
+          v-show="showVpc"
+          :wrapperCol="{ span: 24 }"
+          class="mb-0 mr-1">
+          <!-- <base-select
+            v-if="i === 0"
+            class="w-100"
+            style="width: 200px;"
+            v-decorator="decorator.vpcs(item.key)"
+            :resource="vpcResource"
+            remote
+            :label-format="vpcLabelFormat"
+            :isDefaultSelect="i === 0"
+            :item.sync="item.vpc"
+            :need-params="true"
+            :params="vpcParams"
+            :mapper="vpcResourceMapper"
+            :remote-fn="q => ({ search: q })"
+            @change="v => vpcChange(v, i)"
+            :disabled="vpcObj && !!vpcObj.id"
+            :select-props="{ allowClear: true, placeholder: $t('compute.text_194') }" /> -->
+          <oc-select
+            v-if="i === 0"
+            v-decorator="decorator.vpcs(item.key)"
+            show-status
+            show-group
+            :status-desc="$t('compute.vpc_status_desc')"
+            :resource="vpcResource"
+            :formatter="vpcFormatter"
+            :params="vpcParams"
+            :mapper="vpcResourceMapper"
+            :sort="(arr) => arr.sort((a, b) => a.network_count > b.network_count ? -1 : 1)"
+            :placeholder="$t('compute.text_194')"
+            @selectChange="(curObjArr) => vpcSelectChange(curObjArr, i, item)"
+            @fetchSuccess="(data) => fetchVpcSuccessHandle(data, item)" />
+          <a-tag v-else color="blue" class="w-100 mr-1">{{ getVpcTag(networkList[0].vpc) }}</a-tag>
         </a-form-item>
-        <a-button type="link" class="mt-1" @click="triggerShowIp(item)">{{$t('compute.text_135')}}</a-button>
-      </template>
-      <a-tooltip v-else :title="ipBtnTooltip">
-        <a-button type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowIp(item)">{{$t('compute.text_198')}}</a-button>
-      </a-tooltip>
-      <template v-if="showMacConfig">
-        <template v-if="item.macShow">
+        <a-form-item
+          :wrapperCol="{ span: 24 }"
+          :style="isDialog ? { flex: 1 } : ''"
+          class="mb-0 mr-1 network-item">
+          <base-select
+            class="w-100"
+            v-decorator="decorator.networks(item.key)"
+            resource="networks"
+            remote
+            show-sync
+            :item.sync="item.network"
+            :isDefaultSelect="i === 0"
+            :need-params="true"
+            :params="{ ...networkParamsC, $t: item.key }"
+            :mapper="networkResourceMapper"
+            :remote-fn="q => ({ search: q })"
+            :beforeDefaultSelectCallBack="beforeDefaultSelectCallBack"
+            @change="v => networkChange(v, item)"
+            :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }"
+            :min-width="isDialog ? '200px' : '500px'" />
+          <!-- <oc-select
+            v-decorator="decorator.networks(item.key)"
+            :data="networkOpts"
+            width="100%"
+            layout="between"
+            :loading="networkLoading"
+            :formatter="networkFormatter"
+            :sort="(arr) => arr.sort((a, b) => (a.ports - a.ports_used) > (b.ports - b.ports_used) ? -1 : 1)"
+            @selectChange="(curObjArr) => networkSelectChange(curObjArr, item)"
+            @fetchSuccess="(data) => fetchNetworkSuccessHandle(data, item)" /> -->
+            <div slot="extra" v-if="i === 0">{{$t('compute.text_196')}}<help-link href="/network2">{{$t('compute.perform_create')}}</help-link>
+            </div>
+        </a-form-item>
+      </div>
+      <div class="d-flex ml-5">
+        <template v-if="item.ipShow">
           <a-form-item class="mb-0"  :wrapperCol="{ span: 24 }">
             <a-input
               style="width: 200px"
-              :placeholder="$t('compute.text_806')"
-              @change="e => macChange(e, i)"
-              v-decorator="decorator.macs(item.key, item.network)" />
+              :placeholder="$t('compute.text_197')"
+              @change="e => ipChange(e, i)"
+              v-decorator="decorator.ips(item.key, item.network)" />
           </a-form-item>
-          <a-button type="link" class="mt-1" @click="triggerShowMac(item)">{{$t('compute.text_135')}}</a-button>
+          <a-button type="link" class="mt-1" @click="triggerShowIp(item)">{{$t('compute.text_135')}}</a-button>
         </template>
         <a-tooltip v-else :title="ipBtnTooltip">
-          <a-button type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowMac(item)">{{$t('compute.mac_config')}}</a-button>
+          <a-button type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowIp(item)">{{$t('compute.text_198')}}</a-button>
         </a-tooltip>
-      </template>
-      <template v-if="showDeviceConfig">
-        <template v-if="item.deviceShow">
-          <a-form-item class="mb-0"  :wrapperCol="{ span: 24 }">
-            <oc-select
-              v-decorator="decorator.devices(item.key)"
-              :data="gpuOptions"
-              :placeholder="$t('compute.sriov_device_tips')" />
-          </a-form-item>
-          <a-button type="link" class="mt-1" @click="triggerShowDevice(item)">{{$t('compute.text_135')}}</a-button>
+        <template v-if="showMacConfig">
+          <template v-if="item.macShow">
+            <a-form-item class="mb-0"  :wrapperCol="{ span: 24 }">
+              <a-input
+                style="width: 200px"
+                :placeholder="$t('compute.text_806')"
+                @change="e => macChange(e, i)"
+                v-decorator="decorator.macs(item.key, item.network)" />
+            </a-form-item>
+            <a-button type="link" class="mt-1" @click="triggerShowMac(item)">{{$t('compute.text_135')}}</a-button>
+          </template>
+          <a-tooltip v-else :title="ipBtnTooltip">
+            <a-button type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowMac(item)">{{$t('compute.mac_config')}}</a-button>
+          </a-tooltip>
         </template>
-        <a-button v-else type="link" class="mr-1 mt-1" @click="triggerShowDevice(item)">{{ $t('compute.config_sriov_net') }}</a-button>
-      </template>
-      <a-button shape="circle" icon="minus" size="small" v-if="i !== 0" @click="decrease(item.key, i)" class="mt-2" />
+        <template v-if="showDeviceConfig">
+          <template v-if="item.deviceShow">
+            <a-form-item class="mb-0"  :wrapperCol="{ span: 24 }">
+              <oc-select
+                v-decorator="decorator.devices(item.key)"
+                :data="gpuOptions"
+                :placeholder="$t('compute.sriov_device_tips')" />
+            </a-form-item>
+            <a-button type="link" class="mt-1" @click="triggerShowDevice(item)">{{$t('compute.text_135')}}</a-button>
+          </template>
+          <a-button v-else type="link" class="mr-1 mt-1" @click="triggerShowDevice(item)">{{ $t('compute.config_transparent_net') }}</a-button>
+        </template>
+        <a-button shape="circle" icon="minus" size="small" v-if="i !== 0" @click="decrease(item.key, i)" class="mt-2" />
+      </div>
     </div>
     <div class="d-flex align-items-center" v-if="networkCountRemaining > 0">
       <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
