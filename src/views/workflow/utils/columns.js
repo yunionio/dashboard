@@ -79,7 +79,7 @@ export const getResourceProjectTableColumn = ({ field = 'resource_project_name',
     slots: {
       default: ({ row }, h) => {
         let f = field
-        if (row.process_instance?.process_definition_key === 'apply-internal-resource') {
+        if (row.process_instance?.process_definition_key === 'apply-internal-resource' || row.process_definition_key === 'apply-internal-resource') {
           f = 'variables.project_name'
         }
         const project = _.get(row, f, '-')
