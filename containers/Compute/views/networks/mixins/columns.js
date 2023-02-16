@@ -18,7 +18,7 @@ export default {
       getCopyWithContentTableColumn({ field: 'mac_addr', title: i18n.t('compute.text_385'), sortable: true }),
       getCopyWithContentTableColumn({ field: 'ip_addr', title: i18n.t('compute.text_386'), sortable: true }),
       getCopyWithContentTableColumn({ field: 'eip_addr', title: 'EIP', sortable: true }),
-      getCopyWithContentTableColumn({ field: 'driver', title: i18n.t('compute.text_378') }),
+      getCopyWithContentTableColumn({ field: 'driver', title: i18n.t('compute.text_860') }),
       {
         field: 'guest_id',
         title: i18n.t('compute.text_106'),
@@ -62,7 +62,7 @@ export default {
         title: i18n.t('compute.num_queues'),
         slots: {
           default: ({ row }) => {
-            return row.num_queues
+            return row.num_queues || '-'
           },
         },
       },
