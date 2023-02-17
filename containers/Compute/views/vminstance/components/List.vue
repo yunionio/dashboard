@@ -312,6 +312,25 @@ export default {
           },
           hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_restart'),
         },
+        // 同步状态
+        {
+          label: this.$t('compute.perform_sync_status'),
+          permission: 'server_perform_syncstatus',
+          action: () => {
+            this.onManager('batchPerformAction', {
+              steadyStatus: ['running', 'ready'],
+              managerArgs: {
+                action: 'syncstatus',
+              },
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.selectedItems.length > 0,
+            }
+          },
+          hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_syncstatus'),
+        },
         /* 批量操作 */
         {
           label: this.$t('compute.text_275'),
@@ -321,20 +340,6 @@ export default {
                 // * 实例状态
                 label: this.$t('compute.text_353'),
                 submenus: [
-                  // 同步状态
-                  {
-                    label: this.$t('compute.perform_sync_status'),
-                    permission: 'server_perform_syncstatus',
-                    action: () => {
-                      this.onManager('batchPerformAction', {
-                        steadyStatus: ['running', 'ready'],
-                        managerArgs: {
-                          action: 'syncstatus',
-                        },
-                      })
-                    },
-                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_syncstatus'),
-                  },
                   // 挂起
                   {
                     label: this.$t('compute.text_1128'),
