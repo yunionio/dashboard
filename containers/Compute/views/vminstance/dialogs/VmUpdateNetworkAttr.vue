@@ -18,7 +18,7 @@
               :max="16" />
           </a-tooltip>
         </a-form-item>
-        <a-form-item :label="$t('compute.text_378')">
+        <a-form-item :label="$t('compute.text_860')">
             <a-select v-decorator="decorators.driver">
               <a-select-option v-for="item of driverArr" :key="item.key" :value="item.key">{{item.label}}</a-select-option>
             </a-select>
