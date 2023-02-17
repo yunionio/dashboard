@@ -135,6 +135,23 @@ export default {
           },
         },
         {
+          label: this.$t('db.text_69'),
+          permission: 'rds_dbinstances_perform_syncstatus',
+          action: () => {
+            this.onManager('batchPerformAction', {
+              id: this.list.selectedItems.map(item => item.id),
+              managerArgs: {
+                action: 'sync-status',
+              },
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.selectedItems.length > 0,
+            }
+          },
+        },
+        {
           label: this.$t('common.batchAction'),
           actions: (obj) => {
             const selectedLength = this.list.selectedItems.length
@@ -142,24 +159,6 @@ export default {
             const isRunning = this.list.selectedItems.every(item => item.status.toLowerCase() === 'running')
             const notRunninTip = !isRunning ? this.$t('db.text_156') : null
             return [
-              {
-                label: this.$t('db.text_69'),
-                permission: 'rds_dbinstances_perform_syncstatus',
-                action: (obj) => {
-                  this.onManager('batchPerformAction', {
-                    id: this.list.selectedItems.map(item => item.id),
-                    managerArgs: {
-                      action: 'sync-status',
-                    },
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: selectedLength,
-                    tooltip: notSelectedTooltip,
-                  }
-                },
-              },
               {
                 label: this.$t('db.text_70'),
                 permission: 'rds_dbinstances_perform_reboot',
