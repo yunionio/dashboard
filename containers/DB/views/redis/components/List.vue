@@ -139,6 +139,23 @@ export default {
           },
         },
         {
+          label: this.$t('db.text_69'),
+          permission: 'redis_elasticcaches_perform_sync',
+          action: () => {
+            this.onManager('batchPerformAction', {
+              id: this.list.selectedItems.map(item => item.id),
+              managerArgs: {
+                action: 'Sync',
+              },
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.selectedItems.length > 0,
+            }
+          },
+        },
+        {
           label: this.$t('db.text_213'),
           actions: (obj) => {
             const selectedLength = this.list.selectedItems.length
@@ -146,24 +163,6 @@ export default {
             const isRunning = this.list.selectedItems.every(item => item.status.toLowerCase() === 'running')
             const notRunninTip = !isRunning ? this.$t('db.text_156') : null
             return [
-              {
-                label: this.$t('db.text_69'),
-                permission: 'redis_elasticcaches_perform_sync',
-                action: (obj) => {
-                  this.onManager('batchPerformAction', {
-                    id: this.list.selectedItems.map(item => item.id),
-                    managerArgs: {
-                      action: 'Sync',
-                    },
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: selectedLength,
-                    tooltip: notSelectedTooltip,
-                  }
-                },
-              },
               {
                 label: this.$t('db.text_239'),
                 permission: 'redis_elasticcaches_perform_flush_instance',

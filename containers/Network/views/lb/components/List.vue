@@ -161,32 +161,26 @@ export default {
       const actions = [
         createBtn,
         {
+          label: this.$t('network.text_201'),
+          permission: 'lb_loadbalancers_perform_syncstatus',
+          action: () => {
+            this.onManager('batchPerformAction', {
+              steadyStatus: ['running', 'ready'],
+              managerArgs: {
+                action: 'syncstatus',
+              },
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.selectedItems.length > 0,
+            }
+          },
+        },
+        {
           label: this.$t('network.text_200'),
           actions: () => {
             return [
-              {
-                label: this.$t('network.text_201'),
-                permission: 'lb_loadbalancers_perform_syncstatus',
-                action: () => {
-                  this.onManager('batchPerformAction', {
-                    steadyStatus: ['running', 'ready'],
-                    managerArgs: {
-                      action: 'syncstatus',
-                    },
-                  })
-                },
-                meta: () => {
-                  if (this.list.selectedItems.some(v => v.brand.toLowerCase() === 'onecloud')) {
-                    return {
-                      validate: false,
-                      tooltip: this.$t('network.text_628'),
-                    }
-                  }
-                  return {
-                    validate: true,
-                  }
-                },
-              },
               ...getEnabledSwitchActions(this, undefined, ['lb_loadbalancers_perform_enable', 'lb_loadbalancers_perform_disable'], {
                 actions: [
                   (obj) => {
