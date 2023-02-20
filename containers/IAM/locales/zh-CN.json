@@ -1000,5 +1000,6 @@
   "system.notify.name.net_out_of_sync": "网络拓扑信息不同步通知",
   "system.notify.name.mysql_out_of_sync": "数据库主备异常通知",
   "system.notify.name.cloud_account_sync_status": "云账号状态异常通知",
-  "system.notify.name.service_abnormal": "组件服务异常通知"
+  "system.notify.name.service_abnormal": "组件服务异常通知",
+  "iam.project_admin": "@:dictionary.project管理员"
 }
