@@ -172,9 +172,16 @@ export default {
             })
           },
           meta: () => {
-            return {
+            const ret = {
               validate: this.list.selectedItems.length > 0,
             }
+            const isExist = this.list.selectedItems.some(item => item.brand.toLowerCase() === 'onecloud')
+            if (isExist) {
+              ret.validate = false
+              ret.tooltip = this.$t('network.text_652')
+              return ret
+            }
+            return ret
           },
         },
         {
