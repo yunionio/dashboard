@@ -17,6 +17,7 @@
       :res-id="detailData.id"
       :id="listId"
       :on-manager="onManager"
+      :server-columns="columns"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
       @refresh="refresh"
@@ -26,14 +27,14 @@
 </template>
 
 <script>
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import InstanceGroupDetail from './Detail'
 import VMInstanceListForInstanceGroup from './VMInstanceListForInstanceGroup'
 import VipNetworkListForInstanceGroup from './VIPList'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
 
 export default {
   name: 'InstanceGroupSidePage',
