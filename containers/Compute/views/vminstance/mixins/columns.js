@@ -20,6 +20,11 @@ import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 import i18nLocale from '@/locales'
 
 export default {
+  data () {
+    return {
+      columns: [],
+    }
+  },
   created () {
     this.serverManager = new this.$Manager('servers')
     const doCreateOrSwitchBackup = (obj) => {
@@ -133,6 +138,16 @@ export default {
             return [<icon type={icontype} style={{ fontSize: '16px' }} title={tooltip} />]
           },
         },
+        formatter: ({ row }) => {
+          let tooltip = i18nLocale.t('compute.text_291', [i18nLocale.t('dictionary.server')])
+          if (row.is_gpu) {
+            tooltip = `GPU${this.$t('dictionary.server')}`
+          }
+          if (row.backup_host_id) {
+            tooltip = this.$t('compute.backup')
+          }
+          return tooltip
+        },
       },
       getTagTableColumn({
         onManager: this.onManager,
@@ -174,6 +189,14 @@ export default {
             const config = row.vcpu_count + 'C' + (row.vmem_size / 1024) + 'G' + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
             return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
           },
+        },
+        formatter: ({ row }) => {
+          const ret = []
+          if (row.instance_type) {
+            ret.push(row.instance_type)
+          }
+          const config = row.vcpu_count + 'C' + (row.vmem_size / 1024) + 'G' + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
+          return ret.concat(config).join(', ')
         },
       },
       {
@@ -238,6 +261,13 @@ export default {
             return []
           },
         },
+        formatter: ({ row }) => {
+          if (row.vmem_size) {
+            const config = (row.vmem_size / 1024) + 'G'
+            return config
+          }
+          return ''
+        },
       },
       {
         field: 'disk',
@@ -250,6 +280,11 @@ export default {
             const config = row.disk ? sizestr(row.disk, 'M', 1024) : ''
             return [<list-body-cell-wrap row={{ row }} hide-field field="disk">{ config }</list-body-cell-wrap>]
           },
+        },
+        formatter: ({ row }) => {
+          if (!row.disk) return ''
+          const config = row.disk ? sizestr(row.disk, 'M', 1024) : ''
+          return config
         },
       },
       {
@@ -318,6 +353,9 @@ export default {
             return row.secgroups?.map(item => item.name).join(',')
           },
         },
+        formatter: ({ row }) => {
+          return row.secgroups?.map(item => item.name).join(',')
+        },
       },
       getCopyWithContentTableColumn({
         field: 'vpc',
@@ -354,6 +392,12 @@ export default {
               <list-body-cell-wrap copy field='host' row={row} message={text}></list-body-cell-wrap>,
             ]
           },
+        },
+        formatter: ({ row }) => {
+          if (findPlatform(row.hypervisor, 'hypervisor') === SERVER_TYPE.public) {
+            return ''
+          }
+          return row.host || ''
         },
         hidden: () => this.$store.getters.isProjectMode,
       },

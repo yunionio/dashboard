@@ -1638,6 +1638,8 @@
   "compute.switch_backup": "Switch the backup machine",
   "compute.guest_switch_to_backup": "Active/standby switching",
   "compute.start_buckup": "Start the backup machine",
+  "compute.available_host": "Available host",
+  "compute.unavailable_host": "Unavailable host",
   "compute.auto_allocation": "Auto allocation",
   "compute.specify_ip": "Specify IP"
 }
