@@ -161,32 +161,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['is_gpu', 'metadata', 'instance_type', 'os_type', 'vpc', 'host', 'account', 'created_at', 'macs', 'os_arch', 'vcpu_count', 'vmem_size', 'disk'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.external_id'), key: 'external_id' },
-          { label: this.$t('table.title.name'), key: 'name' },
-          { label: 'IP', key: 'ips' },
-          { label: 'EIP', key: 'eip' },
-          { label: this.$t('table.title.type'), key: 'instance_type' },
-          { label: this.$t('table.title.os'), key: 'os_distribution' },
-          { label: this.$t('common.status'), key: 'status' },
-          { label: this.$t('res.project'), key: 'tenant' },
-          { label: this.$t('table.title.brand'), key: 'hypervisor' },
-          { label: this.$t('res.host'), key: 'host', hidden: () => this.$store.getters.isProjectMode },
-          { label: this.$t('res.cloudaccount'), key: 'manager', hidden: () => this.$store.getters.isProjectMode },
-          { label: this.$t('res.region'), key: 'region' },
-          { label: this.$t('res.zone'), key: 'zone' },
-          { label: this.$t('table.title.bill_type'), key: 'billing_type' },
-          { label: this.$t('table.title.user_tag'), key: 'user_tags' },
-          { label: 'MAC', key: 'macs' },
-          { label: this.$t('table.title.os_arch'), key: 'os_arch' },
-          { label: 'CPU', key: 'vcpu_count' },
-          { label: this.$t('table.title.memory_mb'), key: 'vmem_size' },
-          { label: this.$t('table.title.disk_mb'), key: 'disk' },
-          { label: this.$t('common.createdAt'), key: 'created_at' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('compute.perform_create'),
@@ -1159,6 +1133,25 @@ export default {
         return this.list.selectedItems.every(item => item.instance_type && item.instance_type.startsWith('k') === isArm)
       }
       return true
+    },
+    exportDataOptions () {
+      const ret = {
+        downloadType: 'local',
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: this.$t('table.title.external_id'), key: 'external_id' },
+        ],
+      }
+      this.columns.map(col => {
+        if (!(col.hidden && col.hidden()) && col.field !== 'password') {
+          ret.items.push({
+            field: col.field,
+            title: col.title || col.label,
+            formatter: col.formatter,
+          })
+        }
+      })
+      return ret
     },
   },
   watch: {
