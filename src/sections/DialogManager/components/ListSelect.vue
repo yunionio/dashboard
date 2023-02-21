@@ -20,13 +20,36 @@
         </div>
       </div>
       <div class="page-list-wrapper">
-        <page-list
-          ref="page-list"
-          v-bind="listProps"
-          @radio-change="handleRadioChange" />
-        <template v-if="params.multiple">
-          <a-button type="link" size="small" class="choose-all" @click="chooseAllHandle" v-if="isShowChooseAll">{{$t('common_98')}}</a-button>
-        </template>
+        <!-- Tab -->
+        <a-tabs v-if="curTab" v-model="curTab" :animated="false">
+          <template v-for="obj of tabProps.tabs">
+            <a-tab-pane :tab="obj.label" :key="obj.value">
+              <!-- 可选资源 -->
+              <div v-if="curTab === 'available'">
+                <page-list
+                  ref="page-list"
+                  v-bind="listProps"
+                  @radio-change="handleRadioChange" />
+                <template v-if="params.multiple">
+                  <a-button type="link" size="small" class="choose-all" @click="chooseAllHandle" v-if="isShowChooseAll">{{$t('common_98')}}</a-button>
+                </template>
+              </div>
+              <!-- 不可选资源 -->
+              <div v-if="curTab === 'unavailable'">
+                <oc-simple-table :columns="tabProps.listProps.columns" :data="tabProps.listProps.data" />
+              </div>
+            </a-tab-pane>
+          </template>
+        </a-tabs>
+        <div v-else>
+          <page-list
+            ref="page-list"
+            v-bind="listProps"
+            @radio-change="handleRadioChange" />
+          <template v-if="params.multiple">
+            <a-button type="link" size="small" class="choose-all" @click="chooseAllHandle" v-if="isShowChooseAll">{{$t('common_98')}}</a-button>
+          </template>
+        </div>
       </div>
     </div>
     <div slot="footer">
@@ -49,6 +72,7 @@ export default {
       selected: this.params.selected,
       details: this.params.details,
       current: {},
+      curTab: this.params.tabProps.curTab,
     }
   },
   computed: {
@@ -78,6 +102,11 @@ export default {
     },
     isShowChooseAll () {
       return !R.isEmpty(this.listProps.list.data)
+    },
+    tabProps () {
+      return {
+        ...this.params.tabProps,
+      }
     },
   },
   created () {

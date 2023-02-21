@@ -62,6 +62,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    tabProps: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   provide: {
     inListSelect: true,
@@ -122,6 +126,7 @@ export default {
         formatterLabel: this.formatterLabel,
         multiple: this.multiple,
         dialogParams: this.dialogParams,
+        tabProps: this.tabProps,
       })
     },
     handleSelected (selected, details) {
