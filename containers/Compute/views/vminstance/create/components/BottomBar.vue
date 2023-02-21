@@ -436,15 +436,23 @@ export default {
       }
 
       // disks
-      const { systemDiskSize, systemDiskType } = f
+      const { systemDiskSize, systemDiskType, hypervisor } = f
       const { systemDiskMedium, dataDiskMedium } = this.form.fi
       let systemDisk = systemDiskType.key
-      if (this.fi.createType !== SERVER_TYPE.public) systemDisk = `${systemDiskMedium}::${systemDiskType.key}`
+      // 针对kvm-local盘特殊处理
+      if (systemDisk.indexOf('local') !== -1 && hypervisor === 'kvm') {
+        systemDisk = systemDisk.split('-')[0]
+      }
+      if (this.fi.createType !== SERVER_TYPE.public) systemDisk = `${systemDiskMedium}::${systemDisk}`
       pf.addDisk(systemDisk, systemDiskSize)
       if (this.dataDiskType) {
         const datadisks = this.dataDiskSizes || (this.dataDisk ? [this.dataDisk] : [])
         let dataDisk = this.dataDiskType
-        if (this.fi.createType !== SERVER_TYPE.public) dataDisk = `${dataDiskMedium}::${this.dataDiskType}`
+        // 针对kvm-local盘特殊处理
+        if (dataDisk.indexOf('local') !== -1 && hypervisor === 'kvm') {
+          dataDisk = dataDisk.split('-')[0]
+        }
+        if (this.fi.createType !== SERVER_TYPE.public) dataDisk = `${dataDiskMedium}::${dataDisk}`
         pf.addDisks(dataDisk, datadisks)
       }
 
