@@ -1637,5 +1637,7 @@
   "compute.start_backup": "启动备份机",
   "compute.switch_backup": "切换备份机",
   "compute.guest_switch_to_backup": "主备切换",
-  "compute.start_buckup": "启动备份机"
+  "compute.start_buckup": "启动备份机",
+  "compute.auto_allocation": "自动分配",
+  "compute.specify_ip": "指定IP"
 }
