@@ -10,7 +10,9 @@ import { hasPermission } from '@/utils/auth'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
 import expectStatus from '@/constants/expectStatus'
+import { status as statusMap } from '@/locales/zh-CN'
 import setting from '@/config/setting'
+const brandMap = typeClouds.getBrand()
 
 export const getProjectTableColumn = ({ vm = {}, field = 'tenant', title = i18n.t('res.project'), projectsItem = 'tenant', sortable = true, hidden = false, minWidth = 100 } = {}) => {
   return {
@@ -100,6 +102,20 @@ export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.tit
       },
     },
     hidden,
+    formatter: ({ row }) => {
+      const name = _.get(row, field)
+      const ret = brandMap[name]
+      if (name === 'Cloudpods') {
+        const { inner_copyright, inner_copyright_en } = store.state.app.companyInfo || {}
+        if (setting.language === 'en' && inner_copyright_en) {
+          ret.label = inner_copyright_en
+        }
+        if (setting.language === 'zh-CN' && inner_copyright) {
+          ret.label = inner_copyright
+        }
+      }
+      return ret.label
+    },
   }
 }
 
@@ -128,6 +144,19 @@ export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t
           </div>,
         ]
       },
+    },
+    formatter: ({ row }) => {
+      const val = _.get(row, field) || '-'
+      const moduleStatusMap = statusMap[statusModule]
+      if (moduleStatusMap) {
+        if (moduleStatusMap[val]) {
+          return i18n.t(`status.${statusModule}.${val}`)
+        }
+      }
+      if (statusMap.common[val]) {
+        return i18n.t(`status.common.${val}`)
+      }
+      return val
     },
   }
 }
@@ -345,6 +374,42 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {}, sortab
         return ret
       },
     },
+    formatter: ({ row }) => {
+      const ret = []
+      if (row.eip) {
+        ret.push(`${row.eip}(${row.eip_mode === 'elastic_ip' ? i18n.t('common_290') : i18n.t('common_291')})`)
+      }
+      if (row.ips) {
+        const iparr = row.ips.split(',')
+        iparr.map(ip => {
+          ret.push(`${ip}(${i18n.t('common_287')})`)
+        })
+      }
+      if (row.vips) {
+        row.vips.map(ip => {
+          ret.push(`${ip}(${i18n.t('common_vip')})`)
+        })
+      }
+      if (row.vip) {
+        const iparr = row.vip.split(',')
+        iparr.map(ip => {
+          ret.push(`${ip}(${i18n.t('common_vip')})`)
+        })
+      }
+      if (row.vip_eip) {
+        const iparr = row.vip_eip.split(',')
+        iparr.map(ip => {
+          ret.push(`${ip}(${i18n.t('common_evip')})`)
+        })
+      }
+      if (row.metadata && row.metadata.sync_ips) {
+        const iparr = row.metadata.sync_ips.split(',')
+        iparr.map(ip => {
+          ret.push(`${ip}(${i18n.t('compute.esxi.sync_ips_outofrange')})`)
+        })
+      }
+      return ret.join(', ')
+    },
   }
 }
 
@@ -426,6 +491,39 @@ export const getTagTableColumn = ({
         ]
       },
     },
+    formatter: ({ row }) => {
+      let metadata = _.get(row, field) || {}
+      if (field === 'project_tags' || field === 'object_tags') {
+        metadata = {}
+        const fieldValue = row[field] || []
+        fieldValue.map(item => {
+          if (metadata.hasOwnProperty(item.key)) {
+            if (R.is(Array, metadata[item.key])) {
+              metadata[item.key].push(item.value)
+            } else {
+              metadata[item.key] = [metadata[item.key], item.value]
+            }
+          } else {
+            metadata[item.key] = item.value
+          }
+        })
+      }
+      const ret = []
+      const keys = Object.keys(metadata)
+      keys.map(key => {
+        if (key.startsWith('user:') || key.startsWith('sys:')) {
+          const tagKey = key.replace('user:', '').replace('sys:', '')
+          if (R.is(Array, metadata[key])) {
+            metadata[key].map(val => {
+              ret.push({ key: tagKey, value: val })
+            })
+          } else {
+            ret.push({ key: tagKey, value: metadata[key] })
+          }
+        }
+      })
+      return ret.length ? JSON.stringify(ret) : ''
+    },
   }
 }
 
@@ -473,6 +571,10 @@ export const getTimeTableColumn = ({
         if (fromNow) return row[field] ? moment(row[field]).fromNow() : '-'
         return row[field] ? moment(row[field]).format() : '-'
       },
+    },
+    formatter: ({ row }) => {
+      if (fromNow) return row[field] ? moment(row[field]).fromNow() : '-'
+      return row[field] ? moment(row[field]).format() : '-'
     },
   }
 }
@@ -765,6 +867,14 @@ export const getBillingTableColumn = ({
         }
         return ret
       },
+    },
+    formatter: ({ row }) => {
+      const billingType = row[field]
+      if (billingType === 'postpaid') {
+        return i18n.t('billingType.postpaid')
+      } else if (billingType === 'prepaid') {
+        return i18n.t('billingType.prepaid')
+      }
     },
   }
 }
