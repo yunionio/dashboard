@@ -1664,5 +1664,7 @@
   "compute.group_action.mirror_disk": "镜像与磁盘",
   "compute.config_transparent_net": "配置透传网卡",
   "compute.available_host": "可选宿主机",
-  "compute.unavailable_host": "不可选宿主机"
+  "compute.unavailable_host": "不可选宿主机",
+  "compute.auto_allocation": "自动分配",
+  "compute.specify_ip": "指定IP"
 }
