@@ -1662,7 +1662,7 @@
   "compute.large_page_memory_tips": "Opened large page memory",
   "compute.config_transparent_net": "Configure transparent network card",
   "compute.available_host": "Available host",
-  "compute.unavailable_host": "Unavailable host"
+  "compute.unavailable_host": "Unavailable host",
   "compute.auto_allocation": "Auto allocation",
   "compute.specify_ip": "Specify IP"
 }
