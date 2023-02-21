@@ -39,6 +39,7 @@
             :multiple="false"
             :placeholder="$t('compute.text_314')"
             :dialog-params="{ title: $t('compute.text_111'), width: 1060 }"
+            :tab-props="tabProps"
             @change="hostChangeHandle" />
         </a-form-item>
         <template v-if="isKvm && isAllRunning">
@@ -237,6 +238,41 @@ export default {
     },
     isExistManager () {
       return this.params.data[0].manager_id
+    },
+    tabProps () {
+      return {
+        curTab: 'available',
+        tabs: [
+          { label: this.$t('compute.available_host'), value: 'available' },
+          { label: this.$t('compute.unavailable_host'), value: 'unavailable' },
+        ],
+        listProps: {
+          data: this.forcastData?.filtered_candidates || [],
+          columns: [
+            {
+              field: 'name',
+              title: this.$t('table.title.name'),
+              slots: {
+                default: ({ row }, h) => {
+                  return row.name
+                },
+              },
+            },
+            {
+              field: 'reasons',
+              title: this.$t('common.reason'),
+              slots: {
+                default: ({ row }, h) => {
+                  const ret = row.reasons.map(item => {
+                    return <li>{item}</li>
+                  })
+                  return [<ul style={{ marginLeft: '-26px' }}>{ ...ret }</ul>]
+                },
+              },
+            },
+          ],
+        },
+      }
     },
   },
   created () {
