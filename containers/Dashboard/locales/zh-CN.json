@@ -290,5 +290,8 @@
   "dashboard.host_total_num": "宿主机总量",
   "dashboard.snapshot_num": "快照数量",
   "dashboard.gpu_num": "GPU卡数量",
-  "dashboard.disk_num": "磁盘数量"
+  "dashboard.disk_num": "磁盘数量",
+  "dashboard.instance_count": "实例数量",
+  "dashboard.instance_type": "实例类型",
+  "dashboard.count": "数量"
 }
