@@ -84,6 +84,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import { HYPERVISORS_MAP } from '@/constants'
 import AreaSelects from '@/sections/AreaSelects'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -91,11 +92,10 @@ import validateForm, { isRequired } from '@/utils/validate'
 import i18n from '@/locales'
 import DomainProject from '@/sections/DomainProject'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
-import { MEDIUM_MAP } from '@Compute/constants'
+import { MEDIUM_MAP, CUSTOM_STORAGE_TYPES, STORAGE_TYPES } from '@Compute/constants'
 import Tag from '@/sections/Tag'
 import BottomBar from './components/BottomBar'
-import { HYPERVISORS_MAP } from '../../../../../src/constants'
-import * as CommonConstants from '../../../constants'
+
 import EncryptKeys from '@Compute/sections/encryptkeys'
 import HostServer from './components/HostServer'
 
@@ -447,7 +447,12 @@ export default {
               const types = item.split('/')
               const backend = types[0]
               const medium = types[1]
-              const storageType = CommonConstants.STORAGE_TYPES[provider][backend]
+              let storageType = STORAGE_TYPES[provider][backend]
+              if ((provider === HYPERVISORS_MAP.kvm.provider.toLowerCase() ||
+                provider === HYPERVISORS_MAP.cloudpods.provider.toLowerCase()) &&
+                backend === 'local') {
+                storageType = STORAGE_TYPES[provider][`${backend}-${medium}`] // kvm 区分多种介质的硬盘
+              }
               const getLabel = (backend) => { return backend.includes('rbd') ? 'Ceph' : backend }
               const backends = data.data_storage_types.filter(v => v.includes(backend))
               return {
@@ -497,10 +502,10 @@ export default {
         let storageProvider = {}
         if (R.is(Array, this.provider)) {
           this.provider.forEach(hypervisor => { // 将 kvm 和 esxi 的存储类型合一
-            Object.assign(storageProvider, CommonConstants.STORAGE_TYPES[hypervisor])
+            Object.assign(storageProvider, STORAGE_TYPES[hypervisor])
           })
         } else {
-          storageProvider = CommonConstants.STORAGE_TYPES[this.provider]
+          storageProvider = STORAGE_TYPES[this.provider]
         }
         if (storageProvider[storageType.toLowerCase()]) {
           storageType = storageType.toLowerCase()
@@ -521,7 +526,7 @@ export default {
           return !storageProvider[storageType].unCreateCloud
         }
         // 说明支持自定义
-        if (CommonConstants.CUSTOM_STORAGE_TYPES.includes(this.provider)) {
+        if (CUSTOM_STORAGE_TYPES.includes(this.provider)) {
           return true
         }
         return false
@@ -553,7 +558,7 @@ export default {
         this.maxDiskData = this.getDataDiskMax(val)
         this.step = this.getDataDiskStep(val)
       } catch (error) {
-        console.warn(this.$t('compute.text_413', [CommonConstants.STORAGE_TYPES[this.provider], item.storage_type]))
+        console.warn(this.$t('compute.text_413', [STORAGE_TYPES[this.provider], item.storage_type]))
       }
       this.form.fc.setFieldsValue({ size: 10 })
       const size = this.form.fc.getFieldValue('size')
@@ -568,14 +573,14 @@ export default {
       if (curDisk) {
         return curDisk.min_size_gb
       }
-      return CommonConstants.STORAGE_TYPES[this.provider][val].min
+      return STORAGE_TYPES[this.provider][val].min
     },
     getDataDiskMax (val) {
       const curDisk = this.instanceCapabilitieDataDisk.find(v => val.startsWith(v.storage_type))
       if (curDisk) {
         return curDisk.max_size_gb
       }
-      return CommonConstants.STORAGE_TYPES[this.provider][val].max
+      return STORAGE_TYPES[this.provider][val].max
     },
     getDataDiskStep (val) {
       const curDisk = this.instanceCapabilitieDataDisk.find(v => val.startsWith(v.storage_type))
