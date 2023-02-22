@@ -290,5 +290,8 @@
   "dashboard.host_total_num": "Total number of hosts",
   "dashboard.snapshot_num": "Number of snapshots",
   "dashboard.gpu_num": "Number of GPU cards",
-  "dashboard.disk_num": "Number of disks"
+  "dashboard.disk_num": "Number of disks",
+  "dashboard.instance_count": "Number of instance",
+  "dashboard.instance_type": "Instance type",
+  "dashboard.count": "Total"
 }
