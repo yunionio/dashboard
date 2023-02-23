@@ -242,7 +242,7 @@ export default {
       return {}
     },
     max () {
-      return this.currentTypeObj.sysMax || 0
+      return this.currentTypeObj.sysMax || this.defaultSize
     },
     min () {
       return this.currentTypeObj.sysMin || 0
@@ -314,6 +314,7 @@ export default {
       this.setDiskMedium(diskMsg)
       this.$nextTick(() => { // 解决磁盘大小 inputNumber 第一次点击变为0 的bug
         const initSize = this.defaultSize && this.defaultSize > this.imageMinDisk ? this.defaultSize : this.imageMinDisk
+
         let newDiskSize = initSize || +diskMsg.sysMin
         if (systemDiskSize && systemDiskType && this.decorator.size[0] === 'systemDiskSize') { // 保留之前选择的系统盘大小
           newDiskSize = (systemDiskSize >= diskMsg.sysMin && systemDiskSize < diskMsg.sysMax) ? systemDiskSize : newDiskSize
