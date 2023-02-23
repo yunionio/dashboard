@@ -84,7 +84,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import { HYPERVISORS_MAP } from '@/constants'
+import { HYPERVISORS_MAP, CLOUD_ENVS } from '@/constants'
 import AreaSelects from '@/sections/AreaSelects'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -406,6 +406,9 @@ export default {
       }
       return false
     },
+    isPublic () {
+      return this.cloudEnv === CLOUD_ENVS.public
+    },
   },
   watch: {
     cloudEnv (val) {
@@ -441,17 +444,18 @@ export default {
               const types = item.split('/')
               const backend = types[0]
               const medium = types[1]
-              let storageType = STORAGE_TYPES[provider][backend]
-              if ((provider === HYPERVISORS_MAP.kvm.provider.toLowerCase() ||
-                provider === HYPERVISORS_MAP.cloudpods.provider.toLowerCase()) &&
-                backend === 'local') {
-                storageType = STORAGE_TYPES[provider][`${backend}-${medium}`] // kvm 区分多种介质的硬盘
+              let opt = STORAGE_TYPES[provider][backend]
+              if (!this.isPublic && opt) {
+                opt = {
+                  ...opt,
+                  label: `${opt.label}(${MEDIUM_MAP[medium]})`,
+                }
               }
-              const getLabel = (backend) => { return backend.includes('rbd') ? 'Ceph' : backend }
+              const getLabel = (backend) => { return backend.includes('rbd') ? `Ceph(${MEDIUM_MAP[medium]})` : `${backend}(${MEDIUM_MAP[medium]})` }
               const backends = data.data_storage_types.filter(v => v.includes(backend))
               return {
                 value: `${backend}__${medium}`,
-                label: storageType ? storageType.label : getLabel(backend),
+                label: opt ? opt.label : getLabel(backend),
                 medium: MEDIUM_MAP[medium] || medium,
                 multiple: backends.length > 1,
               }
