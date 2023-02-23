@@ -33,7 +33,6 @@
               <a-select-option v-for="item in storageOpts" :key="item.value">
                 <div class="d-flex">
                   <span class="text-truncate flex-fill mr-2" :title="item.label">{{ item.label }}</span>
-                  <span v-if="item.multiple" style="width: 90px; color: rgb(132, 146, 166); font-size: 13px;">介质: {{ item.medium }}</span>
                 </div>
               </a-select-option>
             </a-select>
