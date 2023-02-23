@@ -2,7 +2,7 @@
   <div class="disk-wrapper d-flex w-auto">
     <a-form-item :wrapperCol="{ span: 24 }" :validate-status="storageStatusMap.type">
       <a-tag color="blue" v-if="diskTypeLabel && !disabled">{{ diskTypeLabel }}</a-tag>
-      <a-select v-else v-decorator="decorator.type" labelInValue :style="{minWidth: '180px'}" @change="typeChange" :disabled="disabled">
+      <a-select v-else v-decorator="decorator.type" labelInValue :style="{minWidth: '300px'}" @change="typeChange" :disabled="disabled">
         <a-select-option v-for="(item, key) of typesMap" :key="key" :value="key">{{ item.label }}</a-select-option>
       </a-select>
     </a-form-item>
