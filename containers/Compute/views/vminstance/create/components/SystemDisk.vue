@@ -26,7 +26,7 @@
 import _ from 'lodash'
 import * as R from 'ramda'
 import Disk from '@Compute/sections/Disk'
-// import { STORAGE_AUTO } from '@Compute/constants'
+import { MEDIUM_MAP } from '@Compute/constants'
 import { IMAGES_TYPE_MAP, STORAGE_TYPES, DISK_LABEL_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import { findAndUnshift, findAndPush } from '@/utils/utils'
@@ -190,8 +190,11 @@ export default {
         const type = typeItemArr[0]
         const medium = typeItemArr[1]
         let opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
-        if ((hyper === HYPERVISORS_MAP.kvm.key || hyper === HYPERVISORS_MAP.cloudpods.key) && type === 'local') {
-          opt = hypervisorDisks[`${type}-${medium}`] // kvm 区分多种介质的硬盘
+        if (!this.isPublic) {
+          opt = {
+            ...opt,
+            label: `${opt.label}(${MEDIUM_MAP[medium]})`,
+          }
         }
         if (opt && !opt.sysUnusable) {
           // 新建ucloud虚拟机时，系统盘类型选择普通本地盘或SSD本地盘，其大小只能是系统镜像min_disk大小
