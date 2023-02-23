@@ -998,5 +998,6 @@
   "system.notify.name.mysql_out_of_sync": "mysql out of sync",
   "system.notify.name.cloud_account_sync_status": "cloud account sync status",
   "system.notify.name.service_abnormal": "service abnormal",
-  "iam.project_admin": "@:dictionary.project admin"
+  "iam.project_admin": "@:dictionary.project admin",
+  "iam.project.alter_role_tips": "Please double check the modified role information, incorrect changes may prevent you from logging into the console."
 }
