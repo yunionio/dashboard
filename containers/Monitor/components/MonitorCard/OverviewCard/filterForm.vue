@@ -79,6 +79,7 @@ export default {
         from: ['from', { initialValue: 7 * 24 * 60 }],
         limit: ['limit', { initialValue: 10 }],
       },
+      serverList: [],
     }
   },
   computed: {
@@ -288,6 +289,46 @@ export default {
       const data = { columns: [], rows: [] }
       const namecolumn = this.getTableNameColumn()
       data.columns.push(namecolumn)
+      if (this.res === 'server') {
+        data.columns.push({
+          field: 'external_id',
+          title: this.$t('table.title.external_id'),
+          formatter: ({ row }) => {
+            const targets = this.serverList.filter(item => item.name === row.vm_name)
+            if (targets[0]) {
+              return targets[0].external_id || ''
+            }
+          },
+          onlyExport: true,
+        })
+        data.columns.push({
+          field: 'id',
+          title: 'ID',
+          formatter: ({ row }) => {
+            const targets = this.serverList.filter(item => item.name === row.vm_name)
+            if (targets[0]) {
+              return targets[0].id || ''
+            }
+          },
+          onlyExport: true,
+        })
+        data.columns.push({
+          field: 'ip',
+          title: 'IP',
+          formatter: ({ row }) => {
+            const targets = this.serverList.filter(item => item.name === row.vm_name)
+            if (targets[0]) {
+              if (targets[0].ips) {
+                return targets[0].ips
+              }
+              if (targets[0].metadata && targets[0].metadata.sync_ips) {
+                return targets[0].metadata.sync_ips
+              }
+            }
+            return ''
+          },
+        })
+      }
       const tr = {}
       for (const k in this.charts) {
         const chart = this.charts[k]
@@ -472,12 +513,32 @@ export default {
         for (const v of vs) {
           await this.fetchChartData(v, values)
         }
+        await this.fetchServerData(this.charts[values.metric.value])
+
         this.emitChart(this.charts[values.metric.value])
         this.emitTable()
       } catch (error) {
         throw error
       } finally {
         loading.stop()
+      }
+    },
+    async fetchServerData (chart = {}) {
+      if (this.res === 'server') {
+        const { chartData = {} } = chart
+        const { rows = [] } = chartData
+        const nameStr = rows.map(item => item.name).join(',')
+        if (rows.length) {
+          try {
+            const res = await new this.$Manager('servers').list({
+              params: {
+                scope: this.$store.getters.scope,
+                filter: `name.in(${nameStr})`,
+              },
+            })
+            this.serverList = res.data.data
+          } catch (err) {}
+        }
       }
     },
     filterNameByOem (name) {
