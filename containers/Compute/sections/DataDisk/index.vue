@@ -39,7 +39,7 @@
 import _ from 'lodash'
 import * as R from 'ramda'
 import Disk from '@Compute/sections/Disk'
-// import { STORAGE_AUTO } from '@Compute/constants'
+import { MEDIUM_MAP } from '@Compute/constants'
 import { STORAGE_TYPES } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import { uuid, findAndUnshift, findAndPush } from '@/utils/utils'
@@ -214,8 +214,11 @@ export default {
         const type = typeItemArr[0]
         const medium = typeItemArr[1]
         let opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
-        if ((hyper === HYPERVISORS_MAP.kvm.key || hyper === HYPERVISORS_MAP.cloudpods.key) && type === 'local' && this.isSomeLocal(currentTypes)) {
-          opt = hypervisorDisks[`${type}-${medium}`] // kvm 区分多种介质的硬盘
+        if (!this.isPublic) {
+          opt = {
+            ...opt,
+            label: `${opt.label}(${MEDIUM_MAP[medium]})`,
+          }
         }
         if (opt) {
           const min = Math.max(DISK_MIN_SIZE, opt.min)
