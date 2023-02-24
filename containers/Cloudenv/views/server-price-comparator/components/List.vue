@@ -9,13 +9,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import storage from '@/utils/storage'
 import { PRICE_COMPARA_KEY_SUFFIX } from '@Cloudenv/constants'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'PriceVMInstanceList',
@@ -27,7 +27,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        responseData: this.responseData,
+        resource: this.getData,
       }),
       groupActions: [
         {
@@ -68,13 +68,20 @@ export default {
     ...mapGetters(['userInfo', 'isAdminMode']),
   },
   created () {
-    this.refreshData()
+    this.list.fetchData()
   },
   methods: {
-    refreshData () {
+    getData (params) {
       const data = storage.get(PRICE_COMPARA_KEY_SUFFIX) || []
-      this.list.responseData = { data: data.filter(v => v.uid === this.userInfo.id) }
-      this.list.fetchData()
+      const list = data.filter(v => v.uid === this.userInfo.id)
+      return {
+        data: {
+          data: list.slice(params.offset || 0, (params.offset || 0) + params.limit),
+          total: list.length,
+          offset: params.offset || 0,
+          limit: params.limit,
+        },
+      }
     },
   },
 }
