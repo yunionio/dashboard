@@ -79,6 +79,7 @@ export default {
         from: ['from', { initialValue: 7 * 24 * 60 }],
         limit: ['limit', { initialValue: 10 }],
       },
+      serverList: [],
     }
   },
   computed: {
@@ -544,6 +545,8 @@ export default {
         for (const v of vs) {
           await this.fetchChartData(v, values)
         }
+        await this.fetchServerData(this.charts[values.metric.value])
+
         this.emitChart(this.charts[values.metric.value])
         this.emitTable()
       } catch (error) {
