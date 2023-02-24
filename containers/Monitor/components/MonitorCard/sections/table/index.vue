@@ -13,13 +13,20 @@
           size="mini"
           border
           ref="overviewTable"
-          :columns="tableData.columns"
+          :columns="columns"
           max-height="400"
           :data="tableData.rows">
           <template v-slot:empty>
             <loader :loading="loading" :noDataText="$t('common.notData')" />
           </template>
         </vxe-grid>
+        <div style="visibility: hidden;height:1px;overflow:hidden;">
+          <vxe-grid
+            ref="overviewTable2"
+            :columns="tableData.columns"
+            max-height="1"
+            :data="tableData.rows" />
+        </div>
         <div class="vxe-grid--pager-wrapper">
           <div class="vxe-pager size--mini">
             <div class="vxe-pager--wrapper">
@@ -54,10 +61,15 @@ export default {
       }
       return 0
     },
+    columns () {
+      return this.tableData.columns.filter(item => !item.onlyExport)
+    },
   },
   methods: {
     exportData () {
-      this.$refs.overviewTable.exportData({ type: 'csv' })
+      this.$refs.overviewTable2.exportData({
+        type: 'csv',
+      })
     },
   },
 }
