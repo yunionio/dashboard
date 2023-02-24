@@ -22,6 +22,9 @@
 </template>
 
 <script>
+import { getSignature } from '@/utils/crypto'
+import { sizestr, mathRoundFix } from '@/utils/utils'
+import setting from '@/config/setting'
 import numerify from '../sections/chart/formatters'
 import BasicSelect from '../sections/select/basic'
 import MetricSelect from '../sections/select/metric'
@@ -29,9 +32,6 @@ import TimeSelect from '../sections/select/timeselect'
 import TopNSelect from '../sections/select/topN'
 import refresh from '../sections/select/refresh'
 import MetricOptions from './metrics'
-import { getSignature } from '@/utils/crypto'
-import { sizestr, mathRoundFix } from '@/utils/utils'
-import setting from '@/config/setting'
 
 function newChart (metircOption) {
   const chart = {
@@ -149,6 +149,9 @@ export default {
     },
     dimension () {
       return this.dimentions.filter((d) => { return d.id === this.dimentionId })[0]
+    },
+    showVmIp () {
+      return this.res === 'server' && this.dimentionId === 'vm_id'
     },
   },
   watch: {
@@ -288,6 +291,75 @@ export default {
       const data = { columns: [], rows: [] }
       const namecolumn = this.getTableNameColumn()
       data.columns.push(namecolumn)
+      if (this.showVmIp) {
+        data.columns.push({
+          field: 'external_id',
+          title: this.$t('table.title.external_id'),
+          formatter: ({ row }) => {
+            const targets = this.serverList.filter(item => item.name === row.vm_name)
+            if (targets[0]) {
+              return targets[0].external_id || ''
+            }
+          },
+          onlyExport: true,
+        })
+        data.columns.push({
+          field: 'id',
+          title: 'ID',
+          formatter: ({ row }) => {
+            const targets = this.serverList.filter(item => item.name === row.vm_name)
+            if (targets[0]) {
+              return targets[0].id || ''
+            }
+          },
+          onlyExport: true,
+        })
+        data.columns.push({
+          field: 'ip',
+          title: 'IP',
+          formatter: ({ row }) => {
+            const targets = this.serverList.filter(item => item.name === row.vm_name)
+            if (targets[0]) {
+              const row = targets[0]
+              const ret = []
+              if (row.eip) {
+                ret.push(`${row.eip}(${row.eip_mode === 'elastic_ip' ? this.$t('common_290') : this.$t('common_291')})`)
+              }
+              if (row.ips) {
+                const iparr = row.ips.split(',')
+                iparr.map(ip => {
+                  ret.push(`${ip}(${this.$t('common_287')})`)
+                })
+              }
+              if (row.vips) {
+                row.vips.map(ip => {
+                  ret.push(`${ip}(${this.$t('common_vip')})`)
+                })
+              }
+              if (row.vip) {
+                const iparr = row.vip.split(',')
+                iparr.map(ip => {
+                  ret.push(`${ip}(${this.$t('common_vip')})`)
+                })
+              }
+              if (row.vip_eip) {
+                const iparr = row.vip_eip.split(',')
+                iparr.map(ip => {
+                  ret.push(`${ip}(${this.$t('common_evip')})`)
+                })
+              }
+              if (row.metadata && row.metadata.sync_ips) {
+                const iparr = row.metadata.sync_ips.split(',')
+                iparr.map(ip => {
+                  ret.push(`${ip}(${this.$t('compute.esxi.sync_ips_outofrange')})`)
+                })
+              }
+              return ret.join(', ')
+            }
+            return ''
+          },
+        })
+      }
       const tr = {}
       for (const k in this.charts) {
         const chart = this.charts[k]
@@ -478,6 +550,24 @@ export default {
         throw error
       } finally {
         loading.stop()
+      }
+    },
+    async fetchServerData (chart = {}) {
+      if (this.showVmIp) {
+        const { chartData = {} } = chart
+        const { rows = [] } = chartData
+        const nameStr = rows.map(item => item.name).join(',')
+        if (rows.length) {
+          try {
+            const res = await new this.$Manager('servers').list({
+              params: {
+                scope: this.$store.getters.scope,
+                filter: `name.in(${nameStr})`,
+              },
+            })
+            this.serverList = res.data.data
+          } catch (err) {}
+        }
       }
     },
     filterNameByOem (name) {
