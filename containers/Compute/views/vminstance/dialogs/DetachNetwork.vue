@@ -15,6 +15,7 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'VmDetachNetworkDialog',
@@ -49,7 +50,7 @@ export default {
         await this.doDetachSubmit()
         this.loading = false
         this.params.refresh()
-        this.$bus.$emit('VMInstanceListSingleUpdate', [this.params.data[0].guest_id])
+        this.$bus.$emit('VMInstanceListSingleRefresh', [this.params.data[0].guest_id, Object.values(expectStatus.server).flat()])
         this.cancelDialog()
       } catch (error) {
         this.loading = false
