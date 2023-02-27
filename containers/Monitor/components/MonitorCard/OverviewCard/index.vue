@@ -12,7 +12,7 @@
             :extraParams="extraParams" />
       </div>
     </template>
-     <component v-if="chart.chartType" :is="chart.chartType" :chartData="chart.chartData" :yAxisFormat="chart.metric.format" :loading="chart.loading || tableLoading" />
+     <component v-if="chart.chartType" :is="chart.chartType" :chartData="chart.chartData" :yAxisFormat="chart.metric.format" :loading="chart.loading || tableLoading" id="monitor-overview-resource" :exportName="exportName" />
     <template #footer>
       <overview-table :table-data="table" :loading="tableLoading" v-if="showTable" />
     </template>
@@ -55,6 +55,11 @@ export default {
       showTable: false,
       tableLoading: false,
     }
+  },
+  computed: {
+    exportName () {
+      return this.chart.metric?.label || 'Export'
+    },
   },
   methods: {
     handleShowTable (v) {
