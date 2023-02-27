@@ -10,19 +10,18 @@
 
 <script>
 import _ from 'lodash'
+import { KVM_MONITOR_OPTS, VMWARE_MONITOR_OPTS } from '../constants'
 import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
 import Monitor from '@/sections/Monitor'
 import WindowsMixin from '@/mixins/windows'
 import { getSignature } from '@/utils/crypto'
-import { KVM_MONITOR_OPTS, VMWARE_MONITOR_OPTS } from '../constants'
-import MonitorTimeMixin from '@/mixins/monitorTime'
 
 export default {
   name: 'VminstanceMonitorSidepage',
   components: {
     Monitor,
   },
-  mixins: [WindowsMixin, MonitorTimeMixin],
+  mixins: [WindowsMixin],
   props: {
     data: { // listItemData
       type: Object,
@@ -114,7 +113,6 @@ export default {
           throw error
         }
       }
-      this.saveMonitorConfig()
     },
     baywatch (props, watcher) {
       const iterator = function (prop) {

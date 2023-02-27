@@ -1,8 +1,8 @@
 <template>
   <div>
-    <a-tabs v-if="resType === 'guest'" @change="handleTabChange">
+    <a-tabs v-if="resType === 'guest'" default-active-key="basic" @change="handleTabChange">
       <a-tab-pane key="basic" :tab="$t('compute.monitor.basic')">
-        <base-monitor :data="data" :constants="monitorConstants" :resId="serverId" monitorType="basic" :currentMonitorType="currentMonitorType" />
+        <base-monitor :data="data" :constants="monitorConstants" :resId="serverId" />
       </a-tab-pane>
       <a-tab-pane key="agent" :tab="$t('compute.monitor.agent')">
         <div>
@@ -26,8 +26,6 @@
         :data="data"
         key="monitor-agent"
         :constants="agentMonitor"
-        :currentMonitorType="currentMonitorType"
-        monitorType="agent"
         :resId="serverId"
         idKey="host_id" />
     </div>
@@ -68,7 +66,6 @@ export default {
   },
   data () {
     return {
-      currentMonitorType: 'basic',
       alertType: 'warning',
       time: '1h',
       timeGroup: '1m',
@@ -103,7 +100,6 @@ export default {
   },
   methods: {
     handleTabChange (tab) {
-      this.currentMonitorType = tab
     },
   },
 }

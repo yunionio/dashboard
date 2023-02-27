@@ -4,8 +4,6 @@
       :time="time"
       :timeGroup="timeGroup"
       :timeOpts="timeOpts"
-      :groupFunc="groupFunc"
-      :customTime="customTime"
       @update:time="updateTime"
       @update:timeGroup="updateTimeGroup"
       @refresh="refresh" />
@@ -37,12 +35,6 @@ export default {
     timeGroup: {
       type: String,
       required: true,
-    },
-    customTime: {
-      type: Object,
-    },
-    groupFunc: {
-      type: String,
     },
     timeOpts: {
       type: Object,
