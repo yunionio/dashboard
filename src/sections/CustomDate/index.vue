@@ -82,15 +82,18 @@ export default {
     }
   },
   watch: {
-    customTime (val) {
-      if (val && val.from) {
-        const hours = +val.from.replace(/^now-(\w+)h$/, '$1')
-        if (R.is(Number, hours) && !Number.isNaN(hours)) this.formData.startValue = this.$moment().subtract(hours, 'hours')
-      }
-      if (val && val.to) {
-        const hours = +val.to.replace(/^now-(\w+)h$/, '$1')
-        if (R.is(Number, hours) && !Number.isNaN(hours)) this.formData.endValue = this.$moment().subtract(hours, 'hours')
-      }
+    customTime: {
+      handler: function (val) {
+        if (val && val.from) {
+          const hours = +val.from.replace(/^now-(\w+)h$/, '$1').replace('now', 0)
+          if (R.is(Number, hours) && !Number.isNaN(hours)) this.formData.startValue = this.$moment().subtract(hours, 'hours')
+        }
+        if (val && val.to) {
+          const hours = +val.to.replace(/^now-(\w+)h$/, '$1').replace('now', 0)
+          if (R.is(Number, hours) && !Number.isNaN(hours)) this.formData.endValue = this.$moment().subtract(hours, 'hours')
+        }
+      },
+      immediate: true,
     },
   },
   methods: {
