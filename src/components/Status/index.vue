@@ -34,12 +34,23 @@ export default {
       type: Array,
       default: () => [new RegExp('fail')],
     },
+    // 指定状态
+    specifyStatus: {
+      type: Object,
+      default: () => {
+        return {
+          class: '',
+          text: '',
+        }
+      },
+    },
     process: {
       type: Number,
     },
   },
   computed: {
     statusClass () {
+      if (this.specifyStatus.class) return this.specifyStatus.class
       const currentStatusMap = expectStatusMap[this.statusModule]
       if (currentStatusMap) {
         if (this.isStatus(currentStatusMap.success) || this.isStatus(expectStatusMap.common.success)) {
@@ -59,6 +70,7 @@ export default {
       return ''
     },
     statusText () {
+      if (this.specifyStatus.text) return this.specifyStatus.text
       const moduleStatusMap = statusMap[this.statusModule]
       if (moduleStatusMap) {
         if (moduleStatusMap[this.status]) {
