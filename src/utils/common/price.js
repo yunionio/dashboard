@@ -35,11 +35,10 @@ export class PriceFetcher {
     let period = 1
     if (billType === 'package' || billType === 'prepaid') {
       period = parseInt(duration)
-      if (duration.toLowerCase().endsWith('w')) period = period * 24 * 7
+      if (duration.toLowerCase().endsWith('w')) price_unit = 'week'
       if (duration.toLowerCase().endsWith('m')) price_unit = 'month'
       if (duration.toLowerCase().endsWith('y')) price_unit = 'year'
     }
-
     return { period, price_unit }
   }
 
@@ -62,7 +61,7 @@ export class PriceFetcher {
     this.period = period || 1
   }
 
-  // 设置计费周期. hour|month|year
+  // 设置计费周期. hour|week|month|year
   setPriceUnit (price_unit = 'hour') {
     this.price_unit = price_unit || 'hour'
   }
@@ -133,7 +132,10 @@ export class PriceFetcher {
         period: this.period,
         cloudaccountId: this.cloudaccountId,
       }
-
+      if (this.price_unit === 'week') {
+        params.price_unit = 'hour'
+        params.period = this.period * 24 * 7
+      }
       this.items.map((item, index) => {
         for (const k in item) {
           params[`items.${index}.${k}`] = item[k]
@@ -252,6 +254,10 @@ export class Price {
 
       const fmt = (num) => { return numerify(num, this.priceFmt) }
       switch (this.price_unit) {
+        case 'week':
+          _day = this.price / 7 / this.period
+          _hour = _day / 24
+          return i18n.t('compute.text_1137', [this.currency, fmt(_day), this.currency, fmt(_hour)])
         case 'month':
           _day = this.price / 30 / this.period
           _hour = _day / 24

@@ -363,7 +363,7 @@ export default {
             cloudregion: undefined,
             zone: undefined,
           })
-          this.$refs.areaSelectRef.fetchs(['provider'])
+          this.$refs.areaSelectRef.fetchs(['provider', 'cloudregion', 'zone'])
         }
       }
     },
