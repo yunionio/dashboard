@@ -289,7 +289,7 @@ export default {
     },
   },
   created () {
-    this.setDefaultType = _.debounce(this.setDefaultType, 300)
+    this.setDefaultType = _.debounce(this.setDefaultType, 1000)
   },
   methods: {
     setDefaultType () {
