@@ -3,29 +3,9 @@
     <refresh-button :loading="loading" @refresh="refresh" class="mr-2" />
     <a-radio-group class="mr-3" @change="timeChange" :value="time">
       <a-radio-button v-for="item in timeOpts" v-show="!item.hidden" :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
-      <slot name="radio-button-append">
-        <custom-date @update:time="(val) => timeChange({target: {value: val}})" :customTime="customTime" @update:customTime="customTimeChange" :showCustomTimeText="isCustom" />
-      </slot>
+      <slot name="radio-button-append" />
     </a-radio-group>
     <template v-if="showTimegroup">
-      <template v-if="time !== 'custom'">
-        <div class="ant-form-item-label">
-          <label :title="$t('common_166')">{{$t('common_166')}}</label>
-        </div>
-        <a-select class="mr-2" :value="timeGroup" @change="timeGroupChange">
-          <a-select-option v-for="item in timeGroupOpts" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
-        </a-select>
-      </template>
-      <template v-else>
-        <div class="ant-form-item-label">
-          <label :title="$t('common_166')">{{$t('common_166')}}</label>
-        </div>
-        <a-select class="mr-2" :value="timeGroup" @change="timeGroupChange">
-          <a-select-option v-for="item in customTimeGroupOpts" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
-        </a-select>
-      </template>
-    </template>
-    <template v-if="showGroupFunc">
       <div class="ant-form-item-label">
         <label :title="$t('common_166')">{{$t('common_166')}}</label>
       </div>
@@ -53,13 +33,6 @@ export default {
     timeGroup: {
       type: String,
     },
-    customTime: {
-      type: Object,
-    },
-    groupFunc: {
-      type: String,
-      default: 'mean',
-    },
     loading: {
       type: Boolean,
       default: false,
@@ -82,16 +55,9 @@ export default {
           timeFormat: 'YYYY-MM-DD HH:mm',
           timeGroupOpts: [
             { key: '5m', label: i18n.t('common_169') },
-            { key: '15m', label: i18n.t('common_num_minutes', [15]) },
-          ],
-        },
-        [`${12}h`]: {
-          key: `${12}h`,
-          label: i18n.t('common_nearly_num_hours', [12]),
-          timeFormat: 'YYYY-MM-DD HH:mm',
-          timeGroupOpts: [
-            { key: '10m', label: i18n.t('common_num_minutes', [10]) },
-            { key: '30m', label: i18n.t('common_num_minutes', [30]) },
+            { key: '10m', label: i18n.t('common_171') },
+            { key: '30m', label: i18n.t('common_172') },
+            { key: '1h', label: i18n.t('common_173') },
           ],
         },
         [`${7 * 24}h`]: {
@@ -112,40 +78,34 @@ export default {
             { key: '24h', label: i18n.t('common_178') },
           ],
         },
+        [`${30 * 3 * 24}h`]: {
+          key: `${30 * 3 * 24}h`,
+          label: i18n.t('common_179'),
+          timeFormat: 'YYYY-MM-DD',
+          timeGroupOpts: [
+            { key: '24h', label: i18n.t('common_178') },
+            { key: '48h', label: i18n.t('common_180') },
+          ],
+        },
+        [`${30 * 6 * 24}h`]: {
+          key: `${30 * 6 * 24}h`,
+          label: i18n.t('common_181'),
+          timeFormat: 'YYYY-MM-DD',
+          timeGroupOpts: [
+            { key: '24h', label: i18n.t('common_178') },
+            { key: `${7 * 24}h`, label: i18n.t('common_182') },
+          ],
+        },
       }),
     },
     showTimegroup: {
       type: Boolean,
       default: true,
     },
-    showGroupFunc: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  data () {
-    return {
-      customTimeNumber: '5',
-      customTimeUnit: 'm',
-      customTimeGroupOpts: [
-        { key: '1m', label: this.$t('common_num_minutes', [1]) },
-        { key: '5m', label: this.$t('common_num_minutes', [5]) },
-        { key: '15m', label: this.$t('common_num_minutes', [15]) },
-        { key: '30m', label: this.$t('common_num_minutes', [30]) },
-        { key: '1h', label: this.$t('common_num_hours', [1]) },
-        { key: '6h', label: this.$t('common_num_hours', [6]) },
-        { key: '12h', label: this.$t('common_num_hours', [12]) },
-      ],
-      groupFuncOpts: [
-        { key: 'min', label: this.$t('common.min') },
-        { key: 'max', label: this.$t('common.max') },
-        { key: 'mean', label: this.$t('common.mean') },
-      ],
-    }
   },
   computed: {
     timeGroupOpts () {
-      return this.isCustom ? this.customTimeGroupOpts : this.timeOpts[this.time].timeGroupOpts
+      return this.timeOpts[this.time].timeGroupOpts
     },
   },
   watch: {
@@ -162,21 +122,11 @@ export default {
     },
     timeChange (val) {
       const time = val.target.value
-      if (time === 'custom') {
-        this.$emit('update:time', time, 'YYYY-MM-DD HH:mm')
-      } else {
-        const { timeFormat } = this.timeOpts[time]
-        this.$emit('update:time', time, timeFormat)
-      }
-    },
-    customTimeChange (val) {
-      this.$emit('update:customTime', val)
+      const { timeFormat } = this.timeOpts[time]
+      this.$emit('update:time', time, timeFormat)
     },
     timeGroupChange (val) {
       this.$emit('update:timeGroup', val)
-    },
-    groupFuncChange (val) {
-      this.$emit('update:groupFunc', val)
     },
   },
 }
