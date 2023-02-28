@@ -249,7 +249,8 @@ export default {
                 return distribution + (version === '-' ? '' : version)
               },
             },
-            getIpsTableColumn({ field: 'ip', title: 'IP', vm: this }),
+            getIpsTableColumn({ field: 'elastic_ip', title: this.$t('common.eip'), vm: this, onlyElastic: true }),
+            getIpsTableColumn({ field: 'ips', title: 'IP', vm: this, noElastic: true }),
             getCopyWithContentTableColumn({
               field: 'macs',
               title: 'MAC',

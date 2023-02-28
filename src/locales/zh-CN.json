@@ -5360,5 +5360,6 @@
   "common.group_by": "聚合函数",
   "common.min": "最小值",
   "common.max": "最大值",
-  "common.mean": "平均值"
+  "common.mean": "平均值",
+  "common.eip": "弹性IP"
 }
