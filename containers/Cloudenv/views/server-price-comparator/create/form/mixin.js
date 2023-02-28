@@ -342,6 +342,9 @@ export default {
         billType,
       } = this.form.fd
       const getPrice = (originPrice) => {
+        if (isNaN(parseFloat(originPrice))) {
+          return '-'
+        }
         return `${sku.currency === 'USD' ? '$' : '¥'}${parseFloat(originPrice).toFixed(2)}`
       }
       const getBrand = (v) => {
