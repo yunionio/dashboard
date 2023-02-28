@@ -311,7 +311,8 @@ export default {
           columns.map(column => {
             let colData = ''
             if (column.formatter) {
-              colData = column.formatter({ row: list[i - 1] })
+              const data = column.formatter({ row: list[i - 1] })
+              colData = data === '-' ? '' : data
             } else {
               colData = list[i - 1][column.key] || ''
             }
