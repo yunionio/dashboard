@@ -83,6 +83,9 @@ export default {
         },
       }
     },
+    refreshData () {
+      this.list.refresh()
+    },
   },
 }
 </script>
