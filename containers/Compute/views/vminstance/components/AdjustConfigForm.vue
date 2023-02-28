@@ -501,7 +501,7 @@ export default {
             )
           },
         }),
-        getIpsTableColumn({ field: 'ip', title: 'IP' }),
+        getIpsTableColumn({ field: 'ips', title: 'IP', vm: this, sortable: true, noElastic: true }),
         {
           field: 'instance_type',
           title: this.$t('compute.text_295'),
