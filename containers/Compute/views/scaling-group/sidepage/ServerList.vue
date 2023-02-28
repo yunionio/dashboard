@@ -70,7 +70,8 @@ export default {
             )
           },
         }),
-        getIpsTableColumn({ field: 'ip', title: 'IP' }),
+        getIpsTableColumn({ field: 'elastic_ip', title: this.$t('common.eip'), vm: this, onlyElastic: true }),
+        getIpsTableColumn({ field: 'ips', title: 'IP', vm: this, noElastic: true }),
         {
           field: 'os_type',
           title: this.$t('table.title.os'),

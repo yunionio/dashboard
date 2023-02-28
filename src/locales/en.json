@@ -5338,5 +5338,6 @@
   "common.group_by": "Group func",
   "common.min": "Min",
   "common.max": "Max",
-  "common.mean": "Average"
+  "common.mean": "Average",
+  "common.eip": "Eip"
 }

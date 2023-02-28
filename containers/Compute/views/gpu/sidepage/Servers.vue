@@ -66,7 +66,8 @@ export default {
           },
         }),
         getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.columns }),
-        getIpsTableColumn({ field: 'ip', title: 'IP' }),
+        getIpsTableColumn({ field: 'elastic_ip', title: this.$t('common.eip'), vm: this, onlyElastic: true }),
+        getIpsTableColumn({ field: 'ips', title: 'IP', vm: this, noElastic: true }),
         {
           field: 'instance_type',
           title: this.$t('compute.text_295'),
@@ -139,7 +140,7 @@ export default {
                 const date = dateArr.join(' ')
                 const seconds = this.$moment(row.expired_at).diff(new Date()) / 1000
                 const textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
-                const text = seconds < 0 ? this.$t('compute.text_499') : this.$t('compute.text_500',[date])
+                const text = seconds < 0 ? this.$t('compute.text_499') : this.$t('compute.text_500', [date])
                 ret.push(<div style={{ color: textColor }}>{ text }</div>)
               }
               return ret

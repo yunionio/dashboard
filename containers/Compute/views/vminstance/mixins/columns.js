@@ -162,7 +162,8 @@ export default {
         tipName: this.$t('dictionary.server'),
         editCheck: (row) => row.hypervisor !== typeClouds.hypervisorMap.bingocloud.key,
       }),
-      getIpsTableColumn({ field: 'ips', title: 'IP', vm: this, sortable: true }),
+      getIpsTableColumn({ field: 'elastic_ip', title: this.$t('common.eip'), vm: this, sortable: true, onlyElastic: true }),
+      getIpsTableColumn({ field: 'ips', title: 'IP', vm: this, sortable: true, noElastic: true }),
       {
         field: 'macs',
         title: 'MAC',

@@ -306,35 +306,53 @@ export const getCopyWithContentTableColumn = ({
   }
 }
 
-export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {}, sortable = false } = {}) => {
+export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {}, sortable = false, onlyElastic = false, noElastic = false } = {}) => {
   return {
     field,
     title,
     width: '180px',
-    sortBy: 'order_by_ip',
+    sortBy: onlyElastic ? 'order_by_eip' : 'order_by_ip',
     sortable,
     slots: {
       default: ({ row }, h) => {
         if (!row.eip && !row.ips && !row.vips && (!row.metadata || !row.metadata.sync_ips)) {
           if (row.hypervisor === typeClouds.hypervisorMap.esxi.key && ['ready', 'running'].includes(row.status)) {
-            return [
-              h(IpSupplement, {
-                props: {
-                  row,
-                  field,
-                  vm,
-                },
-              }),
-            ]
+            if (noElastic || (!onlyElastic && !noElastic)) {
+              return [
+                h(IpSupplement, {
+                  props: {
+                    row,
+                    field,
+                    vm,
+                  },
+                }),
+              ]
+            } else {
+              return '-'
+            }
           } else {
             if (vm.isPreLoad) return [<data-loading />]
             return []
           }
         }
         let ret = []
-        if (row.eip) {
+        if (onlyElastic) { // 只展示弹性ip
+          if (row.eip && row.eip_mode === 'elastic_ip') {
+            ret.push(
+              <list-body-cell-wrap row={row} field="eip" copy><span class="text-color-help">({i18n.t('common_290')})</span></list-body-cell-wrap>,
+            )
+          }
+          return ret.length ? ret : '-'
+        }
+        if (noElastic) {
+          if (row.eip && row.eip_mode !== 'elastic_ip') {
+            ret.push(
+              <list-body-cell-wrap row={row} field="eip" copy><span class="text-color-help">({i18n.t('common_291')})</span></list-body-cell-wrap>,
+            )
+          }
+        } else if (row.eip) {
           ret.push(
-            <list-body-cell-wrap row={row} field="eip" copy><span class="text-color-help">({ row.eip_mode === 'elastic_ip' ? i18n.t('common_290') : i18n.t('common_291') })</span></list-body-cell-wrap>,
+            <list-body-cell-wrap row={row} field="eip" copy><span class="text-color-help">({row.eip_mode === 'elastic_ip' ? i18n.t('common_290') : i18n.t('common_291')})</span></list-body-cell-wrap>,
           )
         }
         if (row.ips) {
@@ -371,13 +389,27 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {}, sortab
           })
           ret = ret.concat(ips)
         }
-        return ret
+        return ret.length ? ret : '-'
       },
     },
     formatter: ({ row }) => {
       const ret = []
-      if (row.eip) {
-        ret.push(`${row.eip}(${row.eip_mode === 'elastic_ip' ? i18n.t('common_290') : i18n.t('common_291')})`)
+      if (onlyElastic) { // 只展示弹性ip
+        if (row.eip && row.eip_mode === 'elastic_ip') {
+          ret.push(ret.push(`${row.eip}(${i18n.t('common_290')})`))
+        }
+        return ret.length ? ret.join(', ') : '-'
+      }
+      if (noElastic) {
+        if (row.eip && row.eip_mode !== 'elastic_ip') {
+          ret.push(ret.push(`${row.eip}(${i18n.t('common_291')})`))
+        }
+      } else if (row.eip) {
+        if (row.eip_mode === 'elastic_ip') {
+          ret.push(`${row.eip}(${i18n.t('common_290')})`)
+        } else {
+          ret.push(`${row.eip}(${i18n.t('common_291')})`)
+        }
       }
       if (row.ips) {
         const iparr = row.ips.split(',')
