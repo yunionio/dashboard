@@ -268,7 +268,7 @@ export default {
         const isUserKey = item.key.startsWith('user:')
         const isExtKey = item.key.startsWith('ext:')
         if (this.ignoreKeys.length > 0 && this.ignoreKeys.includes(item.key)) continue
-        let temp
+        let temp = []
         if (isUserKey) {
           temp = userRet
         }
