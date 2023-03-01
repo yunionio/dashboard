@@ -15,9 +15,10 @@ const getDetailInfo = (data) => {
   const details = data.split(':') || []
   if (data.includes('TooManyFailedAttempts')) {
     return DETAIL_ERRMSG.TooManyFailedAttempts
-  }
-  if (data.includes('wrong captcha length')) {
+  } else if (data.includes('wrong captcha length')) {
     return DETAIL_ERRMSG.WrongCaptchaLength
+  } else if (data.includes('IDP was disabled or in invalid status')) {
+    return DETAIL_ERRMSG.InvalidIdpStatus
   }
   return DETAIL_ERRMSG[details[0]] || data
 }
