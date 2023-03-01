@@ -80,6 +80,12 @@
             </li>
           </template>
         </ul>
+        <template v-if="showLoadMore || showNoMore">
+          <div class="text-center mt-3 mb-2">
+            <a-button v-if="showLoadMore" :loading="loading" type="link" @click="loadMore">{{ loading ? $t('common.loding') : $t('common.LoadMore') }}</a-button>
+            <span v-else>{{ $t('common.load_no_more') }}</span>
+          </div>
+        </template>
       </div>
     </template>
   </a-popover>
@@ -176,6 +182,12 @@ export default {
       withoutUserMetaKey: 'without_user_meta',
       composing: false, // 中文输入法时的正在输入
       composingTag: false,
+      // 所有tag源数据
+      tagData: [],
+      pager: {
+        total: 0,
+        limit: this.params?.limit || 2048,
+      },
     }
   },
   computed: {
@@ -185,7 +197,8 @@ export default {
     },
     getParams () {
       let ret = {
-        limit: 0,
+        limit: this.pager.limit,
+        offset: this.tagData.length,
         scope: this.scope,
         with_user_meta: true,
       }
@@ -234,6 +247,12 @@ export default {
       styles.bottom = `${this.valueWrapBottom}px`
       return styles
     },
+    showLoadMore () {
+      return this.pager.total > this.tagData.length
+    },
+    showNoMore () {
+      return this.pager.total === this.tagData.length && this.pager.total > this.pager.limit
+    },
   },
   destroyed () {
     this.manager = null
@@ -246,10 +265,11 @@ export default {
   methods: {
     handleVisibleChange (visible) {
       if (visible) {
+        this.tagData = []
         this.fetchTags()
       }
     },
-    async fetchTags () {
+    async fetchTags (isAppend = false) {
       this.loading = true
       try {
         let promise
@@ -259,15 +279,21 @@ export default {
           promise = this.manager.get({ id: 'tag-value-pairs', params: this.getParams })
         }
         const response = await promise
-        const data = response.data.data || []
-        this.genTags(data)
+        const { data = [], total } = response.data
+        this.pager.total = total
+        this.tagData = isAppend ? [...this.tagData, ...data] : [...data]
+        this.genTags(data, isAppend)
       } finally {
         this.loading = false
       }
     },
-    genTags (data) {
+    genTags (data, isAppend) {
       let userRet = []
       let extRet = []
+      if (isAppend) {
+        userRet = this.userTags
+        extRet = this.extTags
+      }
       for (let i = 0, len = data.length; i < len; i++) {
         const item = data[i]
         const isUserKey = item.key.startsWith('user:')
@@ -413,6 +439,9 @@ export default {
     getTagDisabled (key) {
       if (this.defaultChecked && this.defaultChecked[key]) return true
       return false
+    },
+    loadMore () {
+      this.fetchTags(true)
     },
   },
 }
