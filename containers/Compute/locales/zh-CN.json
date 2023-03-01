@@ -1641,5 +1641,7 @@
   "compute.available_host": "可选宿主机",
   "compute.unavailable_host": "不可选宿主机",
   "compute.auto_allocation": "自动分配",
-  "compute.specify_ip": "指定IP"
+  "compute.specify_ip": "指定IP",
+  "compute.vga_gpu": "图形GPU",
+  "compute.hpc_gpu": "算力GPU"
 }
