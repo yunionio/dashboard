@@ -8,10 +8,12 @@ export default {
   TooManyFailedAttempts: i18n.t('notify.TooManyFailedAttempts'),
   InputParameterError: i18n.t('notify.InputParameterError'),
   UserLocked: i18n.t('notify.UserLocked'),
+  InvalidIdpStatus: i18n.t('notify.InvalidIdpStatus'),
 }
 
 export const DETAIL_ERRMSG = {
   findUserByMobile: i18n.t('notify.FindUserByMobile'),
   TooManyFailedAttempts: i18n.t('notify.TooManyFailedAttempts'),
   WrongCaptchaLength: i18n.t('notify.WrongCaptchaLength'),
+  InvalidIdpStatus: i18n.t('notify.InvalidIdpStatusDetail'),
 }

@@ -316,6 +316,20 @@ export default {
           onlyExport: true,
         })
         data.columns.push({
+          field: 'elastic_ip',
+          title: this.$t('common.eip'),
+          formatter: ({ row }) => {
+            const targets = this.serverList.filter(item => item.name === row.vm_name)
+            if (targets[0]) {
+              const row = targets[0]
+              if (row.eip && row.eip_mode === 'elastic_ip') {
+                return `${row.eip}(${this.$t('common_290')})`
+              }
+            }
+            return '-'
+          },
+        })
+        data.columns.push({
           field: 'ip',
           title: 'IP',
           formatter: ({ row }) => {
@@ -323,8 +337,8 @@ export default {
             if (targets[0]) {
               const row = targets[0]
               const ret = []
-              if (row.eip) {
-                ret.push(`${row.eip}(${row.eip_mode === 'elastic_ip' ? this.$t('common_290') : this.$t('common_291')})`)
+              if (row.eip && row.eip_mode !== 'elastic_ip') {
+                ret.push(`${row.eip}(${this.$t('common_291')})`)
               }
               if (row.ips) {
                 const iparr = row.ips.split(',')
@@ -357,7 +371,7 @@ export default {
               }
               return ret.join(', ')
             }
-            return ''
+            return '-'
           },
         })
       }

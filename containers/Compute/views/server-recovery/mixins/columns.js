@@ -10,7 +10,8 @@ export default {
     this.columns = [
       getCopyWithContentTableColumn({ field: 'name', title: i18n.t('compute.text_228'), sortable: true }),
       getStatusTableColumn({ statusModule: 'server', hiddenLogView: true }),
-      getIpsTableColumn({ field: 'ips', title: 'IP' }),
+      getIpsTableColumn({ field: 'elastic_ip', title: this.$t('common.eip'), vm: this, onlyElastic: true }),
+      getIpsTableColumn({ field: 'ips', title: 'IP', vm: this, noElastic: true }),
       {
         field: 'instance_type',
         title: i18n.t('compute.text_295'),

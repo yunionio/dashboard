@@ -106,7 +106,8 @@ export default {
             },
           },
         },
-        getIpsTableColumn({ field: 'ip', title: 'IP', vm: this }),
+        getIpsTableColumn({ field: 'elastic_ip', title: this.$t('common.eip'), vm: this, onlyElastic: true }),
+        getIpsTableColumn({ field: 'ips', title: 'IP', vm: this, noElastic: true }),
         getTimeTableColumn({
           field: 'attach_time',
           title: this.$t('compute.text_722'),
