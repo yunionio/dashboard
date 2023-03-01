@@ -72,7 +72,7 @@ export default {
       selected: this.params.selected,
       details: this.params.details,
       current: {},
-      curTab: this.params.tabProps.curTab,
+      curTab: this.params.tabProps?.curTab,
     }
   },
   computed: {
