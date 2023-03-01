@@ -16,7 +16,7 @@ import {
   getUserTagColumn,
   // getExtTagColumn,
 } from '@/utils/common/detailColumn'
-import { ALL_STORAGE, SERVER_TYPE } from '@Compute/constants/index'
+import { ALL_STORAGE, SERVER_TYPE, GPU_DEV_TYPE_OPTION_MAP } from '@Compute/constants/index'
 import {
   getCopyWithContentTableColumn,
   getBrandTableColumn,
@@ -383,7 +383,7 @@ export default {
                 const obj = {}
                 const ids = {}
                 gpuArr.forEach(val => {
-                  if (val.dev_type === 'GPU-HPC') {
+                  if (val.dev_type) {
                     if (!obj[val.model]) {
                       obj[val.model] = 1
                     } else {
@@ -396,7 +396,8 @@ export default {
                   return '-'
                 }
                 return Object.keys(obj).map(k => {
-                  return <side-page-trigger permission='isolated_devices_get' name='GpuSidePage' id={ids[k]} vm={this}>{this.$t('compute.text_370', [obj[k], k])}</side-page-trigger>
+                  const gpuLabel = `${GPU_DEV_TYPE_OPTION_MAP[gpuArr[0].dev_type]?.label}-${k}`
+                  return <side-page-trigger permission='isolated_devices_get' name='GpuSidePage' id={ids[k]} vm={this}>{this.$t('compute.text_370', [obj[k], gpuLabel])}</side-page-trigger>
                 })
               },
             },
