@@ -17,7 +17,7 @@
     <a-form-item :extra="extra" class="mt-2">
       <div class="d-flex">
         <div style="line-height: 40px;">
-          <tag-select :global="global" v-model="checked" :params="params" :managerInstance="managerInstance" :multiple="multiple" :button-text="$t('common_110')" />
+          <tag-select :global="global" v-model="checked" :params="params" :managerInstance="managerInstance" :multiple="multiple" :button-text="$t('common_110')" :allowNoValue="allowNoValue" />
           <a-button class="ml-2" v-if="!showForm && canCreate" @click="() => showForm = true">{{$t('common_258')}}</a-button>
         </div>
         <a-form
@@ -81,6 +81,10 @@ export default {
       default: true,
     },
     managerInstance: Object,
+    allowNoValue: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     return {

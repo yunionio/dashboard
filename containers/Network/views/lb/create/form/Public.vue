@@ -87,17 +87,17 @@
         </div>
     </a-form-item>
     <a-form-item :label="$t('table.title.tag')">
-      <tag v-decorator="decorators.__meta__" />
+      <tag v-decorator="decorators.__meta__" :allowNoValue="false" />
     </a-form-item>
   </a-form>
 </template>
 
 <script>
 import * as R from 'ramda'
-import lbCreate from './mixin.js'
 import ChargeTypeRadio from '@/sections/ChargeTypeRadio'
 import { LB_SPEC } from '@Network/views/lb/constants'
 import AreaSelects from '@/sections/AreaSelects'
+import lbCreate from './mixin.js'
 
 export default {
   name: 'LbAliyunCreate',

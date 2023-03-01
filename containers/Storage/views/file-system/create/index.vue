@@ -60,7 +60,7 @@
         </template>
         <a-form-item :label="$t('compute.text_1154')" class="mb-0">
           <tag
-            v-decorator="decorators.tag" />
+            v-decorator="decorators.tag" :allowNoValue="false" />
         </a-form-item>
       </a-form>
       <bottom-bar :values="form.fc.getFieldsValue()" :cloudAccountId="cloudAccountId" />

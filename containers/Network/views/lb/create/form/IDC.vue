@@ -57,7 +57,7 @@
       </a-row>
     </a-form-item>
     <a-form-item :label="$t('table.title.tag')">
-      <tag v-decorator="decorators.__meta__" />
+      <tag v-decorator="decorators.__meta__" :allowNoValue="false" />
     </a-form-item>
   </a-form>
 </template>
@@ -65,9 +65,9 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import lbCreate from './mixin'
 import CloudregionZone from '@/sections/CloudregionZone'
 import { HYPERVISORS_MAP } from '@/constants'
+import lbCreate from './mixin'
 
 export default {
   name: 'LbOnecloudCreate',
