@@ -369,7 +369,7 @@ export default {
                   ret.push(`${ip}(${this.$t('compute.esxi.sync_ips_outofrange')})`)
                 })
               }
-              return ret.join(', ')
+              return ret.length ? ret.join(', ') : '-'
             }
             return '-'
           },
