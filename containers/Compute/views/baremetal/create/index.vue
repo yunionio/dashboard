@@ -88,7 +88,7 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0" v-bind="formItemLayout">
         <tag
-          v-decorator="decorators.__meta__" />
+          v-decorator="decorators.__meta__" :allowNoValue="false" />
       </a-form-item>
       <a-divider orientation="left">{{$t('compute.text_309')}}</a-divider>
       <a-form-item :label="$t('compute.text_104')" v-bind="formItemLayout" class="mb-0">
@@ -135,7 +135,6 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
-import BottomBar from './BottomBar'
 import { LOGIN_TYPES_MAP, NETWORK_OPTIONS_MAP, FORECAST_FILTERS_MAP } from '@Compute/constants'
 import OsSelect from '@Compute/sections/OsSelect'
 import ServerPassword from '@Compute/sections/ServerPassword'
@@ -151,6 +150,7 @@ import { WORKFLOW_TYPES } from '@/constants/workflow'
 import workflowMixin from '@/mixins/workflow'
 import WindowsMixin from '@/mixins/windows'
 import i18n from '@/locales'
+import BottomBar from './BottomBar'
 
 function checkIpInSegment (i, networkData) {
   return (rule, value, cb) => {

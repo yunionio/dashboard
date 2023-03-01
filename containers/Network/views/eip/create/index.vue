@@ -82,7 +82,7 @@
         </a-form-item>
         <a-form-item :label="$t('common.text00012')" class="mb-0" v-bind="formItemLayout">
           <tag
-            v-decorator="decorators.__meta__" />
+            v-decorator="decorators.__meta__" :allowNoValue="false" />
         </a-form-item>
       </a-form>
     </page-body>
