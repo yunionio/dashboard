@@ -1,5 +1,7 @@
 import i18n from '@/locales'
 import { HYPERVISORS_MAP } from '@/constants'
+import { arrayToObj } from '@/utils/utils'
+
 // 镜像类型
 export const IMAGES_TYPE_MAP = {
   standard: { key: 'standard', label: i18n.t('label.standardImage'), tooltip: i18n.t('common.text00016') },
@@ -702,3 +704,11 @@ export const DISK_LABEL_MAP = {
   GPSSD: i18n.t('compute.disk.rotate_gpssd'),
   'Ceph RBD': i18n.t('compute.ceph_rbd'),
 }
+
+export const OS_TYPE_OPTIONS = [
+  { label: 'Windows', value: 'Windows' },
+  { label: 'CentOS', value: 'CentOS' },
+  { label: 'Linux', value: 'Linux' },
+  { label: 'Ubuntu', value: 'Ubuntu' },
+]
+export const OS_TYPE_OPTION_MAP = arrayToObj(OS_TYPE_OPTIONS, 'value')

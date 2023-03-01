@@ -1664,5 +1664,7 @@
   "compute.available_host": "Available host",
   "compute.unavailable_host": "Unavailable host",
   "compute.auto_allocation": "Auto allocation",
-  "compute.specify_ip": "Specify IP"
+  "compute.specify_ip": "Specify IP",
+  "compute.vga_gpu": "Graphics GPU",
+  "compute.hpc_gpu": "Compute GPU"
 }

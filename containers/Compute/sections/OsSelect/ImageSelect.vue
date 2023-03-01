@@ -31,7 +31,7 @@
         </a-form-item>
       </a-col>
     </a-row>
-    <span v-if="uefi" class="error-color">{{$t('compute.text_150')}}</span>
+    <span v-if="isShowErrorInfo" class="error-color">{{$t('compute.text_150')}}</span>
   </div>
 </template>
 
@@ -41,7 +41,7 @@ import _ from 'lodash'
 import ImageSelectTemplate from './ImageSelectTemplate'
 import { SELECT_IMAGE_KEY_SUFFIX } from '@Compute/constants'
 import { Manager } from '@/utils/manager'
-import { IMAGES_TYPE_MAP } from '@/constants/compute'
+import { IMAGES_TYPE_MAP, OS_TYPE_OPTION_MAP } from '@/constants/compute'
 import storage from '@/utils/storage'
 import { uuid } from '@/utils/utils'
 
@@ -157,7 +157,7 @@ export default {
     cacheimageIds () {
       return this.images.cacheimagesList.map(item => item.id)
     },
-    storageSelectImage () { // public__select_image: {os: 'Windows', image: {id: xxx, name: xxx}}
+    storageSelectImage () { // public__select_image: {os: OS_TYPE_OPTION_MAP.Windows.value, image: {id: xxx, name: xxx}}
       return storage.get(`${this.cloudType}${SELECT_IMAGE_KEY_SUFFIX}`)
     },
     showCloudaccount () {
@@ -203,7 +203,7 @@ export default {
       }
       if (this.uefi) {
         const imageOpts = imageOptions.map((item) => {
-          if (item.properties && item.properties.uefi_support && item.properties.uefi_support !== 'true') {
+          if (!item.properties?.uefi_support) {
             return {
               ...item,
               hidden: true,
@@ -212,7 +212,7 @@ export default {
           return item
         })
         const arr = imageOpts.filter((item) => { return !item.hidden })
-        if (arr.length === 0 && os === 'Windows') {
+        if (arr.length === 0 && os === OS_TYPE_OPTION_MAP.Windows.value) {
           this.form.fc.setFieldsValue({ [this.decorator.image[0]]: initData })
         }
         return imageOpts
@@ -221,6 +221,9 @@ export default {
     },
     isVMware () {
       return this.imageType === IMAGES_TYPE_MAP.vmware.key
+    },
+    isShowErrorInfo () {
+      return this.uefi && this.form.fd.os === OS_TYPE_OPTION_MAP.Windows.value
     },
   },
   watch: {
@@ -438,8 +441,8 @@ export default {
       return img.properties
     },
     getOsDistribution (osDistribution) {
-      if (osDistribution.indexOf('Windows') !== -1) {
-        return 'Windows'
+      if (osDistribution.indexOf(OS_TYPE_OPTION_MAP.Windows.value) !== -1) {
+        return OS_TYPE_OPTION_MAP.Windows.value
       }
       return osDistribution
     },
@@ -518,7 +521,7 @@ export default {
           isOther = true
         }
         if (osVal.toLowerCase().includes('windows')) {
-          osVal = 'Windows'
+          osVal = OS_TYPE_OPTION_MAP.Windows.value
         }
         if (osVal.toLowerCase().includes('linux')) {
           if (osVal.toLowerCase().includes('amazon linux')) {
@@ -579,10 +582,10 @@ export default {
       }
       osOpts = osOpts.filter((item) => {
         if (this.osType) {
-          if (this.osType === 'Windows') {
-            return item.key === 'Windows'
+          if (this.osType === OS_TYPE_OPTION_MAP.Windows.value) {
+            return item.key === OS_TYPE_OPTION_MAP.Windows.value
           }
-          return item.key !== 'Windows'
+          return item.key !== OS_TYPE_OPTION_MAP.Windows.value
         }
         return true
       })
