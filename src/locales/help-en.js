@@ -80,5 +80,7 @@ export default {
     InputParameterError: 'InputParameterError',
     WrongCaptchaLength: 'wrong captcha length',
     UserLocked: 'UserLocked',
+    InvalidIdpStatus: 'Invalid IDP Status',
+    InvalidIdpStatusDetail: 'Please check user\'s IDP was disabled or in invalid status.',
   },
 }
