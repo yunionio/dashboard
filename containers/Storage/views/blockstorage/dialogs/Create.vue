@@ -34,7 +34,7 @@
         <form-items :storage_type="getFieldValue('storage_type')" />
         <a-form-item :label="$t('common.text00012')" class="mb-0">
           <tag
-            v-decorator="decorators.__meta__" />
+            v-decorator="decorators.__meta__" :allowNoValue="false" />
         </a-form-item>
       </a-form>
     </div>

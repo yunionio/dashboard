@@ -52,7 +52,7 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0" v-bind="formItemLayout">
         <tag
-          v-decorator="decorators.__meta__" />
+          v-decorator="decorators.__meta__" :allowNoValue="false" />
       </a-form-item>
       <a-collapse :bordered="false" v-if="cloudEnv === 'public' || isHCSO || isHCS">
         <a-collapse-panel :header="$t('compute.text_309')" key="1">
@@ -93,9 +93,9 @@ import DomainProject from '@/sections/DomainProject'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import { MEDIUM_MAP, CUSTOM_STORAGE_TYPES, STORAGE_TYPES } from '@Compute/constants'
 import Tag from '@/sections/Tag'
+import EncryptKeys from '@Compute/sections/encryptkeys'
 import BottomBar from './components/BottomBar'
 
-import EncryptKeys from '@Compute/sections/encryptkeys'
 import HostServer from './components/HostServer'
 
 export default {
