@@ -17,7 +17,7 @@
         <ul class="tag-list" v-if="filterWithoutUserMeta">
           <li
             class="tag-item"
-            :class="{ checked: checkedKeys.includes(withoutUserMetaKey) && value[withoutUserMetaKey][0] === true }"
+            :class="{ checked: checkedKeys.includes(withoutUserMetaKey) && value[withoutUserMetaKey][0] === true, no_drop: !allowNoValue }"
             @click="handleKeyClick(withoutUserMetaKey, true)">
             <div class="title d-flex align-items-center">
               <div class="flex-fill mr-4 text-truncate">{{$t('common_260')}}</div>
@@ -34,7 +34,7 @@
             class="tag-item"
             v-for="item of filtedUserTags"
             :key="item.key"
-            :class="{checked: checkedKeys.includes(item.key), disabled: getTagDisabled(item.key)}"
+            :class="{checked: checkedKeys.includes(item.key), disabled: getTagDisabled(item.key), no_drop: !allowNoValue}"
             @mouseenter="handleKeyMouseenter('userTags', item.key, $event)"
             @click="handleKeyClick(item.key)">
             <div class="title d-flex align-items-center">
@@ -49,7 +49,7 @@
             class="tag-item"
             v-for="item of filtedExtTags"
             :key="item.key"
-            :class="{checked: checkedKeys.includes(item.key), disabled: getTagDisabled(item.key)}"
+            :class="{checked: checkedKeys.includes(item.key), disabled: getTagDisabled(item.key), no_drop: !allowNoValue}"
             @mouseenter="handleKeyMouseenter('extTags', item.key, $event)"
             @click="handleKeyClick(item.key)">
             <div class="title d-flex align-items-center">
@@ -153,6 +153,11 @@ export default {
     showExtTags: Boolean,
     // 是否在每一个里增加未归类
     showNoValue: Boolean,
+    // 是否允许只选key不选value
+    allowNoValue: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     return {
@@ -377,24 +382,28 @@ export default {
             newValue[key] = [val]
           }
         } else {
-          if (this.checkedKeys.includes(key)) {
-            delete newValue[key]
-          } else {
-            newValue[key] = []
+          if (this.allowNoValue) {
+            if (this.checkedKeys.includes(key)) {
+              delete newValue[key]
+            } else {
+              newValue[key] = []
+            }
           }
         }
       } else {
         if (val) {
-          if (newValue[key] === val) {
+          if (newValue[key] === val || (R.is(Array, newValue[key]) && newValue[key].includes(val))) {
             delete newValue[key]
           } else {
             newValue[key] = [val]
           }
         } else {
-          if (this.checkedKeys.includes(key)) {
-            delete newValue[key]
-          } else {
-            newValue[key] = [val]
+          if (this.allowNoValue) {
+            if (this.checkedKeys.includes(key)) {
+              delete newValue[key]
+            } else {
+              newValue[key] = [val]
+            }
           }
         }
       }
@@ -456,6 +465,9 @@ export default {
   &.disabled {
     cursor: not-allowed;
   }
+}
+.no_drop {
+  cursor: default;
 }
 .values-wrap {
   max-height: 400px;

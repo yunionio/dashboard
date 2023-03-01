@@ -46,7 +46,7 @@
       </a-form-item>
       <!-- 标签 -->
       <a-form-item :label="$t('table.title.tag')" class="mb-3">
-        <tag v-decorator="decorators.__meta__" />
+        <tag v-decorator="decorators.__meta__" :allowNoValue="false" />
       </a-form-item>
       <bottom-bar :provider="provider" :values="form.getFieldsValue()" :cloudAccountId="cloudAccountId" />
     </a-form>

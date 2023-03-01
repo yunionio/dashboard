@@ -140,7 +140,7 @@
           </div>
         </a-form-item>
         <a-form-item :label="$t('compute.text_1154')" class="mb-0">
-          <tag v-decorator="decorators.tag" />
+          <tag v-decorator="decorators.tag" :allowNoValue="false" />
         </a-form-item>
       </a-form>
     </div>
