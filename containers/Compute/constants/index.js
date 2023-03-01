@@ -2,6 +2,7 @@ import * as R from 'ramda'
 import { skuCategoryOptions } from '@/locales/zh-CN'
 import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
+import { arrayToObj } from '@/utils/utils'
 
 export const CreateServerForm = {
   labelCol: 3,
@@ -1134,3 +1135,9 @@ export const BUY_DURATIONS_OPTIONS = [
 
 // 记录创建成功后选择的镜像，存储cookie的key suffix
 export const SELECT_IMAGE_KEY_SUFFIX = '__select_image'
+
+export const GPU_DEV_TYPE_OPTIONS = [
+  { label: i18n.t('compute.vga_gpu'), value: 'GPU-VGA' },
+  { label: i18n.t('compute.hpc_gpu'), value: 'GPU-HPC' },
+]
+export const GPU_DEV_TYPE_OPTION_MAP = arrayToObj(GPU_DEV_TYPE_OPTIONS, 'value')
