@@ -369,7 +369,7 @@ export default {
                   ret.push(`${ip}(${this.$t('compute.esxi.sync_ips_outofrange')})`)
                 })
               }
-              return ret.join(', ')
+              return ret.length ? ret.join(', ') : '-'
             }
             return '-'
           },
@@ -573,7 +573,7 @@ export default {
       if (this.showVmIp) {
         const { chartData = {} } = chart
         const { rows = [] } = chartData
-        const nameStr = rows.map(item => item.name).join(',')
+        const nameStr = rows.map(item => `'${item.name}'`).join(',')
         if (rows.length) {
           try {
             const res = await new this.$Manager('servers').list({
