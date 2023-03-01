@@ -24,6 +24,7 @@ export default {
     getParams: {
       type: [Function, Object],
     },
+    resId: String,
   },
   data () {
     return {
@@ -172,7 +173,7 @@ export default {
     }
   },
   created () {
-    this.list.fetchData()
+    this.init()
   },
   methods: {
     getParam () {
@@ -194,6 +195,20 @@ export default {
       }, {
         list: this.list,
       })
+    },
+    async init () {
+      this.resId && await this.updateProbeIsolatedDevices()
+      await this.list.fetchData()
+    },
+    async updateProbeIsolatedDevices () {
+      try {
+        await new this.$Manager('hosts', 'v1').performAction({
+          id: this.resId,
+          action: 'probe-isolated-devices',
+        })
+      } catch (err) {
+        throw err
+      }
     },
   },
 }
