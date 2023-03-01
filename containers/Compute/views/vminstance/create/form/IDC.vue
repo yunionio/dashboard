@@ -253,7 +253,7 @@ import OsArch from '@/sections/OsArch'
 import Vdi from '@Compute/sections/VDI'
 import Vga from '@Compute/sections/VGA'
 import Machine from '@Compute/sections/Machine'
-import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
+import { NETWORK_OPTIONS_MAP, GPU_DEV_TYPE_OPTIONS } from '@Compute/constants'
 import mixin from './mixin'
 
 export default {
@@ -430,8 +430,11 @@ export default {
       return this.isKvm || !this.isServertemplate
     },
     uefi () {
-      if (this.isKvm && this.form.fd.gpuEnable && this.form.fd.gpu && this.isWindows) {
-        return true
+      const { gpuEnable, gpu, devType } = this.form.fd
+      if (this.isKvm && gpuEnable && gpu) {
+        if (this.isWindows || devType === GPU_DEV_TYPE_OPTIONS[0].value) {
+          return true
+        }
       }
       return false
     },

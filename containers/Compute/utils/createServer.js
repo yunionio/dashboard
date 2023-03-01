@@ -13,8 +13,10 @@ import {
   SECGROUP_OPTIONS_MAP,
   FORECAST_FILTERS_MAP,
   RESOURCE_TYPES_MAP,
+  GPU_DEV_TYPE_OPTION_MAP,
 } from '@Compute/constants'
 import { IMAGES_TYPE_MAP, HOST_CPU_ARCHS } from '@/constants/compute'
+
 import { HYPERVISORS_MAP } from '@/constants'
 import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
 import store from '@/store'
@@ -209,6 +211,12 @@ export const createVmDecorators = type => {
         'gpuCount',
         {
           initialValue: 1,
+        },
+      ],
+      devType: [
+        'devType',
+        {
+          initialValue: GPU_DEV_TYPE_OPTION_MAP['GPU-VGA'].value,
         },
       ],
     },
