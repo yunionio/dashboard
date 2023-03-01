@@ -72,7 +72,7 @@
       :form="form"
       :formItemLayout="formItemLayout" />
     <a-form-item :label="$t('table.title.tag')">
-      <tag v-decorator="decorators.__meta__" />
+      <tag v-decorator="decorators.__meta__" :allowNoValue="false" />
     </a-form-item>
   </a-form>
 </template>
@@ -81,10 +81,10 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
-import lbCreate from './mixin'
 import CloudregionZone from '@/sections/CloudregionZone'
 import EipConfig from '@Compute/sections/EipConfig'
 import { HYPERVISORS_MAP } from '@/constants'
+import lbCreate from './mixin'
 
 export default {
   name: 'LbOnecloudCreate',
