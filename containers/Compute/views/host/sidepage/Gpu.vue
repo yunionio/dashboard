@@ -91,7 +91,8 @@ export default {
     },
   },
   created () {
-    this.list.fetchData()
+    this.$D = new this.$Manager('servers', 'v1')
+    this.init()
   },
   methods: {
     getParam () {
@@ -101,6 +102,51 @@ export default {
         host: this.resId,
       }
       return ret
+    },
+    async init () {
+      await this.initUsbOptions()
+      await this.list.fetchData()
+    },
+    async initUsbOptions () {
+      console.log(123)
+      try {
+        const acttachedRes = await new this.$Manager('isolated_devices', 'v2').list({
+          params: {
+            guest_id: this.resId,
+          },
+        })
+        const { data: acttachedList = [] } = acttachedRes.data
+        const probleDevRes = await this.$D.performAction({
+          id: this.resId,
+          action: 'probe-isolated-devices',
+        })
+
+        const { data: probleDevList = [] } = probleDevRes
+        const device = acttachedList.filter(item => {
+          return item.dev_type === 'USB'
+        }).map(item => {
+          return item.id
+        })
+        this.bindUsbs = device
+        this.form.fc.setFieldsValue({
+          device,
+        })
+        const usbOptions = acttachedList.concat(probleDevList).filter(item => {
+          return item.dev_type === 'USB'
+        }).map(item => {
+          return {
+            key: item.id,
+            id: item.id,
+            name: `${item.addr || ''} ${item.model || ''}`,
+          }
+        })
+        usbOptions.sort((a, b) => {
+          return a.key - b.key
+        })
+        this.usbOptions = usbOptions
+      } catch (err) {
+        throw err
+      }
     },
   },
 }
