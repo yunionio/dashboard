@@ -1003,5 +1003,6 @@
   "system.notify.name.service_abnormal": "组件服务异常通知",
   "iam.project_admin": "@:dictionary.project管理员",
   "iam.project.alter_role_tips": "请仔细核对修改角色信息，修改错误可能会无法登录控制台。",
-  "iam.project.project_leave_tips": "请仔细核对退出项目信息，退出项目可能会无法登录控制台。"
+  "iam.project.project_leave_tips": "请仔细核对退出项目信息，退出项目可能会无法登录控制台。",
+  "iam.notify.server_panicked": "虚拟机异常"
 }
