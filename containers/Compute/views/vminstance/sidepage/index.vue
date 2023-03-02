@@ -27,6 +27,7 @@
       :on-manager="onManager"
       :show-create-action="false"
       :isPageDestroyed="isPageDestroyed"
+      :is-server="true"
       @refresh="refresh"
       @single-refresh="singleRefresh"
       @tab-change="handleTabChange" />
