@@ -1000,5 +1000,6 @@
   "system.notify.name.service_abnormal": "service abnormal",
   "iam.project_admin": "@:dictionary.project admin",
   "iam.project.alter_role_tips": "Please double check the modified role information, incorrect changes may prevent you from logging into the console.",
-  "iam.project.project_leave_tips": "Please check the exit project information carefully, you may not be able to log in to the console if you leave the project."
+  "iam.project.project_leave_tips": "Please check the exit project information carefully, you may not be able to log in to the console if you leave the project.",
+  "iam.notify.server_panicked": "Server Panicked"
 }
