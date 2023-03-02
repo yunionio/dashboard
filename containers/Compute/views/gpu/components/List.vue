@@ -25,6 +25,7 @@ export default {
       type: [Function, Object],
     },
     resId: String,
+    isServer: Boolean,
   },
   data () {
     return {
@@ -197,10 +198,22 @@ export default {
       })
     },
     async init () {
-      this.resId && await this.updateProbeIsolatedDevices()
+      if (this.resId) {
+        this.isServer ? await this.updateServerProbeIsolatedDevices() : await this.updateHostProbeIsolatedDevices()
+      }
       await this.list.fetchData()
     },
-    async updateProbeIsolatedDevices () {
+    async updateServerProbeIsolatedDevices () {
+      try {
+        await new this.$Manager('servers', 'v1').performAction({
+          id: this.resId,
+          action: 'probe-isolated-devices',
+        })
+      } catch (err) {
+        throw err
+      }
+    },
+    async updateHostProbeIsolatedDevices () {
       try {
         await new this.$Manager('hosts', 'v1').performAction({
           id: this.resId,
