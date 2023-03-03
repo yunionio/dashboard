@@ -91,17 +91,6 @@ export default {
       })
       return storageIds
     },
-    selectedItemsDiskIds () {
-      const diskIds = []
-      this.selectedItems.forEach(item => {
-        if (item.disks_info) {
-          item.disks_info.forEach(v => {
-            diskIds.push(v.id)
-          })
-        }
-      })
-      return diskIds
-    },
     columns () {
       const showFields = ['name', 'ips', 'disk']
       return this.params.columns.filter((item) => { return showFields.includes(item.field) })
@@ -113,31 +102,16 @@ export default {
         return `${STORAGE_TYPES[v.storage_type]}(${v.name})`
       }
     },
-    doSingleHandle (ids, values) {
+    doSingleHandle (id, values) {
       const data = {
         target_storage_id: values.storage,
-        disk_id: this.selectedItemsDiskIds[0],
-        keep_origin_disk: values.keep_origin_disk,
+        keep_origin_disk: !values.keep_origin_disk,
       }
       return this.params.onManager('performAction', {
-        id: this.selectedItems[0].id,
+        id,
         steadyStatus: ['running', 'ready'],
         managerArgs: {
-          action: 'change-disk-storage',
-          data,
-        },
-      })
-    },
-    doBatchHandle (ids, values) {
-      const data = {
-        target_storage_id: values.storage,
-        disk_id: this.selectedItemsDiskIds[0],
-      }
-      return this.params.onManager('batchPerformAction', {
-        id: ids,
-        steadyStatus: ['running', 'ready'],
-        managerArgs: {
-          action: 'change-disk-storage',
+          action: 'change-storage',
           data,
         },
       })
@@ -148,9 +122,7 @@ export default {
         const values = await this.form.fc.validateFields()
         const ids = this.params.data.map(item => item.id)
         if (this.isSingle) {
-          await this.doSingleHandle(ids, values)
-        } else {
-          await this.doBatchHandle(ids, values)
+          await this.doSingleHandle(ids[0], values)
         }
         this.$message.success(this.$t('common.success'))
         this.cancelDialog()
