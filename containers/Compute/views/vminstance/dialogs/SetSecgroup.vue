@@ -39,6 +39,7 @@ import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
+import { SECGROUP_LIST_FOR_VMINSTANCE_SIDEPAGE_REFRESH } from '@/constants/event-bus'
 
 export default {
   name: 'VmSetSecgroupDialog',
@@ -174,6 +175,7 @@ export default {
           },
         })
         this.params.refresh && this.params.refresh()
+        this.$bus.$emit(SECGROUP_LIST_FOR_VMINSTANCE_SIDEPAGE_REFRESH)
         this.cancelDialog()
       } finally {
         this.loading = false
