@@ -1,0 +1,1 @@
+export const SECGROUP_LIST_FOR_VMINSTANCE_SIDEPAGE_REFRESH = 'SecgroupListForVminstanceSidepageRefresh'
