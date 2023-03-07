@@ -324,5 +324,6 @@
   "storage.nfs_host_check_reqiure": "NFS Host must be entered",
   "storage.nfs_host_check_valid": "Please enter a valid NFS Host, e.g., 192.168.1.1,192.168.1.2",
   "storage.spec": "Spec",
-  "storage.instance_model": "Instance Model"
+  "storage.instance_model": "Instance Model",
+  "storage.local_storage.help_link": "Local storage management can refer to the document configuration"
 }
