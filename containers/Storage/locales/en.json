@@ -326,6 +326,6 @@
   "storage.spec": "Spec",
   "storage.instance_model": "Instance Model",
   "storage.free": "Free Capacity",
-  "storage.usage_active": "Storage Usage (usage_active)"
-
+  "storage.usage_active": "Storage Usage (usage_active)",
+  "storage.local_storage.help_link": "Local storage management can refer to the document configuration"
 }
