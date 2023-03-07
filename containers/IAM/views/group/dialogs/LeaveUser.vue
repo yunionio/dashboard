@@ -2,6 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{ $t('system.text_197', [$t('dictionary.group')]) }}</div>
     <div slot="body">
+      <a-alert :message="$t('iam.operation_object.alter_tips')" class="mb-2" />
       <dialog-selected-tips :count="params.data.length" :action="$t('system.text_196', [$t('dictionary.group')])" :name="$t('dictionary.user')" />
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
