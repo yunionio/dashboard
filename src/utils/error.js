@@ -17,7 +17,7 @@ const getDetailInfo = (data) => {
     return DETAIL_ERRMSG.TooManyFailedAttempts
   } else if (data.includes('wrong captcha length')) {
     return DETAIL_ERRMSG.WrongCaptchaLength
-  } else if (data.includes('IDP was disabled or in invalid status')) {
+  } else if (data.includes('The IDP of user has been disabled or in invalid status')) {
     return DETAIL_ERRMSG.InvalidIdpStatus
   }
   return DETAIL_ERRMSG[details[0]] || data
