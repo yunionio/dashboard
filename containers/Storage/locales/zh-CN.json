@@ -326,5 +326,6 @@
   "storage.spec": "规格",
   "storage.instance_model": "实例模型",
   "storage.free": "剩余容量",
-  "storage.usage_active": "存储使用率"
+  "storage.usage_active": "存储使用率",
+  "storage.local_storage.help_link": "本地存储管理可参考文档配置"
 }
