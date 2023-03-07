@@ -30,6 +30,7 @@
               <a-radio-button v-if="storageTypes.indexOf(k) > -1" :key="k"  :value="k">{{v}}</a-radio-button>
             </template>
           </a-radio-group>
+          <div v-if="isLocalStorage" slot="extra"><help-link :href="localStorageUrl">{{ $t('storage.local_storage.help_link') }}</help-link></div>
         </a-form-item>
         <form-items :storage_type="getFieldValue('storage_type')" />
         <a-form-item :label="$t('common.text00012')" class="mb-0">
@@ -55,6 +56,7 @@ import CloudregionZone from '@/sections/CloudregionZone'
 import DomainSelect from '@/sections/DomainSelect'
 import Tag from '@/sections/Tag'
 import validateForm from '@/utils/validate'
+import { getDocsUrl } from '@/utils/utils'
 
 export default {
   name: 'BlockStorageCreateDialog',
@@ -76,7 +78,16 @@ export default {
       STORAGE_TYPES,
       loading: false,
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              this.form.fd[key] = values[key]
+            })
+          },
+        }),
+        fd: {
+          storage_type: 'rbd',
+        },
       },
       formItemLayout,
     }
@@ -84,7 +95,7 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode', 'userInfo', 'l3PermissionEnable']),
     storageTypes () {
-      return this.params.storageTypes || ['rbd', 'nfs', 'gpfs']
+      return this.params.storageTypes || ['rbd', 'nfs', 'gpfs', 'local']
     },
     getFieldValue () {
       return this.form.fc.getFieldValue
@@ -149,6 +160,12 @@ export default {
           },
         ],
       }
+    },
+    isLocalStorage () {
+      return this.form.fd.storage_type === 'local'
+    },
+    localStorageUrl () {
+      return `${getDocsUrl()}function_principle/onpremise/storage/blockstorage/add-storage/ `
     },
   },
   methods: {
