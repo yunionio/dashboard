@@ -44,4 +44,13 @@ export default {
       },
     ]
   },
+  methods: {
+    isAliyunDefaultBackendGroup (obj) {
+      const provider = obj && obj.provider ? obj.provider : ''
+      if (provider.toLowerCase() === 'aliyun' && obj.type === 'default') {
+        return true
+      }
+      return false
+    },
+  },
 }

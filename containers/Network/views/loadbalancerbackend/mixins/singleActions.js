@@ -15,14 +15,14 @@ export default {
           })
         },
         meta: obj => {
-          const { provider } = obj
+          const { provider = '' } = obj
           if (this.isAliyunDefaultBackendGroup) {
             return {
               validate: false,
               tooltip: i18n.t('network.lb.default_backendgroup.tips'),
             }
           }
-          if (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google') {
+          if (obj.provider && (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google')) {
             return {
               validate: false,
               tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
@@ -59,7 +59,7 @@ export default {
           })
         },
         meta: obj => {
-          const { provider } = obj
+          const { provider = '' } = obj
           if (this.isAliyunDefaultBackendGroup) {
             return {
               validate: false,
@@ -72,7 +72,7 @@ export default {
               tooltip: i18n.t('common_464'),
             }
           }
-          if (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google') {
+          if (obj.provider && (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google')) {
             return {
               validate: false,
               tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
@@ -103,7 +103,7 @@ export default {
               tooltip: i18n.t('network.lb.default_backendgroup.tips'),
             }
           }
-          if (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google') {
+          if (obj.provider && (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google')) {
             return {
               validate: false,
               tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
