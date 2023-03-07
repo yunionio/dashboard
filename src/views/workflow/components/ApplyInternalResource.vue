@@ -154,7 +154,7 @@ export default {
         if (this.WORKFLOW_ITEM_MAP[key] && this.WORKFLOW_ITEM_MAP[key].valueFormatter) {
           item.value = this.WORKFLOW_ITEM_MAP[key].valueFormatter(projectInfo[key])
         } else {
-          item.value = projectInfo[key].name || projectInfo[key] || '-'
+          item.value = projectInfo[key]?.name || projectInfo[key] || '-'
         }
         if (this.ALL_SELECT_OPTIONS.hasOwnProperty(key) && !(this.WORKFLOW_ITEM_MAP[key] && this.WORKFLOW_ITEM_MAP[key].valueFormatter)) {
           if (this.WORKFLOW_ITEM_MAP && this.WORKFLOW_ITEM_MAP[key] && this.WORKFLOW_ITEM_MAP[key].multiple) { // 多选
@@ -184,7 +184,7 @@ export default {
       keys.map(key => {
         const item = { field: key }
         item.title = this.WORKFLOW_ITEM_MAP[key].label
-        item.value = contractorInfo[key].name || contractorInfo[key] || '-'
+        item.value = contractorInfo[key]?.name || contractorInfo[key] || '-'
         ret.push(item)
       })
       return ret
