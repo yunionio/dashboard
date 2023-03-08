@@ -1072,5 +1072,6 @@
   "network.lb_monitor_bin": "负载均衡入流量",
   "network.lb_monitor_bout": "负载均衡出流量",
   "network.eip_bind_server_tip": "经典网络类型虚拟机不支持绑定EIP",
-  "network.owner_dns_zone": "归属域名"
+  "network.owner_dns_zone": "归属域名",
+  "network.switch_wire": "更换二层网络"
 }
