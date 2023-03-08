@@ -32,7 +32,7 @@ export default {
         },
       }),
       getAccessUrlTableColumn(),
-      getStatusTableColumn({ statusModule: 'cloudaccount' }),
+      getStatusTableColumn({ vm: this, statusModule: 'cloudaccount' }),
       getEnabledTableColumn(),
       getStatusTableColumn({ statusModule: 'cloudaccountHealthStatus', title: i18n.t('cloudenv.text_93'), field: 'health_status', minWidth: 90 }),
       getBalanceTableColumn(),
