@@ -344,7 +344,7 @@ export default {
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'CloudaccountSidePage', {
         id: row.id,
         resource: 'cloudaccounts',
@@ -353,6 +353,7 @@ export default {
       }, {
         list: this.list,
         hiddenActions: this.hiddenActions,
+        tab,
       })
     },
   },
