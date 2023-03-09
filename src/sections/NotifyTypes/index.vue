@@ -28,7 +28,7 @@ export default {
     },
     placeholder: {
       type: String,
-      default: i18n.t('bill.budget_alert_user_placeholder'),
+      default: i18n.t('common.budget_alert_user_placeholder'),
     },
     label: {
       type: String,

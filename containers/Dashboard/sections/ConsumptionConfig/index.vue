@@ -112,13 +112,13 @@ export default {
         const text = localItem ? localItem.label : val.item_name
         const currencyItem = { ...val }
         if (val.item_id.indexOf('*_') !== -1) {
-          currencyItem.item_name = this.$t('bill.show_origin_2', [val.item_name.replace('*_', '')])
+          currencyItem.item_name = this.$t('common.show_origin_2', [val.item_name.replace('*_', '')])
         } else if (val.item_id.indexOf('_') !== -1) {
-          currencyItem.item_name = this.$t('bill.text_287', [val.item_name.replace('_', '')])
+          currencyItem.item_name = this.$t('common.unit_shows_all_bills', [val.item_name.replace('_', '')])
         } else if (val.item_id.indexOf('*') !== -1) {
-          currencyItem.item_name = this.$t('bill.show_origin_1', [val.item_name.replace('*', '')])
+          currencyItem.item_name = this.$t('common.show_origin_1', [val.item_name.replace('*', '')])
         } else {
-          currencyItem.item_name = this.$t('bill.text_39', [text])
+          currencyItem.item_name = this.$t('common.only_show_bills', [text])
         }
         return currencyItem
       })
