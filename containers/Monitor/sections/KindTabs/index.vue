@@ -17,17 +17,17 @@ import i18n from '@/locales'
 
 const allTabs = {
   'cpu-usage': {
-    label: i18n.t('bill.text_81'),
+    label: i18n.t('common.brand'),
     key: 'cpu-usage',
     index: 1,
   },
   'network-recv': {
-    label: i18n.t('bill.text_73'),
+    label: i18n.t('common.resource_type'),
     key: 'network-recv',
     index: 2,
   },
   'network-send': {
-    label: i18n.t('bill.text_82'),
+    label: i18n.t('common.resource'),
     key: 'network-send',
     index: 3,
   },
