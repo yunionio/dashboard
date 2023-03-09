@@ -133,7 +133,7 @@ export default {
           field: 'name',
           title: this.$t('compute.text_228'),
         },
-        getIpsTableColumn({ field: 'ips', title: 'IP', vm: this, sortable: true, noElastic: true }),
+        getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
           field: 'gpu',
           title: 'GPU',

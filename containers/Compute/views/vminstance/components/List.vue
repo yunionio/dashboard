@@ -39,6 +39,7 @@ import {
   getDescriptionFilter,
   getCreatedAtFilter,
 } from '@/utils/common/tableFilter'
+import { getIpsTableColumn } from '@/utils/common/tableColumn'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -1241,7 +1242,10 @@ export default {
         ],
       }
       this.columns.map(col => {
-        if (!(col.hidden && col.hidden()) && col.field !== 'password') {
+        if (col.field === 'ips') {
+          ret.items.push(getIpsTableColumn({ field: 'elastic_ip', title: this.$t('common.eip'), vm: this, onlyElastic: true }))
+          ret.items.push(getIpsTableColumn({ field: 'ip', title: 'IP', vm: this, noElastic: true }))
+        } else if (!(col.hidden && col.hidden()) && col.field !== 'password') {
           ret.items.push({
             field: col.field,
             title: col.title || col.label,
