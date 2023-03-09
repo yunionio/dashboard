@@ -328,6 +328,7 @@ export default {
             }
             return '-'
           },
+          onlyExport: true,
         })
         data.columns.push({
           field: 'ip',
@@ -373,6 +374,53 @@ export default {
             }
             return '-'
           },
+          onlyExport: true,
+        })
+        data.columns.push({
+          field: 'all_ip',
+          title: 'IP',
+          formatter: ({ row }) => {
+            const targets = this.serverList.filter(item => item.name === row.vm_name)
+            if (targets[0]) {
+              const row = targets[0]
+              const ret = []
+              if (row.eip) {
+                ret.push(`${row.eip}(${row.eip_mode === 'elastic_ip' ? this.$t('common_290') : this.$t('common_291')})`)
+              }
+              if (row.ips) {
+                const iparr = row.ips.split(',')
+                iparr.map(ip => {
+                  ret.push(`${ip}(${this.$t('common_287')})`)
+                })
+              }
+              if (row.vips) {
+                row.vips.map(ip => {
+                  ret.push(`${ip}(${this.$t('common_vip')})`)
+                })
+              }
+              if (row.vip) {
+                const iparr = row.vip.split(',')
+                iparr.map(ip => {
+                  ret.push(`${ip}(${this.$t('common_vip')})`)
+                })
+              }
+              if (row.vip_eip) {
+                const iparr = row.vip_eip.split(',')
+                iparr.map(ip => {
+                  ret.push(`${ip}(${this.$t('common_evip')})`)
+                })
+              }
+              if (row.metadata && row.metadata.sync_ips) {
+                const iparr = row.metadata.sync_ips.split(',')
+                iparr.map(ip => {
+                  ret.push(`${ip}(${this.$t('compute.esxi.sync_ips_outofrange')})`)
+                })
+              }
+              return ret.length ? ret.join(', ') : '-'
+            }
+            return '-'
+          },
+          noExport: true,
         })
       }
       const tr = {}

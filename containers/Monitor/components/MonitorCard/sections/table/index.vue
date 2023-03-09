@@ -23,7 +23,7 @@
         <div style="visibility: hidden;height:1px;overflow:hidden;">
           <vxe-grid
             ref="overviewTable2"
-            :columns="tableData.columns"
+            :columns="columns2"
             max-height="1"
             :data="tableData.rows" />
         </div>
@@ -63,6 +63,9 @@ export default {
     },
     columns () {
       return this.tableData.columns.filter(item => !item.onlyExport)
+    },
+    columns2 () {
+      return this.tableData.columns.filter(item => !item.noExport)
     },
   },
   methods: {
