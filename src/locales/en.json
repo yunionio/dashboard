@@ -5282,5 +5282,14 @@
   "common.staticstics.status.offline": "Offline",
   "common.staticstics.status.unmount": "To be mounted",
   "common.res_group_opts.vpcs.classic": "classic",
-  "common.res_group_opts.vpcs.virtual": "virtual"
+  "common.res_group_opts.vpcs.virtual": "virtual",
+  "common.show_origin_1": "Only show {0} bills - original bills",
+  "common.show_origin_2": "Show all bills in units of {0} - the original bill",
+  "common.unit_shows_all_bills": "Show all bills in units of {0}",
+  "common.only_show_bills": "Show only {0} bills",
+  "common.resource_type": "Resource Type",
+  "common.resource": "Resource",
+  "common.current_value": "Current Value",
+  "common.exporting": "Exporting...",
+  "common.budget_alert_user_placeholder": "Please select an alert recipient"
 }
