@@ -396,7 +396,7 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {}, sortab
       const ret = []
       if (onlyElastic) { // 只展示弹性ip
         if (row.eip && row.eip_mode === 'elastic_ip') {
-          ret.push(ret.push(`${row.eip}(${i18n.t('common_290')})`))
+          ret.push(`${row.eip}(${i18n.t('common_290')})`)
         }
         return ret.length ? ret.join(', ') : '-'
       }
