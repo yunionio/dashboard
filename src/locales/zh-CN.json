@@ -5305,5 +5305,14 @@
   "common.staticstics.status.offline": "离线",
   "common.staticstics.status.unmount": "待挂载",
   "common.res_group_opts.vpcs.classic": "经典网络",
-  "common.res_group_opts.vpcs.virtual": "虚拟网络"
+  "common.res_group_opts.vpcs.virtual": "虚拟网络",
+  "common.show_origin_1": "仅显示{0}账单-原账单",
+  "common.show_origin_2": "以{0}为单位显示所有账单-原账单",
+  "common.unit_shows_all_bills": "以{0}为单位显示所有账单",
+  "common.only_show_bills": "仅显示{0}账单",
+  "common.resource_type": "资源类型",
+  "common.resource": "资源",
+  "common.current_value": "当前值",
+  "common.exporting": "导出中...",
+  "common.budget_alert_user_placeholder": "请选择告警接收人"
 }
