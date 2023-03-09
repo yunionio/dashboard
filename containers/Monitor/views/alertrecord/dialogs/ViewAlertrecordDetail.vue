@@ -4,7 +4,7 @@
     <div slot="body" class="alertrecord-detail">
       <a-card class="mb-3" size="small" :title="item.metric" v-for="(item, i) in records" :key="i">
         <div class="Rheader"><span>{{ $t('dashboard.text_20') }}： </span><span>{{ item.metric }}</span></div>
-        <div class="Rheader"><span>{{ $t('bill.text_176') }}： </span><span>{{ item.value_str }}</span></div>
+        <div class="Rheader"><span>{{ $t('common.current_value') }}： </span><span>{{ item.value_str }}</span></div>
         <div class="tag-title mt-3">{{ $t('common.text00012') }}</div>
         <div class="tag-wrapper">
           <div class="tag-item d-flex align-items-center" v-for="(v, k) in item.tags" :key="k">

@@ -16,7 +16,7 @@ export default {
         onManager: this.onManager,
         hideField: true,
         formRules: [
-          { required: true, message: i18n.t('bill.text_145') },
+          { required: true, message: i18n.t('common.text00042') },
         ],
         slotCallback: row => {
           return (
