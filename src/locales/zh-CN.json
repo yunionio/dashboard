@@ -5068,5 +5068,14 @@
   "common.mfa.qr_code_andriod_3": "离线包下载地址",
   "common.mfa.qr_code_chrome_1": "添加谷歌浏览器扩展插件，去",
   "common.mfa.qr_code_chrome_2": "添加",
-  "cloudenv.zstack.auth_url_extra": "http|https://192.168.1.1:8080(注意增加端口,zstack默认API端口是8080)"
+  "cloudenv.zstack.auth_url_extra": "http|https://192.168.1.1:8080(注意增加端口,zstack默认API端口是8080)",
+  "common.show_origin_1": "仅显示{0}账单-原账单",
+  "common.show_origin_2": "以{0}为单位显示所有账单-原账单",
+  "common.unit_shows_all_bills": "以{0}为单位显示所有账单",
+  "common.only_show_bills": "仅显示{0}账单",
+  "common.resource_type": "资源类型",
+  "common.resource": "资源",
+  "common.current_value": "当前值",
+  "common.exporting": "导出中...",
+  "common.budget_alert_user_placeholder": "请选择告警接收人"
 }
