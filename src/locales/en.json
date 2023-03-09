@@ -5052,5 +5052,14 @@
   "common.mfa.qr_code_andriod_3": "offline package download address",
   "common.mfa.qr_code_chrome_1": "add Google browser extension, go to",
   "common.mfa.qr_code_chrome_2": "add",
-  "cloudenv.zstack.auth_url_extra": "http|https://192.168.1.1:8080(Note the addition of port, zstack default API port is 8080)"
+  "cloudenv.zstack.auth_url_extra": "http|https://192.168.1.1:8080(Note the addition of port, zstack default API port is 8080)",
+  "common.show_origin_1": "Only show {0} bills - original bills",
+  "common.show_origin_2": "Show all bills in units of {0} - the original bill",
+  "common.unit_shows_all_bills": "Show all bills in units of {0}",
+  "common.only_show_bills": "Show only {0} bills",
+  "common.resource_type": "Resource Type",
+  "common.resource": "Resource",
+  "common.current_value": "Current Value",
+  "common.exporting": "Exporting...",
+  "common.budget_alert_user_placeholder": "Please select an alert recipient"
 }

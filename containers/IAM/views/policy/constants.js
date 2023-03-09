@@ -539,7 +539,7 @@ export const RESOURCES_MAP = {
     i18n: 'cloudenv.text_580',
   },
   exchange_rates: {
-    i18n: 'bill.text_285',
+    i18n: 'dictionary.billing_exchange_rates',
   },
   snapshotpolicycaches: {
     i18n: 'dictionary.snapshotpolicycaches',

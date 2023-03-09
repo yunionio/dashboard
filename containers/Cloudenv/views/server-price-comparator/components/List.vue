@@ -31,7 +31,8 @@ export default {
       }),
       groupActions: [
         {
-          label: this.$t('bill.text_193'),
+          label: this.$t('common.action.create'),
+          permission: 'server_create',
           action: (row) => {
             this.$router.push({
               path: '/pricecomparator/create',
