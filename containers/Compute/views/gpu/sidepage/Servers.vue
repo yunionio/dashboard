@@ -66,8 +66,7 @@ export default {
           },
         }),
         getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.columns }),
-        getIpsTableColumn({ field: 'elastic_ip', title: this.$t('common.eip'), vm: this, onlyElastic: true }),
-        getIpsTableColumn({ field: 'ips', title: 'IP', vm: this, noElastic: true }),
+        getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
           field: 'instance_type',
           title: this.$t('compute.text_295'),
