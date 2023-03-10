@@ -198,6 +198,7 @@ export default {
     },
   },
   created () {
+    this.initHiddenTab()
     this.initChangeTab()
     this.$bus.$on('agentStatusQuery', (val) => {
       if (this.agent_status === 'failed') {
@@ -212,6 +213,11 @@ export default {
     this.isPageDestroyed = true
   },
   methods: {
+    initHiddenTab () {
+      if (this.listRowData.brand !== 'OneCloud') {
+        this.detailTabs = R.remove(R.findIndex(R.propEq('key', 'gpu-list'))(this.detailTabs), 1, this.detailTabs)
+      }
+    },
     initChangeTab () {
       if (this.params.tab) {
         this.handleTabChange(this.params.tab)
