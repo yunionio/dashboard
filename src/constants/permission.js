@@ -764,6 +764,7 @@ export const PERMISSION = {
   networks_perform_syncstatus: ['compute', 'networks', 'perform', 'syncstatus'],
   networks_perform_set_schedtag: ['compute', 'networks', 'perform', 'set-schedtag'],
   networks_perform_set_user_metadata: ['compute', 'networks', 'perform', 'set-user-metadata'],
+  networks_perform_switch_wire: ['compute', 'networks', 'perform', 'switch-wire'],
   /**
    * VPC 相关操作
    */
