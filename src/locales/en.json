@@ -5348,5 +5348,6 @@
   "common.resource": "Resource",
   "common.current_value": "Current Value",
   "common.exporting": "Exporting...",
-  "common.budget_alert_user_placeholder": "Please select an alert recipient"
+  "common.budget_alert_user_placeholder": "Please select an alert recipient",
+  "common.brand_support": "Currently only {0} supports this operation"
 }
