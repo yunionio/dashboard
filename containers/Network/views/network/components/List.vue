@@ -396,6 +396,7 @@ export default {
               },
               {
                 label: this.$t('network.switch_wire'),
+                permission: 'networks_perform_switch_wire',
                 action: () => {
                   this.createDialog('NetworkSwitchWireDialog', {
                     title: this.$t('network.switch_wire'),
