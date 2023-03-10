@@ -2693,7 +2693,9 @@
     "apsara": "Apsara",
     "tablestore": "Table Storage",
     "diskbackup": "Disk Backup",
-    "instancebackup": "Instance Backup"
+    "instancebackup": "Instance Backup",
+    "project_sharings": "Bill sharing policy",
+    "bill_tasks": "Sharing tasks"
   },
   "res": {
     "role": "Role",
