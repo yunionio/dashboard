@@ -257,6 +257,8 @@ export const PERMISSION = {
   // 云账号
   cloudaccounts_list: ['compute', 'cloudaccounts', 'list'],
   cloudaccounts_perform_project_mapping: ['compute', 'cloudaccounts', 'perform', 'project-mapping'],
+  cloudaccounts_perform_associate: ['compute', 'cloudaccounts', 'perform', 'associate'],
+  cloudaccounts_perform_dissociate: ['compute', 'cloudaccounts', 'perform', 'dissociate'],
   // 代理
   proxysettings_list: ['compute', 'proxysettings', 'list'],
   // CDN
@@ -936,6 +938,11 @@ export const PERMISSION = {
   bill_budgets_create: ['meter', 'budgets', 'create'],
   bill_budgets_delete: ['meter', 'budgets', 'delete'],
   bill_budgets_perform: ['meter', 'budgets', 'perform'],
+  project_sharings_list: ['meter', 'project_sharings', 'list'],
+  project_sharings_create: ['meter', 'project_sharings', 'create'],
+  project_sharings_delete: ['meter', 'project_sharings', 'delete'],
+  bill_tasks_list: ['meter', 'bill_tasks', 'list'],
+  bill_tasks_create: ['meter', 'bill_tasks', 'create'],
 
   // 标签
   bill_tags_list: ['meter', 'bill_tags', 'list'],
