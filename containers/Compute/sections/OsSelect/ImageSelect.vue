@@ -203,7 +203,7 @@ export default {
       }
       if (this.uefi) {
         const imageOpts = imageOptions.map((item) => {
-          if (!item.properties?.uefi_support) {
+          if (!item.properties?.uefi_support || item.properties?.uefi_support === 'false') {
             return {
               ...item,
               hidden: true,
