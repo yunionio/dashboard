@@ -2718,7 +2718,9 @@
     "report_settings": "报表模板",
     "report_elements": "报表字段",
     "diskbackup": "硬盘备份",
-    "instancebackup": "主机备份"
+    "instancebackup": "主机备份",
+    "project_sharings": "费用分摊策略",
+    "bill_tasks": "分摊任务"
   },
   "res": {
     "role": "@:dictionary.role",

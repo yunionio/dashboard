@@ -727,6 +727,12 @@ export const RESOURCES_MAP = {
   report_settings: {
     i18n: 'dictionary.report_settings',
   },
+  project_sharings: {
+    i18n: 'dictionary.project_sharings',
+  },
+  bill_tasks: {
+    i18n: 'dictionary.bill_tasks',
+  },
   ...extraResources,
 }
 
