@@ -10,13 +10,13 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getStatusFilter, getOsTypeFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'ImageRecoveryList',
@@ -100,6 +100,7 @@ export default {
   },
   watch: {
     cloudEnv (val) {
+      this.list.manager = new this.$Manager(val, 'v1')
       this.list.resource = this[`${val}Fetcher`]
       this.list.fetchData(0)
     },
