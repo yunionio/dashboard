@@ -32,11 +32,11 @@
 </template>
 
 <script>
+import TestButton from '@/sections/TestButton'
+import { getRequestT } from '@/utils/utils'
 import BillForm from './form/BillForm'
 import BigQueryBillForm from './form/BigQueryBillForm'
 import ContentInfo from './form/components/ContentInfo'
-import TestButton from '@/sections/TestButton'
-import { getRequestT } from '@/utils/utils'
 
 export default {
   name: 'CloudaccountBillFileIndex',
@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     cancel () {
-      this.$router.push('/cloudaccount')
+      this.$router.push(this.$route.query.backPath || '/cloudaccount')
     },
     testPost () {
       return this.$refs.BILL_FORM.testPost()

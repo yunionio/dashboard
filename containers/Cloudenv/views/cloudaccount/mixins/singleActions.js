@@ -291,6 +291,7 @@ export default {
                       query: {
                         id: obj.id,
                         provider: obj.provider,
+                        backPath: '/cloudaccount',
                       },
                     })
                   },
