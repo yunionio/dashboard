@@ -82,6 +82,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               refresh: this.refresh,
+              cloudEnv: this.cloudEnv,
             })
           },
           meta: () => {
