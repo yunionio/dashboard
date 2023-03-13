@@ -10,13 +10,13 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter, getIpFilter, getOsTypeFilter, getBrandFilter, getHostFilter } from '@/utils/common/tableFilter'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'ServerRecoveryList',
@@ -37,6 +37,8 @@ export default {
         steadyStatus: Object.values(expectStatus.server).flat(),
         filterOptions: {
           name: getNameFilter(),
+          id: getNameFilter({ field: 'id', label: 'ID' }),
+          external_id: getNameFilter({ field: 'external_id', label: this.$t('table.title.external_id') }),
           ip: getIpFilter(),
           status: {
             label: this.$t('compute.text_268'),
@@ -62,7 +64,7 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: this.$t('compute.text_1035'), key: 'external_id' },
+          { label: this.$t('table.title.external_id'), key: 'external_id' },
           { label: this.$t('compute.text_228'), key: 'name' },
           { label: this.$t('compute.text_263'), key: 'ips' },
           { label: this.$t('compute.text_1036'), key: 'eip' },
