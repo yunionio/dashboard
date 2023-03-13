@@ -6,12 +6,13 @@ export default {
         label: i18n.t('compute.text_477'),
         permission: 'images_delete',
         action: obj => {
+          console.log(this.onManager)
           this.createDialog('DeleteResDialog', {
             vm: this,
             data: [obj],
             columns: this.columns,
             title: i18n.t('compute.text_477'),
-            name: this.$t('dictionary.image'),
+            name: this.cloudEnv === 'images' ? this.$t('dictionary.image') : this.$t('compute.text_98'),
             onManager: this.onManager,
             requestParams: { override_pending_delete: true },
           })
@@ -26,6 +27,7 @@ export default {
             data: [obj],
             columns: this.columns,
             refresh: this.refresh,
+            cloudEnv: this.cloudEnv,
           })
         },
         meta: obj => {
