@@ -64,7 +64,7 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: this.$t('compute.text_1035'), key: 'external_id' },
+          { label: this.$t('table.title.external_id'), key: 'external_id' },
           { label: this.$t('compute.text_228'), key: 'name' },
           { label: this.$t('compute.text_263'), key: 'ips' },
           { label: this.$t('compute.text_1036'), key: 'eip' },
