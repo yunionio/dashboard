@@ -268,6 +268,10 @@ export default {
       if (R.equals(val, oldVal)) return
       this.getImagesInfo()
     },
+    uefi (val, oldVal) {
+      if (R.equals(val, oldVal)) return
+      this.getImagesInfo()
+    },
   },
   created () {
     this.imagesM = new Manager('images', 'v1')
@@ -493,6 +497,9 @@ export default {
           })
         }
       } else {
+        if (this.uefi) {
+          images = images.filter(item => item.properties?.uefi_support && item.properties?.uefi_support !== 'false')
+        }
         if (this.imageType !== IMAGES_TYPE_MAP.snapshot.key) {
           images = images.filter(item => {
             let diskFormat = item.disk_format
