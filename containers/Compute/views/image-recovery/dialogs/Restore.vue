@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('compute.text_478')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.image')" :count="params.data.length" :action="$t('compute.text_478')" />
+      <dialog-selected-tips :name="this.params.cloudEnv === 'images' ? $t('dictionary.image') : $t('compute.text_98')" :count="params.data.length" :action="$t('compute.text_478')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">
@@ -29,7 +29,7 @@ export default {
       const selectedIds = this.params.data.map((item) => {
         return item.id
       })
-      return new this.$Manager('images', 'v1').batchPerformAction({
+      return new this.$Manager(this.params.cloudEnv, 'v1').batchPerformAction({
         ids: selectedIds,
         action: 'cancel-delete',
       })
