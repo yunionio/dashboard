@@ -12,8 +12,7 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
+import * as R from 'ramda'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
@@ -24,18 +23,24 @@ import {
   getCreatedAtFilter,
 } from '@/utils/common/tableFilter'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'DnsZoneList',
   mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
+    getParams: {
+      type: [Function, Object],
+    },
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'dns_zones',
+        getParams: this.getParam,
         steadyStatus: {
           status: Object.values(expectStatus.dnszone).flat(),
         },
@@ -172,6 +177,13 @@ export default {
     }, false)
   },
   methods: {
+    getParam () {
+      const ret = {
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+        detail: true,
+      }
+      return ret
+    },
     handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'DnsZoneSidePage', {
         id: row.id,
