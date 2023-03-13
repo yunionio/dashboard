@@ -5314,5 +5314,6 @@
   "common.resource": "资源",
   "common.current_value": "当前值",
   "common.exporting": "导出中...",
-  "common.budget_alert_user_placeholder": "请选择告警接收人"
+  "common.budget_alert_user_placeholder": "请选择告警接收人",
+  "common.brand_support": "目前只有{0}支持该操作"
 }

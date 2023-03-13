@@ -26,6 +26,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
+import { PROVIDER_MAP } from '@/constants'
 
 export default {
   name: 'NetworkList',
@@ -391,6 +392,31 @@ export default {
                     rows: this.list.selectedItems,
                     disabledProviders: ['BingoCloud'],
                   })
+                },
+              },
+              {
+                label: this.$t('network.switch_wire'),
+                permission: 'networks_perform_switch_wire',
+                action: () => {
+                  this.createDialog('NetworkSwitchWireDialog', {
+                    title: this.$t('network.switch_wire'),
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  const isOneCloud = this.list.selectedItems.every(item => item.brand === 'OneCloud')
+                  const provider = 'OneCloud'
+                  if (!isOneCloud) {
+                    return {
+                      validate: false,
+                      tooltip: !isOneCloud && this.$t('common.brand_support', [PROVIDER_MAP[provider].label]),
+                    }
+                  }
+                  return {
+                    validate: this.list.selectedItems.every(item => item.can_delete),
+                  }
                 },
               },
               {

@@ -2,6 +2,7 @@ import { mapGetters } from 'vuex'
 import i18n from '@/locales'
 import { findPlatform, getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import { PROVIDER_MAP } from '@/constants'
 
 const PROVIDER_FILTER_CN = i18n.t('env')
 const disableAdjustConfig = ['private', 'public']
@@ -270,6 +271,32 @@ export default {
                   row: obj,
                   disabledProviders: ['BingoCloud'],
                 })
+              },
+            },
+            {
+              label: this.$t('network.switch_wire'),
+              permission: 'networks_perform_switch_wire',
+              action: () => {
+                this.createDialog('NetworkSwitchWireDialog', {
+                  title: this.$t('network.switch_wire'),
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+              meta: () => {
+                const isOneCloud = obj.brand === 'OneCloud'
+                const provider = 'OneCloud'
+                if (!isOneCloud) {
+                  return {
+                    validate: false,
+                    tooltip: !isOneCloud && this.$t('common.brand_support', [PROVIDER_MAP[provider].label]),
+                  }
+                } else {
+                  return {
+                    validate: obj.can_delete,
+                  }
+                }
               },
             },
             {
