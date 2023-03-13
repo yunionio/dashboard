@@ -9,6 +9,8 @@ export default {
   created () {
     this.columns = [
       getCopyWithContentTableColumn({ field: 'name', title: i18n.t('compute.text_228'), sortable: true }),
+      getCopyWithContentTableColumn({ field: 'id', title: 'ID' }),
+      getCopyWithContentTableColumn({ field: 'external_id', title: i18n.t('table.title.external_id') }),
       getStatusTableColumn({ statusModule: 'server', hiddenLogView: true }),
       getIpsTableColumn({ field: 'ips', title: 'IP' }),
       {
