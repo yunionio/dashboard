@@ -483,8 +483,13 @@ export default {
         const insertIndex = this.checkboxEnabled ? 2 : 1
         defaultColumns = R.insertAll(insertIndex, tagColumns, defaultColumns)
       }
-      // 扩展 两个字段同时排序
+      // 扩展
       defaultColumns = defaultColumns.map(item => {
+        // 列表项默认最小宽度
+        if (item.type !== 'checkbox' || item.type !== 'radio' || item.field !== '_action' || item.field !== '_action_placeholder') {
+          item.minWidth = item.minWidth || 100
+        }
+        // 两个字段同时排序
         if (!item.sortable && (item.sortFields || item.sortByList) && (!item.slots || !item.slots.header)) {
           item.slots = item.slots || {}
           item.slots.header = ({ row }) => {
