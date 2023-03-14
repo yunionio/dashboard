@@ -726,9 +726,11 @@ export default {
         const storageItem = STORAGE_TYPES[this.selectedItem.hypervisor]
         // 针对kvm-local盘特殊处理
         let diskKey = this.sysdisk.type
-        const { medium_type } = this.selectedItem.disks_info[0] || {}
+        const { disk_type, medium_type } = this.selectedItem.disks_info[0] || {}
         if (!this.isPublic) {
-          diskKey = `${diskKey}-${medium_type}`
+          if ((this.selectedItem.hypervisor === HYPERVISORS_MAP.kvm.hypervisor || this.selectedItem.hypervisor === HYPERVISORS_MAP.cloudpods.hypervisor) && diskKey === 'local' && disk_type === 'sys' && medium_type) {
+            diskKey = `${diskKey}-${medium_type}`
+          }
         }
         this.form.fd.defaultType = {
           [this.decorators.systemDisk.type[0]]: { key: diskKey, label: R.is(Object, storageItem) ? (storageItem[diskKey]?.label || diskKey) : diskKey },

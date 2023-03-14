@@ -191,9 +191,13 @@ export default {
         const medium = typeItemArr[1]
         let opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
         if (!this.isPublic) {
-          opt = {
-            ...opt,
-            label: `${opt.label}(${MEDIUM_MAP[medium]})`,
+          if ((hyper === HYPERVISORS_MAP.kvm.key || hyper === HYPERVISORS_MAP.cloudpods.key) && type === 'local') {
+            opt = hypervisorDisks[`${type}-${medium}`] // kvm 区分多种介质的硬盘
+          } else {
+            opt = {
+              ...opt,
+              label: `${opt.label}(${MEDIUM_MAP[medium]})`,
+            }
           }
         }
         if (opt && !opt.sysUnusable) {
