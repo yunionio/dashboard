@@ -325,5 +325,6 @@
   "storage.nfs_host_check_valid": "Please enter a valid NFS Host, e.g., 192.168.1.1,192.168.1.2",
   "storage.spec": "Spec",
   "storage.instance_model": "Instance Model",
-  "storage.local_storage.help_link": "Local storage management can refer to the document configuration"
+  "storage.local_storage.help_link": "Local storage management can refer to the document configuration",
+  "storage.local_storage.help_alert_message": "If you want to add a local storage type, you need to log in to the host where you want to add storage, modify /etc/yunion/host.conf, and add this directory to local_image_paths. For details, please"
 }

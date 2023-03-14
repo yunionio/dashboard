@@ -1,6 +1,5 @@
 import i18n from '@/locales'
 export const STORAGE_TYPES = {
-  local: i18n.t('storage.text_1'),
   baremetal: i18n.t('storage.text_2'),
   sheepdog: 'Sheepdog',
   rbd: 'Ceph',

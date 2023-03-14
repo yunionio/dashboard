@@ -325,5 +325,6 @@
   "storage.nfs_host_check_valid": "请输入合法的NFS Host，例如： 192.168.1.1,192.168.1.2",
   "storage.spec": "规格",
   "storage.instance_model": "实例模型",
-  "storage.local_storage.help_link": "本地存储管理可参考文档配置"
+  "storage.local_storage.help_link": "本地存储管理可参考文档配置",
+  "storage.local_storage.help_alert_message": "若要添加本地存储类型，需登录要添加存储的宿主机进行操作，修改 /etc/yunion/host.conf， 将该目录添加到local_image_paths下，具体请"
 }
