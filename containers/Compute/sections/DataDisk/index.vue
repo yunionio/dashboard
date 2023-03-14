@@ -215,9 +215,13 @@ export default {
         const medium = typeItemArr[1]
         let opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
         if (!this.isPublic) {
-          opt = {
-            ...opt,
-            label: `${opt.label}(${MEDIUM_MAP[medium]})`,
+          if ((hyper === HYPERVISORS_MAP.kvm.key || hyper === HYPERVISORS_MAP.cloudpods.key) && type === 'local' && this.isSomeLocal(currentTypes)) {
+            opt = hypervisorDisks[`${type}-${medium}`]
+          } else {
+            opt = {
+              ...opt,
+              label: `${opt.label}(${MEDIUM_MAP[medium]})`,
+            }
           }
         }
         if (opt) {
