@@ -180,6 +180,7 @@ export default {
           diskType: null,
           dataDiskSizes: {},
           dataDiskTypes: [],
+          hypervisor: itemData.hypervisor,
         },
         fi: {
           cpuMem: {}, // cpu 和 内存 的关联关系
@@ -622,12 +623,11 @@ export default {
       return (this.selectedItem.hypervisor === HYPERVISORS_MAP.kvm.hypervisor || this.selectedItem.hypervisor === HYPERVISORS_MAP.cloudpods.hypervisor)
     },
     dataDiskStorageParams () {
-      const dataDiskSizes = _.get(this.form.fd, 'dataDiskSizes')
-      let dataDiskType = ''
-      for (const key in dataDiskSizes) {
-        if (this.form.fd[`dataDiskTypes[${key}]`]) {
-          dataDiskType = this.form.fd[`dataDiskTypes[${key}]`].key
-        }
+      const { systemDiskType = {}, hypervisor } = this.form.fd
+      let key = systemDiskType.key || ''
+      // 针对kvm-local盘特殊处理
+      if (key.indexOf('local') !== -1 && (hypervisor === 'kvm' || hypervisor === 'cloudpods')) {
+        key = key.split('-')[0]
       }
       const { prefer_manager, schedtag } = this.form.fd
       const params = {
@@ -638,8 +638,8 @@ export default {
         host_schedtag_id: schedtag,
         host_id: this.params.data[0].host_id,
       }
-      if (dataDiskType) {
-        params.filter = [`storage_type.contains("${dataDiskType}")`]
+      if (key) {
+        params.filter = [`storage_type.contains("${key}")`]
       }
       return params
     },
