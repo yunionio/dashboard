@@ -2,6 +2,9 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
+      <a-alert type="warning" class="mb-4">
+        <div slot="message">{{ $t('storage.local_storage.help_alert_message') }}<help-link :href="localStorageUrl">{{ $t('storage.local_storage.help_link') }}</help-link></div>
+      </a-alert>
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item :label="$t('storage.text_55', [$t('dictionary.domain')])">
           <domain-select v-if="isAdminMode && l3PermissionEnable" v-decorator="decorators.project_domain" />
@@ -30,7 +33,6 @@
               <a-radio-button v-if="storageTypes.indexOf(k) > -1" :key="k"  :value="k">{{v}}</a-radio-button>
             </template>
           </a-radio-group>
-          <div v-if="isLocalStorage" slot="extra"><help-link :href="localStorageUrl">{{ $t('storage.local_storage.help_link') }}</help-link></div>
         </a-form-item>
         <form-items :storage_type="getFieldValue('storage_type')" />
         <a-form-item :label="$t('common.text00012')" class="mb-0">
@@ -172,7 +174,6 @@ export default {
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {
-          console.log(err)
           if (err) return reject(err)
           // eslint-disable-next-line camelcase
           const { storage_type, zone, cloudregion } = values
@@ -182,7 +183,6 @@ export default {
             rbd: deleteRbdKeys,
             nfs: deleteNfsKeys,
             gpfs: [...deleteRbdKeys, ...deleteNfsKeys],
-            local: [...deleteRbdKeys, ...deleteNfsKeys],
           }
           if (zone) {
             values.zone = zone.key
