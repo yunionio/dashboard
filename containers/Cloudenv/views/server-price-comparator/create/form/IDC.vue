@@ -111,11 +111,11 @@
 <script>
 import _ from 'lodash'
 import * as R from 'ramda'
-import mixin from './mixin'
 import { HYPERVISORS_MAP } from '@/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
 import OsArch from '@/sections/OsArch'
+import mixin from './mixin'
 
 export default {
   name: 'VM_IDCCreate',
@@ -317,24 +317,33 @@ export default {
       return false
     },
     storageParams () {
-      const systemDiskType = _.get(this.form.fd, 'systemDiskType.key')
+      const { systemDiskType = {}, hypervisor } = this.form.fd
+      let key = systemDiskType.key || ''
+      // 针对kvm-local盘特殊处理
+      if (key.indexOf('local') !== -1 && (hypervisor === 'kvm' || hypervisor === 'cloudpods')) {
+        key = key.split('-')[0]
+      }
       const params = {
         ...this.scopeParams,
         usable: true, // 包含了 enable:true, status为online的数据
         brand: HYPERVISORS_MAP[this.form.fd.hypervisor]?.brand, // kvm,vmware支持指定存储
         manager: this.form.fd.prefer_manager,
       }
-      if (systemDiskType) {
-        params.filter = [`storage_type.contains("${systemDiskType}")`]
+      if (key) {
+        params.filter = [`storage_type.contains("${key}")`]
       }
       return params
     },
     dataDiskStorageParams () {
-      const dataDiskSizes = _.get(this.form.fd, 'dataDiskSizes')
+      const { dataDiskSizes = {}, hypervisor } = this.form.fd
       let dataDiskType = ''
       for (const key in dataDiskSizes) {
         if (this.form.fd[`dataDiskTypes[${key}]`]) {
           dataDiskType = this.form.fd[`dataDiskTypes[${key}]`].key
+          // 针对kvm-local盘特殊处理
+          if (dataDiskType.indexOf('local') !== -1 && (hypervisor === 'kvm' || hypervisor === 'cloudpods')) {
+            dataDiskType = dataDiskType.split('-')[0]
+          }
         }
       }
       const params = {

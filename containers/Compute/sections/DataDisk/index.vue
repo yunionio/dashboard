@@ -215,9 +215,13 @@ export default {
         const medium = typeItemArr[1]
         let opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
         if (!this.isPublic) {
-          opt = {
-            ...opt,
-            label: `${opt.label}(${MEDIUM_MAP[medium]})`,
+          if ((hyper === HYPERVISORS_MAP.kvm.key || hyper === HYPERVISORS_MAP.cloudpods.key) && type === 'local' && this.isSomeLocal(currentTypes)) {
+            opt = hypervisorDisks[`${type}-${medium}`]
+          } else {
+            opt = {
+              ...opt,
+              label: `${opt.label}(${MEDIUM_MAP[medium]})`,
+            }
           }
         }
         if (opt) {
@@ -288,9 +292,14 @@ export default {
       } else {
         scopeParams.scope = this.$store.getters.scope
       }
-      const diskTypeKey = _.get(this.dataDisks, '[0].diskType.key')
+      let diskTypeKey = _.get(this.dataDisks, '[0].diskType.key')
+      const hypervisor = _.get(this.form.fd, 'hypervisor')
 
       if (diskTypeKey) {
+        // 针对kvm-local盘特殊处理
+        if (diskTypeKey.indexOf('local') !== -1 && (hypervisor === 'kvm' || hypervisor === 'cloudpods')) {
+          diskTypeKey = diskTypeKey.split('-')[0]
+        }
         staticParams['joint_filter.0'] = `storages.id(storage_id).storage_type.equals(${diskTypeKey})`
       }
       return {
