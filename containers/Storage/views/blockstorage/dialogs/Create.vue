@@ -172,6 +172,7 @@ export default {
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {
+          console.log(err)
           if (err) return reject(err)
           // eslint-disable-next-line camelcase
           const { storage_type, zone, cloudregion } = values
@@ -181,6 +182,7 @@ export default {
             rbd: deleteRbdKeys,
             nfs: deleteNfsKeys,
             gpfs: [...deleteRbdKeys, ...deleteNfsKeys],
+            local: [...deleteRbdKeys, ...deleteNfsKeys],
           }
           if (zone) {
             values.zone = zone.key
