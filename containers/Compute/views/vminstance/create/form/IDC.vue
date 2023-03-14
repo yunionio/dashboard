@@ -501,36 +501,33 @@ export default {
       return false
     },
     storageParams () {
-      const systemDiskType = _.get(this.form.fd, 'systemDiskType.key')
-      // const { systemDiskSize, dataDiskSizes } = this.form.fd
-      // let dataSizeTotal = 0
-      // if (R.is(Object, dataDiskSizes)) {
-      //   const list = Object.values(dataDiskSizes)
-      //   if (list && list.length) {
-      //     dataSizeTotal = list.reduce((a, b) => a + b)
-      //   }
-      // }
+      const { systemDiskType = {}, hypervisor } = this.form.fd
+      let key = systemDiskType.key || ''
+      // 针对kvm-local盘特殊处理
+      if (key.indexOf('local') !== -1 && (hypervisor === 'kvm' || hypervisor === 'cloudpods')) {
+        key = key.split('-')[0]
+      }
       const params = {
         ...this.scopeParams,
         usable: true, // 包含了 enable:true, status为online的数据
         brand: HYPERVISORS_MAP[this.form.fd.hypervisor]?.brand, // kvm,vmware支持指定存储
         manager: this.form.fd.prefer_manager,
       }
-      if (systemDiskType) {
-        params.filter = [`storage_type.contains("${systemDiskType}")`]
+      if (key) {
+        params.filter = [`storage_type.contains("${key}")`]
       }
-      // const diskSize = systemDiskSize + dataSizeTotal
-      // if (R.is(Number, diskSize)) {
-      //   params.filter = (params.filter || []).concat([`capacity.ge(${(diskSize) * 1024})`])
-      // }
       return params
     },
     dataDiskStorageParams () {
-      const dataDiskSizes = _.get(this.form.fd, 'dataDiskSizes')
+      const { dataDiskSizes = {}, hypervisor } = this.form.fd
       let dataDiskType = ''
       for (const key in dataDiskSizes) {
         if (this.form.fd[`dataDiskTypes[${key}]`]) {
           dataDiskType = this.form.fd[`dataDiskTypes[${key}]`].key
+          // 针对kvm-local盘特殊处理
+          if (dataDiskType.indexOf('local') !== -1 && (hypervisor === 'kvm' || hypervisor === 'cloudpods')) {
+            dataDiskType = dataDiskType.split('-')[0]
+          }
         }
       }
       const params = {
