@@ -40,7 +40,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userInfo']),
+    ...mapGetters(['userInfo', 'isAdminMode']),
   },
   created () {
     this.initSidePageTab('third-process-detail')
@@ -48,10 +48,13 @@ export default {
   },
   methods: {
     getParam () {
-      return {
+      const params = {
         ...this.getParams,
-        user_id: this.userInfo.id,
       }
+      if (!this.isAdminMode) {
+        params.user_id = this.userInfo.id
+      }
+      return params
     },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'ThirdProcessSidePage', {
