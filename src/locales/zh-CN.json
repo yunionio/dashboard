@@ -1186,6 +1186,13 @@
       "ready": "数据同步就绪",
       "failed": "数据同步失败",
       "inprogress": "同步中"
+    },
+    "billtasks": {
+      "queued": "等待执行",
+      "running": "执行中",
+      "fail": "失败",
+      "done": "完成",
+      "cancel": "取消"
     }
   },
   "skuCategoryOptions": {
