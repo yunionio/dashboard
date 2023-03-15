@@ -1170,6 +1170,13 @@
       "ready": "Data synchronization ready",
       "failed": "Data synchronization failed",
       "inprogress": "Inprogress"
+    },
+    "billtasks": {
+      "queued": "Queued",
+      "running": "Running",
+      "fail": "Failed",
+      "done": "Done",
+      "cancel": "Cancel"
     }
   },
   "skuCategoryOptions": {
