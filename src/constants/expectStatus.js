@@ -546,4 +546,9 @@ export default {
     success: ['ready'],
     danger: ['failed'],
   },
+  billtasks: {
+    success: ['done'],
+    info: ['cancel'],
+    danger: ['fail'],
+  },
 }
