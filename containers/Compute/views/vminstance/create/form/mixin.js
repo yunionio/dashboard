@@ -280,7 +280,8 @@ export default {
       return isWindows
     },
     osType () {
-      return this.isWindows ? 'windows' : 'linux'
+      const os_type = this.form.fi.imageMsg.properties?.os_type
+      return this.isWindows ? 'windows' : os_type?.toLowerCase()
     },
     enableEip () {
       const externalAccessMode = _.get(this.form.fi, 'networkVpcObj.external_access_mode')
