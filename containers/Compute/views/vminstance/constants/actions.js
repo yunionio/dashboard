@@ -1112,7 +1112,7 @@ const getSingleActions = function () {
           },
           // * 镜像与磁盘
           {
-            label: i18n.t('compute.group_action.mirror_disk'),
+            label: i18n.t('compute.group_action.mirror_backup'),
             submenus: [
               // 保存镜像
               {
