@@ -287,7 +287,7 @@ export default {
       const titles = columns.map(item => item.label)
       // 每列宽度
       const colWidthList = columns.map(item => {
-        return { wch: item.width }
+        return { wch: item.width || 20 }
       })
       const filename = `${this.params.options.exportTitle || this.params.title}.xlsx`
       const wb = XLSX.utils.book_new()
