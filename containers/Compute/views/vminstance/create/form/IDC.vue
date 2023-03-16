@@ -592,6 +592,9 @@ export default {
       return this.$appConfig.isPrivate
     },
     isShowAgent () {
+      if (this.isIso || !this.osType || !['linux', 'windows'].includes(this.osType)) {
+        return false
+      }
       if (this.isWindows) {
         return !this.isArm
       }
@@ -675,6 +678,9 @@ export default {
     },
     isArm (val, oldV) {
       this.setBios(val)
+    },
+    isShowAgent (val) {
+      this.form.fc.setFieldsValue({ deploy_telegraf: val })
     },
   },
   mounted () {
