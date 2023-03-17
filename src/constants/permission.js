@@ -941,8 +941,8 @@ export const PERMISSION = {
   project_sharings_list: ['meter', 'project_sharings', 'list'],
   project_sharings_create: ['meter', 'project_sharings', 'create'],
   project_sharings_delete: ['meter', 'project_sharings', 'delete'],
-  bill_tasks_list: ['meter', 'bill_tasks', 'list'],
-  bill_tasks_create: ['meter', 'bill_tasks', 'create'],
+  billtasks_list: ['meter', 'billtasks', 'list'],
+  billtasks_create: ['meter', 'billtasks', 'create'],
 
   // 标签
   bill_tags_list: ['meter', 'bill_tags', 'list'],

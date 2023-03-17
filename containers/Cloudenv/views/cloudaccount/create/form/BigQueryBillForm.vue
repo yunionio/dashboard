@@ -29,9 +29,7 @@
         <a-switch v-decorator="decorators.sync_info" />
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_212')" v-if="form.fc.getFieldValue('sync_info')" :extra="$t('cloudenv.text_213')">
-        <a-date-picker :disabled-date="dateDisabledStart" v-decorator="decorators.billtask_start" />
-        <span class="ml-2 mr-2">~</span>
-        <a-date-picker :disabled-date="dateDisabledEnd" v-decorator="decorators.billtask_end" />
+        <a-month-picker v-decorator="decorators.month" :disabled-date="disabledDate" valueFormat="YYYYMM" format="YYYY-MM" />
       </a-form-item>
     </a-form>
   </div>
@@ -122,11 +120,8 @@ export default {
             valuePropName: 'checked',
           },
         ],
-        billtask_start: ['billtask_start', {
-          initialValue: this.$moment().startOf('month'),
-        }],
-        billtask_end: ['billtask_end', {
-          initialValue: this.$moment(),
+        month: ['month', {
+          initialValue: this.$moment().format('YYYYMM'),
         }],
         billing_scope: [
           'billing_scope',
@@ -200,29 +195,27 @@ export default {
         throw err
       }
     },
-    dateDisabledStart (value) {
-      const dateEnd = this.form.fc.getFieldValue('billtask_end')
-      if (dateEnd && value > dateEnd) return true
-      if (value > this.$moment()) return true
-      return false
-    },
-    dateDisabledEnd (value) {
-      const dateStart = this.form.fc.getFieldValue('billtask_start')
-      if (dateStart && value < dateStart) return true
-      if (value > this.$moment()) return true
-      return false
-    },
+    // dateDisabledStart (value) {
+    //   const dateEnd = this.form.fc.getFieldValue('billtask_end')
+    //   if (dateEnd && value > dateEnd) return true
+    //   if (value > this.$moment()) return true
+    //   return false
+    // },
+    // dateDisabledEnd (value) {
+    //   const dateStart = this.form.fc.getFieldValue('billtask_start')
+    //   if (dateStart && value < dateStart) return true
+    //   if (value > this.$moment()) return true
+    //   return false
+    // },
     async postBillTasks (id, values) {
-      const manager = new this.$Manager('bill_tasks', 'v1')
+      const manager = new this.$Manager('billtasks', 'v1')
       try {
-        const { billtask_start, billtask_end } = values
+        const { month } = values
         const data = {
-          sync_info: true,
-          cloudaccount_id: id,
-          action: 'override',
+          account_id: id,
+          month,
+          task_type: 'pull_bills',
         }
-        data.end_day = billtask_end.format('YYYYMMDD')
-        data.start_day = billtask_start.format('YYYYMMDD')
         await manager.create({
           data,
         })
@@ -237,8 +230,7 @@ export default {
           this.postBillTasks(id, values)
         }
         delete values.sync_info
-        delete values.billtask_start
-        delete values.billtask_end
+        delete values.month
         const params = {
           id,
           data: {
@@ -263,8 +255,7 @@ export default {
       const values = await this.form.fc.validateFields()
       values.cloudaccount_id = this.id
       delete values.sync_info
-      delete values.billtask_start
-      delete values.billtask_end
+      delete values.month
       const res = await new this.$Manager('bigquery_options', 'v1').performClassAction({
         action: 'verify',
         data: values,
