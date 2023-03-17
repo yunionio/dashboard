@@ -74,11 +74,13 @@
 import * as R from 'ramda'
 import { mapState } from 'vuex'
 import { getLoginModeInStorage } from '@/utils/auth'
+import CaptchaMixin from '@/mixins/captcha'
 
 const maxSendSmsCount = 300
 
 export default {
   name: 'LoginMobile',
+  mixins: [CaptchaMixin],
   props: {
     placeholder: Object,
     formDataMapper: Function,
@@ -224,6 +226,7 @@ export default {
         })
         this.captchaImg = `data:;base64,${Buffer.from(response.data, 'binary').toString('base64')}`
         this.fd.captcha = ''
+        this.initCaptchaTimer && this.initCaptchaTimer()
       } catch (error) {
         throw error
       } finally {
