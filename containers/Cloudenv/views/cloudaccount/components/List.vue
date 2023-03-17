@@ -276,15 +276,15 @@ export default {
                     },
                     success: async () => {
                       if (supportBill && this.batchDeleteBill && this.$appConfig.isPrivate) {
-                        const manager = new this.$Manager('bill_tasks', 'v1')
+                        const manager = new this.$Manager('billtasks/submit', 'v1')
                         try {
                           const p = this.list.selectedItems.filter(item => {
                             return supportBillBrands.includes(item.brand)
                           }).map(item => {
                             return manager.create({
                               data: {
-                                task_type: 'bill_remove',
-                                cloudaccount_id: item.id,
+                                task_type: 'delete_bills',
+                                account_id: item.id,
                               },
                             })
                           })

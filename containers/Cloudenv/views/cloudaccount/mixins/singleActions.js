@@ -381,11 +381,11 @@ export default {
                       },
                       success: async () => {
                         if (supportBill && this.deleteBill && this.$appConfig.isPrivate) {
-                          const manager = new this.$Manager('bill_tasks', 'v1')
+                          const manager = new this.$Manager('billtasks/submit', 'v1')
                           try {
                             const data = {
-                              task_type: 'bill_remove',
-                              cloudaccount_id: obj.id,
+                              task_type: 'delete',
+                              account_id: obj.id,
                             }
                             await manager.create({
                               data,
