@@ -70,9 +70,9 @@
 <script>
 import * as R from 'ramda'
 import { SCOPES_MAP } from '@/constants'
-import Group from './Group'
 import { getPolicyResList, getPolicyResCheckedList } from '@/utils/policy/policy-res-list'
 import { POLICY_WHITE_LIST } from '@/constants/policy'
+import Group from './Group'
 
 export default {
   name: 'PolicyRuleCheckbox',
@@ -271,7 +271,20 @@ export default {
       if (group.label && group.label.includes(this.searchString)) {
         return true
       }
-      if (group.resources && group.resources.filter(item => item.label.includes(this.searchString)).length) {
+      if (group.resources && group.resources.filter(item => {
+        let show = true
+        if (!item.label.includes(this.searchString)) {
+          show = false
+        } else {
+          if (this.scope === SCOPES_MAP.project.key) {
+            if (item.isDomainRes || item.isSystemRes) show = false
+          } else if (this.scope === SCOPES_MAP.domain.key) {
+            if (item.isSystemRes) show = false
+          }
+        }
+        return show
+      }).length
+      ) {
         return true
       }
       return false
