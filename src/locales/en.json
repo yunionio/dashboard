@@ -1930,6 +1930,7 @@
     "loadbalancer": "Load balance health check"
   },
   "billingType": {
+    "amortized": "Prepaid amortized",
     "postpaid": "Postpaid",
     "prepaid": "Prepaid"
   },
