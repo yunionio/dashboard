@@ -1949,6 +1949,7 @@
     "loadbalancer": "负载均衡健康检查"
   },
   "billingType": {
+    "amortized": "包周期分摊",
     "postpaid": "按量付费",
     "prepaid": "包年包月"
   },
