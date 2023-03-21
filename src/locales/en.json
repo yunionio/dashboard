@@ -2704,7 +2704,8 @@
     "diskbackup": "Disk Backup",
     "instancebackup": "Instance Backup",
     "project_sharings": "Bill sharing policy",
-    "bill_tasks": "Sharing tasks"
+    "billtask": "Sharing tasks",
+    "backupstorage": "Backup storage"
   },
   "res": {
     "role": "Role",

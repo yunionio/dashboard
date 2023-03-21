@@ -2729,7 +2729,8 @@
     "diskbackup": "硬盘备份",
     "instancebackup": "主机备份",
     "project_sharings": "费用分摊策略",
-    "bill_tasks": "分摊任务"
+    "billtask": "分摊任务",
+    "backupstorage": "备份存储"
   },
   "res": {
     "role": "@:dictionary.role",
