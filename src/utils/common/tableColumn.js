@@ -104,7 +104,7 @@ export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.tit
     hidden,
     formatter: ({ row }) => {
       const name = _.get(row, field)
-      const ret = brandMap[name]
+      const ret = brandMap[name] || {}
       if (name === 'Cloudpods') {
         const { inner_copyright, inner_copyright_en } = store.state.app.companyInfo || {}
         if (setting.language === 'en' && inner_copyright_en) {
