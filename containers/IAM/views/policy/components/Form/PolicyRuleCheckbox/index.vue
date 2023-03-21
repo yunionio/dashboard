@@ -168,7 +168,20 @@ export default {
       if (group.label && group.label.includes(this.searchString)) {
         return true
       }
-      if (group.resources && group.resources.filter(item => item.label.includes(this.searchString)).length) {
+      if (group.resources && group.resources.filter(item => {
+        let show = true
+        if (!item.label.includes(this.searchString)) {
+          show = false
+        } else {
+          if (this.scope === SCOPES_MAP.project.key) {
+            if (item.isDomainRes || item.isSystemRes) show = false
+          } else if (this.scope === SCOPES_MAP.domain.key) {
+            if (item.isSystemRes) show = false
+          }
+        }
+        return show
+      }).length
+      ) {
         return true
       }
       return false

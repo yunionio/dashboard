@@ -697,6 +697,24 @@ export const RESOURCES_MAP = {
   waf_instances: {
     i18n: 'dictionary.waf_instance',
   },
+  backupstorages: {
+    i18n: 'dictionary.backupstorage',
+  },
+  ipv6_gateway: {
+    i18n: 'dictionary.ipv6_gateway',
+  },
+  tap_services: {
+    i18n: 'dictionary.tap_service',
+  },
+  tap_flows: {
+    i18n: 'dictionary.tap_flow',
+  },
+  tablestores: {
+    i18n: 'dictionary.tablestore',
+  },
+  commandlogs: {
+    i18n: 'dictionary.command_log',
+  },
 }
 
 export const DEFAULT_ACTIONS_KEY = ['list', 'get', 'update', 'create', 'delete', 'perform']

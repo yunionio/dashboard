@@ -307,7 +307,7 @@ export const PERMISSION = {
   log_list: ['log', 'actions', 'list'],
   log_manage_list_splitable: ['log', 'actions', 'list', 'splitable'],
   // 命令记录
-  commandlogs_list: ['log', 'commandlogs_list', 'list'],
+  commandlogs_list: ['log', 'commandlogs', 'list'],
   // 消息中心
   notifications_list: ['notify', 'notifications', 'list'],
   // 消息订阅
@@ -1299,8 +1299,6 @@ export const PERMISSION = {
 
   //
   price_infos_perform_discount: ['meter', 'price_infos', 'perform', 'discount'],
-
-  capabilities_list: ['compute', 'capabilities', 'list'],
 
   tapservices_list: ['compute', 'tap_services', 'list'],
   tapservices_perform_enabled: ['compute', 'tap_services', 'perform', 'enabled'],
