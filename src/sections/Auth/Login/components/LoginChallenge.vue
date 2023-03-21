@@ -149,11 +149,14 @@ import { setLoginDomain, getLoginDomain } from '@/utils/common/cookie'
 // import { removeQueryKeys } from '@/utils/utils'
 import EditForm from '@/components/Edit/Form'
 import { setSsoIdpIdInCookie, removeSsoIdpIdInCookie } from '@/utils/auth'
+import CaptchaMixin from '@/mixins/captcha'
+
 export default {
   name: 'LoginChallenge',
   components: {
     EditForm,
   },
+  mixins: [CaptchaMixin],
   props: {
     placeholder: Object,
     formDataMapper: Function,
@@ -286,6 +289,7 @@ export default {
         })
         this.captchaImg = `data:;base64,${Buffer.from(response.data, 'binary').toString('base64')}`
         this.fd.captcha = ''
+        this.initCaptchaTimer && this.initCaptchaTimer()
       } catch (error) {
         throw error
       } finally {
