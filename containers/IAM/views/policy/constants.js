@@ -730,8 +730,26 @@ export const RESOURCES_MAP = {
   project_sharings: {
     i18n: 'dictionary.project_sharings',
   },
-  bill_tasks: {
-    i18n: 'dictionary.bill_tasks',
+  billtasks: {
+    i18n: 'dictionary.billtask',
+  },
+  backupstorages: {
+    i18n: 'dictionary.backupstorage',
+  },
+  ipv6_gateway: {
+    i18n: 'dictionary.ipv6_gateway',
+  },
+  tap_services: {
+    i18n: 'dictionary.tap_service',
+  },
+  tap_flows: {
+    i18n: 'dictionary.tap_flow',
+  },
+  tablestores: {
+    i18n: 'dictionary.tablestore',
+  },
+  commandlogs: {
+    i18n: 'dictionary.command_log',
   },
   ...extraResources,
 }
