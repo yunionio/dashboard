@@ -8,11 +8,12 @@
             @changeNav="handleChangeNav"
             @dataLoading="handleOnDataLoading"
             @showTable="handleShowTable"
+            @changeLimit="handleChangeLimit"
             :scope="scope"
             :extraParams="extraParams" />
       </div>
     </template>
-     <component v-if="chart.chartType" :is="chart.chartType" :chartData="chart.chartData" :yAxisFormat="chart.metric.format" :loading="chart.loading || tableLoading" id="monitor-overview-resource" :exportName="exportName" />
+     <component v-if="chart.chartType && limit" :is="chart.chartType" :chartData="chart.chartData" :yAxisFormat="chart.metric.format" :loading="chart.loading || tableLoading" id="monitor-overview-resource" :exportName="exportName" />
     <template #footer>
       <overview-table :table-data="table" :loading="tableLoading" v-if="showTable" />
     </template>
@@ -54,6 +55,7 @@ export default {
       table: {},
       showTable: false,
       tableLoading: false,
+      limit: 10,
     }
   },
   computed: {
@@ -76,6 +78,9 @@ export default {
     },
     handleChangeNav (v) {
       this.$emit('changeNav', v)
+    },
+    handleChangeLimit (v) {
+      this.limit = v || 0
     },
   },
 }

@@ -62,10 +62,10 @@ export default {
       return 0
     },
     columns () {
-      return this.tableData.columns.filter(item => !item.onlyExport)
+      return (this.tableData?.columns || []).filter(item => !item.onlyExport)
     },
     columns2 () {
-      return this.tableData.columns.filter(item => !item.noExport)
+      return (this.tableData?.columns || []).filter(item => !item.noExport)
     },
   },
   methods: {
