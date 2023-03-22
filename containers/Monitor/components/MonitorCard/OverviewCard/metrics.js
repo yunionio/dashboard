@@ -21,9 +21,17 @@ const HostMetricOptions = [
   { label: i18n.t('monitor.overview_tab_bps_sent'), measurement: 'net', field: 'bps_sent', format: '0.00 Bps', value: 4 },
 ]
 
+const RdsMetricOptions = [
+  { label: i18n.t('monitor.overview_tab_read_bps'), measurement: 'rds_diskio', field: 'read_bps', format: '0.00 Bps', value: 0 },
+  { label: i18n.t('monitor.overview_tab_write_bps'), measurement: 'rds_diskio', field: 'write_bps', format: '0.00 Bps', value: 1 },
+  { label: i18n.t('monitor.overview_tab_bps_recv'), measurement: 'rds_netio', field: 'bps_recv', format: '0.00 Bps', value: 2 },
+  { label: i18n.t('monitor.overview_tab_bps_sent'), measurement: 'rds_netio', field: 'bps_sent', format: '0.00 Bps', value: 3 },
+]
+
 const MetricOptions = {
   server: ServerMetricOptions,
   host: HostMetricOptions,
+  rds: RdsMetricOptions,
 }
 
 export default MetricOptions
