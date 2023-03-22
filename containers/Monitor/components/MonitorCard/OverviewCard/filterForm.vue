@@ -84,6 +84,11 @@ export default {
   },
   computed: {
     resOptions () {
+      // if (this.curScope === 'project') {
+      //   return [{ label: this.$t('dictionary.server'), id: 'server' }, { label: 'RDS', id: 'rds' }]
+      // } else {
+      //   return [{ label: this.$t('dictionary.server'), id: 'server' }, { label: this.$t('dictionary.host'), id: 'host' }, { label: 'RDS', id: 'rds' }]
+      // }
       if (this.curScope === 'project') {
         return [{ label: this.$t('dictionary.server'), id: 'server' }]
       } else {
@@ -96,8 +101,10 @@ export default {
       const ret = []
       if (this.res === 'server') {
         ret.push({ scope: curScope, id: 'vm_id', name: 'vm_name', label: this.$t('cloudenv.text_99') })
-      } else {
+      } else if (this.res === 'host') {
         ret.push({ scope: curScope, id: 'host_id', name: 'host', label: this.$t('cloudenv.text_101') })
+      } else if (this.res === 'rds') {
+        ret.push({ scope: curScope, id: 'rds_id', name: 'rds_name', label: 'RDS' })
       }
       scopeLevel > 2 && ret.push({
         scope: curScope,
@@ -111,7 +118,7 @@ export default {
         name: 'project_domain',
         label: this.$t('dictionary.domain'),
       })
-      scopeLevel > 0 && this.res === 'server' && ret.push({
+      scopeLevel > 0 && (this.res === 'server' || this.res === 'rds') && ret.push({
         scope: curScope,
         id: 'tenant_id',
         name: 'tenant',
@@ -169,9 +176,12 @@ export default {
     },
     res (val, oldval) {
       if (val !== oldval) {
-        this.dimentionId = val === 'server' ? 'vm_id' : 'host_id'
+        this.dimentionId = val === 'server' ? 'vm_id' : (val === 'host' ? 'host_id' : 'rds_id')
       }
     },
+  },
+  created () {
+    this.$uM = new this.$Manager('unifiedmonitors', 'v1')
   },
   mounted () {
     this.handleRefreshAll()
@@ -288,7 +298,7 @@ export default {
     },
     toTableData () {
       const curMetric = this.form.getFieldValue('metric')
-      const names = this.charts[curMetric.value].chartData.rows.map((row) => { return row.name })
+      const names = (this.charts[curMetric?.value].chartData?.rows || []).map((row) => { return row.name })
       const data = { columns: [], rows: [] }
       const namecolumn = this.getTableNameColumn()
       data.columns.push(namecolumn)
@@ -297,7 +307,7 @@ export default {
           field: 'external_id',
           title: this.$t('table.title.external_id'),
           formatter: ({ row }) => {
-            const targets = this.serverList.filter(item => item.name === row.vm_name)
+            const targets = this.serverList.filter(item => item.vm_name === row.vm_name)
             if (targets[0]) {
               return targets[0].external_id || ''
             }
@@ -305,12 +315,12 @@ export default {
           onlyExport: true,
         })
         data.columns.push({
-          field: 'id',
+          field: 'vm_id',
           title: 'ID',
           formatter: ({ row }) => {
-            const targets = this.serverList.filter(item => item.name === row.vm_name)
+            const targets = this.serverList.filter(item => item.vm_name === row.vm_name)
             if (targets[0]) {
-              return targets[0].id || ''
+              return targets[0].vm_id || ''
             }
           },
           onlyExport: true,
@@ -319,7 +329,7 @@ export default {
           field: 'elastic_ip',
           title: this.$t('common.eip'),
           formatter: ({ row }) => {
-            const targets = this.serverList.filter(item => item.name === row.vm_name)
+            const targets = this.serverList.filter(item => item.vm_name === row.vm_name)
             if (targets[0]) {
               const row = targets[0]
               if (row.eip && row.eip_mode === 'elastic_ip') {
@@ -334,15 +344,15 @@ export default {
           field: 'ip',
           title: 'IP',
           formatter: ({ row }) => {
-            const targets = this.serverList.filter(item => item.name === row.vm_name)
+            const targets = this.serverList.filter(item => item.vm_name === row.vm_name)
             if (targets[0]) {
               const row = targets[0]
               const ret = []
               if (row.eip && row.eip_mode !== 'elastic_ip') {
                 ret.push(`${row.eip}(${this.$t('common_291')})`)
               }
-              if (row.ips) {
-                const iparr = row.ips.split(',')
+              if (row.vm_ip) {
+                const iparr = row.vm_ip.split(',')
                 iparr.map(ip => {
                   ret.push(`${ip}(${this.$t('common_287')})`)
                 })
@@ -380,15 +390,15 @@ export default {
           field: 'all_ip',
           title: 'IP',
           formatter: ({ row }) => {
-            const targets = this.serverList.filter(item => item.name === row.vm_name)
+            const targets = this.serverList.filter(item => item.vm_name === row.vm_name)
             if (targets[0]) {
               const row = targets[0]
               const ret = []
               if (row.eip) {
                 ret.push(`${row.eip}(${row.eip_mode === 'elastic_ip' ? this.$t('common_290') : this.$t('common_291')})`)
               }
-              if (row.ips) {
-                const iparr = row.ips.split(',')
+              if (row.vm_ip) {
+                const iparr = row.vm_ip.split(',')
                 iparr.map(ip => {
                   ret.push(`${ip}(${this.$t('common_287')})`)
                 })
@@ -445,8 +455,8 @@ export default {
             }
           }
         }
-        data.columns.push(col)
-        chart.$chartData.rows.map((row) => {
+        data.columns.push(col);
+        (chart.$chartData?.rows || []).map((row) => {
           if (names.indexOf(row.name) < 0) {
             return
           }
@@ -516,28 +526,40 @@ export default {
       return data
     },
     async fetchChartData (field, formValues) {
-      const chart = this.charts[field]
-      try {
-        chart.loading = true
-        chart.chartData = {
-          columns: [],
-          rows: [],
-        }
-        const data = this.queryParams(chart.metric, formValues)
-        const { data: { series = [] } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data })
-        chart.chartType = this.isLineChart ? 'OverviewLine' : 'OverviewHistogram'
-        chart.chartData = this.toChartData(series)
-        chart.$chartData = Object.assign({}, chart.chartData)
-        if (formValues.limit && typeof formValues.limit === 'number' && formValues.limit > 0) {
-          if (chart.chartData.rows.length > formValues.limit) {
-            chart.chartData.rows = chart.chartData.rows.slice(chart.chartData.rows.length - formValues.limit)
+      return new Promise((resolve, reject) => {
+        const chart = this.charts[field]
+        try {
+          chart.loading = true
+          chart.chartData = {
+            columns: [],
+            rows: [],
           }
+          const data = this.queryParams(chart.metric, formValues)
+          this.$uM.performAction({ id: 'query', action: '', data }).then(res => {
+            const { data: { series = [] } } = res
+            chart.chartType = this.isLineChart ? 'OverviewLine' : 'OverviewHistogram'
+            chart.chartData = this.toChartData(series)
+            chart.$chartData = Object.assign({}, chart.chartData)
+            if (formValues.limit && typeof formValues.limit === 'number' && formValues.limit > 0) {
+              if (chart.chartData.rows.length > formValues.limit) {
+                chart.chartData.rows = chart.chartData.rows.slice(chart.chartData.rows.length - formValues.limit)
+              }
+            }
+            chart.loading = false
+            if (this.showVmIp) {
+              this.addServerList(series)
+            }
+            resolve(true)
+          }).catch(() => {
+            chart.loading = false
+            resolve(true)
+          })
+        } catch (error) {
+          chart.loading = false
+          resolve(true)
+          throw error
         }
-        chart.loading = false
-      } catch (error) {
-        chart.loading = false
-        throw error
-      }
+      })
     },
     emitChart (chart) {
       this.$emit('updateChart', chart)
@@ -579,6 +601,7 @@ export default {
     },
     handleLimitChange (limit) {
       this.form.setFieldsValue({ limit: limit })
+      this.$emit('changeLimit', limit)
       this.handleRefreshAll()
     },
     handleResChange (res) {
@@ -607,7 +630,6 @@ export default {
         for (const v of vs) {
           await this.fetchChartData(v, values)
         }
-        await this.fetchServerData(this.charts[values.metric.value])
 
         this.emitChart(this.charts[values.metric.value])
         this.emitTable()
@@ -617,23 +639,16 @@ export default {
         loading.stop()
       }
     },
-    async fetchServerData (chart = {}) {
-      if (this.showVmIp) {
-        const { chartData = {} } = chart
-        const { rows = [] } = chartData
-        const nameStr = rows.map(item => `'${item.name}'`).join(',')
-        if (rows.length) {
-          try {
-            const res = await new this.$Manager('servers').list({
-              params: {
-                scope: this.$store.getters.scope,
-                filter: `name.in(${nameStr})`,
-              },
-            })
-            this.serverList = res.data.data
-          } catch (err) {}
+    addServerList (series = []) {
+      series.map(item => {
+        const { tags = {} } = item
+        if (tags.vm_id) {
+          const idx = this.serverList.findIndex(s => s.vm_id === tags.vm_id)
+          if (idx === -1) {
+            this.serverList.push(tags)
+          }
         }
-      }
+      })
     },
     filterNameByOem (name) {
       if (this.dimension.id === 'brand') {
