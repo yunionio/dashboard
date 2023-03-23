@@ -21,6 +21,7 @@ import { HYPERVISORS_MAP } from '@/constants'
 import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
 import store from '@/store'
 import i18n from '@/locales'
+import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
 
 export function checkIpInSegment (i, networkData) {
   return (rule, value, cb) => {
@@ -795,8 +796,9 @@ export class GenCreateData {
     if (item.storage_id) {
       ret.storage_id = item.storage_id
     }
-    if ((this.fd.hypervisor === HYPERVISORS_MAP.kvm.key || this.fd.hypervisor === HYPERVISORS_MAP.cloudpods.key) && ret.backend.indexOf('local') !== -1) {
-      ret.backend = ret.backend.split('-')[0]
+    // 磁盘区分介质
+    if (diskSupportTypeMedium(this.fd.hypervisor)) {
+      ret.backend = getOriginDiskKey(ret.backend)
     }
     return ret
   }
