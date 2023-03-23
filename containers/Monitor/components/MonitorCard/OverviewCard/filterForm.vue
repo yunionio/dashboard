@@ -79,20 +79,14 @@ export default {
         from: ['from', { initialValue: 7 * 24 * 60 }],
         limit: ['limit', { initialValue: 10 }],
       },
-      serverList: [],
     }
   },
   computed: {
     resOptions () {
-      // if (this.curScope === 'project') {
-      //   return [{ label: this.$t('dictionary.server'), id: 'server' }, { label: 'RDS', id: 'rds' }]
-      // } else {
-      //   return [{ label: this.$t('dictionary.server'), id: 'server' }, { label: this.$t('dictionary.host'), id: 'host' }, { label: 'RDS', id: 'rds' }]
-      // }
       if (this.curScope === 'project') {
-        return [{ label: this.$t('dictionary.server'), id: 'server' }]
+        return [{ label: this.$t('dictionary.server'), id: 'server' }, { label: 'RDS', id: 'rds' }]
       } else {
-        return [{ label: this.$t('dictionary.server'), id: 'server' }, { label: this.$t('dictionary.host'), id: 'host' }]
+        return [{ label: this.$t('dictionary.server'), id: 'server' }, { label: this.$t('dictionary.host'), id: 'host' }, { label: 'RDS', id: 'rds' }]
       }
     },
     dimentions () {
@@ -298,7 +292,17 @@ export default {
     },
     toTableData () {
       const curMetric = this.form.getFieldValue('metric')
-      const names = (this.charts[curMetric?.value].chartData?.rows || []).map((row) => { return row.name })
+      let cRows = this.charts[curMetric?.value]?.chartData?.rows || []
+      if (!cRows.length) {
+        for (const k in this.charts) {
+          const rows = this.charts[k]?.chartData?.rows || []
+          if (rows.length) {
+            cRows = rows
+            break
+          }
+        }
+      }
+      const names = cRows.map((row) => { return row.name })
       const data = { columns: [], rows: [] }
       const namecolumn = this.getTableNameColumn()
       data.columns.push(namecolumn)
@@ -307,10 +311,7 @@ export default {
           field: 'external_id',
           title: this.$t('table.title.external_id'),
           formatter: ({ row }) => {
-            const targets = this.serverList.filter(item => item.vm_name === row.vm_name)
-            if (targets[0]) {
-              return targets[0].external_id || ''
-            }
+            return row.tags?.external_id || ''
           },
           onlyExport: true,
         })
@@ -318,10 +319,7 @@ export default {
           field: 'vm_id',
           title: 'ID',
           formatter: ({ row }) => {
-            const targets = this.serverList.filter(item => item.vm_name === row.vm_name)
-            if (targets[0]) {
-              return targets[0].vm_id || ''
-            }
+            return row.tags?.vm_id || ''
           },
           onlyExport: true,
         })
@@ -329,12 +327,9 @@ export default {
           field: 'elastic_ip',
           title: this.$t('common.eip'),
           formatter: ({ row }) => {
-            const targets = this.serverList.filter(item => item.vm_name === row.vm_name)
-            if (targets[0]) {
-              const row = targets[0]
-              if (row.eip && row.eip_mode === 'elastic_ip') {
-                return `${row.eip}(${this.$t('common_290')})`
-              }
+            const { tags = {} } = row
+            if (tags.eip && tags.eip_mode === 'elastic_ip') {
+              return `${tags.eip}(${this.$t('common_290')})`
             }
             return '-'
           },
@@ -344,45 +339,41 @@ export default {
           field: 'ip',
           title: 'IP',
           formatter: ({ row }) => {
-            const targets = this.serverList.filter(item => item.vm_name === row.vm_name)
-            if (targets[0]) {
-              const row = targets[0]
-              const ret = []
-              if (row.eip && row.eip_mode !== 'elastic_ip') {
-                ret.push(`${row.eip}(${this.$t('common_291')})`)
-              }
-              if (row.vm_ip) {
-                const iparr = row.vm_ip.split(',')
-                iparr.map(ip => {
-                  ret.push(`${ip}(${this.$t('common_287')})`)
-                })
-              }
-              if (row.vips) {
-                row.vips.map(ip => {
-                  ret.push(`${ip}(${this.$t('common_vip')})`)
-                })
-              }
-              if (row.vip) {
-                const iparr = row.vip.split(',')
-                iparr.map(ip => {
-                  ret.push(`${ip}(${this.$t('common_vip')})`)
-                })
-              }
-              if (row.vip_eip) {
-                const iparr = row.vip_eip.split(',')
-                iparr.map(ip => {
-                  ret.push(`${ip}(${this.$t('common_evip')})`)
-                })
-              }
-              if (row.metadata && row.metadata.sync_ips) {
-                const iparr = row.metadata.sync_ips.split(',')
-                iparr.map(ip => {
-                  ret.push(`${ip}(${this.$t('compute.esxi.sync_ips_outofrange')})`)
-                })
-              }
-              return ret.length ? ret.join(', ') : '-'
+            const { tags = {} } = row
+            const ret = []
+            if (tags.eip && tags.eip_mode !== 'elastic_ip') {
+              ret.push(`${tags.eip}(${this.$t('common_291')})`)
             }
-            return '-'
+            if (tags.vm_ip) {
+              const iparr = tags.vm_ip.split(',')
+              iparr.map(ip => {
+                ret.push(`${ip}(${this.$t('common_287')})`)
+              })
+            }
+            if (tags.vips) {
+              tags.vips.map(ip => {
+                ret.push(`${ip}(${this.$t('common_vip')})`)
+              })
+            }
+            if (tags.vip) {
+              const iparr = tags.vip.split(',')
+              iparr.map(ip => {
+                ret.push(`${ip}(${this.$t('common_vip')})`)
+              })
+            }
+            if (tags.vip_eip) {
+              const iparr = tags.vip_eip.split(',')
+              iparr.map(ip => {
+                ret.push(`${ip}(${this.$t('common_evip')})`)
+              })
+            }
+            if (tags.metadata && tags.metadata.sync_ips) {
+              const iparr = tags.metadata.sync_ips.split(',')
+              iparr.map(ip => {
+                ret.push(`${ip}(${this.$t('compute.esxi.sync_ips_outofrange')})`)
+              })
+            }
+            return ret.length ? ret.join(', ') : '-'
           },
           onlyExport: true,
         })
@@ -390,45 +381,41 @@ export default {
           field: 'all_ip',
           title: 'IP',
           formatter: ({ row }) => {
-            const targets = this.serverList.filter(item => item.vm_name === row.vm_name)
-            if (targets[0]) {
-              const row = targets[0]
-              const ret = []
-              if (row.eip) {
-                ret.push(`${row.eip}(${row.eip_mode === 'elastic_ip' ? this.$t('common_290') : this.$t('common_291')})`)
-              }
-              if (row.vm_ip) {
-                const iparr = row.vm_ip.split(',')
-                iparr.map(ip => {
-                  ret.push(`${ip}(${this.$t('common_287')})`)
-                })
-              }
-              if (row.vips) {
-                row.vips.map(ip => {
-                  ret.push(`${ip}(${this.$t('common_vip')})`)
-                })
-              }
-              if (row.vip) {
-                const iparr = row.vip.split(',')
-                iparr.map(ip => {
-                  ret.push(`${ip}(${this.$t('common_vip')})`)
-                })
-              }
-              if (row.vip_eip) {
-                const iparr = row.vip_eip.split(',')
-                iparr.map(ip => {
-                  ret.push(`${ip}(${this.$t('common_evip')})`)
-                })
-              }
-              if (row.metadata && row.metadata.sync_ips) {
-                const iparr = row.metadata.sync_ips.split(',')
-                iparr.map(ip => {
-                  ret.push(`${ip}(${this.$t('compute.esxi.sync_ips_outofrange')})`)
-                })
-              }
-              return ret.length ? ret.join(', ') : '-'
+            const { tags = {} } = row
+            const ret = []
+            if (tags.eip) {
+              ret.push(`${tags.eip}(${tags.eip_mode === 'elastic_ip' ? this.$t('common_290') : this.$t('common_291')})`)
             }
-            return '-'
+            if (tags.vm_ip) {
+              const iparr = tags.vm_ip.split(',')
+              iparr.map(ip => {
+                ret.push(`${ip}(${this.$t('common_287')})`)
+              })
+            }
+            if (tags.vips) {
+              tags.vips.map(ip => {
+                ret.push(`${ip}(${this.$t('common_vip')})`)
+              })
+            }
+            if (tags.vip) {
+              const iparr = tags.vip.split(',')
+              iparr.map(ip => {
+                ret.push(`${ip}(${this.$t('common_vip')})`)
+              })
+            }
+            if (tags.vip_eip) {
+              const iparr = tags.vip_eip.split(',')
+              iparr.map(ip => {
+                ret.push(`${ip}(${this.$t('common_evip')})`)
+              })
+            }
+            if (tags.metadata && tags.metadata.sync_ips) {
+              const iparr = tags.metadata.sync_ips.split(',')
+              iparr.map(ip => {
+                ret.push(`${ip}(${this.$t('compute.esxi.sync_ips_outofrange')})`)
+              })
+            }
+            return ret.length ? ret.join(', ') : '-'
           },
           noExport: true,
         })
@@ -546,9 +533,6 @@ export default {
               }
             }
             chart.loading = false
-            if (this.showVmIp) {
-              this.addServerList(series)
-            }
             resolve(true)
           }).catch(() => {
             chart.loading = false
@@ -606,9 +590,6 @@ export default {
     },
     handleResChange (res) {
       this.res = res
-      this.$nextTick(() => {
-        this.handleRefreshAll()
-      })
     },
     async handleRefresh () {
       const loading = this.startLoading()
@@ -638,17 +619,6 @@ export default {
       } finally {
         loading.stop()
       }
-    },
-    addServerList (series = []) {
-      series.map(item => {
-        const { tags = {} } = item
-        if (tags.vm_id) {
-          const idx = this.serverList.findIndex(s => s.vm_id === tags.vm_id)
-          if (idx === -1) {
-            this.serverList.push(tags)
-          }
-        }
-      })
     },
     filterNameByOem (name) {
       if (this.dimension.id === 'brand') {
