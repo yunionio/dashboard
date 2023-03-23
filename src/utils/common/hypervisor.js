@@ -153,3 +153,30 @@ export const getDisabledProvidersActionMeta = ({ row, rows, disabledProviders, m
   } catch (err) { }
   return ret
 }
+
+/**
+ * 判断当前平台是否支持磁盘区分介质
+ * @param {String} hypervisor kvm
+ * @returns {Boolean} 非公有云、飞天、hcs、hcso外支持 storagetype/medium 的格式为磁盘选择的key，返回true
+ */
+export const diskSupportTypeMedium = (hypervisor) => {
+  const cloudObj = typeClouds.hypervisorMap[hypervisor] || {}
+  if (cloudObj.cloud_env === 'public') {
+    return false
+  }
+  if (['hcs', 'hcso', 'apsara'].includes(hypervisor)) {
+    return false
+  }
+  return true
+}
+
+/**
+ * 返回 storagetype/medium 格式的key的原始key，即 storagetype
+ * @param {String} key local/ssd
+ * @returns {String} local
+ */
+export const getOriginDiskKey = (key) => {
+  if (!key) return ''
+  const list = key.split('/')
+  return list[0]
+}

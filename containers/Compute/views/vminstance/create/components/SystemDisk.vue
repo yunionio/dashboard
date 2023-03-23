@@ -30,6 +30,8 @@ import { MEDIUM_MAP } from '@Compute/constants'
 import { IMAGES_TYPE_MAP, STORAGE_TYPES, DISK_LABEL_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import { findAndUnshift, findAndPush } from '@/utils/utils'
+import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
+
 // 磁盘最小值
 export const DISK_MIN_SIZE = 10
 // let isFirstSetDefaultSize = true
@@ -190,20 +192,18 @@ export default {
         const type = typeItemArr[0]
         const medium = typeItemArr[1]
         let opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
-        if (!this.isPublic) {
-          if ((hyper === HYPERVISORS_MAP.kvm.key || hyper === HYPERVISORS_MAP.cloudpods.key) && type === 'local') {
-            opt = hypervisorDisks[`${type}-${medium}`] // kvm 区分多种介质的硬盘
-          } else {
-            opt = {
-              ...opt,
-              label: `${opt.label}(${MEDIUM_MAP[medium]})`,
-            }
+        // 磁盘区分介质
+        if (diskSupportTypeMedium(hyper)) {
+          opt = {
+            ...opt,
+            key: `${type}/${medium}`,
+            label: `${opt.label}(${MEDIUM_MAP[medium]})`,
           }
         }
         if (opt && !opt.sysUnusable) {
           // 新建ucloud虚拟机时，系统盘类型选择普通本地盘或SSD本地盘，其大小只能是系统镜像min_disk大小
           let max = opt.sysMax
-          if (hyper === HYPERVISORS_MAP.ucloud.key && ['LOCAL_NORMAL', 'LOCAL_SSD'].includes(opt.key)) {
+          if (hyper === HYPERVISORS_MAP.ucloud.key && ['LOCAL_NORMAL', 'LOCAL_SSD'].includes(getOriginDiskKey(opt.key))) {
             max = this.imageMinDisk
           }
           // 谷歌云共享核心磁盘最多为3072GB
@@ -222,13 +222,6 @@ export default {
           }
         }
       }
-      // if (this.isIDC && this.hypervisor !== HYPERVISORS_MAP.kvm.key) {
-      //   ret[STORAGE_AUTO.key] = {
-      //     ...STORAGE_AUTO,
-      //     sysMin: Math.max(this.imageMinDisk, DISK_MIN_SIZE),
-      //     sysMax: STORAGE_AUTO.sysMax,
-      //   }
-      // }
       if (this.hypervisor === HYPERVISORS_MAP.google.key) {
         delete ret['local-ssd']
       }
