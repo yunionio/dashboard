@@ -354,6 +354,8 @@ export const PERMISSION = {
   commonalerts_list: ['monitor', 'commonalerts', 'list'],
   // 资源消费预警
   costalerts_list: ['meter', 'costalerts', 'list'],
+  // 巡检
+  check_list: ['autoupdate', 'checks', 'list'],
   /**
    * server 相关操作
    */
