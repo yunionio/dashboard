@@ -116,7 +116,7 @@ import MemRadio from '@Compute/sections/MemRadio'
 import DataDisk from '@Compute/sections/DataDisk'
 import SystemDisk from '@Compute/views/vminstance/create/components/SystemDisk'
 import sku from '@Compute/sections/SKU'
-import { SERVER_TYPE, EIP_TYPES_MAP } from '@Compute/constants'
+import { SERVER_TYPE, EIP_TYPES_MAP, MEDIUM_MAP } from '@Compute/constants'
 import SystemIcon from '@/sections/SystemIcon'
 import { Manager } from '@/utils/manager'
 import WindowsMixin from '@/mixins/windows'
@@ -130,7 +130,7 @@ import {
   getStatusTableColumn,
   getRegionTableColumn,
 } from '@/utils/common/tableColumn'
-import { findPlatform } from '@/utils/common/hypervisor'
+import { findPlatform, diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
 import { isRequired } from '@/utils/validate'
 import { sizestr } from '@/utils/utils'
 import { STORAGE_TYPES } from '@/constants/compute'
@@ -619,15 +619,12 @@ export default {
       }
       return types
     },
-    needLocalMedium () {
-      return (this.selectedItem.hypervisor === HYPERVISORS_MAP.kvm.hypervisor || this.selectedItem.hypervisor === HYPERVISORS_MAP.cloudpods.hypervisor)
-    },
     dataDiskStorageParams () {
       const { systemDiskType = {}, hypervisor } = this.form.fd
       let key = systemDiskType.key || ''
-      // 针对kvm-local盘特殊处理
-      if (key.indexOf('local') !== -1 && (hypervisor === 'kvm' || hypervisor === 'cloudpods')) {
-        key = key.split('-')[0]
+      // 磁盘区分介质
+      if (diskSupportTypeMedium(hypervisor)) {
+        key = getOriginDiskKey(key)
       }
       const { prefer_manager, schedtag } = this.form.fd
       const params = {
@@ -670,6 +667,11 @@ export default {
         this.$bus.$emit('VMGetPrice', `${ret} ${val}`)
       },
       immediate: true,
+    },
+    dataDiskType (val, oldV) {
+      if (val !== oldV) {
+        this.getPriceList()
+      }
     },
   },
   created () {
@@ -724,16 +726,17 @@ export default {
       if (this.form.fd.sysdisks && this.form.fd.sysdisks.length === 1) {
         this.sysdisk = this.form.fd.sysdisks[0]
         const storageItem = STORAGE_TYPES[this.selectedItem.hypervisor]
-        // 针对kvm-local盘特殊处理
+        // 磁盘区分介质
         let diskKey = this.sysdisk.type
+        let diskLabel = R.is(Object, storageItem) ? (storageItem[diskKey]?.label || diskKey) : diskKey
         const { disk_type, medium_type } = this.selectedItem.disks_info[0] || {}
-        if (!this.isPublic) {
-          if ((this.selectedItem.hypervisor === HYPERVISORS_MAP.kvm.hypervisor || this.selectedItem.hypervisor === HYPERVISORS_MAP.cloudpods.hypervisor) && diskKey === 'local' && disk_type === 'sys' && medium_type) {
-            diskKey = `${diskKey}-${medium_type}`
-          }
+
+        if (diskSupportTypeMedium(this.selectedItem.hypervisor) && disk_type === 'sys' && medium_type) {
+          diskLabel = `${diskLabel}(${MEDIUM_MAP[medium_type]})`
+          diskKey = `${diskKey}/${medium_type}`
         }
         this.form.fd.defaultType = {
-          [this.decorators.systemDisk.type[0]]: { key: diskKey, label: R.is(Object, storageItem) ? (storageItem[diskKey]?.label || diskKey) : diskKey },
+          [this.decorators.systemDisk.type[0]]: { key: diskKey, label: diskLabel },
         }
       }
 
@@ -950,18 +953,18 @@ export default {
         }
         if (values.dataDiskTypes) {
           if (values.dataDiskTypes[key]) {
-            // 针对kvm-local盘特殊处理
+            // 磁盘区分介质
             let diskKey = values.dataDiskTypes[key].key
-            if (diskKey.indexOf('local') !== -1 && this.needLocalMedium) {
-              diskKey = diskKey.split('-')[0]
+            if (diskSupportTypeMedium(this.selectedItem.hypervisor)) {
+              diskKey = getOriginDiskKey(diskKey)
             }
             diskObj.backend = diskKey
           } else {
             if (_.get(dataDisks, '[0].diskType.key')) {
-              // 针对kvm-local盘特殊处理
+              // 磁盘区分介质
               let diskKey = _.get(dataDisks, '[0].diskType.key') // 默认添加的盘和第一块保持一致
-              if (diskKey.indexOf('local') !== -1 && this.needLocalMedium) {
-                diskKey = diskKey.split('-')[0]
+              if (diskSupportTypeMedium(this.selectedItem.hypervisor)) {
+                diskKey = getOriginDiskKey(diskKey)
               }
               diskObj.backend = diskKey
             }
@@ -987,10 +990,10 @@ export default {
         if (values.dataDiskStorages && values.dataDiskStorages[key]) {
           diskObj.storage_id = values.dataDiskStorages[key]
         }
-        // 磁盘介质
+        // 磁盘区分介质
         if (values.dataDiskTypes && values.dataDiskTypes[key]) {
           const { key: dataDiskKey = '' } = values.dataDiskTypes[key] || {}
-          if (this.needLocalMedium && dataDiskKey.split('-')[1]) {
+          if (diskSupportTypeMedium(this.selectedItem.hypervisor) && dataDiskKey.split('/')[1]) {
             diskObj.medium = dataDiskKey.split('-')[1]
           }
         }
@@ -1113,18 +1116,18 @@ export default {
       const { systemDiskSize, systemDiskType } = f
       const { systemDiskMedium, dataDiskMedium } = this.form.fi
       let systemDisk = systemDiskType.key
-      // 针对kvm-local盘特殊处理
-      if (systemDisk.indexOf('local') !== -1 && this.hypervisor === 'kvm') {
-        systemDisk = systemDisk.split('-')[0]
+      // 磁盘区分介质
+      if (diskSupportTypeMedium(this.selectedItem.hypervisor)) {
+        systemDisk = getOriginDiskKey(systemDisk)
       }
       if (!isPublic) systemDisk = `${systemDiskMedium}::${systemDisk}`
       pf.addDisk(systemDisk, systemDiskSize)
       if (this.dataDiskType) {
         const datadisks = Object.values(this.form.fd.dataDiskSizes || {})
         let dataDisk = this.dataDiskType
-        // 针对kvm-local盘特殊处理
-        if (dataDisk.indexOf('local') !== -1 && this.hypervisor === 'kvm') {
-          dataDisk = dataDisk.split('-')[0]
+        // 磁盘区分介质
+        if (diskSupportTypeMedium(this.selectedItem.hypervisor)) {
+          dataDisk = getOriginDiskKey(dataDisk)
         }
         if (!isPublic) dataDisk = `${dataDiskMedium}::${dataDisk}`
         pf.addDisks(dataDisk, datadisks)
