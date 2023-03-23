@@ -178,6 +178,7 @@ import { resolveValueChangeField } from '@/utils/common/ant'
 import { HYPERVISORS_MAP } from '@/constants'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
 import mixin from './mixin'
+import { uuid } from '@/utils/utils'
 
 export default {
   name: 'VMPrivateCreate',
@@ -362,6 +363,7 @@ export default {
         show_emulated: true,
         resource_type: 'shared',
         ...this.scopeParams,
+        $t: uuid(),
       }
       let id = this.cloudregionZoneParams.cloudregion
       let resource = 'cloudregions'
@@ -369,12 +371,16 @@ export default {
         id = this.cloudregionZoneParams.zone
         resource = 'zones'
       }
-      const capabilityParams = { id, spec: 'capability', params }
+      const capabilityParams = { id, spec: 'capability', params, $t: uuid() }
       if (!id) return
       if (R.equals(this.capabilityParams, capabilityParams)) return // 和已有的参数一样则不发请求
       this.capabilityParams = capabilityParams
-      new this.$Manager(resource).getSpecific(this.capabilityParams)
+      new this.$Manager(resource).getSpecific(capabilityParams)
         .then(({ data }) => {
+          const { cloudregion = {} } = this.form.fd
+          if (resource === 'cloudregions' && cloudregion.key && id !== cloudregion.key) {
+            return
+          }
           this.form.fi.capability = {
             ...data,
             hypervisors: data.hypervisors.filter(val => val !== 'baremetal'),
@@ -383,6 +389,7 @@ export default {
           this.form.fc.setFieldsValue({
             hypervisor: this.form.fi.capability.hypervisors[0], // 赋值默认第一个平台
           })
+          this.$set(this.form.fd, 'hypervisor', this.form.fi.capability.hypervisors[0])
           this.$nextTick(this.fetchInstanceSpecs)
         })
     },
