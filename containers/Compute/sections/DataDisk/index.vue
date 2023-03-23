@@ -43,6 +43,7 @@ import { MEDIUM_MAP } from '@Compute/constants'
 import { STORAGE_TYPES } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import { uuid, findAndUnshift, findAndPush } from '@/utils/utils'
+import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
 
 // 磁盘最小值
 const DISK_MIN_SIZE = 10
@@ -214,14 +215,12 @@ export default {
         const type = typeItemArr[0]
         const medium = typeItemArr[1]
         let opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
-        if (!this.isPublic) {
-          if ((hyper === HYPERVISORS_MAP.kvm.key || hyper === HYPERVISORS_MAP.cloudpods.key) && type === 'local' && this.isSomeLocal(currentTypes)) {
-            opt = hypervisorDisks[`${type}-${medium}`]
-          } else {
-            opt = {
-              ...opt,
-              label: `${opt.label}(${MEDIUM_MAP[medium]})`,
-            }
+        // 磁盘区分介质
+        if (diskSupportTypeMedium(hyper)) {
+          opt = {
+            ...opt,
+            key: `${type}/${medium}`,
+            label: `${opt.label}(${MEDIUM_MAP[medium]})`,
           }
         }
         if (opt) {
@@ -296,9 +295,9 @@ export default {
       const hypervisor = _.get(this.form.fd, 'hypervisor')
 
       if (diskTypeKey) {
-        // 针对kvm-local盘特殊处理
-        if (diskTypeKey.indexOf('local') !== -1 && (hypervisor === 'kvm' || hypervisor === 'cloudpods')) {
-          diskTypeKey = diskTypeKey.split('-')[0]
+        // 磁盘区分介质
+        if (diskSupportTypeMedium(hypervisor)) {
+          diskTypeKey = getOriginDiskKey(diskTypeKey)
         }
         staticParams['joint_filter.0'] = `storages.id(storage_id).storage_type.equals(${diskTypeKey})`
       }
@@ -365,8 +364,9 @@ export default {
     add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath, min, disabled = false, sizeDisabled = false, medium, ...ret } = {}) {
       const key = uuid()
       let newDiskType = diskType
-      if ((this.getHypervisor() === HYPERVISORS_MAP.kvm.key || this.getHypervisor() === HYPERVISORS_MAP.cloudpods.key) && diskType === 'local' && medium && this.isSomeLocal(Object.keys(this.typesMap))) {
-        newDiskType = `${diskType}-${medium}`
+      // 磁盘区分介质
+      if (diskSupportTypeMedium(this.hypervisor) && medium) {
+        newDiskType = `${diskType}/${medium}`
       }
       const typeObj = this.typesMap[newDiskType]
       let dataDiskTypes = {

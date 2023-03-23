@@ -116,6 +116,7 @@ import { resolveValueChangeField } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
 import OsArch from '@/sections/OsArch'
 import mixin from './mixin'
+import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
 
 export default {
   name: 'VM_IDCCreate',
@@ -319,9 +320,9 @@ export default {
     storageParams () {
       const { systemDiskType = {}, hypervisor } = this.form.fd
       let key = systemDiskType.key || ''
-      // 针对kvm-local盘特殊处理
-      if (key.indexOf('local') !== -1 && (hypervisor === 'kvm' || hypervisor === 'cloudpods')) {
-        key = key.split('-')[0]
+      // 磁盘区分介质
+      if (diskSupportTypeMedium(hypervisor)) {
+        key = getOriginDiskKey(key)
       }
       const params = {
         ...this.scopeParams,
@@ -340,9 +341,9 @@ export default {
       for (const key in dataDiskSizes) {
         if (this.form.fd[`dataDiskTypes[${key}]`]) {
           dataDiskType = this.form.fd[`dataDiskTypes[${key}]`].key
-          // 针对kvm-local盘特殊处理
-          if (dataDiskType.indexOf('local') !== -1 && (hypervisor === 'kvm' || hypervisor === 'cloudpods')) {
-            dataDiskType = dataDiskType.split('-')[0]
+          // 磁盘区分介质
+          if (diskSupportTypeMedium(hypervisor)) {
+            dataDiskType = getOriginDiskKey(dataDiskType)
           }
         }
       }

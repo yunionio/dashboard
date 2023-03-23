@@ -62,6 +62,7 @@ import { sizestrWithUnit } from '@/utils/utils'
 import { PriceFetcher } from '@/utils/common/price'
 import SideErrors from '@/sections/SideErrors'
 import DiscountPrice from '@/sections/DiscountPrice'
+import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
 
 export default {
   name: 'BottomBar',
@@ -264,7 +265,7 @@ export default {
       immediate: true,
     },
     dataDiskType (val, oldV) {
-      if (val !== oldV && this.isPublic) {
+      if (val !== oldV) {
         this.getPriceList()
       }
     },
@@ -299,7 +300,7 @@ export default {
       'dataDiskSizes',
       'fd.gpu',
       'fd.gpuCount',
-    ], (val) => {
+    ], (val, oldval) => {
       if (val) {
         this.getPriceList()
       }
@@ -439,18 +440,18 @@ export default {
       const { systemDiskSize, systemDiskType, hypervisor } = f
       const { systemDiskMedium, dataDiskMedium } = this.form.fi
       let systemDisk = systemDiskType.key
-      // 针对kvm-local盘特殊处理
-      if (systemDisk.indexOf('local') !== -1 && (hypervisor === 'kvm' || hypervisor === 'cloudpods')) {
-        systemDisk = systemDisk.split('-')[0]
+      // 磁盘区分介质
+      if (diskSupportTypeMedium(hypervisor)) {
+        systemDisk = getOriginDiskKey(systemDisk)
       }
       if (this.fi.createType !== SERVER_TYPE.public) systemDisk = `${systemDiskMedium}::${systemDisk}`
       pf.addDisk(systemDisk, systemDiskSize)
       if (this.dataDiskType) {
         const datadisks = this.dataDiskSizes || (this.dataDisk ? [this.dataDisk] : [])
         let dataDisk = this.dataDiskType
-        // 针对kvm-local盘特殊处理
-        if (dataDisk.indexOf('local') !== -1 && (hypervisor === 'kvm' || hypervisor === 'cloudpods')) {
-          dataDisk = dataDisk.split('-')[0]
+        // 磁盘区分介质
+        if (diskSupportTypeMedium(hypervisor)) {
+          dataDisk = getOriginDiskKey(dataDisk)
         }
         if (this.fi.createType !== SERVER_TYPE.public) dataDisk = `${dataDiskMedium}::${dataDisk}`
         pf.addDisks(dataDisk, datadisks)
