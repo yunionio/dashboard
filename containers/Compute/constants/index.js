@@ -805,6 +805,15 @@ export const STORAGE_TYPES = {
       sysMax: 1024,
       sort: 1,
     },
+    volume_type1: {
+      label: 'volume_type1',
+      value: 'volume_type1',
+      min: 10,
+      max: 32768,
+      sysMin: 20,
+      sysMax: 1024,
+      sort: 4,
+    },
   },
   openstack: {
     iscsi: {
