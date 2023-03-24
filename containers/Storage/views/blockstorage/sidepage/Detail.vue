@@ -67,7 +67,7 @@ export default {
           title: this.$t('storage.text_38'),
           slots: {
             default: ({ row }) => {
-              return STORAGE_TYPES[row.storage_type] || '-'
+              return STORAGE_TYPES[row.storage_type] || row.storage_type || '-'
             },
           },
         },
