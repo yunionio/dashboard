@@ -29,6 +29,7 @@ const bingocloudLogo = require('../../../../src/assets/images/providers/bingoclo
 const incloudsphereLogo = require('../../../../src/assets/images/providers/incloudsphere.svg')
 const remotefileLogo = require('../../../../src/assets/images/providers/remotefile.svg')
 const proxmoxLogo = require('../../../../src/assets/images/providers/proxmox.svg')
+const h3cLogo = require('../../../../src/assets/images/providers/h3c.svg')
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
@@ -191,6 +192,12 @@ export const CLOUDACCOUNT_TYPES = {
       component: 'ProxmoxCreate',
       provider: providerMap.proxmox.key,
     },
+    h3c: {
+      name: providerMap.h3c.label,
+      logo: h3cLogo,
+      component: 'H3CCreate',
+      provider: providerMap.h3c.key,
+    },
   },
   storage: {
     s3: {
@@ -250,6 +257,7 @@ export function getCloudaccountDocs (scope) {
     bingocloud: i18n.t('cloudenv.create_bingocloud', [docs_path]),
     incloudsphere: i18n.t('cloudenv.create_incloudsphere', [docs_path]),
     proxmox: i18n.t('cloudenv.create_proxmox', [docs_path]),
+    h3c: i18n.t('cloudenv.create_h3c', [docs_path]),
   }
   // if (isCE()) {
   //   Object.keys(docs).forEach(v => {
@@ -630,6 +638,19 @@ export const keySecretFields = {
       s: i18n.t('cloudenv.text_147'),
     },
   },
+  h3c: {
+    k: 'username',
+    s: 'password',
+    text: 'H3C',
+    placeholder: {
+      k: i18n.t('cloudenv.text_151'),
+      s: i18n.t('cloudenv.text_150'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_94'),
+      s: i18n.t('cloudenv.text_147'),
+    },
+  },
 }
 
 export function getBillBucketUrlDocs (scope) {
@@ -669,4 +690,5 @@ export const notSupportSelectRegion = [
   providerMap.hcs.key,
   providerMap.incloudsphere.key,
   providerMap.remotefile.key,
+  providerMap.h3c.key,
 ]
