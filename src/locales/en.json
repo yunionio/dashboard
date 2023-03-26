@@ -1815,7 +1815,8 @@
     "Nutanix": "Nutanix",
     "BingoCloud": "BingoCloud",
     "RemoteFile": "RemoteFile",
-    "Proxmox": "Proxmox"
+    "Proxmox": "Proxmox",
+    "H3C": "H3C"
   },
   "shareScope": {
     "system": "System",
@@ -2119,7 +2120,8 @@
     "hcsop": "HCSOP",
     "hcs": "HCS",
     "nutanix": "Nutanix",
-    "bingocloud": "BingoCloud"
+    "bingocloud": "BingoCloud",
+    "h3c": "H3C"
   },
   "bandwidths": {
     "100": "one hundred megabytes (100M)",
@@ -5203,6 +5205,7 @@
   "license.provider.incloudsphere": "@:cloudPrvidersMap.IncloudSphere",
   "license.provider.remotefile": "@:cloudPrvidersMap.RemoteFile",
   "license.provider.proxmox": "@:cloudPrvidersMap.Proxmox",
+  "license.provider.h3c": "@:cloudPrvidersMap.H3C",
   "license.provider.s3": "S3",
   "license.provider.ceph": "Ceph",
   "license.provider.xsky": "XSKY",
