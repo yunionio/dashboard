@@ -152,8 +152,8 @@ export default {
     dimension () {
       return this.dimentions.filter((d) => { return d.id === this.dimentionId })[0]
     },
-    showVmIp () {
-      return this.res === 'server' && this.dimentionId === 'vm_id'
+    showIp () {
+      return (this.res === 'server' && this.dimentionId === 'vm_id') || (this.res === 'rds' && this.dimentionId === 'rds_id')
     },
   },
   watch: {
@@ -306,7 +306,7 @@ export default {
       const data = { columns: [], rows: [] }
       const namecolumn = this.getTableNameColumn()
       data.columns.push(namecolumn)
-      if (this.showVmIp) {
+      if (this.showIp) {
         data.columns.push({
           field: 'external_id',
           title: this.$t('table.title.external_id'),
@@ -316,109 +316,153 @@ export default {
           onlyExport: true,
         })
         data.columns.push({
-          field: 'vm_id',
+          field: 'id',
           title: 'ID',
           formatter: ({ row }) => {
-            return row.tags?.vm_id || ''
+            if (this.res === 'server') {
+              return row.tags?.vm_id || ''
+            }
+            if (this.res === 'rds') {
+              return row.tags?.rds_id || ''
+            }
+            return ''
           },
           onlyExport: true,
         })
-        data.columns.push({
-          field: 'elastic_ip',
-          title: this.$t('common.eip'),
-          formatter: ({ row }) => {
-            const { tags = {} } = row
-            if (tags.eip && tags.eip_mode === 'elastic_ip') {
-              return `${tags.eip}(${this.$t('common_290')})`
-            }
-            return '-'
-          },
-          onlyExport: true,
-        })
-        data.columns.push({
-          field: 'ip',
-          title: 'IP',
-          formatter: ({ row }) => {
-            const { tags = {} } = row
-            const ret = []
-            if (tags.eip && tags.eip_mode !== 'elastic_ip') {
-              ret.push(`${tags.eip}(${this.$t('common_291')})`)
-            }
-            if (tags.vm_ip) {
-              const iparr = tags.vm_ip.split(',')
-              iparr.map(ip => {
-                ret.push(`${ip}(${this.$t('common_287')})`)
-              })
-            }
-            if (tags.vips) {
-              tags.vips.map(ip => {
-                ret.push(`${ip}(${this.$t('common_vip')})`)
-              })
-            }
-            if (tags.vip) {
-              const iparr = tags.vip.split(',')
-              iparr.map(ip => {
-                ret.push(`${ip}(${this.$t('common_vip')})`)
-              })
-            }
-            if (tags.vip_eip) {
-              const iparr = tags.vip_eip.split(',')
-              iparr.map(ip => {
-                ret.push(`${ip}(${this.$t('common_evip')})`)
-              })
-            }
-            if (tags.metadata && tags.metadata.sync_ips) {
-              const iparr = tags.metadata.sync_ips.split(',')
-              iparr.map(ip => {
-                ret.push(`${ip}(${this.$t('compute.esxi.sync_ips_outofrange')})`)
-              })
-            }
-            return ret.length ? ret.join(', ') : '-'
-          },
-          onlyExport: true,
-        })
-        data.columns.push({
-          field: 'all_ip',
-          title: 'IP',
-          formatter: ({ row }) => {
-            const { tags = {} } = row
-            const ret = []
-            if (tags.eip) {
-              ret.push(`${tags.eip}(${tags.eip_mode === 'elastic_ip' ? this.$t('common_290') : this.$t('common_291')})`)
-            }
-            if (tags.vm_ip) {
-              const iparr = tags.vm_ip.split(',')
-              iparr.map(ip => {
-                ret.push(`${ip}(${this.$t('common_287')})`)
-              })
-            }
-            if (tags.vips) {
-              tags.vips.map(ip => {
-                ret.push(`${ip}(${this.$t('common_vip')})`)
-              })
-            }
-            if (tags.vip) {
-              const iparr = tags.vip.split(',')
-              iparr.map(ip => {
-                ret.push(`${ip}(${this.$t('common_vip')})`)
-              })
-            }
-            if (tags.vip_eip) {
-              const iparr = tags.vip_eip.split(',')
-              iparr.map(ip => {
-                ret.push(`${ip}(${this.$t('common_evip')})`)
-              })
-            }
-            if (tags.metadata && tags.metadata.sync_ips) {
-              const iparr = tags.metadata.sync_ips.split(',')
-              iparr.map(ip => {
-                ret.push(`${ip}(${this.$t('compute.esxi.sync_ips_outofrange')})`)
-              })
-            }
-            return ret.length ? ret.join(', ') : '-'
-          },
-          noExport: true,
-        })
+        if (this.res === 'rds') {
+          data.columns.push({
+            field: 'internal_connection_str',
+            title: this.$t('monitor.inside_addr'),
+            formatter: ({ row }) => {
+              const { tags = {} } = row
+              return tags.internal_connection_str || '-'
+            },
+            onlyExport: true,
+          })
+          data.columns.push({
+            field: 'connection_str',
+            title: this.$t('monitor.outside_addr'),
+            formatter: ({ row }) => {
+              const { tags = {} } = row
+              return tags.connection_str || '-'
+            },
+            onlyExport: true,
+          })
+          data.columns.push({
+            field: 'all_ip',
+            title: this.$t('monitor.address'),
+            formatter: ({ row }) => {
+              const { tags = {} } = row
+              const ret = []
+              if (tags.connection_str) {
+                ret.push(`${tags.connection_str}(${this.$t('monitor.outside_addr')})`)
+              }
+              if (tags.internal_connection_str) {
+                ret.push(`${tags.internal_connection_str}(${this.$t('monitor.inside_addr')})`)
+              }
+              return ret.length ? ret.join(',') : '-'
+            },
+            noExport: true,
+          })
+        }
+        if (this.res === 'server') {
+          data.columns.push({
+            field: 'elastic_ip',
+            title: this.$t('common.eip'),
+            formatter: ({ row }) => {
+              const { tags = {} } = row
+              if (tags.eip && tags.eip_mode === 'elastic_ip') {
+                return `${tags.eip}(${this.$t('common_290')})`
+              }
+              return '-'
+            },
+            onlyExport: true,
+          })
+          data.columns.push({
+            field: 'ip',
+            title: 'IP',
+            formatter: ({ row }) => {
+              const { tags = {} } = row
+              const ret = []
+              if (tags.eip && tags.eip_mode !== 'elastic_ip') {
+                ret.push(`${tags.eip}(${this.$t('common_291')})`)
+              }
+              if (tags.vm_ip) {
+                const iparr = tags.vm_ip.split(',')
+                iparr.map(ip => {
+                  ret.push(`${ip}(${this.$t('common_287')})`)
+                })
+              }
+              if (tags.vips) {
+                tags.vips.map(ip => {
+                  ret.push(`${ip}(${this.$t('common_vip')})`)
+                })
+              }
+              if (tags.vip) {
+                const iparr = tags.vip.split(',')
+                iparr.map(ip => {
+                  ret.push(`${ip}(${this.$t('common_vip')})`)
+                })
+              }
+              if (tags.vip_eip) {
+                const iparr = tags.vip_eip.split(',')
+                iparr.map(ip => {
+                  ret.push(`${ip}(${this.$t('common_evip')})`)
+                })
+              }
+              if (tags.metadata && tags.metadata.sync_ips) {
+                const iparr = tags.metadata.sync_ips.split(',')
+                iparr.map(ip => {
+                  ret.push(`${ip}(${this.$t('compute.esxi.sync_ips_outofrange')})`)
+                })
+              }
+              return ret.length ? ret.join(', ') : '-'
+            },
+            onlyExport: true,
+          })
+          data.columns.push({
+            field: 'all_ip',
+            title: 'IP',
+            formatter: ({ row }) => {
+              const { tags = {} } = row
+              const ret = []
+              if (tags.eip) {
+                ret.push(`${tags.eip}(${tags.eip_mode === 'elastic_ip' ? this.$t('common_290') : this.$t('common_291')})`)
+              }
+              if (tags.vm_ip) {
+                const iparr = tags.vm_ip.split(',')
+                iparr.map(ip => {
+                  ret.push(`${ip}(${this.$t('common_287')})`)
+                })
+              }
+              if (tags.vips) {
+                tags.vips.map(ip => {
+                  ret.push(`${ip}(${this.$t('common_vip')})`)
+                })
+              }
+              if (tags.vip) {
+                const iparr = tags.vip.split(',')
+                iparr.map(ip => {
+                  ret.push(`${ip}(${this.$t('common_vip')})`)
+                })
+              }
+              if (tags.vip_eip) {
+                const iparr = tags.vip_eip.split(',')
+                iparr.map(ip => {
+                  ret.push(`${ip}(${this.$t('common_evip')})`)
+                })
+              }
+              if (tags.metadata && tags.metadata.sync_ips) {
+                const iparr = tags.metadata.sync_ips.split(',')
+                iparr.map(ip => {
+                  ret.push(`${ip}(${this.$t('compute.esxi.sync_ips_outofrange')})`)
+                })
+              }
+              return ret.length ? ret.join(', ') : '-'
+            },
+            noExport: true,
+          })
+        }
       }
       const tr = {}
       for (const k in this.charts) {

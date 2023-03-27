@@ -15,6 +15,7 @@
           ref="overviewTable"
           :columns="columns"
           max-height="400"
+          :scroll-x="{enabled: false}"
           :data="tableData.rows">
           <template v-slot:empty>
             <loader :loading="loading" :noDataText="$t('common.notData')" />
