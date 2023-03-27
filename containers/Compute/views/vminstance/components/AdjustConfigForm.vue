@@ -740,7 +740,8 @@ export default {
         }
       }
 
-      const { medium_type: dataDiskMedium } = this.selectedItem.disks_info[1] || {}
+      const dataDisks = this.selectedItem.disks_info.filter(item => item.disk_type === 'data')
+      const { medium_type: dataDiskMedium } = dataDisks[0] || {}
       this.$nextTick(() => {
         this.diskLoaded = true
         this.form.fc.setFieldsValue({ vcpu: this.form.fd.vcpu_count, vmem: this.form.fd.vmem })
