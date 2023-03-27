@@ -131,6 +131,10 @@ const LicenseItems = [
     meta: meta('resource_managent', 'private', true),
   },
   {
+    key: 'hcsop',
+    meta: meta('resource_managent', 'private', true),
+  },
+  {
     key: 'hcs',
     meta: meta('resource_managent', 'private', true),
   },
@@ -162,6 +166,10 @@ const LicenseItems = [
   },
   {
     key: 'proxmox',
+    meta: meta('resource_managent', 'private', true),
+  },
+  {
+    key: 'h3c',
     meta: meta('resource_managent', 'private', true),
   },
   {
