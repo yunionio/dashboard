@@ -292,5 +292,8 @@
   "monitor.notification_type": "Notify Type",
   "monitor.role": "Role",
   "monitor.instance_engine": "Engine",
-  "monitor.tag_key": "Tag key: "
+  "monitor.tag_key": "Tag key: ",
+  "monitor.address": "Address",
+  "monitor.inside_addr": "Intranet address",
+  "monitor.outside_addr": "External network address"
 }
