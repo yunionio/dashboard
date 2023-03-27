@@ -292,5 +292,8 @@
   "monitor.notification_type": "通知类型",
   "monitor.role": "角色",
   "monitor.instance_engine": "实例引擎",
-  "monitor.tag_key": "标签键："
+  "monitor.tag_key": "标签键：",
+  "monitor.address": "地址",
+  "monitor.inside_addr": "内网地址",
+  "monitor.outside_addr": "外网地址"
 }
