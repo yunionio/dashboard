@@ -226,3 +226,19 @@ export default {
   },
 }
 </script>
+<style lang="less" scoped>
+.tag-list {
+  min-height: 65px;
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+.tag {
+  max-width: 100%;
+  line-height: 20px;
+  margin-right: 10px;
+  padding: 0 6px 0 4px;
+  font-size: 12px;
+  border-style: solid;
+  border-width: 1px;
+}
+</style>
