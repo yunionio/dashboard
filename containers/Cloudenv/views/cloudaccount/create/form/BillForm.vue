@@ -73,7 +73,13 @@
         <a-switch v-decorator="decorators.sync_info" />
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_212')" v-if="form.fc.getFieldValue('sync_info')" :extra="$t('cloudenv.text_213')">
-        <a-month-picker v-decorator="decorators.month" :disabled-date="disabledDate" valueFormat="YYYYMM" format="YYYY-MM" />
+        <a-form-item style="display:inline-block">
+          <a-date-picker :disabled-date="dateDisabledStart" v-decorator="decorators.start_day" />
+        </a-form-item>
+        <span class="ml-2 mr-2">~</span>
+        <a-form-item style="display:inline-block">
+          <a-date-picker :disabled-date="dateDisabledEnd" v-decorator="decorators.end_day" />
+        </a-form-item>
       </a-form-item>
     </a-form>
   </div>
@@ -232,8 +238,13 @@ export default {
             ],
           },
         ],
-        month: ['month', {
-          initialValue: this.$moment().format('YYYYMM'),
+        start_day: ['start_day', {
+          initialValue: this.$moment().startOf('month'),
+          rules: [{ required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.text_461')]) }],
+        }],
+        end_day: ['end_day', {
+          initialValue: this.$moment(),
+          rules: [{ required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.text_462')]) }],
         }],
         billing_scope: [
           'billing_scope',
@@ -313,11 +324,12 @@ export default {
     async postBillTasks (id, values) {
       const manager = new this.$Manager('billtasks/submit', 'v1')
       try {
-        const { month } = values
+        const { start_day, end_day } = values
         const data = {
           account_id: id,
-          task_type: 'pull_bills',
-          month,
+          task_type: 'pull_bill',
+          start_day: this.$moment(start_day).format('YYYYMM'),
+          end_day: this.$moment(end_day).format('YYYYMM'),
         }
         await manager.create({
           data,
@@ -333,7 +345,8 @@ export default {
           this.postBillTasks(id, values)
         }
         delete values.sync_info
-        delete values.month
+        delete values.start_day
+        delete values.end_day
         const params = {
           id,
           data: {
@@ -380,18 +393,18 @@ export default {
         })
       } else return false
     },
-    // dateDisabledStart (value) {
-    //   const dateEnd = this.form.fc.getFieldValue('billtask_end')
-    //   if (dateEnd && value > dateEnd) return true
-    //   if (value > this.$moment()) return true
-    //   return false
-    // },
-    // dateDisabledEnd (value) {
-    //   const dateStart = this.form.fc.getFieldValue('billtask_start')
-    //   if (dateStart && value < dateStart) return true
-    //   if (value > this.$moment()) return true
-    //   return false
-    // },
+    dateDisabledStart (value) {
+      const dateEnd = this.form.fc.getFieldValue('billtask_end')
+      if (dateEnd && value > dateEnd) return true
+      if (value > this.$moment()) return true
+      return false
+    },
+    dateDisabledEnd (value) {
+      const dateStart = this.form.fc.getFieldValue('billtask_start')
+      if (dateStart && value < dateStart) return true
+      if (value > this.$moment()) return true
+      return false
+    },
   },
 }
 </script>
