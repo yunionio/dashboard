@@ -317,8 +317,9 @@ export default {
         }
       }
     },
-    defaultType () {
-      if (this.getHypervisor() === HYPERVISORS_MAP.esxi.key) {
+    defaultType (v, oldV) {
+      // vmware系统盘改变清空数据盘，忽略调整配置初始化的情况
+      if (this.getHypervisor() === HYPERVISORS_MAP.esxi.key && oldV) {
         this.dataDisks = []
       }
     },
