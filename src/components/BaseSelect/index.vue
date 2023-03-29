@@ -178,6 +178,11 @@ export default {
       type: Boolean,
       default: false,
     },
+    // 远程请求模式的额外数据
+    extraOpts: {
+      type: Array,
+      default: () => ([]),
+    },
   },
   data () {
     this.loadOptsDebounce = debounce(this.loadOpts, 500)
@@ -276,6 +281,15 @@ export default {
     },
     value (v) {
       this.syncItem(v)
+    },
+    extraOpts (list) {
+      // this.sourceList = this.sourceList.concat(sourceList)
+      this.resList = [...list, ...this.sourceList]
+      // this.resList = this.resList.concat(list)
+      this.$emit('update:resList', this.resList)
+      const resOpts = arrayToObj(this.resList)
+      this.resOpts = resOpts
+      this.disabledOpts()
     },
   },
   mounted () {
@@ -455,10 +469,21 @@ export default {
             this.noMoreData = true // 没有更多了
           }
           this.sourceList = sourceList
-          this.resList = list
+          // 额外待选项也参与过滤
+          const targetExtraOpts = this.extraOpts.filter(item => {
+            if (!query) return true
+            if (item[this.searchKey] && item[this.searchKey].includes(query)) {
+              return true
+            }
+          })
+          this.resList = [...targetExtraOpts, ...list]
           this.$emit('update:resList', list)
           const resOpts = arrayToObj(list)
-          this.resOpts = resOpts
+          const extraOpts = arrayToObj(targetExtraOpts)
+          this.resOpts = {
+            ...extraOpts,
+            ...resOpts,
+          }
           this.concatFirstOpts = false
           this.disabledOpts()
           this.defaultSelect(list)
