@@ -105,7 +105,7 @@ export default {
   methods: {
     formatterVal (v) {
       if (v) {
-        return `${STORAGE_TYPES[v.storage_type]}(${v.name})`
+        return `${STORAGE_TYPES[v.storage_type] || v.storage_type}(${v.name})`
       }
     },
     doSingleHandle (ids, values) {
