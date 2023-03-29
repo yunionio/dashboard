@@ -275,10 +275,13 @@ export default {
         if (res.data.data && res.data.data.length) {
           const updateInfo = res.data.data[0]
           const v = updateInfo.current_version.slice(1, 4)
+          console.log(v)
           let baseURL = `https://iso.yunion.cn/${v}/rpms`
           if (updateInfo && updateInfo.current_version) {
             if (v.length === 3 && v[0] === '3') {
-              if (parseInt(v[2]) >= 9) {
+              if (parseInt(v[2]) === 9) {
+                baseURL = 'https://iso.yunion.cn/centos/7/3.9/x86_64/'
+              } else if (parseInt(v[2]) > 9) {
                 baseURL = `https://yunioniso.oss-cn-beijing.aliyuncs.com/iso/${v}/rpms`
               }
             }
