@@ -390,7 +390,7 @@ export default {
       return this.isSomeArm && this.isSomeRunning
     },
     hotplug () { // 做热扩容校验，true 表示置灰 CPU 和 内存，不支持热扩容
-      if (this.params.data.every(val => val.statue === 'ready')) {
+      if (this.params.data.every(val => val.status === 'ready')) {
         return false
       } else {
         if (this.params.data.every(val => {
