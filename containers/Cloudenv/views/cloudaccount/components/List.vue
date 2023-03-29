@@ -283,7 +283,7 @@ export default {
                           }).map(item => {
                             return manager.create({
                               data: {
-                                task_type: 'delete_bills',
+                                task_type: 'delete_bill',
                                 account_id: item.id,
                               },
                             })
