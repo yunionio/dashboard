@@ -283,9 +283,7 @@ export default {
       this.syncItem(v)
     },
     extraOpts (list) {
-      // this.sourceList = this.sourceList.concat(sourceList)
-      this.resList = [...list, ...this.sourceList]
-      // this.resList = this.resList.concat(list)
+      this.resList = [..._.cloneDeep(list), ...this.sourceList]
       this.$emit('update:resList', this.resList)
       const resOpts = arrayToObj(this.resList)
       this.resOpts = resOpts
