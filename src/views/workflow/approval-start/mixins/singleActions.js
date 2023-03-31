@@ -11,9 +11,9 @@ export default {
       {
         label: i18n.t('common_368'),
         action: obj => {
-          const { name, process_instance } = obj
+          const { process_instance } = obj
           let dialogName = 'WorkflowPassDialog'
-          if (name === '网络部审批' && process_instance.process_definition_key === 'apply-internal-resource') {
+          if (process_instance.process_definition_key === 'apply-internal-resource') {
             dialogName = 'ApplyResourceWorkflowPassDialog'
           }
           this.createDialog(dialogName, {

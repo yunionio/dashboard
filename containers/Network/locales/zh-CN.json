@@ -1072,6 +1072,8 @@
   "network.topology.view.pysical": "物理拓扑",
   "network.lb_monitor_bin": "负载均衡入流量",
   "network.lb_monitor_bout": "负载均衡出流量",
+  "network.lb_monitor_active_connection": "活跃连接数",
+  "network.lb_monitor_max_connection": "最大连接数",
   "network.eip_bind_server_tip": "经典网络类型虚拟机不支持绑定EIP",
   "network.request.vpc": "请求方VPC",
   "network.receive.vpc": "接收方VPC",

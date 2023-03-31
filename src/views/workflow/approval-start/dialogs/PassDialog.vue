@@ -29,6 +29,12 @@
             <a-select-option v-for="item of roleOptions" :value="item.id" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
+        <a-form-item v-if="isShowTransfer" :label="$t('common.workflow_is_transfer')">
+          <a-switch
+            :checkedChildren="$t('common.true')"
+            :unCheckedChildren="$t('common.false')"
+            v-decorator="decorators.transferred" />
+        </a-form-item>
         <a-form-item :label="$t('common_157')">
           <a-input :placeholder="$t('common_367')" v-decorator="decorators.remarks" />
         </a-form-item>
@@ -89,6 +95,9 @@ export default {
         remarks: [
           'remarks',
         ],
+        transferred: [
+          'transferred',
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -115,6 +124,16 @@ export default {
       const pdk = this.selectedItems[0].process_definition_key || this.selectedItems[0].process_instance.process_definition_key
       return pdk === WORKFLOW_TYPES.APPLY_JOIN_PROJECT
     },
+    isShowTransfer () {
+      const { name, process_definition_entity = [] } = this.params.data[0]
+      let ret = false
+      process_definition_entity.map(item => {
+        if (item.name === name && item.transfer_node) {
+          ret = true
+        }
+      })
+      return ret
+    },
   },
   created () {
     if (this.isShowJoinProject) {
@@ -133,6 +152,9 @@ export default {
             approved: true, // 审批结果：true通过，false拒绝
             comment: values.remarks, // 审批意见
           },
+        }
+        if (values.hasOwnProperty('transferred')) {
+          params.variables.transferred = values.transferred
         }
         const state = this.selectedItems[0].process_instance && this.selectedItems[0].process_instance.state
         if (state === 'CUSTOM_TODO') {

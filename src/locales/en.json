@@ -5363,5 +5363,15 @@
   "common.current_value": "Current Value",
   "common.exporting": "Exporting...",
   "common.budget_alert_user_placeholder": "Please select an alert recipient",
-  "common.brand_support": "Currently only {0} supports this operation"
+  "common.brand_support": "Currently only {0} supports this operation",
+  "common.workflow_translate_to_role": "Transferring documents to specified roles",
+  "common.workflow_translate_to_user": "Transfer of order by designated person",
+  "common.workflow_assign_translate_role": "Specify transfer role",
+  "common.workflow_assign_translate_user": "Designated Transferor",
+  "common.workflow_translate_user_scope": "Transferor range",
+  "common.workflow_is_transfer": "Transfer Doc",
+  "common.true": "true",
+  "common.false": "false",
+  "common.workflow_allow_transfer": "Allow document transfer",
+  "common.trans": "Trans"
 }
