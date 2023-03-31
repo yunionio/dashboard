@@ -89,7 +89,11 @@ export default {
       await this.$store.dispatch('auth/onAfterLogin')
       this.statusLoaded = true
     } else {
-      this.checkRegistersStatus()
+      if (this.$appConfig.isPrivate) {
+        this.checkRegistersStatus()
+      } else {
+        this.statusLoaded = true
+      }
     }
   },
   methods: {
