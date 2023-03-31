@@ -48,11 +48,11 @@
             </div>
         </a-form-item>
       </div>
-      <div :class="{ 'd-flex ml-5' : isBigScreen }">
+      <div :class="{ 'd-flex ml-1' : isBigScreen }">
         <template v-if="item.ipShow">
           <a-form-item class="mb-0"  :wrapperCol="{ span: 24 }">
             <a-input
-              style="width: 200px"
+              style="width: 164px"
               :placeholder="$t('compute.text_197')"
               @change="e => ipChange(e, i)"
               v-decorator="decorator.ips(item.key, item.network)" />
@@ -66,7 +66,7 @@
           <template v-if="item.macShow">
             <a-form-item class="mb-0"  :wrapperCol="{ span: 24 }">
               <a-input
-                style="width: 200px"
+                style="width: 164px"
                 :placeholder="$t('compute.text_806')"
                 @change="e => macChange(e, i)"
                 v-decorator="decorator.macs(item.key, item.network)" />
@@ -81,6 +81,7 @@
           <template v-if="item.deviceShow">
             <a-form-item class="mb-0"  :wrapperCol="{ span: 24 }">
               <oc-select
+                style="width: 164px"
                 v-decorator="decorator.devices(item.key)"
                 :data="gpuOptions"
                 :placeholder="$t('compute.sriov_device_tips')" />
