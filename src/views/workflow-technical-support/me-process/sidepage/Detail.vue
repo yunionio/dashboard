@@ -193,12 +193,26 @@ export default {
       this.processInstanceInfo = processInstanceInfo
       const processList = []
       processInstanceInfo.definition.forEach((item) => {
-        processList.push({
-          title: item.activity_name,
-          assignees: item.activity_instance.map((v) => {
-            return v.task_assignee_name
-          }),
-        })
+        if (!(item.activity_id || '').includes('Trans')) {
+          processList.push({
+            title: item.activity_name,
+            assignees: item.activity_instance.map((v) => {
+              return v.task_assignee_name
+            }),
+          })
+          // 调整转单节点顺序
+          const targets = processInstanceInfo.definition.filter(t => {
+            return t.activity_id === `Trans${item.activity_id}`
+          })
+          if (targets[0]) {
+            processList.push({
+              title: targets[0].activity_name,
+              assignees: targets[0].activity_instance.map((v) => {
+                return v.task_assignee_name
+              }),
+            })
+          }
+        }
       })
       if (this.proccessDefinitionKey === WORKFLOW_TYPES.APPLY_MACHINE || this.proccessDefinitionKey === WORKFLOW_TYPES.APPLY_SERVER_CHANGECONFIG) {
         processList.push({

@@ -76,6 +76,7 @@ export default {
           variables: {
             approved: false, // 审批结果：true通过，false拒绝
             comment: values.remarks, // 审批意见
+            transferred: false,
           },
         }
         const state = this.selectedItems[0].process_instance && this.selectedItems[0].process_instance.state
