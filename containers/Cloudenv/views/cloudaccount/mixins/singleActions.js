@@ -384,7 +384,7 @@ export default {
                           const manager = new this.$Manager('billtasks/submit', 'v1')
                           try {
                             const data = {
-                              task_type: 'delete',
+                              task_type: 'delete_bill',
                               account_id: obj.id,
                             }
                             await manager.create({
