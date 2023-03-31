@@ -61,7 +61,7 @@ export default {
     },
     hadMonitor () {
       const brand = this.data.brand.toLowerCase()
-      const surportBrand = [HYPERVISORS_MAP.azure.key, HYPERVISORS_MAP.apsara.key]
+      const surportBrand = [HYPERVISORS_MAP.azure.key, HYPERVISORS_MAP.apsara.key, HYPERVISORS_MAP.hcso.key]
       return surportBrand.includes(brand)
     },
     monitorConstants () {

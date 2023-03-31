@@ -115,7 +115,6 @@ export const getCommentTableColumn = ({ field = 'comment', title = i18n.t('commo
     showOverflow: 'title',
     slots: {
       default: ({ row }) => {
-        console.log(row)
         const variables = row.variables
         if (variables.comment) {
           return variables.comment
