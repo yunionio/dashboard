@@ -106,4 +106,22 @@ export const LB_MONITOR_OPTS = {
       transfer: 1024,
     },
   ],
+  hcso: [
+    {
+      name: 'active_connection',
+      label: i18n.t('network.lb_monitor_active_connection'),
+      seleteItem: 'active_connection',
+      fromItem: 'haproxy',
+      unit: '',
+      transfer: 1,
+    },
+    {
+      name: 'max_connection',
+      label: i18n.t('network.lb_monitor_max_connection'),
+      seleteItem: 'max_connection',
+      fromItem: 'haproxy',
+      unit: '',
+      transfer: 1,
+    },
+  ],
 }

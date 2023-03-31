@@ -5385,5 +5385,15 @@
   "common.current_value": "当前值",
   "common.exporting": "导出中...",
   "common.budget_alert_user_placeholder": "请选择告警接收人",
-  "common.brand_support": "目前只有{0}支持该操作"
+  "common.brand_support": "目前只有{0}支持该操作",
+  "common.workflow_translate_to_role": "指定角色转单",
+  "common.workflow_translate_to_user": "指定人转单",
+  "common.workflow_assign_translate_role": "指定转单角色",
+  "common.workflow_assign_translate_user": "指定转单人",
+  "common.workflow_translate_user_scope": "转单人范围",
+  "common.workflow_is_transfer": "是否转单",
+  "common.true": "是",
+  "common.false": "否",
+  "common.workflow_allow_transfer": "是否允许转单",
+  "common.trans": "转"
 }

@@ -31,7 +31,6 @@ export default {
   methods: {
     initMonitorConfig () {
       const monitorConfig = storage.get(this.STORAGE_TIME_KEY, {})
-      console.log('get', monitorConfig)
       const { time, timeGroup, customTime, groupFunc } = monitorConfig
       if (time) {
         this.time = time
@@ -47,7 +46,6 @@ export default {
       }
     },
     saveMonitorConfig () {
-      console.log('set', this.time, this.timeGroup)
       storage.set(this.STORAGE_TIME_KEY, {
         time: this.time,
         timeGroup: this.timeGroup,

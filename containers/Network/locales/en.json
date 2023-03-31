@@ -1073,6 +1073,8 @@
   "network.topology.view.pysical": "Pysical",
   "network.lb_monitor_bin": "Load balancing inflow",
   "network.lb_monitor_bout": "Load balancing outflow",
+  "network.lb_monitor_active_connection": "Active connection",
+  "network.lb_monitor_max_connection": "Max connection",
   "network.eip_bind_server_tip": "Classic network virtual machine does not support to be bound with EIP",
   "network.request.vpc": "Requester VPC",
   "network.receive.vpc": "Receive VPC",
