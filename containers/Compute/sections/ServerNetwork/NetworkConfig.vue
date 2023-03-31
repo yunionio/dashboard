@@ -1,29 +1,13 @@
 <template>
   <div class="network-config">
-    <div class="mb-2" v-for="(item, i) in networkList" :key="item.key">
+    <!-- 适配大、小屏幕 -->
+    <div class="mb-2" :class="{ 'd-flex align-items-start' : isBigScreen }" v-for="(item, i) in networkList" :key="item.key">
       <div class="d-flex">
         <a-tag color="blue" class="mr-1" style="height: 20px; margin-top: 10px;">{{ isBonding ? 'bond' : $t('compute.text_193')}}{{i + count}}</a-tag>
         <a-form-item
           v-show="showVpc"
           :wrapperCol="{ span: 24 }"
           class="mb-0 mr-1">
-          <!-- <base-select
-            v-if="i === 0"
-            class="w-100"
-            style="width: 200px;"
-            v-decorator="decorator.vpcs(item.key)"
-            :resource="vpcResource"
-            remote
-            :label-format="vpcLabelFormat"
-            :isDefaultSelect="i === 0"
-            :item.sync="item.vpc"
-            :need-params="true"
-            :params="vpcParams"
-            :mapper="vpcResourceMapper"
-            :remote-fn="q => ({ search: q })"
-            @change="v => vpcChange(v, i)"
-            :disabled="vpcObj && !!vpcObj.id"
-            :select-props="{ allowClear: true, placeholder: $t('compute.text_194') }" /> -->
           <oc-select
             v-if="i === 0"
             v-decorator="decorator.vpcs(item.key)"
@@ -60,25 +44,15 @@
             @change="v => networkChange(v, item)"
             :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }"
             :min-width="isDialog ? '200px' : '500px'" />
-          <!-- <oc-select
-            v-decorator="decorator.networks(item.key)"
-            :data="networkOpts"
-            width="100%"
-            layout="between"
-            :loading="networkLoading"
-            :formatter="networkFormatter"
-            :sort="(arr) => arr.sort((a, b) => (a.ports - a.ports_used) > (b.ports - b.ports_used) ? -1 : 1)"
-            @selectChange="(curObjArr) => networkSelectChange(curObjArr, item)"
-            @fetchSuccess="(data) => fetchNetworkSuccessHandle(data, item)" /> -->
             <div slot="extra" v-if="i === 0">{{$t('compute.text_196')}}<help-link href="/network2">{{$t('compute.perform_create')}}</help-link>
             </div>
         </a-form-item>
       </div>
-      <div class="d-flex ml-5">
+      <div :class="{ 'd-flex ml-1' : isBigScreen }">
         <template v-if="item.ipShow">
           <a-form-item class="mb-0"  :wrapperCol="{ span: 24 }">
             <a-input
-              style="width: 200px"
+              style="width: 164px"
               :placeholder="$t('compute.text_197')"
               @change="e => ipChange(e, i)"
               v-decorator="decorator.ips(item.key, item.network)" />
@@ -92,7 +66,7 @@
           <template v-if="item.macShow">
             <a-form-item class="mb-0"  :wrapperCol="{ span: 24 }">
               <a-input
-                style="width: 200px"
+                style="width: 164px"
                 :placeholder="$t('compute.text_806')"
                 @change="e => macChange(e, i)"
                 v-decorator="decorator.macs(item.key, item.network)" />
@@ -107,6 +81,7 @@
           <template v-if="item.deviceShow">
             <a-form-item class="mb-0"  :wrapperCol="{ span: 24 }">
               <oc-select
+                style="width: 164px"
                 v-decorator="decorator.devices(item.key)"
                 :data="gpuOptions"
                 :placeholder="$t('compute.sriov_device_tips')" />
@@ -204,6 +179,7 @@ export default {
       ipsDisabled: this.ipsDisable,
       networkLoading: false,
       networkOpts: [],
+      screenWidth: document.body.clientWidth,
     }
   },
   computed: {
@@ -239,6 +215,9 @@ export default {
       }
       return ret
     },
+    isBigScreen () {
+      return this.screenWidth > 1440
+    },
   },
   watch: {
     vpcObj (val) {
@@ -252,6 +231,12 @@ export default {
   },
   created () {
     this.add()
+  },
+  mounted () {
+    window.addEventListener('resize', this.onResize)
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.onResize)
   },
   methods: {
     getVpcTag (data) {
@@ -412,6 +397,9 @@ export default {
           throw err
         })
       }
+    },
+    onResize () {
+      this.screenWidth = document.body.clientWidth
     },
   },
 }
