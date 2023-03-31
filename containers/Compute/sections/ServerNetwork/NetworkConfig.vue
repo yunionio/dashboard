@@ -1,5 +1,6 @@
 <template>
   <div class="network-config">
+    <!-- 适配大、小屏幕 -->
     <div class="mb-2" :class="{ 'd-flex align-items-start' : isBigScreen }" v-for="(item, i) in networkList" :key="item.key">
       <div class="d-flex">
         <a-tag color="blue" class="mr-1" style="height: 20px; margin-top: 10px;">{{ isBonding ? 'bond' : $t('compute.text_193')}}{{i + count}}</a-tag>
@@ -178,6 +179,7 @@ export default {
       ipsDisabled: this.ipsDisable,
       networkLoading: false,
       networkOpts: [],
+      screenWidth: document.body.clientWidth,
     }
   },
   computed: {
@@ -227,14 +229,14 @@ export default {
       }
     },
   },
+  created () {
+    this.add()
+  },
   mounted () {
     window.addEventListener('resize', this.onResize)
   },
   beforeDestroy () {
     window.removeEventListener('resize', this.onResize)
-  },
-  created () {
-    this.add()
   },
   methods: {
     getVpcTag (data) {
