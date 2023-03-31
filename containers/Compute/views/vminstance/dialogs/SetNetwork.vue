@@ -1,5 +1,5 @@
 <template>
-  <base-dialog @cancel="cancelDialog" :width="1200">
+  <base-dialog @cancel="cancelDialog" :width="1300">
     <div slot="header">{{params.title}}</div>
     <div slot="body">
       <!-- <a-alert class="mb-2" type="warning" :message="message" /> -->
