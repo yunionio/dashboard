@@ -93,6 +93,9 @@ export default {
     variables () {
       return this.data.variables
     },
+    local_variables () {
+      return this.data.local_variables
+    },
     proccessDefinitionKey () {
       return this.data.process_definition_key || this.data.process_instance.process_definition_key
     },
@@ -324,7 +327,7 @@ export default {
         slots: {
           default: ({ row }, h) => {
             return [
-              <ApplyInternalResourceInfo variables={ this.variables } />,
+              <ApplyInternalResourceInfo variables={ this.variables } local_variables={ this.local_variables } />,
             ]
           },
         },

@@ -102,6 +102,7 @@ export default {
   name: 'ApplyInternalResourceInfo',
   props: {
     variables: Object,
+    local_variables: Object,
   },
   data () {
     return {
@@ -115,6 +116,9 @@ export default {
   },
   computed: {
     resourceData () {
+      if (this.local_variables) {
+        return getWorkflowParamter(this.local_variables)
+      }
       return getWorkflowParamter(this.variables)
     },
     processType () {
