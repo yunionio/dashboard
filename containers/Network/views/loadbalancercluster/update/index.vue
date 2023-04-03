@@ -138,13 +138,15 @@ export default {
       }
       this.form.fc.setFieldsValue({
         name: data.name,
+        description: data.description,
         ...params,
       })
     },
     formatValues (values) {
-      const { name, ...params } = values
+      const { name, description, ...params } = values
       return {
         name,
+        description,
         ...params,
       }
     },
