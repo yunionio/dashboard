@@ -254,6 +254,7 @@ export default {
       }
       this.form.fc.setFieldsValue({
         name: data.name,
+        description: data.description,
         cluster_id: data.cluster_id,
         ...params,
       })
@@ -274,10 +275,11 @@ export default {
         values.haproxy.global_log = logConfs.join(' ')
         delete values.global_log_path
       }
-      const { name, cluster_id, ...rest } = values
+      const { name, description, cluster_id, ...rest } = values
       if (this.lbAgentId) {
         return {
           name,
+          description,
           cluster_id,
           params: {
             ...rest,
@@ -286,6 +288,7 @@ export default {
       }
       return {
         name,
+        description,
         cluster_id,
         params: {
           ...rest,
