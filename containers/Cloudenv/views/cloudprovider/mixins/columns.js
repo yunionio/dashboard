@@ -5,7 +5,12 @@ import {
   getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
-import { getResourceMatchProjectTableColumn } from '../utils/columns'
+import {
+  getResourceMatchProjectTableColumn,
+} from '../utils/columns'
+import {
+  getLastSyncCostTableColumn,
+} from '../../cloudaccount/utils/columns'
 
 export default {
   created () {
@@ -59,6 +64,7 @@ export default {
           },
         },
       },
+      getLastSyncCostTableColumn(),
       getStatusTableColumn({
         field: 'sync_status',
         title: i18n.t('cloudenv.text_354'),
