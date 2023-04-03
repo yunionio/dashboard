@@ -607,8 +607,11 @@ export default {
           if (this.form.fd.imageType === IMAGES_TYPE_MAP.host.key) {
             const { root_image: rootImage, data_images: dataImages } = this.form.fi.imageMsg
             const systemDiskSize = rootImage.min_disk_mb / 1024
-            const systemDiskType = { // 这里写死即可，因为主机镜像仅 kvm 型机器，且和系统盘类型无瓜葛 @郑雨
-              key: STORAGE_TYPES[HYPERVISORS_MAP.kvm.key].local.key,
+            const { hypervisor } = this.form.fd
+            const { data_storage_types2 } = this.form.fi.capability
+            const medium = data_storage_types2[hypervisor][0].split('/')[1]
+            const systemDiskType = {
+              key: data_storage_types2[hypervisor][0],
               label: STORAGE_TYPES[HYPERVISORS_MAP.kvm.key].local.label,
             }
             this.form.fc.setFieldsValue({
@@ -619,7 +622,7 @@ export default {
             this._resetDataDisk()
             if (dataImages) {
               dataImages.forEach(val => {
-                this.$refs.dataDiskRef.add({ size: val.min_disk_mb / 1024, min: val.min_disk_mb / 1024, minusDisabled: true })
+                this.$refs.dataDiskRef.add({ size: val.min_disk_mb / 1024, min: val.min_disk_mb / 1024, minusDisabled: true, medium })
               })
             }
           }
@@ -634,7 +637,7 @@ export default {
             const dataDisks = snapshots.filter(val => val.disk_type !== 'sys')
             const data = {
               systemDiskType: {
-                key: sysDisk.backend,
+                key: `${sysDisk.backend}/${sysDisk.medium}`,
                 label: STORAGE_TYPES[HYPERVISORS_MAP.kvm.key][sysDisk.backend].label,
               },
               systemDiskSize: sysDisk.size / 1024,
@@ -651,7 +654,7 @@ export default {
             // 重置数据盘数据
             this._resetDataDisk()
             dataDisks.forEach(val => {
-              this.$refs.dataDiskRef.add({ diskType: val.backend, size: val.size / 1024, sizeDisabled: true })
+              this.$refs.dataDiskRef.add({ diskType: val.backend, size: val.size / 1024, sizeDisabled: true, medium: val.medium })
             })
             this.form.fi.dataDiskDisabled = true
             this.form.fi.sysDiskDisabled = true
