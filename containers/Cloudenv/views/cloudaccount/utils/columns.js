@@ -46,6 +46,21 @@ export const getBalanceTableColumn = () => {
   }
 }
 
+export const getLastSyncCostTableColumn = () => {
+  return {
+    field: 'last_sync_cost',
+    title: i18n.t('cloudenv.last_sync_cost'),
+    minWidth: 70,
+    showOverflow: 'ellipsis',
+    formatter: ({ row }) => {
+      if (R.isNil(row.last_sync_cost)) {
+        return '-'
+      }
+      return row.last_sync_cost
+    },
+  }
+}
+
 export const getGuestCountTableColumn = () => {
   return {
     field: 'guest_count',

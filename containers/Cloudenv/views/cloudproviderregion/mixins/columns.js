@@ -1,5 +1,8 @@
 import { getEnabledTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import {
+  getLastSyncCostTableColumn,
+} from '../../cloudaccount/utils/columns'
 
 export default {
   created () {
@@ -9,6 +12,7 @@ export default {
         title: i18n.t('cloudenv.text_10'),
       },
       getEnabledTableColumn({ title: i18n.t('cloudenv.text_366') }),
+      getLastSyncCostTableColumn(),
       {
         field: 'last_auto_sync',
         title: i18n.t('cloudenv.text_103'),
