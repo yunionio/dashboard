@@ -59,11 +59,11 @@ export default {
         distinctField: {
           type: 'field',
           key: 'action',
-          getParams: () => {
-            return this.objId && {
-              filter: `obj_id.in(${this.objId})`,
-            }
-          },
+          // getParams: () => {
+          //   return this.objId && {
+          //     filter: `obj_id.in(${this.objId})`,
+          //   }
+          // },
         },
         mapper: (data, originData) => {
           const i18n = originData._i18n.action
@@ -90,11 +90,11 @@ export default {
         distinctField: {
           type: 'field',
           key: 'service',
-          getParams: () => {
-            return this.objId && {
-              filter: `obj_id.in(${this.objId})`,
-            }
-          },
+          // getParams: () => {
+          //   return this.objId && {
+          //     filter: `obj_id.in(${this.objId})`,
+          //   }
+          // },
         },
         mapper: (data, originData) => {
           const i18n = originData._i18n.service
@@ -121,11 +121,11 @@ export default {
         distinctField: {
           type: 'field',
           key: 'obj_type',
-          getParams: () => {
-            return this.objId && {
-              filter: `obj_id.in(${this.objId})`,
-            }
-          },
+          // getParams: () => {
+          //   return this.objId && {
+          //     filter: `obj_id.in(${this.objId})`,
+          //   }
+          // },
         },
         mapper: (data, originData) => {
           const i18n = originData._i18n.obj_type
@@ -336,7 +336,8 @@ export default {
       const param = {}
       const filter = []
       if (this.objId) {
-        filter.push([`obj_id.in('${this.objId}')`])
+        // filter.push([`obj_id.in('${this.objId}')`])
+        param.obj_id = this.objId
       }
       if (this.objType) {
         param.obj_type = this.objType
