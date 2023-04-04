@@ -17,6 +17,13 @@ import {
   getResourceMatchProjectTableColumn,
 } from '../utils/columns'
 
+import {
+  getLastSyncCostTableColumn,
+} from '../../cloudaccount/utils/columns'
+
+
+
+
 export default {
   created () {
     this.columns = [
@@ -41,6 +48,7 @@ export default {
       getCopyWithContentTableColumn({ field: 'account', title: i18n.t('cloudenv.text_94') }),
       getHostCountTableColumn(),
       getGuestCountTableColumn(),
+      getLastSyncCostTableColumn(),
       // getEnabledTableColumn({ field: 'enable_auto_sync', title: i18n.t('cloudenv.text_83'), minWidth: 90 }),
       {
         field: 'last_auto_sync',
