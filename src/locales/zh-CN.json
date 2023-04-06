@@ -5396,5 +5396,7 @@
   "common.true": "是",
   "common.false": "否",
   "common.workflow_allow_transfer": "是否允许转单",
-  "common.trans": "转"
+  "common.trans": "转",
+  "common.new": "新增",
+  "common.upload_file": "上传文件"
 }
