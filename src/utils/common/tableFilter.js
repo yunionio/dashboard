@@ -414,7 +414,7 @@ export function getCreatedAtFilter ({ field = 'created_at', utc = true } = {}) {
   }
 }
 
-export function getResourceTypeFilter ({ label = i18n.t('common.text_73'), field = 'resource_type', multiple = true, distinctType = 'field' } = {}) {
+export function getResourceTypeFilter ({ label = i18n.t('common.resource_type'), field = 'resource_type', multiple = true, distinctType = 'field' } = {}) {
   return {
     label,
     dropdown: true,
