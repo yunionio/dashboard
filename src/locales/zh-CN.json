@@ -5398,5 +5398,11 @@
   "common.workflow_allow_transfer": "是否允许转单",
   "common.trans": "转",
   "common.new": "新增",
-  "common.upload_file": "上传文件"
+  "common.upload_file": "上传文件",
+  "common.import_tpl_tips": "请先下载模板，按照模板，编辑信息",
+  "common.download_tpl": "下载模板",
+  "common.drag_file_area": "单击或拖动文件到该区域",
+  "common.file_type_validate": "只能上传xlsx文件，且不超过200MB",
+  "common.template": "模板",
+  "common.import_data": "导入数据"
 }

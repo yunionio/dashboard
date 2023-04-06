@@ -5375,5 +5375,11 @@
   "common.workflow_allow_transfer": "Allow document transfer",
   "common.trans": "Trans",
   "common.new": "New",
-  "common.upload_file": "Upload file"
+  "common.upload_file": "Upload file",
+  "common.import_tpl_tips": "Please download the template first, edit the information according to the template",
+  "common.download_tpl": "Download Template",
+  "common.drag_file_area": "Click or drag files into this area",
+  "common.file_type_validate": "Only upload xlsx files, and no more than 200MB",
+  "common.template": "Template",
+  "common.import_data": "Import data"
 }
