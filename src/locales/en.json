@@ -5372,5 +5372,7 @@
   "common.true": "true",
   "common.false": "false",
   "common.workflow_allow_transfer": "Allow document transfer",
-  "common.trans": "Trans"
+  "common.trans": "Trans",
+  "common.new": "New",
+  "common.upload_file": "Upload file"
 }
