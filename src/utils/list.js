@@ -198,6 +198,8 @@ class CreateList {
       fetchDataCb = null,
       // 标识是否是预加载数据
       isPreLoad = true,
+      // 无需两次加载
+      noPreLoad = false,
     },
   ) {
     // 列表唯一标识
@@ -264,6 +266,7 @@ class CreateList {
     this.genParamsCb = genParamsCb
     this.fetchDataCb = fetchDataCb
     this.isPreLoad = isPreLoad
+    this.noPreLoad = noPreLoad
   }
 
   // 重写selectedItems getter和setter
@@ -347,6 +350,9 @@ class CreateList {
 
   async fetchData (offset, limit, showDetails) {
     this.loading = true
+    if (this.noPreLoad) {
+      showDetails = true
+    }
     this.params = this.genParams(offset, limit, showDetails)
     if (!showDetails) this.isPreLoad = true
     try {
