@@ -15,14 +15,8 @@ import {
   getHostCountTableColumn,
   getPublicScopeTableColumn,
   getResourceMatchProjectTableColumn,
-} from '../utils/columns'
-
-import {
   getLastSyncCostTableColumn,
-} from '../../cloudaccount/utils/columns'
-
-
-
+} from '../utils/columns'
 
 export default {
   created () {
