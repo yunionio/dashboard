@@ -78,7 +78,7 @@ export default {
     // 是否可以选择今天之后的日期
     canSelectTodayAfter: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     // 添加到参数中的日期格式
     paramTimeFormatter: {
