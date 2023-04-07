@@ -5404,5 +5404,6 @@
   "common.drag_file_area": "单击或拖动文件到该区域",
   "common.file_type_validate": "只能上传xlsx文件，且不超过200MB",
   "common.template": "模板",
-  "common.import_data": "导入数据"
+  "common.import_data": "导入数据",
+  "common.required_cols": "{0}为必填项！"
 }
