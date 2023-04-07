@@ -64,7 +64,7 @@
       <template v-if="listData.openResources.length">
         <div class="mt-4 mb-2">
           {{$t('wz_workflow_form.open_resource_list')}}
-          <a-button type="link" @click="handleSendEmailClick">{{$t('scope.notify_user')}}</a-button>
+          <a-button type="link" :disabled="!resourceSelected.length" @click="handleSendEmailClick">{{$t('scope.notify_user')}}</a-button>
         </div>
         <vxe-grid
           ref="opTable"
