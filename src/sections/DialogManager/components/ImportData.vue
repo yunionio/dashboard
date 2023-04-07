@@ -53,6 +53,7 @@
  *       {
  *         field: 'id',
  *         title: 'ID',
+ *         required: true, // required 会验证文件中该字段是否传入
  *       },
  *       {
  *         field: 'name',
@@ -184,15 +185,25 @@ export default {
           }
           // 整理数据
           const list = []
+          const requiredCols = []
           const { columns = [] } = that.params.templateConfig
           sheetData.map(item => {
             const row = {}
             columns.map(col => {
-              row[col.field] = col.formatter ? col.formatter({ row: item, cellValue: item[col.title] }) : item[col.title]
+              const cellData = col.formatter ? col.formatter({ row: item, cellValue: item[col.title] }) : item[col.title]
+              row[col.field] = cellData ? (cellData + '').trim() : ''
+              if (col.required && !row[col.field] && !requiredCols.includes(col.title)) {
+                requiredCols.push(col.title)
+              }
             })
             list.push(row)
           })
-          that.doCreate(sheetData, list)
+          // 验证必填项
+          if (requiredCols.length) {
+            that.$message.error(that.$t('common.required_cols', [requiredCols.join(',')]))
+          } else {
+            that.doCreate(sheetData, list)
+          }
         }
         // 以二进制方式打开文件
         fileReader.readAsBinaryString(this.fileList[0])
