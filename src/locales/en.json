@@ -5380,5 +5380,6 @@
   "common.drag_file_area": "Click or drag files into this area",
   "common.file_type_validate": "Only upload xlsx files, and no more than 200MB",
   "common.template": "Template",
-  "common.import_data": "Import data"
+  "common.import_data": "Import data",
+  "common.required_cols": "{0} is required!"
 }
