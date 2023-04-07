@@ -75,7 +75,7 @@ export default {
     // 是否可以选择今天之后的日期
     canSelectTodayAfter: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     formatter: {
       type: Function,
