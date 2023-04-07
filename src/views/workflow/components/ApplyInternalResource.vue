@@ -62,13 +62,18 @@
         :columns="COLUMNS_MAP.cloudSecurityTable"
         :data="listData.cloudSecurityTable" />
       <template v-if="listData.openResources.length">
-        <div class="mt-4 mb-2">{{$t('wz_workflow_form.open_resource_list')}}</div>
+        <div class="mt-4 mb-2">
+          {{$t('wz_workflow_form.open_resource_list')}}
+          <a-button type="link" @click="handleSendEmailClick">{{$t('scope.notify_user')}}</a-button>
+        </div>
         <vxe-grid
           ref="opTable"
           size="mini"
           border
           :columns="COLUMNS_MAP.openResource"
-          :data="listData.openResources" />
+          :data="listData.openResources"
+          @checkbox-change="handleResourceCheckedChange"
+          @checkbox-all="handleResourceCheckedChange" />
       </template>
     </template>
     <!-- 升降配 -->
@@ -97,9 +102,11 @@
 <script>
 import * as R from 'ramda'
 import { getWorkflowParamter } from '@/utils/utils'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'ApplyInternalResourceInfo',
+  mixins: [WindowsMixin],
   props: {
     variables: Object,
     local_variables: Object,
@@ -112,6 +119,7 @@ export default {
       INIT_CONTRACTOR_INFO: {},
       COLUMNS_MAP: {},
       ALL_SELECT_OPTIONS: {},
+      resourceSelected: [],
     }
   },
   computed: {
@@ -200,7 +208,22 @@ export default {
       const { resources: openResources = [] } = openResourceInfo
       const { resources: changeResources = [] } = changeResourceInfo
       const { resources: deleteResources = [] } = deleteResourceInfo
-      return { ecs, eip, rds, server, basicSecurityServices, cloudSecurityTable, openResources, changeResources, deleteResources }
+      return {
+        ecs,
+        eip,
+        rds,
+        server,
+        basicSecurityServices,
+        cloudSecurityTable,
+        openResources: openResources.map((item, index) => {
+          return {
+            ...item,
+            index,
+          }
+        }),
+        changeResources,
+        deleteResources,
+      }
     },
   },
   created () {
@@ -227,6 +250,18 @@ export default {
     } catch (err) {
       console.error(err)
     }
+  },
+  methods: {
+    handleResourceCheckedChange (e) {
+      this.resourceSelected = e.selection.map(item => item.index)
+    },
+    handleSendEmailClick () {
+      this.createDialog('WorkflowEmailSendDialog', {
+        resourceList: this.listData.openResources.filter(item => this.resourceSelected.includes(item.index)),
+        email: this.resourceData?.unitInfo?.email,
+        project_name: this.resourceData?.projectInfo?.project_name,
+      })
+    },
   },
 }
 </script>
