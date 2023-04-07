@@ -18,6 +18,7 @@ import SystemIcon from '@/sections/SystemIcon'
 import { sizestr } from '@/utils/utils'
 import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 import i18nLocale from '@/locales'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   data () {
@@ -389,7 +390,7 @@ export default {
         slots: {
           default: ({ row }) => {
             if (!row.host) return [<data-loading />]
-            if (findPlatform(row.hypervisor, 'hypervisor') === SERVER_TYPE.public) {
+            if (findPlatform(row.hypervisor, 'hypervisor') === SERVER_TYPE.public || row.hypervisor === HYPERVISORS_MAP.hcso.hypervisor) {
               return '-'
             }
             const text = row.host || '-'
