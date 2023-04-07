@@ -42,7 +42,7 @@ export default {
     customTimeLabel: String,
     canSelectTodayAfter: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     showFormat: String,
   },

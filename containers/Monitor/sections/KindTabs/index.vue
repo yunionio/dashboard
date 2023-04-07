@@ -8,7 +8,7 @@
         </a-radio-group>
       </div>
       <div class="float-right d-flex">
-        <date-time :getParams.sync="dateParams" />
+        <date-time :getParams.sync="dateParams" :canSelectTodayAfter="false" />
       </div>
     </div>
 </template>
