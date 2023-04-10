@@ -1666,5 +1666,6 @@
   "compute.auto_allocation": "Auto allocation",
   "compute.specify_ip": "Specify IP",
   "compute.vga_gpu": "Graphics GPU",
-  "compute.hpc_gpu": "Compute GPU"
+  "compute.hpc_gpu": "Compute GPU",
+  "compute.reserved_cpus_info": "reserved core"
 }
