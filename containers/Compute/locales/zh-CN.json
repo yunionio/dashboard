@@ -1668,5 +1668,6 @@
   "compute.auto_allocation": "自动分配",
   "compute.specify_ip": "指定IP",
   "compute.vga_gpu": "图形GPU",
-  "compute.hpc_gpu": "算力GPU"
+  "compute.hpc_gpu": "算力GPU",
+  "compute.reserved_cpus_info": "预留核"
 }

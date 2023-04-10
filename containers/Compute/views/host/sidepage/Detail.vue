@@ -323,6 +323,20 @@ export default {
                 },
               },
             },
+            {
+              field: 'reserved_cpus_info',
+              title: this.$t('compute.reserved_cpus_info'),
+              slots: {
+                default: ({ row }, h) => {
+                  if (row.metadata?.reserved_cpus_info) {
+                    const reserved_cpus_info = row.metadata?.reserved_cpus_info || '{}'
+                    const cpusInfo = JSON.parse(reserved_cpus_info).cpus || ''
+                    return cpusInfo.split(',').sort().join('、') || '-'
+                  }
+                  return '-'
+                },
+              },
+            },
           ],
         },
         {
