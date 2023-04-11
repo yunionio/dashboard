@@ -74,11 +74,11 @@
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_212')" v-if="form.fc.getFieldValue('sync_info')" :extra="$t('cloudenv.text_213')">
         <a-form-item style="display:inline-block">
-          <a-date-picker :disabled-date="dateDisabledStart" v-decorator="decorators.start_day" />
+          <a-month-picker v-decorator="decorators.start_day" :disabled-date="dateDisabledStart" format="YYYY-MM" />
         </a-form-item>
         <span class="ml-2 mr-2">~</span>
         <a-form-item style="display:inline-block">
-          <a-date-picker :disabled-date="dateDisabledEnd" v-decorator="decorators.end_day" />
+          <a-month-picker v-decorator="decorators.end_day" :disabled-date="dateDisabledEnd" format="YYYY-MM" />
         </a-form-item>
       </a-form-item>
     </a-form>
@@ -328,8 +328,8 @@ export default {
         const data = {
           account_id: id,
           task_type: 'pull_bill',
-          start_day: this.$moment(start_day).format('YYYYMM'),
-          end_day: this.$moment(end_day).format('YYYYMM'),
+          start_day: parseInt(this.$moment(start_day).startOf('month').format('YYYYMMDD')),
+          end_day: parseInt(this.$moment(end_day).endOf('month').format('YYYYMMDD')),
         }
         await manager.create({
           data,
@@ -394,13 +394,13 @@ export default {
       } else return false
     },
     dateDisabledStart (value) {
-      const dateEnd = this.form.fc.getFieldValue('billtask_end')
+      const dateEnd = this.form.fc.getFieldValue('end_day')
       if (dateEnd && value > dateEnd) return true
       if (value > this.$moment()) return true
       return false
     },
     dateDisabledEnd (value) {
-      const dateStart = this.form.fc.getFieldValue('billtask_start')
+      const dateStart = this.form.fc.getFieldValue('start_day')
       if (dateStart && value < dateStart) return true
       if (value > this.$moment()) return true
       return false
