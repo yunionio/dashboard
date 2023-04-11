@@ -30,11 +30,11 @@
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_212')" v-if="form.fc.getFieldValue('sync_info')" :extra="$t('cloudenv.text_213')">
         <a-form-item style="display:inline-block">
-          <a-date-picker :disabled-date="dateDisabledStart" v-decorator="decorators.start_day" />
+          <a-month-picker v-decorator="decorators.start_day" :disabled-date="dateDisabledStart" format="YYYY-MM" />
         </a-form-item>
         <span class="ml-2 mr-2">~</span>
         <a-form-item style="display:inline-block">
-          <a-date-picker :disabled-date="dateDisabledEnd" v-decorator="decorators.end_day" />
+          <a-month-picker v-decorator="decorators.end_day" :disabled-date="dateDisabledEnd" format="YYYY-MM" />
         </a-form-item>
       </a-form-item>
     </a-form>
@@ -224,8 +224,8 @@ export default {
         const { start_day, end_day } = values
         const data = {
           account_id: id,
-          start_day: this.$moment(start_day).format('YYYYMMDD'),
-          end_day: this.$moment(end_day).format('YYYYMMDD'),
+          start_day: parseInt(this.$moment(start_day).startOf('month').format('YYYYMMDD')),
+          end_day: parseInt(this.$moment(end_day).endOf('month').format('YYYYMMDD')),
           task_type: 'pull_bill',
         }
         await manager.create({
