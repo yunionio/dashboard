@@ -52,6 +52,7 @@ export const getSpecContainerParams = (fd, tabs) => {
     }
     if (fd.containerCpus[val]) resources.requests.cpu = fd.containerCpus[val] + 'm'
     if (fd.containerMemorys[val]) resources.requests.memory = fd.containerMemorys[val] + 'Mi'
+    p.resources = resources
     return p
   })
   const params = {
