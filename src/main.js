@@ -55,6 +55,10 @@ async function start () {
   try {
     await store.dispatch('app/fetchCompayInfo')
     await store.dispatch('app/fetchWorkflowEnabledKeys', { $t: uuid() })
+    // 商业版数据处理
+    if (process.env.VUE_APP_IS_PRIVATE) {
+      store.dispatch('bill/fetchProjectSharingAccounts')
+    }
   } finally {
     app.$mount('#app')
   }
