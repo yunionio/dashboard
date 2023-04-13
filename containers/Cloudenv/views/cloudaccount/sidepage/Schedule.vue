@@ -19,7 +19,7 @@
 
 <script>
 import ResSync from './ResSync'
-import BillSync from './BillSync'
+import BillTask from '@Cloudenv/views/billtasks/components/List'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { hasMeterService } from '@/utils/auth'
@@ -28,7 +28,7 @@ export default {
   name: 'ScheduledtasksListForCloudaccountSidepage',
   components: {
     ResSync,
-    BillSync,
+    BillTask,
   },
   mixins: [WindowsMixin, ListMixin],
   props: {
@@ -48,7 +48,7 @@ export default {
         { key: 'res-sync', label: this.$t('cloudenv.res_sync') },
       ]
       if (hasMeterService()) {
-        tabs.push({ key: 'bill-sync', label: this.$t('cloudenv.bill_sync') })
+        tabs.push({ key: 'bill-task', label: this.$t('cloudenv.bill_tasks') })
       }
       return tabs
     },
