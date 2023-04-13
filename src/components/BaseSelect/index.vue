@@ -183,12 +183,17 @@ export default {
       type: Array,
       default: () => ([]),
     },
+    autoLoadDefaultSelect: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     this.loadOptsDebounce = debounce(this.loadOpts, 500)
     return {
       resOpts: {},
       resList: [],
+      allResList: [],
       query: undefined,
       loading: false,
       showLoadMore: false,
@@ -237,6 +242,10 @@ export default {
     loadingC () {
       if (this.selectProps && R.is(Boolean, this.selectProps.loading)) return this.selectProps.loading
       return this.loading
+    },
+    labelInValueKeyName () {
+      const { labelInValueKeyName = 'value' } = this.selectProps
+      return labelInValueKeyName
     },
   },
   watch: {
@@ -288,6 +297,9 @@ export default {
       const resOpts = arrayToObj(this.resList)
       this.resOpts = resOpts
       this.disabledOpts()
+    },
+    resList (list) {
+      this.allResList = this.mergeListByIdKey(this.allResList, list)
     },
   },
   mounted () {
@@ -432,6 +444,25 @@ export default {
       if (R.is(Number, offset)) params.offset = offset
       return { manager, params }
     },
+    genDefaultParams () {
+      const { manager, params } = this.genParams(this.query)
+      let value = ''
+      if (R.is(Object, this.value)) {
+        value = _.get(this.value, this.labelInValueKeyName)
+      } else if (R.is(String, this.value)) {
+        value = this.value
+      }
+      if (value) {
+        const idFilter = `${this.idKey}.in(${value})`
+        if (params.filter) {
+          params.filter = R.is(String, params.filter) ? [params.filter, idFilter] : [...params.filter, idFilter]
+        } else {
+          params.filter = `${this.idKey}.in(${value})`
+        }
+      }
+      params.$t = 1
+      return { manager, params }
+    },
     async loadMore () {
       this.loadMoreClicked = true
       this.loadMoreOffset += (this.params.limit || 20)
@@ -444,12 +475,23 @@ export default {
         this.showLoadMore = false
         this.noMoreData = true // 没有更多了
       }
-      this.sourceList = this.sourceList.concat(sourceList)
-      this.resList = this.resList.concat(list)
+      this.sourceList = this.mergeListByIdKey(this.sourceList, sourceList)
+      this.resList = this.mergeListByIdKey(this.resList, list)
+
       this.$emit('update:resList', this.resList)
       const resOpts = arrayToObj(this.resList)
       this.resOpts = resOpts
       this.disabledOpts()
+    },
+    getSelectedList (query) {
+      const selected = R.is(Object, this.value) ? this.value[this.labelInValueKeyName] : this.value
+      if (!selected) return []
+      return this.allResList.filter(item => {
+        if ((!query || (item[this.searchKey] && item[this.searchKey].includes(query))) && item[this.idKey] === selected) {
+          return true
+        }
+        return false
+      })
     },
     async loadOpts (query) {
       if (this.options) return // 指定数据源是外传options,这里不请求
@@ -466,7 +508,8 @@ export default {
             this.showLoadMore = false
             this.noMoreData = true // 没有更多了
           }
-          this.sourceList = sourceList
+          const expectedSelectedList = this.getSelectedList(query)
+          this.sourceList = this.mergeListByIdKey(sourceList, expectedSelectedList)
           // 额外待选项也参与过滤
           const targetExtraOpts = this.extraOpts.filter(item => {
             if (!query) return true
@@ -474,23 +517,23 @@ export default {
               return true
             }
           })
-          this.resList = [...targetExtraOpts, ...list]
-          this.$emit('update:resList', list)
-          const resOpts = arrayToObj(list)
-          const extraOpts = arrayToObj(targetExtraOpts)
-          this.resOpts = {
-            ...extraOpts,
-            ...resOpts,
-          }
+          this.resList = this.mergeListByIdKey([...targetExtraOpts, ...list], expectedSelectedList)
+          this.$emit('update:resList', this.resList)
+          const resOpts = arrayToObj(this.resList)
+          this.resOpts = resOpts
           this.concatFirstOpts = false
           this.disabledOpts()
-          this.defaultSelect(list)
           this.$emit('update:initLoaded', true)
           this.fetchDataNum++
           if (this.fetchDataNum === 1) {
             this.firstResOpts = resOpts
             this.firstTotal = data.total
+            // 加载默认选中项
+            if (this.autoLoadDefaultSelect) {
+              await this.loadDefaultSelectedOpts()
+            }
           }
+          this.defaultSelect(this.sourceList)
           return list
         } catch (error) {
           throw error
@@ -516,6 +559,57 @@ export default {
         throw error
       }
     },
+    mergeListByIdKey (sourceList, mergeList) {
+      const ret = []
+      sourceList.map(s => {
+        if (!ret.some(item => item[this.idKey] === s[this.idKey])) {
+          ret.push(s)
+        }
+      })
+      mergeList.map(s => {
+        if (!ret.some(item => item[this.idKey] === s[this.idKey])) {
+          ret.push(s)
+        }
+      })
+      return ret
+    },
+    async loadDefaultSelectedOpts () {
+      // eslint-disable-next-line
+      return new Promise(async (resolve) => {
+        const selected = R.is(Object, this.value) ? this.value[this.labelInValueKeyName] : this.value
+        if (!selected || this.resOpts[selected]) {
+          resolve()
+          return
+        }
+        // 拉取默认选中或后续主动修改但第一次未拉取到的选项
+        const { manager, params } = this.genDefaultParams(this.query)
+        const { list, sourceList } = await this.fetchData(manager, params)
+        if (list.length) {
+          this.sourceList = this.mergeListByIdKey(this.sourceList, sourceList)
+          this.resList = this.mergeListByIdKey(this.resList, list)
+          this.$emit('update:resList', this.resList)
+          const resOpts = arrayToObj(this.resList)
+          this.resOpts = resOpts
+          this.firstResOpts = { ...this.firstResOpts, ...resOpts }
+          this.disabledOpts()
+        } else {
+          // 所选项没有，清空或保留
+          if (this.isDefaultSelect) {
+            if (this.resList.length > 0) {
+              const defaultItem = this.resList[0]
+              if (this.selectProps && this.selectProps.labelInValue) {
+                this.change({ label: defaultItem[this.nameKey], [this.labelInValueKeyName]: defaultItem[this.idKey] })
+              } else {
+                this.change(defaultItem[this.idKey])
+              }
+            } else {
+              this.clearSelect()
+            }
+          }
+        }
+        resolve()
+      })
+    },
     defaultSelect (list) {
       if (this.beforeDefaultSelectCallBack) {
         if (!this.beforeDefaultSelectCallBack(list)) return
@@ -523,7 +617,7 @@ export default {
       let isErrorOrEmpty = !this.value
       let value = this.value
       if (R.is(String, this.value)) {
-        value = _.get(this.value, 'key') || this.value
+        value = _.get(this.value, this.labelInValueKeyName) || this.value
         isErrorOrEmpty = !list.find(val => val.id === value || val.key === value)
       }
       if (value && !isErrorOrEmpty) {
@@ -531,7 +625,7 @@ export default {
       } else if (this.isDefaultSelect && list.length > 0 && isErrorOrEmpty) { // 是错误值或者没有初始化值才可以默认选择
         const defaultItem = list[0]
         if (this.selectProps && this.selectProps.labelInValue) {
-          this.change({ label: defaultItem[this.nameKey], value: defaultItem[this.idKey] })
+          this.change({ label: defaultItem[this.nameKey], [this.labelInValueKeyName]: defaultItem[this.idKey] })
         } else {
           this.change(defaultItem[this.idKey])
         }

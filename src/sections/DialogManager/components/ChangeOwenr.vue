@@ -12,6 +12,7 @@
         <a-form-item :label="params.projectLabel || $t('dictionary.project')" v-bind="formItemLayout">
           <domain-project
             :fc="form.fc"
+            :fd="form.fd"
             :form-layout="formItemLayout"
             :labelInValue="false"
             :decorators="{ project: decorators.project, domain: decorators.domain }"
@@ -30,7 +31,7 @@
 import _ from 'lodash'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import DomainProject from '@/sections/DomainProject'
+import DomainProject from '@/sections/DomainProject/last'
 
 export default {
   name: 'ChangeOwenrDialog',
@@ -42,7 +43,18 @@ export default {
     return {
       loading: false,
       form: {
-        fc: this.$form.createForm(this, { name: 'change_project_form' }),
+        fc: this.$form.createForm(this, {
+          name: 'change_project_form',
+          onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              this.form.fd[key] = values[key]
+            })
+          },
+        }),
+        fd: {
+          domain: _.get(this.params, 'data[0].domain_id'),
+          project: _.get(this.params, 'data[0].tenant_id'),
+        },
       },
       decorators: {
         domain: [
