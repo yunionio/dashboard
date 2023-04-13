@@ -83,7 +83,7 @@ export default {
       formScope: _.get(this.decorators, 'scope[1].initialValue'),
       domainParams: {
         scope: this.scope,
-        limit: 0,
+        limit: 20,
       },
       project: {},
     }
@@ -97,7 +97,7 @@ export default {
       return this.formScope === 'project'
     },
     projectParams () {
-      const params = { limit: 0 }
+      const params = { limit: 20 }
       if (this.isAdminMode) {
         params.scope = 'system'
       } else if (this.isDomainMode) {
