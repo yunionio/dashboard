@@ -121,6 +121,9 @@ export default {
   },
   created () {
     this.fetchData()
+    this.$bus.$on('refreshBillTaskList', () => {
+      this.list.refresh()
+    })
   },
   methods: {
     fetchData () {
