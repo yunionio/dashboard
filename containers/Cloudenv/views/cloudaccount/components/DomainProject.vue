@@ -1,17 +1,26 @@
 <template>
   <div>
     <a-form-item :label="$t('dictionary.domain')" v-bind="formLayout" v-if="isAdminMode && l3PermissionEnable">
-      <a-select
-        :allowClear="allowClear"
-        :labelInValue="labelInValue"
+      <base-select
+        ref="domain"
         v-decorator="decorators.domain"
-        :loading="domainLoading"
-        :placeholder="$t('rules.domain')"
+        resource="domains"
+        remote
+        :is-default-select="isDefaultSelect"
+        :params="domainParams"
+        :select-props="{
+          allowClear,
+          labelInValue,
+          placeholder: $t('rules.domain'),
+          dropdownClassName: 'oc-select-dropdown',
+          labelInValueKeyName: 'key',
+        }"
         @change="domainChange"
-        :filterOption="filterOption"
-        showSearch>
-        <a-select-option v-for="item of domains" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
-      </a-select>
+        @update:resList="updateDomainList">
+        <template #optionLabelTemplate="{ item }">
+          <span class="text-color-secondary option-prefix">{{ $t('dictionary.domain') }}: </span>{{ item.name }}
+        </template>
+      </base-select>
     </a-form-item>
     <a-form-item :label="$t('cloudenv.resource_map_type')" :extra="resourceMapExtra">
       <a-radio-group v-decorator="extraDecorators.resource_map_type" @change="resourceMapTypeChange">
@@ -20,18 +29,26 @@
       </a-radio-group>
     </a-form-item>
     <a-form-item :label="resourceMapType === 'target_project' ? $t('scope.text_573', [$t('dictionary.project')]) : $t('cloudenv.map_project_is_no_cloudproject')">
-      <a-select
-        :disabled="disableProjectSelect || isOpenstack"
-        :allowClear="allowClear"
-        :labelInValue="labelInValue"
+      <base-select
+        ref="project"
         v-decorator="decorators.project"
-        :loading="projectLoading"
-        :placeholder="$t('rules.project')"
+        resource="projects"
+        remote
+        :is-default-select="isDefaultSelect"
+        :params="projectParams"
+        :select-props="{
+          allowClear,
+          labelInValue,
+          placeholder: $t('rules.project'),
+          dropdownClassName: 'oc-select-dropdown',
+          labelInValueKeyName: 'key',
+        }"
         @change="projectChange"
-        :filterOption="filterOption"
-        showSearch>
-          <a-select-option v-for="item of projects" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
-      </a-select>
+        @update:resList="updateProjectList">
+        <template #optionLabelTemplate="{ item }">
+          <span class="text-color-secondary option-prefix">{{ $t('dictionary.project') }}: </span>{{ item.name }}
+        </template>
+      </base-select>
     </a-form-item>
     <a-form-item :label="$t('cloudenv.text_580')">
       <a-switch v-decorator="extraDecorators.is_open_project_mapping" :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" @change="openProjectMappingChange" />
@@ -62,7 +79,6 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
-import { Manager } from '@/utils/manager'
 
 export default {
   name: 'DomainProject',
@@ -88,15 +104,22 @@ export default {
       type: Boolean,
       default: true,
     },
+    isDefaultSelect: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     return {
       domains: [],
+      domainParams: {
+        scope: this.scope,
+        limit: 20,
+        filter: 'enabled.equals(1)', // 仅显示启用状态下的域
+      },
       domainId: '',
-      domainLoading: false,
       projectData: {},
       projects: [],
-      projectLoading: false,
       disableProjectSelect: false,
       extraDecorators: {
         resource_map_type: [
@@ -160,6 +183,22 @@ export default {
       const url = this.$router.resolve('/projectmapping')
       return url.href
     },
+    projectParams () {
+      const ret = {
+        scope: this.scope,
+        limit: 20,
+      }
+      const domainId = this.domainId
+      if (domainId && !this.isDomainMode) {
+        ret.domain_id = domainId
+      }
+      if (this.isAdminMode) {
+        delete ret.scope
+        delete ret.domain_id
+        ret.project_domain = domainId || this.userInfo.projectDomainId
+      }
+      return ret
+    },
     projectMappingParams () {
       if (this.isAdminMode) {
         return {
@@ -173,15 +212,83 @@ export default {
     },
   },
   mounted () {
-    this.dm = new Manager('domains', 'v1')
-    this.pm = new Manager('projects', 'v1')
-    if (this.isAdminMode && this.l3PermissionEnable) {
-      this.fetchDomains()
-    } else {
-      this.fetchProjects('default')
-    }
+    this.initDefaultData()
   },
   methods: {
+    async initDefaultData () {
+      if (this.isAdminMode) { // 系统视图
+        let defaultDomain = { key: this.userInfo.projectDomainId, label: this.userInfo.projectDomain }
+        const initialValue = _.get(this.decorators, 'domain[1].initialValue')
+        if (R.is(Object, initialValue) && initialValue.key) {
+          defaultDomain = { key: initialValue.key, label: initialValue.label }
+        } else if (R.is(String, initialValue) && initialValue) {
+          defaultDomain = { key: initialValue }
+        }
+        const projectInitialValue = _.get(this.decorators, 'project[1].initialValue')
+        const domainChange = () => {
+          this._setInitDomain(defaultDomain)
+          this.domainChange(defaultDomain || {})
+        }
+        if (R.is(Object, projectInitialValue) && projectInitialValue.key) {
+          domainChange()
+        } else if (R.is(String, projectInitialValue) && projectInitialValue) {
+          domainChange()
+        } else {
+          if (this.isDefaultSelect) {
+            domainChange()
+          }
+        }
+        if (this.isDomainFirstLoadData) {
+          this.$emit('fetchDomainCallback')
+          this.isDomainFirstLoadData = false
+        }
+        // await this.$nextTick()
+        // this.$refs.domain.loadDefaultSelectedOpts()
+      } else {
+        if (this.isDomainMode) { // 域视图
+          const data = [{
+            key: this.userInfo.projectDomainId,
+            label: this.userInfo.projectDomain,
+          }]
+          this.domains = data
+          this.domainChange(data[0])
+
+          let defaultProject = { key: this.userInfo.projectId, label: this.userInfo.projectName }
+          const initialProject = _.get(this.decorators, 'project[1].initialValue')
+          if (R.is(Object, initialProject) && initialProject.key) {
+            defaultProject = { key: initialProject.key, label: initialProject.label }
+          } else if (R.is(String, initialProject) && initialProject) {
+            defaultProject = { key: initialProject.key, label: initialProject.label }
+          }
+          const projectChange = () => {
+            this.projectChange(defaultProject || {})
+            this._setInitProject(defaultProject || {})
+          }
+          if (R.is(Object, initialProject) && initialProject.key) {
+            projectChange()
+          } else if (R.is(String, initialProject) && initialProject) {
+            projectChange()
+          } else {
+            if (this.isDefaultSelect) {
+              projectChange()
+            }
+          }
+          if (this.isProjectFirstLoadData) {
+            this.$emit('fetchProjectCallback')
+            this.isProjectFirstLoadData = false
+          }
+        } else { // 普通视图
+          const data = [{
+            key: this.userInfo.projectId,
+            label: this.userInfo.projectName,
+          }]
+          this.projects = data
+          // 普通视图下不用判断 isDefaultSelect
+          this.projectChange(data[0])
+          this._setInitProject(data[0])
+        }
+      }
+    },
     resourceMapTypeChange (e) {
       this.resourceMapType = e.target.value
     },
@@ -190,11 +297,6 @@ export default {
     },
     openProjectMappingChange (e) {
       this.openProjectMapping = e
-    },
-    filterOption (input, option) {
-      return (
-        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
-      )
     },
     /*
      * @params {Object} domain { key: <domainId> }
@@ -228,123 +330,31 @@ export default {
         }
       }
     },
-    async fetchDomains () {
-      if (!this.isAdminMode) {
-        const data = [{
-          key: this.userInfo.projectDomainId,
-          label: this.userInfo.projectDomain,
-        }]
-        this.domains = data
-        this.domainChange(data[0])
-        return
-      }
-      this.domainLoading = true
-      try {
-        const params = {
-          scope: this.scope,
-          limit: 0,
-          filter: 'enabled.equals(1)', // 仅显示启用状态下的域
-        }
-        const response = await this.dm.list({ params })
-        const data = response.data.data || []
-        this.domains = data.map(val => ({ ...val, key: val.id, label: val.name }))
-        let defaultData = { key: this.userInfo.projectDomainId, label: this.userInfo.projectDomain }
-        if (!this.domains.find(val => val.key === this.userInfo.projectDomainId)) return // 如果下拉列表没有当前域值，return
-        const initialValue = _.get(this.decorators, 'domain[1].initialValue')
-        if (initialValue) {
-          const findInitValue = this.domains.find(val => val.key === (initialValue.key || initialValue))
-          if (findInitValue) {
-            defaultData = { key: findInitValue.key, label: findInitValue.label }
-          }
-        }
-        this._setInitDomain(defaultData)
-        this.domainChange(defaultData || {})
-      } catch (error) {
-        throw error
-      } finally {
-        this.domainLoading = false
-      }
-    },
-    async fetchProjects (domainId = 'default') {
-      if (!this.isAdminMode && !this.isDomainMode) {
-        const data = [{
-          key: this.userInfo.projectId,
-          label: this.userInfo.projectName,
-        }]
-        this.projects = data
-        this.projectChange(data[0])
-        this._setInitProject(data[0])
-        return
-      }
-      this.projectLoading = true
-      try {
-        const params = {
-          scope: this.scope,
-        }
-
-        if (domainId && !this.isDomainMode) params.domain_id = domainId
-        if (this.isAdminMode) {
-          params.project_domain = domainId || this.userInfo.projectDomainId
-          delete params.scope
-          delete params.domain_id
-        }
-        const response = await this.pm.list({ params })
-        const data = response.data.data
-        this.projects = data.map(val => ({ ...val, key: val.id, label: val.name })) || []
-        let defaultData = { key: this.userInfo.projectId, label: this.userInfo.projectName }
-        if (!this.projects.find(val => val.key === this.userInfo.projectId)) { // 如果下拉列表没有当前项目值，取第一个值
-          defaultData = this.projects[0]
-        }
-        const initialValue = _.get(this.decorators, 'project[1].initialValue')
-        if (initialValue) {
-          const findInitValue = this.projects.find(val => val.key === (initialValue.key || initialValue))
-          if (findInitValue) {
-            defaultData = { key: findInitValue.key, label: findInitValue.label }
-          }
-        }
-        this.projectChange(defaultData || {})
-        this._setInitProject(defaultData || {})
-      } catch (error) {
-        throw error
-      } finally {
-        this.projectLoading = false
-      }
-    },
     /**
      * domain {Object|String}
      */
     domainChange (domain) {
       const domainId = R.is(Object, domain) ? domain.key : domain
-      if (domainId) {
-        this.fetchProjects(domainId)
-        this.fc.setFieldsValue({
-          project: undefined,
-        })
-        this.$emit('update:domain', domainId)
+      if (this.labelInValue) {
+        this.$emit('update:domain', domain)
       } else {
-        this.fc.setFieldsValue({
-          domain: undefined,
-          project: undefined,
-        })
-        this.projects = []
+        this.$emit('update:domain', domainId)
       }
       this.domainId = domainId
     },
     projectChange (project) {
+      const projectId = R.is(Object, project) ? project.key : project
       this.projectData = project
-      this.$emit('update:project', project)
-      if (!this.isAdminMode && !this.isDomainMode) {
-        this.fc.getFieldDecorator('project', { preserve: true, initialValue: project })
+      if (this.labelInValue) {
+        this.$emit('update:project', project)
+      } else {
+        this.$emit('update:project', projectId)
       }
     },
     handleAutoCreateProjectChange (e) {
       const checked = e.target.checked
       this.disableProjectSelect = checked
       this.$bus.$emit('updateAutoCreate', checked)
-    },
-    fetchProjectsHandle (e) {
-      const domain = this.fc.getFieldValue('domain')
-      this.fetchProjects(domain?.key)
     },
   },
 }

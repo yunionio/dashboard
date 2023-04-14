@@ -104,7 +104,10 @@ export default {
         domain: [
           'domain',
           {
-            initialValue: this.$store.getters.userInfo.projectDomainId,
+            initialValue: {
+              key: this.$store.getters.userInfo.projectDomainId,
+              label: this.$store.getters.userInfo.projectDomain,
+            },
             rules: [
               { validator: isRequired(), message: this.$t('rules.domain'), trigger: 'change' },
             ],

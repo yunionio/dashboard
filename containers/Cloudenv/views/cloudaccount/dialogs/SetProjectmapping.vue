@@ -23,8 +23,7 @@
             resource="projects"
             filterable
             remote
-            :params="projectParams"
-            :extraOpts="targetProjects" />
+            :params="projectParams" />
         </a-form-model-item>
         <a-form-model-item :label="$t('cloudenv.text_580')" prop="project_mapping_id">
           <a-switch
@@ -112,15 +111,6 @@ export default {
     }
   },
   computed: {
-    targetProjects () {
-      const ret = []
-      this.params.data.map(item => {
-        if (item.tenant && item.tenant_id) {
-          ret.push({ id: item.tenant_id, name: item.tenant })
-        }
-      })
-      return ret
-    },
     resourceMapExtra () {
       if (this.fd.resource_map_type === 'target_project') {
         if (this.openProjectMapping) {

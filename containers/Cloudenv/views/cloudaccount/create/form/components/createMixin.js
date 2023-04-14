@@ -37,7 +37,10 @@ export default {
         project: [
           'project',
           {
-            initialValue: this.$store.getters.userInfo.projectId,
+            initialValue: {
+              key: this.$store.getters.userInfo.projectId,
+              label: this.$store.getters.userInfo.project,
+            },
             rules: [
               { validator: this.handleProject, message: this.$t('rules.project'), trigger: 'change' },
             ],
