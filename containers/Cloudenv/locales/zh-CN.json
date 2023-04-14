@@ -810,5 +810,19 @@
   "cloudenv.action_group.set_fee": "费用设置",
   "cloudenv.action.update_account": "更新账号",
   "cloudenv.action.update_credential": "更新账单",
-  "cloudenv.last_sync_cost": "上次同步耗时"
+  "cloudenv.last_sync_cost": "上次同步耗时",
+  "cloudenv.share_month": "分摊月份",
+  "cloudenv.bill_tasks": "账单任务",
+  "cloudenv.task_type": "任务类型",
+  "cloudenv.task_type.project_sharing": "缺省项目分摊",
+  "cloudenv.task_type.prepaid_amortizing": "预付费分摊",
+  "cloudenv.task_type.pull_bill": "拉取账单",
+  "cloudenv.task_type.recalculate": "二次定价",
+  "cloudenv.task_type.delete_bill": "删除账单",
+  "cloudenv.month": "月份",
+  "cloudenv.billtask_cannot_cancel": "当前账单任务无法取消",
+  "cloudenv.title.project_type": "归属模式",
+  "cloudenv.bill_task.task_mode": "启动方式",
+  "cloudenv.bill_task.task_mode.auto": "自动",
+  "cloudenv.bill_task.task_mode.manual": "手动"
 }
