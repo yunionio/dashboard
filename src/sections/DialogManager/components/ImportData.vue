@@ -54,6 +54,14 @@
  *         field: 'id',
  *         title: 'ID',
  *         required: true, // required 会验证文件中该字段是否传入
+ *         validator: (val) => { // 验证该字段是否合乎预期
+ *           const ret = { validate: true }
+ *           if (!['ecs', 'rds'].includes(val)) {
+ *             ret.validate = false
+ *             ret.tooltip = '资源id必须为ecs，rds'
+ *           }
+ *           return ret
+ *         }
  *       },
  *       {
  *         field: 'name',
@@ -186,14 +194,24 @@ export default {
           // 整理数据
           const list = []
           const requiredCols = []
+          const validatorTips = []
           const { columns = [] } = that.params.templateConfig
           sheetData.map(item => {
             const row = {}
             columns.map(col => {
               const cellData = col.formatter ? col.formatter({ row: item, cellValue: item[col.title] }) : item[col.title]
-              row[col.field] = cellData ? (cellData + '').trim() : ''
-              if (col.required && !row[col.field] && !requiredCols.includes(col.title)) {
-                requiredCols.push(col.title)
+              const v = cellData ? (cellData + '').trim() : ''
+              row[col.field] = v
+              if (!v) {
+                if (col.required && !requiredCols.includes(col.title)) {
+                  requiredCols.push(col.title)
+                }
+              }
+              if (col.validator) {
+                const valid = col.validator(v)
+                if (!valid.validate && !validatorTips.includes(valid.tooltip)) {
+                  validatorTips.push(valid.tooltip)
+                }
               }
             })
             list.push(row)
@@ -201,6 +219,8 @@ export default {
           // 验证必填项
           if (requiredCols.length) {
             that.$message.error(that.$t('common.required_cols', [requiredCols.join(',')]))
+          } else if (validatorTips.length) {
+            that.$message.error(validatorTips.join(','))
           } else {
             that.doCreate(sheetData, list)
           }
