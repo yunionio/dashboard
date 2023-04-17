@@ -14,8 +14,14 @@
             :select-props="{placeholder: $t('common.tips.select', [$t('cloudenv.task_type')])}"
             :disabled-items="disabledActions" />
         </a-form-model-item>
-        <a-form-model-item v-if="isMonthShow" :label="$t('cloudenv.month')" prop="month" v-bind="formItemLayout">
-          <a-month-picker v-model="form.month" :disabled-date="disabledDate" valueFormat="YYYYMM" format="YYYY-MM" />
+        <a-form-model-item v-if="isMonthShow" :label="$t('cloudenv.text_212')" v-bind="formItemLayout" prop="start_day">
+          <a-form-model-item style="display:inline-block" prop="start_day">
+            <a-month-picker v-model="form.start_day" :disabled-date="dateDisabledStart" />
+          </a-form-model-item>
+          <span class="ml-2 mr-2">~</span>
+          <a-form-model-item style="display:inline-block" prop="end_day">
+            <a-month-picker v-model="form.end_day" :disabled-date="dateDisabledEnd" />
+          </a-form-model-item>
         </a-form-model-item>
       </a-form-model>
     </div>
@@ -70,12 +76,14 @@ export default {
       form: {
         account_id: this.params.account_id,
         task_type: initTaskType,
-        month: this.$moment().subtract(1, 'month').format('YYYYMM'),
+        start_day: this.$moment().subtract(1, 'month'),
+        end_day: this.$moment().subtract(1, 'month'),
       },
       rules: {
         account_id: [{ required: true, message: this.$t('common.tips.select', [this.$t('dictionary.cloudaccount')]) }],
         task_type: [{ required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.task_type')]) }],
-        month: [{ required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.share_resource_type')]) }],
+        start_day: [{ required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.text_461')]) }],
+        end_day: [{ required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.text_462')]) }],
       },
       taskTypeOpts: TaskTypeList.map(id => {
         return {
@@ -98,6 +106,18 @@ export default {
     this.$bM = new this.$Manager('billtasks/submit', 'v1')
   },
   methods: {
+    dateDisabledStart (value) {
+      const dateEnd = this.form.end_day
+      if (dateEnd && value > dateEnd) return true
+      if (value > this.$moment()) return true
+      return false
+    },
+    dateDisabledEnd (value) {
+      const dateStart = this.form.start_day
+      if (dateStart && value < dateStart) return true
+      if (value > this.$moment()) return true
+      return false
+    },
     validateForm () {
       return new Promise((resolve, reject) => {
         this.$refs.form.validate((valid, err) => {
@@ -119,7 +139,8 @@ export default {
           task_type: this.form.task_type,
         }
         if (this.isMonthShow) {
-          data.month = parseInt(this.form.month)
+          data.start_day = parseInt(this.$moment(this.form.start_day).startOf('month').format('YYYYMMDD'))
+          data.end_day = parseInt(this.$moment(this.form.end_day).endOf('month').format('YYYYMMDD'))
         }
         await this.$bM.create({
           data,
