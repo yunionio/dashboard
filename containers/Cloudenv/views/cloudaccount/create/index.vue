@@ -23,7 +23,7 @@
       <div slot="right">
         <a-button class="mr-3" @click="perv" v-if="!isFirstStep && !isScheduledSetting">{{$t('cloudenv.text_273')}}</a-button>
         <a-button :disabled="nextDisabled" class="mr-3" type="primary"  @click="next" :loading="loading">{{ nextStepTitle }}</a-button>
-        <test-button v-if="['create-cloudaccount', 'bill-form', 'bill-file-index'].includes(currentComponent)" class="mr-3" :post="testPost" />
+        <test-button v-if="['create-cloudaccount', 'bill-form', 'bill-file-index'].includes(currentComponent)" class="mr-3" :post="testPost" :isSuccessAlert="!['bill-form', 'bill-file-index'].includes(currentComponent)" />
         <a-button @click="cancel">{{['select-region', 'bill-form', 'bill-file-index', 'scheduled-settings'].includes(currentComponent) ? $t('cloudenv.text_274'): $t('cloudenv.text_170')}}</a-button>
       </div>
     </page-footer>
