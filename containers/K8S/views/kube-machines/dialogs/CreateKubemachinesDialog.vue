@@ -328,9 +328,10 @@ export default {
             disks[0].schedtags = [{ id: data.systemDiskSchedtag[key], strategy: data.systemDiskPolicy[key] }]
           }
         }
-        if ((this.hypervisor === HYPERVISORS_MAP.kvm.key || this.hypervisor === HYPERVISORS_MAP.cloudpods.key) && disks[0].backend.indexOf('local') !== -1) {
-          disks[0].medium = disks[0].backend.split('-')[1]
-          disks[0].backend = disks[0].backend.split('-')[0]
+        if (this.hypervisor === HYPERVISORS_MAP.kvm.key || this.hypervisor === HYPERVISORS_MAP.cloudpods.key) {
+          const backend = disks[0].backend
+          disks[0].backend = backend.split('/')[0]
+          disks[0].medium = backend.split('/')[1]
         }
         if (data.image && data.image[key]) {
           disks[0].image_id = data.image[key].key
