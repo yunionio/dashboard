@@ -215,6 +215,7 @@ export default {
         from: this.time,
         interval: this.timeGroup,
         unit: true,
+        skip_check_series: true,
       }
       if (this.time === 'custom' && this.customTime && this.customTime.from && this.customTime.to) {
         data.from = this.customTime.from
