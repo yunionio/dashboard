@@ -208,6 +208,7 @@ export default {
         from: this.time,
         interval: this.timeGroup,
         unit: true,
+        skip_check_series: true,
       }
       data.signature = getSignature(data)
       return data
