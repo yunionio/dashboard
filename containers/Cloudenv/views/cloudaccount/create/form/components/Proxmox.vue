@@ -78,7 +78,7 @@ export default {
         port: [
           'port',
           {
-            initialValue: 443,
+            initialValue: 8006,
             rules: [
               { type: 'number', min: 0, max: 65535, message: this.$t('cloudenv.text_270'), trigger: 'blur', transform: (v) => parseFloat(v) },
             ],
