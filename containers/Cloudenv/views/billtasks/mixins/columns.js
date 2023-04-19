@@ -22,7 +22,7 @@ export default {
       //   },
       // }),
       {
-        title: 'ID',
+        title: this.$t('cloudenv.task_id'),
         field: 'id',
         minWidth: 80,
         showOverflow: 'ellipsis',
