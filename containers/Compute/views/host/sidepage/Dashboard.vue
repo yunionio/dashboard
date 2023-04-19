@@ -3,8 +3,8 @@
     <a-divider orientation="left">{{$t('compute.text_572')}}</a-divider>
       <a-row class="mb-2" :gutter="{ lg: 24, xl: 12, xxl: 24 }">
         <a-col class="mb-3" :lg="12" :xl="6" v-for="(item, index) in progressList" :key="item.label">
-          <progress-card :progress="item" v-if="index !== 3" />
-          <ring-card v-else :options="item" height="210px" />
+          <progress-card :progress="item" v-if="index !== 3" :card-style="{height: '312px'}" />
+          <ring-card v-else :options="item" height="230px" />
         </a-col>
       </a-row>
     <!-- <a-divider class="mt-3" orientation="left">{{$t('compute.text_573')}}</a-divider>
@@ -178,7 +178,7 @@ export default {
           percent: total ? (current / total) : 0,
           msg: {
             current,
-            total,
+            total: `${total * obj.cpu_commit_bound || 1} (${this.$t('compute.text_563')}: ${obj.cpu_count}, ${this.$t('compute.reserved')}: ${obj.cpu_reserved})`,
           },
         }
       })()
@@ -190,7 +190,7 @@ export default {
           percent: total ? (current / total) : 0,
           msg: {
             current: sizestrWithUnit(current, 'M', 1024),
-            total: sizestrWithUnit(total, 'M', 1024),
+            total: `${sizestrWithUnit(total * obj.mem_commit_bound || 1, 'M', 1024)} (${this.$t('compute.text_564')}: ${sizestrWithUnit(obj.mem_size, 'M', 1024)}, ${this.$t('compute.reserved')}: ${sizestrWithUnit(obj.mem_reserved, 'M', '1024')})`,
           },
         }
       })()
@@ -202,7 +202,7 @@ export default {
           percent: total ? (current / total) : 0,
           msg: {
             current: sizestrWithUnit(current, 'M', 1024),
-            total: sizestrWithUnit(total, 'M', 1024),
+            total: `${sizestrWithUnit(total * obj.storage_commit_rate || 1, 'M', 1024)} (${this.$t('compute.text_565')}: ${sizestrWithUnit(obj.storage_size, 'M', '1024')})`,
           },
         }
       })()
