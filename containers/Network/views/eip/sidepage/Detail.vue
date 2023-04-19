@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { getAssociateNameTableColumn } from '../utils/columns'
 import { getBrandTableColumn } from '@/utils/common/tableColumn'
 import {
   getUserTagColumn,
@@ -17,6 +16,7 @@ import {
 } from '@/utils/common/detailColumn'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
+import { getAssociateNameTableColumn } from '../utils/columns'
 
 export default {
   name: 'EipDetail',
@@ -53,7 +53,7 @@ export default {
           field: 'bandwidth',
           title: this.$t('network.text_195'),
           formatter: ({ cellValue, row }) => {
-            if (row.cloud_env === 'private' && row.brand !== 'Apsara') return '-'
+            if (!cellValue) return '-'
             return sizestr(cellValue, 'M', 1024)
           },
         },
