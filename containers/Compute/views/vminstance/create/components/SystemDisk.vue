@@ -238,11 +238,19 @@ export default {
       }
       return {}
     },
+    currentDiskCapability () {
+      if (this.hypervisor !== HYPERVISORS_MAP.kvm.key) return {}
+      const instance_capabilities = this.capabilityData.instance_capabilities || []
+      const storages = instance_capabilities.find(item => item.hypervisor === this.hypervisor)?.storages
+      const sys_disk = storages.sys_disk || []
+      const currentDisk = sys_disk.find(item => this.currentTypeObj.key?.startsWith(item.storage_type))
+      return currentDisk
+    },
     max () {
-      return this.currentTypeObj.sysMax || this.defaultSize
+      return this.currentDiskCapability?.max_size_gb || this.currentTypeObj.sysMax || this.defaultSize
     },
     min () {
-      return this.currentTypeObj.sysMin || 0
+      return this.currentDiskCapability?.min_size_gb || this.currentTypeObj.sysMin || 0
     },
     storageStatusMap () {
       var statusMap = {
