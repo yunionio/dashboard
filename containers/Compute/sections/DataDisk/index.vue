@@ -261,11 +261,19 @@ export default {
       }
       return {}
     },
+    currentDiskCapability () {
+      if (this.hypervisor !== HYPERVISORS_MAP.kvm.key) return {}
+      const instance_capabilities = this.capabilityData.instance_capabilities || []
+      const storages = instance_capabilities.find(item => item.hypervisor === this.hypervisor)?.storages
+      const data_disk = storages.data_disk || []
+      const currentDisk = data_disk.find(item => this.currentTypeObj.key?.startsWith(item.storage_type))
+      return currentDisk
+    },
     max () {
-      return this.currentTypeObj ? (this.currentTypeObj.max || DISK_MIN_SIZE) : DISK_MIN_SIZE
+      return this.currentDiskCapability?.max_size_gb || this.currentTypeObj?.max || DISK_MIN_SIZE
     },
     min () {
-      return this.currentTypeObj ? (this.currentTypeObj.min || DISK_MIN_SIZE) : DISK_MIN_SIZE
+      return this.currentDiskCapability?.min_size_gb || this.currentTypeObj?.min || DISK_MIN_SIZE
     },
     diskRemain () {
       const remain = this.capabilityData.max_data_disk_count - this.dataDisks.length
