@@ -1667,5 +1667,6 @@
   "compute.specify_ip": "Specify IP",
   "compute.vga_gpu": "Graphics GPU",
   "compute.hpc_gpu": "Compute GPU",
-  "compute.reserved_cpus_info": "reserved core"
+  "compute.reserved_cpus_info": "reserved core",
+  "compute.reserved": "Reserved"
 }
