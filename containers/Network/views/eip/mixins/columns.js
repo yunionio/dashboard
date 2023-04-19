@@ -36,7 +36,7 @@ export default {
         minWidth: 80,
         showOverflow: 'ellipsis',
         formatter: ({ row, cellValue }) => {
-          if (row.bandwidth === 0 && row.cloud_env === 'private' && row.brand !== 'Apsara') return '-'
+          if (!row.bandwidth) return '-'
           return sizestr(cellValue, 'M', 1024)
         },
       },
