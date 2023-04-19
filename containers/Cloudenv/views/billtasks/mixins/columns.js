@@ -22,6 +22,12 @@ export default {
       //   },
       // }),
       {
+        title: 'ID',
+        field: 'id',
+        minWidth: 80,
+        showOverflow: 'ellipsis',
+      },
+      {
         field: 'task_type',
         title: this.$t('cloudenv.task_type'),
         slots: {
