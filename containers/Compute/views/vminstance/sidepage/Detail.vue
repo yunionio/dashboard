@@ -320,23 +320,35 @@ export default {
                 return <a onClick={ () => this.$emit('tab-change', 'disk-list-for-vm-instance-sidepage') }>{this.diskInfos.dataDisk}</a>
               },
             },
-            getCopyWithContentTableColumn({
-              field: 'cdrom',
-              title: 'ISO',
-              hideField: true,
-              slotCallback: row => {
+            (() => {
+              function getCdromInfo (row) {
                 if (!row.cdrom) return '-'
                 let cdrom = `${row.cdrom}`
                 if (Array.isArray(row.cdrom) && row.cdrom.length > 0) {
                   cdrom = row.cdrom[0].detail
                 }
                 const idx = cdrom.indexOf('(')
-                const id = cdrom.substring(idx + 1, cdrom.indexOf('/'))
-                return [
-                  <side-page-trigger permission='images_get' name='SystemImageSidePage' id={id} vm={this}>{ cdrom.substring(0, idx) || '-' }</side-page-trigger>,
-                ]
-              },
-            }),
+                return cdrom.substring(0, idx)
+              }
+              return getCopyWithContentTableColumn({
+                field: 'cdrom',
+                title: 'ISO',
+                hideField: true,
+                message: getCdromInfo,
+                slotCallback: row => {
+                  if (!row.cdrom) return '-'
+                  let cdrom = `${row.cdrom}`
+                  if (Array.isArray(row.cdrom) && row.cdrom.length > 0) {
+                    cdrom = row.cdrom[0].detail
+                  }
+                  const idx = cdrom.indexOf('(')
+                  const id = cdrom.substring(idx + 1, cdrom.indexOf('/'))
+                  return [
+                    <side-page-trigger permission='images_get' name='SystemImageSidePage' id={id} vm={this}>{ cdrom.substring(0, idx) || '-' }</side-page-trigger>,
+                  ]
+                },
+              })
+            })(),
             {
               field: 'isolated_devices',
               title: 'GPU',
