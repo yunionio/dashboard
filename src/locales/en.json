@@ -5382,5 +5382,7 @@
   "common.file_type_validate": "Only upload xlsx files, and no more than 200MB",
   "common.template": "Template",
   "common.import_data": "Import data",
-  "common.required_cols": "{0} is required!"
+  "common.required_cols": "{0} is required!",
+  "common.quick_sync": "Quick sync",
+  "common.quick_sync_tip": "After opening, only newly added and deleted resources will be synchronized"
 }
