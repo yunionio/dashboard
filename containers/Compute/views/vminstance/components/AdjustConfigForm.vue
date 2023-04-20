@@ -886,6 +886,10 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
+        if (!this.form.fd.sku?.name) {
+          // 修复套餐为空时，sku值为空对象导致非空校验失效问题
+          this.form.fc.setFieldsValue({ sku: null })
+        }
         const values = await this.form.fc.validateFields()
         if (this.isOpenWorkflow) {
           const projects = new Set(this.params.data.map(item => item.tenant_id))
