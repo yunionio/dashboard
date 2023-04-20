@@ -446,21 +446,13 @@ export default {
       if (R.is(Number, offset)) params.offset = offset
       return { manager, params }
     },
-    genDefaultParams () {
+    genDefaultParams (fetchKeys) {
       const { manager, params } = this.genParams(this.query)
-      let value = ''
-      if (R.is(Object, this.value)) {
-        value = _.get(this.value, this.labelInValueKeyName)
-      } else if (R.is(String, this.value)) {
-        value = this.value
-      }
-      if (value) {
-        const idFilter = `${this.idKey}.in(${value})`
-        if (params.filter) {
-          params.filter = R.is(String, params.filter) ? [params.filter, idFilter] : [...params.filter, idFilter]
-        } else {
-          params.filter = `${this.idKey}.in(${value})`
-        }
+      const idFilter = `${this.idKey}.in(${fetchKeys.join(',')})`
+      if (params.filter) {
+        params.filter = R.is(String, params.filter) ? [params.filter, idFilter] : [...params.filter, idFilter]
+      } else {
+        params.filter = `${this.idKey}.in(${fetchKeys.join(',')})`
       }
       params.$t = 1
       return { manager, params }
@@ -578,13 +570,25 @@ export default {
     async loadDefaultSelectedOpts () {
       // eslint-disable-next-line
       return new Promise(async (resolve) => {
-        const selected = R.is(Object, this.value) ? this.value[this.labelInValueKeyName] : this.value
-        if (!selected || this.resOpts[selected]) {
+        let selected = []
+        if (R.is(Array, this.value)) {
+          selected = this.value.filter(key => !!key)
+        } else if (R.is(Object, this.value) || R.is(String, this.value)) {
+          const v = R.is(Object, this.value) ? this.value[this.labelInValueKeyName] : this.value
+          if (v) selected.push(v)
+        }
+        const noHas = []
+        selected.map(key => {
+          if (!this.resOpts[key]) {
+            noHas.push(key)
+          }
+        })
+        if (!selected.length || !noHas.length) {
           resolve()
           return
         }
         // 拉取默认选中或后续主动修改但第一次未拉取到的选项
-        const { manager, params } = this.genDefaultParams(this.query)
+        const { manager, params } = this.genDefaultParams(noHas)
         const { list, sourceList } = await this.fetchData(manager, params)
         if (list.length) {
           this.sourceList = this.mergeListByIdKey(this.sourceList, sourceList)
