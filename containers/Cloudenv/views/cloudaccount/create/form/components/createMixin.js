@@ -107,7 +107,8 @@ export default {
       const fields = Object.keys(changedFields)
       if (changedFields && fields.length > 0) {
         fields.forEach(field => {
-          this.form.fd[field] = changedFields[field]
+          this.$set(this.form.fd, field, changedFields[field])
+          // this.form.fd[field] = changedFields[field]
           const fn = this[`${field}_change`]
           if (fn && typeof fn === 'function') {
             fn()
