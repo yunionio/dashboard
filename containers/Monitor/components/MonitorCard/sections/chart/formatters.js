@@ -15,10 +15,10 @@ const bps = {
       const min = Math.pow(BINARY.base, power)
       const max = Math.pow(BINARY.base, power + 1)
 
-      if (value === null || value === 0 || (value >= min && value < max)) {
+      if (value === null || value === 0 || (value >= 0 && value < max)) {
         suffix += BINARY.suffixes[power]
 
-        if (min > 0) value = value / min
+        if (min > 1) value = value / min
 
         break
       }
