@@ -825,5 +825,6 @@
   "cloudenv.bill_task.task_mode": "启动方式",
   "cloudenv.bill_task.task_mode.auto": "自动",
   "cloudenv.bill_task.task_mode.manual": "手动",
-  "cloudenv.verify_method": "认证方式"
+  "cloudenv.verify_method": "认证方式",
+  "cloudenv.task_id": "任务ID"
 }
