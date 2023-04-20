@@ -21,6 +21,18 @@
             </a-select-option>
           </a-select>
         </a-form-item>
+        <a-form-item>
+          <span slot="label">{{$t('common.quick_sync')}}<help-tooltip class="ml-1" :text="$t('common.quick_sync_tip')" /></span>
+          <a-switch
+            :checkedChildren="$t('common.text00062')"
+            :unCheckedChildren="$t('common.text00063')"
+            v-decorator="[
+              'xor',
+              {
+                initialValue: false
+              }
+            ]" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -92,18 +104,22 @@ export default {
       try {
         const ids = this.params.data.map(item => item.id)
         const values = await this.validateForm()
-
+        const data = {
+          force: true,
+          resources: values.resource,
+        }
+        if (values.resource[0] === 'all') {
+          data.full_sync = true
+          data.resources = []
+        }
+        if (values.xor) data.xor = true
         if (this.params.onManager) {
           await this.params.onManager('batchPerformAction', {
             id: ids,
             steadyStatus: this.params.steadyStatus || {},
             managerArgs: {
               action: 'sync',
-              data: {
-                full_sync: true,
-                force: true,
-                resources: values.resource[0] === 'all' ? [] : values.resource,
-              },
+              data,
             },
           })
         } else {
@@ -112,19 +128,15 @@ export default {
             ids: ids,
             action: 'sync',
             data: {
-              resources: values.resource[0] === 'all' ? [] : values.resource,
               region: [
                 this.params.data[0].cloudregion_id,
               ],
-            },
-            params: {
-              full_sync: true,
-              force: true,
+              ...data,
             },
           })
         }
-        this.params.callback && this.params.callback()
-        this.cancelDialog()
+        // this.params.callback && this.params.callback()
+        // this.cancelDialog()
       } catch (error) {
         throw error
       } finally {
