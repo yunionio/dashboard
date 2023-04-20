@@ -382,7 +382,7 @@
   "system.text_393": "资源账单",
   "system.text_394": "实例账单",
   "system.text_395": "邮件短信",
-  "system.text_396": "费率配置",
+  "system.text_396": "@:dictionary.rate配置",
   "system.text_397": "节点",
   "system.text_398": "存储声明",
   "system.text_399": "安全组规则",
@@ -705,7 +705,7 @@
     },
     "common$global_http_proxy": {
       "label": "全局代理开关",
-      "desc": "如果开启，在下载套餐、下载公有云镜像列表、下载费率、镜像市场列表展示、通过URL导入镜像、拉取公共镜像列表时将使用全局代理"
+      "desc": "如果开启，在下载套餐、下载公有云镜像列表、下载@:dictionary.rate、镜像市场列表展示、通过URL导入镜像、拉取公共镜像列表时将使用全局代理"
     },
     "yunionapi$force_single_session_login": {
       "label": "单session登录开关",
@@ -824,7 +824,7 @@
   "system.webconsole": "站内信{0}",
   "system.role": "角色信息",
   "system.eport": "公网IP地址(个)",
-  "system.global_http_proxy": "如果开启，在下载套餐、下载公有云镜像列表、下载费率、镜像市场列表展示、通过URL导入镜像、拉取公共镜像列表时将使用全局代理，云账号的代理服务需在多云管理模块单独配置",
+  "system.global_http_proxy": "如果开启，在下载套餐、下载公有云镜像列表、下载@:dictionary.rate、镜像市场列表展示、通过URL导入镜像、拉取公共镜像列表时将使用全局代理，云账号的代理服务需在多云管理模块单独配置",
   "system.global_https_proxy_extra": "若请求的url是https，优先使用https代理",
   "system.global_http_proxy_extra": "建议https代理和http代理至少填写一个，可以为空，为空则代表直连",
   "system.global_https_proxy.label": "https代理",

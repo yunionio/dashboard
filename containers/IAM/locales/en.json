@@ -382,7 +382,7 @@
   "system.text_393": "Resource Bill",
   "system.text_394": "Instance Bill",
   "system.text_395": "Mail SMS",
-  "system.text_396": "Rate Configuration",
+  "system.text_396": "@:dictionary.rate Configuration",
   "system.text_397": "Node",
   "system.text_398": "Storage Statement",
   "system.text_399": "Security Group Rules",
@@ -706,7 +706,7 @@
     },
     "common$global_http_proxy": {
       "label": "Global Proxy",
-      "desc": "If enabled, the global proxy will be used for the following scenarios: downloading configuration and rate data, downloading public images, importing image from Image market, uploading image from URL, etc."
+      "desc": "If enabled, the global proxy will be used for the following scenarios: downloading configuration and @:dictionary.rate data, downloading public images, importing image from Image market, uploading image from URL, etc."
     },
     "yunionapi$force_single_session_login": {
       "label": "Single session login switch",
@@ -825,7 +825,7 @@
   "system.webconsole": "Internal Message {0}",
   "system.role": "Role Settings",
   "system.eport": "Public IP",
-  "system.global_http_proxy": "If enabled, the global proxy will be used when downloading packages, downloading public cloud image lists, downloading rates, mirror market list display, importing mirrors via URL, and pulling public mirror lists. The proxy service of cloud accounts needs to be configured separately in the multi-cloud management module",
+  "system.global_http_proxy": "If enabled, the global proxy will be used when downloading packages, downloading public cloud image lists, downloading @:dictionary.rate, mirror market list display, importing mirrors via URL, and pulling public mirror lists. The proxy service of cloud accounts needs to be configured separately in the multi-cloud management module",
   "system.global_https_proxy_extra": "If the requested url is https, https proxy is preferred",
   "system.global_http_proxy_extra": "It is recommended that the HTTPS proxy and HTTP proxy should fill at least one blank to represent a direct connection",
   "system.global_https_proxy.label": "Https Proxy",
