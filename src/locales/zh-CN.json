@@ -5406,5 +5406,7 @@
   "common.file_type_validate": "只能上传xlsx文件，且不超过200MB",
   "common.template": "模板",
   "common.import_data": "导入数据",
-  "common.required_cols": "{0}为必填项！"
+  "common.required_cols": "{0}为必填项！",
+  "common.quick_sync": "快速同步",
+  "common.quick_sync_tip": "开启后，将只同步新增和删除的资源"
 }
