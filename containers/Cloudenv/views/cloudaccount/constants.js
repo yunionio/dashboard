@@ -691,4 +691,5 @@ export const notSupportSelectRegion = [
   providerMap.incloudsphere.key,
   providerMap.remotefile.key,
   providerMap.h3c.key,
+  providerMap.proxmox.key,
 ]
