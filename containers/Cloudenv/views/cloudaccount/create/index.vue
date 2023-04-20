@@ -475,6 +475,10 @@ export default {
       if (formData.sync_interval_seconds) {
         data.sync_interval_seconds = formData.sync_interval_seconds * 60 // 转换为秒
       }
+      if (formData.verify_method) {
+        data.username = `${formData.username}@${formData.verify_method}`
+        delete data.verify_method
+      }
       this._addDomainProject(data)
       this._providerDiff(data)
       await this.cloudaccountsM.performClassAction({
