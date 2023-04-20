@@ -42,7 +42,7 @@ export default {
   computed: {
     projectParams () {
       return {
-        limit: 0,
+        limit: 20,
         scope: this.scope,
       }
     },

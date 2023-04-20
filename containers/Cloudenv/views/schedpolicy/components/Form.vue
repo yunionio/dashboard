@@ -17,7 +17,8 @@
         v-decorator="decorators.schedtag"
         resource="schedtags"
         :params="schedtagParams"
-        :select-props="{ placeholder: $t('cloudenv.text_378') }" />
+        :select-props="{ placeholder: $t('cloudenv.text_378') }"
+        :autoLoadDefaultSelect="false" />
     </a-form-item>
     <condition-select @conditionValsChange="conditionValsChange" :decorators="decorators" :formItemLayout="formItemLayout" />
   </a-form>

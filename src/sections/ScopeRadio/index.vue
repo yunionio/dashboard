@@ -14,6 +14,7 @@
         v-decorator="decorators.domain"
         :params="domainParams"
         filterable
+        remote
         version="v1"
         :disabled="disabled"
         @change="v => emit(v, 'domainId')"
@@ -26,6 +27,7 @@
         :params="projectParams"
         :item.sync="project"
         filterable
+        remote
         version="v1"
         :need-params="true"
         :disabled="disabled"
