@@ -1,5 +1,5 @@
 <template>
-  <a-card :title="progress.title">
+  <a-card :title="progress.title" :style="cardStyle">
     <div class="text-center">
       <a-progress :type="type" v-bind="progressProps" :percent="percent" :status="status" :format="format" />
       <div class="content mt-4" v-if="progress.msg">
@@ -41,6 +41,10 @@ export default {
     colorReverse: {
       type: Boolean,
       default: false,
+    },
+    cardStyle: {
+      type: Object,
+      default: () => ({}),
     },
   },
   computed: {

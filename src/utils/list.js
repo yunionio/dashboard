@@ -224,6 +224,7 @@ class CreateList {
     this.limit = limit
     this.total = 0
     this.nextMarker = ''
+    this.pagerType = ''
     // 选择数据
     this._selectedItems = []
     this.selected = []
@@ -391,6 +392,7 @@ class CreateList {
         this.data = this.wrapData(data)
       }
       this.nextMarker = response.data.next_marker
+      this.pagerType = response.data.marker_field ? 'loadMore' : 'pager'
       this.syncSelected()
       this.checkSteadyStatus()
       this.total = total
