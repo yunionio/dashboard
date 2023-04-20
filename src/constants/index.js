@@ -135,6 +135,7 @@ export const ENABLE_USER_CUSTOM_DICTIONARY = [
   'role',
   'policy',
   'schedtag',
+  'rate',
 ]
 
 export const chartColors = getColorByCache()
