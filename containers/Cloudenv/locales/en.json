@@ -825,5 +825,6 @@
   "cloudenv.bill_task.task_mode": "Start Mode",
   "cloudenv.bill_task.task_mode.auto": "Automatic",
   "cloudenv.bill_task.task_mode.manual": "Manual",
+  "cloudenv.verify_method": "Verify Method",
   "cloudenv.task_id": "Task ID"
 }

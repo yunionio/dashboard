@@ -13,8 +13,13 @@
       <a-form-item :label="$t('cloudenv.text_266')">
         <a-input v-decorator="decorators.port" />
       </a-form-item>
+      <a-form-item :label="$t('cloudenv.verify_method')">
+        <a-radio-group v-decorator="decorators.verify_method" @change="onVerifyMethodChange">
+          <a-radio-button v-for="item of verifyMethodOptions" :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
+        </a-radio-group>
+      </a-form-item>
       <a-form-item :label="keySecretField.label.k">
-        <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
+        <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" :suffix="usernameSuffix" />
         <div slot="extra">
            {{$t('cloudenv.text_236', [keySecretField.text, keySecretField.label.k])}}
            <help-link :href="docs[provider.toLowerCase()]">{{$t('cloudenv.text_237')}}</help-link>
@@ -40,6 +45,11 @@ import { isRequired } from '@/utils/validate'
 import createMixin from './createMixin'
 import DomainProject from '../../../components/DomainProject'
 
+const verifyMethodOptions = [
+  { key: 'pam', label: 'PAM' },
+  { key: 'pve', label: 'PVE' },
+]
+
 export default {
   name: 'ProxmoxCreate',
   components: {
@@ -52,6 +62,7 @@ export default {
   data () {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
     return {
+      verifyMethodOptions,
       docs: getCloudaccountDocs(this.$store.getters.scope),
       decorators: {
         name: [
@@ -82,6 +93,12 @@ export default {
             rules: [
               { type: 'number', min: 0, max: 65535, message: this.$t('cloudenv.text_270'), trigger: 'blur', transform: (v) => parseFloat(v) },
             ],
+          },
+        ],
+        verify_method: [
+          'verify_method',
+          {
+            initialValue: verifyMethodOptions[0].key,
           },
         ],
         username: [
@@ -122,6 +139,17 @@ export default {
       },
       keepAliveFields: true,
     }
+  },
+  computed: {
+    usernameSuffix () {
+      const suffix = this.form.fd.verify_method || verifyMethodOptions[0].key
+      return `@${suffix}`
+    },
+  },
+  methods: {
+    onVerifyMethodChange (e) {
+      this.form.fc.setFieldsValue({ verify_method: e.target.value })
+    },
   },
 }
 </script>

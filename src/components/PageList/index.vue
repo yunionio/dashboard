@@ -71,6 +71,7 @@
         :config="config"
         :resource="resource"
         :next-marker="nextMarker"
+        :pager-type="pagerType"
         :selection-type="selectionType"
         :inBaseSidePage="inBaseSidePage"
         :isSidepageOpen="isSidepageOpen"
@@ -310,6 +311,9 @@ export default {
     },
     nextMarker () {
       return this.list.nextMarker
+    },
+    pagerType () {
+      return this.list.pagerType
     },
     showTagConfigCheck () {
       return this.showTagConfig && this.projectTags.enableOrganization
