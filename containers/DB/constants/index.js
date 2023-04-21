@@ -37,7 +37,7 @@ export const RDS_MONITOR_ALL_OPTS = [
     as: i18n.t('db.text_11'),
     unit: '%',
     transfer: 1,
-    supportBrands: ['huawei', 'hcso', 'hcs', 'aliyun', 'remotefile', 'apsara', 'azure', 'jdcloud', 'qcloud', 'aws'],
+    supportBrands: ['huawei', 'hcso', 'hcs', 'aliyun', 'remotefile', 'apsara', 'azure', 'jdcloud', 'qcloud', 'aws', 'h3c'],
   },
   {
     name: 'mem',
@@ -47,7 +47,7 @@ export const RDS_MONITOR_ALL_OPTS = [
     as: i18n.t('db.text_12'),
     unit: '%',
     transfer: 1,
-    supportBrands: ['huawei', 'hcso', 'hcs', 'aliyun', 'remotefile', 'apsara', 'azure', 'jdcloud', 'qcloud'],
+    supportBrands: ['huawei', 'hcso', 'hcs', 'aliyun', 'remotefile', 'apsara', 'azure', 'jdcloud', 'qcloud', 'h3c'],
   },
   {
     name: 'bps_recv',
@@ -77,7 +77,7 @@ export const RDS_MONITOR_ALL_OPTS = [
     fromItem: 'rds_disk',
     unit: '%',
     transfer: 1,
-    supportBrands: ['huawei', 'hcso', 'hcs', 'aliyun', 'remotefile', 'apsara', 'azure', 'jdcloud', 'qcloud'],
+    supportBrands: ['huawei', 'hcso', 'hcs', 'aliyun', 'remotefile', 'apsara', 'azure', 'jdcloud', 'qcloud', 'h3c'],
   },
   {
     name: 'read_bps',
