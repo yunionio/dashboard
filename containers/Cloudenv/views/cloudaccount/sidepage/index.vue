@@ -121,6 +121,7 @@ export default {
         return {
           label: this.data.id,
           resource_type: 'cloudaccount',
+          account_id: this.data.id,
         }
       }
       return null
