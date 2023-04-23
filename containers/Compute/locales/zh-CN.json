@@ -135,7 +135,7 @@
   "compute.text_135": "取消",
   "compute.text_136": "设置",
   "compute.text_137": "容量范围 {0} ~ {1}GB",
-  "compute.text_138": "不设置",
+  "compute.text_138": "无限制",
   "compute.text_139": "1小时",
   "compute.text_140": "6小时",
   "compute.text_141": "1天",
@@ -1644,5 +1644,7 @@
   "compute.specify_ip": "指定IP",
   "compute.vga_gpu": "图形GPU",
   "compute.hpc_gpu": "算力GPU",
-  "compute.reserved": "预留"
+  "compute.reserved_cpus_info": "预留核",
+  "compute.reserved": "预留",
+  "compute.transfer.max_brand_width.tooltip": "带宽限制单位为Mbps，即每秒兆比特"
 }

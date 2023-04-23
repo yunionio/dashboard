@@ -43,7 +43,11 @@
             @change="hostChangeHandle" />
         </a-form-item>
         <template v-if="isKvm && isAllRunning">
-          <a-form-item :label="$t('compute.vminstance.transfer.max_brand_width')">
+          <a-form-item>
+            <span slot="label">
+              {{ $t('compute.vminstance.transfer.max_brand_width') }}
+              <a-tooltip :title="$t('compute.transfer.max_brand_width.tooltip')"><a-icon type="question-circle-o" /></a-tooltip>
+            </span>
             <migration-bandwidth :decorators="decorators" :form="form" />
           </a-form-item>
           <a-form-item :label="$t('compute.vminstance.transfer.quickly_finish')"
@@ -124,7 +128,7 @@ export default {
         brandWidth: [
           'brandWidth',
           {
-            initialValue: '-1',
+            initialValue: '100',
           },
         ],
         customBrandWidth: [
@@ -296,8 +300,8 @@ export default {
           data.skip_cpu_check = true
           data.skip_kernel_check = true
         }
-        if (values.brandwidth !== '-1') {
-          data.max_bandwidth_mb = values.brandwidth === 'custom' ? values.customBrandWidth : values.brandwidth
+        if (values.brandWidth !== '-1') {
+          data.max_bandwidth_mb = (values.brandwidth === 'custom' ? values.customBrandWidth : values.brandWidth) * 1024
         }
         if (values.quickly_finish) {
           data.quickly_finish = true
