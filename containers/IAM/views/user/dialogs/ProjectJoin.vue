@@ -22,28 +22,30 @@
             @change="domainChange" />
         </a-form-item>
         <a-form-item :label="$t('dictionary.project')">
-          <a-select
-            :filterOption="filterOption"
-            :loading="projectLoading"
+          <base-select
+            resource="projects"
             v-decorator="decorators.projects"
-            mode="multiple"
-            :placeholder="$t('rules.project')">
-            <a-select-option v-for="item in projectList" :key="item.id">
+            filterable
+            remote
+            :select-props="{placeholder: $t('rules.project'), mode: 'multiple'}"
+            :params="projectParams">
+            <template #optionLabelTemplate="{item}">
               {{item.name}}
-            </a-select-option>
-          </a-select>
+            </template>
+          </base-select>
         </a-form-item>
         <a-form-item :label="$t('dictionary.role')">
-          <a-select
-            :filterOption="filterOption"
-            :loading="roleLoading"
-             v-decorator="decorators.roles"
-            mode="multiple"
-            :placeholder="$t('rules.role')">
-            <a-select-option v-for="item in roleList" :key="item.id">
+          <base-select
+            resource="roles"
+            v-decorator="decorators.roles"
+            filterable
+            remote
+            :select-props="{placeholder: $t('rules.role'), mode: 'multiple'}"
+            :params="roleParams">
+            <template #optionLabelTemplate="{item}">
               {{item.name}}
-            </a-select-option>
-          </a-select>
+            </template>
+          </base-select>
         </a-form-item>
       </a-form>
     </div>
@@ -111,7 +113,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isDomainMode', 'isAdminMode', 'l3PermissionEnable']),
+    ...mapGetters(['isDomainMode', 'isAdminMode', 'l3PermissionEnable', 'scope']),
     domainOptions () {
       return [{
         label: 'Default',
@@ -123,56 +125,29 @@ export default {
         scope: this.scope,
       }
     },
+    projectParams () {
+      const ret = {
+        scope: this.scope,
+        project_domain_id: this.domainId,
+        limit: 20,
+      }
+      return ret
+    },
+    roleParams () {
+      const ret = {
+        scope: this.scope,
+        project_domain_id: this.domainId,
+        limit: 20,
+      }
+      return ret
+    },
   },
   created () {
     if (!this.l3PermissionEnable) {
       this.domainId = 'default'
     }
-    this.fetchProjects()
-    this.fetchRoles()
   },
   methods: {
-    filterOption (input, option) {
-      return (
-        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
-      )
-    },
-    async fetchProjects () {
-      const params = {
-        project_domain_id: this.domainId,
-        scope: this.$store.getters.scope,
-      }
-      // const uid = get(this, 'params.data[0].id')
-      // if (uid) {
-      //   params.user = uid
-      //   params.jointable = true
-      // }
-      this.projectLoading = true
-      try {
-        const { data = {} } = await new this.$Manager('projects', 'v1').list({ params })
-        this.projectList = data.data || []
-      } catch (err) {
-        throw err
-      } finally {
-        this.projectLoading = false
-      }
-    },
-    async fetchRoles () {
-      const manager = new this.$Manager('roles', 'v1')
-      const params = {
-        project_domain_id: this.domainId,
-        scope: this.$store.getters.scope,
-      }
-      this.roleLoading = true
-      try {
-        const { data = {} } = await manager.list({ params })
-        this.roleList = data.data || []
-      } catch (err) {
-        throw err
-      } finally {
-        this.roleLoading = false
-      }
-    },
     async handleConfirm () {
       this.loading = true
       const manager = new this.$Manager('users', 'v1')
@@ -192,11 +167,6 @@ export default {
     },
     domainChange (val) {
       this.domainId = val
-      this.form.fc.resetFields(['projects', 'roles'])
-      this.$nextTick(() => {
-        this.fetchProjects()
-        this.fetchRoles()
-      })
     },
   },
 }
