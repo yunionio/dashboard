@@ -135,7 +135,7 @@
   "compute.text_135": "Cancel",
   "compute.text_136": "Settings",
   "compute.text_137": "Capacity range {0} ~ {1}GB",
-  "compute.text_138": "Never",
+  "compute.text_138": "Unlimited",
   "compute.text_139": "1 hour",
   "compute.text_140": "6 hours",
   "compute.text_141": "1 day",
@@ -1668,5 +1668,6 @@
   "compute.vga_gpu": "Graphics GPU",
   "compute.hpc_gpu": "Compute GPU",
   "compute.reserved_cpus_info": "reserved core",
-  "compute.reserved": "Reserved"
+  "compute.reserved": "Reserved",
+  "compute.transfer.max_brand_width.tooltip": "The unit of bandwidth limit is Mbps, that is, megabits per second"
 }
