@@ -10,7 +10,8 @@
           :id="id"
           :resId="resId"
           :data="data"
-          :getParams="getParams" />
+          :getParams="getParams"
+          :accountData="data" />
       </keep-alive>
     </div>
   </div>
