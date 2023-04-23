@@ -172,13 +172,20 @@ export default {
       const tempList = new Array(3)
       tempList[0] = (() => {
         const current = obj.cpu_commit || 0
-        const total = obj.cpu_count - (obj.cpu_reserved || 0)
+        let cpu_reserved = 0
+        const { metadata = {} } = obj
+        const { reserved_cpus_info = '' } = metadata
+        if (reserved_cpus_info) {
+          const l = JSON.parse(reserved_cpus_info)
+          cpu_reserved = l.cpus.split(',').length
+        }
+        const total = obj.cpu_count - (cpu_reserved || 0)
         return {
           title: 'CPU',
           percent: total ? (current / total) : 0,
           msg: {
             current,
-            total: `${total * obj.cpu_commit_bound || 1} (${this.$t('compute.text_563')}: ${obj.cpu_count}, ${this.$t('compute.reserved')}: ${obj.cpu_reserved})`,
+            total: `${total * obj.cpu_commit_bound || 1} (${this.$t('compute.text_563')}: ${obj.cpu_count}, ${this.$t('compute.reserved')}: ${cpu_reserved})`,
           },
         }
       })()
