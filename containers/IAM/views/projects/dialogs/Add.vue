@@ -210,17 +210,20 @@ export default {
         return {
           scope: this.scope,
           domain_id: this.domain_id,
+          limit: 20,
         }
       }
       return {
         scope: this.scope,
         domain_id: this.domain_id,
+        limit: 20,
       }
     },
     rolesParams () {
       return {
         scope: this.scope,
         domain_id: this.domain_id,
+        limit: 20,
       }
     },
     domainParams () {
