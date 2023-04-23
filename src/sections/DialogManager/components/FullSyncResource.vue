@@ -5,6 +5,17 @@
       <dialog-selected-tips :name="params.name" class="mt-3" :count="params.data.length" :action="params.action" />
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
+        <a-form-item :label="$t('common.sync_mode')" :help="$t('common.increment_sync_tip')">
+          <a-radio-group v-decorator="[
+              'sync_mode',
+              {
+                initialValue: 'full'
+              }
+            ]">
+            <a-radio-button value="full">{{$t('common.full_sync')}}</a-radio-button>
+            <a-radio-button value="increment">{{$t('common.increment_sync')}}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
         <a-form-item :label="$t('common.full_sync_resource_type')">
           <a-select
             mode="multiple"
@@ -20,18 +31,6 @@
               {{ v === 'all' ? $t('cloudenv.text_297') : getResourceI18n(v) }}
             </a-select-option>
           </a-select>
-        </a-form-item>
-        <a-form-item>
-          <span slot="label">{{$t('common.quick_sync')}}<help-tooltip class="ml-1" :text="$t('common.quick_sync_tip')" /></span>
-          <a-switch
-            :checkedChildren="$t('common.text00062')"
-            :unCheckedChildren="$t('common.text00063')"
-            v-decorator="[
-              'xor',
-              {
-                initialValue: false
-              }
-            ]" />
         </a-form-item>
       </a-form>
     </div>
@@ -112,7 +111,7 @@ export default {
           data.full_sync = true
           data.resources = []
         }
-        if (values.xor) data.xor = true
+        if (values.sync_mode === 'increment') data.xor = true
         if (this.params.onManager) {
           await this.params.onManager('batchPerformAction', {
             id: ids,
