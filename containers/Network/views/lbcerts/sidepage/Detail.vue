@@ -3,7 +3,8 @@
     :on-manager="onManager"
     :data="data"
     :base-info="baseInfo"
-    :extra-info="extraInfo" />
+    :extra-info="extraInfo"
+    :hidden-keys="['status']" />
 </template>
 
 <script>
@@ -26,6 +27,25 @@ export default {
   data () {
     return {
       baseInfo: [
+        {
+          field: 'is_complete',
+          title: this.$t('network.text_27') + ' ',
+          slots: {
+            default: ({ row }) => {
+              if (row.is_complete === false) {
+                return [<div slot="label">
+                  <span class="status-dot warning"/>
+                  <span class="mr-1"> {this.$t('network.lbcert.is_complete.false')} </span>
+                  <a-tooltip title={this.$t('network.text_753')}>
+                    <a-icon type="question-circle-o" />
+                  </a-tooltip>
+                </div>]
+              } else {
+                return [<div slot="label"><span class="status-dot success"/><span class="mr-1"> {this.$t('network.lbcert.is_complete.true')} </span></div>]
+              }
+            },
+          },
+        },
         isPublicTableColumn(),
         {
           field: 'fingerprint',
@@ -53,3 +73,27 @@ export default {
   },
 }
 </script>
+<style scoped lang="less">
+@import '~@/styles/less/theme';
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  position: relative;
+  display: inline-flex;
+}
+
+.success {
+  background-color: @success-color;
+}
+.danger {
+  background-color: @error-color;
+}
+.info {
+  background-color: @normal-color;
+}
+.warning {
+  background-color: @warning-color;
+}
+</style>

@@ -185,8 +185,8 @@ export default {
 @import '~@/styles/less/theme';
 
 .status-dot {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   position: relative;
   display: inline-flex;
