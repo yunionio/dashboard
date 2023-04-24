@@ -395,7 +395,7 @@ export function sizestrC (...args) {
 export const findAndUnshift = (arr, condition) => {
   const ret = arr.slice(0)
   if (!condition || !R.is(Function, condition)) return ret
-  let firstValue = ret[0]
+  let firstValue
   for (var i = 0; i < ret.length; i++) {
     if (condition(ret[i])) {
       firstValue = ret[i]
@@ -403,7 +403,9 @@ export const findAndUnshift = (arr, condition) => {
       break
     }
   }
-  ret.unshift(firstValue)
+  if (firstValue) {
+    ret.unshift(firstValue)
+  }
   return ret
 }
 
