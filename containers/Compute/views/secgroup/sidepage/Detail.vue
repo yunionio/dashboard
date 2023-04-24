@@ -3,7 +3,8 @@
     :on-manager="onManager"
     :data="data"
     resource="secgroups"
-    :base-info="baseInfo" />
+    :base-info="baseInfo"
+    status-module="secgroup" />
 </template>
 
 <script>
