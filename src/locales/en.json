@@ -168,7 +168,9 @@
       "live_migrating": "Migrating",
       "stopped": "Stopped",
       "on": "On",
-      "off": "Off"
+      "off": "Off",
+      "qga_exec_command_failed": "QGA execution failed",
+      "convert_failed": "Convert Failed"
     },
     "network": {
       "init": "Initialize",
