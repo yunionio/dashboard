@@ -414,8 +414,7 @@ export default {
           throw error
         })
     },
-    doCreateWorkflow (genCreateData) {
-      const data = genCreateData.all()
+    doCreateWorkflow (data) {
       const variables = {
         process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
         initiator: this.$store.getters.userInfo.id,
