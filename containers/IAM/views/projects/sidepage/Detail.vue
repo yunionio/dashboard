@@ -41,9 +41,9 @@ import ExternalprojectList from '@Cloudenv/views/externalproject/components/List
 import BucketStorageList from '@Storage/views/bucket/components/List'
 import RDSList from '@DB/views/rds/components/List'
 import RedisList from '@DB/views/redis/components/List'
-import { hasPermission } from '@/utils/auth'
 import { transformLabel } from '../../policy/utils'
 import { RESOURCES_MAP } from '../../policy/constants'
+import ProjectAdmin from '../components/ProjectAdmin'
 
 const RESOURCES_BASE = {
   servers: {},
@@ -92,6 +92,7 @@ export default {
     BucketStorageList,
     RDSList,
     RedisList,
+    ProjectAdmin,
   ],
   mixins: [WindowsMixin],
   props: {
@@ -111,61 +112,6 @@ export default {
       loading: false,
       nameRules: [
         { required: true, message: this.$t('system.text_168') },
-      ],
-      baseInfo: [
-        getUserTagColumn({ onManager: this.onManager, resource: 'domain', params: { service: 'identity' }, columns: () => this.columns, tipName: this.$t('dictionary.project') }),
-        getExtTagColumn({ onManager: this.onManager, resource: 'domain', params: { service: 'identity' }, columns: () => this.columns, tipName: this.$t('dictionary.project') }),
-        {
-          field: 'group_count',
-          title: this.$t('system.text_457'),
-          slots: {
-            default: ({ row }) => {
-              if (!row.group_count) return '0'
-              return [<a onClick={ () => this.$emit('tab-change', 'project-directly-under-user-list') }>{row.group_count}</a>]
-            },
-          },
-        },
-        {
-          field: 'user_count',
-          title: this.$t('system.text_458'),
-          slots: {
-            default: ({ row }) => {
-              if (!row.user_count) return '0'
-              return [<a onClick={ () => this.$emit('tab-change', 'project-directly-under-user-list') }>{row.user_count}</a>]
-            },
-          },
-        },
-        {
-          field: 'admin',
-          title: this.$t('iam.project_admin'),
-          slots: {
-            default: ({ row }) => {
-              if (!row.admin_id) {
-                return [<span>{row.admin || '-'}</span>, <help-tooltip class="ml-2" name="projectAdminTip" />]
-              }
-              const p = hasPermission({ key: 'users_get' })
-              let node
-              if (p) {
-                node = [
-                  <div class="d-flex align-items-center">
-                    <list-body-cell-wrap row={ row } onManager={ this.onManager } field='admin' title={ row.admin } hideField={ true }>
-                      <side-page-trigger permission='users_get' name='UserSidePage' id={row.admin_id} vm={this}>{ row.admin }</side-page-trigger>
-                    </list-body-cell-wrap>
-                    <help-tooltip class="ml-1" name="projectAdminTip" />
-                  </div>,
-                ]
-              } else {
-                node = [
-                  <div class="d-flex align-items-center">
-                    <list-body-cell-wrap row={ row } onManager={ this.onManager } field='admin' title={ row.admin } />
-                    <help-tooltip class="ml-1" name="projectAdminTip" />
-                  </div>,
-                ]
-              }
-              return node
-            },
-          },
-        },
       ],
       resourceListComponent: {
         servers: {
@@ -249,6 +195,39 @@ export default {
           params: {},
         },
       },
+      baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'domain', params: { service: 'identity' }, columns: () => this.columns, tipName: this.$t('dictionary.project') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'domain', params: { service: 'identity' }, columns: () => this.columns, tipName: this.$t('dictionary.project') }),
+        {
+          field: 'group_count',
+          title: this.$t('system.text_457'),
+          slots: {
+            default: ({ row }) => {
+              if (!row.group_count) return '0'
+              return [<a onClick={ () => this.$emit('tab-change', 'project-directly-under-user-list') }>{row.group_count}</a>]
+            },
+          },
+        },
+        {
+          field: 'user_count',
+          title: this.$t('system.text_458'),
+          slots: {
+            default: ({ row }) => {
+              if (!row.user_count) return '0'
+              return [<a onClick={ () => this.$emit('tab-change', 'project-directly-under-user-list') }>{row.user_count}</a>]
+            },
+          },
+        },
+        {
+          field: 'admin',
+          title: this.$t('iam.project_admin'),
+          slots: {
+            default: ({ row }) => {
+              return [<ProjectAdmin row={ row } manager={ this.onManager } onOk={this.ok} />]
+            },
+          },
+        },
+      ],
     }
   },
   computed: {
@@ -376,6 +355,9 @@ export default {
       }).catch(() => {
         this.loading = false
       })
+    },
+    ok () {
+      this.$bus.$emit('refresh-detail')
     },
   },
 }

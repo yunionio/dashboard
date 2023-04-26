@@ -1002,5 +1002,6 @@
   "iam.project.alter_role_tips": "Please double check the modified role information, incorrect changes may prevent you from logging into the console.",
   "iam.project.project_leave_tips": "Please check the exit project information carefully, you may not be able to log in to the console if you leave the project.",
   "iam.notify.server_panicked": "Server Panicked",
-  "iam.operation_object.alter_tips": "Please check the operation object carefully, you may not be able to log in to the console if you modify it incorrectly."
+  "iam.operation_object.alter_tips": "Please check the operation object carefully, you may not be able to log in to the console if you modify it incorrectly.",
+  "iam.modify_sth": "Modify {0}"
 }
