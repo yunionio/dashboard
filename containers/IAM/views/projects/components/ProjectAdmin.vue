@@ -60,6 +60,7 @@ export default {
       visiable: false,
       userParams: {
         limit: 20,
+        scope: this.$store.getters.scope,
       },
       layout: {
         labelCol: { span: 8 },
