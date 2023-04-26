@@ -1097,7 +1097,7 @@
   "compute.text_1113": "Only the system administrator supports this operation temporarily",
   "compute.text_1114": "Please select the shutdown machine for operation",
   "compute.text_1115": "Please select a local IDC machine for operation",
-  "compute.text_1116": "Associated Security Group",
+  "compute.text_1116": "Modify Security Group",
   "compute.text_1117": "Renewal",
   "compute.text_1118": "Only public cloud supports this operation",
   "compute.text_1119": "Only resources with annual and monthly subscription support this operation",
