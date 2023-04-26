@@ -1,10 +1,10 @@
 import { mapGetters } from 'vuex'
 import { Base64 } from 'js-base64'
 import qs from 'qs'
-import { canIpmiProbe } from '../utils/status'
 import expectStatus from '@/constants/expectStatus'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
+import { canIpmiProbe } from '../utils/status'
 import { solWebConsole, jnlpConsole } from '../../../utils/webconsole'
 
 export default {
@@ -51,7 +51,7 @@ export default {
               }
             }
           }
-          ips.forEach(ip => {
+          Array.from(new Set(ips)).forEach(ip => {
             const meta = () => ({ validate: obj.status === 'running' })
             ret.push({
               label: `SSH ${ip}`,
