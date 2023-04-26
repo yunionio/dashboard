@@ -57,6 +57,7 @@ export default {
       }
       return callback()
     }
+
     return {
       loading: false,
       form: {
@@ -154,6 +155,8 @@ export default {
           },
         })
         this.bindedSecgroups = data
+        const secgroupIds = data.map(item => item.id)
+        this.decorators.secgroups[1].initialValue = secgroupIds
         this.bindedSecgroupsLoaded = true
       } catch (error) {
         throw error
@@ -167,13 +170,21 @@ export default {
         const data = {
           secgroup_ids: values.secgroups,
         }
-        await this.params.onManager('batchPerformAction', {
-          id: ids,
-          managerArgs: {
+        if (this.params.manager) {
+          await this.params.manager.batchPerformAction({
+            ids,
             action: 'set-secgroup',
             data,
-          },
-        })
+          })
+        } else {
+          await this.params.onManager('batchPerformAction', {
+            id: ids,
+            managerArgs: {
+              action: 'set-secgroup',
+              data,
+            },
+          })
+        }
         this.params.refresh && this.params.refresh()
         this.$bus.$emit(SECGROUP_LIST_FOR_VMINSTANCE_SIDEPAGE_REFRESH)
         this.cancelDialog()

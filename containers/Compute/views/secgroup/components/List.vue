@@ -6,7 +6,7 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions"
+    :single-actions="customSingleActions || singleActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
     :defaultSearchKey="defaultSearchKey"
@@ -56,6 +56,18 @@ export default {
     hiddenColumns: {
       type: Array,
       default: () => ([]),
+    },
+    customGroupActions: {
+      type: Array,
+    },
+    customSingleActions: {
+      type: Array,
+    },
+    frontGroupMethods: {
+      type: String,
+      validator (value) {
+        return ['coverage', 'append'].includes(value)
+      },
     },
   },
   data () {
@@ -193,6 +205,7 @@ export default {
       if (this.showCreateAction) {
         defaultActions.unshift(createAction)
       }
+      if (this.frontGroupMethods === 'coverage') return _frontGroupActions
       return _frontGroupActions.concat(defaultActions).sort((a, b) => a.index - b.index)
     },
   },

@@ -114,18 +114,18 @@ export const getDeleteResult = (row, deleteField = 'can_delete', failKey = 'dele
       validate: false,
     }
   }
-  data = data.filter(item => !item[deleteField])
+  data = data.filter(item => !item?.[deleteField])
   const len = data.length
   if (len > 0) {
     validate = false
     let deleteFailReason = []
     // 只有一项不可删除条目时
     if (len === 1) {
-      deleteFailReason = [data[0][failKey]]
+      deleteFailReason = [data[0]?.[failKey]]
     }
     // 有多条不可删除条目时
     if (len > 1) {
-      deleteFailReason = data.map(item => item[failKey]).filter(val => !!val)
+      deleteFailReason = data.map(item => item?.[failKey]).filter(val => !!val)
     }
     // 处理获取到的 deleteFailReason
     if (deleteFailReason.length > 1 || deleteFailReason.length <= 0) {
