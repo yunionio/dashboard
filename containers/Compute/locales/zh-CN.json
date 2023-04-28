@@ -1671,5 +1671,7 @@
   "compute.hpc_gpu": "算力GPU",
   "compute.reserved_cpus_info": "预留核",
   "compute.reserved": "预留",
-  "compute.transfer.max_brand_width.tooltip": "带宽限制单位为Mbps，即每秒兆比特"
+  "compute.transfer.max_brand_width.tooltip": "带宽限制单位为Mbps，即每秒兆比特",
+  "compute.secgroup.remove_secgroup.group_actions.tooltip": "需至少保留一个安全组，请勿全部移除",
+  "compute.secgroup.remove_secgroup.single_actions.tooltip": "需至少保留一个安全组，不支持该操作"
 }
