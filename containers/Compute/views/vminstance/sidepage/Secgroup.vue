@@ -57,9 +57,17 @@ export default {
               })
             },
             meta: () => {
-              return {
-                validate: this.list.selectedItems.length && this.list.selectedItems.length < this.list.total,
+              const ret = { validate: true }
+              if (!this.list.selectedItems?.length) {
+                ret.validate = false
+                return ret
               }
+              if (this.list.selectedItems.length === this.list.total) {
+                ret.validate = false
+                ret.tooltip = this.$t('compute.secgroup.remove_secgroup.group_actions.tooltip')
+                return ret
+              }
+              return ret
             },
           },
         ]
@@ -78,9 +86,13 @@ export default {
             })
           },
           meta: () => {
-            return {
-              validate: this.$refs.secgroupList?.list?.total > 1,
+            const ret = { validate: true }
+            if (this.$refs.secgroupList?.list?.total === 1) {
+              ret.validate = false
+              ret.tooltip = this.$t('compute.secgroup.remove_secgroup.single_actions.tooltip')
+              return ret
             }
+            return ret
           },
         },
       ],
