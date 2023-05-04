@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import get from 'lodash/get'
 import { getTimeRangeFilter } from '@/utils/common/tableFilter'
 import {
@@ -33,6 +34,7 @@ export default {
     listId: {
       type: String,
     },
+    getParams: [Object, Function],
   },
   data () {
     const filterOptions = {
@@ -343,7 +345,8 @@ export default {
         param.obj_type = this.objType
       }
       param.filter = filter
-      return param
+      const params = R.is(Function, this.getParams) ? this.getParams() : this.getParams || {}
+      return { ...param, ...params }
     },
     refresh (clearSelected) {
       clearSelected()
