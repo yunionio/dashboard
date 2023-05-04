@@ -1,5 +1,5 @@
 <template>
-  <event-list :obj-id="resId" :obj-type="resType" :list-id="id" />
+  <event-list :obj-id="resId" :obj-type="resType" :list-id="id" :getParams="getParams" />
 </template>
 
 <script>
@@ -22,6 +22,7 @@ export default {
     resType: {
       type: String,
     },
+    getParams: [Object, Function],
   },
 }
 </script>
