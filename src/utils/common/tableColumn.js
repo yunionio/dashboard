@@ -487,7 +487,7 @@ export const getTagTableColumn = ({
     slots: {
       default: ({ row }, h) => {
         let metadata = _.get(row, field) || {}
-        if (field === 'project_tags' || field === 'object_tags') {
+        if (field === 'project_tags' || field === 'object_tags' || field === 'domain_tags') {
           metadata = {}
           const fieldValue = row[field] || []
           fieldValue.map(item => {
@@ -525,7 +525,7 @@ export const getTagTableColumn = ({
     },
     formatter: ({ row }) => {
       let metadata = _.get(row, field) || {}
-      if (field === 'project_tags' || field === 'object_tags') {
+      if (field === 'project_tags' || field === 'object_tags' || field === 'domain_tags') {
         metadata = {}
         const fieldValue = row[field] || []
         fieldValue.map(item => {
