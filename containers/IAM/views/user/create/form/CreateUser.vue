@@ -15,6 +15,7 @@
         v-decorator="decorators.domain"
         :params="domainParams"
         filterable
+        remote
         version="v1"
         :showSync="true"
         :select-props="{placeholder: $t('system.text_443', [$t('dictionary.domain')]), labelInValue: true }" />
@@ -144,7 +145,7 @@ export default {
       },
       domainParams: {
         scope: this.$store.getters.scope,
-        limit: 0,
+        limit: 20,
         enabled: true,
       },
     }
