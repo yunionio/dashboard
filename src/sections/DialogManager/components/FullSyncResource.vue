@@ -134,8 +134,8 @@ export default {
             },
           })
         }
-        // this.params.callback && this.params.callback()
-        // this.cancelDialog()
+        this.params.callback && this.params.callback()
+        this.cancelDialog()
       } catch (error) {
         throw error
       } finally {
