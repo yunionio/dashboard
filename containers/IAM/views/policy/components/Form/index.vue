@@ -24,13 +24,6 @@
         <a-input v-model="model.description" :placeholder="$t('common.tips.input', [$t('common.description')])" />
       </a-form-model-item>
       <a-form-model-item :label="$t('system.text_326', [$t('dictionary.policy')])" porp="scope">
-        <!--template v-slot:extra v-if="!isUpdate">
-          <template v-if="isAdminMode">
-            <span>{{ $t('system.text_332', [$t('dictionary.policy')]) }}<strong>{{ $t('system.text_334') }}</strong>，</span>
-          </template>
-          <span v-if="l3PermissionEnable">{{ $t('system.text_335', [$t('dictionary.domain'), $t('dictionary.policy')]) }}<strong>{{ $t('system.text_335', [$t('dictionary.domain')]) }}</strong>，</span>
-          <span>{{$t('system.text_337')}}</span>
-        </template-->
         <template v-if="!isUpdate">
           <scope-select v-model="model.scope" />
         </template>
@@ -43,8 +36,19 @@
           </template>
         </a-radio-group>
       </a-form-model-item>
-      <a-form-model-item :label="$t('iam.project_tag')" prop="__meta__">
-        <pairs-tag :value="tags" @change="handleTagsChange" />
+      <a-form-model-item v-if="model.scope === 'system'" :label="$t('iam.domain_tag')" prop="domain_tags">
+        <tag
+         :value="domain_tags"
+         :canCreate="false"
+         extra=""
+         :multiple="true"
+         :params="{service: 'compute', user_meta: true}"
+         @change="handleDomainTagsChange"
+         @tagsChange="handleDomainTagsUpdate"
+         :global="true" />
+      </a-form-model-item>
+      <a-form-model-item v-if="model.scope !== 'project'" :label="$t('iam.project_tag')" prop="project_tags">
+        <pairs-tag :value="project_tags" @change="handleProjectTagsChange" />
       </a-form-model-item>
       <a-form-model-item :label="$t('iam.object_tag')" prop="object_tags">
         <tag
@@ -236,19 +240,34 @@ export default {
     const initialYamlPolicyValue = (this.editType === 'yaml' && this.policy && this.policy.policy) || 'policy:\n  "*": allow'
     const initialCheckboxPolicyValue = (this.policy && this.policy.policy) || {}
     const initialDescriptionValue = (this.policy && this.policy.description) || ''
-    const initTagsValue = (this.policy && this.policy.project_tags) || []
-    const ret = {}
+    const initProjectTagsValue = (this.policy && this.policy.project_tags) || []
+    const initObjectTagsValue = {}
+    const initDomainTagsValue = {}
     if (this.policy && this.policy.object_tags) {
       const { object_tags } = this.policy
       object_tags.map(item => {
-        if (ret.hasOwnProperty(item.key)) {
-          if (R.is(Array, ret[item.key])) {
-            ret[item.key].push(item.value || '')
+        if (initObjectTagsValue.hasOwnProperty(item.key)) {
+          if (R.is(Array, initObjectTagsValue[item.key])) {
+            initObjectTagsValue[item.key].push(item.value || '')
           } else {
-            ret[item.key] = [ret[item.key], item.value || '']
+            initObjectTagsValue[item.key] = [initObjectTagsValue[item.key], item.value || '']
           }
         } else {
-          ret[item.key] = item.value || ''
+          initObjectTagsValue[item.key] = item.value || ''
+        }
+      })
+    }
+    if (this.policy && this.policy.domain_tags) {
+      const { domain_tags } = this.policy
+      domain_tags.map(item => {
+        if (initDomainTagsValue.hasOwnProperty(item.key)) {
+          if (R.is(Array, initDomainTagsValue[item.key])) {
+            initDomainTagsValue[item.key].push(item.value || '')
+          } else {
+            initDomainTagsValue[item.key] = [initDomainTagsValue[item.key], item.value || '']
+          }
+        } else {
+          initDomainTagsValue[item.key] = item.value || ''
         }
       })
     }
@@ -262,18 +281,23 @@ export default {
         domain: initialDomainValue,
         description: initialDescriptionValue,
       },
-      tags: initTagsValue,
-      object_tags: ret,
+      project_tags: initProjectTagsValue,
+      object_tags: initObjectTagsValue,
+      domain_tags: initDomainTagsValue,
       objectTagsArray: [],
+      domainTagsArray: [],
       currentDomain: {},
       rules: {
         name: [
           { required: true, message: this.$t('common.text00042') },
         ],
+        domain_tags: [
+          { validator: validateForm('tagName') },
+        ],
         object_tags: [
           { validator: validateForm('tagName') },
         ],
-        __meta__: [
+        project_tags: [
           { validator: validateForm('tagName') },
         ],
       },
@@ -352,7 +376,7 @@ export default {
       try {
         await this.$refs.form.validate()
         const { name, scope, domain, description } = this.model
-        const { tags, objectTagsArray } = this
+        const { project_tags, objectTagsArray, domainTagsArray } = this
         let data = {}
         let policy
         if (this.editType === 'checkbox') {
@@ -391,8 +415,14 @@ export default {
         if (description) {
           data.description = description
         }
-        data.project_tags = tags
+        data.project_tags = project_tags
         data.object_tags = objectTagsArray.map(item => {
+          return {
+            key: item.key,
+            value: item.value,
+          }
+        })
+        data.domain_tags = domainTagsArray.map(item => {
           return {
             key: item.key,
             value: item.value,
@@ -468,14 +498,20 @@ export default {
     handleDomainChange (domain) {
       this.currentDomain = domain
     },
-    handleTagsChange (tags) {
-      this.tags = tags || []
+    handleProjectTagsChange (tags) {
+      this.project_tags = tags || []
     },
     handleObjectTagsChange (tags) {
       this.object_tags = tags || {}
     },
+    handleDomainTagsChange (tags) {
+      this.domain_tags = tags || {}
+    },
     handleObjectTagsUpdate (tags) {
       this.objectTagsArray = tags
+    },
+    handleDomainTagsUpdate (tags) {
+      this.domainTagsArray = tags
     },
     customPolicy (policy) {
       // 勾选迁移权限后就同时支持冷、热迁移

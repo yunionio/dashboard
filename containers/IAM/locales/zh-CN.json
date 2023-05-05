@@ -1006,5 +1006,6 @@
   "iam.project.project_leave_tips": "请仔细核对退出项目信息，退出项目可能会无法登录控制台。",
   "iam.notify.server_panicked": "虚拟机异常",
   "iam.operation_object.alter_tips": "请仔细核对操作对象，修改错误可能会无法登录控制台。",
-  "iam.modify_sth": "修改{0}"
+  "iam.modify_sth": "修改{0}",
+  "iam.domain_tag": "域标签"
 }
