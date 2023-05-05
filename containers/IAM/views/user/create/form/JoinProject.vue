@@ -15,6 +15,7 @@
         resource="roles"
         :params="roleParams"
         filterable
+        remote
         :showSync="true"
         :select-props="{ mode: 'multiple', placeholder: $t('rules.role') }" />
       <div slot="extra">{{$t('system.text_441', [$t('dictionary.role')])}}<help-link :href="roleLink">{{$t('system.text_440')}}</help-link></div>
@@ -39,7 +40,7 @@ export default {
     },
   },
   data () {
-    const domainId = this.domain ? this.domain.key : 'default'
+    const domainId = !this.domain || !this.$store.getters.l3PermissionEnable ? 'default' : this.domain.key
     return {
       form: {
         fc: this.$form.createForm(this),
@@ -63,7 +64,7 @@ export default {
         domain: [
           'domain',
           {
-            initialValue: domainId,
+            initialValue: this.$store.getters.isAdminMode ? this.domain || { key: 'default', label: 'Default' } : domainId,
           },
         ],
         roles: [
@@ -101,7 +102,7 @@ export default {
     roleParams () {
       const ret = {
         scope: this.scope,
-        limit: 0,
+        limit: 20,
       }
       ret.project_domain_id = this.domainId
       if (ret.project_domain_id === 'default') {
