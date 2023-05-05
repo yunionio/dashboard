@@ -40,6 +40,7 @@
                     :y="item.y"
                     :w="item.w"
                     :h="item.h"
+                    :minH="item.minH"
                     :i="item.i"
                     :key="item.i"
                     :is-draggable="!item.isTemplate"
@@ -296,6 +297,7 @@ export default {
             y: this.y,
             w: this.currentOption.w,
             h: this.currentOption.h,
+            minH: this.currentOption.minH,
             i: this.tempId,
             isTemplate: true,
             component: this.currentOption.component,
@@ -447,7 +449,7 @@ export default {
       }, data)
       this.dashboardParams = dashboardParams
       this.layoutInit = R.clone(layout)
-      console.log(layout)
+      // console.log(layout)
       this.layout = generateFitLayout(layout)
     },
     // 生成需要存储到配置中的data
@@ -462,6 +464,7 @@ export default {
             y: layout.y,
             w: layout.w,
             h: layout.h,
+            minH: layout.minH,
             component: layout.component,
           },
           params: this.dashboardParams[layout.i],
