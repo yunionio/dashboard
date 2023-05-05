@@ -44,6 +44,12 @@ export default {
         },
       },
       getTagTableColumn({
+        customTitle: this.$t('iam.domain_tag'),
+        title: this.$t('iam.domain_tag'),
+        field: 'domain_tags',
+        columns: () => this.columns,
+      }),
+      getTagTableColumn({
         customTitle: this.$t('iam.project_tag'),
         title: this.$t('iam.project_tag'),
         field: 'project_tags',
