@@ -16,7 +16,7 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item :extra="$t('compute.secgroup.source.effect.desc')">
+        <a-form-item>
           <span slot="label">
             {{decLabel}}&nbsp;
             <a-tooltip :title="$t('compute.text_995')">
@@ -35,12 +35,12 @@
               {{item.value}}
               </a-select-option>
             </a-select-opt-group>
-            <a-select-opt-group>
+            <!-- <a-select-opt-group>
               <span slot="label">{{$t('dictionary.secgroup')}}</span>
               <a-select-option v-for="item in secgroupOpts" :key="item.id" :value="item.name">
               {{item.name}}
               </a-select-option>
-            </a-select-opt-group>
+            </a-select-opt-group> -->
           </a-select>
         </a-form-item>
         <a-form-item :label="$t('compute.text_980')">
@@ -109,10 +109,9 @@ export default {
           'source',
           {
             validateFirst: true,
-            initialValue: selectItem.cidr || selectItem.peer_secgroup || '',
+            initialValue: selectItem.cidr || '',
             rules: [
-              { required: true, message: this.$t('compute.text_996') },
-              // { validator: this.$validate('cidr') },
+              { validator: this.$validate(['cidr', 'IPv4']) },
             ],
           },
         ],
@@ -201,7 +200,7 @@ export default {
     ...mapGetters(['scope']),
   },
   created () {
-    this.fetchSecgroups('')
+    // this.fetchSecgroups('')
   },
   methods: {
     validatePorts (rule, value, callback) {
@@ -289,22 +288,22 @@ export default {
         }
       }
     },
-    async fetchSecgroups (value) {
-      const params = {
-        filter: [
-          `id.notequals("${this.params.secgroup}")`,
-        ],
-        scope: this.scope,
-        limit: 10,
-      }
-      if (value.length > 0) {
-        params.filter.push(`name.contains("${value}")`)
-      }
-      await new this.$Manager('secgroups').list({ params })
-        .then(({ data: { data = [] } }) => {
-          this.secgroupOpts.splice(0, this.secgroupOpts.length, ...data)
-        })
-    },
+    // async fetchSecgroups (value) {
+    // const params = {
+    //   filter: [
+    //     `id.notequals("${this.params.secgroup}")`,
+    //   ],
+    //   scope: this.scope,
+    //   limit: 10,
+    // }
+    // if (value.length > 0) {
+    //   params.filter.push(`name.contains("${value}")`)
+    // }
+    // await new this.$Manager('secgroups').list({ params })
+    //   .then(({ data: { data = [] } }) => {
+    //     this.secgroupOpts.splice(0, this.secgroupOpts.length, ...data)
+    //   })
+    // },
     portsChange (e) {
       this.portsChecked = !this.portsChecked
       this.portsDisabled = !this.portsDisabled
@@ -367,12 +366,12 @@ export default {
           values.ports = ''
         }
         if (values.source) {
-          const isCidr = validate(values.source, 'cidr')
-          if (!isCidr || isCidr.result === false) {
-            values.peer_secgroup_id = values.source
-          } else {
-            values.cidr = values.source
-          }
+          // const isCidr = validate(values.source, 'cidr')
+          // if (!isCidr || isCidr.result === false) {
+          //   values.peer_secgroup_id = values.source
+          // } else {
+          values.cidr = values.source
+          // }
           delete values.source
         }
         await this.saveEdit(values)
