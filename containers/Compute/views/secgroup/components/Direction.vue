@@ -87,9 +87,6 @@ export default {
             if (row.cidr) {
               return `${row.cidr} (IP)`
             }
-            if (row.peer_secgroup) {
-              return `${row.peer_secgroup} (${this.$t('dictionary.secgroup')})`
-            }
             return '-'
           },
         },
