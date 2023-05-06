@@ -172,11 +172,11 @@ export const diskSupportTypeMedium = (hypervisor) => {
 
 /**
  * 返回 storagetype/medium 格式的key的原始key，即 storagetype
- * @param {String} key local/ssd
+ * @param {String} key local/ssd ; medium值true 返回 medium
  * @returns {String} local
  */
-export const getOriginDiskKey = (key) => {
+export const getOriginDiskKey = (key, medium) => {
   if (!key) return ''
   const list = key.split('/')
-  return list[0]
+  return medium ? list[1] : list[0]
 }
