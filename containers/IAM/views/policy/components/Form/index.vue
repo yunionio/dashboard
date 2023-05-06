@@ -42,10 +42,10 @@
          :canCreate="false"
          extra=""
          :multiple="true"
-         :params="{service: 'compute', user_meta: true}"
+         :params="{service: 'identity', user_meta: true, resources: 'domain'}"
          @change="handleDomainTagsChange"
          @tagsChange="handleDomainTagsUpdate"
-         :global="true" />
+         :global="false" />
       </a-form-model-item>
       <a-form-model-item v-if="model.scope !== 'project'" :label="$t('iam.project_tag')" prop="project_tags">
         <pairs-tag :value="project_tags" @change="handleProjectTagsChange" />
