@@ -1,0 +1,18 @@
+{
+  "compute.pci.passthrough_device": "透传设备",
+  "compute.pci.passthrough_device_type": "透传设备类型",
+  "compute.pci.dev_type": "设备类型",
+  "compute.pci.dev_type.placeholder": "请输入设备类型，如GPU、NPU、USB等",
+  "compute.pci.model": "设备型号",
+  "compute.pci.model.placeholder": "请输入设备型号",
+  "compute.pci.vendor_id": "设备VendorID",
+  "compute.pci.vendor_id.placeholder": "请输入设备VendorId",
+  "compute.pci.vendor_id.extra": "设备VendorId参数获取方法参考",
+  "compute.pci.device_id": "设备DeviceID",
+  "compute.pci.device_id.placeholder": "请输入设备DeviceId",
+  "compute.pci.device_id.extra": "设备DeviceId参数获取方法参考",
+  "compute.pci.host": "宿主机",
+  "compute.pci.host.placeholder": "请选择宿主机",
+  "compute.pci.host.extra": "选择宿主机后，相应宿主机会自动上报相应透传设备，未选择设备需重启host服务生效！",
+  "compute.pci.document": "文档"
+}
