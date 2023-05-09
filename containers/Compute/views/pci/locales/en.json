@@ -1,0 +1,18 @@
+{
+  "compute.pci.passthrough_device": "passthrough device",
+  "compute.pci.passthrough_device_type": "passthrough device type",
+  "compute.pci.dev_type": "Device Type",
+  "compute.pci.dev_type.placeholder": "Please enter the device type, such as GPU, NPU, USB, etc.",
+  "compute.pci.model": "Device model",
+  "compute.pci.model.placeholder": "Please enter the device model",
+  "compute.pci.vendor_id": "Device VendorID",
+  "compute.pci.vendor_id.placeholder": "Please enter the device VendorId",
+  "compute.pci.vendor_id.extra": "Reference for obtaining the device VendorId parameter",
+  "compute.pci.device_id": "Device ID",
+  "compute.pci.device_id.placeholder": "Please enter DeviceId",
+  "compute.pci.device_id.extra": "Reference for obtaining the DeviceId parameter",
+  "compute.pci.host": "Host",
+  "compute.pci.host.placeholder": "Please select a host",
+  "compute.pci.host.extra": "After the host is selected, the corresponding host will automatically report the corresponding transparent transmission device. If the device is not selected, the host service needs to be restarted to take effect!",
+  "compute.pci.document": "Document"
+}
