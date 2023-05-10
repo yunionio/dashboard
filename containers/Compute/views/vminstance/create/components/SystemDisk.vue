@@ -240,9 +240,9 @@ export default {
     },
     currentDiskCapability () {
       if (this.hypervisor !== HYPERVISORS_MAP.kvm.key) return {}
-      const instance_capabilities = this.capabilityData.instance_capabilities || []
+      const instance_capabilities = this.capabilityData?.instance_capabilities || []
       const storages = instance_capabilities.find(item => item.hypervisor === this.hypervisor)?.storages
-      const sys_disk = storages.sys_disk || []
+      const sys_disk = storages?.sys_disk || []
       const currentDisk = sys_disk.find(item => this.currentTypeObj.key?.startsWith(item.storage_type))
       return currentDisk
     },

@@ -510,18 +510,25 @@ export default {
     storageParams () {
       const { systemDiskType = {}, hypervisor } = this.form.fd
       let key = systemDiskType.key || ''
-      // 磁盘区分介质
-      if (diskSupportTypeMedium(hypervisor)) {
-        key = getOriginDiskKey(key)
-      }
       const params = {
         ...this.scopeParams,
         usable: true, // 包含了 enable:true, status为online的数据
         brand: HYPERVISORS_MAP[this.form.fd.hypervisor]?.brand, // kvm,vmware支持指定存储
         manager: this.form.fd.prefer_manager,
       }
-      if (key) {
-        params.filter = [`storage_type.contains("${key}")`]
+
+      // 磁盘区分介质
+      if (diskSupportTypeMedium(hypervisor)) {
+        const medium = getOriginDiskKey(key, true)
+        key = getOriginDiskKey(key)
+        params.filter = [
+          `storage_type.contains("${key}")`,
+          `medium_type.contains("${medium}")`,
+        ]
+      } else {
+        params.filter = [
+          `storage_type.contains("${key}")`,
+        ]
       }
       return params
     },
