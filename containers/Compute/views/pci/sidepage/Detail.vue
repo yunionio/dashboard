@@ -2,7 +2,10 @@
   <detail
     :on-manager="onManager"
     :data="data"
-    :base-info="baseInfo" />
+    :base-info="baseInfo"
+    :showDesc="false"
+    :showName="false"
+    :hiddenKeys="['status']" />
 </template>
 
 <script>
@@ -30,7 +33,7 @@ export default {
   data () {
     return {
       baseInfo: [
-        getDevTypeColumn(),
+        getDevTypeColumn({ vm: this }),
         getModelColumn(),
         getVendorIdColumn(),
         getDeviceIdColumn(),
