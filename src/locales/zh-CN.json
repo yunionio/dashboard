@@ -5411,5 +5411,6 @@
   "common.sync_mode": "同步模式",
   "common.full_sync": "全量同步",
   "common.increment_sync": "增量同步",
-  "common.increment_sync_tip": "增量同步只同步新增和删除的资源"
+  "common.increment_sync_tip": "增量同步只同步新增和删除的资源",
+  "common.ssh_password_tip": "请输入SSH账户密码"
 }

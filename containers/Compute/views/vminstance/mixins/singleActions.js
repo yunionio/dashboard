@@ -20,7 +20,7 @@ export default {
     this.webconsoleManager = null
   },
   methods: {
-    openWebConsole (obj, data) {
+    openWebConsole (obj, data, protocol) {
       let connectParams = qs.parse(data.connect_params)
       if (!connectParams.access_token) {
         connectParams = {
@@ -38,6 +38,9 @@ export default {
         os_type: obj.os_type,
         ips: obj.ips,
         instanceName: obj.name,
+      }
+      if (protocol) {
+        query.protocol = protocol
       }
       // const href = `${this.$appConfig.webConsolePath}?${qs.stringify(query)}`
       const href = `${this.$store.getters.auth.regions.api_server}/web-console/?${qs.stringify(query)}`
