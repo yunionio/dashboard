@@ -120,7 +120,7 @@ export default {
       const params = {
         name: data.name,
         description: data.description,
-        id: data.cloudregion.key,
+        cloudregion_id: data.cloudregion.key,
         zone: data.zone.key,
         zoneData: {
           id: data.zone.key,
