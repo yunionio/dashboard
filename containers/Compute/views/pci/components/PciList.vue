@@ -55,6 +55,7 @@ export default {
       }),
       exportDataOptions: {
         items: [
+          { label: 'ID', key: 'id' },
           { label: this.$t('compute.pci.dev_type'), key: 'dev_type' },
           { label: this.$t('compute.pci.model'), key: 'model' },
           { label: this.$t('compute.pci.vendor_id'), key: 'vendor_id' },
@@ -82,7 +83,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: this.$t('table.action.delete'),
-              name: this.$t('compute.pci.pass_through_device_type'),
+              name: this.$t('compute.pci.passthrough_device_type'),
               onManager: this.onManager,
             })
           },
@@ -99,6 +100,7 @@ export default {
     }
   },
   created () {
+    this.initSidePageTab('pci-detail')
     this.list.fetchData()
   },
   methods: {
@@ -108,6 +110,16 @@ export default {
         details: true,
       }
       return ret
+    },
+    handleOpenSidepage (row, tab) {
+      this.sidePageTriggerHandle(this, 'PciSidePage', {
+        id: row.id,
+        resource: 'isolated_device_models',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+        tab,
+      })
     },
   },
 }

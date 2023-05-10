@@ -1,9 +1,9 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="$t('compute.text_113')"
+    :title="$t('compute.pci.passthrough_device_type')"
     icon="passthrough"
-    :res-name="detailData.name"
+    :res-name="detailData.dev_type"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
@@ -14,11 +14,14 @@
     </template>
     <component
       :is="params.windowData.currentTab"
-      :res-id="data.resId"
+      :res-id="data.id"
       :id="listId"
       :data="detailData"
       :on-manager="onManager"
-      :getParams="getParams" />
+      :getParams="getParams"
+      @refresh="refresh"
+      @single-refresh="singleRefresh"
+      @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
@@ -59,7 +62,14 @@ export default {
     },
   },
   created () {
-    if (this.params.tab) this.handleTabChange(this.params.tab)
+    this.initChangeTab()
+  },
+  methods: {
+    initChangeTab () {
+      if (this.params.tab) {
+        this.handleTabChange(this.params.tab)
+      }
+    },
   },
 }
 </script>
