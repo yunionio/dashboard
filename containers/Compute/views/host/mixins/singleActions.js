@@ -34,16 +34,33 @@ export default {
             if (obj.access_ip) {
               ips = [obj.access_ip, ...ips]
             }
+            const openWebConsole = (params) => {
+              this.webconsoleManager.performAction(params).then(({ data }) => {
+                const connectParams = qs.parse(data.connect_params)
+                // 验证账号密码
+                if (connectParams.is_need_login === 'true') {
+                  this.createDialog('SshAuthDialog', {
+                    manager: this.webconsoleManager,
+                    params,
+                    success: (data) => {
+                      this.openWebConsole(obj, data, 'ws')
+                    },
+                  })
+                  return
+                }
+                // 无需验证账号密码
+                this.openWebConsole(obj, data, 'ws')
+              })
+            }
             const actionGenerator = ip => {
               return (sshData) => {
                 const success = () => {
-                  this.webconsoleManager.performAction({
+                  const params = {
                     action: ip,
                     data: { type: 'host', ...sshData },
                     id: 'ssh',
-                  }).then(({ data }) => {
-                    this.openWebConsole(obj, data)
-                  })
+                  }
+                  openWebConsole(params)
                 }
                 if (this.enableMFA) {
                   this.createDialog('SecretVertifyDialog', {
@@ -76,16 +93,21 @@ export default {
                       data: [obj],
                       list: this.list,
                       callback: async (data) => {
-                        const response = await this.webconsoleManager.performAction({
-                          id: 'ssh',
-                          action: ip,
-                          data: {
-                            type: 'host',
-                            id: obj.id,
-                            ...data,
-                          },
-                        })
-                        this.openWebConsole(obj, response.data)
+                        const success = () => {
+                          const params = {
+                            action: ip,
+                            data: { type: 'host', id: obj.id, ...data },
+                            id: 'ssh',
+                          }
+                          openWebConsole(params)
+                        }
+                        if (this.enableMFA) {
+                          this.createDialog('SecretVertifyDialog', {
+                            success,
+                          })
+                        } else {
+                          success()
+                        }
                       },
                       decorators: {
                         port: [
@@ -522,7 +544,7 @@ export default {
     },
   },
   methods: {
-    openWebConsole (obj, data) {
+    openWebConsole (obj, data, protocol) {
       let connectParams = qs.parse(data.connect_params)
       if (!connectParams.access_token) {
         connectParams = {
@@ -540,6 +562,9 @@ export default {
         os_type: obj.os_type,
         ips: obj.access_ip,
         instanceName: obj.name,
+      }
+      if (protocol) {
+        query.protocol = protocol
       }
       // const href = `${this.$appConfig.webConsolePath}?${qs.stringify(query)}`
       const href = `${this.$store.getters.auth.regions.api_server}/web-console/?${qs.stringify(query)}`
