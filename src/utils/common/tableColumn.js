@@ -119,7 +119,7 @@ export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.tit
   }
 }
 
-export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t('common.status'), statusModule, sortable = true, minWidth = 120, slotCallback, hiddenLogView = false } = {}) => {
+export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t('common.status'), statusModule, sortable = true, minWidth = 120, slotCallback, hiddenLogView = false, formatter } = {}) => {
   return {
     field,
     title,
@@ -146,6 +146,9 @@ export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t
       },
     },
     formatter: ({ row }) => {
+      if (formatter) {
+        return formatter({ row })
+      }
       const val = _.get(row, field) || '-'
       const moduleStatusMap = statusMap[statusModule]
       if (moduleStatusMap) {
