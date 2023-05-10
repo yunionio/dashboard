@@ -1,5 +1,3 @@
-// import i18n from '@/locales'
-
 export default {
   created () {
     this.singleActions = [
@@ -11,7 +9,7 @@ export default {
             data: [obj],
             columns: this.columns,
             title: this.$t('table.action.delete'),
-            name: this.$t('compute.pci.pass_through_device_type'),
+            name: this.$t('compute.pci.passthrough_device_type'),
             onManager: this.onManager,
           })
         },
