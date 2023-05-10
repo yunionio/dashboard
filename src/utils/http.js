@@ -293,4 +293,15 @@ http.interceptors.response.use(
   },
 )
 
+/**
+ * showErrorNotification 自定义展示error通知
+ * @param {
+ *  errorMsg: {
+ *    class: String,
+ *    detail: String
+ *  }
+ *  reqMsg: Object,
+ * }
+ */
+export const showErrorNotification = showErrorNotify
 export default http
