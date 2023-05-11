@@ -24,15 +24,13 @@
           <a-input v-decorator="decorators.device_id" :placeholder="$t('compute.pci.device_id.placeholder')" />
         </a-form-item>
         <a-form-item :label="$t('compute.pci.host')" :extra="$t('compute.pci.host.extra')">
-          <base-select
-            class="w-100"
-            resource="hosts"
+          <list-select
             v-decorator="decorators.hosts"
-            :params="hostParams"
-            :need-params="true"
-            :filterable="true"
-            :showSync="true"
-            :select-props="{ allowClear: true, placeholder: this.$t('compute.pci.host.placeholder'), mode: 'multiple' }" />
+            :list-props="resourceProps"
+            :formatter="v => v.name"
+            :multiple="true"
+            :placeholder="$t('compute.pci.host.placeholder')"
+            :dialog-params="{ title: $t('compute.text_111'), width: 1060 }" />
         </a-form-item>
       </a-form>
     </div>
@@ -46,10 +44,16 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { typeClouds } from '@/utils/common/hypervisor'
+import ListSelect from '@/sections/ListSelect'
+import ResourcePropsMixin from '../mixins/resourceProps'
 
 export default {
   name: 'PciCreateDialog',
-  mixins: [DialogMixin, WindowsMixin],
+  components: {
+    ListSelect,
+  },
+  mixins: [DialogMixin, WindowsMixin, ResourcePropsMixin],
   data () {
     return {
       loading: false,
@@ -76,16 +80,20 @@ export default {
         vendor_id: [
           'vendor_id',
           {
+            validateFirst: true,
             rules: [
               { required: true, message: this.$t('compute.pci.vendor_id.placeholder') },
+              { validator: this.validateVendorId(), trigger: 'blur' },
             ],
           },
         ],
         device_id: [
           'device_id',
           {
+            validateFirst: true,
             rules: [
               { required: true, message: this.$t('compute.pci.device_id.placeholder') },
+              { validator: this.validateDeviceId(), trigger: 'blur' },
             ],
           },
         ],
@@ -103,10 +111,30 @@ export default {
       },
       hostParams: {
         details: false,
+        baremetal: false,
+        brand: typeClouds.brandMap.OneCloud.brand,
       },
     }
   },
   methods: {
+    validateVendorId () {
+      return (rule, value, callback) => {
+        const reg = /[a-f0-9]{4}/
+        if (reg.test(value)) {
+          callback()
+        }
+        callback(new Error(this.$t('compute.pci.vendor_id.reg_error_msg')))
+      }
+    },
+    validateDeviceId () {
+      return (rule, value, callback) => {
+        const reg = /[a-f0-9]{4}/
+        if (reg.test(value)) {
+          callback()
+        }
+        callback(new Error(this.$t('compute.pci.device_id.reg_error_msg')))
+      }
+    },
     doSubmit (data) {
       return new this.$Manager('isolated_device_models').create({
         data,
@@ -117,8 +145,14 @@ export default {
       try {
         this.loading = true
         const values = await validateFields()
-        await this.doSubmit(values)
-        console.log('values', values)
+        const data = {
+          dev_type: values.dev_type.trim(),
+          model: values.model.trim(),
+          vendor_id: values.vendor_id.trim(),
+          device_id: values.device_id.trim(),
+          hosts: values.hosts,
+        }
+        await this.doSubmit(data)
         this.loading = false
         this.cancelDialog()
         this.params.refresh && this.params.refresh()
