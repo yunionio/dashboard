@@ -66,6 +66,7 @@ export default {
       groupActions: [
         {
           label: this.$t('common.create'),
+          permission: 'isolated_device_models_create',
           action: () => {
             this.createDialog('PciCreateDialog', {
               refresh: this.refresh,
@@ -77,6 +78,7 @@ export default {
         },
         {
           label: this.$t('table.action.delete'),
+          permission: 'isolated_device_models_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
