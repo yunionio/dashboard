@@ -3,6 +3,7 @@ export default {
     this.singleActions = [
       {
         label: this.$t('table.action.delete'),
+        permission: 'isolated_device_models_delete',
         action: obj => {
           this.createDialog('DeleteResDialog', {
             vm: this,
