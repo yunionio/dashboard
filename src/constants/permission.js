@@ -216,10 +216,10 @@ export const PERMISSION = {
   schedpolicies_update: ['compute', 'schedpolicies', 'update'],
   schedpolicies_delete: ['compute', 'schedpolicies', 'delete'],
   // GPU透传
-  isolated_devices_list: ['compute', 'isolated-devices', 'list'],
+  isolated_devices_list: ['compute', 'isolated_devices', 'list'],
   // GPU透传详情
-  isolated_devices_get: ['compute', 'isolated-devices', 'get'],
-  isolated_devices_update: ['compute', 'isolated-devices', 'update'],
+  isolated_devices_get: ['compute', 'isolated_devices', 'get'],
+  isolated_devices_update: ['compute', 'isolated_devices', 'update'],
   // 路由表
   route_tables_list: ['compute', 'route_tables', 'list'],
   route_tables_syncstatus: ['compute', 'route_tables', 'syncstatus'],
@@ -1356,6 +1356,13 @@ export const PERMISSION = {
   report_elements_list: ['report', 'report_elements', 'list'],
   report_elements_create: ['report', 'report_elements', 'create'],
   report_elements_delete: ['report', 'report_elements', 'delete'],
+
+  // 透传设备类型
+  isolated_device_models_list: ['compute', 'isolated_device_models', 'list'],
+  isolated_device_models_get: ['compute', 'isolated_device_models', 'get'],
+  isolated_device_models_create: ['compute', 'isolated_device_models', 'create'],
+  isolated_device_models_update: ['compute', 'isolated_device_models', 'update'],
+  isolated_device_models_delete: ['compute', 'isolated_device_models', 'delete'],
 
   ...extraPermissions,
 }
