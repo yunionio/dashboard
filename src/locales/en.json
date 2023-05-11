@@ -2709,7 +2709,8 @@
     "project_sharings": "Bill sharing policy",
     "billtask": "Sharing tasks",
     "backupstorage": "Backup storage",
-    "rate": "Rate"
+    "rate": "Rate",
+    "isolated_device_models": "passthrough device type"
   },
   "res": {
     "role": "Role",
