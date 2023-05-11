@@ -444,6 +444,10 @@ export default {
     }
     this.pushApiServerUrlAlert(this.userInfo.id)
     this.cronjobFetchAlerts()
+    // 商业版数据处理
+    if (process.env.VUE_APP_IS_PRIVATE) {
+      this.$store.dispatch('bill/fetchProjectSharingAccounts')
+    }
   },
   methods: {
     checkWorkflow (val) {
