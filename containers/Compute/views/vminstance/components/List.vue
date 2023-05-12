@@ -78,6 +78,10 @@ export default {
     if (this.$route.query.id) {
       filter.id = [this.$route.query.id]
     }
+    const pci_model_types = this.$store.getters.capability?.pci_model_types || []
+    const devTypes = pci_model_types.map(item => {
+      return { key: item.dev_type, label: item.dev_type }
+    })
     const filterOptions = {
       external_id: {
         label: this.$t('table.title.external_id'),
@@ -125,9 +129,9 @@ export default {
         dropdown: true,
         items: [
           { label: this.$t('compute.text_291', [this.$t('dictionary.server')]), key: 'normal' },
-          { label: `GPU${this.$t('dictionary.server')}`, key: 'gpu' },
           { label: `USB${this.$t('dictionary.server')}`, key: 'usb' },
           { label: this.$t('compute.backup'), key: 'backup' },
+          ...devTypes,
         ],
       },
       region: getRegionFilter(),
