@@ -87,7 +87,7 @@ export default {
   data () {
     return {
       loading: false,
-      action: this.$t('compute.text_1176'),
+      action: this.$t('compute.text_1112'),
       form: {
         fc: this.$form.createForm(this, { onValuesChange: this.onValuesChange }),
         fd: {
@@ -165,7 +165,7 @@ export default {
           host += item.host_id + ','
         })
         host = host.substring(0, host.lastIndexOf(','))
-        return { 'filter.0': `host_id.in(${host})`, limit: 0, 'filter.1': 'dev_type.in(GPU-HPC,GPU-VGA)' }
+        return { 'filter.0': `host_id.in(${host})`, limit: 0, 'filter.1': 'dev_type.notin(USB,NIC,NVME-PT)' }
       }
       return {}
     },
