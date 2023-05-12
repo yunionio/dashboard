@@ -5418,5 +5418,6 @@
   "common.minute_unit": "分",
   "common.second_unit": "秒",
   "common.permission.403": "权限不足，请联系管理员",
-  "common.ssh_password_tip": "请输入SSH账户密码"
+  "common.ssh_password_tip": "请输入SSH账户密码",
+  "common.operation_object": "操作对象"
 }
