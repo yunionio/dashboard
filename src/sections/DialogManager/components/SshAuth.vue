@@ -3,6 +3,11 @@
     <div slot="header">{{$t('common.ssh_password_tip')}}</div>
     <div slot="body">
       <a-form-model ref="form" :model="formData" :rules="rules" v-bind="layout">
+        <a-form-model-item :label="$t('common.operation_object')">
+          <list-body-cell-wrap copy :row="{...params.data, text: `${params.data.name} (${params.data.ip || '-'})`}" field="text" hideField>
+            <span v-if="params.data.name">{{params.data.name}}</span><span v-if="params.data.ip">{{` （${params.data.ip}）`}}</span>
+          </list-body-cell-wrap>
+        </a-form-model-item>
         <a-form-model-item :label="$t('scope.text_406')" prop="username">
           <a-input v-model="formData.username" :placeholder="$t('common.tips.input', [$t('scope.text_406')])" />
         </a-form-model-item>
