@@ -1133,8 +1133,8 @@
   "compute.text_1149": "标签值",
   "compute.text_1150": "请输入标签键",
   "compute.text_1151": "根据选择的区域不同，平台的可用类型不同且目前只有@:brand支持GPU虚拟机、云硬盘",
-  "compute.text_1152": "是否配置GPU",
-  "compute.text_1153": "目前只有@:brand支持GPU虚拟机",
+  "compute.text_1152": "配置透传设备",
+  "compute.text_1153": "目前只有@:brand支持透传设备虚拟机",
   "compute.text_1154": "标签",
   "compute.text_1155": "引导方式",
   "compute.text_1156": "备份机",
@@ -1673,5 +1673,6 @@
   "compute.reserved": "预留",
   "compute.transfer.max_brand_width.tooltip": "带宽限制单位为Mbps，即每秒兆比特",
   "compute.secgroup.remove_secgroup.group_actions.tooltip": "需至少保留一个安全组，请勿全部移除",
-  "compute.secgroup.remove_secgroup.single_actions.tooltip": "需至少保留一个安全组，不支持该操作"
+  "compute.secgroup.remove_secgroup.single_actions.tooltip": "需至少保留一个安全组，不支持该操作",
+  "compute.pci.add_transparent_device": "添加透传设备"
 }
