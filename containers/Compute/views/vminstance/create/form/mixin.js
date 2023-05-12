@@ -7,6 +7,7 @@ import CpuRadio from '@Compute/sections/CpuRadio'
 import MemRadio from '@Compute/sections/MemRadio'
 import sku from '@Compute/sections/SKU'
 import gpu from '@Compute/sections/GPU/index'
+import pci from '@Compute/sections/PCI'
 import { Decorator, GenCreateData } from '@Compute/utils/createServer'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import ServerAccount from '@Compute/sections/ServerAccount'
@@ -74,6 +75,7 @@ export default {
     NameRepeated,
     ServerAccount,
     HostName,
+    pci,
   },
   mixins: [workflowMixin],
   props: {
@@ -167,6 +169,27 @@ export default {
         if (data.hasOwnProperty(key)) {
           const item = data[key]
           if (item.dev_type.startsWith('GPU')) {
+            ret.push({
+              ...item,
+              key: `vendor=${item.vendor}:${item.model}`,
+              label: `${item.vendor}/${item.model}`,
+            })
+          }
+        }
+      }
+      return ret
+    },
+    pciDevTypeOptions () {
+      return this.form.fi.capability.pci_model_types
+    },
+    pciOptions () {
+      const specs = this.form.fi.capability.specs || {}
+      const data = specs.isolated_devices || {}
+      const ret = []
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          const item = data[key]
+          if (!item.dev_type.startsWith('USB')) {
             ret.push({
               ...item,
               key: `vendor=${item.vendor}:${item.model}`,
