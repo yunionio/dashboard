@@ -1133,8 +1133,8 @@
   "compute.text_1149": "Tag Value",
   "compute.text_1150": "Please input the tag value",
   "compute.text_1151": "Depending on the selected region, the available types of platforms vary. GPU cloud servers and cloud hard drives are currently only supported by @:brand.",
-  "compute.text_1152": "Configure GPU",
-  "compute.text_1153": "Currently GPU cloud server is only supported by @:brand.",
+  "compute.text_1152": "Configure transparent device",
+  "compute.text_1153": "Currently transparent device cloud server is only supported by @:brand.",
   "compute.text_1154": "Tag",
   "compute.text_1155": "Boot Firmware",
   "compute.text_1156": "Backup Machine",
@@ -1671,5 +1671,6 @@
   "compute.reserved": "Reserved",
   "compute.transfer.max_brand_width.tooltip": "The unit of bandwidth limit is Mbps, that is, megabits per second",
   "compute.secgroup.remove_secgroup.group_actions.tooltip": "Please keep at least one security group and do not remove them all",
-  "compute.secgroup.remove_secgroup.single_actions.tooltip": "Please keep at least one security group, this action is not supported"
+  "compute.secgroup.remove_secgroup.single_actions.tooltip": "Please keep at least one security group, this action is not supported",
+  "compute.pci.add_transparent_device": "Add transparent device"
 }

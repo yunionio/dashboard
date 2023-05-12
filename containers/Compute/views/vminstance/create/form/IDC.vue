@@ -56,7 +56,7 @@
           :options="archOptions" />
       </a-form-item>
       <a-form-item v-if="form.fd.hypervisor === 'kvm'" :label="$t('compute.text_1152')" :extra="$t('compute.text_1153')">
-        <gpu :decorators="decorators.gpu" :gpu-options="gpuOptions" @change="gpuChange" />
+        <pci :decorators="decorators.pci" :pciDevTypeOptions="pciDevTypeOptions" :form="form" :pci-options="pciOptions" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1058')" class="mb-0">
         <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :showUnlimited="true" @change="cpuChange" />
@@ -437,9 +437,9 @@ export default {
       return this.isKvm || !this.isServertemplate
     },
     uefi () {
-      const { gpuEnable, gpu, devType } = this.form.fd
-      if (this.isKvm && gpuEnable && gpu) {
-        if (this.isWindows || devType === GPU_DEV_TYPE_OPTIONS[0].value) {
+      const { pciEnable, pciDevType, pciModel } = this.form.fd
+      if (this.isKvm && pciEnable && pciModel) {
+        if (this.isWindows || Object.values(pciDevType).includes(GPU_DEV_TYPE_OPTIONS[0].value)) {
           return true
         }
       }
