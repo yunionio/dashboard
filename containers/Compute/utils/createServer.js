@@ -192,6 +192,7 @@ export const createVmDecorators = type => {
         ],
       },
     ],
+    // 废弃数据，使用 pci 数据代替
     gpu: {
       gpuEnable: [
         'gpuEnable',
@@ -218,6 +219,32 @@ export const createVmDecorators = type => {
         'devType',
         {
           initialValue: GPU_DEV_TYPE_OPTION_MAP['GPU-VGA'].value,
+        },
+      ],
+    },
+    pci: {
+      pciEnable: [
+        'pciEnable',
+        {
+          valuePropName: 'checked',
+          initialValue: false,
+        },
+      ],
+      pciDevType: i => [
+        `pciDevType[${i}]`,
+      ],
+      pciModel: i => [
+        `pciModel[${i}]`,
+        {
+          rules: [
+            { required: true, message: i18n.t('compute.text_147') },
+          ],
+        },
+      ],
+      pciCount: i => [
+        `pciCount[${i}]`,
+        {
+          initialValue: 1,
         },
       ],
     },
@@ -712,7 +739,7 @@ export const createVmDecorators = type => {
 }
 
 const decoratorGroup = {
-  idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch', 'hostName', 'encrypt_keys', 'custom_data_type', 'deploy_telegraf'],
+  idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch', 'hostName', 'encrypt_keys', 'custom_data_type', 'deploy_telegraf', 'pci'],
   public: ['domain', 'project', 'name', 'description', 'count', 'imageOS', 'reason', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType', 'tag', 'servertemplate', 'duration', 'cloudprovider', 'hostName'],
   private: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'duration', 'tag', 'servertemplate', 'cloudprovider', 'hostName'],
 }
@@ -991,6 +1018,31 @@ export class GenCreateData {
   }
 
   /**
+   * 获取配置的PCI数据
+   *
+   * @returns { Array }
+   * @memberof GenCreateData
+   */
+  genPciDevices () {
+    const ret = []
+    const { pciCount, pciModel } = this.fd
+    const pciKeys = Object.keys(this.fd.pciCount)
+    pciKeys.forEach(key => {
+      for (let i = 0, len = pciCount[key]; i < len; i++) {
+        const regexp = /vendor=(.+):(.+)/
+        const matched = pciModel[key].match(regexp)
+        const model = matched[2]
+        const vendor = matched[1]
+        ret.push({
+          model,
+          vendor,
+        })
+      }
+    })
+    return ret
+  }
+
+  /**
    * 获取管理员密码所提交的 key 与 value
    *
    * @returns { String }
@@ -1197,8 +1249,12 @@ export class GenCreateData {
       data.eip_bgp_type = this.fd.eip_bgp_type
     }
     // gpu
-    if (this.fd.gpuEnable) {
-      data.isolated_devices = this.genDevices()
+    // if (this.fd.gpuEnable) {
+    //   data.isolated_devices = this.genDevices()
+    // }
+    // pci
+    if (this.fd.pciEnable) {
+      data.isolated_devices = this.genPciDevices()
     }
     // 管理员密码非默认的情况下进行传参设置
     if (this.fd.loginType !== LOGIN_TYPES_MAP.random.key) {
@@ -1309,6 +1365,7 @@ export class GenCreateData {
         } else {
           message += i18n.t('compute.text_1325', [item.filter_name])
         }
+
         errors.push({
           message,
           children: item.reasons,
