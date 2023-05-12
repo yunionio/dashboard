@@ -129,7 +129,7 @@ export default {
   },
   methods: {
     async initDefaultData () {
-      if (this.isAdminMode) { // 系统视图
+      if (this.isAdminMode && this.l3PermissionEnable) { // 系统视图
         let defaultDomain = { key: this.userInfo.projectDomainId, label: this.userInfo.projectDomain }
         const initialValue = _.get(this.decorators, 'domain[1].initialValue')
         if (R.is(Object, initialValue) && initialValue.key) {
