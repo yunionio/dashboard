@@ -141,6 +141,8 @@ export function hasPermission ({
   key,
   // 资源数据
   resourceData,
+  // 权限数据
+  permissionData,
 }) {
   // 没有声明定义的权限key，默认认为有权限
   if (!key) return true
@@ -149,7 +151,8 @@ export function hasPermission ({
   const has = keys.every(item => {
     // 这里只判断无权限的情况
     // 获取当前的key对应的权限结果
-    const pArr = store.getters.permission && store.getters.permission[item]
+    const pData = permissionData || (store.getters.permission && store.getters.permission)
+    const pArr = pData[item]
     if (pArr && pArr.length > 0) {
       // 如果当前的权限的资源不包含此资源直接不显示
       if (!store.getters.currentScopeResource.includes(pArr[1])) return false
