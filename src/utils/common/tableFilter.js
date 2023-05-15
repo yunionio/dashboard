@@ -517,3 +517,42 @@ export function getDistinctFieldFilter ({
   if (getParams) ret.getParams = getParams
   return ret
 }
+
+/**
+ * 自定义列表distinct
+ * @param {*} param0
+ * @returns Object
+ * @description 区别于 getDistinctFieldFilter，可以不依托于当前列表，自定义fetchDistinct方法
+ */
+export const getCustomDistinctFieldFilter = ({ label, multiple = true, fetchMethod, mapper, type = 'field', field, disabledFormatter = false }) => {
+  const ret = {
+    label,
+    dropdown: true,
+    multiple,
+    distinctField: {
+      type,
+      key: field,
+    },
+    filter: true,
+    mapper: (list) => {
+      return list.filter(item => item.key)
+    },
+    formatter: val => {
+      if (multiple) {
+        return `${field}.in(${val.join(',')})`
+      }
+      return `${field}.equals('${val}')`
+    },
+  }
+  if (fetchMethod) {
+    ret.fetchMethod = fetchMethod
+  }
+  if (mapper) {
+    ret.mapper = mapper
+  }
+  if (disabledFormatter) {
+    delete ret.filter
+    delete ret.formatter
+  }
+  return ret
+}
