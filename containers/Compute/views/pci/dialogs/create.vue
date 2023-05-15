@@ -121,18 +121,18 @@ export default {
       return (rule, value, callback) => {
         const reg = /[a-f0-9]{4}/
         if (reg.test(value)) {
-          callback()
+          return callback()
         }
-        callback(new Error(this.$t('compute.pci.vendor_id.reg_error_msg')))
+        return callback(new Error(this.$t('compute.pci.vendor_id.reg_error_msg')))
       }
     },
     validateDeviceId () {
       return (rule, value, callback) => {
         const reg = /[a-f0-9]{4}/
         if (reg.test(value)) {
-          callback()
+          return callback()
         }
-        callback(new Error(this.$t('compute.pci.device_id.reg_error_msg')))
+        return callback(new Error(this.$t('compute.pci.device_id.reg_error_msg')))
       }
     },
     doSubmit (data) {
