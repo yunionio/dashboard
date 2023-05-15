@@ -38,7 +38,6 @@ export default {
       // getStatusTableColumn({ statusModule: 'disk' }),
       getTagTableColumn({
         onManager: this.onManager,
-        needExt: true,
         resource: 'disks',
         columns: () => this.columns,
         editCheck: (row) => (row.provider || '').toLowerCase() !== 'bingocloud',

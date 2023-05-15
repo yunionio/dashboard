@@ -27,7 +27,6 @@ export default {
       getStatusTableColumn({ statusModule: 'vpc', vm: this }),
       getTagTableColumn({
         onManager: this.onManager,
-        needExt: true,
         resource: 'vpcs',
         columns: () => this.columns,
         editCheck: (row) => (row.provider || '').toLowerCase() !== 'bingocloud',

@@ -19,7 +19,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'lb_loadbalancerclusters', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'lb_loadbalancerclusters', columns: () => this.columns }),
       {
         field: 'params.virtual_router_id',
         title: 'Virtual Router ID',

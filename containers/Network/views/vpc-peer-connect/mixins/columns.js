@@ -25,7 +25,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'vpcPeerConnect', vm: this }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'vpc_peering_connections', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'vpc_peering_connections', columns: () => this.columns }),
       getVpcTableColumn(this),
       getPeerVpcTableColumn(),
       getExtPeerAccountTableColumn(),

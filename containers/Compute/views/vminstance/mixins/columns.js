@@ -157,7 +157,6 @@ export default {
       },
       getTagTableColumn({
         onManager: this.onManager,
-        needExt: true,
         resource: 'server',
         columns: () => this.columns,
         tipName: this.$t('dictionary.server'),

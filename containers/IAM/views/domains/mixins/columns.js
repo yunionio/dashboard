@@ -21,7 +21,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'domains', columns: () => this.columns, tipName: this.$t('dictionary.domain') }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'domains', columns: () => this.columns, tipName: this.$t('dictionary.domain') }),
       getEnabledTableColumn(),
       {
         field: 'idp',

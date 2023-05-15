@@ -28,7 +28,6 @@ export default {
       }),
       getTagTableColumn({
         onManager: this.onManager,
-        needExt: true,
         resource: 'schedtags',
         columns: () => this.columns,
         tipName: this.$t('dictionary.schedtag'),

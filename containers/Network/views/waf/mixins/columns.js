@@ -24,7 +24,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'waf_instances', columns: () => this.columns, tipName: this.$t('network.waf') }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'waf_instances', columns: () => this.columns, tipName: this.$t('network.waf') }),
       getStatusTableColumn({ statusModule: 'waf', vm: this }),
       {
         field: 'type',
