@@ -9,7 +9,7 @@
         <div class="dashboard-card-header-right">
           <span v-if="showDebuggerInfo">{{ `${$t('dashboard.text_20')}: ${form.fd.usage_key}` }}</span>
           <slot name="actions" :handle-edit="handleEdit" />
-          <a class="ml-2" v-if="!edit && canShowEdit" @click="goPage">
+          <a class="ml-2" :style="{ color: isResDeny ? '#ccc' : '' }" v-if="!edit && canShowEdit" @click="goPage">
             <icon type="arrow-right" style="font-size:18px" />
           </a>
         </div>
@@ -50,11 +50,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import QuotaConfig from '@Dashboard/sections/QuotaConfig'
 import { USAGE_CONFIG } from '@Dashboard/constants'
 import { load } from '@Dashboard/utils/cache'
 import { getRequestT } from '@/utils/utils'
+import { hasPermission } from '@/utils/auth'
 import mixin from './mixin'
 
 export default {
@@ -170,6 +172,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['permission']),
     usage () {
       const usage = (this.data && this.data[this.form.fd.usage_key]) || 0
       const ret = {
@@ -209,6 +212,15 @@ export default {
       const config = USAGE_CONFIG[this.currentUsageKey]
       if (config && config.canUseUserUnit) {
         return true
+      }
+      return false
+    },
+    isResDeny () {
+      const usage_key = this.params.usage_key
+      if (usage_key.endsWith('servers')) {
+        return !hasPermission({ key: 'servers_list', permissionData: this.permission })
+      } else if (usage_key.endsWith('hosts') || usage_key.endsWith('baremetals')) {
+        return !hasPermission({ key: 'hosts_list', permissionData: this.permission })
       }
       return false
     },
