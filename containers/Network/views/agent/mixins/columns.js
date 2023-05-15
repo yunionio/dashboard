@@ -20,7 +20,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'lb_loadbalanceragents', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'lb_loadbalanceragents', columns: () => this.columns }),
       {
         field: 'ha_state',
         title: i18n.t('network.text_22'),

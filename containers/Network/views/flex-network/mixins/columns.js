@@ -21,7 +21,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'networkinterface', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'networkinterface', columns: () => this.columns }),
       getCopyWithContentTableColumn({ field: 'mac', title: i18n.t('network.text_228') }),
       getStatusTableColumn({ statusModule: 'network' }),
       getPublicScopeTableColumn({ vm: this, resource: 'networkinterfaces' }),

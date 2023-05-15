@@ -39,7 +39,7 @@ export default {
   data () {
     return {
       baseInfo: [
-        getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'backupstorages', columns: () => this.columns }),
+        getTagTableColumn({ onManager: this.onManager, resource: 'backupstorages', columns: () => this.columns }),
         getPublicScopeTableColumn({ vm: this, resource: 'backupstorages' }),
         getStorageTypeColumns(),
         getNFSHostColumns(),

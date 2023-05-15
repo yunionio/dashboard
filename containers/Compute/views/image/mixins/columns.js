@@ -45,7 +45,7 @@ export default {
           },
         },
       },
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'images', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'images', columns: () => this.columns }),
       {
         field: 'disk_format',
         title: i18n.t('table.title.disk_format'),

@@ -53,7 +53,6 @@ export default {
       getStatusTableColumn({ statusModule: 'network', vm: this }),
       getTagTableColumn({
         onManager: this.onManager,
-        needExt: true,
         resource: 'networks',
         columns: () => this.columns,
         editCheck: (row) => (row.provider || '').toLowerCase() !== 'bingocloud',
