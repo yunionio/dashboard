@@ -20,7 +20,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'lb_loadbalancercertificates', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'lb_loadbalancercertificates', columns: () => this.columns }),
       {
         field: 'is_complete',
         title: i18n.t('network.text_27'),

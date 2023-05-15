@@ -19,7 +19,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'vpcNetwork', vm: this }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'inter_vpc_networks', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'inter_vpc_networks', columns: () => this.columns }),
       {
         field: 'vpc_count',
         title: this.$t('network.text_243'),

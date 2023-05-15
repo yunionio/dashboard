@@ -36,7 +36,7 @@ export default {
       }),
       getStatusTableColumn({ statusModule: 'host', vm: this }),
       getEnabledTableColumn(),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'host', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'host', columns: () => this.columns }),
       {
         field: 'custom_ip',
         title: 'IP',

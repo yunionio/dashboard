@@ -33,7 +33,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'dns_zones', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'dns_zones', columns: () => this.columns }),
       getZoneTypeTableColumns(),
       getDnsRecordsetCountTableColumns(),
       getVpcCountTableColumns(),

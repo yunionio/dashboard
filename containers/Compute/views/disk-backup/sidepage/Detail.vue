@@ -40,7 +40,7 @@ export default {
   data () {
     return {
       baseInfo: [
-        getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'diskbackups', columns: () => this.columns }),
+        getTagTableColumn({ onManager: this.onManager, resource: 'diskbackups', columns: () => this.columns }),
         getDiskTypeTableColumn(),
         {
           field: 'disk_name',

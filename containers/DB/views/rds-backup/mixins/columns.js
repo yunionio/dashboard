@@ -18,7 +18,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'dbinstancebackup', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'dbinstancebackup', columns: () => this.columns }),
       {
         field: 'dbinstance',
         minWidth: 100,
