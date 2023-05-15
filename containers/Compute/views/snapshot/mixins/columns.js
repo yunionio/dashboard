@@ -29,7 +29,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'snapshot', vm: this }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'snapshots', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'snapshots', columns: () => this.columns }),
       getOsArch(),
       {
         field: 'size',

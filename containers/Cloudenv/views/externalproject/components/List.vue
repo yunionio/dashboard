@@ -231,7 +231,6 @@ export default {
         getStatusTableColumn({ statusModule: 'externalproject' }),
         getTagTableColumn({
           onManager: this.onManager,
-          needExt: true,
           resource: 'externalprojects',
           columns: () => this.columns,
           tipName: this.$t('cloudenv.text_386'),

@@ -40,7 +40,7 @@ export default {
   data () {
     return {
       baseInfo: [
-        getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'instancebackups', columns: () => this.columns }),
+        getTagTableColumn({ onManager: this.onManager, resource: 'instancebackups', columns: () => this.columns }),
         getBackupStorageNameTableColumn(),
         getSizeMbTableColumn(),
         getBrandTableColumn(),

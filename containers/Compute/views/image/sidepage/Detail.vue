@@ -45,7 +45,7 @@ export default {
       baseInfo: [
         getUserTagColumn({ onManager: this.onManager, resource: 'image', columns: () => this.columns, tipName: this.$t('compute.text_97') }),
         getExtTagColumn({ onManager: this.onManager, resource: 'image', columns: () => this.columns, tipName: this.$t('compute.text_97') }),
-        getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'image', columns: () => this.columns }),
+        getTagTableColumn({ onManager: this.onManager, resource: 'image', columns: () => this.columns }),
         {
           field: 'project_domain',
           title: this.$t('dictionary.domain'),

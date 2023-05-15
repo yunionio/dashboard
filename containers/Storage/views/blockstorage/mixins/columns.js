@@ -24,7 +24,6 @@ export default {
       getEnabledTableColumn(),
       getTagTableColumn({
         onManager: this.onManager,
-        needExt: true,
         resource: 'storages',
         columns: () => this.columns,
         tipName: this.$t('dictionary.blockstorage'),
