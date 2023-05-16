@@ -646,6 +646,37 @@ export const getTimeRangeColumn = ({
   }
 }
 
+/**
+ * 时长展示
+ * @param {Object}
+ * @returns string eg: 2分12秒 12秒
+ */
+export const getTimeDurationColumn = ({
+  field = 'time_duration',
+  start_field = 'start_time',
+  end_field = 'end_time',
+  title = i18n.t('table.title.time_duration'),
+} = {}) => {
+  return {
+    field,
+    title,
+    formatter: ({ row }) => {
+      const start = row[start_field] ? moment(row[start_field]) : ''
+      const end = row[end_field] ? moment(row[end_field]) : ''
+      if (start && end) {
+        const duration = parseInt(moment.duration(end.diff(start)) / 1000)
+        if (!duration) return '-'
+        const h = parseInt(duration / (60 * 60))
+        const m = parseInt((duration % (60 * 60)) / 60)
+        const s = duration % 60
+        return `${h ? `${h}${i18n.t('common.hour_unit')} ` : ''}${m ? `${m}${i18n.t('common.minute_unit')} ` : ''}${`${s}${i18n.t('common.second_unit')}`}`
+      } else {
+        return '-'
+      }
+    },
+  }
+}
+
 export const getAccountTableColumn = ({
   field = 'account',
   title = i18n.t('res.cloudaccount'),

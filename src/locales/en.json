@@ -5389,5 +5389,8 @@
   "common.sync_mode": "Sync mode",
   "common.full_sync": "Full sync",
   "common.increment_sync": "Increment sync",
-  "common.increment_sync_tip": "Only newly added and deleted resources will be synchronized in increment sync mode"
+  "common.increment_sync_tip": "Only newly added and deleted resources will be synchronized in increment sync mode",
+  "common.hour_unit": "h",
+  "common.minute_unit": "m",
+  "common.second_unit": "s"
 }
