@@ -192,10 +192,7 @@ export const PERMISSION = {
   hosts_get_ipmi: ['compute', 'hosts', 'get', 'ipmi'],
   // 服务器详情
   hosts_get: ['compute', 'hosts', 'get'],
-  // 调度标签
-  schedtags_list: ['compute', 'schedtags', 'list'],
-  // 动态调度标签
-  dynamicschedtags_list: ['compute', 'dynamicschedtags', 'list'],
+
   // 调度策略
   schedpolicies_list: ['compute', 'schedpolicies', 'list'],
   schedpolicies_create: ['compute', 'schedpolicies', 'create'],
@@ -781,19 +778,25 @@ export const PERMISSION = {
   notices_update: ['yunionagent', 'notices', 'update'],
   notices_delete: ['yunionagent', 'notices', 'delete'],
   notices_get: ['yunionagent', 'notices', 'get'],
+
   /**
-   * schedtags 相关操作
+   * 调度标签 schedtags
    */
+  schedtags_list: ['compute', 'schedtags', 'list'],
   schedtags_create: ['compute', 'schedtags', 'create'],
   schedtags_update: ['compute', 'schedtags', 'update'],
   schedtags_delete: ['compute', 'schedtags', 'delete'],
   schedtags_perform_set_scope: ['compute', 'schedtags', 'perform', 'set-scope'],
   schedtags_perform_set_resource: ['compute', 'schedtags', 'perform', 'set-resource'],
   schedtags_get: ['compute', 'schedtags', 'get'],
+
+  // 动态调度标签
+  dynamicschedtags_list: ['compute', 'dynamicschedtags', 'list'],
   dynamicschedtags_create: ['compute', 'schedtags', 'create'],
   dynamicschedtags_update: ['compute', 'schedtags', 'update'],
   dynamicschedtags_delete: ['compute', 'schedtags', 'delete'],
   schedtags_perform_set_user_metadata: ['compute', 'schedtags', 'perform', 'set-user-metadata'],
+
   /**
    * storages 相关操作
    */
@@ -1315,6 +1318,26 @@ export const PERMISSION = {
   tapflows_create: ['compute', 'tap_flows', 'create'],
 
   tablestores_list: ['compute', 'tablestores', 'list'],
+
+  // ipv6网关
+  ipv6_gateways_list: ['compute', 'ipv6_gateways', 'list'],
+  ipv6_gateways_get: ['compute', 'ipv6_gateways', 'get'],
+  ipv6_gateways_create: ['compute', 'ipv6_gateways', 'create'],
+  ipv6_gateways_update: ['compute', 'ipv6_gateways', 'update'],
+  ipv6_gateways_delete: ['compute', 'ipv6_gateways', 'delete'],
+
+  // ModelArts
+  modelarts_list: ['compute', 'modelarts_pools', 'list'],
+  modelarts_get: ['compute', 'modelarts_pools', 'get'],
+  modelarts_create: ['compute', 'modelarts_pools', 'create'],
+  modelarts_update: ['compute', 'modelarts_pools', 'update'],
+  modelarts_delete: ['compute', 'modelarts_pools', 'delete'],
+  modelarts_perform_syncstatus: ['compute', 'modelarts_pools', 'perform', 'syncstatus'],
+  modelarts_perform_change_owner: ['compute', 'modelarts_pools', 'perform', 'change-owner'],
+
+  // 报表
+  irs_reports_list: ['report', 'reports', 'list'],
+  irs_reports_get: ['report', 'reports', 'get'],
 }
 
 // 已声明权限的资源
