@@ -2,6 +2,7 @@ import {
   // getAccountTableColumn,
   getTimeTableColumn,
   getStatusTableColumn,
+  getTimeDurationColumn,
   // getNameDescriptionTableColumn,
 } from '@/utils/common/tableColumn'
 
@@ -62,6 +63,12 @@ export default {
       },
       getTimeTableColumn({ field: 'started_at', title: this.$t('cloudenv.text_461') }),
       getTimeTableColumn({ field: 'ended_at', title: this.$t('cloudenv.text_462') }),
+      getTimeDurationColumn({
+        field: 'time_duration',
+        title: this.$t('cloudenv.time_duration'),
+        start_field: 'started_at',
+        end_field: 'ended_at',
+      }),
     ]
   },
 }
