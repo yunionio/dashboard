@@ -5391,5 +5391,8 @@
   "common.increment_sync": "Increment sync",
   "common.increment_sync_tip": "Only newly added and deleted resources will be synchronized in increment sync mode",
   "common.ssh_password_tip": "Please input SSH Username-Password",
-  "common.operation_object": "Operation object"
+  "common.operation_object": "Operation object",
+  "common.hour_unit": "h",
+  "common.minute_unit": "m",
+  "common.second_unit": "s"
 }
