@@ -387,11 +387,12 @@ export default {
             })(),
             {
               field: 'isolated_devices',
-              title: 'GPU',
+              title: this.$t('compute.text_113'),
               formatter: ({ row }) => {
                 if (!row.isolated_devices) return '-'
                 const gpuArr = row.isolated_devices
                 const obj = {}
+                const devTypeMap = {}
                 const ids = {}
                 gpuArr.forEach(val => {
                   if (val.dev_type) {
@@ -401,13 +402,14 @@ export default {
                       obj[val.model] += 1
                     }
                     ids[val.model] = val.id
+                    devTypeMap[val.model] = val.dev_type
                   }
                 })
                 if (Object.keys(obj).length === 0) {
                   return '-'
                 }
                 return Object.keys(obj).map(k => {
-                  const gpuLabel = `${GPU_DEV_TYPE_OPTION_MAP[gpuArr[0].dev_type]?.label}-${k}`
+                  const gpuLabel = `${GPU_DEV_TYPE_OPTION_MAP[devTypeMap[k]]?.label || devTypeMap[k]}-${k}`
                   return <side-page-trigger permission='isolated_devices_get' name='GpuSidePage' id={ids[k]} vm={this}>{this.$t('compute.text_370', [obj[k], gpuLabel])}</side-page-trigger>
                 })
               },
