@@ -99,7 +99,7 @@ import Clickoutside from '@/directives/clickoutside'
 import { getTagTitle, getTagValue } from '@/utils/common/tag'
 import i18n from '@/locales'
 
-const filterHandler = function (val, search) {
+const filterHandler = function (val = '', search) {
   if (val.includes(':')) {
     val = val.split(':')[1]
   }
