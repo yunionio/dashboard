@@ -665,7 +665,7 @@ export const getTimeDurationColumn = ({
       const end = row[end_field] ? moment(row[end_field]) : ''
       if (start && end) {
         const duration = parseInt(moment.duration(end.diff(start)) / 1000)
-        if (!duration) return '-'
+        if (!duration) return `< 1${i18n.t('common.second_unit')}`
         const h = parseInt(duration / (60 * 60))
         const m = parseInt((duration % (60 * 60)) / 60)
         const s = duration % 60
