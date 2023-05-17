@@ -868,6 +868,7 @@ const getSingleActions = function () {
               // 更换块存储
               {
                 label: i18n.t('compute.vminstance.change_disk_storage'),
+                permission: 'server_perform_change_storage',
                 action: () => {
                   this.createDialog('VmChangeBlockStorageDialog', {
                     data: [obj],

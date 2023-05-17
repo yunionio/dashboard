@@ -429,6 +429,7 @@ export const PERMISSION = {
   server_perform_instance_backup: ['compute', 'servers', 'perform', 'instance-backup'],
   server_perform_list_forward: ['compute', 'servers', 'perform', 'list-forward'],
   server_perform_open_forward: ['compute', 'servers', 'perform', 'open-forward'],
+  server_perform_change_storage: ['compute', 'servers', 'perform', 'change-storage'],
   server_get_jnlp: ['compute', 'servers', 'get', 'jnlp'],
   server_get_cpuset_cores: ['compute', 'servers', 'get', 'cpuset-cores'],
   /**
