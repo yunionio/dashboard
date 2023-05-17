@@ -36,6 +36,9 @@ export function load ({
     if (_queue[key]) {
       _queue[key].add(resolve, reject)
     } else {
+      // refresh 突破缓存限制
+      if (actionArgs.params) actionArgs.params.refresh = true
+      if (actionArgs.data) actionArgs.data.refresh = true
       _queue[key] = new Loader({ key, res, action, apiVersion, resolve, reject, actionArgs, resPath, useManager })
       setTimeout(() => {
         _queue[key] && _queue[key].load()
