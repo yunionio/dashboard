@@ -7,7 +7,13 @@
     </page-body>
     <page-footer>
       <template v-slot:right>
-        <a-button type="primary" size="large" :loading="loading" @click="handleSubmit">{{ createTxt }}</a-button>
+        <a-tooltip v-if="disabledJoinProject">
+          <template slot="title">
+            {{ this.$t('iam.disabled_join_project.tips') }}
+          </template>
+          <a-button type="primary" size="large" :loading="loading" :disabled="disabledJoinProject" @click="handleSubmit">{{ createTxt }}</a-button>
+        </a-tooltip>
+        <a-button v-else type="primary" size="large" :loading="loading" @click="handleSubmit">{{ createTxt }}</a-button>
         <a-button class="ml-2" size="large" @click="handleCancel">{{ cancelTxt }}</a-button>
       </template>
     </page-footer>
@@ -17,6 +23,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import step from '@/mixins/step'
+import { hasPermission } from '@/utils/auth'
 import CreateUser from './form/CreateUser'
 import JoinProject from './form/JoinProject'
 
@@ -42,7 +49,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode', 'l3PermissionEnable', 'userInfo']),
+    ...mapGetters(['isAdminMode', 'l3PermissionEnable', 'userInfo', 'permission']),
     stepComponent () {
       return this.step.steps[this.step.currentStep].key
     },
@@ -55,6 +62,12 @@ export default {
     },
     createTxt () {
       return this.step.currentStep ? this.$t('system.text_498', []) : this.$t('common.create')
+    },
+    disabledJoinProject () {
+      if (this.step.currentStep === 1) {
+        return !hasPermission({ key: 'projects_perform_join', permissionData: this.permission })
+      }
+      return false
     },
   },
   created () {
