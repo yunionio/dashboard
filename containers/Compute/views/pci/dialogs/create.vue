@@ -119,7 +119,7 @@ export default {
   methods: {
     validateVendorId () {
       return (rule, value, callback) => {
-        const reg = /[a-f0-9]{4}/
+        const reg = /^[a-f0-9]{4}$/
         if (reg.test(value)) {
           return callback()
         }
@@ -128,7 +128,7 @@ export default {
     },
     validateDeviceId () {
       return (rule, value, callback) => {
-        const reg = /[a-f0-9]{4}/
+        const reg = /^[a-f0-9]{4}$/
         if (reg.test(value)) {
           return callback()
         }
