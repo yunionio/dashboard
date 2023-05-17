@@ -23,6 +23,7 @@ import {
 import { SCOPES_MAP } from '@/constants'
 import router from '@/router'
 import { removeKeyIgnoreCase, getKeyIgnoreCase } from '@/utils/utils'
+import { clear as clearDashboardCache } from '@Dashboard/utils/cache'
 
 const initialState = {
   scope: getScopeFromCookie() || 'project',
@@ -199,6 +200,9 @@ export default {
       setLoggedUsersInStorage({})
       state.loggedUsers = {}
     },
+    CLEAR_DASHBOARD_CACHE () {
+      clearDashboardCache()
+    },
   },
   getters: {
     // 是否切换到管理后台
@@ -327,6 +331,7 @@ export default {
         if (is_forget_login_user) {
           await commit('CLEAR_LOGGED_USERS')
         }
+        await commit('CLEAR_DASHBOARD_CACHE')
         return response.data
       } catch (error) {
         throw error
