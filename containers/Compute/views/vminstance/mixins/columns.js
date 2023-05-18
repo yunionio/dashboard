@@ -134,7 +134,7 @@ export default {
             let tooltip = i18nLocale.t('compute.text_291', [i18nLocale.t('dictionary.server')])
             let icontype = 'cpu'
             if (row.is_gpu) {
-              tooltip = `GPU${this.$t('dictionary.server')}`
+              tooltip = `${this.$t('compute.text_113')}${this.$t('dictionary.server')}`
               icontype = 'gpu'
             }
             if (row.backup_host_id) {
