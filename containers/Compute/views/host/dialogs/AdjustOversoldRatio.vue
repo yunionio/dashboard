@@ -10,11 +10,27 @@
           <a-input-number v-decorator="decorators.cpu_cmtbound" :min="0.1" :step="0.1" />
         </a-form-item>
         <a-form-item :label="$t('compute.memory_commit_bound')" v-bind="formItemLayout">
-          <a-input-number v-decorator="decorators.mem_cmtbound" :min="0.1" :max="1" :step="0.1" />
+          <template v-if="isOpenPage">
+            <a-tooltip>
+              <template slot="title">
+                {{ $t('compute.host.open_page_size.tooltip') }}
+              </template>
+              <a-input-number v-decorator="decorators.mem_cmtbound" :min="0.1" :max="1" :step="0.1" :disabled="true" />
+            </a-tooltip>
+          </template>
+          <a-input-number v-else v-decorator="decorators.mem_cmtbound" :min="0.1" :max="1" :step="0.1" />
           <div style="font-size:12px" class="add-desc">{{$t('compute.text_544')}}</div>
         </a-form-item>
         <a-form-item :label="$t('compute.memory_reserve_gb')" v-bind="formItemLayout">
-          <a-input-number v-decorator="decorators.mem_reserved" :min="1" :step="1" />
+          <template v-if="isOpenPage">
+            <a-tooltip>
+              <template slot="title">
+                {{ $t('compute.host.open_page_size.tooltip') }}
+              </template>
+              <a-input-number v-decorator="decorators.mem_reserved" :min="1" :step="1" :disabled="true" />
+            </a-tooltip>
+          </template>
+          <a-input-number v-else v-decorator="decorators.mem_reserved" :min="1" :step="1" />
         </a-form-item>
       </a-form>
     </div>
@@ -89,6 +105,12 @@ export default {
         },
       },
     }
+  },
+  computed: {
+    isOpenPage () {
+      const firstItem = this.params.data[0]
+      return firstItem?.page_size_kb > 4
+    },
   },
   methods: {
     doUpdate (data) {
