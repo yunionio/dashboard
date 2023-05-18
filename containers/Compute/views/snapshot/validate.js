@@ -54,13 +54,6 @@ export const RollbackDiskValidate = {
     const { validate, tooltip } = RollbackDiskValidate.base(obj)
     return { validate, tooltip }
   },
-  openstack (obj) {
-    const ret = {
-      validate: false,
-      tooltip: i18n.t('compute.text_1077', [BRAND_MAP[obj.brand].label]),
-    }
-    return ret
-  },
   zstack (obj) {
     const { validate, tooltip } = RollbackDiskValidate.base(obj)
     return { validate, tooltip }
