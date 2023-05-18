@@ -1155,6 +1155,26 @@ export const getSearchMaps = (searchRes = {}) => {
       },
       resData: {},
     },
+    isolated_devices: {
+      menu_key: 'gpu',
+      res_name: 'isolated_devices',
+      label: i18n.t('compute.pci.passthrough_device'),
+      id: 'isolated_devices',
+      component: 'GpuList',
+      hasPermission: hasPermission({ key: 'isolated_devices_list' }),
+      params: {
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        id: {
+          id: searchRes.id,
+        },
+      },
+      resData: {},
+    },
   }
 
   const validMaps = R.filter((val, key) => {

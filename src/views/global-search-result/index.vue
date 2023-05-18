@@ -26,6 +26,7 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import qs from 'qs'
+import GpuList from '@Compute/views/gpu/components/List'
 import IDPList from '@IAM/views/idp/components/List'
 import DomainList from '@IAM/views/domains/components/List'
 import ProjectList from '@IAM/views/projects/components/List'
@@ -121,6 +122,7 @@ export default {
     CdnDomainList,
     WafList,
     FileSystemList,
+    GpuList,
   },
   data () {
     const maps = getSearchMaps()
