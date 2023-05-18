@@ -88,7 +88,7 @@ export default {
       taskTypeOpts: TaskTypeList.map(id => {
         return {
           id,
-          name: this.$t(`bill.task_type.${id}`),
+          name: this.$t(`cloudenv.task_type.${id}`),
         }
       }),
       accountParams: {

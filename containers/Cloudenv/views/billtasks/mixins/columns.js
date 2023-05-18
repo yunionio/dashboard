@@ -33,14 +33,14 @@ export default {
         title: this.$t('cloudenv.task_type'),
         slots: {
           default: ({ row }) => {
-            const name = this.$te(`bill.task_type.${row.task_type}`) ? this.$t(`bill.task_type.${row.task_type}`) : row.task_type || '-'
+            const name = this.$te(`cloudenv.task_type.${row.task_type}`) ? this.$t(`cloudenv.task_type.${row.task_type}`) : row.task_type || '-'
             return [
               <side-page-trigger onTrigger={() => this.handleOpenSidepage({ name, ...row })}>{name}</side-page-trigger>,
             ]
           },
         },
         formatter: ({ row }) => {
-          const name = this.$te(`bill.task_type.${row.task_type}`) ? this.$t(`bill.task_type.${row.task_type}`) : row.task_type || '-'
+          const name = this.$te(`cloudenv.task_type.${row.task_type}`) ? this.$t(`cloudenv.task_type.${row.task_type}`) : row.task_type || '-'
           return name
         },
       },
@@ -50,7 +50,7 @@ export default {
         field: 'mode',
         title: this.$t('cloudenv.bill_task.task_mode'),
         formatter: ({ row }) => {
-          return this.$te(`bill.bill_task.task_mode.${row.mode}`) ? this.$t(`bill.bill_task.task_mode.${row.mode}`) : '-'
+          return this.$te(`cloudenv.bill_task.task_mode.${row.mode}`) ? this.$t(`cloudenv.bill_task.task_mode.${row.mode}`) : '-'
         },
       },
       {
