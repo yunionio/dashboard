@@ -432,6 +432,8 @@ export const PERMISSION = {
   server_perform_change_storage: ['compute', 'servers', 'perform', 'change-storage'],
   server_get_jnlp: ['compute', 'servers', 'get', 'jnlp'],
   server_get_cpuset_cores: ['compute', 'servers', 'get', 'cpuset-cores'],
+  server_perform_cpuset: ['compute', 'servers', 'perform', 'cpuset'],
+  server_perform_make_sshable: ['compute', 'servers', 'perform', 'make-sshable'],
   /**
    * images 相关操作
    */

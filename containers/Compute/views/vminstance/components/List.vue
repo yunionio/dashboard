@@ -884,7 +884,7 @@ export default {
                   // 探测免密登录
                   {
                     label: this.$t('compute.vminstance.actions.detect_ssh_authentication'),
-                    permission: 'server_perform_detect_ssh_proxy',
+                    permission: 'server_perform_make_sshable',
                     action: () => {
                       this.createDialog('DetectSSHDialog', {
                         data: this.list.selectedItems,

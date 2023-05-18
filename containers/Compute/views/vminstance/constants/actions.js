@@ -912,7 +912,7 @@ const getSingleActions = function () {
               // 绑定物理CPU
               {
                 label: i18n.t('compute.bind_physical_cpu'),
-                permission: 'server_get_cpuset_cores',
+                permission: 'server_perform_cpuset',
                 action: () => {
                   this.createDialog('BindPhysicalCpuDialog', {
                     data: [obj],
@@ -1102,7 +1102,7 @@ const getSingleActions = function () {
               // 探测免密登录
               {
                 label: i18n.t('compute.vminstance.actions.detect_ssh_authentication'),
-                permission: 'server_perform_detect_ssh_proxy',
+                permission: 'server_perform_make_sshable',
                 action: () => {
                   this.createDialog('DetectSSHDialog', {
                     data: [obj],
