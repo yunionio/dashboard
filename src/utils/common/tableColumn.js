@@ -215,6 +215,7 @@ export const getNameDescriptionTableColumn = ({
   message,
   addEncrypt,
   label,
+  formatter,
 } = {}) => {
   return {
     field,
@@ -222,6 +223,7 @@ export const getNameDescriptionTableColumn = ({
     sortable,
     showOverflow: 'ellipsis',
     minWidth,
+    formatter,
     // fixed: 'left',
     slots: {
       default: ({ row }, h) => {
