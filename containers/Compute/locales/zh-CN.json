@@ -1674,5 +1674,6 @@
   "compute.transfer.max_brand_width.tooltip": "带宽限制单位为Mbps，即每秒兆比特",
   "compute.secgroup.remove_secgroup.group_actions.tooltip": "需至少保留一个安全组，请勿全部移除",
   "compute.secgroup.remove_secgroup.single_actions.tooltip": "需至少保留一个安全组，不支持该操作",
-  "compute.pci.add_transparent_device": "添加透传设备"
+  "compute.pci.add_transparent_device": "添加透传设备",
+  "compute.host.open_page_size.tooltip": "宿主机开启大页后不支持该操作"
 }
