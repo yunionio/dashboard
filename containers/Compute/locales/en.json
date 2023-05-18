@@ -1672,5 +1672,6 @@
   "compute.transfer.max_brand_width.tooltip": "The unit of bandwidth limit is Mbps, that is, megabits per second",
   "compute.secgroup.remove_secgroup.group_actions.tooltip": "Please keep at least one security group and do not remove them all",
   "compute.secgroup.remove_secgroup.single_actions.tooltip": "Please keep at least one security group, this action is not supported",
-  "compute.pci.add_transparent_device": "Add transparent device"
+  "compute.pci.add_transparent_device": "Add transparent device",
+  "compute.host.open_page_size.tooltip": "This operation is not supported by the host when large pages are enabled"
 }
