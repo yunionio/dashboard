@@ -117,4 +117,24 @@ export const RollbackDiskValidate = {
     ret.tooltip = i18n.t('compute.text_1077', [BRAND_MAP[obj.brand].label])
     return ret
   },
+  openstack (obj) {
+    const ret = { validate: false }
+
+    if (obj.disk_type !== 'data') {
+      ret.tooltip = i18n.t('compute.text_1080', [BRAND_MAP[obj.brand].label])
+      return ret
+    }
+    if (obj.disk_status && obj.disk_status !== 'ready') {
+      ret.tooltip = i18n.t('compute.text_1075')
+      return ret
+    }
+    if (obj.status && obj.status !== 'ready') {
+      ret.tooltip = i18n.t('compute.text_1076')
+      return ret
+    }
+    if (obj.guest) {
+      ret.tooltip = i18n.t('compute.text_1079', [BRAND_MAP[obj.brand].label])
+      return ret
+    }
+  },
 }
