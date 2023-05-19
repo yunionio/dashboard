@@ -143,7 +143,7 @@
   "compute.text_143": "1 month",
   "compute.text_144": "Custom",
   "compute.text_145": "Please select an eip",
-  "compute.text_146": "The GPU cloud server is not connected to the current zone",
+  "compute.text_146": "The Transparent Devices cloud server is not connected to the current zone",
   "compute.text_147": "Please select GPU model",
   "compute.text_148": "Please select {0}",
   "compute.text_149": "Please select a cloud account",
