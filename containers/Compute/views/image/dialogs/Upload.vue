@@ -41,7 +41,7 @@
         <a-form-item :label="$t('compute.text_672')" v-bind="formItemLayout" v-if="!byUpload">
           <a-input :placeholder="$t('compute.text_673')" v-decorator="decorators.copy_from" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_267')" v-bind="formItemLayout" v-if="!byUpload">
+        <a-form-item :label="$t('compute.text_267')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.os_type">
             <a-radio-button value="Linux">
               Linux
@@ -297,6 +297,7 @@ export default {
           formData.append('name', values.name)
           formData.append('os_version', '')
           formData.append('os_arch', values.os_arch)
+          formData.append('properties.os_type', values.os_type)
           if (values.encryptEnable === 'existing' && values.encrypt_key_id) {
             formData.append('encrypt_key_id', values.encrypt_key_id)
           } else if (values.encryptEnable === 'new') {
