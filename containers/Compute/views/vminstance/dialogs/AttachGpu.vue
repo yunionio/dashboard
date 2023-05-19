@@ -21,7 +21,7 @@
           </a-radio-group>
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-model="isOpenGpu" v-else />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_607')" v-show="isOpenGpu" :extra="$t('compute.text_1171')">
+        <a-form-item :label="$t('compute.text_607')" v-if="isOpenGpu" :extra="$t('compute.text_1171')">
           <!-- 批量设置 -->
           <base-select
             v-if="isGroupAction"
@@ -58,7 +58,7 @@
             resource="isolated_devices"
             :select-props="{ allowClear: true, placeholder: $t('compute.text_1172'), mode: 'multiple' }" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_294')" v-show="isOpenGpu && isGroupAction" :extra="$t('compute.text_1175')">
+        <a-form-item :label="$t('compute.text_294')" v-if="isOpenGpu && isGroupAction" :extra="$t('compute.text_1175')">
           <a-input-number :min="1" v-decorator="decorators.number" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_495')">
@@ -165,7 +165,12 @@ export default {
           host += item.host_id + ','
         })
         host = host.substring(0, host.lastIndexOf(','))
-        return { 'filter.0': `host_id.in(${host})`, limit: 0, 'filter.1': 'dev_type.notin(USB,NIC,NVME-PT)' }
+        return {
+          'filter.0': `host_id.in(${host})`,
+          limit: 0,
+          'filter.1': 'dev_type.notin(USB,NIC,NVME-PT)',
+          scope: this.$store.getters.scope,
+        }
       }
       return {}
     },
