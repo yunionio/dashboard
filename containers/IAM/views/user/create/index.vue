@@ -9,7 +9,7 @@
       <template v-slot:right>
         <a-tooltip v-if="disabledJoinProject">
           <template slot="title">
-            {{ this.$t('iam.disabled_join_project.tips') }}
+            {{ $t('iam.disabled_join_project.tips') }}
           </template>
           <a-button type="primary" size="large" :loading="loading" :disabled="disabledJoinProject" @click="handleSubmit">{{ createTxt }}</a-button>
         </a-tooltip>
