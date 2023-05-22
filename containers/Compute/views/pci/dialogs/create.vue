@@ -13,13 +13,13 @@
         </a-form-item>
         <a-form-item :label="$t('compute.pci.vendor_id')">
           <template #extra>
-            {{ $t('compute.pci.vendor_id.extra') }}<help-link href="/">{{ $t('compute.pci.document') }}</help-link>
+            {{ $t('compute.pci.vendor_id.extra') }}<help-link :href="vendorAndDeviceLink">{{ $t('compute.pci.document') }}</help-link>
           </template>
           <a-input v-decorator="decorators.vendor_id" :placeholder="$t('compute.pci.vendor_id.placeholder')" />
         </a-form-item>
         <a-form-item :label="$t('compute.pci.device_id')">
           <template #extra>
-            {{ $t('compute.pci.device_id.extra') }}<help-link href="/">{{ $t('compute.pci.document') }}</help-link>
+            {{ $t('compute.pci.device_id.extra') }}<help-link :href="vendorAndDeviceLink">{{ $t('compute.pci.document') }}</help-link>
           </template>
           <a-input v-decorator="decorators.device_id" :placeholder="$t('compute.pci.device_id.placeholder')" />
         </a-form-item>
@@ -44,6 +44,7 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { getDocsUrl } from '@/utils/utils'
 import { typeClouds } from '@/utils/common/hypervisor'
 import ListSelect from '@/sections/ListSelect'
 import ResourcePropsMixin from '../mixins/resourceProps'
@@ -57,6 +58,7 @@ export default {
   data () {
     return {
       loading: false,
+      baseDocURL: getDocsUrl(this.$store.getters.scope),
       form: {
         fc: this.$form.createForm(this),
       },
@@ -115,6 +117,11 @@ export default {
         brand: typeClouds.brandMap.OneCloud.brand,
       },
     }
+  },
+  computed: {
+    vendorAndDeviceLink () {
+      return `${this.baseDocURL}function_principle/onpremise/vminstance/custom-pci-devices/`
+    },
   },
   methods: {
     validateVendorId () {
