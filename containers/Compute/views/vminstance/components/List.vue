@@ -765,7 +765,6 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
-                      const isAllReady = this.list.selectedItems.every((item) => { return item.status === 'ready' })
                       const isAllIdc = this.list.selectedItems.every((item) => {
                         return findPlatform(item.hypervisor, 'hypervisor') === SERVER_TYPE.idc
                       })
@@ -777,11 +776,6 @@ export default {
                       if (!isAllAdmin) {
                         ret.validate = false
                         ret.tooltip = this.$t('compute.text_1113')
-                        return ret
-                      }
-                      if (!isAllReady) {
-                        ret.validate = false
-                        ret.tooltip = this.$t('compute.text_1114')
                         return ret
                       }
                       if (!isAllIdc) {
