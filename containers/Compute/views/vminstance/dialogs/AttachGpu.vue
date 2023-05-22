@@ -61,7 +61,7 @@
         <a-form-item :label="$t('compute.text_294')" v-if="isOpenGpu && isGroupAction" :extra="$t('compute.text_1175')">
           <a-input-number :min="1" v-decorator="decorators.number" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_495')">
+        <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_495')" v-if="isOpenAutoStart">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" />
         </a-form-item>
       </a-form>
@@ -107,7 +107,7 @@ export default {
           'autoStart',
           {
             valuePropName: 'checked',
-            initialValue: true,
+            initialValue: false,
           },
         ],
         number: [
@@ -197,6 +197,9 @@ export default {
     isGroupAction () { // 是否是批量操作
       if (this.params.data.length > 1) return true
       return false
+    },
+    isOpenAutoStart () {
+      return this.selectedItems.every(item => item.status === 'ready')
     },
   },
   watch: {
