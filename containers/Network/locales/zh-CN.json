@@ -1093,5 +1093,8 @@
   "network.owner_dns_zone": "归属域名",
   "network.update_cluster": "修改集群",
   "network.associated_cluster": "关联集群",
-  "network.switch_wire": "更换二层网络"
+  "network.switch_wire": "更换二层网络",
+  "network.priority": "优先级",
+  "network.priority.extra": "优先级：1-255之间的正整数",
+  "network.interface": "网口"
 }

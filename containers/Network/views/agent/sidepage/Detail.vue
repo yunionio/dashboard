@@ -88,6 +88,16 @@ export default {
             },
           },
         },
+        {
+          field: 'priority',
+          title: this.$t('network.priority'),
+          width: 100,
+        },
+        {
+          field: 'interface',
+          title: this.$t('network.interface'),
+          width: 100,
+        },
       ],
       extraInfo: [
         {

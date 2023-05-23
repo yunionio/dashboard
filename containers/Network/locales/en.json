@@ -1094,5 +1094,8 @@
   "network.owner_dns_zone": "Owner domain",
   "network.update_cluster": "Update Cluster",
   "network.associated_cluster": "Associated Cluster",
-  "network.switch_wire": "Switch Layer 2 network"
+  "network.switch_wire": "Switch Layer 2 network",
+  "network.priority": "Priority",
+  "network.priority.extra": "Priority: a positive integer between 1 and 255.",
+  "network.interface": "Interface"
 }

@@ -21,6 +21,20 @@
           <p slot="extra">{{$t('network.text_80')}}<a-button type="link" size="small" @click="createCluster">{{$t('network.text_26')}}</a-button>
           </p>
         </a-form-item>
+        <a-form-item :label="$t('network.priority')">
+          <a-tooltip>
+            <template slot="title">
+              {{ $t('network.priority.extra') }}
+            </template>
+            <a-input-number
+              v-decorator="decorators.priority"
+              :min="1"
+              :max="255"
+              :step="1"
+              :formatter="v => `${ isNaN(parseInt(v)) ? 1 : parseInt(v) }`"
+              :parser="v => `${ isNaN(parseInt(v)) ? 1 : parseInt(v) }`" />
+          </a-tooltip>
+        </a-form-item>
         <a-collapse :bordered="false">
          <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
             <a-collapse @change="handleCollapseChange">
@@ -130,6 +144,12 @@ export default {
             rules: [
               { required: true, message: this.$t('network.text_79') },
             ],
+          },
+        ],
+        priority: [
+          'priority',
+          {
+            initialValue: 1,
           },
         ],
         telegraf_influx_db_output_url: [
@@ -256,6 +276,7 @@ export default {
         name: data.name,
         description: data.description,
         cluster_id: data.cluster_id,
+        priority: data.priority,
         ...params,
       })
       this.defaultParams = data.params
@@ -275,12 +296,13 @@ export default {
         values.haproxy.global_log = logConfs.join(' ')
         delete values.global_log_path
       }
-      const { name, description, cluster_id, ...rest } = values
+      const { name, description, cluster_id, priority, ...rest } = values
       if (this.lbAgentId) {
         return {
           name,
           description,
           cluster_id,
+          priority,
           params: {
             ...rest,
           },
@@ -290,6 +312,7 @@ export default {
         name,
         description,
         cluster_id,
+        priority,
         params: {
           ...rest,
         },
