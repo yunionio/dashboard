@@ -318,11 +318,16 @@ export default {
         },
       }
     },
-    doUpdate (values) {
-      return this.manager.performAction({
+    async doUpdate (values) {
+      const { params, ...rest } = this.formatValues(values)
+      await this.manager.update({
+        id: this.lbAgentId,
+        data: rest,
+      })
+      await this.manager.performAction({
         action: 'params-patch',
         id: this.lbAgentId,
-        data: this.formatValues(values),
+        data: { params },
       })
     },
     async handleCollapseChange (activeKeys) {
