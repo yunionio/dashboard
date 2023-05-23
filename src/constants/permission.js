@@ -1390,6 +1390,11 @@ export const PERMISSION = {
   irs_reports_list: ['report', 'reports', 'list'],
   irs_reports_get: ['report', 'reports', 'get'],
 
+  month_reports_list: ['report', 'month_reports', 'list'],
+  month_reports_update: ['report', 'month_reports', 'update'],
+  month_reports_perform_enabled: ['report', 'month_reports', 'perform', 'enabled'],
+  month_reports_perform_disabled: ['report', 'month_reports', 'perform', 'disabled'],
+
   ...extraPermissions,
 }
 
