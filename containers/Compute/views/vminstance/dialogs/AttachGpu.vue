@@ -135,16 +135,14 @@ export default {
         },
         getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
-          field: 'gpu',
-          title: 'GPU',
+          field: 'isolated_devices',
+          title: this.$t('compute.text_113'),
           slots: {
             default: ({ row }) => {
               const ret = []
               if (row.isolated_devices) {
                 row.isolated_devices.map(item => {
-                  if (item.dev_type.indexOf('GPU') !== -1) {
-                    ret.push(<list-body-cell-wrap row={{ showName: `${item.addr || ''} ${item.model || ''}` }} field="showName" />)
-                  }
+                  ret.push(<list-body-cell-wrap row={{ showName: `${item.addr || ''} ${item.model || ''}` }} field="showName" />)
                 })
               }
               return ret
@@ -224,7 +222,19 @@ export default {
       }
     },
   },
+  created () {
+    this.init()
+  },
   methods: {
+    init () {
+      if (!this.isGroupAction) {
+        const bindDevices = this.selectedItems?.[0]?.isolated_devices?.map(item => item.id) || []
+        if (bindDevices?.length > 0) {
+          this.isOpenGpu = true
+          this.form.fc.setFieldsValue({ device: bindDevices })
+        }
+      }
+    },
     async doAttachSubmit (data) {
       const params = {
         add_devices: this.attchGpu,
