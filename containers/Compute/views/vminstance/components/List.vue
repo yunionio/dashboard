@@ -749,7 +749,7 @@ export default {
                     },
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_change_config'),
                   },
-                  // 设置GPU卡
+                  // 设置透传设备
                   {
                     label: this.$t('compute.text_1112'),
                     permission: 'attach-isolated-device,server_perform_detach_isolated_device,server_perform_set_isolated_device',
@@ -771,6 +771,12 @@ export default {
                       const isAllAdmin = this.list.selectedItems.every((item) => {
                         return this.isAdminMode
                       })
+                      const isOk = this.list.selectedItems.every((item) => { return ['running', 'ready'].includes(item.status) })
+                      if (!isOk) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1126')
+                        return ret
+                      }
                       // 某些云不支持
                       const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.bingocloud.key, 'esxi'])
                       if (!isAllAdmin) {
