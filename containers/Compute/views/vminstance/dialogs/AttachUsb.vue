@@ -53,12 +53,12 @@
             :need-params="false"
             filterable
             :options="usbOptions"
-            :select-props="{ allowClear: true, placeholder: $t('compute.text_1403'), mode: 'multiple' }" />
+            :select-props="{ allowClear: true, placeholder: $t('compute.text_1403'), mode: 'multiple', loading: usbOptionsLoading }" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_294')" v-show="isOpenUsb && isGroupAction" :extra="$t('compute.text_1175')">
           <a-input-number :min="1" v-decorator="decorators.number" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_495')">
+        <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_495')" v-if="isOpenAutoStart">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" />
         </a-form-item>
       </a-form>
@@ -104,7 +104,7 @@ export default {
           'autoStart',
           {
             valuePropName: 'checked',
-            initialValue: true,
+            initialValue: false,
           },
         ],
         number: [
@@ -126,6 +126,7 @@ export default {
       usbOptions: [],
       isOpenUsb: false,
       bindUsbs: [],
+      usbOptionsLoading: false,
       columns: [
         {
           field: 'name',
@@ -152,13 +153,30 @@ export default {
       ],
     }
   },
+  computed: {
+    selectedItems () {
+      return this.params.data
+    },
+    isOpenAutoStart () {
+      return this.selectedItems.every(item => item.status === 'ready')
+    },
+  },
   created () {
     this.$D = new this.$Manager('servers', 'v1')
-    this.initUsbOptions()
+    this.initUsb()
   },
   methods: {
+    initUsb () {
+      const { isolated_devices } = this.params.data[0]
+      const devices = isolated_devices.filter(item => item.dev_type === 'USB')
+      if (devices?.length > 0) {
+        this.isOpenUsb = true
+      }
+      this.initUsbOptions()
+    },
     async initUsbOptions () {
       try {
+        this.usbOptionsLoading = true
         const acttachedRes = await new this.$Manager('isolated_devices', 'v2').list({
           params: {
             guest_id: this.params.data[0].id,
@@ -195,6 +213,8 @@ export default {
         this.usbOptions = usbOptions
       } catch (err) {
         throw err
+      } finally {
+        this.usbOptionsLoading = false
       }
     },
     async doAttachSubmit (data) {
