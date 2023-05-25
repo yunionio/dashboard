@@ -52,18 +52,10 @@ export default {
             return ret
           }
 
-          if (obj.dev_type === 'USB') {
-            if (obj.guest_status !== 'ready' && obj.guest_status !== 'running') {
-              ret.validate = false
-              ret.tooltip = this.$t('compute.text_489', [this.$t('dictionary.server')])
-              return ret
-            }
-          } else {
-            if (obj.guest_status !== 'ready') {
-              ret.validate = false
-              ret.tooltip = this.$t('compute.text_489_1', [this.$t('dictionary.server')])
-              return ret
-            }
+          if (obj.guest_status !== 'ready' && obj.guest_status !== 'running') {
+            ret.validate = false
+            ret.tooltip = this.$t('compute.text_489', [this.$t('dictionary.server')])
+            return ret
           }
           return ret
         },
