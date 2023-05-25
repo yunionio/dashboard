@@ -128,14 +128,6 @@ export default {
                 tooltip: this.$t('compute.text_489', [this.$t('dictionary.server')]),
               }
             }
-            // gpu不支持热插拔
-            const validateGpu = item.some(item => item.dev_type !== 'USB' && item.guest_status && item.guest_status !== 'ready')
-            if (validateGpu) {
-              return {
-                validate: false,
-                tooltip: this.$t('compute.text_489_2', [this.$t('dictionary.server')]),
-              }
-            }
             return {
               validate: true,
             }
