@@ -90,7 +90,19 @@ export default {
       options = this.hiddenScope.length > 0 ? options.filter(item => !this.hiddenScope.includes(item.value)) : options
       return options.filter(item => {
         if (this.l3PermissionEnable) {
+          if (this.scope === 'domain') {
+            return item.value === 'domain'
+          }
+          if (this.scope === 'project') {
+            return item.value === 'project'
+          }
           return item.scope.includes(this.subscriptionScope)
+        }
+        if (this.scope === 'domain') {
+          return item.value === 'domain'
+        }
+        if (this.scope === 'project') {
+          return item.value === 'project'
         }
         return item.scope.includes(this.subscriptionScope) && !['any_domain', 'domain', 'any_project_in_domain'].includes(item.value)
       })
@@ -98,10 +110,13 @@ export default {
     isShowDomainSelect () {
       return this.l3PermissionEnable &&
       ['domain', 'any_project_in_domain'].includes(this.range_scope) &&
-      this.subscriptionScope === 'system'
+      this.subscriptionScope === 'system' &&
+      this.scope !== 'domain'
     },
     isShowProjectSelect () {
-      return this.range_scope === 'project' && this.subscriptionScope !== 'project'
+      return this.range_scope === 'project' &&
+      this.subscriptionScope !== 'project' &&
+      this.scope !== 'project'
     },
   },
   watch: {
