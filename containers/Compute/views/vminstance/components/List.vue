@@ -772,9 +772,6 @@ export default {
                       const isAllIdc = this.list.selectedItems.every((item) => {
                         return findPlatform(item.hypervisor, 'hypervisor') === SERVER_TYPE.idc
                       })
-                      const isAllAdmin = this.list.selectedItems.every((item) => {
-                        return this.isAdminMode
-                      })
                       const isOk = this.list.selectedItems.every((item) => { return ['running', 'ready'].includes(item.status) })
                       if (!isOk) {
                         ret.validate = false
@@ -783,11 +780,6 @@ export default {
                       }
                       // 某些云不支持
                       const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.bingocloud.key, 'esxi'])
-                      if (!isAllAdmin) {
-                        ret.validate = false
-                        ret.tooltip = this.$t('compute.text_1113')
-                        return ret
-                      }
                       if (!isAllIdc) {
                         ret.validate = false
                         ret.tooltip = this.$t('compute.text_1115')
