@@ -6,7 +6,7 @@
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
-        <a-form-item :label="$t('compute.text_492', [this.$t('dictionary.server')])" v-bind="formItemLayout" :extra="extra">
+        <a-form-item :label="$t('compute.text_492', [this.$t('dictionary.server')])" v-bind="formItemLayout" :extra="$t('compute.text_493')">
           <a-select v-decorator="decorators.guest">
             <a-select-option v-for="item in guestesOpts" :key="item.id">
               {{item.name}}
@@ -86,13 +86,6 @@ export default {
       })
       return ret
     },
-    extra () {
-      if (this.dev_type === 'USB') {
-        return this.$t('compute.text_493')
-      } else {
-        return this.$t('compute.gpu_associate_server')
-      }
-    },
   },
   created () {
     const params = {
@@ -103,12 +96,7 @@ export default {
     }
     new this.$Manager('servers').list({ params })
       .then((res) => {
-        const { dev_type } = this.params.data[0]
-        if (dev_type === 'USB') {
-          this.guestesOpts = res.data.data.filter(val => val.status === 'ready' || val.status === 'running')
-        } else {
-          this.guestesOpts = res.data.data.filter(val => val.status === 'ready')
-        }
+        this.guestesOpts = res.data.data.filter(val => val.status === 'ready' || val.status === 'running')
       })
   },
   methods: {

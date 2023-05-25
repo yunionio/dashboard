@@ -21,6 +21,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import _ from 'lodash'
 import { SERVER_TYPE } from '@Compute/constants'
 import ListMixin from '@/mixins/list'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
@@ -78,10 +79,13 @@ export default {
     if (this.$route.query.id) {
       filter.id = [this.$route.query.id]
     }
+
     const pci_model_types = this.$store.getters.capability?.pci_model_types || []
-    const devTypes = pci_model_types.map(item => {
+    let devTypes = pci_model_types.map(item => {
       return { key: item.dev_type, label: item.dev_type }
     })
+    devTypes = _.unionWith(devTypes, _.isEqual)
+
     const filterOptions = {
       external_id: {
         label: this.$t('table.title.external_id'),
