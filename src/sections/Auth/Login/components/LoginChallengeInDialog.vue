@@ -223,6 +223,7 @@ export default {
     ...mapState('auth', {
       regions: state => state.regions,
       loggedUsers: state => state.loggedUsers,
+      userInfo: state => state.info,
     }),
     isForgetLoginUser () {
       return this.regions.is_forget_login_user
@@ -256,6 +257,9 @@ export default {
         return `${user} - ${domain}`
       }
     },
+    loginUserName () {
+      return this.userInfo.name
+    },
   },
   watch: {
     showCaptchaInput: {
@@ -263,6 +267,12 @@ export default {
         if (val === true) {
           this.fetchCaptcha()
         }
+      },
+      immediate: true,
+    },
+    loginUserName: {
+      handler (val) {
+        this.fd.username = val
       },
       immediate: true,
     },
