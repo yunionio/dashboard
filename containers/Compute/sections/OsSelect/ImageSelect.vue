@@ -610,7 +610,7 @@ export default {
       this.imageOpts = []
       const { osOpts, imageOptsMap } = this.imagesInfo
       if (osOpts && osOpts.length) {
-        let os = osValue || osOpts[0].key
+        let os = imageOptsMap[osValue] ? osValue : osOpts[0].key
         let imageOpts = this.getImageOpts(imageOptsMap[os])
         if (!imageOpts || !imageOpts.length) {
           this.form.fc.setFieldsValue({ image: initData })
@@ -673,8 +673,10 @@ export default {
 
       if (imageOs) {
         const os = imageOs.replace(imageOs[0], imageOs[0].toUpperCase())
-        this.form.fc.setFieldsValue({ os })
         const images = this.imagesInfo.imageOptsMap[os] || []
+        if (images?.length > 0) {
+          this.form.fc.setFieldsValue({ os })
+        }
         let image = images.find((item) => { return item.id === imageId })
         this.defaultSelect(os === 'Nfs' ? 'nfs' : os)
         if (image) {
