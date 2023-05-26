@@ -3,10 +3,10 @@
     <page-header :title="$t('cloudenv.text_432')" />
     <page-body needMarginBottom>
       <a-form :form="form.fc" v-bind="formItemLayout" hideRequiredMark>
-        <a-form-item :label="$t('cloudenv.text_410', [$t('dictionary.project')])" class="mt-3 mb-0" v-bind="formItemLayout">
+        <a-form-item :label="$t('cloudenv.text_410', [$t('dictionary.project')])" class="mt-3" v-bind="formItemLayout">
           <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
         </a-form-item>
-        <a-form-item :label="$t('cloudenv.text_95')">
+        <a-form-item :label="$t('cloudenv.text_95')" :extra="$t('cloudenv.name.extra')">
           <a-input :placeholder="$t('cloudenv.text_190')" v-decorator="decorators.name" />
           <template v-slot:extra>
             <name-repeated res="scheduledtasks" :name="form.fd.name" />
