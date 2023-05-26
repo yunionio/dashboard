@@ -7,9 +7,9 @@
       <a-form
         :form="form.fc">
         <a-form-item :label="$t('compute.text_1051')" v-bind="formItemLayout">
-          <a-input-number :min="1" :max="100000" v-decorator="decorators.cpu_core_count" />{{$t('compute.text_167')}}</a-form-item>
+          <a-input-number :min="1" v-decorator="decorators.cpu_core_count" />{{$t('compute.text_167')}}</a-form-item>
         <a-form-item :label="$t('compute.text_1052')" v-bind="formItemLayout">
-          <a-input-number :min="1" :max="100000" v-decorator="decorators.memory_size_mb" /> GB
+          <a-input-number :min="1" v-decorator="decorators.memory_size_mb" /> GB
         </a-form-item>
       </a-form>
     </div>
