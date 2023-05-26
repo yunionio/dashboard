@@ -108,6 +108,9 @@ export default {
     if (!hasPermission({ key: 'eip_list' })) {
       detailTabs = R.remove(R.findIndex(R.propEq('key', 'eip-list-for-vm-instance-sidepage'))(detailTabs), 1, detailTabs)
     }
+    if (this.$store.getters.isProjectMode) {
+      detailTabs = R.remove(R.findIndex(R.propEq('key', 'gpu-list'))(detailTabs), 1, detailTabs)
+    }
     if (isScopedPolicyMenuHidden('sub_hidden_menus.disk_snapshot') && isScopedPolicyMenuHidden('sub_hidden_menus.instance_snapshot')) {
       detailTabs = R.remove(R.findIndex(R.propEq('key', 'vm-snapshot-sidepage'))(detailTabs), 1, detailTabs)
     }

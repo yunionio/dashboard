@@ -666,6 +666,9 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.gpu')) {
                 return true
               }
+              if (!(store.getters.isAdminMode || store.getters.isDomainMode)) {
+                return true
+              }
               return !hasSetupKey(['onestack'])
             },
             // hidden: () => {
