@@ -827,5 +827,6 @@
   "cloudenv.bill_task.task_mode.auto": "Automatic",
   "cloudenv.bill_task.task_mode.manual": "Manual",
   "cloudenv.verify_method": "Verify Method",
-  "cloudenv.task_id": "Task ID"
+  "cloudenv.task_id": "Task ID",
+  "cloudenv.name.extra": "The name supports an ordered suffix placeholder'#', e.g. given name res## with quantity 2, the names of the servers after creation are res01 and res02. If the indexes have been occupoed, the index will be automatically calculated"
 }
