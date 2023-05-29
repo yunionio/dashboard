@@ -44,3 +44,16 @@ export const getDeviceIdColumn = () => {
     title: i18n.t('compute.pci.device_id'),
   })
 }
+
+// 是否开启热插拔
+export const getHotPluggableColumn = () => {
+  return {
+    field: 'hot_pluggable',
+    title: i18n.t('compute.pci.hot_pluggable'),
+    slots: {
+      default: ({ row }, h) => {
+        return row.hot_pluggable ? i18n.t('table.title.on') : i18n.t('table.title.off')
+      },
+    },
+  }
+}

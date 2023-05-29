@@ -16,5 +16,6 @@
   "compute.pci.host": "宿主机",
   "compute.pci.host.placeholder": "请选择宿主机",
   "compute.pci.host.extra": "选择宿主机后，相应宿主机会自动上报相应透传设备，未选择设备需重启host服务生效！",
-  "compute.pci.document": "文档"
+  "compute.pci.document": "文档",
+  "compute.pci.hot_pluggable": "热插拔"
 }
