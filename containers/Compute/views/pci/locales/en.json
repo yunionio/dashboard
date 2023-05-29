@@ -16,5 +16,6 @@
   "compute.pci.host": "Host",
   "compute.pci.host.placeholder": "Please select a host",
   "compute.pci.host.extra": "After the host is selected, the corresponding host will automatically report the corresponding transparent transmission device. If no device is selected, the host service needs to be restarted to take effect!",
-  "compute.pci.document": "Document"
+  "compute.pci.document": "Document",
+  "compute.pci.hot_pluggable": "Hot Pluggable"
 }
