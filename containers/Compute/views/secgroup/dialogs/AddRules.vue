@@ -101,7 +101,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('compute.text_996') },
-              { validator: this.$validate('cidr') },
+              { validator: this.$validate(['cidr', 'IPv4'], true, 'some') },
             ],
           },
         ],
