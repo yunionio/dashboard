@@ -32,6 +32,9 @@
             :placeholder="$t('compute.pci.host.placeholder')"
             :dialog-params="{ title: $t('compute.text_111'), width: 1060 }" />
         </a-form-item>
+        <a-form-item :label="$t('compute.pci.hot_pluggable')">
+          <a-switch v-decorator="decorators.hot_pluggable" :checked-children="$t('table.title.on')" :un-checked-children="$t('table.title.off')" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -102,6 +105,12 @@ export default {
         hosts: [
           'hosts',
         ],
+        hot_pluggable: [
+          'hot_pluggable',
+          {
+            initialValue: false,
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -158,6 +167,7 @@ export default {
           vendor_id: values.vendor_id.trim(),
           device_id: values.device_id.trim(),
           hosts: values.hosts,
+          hot_pluggable: values.hot_pluggable,
         }
         await this.doSubmit(data)
         this.loading = false

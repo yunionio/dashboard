@@ -3,6 +3,7 @@ import {
   getModelColumn,
   getVendorIdColumn,
   getDeviceIdColumn,
+  getHotPluggableColumn,
 } from '../utils/columns'
 
 export default {
@@ -12,6 +13,7 @@ export default {
       getModelColumn(),
       getVendorIdColumn(),
       getDeviceIdColumn(),
+      getHotPluggableColumn(),
     ]
   },
 }

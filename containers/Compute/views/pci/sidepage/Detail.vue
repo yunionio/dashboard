@@ -14,6 +14,7 @@ import {
   getModelColumn,
   getVendorIdColumn,
   getDeviceIdColumn,
+  getHotPluggableColumn,
 } from '../utils/columns'
 import WindowsMixin from '@/mixins/windows'
 
@@ -37,6 +38,7 @@ export default {
         getModelColumn(),
         getVendorIdColumn(),
         getDeviceIdColumn(),
+        getHotPluggableColumn(),
       ],
     }
   },
