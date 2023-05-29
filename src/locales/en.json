@@ -5394,5 +5394,6 @@
   "common.operation_object": "Operation object",
   "common.hour_unit": "h",
   "common.minute_unit": "m",
-  "common.second_unit": "s"
+  "common.second_unit": "s",
+  "common.permission.403": "Insufficient permissions. Please contact the administrator."
 }
