@@ -998,8 +998,9 @@ export default {
         // 磁盘区分介质
         if (values.dataDiskTypes && values.dataDiskTypes[key]) {
           const { key: dataDiskKey = '' } = values.dataDiskTypes[key] || {}
-          if (diskSupportTypeMedium(this.selectedItem.hypervisor) && dataDiskKey.split('/')[1]) {
-            diskObj.medium = dataDiskKey.split('-')[1]
+          const medium = dataDiskKey.split('/')[1]
+          if (diskSupportTypeMedium(this.selectedItem.hypervisor) && medium) {
+            diskObj.medium = medium
           }
         }
         dataDisk.push(diskObj)
