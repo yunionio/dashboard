@@ -285,6 +285,8 @@ http.interceptors.response.use(
       // 忽略证书错误
       if (status === 402 && (error.response.data.details === 'no license found' || error.response.data.details === '无有效license')) {
         console.log(error)
+      } if (status === 403) {
+        message.error(i18n.t('common.permission.403'))
       } else if (error.response.data && !(error.response.data.details || String()).includes('No token in header')) {
         showHttpErrorMessage(error)
       }

@@ -5417,5 +5417,6 @@
   "common.operation_object": "操作对象",
   "common.hour_unit": "小时",
   "common.minute_unit": "分",
-  "common.second_unit": "秒"
+  "common.second_unit": "秒",
+  "common.permission.403": "权限不足，请联系管理员"
 }
