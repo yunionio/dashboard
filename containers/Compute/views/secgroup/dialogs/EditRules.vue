@@ -111,7 +111,7 @@ export default {
             validateFirst: true,
             initialValue: selectItem.cidr || '',
             rules: [
-              { validator: this.$validate(['cidr', 'IPv4']) },
+              { validator: this.$validate(['cidr', 'IPv4'], true, 'some') },
             ],
           },
         ],
