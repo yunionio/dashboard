@@ -13,7 +13,7 @@ export default {
       getModelColumn(),
       getVendorIdColumn(),
       getDeviceIdColumn(),
-      getHotPluggableColumn(),
+      getHotPluggableColumn({ vm: this }),
     ]
   },
 }

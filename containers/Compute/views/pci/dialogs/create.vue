@@ -32,7 +32,13 @@
             :placeholder="$t('compute.pci.host.placeholder')"
             :dialog-params="{ title: $t('compute.text_111'), width: 1060 }" />
         </a-form-item>
-        <a-form-item :label="$t('compute.pci.hot_pluggable')">
+        <a-form-item :label="$t('compute.pci.hot_pluggable')" :extra="$t('compute.pci.hot_pluggable.tips')">
+          <!-- <span slot="label">
+            {{ $t('compute.pci.hot_pluggable') }}&nbsp;
+            <a-tooltip :title="$t('compute.pci.hot_pluggable.tips')">
+              <a-icon type="question-circle-o" />
+            </a-tooltip>
+          </span> -->
           <a-switch v-decorator="decorators.hot_pluggable" :checked-children="$t('table.title.on')" :un-checked-children="$t('table.title.off')" />
         </a-form-item>
       </a-form>
