@@ -1,9 +1,9 @@
 <template>
-  <div class="d-flex">
+  <div>
     <template v-if="!isAdminMode && !isDomainMode">
       <div style="margin-bottom: 24px;">{{ projectData.label }}</div>
     </template>
-    <a-row :gutter="8" class="w-100" v-else>
+    <a-row :gutter="8" v-else>
       <a-col :span="12">
         <a-form-item :class="{ 'mb-0': mb0 }" v-if="isAdminMode && l3PermissionEnable" :wrapperCol="{ span: 24 }">
           <base-select
