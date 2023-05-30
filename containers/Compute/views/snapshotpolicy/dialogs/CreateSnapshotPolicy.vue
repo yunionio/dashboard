@@ -193,12 +193,15 @@ export default {
       })
     },
     async doCreateSnapshotPolicySubmit () {
-      const { alwaysReserved, project, ...rest } = this.form.fd
+      const { alwaysReserved, domain, project, ...rest } = this.form.fd
       const params = {
         ...rest,
       }
       if (alwaysReserved) {
         params.retention_days = -1
+      }
+      if (domain) {
+        params.domain = domain.key
       }
       if (project) {
         params.tenant = project.key
