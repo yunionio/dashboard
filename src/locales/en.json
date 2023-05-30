@@ -2874,6 +2874,7 @@
     "info": "Details",
     "edit": "Modify",
     "success": "Operation successful",
+    "failed": "Operation failedful",
     "loding": "Loading",
     "notData": "No data temporarily",
     "placeholder": "Please enter",

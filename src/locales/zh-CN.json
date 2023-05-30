@@ -2897,6 +2897,7 @@
     "info": "基本信息",
     "edit": "修改",
     "success": "操作成功",
+    "failed": "操作失败",
     "loding": "加载中",
     "notData": "暂无数据",
     "placeholder": "请输入",
