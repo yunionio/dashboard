@@ -16,6 +16,16 @@ export default {
         },
         meta: obj => this.$getDeleteResult(obj),
       },
+      {
+        label: this.$t('table.action.modify'),
+        permission: 'isolated_device_models_update',
+        action: obj => {
+          this.createDialog('UpdateHotPluggableDialog', {
+            data: [obj],
+            refresh: this.refresh,
+          })
+        },
+      },
     ]
   },
 }
