@@ -160,10 +160,14 @@ export default {
           }
         } else {
           let newKey = key
+          let newValues = value
           if (this.autocompleterSearch && !this.autocompleterSearch.includes(this.keySeparator)) {
             const ipKey = Object.keys(this.options).find(v => v.startsWith('ip') || v.endsWith('ip'))
+            newValues = (value.map(item => { return item.split(',') })).flat()
+            const isIp = newValues.some(item => /(^[0-9]{1,3}\.)|(^\.[0-9]{1,3})/.test(item) && !/[a-zA-Z]+/.test(item))
+            const isUUID = newValues.some(item => /[a-f\d]{4}(?:[a-f\d]{4}-){4}[a-f\d]{12}/.test(item))
 
-            if (/(^[0-9]{1,3}\.)|(^\.[0-9]{1,3})/.test(value) && !/[a-zA-Z]+/.test(value) && ipKey) {
+            if (isIp && ipKey) {
               if (Array.isArray(value)) {
                 const isErrIp = value[0].split('.').some(v => v > 255)
                 if (isErrIp) {
@@ -174,13 +178,15 @@ export default {
               } else {
                 newKey = ipKey
               }
+            } else if (isUUID) {
+              newKey = 'id'
             } else {
               if (this.options[this.defaultSearchKey]) {
                 newKey = this.defaultSearchKey
               }
             }
           }
-          this.newValues[newKey] = value
+          this.newValues[newKey] = newValues
         }
       }, values)
       this.$emit('input', this.newValues)

@@ -295,6 +295,23 @@ export default {
         }
       } else {
         value = value.split(this.valueSeparator)
+        /* ======================TASK4351 列表查询多个IP、多个UUID start=========================== */
+        if (this.search && this.search.indexOf(',') !== -1) {
+          if (this.selectKey === 'id') {
+            if (Array.isArray(value)) {
+              value = (value.map(item => { return item.split(',') })).flat()
+            } else {
+              value = value.split(',')
+            }
+          } else if (this.selectKey === 'ip_addr') {
+            if (Array.isArray(value)) {
+              value = (value.map(item => { return item.split(',') })).flat()
+            } else {
+              value = value.split(',')
+            }
+          }
+        }
+        /* ======================TASK4351 列表查询多个IP、多个UUID end=========================== */
       }
       if (R.isNil(value) || R.isEmpty(value)) {
         return
@@ -352,6 +369,24 @@ export default {
       this.search = e.target.value
       let value = (e.target.value && e.target.value.split(this.keySeparator)) || []
       value = (value[1] && value[1].split(this.valueSeparator)) || value[0]
+      /* ======================TASK4351 列表查询多个IP、多个UUID start=========================== */
+      const val = e.target.value
+      if (val && val.indexOf(',') !== -1) {
+        if (this.selectKey === 'id') {
+          if (Array.isArray(value)) {
+            value = (value.map(item => { return item.split(',') })).flat()
+          } else {
+            value = value.split(',')
+          }
+        } else if (this.selectKey === 'ip_addr') {
+          if (Array.isArray(value)) {
+            value = (value.map(item => { return item.split(',') })).flat()
+          } else {
+            value = value.split(',')
+          }
+        }
+      }
+      /* ======================TASK4351 列表查询多个IP、多个UUID end=========================== */
       if (this.isDropdown && !this.isDate) {
         if (!value) {
           this.selectKey = null
