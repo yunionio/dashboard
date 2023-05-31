@@ -86,7 +86,7 @@ export const getRegionTableColumn = ({ field = 'region', title = i18n.t('res.reg
   }
 }
 
-export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.title.brand'), hidden = false, minWidth = 70, sortable = true } = {}) => {
+export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.title.brand'), hidden = false, minWidth = 70, sortable = true, hideLoading = false } = {}) => {
   return {
     field,
     title,
@@ -95,7 +95,7 @@ export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.tit
     slots: {
       default: ({ row }, h) => {
         const val = _.get(row, field)
-        if (!val) return [<data-loading />]
+        if (!val) return hideLoading ? '-' : [<data-loading />]
         return [
           <BrandIcon name={ val } />,
         ]
