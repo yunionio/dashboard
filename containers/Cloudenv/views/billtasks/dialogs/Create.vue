@@ -49,7 +49,7 @@ export default {
     const { accountData = {} } = this.params
     const initDisabledActions = []
     if (accountData.status === 'deleted') {
-      initDisabledActions.push(...TaskTypeList.slice(0, 4))
+      initDisabledActions.push('pull_bill', 'prepaid_amortizing', 'project_sharing', 'recalculate')
     } else if (accountData.brand) {
       if (accountData.cloud_env !== 'public') {
         initDisabledActions.push('project_sharing')
