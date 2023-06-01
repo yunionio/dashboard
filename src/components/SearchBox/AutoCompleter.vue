@@ -297,18 +297,18 @@ export default {
       } else {
         value = value.split(this.valueSeparator)
         /* ======================TASK4351 列表查询多个IP、多个UUID start=========================== */
-        if (this.search && this.search.indexOf(',') !== -1) {
+        if (this.search && this.search.indexOf('|') !== -1) {
           if (this.selectKey === 'id') {
             if (Array.isArray(value)) {
-              value = (value.map(item => { return item.split(',') })).flat()
+              value = (value.map(item => { return item.split('|') })).flat()
             } else {
-              value = value.split(',')
+              value = value.split('|')
             }
           } else if (this.selectKey === 'ip_addr') {
             if (Array.isArray(value)) {
-              value = (value.map(item => { return item.split(',') })).flat()
+              value = (value.map(item => { return item.split('|') })).flat()
             } else {
-              value = value.split(',')
+              value = value.split('|')
             }
           }
         }
@@ -372,18 +372,18 @@ export default {
       value = (value[1] && value[1].split(this.valueSeparator)) || value[0]
       /* ======================TASK4351 列表查询多个IP、多个UUID start=========================== */
       const val = e.target.value
-      if (val && val.indexOf(',') !== -1) {
+      if (val && val.indexOf('|') !== -1) {
         if (this.selectKey === 'id') {
           if (Array.isArray(value)) {
-            value = (value.map(item => { return item.split(',') })).flat()
+            value = (value.map(item => { return item.split('|') })).flat()
           } else {
-            value = value.split(',')
+            value = value.split('|')
           }
         } else if (this.selectKey === 'ip_addr') {
           if (Array.isArray(value)) {
-            value = (value.map(item => { return item.split(',') })).flat()
+            value = (value.map(item => { return item.split('|') })).flat()
           } else {
-            value = value.split(',')
+            value = value.split('|')
           }
         }
       }
