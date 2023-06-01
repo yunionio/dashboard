@@ -163,7 +163,7 @@ export default {
           let newValues = value
           if (this.autocompleterSearch && !this.autocompleterSearch.includes(this.keySeparator)) {
             const ipKey = Object.keys(this.options).find(v => v.startsWith('ip') || v.endsWith('ip'))
-            newValues = (value.map(item => { return item.split(',') })).flat()
+            newValues = (value.map(item => { return item.split('|') })).flat()
             const isIp = newValues.some(item => /(^[0-9]{1,3}\.)|(^\.[0-9]{1,3})/.test(item) && !/[a-zA-Z]+/.test(item))
             const isUUID = newValues.some(item => /[a-f\d]{4}(?:[a-f\d]{4}-){4}[a-f\d]{12}/.test(item))
 
