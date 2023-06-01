@@ -7,7 +7,10 @@
 </template>
 
 <script>
-import { getEnabledTableColumn } from '@/utils/common/tableColumn'
+import {
+  getEnabledTableColumn,
+  getTagTableColumn,
+} from '@/utils/common/tableColumn'
 
 export default {
   name: 'UserDetail',
@@ -81,6 +84,12 @@ export default {
             },
           },
         },
+        getTagTableColumn({
+          onManager: this.onManager,
+          resource: 'users',
+          needExt: true,
+          columns: () => this.columns,
+        }),
       ],
       extraInfo: [
         {
