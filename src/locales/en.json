@@ -4007,7 +4007,7 @@
   "common.text00012": "Tags",
   "common.text00013": "Tag free",
   "common.text00014": "Select attributes to filter",
-  "common.text00015": "The default search method is by name, with automatic matching for IP or ID search terms. Multiple IP or ID searches should be separated by a comma (,).",
+  "common.text00015": "The default search method is by name, with automatic matching for IP or ID search terms. Multiple IP or ID searches should be separated by a line (|).",
   "common.text00016": "The public image provided by the @:brand platform can be adapted to all platforms",
   "common.text00017": "Custom Image",
   "common.text00018": "User-defined image uploaded on @:brand platform",
