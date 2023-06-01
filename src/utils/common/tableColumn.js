@@ -211,6 +211,7 @@ export const getNameDescriptionTableColumn = ({
   cellWrapSlots,
   edit = true,
   editDesc = true,
+  copyDesc = false,
   minWidth = 100,
   message,
   addEncrypt,
@@ -268,6 +269,7 @@ export const getNameDescriptionTableColumn = ({
               onManager,
               steadyStatus,
               formRules: descriptionRules,
+              copy: copyDesc,
             },
           }))
         }
