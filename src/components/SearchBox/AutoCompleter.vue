@@ -255,8 +255,11 @@ export default {
             }
           }
           if (!key) {
-            if (regexp.isUUID(this.search) && this.options.id) {
-              key = 'id'
+            const searchValues = this.search.split('|')
+            const isUUID = searchValues.some(item => regexp.isUUID(item))
+            const idKey = Object.keys(this.options).find(v => v.endsWith('id'))
+            if (isUUID && idKey) {
+              key = idKey
             } else {
               key = 'name'
             }
@@ -297,13 +300,13 @@ export default {
         value = value.split(this.valueSeparator)
         /* ======================TASK4351 列表查询多个IP、多个UUID start=========================== */
         if (this.search && this.search.indexOf('|') !== -1) {
-          if (this.selectKey === 'id') {
+          if (this.selectKey?.endsWith('id')) {
             if (Array.isArray(value)) {
               value = (value.map(item => { return item.split('|') })).flat()
             } else {
               value = value.split('|')
             }
-          } else if (this.selectKey === 'ip_addr') {
+          } else if (this.selectKey?.startsWith('ip') || this.selectKey?.endsWith('ip')) {
             if (Array.isArray(value)) {
               value = (value.map(item => { return item.split('|') })).flat()
             } else {
@@ -372,13 +375,13 @@ export default {
       /* ======================TASK4351 列表查询多个IP、多个UUID start=========================== */
       const val = e.target.value
       if (val && val.indexOf('|') !== -1) {
-        if (this.selectKey === 'id') {
+        if (this.selectKey?.endsWith('id')) {
           if (Array.isArray(value)) {
             value = (value.map(item => { return item.split('|') })).flat()
           } else {
             value = value.split('|')
           }
-        } else if (this.selectKey === 'ip_addr') {
+        } else if (this.selectKey?.startsWith('ip') || this.selectKey?.endsWith('ip')) {
           if (Array.isArray(value)) {
             value = (value.map(item => { return item.split('|') })).flat()
           } else {
