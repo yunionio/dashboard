@@ -3,6 +3,7 @@ import {
   getEnabledTableColumn,
   getProjectDomainTableColumn,
   getTimeTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -42,6 +43,12 @@ export default {
       }),
       getProjectDomainTableColumn(),
       getTimeTableColumn(),
+      getTagTableColumn({
+        onManager: this.onManager,
+        resource: 'users',
+        needExt: true,
+        columns: () => this.columns,
+      }),
     ]
   },
 }
