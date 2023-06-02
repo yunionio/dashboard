@@ -289,10 +289,12 @@ export default {
           title: this.$t('common_550'),
           hideField: true,
           message: (row) => {
-            return this.$t('idpTmplTitles.' + row.template) || row.template || '-'
+            const v = row.template || row.driver
+            return this.$t('idpTmplTitles')[v] ? this.$t(`idpTmplTitles.${v}`) : v || '-'
           },
           slotCallback: (row) => {
-            return this.$t('idpTmplTitles.' + row.template) || row.template || '-'
+            const v = row.template || row.driver
+            return this.$t('idpTmplTitles')[v] ? this.$t(`idpTmplTitles.${v}`) : v || '-'
           },
         }),
         {
