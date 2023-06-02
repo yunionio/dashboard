@@ -9,8 +9,10 @@
 <script>
 import {
   getEnabledTableColumn,
-  getTagTableColumn,
 } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+} from '@/utils/common/detailColumn'
 
 export default {
   name: 'UserDetail',
@@ -84,7 +86,7 @@ export default {
             },
           },
         },
-        getTagTableColumn({
+        getUserTagColumn({
           onManager: this.onManager,
           resource: 'users',
           needExt: true,
