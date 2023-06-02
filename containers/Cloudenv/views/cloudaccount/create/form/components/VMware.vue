@@ -1,6 +1,9 @@
 <template>
   <div>
     <a-form :form="form.fc" v-bind="formLayout">
+      <a-alert class="my-2" banner>
+        <template slot="message">{{ $t('cloudenv.vmware.message') }}<help-link :href="vmDocLink">{{ $t('cloudenv.vmware.message.doc') }}</help-link></template>
+      </a-alert>
       <a-form-item :label="$t('cloudenv.text_95')">
         <a-input v-decorator="decorators.name" :placeholder="$t('cloudenv.text_190')" />
       </a-form-item>
@@ -38,6 +41,7 @@ import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
 import ShareMode from '@Cloudenv/views/cloudaccount/components/ShareMode'
 import { getCloudaccountDocs, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
+import { getDocsUrl } from '@/utils/utils'
 import createMixin from './createMixin'
 import DomainProject from '../../../components/DomainProject'
 
@@ -53,6 +57,7 @@ export default {
   data () {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
     return {
+      baseDocURL: getDocsUrl(this.$store.getters.scope),
       docs: getCloudaccountDocs(this.$store.getters.scope),
       decorators: {
         name: [
@@ -120,6 +125,11 @@ export default {
       },
       keepAliveFields: true,
     }
+  },
+  computed: {
+    vmDocLink () {
+      return `${this.baseDocURL}function_principle/multicloud/cloudaccounts/vmware_net/`
+    },
   },
 }
 </script>
