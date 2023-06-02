@@ -829,5 +829,7 @@
   "cloudenv.verify_method": "认证方式",
   "cloudenv.task_id": "任务ID",
   "cloudenv.time_duration": "耗时",
-  "cloudenv.name.extra": "名称支持有序后缀占位符‘#’，用法举例，名称res##，数量2，创建后实例的名称依次为res01、res02，已有同名实例，序号顺延"
+  "cloudenv.name.extra": "名称支持有序后缀占位符‘#’，用法举例，名称res##，数量2，创建后实例的名称依次为res01、res02，已有同名实例，序号顺延",
+  "cloudenv.vmware.message": "新建vmware云账号前建议先配置网路，具体",
+  "cloudenv.vmware.message.doc": "参考文档"
 }
