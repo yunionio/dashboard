@@ -1481,6 +1481,10 @@ const getSingleActions = function () {
                     ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                     return ret
                   }
+                  if (!['ready'].includes(obj.status)) {
+                    ret.tooltip = i18n.t('compute.text_1308')
+                    return ret
+                  }
                   if (obj.backup_host_id) {
                     ret.tooltip = i18n.t('compute.text_1296')
                     return ret
