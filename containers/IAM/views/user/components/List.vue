@@ -2,7 +2,6 @@
   <page-list
     show-tag-filter
     show-tag-columns
-    show-tag-config
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
