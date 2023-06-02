@@ -297,7 +297,7 @@ export default {
       return this.list.limit
     },
     total () {
-      return this.list.total
+      return this.list.total || Object.keys(this.data)?.length
     },
     offset () {
       return this.list.offset
