@@ -32,6 +32,12 @@ export default {
           },
         },
       },
+      getTagTableColumn({
+        onManager: this.onManager,
+        resource: 'users',
+        needExt: true,
+        columns: () => this.columns,
+      }),
       getEnabledTableColumn(),
       getEnabledTableColumn({
         field: 'allow_web_console',
@@ -43,12 +49,6 @@ export default {
       }),
       getProjectDomainTableColumn(),
       getTimeTableColumn(),
-      getTagTableColumn({
-        onManager: this.onManager,
-        resource: 'users',
-        needExt: true,
-        columns: () => this.columns,
-      }),
     ]
   },
 }
