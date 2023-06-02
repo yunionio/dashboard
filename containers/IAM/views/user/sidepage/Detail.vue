@@ -52,6 +52,12 @@ export default {
           field: 'enable_mfa',
           title: 'MFA',
         }),
+        getUserTagColumn({
+          onManager: this.onManager,
+          resource: 'users',
+          needExt: true,
+          columns: () => this.columns,
+        }),
         {
           field: 'group_count',
           title: this.$t('system.text_514'),
@@ -86,12 +92,6 @@ export default {
             },
           },
         },
-        getUserTagColumn({
-          onManager: this.onManager,
-          resource: 'users',
-          needExt: true,
-          columns: () => this.columns,
-        }),
       ],
       extraInfo: [
         {

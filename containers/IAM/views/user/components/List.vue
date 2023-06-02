@@ -2,13 +2,15 @@
   <page-list
     show-tag-filter
     show-tag-columns
+    show-ext-tags
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :ext-tag-params="{ service: 'identity' }" />
 </template>
 
 <script>
