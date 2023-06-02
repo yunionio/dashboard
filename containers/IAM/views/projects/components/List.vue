@@ -11,7 +11,8 @@
     :showGroupActions="showGroupActions"
     :showSingleActions="showSingleActions"
     :export-data-options="exportDataOptions"
-    :tag-config-params="tagConfigParams" />
+    :tag-config-params="tagConfigParams"
+    :ext-tag-params="{ service: 'identity' }" />
 </template>
 
 <script>
