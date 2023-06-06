@@ -4,11 +4,13 @@ import {
 } from '@/utils/common/tableColumn'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 import i18n from '@/locales'
-import { statusMap, auditStatusMap } from '../../utils'
+import { auditStatusMap } from '../../utils'
 import {
   getProcessDefinitionNameTableColumn,
   getResourceNameTableColumn,
   getResourceProjectTableColumn,
+  getStateTableColumn,
+  internalResourceColumns,
 } from '../../utils/columns'
 
 export default {
@@ -26,12 +28,16 @@ export default {
           )
         },
       }),
+      ...internalResourceColumns(),
       {
         field: 'initiator_name',
         title: i18n.t('common_371'),
         hideField: true,
         minWidth: 80,
         onManager: this.onManager,
+        formatter: ({ row }) => {
+          return row.variables.initiator_name || ''
+        },
         slots: {
           default: ({ row }, h) => {
             const name = row.variables.initiator_name
@@ -45,27 +51,24 @@ export default {
         field: 'variables.resource_project_name',
         title: this.$t('dictionary.project'),
       }),
-      {
-        field: 'state',
-        title: i18n.t('common_372'),
-        minWidth: 80,
-        showOverflow: 'title',
-        slots: {
-          default: ({ row }, h) => {
-            const statusObj = statusMap(row.process_definition_key)[row.state]
-            if (statusObj) {
-              return [
-                <span style={{ color: statusObj.color }}>{statusObj.text}</span>,
-              ]
-            }
-          },
-        },
-      },
+      getStateTableColumn(),
       {
         field: 'audit_status',
         title: i18n.t('common_401'),
         minWidth: 80,
         showOverflow: 'title',
+        formatter: ({ row }) => {
+          if (row.variables.audit_status) {
+            const statusObj = auditStatusMap(row.process_definition_key)[row.variables.audit_status]
+            if (row.process_definition_key === WORKFLOW_TYPES.CUSTOMER_SERVICE) {
+              return row.audit_state
+            }
+            if (statusObj) {
+              return statusObj.text
+            }
+          }
+          return ''
+        },
         slots: {
           default: ({ row }, h) => {
             if (row.variables.audit_status) {
@@ -90,6 +93,10 @@ export default {
         minWidth: 100,
         showOverflow: 'title',
         sortable: true,
+        formatter: ({ row }) => {
+          const bizStatus = row.variables.biz_status
+          return i18n.te(`status.workflowBiz.${bizStatus}`) ? i18n.t(`status.workflowBiz.${bizStatus}`) : ''
+        },
         slots: {
           default: ({ row }, h) => {
             const bizStatus = row.variables.biz_status
@@ -108,22 +115,20 @@ export default {
         title: i18n.t('common_399'),
         minWidth: 120,
         showOverflow: 'title',
-        slots: {
-          default: ({ row }) => {
-            const assignees = []
-            if (Array.isArray(row.tasks)) {
-              row.tasks.forEach((item) => {
-                if (!item.delete_reason) {
-                  assignees.push(item.assignee_name)
-                }
-              })
-            } else {
-              if (row.tasks && !row.delete_reason) {
-                assignees.push(row.tasks.assignee_name)
+        formatter: ({ row }) => {
+          const assignees = []
+          if (Array.isArray(row.tasks)) {
+            row.tasks.forEach((item) => {
+              if (!item.delete_reason) {
+                assignees.push(item.assignee_name)
               }
+            })
+          } else {
+            if (row.tasks && !row.delete_reason) {
+              assignees.push(row.tasks.assignee_name)
             }
-            return assignees.length > 0 ? assignees.join(',') : '-'
-          },
+          }
+          return assignees.length > 0 ? assignees.join(',') : '-'
         },
       },
       getTimeTableColumn({ field: 'start_time', title: i18n.t('common_374') }),

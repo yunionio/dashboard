@@ -282,16 +282,39 @@ export default {
       })
     },
     localExport (cols, list) {
+      let dataList = list
       const columns = cols.filter(item => this.selectedExportKeys.includes(item.key))
+      // 折叠行
+      let expandColumns = []
+      let getExpandData
+      columns.map(item => {
+        if (item.expandColumns && item.getExpandData) {
+          expandColumns = item.expandColumns
+          getExpandData = item.getExpandData
+        }
+      })
+      const hasExpandColumn = expandColumns.length && getExpandData
+      if (hasExpandColumn) {
+        dataList = []
+        list.map(item => {
+          const expandData = getExpandData({ row: item })
+          expandData.map(s => {
+            dataList.push({ ...item, _expandData: s })
+          })
+        })
+      }
       // 标题行
       const titles = columns.map(item => item.label)
+      if (hasExpandColumn) {
+        titles.push(...expandColumns.map(item => item.label || item.title))
+      }
       // 每列宽度
       const colWidthList = columns.map(item => {
-        return { wch: item.width || 20 }
+        return { wch: item.width ? Math.ceil(Number(item.width) / 8) : 20 }
       })
       const filename = `${this.params.options.exportTitle || this.params.title}.xlsx`
       const wb = XLSX.utils.book_new()
-      const allLength = list.length
+      const allLength = dataList.length
       const sheetMaxLen = 60000 // 每个sheet最多多少条
       let sheetIdx = 1
       let sheetDatas = []
@@ -311,10 +334,10 @@ export default {
           columns.map(column => {
             let colData = ''
             if (column.formatter) {
-              const data = column.formatter({ row: list[i - 1] })
+              const data = column.formatter({ row: dataList[i - 1] })
               colData = data === '-' ? '' : data
             } else {
-              colData = list[i - 1][column.key] || ''
+              colData = dataList[i - 1][column.key] || ''
             }
             row.push(colData)
           })
@@ -329,12 +352,24 @@ export default {
         columns.map(column => {
           let colData = ''
           if (column.formatter) {
-            colData = column.formatter({ row: list[i - 1] })
+            colData = column.formatter({ row: dataList[i - 1] })
           } else {
-            colData = list[i - 1][column.key] || ''
+            colData = dataList[i - 1][column.key] || ''
           }
           row.push(colData)
         })
+        // 折叠行
+        if (hasExpandColumn) {
+          expandColumns.map(column => {
+            let colData = ''
+            if (column.formatter) {
+              colData = column.formatter({ row: dataList[i - 1]._expandData })
+            } else {
+              colData = dataList[i - 1]._expandData[column.key || column.field] || ''
+            }
+            row.push(colData)
+          })
+        }
         sheetDatas.push(row)
       }
       XLSX.writeFile(wb, filename)
