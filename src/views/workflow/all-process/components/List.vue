@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -14,6 +15,7 @@ import { PROCESS_TYPES_OPTS } from '@/constants/workflow'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { statusMap } from '../../constants'
+import { internalResourceFilters } from '../../utils'
 
 export default {
   name: 'AllProcessList',
@@ -59,6 +61,7 @@ export default {
               }
             }),
           },
+          ...internalResourceFilters,
           resource_name: {
             label: this.$t('common_151'),
           },
@@ -72,6 +75,12 @@ export default {
   },
   computed: {
     ...mapGetters(['userInfo']),
+    exportDataOptions () {
+      return {
+        downloadType: 'local',
+        items: this.columns,
+      }
+    },
   },
   created () {
     this.initSidePageTab('all-process-detail')

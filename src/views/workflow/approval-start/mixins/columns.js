@@ -7,6 +7,7 @@ import {
   getProcessDefinitionNameTableColumn,
   getResourceNameTableColumn,
   getResourceProjectTableColumn,
+  internalResourceColumns,
 } from '../../utils/columns'
 import { statusMap } from '../../utils'
 
@@ -25,6 +26,7 @@ export default {
           )
         },
       }),
+      ...internalResourceColumns(),
       getProcessDefinitionNameTableColumn({ field: 'process_instance.process_definition_name' }),
       getResourceNameTableColumn(),
       getResourceProjectTableColumn({
@@ -45,6 +47,10 @@ export default {
         title: i18n.t('common_372'),
         minWidth: 80,
         showOverflow: 'title',
+        formatter: ({ row }) => {
+          const statusObj = statusMap(row.process_instance.process_definition_key)[row.process_instance.state]
+          return statusObj ? statusObj.text : ''
+        },
         slots: {
           default: ({ row }, h) => {
             const statusObj = statusMap(row.process_instance.process_definition_key)[row.process_instance.state]
