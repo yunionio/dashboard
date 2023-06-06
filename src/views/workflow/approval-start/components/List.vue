@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -11,6 +12,7 @@ import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import { internalResourceFilters } from '../../utils'
 
 export default {
   name: 'ApprovalStartList',
@@ -39,10 +41,19 @@ export default {
           resource_project: {
             label: this.$t('common_310'),
           },
+          ...internalResourceFilters,
         },
       }),
       groupActions: [],
     }
+  },
+  computed: {
+    exportDataOptions () {
+      return {
+        downloadType: 'local',
+        items: this.columns,
+      }
+    },
   },
   created () {
     this.initSidePageTab('approval-start-detail')

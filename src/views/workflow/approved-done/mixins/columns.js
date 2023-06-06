@@ -8,6 +8,7 @@ import {
   getProcessDefinitionNameTableColumn,
   getResourceNameTableColumn,
   getResourceProjectTableColumn,
+  internalResourceColumns,
 } from '../../utils/columns'
 const R = require('ramda')
 
@@ -26,6 +27,7 @@ export default {
           )
         },
       }),
+      ...internalResourceColumns(),
       getProcessDefinitionNameTableColumn({ field: 'process_instance.process_definition_name' }),
       getResourceNameTableColumn(),
       getResourceProjectTableColumn({
@@ -46,6 +48,19 @@ export default {
         title: i18n.t('common_372'),
         minWidth: 80,
         showOverflow: 'title',
+        formatter: ({ row }) => {
+          if (row.process_definition_key === WORKFLOW_TYPES.CUSTOMER_SERVICE) {
+            if (row.variables.satisfied) {
+              return this.$t('common.pass')
+            }
+            return this.$t('common.pending')
+          }
+          if (R.isNil(row.local_variables) || R.isEmpty(row.local_variables)) return '-'
+          if (row.local_variables.approved) {
+            return this.$t('common.pass')
+          }
+          return this.$t('common.reject')
+        },
         slots: {
           default: ({ row }, h) => {
             if (row.process_definition_key === WORKFLOW_TYPES.CUSTOMER_SERVICE) {

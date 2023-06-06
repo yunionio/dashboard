@@ -1,4 +1,4 @@
-import { WORKFLOW_TYPES } from '@/constants/workflow'
+import { WORKFLOW_TYPES, PROCESS_TYPES_OPTS } from '@/constants/workflow'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
 
@@ -91,4 +91,49 @@ export const diff = (compareValue, baseValue, unit = i18n.t('common_61')) => {
 
 export const CHANGE_TYPES = {
   'change-bandwidth': i18n.t('common.change_bandwidth'),
+}
+
+export const internalResourceFilters = {
+  source: {
+    label: i18n.t('wz_workflow_form.labels.source'),
+    dropdown: true,
+    filter: true,
+    items: [
+      { label: i18n.t('wz_workflow_form.data_from.new_order'), key: 'new_order' },
+      { label: i18n.t('wz_workflow_form.data_from.irs_order'), key: 'irs_order' },
+    ],
+    formatter: (val) => {
+      return `paramter.contains(${val})`
+    },
+  },
+  project_name: {
+    label: i18n.t('wz_workflow_form.labels.country'),
+    filter: true,
+    formatter: (val) => {
+      return `project_name.contains(${val})`
+    },
+  },
+  process_definition_key: {
+    label: i18n.t('common_375'),
+    dropdown: true,
+    filter: true,
+    items: [
+      ...PROCESS_TYPES_OPTS.filter(v => v.value !== 'apply-internal-resource').map((v) => {
+        return {
+          label: v.name,
+          key: v.value,
+        }
+      }),
+      { label: i18n.t('system_process_type.1'), key: '云资源申请' },
+      { label: i18n.t('system_process_type.11'), key: '云资源变更（升降配）' },
+      { label: i18n.t('system_process_type.21'), key: '云资源释放' },
+    ],
+    formatter: (val) => {
+      console.log(PROCESS_TYPES_OPTS, val)
+      if (PROCESS_TYPES_OPTS.some(item => item.value === val)) {
+        return `process_definition_key.equals(${val})`
+      }
+      return `paramter.contains(${val})`
+    },
+  },
 }
