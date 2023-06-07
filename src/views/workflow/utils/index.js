@@ -103,7 +103,7 @@ export const internalResourceFilters = {
       { label: i18n.t('wz_workflow_form.data_from.irs_order'), key: 'irs_order' },
     ],
     formatter: (val) => {
-      return `paramter.contains(${val})`
+      return `paramter.contains("id":"${val}")`
     },
   },
   project_name: {
@@ -133,7 +133,7 @@ export const internalResourceFilters = {
       if (PROCESS_TYPES_OPTS.some(item => item.value === val)) {
         return `process_definition_key.equals(${val})`
       }
-      return `paramter.contains(${val})`
+      return `paramter.contains("name":"${val}")`
     },
   },
 }
