@@ -75,6 +75,7 @@ export default {
             limit: 0,
             vpc,
             status: 'enabled',
+            scope: this.$store.getters.scope,
           },
         })
         this.loadbalancerList = data.data || []
