@@ -2,7 +2,10 @@
   <div class="h-100 position-relative">
     <div class="dashboard-card-wrap">
       <div class="dashboard-card-header">
-        <div class="dashboard-card-header-left">{{ form.fd.name || $t('dashboard.text_6') }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-left">
+          {{ form.fd.name || $t('dashboard.text_6') }}<a-icon class="ml-2" type="loading" v-if="loading" />
+          <span v-if="isResDeny" class="ml-2"><a-icon class="warning-color mr-1" type="warning" />{{ $t('common.permission.403') }}</span>
+        </div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
         </div>
@@ -15,19 +18,19 @@
         <div class="flex-fill ml-4">
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle">
             <div class="label-unit">{{ useLabel }}</div>
-            <div class="flex-number mr-1 ml-1 text-right">{{usage.usage}}</div>
+            <div class="flex-number mr-1 ml-1 text-right">{{isResDeny ? '-' : usage.usage}}</div>
             <div class="label-unit">{{usage.unit}}</div>
           </div>
 
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle">
             <div class="label-unit">{{ unUseLabel }}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.un_usage_tips')"><icon type="help" /></a-tooltip></div>
-            <div class="flex-number mr-1 ml-1 text-right">{{displayUnUsage.usage}}</div>
+            <div class="flex-number mr-1 ml-1 text-right">{{isResDeny ? '-' : displayUnUsage.usage}}</div>
             <div class="label-unit">{{displayUnUsage.unit}}</div>
           </div>
 
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle" v-if="showReserved">
             <div class="flex-shrink-0 flex-grow-0 label-unit">{{$t('dashboard.text_182')}}</div>
-            <div class="flex-number mr-1 ml-1 text-right">{{reserved.usage}}</div>
+            <div class="flex-number mr-1 ml-1 text-right">{{isResDeny ? '-' : reserved.usage}}</div>
             <div class="label-unit">{{reserved.unit}}</div>
           </div>
 
@@ -35,13 +38,13 @@
             <div class="flex-shrink-0 flex-grow-0 label-unit">
               {{$t('dashboard.text_183')}}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.gpu_reserved_tips')"><icon type="help" /></a-tooltip>
             </div>
-            <div class="flex-number mr-1 ml-1 text-right">{{gpuReserved.usage}}</div>
+            <div class="flex-number mr-1 ml-1 text-right">{{isResDeny ? '-' : gpuReserved.usage}}</div>
             <div  class="label-unit">{{gpuReserved.unit}}</div>
           </div>
 
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle">
             <div class="label-unit">{{ $t('dashboard.text_181') }}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.all_usage_tips')"><icon type="help" /></a-tooltip></div>
-            <div class="flex-number mr-1 ml-1 text-right">{{allUsage.usage}}</div>
+            <div class="flex-number mr-1 ml-1 text-right">{{isResDeny ? '-' : allUsage.usage}}</div>
             <div class="label-unit">{{allUsage.unit}}</div>
           </div>
         </div>
@@ -81,11 +84,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import QuotaConfig from '@Dashboard/sections/QuotaConfig'
 import { USAGE_CONFIG } from '@Dashboard/constants'
 import { load } from '@Dashboard/utils/cache'
 import { getRequestT, sizestrWithUnit } from '@/utils/utils'
+import { hasPermission } from '@/utils/auth'
 import { numerify } from '@/filters'
 import mixin from './mixin'
 
@@ -220,6 +225,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['permission']),
     isRing () {
       return this.form.fd.chart_type === 'ring'
     },
@@ -298,6 +304,7 @@ export default {
       }
     },
     decimalPercent () {
+      if (this.isResDeny) return '0'
       if (this.usageNumber === 0 || this.allUsageNumber === 0) return '0'
       const percent = this.usageNumber / this.allUsageNumber
       if (percent > 0 && percent < 0.01) {
@@ -306,6 +313,7 @@ export default {
       return numerify(this.usageNumber / this.allUsageNumber, '0.00')
     },
     percent () {
+      if (this.isResDeny) return '0'
       const data = parseFloat(this.decimalPercent)
       if (data > 0 && data < 0.01) {
         return 0.4
@@ -396,6 +404,20 @@ export default {
       }
       return this.$t('dashboard.text_34')
     },
+    isResDeny () {
+      const usage_key = this.params.all_usage_key
+
+      if (usage_key.endsWith('servers')) {
+        return !hasPermission({ key: 'servers_list', permissionData: this.permission })
+      } else if (usage_key.endsWith('disks.count')) {
+        return !hasPermission({ key: 'disks_list', permissionData: this.permission })
+      } else if (usage_key.endsWith('ports')) {
+        return !hasPermission({ key: 'networks_list', permissionData: this.permission })
+      } else if (usage_key.endsWith('eip.floating_ip')) {
+        return !hasPermission({ key: 'eips_list', permissionData: this.permission })
+      }
+      return false
+    },
   },
   watch: {
     'form.fd' (val) {
@@ -450,6 +472,7 @@ export default {
       return params
     },
     async fetchUsage () {
+      if (this.isResDeny) return
       this.loading = true
       try {
         const params = this.genUsageParams()
