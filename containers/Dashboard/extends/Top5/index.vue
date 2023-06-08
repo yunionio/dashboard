@@ -2,7 +2,10 @@
   <div class="h-100 position-relative">
     <div class="dashboard-card-wrap">
       <div class="dashboard-card-header">
-        <div class="dashboard-card-header-left">{{ form.fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-left">
+          {{ form.fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" />
+          <span v-if="isResDeny" class="ml-2"><a-icon class="warning-color mr-1" type="warning" />{{ $t('common.permission.403') }}</span>
+        </div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
           <a class="ml-2" v-if="!edit" @click="goPage">
@@ -100,6 +103,7 @@ import { load } from '@Dashboard/utils/cache'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 import { getRequestT } from '@/utils/utils'
+import { hasPermission } from '@/utils/auth'
 import { getSignature } from '@/utils/crypto'
 import { getMetricDocs } from '@Dashboard/constants'
 import { usageConfig } from './constants'
@@ -275,7 +279,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scope', 'capability', 'isAdminMode', 'isDomainMode', 'isProjectMode', 'userInfo']),
+    ...mapGetters(['scope', 'capability', 'isAdminMode', 'isDomainMode', 'isProjectMode', 'userInfo', 'permission']),
     brandEnvs () {
       const brand = this.form.fd.brand
       return brand.map(key => findPlatform(key))
@@ -340,6 +344,13 @@ export default {
     dimension () {
       return this.dimentions.filter((d) => { return d.id === this.form.fd.dimensionId })[0]
     },
+    isResDeny () {
+      const usage = this.params.usage
+      if (usage.endsWith('vm_cpu') || usage.endsWith('vm_mem') || usage.endsWith('vm_disk')) {
+        return !hasPermission({ key: 'servers_list', permissionData: this.permission })
+      }
+      return false
+    },
   },
   watch: {
     'form.fd' (val) {
@@ -372,6 +383,7 @@ export default {
     },
     async fetchData () {
       // if (!this.form.fd.brand) return
+      if (this.isResDeny) return
       this.loading = true
       try {
         const requestData = this.genQueryData()
