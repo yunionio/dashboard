@@ -1,4 +1,7 @@
 .detail {
+  &-all {
+    min-height: 100%;
+  }
   &-left {
     float: left;
     width: 360px;
