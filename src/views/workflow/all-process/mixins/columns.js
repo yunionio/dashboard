@@ -36,12 +36,12 @@ export default {
         minWidth: 80,
         onManager: this.onManager,
         formatter: ({ row }) => {
-          return row.variables.initiator_name || ''
+          return row.variables.initiator_displayname || row.variables.initiator_name || ''
         },
         slots: {
           default: ({ row }, h) => {
-            const name = row.variables.initiator_name
-            return [<list-body-cell-wrap copy row={ row.variables } field='initiator_name' title={ name } />]
+            const name = row.variables.initiator_displayname || row.variables.initiator_name
+            return [<list-body-cell-wrap copy row={ { name } } field='name' title={ name } />]
           },
         },
       },
@@ -120,12 +120,12 @@ export default {
           if (Array.isArray(row.tasks)) {
             row.tasks.forEach((item) => {
               if (!item.delete_reason) {
-                assignees.push(item.assignee_name)
+                assignees.push(item.assignee_displayname || item.assignee_name)
               }
             })
           } else {
             if (row.tasks && !row.delete_reason) {
-              assignees.push(row.tasks.assignee_name)
+              assignees.push(row.tasks.assignee_displayname || row.tasks.assignee_name)
             }
           }
           return assignees.length > 0 ? assignees.join(',') : '-'

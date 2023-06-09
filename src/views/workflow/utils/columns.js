@@ -441,12 +441,12 @@ export const getAssigneeTableColumn = ({ field = 'assignee', title = i18n.t('com
       if (Array.isArray(row.tasks)) {
         row.tasks.forEach((item) => {
           if (!item.delete_reason) {
-            assignees.push(item.assignee_name)
+            assignees.push(item.assignee_displayname || item.assignee_name)
           }
         })
       } else {
         if (row.tasks && !row.delete_reason) {
-          assignees.push(row.tasks.assignee_name)
+          assignees.push(row.tasks.assignee_displayname || row.tasks.assignee_name)
         }
       }
       return assignees.length > 0 ? assignees.join(',') : '-'

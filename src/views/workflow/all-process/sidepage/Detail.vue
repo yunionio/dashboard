@@ -7,7 +7,8 @@
       :hiddenKeys="['created_at', 'updated_at', 'description']"
       :show-desc="false"
       :base-info="baseInfo"
-      :extra-info="extraInfo" />
+      :extra-info="extraInfo"
+      :hidden-base-info="proccessDefinitionKey === 'apply-internal-resource'" />
     <loading-block
       v-else
       :layout="loadingLayout" />
@@ -61,7 +62,7 @@ export default {
           field: 'initiator_name',
           title: this.$t('common_371'),
           formatter: ({ cellValue, row }) => {
-            return row.variables.initiator_name || row.process_instance.start_user_name
+            return row.variables.initiator_displayname || row.process_instance.start_user_name || row.variables.initiator_name || row.process_instance.start_user_name
           },
         },
         {
