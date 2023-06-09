@@ -1,45 +1,53 @@
 <template>
   <div style="position: relative;">
     <!-- 1 -->
-    <div class="mt-2">基础信息</div>
-    <template v-for="(item, index) in unitInfoList">
-      <div :key="'unit_info_' + item.key + index" class="detail-item mt-2">
-        <div class="detail-item-title">{{item.title}}</div>
-        <div class="detail-item-value">{{item.value}}</div>
-      </div>
-    </template>
+    <div class="section-title mt-4">{{$t('wz_workflow_form.unit_info')}}</div>
+    <div class="d-flex flex-wrap">
+      <template v-for="(item, index) in unitInfoList">
+        <div :key="'unit_info_' + item.key + index" class="detail-item mt-2" style="width:33%">
+          <div class="detail-item-title">{{item.title}}</div>
+          <div class="detail-item-value">{{item.value}}</div>
+        </div>
+      </template>
+    </div>
     <!-- 2 -->
-    <template v-for="(item, index) in projectInfoList">
-      <div :key="'project_info_' + item.key + index" class="detail-item mt-2">
-        <div class="detail-item-title">{{item.title}}</div>
-        <div class="detail-item-value">{{item.value}}</div>
-      </div>
-    </template>
+    <div class="section-title mt-4">{{$t('wz_workflow_form.project_info')}}</div>
+    <div class="d-flex flex-wrap">
+      <template v-for="(item, index) in projectInfoList">
+        <div :key="'project_info_' + item.key + index" class="detail-item mt-2" style="width:33%">
+          <div class="detail-item-title">{{item.title}}</div>
+          <div class="detail-item-value">{{item.value}}</div>
+        </div>
+      </template>
+    </div>
     <!-- 3 -->
-    <template v-for="(item, index) in contractorInfoList">
-      <div :key="'contractor_info_' + item.key + index" class="detail-item mt-2">
-        <div class="detail-item-title">{{item.title}}</div>
-        <div class="detail-item-value">{{item.value}}</div>
-      </div>
-    </template>
+    <div class="section-title mt-4">{{$t('wz_workflow_form.contractor_info')}}</div>
+    <div class="d-flex flex-wrap">
+      <template v-for="(item, index) in contractorInfoList">
+        <div :key="'contractor_info_' + item.key + index" class="detail-item mt-2" style="width:33%">
+          <div class="detail-item-title">{{item.title}}</div>
+          <div class="detail-item-value">{{item.value}}</div>
+        </div>
+      </template>
+    </div>
     <!-- 申请单 -->
     <template v-if="processType === '1'">
       <!-- 4 -->
-      <div class="mt-4 mb-2">{{$t('wz_workflow_form.titles.ecs')}}</div>
+      <div class="section-title mt-4 mb-2">{{$t('wz_workflow_form.titles.ecs')}}</div>
       <vxe-grid
         ref="ecsTable"
         size="mini"
         border
         :columns="COLUMNS_MAP.ecs"
         :data="[...listData.ecs, ...listData.eip]" />
-      <div class="mt-4 mb-2">{{$t('wz_workflow_form.titles.rds')}}</div>
+      <div class="section-title mt-4 mb-2">{{$t('wz_workflow_form.titles.rds')}}</div>
       <vxe-grid
         ref="rdsTable"
         size="mini"
         border
         :columns="COLUMNS_MAP.rds"
         :data="listData.rds" />
-      <div class="mt-4 mb-2">{{$t('wz_workflow_form.titles.server')}}</div>
+      <div class="section-title mt-4 mb-2">{{$t('wz_workflow_form.titles.server')}}</div>
       <vxe-grid
         ref="serverTable"
         size="mini"
@@ -47,14 +55,14 @@
         :columns="COLUMNS_MAP.server"
         :data="listData.server" />
       <!-- 5 -->
-      <div class="mt-4 mb-2">{{$t('wz_workflow_form.titles.basic_security_services')}}</div>
+      <div class="section-title mt-4 mb-2">{{$t('wz_workflow_form.titles.basic_security_services')}}</div>
       <vxe-grid
         ref="bssTable"
         size="mini"
         border
         :columns="COLUMNS_MAP.basicSecurityServices"
         :data="listData.basicSecurityServices" />
-      <div class="mt-4 mb-2">{{$t('wz_workflow_form.titles.cloud_security_table')}}</div>
+      <div class="section-title mt-4 mb-2">{{$t('wz_workflow_form.titles.cloud_security_table')}}</div>
       <vxe-grid
         ref="cstTable"
         size="mini"
@@ -62,7 +70,7 @@
         :columns="COLUMNS_MAP.cloudSecurityTable"
         :data="listData.cloudSecurityTable" />
       <template v-if="listData.openResources.length">
-        <div class="mt-4 mb-2">
+        <div class="section-title mt-4 mb-2">
           {{$t('wz_workflow_form.open_resource_list')}}
           <a-button v-if="resourceSelected.length" type="link" @click="handleSendEmailClick">{{$t('scope.notify_user')}}</a-button>
           <a-popover v-else placement="top">
@@ -82,7 +90,7 @@
     </template>
     <!-- 升降配 -->
     <template v-else-if="processType === '11'">
-      <div class="mt-4 mb-2">{{$t('wz_workflow_form.change_resource_list')}}</div>
+      <div class="section-title mt-4 mb-2">{{$t('wz_workflow_form.change_resource_list')}}</div>
       <vxe-grid
         ref="chTable"
         size="mini"
@@ -92,7 +100,7 @@
     </template>
     <!-- 释放 -->
     <template v-else-if="processType === '21'">
-      <div class="mt-4 mb-2">{{$t('wz_workflow_form.delete_resource_list')}}</div>
+      <div class="section-title mt-4 mb-2">{{$t('wz_workflow_form.delete_resource_list')}}</div>
       <vxe-grid
         ref="delTable"
         size="mini"
@@ -141,7 +149,7 @@ export default {
       const ret = []
       if (R.isEmpty(this.INIT_UNIT_INFO)) return []
       const keys = Object.keys(this.INIT_UNIT_INFO)
-      const { unitInfo, process_id, process_type } = this.resourceData
+      const { unitInfo, process_id, process_type = {} } = this.resourceData
       ret.push({
         field: 'process_type',
         title: this.WORKFLOW_ITEM_MAP.process_type.label,
@@ -270,6 +278,10 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.section-title {
+  font-size: 14px;
+  font-weight: bold;
+}
 .tag-list {
   min-height: 65px;
   border: 1px solid #ddd;

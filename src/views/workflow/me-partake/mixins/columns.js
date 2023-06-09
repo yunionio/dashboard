@@ -39,7 +39,7 @@ export default {
         minWidth: 80,
         showOverflow: 'title',
         formatter: ({ cellVal, row }) => {
-          return row.process_instance.start_user_name
+          return row.process_instance.start_user_displayname || row.process_instance.start_user_name
         },
       },
       {
@@ -73,12 +73,12 @@ export default {
           if (Array.isArray(pit)) {
             pit.forEach((item) => {
               if (item.delete_reason === 'completed') {
-                assignees.push(item.assignee_name)
+                assignees.push(item.assignee_displayname || item.assignee_name)
               }
             })
           } else {
             if (pit && pit.delete_reason === 'completed') {
-              assignees.push(pit.assignee_name)
+              assignees.push(pit.assignee_displayname || pit.assignee_name)
             }
           }
           return assignees.join(',')
