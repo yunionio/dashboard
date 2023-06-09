@@ -5,8 +5,6 @@ import {
 import i18n from '@/locales'
 import {
   getProcessDefinitionNameTableColumn,
-  getResourceNameTableColumn,
-  getResourceProjectTableColumn,
   internalResourceColumns,
   getStateTableColumn,
   getAuditStatusTableColumn,
@@ -29,13 +27,8 @@ export default {
           )
         },
       }),
-      ...internalResourceColumns(),
       getProcessDefinitionNameTableColumn(),
-      getResourceNameTableColumn(),
-      getResourceProjectTableColumn({
-        field: 'variables.resource_project_name',
-        title: this.$t('dictionary.project'),
-      }),
+      ...internalResourceColumns(),
       getStateTableColumn(),
       getAuditStatusTableColumn(),
       getStatusTableColumn(),

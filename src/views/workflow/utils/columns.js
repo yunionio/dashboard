@@ -218,6 +218,12 @@ export const internalResourceColumns = () => {
     ret.push(getResourceSourceTableColumn())
     ret.push(getAreaTableColumn())
     ret.push(getOpenResourceTableColumns())
+  } else {
+    ret.push(getResourceNameTableColumn())
+    ret.push(getResourceProjectTableColumn({
+      field: 'variables.resource_project_name',
+      title: i18n.t('dictionary.project'),
+    }))
   }
   return ret
 }

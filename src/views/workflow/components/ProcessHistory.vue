@@ -42,6 +42,9 @@ export default {
         title: this.$t('common_392'),
         minWidth: 40,
         showOverflow: 'title',
+        formatter: ({ row }) => {
+          return row.task_assignee_displayname || row.task_assignee_name
+        },
       },
       {
         field: 'task_approved',
