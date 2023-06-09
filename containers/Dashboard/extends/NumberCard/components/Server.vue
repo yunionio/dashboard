@@ -5,18 +5,19 @@
         <div class="dashboard-card-header-left" @click.alt="showDebuggerInfo = !showDebuggerInfo">{{ form.fd.name || $t('dashboard.text_6') }}
           <a-icon class="ml-2" type="loading" v-if="loading" />
           <a-tooltip v-if="isServersAnypool"><template slot="title">{{ $t('dashboard.server_tips') }}</template><icon type="help" /></a-tooltip>
+          <span v-if="isResDeny" class="ml-2"><a-icon class="warning-color mr-1" type="warning" />{{ $t('common.permission.403') }}</span>
         </div>
         <div class="dashboard-card-header-right">
           <span v-if="showDebuggerInfo">{{ `${$t('dashboard.text_20')}: ${form.fd.usage_key}` }}</span>
           <slot name="actions" :handle-edit="handleEdit" />
-          <a class="ml-2" :style="{ color: isResDeny ? '#ccc' : '' }" v-if="!edit && canShowEdit" @click="goPage">
+          <a class="ml-2" v-if="!edit && canShowEdit" @click="goPage">
             <icon type="arrow-right" style="font-size:18px" />
           </a>
         </div>
       </div>
       <div class="dashboard-card-body d-flex align-items-center justify-content-center">
         <div class="d-flex">
-          <div class="number-card-number mr-1">{{ this.usage.usage }}</div>
+          <div class="number-card-number mr-1">{{ isResDeny ? '-' : this.usage.usage }}</div>
           <div class="number-card-unit">{{ this.usage.unit }}</div>
         </div>
       </div>
@@ -217,10 +218,24 @@ export default {
     },
     isResDeny () {
       const usage_key = this.params.usage_key
-      if (usage_key.endsWith('servers')) {
+      if (usage_key.endsWith('servers') || usage_key.endsWith('cpu') || usage_key.endsWith('memory') || usage_key.endsWith('disk') || usage_key.endsWith('isolated_devices')) {
         return !hasPermission({ key: 'servers_list', permissionData: this.permission })
       } else if (usage_key.endsWith('hosts') || usage_key.endsWith('baremetals')) {
         return !hasPermission({ key: 'hosts_list', permissionData: this.permission })
+      } else if (usage_key.endsWith('buckets')) {
+        return !hasPermission({ key: 'buckets_list', permissionData: this.permission })
+      } else if (usage_key.endsWith('cache')) {
+        return !hasPermission({ key: 'redis_elasticcaches_list', permissionData: this.permission })
+      } else if (usage_key.endsWith('rds')) {
+        return !hasPermission({ key: 'rds_dbinstances_list', permissionData: this.permission })
+      } else if (usage_key.endsWith('loadbalancer')) {
+        return !hasPermission({ key: 'lb_loadbalancers_list', permissionData: this.permission })
+      } else if (usage_key.endsWith('eip.floating_ip')) {
+        return !hasPermission({ key: 'eips_list', permissionData: this.permission })
+      } else if (usage_key.endsWith('snapshot')) {
+        return !hasPermission({ key: 'snapshots_list', permissionData: this.permission })
+      } else if (usage_key.endsWith('disks.count')) {
+        return !hasPermission({ key: 'disks_list', permissionData: this.permission })
       }
       return false
     },
@@ -281,6 +296,7 @@ export default {
       return params
     },
     async fetchUsage () {
+      if (this.isResDeny) return
       this.loading = true
       try {
         const params = this.genUsageParams()
