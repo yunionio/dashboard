@@ -344,6 +344,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    hiddenBaseInfo: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     commonBaseInfo () {
@@ -490,6 +494,9 @@ export default {
       ])
     },
     renderBase (h) {
+      if (this.hiddenBaseInfo) {
+        return
+      }
       return h('div', {
         class: 'detail-left',
       }, [
@@ -498,7 +505,7 @@ export default {
     },
     renderExtra (h) {
       return h('div', {
-        class: 'detail-right',
+        class: this.hiddenBaseInfo ? 'detail-all' : 'detail-right',
       }, this.extraInfo.map(item => {
         return this.renderContent(h, 'info2', item.title, item.items, item)
       }))
