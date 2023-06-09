@@ -7,8 +7,6 @@ import i18n from '@/locales'
 import { auditStatusMap } from '../../utils'
 import {
   getProcessDefinitionNameTableColumn,
-  getResourceNameTableColumn,
-  getResourceProjectTableColumn,
   getStateTableColumn,
   internalResourceColumns,
 } from '../../utils/columns'
@@ -46,11 +44,6 @@ export default {
         },
       },
       getProcessDefinitionNameTableColumn(),
-      getResourceNameTableColumn(),
-      getResourceProjectTableColumn({
-        field: 'variables.resource_project_name',
-        title: this.$t('dictionary.project'),
-      }),
       getStateTableColumn(),
       {
         field: 'audit_status',

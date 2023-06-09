@@ -5,8 +5,6 @@ import {
 import i18n from '@/locales'
 import {
   getProcessDefinitionNameTableColumn,
-  getResourceNameTableColumn,
-  getResourceProjectTableColumn,
   internalResourceColumns,
 } from '../../utils/columns'
 import { statusMap } from '../../utils'
@@ -26,13 +24,8 @@ export default {
           )
         },
       }),
-      ...internalResourceColumns(),
       getProcessDefinitionNameTableColumn({ field: 'process_instance.process_definition_name' }),
-      getResourceNameTableColumn(),
-      getResourceProjectTableColumn({
-        field: 'variables.resource_project_name',
-        title: this.$t('dictionary.project'),
-      }),
+      ...internalResourceColumns(),
       {
         field: 'initiator',
         title: i18n.t('common_371'),
