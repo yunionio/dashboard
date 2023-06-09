@@ -2,7 +2,10 @@
   <div class="h-100 position-relative">
     <div class="dashboard-card-wrap">
       <div class="dashboard-card-header">
-        <div class="dashboard-card-header-left">{{ form.fd.name || $t('dashboard.text_6') }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-left">
+          {{ form.fd.name || $t('dashboard.text_6') }}<a-icon class="ml-2" type="loading" v-if="loading" />
+          <span v-if="isResDeny" class="ml-2"><a-icon class="warning-color mr-1" type="warning" />{{ $t('common.permission.403') }}</span>
+        </div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
           <router-link v-if="!edit" to="/log" class="ml-2">
@@ -50,6 +53,7 @@ import { mapGetters } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { load } from '@Dashboard/utils/cache'
 import { getRequestT } from '@/utils/utils'
+import { hasPermission } from '@/utils/auth'
 
 export default {
   name: 'Log',
@@ -109,7 +113,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scope']),
+    ...mapGetters(['scope', 'permission']),
+    isResDeny () {
+      return !hasPermission({ key: 'logs_list', permissionData: this.permission })
+    },
   },
   watch: {
     'form.fd' (val) {
@@ -138,6 +145,7 @@ export default {
       return this.fetchLogs()
     },
     async fetchLogs () {
+      if (this.isResDeny) return
       this.loading = true
       try {
         const data = await load({
