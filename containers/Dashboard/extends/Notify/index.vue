@@ -106,7 +106,7 @@ export default {
     },
     isResDeny () {
       return !hasPermission({ key: 'notices_list', permissionData: this.permission })
-    }
+    },
   },
   watch: {
     'form.fd' (val) {
