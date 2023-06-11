@@ -188,7 +188,7 @@ export default {
       if (this.proccessDefinitionKey !== WORKFLOW_TYPES.CUSTOMER_SERVICE) {
         processInstanceInfo.log.unshift({
           activity_name: this.$t('common_377'),
-          task_assignee_name: processInstanceInfo.variables && processInstanceInfo.variables.initiator_name,
+          task_assignee_name: processInstanceInfo.variables && (processInstanceInfo.variables.initiator_displayname || processInstanceInfo.variables.initiator_name),
           end_time: processInstanceInfo.start_time,
           task: {
             local_variables: {
@@ -205,7 +205,7 @@ export default {
           processList.push({
             title: item.activity_name,
             assignees: item.activity_instance.map((v) => {
-              return v.task_assignee_name
+              return v.task_assignee_displayname || v.task_assignee_name
             }),
           })
           // 调整转单节点顺序
@@ -216,7 +216,7 @@ export default {
             processList.push({
               title: targets[0].activity_name,
               assignees: targets[0].activity_instance.map((v) => {
-                return v.task_assignee_name
+                return v.task_assignee_displayname || v.task_assignee_name
               }),
             })
           }
@@ -247,7 +247,7 @@ export default {
     initProcessList () {
       this.processList.unshift({
         title: this.$t('common_377'),
-        assignees: this.processInstanceInfo.variables && this.processInstanceInfo.variables.initiator_name,
+        assignees: this.processInstanceInfo.variables && (this.processInstanceInfo.variables.initiator_displayname || this.processInstanceInfo.variables.initiator_name),
       })
       const processList = {
         title: this.$t('common_381'),
