@@ -41,7 +41,8 @@
               :require-data-disk-types="requireDataDiskTypes"
               :instance-type="instanceType"
               :hypervisor="hypervisor"
-              :canSkuShow="diskLoaded" />
+              :canSkuShow="diskLoaded"
+              :hasMeterService="hasMeterService" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_49')" v-show="selectedItems.length === 1 && form.fd.defaultType">
             <system-disk
