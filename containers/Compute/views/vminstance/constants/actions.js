@@ -148,6 +148,7 @@ const getSingleActions = function () {
                   this.createDialog('SshAuthDialog', {
                     manager: this.webconsoleManager,
                     params,
+                    data: { name: obj.name, ip: addr.ipAddr },
                     success: (data) => {
                       this.openWebConsole(obj, data, 'ws')
                     },
