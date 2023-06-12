@@ -1,3 +1,4 @@
+import qs from 'qs'
 import { SERVER_TYPE } from '@Compute/constants'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
@@ -7,8 +8,8 @@ import { PROVIDER_MAP } from '@/constants'
 import { hasSetupKey } from '@/utils/auth'
 import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import VncInfoFetcher from '@Compute/sections/VncInfoFetcher'
-import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip } from '../utils'
 import { POLICY_RES_NAME_KEY_MAP } from '@/constants/policy'
+import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip } from '../utils'
 
 const getSingleActions = function () {
   return [
@@ -129,19 +130,32 @@ const getSingleActions = function () {
               return Promise.reject(Error(`unexpected ${ipInfo}`))
             }
 
-            const openWebconsole = (port, id) => {
-              fetchWebconsoleAddr(port).then(addr => {
-                return this.webconsoleManager.performAction({
-                  id: 'ssh',
-                  action: addr.ipAddr,
-                  data: {
-                    id,
-                    port: addr.port,
-                    type: 'server',
-                  },
-                })
-              }).then(({ data }) => {
-                this.openWebConsole(obj, data)
+            const openWebconsole = async (port, id) => {
+              const addr = await fetchWebconsoleAddr(port)
+              const params = {
+                id: 'ssh',
+                action: addr.ipAddr,
+                data: {
+                  id,
+                  port: addr.port,
+                  type: 'server',
+                },
+              }
+              this.webconsoleManager.performAction(params).then(({ data }) => {
+                const connectParams = qs.parse(data.connect_params)
+                // 验证账号密码
+                if (connectParams.is_need_login === 'true') {
+                  this.createDialog('SshAuthDialog', {
+                    manager: this.webconsoleManager,
+                    params,
+                    success: (data) => {
+                      this.openWebConsole(obj, data, 'ws')
+                    },
+                  })
+                  return
+                }
+                // 无需验证账号密码
+                this.openWebConsole(obj, data, 'ws')
               })
             }
 
