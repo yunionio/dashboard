@@ -41,7 +41,7 @@
 <script>
 import * as R from 'ramda'
 import XLSX from 'xlsx'
-import { download, getRequestT } from '@/utils/utils'
+import { download, getRequestT, isCE } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { getTagTitle } from '@/utils/common/tag'
@@ -118,7 +118,7 @@ export default {
       return this.params.resource.resource.substr(0, this.params.resource.resource.length - 1)
     },
     downloadType () {
-      return this.params.options.downloadType === 'local' ? 'local' : 'remote'
+      return this.params.options.downloadType === 'local' && !isCE() ? 'local' : 'remote'
     },
   },
   methods: {
