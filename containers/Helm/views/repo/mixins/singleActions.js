@@ -4,59 +4,89 @@ import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
-      getSetPublicAction(this, {
-        name: i18n.t('helm.text_6'),
-        scope: 'domain',
-        resource: 'repos',
-        apiVersion: 'v1',
-      }, {
-        permission: 'k8s_repos_perform_public',
-      }),
-      getDomainChangeOwnerAction(this, {
-        name: this.$t('dictionary.host'),
-        resource: 'repos',
-        apiVersion: 'v1',
-      }, {
-        permission: 'k8s_repos_perform_change_owner',
-        meta: obj => {
-          const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
-          return {
-            validate: ownerDomain,
-          }
-        },
-      }),
       {
-        label: i18n.t('helm.text_69'),
-        permission: 'k8s_repos_delete',
+        label: this.$t('scope.text_528'),
         action: (obj) => {
-          const requestParams = {
-            cluster: obj.clusterID,
-          }
-          if (obj.namespace) {
-            requestParams.namespace = obj.namespace
-          }
-          this.createDialog('DeleteResDialog', {
-            vm: this,
-            data: [obj],
-            columns: this.columns,
-            title: i18n.t('helm.text_69'),
-            name: i18n.t('helm.text_6'),
+          this.onManager('performAction', {
+            id: obj.id,
+            managerArgs: {
+              action: 'sync',
+            },
+          })
+          this.$message.success(this.$t('scope.text_529'))
+        },
+      },
+      {
+        label: this.$t('common.edit'),
+        action: (obj) => {
+          this.createDialog('ChartCreateDialog', {
             onManager: this.onManager,
-            idKey: 'name',
-            requestParams,
+            data: [obj],
+            formType: 'update',
+            refresh: this.refresh,
           })
         },
-        meta: (obj) => {
-          let validate = true
-          let tooltip = ''
-          if (+obj.release_count > 0) {
-            validate = false
-            tooltip = i18n.t('helm.text_97')
-          }
-          return {
-            validate,
-            tooltip,
-          }
+      },
+      {
+        label: i18n.t('common.more'),
+        actions: (obj) => {
+          return [
+            getSetPublicAction(this, {
+              name: i18n.t('helm.text_6'),
+              scope: 'domain',
+              resource: 'repos',
+              apiVersion: 'v1',
+            }, {
+              permission: 'k8s_repos_perform_public',
+            }),
+            getDomainChangeOwnerAction(this, {
+              name: this.$t('dictionary.host'),
+              resource: 'repos',
+              apiVersion: 'v1',
+            }, {
+              permission: 'k8s_repos_perform_change_owner',
+              meta: obj => {
+                const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
+                return {
+                  validate: ownerDomain,
+                }
+              },
+            }),
+            {
+              label: i18n.t('helm.text_69'),
+              permission: 'k8s_repos_delete',
+              action: (obj) => {
+                const requestParams = {
+                  cluster: obj.clusterID,
+                }
+                if (obj.namespace) {
+                  requestParams.namespace = obj.namespace
+                }
+                this.createDialog('DeleteResDialog', {
+                  vm: this,
+                  data: [obj],
+                  columns: this.columns,
+                  title: i18n.t('helm.text_69'),
+                  name: i18n.t('helm.text_6'),
+                  onManager: this.onManager,
+                  idKey: 'name',
+                  requestParams,
+                })
+              },
+              meta: (obj) => {
+                let validate = true
+                let tooltip = ''
+                if (+obj.release_count > 0) {
+                  validate = false
+                  tooltip = i18n.t('helm.text_97')
+                }
+                return {
+                  validate,
+                  tooltip,
+                }
+              },
+            },
+          ]
         },
       },
     ]
