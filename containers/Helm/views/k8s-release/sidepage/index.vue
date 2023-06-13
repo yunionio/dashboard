@@ -78,6 +78,7 @@ export default {
           detailTabs.push(item)
         }
       })
+      detailTabs.push({ label: this.$t('dictionary.actions'), key: 'event-drawer' })
       return detailTabs
     },
     responseData () {
