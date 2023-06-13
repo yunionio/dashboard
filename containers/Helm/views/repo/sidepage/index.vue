@@ -37,6 +37,7 @@ export default {
     return {
       detailTabs: [
         { label: this.$t('helm.text_78'), key: 'detail' },
+        { label: this.$t('dictionary.actions'), key: 'event-drawer' },
       ],
     }
   },
