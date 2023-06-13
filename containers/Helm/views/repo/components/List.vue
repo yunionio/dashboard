@@ -93,7 +93,7 @@ export default {
         id: row.name,
         resource: 'repos',
         getParams: this.getParams,
-        idKey: 'name',
+        // idKey: 'name',
         apiVersion: 'v1',
       }, {
         list: this.list,
