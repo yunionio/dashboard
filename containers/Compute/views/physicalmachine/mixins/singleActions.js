@@ -47,7 +47,7 @@ export default {
                 return
               }
               // 无需验证账号密码
-              this.openWebConsole(obj, data, 'ws')
+              this.openWebConsole(obj, data)
             })
           }
           const actionGenerator = ip => {
