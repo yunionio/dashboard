@@ -160,13 +160,14 @@ export default {
           return item.disk_id === disk_id
         })
         if (current && current[0]) {
+          const driver = current[0].driver
           this.form.fd = current[0]
           this.dataList = current
           this.form.fc.setFieldsValue({
-            driver: current[0].driver,
+            driver,
             cache_mode: current[0].cache_mode,
           })
-          this.is_ssd = is_ssd
+          this.is_ssd = driver !== 'scsi' ? false : is_ssd
         }
       }
     },
