@@ -145,7 +145,7 @@ export default {
             },
             {
               name: 'K8sReleaseUpdate',
-              path: 'update/:name',
+              path: 'update/:id',
               component: K8sReleaseUpdate,
             },
           ],

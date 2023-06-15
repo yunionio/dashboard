@@ -2,33 +2,49 @@ import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
-      // {
-      //   label: '升级',
-      //   permission: 'k8s_releases_update',
-      //   action: async obj => {
-      //     this.$router.push({
-      //       path: `/k8s-release/update/${obj.name}`,
-      //       query: {
-      //         cluster: obj.clusterID,
-      //         namespace: obj.namespace,
-      //         chart: obj.chart,
-      //       },
-      //     })
-      //   },
-      // },
-      // {
-      //   label: '回滚',
-      //   permission: 'k8s_releases_perform_rollback',
-      //   action: async obj => {
-      //     this.createDialog('K8SRollbackDialog', {
-      //       data: [obj],
-      //       columns: this.columns,
-      //       onManager: this.onManager,
-      //       cluster: obj.clusterID,
-      //       namespace: obj.namespace,
-      //     })
-      //   },
-      // },
+      {
+        label: this.$t('helm.upgrade'),
+        permission: 'k8s_releases_update',
+        action: async obj => {
+          this.$router.push({
+            path: `/k8s-release/update/${obj.id}`,
+            query: {
+              cluster: obj.clusterID,
+              namespace: obj.namespace,
+              chart: obj.chart,
+            },
+          })
+        },
+        meta: (obj) => {
+          const ret = { validate: true }
+          if (!obj.chart) {
+            ret.validate = false
+            return ret
+          }
+          return ret
+        },
+      },
+      {
+        label: this.$t('helm.text_72'),
+        permission: 'k8s_releases_perform_rollback',
+        action: async obj => {
+          this.createDialog('K8SRollbackDialog', {
+            data: [obj],
+            columns: this.columns,
+            onManager: this.onManager,
+            cluster: obj.clusterID,
+            namespace: obj.namespace,
+          })
+        },
+        meta: (obj) => {
+          const ret = { validate: true }
+          if (!obj.chart) {
+            ret.validate = false
+            return ret
+          }
+          return ret
+        },
+      },
       {
         label: i18n.t('helm.text_69'),
         permission: 'k8s_releases_delete',
