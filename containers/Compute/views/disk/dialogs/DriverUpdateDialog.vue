@@ -6,7 +6,7 @@
       <a-form
         :form="form.fc" v-bind="formItemLayout" hideRequiredMark>
         <dialog-table :data="dataList" :columns="columns" />
-        <a-form-item label="SSD">
+        <a-form-item label="SSD" :extra="$t('compute.disk.ssd_extra')">
           <a-switch v-model="is_ssd" />
         </a-form-item>
         <a-form-item :label="$t('compute.cache_mode')">
