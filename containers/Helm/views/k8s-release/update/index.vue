@@ -166,9 +166,9 @@ export default {
       }
     },
     async getRelease () {
-      const { name } = this.$route.params
+      const { id } = this.$route.params
       const { data } = await this.releaseM.get({
-        id: `${name}`,
+        id,
         params: {
           cluster: this.$route.query.cluster,
           namespace: this.$route.query.namespace,
@@ -176,7 +176,7 @@ export default {
       })
       if (!R.isNil(data) && !R.isEmpty(data)) {
         this.releaseDetail = data
-        this.chartDetail = this.releaseDetail.chart
+        this.chartDetail = this.releaseDetail.chart_info
         this.form.fc.setFieldsValue({
           [this.decorators.release_name[0]]: this.releaseDetail.name,
           [this.decorators.yaml[0]]: jsYaml.safeDump(this.releaseDetail.config || {}, { lineWidth: Infinity }),
@@ -188,6 +188,7 @@ export default {
       this.versionLoading = true
       const { data: { data = [] } } = await this.chartsM.list({
         params: {
+          repo: this.releaseDetail.repo_id,
           name: this.chartDetail.metadata.name,
           all_version: true,
           limit: 0,
@@ -202,7 +203,7 @@ export default {
         return {
           ...v,
           label: `${v.repo}-${v.version}`,
-          key: `${v.repo}-${v.version}`,
+          key: `${v.repo}$$${v.version}`,
         }
       })
       if (this.versions && this.versions.length) {
@@ -226,12 +227,14 @@ export default {
         values: values.yaml,
       }
       if (!R.isNil(values.version) && !R.isEmpty(values.version)) {
-        const [repo, v] = values.version.split('-')
+        const [repo, v] = values.version.split('$$')
         data.repo = repo
         data.version = v
       }
-      await this.releaseM.update({
-        id: values.release_name,
+      const { id } = this.$route.params
+      await this.releaseM.performAction({
+        id,
+        action: 'upgrade',
         data,
       })
     },
