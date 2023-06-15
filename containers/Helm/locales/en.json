@@ -84,5 +84,6 @@
   "helm.text_102": "release count",
   "helm.text_103": "Create Helm Repo",
   "helm.text_104": "Update Helm Repo",
-  "helm.text_105": "Try Times"
+  "helm.text_105": "Try Times",
+  "helm.upgrade": "Upgrade"
 }
