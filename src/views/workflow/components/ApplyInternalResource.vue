@@ -19,8 +19,9 @@
           <div class="detail-item-value">{{item.value}}</div>
         </div>
       </template>
-      <div class="detail-item mt-2" style="100%" v-if="attachmentList.length">
+      <div class="detail-item mt-2" style="100%">
         <div class="detail-item-title">{{$t('wz_workflow_form.labels.cloud_solution')}}</div>
+        <div class="detail-item-value" v-if="!attachmentList.length">-</div>
         <div class="detail-item-value">
           <div class="mb-2" v-for="item in attachmentList" :key="item.key">
             <a-button type="link" style="padding:0;height:16px" @click="handleDownload">{{item.name}}</a-button>
