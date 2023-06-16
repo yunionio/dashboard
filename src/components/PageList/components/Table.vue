@@ -30,9 +30,10 @@
           v-on="dynamicEvents"
           v-bind="dynamicProps">
           <template v-slot:empty>
-            <loader :loading="loading" :noDataText="noDataText" />
+            <deny v-if="isResDeny" />
+            <loader v-else :loading="loading" :noDataText="noDataText" />
           </template>
-          <template v-if="pagerType === 'pager'" v-slot:pager>
+          <template v-if="!isResDeny && pagerType === 'pager'" v-slot:pager>
             <vxe-pager
               :layouts="tablePage.layouts"
               :current-page="tablePage.currentPage"
@@ -62,20 +63,24 @@
 <script>
 import Sortable from 'sortablejs'
 import XEUtils from 'xe-utils'
+import { mapGetters } from 'vuex'
 import * as R from 'ramda'
 import _ from 'lodash'
 import { addResizeListener, removeResizeListener } from '@/utils/resizeEvent'
 import { getTagTitle } from '@/utils/common/tag'
+import { hasPermission } from '@/utils/auth'
 import storage from '@/utils/storage'
 import TreeProject from '@/sections/TreeProject'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '../Actions'
 import MultipleSort from './MultipleSort'
+import Deny from './Deny.vue'
 
 export default {
   name: 'PageListTable',
   components: {
     TreeProject,
+    Deny,
   },
   mixins: [WindowsMixin],
   props: {
@@ -174,6 +179,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['permission']),
     // 是否开启checkbox
     checkboxEnabled () {
       if (this.hideRowselect) return false
@@ -190,6 +196,7 @@ export default {
       }
     },
     tableData (val, oldVal) {
+      if (this.isResDeny) return []
       const dataList = Object.values(this.data).sort((a, b) => a.index - b.index)
       if (this.total <= 0 || !this.showPage) {
         return dataList.map(item => item.data)
@@ -268,6 +275,9 @@ export default {
         }).join('、')
       }
       return []
+    },
+    isResDeny () {
+      return !hasPermission({ key: `${this.resource}_list`, permissionData: this.permission })
     },
   },
   watch: {
