@@ -5,6 +5,13 @@ import { getWorkflowParamter } from '@/utils/utils'
 import store from '@/store'
 import { statusMap, auditStatusMap } from './index'
 
+const getParamter = (variables) => {
+  if (variables['server-create-paramter']) {
+    return JSON.parse(variables['server-create-paramter'])
+  } else {
+    return getWorkflowParamter(variables)
+  }
+}
 export const getProcessDefinitionNameTableColumn = ({ field = 'process_definition_name', title = i18n.t('common_375') } = {}) => {
   return {
     field,
@@ -13,16 +20,7 @@ export const getProcessDefinitionNameTableColumn = ({ field = 'process_definitio
     showOverflow: 'title',
     formatter: ({ row }) => {
       if (row.process_definition_key === 'apply-internal-resource' || (row.process_definition_id || '').indexOf('apply-internal-resource') !== -1) {
-        const paramter = row.variables['server-create-paramter'] || row.variables.paramter
-        let rs = paramter ? JSON.parse(paramter) : {}
-        let name = rs.generate_name || rs.name
-        if (Array.isArray(rs)) {
-          name = rs.map((item) => item.name).join(',')
-        }
-        if (!name) {
-          name = '-'
-        }
-        rs = getWorkflowParamter(row.variables)
+        const rs = getWorkflowParamter(row.variables)
         const { process_type = {} } = rs
         return i18n.t(`system_process_type.${process_type.id}`)
       } else {
@@ -40,8 +38,7 @@ export const getResourceSourceTableColumn = ({ field = 'source', title = i18n.t(
     showOverflow: 'title',
     formatter: ({ row }) => {
       if (row.process_definition_key === 'apply-internal-resource' || (row.process_definition_id || '').indexOf('apply-internal-resource') !== -1) {
-        const paramter = row.variables['server-create-paramter'] || row.variables.paramter
-        const rs = paramter ? JSON.parse(paramter) : {}
+        const rs = getParamter(row.variables)
         const { process_id } = rs
         if (process_id) {
           return `${i18n.t('system.irs_orders')}-${process_id}`
@@ -55,8 +52,7 @@ export const getResourceSourceTableColumn = ({ field = 'source', title = i18n.t(
     slots: {
       default: ({ row }, h) => {
         if (row.process_definition_key === 'apply-internal-resource' || (row.process_definition_id || '').indexOf('apply-internal-resource') !== -1) {
-          const paramter = row.variables['server-create-paramter'] || row.variables.paramter
-          const rs = paramter ? JSON.parse(paramter) : {}
+          const rs = getParamter(row.variables)
           const { process_id } = rs
           const ret = []
           if (process_id) {
@@ -171,8 +167,7 @@ const openResourceColumns = [
 ]
 
 const getOpenResourceDatas = ({ row }) => {
-  const paramter = row.variables['server-create-paramter'] || row.variables.paramter
-  const rs = paramter ? JSON.parse(paramter) : {}
+  const rs = getParamter(row.variables)
   const { openResourceInfo = {} } = rs
   const { resources = [] } = openResourceInfo
   return resources
@@ -190,8 +185,7 @@ export const getOpenResourceTableColumns = () => {
     slots: {
       default: ({ row }, h) => {
         if (row.process_instance?.process_definition_key === 'apply-internal-resource' || row.process_definition_key === 'apply-internal-resource') {
-          const paramter = row.variables['server-create-paramter'] || row.variables.paramter
-          const rs = paramter ? JSON.parse(paramter) : {}
+          const rs = getParamter(row.variables)
           const { openResourceInfo = {} } = rs
           const { resources = [] } = openResourceInfo
           return resources.length
@@ -236,8 +230,7 @@ export const getResourceNameTableColumn = ({ field = 'resource_name', title = i1
     showOverflow: 'title',
     formatter: ({ row }) => {
       if (!row.variables) return ''
-      const paramter = row.variables['server-create-paramter'] || row.variables.paramter
-      const rs = paramter ? JSON.parse(paramter) : {}
+      const rs = getParamter(row.variables)
       let name = rs.generate_name || rs.name
       if (Array.isArray(rs)) {
         name = rs.map((item) => item.name).join(',')
@@ -254,8 +247,7 @@ export const getResourceNameTableColumn = ({ field = 'resource_name', title = i1
     slots: {
       default: ({ row }, h) => {
         if (!row.variables) return '-'
-        const paramter = row.variables['server-create-paramter'] || row.variables.paramter
-        const rs = paramter ? JSON.parse(paramter) : {}
+        const rs = getParamter(row.variables)
         let name = rs.generate_name || rs.name
         if (Array.isArray(rs)) {
           name = rs.map((item) => item.name).join(',')

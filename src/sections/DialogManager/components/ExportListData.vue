@@ -298,9 +298,13 @@ export default {
         dataList = []
         list.map(item => {
           const expandData = getExpandData({ row: item })
-          expandData.map(s => {
-            dataList.push({ ...item, _expandData: s })
-          })
+          if (expandData.length) {
+            expandData.map(s => {
+              dataList.push({ ...item, _expandData: s })
+            })
+          } else {
+            dataList.push({ ...item, _expandData: {} })
+          }
         })
       }
       // 标题行
