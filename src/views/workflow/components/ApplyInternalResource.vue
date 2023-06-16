@@ -19,6 +19,14 @@
           <div class="detail-item-value">{{item.value}}</div>
         </div>
       </template>
+      <div class="detail-item mt-2" style="100%" v-if="attachmentList.length">
+        <div class="detail-item-title">{{$t('wz_workflow_form.labels.cloud_solution')}}</div>
+        <div class="detail-item-value">
+          <div class="mb-2" v-for="item in attachmentList" :key="item.key">
+            <a-button type="link" style="padding:0;height:16px" @click="handleDownload">{{item.name}}</a-button>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- 3 -->
     <div class="section-title mt-4">{{$t('wz_workflow_form.contractor_info')}}</div>
@@ -237,6 +245,11 @@ export default {
         deleteResources,
       }
     },
+    attachmentList () {
+      if (R.isEmpty(this.INIT_UNIT_INFO)) return []
+      const { attachmentList = [] } = this.resourceData
+      return attachmentList
+    },
   },
   created () {
     try {
@@ -272,6 +285,11 @@ export default {
         resourceList: this.listData.openResources.filter(item => this.resourceSelected.includes(item.index)),
         email: this.resourceData?.unitInfo?.email,
         project_name: this.resourceData?.projectInfo?.project_name,
+      })
+    },
+    handleDownload () {
+      this.createDialog('WorkflowDownloadAttachmentDialog', {
+        fileList: this.attachmentList,
       })
     },
   },
