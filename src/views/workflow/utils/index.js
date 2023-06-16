@@ -1,6 +1,7 @@
 import { WORKFLOW_TYPES, PROCESS_TYPES_OPTS } from '@/constants/workflow'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
+import { getCreatedAtFilter } from '@/utils/common/tableFilter'
 
 export const statusMap = function (pdk) {
   const mp = {
@@ -136,4 +137,5 @@ export const internalResourceFilters = {
       return `paramter.contains("name":"${val}")`
     },
   },
+  created_at: getCreatedAtFilter({ field: 'create_time' }),
 }
