@@ -38,9 +38,6 @@ export default {
           id: {
             label: this.$t('common_350'),
           },
-          initiator_name: {
-            label: this.$t('common_371'),
-          },
           status: {
             label: this.$t('common.status'),
             dropdown: true,
