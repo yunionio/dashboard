@@ -24,7 +24,7 @@
         <div class="detail-item-value" v-if="!attachmentList.length">-</div>
         <div class="detail-item-value">
           <div class="mb-2" v-for="item in attachmentList" :key="item.key">
-            <a-button type="link" style="padding:0;height:16px" @click="handleDownload">{{item.name}}</a-button>
+            <a-button type="link" style="padding:0;height:16px" @click="()=>{handleDownload(item)}">{{item.name}}</a-button>
           </div>
         </div>
       </div>
@@ -124,6 +124,7 @@
 import * as R from 'ramda'
 import { getWorkflowParamter } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
+import { objectsModel } from '@Storage/views/bucket/utils/controller.js'
 
 export default {
   name: 'ApplyInternalResourceInfo',
@@ -141,6 +142,7 @@ export default {
       COLUMNS_MAP: {},
       ALL_SELECT_OPTIONS: {},
       resourceSelected: [],
+      bucketData: {},
     }
   },
   computed: {
@@ -251,8 +253,21 @@ export default {
       const { attachmentList = [] } = this.resourceData
       return attachmentList
     },
+    accessUrl () {
+      if (this.bucketData.access_urls && this.bucketData.access_urls.length > 0) {
+        const accessUrls = this.bucketData.access_urls
+        for (let i = 0; i < accessUrls.length; i++) {
+          if (accessUrls[i].primary) {
+            return accessUrls[i].url
+          }
+        }
+        return accessUrls[0].url
+      }
+      return ''
+    },
   },
   created () {
+    this.$bM = new this.$Manager('buckets')
     try {
       if (!this.$store.getters.workflow.enableApplyInternalResource) return
       const requireComponent = require.context('@scope', true, /constants\.(js)$/)
@@ -273,11 +288,24 @@ export default {
           this.ALL_SELECT_OPTIONS = ALL_SELECT_OPTIONS
         }
       })
+      this.initBucketData()
     } catch (err) {
       console.error(err)
     }
   },
   methods: {
+    async initBucketData () {
+      const { bucketId = '' } = this.$store.getters.workflow
+      if (!bucketId) return
+      try {
+        const res = await this.$bM.get({
+          id: bucketId,
+        })
+        this.bucketData = res.data
+      } catch (err) {
+        throw err
+      }
+    },
     handleResourceCheckedChange (e) {
       this.resourceSelected = e.selection.map(item => item.index)
     },
@@ -288,9 +316,13 @@ export default {
         project_name: this.resourceData?.projectInfo?.project_name,
       })
     },
-    handleDownload () {
-      this.createDialog('WorkflowDownloadAttachmentDialog', {
-        fileList: this.attachmentList,
+    handleDownload (data) {
+      objectsModel.getUrl(data, this.bucketData.name, this.accessUrl).then((url) => {
+        const a = document.createElement('a')
+        document.body.appendChild(a)
+        a.href = url
+        a.click()
+        document.body.removeChild(a)
       })
     },
   },
