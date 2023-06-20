@@ -292,7 +292,9 @@ export default {
     },
     toTableData () {
       const curMetric = this.form.getFieldValue('metric')
+      // 取当前活动监控指标为数据集
       let cRows = this.charts[curMetric?.value]?.chartData?.rows || []
+      // 没有值时，依次取新的指标为数据集
       if (!cRows.length) {
         for (const k in this.charts) {
           const rows = this.charts[k]?.chartData?.rows || []
@@ -302,7 +304,8 @@ export default {
           }
         }
       }
-      const names = cRows.map((row) => { return row.name })
+      const ids = cRows.map((row) => { return row.id })
+
       const data = { columns: [], rows: [] }
       const namecolumn = this.getTableNameColumn()
       data.columns.push(namecolumn)
@@ -488,16 +491,16 @@ export default {
         }
         data.columns.push(col);
         (chart.$chartData?.rows || []).map((row) => {
-          if (names.indexOf(row.name) < 0) {
+          if (ids.indexOf(row.id) < 0) {
             return
           }
 
-          if (!tr[row.name]) {
-            tr[row.name] = {}
-            tr[row.name][namecolumn.field] = row.name
-            tr[row.name].tags = row.tags
+          if (!tr[row.id]) {
+            tr[row.id] = {}
+            tr[row.id][namecolumn.field] = row.name
+            tr[row.id].tags = row.tags
           }
-          tr[row.name][column] = row.value
+          tr[row.id][column] = row.value
         })
       }
       for (const r in tr) {
