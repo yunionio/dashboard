@@ -73,6 +73,9 @@ export default {
           },
           project_domain: getProjectDomainFilter(),
           created_at: getCreatedAtFilter(),
+          idp_id: {
+            label: this.$t('dictionary.identity_provider'),
+          },
         },
         responseData: this.responseData,
         hiddenColumns: ['created_at'],

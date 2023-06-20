@@ -63,6 +63,15 @@ export default {
           description: getDescriptionFilter(),
           project_domain: getProjectDomainFilter(),
           created_at: getCreatedAtFilter(),
+          user_id: {
+            label: this.$t('dictionary.user'),
+          },
+          group_id: {
+            label: this.$t('dictionary.group'),
+          },
+          idp_id: {
+            label: this.$t('dictionary.identity_provider'),
+          },
         },
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
