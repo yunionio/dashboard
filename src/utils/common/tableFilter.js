@@ -160,7 +160,7 @@ export function getCloudProviderFilter () {
   return {
     label: i18n.t('compute.text_653'),
     dropdown: true,
-    multiple: false,
+    multiple: true,
     distinctField: {
       type: 'extra_field',
       key: 'manager',
@@ -293,6 +293,7 @@ export function getVpcFilter () {
   return {
     label: 'VPC',
     dropdown: true,
+    multiple: true,
     distinctField: {
       type: 'extra_field',
       key: 'vpc',
@@ -307,6 +308,7 @@ export const getOsArchFilter = (isCapabilityKey = false) => {
   return {
     label: i18n.t('table.title.os_arch'),
     dropdown: true,
+    multiple: true,
     items,
   }
 }
@@ -315,6 +317,7 @@ export function getRegionFilter () {
   return {
     label: i18n.t('res.region'),
     dropdown: true,
+    multiple: true,
     distinctField: {
       type: 'extra_field',
       key: 'region',

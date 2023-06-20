@@ -131,6 +131,7 @@ export default {
       server_type: {
         label: this.$t('table.title.type'),
         dropdown: true,
+        multiple: true,
         items: [
           { label: this.$t('compute.text_291', [this.$t('dictionary.server')]), key: 'normal' },
           { label: `USB${this.$t('dictionary.server')}`, key: 'usb' },
