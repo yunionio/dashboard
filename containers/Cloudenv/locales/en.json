@@ -778,5 +778,7 @@
   "cloudenv.aksk.download_tip": "The access key is created successfully. Please download and save it in time. After the pop-up window is closed, you will not be able to obtain the key information again, but you can re create a new key.",
   "cloudenv.last_sync_cost": "Last Sync Cost",
   "cloudenv.vmware.message": "It is recommended to configure the network before creating a new VMware cloud account. Please refer to the specific",
-  "cloudenv.vmware.message.doc": "documentation for instructions."
+  "cloudenv.vmware.message.doc": "documentation for instructions.",
+  "cloudenv.server.running.rate": "虚拟机开机率",
+  "cloudenv.server.unrunning": "未开机"
 }
