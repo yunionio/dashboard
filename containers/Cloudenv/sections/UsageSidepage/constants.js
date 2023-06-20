@@ -279,11 +279,11 @@ export const USAGE_CONFIG_MAP = {
 
 export const USAGE_RING_DATAS = [
   {
-    name: i18n.t('dashboard.text_151'),
+    name: i18n.t('cloudenv.server.running.rate'),
     sum: 'servers',
-    use: 'ready_servers',
-    use_label: i18n.t('dashboard.shutdown'),
-    unuse_label: i18n.t('dashboard.not_shutdown'),
+    use: 'running_servers',
+    use_label: i18n.t('cloudenv.text_511'),
+    unuse_label: i18n.t('cloudenv.server.unrunning'),
   },
   {
     name: i18n.t('dashboard.text_147'),
