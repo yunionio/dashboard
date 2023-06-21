@@ -161,10 +161,11 @@ export default {
       if (R.isEmpty(this.INIT_UNIT_INFO)) return []
       const keys = Object.keys(this.INIT_UNIT_INFO)
       const { unitInfo, process_id, process_type = {} } = this.resourceData
+      const processTypeName = process_type.id ? this.$t(`system_process_type.${process_type.id}`) : process_type.name || ''
       ret.push({
         field: 'process_type',
         title: this.WORKFLOW_ITEM_MAP.process_type.label,
-        value: process_id ? process_id + '-' + process_type.name : process_type.name,
+        value: process_id ? process_id + '-' + processTypeName : processTypeName,
       })
       keys.map(key => {
         const item = { field: key }
