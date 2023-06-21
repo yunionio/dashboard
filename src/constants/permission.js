@@ -1160,13 +1160,13 @@ export const PERMISSION = {
   // 权限
   policies_get: ['identity', 'policies', 'get'],
   // 定时任务
-  scheduledtasks_list: ['compute', 'scheduledtasks', 'list'],
-  scheduledtasks_create: ['compute', 'scheduledtasks', 'create'],
-  scheduledtasks_update: ['compute', 'scheduledtasks', 'update'],
-  scheduledtasks_delete: ['compute', 'scheduledtasks', 'delete'],
-  scheduledtasks_perform_enable: ['compute', 'scheduledtasks', 'perform', 'enable'],
-  scheduledtasks_perform_disable: ['compute', 'scheduledtasks', 'perform', 'disable'],
-  scheduledtasks_perform_set_label: ['compute', 'scheduledtasks', 'perform', 'set-labels'],
+  scheduledtasks_list: ['scheduledtask', 'scheduledtasks', 'list'],
+  scheduledtasks_create: ['scheduledtask', 'scheduledtasks', 'create'],
+  scheduledtasks_update: ['scheduledtask', 'scheduledtasks', 'update'],
+  scheduledtasks_delete: ['scheduledtask', 'scheduledtasks', 'delete'],
+  scheduledtasks_perform_enable: ['scheduledtask', 'scheduledtasks', 'perform', 'enable'],
+  scheduledtasks_perform_disable: ['scheduledtask', 'scheduledtasks', 'perform', 'disable'],
+  scheduledtasks_perform_set_label: ['scheduledtask', 'scheduledtasks', 'perform', 'set-labels'],
   // 权限组
   cloudgroup_create: ['cloudid', 'cloudgroups', 'create'],
   cloudgroup_list: ['cloudid', 'cloudgroups', 'list'],
