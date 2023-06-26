@@ -801,6 +801,10 @@
     "meter$enable_bill_predict": {
       "label": "Enable billing predict",
       "desc": "It is off by default. After it is on, you can view consumption trend and consumption forecast in the expense overview."
+    },
+    "compute$enable_export_username_password": {
+      "label": "Virtual Machine Password Export Switch",
+      "desc": "When enabled, includes account password information when exporting the virtual machine list through the platform (caution advised for large quantities)"
     }
   },
   "user": {

@@ -800,6 +800,10 @@
     "meter$enable_bill_predict": {
       "label": "启用消费预测",
       "desc": "默认关闭，开启后可在费用总览查看消费趋势及消费预测。"
+    },
+    "compute$enable_export_username_password": {
+      "label": "虚拟机密码导出开关",
+      "desc": "开启后，通过平台导出虚拟机列表时，同时包含账号密码信息（数量较多时慎重打开）"
     }
   },
   "user": {

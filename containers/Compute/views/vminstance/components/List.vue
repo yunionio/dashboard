@@ -48,6 +48,7 @@ import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import regexp from '@/utils/regexp'
 import { hasSetupKey } from '@/utils/auth'
+import { Manager } from '@/utils/manager'
 import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -1236,12 +1237,78 @@ export default {
     },
     exportDataOptions () {
       const ret = {
+        isOpenExportUsernamePassword: false,
         downloadType: 'local',
         items: [
           { label: 'ID', key: 'id' },
           { label: this.$t('table.title.external_id'), key: 'external_id' },
         ],
+        async beforeExport () {
+          const checkOpenExportUsernamePassword = async () => {
+            try {
+              const configM = new Manager('services', 'v1')
+              const servicesRes = await configM.list({ params: { type: 'compute_v2' } })
+              const serviceId = servicesRes.data.data?.[0]?.id
+              const configData = await configM.getSpecific({ id: serviceId, spec: 'config' })
+              const { enable_export_username_password = false } = configData.data?.config?.default
+              ret.isOpenExportUsernamePassword = enable_export_username_password
+              return enable_export_username_password
+            } catch (error) {
+              console.log('fetch compute_v2 service config error!!!')
+            }
+          }
+
+          const isOpenExportUsernamePassword = await checkOpenExportUsernamePassword()
+          ret.isOpenExportUsernamePassword = isOpenExportUsernamePassword
+
+          ret.items.forEach(item => {
+            if (item.field === 'extra_user') {
+              item.hidden = !isOpenExportUsernamePassword
+            }
+            if (item.field === 'extra_password') {
+              item.hidden = !isOpenExportUsernamePassword
+            }
+          })
+        },
+        async callback (data) {
+          if (!ret.isOpenExportUsernamePassword) {
+            return data
+          }
+
+          const manager = new Manager('servers')
+          const allPromise = data.map(async item => {
+            let username = ''
+            let password = ''
+
+            try {
+              const { data } = await manager.objectRpc({
+                methodname: 'GetLoginInfo',
+                objId: item.id,
+              })
+              username = data.username
+              password = data.password
+            } catch (error) {
+              console.log(`server: ${item.id}, login info fetch error!!!`)
+            }
+
+            return Promise.resolve({ id: item.id, username, password })
+          })
+
+          const results = Promise.all(allPromise).then(values => {
+            const realData = data.map(item => {
+              const curObj = values.find(v => v.id === item.id)
+              return {
+                ...item,
+                extra_user: curObj.username,
+                extra_password: curObj.password,
+              }
+            })
+            return realData
+          })
+          return results
+        },
       }
+
       this.columns.map(col => {
         if (col.field === 'ips') {
           ret.items.push(getIpsTableColumn({ field: 'elastic_ip', title: this.$t('common.eip'), vm: this, onlyElastic: true }))
@@ -1252,6 +1319,9 @@ export default {
             title: col.title || col.label,
             formatter: col.formatter,
           })
+        } else if (col.field === 'password') {
+          ret.items.push({ field: 'extra_user', title: this.$t('compute.text_566') })
+          ret.items.push({ field: 'extra_password', title: this.$t('common_328') })
         }
       })
       return ret
