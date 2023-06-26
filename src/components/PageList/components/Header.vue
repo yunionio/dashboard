@@ -208,7 +208,10 @@ export default {
       this.$emit('clear-selected')
       this.$emit('filter-change', filter)
     },
-    handleExportData () {
+    async handleExportData () {
+      if (R.is(Function, this.exportDataOptions.beforeExport)) {
+        await this.exportDataOptions.beforeExport()
+      }
       this.createDialog('ExportListDataDialog', {
         title: this.exportDataOptions.title || this.$t('common.text00010'),
         config: this.config,
@@ -220,6 +223,7 @@ export default {
         apiVersion: this.apiVersion,
         resource: this.resource,
         showTagColumns: this.showTagColumns,
+        callback: this.exportDataOptions.callback,
       })
     },
     handleCustomList () {

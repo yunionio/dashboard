@@ -212,6 +212,7 @@ export default {
         const resource = this.params.options.resource || this.params.resource
         const total = this.params.options.resource && await this.getResourceTotal(resource)
         const params = this.genParams(values, total)
+
         if (this.downloadType === 'remote') {
           const response = await this.$http({
             methods: 'GET',
@@ -233,7 +234,10 @@ export default {
           const { data: res = {} } = await new this.$Manager(resource, this.params.apiVersion).list({
             params,
           })
-          const data = res.data || []
+          let data = res.data || []
+          if (R.is(Function, this.params.callback)) {
+            data = await this.params.callback(data)
+          }
           // 生成数据
           this.localExport(this.exportOptionItems, data)
         }
