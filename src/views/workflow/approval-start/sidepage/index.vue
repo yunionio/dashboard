@@ -17,7 +17,8 @@
       :onManager="onManager"
       :res-id="data.id"
       :data="detailData"
-      :getParams="getParams" />
+      :getParams="getParams"
+      :workflowColumns="columns" />
   </base-side-page>
 </template>
 
