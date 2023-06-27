@@ -32,11 +32,11 @@ export default {
             ips = [obj.access_ip, ...ips]
           }
           const actionGenerator = ip => {
-            return (sshData) => {
+            return (_) => {
               const success = () => {
                 this.webconsoleManager.performAction({
                   action: ip,
-                  data: sshData,
+                  data: {},
                   id: 'ssh',
                 }).then(({ data }) => {
                   this.openWebConsole(obj, data)
