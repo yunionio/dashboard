@@ -13,9 +13,9 @@
             <a-radio-button value="bigquery">
               Bigquery
             </a-radio-button>
-            <a-radio-button value="bucket">
+            <!-- <a-radio-button value="bucket">
               Bucket
-            </a-radio-button>
+            </a-radio-button> -->
           </a-radio-group>
         </div>
         <component :account="account" :is="form" ref="BILL_FORM" />

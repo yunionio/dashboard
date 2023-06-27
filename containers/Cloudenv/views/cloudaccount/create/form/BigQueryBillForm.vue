@@ -22,7 +22,7 @@
       <a-form-item :label="$t('cloudenv.billing_scope')">
         <a-radio-group v-decorator="decorators.billing_scope">
           <a-radio-button value="managed" key="managed">{{ $t('cloudenv.billing_scope.managed') }}</a-radio-button>
-<!--          <a-radio-button value="all" key="all">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>-->
+          <a-radio-button value="all" key="all">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>
         </a-radio-group>
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_210')"  :extra="$t('cloudenv.text_211')">
