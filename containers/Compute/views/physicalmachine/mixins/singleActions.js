@@ -51,11 +51,11 @@ export default {
             })
           }
           const actionGenerator = ip => {
-            return (sshData) => {
+            return (_) => {
               const success = () => {
                 const params = {
                   action: ip,
-                  data: sshData,
+                  data: {},
                   id: 'ssh',
                 }
                 openWebConsole(params)
