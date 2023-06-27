@@ -102,6 +102,7 @@ export default {
             return '-'
           },
         },
+        hidden: this.$store.getters.workflow.enableApplyInternalResource,
       },
       {
         field: 'assignee',

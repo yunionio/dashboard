@@ -44,6 +44,7 @@ export default {
       type: Function,
       required: true,
     },
+    workflowColumns: Array,
   },
   data () {
     return {
@@ -328,7 +329,7 @@ export default {
         slots: {
           default: ({ row }, h) => {
             return [
-              <ApplyInternalResourceInfo variables={ this.variables } local_variables={ this.local_variables } />,
+              <ApplyInternalResourceInfo variables={ this.variables } local_variables={ this.local_variables } data={ this.data } columns={ this.workflowColumns } />,
             ]
           },
         },
