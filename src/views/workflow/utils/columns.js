@@ -425,6 +425,7 @@ export const getStatusTableColumn = ({ field = 'status', title = i18n.t('common_
         return '-'
       },
     },
+    hidden: store.getters.workflow.enableApplyInternalResource,
   }
 }
 
