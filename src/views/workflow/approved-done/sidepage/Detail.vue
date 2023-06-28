@@ -328,7 +328,7 @@ export default {
         slots: {
           default: ({ row }, h) => {
             return [
-              <ApplyInternalResourceInfo variables={ this.variables } local_variables={ this.local_variables } data={ this.data } columns={ this.workflowColumns } />,
+              <ApplyInternalResourceInfo resource="historic-task-instances" variables={ this.variables } local_variables={ this.local_variables } data={ this.data } columns={ this.workflowColumns } />,
             ]
           },
         },

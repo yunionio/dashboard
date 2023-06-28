@@ -86,6 +86,7 @@
             <template slot="content">{{$t('wz_workflow_form.tips.send_email_tip')}}</template>
             <a-button type="link" :disabled="true" @click="handleSendEmailClick">{{$t('scope.notify_user')}}</a-button>
           </a-popover>
+          <a-button v-if="isAdminMode" style="padding:0" type="link" @click="handleModifyClick">{{$t('table.action.modify')}}</a-button>
         </div>
         <vxe-grid
           ref="opTable"
@@ -122,6 +123,7 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import { getWorkflowParamter } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 import { objectsModel } from '@Storage/views/bucket/utils/controller.js'
@@ -132,6 +134,8 @@ export default {
   props: {
     variables: Object,
     local_variables: Object,
+    data: Object,
+    resource: String,
   },
   data () {
     return {
@@ -146,6 +150,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isAdminMode']),
     resourceData () {
       if (this.local_variables) {
         return getWorkflowParamter(this.local_variables)
@@ -324,6 +329,18 @@ export default {
         a.href = url
         a.click()
         document.body.removeChild(a)
+      })
+    },
+    handleModifyClick () {
+      this.createDialog('ApplyResourceWorkflowPassDialog', {
+        // vm: this,
+        type: 'update',
+        data: [this.data],
+        columns: this.columns,
+        resource: this.resource,
+        success: () => {
+          this.$bus.$emit('refresh-detail')
+        },
       })
     },
   },
