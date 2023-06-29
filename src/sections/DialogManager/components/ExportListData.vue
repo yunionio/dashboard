@@ -236,7 +236,7 @@ export default {
           })
           let data = res.data || []
           if (R.is(Function, this.params.callback)) {
-            data = await this.params.callback(data)
+            data = await this.params.callback(data, this.selectedExportKeys)
           }
           // 生成数据
           this.localExport(this.exportOptionItems, data)

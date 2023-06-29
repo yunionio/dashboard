@@ -317,7 +317,7 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {}, sortab
   return {
     field,
     title,
-    width: '180px',
+    minWidth: 180,
     sortBy: onlyElastic ? 'order_by_eip' : 'order_by_ip',
     sortable,
     slots: {
@@ -761,7 +761,7 @@ export const getPublicScopeTableColumn = ({
   title = i18n.t('table.title.share_range'),
   vm,
   resource,
-  width = '110px',
+  width = 110,
   hidden,
 } = {}) => {
   return {
