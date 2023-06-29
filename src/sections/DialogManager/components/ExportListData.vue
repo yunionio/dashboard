@@ -285,7 +285,36 @@ export default {
         })
       })
     },
+    getSheetMerges ({ titles, sheetOriginDatas, columns, expandColumns }) {
+      const merges = []
+      const mergesM = {}
+      sheetOriginDatas.map(item => {
+        if (mergesM[item._expandIndex]) {
+          mergesM[item._expandIndex] += 1
+        } else {
+          mergesM[item._expandIndex] = 1
+        }
+      })
+      const keys = Object.keys(mergesM).map(num => Number(num))
+      keys.sort((a, b) => a - b)
+      let idx = 1
+      keys.map(key => {
+        if (mergesM[key] > 1) {
+          columns.map((s, i) => {
+            merges.push({ s: { r: idx, c: i }, e: { r: idx + mergesM[key] - 1, c: i } })
+          })
+        }
+        idx += mergesM[key]
+      })
+      return merges
+    },
     localExport (cols, list) {
+      list = list.filter(item => {
+        if (item.id && this.params.selected.length && !this.params.selected.includes(item.id)) {
+          return false
+        }
+        return true
+      })
       let dataList = list
       const columns = cols.filter(item => this.selectedExportKeys.includes(item.key))
       // 折叠行
@@ -300,14 +329,14 @@ export default {
       const hasExpandColumn = expandColumns.length && getExpandData
       if (hasExpandColumn) {
         dataList = []
-        list.map(item => {
+        list.map((item, index) => {
           const expandData = getExpandData({ row: item })
           if (expandData.length) {
             expandData.map(s => {
-              dataList.push({ ...item, _expandData: s })
+              dataList.push({ ...item, _expandData: s, _expandIndex: index })
             })
           } else {
-            dataList.push({ ...item, _expandData: {} })
+            dataList.push({ ...item, _expandData: {}, _expandIndex: index })
           }
         })
       }
@@ -326,6 +355,7 @@ export default {
       const sheetMaxLen = 60000 // 每个sheet最多多少条
       let sheetIdx = 1
       let sheetDatas = []
+      let sheetOriginDatas = []
       // 生成sheet
       for (let i = 1; i < allLength + 1; i++) {
         const idx = Math.ceil(i / sheetMaxLen)
@@ -333,10 +363,15 @@ export default {
           // 保存旧表
           const ws_name = 'sheet' + sheetIdx
           const ws = XLSX.utils.aoa_to_sheet([titles, ...sheetDatas])
+          if (hasExpandColumn) {
+            const sheetMerges = this.getSheetMerges({ titles, sheetOriginDatas, columns, expandColumns })
+            ws['!merges'] = sheetMerges
+          }
           XLSX.utils.book_append_sheet(wb, ws, ws_name)
           // 插入新表
           sheetIdx = idx
           sheetDatas = []
+          sheetOriginDatas = []
         } else if (i === allLength) { // 尾表
           const row = []
           columns.map(column => {
@@ -350,8 +385,13 @@ export default {
             row.push(colData)
           })
           sheetDatas.push(row)
+          sheetOriginDatas.push(dataList[i - 1])
           const ws_name = 'sheet' + sheetIdx
           const ws = XLSX.utils.aoa_to_sheet([titles, ...sheetDatas])
+          if (hasExpandColumn) {
+            const sheetMerges = this.getSheetMerges({ titles, sheetOriginDatas, columns, expandColumns })
+            ws['!merges'] = sheetMerges
+          }
           ws['!cols'] = colWidthList
           XLSX.utils.book_append_sheet(wb, ws, ws_name)
         }
@@ -379,6 +419,7 @@ export default {
           })
         }
         sheetDatas.push(row)
+        sheetOriginDatas.push(dataList[i - 1])
       }
       XLSX.writeFile(wb, filename)
     },
