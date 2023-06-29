@@ -323,7 +323,7 @@ export default {
             usable: true,
             cloud_env: 'private',
             show_emulated: true,
-            filter: `provider.notin(${HYPERVISORS_MAP.nutanix.provider})`,
+            filter: `provider.notin(${HYPERVISORS_MAP.nutanix.provider}, ${HYPERVISORS_MAP.proxmox.provider})`,
             ...project_domain,
           },
           provider: {},

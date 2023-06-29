@@ -39,7 +39,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.blockstorage')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'nutanix', 'bingocloud'])
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'nutanix', 'bingocloud', 'proxmox'])
             },
           },
           component: Layout,
