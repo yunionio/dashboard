@@ -1157,6 +1157,7 @@ const getSingleActions = function () {
                     typeClouds.hypervisorMap.ucloud.brand,
                     typeClouds.hypervisorMap.ctyun.brand,
                     typeClouds.hypervisorMap.nutanix.brand,
+                    typeClouds.hypervisorMap.proxmox.brand,
                   ]
                   if (noSupportBrand.includes(obj.brand)) {
                     ret.tooltip = i18n.t('compute.text_1287', [obj.brand])
