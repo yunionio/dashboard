@@ -1270,8 +1270,11 @@ export default {
             }
           })
         },
-        async callback (data) {
+        async callback (data, selectedExportKeys) {
           if (!ret.isOpenExportUsernamePassword) {
+            return data
+          }
+          if (!selectedExportKeys.includes('extra_user') && !selectedExportKeys.includes('extra_password')) {
             return data
           }
 
