@@ -86,7 +86,7 @@
             <template slot="content">{{$t('wz_workflow_form.tips.send_email_tip')}}</template>
             <a-button type="link" :disabled="true" @click="handleSendEmailClick">{{$t('scope.notify_user')}}</a-button>
           </a-popover>
-          <a-button v-if="isAdminMode && canUpdate" style="padding:0" type="link" @click="handleModifyClick">{{$t('table.action.modify')}}</a-button>
+          <!-- <a-button v-if="isAdminMode && canUpdate" style="padding:0" type="link" @click="handleModifyClick">{{$t('table.action.modify')}}</a-button> -->
         </div>
         <vxe-grid
           ref="opTable"
@@ -136,7 +136,6 @@ export default {
     local_variables: Object,
     data: Object,
     resource: String,
-    canUpdate: Boolean,
   },
   data () {
     return {
@@ -338,7 +337,7 @@ export default {
         type: 'update',
         data: [this.data],
         columns: this.columns,
-        resource: this.resource,
+        resource: 'process-tasks',
         success: () => {
           this.$bus.$emit('refresh-detail')
         },
