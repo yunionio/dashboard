@@ -457,6 +457,10 @@ export function getImageDistributionFilter () {
       { label: 'FreeBSD', key: 'FreeBSD' },
       { label: 'Linux', key: 'Linux' },
       { label: 'VMWare', key: 'VMWare' },
+      { label: 'UOS', key: 'UOS' },
+      { label: 'Kylin', key: 'Kylin' },
+      { label: 'NeoKylin', key: 'NeoKylin' },
+      { label: 'RedHat', key: 'RedHat' },
     ],
   }
 }
