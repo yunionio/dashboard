@@ -452,7 +452,7 @@ export default {
       }
       if (this.type === SERVER_TYPE.private) {
         // nutanix vmware incloudshpere
-        if (this.selectedItem && (this.selectedItem.provider === HYPERVISORS_MAP.nutanix.provider || this.selectedItem.provider === HYPERVISORS_MAP.incloudsphere.provider)) {
+        if (this.selectedItem && (this.selectedItem.provider === HYPERVISORS_MAP.nutanix.provider || this.selectedItem.provider === HYPERVISORS_MAP.incloudsphere.provider || this.selectedItem.provider === HYPERVISORS_MAP.proxmox.provider)) {
           params['provider.0'] = HYPERVISORS_MAP.kvm.provider
         } else {
           params.cloudregion_id = this.selectedItem.cloudregion_id
