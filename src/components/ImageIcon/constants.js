@@ -37,6 +37,10 @@ export const IMAGE_MSG = {
     label: 'RedHat',
     position: '0px -34px',
   },
+  redhat: {
+    label: 'RedHat',
+    position: '0px -34px',
+  },
 }
 
 export const CUSTOME_IMG = {
