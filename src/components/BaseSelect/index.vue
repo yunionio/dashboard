@@ -540,9 +540,10 @@ export default {
         const { data } = await manager.list({ params, ctx: this.ctx, cancelToken: this.cancelToken })
         const _list = R.type(data) === 'Array' ? data : (R.type(data) === 'Object' && (data.data || []))
         let list = _list.map(val => ({ ...val, id: val[this.idKey], name: val[this.nameKey] }))
-        const sourceList = list
+        let sourceList = list
         if (this.mapper) {
           list = this.mapper(list)
+          sourceList = this.mapper(sourceList)
         }
         this.loading = false
         this.isInitLoad = false
