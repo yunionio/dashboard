@@ -833,5 +833,6 @@
   "cloudenv.vmware.message": "新建vmware云账号前建议先配置网路，具体",
   "cloudenv.vmware.message.doc": "参考文档",
   "cloudenv.server.running.rate": "虚拟机开机率",
-  "cloudenv.server.unrunning": "未开机"
+  "cloudenv.server.unrunning": "未开机",
+  "cloudenv.helptool.unavailable.title.tooltip": "表示该账号云上项目列表不存在该项目，可能已经删除或在账单中存在，不影响使用"
 }
