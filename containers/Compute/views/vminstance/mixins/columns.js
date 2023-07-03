@@ -237,6 +237,9 @@ export default {
             ]
           },
         },
+        formatter: ({ row }) => {
+          return row.metadata?.os_distribution || row.metadata?.os_type || row.os_type
+        },
       },
       {
         field: 'vcpu_count',
