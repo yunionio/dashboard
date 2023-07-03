@@ -956,7 +956,7 @@
     },
     "externalproject": {
       "available": "可用",
-      "unavailable": "不可用",
+      "unavailable": "未匹配",
       "creating": "创建中",
       "deleting": "删除中",
       "unknown": "未知"
