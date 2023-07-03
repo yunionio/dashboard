@@ -119,7 +119,7 @@ export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.tit
   }
 }
 
-export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t('common.status'), statusModule, sortable = true, minWidth = 120, slotCallback, hiddenLogView = false, formatter } = {}) => {
+export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t('common.status'), statusModule, sortable = true, minWidth = 120, slotCallback, hiddenLogView = false, formatter, helpTool = {} } = {}) => {
   return {
     field,
     title,
@@ -137,10 +137,12 @@ export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t
         if (R.isNil(val) || _.get(row, field) === undefined) return '-'
         const log = <side-page-trigger class="ml-1" onTrigger={ () => vm.handleOpenSidepage(row, 'event-drawer') }>{ i18n.t('common.view_logs') }</side-page-trigger>
         const isError = field === 'status' ? !hiddenLogView && vm.handleOpenSidepage && (['invalid', 'unknown'].includes(val) || /failed|fail$/.test(val)) : false
+        const help = <a-tooltip class="ml-1" title={helpTool.title}><icon type="question" /></a-tooltip>
         return [
           <div class='d-flex align-items-center text-truncate'>
             <status status={ val } statusModule={ statusModule } />
             { isError ? log : null }
+            { helpTool.isOpen && helpTool.status?.includes(row.status) ? help : null }
           </div>,
         ]
       },

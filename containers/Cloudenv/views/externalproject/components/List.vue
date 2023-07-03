@@ -228,7 +228,15 @@ export default {
             return row.manager || '-'
           },
         },
-        getStatusTableColumn({ statusModule: 'externalproject' }),
+        getStatusTableColumn({
+          statusModule: 'externalproject',
+          sortable: false,
+          helpTool: {
+            isOpen: true,
+            title: this.$t('cloudenv.helptool.unavailable.title.tooltip'),
+            status: ['unavailable'],
+          },
+        }),
         getTagTableColumn({
           onManager: this.onManager,
           resource: 'externalprojects',
