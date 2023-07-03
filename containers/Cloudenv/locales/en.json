@@ -831,6 +831,7 @@
   "cloudenv.name.extra": "The name supports an ordered suffix placeholder'#', e.g. given name res## with quantity 2, the names of the servers after creation are res01 and res02. If the indexes have been occupoed, the index will be automatically calculated",
   "cloudenv.vmware.message": "It is recommended to configure the network before creating a new VMware cloud account. Please refer to the specific",
   "cloudenv.vmware.message.doc": "documentation for instructions.",
-  "cloudenv.server.running.rate": "虚拟机开机率",
-  "cloudenv.server.unrunning": "未开机"
+  "cloudenv.server.running.rate": "Virtual machine boot rate",
+  "cloudenv.server.unrunning": "Not running",
+  "cloudenv.helptool.unavailable.title.tooltip": "The specified project does not exist in the account’s cloud project list. It may have been deleted or it could be present in the billing information, but this does not affect its usability."
 }
