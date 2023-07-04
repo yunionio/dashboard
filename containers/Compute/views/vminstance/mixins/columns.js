@@ -238,7 +238,21 @@ export default {
           },
         },
         formatter: ({ row }) => {
-          return row.metadata?.os_distribution || row.metadata?.os_type || row.os_type
+          const dist = row.metadata.os_distribution || row.metadata.distro
+          const version = row.metadata.os_version || row.metadata.version
+          let tooltip = ''
+
+          if (dist) {
+            tooltip = version ? (version.includes(dist) ? version : `${decodeURI(dist)} ${version}`) : dist
+          } else if (row.metadata.os_type) {
+            tooltip = row.metadata.os_type
+          } else if (row.os_type) {
+            tooltip = row.os_type
+          } else {
+            tooltip = i18nLocale.t('compute.text_339')
+          }
+
+          return tooltip
         },
       },
       {
