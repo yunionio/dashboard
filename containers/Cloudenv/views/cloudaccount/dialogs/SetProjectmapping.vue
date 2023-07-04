@@ -17,7 +17,7 @@
           </a-radio-group>
         </a-form-model-item>
         <a-form-model-item
-          :label="resourceMapType === 'target_project' ? $t('scope.text_573', [$t('dictionary.project')]) : $t('cloudenv.map_project_is_no_cloudproject')">
+          :label="fd.resource_map_type === 'target_project' ? $t('cloudenv.cloudaccount.project_mapping') : $t('cloudenv.map_project_is_no_cloudproject')">
           <base-select
             v-model="fd.project_id"
             resource="projects"
@@ -40,7 +40,7 @@
               :params="projectMappingParams" />
           </a-form-model-item>
         </a-form-model-item>
-        <a-form-model-item :label="$t('cloudenv.effective_scope')" prop="effective_scope" :extra="effectiveScopeExtra">
+        <a-form-model-item v-if="fd.is_open_project_mapping" :label="$t('cloudenv.effective_scope')" prop="effective_scope" :extra="effectiveScopeExtra">
           <a-radio-group v-model="fd.effective_scope">
             <a-radio-button value="resource">{{$t('cloudenv.resource_tag')}}</a-radio-button>
             <a-radio-button value="project">{{$t('cloudenv.project_tag')}}</a-radio-button>
@@ -174,12 +174,14 @@ export default {
       if (is_open_project_mapping && project_mapping_id) {
         ret.project_mapping_id = project_mapping_id
       }
-      if (effective_scope === 'resource') {
-        ret.enable_resource_sync = true
-        ret.enable_project_sync = false
-      } else if (effective_scope === 'project') {
-        ret.enable_project_sync = true
-        ret.enable_resource_sync = false
+      if (is_open_project_mapping) {
+        if (effective_scope === 'resource') {
+          ret.enable_resource_sync = true
+          ret.enable_project_sync = false
+        } else if (effective_scope === 'project') {
+          ret.enable_project_sync = true
+          ret.enable_resource_sync = false
+        }
       }
       return ret
     },
