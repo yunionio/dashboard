@@ -180,6 +180,7 @@ export default {
       if (this.downloadType === 'local') {
         params.limit = params.export_limit
         params.details = true
+        params.force_no_paging = true
         delete params.export
         delete params.export_keys
         delete params.export_texts
