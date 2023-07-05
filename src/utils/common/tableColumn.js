@@ -130,6 +130,9 @@ export const getBillBrandTableColumn = ({ field = 'brand', title = i18n.t('table
         if (val === 'k8s' || val === 'Kubernetes') {
           return [<span title='K8S'><icon type='k8s' style="font-size:20px;" /></span>]
         }
+        if (val === 'openshift') {
+          return [<span title='OpenShift'><icon type='openshift' style="font-size:20px;" /></span>]
+        }
         return [
           <BrandIcon name={val} />,
         ]
@@ -139,6 +142,7 @@ export const getBillBrandTableColumn = ({ field = 'brand', title = i18n.t('table
       const name = _.get(row, field)
       if (!name) return emptyValue
       if (name === 'k8s' || name === 'Kubernetes') return 'K8S'
+      if (name === 'openshift') return 'OpenShift'
       const ret = brandMap[name] || {}
       if (name === 'Cloudpods') {
         const { inner_copyright, inner_copyright_en } = store.state.app.companyInfo || {}

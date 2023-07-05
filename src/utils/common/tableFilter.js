@@ -85,6 +85,7 @@ export function getBillBrandFilter ({ key, outBrands, formatter } = {}) {
   }
   if (hasSetupKey('k8s')) {
     ret.items.push({ key: 'k8s', label: 'K8S' })
+    ret.items.push({ key: 'openshift', label: 'OpenShift' })
   }
   if (formatter) ret.formatter = formatter
   return ret
