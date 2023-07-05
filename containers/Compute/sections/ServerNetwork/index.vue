@@ -135,9 +135,12 @@ export default {
   },
   data () {
     const { auto_alloc_network_count } = this.$store.getters.capability
+    const { hypervisor } = this.form.fd
     const _networkMaps = { ...NETWORK_OPTIONS_MAP }
     if (!auto_alloc_network_count || auto_alloc_network_count <= 0) {
-      delete _networkMaps.default
+      if (hypervisor !== HYPERVISORS_MAP.proxmox.key) {
+        delete _networkMaps.default
+      }
     }
     if (this.allowNetworkTypes && this.allowNetworkTypes.length) {
       this.allowNetworkTypes.forEach(key => {
@@ -166,7 +169,10 @@ export default {
   watch: {
     'form.fi.capability.auto_alloc_network_count' (val) {
       if (val === 0) {
-        this.$delete(this.networkMaps, NETWORK_OPTIONS_MAP.default.key)
+        const { hypervisor } = this.form.fd
+        if (hypervisor !== HYPERVISORS_MAP.proxmox.key) {
+          this.$delete(this.networkMaps, NETWORK_OPTIONS_MAP.default.key)
+        }
         this.form.fc.setFieldsValue({
           networkType: NETWORK_OPTIONS_MAP.manual.key,
         })
