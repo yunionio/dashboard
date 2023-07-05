@@ -119,6 +119,41 @@ export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.tit
   }
 }
 
+export const getBillBrandTableColumn = ({ field = 'brand', title = i18n.t('table.title.brand'), hidden = false, minWidth = 70, sortable = true, hideLoading = false, emptyValue } = {}) => {
+  return {
+    field,
+    title,
+    slots: {
+      default: ({ row }, h) => {
+        const val = _.get(row, field)
+        if (!val) return emptyValue
+        if (val === 'k8s' || val === 'Kubernetes') {
+          return [<span title='K8S'><icon type='k8s' style="font-size:20px;" /></span>]
+        }
+        return [
+          <BrandIcon name={val} />,
+        ]
+      },
+    },
+    formatter: ({ row }) => {
+      const name = _.get(row, field)
+      if (!name) return emptyValue
+      if (name === 'k8s' || name === 'Kubernetes') return 'K8S'
+      const ret = brandMap[name] || {}
+      if (name === 'Cloudpods') {
+        const { inner_copyright, inner_copyright_en } = store.state.app.companyInfo || {}
+        if (setting.language === 'en' && inner_copyright_en) {
+          ret.label = inner_copyright_en
+        }
+        if (setting.language === 'zh-CN' && inner_copyright) {
+          ret.label = inner_copyright
+        }
+      }
+      return ret.label
+    },
+  }
+}
+
 export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t('common.status'), statusModule, sortable = true, minWidth = 120, slotCallback, hiddenLogView = false, formatter, helpTool = {} } = {}) => {
   return {
     field,

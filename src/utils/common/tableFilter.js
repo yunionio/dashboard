@@ -3,6 +3,7 @@ import moment from 'moment'
 import store from '@/store'
 import i18n from '@/locales'
 import { Manager } from '@/utils/manager'
+import { hasSetupKey } from '@/utils/auth'
 import { HYPERVISORS_MAP } from '@/constants'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
 import setting from '@/config/setting'
@@ -73,6 +74,20 @@ export function getBrandFilter (key, outBrands) {
     multiple: true,
     items: getBrandItems(key, outBrands),
   }
+}
+
+export function getBillBrandFilter ({ key, outBrands, formatter } = {}) {
+  const ret = {
+    label: i18n.t('table.title.brand'),
+    dropdown: true,
+    multiple: true,
+    items: getBrandItems(key, outBrands),
+  }
+  if (hasSetupKey('k8s')) {
+    ret.items.push({ key: 'k8s', label: 'K8S' })
+  }
+  if (formatter) ret.formatter = formatter
+  return ret
 }
 
 // 对符合条件的系统的Brand进行二次过滤，只选择传入的支持的平台

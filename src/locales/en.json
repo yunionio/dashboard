@@ -2710,6 +2710,7 @@
     "billtask": "Sharing tasks",
     "backupstorage": "Backup storage",
     "rate": "Rate",
+    "rateset": "Ratesets",
     "isolated_device_models": "passthrough device type"
   },
   "res": {
