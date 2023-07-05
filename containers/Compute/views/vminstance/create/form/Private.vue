@@ -353,6 +353,9 @@ export default {
       if (this.isInCloudSphere) {
         return ['standard', 'customize']
       }
+      if (this.form.fd.hypervisor === HYPERVISORS_MAP.proxmox.key) {
+        return ['private']
+      }
       return []
     },
   },
