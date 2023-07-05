@@ -63,7 +63,7 @@ export default {
       const { exp } = tokenObj
       if (exp) {
         const time = new Date(exp).getTime() - new Date().getTime()
-        if (time > 0) {
+        if (time > 0 && time < 3 * 24 * 60 * 60 * 1000) {
           this.timeout = setTimeout(() => {
             this.createDialog('LoginDialog', {
               tokenExpTime: exp,
