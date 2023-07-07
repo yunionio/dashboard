@@ -45,7 +45,9 @@ export const getProjectTableColumn = ({ vm = {}, field = 'tenant', title = i18n.
         return ret
       },
     },
-    hidden,
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   }
 }
 
@@ -82,7 +84,9 @@ export const getRegionTableColumn = ({ field = 'region', title = i18n.t('res.reg
         return ret
       },
     },
-    hidden,
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   }
 }
 
@@ -101,7 +105,6 @@ export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.tit
         ]
       },
     },
-    hidden,
     formatter: ({ row }) => {
       const name = _.get(row, field)
       const ret = brandMap[name] || {}
@@ -116,10 +119,13 @@ export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.tit
       }
       return ret.label
     },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   }
 }
 
-export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t('common.status'), statusModule, sortable = true, minWidth = 120, slotCallback, hiddenLogView = false, formatter, helpTool = {} } = {}) => {
+export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t('common.status'), statusModule, sortable = true, minWidth = 120, slotCallback, hiddenLogView = false, formatter, helpTool = {}, hidden } = {}) => {
   return {
     field,
     title,
@@ -163,19 +169,23 @@ export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t
       }
       return val
     },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   }
 }
 
-export const getEnabledTableColumn = ({ field = 'enabled', title = i18n.t('table.title.enable_status'), minWidth = 90 } = {}) => {
+export const getEnabledTableColumn = ({ field = 'enabled', title = i18n.t('table.title.enable_status'), minWidth = 90, hidden } = {}) => {
   return getStatusTableColumn({
     field,
     title,
     statusModule: 'enabled',
     minWidth,
+    hidden,
   })
 }
 
-export const getPublicTableColumn = ({ field = 'share_mode', title = i18n.t('common_286') } = {}) => {
+export const getPublicTableColumn = ({ field = 'share_mode', title = i18n.t('common_286'), hidden } = {}) => {
   const shareMode = {
     account_domain: i18n.t('common_287'),
     system: i18n.t('common_288'),
@@ -189,6 +199,9 @@ export const getPublicTableColumn = ({ field = 'share_mode', title = i18n.t('com
       default: ({ row }, h) => {
         return shareMode[row[field]]
       },
+    },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
     },
   }
 }
@@ -219,6 +232,7 @@ export const getNameDescriptionTableColumn = ({
   addEncrypt,
   label,
   formatter,
+  hidden,
 } = {}) => {
   return {
     field,
@@ -278,6 +292,9 @@ export const getNameDescriptionTableColumn = ({
         return ret
       },
     },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   }
 }
 
@@ -311,11 +328,13 @@ export const getCopyWithContentTableColumn = ({
         ]
       },
     },
-    hidden,
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   }
 }
 
-export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {}, sortable = false, onlyElastic = false, noElastic = false } = {}) => {
+export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {}, sortable = false, onlyElastic = false, noElastic = false, hidden } = {}) => {
   return {
     field,
     title,
@@ -451,10 +470,13 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {}, sortab
       }
       return ret.join(', ')
     },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   }
 }
 
-export const getSwitchTableColumn = ({ field, title, change, disabled }) => {
+export const getSwitchTableColumn = ({ field, title, change, disabled, hidden }) => {
   return {
     field,
     title,
@@ -469,6 +491,9 @@ export const getSwitchTableColumn = ({ field, title, change, disabled }) => {
           <a-switch checked={ checked } disabled={ disabled } checkedChildren={i18n.t('common_292')} unCheckedChildren={i18n.t('common_293')} onChange={ change } />,
         ]
       },
+    },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
     },
   }
 }
@@ -488,6 +513,7 @@ export const getTagTableColumn = ({
   list = {},
   params = {}, // 请求已有标签传入参数
   editCheck = (row) => true,
+  hidden,
 } = {}) => {
   return {
     field,
@@ -565,10 +591,13 @@ export const getTagTableColumn = ({
       })
       return ret.length ? JSON.stringify(ret) : ''
     },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   }
 }
 
-export const isPublicTableColumn = ({ field = 'is_public', title = i18n.t('common_101') } = {}) => {
+export const isPublicTableColumn = ({ field = 'is_public', title = i18n.t('common_101'), hidden } = {}) => {
   return {
     field,
     title,
@@ -591,6 +620,9 @@ export const isPublicTableColumn = ({ field = 'is_public', title = i18n.t('commo
       }
       return text
     },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   }
 }
 export const getTimeTableColumn = ({
@@ -600,6 +632,7 @@ export const getTimeTableColumn = ({
   fromNow = false,
   minWidth = 180,
   vm = {},
+  hidden,
 } = {}) => {
   return {
     field,
@@ -617,6 +650,9 @@ export const getTimeTableColumn = ({
       if (fromNow) return row[field] ? moment(row[field]).fromNow() : '-'
       return row[field] ? moment(row[field]).format() : '-'
     },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   }
 }
 
@@ -627,6 +663,7 @@ export const getTimeRangeColumn = ({
   title = i18n.t('table.title.create_time'),
   sortable = false,
   format = 'YYYY-MM-DD HH:mm:ss',
+  hidden,
 } = {}) => {
   return {
     field,
@@ -649,6 +686,9 @@ export const getTimeRangeColumn = ({
         return i18n.t('common.permanent_effect')
       },
     },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   }
 }
 
@@ -662,6 +702,7 @@ export const getTimeDurationColumn = ({
   start_field = 'start_time',
   end_field = 'end_time',
   title = i18n.t('table.title.time_duration'),
+  hidden,
 } = {}) => {
   return {
     field,
@@ -679,6 +720,9 @@ export const getTimeDurationColumn = ({
       } else {
         return '-'
       }
+    },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
     },
   }
 }
@@ -730,7 +774,7 @@ export const getAccountTableColumn = ({
   }
 }
 
-export const getBillingTypeTableColumn = ({ field = 'billing_type', title = i18n.t('table.title.bill_type'), width = '120px' } = {}) => {
+export const getBillingTypeTableColumn = ({ field = 'billing_type', title = i18n.t('table.title.bill_type'), width = '120px', hidden } = {}) => {
   return {
     field,
     title,
@@ -754,6 +798,9 @@ export const getBillingTypeTableColumn = ({ field = 'billing_type', title = i18n
         }
         return ret
       },
+    },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
     },
   }
 }
@@ -866,13 +913,17 @@ export const getProjectDomainTableColumn = ({
   title = i18n.t('table.title.owner_domain'),
   sortable = true,
   vm = {},
+  hidden,
 } = {}) => {
   return getCopyWithContentTableColumn({
     title,
     field,
     sortable,
-    hidden: !(store.getters.isAdminMode || store.getters.isDomainMode),
     vm,
+    hidden: () => {
+      if (!(store.getters.isAdminMode || store.getters.isDomainMode)) return true
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   })
 }
 
@@ -883,6 +934,7 @@ export const getBillingTableColumn = ({
   minWidth = 120,
   showOverflow = 'ellipsis',
   hiddenSetBtn,
+  hidden,
 } = {}) => {
   return {
     title,
@@ -948,6 +1000,9 @@ export const getBillingTableColumn = ({
         return i18n.t('billingType.prepaid')
       }
     },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   }
 }
 
@@ -957,6 +1012,7 @@ export const getZone1TableColumn = ({
   idField = 'zone_1_id',
   title = i18n.t('table.title.zone_1_name'),
   sortable = true,
+  hidden,
 } = {}) => {
   return {
     field,
@@ -982,12 +1038,16 @@ export const getZone1TableColumn = ({
         ]
       },
     },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   }
 }
 
 export const getOsArch = ({
   field = 'os_arch',
   title = i18n.t('table.title.os_arch'),
+  hidden,
 } = {}) => {
   return {
     field,
@@ -1004,6 +1064,9 @@ export const getOsArch = ({
       }
       return HOST_CPU_ARCHS.x86.label
     },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   }
 }
 
@@ -1011,6 +1074,7 @@ export const getInstanceSnapshotsTableColumn = ({
   field = 'instance_snapshots',
   title = i18n.t('dictionary.instance_snapshot'),
   sortable = true,
+  hidden,
 } = {}) => {
   return {
     field,
@@ -1020,12 +1084,16 @@ export const getInstanceSnapshotsTableColumn = ({
       const extResource = _.get(row, 'ext_resource') || {}
       return _.get(extResource, field) || '-'
     },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   }
 }
 
 export const getServerMonitorAgentInstallStatus = ({
   field = 'metadata',
   title = i18n.t('compute.monitor.agent.install_status'),
+  hidden,
 } = {}) => {
   return {
     field,
@@ -1048,10 +1116,13 @@ export const getServerMonitorAgentInstallStatus = ({
         return i18n.t('compute.monitor.agent.install_status.uninstall')
       },
     },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   }
 }
 
-export const getCycleTimerColumn = ({ timeFormat = 'YYYY-MM-DD HH:mm:ss' } = {}) => {
+export const getCycleTimerColumn = ({ timeFormat = 'YYYY-MM-DD HH:mm:ss', hidden } = {}) => {
   return {
     field: 'cycle_timer',
     title: i18n.t('cloudenv.text_427'),
@@ -1084,11 +1155,14 @@ export const getCycleTimerColumn = ({ timeFormat = 'YYYY-MM-DD HH:mm:ss' } = {})
         }
       },
     },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   }
 }
 
 // 所属域
-export const getDomainColumn = ({ vm }) => {
+export const getDomainColumn = ({ vm, hidden }) => {
   return {
     field: 'domain',
     title: i18n.t('common.attribution_scope'),
@@ -1115,16 +1189,22 @@ export const getDomainColumn = ({ vm }) => {
         ]
       },
     },
-    hidden: () => store.getters.isProjectMode,
+    hidden: () => {
+      if (store.getters.isProjectMode) return true
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
   }
 }
 
-export const getCloudEnvTableColumn = ({ field = 'cloud_env', title = i18n.t('common.cloud_env') } = {}) => {
+export const getCloudEnvTableColumn = ({ field = 'cloud_env', title = i18n.t('common.cloud_env'), hidden } = {}) => {
   return {
     field,
     title,
     formatter: ({ row }) => {
       return i18n.te(`cloud_env.${row[field]}`) ? i18n.t(`cloud_env.${row[field]}`) : i18n.t('cloud_env.onpremise')
+    },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
     },
   }
 }
