@@ -27,9 +27,26 @@ export default {
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
           )
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('slb_hidden_columns.name')
+        },
       }),
-      getStatusTableColumn({ statusModule: 'lb', title: i18n.t('network.text_27'), vm: this }),
-      getTagTableColumn({ onManager: this.onManager, resource: 'lb_loadbalancers', columns: () => this.columns }),
+      getStatusTableColumn({
+        statusModule: 'lb',
+        title: i18n.t('network.text_27'),
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('slb_hidden_columns.status')
+        },
+      }),
+      getTagTableColumn({
+        onManager: this.onManager,
+        resource: 'lb_loadbalancers',
+        columns: () => this.columns,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('slb_hidden_columns.metadata')
+        },
+      }),
       {
         field: 'address',
         title: i18n.t('network.text_248'),
@@ -58,6 +75,9 @@ export default {
             </div>]
           },
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('slb_hidden_columns.address')
+        },
       },
       {
         field: 'loadbalancer_spec',
@@ -75,6 +95,9 @@ export default {
           }
           return row.loadbalancer_spec || '-'
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('slb_hidden_columns.loadbalancer_spec')
+        },
       },
       {
         field: 'vpc',
@@ -83,7 +106,10 @@ export default {
         formatter: ({ row }) => {
           return row.vpc || '-'
         },
-        hidden: this.$store.getters.isProjectMode,
+        hidden: () => {
+          if (this.$store.getters.isProjectMode) return true
+          return this.$isScopedPolicyMenuHidden('slb_hidden_columns.loadbalancer_spec')
+        },
       },
       {
         field: 'charge_type',
@@ -93,14 +119,24 @@ export default {
           if (row.charge_type) return CHARGE_TYPE[row.charge_type] || row.charge_type
           return '-'
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('slb_hidden_columns.loadbalancer_spec')
+        },
       },
-      getBrandTableColumn(),
+      getBrandTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('slb_hidden_columns.brand')
+        },
+      }),
       {
         field: 'cluster',
         title: i18n.t('network.text_19'),
         minWidth: 100,
         formatter: ({ row }) => {
           return row.cluster || '-'
+        },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('slb_hidden_columns.cluster')
         },
       },
       // {
@@ -128,8 +164,17 @@ export default {
       //     },
       //   },
       // },
-      getProjectTableColumn(),
-      getRegionTableColumn({ showOverflow: false }),
+      getProjectTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('slb_hidden_columns.tenant')
+        },
+      }),
+      getRegionTableColumn({
+        showOverflow: false,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('slb_hidden_columns.region')
+        },
+      }),
       {
         field: 'account',
         title: i18n.t('network.text_196'),
@@ -152,9 +197,16 @@ export default {
             return ret
           },
         },
-        hidden: this.$store.getters.isProjectMode,
+        hidden: () => {
+          if (this.$store.getters.isProjectMode) return true
+          return this.$isScopedPolicyMenuHidden('slb_hidden_columns.cluster')
+        },
       },
-      getTimeTableColumn(),
+      getTimeTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('slb_hidden_columns.created_at')
+        },
+      }),
     ]
   },
 }
