@@ -20,9 +20,25 @@ export default {
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
           )
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('rds_hidden_columns.name')
+        },
       }),
-      getStatusTableColumn({ statusModule: 'rds', vm: this }),
-      getTagTableColumn({ onManager: this.onManager, resource: 'rds_dbinstances', columns: () => this.columns }),
+      getStatusTableColumn({
+        statusModule: 'rds',
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('rds_hidden_columns.status')
+        },
+      }),
+      getTagTableColumn({
+        onManager: this.onManager,
+        resource: 'rds_dbinstances',
+        columns: () => this.columns,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('rds_hidden_columns.metadata')
+        },
+      }),
       {
         field: 'category',
         title: i18n.t('db.text_61'),
@@ -31,6 +47,9 @@ export default {
           default: ({ row }) => {
             return DBINSTANCE_CATEGORY[row.category] || row.category || '-'
           },
+        },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('rds_hidden_columns.category')
         },
       },
       {
@@ -49,6 +68,9 @@ export default {
             return i18n.t('db.text_151', [row.vcpu_count, sizestr(row.vmem_size_mb, 'M', 1024)])
           },
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('rds_hidden_columns.vcpu_count')
+        },
       },
       {
         field: 'engine',
@@ -58,6 +80,9 @@ export default {
           default: ({ row }) => {
             return `${row.engine} ${row.engine_version}`
           },
+        },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('rds_hidden_columns.engine')
         },
       },
       {
@@ -99,6 +124,9 @@ export default {
             ]
           },
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('rds_hidden_columns.internal_connection_str')
+        },
       },
       {
         title: i18n.t('db.text_64'),
@@ -107,11 +135,31 @@ export default {
         slots: {
           default: ({ row }) => row.port || '-',
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('rds_hidden_columns.port')
+        },
       },
-      getBillingTableColumn({ vm: this }),
-      getBrandTableColumn(),
-      getAccountTableColumn(),
-      getProjectTableColumn(),
+      getBillingTableColumn({
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('rds_hidden_columns.billing_type')
+        },
+      }),
+      getBrandTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('rds_hidden_columns.brand')
+        },
+      }),
+      getAccountTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('rds_hidden_columns.account')
+        },
+      }),
+      getProjectTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('rds_hidden_columns.tenant')
+        },
+      }),
       {
         field: 'region',
         minWidth: 120,
@@ -135,8 +183,15 @@ export default {
             return ret
           },
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('rds_hidden_columns.region')
+        },
       },
-      getTimeTableColumn(),
+      getTimeTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('rds_hidden_columns.created_at')
+        },
+      }),
     ]
   },
 }
