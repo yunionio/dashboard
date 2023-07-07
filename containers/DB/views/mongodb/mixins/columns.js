@@ -17,9 +17,25 @@ export default {
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name || row.external_id }</side-page-trigger>
           )
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.name')
+        },
       }),
-      getStatusTableColumn({ statusModule: 'mongodb', vm: this }),
-      getTagTableColumn({ onManager: this.onManager, resource: 'mongodbs', columns: () => this.columns }),
+      getStatusTableColumn({
+        statusModule: 'mongodb',
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.status')
+        },
+      }),
+      getTagTableColumn({
+        onManager: this.onManager,
+        resource: 'mongodbs',
+        columns: () => this.columns,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.metadata')
+        },
+      }),
       {
         field: 'instance_type',
         title: this.$t('cloudenv.text_459'),
@@ -36,6 +52,9 @@ export default {
             return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
           },
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.instance_type')
+        },
       },
       {
         field: 'ip_addr',
@@ -50,6 +69,9 @@ export default {
             return ret
           },
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.ip_addr')
+        },
       },
       {
         field: 'engine_version',
@@ -63,11 +85,30 @@ export default {
             return ret
           },
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.engine_version')
+        },
       },
-      getBrandTableColumn(),
-      getAccountTableColumn(),
-      getProjectTableColumn(),
-      getRegionTableColumn(),
+      getBrandTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.brand')
+        },
+      }),
+      getAccountTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.account')
+        },
+      }),
+      getProjectTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.tenant')
+        },
+      }),
+      getRegionTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.region')
+        },
+      }),
     ]
   },
 }
