@@ -17,9 +17,25 @@ export default {
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name || row.external_id }</side-page-trigger>
           )
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('redis_hidden_columns.name')
+        },
       }),
-      getStatusTableColumn({ statusModule: 'redis', vm: this }),
-      getTagTableColumn({ onManager: this.onManager, resource: 'redis_elasticcaches', columns: () => this.columns }),
+      getStatusTableColumn({
+        statusModule: 'redis',
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('redis_hidden_columns.status')
+        },
+      }),
+      getTagTableColumn({
+        onManager: this.onManager,
+        resource: 'redis_elasticcaches',
+        columns: () => this.columns,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('redis_hidden_columns.metadata')
+        },
+      }),
       {
         field: 'arch_type',
         title: i18n.t('db.text_119'),
@@ -29,6 +45,9 @@ export default {
             const type = row.local_category || row.arch_type
             return ENGINE_ARCH[type] || type
           },
+        },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('redis_hidden_columns.arch_type')
         },
       },
       {
@@ -40,6 +59,9 @@ export default {
             return sizestr(row.capacity_mb, 'M', 1024)
           },
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('redis_hidden_columns.instance_type')
+        },
       },
       {
         field: 'engine',
@@ -50,6 +72,9 @@ export default {
             return `${row.engine} ${row.engine_version}`
           },
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('redis_hidden_columns.engine')
+        },
       },
       {
         field: 'password',
@@ -59,6 +84,9 @@ export default {
           default: ({ row }) => {
             return [<PasswordFetcher serverId={row.id} resourceType='elasticcaches' />]
           },
+        },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('redis_hidden_columns.password')
         },
       },
       {
@@ -89,6 +117,9 @@ export default {
             ]
           },
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('redis_hidden_columns.private_dns')
+        },
       },
       {
         field: 'private_connect_port',
@@ -109,13 +140,41 @@ export default {
             return ports
           },
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('redis_hidden_columns.private_connect_port')
+        },
       },
-      getBillingTableColumn({ vm: this }),
-      getBrandTableColumn(),
-      getAccountTableColumn(),
-      getProjectTableColumn(),
-      getRegionTableColumn(),
-      getTimeTableColumn(),
+      getBillingTableColumn({
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('redis_hidden_columns.billing_type')
+        },
+      }),
+      getBrandTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('redis_hidden_columns.brand')
+        },
+      }),
+      getAccountTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('redis_hidden_columns.account')
+        },
+      }),
+      getProjectTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('redis_hidden_columns.tenant')
+        },
+      }),
+      getRegionTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('redis_hidden_columns.region')
+        },
+      }),
+      getTimeTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('redis_hidden_columns.created_at')
+        },
+      }),
     ]
   },
 }
