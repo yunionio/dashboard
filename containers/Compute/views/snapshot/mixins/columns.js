@@ -27,16 +27,39 @@ export default {
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
           )
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.name')
+        },
       }),
-      getStatusTableColumn({ statusModule: 'snapshot', vm: this }),
-      getTagTableColumn({ onManager: this.onManager, resource: 'snapshots', columns: () => this.columns }),
-      getOsArch(),
+      getStatusTableColumn({
+        statusModule: 'snapshot',
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.status')
+        },
+      }),
+      getTagTableColumn({
+        onManager: this.onManager,
+        resource: 'snapshots',
+        columns: () => this.columns,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.metadata')
+        },
+      }),
+      getOsArch({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.os_arch')
+        },
+      }),
       {
         field: 'size',
         title: i18n.t('table.title.snapshot_size'),
         width: 70,
         formatter: ({ row }) => {
           return sizestr(row.size, 'M', 1024)
+        },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.size')
         },
       },
       {
@@ -45,6 +68,9 @@ export default {
         width: 70,
         formatter: ({ row }) => {
           return DISK_TYPES[row.disk_type] || row.disk_type
+        },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.disk_type')
         },
       },
       getCopyWithContentTableColumn({
@@ -55,8 +81,16 @@ export default {
           if (this.isPreLoad && !row.disk_name) return [<data-loading />]
           return row.disk_name
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.disk_name')
+        },
       }),
-      getStorageTypeTableColumn({ vm: this }),
+      getStorageTypeTableColumn({
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.storage_type')
+        },
+      }),
       {
         field: 'guest',
         title: i18n.t('res.server'),
@@ -73,12 +107,37 @@ export default {
             ]
           },
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.guest')
+        },
       },
-      getBrandTableColumn(),
-      getAccountTableColumn({ vm: this }),
-      getTimeTableColumn(),
-      getProjectTableColumn(),
-      getRegionTableColumn({ vm: this }),
+      getBrandTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.brand')
+        },
+      }),
+      getAccountTableColumn({
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.account')
+        },
+      }),
+      getTimeTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.created_at')
+        },
+      }),
+      getProjectTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.tenant')
+        },
+      }),
+      getRegionTableColumn({
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.region')
+        },
+      }),
     ]
   },
 }
