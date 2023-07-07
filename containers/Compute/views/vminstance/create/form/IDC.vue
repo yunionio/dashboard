@@ -467,12 +467,12 @@ export default {
       return show
     },
     systemdiskSizeDisabled () {
-      if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
-        const vmLocalImageType = [IMAGES_TYPE_MAP.vmware.key]
-        if (vmLocalImageType.includes(this.form.fd.imageType)) {
-          return true
-        }
-      }
+      // if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
+      //   const vmLocalImageType = [IMAGES_TYPE_MAP.vmware.key]
+      //   if (vmLocalImageType.includes(this.form.fd.imageType)) {
+      //     return true
+      //   }
+      // }
       return false
     },
     systemdiskDefaultSize () {
