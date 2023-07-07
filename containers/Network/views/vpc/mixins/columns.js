@@ -23,24 +23,42 @@ export default {
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
           )
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('vpc_hidden_columns.name')
+        },
       }),
-      getStatusTableColumn({ statusModule: 'vpc', vm: this }),
+      getStatusTableColumn({
+        statusModule: 'vpc',
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('vpc_hidden_columns.status')
+        },
+      }),
       getTagTableColumn({
         onManager: this.onManager,
         resource: 'vpcs',
         columns: () => this.columns,
         editCheck: (row) => (row.provider || '').toLowerCase() !== 'bingocloud',
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('vpc_hidden_columns.metadata')
+        },
       }),
       getCopyWithContentTableColumn({
         field: 'cidr_block',
         title: i18n.t('network.text_244'),
         sortable: true,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('vpc_hidden_columns.cidr_block')
+        },
       }),
       {
         field: 'wire_count',
         title: i18n.t('network.text_571'),
         width: 100,
         sortable: true,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('vpc_hidden_columns.wire_count')
+        },
       },
       {
         field: 'network_count',
@@ -55,13 +73,42 @@ export default {
             ]
           },
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('vpc_hidden_columns.network_count')
+        },
       },
-      getBrandTableColumn(),
-      getAccountTableColumn(),
-      getPublicScopeTableColumn({ vm: this, resource: 'vpcs' }),
-      getProjectDomainTableColumn(),
-      getRegionTableColumn(),
-      getTimeTableColumn(),
+      getBrandTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('vpc_hidden_columns.brand')
+        },
+      }),
+      getAccountTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('vpc_hidden_columns.account')
+        },
+      }),
+      getPublicScopeTableColumn({
+        vm: this,
+        resource: 'vpcs',
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('vpc_hidden_columns.public_scope')
+        },
+      }),
+      getProjectDomainTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('vpc_hidden_columns.project_domain')
+        },
+      }),
+      getRegionTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('vpc_hidden_columns.region')
+        },
+      }),
+      getTimeTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('vpc_hidden_columns.created_at')
+        },
+      }),
     ]
   },
 }
