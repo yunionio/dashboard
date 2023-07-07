@@ -1313,6 +1313,7 @@ export default {
       }
 
       this.columns.map(col => {
+        console.log(col.hidden)
         if (col.field === 'ips') {
           ret.items.push(getIpsTableColumn({ field: 'elastic_ip', title: this.$t('common.eip'), vm: this, onlyElastic: true }))
           ret.items.push(getIpsTableColumn({ field: 'ip', title: 'IP', vm: this, noElastic: true }))
