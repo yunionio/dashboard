@@ -22,13 +22,32 @@ export default {
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
           )
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('eip_hidden_columns.name')
+        },
       }),
-      getStatusTableColumn({ statusModule: 'eip', vm: this }),
-      getTagTableColumn({ onManager: this.onManager, resource: 'eips', columns: () => this.columns }),
+      getStatusTableColumn({
+        statusModule: 'eip',
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('eip_hidden_columns.status')
+        },
+      }),
+      getTagTableColumn({
+        onManager: this.onManager,
+        resource: 'eips',
+        columns: () => this.columns,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('eip_hidden_columns.metadata')
+        },
+      }),
       {
         field: 'ip_addr',
         title: 'IP',
         width: 140,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('eip_hidden_columns.ip_addr')
+        },
       },
       {
         field: 'bandwidth',
@@ -38,6 +57,9 @@ export default {
         formatter: ({ row, cellValue }) => {
           if (!row.bandwidth) return '-'
           return sizestr(cellValue, 'M', 1024)
+        },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('eip_hidden_columns.bandwidth')
         },
       },
       {
@@ -53,8 +75,15 @@ export default {
           }
           return cellValue
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('eip_hidden_columns.charge_type')
+        },
       },
-      getBrandTableColumn(),
+      getBrandTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('eip_hidden_columns.brand')
+        },
+      }),
       {
         field: 'account',
         title: i18n.t('network.text_196'),
@@ -78,12 +107,33 @@ export default {
             return ret
           },
         },
-        hidden: this.$store.getters.isProjectMode,
+        hidden: () => {
+          if (this.$store.getters.isProjectMode) return true
+          return this.$isScopedPolicyMenuHidden('eip_hidden_columns.name')
+        },
       },
-      getAssociateNameTableColumn({ vm: this }),
-      getProjectTableColumn(),
-      getRegionTableColumn({ vm: this }),
-      getTimeTableColumn(),
+      getAssociateNameTableColumn({
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('eip_hidden_columns.associate_name')
+        },
+      }),
+      getProjectTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('eip_hidden_columns.tenant')
+        },
+      }),
+      getRegionTableColumn({
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('eip_hidden_columns.region')
+        },
+      }),
+      getTimeTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('eip_hidden_columns.created_at')
+        },
+      }),
     ]
   },
 }
