@@ -97,6 +97,9 @@ export default {
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
           )
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.name')
+        },
       }),
       getStatusTableColumn({
         minWidth: 180,
@@ -119,11 +122,17 @@ export default {
             </div>,
           ]
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.status')
+        },
       }),
       getStatusTableColumn({
         field: 'power_states',
         title: this.$t('compute.power_states'),
         statusModule: 'server',
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.power_states')
+        },
       }),
       {
         field: 'is_gpu',
@@ -154,6 +163,9 @@ export default {
           }
           return tooltip
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.is_gpu')
+        },
       },
       getTagTableColumn({
         onManager: this.onManager,
@@ -161,8 +173,19 @@ export default {
         columns: () => this.columns,
         tipName: this.$t('dictionary.server'),
         editCheck: (row) => row.hypervisor !== typeClouds.hypervisorMap.bingocloud.key,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.metadata')
+        },
       }),
-      getIpsTableColumn({ field: 'ips', title: 'IP', vm: this, sortable: true }),
+      getIpsTableColumn({
+        field: 'ips',
+        title: 'IP',
+        vm: this,
+        sortable: true,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.ips')
+        },
+      }),
       {
         field: 'macs',
         title: 'MAC',
@@ -177,8 +200,15 @@ export default {
             return []
           },
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.macs')
+        },
       },
-      getOsArch(),
+      getOsArch({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.os_arch')
+        },
+      }),
       {
         field: 'instance_type',
         title: i18nLocale.t('table.title.flavor'),
@@ -202,6 +232,9 @@ export default {
           }
           const config = row.vcpu_count + 'C' + (row.vmem_size / 1024) + 'G' + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
           return ret.concat(config).join(', ')
+        },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.instance_type')
         },
       },
       {
@@ -254,6 +287,9 @@ export default {
 
           return tooltip
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.os_type')
+        },
       },
       {
         field: 'vcpu_count',
@@ -267,6 +303,9 @@ export default {
             }
             return []
           },
+        },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.vcpu_count')
         },
       },
       {
@@ -290,6 +329,9 @@ export default {
           }
           return ''
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.vmem_size')
+        },
       },
       {
         field: 'disk',
@@ -307,6 +349,9 @@ export default {
           if (!row.disk) return ''
           const config = row.disk ? sizestr(row.disk, 'M', 1024) : ''
           return config
+        },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.disk')
         },
       },
       {
@@ -363,6 +408,9 @@ export default {
             return [<PasswordFetcher serverId={ row.id } resourceType='servers' />]
           },
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.password')
+        },
       },
       {
         field: 'secgroups',
@@ -378,25 +426,46 @@ export default {
         formatter: ({ row }) => {
           return row.secgroups?.map(item => item.name).join(',')
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.secgroups')
+        },
       },
       getCopyWithContentTableColumn({
         field: 'vpc',
         title: 'VPC',
         hideField: true,
-        hidden: () => this.$store.getters.isProjectMode,
         slotCallback: (row) => {
           if (this.isPreLoad && !row.vpc) return [<data-loading />]
           return row.vpc
         },
+        hidden: () => {
+          if (this.$store.getters.isProjectMode) return true
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.vpc')
+        },
       }),
-      getBillingTableColumn({ vm: this, hiddenSetBtn: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_cancel_expire') }),
-      getBrandTableColumn(),
+      getBillingTableColumn({
+        vm: this,
+        hiddenSetBtn: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_cancel_expire'),
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.billing_type')
+        },
+      }),
+      getBrandTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.brand')
+        },
+      }),
       // getCopyWithContentTableColumn({
       //   field: 'account',
       //   title: i18nLocale.t('res.cloudaccount'),
       //   hidden: () => this.$store.getters.isProjectMode,
       // }),
-      getAccountTableColumn({ vm: this }),
+      getAccountTableColumn({
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.account')
+        },
+      }),
       {
         field: 'host',
         title: i18nLocale.t('res.host'),
@@ -421,11 +490,26 @@ export default {
           }
           return row.host || ''
         },
-        hidden: () => this.$store.getters.isProjectMode,
+        hidden: () => {
+          if (this.$store.getters.isProjectMode) return true
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.host')
+        },
       },
-      getProjectTableColumn(),
-      getRegionTableColumn(),
-      getTimeTableColumn(),
+      getProjectTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.tenant')
+        },
+      }),
+      getRegionTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.region')
+        },
+      }),
+      getTimeTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.created_at')
+        },
+      }),
     ]
     if (this.hideColumnFields) {
       this.columns = columns.filter((column) => { return !this.hideColumnFields.includes(column.field) })
