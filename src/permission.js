@@ -95,7 +95,20 @@ router.beforeEach(async (to, from, next) => {
     !hasProfile && await store.dispatch('profile/get')
     !hasStats && await store.dispatch('auth/getStats')
     !hasScopePolicy && await store.dispatch('scopedPolicy/get', {
-      category: ['sub_hidden_menus', 'document_configured_callback_address'],
+      category: [
+        'sub_hidden_menus',
+        'document_configured_callback_address',
+        'server_hidden_columns',
+        'disk_hidden_columns',
+        'snapshot_hidden_columns',
+        'eip_hidden_columns',
+        'oss_hidden_columns',
+        'rds_hidden_columns',
+        'redis_hidden_columns',
+        'slb_hidden_columns',
+        'mongodb_hidden_columns',
+        'vpc_hidden_columns',
+      ],
     })
     !hasGlobalConfig && await store.dispatch('common/fetchGlobalConfig')
     !hasGlobalServices && await store.dispatch('common/fetchGlobalServices')
