@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-alert type="info" class="mb-2">
+    <a-alert v-if="!isCE()" type="info" class="mb-2">
       <template #message>
         <div>{{ $t('system.text_565') }}</div>
         <div><span class="text-color-help mr-2">* EntityId:</span>{{ serverUrl }}<copy class="ml-1" :message="serverUrl" /></div>
@@ -27,7 +27,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { getEnabledFilter, getStatusFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
-import { getRequestT } from '@/utils/utils'
+import { getRequestT, isCE } from '@/utils/utils'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -43,6 +43,7 @@ export default {
   },
   data () {
     return {
+      isCE,
       serverUrl: '',
       list: this.$list.createList(this, {
         id: this.id,
