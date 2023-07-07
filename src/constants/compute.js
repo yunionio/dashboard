@@ -37,7 +37,7 @@ export const STORAGE_TYPES = {
       min: 5, // 数据盘或者新建云硬盘的取值范围【G】
       max: 2000, // 数据盘或者新建云硬盘的取值范围【G】
       sysMin: 20, // 系统盘取值范围【G】
-      sysMax: 500, // 系统盘取值范围【G】
+      sysMax: 2000, // 系统盘取值范围【G】
     },
     cloud_ssd: {
       label: i18n.t('common.storage.cloudssd'),
@@ -45,7 +45,7 @@ export const STORAGE_TYPES = {
       min: 20,
       max: 32768,
       sysMin: 20,
-      sysMax: 500,
+      sysMax: 2 * 1024,
     },
     cloud_essd: {
       label: i18n.t('common.storage.cloudessd'),
@@ -53,39 +53,39 @@ export const STORAGE_TYPES = {
       min: 20,
       max: 32768,
       sysMin: 20,
-      sysMax: 500,
+      sysMax: 2 * 1024,
     },
     cloud_essd_pl0: {
       label: i18n.t('common.storage.cloudessdpl0'),
       key: 'cloud_essd_pl0',
       min: 40,
       max: 32768,
-      sysMin: 20,
-      sysMax: 500,
+      sysMin: 40,
+      sysMax: 2 * 1024,
     },
     cloud_essd_pl2: {
       label: i18n.t('common.storage.cloudessdpl2'),
       key: 'cloud_essd_pl2',
       min: 461,
       max: 32768,
-      sysMin: 20,
-      sysMax: 500,
+      sysMin: 461,
+      sysMax: 2 * 1024,
     },
     cloud_essd_pl3: {
       label: i18n.t('common.storage.cloudessdpl3'),
       key: 'cloud_essd_pl3',
       min: 1261,
       max: 32768,
-      sysMin: 20,
-      sysMax: 500,
+      sysMin: 1261,
+      sysMax: 2 * 1024,
     },
     cloud_auto: {
       label: i18n.t('common.storage.cloud_auto'),
       key: 'cloud_auto',
       min: 40,
       max: 32768,
-      sysMin: 20,
-      sysMax: 500,
+      sysMin: 40,
+      sysMax: 2 * 1024,
     },
     cloud_efficiency: {
       label: i18n.t('common.storage.cloudefficiency'),
@@ -94,7 +94,7 @@ export const STORAGE_TYPES = {
       max: 32768,
       default: true,
       sysMin: 20,
-      sysMax: 500,
+      sysMax: 2 * 1024,
     },
     ephemeral_ssd: {
       label: i18n.t('common.storage.ephemeralssd'),
