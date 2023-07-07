@@ -34,6 +34,9 @@ export default {
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
           )
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.name')
+        },
       }),
       // getStatusTableColumn({ statusModule: 'disk' }),
       getTagTableColumn({
@@ -41,6 +44,9 @@ export default {
         resource: 'disks',
         columns: () => this.columns,
         editCheck: (row) => (row.provider || '').toLowerCase() !== 'bingocloud',
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.metadata')
+        },
       }),
       {
         field: 'disk_size',
@@ -50,6 +56,9 @@ export default {
         formatter: ({ cellValue }) => {
           return sizestr(cellValue, 'M', 1024)
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.disk_size')
+        },
       },
       {
         field: 'iops',
@@ -57,13 +66,23 @@ export default {
         formatter: ({ row }) => {
           return row.iops || '-'
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.iops')
+        },
       },
       {
         field: 'disk_format',
         title: i18n.t('table.title.disk_format'),
         width: 70,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.disk_format')
+        },
       },
-      getStorageTypeTableColumn(),
+      getStorageTypeTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.storage_type')
+        },
+      }),
       {
         field: 'disk_type',
         title: i18n.t('table.title.disk_type'),
@@ -71,8 +90,16 @@ export default {
         formatter: ({ cellValue }) => {
           return cellValue === 'sys' ? i18n.t('compute.text_49') : i18n.t('compute.text_50')
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.disk_type')
+        },
       },
-      getUnusedTableColumn({ vm: this }),
+      getUnusedTableColumn({
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.guest_count')
+        },
+      }),
       {
         field: 'guest',
         title: this.$t('res.server'),
@@ -97,6 +124,9 @@ export default {
             ]
           },
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.guest')
+        },
       },
       getCopyWithContentTableColumn({
         field: 'storage',
@@ -106,14 +136,49 @@ export default {
           if (this.isPreLoad && !row.storage) return [<data-loading />]
           return row.storage
         },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.storage')
+        },
       }),
-      getTimeTableColumn(),
-      getBrandTableColumn(),
-      getRegionTableColumn({ vm: this }),
-      getBillingTypeTableColumn(),
-      getStatusTableColumn({ statusModule: 'disk', vm: this }),
-      getProjectTableColumn(),
-      getAccountTableColumn({ vm: this }),
+      getTimeTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.created_at')
+        },
+      }),
+      getBrandTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.brand')
+        },
+      }),
+      getRegionTableColumn({
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.region')
+        },
+      }),
+      getBillingTypeTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.billing_type')
+        },
+      }),
+      getStatusTableColumn({
+        statusModule: 'disk',
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.status')
+        },
+      }),
+      getProjectTableColumn({
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.tenant')
+        },
+      }),
+      getAccountTableColumn({
+        vm: this,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.account')
+        },
+      }),
       {
         field: 'medium_type',
         title: i18n.t('table.title.disk_medium_type'),
@@ -124,7 +189,10 @@ export default {
             return MEDIUM_MAP[row.medium_type]
           },
         },
-        hidden: this.hiddenColumns.includes('medium_type'),
+        hidden: () => {
+          if (this.hiddenColumns.includes('medium_type')) return true
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.storage')
+        },
       },
     ]
   },
