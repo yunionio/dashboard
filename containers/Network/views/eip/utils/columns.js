@@ -1,7 +1,8 @@
+import * as R from 'ramda'
 import i18n from '@/locales'
 import { ASSOCIATE_MAP } from '../constants'
 
-export const getAssociateNameTableColumn = ({ vm = {} } = {}) => {
+export const getAssociateNameTableColumn = ({ vm = {}, hidden } = {}) => {
   return {
     field: 'associate_name',
     title: i18n.t('network.text_197'),
@@ -23,6 +24,9 @@ export const getAssociateNameTableColumn = ({ vm = {} } = {}) => {
         }
         return '-'
       },
+    },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
     },
   }
 }
