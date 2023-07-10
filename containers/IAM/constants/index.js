@@ -40,8 +40,8 @@ export const NOTIFY_TOPIC_NAMES_MAP = {
   'cloud account sync status': i18n.t('system.notify.name.cloud_account_sync_status'),
   'service abnormal': i18n.t('system.notify.name.service_abnormal'),
   'server panicked': i18n.t('iam.notify.server_panicked'),
-  'resource release': '资源（含包年包月）即将到期释放发送通知',
-  'password expire': '密码即将过期通知',
+  'resource release': i18n.t('iam.notify_topic.resource_release'),
+  'password expire': i18n.t('iam.notify_topic.password_expire'),
 }
 
 export const NOTIFY_ROLE_SCOPES = [
