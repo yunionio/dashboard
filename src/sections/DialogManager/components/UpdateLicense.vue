@@ -38,7 +38,7 @@
           <div slot="extra"  v-if="license || email">
             <div class="mt-2 mb-1">{{$t('common_126')}}</div>
             <ul>
-              <li v-if="license">{{$t('common_127')}}<help-link :href="license">{{$t('common_128')}}</help-link></li>
+              <!-- <li v-if="license">{{$t('common_127')}}<help-link :href="license">{{$t('common_128')}}</help-link></li> -->
               <li v-if="email">{{$t('common_129')}}<a :href="`mailto:${email}`">{{ email }}</a>{{$t('common_130')}}</li>
             </ul>
           </div>
