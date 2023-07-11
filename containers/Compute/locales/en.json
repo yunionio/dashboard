@@ -1674,5 +1674,6 @@
   "compute.secgroup.remove_secgroup.single_actions.tooltip": "Please keep at least one security group, this action is not supported",
   "compute.pci.add_transparent_device": "Add transparent device",
   "compute.host.open_page_size.tooltip": "This operation is not supported by the host when large pages are enabled",
-  "compute.disk.ssd_extra": "When enabled, this disk will appear as an SSD disk within the virtual machine, with a rotational field value of 0 and no relation to the physical disk medium information."
+  "compute.disk.ssd_extra": "When enabled, this disk will appear as an SSD disk within the virtual machine, with a rotational field value of 0 and no relation to the physical disk medium information.",
+  "compute.reset_password.qga_tooltip": "The virtual machine QGA is not installed. Online password modification is not supported. Please check and try again or perform the operation after shutting down."
 }

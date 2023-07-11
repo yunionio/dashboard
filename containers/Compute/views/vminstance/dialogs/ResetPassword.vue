@@ -24,10 +24,13 @@
             <a-input type="number" v-decorator="decorators.mfa" />
           </a-form-item>
         </template>
+        <p v-if="!checkQgaOK" class="error-color">{{ $t('compute.reset_password.qga_tooltip') }}</p>
       </a-form>
     </div>
     <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+      <a-tooltip :title="checkQgaOK ? undefined : $t('compute.reset_password.qga_tooltip')">
+        <a-button :class="{ 'mr-1': !checkQgaOK }" type="primary" @click="handleConfirm" :loading="loading" :disabled="!checkQgaOK">{{ $t('dialog.ok') }}</a-button>
+      </a-tooltip>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
@@ -118,6 +121,7 @@ export default {
         },
       },
       qgaDoc: getDoc(DOC_MAP.QGA),
+      checkQgaOK: true,
     }
   },
   computed: {
@@ -143,7 +147,29 @@ export default {
       return this.selectedItems?.length === 1
     },
   },
+  created () {
+    this.isSingle && this.fetchQgaPing()
+  },
   methods: {
+    async fetchQgaPing () {
+      try {
+        const data = await new this.$Manager('servers', 'v2').performAction({
+          id: this.selectedItem.id,
+          action: 'qga-ping',
+          data: {
+            timeout: 100,
+          },
+        })
+
+        if (data.code) {
+          this.checkQgaOK = false
+        } else {
+          this.checkQgaOK = true
+        }
+      } catch (error) {
+        this.checkQgaOK = false
+      }
+    },
     async handleConfirm () {
       this.loading = true
       try {
