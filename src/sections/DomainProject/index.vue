@@ -44,6 +44,7 @@
               dropdownClassName: 'oc-select-dropdown',
               labelInValueKeyName: 'key',
             }"
+            :beforeDefaultSelectCallBack="beforeProjectDefaultSelectCallBack"
             @change="projectChange"
             @update:resList="updateProjectList">
             <template #optionLabelTemplate="{ item }">
@@ -59,7 +60,7 @@
 <script>
 import * as R from 'ramda'
 import _ from 'lodash'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'DomainProject',
@@ -107,6 +108,10 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
+    ...mapState('storage', {
+      domain: state => state.domain,
+      project: state => state.project,
+    }),
     projectParams () {
       const ret = {
         scope: this.scope,
@@ -136,6 +141,10 @@ export default {
           defaultDomain = { key: initialValue.key, label: initialValue.label }
         } else if (R.is(String, initialValue) && initialValue) {
           defaultDomain = { key: initialValue }
+        }
+        const domainData = await this.$store.dispatch('storage/getDomainById', this.domain)
+        if (domainData) {
+          defaultDomain = this.domain
         }
         const projectInitialValue = _.get(this.decorators, 'project[1].initialValue')
         const domainChange = () => {
@@ -246,6 +255,7 @@ export default {
      * domain {Object|String}
      */
     domainChange (domain) {
+      this.$store.commit('storage/SET_DOMAIN', domain)
       const domainId = R.is(Object, domain) ? domain.key : domain
       if (this.labelInValue) {
         this.$emit('update:domain', domain)
@@ -258,12 +268,25 @@ export default {
      * project {Object|String}
      */
     projectChange (project) {
+      this.$store.commit('storage/SET_PROJECT', project)
       const projectId = R.is(Object, project) ? project.key : project
       this.projectData = project
       if (this.labelInValue) {
         this.$emit('update:project', project)
       } else {
         this.$emit('update:project', projectId)
+      }
+    },
+    async beforeProjectDefaultSelectCallBack () {
+      try {
+        if (!this.project?.key) return true
+        const project = await this.$store.dispatch('storage/getProjectById', this.project)
+        if (project) {
+          this._setInitProject({ key: project.id, label: project.name })
+          return false
+        }
+      } catch (error) {
+        return true
       }
     },
   },
