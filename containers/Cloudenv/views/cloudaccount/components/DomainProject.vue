@@ -50,7 +50,7 @@
         </template>
       </base-select>
     </a-form-item>
-    <a-form-item :label="$t('cloudenv.text_580')">
+    <a-form-item :label="$t('cloudenv.text_580')" class="mb-0">
       <a-switch v-decorator="extraDecorators.is_open_project_mapping" :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" @change="openProjectMappingChange" />
       <a-form-item>
         <base-select

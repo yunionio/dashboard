@@ -835,5 +835,7 @@
   "cloudenv.server.running.rate": "虚拟机开机率",
   "cloudenv.server.unrunning": "未开机",
   "cloudenv.helptool.unavailable.title.tooltip": "表示该账号云上项目列表不存在该项目，可能已经删除或在账单中存在，不影响使用",
-  "cloudenv.cloudaccount.project_mapping": "资源归属项目到"
+  "cloudenv.cloudaccount.project_mapping": "资源归属项目到",
+  "cloudenv.block_resources": "屏蔽同步资源",
+  "cloudenv.block_resources_type": "屏蔽资源类型"
 }
