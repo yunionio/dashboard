@@ -211,7 +211,8 @@ export const getBlockResourceTableColumn = () => {
     showOverflow: 'title',
     slots: {
       default: ({ row }, h) => {
-        const skip_sync_resources = row.skip_sync_resources || ['eips', 'snapshots']
+        if (!row.skip_sync_resources) return '-'
+        const skip_sync_resources = row.skip_sync_resources || []
         return skip_sync_resources.map(item => {
           return <a-tag>{ BLOCKED_RESOURCES_MAP[item].label }</a-tag>
         })
