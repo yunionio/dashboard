@@ -27,6 +27,7 @@
         <a-input v-decorator="decorators.crm_biz_id" :placeholder="$t('cloudenv.crm_biz_id.tips')" />
       </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
+      <blocked-resources :decorators="{ isOpenBlockedResources: decorators.isOpenBlockedResources, blockedResources: decorators.blockedResources }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
       <a-form-item :label="$t('cloudaccount.create_form.saml_user_label')" v-show="!isNotSupportSaml">
         <a-switch :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" v-decorator="decorators.saml_auth" />
