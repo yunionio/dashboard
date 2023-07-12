@@ -168,9 +168,21 @@ const openResourceColumns = [
 
 const getOpenResourceDatas = ({ row }) => {
   const rs = getParamter(row.variables)
-  const { openResourceInfo = {} } = rs
-  const { resources = [] } = openResourceInfo
-  return resources
+  const { process_type = { id: '1' } } = rs
+  if (process_type.id === '1') {
+    const { openResourceInfo = {} } = rs
+    const { resources = [] } = openResourceInfo
+    return resources
+  } else if (process_type.id === '11') {
+    const { changeResourceInfo = {} } = rs
+    const { resources = [] } = changeResourceInfo
+    return resources
+  } else if (process_type.id === '21') {
+    const { deleteResourceInfo = {} } = rs
+    const { resources = [] } = deleteResourceInfo
+    return resources
+  }
+  return []
 }
 
 export const getOpenResourceTableColumns = () => {
@@ -185,9 +197,7 @@ export const getOpenResourceTableColumns = () => {
     slots: {
       default: ({ row }, h) => {
         if (row.process_instance?.process_definition_key === 'apply-internal-resource' || row.process_definition_key === 'apply-internal-resource') {
-          const rs = getParamter(row.variables)
-          const { openResourceInfo = {} } = rs
-          const { resources = [] } = openResourceInfo
+          const resources = getOpenResourceDatas({ row })
           return resources.length
         } else {
           return '-'
