@@ -136,9 +136,11 @@ export default {
       return ''
     },
     projectParams () {
+      const { projectParams = {} } = this.params
       return {
         scope: this.$store.getters.scope,
         limit: 20,
+        ...projectParams,
       }
     },
     openProjectMapping () {
