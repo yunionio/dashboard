@@ -123,7 +123,7 @@ const openResourceColumns = [
     field: 'instance_code',
     slots: {
       default: ({ row }, h) => {
-        return row.instance_code
+        return row.instance_code || row.instance_id
       },
     },
   },
