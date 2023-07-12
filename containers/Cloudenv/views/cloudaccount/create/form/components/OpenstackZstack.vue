@@ -37,6 +37,7 @@
         <a-input v-decorator="decorators.domain_name" />
       </a-form-item>
       <domain-project :provider="provider" :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
+      <blocked-resources :decorators="{ isOpenBlockedResources: decorators.isOpenBlockedResources, blockedResources: decorators.blockedResources }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
       <read-only />

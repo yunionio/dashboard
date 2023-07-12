@@ -2,6 +2,7 @@ import * as R from 'ramda'
 import i18n from '@/locales'
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import store from '@/store'
+import { BLOCKED_RESOURCES_MAP } from '@Cloudenv/constants'
 
 export const getAccessUrlTableColumn = () => {
   return {
@@ -198,6 +199,29 @@ export const getResourceMatchProjectTableColumn = () => {
         }
         return ret
       },
+    },
+  }
+}
+
+export const getBlockResourceTableColumn = () => {
+  return {
+    field: 'skip_sync_resources',
+    title: i18n.t('cloudenv.block_resources_type'),
+    minWidth: 120,
+    showOverflow: 'title',
+    slots: {
+      default: ({ row }, h) => {
+        const skip_sync_resources = row.skip_sync_resources || ['eips', 'snapshots']
+        return skip_sync_resources.map(item => {
+          return <a-tag>{ BLOCKED_RESOURCES_MAP[item].label }</a-tag>
+        })
+      },
+    },
+    formatter: ({ row }) => {
+      const skip_sync_resources = row.skip_sync_resources || []
+      return skip_sync_resources.map(item => {
+        return BLOCKED_RESOURCES_MAP[item].label
+      })
     },
   }
 }

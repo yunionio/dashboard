@@ -1,7 +1,11 @@
 import * as R from 'ramda'
 import { keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
+import BlockedResources from '@Cloudenv/views/cloudaccount/components/BlockedResources'
 
 export default {
+  components: {
+    BlockedResources,
+  },
   props: {
     provider: {
       type: String,
@@ -46,6 +50,21 @@ export default {
             ],
           },
         ],
+        isOpenBlockedResources: [
+          'isOpenBlockedResources',
+          {
+            initialValue: false,
+            valuePropName: 'checked',
+          },
+        ],
+        blockedResources: [
+          'blockedResources',
+          {
+            rules: [
+              { required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.block_resources_type')]) },
+            ],
+          },
+        ],
       },
     }
   },
@@ -76,6 +95,15 @@ export default {
     })
   },
   methods: {
+    transformParams (params) {
+      // 处理屏蔽同步资源
+      if (params.isOpenBlockedResources) {
+        params.skip_sync_resources = params.blockedResources
+        delete params.isOpenBlockedResources
+        delete params.blockedResources
+      }
+      return params
+    },
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {
@@ -90,7 +118,7 @@ export default {
                 params[key] = value
               }
             }, values)
-            resolve(params)
+            resolve(this.transformParams(params))
           }
         })
       })

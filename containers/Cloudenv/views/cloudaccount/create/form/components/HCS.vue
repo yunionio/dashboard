@@ -21,6 +21,7 @@
         <a-input v-decorator="decorators.auth_url" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.hcs.auth_url')])" />
       </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
+      <blocked-resources :decorators="{ isOpenBlockedResources: decorators.isOpenBlockedResources, blockedResources: decorators.blockedResources }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
       <auto-sync :fc="form.fc" />
       <read-only />

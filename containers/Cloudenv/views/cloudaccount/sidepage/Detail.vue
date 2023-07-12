@@ -22,6 +22,7 @@ import {
   getHostCountTableColumn,
   getPublicScopeTableColumn,
   getResourceMatchProjectTableColumn,
+  getBlockResourceTableColumn,
 } from '../utils/columns'
 
 export default {
@@ -68,6 +69,7 @@ export default {
       ],
       baseInfo: [
         getResourceMatchProjectTableColumn(),
+        getBlockResourceTableColumn(),
         getPublicScopeTableColumn({ vm: this, resource: 'cloudaccounts' }),
         getBrandTableColumn(),
         {
