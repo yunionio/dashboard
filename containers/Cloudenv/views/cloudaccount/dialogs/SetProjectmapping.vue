@@ -46,6 +46,18 @@
             <a-radio-button value="project">{{$t('cloudenv.project_tag')}}</a-radio-button>
           </a-radio-group>
         </a-form-model-item>
+        <a-form-item :label="$t('cloudenv.block_resources')">
+          <a-switch
+            :checkedChildren="$t('cloudenv.text_84')"
+            :unCheckedChildren="$t('cloudenv.text_85')"
+            v-model="fd.isOpenBlockedResources" />
+        </a-form-item>
+        <a-form-item :label="$t('cloudenv.block_resources_type')" v-if="fd.isOpenBlockedResources">
+          <base-select
+            v-model="fd.blockedResources"
+            :options="BLOCKED_RESOURCES"
+            :select-props="{ placeholder: $t('common.tips.select', [$t('cloudenv.block_resources_type')]), allowClear: true, mode: 'multiple' }" />
+        </a-form-item>
       </a-form-model>
     </div>
     <div slot="footer">
@@ -58,6 +70,7 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { BLOCKED_RESOURCES } from '@Cloudenv/constants'
 
 export default {
   name: 'CloudaccountSetPojectmappingDialog',
@@ -68,6 +81,7 @@ export default {
     let initProjectMappingId = ''
     let initEffectiveScope = ''
     let initProjectId = ''
+    let initBlockResource = []
     this.params.data.map(item => {
       if (!initProjectMappingId && item.project_mapping_id) {
         initProjectMappingId = item.project_mapping_id
@@ -84,8 +98,12 @@ export default {
       } else if (item.enable_project_sync && !initEffectiveScope) {
         initEffectiveScope = 'project'
       }
+      if (item.skip_sync_resources) {
+        initBlockResource = item.skip_sync_resources
+      }
     })
     return {
+      BLOCKED_RESOURCES,
       loading: false,
       showAutoCreateProject: true,
       fd: {
@@ -94,10 +112,15 @@ export default {
         is_open_project_mapping: initOpenProjectMapping,
         project_mapping_id: initProjectMappingId,
         effective_scope: initEffectiveScope || 'resource',
+        isOpenBlockedResources: initBlockResource?.length > 0,
+        blockedResources: initBlockResource || [],
       },
       rules: {
         project_mapping_id: [
           { required: false, message: this.$t('common.tips.select', [this.$t('cloudenv.text_580')]) },
+        ],
+        blockedResources: [
+          { required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.block_resources_type')]) },
         ],
       },
       formItemLayout: {
@@ -155,6 +178,9 @@ export default {
       }
       return ret
     },
+    isSingle () {
+      return this.params.data.length === 1
+    },
   },
   methods: {
     genParams () {
@@ -164,6 +190,8 @@ export default {
         is_open_project_mapping,
         project_mapping_id,
         effective_scope,
+        isOpenBlockedResources,
+        blockedResources,
       } = this.fd
       const ret = {
         auto_create_project: resource_map_type === 'auto_create_project',
@@ -183,13 +211,18 @@ export default {
           ret.enable_resource_sync = false
         }
       }
+      if (isOpenBlockedResources) {
+        ret.skip_sync_resources = blockedResources
+        delete ret.isOpenBlockedResources
+        delete ret.blockedResources
+      }
       return ret
     },
     async handleConfirm () {
       this.loading = true
       try {
         await this.$refs.form.validate()
-        const data = this.genParams()
+        const { skip_sync_resources, ...data } = this.genParams()
         await this.params.onManager('batchPerformAction', {
           id: this.params.data.map(item => {
             return item.id
@@ -197,6 +230,14 @@ export default {
           managerArgs: {
             action: 'project-mapping',
             data,
+          },
+        })
+        await this.params.onManager('update', {
+          id: this.params.data[0].id,
+          managerArgs: {
+            data: {
+              skip_sync_resources: skip_sync_resources || [],
+            },
           },
         })
         this.cancelDialog()
