@@ -381,10 +381,22 @@ export default {
               const data = column.formatter({ row: dataList[i - 1] })
               colData = data === '-' ? '' : data
             } else {
-              colData = dataList[i - 1][column.key] || ''
+              colData = dataList[i - 1][column.key || column.field] || ''
             }
             row.push(colData)
           })
+          // 折叠行
+          if (hasExpandColumn) {
+            expandColumns.map(column => {
+              let colData = ''
+              if (column.formatter) {
+                colData = column.formatter({ row: dataList[i - 1]._expandData })
+              } else {
+                colData = dataList[i - 1]._expandData[column.key || column.field] || ''
+              }
+              row.push(colData)
+            })
+          }
           sheetDatas.push(row)
           sheetOriginDatas.push(dataList[i - 1])
           const ws_name = 'sheet' + sheetIdx
