@@ -18,80 +18,82 @@
         </div>
       </template>
     </a-alert>
-    <a-form
-      class="mt-3"
-      :form="form.fc">
-      <a-form-item
-        :label="$t('k8s.text_412')"
-        v-bind="formItemLayout">
-        <base-select
-          v-if="$store.getters.isAdminMode"
-          v-decorator="decorators.project_domain_id"
-          resource="domains"
-          version="v1"
-          :params="params.domain"
-          @change="domainChange"
-          is-default-select
-          filterable />
-        <div v-else>{{ $store.getters.userInfo.projectDomain }}</div>
-      </a-form-item>
-      <a-form-item
-        :label="$t('k8s.platform')"
-        v-bind="formItemLayout">
-        <a-radio-group
-          v-decorator="decorators.provider(provider)"
-          v-if="providers.length"
-          @change="providerChange">
-          <a-radio-button v-for="item in providers" :key="item.value" :value="item">
-            {{ item.label }}
-          </a-radio-button>
-        </a-radio-group>
-        <div v-else>{{ $t('common_467') }}</div>
-      </a-form-item>
-      <a-form-item :label="$t('k8s.region')" class="mb-0" v-bind="formItemLayout" v-if="provider.brand">
-        <cloudregion-vpc
-          :cloudregion-params="cloudregionParams"
-          :vpc-params="params.vpcParams"
-          :decorator="decorators.regionVpc" />
-      </a-form-item>
-      <a-form-item
-        :label="$t('k8s.text_41')"
-        v-bind="formItemLayout">
-        <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
-      </a-form-item>
-      <a-form-item :label="$t('k8s.text_152')" v-if="cloudregionId" v-bind="formItemLayout">
-        <server-config
-          :form="form"
-          :cloudregionId="cloudregionId"
-          :decorator="decorators.serverConfig"
-          :hypervisor="hypervisor"
-          :platform="platform"
-          :networkParams="params.network" />
-      </a-form-item>
-      <a-form-item :label="$t('k8s.text_153')" v-bind="formItemLayout">
-        <base-select
-          v-decorator="decorators.version"
-          :options="k8sVersionOps"
-          :filterable="true"
-          :select-props="{ placeholder: $t('k8s.text_154') }" />
-      </a-form-item>
-      <!-- <a-form-item :label="$t('k8s.text_155')" v-bind="formItemLayout" v-if="isAdminMode">
-        <a-switch :checkedChildren="$t('k8s.text_156')" :unCheckedChildren="$t('k8s.text_157')" v-decorator="decorators.is_public" />
-      </a-form-item> -->
-      <a-form-item :label="$t('k8s.text_158')" v-bind="formItemLayout">
-        <a-switch :checkedChildren="$t('k8s.text_156')" :unCheckedChildren="$t('k8s.text_157')" v-decorator="decorators.isConfigImage" @change="isConfigImageChange" />
-      </a-form-item>
-      <a-form-item
-        v-if="isConfigImage"
-        :label="$t('k8s.text_52')"
-        v-bind="formItemLayout"
-        :extra="$t('k8s.text_159')">
-        <a-input v-decorator="decorators.image_repository_url" :placeholder="$t('k8s.text_160')" />
-      </a-form-item>
-      <a-form-item v-if="isConfigImage" :wrapper-col="{ span: 20, offset: 3 }">
-        <a-checkbox v-decorator="decorators.image_repository_insecure">{{$t('k8s.text_161')}}</a-checkbox>
-      </a-form-item>
-    </a-form>
+    <page-body needMarginBottom>
+      <a-form
+        class="mt-3"
+        :form="form.fc">
+        <a-form-item
+          :label="$t('k8s.text_412')"
+          v-bind="formItemLayout">
+          <base-select
+            v-if="$store.getters.isAdminMode"
+            v-decorator="decorators.project_domain_id"
+            resource="domains"
+            version="v1"
+            :params="params.domain"
+            @change="domainChange"
+            is-default-select
+            filterable />
+          <div v-else>{{ $store.getters.userInfo.projectDomain }}</div>
+        </a-form-item>
+        <a-form-item
+          :label="$t('k8s.platform')"
+          v-bind="formItemLayout">
+          <a-radio-group
+            v-decorator="decorators.provider(provider)"
+            v-if="providers.length"
+            @change="providerChange">
+            <a-radio-button v-for="item in providers" :key="item.value" :value="item">
+              {{ item.label }}
+            </a-radio-button>
+          </a-radio-group>
+          <div v-else>{{ $t('common_467') }}</div>
+        </a-form-item>
+        <a-form-item :label="$t('k8s.region')" class="mb-0" v-bind="formItemLayout" v-if="provider.brand">
+          <cloudregion-vpc
+            :cloudregion-params="cloudregionParams"
+            :vpc-params="params.vpcParams"
+            :decorator="decorators.regionVpc" />
+        </a-form-item>
+        <a-form-item
+          :label="$t('k8s.text_41')"
+          v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
+        </a-form-item>
+        <a-form-item :label="$t('k8s.text_152')" v-if="cloudregionId" v-bind="formItemLayout">
+          <server-config
+            :form="form"
+            :cloudregionId="cloudregionId"
+            :decorator="decorators.serverConfig"
+            :hypervisor="hypervisor"
+            :platform="platform"
+            :networkParams="params.network" />
+        </a-form-item>
+        <a-form-item :label="$t('k8s.text_153')" v-bind="formItemLayout">
+          <base-select
+            v-decorator="decorators.version"
+            :options="k8sVersionOps"
+            :filterable="true"
+            :select-props="{ placeholder: $t('k8s.text_154') }" />
+        </a-form-item>
+        <!-- <a-form-item :label="$t('k8s.text_155')" v-bind="formItemLayout" v-if="isAdminMode">
+          <a-switch :checkedChildren="$t('k8s.text_156')" :unCheckedChildren="$t('k8s.text_157')" v-decorator="decorators.is_public" />
+        </a-form-item> -->
+        <a-form-item :label="$t('k8s.text_158')" v-bind="formItemLayout">
+          <a-switch :checkedChildren="$t('k8s.text_156')" :unCheckedChildren="$t('k8s.text_157')" v-decorator="decorators.isConfigImage" @change="isConfigImageChange" />
+        </a-form-item>
+        <a-form-item
+          v-if="isConfigImage"
+          :label="$t('k8s.text_52')"
+          v-bind="formItemLayout"
+          :extra="$t('k8s.text_159')">
+          <a-input v-decorator="decorators.image_repository_url" :placeholder="$t('k8s.text_160')" />
+        </a-form-item>
+        <a-form-item v-if="isConfigImage" :wrapper-col="{ span: 20, offset: 3 }">
+          <a-checkbox v-decorator="decorators.image_repository_insecure">{{$t('k8s.text_161')}}</a-checkbox>
+        </a-form-item>
+      </a-form>
+    </page-body>
     <page-footer>
       <div slot="right">
         <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{$t('common.create')}}</a-button>
