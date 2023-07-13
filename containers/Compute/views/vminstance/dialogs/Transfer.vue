@@ -50,10 +50,10 @@
             </span>
             <migration-bandwidth :decorators="decorators" :form="form" />
           </a-form-item>
-          <a-form-item :label="$t('compute.vminstance.transfer.quickly_finish')"
+          <!-- <a-form-item :label="$t('compute.vminstance.transfer.quickly_finish')"
             :extra="$t('compute.vminstance.transfer.quickly_finish.extra')">
             <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.quickly_finish" />
-          </a-form-item>
+          </a-form-item> -->
         </template>
       </a-form>
     </div>
@@ -139,13 +139,13 @@ export default {
             ],
           },
         ],
-        quickly_finish: [
-          'quickly_finish',
-          {
-            initialValue: false,
-            valuePropName: 'checked',
-          },
-        ],
+        // quickly_finish: [
+        //   'quickly_finish',
+        //   {
+        //     initialValue: false,
+        //     valuePropName: 'checked',
+        //   },
+        // ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -303,9 +303,7 @@ export default {
         if (values.brandWidth !== '-1') {
           data.max_bandwidth_mb = (values.brandwidth === 'custom' ? values.customBrandWidth : values.brandWidth) * 1024
         }
-        if (values.quickly_finish) {
-          data.quickly_finish = true
-        }
+        data.quickly_finish = true
       }
       if (values.rescue_mode) {
         action = 'migrate'
