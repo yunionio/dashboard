@@ -5,6 +5,19 @@
       class="mt-3"
       :form="form.fc">
       <a-form-item
+        :label="$t('k8s.text_412')"
+        v-bind="formItemLayout">
+        <base-select
+          v-if="isAdminMode"
+          v-decorator="decorators.project_domain_id"
+          resource="domains"
+          version="v1"
+          :params="domainParams"
+          is-default-select
+          filterable />
+        <div v-else>{{ userInfo.projectDomain }}</div>
+      </a-form-item>
+      <a-form-item
         :label="$t('k8s.text_41')"
         v-bind="formItemLayout">
         <a-input v-decorator="decorators.name" :placeholder="$t('k8s.text_60')" />
@@ -26,6 +39,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { validateYaml } from '@/utils/validate'
 import IconRadio from '@/sections/IconRadio'
 
@@ -54,6 +68,14 @@ export default {
         fc: this.$form.createForm(this),
       },
       decorators: {
+        project_domain_id: [
+          'project_domain_id',
+          {
+            rules: [
+              { required: true, message: this.$t('k8s.text_413') },
+            ],
+          },
+        ],
         name: [
           'name',
           {
@@ -109,6 +131,15 @@ export default {
       clusterTypesOpt,
     }
   },
+  computed: {
+    ...mapGetters(['isAdminMode', 'userInfo', 'scope']),
+    domainParams () {
+      return {
+        scope: this.scope,
+        limit: 0,
+      }
+    },
+  },
   methods: {
     async doImport () {
       this.loading = true
@@ -119,6 +150,7 @@ export default {
           provider: 'external',
           resource_type: 'unknown',
           name: values.name,
+          project_domain_id: this.isAdminMode ? values.project_domain_id : this.userInfo.domain?.id,
           import_data: {
             kubeconfig: values.kubeconfig,
           },
