@@ -286,6 +286,7 @@ export default {
   methods: {
     doSingleTransfer (ids, values) {
       let action = 'migrate'
+      const selectedItem = this.params.data[0]
       const data = {
         prefer_host: values.host,
       }
@@ -305,7 +306,7 @@ export default {
         }
         data.quickly_finish = true
       }
-      if (values.rescue_mode) {
+      if (selectedItem.host_enabled === false && selectedItem.host_status === 'offline') {
         action = 'migrate'
         data.rescue_mode = true
       }
