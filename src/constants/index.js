@@ -133,6 +133,7 @@ export const ENABLE_USER_CUSTOM_DICTIONARY = [
   'user',
   'project',
   'role',
+  'rateset',
   'policy',
   'schedtag',
   'rate',
