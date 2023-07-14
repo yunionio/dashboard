@@ -63,7 +63,7 @@
               <li @click="applyInternalResourceHandle" v-if="internalResourceEnabled">{{$t('navbar.button.work_order_apply_internal_resource')}}</li>
             </ul>
           </template>
-          <template v-if="isAdminMode && (isShowWorkflow || customerServiceEnabled)">
+          <template v-if="isAdminMode && isShowWorkflow && internalResourceEnabled">
             <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="plus" /><span class="ml-2">{{$t('common_204')}}</span></div>
             <ul class="work-list">
               <li @click="applyInternalResourceHandle" v-if="internalResourceEnabled">{{$t('navbar.button.work_order_apply_internal_resource')}}</li>

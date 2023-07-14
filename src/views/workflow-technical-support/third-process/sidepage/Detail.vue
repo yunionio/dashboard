@@ -59,7 +59,7 @@ export default {
           field: 'initiator_name',
           title: this.$t('common_371'),
           formatter: ({ cellValue, row }) => {
-            return this.data.start_user_name || '-'
+            return this.data?.start_user_name || '-'
           },
         },
         {

@@ -60,7 +60,7 @@ export default {
           field: 'initiator_name',
           title: this.$t('common_371'),
           formatter: ({ cellValue, row }) => {
-            return row.variables.initiator_name || row.process_instance.start_user_name
+            return row.variables.initiator_name || row.process_instance?.start_user_name
           },
         },
         {
