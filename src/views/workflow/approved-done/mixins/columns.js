@@ -33,7 +33,7 @@ export default {
         minWidth: 80,
         showOverflow: 'title',
         formatter: ({ cellVal, row }) => {
-          return row.process_instance.start_user_displayname || row.process_instance.start_user_name
+          return row.process_instance?.start_user_displayname || row.process_instance?.start_user_name
         },
       },
       {
