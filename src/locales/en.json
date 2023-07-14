@@ -5399,5 +5399,7 @@
   "common.second_unit": "s",
   "common.permission.403": "Insufficient permissions. Please contact the administrator.",
   "common.ssh_password_tip": "Please input SSH Username-Password",
-  "common.operation_object": "Operation object"
+  "common.operation_object": "Operation object",
+  "common.bgp_type_options.bgp": "BGP",
+  "common.bgp_type_options.bgp_pro": "BGP_PRO"
 }
