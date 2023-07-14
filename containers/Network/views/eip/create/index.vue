@@ -25,9 +25,9 @@
         <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
           <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
         </a-form-item>
-        <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="this.cloudEnv === 'onpremise'" v-show="showBgpTypes">
+        <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="showBgpTypes">
           <a-select v-decorator="decorators.bgp_type" @change="handleBgpTypeChange">
-            <a-select-option v-for="item in bgpTypeOptions" :value="item" :key="item">{{ item === '' ? $t('network.text_749') : item }}</a-select-option>
+            <a-select-option v-for="item in bgpTypeOptions" :value="item" :key="item">{{ item === '' ? $t('network.text_749') : BGP_TYPES_MAP[item] ? BGP_TYPES_MAP[item].label : item }}</a-select-option>
           </a-select>
         </a-form-item>
         <template v-if="showIpSubnet">
@@ -106,6 +106,7 @@ import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import Tag from '@/sections/Tag'
 import { HYPERVISORS_MAP } from '../../../../../src/constants'
 import BottomBar from './components/BottomBar'
+import { BGP_TYPES, BGP_TYPES_MAP } from '@/constants/network'
 
 export default {
   name: 'EipCreate',
@@ -126,6 +127,7 @@ export default {
       routerQuery = cloudEnv === 'onpremise' ? 'idc' : cloudEnv
     }
     return {
+      BGP_TYPES_MAP,
       loading: false,
       inputIpType: 'random',
       cloudEnvOptions,
@@ -258,6 +260,9 @@ export default {
       ret = { ...ret, ...{ 1: '1Mbps', [this.maxBandwidth]: `${this.maxBandwidth}Mbps` } }
       return ret
     },
+    isOnpremise () {
+      return this.cloudEnv === 'onpremise'
+    },
     isHCSO () {
       if (this.selectedRegionItem) {
         return this.selectedRegionItem.provider === HYPERVISORS_MAP.hcso.provider
@@ -267,6 +272,12 @@ export default {
     isHCS () {
       if (this.selectedRegionItem) {
         return this.selectedRegionItem.provider === HYPERVISORS_MAP.hcs.provider
+      }
+      return false
+    },
+    isAliyun () {
+      if (this.selectedRegionItem) {
+        return this.selectedRegionItem.provider === HYPERVISORS_MAP.aliyun.provider
       }
       return false
     },
@@ -294,7 +305,7 @@ export default {
         return false
       }
 
-      return true
+      return this.isOnpremise || this.isAliyun
     },
     regionParams () {
       let params = {
@@ -446,6 +457,13 @@ export default {
       })
       this.bandwidth = newValue === 'private' && !this.isHCSO && !this.isHCS ? 0 : 30
     },
+    isAliyun (newValue) {
+      if (newValue) {
+        this.bgpTypeOptions = BGP_TYPES.map(item => item.value)
+      } else {
+        this.fetchBgpType()
+      }
+    },
   },
   provide () {
     return {
@@ -461,6 +479,7 @@ export default {
   },
   methods: {
     fetchBgpType () {
+      if (this.isAliyun) return
       new this.$Manager('networks/distinct-field').list({
         params: {
           usable: true,
