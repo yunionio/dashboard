@@ -9,7 +9,7 @@ import {
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
-import { getAssociateNameTableColumn } from '../utils/columns'
+import { getAssociateNameTableColumn, getIPWithBgpTypeTableColumn } from '../utils/columns'
 
 export default {
   created () {
@@ -41,14 +41,19 @@ export default {
           return this.$isScopedPolicyMenuHidden('eip_hidden_columns.metadata')
         },
       }),
-      {
-        field: 'ip_addr',
-        title: 'IP',
-        width: 140,
+      // {
+      //   field: 'ip_addr',
+      //   title: 'IP',
+      //   width: 140,
+      //   hidden: () => {
+      //     return this.$isScopedPolicyMenuHidden('eip_hidden_columns.ip_addr')
+      //   },
+      // },
+      getIPWithBgpTypeTableColumn({
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('eip_hidden_columns.ip_addr')
         },
-      },
+      }),
       {
         field: 'bandwidth',
         title: i18n.t('network.text_195'),

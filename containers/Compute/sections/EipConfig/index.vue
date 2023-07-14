@@ -19,9 +19,9 @@
           :select-props="{ allowClear: true, placeholder: $t('compute.text_145') }" />
       </a-row>
     </a-form-item>
-    <a-form-item :label="$t('compute.text_1359')" v-if="isNew && (cloudEnv == null || cloudEnv === 'idc' || cloudEnv === 'onpremise')"  v-show="showBgpTypes" v-bind="formItemLayout">
+    <a-form-item :label="$t('compute.text_1359')" v-if="isNew && showBgpTypes" v-bind="formItemLayout">
       <a-select v-decorator="decorators.bgp_type">
-        <a-select-option v-for="item in bgpTypeOptions" :value="item" :key="item">{{ item === '' ? $t('compute.text_1352') : item }}</a-select-option>
+        <a-select-option v-for="item in bgpTypeOptions" :value="item" :key="item">{{ item === '' ? $t('compute.text_1352') : BGP_TYPES_MAP[item] ? BGP_TYPES_MAP[item].label : item }}</a-select-option>
       </a-select>
     </a-form-item>
     <a-form-item :label="$t('compute.text_1360')" v-if="isNew" v-bind="formItemLayout">
@@ -54,7 +54,9 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { EIP_TYPES_MAP as types } from '@Compute/constants'
 import { typeClouds } from '@/utils/common/hypervisor'
+import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
+import { BGP_TYPES, BGP_TYPES_MAP } from '@/constants/network'
 
 const chargeTypes = {
   traffic: {
@@ -111,6 +113,7 @@ export default {
   },
   data () {
     return {
+      BGP_TYPES_MAP,
       type: this.decorators.type[1] && this.decorators.type[1].initialValue,
       chargeType: this.decorators.charge_type[1] && this.decorators.charge_type[1].initialValue,
       bgpTypeOptions: [],
@@ -118,6 +121,12 @@ export default {
   },
   computed: {
     ...mapGetters(['scope']),
+    isOnpremise () {
+      return this.cloudEnv === 'onpremise'
+    },
+    isAliyun () {
+      return this.hypervisor === HYPERVISORS_MAP.aliyun.hypervisor
+    },
     isPrivateEnv () {
       const privateHyper = []
       for (const key in typeClouds.hypervisorMap) {
@@ -135,7 +144,7 @@ export default {
         return false
       }
 
-      return true
+      return this.cloudEnv == null || this.cloudEnv === 'idc' || this.isOnpremise || this.isAliyun
     },
     types () {
       const ret = { ...types }
@@ -243,12 +252,22 @@ export default {
         }
       }
     },
+    'form.fd.eip_type' (newValue) {
+      if (newValue === 'new') {
+        if (this.isAliyun) {
+          this.bgpTypeOptions = BGP_TYPES.map(item => item.value)
+        } else {
+          this.fetchBgpType()
+        }
+      }
+    },
   },
   created () {
     this.fetchBgpType()
   },
   methods: {
     fetchBgpType () {
+      if (this.isAliyun) return
       new this.$Manager('networks/distinct-field').list({
         params: {
           usable: true,

@@ -5400,5 +5400,7 @@
   "common.hour_unit": "h",
   "common.minute_unit": "m",
   "common.second_unit": "s",
-  "common.permission.403": "Insufficient permissions. Please contact the administrator."
+  "common.permission.403": "Insufficient permissions. Please contact the administrator.",
+  "common.bgp_type_options.bgp": "BGP",
+  "common.bgp_type_options.bgp_pro": "BGP_PRO"
 }

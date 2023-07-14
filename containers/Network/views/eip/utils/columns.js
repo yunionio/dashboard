@@ -1,6 +1,7 @@
 import * as R from 'ramda'
 import i18n from '@/locales'
 import { ASSOCIATE_MAP } from '../constants'
+import { BGP_TYPES_MAP } from '@/constants/network'
 
 export const getAssociateNameTableColumn = ({ vm = {}, hidden } = {}) => {
   return {
@@ -23,6 +24,33 @@ export const getAssociateNameTableColumn = ({ vm = {}, hidden } = {}) => {
           }
         }
         return '-'
+      },
+    },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
+  }
+}
+
+export const getIPWithBgpTypeTableColumn = ({ hidden } = {}) => {
+  return {
+    field: 'ip_addr',
+    title: 'IP',
+    minWidth: 120,
+    slots: {
+      default: ({ row }, h) => {
+        const ret = []
+        const bgp = BGP_TYPES_MAP[row.bgp_type]?.label || row.bgp_type
+        if (bgp) {
+          ret.push(
+            <list-body-cell-wrap row={row} field="ip_addr" copy><span class="text-color-help">({ bgp })</span></list-body-cell-wrap>,
+          )
+        } else {
+          ret.push(
+            <list-body-cell-wrap row={row} field="ip_addr" copy></list-body-cell-wrap>,
+          )
+        }
+        return ret
       },
     },
     hidden: () => {
