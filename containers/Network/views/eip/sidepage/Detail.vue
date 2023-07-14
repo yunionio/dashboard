@@ -16,7 +16,7 @@ import {
 } from '@/utils/common/detailColumn'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
-import { getAssociateNameTableColumn } from '../utils/columns'
+import { getAssociateNameTableColumn, getIPWithBgpTypeTableColumn } from '../utils/columns'
 
 export default {
   name: 'EipDetail',
@@ -38,17 +38,11 @@ export default {
         getExtTagColumn({ onManager: this.onManager, resource: 'eip', columns: () => this.columns, tipName: this.$t('dictionary.eip') }),
         getBrandTableColumn(),
         getAssociateNameTableColumn(this),
-        {
-          field: 'bgp_type',
-          title: this.$t('network.text_743'),
-          formatter: ({ cellValue }) => {
-            return cellValue || '-'
-          },
-        },
-        {
-          field: 'ip_addr',
-          title: 'IP',
-        },
+        // {
+        //   field: 'ip_addr',
+        //   title: 'IP',
+        // },
+        getIPWithBgpTypeTableColumn(),
         {
           field: 'bandwidth',
           title: this.$t('network.text_195'),
