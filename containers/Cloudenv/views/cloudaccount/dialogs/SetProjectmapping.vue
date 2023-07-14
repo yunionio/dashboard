@@ -46,13 +46,13 @@
             <a-radio-button value="project">{{$t('cloudenv.project_tag')}}</a-radio-button>
           </a-radio-group>
         </a-form-model-item>
-        <a-form-item :label="$t('cloudenv.block_resources')">
+        <a-form-item :label="$t('cloudenv.block_resources')" v-if="!ignoreBlockedResources">
           <a-switch
             :checkedChildren="$t('cloudenv.text_84')"
             :unCheckedChildren="$t('cloudenv.text_85')"
             v-model="fd.isOpenBlockedResources" />
         </a-form-item>
-        <a-form-item :label="$t('cloudenv.block_resources_type')" v-if="fd.isOpenBlockedResources">
+        <a-form-item :label="$t('cloudenv.block_resources_type')" v-if="!ignoreBlockedResources && fd.isOpenBlockedResources">
           <base-select
             v-model="fd.blockedResources"
             :options="BLOCKED_RESOURCES"
@@ -183,6 +183,10 @@ export default {
     isSingle () {
       return this.params.data.length === 1
     },
+    ignoreBlockedResources () {
+      const { ignoreBlockedResources = false } = this.params
+      return ignoreBlockedResources
+    },
   },
   methods: {
     genParams () {
@@ -213,7 +217,7 @@ export default {
           ret.enable_resource_sync = false
         }
       }
-      if (isOpenBlockedResources) {
+      if (!this.ignoreBlockedResources && isOpenBlockedResources) {
         ret.skip_sync_resources = blockedResources
         delete ret.isOpenBlockedResources
         delete ret.blockedResources
@@ -234,14 +238,16 @@ export default {
             data,
           },
         })
-        await this.params.onManager('update', {
-          id: this.params.data[0].id,
-          managerArgs: {
-            data: {
-              skip_sync_resources: skip_sync_resources || [],
+        if (!this.ignoreBlockedResources) {
+          await this.params.onManager('update', {
+            id: this.params.data[0].id,
+            managerArgs: {
+              data: {
+                skip_sync_resources: skip_sync_resources || [],
+              },
             },
-          },
-        })
+          })
+        }
         this.cancelDialog()
       } finally {
         this.loading = false
