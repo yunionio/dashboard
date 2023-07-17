@@ -32,6 +32,17 @@
             {{ $t('iam.get_params_help') }} ，{{ $t('iam.help') }} <help-link :href="getWebhookDocsUrl(form.fd.type)">{{ $t('common_386') }}</help-link>
           </div>
         </a-form-item>
+        <template v-if="form.fc.getFieldValue('type') === 'webhook'">
+          <a-form-item label="header">
+            <a-input v-decorator="decorators.header" />
+          </a-form-item>
+          <a-form-item label="body">
+            <a-input v-decorator="decorators.body" />
+          </a-form-item>
+          <a-form-item label="msg_key">
+            <a-input v-decorator="decorators.msg_key" />
+          </a-form-item>
+        </template>
       </a-form>
     </div>
     <div slot="footer">
@@ -58,7 +69,7 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const { name, domain_id, tenant_id, address, type } = this.params.data || {}
+    const { name, domain_id, tenant_id, address, type, header, body, msg_key } = this.params.data || {}
     const { projectDomainId, projectId } = this.$store.getters.userInfo
     const initType = type || 'dingtalk'
 
@@ -125,6 +136,24 @@ export default {
             ],
           },
         ],
+        header: [
+          'header',
+          {
+            initialValue: JSON.stringify(header),
+          },
+        ],
+        body: [
+          'body',
+          {
+            initialValue: JSON.stringify(body),
+          },
+        ],
+        msg_key: [
+          'msg_key',
+          {
+            initialValue: msg_key || '',
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -170,14 +199,20 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
-        const { domain, project, name, ...rest } = values
+        const { domain, project, name, header, body, msg_key, ...rest } = values
         this.loading = true
 
         if (this.isEdit) {
           const data = { ...rest, name }
+          if (header) data.header = JSON.parse(header.trim())
+          if (body) data.body = JSON.parse(body.trim())
+          if (msg_key) data.msg_key = msg_key.trim()
           await this.doUpdate(this.params.data?.id, data)
         } else {
           const data = { ...rest, project: project?.key, domain: domain?.key, generate_name: name }
+          if (header) data.header = JSON.parse(header.trim())
+          if (body) data.body = JSON.parse(body.trim())
+          if (msg_key) data.msg_key = msg_key.trim()
           await this.doCreate(data)
         }
 
