@@ -330,7 +330,10 @@ export default {
         os_arch: HOST_CPU_ARCHS.x86.key,
       }
       if (!params.cloudregion_id) return {}
-      if (this.form.fd.imageType === 'vmware') params.image_type = 'system'
+      if (this.form.fd.imageType === 'vmware') {
+        params.image_type = 'system'
+        params.project_domain = this.project_domain
+      }
       return params
     },
     showSku () {
