@@ -231,6 +231,7 @@ export default {
     cacheImageParams () {
       const params = {
         manager_id: this.form.fd.cloudprovider,
+        project_domain: this.project_domain,
       }
       if (R.is(Object, this.form.fd.sku)) {
         if (this.cloudregionZoneParams.cloudregion) {
