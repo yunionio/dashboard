@@ -56,6 +56,7 @@ export default {
       required: true,
     },
     ignoreKeys: Array,
+    supportKeyStarts: Array,
     needExt: Boolean,
     resource: {
       type: String,
@@ -90,14 +91,15 @@ export default {
       const data = filterUserTag({
         metadata: this.metadata,
         ignoreKeys: this.ignoreKeys,
-        needExt: this.needExt,
         ignorePrefix: this.ignorePrefix,
+        supportKeyStarts: this.supportKeyStarts,
       })
       return data
     },
     tags () {
       let ret = this.data.arr.filter((item) => {
-        return item.key.startsWith('user:') || item.key.startsWith('sys:') || (this.needExt && item.key.startsWith('ext:'))
+        // return item.key.startsWith('user:') || item.key.startsWith('sys:') || (this.needExt && item.key.startsWith('ext:'))
+        return this.supportKeyStarts.some(s => item.key.startsWith(s))
       }).map(item => {
         const rgb = getTagColor(item.key, item.value, 'rgb')
         const strRgb = rgb.join(',')
