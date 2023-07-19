@@ -279,7 +279,7 @@ export default {
     this.guestimagesM = new Manager('guestimages', 'v1')
     this.instanceSnapshots = new Manager('instance_snapshots', 'v2')
     this.fetchData()
-    this.fetchCacheimages()
+    this.fetchCacheimages = _.debounce(this._fetchCacheimages, 500)
   },
   methods: {
     fetchData () {
@@ -395,7 +395,8 @@ export default {
         throw error
       }
     },
-    async fetchCacheimages () {
+    async _fetchCacheimages () {
+      console.log(this.form.fd.domain.key)
       if (R.isNil(this.cacheImageParams) || R.isEmpty(this.cacheImageParams)) return
       if (!this.isPublicImage && !this.isPrivateImage && !this.isVMware) return // 阻止不必要的请求，仅这三种情况需要渲染的是cacheimage，而且现在没有[需要标出哪些已缓存]的功能了
       const params = {
@@ -421,6 +422,9 @@ export default {
       }
       if (this.isVMware) {
         params.image_type = 'system'
+      }
+      if (this.isPrivate || this.isVMware) {
+        params.project_domain = this.form.fd.domain.key
       }
       this.loading = true
       this.images.cacheimagesList = []
