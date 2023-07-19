@@ -64,14 +64,17 @@ export default {
           },
           backgroundColor: 'rgba(255,255,255,1)',
           padding: [5, 10],
+          enterable: true,
+          confine: true,
           textStyle: {
             color: '#7588E4',
           },
-          extraCssText: 'box-shadow: 0 0 5px rgba(0,0,0,0.3)',
+          extraCssText: 'box-shadow: 0 0 5px rgba(0,0,0,0.3); max-width: 500px; max-height: 600px; overflow: auto; white-space: pre-wrap;',
           position: (point, params, dom, rect, size) => {
+            console.log(dom)
             let wrapper = ''
             if (params[0] && params[0].axisValueLabel) {
-              wrapper = `<div style="color: #5D6F80;margin-top:10px">${params[0].axisValueLabel}</div>`
+              wrapper = `<div style="color: #5D6F80; margin-top:10px;">${params[0].axisValueLabel}</div>`
             }
             dom.innerHTML = wrapper + dom.innerHTML
           },
