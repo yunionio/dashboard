@@ -224,6 +224,9 @@ export default {
       }
       query.from = `${formValues.from}m` || '168h'
       query.interval = this.intervalInput(formValues.from)
+      if (['tenant_id', 'domain_id'].includes(this.dimentionId)) {
+        query.skip_check_series = true
+      }
       query.metric_query = [
         {
           model: {
