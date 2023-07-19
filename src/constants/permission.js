@@ -1398,6 +1398,12 @@ export const PERMISSION = {
   month_reports_perform_enabled: ['report', 'month_reports', 'perform', 'enabled'],
   month_reports_perform_disabled: ['report', 'month_reports', 'perform', 'disabled'],
 
+  organizations_list: ['identity', 'organizations', 'list'],
+  organizations_create: ['identity', 'organizations', 'create'],
+  organizations_update: ['identity', 'organizations', 'update'],
+  organizations_delete: ['identity', 'organizations', 'delete'],
+  organizations_perform_bind: ['identity', 'organizations', 'perform', 'bind'],
+
   ...extraPermissions,
 }
 

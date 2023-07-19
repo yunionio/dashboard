@@ -544,6 +544,7 @@ export const getTagTableColumn = ({
   field = 'metadata',
   title = i18n.t('table.title.tag'),
   ignoreKeys,
+  supportKeyStarts = ['user:'],
   needExt,
   resource,
   onManager,
@@ -579,6 +580,10 @@ export const getTagTableColumn = ({
             }
           })
         }
+        const supportStarts = [...supportKeyStarts]
+        if (needExt) {
+          supportStarts.push('ext:')
+        }
         return [
           h(TagTableColumn, {
             props: {
@@ -586,6 +591,7 @@ export const getTagTableColumn = ({
               onManager,
               metadata,
               ignoreKeys,
+              supportKeyStarts: supportStarts,
               needExt,
               resource,
               columns,
@@ -619,9 +625,16 @@ export const getTagTableColumn = ({
       }
       const ret = []
       const keys = Object.keys(metadata)
+      const supportStarts = [...supportKeyStarts]
+      if (needExt) {
+        supportStarts.push('ext:')
+      }
       keys.map(key => {
-        if (key.startsWith('user:') || key.startsWith('sys:')) {
-          const tagKey = key.replace('user:', '').replace('sys:', '')
+        if (supportStarts.some(s => key.startsWith(s))) {
+          let tagKey = key
+          supportStarts.map(s => {
+            tagKey = tagKey.replace(s, '')
+          })
           if (R.is(Array, metadata[key])) {
             metadata[key].map(val => {
               ret.push({ key: tagKey, value: val })

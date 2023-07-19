@@ -24,6 +24,13 @@ export function isExtTag (key) {
   return key.startsWith('ext:')
 }
 /**
+ * 判断是不是org标签
+ * @param {String} key
+ */
+export function isOrgTag (key) {
+  return key.startsWith('org:')
+}
+/**
  * 过滤出用户标签，可以忽略指定的Key
  * @param {Object} metadata
  * @param {Array} ignoreKeys
@@ -33,7 +40,8 @@ export function isExtTag (key) {
 export function filterUserTag ({
   metadata,
   ignoreKeys = [],
-  needExt = false,
+  // needExt = false,
+  supportKeyStarts = ['user:'],
   ignorePrefix = false,
 }) {
   const arr = []
@@ -41,7 +49,8 @@ export function filterUserTag ({
   for (const key in metadata) {
     if (
       (ignoreKeys.length > 0 && ignoreKeys.includes(key)) ||
-      (!ignorePrefix && (needExt ? (!isUserTag(key) && !isExtTag(key)) : !isUserTag(key)))
+      // (!ignorePrefix && (needExt ? (!isUserTag(key) && !isExtTag(key)) : !isUserTag(key)))
+      (!ignorePrefix && !supportKeyStarts.some(s => key.startsWith(s)))
     ) continue
     let value = metadata[key]
     const values = []
@@ -130,7 +139,7 @@ export function getTagColor (key, value, type = 'hex') {
 
 export function getTagTitle (key, value) {
   let val = value
-  let str = R.replace(/(ext:|user:|sys:)/, '', key)
+  let str = R.replace(/(ext:|user:|sys:|org:)/, '', key)
   if (str === 'cloud_default') {
     str = i18n.t('common_736')
   }
