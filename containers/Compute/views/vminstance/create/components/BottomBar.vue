@@ -109,7 +109,7 @@ export default {
     cloudaccountId: String,
   },
   data () {
-    this.getPriceList = _.debounce(this._getPriceList2, 500)
+    this.getPriceList = _.debounce(this._getPriceList2, 1500)
     return {
       origin_price: null,
       discount: 0,
