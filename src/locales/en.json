@@ -2711,7 +2711,8 @@
     "backupstorage": "Backup storage",
     "rate": "Rate",
     "rateset": "Ratesets",
-    "isolated_device_models": "passthrough device type"
+    "isolated_device_models": "passthrough device type",
+    "organization": "Organization"
   },
   "res": {
     "role": "Role",
