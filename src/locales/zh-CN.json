@@ -2736,7 +2736,8 @@
     "backupstorage": "备份存储",
     "rate": "费率",
     "rateset": "费率集",
-    "isolated_device_models": "透传设备类型"
+    "isolated_device_models": "透传设备类型",
+    "organization": "组织架构"
   },
   "res": {
     "role": "@:dictionary.role",
