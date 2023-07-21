@@ -79,7 +79,7 @@ export default {
       }
 
       if (this.service === 'elasticcaches') {
-        params.brands = ['Huawei', 'Aliyun', 'Qcloud', 'HCS']
+        params.brands = ['Huawei', 'Aliyun', 'Qcloud', 'HCS', 'Aws']
       }
 
       return params
