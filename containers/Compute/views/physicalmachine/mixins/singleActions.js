@@ -39,6 +39,7 @@ export default {
                 this.createDialog('SshAuthDialog', {
                   manager: this.webconsoleManager,
                   params,
+                  errorMsg: connectParams.login_error_message,
                   data: { name: obj.name, ip: params.action },
                   success: (data) => {
                     this.openWebConsole(obj, data, 'ws')
