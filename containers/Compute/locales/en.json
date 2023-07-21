@@ -1647,5 +1647,6 @@
   "compute.reserved_cpus_info": "reserved core",
   "compute.reserved": "Reserved",
   "compute.transfer.max_brand_width.tooltip": "The unit of bandwidth limit is Mbps, that is, megabits per second",
-  "compute.disk.ssd_extra": "When enabled, this disk will appear as an SSD disk within the virtual machine, with a rotational field value of 0 and no relation to the physical disk medium information."
+  "compute.disk.ssd_extra": "When enabled, this disk will appear as an SSD disk within the virtual machine, with a rotational field value of 0 and no relation to the physical disk medium information.",
+  "compute.daemon.tooltip": "After the host restarts, automatically start the virtual machine"
 }
