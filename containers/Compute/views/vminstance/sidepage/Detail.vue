@@ -404,7 +404,7 @@ export default {
             },
             {
               field: 'is_daemon',
-              title: this.$t('compute.is_daemon'),
+              title: this.$t('compute.text_494'),
               formatter: ({ row }) => {
                 if (row.is_daemon) {
                   return this.$t('table.title.on')

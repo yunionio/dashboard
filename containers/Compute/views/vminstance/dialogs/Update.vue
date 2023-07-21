@@ -36,7 +36,7 @@
           <a-form-item :label="$t('compute.machine')" v-bind="formItemLayout">
             <machine :decorator="decorators.machine" :isArm="isArm" />
           </a-form-item>
-          <a-form-item :label="$t('compute.is_daemon')" v-bind="formItemLayout" v-if="canAdminUpdate">
+          <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.daemon.tooltip')" v-bind="formItemLayout" v-if="canAdminUpdate">
             <a-switch v-model="is_daemon" />
           </a-form-item>
         </template>
