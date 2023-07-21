@@ -146,14 +146,20 @@ export default {
     isSingle () {
       return this.selectedItems?.length === 1
     },
+    isAllRunning () {
+      return this.selectedItems.every(item => item.status === 'running')
+    },
+    isSupportQgaPing () {
+      return this.isAllKvm && this.isAllRunning && this.isSingle
+    },
   },
   created () {
-    this.isSingle && this.fetchQgaPing()
+    this.isSupportQgaPing && this.fetchQgaPing()
   },
   methods: {
     async fetchQgaPing () {
       try {
-        const data = await new this.$Manager('servers', 'v2').performAction({
+        const res = await new this.$Manager('servers', 'v2').performAction({
           id: this.selectedItem.id,
           action: 'qga-ping',
           data: {
@@ -161,7 +167,7 @@ export default {
           },
         })
 
-        if (data.code) {
+        if (res.data?.ping_error) {
           this.checkQgaOK = false
         } else {
           this.checkQgaOK = true
