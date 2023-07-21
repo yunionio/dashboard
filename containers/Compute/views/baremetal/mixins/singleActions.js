@@ -1,10 +1,10 @@
 import { mapGetters } from 'vuex'
 import { Base64 } from 'js-base64'
 import qs from 'qs'
-import { commonUnabled, cloudEnabled, cloudUnabledTip } from '../../vminstance/utils'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import i18n from '@/locales'
+import { commonUnabled, cloudEnabled, cloudUnabledTip } from '../../vminstance/utils'
 import { solWebConsole, jnlpConsole } from '../../../utils/webconsole'
 import { hostServerActions } from '../../../utils/hostActions'
 
@@ -35,6 +35,7 @@ export default {
                 this.createDialog('SshAuthDialog', {
                   manager: this.webconsoleManager,
                   params,
+                  errorMsg: connectParams.login_error_message,
                   data: { name: obj.name, ip: params.action },
                   success: (data) => {
                     this.openWebConsole(obj, data, 'ws')
