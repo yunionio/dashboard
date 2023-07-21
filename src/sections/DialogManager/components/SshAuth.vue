@@ -14,6 +14,12 @@
         <a-form-model-item :label="$t('common_328')" prop="password">
           <a-input-password v-model="formData.password" :placeholder="$t('common.tips.input', [$t('common_328')])" />
         </a-form-model-item>
+        <a-form-model-item :label="$t('compute.text_349')" prop="port">
+          <a-input v-model="formData.port" :placeholder="$t('compute.text_350')" />
+        </a-form-model-item>
+        <a-form-model-item :label="$t('common.text00089')">
+          <div class="error-color">{{errorMsg}}</div>
+        </a-form-model-item>
       </a-form-model>
     </div>
     <div slot="footer">
@@ -34,6 +40,8 @@ export default {
   name: 'SshAuthDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const initPort = this.params.params?.data?.port || 22
+    const errorMsg = this.params.errorMsg || '-'
     return {
       loading: false,
       layout: {
@@ -43,11 +51,14 @@ export default {
       formData: {
         username: '',
         password: '',
+        port: initPort,
       },
       rules: {
         username: { required: true, message: this.$t('common.tips.input', [this.$t('scope.text_406')]) },
         password: { required: true, message: this.$t('common.tips.input', [this.$t('common_328')]) },
+        port: { required: true, message: this.$t('compute.text_350') },
       },
+      errorMsg,
     }
   },
   methods: {
