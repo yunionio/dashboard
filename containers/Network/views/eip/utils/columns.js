@@ -41,7 +41,7 @@ export const getIPWithBgpTypeTableColumn = ({ hidden } = {}) => {
       default: ({ row }, h) => {
         const ret = []
         const bgp = BGP_TYPES_MAP[row.bgp_type]?.label || row.bgp_type
-        if (bgp) {
+        if (bgp && row.bgp_type === BGP_TYPES_MAP.BGP_PRO.value) {
           ret.push(
             <list-body-cell-wrap row={row} field="ip_addr" copy><span class="text-color-help">({ bgp })</span></list-body-cell-wrap>,
           )

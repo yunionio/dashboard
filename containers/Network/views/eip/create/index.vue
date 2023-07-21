@@ -4,7 +4,7 @@
     <page-body needMarginBottom>
       <a-form
         :form="form.fc">
-        <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" v-bind="formItemLayout" class="mb-0">
+        <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" v-bind="formItemLayout">
           <domain-project :fc="form.fc" :form-layout="formItemLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="domainChange" />
         </a-form-item>
         <area-selects
@@ -460,6 +460,9 @@ export default {
     isAliyun (newValue) {
       if (newValue) {
         this.bgpTypeOptions = BGP_TYPES.map(item => item.value)
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({ bgp_type: 'BGP' })
+        })
       } else {
         this.fetchBgpType()
       }
@@ -479,7 +482,9 @@ export default {
   },
   methods: {
     fetchBgpType () {
-      if (this.isAliyun) return
+      if (this.isAliyun) {
+        return
+      }
       new this.$Manager('networks/distinct-field').list({
         params: {
           usable: true,
