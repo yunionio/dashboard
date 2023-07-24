@@ -40,12 +40,14 @@
           <a-form-item :label="field.label.s">
             <a-input-password v-decorator="decorators.keySecret" :placeholder="field.placeholder.s" type="password" />
           </a-form-item>
-          <a-form-item :label="$t('cloudenv.text_264')" :extra="this.$t('common_572')">
-            <a-input v-decorator="decorators.host" />
-          </a-form-item>
-          <a-form-item :label="$t('cloudenv.text_266')">
-            <a-input v-decorator="decorators.port" />
-          </a-form-item>
+          <template v-if="isVMware">
+            <a-form-item :label="$t('cloudenv.text_264')" :extra="this.$t('common_572')">
+              <a-input v-decorator="decorators.host" />
+            </a-form-item>
+            <a-form-item :label="$t('cloudenv.text_266')">
+              <a-input v-decorator="decorators.port" />
+            </a-form-item>
+          </template>
          </div>
         <!-- <a-form-item :label="$t('cloudenv.text_242')" v-if="isAzure">
           <a-textarea v-decorator="decorators.balanceKey" rows="4" />
@@ -155,7 +157,6 @@ export default {
         host: [
           'host',
           {
-            validateFirst: true,
             rules: [
               { required: true, message: this.$t('cloudenv.text_268') },
               { validator: this.$validate(['domain', 'IPv4'], true, 'some'), trigger: ['blur', 'change'], message: this.$t('cloudenv.text_269') },
@@ -232,7 +233,17 @@ export default {
       return ret
     },
   },
+  created () {
+    this.init()
+  },
   methods: {
+    init () {
+      if (this.isVMware) {
+        const { host, port, protocol } = this.parseUrl(this.params.data[0].access_url)
+        this.setHost(host)
+        this.setPort(port || (protocol === 'http' ? 80 : 443))
+      }
+    },
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {
@@ -282,6 +293,19 @@ export default {
           action: 'test-connectivity',
           data: values,
         },
+      })
+    },
+    parseUrl (url) {
+      return new URL(url)
+    },
+    setHost (host) {
+      this.$nextTick(() => {
+        this.form.fc.setFieldsValue({ host })
+      })
+    },
+    setPort (port) {
+      this.$nextTick(() => {
+        this.form.fc.setFieldsValue({ port })
       })
     },
   },
