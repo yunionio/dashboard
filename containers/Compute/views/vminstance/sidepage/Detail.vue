@@ -442,7 +442,12 @@ export default {
             },
             {
               field: 'is_daemon',
-              title: this.$t('compute.text_494'),
+              title: () => {
+                return [
+                  this.$t('compute.text_494'),
+                  <help-tooltip class="ml-1" text={ this.$t('compute.daemon.tooltip') } />,
+                ]
+              },
               formatter: ({ row }) => {
                 if (row.is_daemon) {
                   return this.$t('table.title.on')
