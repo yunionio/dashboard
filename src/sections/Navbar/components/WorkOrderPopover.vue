@@ -53,7 +53,7 @@
               </i18n>
             </ul>
           </template>
-          <template v-if="!isAdminMode && (isShowWorkflow || customerServiceEnabled)">
+          <template v-if="!isAdminMode && isShowWorkflow && isShowAddWorkflow">
             <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="plus" /><span class="ml-2">{{$t('common_204')}}</span></div>
             <ul class="work-list">
               <li @click="joinProjectHandle" v-if="isProjectMode && projectEnabled">{{$t('navbar.button.join_project')}}</li>
@@ -119,6 +119,10 @@ export default {
     isShowWorkflow () {
       if (this.workflowEnabledKeys?.length === 0) return false
       return this.workflowEnabledKeys.some(v => v !== WORKFLOW_TYPES.CUSTOMER_SERVICE)
+    },
+    isShowAddWorkflow () {
+      return (this.isProjectMode && (this.projectEnabled || this.projectQuotaEnabled)) ||
+      this.customerServiceEnabled || (this.isDomainMode && this.domainQuotaEnabled)
     },
   },
   methods: {
