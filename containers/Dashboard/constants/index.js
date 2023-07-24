@@ -942,12 +942,12 @@ export const USAGE_CONFIG = {
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private],
   },
-  vpcs: {
+  'all.vpcs': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
-  wires: {
+  'all.wires': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private],
