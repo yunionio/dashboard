@@ -40,6 +40,12 @@
           <a-form-item :label="field.label.s">
             <a-input-password v-decorator="decorators.keySecret" :placeholder="field.placeholder.s" type="password" />
           </a-form-item>
+          <a-form-item :label="$t('cloudenv.text_264')" :extra="this.$t('common_572')">
+            <a-input v-decorator="decorators.host" />
+          </a-form-item>
+          <a-form-item :label="$t('cloudenv.text_266')">
+            <a-input v-decorator="decorators.port" />
+          </a-form-item>
          </div>
         <!-- <a-form-item :label="$t('cloudenv.text_242')" v-if="isAzure">
           <a-textarea v-decorator="decorators.balanceKey" rows="4" />
@@ -143,6 +149,24 @@ export default {
           {
             rules: [
               { required: true, message: this.$t('cloudenv.text_308') },
+            ],
+          },
+        ],
+        host: [
+          'host',
+          {
+            validateFirst: true,
+            rules: [
+              { required: true, message: this.$t('cloudenv.text_268') },
+              { validator: this.$validate(['domain', 'IPv4'], true, 'some'), trigger: ['blur', 'change'], message: this.$t('cloudenv.text_269') },
+            ],
+          },
+        ],
+        port: [
+          'port',
+          {
+            rules: [
+              { type: 'number', min: 0, max: 65535, message: this.$t('cloudenv.text_270'), trigger: 'blur', transform: (v) => parseFloat(v) },
             ],
           },
         ],
