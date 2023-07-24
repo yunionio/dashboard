@@ -239,8 +239,8 @@ export default {
   methods: {
     init () {
       if (this.isVMware) {
-        const { host, port, protocol } = this.parseUrl(this.params.data[0].access_url)
-        this.setHost(host)
+        const { hostname, port, protocol } = this.parseUrl(this.params.data[0].access_url)
+        this.setHost(hostname)
         this.setPort(port || (protocol === 'http' ? 80 : 443))
       }
     },
