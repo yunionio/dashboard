@@ -435,7 +435,7 @@ export default {
       }
       const children = []
       if (renderTitle && item.title) {
-        children.push(h('div', { class: 'detail-item-title', attrs: { title: item.title } }, R.is(String, item.title) ? item.title : changeToArr(item.title(h))))
+        children.push(h('div', { class: 'detail-item-title', attrs: { title: R.is(String, item.title) ? item.title : '' } }, R.is(String, item.title) ? item.title : changeToArr(item.title(h))))
       }
       children.push(<div class={classNames('detail-item-value', { 'ml-0': !renderTitle || !item.title })}>{val}</div>)
       return h('div', {
