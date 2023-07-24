@@ -439,8 +439,9 @@ export default {
       this.fetchCacheimages()
     },
     getProperties (img) {
+      if (!img) return null
       if (this.isPublicImage || this.isPrivateImage || this.isVMwareImage) {
-        return img.info.properties
+        return img.info?.properties
       }
       return img.properties
     },
