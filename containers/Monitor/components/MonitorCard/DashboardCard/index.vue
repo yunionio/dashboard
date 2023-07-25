@@ -22,7 +22,7 @@
         <a-radio :checked="focusPanelId == panel.panel_id" @click="(e)=>{chose_panel(panel.panel_id,panel.panel_name)}">{{panel.panel_name}}</a-radio>
       </div>
     </template>
-    <overview-line v-if="resizeStatus" :class="card_style" :chartHeigth="chartHeigth" style="padding-top: 10px;" :chartData="chart.chartData" :yAxisFormat="chart.metric && chart.metric.format ? chart.metric.format : '0.[00]'" :loading="loading" />
+    <overview-line v-if="resizeStatus" :class="card_style" :chartHeigth="chartHeigth" style="padding-top: 10px;" :chartData="chart.chartData" :yAxisFormat="chart.metric && chart.metric.format ? chart.metric.format : '0.[00]'" :loading="loading" :exportName="panel.panel_name || (chart.metric && chart.metric.label)" />
     <template #footer>
       <overview-table :table-data="table" :loading="tableLoading" />
     </template>
