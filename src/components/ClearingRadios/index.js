@@ -1,4 +1,16 @@
 import i18n from '@/locales'
+
+const BILL_TYPES_MAP = {
+  postpaid: {
+    label: i18n.t('billingType.postpaid'),
+    key: 'postpaid',
+  },
+  prepaid: {
+    label: i18n.t('billingType.prepaid'),
+    key: 'prepaid',
+  },
+}
+
 export default {
   name: 'ClearingRadios',
   inject: ['form'],
@@ -78,10 +90,10 @@ export default {
             initialValue: this.billing_type,
           })(
             <a-radio-group>
-              {Object.keys(this.$t('billingType')).map(k => {
+              {Object.keys(BILL_TYPES_MAP).map(k => {
                 return (
                   <a-radio-button key={k} value={k}>
-                    {this.$t('billingType')[k]}
+                    {BILL_TYPES_MAP[k].label}
                   </a-radio-button>
                 )
               })}
