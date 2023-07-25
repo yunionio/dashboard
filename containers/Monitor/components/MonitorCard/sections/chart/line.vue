@@ -10,12 +10,12 @@
       :loading="loading"
       :chartEvents="chartEvents"
       :extraToolbox="extraToolbox" />
-    <download-excel v-show="false" ref="excel" :data="chartData && chartData.rows" :fields="excelColumnMap" :name="`${extraToolbox.pdf.name}.xls`" />
   </div>
 </template>
 
 <script>
 import * as R from 'ramda'
+import XLSX from 'xlsx'
 import commonChartProps from './common'
 // eslint-disable-next-line no-unused-vars
 import numerify from './formatters'
@@ -43,6 +43,29 @@ export default {
         columnMap[item] = { field: item }
       })
       return columnMap
+    },
+    exportExcelData () {
+      const { columns, rows } = this.chartData
+      if (columns.length > 1) {
+        const resourceNames = columns.slice(1)
+        const times = rows.map(item => item.time)
+        const titles = ['resource_name', ...times]
+        const data = [titles]
+        resourceNames.map(name => {
+          const row = [name]
+          times.map(time => {
+            const targets = rows.filter(item => item.time === time)
+            if (targets[0]) {
+              row.push(targets[0][name])
+            } else {
+              row.push('')
+            }
+          })
+          data.push(row)
+        })
+        return data
+      }
+      return []
     },
     extraToolbox () {
       return {
@@ -133,7 +156,12 @@ export default {
   },
   methods: {
     exportExcel () {
-      this.$refs.excel.generate()
+      const filename = `${this.exportName || this.$t('monitor.overview_alert_trend')}.xlsx`
+      const ws_name = 'Sheet1'
+      const wb = XLSX.utils.book_new()
+      const ws = XLSX.utils.aoa_to_sheet(this.exportExcelData)
+      XLSX.utils.book_append_sheet(wb, ws, ws_name)
+      XLSX.writeFile(wb, filename)
     },
   },
 }
