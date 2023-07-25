@@ -1935,7 +1935,10 @@
   "billingType": {
     "amortized": "Prepaid amortized",
     "postpaid": "Postpaid",
-    "prepaid": "Prepaid"
+    "prepaid": "Prepaid",
+    "syncpolicy": "No cost sharing",
+    "default": "Cost before project allocation",
+    "sharing": "Cost after project allocation"
   },
   "isoChannelOptions": {
     "import": "Import from the Image Marketplace",
