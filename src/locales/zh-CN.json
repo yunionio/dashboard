@@ -1954,7 +1954,10 @@
   "billingType": {
     "amortized": "包周期分摊",
     "postpaid": "按量付费",
-    "prepaid": "包年包月"
+    "prepaid": "包年包月",
+    "syncpolicy": "不分摊费用",
+    "default": "项目分摊前费用",
+    "sharing": "项目分摊后费用"
   },
   "isoChannelOptions": {
     "import": "从镜像市场导入",
