@@ -365,7 +365,6 @@ export default {
                   label: i18n.t('common.delete'),
                   permission: 'cloudaccounts_delete',
                   action: () => {
-                    const supportBill = ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure', 'Qcloud'].includes(obj.brand)
                     this.createDialog('DeleteResDialog', {
                       vm: this,
                       data: [obj],
@@ -374,13 +373,13 @@ export default {
                       name: this.$t('dictionary.cloudaccount'),
                       onManager: this.onManager,
                       content: () => {
-                        if (supportBill && this.$appConfig.isPrivate) {
+                        if (this.$appConfig.isPrivate) {
                           return <a-checkbox v-model={ this.deleteBill }>{ this.$t('cloudenv.text_497') }</a-checkbox>
                         }
                         return null
                       },
                       success: async () => {
-                        if (supportBill && this.deleteBill && this.$appConfig.isPrivate) {
+                        if (this.deleteBill && this.$appConfig.isPrivate) {
                           const manager = new this.$Manager('billtasks/submit', 'v1')
                           try {
                             const data = {
