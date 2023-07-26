@@ -139,7 +139,7 @@ export default {
         header: [
           'header',
           {
-            initialValue: JSON.stringify(header),
+            initialValue: header ? JSON.stringify(header) : '',
             rules: [
               { validator: this.checkHeader },
             ],
@@ -148,7 +148,7 @@ export default {
         body: [
           'body',
           {
-            initialValue: JSON.stringify(body),
+            initialValue: body ? JSON.stringify(body) : '',
             rules: [
               { validator: this.checkBody },
             ],
@@ -210,8 +210,16 @@ export default {
 
         if (this.isEdit) {
           const data = { ...rest, name }
-          if (header) data.header = JSON.parse(header.trim())
-          if (body) data.body = JSON.parse(body.trim())
+          if (header) {
+            data.header = JSON.parse(header.trim())
+          } else {
+            data.header = {}
+          }
+          if (body) {
+            data.body = JSON.parse(body.trim())
+          } else {
+            data.body = {}
+          }
           if (msg_key) data.msg_key = msg_key.trim()
           await this.doUpdate(this.params.data?.id, data)
         } else {
@@ -233,7 +241,10 @@ export default {
     },
     checkHeader (rule, value, callback) {
       try {
-        JSON.parse(value)
+        const v = value.trim()
+        if (v) {
+          JSON.parse(v)
+        }
         callback()
       } catch (error) {
         // eslint-disable-next-line standard/no-callback-literal
@@ -242,7 +253,10 @@ export default {
     },
     checkBody (rule, value, callback) {
       try {
-        JSON.parse(value)
+        const v = value.trim()
+        if (v) {
+          JSON.parse(v)
+        }
         callback()
       } catch (error) {
         // eslint-disable-next-line standard/no-callback-literal
