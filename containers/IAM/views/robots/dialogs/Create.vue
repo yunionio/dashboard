@@ -140,12 +140,18 @@ export default {
           'header',
           {
             initialValue: JSON.stringify(header),
+            rules: [
+              { validator: this.checkHeader },
+            ],
           },
         ],
         body: [
           'body',
           {
             initialValue: JSON.stringify(body),
+            rules: [
+              { validator: this.checkBody },
+            ],
           },
         ],
         msg_key: [
@@ -223,6 +229,24 @@ export default {
       } catch (error) {
         this.loading = false
         throw error
+      }
+    },
+    checkHeader (rule, value, callback) {
+      try {
+        JSON.parse(value)
+        callback()
+      } catch (error) {
+        // eslint-disable-next-line standard/no-callback-literal
+        callback(this.$t('iam.robots.json_validate'))
+      }
+    },
+    checkBody (rule, value, callback) {
+      try {
+        JSON.parse(value)
+        callback()
+      } catch (error) {
+        // eslint-disable-next-line standard/no-callback-literal
+        callback(this.$t('iam.robots.json_validate'))
       }
     },
   },

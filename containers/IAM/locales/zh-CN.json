@@ -1014,5 +1014,6 @@
   "iam.domain_tag": "域标签",
   "iam.disabled_join_project.tips": "权限不足，请点击跳过按钮",
   "iam.notify_topic.resource_release": "资源（含包年包月）即将到期释放发送通知",
-  "iam.notify_topic.password_expire": "密码即将过期通知"
+  "iam.notify_topic.password_expire": "密码即将过期通知",
+  "iam.robots.json_validate": "输入参数格式错误，请输入合法的json格式，如：{\"test\":\"test\"}"
 }

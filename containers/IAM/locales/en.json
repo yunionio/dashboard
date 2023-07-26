@@ -1011,5 +1011,6 @@
   "iam.domain_tag": "Domain tags",
   "iam.disabled_join_project.tips": "Insufficient permissions, please click the skip button",
   "iam.notify_topic.resource_release": "Notification of impending release of resources (including annual/monthly packages)",
-  "iam.notify_topic.password_expire": "Notification of password expiration"
+  "iam.notify_topic.password_expire": "Notification of password expiration",
+  "iam.robots.json_validate": "Input parameter format error, please enter a legal json format, such as: {\"test\":\"test\"}"
 }
