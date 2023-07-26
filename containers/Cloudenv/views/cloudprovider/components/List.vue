@@ -57,7 +57,7 @@ export default {
               return `account.contains("${val}")`
             },
           },
-          tenant: getTenantFilter(),
+          projects: getTenantFilter(),
         },
       }),
       groupActions: [
