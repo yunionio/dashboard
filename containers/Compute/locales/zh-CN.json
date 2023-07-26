@@ -1648,5 +1648,6 @@
   "compute.reserved": "预留",
   "compute.transfer.max_brand_width.tooltip": "带宽限制单位为Mbps，即每秒兆比特",
   "compute.disk.ssd_extra": "打开后，该磁盘虚机内显示成 SSD 磁盘，rotational 字段值为 0，和磁盘介质信息无关。",
-  "compute.daemon.tooltip": "宿主机重启后，自动启动虚拟机"
+  "compute.daemon.tooltip": "宿主机重启后，自动启动虚拟机",
+  "compute.image.min_disk.extra": "通过虚拟机保存的镜像，最小磁盘需大于或等于当时系统盘容量"
 }
