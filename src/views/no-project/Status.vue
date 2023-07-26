@@ -10,7 +10,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import MeProcess from '@/views/workflow/me-process/components/List'
+import MeProcess from '@System/views/workflow/me-process/components/List'
 
 export default {
   name: 'NoProjectMeProcess',
