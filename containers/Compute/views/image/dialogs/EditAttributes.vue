@@ -39,7 +39,7 @@
           </a-select>
           <a-input v-if="isDisOther" v-decorator="decorators.osOtherDistribution" :placeholder="$t('compute.text_659')" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_633')" v-bind="formItemLayout" v-if="!isHostImage">
+        <a-form-item :label="$t('compute.text_633')" :extra="$t('compute.image.min_disk.extra')" v-bind="formItemLayout" v-if="!isHostImage">
           <a-input-number :min="1" :max="1000" :step="50" :precision="0" v-decorator="decorators.minDisk" /> GB
         </a-form-item>
         <a-form-item :label="$t('compute.text_634')" v-bind="formItemLayout">
