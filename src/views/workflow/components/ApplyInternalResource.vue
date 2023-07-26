@@ -187,7 +187,7 @@ export default {
     projectInfoList () {
       const ret = []
       if (R.isEmpty(this.INIT_UNIT_INFO)) return []
-      const keys = Object.keys(this.INIT_PROJECT_INFO)
+      const keys = Object.keys(this.INIT_PROJECT_INFO).filter(key => !['project_type', 'a_end', 'z_end', 'ip_segment'].includes(key))
       const { projectInfo } = this.resourceData
       keys.map(key => {
         const item = { field: key }
@@ -195,7 +195,14 @@ export default {
         if (this.WORKFLOW_ITEM_MAP[key] && this.WORKFLOW_ITEM_MAP[key].valueFormatter) {
           item.value = this.WORKFLOW_ITEM_MAP[key].valueFormatter(projectInfo[key])
         } else {
-          item.value = projectInfo[key]?.name || projectInfo[key] || '-'
+          let value = projectInfo[key]?.name || projectInfo[key] || '-'
+          if (key === 'project_name') {
+            const { project_type = { id: 'origin_project' }, a_end = '-', z_end = '-', ip_segment = '-' } = projectInfo
+            if (project_type.id === 'new_project') {
+              value += `(${this.$t('wz_workflow_form.labels.a_end')}: ${a_end || '-'},${this.$t('wz_workflow_form.labels.z_end')}: ${z_end || '-'},${this.$t('wz_workflow_form.labels.ip_segment')}: ${ip_segment || '-'})`
+            }
+          }
+          item.value = value
         }
         if (this.ALL_SELECT_OPTIONS.hasOwnProperty(key) && !(this.WORKFLOW_ITEM_MAP[key] && this.WORKFLOW_ITEM_MAP[key].valueFormatter)) {
           if (this.WORKFLOW_ITEM_MAP && this.WORKFLOW_ITEM_MAP[key] && this.WORKFLOW_ITEM_MAP[key].multiple) { // 多选
