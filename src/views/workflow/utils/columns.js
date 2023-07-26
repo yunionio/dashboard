@@ -213,6 +213,10 @@ export const getOpenResourceTableColumns = () => {
         }
       },
     },
+    formatter: ({ row }) => {
+      const resources = getOpenResourceDatas({ row })
+      return resources.length
+    },
   }
 }
 
@@ -222,6 +226,7 @@ export const internalResourceColumns = () => {
     ret.push(getResourceSourceTableColumn())
     ret.push(getAreaTableColumn())
     ret.push(getOpenResourceTableColumns())
+    ret.push(getInternalResourceProjectTableColumn())
   } else {
     ret.push(getResourceNameTableColumn())
     ret.push(getResourceProjectTableColumn({
@@ -296,6 +301,41 @@ export const getResourceProjectTableColumn = ({ field = 'resource_project_name',
         return [
           <list-body-cell-wrap copy row={row} hideField={ true } message={ project }>
             { project }
+          </list-body-cell-wrap>,
+        ]
+      },
+    },
+  }
+}
+
+export const getInternalResourceProjectTableColumn = () => {
+  return {
+    field: 'project_name',
+    title: i18n.t('wz_workflow_form.labels.project_name'),
+    minWidth: 80,
+    showOverflow: 'title',
+    formatter: ({ row }) => {
+      if (!row.variables) return ''
+      const rs = getParamter(row.variables)
+      let value = rs.projectInfo?.project_name || ''
+      const { project_type = { id: 'origin_project' }, a_end = '-', z_end = '-', ip_segment = '-' } = rs.projectInfo
+      if (project_type.id === 'new_project') {
+        value += `(${i18n.t('wz_workflow_form.labels.a_end')}: ${a_end || '-'},${i18n.t('wz_workflow_form.labels.z_end')}: ${z_end || '-'},${i18n.t('wz_workflow_form.labels.ip_segment')}: ${ip_segment || '-'})`
+      }
+      return value
+    },
+    slots: {
+      default: ({ row }, h) => {
+        if (!row.variables) return ''
+        const rs = getParamter(row.variables)
+        let name = rs.projectInfo?.project_name || ''
+        const { project_type = { id: 'origin_project' }, a_end = '-', z_end = '-', ip_segment = '-' } = rs.projectInfo
+        if (project_type.id === 'new_project') {
+          name += `(${i18n.t('wz_workflow_form.labels.a_end')}: ${a_end || '-'},${i18n.t('wz_workflow_form.labels.z_end')}: ${z_end || '-'},${i18n.t('wz_workflow_form.labels.ip_segment')}: ${ip_segment || '-'})`
+        }
+        return [
+          <list-body-cell-wrap copy row={row} hideField={true} message={name}>
+            {name}
           </list-body-cell-wrap>,
         ]
       },
