@@ -65,11 +65,11 @@ export default {
         slots: {
           default: ({ row }) => {
             if (this.isPreLoad && !row.properties) return [<data-loading />]
-            let name = row.properties.os_distribution ? decodeURI(row.properties.os_distribution) : row.properties.os_type || ''
+            let name = row.properties?.os_distribution ? decodeURI(row.properties?.os_distribution) : row.properties?.os_type || ''
             if (name.includes('Windows') || name.includes('windows')) {
               name = 'Windows'
             }
-            const tooltip = (row.properties.os_version ? `${name} ${row.properties.os_version}` : name) || i18n.t('compute.text_339')
+            const tooltip = (row.properties?.os_version ? `${name} ${row.properties?.os_version}` : name) || i18n.t('compute.text_339')
             return [
               <SystemIcon tooltip={ tooltip } name={ name } />,
             ]

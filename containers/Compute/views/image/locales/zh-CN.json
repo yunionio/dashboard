@@ -1,0 +1,6 @@
+{
+  "compute.image.merge_mirror": "合并镜像",
+  "compute.image.merge_mirror.action.tooltip": "单个镜像不支持该操作，请选择俩个及以上镜像重试！",
+  "compute.image.merge_mirror.extra": "合并生成的新镜像在主机镜像列表中，操作镜像位置不变",
+  "compute.image.merge_mirror.placeholder": "请输入合并后的主机镜像名称"
+}

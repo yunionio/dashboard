@@ -231,6 +231,24 @@ export default {
                 },
               },
               {
+                label: this.$t('compute.image.merge_mirror'),
+                action: () => {
+                  this.createDialog('MergeMirrorDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  const ret = { validate: true }
+                  if (this.list.selectedItems.length < 2) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('compute.image.merge_mirror.action.tooltip')
+                  }
+                  return ret
+                },
+              },
+              {
                 label: this.$t('common_277'),
                 permission: 'images_update',
                 action: (row) => {
