@@ -62,20 +62,20 @@ export default {
         slots: {
           default: ({ row }, h) => {
             if (!row.properties) return
-            const dist = row.properties.os_distribution || row.properties.distro
-            const version = row.properties.os_version || row.properties.version
+            const dist = row.properties?.os_distribution || row.properties?.distro
+            const version = row.properties?.os_version || row.properties?.version
 
             let name = ''
             let tooltip = ''
             if (dist) {
               tooltip = version ? (version.includes(dist) ? version : `${decodeURI(dist)} ${version}`) : dist
-            } else if (row.properties.os_type) {
-              tooltip = row.properties.os_type
+            } else if (row.properties?.os_type) {
+              tooltip = row.properties?.os_type
             } else {
               tooltip = i18n.t('compute.text_339')
             }
 
-            name = dist || row.properties.os_type || ''
+            name = dist || row.properties?.os_type || ''
             if (name.includes('Windows') || name.includes('windows')) {
               name = 'Windows'
             } else if (name.includes('Linux') || name.includes('linux')) {
