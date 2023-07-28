@@ -139,7 +139,7 @@
       </a-tooltip>
     </div>
     <!-- cloudsheel -->
-    <cloud-shell v-if="isAdminMode && !workflow.enableApplyInternalResource" class="navbar-item-icon primary-color-hover" />
+    <cloud-shell v-if="isAdminMode && enableCloudShell" class="navbar-item-icon primary-color-hover" />
     <slot name="behindNavbar" />
     <!-- 更多 -->
     <slot name="morePopover">
@@ -255,6 +255,11 @@ export default {
       alertresource: state => state.alertresource,
       alertrecords: state => state.alertrecords,
     }),
+    enableCloudShell () {
+      const { globalConfig = {} } = this.common
+      const { enable_cloud_shell = true } = globalConfig
+      return enable_cloud_shell
+    },
     products () {
       if (this.userInfo.menus && this.userInfo.menus.length > 0) {
         const menus = this.userInfo.menus.filter(item => item.service === 'external-service').map(item => {
