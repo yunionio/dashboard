@@ -11,6 +11,7 @@
             v-decorator="decorators.project"
             :params="projectParams"
             version="v1"
+            remote
             :select-props="{ placeholder: this.$t('rules.project') }"
             resource="projects"
             :filterable="true" />
@@ -65,6 +66,7 @@ export default {
       const params = {
         scope: this.$store.getters.scope,
         domain_id: 'default',
+        limit: 20,
       }
       if (this.$store.getters.l3PermissionEnable) {
         params.domain_id = this.params.data[0].domain_id
