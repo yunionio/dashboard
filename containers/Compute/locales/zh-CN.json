@@ -1679,5 +1679,7 @@
   "compute.disk.ssd_extra": "打开后，该磁盘虚机内显示成 SSD 磁盘，rotational 字段值为 0，和磁盘介质信息无关。",
   "compute.reset_password.qga_tooltip": "检测该虚拟机QGA未安装，不支持在线修改密码，请检查后重试或关机后操作！",
   "compute.daemon.tooltip": "宿主机重启后，自动启动虚拟机",
-  "compute.image.min_disk.extra": "通过虚拟机保存的镜像，最小磁盘需大于或等于当时系统盘容量"
+  "compute.image.min_disk.extra": "通过虚拟机保存的镜像，最小磁盘需大于或等于当时系统盘容量",
+  "compute.server.shutdown_mode.stop_charging": "开启关机不收费",
+  "compute.server.shutdown_mode.tooltip": "开启关机不收费，不支持该操作"
 }

@@ -679,9 +679,11 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
-                      if (this.isSameHyper) {
-                        ret.validate = cloudEnabled('rebuildRoot', this.list.selectedItems)
-                        ret.tooltip = cloudUnabledTip('rebuildRoot', this.list.selectedItems)
+
+                      const isSameStopCharging = this.list.selectedItems.some((item) => { return item.shutdown_mode === 'stop_charging' })
+                      if (isSameStopCharging) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.server.shutdown_mode.tooltip')
                         return ret
                       }
 
@@ -691,8 +693,13 @@ export default {
                         ret.tooltip = this.$t('compute.vminstance.actions.adjust_config.cpu_arch.tips')
                         return ret
                       }
-                      ret.validate = false
-                      ret.tooltip = this.$t('compute.text_278')
+
+                      if (this.isSameHyper) {
+                        ret.validate = cloudEnabled('rebuildRoot', this.list.selectedItems)
+                        ret.tooltip = cloudUnabledTip('rebuildRoot', this.list.selectedItems)
+                        return ret
+                      }
+
                       return ret
                     },
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_rebuild_root'),
@@ -745,6 +752,12 @@ export default {
                         if (!this.isSameArch) {
                           ret.validate = false
                           ret.tooltip = this.$t('compute.vminstance.actions.adjust_config.cpu_arch.tips')
+                          return ret
+                        }
+                        const isSameStopCharging = this.list.selectedItems.some((item) => { return item.shutdown_mode === 'stop_charging' })
+                        if (isSameStopCharging) {
+                          ret.validate = false
+                          ret.tooltip = this.$t('compute.server.shutdown_mode.tooltip')
                           return ret
                         }
                         return ret

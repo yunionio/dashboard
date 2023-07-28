@@ -757,6 +757,11 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  if (obj.shutdown_mode === 'stop_charging') {
+                    ret.validate = false
+                    ret.tooltip = i18n.t('compute.server.shutdown_mode.tooltip')
+                    return ret
+                  }
                   if (commonUnabled(obj)) return ret
                   ret.validate = cloudEnabled('rebuildRoot', obj)
                   ret.tooltip = cloudUnabledTip('rebuildRoot', obj)
@@ -789,6 +794,11 @@ const getSingleActions = function () {
                   }
                   if (obj.os_arch === HOST_CPU_ARCHS.arm.key && obj.status === 'running') {
                     ret.tooltip = i18n.t('compute.text_1371')
+                    return ret
+                  }
+                  if (obj.shutdown_mode === 'stop_charging') {
+                    ret.validate = false
+                    ret.tooltip = i18n.t('compute.server.shutdown_mode.tooltip')
                     return ret
                   }
                   if (commonUnabled(obj)) return ret
