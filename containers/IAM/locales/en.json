@@ -805,6 +805,10 @@
     "compute$enable_export_username_password": {
       "label": "Virtual Machine Password Export Switch",
       "desc": "When enabled, includes account password information when exporting the virtual machine list through the platform (caution advised for large quantities)"
+    },
+    "common$enable_cloud_shell": {
+      "label": "CloudShell Switch",
+      "desc": "After closing, the cloud management CloudShell entrance is hidden and users cannot use it!"
     }
   },
   "user": {
