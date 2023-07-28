@@ -22,8 +22,8 @@ const ecloudLogo = require('../../../../src/assets/images/providers/ecloud.svg')
 const jdcloudLogo = require('../../../../src/assets/images/providers/jdcloud.svg')
 const cloudpodsLogo = require('../../../../src/assets/images/providers/cloudpods.svg')
 const hcsoLogo = require('../../../../src/assets/images/providers/hcso.svg')
-const hcsopLogo = require('../../../../src/assets/images/providers/hcsop.svg')
-const hcsLogo = require('../../../../src/assets/images/providers/hcs.svg')
+const hcsopLogo = require('../../../../src/assets/images/providers/huawei.svg')
+const hcsLogo = require('../../../../src/assets/images/providers/huawei.svg')
 const nutanixLogo = require('../../../../src/assets/images/providers/nutanix.svg')
 const bingocloudLogo = require('../../../../src/assets/images/providers/bingocloud.svg')
 const incloudsphereLogo = require('../../../../src/assets/images/providers/incloudsphere.svg')
@@ -61,6 +61,10 @@ export const CLOUDACCOUNT_TYPES = {
       logo: huaweiLogo,
       component: 'HuaweiCreate',
       provider: providerMap.huawei.key,
+      logoStyle: {
+        position: 'relative',
+        top: '3px',
+      },
     },
     qcloud: {
       name: providerMap.qcloud.label,
@@ -147,12 +151,20 @@ export const CLOUDACCOUNT_TYPES = {
       logo: hcsopLogo,
       component: 'HCSOPCreate',
       provider: providerMap.hcsop.key,
+      logoStyle: {
+        position: 'relative',
+        top: '3px',
+      },
     },
     hcs: {
       name: providerMap.hcs.label,
       logo: hcsLogo,
       component: 'HCSCreate',
       provider: providerMap.hcs.key,
+      logoStyle: {
+        position: 'relative',
+        top: '3px',
+      },
     },
     nutanix: {
       name: providerMap.nutanix.label,

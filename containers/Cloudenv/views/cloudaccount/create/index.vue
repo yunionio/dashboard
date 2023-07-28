@@ -15,7 +15,7 @@
         <div class="d-flex align-items-center">
           <div class="mr-2">{{$t('cloudenv.text_272')}}</div>
           <div class="item d-flex p-1 mb-0 align-items-center active">
-            <img :src="currentItem.logo" />
+            <img :src="currentItem.logo" :style="currentItem.logoStyle" />
             <h5 class="ml-2" v-if="showName(currentItem)">{{ currentItem.name }}</h5>
           </div>
         </div>
