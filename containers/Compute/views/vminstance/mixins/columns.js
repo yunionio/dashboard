@@ -112,6 +112,7 @@ export default {
               columns: this.columns,
               onManager: this.onManager,
             }) }>{ this.$t('common.cancel') }</a>
+          const shutdown = <span class="text-color-help">({ this.$t('compute.server.shutdown_mode.stop_charging') })</span>
 
           return [
             <div class='d-flex align-items-center text-truncate'>
@@ -119,6 +120,7 @@ export default {
               { row.metadata && getToolTip(row) }
               { row.status?.includes('fail') ? log : null }
               { row.status === 'live_migrating' ? cancel : null }
+              { row.shutdown_mode === 'stop_charging' ? shutdown : null }
             </div>,
           ]
         },
