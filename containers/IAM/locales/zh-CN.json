@@ -804,6 +804,10 @@
     "compute$enable_export_username_password": {
       "label": "虚拟机密码导出开关",
       "desc": "开启后，通过平台导出虚拟机列表时，同时包含账号密码信息（数量较多时慎重打开）"
+    },
+    "common$enable_cloud_shell": {
+      "label": "CloudShell开关",
+      "desc": "关闭后，云管CloudShell入口隐藏，用户无法使用！"
     }
   },
   "user": {
