@@ -808,6 +808,22 @@
     "common$enable_cloud_shell": {
       "label": "CloudShell开关",
       "desc": "关闭后，云管CloudShell入口隐藏，用户无法使用！"
+    },
+    "compute$local_sys_disk_min_size_gb": {
+      "label": "本地系统盘最小值",
+      "desc": "设置本地系统盘最小值"
+    },
+    "compute$local_sys_disk_max_size_gb": {
+      "label": "本地系统盘最大值",
+      "desc": "设置本地系统盘最大值"
+    },
+    "compute$local_data_disk_min_size_gb": {
+      "label": "本地数据盘最小值",
+      "desc": "设置本地数据盘最小值"
+    },
+    "compute$local_data_disk_max_size_gb": {
+      "label": "本地数据盘最大值",
+      "desc": "设置本地数据盘最大值"
     }
   },
   "user": {
