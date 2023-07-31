@@ -809,6 +809,22 @@
     "common$enable_cloud_shell": {
       "label": "CloudShell Switch",
       "desc": "After closing, the cloud management CloudShell entrance is hidden and users cannot use it!"
+    },
+    "compute$local_sys_disk_min_size_gb": {
+      "label": "The minimum value of the local system disk",
+      "desc": "Set the minimum value of the local system disk"
+    },
+    "compute$local_sys_disk_max_size_gb": {
+      "label": "The maximum value of the local system disk",
+      "desc": "Set the maximum value of the local system disk"
+    },
+    "compute$local_data_disk_min_size_gb": {
+      "label": "The minimum value of the local data disk",
+      "desc": "Set the minimum value of the local data disk"
+    },
+    "compute$local_data_disk_max_size_gb": {
+      "label": "Maximum value of local data disk",
+      "desc": "Set the maximum value of the local data disk"
     }
   },
   "user": {
