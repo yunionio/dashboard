@@ -423,7 +423,7 @@ export default {
         params.image_type = 'system'
       }
       if (this.isPrivate || this.isVMware) {
-        params.project_domain = this.form.fd.domain?.key || this.$store.getters.userInfo.domain?.id
+        params.project_domain = this.form.fd.domain?.key || this.$store.getters.userInfo.projectDomainId
       }
       this.loading = true
       this.images.cacheimagesList = []
