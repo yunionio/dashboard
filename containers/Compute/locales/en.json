@@ -1677,5 +1677,6 @@
   "compute.disk.ssd_extra": "When enabled, this disk will appear as an SSD disk within the virtual machine, with a rotational field value of 0 and no relation to the physical disk medium information.",
   "compute.reset_password.qga_tooltip": "The virtual machine QGA is not installed. Online password modification is not supported. Please check and try again or perform the operation after shutting down.",
   "compute.daemon.tooltip": "After the host restarts, automatically start the virtual machine",
-  "compute.image.min_disk.extra": "For the image saved by the virtual machine, the minimum disk must be greater than or equal to the current system disk capacity"
+  "compute.image.min_disk.extra": "For the image saved by the virtual machine, the minimum disk must be greater than or equal to the current system disk capacity",
+  "compute.disk.size.required_message": "The hard disk capacity number is required"
 }
