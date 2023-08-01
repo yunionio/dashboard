@@ -5427,5 +5427,6 @@
   "common.ssh_password_tip": "请输入SSH账户密码",
   "common.operation_object": "操作对象",
   "common.bgp_type_options.bgp": "BGP(多线)",
-  "common.bgp_type_options.bgp_pro": "BGP(多线)_精品"
+  "common.bgp_type_options.bgp_pro": "BGP(多线)_精品",
+  "common.message.error.not_supported_error": "后端不支持该操作"
 }

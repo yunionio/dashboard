@@ -5404,5 +5404,6 @@
   "common.ssh_password_tip": "Please input SSH Username-Password",
   "common.operation_object": "Operation object",
   "common.bgp_type_options.bgp": "BGP",
-  "common.bgp_type_options.bgp_pro": "BGP_PRO"
+  "common.bgp_type_options.bgp_pro": "BGP_PRO",
+  "common.message.error.not_supported_error": "Backend does not support this operation"
 }
