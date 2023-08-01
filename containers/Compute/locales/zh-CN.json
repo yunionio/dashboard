@@ -1681,5 +1681,6 @@
   "compute.daemon.tooltip": "宿主机重启后，自动启动虚拟机",
   "compute.image.min_disk.extra": "通过虚拟机保存的镜像，最小磁盘需大于或等于当时系统盘容量",
   "compute.server.shutdown_mode.stop_charging": "开启关机不收费",
-  "compute.server.shutdown_mode.tooltip": "开启关机不收费，不支持该操作"
+  "compute.server.shutdown_mode.tooltip": "开启关机不收费，不支持该操作",
+  "compute.disk.size.required_message": "硬盘容量数字为必填"
 }

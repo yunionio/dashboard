@@ -1679,5 +1679,6 @@
   "compute.daemon.tooltip": "After the host restarts, automatically start the virtual machine",
   "compute.image.min_disk.extra": "For the image saved by the virtual machine, the minimum disk must be greater than or equal to the current system disk capacity",
   "compute.server.shutdown_mode.stop_charging": "Enable shutdown without charging",
-  "compute.server.shutdown_mode.tooltip": "There is no charge for enabling and shutting down, and this operation is not supported"
+  "compute.server.shutdown_mode.tooltip": "There is no charge for enabling and shutting down, and this operation is not supported",
+  "compute.disk.size.required_message": "The hard disk capacity number is required"
 }
