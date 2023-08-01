@@ -5429,5 +5429,6 @@
   "common.second_unit": "秒",
   "common.permission.403": "权限不足，请联系管理员",
   "common.bgp_type_options.bgp": "BGP(多线)",
-  "common.bgp_type_options.bgp_pro": "BGP(多线)_精品"
+  "common.bgp_type_options.bgp_pro": "BGP(多线)_精品",
+  "common.message.error.not_supported_error": "后端不支持该操作"
 }

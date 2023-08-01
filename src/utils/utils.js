@@ -1076,3 +1076,22 @@ export const getWorkflowParamterParams = (paramter) => {
   }
   return ret
 }
+
+export const isBlob = (val) => {
+  return Object.prototype.toString.call(val) === '[object Blob]'
+}
+
+export const blobToJson = (blob) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = (event) => {
+      try {
+        const data = JSON.parse(event.target.result)
+        resolve(data)
+      } catch (error) {
+        reject(error)
+      }
+    }
+    reader.readAsText(blob)
+  })
+}

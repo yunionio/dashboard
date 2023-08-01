@@ -11,7 +11,7 @@ import qs from 'qs'
 import store from '@/store'
 import router from '@/router'
 import { getHttpErrorMessage, getHttpReqMessage, getErrorBody, getDescription } from '@/utils/error'
-import { uuid, genReferRouteQuery } from '@/utils/utils'
+import { uuid, genReferRouteQuery, isBlob, blobToJson } from '@/utils/utils'
 import { SHOW_SYSTEM_RESOURCE } from '@/constants'
 import i18n from '@/locales'
 
@@ -288,6 +288,15 @@ http.interceptors.response.use(
       } if (status === 403) {
         message.error(i18n.t('common.permission.403'))
       } else if (error.response.data && !(error.response.data.details || String()).includes('No token in header')) {
+        if (isBlob(error.response.data)) {
+          blobToJson(error.response.data).then(res => {
+            if (res.class === 'NotSupportedError') {
+              message.error(i18n.t('common.message.error.not_supported_error'))
+            }
+          }).catch(err => {
+            console.log(err)
+          })
+        }
         showHttpErrorMessage(error)
       }
     }
