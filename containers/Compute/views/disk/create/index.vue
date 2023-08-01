@@ -26,7 +26,7 @@
       <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
         <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
       </a-form-item>
-      <a-form-item :label="$t('compute.text_100')" required v-bind="formItemLayout">
+      <a-form-item :label="$t('compute.text_100')" v-bind="formItemLayout">
         <a-row>
           <a-col :span="6" class="mr-2">
             <a-select v-decorator="decorators.backend" @change="__newStorageChange">
@@ -38,9 +38,11 @@
             </a-select>
           </a-col>
           <a-col :span="5">
-            <a-tooltip :title="tooltip" placement="top">
-              <a-input-number :min="minDiskData" :max="maxDiskData" :step="step" v-decorator="decorators.size" /> GB
-            </a-tooltip>
+            <a-form-item>
+              <a-tooltip :title="tooltip" placement="top">
+                <a-input-number :min="minDiskData" :max="maxDiskData" :step="step" v-decorator="decorators.size" /> GB
+              </a-tooltip>
+            </a-form-item>
           </a-col>
         </a-row>
       </a-form-item>
@@ -205,7 +207,7 @@ export default {
           {
             initialValue: 10,
             rules: [
-              { required: true },
+              { required: true, type: 'number', message: this.$t('compute.disk.size.required_message') },
             ],
           },
         ],
