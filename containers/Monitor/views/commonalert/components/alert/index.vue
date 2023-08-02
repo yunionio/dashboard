@@ -7,6 +7,7 @@
         :alertData="alertData"
         :threshold.sync="threshold"
         :timeRangeParams="timeRangeParams"
+        :isUpdate="isUpdate"
         @refresh="refresh"
         @resetChart="resetChart"
         @mertricItemChange="mertricItemChange"
@@ -164,6 +165,9 @@ export default {
           const desc = this.alertData.common_alert_metric_details[0].field_description
           this.lineDescription.isUpdate = true
           this.lineDescription.metric_res_type = this.alertData.common_alert_metric_details[0].res_type
+          if (this.alertData.common_alert_metric_details[0].measurement === 'cloudaccount_balance') {
+            desc.unit = 'currency'
+          }
           this.$set(this.lineDescription, 'description', desc || {})
         }
       })
@@ -315,6 +319,22 @@ export default {
         const { data: { series = [], series_total = 0 } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data })
         this.series = []
         this.$nextTick(_ => {
+          if (this.lineDescription.id === 'balance' && this.lineDescription.metric_res_type === 'cloudaccount') {
+            const currencyList = []
+            series.map(item => {
+              const { tags = {} } = item
+              const { currency = 'CNY' } = tags
+              if (!currencyList.includes(currency)) {
+                currencyList.push(currency)
+              }
+            })
+            if (currencyList.length !== 1 && this.lineDescription.description) {
+              this.lineDescription.description.unit = ''
+            }
+            if (currencyList.length === 1 && this.lineDescription.description) {
+              this.lineDescription.description.unit = 'currency'
+            }
+          }
           this.series = series
           this.pager = { seriesIndex: 0, total: series_total, page: 1 + offset / limit, limit: limit }
           this.chartLoading = false

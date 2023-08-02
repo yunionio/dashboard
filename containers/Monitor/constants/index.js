@@ -371,6 +371,7 @@ export const filterKeyMap = {
   engine: i18n.t('monitor.instance_engine'),
   server_type: i18n.t('db.text_119'),
   rds_name: i18n.t('db.text_60'),
+  currency: i18n.t('monitor.currency'),
 }
 
 export const MONITOR_MAX_POINTERS = 30
