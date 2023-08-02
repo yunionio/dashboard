@@ -63,6 +63,10 @@ export default {
         ...item,
       }
     })
+    // 导出备注信息（位置在 name 之后）
+    const nameIndex = exportOptionItems.findIndex(item => item.field === 'name' || item.key === 'name')
+    exportOptionItems = R.insert(nameIndex + 1, { label: this.$t('table.title.desc'), key: 'description' }, exportOptionItems)
+
     let allExportKeys = exportOptionItems.map(item => item.key)
     const exportTags = (this.params.showTagColumns && this.params.config.showTagKeys) || []
     if (exportTags && exportTags.length) {
