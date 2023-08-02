@@ -10,6 +10,21 @@
         <a-form-item :label="$t('compute.text_228')" :extra="$t('compute.image.merge_mirror.extra')">
           <a-input v-decorator="decorators.name" :placeholder="$t('compute.image.merge_mirror.placeholder')" />
         </a-form-item>
+        <a-form-item :label="$t('compute.image.merge_mirror.order')" :extra="$t('compute.image.merge_mirror.order_extra')">
+          <draggable
+            handle=".drag-icon"
+            chosen-class="chosen"
+            v-model="images"
+            :move="onMoveHandle">
+            <transition-group type="transition" name="flip-list">
+              <template v-for="item of images">
+                <div class="item" :key="item.id">
+                  <a-icon type="drag" class="drag-icon pr-3" @click.prevent="() => {}" />{{item.name}}
+                </div>
+              </template>
+            </transition-group>
+          </draggable>
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -20,11 +35,15 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'MergeMirrorDialog',
+  components: {
+    draggable,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -57,6 +76,7 @@ export default {
           },
         ],
       },
+      images: [],
     }
   },
   computed: {
@@ -64,7 +84,19 @@ export default {
       return this.params.columns.filter(item => ['name', 'tenant'].includes(item.field))
     },
   },
+  created () {
+    this.init()
+  },
   methods: {
+    init () {
+      this.images = this.params.data.map((item, index) => {
+        return {
+          order: item.is_data ? index : -1,
+          ...item,
+        }
+      })
+      this.images.sort((a, b) => a.order - b.order)
+    },
     doAction (data) {
       return new this.$Manager('guestimages', 'v1').create({ data })
     },
@@ -72,8 +104,7 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        const images = this.params.data
-        const data = { images, name: values.name }
+        const data = { images: this.images, name: values.name }
         await this.doAction(data)
         this.cancelDialog()
         this.params.refresh()
@@ -83,6 +114,29 @@ export default {
         this.loading = false
       }
     },
+    onMoveHandle (e) {
+      const { is_data } = e.draggedContext.element
+      if (is_data && e.relatedContext.index === 0) return false
+      if (this.images && this.images.length > 1) {
+        if (e.draggedContext.index === 0 && this.images[1].is_data) return false
+      }
+    },
   },
 }
 </script>
+<style lang="scss" scoped>
+.item {
+  padding: 0 10px;
+  background-color: #fdfdfd;
+  border: solid 1px #eee;
+  margin-bottom: 10px;
+}
+
+.item:hover {
+  background-color: #f1f1f1;
+}
+
+.chosen {
+  border: solid 1px #1890ff !important;
+}
+</style>
