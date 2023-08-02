@@ -157,8 +157,24 @@ export function getMetircAlertUtil (row, field, condition) {
     const reduce = (alertStrategyMaps[detail.reduce]) || ''
     const alert_duration = row.alert_duration ? i18n.t('monitor.list.duration.label', [row.alert_duration]) : row[field].alert_duration ? i18n.t('monitor.list.duration.label', [row[field].alert_duration]) : ''
     let preiod = ((preiodMaps[row.period] || {}).label) || row.period || ((preiodMaps[detail.period] || {}).label) || detail.period
-    const unit = detail.field_description ? _.get(detail, 'field_description.unit') : (R.type(row.eval_data) === 'Array' ? (_.get(row, 'eval_data[0].unit') || '') : '')
-    const threshold = R.is(String, detail.threshold) ? { text: detail.threshold } : transformUnit(detail.threshold, unit)
+    let unit = detail.field_description ? _.get(detail, 'field_description.unit') : (R.type(row.eval_data) === 'Array' ? (_.get(row, 'eval_data[0].unit') || '') : '')
+    let threshold = R.is(String, detail.threshold) ? { text: detail.threshold } : transformUnit(detail.threshold, unit)
+    if (detail.measurement === 'cloudaccount_balance' && unit === 'RMB') {
+      unit = ''
+      if (detail.filters && detail.filters.length) {
+        const targets = detail.filters.filter(item => item.key === 'currency')
+        const cs = []
+        targets.map(item => {
+          if (item.value && !cs.includes(item.value)) {
+            cs.push(item.value)
+          }
+        })
+        if (cs.length === 1) {
+          unit = currencyUnitMap[cs[0]]?.sign || ''
+        }
+      }
+      threshold = R.is(String, detail.threshold) ? { text: detail.threshold } : unit ? { text: `${unit}${detail.threshold}` } : { text: detail.threshold }
+    }
     let comparator = detail.comparator
     let txt = threshold.text
     if (detail.comparator === 'within_range' && detail.within_range) {

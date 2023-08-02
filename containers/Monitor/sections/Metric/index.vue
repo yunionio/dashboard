@@ -1,44 +1,46 @@
 <template>
   <a-row :gutter="gutter">
-    <a-col :span="span" v-if="showResType">
-      <a-form-item class="mr-1">
-        <base-select
-          minWidth="192px"
-          v-decorator="decorators.metric_res_type"
-          :options="metricTypeOpts"
-          filterable
-          :disabled="disabled"
-          :select-props="{ placeholder: $t('monitor.text_111'), loading }"
-          @change="metricTypeChange" />
-      </a-form-item>
-    </a-col>
-    <a-col :span="span">
-      <a-form-item class="mr-1">
-        <base-select
-          minWidth="192px"
-          v-decorator="decorators.metric_key"
-          :options="metricKeyOpts"
-          filterable
-          :disabled="disabled"
-          :item.sync="metricKeyItem"
-          :select-props="{ placeholder: $t('monitor.text_112'), loading }"
-          @change="metricKeyChange" />
-      </a-form-item>
-    </a-col>
-    <a-col :span="span">
-      <a-form-item>
-        <base-select
-          minWidth="192px"
-          filterable
-          v-decorator="decorators.metric_value"
-          :item.sync="metricValueItem"
-          :options="metricOpts"
-          :labelFormat="metricValueLabelFormat"
-          :disabled="disabled"
-          @change="metricValueChange"
-          :select-props="{ placeholder: $t('monitor.text_113'), allowClear: true, loading }" />
-      </a-form-item>
-    </a-col>
+    <a-form-item :extra="extra" style="margin-bottom:0">
+      <a-col :span="span" v-if="showResType">
+        <a-form-item class="mr-1">
+          <base-select
+            minWidth="192px"
+            v-decorator="decorators.metric_res_type"
+            :options="metricTypeOpts"
+            filterable
+            :disabled="disabled"
+            :select-props="{ placeholder: $t('monitor.text_111'), loading }"
+            @change="metricTypeChange" />
+        </a-form-item>
+      </a-col>
+      <a-col :span="span">
+        <a-form-item class="mr-1">
+          <base-select
+            minWidth="192px"
+            v-decorator="decorators.metric_key"
+            :options="metricKeyOpts"
+            filterable
+            :disabled="disabled"
+            :item.sync="metricKeyItem"
+            :select-props="{ placeholder: $t('monitor.text_112'), loading }"
+            @change="metricKeyChange" />
+        </a-form-item>
+      </a-col>
+      <a-col :span="span">
+        <a-form-item>
+          <base-select
+            minWidth="192px"
+            filterable
+            v-decorator="decorators.metric_value"
+            :item.sync="metricValueItem"
+            :options="metricOpts"
+            :labelFormat="metricValueLabelFormat"
+            :disabled="disabled"
+            @change="metricValueChange"
+            :select-props="{ placeholder: $t('monitor.text_113'), allowClear: true, loading }" />
+        </a-form-item>
+      </a-col>
+    </a-form-item>
   </a-row>
 </template>
 
@@ -145,6 +147,12 @@ export default {
       if (this.showResType) return 8
       return 0
     },
+    extra () {
+      // if (this.metricValueItem.id === 'balance' && this.metricValueItem.metric_res_type === 'cloudaccount') {
+      //   return this.$t('monitor.currency_select_tip')
+      // }
+      return ''
+    },
   },
   watch: {
     metric_res_type (val) {
@@ -202,7 +210,6 @@ export default {
         if (this.metricKeyItem) {
           kItem = this.metricKeyOpts.find((opt) => { return opt.key === this.metric_key })
         }
-        console.log(vItem, kItem)
         this.$emit('metricChange', { metricKey: this.metric_key, mertric: val, mertricItem: vItem, metricKeyItem: kItem })
       }
     },

@@ -295,5 +295,7 @@
   "monitor.tag_key": "标签键：",
   "monitor.address": "地址",
   "monitor.inside_addr": "内网地址",
-  "monitor.outside_addr": "外网地址"
+  "monitor.outside_addr": "外网地址",
+  "monitor.currency": "货币",
+  "monitor.currency_select_tip": "请注意选择货币"
 }

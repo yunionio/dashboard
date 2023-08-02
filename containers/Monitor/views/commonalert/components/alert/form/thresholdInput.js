@@ -110,7 +110,7 @@ export default {
     renderUnit (h) {
       const unit = this.unit
       const option = this.threshold.option
-      if (!this.unit) {
+      if (!this.unit || this.unit === 'RMB') {
         return ''
       }
       if (this.options) {
