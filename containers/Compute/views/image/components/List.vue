@@ -237,6 +237,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
+                    refresh: this.refresh,
                   })
                 },
                 meta: () => {
@@ -244,6 +245,7 @@ export default {
                   if (this.list.selectedItems.length < 2) {
                     ret.validate = false
                     ret.tooltip = this.$t('compute.image.merge_mirror.action.tooltip')
+                    return ret
                   }
                   return ret
                 },
