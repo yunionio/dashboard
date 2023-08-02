@@ -106,14 +106,6 @@ export default {
       decorators: {
         release_name: [
           'release_name',
-          {
-            validateFirst: true,
-            rules: [
-              { required: true, message: this.$t('helm.text_28') },
-              { min: 2, max: 24, message: this.$t('helm.text_38'), trigger: 'blur' },
-              { validator: this.$validate('k8sName') },
-            ],
-          },
         ],
         version: [
           'version',
