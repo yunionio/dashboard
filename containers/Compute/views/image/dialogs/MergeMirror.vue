@@ -14,8 +14,7 @@
           <draggable
             handle=".drag-icon"
             chosen-class="chosen"
-            v-model="images"
-            :move="onMoveHandle">
+            v-model="images">
             <transition-group type="transition" name="flip-list">
               <template v-for="item of images">
                 <div class="item" :key="item.id">
@@ -70,8 +69,10 @@ export default {
         name: [
           'name',
           {
+            validateFirst: true,
             rules: [
               { required: true, message: this.$t('compute.text_660') },
+              { validator: this.$validate('imageName') },
             ],
           },
         ],
