@@ -55,6 +55,7 @@ import LineChart from '@/sections/Charts/Line'
 import { ColorHash } from '@/utils/colorHash'
 import { transformUnit } from '@/utils/utils'
 import { BRAND_MAP } from '@/constants'
+import { currencyUnitMap } from '@/constants/currency'
 
 const MAX_COLUMNS = 6
 
@@ -360,6 +361,7 @@ export default {
       }))
       const dataset = []
       const names = []
+      const currencys = []
       this.series.forEach((item, i) => {
         let name = item.raw_name
         if (BRAND_MAP[name] && BRAND_MAP[name].label) {
@@ -367,6 +369,12 @@ export default {
         }
         if (item.tags && item.tags.path) {
           name += ` (path: ${item.tags.path})`
+        }
+        if (item.tags) {
+          const { currency = 'CNY' } = (item.tags || {})
+          if (currency && !currencys.includes(currency)) {
+            currencys.push(currency)
+          }
         }
         const seriesItem = {
           ...(lineChartOptions.series[i] || {}),
@@ -397,6 +405,13 @@ export default {
               unit = 'intms'
             }
             const val = transformUnit(value, unit, 1000, '0')
+            if (unit === 'currency') {
+              let unit = ''
+              if (currencys.length === 1) {
+                unit = currencyUnitMap[currencys[0]]?.sign || ''
+              }
+              return unit ? `${unit} ${val.value || value}` : val.value || value
+            }
             return val.text
           },
         },
@@ -406,8 +421,16 @@ export default {
         trigger: 'axis',
         position: (point, params, dom, rect, size) => {
           const series = params.map((line, i) => {
-            const val = transformUnit(line.value[0], _.get(this.description, 'description.unit'))
-            const value = _.get(val, 'text') || line.value
+            const unit = _.get(this.description, 'description.unit')
+            const val = transformUnit(line.value[0], unit)
+            let value = _.get(val, 'text') || line.value
+            if (unit === 'currency') {
+              let unit = ''
+              if (currencys.length === 1) {
+                unit = currencyUnitMap[currencys[0]]?.sign || ''
+              }
+              value = unit ? `${unit} ${_.get(val, 'value' || line.value[0])}` : _.get(val, 'value' || line.value[0])
+            }
             const color = i === this.highlight.index ? this.highlight.color : '#616161'
             return `<div style="color: ${color};" class="d-flex align-items-center"><span>${line.marker}</span> <span class="text-truncate" style="max-width: 500px;">${line.seriesName || ' '}</span>:&nbsp;<span>${value}</span></div>`
           }).join('')
