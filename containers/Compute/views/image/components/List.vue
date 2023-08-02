@@ -247,6 +247,12 @@ export default {
                     ret.tooltip = this.$t('compute.image.merge_mirror.action.tooltip')
                     return ret
                   }
+                  const isSomeISO = this.list.selectedItems.some(item => item.disk_format === 'iso')
+                  if (isSomeISO) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('compute.image.merge_mirror.system_image.select_validate')
+                    return ret
+                  }
                   return ret
                 },
               },
