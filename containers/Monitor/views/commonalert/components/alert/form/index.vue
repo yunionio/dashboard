@@ -16,7 +16,7 @@
         :disabled="disabled"
         :loading="metricLoading"
         :showResType="showResType"
-        @metricClear="resetChart"
+        @metricClear="resetMetric"
         @metricChange="getMetricInfo" />
     </a-form-item>
     <a-form-item :label="$t('monitor.monitor_filters')">
@@ -31,7 +31,7 @@
         :metricInfo="metricInfo" />
     </a-form-item>
     <a-form-item :label="$t('monitor.condition')" class="mb-0">
-      <condition :decorators="decorators" :disabled="disabled" @comparatorChange="emitComparator"  @thresholdChange="emitThreshold" :unit="conditionUnit" />
+      <condition :decorators="decorators" :disabled="disabled" @comparatorChange="emitComparator"  @thresholdChange="emitThreshold" :unit="metricInfo.measurement === 'cloudaccount_balance' ? '' : conditionUnit" />
     </a-form-item>
     <a-form-item :label="$t('monitor.commonalerts.form.column.silent')" class="mb-0">
       <a-form-item class="mr-1">
@@ -117,13 +117,13 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
-import Condition from './Condition'
 import Metric from '@Monitor/sections/Metric'
 import Filters from '@Monitor/sections/Filters'
 import ScopeRadio from '@/sections/ScopeRadio'
 import { levelMaps, metric_zh } from '@Monitor/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import NotifyTypes from '@/sections/NotifyTypes'
+import Condition from './Condition'
 
 export default {
   name: 'CommonalertForm',
@@ -156,6 +156,7 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    isUpdate: Boolean,
   },
   data () {
     let tags = []
@@ -462,6 +463,7 @@ export default {
       currentScope: initialValue.scope,
       notifyTypes: initialValue.notifyTypes,
       label: this.$t('monitor.text00015'),
+      isFirstMetricChange: this.isUpdate,
     }
   },
   computed: {
@@ -674,6 +676,13 @@ export default {
         }
         this.metricInfoLoading = true
         const { data } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'metric-measurement', params })
+        if (metricKey === 'cloudaccount_balance' && !this.isFirstMetricChange) {
+          const { tag_key = [], tag_value = {} } = data
+          if (tag_key.includes('currency') && tag_value.currency && tag_value.currency.length) {
+            this.tags = [{ key: 'currency', value: tag_value.currency[0], operator: '=' }]
+          }
+        }
+        this.isFirstMetricChange = false
         this.metricInfo = data
         this.metricInfoLoading = false
       } catch (error) {
@@ -726,6 +735,10 @@ export default {
       if (needEmit) this.$emit('refresh', params)
       this.oldParams = params // 记录为上一次 params
       return params
+    },
+    resetMetric () {
+      this.tags = []
+      this.resetChart()
     },
     resetChart () {
       this.$emit('resetChart')
