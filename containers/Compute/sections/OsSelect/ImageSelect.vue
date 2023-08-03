@@ -280,6 +280,9 @@ export default {
     this.instanceSnapshots = new Manager('instance_snapshots', 'v2')
     this.fetchData()
     this.fetchCacheimages = _.debounce(this._fetchCacheimages, 500)
+    if (this.isPublicImage || this.isPrivateImage || this.isVMware) {
+      this.fetchCacheimages()
+    }
   },
   methods: {
     fetchData () {
