@@ -83,28 +83,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('network.text_21'), key: 'name' },
-          { label: this.$t('network.text_27'), key: 'status' },
-          { label: this.$t('network.text_536'), key: 'nat_spec' },
-          { label: this.$t('network.text_535'), key: 'vpc' },
-          { label: this.$t('network.text_198'), key: 'provider' },
-          { label: this.$t('network.text_199'), key: 'region' },
-          { label: this.$t('network.text_196'), key: 'manager' },
-          { label: this.$t('network.text_537'), key: 'billing_type' },
-          { label: this.$t('network.text_313'), key: 'created_at' },
-          {
-            label: this.$t('network.text_232'),
-            key: 'public_scope',
-            hidden: () => {
-              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('natgateways'))
-            },
-          },
-          { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('network.text_26'),
@@ -353,6 +331,13 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo']),
+    exportDataOptions () {
+      return {
+        title: this.$t('dictionary.nat'),
+        downloadType: 'local',
+        items: this.columns,
+      }
+    },
   },
   created () {
     this.initSidePageTab('nat-detail')
