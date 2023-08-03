@@ -968,7 +968,7 @@ export const escapeHTML = str =>
   )
 
 /**
- * 替换云账号中OneStack为oem.brand.en
+ * 替换云账号中OneStack、费用云账号中的YunionCloud为oem.brand.en
  * @param {Object} param data: {Array|Object}
  * @returns {Array|Object} data
  */
@@ -987,11 +987,13 @@ export const accountsFilterByOem = (
     list = [data]
   }
 
+  const lang = getLanguage()
+
   const ret = list.map(item => {
     if (checkById && item[idKey] === 'yunion' && checkByName && item[nameKey] === 'OneStack') {
-      item[nameKey] = setting.brand.en || item[nameKey]
+      item[nameKey] = setting.brand[lang] || setting.brand.en || item[nameKey]
     } else if (checkByName && item[nameKey] === 'OneStack') {
-      item[nameKey] = setting.brand.en || item[nameKey]
+      item[nameKey] = setting.brand[lang] || setting.brand.en || item[nameKey]
     }
     return item
   })
@@ -1016,9 +1018,11 @@ export const brandsFilterByOem = (
     list = [data]
   }
 
+  const lang = getLanguage()
+
   const ret = list.map(item => {
     if (item[nameKey] === 'OneCloud') {
-      item[nameKey] = setting.brand.en || item[nameKey]
+      item[nameKey] = setting.brand[lang] || setting.brand.en || item[nameKey]
     }
     return item
   })
