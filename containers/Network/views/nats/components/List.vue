@@ -14,8 +14,6 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
 import { getFilter, getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
@@ -23,6 +21,8 @@ import { disableDeleteAction } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import i18n from '@/locales'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import { checkReadOnly } from '../utils'
 
 export default {
@@ -335,7 +335,10 @@ export default {
       return {
         title: this.$t('dictionary.nat'),
         downloadType: 'local',
-        items: this.columns,
+        items: [
+          { field: 'id', title: 'ID' },
+          ...this.columns,
+        ],
       }
     },
   },
