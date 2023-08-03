@@ -24,11 +24,9 @@ export const getNatSpecColumn = ({ field = 'nat_spec', title = i18n.t('network.t
   return {
     field,
     title,
-    slots: {
-      default: ({ row }, h) => {
-        const spec = row.nat_spec && row.nat_spec.toLowerCase()
-        return NatSpec[spec] || spec
-      },
+    formatter: ({ row }) => {
+      const spec = row.nat_spec && row.nat_spec.toLowerCase()
+      return NatSpec[spec] || spec
     },
   }
 }
