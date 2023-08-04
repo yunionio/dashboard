@@ -176,6 +176,9 @@ export default {
         if (item.manager_id && !managerIds.includes(item.manager_id)) {
           managerIds.push(item.manager_id)
         }
+        if (item.host_id) {
+          hostIds.push(item.host_id)
+        }
       })
 
       if (!this.isKvm) {
@@ -280,7 +283,7 @@ export default {
     },
   },
   created () {
-    this.isSingle && !this.isExistManager && this.queryForcastData()
+    // this.isSingle && !this.isExistManager && this.queryForcastData()
     this.queryHosts()
   },
   methods: {
