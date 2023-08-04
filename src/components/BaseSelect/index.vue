@@ -312,6 +312,7 @@ export default {
   },
   methods: {
     dropdownChange (open) {
+      this.$emit('dropdownChange', open)
       if (!this.remote) return
       if (open) { // 打开
         if (!R.isEmpty(this.firstResOpts) && !this.concatFirstOpts && !R.isEmpty(this.currentItem)) {
