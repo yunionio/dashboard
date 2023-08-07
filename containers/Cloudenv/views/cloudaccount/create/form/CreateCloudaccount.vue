@@ -23,6 +23,7 @@ import BingoCloud from './components/BingoCloud'
 import InCloudSphere from './components/InCloudSphere'
 import RemoteFile from './components/RemoteFile'
 import H3C from './components/H3C'
+import Ksyun from './components/Ksyun'
 
 export default {
   name: 'CreateCloudaccount',
@@ -55,6 +56,7 @@ export default {
     RemoteFileCreate: RemoteFile,
     ProxmoxCreate: Proxmox,
     H3CCreate: H3C,
+    KsyunCreate: Ksyun,
   },
   props: {
     currentItem: {

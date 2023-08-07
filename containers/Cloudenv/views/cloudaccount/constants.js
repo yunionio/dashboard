@@ -30,6 +30,7 @@ const incloudsphereLogo = require('../../../../src/assets/images/providers/inclo
 const remotefileLogo = require('../../../../src/assets/images/providers/remotefile.svg')
 const proxmoxLogo = require('../../../../src/assets/images/providers/proxmox.svg')
 const h3cLogo = require('../../../../src/assets/images/providers/h3c.svg')
+const ksyunLogo = require('../../../../src/assets/images/providers/ksyun.svg')
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
@@ -101,6 +102,12 @@ export const CLOUDACCOUNT_TYPES = {
       logo: jdcloudLogo,
       component: 'JDcloudCreate',
       provider: providerMap.jdcloud.key,
+    },
+    ksyun: {
+      name: providerMap.ksyun.label,
+      logo: ksyunLogo,
+      component: 'KsyunCreate',
+      provider: providerMap.ksyun.key,
     },
   },
   private: {
@@ -270,6 +277,7 @@ export function getCloudaccountDocs (scope) {
     incloudsphere: i18n.t('cloudenv.create_incloudsphere', [docs_path]),
     proxmox: i18n.t('cloudenv.create_proxmox', [docs_path]),
     h3c: i18n.t('cloudenv.create_h3c', [docs_path]),
+    ksyun: i18n.t('cloudenv.create_ksyun', [docs_path]),
   }
   // if (isCE()) {
   //   Object.keys(docs).forEach(v => {
@@ -660,6 +668,19 @@ export const keySecretFields = {
     },
     label: {
       k: i18n.t('cloudenv.text_94'),
+      s: i18n.t('cloudenv.text_147'),
+    },
+  },
+  ksyun: {
+    k: 'access_key_id',
+    s: 'access_key_secret',
+    text: i18n.t('cloudenv.ksyun'),
+    placeholder: {
+      k: i18n.t('cloudenv.text_144'),
+      s: i18n.t('cloudenv.text_145'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_146'),
       s: i18n.t('cloudenv.text_147'),
     },
   },

@@ -11,7 +11,8 @@
     "HCSO": "HCSO",
     "HCS": "HCS",
     "Ecloud": "移动云",
-    "Cloudpods": "Cloudpods"
+    "Cloudpods": "Cloudpods",
+    "Ksyun": "金山云"
   },
   "scopeProviders": {
     "esxi": "VMware",
