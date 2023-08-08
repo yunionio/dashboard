@@ -68,7 +68,7 @@ export default {
         iops: [
           'iops',
           {
-            initialValue: iops ? parseInt(iopsVal) : 1,
+            initialValue: iops ? parseInt(iopsVal) : 1000,
             rules: [
               { required: true, message: this.$t('compute.text_1250') },
             ],
@@ -77,7 +77,7 @@ export default {
         bps: [
           'bps',
           {
-            initialValue: bps ? parseInt(bpsVal) : 1,
+            initialValue: bps ? parseInt(bpsVal) : 100,
             rules: [
               { required: true, message: this.$t('compute.text_1250_1') },
             ],
