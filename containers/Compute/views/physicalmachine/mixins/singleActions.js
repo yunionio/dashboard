@@ -12,9 +12,14 @@ export default {
     this.manager = null
   },
   computed: {
-    ...mapGetters(['userInfo', 'auth']),
+    ...mapGetters(['userInfo', 'auth', 'common']),
     enableMFA () {
       return this.userInfo.enable_mfa && this.auth.auth.system_totp_on
+    },
+    enableWaterMark () {
+      const { globalConfig = {} } = this.common
+      const { enable_watermark = true } = globalConfig
+      return enable_watermark
     },
   },
   created () {
@@ -525,6 +530,9 @@ export default {
       }
       if (protocol) {
         query.protocol = protocol
+      }
+      if (this.enableWaterMark) {
+        query.waterMark = `${this.userInfo.name}${this.userInfo.displayname ? `（${this.userInfo.displayname}）` : ''}<br />${obj.name}`
       }
       // const href = `${this.$appConfig.webConsolePath}?${qs.stringify(query)}`
       const href = `${this.$store.getters.auth.regions.api_server}/web-console/?${qs.stringify(query)}`

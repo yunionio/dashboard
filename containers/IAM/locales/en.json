@@ -810,6 +810,10 @@
       "label": "CloudShell Switch",
       "desc": "After closing, the cloud management CloudShell entrance is hidden and users cannot use it!"
     },
+    "common$enable_watermark": {
+      "label": "WaterMark Switch",
+      "desc": "It is on by default. After closing, the WebConsole watermark display will be hidden."
+    },
     "compute$local_sys_disk_min_size_gb": {
       "label": "The minimum value of the local system disk",
       "desc": "Set the minimum value of the local system disk"
