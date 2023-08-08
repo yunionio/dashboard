@@ -11,7 +11,8 @@
     "HCSO": "HCSO",
     "HCS": "HCS",
     "Ecloud": "mCloud",
-    "Nutanix": "Nutanix"
+    "Nutanix": "Nutanix",
+    "Ksyun": "Ksyun"
   },
   "scopeProviders": {
     "esxi": "VMware",
@@ -31,6 +32,7 @@
     "HCSO": "HCSO",
     "HCS": "HCS",
     "ecloud": "mCloud",
-    "nutanix": "Nutanix"
+    "nutanix": "Nutanix",
+    "ksyun": "Ksyun"
   }
 }

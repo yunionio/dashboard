@@ -34,6 +34,7 @@ export const HYPERVISORS = [
   { key: 'ctyun', label: i18n.t('scopeCloudPrvidersMap.Ctyun'), provider: 'Ctyun', brand: 'Ctyun', host_type: 'ctyun', hypervisor: 'ctyun', env: 'public', cloud_env: 'public' },
   { key: 'ecloud', label: i18n.t('scopeCloudPrvidersMap.Ecloud'), provider: 'Ecloud', brand: 'Ecloud', host_type: 'ecloud', hypervisor: 'ecloud', env: 'public', cloud_env: 'public' },
   { key: 'jdcloud', label: i18n.t('scopeCloudPrvidersMap.JDcloud'), provider: 'JDcloud', brand: 'JDcloud', host_type: 'jdcloud', hypervisor: 'jdcloud', env: 'public', cloud_env: 'public' },
+  { key: 'ksyun', label: i18n.t('scopeCloudPrvidersMap.Ksyun'), provider: 'Ksyun', brand: 'Ksyun', host_type: 'ksyun', hypervisor: 'ksyun', env: 'public', cloud_env: 'public' },
 ]
 
 export const HYPERVISORS_MAP = arrayToObj(HYPERVISORS, 'key')
@@ -93,6 +94,7 @@ export const HYPERVISORS_GROUP = {
     ucloud: HYPERVISORS_MAP.ucloud,
     google: HYPERVISORS_MAP.google,
     jdcloud: HYPERVISORS_MAP.jdcloud,
+    ksyun: HYPERVISORS_MAP.ksyun,
   },
 }
 
