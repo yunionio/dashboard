@@ -247,10 +247,16 @@ export default {
       return currentDisk
     },
     max () {
-      return Math.min(this.currentDiskCapability?.max_size_gb, this.currentTypeObj.sysMax) || this.defaultSize
+      if (!this.currentDiskCapability?.max_size_gb) {
+        return this.currentTypeObj.sysMax || this.defaultSize
+      }
+      return Math.min(this.currentDiskCapability?.max_size_gb, (this.currentTypeObj.sysMax || this.defaultSize))
     },
     min () {
-      return Math.max(this.currentDiskCapability?.min_size_gb, this.currentTypeObj.sysMin, 0)
+      if (!this.currentDiskCapability?.min_size_gb) {
+        return this.currentTypeObj.sysMin || 0
+      }
+      return Math.max(this.currentDiskCapability?.min_size_gb, (this.currentTypeObj.sysMin || 0))
     },
     storageStatusMap () {
       var statusMap = {
