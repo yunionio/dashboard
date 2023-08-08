@@ -412,9 +412,11 @@ export default {
           'filter.0': 'external_access_mode.in(eip,eip-distgw)',
         },
         network: {},
-        k8sVersions: {
-          provider: KUBE_PROVIDER,
-          resource_type: 'guest',
+        k8sVersions: () => {
+          return {
+            provider: this.hypervisor || KUBE_PROVIDER,
+            resource_type: 'guest',
+          }
         },
         domain: {
           scope: this.$store.getters.scope,
@@ -468,7 +470,6 @@ export default {
     this.clustersM = new this.$Manager('kubeclusters', 'v1')
     this.form.fc.getFieldDecorator('cloudregion', { preserve: true })
     /* this.form.fc.getFieldDecorator('zone', { preserve: true }) */
-    this.fetchK8sVersions()
   },
   methods: {
     /*
@@ -563,11 +564,12 @@ export default {
         },
       }).then(({ data }) => {
         this.preCheckResp = data
+        this.fetchK8sVersions()
       })
     },
     fetchK8sVersions () {
       new this.$Manager('kubeclusters/k8s-versions', 'v1').list({
-        params: this.params.k8sVersions,
+        params: this.params.k8sVersions(),
       }).then(({ data }) => {
         data.map((item, index) => {
           this.k8sVersionOps.push({ key: item, label: item })
