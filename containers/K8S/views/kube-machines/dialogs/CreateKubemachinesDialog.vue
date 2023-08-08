@@ -48,7 +48,7 @@ import { mapGetters } from 'vuex'
 import ServerConfig from '@K8S/sections/serverConfig'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
-import { KUBE_PROVIDER, hyperOpts } from '@K8S/views/cluster/constants'
+import { hyperOpts } from '@K8S/views/cluster/constants'
 import { isWithinRange, isRequired } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -250,7 +250,7 @@ export default {
         },
         network: {},
         k8sVersions: {
-          provider: KUBE_PROVIDER,
+          provider: this.hypervisor,
           resource_type: 'guest',
         },
       },
