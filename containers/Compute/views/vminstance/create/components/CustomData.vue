@@ -1,6 +1,7 @@
 <template>
-  <a-form-item :label="$t('compute.custom_data')" :extra="extra">
+  <a-form-item :label="$t('compute.custom_data')" :extra="form.fd.custom_data_type ? extra : null">
     <a-radio-group v-decorator="decorators.custom_data_type" class="mb-2" @change="handleTypeChange">
+      <a-radio-button value="">{{ $t('compute.text_116') }}</a-radio-button>
       <a-radio-button value="input">{{ $t('compute.custom_data_input') }}</a-radio-button>
       <a-radio-button value="file">{{ $t('compute.custom_data_file') }}</a-radio-button>
     </a-radio-group>

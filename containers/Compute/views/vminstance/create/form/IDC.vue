@@ -227,9 +227,7 @@
           <a-form-item v-show="!isServertemplate" v-if="isKvm && enableEncryption" :label="$t('compute.server.encryption')" :extra="$t('compute.server.encryption.extra')">
             <encrypt-keys :decorators="decorators.encrypt_keys" />
           </a-form-item>
-          <template v-if="isKvm">
-            <custom-data ref="customData" :decorators="decorators" :form="form" />
-          </template>
+          <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" />
         </a-collapse-panel>
       </a-collapse>
       <bottom-bar
@@ -258,9 +256,8 @@ import Vdi from '@Compute/sections/VDI'
 import Vga from '@Compute/sections/VGA'
 import Machine from '@Compute/sections/Machine'
 import { NETWORK_OPTIONS_MAP, GPU_DEV_TYPE_OPTIONS } from '@Compute/constants'
-import CustomData from '../components/CustomData'
-import mixin from './mixin'
 import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
+import mixin from './mixin'
 
 export default {
   name: 'VM_IDCCreate',
@@ -272,7 +269,6 @@ export default {
     Vga,
     Machine,
     EncryptKeys,
-    CustomData,
   },
   mixins: [mixin],
   data () {
