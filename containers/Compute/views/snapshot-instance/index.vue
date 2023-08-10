@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('compute.text_102')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv">
+    <page-header :title="$t('compute.text_102')">
       <div slot="res-status-tab" style="position: absolute; right: 0; top: 14px;">
         <res-status-tab
           :loading="statisticsLoading"
@@ -19,9 +19,9 @@
 </template>
 
 <script>
-import SnapshotList from './components/List'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import SnapshotList from './components/List'
 
 export default {
   name: 'VmInstanceSnapshotsIndex',

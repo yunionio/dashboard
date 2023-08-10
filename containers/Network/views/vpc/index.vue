@@ -1,6 +1,6 @@
 <template>
   <div>
-   <page-header :title="$t('dictionary.vpc')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv">
+   <page-header :title="$t('dictionary.vpc')">
      <div slot="res-status-tab" style="position: absolute; right: 0; top: 14px;">
         <res-status-tab
           :loading="statisticsLoading"
@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import List from './components/List'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import List from './components/List'
 
 export default {
   name: 'VPCIndex',
