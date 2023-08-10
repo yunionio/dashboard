@@ -1372,14 +1372,14 @@
     "create": "新建"
   },
   "env": {
-    "idc": "集群一",
-    "private": "集群二",
-    "public": "集群三"
+    "idc": "本地IDC",
+    "private": "私有云",
+    "public": "公有云"
   },
   "cloud_env": {
-    "onpremise": "集群一",
-    "private": "集群二",
-    "public": "集群三"
+    "onpremise": "本地IDC",
+    "private": "私有云",
+    "public": "公有云"
   },
   "usage": {
     "all.bucket_bytes": "对象存储容量",
