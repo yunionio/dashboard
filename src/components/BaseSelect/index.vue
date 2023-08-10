@@ -528,7 +528,7 @@ export default {
               await this.loadDefaultSelectedOpts()
             }
           }
-          this.defaultSelect(this.sourceList)
+          this.defaultSelect([...this.extraOpts, ...this.sourceList])
           return list
         } catch (error) {
           throw error
