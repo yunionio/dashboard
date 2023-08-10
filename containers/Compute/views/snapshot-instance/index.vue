@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('compute.text_102')">
+    <page-header :title="$t('compute.text_102')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv">
       <div slot="res-status-tab" style="position: absolute; right: 0; top: 14px;">
         <res-status-tab
           :loading="statisticsLoading"

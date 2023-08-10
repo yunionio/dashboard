@@ -1,6 +1,6 @@
 <template>
   <div>
-   <page-header :title="$t('dictionary.vpc')">
+   <page-header :title="$t('dictionary.vpc')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv">
      <div slot="res-status-tab" style="position: absolute; right: 0; top: 14px;">
         <res-status-tab
           :loading="statisticsLoading"
