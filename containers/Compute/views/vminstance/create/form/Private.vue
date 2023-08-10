@@ -157,6 +157,7 @@
               :decorators="decorators.schedPolicy"
               :policy-schedtag-params="policySchedtagParams" />
           </a-form-item>
+          <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" />
         </a-collapse-panel>
       </a-collapse>
       <bottom-bar
@@ -178,8 +179,8 @@ import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { HYPERVISORS_MAP } from '@/constants'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
-import mixin from './mixin'
 import { uuid } from '@/utils/utils'
+import mixin from './mixin'
 
 export default {
   name: 'VMPrivateCreate',

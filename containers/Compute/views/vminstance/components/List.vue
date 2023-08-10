@@ -1019,6 +1019,7 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
+                      console.log(1)
                       let isOk = this.list.selectedItems.every((item) => {
                         return ['running', 'ready', 'unknown'].includes(item.status)
                       })
