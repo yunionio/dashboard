@@ -184,6 +184,7 @@
               :hideCloudaccountSched="hideCloudaccountSched"
               :policy-schedtag-params="policySchedtagParams" />
           </a-form-item>
+          <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" />
         </a-collapse-panel>
       </a-collapse>
       <bottom-bar

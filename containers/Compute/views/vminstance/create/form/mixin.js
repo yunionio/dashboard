@@ -35,6 +35,7 @@ import Tag from '../components/Tag'
 import SystemDisk from '../components/SystemDisk'
 import Servertemplate from '../components/Servertemplate'
 import BottomBar from '../components/BottomBar'
+import CustomData from '../components/CustomData'
 
 const CreateServerForm = {
   wrapperCol: {
@@ -76,6 +77,7 @@ export default {
     ServerAccount,
     HostName,
     pci,
+    CustomData,
   },
   mixins: [workflowMixin],
   props: {
@@ -338,6 +340,10 @@ export default {
       } else {
         return `${this.$t('compute.host_name_tips')} ${this.$t('compute.validate.others')}`
       }
+    },
+    showCustomData () {
+      const hiddenCustomDataHypervisors = []
+      return !hiddenCustomDataHypervisors.includes(this.form.fd.hypervisor)
     },
   },
   created () {
