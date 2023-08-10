@@ -72,7 +72,7 @@ case $ARCH in
     amd64 | "arm64" )
         buildx_and_push "$img_name" "$DOCKER_DIR/Dockerfile" "$SRC_DIR" "$ARCH"
         ;;
-    all)
+    *)
         for arch in "arm64" "amd64"; do
             buildx_and_push "$img_name-$arch" "$DOCKER_DIR/Dockerfile" "$SRC_DIR" "$arch"
         done
