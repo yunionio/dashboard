@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('network.text_565')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv">
+    <page-header :title="$t('network.text_565')">
       <div slot="res-status-tab" style="position: absolute; right: 0; top: 14px;">
         <res-status-tab
           :loading="statisticsLoading"
@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import NetworkList from './components/List'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import NetworkList from './components/List'
 
 export default {
   name: 'NetworkIndex',
