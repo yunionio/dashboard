@@ -13,16 +13,16 @@
 </template>
 
 <script>
-import { BAND_WIDTH_OPTION } from '../../../constants'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import { getWiresMergeAction } from '../utils/groupactions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 import { getNameFilter, getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
+import { getWiresMergeAction } from '../utils/groupactions'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import { BAND_WIDTH_OPTION } from '../../../constants'
 
 export default {
   name: 'WireList',
@@ -87,28 +87,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('network.text_21'), key: 'name' },
-          { label: this.$t('network.text_195'), key: 'bandwidth' },
-          { label: 'VPC', key: 'vpc' },
-          { label: this.$t('network.text_695'), key: 'networks' },
-          { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: this.$t('network.text_198'), key: 'provider' },
-          { label: this.$t('network.text_196'), key: 'manager' },
-          {
-            label: this.$t('common_101'),
-            key: 'public_scope',
-            hidden: () => {
-              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('wires'))
-            },
-          },
-          { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
-          { label: this.$t('common_715'), key: 'user_tags' },
-          { label: this.$t('common.createdAt'), key: 'created_at' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('network.text_26'),
@@ -211,6 +189,19 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    exportDataOptions () {
+      return {
+        title: this.$t('network.text_571'),
+        downloadType: 'local',
+        items: [
+          { label: 'ID', key: 'id' },
+          { field: 'external_id', title: this.$t('table.title.external_id') },
+          ...this.columns,
+        ],
+      }
+    },
   },
   watch: {
     cloudEnv (val) {

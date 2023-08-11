@@ -1,5 +1,5 @@
-import { BAND_WIDTH_OPTION } from '../../../constants'
 import i18n from '@/locales'
+import { BAND_WIDTH_OPTION } from '../../../constants'
 
 export const getBandwidthTableColumn = () => {
   return {
@@ -8,9 +8,9 @@ export const getBandwidthTableColumn = () => {
     minWidth: 100,
     sortable: true,
     showOverflow: 'ellipsis',
-    formatter: ({ cellValue }) => {
-      const item = BAND_WIDTH_OPTION.find(val => val.value === `${cellValue}`)
-      return item ? item.label : cellValue
+    formatter: ({ row }) => {
+      const item = BAND_WIDTH_OPTION.find(val => val.value === `${row.bandwidth}`)
+      return item ? item.label : row.bandwidth
     },
   }
 }

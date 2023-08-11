@@ -1,4 +1,3 @@
-import { getBandwidthTableColumn } from '../utils/columns'
 import HostColumn from '@Network/views/wire/sections/hosts'
 import {
   getNameDescriptionTableColumn,
@@ -11,6 +10,7 @@ import {
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import { getBandwidthTableColumn } from '../utils/columns'
 
 export default {
   created () {
