@@ -270,32 +270,22 @@ export default {
         responseData: this.responseData,
         hiddenColumns: this.hiddenColumns, // ['metadata', 'disk_format', 'storage', 'medium_type', 'created_at'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.name'), key: 'name' },
-          { label: this.$t('table.title.disk_size'), key: 'disk_size' },
-          { label: this.$t('table.title.disk_format'), key: 'disk_format' },
-          { label: this.$t('storage.text_38'), key: 'storage_type' },
-          { label: this.$t('table.title.disk_type'), key: 'disk_type' },
-          { label: this.$t('table.title.disk_guest_count'), key: 'guest_count' },
-          { label: this.$t('table.title.disk_guest'), key: 'guest' },
-          { label: this.$t('table.title.disk_storage'), key: 'storage' },
-          { label: this.$t('table.title.create_time'), key: 'created_at' },
-          { label: this.$t('common.status'), key: 'status' },
-          { label: this.$t('res.project'), key: 'tenant' },
-          { label: this.$t('table.title.brand'), key: 'provider' },
-          { label: this.$t('res.region'), key: 'region' },
-          { label: this.$t('res.zone'), key: 'zone' },
-          { label: this.$t('table.title.disk_medium_type'), key: 'medium_type' },
-          { label: this.$t('table.title.user_tag'), key: 'user_tags' },
-        ],
-      },
       groupActions,
     }
   },
   computed: {
     ...mapGetters(['isProjectMode']),
+    exportDataOptions () {
+      return {
+        downloadType: 'local',
+        title: this.$t('compute.text_100'),
+        items: [
+          { label: 'ID', key: 'id' },
+          { field: 'external_id', label: this.$t('table.title.external_id') },
+          ...this.columns,
+        ],
+      }
+    },
   },
   watch: {
     cloudEnv (val) {

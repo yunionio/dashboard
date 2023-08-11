@@ -81,6 +81,9 @@ export default {
           if (this.isPreLoad && !row.disk_name) return [<data-loading />]
           return row.disk_name
         },
+        formatter: ({ row }) => {
+          return row.disk_name
+        },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.disk_name')
         },
@@ -106,6 +109,9 @@ export default {
               </div>,
             ]
           },
+        },
+        formatter: ({ row }) => {
+          return row.guest || '-'
         },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.guest')

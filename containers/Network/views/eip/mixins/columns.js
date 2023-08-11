@@ -61,7 +61,7 @@ export default {
         showOverflow: 'ellipsis',
         formatter: ({ row, cellValue }) => {
           if (!row.bandwidth) return '-'
-          return sizestr(cellValue, 'M', 1024)
+          return sizestr(row.bandwidth, 'M', 1024)
         },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('eip_hidden_columns.bandwidth')
@@ -71,7 +71,8 @@ export default {
         field: 'charge_type',
         title: i18n.t('network.text_192'),
         minWidth: 80,
-        formatter: ({ cellValue }) => {
+        formatter: ({ row }) => {
+          const cellValue = row.charge_type
           if (cellValue === 'traffic') {
             return i18n.t('network.text_193')
           }
@@ -115,6 +116,9 @@ export default {
         hidden: () => {
           if (this.$store.getters.isProjectMode) return true
           return this.$isScopedPolicyMenuHidden('eip_hidden_columns.name')
+        },
+        formatter: ({ row }) => {
+          return row.account || '-'
         },
       },
       getAssociateNameTableColumn({

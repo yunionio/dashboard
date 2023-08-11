@@ -20,9 +20,9 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import regexp from '@/utils/regexp'
+import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 
 export default {
   name: 'EipList',
@@ -175,28 +175,22 @@ export default {
         responseData: this.responseData,
         hiddenColumns: this.hiddenColumns, // ['metadata', 'account'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('network.text_21'), key: 'name' },
-          { label: this.$t('network.text_191'), key: 'ip_addr' },
-          { label: this.$t('network.text_195'), key: 'bandwidth' },
-          { label: this.$t('network.text_196'), key: 'account', hidden: this.$store.getters.isProjectMode },
-          { label: this.$t('network.text_27'), key: 'status' },
-          { label: this.$t('network.text_192'), key: 'charge_type' },
-          { label: this.$t('network.text_197'), key: 'associate_name' },
-          { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: this.$t('network.text_198'), key: 'provider' },
-          { label: this.$t('network.text_199'), key: 'region' },
-          { label: this.$t('common_715'), key: 'user_tags' },
-          { label: this.$t('common.createdAt'), key: 'created_at' },
-        ],
-      },
       groupActions: groupActions,
     }
   },
   computed: {
     ...mapGetters(['isProjectMode']),
+    exportDataOptions () {
+      return {
+        downloadType: 'local',
+        title: this.$t('network.text_221'),
+        items: [
+          { field: 'id', title: 'ID' },
+          { field: 'external_id', title: this.$t('table.title.external_id') },
+          ...this.columns,
+        ],
+      }
+    },
   },
   watch: {
     cloudEnv (val) {
