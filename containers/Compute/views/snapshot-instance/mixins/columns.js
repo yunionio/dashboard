@@ -43,6 +43,15 @@ export default {
             return list
           },
         },
+        formatter: ({ row }) => {
+          const { snapshots = [] } = row
+          const len = snapshots.length
+          const list = snapshots.map(item => item.name)
+          if (len) {
+            return `${i18n.t('compute.text_619', [len])}(${list.join(',')})`
+          }
+          return ''
+        },
       },
       {
         field: 'with_memory',
@@ -63,6 +72,9 @@ export default {
             return sizestr(row.size, 'M', 1024)
           },
         },
+        formatter: ({ row }) => {
+          return sizestr(row.size, 'M', 1024)
+        },
       },
       {
         field: 'guest',
@@ -80,6 +92,7 @@ export default {
             ]
           },
         },
+        formatter: ({ row }) => row.guest,
       },
       getBrandTableColumn(),
       getTimeTableColumn(),

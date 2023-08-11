@@ -72,19 +72,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.name'), key: 'name' },
-          { label: this.$t('table.title.sub_snapshot'), key: 'snapshots' },
-          { label: this.$t('table.title.snapshot_size'), key: 'size' },
-          { label: this.$t('common.status'), key: 'status' },
-          { label: this.$t('res.project'), key: 'tenant' },
-          { label: this.$t('res.server'), key: 'guest' },
-          { label: this.$t('table.title.user_tag'), key: 'user_tags' },
-          { label: this.$t('table.title.os_arch'), key: 'os_arch' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('table.action.set_tag'),
@@ -140,6 +127,18 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    exportDataOptions () {
+      return {
+        title: this.$t('compute.text_102'),
+        downloadType: 'local',
+        items: [
+          { field: 'id', title: 'ID' },
+          ...this.columns,
+        ],
+      }
+    },
   },
   watch: {
     cloudEnv (val) {

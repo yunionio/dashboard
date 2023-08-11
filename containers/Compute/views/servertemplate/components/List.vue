@@ -11,13 +11,13 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getTenantFilter, getStatusFilter, getBrandFilter, getDomainFilter, getOsArchFilter, getRegionFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'ServertemplateList',
@@ -92,16 +92,6 @@ export default {
         hiddenColumns: ['os_type', 'os_arch', 'created_at'],
         responseData: this.responseData,
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.name'), key: 'name' },
-          { label: this.$t('res.project'), key: 'tenant' },
-          { label: this.$t('table.title.create_time'), key: 'created_at' },
-          { label: this.$t('table.title.os_arch'), key: 'os_arch' },
-          { label: this.$t('common.createdAt'), key: 'created_at' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('compute.perform_create'),
@@ -151,6 +141,16 @@ export default {
         return item.key
       }
       return ''
+    },
+    exportDataOptions () {
+      return {
+        downloadType: 'local',
+        title: this.$t('compute.text_873'),
+        items: [
+          { field: 'id', title: 'ID' },
+          ...this.columns,
+        ],
+      }
     },
   },
   watch: {

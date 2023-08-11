@@ -54,6 +54,18 @@ export default {
             return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
           },
         },
+        formatter: ({ row }) => {
+          const { sku, disks } = row.config_info || {}
+          const diskSize = disks.map(item => item.size_mb).reduce((a, b) => {
+            return a + b
+          })
+          const ret = []
+          if (row.name) {
+            ret.push(sku.name)
+          }
+          const config = sku.cpu_core_count + 'C' + sizestr(sku.memory_size_mb, 'M', 1024) + (diskSize ? sizestr(diskSize, 'M', 1024) : '')
+          return ret.concat(config).join(',')
+        },
       },
       {
         field: 'os_type',
@@ -72,6 +84,13 @@ export default {
             ]
           },
         },
+        formatter: ({ row }) => {
+          let name = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type || ''
+          if (name.includes('Windows') || name.includes('windows')) {
+            name = 'Windows'
+          }
+          return name
+        },
       },
       {
         field: 'config_info.image',
@@ -83,6 +102,9 @@ export default {
             if (!row.config_info) return [<data-loading />]
             return row.config_info.image
           },
+        },
+        formatter: ({ row }) => {
+          return row.config_info?.image
         },
       },
       getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC', vm: this }),

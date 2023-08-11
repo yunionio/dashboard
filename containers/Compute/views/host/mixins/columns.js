@@ -275,6 +275,13 @@ export default {
             ]
           },
         },
+        formatter: ({ row }) => {
+          const tags = _.sortBy(row.schedtags, ['default', 'name'])
+          if (tags.length > 0) {
+            return tags.map(tag => tag.name)
+          }
+          return this.$t('compute.text_1322')
+        },
       },
       getBrandTableColumn(),
       getAccountTableColumn({ vm: this }),

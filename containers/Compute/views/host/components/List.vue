@@ -114,42 +114,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'id', 'server_id', 'sn', 'manufacture', 'model', 'schedtag', 'nonsystem_guests', 'public_scope', 'project_domain', 'region', 'os_arch', 'created_at'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('compute.text_228'), key: 'name' },
-          { label: this.$t('compute.text_241'), key: 'enabled' },
-          { label: this.$t('compute.text_268'), key: 'status' },
-          { label: this.$t('compute.text_503'), key: 'access_ip' },
-          { label: this.$t('compute.text_504'), key: 'ipmi_ip' },
-          { label: this.$t('compute.text_502'), key: 'host_status' },
-          { label: '#VM', key: 'nonsystem_guests' },
-          { label: this.$t('compute.text_563'), key: 'cpu_count' },
-          { label: this.$t('compute.text_523'), key: 'cpu_commit_rate' },
-          { label: this.$t('compute.text_369'), key: 'mem_size' },
-          { label: this.$t('compute.text_518'), key: 'mem_commit_rate' },
-          { label: this.$t('compute.text_99'), key: 'storage_size' },
-          { label: this.$t('compute.storage_commit_rate'), key: 'storage_commit_rate' },
-          { label: this.$t('compute.text_847'), key: 'sys_info.manufacture' },
-          { label: this.$t('compute.text_580'), key: 'sys_info.model' },
-          { label: 'SN', key: 'sn' },
-          { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: this.$t('compute.text_177'), key: 'region' },
-          { label: this.$t('compute.text_270'), key: 'zone' },
-          {
-            label: this.$t('compute.text_505'),
-            key: 'public_scope',
-            hidden: () => {
-              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('cloudaccounts'))
-            },
-          },
-          { label: this.$t('compute.text_506', [this.$t('dictionary.domain')]), key: 'project_domain' },
-          { label: this.$t('compute.text_271'), key: 'user_tags' },
-          { label: this.$t('table.title.os_arch'), key: 'os_arch' },
-          { label: this.$t('table.title.brand'), key: 'brand' },
-          { label: this.$t('common.createdAt'), key: 'created_at' },
-        ],
-      },
     }
   },
   computed: {
@@ -483,6 +447,20 @@ export default {
           },
         ],
       )
+    },
+    exportDataOptions () {
+      return {
+        title: this.$t('compute.text_111'),
+        downloadType: 'local',
+        items: [
+          { field: 'id', title: 'ID' },
+          { field: 'external_id', title: this.$t('table.title.external_id') },
+          ...(this.columns.filter(item => !['server_id', 'id'].includes(item.field))),
+          { label: this.$t('compute.text_523'), key: 'cpu_commit_rate' },
+          { label: this.$t('compute.text_518'), key: 'mem_commit_rate' },
+          { label: this.$t('compute.storage_commit_rate'), key: 'storage_commit_rate' },
+        ],
+      }
     },
   },
   watch: {
