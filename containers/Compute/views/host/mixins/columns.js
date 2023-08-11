@@ -106,6 +106,16 @@ export default {
             return cellWrap
           },
         },
+        formatter: ({ row }) => {
+          const list = []
+          if (row.access_ip) {
+            list.push(`${row.access_ip}${this.$t('compute.text_1319')}`)
+          }
+          if (row.ipmi_ip) {
+            list.push(`${row.ipmi_ip}${this.$t('compute.text_1320')}`)
+          }
+          return list.length ? list.join(',') : '-'
+        },
       },
       {
         field: 'id',
@@ -147,6 +157,9 @@ export default {
             return `${row.nonsystem_guests}`
           },
         },
+        formatter: ({ row }) => {
+          return row.nonsystem_guests || '-'
+        },
       },
       getOsArch({ field: 'cpu_architecture' }),
       {
@@ -162,6 +175,9 @@ export default {
             return row.cpu_count ? `${row.cpu_count}/${percentstr(row.cpu_commit_rate)}` : 'N/A'
           },
         },
+        formatter: ({ row }) => {
+          return row.cpu_count || '-'
+        },
       },
       {
         field: 'mem_size',
@@ -175,6 +191,9 @@ export default {
             return row.mem_size ? `${sizestr(row.mem_size, 'M', 1024)}/${percentstr(row.mem_commit_rate)}` : 'N/A'
           },
         },
+        formatter: ({ row }) => {
+          return row.mem_size ? sizestr(row.mem_size, 'M', 1024) : '-'
+        },
       },
       {
         field: 'storage',
@@ -184,8 +203,11 @@ export default {
         slots: {
           default: ({ row }) => {
             if (this.isPreLoad && !row.storage) return [<data-loading />]
-            return row.mem_size ? `${sizestr(row.storage, 'M', 1024)}/${percentstr(row.storage_commit_rate)}` : 'N/A'
+            return row.storage ? `${sizestr(row.storage, 'M', 1024)}/${percentstr(row.storage_commit_rate)}` : 'N/A'
           },
+        },
+        formatter: ({ row }) => {
+          return row.mem_size ? sizestr(row.storage, 'M', 1024) : '-'
         },
       },
       {
@@ -216,6 +238,12 @@ export default {
               ]
             }
           },
+        },
+        formatter: ({ row }) => {
+          if (row.sys_info && row.sys_info.oem_name) {
+            return row.sys_info.oem_name
+          }
+          return '-'
         },
       },
       {

@@ -26,10 +26,10 @@ import {
   getRegionFilter,
   getDescriptionFilter,
 } from '@/utils/common/tableFilter'
+import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import { steadyStatus } from '../constants'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 
 export default {
   name: 'SnapshotList',
@@ -85,25 +85,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['storage_type', 'created_at', 'os_arch'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.name'), key: 'name' },
-          { label: this.$t('res.disk'), key: 'disk_name' },
-          { label: this.$t('table.title.disk_type'), key: 'disk_type' },
-          { label: this.$t('table.title.snapshot_size'), key: 'size' },
-          { label: this.$t('common.status'), key: 'status' },
-          { label: this.$t('res.project'), key: 'tenant' },
-          { label: this.$t('table.title.brand'), key: 'provider' },
-          { label: this.$t('res.server'), key: 'guest' },
-          { label: this.$t('table.title.create_time'), key: 'create_at' },
-          { label: this.$t('res.region'), key: 'region' },
-          { label: this.$t('res.zone'), key: 'zone' },
-          { label: this.$t('table.title.storage_type'), key: 'storage_type' },
-          { label: this.$t('table.title.user_tag'), key: 'user_tags' },
-          { label: this.$t('table.title.os_arch'), key: 'os_arch' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('compute.perform_sync_status'),
@@ -174,6 +155,19 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    exportDataOptions () {
+      return {
+        downloadType: 'local',
+        title: this.$t('compute.text_101'),
+        items: [
+          { field: 'id', title: 'ID' },
+          { field: 'external_id', title: this.$t('table.title.external_id') },
+          ...this.columns,
+        ],
+      }
+    },
   },
   watch: {
     cloudEnv (val) {
