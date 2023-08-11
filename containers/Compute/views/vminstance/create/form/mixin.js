@@ -31,11 +31,13 @@ import { getInitialValue } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
+import { uuid } from '@/utils/utils'
 import Tag from '../components/Tag'
 import SystemDisk from '../components/SystemDisk'
 import Servertemplate from '../components/Servertemplate'
 import BottomBar from '../components/BottomBar'
 import CustomData from '../components/CustomData'
+import BastionHost from '../components/BastionHost'
 
 const CreateServerForm = {
   wrapperCol: {
@@ -78,6 +80,7 @@ export default {
     HostName,
     pci,
     CustomData,
+    BastionHost,
   },
   mixins: [workflowMixin],
   props: {
@@ -494,6 +497,21 @@ export default {
               storage.set(`${this.form.fi.createType}${SELECT_IMAGE_KEY_SUFFIX}`, `${this.form.fd.os}:${image}`)
             }
           }
+          if (this.form.fd.bastion_host_enable) {
+            let servers = []
+            if (R.is(Array, res.data.data)) {
+              res.data.data.forEach(o => {
+                if (o.status === 200) {
+                  servers.push(o.data)
+                }
+              })
+            } else {
+              servers = [res.data]
+            }
+            servers.forEach((o) => {
+              this.createBastionServer({ server_id: o.id, name: o.name, os_type: o.os_type })
+            })
+          }
           if (isSuccess(res)) {
             this.$message.success(i18n.t('compute.text_322'))
           }
@@ -681,6 +699,28 @@ export default {
     handleHostNameChange (v) {
       this.hostNameValidate = {
         ...this.validateHostNameChange(v),
+      }
+    },
+    async createBastionServer (params) {
+      const bsManager = new this.$Manager('bastion_servers')
+      const {
+        bastion_host_id,
+        nodes,
+        port,
+        privileged_accounts,
+        accounts,
+      } = this.form.fd
+      const data = {
+        bastion_host_id,
+        nodes,
+        port,
+        accounts: [privileged_accounts].concat(accounts),
+        ...params,
+      }
+      try {
+        return bsManager.create({ data, params: { $t: uuid() } })
+      } catch (error) {
+        throw error
       }
     },
   },
