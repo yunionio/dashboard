@@ -1,7 +1,7 @@
 import * as R from 'ramda'
 import i18n from '@/locales'
-import { ASSOCIATE_MAP } from '../constants'
 import { BGP_TYPES_MAP } from '@/constants/network'
+import { ASSOCIATE_MAP } from '../constants'
 
 export const getAssociateNameTableColumn = ({ vm = {}, hidden } = {}) => {
   return {
@@ -29,6 +29,19 @@ export const getAssociateNameTableColumn = ({ vm = {}, hidden } = {}) => {
     hidden: () => {
       return R.is(Function, hidden) ? hidden() : hidden
     },
+    formatter: ({ row }) => {
+      const { associate_name, associate_id, associate_type } = row
+      if (vm && associate_type) {
+        const associate = ASSOCIATE_MAP[associate_type] || {}
+        const text = `${associate_name || '-'}(${associate.name || '-'})`
+        if (associate_name && associate_id) {
+          return text
+        } else {
+          return `${associate_name || '-'}${associate.name ? `(${associate.name})` : ''}`
+        }
+      }
+      return '-'
+    },
   }
 }
 
@@ -55,6 +68,17 @@ export const getIPWithBgpTypeTableColumn = ({ hidden } = {}) => {
     },
     hidden: () => {
       return R.is(Function, hidden) ? hidden() : hidden
+    },
+    formatter: ({ row }) => {
+      const ret = []
+      const bgp = BGP_TYPES_MAP[row.bgp_type]?.label || row.bgp_type
+      if (bgp && row.bgp_type === BGP_TYPES_MAP.BGP_PRO.value) {
+        ret.push(`${row.ip_addr}(${bgp})`)
+      } else {
+        ret.push(row.ip_addr)
+      }
+      const list = ret.filter(item => item)
+      return list.length ? list.join(',') : ''
     },
   }
 }

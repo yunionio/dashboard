@@ -58,22 +58,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.name'), key: 'name' },
-          { label: this.$t('common.status'), key: 'status' },
-          { label: this.$t('table.title.user_tag'), key: 'user_tags' },
-          { label: this.$t('compute.backup_size'), key: 'size_mb' },
-          { label: this.$t('table.title.disk_type'), key: 'disk_type' },
-          { label: this.$t('res.disk'), key: 'disk_name' },
-          { label: this.$t('compute.disk_size'), key: 'disk_size' },
-          { label: this.$t('res.project'), key: 'tenant' },
-          { label: this.$t('table.title.create_time'), key: 'created_at' },
-          { label: this.$t('compute.backup_storage'), key: 'backup_storage_name' },
-          { label: this.$t('table.title.brand'), key: 'provider' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('compute.perform_sync_status'),
@@ -139,6 +123,18 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    exportDataOptions () {
+      return {
+        title: this.$t('compute.disk_backup'),
+        downloadType: 'local',
+        items: [
+          { label: 'ID', key: 'id' },
+          ...this.columns,
+        ],
+      }
+    },
   },
   watch: {
     cloudEnv (val) {

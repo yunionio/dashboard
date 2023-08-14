@@ -799,6 +799,14 @@ export const getBillingTypeTableColumn = ({ field = 'billing_type', title = i18n
         return ret
       },
     },
+    formatter: ({ row }) => {
+      if (row[field] === 'postpaid') {
+        return i18n.t('billingType.postpaid')
+      } else if (row[field] === 'prepaid') {
+        return i18n.t('billingType.prepaid')
+      }
+      return ''
+    },
     hidden: () => {
       return R.is(Function, hidden) ? hidden() : hidden
     },

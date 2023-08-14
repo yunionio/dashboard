@@ -10,10 +10,8 @@ export const getDiskSizeTableColumn = () => {
     field: 'disk_size_mb',
     title: i18n.t('compute.disk_size'),
     minWidth: 70,
-    slots: {
-      default: ({ row }, h) => {
-        return sizestr(row.disk_size_mb, 'M', 1024)
-      },
+    formatter: ({ row }) => {
+      return sizestr(row.disk_size_mb, 'M', 1024)
     },
   }
 }
@@ -23,10 +21,8 @@ export const getSizeMbTableColumn = () => {
     field: 'size_mb',
     title: i18n.t('compute.backup_size'),
     minWidth: 70,
-    slots: {
-      default: ({ row }, h) => {
-        return sizestr(row.size_mb, 'M', 1024)
-      },
+    formatter: ({ row }) => {
+      return sizestr(row.size_mb, 'M', 1024)
     },
   }
 }

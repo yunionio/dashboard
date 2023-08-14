@@ -53,8 +53,8 @@ export default {
         title: i18n.t('table.title.disk_size'),
         sortable: true,
         minWidth: 50,
-        formatter: ({ cellValue }) => {
-          return sizestr(cellValue, 'M', 1024)
+        formatter: ({ row }) => {
+          return sizestr(row.disk_size, 'M', 1024)
         },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('disk_hidden_columns.disk_size')
@@ -87,8 +87,8 @@ export default {
         field: 'disk_type',
         title: i18n.t('table.title.disk_type'),
         width: 70,
-        formatter: ({ cellValue }) => {
-          return cellValue === 'sys' ? i18n.t('compute.text_49') : i18n.t('compute.text_50')
+        formatter: ({ row }) => {
+          return row.disk_type === 'sys' ? i18n.t('compute.text_49') : i18n.t('compute.text_50')
         },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('disk_hidden_columns.disk_type')
@@ -124,6 +124,11 @@ export default {
             ]
           },
         },
+        formatter: ({ row }) => {
+          if (!row.guest || row.guests.length <= 0) return '-'
+          const guests = row.guests.map((guest, index) => guest.name)
+          return guests.length ? guests.join(',') : '-'
+        },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('disk_hidden_columns.guest')
         },
@@ -136,6 +141,7 @@ export default {
           if (this.isPreLoad && !row.storage) return [<data-loading />]
           return row.storage
         },
+        formatter: ({ row }) => row.storage,
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('disk_hidden_columns.storage')
         },
@@ -189,6 +195,7 @@ export default {
             return MEDIUM_MAP[row.medium_type]
           },
         },
+        formatter: ({ row }) => row.medium_type ? MEDIUM_MAP[row.medium_type] : '-',
         hidden: () => {
           if (this.hiddenColumns.includes('medium_type')) return true
           return this.$isScopedPolicyMenuHidden('disk_hidden_columns.storage')

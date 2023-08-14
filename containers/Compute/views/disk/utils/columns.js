@@ -15,6 +15,9 @@ export const getUnusedTableColumn = ({ hidden, vm = {} } = {}) => {
         return row.guest_count >= 1 ? [<span class="success-color">{ i18n.t('compute.text_464') }</span>] : [<span class="warning-color">{ i18n.t('compute.text_281') }</span>]
       },
     },
+    formatter: ({ row }) => {
+      return row.guest_count >= 1 ? i18n.t('compute.text_464') : i18n.t('compute.text_281')
+    },
     hidden: () => {
       return R.is(Function, hidden) ? hidden() : hidden
     },
