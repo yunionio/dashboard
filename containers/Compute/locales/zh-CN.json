@@ -1680,5 +1680,17 @@
   "compute.reset_password.qga_tooltip": "检测该虚拟机QGA未安装，不支持在线修改密码，请检查后重试或关机后操作！",
   "compute.daemon.tooltip": "宿主机重启后，自动启动虚拟机",
   "compute.image.min_disk.extra": "通过虚拟机保存的镜像，最小磁盘需大于或等于当时系统盘容量",
-  "compute.disk.size.required_message": "硬盘容量数字为必填"
+  "compute.disk.size.required_message": "硬盘容量数字为必填",
+  "compute.bastionHost.bastion_host": "堡垒机",
+  "compute.bastionHost.add_bastion_host": "添加到堡垒机",
+  "compute.bastionHost.bastion_host.switch_disabled": "未接入堡垒机",
+  "compute.bastionHost.node": "堡垒机资源节点",
+  "compute.bastionHost.port": "端口",
+  "compute.bastionHost.privileged_account": "堡垒机特权用户",
+  "compute.bastionHost.account": "堡垒机普通用户",
+  "compute.bastionHost.bastion_host.placeholder": "@:common.select堡垒机",
+  "compute.bastionHost.node.placeholder": "@:common.select堡垒机资源节点",
+  "compute.bastionHost.port.placeholder": "@:common.placeholder端口",
+  "compute.bastionHost.privileged_account.placeholder": "@:common.select堡垒机特权用户",
+  "compute.bastionHost.account.placeholder": "@:common.select堡垒机普通用户"
 }
