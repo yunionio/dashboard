@@ -1,20 +1,22 @@
 <template>
-  <a-form
-    :form="form"
-    :style="{ width: `${width}px` }"
-    @submit="handleSubmit">
-    <a-form-item :label="label" v-bind="formLayout">
-      <a-input class="w-100" v-decorator="decorators.input" :placeholder="placeholder" allowClear />
-    </a-form-item>
+  <a-form-model
+    ref="form"
+    :model="form"
+    :rules="rules"
+    :style="{ width: `${width}px` }">
+    <a-form-model-item :label="label" v-bind="formLayout">
+      <a-input class="w-100" v-model="form.input" :placeholder="placeholder" allowClear />
+    </a-form-model-item>
     <div class="text-right">
-      <a-button type="primary" html-type="submit">{{ okText }}</a-button>
+      <a-button type="primary" html-type="submit" @click="handleSubmit">{{ okText }}</a-button>
       <a-button class="ml-3" @click="cancel">{{ cancelText }}</a-button>
     </div>
-  </a-form>
+  </a-form-model>
 </template>
 
 <script>
 import * as R from 'ramda'
+import { validateModelForm } from '@/utils/validate'
 import i18n from '@/locales'
 
 export default {
@@ -52,18 +54,13 @@ export default {
   },
   data () {
     return {
-      form: this.$form.createForm(this),
-      decorators: {
-        input: [
-          'input',
-          {
-            initialValue: this.defaultValue,
-            validateFirst: true,
-            rules: this.formRules || [
-              { required: true, message: `${this.$t('common.placeholder')} ${this.label.toLowerCase()}` },
-              { validator: this.$validate('resourceName') },
-            ],
-          },
+      form: {
+        input: this.defaultValue,
+      },
+      rules: {
+        input: this.formRules || [
+          { required: true, message: `${this.$t('common.placeholder')} ${this.label.toLowerCase()}` },
+          { validator: this.$validate('resourceName') },
         ],
       },
     }
@@ -78,19 +75,19 @@ export default {
     cancel () {
       this.$emit('cancel')
     },
-    handleSubmit (e) {
-      e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          const trimValue = R.map(value => {
-            if (R.is(String, value)) {
-              return value.trim()
-            }
-            return value
-          }, values)
-          this.$emit('submit', trimValue)
-        }
-      })
+    async handleSubmit (e) {
+      try {
+        await validateModelForm(this.$refs.form)
+        const trimValue = R.map(value => {
+          if (R.is(String, value)) {
+            return value.trim()
+          }
+          return value
+        }, this.form)
+        this.$emit('submit', trimValue)
+      } catch (err) {
+        console.error('err', err)
+      }
     },
   },
 }
