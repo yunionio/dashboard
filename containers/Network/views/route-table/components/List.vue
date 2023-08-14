@@ -11,8 +11,6 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import {
   getDomainFilter,
@@ -26,6 +24,8 @@ import {
 } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'RouteTableList',
@@ -76,19 +76,19 @@ export default {
         },
         hiddenColumns: this.defaultHiddenColumns,
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('network.text_21'), key: 'name' },
-          { label: this.$t('network.text_27'), key: 'status' },
-          { label: this.$t('network.text_535'), key: 'vpc' },
-          { label: this.$t('network.text_199'), key: 'region' },
-          { label: this.$t('network.text_196'), key: 'manager' },
-          { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
-        ],
-      },
       groupActions: [],
     }
+  },
+  computed: {
+    exportDataOptions () {
+      return {
+        downloadType: 'local',
+        title: this.$t('dictionary.route_table'),
+        items: [
+          ...this.columns,
+        ],
+      }
+    },
   },
   created () {
     this.list.fetchData()
