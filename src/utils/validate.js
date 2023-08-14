@@ -457,4 +457,21 @@ export const isValidateResourceLock = (value = {}, callback) => {
   return ret
 }
 
+/**
+ * 检测 v-model-form
+ * @param {*} form this.$refs.form
+ * @returns Promise
+ */
+export const validateModelForm = (form) => {
+  return new Promise((resolve, reject) => {
+    form.validate((valid, err) => {
+      if (valid) {
+        resolve(valid)
+      } else {
+        reject(err)
+      }
+    })
+  })
+}
+
 export default validateForm

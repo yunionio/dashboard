@@ -186,7 +186,6 @@ export default {
     },
     showEncryptionLock () {
       if (this.addEncrypt) {
-        console.log('showEncryptionLock', this.row.encrypt_key_id)
         if (R.is(String, this.row.encrypt_key_id) && this.row.encrypt_key_id) {
           return true
         }
