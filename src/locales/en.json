@@ -2716,7 +2716,8 @@
     "rate": "Rate",
     "rateset": "Ratesets",
     "isolated_device_models": "passthrough device type",
-    "organization": "Organization"
+    "organization": "Organization",
+    "bastion_host": "Bastion Host"
   },
   "res": {
     "role": "Role",
