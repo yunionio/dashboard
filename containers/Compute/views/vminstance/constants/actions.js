@@ -666,6 +666,15 @@ const getSingleActions = function () {
                 },
                 hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_clone'),
               },
+              // 添加到堡垒机
+              {
+                label: i18n.t('compute.bastionHost.add_bastion_host'),
+                action: () => {
+                  this.createDialog('VmAddBastionHostDialog', {
+                    data: [obj],
+                  })
+                },
+              },
               // 续费
               {
                 label: i18n.t('compute.text_1117'),

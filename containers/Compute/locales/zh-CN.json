@@ -1684,6 +1684,7 @@
   "compute.server.shutdown_mode.tooltip": "开启关机不收费，不支持该操作",
   "compute.disk.size.required_message": "硬盘容量数字为必填",
   "compute.bastionHost.bastion_host": "堡垒机",
+  "compute.bastionHost.add_bastion_host": "添加到堡垒机",
   "compute.bastionHost.bastion_host.switch_disabled": "未接入堡垒机",
   "compute.bastionHost.node": "堡垒机资源节点",
   "compute.bastionHost.port": "端口",
