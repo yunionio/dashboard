@@ -2713,7 +2713,8 @@
     "billtask": "Sharing tasks",
     "backupstorage": "Backup storage",
     "rate": "Rate",
-    "isolated_device_models": "passthrough device type"
+    "isolated_device_models": "passthrough device type",
+    "bastion_host": "Bastion Host"
   },
   "res": {
     "role": "Role",
