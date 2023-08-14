@@ -39,6 +39,7 @@ export default {
   },
   methods: {
     submit (values) {
+      console.log('on submit')
       this.hideForm()
       if (!this.$slots.default) { // 没有自定义表单slot
         this.$emit('update', values)

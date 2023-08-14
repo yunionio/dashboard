@@ -1,13 +1,12 @@
 <template>
   <a-form
     :form="form"
-    :style="{ width: `${width}px` }"
-    @submit="handleSubmit">
+    :style="{ width: `${width}px` }">
     <a-form-item :label="label" v-bind="formLayout">
       <a-input class="w-100" v-decorator="decorators.input" :placeholder="placeholder" allowClear />
     </a-form-item>
     <div class="text-right">
-      <a-button type="primary" html-type="submit">{{ okText }}</a-button>
+      <a-button type="primary" html-type="submit" @click="handleSubmit">{{ okText }}</a-button>
       <a-button class="ml-3" @click="cancel">{{ cancelText }}</a-button>
     </div>
   </a-form>
@@ -79,7 +78,7 @@ export default {
       this.$emit('cancel')
     },
     handleSubmit (e) {
-      e.preventDefault()
+      console.log('submit')
       this.form.validateFields((err, values) => {
         if (!err) {
           const trimValue = R.map(value => {
@@ -88,7 +87,10 @@ export default {
             }
             return value
           }, values)
+          console.log('emit submit', trimValue)
           this.$emit('submit', trimValue)
+        } else {
+          console.error(err)
         }
       })
     },
