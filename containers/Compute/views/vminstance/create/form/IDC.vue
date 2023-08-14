@@ -228,6 +228,9 @@
             <encrypt-keys :decorators="decorators.encrypt_keys" />
           </a-form-item>
           <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" />
+          <a-form-item :label="$t('compute.bastionHost.bastion_host')">
+            <bastion-host :decorator="decorators.bastion_host" :form="form" />
+          </a-form-item>
         </a-collapse-panel>
       </a-collapse>
       <bottom-bar

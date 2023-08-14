@@ -735,13 +735,63 @@ export const createVmDecorators = type => {
         initialValue: true,
       },
     ],
+    bastion_host: {
+      bastion_host_enable: [
+        'bastion_host_enable',
+        {
+          valuePropName: 'checked',
+          initialValue: false,
+        },
+      ],
+      bastion_host_id: [
+        'bastion_host_id',
+        {
+          rules: [
+            { required: true, message: i18n.t('compute.bastionHost.bastion_host.placeholder') },
+          ],
+        },
+      ],
+      nodes: [
+        'nodes',
+        {
+          rules: [
+            { required: true, message: i18n.t('compute.bastionHost.node.placeholder') },
+          ],
+        },
+      ],
+      port: [
+        'port',
+        {
+          initialValue: 22,
+          rules: [
+            { type: 'number', min: 0, max: 65535, message: i18n.t('compute.bastionHost.port.placeholder'), trigger: 'blur', transform: (v) => parseInt(v) },
+          ],
+        },
+      ],
+      privileged_accounts: [
+        'privileged_accounts',
+        {
+          rules: [
+            { required: true, message: i18n.t('compute.bastionHost.privileged_account.placeholder') },
+          ],
+        },
+      ],
+      accounts: [
+        'accounts',
+        {
+          rules: [
+            { required: true, message: i18n.t('compute.bastionHost.account.placeholder') },
+          ],
+        },
+      ],
+    },
   }
 }
 
 const decoratorGroup = {
-  idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch', 'hostName', 'encrypt_keys', 'custom_data_type', 'deploy_telegraf', 'pci'],
-  public: ['domain', 'project', 'name', 'description', 'count', 'imageOS', 'reason', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType', 'tag', 'servertemplate', 'duration', 'cloudprovider', 'hostName', 'custom_data_type'],
-  private: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'duration', 'tag', 'servertemplate', 'cloudprovider', 'hostName', 'custom_data_type'],
+  idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch', 'hostName', 'encrypt_keys', 'custom_data_type', 'deploy_telegraf', 'pci', 'bastion_host'],
+  public: ['domain', 'project', 'name', 'description', 'count', 'imageOS', 'reason', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType', 'tag', 'servertemplate', 'duration', 'cloudprovider', 'hostName', 'custom_data_type', 'bastion_host'],
+  private: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'duration', 'tag', 'servertemplate', 'cloudprovider', 'hostName', 'custom_data_type', 'bastion_host'],
 }
 
 export class Decorator {
