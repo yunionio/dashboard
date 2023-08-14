@@ -229,6 +229,8 @@ export default {
               },
             },
           })
+        } else {
+          console.warn('no manager')
         }
       }
     },
