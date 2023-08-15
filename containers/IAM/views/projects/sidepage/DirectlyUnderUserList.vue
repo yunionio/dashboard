@@ -138,6 +138,7 @@ export default {
               ],
               success: () => {
                 this.list.refresh()
+                this.$bus.$emit('SystemProjectsListRefresh')
               },
             })
           },
@@ -158,6 +159,7 @@ export default {
               projectId: this.resId,
               success: () => {
                 this.list.refresh()
+                this.$bus.$emit('SystemProjectsListRefresh')
               },
             })
           },
@@ -210,6 +212,7 @@ export default {
               projectId: this.resId,
               success: () => {
                 this.list.refresh()
+                this.$bus.$emit('SystemProjectsListRefresh')
               },
             })
           },
