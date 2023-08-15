@@ -220,7 +220,14 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
             if (p) {
               node = (
                 <list-body-cell-wrap copy row={ data } onManager={ onManager } field='project_domain' title={ row.project_domain } message={domain} hideField={ true }>
-                  <side-page-trigger permission='domains_get' name='DomainSidePage' id={row.project_domain} vm={vm}>{ domain }</side-page-trigger>
+                  <side-page-trigger
+                    permission='domains_get'
+                    name='DomainSidePage'
+                    id={row.project_domain}
+                    options={{ getParams: { pending_delete: 'any' } }}
+                    vm={vm}>
+                    {domain}
+                  </side-page-trigger>
                 </list-body-cell-wrap>
               )
             } else {
@@ -267,7 +274,15 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
                   edit={ true }
                   customEdit={ true }
                   customEditCallback={ customEditCallback } >
-                  <side-page-trigger permission='projects_get' name='ProjectSidePage' id={row.tenant_id} vm={vm}>{ row.tenant }</side-page-trigger>
+                  <side-page-trigger
+                    permission='projects_get'
+                    name='ProjectSidePage'
+                    id={row.tenant_id}
+                    vm={vm}
+                    options={{ getParams: { pending_delete: 'any' } }}
+                  >
+                    {row.tenant}
+                  </side-page-trigger>
                 </list-body-cell-wrap>
               )
             } else {
