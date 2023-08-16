@@ -293,5 +293,8 @@
   "dashboard.disk_num": "Number of disks",
   "dashboard.instance_count": "Number of instance",
   "dashboard.instance_type": "Instance type",
-  "dashboard.count": "Total"
+  "dashboard.count": "Total",
+  "dashboard.host_type": "Host Type",
+  "dashboard.hypervisor": "Hypervisor",
+  "dashboard.baremetal": "Baremetal"
 }
