@@ -78,6 +78,13 @@
         </a-select>
       </a-form-item>
     </a-form-item>
+    <a-form-item :label="$t('dashboard.host_type')" v-if="showHostType && isOneCloud">
+      <a-radio-group v-decorator="decorators.host_type">
+        <a-radio-button value="all">{{ $t('dashboard.text_99') }}</a-radio-button>
+        <a-radio-button value="hypervisor">{{ $t('dashboard.hypervisor') }}</a-radio-button>
+        <a-radio-button value="baremetal">{{ $t('dashboard.baremetal') }}</a-radio-button>
+      </a-radio-group>
+    </a-form-item>
     <a-form-model-item :label="$t('iam.project_tag')" prop="__meta__" v-if="showTag">
       <pairs-tag v-decorator="decorators.tags" />
     </a-form-model-item>
@@ -133,8 +140,8 @@ import { mapGetters } from 'vuex'
 import { USAGE_CONFIG, getMetricDocs } from '@Dashboard/constants'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { usageMap } from '@/constants/generalUsage'
-import UsageSelect from './UsageSelect'
 import PairsTag from '@/sections/PairsTag'
+import UsageSelect from './UsageSelect'
 
 export default {
   name: 'QuotaConfig',
@@ -164,6 +171,10 @@ export default {
       type: String,
     },
     showTag: {
+      type: Boolean,
+      default: false,
+    },
+    showHostType: {
       type: Boolean,
       default: false,
     },
@@ -201,6 +212,9 @@ export default {
       } else {
         return true
       }
+    },
+    isOneCloud () {
+      return this.brand === typeClouds.brandMap.OneCloud.key
     },
   },
   destroyed () {
