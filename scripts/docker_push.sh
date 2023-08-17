@@ -45,16 +45,14 @@ buildx_and_push() {
     local path=$3
     local arch=$4
     docker buildx build -t "$tag" --platform "linux/$arch" -f "$2" "$3" --push
-    docker pull "$tag"
+    docker pull --platform "linux/$arch" "$tag"
 }
 
 make_manifest_image() {
     local img_name=$1
-    docker manifest create --amend $img_name \
+    docker buildx imagetools create -t $img_name \
         $img_name-amd64 \
         $img_name-arm64
-    docker manifest annotate $img_name $img_name-arm64 --arch arm64
-    docker manifest push $img_name
 }
 
 build_src
