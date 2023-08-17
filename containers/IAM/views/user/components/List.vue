@@ -138,22 +138,18 @@ export default {
               ...getEnabledSwitchActions(this, undefined, ['users_perform_enable', 'users_perform_disable'], {
                 actions: [
                   () => {
-                    this.onManager('batchUpdate', {
+                    this.onManager('batchPerformAction', {
                       ids: this.list.selectedItems.map(({ id }) => id),
                       managerArgs: {
-                        data: {
-                          enabled: true,
-                        },
+                        action: 'enable',
                       },
                     })
                   },
                   () => {
-                    this.onManager('batchUpdate', {
+                    this.onManager('batchPerformAction', {
                       ids: this.list.selectedItems.map(({ id }) => id),
                       managerArgs: {
-                        data: {
-                          enabled: false,
-                        },
+                        action: 'disable',
                       },
                     })
                   },
