@@ -1692,5 +1692,6 @@
   "compute.bastionHost.node.placeholder": "@:common.select堡垒机资源节点",
   "compute.bastionHost.port.placeholder": "@:common.placeholder端口",
   "compute.bastionHost.privileged_account.placeholder": "@:common.select堡垒机特权用户",
-  "compute.bastionHost.account.placeholder": "@:common.select堡垒机普通用户"
+  "compute.bastionHost.account.placeholder": "@:common.select堡垒机普通用户",
+  "compute.custom_data.extra": "优先使用#cloud-config yaml 格式"
 }
