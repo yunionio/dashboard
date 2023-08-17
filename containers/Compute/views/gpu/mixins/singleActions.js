@@ -3,6 +3,24 @@ export default {
   created () {
     this.singleActions = [
       {
+        label: '更新设备类型',
+        action: obj => {
+          this.createDialog('UpdateDeviceTypeDialog', {
+            data: [obj],
+            columns: this.columns,
+            refresh: this.refresh,
+          })
+        },
+        meta: obj => {
+          const ret = { validate: true }
+          if (!obj.dev_type.startsWith('GPU-')) {
+            ret.tooltip = '当前设备类型不支持更新'
+            return ret
+          }
+          return ret
+        },
+      },
+      {
         label: this.$t('compute.text_483', [this.$t('dictionary.server')]),
         permission: 'server_perform_attach_isolated_device',
         action: obj => {

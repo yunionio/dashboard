@@ -9,12 +9,12 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import { getNameFilter, getRegionFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'GpuList',
@@ -167,6 +167,32 @@ export default {
             return {
               validate: true,
             }
+          },
+        },
+        {
+          label: '更新设备类型',
+          action: obj => {
+            this.createDialog('UpdateDeviceTypeDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              refresh: this.refresh,
+            })
+          },
+          meta: obj => {
+            const ret = { validate: true }
+            const isSelected = this.list.selectedItems?.length > 0
+            if (!isSelected) {
+              ret.validate = false
+              ret.tooltip = '请选择要更新设备类型的透传设备'
+              return ret
+            }
+            const isAllGPU = this.list.selectedItems.every(o => o.dev_type.startsWith('GPU-'))
+            if (!isAllGPU) {
+              ret.validate = false
+              ret.tooltip = '请选择GPU类型的透传设备'
+              return ret
+            }
+            return ret
           },
         },
       ],
