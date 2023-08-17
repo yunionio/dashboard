@@ -9,12 +9,12 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import { getNameFilter, getRegionFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'GpuList',
@@ -167,6 +167,32 @@ export default {
             return {
               validate: true,
             }
+          },
+        },
+        {
+          label: this.$t('gpu.device_type.update'),
+          action: obj => {
+            this.createDialog('UpdateDeviceTypeDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              refresh: this.refresh,
+            })
+          },
+          meta: obj => {
+            const ret = { validate: true }
+            const isSelected = this.list.selectedItems?.length > 0
+            if (!isSelected) {
+              ret.validate = false
+              ret.tooltip = this.$t('gpu.device_type.update.tooltip')
+              return ret
+            }
+            const isAllGPU = this.list.selectedItems.every(o => o.dev_type.indexOf('GPU') !== -1)
+            if (!isAllGPU) {
+              ret.validate = false
+              ret.tooltip = this.$t('gpu.device_type.gpu.tooltip')
+              return ret
+            }
+            return ret
           },
         },
       ],

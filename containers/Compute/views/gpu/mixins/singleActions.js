@@ -3,6 +3,25 @@ export default {
   created () {
     this.singleActions = [
       {
+        label: this.$t('gpu.device_type.update'),
+        action: obj => {
+          this.createDialog('UpdateDeviceTypeDialog', {
+            data: [obj],
+            columns: this.columns,
+            refresh: this.refresh,
+          })
+        },
+        meta: obj => {
+          const ret = { validate: true }
+          if (obj.dev_type.indexOf('GPU') === -1) {
+            ret.validate = false
+            ret.tooltip = this.$t('gpu.device_type.update.validate')
+            return ret
+          }
+          return ret
+        },
+      },
+      {
         label: this.$t('compute.text_483', [this.$t('dictionary.server')]),
         permission: 'server_perform_attach_isolated_device',
         action: obj => {

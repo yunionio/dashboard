@@ -1,0 +1,10 @@
+{
+  "gpu.device_type": "Device Type",
+  "gpu.device_type.update": "Update device type",
+  "gpu.device_type.update.tooltip": "Please select the transparent transmission device to update the device type",
+  "gpu.device_type.update.validate": "The current device type does not support updates",
+  "gpu.device_type.gpu.tooltip": "Please select GPU type transparent device",
+  "gpu.device_type.message_1": "GPU-HPC: High-Performance Computing, mainly used for scientific computing, data analysis, machine learning and other tasks that require large-scale parallel computing.",
+  "gpu.device_type.message_2": "GPU-VGA: Video Graphics Array, used for graphics rendering and display purposes.",
+  "gpu.device_type.message_3": "When the GPU card of GPU-VGA type is transmitted to the virtual machine for use, the simulated VGA device is no longer provided, and the graphics card driver needs to be installed in advance in the image."
+}
