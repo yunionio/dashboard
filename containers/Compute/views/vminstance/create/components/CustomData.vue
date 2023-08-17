@@ -75,10 +75,15 @@ export default {
 
       reader.onload = (info) => {
         const json = JSON.parse(info.target.result)
-        const isRight = this.checkFileData(json)
-        if (!isRight) {
-          file.status = 'error'
-          this.$message.error(this.$t('compute.custom_data_error1'))
+        if (this.isKvm) {
+          const isRight = this.checkFileData(json)
+          if (!isRight) {
+            file.status = 'error'
+            this.$message.error(this.$t('compute.custom_data_error1'))
+          } else {
+            this.fileList = [file]
+            this.customData = json
+          }
         } else {
           this.fileList = [file]
           this.customData = json
