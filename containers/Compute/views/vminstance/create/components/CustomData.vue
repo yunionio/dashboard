@@ -1,5 +1,5 @@
 <template>
-  <a-form-item :label="$t('compute.custom_data')" :extra="isKvm && form.fd.custom_data_type ? extra : null">
+  <a-form-item :label="$t('compute.custom_data')" :extra="form.fd.custom_data_type ? customDataExtra : ''">
     <a-radio-group v-decorator="decorators.custom_data_type" class="mb-2" @change="handleTypeChange">
       <a-radio-button value="">{{ $t('compute.text_116') }}</a-radio-button>
       <a-radio-button value="input">{{ $t('compute.custom_data_input') }}</a-radio-button>
@@ -54,7 +54,6 @@ export default {
       },
       fileList: [],
       errorTip: '',
-      extra: this.$t('compute.custom_data_temp'),
       codeMirrorData: '',
       customData: [],
     }
@@ -62,6 +61,9 @@ export default {
   computed: {
     isKvm () {
       return this.form.fd.hypervisor === 'kvm'
+    },
+    customDataExtra () {
+      return this.isKvm ? this.$t('compute.custom_data_temp') : this.$t('compute.custom_data.extra')
     },
   },
   methods: {
@@ -130,6 +132,8 @@ export default {
     handleCodeInput (_value) {
       if (this.isKvm) {
         this.doCheck(_value)
+      } else {
+        this.customData = _value
       }
     },
     doCheck (_value) {
