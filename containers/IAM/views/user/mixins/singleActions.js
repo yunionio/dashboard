@@ -22,22 +22,18 @@ export default {
             ...getEnabledSwitchActions(this, row, ['users_perform_enable', 'users_perform_disable'], {
               actions: [
                 () => {
-                  this.onManager('update', {
+                  this.onManager('performAction', {
                     id: row.id,
                     managerArgs: {
-                      data: {
-                        enabled: true,
-                      },
+                      action: 'enable',
                     },
                   })
                 },
                 () => {
-                  this.onManager('update', {
+                  this.onManager('performAction', {
                     id: row.id,
                     managerArgs: {
-                      data: {
-                        enabled: false,
-                      },
+                      action: 'disable',
                     },
                   })
                 },

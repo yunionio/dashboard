@@ -82,7 +82,6 @@ export default {
           label: this.$t('system.text_226'),
           permission: 'policies_update',
           action: () => {
-            const ids = this.list.selected
             this.createDialog('DisableDialog', {
               title: this.$t('system.text_341', [this.$t('dictionary.policy')]),
               name: this.$t('dictionary.policy'),
@@ -90,9 +89,7 @@ export default {
               data: this.list.selectedItems,
               ok: async () => {
                 try {
-                  const response = await this.list.batchUpdate(ids, {
-                    enabled: false,
-                  })
+                  const response = await this.list.batchPerformAction('disable')
                   return response
                 } catch (error) {
                   throw error
@@ -120,7 +117,6 @@ export default {
           label: this.$t('system.text_225'),
           permission: 'policies_update',
           action: () => {
-            const ids = this.list.selected
             this.createDialog('DisableDialog', {
               title: this.$t('system.text_342', [this.$t('dictionary.policy')]),
               name: this.$t('dictionary.policy'),
@@ -128,9 +124,7 @@ export default {
               data: this.list.selectedItems,
               ok: async () => {
                 try {
-                  const response = await this.list.batchUpdate(ids, {
-                    enabled: true,
-                  })
+                  const response = await this.list.batchPerformAction('enable')
                   return response
                 } catch (error) {
                   throw error
