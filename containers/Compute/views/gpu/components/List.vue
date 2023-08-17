@@ -170,7 +170,7 @@ export default {
           },
         },
         {
-          label: '更新设备类型',
+          label: this.$t('gpu.device_type.update'),
           action: obj => {
             this.createDialog('UpdateDeviceTypeDialog', {
               data: this.list.selectedItems,
@@ -183,13 +183,13 @@ export default {
             const isSelected = this.list.selectedItems?.length > 0
             if (!isSelected) {
               ret.validate = false
-              ret.tooltip = '请选择要更新设备类型的透传设备'
+              ret.tooltip = this.$t('gpu.device_type.update.tooltip')
               return ret
             }
-            const isAllGPU = this.list.selectedItems.every(o => o.dev_type.startsWith('GPU-'))
+            const isAllGPU = this.list.selectedItems.every(o => o.dev_type.indexOf('GPU') !== -1)
             if (!isAllGPU) {
               ret.validate = false
-              ret.tooltip = '请选择GPU类型的透传设备'
+              ret.tooltip = this.$t('gpu.device_type.gpu.tooltip')
               return ret
             }
             return ret

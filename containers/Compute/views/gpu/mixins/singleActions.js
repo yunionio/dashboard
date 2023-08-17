@@ -3,7 +3,7 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '更新设备类型',
+        label: this.$t('gpu.device_type.update'),
         action: obj => {
           this.createDialog('UpdateDeviceTypeDialog', {
             data: [obj],
@@ -13,8 +13,9 @@ export default {
         },
         meta: obj => {
           const ret = { validate: true }
-          if (!obj.dev_type.startsWith('GPU-')) {
-            ret.tooltip = '当前设备类型不支持更新'
+          if (obj.dev_type.indexOf('GPU') === -1) {
+            ret.validate = false
+            ret.tooltip = this.$t('gpu.device_type.update.validate')
             return ret
           }
           return ret
