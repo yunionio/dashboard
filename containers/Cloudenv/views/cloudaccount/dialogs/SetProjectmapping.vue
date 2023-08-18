@@ -18,7 +18,12 @@
         </a-form-model-item>
         <a-form-model-item
           :label="fd.resource_map_type === 'target_project' ? $t('cloudenv.cloudaccount.project_mapping') : $t('cloudenv.map_project_is_no_cloudproject')">
+          <a-radio-group v-if="fd.resource_map_type === 'auto_create_project'" v-model="fd.create_project_target" @change="createProjectTargetChange">
+            <a-radio-button value="project">{{$t('dictionary.project')}}</a-radio-button>
+            <a-radio-button value="cloudprovider">{{$t('dictionary.cloudprovider')}}</a-radio-button>
+          </a-radio-group>
           <base-select
+            v-if="fd.create_project_target === 'project'"
             v-model="fd.project_id"
             resource="projects"
             filterable
@@ -77,6 +82,7 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     let initResourceTypeMap = 'target_project'
+    let initCreateProjectTarget = 'project'
     let initOpenProjectMapping = false
     let initProjectMappingId = ''
     let initEffectiveScope = ''
@@ -88,6 +94,10 @@ export default {
         initOpenProjectMapping = true
       }
       if (item.auto_create_project) {
+        initResourceTypeMap = 'auto_create_project'
+      }
+      if (item.auto_create_project_for_provider) {
+        initCreateProjectTarget = 'cloudprovider'
         initResourceTypeMap = 'auto_create_project'
       }
       if (item.tenant_id) {
@@ -108,6 +118,7 @@ export default {
       showAutoCreateProject: true,
       fd: {
         resource_map_type: initResourceTypeMap,
+        create_project_target: initCreateProjectTarget,
         project_id: initProjectId,
         is_open_project_mapping: initOpenProjectMapping,
         project_mapping_id: initProjectMappingId,
@@ -186,6 +197,7 @@ export default {
     genParams () {
       const {
         resource_map_type,
+        create_project_target,
         project_id,
         is_open_project_mapping,
         project_mapping_id,
@@ -193,10 +205,14 @@ export default {
         isOpenBlockedResources,
         blockedResources,
       } = this.fd
-      const ret = {
-        auto_create_project: resource_map_type === 'auto_create_project',
+      const ret = {}
+      if (resource_map_type === 'auto_create_project' && create_project_target === 'project') {
+        ret.auto_create_project = true
+      } else {
+        ret.auto_create_project = false
       }
-      if (project_id) {
+      ret.auto_create_project_for_provider = create_project_target === 'cloudprovider'
+      if (project_id && create_project_target !== 'cloudprovider') {
         ret.project_id = project_id
       }
       if (is_open_project_mapping && project_mapping_id) {
@@ -217,6 +233,15 @@ export default {
         delete ret.blockedResources
       }
       return ret
+    },
+    resourceMapTypeChange (e) {
+      console.log(e.target.value)
+      if (e.target.value === 'target_project') {
+        this.fd.create_project_target = 'project'
+      }
+    },
+    createProjectTargetChange (e) {
+      this.fd.create_project_target = e.target.value
     },
     async handleConfirm () {
       this.loading = true

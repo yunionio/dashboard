@@ -178,7 +178,12 @@ export const getResourceMatchProjectTableColumn = () => {
     slots: {
       default: ({ row }, h) => {
         const ret = []
-        if (row.auto_create_project) {
+        if (row.auto_create_project_for_provider) {
+          ret.push(<span class='mr-2'>{i18n.t('cloudenv.text_493')}</span>)
+          let helpText = i18n.t('help.cloudaccountAutoCreateProject')
+          helpText += i18n.t('cloudenv.no_match_cloudproject', [i18n.t('cloudenv.project_same_as_cloudprovider')])
+          ret.push(<help-tooltip text={helpText} />)
+        } else if (row.auto_create_project) {
           ret.push(<span class='mr-2'>{i18n.t('cloudenv.text_493')}</span>)
           let helpText = i18n.t('help.cloudaccountAutoCreateProject')
           if (row.tenant) {
