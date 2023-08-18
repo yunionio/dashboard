@@ -234,6 +234,12 @@ export default {
       }
       return ret
     },
+    resourceMapTypeChange (e) {
+      console.log(e.target.value)
+      if (e.target.value === 'target_project') {
+        this.fd.create_project_target = 'project'
+      }
+    },
     createProjectTargetChange (e) {
       this.fd.create_project_target = e.target.value
     },
