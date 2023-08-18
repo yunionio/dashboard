@@ -140,10 +140,6 @@ export default {
                   }
                 }
               },
-              meta: () => {
-                const ret = checkReadOnly(obj, i18n.t('common_277'))
-                if (!ret.validate) return ret
-              },
             }),
             {
               label: i18n.t('network.text_131'),
