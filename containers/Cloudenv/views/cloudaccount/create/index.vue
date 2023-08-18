@@ -31,6 +31,11 @@
 </template>
 
 <script>
+import { CLOUDACCOUNT_TYPES, notSupportSelectRegion } from '@Cloudenv/views/cloudaccount/constants'
+import step from '@/mixins/step'
+import { Manager } from '@/utils/manager'
+import { getRequestT } from '@/utils/utils'
+import TestButton from '@/sections/TestButton'
 import SelectCloudaccount from './form/SelectCloudaccount'
 import CreateCloudaccount from './form/CreateCloudaccount'
 import SelectRegion from './form/SelectRegion'
@@ -39,11 +44,6 @@ import BillForm from './form/BillForm'
 import BillFileIndex from './BillFileIndex'
 import GuestNetwork from './form/GuestNetwork'
 import HostNetwork from './form/HostNetwork'
-import { CLOUDACCOUNT_TYPES, notSupportSelectRegion } from '@Cloudenv/views/cloudaccount/constants'
-import step from '@/mixins/step'
-import { Manager } from '@/utils/manager'
-import { getRequestT } from '@/utils/utils'
-import TestButton from '@/sections/TestButton'
 
 export default {
   name: 'Cloudaccount',
@@ -211,8 +211,11 @@ export default {
       delete data.domain
       delete data.project
       if (!this.isAdminMode || !this.l3PermissionEnable) delete data.domain_id
-      if (data.resource_map_type === 'auto_create_project') {
+      if (data.resource_map_type === 'auto_create_project' && data.create_project_target === 'project') {
         data.auto_create_project = true
+      }
+      if (data.resource_map_type === 'auto_create_project' && data.create_project_target === 'cloudprovider') {
+        data.auto_create_project_for_provider = true
       }
       if (data.project_mapping_id) {
         if (data.effective_scope === 'resource') {
@@ -224,6 +227,7 @@ export default {
       delete data.effective_scope
       delete data.is_open_project_mapping
       delete data.resource_map_type
+      delete data.create_project_target
     },
     _providerDiff (data) {
       const brand = this.currentItem.provider.toLowerCase()

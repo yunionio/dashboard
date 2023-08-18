@@ -41,7 +41,7 @@ export default {
       <div>The minimum time interval is 30 minutes</div>
     `,
     cloudaccountAutoCreateProject: `
-      <div>If the project information has been set on the cloud account, we will automatically create a project with the same name as the project on the cloud (if the name is the same as the local project, the system will add "-1" by default)</div>
+      <div>If the project information has been set on the cloud account, we will automatically create a project with the same name as the project on the cloud (or same name as the provider on the cloud) (if the name is the same as the local project, the system will add "-1" by default)</div>
     `,
     useCasProject: `
       <div>The user is first synchronized to the project with the same name in the system as the CAS (if there is no project, it will be created automatically), if some users in the CAS do not have a project, the default project will be used. </div>

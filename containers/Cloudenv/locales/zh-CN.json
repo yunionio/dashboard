@@ -799,8 +799,8 @@
   "cloudenv.map_project_is_no_cloudproject": "无云上项目资源归属到",
   "cloudenv.resource_map_target_project": "资源归属到指定项目。",
   "cloudenv.resource_map_project_mapping_target_project": "资源会根据同步策略进行项目归属，若无法匹配同步策略则归属到指定项目中。",
-  "cloudenv.resource_map_cloudproject": "资源会同步与云上项目同名的本地项目中，若资源无云上项目属性则归属到指定项目中。",
-  "cloudenv.resource_map_project_mapping_cloudproject": "资源会根据同步策略进行项目归属， 若无法匹配同步策略资源会同步与云上项目同名的本地项目中，若资源无云上项目属性则归属到指定项目中。",
+  "cloudenv.resource_map_cloudproject": "资源会同步与云上项目同名的本地项目中，若资源无云上项目属性则归属到指定项目中或与云订阅同名的本地项目中。",
+  "cloudenv.resource_map_project_mapping_cloudproject": "资源会根据同步策略进行项目归属， 若无法匹配同步策略资源会同步与云上项目同名的本地项目中，若资源无云上项目属性则归属到指定项目中或与云订阅同名的本地项目中。",
   "cloudenv.no_project_mapping": "没有想要的同步策略？",
   "cloudenv.go_create": "去新建",
   "cloudenv.project_same_as_tag_value": "标签值同名项目",
@@ -839,5 +839,6 @@
   "cloudenv.helptool.unavailable.title.tooltip": "表示该账号云上项目列表不存在该项目，可能已经删除或在账单中存在，不影响使用",
   "cloudenv.cloudaccount.project_mapping": "资源归属项目到",
   "cloudenv.block_resources": "屏蔽同步资源",
-  "cloudenv.block_resources_type": "屏蔽资源类型"
+  "cloudenv.block_resources_type": "屏蔽资源类型",
+  "cloudenv.project_same_as_cloudprovider": "与云订阅同名的本地项目"
 }
