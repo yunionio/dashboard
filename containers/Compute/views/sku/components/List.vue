@@ -16,6 +16,8 @@ import { sizestr } from '@/utils/utils'
 import ListMixin from '@/mixins/list'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
+import { findPlatform } from '@/utils/common/hypervisor'
+import { SERVER_TYPE } from '../../../constants'
 
 export default {
   name: 'SkuList',
@@ -95,11 +97,11 @@ export default {
             })
           },
           meta: () => {
-            const validate = this.cloudEnv !== 'public'
+            const validate = this.cloudEnv !== 'public' && this.cloudEnv !== 'private'
             const meta = {
               buttonType: 'primary',
               validate,
-              tooltip: validate ? '' : this.$t('commpute.public_sku_disable_tooltip'),
+              tooltip: validate ? '' : this.$t(`commpute.${this.cloudEnv}_sku_disable_tooltip`),
             }
             return meta
           },
@@ -116,7 +118,46 @@ export default {
           label: this.$t('common.batchAction'),
           actions: () => {
             return [
-              ...getEnabledSwitchActions(this, undefined, ['skus_update', 'skus_update']),
+              ...getEnabledSwitchActions(this, undefined, ['skus_update', 'skus_update'], {
+                extraMetas: [
+                  () => {
+                    let tooltip = ''
+                    let validate = this.list.selectedItems.length > 0
+                    if (this.list.selectedItems.some(item => {
+                      const env = findPlatform(item.provider, 'provider')
+                      if (env === SERVER_TYPE.private) {
+                        return true
+                      }
+                      return false
+                    })) {
+                      validate = false
+                      tooltip = this.$t('commpute.private_sku_disable_tooltip')
+                    }
+                    return {
+                      validate,
+                      tooltip,
+                    }
+                  },
+                  () => {
+                    let tooltip = ''
+                    let validate = this.list.selectedItems.length > 0
+                    if (this.list.selectedItems.some(item => {
+                      const env = findPlatform(item.provider, 'provider')
+                      if (env === SERVER_TYPE.private) {
+                        return true
+                      }
+                      return false
+                    })) {
+                      validate = false
+                      tooltip = this.$t('commpute.private_sku_disable_tooltip')
+                    }
+                    return {
+                      validate,
+                      tooltip,
+                    }
+                  },
+                ],
+              }),
               {
                 label: this.$t('compute.sku.setup.sell.status'),
                 permission: 'skus_update',
@@ -128,10 +169,22 @@ export default {
                   })
                 },
                 meta: () => {
-                  const ret = {
-                    validate: this.list.selectedItems.length > 0,
+                  let tooltip = ''
+                  let validate = this.list.selectedItems.length > 0
+                  if (this.list.selectedItems.some(item => {
+                    const env = findPlatform(item.provider, 'provider')
+                    if (env === SERVER_TYPE.private) {
+                      return true
+                    }
+                    return false
+                  })) {
+                    validate = false
+                    tooltip = this.$t('commpute.private_sku_disable_tooltip')
                   }
-                  return ret
+                  return {
+                    validate,
+                    tooltip,
+                  }
                 },
               },
               {
@@ -148,7 +201,25 @@ export default {
                   })
                 },
                 meta: () => {
-                  if (this.cloudEnv === 'public') {
+                  if (this.list.selectedItems.some(item => {
+                    const env = findPlatform(item.provider, 'provider')
+                    if (env === SERVER_TYPE.private) {
+                      return true
+                    }
+                    return false
+                  })) {
+                    return {
+                      validate: false,
+                      tooltip: this.$t('commpute.private_sku_disable_tooltip'),
+                    }
+                  }
+                  if (this.list.selectedItems.some(item => {
+                    const env = findPlatform(item.provider, 'provider')
+                    if (env === SERVER_TYPE.public) {
+                      return true
+                    }
+                    return false
+                  })) {
                     return {
                       validate: false,
                       tooltip: this.$t('commpute.public_sku_disable_tooltip'),
