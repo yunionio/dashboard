@@ -9,8 +9,8 @@
 
 <script>
 import _ from 'lodash'
-import SkuList from './components/List'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
+import SkuList from './components/List'
 
 export default {
   name: 'SKUIndex',
@@ -18,8 +18,7 @@ export default {
     SkuList,
   },
   data () {
-    // 分类只有本地IDC和公有云，没有全部、私有云
-    const cloudEnvOptions = getCloudEnvOptions('compute_engine_brands').filter(val => ['onpremise', 'public'].includes(val.key))
+    const cloudEnvOptions = getCloudEnvOptions('compute_engine_brands').filter(val => ['onpremise', 'public', 'private'].includes(val.key))
     return {
       listId: 'SkuList',
       getParams: {
