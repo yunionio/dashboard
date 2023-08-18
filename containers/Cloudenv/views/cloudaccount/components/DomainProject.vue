@@ -303,6 +303,9 @@ export default {
     },
     resourceMapTypeChange (e) {
       this.resourceMapType = e.target.value
+      if (e.target.value === 'target_project') {
+        this.createProjectTarget = 'project'
+      }
     },
     createProjectTargetChange (e) {
       this.createProjectTarget = e.target.value
