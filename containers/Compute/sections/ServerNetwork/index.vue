@@ -135,7 +135,7 @@ export default {
   },
   data () {
     const { auto_alloc_network_count } = this.$store.getters.capability
-    const { hypervisor } = this.form.fd
+    const { hypervisor } = this.form.fd || {}
     const _networkMaps = { ...NETWORK_OPTIONS_MAP }
     if (!auto_alloc_network_count || auto_alloc_network_count <= 0) {
       if (hypervisor !== HYPERVISORS_MAP.proxmox.key) {
@@ -169,7 +169,7 @@ export default {
   watch: {
     'form.fi.capability.auto_alloc_network_count' (val) {
       if (val === 0) {
-        const { hypervisor } = this.form.fd
+        const { hypervisor } = this.form.fd || {}
         if (hypervisor !== HYPERVISORS_MAP.proxmox.key) {
           this.$delete(this.networkMaps, NETWORK_OPTIONS_MAP.default.key)
         }
