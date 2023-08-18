@@ -29,7 +29,12 @@
       </a-radio-group>
     </a-form-item>
     <a-form-item :label="resourceMapType === 'target_project' ? $t('scope.text_573', [$t('dictionary.project')]) : $t('cloudenv.map_project_is_no_cloudproject')">
+      <a-radio-group v-if="resourceMapType === 'auto_create_project'" v-decorator="extraDecorators.create_project_target" @change="createProjectTargetChange">
+        <a-radio-button value="project">{{$t('dictionary.project')}}</a-radio-button>
+        <a-radio-button value="cloudprovider">{{$t('dictionary.cloudprovider')}}</a-radio-button>
+      </a-radio-group>
       <base-select
+        v-if="createProjectTarget !== 'cloudprovider'"
         ref="project"
         v-decorator="decorators.project"
         resource="projects"
@@ -128,6 +133,12 @@ export default {
             initialValue: 'target_project',
           },
         ],
+        create_project_target: [
+          'create_project_target',
+          {
+            initialValue: 'project',
+          },
+        ],
         is_open_project_mapping: [
           'is_open_project_mapping',
           {
@@ -145,6 +156,7 @@ export default {
         ],
       },
       resourceMapType: 'target_project',
+      createProjectTarget: 'project',
       openProjectMapping: false,
       effectiveScope: 'resource',
     }
@@ -291,6 +303,9 @@ export default {
     },
     resourceMapTypeChange (e) {
       this.resourceMapType = e.target.value
+    },
+    createProjectTargetChange (e) {
+      this.createProjectTarget = e.target.value
     },
     effectiveScopeChange (e) {
       this.effectiveScope = e.target.value
