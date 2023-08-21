@@ -3,6 +3,7 @@
     <tag-select
       multiple
       filter-without-user-meta
+      filter-with-user-meta
       :params="params"
       :value="tagFilter"
       :managerInstance="tagManagerInstance"
@@ -95,10 +96,13 @@ export default {
     genTag (key, value) {
       const rgb = getTagColor(key, value, 'rgb')
       const strRgb = rgb.join(',')
+      let title = getTagTitle(key, value)
+      if (key === 'without_user_meta') title = this.$t('common.text00013')
+      if (key === 'with_user_meta') title = this.$t('common.with_user_meta')
       return {
         key,
         value,
-        title: key === 'without_user_meta' ? this.$t('common.text00013') : getTagTitle(key, value),
+        title,
         color: `rgb(${strRgb})`,
         backgroundColor: `rgba(${strRgb},.1)`,
       }
