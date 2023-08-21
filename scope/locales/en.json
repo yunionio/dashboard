@@ -12,7 +12,8 @@
     "HCS": "HCS",
     "Ecloud": "mCloud",
     "Nutanix": "Nutanix",
-    "Ksyun": "Ksyun"
+    "Ksyun": "Ksyun",
+    "Baidu": "Baidu Cloud"
   },
   "scopeProviders": {
     "esxi": "VMware",

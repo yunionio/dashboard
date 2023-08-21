@@ -24,6 +24,7 @@ import InCloudSphere from './components/InCloudSphere'
 import RemoteFile from './components/RemoteFile'
 import H3C from './components/H3C'
 import Ksyun from './components/Ksyun'
+import BaiduCloud from './components/BaiduCloud'
 
 export default {
   name: 'CreateCloudaccount',
@@ -57,6 +58,7 @@ export default {
     ProxmoxCreate: Proxmox,
     H3CCreate: H3C,
     KsyunCreate: Ksyun,
+    BaiduCloudCreate: BaiduCloud,
   },
   props: {
     currentItem: {

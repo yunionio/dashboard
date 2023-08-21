@@ -840,5 +840,7 @@
   "cloudenv.cloudaccount.project_mapping": "资源归属项目到",
   "cloudenv.block_resources": "屏蔽同步资源",
   "cloudenv.block_resources_type": "屏蔽资源类型",
-  "cloudenv.project_same_as_cloudprovider": "与云订阅同名的本地项目"
+  "cloudenv.project_same_as_cloudprovider": "与云订阅同名的本地项目",
+  "cloudenv.baidu": "百度云",
+  "cloudenv.create_baidu": "{0}#新建百度云账号"
 }

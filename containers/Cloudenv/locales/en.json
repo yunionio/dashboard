@@ -838,5 +838,7 @@
   "cloudenv.helptool.unavailable.title.tooltip": "The specified project does not exist in the account’s cloud project list. It may have been deleted or it could be present in the billing information, but this does not affect its usability.",
   "cloudenv.cloudaccount.project_mapping": "Allocate resources to project",
   "cloudenv.block_resources": "Block Synchronized Resources",
-  "cloudenv.block_resources_type": "Blocked Resource Type"
+  "cloudenv.block_resources_type": "Blocked Resource Type",
+  "cloudenv.baidu": "Baidu Cloud",
+  "cloudenv.create_baidu": "{0}#create-baidu-account"
 }

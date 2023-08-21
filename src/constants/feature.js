@@ -205,6 +205,10 @@ const LicenseItems = [
     key: 'auth',
     meta: meta('auth', '', false),
   },
+  {
+    key: 'baidu',
+    meta: meta('resource_managent', 'public', true),
+  },
 ]
 
 function fullfillLicenseItems () {
