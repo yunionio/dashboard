@@ -140,6 +140,7 @@ export function getTagColor (key, value, type = 'hex') {
 export function getTagTitle (key, value) {
   let val = value
   let str = R.replace(/(ext:|user:|sys:|org:)/, '', key)
+  if (!str) return i18n.t('common.null_tag_key')
   if (str === 'cloud_default') {
     str = i18n.t('common_736')
   }
