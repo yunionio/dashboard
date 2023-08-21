@@ -104,17 +104,17 @@ export const CLOUDACCOUNT_TYPES = {
       component: 'JDcloudCreate',
       provider: providerMap.jdcloud.key,
     },
-    ksyun: {
-      name: providerMap.ksyun.label,
-      logo: ksyunLogo,
-      component: 'KsyunCreate',
-      provider: providerMap.ksyun.key,
-    },
     baidu: {
       name: providerMap.baidu.label,
       logo: baiduLogo,
       component: 'BaiduCloudCreate',
       provider: providerMap.baidu.key,
+    },
+    ksyun: {
+      name: providerMap.ksyun.label,
+      logo: ksyunLogo,
+      component: 'KsyunCreate',
+      provider: providerMap.ksyun.key,
     },
   },
   private: {

@@ -67,10 +67,6 @@ const LicenseItems = [
     meta: meta('resource_managent', 'public', true),
   },
   {
-    key: 'ksyun',
-    meta: meta('resource_managent', 'public', true),
-  },
-  {
     key: 'aws',
     meta: meta('resource_managent', 'public', true),
   },
@@ -207,6 +203,10 @@ const LicenseItems = [
   },
   {
     key: 'baidu',
+    meta: meta('resource_managent', 'public', true),
+  },
+  {
+    key: 'ksyun',
     meta: meta('resource_managent', 'public', true),
   },
 ]
