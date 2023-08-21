@@ -34,7 +34,7 @@ import ReadOnly from '@Cloudenv/views/cloudaccount/components/ReadOnly'
 import { getCloudaccountDocs, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
 import createMixin from './createMixin'
-import DomainProject from '../../../components/DomainProject'
+import DomainProject from '@Cloudenv/views/cloudaccount/components/DomainProject'
 
 export default {
   name: 'KsyunCreate',
