@@ -5406,5 +5406,7 @@
   "common.operation_object": "Operation object",
   "common.bgp_type_options.bgp": "BGP",
   "common.bgp_type_options.bgp_pro": "BGP_PRO",
-  "common.message.error.not_supported_error": "Backend does not support this operation"
+  "common.message.error.not_supported_error": "Backend does not support this operation",
+  "common.with_user_meta": "With Tag Resources",
+  "common.null_tag_key": "Empty label key"
 }

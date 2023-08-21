@@ -25,6 +25,17 @@
             </div>
           </li>
         </ul>
+        <ul class="tag-list" v-if="filterWithUserMeta">
+          <li
+            class="tag-item"
+            :class="{ checked: checkedKeys.includes(withUserMetaKey) && value[withUserMetaKey][0] === true, no_drop: !allowNoValue }"
+            @click="handleKeyClick(withUserMetaKey, true)">
+            <div class="title d-flex align-items-center">
+              <div class="flex-fill mr-4 text-truncate">{{$t('common.with_user_meta')}}</div>
+              <a-icon class="check-icon" type="check" />
+            </div>
+          </li>
+        </ul>
         <ul class="tag-list" v-if="showUserTags">
           <li class="tag-tip d-flex align-items-center">
             <div style="font-size: 12px; width: 70px;">{{$t('common_261')}}</div>
@@ -148,6 +159,7 @@ export default {
       default: () => ([]),
     },
     filterWithoutUserMeta: Boolean,
+    filterWithUserMeta: Boolean,
     multiple: Boolean,
     resources: String,
     managerInstance: Object,
@@ -180,6 +192,7 @@ export default {
       mouseenterType: null,
       search: '',
       withoutUserMetaKey: 'without_user_meta',
+      withUserMetaKey: 'with_user_meta',
       composing: false, // 中文输入法时的正在输入
       composingTag: false,
       // 所有tag源数据
@@ -323,13 +336,13 @@ export default {
         userRet = userRet.map(item => {
           return {
             ...item,
-            value: [...item.value, '___no_value__'],
+            value: ['___no_value__', ...item.value],
           }
         })
         extRet = extRet.map(item => {
           return {
             ...item,
-            value: [...item.value, '___no_value__'],
+            value: ['___no_value__', ...item.value],
           }
         })
       }
@@ -395,7 +408,7 @@ export default {
           if (newValue[key]) {
             const index = R.indexOf(val, newValue[key])
             if (index !== -1) {
-              if (key === this.withoutUserMetaKey) {
+              if (key === this.withoutUserMetaKey || key === this.withUserMetaKey) {
                 // 当选择无标签资源时
                 delete newValue[key]
               } else {
