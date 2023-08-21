@@ -12,7 +12,8 @@
     "HCS": "HCS",
     "Ecloud": "移动云",
     "Cloudpods": "Cloudpods",
-    "Ksyun": "金山云"
+    "Ksyun": "金山云",
+    "Baidu": "百度云"
   },
   "scopeProviders": {
     "esxi": "VMware",
