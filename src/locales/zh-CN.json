@@ -5437,5 +5437,8 @@
   "common.bgp_type_options.bgp_pro": "BGP(多线)_精品",
   "common.message.error.not_supported_error": "后端不支持该操作",
   "common.with_user_meta": "有标签资源",
-  "common.null_tag_key": "空标签键"
+  "common.null_tag_key": "空标签键",
+  "common.some_items_peer_time": "{0}条/次",
+  "common.current_total_items": "已展示 {0} 条记录",
+  "common.operation_type": "操作类型"
 }
