@@ -33,6 +33,10 @@
     "ecloud": "移动云",
     "HCSO": "HCSO",
     "HCS": "HCS",
-    "cloudpods": "Cloudpods"
+    "cloudpods": "Cloudpods",
+    "nutanix": "Nutanix",
+    "bingocloud": "品高云",
+    "ksyun": "金山云",
+    "baidu": "百度云"
   }
 }
