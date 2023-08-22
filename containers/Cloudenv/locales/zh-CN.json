@@ -842,5 +842,7 @@
   "cloudenv.block_resources_type": "屏蔽资源类型",
   "cloudenv.project_same_as_cloudprovider": "与云订阅同名的本地项目",
   "cloudenv.baidu": "百度云",
-  "cloudenv.create_baidu": "{0}#新建百度云账号"
+  "cloudenv.create_baidu": "{0}#新建百度云账号",
+  "cloudenv.qingcloud": "青云",
+  "cloudenv.create_qingcloud": "{0}#新建青云云账号"
 }

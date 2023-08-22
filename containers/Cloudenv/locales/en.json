@@ -840,5 +840,7 @@
   "cloudenv.block_resources": "Block Synchronized Resources",
   "cloudenv.block_resources_type": "Blocked Resource Type",
   "cloudenv.baidu": "Baidu Cloud",
-  "cloudenv.create_baidu": "{0}#create-baidu-account"
+  "cloudenv.create_baidu": "{0}#create-baidu-account",
+  "cloudenv.qingcloud": "Qing Cloud",
+  "cloudenv.create_qingcloud": "{0}#create-qingcloud-account"
 }

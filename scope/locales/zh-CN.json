@@ -13,7 +13,8 @@
     "Ecloud": "移动云",
     "Cloudpods": "Cloudpods",
     "Ksyun": "金山云",
-    "Baidu": "百度云"
+    "Baidu": "百度云",
+    "Qingcloud": "青云"
   },
   "scopeProviders": {
     "esxi": "VMware",
@@ -37,6 +38,7 @@
     "nutanix": "Nutanix",
     "bingocloud": "品高云",
     "ksyun": "金山云",
-    "baidu": "百度云"
+    "baidu": "百度云",
+    "qingcloud": "青云"
   }
 }
