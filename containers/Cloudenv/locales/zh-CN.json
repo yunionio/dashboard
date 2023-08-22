@@ -385,7 +385,7 @@
   "cloudenv.text_336": "更改{0}时若同时修改{1}，该订阅所属{2}会同步修改",
   "cloudenv.text_340": "新建订阅",
   "cloudenv.text_341": "新建订阅需要满足以下2个条件：",
-  "cloudenv.text_342": "1.国际区的云账号，中国大陆地区的云账号不支持该操作",
+  "cloudenv.text_342": "1.Azure国际区云账号",
   "cloudenv.text_343": "2.录入的APP必须被授予Owner的权限",
   "cloudenv.text_344": "EA账号",
   "cloudenv.text_345": "请选择EA账号",
