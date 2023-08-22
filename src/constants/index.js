@@ -36,6 +36,7 @@ export const HYPERVISORS = [
   { key: 'jdcloud', label: i18n.t('scopeCloudPrvidersMap.JDcloud'), provider: 'JDcloud', brand: 'JDcloud', host_type: 'jdcloud', hypervisor: 'jdcloud', env: 'public', cloud_env: 'public' },
   { key: 'ksyun', label: i18n.t('scopeCloudPrvidersMap.Ksyun'), provider: 'Ksyun', brand: 'Ksyun', host_type: 'ksyun', hypervisor: 'ksyun', env: 'public', cloud_env: 'public' },
   { key: 'baidu', label: i18n.t('scopeCloudPrvidersMap.Baidu'), provider: 'Baidu', brand: 'Baidu', host_type: 'baidu', hypervisor: 'baidu', env: 'public', cloud_env: 'public' },
+  { key: 'qingcloud', label: i18n.t('scopeCloudPrvidersMap.Qingcloud'), provider: 'QingCloud', brand: 'QingCloud', host_type: 'qingcloud', hypervisor: 'qingcloud', env: 'public', cloud_env: 'public' },
 ]
 
 export const HYPERVISORS_MAP = arrayToObj(HYPERVISORS, 'key')

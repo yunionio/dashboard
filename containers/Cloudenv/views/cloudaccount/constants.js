@@ -32,6 +32,7 @@ const proxmoxLogo = require('@/assets/images/providers/proxmox.svg')
 const h3cLogo = require('@/assets/images/providers/h3c.svg')
 const ksyunLogo = require('@/assets/images/providers/ksyun.svg')
 const baiduLogo = require('@/assets/images/providers/baidu.svg')
+const qingcloudLogo = require('@/assets/images/providers/qingcloud.svg')
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
@@ -115,6 +116,12 @@ export const CLOUDACCOUNT_TYPES = {
       logo: ksyunLogo,
       component: 'KsyunCreate',
       provider: providerMap.ksyun.key,
+    },
+    qingcloud: {
+      name: providerMap.qingcloud.label,
+      logo: qingcloudLogo,
+      component: 'QingcloudCreate',
+      provider: providerMap.qingcloud.key,
     },
   },
   private: {
@@ -286,6 +293,7 @@ export function getCloudaccountDocs (scope) {
     h3c: i18n.t('cloudenv.create_h3c', [docs_path]),
     ksyun: i18n.t('cloudenv.create_ksyun', [docs_path]),
     baidu: i18n.t('cloudenv.create_baidu', [docs_path]),
+    qingcloud: i18n.t('cloudenv.create_qingcloud', [docs_path]),
   }
   // if (isCE()) {
   //   Object.keys(docs).forEach(v => {
@@ -696,6 +704,19 @@ export const keySecretFields = {
     k: 'access_key_id',
     s: 'access_key_secret',
     text: i18n.t('cloudenv.baidu'),
+    placeholder: {
+      k: i18n.t('cloudenv.text_144'),
+      s: i18n.t('cloudenv.text_145'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_146'),
+      s: i18n.t('cloudenv.text_147'),
+    },
+  },
+  qingcloud: {
+    k: 'access_key_id',
+    s: 'access_key_secret',
+    text: i18n.t('cloudenv.qingcloud'),
     placeholder: {
       k: i18n.t('cloudenv.text_144'),
       s: i18n.t('cloudenv.text_145'),

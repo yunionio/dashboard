@@ -209,6 +209,10 @@ const LicenseItems = [
     key: 'ksyun',
     meta: meta('resource_managent', 'public', true),
   },
+  {
+    key: 'qingcloud',
+    meta: meta('resource_managent', 'public', true),
+  },
 ]
 
 function fullfillLicenseItems () {

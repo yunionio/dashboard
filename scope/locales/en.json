@@ -13,7 +13,8 @@
     "Ecloud": "mCloud",
     "Nutanix": "Nutanix",
     "Ksyun": "Ksyun",
-    "Baidu": "Baidu Cloud"
+    "Baidu": "Baidu Cloud",
+    "Qingcloud": "Qing Cloud"
   },
   "scopeProviders": {
     "esxi": "VMware",
@@ -37,6 +38,7 @@
     "nutanix": "Nutanix",
     "bingocloud": "Bingo Cloud",
     "ksyun": "Ksyun",
-    "baidu": "Baidu Cloud"
+    "baidu": "Baidu Cloud",
+    "qingcloud": "Qing Cloud"
   }
 }

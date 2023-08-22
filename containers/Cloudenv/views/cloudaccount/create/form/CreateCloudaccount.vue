@@ -25,6 +25,7 @@ import RemoteFile from './components/RemoteFile'
 import H3C from './components/H3C'
 import Ksyun from './components/Ksyun'
 import BaiduCloud from './components/BaiduCloud'
+import Qingcloud from './components/Qingcloud'
 
 export default {
   name: 'CreateCloudaccount',
@@ -59,6 +60,7 @@ export default {
     H3CCreate: H3C,
     KsyunCreate: Ksyun,
     BaiduCloudCreate: BaiduCloud,
+    QingcloudCreate: Qingcloud,
   },
   props: {
     currentItem: {
