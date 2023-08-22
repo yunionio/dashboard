@@ -5318,5 +5318,8 @@
   "common.current_value": "当前值",
   "common.exporting": "导出中...",
   "common.budget_alert_user_placeholder": "请选择告警接收人",
-  "common.brand_support": "目前只有{0}支持该操作"
+  "common.brand_support": "目前只有{0}支持该操作",
+  "common.some_items_peer_time": "{0}条/次",
+  "common.current_total_items": "已展示 {0} 条记录",
+  "common.operation_type": "操作类型"
 }

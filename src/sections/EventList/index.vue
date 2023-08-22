@@ -53,7 +53,7 @@ export default {
         },
       },
       action: {
-        label: this.$t('table.title.operation'),
+        label: this.$t('common.operation_type'),
         dropdown: true,
         multiple: true,
         distinctField: {
@@ -81,6 +81,24 @@ export default {
             }
           }
           return Object.keys(obj).filter(item => !!item).map((item) => ({ label: item, key: obj[item].join(',') }))
+        },
+      },
+      severity: {
+        label: this.$t('common_log_table_key.severity'),
+        dropdown: true,
+        multiple: true,
+        distinctField: {
+          type: 'field',
+          key: 'severity',
+        },
+      },
+      kind: {
+        label: this.$t('common_log_table_key.kind'),
+        dropdown: true,
+        multiple: true,
+        distinctField: {
+          type: 'field',
+          key: 'kind',
         },
       },
       service: {
@@ -246,7 +264,7 @@ export default {
           slotCallback: row => this.$te(`dictionary.${row.obj_type}`) ? this.$t(`dictionary.${row.obj_type}`) : row.obj_type,
         }),
         {
-          title: this.$t('compute.text_929'),
+          title: this.$t('common.operation_type'),
           field: '_i18n.action',
           minWidth: 80,
           showOverflow: 'ellipsis',
