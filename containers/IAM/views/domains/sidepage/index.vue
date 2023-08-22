@@ -33,6 +33,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import { isCE } from '@/utils/utils'
 import ProjectList from '@IAM/views/projects/components/List'
 import UserList from '@IAM/views/user/components/List'
 import SidePageMixin from '@/mixins/sidePage'
@@ -106,7 +107,7 @@ export default {
     },
   },
   created () {
-    if (!this.l3PermissionEnable || !this.globalConfig.enable_quota_check) {
+    if (!this.l3PermissionEnable || !this.globalConfig.enable_quota_check || isCE()) {
       this.detailTabs.splice(1, 1)
     }
     if (this.params.tab) {
