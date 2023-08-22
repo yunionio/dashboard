@@ -30,6 +30,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { isCE } from '@/utils/utils'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -73,7 +74,7 @@ export default {
         // { label: this.$t('system.text_173'), key: 'project-resources-statistics' },
         { label: this.$t('system.text_17'), key: 'event-drawer' },
       ]
-      if (!this.globalConfig.enable_quota_check) {
+      if (!this.globalConfig.enable_quota_check || isCE()) {
         detailTabs.splice(2, 1)
       }
       return detailTabs
