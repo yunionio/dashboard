@@ -5,28 +5,19 @@
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1127')" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
-        <!-- 强制迁移 -->
-        <!-- <a-form-item :label="$t('compute.text_1261')" v-if="isSingle" :extra="$t('compute.text_1262')">
-          <a-switch
-            :checkedChildren="$t('compute.text_115')"
-            :unCheckedChildren="$t('compute.text_116')"
-            v-decorator="decorators.rescue_mode"
-            @change="rescueModeChangeHandle" />
-        </a-form-item> -->
         <!-- 自动启动 -->
-        <a-form-item :label="$t('compute.text_494')" v-if="isSingle && firstData.status === 'ready'" :extra="$t('compute.text_1263')">
+        <a-form-item :label="$t('compute.text_494')" v-if="isSingle && isAllReady" :extra="$t('compute.text_1263')">
           <a-switch
             :checkedChildren="$t('compute.text_115')"
             :unCheckedChildren="$t('compute.text_116')"
             v-decorator="decorators.auto_start" />
         </a-form-item>
         <!-- 跳过CPU检查 -->
-        <a-form-item :label="$t('compute.live_migrate.skip_cpu_check')" v-if="isKvm && firstData.status === 'running'" :extra="$t('compute.live_migrate.skip_cpu_check.explain')">
+        <a-form-item :label="$t('compute.live_migrate.skip_cpu_check')" v-if="isKvm && isAllRunning" :extra="$t('compute.live_migrate.skip_cpu_check.explain')">
           <a-switch
             :checkedChildren="$t('compute.text_115')"
             :unCheckedChildren="$t('compute.text_116')"
-            v-decorator="decorators.skip_cpu_check"
-            @change="skipCpuCheckChangeHandle" />
+            v-decorator="decorators.skip_cpu_check" />
         </a-form-item>
         <a-form-item
           :label="$t('compute.text_111')"
@@ -50,10 +41,6 @@
             </span>
             <migration-bandwidth :decorators="decorators" :form="form" />
           </a-form-item>
-          <!-- <a-form-item :label="$t('compute.vminstance.transfer.quickly_finish')"
-            :extra="$t('compute.vminstance.transfer.quickly_finish.extra')">
-            <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.quickly_finish" />
-          </a-form-item> -->
         </template>
       </a-form>
     </div>
@@ -104,13 +91,6 @@ export default {
             ],
           },
         ],
-        rescue_mode: [
-          'rescue_mode',
-          {
-            initialValue: false,
-            valuePropName: 'checked',
-          },
-        ],
         auto_start: [
           'auto_start',
           {
@@ -139,13 +119,6 @@ export default {
             ],
           },
         ],
-        // quickly_finish: [
-        //   'quickly_finish',
-        //   {
-        //     initialValue: false,
-        //     valuePropName: 'checked',
-        //   },
-        // ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -243,6 +216,9 @@ export default {
     isAllRunning () {
       return this.params.data.every(item => item.status === 'running')
     },
+    isAllReady () {
+      return this.params.data.every(item => item.status === 'ready')
+    },
     isExistManager () {
       return this.params.data[0].manager_id
     },
@@ -293,10 +269,10 @@ export default {
       const data = {
         prefer_host: values.host,
       }
-      if (this.firstData.status === 'ready') {
+      if (this.isAllReady) {
         data.auto_start = values.auto_start
       }
-      if (this.firstData.status !== 'running') {
+      if (!this.isAllRunning) {
         action = 'migrate'
       } else {
         action = 'live-migrate'
@@ -378,30 +354,14 @@ export default {
       this.doForecast(live_migrate, skip_cpu_check, prefer_host_id).then((res) => {
         this.forcastData = res.data
       }).catch((err) => {
-        console.log(err)
         throw err
       })
-    },
-    rescueModeChangeHandle (v) {
-      this.form.fc.setFieldsValue({ host: '' })
-      if (v) {
-        this.forcastData = null
-      } else {
-        this.queryForcastData(false)
-      }
-    },
-    skipCpuCheckChangeHandle (v) {
-      const rescue_mode = this.form.fc.getFieldValue('rescue_mode')
-      if (rescue_mode) return
-      if (!this.isSingle) return
-      this.queryForcastData(v)
     },
     queryHosts () {
       const hostsManager = new this.$Manager('hosts')
       hostsManager.list({ params: this.hostsParams }).then((res) => {
         this.hosts = res.data.data || []
       }).catch((err) => {
-        console.log(err)
         throw err
       })
     },
