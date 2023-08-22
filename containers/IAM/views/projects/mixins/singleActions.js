@@ -1,4 +1,5 @@
 import i18n from '@/locales'
+import { isCE } from '@/utils/utils'
 
 export default {
   created () {
@@ -29,7 +30,7 @@ export default {
                 validate: true,
               }),
               hidden: () => {
-                return !this.globalConfig.enable_quota_check
+                return !this.globalConfig.enable_quota_check || isCE()
               },
             },
             {

@@ -1,3 +1,4 @@
+import { isCE } from '@/utils/utils'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 
@@ -89,7 +90,7 @@ export default {
           validate: true,
         }),
         hidden: () => {
-          return !this.globalConfig.enable_quota_check
+          return !this.globalConfig.enable_quota_check || isCE()
         },
       })
     }
