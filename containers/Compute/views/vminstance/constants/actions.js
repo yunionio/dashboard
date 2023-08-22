@@ -1574,27 +1574,30 @@ const getSingleActions = function () {
                   })
                 },
                 meta: () => {
-                  const provider = obj.provider
-                  const ret = {
-                    validate: false,
-                    tooltip: null,
+                  const ret = { validate: true, tooltip: null }
+                  if (!this.isAdminMode && !this.isDomainMode) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('compute.tooltip.check_domain_permission')
+                    return ret
+                  }
+                  if (!['running', 'ready', 'unknown'].includes(obj.status)) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('compute.tooltip.check_status_transfer')
+                    return ret
                   }
                   if (obj.backup_host_id) {
-                    ret.tooltip = i18n.t('compute.text_1299')
+                    ret.validate = false
+                    ret.tooltip = this.$t('compute.tooltip.check_backup_host_transfer')
                     return ret
                   }
                   if (obj.is_gpu) {
-                    ret.tooltip = i18n.t('compute.text_1300')
+                    ret.validate = false
+                    ret.tooltip = this.$t('compute.tooltip.check_gpu_transfer')
                     return ret
                   }
-                  if (!this.isAdminMode && !this.isDomainMode) {
-                    ret.tooltip = i18n.t('migration.project.error')
-                    return ret
-                  }
-                  if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key &&
-                    obj.hypervisor !== typeClouds.hypervisorMap.esxi.key &&
-                    obj.hypervisor !== typeClouds.hypervisorMap.openstack.key) {
-                    ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
+                  if (obj.cdrom) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('compute.tooltip.check_cdrom_transfer')
                     return ret
                   }
                   ret.validate = cloudEnabled('transfer', obj)
@@ -1615,24 +1618,30 @@ const getSingleActions = function () {
                   })
                 },
                 meta: () => {
-                  const ret = {
-                    validate: false,
-                    tooltip: null,
-                  }
-                  if (obj.backup_host_id) {
-                    ret.tooltip = i18n.t('compute.text_1299')
-                    return ret
-                  }
-                  if (obj.is_gpu) {
-                    ret.tooltip = i18n.t('compute.text_1300')
-                    return ret
-                  }
+                  const ret = { validate: true, tooltip: null }
                   if (!this.isAdminMode && !this.isDomainMode) {
-                    ret.tooltip = i18n.t('migration.project.error')
+                    ret.validate = false
+                    ret.tooltip = this.$t('compute.tooltip.check_domain_permission')
+                    return ret
+                  }
+                  if (!['ready'].includes(obj.status)) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('compute.tooltip.check_ready_status_transfer')
                     return ret
                   }
                   if (obj.hypervisor !== typeClouds.hypervisorMap.esxi.key) {
+                    ret.validate = false
                     ret.tooltip = i18n.t('compute.brand_support', [typeClouds.hypervisorMap.esxi.label])
+                    return ret
+                  }
+                  if (obj.backup_host_id) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('compute.tooltip.check_backup_host_transfer')
+                    return ret
+                  }
+                  if (obj.is_gpu) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('compute.tooltip.check_gpu_transfer')
                     return ret
                   }
                   ret.validate = cloudEnabled('v2vTransfer', obj)
