@@ -1700,6 +1700,6 @@
   "compute.tooltip.check_gpu_transfer": "GPU虚拟机不支持该操作",
   "compute.tooltip.check_cdrom_transfer": "ISO虚拟机不支持该操作",
   "compute.tooltip.check_some_status_transfer": "请选择相同状态的虚拟机",
-  "compute.tooltip.check_status_transfer": "请选择状态为运行中、关机或未知状态的虚拟机",
+  "compute.tooltip.check_status_transfer": "请选择状态为运行中、关机的虚拟机",
   "compute.tooltip.check_ready_status_transfer": "请选择状态为关机状态的虚拟机"
 }
