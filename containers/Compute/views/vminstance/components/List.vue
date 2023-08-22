@@ -1047,7 +1047,7 @@ export default {
                         return ret
                       }
                       const isStatusOk = [...statusSet].every((status) => {
-                        return ['running', 'ready', 'unknown'].includes(status)
+                        return ['running', 'ready'].includes(status)
                       })
                       if (!isStatusOk) {
                         ret.tooltip = this.$t('compute.tooltip.check_status_transfer')

@@ -1590,7 +1590,7 @@ const getSingleActions = function () {
                     ret.tooltip = this.$t('compute.tooltip.check_domain_permission')
                     return ret
                   }
-                  if (!['running', 'ready', 'unknown'].includes(obj.status)) {
+                  if (!['running', 'ready'].includes(obj.status)) {
                     ret.validate = false
                     ret.tooltip = this.$t('compute.tooltip.check_status_transfer')
                     return ret
