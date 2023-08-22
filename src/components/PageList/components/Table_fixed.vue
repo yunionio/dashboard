@@ -48,7 +48,13 @@
           </template>
         </vxe-grid>
         <template v-if="loadMoreShow">
-          <div class="text-center mt-4">
+          <div class="vxe-pager d-flex align-items-center justify-content-end mt-2">
+            <a-select v-model="loadMoreSize" style="min-width:100px;font-size:12px" size="small" @change="handleLoadMoreSizeChange">
+              <a-select-option v-for="size in loadMorePagings" :value="size" :key="size" style="text-align:center;font-size:12px">{{$t('common.some_items_peer_time', [size])}}</a-select-option>
+            </a-select>
+            <span class="ml-3">{{$t('common.current_total_items', [tableData.length])}}</span>
+          </div>
+          <div class="text-center mt-3">
             <a-button v-if="nextMarker" :loading="loading" type="link" @click="handleNextMarkerChange">{{ loading ? $t('common.loding') : $t('common.LoadMore') }}</a-button>
             <span v-else>{{ $t('common.load_no_more') }}</span>
           </div>
@@ -171,6 +177,8 @@ export default {
       finalLimit: this.getLimit(),
       storageKey,
       storageConfig: this.id && storage.get(storageKey),
+      loadMoreSize: 20,
+      loadMorePagings: [20, 100, 200, 500, 1000],
     }
   },
   computed: {
@@ -450,6 +458,9 @@ export default {
     clearCheckbox () {
       this.$refs.grid.clearCheckboxReserve()
       this.$refs.grid.clearCheckboxRow()
+    },
+    handleLoadMoreSizeChange (val) {
+      this.$emit('change-load-more-size', val)
     },
     handleNextMarkerChange () {
       this.$emit('change-next-marker')

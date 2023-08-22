@@ -90,6 +90,7 @@
         @do-sort="doSort"
         @change-selected="changeSelected"
         @clear-selected="clearSelected"
+        @change-load-more-size="changeLoadMoreSize"
         @change-next-marker="changeNextMarker"
         @radio-change="radioChange"
         @project-tag-filter-change="projectTagFilterChange" />
@@ -384,6 +385,9 @@ export default {
     },
     getGrid () {
       return this.$refs.table.$refs.grid
+    },
+    changeLoadMoreSize (val) {
+      this.list.changeLoadMoreSize(val)
     },
     changeNextMarker () {
       this.list.changeNextMarker()
