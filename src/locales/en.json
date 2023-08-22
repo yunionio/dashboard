@@ -5297,5 +5297,8 @@
   "common.current_value": "Current Value",
   "common.exporting": "Exporting...",
   "common.budget_alert_user_placeholder": "Please select an alert recipient",
-  "common.brand_support": "Currently only {0} supports this operation"
+  "common.brand_support": "Currently only {0} supports this operation",
+  "common.some_items_peer_time": "{0} items/time",
+  "common.current_total_items": "Currently displaying {0} records",
+  "common.operation_type": "Operation type"
 }
