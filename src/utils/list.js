@@ -223,6 +223,7 @@ class CreateList {
     this.offset = 0
     this.limit = limit
     this.total = 0
+    this.loadMoreSize = 20
     this.nextMarker = ''
     this.pagerType = ''
     // 选择数据
@@ -562,7 +563,8 @@ class CreateList {
     // 加载更多类型分页的列表
     if (this.nextMarker) {
       params.paging_marker = this.nextMarker
-      delete params.limit
+      params.limit = this.loadMoreSize
+      // delete params.limit
       delete params.offset
     }
     if (R.is(Function, this.genParamsCb)) {
@@ -719,6 +721,14 @@ class CreateList {
     const offset = Math.floor(this.offset / pageSize) * pageSize
     this.limit = pageSize
     this.fetchData(offset, pageSize)
+  }
+
+  /**
+   * @description 修改加载更多条数
+   * @param {Number} size
+   */
+  changeLoadMoreSize (size) {
+    this.loadMoreSize = size
   }
 
   /**
