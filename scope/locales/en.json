@@ -30,10 +30,13 @@
     "huawei": "Huawei Cloud",
     "jdcloud": "JD Cloud",
     "ucloud": "UCloud",
+    "ecloud": "mCloud",
     "HCSO": "HCSO",
     "HCS": "HCS",
-    "ecloud": "mCloud",
+    "cloudpods": "Cloudpods",
     "nutanix": "Nutanix",
-    "ksyun": "Ksyun"
+    "bingocloud": "Bingo Cloud",
+    "ksyun": "Ksyun",
+    "baidu": "Baidu Cloud"
   }
 }
