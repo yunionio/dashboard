@@ -65,6 +65,7 @@ export default {
         scope: this.scope,
         brand: this.params.data[0].brand,
         vpcId: this.params.data[0].vpc_id,
+        // zone: this.params.data[0].zone_id,
       }
       return params
     },

@@ -2,7 +2,7 @@ import { mapGetters } from 'vuex'
 import i18n from '@/locales'
 import { findPlatform, getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import { getSetPublicAction } from '@/utils/common/tableActions'
-import { PROVIDER_MAP } from '@/constants'
+// import { PROVIDER_MAP } from '@/constants'
 
 const PROVIDER_FILTER_CN = i18n.t('env')
 const disableAdjustConfig = ['private', 'public']
@@ -285,17 +285,9 @@ export default {
                 })
               },
               meta: () => {
-                const isOneCloud = obj.brand === 'OneCloud'
-                const provider = 'OneCloud'
-                if (!isOneCloud) {
-                  return {
-                    validate: false,
-                    tooltip: !isOneCloud && this.$t('common.brand_support', [PROVIDER_MAP[provider].label]),
-                  }
-                } else {
-                  return {
-                    validate: obj.can_delete,
-                  }
+                return {
+                  validate: obj.is_default_vpc,
+                  tooltip: 'not supported',
                 }
               },
             },
