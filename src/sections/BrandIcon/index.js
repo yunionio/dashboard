@@ -11,6 +11,12 @@ export default {
       type: String,
       required: true,
     },
+    customStyle: {
+      type: Object,
+      default () {
+        return {}
+      },
+    },
   },
   computed: {
     ...mapState('app', {
@@ -51,7 +57,7 @@ export default {
     return (
       <span title={option.label}>
         {
-          cloudPodsIcon ? <img src={cloudPodsIcon} style={{ width: fontSize }} /> : <icon type={name} style={{ fontSize }} />
+          cloudPodsIcon ? <img src={cloudPodsIcon} style={{ width: fontSize, ...this.customStyle }} /> : <icon type={name} style={{ fontSize, ...this.customStyle }} />
         }
       </span>
     )

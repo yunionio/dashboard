@@ -14,7 +14,8 @@
     "Cloudpods": "Cloudpods",
     "Ksyun": "金山云",
     "Baidu": "百度云",
-    "Qingcloud": "青云"
+    "Qingcloud": "青云",
+    "ChinaUnion": "联通云"
   },
   "scopeProviders": {
     "esxi": "VMware",
@@ -39,6 +40,7 @@
     "bingocloud": "品高云",
     "ksyun": "金山云",
     "baidu": "百度云",
-    "qingcloud": "青云"
+    "qingcloud": "青云",
+    "chinaunion": "联通云"
   }
 }

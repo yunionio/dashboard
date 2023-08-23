@@ -100,8 +100,12 @@ export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.tit
       default: ({ row }, h) => {
         const val = _.get(row, field)
         if (!val) return hideLoading ? '-' : [<data-loading />]
+        let customStyle = {}
+        if (row.brand === brandMap.Baidu.key) {
+          customStyle = { fontSize: '16px', marginLeft: '2px' }
+        }
         return [
-          <BrandIcon name={ val } />,
+          <BrandIcon name={val} customStyle={ customStyle } />,
         ]
       },
     },
