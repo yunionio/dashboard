@@ -149,15 +149,17 @@ export default {
                   },
                   meta: () => {
                     const ret = {
-                      validate: false,
+                      validate: true,
                       tooltip: null,
                     }
                     if (obj.metadata.is_fake_baremetal_server === 'true') {
+                      ret.tooltip = i18n.t('compute.tooltip.check_fake_baremetal_server')
                       ret.validate = false
                       return ret
                     }
                     if (obj.status !== 'ready' && obj.status !== 'admin') {
                       ret.tooltip = i18n.t('compute.text_358')
+                      ret.validate = false
                       return ret
                     }
                     if (commonUnabled(obj)) return ret
@@ -213,10 +215,14 @@ export default {
                   },
                   meta: () => {
                     const ret = {
-                      validate: false,
+                      validate: true,
                       tooltip: null,
                     }
-                    if (obj.metadata.is_fake_baremetal_server === 'true') ret.validate = false
+                    if (obj.metadata.is_fake_baremetal_server === 'true') {
+                      ret.tooltip = i18n.t('compute.tooltip.check_fake_baremetal_server')
+                      ret.validate = false
+                      return ret
+                    }
                     return ret
                   },
                 },
@@ -237,15 +243,20 @@ export default {
                   },
                   meta: () => {
                     const ret = {
-                      validate: false,
+                      validate: true,
                       tooltip: null,
                     }
-                    if (obj.metadata.is_fake_baremetal_server === 'true') return ret
-                    if (commonUnabled(obj)) return ret
-                    if (obj.keypair_id && obj.keypair_id.toLowerCase() !== 'none') {
-                      ret.tooltip = i18n.t('compute.text_277')
+                    if (obj.metadata.is_fake_baremetal_server === 'true') {
+                      ret.tooltip = i18n.t('compute.tooltip.check_fake_baremetal_server')
+                      ret.validate = false
                       return ret
                     }
+                    if (obj.keypair_id && obj.keypair_id.toLowerCase() !== 'none') {
+                      ret.tooltip = i18n.t('compute.text_277')
+                      ret.validate = false
+                      return ret
+                    }
+                    if (commonUnabled(obj)) return ret
                     ret.validate = cloudEnabled('resetPassword', { ...obj, brand: 'baremetal' })
                     ret.tooltip = cloudUnabledTip('resetPassword', { ...obj, brand: 'baremetal' })
                     return ret
@@ -263,19 +274,25 @@ export default {
                   },
                   meta: () => {
                     const ret = {
-                      validate: false,
+                      validate: true,
                       tooltip: null,
                     }
-                    if (obj.metadata.is_fake_baremetal_server === 'true') return ret
-                    if (commonUnabled(obj)) return ret
+                    if (obj.metadata.is_fake_baremetal_server === 'true') {
+                      ret.tooltip = i18n.t('compute.tooltip.check_fake_baremetal_server')
+                      ret.validate = false
+                      return ret
+                    }
                     if (obj.os_type === 'Windows') {
                       ret.tooltip = i18n.t('compute.text_362')
+                      ret.validate = false
                       return ret
                     }
                     if (obj.keypair) {
                       ret.tooltip = i18n.t('compute.text_363')
+                      ret.validate = false
                       return ret
                     }
+                    if (commonUnabled(obj)) return ret
                     ret.validate = cloudEnabled('bindKeyPair', obj)
                     ret.tooltip = cloudUnabledTip('bindKeyPair', obj)
                     return ret
@@ -293,19 +310,25 @@ export default {
                   },
                   meta: () => {
                     const ret = {
-                      validate: false,
+                      validate: true,
                       tooltip: null,
                     }
-                    if (obj.metadata.is_fake_baremetal_server === 'true') return ret
-                    if (commonUnabled(obj)) return ret
+                    if (obj.metadata.is_fake_baremetal_server === 'true') {
+                      ret.tooltip = i18n.t('compute.tooltip.check_fake_baremetal_server')
+                      ret.validate = false
+                      return ret
+                    }
                     if (obj.os_type === 'Windows') {
                       ret.tooltip = i18n.t('compute.text_362')
+                      ret.validate = false
                       return ret
                     }
                     if (!obj.keypair) {
                       ret.tooltip = i18n.t('compute.text_365')
+                      ret.validate = false
                       return ret
                     }
+                    if (commonUnabled(obj)) return ret
                     ret.validate = cloudEnabled('unBindKeyPair', obj)
                     ret.tooltip = cloudUnabledTip('unBindKeyPair', obj)
                     return ret
