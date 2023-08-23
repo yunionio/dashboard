@@ -94,7 +94,7 @@ export default {
         {
           field: 'ip_addr',
           title: 'IP',
-          width: 100,
+          width: 150,
         },
         {
           field: 'mac',
@@ -472,7 +472,7 @@ export default {
           slots: {
             default: ({ row }, h) => {
               return [
-                <vxe-grid class="mb-2" data={ row.nic_info } columns={ this.hostColumns } />,
+                <vxe-grid class="mb-2" data={ row.nic_info.filter(nic => !nic.mac.startsWith('ff:')) } columns={ this.hostColumns } />,
               ]
             },
           },

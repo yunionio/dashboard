@@ -31,6 +31,36 @@ export default {
     columns: Array,
   },
   data () {
+    const extraInfo = []
+    if (this.data.metadata['sys:datacenter']) {
+      extraInfo.push({
+        title: this.$t('network.vmware_extra_info'),
+        items: [
+          {
+            field: 'metadata',
+            title: this.$t('network.vmware_datacenter_prompt'),
+            slots: {
+              default: ({ row }, h) => {
+                return [
+                  <span>{row.metadata['sys:datacenter']}</span>,
+                ]
+              },
+            },
+          },
+          {
+            field: 'metadata',
+            title: this.$t('network.vmware_vm_ips_prompt'),
+            slots: {
+              default: ({ row }, h) => {
+                return [
+                  <span>{row.metadata['sys:vm_ips']}</span>,
+                ]
+              },
+            },
+          },
+        ],
+      })
+    }
     return {
       baseInfo: [
         getUserTagColumn({ onManager: this.onManager, resource: 'wire', columns: () => this.columns, tipName: this.$t('dictionary.hostwire') }),
@@ -73,7 +103,7 @@ export default {
           },
         }),
       ],
-      extraInfo: [],
+      extraInfo: extraInfo,
     }
   },
 }

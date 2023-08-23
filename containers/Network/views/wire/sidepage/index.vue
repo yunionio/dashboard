@@ -40,6 +40,7 @@ import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Topology from './Topology'
 import Monitor from './Monitor'
+import VminstanceList from './VminstanceList'
 import Actions from '@/components/PageList/Actions'
 
 export default {
@@ -53,6 +54,7 @@ export default {
     Monitor,
     NetworkList,
     Topology,
+    VminstanceList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -60,6 +62,7 @@ export default {
       detailTabs: [
         { label: this.$t('network.text_67'), key: 'wire-detail' },
         { label: this.$t('network.text_565'), key: 'network-list' },
+        { label: this.$t('compute.text_91'), key: 'vminstance-list' },
         { label: this.$t('network.text_598'), key: 'baremetals-list' },
         { label: this.$t('network.text_70'), key: 'hosts-list' },
         { label: this.$t('network.text_710'), key: 'dashboard' },
@@ -71,6 +74,11 @@ export default {
   },
   computed: {
     getParams () {
+      if (this.params.windowData.currentTab === 'vminstance-list') {
+        return {
+          wire_id: this.data.id,
+        }
+      }
       if (this.params.windowData.currentTab === 'network-list') {
         return {
           width_meta: true,
@@ -84,6 +92,8 @@ export default {
       switch (this.params.windowData.currentTab) {
         case 'event-drawer':
           return 'EventListForWireSidePage'
+        case 'vminstance-list':
+          return 'VminstanceListForWireSidepage'
         case 'network-list':
           return 'NetworkListForWireSidePage'
         case 'baremetals-list':

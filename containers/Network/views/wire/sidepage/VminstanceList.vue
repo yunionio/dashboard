@@ -10,7 +10,7 @@
 import VminstanceList from '@Compute/views/vminstance/components/List'
 
 export default {
-  name: 'VminstanceListForHostSidePage',
+  name: 'VminstanceListForWireSidepage',
   components: {
     VminstanceList,
   },
