@@ -345,8 +345,17 @@ export default {
       }
     },
     showCustomData () {
-      const hiddenCustomDataHypervisors = []
-      return !hiddenCustomDataHypervisors.includes(this.form.fd.hypervisor)
+      const showCustomDataHypervisors = [
+        HYPERVISORS_MAP.kvm.key,
+        HYPERVISORS_MAP.esxi.key,
+        HYPERVISORS_MAP.aliyun.key,
+        HYPERVISORS_MAP.google.key,
+        HYPERVISORS_MAP.aws.key,
+        HYPERVISORS_MAP.huawei.key,
+        HYPERVISORS_MAP.azure.key,
+        HYPERVISORS_MAP.qcloud.key,
+      ]
+      return showCustomDataHypervisors.includes(this.form.fd.hypervisor)
     },
   },
   created () {

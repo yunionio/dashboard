@@ -1694,7 +1694,7 @@
   "compute.bastionHost.port.placeholder": "@:common.placeholder port",
   "compute.bastionHost.privileged_account.placeholder": "@:common.select bastion host privileged user",
   "compute.bastionHost.account.placeholder": "@:common.select common user of the bastion host",
-  "compute.custom_data.extra": "Prefer to use #cloud-config yaml format",
+  "compute.custom_data.extra": "The #cloud-config yaml format is preferred. This operation depends on the Cloud-init component, which must be included in the image.",
   "compute.tooltip.check_domain_permission": "Only system or @:dictionary.domain administrators support this operation",
   "compute.tooltip.check_backup_host_transfer": "Highly available machines do not support this operation",
   "compute.tooltip.check_gpu_transfer": "GPU virtual machine does not support this operation",
