@@ -536,23 +536,34 @@ export default {
     dataDiskStorageParams () {
       const { dataDiskSizes = {}, hypervisor } = this.form.fd
       let dataDiskType = ''
+      let medium = ''
       for (const key in dataDiskSizes) {
         if (this.form.fd[`dataDiskTypes[${key}]`]) {
           dataDiskType = this.form.fd[`dataDiskTypes[${key}]`].key
           // 磁盘区分介质
           if (diskSupportTypeMedium(hypervisor)) {
+            medium = getOriginDiskKey(dataDiskType, true)
+            dataDiskType = getOriginDiskKey(dataDiskType)
+          } else {
             dataDiskType = getOriginDiskKey(dataDiskType)
           }
         }
       }
       const params = {
         ...this.scopeParams,
-        usable: true, // 包含了 enable:true, status为online的数据
+        usable: true, // 包含了 host status online 和 account 正常
         brand: HYPERVISORS_MAP[this.form.fd.hypervisor]?.brand, // kvm,vmware支持指定存储
         manager: this.form.fd.prefer_manager,
       }
       if (dataDiskType) {
-        params.filter = [`storage_type.contains("${dataDiskType}")`]
+        if (medium) {
+          params.filter = [
+            `storage_type.contains("${dataDiskType}")`,
+            `medium_type.contains("${medium}")`,
+          ]
+        } else {
+          params.filter = [`storage_type.contains("${dataDiskType}")`]
+        }
       }
       return params
     },
