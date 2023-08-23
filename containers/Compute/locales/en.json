@@ -1700,5 +1700,6 @@
   "compute.tooltip.check_gpu_transfer": "GPU virtual machine does not support this operation",
   "compute.tooltip.check_cdrom_transfer": "ISO virtual machine does not support this operation",
   "compute.tooltip.check_some_status_transfer": "Please select a virtual machine with the same status",
-  "compute.tooltip.check_status_transfer": "Please select a virtual machine whose status is running, ready"
+  "compute.tooltip.check_status_transfer": "Please select a virtual machine whose status is running, ready",
+  "compute.tooltip.check_fake_baremetal_server": "This operation is not supported on the machine"
 }
