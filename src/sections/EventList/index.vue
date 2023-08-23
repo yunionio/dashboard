@@ -231,9 +231,12 @@ export default {
           allFilter: { label: this.$t('common_96'), key: 'allFilter' },
         },
         getParams: ({ exportType }) => {
-          let params = {}
+          let params = {
+            scope: this.$store.getters.scope,
+          }
           if (exportType === 'allFilter') {
             params = {
+              scope: this.$store.getters.scope,
               filter: this.list.params.filter,
               export_limit: 0,
             }
