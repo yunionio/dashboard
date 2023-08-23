@@ -153,7 +153,7 @@ export default {
     },
   },
   created () {
-    this.isSingle && this.queryForcastData()
+    // this.isSingle && this.queryForcastData()
     this.queryHosts()
   },
   methods: {

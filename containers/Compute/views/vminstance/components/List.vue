@@ -976,29 +976,47 @@ export default {
                       })
                     },
                     meta: () => {
-                      const ret = {
-                        validate: true,
-                        tooltip: null,
-                      }
-                      let isOk = this.list.selectedItems.every((item) => {
-                        return ['running', 'ready', 'unknown'].includes(item.status)
+                      const ret = { validate: true, tooltip: null }
+                      // 运行中、关机、状态未知
+                      const statusSet = new Set()
+                      const hypervisors = new Set()
+                      this.list.selectedItems.forEach(item => {
+                        statusSet.add(item.status)
+                        hypervisors.add(item.hypervisor)
                       })
-                      if (isOk) {
-                        isOk = this.list.selectedItems.every((item) => {
-                          if (item.backup_host_id) {
-                            return false
-                          }
-                          if (item.status === 'running') {
-                            return !item.is_gpu && !item.cdrom
-                          }
-                          return true
-                        })
+                      if (!this.isAdminMode && !this.isDomainMode) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.tooltip.check_domain_permission')
+                        return ret
                       }
-                      if (!isOk) {
+                      if (statusSet.size > 1) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.tooltip.check_some_status_transfer')
+                        return ret
+                      }
+                      const isStatusOk = [...statusSet].every((status) => {
+                        return ['running', 'ready', 'unknown'].includes(status)
+                      })
+                      if (!isStatusOk) {
+                        ret.tooltip = this.$t('compute.tooltip.check_status_transfer')
                         ret.validate = false
                         return ret
                       }
-                      if (this.list.selectedItems.some(item => item.hypervisor !== 'kvm' && item.hypervisor !== 'openstack' && item.hypervisor !== 'esxi')) {
+                      const isBackupHost = this.list.selectedItems.some((item) => item.backup_host_id)
+                      if (isBackupHost) {
+                        ret.tooltip = this.$t('compute.tooltip.check_backup_host_transfer')
+                        ret.validate = false
+                        return ret
+                      }
+                      const isGpu = this.list.selectedItems.some((item) => item.is_gpu)
+                      if (isGpu) {
+                        ret.tooltip = this.$t('compute.tooltip.check_gpu_transfer')
+                        ret.validate = false
+                        return ret
+                      }
+                      const isCdrom = this.list.selectedItems.some((item) => item.cdrom)
+                      if (isCdrom) {
+                        ret.tooltip = this.$t('compute.tooltip.check_cdrom_transfer')
                         ret.validate = false
                         return ret
                       }

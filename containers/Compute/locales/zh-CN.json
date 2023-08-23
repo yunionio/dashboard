@@ -1650,5 +1650,12 @@
   "compute.disk.ssd_extra": "打开后，该磁盘虚机内显示成 SSD 磁盘，rotational 字段值为 0，和磁盘介质信息无关。",
   "compute.daemon.tooltip": "宿主机重启后，自动启动虚拟机",
   "compute.image.min_disk.extra": "通过虚拟机保存的镜像，最小磁盘需大于或等于当时系统盘容量",
-  "compute.disk.size.required_message": "硬盘容量数字为必填"
+  "compute.disk.size.required_message": "硬盘容量数字为必填",
+  "compute.tooltip.check_domain_permission": "仅系统或@:dictionary.domain管理员支持该操作",
+  "compute.tooltip.check_backup_host_transfer": "高可用机器不支持该操作",
+  "compute.tooltip.check_gpu_transfer": "GPU虚拟机不支持该操作",
+  "compute.tooltip.check_cdrom_transfer": "ISO虚拟机不支持该操作",
+  "compute.tooltip.check_some_status_transfer": "请选择相同状态的虚拟机",
+  "compute.tooltip.check_status_transfer": "请选择状态为运行中、关机或未知状态的虚拟机",
+  "compute.tooltip.check_ready_status_transfer": "请选择状态为关机状态的虚拟机"
 }
