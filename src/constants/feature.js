@@ -213,6 +213,10 @@ const LicenseItems = [
     key: 'qingcloud',
     meta: meta('resource_managent', 'public', true),
   },
+  {
+    key: 'chinaunion',
+    meta: meta('resource_managent', 'public', true),
+  },
 ]
 
 function fullfillLicenseItems () {

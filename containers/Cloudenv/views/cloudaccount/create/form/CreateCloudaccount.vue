@@ -26,6 +26,7 @@ import H3C from './components/H3C'
 import Ksyun from './components/Ksyun'
 import BaiduCloud from './components/BaiduCloud'
 import Qingcloud from './components/Qingcloud'
+import ChinaUnion from './components/ChinaUnion'
 
 export default {
   name: 'CreateCloudaccount',
@@ -61,6 +62,7 @@ export default {
     KsyunCreate: Ksyun,
     BaiduCloudCreate: BaiduCloud,
     QingcloudCreate: Qingcloud,
+    ChinaUnionCreate: ChinaUnion,
   },
   props: {
     currentItem: {

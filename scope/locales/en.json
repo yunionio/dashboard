@@ -14,7 +14,8 @@
     "Nutanix": "Nutanix",
     "Ksyun": "Ksyun",
     "Baidu": "Baidu Cloud",
-    "Qingcloud": "Qing Cloud"
+    "Qingcloud": "Qing Cloud",
+    "ChinaUnion": "China Union"
   },
   "scopeProviders": {
     "esxi": "VMware",
@@ -39,6 +40,7 @@
     "bingocloud": "Bingo Cloud",
     "ksyun": "Ksyun",
     "baidu": "Baidu Cloud",
-    "qingcloud": "Qing Cloud"
+    "qingcloud": "Qing Cloud",
+    "chinayunion": "China Union"
   }
 }
