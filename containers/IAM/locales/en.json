@@ -829,6 +829,10 @@
     "compute$local_data_disk_max_size_gb": {
       "label": "Maximum value of local data disk",
       "desc": "Set the maximum value of the local data disk"
+    },
+    "common$time_zone": {
+      "label": "System time zone",
+      "desc": "Not set by default. After setting, the time will be displayed according to the system time zone setting."
     }
   },
   "user": {

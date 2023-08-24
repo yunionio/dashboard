@@ -828,6 +828,10 @@
     "compute$local_data_disk_max_size_gb": {
       "label": "本地数据盘最大值",
       "desc": "设置本地数据盘最大值"
+    },
+    "common$time_zone": {
+      "label": "系统时区",
+      "desc": "默认不设置。设置后会按照系统时区的设置展示时间。"
     }
   },
   "user": {
