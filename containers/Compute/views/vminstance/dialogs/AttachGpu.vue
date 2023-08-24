@@ -80,6 +80,7 @@ import {
 } from '@/utils/common/tableColumn'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { GPU_DEV_TYPE_OPTION_MAP } from '@Compute/constants'
 
 export default {
   name: 'VmAttachGpuDialog',
@@ -417,7 +418,11 @@ export default {
       return arr
     },
     labelFormat (val) {
-      return `${val.addr || ''} ${val.model || ''}`
+      const vgpuType = GPU_DEV_TYPE_OPTION_MAP.VGPU.value
+      if (val.dev_type.endsWith(vgpuType)) {
+        return `${vgpuType}:${val.model || ''}`
+      }
+      return `${val.dev_type}:${val.addr || ''}:${val.model || ''}`
     },
     onValuesChange (props, values) {
       Object.keys(values).forEach((key) => {

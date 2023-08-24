@@ -64,6 +64,14 @@ export default {
               field: 'addr',
               title: 'PCI_BUS_ID',
             },
+            {
+              field: 'framebuffer',
+              title: this.$t('gpu.device_type.framebuffer'),
+            },
+            {
+              field: 'max_resolution',
+              title: this.$t('gpu.device_type.max_resolution'),
+            },
           ],
         },
       ],

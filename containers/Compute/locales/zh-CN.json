@@ -1670,6 +1670,7 @@
   "compute.specify_ip": "指定IP",
   "compute.vga_gpu": "图形GPU",
   "compute.hpc_gpu": "算力GPU",
+  "compute.v_gpu": "虚拟GPU",
   "compute.reserved_cpus_info": "预留核",
   "compute.reserved": "预留",
   "compute.transfer.max_brand_width.tooltip": "带宽限制单位为Mbps，即每秒兆比特",
