@@ -285,10 +285,11 @@ export default {
                 })
               },
               meta: () => {
-                return {
-                  validate: obj.is_default_vpc,
-                  tooltip: 'not supported',
+                const ret = { validate: obj.is_default_vpc }
+                if (!ret.validate) {
+                  ret.tooltip = this.$t('network.not_support')
                 }
+                return ret
               },
             },
             {

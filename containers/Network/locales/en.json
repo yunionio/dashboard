@@ -1100,5 +1100,6 @@
   "network.switch_wire": "Switch Layer 2 network",
   "network.priority": "Priority",
   "network.priority.extra": "Priority: a positive integer between 1 and 255.",
-  "network.interface": "Interface"
+  "network.interface": "Interface",
+  "network.not_support": "Not supported"
 }
