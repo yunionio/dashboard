@@ -109,9 +109,6 @@ export default {
       }
     },
   },
-  created () {
-    this.fetchBastionHosts()
-  },
   methods: {
     changeHandle (v) {
       this.bastionHostEnable = v
