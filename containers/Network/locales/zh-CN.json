@@ -1099,5 +1099,6 @@
   "network.switch_wire": "更换二层网络",
   "network.priority": "优先级",
   "network.priority.extra": "优先级：1-255之间的正整数",
-  "network.interface": "网口"
+  "network.interface": "网口",
+  "network.not_support": "不支持"
 }
