@@ -52,10 +52,10 @@ export default {
                   data: [obj],
                   ok: async () => {
                     try {
-                      const response = await this.onManager('performAction', {
+                      const response = await this.onManager('update', {
                         id: obj.id,
                         managerArgs: {
-                          action: 'enable',
+                          data: { enabled: true },
                         },
                       })
                       return response
@@ -83,10 +83,10 @@ export default {
                   data: [obj],
                   ok: async () => {
                     try {
-                      const response = await this.onManager('performAction', {
+                      const response = await this.onManager('update', {
                         id: obj.id,
                         managerArgs: {
-                          action: 'disable',
+                          data: { enabled: false },
                         },
                       })
                       return response
