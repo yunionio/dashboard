@@ -355,7 +355,7 @@ export default {
         HYPERVISORS_MAP.azure.key,
         HYPERVISORS_MAP.qcloud.key,
       ]
-      return showCustomDataHypervisors.includes(this.form.fd.hypervisor)
+      return showCustomDataHypervisors.includes(this.form.fd.hypervisor || this.hypervisor)
     },
   },
   created () {
