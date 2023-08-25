@@ -1,5 +1,5 @@
 <template>
-  <event-list :obj-id="resId" :obj-type="resType" :list-id="id" :getParams="getParams" />
+  <event-list :obj-id="resId" :obj-type="resType" :list-id="id" :getParams="getParams" :enableVirtualScroll="enableVirtualScroll" />
 </template>
 
 <script>
@@ -21,6 +21,10 @@ export default {
     },
     resType: {
       type: String,
+    },
+    enableVirtualScroll: {
+      type: Boolean,
+      default: false,
     },
     getParams: [Object, Function],
   },
