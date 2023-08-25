@@ -6,5 +6,8 @@
   "gpu.device_type.gpu.tooltip": "请选择GPU类型的透传设备",
   "gpu.device_type.message_1": "GPU-HPC: 高性能计算卡（High-Performance Computing），主要用于进行科学计算、数据分析、机器学习等需要大规模并行计算的任务。",
   "gpu.device_type.message_2": "GPU-VGA: 视频图形处理卡（Video Graphics Array），用于图形渲染和显示的目的。",
-  "gpu.device_type.message_3": "GPU-VGA 类型的 GPU 卡透传给虚机使用时，不在提供模拟的 VGA 设备，需要在镜像内提前安装好显卡驱动。"
+  "gpu.device_type.message_3": "GPU-VGA 类型的 GPU 卡透传给虚机使用时，不在提供模拟的 VGA 设备，需要在镜像内提前安装好显卡驱动。",
+  "gpu.device_type.tooltip.check_hpc_vga_gpu": "只有GPU-HPC、GPU-VGA类型的透传设备支持该操作",
+  "gpu.device_type.framebuffer": "显存",
+  "gpu.device_type.max_resolution": "分辨率"
 }

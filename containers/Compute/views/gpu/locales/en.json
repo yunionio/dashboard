@@ -6,5 +6,8 @@
   "gpu.device_type.gpu.tooltip": "Please select GPU type transparent device",
   "gpu.device_type.message_1": "GPU-HPC: High-Performance Computing, mainly used for scientific computing, data analysis, machine learning and other tasks that require large-scale parallel computing.",
   "gpu.device_type.message_2": "GPU-VGA: Video Graphics Array, used for graphics rendering and display purposes.",
-  "gpu.device_type.message_3": "When the GPU card of GPU-VGA type is transmitted to the virtual machine for use, the simulated VGA device is no longer provided, and the graphics card driver needs to be installed in advance in the image."
+  "gpu.device_type.message_3": "When the GPU card of GPU-VGA type is transmitted to the virtual machine for use, the simulated VGA device is no longer provided, and the graphics card driver needs to be installed in advance in the image.",
+  "gpu.device_type.tooltip.check_hpc_vga_gpu": "Only GPU-HPC, GPU-VGA type transparent transmission devices support this operation",
+  "gpu.device_type.framebuffer": "Video Memory",
+  "gpu.device_type.max_resolution": "Resolution"
 }
