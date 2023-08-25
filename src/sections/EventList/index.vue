@@ -6,6 +6,7 @@
       :export-data-options="exportDataOptions"
       :show-page="false"
       :refresh-method="refresh"
+      :enable-virtual-scroll="enableVirtualScroll"
       default-search-key="obj_name"
       :single-actions="singleActions" />
   </div>
@@ -33,6 +34,10 @@ export default {
     },
     listId: {
       type: String,
+    },
+    enableVirtualScroll: {
+      type: Boolean,
+      default: false,
     },
     getParams: [Object, Function],
   },
