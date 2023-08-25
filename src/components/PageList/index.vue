@@ -85,6 +85,7 @@
         :update-config="updateConfig"
         :edit-config="editConfig"
         :tableOverviewIndexs="tableOverviewIndexs"
+        :enableVirtualScroll="enableVirtualScroll"
         @change-current-page="changeCurrentPage"
         @change-page-size="changePageSize"
         @do-sort="doSort"
@@ -229,6 +230,10 @@ export default {
     showNoValue: {
       type: Boolean,
       default: true,
+    },
+    enableVirtualScroll: {
+      type: Boolean,
+      default: false,
     },
   },
   provide: {
