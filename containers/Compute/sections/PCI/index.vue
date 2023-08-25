@@ -9,7 +9,7 @@
     <template v-if="pciEnable">
       <a-form-item v-for="(k, index) in pciForm.fc.getFieldValue('keys')" :key="k">
         <a-row :gutter="[8,0]">
-          <a-col :span="3">
+          <a-col :span="4">
             <a-form-item>
               <base-select v-decorator="decorators.pciDevType(k)" :options="realPciDevTypeOptions" @change="(val) => onChangeDevType(val, k)" />
             </a-form-item>
@@ -73,7 +73,7 @@ export default {
     return {
       pciEnable: false,
       pciCountOptions: GPU_COUNT_OPTIONS,
-      curPciDevType: this.pciDevTypeOptions[0].dev_type,
+      curPciDevType: '',
     }
   },
   computed: {
@@ -82,14 +82,16 @@ export default {
     },
     realPciDevTypeOptions () {
       return this.pciDevTypeOptions.map(item => {
+        const vgpuVal = GPU_DEV_TYPE_OPTION_MAP.VGPU.value
+        const dev_type = item.dev_type.endsWith(`-${vgpuVal}`) ? vgpuVal : item.dev_type
         return {
-          key: item.dev_type,
-          label: GPU_DEV_TYPE_OPTION_MAP[item.dev_type]?.label || item.dev_type,
+          key: dev_type,
+          label: GPU_DEV_TYPE_OPTION_MAP[dev_type]?.label || dev_type,
         }
       })
     },
     realPciOptions () {
-      return this.pciOptions.filter(item => item.dev_type === this.curPciDevType)
+      return this.pciOptions.filter(item => item.dev_type.endsWith(this.curPciDevType))
     },
   },
   watch: {
@@ -118,8 +120,8 @@ export default {
     initialValue (id = 0) {
       this.$nextTick(() => {
         this.form.fc.setFieldsValue({
-          [`pciDevType[${id}]`]: this.curPciDevType,
-          [`pciModel[${id}]`]: this.realPciOptions[0].key,
+          [`pciDevType[${id}]`]: this.realPciDevTypeOptions[0]?.key,
+          [`pciModel[${id}]`]: this.realPciOptions[0]?.key,
           [`pciCount[${id}]`]: 1,
         })
       })

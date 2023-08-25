@@ -1668,6 +1668,7 @@
   "compute.specify_ip": "Specify IP",
   "compute.vga_gpu": "Graphics GPU",
   "compute.hpc_gpu": "Compute GPU",
+  "compute.v_gpu": "Virtual GPU",
   "compute.reserved_cpus_info": "reserved core",
   "compute.reserved": "Reserved",
   "compute.transfer.max_brand_width.tooltip": "The unit of bandwidth limit is Mbps, that is, megabits per second",

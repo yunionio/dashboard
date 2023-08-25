@@ -13,6 +13,7 @@ import { getNameFilter, getRegionFilter, getDescriptionFilter } from '@/utils/co
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import { GPU_DEV_TYPE_OPTION_MAP } from '@Compute/constants'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
@@ -190,6 +191,14 @@ export default {
             if (!isAllGPU) {
               ret.validate = false
               ret.tooltip = this.$t('gpu.device_type.gpu.tooltip')
+              return ret
+            }
+            const isGpuHpcOrVga = this.list.selectedItems.every(o => {
+              return o.dev_type === GPU_DEV_TYPE_OPTION_MAP['GPU-HPC'].value || o.dev_type === GPU_DEV_TYPE_OPTION_MAP['GPU-VGA'].value
+            })
+            if (!isGpuHpcOrVga) {
+              ret.validate = false
+              ret.tooltip = this.$t('gpu.device_type.tooltip.check_hpc_vga_gpu')
               return ret
             }
             return ret
