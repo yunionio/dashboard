@@ -12,10 +12,10 @@
       <a-upload-dragger
         v-if="form.fd.custom_data_type === 'file'"
         list-type="text"
-        :max-count="1"
         :beforeUpload="beforeUpload"
-        accept=".json"
-        :fileList="fileList">
+        :remove="handleRemove"
+        :fileList="fileList"
+        :accept="accept">
         <div class="pt-3 pb-3">
           <p class="ant-upload-drag-icon"><a-icon type="inbox" /></p>
           <p class="ant-upload-text">{{$t('system.text_505')}}</p>
@@ -56,6 +56,7 @@ export default {
       errorTip: '',
       codeMirrorData: '',
       customData: [],
+      accept: '.sh,.json,.yaml',
     }
   },
   computed: {
@@ -67,6 +68,12 @@ export default {
     },
   },
   methods: {
+    handleRemove (file) {
+      const index = this.fileList.indexOf(file)
+      const newFileList = this.fileList.slice()
+      newFileList.splice(index, 1)
+      this.fileList = newFileList
+    },
     beforeUpload (file) {
       if (file.size > 32768) {
         this.$message.error(this.$t('compute.custom_data_file_limit'))
@@ -76,19 +83,24 @@ export default {
       reader.readAsText(file)// 读取文件的内容
 
       reader.onload = (info) => {
-        const json = JSON.parse(info.target.result)
+        let result = info.target.result
+        try {
+          result = JSON.parse(info.target.result)
+        } catch (error) {
+          result = info.target.result
+        }
         if (this.isKvm) {
-          const isRight = this.checkFileData(json)
+          const isRight = this.checkFileData(result)
           if (!isRight) {
             file.status = 'error'
             this.$message.error(this.$t('compute.custom_data_error1'))
           } else {
             this.fileList = [file]
-            this.customData = json
+            this.customData = result
           }
         } else {
           this.fileList = [file]
-          this.customData = json
+          this.customData = result
         }
       }
       return false
