@@ -1,5 +1,5 @@
 <template>
-  <floating-scroll ref="floating-scroll" :hiddenScrollbar="hiddenScrollbar">
+  <component :is="tableWrapper" ref="floating-scroll" :hiddenScrollbar="hiddenScrollbar">
     <div class="table-container d-flex">
       <template v-if="showTagConfig">
         <tree-project
@@ -10,12 +10,12 @@
           @select="handleProjectTagSelect"
           @treeProjectConfig="handleTreeProjectConfig" />
       </template>
-      <div style="flex: 1 1 auto">
+      <div id="vxe-table" :style="enableVirtualScroll ? 'width:100%' : 'flex: 1 1 auto;'">
         <vxe-grid
+          :class="enableVirtualScroll ? 'page-list-grid-virtual-scroll' : 'page-list-grid'"
           show-header-overflow
           highlight-hover-row
           highlight-current-row
-          class="page-list-grid"
           ref="grid"
           align="left"
           :data="tableData"
@@ -50,13 +50,13 @@
           </template>
         </vxe-grid>
         <template v-if="loadMoreShow">
-          <div class="vxe-pager d-flex align-items-center justify-content-end mt-2">
-            <a-select v-model="loadMoreSize" style="min-width:100px;font-size:12px" size="small" @change="handleLoadMoreSizeChange">
-              <a-select-option v-for="size in loadMorePagings" :value="size" :key="size" style="text-align:center;font-size:12px">{{$t('common.some_items_peer_time', [size])}}</a-select-option>
-            </a-select>
-            <span class="ml-3">{{$t('common.current_total_items', [tableData.length])}}</span>
-          </div>
-          <div class="text-center mt-3">
+          <div class="text-center mt-3 load-more-wrapper">
+            <div v-if="enableVirtualScroll" class="vxe-pager d-flex align-items-center justify-content-end" style="float:right">
+              <a-select v-model="loadMoreSize" style="min-width:100px;font-size:12px" size="small" @change="handleLoadMoreSizeChange">
+                <a-select-option v-for="size in loadMorePagings" :value="size" :key="size" style="text-align:center;font-size:12px">{{$t('common.some_items_peer_time', [size])}}</a-select-option>
+              </a-select>
+              <span class="ml-3">{{$t('common.current_total_items', [tableData.length])}}</span>
+            </div>
             <a-button v-if="nextMarker" :loading="loading" type="link" @click="handleNextMarkerChange">{{ loading ? $t('common.loding') : $t('common.LoadMore') }}</a-button>
             <span v-else>{{ $t('common.load_no_more') }}</span>
           </div>
@@ -64,7 +64,7 @@
       </div>
     </div>
 
-  </floating-scroll>
+  </component>
 </template>
 
 <script>
@@ -173,6 +173,10 @@ export default {
     tableOverviewIndexs: {
       type: Array,
     },
+    enableVirtualScroll: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     const storageKey = this.id && `__oc_${this.id}__`
@@ -185,10 +189,14 @@ export default {
       storageConfig: this.id && storage.get(storageKey),
       loadMoreSize: 20,
       loadMorePagings: [20, 100, 200, 500, 1000],
+      vxeGridHeight: 0,
     }
   },
   computed: {
     ...mapGetters(['permission']),
+    tableWrapper () {
+      return this.enableVirtualScroll ? 'div' : 'floating-scroll'
+    },
     // 是否开启checkbox
     checkboxEnabled () {
       if (this.hideRowselect) return false
@@ -262,6 +270,11 @@ export default {
       if (this.editConfig) {
         ret['edit-config'] = this.editConfig
         ret['keep-source'] = true
+      }
+      if (this.enableVirtualScroll) {
+        ret.height = this.vxeGridHeight
+        ret['scroll-x'] = { gt: 1 }
+        ret['scroll-y'] = { gt: 1 }
       }
       return ret
     },
@@ -356,15 +369,27 @@ export default {
     // 如果切换二级菜单显示隐藏后，重新计算表格宽度
     l2MenuVisibleForStore () {
       this.$nextTick(() => {
-        this.updateFloatingScroll()
+        if (!this.enableVirtualScroll) {
+          this.updateFloatingScroll()
+        }
       })
     },
   },
   mounted () {
-    this.initFloatingScrollListener()
+    if (this.enableVirtualScroll) {
+      this.initHeight()
+    } else {
+      this.initFloatingScrollListener()
+    }
     this.treeDrop()
   },
   methods: {
+    initHeight () {
+      const gridEl = this.$refs.grid.$el
+      const wH = document.body.offsetHeight
+      const remBase = parseInt(window.getComputedStyle(document.documentElement).fontSize) / 4
+      this.vxeGridHeight = wH - gridEl.getBoundingClientRect().y - (48 + remBase * 4 + 20 + 15)
+    },
     // 初始化tbody监听器，发生变化更新虚拟滚动条，以保证宽度是正确的
     initFloatingScrollListener () {
       const gridEl = this.$refs.grid.$el
@@ -515,6 +540,9 @@ export default {
             return [<span>{ item.title }</span>, <MultipleSort column={item} listParams={this.list.params || {}} onDoSort={this.handleSortChange} />]
           }
         }
+        if (item.showOverflow !== 'ellipsis') {
+          item.className = item.className ? item.className + ' table--td-auto-height' : 'table--td-auto-height'
+        }
         return item
       })
       return defaultColumns
@@ -632,6 +660,13 @@ export default {
     }
   }
 }
+.page-list-grid-virtual-scroll {
+  ::v-deep {
+    .vxe-table.is--empty .vxe-table--empty-block, .vxe-table.is--empty .vxe-table--empty-placeholder {
+      height: auto !important;
+    }
+  }
+}
 .sortable-tree-demo .drag-btn {
   cursor: move;
   font-size: 12px;
@@ -647,5 +682,9 @@ export default {
   transform: translateY(-50%);
   z-index: 10;
   font-size: 14px;
+}
+.load-more-wrapper {
+  height: 48px;
+  line-height: 48px;
 }
 </style>
