@@ -6,6 +6,7 @@
       :export-data-options="exportDataOptions"
       :show-page="false"
       :refresh-method="refresh"
+      :enable-virtual-scroll="enableVirtualScroll"
       default-search-key="obj_name"
       :single-actions="singleActions" />
   </div>
@@ -32,6 +33,10 @@ export default {
     },
     listId: {
       type: String,
+    },
+    enableVirtualScroll: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
@@ -172,9 +177,6 @@ export default {
         ],
       },
       start_time: getTimeRangeFilter({ label: this.$t('common_156'), field: 'start_time' }),
-      ip: {
-        label: 'IP',
-      },
     }
     if (this.$store.getters.isProjectMode) delete filterOptions.tenant
     return {
