@@ -5,12 +5,12 @@
     status-module="rds"
     :data="data"
     resource="dbinstances"
-    :extra-info="extraInfo" />
+    :extra-info="extraInfo"
+    auto-hidden-columns-key="rds_hidden_columns" />
 </template>
 
 <script>
 // import BrandIcon from '@/sections/BrandIcon'
-import { DBINSTANCE_CATEGORY, DBINSTANCE_STORAGE_TYPE } from '../constants'
 import {
   getUserTagColumn,
   // getExtTagColumn,
@@ -22,6 +22,7 @@ import {
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 import { hasPermission } from '@/utils/auth'
+import { DBINSTANCE_CATEGORY, DBINSTANCE_STORAGE_TYPE } from '../constants'
 
 export default {
   name: 'RDSDetail',
@@ -61,6 +62,7 @@ export default {
         // getExtTagColumn({ onManager: this.onManager, resource: 'dbinstance', columns: () => this.columns, tipName: this.$t('dictionary.dbinstances') }),
         getBrandTableColumn(),
         {
+          field: 'charge_type',
           title: this.$t('db.text_54'),
           slots: {
             default: ({ row }) => {
@@ -95,6 +97,7 @@ export default {
         },
         {
           field: 'zone',
+          hiddenField: 'region',
           title: this.$t('db.text_133'),
           slots: {
             default: ({ row }) => {
@@ -200,6 +203,7 @@ export default {
               },
             },
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('rds_hidden_columns.db_info'),
         },
         {
           title: this.$t('db.text_171'),
@@ -288,6 +292,7 @@ export default {
               },
             },
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('rds_hidden_columns.connection_info'),
         },
         {
           title: this.$t('db.text_177'),
@@ -304,6 +309,7 @@ export default {
               },
             },
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('rds_hidden_columns.db_size_gb'),
         },
         {
           title: this.$t('db.text_179'),
@@ -321,6 +327,7 @@ export default {
               },
             }),
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('rds_hidden_columns.perform_action'),
         },
       ],
     }

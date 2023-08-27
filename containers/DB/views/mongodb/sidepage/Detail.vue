@@ -5,12 +5,12 @@
     :base-info="baseInfo"
     :extra-info="extraInfo"
     resource="elasticcaches"
-    statusModule="redis" />
+    statusModule="redis"
+    auto-hidden-columns-key="mongodb_hidden_columns" />
 </template>
 
 <script>
 import * as R from 'ramda'
-import { categoryMap } from '../constants'
 // import { NODE_TYPE, PERFORMANCE_TYPE } from '@DB/views/redis/constants'
 
 import {
@@ -24,6 +24,7 @@ import {
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
+import { categoryMap } from '../constants'
 
 export default {
   name: 'MongodbDetail',
@@ -47,6 +48,7 @@ export default {
         getBillingTypeTableColumn(),
         {
           field: 'zone',
+          hiddenField: 'region',
           title: this.$t('db.text_133'),
           slots: {
             default: ({ row }) => {
@@ -134,6 +136,7 @@ export default {
               },
             },
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.db_info'),
         },
         {
           title: this.$t('db.text_171'),
@@ -170,6 +173,7 @@ export default {
               },
             },
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.connection_info'),
         },
         {
           title: this.$t('db.text_179'),
@@ -187,6 +191,7 @@ export default {
               },
             }),
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.perform_action'),
         },
       ],
     }

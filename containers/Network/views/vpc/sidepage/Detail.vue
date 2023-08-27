@@ -5,7 +5,8 @@
     :base-info="baseInfo"
     :extra-info="extraInfo"
     resource="vpcs"
-    statusModule="vpc" />
+    statusModule="vpc"
+    auto-hidden-columns-key="vpc_hidden_columns" />
 </template>
 
 <script>

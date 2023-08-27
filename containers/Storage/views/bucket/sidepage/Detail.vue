@@ -5,7 +5,8 @@
     :base-info="baseInfo"
     :extra-info="extraInfo"
     statusModule="bucket"
-    resource="buckets" />
+    resource="buckets"
+    auto-hidden-columns-key="oss_hidden_columns" />
 </template>
 
 <script>
@@ -92,7 +93,7 @@ export default {
         getPublicScopeTableColumn({ vm: this, resource: 'buckets' }),
         getBrandTableColumn(),
         getCopyWithContentTableColumn({
-          field: 'cloudregion',
+          field: 'region',
           title: this.$t('storage.text_47'),
           hideField: true,
           slotCallback: row => {
@@ -145,6 +146,7 @@ export default {
           ])
         },
         items: [],
+        hidden: () => this.$isScopedPolicyMenuHidden('oss_hidden_columns.referer'),
       }
       if (this.data.referer) {
         const others = [
@@ -238,6 +240,7 @@ export default {
               ]
             },
           },
+          hidden: () => this.$isScopedPolicyMenuHidden('oss_hidden_columns.url'),
         },
         {
           title: this.$t('storage.text_220'),
@@ -292,6 +295,7 @@ export default {
               ]
             },
           },
+          hidden: () => this.$isScopedPolicyMenuHidden('oss_hidden_columns.cdn_domains'),
         },
         {
           title: this.$t('storage.text_230'),
@@ -318,6 +322,7 @@ export default {
               },
             },
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('oss_hidden_columns.website_url'),
         },
         {
           title: <RenderSizeTitle data={this.data} />,
@@ -337,6 +342,7 @@ export default {
               },
             },
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('oss_hidden_columns.size'),
         },
         {
           title: this.$t('storage.text_144'),
@@ -364,6 +370,7 @@ export default {
               },
             },
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('oss_hidden_columns.size_limit'),
         },
         {
           title: this.$t('storage.text_147'),
@@ -381,6 +388,7 @@ export default {
               },
             },
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('oss_hidden_columns.acl'),
         },
         referer,
       ]

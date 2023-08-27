@@ -8,7 +8,7 @@
     :tabs="filterDetailTabs"
     :loaded="loaded"
     @tab-change="handleTabChange">
-    <template v-slot:actions>
+    <template v-slot:actions v-if="showActions">
       <actions
         :options="singleActions"
         :row="detailData"
@@ -234,6 +234,9 @@ export default {
     },
     hiddenSingleActions () {
       return this.params.windowData.currentTab === 'scheduledtasks-list'
+    },
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('server_hidden_columns.perform_action')
     },
     filterDetailTabs () {
       return this.detailTabs.map(item => {

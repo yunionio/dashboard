@@ -5,7 +5,8 @@
     :base-info="baseInfo"
     :extra-info="extraInfo"
     resource="elasticcaches"
-    statusModule="redis" />
+    statusModule="redis"
+    auto-hidden-columns-key="redis_hidden_columns" />
 </template>
 
 <script>
@@ -46,6 +47,7 @@ export default {
         getBillingTypeTableColumn(),
         {
           field: 'zone',
+          hiddenField: 'region',
           title: this.$t('db.text_133'),
           slots: {
             default: ({ row }) => {
@@ -144,6 +146,7 @@ export default {
               },
             },
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('redis_hidden_columns.db_info'),
         },
         {
           title: this.$t('db.text_171'),
@@ -236,6 +239,7 @@ export default {
               hidden: () => this.data.brand !== 'Qcloud',
             },
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('redis_hidden_columns.connection_info'),
         },
         {
           title: this.$t('db.text_179'),
@@ -253,6 +257,7 @@ export default {
               },
             }),
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('redis_hidden_columns.perform_action'),
         },
       ],
     }

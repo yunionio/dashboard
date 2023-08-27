@@ -8,6 +8,7 @@ const getTagColumn = ({
   showEdit = false,
   type = 'user',
   field = 'user_tag',
+  hiddenField = 'metadata',
   title = i18n.t('table.title.user_tag'),
   ignoreKeys,
   needExt,
@@ -24,6 +25,7 @@ const getTagColumn = ({
   return {
     title,
     field,
+    hiddenField,
     hidden,
     slots: {
       default: ({ row }, h) => {
@@ -54,6 +56,7 @@ const getTagColumn = ({
 
 export const getUserTagColumn = ({
   field = 'user_tag',
+  hiddenField = 'metadata',
   title = i18n.t('table.title.user_tag'),
   ignoreKeys,
   needExt,
@@ -71,6 +74,7 @@ export const getUserTagColumn = ({
     showEdit,
     type: 'user',
     field: field,
+    hiddenField,
     title: title,
     ignoreKeys,
     needExt,
@@ -87,6 +91,7 @@ export const getUserTagColumn = ({
 
 export const getExtTagColumn = ({
   field = 'ext_tag',
+  hiddenField = 'metadata',
   title = i18n.t('table.title.ext_tag'),
   ignoreKeys,
   needExt,
@@ -102,6 +107,7 @@ export const getExtTagColumn = ({
   return getTagColumn({
     type: 'ext',
     field: field,
+    hiddenField,
     title: title,
     ignoreKeys,
     needExt,

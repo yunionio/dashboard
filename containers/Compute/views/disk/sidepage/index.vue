@@ -8,7 +8,7 @@
     :tabs="detailTabs"
     :loaded="loaded"
     @tab-change="handleTabChange">
-    <template v-slot:actions>
+    <template v-slot:actions v-if="showActions">
       <actions
         :options="singleActions"
         :row="detailData"
@@ -64,6 +64,9 @@ export default {
         default:
           return ''
       }
+    },
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('disk_hidden_columns.perform_action')
     },
     hiddenColumns () {
       return this.params.hiddenColumns || []

@@ -5,7 +5,8 @@
     :group-actions="groupActions"
     :list="list"
     :single-actions="singleActions"
-    :showGroupActions="showGroupActions"
+    :showSingleActions="showActions"
+    :showGroupActions="showActions && showGroupActions"
     :export-data-options="exportDataOptions"
     :show-tag-columns="true"
     :show-tag-filter="true"
@@ -14,13 +15,13 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getStatusFilter, getTenantFilter, getBrandFilter, getCloudProviderFilter, getAccountFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'MongoDBList',
@@ -173,6 +174,11 @@ export default {
         queryTreeId: 'project-tag-value-tree',
       },
     }
+  },
+  computed: {
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.perform_action')
+    },
   },
   created () {
     this.list.fetchData()

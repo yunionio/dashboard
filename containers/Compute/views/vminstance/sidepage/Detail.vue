@@ -5,6 +5,7 @@
     :extra-info="extraInfo"
     :base-info="baseInfo"
     :name-rules="[{ required: true, message: $t('compute.text_210') }]"
+    auto-hidden-columns-key="server_hidden_columns"
     status-module="server"
     resource="servers" />
 </template>
@@ -59,6 +60,7 @@ export default {
         }),
         {
           field: 'project_domain',
+          hiddenField: 'tenant',
           title: this.$t('dictionary.domain'),
           formatter: ({ row }) => {
             if (!row.domain_id) return '-'
@@ -76,6 +78,7 @@ export default {
         getNameDescriptionTableColumn({
           onManager: this.onManager,
           field: 'hostname',
+          hiddenField: 'name',
           title: this.$t('common_388'),
           label: this.$t('common_388'),
           showDesc: false,
@@ -94,6 +97,7 @@ export default {
         getServerMonitorAgentInstallStatus(),
         {
           field: 'keypair',
+          hiddenField: 'password',
           title: this.$t('compute.text_33'),
         },
         getBrandTableColumn(),
@@ -234,6 +238,7 @@ export default {
               },
             },
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.os_arch'),
         })
       }
       const infos = [
@@ -473,6 +478,7 @@ export default {
               },
             },
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.os_arch'),
         },
         {
           title: this.$t('compute.title.encryption'),
@@ -515,6 +521,7 @@ export default {
               },
             },
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.password'),
         },
         ...backupInfo,
         {
@@ -533,6 +540,7 @@ export default {
               },
             }),
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.perform_action'),
         },
       ]
       if (this.isKvm && this.cmdline) {

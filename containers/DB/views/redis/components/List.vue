@@ -8,15 +8,13 @@
     :list="list"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions"
+    :showSingleActions="showActions"
+    :showGroupActions="showActions && showGroupActions"
     :export-data-options="exportDataOptions"
     :tag-config-params="tagConfigParams" />
 </template>
 
 <script>
-import { ENGINE_ARCH } from '../constants/index.js'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getStatusFilter, getTenantFilter, getFilter, getDomainFilter, getBrandFilter, getCloudProviderFilter, getAccountFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
@@ -25,6 +23,9 @@ import WindowsMixin from '@/mixins/windows'
 import globalSearchMixins from '@/mixins/globalSearch'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import { HYPERVISORS_MAP } from '@/constants'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import { ENGINE_ARCH } from '../constants/index.js'
 
 export default {
   name: 'RedisList',
@@ -367,6 +368,11 @@ export default {
         queryTreeId: 'project-tag-value-tree',
       },
     }
+  },
+  computed: {
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('redis_hidden_columns.perform_action')
+    },
   },
   created () {
     this.list.fetchData()
