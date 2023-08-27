@@ -96,7 +96,7 @@ export default {
       }),
       getProjectDomainTableColumn({
         hidden: () => {
-          return this.$isScopedPolicyMenuHidden('vpc_hidden_columns.project_domain')
+          return this.$isScopedPolicyMenuHidden('vpc_hidden_columns.tenant')
         },
       }),
       getRegionTableColumn({

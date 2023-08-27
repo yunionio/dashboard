@@ -8,7 +8,7 @@
     :current-tab="params.windowData.currentTab"
     :loaded="loaded"
     @tab-change="handleTabChange">
-    <template v-slot:actions>
+    <template v-slot:actions v-if="showActions">
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
     <component
@@ -24,13 +24,13 @@
 </template>
 
 <script>
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import MongodbDetail from './Detail'
 import MongodbBackupList from './BackupList.vue'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
 
 export default {
   name: 'MongoDBSidePage',
@@ -51,6 +51,9 @@ export default {
         { label: this.$t('db.text_192'), key: 'event-drawer' },
       ]
       return ret
+    },
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.perform_action')
     },
     getParams () {
       return {

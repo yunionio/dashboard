@@ -8,7 +8,7 @@
     :current-tab="params.windowData.currentTab"
     :loaded="loaded"
     @tab-change="handleTabChange">
-    <template v-slot:actions>
+    <template v-slot:actions v-if="showActions">
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
     <component :columns="columns" :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager" :refresh="refresh" :getParams="getParams" :params="getParams" :res-id="getParams.storage" :id="listId" />
@@ -17,6 +17,9 @@
 
 <script>
 
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import Detail from './Detail'
@@ -24,9 +27,6 @@ import Objects from './Objects'
 import Monitor from './Monitor'
 import Rules from './CrossDomainRules'
 import Policies from './Policies'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
 
 export default {
   name: 'BucketStorageSidePage',
@@ -57,6 +57,9 @@ export default {
         storage: this.data.id,
         details: true,
       }
+    },
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('oss_hidden_columns.perform_action')
     },
     listId () {
       switch (this.params.windowData.currentTab) {

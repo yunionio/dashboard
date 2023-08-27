@@ -9,7 +9,7 @@
     :tabs="detailTabs"
     :loaded="loaded"
     @tab-change="handleTabChange">
-    <template v-slot:actions>
+    <template v-slot:actions v-if="showActions">
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
     <component
@@ -29,15 +29,15 @@
 </template>
 
 <script>
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import RouteTableList from './RouteTable'
 import NetworkList from './Network'
 import VpcDetail from './Detail'
 import Topology from './Topology'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
 
 export default {
   name: 'VpcSidePage',
@@ -65,6 +65,9 @@ export default {
         tabs.splice(2, 0, { label: this.$t('dictionary.route_table'), key: 'route-table-list' })
       }
       return tabs
+    },
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('slb_hidden_columns.perform_action')
     },
     getParams () {
       if (this.params.windowData.currentTab === 'network-list') {

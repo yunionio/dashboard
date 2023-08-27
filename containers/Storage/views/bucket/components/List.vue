@@ -8,7 +8,8 @@
     :group-actions="groupActions"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions"
+    :showSingleActions="showActions"
+    :showGroupActions="showActions && showGroupActions"
     :export-data-options="exportDataOptions"
     :tag-config-params="tagConfigParams" />
 </template>
@@ -264,6 +265,9 @@ export default {
   },
   computed: {
     ...mapGetters(['isProjectMode']),
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('oss_hidden_columns.perform_action')
+    },
   },
   watch: {
     cloudEnv (val) {

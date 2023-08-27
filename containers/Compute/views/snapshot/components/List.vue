@@ -8,7 +8,8 @@
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions" />
+    :showSingleActions="showActions"
+    :showGroupActions="showActions && showGroupActions" />
 </template>
 
 <script>
@@ -157,6 +158,9 @@ export default {
     }
   },
   computed: {
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.perform_action')
+    },
     exportDataOptions () {
       return {
         downloadType: 'local',

@@ -5,7 +5,8 @@
     statusModule="lb"
     resource="lbs"
     :base-info="baseInfo"
-    :extra-info="extraInfo" />
+    :extra-info="extraInfo"
+    auto-hidden-columns-key="slb_hidden_columns" />
 </template>
 
 <script>
@@ -39,7 +40,7 @@ export default {
         getUserTagColumn({ onManager: this.onManager, resource: 'loadbalancer', columns: () => this.columns }),
         // getExtTagColumn({ onManager: this.onManager, resource: 'loadbalancer', columns: () => this.columns }),
         {
-          field: 'loadbalance_type',
+          field: 'loadbalancer_spec',
           title: this.$t('network.text_268'),
           formatter: ({ row }) => {
             let { provider } = row
@@ -191,6 +192,7 @@ export default {
               },
             },
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('slb_hidden_columns.loadbalancer_spec'),
         },
         {
           title: this.$t('db.text_179'),
@@ -208,6 +210,7 @@ export default {
               },
             }),
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('slb_hidden_columns.perform_action'),
         },
       ],
     }

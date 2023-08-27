@@ -5,7 +5,8 @@
     :base-info="baseInfo"
     :extra-info="extraInfo"
     resource="snapshots"
-    status-module="snapshot" />
+    status-module="snapshot"
+    auto-hidden-columns-key="snapshot_hidden_columns" />
 </template>
 
 <script>
@@ -86,7 +87,7 @@ export default {
           },
         },
         {
-          field: 'disk',
+          field: 'disk_name',
           title: this.$t('compute.text_100'),
           slots: {
             default: ({ row }, h) => {
@@ -146,6 +147,7 @@ export default {
               },
             },
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.encryption'),
         },
       ],
     }
