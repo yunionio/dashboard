@@ -1159,12 +1159,14 @@ export const getInstanceSnapshotsTableColumn = ({
 
 export const getServerMonitorAgentInstallStatus = ({
   field = 'metadata',
+  hiddenField = 'agent_status',
   title = i18n.t('compute.monitor.agent.install_status'),
   hidden,
 } = {}) => {
   return {
     field,
     title,
+    hiddenField,
     slots: {
       default: function ({ row }, h) {
         const status = _.get(row, ['metadata', 'sys:monitor_agent']) || _.get(row, ['metadata', '__monitor_agent'])

@@ -8,7 +8,8 @@
     :single-actions="singleActions"
     :group-actions="groupActions"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions"
+    :showSingleActions="showActions"
+    :showGroupActions="showActions && showGroupActions"
     :export-data-options="exportDataOptions"
     :tag-config-params="tagConfigParams" />
 </template>
@@ -118,6 +119,9 @@ export default {
   },
   computed: {
     ...mapGetters(['userInfo', 'capability']),
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('slb_hidden_columns.perform_action')
+    },
     groupActions () {
       let createBtn = {
         label: this.$t('network.text_26'),

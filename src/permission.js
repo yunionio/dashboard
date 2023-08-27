@@ -108,6 +108,7 @@ router.beforeEach(async (to, from, next) => {
         'slb_hidden_columns',
         'mongodb_hidden_columns',
         'vpc_hidden_columns',
+        'navbar_hidden_items',
       ],
     })
     !hasGlobalConfig && await store.dispatch('common/fetchGlobalConfig')

@@ -6,11 +6,12 @@
     show-tag-config
     :list="list"
     :columns="columns"
+    :show-single-actions="showActions"
+    :show-group-actions="showGroupActions && showActions"
     :group-actions="groupActions"
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions"
     :defaultSearchKey="defaultSearchKey"
     :before-show-menu="beforeShowMenu"
     :refresh-method="handleListRefresh"
@@ -99,6 +100,7 @@ export default {
       brand: getBrandFilter('compute_engine_brands'),
       ip_addr: {
         label: 'IP',
+        hiddenFilterField: 'ips',
       },
       status: getStatusFilter('server'),
       power_states: getStatusFilter({ title: this.$t('compute.power_states'), statusModule: 'server', field: 'power_states' }),
@@ -159,6 +161,7 @@ export default {
     })
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'servers',
         getParams: this.getParam,
@@ -172,6 +175,7 @@ export default {
         filterOptions,
         responseData: this.responseData,
         hiddenColumns: ['is_gpu', 'metadata', 'instance_type', 'os_type', 'vpc', 'host', 'account', 'created_at', 'macs', 'os_arch', 'vcpu_count', 'vmem_size', 'disk', 'power_states'],
+        autoHiddenFilterKey: 'server_hidden_columns',
       }),
       groupActions: [
         // 新建
@@ -1256,6 +1260,9 @@ export default {
         return this.list.selectedItems.every(item => item.instance_type && item.instance_type.startsWith('k') === isArm)
       }
       return true
+    },
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('server_hidden_columns.perform_action')
     },
     exportDataOptions () {
       const ret = {

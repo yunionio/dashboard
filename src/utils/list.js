@@ -172,6 +172,7 @@ class CreateList {
       idKey = 'id',
       filterOptions = {},
       filter = {},
+      autoHiddenFilterKey = '',
       // 期望的状态，如果不符合预期，则进行定时更新
       steadyStatus = null,
       // 定时更新间隔时间，默认10s
@@ -232,7 +233,7 @@ class CreateList {
     // 指定作为id的属性key值
     this.idKey = idKey
     // 自定义过滤配置
-    this.filterOptions = filterOptions
+    this.filterOptions = this.genFilterOptions(filterOptions, autoHiddenFilterKey)
     // 如果有search，表示需要配置模糊匹配选项，则将模糊匹配添加上
     // if (search) {
     //   this.search = search
@@ -587,6 +588,26 @@ class CreateList {
       }
     }
     return steadyStatus
+  }
+
+  /**
+   * @description 根据隐藏列隐藏对应的filter
+   * @param {Object} filterOptions
+   * @returns {Object}
+   */
+  genFilterOptions (filterOptions, autoHiddenFilterKey) {
+    if (R.isEmpty(filterOptions)) return filterOptions
+    let ret = {}
+    if (autoHiddenFilterKey) {
+      for (const key in filterOptions) {
+        if (!this.ctx.$isScopedPolicyMenuHidden(`${autoHiddenFilterKey}.${filterOptions[key].hiddenFilterField || key}`)) {
+          ret[key] = filterOptions[key]
+        }
+      }
+    } else {
+      ret = { ...filterOptions }
+    }
+    return ret
   }
 
   /**

@@ -8,7 +8,7 @@
     :current-tab="params.windowData.currentTab"
     :loaded="loaded"
     @tab-change="handleTabChange">
-    <template v-slot:actions>
+    <template v-slot:actions v-if="showActions">
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
     <component
@@ -25,6 +25,10 @@
 </template>
 
 <script>
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
+import SecgroupList from '@Compute/views/secgroup/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import RedisDetail from './Detail'
@@ -32,10 +36,6 @@ import RedisWhiteList from './WhiteList'
 import RedisAccountList from './AccountList'
 import RedisBackupList from './BackupList'
 import Monitor from './Monitor'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
-import SecgroupList from '@Compute/views/secgroup/components/List'
 
 export default {
   name: 'RedisSidePage',
@@ -63,6 +63,9 @@ export default {
         { label: this.$t('db.text_192'), key: 'event-drawer' },
       ]
       return ret
+    },
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('redis_hidden_columns.perform_action')
     },
     getParams () {
       return {

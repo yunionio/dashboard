@@ -4,6 +4,7 @@
     :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo"
+    auto-hidden-columns-key="disk_hidden_columns"
     resource="disks"
     status-module="disk" />
 </template>
@@ -181,6 +182,7 @@ export default {
               },
             },
           ],
+          hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_columns.encryption'),
         },
       ],
     }

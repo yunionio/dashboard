@@ -5,7 +5,8 @@
     resource="eips"
     statusModule="eip"
     :base-info="baseInfo"
-    :extra-info="extraInfo" />
+    :extra-info="extraInfo"
+    auto-hidden-columns-key="eip_hidden_columns" />
 </template>
 
 <script>

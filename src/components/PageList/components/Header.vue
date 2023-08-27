@@ -14,7 +14,7 @@
         <!-- 批量前面追加内容 slot -->
         <slot name="group-actions-prepend" />
         <!-- 批量操作 -->
-        <template v-if="groupActions">
+        <template v-if="showGroupActions && groupActions">
           <actions
             group
             class="flex-shrink-0"
