@@ -8,7 +8,7 @@
     :tabs="detailTabs"
     :loaded="loaded"
     @tab-change="handleTabChange">
-    <template v-slot:actions>
+    <template v-slot:actions v-if="showActions">
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
     <component
@@ -52,6 +52,9 @@ export default {
         default:
           return ''
       }
+    },
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.perform_action')
     },
   },
 }

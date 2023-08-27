@@ -8,7 +8,8 @@
     :list="list"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions"
+    :showSingleActions="showActions"
+    :showGroupActions="showActions && showGroupActions"
     :defaultSearchKey="defaultSearchKey"
     :export-data-options="exportDataOptions"
     :tag-config-params="tagConfigParams" />
@@ -328,6 +329,11 @@ export default {
         queryTreeId: 'project-tag-value-tree',
       },
     }
+  },
+  computed: {
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('rds_hidden_columns.perform_action')
+    },
   },
   created () {
     this.webconsoleManager = new this.$Manager('webconsole', 'v1')

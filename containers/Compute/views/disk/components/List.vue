@@ -9,7 +9,8 @@
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions"
+    :showSingleActions="showActions"
+    :showGroupActions="showActions && showGroupActions"
     :before-show-menu="beforeShowMenu" />
 </template>
 
@@ -275,6 +276,9 @@ export default {
   },
   computed: {
     ...mapGetters(['isProjectMode']),
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('disk_hidden_columns.perform_action')
+    },
     exportDataOptions () {
       return {
         downloadType: 'local',

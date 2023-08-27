@@ -9,13 +9,12 @@
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
     :defaultSearchKey="defaultSearchKey"
-    :showGroupActions="showGroupActions" />
+    :showSingleActions="showActions"
+    :showGroupActions="showActions && showGroupActions" />
 </template>
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
 import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
@@ -33,6 +32,8 @@ import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/t
 import regexp from '@/utils/regexp'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'VPCList',
@@ -274,6 +275,11 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('vpc_hidden_columns.perform_action')
+    },
   },
   watch: {
     cloudEnv (val) {

@@ -48,6 +48,7 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
     outher.push(
       {
         field: 'zone',
+        hiddenField: 'region',
         title: i18n.t('res.zone'),
         slots: {
           default: ({ row }) => {
@@ -107,6 +108,7 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
     outher.push(
       {
         field: 'manager',
+        hiddenField: 'account',
         title: i18n.t('res.cloudprovider'),
         slots: {
           default: ({ row }) => {
@@ -143,6 +145,7 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
     },
     {
       field: 'updated_at',
+      hiddenField: 'created_at',
       title: i18n.t('table.title.update_time'),
       formatter: ({ row }) => {
         return (row.updated_at && moment(row.updated_at).format()) || '-'
@@ -209,6 +212,7 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
     ret.push(
       {
         field: 'project_domain',
+        hiddenField: 'tenant',
         title: i18n.t('res.domain'),
         slots: {
           default: ({ row }) => {
@@ -350,6 +354,7 @@ export default {
     hiddenKeys: {
       type: Array,
     },
+    autoHiddenColumnsKey: String,
     resource: String,
     isEditDesc: {
       type: Boolean,
@@ -409,16 +414,19 @@ export default {
       // defaultTopBaseInfo.concat(this.baseInfo).concat(defaultLastBaseInfo)
       baseInfo = R.uniqBy(item => item.field && item.title, baseInfo)
         .filter(child => {
-          if (this.hiddenKeys && this.hiddenKeys.length) {
-            return !this.hiddenKeys.includes(child.field)
-          } else {
-            if (!R.isNil(child.hidden)) {
-              if (R.is(Function, child.hidden)) {
-                return !child.hidden(this.data)
-              }
-            }
-            return !child.hidden
+          if (this.hiddenKeys && this.hiddenKeys.length && this.hiddenKeys.includes(child.field)) {
+            return false
           }
+          console.log(child.hiddenField || child.field)
+          if (this.autoHiddenColumnsKey && this.$isScopedPolicyMenuHidden(`${this.autoHiddenColumnsKey}.${child.hiddenField || child.field}`)) {
+            return false
+          }
+          if (!R.isNil(child.hidden)) {
+            if (R.is(Function, child.hidden)) {
+              return !child.hidden(this.data)
+            }
+          }
+          return !child.hidden
         })
       return baseInfo
     },
@@ -445,6 +453,7 @@ export default {
         }
       } catch (error) {
         val = '-'
+        console.log(item)
         console.warn(`Get field ${item.field} faied`)
         throw error
       }

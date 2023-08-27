@@ -8,7 +8,7 @@
     :tabs="detailTabs"
     :loaded="loaded"
     @tab-change="handleTabChange">
-    <template v-slot:actions>
+    <template v-slot:actions v-if="showActions">
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
     <component
@@ -74,6 +74,9 @@ export default {
       //   }
       // }
       return params
+    },
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('slb_hidden_columns.perform_action')
     },
     listId () {
       switch (this.params.windowData.currentTab) {
