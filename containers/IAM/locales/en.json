@@ -26,9 +26,9 @@
   "system.text_24": "Reminder: The application scope of the new rule overlaps with the existing rule, and the existing rule will be overwritten",
   "system.text_25": "Any",
   "system.text_26": "Image",
-  "system.text_27": "On-premise",
-  "system.text_28": "Private Cloud",
-  "system.text_29": "Public Cloud",
+  "system.text_27": "@:dictionary.onpremise_env",
+  "system.text_28": "@:dictionary.private_env",
+  "system.text_29": "@:dictionary.public_env",
   "system.text_30": "Server",
   "system.text_31": "Baremetal Server",
   "system.text_32": "Quota Matching Rules:",
@@ -706,7 +706,7 @@
     },
     "common$global_http_proxy": {
       "label": "Global Proxy",
-      "desc": "If enabled, the global proxy will be used for the following scenarios: downloading configuration and @:dictionary.rate data, downloading public images, importing image from Image market, uploading image from URL, etc."
+      "desc": "If enabled, the global proxy will be used for the following scenarios: downloading configuration and @:dictionary.rate data, downloading @:dictionary.public_env images, importing image from Image market, uploading image from URL, etc."
     },
     "yunionapi$force_single_session_login": {
       "label": "Single session login switch",
@@ -714,15 +714,15 @@
     },
     "compute$enable_pre_allocate_ip_addr": {
       "label": "Automatically assign IP switch",
-      "desc": "After opening, we will automatically allocate IP when creating a new resource. After closing, we will no longer automatically allocate IP, and the IP reserved in this system cannot be guaranteed not to be allocated! (Only private cloud and public cloud)"
+      "desc": "After opening, we will automatically allocate IP when creating a new resource. After closing, we will no longer automatically allocate IP, and the IP reserved in this system cannot be guaranteed not to be allocated! (Only @:dictionary.private_env and @:dictionary.public_env)"
     },
     "compute$enable_auto_merge_security_group": {
       "label": "Automatically Merge Security Group",
-      "desc": "After opening, pull the cloud security group information, according to the rules of the equivalent security group, automerge security group! (Only private cloud and public cloud)"
+      "desc": "After opening, pull the cloud security group information, according to the rules of the equivalent security group, automerge security group! (Only @:dictionary.private_env and @:dictionary.public_env)"
     },
     "compute$cloudaccount_health_status_check": {
       "label": "Account Health Check switch",
-      "desc": "After opening, it will automatically check whether the cloud has the ability to create resources according to the balance information, and the health check can be closed under special circumstances! (Only public cloud)"
+      "desc": "After opening, it will automatically check whether the cloud has the ability to create resources according to the balance information, and the health check can be closed under special circumstances! (Only @:dictionary.public_env)"
     },
     "meter$exchange_rate_available": {
       "label": "Multi-Currency Bill Combined",
@@ -784,11 +784,11 @@
     },
     "compute$disable_sync_cloud_event": {
       "label": "On-cloud log synchronization switch",
-      "desc": "It is off by default. When it is on, the operation logs on the public cloud will be synchronized."
+      "desc": "It is off by default. When it is on, the operation logs on the @:dictionary.public_env will be synchronized."
     },
     "compute$default_admin_security_group_id": {
       "label": "Admin Security ID",
-      "desc": "If set, the machine created by the local IDC will be bound to the specified management security group by default. If the previous virtual machine is not bound to any management security group, it will be bound to the security group after the next system restart. The management security group is not visible to ordinary users."
+      "desc": "If set, the machine created by the @:dictionary.onpremise_env will be bound to the specified management security group by default. If the previous virtual machine is not bound to any management security group, it will be bound to the security group after the next system restart. The management security group is not visible to ordinary users."
     },
     "yunionapi$hide_web_error_details": {
       "label": "Error details hide switch",
@@ -849,7 +849,7 @@
   "system.webconsole": "Internal Message {0}",
   "system.role": "Role Settings",
   "system.eport": "Public IP",
-  "system.global_http_proxy": "If enabled, the global proxy will be used when downloading packages, downloading public cloud image lists, downloading @:dictionary.rate, mirror market list display, importing mirrors via URL, and pulling public mirror lists. The proxy service of cloud accounts needs to be configured separately in the multi-cloud management module",
+  "system.global_http_proxy": "If enabled, the global proxy will be used when downloading packages, downloading @:dictionary.public_env image lists, downloading @:dictionary.rate, mirror market list display, importing mirrors via URL, and pulling public mirror lists. The proxy service of cloud accounts needs to be configured separately in the multi-cloud management module",
   "system.global_https_proxy_extra": "If the requested url is https, https proxy is preferred",
   "system.global_http_proxy_extra": "It is recommended that the HTTPS proxy and HTTP proxy should fill at least one blank to represent a direct connection",
   "system.global_https_proxy.label": "Https Proxy",
@@ -978,9 +978,13 @@
   "system.companyinfo.copyright_en": "Copyright Information (English)",
   "system.companyinfo.font_color": "Font Color",
   "system.companyinfo.monitor_dashboard_style": "Big Screen Types",
+  "system.companyinfo.inner_copyright": "@:dictionary.private_env name(Chinese)",
+  "system.companyinfo.inner_copyright_en": "@:dictionary.private_env name(English)",
+  "system.companyinfo.inner_logo": "@:dictionary.private_env logo",
+  "system.companyinfo.inner_logo.extra": "Only .png（Width 64 * Height 64)",
   "system.companyinfo.monitor_dashboard_style.overview": "Cloud Management",
-  "system.companyinfo.monitor_dashboard_style.overview_private": "Private Cloud 1",
-  "system.companyinfo.monitor_dashboard_style.overview_private2": "Private Cloud 2",
+  "system.companyinfo.monitor_dashboard_style.overview_private": "@:dictionary.private_env 1",
+  "system.companyinfo.monitor_dashboard_style.overview_private2": "@:dictionary.private_env 2",
   "system.companyinfo.monitor_dashboard_style.overview_custom": "Default",
   "system.robot.shared": "The shared robot does not support this operation",
   "system.displayname_tip": "Please enter a displayname",
