@@ -73,6 +73,7 @@ export default {
       },
       zone: {
         label: this.$t('compute.text_270'),
+        hiddenField: 'region',
       },
       created_at: getCreatedAtFilter(),
     }
@@ -83,6 +84,7 @@ export default {
     }
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'loadbalancers',
         getParams: this.getParam,
@@ -92,6 +94,7 @@ export default {
         },
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'account', 'cluster', 'created_at'],
+        autoHiddenFilterKey: 'slb_hidden_columns',
       }),
       exportDataOptions: {
         items: [

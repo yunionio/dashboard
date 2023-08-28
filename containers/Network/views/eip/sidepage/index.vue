@@ -8,7 +8,7 @@
     :tabs="detailTabs"
     :loaded="loaded"
     @tab-change="handleTabChange">
-    <template v-slot:actions>
+    <template v-slot:actions v-if="showActions">
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
     <component
@@ -28,12 +28,12 @@
 </template>
 
 <script>
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import EipDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import EipDetail from './Detail'
 
 export default {
   name: 'EipSidePage',
@@ -61,6 +61,9 @@ export default {
         default:
           return ''
       }
+    },
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('eip_hidden_columns.perform_action')
     },
   },
 }
