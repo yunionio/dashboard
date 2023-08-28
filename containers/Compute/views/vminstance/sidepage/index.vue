@@ -45,6 +45,7 @@ import Actions from '@/components/PageList/Actions'
 import { hasPermission } from '@/utils/auth'
 import GpuList from '@Compute/views/gpu/components/List'
 import ScheduledtasksList from '@Cloudenv/views/scheduledtask/components/List'
+import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 import NetworkListForVmInstanceSidepage from './Network'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -55,7 +56,6 @@ import VmInstanceAlertSidepage from './Alert'
 import VmSnapshotSidepage from './Snapshot'
 import SecgroupList from './Secgroup'
 import DiskListForVmInstanceSidepage from './DiskList'
-import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 // import DiskSnapshotListForVmInstanceSidepage from '@Compute/views/snapshot/components/List'
 // import InstanceSnapshotListForVmInstanceSidepage from '@Compute/views/snapshot-instance/components/List'
 // import EipListForVmInstanceSidepage from './EipList'
@@ -113,6 +113,9 @@ export default {
     }
     if (isScopedPolicyMenuHidden('sub_hidden_menus.disk_snapshot') && isScopedPolicyMenuHidden('sub_hidden_menus.instance_snapshot')) {
       detailTabs = R.remove(R.findIndex(R.propEq('key', 'vm-snapshot-sidepage'))(detailTabs), 1, detailTabs)
+    }
+    if (isScopedPolicyMenuHidden('sub_hidden_menus.scheduledtask')) {
+      detailTabs = R.remove(R.findIndex(R.propEq('key', 'scheduledtasks-list'))(detailTabs), 1, detailTabs)
     }
     return {
       detailTabs,

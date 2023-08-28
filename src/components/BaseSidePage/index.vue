@@ -39,7 +39,7 @@
       <div class="side-page-header-tabs">
         <a-tabs :active-key="currentTab" @change="handleTabChange" :tab-bar-style="{ padding: '0 30px', marginBottom: 0 }" :animated="false">
           <a-tab-pane
-            v-for="item of tabs"
+            v-for="item of filteredTabs"
             :key="item.key"
             :tab="item.label"
             :disabled="hasError || item.disabled" />
@@ -70,6 +70,7 @@ import * as R from 'ramda'
 import { mapState } from 'vuex'
 import Clickoutside from '@/directives/clickoutside'
 import { getHttpErrorMessage } from '@/utils/error'
+import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 
 export default {
   name: 'BaseSidePage',
@@ -144,6 +145,17 @@ export default {
     isBillSidepage () {
       return this.windowId.startsWith('Bill')
     },
+    filteredTabs () {
+      const filteredTabs = []
+      if (this.tabs && this.tabs.length) {
+        this.tabs.map(item => {
+          if (!(item.key === 'event-drawer' && isScopedPolicyMenuHidden('sub_hidden_menus.log'))) {
+            filteredTabs.push(item)
+          }
+        })
+      }
+      return filteredTabs
+    },
   },
   watch: {
     sidepageLeft: {
@@ -158,8 +170,8 @@ export default {
   mounted () {
     this.$nextTick(() => {
       // document.body.style.overflow = ''
-      if (!this.currentTab && this.tabs && this.tabs.length > 0) {
-        this.handleTabChange(this.tabs[0].key)
+      if (!this.currentTab && this.filteredTabs && this.filteredTabs.length > 0) {
+        this.handleTabChange(this.filteredTabs[0].key)
       }
     })
   },
@@ -172,7 +184,7 @@ export default {
     },
     refreshDetailHandler () {
       this.refreshDetail = true
-      const idx = this.tabs.findIndex(item => item.key === this.currentTab)
+      const idx = this.filteredTabs.findIndex(item => item.key === this.currentTab)
       if (idx === 0) {
         this.$bus.$emit('refresh-detail')
       }
