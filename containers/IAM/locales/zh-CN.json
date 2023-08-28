@@ -26,9 +26,9 @@
   "system.text_24": "提示：新规则的应用范围与已有规则重复，将会覆盖已有规则",
   "system.text_25": "任意",
   "system.text_26": "镜像",
-  "system.text_27": "本地IDC",
-  "system.text_28": "私有云",
-  "system.text_29": "公有云",
+  "system.text_27": "@:dictionary.onpremise_env",
+  "system.text_28": "@:dictionary.private_env",
+  "system.text_29": "@:dictionary.public_env",
   "system.text_30": "虚拟机",
   "system.text_31": "裸金属服务器",
   "system.text_32": "配额应用规则：",
@@ -705,7 +705,7 @@
     },
     "common$global_http_proxy": {
       "label": "全局代理开关",
-      "desc": "如果开启，在下载套餐、下载公有云镜像列表、下载@:dictionary.rate、镜像市场列表展示、通过URL导入镜像、拉取公共镜像列表时将使用全局代理"
+      "desc": "如果开启，在下载套餐、下载@:dictionary.public_env镜像列表、下载@:dictionary.rate、镜像市场列表展示、通过URL导入镜像、拉取公共镜像列表时将使用全局代理"
     },
     "yunionapi$force_single_session_login": {
       "label": "单session登录开关",
@@ -713,15 +713,15 @@
     },
     "compute$enable_pre_allocate_ip_addr": {
       "label": "自动分配IP开关",
-      "desc": "打开后，新建资源时我们会自动分配IP，关闭后我们不再自动分配IP，且在本系统预留的IP无法保证不被分配！（仅限私有云及公有云）"
+      "desc": "打开后，新建资源时我们会自动分配IP，关闭后我们不再自动分配IP，且在本系统预留的IP无法保证不被分配！（仅限@:dictionary.private_env及@:dictionary.public_env）"
     },
     "compute$enable_auto_merge_security_group": {
       "label": "自动合并安全组",
-      "desc": "打开后，拉取云上安全组信息时，根据等效安全组规则，自动合并安全组！（仅限私有云及公有云）"
+      "desc": "打开后，拉取云上安全组信息时，根据等效安全组规则，自动合并安全组！（仅限@:dictionary.private_env及@:dictionary.public_env）"
     },
     "compute$cloudaccount_health_status_check": {
       "label": "云账号健康检查开关",
-      "desc": "打开后，会根据余额信息自动检查云账号是否具备创建资源的能力, 若是特殊账号可以关闭健康检查！（仅限公有云）"
+      "desc": "打开后，会根据余额信息自动检查云账号是否具备创建资源的能力, 若是特殊账号可以关闭健康检查！（仅限@:dictionary.public_env）"
     },
     "meter$exchange_rate_available": {
       "label": "多币种账单合并展示开关",
@@ -783,11 +783,11 @@
     },
     "compute$disable_sync_cloud_event": {
       "label": "云上日志同步开关",
-      "desc": "默认关闭，开启后将同步公有云上操作日志。"
+      "desc": "默认关闭，开启后将同步@:dictionary.public_env上操作日志。"
     },
     "compute$default_admin_security_group_id": {
       "label": "管理安全组ID",
-      "desc": "若设定，此后本地idc所创建的机器默认会绑定此指定的管理安全组，若之前的虚拟机没有绑定任何管理安全组，在系统下一次重启后会绑定此安全组，此管理安全组对普通用户不可见。"
+      "desc": "若设定，此后@:dictionary.onpremise_env所创建的机器默认会绑定此指定的管理安全组，若之前的虚拟机没有绑定任何管理安全组，在系统下一次重启后会绑定此安全组，此管理安全组对普通用户不可见。"
     },
     "yunionapi$hide_web_error_details": {
       "label": "错误详情隐藏开关",
@@ -856,7 +856,7 @@
   "system.webconsole": "站内信{0}",
   "system.role": "角色信息",
   "system.eport": "公网IP地址(个)",
-  "system.global_http_proxy": "如果开启，在下载套餐、下载公有云镜像列表、下载@:dictionary.rate、镜像市场列表展示、通过URL导入镜像、拉取公共镜像列表时将使用全局代理，云账号的代理服务需在多云管理模块单独配置",
+  "system.global_http_proxy": "如果开启，在下载套餐、下载@:dictionary.public_env镜像列表、下载@:dictionary.rate、镜像市场列表展示、通过URL导入镜像、拉取公共镜像列表时将使用全局代理，云账号的代理服务需在多云管理模块单独配置",
   "system.global_https_proxy_extra": "若请求的url是https，优先使用https代理",
   "system.global_http_proxy_extra": "建议https代理和http代理至少填写一个，可以为空，为空则代表直连",
   "system.global_https_proxy.label": "https代理",
@@ -983,15 +983,15 @@
   "system.companyinfo.monitor_dashboard_logo.extra": "仅支持.png格式（宽71 * 高19)",
   "system.companyinfo.copyright": "版权信息(中文)",
   "system.companyinfo.copyright_en": "版权信息(英文)",
-  "system.companyinfo.inner_copyright": "纳管内置私有云名称(中文)",
-  "system.companyinfo.inner_copyright_en": "纳管内置私有云名称(英文)",
-  "system.companyinfo.inner_logo": "纳管内置私有云logo",
+  "system.companyinfo.inner_copyright": "纳管内置@:dictionary.private_env名称(中文)",
+  "system.companyinfo.inner_copyright_en": "纳管内置@:dictionary.private_env名称(英文)",
+  "system.companyinfo.inner_logo": "纳管内置@:dictionary.private_envlogo",
   "system.companyinfo.inner_logo.extra": "仅支持.png格式（宽64 * 高64)",
   "system.companyinfo.font_color": "字体颜色",
   "system.companyinfo.monitor_dashboard_style": "监控大屏类型",
   "system.companyinfo.monitor_dashboard_style.overview": "云管",
-  "system.companyinfo.monitor_dashboard_style.overview_private": "私有云-1",
-  "system.companyinfo.monitor_dashboard_style.overview_private2": "私有云-2",
+  "system.companyinfo.monitor_dashboard_style.overview_private": "@:dictionary.private_env-1",
+  "system.companyinfo.monitor_dashboard_style.overview_private2": "@:dictionary.private_env-2",
   "system.companyinfo.monitor_dashboard_style.overview_custom": "默认",
   "system.robot.shared": "被共享的机器人不支持该操作",
   "system.displayname_tip": "请输入显示名",

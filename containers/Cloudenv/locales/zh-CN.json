@@ -163,9 +163,9 @@
   "cloudenv.text_119": "请导入JSON文件",
   "cloudenv.text_120": "只能上传json文件!",
   "cloudenv.text_121": "上传文件大小不超过2MB!",
-  "cloudenv.text_122": "公有云",
+  "cloudenv.text_122": "@:dictionary.public_env",
   "cloudenv.text_123": "对象存储",
-  "cloudenv.text_124": "私有云 & 虚拟化平台",
+  "cloudenv.text_124": "@:dictionary.private_env & 虚拟化平台",
   "cloudenv.text_125": "{0}#新建阿里云账号",
   "cloudenv.text_126": "{0}#新建azure账号",
   "cloudenv.text_127": "{0}#新建aws账号",
@@ -255,7 +255,7 @@
   "cloudenv.text_2041": "BigQuery表ID",
   "cloudenv.text_205": "如何获取账单存储桶URL",
   "cloudenv.text_206": "文件前缀",
-  "cloudenv.text_207": "一般为公有云的账户ID，用于筛选存储桶的账单文件。上述Bucket里面只有账单文件时，不需要关注该字段。",
+  "cloudenv.text_207": "一般为@:dictionary.public_env的账户ID，用于筛选存储桶的账单文件。上述Bucket里面只有账单文件时，不需要关注该字段。",
   "cloudenv.text_208": "使用量文件/Usage export",
   "cloudenv.text_209": "请正确输入使用量所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com",
   "cloudenv.text_210": "立即采集账单",
@@ -555,7 +555,7 @@
       "discount": "请设置优惠率"
     },
     "tooltip": {
-      "disable_set_discount": "非公有云账号不支持设置优惠率"
+      "disable_set_discount": "非@:dictionary.public_env账号不支持设置优惠率"
     },
     "create_form": {
       "saml_user_label": "开启免密登录",
@@ -658,7 +658,7 @@
   "cloudenv.cloudaccount.hcso.default_region": "默认区域",
   "cloudenv.cloudaccount.hcso.iam": "统一身份认证服务 端点",
   "cloudenv.cloudaccount.hcso.ecs": "弹性云服务 端点",
-  "cloudenv.cloudaccount.hcso.vpc": "虚拟私有云 端点",
+  "cloudenv.cloudaccount.hcso.vpc": "虚拟@:dictionary.private_env 端点",
   "cloudenv.cloudaccount.hcso.ims": "镜像服务 端点",
   "cloudenv.cloudaccount.hcso.evs": "云硬盘 端点",
   "cloudenv.cloudaccount.hcso.dcs": "分布式缓存服务 端点",
