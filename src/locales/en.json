@@ -1357,14 +1357,14 @@
     "create": "Create"
   },
   "env": {
-    "idc": "On-premise",
-    "private": "Private Cloud",
-    "public": "Public Cloud"
+    "idc": "@:dictionary.onpremise_env",
+    "private": "@:dictionary.private_env",
+    "public": "@:dictionary.public_env"
   },
   "cloud_env": {
-    "onpremise": "On-premise",
-    "private": "Private Cloud",
-    "public": "Public Cloud"
+    "onpremise": "@:dictionary.onpremise_env",
+    "private": "@:dictionary.private_env",
+    "public": "@:dictionary.public_env"
   },
   "usage": {
     "all.bucket_bytes": "Object storage capacity",
@@ -2195,7 +2195,7 @@
     "scalinggroups.disable": "If disabled, all scaling policies under the scaling group cannot be executed, but scaling policies can still be created.",
     "scalingpolicies.enable": "If enabled, the scaling policy will create or delete servers based on the policy settings.",
     "scalingpolicies.disable": "If disabled, the scaling policy in the disabled state will not take effect.",
-    "serverskus.disable": "When creating a local IDC or private cloud server, you cannot choose a disabled package.",
+    "serverskus.disable": "When creating a @:dictionary.onpremise_env or @:dictionary.private_env server, you cannot choose a disabled package.",
     "hosts.disable": "If disabled, new servers cannot be allocated on the host.",
     "physicalmachine.disable": "If disabled, physical machines cannot be used to create baremetal server.",
     "devtool_templates.disable": "If disabled, the operation and maintenance template cannot be associated with the server.",
@@ -2216,7 +2216,7 @@
       "title": "Unity",
       "messages": [
         "Unified template/API/scheduling/account system/monitoring/console/billing and metering",
-        "Realize the comprehensive management of physical machines/servers/containers/public cloud resources"
+        "Realize the comprehensive management of physical machines/servers/containers/@:dictionary.public_env resources"
       ]
     },
     {
@@ -2717,7 +2717,10 @@
     "rateset": "Ratesets",
     "isolated_device_models": "passthrough device type",
     "organization": "Organization",
-    "bastion_host": "Bastion Host"
+    "bastion_host": "Bastion Host",
+    "onpremise_env": "On-premise",
+    "private_env": "Private cloud",
+    "public_env": "Public cloud"
   },
   "res": {
     "role": "Role",
@@ -3149,9 +3152,9 @@
   "scope.text_71": "Please select",
   "scope.text_72": "Please select a region",
   "scope.text_73": "Add an available area",
-  "scope.text_74": "@:brand Private Cloud Platform",
-  "scope.text_75": "Public Cloud Management",
-  "scope.text_76": "Private Cloud & Virtualization Platform",
+  "scope.text_74": "@:brand @:dictionary.private_env Platform",
+  "scope.text_75": "@:dictionary.public_env Management",
+  "scope.text_76": "@:dictionary.private_env & Virtualization Platform",
   "scope.text_77": "Object Storage",
   "scope.text_78": "Container Management",
   "scope.text_79": "Container Cluster",
@@ -3191,7 +3194,7 @@
   "scope.text_113": "Click 'Function selection' to configure",
   "scope.text_114": "Select All",
   "scope.text_115": "This feature is only supported when the KVM platform is selected",
-  "scope.text_116": "Please select at least one of KVM, public cloud, private cloud or virtualization platform",
+  "scope.text_116": "Please select at least one of KVM, @:dictionary.public_env, @:dictionary.private_env or virtualization platform",
   "scope.text_117": "Delete Ceph Storage",
   "scope.text_118": "Associated Host",
   "scope.text_119": "Status",
@@ -3214,9 +3217,9 @@
   "scope.text_126": "Non-OneStack host: {0} CPU Nodes",
   "scope.licenses.cmp_server": "CMP license",
   "scope.licenses.cmp_server.status": "CMP license usage:",
-  "scope.licenses.cmp_host": "Managed Private Cloud host license",
-  "scope.licenses.cmp_host.status": "Managed Private Cloud host license usage:",
-  "scope.text_129": "Public cloud server: {0} (the average value of the past 7 days or the minimum value of the current value)",
+  "scope.licenses.cmp_host": "Managed @:dictionary.private_env host license",
+  "scope.licenses.cmp_host.status": "Managed @:dictionary.private_env host license usage:",
+  "scope.text_129": "@:dictionary.public_env server: {0} (the average value of the past 7 days or the minimum value of the current value)",
   "scope.text_130": "Non-OneStack host: {0} ({1}Slot)",
   "scope.text_132": "Authorization Information",
   "scope.text_133": "Upload License",
@@ -4061,12 +4064,12 @@
   "common.text00022": "The user saves the image combination of all the disks of a certain host on the @:brand platform, and the minimum disk quantity and capacity requirements are the same as the original host",
   "common.text00023": "Server Snapshot",
   "common.text00024": "The user saves all the disks of a host on the @:brand platform and the snapshot combination at the same time. The number of disks, capacity and media type must be consistent with the original host",
-  "common.text00025": "Public Cloud Image",
-  "common.text00026": "Standard image provided by public cloud platform",
-  "common.public_cloud_customized_image": "Public Cloud Custom Image",
-  "common.text00028": "Image uploaded by users on public cloud platform",
-  "common.text00029": "Private Cloud Image",
-  "common.text00030": "Image image provided by private cloud platform",
+  "common.text00025": "@:dictionary.public_env Image",
+  "common.text00026": "Standard image provided by @:dictionary.public_env platform",
+  "common.public_cloud_customized_image": "@:dictionary.public_env Custom Image",
+  "common.text00028": "Image uploaded by users on @:dictionary.public_env platform",
+  "common.text00029": "@:dictionary.private_env Image",
+  "common.text00030": "Image image provided by @:dictionary.private_env platform",
   "common.text00031": "VMware platform image",
   "common.text00032": "Image provided by VMware platform",
   "common.text00033": "Server Application",
@@ -5233,7 +5236,7 @@
   "license.feature.monitor": "@:license.module.monitor",
   "license.feature.bill": "Cost",
   "license.feature.auth": "IAM",
-  "license.group.onecloud": "Built-in Private Cloud Platform",
+  "license.group.onecloud": "Built-in @:dictionary.private_env Platform",
   "license.group.public": "@:scope.text_75",
   "license.group.private": "@:scope.text_76",
   "license.group.storage": "@:scope.text_77",
@@ -5251,7 +5254,7 @@
   "scope.auth.remove.history.user.btn": "Remove login ID",
   "scope.auth.outher.history.user.btn": "Use Another login ID",
   "scope.login.app.name": "Cloud Management Platform",
-  "scope.brand_private": "Built-in Private Cloud Platform",
+  "scope.brand_private": "Built-in @:dictionary.private_env Platform",
   "common.tag.sys_tag_tooltip": "System tag on the cloud. The operation is not supported",
   "common.export_pdf": "Export as PDF",
   "common.export_excel": "Export as Excel",
