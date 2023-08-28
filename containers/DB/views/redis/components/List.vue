@@ -43,6 +43,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'elasticcaches',
         getParams: this.getParam,
@@ -74,6 +75,7 @@ export default {
             label: this.$t('db.text_236'),
             dropdown: true,
             multiple: true,
+            hiddenField: 'engine',
             distinctField: {
               type: 'field',
               key: 'engine_version',
@@ -81,6 +83,7 @@ export default {
           },
           local_category: {
             label: this.$t('db.text_119'),
+            hiddenField: 'instance_type',
             dropdown: true,
             multiple: true,
             items: Object.keys(ENGINE_ARCH).map(key => {
@@ -93,6 +96,7 @@ export default {
           }),
           public_dns: getFilter({
             field: 'public_dns',
+            hiddenField: 'private_dns',
             title: this.$t('db.text_59'),
           }),
           region: {
@@ -102,6 +106,7 @@ export default {
         },
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'instance_type', 'created_at'],
+        autoHiddenFilterKey: 'redis_hidden_columns',
       }),
       exportDataOptions: {
         items: [

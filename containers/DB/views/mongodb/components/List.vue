@@ -32,6 +32,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'mongodbs',
         apiVersion: 'v1',
@@ -60,6 +61,7 @@ export default {
           projects: getTenantFilter(),
         },
         responseData: this.responseData,
+        autoHiddenFilterKey: 'mongodb_hidden_columns',
       }),
       exportDataOptions: {
         items: [

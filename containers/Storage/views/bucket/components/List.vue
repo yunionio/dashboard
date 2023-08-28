@@ -44,6 +44,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'buckets',
         getParams: this.getParam,
@@ -83,6 +84,7 @@ export default {
         },
         responseData: this.responseData,
         hiddenColumns: ['storage_class', 'account', 'public_scope'],
+        autoHiddenFilterKey: 'oss_hidden_columns',
       }),
       exportDataOptions: {
         items: [

@@ -131,11 +131,12 @@ export function getStatusFilter (params) {
   }
 }
 
-export function getTenantFilter () {
+export function getTenantFilter ({ hiddenField = 'tenant' } = {}) {
   return {
     label: i18n.t('res.project'),
     dropdown: true,
     multiple: true,
+    hiddenField,
     distinctField: {
       type: 'extra_field',
       key: 'tenant',
@@ -143,7 +144,7 @@ export function getTenantFilter () {
   }
 }
 
-export function getAccountFilter ({ label = i18n.t('res.cloudaccount'), distinctType = 'extra_field', field = 'account', formatter, getParams } = {}) {
+export function getAccountFilter ({ label = i18n.t('res.cloudaccount'), distinctType = 'extra_field', field = 'account', hiddenField = 'account', formatter, getParams } = {}) {
   const options = {
     label,
     dropdown: true,
@@ -152,6 +153,7 @@ export function getAccountFilter ({ label = i18n.t('res.cloudaccount'), distinct
       type: distinctType,
       key: field,
     },
+    hiddenField,
     mapper: data => {
       return data.map(item => {
         if (item.label && item.label === 'OneStack') {
@@ -172,11 +174,12 @@ export function getAccountFilter ({ label = i18n.t('res.cloudaccount'), distinct
   return options
 }
 
-export function getCloudProviderFilter () {
+export function getCloudProviderFilter ({ hiddenField = 'account' } = {}) {
   return {
     label: i18n.t('compute.text_653'),
     dropdown: true,
     multiple: true,
+    hiddenField,
     distinctField: {
       type: 'extra_field',
       key: 'manager',
@@ -281,11 +284,12 @@ export function getProjectFilter () {
   }
 }
 
-export function getDomainFilter (domain_key = 'domain') {
+export function getDomainFilter (domain_key = 'domain', hiddenField = 'tenant') {
   return {
     label: i18n.t('table.title.domain'),
     dropdown: true,
     multiple: true,
+    hiddenField,
     distinctField: {
       type: 'extra_field',
       key: domain_key,
@@ -294,10 +298,11 @@ export function getDomainFilter (domain_key = 'domain') {
   }
 }
 
-export function getProjectDomainFilter () {
+export function getProjectDomainFilter ({ hiddenField = 'tenant' } = {}) {
   return {
     label: i18n.t('dictionary.domain'),
     dropdown: true,
+    hiddenField,
     distinctField: {
       type: 'extra_field',
       key: 'domain',
@@ -482,21 +487,23 @@ export function getImageDistributionFilter () {
 }
 
 export function getDescriptionFilter (params = {}) {
-  const { label = i18n.t('table.title.desc'), field = 'description' } = params
+  const { label = i18n.t('table.title.desc'), field = 'description', hiddenField = 'name' } = params
   return {
     label,
     filter: true,
+    hiddenField,
     formatter: val => {
       return `${field}.contains('${val}')`
     },
   }
 }
 
-export function getGuestStatusFilter () {
+export function getGuestStatusFilter ({ hiddenField = 'guest_status' } = {}) {
   return {
     label: i18n.t('compute.guest.status'),
     dropdown: true,
     multiple: true,
+    hiddenField,
     distinctField: {
       type: 'extra_field',
       key: 'guest_status',

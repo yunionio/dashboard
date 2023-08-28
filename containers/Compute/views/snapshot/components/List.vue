@@ -45,6 +45,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'snapshots',
         getParams: this.getParam,
@@ -58,6 +59,7 @@ export default {
           status: getStatusFilter('snapshot'),
           server_id: {
             label: this.$t('res.server'),
+            hiddenField: 'guest',
           },
           brand: getBrandFilter(),
           projects: getTenantFilter(),
@@ -85,6 +87,7 @@ export default {
         },
         responseData: this.responseData,
         hiddenColumns: ['storage_type', 'created_at', 'os_arch'],
+        autoHiddenFilterKey: 'snapshot_hidden_columns',
       }),
       groupActions: [
         {
