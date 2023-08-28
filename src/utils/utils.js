@@ -1048,8 +1048,9 @@ export function getColorByCache () {
 
 export const getWorkflowParamter = (variables = {}, defaultValue = {}) => {
   const keys = Object.keys(variables)
-  const p_list = keys.filter(key => key.startsWith('paramter_'))
-  const paramterList = p_list.length ? p_list : ['paramter']
+  const paramKey = variables.parameter ? 'parameter' : 'paramter'
+  const p_list = keys.filter(key => key.startsWith(`${paramKey}_`))
+  const paramterList = p_list.length ? p_list : [paramKey]
   paramterList.sort()
   let paramter = ''
   paramterList.map(key => {
