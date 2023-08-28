@@ -136,6 +136,9 @@ export const ENABLE_USER_CUSTOM_DICTIONARY = [
   'policy',
   'schedtag',
   'rate',
+  'onpremise_env',
+  'private_env',
+  'public_env',
 ]
 
 export const chartColors = getColorByCache()

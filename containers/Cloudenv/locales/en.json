@@ -163,9 +163,9 @@
   "cloudenv.text_119": "Please import JSON file",
   "cloudenv.text_120": "Only JSON files allowed!",
   "cloudenv.text_121": "File size must not exceed 2MB!",
-  "cloudenv.text_122": "Public Cloud",
+  "cloudenv.text_122": "@:dictionary.public_env",
   "cloudenv.text_123": "Object Storage",
-  "cloudenv.text_124": "Private Cloud & Virtualization Platform",
+  "cloudenv.text_124": "@:dictionary.private_env & Virtualization Platform",
   "cloudenv.text_125": "{0}#create-alibaba-cloud-account",
   "cloudenv.text_126": "{0}#create-azure-account",
   "cloudenv.text_127": "{0}#create-aws-account",
@@ -253,7 +253,7 @@
   "cloudenv.text_2041": "BigQuery Table ID",
   "cloudenv.text_205": "How to get the billing bucket URL",
   "cloudenv.text_206": "File Prefix",
-  "cloudenv.text_207": "Generally, it is the account ID of the public cloud, which is used to filter the billing files of the bucket. When there is only a billing file in the above bucket, you do not need to pay attention to this field.",
+  "cloudenv.text_207": "Generally, it is the account ID of the @:dictionary.public_env, which is used to filter the billing files of the bucket. When there is only a billing file in the above bucket, you do not need to pay attention to this field.",
   "cloudenv.text_208": "Usage export file/Usage export",
   "cloudenv.text_209": "Please enter the URL of the bucket where the usage number is located, e.g. https://bucket-name.oss-cn-beijing.aliyuncs.com",
   "cloudenv.text_210": "Collect bills now",
@@ -553,7 +553,7 @@
       "discount": "Please set discount"
     },
     "tooltip": {
-      "disable_set_discount": "Non-public cloud accounts do not support setting discount rates"
+      "disable_set_discount": "Non-@:dictionary.public_env accounts do not support setting discount rates"
     },
     "create_form": {
       "saml_user_label": "Enable SSO Login",
