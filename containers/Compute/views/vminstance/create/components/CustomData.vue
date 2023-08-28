@@ -83,12 +83,8 @@ export default {
       reader.readAsText(file)// 读取文件的内容
 
       reader.onload = (info) => {
-        let result = info.target.result
-        try {
-          result = JSON.parse(info.target.result)
-        } catch (error) {
-          result = info.target.result
-        }
+        const result = info.target.result
+
         if (this.isKvm) {
           const isRight = this.checkFileData(result)
           if (!isRight) {
@@ -105,10 +101,16 @@ export default {
       }
       return false
     },
-    checkFileData (json) {
+    checkFileData (val) {
       let isRight = true
-      if (R.is(Array, json)) {
-        json.map(item => {
+      let result = {}
+      try {
+        result = JSON.parse(val)
+      } catch (error) {
+        result = val
+      }
+      if (R.is(Array, result)) {
+        result.map(item => {
           if (!item.path || !item.content || !item.action) {
             isRight = false
           }
@@ -129,10 +131,9 @@ export default {
       const { _value } = e.target
       try {
         const vstr = JSON.stringify(_value)
-        const varr = JSON.parse(vstr)
-        const isRight = this.checkFileData(varr)
-        if (!varr || isRight) {
-          this.customData = varr
+        const isRight = this.checkFileData(vstr)
+        if (isRight) {
+          this.customData = vstr
           this.errorTip = ''
         } else {
           this.errorTip = '格式错误'
@@ -155,10 +156,9 @@ export default {
           this.errorTip = ''
           return
         }
-        const varr = JSON.parse(_value)
-        const isRight = this.checkFileData(varr)
+        const isRight = this.checkFileData(_value)
         if (isRight) {
-          this.customData = varr
+          this.customData = _value
           this.errorTip = ''
         } else {
           this.errorTip = this.$t('compute.custom_data_error1')
