@@ -115,7 +115,7 @@ export default {
         },
         hidden: () => {
           if (this.$store.getters.isProjectMode) return true
-          return this.$isScopedPolicyMenuHidden('eip_hidden_columns.name')
+          return this.$isScopedPolicyMenuHidden('eip_hidden_columns.account')
         },
         formatter: ({ row }) => {
           return row.account || '-'

@@ -92,6 +92,7 @@ export default {
     })
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'vpcs',
         getParams: this.getParam,
@@ -99,6 +100,7 @@ export default {
         filterOptions,
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'wire_count', 'created_at'],
+        autoHiddenFilterKey: 'vpc_hidden_columns',
       }),
       exportDataOptions: {
         items: [

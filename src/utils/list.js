@@ -600,7 +600,7 @@ class CreateList {
     let ret = {}
     if (autoHiddenFilterKey) {
       for (const key in filterOptions) {
-        if (!this.ctx.$isScopedPolicyMenuHidden(`${autoHiddenFilterKey}.${filterOptions[key].hiddenFilterField || key}`)) {
+        if (!this.ctx.$isScopedPolicyMenuHidden(`${autoHiddenFilterKey}.${filterOptions[key].hiddenField || key}`)) {
           ret[key] = filterOptions[key]
         }
       }
