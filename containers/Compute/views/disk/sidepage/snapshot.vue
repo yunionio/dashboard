@@ -3,7 +3,9 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :showSingleActions="showActions"
+    :showGroupActions="showActions" />
 </template>
 
 <script>
@@ -38,6 +40,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: 'SnapshotListForDiskSidePage',
         resource: 'snapshots',
         steadyStatus: Object.values(expectStatus.disk).flat(),
@@ -58,19 +61,25 @@ export default {
             },
           },
         },
+        autoHiddenFilterKey: 'snapshot_hidden_columns',
       }),
       columns: [
-        getCopyWithContentTableColumn({ field: 'name', title: this.$t('compute.text_415') }),
+        getCopyWithContentTableColumn({
+          field: 'name',
+          title: this.$t('compute.text_415'),
+        }),
         {
           field: 'disk_name',
           title: this.$t('compute.text_100'),
           minWidth: 50,
+          hidden: () => this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.name'),
         },
-        getBrandTableColumn(),
+        getBrandTableColumn({ hidden: () => this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.brand') }),
         {
           field: 'size',
           title: this.$t('compute.text_397'),
           minWidth: 50,
+          hidden: () => this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.size'),
           formatter: ({ cellValue }) => {
             return sizestr(cellValue, 'M', 1024)
           },
@@ -82,8 +91,9 @@ export default {
           formatter: ({ cellValue }) => {
             return DISK_TYPES[cellValue]
           },
+          hidden: () => this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.disk_type'),
         },
-        getStatusTableColumn({ statusModule: 'snapshot' }),
+        getStatusTableColumn({ statusModule: 'snapshot', hidden: () => this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.status') }),
         {
           field: 'guest',
           title: this.$t('compute.text_463'),
@@ -99,6 +109,7 @@ export default {
               ]
             },
           },
+          hidden: () => this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.guest'),
         },
         {
           field: 'created_at',
@@ -107,6 +118,7 @@ export default {
           formatter: ({ cellValue }) => {
             return this.$moment(cellValue).format()
           },
+          hidden: () => this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.created_at'),
         },
       ],
       groupActions: [
@@ -156,6 +168,11 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('snapshot_hidden_columns.perform_action')
+    },
   },
   created () {
     this.list.fetchData()

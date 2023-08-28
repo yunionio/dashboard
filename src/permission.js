@@ -102,6 +102,7 @@ router.beforeEach(async (to, from, next) => {
         'disk_hidden_columns',
         'snapshot_hidden_columns',
         'eip_hidden_columns',
+        'network_hidden_columns',
         'oss_hidden_columns',
         'rds_hidden_columns',
         'redis_hidden_columns',

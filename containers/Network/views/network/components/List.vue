@@ -9,7 +9,8 @@
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
     :defaultSearchKey="defaultSearchKey"
-    :showGroupActions="showGroupActions" />
+    :showSingleActions="showActions"
+    :showGroupActions="showActions && showGroupActions" />
 </template>
 
 <script>
@@ -22,11 +23,11 @@ import GlobalSearchMixin from '@/mixins/globalSearch'
 import expectStatus from '@/constants/expectStatus'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import regexp from '@/utils/regexp'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import { PROVIDER_MAP } from '@/constants'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'NetworkList',
@@ -74,9 +75,11 @@ export default {
       description: getDescriptionFilter(),
       ip_match: {
         label: 'IP',
+        hiddenField: 'ip',
       },
       guest_ip_start: {
         label: this.$t('network.text_607'),
+        hiddenField: 'ip',
         filter: true,
         formatter: val => {
           return `guest_ip_start.contains(${val})`
@@ -84,6 +87,7 @@ export default {
       },
       guest_ip_end: {
         label: this.$t('network.text_608'),
+        hiddenField: 'ip',
         filter: true,
         formatter: val => {
           return `guest_ip_end.contains(${val})`
@@ -134,6 +138,7 @@ export default {
     })
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'networks',
         getParams: this.getParam,
@@ -141,6 +146,7 @@ export default {
         filterOptions,
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'vpc', 'wire', 'vlan_id', 'schedtag', 'account', 'public_scope', 'created_at'],
+        autoHiddenFilterKey: 'network_hidden_columns',
       }),
       exportDataOptions: {
         items: [
@@ -535,6 +541,9 @@ export default {
         return this.link(this.list.selectedItems)
       }
       return false
+    },
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('network_hidden_columns.perform_action')
     },
   },
   watch: {
