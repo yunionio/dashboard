@@ -29,6 +29,7 @@
 </template>
 <script>
 import * as R from 'ramda'
+import { HYPERVISORS_MAP } from '@/constants'
 import NetworkConfig from '@Compute/sections/ServerNetwork/NetworkConfig'
 import { checkIpInSegment } from '@Compute/utils/createServer'
 import expectStatus from '@/constants/expectStatus'
@@ -142,14 +143,19 @@ export default {
     networkParams () {
       const { data } = this.params
       const resItem = data && data.length > 0 ? data[0] : {}
-      return {
+      const params = {
         filter: 'server_type.notin(ipmi, pxe, eip)',
         usable: true,
         cloudregion: resItem.cloudregion_id,
         zone: resItem.zone_id,
         // host: resItem.host,
         scope: this.$store.getters.scope,
+        host_type: 'hypervisor',
       }
+      if ([HYPERVISORS_MAP.esxi.key].includes(resItem.hypervisor)) {
+        params.host_type = 'esxi'
+      }
+      return params
     },
     networkLimit () {
       return 8 - (this.params.total || 0)
