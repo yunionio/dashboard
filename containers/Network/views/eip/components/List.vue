@@ -9,7 +9,8 @@
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
     :defaultSearchKey="defaultSearchKey"
-    :showGroupActions="showGroupActions" />
+    :showSingleActions="showActions"
+    :showGroupActions="showActions && showGroupActions" />
 </template>
 
 <script>
@@ -129,6 +130,7 @@ export default {
     }
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'eips',
         getParams: this.getParam,
@@ -171,6 +173,7 @@ export default {
           },
           created_at: getCreatedAtFilter(),
         },
+        autoHiddenFilterKey: 'eip_hidden_columns',
         steadyStatus: Object.values(expectStatus.eip).flat(),
         responseData: this.responseData,
         hiddenColumns: this.hiddenColumns, // ['metadata', 'account'],
@@ -190,6 +193,9 @@ export default {
           ...this.columns,
         ],
       }
+    },
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('eip_hidden_columns.perform_action')
     },
   },
   watch: {

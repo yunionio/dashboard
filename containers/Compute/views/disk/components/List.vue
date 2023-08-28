@@ -217,6 +217,7 @@ export default {
       },
       guest_id: {
         label: this.$t('res.server'),
+        hiddenField: 'guest',
       },
       disk_type: {
         label: this.$t('table.title.disk_type'),
@@ -229,6 +230,7 @@ export default {
       },
       unused: {
         label: this.$t('table.title.disk_mounted'),
+        hiddenField: 'guest_count',
         dropdown: true,
         items: [
           { label: this.$t('compute.text_394'), key: false },
@@ -253,13 +255,14 @@ export default {
           return { label: MEDIUM_MAP[k], key: k }
         }),
       },
-      guest_status: getGuestStatusFilter(),
+      guest_status: getGuestStatusFilter({ hiddenField: 'guest' }),
     }
     for (let i = 0, len = this.hiddenFilterOptions.length; i < len; i++) {
       delete filterOptions[this.hiddenFilterOptions[i]]
     }
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'disks',
         getParams: this.getParam,
@@ -270,6 +273,7 @@ export default {
         },
         responseData: this.responseData,
         hiddenColumns: this.hiddenColumns, // ['metadata', 'disk_format', 'storage', 'medium_type', 'created_at'],
+        autoHiddenFilterKey: 'disk_hidden_columns',
       }),
       groupActions,
     }

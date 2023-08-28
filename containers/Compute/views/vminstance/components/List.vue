@@ -100,7 +100,7 @@ export default {
       brand: getBrandFilter('compute_engine_brands'),
       ip_addr: {
         label: 'IP',
-        hiddenFilterField: 'ips',
+        hiddenField: 'ips',
       },
       status: getStatusFilter('server'),
       power_states: getStatusFilter({ title: this.$t('compute.power_states'), statusModule: 'server', field: 'power_states' }),
@@ -135,6 +135,7 @@ export default {
         label: this.$t('table.title.type'),
         dropdown: true,
         multiple: true,
+        hiddenField: 'is_gpu',
         items: [
           { label: this.$t('compute.text_291', [this.$t('dictionary.server')]), key: 'normal' },
           { label: `USB${this.$t('dictionary.server')}`, key: 'usb' },

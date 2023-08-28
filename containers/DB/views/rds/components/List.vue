@@ -44,6 +44,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'dbinstances',
         getParams: this.getParam,
@@ -84,10 +85,11 @@ export default {
             title: this.$t('db.text_58'),
           }),
           connection_str: getFilter({
+            hiddenField: 'internal_connection_str',
             field: 'connection_str',
             title: this.$t('db.text_59'),
           }),
-          ip_addr: { label: this.$t('db.url_ip') },
+          ip_addr: { hiddenField: 'internal_connection_str', label: this.$t('db.url_ip') },
           region: {
             label: this.$t('db.text_40'),
           },
@@ -96,6 +98,7 @@ export default {
         },
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'vcpu_count', 'account', 'created_at'],
+        autoHiddenFilterKey: 'rds_hidden_columns',
       }),
       exportDataOptions: {
         items: [
