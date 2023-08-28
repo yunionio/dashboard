@@ -8,7 +8,7 @@
     :tabs="detailTabs"
     :loaded="loaded"
     @tab-change="handleTabChange">
-    <template v-slot:actions>
+    <template v-slot:actions v-if="showActions">
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
     <component
@@ -29,6 +29,10 @@
 </template>
 
 <script>
+import ReservedIpList from '@Network/views/reserved-ip/components/List'
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import NetworkDetail from './Detail'
@@ -38,10 +42,6 @@ import LbIp from './LbIp'
 import FlexIp from './FlexIp'
 import IPList from './IPList'
 import NetworkIpMacs from './NetworkIpMacs'
-import ReservedIpList from '@Network/views/reserved-ip/components/List'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
 
 export default {
   name: 'NetworkSidePage',
@@ -100,6 +100,9 @@ export default {
     },
     hiddenColumns () {
       return this.params.hiddenColumns || []
+    },
+    showActions () {
+      return !this.$isScopedPolicyMenuHidden('network_hidden_columns.perform_action')
     },
   },
   methods: {

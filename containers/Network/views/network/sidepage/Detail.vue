@@ -5,7 +5,8 @@
     :base-info="baseInfo"
     :extra-info="extraInfo"
     resource="networks"
-    status-module="network" />
+    status-module="network"
+    auto-hidden-columns-key="network_hidden_columns" />
 </template>
 
 <script>
@@ -54,7 +55,7 @@ export default {
         getPublicScopeTableColumn({ vm: this, resource: 'networks' }),
         getBrandTableColumn(),
         {
-          field: 'schedtags',
+          field: 'schedtag',
           title: this.$t('network.text_630'),
           formatter: ({ cellValue, row }) => {
             if (row.schedtags && row.schedtags.length > 0) {

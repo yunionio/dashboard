@@ -49,13 +49,19 @@ export default {
             return ret
           },
         },
+        hidden: () => this.$isScopedPolicyMenuHidden('network_hidden_columns.name'),
       },
-      getStatusTableColumn({ statusModule: 'network', vm: this }),
+      getStatusTableColumn({
+        statusModule: 'network',
+        vm: this,
+        hidden: () => this.$isScopedPolicyMenuHidden('network_hidden_columns.status'),
+      }),
       getTagTableColumn({
         onManager: this.onManager,
         resource: 'networks',
         columns: () => this.columns,
         editCheck: (row) => (row.provider || '').toLowerCase() !== 'bingocloud',
+        hidden: () => this.$isScopedPolicyMenuHidden('network_hidden_columns.metadata'),
       }),
       {
         field: 'server_type',
@@ -64,8 +70,15 @@ export default {
         formatter: ({ cellValue }) => {
           return this.$t('networkServerType')[cellValue] || i18n.t('network.text_507')
         },
+        hidden: () => this.$isScopedPolicyMenuHidden('network_hidden_columns.server_type'),
       },
-      getStatusTableColumn({ field: 'is_auto_alloc', statusModule: 'networIsAutoAlloc', title: i18n.t('common_498'), minWidth: 140 }),
+      getStatusTableColumn({
+        field: 'is_auto_alloc',
+        statusModule: 'networIsAutoAlloc',
+        title: i18n.t('common_498'),
+        minWidth: 140,
+        hidden: () => this.$isScopedPolicyMenuHidden('network_hidden_columns.is_auto_alloc'),
+      }),
       {
         field: 'ip',
         title: i18n.t('network.text_213'),
@@ -78,6 +91,7 @@ export default {
             ]
           },
         },
+        hidden: () => this.$isScopedPolicyMenuHidden('network_hidden_columns.ip'),
       },
       {
         field: 'ports',
@@ -92,21 +106,23 @@ export default {
             ]
           },
         },
+        hidden: () => this.$isScopedPolicyMenuHidden('network_hidden_columns.ports'),
       },
       getCopyWithContentTableColumn({
         field: 'vpc',
         title: 'VPC',
-        hidden: () => this.$store.getters.isProjectMode || this.hiddenColumns.includes('vpc'),
+        hidden: () => this.$store.getters.isProjectMode || this.hiddenColumns.includes('vpc') || this.$isScopedPolicyMenuHidden('network_hidden_columns.vpc'),
       }),
       getCopyWithContentTableColumn({
         field: 'wire',
         title: i18n.t('network.text_571'),
-        hidden: () => this.hiddenColumns.includes('wire'),
+        hidden: () => this.hiddenColumns.includes('wire') || this.$isScopedPolicyMenuHidden('network_hidden_columns.wire'),
       }),
       {
         field: 'vlan_id',
         title: 'VLAN',
         width: 60,
+        hidden: () => this.$isScopedPolicyMenuHidden('network_hidden_columns.vlan_id'),
       },
       {
         field: 'schedtag',
@@ -124,22 +140,29 @@ export default {
             ]
           },
         },
+        hidden: () => this.$isScopedPolicyMenuHidden('network_hidden_columns.schedtag'),
       },
       getBrandTableColumn({
-        hidden: () => this.hiddenColumns.includes('brand'),
+        hidden: () => this.hiddenColumns.includes('brand') || this.$isScopedPolicyMenuHidden('network_hidden_columns.brand'),
       }),
       getAccountTableColumn({
-        hidden: () => this.hiddenColumns.includes('account'),
+        hidden: () => this.hiddenColumns.includes('account') || this.$isScopedPolicyMenuHidden('network_hidden_columns.account'),
       }),
-      getPublicScopeTableColumn({ vm: this, resource: 'networks' }),
+      getPublicScopeTableColumn({
+        vm: this,
+        resource: 'networks',
+        hidden: () => this.$isScopedPolicyMenuHidden('network_hidden_columns.public_scope'),
+      }),
       getProjectTableColumn({
-        hidden: () => this.hiddenColumns.includes('tenant'),
+        hidden: () => this.hiddenColumns.includes('tenant') || this.$isScopedPolicyMenuHidden('network_hidden_columns.tenant'),
       }),
       getRegionTableColumn({
-        hidden: () => this.hiddenColumns.includes('region'),
+        hidden: () => this.hiddenColumns.includes('region') || this.$isScopedPolicyMenuHidden('network_hidden_columns.region'),
         vm: this,
       }),
-      getTimeTableColumn(),
+      getTimeTableColumn({
+        hidden: () => this.$isScopedPolicyMenuHidden('network_hidden_columns.created_at'),
+      }),
     ]
   },
   computed: {
