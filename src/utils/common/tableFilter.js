@@ -482,6 +482,7 @@ export function getImageDistributionFilter () {
       { label: 'Kylin', key: 'Kylin' },
       { label: 'NeoKylin', key: 'NeoKylin' },
       { label: 'RedHat', key: 'RedHat' },
+      { label: 'NFS', key: 'nfs' },
     ],
   }
 }
