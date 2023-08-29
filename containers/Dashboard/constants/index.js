@@ -37,42 +37,56 @@ export const USAGE_CONFIG = {
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
-  'storages.system.medium_type.ssd_capacity': {
+  'storages.medium_type.ssd': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
-  'storages.system.medium_type.hybrid_capacity': {
+  'storages.medium_type.rotate': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
-  'storages.system.medium_type.ssd_capacity_used': {
+  'all.disks.medium_type.ssd': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
-  'storages.system.medium_type.ssd_capacity_no_used': {
+  'all.disks.medium_type.rotate': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
-  'storages.system.medium_type.hybrid_capacity_used': {
+  'domain.storages.medium_type.ssd': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
-  'storages.system.medium_type.hybrid_capacity_no_used': {
+  'domain.storages.medium_type.rotate': {
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
+    scope: SCOPES_MAP.system.key,
+    clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
+  },
+  'domain.disks.medium_type.ssd': {
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
+    scope: SCOPES_MAP.system.key,
+    clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
+  },
+  'domain.disks.medium_type.rotate': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
