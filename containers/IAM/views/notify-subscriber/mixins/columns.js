@@ -66,6 +66,20 @@ export default {
           }
         },
       },
+      {
+        title: i18n.t('iam.notify_silent'),
+        field: 'group_key',
+        minWidth: 100,
+        formatter: ({ row }) => {
+          const { group_key = 0 } = row
+          if (!group_key) return '-'
+          if (group_key < 60) {
+            return i18n.t('iam.silent.minute', [group_key])
+          } else {
+            return i18n.t('iam.silent.hour', [parseInt(group_key / 60)])
+          }
+        },
+      },
     ]
   },
 }

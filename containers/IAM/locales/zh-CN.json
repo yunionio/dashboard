@@ -1043,5 +1043,9 @@
   "iam.disabled_join_project.tips": "权限不足，请点击跳过按钮",
   "iam.notify_topic.resource_release": "资源（含包年包月）即将到期释放发送通知",
   "iam.notify_topic.password_expire": "密码即将过期通知",
-  "iam.robots.json_validate": "输入参数格式错误，请输入合法的json格式，如：{\"test\":\"test\"}"
+  "iam.robots.json_validate": "输入参数格式错误，请输入合法的json格式，如：{\"test\":\"test\"}",
+  "iam.silent.minute": "{0}分钟",
+  "iam.silent.hour": "{0}小时",
+  "iam.notify_silent": "消息静默期",
+  "iam.notify_silent.tip": "第一次通知立即发送，相同资源静默期后才会发送第二次通知信息。"
 }
