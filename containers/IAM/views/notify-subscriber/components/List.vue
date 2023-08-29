@@ -70,14 +70,6 @@ export default {
           },
         },
       }),
-      exportDataOptions: {
-        items: [
-          { label: this.$t('system.notify.topic.receiver.resource_scope'), key: 'resource_scope' },
-          { label: this.$t('system.text_163'), key: 'enabled' },
-          { label: this.$t('system.text_48'), key: 'type' },
-          // todo: 接收对象
-        ],
-      },
       groupActions: [
         // 新建
         {
@@ -158,6 +150,15 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    exportDataOptions () {
+      return {
+        title: this.$t('system.notify.topic.receiver.management'),
+        downloadType: 'local',
+        items: this.columns,
+      }
+    },
   },
   created () {
     this.list.fetchData()
