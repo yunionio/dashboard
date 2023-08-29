@@ -451,6 +451,7 @@ export function getImageDistributionFilter () {
       { label: 'FreeBSD', key: 'FreeBSD' },
       { label: 'Linux', key: 'Linux' },
       { label: 'VMWare', key: 'VMWare' },
+      { label: 'NFS', key: 'nfs' },
     ],
   }
 }
