@@ -8,7 +8,7 @@
         </div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="() => visible = true" />
-          <router-link v-if="!edit" to="/servers" class="ml-2">
+          <router-link v-if="!edit" to="/vminstance" class="ml-2">
             <icon type="arrow-right" style="font-size:18px" />
           </router-link>
         </div>
