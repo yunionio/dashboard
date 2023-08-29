@@ -417,7 +417,6 @@ export default {
           if (this.hiddenKeys && this.hiddenKeys.length && this.hiddenKeys.includes(child.field)) {
             return false
           }
-          console.log(child.hiddenField || child.field)
           if (this.autoHiddenColumnsKey && this.$isScopedPolicyMenuHidden(`${this.autoHiddenColumnsKey}.${child.hiddenField || child.field}`)) {
             return false
           }
@@ -453,7 +452,6 @@ export default {
         }
       } catch (error) {
         val = '-'
-        console.log(item)
         console.warn(`Get field ${item.field} faied`)
         throw error
       }
