@@ -76,6 +76,19 @@
             :params="recipientParams"
             :select-props="{ placeholder: $t('system.text_232', [$t('system.notify.subscriber.type.robot')]), allowClear: false }" />
         </a-form-item>
+        <a-form-item :label="$t('iam.notify_silent')">
+          <a-row type="flex">
+            <a-col :flex="2" class="mr-2">
+              <a-select
+                v-decorator="decorators.group_key"
+                allow-clear
+                :placeholder="$t('common.tips.select', [$t('iam.notify_silent')])">
+                <a-select-option v-for="item in groupKeyOpts" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
+              </a-select>
+            </a-col>
+            <a-col :flex="3"><help-tooltip :text="$t('iam.notify_silent.tip')" /></a-col>
+          </a-row>
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -110,12 +123,14 @@ export default {
       initialValues.role = s.role ? s.role.id : ''
       initialValues.robot = s.robot ? s.robot.id : ''
       initialValues.receivers = s.receivers ? s.receivers.map(r => r.id) : []
+      initialValues.group_key = s.group_key || undefined
     } else {
       // create
       initialValues.scope = this.$store.getters.scope
       initialValues.resource_scope = this.$store.getters.scope
       initialValues.type = NOTIFY_SUBSCRIBER_TYPES[0].key
       initialValues.role_scope = 'system'
+      initialValues.group_key = 60
     }
 
     return {
@@ -206,6 +221,15 @@ export default {
             ],
           },
         ],
+        group_key: [
+          'group_key',
+          {
+            initialValue: initialValues.group_key,
+            rules: [
+              { required: false, message: `${this.$t('common.select')}` },
+            ],
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -215,6 +239,18 @@ export default {
           span: 5,
         },
       },
+      groupKeyOpts: [
+        { id: 5, name: this.$t('iam.silent.minute', [5]) },
+        { id: 10, name: this.$t('iam.silent.minute', [10]) },
+        { id: 15, name: this.$t('iam.silent.minute', [15]) },
+        { id: 30, name: this.$t('iam.silent.minute', [30]) },
+        { id: 1 * 60, name: this.$t('iam.silent.hour', [1]) },
+        { id: 2 * 60, name: this.$t('iam.silent.hour', [2]) },
+        { id: 3 * 60, name: this.$t('iam.silent.hour', [3]) },
+        { id: 6 * 60, name: this.$t('iam.silent.hour', [6]) },
+        { id: 12 * 60, name: this.$t('iam.silent.hour', [12]) },
+        { id: 24 * 60, name: this.$t('iam.silent.hour', [24]) },
+      ],
     }
   },
   computed: {
@@ -259,6 +295,7 @@ export default {
           role_scope: values.role_scope,
           role: values.role,
           robot: values.robot,
+          group_key: values.group_key || 0,
         }
         if (this.isUpdate) {
           // params.topic_id = this.params.data.topic_id || this.params.resId
