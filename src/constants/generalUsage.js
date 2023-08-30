@@ -215,13 +215,16 @@ export const usageMap = {
   diskAttachSsd: {
     field: {
       used: {
-        system: 'storages.system.medium_type.ssd_capacity_used',
+        system: 'all.disks.medium_type.ssd',
+        domain: 'domain.disks.medium_type.ssd',
       },
       remain: {
-        system: 'storages.system.medium_type.ssd_capacity_no_used',
+        system: obj => obj['storages.medium_type.ssd'] - obj['all.disks.medium_type.ssd'],
+        domain: obj => obj['domain.storages.medium_type.ssd'] - obj['domain.disks.medium_type.ssd'],
       },
       total: {
-        system: 'storages.system.medium_type.ssd_capacity',
+        system: 'storages.medium_type.ssd',
+        domain: 'domain.storages.medium_type.ssd',
       },
     },
     unit: 'M',
@@ -229,13 +232,16 @@ export const usageMap = {
   diskAttachHdd: {
     field: {
       used: {
-        system: 'storages.system.medium_type.hybrid_capacity_used',
+        system: 'all.disks.medium_type.rotate',
+        domain: 'domain.disks.medium_type.rotate',
       },
       remain: {
-        system: 'storages.system.medium_type.hybrid_capacity_no_used',
+        system: obj => obj['storages.medium_type.rotate'] - obj['all.disks.medium_type.rotate'],
+        domain: obj => obj['domain.storages.medium_type.rotate'] - obj['domain.disks.medium_type.rotate'],
       },
       total: {
-        system: 'storages.system.medium_type.hybrid_capacity',
+        system: 'storages.medium_type.rotate',
+        domain: 'domain.storages.medium_type.rotate',
       },
     },
     unit: 'M',

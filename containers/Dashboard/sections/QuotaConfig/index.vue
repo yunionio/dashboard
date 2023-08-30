@@ -78,13 +78,13 @@
         </a-select>
       </a-form-item>
     </a-form-item>
-    <a-form-item :label="$t('dashboard.host_type')" v-if="showHostType && isOneCloud">
+    <!--a-form-item :label="$t('dashboard.host_type')" v-if="showHostType && isOneCloud">
       <a-radio-group v-decorator="decorators.host_type">
         <a-radio-button value="all">{{ $t('dashboard.text_99') }}</a-radio-button>
         <a-radio-button value="hypervisor">{{ $t('dashboard.hypervisor') }}</a-radio-button>
         <a-radio-button value="baremetal">{{ $t('dashboard.baremetal') }}</a-radio-button>
       </a-radio-group>
-    </a-form-item>
+    </a-form-item-->
     <a-form-model-item :label="$t('iam.project_tag')" prop="__meta__" v-if="showTag">
       <pairs-tag v-decorator="decorators.tags" />
     </a-form-model-item>
@@ -174,10 +174,10 @@ export default {
       type: Boolean,
       default: false,
     },
-    showHostType: {
+    /* showHostType: {
       type: Boolean,
       default: false,
-    },
+    }, */
   },
   data () {
     return {
