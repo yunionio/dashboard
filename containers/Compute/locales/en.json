@@ -1703,5 +1703,6 @@
   "compute.tooltip.check_fake_baremetal_server": "This operation is not supported on the machine",
   "compute.storage.check_status.account_health_status": "Cloud account health status is abnormal",
   "compute.storage.check_status.account_status": "Cloud account status is abnormal",
-  "compute.storage.check_status.host_status": "Host service or status is abnormal"
+  "compute.storage.check_status.host_status": "Host service or status is abnormal",
+  "compute.vmware.transfer.message": "Prompt message: The migration host must belong to the same Layer 2 network and the target host must be in normal state"
 }

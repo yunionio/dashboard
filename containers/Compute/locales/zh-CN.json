@@ -1706,5 +1706,6 @@
   "compute.tooltip.check_fake_baremetal_server": "托管的机器不支持该操作",
   "compute.storage.check_status.account_health_status": "云账号健康状态异常",
   "compute.storage.check_status.account_status": "云账号状态异常",
-  "compute.storage.check_status.host_status": "宿主机服务或状态异常"
+  "compute.storage.check_status.host_status": "宿主机服务或状态异常",
+  "compute.vmware.transfer.message": "提示信息：迁移宿主机需属于同一个二层网络且目标宿主机状态正常"
 }
