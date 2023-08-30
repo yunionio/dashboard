@@ -109,6 +109,11 @@ export default {
       }
     },
   },
+  created () {
+    if (this.$appConfig.isPrivate) {
+      this.fetchBastionHosts()
+    }
+  },
   methods: {
     changeHandle (v) {
       this.bastionHostEnable = v

@@ -357,6 +357,9 @@ export default {
       ]
       return showCustomDataHypervisors.includes(this.form.fd.hypervisor || this.hypervisor)
     },
+    isOpenSourceVersion () {
+      return !this.$appConfig.isPrivate
+    },
   },
   created () {
     this.zoneM = new Manager('zones')
