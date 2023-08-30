@@ -7,12 +7,25 @@
       resource="storages"
       @change="change"
       :params="{ ...storageParams, $t: diskKey }"
-      :options="options" />
+      :options="options">
+      <template #optionLabelTemplate="{ item }">
+        <div>
+          <div class="d-flex">
+            <span class="text-truncate flex-fill mr-2" :title="item.name">{{ item.name }}</span>
+            <span style="color: #8492a6; font-size: 13px">{{ item.capacityLabel }}</span>
+          </div>
+          <div class="mt-1" v-if="item.statusErrors && item.statusErrors.length > 0">
+            <a-tag color="red" v-for="(err, idx) in item.statusErrors" :key="idx">{{ err }}</a-tag>
+          </div>
+        </div>
+      </template>
+    </base-select>
   </a-form-item>
 </template>
 
 <script>
 import * as R from 'ramda'
+import { sizestr } from '@/utils/utils'
 
 export default {
   name: 'DiskStorageSelect',
@@ -100,7 +113,16 @@ export default {
       try {
         const { data } = await new this.$Manager('storages', 'v1').list({ params: { ...this.storageParams, $t: this.diskKey } })
         const list = R.type(data) === 'Array' ? data : (R.type(data) === 'Object' && (data.data || []))
-        this.opts = list
+        this.opts = list.map((o, idx) => {
+          const statusErrors = this.getStatusErrors(o)
+
+          return {
+            ...o,
+            capacityLabel: this.getCapacityLabel(o),
+            __disabled: statusErrors.length > 0,
+            statusErrors,
+          }
+        })
         this.$nextTick(() => {
           this.filterOptions()
         })
@@ -162,6 +184,30 @@ export default {
         }
       }
       this.options = filterdList
+    },
+    getCapacityLabel (val) {
+      const capacity = sizestr(val.capacity, 'M', 1024)
+      const actual_capacity_used = val.actual_capacity_used ? sizestr(val.actual_capacity_used, 'M', 1024) : '-'
+      const allocated = sizestr(val.used_capacity, 'M', 1024)
+
+      return `${this.$t('storage.text_180', [capacity])} / ${this.$t('storage.text_181', [allocated])} / ${this.$t('storage.text_178', [actual_capacity_used])}`
+    },
+    getStatusErrors (val) {
+      const statusErrors = []
+
+      if (val.account_health_status && !['normal', 'no permission'].includes(val.account_health_status)) {
+        statusErrors.push(this.$t('compute.storage.check_status.account_health_status'))
+      }
+      if (val.account_status && val.account_status !== 'connected') {
+        statusErrors.push(this.$t('compute.storage.check_status.account_status'))
+      }
+      const isSomeHostOk = val.hosts.some(item => {
+        return item.host_status === 'online' && item.status === 'running'
+      })
+      if (!isSomeHostOk) {
+        statusErrors.push(this.$t('compute.storage.check_status.host_status'))
+      }
+      return statusErrors
     },
   },
 }
