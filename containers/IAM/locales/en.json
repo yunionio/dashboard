@@ -1039,5 +1039,15 @@
   "iam.silent.minute": "{0} minute(s)",
   "iam.silent.hour": "{0} hour(s)",
   "iam.notify_silent": "Message silence period",
-  "iam.notify_silent.tip": "The first notification will be sent immediately, and the second notification information will only be sent after the same resource silence period."
+  "iam.notify_silent.tip": "The first notification will be sent immediately, and the second notification information will only be sent after the same resource silence period.",
+  "iam.notify_time": "Notification time",
+  "iam.modify_notify_time": "Modify notification time",
+  "iam.notify_one_day": "Send notification {0} before expiration",
+  "iam.notify_some_day": "Send notifications separately before expiration {0}",
+  "iam.notify_time.some_day": "{0} day(s)",
+  "iam.message_subscription": "Message subscription",
+  "iam.before_expiration": "",
+  "iam.day": "day(s) before expiration",
+  "iam.add_notify_time": "Increase notification time",
+  "iam.notify_time_not_repeat": "Notification time is duplicated"
 }
