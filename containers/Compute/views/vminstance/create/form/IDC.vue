@@ -513,7 +513,7 @@ export default {
       let key = systemDiskType.key || ''
       const params = {
         ...this.scopeParams,
-        usable: true, // 包含了 enable:true, status为online的数据
+        // usable: true, // 包含了 enable:true, status为online的数据
         brand: HYPERVISORS_MAP[this.form.fd.hypervisor]?.brand, // kvm,vmware支持指定存储
         manager: this.form.fd.prefer_manager,
       }

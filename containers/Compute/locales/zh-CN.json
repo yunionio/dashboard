@@ -1705,5 +1705,8 @@
   "compute.tooltip.check_some_status_transfer": "请选择相同状态的虚拟机",
   "compute.tooltip.check_status_transfer": "请选择状态为运行中、关机的虚拟机",
   "compute.tooltip.check_ready_status_transfer": "请选择状态为关机状态的虚拟机",
-  "compute.tooltip.check_fake_baremetal_server": "托管的机器不支持该操作"
+  "compute.tooltip.check_fake_baremetal_server": "托管的机器不支持该操作",
+  "compute.storage.check_status.account_health_status": "云账号健康状态异常",
+  "compute.storage.check_status.account_status": "云账号状态异常",
+  "compute.storage.check_status.host_status": "宿主机服务或状态异常"
 }
