@@ -1035,5 +1035,9 @@
   "iam.domain_tag": "Domain tags",
   "iam.disabled_join_project.tips": "Insufficient permissions, please click the skip button",
   "iam.notify_topic.resource_release": "Notification of impending release of resources (including annual/monthly packages)",
-  "iam.notify_topic.password_expire": "Notification of password expiration"
+  "iam.notify_topic.password_expire": "Notification of password expiration",
+  "iam.silent.minute": "{0} minute(s)",
+  "iam.silent.hour": "{0} hour(s)",
+  "iam.notify_silent": "Message silence period",
+  "iam.notify_silent.tip": "The first notification will be sent immediately, and the second notification information will only be sent after the same resource silence period."
 }
