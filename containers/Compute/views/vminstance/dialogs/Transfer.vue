@@ -20,9 +20,7 @@
             v-decorator="decorators.skip_cpu_check" />
         </a-form-item>
         <a-form-item
-          :label="$t('compute.text_111')"
-          :validate-status="message ? 'warning' : hostValidateStatus"
-          :help="message || hostValidateMsg">
+          :label="$t('compute.text_111')">
           <list-select
             v-decorator="decorators.host"
             :list-props="resourceProps"
@@ -32,6 +30,7 @@
             :dialog-params="{ title: $t('compute.text_111'), width: 1060 }"
             :tab-props="tabProps"
             @change="hostChangeHandle" />
+            <div :class="[hostValidateStatus]" style="line-height: 20px; color: rgba(0,0,0,.45);">{{ message || hostValidateMsg }}</div>
         </a-form-item>
         <template v-if="isKvm && isAllRunning">
           <a-form-item>
@@ -55,6 +54,7 @@
 import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { HYPERVISORS_MAP } from '@/constants'
 import ListSelect from '@/sections/ListSelect'
 import MigrationBandwidth from '@Compute/sections/MigrationBandwidth'
 import ResourceProps from '../mixins/resourceProps'
@@ -67,6 +67,8 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin, ResourceProps],
   data () {
+    const isVMware = this.params.data[0].hypervisor === HYPERVISORS_MAP.esxi.key
+
     return {
       loading: false,
       form: {
@@ -87,7 +89,7 @@ export default {
           'host',
           {
             rules: [
-              { required: false, message: this.$t('compute.text_314'), trigger: 'change' },
+              { required: isVMware, message: this.$t('compute.text_314'), trigger: 'change' },
             ],
           },
         ],
@@ -139,7 +141,10 @@ export default {
       return this.params.data.length === 1
     },
     isKvm () {
-      return this.firstData.hypervisor === 'kvm'
+      return this.firstData.hypervisor === HYPERVISORS_MAP.kvm.key
+    },
+    isVMware () {
+      return this.firstData.hypervisor === HYPERVISORS_MAP.esxi.key
     },
     hostsParams () {
       let hostType = 'hypervisor'
@@ -192,12 +197,14 @@ export default {
       })
     },
     hostValidateStatus () {
+      if (this.message) return 'warning-color'
       if (this.forcastData && this.hostsOptions?.length === 0) {
-        return 'error'
+        return 'error-color'
       }
-      return 'success'
+      return 'info-color'
     },
     hostValidateMsg () {
+      if (this.isVMware) return this.$t('compute.vmware.transfer.message')
       if (this.forcastData && this.hostsOptions?.length === 0) {
         return this.$t('compute.transfer_host')
       }
