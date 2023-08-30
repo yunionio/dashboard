@@ -7,12 +7,25 @@
       resource="storages"
       @change="change"
       :params="{ ...storageParams, $t: diskKey }"
-      :options="options" />
+      :options="options">
+      <template #optionLabelTemplate="{ item }">
+        <div>
+          <div class="d-flex">
+            <span class="text-truncate flex-fill mr-2" :title="item.name">{{ item.name }}</span>
+            <span style="color: #8492a6; font-size: 13px">{{ item.capacityLabel }}</span>
+          </div>
+          <div class="mt-1">
+            <a-tag color="red">云账号异常</a-tag><a-tag color="red">宿主机异常</a-tag>
+          </div>
+        </div>
+      </template>
+    </base-select>
   </a-form-item>
 </template>
 
 <script>
 import * as R from 'ramda'
+import { sizestr } from '@/utils/utils'
 
 export default {
   name: 'DiskStorageSelect',
@@ -100,7 +113,13 @@ export default {
       try {
         const { data } = await new this.$Manager('storages', 'v1').list({ params: { ...this.storageParams, $t: this.diskKey } })
         const list = R.type(data) === 'Array' ? data : (R.type(data) === 'Object' && (data.data || []))
-        this.opts = list
+        this.opts = list.map((o, idx) => {
+          return {
+            ...o,
+            capacityLabel: this.getCapacityLabel(o),
+            __disabled: idx === 1,
+          }
+        })
         this.$nextTick(() => {
           this.filterOptions()
         })
@@ -162,6 +181,14 @@ export default {
         }
       }
       this.options = filterdList
+    },
+    getCapacityLabel (val) {
+      const capacity = sizestr(val.capacity, 'M', 1024)
+      const allowedBrands = ['VMware', 'OneCloud']
+      const actual_capacity_used = allowedBrands.includes(val.brand) ? sizestr(val.actual_capacity_used, 'M', 1024) : '-'
+      const allocated = sizestr(val.used_capacity, 'M', 1024)
+
+      return `${this.$t('storage.text_180', [capacity])} / ${this.$t('storage.text_181', [allocated])} / ${this.$t('storage.text_178', [actual_capacity_used])}`
     },
   },
 }
