@@ -7,7 +7,8 @@
       resource="storages"
       @change="change"
       :params="{ ...storageParams, $t: diskKey }"
-      :options="options">
+      :options="options"
+      :dropdownMenuStyle="{ 'min-height': '20px' }">
       <template #optionLabelTemplate="{ item }">
         <div>
           <div class="d-flex">
@@ -113,7 +114,7 @@ export default {
       try {
         const { data } = await new this.$Manager('storages', 'v1').list({ params: { ...this.storageParams, $t: this.diskKey } })
         const list = R.type(data) === 'Array' ? data : (R.type(data) === 'Object' && (data.data || []))
-        this.opts = list.map((o, idx) => {
+        const opts = list.map((o, idx) => {
           const statusErrors = this.getStatusErrors(o)
 
           return {
@@ -121,8 +122,12 @@ export default {
             capacityLabel: this.getCapacityLabel(o),
             __disabled: statusErrors.length > 0,
             statusErrors,
+            order: statusErrors.length > 0 ? -1 : idx,
+            optClass: 'storage-option-item',
           }
         })
+        opts.sort((a, b) => b.order - a.order)
+        this.opts = opts
         this.$nextTick(() => {
           this.filterOptions()
         })
@@ -219,6 +224,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss">
+.storage-option-item {
+  min-height: 46px;
+}
 </style>

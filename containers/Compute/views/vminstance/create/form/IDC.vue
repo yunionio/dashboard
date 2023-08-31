@@ -551,7 +551,7 @@ export default {
       }
       const params = {
         ...this.scopeParams,
-        usable: true, // 包含了 host status online 和 account 正常
+        // usable: true, // 包含了 host status online 和 account 正常
         brand: HYPERVISORS_MAP[this.form.fd.hypervisor]?.brand, // kvm,vmware支持指定存储
         manager: this.form.fd.prefer_manager,
       }
