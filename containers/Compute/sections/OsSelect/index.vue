@@ -23,7 +23,8 @@
       :imageCloudproviderDisabled="imageCloudproviderDisabled"
       :sys-disk-size="sysDiskSize"
       :form="form"
-      :edit="edit" />
+      :edit="edit"
+      :hypervisor="hypervisor" />
   </div>
 </template>
 
@@ -183,7 +184,6 @@ export default {
   },
   methods: {
     imageInput (image) {
-      console.log(image)
       this.$emit('change', image)
     },
     change (e) {

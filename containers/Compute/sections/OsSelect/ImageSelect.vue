@@ -41,6 +41,7 @@ import _ from 'lodash'
 import ImageSelectTemplate from './ImageSelectTemplate'
 import { SELECT_IMAGE_KEY_SUFFIX } from '@Compute/constants'
 import { Manager } from '@/utils/manager'
+import { HYPERVISORS_MAP } from '@/constants'
 import { IMAGES_TYPE_MAP, OS_TYPE_OPTION_MAP } from '@/constants/compute'
 import storage from '@/utils/storage'
 import { uuid } from '@/utils/utils'
@@ -102,6 +103,9 @@ export default {
     edit: {
       type: Boolean,
       default: false,
+    },
+    hypervisor: {
+      type: String,
     },
   },
   data () {
@@ -224,6 +228,9 @@ export default {
     },
     isShowErrorInfo () {
       return this.uefi && this.form.fd.os === OS_TYPE_OPTION_MAP.Windows.value
+    },
+    isCloudpods () {
+      return this.hypervisor === HYPERVISORS_MAP.cloudpods.key
     },
   },
   watch: {
@@ -425,7 +432,7 @@ export default {
       if (this.isVMware) {
         params.image_type = 'system'
       }
-      if (this.isPrivate || this.isVMware) {
+      if ((this.isPrivate && !this.isCloudpods) || this.isVMware) {
         params.project_domain = this.form.fd.domain?.key || this.$store.getters.userInfo.projectDomainId
       }
       this.loading = true
