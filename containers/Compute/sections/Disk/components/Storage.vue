@@ -195,13 +195,19 @@ export default {
     getStatusErrors (val) {
       const statusErrors = []
 
+      if (val.status !== 'online') {
+        statusErrors.push(this.$t('compute.storage.check_status.status'))
+      }
+      if (!val.enabled) {
+        statusErrors.push(this.$t('compute.storage.check_status.enabled'))
+      }
       if (val.account_health_status && !['normal', 'no permission'].includes(val.account_health_status)) {
         statusErrors.push(this.$t('compute.storage.check_status.account_health_status'))
       }
       if (val.account_status && val.account_status !== 'connected') {
         statusErrors.push(this.$t('compute.storage.check_status.account_status'))
       }
-      const isSomeHostOk = val.hosts.some(item => {
+      const isSomeHostOk = val.hosts?.some(item => {
         return item.host_status === 'online' && item.status === 'running'
       })
       if (!isSomeHostOk) {
