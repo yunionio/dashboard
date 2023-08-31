@@ -25,7 +25,7 @@
         </a-select-option>
       </slot>
       <template v-else>
-        <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :label="getLabel(item)" :disabled="item.__disabled">
+        <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :label="getLabel(item)" :disabled="item.__disabled" :class="item.optClass">
           <option-label-prefix :nameKey="nameKey" :data="item" />
           <slot name="optionLabelTemplate" v-bind:item="item" />
         </a-select-option>
