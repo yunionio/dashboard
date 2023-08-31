@@ -27,6 +27,12 @@ export default {
     id: String,
     data: Object,
     getParams: [Function, Object],
+    serverColumns: {
+      type: Array,
+      default () {
+        return []
+      },
+    },
   },
   data () {
     const that = this
@@ -39,8 +45,8 @@ export default {
               this.createDialog('VmSetSecgroupDialog', {
                 vm: this,
                 data: [that.data],
-                columns: this.columns,
-                manager: new this.$Manager('servers'),
+                columns: that.serverColumns,
+                manager: new that.$Manager('servers'),
               })
             },
           },
