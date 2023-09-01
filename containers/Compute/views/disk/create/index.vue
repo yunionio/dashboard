@@ -4,7 +4,7 @@
     <a-form
       class="mt-3"
       :form="form.fc">
-      <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" class="mb-0" v-bind="formItemLayout">
+      <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
       <area-selects
@@ -37,16 +37,27 @@
               </a-select-option>
             </a-select>
           </a-col>
-          <a-col :span="5">
+          <a-col :span="2">
             <a-form-item>
               <a-tooltip :title="tooltip" placement="top">
                 <a-input-number :min="minDiskData" :max="maxDiskData" :step="step" v-decorator="decorators.size" /> GB
               </a-tooltip>
             </a-form-item>
           </a-col>
+          <a-col :span="5">
+            <div v-if="isIDC" class="d-flex">
+              <disk-storage-select
+                v-if="showStorage"
+                style="min-width: 480px; max-width: 500px;"
+                :decorators="decorators"
+                :form="form"
+                :storageParams="storageParams" />
+              <a-button class="mt-1" type="link" @click="showStorage = !showStorage">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
+            </div>
+          </a-col>
         </a-row>
       </a-form-item>
-      <a-form-item :label="$t('common.choose.server.label')" v-bind="formItemLayout" v-if="isIDC && isLocalDisk">
+      <a-form-item :label="$t('common.choose.server.label')" v-bind="formItemLayout" v-if="isIDC">
         <host-server :form="form" :decorators="decorators" />
       </a-form-item>
       <a-form-item v-if="enableEncryption" v-bind="formItemLayout" :label="$t('compute.disk.encryption')" :extra="$t('compute.disk.encryption.extra')">
@@ -96,6 +107,7 @@ import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import { MEDIUM_MAP, CUSTOM_STORAGE_TYPES, STORAGE_TYPES } from '@Compute/constants'
 import Tag from '@/sections/Tag'
 import EncryptKeys from '@Compute/sections/encryptkeys'
+import DiskStorageSelect from '@Compute/sections/Disk/components/Storage'
 import BottomBar from './components/BottomBar'
 
 import HostServer from './components/HostServer'
@@ -109,6 +121,7 @@ export default {
     Tag,
     EncryptKeys,
     HostServer,
+    DiskStorageSelect,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -241,6 +254,15 @@ export default {
         },
         host: ['host'],
         server: ['server'],
+        storage: [
+          'storage',
+          {
+            rules: [{
+              required: true,
+              message: i18n.t('compute.text_1351'),
+            }],
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -264,6 +286,7 @@ export default {
       regionList: {},
       zoneList: {},
       instance_capabilities: [],
+      showStorage: false,
     }
   },
   computed: {
@@ -415,6 +438,23 @@ export default {
     },
     isPublic () {
       return this.cloudEnv === CLOUD_ENVS.public
+    },
+    storageParams () {
+      const params = {
+        project_domain: this.form.fd.domain,
+        zone: this.cloudproviderParams?.zone,
+      }
+      const storageVal = this.storageItem.value?.toLowerCase()
+      if (storageVal) {
+        // 磁盘区分介质
+        const storage_type = storageVal?.split('__')[0]
+        const medium_type = storageVal?.split('__')[1]
+        params.filter = [
+            `storage_type.contains("${storage_type}")`,
+            `medium_type.contains("${medium_type}")`,
+        ]
+      }
+      return params
     },
   },
   watch: {
