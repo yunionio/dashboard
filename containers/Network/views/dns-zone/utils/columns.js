@@ -16,7 +16,7 @@ export const getVpcCountTableColumns = () => {
 
 export const getDnsRecordsetCountTableColumns = () => {
   return {
-    field: 'dns_recordset_count',
+    field: 'dns_record_count',
     title: i18n.t('network.text_718'),
   }
 }

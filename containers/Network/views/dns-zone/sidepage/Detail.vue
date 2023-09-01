@@ -5,7 +5,6 @@
     :base-info="baseInfo"
     resource="dns_zones"
     statusModule="dnszone"
-    :hiddenKeys="['tenant']"
     :nameProps="{edit: false}" />
 </template>
 
@@ -31,10 +30,10 @@ export default {
       baseInfo: [
         getZoneTypeTableColumns(),
         {
-          field: 'dns_recordset_count',
+          field: 'dns_record_count',
           title: this.$t('network.text_718'),
           formatter: ({ row }) => {
-            return <a onClick={ () => this.$emit('tab-change', 'dns-recordset-list-for-dns-zone-sidepage') }>{row.dns_recordset_count}</a>
+            return <a onClick={ () => this.$emit('tab-change', 'dns-recordset-list-for-dns-zone-sidepage') }>{row.dns_record_count}</a>
           },
         },
         {

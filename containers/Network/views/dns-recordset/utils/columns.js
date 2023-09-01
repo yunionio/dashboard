@@ -27,39 +27,47 @@ export const getTrafficPoliciesTableColumns = () => {
     field: 'traffic_policies',
     title: i18n.t('common_696'),
     width: 220,
-    type: 'expand',
     slots: {
-      default: ({ row }) => {
-        if (!row.traffic_policies) return i18n.t('common_701', [0])
-        return i18n.t('common_701', [row.traffic_policies.length])
-      },
-      content: ({ row }, h) => {
+      default: ({ row }, h) => {
+        if (row.cloud_env === 'onpremise') return '-'
         const trafficPolicieList = []
-        const { traffic_policies } = row
         const generateContent = (item, idx) => {
           const con = []
-          if (item.provider) {
-            con.push(policyParamsMap.provider[item.provider])
-          }
           if (item.policy_type) {
             con.push(policyParamsMap.policy_type[item.policy_type])
           }
           if (item.policy_value) {
             con.push(policyParamsMap.policy_value[item.policy_value] || item.policy_value)
           }
-          return `${i18n.t('common_698')}${idx + 1}: ${con.join('/')}`
+          return con.join('/')
         }
-        if (!traffic_policies || traffic_policies.length === 0) {
+        if (!row.policy_type) {
           trafficPolicieList.push(
-            <div>{ i18n.t('common_700') }</div>,
+            <div>{i18n.t('common_700')}</div>,
           )
         } else {
-          return traffic_policies.map((item, idx) => {
-            return <a-tag color="pink">{ generateContent(item, idx) }</a-tag>
-          })
+          return [<a-tag color="pink">{generateContent(row)}</a-tag>]
         }
         return trafficPolicieList
       },
+    },
+    formatter: ({ row }) => {
+      if (row.cloud_env === 'onpremise') return '-'
+      const generateContent = (item, idx) => {
+        const con = []
+        if (item.policy_type) {
+          con.push(policyParamsMap.policy_type[item.policy_type])
+        }
+        if (item.policy_value) {
+          con.push(policyParamsMap.policy_value[item.policy_value] || item.policy_value)
+        }
+        return con.join('/')
+      }
+      if (!row.policy_type) {
+        return i18n.t('common_700')
+      } else {
+        return generateContent(row)
+      }
     },
   }
 }

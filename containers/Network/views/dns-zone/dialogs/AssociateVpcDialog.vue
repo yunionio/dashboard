@@ -98,6 +98,9 @@ export default {
         cloudregion_id: this.regionId,
         filter: 'provider.in(Aws, Aliyun, OneCloud)',
       }
+      if (this.params.data[0].manager_id) {
+        params.manager_id = this.params.data[0].manager_id
+      }
       if (this.isAdminMode) {
         params.project_domain = this.params.data[0].project_domain
         delete params.scope

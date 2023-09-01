@@ -69,41 +69,15 @@
           </span>
           <a-input-number v-decorator="decorators.mx_priority" :min="1" :max="50" />
         </a-form-item>
-        <a-form-item>
-          <span slot="label">
-            {{ $t('common_696') }}
-            <a-tooltip class="item" effect="dark" placement="top">
-              <a-icon type="info-circle" />
-              <div slot="title">{{$t('network.text_740')}}</div>
-            </a-tooltip>
-          </span>
+        <a-form-item v-if="isPublic" :label="$t('common_696')" class="mb-0">
           <a-row
             :gutter="4"
-            :key="item.key"
-            class="record-list mb-3"
-            v-for="(item, idx) in trafficPolicies">
-            <a-col :span="8">
+            class="record-list mb-3">
+            <a-col :span="12">
               <a-form-item>
-                <a-select
-                  showSearch
-                  :filterOption="filterOption"
-                  v-decorator="decorators.provider(item.key)"
-                  @change="(val) => providerChangeHandle(val, item)"
-                  @dropdownVisibleChange="(open) => { dropdownVisibleChangeHandle(open, item) }">
-                  <a-select-option
-                    :key="i"
-                    :value="item.value"
-                    v-for="(item, i) in item.providers">
-                    {{item.label}}
-                  </a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col :span="8">
-              <a-form-item>
-                <a-select v-decorator="decorators.policy_type(item.key)" @change="(val) => policyTypeChangeHandle(val, item)">
+                <a-select v-decorator="decorators.policy_type" @change="policyTypeChangeHandle">
                   <template
-                      v-for="(item, i) in item.policy_types">
+                      v-for="(item, i) in policyTypeOpts">
                     <a-select-option
                       :key="i"
                       :value="item.value"
@@ -114,30 +88,20 @@
                 </a-select>
               </a-form-item>
             </a-col>
-            <a-col :span="6">
+            <a-col :span="12">
               <a-form-item>
-                <a-input v-if="item.policy_type === 'Weighted'" v-decorator="decorators.policy_txtvalue(item.key)" />
-                <a-select v-else :disabled="item.policy_type === 'Simple' || item.policy_type === 'MultiValueAnswer'" v-decorator="decorators.policy_value(item.key)">
+                <a-input v-if="form.fd.policy_type === 'Weighted'" v-decorator="decorators.policy_txtvalue" />
+                <a-select v-else :disabled="form.fd.policy_type === 'Simple' || form.fd.policy_type === 'MultiValueAnswer'" v-decorator="decorators.policy_value">
                   <a-select-option
                     :key="i"
                     :value="item.value"
-                    v-for="(item, i) in item.policy_values">
+                    v-for="(item, i) in policyValueOpts">
                     {{item.label}}
                   </a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
-            <a-col :span="2">
-              <a-button v-show="!item.isHiddenDelete" shape="circle" icon="minus" size="small" @click="() => remove(item.key, idx)" class="mt-2" />
-            </a-col>
           </a-row>
-          <div class="d-flex align-items-center mt-1" v-if="options.providers.length > trafficPolicies.length">
-            <a-spin v-if="loading.trafficPolicy" />
-            <template v-else>
-              <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
-              <a-button type="link" @click="add">{{$t('common_697')}}</a-button>
-            </template>
-          </div>
         </a-form-item>
         <a-form-item :label="$t('compute.text_1154')" class="mb-0">
           <tag v-decorator="decorators.tag" :allowNoValue="false" />
@@ -153,7 +117,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { uuid } from '@/utils/utils'
 import validateForm, { validate } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -171,6 +134,7 @@ export default {
     const dnsTypes = getDnsTypes(this.params.detailData)
     const dnsProviders = getDnsProviders(providers, this.params.detailData)
     const ttls = getTtls(this.params.detailData)
+    const initPolicyType = this.params.data ? this.params.data[0]?.policy_type || 'Simple' : 'Simple'
 
     const checkDnsValue = (rule, value, callback) => {
       if (this.form.fd.dns_type === 'A') {
@@ -267,8 +231,9 @@ export default {
       form: {
         fc: this.$form.createForm(this, { onValuesChange: this.onValuesChange }),
         fd: {
+          provider: '',
           dns_type: 'A',
-          policy_type: '',
+          policy_type: initPolicyType,
         },
       },
       decorators: {
@@ -312,8 +277,8 @@ export default {
             initialValue: 300,
           },
         ],
-        provider: (k) => ([
-          `provider[${k}]`,
+        provider: [
+          'provider',
           {
             initialValue: '',
             validateTrigger: ['change', 'blur'],
@@ -322,31 +287,31 @@ export default {
               message: this.$t('network.text_334', [this.$t('common_283')]),
             }],
           },
-        ]),
-        policy_type: (k) => ([
-          `policy_type[${k}]`,
+        ],
+        policy_type: [
+          'policy_type',
           {
-            initialValue: '',
+            initialValue: initPolicyType,
             validateTrigger: ['change', 'blur'],
             rules: [{
               required: true,
               message: this.$t('network.text_334', [this.$t('common_713')]),
             }],
           },
-        ]),
-        policy_value: (k) => ([
-          `policy_value[${k}]`,
+        ],
+        policy_value: [
+          'policy_value',
           {
             initialValue: '',
           },
-        ]),
-        policy_txtvalue: (k) => ([
-          `policy_txtvalue[${k}]`,
+        ],
+        policy_txtvalue: [
+          'policy_txtvalue',
           {
             initialValue: '',
             rules: [{ validator: checkPolicyTxtValue }],
           },
-        ]),
+        ],
         tag: [
           'tag',
           {
@@ -375,6 +340,9 @@ export default {
     },
     isPublicZone () {
       return this.zoneType === 'PublicZone'
+    },
+    isPublic () {
+      return this.params.detailData.cloud_env === 'public'
     },
     ttlRange () {
       if (this.isPublicZone) {
@@ -408,52 +376,21 @@ export default {
     exsitProviders () {
       return this.trafficPolicies.map(v => v.provider)
     },
+    policyTypeOpts () {
+      return this.getPublicTypes(this.params.detailData.provider, this.zoneType)
+    },
+    policyValueOpts () {
+      return this.getPublicValues(this.params.detailData.provider, this.form.fd.policy_type)
+    },
   },
   created () {
-    this.recordsetManager = new this.$Manager('dns_recordsets')
+    this.recordsetManager = new this.$Manager('dnsrecords')
   },
   async mounted () {
     await this.fetchTrafficPolicies()
     this.backfillData()
   },
   methods: {
-    add (val) {
-      const uid = uuid()
-      const provider = this.form.fc.getFieldsValue().provider || {}
-      const providerValues = Object.values(provider)
-      const _providers = this.options.providers.filter(item => !providerValues.includes(item.value))
-      const _provider = val.provider || _providers[0].value
-      const policy_types = this.getPublicTypes(_provider, this.zoneType)
-      const curPolicyType = val.policy_type || policy_types[0].value
-      const policy_values = this.getPublicValues(_provider, curPolicyType)
-
-      this.trafficPolicies.push({
-        key: uid,
-        provider: _provider,
-        providers: _providers,
-        policy_types: policy_types,
-        policy_type: curPolicyType,
-        policy_values: policy_values,
-        isHiddenDelete: val.isHiddenDelete,
-      })
-
-      this.form.fc.getFieldDecorator(`provider[${uid}]`, this.decorators.provider(uid)[1])
-      this.form.fc.getFieldDecorator(`policy_type[${uid}]`, this.decorators.policy_type(uid)[1])
-      this.form.fc.getFieldDecorator(`policy_value[${uid}]`, this.decorators.policy_value(uid)[1])
-      this.form.fc.getFieldDecorator(`policy_txtvalue[${uid}]`, this.decorators.policy_txtvalue(uid)[1])
-
-      this.$nextTick(() => {
-        this.form.fc.setFieldsValue({
-          [`provider[${uid}]`]: _provider,
-          [`policy_type[${uid}]`]: curPolicyType,
-          [`policy_value[${uid}]`]: val.policy_value || '',
-          [`policy_txtvalue[${uid}]`]: val.policy_value || '',
-        })
-      })
-    },
-    remove (k, idx) {
-      this.trafficPolicies.splice(idx, 1)
-    },
     doCreate (data) {
       if (this.params.type === 'create') {
         return this.recordsetManager.create({ data })
@@ -478,49 +415,43 @@ export default {
         this.loading.submit = false
       }
     },
-    policyTypeChangeHandle (val, item) {
-      item.policy_type = val
-      item.policy_values = this.getPublicValues(item.provider, val)
+    policyTypeChangeHandle (val) {
       this.$nextTick(() => {
-        if (item.policy_values.length > 0) {
+        if (this.policyValueOpts.length > 0) {
           this.form.fc.setFieldsValue({
-            [`policy_value[${item.key}]`]: item.policy_values[0].value,
+            policy_value: this.policyValueOpts[0].value,
           })
           this.form.fc.setFieldsValue({
-            [`policy_txtvalue[${item.key}]`]: item.policy_values[0].value,
+            policy_txtvalue: this.policyValueOpts[0].value,
           })
         } else {
           this.form.fc.setFieldsValue({
-            [`policy_value[${item.key}]`]: '',
+            policy_value: '',
           })
           this.form.fc.setFieldsValue({
-            [`policy_txtvalue[${item.key}]`]: '',
+            policy_txtvalue: '',
           })
         }
       })
     },
     generateData (values) {
-      const { name, dns_type, dns_value, ttl, provider, policy_type, policy_value, policy_txtvalue, mx_priority } = values
+      const { name, dns_type, dns_value, ttl, policy_type, policy_value, policy_txtvalue, mx_priority } = values
       const { id } = this.params.detailData
-      const trafficPolicies = this.trafficPolicies.map((item) => {
-        return {
-          provider: provider[item.key],
-          policy_type: policy_type[item.key],
-          policy_value: item.policy_type === 'Weighted' ? policy_txtvalue[item.key] : policy_value[item.key] || '',
-        }
-      })
       const data = {
         name,
         dns_type,
         dns_value,
         ttl,
-        traffic_policies: trafficPolicies,
         dns_zone_id: id,
         enabled: true,
         __meta__: values.tag,
       }
       if (this.isMX) {
         data.mx_priority = mx_priority
+      }
+      if (this.isPublic) {
+        data.policy_type = policy_type
+        data.policy_value = policy_type === 'Weighted' ? policy_txtvalue : policy_value
       }
       return data
     },
@@ -530,14 +461,7 @@ export default {
       }
     },
     _updateFormValue (val) {
-      const { name, dns_type, dns_value, ttl, traffic_policies = [], mx_priority } = val
-
-      traffic_policies.forEach((item) => {
-        this.add({
-          ...item,
-          isHiddenDelete: this.isUpdate,
-        })
-      })
+      const { name, dns_type, dns_value, ttl, mx_priority, policy_type, policy_value } = val
       this.$nextTick(() => {
         let _name = ''
         if (this.isUpdate) {
@@ -548,9 +472,15 @@ export default {
           dns_type,
           dns_value,
           ttl,
+          policy_type,
         }
         if (dns_type === 'MX') {
           data.mx_priority = mx_priority
+        }
+        if (policy_type === 'Weighted') {
+          data.policy_txtvalue = policy_value
+        } else if (policy_type !== 'MultiValueAnswer' && policy_type !== 'Simple') {
+          data.policy_value = policy_value
         }
         this.form.fc.setFieldsValue(data)
       })
@@ -576,6 +506,7 @@ export default {
     getPublicTypes (provider, zoneType) {
       let types = []
       if (!this.dnsZoneCapabilityData) return []
+      if (!provider) return []
       if (this.dnsZoneCapabilityData[provider] && this.dnsZoneCapabilityData[provider].policy_types) {
         types = this.dnsZoneCapabilityData[provider].policy_types[zoneType] || []
         types = types.filter((item) => {
@@ -622,31 +553,6 @@ export default {
       this.$nextTick(() => {
         this.form.fc.validateFields(['dns_value'], { force: true })
       })
-    },
-    providerChangeHandle (val, item) {
-      item.provider = val
-      item.policy_types = this.getPublicTypes(val, this.zoneType)
-      this.$nextTick(() => {
-        if (item.policy_types.length > 0) {
-          this.form.fc.setFieldsValue({
-            [`policy_type[${item.key}]`]: item.policy_types[0].value,
-          })
-          this.policyTypeChangeHandle(item.policy_types[0].value, item)
-        } else {
-          this.form.fc.setFieldsValue({
-            [`policy_type[${item.key}]`]: '',
-          })
-          this.policyTypeChangeHandle('', item)
-        }
-      })
-    },
-    dropdownVisibleChangeHandle (open, item) {
-      if (open) {
-        const newProviders = this.options.providers.filter((v) => {
-          return !this.exsitProviders.includes(v.value) || v.value === item.provider
-        })
-        item.providers = newProviders
-      }
     },
     filterOption (input, option) {
       return (
