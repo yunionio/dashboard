@@ -1,13 +1,15 @@
 <template>
   <div>
-   <page-header :title="$t('dictionary.dns_zone')" />
+   <page-header :title="$t('dictionary.dns_zone')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
    <page-body>
-     <list :id="listId" />
+     <list :id="listId" :cloudEnv="cloudEnv" />
    </page-body>
   </div>
 </template>
 
 <script>
+import _ from 'lodash'
+import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import List from './components/List'
 
 export default {
@@ -16,8 +18,12 @@ export default {
     List,
   },
   data () {
+    const cloudEnvOptions = getCloudEnvOptions('compute_engine_brands').filter(val => ['onpremise', 'public'].includes(val.key))
+    const cloudEnv = this.$route.params?.cloudEnv
     return {
       listId: 'DnsZoneList',
+      cloudEnvOptions,
+      cloudEnv: cloudEnv || _.get(cloudEnvOptions, '[0].key'),
     }
   },
 }

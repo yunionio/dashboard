@@ -31,7 +31,7 @@ export default {
         },
       }),
       getEnabledTableColumn(),
-      getTagTableColumn({ onManager: this.onManager, resource: 'dns_recordsets', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'dnsrecords', columns: () => this.columns }),
       getDnsTypeTableColumns(),
       getDnsValueTableColumns(),
       getTrafficPoliciesTableColumns(),

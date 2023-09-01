@@ -58,11 +58,11 @@ export default {
       const detailTabs = [
         { label: this.$t('network.text_67'), key: 'dns-zone-detail' },
         { label: this.$t('common_663'), key: 'dns-recordset-list-for-dns-zone-sidepage' },
-        { label: this.$t('network.text_316'), key: 'dns-zonecache-list-for-dns-zone-sidepage' },
+        // { label: this.$t('network.text_316'), key: 'dns-zonecache-list-for-dns-zone-sidepage' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ]
       if (data.zone_type === 'PrivateZone') {
-        detailTabs.splice(2, 0, { label: this.$t('network.text_719'), key: 'dns-associate-vpc-list' })
+        detailTabs.splice(1, 0, { label: this.$t('network.text_719'), key: 'dns-associate-vpc-list' })
       }
       return detailTabs
     },

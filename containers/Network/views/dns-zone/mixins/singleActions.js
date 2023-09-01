@@ -55,37 +55,37 @@ export default {
                 return ret
               },
             },
-            {
-              label: this.$t('network.text_721'),
-              permission: 'dns_zones_sync_recordsets',
-              action: () => {
-                this.createDialog('DeleteResDialog', {
-                  vm: this,
-                  title: this.$t('network.text_721'),
-                  name: this.$t('dictionary.dns_zone'),
-                  data: [obj],
-                  columns: this.columns,
-                  onManager: this.onManager,
-                  alert: this.$t('network.text_761'),
-                  ok: () => {
-                    this.onManager('performAction', {
-                      steadyStatus: ['available'],
-                      id: obj.id,
-                      managerArgs: {
-                        action: 'sync-recordsets',
-                      },
-                    })
-                  },
-                })
-              },
-              meta: () => {
-                const ret = this.$isOwner(obj)
-                if (!ret.validate) return ret
-                return {
-                  validate: !['sync_record_sets'].includes(obj.status),
-                }
-              },
-            },
+            // {
+            //   label: this.$t('network.text_721'),
+            //   permission: 'dns_zones_sync_recordsets',
+            //   action: () => {
+            //     this.createDialog('DeleteResDialog', {
+            //       vm: this,
+            //       title: this.$t('network.text_721'),
+            //       name: this.$t('dictionary.dns_zone'),
+            //       data: [obj],
+            //       columns: this.columns,
+            //       onManager: this.onManager,
+            //       alert: this.$t('network.text_761'),
+            //       ok: () => {
+            //         this.onManager('performAction', {
+            //           steadyStatus: ['available'],
+            //           id: obj.id,
+            //           managerArgs: {
+            //             action: 'sync-recordsets',
+            //           },
+            //         })
+            //       },
+            //     })
+            //   },
+            //   meta: () => {
+            //     const ret = this.$isOwner(obj)
+            //     if (!ret.validate) return ret
+            //     return {
+            //       validate: !['sync_record_sets'].includes(obj.status),
+            //     }
+            //   },
+            // },
             getDomainChangeOwnerAction(this, {
               name: this.$t('dictionary.dns_zone'),
               resource: 'dns_zones',

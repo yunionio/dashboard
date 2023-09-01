@@ -3,7 +3,7 @@
     :on-manager="onManager"
     :data="data"
     :base-info="baseInfo"
-    resource="dns_recordsets"
+    resource="dnsrecords"
     :hiddenKeys="['tenant', 'project_domain', 'status']"
     :nameProps="{edit: false}" />
 </template>
@@ -13,6 +13,7 @@ import {
   getDnsTypeTableColumns,
   getDnsValueTableColumns,
   getTtlTableColumns,
+  getTrafficPoliciesTableColumns,
 } from '../utils/columns'
 import {
   getEnabledTableColumn,
@@ -35,6 +36,7 @@ export default {
         getDnsTypeTableColumns(),
         getDnsValueTableColumns(),
         getTtlTableColumns(),
+        getTrafficPoliciesTableColumns(),
         getEnabledTableColumn(),
       ],
       extraInfo: [],

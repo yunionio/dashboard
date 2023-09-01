@@ -644,13 +644,13 @@ export const getSearchMaps = (searchRes = {}) => {
       },
       resData: {},
     },
-    dns_recordsets: {
-      menu_key: 'dns_recordsets',
-      res_name: 'dns_recordsets',
-      label: i18n.t('dictionary.dns_recordsets'),
-      id: 'dns_recordsets',
+    dnsrecords: {
+      menu_key: 'dnsrecords',
+      res_name: 'dnsrecords',
+      label: i18n.t('dictionary.dnsrecords'),
+      id: 'dnsrecords',
       component: 'DnsRecordSetList',
-      hasPermission: hasPermission({ key: 'dns_recordsets_list' }),
+      hasPermission: hasPermission({ key: 'dnsrecords_list' }),
       params: {
         common: {
           ...commonSearchQuery,
