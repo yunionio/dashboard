@@ -341,11 +341,11 @@ export default {
       const params = {
         limit: 0,
         brand: this.form.fd.provider,
-        cloudregion: this.form.fd.cloudregion,
+        cloudregion_id: this.form.fd.cloudregion?.key || this.form.fd.cloudregion,
         ...this.scopeParams,
       }
       if (this.form.fd.zone) {
-        params.zone = this.form.fd.zone
+        params.zone_id = this.form.fd.zone?.key || this.form.fd.zone
       }
       return params
     },
