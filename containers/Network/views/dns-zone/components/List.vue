@@ -21,6 +21,10 @@ import {
   getStatusFilter,
   getDescriptionFilter,
   getCreatedAtFilter,
+  getBrandFilter,
+  getTenantFilter,
+  getAccountFilter,
+  getCloudProviderFilter,
 } from '@/utils/common/tableFilter'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -34,6 +38,7 @@ export default {
     getParams: {
       type: [Function, Object],
     },
+    cloudEnv: String,
   },
   data () {
     return {
@@ -57,6 +62,9 @@ export default {
           },
           description: getDescriptionFilter(),
           status: getStatusFilter('dnszone'),
+          brand: getBrandFilter(),
+          account: getAccountFilter(),
+          manager: getCloudProviderFilter(),
           zone_type: {
             label: this.$t('network.text_717'),
             dropdown: true,
@@ -71,42 +79,22 @@ export default {
             },
           },
           project_domains: getDomainFilter(),
+          tenant: getTenantFilter(),
           created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('network.text_21'), key: 'name' },
-          { label: this.$t('network.text_717'), key: 'zone_type' },
-          { label: this.$t('network.text_718'), key: 'dns_recordset_count' },
-          { label: this.$t('network.text_719'), key: 'vpc_count' },
-          { label: this.$t('network.text_27'), key: 'status' },
-          {
-            label: this.$t('common_101'),
-            key: 'public_scope',
-            hidden: () => {
-              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('vpcs'))
-            },
-          },
-          { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
-          { label: this.$t('common.createdAt'), key: 'created_at' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('network.text_26'),
           permission: 'dns_zones_create',
           action: () => {
-            // this.createDialog('DnsZoneCreateDialog', {
-            //   title: this.$t('common_661'),
-            //   onManager: this.onManager,
-            //   refresh: this.refresh,
-            // })
             this.$router.push({
-              path: `${this.$route.path}/create`,
+              name: 'DnsZoneCreate',
+              params: {
+                cloudEnv: this.cloudEnv,
+              },
             })
           },
           meta: () => {
@@ -169,6 +157,22 @@ export default {
       ],
     }
   },
+  computed: {
+    exportDataOptions () {
+      return {
+        downloadType: 'local',
+        title: this.$t('dictionary.dns_zone'),
+        items: this.columns,
+      }
+    },
+  },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
+  },
   created () {
     this.initSidePageTab('dns-zone-detail')
     this.list.fetchData()
@@ -182,6 +186,7 @@ export default {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
         detail: true,
       }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
     handleOpenSidepage (row, tab) {

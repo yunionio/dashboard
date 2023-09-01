@@ -6,8 +6,10 @@ import {
 } from '../utils/columns'
 import {
   getNameDescriptionTableColumn,
+  getBrandTableColumn,
   getPublicScopeTableColumn,
-  getProjectDomainTableColumn,
+  getProjectTableColumn,
+  getAccountTableColumn,
   getTagTableColumn,
   getStatusTableColumn,
   getTimeTableColumn,
@@ -34,12 +36,14 @@ export default {
         },
       }),
       getTagTableColumn({ onManager: this.onManager, resource: 'dns_zones', columns: () => this.columns }),
+      getBrandTableColumn(),
       getZoneTypeTableColumns(),
       getDnsRecordsetCountTableColumns(),
       getVpcCountTableColumns(),
       getStatusTableColumn({ statusModule: 'dnszone', vm: this }),
       getPublicScopeTableColumn({ vm: this, resource: 'dns_zones' }),
-      getProjectDomainTableColumn(),
+      getAccountTableColumn(),
+      getProjectTableColumn(),
       getTimeTableColumn(),
     ]
   },

@@ -33,7 +33,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'dns_recordsets',
+        resource: 'dnsrecords',
         getParams: {
           ...this.getParams,
           details: true,
@@ -145,7 +145,7 @@ export default {
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'DnsRecordSetSidePage', {
         id: row.id,
-        resource: 'dns_recordsets',
+        resource: 'dnsrecords',
       }, {
         list: this.list,
       })
