@@ -485,9 +485,11 @@ export default {
       }
       this._addDomainProject(data)
       this._providerDiff(data)
-      await this.cloudaccountsM.performClassAction({
-        action: 'check-create-data',
-        data: data,
+      await this.cloudaccountsM.create({
+        data: {
+          ...data,
+          dry_run: true,
+        },
       })
     },
     async doCreateCloudaccountByRegion () {

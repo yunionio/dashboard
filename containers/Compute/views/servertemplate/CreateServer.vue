@@ -137,8 +137,8 @@ export default {
     },
     async checkCreateData (fd) {
       try {
-        const data = { generate_name: fd.generate_name, ...this.serverConfig }
-        const res = new this.$Manager('servers').performAction({ id: 'check-create-data', action: '', data })
+        const data = { generate_name: fd.generate_name, ...this.serverConfig, dry_run: true }
+        const res = new this.$Manager('servers').create({ data })
         return res
       } catch (error) {
         throw error
