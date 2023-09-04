@@ -10,6 +10,7 @@ export const WORKFLOW_TYPES = {
   APPLY_SERVER_DELETE: 'apply-server-delete',
   CUSTOMER_SERVICE: 'customer-service',
   APPLY_INTERNAL_RESOURCE: 'apply-internal-resource',
+  APPLY_SERVER_STOP: 'apply-server-stop',
 }
 
 export const PROCESS_TYPES_OPTS = [
@@ -41,6 +42,10 @@ export const PROCESS_TYPES_OPTS = [
   {
     name: i18n.t('common.apply_internal_resource'),
     value: WORKFLOW_TYPES.APPLY_INTERNAL_RESOURCE,
+  },
+  {
+    name: i18n.t('common.workflow.shut_down'),
+    value: WORKFLOW_TYPES.APPLY_SERVER_STOP,
   },
 ]
 
