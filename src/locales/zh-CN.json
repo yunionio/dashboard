@@ -5439,5 +5439,6 @@
   "common.null_tag_key": "空标签键",
   "common.some_items_peer_time": "{0}条/次",
   "common.current_total_items": "已展示 {0} 条记录",
-  "common.operation_type": "操作类型"
+  "common.operation_type": "操作类型",
+  "common.workflow.shut_down": "主机关机"
 }
