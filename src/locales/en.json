@@ -5879,5 +5879,6 @@
       "Wake": "Wake",
       "Wallis": "Wallis"
     }
-  }
+  },
+  "common.workflow.shut_down": "Host shuts down"
 }
