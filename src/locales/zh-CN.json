@@ -5896,5 +5896,6 @@
       "Wake": "Wake",
       "Wallis": "沃利斯"
     }
-  }
+  },
+  "common.workflow.shut_down": "主机关机"
 }
