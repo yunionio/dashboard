@@ -90,7 +90,8 @@
             resource="server"
             v-model="checked"
             @input="handleSelectInput"
-            :params="params.params" />
+            :params="params.params"
+            :allowNoValue="false" />
           <a-button class="ml-2" v-if="!showForm" @click="() => showForm = true">{{$t('common_111')}}</a-button>
         </div>
         <a-form
