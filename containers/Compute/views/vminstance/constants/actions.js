@@ -476,6 +476,38 @@ const getSingleActions = function () {
                 },
                 hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_sync_config'),
               },
+              // 启动救援模式
+              {
+                label: i18n.t('compute.start_rescue'),
+                permission: 'server_perform_rescue',
+                action: () => {
+                  this.createDialog('VmStartRescueDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  return { validate: cloudEnabled('startRescue', obj) }
+                },
+                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_rescue'),
+              },
+              // 退出救援模式 TODO
+              {
+                label: i18n.t('compute.stop_rescue'),
+                permission: 'server_perform_rescue_stop',
+                action: () => {
+                  this.createDialog('VmStopRescueDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  return { validate: cloudEnabled('stopRescue', obj) }
+                },
+                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_rescue_stop'),
+              },
             ],
           },
           // * 属性设置

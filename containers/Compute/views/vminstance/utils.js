@@ -631,6 +631,19 @@ const actionEableMap = {
       onecloud: ['ready'],
     },
   },
+  startRescue: {
+    cn: i18n.t('compute.start_rescue'),
+    brand: {
+      onecloud: ['ready', 'running'],
+    },
+  },
+  stopRescue: {
+    cn: i18n.t('compute.stop_rescue'),
+    brand: {
+      // TODO: Add rescue status in frontend.
+      onecloud: true,
+    },
+  },
 }
 
 export const commonEnabled = (value, statusArr = ['ready']) => {
