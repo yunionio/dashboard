@@ -772,9 +772,11 @@ export default {
             if (i > 0) {
               bodyData.name = `${bodyData.name}-${i + 1}`
             }
-            await manager.performClassAction({
-              action: 'check-create-data',
-              data: bodyData,
+            await manager.create({
+              data: {
+                ...bodyData,
+                dry_run: true,
+              },
             })
             await manager.create({ data: bodyData })
           }

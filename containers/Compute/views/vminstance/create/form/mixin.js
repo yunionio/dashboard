@@ -485,7 +485,7 @@ export default {
         })
     },
     async checkCreateData (data) {
-      return new this.$Manager('servers').performAction({ id: 'check-create-data', action: '', data })
+      return new this.$Manager('servers').create({ data: { ...data, dry_run: true } })
     },
     doForecast (genCreateData, data) {
       return new Promise((resolve, reject) => {
