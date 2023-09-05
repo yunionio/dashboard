@@ -53,19 +53,13 @@
               </i18n>
             </ul>
           </template>
-          <template v-if="!isAdminMode && isShowWorkflow && isShowAddWorkflow">
+          <template v-if="isShowWorkflow && isShowAddWorkflow">
             <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="plus" /><span class="ml-2">{{$t('common_204')}}</span></div>
             <ul class="work-list">
               <li @click="joinProjectHandle" v-if="isProjectMode && projectEnabled">{{$t('navbar.button.join_project')}}</li>
               <li @click="customeServiceHandle" v-if="customerServiceEnabled">{{$t('navbar.button.work_order_support')}}</li>
               <li @click="applyProjectQuotaHandle" v-if="isProjectMode && projectQuotaEnabled">{{$t('navbar.button.work_order_apply_project_quota')}}</li>
               <li @click="applyDomainQuotaHandle" v-if="isDomainMode && domainQuotaEnabled">{{$t('navbar.button.work_order_apply_domain_quota')}}</li>
-              <li @click="applyInternalResourceHandle" v-if="internalResourceEnabled">{{$t('navbar.button.work_order_apply_internal_resource')}}</li>
-            </ul>
-          </template>
-          <template v-if="isAdminMode && isShowWorkflow && internalResourceEnabled">
-            <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="plus" /><span class="ml-2">{{$t('common_204')}}</span></div>
-            <ul class="work-list">
               <li @click="applyInternalResourceHandle" v-if="internalResourceEnabled">{{$t('navbar.button.work_order_apply_internal_resource')}}</li>
             </ul>
           </template>
