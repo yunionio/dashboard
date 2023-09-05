@@ -18,7 +18,7 @@ export default {
     List,
   },
   data () {
-    const cloudEnvOptions = getCloudEnvOptions('compute_engine_brands').filter(val => ['onpremise', 'public'].includes(val.key))
+    const cloudEnvOptions = getCloudEnvOptions('compute_engine_brands').filter(val => !['private'].includes(val.key))
     const cloudEnv = this.$route.params?.cloudEnv
     return {
       listId: 'DnsZoneList',
