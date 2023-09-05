@@ -5880,5 +5880,6 @@
       "Wallis": "Wallis"
     }
   },
-  "common.workflow.shut_down": "Host shuts down"
+  "common.workflow.shut_down": "Host shuts down",
+  "common.workflow.restart": "Host restart"
 }

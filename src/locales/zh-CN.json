@@ -5897,5 +5897,6 @@
       "Wallis": "沃利斯"
     }
   },
-  "common.workflow.shut_down": "主机关机"
+  "common.workflow.shut_down": "主机关机",
+  "common.workflow.restart": "主机重启"
 }
