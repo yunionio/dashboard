@@ -10,7 +10,8 @@
             remote
             is-default-select
             :select-props="{labelInValue: isAdminMode, labelInValueKeyName: 'key', dropdownClassName: 'oc-select-dropdown', placeholder: $t('rules.domain')}"
-            :params="domainParams">
+            :params="domainParams"
+            @change="domainChange">
             <template #optionLabelTemplate="{item}">
               <span class="text-color-secondary option-prefix">{{$t('dictionary.domain')}}: </span>{{item.name}}
             </template>
