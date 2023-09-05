@@ -420,11 +420,7 @@ export default {
             delete data.custom_data_type
             const { customData } = this.$refs.customData
             if (customData.length) {
-              if (this.isKvm) {
-                data.deploy_configs = customData
-              } else {
-                data.user_data = customData
-              }
+              data.user_data = customData
             }
           }
           if (this.isServertemplate) { // 创建主机模板
