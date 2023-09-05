@@ -357,6 +357,14 @@ export default {
       }
       return <div>{ item.name }</div>
     },
+    cancel () {
+      this.$router.push({
+        name: 'DnsZone',
+        params: {
+          cloudEnv: this.cloudEnv,
+        },
+      })
+    },
   },
 }
 </script>

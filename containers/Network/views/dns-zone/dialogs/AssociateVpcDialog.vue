@@ -13,7 +13,6 @@
           :wrapperCol="formItemLayout.wrapperCol"
           :labelCol="formItemLayout.labelCol"
           :names="areaselectsName"
-          :providerParams="providerParams"
           :cloudregionParams="cloudregionParams"
           :isRequired="true"
           filterBrandResource="network_manage"
@@ -70,8 +69,7 @@ export default {
           },
         ],
       },
-      areaselectsName: ['provider', 'cloudregion'],
-      regionProvider: '',
+      areaselectsName: ['cloudregion'],
       regionId: '',
       associateVpcIds: [],
       formItemLayout: {
@@ -96,7 +94,6 @@ export default {
         usable_vpc: true,
         scope: this.scope,
         cloudregion_id: this.regionId,
-        filter: 'provider.in(Aws, Aliyun, OneCloud)',
       }
       if (this.params.data[0].manager_id) {
         params.manager_id = this.params.data[0].manager_id
@@ -108,19 +105,13 @@ export default {
       if (!this.regionId) return {}
       return params
     },
-    providerParams () {
-      return {
-        filter: 'provider.in(Aws, Aliyun, OneCloud)',
-        scope: this.scope,
-        cloud_env: 'public',
-      }
-    },
     cloudregionParams () {
       return {
         scope: this.scope,
         limit: 0,
         usable_vpc: true,
         show_emulated: true,
+        provider: this.params.data[0].provider,
       }
     },
   },
@@ -148,8 +139,6 @@ export default {
     handleRegionChange (data) {
       const { cloudregion } = data
       if (cloudregion) {
-        const { provider } = cloudregion.value
-        this.regionProvider = provider
         this.regionId = cloudregion.id
       }
     },
