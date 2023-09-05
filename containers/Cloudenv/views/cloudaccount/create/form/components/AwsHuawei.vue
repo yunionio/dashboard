@@ -7,7 +7,7 @@
       <a-form-item :label="$t('common.description')">
         <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.environment')">
+      <a-form-item v-if="provider !== 'Huawei'" :label="$t('cloudenv.environment')">
         <base-select
           :options="environments"
           v-decorator="decorators.environment"
