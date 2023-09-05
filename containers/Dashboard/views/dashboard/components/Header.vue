@@ -14,18 +14,18 @@
     <a-button @click="handleRefresh" type="link" class="action-btn">
       <icon type="refresh" />
     </a-button>
-    <a-dropdown :trigger="['click']" slot="tabBarExtraContent" placement="bottomRight">
+    <a-dropdown v-if="showActions.length" :trigger="['click']" slot="tabBarExtraContent" placement="bottomRight">
       <a class="ant-dropdown-link font-weight-bold pl-2 pr-2 h-100 d-block action-btn" @click="e => e.preventDefault()">
         <icon type="more" style="font-size: 18px;" />
       </a>
       <a-menu slot="overlay" @click="handleActionClick">
-        <a-menu-item key="handleCreate"><a-icon type="plus" />{{$t('dashboard.text_103')}}</a-menu-item>
-        <a-menu-item key="handleEdit"><a-icon type="edit" />{{$t('dashboard.text_104')}}</a-menu-item>
-        <a-menu-item key="handleDownload"><a-icon type="download" />{{$t('dashboard.text_105')}}</a-menu-item>
-        <a-menu-item key="handleImport"><a-icon type="file" />{{$t('dashboard.text_106')}}</a-menu-item>
-        <a-menu-item key="handleCopy"><a-icon type="copy" />{{$t('dashboard.text_107')}}</a-menu-item>
-        <a-menu-item key="handleShare" v-if="isAdminMode && isDefaultOption"><a-icon type="share-alt" />{{$t('common_104', [''])}}</a-menu-item>
-        <a-menu-item key="handleDelete"><a-icon type="delete" />{{deleteText}}</a-menu-item>
+        <a-menu-item key="handleCreate" v-if="showActions.includes('create')"><a-icon type="plus" />{{$t('dashboard.text_103')}}</a-menu-item>
+        <a-menu-item key="handleEdit" v-if="showActions.includes('edit')"><a-icon type="edit" />{{$t('dashboard.text_104')}}</a-menu-item>
+        <a-menu-item key="handleDownload" v-if="showActions.includes('export')"><a-icon type="download" />{{$t('dashboard.text_105')}}</a-menu-item>
+        <a-menu-item key="handleImport" v-if="showActions.includes('import')"><a-icon type="file" />{{$t('dashboard.text_106')}}</a-menu-item>
+        <a-menu-item key="handleCopy" v-if="showActions.includes('clone')"><a-icon type="copy" />{{$t('dashboard.text_107')}}</a-menu-item>
+        <a-menu-item key="handleShare" v-if="isAdminMode && isDefaultOption && showActions.includes('share')"><a-icon type="share-alt" />{{$t('common_104', [''])}}</a-menu-item>
+        <a-menu-item key="handleDelete" v-if="showActions.includes('reset')"><a-icon type="delete" />{{deleteText}}</a-menu-item>
       </a-menu>
     </a-dropdown>
   </div>
@@ -97,6 +97,11 @@ export default {
       } else {
         return this.$t('dashboard.text_108')
       }
+    },
+    showActions () {
+      return (['create', 'edit', 'export', 'import', 'share', 'reset', 'clone']).filter(key => {
+        return !this.$isScopedPolicyMenuHidden(`dashboard_hidden_actions.${key}`)
+      })
     },
   },
   beforeDestroy () {
