@@ -61,7 +61,7 @@ export default {
         // { label: this.$t('network.text_316'), key: 'dns-zonecache-list-for-dns-zone-sidepage' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ]
-      if (data.zone_type === 'PrivateZone') {
+      if (data.cloud_env === 'public' && data.zone_type === 'PrivateZone') {
         detailTabs.splice(1, 0, { label: this.$t('network.text_719'), key: 'dns-associate-vpc-list' })
       }
       return detailTabs
