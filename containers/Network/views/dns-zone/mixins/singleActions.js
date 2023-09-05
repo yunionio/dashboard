@@ -30,6 +30,10 @@ export default {
             ret.tooltip = i18n.t('network.text_730')
             return ret
           }
+          if (obj.cloud_env === 'onpremise') {
+            ret.validate = false
+            ret.tooltip = i18n.t('network.text_652')
+          }
           return ret
         },
       },
