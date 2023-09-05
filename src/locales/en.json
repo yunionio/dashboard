@@ -5423,5 +5423,6 @@
   "common.some_items_peer_time": "{0} items/time",
   "common.current_total_items": "Currently displaying {0} records",
   "common.operation_type": "Operation type",
-  "common.workflow.shut_down": "Host shuts down"
+  "common.workflow.shut_down": "Host shuts down",
+  "common.workflow.restart": "Host restart"
 }
