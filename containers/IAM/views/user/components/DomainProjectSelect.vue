@@ -103,7 +103,6 @@ export default {
       }
       if (this.l3PermissionEnable) {
         params.project_domain_id = this.projectDomainId || this.userInfo.projectDomainId
-        if (params.project_domain_id === 'default') delete params.project_domain_id
       } else {
         params.project_domain_id = this.projectDomainId
       }
