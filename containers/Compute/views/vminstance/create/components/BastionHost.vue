@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-form-item class="mb-0" v-if="!inDialog">
+    <a-form-item v-if="!inDialog" :label="$t('compute.bastionHost.bastion_host')">
       <a-tooltip
         :title="switchDisabled ? $t('compute.bastionHost.bastion_host.switch_disabled') : null">
         <a-switch
@@ -12,7 +12,7 @@
       </a-tooltip>
     </a-form-item>
     <template v-if="inDialog || bastionHostEnable">
-      <a-form-item class="mt-2" :label="inDialog ? $t('compute.bastionHost.bastion_host') : ''">
+      <a-form-item class="mt-2" :label="inDialog ? $t('compute.bastionHost.bastion_host') : $t('compute.bastionHost.add_bastion_host')">
         <base-select
           v-decorator="decorator.bastion_host_id"
           :options="bastionHosts"
@@ -23,7 +23,7 @@
           }"
           @change="bastionHostChangeHandle" />
       </a-form-item>
-      <a-form-item class="mt-2" :label="inDialog ? $t('compute.bastionHost.node') : ''">
+      <a-form-item class="mt-2" :label="$t('compute.bastionHost.node')">
         <base-select
           v-decorator="decorator.nodes"
           :options="nodes"
@@ -35,12 +35,12 @@
             loading: nodeLoading
           }" />
       </a-form-item>
-      <a-form-item class="mt-2" :label="inDialog ? $t('compute.bastionHost.port') : ''">
+      <a-form-item class="mt-2" :label="$t('compute.bastionHost.port')">
         <a-input-number
           v-decorator="decorator.port"
           :placeholder="$t('compute.bastionHost.port.placeholder')" />
       </a-form-item>
-      <a-form-item class="mt-2" :label="inDialog ? $t('compute.bastionHost.privileged_account') : ''">
+      <a-form-item class="mt-2" :label="$t('compute.bastionHost.privileged_account')">
         <base-select
           v-decorator="decorator.privileged_accounts"
           :options="privilegedAccounts"
@@ -51,7 +51,7 @@
             loading: accountLoading
           }" />
       </a-form-item>
-      <a-form-item class="mt-2" :label="inDialog ? $t('compute.bastionHost.account') : ''">
+      <a-form-item class="mt-2" :label="$t('compute.bastionHost.account')">
         <base-select
           v-decorator="decorator.accounts"
           :options="accounts"
