@@ -33,7 +33,7 @@
 import 'codemirror/theme/material.css'
 import 'codemirror/addon/edit/matchbrackets'
 // import yaml from 'js-yaml'
-import * as R from 'ramda'
+// import * as R from 'ramda'
 
 export default {
   props: {
@@ -64,7 +64,7 @@ export default {
       return this.form.fd.hypervisor === 'kvm'
     },
     customDataExtra () {
-      return this.isKvm ? this.$t('compute.custom_data_temp') : this.$t('compute.custom_data.extra')
+      return this.$t('compute.custom_data.extra')
     },
   },
   methods: {
@@ -84,41 +84,10 @@ export default {
 
       reader.onload = (info) => {
         const result = info.target.result
-
-        if (this.isKvm) {
-          const isRight = this.checkFileData(result)
-          if (!isRight) {
-            file.status = 'error'
-            this.$message.error(this.$t('compute.custom_data_error1'))
-          } else {
-            this.fileList = [file]
-            this.customData = result
-          }
-        } else {
-          this.fileList = [file]
-          this.customData = result
-        }
+        this.fileList = [file]
+        this.customData = result
       }
       return false
-    },
-    checkFileData (val) {
-      let isRight = true
-      let result = {}
-      try {
-        result = JSON.parse(val)
-      } catch (error) {
-        result = val
-      }
-      if (R.is(Array, result)) {
-        result.map(item => {
-          if (!item.path || !item.content || !item.action) {
-            isRight = false
-          }
-        })
-      } else {
-        return false
-      }
-      return isRight
     },
     handleTypeChange () {
       this.errorTip = ''
@@ -126,46 +95,8 @@ export default {
       this.codeMirrorData = ''
       this.customData = []
     },
-    async handleInputChange (e) {
-      await this.$nextTick()
-      const { _value } = e.target
-      try {
-        const vstr = JSON.stringify(_value)
-        const isRight = this.checkFileData(vstr)
-        if (isRight) {
-          this.customData = vstr
-          this.errorTip = ''
-        } else {
-          this.errorTip = '格式错误'
-        }
-      } catch (err) {
-        console.error('解析失败')
-      }
-    },
     handleCodeInput (_value) {
-      if (this.isKvm) {
-        this.doCheck(_value)
-      } else {
-        this.customData = _value
-      }
-    },
-    doCheck (_value) {
-      try {
-        if (!_value) {
-          this.customData = []
-          this.errorTip = ''
-          return
-        }
-        const isRight = this.checkFileData(_value)
-        if (isRight) {
-          this.customData = _value
-          this.errorTip = ''
-        } else {
-          this.errorTip = this.$t('compute.custom_data_error1')
-        }
-      } catch (err) {
-        this.errorTip = this.$t('compute.custom_data_error1')
-      }
+      this.customData = _value
     },
   },
 }
