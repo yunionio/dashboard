@@ -305,7 +305,7 @@ export default {
       }
     },
     async fetchProjects (query) {
-      const params = {
+      let params = {
         details: true,
         scope: this.scope,
         limit: 20,
@@ -316,6 +316,9 @@ export default {
       }
       if (query) {
         params.search = query
+      }
+      if (this.params.projectExtraParams) {
+        params = { ...params, ...this.params.projectExtraParams }
       }
       try {
         const response = await this.pm.list({
