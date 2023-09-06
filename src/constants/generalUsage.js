@@ -7,9 +7,9 @@ export const usageMap = {
   cpu: {
     field: {
       used: {
-        system: 'all.servers.cpu',
-        domain: 'domain.servers.cpu',
-        project: 'servers.cpu',
+        system: ['all.servers.cpu', 'all.running_servers.cpu'],
+        domain: ['domain.servers.cpu', 'domain.running_servers.cpu'],
+        project: ['servers.cpu', 'running_servers.cpu'],
       },
       total: {
         system: ['hosts.cpu', 'hosts.cpu.virtual'],
@@ -21,9 +21,9 @@ export const usageMap = {
   memory: {
     field: {
       used: {
-        system: 'all.servers.memory',
-        domain: 'domain.servers.memory',
-        project: 'servers.memory',
+        system: ['all.servers.memory', 'all.running_servers.memory'],
+        domain: ['domain.servers.memory', 'domain.running_servers.memory'],
+        project: ['servers.memory', 'running_servers.memory'],
       },
       total: {
         system: ['hosts.memory', 'hosts.memory.virtual'],
