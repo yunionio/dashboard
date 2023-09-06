@@ -181,11 +181,11 @@ export default {
       if (this.form && this.form.fc) {
         if (this.storageCache) {
           const hasCache = filterdList.some(val => val.id === this.storageCache)
-          // if (hasCache) { // 如果新的list存在缓存值的话，取缓存值
-          this.form.fc.setFieldsValue({
-            [this.decorators.storage[0]]: hasCache ? this.storageCache : '',
-          })
-          // }
+          if (hasCache) { // 如果新的list存在缓存值的话，取缓存值
+            this.form.fc.setFieldsValue({
+              [this.decorators.storage[0]]: this.storageCache,
+            })
+          }
         }
       }
       this.options = filterdList
