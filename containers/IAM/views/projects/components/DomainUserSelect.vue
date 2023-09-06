@@ -71,7 +71,6 @@ export default {
       return this.$router.resolve('/systemuser/create').href
     },
     userParams () {
-      // 三级权限开：创建default域下的项目时：用户可以选择任意域下的
       const params = {
         scope: this.scope,
         limit: 0,
@@ -79,7 +78,6 @@ export default {
       if (this.isAdminMode) {
         if (this.l3PermissionEnable) {
           params.domain_id = this.projectDomainId || this.userInfo.projectDomainId
-          if (params.domain_id === 'default') delete params.domain_id
         } else {
           params.domain_id = this.projectDomainId
         }

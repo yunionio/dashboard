@@ -104,10 +104,6 @@ export default {
         scope: this.scope,
         limit: 20,
       }
-      ret.project_domain_id = this.domainId
-      if (ret.project_domain_id === 'default') {
-        delete ret.project_domain_id
-      }
       return ret
     },
     roleLink () {
