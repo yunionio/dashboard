@@ -96,13 +96,13 @@ export default {
       { label: this.$t('cloudenv.text_431'), key: 'scheduledtasks-list' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
     ]
-    if (!hasPermission({ key: 'guestsecgroups_list' })) {
+    if (!hasPermission({ key: 'guestsecgroups_list' }) || isScopedPolicyMenuHidden('server_hidden_columns.secgroups')) {
       detailTabs = R.remove(R.findIndex(R.propEq('key', 'secgroup-list'))(detailTabs), 1, detailTabs)
     }
-    if (!hasPermission({ key: 'guestnetworks_list' })) {
+    if (!hasPermission({ key: 'guestnetworks_list' }) || isScopedPolicyMenuHidden('server_hidden_columns.ips')) {
       detailTabs = R.remove(R.findIndex(R.propEq('key', 'network-list-for-vm-instance-sidepage'))(detailTabs), 1, detailTabs)
     }
-    if (!hasPermission({ key: 'guestdisks_list' })) {
+    if (!hasPermission({ key: 'guestdisks_list' }) || isScopedPolicyMenuHidden('server_hidden_columns.disk')) {
       detailTabs = R.remove(R.findIndex(R.propEq('key', 'disk-list-for-vm-instance-sidepage'))(detailTabs), 1, detailTabs)
     }
     if (!hasPermission({ key: 'eip_list' })) {

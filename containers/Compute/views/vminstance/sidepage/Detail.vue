@@ -253,8 +253,9 @@ export default {
                 const { os_version: version = '' } = row.metadata || {}
                 return distribution + (version === '-' ? '' : version)
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.os_type'),
             },
-            getIpsTableColumn({ field: 'ip', title: 'IP', vm: this }),
+            getIpsTableColumn({ field: 'ip', title: 'IP', vm: this, hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.ips') }),
             getCopyWithContentTableColumn({
               field: 'macs',
               title: 'MAC',
@@ -262,6 +263,7 @@ export default {
               slotCallback: row => {
                 return row.macs || '-'
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.macs'),
             }),
             getCopyWithContentTableColumn({
               field: 'image',
@@ -303,7 +305,7 @@ export default {
                   ]
                 },
               },
-              hidden: () => this.$store.getters.isProjectMode,
+              hidden: () => this.$store.getters.isProjectMode || this.$isScopedPolicyMenuHidden('server_hidden_columns.host'),
             },
             {
               field: 'secgroups',
@@ -318,6 +320,7 @@ export default {
                   })
                 },
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.secgroups'),
             },
             getCopyWithContentTableColumn({
               field: 'vpc',
@@ -329,7 +332,7 @@ export default {
                   <side-page-trigger permission='vpcs_get' name='VpcSidePage' id={row.vpc_id} vm={this}>{ row.vpc }</side-page-trigger>,
                 ]
               },
-              hidden: () => this.$store.getters.isProjectMode,
+              hidden: () => this.$store.getters.isProjectMode || this.$isScopedPolicyMenuHidden('server_hidden_columns.vpc'),
             }),
             {
               field: 'vcpu_count',
@@ -337,6 +340,7 @@ export default {
               formatter: ({ row }) => {
                 return row.vcpu_count + this.$t('compute.text_167')
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.vcpu_count'),
             },
             {
               field: 'vmem_size',
@@ -344,6 +348,7 @@ export default {
               formatter: ({ row }) => {
                 return (row.vmem_size / 1024) + 'GB'
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.vmem_size'),
             },
             {
               field: 'sysDisk',
@@ -352,6 +357,7 @@ export default {
                 if (!this.diskInfos.sysDisk) return '-'
                 return <a onClick={ () => this.$emit('tab-change', 'disk-list-for-vm-instance-sidepage') }>{this.diskInfos.sysDisk}</a>
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.disk'),
             },
             {
               field: 'dataDisk',
@@ -360,6 +366,7 @@ export default {
                 if (!this.diskInfos.dataDisk) return '-'
                 return <a onClick={ () => this.$emit('tab-change', 'disk-list-for-vm-instance-sidepage') }>{this.diskInfos.dataDisk}</a>
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.disk'),
             },
             (() => {
               function getCdromInfo (row) {
