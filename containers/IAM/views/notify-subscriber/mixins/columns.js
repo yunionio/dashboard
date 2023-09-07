@@ -68,15 +68,15 @@ export default {
       },
       {
         title: i18n.t('iam.notify_silent'),
-        field: 'group_key',
+        field: 'group_times',
         minWidth: 100,
         formatter: ({ row }) => {
-          const { group_key = 0 } = row
-          if (!group_key) return '-'
-          if (group_key < 60) {
-            return i18n.t('iam.silent.minute', [group_key])
+          const { group_times = 0 } = row
+          if (!group_times) return '-'
+          if (group_times < 60) {
+            return i18n.t('iam.silent.minute', [group_times])
           } else {
-            return i18n.t('iam.silent.hour', [parseInt(group_key / 60)])
+            return i18n.t('iam.silent.hour', [parseInt(group_times / 60)])
           }
         },
       },
