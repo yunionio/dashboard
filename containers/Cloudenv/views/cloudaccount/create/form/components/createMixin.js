@@ -118,6 +118,9 @@ export default {
                 params[key] = value
               }
             }, values)
+            if (this.provider === 'Huawei' && !params.environment) {
+              params.environment = 'ChinaCloud'
+            }
             resolve(this.transformParams(params))
           }
         })
