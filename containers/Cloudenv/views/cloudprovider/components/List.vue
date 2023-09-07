@@ -53,8 +53,9 @@ export default {
           account: {
             label: this.$t('cloudenv.text_353'),
             filter: true,
+            filterAny: true,
             formatter: val => {
-              return `account.contains("${val}")`
+              return val.map(id => `account.contains("${id}")`)
             },
           },
           projects: getTenantFilter(),
