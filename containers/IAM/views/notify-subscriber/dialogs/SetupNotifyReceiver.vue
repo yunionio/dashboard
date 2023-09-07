@@ -80,7 +80,7 @@
           <a-row type="flex">
             <a-col :flex="2" class="mr-2">
               <a-select
-                v-decorator="decorators.group_key"
+                v-decorator="decorators.group_times"
                 allow-clear
                 :placeholder="$t('common.tips.select', [$t('iam.notify_silent')])">
                 <a-select-option v-for="item in groupKeyOpts" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
@@ -123,14 +123,14 @@ export default {
       initialValues.role = s.role ? s.role.id : ''
       initialValues.robot = s.robot ? s.robot.id : ''
       initialValues.receivers = s.receivers ? s.receivers.map(r => r.id) : []
-      initialValues.group_key = s.group_key || undefined
+      initialValues.group_times = s.group_times || undefined
     } else {
       // create
       initialValues.scope = this.$store.getters.scope
       initialValues.resource_scope = this.$store.getters.scope
       initialValues.type = NOTIFY_SUBSCRIBER_TYPES[0].key
       initialValues.role_scope = 'system'
-      initialValues.group_key = 60
+      initialValues.group_times = 60
     }
 
     return {
@@ -221,10 +221,10 @@ export default {
             ],
           },
         ],
-        group_key: [
-          'group_key',
+        group_times: [
+          'group_times',
           {
-            initialValue: initialValues.group_key,
+            initialValue: initialValues.group_times,
             rules: [
               { required: false, message: `${this.$t('common.select')}` },
             ],
@@ -295,7 +295,7 @@ export default {
           role_scope: values.role_scope,
           role: values.role,
           robot: values.robot,
-          group_key: values.group_key || 0,
+          group_times: values.group_times || 0,
         }
         if (this.isUpdate) {
           // params.topic_id = this.params.data.topic_id || this.params.resId
