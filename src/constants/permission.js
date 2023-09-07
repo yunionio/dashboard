@@ -435,6 +435,8 @@ export const PERMISSION = {
   server_get_cpuset_cores: ['compute', 'servers', 'get', 'cpuset-cores'],
   server_perform_cpuset: ['compute', 'servers', 'perform', 'cpuset'],
   server_perform_make_sshable: ['compute', 'servers', 'perform', 'make-sshable'],
+  server_perform_rescue: ['compute', 'servers', 'perform', 'rescue'],
+  server_perform_rescue_stop: ['compute', 'servers', 'perform', 'rescue-stop'],
   /**
    * images 相关操作
    */

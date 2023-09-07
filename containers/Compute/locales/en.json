@@ -1708,5 +1708,7 @@
   "compute.storage.check_status.host_status": "Host service or status is abnormal",
   "compute.vmware.transfer.message": "Prompt message: The migration host must belong to the same Layer 2 network and the target host must be in normal state",
   "compute.storage.check_status.status": "The block storage status is abnormal",
-  "compute.storage.check_status.enabled": "Block storage is not enabled"
+  "compute.storage.check_status.enabled": "Block storage is not enabled",
+  "compute.start_rescue": "Start Rescue",
+  "compute.stop_rescue": "Stop Rescue"
 }
