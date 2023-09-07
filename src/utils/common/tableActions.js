@@ -91,7 +91,7 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
   if (!vm) {
     throw Error('not found vm instance')
   }
-  const { name = i18n.t('common_92'), scope, resource, apiVersion, noCandidateDomains, projectExtraParams = {} } = dialogParams
+  const { name = i18n.t('common_92'), scope, resource, apiVersion, noCandidateDomains } = dialogParams
   const options = {
     label: i18n.t('common_100'),
     action: row => {
@@ -106,7 +106,6 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
         resource,
         apiVersion,
         noCandidateDomains,
-        projectExtraParams,
       })
     },
     meta: row => {

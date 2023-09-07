@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { getCopyWithContentTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
+import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'KeyPairDetail',
@@ -23,10 +23,6 @@ export default {
   data () {
     return {
       baseInfo: [
-        getPublicScopeTableColumn({
-          vm: this,
-          resource: 'keypairs',
-        }),
         getCopyWithContentTableColumn({
           field: 'fingerprint',
           title: this.$t('compute.text_726'),

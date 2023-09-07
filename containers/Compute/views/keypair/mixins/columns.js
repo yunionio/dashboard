@@ -2,7 +2,6 @@ import {
   getNameDescriptionTableColumn,
   getCopyWithContentTableColumn,
   getTimeTableColumn,
-  getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -18,10 +17,6 @@ export default {
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
           )
         },
-      }),
-      getPublicScopeTableColumn({
-        vm: this,
-        resource: 'keypairs',
       }),
       getCopyWithContentTableColumn({ field: 'public_key', title: i18n.t('compute.text_725') }),
       getCopyWithContentTableColumn({ field: 'fingerprint', title: i18n.t('compute.text_726') }),
