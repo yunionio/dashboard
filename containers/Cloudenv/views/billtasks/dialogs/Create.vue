@@ -76,8 +76,8 @@ export default {
       form: {
         account_id: this.params.account_id,
         task_type: initTaskType,
-        start_day: this.$moment().subtract(1, 'month'),
-        end_day: this.$moment().subtract(1, 'month'),
+        start_day: this.$moment(),
+        end_day: this.$moment(),
       },
       rules: {
         account_id: [{ required: true, message: this.$t('common.tips.select', [this.$t('dictionary.cloudaccount')]) }],
