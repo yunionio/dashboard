@@ -854,11 +854,14 @@ class CreateList {
           val = option.formatter(val)
         }
       }
+      if (option.filterAny) {
+        ret.filter_any = 'true'
+      }
       if (option.filter) {
         if (option.jointFilter) {
           jointFilters.push(val)
         } else {
-          filters.push(val)
+          Array.isArray(val) ? filters.push(...val) : filters.push(val)
         }
       } else {
         ret[key] = val
