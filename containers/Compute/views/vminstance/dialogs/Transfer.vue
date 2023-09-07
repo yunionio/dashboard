@@ -305,6 +305,9 @@ export default {
         data.skip_cpu_check = true
         data.skip_kernel_check = true
       }
+      if (values.brandWidth !== '-1') {
+        data.max_bandwidth_mb = (values.brandwidth === 'custom' ? values.customBrandWidth : values.brandWidth) * 1024
+      }
       return this.params.onManager('performClassAction', {
         id: ids,
         steadyStatus: ['running', 'ready'],
