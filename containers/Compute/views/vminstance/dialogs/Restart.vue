@@ -113,12 +113,9 @@ export default {
     },
     async handleRestartByWorkflowSubmit (values) {
       const ids = this.params.data.map(item => item.id)
-      const params = this.params.data.map(item => {
-        return {
-          is_force: values.autoStart,
-          name: item.name,
-        }
-      })
+      const params = {
+        is_force: values.autoStart,
+      }
       const variables = {
         project: this.params.data[0].tenant_id,
         project_domain: this.params.data[0].domain_id,
