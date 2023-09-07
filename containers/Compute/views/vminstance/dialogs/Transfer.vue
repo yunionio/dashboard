@@ -256,7 +256,7 @@ export default {
     },
   },
   created () {
-    this.isSingle && !this.isExistManager && this.queryForcastData()
+    // this.isSingle && !this.isExistManager && this.queryForcastData()
     this.queryHosts()
   },
   methods: {
