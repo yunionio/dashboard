@@ -131,12 +131,9 @@ export default {
     async handleShutDownByWorkflowSubmit () {
       const ids = this.params.data.map(item => item.id)
       const values = await this.form.fc.validateFields()
-      const params = this.params.data.map(item => {
-        return {
-          stop_charging: values.stopPaying,
-          name: item.name,
-        }
-      })
+      const params = {
+        stop_charging: values.stopPaying,
+      }
       const variables = {
         project: this.params.data[0].tenant_id,
         project_domain: this.params.data[0].domain_id,
