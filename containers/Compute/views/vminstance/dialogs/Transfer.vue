@@ -256,7 +256,7 @@ export default {
     },
   },
   created () {
-    this.isSingle && !this.isExistManager && this.queryForcastData()
+    // this.isSingle && !this.isExistManager && this.queryForcastData()
     this.queryHosts()
   },
   methods: {
@@ -304,6 +304,9 @@ export default {
       if (values.skip_cpu_check) {
         data.skip_cpu_check = true
         data.skip_kernel_check = true
+      }
+      if (values.brandWidth !== '-1') {
+        data.max_bandwidth_mb = (values.brandwidth === 'custom' ? values.customBrandWidth : values.brandWidth) * 1024
       }
       return this.params.onManager('performClassAction', {
         id: ids,
