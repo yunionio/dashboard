@@ -53,10 +53,10 @@ export default {
         const data = [titles]
         resourceNames.map(name => {
           const row = [name]
-          times.map(time => {
+          times.map((time, idx) => {
             const targets = rows.filter(item => item.time === time)
-            if (targets[0]) {
-              row.push(targets[0][name])
+            if (targets[idx]) {
+              row.push(targets[idx][name])
             } else {
               row.push('')
             }
