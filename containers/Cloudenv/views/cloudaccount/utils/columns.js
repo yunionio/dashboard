@@ -12,7 +12,7 @@ export const getAccessUrlTableColumn = () => {
     showOverflow: 'ellipsis',
     slots: {
       default: ({ row }, h) => {
-        if (!row.access_url) return '-'
+        if (!row.access_url || row.brand === 'Huawei') return '-'
         let txt
         Object.keys(i18n.t('cloudAccountAccessType')).forEach(k => {
           if (row.access_url.indexOf(k) > -1) {

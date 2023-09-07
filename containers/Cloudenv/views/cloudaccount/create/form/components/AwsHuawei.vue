@@ -69,7 +69,6 @@ export default {
   mixins: [createMixin],
   data () {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
-    console.log(ACCESS_URL, keySecretFields, this.provider)
     const environments = Object.entries(ACCESS_URL[this.provider.toLowerCase()]).map(keyValueArr => ({ key: keyValueArr[0], label: keyValueArr[1] }))
     return {
       docs: getCloudaccountDocs(this.$store.getters.scope),
