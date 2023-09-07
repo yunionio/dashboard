@@ -58,7 +58,6 @@ export const PERMISSION = {
   networkcard_list: ['compute', 'networkinterfaces', 'list'],
   // 密钥
   keypairs_list: ['compute', 'keypairs', 'list'],
-  keypairs_perform_public: ['compute', 'keypairs', 'perform', 'public'],
   // 回收站
   recyclebins_list: ['compute', 'recyclebins', 'list'],
   // 集群节点
