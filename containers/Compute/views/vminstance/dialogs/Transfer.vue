@@ -116,8 +116,10 @@ export default {
         customBrandWidth: [
           'customBrandWidth',
           {
+            validateFirst: true,
             rules: [
               { required: true, message: this.$t('compute.vminstance.transfer.max_brand_width.required'), trigger: 'change' },
+              { pattern: /^[1-9][0-9]*$/, message: this.$t('compute.transfer.bandwidth.number.check') },
             ],
           },
         ],
@@ -288,7 +290,7 @@ export default {
           data.skip_kernel_check = true
         }
         if (values.brandWidth !== '-1') {
-          data.max_bandwidth_mb = values.brandwidth === 'custom' ? +values.customBrandWidth : +values.brandWidth
+          data.max_bandwidth_mb = values.brandWidth === 'custom' ? (+values.customBrandWidth || 0) : +values.brandWidth
         }
         data.quickly_finish = true
       }
@@ -315,7 +317,7 @@ export default {
         data.skip_kernel_check = true
       }
       if (values.brandWidth !== '-1') {
-        data.max_bandwidth_mb = values.brandwidth === 'custom' ? +values.customBrandWidth : +values.brandWidth
+        data.max_bandwidth_mb = values.brandWidth === 'custom' ? (+values.customBrandWidth || 0) : +values.brandWidth
       }
       return this.params.onManager('performClassAction', {
         id: ids,
