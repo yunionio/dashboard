@@ -204,6 +204,7 @@ export default {
     recipientParams () {
       const params = {
         is_system_account: false,
+        enabled: true,
         ...this.domainParams,
       }
       return params
