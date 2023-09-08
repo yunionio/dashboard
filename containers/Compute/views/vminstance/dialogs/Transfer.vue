@@ -288,7 +288,7 @@ export default {
           data.skip_kernel_check = true
         }
         if (values.brandWidth !== '-1') {
-          data.max_bandwidth_mb = (values.brandwidth === 'custom' ? values.customBrandWidth : values.brandWidth) * 1024
+          data.max_bandwidth_mb = values.brandwidth === 'custom' ? +values.customBrandWidth : +values.brandWidth
         }
         data.quickly_finish = true
       }
@@ -315,7 +315,7 @@ export default {
         data.skip_kernel_check = true
       }
       if (values.brandWidth !== '-1') {
-        data.max_bandwidth_mb = (values.brandwidth === 'custom' ? values.customBrandWidth : values.brandWidth) * 1024
+        data.max_bandwidth_mb = values.brandwidth === 'custom' ? +values.customBrandWidth : +values.brandWidth
       }
       return this.params.onManager('performClassAction', {
         id: ids,
