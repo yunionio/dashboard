@@ -1709,5 +1709,6 @@
   "compute.storage.check_status.host_status": "宿主机服务或状态异常",
   "compute.vmware.transfer.message": "提示信息：迁移宿主机需属于同一个二层网络且目标宿主机状态正常",
   "compute.storage.check_status.status": "块存储状态异常",
-  "compute.storage.check_status.enabled": "块存储未启用"
+  "compute.storage.check_status.enabled": "块存储未启用",
+  "compute.transfer.bandwidth.number.check": "只能输入正整数"
 }
