@@ -421,7 +421,12 @@ export default {
           if (column.formatter) {
             colData = column.formatter({ row: dataList[i - 1] })
           } else {
-            colData = dataList[i - 1][column.key] || ''
+            if (column.key?.startsWith('tag:')) {
+              const cKey = column.key.replace('tag:', '')
+              colData = dataList[i - 1].metadata?.[cKey] || ''
+            } else {
+              colData = dataList[i - 1][column.key] || ''
+            }
           }
           row.push(colData)
         })
