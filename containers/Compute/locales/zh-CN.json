@@ -1658,5 +1658,6 @@
   "compute.tooltip.check_some_status_transfer": "请选择相同状态的虚拟机",
   "compute.tooltip.check_status_transfer": "请选择状态为运行中、关机的虚拟机",
   "compute.tooltip.check_ready_status_transfer": "请选择状态为关机状态的虚拟机",
-  "compute.tooltip.check_fake_baremetal_server": "托管的机器不支持该操作"
+  "compute.tooltip.check_fake_baremetal_server": "托管的机器不支持该操作",
+  "compute.transfer.bandwidth.number.check": "只能输入正整数"
 }
