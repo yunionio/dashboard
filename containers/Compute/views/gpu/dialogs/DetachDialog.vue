@@ -6,7 +6,7 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout" :extra="$t('compute.text_495')">
+        <a-form-item :label="$t('compute.text_494')" v-if="isShowAutoStart" v-bind="formItemLayout" :extra="$t('compute.text_495')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" />
         </a-form-item>
       </a-form>
@@ -50,6 +50,17 @@ export default {
       },
     }
   },
+  computed: {
+    selectedItems () {
+      return this.params.data
+    },
+    isGuestAllRunning () {
+      return this.selectedItems.every(o => o.guest_status === 'running')
+    },
+    isShowAutoStart () {
+      return !this.isGuestAllRunning
+    },
+  },
   methods: {
     validateForm () {
       return new Promise((resolve, reject) => {
@@ -67,7 +78,7 @@ export default {
         id: this.params.data[0].guest_id,
         action: 'detach-isolated-device',
         data: {
-          auto_start: values.autoStart,
+          auto_start: this.isShowAutoStart ? values.autoStart : false,
           device: this.params.data[0].id,
         },
       })
@@ -91,7 +102,7 @@ export default {
     doDetachSubmit (values) {
       const data = {
         detach_all: true,
-        auto_start: values.autoStart,
+        auto_start: this.isShowAutoStart ? values.autoStart : false,
       }
       const selectedIds = this.params.data.map((item) => {
         return item.guest_id

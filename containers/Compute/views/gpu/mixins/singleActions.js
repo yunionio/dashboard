@@ -88,6 +88,7 @@ export default {
         },
       },
       {
+        key: 'SetReserveResource',
         label: i18n.t('compute.text_490'),
         permission: 'isolated_devices_update',
         action: obj => {

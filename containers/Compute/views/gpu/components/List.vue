@@ -2,8 +2,8 @@
   <page-list
     :list="list"
     :columns="columns"
-    :group-actions="groupActions"
-    :single-actions="singleActions"
+    :group-actions="getFinalGroupActions(groupActions)"
+    :single-actions="getFinalSingleActions(singleActions)"
     :export-data-options="exportDataOptions" />
 </template>
 
@@ -27,6 +27,7 @@ export default {
     },
     resId: String,
     isServer: Boolean,
+    hiddenActionKeys: Array,
   },
   data () {
     return {
@@ -135,6 +136,7 @@ export default {
           },
         },
         {
+          key: 'SetReserveResource',
           label: this.$t('compute.text_490'),
           permission: 'isolated_devices_update',
           action: () => {
@@ -256,6 +258,18 @@ export default {
       } catch (err) {
         throw err
       }
+    },
+    getFinalGroupActions () {
+      if (this.hiddenActionKeys?.length > 0) {
+        return this.groupActions.filter(o => !this.hiddenActionKeys.includes(o.key))
+      }
+      return this.groupActions
+    },
+    getFinalSingleActions () {
+      if (this.hiddenActionKeys?.length > 0) {
+        return this.singleActions.filter(o => !this.hiddenActionKeys.includes(o.key))
+      }
+      return this.singleActions
     },
   },
 }

@@ -13,7 +13,7 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout" :extra="$t('compute.text_495')">
+        <a-form-item v-if="isShowAutoStart" :label="$t('compute.text_494')" v-bind="formItemLayout" :extra="$t('compute.text_495')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" />
         </a-form-item>
       </a-form>
@@ -37,7 +37,15 @@ export default {
       loading: false,
       scope: this.$store.getters.scope,
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              // this.form.fd[key] = values[key]
+              this.$set(this.form.fd, key, values[key])
+            })
+          },
+        }),
+        fd: {},
       },
       decorators: {
         guest: [
@@ -86,6 +94,15 @@ export default {
       })
       return ret
     },
+    curGuest () {
+      return this.guestesOpts.find(o => o.id === this.form.fd.guest)
+    },
+    isGuestRunning () {
+      return this.curGuest?.status === 'running'
+    },
+    isShowAutoStart () {
+      return this.curGuest !== undefined && !this.isGuestRunning
+    },
   },
   created () {
     const params = {
@@ -116,7 +133,7 @@ export default {
         id: data.guest,
         action: 'attach-isolated-device',
         data: {
-          auto_start: data.autoStart,
+          auto_start: this.isShowAutoStart ? data.autoStart : false,
           device: this.params.data[0].id,
         },
       })
