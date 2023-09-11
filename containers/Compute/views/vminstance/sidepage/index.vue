@@ -29,6 +29,7 @@
       :isPageDestroyed="isPageDestroyed"
       :hiddenColumns="hiddenColumns"
       :hiddenSingleActions="hiddenSingleActions"
+      :hiddenActionKeys="['SetReserveResource']"
       :is-server="true"
       @refresh="refresh"
       @single-refresh="singleRefresh"
