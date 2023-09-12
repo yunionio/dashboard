@@ -55,7 +55,13 @@
           :form="form"
           :options="archOptions" />
       </a-form-item>
-      <a-form-item v-if="form.fd.hypervisor === 'kvm'" :label="$t('compute.text_1152')" :extra="$t('compute.text_1153')">
+      <a-form-item v-if="form.fd.hypervisor === 'kvm'" :extra="$t('compute.text_1153')">
+        <span slot="label">
+          {{ $t('compute.text_1152') }}&nbsp;
+          <a-tooltip :title="$t('compute.vgpu_check.tooltip')">
+            <a-icon type="question-circle-o" />
+          </a-tooltip>
+        </span>
         <pci :decorators="decorators.pci" :pciDevTypeOptions="pciDevTypeOptions" :form="form" :pci-options="pciOptions" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1058')" class="mb-0">
