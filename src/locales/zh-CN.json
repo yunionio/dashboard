@@ -5446,5 +5446,7 @@
   "common.current_total_items": "已展示 {0} 条记录",
   "common.operation_type": "操作类型",
   "common.workflow.shut_down": "主机关机",
-  "common.workflow.restart": "主机重启"
+  "common.workflow.restart": "主机重启",
+  "common.ssh_login_err": "SSH远程登录失败",
+  "common.ssh_login_err_msg": "请输入SSH登录信息再次重试登录"
 }

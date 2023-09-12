@@ -2,6 +2,9 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('common.ssh_password_tip')}}</div>
     <div slot="body">
+      <a-alert type="warning" class="mb-2">
+        <div slot="message">{{$t('common.ssh_login_err')}}<help-tooltip :text="errorMsg" class="ml-1" />，{{$t('common.ssh_login_err_msg')}}</div>
+      </a-alert>
       <a-form-model ref="form" :model="formData" :rules="rules" v-bind="layout">
         <a-form-model-item :label="$t('common.operation_object')">
           <list-body-cell-wrap copy :row="{...params.data, text: `${params.data.name} (${params.data.ip || '-'})`}" field="text" hideField>
@@ -17,9 +20,9 @@
         <a-form-model-item :label="$t('compute.text_349')" prop="port">
           <a-input v-model="formData.port" :placeholder="$t('compute.text_350')" />
         </a-form-model-item>
-        <a-form-model-item :label="$t('common.text00089')">
+        <!-- <a-form-model-item :label="$t('common.text00089')">
           <div class="error-color">{{errorMsg}}</div>
-        </a-form-model-item>
+        </a-form-model-item> -->
       </a-form-model>
     </div>
     <div slot="footer">
