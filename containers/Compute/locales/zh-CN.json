@@ -1712,5 +1712,6 @@
   "compute.vmware.transfer.message": "提示信息：迁移宿主机需属于同一个二层网络且目标宿主机状态正常",
   "compute.storage.check_status.status": "块存储状态异常",
   "compute.storage.check_status.enabled": "块存储未启用",
-  "compute.transfer.bandwidth.number.check": "只能输入正整数"
+  "compute.transfer.bandwidth.number.check": "只能输入正整数",
+  "compute.vgpu_check.tooltip": "不支持同时使用VGPU和物理GPU，NVIDIA的VGPU只能绑定一块"
 }

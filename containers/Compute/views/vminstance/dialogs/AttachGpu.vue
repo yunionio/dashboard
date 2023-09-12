@@ -21,7 +21,13 @@
           </a-radio-group>
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-model="isOpenGpu" v-else />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_607')" v-if="isOpenGpu" :extra="$t('compute.text_1171')">
+        <a-form-item v-if="isOpenGpu" :extra="$t('compute.text_1171')">
+          <span slot="label">
+            {{ $t('compute.text_607') }}&nbsp;
+            <a-tooltip :title="$t('compute.vgpu_check.tooltip')">
+              <a-icon type="question-circle-o" />
+            </a-tooltip>
+          </span>
           <!-- 批量设置 -->
           <base-select
             v-if="isGroupAction"
