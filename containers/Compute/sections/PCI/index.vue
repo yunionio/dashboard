@@ -11,12 +11,12 @@
         <a-row :gutter="[8,0]">
           <a-col :span="4">
             <a-form-item>
-              <base-select v-decorator="decorators.pciDevType(k)" :options="realPciDevTypeOptions" @change="(val) => onChangeDevType(val, k)" />
+              <base-select v-decorator="decorators.pciDevType(k)" :options="getRealPciDevTypeOptions(realPciDevTypeOptions, index)" @change="(val) => onChangeDevType(val, k)" />
             </a-form-item>
           </a-col>
           <a-col :span="9">
             <a-form-item>
-              <base-select v-decorator="decorators.pciModel(k)" :options="realPciOptions" @change="(val) => onChangeModel(val, k)"
+              <base-select v-decorator="decorators.pciModel(k)" :options="getRealPciOptions(realPciOptions, index)" @change="(val) => onChangeModel(val, k)"
                 :selectProps="{ placeholder: $t('compute.text_147') }" />
             </a-form-item>
           </a-col>
@@ -37,7 +37,7 @@
           </a-col>
         </a-row>
       </a-form-item>
-      <div class="d-flex align-items-center mb-2">
+      <div v-if="!isNvidiaVgpu" class="d-flex align-items-center mb-2">
         <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
         <a-button type="link" @click="add">{{ $t('compute.pci.add_transparent_device') }}</a-button>
       </div>
@@ -81,7 +81,7 @@ export default {
       return this.pciOptions && this.pciOptions.length === 0
     },
     realPciDevTypeOptions () {
-      return this.pciDevTypeOptions.map(item => {
+      const pciDevTypeOptions = this.pciDevTypeOptions.map(item => {
         const vgpuVal = GPU_DEV_TYPE_OPTION_MAP.VGPU.value
         const dev_type = item.dev_type.endsWith(`-${vgpuVal}`) ? vgpuVal : item.dev_type
         return {
@@ -89,9 +89,15 @@ export default {
           label: GPU_DEV_TYPE_OPTION_MAP[dev_type]?.label || dev_type,
         }
       })
+      return pciDevTypeOptions
     },
     realPciOptions () {
       return this.pciOptions.filter(item => item.dev_type.endsWith(this.curPciDevType))
+    },
+    isNvidiaVgpu () {
+      const curPciModel = this.form.fd['pciModel[0]']
+      const curPci = this.pciOptions.find(o => o.key === curPciModel)
+      return curPci?.dev_type === 'LEGACY-VGPU'
     },
   },
   watch: {
@@ -120,8 +126,8 @@ export default {
     initialValue (id = 0) {
       this.$nextTick(() => {
         this.form.fc.setFieldsValue({
-          [`pciDevType[${id}]`]: this.realPciDevTypeOptions[0]?.key,
-          [`pciModel[${id}]`]: this.realPciOptions[0]?.key,
+          [`pciDevType[${id}]`]: this.curPciDevType || this.getRealPciDevTypeOptions(this.realPciDevTypeOptions)[0].key,
+          [`pciModel[${id}]`]: this.form.fd['pciModel[0]'] || this.getRealPciOptions(this.realPciOptions)[0].key,
           [`pciCount[${id}]`]: 1,
         })
       })
@@ -141,11 +147,16 @@ export default {
         [`pciDevType[${key}]`]: val,
         [`pciModel[${key}]`]: this.realPciOptions[0].key,
       })
+      this.reset()
     },
     onChangeModel (val, key) {
       this.form.fc.setFieldsValue({
         [`pciModel[${key}]`]: val,
       })
+      const curPci = this.pciOptions.find(o => o.key === val)
+      if (curPci.dev_type === 'LEGACY-VGPU') {
+        this.reset()
+      }
     },
     onChangeCount (e, key) {
       this.form.fc.setFieldsValue({
@@ -171,6 +182,40 @@ export default {
         keys: keys.filter(key => key !== k),
       })
       this.removeValue(k)
+    },
+    reset () {
+      const { pciForm } = this
+      const keys = pciForm.fc.getFieldValue('keys')
+
+      pciForm.fc.setFieldsValue({
+        keys: keys.filter(key => key === 0),
+      })
+      keys.forEach(k => {
+        if (k !== 0) {
+          this.removeValue(k)
+        }
+      })
+    },
+    getRealPciDevTypeOptions (realPciDevTypeOptions, index = 0) {
+      let options = realPciDevTypeOptions
+      if (index !== 0) {
+        options = realPciDevTypeOptions.filter(o => {
+          return this.form.fd['pciDevType[0]'] === o.key
+        })
+      }
+      if (!this.curPciDevType) {
+        this.curPciDevType = options[0]?.key
+      }
+      return options
+    },
+    getRealPciOptions (realPciOptions, index = 0) {
+      let options = realPciOptions
+      if (index !== 0) {
+        options = realPciOptions.filter(o => {
+          return this.form.fd['pciModel[0]'] === o.key
+        })
+      }
+      return options
     },
   },
 }
