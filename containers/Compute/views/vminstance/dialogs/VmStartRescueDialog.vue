@@ -2,6 +2,12 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{action}}</div>
     <div slot="body">
+      <a-alert class="mb-2" type="warning">
+        <template v-slot:message>
+          <div>{{$t('compute.start_rescue_tips')}}</div>
+          <div class="mt-2">{{$t('compute.start_rescue_default_config')}}</div>
+        </template>
+      </a-alert>
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
     </div>
@@ -38,7 +44,7 @@ export default {
         id: ids,
         steadyStatus: 'running',
         managerArgs: {
-          action: 'rescue',
+          action: 'start-rescue',
         },
       })
     },

@@ -479,7 +479,7 @@ const getSingleActions = function () {
               // 启动救援模式
               {
                 label: i18n.t('compute.start_rescue'),
-                permission: 'server_perform_rescue',
+                permission: 'server_perform_start_rescue',
                 action: () => {
                   this.createDialog('VmStartRescueDialog', {
                     data: [obj],
@@ -490,12 +490,12 @@ const getSingleActions = function () {
                 meta: () => {
                   return { validate: cloudEnabled('startRescue', obj) }
                 },
-                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_rescue'),
+                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_start_rescue'),
               },
               // 退出救援模式 TODO
               {
                 label: i18n.t('compute.stop_rescue'),
-                permission: 'server_perform_rescue_stop',
+                permission: 'server_perform_stop_rescue',
                 action: () => {
                   this.createDialog('VmStopRescueDialog', {
                     data: [obj],
@@ -506,7 +506,7 @@ const getSingleActions = function () {
                 meta: () => {
                   return { validate: cloudEnabled('stopRescue', obj) }
                 },
-                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_rescue_stop'),
+                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_stop_rescue'),
               },
             ],
           },

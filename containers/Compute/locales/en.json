@@ -1710,5 +1710,7 @@
   "compute.storage.check_status.status": "The block storage status is abnormal",
   "compute.storage.check_status.enabled": "Block storage is not enabled",
   "compute.start_rescue": "Start Rescue",
-  "compute.stop_rescue": "Stop Rescue"
+  "compute.stop_rescue": "Stop Rescue",
+  "compute.start_rescue_tips": "Use the account password below to access the rescue system. After exiting Rescue Mode, use the original account password to access. Instance memory requires 2GB or more.",
+  "compute.start_rescue_default_config": "Account:root Password:mosbaremetal"
 }

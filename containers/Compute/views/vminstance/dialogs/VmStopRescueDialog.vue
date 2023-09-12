@@ -38,7 +38,7 @@ export default {
         id: ids,
         steadyStatus: 'running',
         managerArgs: {
-          action: 'rescue-stop',
+          action: 'stop-rescue',
         },
       })
     },

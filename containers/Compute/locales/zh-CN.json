@@ -1713,5 +1713,7 @@
   "compute.storage.check_status.status": "块存储状态异常",
   "compute.storage.check_status.enabled": "块存储未启用",
   "compute.start_rescue": "启动救援",
-  "compute.stop_rescue": "退出救援"
+  "compute.stop_rescue": "退出救援",
+  "compute.start_rescue_tips": "使用下面的账号密码进入救援系统。退出救援模式后，使用原账号密码访问。实例内存需要2GB以上。",
+  "compute.start_rescue_default_config": "账号：root 密码：mosbaremetal"
 }

@@ -170,7 +170,10 @@
       "on": "On",
       "off": "Off",
       "qga_exec_command_failed": "QGA execution failed",
-      "convert_failed": "Convert Failed"
+      "convert_failed": "Convert Failed",
+      "start_rescue": "Start Rescue",
+      "rescuing": "Rescuing",
+      "stop_rescue": "Stop Rescue"
     },
     "network": {
       "init": "Initialize",

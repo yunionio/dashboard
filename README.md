@@ -81,5 +81,5 @@ yarn build
 ### Make docker image
 
 ```bash
-REGISTRY=registry.cn-beijing.aliyuncs.com/yunionio TAG=your-tag ./scripts/docker-push.sh
+REGISTRY=registry.cn-beijing.aliyuncs.com/yunionio TAG=your-tag ./scripts/docker_push.sh
 ```
