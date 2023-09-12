@@ -34,7 +34,8 @@
             :resList.sync="gpuOpt"
             :mapper="mapper"
             resource="isolated_devices"
-            :select-props="{ allowClear: true, placeholder: $t('compute.text_1172'), mode: 'default' }">
+            :select-props="{ allowClear: true, placeholder: $t('compute.text_1172'), mode: 'default' }"
+            @change="gpuChangeHandle">
             <template v-slot:optionTemplate>
               <a-select-option v-for="item in gpuOpt" :key="item.id" :value="item.id" :disabled="item.__disabled">
                 <div class="d-flex">
@@ -56,7 +57,8 @@
             filterable
             :resList.sync="gpuOpt"
             resource="isolated_devices"
-            :select-props="{ allowClear: true, placeholder: $t('compute.text_1172'), mode: 'multiple' }" />
+            :select-props="{ allowClear: true, placeholder: $t('compute.text_1172'), mode: 'multiple' }"
+            @change="gpuChangeHandle" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_294')" v-if="isOpenGpu && isGroupAction" :extra="$t('compute.text_1175')">
           <a-input-number :min="1" v-decorator="decorators.number" />
@@ -436,6 +438,24 @@ export default {
           this.form.fd[key] = values[key]
         }
       })
+    },
+    gpuChangeHandle (val = []) {
+      if (val && val.length > 0) {
+        const vgpuType = GPU_DEV_TYPE_OPTION_MAP.VGPU.value
+        const bindDevices = this.gpuOpt.filter(o => val.includes(o.id))
+        const gpuTypesSet = new Set()
+        const lastGpu = this.gpuOpt.find(o => o.id === val[val.length - 1])
+
+        bindDevices.forEach(o => {
+          gpuTypesSet.add(o.dev_type.endsWith(vgpuType) ? vgpuType : 'GPU')
+        })
+
+        if (lastGpu.dev_type === 'LEGACY-VGPU' || gpuTypesSet.size > 1) {
+          this.$nextTick(() => {
+            this.form.fc.setFieldsValue({ device: [lastGpu.id] })
+          })
+        }
+      }
     },
   },
 }
