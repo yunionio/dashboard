@@ -1707,5 +1707,6 @@
   "compute.vmware.transfer.message": "Prompt message: The migration host must belong to the same Layer 2 network and the target host must be in normal state",
   "compute.storage.check_status.status": "The block storage status is abnormal",
   "compute.storage.check_status.enabled": "Block storage is not enabled",
-  "compute.transfer.bandwidth.number.check": "Only positive integers can be entered"
+  "compute.transfer.bandwidth.number.check": "Only positive integers can be entered",
+  "compute.vgpu_check.tooltip": "It is not supported to use VGPU and physical GPU at the same time. NVIDIA's VGPU can only be bound to one piece."
 }
