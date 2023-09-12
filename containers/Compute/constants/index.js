@@ -1148,6 +1148,6 @@ export const SELECT_IMAGE_KEY_SUFFIX = '__select_image'
 export const GPU_DEV_TYPE_OPTIONS = [
   { label: i18n.t('compute.vga_gpu'), value: 'GPU-VGA' },
   { label: i18n.t('compute.hpc_gpu'), value: 'GPU-HPC' },
-  { label: i18n.t('compute.v_gpu'), value: 'VGPU' },
+  { label: 'VGPU', value: 'VGPU' },
 ]
 export const GPU_DEV_TYPE_OPTION_MAP = arrayToObj(GPU_DEV_TYPE_OPTIONS, 'value')
