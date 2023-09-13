@@ -5264,6 +5264,7 @@
   "license.group.private": "@:scope.text_76",
   "license.group.storage": "@:scope.text_77",
   "license.group.container": "@:scope.text_78",
+  "license.group.bill": "费用管理",
   "license.group.default": "",
   "scope.auth.login": "用户登录",
   "scope.auth.username.placeholder": "请输入用户名",
