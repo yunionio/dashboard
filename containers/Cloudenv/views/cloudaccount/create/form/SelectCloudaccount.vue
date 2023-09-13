@@ -66,13 +66,26 @@ export default {
           }
         }
       }
-      if (!hasSetupKey(['private', 'public', 'onecloud']) && hasSetupKey(['bill'])) {
-        if (!typesMap.public) {
-          typesMap.public = {}
+      if (hasSetupKey(['bill'])) {
+        const setUpKeys = this.globalSettingSetupKeys || []
+        const billTargetItems = ['aliyun', 'aws', 'azure', 'google', 'huawei', 'qcloud', 'jdcloud'].filter(key => setUpKeys.includes('bill_' + key))
+        if (!billTargetItems.length) {
+          // 旧版本 license只签发bill
+          if (!hasSetupKey('public')) {
+            if (!typesMap.public) {
+              typesMap.public = {}
+            }
+            ['aliyun', 'aws', 'azure', 'google', 'huawei', 'qcloud', 'jdcloud'].map(key => {
+              typesMap.public[key] = CLOUDACCOUNT_TYPES.public[key]
+            })
+          }
+        } else {
+          // 新版本 license签发billItem
+          typesMap.public = typesMap.public || {}
+          billTargetItems.map(key => {
+            typesMap.public[key] = CLOUDACCOUNT_TYPES.public[key]
+          })
         }
-        ['aliyun', 'aws', 'azure', 'google', 'huawei', 'qcloud', 'jdcloud'].map(key => {
-          typesMap.public[key] = CLOUDACCOUNT_TYPES.public[key]
-        })
       }
       return typesMap
     },
@@ -106,7 +119,7 @@ export default {
         return this.globalSettingSetupKeys.indexOf(item) > -1 || (this.globalSettingSetupKeys.indexOf('bill') > -1 && this.isBillEnv(item))
       }
       // console.log(this.globalSettingSetupKeys, item.provider.toLowerCase(), this.globalSettingSetupKeys.indexOf(item.provider.toLowerCase()) > -1)
-      return this.globalSettingSetupKeys.indexOf(item.provider.toLowerCase()) > -1 || (this.globalSettingSetupKeys.indexOf('bill') > -1 && this.isBillItem(item))
+      return this.globalSettingSetupKeys.indexOf(item.provider.toLowerCase()) > -1 || this.isShowBillItem(item)
     },
     isBillEnv (env) {
       if (env === 'public') {
@@ -114,9 +127,14 @@ export default {
       }
       return false
     },
-    isBillItem (item) {
+    isShowBillItem (item) {
+      if (this.globalSettingSetupKeys.indexOf('bill') === -1) return false
+      // 开启费用
       if (['aws', 'aliyun', 'google', 'huawei', 'azure', 'qcloud', 'jdcloud'].indexOf(item.provider.toLowerCase()) > -1) {
-        return true
+        // 没有平台但是有费用
+        if (this.globalSettingSetupKeys.indexOf(`bill_${item.provider.toLowerCase()}`) > -1) {
+          return true
+        }
       }
       return false
     },

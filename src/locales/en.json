@@ -5247,6 +5247,7 @@
   "license.group.private": "@:scope.text_76",
   "license.group.storage": "@:scope.text_77",
   "license.group.container": "@:scope.text_78",
+  "license.group.bill": "Bill Management",
   "license.group.default": "",
   "scope.auth.login": "Sign in",
   "scope.auth.username.placeholder": "User",
