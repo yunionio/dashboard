@@ -3,7 +3,7 @@ import i18n from '@/locales'
 
 const vIsAccount = R.pipe(R.path(['meta', 'is_account']), R.equals(true))
 const vIsOnestack = R.whereEq({ key: 'onestack' })
-const vIsCloudPlatform = R.pipe(R.path(['meta', 'group']), (group) => { return group && ['onecloud', 'private', 'public'].indexOf(group) >= 0 })
+const vIsCloudPlatform = R.pipe(R.path(['meta', 'group']), (group) => { return group && ['onecloud', 'private', 'public', 'bill'].indexOf(group) >= 0 })
 const vIsCloudAccount = R.and(vIsAccount, vIsCloudPlatform)
 
 class validators {
@@ -194,8 +194,39 @@ const LicenseItems = [
     meta: meta('monitor', '', false),
   },
   {
-    key: 'bill',
-    meta: meta('bill', '', false),
+    key: 'bill_aliyun',
+    origin_key: 'aliyun',
+    meta: meta('resource_managent', 'bill', true),
+  },
+  {
+    key: 'bill_aws',
+    origin_key: 'aws',
+    meta: meta('resource_managent', 'bill', true),
+  },
+  {
+    key: 'bill_azure',
+    origin_key: 'azure',
+    meta: meta('resource_managent', 'bill', true),
+  },
+  {
+    key: 'bill_google',
+    origin_key: 'google',
+    meta: meta('resource_managent', 'bill', true),
+  },
+  {
+    key: 'bill_huawei',
+    origin_key: 'huawei',
+    meta: meta('resource_managent', 'bill', true),
+  },
+  {
+    key: 'bill_qcloud',
+    origin_key: 'qcloud',
+    meta: meta('resource_managent', 'bill', true),
+  },
+  {
+    key: 'bill_jdcloud',
+    origin_key: 'jdcloud',
+    meta: meta('resource_managent', 'bill', true),
   },
   {
     key: 'auth',
@@ -221,12 +252,13 @@ const LicenseItems = [
 
 function fullfillLicenseItems () {
   LicenseItems.map(item => {
+    const key = item.origin_key || item.key
     if (item.meta.is_account) {
-      item.label = i18n.t(`license.provider.${item.key}`)
-      item.icon = require(`@/assets/images/providers/${item.key}.svg`)
+      item.label = i18n.t(`license.provider.${key}`)
+      item.icon = require(`@/assets/images/providers/${key}.svg`)
     } else {
-      item.label = i18n.t(`license.feature.${item.key}`)
-      item.icon = require(`@/assets/images/features/${item.key}.svg`)
+      item.label = i18n.t(`license.feature.${key}`)
+      item.icon = require(`@/assets/images/features/${key}.svg`)
     }
     item.value = item.key
   })
