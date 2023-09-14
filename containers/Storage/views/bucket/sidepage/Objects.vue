@@ -9,7 +9,9 @@
       :list="list"
       :columns="columns"
       :group-actions="groupActions"
-      :single-actions="singleActions">
+      :single-actions="singleActions"
+      default-search-key="prefix"
+      :placeholder="$t('storage.bucket_object_search_placeholder')">
       <div slot="table-prepend" class="d-flex align-items-center pt-2 pb-2">
         <span><a-icon type="folder-open" theme="filled" style="color: rgb(245,200, 61);font-size:15px" />{{$t('storage.text_150')}}</span>
         <a-breadcrumb>
@@ -431,7 +433,7 @@ export default {
       // 表示根目录，根目录不需要prefix
       this.prefix = key
       this.nextFetchListLoading = true
-      await this.list.reset()
+      await this.list.changeFilter({})
       await this.list.fetchData()
       this.nextFetchListLoading = false
     },
