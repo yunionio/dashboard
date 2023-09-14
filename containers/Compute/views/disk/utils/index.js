@@ -139,7 +139,6 @@ export const diskResizeConfig = {
   aliyun (obj) {
     const provider = obj.provider
     const diskType = 'data'
-    const storageType = ['cloud', 'cloud_efficiency', 'cloud_ssd']
     const { validate, tooltip } = diskResizeConfig.base(obj)
     if (!validate) {
       return {
@@ -151,12 +150,6 @@ export const diskResizeConfig = {
       return {
         validate: false,
         tooltip: i18n.t('compute.text_466', [PROVIDER_MAP[provider].label, DISK_TYPES[diskType]]),
-      }
-    }
-    if (!storageType.includes(obj.storage_type)) {
-      return {
-        validate: false,
-        tooltip: i18n.t('compute.text_470', [PROVIDER_MAP[provider].label, _tran2(storageType, ALL_STORAGE_LABEL)]),
       }
     }
     return {
