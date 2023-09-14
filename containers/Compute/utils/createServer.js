@@ -485,6 +485,10 @@ export const createVmDecorators = type => {
           `networkPolicys[${i}]`,
           {
             validateTrigger: ['blur', 'change'],
+            rules: [{
+              required: true,
+              message: i18n.t('common_256'),
+            }],
           },
         ],
         devices: i => [
