@@ -30,6 +30,7 @@ import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import WorkflowMixin from '@/mixins/workflow'
+import { BATCH_OPERATE_SERVERS_MAX } from '@/constants/workflow'
 
 export default {
   name: 'VmRestartDialog',
@@ -95,6 +96,11 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         if (this.isOpenWorkflow) {
+          if (this.params.data.length > BATCH_OPERATE_SERVERS_MAX) {
+            this.$message.error(this.$t('compute.workflow.operate_servers_check.message', [this.$t('compute.text_274'), BATCH_OPERATE_SERVERS_MAX]))
+            this.loading = false
+            return
+          }
           const projects = new Set(this.params.data.map(item => item.tenant_id))
           if (projects.size > 1) {
             this.$message.error(this.$t('compute.text_1348'))
