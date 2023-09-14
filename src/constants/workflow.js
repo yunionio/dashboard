@@ -92,3 +92,5 @@ export const PRIORITY_OPTS = [
   { key: 'fatal', value: i18n.t('common.workflow_priority_fatal') },
 ]
 export const PRIORITY_MAP = arrayToObj(PRIORITY_OPTS, 'key')
+
+export const BATCH_OPERATE_SERVERS_MAX = 20
