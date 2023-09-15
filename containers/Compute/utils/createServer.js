@@ -315,6 +315,24 @@ export const createVmDecorators = type => {
           }],
         },
       ],
+      iops: [
+        'systemDiskIops',
+        {
+          rules: [{
+            required: true,
+            message: i18n.t('compute.iops_input_tip'),
+          }],
+        },
+      ],
+      throughput: [
+        'systemDiskThroughput',
+        {
+          rules: [{
+            required: true,
+            message: i18n.t('compute.throuthput_input_tip'),
+          }],
+        },
+      ],
     },
     dataDisk: {
       type: i => [
@@ -392,6 +410,24 @@ export const createVmDecorators = type => {
           rules: [{
             required: true,
             message: i18n.t('compute.text_1351'),
+          }],
+        },
+      ],
+      iops: i => [
+        `dataDiskIops[${i}]`,
+        {
+          rules: [{
+            required: true,
+            message: i18n.t('compute.iops_input_tip'),
+          }],
+        },
+      ],
+      throughput: i => [
+        `dataDiskThroughputs[${i}]`,
+        {
+          rules: [{
+            required: true,
+            message: i18n.t('compute.throughput_input_tip'),
           }],
         },
       ],
@@ -877,6 +913,12 @@ export class GenCreateData {
     if (item.storage_id) {
       ret.storage_id = item.storage_id
     }
+    if (item.iops) {
+      ret.iops = item.iops
+    }
+    if (item.throughput) {
+      ret.throughput = item.throughput
+    }
     // 磁盘区分介质
     if (diskSupportTypeMedium(this.fd.hypervisor)) {
       ret.backend = getOriginDiskKey(ret.backend)
@@ -925,6 +967,12 @@ export class GenCreateData {
     if (this.fd.systemDiskStorage) {
       systemDisk.storage_id = this.fd.systemDiskStorage
     }
+    if (this.fd.systemDiskIops) {
+      systemDisk.iops = this.fd.systemDiskIops
+    }
+    if (this.fd.systemDiskThroughput) {
+      systemDisk.throughput = this.fd.systemDiskThroughput
+    }
     // #7356 新建vmware主机，数据盘没有传磁盘类型字段
     if (this.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
       dataDiskType = dataDiskType || sysDiskType
@@ -955,6 +1003,12 @@ export class GenCreateData {
       if (this.fd.dataDiskStorages && this.fd.dataDiskStorages[key]) {
         // if system disk specifies storage, the data disks should do the same
         diskObj.storage_id = this.fd.dataDiskStorages[key] || this.fd.systemDiskStorage
+      }
+      if (this.fd.dataDiskIops && this.fd.dataDiskIops[key]) {
+        diskObj.iops = this.fd.dataDiskIops[key]
+      }
+      if (this.fd.dataDiskThroughputs && this.fd.dataDiskThroughputs[key]) {
+        diskObj.throughput = this.fd.dataDiskThroughputs[key]
       }
       if (this.fi.dataDiskMedium) {
         diskObj.medium = this.fi.dataDiskMedium

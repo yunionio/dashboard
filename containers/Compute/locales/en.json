@@ -1711,5 +1711,10 @@
   "compute.storage.check_status.enabled": "Block storage is not enabled",
   "compute.transfer.bandwidth.number.check": "Only positive integers can be entered",
   "compute.vgpu_check.tooltip": "It is not supported to use VGPU and physical GPU at the same time. NVIDIA's VGPU can only be bound to one piece.",
-  "compute.workflow.operate_servers_check.message": "The batch of {0} machines for the work order cannot exceed {1} at a time"
+  "compute.workflow.operate_servers_check.message": "The batch of {0} machines for the work order cannot exceed {1} at a time",
+  "compute.throughput": "Throughput",
+  "compute.set_iops": "Set IOPS",
+  "compute.set_throughput": "Set Throughput",
+  "compute.iops_input_tip": "Please input iops",
+  "compute.throuthput_input_tip": "Please input throughput"
 }
