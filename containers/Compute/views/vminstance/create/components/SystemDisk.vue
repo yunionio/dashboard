@@ -16,6 +16,9 @@
       :size-disabled="sizeDisabled || disabled"
       :storage-status-map="storageStatusMap"
       :isStorageShow="isStorageShow"
+      :isIopsShow="isIopsShow"
+      :isThroughputShow="isThroughputShow"
+      :iopsLimit="iopsLimit"
       @showStorageChange="showStorageChange"
       @diskTypeChange="setDiskMedium"
       @storageHostChange="(val) => $emit('storageHostChange', val)" />
@@ -106,6 +109,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    isIopsShow: {
+      type: Boolean,
+      default: false,
+    },
+    isThroughputShow: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     isPublic () {
@@ -119,6 +130,9 @@ export default {
     },
     isVMware () {
       return this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key
+    },
+    isAws () {
+      return this.hypervisor === HYPERVISORS_MAP.aws.key
     },
     imageMinDisk () {
       const image = this.image
@@ -147,6 +161,36 @@ export default {
         // } else {
         //   ret.push('schedtag')
         // }
+      }
+      if (this.isAws && !this.isServertemplate) {
+        if (this.currentTypeObj?.key === 'gp3') {
+          ret.push('iops', 'throughput')
+        }
+        if (this.currentTypeObj?.key === 'io1') {
+          ret.push('iops')
+        }
+      }
+      return ret
+    },
+    iopsLimit () {
+      let ret = { min: 0 }
+      if (this.isAws && !this.isServertemplate) {
+        // gp3 iops 不能超过磁盘500倍
+        if (this.currentTypeObj?.key === 'gp3') {
+          ret = { min: 3000, max: 16000 }
+          const { systemDiskSize } = this.form.fd
+          if (systemDiskSize) {
+            ret.max = systemDiskSize * 500 < ret.max ? systemDiskSize * 500 : ret.max
+          }
+        }
+        // io1 iops 不能超过磁盘50倍
+        if (this.currentTypeObj?.key === 'io1') {
+          ret = { min: 100, max: 64000 }
+          const { systemDiskSize } = this.form.fd
+          if (systemDiskSize) {
+            ret.max = systemDiskSize * 50 < ret.max ? systemDiskSize * 50 : ret.max
+          }
+        }
       }
       return ret
     },

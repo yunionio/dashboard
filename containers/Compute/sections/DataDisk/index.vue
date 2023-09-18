@@ -21,6 +21,9 @@
           :storageParams="storageParams"
           :storageHostParams="storageHostParams"
           :isStorageShow="isStorageShow"
+          :isIopsShow="isIopsShow"
+          :isThroughputShow="isThroughputShow"
+          :iopsLimit="iopsLimit[item.key]"
           @snapshotChange="val => snapshotChange(item, val, i)"
           @diskTypeChange="val => diskTypeChange(item, val)"
           @storageHostChange="(val) => $emit('storageHostChange', val)" />
@@ -122,6 +125,18 @@ export default {
       type: Object,
     },
     storageHostParams: Object,
+    isIopsShow: {
+      type: Boolean,
+      default: false,
+    },
+    isThroughputShow: {
+      type: Boolean,
+      default: false,
+    },
+    isServertemplate: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -137,6 +152,9 @@ export default {
     },
     isIDC () {
       return this.type === 'idc'
+    },
+    isAws () {
+      return this.hypervisor === HYPERVISORS_MAP.aws.key
     },
     elements () {
       const ret = []
@@ -165,7 +183,39 @@ export default {
         ret.push('schedtag')
         // }
       }
+      if (this.isAws && !this.isServertemplate) {
+        if (this.currentTypeObj?.key === 'gp3') {
+          ret.push('iops', 'throughput')
+        }
+        if (this.currentTypeObj?.key === 'io1') {
+          ret.push('iops')
+        }
+      }
       return ret
+    },
+    iopsLimit () {
+      const value = {}
+      if (!this.isAws || this.isServertemplate) return value
+      this.dataDisks.map(item => {
+        const type = item.diskType?.key
+        let ret = { min: 0 }
+        // gp3 iops 不能超过磁盘500倍
+        if (type === 'gp3') {
+          ret = { min: 3000, max: 16000 }
+          if (this.form.fd.dataDiskSizes?.[item.key]) {
+            ret.max = this.form.fd.dataDiskSizes?.[item.key] * 500 < ret.max ? this.form.fd.dataDiskSizes?.[item.key] * 500 : ret.max
+          }
+        }
+        // io1 iops 不能超过磁盘50倍
+        if (type === 'io1') {
+          ret = { min: 100, max: 64000 }
+          if (this.form.fd.dataDiskSizes?.[item.key]) {
+            ret.max = this.form.fd.dataDiskSizes?.[item.key] * 50 < ret.max ? this.form.fd.dataDiskSizes?.[item.key] * 50 : ret.max
+          }
+        }
+        value[item.key] = ret
+      })
+      return value
     },
     typesMap () {
       const ret = {}

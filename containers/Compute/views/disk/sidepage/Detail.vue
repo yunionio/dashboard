@@ -69,6 +69,13 @@ export default {
           },
         },
         {
+          field: 'throughput',
+          title: this.$t('compute.throughput'),
+          formatter: ({ row }) => {
+            return row.throughput || '-'
+          },
+        },
+        {
           field: 'disk_type',
           title: this.$t('compute.text_381'),
           formatter: ({ cellValue }) => {

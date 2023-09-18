@@ -45,6 +45,33 @@
       <storage style="min-width: 480px; max-width: 500px;" :diskKey="diskKey" :decorators="decorator" :storageParams="storageParams" v-if="showStorage" :form="form" :storageHostParams="storageHostParams" @storageHostChange="(val) => $emit('storageHostChange', val)" />
       <a-button v-if="!disabled" class="mt-1" type="link" @click="storageShowClick">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
     </template>
+    <!-- iops 创建时可设置，修改时禁用 -->
+    <template v-if="has('iops') && !disabled && isIopsShow">
+      <a-form-item>
+        <a-tooltip :title="iopsTooltip" placement="top">
+          <a-input-number
+            v-if="showIops"
+            v-decorator="decorator.iops"
+            placeholder="IOPS"
+            :min="iopsLimit.min"
+            :max="iopsLimit.max"
+            :precision="0" />
+        </a-tooltip>
+      </a-form-item>
+      <a-button class="mt-1" type="link" @click="() => showIops = !showIops">{{ showIops ? $t('compute.text_135') : $t('compute.set_iops') }}</a-button>
+    </template>
+    <!-- throughput 创建时可设置，修改时禁用 -->
+    <template v-if="has('throughput') && !disabled && isThroughputShow">
+      <a-form-item>
+        <a-input-number
+          v-if="showThroughput"
+          v-decorator="decorator.throughput"
+          :placeholder="$t('compute.throughput')"
+          :min="0"
+          :precision="0" />
+      </a-form-item>
+      <a-button class="mt-1" type="link" @click="() => showThroughput = !showThroughput">{{ showThroughput ? $t('compute.text_135') : $t('compute.set_throughput') }}</a-button>
+    </template>
     <!-- 磁盘容量预警信息提示 -->
     <a-tooltip v-if="storageStatusMap.tooltip">
       <template slot="title">
@@ -144,6 +171,18 @@ export default {
       type: Boolean,
       default: false,
     },
+    isIopsShow: {
+      type: Boolean,
+      default: false,
+    },
+    isThroughputShow: {
+      type: Boolean,
+      default: false,
+    },
+    iopsLimit: {
+      type: Object,
+      default: () => ({ min: 0 }),
+    },
   },
   data () {
     return {
@@ -151,12 +190,20 @@ export default {
       showMountpoint: false,
       showSnapshot: false,
       showStorage: false,
+      showIops: false,
+      showThroughput: false,
       snapshotObj: {},
     }
   },
   computed: {
     tooltip () {
       return this.$t('compute.text_137', [this.minSize, this.max])
+    },
+    iopsTooltip () {
+      if (this.iopsLimit.min && this.iopsLimit.max) {
+        return `${this.iopsLimit.min} ~ ${this.iopsLimit.max}`
+      }
+      return ''
     },
     minSize () {
       let snapshotSize = this.snapshotObj.size || 0
