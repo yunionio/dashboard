@@ -533,6 +533,10 @@ export const createVmDecorators = type => {
           `policySchedtagPolicys[${i}]`,
           {
             validateTrigger: ['blur', 'change'],
+            rules: [{
+              required: true,
+              message: i18n.t('common_256'),
+            }],
           },
         ],
       },
