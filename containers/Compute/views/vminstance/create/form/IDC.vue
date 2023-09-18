@@ -89,7 +89,7 @@
           :cloudproviderParamsExtra="cloudproviderParamsExtra"
           @updateImageMsg="updateFi" />
       </a-form-item>
-      <a-form-item v-if="isKvm && isShowAgent" :label="$t('compute.agent.label')" :extra="$t('compute.agent.extra')">
+      <a-form-item v-if="isShowAgent" :label="$t('compute.agent.label')" :extra="$t('compute.agent.extra')">
         <a-checkbox v-decorator="decorators.deploy_telegraf">{{ $t('compute.agent.install.plugin') }}</a-checkbox>
       </a-form-item>
       <a-form-item :label="$t('compute.text_49')" class="mb-0">
@@ -619,9 +619,7 @@ export default {
       return this.$appConfig.isPrivate
     },
     isShowAgent () {
-      if (this.isIso || !this.osType || !['linux', 'windows'].includes(this.osType)) {
-        return false
-      }
+      if (this.isIso || !this.osType) return false
       if (this.isWindows) {
         return !this.isArm
       }
