@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import NodeAlertForm from '../components/Form'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import NodeAlertForm from '../components/Form'
 
 export default {
   name: 'CreateNodeAlert',
