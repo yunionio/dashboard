@@ -12,4 +12,5 @@ export default {
   l2MenuVisible: !R.isNil(_l2MenuVisible) && !R.isNil(_l2MenuVisible) ? _l2MenuVisible : true,
   monitorAlertNotifyTriggerTime: process.env.VUE_APP_MONITOR_ALERT_NOTIFY_TRIGGER_TIME || 1000 * 60 * 60, // 默认值1小时
   oemVersion: process.env.OEM_VERSION || process.env.VUE_APP_OEM_VERSION || '',
+  oemReleaseChannel: process.env.o_release_channel,
 }
