@@ -54,7 +54,7 @@
         class="w-100"
         :filterable="true"
         needParams
-        resource="users"
+        resource="receivers"
         version="v1"
         :params="recipientParams"
         :resList.sync="recipientOpts"
@@ -203,8 +203,9 @@ export default {
     },
     recipientParams () {
       const params = {
-        is_system_account: false,
         enabled: true,
+        limit: 0,
+        with_meta: true,
         ...this.domainParams,
       }
       return params
