@@ -42,6 +42,9 @@
         <a-form-item :label="$t('compute.text_308')" v-if="!isZStack" class="mb-0">
           <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" :form="form" />
         </a-form-item>
+        <a-form-item v-if="isShowAgent" :label="$t('compute.agent.label')" :extra="$t('compute.agent.extra')">
+          <a-checkbox v-decorator="decorators.deploy_telegraf">{{ $t('compute.agent.install.plugin') }}</a-checkbox>
+        </a-form-item>
         <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_1220')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" />
         </a-form-item>
@@ -85,7 +88,13 @@ export default {
       loading: false,
       action: this.$t('compute.text_357'),
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              this.$set(this.form.fd, key, values[key])
+            })
+          },
+        }),
         fd: {},
       },
       ignoreImageOptions: [
@@ -241,6 +250,13 @@ export default {
             initialValue: true,
           },
         ],
+        deploy_telegraf: [
+          'deploy_telegraf',
+          {
+            valuePropName: 'checked',
+            initialValue: true,
+          },
+        ],
       }
     },
     cacheImageParams () {
@@ -341,6 +357,14 @@ export default {
     isShowColumns () {
       return this.params.columns?.length > 0
     },
+    isShowAgent () {
+      const { os } = this.form.fd
+      if (![HYPERVISORS_MAP.kvm.key, HYPERVISORS_MAP.esxi.key].includes(this.hypervisor)) return false
+      if (os === 'Windows') {
+        return this.osArch !== HOST_CPU_ARCHS.arm.capabilityKey
+      }
+      return true
+    },
   },
   // watch: {
   //   type: {
@@ -361,7 +385,7 @@ export default {
   },
   methods: {
     async doRebuildRootSubmit (data) {
-      const { autoStart, image, loginType, loginKeypair, loginPassword } = data
+      const { autoStart, image, loginType, loginKeypair, loginPassword, deploy_telegraf } = data
       const ids = this.params.data.map(item => item.id)
       const params = {
         reset_password: true,
@@ -381,6 +405,10 @@ export default {
       }
       if (this.isZStack) {
         params.reset_password = false
+      }
+      // 安装监控 agent
+      if (this.isShowAgent && deploy_telegraf) {
+        params.deploy_telegraf = deploy_telegraf
       }
       return this.params.onManager('batchPerformAction', {
         steadyStatus: ['running', 'ready'],
