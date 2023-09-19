@@ -11,7 +11,7 @@
         <a-menu-item :key="docsUrl">{{$t('navbar.button.docs')}}</a-menu-item>
         <a-menu-item key="/licenses">
           <span>{{isCE() ? $t('scope.text_145') : $t('navbar.button.about')}}</span>
-          <a-icon v-if="isAdminMode && updateAvailable" type="cloud-upload" class="success-color ml-1" />
+          <a-icon v-if="!isOEM && isAdminMode && updateAvailable" type="cloud-upload" class="success-color ml-1" />
         </a-menu-item>
       </a-menu>
     </a-dropdown>
@@ -21,7 +21,8 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import { isCE, getDocsUrl } from '../../../utils/utils'
+import setting from '@/config/setting'
+import { isCE, getDocsUrl } from '@/utils/utils'
 
 export default {
   name: 'HelpPopover',
@@ -29,6 +30,7 @@ export default {
     return {
       updateAvailable: false,
       isCE,
+      isOEM: setting.brand?.en !== 'YunionCloud',
     }
   },
   computed: {
@@ -41,7 +43,7 @@ export default {
     this.manager = null
   },
   created () {
-    if (!this.isCE()) {
+    if (!this.isOEM && !this.isCE()) {
       this.manager = new this.$Manager('updates', 'v1')
       this.getUpdateInfo()
     }
