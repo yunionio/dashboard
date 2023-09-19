@@ -16,6 +16,7 @@ import 'codemirror/mode/yaml/yaml.js'
 
 import { uuid } from '@/utils/utils'
 import '@/utils/polyfill'
+import '@/config/appBuryPoint'
 
 import store from './store'
 import router from './router'
