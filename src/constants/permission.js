@@ -1395,6 +1395,13 @@ export const PERMISSION = {
   month_reports_perform_enabled: ['report', 'month_reports', 'perform', 'enabled'],
   month_reports_perform_disabled: ['report', 'month_reports', 'perform', 'disabled'],
 
+  compute_usages_list: ['compute', 'usages', 'list'],
+  compute_usages_get: ['compute', 'usages', 'get'],
+  image_usages_list: ['image', 'usages', 'list'],
+  image_usages_get: ['image', 'usages', 'get'],
+  identity_usages_list: ['identity', 'usages', 'list'],
+  identity_usages_get: ['identity', 'usages', 'get'],
+
   ...extraPermissions,
 }
 
