@@ -382,18 +382,18 @@ export default {
         if (this.editType === 'checkbox') {
           policy = this.genPostPolicyData()
           // 无论如何设置，usages都设置为有权限
-          policy.compute.usages = {
-            get: { '*': 'allow' },
-            list: { '*': 'allow' },
-          }
-          policy.image.usages = {
-            get: { '*': 'allow' },
-            list: { '*': 'allow' },
-          }
-          policy.identity.usages = {
-            get: { '*': 'allow' },
-            list: { '*': 'allow' },
-          }
+          // policy.compute.usages = {
+          //   get: { '*': 'allow' },
+          //   list: { '*': 'allow' },
+          // }
+          // policy.image.usages = {
+          //   get: { '*': 'allow' },
+          //   list: { '*': 'allow' },
+          // }
+          // policy.identity.usages = {
+          //   get: { '*': 'allow' },
+          //   list: { '*': 'allow' },
+          // }
           // 自定义处理
           this.customPolicy(policy)
           data = {
