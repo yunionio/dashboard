@@ -1,47 +1,6 @@
-import InstanceBackup from '@Compute/views/instance-backup'
-import DiskCreate from '@Compute/views/disk/create/index'
-import VMInstance from '@Compute/views/vminstance'
-import Baremetal from '@Compute/views/baremetal'
-import WebApp from '@Compute/views/webapp'
-import BaremetalCreate from '@Compute/views/baremetal/create/index'
-import Image from '@Compute/views/image'
-import ImageImport from '@Compute/views/image/image-import/index'
-import HostImage from '@Compute/views/host-image'
-import VMInstanceCreate from '@Compute/views/vminstance/create/index'
-import VMInstanceAdjustConfig from '@Compute/views/vminstance/adjustConfig'
-import Network from '@Network/views/network'
-import NetworkCreate from '@Network/views/network/Create'
-import EditAttributes from '@Network/views/network/EditAttributes'
-import Eip from '@Network/views/eip'
-import EipCreate from '@Network/views/eip/create'
-import Host from '@Compute/views/host'
-import Physicalmachine from '@Compute/views/physicalmachine'
-import PhysicalmachineAdd from '@Compute/views/physicalmachine/add'
-import ServerRecovery from '@Compute/views/server-recovery'
-import DiskRecovery from '@Compute/views/disk-recovery'
-import ImageRecovery from '@Compute/views/image-recovery'
-import InstanceGroup from '@Compute/views/instance-group'
-import SKU from '@Compute/views/sku'
-import Keypair from '@Compute/views/keypair'
-import Disk from '@Compute/views/disk'
-import DiskBackup from '@Compute/views/disk-backup'
-import GPU from '@Compute/views/gpu'
-import Secgroup from '@Compute/views/secgroup'
-import Servertemplate from '@Compute/views/servertemplate'
-import ServertemplateCreateServer from '@Compute/views/servertemplate/CreateServer'
-import DiskSnapshot from '@Compute/views/snapshot'
-import InstanceSnapshot from '@Compute/views/snapshot-instance'
-import SnapshotPolicy from '@Compute/views/snapshotpolicy'
 // import AnsibleTemplate from '@Compute/views/ansible-template'
 // import AnsibleTemplateCreate from '@Compute/views/ansible-template/create'
 // import AnsiblePlaybook from '@Compute/views/ansible-playbook'
-import ScalingGroup from '@Compute/views/scaling-group'
-import ScalingGroupCreate from '@Compute/views/scaling-group/create'
-import Schedtag from '@Cloudenv/views/schedtag'
-import Schedpolicy from '@Cloudenv/views/schedpolicy'
-import Dynamicschedtag from '@Cloudenv/views/dynamicschedtag'
-import TapService from '@Compute/views/tap-service'
-import TapServiceCreate from '@Compute/views/tap-service/create'
 
 import store from '@/store'
 import Layout from '@/layouts/RouterView'
@@ -49,6 +8,48 @@ import i18n from '@/locales'
 
 import { hasSetupKey } from '@/utils/auth'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
+
+const ScalingGroup = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/scaling-group')
+const ScalingGroupCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/scaling-group/create')
+const Schedtag = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Cloudenv/views/schedtag')
+const Schedpolicy = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Cloudenv/views/schedpolicy')
+const Dynamicschedtag = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Cloudenv/views/dynamicschedtag')
+const TapService = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/tap-service')
+const TapServiceCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/tap-service/create')
+const HostImage = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/host-image')
+const VMInstanceCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/vminstance/create/index')
+const VMInstanceAdjustConfig = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/vminstance/adjustConfig')
+const Network = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Network/views/network')
+const NetworkCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Network/views/network/Create')
+const EditAttributes = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Network/views/network/EditAttributes')
+const Eip = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Network/views/eip')
+const EipCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Network/views/eip/create')
+const Host = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/host')
+const Physicalmachine = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/physicalmachine')
+const PhysicalmachineAdd = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/physicalmachine/add')
+const ServerRecovery = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/server-recovery')
+const DiskRecovery = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/disk-recovery')
+const ImageRecovery = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/image-recovery')
+const InstanceGroup = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/instance-group')
+const SKU = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/sku')
+const Keypair = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/keypair')
+const Disk = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/disk')
+const DiskBackup = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/disk-backup')
+const GPU = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/gpu')
+const Secgroup = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/secgroup')
+const Servertemplate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/servertemplate')
+const ServertemplateCreateServer = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/servertemplate/CreateServer')
+const DiskSnapshot = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/snapshot')
+const InstanceSnapshot = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/snapshot-instance')
+const SnapshotPolicy = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/snapshotpolicy')
+const ImageImport = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/image/image-import/index')
+const InstanceBackup = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/instance-backup')
+const DiskCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/disk/create/index')
+const VMInstance = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/vminstance')
+const Baremetal = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/baremetal')
+const WebApp = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/webapp')
+const BaremetalCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/baremetal/create/index')
+const Image = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/image')
 
 export default {
   index: 20,
