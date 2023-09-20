@@ -72,7 +72,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import interact from 'interactjs'
+import interact from '@interactjs/interactjs'
 import VueGridLayout from 'vue-grid-layout'
 import debounce from 'lodash/debounce'
 import extendsComponents from '@scope/extends'
