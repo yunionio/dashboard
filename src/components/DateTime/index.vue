@@ -102,6 +102,11 @@ export default {
       type: Boolean,
       default: false,
     },
+    // 是否禁用往本地存储设置时间值
+    disableLocalTimeSet: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     let initDateMode = this.hasDefaultTime ? this.defaultDateMode : ''
@@ -238,7 +243,7 @@ export default {
       return this.$moment(date).format('YYYY-MM-DD')
     },
     setLocalTime () {
-      if (!this.disableLocalTime) {
+      if (!this.disableLocalTimeSet) {
         storage.set(localTimeKey, {
           dateMode: this.time.dateMode,
           time: this.time.dateMode === 'custom' ? this.customDate : { },
