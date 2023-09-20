@@ -1,50 +1,51 @@
 // import FlexNetwork from '@Network/views/flex-network'
-import Ipv6Gateway from '@Network/views/ipv6-gateway'
-import DnsZone from '@Network/views/dns-zone'
-import DnsZoneCreate from '@Network/views/dns-zone/create'
-import EipCreate from '@Network/views/eip/create'
-import Wire from '@Network/views/wire'
-import Network from '@Network/views/network'
-import NetworkCreate from '@Network/views/network/Create'
-import EditAttributes from '@Network/views/network/EditAttributes'
-import BatchEditAttributes from '@Network/views/network/BatchEditAttributes'
-import Eip from '@Network/views/eip'
-import Waf from '@Network/views/waf'
-import GlobalVpc from '@Network/views/global-vpc'
-import GlobalVpcCreate from '@Network/views/global-vpc/create'
-import RouteTableList from '@Network/views/route-table'
-import NatList from '@Network/views/nats'
-import NatCreate from '@Network/views/nats/create/index'
 // import ReservedIpList from '@Network/views/reserved-ip'
 // import DNS from '@Network/views/dns'
-import VPC from '@Network/views/vpc'
-import VpcNetwork from '@Network/views/vpc-network'
-import VpcPeerConnect from '@Network/views/vpc-peer-connect'
-import VPCCreate from '@Network/views/vpc/create'
-import LbList from '@Network/views/lb'
-import LBCreate from '@Network/views/lb/create/index'
-import LbListenerCreate from '@Network/views/loadbalancerlistener/create'
-import LbaclsList from '@Network/views/lbacls'
-import LbcertsList from '@Network/views/lbcerts'
-import LoadbalancerclusterList from '@Network/views/loadbalancercluster'
-import LBClusterUpdate from '@Network/views/loadbalancercluster/update'
-import SshProxyList from '@Network/views/ssh-proxy'
-import SshProxyCreate from '@Network/views/ssh-proxy/form'
-import SshAgentList from '@Network/views/ssh-agent'
 // import LoadbalancerclusterList from '@Network/views/ssh-service'
-import AgentList from '@Network/views/agent'
-import AgentForm from '@Network/views/agent/form'
-import Layout from '@/layouts/RouterView'
-import Cloudregion from '@Cloudenv/views/cloudregion'
-import Zone from '@Cloudenv/views/zone'
-import CdnList from '@Network/views/cdn'
-import CdnCreate from '@Network/views/cdn/create'
-import VpcPeerConnectCreate from '@Network/views/vpc-peer-connect/create'
 
+import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
 import store from '@/store'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
+
+const AgentList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/agent')
+const AgentForm = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/agent/form')
+const Cloudregion = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Cloudenv/views/cloudregion')
+const Zone = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Cloudenv/views/zone')
+const CdnList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/cdn')
+const CdnCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/cdn/create')
+const VpcPeerConnectCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/vpc-peer-connect/create')
+const Ipv6Gateway = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/ipv6-gateway')
+const DnsZone = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/dns-zone')
+const DnsZoneCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/dns-zone/create')
+const EipCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/eip/create')
+const Wire = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/wire')
+const Network = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/network')
+const NetworkCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/network/Create')
+const EditAttributes = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/network/EditAttributes')
+const BatchEditAttributes = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/network/BatchEditAttributes')
+const Eip = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/eip')
+const Waf = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/waf')
+const GlobalVpc = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/global-vpc')
+const GlobalVpcCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/global-vpc/create')
+const RouteTableList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/route-table')
+const NatList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/nats')
+const NatCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/nats/create/index')
+const VPC = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/vpc')
+const VpcNetwork = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/vpc-network')
+const VpcPeerConnect = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/vpc-peer-connect')
+const VPCCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/vpc/create')
+const LbList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/lb')
+const LBCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/lb/create/index')
+const LbListenerCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/loadbalancerlistener/create')
+const LbaclsList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/lbacls')
+const LbcertsList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/lbcerts')
+const LoadbalancerclusterList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/loadbalancercluster')
+const LBClusterUpdate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/loadbalancercluster/update')
+const SshProxyList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/ssh-proxy')
+const SshProxyCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/ssh-proxy/form')
+const SshAgentList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/ssh-agent')
 
 export default {
   index: 40,
