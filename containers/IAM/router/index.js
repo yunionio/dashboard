@@ -1,28 +1,29 @@
-import IDP from '@IAM/views/idp'
-import IDPEdit from '@IAM/views/idp/edit'
-import Domain from '@IAM/views/domains'
-import DomainCreate from '@IAM/views/domains/create'
-import Projects from '@IAM/views/projects'
-import SecurityAlerts from '@IAM/views/security-alerts'
-import ProjectCreate from '@IAM/views/projects/create'
-import Group from '@IAM/views/group'
-import User from '@IAM/views/user'
-import UserCreate from '@IAM/views/user/create'
-import Role from '@IAM/views/role'
-import Policy from '@IAM/views/policy'
-import PolicyCreate from '@IAM/views/policy/Create'
-import PolicyUpdate from '@IAM/views/policy/Update'
-import Notification from '@IAM/views/notification'
-import NotifyTopic from '@IAM/views/notify-topic'
-import Robots from '@IAM/views/robots'
-import NotifyConfigs from '@IAM/views/notifyconfig'
-import NotifyConfigCreate from '@IAM/views/notifyconfig/create'
-import Contact from '@IAM/views/contact'
 import Layout from '@/layouts/RouterView'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 import { hasServices, setupKeys } from '@/utils/auth'
 import store from '@/store'
+
+const IDP = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/idp')
+const IDPEdit = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/idp/edit')
+const Domain = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/domains')
+const DomainCreate = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/domains/create')
+const Projects = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/projects')
+const SecurityAlerts = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/security-alerts')
+const ProjectCreate = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/projects/create')
+const Group = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/group')
+const User = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/user')
+const UserCreate = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/user/create')
+const Role = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/role')
+const Policy = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/policy')
+const PolicyCreate = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/policy/Create')
+const PolicyUpdate = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/policy/Update')
+const Notification = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/notification')
+const NotifyTopic = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/notify-topic')
+const Robots = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/robots')
+const NotifyConfigs = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/notifyconfig')
+const NotifyConfigCreate = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/notifyconfig/create')
+const Contact = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/contact')
 
 function menuPath (path) {
   return '/iam' + path
