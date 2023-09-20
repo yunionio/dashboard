@@ -30,8 +30,9 @@ export function genPolicyGroups () {
         resources: [],
       }
     }
-    if (!resources.includes(item[1])) {
-      resources.push(item[1])
+    // 由验证<resource>为唯一项，改为验证<service>_<resource>
+    if (!resources.includes(`${item[0]}_${item[1]}`)) {
+      resources.push(`${item[0]}_${item[1]}`)
       const res = {
         label: transformLabel(RESOURCES_MAP[item[1]]) || item[1],
         resource: item[1],

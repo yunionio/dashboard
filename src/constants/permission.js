@@ -1405,6 +1405,13 @@ export const PERMISSION = {
   organizations_delete: ['identity', 'organizations', 'delete'],
   organizations_perform_bind: ['identity', 'organizations', 'perform', 'bind'],
 
+  compute_usages_list: ['compute', 'usages', 'list'],
+  compute_usages_get: ['compute', 'usages', 'get'],
+  image_usages_list: ['image', 'usages', 'list'],
+  image_usages_get: ['image', 'usages', 'get'],
+  identity_usages_list: ['identity', 'usages', 'list'],
+  identity_usages_get: ['identity', 'usages', 'get'],
+
   ...extraPermissions,
 }
 
