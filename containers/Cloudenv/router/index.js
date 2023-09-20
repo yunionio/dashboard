@@ -1,18 +1,19 @@
-import ProjectMapping from '@Cloudenv/views/projectmapping'
-import Cloudgroup from '@Cloudenv/views/cloudgroup'
-import Cloudaccount from '@Cloudenv/views/cloudaccount'
-import CloudaccountCreate from '@Cloudenv/views/cloudaccount/create'
-import CloudaccountUpdateBill from '@Cloudenv/views/cloudaccount/create/BillFileIndex'
-import Proxysetting from '@Cloudenv/views/proxysetting'
 // import ServerPriceComparatorCreate from '@Cloudenv/views/server-price-comparator/create'
 // import PriceComparatorList from '@Cloudenv/views/server-price-comparator'
 // import Policydefinition from '@Cloudenv/views/policydefinition'
+
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey, setupKeys } from '@/utils/auth'
-
 import store from '@/store'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
+
+const ProjectMapping = () => import(/* webpackChunkName: "cloudenv" */ /* webpackPrefetch: true */ '@Cloudenv/views/projectmapping')
+const Cloudgroup = () => import(/* webpackChunkName: "cloudenv" */ /* webpackPrefetch: true */ '@Cloudenv/views/cloudgroup')
+const Cloudaccount = () => import(/* webpackChunkName: "cloudenv" */ /* webpackPrefetch: true */ '@Cloudenv/views/cloudaccount')
+const CloudaccountCreate = () => import(/* webpackChunkName: "cloudenv" */ /* webpackPrefetch: true */ '@Cloudenv/views/cloudaccount/create')
+const CloudaccountUpdateBill = () => import(/* webpackChunkName: "cloudenv" */ /* webpackPrefetch: true */ '@Cloudenv/views/cloudaccount/create/BillFileIndex')
+const Proxysetting = () => import(/* webpackChunkName: "cloudenv" */ /* webpackPrefetch: true */ '@Cloudenv/views/proxysetting')
 
 export default {
   index: 90,

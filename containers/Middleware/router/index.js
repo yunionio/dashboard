@@ -1,9 +1,10 @@
-import Kafka from '@Middleware/views/kafka'
-import Elasticsearch from '@Middleware/views/elasticsearch'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
+
+const Kafka = () => import(/* webpackChunkName: "middleware" */ /* webpackPrefetch: true */ '@Middleware/views/kafka')
+const Elasticsearch = () => import(/* webpackChunkName: "middleware" */ /* webpackPrefetch: true */ '@Middleware/views/elasticsearch')
 
 export default {
   index: 60,
