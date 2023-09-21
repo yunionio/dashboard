@@ -1194,6 +1194,9 @@
       "fail": "失败",
       "done": "完成",
       "cancel": "取消"
+    },
+    "k8s_repo": {
+      "init": "正常"
     }
   },
   "skuCategoryOptions": {

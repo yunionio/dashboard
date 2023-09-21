@@ -55,6 +55,7 @@ const Secret = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: tr
 const K8sSecretCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/secret/create')
 const FederatednamespaceCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/federatednamespace/create')
 const FederatedroleCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/federatedrole/create')
+const K8sRepos = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/repos')
 
 export default {
   index: 30,
@@ -243,6 +244,34 @@ export default {
               name: 'K8sPersistentvolumeclaimCreate',
               path: 'create',
               component: K8sPersistentvolumeclaimCreate,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: i18n.t('k8s.repo'),
+      },
+      submenus: [
+        {
+          path: '/k8s-repos',
+          meta: {
+            label: i18n.t('k8s.text_158'),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_service')) {
+                return true
+              }
+              if (!store.getters.isAdminMode) return true
+              return !hasSetupKey('k8s')
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sRepos',
+              path: '',
+              component: K8sRepos,
             },
           ],
         },

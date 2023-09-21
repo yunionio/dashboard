@@ -1179,6 +1179,9 @@
       "fail": "Failed",
       "done": "Done",
       "cancel": "Cancel"
+    },
+    "k8s_repo": {
+      "init": "Initialize"
     }
   },
   "skuCategoryOptions": {
