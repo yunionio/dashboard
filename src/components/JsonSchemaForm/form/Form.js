@@ -66,6 +66,7 @@ export default {
           },
         }),
         fd: {},
+        fe: {},
       },
       formDefinition: {
         definition: [],
@@ -103,6 +104,7 @@ export default {
     return {
       form: this.form.fc,
       formFd: this.form,
+      extendFd: this.extendFd,
       formDefinition: this.formDefinition,
       defaultValue: this.defaultValue,
       model: this.model,
