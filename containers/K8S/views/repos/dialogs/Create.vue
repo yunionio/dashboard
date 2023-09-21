@@ -131,6 +131,7 @@ export default {
           },
         }
         await manager.create({ data })
+        this.params.refresh && this.params.refresh()
         this.cancelDialog()
       } catch (error) {
         throw error

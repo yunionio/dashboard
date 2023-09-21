@@ -432,5 +432,6 @@
   "k8s.repo.url": "Warehouse address",
   "k8s.repo.url.extra": "The address must have a suffix, indicating the namespace corresponding to the image warehouse",
   "k8s.repo.image.name": "Image name",
-  "k8s.repo.image.tag": "Image version"
+  "k8s.repo.image.tag": "Image version",
+  "k8s.repo.image.tag_empty": "No image version yet"
 }

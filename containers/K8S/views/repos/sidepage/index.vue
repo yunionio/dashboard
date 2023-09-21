@@ -54,9 +54,7 @@ export default {
   },
   computed: {
     getParams () {
-      return {
-        repository: this.detailData?.id,
-      }
+      return {}
     },
     listId () {
       switch (this.params.windowData.currentTab) {
