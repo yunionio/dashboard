@@ -10,6 +10,7 @@
 import {
   getNameFilter,
 } from '@/utils/common/tableFilter'
+import { uuid } from '@/utils/utils'
 
 export default {
   name: 'ContainerRegistry',
@@ -25,8 +26,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: 'containerRegistryListId',
-        resource: `container_registries/${this.resId}/image-tags`,
-        apiVersion: 'v1',
+        resource: () => this.fetchData(),
         getParams: this.getParams,
         filterOptions: {
           name: getNameFilter(),
@@ -36,7 +36,7 @@ export default {
         {
           field: 'name',
           title: this.$t('k8s.repo.image.name'),
-          minWidth: 240,
+          width: 240,
           slots: {
             default: ({ row }, h) => {
               return row.name
@@ -46,7 +46,7 @@ export default {
         {
           field: 'version',
           title: this.$t('k8s.repo.image.tag'),
-          width: 220,
+          minWidth: 220,
           type: 'expand',
           slots: {
             default: ({ row }) => {
@@ -55,7 +55,11 @@ export default {
               return this.$t('compute.text_619', [len])
             },
             content: ({ row }, h) => {
-              return row.tags.map(v => <a-tag>{{ v }}</a-tag>)
+              if (row.tags?.length) {
+                return row.tags.map(v => <a-tag>{ v }</a-tag>)
+              } else {
+                return <a-tag>{ this.$t('k8s.repo.image.tag_empty') }</a-tag>
+              }
             },
           },
         },
@@ -65,6 +69,62 @@ export default {
   },
   created () {
     this.list.fetchData()
+  },
+  methods: {
+    async fetchTagByName (name) {
+      try {
+        const result = await new this.$Manager('container_registries')
+          .getSpecific({
+            id: this.resId,
+            spec: 'image-tags',
+            params: {
+              $t: uuid(),
+              repository: name,
+            },
+          })
+        return Promise.resolve(result.data)
+      } catch (error) {
+        return Promise.reject(error)
+      }
+    },
+    async fetchData () {
+      const response = { data: {} }
+      try {
+        const result = await new this.$Manager('container_registries')
+          .getSpecific({
+            id: this.resId,
+            spec: 'images',
+          })
+        const repos = result.data.repositories.map((item, key) => {
+          return {
+            id: key,
+            name: item,
+            tags: [],
+          }
+        })
+        const allPromise = repos.map(item => {
+          return this.fetchTagByName(item.name)
+        })
+        const tagMap = await Promise.allSettled(allPromise).then((values) => {
+          const tagMap = new Map()
+          values.forEach(({ status, value }) => {
+            if (status === 'fulfilled') {
+              tagMap.set(value.name, value.tags)
+            }
+          })
+          return Promise.resolve(tagMap)
+        })
+        response.data.data = repos.map(item => {
+          return {
+            ...item,
+            tags: tagMap.get(item.name),
+          }
+        })
+      } catch (error) {
+        throw error
+      }
+      return response
+    },
   },
 }
 </script>
