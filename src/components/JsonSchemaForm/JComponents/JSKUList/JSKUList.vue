@@ -29,6 +29,9 @@ export default {
     }
   },
   computed: {
+    isSlaveNode () {
+      return this.$attrs.id.includes('slaveNode')
+    },
     params () {
       const hyper = this.formFd.fd.hypervisor
       const env = findPlatform(hyper)
@@ -57,6 +60,10 @@ export default {
           if (this.formFd.fd.preferZone) p.zone = this.formFd.fd.preferZone
         }
       }
+      // 子节点套餐过滤
+      if (this.isSlaveNode && this.formFd.fe.sku && this.formFd.fe.sku.cpu_arch) {
+        p.cpu_arch = this.formFd.fe.sku.cpu_arch
+      }
       if (env === 'public') {
         if (!p.cloudregion || !p.zone) return { ...mustParams }
       }
@@ -82,6 +89,9 @@ export default {
       this.$nextTick(() => {
         this.setSku({ name: 'jsonschema', data: { sku: this.sku } })
       })
+      if (!this.isSlaveNode) {
+        this.formFd.fe = { ...this.formFd.fe, sku: this.sku }
+      }
     },
     mapper (list) {
       // 套餐去重
