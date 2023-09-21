@@ -363,11 +363,40 @@ export default {
           if (R.is(String, schema)) {
             schema = JSON.parse(schema)
           }
+          this.appendImageToVm(schema)
           delete schema.properties.envs
           this.schema = schema
           this.getDefinition()
           this.isJsonSchema = true
         }
+      }
+    },
+    appendImageToVm (schema) {
+      if (schema.properties && schema.properties.virtualMachines && schema.properties.virtualMachines.properties) {
+        // 多节点
+        for (const key in schema.properties.virtualMachines.properties) {
+          this.appendImageToNode(schema.properties.virtualMachines.properties[key], key)
+        }
+      } else if (schema.properties.virtualMachine) {
+        // 单节点
+        this.appendImageToNode(schema.properties.virtualMachine, '')
+      }
+    },
+    appendImageToNode (node, nodeName) {
+      if (node.required && node.required.includes('image') && node.properties && !node.properties.image) {
+        node.properties.image = {
+          title: '镜像',
+          type: 'string',
+          componentType: 'ImageList',
+          description: nodeName === 'slaveNode' ? '' : '请选择镜像',
+        }
+        const temp = { ...node.properties }
+        node.properties = {}
+        node.required.map(key => {
+          node.properties[key] = temp[key]
+          delete temp[key]
+        })
+        node.properties = { ...node.properties, ...temp }
       }
     },
     async fetchChartData () {
