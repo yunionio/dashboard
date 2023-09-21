@@ -45,7 +45,9 @@ export default {
         {
           label: this.$t('common.create'),
           action: () => {
-            this.createDialog('ReposCreateDialog', {})
+            this.createDialog('ReposCreateDialog', {
+              refresh: this.refresh,
+            })
           },
           meta: () => {
             return {
