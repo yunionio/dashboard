@@ -15,6 +15,7 @@ import JNetworkList from './JComponents/JNetworkList/index'
 import JSKUList from './JComponents/JSKUList/index'
 import JVPCList from './JComponents/JVPCList/index'
 import JStorageBackendList from './JComponents/JStorageBackendList/index'
+import JImageList from './JComponents/JImageList/index'
 
 const components = [
   Form,
@@ -32,6 +33,7 @@ const components = [
   JSKUList,
   JStorageBackendList,
   JVPCList,
+  JImageList,
 ]
 
 components.map(component => {
