@@ -350,6 +350,14 @@ export default {
       }],
     }
   },
+  watch: {
+    getParams (val) {
+      if (!R.is(Function, this.getParams)) {
+        this.list.reset()
+        this.list.fetchData()
+      }
+    },
+  },
   created () {
     this.initSidePageTab('cloudregion-detail')
     this.list.fetchData()
