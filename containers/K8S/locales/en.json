@@ -427,5 +427,10 @@
   "k8s.ref_prepare_doc": "please refer to document setup environment",
   "k8s.text_414": "Monitor",
   "k8s.text_415": "CPU Usage",
-  "k8s.text_416": "Memory Usage"
+  "k8s.text_416": "Memory Usage",
+  "k8s.repo": "warehouse",
+  "k8s.repo.url": "Warehouse address",
+  "k8s.repo.url.extra": "The address must have a suffix, indicating the namespace corresponding to the image warehouse",
+  "k8s.repo.image.name": "Image name",
+  "k8s.repo.image.tag": "Image version"
 }

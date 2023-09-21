@@ -200,6 +200,9 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
       title: i18n.t('common.status'),
       slots: {
         default: ({ row }) => {
+          if (vm.specifyStatus) {
+            return [<status specifyStatus={vm.specifyStatus} />]
+          }
           if (statusModule && row[statusKey]) {
             return [<status status={ row[statusKey] } statusModule={ statusModule } process={ row.progress } />]
           }
@@ -367,6 +370,9 @@ export default {
     hiddenBaseInfo: {
       type: Boolean,
       default: false,
+    },
+    specifyStatus: {
+      type: Object,
     },
   },
   computed: {
