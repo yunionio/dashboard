@@ -95,12 +95,12 @@
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import { HYPERVISORS_MAP } from '@/constants'
-import { zoneTypes } from '../constants'
 import DomainProject from '@/sections/DomainProject'
 import validateForm, { validate } from '@/utils/validate'
 import { isValidDomain } from '@/utils/utils'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import Tag from '@/sections/Tag'
+import { zoneTypes } from '../constants'
 
 export default {
   name: 'DnsZoneCreate',
@@ -174,7 +174,7 @@ export default {
           'vpc_ids',
           {
             rules: [
-              { required: false, message: this.$t('network.text_274') },
+              { required: true, message: this.$t('network.text_274') },
             ],
           },
         ],
@@ -305,7 +305,7 @@ export default {
         const values = await this.form.fc.validateFields()
         const { domain, project, name, zoneType, description, cloudprovider } = values
         const data = {
-          domain: domain || this.userInfo.project_domain,
+          domain: domain || this.$store.getters.userInfo.project_domain,
           project: project,
           name,
           description,
