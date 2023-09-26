@@ -844,5 +844,8 @@
   "cloudenv.qingcloud": "Qing Cloud",
   "cloudenv.create_qingcloud": "{0}#create-qingcloud-account",
   "cloudenv.chinaunion": "China Union",
-  "cloudenv.create_chinaunion": "{0}#create-chinaunion-account"
+  "cloudenv.create_chinaunion": "{0}#create-chinaunion-account",
+  "cloudenv.view_record": "View records",
+  "cloudenv.old_sth": "Origin {0}",
+  "cloudenv.new_sth": "Current {0}"
 }
