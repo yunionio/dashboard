@@ -2,6 +2,7 @@ import {
   getNameDescriptionTableColumn,
   getEnabledTableColumn,
   getTagTableColumn,
+  getStatusTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 import {
@@ -31,6 +32,7 @@ export default {
         },
       }),
       getEnabledTableColumn(),
+      getStatusTableColumn({ statusModule: 'common' }),
       getTagTableColumn({ onManager: this.onManager, resource: 'dnsrecords', columns: () => this.columns }),
       getDnsTypeTableColumns(),
       getDnsValueTableColumns(),
