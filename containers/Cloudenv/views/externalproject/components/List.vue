@@ -180,6 +180,15 @@ export default {
             }
           },
         },
+        {
+          label: this.$t('cloudenv.view_record'),
+          permission: 'log_list',
+          action: obj => {
+            this.createDialog('ExternalProjectLogDialog', {
+              data: [obj],
+            })
+          },
+        },
       ],
       projectOpts: [],
     }
