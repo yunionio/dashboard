@@ -9,7 +9,7 @@
 export default {
   computed: {
     key () {
-      return this.$route.fullPath
+      return this.$route.fullPath.split('?')[0]
     },
     keepAlive () {
       const { meta = {} } = this.$route
