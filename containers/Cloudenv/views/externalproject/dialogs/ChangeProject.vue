@@ -196,7 +196,7 @@ export default {
         const projects = response.data.data || []
         let initProjectId = ''
         if (!this.isBatch && !this.initProjectIdFlag) {
-          if (this.params.data[0].project_id && this.params.data[0].project) {
+          if (this.params.data[0].tenant_id && this.params.data[0].project) {
             const selectedProject = {
               id: this.params.data[0].tenant_id,
               name: this.params.data[0].project,
