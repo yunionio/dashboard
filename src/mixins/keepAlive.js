@@ -2,12 +2,13 @@
 export default {
   beforeRouteLeave (to, from, next) {
     try {
-      const { key } = from.meta
-      const { closeTargetPath = [] } = from.meta // 跳转到哪些路由需要清除自身cache ['/yyy']
+      const { key: toKey } = to.meta
+      const { key: fromKey, keepTargetPath = [] } = from.meta // 跳转到哪些路由需要清除/保留自身cache ['/yyy']
       const cache = this.$vnode.parent.componentInstance.cache
       const keys = this.$vnode.parent.componentInstance.keys
-      closeTargetPath.map(targetPath => {
-        if (key && targetPath === to.path && cache[key] !== null) {
+      const list = [...keys]
+      list.map(key => {
+        if (!keepTargetPath.includes(toKey) && key === fromKey) { // 若跳转目标地址需要原地址keepAlive时，不清除原地址cache
           delete cache[key]
           const index = keys.indexOf(key)
           if (index > -1) {
