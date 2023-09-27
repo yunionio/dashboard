@@ -16,14 +16,14 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import releaseMixin from '@K8S/mixins/releaseSidepage'
 import clusterNamespaceMixin from '@K8S/mixins/clusterNamespace'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getNameFilter } from '@/utils/common/tableFilter'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'K8SDeploymentList',
