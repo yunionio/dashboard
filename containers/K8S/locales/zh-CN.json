@@ -433,5 +433,8 @@
   "k8s.repo.url.extra": "地址必须要有后缀，表示对应镜像仓库⾥⾯的namespace",
   "k8s.repo.image.name": "镜像名称",
   "k8s.repo.image.tag": "镜像版本",
-  "k8s.repo.image.tag_empty": "暂无镜像版本"
+  "k8s.repo.image.tag_empty": "暂无镜像版本",
+  "k8s.repo.image.source": "镜像来源",
+  "k8s.repo.image.custom": "自定义URL",
+  "k8s.repo.image.registry": "镜像仓库"
 }

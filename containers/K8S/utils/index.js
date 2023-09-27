@@ -1,9 +1,10 @@
 import * as R from 'ramda'
 import { RESTART_POLICY_OPTS } from '@K8S/constants'
+import { checkIpInSegment } from '@Compute/utils/createServer'
 import store from '@/store'
 import i18n from '@/locales'
 import validateForm from '@/utils/validate'
-import { checkIpInSegment } from '@Compute/utils/createServer'
+import { removeHttp } from '@/utils/url'
 
 const validateValidPath = (rule, value, callback) => {
   if (value.startsWith('/')) {
@@ -37,7 +38,7 @@ export const getSpecContainerParams = (fd, tabs) => {
     }
     const p = {
       name: fd.containerNames[val],
-      image: fd.containerimages[val],
+      image: (fd.registryImages?.[val] && removeHttp(fd.registryImages?.[val])) || fd.containerimages?.[val],
       securityContext: {
         privileged: fd.containerPrivilegeds[val],
       },
@@ -285,6 +286,20 @@ export function getCreateDecorators (resource) {
           rules: [
             { required: true, message: i18n.t('k8s.text_60') },
             { validator: this.$validate('k8sLabel') },
+          ],
+        },
+      ],
+      source: i => [
+        `containerSources[${i}]`,
+        {
+          initialValue: 'custom',
+        },
+      ],
+      registryImage: i => [
+        `registryImages[${i}]`,
+        {
+          rules: [
+            { required: true, message: i18n.t('common.tips.select', [i18n.t('k8s.repo.image.registry')]) },
           ],
         },
       ],
