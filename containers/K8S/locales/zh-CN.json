@@ -427,5 +427,14 @@
   "k8s.ref_prepare_doc": "请参考文档准备环境",
   "k8s.text_414": "监控",
   "k8s.text_415": "CPU使用率",
-  "k8s.text_416": "内存使用率"
+  "k8s.text_416": "内存使用率",
+  "k8s.repo": "仓库",
+  "k8s.repo.url": "仓库地址",
+  "k8s.repo.url.extra": "地址必须要有后缀，表示对应镜像仓库⾥⾯的namespace",
+  "k8s.repo.image.name": "镜像名称",
+  "k8s.repo.image.tag": "镜像版本",
+  "k8s.repo.image.tag_empty": "暂无镜像版本",
+  "k8s.repo.image.source": "镜像来源",
+  "k8s.repo.image.custom": "自定义URL",
+  "k8s.repo.image.registry": "镜像仓库"
 }
