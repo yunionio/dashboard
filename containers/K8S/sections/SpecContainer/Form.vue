@@ -3,8 +3,17 @@
     <a-form-item :label="$t('k8s.text_41')">
       <a-input :placeholder="$t('k8s.text_60')" v-decorator="decorators.name" />
     </a-form-item>
-    <a-form-item :label="$t('k8s.text_97')">
+    <a-form-item :label="$t('k8s.repo.image.source')">
+      <a-radio-group default-value="custom" @change="handleSourceChange">
+        <a-radio-button value="custom">{{ $t('k8s.repo.image.custom') }}</a-radio-button>
+        <a-radio-button value="registry">{{ $t('k8s.repo.image.registry') }}</a-radio-button>
+      </a-radio-group>
+    </a-form-item>
+    <a-form-item v-if="source === 'custom'" :label="$t('k8s.text_97')">
       <a-input :placeholder="$t('k8s.text_98')" v-decorator="decorators.image" />
+    </a-form-item>
+    <a-form-item v-else :label="$t('k8s.text_97')">
+      <mirror-registry v-decorator="decorators.registryImage" />
     </a-form-item>
     <a-form-item label="CPU">
       <a-input :placeholder="$t('k8s.text_99')" type="number" v-decorator="decorators.cpu" :addonAfter="$t('k8s.text_100')" :min="1" @blur="e => formatInput(e, 'cpu')" />
@@ -40,11 +49,13 @@
 <script>
 import * as R from 'ramda'
 import Labels from '@K8S/sections/Labels'
+import MirrorRegistry from '@K8S/sections/MirrorRegistry'
 
 export default {
   name: 'K8SSpecContainerForm',
   components: {
     Labels,
+    MirrorRegistry,
   },
   props: {
     decorators: {
@@ -57,6 +68,11 @@ export default {
       tpye: Object,
       validator: val => val.fc,
     },
+  },
+  data () {
+    return {
+      source: 'custom', // custom or registry
+    }
   },
   computed: {
     keyBaseSelectProps () {
@@ -87,6 +103,9 @@ export default {
           })
         }
       }
+    },
+    handleSourceChange (e) {
+      this.source = e.target.value
     },
   },
 }
