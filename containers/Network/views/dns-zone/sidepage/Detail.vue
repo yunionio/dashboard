@@ -40,7 +40,7 @@ export default {
           field: 'vpc_count',
           title: this.$t('network.text_719'),
           formatter: ({ row }) => {
-            if (row.zone_type === 'PublicZone') return row.vpc_count
+            if (row.zone_type === 'PublicZone' || row.cloud_env === 'onpremise') return row.vpc_count
             return <a onClick={ () => this.$emit('tab-change', 'dns-associate-vpc-list') }>{row.vpc_count}</a>
           },
         },
