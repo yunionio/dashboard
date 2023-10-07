@@ -127,6 +127,7 @@ export default {
         },
         params: {
           all_usage_key: 'hosts.cpu',
+          chart_type: 'liquidfill',
           color: 'default',
           name: i18n.t('dashboard.text_135'),
           regionAccountType: 'region',
@@ -145,6 +146,7 @@ export default {
         },
         params: {
           all_usage_key: 'hosts.memory',
+          chart_type: 'liquidfill',
           color: 'default',
           name: i18n.t('dashboard.text_132'),
           regionAccountType: 'region',
@@ -163,6 +165,7 @@ export default {
         },
         params: {
           all_usage_key: 'storages',
+          chart_type: 'liquidfill',
           color: 'default',
           name: i18n.t('dashboard.text_128'),
           regionAccountType: 'region',
@@ -181,6 +184,7 @@ export default {
         },
         params: {
           all_usage_key: 'isolated_devices',
+          chart_type: 'liquidfill',
           color: 'default',
           name: i18n.t('dashboard.text_129'),
           regionAccountType: 'region',
@@ -199,6 +203,7 @@ export default {
         },
         params: {
           all_usage_key: 'all.eip.floating_ip',
+          chart_type: 'liquidfill',
           color: 'reverse',
           name: i18n.t('dashboard.text_156'),
           regionAccountType: 'region',
@@ -217,6 +222,7 @@ export default {
         },
         params: {
           all_usage_key: 'all.ports',
+          chart_type: 'liquidfill',
           color: 'default',
           name: i18n.t('dashboard.text_152'),
           regionAccountType: 'region',
@@ -235,6 +241,7 @@ export default {
         },
         params: {
           all_usage_key: 'all.servers',
+          chart_type: 'liquidfill',
           color: 'default',
           name: i18n.t('dashboard.text_151'),
           regionAccountType: 'region',
@@ -253,6 +260,7 @@ export default {
         },
         params: {
           all_usage_key: 'all.disks.count',
+          chart_type: 'liquidfill',
           color: 'reverse',
           name: i18n.t('dashboard.text_147'),
           regionAccountType: 'region',
@@ -406,6 +414,7 @@ export default {
         },
         params: {
           all_usage_key: 'domain.servers',
+          chart_type: 'liquidfill',
           color: 'default',
           name: i18n.t('dashboard.text_151'),
           regionAccountType: 'region',
@@ -424,6 +433,7 @@ export default {
         },
         params: {
           all_usage_key: 'domain.disks.count',
+          chart_type: 'liquidfill',
           color: 'default',
           name: i18n.t('dashboard.disks_unmounted'),
           regionAccountType: 'region',
@@ -442,6 +452,7 @@ export default {
         },
         params: {
           all_usage_key: 'domain.ports',
+          chart_type: 'liquidfill',
           color: 'default',
           name: i18n.t('dashboard.text_152'),
           regionAccountType: 'region',
@@ -460,6 +471,7 @@ export default {
         },
         params: {
           all_usage_key: 'domain.eip.floating_ip',
+          chart_type: 'liquidfill',
           color: 'reverse',
           name: i18n.t('dashboard.text_156'),
           regionAccountType: 'region',
@@ -607,6 +619,7 @@ export default {
         },
         params: {
           all_usage_key: 'servers',
+          chart_type: 'liquidfill',
           color: 'default',
           name: i18n.t('dashboard.text_151'),
           regionAccountType: 'region',
@@ -625,6 +638,7 @@ export default {
         },
         params: {
           all_usage_key: 'disks.count',
+          chart_type: 'liquidfill',
           color: 'default',
           name: i18n.t('dashboard.disks_unmounted'),
           regionAccountType: 'region',
@@ -643,6 +657,7 @@ export default {
         },
         params: {
           all_usage_key: 'ports',
+          chart_type: 'liquidfill',
           color: 'default',
           name: i18n.t('dashboard.text_152'),
           regionAccountType: 'region',
@@ -661,6 +676,7 @@ export default {
         },
         params: {
           all_usage_key: 'eip.floating_ip',
+          chart_type: 'liquidfill',
           color: 'reverse',
           name: i18n.t('dashboard.text_156'),
           regionAccountType: 'region',
