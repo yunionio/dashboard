@@ -1,5 +1,6 @@
 import qs from 'qs'
 import { SERVER_TYPE } from '@Compute/constants'
+import VncInfoFetcher from '@Compute/sections/VncInfoFetcher'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
@@ -7,7 +8,6 @@ import { HOST_CPU_ARCHS } from '@/constants/compute'
 import { PROVIDER_MAP } from '@/constants'
 import { hasSetupKey } from '@/utils/auth'
 import { KVM_SHARE_STORAGES } from '@/constants/storage'
-import VncInfoFetcher from '@Compute/sections/VncInfoFetcher'
 import { POLICY_RES_NAME_KEY_MAP } from '@/constants/policy'
 import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip } from '../utils'
 
@@ -400,7 +400,7 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
-                  if (obj.hypervisor !== typeClouds.hypervisorMap.esxi.key) {
+                  if (![typeClouds.hypervisorMap.esxi.key, typeClouds.hypervisorMap.kvm.key].includes(obj.hypervisor)) {
                     ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                     return ret
                   }
