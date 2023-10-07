@@ -322,6 +322,7 @@ export default {
       return numerify(data * 100, 0.0)
     },
     percentTips () {
+      if (this.percent === 0) return '0%'
       if (this.percent < 1) {
         return '< 1%'
       }
