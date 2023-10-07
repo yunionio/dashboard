@@ -462,11 +462,25 @@ export default {
         })
     },
     doCreateWorkflow (data) {
+      const {
+        bastion_host_id,
+        nodes,
+        port,
+        privileged_accounts,
+        accounts,
+      } = this.form.fd
       const variables = {
         process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
         initiator: this.$store.getters.userInfo.id,
         description: this.form.fd.reason,
         'server-create-paramter': JSON.stringify(data),
+        'bastion-parameter': JSON.stringify({
+          bastion_host_id,
+          nodes,
+          port,
+          privileged_accounts,
+          accounts,
+        }),
         price: this.price,
       }
       this._getProjectDomainInfo(variables)
