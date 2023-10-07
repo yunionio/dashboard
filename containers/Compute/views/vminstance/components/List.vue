@@ -345,9 +345,14 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
-                      const isAllVMware = this.list.selectedItems.every(item => item.hypervisor === typeClouds.hypervisorMap.esxi.key || item.hypervisor === typeClouds.hypervisorMap.kvm.key)
+                      const isAllSupportHypervisor = this.list.selectedItems.every(item => {
+                        return [
+                          typeClouds.hypervisorMap.esxi.key,
+                          typeClouds.hypervisorMap.kvm.key,
+                        ].includes(item.hypervisor)
+                      })
                       const isAllRunning = this.list.selectedItems.every(item => item.status === 'running')
-                      if (!isAllVMware) {
+                      if (!isAllSupportHypervisor) {
                         ret.validate = false
                         ret.tooltip = this.$t('compute.text_1129')
                         return ret
