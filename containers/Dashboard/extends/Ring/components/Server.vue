@@ -407,7 +407,7 @@ export default {
       return this.$t('dashboard.text_34')
     },
     isResDeny () {
-      const usage_key = this.params.all_usage_key
+      const usage_key = this.params?.all_usage_key || ''
 
       if (usage_key.endsWith('servers')) {
         return !hasPermission({ key: 'servers_list', permissionData: this.permission })

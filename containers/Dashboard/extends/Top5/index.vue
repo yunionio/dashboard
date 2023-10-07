@@ -327,7 +327,7 @@ export default {
       return this.dimentions.filter((d) => { return d.id === this.form.fd.dimensionId })[0]
     },
     isResDeny () {
-      const usage = this.params.usage
+      const usage = this.params?.usage || ''
       if (usage.endsWith('vm_cpu') || usage.endsWith('vm_mem') || usage.endsWith('vm_disk')) {
         return !hasPermission({ key: 'servers_list', permissionData: this.permission })
       }
