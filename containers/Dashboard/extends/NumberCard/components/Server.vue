@@ -196,7 +196,7 @@ export default {
       return false
     },
     isResDeny () {
-      const usage_key = this.params.usage_key
+      const usage_key = this.params?.usage_key || ''
       if (usage_key.endsWith('servers')) {
         return !hasPermission({ key: 'servers_list', permissionData: this.permission })
       } else if (usage_key.endsWith('hosts') || usage_key.endsWith('baremetals')) {
