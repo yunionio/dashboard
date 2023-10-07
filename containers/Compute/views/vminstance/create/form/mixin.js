@@ -462,26 +462,16 @@ export default {
         })
     },
     doCreateWorkflow (data) {
-      const {
-        bastion_host_id,
-        nodes,
-        port,
-        privileged_accounts,
-        accounts,
-      } = this.form.fd
+      const bastionData = this.getBationServerData()
       const variables = {
         process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
         initiator: this.$store.getters.userInfo.id,
         description: this.form.fd.reason,
         'server-create-paramter': JSON.stringify(data),
-        'bastion-parameter': JSON.stringify({
-          bastion_host_id,
-          nodes,
-          port,
-          privileged_accounts,
-          accounts,
-        }),
         price: this.price,
+      }
+      if (this.form.fd.bastion_host_enable) {
+        variables['bastion-parameter'] = JSON.stringify(bastionData)
       }
       this._getProjectDomainInfo(variables)
       new this.$Manager('process-instances', 'v1')
@@ -730,8 +720,7 @@ export default {
         ...this.validateHostNameChange(v),
       }
     },
-    async createBastionServer (params) {
-      const bsManager = new this.$Manager('bastion_servers')
+    getBationServerData () {
       const {
         bastion_host_id,
         nodes,
@@ -739,11 +728,18 @@ export default {
         privileged_accounts,
         accounts,
       } = this.form.fd
-      const data = {
+      return {
         bastion_host_id,
         nodes,
         port,
         accounts: [privileged_accounts].concat(accounts),
+      }
+    },
+    async createBastionServer (params) {
+      const bsManager = new this.$Manager('bastion_servers')
+      const bastionData = this.getBationServerData()
+      const data = {
+        ...bastionData,
         ...params,
       }
       try {
