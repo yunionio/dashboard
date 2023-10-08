@@ -120,20 +120,23 @@ export default {
       &:hover {
         background-color: @primary-1;
         > a {
-          color: @sidebar-light-hover-text-color;
+          color: @primary-color!important;
         }
       }
       &.active {
         // background-color: @primary-1 !important;
         > a {
-          color: @sidebar-light-active-text-color;
+          color: @primary-color;
         }
       }
       &.ant-popover-open {
-        background-color: @primary-1 !important;
+        background-color: @primary-1;
         > a {
-          color: @sidebar-light-active-text-color;
+          color: @primary-color!important;
         }
+      }
+      .l1-menu-item-right-icon {
+        color: @sidebar-light-text-color!important;
       }
     }
   }
@@ -175,6 +178,9 @@ export default {
     > a {
       color: @sidebar-dark-hover-text-color!important;
     }
+  }
+  .l1-menu-item-right-icon {
+    color: @sidebar-light-text-color!important;
   }
 }
 </style>
