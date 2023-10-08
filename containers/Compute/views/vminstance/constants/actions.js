@@ -525,7 +525,9 @@ const getSingleActions = function () {
                     ret.tooltip = i18n.t('compute.text_285')
                     return ret
                   }
-                  if (obj.hypervisor !== 'kvm' && findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
+                  if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key &&
+                    obj.hypervisor !== typeClouds.hypervisorMap.esxi.key &&
+                    findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
                     ret.tooltip = i18n.t('compute.text_1278')
                     return ret
                   }
