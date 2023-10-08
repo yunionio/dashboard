@@ -1,17 +1,18 @@
-import FileSystemCreate from '@Storage/views/file-system/create/index'
-import BucketSetStaticWebsit from '@Storage/views/bucket/components/SetStaticWebsit'
-import BucketCreate from '@Storage/views/bucket/create'
-import BlockStorage from '@Storage/views/blockstorage'
-import Bucket from '@Storage/views/bucket'
-import FileSystem from '@Storage/views/file-system'
-import AccessGroup from '@Storage/views/access-group'
-import Tablestore from '@Storage/views/tablestore'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
 import store from '@/store'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
-import BackupStorage from '@Storage/views/backup-storage'
+
+const BackupStorage = () => import(/* webpackChunkName: "storage" */ /* webpackPrefetch: true */ '@Storage/views/backup-storage')
+const Tablestore = () => import(/* webpackChunkName: "storage" */ /* webpackPrefetch: true */ '@Storage/views/tablestore')
+const AccessGroup = () => import(/* webpackChunkName: "storage" */ /* webpackPrefetch: true */ '@Storage/views/access-group')
+const FileSystem = () => import(/* webpackChunkName: "storage" */ /* webpackPrefetch: true */ '@Storage/views/file-system')
+const Bucket = () => import(/* webpackChunkName: "storage" */ /* webpackPrefetch: true */ '@Storage/views/bucket')
+const BlockStorage = () => import(/* webpackChunkName: "storage" */ /* webpackPrefetch: true */ '@Storage/views/blockstorage')
+const BucketCreate = () => import(/* webpackChunkName: "storage" */ /* webpackPrefetch: true */ '@Storage/views/bucket/create')
+const BucketSetStaticWebsit = () => import(/* webpackChunkName: "storage" */ /* webpackPrefetch: true */ '@Storage/views/bucket/components/SetStaticWebsit')
+const FileSystemCreate = () => import(/* webpackChunkName: "storage" */ /* webpackPrefetch: true */ '@Storage/views/file-system/create/index')
 
 export default {
   index: 50,
