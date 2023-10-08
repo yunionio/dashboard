@@ -1,60 +1,60 @@
-import K8sRbacrolebindingCreate from '@K8S/views/rbacrolebinding/create'
-import K8sRbacclusterroleCreate from '@K8S/views/rbacclusterrole/create'
-import K8sRbacclusterrolebinding from '@K8S/views/rbacclusterrolebinding'
-import K8sRbacclusterrolebindingCreate from '@K8S/views/rbacclusterrolebinding/create'
-import Federatednamespace from '@K8S/views/federatednamespace'
-import Federatedclusterrole from '@K8S/views/federatedclusterrole'
-import FederatedclusterroleCreate from '@K8S/views/federatedclusterrole/create'
-import Federatedrolebinding from '@K8S/views/federatedrolebinding'
-import FederatedrolebindingCreate from '@K8S/views/federatedrolebinding/create'
-import Federatedclusterrolebinding from '@K8S/views/federatedclusterrolebinding'
-import FederatedclusterrolebindingCreate from '@K8S/views/federatedclusterrolebinding/create'
-import Federatedrole from '@K8S/views/federatedrole'
-import Kubeclusters from '@K8S/views/cluster'
-import KubeclustersCreate from '@K8S/views/cluster/create'
-import KubeclustersImport from '@K8S/views/cluster/import'
-import Deployment from '@K8S/views/deployment'
-import K8sDeploymentCreate from '@K8S/views/deployment/create'
-import Daemonset from '@K8S/views/daemonset'
-import K8sDaemonsetCreate from '@K8S/views/daemonset/create'
-import K8SNode from '@K8S/views/nodes'
-import K8sStorageclasses from '@K8S/views/storage-class'
-import K8sStorageclassesCreate from '@K8S/views/storage-class/create'
-import K8sNamespace from '@K8S/views/namespace'
-import K8sNamespaceCreate from '@K8S/views/namespace/create'
-import K8sRbacrole from '@K8S/views/rbacrole'
-import K8sRbacrolebinding from '@K8S/views/rbacrolebinding'
-import K8sRbacroleCreate from '@K8S/views/rbacrole/create'
-import K8sRbacclusterrole from '@K8S/views/rbacclusterrole'
-import K8sServiceAccount from '@K8S/views/service-account'
-import K8sKubeComponent from '@K8S/views/kube-component'
-import K8sKubeComponentCreate from '@K8S/views/kube-component/create'
-import K8sKubeComponentUpdate from '@K8S/views/kube-component/update'
-import Statefulset from '@K8S/views/statefulset'
-import K8sStatefulsetCreate from '@K8S/views/statefulset/create'
-import Pod from '@K8S/views/pod'
-import Job from '@K8S/views/job'
-import K8sJobCreate from '@K8S/views/job/create'
-import CronJob from '@K8S/views/cronjob'
-import K8sCronJobCreate from '@K8S/views/cronjob/create'
-import Persistentvolumeclaim from '@K8S/views/persistentvolumeclaim'
-import K8sPersistentvolumeclaimCreate from '@K8S/views/persistentvolumeclaim/create'
-import Service from '@K8S/views/service'
-import K8sServiceCreate from '@K8S/views/service/create'
-import Ingress from '@K8S/views/ingress'
-import K8sIngressCreate from '@K8S/views/ingress/create'
-import Configmap from '@K8S/views/configmap'
-import K8sConfigmapCreate from '@K8S/views/configmap/create'
-import Secret from '@K8S/views/secret'
-import K8sSecretCreate from '@K8S/views/secret/create'
 import Layout from '@/layouts/RouterView'
-import FederatednamespaceCreate from '@K8S/views/federatednamespace/create'
-import FederatedroleCreate from '@K8S/views/federatedrole/create'
 import store from '@/store'
-
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
+
+const K8sRbacrolebindingCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/rbacrolebinding/create')
+const K8sRbacclusterroleCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/rbacclusterrole/create')
+const K8sRbacclusterrolebinding = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/rbacclusterrolebinding')
+const K8sRbacclusterrolebindingCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/rbacclusterrolebinding/create')
+const Federatednamespace = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/federatednamespace')
+const Federatedclusterrole = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/federatedclusterrole')
+const FederatedclusterroleCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/federatedclusterrole/create')
+const Federatedrolebinding = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/federatedrolebinding')
+const FederatedrolebindingCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/federatedrolebinding/create')
+const Federatedclusterrolebinding = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/federatedclusterrolebinding')
+const FederatedclusterrolebindingCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/federatedclusterrolebinding/create')
+const Federatedrole = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/federatedrole')
+const Kubeclusters = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/cluster')
+const KubeclustersCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/cluster/create')
+const KubeclustersImport = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/cluster/import')
+const Deployment = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/deployment')
+const K8sDeploymentCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/deployment/create')
+const Daemonset = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/daemonset')
+const K8sDaemonsetCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/daemonset/create')
+const K8SNode = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/nodes')
+const K8sStorageclasses = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/storage-class')
+const K8sStorageclassesCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/storage-class/create')
+const K8sNamespace = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/namespace')
+const K8sNamespaceCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/namespace/create')
+const K8sRbacrole = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/rbacrole')
+const K8sRbacrolebinding = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/rbacrolebinding')
+const K8sRbacroleCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/rbacrole/create')
+const K8sRbacclusterrole = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/rbacclusterrole')
+const K8sServiceAccount = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/service-account')
+const K8sKubeComponent = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/kube-component')
+const K8sKubeComponentCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/kube-component/create')
+const K8sKubeComponentUpdate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/kube-component/update')
+const Statefulset = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/statefulset')
+const K8sStatefulsetCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/statefulset/create')
+const Pod = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/pod')
+const Job = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/job')
+const K8sJobCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/job/create')
+const CronJob = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/cronjob')
+const K8sCronJobCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/cronjob/create')
+const Persistentvolumeclaim = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/persistentvolumeclaim')
+const K8sPersistentvolumeclaimCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/persistentvolumeclaim/create')
+const Service = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/service')
+const K8sServiceCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/service/create')
+const Ingress = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/ingress')
+const K8sIngressCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/ingress/create')
+const Configmap = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/configmap')
+const K8sConfigmapCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/configmap/create')
+const Secret = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/secret')
+const K8sSecretCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/secret/create')
+const FederatednamespaceCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/federatednamespace/create')
+const FederatedroleCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/federatedrole/create')
 
 export default {
   index: 30,

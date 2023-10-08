@@ -1,13 +1,14 @@
-import Redis from '@DB/views/redis'
-import RedisCreate from '@DB/views/redis/create'
-import RDS from '@DB/views/rds'
-import RDSCreate from '@DB/views/rds/create'
 // import RDSBackup from '@DB/views/rds-backup'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
-import MongoDB from '@DB/views/mongodb'
+
+const Redis = () => import(/* webpackChunkName: "db" */ /* webpackPrefetch: true */ '@DB/views/redis')
+const RedisCreate = () => import(/* webpackChunkName: "db" */ /* webpackPrefetch: true */ '@DB/views/redis/create')
+const RDS = () => import(/* webpackChunkName: "db" */ /* webpackPrefetch: true */ '@DB/views/rds')
+const RDSCreate = () => import(/* webpackChunkName: "db" */ /* webpackPrefetch: true */ '@DB/views/rds/create')
+const MongoDB = () => import(/* webpackChunkName: "db" */ /* webpackPrefetch: true */ '@DB/views/mongodb')
 
 export default {
   index: 58,

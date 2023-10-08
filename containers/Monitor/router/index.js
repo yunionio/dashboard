@@ -1,19 +1,20 @@
-import Overview from '@Monitor/views/overview'
-import CommonalertsIndex from '@Monitor/views/commonalert'
-import commonalertsCreate from '@Monitor/views/commonalert/create'
-import commonalertsUpdate from '@Monitor/views/commonalert/update'
-import MonitorresourcesIndex from '@Monitor/views/monitorresource'
-import AlertresourceIndex from '@Monitor/views/alertresource'
-import AlertrecordIndex from '@Monitor/views/alertrecord'
-import Explorer from '@Monitor/views/explorer'
-import Dashboard from '@Monitor/views/dashboard'
-import MonitorDashboardChartCreate from '@Monitor/views/dashboard/create'
-import AlertRecordShieldsIndex from '@Monitor/views/alertrecordshields'
 import Layout from '@/layouts/RouterView'
 import { setupKeys } from '@/utils/auth'
 import i18n from '@/locales'
 import store from '@/store'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
+
+const Overview = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/overview')
+const CommonalertsIndex = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/commonalert')
+const commonalertsCreate = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/commonalert/create')
+const commonalertsUpdate = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/commonalert/update')
+const MonitorresourcesIndex = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/monitorresource')
+const AlertresourceIndex = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/alertresource')
+const AlertrecordIndex = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/alertrecord')
+const Explorer = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/explorer')
+const Dashboard = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/dashboard')
+const MonitorDashboardChartCreate = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/dashboard/create')
+const AlertRecordShieldsIndex = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/alertrecordshields')
 
 export default {
   index: 65,
