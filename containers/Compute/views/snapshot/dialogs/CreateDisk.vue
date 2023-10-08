@@ -5,8 +5,12 @@
       <dialog-selected-tips :name="$t('dictionary.snapshot')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
-        :form="form.fc">
-        <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
+        :form="form.fc"
+        v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])">
+          <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_228')">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
         </a-form-item>
       </a-form>
@@ -19,13 +23,19 @@
 </template>
 
 <script>
+import DomainProject from '@/sections/DomainProject'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'SnapshotCreateDiskDialog',
+  components: {
+    DomainProject,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const { domain_id, tenant_id } = this.params.data[0]
+
     return {
       loading: false,
       action: this.$t('compute.create_disk'),
@@ -33,6 +43,20 @@ export default {
         fc: this.$form.createForm(this),
       },
       decorators: {
+        projectDomain: {
+          project: [
+            'project',
+            {
+              initialValue: tenant_id,
+            },
+          ],
+          domain: [
+            'domain',
+            {
+              initialValue: domain_id,
+            },
+          ],
+        },
         name: [
           'name',
           {
@@ -66,6 +90,7 @@ export default {
       const manager = new this.$Manager('disks')
       return manager.create({
         data: {
+          project_id: values.project,
           name: values.name,
           snapshot_id: this.params.data[0].id,
         },
