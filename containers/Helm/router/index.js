@@ -1,18 +1,19 @@
-import VmRelase from '@Helm/views/vm-release'
-import VmReleaseUpdate from '@Helm/views/vm-release/update'
-import K8sRelease from '@Helm/views/k8s-release'
-import K8sReleaseUpdate from '@Helm/views/k8s-release/update'
-import Chart from '@Helm/views/chart'
-import K8sChartCreate from '@Helm/views/chart/create'
-import Repo from '@Helm/views/repo'
-import Scheduledtask from '@Cloudenv/views/scheduledtask'
-import ScheduledtaskCreate from '@Cloudenv/views/scheduledtask/create'
 // import AnsibleTemplate from '@Compute/views/ansible-template'
 // import AnsibleTemplateCreate from '@Compute/views/ansible-template/create'
 import Layout from '@/layouts/RouterView'
 import { setupKeys } from '@/utils/auth'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
+
+const VmRelase = () => import(/* webpackChunkName: "helm" */ /* webpackPrefetch: true */ '@Helm/views/vm-release')
+const VmReleaseUpdate = () => import(/* webpackChunkName: "helm" */ /* webpackPrefetch: true */ '@Helm/views/vm-release/update')
+const K8sRelease = () => import(/* webpackChunkName: "helm" */ /* webpackPrefetch: true */ '@Helm/views/k8s-release')
+const K8sReleaseUpdate = () => import(/* webpackChunkName: "helm" */ /* webpackPrefetch: true */ '@Helm/views/k8s-release/update')
+const Chart = () => import(/* webpackChunkName: "helm" */ /* webpackPrefetch: true */ '@Helm/views/chart')
+const K8sChartCreate = () => import(/* webpackChunkName: "helm" */ /* webpackPrefetch: true */ '@Helm/views/chart/create')
+const Repo = () => import(/* webpackChunkName: "helm" */ /* webpackPrefetch: true */ '@Helm/views/repo')
+const Scheduledtask = () => import(/* webpackChunkName: "helm" */ /* webpackPrefetch: true */ '@Cloudenv/views/scheduledtask')
+const ScheduledtaskCreate = () => import(/* webpackChunkName: "helm" */ /* webpackPrefetch: true */ '@Cloudenv/views/scheduledtask/create')
 
 // let Monitor = { meta: { hidden: true } }
 // const modules = require.context('../../../containers', true, /^((?![\\/]node_modules).)*.\/router\/index.js$/)
