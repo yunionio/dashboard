@@ -13,6 +13,8 @@
     "deploy": "node ./upload/upload.js"
   },
   "dependencies": {
+    "@wangeditor/editor": "^5.1.23",
+    "@wangeditor/editor-for-vue": "^1.0.2",
     "ajv": "^6.12.3",
     "ajv-errors": "^1.0.1",
     "animejs": "^3.1.0",
