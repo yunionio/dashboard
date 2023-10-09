@@ -12,6 +12,9 @@ export default {
     row: {
       type: Object,
     },
+    rows: {
+      type: Array,
+    },
     buttonType: {
       type: String,
       default: 'link',
@@ -52,8 +55,15 @@ export default {
       const isValidate = this.meta.validate
       const isExtraValidate = this.extraMeta?.validate
       let isPermission = true
-      if (this.item.permission) {
+      // singleAction判断
+      if (this.item.permission && this.row) {
         isPermission = hasPermission({ key: this.item.permission, resourceData: this.row })
+      }
+      // groupActions判断
+      if (this.item.permission && !this.row && this.rows && this.rows.length && this.meta.buttonType !== 'primary') {
+        isPermission = this.rows.every(item => {
+          return hasPermission({ key: this.item.permission, resourceData: item })
+        })
       }
       return !isValidate || !isPermission || !isExtraValidate
     },
