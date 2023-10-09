@@ -25,6 +25,7 @@
       :get-grid="getGrid"
       :total="total"
       :selected="selected"
+      :selectedItems="selectedItems"
       :api-version="apiVersion"
       :update-config="updateConfig"
       :fetch-distinct-field="fetchDistinctField"
@@ -314,6 +315,9 @@ export default {
     },
     selected () {
       return this.list.selected
+    },
+    selectedItems () {
+      return this.list.selectedItems
     },
     nextMarker () {
       return this.list.nextMarker
