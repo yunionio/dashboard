@@ -227,7 +227,7 @@
               :availableHostCount="availableHostCount"
               :hostParams="backupHostParams" />
           </a-form-item>
-          <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.daemon.tooltip')">
+          <a-form-item v-if="isKvm" :label="$t('compute.text_494')" :extra="$t('compute.daemon.tooltip')">
             <a-switch
               v-decorator="decorators.is_daemon"
               :checkedChildren="$t('compute.text_115')"
