@@ -396,7 +396,7 @@ export default {
               if (tags.vm_ip) {
                 const iparr = tags.vm_ip.split(',')
                 iparr.map(ip => {
-                  ret.push(`${ip}(${this.$t('common_287')})`)
+                  ret.push(`${ip}(${this.$t('common.intranet')})`)
                 })
               }
               if (tags.vips) {
@@ -438,7 +438,7 @@ export default {
               if (tags.vm_ip) {
                 const iparr = tags.vm_ip.split(',')
                 iparr.map(ip => {
-                  ret.push(`${ip}(${this.$t('common_287')})`)
+                  ret.push(`${ip}(${this.$t('common.intranet')})`)
                 })
               }
               if (tags.vips) {

@@ -5449,5 +5449,6 @@
   "common.workflow.shut_down": "主机关机",
   "common.workflow.restart": "主机重启",
   "common.ssh_login_err": "SSH远程登录失败",
-  "common.ssh_login_err_msg": "请输入SSH登录信息再次重试登录"
+  "common.ssh_login_err_msg": "请输入SSH登录信息再次重试登录",
+  "common.intranet": "内网"
 }
