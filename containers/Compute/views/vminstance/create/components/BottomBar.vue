@@ -409,7 +409,7 @@ export default {
     // },
     async _getPriceList2 () {
       const f = this.fd
-      if (!this.hasMeterService) return // 如果没有 meter 服务则取消调用
+      if (!this.hasMeterService || !this.$appConfig.isPrivate) return // 如果没有 meter 服务则取消调用
       if (R.isEmpty(f.sku) || R.isNil(f.sku)) return
       if (this.fi.createType === SERVER_TYPE.public && (R.isNil(f.sku.region_ext_id) || R.isEmpty(f.sku.region_ext_id))) return
       if (!R.is(Number, f.count)) return
