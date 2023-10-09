@@ -185,9 +185,7 @@
               :policy-schedtag-params="policySchedtagParams" />
           </a-form-item>
           <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" />
-          <a-form-item v-if="!isOpenSourceVersion" :label="$t('compute.bastionHost.bastion_host')">
-            <bastion-host :decorator="decorators.bastion_host" :form="form" />
-          </a-form-item>
+          <bastion-host v-if="!isOpenSourceVersion" :decorator="decorators.bastion_host" :form="form" />
         </a-collapse-panel>
       </a-collapse>
       <bottom-bar
