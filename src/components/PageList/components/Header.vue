@@ -19,6 +19,7 @@
             group
             class="flex-shrink-0"
             :options="groupActions"
+            :rows="selectedItems"
             button-type="default"
             :show-sync="showSync"
             @clear-selected="() => $emit('clear-selected')" />
@@ -135,6 +136,10 @@ export default {
       required: true,
     },
     selected: {
+      type: Array,
+      required: true,
+    },
+    selectedItems: {
       type: Array,
       required: true,
     },

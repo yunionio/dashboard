@@ -22,6 +22,7 @@
           :key="item.label"
           :item="item"
           :row="row"
+          :rows="rows"
           :button-type="buttonType"
           :button-size="buttonSize"
           :button-block="buttonBlock"
@@ -49,6 +50,10 @@ export default {
     // 有 row 则认为是列表每行的 actions
     row: {
       type: Object,
+    },
+    // 没 row 并且有 rows 是 groupActions
+    rows: {
+      type: Array,
     },
     options: {
       type: Array,
