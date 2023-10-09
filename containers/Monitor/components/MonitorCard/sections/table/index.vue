@@ -12,6 +12,7 @@
           class="mt-4"
           size="mini"
           border
+          resizable
           ref="overviewTable"
           :columns="columns"
           max-height="400"
