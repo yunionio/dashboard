@@ -1,4 +1,5 @@
 import i18n from '@/locales'
+import { BRAND_MAP } from '@/constants'
 import { RollbackDiskValidate } from '../validate'
 
 export default {
@@ -51,8 +52,14 @@ export default {
             refresh: this.refresh,
           })
         },
-        hidden: (obj) => {
-          return obj.cloud_env !== 'onpremise'
+        meta: (obj) => {
+          const ret = { validate: true }
+          if (obj.brand !== BRAND_MAP.OneCloud.brand) {
+            ret.validate = false
+            ret.tooltip = i18n.t('compute.text_473', [BRAND_MAP[obj.brand]?.label || ''])
+            return ret
+          }
+          return ret
         },
       },
       {
