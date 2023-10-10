@@ -551,4 +551,7 @@ export default {
     info: ['cancel'],
     danger: ['fail'],
   },
+  k8s_repo: {
+    success: ['init'],
+  },
 }
