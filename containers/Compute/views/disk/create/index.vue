@@ -58,7 +58,7 @@
         </a-row>
       </a-form-item>
       <a-form-item :label="$t('common.choose.server.label')" v-bind="formItemLayout" v-if="isIDC">
-        <host-server :form="form" :decorators="decorators" />
+        <host-server :form="form" :decorators="decorators" :query="hostQuery" />
       </a-form-item>
       <a-form-item v-if="enableEncryption" v-bind="formItemLayout" :label="$t('compute.disk.encryption')" :extra="$t('compute.disk.encryption.extra')">
         <encrypt-keys :decorators="decorators.encrypt_keys" />
@@ -96,6 +96,9 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import { MEDIUM_MAP, CUSTOM_STORAGE_TYPES, STORAGE_TYPES } from '@Compute/constants'
+import EncryptKeys from '@Compute/sections/encryptkeys'
+import DiskStorageSelect from '@Compute/sections/Disk/components/Storage'
 import { HYPERVISORS_MAP, CLOUD_ENVS } from '@/constants'
 import AreaSelects from '@/sections/AreaSelects'
 import DialogMixin from '@/mixins/dialog'
@@ -104,10 +107,7 @@ import validateForm, { isRequired } from '@/utils/validate'
 import i18n from '@/locales'
 import DomainProject from '@/sections/DomainProject'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
-import { MEDIUM_MAP, CUSTOM_STORAGE_TYPES, STORAGE_TYPES } from '@Compute/constants'
 import Tag from '@/sections/Tag'
-import EncryptKeys from '@Compute/sections/encryptkeys'
-import DiskStorageSelect from '@Compute/sections/Disk/components/Storage'
 import BottomBar from './components/BottomBar'
 
 import HostServer from './components/HostServer'
@@ -455,6 +455,14 @@ export default {
         ]
       }
       return params
+    },
+    hostQuery () {
+      const value = this.storageItem.value
+      const storageArr = value.split('__')
+      const storage_type = storageArr[1]
+      return {
+        storage_type,
+      }
     },
   },
   watch: {
