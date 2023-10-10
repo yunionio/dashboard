@@ -59,6 +59,12 @@ export default {
       type: String,
       default: 'onpremise',
     },
+    query: {
+      type: Object,
+      default () {
+        return {}
+      },
+    },
   },
   data () {
     return {
@@ -73,13 +79,21 @@ export default {
   computed: {
     ...mapGetters(['isProjectMode', 'scope']),
   },
+  watch: {
+    query: {
+      handler: function (val) {
+        this.fetchHosts(val)
+      },
+      deep: true,
+    },
+  },
   created () {
     this.hostManager = new Manager('hosts')
     this.serverManager = new Manager('servers')
     this.fetchHosts = _.debounce(this._fetchHosts, 500)
     this.fetchServers = _.debounce(this._fetchServers, 500)
     if (!this.isProjectMode) {
-      this.fetchHosts()
+      this.fetchHosts(this.query)
     } else {
       this.fetchServers({})
     }
