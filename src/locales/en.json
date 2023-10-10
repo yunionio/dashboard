@@ -5893,5 +5893,7 @@
   "common.workflow.restart": "Host restart",
   "common.ssh_login_err": "SSH remote login failed",
   "common.ssh_login_err_msg": "please enter SSH login information and try logging in again",
-  "common.intranet": "Intranet"
+  "common.intranet": "Intranet",
+  "common.schedtag.extra": "How to use scheduling tags",
+  "common.view.doc": "View Document"
 }
