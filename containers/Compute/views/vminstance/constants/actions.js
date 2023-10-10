@@ -528,7 +528,7 @@ const getSingleActions = function () {
                   if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key &&
                     obj.hypervisor !== typeClouds.hypervisorMap.esxi.key &&
                     findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
-                    ret.tooltip = i18n.t('compute.text_1278')
+                    ret.tooltip = i18n.t('compute.text_473', [typeClouds.hypervisorMap[obj.hypervisor]?.label || ''])
                     return ret
                   }
                   ret.validate = true
