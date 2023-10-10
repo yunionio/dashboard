@@ -457,12 +457,15 @@ export default {
       return params
     },
     hostQuery () {
-      const value = this.storageItem.value
-      const storageArr = value.split('__')
-      const storage_type = storageArr[1]
-      return {
-        storage_type,
+      const value = this.storageItem?.value
+      if (value) {
+        const storageArr = value.split('__')
+        const storage_type = storageArr[1]
+        return {
+          storage_type,
+        }
       }
+      return {}
     },
   },
   watch: {
