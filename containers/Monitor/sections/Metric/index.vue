@@ -119,7 +119,7 @@ export default {
     metricOpts () {
       const metricKeyItem = this.metricKeyOpts.find(item => item.key === this.metric_key)
       if (metricKeyItem && _.isArray(metricKeyItem.field_key)) {
-        return metricKeyItem.field_key.map(val => {
+        const metricValueOpts = metricKeyItem.field_key.map(val => {
           let label = val
           const fieldDes = metricKeyItem.field_descriptions
           let description = {}
@@ -135,6 +135,20 @@ export default {
             metric_res_type: metricKeyItem.metric_res_type,
           }
         })
+        // 默认策略适配
+        const metric_value = _.get(this.decorators, 'metric_value[1].initialValue')
+        if (metric_value && !metricKeyItem.field_key.includes(metric_value) && metric_zh[metric_value] && (metric_value === 'free/total' || metric_value === 'inodes_free/inodes_total')) {
+          metricValueOpts.push({
+            key: metric_value,
+            label: metric_zh[metric_value],
+            metric_res_type: metricKeyItem.metric_res_type,
+            description: {
+              name: metric_value,
+              unit: '%',
+            },
+          })
+        }
+        return metricValueOpts
       } else {
         return []
       }
