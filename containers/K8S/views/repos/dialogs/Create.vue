@@ -82,7 +82,7 @@ export default {
           'username',
           {
             rules: [
-              { required: true, message: this.$t('common.tips.input', [this.$t('k8s.text_54')]) },
+              { required: false, message: this.$t('common.tips.input', [this.$t('k8s.text_54')]) },
             ],
           },
         ],
@@ -90,7 +90,7 @@ export default {
           'password',
           {
             rules: [
-              { required: true, message: this.$t('common.tips.input', [this.$t('k8s.text_56')]) },
+              { required: false, message: this.$t('common.tips.input', [this.$t('k8s.text_56')]) },
             ],
           },
         ],
