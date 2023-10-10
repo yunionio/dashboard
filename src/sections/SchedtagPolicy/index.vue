@@ -3,6 +3,7 @@
     <a-form-item
       :wrapperCol="{ span: 24 }"
       class="mb-0 mr-1 w-50">
+      <div slot="extra">{{ $t('common.schedtag.extra') }}，<help-link  :href="docUrl">{{ $t('common.view.doc') }}</help-link></div>
       <base-select
         class="w-100"
         v-decorator="decorators.schedtag"
@@ -24,6 +25,7 @@
 </template>
 
 <script>
+import { getDocsUrl } from '@/utils/utils'
 import { SCHEDTAG_POLICY_OPTIONS } from '@/constants'
 
 export default {
@@ -51,6 +53,7 @@ export default {
     return {
       policyOpts: SCHEDTAG_POLICY_OPTIONS,
       schedtagItem: {},
+      docUrl: `${getDocsUrl()}web_ui/computing/schedule/schedtag`,
     }
   },
   methods: {
