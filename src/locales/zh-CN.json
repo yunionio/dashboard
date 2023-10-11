@@ -2980,6 +2980,13 @@
       "ssd": "超高IO云硬盘",
       "sas": "高IO云硬盘",
       "sata": "普通IO云硬盘",
+      "ctyun": {
+        "ssd": "超高IO",
+        "sas": "高IO",
+        "sata": "普通IO",
+        "fase_ssd": "急速型SSD",
+        "ssd_genric": "通用型SSD"
+      },
       "localstorage": "本地云盘",
       "ceph": "共享云盘",
       "LOCAL_NORMAL": "共享云盘",

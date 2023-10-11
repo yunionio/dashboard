@@ -902,7 +902,7 @@ export const STORAGE_TYPES = {
   },
   ctyun: {
     SSD: {
-      label: i18n.t('compute.text_73'),
+      label: i18n.t('compute.ctyun.ssd'),
       value: 'SSD',
       min: 10,
       max: 32768,
@@ -911,7 +911,7 @@ export const STORAGE_TYPES = {
       sort: 3,
     },
     SAS: {
-      label: i18n.t('compute.text_74'),
+      label: i18n.t('compute.ctyun.sas'),
       value: 'SAS',
       min: 10,
       max: 32768,
@@ -920,8 +920,28 @@ export const STORAGE_TYPES = {
       sort: 2,
     },
     SATA: {
-      label: i18n.t('compute.text_75'),
+      label: i18n.t('compute.ctyun.sata'),
       value: 'SATA',
+      min: 10,
+      max: 32768,
+      default: true,
+      sysMin: 20,
+      sysMax: 1024,
+      sort: 1,
+    },
+    'SSD-genric': {
+      label: i18n.t('compute.ctyun.ssd_genric'),
+      value: 'SSD-genric',
+      min: 10,
+      max: 32768,
+      default: true,
+      sysMin: 20,
+      sysMax: 1024,
+      sort: 1,
+    },
+    'FAST-SSD': {
+      label: i18n.t('compute.ctyun.fast_ssd'),
+      value: 'FAST-SSD',
       min: 10,
       max: 32768,
       default: true,
