@@ -14,17 +14,17 @@
 <script>
 import * as R from 'ramda'
 import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
+import { getDistinctFieldFilter, getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { hasServices } from '@/utils/auth'
 import expectStatus from '@/constants/expectStatus'
 import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 
 export default {
   name: 'BlockStorageList',
@@ -248,17 +248,35 @@ export default {
             ...brandFilter,
             items: brandFilter.items.filter(val => !notSupportBrand.includes(val.key)),
           },
-          storage_type: {
-            label: this.$t('storage.text_38'),
+          // storage_type: {
+          //   label: this.$t('storage.text_38'),
+          //   filter: true,
+          //   dropdown: true,
+          //   items: Object.keys(STORAGE_TYPES).map(key => {
+          //     return { label: STORAGE_TYPES[key], key }
+          //   }),
+          //   formatter: val => {
+          //     return `storage_type.equals("${val}")`
+          //   },
+          // },
+          storage_type: getDistinctFieldFilter({
+            field: 'storage_type',
             filter: true,
-            dropdown: true,
-            items: Object.keys(STORAGE_TYPES).map(key => {
-              return { label: STORAGE_TYPES[key], key }
-            }),
-            formatter: val => {
-              return `storage_type.contains("${val}")`
+            multiple: false,
+            label: this.$t('storage.text_38'),
+            mapper: (data) => {
+              return data.map(item => {
+                const k = item.key.toLowerCase()
+                return {
+                  key: item.key,
+                  label: STORAGE_TYPES[k] || k,
+                }
+              })
             },
-          },
+            formatter: (val) => {
+              return `storage_type.equals('${val}')`
+            },
+          }),
           medium_type: {
             label: this.$t('storage.text_39'),
             filter: true,
