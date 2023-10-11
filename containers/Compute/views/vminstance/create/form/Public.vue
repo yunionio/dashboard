@@ -406,7 +406,6 @@ export default {
         delete loginTypes[LOGIN_TYPES_MAP.image.key]
       }
       if (HYPERVISORS_MAP.ctyun.key === hypervisor) {
-        delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
         delete loginTypes[LOGIN_TYPES_MAP.image.key]
       }
       if (HYPERVISORS_MAP.google.key === hypervisor) {
@@ -522,7 +521,7 @@ export default {
           })
         } else {
           list = list.filter(item => {
-            return ![HYPERVISORS_MAP.azure.key, HYPERVISORS_MAP.aws.key, HYPERVISORS_MAP.google.key, HYPERVISORS_MAP.ctyun.key].includes(item.name.toLowerCase())
+            return ![HYPERVISORS_MAP.azure.key, HYPERVISORS_MAP.aws.key, HYPERVISORS_MAP.google.key].includes(item.name.toLowerCase())
           })
         }
       }
