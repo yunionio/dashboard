@@ -16,7 +16,7 @@
         </a-form-model-item>
         <a-form-model-item v-if="isMonthShow" :label="$t('cloudenv.text_212')" v-bind="formItemLayout" prop="start_day">
           <a-form-model-item style="display:inline-block" prop="start_day">
-            <a-month-picker v-model="form.start_day" :disabled-date="dateDisabledStart" />
+            <a-month-picker v-model="form.start_day" :disabled-date="dateDisabledStart" @change="startChange" />
           </a-form-model-item>
           <span class="ml-2 mr-2">~</span>
           <a-form-model-item style="display:inline-block" prop="end_day">
@@ -106,9 +106,13 @@ export default {
     this.$bM = new this.$Manager('billtasks/submit', 'v1')
   },
   methods: {
-    dateDisabledStart (value) {
+    startChange (value) {
       const dateEnd = this.form.end_day
-      if (dateEnd && value > dateEnd) return true
+      if (dateEnd && value > dateEnd) {
+        this.form.end_day = value
+      }
+    },
+    dateDisabledStart (value) {
       if (value > this.$moment()) return true
       return false
     },
