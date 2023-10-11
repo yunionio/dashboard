@@ -7,7 +7,7 @@
       <a-form-item :label="$t('common.description')">
         <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
       </a-form-item>
-      <a-form-item v-if="provider !== 'Huawei'" :label="$t('cloudenv.environment')">
+      <a-form-item v-if="provider !== 'Huawei' && provider !== 'Ctyun'" :label="$t('cloudenv.environment')">
         <base-select
           :options="environments"
           v-decorator="decorators.environment"
@@ -22,9 +22,6 @@
       </a-form-item>
       <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
-      </a-form-item>
-      <a-form-item :label="$t('cloudenv.crm_biz_id')" v-if="provider.toLowerCase() === 'ctyun'">
-        <a-input v-decorator="decorators.crm_biz_id" :placeholder="$t('cloudenv.crm_biz_id.tips')" />
       </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <blocked-resources :decorators="{ isOpenBlockedResources: decorators.isOpenBlockedResources, blockedResources: decorators.blockedResources }" />
@@ -123,12 +120,6 @@ export default {
             rules: [
               { required: true, message: keySecretField.placeholder.s },
             ],
-          },
-        ],
-        crm_biz_id: [
-          'crm_biz_id',
-          {
-            initialValue: '',
           },
         ],
         domain: [
