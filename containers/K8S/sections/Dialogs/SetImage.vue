@@ -83,7 +83,7 @@ export default {
         managerArgs: {
           id: this.data.id,
           params: {
-            cluster: this.data.cluster,
+            cluster: this.data.cluster_id,
             namespace: this.data.namespace,
           },
         },
