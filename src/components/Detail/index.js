@@ -158,7 +158,7 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
   return ret
 }
 
-const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, onManager, resource }) => {
+const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, onManager, resource, columns }) => {
   const ret = []
   if (data.external_id) {
     ret.push(
@@ -203,8 +203,19 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
           if (vm.specifyStatus) {
             return [<status specifyStatus={vm.specifyStatus} />]
           }
+          const cancel = <a class="ml-1"
+            onClick={() => vm.createDialog('VmLiveMigrateCancelDialog', {
+              data: [row],
+              columns: columns,
+              onManager: vm.onManager,
+            })}>{vm.$t('common.cancel')}</a>
           if (statusModule && row[statusKey]) {
-            return [<status status={ row[statusKey] } statusModule={ statusModule } process={ row.progress } />]
+            return [
+              <div class='d-flex align-items-center text-truncate'>
+                <status status={row[statusKey]} statusModule={statusModule} process={row.progress} />
+                {row.status === 'live_migrating' ? cancel : null}
+              </div>,
+            ]
           }
           return '-'
         },
@@ -374,6 +385,9 @@ export default {
     specifyStatus: {
       type: Object,
     },
+    columns: {
+      type: Array,
+    },
   },
   computed: {
     commonBaseInfo () {
@@ -384,6 +398,7 @@ export default {
         data: this.data,
         onManager: this.onManager,
         resource: this.resource,
+        columns: this.columns,
       })
       const defaultLastBaseInfo = getDefaultLastBaseInfo(this, this.$createElement, {
         onManager: this.onManager,
