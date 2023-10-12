@@ -11,45 +11,30 @@
         :rules="rules"
         v-bind="formItemLayout">
         <a-form-model-item :label="$t('cloudenv.resource_map_type')" :extra="resourceMapExtra">
-          <a-radio-group v-model="fd.resource_map_type" @change="resourceMapTypeChange">
-            <a-radio-button value="target_project">{{$t('cloudenv.target_project')}}</a-radio-button>
-            <a-radio-button v-if="showAutoCreateProject" value="auto_create_project">{{$t('cloudenv.map_by_cloudproject')}}</a-radio-button>
+          <a-checkbox-group v-model="fd.resource_map_type" :options="resourceMapTypeOpts" @change="resourceMapTypeChange" />
+        </a-form-model-item>
+        <!-- 同步策略 -->
+        <a-form-model-item v-if="openProjectMapping" :label="$t('cloudenv.text_580')" prop="project_mapping_id">
+          <base-select
+            v-model="fd.project_mapping_id"
+            resource="project_mappings"
+            :select-props="{ placeholder: $t('common.tips.select', [$t('cloudenv.text_580')]), allowClear: true }"
+            :params="projectMappingParams" />
+        </a-form-model-item>
+        <a-form-model-item v-if="openProjectMapping" :label="$t('cloudenv.effective_scope')" prop="effective_scope" :extra="effectiveScopeExtra">
+          <a-radio-group v-model="fd.effective_scope">
+            <a-radio-button value="resource">{{$t('cloudenv.resource_tag')}}</a-radio-button>
+            <a-radio-button value="project">{{$t('cloudenv.project_tag')}}</a-radio-button>
           </a-radio-group>
         </a-form-model-item>
         <a-form-model-item
-          :label="fd.resource_map_type === 'target_project' ? $t('cloudenv.cloudaccount.project_mapping') : $t('cloudenv.map_project_is_no_cloudproject')">
-          <a-radio-group v-if="fd.resource_map_type === 'auto_create_project'" v-model="fd.create_project_target" @change="createProjectTargetChange">
-            <a-radio-button value="project">{{$t('dictionary.project')}}</a-radio-button>
-            <a-radio-button value="cloudprovider">{{$t('dictionary.cloudprovider')}}</a-radio-button>
-          </a-radio-group>
+          :label="fd.resource_map_type.length ? $t('cloudenv.default_project') : $t('cloudenv.target_project')">
           <base-select
-            v-if="fd.create_project_target === 'project'"
             v-model="fd.project_id"
             resource="projects"
             filterable
             remote
             :params="projectParams" />
-        </a-form-model-item>
-        <a-form-model-item :label="$t('cloudenv.text_580')" prop="project_mapping_id">
-          <a-switch
-            v-model="fd.is_open_project_mapping"
-            :checkedChildren="$t('cloudenv.text_84')"
-            :unCheckedChildren="$t('cloudenv.text_85')"
-            @change="openProjectMappingChange" />
-          <a-form-model-item>
-            <base-select
-              v-if="openProjectMapping"
-              v-model="fd.project_mapping_id"
-              resource="project_mappings"
-              :select-props="{ placeholder: $t('common.tips.select', [$t('cloudenv.text_580')]), allowClear: true }"
-              :params="projectMappingParams" />
-          </a-form-model-item>
-        </a-form-model-item>
-        <a-form-model-item v-if="fd.is_open_project_mapping" :label="$t('cloudenv.effective_scope')" prop="effective_scope" :extra="effectiveScopeExtra">
-          <a-radio-group v-model="fd.effective_scope">
-            <a-radio-button value="resource">{{$t('cloudenv.resource_tag')}}</a-radio-button>
-            <a-radio-button value="project">{{$t('cloudenv.project_tag')}}</a-radio-button>
-          </a-radio-group>
         </a-form-model-item>
         <a-form-item :label="$t('cloudenv.block_resources')">
           <a-switch
@@ -73,17 +58,15 @@
 </template>
 
 <script>
+import { BLOCKED_RESOURCES } from '@Cloudenv/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { BLOCKED_RESOURCES } from '@Cloudenv/constants'
 
 export default {
   name: 'CloudaccountSetPojectmappingDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    let initResourceTypeMap = 'target_project'
-    let initCreateProjectTarget = 'project'
-    let initOpenProjectMapping = false
+    const initResourceTypeMap = []
     let initProjectMappingId = ''
     let initEffectiveScope = ''
     let initProjectId = ''
@@ -91,14 +74,13 @@ export default {
     this.params.data.map(item => {
       if (!initProjectMappingId && item.project_mapping_id) {
         initProjectMappingId = item.project_mapping_id
-        initOpenProjectMapping = true
+        initResourceTypeMap.push('project_mapping')
       }
       if (item.auto_create_project) {
-        initResourceTypeMap = 'auto_create_project'
+        initResourceTypeMap.push('external_project')
       }
       if (item.auto_create_project_for_provider) {
-        initCreateProjectTarget = 'cloudprovider'
-        initResourceTypeMap = 'auto_create_project'
+        initResourceTypeMap.push('cloudprovider')
       }
       if (item.tenant_id) {
         initProjectId = item.tenant_id
@@ -118,9 +100,7 @@ export default {
       showAutoCreateProject: true,
       fd: {
         resource_map_type: initResourceTypeMap,
-        create_project_target: initCreateProjectTarget,
         project_id: initProjectId,
-        is_open_project_mapping: initOpenProjectMapping,
         project_mapping_id: initProjectMappingId,
         effective_scope: initEffectiveScope || 'resource',
         isOpenBlockedResources: initBlockResource?.length > 0,
@@ -128,7 +108,7 @@ export default {
       },
       rules: {
         project_mapping_id: [
-          { required: false, message: this.$t('common.tips.select', [this.$t('cloudenv.text_580')]) },
+          { required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.text_580')]) },
         ],
         blockedResources: [
           { required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.block_resources_type')]) },
@@ -145,21 +125,30 @@ export default {
     }
   },
   computed: {
+    resourceMapTypeOpts () {
+      const ret = [
+        { value: 'project_mapping', label: this.$t('cloudenv.belong_to_project.project_mapping') },
+        { value: 'external_project', label: this.$t('cloudenv.belong_to_project.external_project') },
+        { value: 'cloudprovider', label: this.$t('cloudenv.belong_to_project.cloudprovider') },
+      ]
+      return ret
+    },
     resourceMapExtra () {
-      if (this.fd.resource_map_type === 'target_project') {
-        if (this.openProjectMapping) {
-          return this.$t('cloudenv.resource_map_project_mapping_target_project')
-        } else {
-          return this.$t('cloudenv.resource_map_target_project')
-        }
-      } else if (this.fd.resource_map_type === 'auto_create_project') {
-        if (this.openProjectMapping) {
-          return this.$t('cloudenv.resource_map_project_mapping_cloudproject')
-        } else {
-          return this.$t('cloudenv.resource_map_cloudproject')
+      const { resource_map_type: resourceMapType } = this.fd
+      if (!resourceMapType.length) return ''
+      if (resourceMapType.length === 1) {
+        return this.$t(`cloudenv.resource_map_type.${resourceMapType[0]}`)
+      }
+      if (resourceMapType.length === 2) {
+        if (!resourceMapType.includes('cloudprovider')) {
+          return this.$t('cloudenv.resource_map_type.project_mapping_and_external_project')
+        } else if (!resourceMapType.includes('external_project')) {
+          return this.$t('cloudenv.resource_map_type.project_mapping_and_cloudprovider')
+        } else if (!resourceMapType.includes('project_mapping')) {
+          return this.$t('cloudenv.resource_map_type.external_project_and_cloudprovider')
         }
       }
-      return ''
+      return this.$t('cloudenv.resource_map_type.all')
     },
     effectiveScopeExtra () {
       if (this.fd.effective_scope === 'resource') {
@@ -176,7 +165,7 @@ export default {
       }
     },
     openProjectMapping () {
-      return this.fd.is_open_project_mapping
+      return this.fd.resource_map_type.includes('project_mapping')
     },
     projectMappingParams () {
       const ret = {
@@ -197,28 +186,19 @@ export default {
     genParams () {
       const {
         resource_map_type,
-        create_project_target,
         project_id,
-        is_open_project_mapping,
         project_mapping_id,
         effective_scope,
         isOpenBlockedResources,
         blockedResources,
       } = this.fd
       const ret = {}
-      if (resource_map_type === 'auto_create_project' && create_project_target === 'project') {
-        ret.auto_create_project = true
-      } else {
-        ret.auto_create_project = false
-      }
-      ret.auto_create_project_for_provider = create_project_target === 'cloudprovider'
-      if (project_id && create_project_target !== 'cloudprovider') {
-        ret.project_id = project_id
-      }
-      if (is_open_project_mapping && project_mapping_id) {
+      ret.auto_create_project = resource_map_type.includes('external_project')
+      ret.auto_create_project_for_provider = resource_map_type.includes('cloudprovider')
+      if (resource_map_type.includes('project_mapping') && project_mapping_id) {
         ret.project_mapping_id = project_mapping_id
       }
-      if (is_open_project_mapping) {
+      if (resource_map_type.includes('project_mapping')) {
         if (effective_scope === 'resource') {
           ret.enable_resource_sync = true
           ret.enable_project_sync = false
@@ -227,6 +207,9 @@ export default {
           ret.enable_resource_sync = false
         }
       }
+      if (project_id) {
+        ret.project_id = project_id
+      }
       if (isOpenBlockedResources) {
         ret.skip_sync_resources = blockedResources
         delete ret.isOpenBlockedResources
@@ -234,14 +217,9 @@ export default {
       }
       return ret
     },
-    resourceMapTypeChange (e) {
-      console.log(e.target.value)
-      if (e.target.value === 'target_project') {
-        this.fd.create_project_target = 'project'
-      }
-    },
-    createProjectTargetChange (e) {
-      this.fd.create_project_target = e.target.value
+    resourceMapTypeChange (value) {
+      this.resourceMapType = value
+      this.openProjectMapping = value.includes('project_mapping')
     },
     async handleConfirm () {
       this.loading = true
