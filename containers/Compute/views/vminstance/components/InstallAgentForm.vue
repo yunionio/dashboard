@@ -112,7 +112,7 @@ export default {
       if (this.data?.os_type === 'Windows') {
         return this.data.status !== 'ready'
       }
-      return this.data.status !== 'running'
+      return !['running', 'ready'].includes(this.data.status)
     },
     buttonText () {
       if (this.showInstallButton) {
@@ -127,7 +127,7 @@ export default {
           return this.$t('compute.text_1397')
         }
       }
-      if (this.data.status !== 'running') {
+      if (!['running', 'ready'].includes(this.data.status)) {
         return this.$t('compute.text_1397')
       }
       return ''
@@ -155,22 +155,31 @@ export default {
   },
   methods: {
     async handleInstallAgent (e) {
-      // if hypervisor is kvm. directly install agent
-      if (this.data.hypervisor === 'kvm') {
+      if (this.data.hypervisor === 'kvm' || this.data.hypervisor === 'esxi') {
         if (this.data.status === 'running') {
           const data = {
             auto_choose_proxy_endpoint: true,
             server_id: this.data.id,
           }
-          const ret = await new this.$Manager('scripts').performAction({ id: 'monitor agent', action: 'apply', data: data })
+          const ret = await new this.$Manager('scripts')
+            .performAction({
+              id: 'monitor agent',
+              action: 'apply',
+              data: data,
+            })
           await this.handleInstallTask(ret.data.script_apply_id)
           return
         }
-        if (this.data?.os_type === 'Windows' && this.data.status === 'ready') {
+        if (this.data.status === 'ready') {
           const data = {
             deploy_telegraf: true,
           }
-          await new this.$Manager('servers').performAction({ id: this.data.id, action: 'deploy', data: data })
+          await new this.$Manager('servers')
+            .performAction({
+              id: this.data.id,
+              action: 'deploy',
+              data: data,
+            })
           this.agent_install_status = 'installing'
           const timer = setInterval(() => {
             this.$bus.$emit('VMInstanceListSingleRefresh', [this.data.id])
