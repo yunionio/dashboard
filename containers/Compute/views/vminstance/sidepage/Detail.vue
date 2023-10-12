@@ -271,7 +271,7 @@ export default {
               title: this.$t('compute.text_97'),
               hideField: true,
               message: this.diskInfos.image,
-              customEdit: hasPermission({ key: 'server_perform_rebuild_root' }),
+              customEdit: hasPermission({ key: 'server_perform_rebuild_root' }) && this.data.status === 'ready',
               customEditCallback: (row) => {
                 this.createDialog('VmRebuildRootDialog', {
                   data: [row],
