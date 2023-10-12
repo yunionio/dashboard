@@ -1,6 +1,10 @@
 <template>
   <a-form-item :label="$t('cloudenv.text_14')" v-if="isPermission">
-    <div class="d-flex align-items-center w-50">
+    <a-switch
+      :checkedChildren="$t('cloudenv.text_84')"
+      :unCheckedChildren="$t('cloudenv.text_85')"
+      v-model="isOpenProxy" />
+    <div v-if="isOpenProxy" class="d-flex align-items-center w-50">
       <a-select class="base-select" :loading="loading" showSearch :filterOption="filterOption" v-decorator="decorator">
         <a-select-option v-for="item of proxyOpts" :key="item.id" :value="item.id">
           {{item.name}} {{item.id === 'DIRECT' ? $t('cloudenv.text_110') :  null}}
@@ -8,7 +12,9 @@
       </a-select>
       <a @click="fetchQueryProxy"><a-icon :spin="loading" type="sync" class="ml-2" /></a>
     </div>
-    <div slot="extra">{{$t('cloudenv.text_111')}}<div>{{$t('cloudenv.text_112')}}<span class="link-color oc-pointer" @click="createProxySetting">{{$t('cloudenv.text_104')}}</span></div>
+    <div slot="extra">
+      <div v-if="!isOpenProxy">{{$t('cloudenv.text_111')}}</div>
+      <div v-else>{{$t('cloudenv.text_112')}}<span class="link-color oc-pointer" @click="createProxySetting">{{$t('cloudenv.text_104')}}</span></div>
     </div>
   </a-form-item>
 </template>
@@ -36,6 +42,7 @@ export default {
     return {
       proxyOpts: [],
       loading: false,
+      isOpenProxy: false,
     }
   },
   computed: {
@@ -43,6 +50,9 @@ export default {
     decorator () {
       return [
         'proxy_setting',
+        {
+          rules: [{ required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.text_14')]) }],
+        },
       ]
     },
     isPermission () {
