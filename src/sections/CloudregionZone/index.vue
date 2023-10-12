@@ -19,9 +19,9 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { Manager } from '@/utils/manager'
+import { cloudregionFilterByCapability } from '@/utils/common/capability'
 import Cloudregion from './components/Cloudregion'
 import Zone from './components/Zone'
-import { cloudregionFilterByCapability } from '@/utils/common/capability'
 
 export default {
   name: 'RegionZoneSelect',
