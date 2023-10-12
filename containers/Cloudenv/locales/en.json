@@ -845,5 +845,16 @@
   "cloudenv.create_chinaunion": "{0}#create-chinaunion-account",
   "cloudenv.view_record": "View records",
   "cloudenv.old_sth": "Origin {0}",
-  "cloudenv.new_sth": "Current {0}"
+  "cloudenv.new_sth": "Current {0}",
+  "cloudenv.belong_to_project.project_mapping": "According to project mapping",
+  "cloudenv.belong_to_project.external_project": "According to external project",
+  "cloudenv.belong_to_project.cloudprovider": "According to cloudprovider",
+  "cloudenv.default_project": "Default project",
+  "cloudenv.resource_map_type.project_mapping": "Resources will be attributed based on the synchronization strategy, and if they do not match the attribution method, they will be attributed to the default project.",
+  "cloudenv.resource_map_type.external_project": "The resource will be synchronized to a local project with the same name as the cloud project. If the resource does not have cloud project attributes, it will belong to the default project.",
+  "cloudenv.resource_map_type.cloudprovider": "The resource will be synchronized to a local project with the same name as the cloud subscription. If the resource does not have cloud subscription properties, it will belong to the default project.",
+  "cloudenv.resource_map_type.project_mapping_and_external_project": "Resources will be assigned priority based on the synchronization strategy. Resources that do not match the synchronization strategy will be synchronized with local projects with the same name as the cloud project. If the resources do not match the above two attribution methods, they will be assigned to the default project.",
+  "cloudenv.resource_map_type.project_mapping_and_cloudprovider": "Resources will be assigned priority based on the synchronization strategy. Resources that do not match the synchronization strategy will be assigned to local projects with the same name in the cloud subscription. If the resources do not match the above two attribution methods, they will be assigned to the default project.",
+  "cloudenv.resource_map_type.external_project_and_cloudprovider": "Resources will be prioritized in synchronizing with local projects with the same name as cloud projects. If there is no cloud project ownership for the resources, they will belong to local projects with the same name as cloud subscription. If the resources do not match the two ownership methods mentioned above, they will belong to the default project.",
+  "cloudenv.resource_map_type.all": "Resources will be assigned priority based on the synchronization strategy. Resources that do not match the synchronization strategy will be assigned priority to local projects with the same name as the cloud project. Resources that do not match the above two methods will be assigned to local projects with the same name as the cloud subscription. If resources do not match the above three ownership methods, they will be assigned to the default project."
 }

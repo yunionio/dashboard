@@ -211,23 +211,22 @@ export default {
       delete data.domain
       delete data.project
       if (!this.isAdminMode || !this.l3PermissionEnable) delete data.domain_id
-      if (data.resource_map_type === 'auto_create_project' && data.create_project_target === 'project') {
-        data.auto_create_project = true
-      }
-      if (data.resource_map_type === 'auto_create_project' && data.create_project_target === 'cloudprovider') {
-        data.auto_create_project_for_provider = true
-      }
-      if (data.project_mapping_id) {
+      const { resource_map_type = [] } = data
+      if (resource_map_type.includes('project_mapping') && data.project_mapping_id) {
         if (data.effective_scope === 'resource') {
           data.enable_resource_sync = true
         } else if (data.effective_scope === 'project') {
           data.enable_project_sync = true
         }
       }
+      if (resource_map_type.includes('cloudprovider')) {
+        data.auto_create_project_for_provider = true
+      }
+      if (resource_map_type.includes('external_project')) {
+        data.auto_create_project = true
+      }
       delete data.effective_scope
-      delete data.is_open_project_mapping
       delete data.resource_map_type
-      delete data.create_project_target
     },
     _providerDiff (data) {
       const brand = this.currentItem.provider.toLowerCase()
@@ -253,7 +252,6 @@ export default {
         delete data.verify_method
       }
       this._addDomainProject(data)
-      console.log(data)
       this._providerDiff(data)
       const ret = await this.cloudaccountsM.create({ data })
       if (this.$store.getters.auth.stats.cloudaccounts === 0) {
