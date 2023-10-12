@@ -5,6 +5,7 @@
     :extra-info="extraInfo"
     :base-info="baseInfo"
     :name-rules="[{ required: true, message: $t('compute.text_210') }]"
+    :columns="serverColumns"
     auto-hidden-columns-key="server_hidden_columns"
     status-module="server"
     resource="servers" />
@@ -13,11 +14,12 @@
 <script>
 import 'codemirror/theme/material.css'
 import * as R from 'ramda'
+import { ALL_STORAGE, SERVER_TYPE, GPU_DEV_TYPE_OPTION_MAP } from '@Compute/constants/index'
+import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import {
   getUserTagColumn,
   // getExtTagColumn,
 } from '@/utils/common/detailColumn'
-import { ALL_STORAGE, SERVER_TYPE, GPU_DEV_TYPE_OPTION_MAP } from '@Compute/constants/index'
 import {
   getCopyWithContentTableColumn,
   getBrandTableColumn,
@@ -32,7 +34,6 @@ import {
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { BRAND_MAP, HYPERVISORS_MAP } from '@/constants'
-import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { sizestr, sizestrWithUnit } from '@/utils/utils'
 import { hasPermission } from '@/utils/auth'
 
