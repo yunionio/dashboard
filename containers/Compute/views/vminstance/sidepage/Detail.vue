@@ -429,6 +429,13 @@ export default {
                 return row.monitor_url
               },
             },
+            {
+              field: 'bios',
+              title: this.$t('compute.bios'),
+              formatter: ({ row }) => {
+                return row.bios || 'BIOS'
+              },
+            },
           ],
         },
         {
