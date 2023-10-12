@@ -23,18 +23,28 @@
       </base-select>
     </a-form-item>
     <a-form-item :label="$t('cloudenv.resource_map_type')" :extra="resourceMapExtra">
-      <a-radio-group v-decorator="extraDecorators.resource_map_type" @change="resourceMapTypeChange">
-        <a-radio-button value="target_project">{{$t('cloudenv.target_project')}}</a-radio-button>
-        <a-radio-button v-if="showAutoCreateProject" value="auto_create_project">{{$t('cloudenv.map_by_cloudproject')}}</a-radio-button>
+      <a-checkbox-group v-decorator="extraDecorators.resource_map_type" :options="resourceMapTypeOpts" @change="resourceMapTypeChange" />
+    </a-form-item>
+    <a-form-item v-if="openProjectMapping" :label="$t('cloudenv.text_580')">
+      <base-select
+        v-decorator="extraDecorators.project_mapping_id"
+        resource="project_mappings"
+        showSync
+        :select-props="{ placeholder: $t('common.tips.select', [$t('cloudenv.text_580')]) }"
+        :params="projectMappingParams" />
+      <div slot="extra">
+        {{$t('cloudenv.no_project_mapping')}}
+        <help-link :href="href">{{$t('cloudenv.go_create')}}</help-link>
+      </div>
+    </a-form-item>
+    <a-form-item v-if="openProjectMapping" :label="$t('cloudenv.project_mapping_effective_scope')" :extra="effectiveScopeExtra">
+      <a-radio-group v-decorator="extraDecorators.effective_scope" @change="effectiveScopeChange">
+        <a-radio-button value="resource">{{$t('cloudenv.resource_tag')}}</a-radio-button>
+        <a-radio-button value="project">{{$t('cloudenv.project_tag')}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label="resourceMapType === 'target_project' ? $t('scope.text_573', [$t('dictionary.project')]) : $t('cloudenv.map_project_is_no_cloudproject')">
-      <a-radio-group v-if="resourceMapType === 'auto_create_project'" v-decorator="extraDecorators.create_project_target" @change="createProjectTargetChange">
-        <a-radio-button value="project">{{$t('dictionary.project')}}</a-radio-button>
-        <a-radio-button value="cloudprovider">{{$t('dictionary.cloudprovider')}}</a-radio-button>
-      </a-radio-group>
+    <a-form-item :label="resourceMapType.length ? $t('cloudenv.default_project') : $t('cloudenv.target_project')">
       <base-select
-        v-if="createProjectTarget !== 'cloudprovider'"
         ref="project"
         v-decorator="decorators.project"
         resource="projects"
@@ -54,28 +64,6 @@
           <span class="text-color-secondary option-prefix">{{ $t('dictionary.project') }}: </span>{{ item.name }}
         </template>
       </base-select>
-    </a-form-item>
-    <a-form-item :label="$t('cloudenv.text_580')" class="mb-0">
-      <a-switch v-decorator="extraDecorators.is_open_project_mapping" :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" @change="openProjectMappingChange" />
-      <a-form-item>
-        <base-select
-          v-if="openProjectMapping"
-          v-decorator="extraDecorators.project_mapping_id"
-          resource="project_mappings"
-          showSync
-          :select-props="{ placeholder: $t('common.tips.select', [$t('cloudenv.text_580')]) }"
-          :params="projectMappingParams" />
-          <div v-if="openProjectMapping" slot="extra">
-            {{$t('cloudenv.no_project_mapping')}}
-            <help-link :href="href">{{$t('cloudenv.go_create')}}</help-link>
-          </div>
-      </a-form-item>
-    </a-form-item>
-    <a-form-item v-if="openProjectMapping" :label="$t('cloudenv.project_mapping_effective_scope')" :extra="effectiveScopeExtra">
-      <a-radio-group v-decorator="extraDecorators.effective_scope" @change="effectiveScopeChange">
-        <a-radio-button value="resource">{{$t('cloudenv.resource_tag')}}</a-radio-button>
-        <a-radio-button value="project">{{$t('cloudenv.project_tag')}}</a-radio-button>
-      </a-radio-group>
     </a-form-item>
   </div>
 </template>
@@ -130,23 +118,14 @@ export default {
         resource_map_type: [
           'resource_map_type',
           {
-            initialValue: 'target_project',
-          },
-        ],
-        create_project_target: [
-          'create_project_target',
-          {
-            initialValue: 'project',
-          },
-        ],
-        is_open_project_mapping: [
-          'is_open_project_mapping',
-          {
-            initialValue: false,
+            initialValue: [],
           },
         ],
         project_mapping_id: [
           'project_mapping_id',
+          {
+            rules: [{ required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.text_580')]) }],
+          },
         ],
         effective_scope: [
           'effective_scope',
@@ -155,8 +134,7 @@ export default {
           },
         ],
       },
-      resourceMapType: 'target_project',
-      createProjectTarget: 'project',
+      resourceMapType: [],
       openProjectMapping: false,
       effectiveScope: 'resource',
     }
@@ -170,20 +148,21 @@ export default {
       return false
     },
     resourceMapExtra () {
-      if (this.resourceMapType === 'target_project') {
-        if (this.openProjectMapping) {
-          return this.$t('cloudenv.resource_map_project_mapping_target_project')
-        } else {
-          return this.$t('cloudenv.resource_map_target_project')
-        }
-      } else if (this.resourceMapType === 'auto_create_project') {
-        if (this.openProjectMapping) {
-          return this.$t('cloudenv.resource_map_project_mapping_cloudproject')
-        } else {
-          return this.$t('cloudenv.resource_map_cloudproject')
+      const { resourceMapType } = this
+      if (!resourceMapType.length) return ''
+      if (resourceMapType.length === 1) {
+        return this.$t(`cloudenv.resource_map_type.${resourceMapType[0]}`)
+      }
+      if (resourceMapType.length === 2) {
+        if (!resourceMapType.includes('cloudprovider')) {
+          return this.$t('cloudenv.resource_map_type.project_mapping_and_external_project')
+        } else if (!resourceMapType.includes('external_project')) {
+          return this.$t('cloudenv.resource_map_type.project_mapping_and_cloudprovider')
+        } else if (!resourceMapType.includes('project_mapping')) {
+          return this.$t('cloudenv.resource_map_type.external_project_and_cloudprovider')
         }
       }
-      return ''
+      return this.$t('cloudenv.resource_map_type.all')
     },
     effectiveScopeExtra () {
       if (this.effectiveScope === 'resource') {
@@ -221,6 +200,14 @@ export default {
       return {
         scope: this.scope,
       }
+    },
+    resourceMapTypeOpts () {
+      const ret = [
+        { value: 'project_mapping', label: this.$t('cloudenv.belong_to_project.project_mapping') },
+        { value: 'external_project', label: this.$t('cloudenv.belong_to_project.external_project') },
+        { value: 'cloudprovider', label: this.$t('cloudenv.belong_to_project.cloudprovider') },
+      ]
+      return ret
     },
   },
   mounted () {
@@ -301,20 +288,12 @@ export default {
         }
       }
     },
-    resourceMapTypeChange (e) {
-      this.resourceMapType = e.target.value
-      if (e.target.value === 'target_project') {
-        this.createProjectTarget = 'project'
-      }
-    },
-    createProjectTargetChange (e) {
-      this.createProjectTarget = e.target.value
+    resourceMapTypeChange (value) {
+      this.resourceMapType = value
+      this.openProjectMapping = value.includes('project_mapping')
     },
     effectiveScopeChange (e) {
       this.effectiveScope = e.target.value
-    },
-    openProjectMappingChange (e) {
-      this.openProjectMapping = e
     },
     /*
      * @params {Object} domain { key: <domainId> }
@@ -368,11 +347,6 @@ export default {
       } else {
         this.$emit('update:project', projectId)
       }
-    },
-    handleAutoCreateProjectChange (e) {
-      const checked = e.target.checked
-      this.disableProjectSelect = checked
-      this.$bus.$emit('updateAutoCreate', checked)
     },
   },
 }
