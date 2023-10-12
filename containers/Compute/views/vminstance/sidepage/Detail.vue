@@ -485,6 +485,13 @@ export default {
                 return row.monitor_url
               },
             },
+            {
+              field: 'bios',
+              title: this.$t('compute.bios'),
+              formatter: ({ row }) => {
+                return row.bios || 'BIOS'
+              },
+            },
           ],
           hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.os_arch'),
         },
