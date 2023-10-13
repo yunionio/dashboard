@@ -79,15 +79,15 @@ import * as R from 'ramda'
 import marked from 'marked'
 import { Base64 } from 'js-base64'
 import { mapGetters } from 'vuex'
-import { compactObj } from '@/utils/utils'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 import TemplatePreview from '@K8S/sections/TemplatePreview'
 import k8sCreateMixin from '@K8S/mixins/create'
+import FormYaml from '@Helm/views/chart/create/FormYaml'
 import DomainProject from '@/sections/DomainProject'
 import { validateYaml, isRequired } from '@/utils/validate'
 import { HYPERVISORS_MAP } from '@/constants'
-import FormYaml from '@Helm/views/chart/create/FormYaml'
+import { compactObj } from '@/utils/utils'
 
 export default {
   name: 'K8SChartCreate',
@@ -341,16 +341,16 @@ export default {
           repo: repo,
         },
       })
-      const ret = await this.endpointM.list({
-        params: {
-          service: 'influxdb',
-          interface: 'public',
-        },
-      })
-      const ends = ret.data.data || []
-      if (ends.length) {
-        this.influxdbUrl = ends[0].url
-      }
+      // const ret = await this.endpointM.list({
+      //   params: {
+      //     service: 'influxdb',
+      //     interface: 'public',
+      //   },
+      // })
+      // const ends = ret.data.data || []
+      // if (ends.length) {
+      //   this.influxdbUrl = ends[0].url
+      // }
       if (data) {
         this.chartDetail = data
         this.previewFiles = data.files
