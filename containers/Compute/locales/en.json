@@ -1722,5 +1722,8 @@
   "compute.set_throughput": "Set Throughput",
   "compute.iops_input_tip": "Please input iops",
   "compute.throuthput_input_tip": "Please input throughput",
-  "compute.bios": "Boot Mode"
+  "compute.bios": "Boot Mode",
+  "compute.not_limited": "0 means no limit",
+  "compute.iops": "IOPS",
+  "compute.bps": "Throughput"
 }
