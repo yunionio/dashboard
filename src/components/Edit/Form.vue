@@ -4,7 +4,7 @@
     :model="form"
     :rules="rules"
     :style="{ width: `${width}px` }">
-    <a-form-model-item :label="label" v-bind="formLayout">
+    <a-form-model-item :label="label" v-bind="formLayout" prop="input">
       <a-input class="w-100" v-model="form.input" :placeholder="placeholder" allowClear />
     </a-form-model-item>
     <div class="text-right">
