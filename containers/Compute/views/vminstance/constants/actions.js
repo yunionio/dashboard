@@ -703,10 +703,6 @@ const getSingleActions = function () {
                     ret.tooltip = i18n.t('compute.text_1119')
                     return ret
                   }
-                  if (!this.isAdminMode && !this.isDomainMode) {
-                    ret.tooltip = i18n.t('compute.text_613')
-                    return ret
-                  }
                   ret.validate = true
                   return ret
                 },
@@ -735,10 +731,6 @@ const getSingleActions = function () {
                   }
                   if (obj.billing_type !== 'prepaid') {
                     ret.tooltip = i18n.t('compute.text_1119')
-                    return ret
-                  }
-                  if (!this.isAdminMode && !this.isDomainMode) {
-                    ret.tooltip = i18n.t('compute.text_613')
                     return ret
                   }
                   ret.validate = true
