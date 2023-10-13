@@ -1718,5 +1718,8 @@
   "compute.transfer.bandwidth.number.check": "只能输入正整数",
   "compute.vgpu_check.tooltip": "不支持同时使用VGPU和物理GPU，NVIDIA的VGPU只能绑定一块",
   "compute.workflow.operate_servers_check.message": "工单的批量{0}机器每次最多不能超过{1}台",
-  "compute.bios": "引导模式"
+  "compute.bios": "引导模式",
+  "compute.not_limited": "0代表不限制",
+  "compute.iops": "IOPS",
+  "compute.bps": "吞吐量"
 }
