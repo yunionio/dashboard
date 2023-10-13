@@ -5,33 +5,40 @@
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
-        v-bind="formItemLayout"
         :form="form.fc">
-        <a-form-item :label="$t('compute.text_1247')">
-          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-model="form.fi.isSetSpeed" />
-        </a-form-item>
-        <a-form-item v-show="form.fi.isSetSpeed">
-          <span slot="label">
-            {{ $t('compute.text_1248') }}&nbsp;
-            <a-tooltip :title="$t('compute.text_1248_tip')">
-              <a-icon type="question-circle-o" />
-            </a-tooltip>
-          </span>
-          <span>
-            <a-input-number :min="1" :step="50" v-decorator="decorators.iops" />
-          </span>
-        </a-form-item>
-        <a-form-item v-show="form.fi.isSetSpeed">
-          <span slot="label">
-            {{ $t('compute.text_1248_1') }}&nbsp;
-            <a-tooltip :title="$t('compute.text_1248_1_tip')">
-              <a-icon type="question-circle-o" />
-            </a-tooltip>
-          </span>
-          <span>
-            <a-input-number :min="1" :step="50" v-decorator="decorators.bps" />
-          </span>
-          <span class="ml-2">M/s</span>
+        <a-form-item v-for="(obj, idx) in disksInfo" :key="idx">
+          <a-card size="small">
+            <div slot="title"><a-tag>{{ obj.disk_type === 'sys' ? $t('common_432') : $t('common_433') }}</a-tag> {{obj.name}}</div>
+            <a-row>
+              <a-col :span="12">
+                <a-form-item v-bind="formItemLayout" :extra="$t('compute.not_limited')">
+                  <span slot="label">
+                    {{ $t('compute.iops') }}&nbsp;
+                    <a-tooltip :title="$t('compute.text_1248_tip')">
+                      <a-icon type="question-circle-o" />
+                    </a-tooltip>
+                  </span>
+                  <span>
+                    <a-input-number :min="0" :step="50" v-decorator="decorators.iops(idx)" />
+                  </span>
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item v-bind="formItemLayout" :extra="$t('compute.not_limited')">
+                  <span slot="label">
+                    {{ $t('compute.bps') }}&nbsp;
+                    <a-tooltip :title="$t('compute.text_1248_1_tip')">
+                      <a-icon type="question-circle-o" />
+                    </a-tooltip>
+                  </span>
+                  <span>
+                    <a-input-number :min="0" :step="50" v-decorator="decorators.bps(idx)" />
+                  </span>
+                  <span class="ml-2">M/s</span>
+                </a-form-item>
+              </a-col>
+            </a-row>
+          </a-card>
         </a-form-item>
       </a-form>
     </div>
@@ -43,7 +50,6 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -51,33 +57,27 @@ export default {
   name: 'VmSetSpeedDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const bpsVal = _.get(this.params.data[0], 'metadata.bps')
-    const bps = Boolean(parseInt(bpsVal))
-    const iopsVal = _.get(this.params.data[0], 'metadata.iops')
-    const iops = Boolean(parseInt(iopsVal))
     return {
       loading: false,
       action: this.$t('compute.text_1249'),
       form: {
         fc: this.$form.createForm(this),
-        fi: {
-          isSetSpeed: bps,
-        },
+        fi: {},
       },
       decorators: {
-        iops: [
-          'iops',
+        iops: i => [
+          `iops${i}`,
           {
-            initialValue: iops ? parseInt(iopsVal) : 1000,
+            initialValue: 0,
             rules: [
               { required: true, message: this.$t('compute.text_1250') },
             ],
           },
         ],
-        bps: [
-          'bps',
+        bps: i => [
+          `bps${i}`,
           {
-            initialValue: bps ? parseInt(bpsVal) : 100,
+            initialValue: 0,
             rules: [
               { required: true, message: this.$t('compute.text_1250_1') },
             ],
@@ -92,20 +92,43 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 19,
+          span: 12,
         },
         labelCol: {
-          span: 4,
+          span: 8,
         },
       },
     }
   },
+  computed: {
+    disksInfo () {
+      return this.params.data[0].disks_info
+    },
+  },
+  created () {
+    this.initialValue()
+  },
   methods: {
-    async doSetSpeedSubmit (data) {
-      const params = { iops: 0, bps: 0 }
-      if (this.form.fi.isSetSpeed) {
-        params.bps = data.bps
-        params.iops = data.iops
+    initialValue () {
+      this.$nextTick(() => {
+        this.disksInfo.forEach((o, i) => {
+          this.form.fc.setFieldsValue({
+            [`iops${i}`]: o.iops,
+            [`bps${i}`]: o.bps / 1024 / 1024,
+          })
+        })
+      })
+    },
+    async doSetSpeedSubmit (values) {
+      const bps = {}
+      const iops = {}
+      this.disksInfo.forEach((o, i) => {
+        bps[o.id] = +(values[`bps${i}`]) * 1024 * 1024
+        iops[o.id] = values[`iops${i}`]
+      })
+      const params = {
+        bps,
+        iops,
       }
       const ids = this.params.data.map(item => item.id)
       return this.params.onManager('batchPerformAction', {
