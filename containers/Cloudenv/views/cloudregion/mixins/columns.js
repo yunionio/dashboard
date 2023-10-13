@@ -16,7 +16,7 @@ export default {
         ],
         slotCallback: row => {
           return (
-            <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ row.name }</side-page-trigger>
+            <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ row.name || '-' }</side-page-trigger>
           )
         },
       }),
