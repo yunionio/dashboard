@@ -375,18 +375,20 @@ export function getServiceCreateParams (values) {
     if (isNodePort) {
       service.type = 'NodePort'
     }
-    const portMappings = Object.keys(values.ports).map(key => {
-      const portMap = {
-        port: +values.ports[key],
-        targetPort: +values.targetPorts[key],
-        protocol: values.protocols[key],
-      }
-      if (isNodePort) {
-        portMap.nodePort = values.nodePorts[key]
-      }
-      return portMap
-    })
-    service.portMappings = portMappings
+    if (values.ports) {
+      const portMappings = Object.keys(values.ports).map(key => {
+        const portMap = {
+          port: +values.ports[key],
+          targetPort: +values.targetPorts[key],
+          protocol: values.protocols[key],
+        }
+        if (isNodePort) {
+          portMap.nodePort = values.nodePorts[key]
+        }
+        return portMap
+      })
+      service.portMappings = portMappings
+    }
   }
   return service
 }
