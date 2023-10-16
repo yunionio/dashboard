@@ -358,6 +358,17 @@ export default {
           this.activeKey.push('yaml')
         }
         const jsonSchemaItem = data.files.find(val => val.name.endsWith('values.schema.json'))
+        const clearInflushdbInfo = (schema) => {
+          const telegraf = schema?.properties?.virtualMachines?.properties?.masterNode?.properties?.ansiblePlaybook?.properties?.telegraf
+          if (telegraf) {
+            const influxdb = telegraf?.properties
+            if (influxdb) {
+              influxdb.influxdbName.default = ''
+              influxdb.influxdbUrl.default = ''
+            }
+          }
+          return schema
+        }
         if (R.is(Object, jsonSchemaItem)) {
           let schema = Base64.decode(jsonSchemaItem.data)
           if (R.is(String, schema)) {
@@ -365,7 +376,7 @@ export default {
           }
           this.appendImageToVm(schema)
           delete schema.properties.envs
-          this.schema = schema
+          this.schema = clearInflushdbInfo(schema)
           this.getDefinition()
           this.isJsonSchema = true
         }
