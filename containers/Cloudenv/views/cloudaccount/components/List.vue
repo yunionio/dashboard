@@ -83,39 +83,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['guest_count', 'host_count', 'enable_auto_sync', 'probe_at', 'access_url', 'created_at'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('cloudenv.text_95'), key: 'name' },
-          { label: this.$t('cloudenv.text_96'), key: 'access_url' },
-          { label: this.$t('cloudenv.text_97'), key: 'enabled' },
-          { label: this.$t('cloudenv.text_98'), key: 'status' },
-          { label: this.$t('cloudenv.text_93'), key: 'health_status' },
-          { label: this.$t('cloudenv.text_99'), key: 'guest_count' },
-          { label: this.$t('cloudenv.text_100'), key: 'balance' },
-          { label: this.$t('cloudenv.text_101'), key: 'host_count' },
-          { label: this.$t('cloudenv.text_94'), key: 'account' },
-          { label: this.$t('cloudenv.text_102'), key: 'brand' },
-          // { label: this.$t('cloudenv.text_83'), key: 'enable_auto_sync' },
-          { label: this.$t('cloudenv.text_103'), key: 'last_auto_sync' },
-          {
-            label: this.$t('compute.text_505'),
-            key: 'public_scope',
-            hidden: () => {
-              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('cloudaccounts'))
-            },
-          },
-          {
-            label: this.$t('table.title.owner_domain'),
-            key: 'project_domain',
-          },
-          {
-            label: this.$t('scope.text_573', [this.$t('dictionary.project')]),
-            key: 'tenant',
-          },
-          { label: this.$t('common.createdAt'), key: 'created_at' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('cloudenv.text_104'),
@@ -321,6 +288,15 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    exportDataOptions () {
+      return {
+        title: this.$t('cloudenv.text_12'),
+        downloadType: 'local',
+        items: this.columns,
+      }
+    },
   },
   watch: {
     cloudEnv (val) {

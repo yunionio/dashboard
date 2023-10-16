@@ -251,8 +251,8 @@ export default {
   }
   &:hover {
     ::v-deep {
-      &.drag-icon {
-        visibility: visible;
+      .drag-icon {
+        visibility: visible !important;;
       }
     }
   }
