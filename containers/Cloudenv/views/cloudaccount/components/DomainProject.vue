@@ -43,7 +43,7 @@
         <a-radio-button value="project">{{$t('cloudenv.project_tag')}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label="resourceMapType.length ? $t('cloudenv.default_project') : $t('cloudenv.target_project')">
+    <a-form-item v-if="resourceMapType.length" :label="resourceMapType.length === 1 && resourceMapType.includes('project') ? $t('cloudenv.target_project') : $t('cloudenv.default_project')">
       <base-select
         ref="project"
         v-decorator="decorators.project"
@@ -118,7 +118,8 @@ export default {
         resource_map_type: [
           'resource_map_type',
           {
-            initialValue: [],
+            initialValue: ['project'],
+            rules: [{ required: true, message: this.$t('cloudenv.select_resource_map_type') }],
           },
         ],
         project_mapping_id: [
@@ -134,7 +135,7 @@ export default {
           },
         ],
       },
-      resourceMapType: [],
+      resourceMapType: ['project'],
       openProjectMapping: false,
       effectiveScope: 'resource',
     }
@@ -153,16 +154,24 @@ export default {
       if (resourceMapType.length === 1) {
         return this.$t(`cloudenv.resource_map_type.${resourceMapType[0]}`)
       }
-      if (resourceMapType.length === 2) {
-        if (!resourceMapType.includes('cloudprovider')) {
-          return this.$t('cloudenv.resource_map_type.project_mapping_and_external_project')
-        } else if (!resourceMapType.includes('external_project')) {
-          return this.$t('cloudenv.resource_map_type.project_mapping_and_cloudprovider')
-        } else if (!resourceMapType.includes('project_mapping')) {
-          return this.$t('cloudenv.resource_map_type.external_project_and_cloudprovider')
-        }
+      if (resourceMapType.includes('project_mapping') && resourceMapType.includes('external_project') && resourceMapType.includes('cloudprovider')) {
+        return this.$t('cloudenv.resource_map_type.all')
       }
-      return this.$t('cloudenv.resource_map_type.all')
+      if (resourceMapType.includes('project_mapping') && resourceMapType.includes('external_project')) {
+        return this.$t('cloudenv.resource_map_type.project_mapping_and_external_project')
+      }
+      if (resourceMapType.includes('project_mapping') && resourceMapType.includes('cloudprovider')) {
+        return this.$t('cloudenv.resource_map_type.project_mapping_and_cloudprovider')
+      }
+      if (resourceMapType.includes('external_project') && resourceMapType.includes('cloudprovider')) {
+        return this.$t('cloudenv.resource_map_type.external_project_and_cloudprovider')
+      }
+      const types = resourceMapType.filter(key => key !== 'project')
+      if (types.length) {
+        return this.$t(`cloudenv.resource_map_type.${types[0]}`)
+      } else {
+        return this.$t('cloudenv.resource_map_type.project')
+      }
     },
     effectiveScopeExtra () {
       if (this.effectiveScope === 'resource') {
@@ -206,6 +215,7 @@ export default {
         { value: 'project_mapping', label: this.$t('cloudenv.belong_to_project.project_mapping') },
         { value: 'external_project', label: this.$t('cloudenv.belong_to_project.external_project') },
         { value: 'cloudprovider', label: this.$t('cloudenv.belong_to_project.cloudprovider') },
+        { value: 'project', label: this.$t('cloudenv.target_project') },
       ]
       return ret
     },
