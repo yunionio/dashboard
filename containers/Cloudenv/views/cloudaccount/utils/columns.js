@@ -169,7 +169,7 @@ export const getPublicScopeTableColumn = ({
   }
 }
 
-export const getResourceMatchProjectTableColumn = () => {
+export const getResourceMatchProjectTableColumn = ({ isEdit = false, editCallback } = {}) => {
   return {
     field: 'resource_tenant',
     title: i18n.t('cloudenv.resource_map_type'),
@@ -184,7 +184,6 @@ export const getResourceMatchProjectTableColumn = () => {
         if (auto_create_project) resourceMapType.push('external_project')
         if (auto_create_project_for_provider) resourceMapType.push('cloudprovider')
         if (resourceMapType.length) {
-          ret.push(<span class='mr-2'>{i18n.t('cloudenv.text_493')}</span>)
           let tooltip = ''
           if (resourceMapType.length === 1) {
             tooltip = i18n.t(`cloudenv.resource_map_type.${resourceMapType[0]}`)
@@ -194,9 +193,9 @@ export const getResourceMatchProjectTableColumn = () => {
             tooltip = i18n.t('cloudenv.resource_map_type.all')
           }
           if (tenant) {
-            tooltip += (i18n.t('cloudenv.default_project') + ': ' + tenant)
+            tooltip = tooltip + '<div>' + (i18n.t('cloudenv.default_project') + ': ' + tenant) + '</div>'
           }
-          ret.push(<help-tooltip text={tooltip} />)
+          ret.push(<list-body-cell-wrap field='text' row={{ text: i18n.t('cloudenv.text_493') }} edit={isEdit} customEdit={!!editCallback} customEditCallback={editCallback}><help-tooltip text={tooltip} class="ml-2 mr-1" /></list-body-cell-wrap>)
           if (project_mapping) {
             let label = ''
             if (row.enable_resource_sync) {
@@ -204,13 +203,38 @@ export const getResourceMatchProjectTableColumn = () => {
             } else if (row.enable_project_sync) {
               label = i18n.t('cloudenv.project_project_mapping')
             }
-            ret.push(<list-body-cell-wrap copy field='project_mapping' row={row} hideField><span class="text-color-secondary">{label || i18n.t('cloudenv.text_580')}：{project_mapping}</span></list-body-cell-wrap>)
+            ret.push(<list-body-cell-wrap copy edit={isEdit} field='project_mapping' row={row} hideField customEdit={!!editCallback} customEditCallback={editCallback}><span class="text-color-secondary">{label || i18n.t('cloudenv.text_580')}：{project_mapping}</span></list-body-cell-wrap>)
           }
         } else {
-          ret.push(<list-body-cell-wrap copy field='tenant' row={row} hideField><span>{i18n.t('cloudenv.target_project')}：{tenant}</span></list-body-cell-wrap>)
+          ret.push(<list-body-cell-wrap copy edit={isEdit} field='tenant' row={row} hideField customEdit={!!editCallback} customEditCallback={editCallback}><span>{i18n.t('cloudenv.target_project')}：{tenant}</span></list-body-cell-wrap>)
         }
         return ret
       },
+    },
+    formatter: ({ row }) => {
+      const ret = []
+      const resourceMapType = []
+      const { auto_create_project, auto_create_project_for_provider, project_mapping, tenant } = row
+      if (project_mapping) resourceMapType.push('project_mapping')
+      if (auto_create_project) resourceMapType.push('external_project')
+      if (auto_create_project_for_provider) resourceMapType.push('cloudprovider')
+      if (resourceMapType.length) {
+        if (project_mapping) {
+          let label = ''
+          if (row.enable_resource_sync) {
+            label = i18n.t('cloudenv.resource_project_mapping')
+          } else if (row.enable_project_sync) {
+            label = i18n.t('cloudenv.project_project_mapping')
+          }
+          ret.push(`${label || i18n.t('cloudenv.text_580')}：${project_mapping}`)
+        }
+        if (tenant) {
+          ret.push(i18n.t('cloudenv.default_project') + ': ' + tenant)
+        }
+      } else {
+        ret.push(`${i18n.t('cloudenv.target_project')}：${tenant}`)
+      }
+      return ret.join(',')
     },
   }
 }
