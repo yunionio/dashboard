@@ -13,13 +13,13 @@
         </a-form-item>
         <a-form-item :label="$t('compute.pci.vendor_id')">
           <template #extra>
-            {{ $t('compute.pci.vendor_id.extra') }}<help-link :href="vendorAndDeviceLink">{{ $t('compute.pci.document') }}</help-link>
+            {{ $t('compute.pci.vendor_id.extra') }}<help-link v-if="vendorAndDeviceLink" :href="vendorAndDeviceLink">{{ $t('compute.pci.document') }}</help-link>
           </template>
           <a-input v-decorator="decorators.vendor_id" :placeholder="$t('compute.pci.vendor_id.placeholder')" />
         </a-form-item>
         <a-form-item :label="$t('compute.pci.device_id')">
           <template #extra>
-            {{ $t('compute.pci.device_id.extra') }}<help-link :href="vendorAndDeviceLink">{{ $t('compute.pci.document') }}</help-link>
+            {{ $t('compute.pci.device_id.extra') }}<help-link v-if="vendorAndDeviceLink" :href="vendorAndDeviceLink">{{ $t('compute.pci.document') }}</help-link>
           </template>
           <a-input v-decorator="decorators.device_id" :placeholder="$t('compute.pci.device_id.placeholder')" />
         </a-form-item>
@@ -135,7 +135,11 @@ export default {
   },
   computed: {
     vendorAndDeviceLink () {
-      return `${this.baseDocURL}function_principle/onpremise/vminstance/custom-pci-devices/`
+      const lang = this.$store.getters.setting.language
+      if (lang === 'zh-CN') {
+        return `${this.baseDocURL}web_ui/computing/resources/gpu/#自定义透传设备类型`
+      }
+      return null
     },
   },
   methods: {
