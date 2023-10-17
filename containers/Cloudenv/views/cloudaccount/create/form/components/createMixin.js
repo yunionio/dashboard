@@ -46,7 +46,7 @@ export default {
               label: this.$store.getters.userInfo.project,
             },
             rules: [
-              { validator: this.handleProject, message: this.$t('rules.project'), trigger: 'change' },
+              { required: true, message: this.$t('rules.project') },
             ],
           },
         ],
@@ -90,9 +90,6 @@ export default {
     this.form.fc.resetFields()
   },
   created () {
-    this.$bus.$on('updateAutoCreate', (v) => {
-      this.handleProjectChange(v)
-    })
   },
   methods: {
     transformParams (params) {
@@ -147,19 +144,6 @@ export default {
         })
       }
     },
-    handleProject (rule, value, callback) {
-      const { auto_create_project } = this.form.fd
 
-      if (auto_create_project || value?.key) {
-        callback()
-      } else {
-        callback(Error)
-      }
-    },
-    handleProjectChange (v) {
-      this.$nextTick(() => {
-        this.form.fc.validateFields(['project'], { force: true })
-      })
-    },
   },
 }
