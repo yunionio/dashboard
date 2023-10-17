@@ -22,26 +22,27 @@
       :id="listId"
       resource="cloudaccounts"
       :cloudaccount-list-refresh="params.options.refresh"
-      :getParams="getParams" />
+      :getParams="getParams"
+      :columns="columns" />
   </base-side-page>
 </template>
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import CloudaccountDetail from './Detail'
-import HostList from './Host'
 import CloudproviderList from '@Cloudenv/views/cloudprovider/components/List'
 import Usage from '@Cloudenv/sections/UsageSidepage'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
-import { findPlatform } from '@/utils/common/hypervisor'
 import CloudgroupList from '@Cloudenv/views/cloudgroup/components/List'
 import ClouduserList from '@Cloudenv/views/clouduser/components/List'
 import ExternalprojectList from '@Cloudenv/views/externalproject/components/List'
 import SamluserList from '@Cloudenv/views/samluser/components/List'
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
+import { findPlatform } from '@/utils/common/hypervisor'
+import HostList from './Host'
+import CloudaccountDetail from './Detail'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import ScheduledtasksList from './Schedule'
 
 export default {

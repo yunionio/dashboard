@@ -65,6 +65,18 @@ export default {
             }
           },
         },
+        formatter: ({ row }) => {
+          if (row.sync_status !== 'idle') { // 表示正在同步中
+            return ''
+          } else {
+            const time = this.$moment(row.last_sync)
+            if (time) {
+              return time.fromNow()
+            } else {
+              return '-'
+            }
+          }
+        },
       },
       {
         field: 'probe_at',

@@ -37,6 +37,10 @@ export default {
       type: Object,
       required: true,
     },
+    columns: {
+      type: Array,
+      required: true,
+    },
   },
   data () {
     return {
@@ -68,7 +72,7 @@ export default {
         },
       ],
       baseInfo: [
-        getResourceMatchProjectTableColumn(),
+        getResourceMatchProjectTableColumn({ isEdit: true, editCallback: this.editCallback }),
         getBlockResourceTableColumn(),
         getPublicScopeTableColumn({ vm: this, resource: 'cloudaccounts' }),
         getBrandTableColumn(),
@@ -202,6 +206,13 @@ export default {
     this.fetchDiscount()
   },
   methods: {
+    editCallback () {
+      this.createDialog('CloudaccountSetPojectmappingDialog', {
+        data: [this.data],
+        columns: this.columns,
+        onManager: this.onManager,
+      })
+    },
     async clearPermissions () {
       try {
         this.clearPermissionsLoading = true
