@@ -852,11 +852,13 @@
   "cloudenv.belong_to_project.external_project": "根据云上项目归属",
   "cloudenv.belong_to_project.cloudprovider": "根据云订阅归属",
   "cloudenv.default_project": "缺省项目",
+  "cloudenv.resource_map_type.project": "所有项目资源均归属到指定项目，如果同时有其他的选择，以目前的提示信息为准！",
   "cloudenv.resource_map_type.project_mapping": "资源会根据同步策略归属，若资源不匹配该归属方式则归属到缺省项目中。",
   "cloudenv.resource_map_type.external_project": "资源会同步到与云上项目同名的本地项目中，若资源无云上项目属性则归属到缺省项目中。",
   "cloudenv.resource_map_type.cloudprovider": "资源会同步到与云订阅同名的本地项目中，若资源无云订阅属性则归属到缺省项目中。",
   "cloudenv.resource_map_type.project_mapping_and_external_project": "资源会优先根据同步策略归属，不匹配同步策略的资源会同步与云上项目同名的本地项目中，若资源不匹配上述两种归属方式则归属到缺省项目中。",
   "cloudenv.resource_map_type.project_mapping_and_cloudprovider": "资源会优先根据同步策略归属，不匹配同步策略的资源会归属到云订阅同名的本地项目中，若资源不匹配上述两种归属方式则归属到缺省项目中。",
   "cloudenv.resource_map_type.external_project_and_cloudprovider": "资源会优先同步与云上项目同名的本地项目中，若资源无云上项目归属则归属到云订阅同名的本地项目中，若资源不匹配上述两种归属方式则归属到缺省项目中。",
-  "cloudenv.resource_map_type.all": "资源会优先根据同步策略归属，不匹配同步策略的资源会优先同步与云上项目同名的本地项目中，不匹配上述两种方式的资源会归属到与云订阅同名的本地项目中，若资源不匹配上述三种归属方式则归属到缺省项目中。"
+  "cloudenv.resource_map_type.all": "资源会优先根据同步策略归属，不匹配同步策略的资源会优先同步与云上项目同名的本地项目中，不匹配上述两种方式的资源会归属到与云订阅同名的本地项目中，若资源不匹配上述三种归属方式则归属到缺省项目中。",
+  "cloudenv.select_resource_map_type": "请至少选择一种资源归属方式"
 }

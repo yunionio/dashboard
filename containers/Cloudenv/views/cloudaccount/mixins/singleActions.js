@@ -150,6 +150,7 @@ export default {
                       data: [obj],
                       columns: this.columns,
                       onManager: this.onManager,
+                      projectParams: { domain_id: obj.domain_id },
                     })
                   },
                 },
