@@ -1032,6 +1032,8 @@
   "network.vmware_extra_info": "VMWare信息",
   "network.vmware_datacenter_prompt": "数据中心",
   "network.vmware_vm_ips_prompt": "虚拟机IP",
+  "network.vmware_vm_macs_prompt": "虚拟机MAC",
+  "network.additional_wires.title": "附属二层网络",
   "network.local_vpc": "本端VPC",
   "network.peer_vpc": "对端VPC",
   "network.peer_account": "对端账号",

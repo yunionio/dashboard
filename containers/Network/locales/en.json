@@ -726,6 +726,8 @@
   "network.vmware_extra_info": "VMWare Information",
   "network.vmware_datacenter_prompt": "Datacenter",
   "network.vmware_vm_ips_prompt": "VM IPs",
+  "network.vmware_vm_macs_prompt": "VM MACs",
+  "network.additional_wires.title": "Additional Wires",
   "network.dns.simple": "Default",
   "network.dns.bycarrier": "Carrier",
   "network.dns.bygeolocation": "Geographical Area",

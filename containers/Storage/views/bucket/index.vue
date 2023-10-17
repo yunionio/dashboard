@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import List from './components/List'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import List from './components/List'
 
 export default {
   name: 'BucketStorage',

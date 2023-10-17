@@ -36,6 +36,132 @@ export default {
     columns: Array,
   },
   data () {
+    const extraInfo = [
+      {
+        title: this.$t('network.text_308'),
+        items: [
+          getCopyWithContentTableColumn({
+            field: 'vpc',
+            title: 'VPC',
+            hideField: true,
+            slotCallback: row => {
+              if (!row.vpc) return '-'
+              return [
+                <side-page-trigger permission='vpcs_get' name='VpcSidePage' id={row.vpc_id} vm={this}>{ row.vpc }</side-page-trigger>,
+              ]
+            },
+          }),
+          {
+            field: 'wire',
+            title: this.$t('network.text_571'),
+            slots: {
+              default: ({ row }) => {
+                return [
+                  <side-page-trigger permission='wires_get' name='WireSidePage' id={row.wire_id} vm={this}>{ row.wire }</side-page-trigger>,
+                ]
+              },
+            },
+          },
+          {
+            field: 'server_type',
+            title: this.$t('network.text_574'),
+            formatter: ({ cellValue }) => {
+              if (cellValue === 'baremetal') {
+                return this.$t('network.text_598')
+              }
+              if (cellValue === 'container') {
+                return this.$t('network.text_599')
+              }
+              if (cellValue === 'guest') {
+                return this.$t('network.text_226')
+              }
+              if (cellValue === 'eip') {
+                return this.$t('network.text_221')
+              }
+              return this.$t('network.text_507')
+            },
+          },
+          {
+            field: 'bgp_type',
+            title: this.$t('network.text_743'),
+            formatter: ({ cellValue }) => {
+              return cellValue || '-'
+            },
+          },
+          {
+            field: 'guest_ip_start',
+            title: this.$t('network.text_653'),
+            formatter: ({ cellValue, row }) => {
+              return `${cellValue}-${row.guest_ip_end}`
+            },
+          },
+          {
+            field: 'guest_ip_mask',
+            title: this.$t('network.text_609'),
+          },
+          {
+            field: 'guest_gateway',
+            title: this.$t('network.text_654'),
+          },
+          {
+            field: 'vlan_id',
+            title: 'VLAN ID',
+            formatter: ({ cellValue }) => {
+              return cellValue || '-'
+            },
+          },
+          {
+            field: 'ports',
+            title: this.$t('network.text_622'),
+            slots: {
+              default: ({ row }) => {
+                return [
+                  <i18n path='network.text_735' tag="div">
+                    <template slot='ports'>{ row.ports }</template>
+                    <template slot='ports_used'>
+                      { row.ports_used <= 0 ? 0 : <a onClick={ () => this.$emit('tab-change', 'i-p-list') }>{row.ports_used}</a> }
+                    </template>
+                    <template slot='reserve_vnics'>{ row.reserve_vnics }</template>
+                  </i18n>,
+                ]
+              },
+            },
+          },
+          {
+            field: 'guest_dns',
+            title: this.$t('network.dns_server'),
+          },
+          {
+            field: 'guest_domain',
+            title: this.$t('network.text_586'),
+            formatter: ({ cellValue }) => {
+              return cellValue || '-'
+            },
+          },
+        ],
+      },
+    ]
+    if (this.data.cloud_env === 'onpremise' && this.$store.getters.capability.brands.includes('VMware')) {
+      extraInfo.push({
+        title: this.$t('network.vmware_extra_info'),
+        items: [
+          {
+            field: 'additional_wires',
+            title: this.$t('network.additional_wires.title'),
+            slots: {
+              default: ({ row }) => {
+                if (!row.additional_wires) {
+                  return []
+                }
+                return [
+                  <side-page-trigger permission='wires_get' name='WireSidePage' id={row.additional_wires[0].wire_id} vm={this}>{ row.additional_wires[0].wire }</side-page-trigger>,
+                ]
+              },
+            },
+          },
+        ],
+      })
+    }
     return {
       baseInfo: [
         getUserTagColumn({
@@ -66,111 +192,7 @@ export default {
           },
         },
       ],
-      extraInfo: [
-        {
-          title: this.$t('network.text_308'),
-          items: [
-            getCopyWithContentTableColumn({
-              field: 'vpc',
-              title: 'VPC',
-              hideField: true,
-              slotCallback: row => {
-                if (!row.vpc) return '-'
-                return [
-                  <side-page-trigger permission='vpcs_get' name='VpcSidePage' id={row.vpc_id} vm={this}>{ row.vpc }</side-page-trigger>,
-                ]
-              },
-            }),
-            {
-              field: 'wire',
-              title: this.$t('network.text_571'),
-              slots: {
-                default: ({ row }) => {
-                  return [
-                    <side-page-trigger permission='wires_get' name='WireSidePage' id={row.wire_id} vm={this}>{ row.wire }</side-page-trigger>,
-                  ]
-                },
-              },
-            },
-            {
-              field: 'server_type',
-              title: this.$t('network.text_574'),
-              formatter: ({ cellValue }) => {
-                if (cellValue === 'baremetal') {
-                  return this.$t('network.text_598')
-                }
-                if (cellValue === 'container') {
-                  return this.$t('network.text_599')
-                }
-                if (cellValue === 'guest') {
-                  return this.$t('network.text_226')
-                }
-                if (cellValue === 'eip') {
-                  return this.$t('network.text_221')
-                }
-                return this.$t('network.text_507')
-              },
-            },
-            {
-              field: 'bgp_type',
-              title: this.$t('network.text_743'),
-              formatter: ({ cellValue }) => {
-                return cellValue || '-'
-              },
-            },
-            {
-              field: 'guest_ip_start',
-              title: this.$t('network.text_653'),
-              formatter: ({ cellValue, row }) => {
-                return `${cellValue}-${row.guest_ip_end}`
-              },
-            },
-            {
-              field: 'guest_ip_mask',
-              title: this.$t('network.text_609'),
-            },
-            {
-              field: 'guest_gateway',
-              title: this.$t('network.text_654'),
-            },
-            {
-              field: 'vlan_id',
-              title: 'VLAN ID',
-              formatter: ({ cellValue }) => {
-                return cellValue || '-'
-              },
-            },
-            {
-              field: 'ports',
-              title: this.$t('network.text_622'),
-              slots: {
-                default: ({ row }) => {
-                  return [
-                    <i18n path='network.text_735' tag="div">
-                      <template slot='ports'>{ row.ports }</template>
-                      <template slot='ports_used'>
-                        { row.ports_used <= 0 ? 0 : <a onClick={ () => this.$emit('tab-change', 'i-p-list') }>{row.ports_used}</a> }
-                      </template>
-                      <template slot='reserve_vnics'>{ row.reserve_vnics }</template>
-                    </i18n>,
-                  ]
-                },
-              },
-            },
-            {
-              field: 'guest_dns',
-              title: this.$t('network.dns_server'),
-            },
-            {
-              field: 'guest_domain',
-              title: this.$t('network.text_586'),
-              formatter: ({ cellValue }) => {
-                return cellValue || '-'
-              },
-            },
-          ],
-        },
-      ],
+      extraInfo: extraInfo,
     }
   },
 }

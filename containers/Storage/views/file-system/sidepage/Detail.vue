@@ -14,7 +14,6 @@ import {
   getUserTagColumn,
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
-import ColumnsMixin, { getFileSystemTypeColumn, getFileSystemStorageTypeColumn } from '../mixins/columns'
 import {
   getPublicScopeTableColumn,
   getBrandTableColumn,
@@ -22,6 +21,7 @@ import {
   getSwitchTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
+import ColumnsMixin, { getFileSystemTypeColumn, getFileSystemStorageTypeColumn } from '../mixins/columns'
 
 export default {
   name: 'FileSystemDetail',
