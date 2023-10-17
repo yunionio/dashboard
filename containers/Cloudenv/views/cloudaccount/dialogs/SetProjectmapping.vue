@@ -10,7 +10,7 @@
         :model="fd"
         :rules="rules"
         v-bind="formItemLayout">
-        <a-form-model-item :label="$t('cloudenv.resource_map_type')" :extra="resourceMapExtra">
+        <a-form-model-item :label="$t('cloudenv.resource_map_type')" :extra="resourceMapExtra" prop="resource_map_type">
           <a-checkbox-group v-model="fd.resource_map_type" :options="resourceMapTypeOpts" @change="resourceMapTypeChange" />
         </a-form-model-item>
         <!-- 同步策略 -->
@@ -28,7 +28,9 @@
           </a-radio-group>
         </a-form-model-item>
         <a-form-model-item
-          :label="fd.resource_map_type.length ? $t('cloudenv.default_project') : $t('cloudenv.target_project')">
+          v-if="fd.resource_map_type.length"
+          :label="fd.resource_map_type.length === 1 && fd.resource_map_type.includes('project') ? $t('cloudenv.target_project') : $t('cloudenv.default_project')"
+          prop="project_id">
           <base-select
             v-model="fd.project_id"
             resource="projects"
@@ -66,24 +68,25 @@ export default {
   name: 'CloudaccountSetPojectmappingDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const initResourceTypeMap = []
-    let initProjectMappingId = ''
+    const initResourceMapType = []
+    let initProjectMappingId = null
     let initEffectiveScope = ''
-    let initProjectId = ''
+    let initProjectId = null
     let initBlockResource = []
     this.params.data.map(item => {
       if (!initProjectMappingId && item.project_mapping_id) {
         initProjectMappingId = item.project_mapping_id
-        initResourceTypeMap.push('project_mapping')
+        initResourceMapType.push('project_mapping')
       }
       if (item.auto_create_project) {
-        initResourceTypeMap.push('external_project')
+        initResourceMapType.push('external_project')
       }
       if (item.auto_create_project_for_provider) {
-        initResourceTypeMap.push('cloudprovider')
+        initResourceMapType.push('cloudprovider')
       }
       if (item.tenant_id) {
         initProjectId = item.tenant_id
+        initResourceMapType.push('project')
       }
       if (item.enable_resource_sync && !initEffectiveScope) {
         initEffectiveScope = 'resource'
@@ -99,7 +102,7 @@ export default {
       loading: false,
       showAutoCreateProject: true,
       fd: {
-        resource_map_type: initResourceTypeMap,
+        resource_map_type: initResourceMapType,
         project_id: initProjectId,
         project_mapping_id: initProjectMappingId,
         effective_scope: initEffectiveScope || 'resource',
@@ -107,11 +110,17 @@ export default {
         blockedResources: initBlockResource || [],
       },
       rules: {
+        resource_map_type: [
+          { required: true, message: this.$t('cloudenv.select_resource_map_type') },
+        ],
         project_mapping_id: [
           { required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.text_580')]) },
         ],
         blockedResources: [
           { required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.block_resources_type')]) },
+        ],
+        project_id: [
+          { required: true, message: this.$t('rules.project') },
         ],
       },
       formItemLayout: {
@@ -130,6 +139,7 @@ export default {
         { value: 'project_mapping', label: this.$t('cloudenv.belong_to_project.project_mapping') },
         { value: 'external_project', label: this.$t('cloudenv.belong_to_project.external_project') },
         { value: 'cloudprovider', label: this.$t('cloudenv.belong_to_project.cloudprovider') },
+        { value: 'project', label: this.$t('cloudenv.target_project') },
       ]
       return ret
     },
@@ -139,16 +149,24 @@ export default {
       if (resourceMapType.length === 1) {
         return this.$t(`cloudenv.resource_map_type.${resourceMapType[0]}`)
       }
-      if (resourceMapType.length === 2) {
-        if (!resourceMapType.includes('cloudprovider')) {
-          return this.$t('cloudenv.resource_map_type.project_mapping_and_external_project')
-        } else if (!resourceMapType.includes('external_project')) {
-          return this.$t('cloudenv.resource_map_type.project_mapping_and_cloudprovider')
-        } else if (!resourceMapType.includes('project_mapping')) {
-          return this.$t('cloudenv.resource_map_type.external_project_and_cloudprovider')
-        }
+      if (resourceMapType.includes('project_mapping') && resourceMapType.includes('external_project') && resourceMapType.includes('cloudprovider')) {
+        return this.$t('cloudenv.resource_map_type.all')
       }
-      return this.$t('cloudenv.resource_map_type.all')
+      if (resourceMapType.includes('project_mapping') && resourceMapType.includes('external_project')) {
+        return this.$t('cloudenv.resource_map_type.project_mapping_and_external_project')
+      }
+      if (resourceMapType.includes('project_mapping') && resourceMapType.includes('cloudprovider')) {
+        return this.$t('cloudenv.resource_map_type.project_mapping_and_cloudprovider')
+      }
+      if (resourceMapType.includes('external_project') && resourceMapType.includes('cloudprovider')) {
+        return this.$t('cloudenv.resource_map_type.external_project_and_cloudprovider')
+      }
+      const types = resourceMapType.filter(key => key !== 'project')
+      if (types.length) {
+        return this.$t(`cloudenv.resource_map_type.${types[0]}`)
+      } else {
+        return this.$t('cloudenv.resource_map_type.project')
+      }
     },
     effectiveScopeExtra () {
       if (this.fd.effective_scope === 'resource') {
