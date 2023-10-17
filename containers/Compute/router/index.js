@@ -389,6 +389,9 @@ export default {
             label: i18n.t('compute.disk_backup'),
             permission: 'diskbackups_list',
             hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.disk_backup')) {
+                return true
+              }
               return !hasSetupKey(['onestack'])
             },
           },
@@ -407,6 +410,9 @@ export default {
             label: i18n.t('compute.instance_backup'),
             permission: 'instancebackups_list',
             hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.instance_backup')) {
+                return true
+              }
               return !hasSetupKey(['onestack'])
             },
           },
