@@ -16,9 +16,10 @@
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
-import { getNameFilter, getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
+import { HYPERVISORS } from '@/constants/index'
 import { getWiresMergeAction } from '../utils/groupactions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -41,6 +42,33 @@ export default {
     },
   },
   data () {
+    const brandFilter = []
+    const netBrands = getBrandFilter('network_manage_brands')
+    console.log(netBrands)
+    let hasOneCloud = false
+    for (var i = 0; i < netBrands.items.length; i++) {
+      const testIsPublic = (key) => {
+        for (var j = 0; j < HYPERVISORS.length; j++) {
+          if (HYPERVISORS[j].provider === key && HYPERVISORS[j].cloud_env === 'public') {
+            return true
+          }
+        }
+        return false
+      }
+      if (testIsPublic(netBrands.items[i].key)) {
+        continue
+      }
+      if (netBrands.items[i].key === 'OneCloud') {
+        hasOneCloud = true
+      }
+      brandFilter.push(netBrands.items[i])
+    }
+    if (!hasOneCloud) {
+      brandFilter.push({ key: 'OneCloud', label: 'OneCloud' })
+    }
+    console.log(brandFilter)
+    netBrands.items = brandFilter
+    console.log(netBrands)
     return {
       expandConfig: {
         loadMethod: this.loadDetails,
@@ -81,6 +109,8 @@ export default {
           region: {
             label: this.$t('network.text_199'),
           },
+          brand: netBrands,
+          cloudaccount: getAccountFilter(),
           project_domains: getProjectDomainFilter(),
           created_at: getCreatedAtFilter(),
         },

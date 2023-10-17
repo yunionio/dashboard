@@ -32,13 +32,13 @@
 </template>
 
 <script>
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import FileSystemDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import MountTargetList from '@Storage/views/mount-target/components/List'
 import Actions from '@/components/PageList/Actions'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import FileSystemDetail from './Detail'
 
 export default {
   name: 'FileSystemSidePage',
