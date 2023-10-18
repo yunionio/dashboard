@@ -30,6 +30,8 @@ import './plugins'
 import './permission'
 import './filters'
 
+Vue._watchers = Vue.prototype._watchers = []
+
 Vue.use(Antd)
 Vue.use(VXETable, {
   i18n: key => i18n.t(key),
