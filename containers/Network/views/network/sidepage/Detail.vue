@@ -147,15 +147,24 @@ export default {
         items: [
           {
             field: 'additional_wires',
-            title: this.$t('network.additional_wires.title'),
+            title: () => {
+              return [
+                this.$t('network.additional_wires.title'),
+                <help-tooltip class="ml-1" text={ this.$t('network.additional_wires.title.tooltip') } />,
+              ]
+            },
             slots: {
               default: ({ row }) => {
+                let comps = []
                 if (!row.additional_wires) {
-                  return []
+                  comps.push(<a-button type="link" class="ml-2" style="height: 21px; padding:0;" onclick={this.setWireHandle}>({ this.$t('common.setting') })</a-button>)
+                  return comps
                 }
-                return [
-                  <side-page-trigger permission='wires_get' name='WireSidePage' id={row.additional_wires[0].wire_id} vm={this}>{ row.additional_wires[0].wire }</side-page-trigger>,
-                ]
+                comps = row.additional_wires.map((item, idx) => {
+                  return <side-page-trigger permission='wires_get' name='WireSidePage' id={item.wire_id} vm={this}>{ item.wire }{ idx < row.additional_wires.length - 1 ? ',' : '' }</side-page-trigger>
+                })
+                comps.push(<a-button type="link" class="ml-2" style="height: 21px; padding:0;" onclick={this.setWireHandle}>({ this.$t('common.setting') })</a-button>)
+                return comps
               },
             },
           },
@@ -194,6 +203,16 @@ export default {
       ],
       extraInfo: extraInfo,
     }
+  },
+  methods: {
+    setWireHandle () {
+      this.createDialog('SetAdditionalWiresDialog', {
+        currentData: this.data,
+        success: () => {
+          this.$emit('refresh')
+        },
+      })
+    },
   },
 }
 </script>
