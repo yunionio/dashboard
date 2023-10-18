@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import { getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 export default {
@@ -25,7 +25,17 @@ export default {
         return column
       }
       column = [
-        getCopyWithContentTableColumn({ field: 'name', title: i18n.t('compute.text_228') }),
+        getNameDescriptionTableColumn({
+          field: 'name',
+          edit: false,
+          editDesc: false,
+          hideField: true,
+          slotCallback: row => {
+            return (
+              <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{row.name}</side-page-trigger>
+            )
+          },
+        }),
         getStatusTableColumn({ statusModule: 'disk', hiddenLogView: true }),
         {
           field: 'disk_type',
