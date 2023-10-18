@@ -6,7 +6,6 @@ export default {
         label: i18n.t('compute.text_477'),
         permission: 'images_delete',
         action: obj => {
-          console.log(this.onManager)
           this.createDialog('DeleteResDialog', {
             vm: this,
             data: [obj],
