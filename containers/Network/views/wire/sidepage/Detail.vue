@@ -8,13 +8,13 @@
 </template>
 
 <script>
-import { getBandwidthTableColumn } from '../utils/columns'
 import { getBrandTableColumn, getCopyWithContentTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
 import {
   getUserTagColumn,
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
 import WindowsMixin from '@/mixins/windows'
+import { getBandwidthTableColumn } from '../utils/columns'
 
 export default {
   name: 'WireDetail',
@@ -54,6 +54,17 @@ export default {
               default: ({ row }, h) => {
                 return [
                   <span>{row.metadata['sys:vm_ips']}</span>,
+                ]
+              },
+            },
+          },
+          {
+            field: 'metadata',
+            title: this.$t('network.vmware_vm_macs_prompt'),
+            slots: {
+              default: ({ row }, h) => {
+                return [
+                  <span>{row.metadata['sys:vm_macs']}</span>,
                 ]
               },
             },
