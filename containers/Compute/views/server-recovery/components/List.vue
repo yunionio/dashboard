@@ -147,6 +147,15 @@ export default {
         ...this.getParams,
       }
     },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'VminstanceRecoverySidePage', {
+        id: row.id,
+        resource: 'servers',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+      })
+    },
   },
 }
 </script>
