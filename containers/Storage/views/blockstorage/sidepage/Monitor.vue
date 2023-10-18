@@ -16,8 +16,8 @@ import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
 import Monitor from '@/sections/Monitor'
 import WindowsMixin from '@/mixins/windows'
 import { getSignature } from '@/utils/crypto'
-import { STORAGE_MONITOR_OPTS } from '../constants'
 import MonitorTimeMixin from '@/mixins/monitorTime'
+import { STORAGE_MONITOR_OPTS } from '../constants'
 
 export default {
   name: 'StorageMonitorSidepage',

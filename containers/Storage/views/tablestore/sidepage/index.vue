@@ -17,12 +17,12 @@
 
 <script>
 
-import ColumnsMixin from '../mixins/columns'
 // import SingleActionsMixin from '../mixins/singleActions'
-import TablestoreDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import ColumnsMixin from '../mixins/columns'
+import TablestoreDetail from './Detail'
 
 export default {
   name: 'TablestoreSidePage',
