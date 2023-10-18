@@ -60,7 +60,8 @@ export default {
     async onSubmit (values) {
       this.loading = true
       try {
-        await this.vm.list.onManager('performAction', {
+        const onManager = this.vm.onManager || this.vm.list.onManager
+        await onManager('performAction', {
           id: this.row.id,
           steadyStatus: ['running', 'ready'],
           managerArgs: {
