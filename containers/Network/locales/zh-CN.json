@@ -1102,5 +1102,9 @@
   "network.priority": "优先级",
   "network.priority.extra": "优先级：1-255之间的正整数",
   "network.interface": "网口",
-  "network.not_support": "不支持"
+  "network.not_support": "不支持",
+  "network.additional_wires.title.tooltip": "允许VMware IP子网关联多个二层网络，此处展示该IP子网额外关联的所有二层网络，并且允许设置",
+  "network.additional_wires.set": "设置附属二层网络",
+  "network.additional_wires.type.auto": "自动探测",
+  "network.additional_wires.type.manual": "手动配置"
 }

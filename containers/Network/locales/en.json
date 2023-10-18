@@ -1103,5 +1103,6 @@
   "network.priority": "Priority",
   "network.priority.extra": "Priority: a positive integer between 1 and 255.",
   "network.interface": "Interface",
-  "network.not_support": "Not supported"
+  "network.not_support": "Not supported",
+  "network.additional_wires.title.tooltip": "Allow VMware IP network to be associated with more than one layer-2 network. All the additional layer-2 networks of this IP network are listed here. You may also set IP network's additional layer-2 networks manually."
 }
