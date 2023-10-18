@@ -14,7 +14,10 @@
             resource="wires"
             v-decorator="decorators.wires"
             :selectProps="{ 'placeholder': $t('network.text_572'), mode: 'multiple' }"
-            :params="wireParams" />
+            remote
+            :remote-fn="q => ({ filter: `name.contains(${q})` })"
+            :params="wireParams"
+            :mapper="wireMapper" />
         </a-form-item>
       </a-form>
     </div>
@@ -88,6 +91,15 @@ export default {
     }
   },
   methods: {
+    wireMapper (list) {
+      if (list && list.length > 0) {
+        return list.filter(item => {
+          const wid = this.params.currentData.wire_id
+          return item.id !== wid
+        })
+      }
+      return []
+    },
     async doSubmit (values) {
       const id = this.params.currentData.id
       const params = {}
