@@ -1,12 +1,23 @@
 import * as R from 'ramda'
 import { sizestr } from '@/utils/utils'
 import SystemIcon from '@/sections/SystemIcon'
-import { getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 export default {
   created () {
     this.columns = [
+      getNameDescriptionTableColumn({
+        field: 'name',
+        edit: false,
+        editDesc: false,
+        hideField: true,
+        slotCallback: row => {
+          return (
+            <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{row.name}</side-page-trigger>
+          )
+        },
+      }),
       getCopyWithContentTableColumn({ field: 'name', title: i18n.t('compute.text_228') }),
       getStatusTableColumn({ statusModule: 'image', hiddenLogView: true }),
       {

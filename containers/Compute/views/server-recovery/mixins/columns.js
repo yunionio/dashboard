@@ -1,14 +1,24 @@
+import { SERVER_TYPE } from '@Compute/constants'
 import { sizestr } from '@/utils/utils'
-import { getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import i18n from '@/locales'
-import { SERVER_TYPE } from '@Compute/constants'
 import { findPlatform } from '@/utils/common/hypervisor'
 
 export default {
   created () {
     this.columns = [
-      getCopyWithContentTableColumn({ field: 'name', title: i18n.t('compute.text_228'), sortable: true }),
+      getNameDescriptionTableColumn({
+        field: 'name',
+        edit: false,
+        editDesc: false,
+        hideField: true,
+        slotCallback: row => {
+          return (
+            <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{row.name}</side-page-trigger>
+          )
+        },
+      }),
       getCopyWithContentTableColumn({ field: 'id', title: 'ID' }),
       getCopyWithContentTableColumn({ field: 'external_id', title: i18n.t('table.title.external_id') }),
       getStatusTableColumn({ statusModule: 'server', hiddenLogView: true }),
