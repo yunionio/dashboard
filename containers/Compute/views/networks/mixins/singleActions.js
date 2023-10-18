@@ -1,6 +1,5 @@
 import { SERVER_TYPE } from '@Compute/constants'
 import { findPlatform } from '@/utils/common/hypervisor'
-import { PROVIDER_MAP } from '@/constants'
 import i18n from '@/locales'
 import { hasSetupKey } from '@/utils/auth'
 
@@ -73,10 +72,6 @@ export default {
                 const ret = {
                   validate: false,
                   tooltip: null,
-                }
-                if (this.data?.provider === PROVIDER_MAP.VMware.key) {
-                  ret.tooltip = this.$t('compute.text_450')
-                  return ret
                 }
                 if (isPrivate || isPublic) {
                   ret.tooltip = i18n.t('compute.text_391')
