@@ -167,6 +167,7 @@ export default {
       this.dropdownSearch = e.target.value
     },
     getItems () {
+      if (!this.config.items) return []
       return this.config.items.filter(v => {
         if (!v.label) return true
         const label = v.label.toLowerCase()
