@@ -417,6 +417,7 @@ export default {
           values.dry_run = true
         }
         this.newAccountInfo = await this.doCreateCloudaccount(values)
+        this.$store.dispatch('auth/getCapabilities')
         if (notSupportSelectRegion.indexOf(this.currentItem.provider) === -1) {
           this.currentComponent = 'select-region'
         } else {
