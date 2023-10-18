@@ -131,6 +131,15 @@ export default {
     guestimagesFetcher (params) {
       return this.vm.list({ params })
     },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'ImageRecoverySidePage', {
+        id: row.id,
+        resource: this.cloudEnv,
+        getParams: this.getParams,
+      }, {
+        list: this.list,
+      })
+    },
   },
 }
 </script>
