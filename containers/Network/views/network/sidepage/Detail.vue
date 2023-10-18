@@ -156,14 +156,16 @@ export default {
             slots: {
               default: ({ row }) => {
                 let comps = []
+                const link = <span class='wire-edit' onclick={this.setWireHandle}>
+                  <a-icon class='mr-1' type="edit" style="font-size: 12px;" />{ this.$t('common.setting') }</span>
                 if (!row.additional_wires) {
-                  comps.push(<a-button type="link" class="ml-2" style="height: 21px; padding:0;" onclick={this.setWireHandle}>({ this.$t('common.setting') })</a-button>)
+                  comps.push(link)
                   return comps
                 }
                 comps = row.additional_wires.map((item, idx) => {
                   return <side-page-trigger permission='wires_get' name='WireSidePage' id={item.wire_id} vm={this}>{ item.wire }{ idx < row.additional_wires.length - 1 ? ',' : '' }</side-page-trigger>
                 })
-                comps.push(<a-button type="link" class="ml-2" style="height: 21px; padding:0;" onclick={this.setWireHandle}>({ this.$t('common.setting') })</a-button>)
+                comps.push(link)
                 return comps
               },
             },
@@ -216,3 +218,13 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+.wire-edit {
+  padding: 0 6px 0 4px;
+  margin-left: 10px;
+  font-size: 12px;
+  line-height: 20px;
+  border: 1px dashed #97a4b6;
+  cursor: pointer;
+}
+</style>
