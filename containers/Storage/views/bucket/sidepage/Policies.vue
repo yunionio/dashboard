@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-alert banner v-if="!isQcloud">
+    <a-alert banner v-if="!isSupport">
       <template #message>
         <p>{{$t('storage.text_148')}}</p>
         <p>{{$t('storage.text_258')}}</p>
@@ -35,7 +35,12 @@ export default {
     },
   },
   data () {
-    const isQcloud = this.data.provider === HYPERVISORS_MAP.qcloud.provider
+    const isSupport = [
+      HYPERVISORS_MAP.qcloud.provider,
+      HYPERVISORS_MAP.aliyun.provider,
+      HYPERVISORS_MAP.aws.provider,
+      HYPERVISORS_MAP.huawei.provider,
+    ].includes(this.data.provider)
     return {
       list: this.$list.createList(this, {
         id: 'BucketPolicyList',
@@ -189,11 +194,11 @@ export default {
           },
         },
       ],
-      isQcloud,
+      isSupport,
     }
   },
   created () {
-    if (this.data.provider === HYPERVISORS_MAP.qcloud.provider) {
+    if (this.isSupport) {
       this.list.fetchData()
     }
   },
