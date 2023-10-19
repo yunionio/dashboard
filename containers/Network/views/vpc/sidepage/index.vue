@@ -20,6 +20,7 @@
       :getParams="getParams"
       :on-manager="onManager"
       :columns="columns"
+      :hiddenActions="hiddenActions"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
       @refresh="refresh"
@@ -29,6 +30,8 @@
 </template>
 
 <script>
+import * as R from 'ramda'
+import SecgroupList from '@Compute/views/secgroup/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -47,6 +50,7 @@ export default {
     Actions,
     RouteTableList,
     Topology,
+    SecgroupList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -62,7 +66,10 @@ export default {
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ]
       if (this.detailData.brand === 'Huawei' || this.detailData.brand === 'Aliyun' || this.detailData.brand === 'OpenStack') {
-        tabs.splice(2, 0, { label: this.$t('dictionary.route_table'), key: 'route-table-list' })
+        tabs.splice(R.findIndex(R.propEq('key', 'topology'))(tabs), 0, { label: this.$t('dictionary.route_table'), key: 'route-table-list' })
+      }
+      if (this.detailData.cloud_env && this.detailData.cloud_env !== 'onpremise') {
+        tabs.splice(R.findIndex(R.propEq('key', 'network-list'))(tabs), 0, { label: this.$t('dictionary.secgroup'), key: 'secgroup-list' })
       }
       return tabs
     },
@@ -82,6 +89,11 @@ export default {
           vpc: this.detailData.id,
         }
       }
+      if (this.params.windowData.currentTab === 'secgroup-list') {
+        return {
+          vpc_id: this.detailData.id,
+        }
+      }
       return null
     },
     listId () {
@@ -92,6 +104,8 @@ export default {
           return 'NetworkListForVpcSidePage'
         case 'route-table-list':
           return 'RouteTableListForVpcSidePage'
+        case 'secgroup-list':
+          return 'SecgroupListForVpcSidepage'
         default:
           return ''
       }
@@ -100,6 +114,9 @@ export default {
       return this.params.hiddenColumns
     },
     hiddenActions () {
+      if (this.params.windowData.currentTab === 'secgroup-list') {
+        return ['create']
+      }
       return this.params.hiddenActions
     },
   },

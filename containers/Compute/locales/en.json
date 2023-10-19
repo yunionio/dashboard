@@ -1725,5 +1725,6 @@
   "compute.bios": "Boot Mode",
   "compute.not_limited": "0 means no limit",
   "compute.iops": "IOPS",
-  "compute.bps": "Throughput"
+  "compute.bps": "Throughput",
+  "compute.idc_secgroup_support_add_rules": "Only the security group of the local IDC supports this operation"
 }

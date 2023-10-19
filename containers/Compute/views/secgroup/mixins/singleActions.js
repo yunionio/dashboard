@@ -1,7 +1,7 @@
 import { mapGetters } from 'vuex'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import i18n from '@/locales'
-import { exportDataOptions } from '../utils'
+// import { exportDataOptions } from '../utils'
 
 export default {
   computed: {
@@ -86,6 +86,19 @@ export default {
             //   },
             // },
             {
+              label: i18n.t('compute.perform_sync_status'),
+              permission: 'secgroups_perform_sync_status',
+              action: () => {
+                this.onManager('performAction', {
+                  steadyStatus: ['ready', 'delete_failed'],
+                  id: obj.id,
+                  managerArgs: {
+                    action: 'syncstatus',
+                  },
+                })
+              },
+            },
+            {
               label: i18n.t('compute.text_1028'),
               permission: 'servers_list',
               action: (obj) => {
@@ -96,66 +109,66 @@ export default {
               },
               hidden: () => this.hiddenActions.includes('openSecgroupSidepageTab'),
             },
-            {
-              label: i18n.t('compute.text_983'),
-              permission: 'secgroups_perform_clone',
-              action: () => {
-                this.createDialog('CloneSecgroupDialog', {
-                  data: [obj],
-                  columns: this.columns,
-                  title: i18n.t('compute.text_983'),
-                  onManager: this.onManager,
-                  refresh: this.refresh,
-                })
-              },
-              meta: () => {
-                const isPrivate = !obj.is_public
-                return {
-                  validate: this.isPower(obj),
-                  tooltip: !isPrivate ? i18n.t('compute.secgroup.shared') : '',
-                }
-              },
-            },
-            {
-              label: i18n.t('compute.import_secgroup_rule', []),
-              permission: 'secgroups_perform_import_rules',
-              action: () => {
-                this.createDialog('ImportSecgroupRuleDialog', {
-                  data: [obj],
-                  exportDataOptions,
-                  onManager: this.onManager,
-                  refresh: this.refresh,
-                  a: 1,
-                })
-              },
-              meta: () => {
-                const isPrivate = !obj.is_public
-                return {
-                  validate: this.isPower(obj),
-                  tooltip: !isPrivate ? i18n.t('compute.secgroup.shared') : '',
-                }
-              },
-            },
-            {
-              label: i18n.t('compute.text_1012'),
-              permission: 'secgroups_perform_merge',
-              action: () => {
-                this.createDialog('ConcatSecgroupDialog', {
-                  data: [obj],
-                  columns: this.columns,
-                  title: i18n.t('compute.text_1012'),
-                  onManager: this.onManager,
-                  refresh: this.refresh,
-                })
-              },
-              meta: () => {
-                const isPrivate = !obj.is_public
-                return {
-                  validate: this.isPower(obj),
-                  tooltip: !isPrivate ? i18n.t('compute.secgroup.shared') : '',
-                }
-              },
-            },
+            // {
+            //   label: i18n.t('compute.text_983'),
+            //   permission: 'secgroups_perform_clone',
+            //   action: () => {
+            //     this.createDialog('CloneSecgroupDialog', {
+            //       data: [obj],
+            //       columns: this.columns,
+            //       title: i18n.t('compute.text_983'),
+            //       onManager: this.onManager,
+            //       refresh: this.refresh,
+            //     })
+            //   },
+            //   meta: () => {
+            //     const isPrivate = !obj.is_public
+            //     return {
+            //       validate: this.isPower(obj),
+            //       tooltip: !isPrivate ? i18n.t('compute.secgroup.shared') : '',
+            //     }
+            //   },
+            // },
+            // {
+            //   label: i18n.t('compute.import_secgroup_rule', []),
+            //   permission: 'secgroups_perform_import_rules',
+            //   action: () => {
+            //     this.createDialog('ImportSecgroupRuleDialog', {
+            //       data: [obj],
+            //       exportDataOptions,
+            //       onManager: this.onManager,
+            //       refresh: this.refresh,
+            //       a: 1,
+            //     })
+            //   },
+            //   meta: () => {
+            //     const isPrivate = !obj.is_public
+            //     return {
+            //       validate: this.isPower(obj),
+            //       tooltip: !isPrivate ? i18n.t('compute.secgroup.shared') : '',
+            //     }
+            //   },
+            // },
+            // {
+            //   label: i18n.t('compute.text_1012'),
+            //   permission: 'secgroups_perform_merge',
+            //   action: () => {
+            //     this.createDialog('ConcatSecgroupDialog', {
+            //       data: [obj],
+            //       columns: this.columns,
+            //       title: i18n.t('compute.text_1012'),
+            //       onManager: this.onManager,
+            //       refresh: this.refresh,
+            //     })
+            //   },
+            //   meta: () => {
+            //     const isPrivate = !obj.is_public
+            //     return {
+            //       validate: this.isPower(obj),
+            //       tooltip: !isPrivate ? i18n.t('compute.secgroup.shared') : '',
+            //     }
+            //   },
+            // },
             {
               label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
               permission: 'secgroups_create',

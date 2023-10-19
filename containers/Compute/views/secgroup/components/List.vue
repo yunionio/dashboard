@@ -16,8 +16,6 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter, getTenantFilter, getDomainFilter, getRegionFilter, getBrandFilter, getAccountFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
@@ -25,6 +23,8 @@ import globalSearchMixins from '@/mixins/globalSearch'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import regexp from '@/utils/regexp'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import { exportDataOptions } from '../utils'
 
 export default {
@@ -69,6 +69,7 @@ export default {
         return ['coverage', 'append'].includes(value)
       },
     },
+    cloudEnv: String,
   },
   data () {
     return {
@@ -111,15 +112,26 @@ export default {
         label: this.$t('compute.perform_create'),
         permission: 'secgroups_create',
         action: () => {
-          this.createDialog('CreateSecgroupDialog', {
-            title: this.$t('compute.perform_create'),
-            onManager: this.onManager,
-            refresh: this.refresh,
+          // this.createDialog('CreateSecgroupDialog', {
+          //   title: this.$t('compute.perform_create'),
+          //   onManager: this.onManager,
+          //   refresh: this.refresh,
+          // })
+          this.$router.push({
+            name: 'SecgroupCreate',
+            query: {
+              type: this.cloudEnv,
+            },
           })
         },
-        meta: () => ({
-          buttonType: 'primary',
-        }),
+        meta: () => {
+          return {
+            buttonType: 'primary',
+            validate: !this.cloudEnvEmpty,
+            tooltip: this.cloudEnvEmpty ? this.$t('common.no_platform_available') : '',
+          }
+        },
+        hidden: () => this.hiddenActions.includes('create'),
       }
       const defaultActions = [
         {
@@ -137,6 +149,12 @@ export default {
           },
           meta: () => {
             if (this.list.selectedItems.length > 0) {
+              if (!this.list.selectedItems.every(item => item.cloud_env === 'onpremise')) {
+                return {
+                  validate: false,
+                  tooltip: this.$t('compute.idc_secgroup_support_add_rules'),
+                }
+              }
               if (this.isAdminMode) {
                 return {
                   validate: true,
@@ -224,6 +242,11 @@ export default {
         }
       },
     },
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
   },
   created () {
     this.initSidePageTab('secgroup-detail')
@@ -271,22 +294,22 @@ export default {
         manager = null
       }
     },
-    openEditRulesDialog (rule, row) {
-      if (this.isProjectMode && this.userInfo.projectId !== row.tenant_id) {
-        return
-      }
-      if (this.isDomainMode && this.userInfo.domain.id !== row.domain_id) {
-        return
-      }
-      this.createDialog('EditRulesDialog', {
-        data: [rule],
-        title: 'edit',
-        columns: this.columns,
-        refresh: () => {
-          this.list.refresh()
-        },
-      })
-    },
+    // openEditRulesDialog (rule, row) {
+    //   if (this.isProjectMode && this.userInfo.projectId !== row.tenant_id) {
+    //     return
+    //   }
+    //   if (this.isDomainMode && this.userInfo.domain.id !== row.domain_id) {
+    //     return
+    //   }
+    //   this.createDialog('EditRulesDialog', {
+    //     data: [rule],
+    //     title: 'edit',
+    //     columns: this.columns,
+    //     refresh: () => {
+    //       this.list.refresh()
+    //     },
+    //   })
+    // },
     openAssociateVirtualMachineDialog (obj) {
       this.createDialog('AssociateVirtualMachineDialog', {
         data: [obj],

@@ -59,13 +59,13 @@
           <a-checkbox class="right-checkbox" @change="portsChange" :checked="portsChecked" :disabled="portsCheckboxDisabled">{{$t('compute.text_1000')}}</a-checkbox>
         </a-form-item>
         <a-form-item :label="$t('compute.text_694')">
-          <a-select v-decorator="decorators.action">
+          <a-select v-decorator="decorators.action" :disabled="isAws">
             <a-select-option v-for="item in actionOptions" :key="item.value" :value="item.value">
               {{item.label}}
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item>
+        <a-form-item v-if="!isAws">
           <span slot="label">{{$t('compute.text_1001')}}<a-tooltip :title="$t('compute.text_1002')">
               <a-icon type="question-circle-o" />
             </a-tooltip>
@@ -198,6 +198,9 @@ export default {
   },
   computed: {
     ...mapGetters(['scope']),
+    isAws () {
+      return this.params.brand === 'Aws'
+    },
   },
   created () {
     // this.fetchSecgroups('')

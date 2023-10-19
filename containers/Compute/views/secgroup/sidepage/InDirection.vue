@@ -4,13 +4,13 @@
       :message="$t('compute.text_1031')"
       type="warning"
       style="margin-bottom: 20px" />
-    <direction-list :type="getParams.type" :id="getParams.id" :isRead="isRead" :listId="getParams.listId" />
+    <direction-list :type="getParams.type" :id="getParams.id" :isRead="isRead" :listId="getParams.listId" :data="data" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import DirectionList from '../components/Direction'
+import DirectionList from '@Compute/views/secgroup-rule/components/List'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
