@@ -228,7 +228,22 @@ export default {
       return R.is(Object, disk) ? Object.values(disk) : []
     },
     secgroupParams () {
-      return this.scopeParams
+      const params = {
+        ...this.scopeParams,
+      }
+      if (this.type === 'public') { // 公有云
+        if (R.is(Object, this.form.fd.sku)) {
+          const cloudregion = this.form.fd.sku.cloudregion_id // 取 sku
+          if (cloudregion) params.cloudregion_id = cloudregion
+        }
+      } else { // 私有云和IDC取 CloudregionZone 组件
+        const cloudregion = _.get(this.form.fd, 'cloudregion.key')
+        if (cloudregion) params.cloudregion_id = cloudregion
+      }
+      if (this.form.fi.networkVpcObj && this.form.fi.networkVpcObj.id) {
+        params.vpc_id = this.form.fi.networkVpcObj.id
+      }
+      return params
     },
     isOpenWorkflow () {
       if (this.isServertemplate) return false

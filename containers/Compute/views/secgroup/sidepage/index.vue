@@ -29,16 +29,16 @@
 
 <script>
 import * as R from 'ramda'
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import VminstanceList from './Server'
 import SecgroupDetail from './Detail'
 import InDirection from './InDirection'
 import OutDirection from './OutDirection'
-import CacheList from './Cache'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
+// import CacheList from './Cache'
 
 export default {
   name: 'SecGroupSidePage',
@@ -47,7 +47,7 @@ export default {
     Actions,
     OutDirection,
     InDirection,
-    CacheList,
+    // CacheList,
     VminstanceList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -57,7 +57,7 @@ export default {
       { label: this.$t('compute.text_993'), key: 'in-direction' },
       { label: this.$t('compute.text_994'), key: 'out-direction' },
       { label: this.$t('compute.text_1023'), key: 'vminstance-list' },
-      { label: this.$t('compute.text_692'), key: 'cache-list' },
+      // { label: this.$t('compute.text_692'), key: 'cache-list' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
     ]
     if (this.params.hiddenSidepageTabs && this.params.hiddenSidepageTabs.includes('vminstance-list')) {
@@ -80,11 +80,6 @@ export default {
           type: 'out',
           id: this.data.id,
           listId: 'LIST_Secgroup_Outlist',
-        }
-      } else if (this.params.windowData.currentTab === 'cache-list') {
-        return {
-          id: this.data.id,
-          listId: 'LIST_Secgroup_Cachelist',
         }
       } else if (this.params.windowData.currentTab === 'vminstance-list') {
         return {
