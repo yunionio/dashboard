@@ -1728,5 +1728,6 @@
   "compute.bios": "引导模式",
   "compute.not_limited": "0代表不限制",
   "compute.iops": "IOPS",
-  "compute.bps": "吞吐量"
+  "compute.bps": "吞吐量",
+  "compute.idc_secgroup_support_add_rules": "只有本地IDC的安全组支持此操作"
 }

@@ -37,6 +37,7 @@ const Disk = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: 
 const DiskBackup = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/disk-backup')
 const GPU = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/gpu')
 const Secgroup = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/secgroup')
+const SecgroupCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/secgroup/Create')
 const Servertemplate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/servertemplate')
 const ServertemplateCreateServer = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/servertemplate/CreateServer')
 const DiskSnapshot = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/snapshot')
@@ -450,6 +451,11 @@ export default {
               name: 'Secgroup',
               path: '',
               component: Secgroup,
+            },
+            {
+              name: 'SecgroupCreate',
+              path: 'create',
+              component: SecgroupCreate,
             },
           ],
         },

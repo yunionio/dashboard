@@ -10,8 +10,11 @@
 <script>
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
+import { getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 import regexp from '@/utils/regexp'
+import expectStatus from '@/constants/expectStatus'
+import SingleActionsMixin from '../mixins/singleActions'
 
 const PROTOCOL = {
   any: 'ANY',
@@ -27,7 +30,7 @@ const ACTIONS = {
 
 export default {
   name: 'DirectionList',
-  mixins: [WindowsMixin, ListMixin],
+  mixins: [WindowsMixin, ListMixin, SingleActionsMixin],
   props: {
     type: {
       type: String,
@@ -44,19 +47,23 @@ export default {
     listId: {
       type: String,
     },
+    data: Object,
   },
   data () {
     const title = this.type === 'out' ? this.$t('compute.text_978') : this.$t('compute.text_979')
+    const getParams = {
+      direction: this.type,
+      order: 'desc',
+      order_by: 'priority',
+      secgroup: this.id,
+    }
     return {
+      getParams,
       list: this.$list.createList(this, {
         id: this.listId,
         resource: 'secgrouprules',
-        getParams: {
-          direction: this.type,
-          order: 'desc',
-          order_by: 'priority',
-          secgroup: this.id,
-        },
+        steadyStatus: Object.values(expectStatus.common).flat(),
+        getParams,
         filterOptions: {
           cidr: {
             label: title,
@@ -78,18 +85,18 @@ export default {
         },
       }),
       columns: [
-        {
+        getNameDescriptionTableColumn({
           field: 'cidr',
-          title: title,
-          minWidth: 70,
-          showOverflow: 'ellipsis',
-          formatter: ({ cellValue, row }) => {
-            if (row.cidr) {
-              return `${row.cidr} (IP)`
-            }
-            return '-'
+          edit: false,
+          showDesc: false,
+          hideField: true,
+          slotCallback: row => {
+            const name = row.cidr ? `${row.cidr} (IP)` : '-'
+            return (
+              <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ name }</side-page-trigger>
+            )
           },
-        },
+        }),
         {
           field: 'protocol',
           title: this.$t('compute.text_980'),
@@ -104,6 +111,7 @@ export default {
             return cellValue === 'any' ? 'ALL' : !row.ports ? 'ALL' : row.ports
           },
         },
+        getStatusTableColumn({ statusModule: 'common' }),
         {
           field: 'action',
           title: this.$t('compute.text_694'),
@@ -114,6 +122,12 @@ export default {
         {
           field: 'priority',
           title: this.$t('compute.text_981'),
+          formatter: ({ row }) => {
+            if (this.data.brand === 'Aws') {
+              return '-'
+            }
+            return row.priority
+          },
         },
         {
           field: 'description',
@@ -136,70 +150,6 @@ export default {
           },
         },
       ],
-      singleActions: [
-        {
-          label: this.$t('compute.text_982'),
-          permission: 'secgrouprules_update',
-          action: obj => {
-            this.createDialog('EditRulesDialog', {
-              data: [obj],
-              title: 'edit',
-              columns: this.columns,
-              onManager: this.onManager,
-              refresh: this.refresh,
-              type: this.type,
-            })
-          },
-          meta: () => {
-            return {
-              validate: !this.isRead,
-              tooltip: this.isRead ? i18n.t('compute.secgroup.shared') : '',
-            }
-          },
-        },
-        {
-          label: this.$t('compute.text_983'),
-          permission: 'secgrouprules_create',
-          action: obj => {
-            this.createDialog('EditRulesDialog', {
-              data: [obj],
-              title: 'clone',
-              columns: this.columns,
-              onManager: this.onManager,
-              refresh: this.refresh,
-              type: this.type,
-              secgroup: this.id,
-            })
-          },
-          meta: () => {
-            return {
-              validate: !this.isRead,
-              tooltip: this.isRead ? i18n.t('compute.secgroup.shared') : '',
-            }
-          },
-        },
-        {
-          label: this.$t('compute.perform_delete'),
-          permission: 'secgrouprules_delete',
-          action: obj => {
-            this.createDialog('DeleteResDialog', {
-              vm: this,
-              data: [obj],
-              columns: this.columns,
-              title: this.$t('compute.perform_delete'),
-              name: this.$t('compute.text_984'),
-              onManager: this.onManager,
-              refresh: this.refresh,
-            })
-          },
-          meta: () => {
-            return {
-              validate: !this.isRead,
-              tooltip: this.isRead ? i18n.t('compute.secgroup.shared') : '',
-            }
-          },
-        },
-      ],
       groupActions: [
         {
           label: this.$t('compute.perform_create'),
@@ -212,6 +162,7 @@ export default {
               refresh: this.refresh,
               type: this.type,
               secgroup: this.id,
+              brand: this.data.brand,
             })
           },
           meta: () => {
@@ -259,6 +210,15 @@ export default {
       if (regexp.isNumber(search)) {
         return 'ports'
       }
+    },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'SecgroupRuleSidePage', {
+        id: row.id,
+        resource: 'secgrouprules',
+        getParams: this.getParams,
+      }, {
+        list: this.list,
+      })
     },
   },
 }
