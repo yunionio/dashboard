@@ -991,6 +991,7 @@
   "compute.text_997": "任意IP",
   "compute.text_998": "端口",
   "compute.text_999": "协议端口支持以下格式: 单个端口: 80 多个端口: 80,443 连续端口: 3306-20000",
+  "compute.text_999_1": "协议端口支持以下格式: 单个端口: 80 连续端口: 3306-20000",
   "compute.text_1000": "任意端口",
   "compute.text_1001": "优先级",
   "compute.text_1002": "从1到100优先级依次增大",
@@ -1729,5 +1730,9 @@
   "compute.not_limited": "0代表不限制",
   "compute.iops": "IOPS",
   "compute.bps": "吞吐量",
-  "compute.idc_secgroup_support_add_rules": "只有本地IDC的安全组支持此操作"
+  "compute.idc_secgroup_support_add_rules": "只有本地IDC的安全组支持此操作",
+  "compute.secgroup_priority_tip": "数字越小优先级越高",
+  "compute.secgroup_priority_tip2": "数字越大优先级越高",
+  "compute.secgroup_priority_no_repeat": "优先级不可以重复",
+  "compute.use_en_comment": "请使用英文备注"
 }
