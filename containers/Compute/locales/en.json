@@ -1726,5 +1726,9 @@
   "compute.not_limited": "0 means no limit",
   "compute.iops": "IOPS",
   "compute.bps": "Throughput",
-  "compute.idc_secgroup_support_add_rules": "Only the security group of the local IDC supports this operation"
+  "compute.idc_secgroup_support_add_rules": "Only the security group of the local IDC supports this operation",
+  "compute.secgroup_priority_tip": "The smaller the number, the higher the priority",
+  "compute.secgroup_priority_tip2": "The higher the number, the higher the priority",
+  "compute.secgroup_priority_no_repeat": "Priority cannot be repeated",
+  "compute.use_en_comment": "Please use English remarks"
 }

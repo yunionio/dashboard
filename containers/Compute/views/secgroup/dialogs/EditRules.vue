@@ -16,13 +16,7 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item>
-          <span slot="label">
-            {{decLabel}}&nbsp;
-            <a-tooltip :title="$t('compute.text_995')">
-              <a-icon type="question-circle-o" />
-            </a-tooltip>
-          </span>
+        <a-form-item :label="decLabel" :extra="$t('compute.text_995')">
           <a-select
             mode="combobox"
             @change="fetchSecgroups"
@@ -50,29 +44,21 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item>
-          <span slot="label">{{$t('compute.text_998')}}<a-tooltip :title="$t('compute.text_999')">
-              <a-icon type="question-circle-o" />
-            </a-tooltip>
-          </span>
+        <a-form-item :label="$t('compute.text_998')" :extra="portExtra">
           <a-input :disabled="portsDisabled" v-decorator="decorators.ports" :placeholder="$t('compute.text_350')" />
           <a-checkbox class="right-checkbox" @change="portsChange" :checked="portsChecked" :disabled="portsCheckboxDisabled">{{$t('compute.text_1000')}}</a-checkbox>
         </a-form-item>
         <a-form-item :label="$t('compute.text_694')">
-          <a-select v-decorator="decorators.action" :disabled="isAws">
+          <a-select v-decorator="decorators.action" :disabled="!isPrioritySupport">
             <a-select-option v-for="item in actionOptions" :key="item.value" :value="item.value">
               {{item.label}}
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item v-if="!isAws">
-          <span slot="label">{{$t('compute.text_1001')}}<a-tooltip :title="$t('compute.text_1002')">
-              <a-icon type="question-circle-o" />
-            </a-tooltip>
-          </span>
-          <a-input-number :min="1" :max="100" v-decorator="decorators.priority" />
+        <a-form-item v-if="isPrioritySupport" :label="$t('compute.text_1001')">
+          <a-input-number :min="priorityMin" :max="priorityMax" v-decorator="decorators.priority" />
         </a-form-item>
-        <a-form-item>
+        <a-form-item :extra="isAws ? $t('compute.use_en_comment') : ''">
           <span slot="label">{{$t('compute.text_312')}}</span>
           <a-input v-decorator="decorators.description" :placeholder="$t('common_367')" />
         </a-form-item>
@@ -90,12 +76,17 @@ import { mapGetters } from 'vuex'
 import { validate } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { priorityRuleMap } from '../constants'
 
 export default {
   name: 'EditRulesDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const selectItem = this.params.data[0]
+    const { brand } = this.params
+    const item = brand ? priorityRuleMap[brand.toLowerCase()] || {} : {}
+    const priorityMin = !item.noSupport ? item.min : 1
+    const priorityMax = !item.noSupport ? item.max : 1
     return {
       loading: false,
       form: {
@@ -156,7 +147,7 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 10,
+          span: 15,
         },
         labelCol: {
           span: 3,
@@ -169,12 +160,6 @@ export default {
         { label: 'HTTP（80）', value: 'http', description: this.$t('compute.text_1006') },
         { label: 'HTTPS（443）', value: 'https', description: this.$t('compute.text_1007') },
         { label: 'Ping', value: 'ping', description: this.$t('compute.text_1008') },
-      ],
-      protocolOptions: [
-        { label: 'TCP', value: 'tcp' },
-        { label: 'UDP', value: 'udp' },
-        { label: 'ICMP', value: 'icmp' },
-        { label: this.$t('compute.text_1009'), value: 'any' },
       ],
       actionOptions: [
         { label: this.$t('compute.text_976'), value: 'allow' },
@@ -194,12 +179,42 @@ export default {
       portsChecked: JSON.stringify(selectItem) === '{}' ? false : !selectItem.ports,
       decLabel: this.params.type === 'in' ? this.$t('compute.text_979') : this.$t('compute.text_978'),
       protocolDisabled: this.params.title !== 'edit',
+      priorityMin,
+      priorityMax,
+      isPrioritySupport: !item.noSupport,
+      priorityItem: item,
     }
   },
   computed: {
     ...mapGetters(['scope']),
+    priorityExtra () {
+      if (this.priorityItem.noSupport) {
+        return ''
+      } else if (this.priorityItem.max) {
+        return `${this.priorityItem.min}-${this.priorityItem.max}, ${this.priorityItem.isMaxHigh ? this.$t('compute.secgroup_priority_tip2') : this.$t('compute.secgroup_priority_tip')}${this.priorityItem.noRepeat ? ', ' + this.$t('compute.secgroup_priority_no_repeat') : ''}`
+      }
+      return this.$t('compute.text_1002')
+    },
+    portExtra () {
+      if (this.priorityItem.portSupportComma) {
+        return this.$t('compute.text_999')
+      }
+      return this.$t('compute.text_999_1')
+    },
     isAws () {
       return this.params.brand === 'Aws'
+    },
+    protocolOptions () {
+      let ret = [
+        { label: 'TCP', value: 'tcp' },
+        { label: 'UDP', value: 'udp' },
+        { label: 'ICMP', value: 'icmp' },
+        { label: this.$t('compute.text_1009'), value: 'any' },
+      ]
+      if (this.params.brand && this.params.brand.toLowerCase() === 'ucloud') {
+        ret = ret.filter(item => item.value !== 'any')
+      }
+      return ret
     },
   },
   created () {
@@ -394,7 +409,7 @@ export default {
 .right-checkbox {
   width: 100px;
   height: 40px;
-  left: 330px;
+  left: 500px;
   font-size: 12px!important;
   color: #ccc;
   position: absolute;

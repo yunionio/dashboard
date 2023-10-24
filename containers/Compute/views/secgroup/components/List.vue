@@ -134,41 +134,41 @@ export default {
         hidden: () => this.hiddenActions.includes('create'),
       }
       const defaultActions = [
-        {
-          index: 2,
-          label: this.$t('compute.text_991'),
-          permission: 'secgroups_perform_add_rules',
-          action: () => {
-            this.createDialog('AddRulesDialog', {
-              data: this.list.selectedItems,
-              columns: this.columns,
-              title: this.$t('compute.text_991'),
-              onManager: this.onManager,
-              refresh: this.refresh,
-            })
-          },
-          meta: () => {
-            if (this.list.selectedItems.length > 0) {
-              if (!this.list.selectedItems.every(item => item.cloud_env === 'onpremise')) {
-                return {
-                  validate: false,
-                  tooltip: this.$t('compute.idc_secgroup_support_add_rules'),
-                }
-              }
-              if (this.isAdminMode) {
-                return {
-                  validate: true,
-                }
-              } else {
-                return this.$isOwner(this.list.selectedItems)
-              }
-            }
-            return {
-              validate: false,
-              tooltip: this.$t('compute.text_992'),
-            }
-          },
-        },
+        // {
+        //   index: 2,
+        //   label: this.$t('compute.text_991'),
+        //   permission: 'secgroups_perform_add_rules',
+        //   action: () => {
+        //     this.createDialog('AddRulesDialog', {
+        //       data: this.list.selectedItems,
+        //       columns: this.columns,
+        //       title: this.$t('compute.text_991'),
+        //       onManager: this.onManager,
+        //       refresh: this.refresh,
+        //     })
+        //   },
+        //   meta: () => {
+        //     if (this.list.selectedItems.length > 0) {
+        //       if (!this.list.selectedItems.every(item => item.cloud_env === 'onpremise')) {
+        //         return {
+        //           validate: false,
+        //           tooltip: this.$t('compute.idc_secgroup_support_add_rules'),
+        //         }
+        //       }
+        //       if (this.isAdminMode) {
+        //         return {
+        //           validate: true,
+        //         }
+        //       } else {
+        //         return this.$isOwner(this.list.selectedItems)
+        //       }
+        //     }
+        //     return {
+        //       validate: false,
+        //       tooltip: this.$t('compute.text_992'),
+        //     }
+        //   },
+        // },
         getSetPublicAction(this, {
           name: this.$t('dictionary.secgroup'),
           scope: 'project',
@@ -274,6 +274,7 @@ export default {
         hiddenColumns: this.hiddenColumns,
         hiddenActions: this.hiddenActions,
         tab,
+        row,
       })
     },
     async loadRules ({ row }) {
