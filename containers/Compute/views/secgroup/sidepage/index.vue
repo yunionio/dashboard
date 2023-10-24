@@ -63,6 +63,9 @@ export default {
     if (this.params.hiddenSidepageTabs && this.params.hiddenSidepageTabs.includes('vminstance-list')) {
       detailTabs = R.remove(R.findIndex(R.propEq('key', 'vminstance-list'))(detailTabs), 1, detailTabs)
     }
+    if (this.params.row && this.params.row.brand && this.params.row.brand.toLowerCase() === 'ucloud') {
+      detailTabs = R.remove(R.findIndex(R.propEq('key', 'out-direction'))(detailTabs), 1, detailTabs)
+    }
     return {
       detailTabs,
     }
