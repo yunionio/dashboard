@@ -347,7 +347,7 @@ export default {
       item.vpc = curObjArr[0]
       this.$nextTick(() => {
         if (this.form.fi) {
-          const networkVpcObj = item.vpc
+          const networkVpcObj = item.vpc || {}
           if (R.is(Object, networkVpcObj)) {
             this.$set(this.form.fi, 'networkVpcObj', networkVpcObj)
           }
@@ -366,6 +366,7 @@ export default {
       this.$nextTick(() => {
         this.form.fc.setFieldsValue({ [`vpcs[${item.key}]`]: data?.[0]?.key, vpcs: { [item.key]: data?.[0]?.key } })
       })
+      this.vpcSelectChange([data[0]], 0, item)
       // this.fetchNetworkOpts(this.networkParamsC, item)
     },
     fetchNetworkSuccessHandle (data, item) {

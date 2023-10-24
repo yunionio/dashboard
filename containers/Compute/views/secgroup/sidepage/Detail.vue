@@ -13,7 +13,7 @@ import {
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
 import WindowsMixin from '@/mixins/windows'
-import { getPublicScopeTableColumn } from '@/utils/common/tableColumn'
+import { getBrandTableColumn, getPublicScopeTableColumn, getRegionTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'SecgroupDetail',
@@ -39,6 +39,7 @@ export default {
         domain: this.$t('shareScope.domain'),
       },
       baseInfo: [
+        getBrandTableColumn(),
         getUserTagColumn({ onManager: this.onManager, resource: 'secgroup', columns: () => this.columns, tipName: this.$t('dictionary.secgroup') }),
         getExtTagColumn({ onManager: this.onManager, resource: 'secgroup', columns: () => this.columns, tipName: this.$t('dictionary.secgroup') }),
         getPublicScopeTableColumn({ vm: this, resource: 'secgroups' }),
@@ -57,13 +58,25 @@ export default {
           },
           hidden: () => this.hiddenColumns.includes('guest_cnt'),
         },
-        {
-          field: 'cache_cnt',
-          title: this.$t('compute.text_1030'),
-          formatter: ({ row }) => {
-            return <a onClick={ () => this.$emit('tab-change', 'cache-list') }>{row.cache_cnt}</a>
+        // {
+        //   field: 'cache_cnt',
+        //   title: this.$t('compute.text_1030'),
+        //   formatter: ({ row }) => {
+        //     return <a onClick={ () => this.$emit('tab-change', 'cache-list') }>{row.cache_cnt}</a>
+        //   },
+        // },
+        getRegionTableColumn(),
+        getCopyWithContentTableColumn({
+          field: 'vpc',
+          title: 'VPC',
+        }),
+        getCopyWithContentTableColumn({
+          field: 'global_vpc',
+          title: this.$t('common_307'),
+          message: (row) => {
+            return row.brand === 'Google' ? row.global_vpc || '-' : '-'
           },
-        },
+        }),
       ],
     }
   },
