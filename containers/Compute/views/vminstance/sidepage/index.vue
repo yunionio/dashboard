@@ -40,17 +40,17 @@
 <script>
 import * as R from 'ramda'
 // import HostList from '@Compute/views/host/components/List'
+import GpuList from '@Compute/views/gpu/components/List'
+import ScheduledtasksList from '@Cloudenv/views/scheduledtask/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 import { hasPermission } from '@/utils/auth'
-import GpuList from '@Compute/views/gpu/components/List'
-import ScheduledtasksList from '@Cloudenv/views/scheduledtask/components/List'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 import NetworkListForVmInstanceSidepage from './Network'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import { cloudEnabled, cloudUnabledTip } from '../utils'
+// import { cloudEnabled, cloudUnabledTip } from '../utils'
 import VmInstanceDetail from './Detail'
 import VmInstanceMonitorSidepage from './Monitor'
 import VmInstanceAlertSidepage from './Alert'
@@ -166,34 +166,34 @@ export default {
       return null
     },
     secgroupListActives () {
-      const me = this
+      // const me = this
       const _ = {
         frontGroupActions: function () {
           return [
-            {
-              index: 1,
-              label: this.$t('compute.text_1116'),
-              permission: 'server_perform_add_secgroup',
-              action: () => {
-                this.createDialog('VmSetSecgroupDialog', {
-                  vm: me,
-                  data: [me.detailData],
-                  columns: me.columns,
-                  onManager: me.onManager,
-                  refresh: () => {
-                    this.refresh()
-                  },
-                })
-              },
-              meta: () => {
-                const ret = {
-                  validate: cloudEnabled('assignSecgroup', me.detailData),
-                  tooltip: cloudUnabledTip('assignSecgroup', me.detailData),
-                }
-                return ret
-              },
-              hidden: this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_secgroup'),
-            },
+            // {
+            //   index: 1,
+            //   label: this.$t('compute.text_1116'),
+            //   permission: 'server_perform_add_secgroup',
+            //   action: () => {
+            //     this.createDialog('VmSetSecgroupDialog', {
+            //       vm: me,
+            //       data: [me.detailData],
+            //       columns: me.columns,
+            //       onManager: me.onManager,
+            //       refresh: () => {
+            //         this.refresh()
+            //       },
+            //     })
+            //   },
+            //   meta: () => {
+            //     const ret = {
+            //       validate: cloudEnabled('assignSecgroup', me.detailData),
+            //       tooltip: cloudUnabledTip('assignSecgroup', me.detailData),
+            //     }
+            //     return ret
+            //   },
+            //   hidden: this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_secgroup'),
+            // },
           ]
         },
       }

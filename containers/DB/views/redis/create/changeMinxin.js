@@ -108,9 +108,14 @@ export default {
       }
     },
     async handleValuesChange (fc, changedFields) {
-      this.form.fd = {
-        ...this.form.fd,
-        ...changedFields,
+      const fields = Object.keys(changedFields)
+      if (changedFields && fields.length > 0) {
+        fields.forEach(field => {
+          this.$set(this.form.fd, field, changedFields[field])
+          if (field === 'vpc') {
+            this.vpc = changedFields[field]
+          }
+        })
       }
       if (changedFields.hasOwnProperty('provider')) {
         this.provider = changedFields.provider

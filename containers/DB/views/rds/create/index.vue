@@ -42,7 +42,7 @@
       <item-network ref="NETWORK" @vpcListChange="handleVpcListChange" />
       <!-- 选择安全组 -->
       <a-form-item v-if="showSecgroup(form)" :label="$t('db.text_144')">
-        <secgroup-config :max="getSecgroupMax(form)" :decorators="decorators.secgroup" />
+        <secgroup-config :max="getSecgroupMax(form)" :decorators="decorators.secgroup" :secgroup-params="secgroupParams" />
       </a-form-item>
       <!-- 标签 -->
       <a-form-item :label="$t('table.title.tag')" class="mb-3">
@@ -110,6 +110,7 @@ export default {
         project_domain: '',
       },
       vpcList: [],
+      vpc: '',
     }
   },
   computed: {
@@ -139,6 +140,13 @@ export default {
         return currentVpc[0].account_id
       }
       return ''
+    },
+    secgroupParams () {
+      const ret = {}
+      if (this.vpc) {
+        ret.vpc_id = this.vpc
+      }
+      return ret
     },
   },
   provide () {
