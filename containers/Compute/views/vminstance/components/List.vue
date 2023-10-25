@@ -936,26 +936,26 @@ export default {
                 label: this.$t('compute.text_1290'),
                 submenus: [
                   // 关联安全组
-                  {
-                    label: this.$t('compute.text_1116'),
-                    permission: 'server_perform_add_secgroup',
-                    action: () => {
-                      this.createDialog('VmSetSecgroupDialog', {
-                        vm: this,
-                        data: this.list.selectedItems,
-                        columns: this.columns,
-                        onManager: this.onManager,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: cloudEnabled('assignSecgroup', this.list.selectedItems),
-                        tooltip: cloudUnabledTip('assignSecgroup', this.list.selectedItems),
-                      }
-                      return ret
-                    },
-                    hidden: () => !(hasSetupKey(['onestack', 'onecloud', 'public', 'openstack', 'dstack', 'zstack', 'apsara', 'cloudpods', 'hcso', 'hcs'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_secgroup'),
-                  },
+                  // {
+                  //   label: this.$t('compute.text_1116'),
+                  //   permission: 'server_perform_add_secgroup',
+                  //   action: () => {
+                  //     this.createDialog('VmSetSecgroupDialog', {
+                  //       vm: this,
+                  //       data: this.list.selectedItems,
+                  //       columns: this.columns,
+                  //       onManager: this.onManager,
+                  //     })
+                  //   },
+                  //   meta: () => {
+                  //     const ret = {
+                  //       validate: cloudEnabled('assignSecgroup', this.list.selectedItems),
+                  //       tooltip: cloudUnabledTip('assignSecgroup', this.list.selectedItems),
+                  //     }
+                  //     return ret
+                  //   },
+                  //   hidden: () => !(hasSetupKey(['onestack', 'onecloud', 'public', 'openstack', 'dstack', 'zstack', 'apsara', 'cloudpods', 'hcso', 'hcs'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_secgroup'),
+                  // },
                   // 公网IP转EIP
                   {
                     label: this.$t('compute.text_1121'),

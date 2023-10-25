@@ -193,7 +193,8 @@
               :isSnapshotImageType="isSnapshotImageType"
               :decorators="decorators.secgroup"
               :secgroup-params="secgroupParams"
-              :hypervisor="form.fd.hypervisor" />
+              :hypervisor="form.fd.hypervisor"
+              :showSecgroupBind="showSecgroupBind" />
           </a-form-item>
           <a-form-item v-show="!isServertemplate" :label="$t('compute.text_311')" class="mb-0">
             <sched-policy

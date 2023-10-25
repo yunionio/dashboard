@@ -54,6 +54,10 @@ export default {
     max: {
       type: Number,
     },
+    showSecgroupBind: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     // const concatRules = (k, l, r) => k === 'rules' ? R.concat(l, r) : r
@@ -73,8 +77,8 @@ export default {
   },
   computed: {
     types () {
-      const types = SECGROUP_OPTIONS_MAP
-      if (this.isInCloudSphere) {
+      const types = { ...SECGROUP_OPTIONS_MAP }
+      if (this.isInCloudSphere || !this.showSecgroupBind) {
         delete types.bind
       }
       return types
@@ -140,6 +144,14 @@ export default {
     hypervisor () {
       if (this.form && this.form.fc) {
         this.form.fc.validateFields([this.decorators.secgroup[0]])
+      }
+    },
+    types (val) {
+      if (!val.bind && this.form.fd && this.form.fd[this.decorators.type[0]] === 'bind' && this.form && this.form.fc) {
+        this.form.fc.setFieldsValue({
+          [this.decorators.type[0]]: 'default',
+        })
+        this.isBind = false
       }
     },
   },
