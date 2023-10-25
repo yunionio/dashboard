@@ -60,9 +60,9 @@ import ServerPassword from '@Compute/sections/ServerPassword'
 import Duration from '@Compute/sections/Duration'
 import ItemArea from '@DB/sections/ItemArea'
 import ItemNetwork from '@DB/sections/ItemNetwork'
+import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import DomainProject from '@/sections/DomainProject'
 import NameRepeated from '@/sections/NameRepeated'
-import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import Tag from '@/sections/Tag'
 import changeMinxin from './changeMinxin'
 import BottomBar from './components/BottomBar'
@@ -116,14 +116,19 @@ export default {
       decorators: DECORATORS,
       project_id: '',
       vpcList: [],
+      vpc: '',
     }
   },
   computed: {
     secgroupParams () {
-      return {
+      const ret = {
         project_id: this.project_id,
         ...this.scopeParam,
       }
+      if (this.vpc) {
+        ret.vpc_id = this.vpc
+      }
+      return ret
     },
     scopeParams () {
       if (this.$store.getters.isAdminMode) {
