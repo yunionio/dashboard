@@ -177,7 +177,8 @@
               :form="form"
               :decorators="decorators.secgroup"
               :secgroup-params="secgroupParams"
-              :hypervisor="hypervisor" />
+              :hypervisor="hypervisor"
+              :showSecgroupBind="showSecgroupBind" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_311')" v-show="!isServertemplate" class="mb-0">
             <sched-policy

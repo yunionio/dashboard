@@ -245,6 +245,9 @@ export default {
       }
       return params
     },
+    showSecgroupBind () {
+      return this.form.fd.networkType === 'manual'
+    },
     isOpenWorkflow () {
       if (this.isServertemplate) return false
       return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_MACHINE)

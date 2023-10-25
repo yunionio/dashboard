@@ -146,7 +146,8 @@
             <secgroup-config
               :decorators="decorators.secgroup"
               :secgroup-params="secgroupParams"
-              :hypervisor="form.fd.hypervisor" />
+              :hypervisor="form.fd.hypervisor"
+              :showSecgroupBind="showSecgroupBind" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_311')" v-show="!isServertemplate" class="mb-0">
             <sched-policy
