@@ -155,7 +155,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'scope', 'userInfo']),
     vpcParams () {
       const params = {
         limit: 0,
@@ -248,9 +248,20 @@ export default {
       this.project_domain = val.key
     },
     handleRegionChange (data) {
-      const { provider } = data.cloudregion.value
-      this.regionProvider = provider
-      this.regionId = data.cloudregion.id
+      const { provider, cloudregion } = data
+      if (data.hasOwnProperty('provider')) {
+        if (provider) {
+          this.regionProvider = provider.id || provider
+        } else {
+          this.regionProvider = ''
+          this.regionId = ''
+        }
+      }
+      if (data.hasOwnProperty('cloudregion')) {
+        if (cloudregion) {
+          this.regionId = cloudregion.id || cloudregion
+        }
+      }
     },
     vpcChange (vpcId) {
       this.vpcId = vpcId
@@ -272,13 +283,18 @@ export default {
       return (<div>{ item.name }</div>)
     },
     genData (values) {
-      return {
-        project_id: values.project.key,
+      const ret = {
         name: values.name,
         description: values.description,
         vpc: values.vpc,
         __meta__: values.__meta__,
       }
+      if (!this.isAdminMode && !this.isDomainMode) {
+        ret.project_id = this.userInfo.projectId
+      } else {
+        ret.project_id = values.project?.key
+      }
+      return ret
     },
     clearGuestIpPrefixError () {
       this.guestIpPrefixValidateStatus = ''
