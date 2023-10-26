@@ -12,7 +12,7 @@
             <a-dropdown :trigger="['click']">
               <div class="oc-pointer">
                 <a-icon type="global" />
-                <span class="ml-2">{{ language === 'zh-CN' ? '简体中文' : 'English' }}</span>
+                <span class="ml-2">{{ languageText }}</span>
               </div>
               <a-menu slot="overlay" @click="handleChangeLanguage">
                 <a-menu-item key="zh-CN">
@@ -20,6 +20,9 @@
                 </a-menu-item>
                 <a-menu-item key="en">
                   <span class="mr-2">English</span><a-icon v-show="language === 'en'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+                </a-menu-item>
+                <a-menu-item key="ja-JP">
+                  <span class="mr-2">日本語</span><a-icon v-show="language === 'ja-JP'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
                 </a-menu-item>
               </a-menu>
             </a-dropdown>
@@ -77,6 +80,15 @@ export default {
     },
     language () {
       return this.setting.language
+    },
+    languageText () {
+      if (this.language === 'zh-CN') {
+        return '简体中文'
+      } else if (this.language === 'ja-JP') {
+        return '日本語'
+      } else {
+        return 'English'
+      }
     },
   },
   async created () {
