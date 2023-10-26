@@ -1,0 +1,9 @@
+{
+  "compute.image.merge_mirror": "画像を結合する",
+  "compute.image.merge_mirror.action.tooltip": "この操作は1つの画像ではサポートされていません。2つ以上の画像を選択して再試行してください。",
+  "compute.image.merge_mirror.extra": "マージによって生成された新しいイメージはホスト イメージ リストにあり、操作イメージの場所は変更されません",
+  "compute.image.merge_mirror.placeholder": "マージされたホストイメージの名前を入力します",
+  "compute.image.merge_mirror.system_image.select_validate": "ISO イメージをホスト イメージにマージできない",
+  "compute.image.merge_mirror.order": "ミラーの順序",
+  "compute.image.merge_mirror.order_extra": "イメージの順序は、ホストが作成されたときのディスクの順序に対応し、システムディスク、データディスク1、データディスク2、データディスクN、順序が実際のディスクと一致していることを確認してください。"
+}
