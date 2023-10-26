@@ -15,11 +15,16 @@ export default {
             brand: this.data.brand,
           })
         },
-        meta: () => {
-          return {
+        meta: (obj) => {
+          const ret = {
             validate: !this.isRead,
             tooltip: this.isRead ? this.$t('compute.secgroup.shared') : '',
           }
+          if (['hcs', 'hcso', 'huawei', 'volcengine'].includes((this.data.brand || '').toLowerCase())) {
+            ret.validate = false
+            ret.tooltip = this.$t('compute.text_1388')
+          }
+          return ret
         },
       },
       // {

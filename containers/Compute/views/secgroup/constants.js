@@ -42,6 +42,7 @@ export const priorityRuleMap = {
     min: 0,
     max: 99,
     portSupportComma: true,
+    noSupport: true,
   },
   ucloud: {
     min: 1,
