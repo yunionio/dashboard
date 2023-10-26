@@ -1,0 +1,20 @@
+{
+  "network.cdn.accelerated_domain": "高速化ドメイン名",
+  "network.cdn.cloudprovider": "クラウド サブスクリプションを指定する",
+  "network.cdn.origin_types": "オリジンサーバープロトコル",
+  "network.cdn.origin": "オリジンサーバー",
+  "network.cdn.area_require_message": "加速領域を選択してください",
+  "network.cdn.origin_require_message": "オリジンサーバーのアドレスを入力してください",
+  "network.cdn.port_require_message": "ポートを入力してください",
+  "network.cdn.priority_require_message": "重量を入力してください",
+  "network.cdn.service_type_web": "CDN ウェブページの小さなファイル",
+  "network.cdn.service_type_download": "CDNは大きなファイルをダウンロードします",
+  "network.cdn.service_type_media": "CDNオーディオおよびビデオオンデマンド",
+  "network.cdn.service_type_hybrid": "ECDN ダイナミックおよびスタティックアクセラレーション",
+  "network.cdn.service_type_dynamic": "ECDN ダイナミック アクセラレーション",
+  "network.cdn.origin_type_domain": "独自のソース",
+  "network.cdn.origin_type_cos": "COS ソース",
+  "network.cdn.origin_protocol_follow": "プロトコルのフォロー",
+  "network.cdn.origin_repeat_validate": "現在追加されているオリジンサーバーのIPアドレスが重複しています!",
+  "network.cdn.priority_validate": "単一のオリジンサーバーの重みを構成することはできません。"
+}

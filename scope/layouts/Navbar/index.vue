@@ -142,6 +142,9 @@
             <a-menu-item key="4" @click="settingLanguageEN">
               <span class="mr-2" style="cursor: pointer">English</span><a-icon v-show="language === 'en'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
             </a-menu-item>
+            <div @click="settingLanguageJP">
+              <span class="mr-2" style="cursor: pointer">日本語</span><a-icon v-show="language === 'ja-JP'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+            </div>
           </a-sub-menu>
           <a-menu-item key="toClouduser"><a-icon class="mr-2 ml-2" type="cloud-upload" />{{ $t('scope.cloudid') }}</a-menu-item>
           <a-menu-item key="handleUpdatePassword"><a-icon class="mr-2 ml-2" type="usergroup-delete" />{{ $t('scope.text_5') }}</a-menu-item>
@@ -360,6 +363,10 @@ export default {
     },
     settingLanguageEN () {
       setLanguage('en')
+      window.location.reload()
+    },
+    settingLanguageJP () {
+      setLanguage('ja-JP')
       window.location.reload()
     },
     isSingleProject (projects, item) {
