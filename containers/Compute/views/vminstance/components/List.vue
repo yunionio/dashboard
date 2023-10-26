@@ -75,6 +75,10 @@ export default {
     tableOverviewIndexs: {
       type: Array,
     },
+    hiddenActions: {
+      type: Array,
+      default: () => ([]),
+    },
   },
   data () {
     const filter = {}
@@ -200,7 +204,7 @@ export default {
               tooltip: this.cloudEnvEmpty ? this.$t('common.no_platform_available') : '',
             }
           },
-          hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_create'),
+          hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_create') || this.hiddenActions.includes('create'),
         },
         // 开机
         {
