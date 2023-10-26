@@ -1,0 +1,22 @@
+{
+  "compute.pci.passthrough_device": "透明伝送装置",
+  "compute.pci.passthrough_device_type": "透過的なデバイスの種類",
+  "compute.pci.dev_type": "デバイスの種類",
+  "compute.pci.dev_type.placeholder": "GPU、NPU、USB などのデバイスの種類を入力してください",
+  "compute.pci.model": "デバイスモデル",
+  "compute.pci.model.placeholder": "デバイスモデルを入力してください",
+  "compute.pci.vendor_id": "デバイス ベンダー ID",
+  "compute.pci.vendor_id.placeholder": "デバイスのベンダーIDを入力してください",
+  "compute.pci.vendor_id.extra": "デバイスの VendorId パラメーターは、メソッド参照として取得されます",
+  "compute.pci.vendor_id.reg_error_msg": "小文字または数字の組み合わせを含む4桁の数字を入力してください",
+  "compute.pci.device_id": "デバイス デバイス ID",
+  "compute.pci.device_id.placeholder": "デバイスのデバイス ID を入力してください",
+  "compute.pci.device_id.extra": "デバイス DeviceId パラメーターは、メソッド参照に対して取得されます",
+  "compute.pci.device_id.reg_error_msg": "小文字または数字の組み合わせを含む4桁の数字を入力してください",
+  "compute.pci.host": "ホスト",
+  "compute.pci.host.placeholder": "ホストを選択してください",
+  "compute.pci.host.extra": "ホストを選択した後、対応するホストマシンは対応する透過デバイスを自動的に報告し、デバイスが選択されていない場合は、ホストサービスを再起動して有効にする必要があります。",
+  "compute.pci.document": "ドキュメンテーション",
+  "compute.pci.hot_pluggable": "ホットスワップ対応",
+  "compute.pci.hot_pluggable.tips": "透過デバイスがホットプラグをサポートしているかどうかは、デバイス自体によって決定され、検証後にホットプラグを有効にするかどうかを選択します"
+}

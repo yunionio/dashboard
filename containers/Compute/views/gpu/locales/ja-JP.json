@@ -1,0 +1,13 @@
+{
+  "gpu.device_type": "デバイスの種類",
+  "gpu.device_type.update": "デバイスの種類を更新する",
+  "gpu.device_type.update.tooltip": "デバイスタイプを更新する透過デバイスを選択します",
+  "gpu.device_type.update.validate": "現在のデバイスの種類の更新はサポートされていません",
+  "gpu.device_type.gpu.tooltip": "GPU タイプの透過デバイスを選択する",
+  "gpu.device_type.message_1": "GPU-HPC:主に科学計算、データ分析、機械学習、および超並列計算を必要とするその他のタスクに使用される高性能コンピューティングカード。",
+  "gpu.device_type.message_2": "GPU-VGA:グラフィックスのレンダリングと表示の目的で使用されるビデオグラフィックスアレイ。",
+  "gpu.device_type.message_3": "GPU-VGAタイプのGPUカードをVMに送信する場合、シミュレートされたVGAデバイスは提供されず、グラフィックスドライバを事前にイメージにインストールする必要があります。",
+  "gpu.device_type.tooltip.check_hpc_vga_gpu": "GPU-HPCおよびGPU-VGAタイプの透過伝送デバイスのみがこの操作をサポートしています",
+  "gpu.device_type.framebuffer": "記憶",
+  "gpu.device_type.max_resolution": "解決"
+}
