@@ -850,7 +850,7 @@
   "cloudenv.belong_to_project.external_project": "According to external project",
   "cloudenv.belong_to_project.cloudprovider": "According to cloudprovider",
   "cloudenv.default_project": "Default project",
-  "cloudenv.resource_map_type.project": "All project resources belong to the designated project. If there are other options at the same time, the current prompt information shall prevail!",
+  "cloudenv.resource_map_type.project": "All project resources belong to the designated project.",
   "cloudenv.resource_map_type.project_mapping": "Resources will be attributed based on the synchronization strategy, and if they do not match the attribution method, they will be attributed to the default project.",
   "cloudenv.resource_map_type.external_project": "The resource will be synchronized to a local project with the same name as the cloud project. If the resource does not have cloud project attributes, it will belong to the default project.",
   "cloudenv.resource_map_type.cloudprovider": "The resource will be synchronized to a local project with the same name as the cloud subscription. If the resource does not have cloud subscription properties, it will belong to the default project.",
