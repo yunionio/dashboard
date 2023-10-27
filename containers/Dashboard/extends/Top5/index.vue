@@ -358,8 +358,6 @@ export default {
       handler (val) {
         this.changeName(this.form.fd.resType, val)
       },
-      deep: true,
-      immediate: true,
     },
   },
   created () {
