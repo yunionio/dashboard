@@ -3,7 +3,7 @@
   "middleware.name": "名前",
   "middleware.status": "状態",
   "middleware.kafka": "カフカ",
-  "middleware.cloudaccount": "クラウドアカウント",
+  "middleware.cloudaccount": "アカウント",
   "middleware.cloudregion": "地域",
   "middleware.provider": "クラウドプラットフォーム",
   "middleware.billing_type": "請求タイプ",
