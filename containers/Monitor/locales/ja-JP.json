@@ -74,7 +74,7 @@
   "monitor_metric_73": "メモリ使用量",
   "monitor_metric_74": "CPU 使用率",
   "monitor_metric_77": "秤",
-  "monitor_metric_76": "クラウドアカウント残高",
+  "monitor_metric_76": "アカウント残高",
   "monitor_metric_78": "合計 {0} レコード",
   "monitor_metric_79": "ディスク読み取り速度 (BPS)",
   "monitor_metric_80": "ディスク書き込み速度 (BPS)",
