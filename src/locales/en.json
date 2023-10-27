@@ -170,7 +170,8 @@
       "on": "On",
       "off": "Off",
       "qga_exec_command_failed": "QGA execution failed",
-      "convert_failed": "Convert Failed"
+      "convert_failed": "Convert Failed",
+      "security_group_fail": "Failed to create security group"
     },
     "network": {
       "init": "Initialize",

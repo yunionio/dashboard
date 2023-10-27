@@ -22,6 +22,7 @@
             @change="fetchSecgroups"
             option-filter-prop="children"
             :placeholder="$t('compute.secgroup.source.placeholder')"
+            :disabled="cidrDisabled"
             v-decorator="decorators.source">
             <a-select-opt-group>
               <span slot="label">CIDR</span>
@@ -38,25 +39,25 @@
           </a-select>
         </a-form-item>
         <a-form-item :label="$t('compute.text_980')">
-          <a-select v-decorator="decorators.protocol" @change="protocolChange" :disabled="protocolDisabled">
+          <a-select v-decorator="decorators.protocol" @change="protocolChange" :disabled="protocolDisabled || cidrDisabled">
             <a-select-option v-for="item in protocolOptions" :key="item.value" :value="item.value">
               {{item.label}}
             </a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item :label="$t('compute.text_998')" :extra="portExtra">
-          <a-input :disabled="portsDisabled" v-decorator="decorators.ports" :placeholder="$t('compute.text_350')" />
-          <a-checkbox class="right-checkbox" @change="portsChange" :checked="portsChecked" :disabled="portsCheckboxDisabled">{{$t('compute.text_1000')}}</a-checkbox>
+          <a-input :disabled="portsDisabled || cidrDisabled" v-decorator="decorators.ports" :placeholder="$t('compute.text_350')" />
+          <a-checkbox class="right-checkbox" @change="portsChange" :checked="portsChecked" :disabled="portsCheckboxDisabled || cidrDisabled">{{$t('compute.text_1000')}}</a-checkbox>
         </a-form-item>
         <a-form-item :label="$t('compute.text_694')">
-          <a-select v-decorator="decorators.action" :disabled="!isPrioritySupport">
+          <a-select v-decorator="decorators.action" :disabled="!isPrioritySupport || cidrDisabled">
             <a-select-option v-for="item in actionOptions" :key="item.value" :value="item.value">
               {{item.label}}
             </a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item v-if="isPrioritySupport" :label="$t('compute.text_1001')">
-          <a-input-number :min="priorityMin" :max="priorityMax" v-decorator="decorators.priority" />
+          <a-input-number :min="priorityMin" :max="priorityMax" :disabled="cidrDisabled" v-decorator="decorators.priority" />
         </a-form-item>
         <a-form-item :extra="isAws ? $t('compute.use_en_comment') : ''">
           <span slot="label">{{$t('compute.text_312')}}</span>
@@ -135,7 +136,7 @@ export default {
         priority: [
           'priority',
           {
-            initialValue: selectItem.priority || 1,
+            initialValue: selectItem.priority || priorityMin,
           },
         ],
         description: [
@@ -215,6 +216,12 @@ export default {
         ret = ret.filter(item => item.value !== 'any')
       }
       return ret
+    },
+    cidrDisabled () {
+      if (this.params.title === 'edit' && ['ctyun', 'aliyun'].includes(this.params.brand.toLowerCase())) {
+        return true
+      }
+      return false
     },
   },
   created () {

@@ -170,7 +170,8 @@
       "on": "稼働中",
       "off": "シャットダウン",
       "qga_exec_command_failed": "QGA の実行に失敗しました",
-      "convert_failed": "変換に失敗しました"
+      "convert_failed": "変換に失敗しました",
+      "security_group_fail": "セキュリティグループの作成に失敗しました"
     },
     "network": {
       "init": "初期化する",
