@@ -56,8 +56,8 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item v-if="isPrioritySupport" :label="$t('compute.text_1001')">
-          <a-input-number :min="priorityMin" :max="priorityMax" :disabled="cidrDisabled" v-decorator="decorators.priority" />
+        <a-form-item v-if="isPrioritySupport" :label="$t('compute.text_1001')" :extra="priorityExtra">
+          <a-input-number :min="priorityMin" :max="priorityMax" :disabled="priorityDisabled || cidrDisabled" v-decorator="decorators.priority" />
         </a-form-item>
         <a-form-item :extra="isAws ? $t('compute.use_en_comment') : ''">
           <span slot="label">{{$t('compute.text_312')}}</span>
@@ -86,8 +86,8 @@ export default {
     const selectItem = this.params.data[0]
     const { brand } = this.params
     const item = brand ? priorityRuleMap[brand.toLowerCase()] || {} : {}
-    const priorityMin = !item.noSupport ? item.min : 1
-    const priorityMax = !item.noSupport ? item.max : 1
+    const priorityMin = !item.priorityNoSupport ? item.min : 1
+    const priorityMax = !item.priorityNoSupport ? item.max : 1
     return {
       loading: false,
       form: {
@@ -182,14 +182,14 @@ export default {
       protocolDisabled: this.params.title !== 'edit',
       priorityMin,
       priorityMax,
-      isPrioritySupport: !item.noSupport,
+      isPrioritySupport: !item.priorityNoSupport,
       priorityItem: item,
     }
   },
   computed: {
     ...mapGetters(['scope']),
     priorityExtra () {
-      if (this.priorityItem.noSupport) {
+      if (this.priorityItem.priorityNoSupport) {
         return ''
       } else if (this.priorityItem.max) {
         return `${this.priorityItem.min}-${this.priorityItem.max}, ${this.priorityItem.isMaxHigh ? this.$t('compute.secgroup_priority_tip2') : this.$t('compute.secgroup_priority_tip')}${this.priorityItem.noRepeat ? ', ' + this.$t('compute.secgroup_priority_no_repeat') : ''}`
@@ -222,6 +222,9 @@ export default {
         return true
       }
       return false
+    },
+    priorityDisabled () {
+      return this.params.title === 'edit' && ['qcloud'].includes(this.params.brand.toLowerCase())
     },
   },
   created () {
