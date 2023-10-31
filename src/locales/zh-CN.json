@@ -170,7 +170,8 @@
       "on": "运行中",
       "off": "关机",
       "qga_exec_command_failed": "QGA执行失败",
-      "convert_failed": "转换失败"
+      "convert_failed": "转换失败",
+      "qga_set_network_failed": "QGA设置网络失败"
     },
     "network": {
       "init": "初始化",
