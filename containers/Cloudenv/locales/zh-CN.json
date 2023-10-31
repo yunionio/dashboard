@@ -3,7 +3,8 @@
     "one": "单次",
     "day": "每天",
     "week": "每周",
-    "month": "每月"
+    "month": "每月",
+    "cycle": "周期"
   },
   "cloudenvScheduledtaskRuleAction": {
     "start": "开机",
@@ -862,5 +863,13 @@
   "cloudenv.resource_map_type.project_mapping_and_cloudprovider": "资源会优先根据同步策略归属，不匹配同步策略的资源会归属到云订阅同名的本地项目中，若资源不匹配上述两种归属方式则归属到缺省项目中。",
   "cloudenv.resource_map_type.external_project_and_cloudprovider": "资源会优先同步与云上项目同名的本地项目中，若资源无云上项目归属则归属到云订阅同名的本地项目中，若资源不匹配上述两种归属方式则归属到缺省项目中。",
   "cloudenv.resource_map_type.all": "资源会优先根据同步策略归属，不匹配同步策略的资源会优先同步与云上项目同名的本地项目中，不匹配上述两种方式的资源会归属到与云订阅同名的本地项目中，若资源不匹配上述三种归属方式则归属到缺省项目中。",
-  "cloudenv.select_resource_map_type": "请至少选择一种资源归属方式"
+  "cloudenv.select_resource_map_type": "请至少选择一种资源归属方式",
+  "cloudenv.frequency": "频率",
+  "cloudenv.cycle_type.hour": "小时",
+  "cloudenv.cycle_type.day": "天",
+  "cloudenv.cycle_type.week": "周",
+  "cloudenv.cycle_type.month": "月",
+  "cloudenv.cycle_once": "同步一次",
+  "cloudenv.input_cycle_num": "请输入频率",
+  "cloudenv.each": "每"
 }

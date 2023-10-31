@@ -3,7 +3,8 @@
     "one": "Single time",
     "day": "Everyday",
     "week": "Weekly",
-    "month": "Monthly"
+    "month": "Monthly",
+    "cycle": "Cycle"
   },
   "cloudenvScheduledtaskRuleAction": {
     "start": "Start",
@@ -860,5 +861,13 @@
   "cloudenv.resource_map_type.project_mapping_and_cloudprovider": "Resources will be assigned priority based on the synchronization strategy. Resources that do not match the synchronization strategy will be assigned to local projects with the same name in the cloud subscription. If the resources do not match the above two attribution methods, they will be assigned to the default project.",
   "cloudenv.resource_map_type.external_project_and_cloudprovider": "Resources will be prioritized in synchronizing with local projects with the same name as cloud projects. If there is no cloud project ownership for the resources, they will belong to local projects with the same name as cloud subscription. If the resources do not match the two ownership methods mentioned above, they will belong to the default project.",
   "cloudenv.resource_map_type.all": "Resources will be assigned priority based on the synchronization strategy. Resources that do not match the synchronization strategy will be assigned priority to local projects with the same name as the cloud project. Resources that do not match the above two methods will be assigned to local projects with the same name as the cloud subscription. If resources do not match the above three ownership methods, they will be assigned to the default project.",
-  "cloudenv.select_resource_map_type": "Please select at least one resource ownership method"
+  "cloudenv.select_resource_map_type": "Please select at least one resource ownership method",
+  "cloudenv.frequency": "Frequency",
+  "cloudenv.cycle_type.hour": "hour",
+  "cloudenv.cycle_type.day": "day",
+  "cloudenv.cycle_type.week": "week",
+  "cloudenv.cycle_type.month": "month",
+  "cloudenv.cycle_once": "sync once",
+  "cloudenv.input_cycle_num": "Please input frequency",
+  "cloudenv.each": "Each"
 }
