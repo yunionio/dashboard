@@ -108,4 +108,8 @@ export const CUSTOME_IMG = {
     label: 'Rocky',
     url: 'rocky',
   },
+  anolis: {
+    label: 'Anolis',
+    url: 'anolis',
+  },
 }
