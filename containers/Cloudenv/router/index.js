@@ -3,7 +3,7 @@
 // import Policydefinition from '@Cloudenv/views/policydefinition'
 
 import Layout from '@/layouts/RouterView'
-import { hasSetupKey, setupKeys } from '@/utils/auth'
+import { hasSetupKey } from '@/utils/auth'
 import store from '@/store'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
@@ -36,7 +36,11 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.cloudaccount')) {
                 return true
               }
-              return !hasSetupKey(['bill', 'private', 'vmware', 'public', 'storage'])
+              if (!hasSetupKey(['onecloud', 'public', 'private', 'storage', 'k8s'])) {
+                return !hasSetupKey(['bill'])
+              } else {
+                return !hasSetupKey(['public', 'private', 'vmware', 'storage'])
+              }
             },
           },
           component: Layout,
@@ -68,7 +72,12 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.cloudgroup')) {
                 return true
               }
-              return store.getters.isProjectMode || !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'google', 'hcso', 'hcs'])
+              if (store.getters.isProjectMode) return true
+              if (!hasSetupKey(['onecloud', 'public', 'private', 'storage', 'k8s'])) {
+                return true
+              } else {
+                return !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'google', 'hcso', 'hcs'])
+              }
             },
           },
           component: Layout,
@@ -89,14 +98,11 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.proxysetting')) {
                 return true
               }
-              const haskeys = setupKeys.hasVersionedSetupKey({
-                '3.0': ['bill'],
-                default: true,
-              })
-              if (haskeys) {
-                return false
+              if (!hasSetupKey(['onecloud', 'public', 'private', 'storage', 'k8s'])) {
+                return !hasSetupKey(['bill'])
+              } else {
+                return !hasSetupKey(['public', 'private', 'vmware', 'storage'])
               }
-              return !hasSetupKey(['private', 'vmware', 'public', 'storage'])
             },
           },
           component: Layout,
@@ -117,14 +123,11 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.projectmapping')) {
                 return true
               }
-              const haskeys = setupKeys.hasVersionedSetupKey({
-                '3.0': ['bill'],
-                default: true,
-              })
-              if (haskeys) {
-                return false
+              if (!hasSetupKey(['onecloud', 'public', 'private', 'storage', 'k8s'])) {
+                return !hasSetupKey(['bill'])
+              } else {
+                return !hasSetupKey(['public', 'jdcloud', 'ecloud'])
               }
-              return !hasSetupKey('public') || setupKeys.isSubSet(['public', 'jdcloud', 'ecloud'])
             },
           },
           component: Layout,
