@@ -37,7 +37,7 @@
               </a-select-option>
             </a-select>
           </a-col>
-          <a-col :span="2">
+          <a-col :span="3">
             <a-form-item>
               <a-tooltip :title="tooltip" placement="top">
                 <a-input-number :min="minDiskData" :max="maxDiskData" :step="step" v-decorator="decorators.size" /> GB

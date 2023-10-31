@@ -60,4 +60,8 @@ export const priorityRuleMap = {
     isMaxHigh: true,
     portSupportComma: true,
   },
+  volcengine: {
+    min: 1,
+    max: 100,
+  },
 }

@@ -1059,6 +1059,38 @@ export const STORAGE_TYPES = {
       unCreateCloud: true, // 不支持创建云硬盘
     },
   },
+  [HYPERVISORS_MAP.volcengine.key]: {
+    ESSD_FlexPL: {
+      label: i18n.t('compute.volcengine.essd_flexpl'),
+      value: 'ESSD_FlexPL',
+      min: 20,
+      max: 32768,
+      default: true,
+      sysMin: 40,
+      sysMax: 2048,
+      sort: 1,
+    },
+    ESSD_PL0: {
+      label: i18n.t('compute.volcengine.essd_pl0'),
+      value: 'ESSD_PL0',
+      min: 20,
+      max: 32768,
+      default: true,
+      sysMin: 40,
+      sysMax: 2048,
+      sort: 2,
+    },
+    PTSSD: {
+      label: i18n.t('compute.volcengine.ptssd'),
+      value: 'PTSSD',
+      min: 20,
+      max: 8192,
+      default: true,
+      sysMin: 40,
+      sysMax: 500,
+      sort: 3,
+    },
+  },
   // [HYPERVISORS_MAP.bingocloud.key]: {
   //   local: {
   //     label: i18n.t('compute.text_70'),
