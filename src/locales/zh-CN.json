@@ -171,7 +171,8 @@
       "off": "关机",
       "qga_exec_command_failed": "QGA执行失败",
       "convert_failed": "转换失败",
-      "security_group_fail": "创建安全组失败"
+      "security_group_fail": "创建安全组失败",
+      "qga_set_network_failed": "QGA设置网络失败"
     },
     "network": {
       "init": "初始化",
