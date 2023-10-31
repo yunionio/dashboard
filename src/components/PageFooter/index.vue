@@ -1,6 +1,6 @@
 <template>
   <div :class="formWrap">
-    <div class="page-footer p-3 bg-white">
+    <div class="page-footer p-3 bg-white" :style="pageFooterStyle">
       <div class="page-footer_inner d-flex h-100">
         <template v-if="hasDefaultSlot">
           <div class="d-flex justify-content-end align-items-center"><slot /></div>
@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'PageFooter',
   inheritAttrs: false,
@@ -25,6 +27,9 @@ export default {
     },
   },
   computed: {
+    ...mapState({
+      setting: state => state.setting,
+    }),
     hasDefaultSlot () {
       return !!this.$slots.default
     },
@@ -34,6 +39,15 @@ export default {
       } else {
         return ''
       }
+    },
+    l2MenuVisibleForStore () {
+      return this.setting?.l2MenuVisible
+    },
+    pageFooterStyle () {
+      if (!this.l2MenuVisibleForStore) {
+        return { left: 0 }
+      }
+      return {}
     },
   },
 }
