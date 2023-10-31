@@ -845,6 +845,8 @@
   "cloudenv.create_qingcloud": "{0}#新建青云云账号",
   "cloudenv.chinaunion": "联通云",
   "cloudenv.create_chinaunion": "{0}#新建联通云云账号",
+  "cloudenv.volcengine": "火山引擎",
+  "cloudenv.create_volcengine": "{0}#新建火山引擎账号",
   "cloudenv.view_record": "查看记录",
   "cloudenv.old_sth": "原{0}",
   "cloudenv.new_sth": "当前{0}",

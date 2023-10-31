@@ -1734,5 +1734,8 @@
   "compute.secgroup_priority_tip": "数値が小さいほど、優先度が高くなります",
   "compute.secgroup_priority_tip2": "数値が大きいほど、優先度が高くなります",
   "compute.secgroup_priority_no_repeat": "優先順位を繰り返すことはできません",
-  "compute.use_en_comment": "英語のメモを使用してください"
+  "compute.use_en_comment": "英語のメモを使用してください",
+  "compute.volcengine.essd_flexpl": "ESSD FlexPL",
+  "compute.volcengine.essd_pl0": "ESSD PL0",
+  "compute.volcengine.essd_ptssd": "PTSSD"
 }

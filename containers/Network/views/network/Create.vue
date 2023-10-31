@@ -3,7 +3,7 @@
     <page-header :title="$t('network.text_570')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body need-margin-bottom>
       <a-form class="mt-3" :form="form.fc" @submit.prevent="handleSubmit" v-bind="formItemLayout">
-        <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" class="mt-3 mb-0" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" class="mt-3" v-bind="formItemLayout">
           <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="handleDomainChange" />
         </a-form-item>
         <area-selects
@@ -140,7 +140,6 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import IpSubnets from './components/IpSubnets'
 import validateForm, { isRequired, REGEXP } from '@/utils/validate'
 import { Manager } from '@/utils/manager'
 import { uuid } from '@/utils/utils'
@@ -150,6 +149,7 @@ import AreaSelects from '@/sections/AreaSelects'
 import i18n from '@/locales'
 import { HYPERVISORS_MAP } from '@/constants'
 import Tag from '@/sections/Tag'
+import IpSubnets from './components/IpSubnets'
 
 const { networkSegment } = REGEXP
 const masks = {

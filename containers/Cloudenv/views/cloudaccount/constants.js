@@ -34,6 +34,7 @@ const ksyunLogo = require('@/assets/images/providers/ksyun.svg')
 const baiduLogo = require('@/assets/images/providers/baidu.svg')
 const qingcloudLogo = require('@/assets/images/providers/qingcloud.svg')
 const chinaUnionLogo = require('@/assets/images/providers/chinaunion.svg')
+const volcEngineLogo = require('@/assets/images/providers/volcengine.svg')
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
@@ -129,6 +130,12 @@ export const CLOUDACCOUNT_TYPES = {
       logo: chinaUnionLogo,
       component: 'chinaUnionCreate',
       provider: providerMap.chinaunion.key,
+    },
+    volcengine: {
+      name: providerMap.volcengine.label,
+      logo: volcEngineLogo,
+      component: 'volcEngineCreate',
+      provider: providerMap.volcengine.key,
     },
   },
   private: {
@@ -302,6 +309,7 @@ export function getCloudaccountDocs (scope) {
     baidu: i18n.t('cloudenv.create_baidu', [docs_path]),
     qingcloud: i18n.t('cloudenv.create_qingcloud', [docs_path]),
     chinaunion: i18n.t('cloudenv.create_chinaunion', [docs_path]),
+    volcengine: i18n.t('cloudenv.create_volcengine', [docs_path]),
   }
   // if (isCE()) {
   //   Object.keys(docs).forEach(v => {
@@ -738,6 +746,19 @@ export const keySecretFields = {
     k: 'access_key_id',
     s: 'access_key_secret',
     text: i18n.t('cloudenv.chinaunion'),
+    placeholder: {
+      k: i18n.t('cloudenv.text_144'),
+      s: i18n.t('cloudenv.text_145'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_146'),
+      s: i18n.t('cloudenv.text_147'),
+    },
+  },
+  volcengine: {
+    k: 'access_key_id',
+    s: 'access_key_secret',
+    text: i18n.t('cloudenv.volcengine'),
     placeholder: {
       k: i18n.t('cloudenv.text_144'),
       s: i18n.t('cloudenv.text_145'),
