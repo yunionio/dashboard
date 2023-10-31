@@ -2700,6 +2700,7 @@
     "inter_vpc_network_route_sets": "VPC互联-路由",
     "vpc_peer_connect": "VPC对等连接",
     "dns_recordset": "DNS解析-记录",
+    "dnsrecords": "DNS解析-记录",
     "nodealerts": "监控",
     "redis_backup": "Redis-备份",
     "storagecachedimages": "系统镜像-缓存",
