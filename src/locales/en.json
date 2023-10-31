@@ -2686,6 +2686,7 @@
     "inter_vpc_network_route_sets": "VPC Network-Router",
     "vpc_peer_connect": "VPC Peer Connect",
     "dns_recordset": "DNS-Record",
+    "dnsrecords": "DNS-Record",
     "nodealerts": "Monitor",
     "redis_backup": "Redis-Backup",
     "storagecachedimages": "Images-Cache",
