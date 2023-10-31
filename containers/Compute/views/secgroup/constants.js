@@ -1,12 +1,12 @@
 export const priorityRuleMap = {
   aws: {
-    noSupport: true,
+    priorityNoSupport: true,
   },
   bingocloud: {
-    noSupport: true,
+    priorityNoSupport: true,
   },
   openstack: {
-    noSupport: true,
+    priorityNoSupport: true,
   },
   aliyun: {
     min: 1,
@@ -42,7 +42,6 @@ export const priorityRuleMap = {
     min: 0,
     max: 99,
     portSupportComma: true,
-    noSupport: true,
   },
   ucloud: {
     min: 1,
