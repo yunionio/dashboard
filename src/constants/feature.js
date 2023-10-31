@@ -248,6 +248,10 @@ const LicenseItems = [
     key: 'chinaunion',
     meta: meta('resource_managent', 'public', true),
   },
+  {
+    key: 'volcengine',
+    meta: meta('resource_managent', 'public', true),
+  },
 ]
 
 function fullfillLicenseItems () {

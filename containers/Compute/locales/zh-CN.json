@@ -1734,5 +1734,8 @@
   "compute.secgroup_priority_tip": "数字越小优先级越高",
   "compute.secgroup_priority_tip2": "数字越大优先级越高",
   "compute.secgroup_priority_no_repeat": "优先级不可以重复",
-  "compute.use_en_comment": "请使用英文备注"
+  "compute.use_en_comment": "请使用英文备注",
+  "compute.volcengine.essd_flexpl": "极速型SSD FlexPL",
+  "compute.volcengine.essd_pl0": "极速型SSD PL0",
+  "compute.volcengine.essd_ptssd": "性能型SSD"
 }

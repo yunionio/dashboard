@@ -27,6 +27,7 @@ import Ksyun from './components/Ksyun'
 import BaiduCloud from './components/BaiduCloud'
 import Qingcloud from './components/Qingcloud'
 import ChinaUnion from './components/ChinaUnion'
+import VolcEngine from './components/VolcEngine'
 
 export default {
   name: 'CreateCloudaccount',
@@ -63,6 +64,7 @@ export default {
     BaiduCloudCreate: BaiduCloud,
     QingcloudCreate: Qingcloud,
     ChinaUnionCreate: ChinaUnion,
+    VolcEngineCreate: VolcEngine,
   },
   props: {
     currentItem: {
