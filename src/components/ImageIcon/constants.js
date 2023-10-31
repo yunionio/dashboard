@@ -104,4 +104,8 @@ export const CUSTOME_IMG = {
     label: 'neokylin',
     url: 'neokylin',
   },
+  rocky: {
+    label: 'Rocky',
+    url: 'rocky',
+  },
 }
