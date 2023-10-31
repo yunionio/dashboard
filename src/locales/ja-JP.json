@@ -2703,6 +2703,7 @@
     "inter_vpc_network_route_sets": "VPC 相互接続 - ルーティング",
     "vpc_peer_connect": "VPC ピア接続",
     "dns_recordset": "DNS 解決 - レコード",
+    "dnsrecords": "DNS 解決 - レコード",
     "nodealerts": "モニター",
     "redis_backup": "レディス - バックアップ",
     "storagecachedimages": "システム イメージ - キャッシュ",
