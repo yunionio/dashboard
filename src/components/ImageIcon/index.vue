@@ -23,6 +23,7 @@ const vmware = require('./assets/vmware.png')
 const cirros = require('./assets/cirros.png')
 const neokylin = require('./assets/neokylin.png')
 const rocky = require('./assets/rocky.png')
+const anolis = require('./assets/anolis.png')
 
 export default {
   name: 'ImageIcon',
@@ -135,6 +136,9 @@ export default {
             break
           case 'rocky':
             curImg = rocky
+            break
+          case 'anolis':
+            curImg = anolis
             break
           default:
             break
