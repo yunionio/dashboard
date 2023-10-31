@@ -171,7 +171,8 @@
       "off": "Off",
       "qga_exec_command_failed": "QGA execution failed",
       "convert_failed": "Convert Failed",
-      "security_group_fail": "Failed to create security group"
+      "security_group_fail": "Failed to create security group",
+      "qga_set_network_failed": "QGA failed to set the network"
     },
     "network": {
       "init": "Initialize",
