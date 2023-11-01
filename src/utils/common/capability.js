@@ -82,13 +82,17 @@
 export const cloudregionFilterByCapability = ({ capability = {}, resource = '', dataList = [], filterKey = 'read_only', regionKey = 'provider' }) => {
   // 未指明资源类型
   if (!resource) return dataList
+  const listKey = `${resource}_brands`
+  const filterOriginList = (capability[listKey] || []).map(item => item.toLowerCase())
   const key = `${filterKey}_${resource}_brands`
-  // 未包含要剔除的平台信息
-  if (!capability[key] || !capability[key].length) return dataList
-  const filterList = capability[key].map(item => item.toLowerCase())
+  const filterList = (capability[key] || []).map(item => item.toLowerCase())
   return dataList.filter(item => {
     const regionBrandKey = (item.provider || item.brand || (regionKey ? item[regionKey] : '')).toLowerCase()
-    if (regionBrandKey && filterList.includes(regionBrandKey)) {
+    // onecloud 验证 ceph/s3/xsky
+    if (regionBrandKey === 'onecloud') {
+      return filterOriginList.some(key => ['ceph', 's3', 'xsky', 'onecloud'].includes(key)) && !filterList.some(key => ['ceph', 's3', 'xsky', 'onecloud'].includes(key))
+    }
+    if (regionBrandKey && (filterList.includes(regionBrandKey) || !filterOriginList.includes(regionBrandKey))) {
       return false
     }
     return true
