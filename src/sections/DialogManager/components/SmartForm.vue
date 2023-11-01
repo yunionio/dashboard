@@ -18,7 +18,7 @@ export default {
       try {
         const values = await validateFields()
         this.loading = true
-        if (callback && R.type(callback) === 'Function') {
+        if (callback && R.type(callback).includes('Function')) {
           await callback(values)
           this.cancelDialog()
         }
