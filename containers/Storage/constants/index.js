@@ -122,3 +122,12 @@ export const LOCATION_MAP = {
 }
 
 export const FINANCE_INTERNAL = ['oss-cn-shanghai-finance-1', 'oss-cn-hzjbp', 'oss-cn-shenzhen-finance-1']
+
+// 存储类型
+export const STORAGE_CLASS = {
+  STANDARD: i18n.t('storage.volcengine.storage_class.standard'),
+  IA: i18n.t('storage.volcengine.storage_class.ia'),
+  ARCHIVE_FR: i18n.t('storage.volcengine.storage_class.archive_fr'),
+  ARCHIVE: i18n.t('storage.volcengine.storage_class.archive'),
+  COLD_ARCHIVE: i18n.t('storage.volcengine.storage_class.cold_archive'),
+}
