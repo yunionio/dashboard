@@ -15,7 +15,8 @@
     "Ksyun": "キングソフトクラウド",
     "Baidu": "百度クラウド",
     "Qingcloud": "チンユン",
-    "ChinaUnion": "ユニコムクラウド"
+    "ChinaUnion": "ユニコムクラウド",
+    "VolcEngine": "火山エンジン"
   },
   "scopeProviders": {
     "esxi": "ヴイエムウェア",
@@ -41,6 +42,7 @@
     "ksyun": "キングソフトクラウド",
     "baidu": "百度クラウド",
     "qingcloud": "チンユン",
-    "chinaunion": "ユニコムクラウド"
+    "chinaunion": "ユニコムクラウド",
+    "volcengine": "火山エンジン"
   }
 }

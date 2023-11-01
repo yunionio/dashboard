@@ -256,7 +256,7 @@ export default {
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
                   row: obj,
-                  disabledProviders: ['BingoCloud'],
+                  disabledProviders: ['BingoCloud', 'VolcEngine'],
                 })
               },
             },

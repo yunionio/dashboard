@@ -44,6 +44,7 @@ const actionEableMap = {
       proxmox: ['ready'],
       bingocloud: false,
       incloudsphere: ['ready'],
+      volcengine: ['ready'],
       remotefile: false,
     },
   },
@@ -75,6 +76,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: ['running'],
       remotefile: false,
+      volcengine: ['running'],
     },
   },
   restart: {
@@ -105,6 +107,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: ['running', 'stop_fail'],
       remotefile: false,
+      volcengine: ['running', 'stop_fail'],
     },
   },
   rebuildRoot: {
@@ -133,6 +136,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
+      volcengine: false,
     },
   },
   resetPassword: {
@@ -161,6 +165,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: ['running'],
       remotefile: false,
+      volcengine: ['ready'],
     },
   },
   bindKeyPair: {
@@ -189,6 +194,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: ['running'],
       remotefile: false,
+      volcengine: ['ready'],
     },
   },
   unBindKeyPair: {
@@ -217,6 +223,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
+      volcengine: ['ready'],
     },
   },
   adjustConfig: {
@@ -245,6 +252,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: ['ready', 'running'],
       remotefile: false,
+      volcengine: ['ready'],
     },
   },
   vnc: {
@@ -275,6 +283,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: ['running'],
       remotefile: false,
+      volcengine: ['running'],
     },
   },
   'EIP SSH': {
@@ -304,6 +313,7 @@ const actionEableMap = {
       proxmox: false,
       bingocloud: false,
       remotefile: false,
+      volcengine: true,
     },
   },
   'IP SSH': {
@@ -334,6 +344,7 @@ const actionEableMap = {
       incloudsphere: ['running'],
       proxmox: false,
       remotefile: false,
+      volcengine: ['running'],
     },
   },
   createSnapshot: {
@@ -362,6 +373,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
+      volcengine: false,
     },
   },
   createBackup: {
@@ -390,6 +402,7 @@ const actionEableMap = {
       proxmox: false,
       incloudsphere: false,
       remotefile: false,
+      volcengine: false,
     },
   },
   transfer: {
@@ -418,6 +431,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
+      volcengine: false,
     },
   },
   v2vTransfer: {
@@ -446,6 +460,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
+      volcengine: false,
     },
   },
   assignSecgroup: {
@@ -474,6 +489,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
+      volcengine: true,
     },
   },
   insertiso: {
@@ -501,6 +517,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
+      volcengine: false,
     },
   },
   ejectiso: {
@@ -528,6 +545,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
+      volcengine: false,
     },
   },
   bindEip: {
@@ -556,6 +574,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
+      volcengine: ['running', 'ready'],
     },
   },
   unbindEip: {
@@ -584,6 +603,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
+      volcengine: ['running', 'ready'],
     },
   },
   acttachGpu: {
@@ -594,6 +614,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
+      volcengine: false,
     },
   },
   acttachUsb: {
@@ -604,6 +625,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
+      volcengine: false,
     },
   },
   publicIpToEip: {
@@ -616,6 +638,7 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
+      volcengine: false,
     },
   },
   changeBlockStorage: {
@@ -623,12 +646,14 @@ const actionEableMap = {
     brand: {
       onecloud: ['ready', 'running'],
       remotefile: false,
+      volcengine: false,
     },
   },
   addBackup: {
     cn: i18n.t('compute.text_1162'),
     brand: {
       onecloud: ['ready'],
+      volcengine: false,
     },
   },
 }

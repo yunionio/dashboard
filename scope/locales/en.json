@@ -15,7 +15,8 @@
     "Ksyun": "Ksyun",
     "Baidu": "Baidu Cloud",
     "Qingcloud": "Qing Cloud",
-    "ChinaUnion": "China Union"
+    "ChinaUnion": "China Union",
+    "VolcEngine": "Volc Engine"
   },
   "scopeProviders": {
     "esxi": "VMware",
@@ -41,6 +42,7 @@
     "ksyun": "Ksyun",
     "baidu": "Baidu Cloud",
     "qingcloud": "Qing Cloud",
-    "chinayunion": "China Union"
+    "chinayunion": "China Union",
+    "volcengine": "Volc Engine"
   }
 }
