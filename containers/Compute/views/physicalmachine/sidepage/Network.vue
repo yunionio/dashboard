@@ -88,12 +88,12 @@ export default {
   },
   computed: {
     nicList () {
-      return this.hostInfo.nic_info.filter((o) => {
+      return (this.hostInfo.nic_info || []).filter((o) => {
         return o.nic_type !== 'ipmi'
       })
     },
     ipmiList () {
-      return this.hostInfo.nic_info.filter((o) => {
+      return (this.hostInfo.nic_info || []).filter((o) => {
         return o.nic_type === 'ipmi'
       })
     },
