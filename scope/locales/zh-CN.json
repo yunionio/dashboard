@@ -15,7 +15,8 @@
     "Ksyun": "金山云",
     "Baidu": "百度云",
     "Qingcloud": "青云",
-    "ChinaUnion": "联通云"
+    "ChinaUnion": "联通云",
+    "VolcEngine": "火山引擎"
   },
   "scopeProviders": {
     "esxi": "VMware",
@@ -41,6 +42,7 @@
     "ksyun": "金山云",
     "baidu": "百度云",
     "qingcloud": "青云",
-    "chinaunion": "联通云"
+    "chinaunion": "联通云",
+    "volcengine": "火山引擎"
   }
 }

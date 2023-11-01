@@ -1737,5 +1737,7 @@
   "compute.use_en_comment": "英語のメモを使用してください",
   "compute.volcengine.essd_flexpl": "ESSD FlexPL",
   "compute.volcengine.essd_pl0": "ESSD PL0",
-  "compute.volcengine.essd_ptssd": "PTSSD"
+  "compute.volcengine.essd_ptssd": "PTSSD",
+  "compute.volcengine.sys_disk_resize_tip": "火山エンジン システム ディスクは、[{0}] 状態でのみこの操作をサポートします。",
+  "compute.volcengine.data_disk_resize_tip": "火山エンジン データ ディスクは、[{0}] 状態でのみこの操作をサポートします。"
 }

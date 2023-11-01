@@ -1737,5 +1737,7 @@
   "compute.use_en_comment": "请使用英文备注",
   "compute.volcengine.essd_flexpl": "极速型SSD FlexPL",
   "compute.volcengine.essd_pl0": "极速型SSD PL0",
-  "compute.volcengine.essd_ptssd": "性能型SSD"
+  "compute.volcengine.essd_ptssd": "性能型SSD",
+  "compute.volcengine.sys_disk_resize_tip": "火山引擎系统盘仅在【{0}】状态下支持此操作",
+  "compute.volcengine.data_disk_resize_tip": "火山引擎数据盘仅在【{0}】状态下支持此操作"
 }
