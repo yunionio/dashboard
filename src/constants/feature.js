@@ -3,7 +3,7 @@ import i18n from '@/locales'
 
 const vIsAccount = R.pipe(R.path(['meta', 'is_account']), R.equals(true))
 const vIsOnestack = R.whereEq({ key: 'onestack' })
-const vIsCloudPlatform = R.pipe(R.path(['meta', 'group']), (group) => { return group && ['onecloud', 'private', 'public', 'bill'].indexOf(group) >= 0 })
+const vIsCloudPlatform = R.pipe(R.path(['meta', 'group']), (group) => { return group && ['onecloud', 'private', 'public'].indexOf(group) >= 0 })
 const vIsCloudAccount = R.and(vIsAccount, vIsCloudPlatform)
 
 class validators {
