@@ -20,9 +20,9 @@
 </template>
 
 <script>
+import { CLOUDACCOUNT_TYPES, ENV_TITLE } from '@Cloudenv/views/cloudaccount/constants'
 import { hasSetupKey } from '@/utils/auth'
 import setting from '@/config/setting'
-import { CLOUDACCOUNT_TYPES, ENV_TITLE } from '@Cloudenv/views/cloudaccount/constants'
 
 export default {
   name: 'SelectCloudaccount',
@@ -66,7 +66,7 @@ export default {
           }
         }
       }
-      if (hasSetupKey(['bill'])) {
+      if (hasSetupKey(['bill']) && !hasSetupKey(['onecloud', 'public', 'private', 'vmware', 'storate'])) {
         const setUpKeys = this.globalSettingSetupKeys || []
         const billTargetItems = ['aliyun', 'aws', 'azure', 'google', 'huawei', 'qcloud', 'jdcloud'].filter(key => setUpKeys.includes('bill_' + key))
         if (!billTargetItems.length) {
