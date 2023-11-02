@@ -30,10 +30,10 @@
 
 <script>
 import * as R from 'ramda'
-import ImageSelect from './ImageSelect'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import storage from '@/utils/storage'
+import ImageSelect from './ImageSelect'
 
 export default {
   name: 'OsSelect',
@@ -132,7 +132,7 @@ export default {
         ret.push(IMAGES_TYPE_MAP.iso)
         ret.push(IMAGES_TYPE_MAP.snapshot)
       } else if (this.hypervisor === HYPERVISORS_MAP.proxmox.key) {
-        ret = [IMAGES_TYPE_MAP.private, IMAGES_TYPE_MAP.iso]
+        ret = [IMAGES_TYPE_MAP.private, IMAGES_TYPE_MAP.iso, IMAGES_TYPE_MAP.private_iso]
       } else if (this.isPublic) {
         ret.unshift(IMAGES_TYPE_MAP.public_customize)
         ret.unshift(IMAGES_TYPE_MAP.public)
