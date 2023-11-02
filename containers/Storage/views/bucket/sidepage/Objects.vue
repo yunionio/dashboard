@@ -33,16 +33,17 @@ import { objectsModel } from '@Storage/views/bucket/utils/controller.js'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { sizestrWithUnit } from '@/utils/utils'
+import i18n from '@/locales'
 
 const validDirName = (rule, value, callback) => {
-  if (value === '') {
-    callback(new Error(this.$t('storage.text_151')))
+  if (!value) {
+    callback(new Error(i18n.t('storage.text_151')))
   } else if (value.startsWith('/')) {
-    callback(new Error(this.$t('storage.text_152')))
+    callback(new Error(i18n.t('storage.text_152')))
   } else if (value.includes('//')) {
-    callback(new Error(this.$t('storage.validDirName')))
+    callback(new Error(i18n.t('storage.validDirName')))
   } else if (value === '..') {
-    callback(new Error(this.$t('storage.text_153')))
+    callback(new Error(i18n.t('storage.text_153')))
   } else {
     callback()
   }
