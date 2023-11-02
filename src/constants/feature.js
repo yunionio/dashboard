@@ -183,6 +183,11 @@ const LicenseItems = [
   {
     key: 'xsky',
     meta: meta('resource_managent', 'storage', true),
+    hiddenName: true,
+    logoStyle: {
+      width: '100px',
+      height: '16px',
+    },
   },
   {
     key: 'k8s',
