@@ -1,5 +1,5 @@
 // import AccessInfo from '../components/AccessInfo'
-import { ACL_TYPE } from '@Storage/constants/index.js'
+import { ACL_TYPE, STORAGE_CLASS } from '@Storage/constants/index.js'
 import { getNameDescriptionTableColumn, getStatusTableColumn, getBrandTableColumn, getRegionTableColumn, getAccountTableColumn, getProjectTableColumn, getPublicScopeTableColumn, getTagTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -43,7 +43,7 @@ export default {
         title: i18n.t('storage.text_38'),
         width: 120,
         formatter: ({ row }) => {
-          return row.storage_class || '-'
+          return row.storage_class ? STORAGE_CLASS[row.storage_class] || row.storage_class : '-'
         },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('oss_hidden_columns.storage_class')

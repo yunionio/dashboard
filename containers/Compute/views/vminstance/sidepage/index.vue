@@ -274,6 +274,9 @@ export default {
       if (this.listRowData.brand !== 'OneCloud') {
         this.detailTabs = R.remove(R.findIndex(R.propEq('key', 'gpu-list'))(this.detailTabs), 1, this.detailTabs)
       }
+      if (this.listRowData.brand === 'VolcEngine') {
+        this.detailTabs = R.remove(R.findIndex(R.propEq('key', 'vm-snapshot-sidepage'))(this.detailTabs), 1, this.detailTabs)
+      }
     },
     initChangeTab () {
       if (this.params.tab) {

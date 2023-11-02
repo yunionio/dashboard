@@ -1,7 +1,7 @@
-import { DISK_TYPES, ALL_STORAGE_LABEL } from '../../../constants'
 import status from '@/locales/zh-CN'
 import { PROVIDER_MAP } from '@/constants'
 import i18n from '@/locales'
+import { DISK_TYPES, ALL_STORAGE_LABEL } from '../../../constants'
 const { disk: diskStatus, server: serverStatus } = status.status
 
 const _tran = (enArr, status = diskStatus, res = 'disk') => {
@@ -287,6 +287,30 @@ export const diskResizeConfig = {
       tooltip: '',
     }
   },
+  volcengine (obj) {
+    const { validate, tooltip } = diskResizeConfig.base(obj)
+    if (!validate) {
+      return {
+        validate: false,
+        tooltip,
+      }
+    }
+    if (obj.disk_type === 'data') { // 数据盘
+      const validate = obj.guest_status === 'ready' || obj.guest_status === 'running' // 关机可以扩容
+      const tooltip = validate ? '' : i18n.t('compute.volcengine.data_disk_resize_tip', [_tran(['ready', 'running'], serverStatus, 'server')])
+      return {
+        validate,
+        tooltip,
+      }
+    } else { // 系统盘
+      const validate = obj.guest_status === 'ready' // 关机可以扩容
+      const tooltip = validate ? '' : i18n.t('compute.volcengine.sys_disk_resize_tip', [_tran(['ready'], serverStatus, 'server')])
+      return {
+        validate,
+        tooltip,
+      }
+    }
+  },
 }
 
 // 磁盘新建快照的逻辑梳理
@@ -522,6 +546,11 @@ export const diskCreateSnapshotConfig = {
     }
   },
   bingocloud (obj) {
+    return {
+      validate: false,
+    }
+  },
+  volcengine (obj) {
     return {
       validate: false,
     }
