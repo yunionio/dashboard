@@ -31,14 +31,14 @@ export const diskResizeConfig = {
       }
     }
     if (obj.disk_type === 'data') { // 数据盘
-      const validate = obj.guest_status === 'ready' || obj.guest_status === 'running' // 关机可以扩容
+      const validate = obj.guest_status === 'ready' || obj.guest_status === 'running' // 开关机可以扩容
       const tooltip = validate ? '' : i18n.t('compute.text_1349', [_tran(['ready', 'running'], serverStatus, 'server')])
       return {
         validate,
         tooltip,
       }
     } else { // 系统盘
-      const validate = obj.guest_status === 'ready' || obj.guest_status === 'running' // 关机可以扩容
+      const validate = obj.guest_status === 'ready' || obj.guest_status === 'running' // 开关机可以扩容
       const tooltip = validate ? '' : i18n.t('compute.text_1349', [_tran(['running'], serverStatus, 'server')])
       return {
         validate,
