@@ -243,6 +243,9 @@ export default {
           params.cloudregion_id = this.cloudregionZoneParams.cloudregion
         }
       }
+      if (this.form.fd.imageType === 'private_iso') {
+        params.filter = 'name.endswith(".iso")'
+      }
       if (!params.cloudregion_id) return {}
       return params
     },
