@@ -38,13 +38,13 @@
 <script>
 import * as R from 'ramda'
 import _ from 'lodash'
-import ImageSelectTemplate from './ImageSelectTemplate'
 import { SELECT_IMAGE_KEY_SUFFIX } from '@Compute/constants'
 import { Manager } from '@/utils/manager'
 import { HYPERVISORS_MAP } from '@/constants'
 import { IMAGES_TYPE_MAP, OS_TYPE_OPTION_MAP } from '@/constants/compute'
 import storage from '@/utils/storage'
 import { uuid } from '@/utils/utils'
+import ImageSelectTemplate from './ImageSelectTemplate'
 
 const initData = undefined
 
@@ -145,7 +145,7 @@ export default {
     },
     // 选择的镜像类型是否为私有云镜像
     isPrivateImage () {
-      return this.imageType === IMAGES_TYPE_MAP.private.key
+      return this.imageType === IMAGES_TYPE_MAP.private.key || this.imageType === IMAGES_TYPE_MAP.private_iso.key
     },
     isVMwareImage () {
       return this.imageType === IMAGES_TYPE_MAP.vmware.key

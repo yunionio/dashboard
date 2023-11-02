@@ -5906,5 +5906,7 @@
   "common.ssh_login_err_msg": "please enter SSH login information and try logging in again",
   "common.intranet": "Intranet",
   "common.schedtag.extra": "How to use scheduling tags",
-  "common.view.doc": "View Document"
+  "common.view.doc": "View Document",
+  "common.private_iso": "@:dictionary.private_env ISO images",
+  "common.private_iso_tip": "ISO images of @:dictionary.private_env"
 }
