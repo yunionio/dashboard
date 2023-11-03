@@ -313,7 +313,7 @@ const actionEableMap = {
       proxmox: false,
       bingocloud: false,
       remotefile: false,
-      volcengine: true,
+      volcengine: ['running'],
     },
   },
   'IP SSH': {
