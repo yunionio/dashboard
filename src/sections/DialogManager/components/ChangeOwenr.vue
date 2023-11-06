@@ -88,6 +88,9 @@ export default {
   },
   computed: {
     columns () {
+      if (this.params.custom_columns) {
+        return this.params.custom_columns
+      }
       if (this.params.columns && this.params.columns.length >= 2) {
         const keys = ['name', 'tenant']
         return this.params.columns.filter(({ field }) => {
