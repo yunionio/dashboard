@@ -199,7 +199,9 @@ export default {
     },
     async init () {
       if (this.resId) {
-        this.isServer ? await this.updateServerProbeIsolatedDevices() : await this.updateHostProbeIsolatedDevices()
+        if (!this.isServer) {
+          await this.updateHostProbeIsolatedDevices()
+        }
       }
       await this.list.fetchData()
     },
