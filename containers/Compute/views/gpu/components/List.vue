@@ -9,11 +9,11 @@
 
 <script>
 import * as R from 'ramda'
+import { GPU_DEV_TYPE_OPTION_MAP } from '@Compute/constants'
 import { getNameFilter, getRegionFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { GPU_DEV_TYPE_OPTION_MAP } from '@Compute/constants'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
@@ -235,7 +235,9 @@ export default {
     },
     async init () {
       if (this.resId) {
-        this.isServer ? await this.updateServerProbeIsolatedDevices() : await this.updateHostProbeIsolatedDevices()
+        if (!this.isServer) {
+          await this.updateHostProbeIsolatedDevices()
+        }
       }
       await this.list.fetchData()
     },
