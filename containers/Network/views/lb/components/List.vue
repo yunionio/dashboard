@@ -195,6 +195,27 @@ export default {
           label: this.$t('network.text_200'),
           actions: () => {
             return [
+              {
+                label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
+                permission: 'lb_loadbalancers_perform_change_owner',
+                action: () => {
+                  this.createDialog('ChangeOwenrDialog', {
+                    data: this.list.selectedItems,
+                    custom_columns: this.columns.filter(o => ['name', 'address', 'tenant'].includes(o.field)),
+                    onManager: this.onManager,
+                    name: this.$t('network.text_714'),
+                    resource: 'loadbalancers',
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  ret.validate = true
+                  return ret
+                },
+              },
               ...getEnabledSwitchActions(this, undefined, ['lb_loadbalancers_perform_enable', 'lb_loadbalancers_perform_disable'], {
                 actions: [
                   (obj) => {
