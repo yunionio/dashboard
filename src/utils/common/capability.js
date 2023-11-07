@@ -90,7 +90,7 @@ export const cloudregionFilterByCapability = ({ capability = {}, resource = '', 
     const regionBrandKey = (item.provider || item.brand || (regionKey ? item[regionKey] : '')).toLowerCase()
     // onecloud 验证 ceph/s3/xsky
     if (regionBrandKey === 'onecloud') {
-      return filterOriginList.some(key => ['ceph', 's3', 'xsky', 'onecloud'].includes(key)) && !filterList.some(key => ['ceph', 's3', 'xsky', 'onecloud'].includes(key))
+      return filterOriginList.some(key => ['ceph', 's3', 'xsky', 'onecloud', 'vmware'].includes(key)) && !filterList.some(key => ['ceph', 's3', 'xsky', 'onecloud', 'vmware'].includes(key))
     }
     if (regionBrandKey && (filterList.includes(regionBrandKey) || !filterOriginList.includes(regionBrandKey))) {
       return false
