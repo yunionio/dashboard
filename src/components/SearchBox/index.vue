@@ -49,9 +49,9 @@
 
 <script>
 import * as R from 'ramda'
-import i18n from '@/locales'
 import AutoCompleter from './AutoCompleter'
 import Tag from './Tag'
+import i18n from '@/locales'
 
 export default {
   name: 'SearchBox',
@@ -134,7 +134,7 @@ export default {
       R.forEachObjIndexed((value, key) => {
         if (Array.isArray(value)) {
           const whiteList = ['created_at', 'received_at', 'recv_at', 'start_time']
-          if (!whiteList.includes(key)) {
+          if (!whiteList.includes(key) && !this.options[key].is_time) {
             value = value.filter((item) => {
               if (R.is(Boolean, item)) return true
               return item?.trim().length > 0
