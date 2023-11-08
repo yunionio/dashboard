@@ -411,6 +411,7 @@ export function getTimeRangeFilter ({ label = '', field = '' }) {
     dropdown: true,
     date: true,
     filter: true,
+    is_time: true,
     formatter: (val, type) => {
       if (type === 'before') {
         return `${field}.le("${utcTime(val)}")`
