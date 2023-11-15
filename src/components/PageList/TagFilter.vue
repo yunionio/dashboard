@@ -1,17 +1,17 @@
 <template>
-  <div class="d-flex tag-filter-wrap ml-2 flex-fill">
+  <div :class="`d-flex tag-filter-wrap ml-2 ${flexFill ? 'flex-fill' : ''}`">
     <tag-select
       multiple
-      filter-without-user-meta
-      filter-with-user-meta
       :params="params"
       :value="tagFilter"
       :managerInstance="tagManagerInstance"
       :show-ext-tags="showExtTags"
       :show-no-value="showNoValue"
+      :filter-with-user-meta="filterWithUserMeta"
+      :filter-without-user-meta="filterWithoutUserMeta"
       @change="handleTagFilterChange">
       <template v-slot:trigger>
-        <a-button class="flex-shrink-0" style="margin-right: -1px;"><icon type="res-tag" />{{$t('common.text00012')}}</a-button>
+        <a-button class="flex-shrink-0" style="margin-right: -1px;"><icon type="res-tag" />{{buttonText || $t('common.text00012')}}</a-button>
       </template>
     </tag-select>
     <div class="tag-wrap" v-if="tags && tags.length > 0">
@@ -55,6 +55,19 @@ export default {
     },
     showExtTags: Boolean,
     showNoValue: Boolean,
+    buttonText: String,
+    flexFill: {
+      type: Boolean,
+      default: true,
+    },
+    filterWithUserMeta: {
+      type: Boolean,
+      default: true,
+    },
+    filterWithoutUserMeta: {
+      type: Boolean,
+      default: true,
+    },
   },
   computed: {
     params () {

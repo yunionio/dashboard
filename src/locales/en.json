@@ -2734,7 +2734,8 @@
     "bastion_host": "Bastion Host",
     "onpremise_env": "On-premise",
     "private_env": "Private cloud",
-    "public_env": "Public cloud"
+    "public_env": "Public cloud",
+    "project_tag": "Project tag"
   },
   "res": {
     "role": "Role",

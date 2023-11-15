@@ -2754,7 +2754,8 @@
     "bastion_host": "要塞ホスト",
     "onpremise_env": "ローカル IDC",
     "private_env": "プライベートクラウド",
-    "public_env": "パブリッククラウド"
+    "public_env": "パブリッククラウド",
+    "project_tag": "プロジェクトラベル"
   },
   "res": {
     "role": "@:dictionary.role",

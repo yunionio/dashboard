@@ -7,8 +7,11 @@
       :loading="loading"
       :group-actions="groupActions"
       :tag-manager-instance="tagManagerInstance"
+      :tag-manager-instance2="tagManagerInstance2"
       :show-tag-filter="showTagFilter"
+      :show-tag-filter2="showTagFilter2"
       :tag-filter="tagFilter"
+      :tag-filter2="tagFilter2"
       :resource="resource"
       :show-searchbox="showSearchbox"
       :filter-options="filterOptions"
@@ -39,6 +42,7 @@
       @refresh="refresh"
       @clear-selected="clearSelected"
       @tag-filter-change="tagFilterChange"
+      @tag-filter-change2="tagFilterChange2"
       @filter-change="filterChange"
       @treeToggleClick="treeToggleClick">
       <slot name="group-actions-prepend" slot="group-actions-prepend" />
@@ -148,10 +152,13 @@ export default {
     singleActions: Array,
     // 提供给标签过滤器自定义获取标签数据的Manager实例
     tagManagerInstance: Object,
+    tagManagerInstance2: Object,
     // 开启标签过滤
     showTagFilter: Boolean,
+    showTagFilter2: Boolean,
     // 开启标签列
     showTagColumns: Boolean,
+    showTagColumns2: Boolean,
     // 是否显示搜索框
     showSearchbox: {
       type: Boolean,
@@ -212,7 +219,17 @@ export default {
         return {}
       },
     },
+    extTagParams2: {
+      type: Object,
+      default () {
+        return {}
+      },
+    },
     showExtTags: {
+      type: Boolean,
+      default: false,
+    },
+    showExtTags2: {
       type: Boolean,
       default: false,
     },
@@ -229,6 +246,10 @@ export default {
       type: Array,
     },
     showNoValue: {
+      type: Boolean,
+      default: true,
+    },
+    showNoValue2: {
       type: Boolean,
       default: true,
     },
@@ -275,6 +296,9 @@ export default {
     // 标签过滤项
     tagFilter () {
       return this.list.tagFilter
+    },
+    tagFilter2 () {
+      return this.list.tagFilter2
     },
     filterOptions () {
       return this.list.filterOptions
@@ -350,6 +374,9 @@ export default {
     // 更改标签并重置刷新列表
     tagFilterChange (tagFilter) {
       this.list.changeTagFilter(tagFilter)
+    },
+    tagFilterChange2 (tagFilter) {
+      this.list.changeTagFilter2(tagFilter)
     },
     filterChange (filter) {
       this.list.changeFilter(filter)
