@@ -271,6 +271,7 @@ export default {
           },
         },
         formatter: ({ row }) => {
+          if (!row.metadata) return
           const dist = row.metadata.os_distribution || row.metadata.distro
           const version = row.metadata.os_version || row.metadata.version
           let tooltip = ''
