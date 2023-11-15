@@ -101,6 +101,26 @@ export function getInBrandFilter (key, inBrands = []) {
   }
 }
 
+export function getBrandDistinctFilter ({ getParams = {} } = {}) {
+  return {
+    label: i18n.t('table.title.brand'),
+    dropdown: true,
+    multiple: true,
+    distinctField: {
+      type: 'field',
+      key: 'brand',
+      getParams,
+    },
+    mapper: data => {
+      return [
+        ...getBrandItems(),
+        { key: 'k8s', label: 'K8S' },
+        { key: 'openshift', label: 'OpenShift' },
+      ].filter(v => data.some(item => item.key === v.key))
+    },
+  }
+}
+
 export function getStatusFilter (params) {
   let label = i18n.t('common.status')
   let statusModule = ''
