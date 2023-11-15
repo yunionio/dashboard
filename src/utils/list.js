@@ -181,6 +181,7 @@ class CreateList {
       hiddenColumns = [],
       // 标签的过滤项
       tagFilter = {},
+      tagFilter2 = {},
       // 标签层级过滤项
       projectTagFilter = {},
       // 外传responseData
@@ -254,6 +255,7 @@ class CreateList {
     this.configLoaded = false
     // 标签的过滤项
     this.tagFilter = tagFilter
+    this.tagFilter2 = tagFilter2
     this.projectTagFilter = projectTagFilter
     // 外传responseData
     this.responseData = responseData
@@ -549,7 +551,7 @@ class CreateList {
       ...params,
       ...this.genFilterParams(params),
     }
-    if ((!R.isEmpty(this.tagFilter) && !R.isNil(this.tagFilter)) || (!R.isEmpty(this.projectTagFilter) && !R.isNil(this.projectTagFilter))) {
+    if ((!R.isEmpty(this.tagFilter) && !R.isNil(this.tagFilter)) || (!R.isEmpty(this.projectTagFilter) && !R.isNil(this.projectTagFilter)) || (!R.isEmpty(this.tagFilter2) && !R.isNil(this.tagFilter2))) {
       params = {
         ...params,
         ...this.genTagFilterParams(params),
@@ -782,6 +784,17 @@ class CreateList {
   }
 
   /**
+   * @description 标签过滤条件变更
+   * @param {*} tagFilter
+   * @memberof CreateList
+   */
+  changeTagFilter2 (tagFilter) {
+    this.tagFilter2 = tagFilter
+    this.reset()
+    this.fetchData(0, 0)
+  }
+
+  /**
    * @description 项目标签过滤条件变更
    * @param {[tags, project_tags]: Array, tagFilterKey: String} projectTagFilter
    * @memberof CreateList
@@ -965,6 +978,7 @@ class CreateList {
   genTagFilterParams (params) {
     const ret = {}
     let index = 0
+    let index2 = 0
     const { projectTagFilter = {} } = this
     const { tagFilterKey = 'project_tags' } = projectTagFilter
     if (projectTagFilter[tagFilterKey]) {
@@ -1010,6 +1024,27 @@ class CreateList {
         }
       }
     }, this.tagFilter)
+
+    R.forEachObjIndexed((value, key) => {
+      if (key === 'without_user_meta' && value && value[0] === true) {
+        ret.without_user_meta = true
+      } else if (key === 'with_user_meta' && value && value[0] === true) {
+        ret.with_user_meta = true
+      } else {
+        ret[`projecttags.${index2}.key`] = []
+        let len = 1
+        if (value && value.length) len = value.length
+        if (len > 0) {
+          for (let i = 0; i < len; i++) {
+            ret[`projecttags.${index2}.key`] = key
+            ret[`projecttags.${index2}.value`] = value[i]
+            index2++
+          }
+        } else {
+          ret[`projecttags.${index2}.value`] = ''
+        }
+      }
+    }, this.tagFilter2)
 
     if (ret.with_user_meta && ret.without_user_meta) {
       delete ret.with_user_meta

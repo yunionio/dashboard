@@ -35,7 +35,22 @@
             :extTagParams="extTagParams"
             :show-ext-tags="showExtTags"
             :show-no-value="showNoValue"
+            :flexFill="!showTagFilter2"
             @tag-filter-change="(tagFilter) => $emit('tag-filter-change', tagFilter)" />
+        </template>
+        <!-- 标签过滤器 -->
+        <template v-if="showTagFilter2">
+          <tag-filter
+            :resource="resource"
+            :tag-manager-instance="tagManagerInstance2"
+            :tag-filter="tagFilter2"
+            :extTagParams="extTagParams2"
+            :show-ext-tags="showExtTags2"
+            :show-no-value="showNoValue2"
+            :button-text="$t('dictionary.project_tag')"
+            :filter-with-user-meta="false"
+            :filter-without-user-meta="false"
+            @tag-filter-change="(tagFilter) => $emit('tag-filter-change2', tagFilter)" />
         </template>
       </div>
       <div class="ml-4 d-flex flex-shrink-0 justify-content-end">
@@ -108,9 +123,12 @@ export default {
     groupActions: Array,
     // 提供给标签过滤器自定义获取标签数据的Manager实例
     tagManagerInstance: Object,
+    tagManagerInstance2: Object,
     // 开启标签过滤
     showTagFilter: Boolean,
+    showTagFilter2: Boolean,
     tagFilter: Object,
+    tagFilter2: Object,
     // create list传递的resource
     resource: [String, Object, Function],
     showSearchbox: Boolean,
@@ -167,10 +185,20 @@ export default {
     showExtTags: {
       type: Boolean,
     },
+    extTagParams2: {
+      type: Object,
+      default () {
+        return {}
+      },
+    },
+    showExtTags2: {
+      type: Boolean,
+    },
     showTagConfig: Boolean,
     tagConfigParams: Object,
     treeToggleOpen: Boolean,
     showNoValue: Boolean,
+    showNoValue2: Boolean,
   },
   computed: {
     _filterOptions () {
