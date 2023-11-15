@@ -63,7 +63,7 @@ export default {
     wireParams () {
       const params = {
         scope: this.$store.getters.scope,
-        brand: this.params.data[0].brand,
+        // brand: this.params.data[0].brand,
         vpcId: this.params.data[0].vpc_id,
         // zone: this.params.data[0].zone_id,
       }
