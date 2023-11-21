@@ -1097,36 +1097,52 @@ export default {
                     },
                     meta: () => {
                       const ret = { validate: true, tooltip: null }
+                      const statusSet = new Set()
+                      const hypervisorSet = new Set()
+                      const backupHostSet = new Set()
+
                       if (!this.isAdminMode && !this.isDomainMode) {
                         ret.validate = false
                         ret.tooltip = this.$t('compute.tooltip.check_domain_permission')
                         return ret
                       }
-                      const isReadyStatus = this.list.selectedItems.every((status) => {
-                        return ['ready'].includes(status)
+
+                      this.list.selectedItems.forEach((item) => {
+                        statusSet.add(item.status)
+                        hypervisorSet.add(item.hypervisor)
+                        if (item.backup_host_id) {
+                          backupHostSet.add(item.backup_host_id)
+                        }
                       })
-                      if (!isReadyStatus) {
+
+                      if (statusSet.size > 1 || !statusSet.has('ready')) {
                         ret.tooltip = this.$t('compute.tooltip.check_ready_status_transfer')
                         ret.validate = false
                         return ret
                       }
-                      const isAllVMware = this.list.selectedItems.every(item => item.hypervisor === typeClouds.hypervisorMap.esxi.key)
-                      if (!isAllVMware) {
-                        ret.tooltip = this.$t('compute.brand_support', [typeClouds.hypervisorMap.esxi.label])
+                      if (hypervisorSet.size > 1) {
+                        ret.tooltip = this.$t('compute.v2vtransfer.same_brand')
                         ret.validate = false
                         return ret
+                      } else {
+                        if (!hypervisorSet.has(typeClouds.hypervisorMap.cloudpods.key) &&
+                          !hypervisorSet.has(typeClouds.hypervisorMap.esxi.key)) {
+                          ret.tooltip = this.$t('compute.brand_support', [`${typeClouds.hypervisorMap.cloudpods.label},${typeClouds.hypervisorMap.esxi.label}`])
+                          ret.validate = false
+                          return ret
+                        }
                       }
-                      const isBackupHost = this.list.selectedItems.some((item) => item.backup_host_id)
-                      if (isBackupHost) {
+                      if (backupHostSet.size > 0) {
                         ret.tooltip = this.$t('compute.tooltip.check_backup_host_transfer')
                         ret.validate = false
                         return ret
                       }
+
                       ret.validate = cloudEnabled('v2vTransfer', this.list.selectedItems)
                       ret.tooltip = cloudUnabledTip('v2vTransfer', this.list.selectedItems)
                       return ret
                     },
-                    hidden: () => !(hasSetupKey(['vmware'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
+                    hidden: () => !(hasSetupKey(['vmware', 'cloudpods'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
                   },
                   // 快速恢复
                   {

@@ -428,7 +428,7 @@ const actionEableMap = {
       aliyun: false,
       aws: false,
       onecloud: false,
-      cloudpods: false,
+      cloudpods: ['ready'],
       vmware: ['ready'],
       baremetal: false,
       huawei: false,

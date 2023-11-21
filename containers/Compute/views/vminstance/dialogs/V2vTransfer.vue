@@ -1,5 +1,5 @@
 <template>
-  <base-dialog @cancel="cancelDialog">
+  <base-dialog class="v2vtransfer-dialog" @cancel="cancelDialog" :width="1300">
     <div slot="header">{{$t('compute.v2vtransfer.label')}}</div>
     <div slot="body">
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.v2vtransfer.label')" />
@@ -7,6 +7,33 @@
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
         <a-form-item :label="$t('compute.v2vtransfer.type')">
           <a-radio v-decorator="decorators.type">{{ $t('compute.v2vtransfer.kvm') }} <help-tooltip name="v2vTransferType" /></a-radio>
+        </a-form-item>
+        <a-form-item :label="$t('dictionary.project')">
+          <domain-project
+            :decorators="decorators.projectDomain"
+            :fc="form.fc"
+            :labelInValue="false" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_177')" class="mb-0">
+          <cloudregion-zone
+            :zone-params="zoneParams"
+            :cloudregion-params="cloudregionParams"
+            :decorator="decorators.cloudregionZone"
+            filterBrandResource="compute_engine" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_104')" class="mb-0">
+          <server-network
+            :form="form"
+            :decorator="decorators.network"
+            :network-resource-mapper="networkResourceMapper"
+            :network-list-params="networkParams"
+            :schedtag-params="resourcesParams.schedtag"
+            :vpcResource="vpcResource"
+            :networkVpcParams="resourcesParams.vpcParams"
+            :vpcResourceMapper="vpcResourceMapper"
+            :showMacConfig="firstData.hypervisor === 'kvm'"
+            :showDeviceConfig="firstData.hypervisor === 'kvm'"
+            :isDialog="true" />
         </a-form-item>
         <a-form-item
           :label="$t('compute.text_111')"
@@ -31,24 +58,63 @@
 </template>
 
 <script>
+import _ from 'lodash'
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
+import ServerNetwork from '@Compute/sections/ServerNetwork'
 import { typeClouds } from '@/utils/common/hypervisor'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import ListSelect from '@/sections/ListSelect'
+import DomainProject from '@/sections/DomainProject'
+import CloudregionZone from '@/sections/CloudregionZone'
+import { HYPERVISORS_MAP } from '@/constants'
+import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
 import ResourceProps from '../mixins/resourceProps'
 
 export default {
   name: 'VmV2vTransferDialog',
+  provide () {
+    return {
+      form: this.form,
+    }
+  },
   components: {
     ListSelect,
+    DomainProject,
+    ServerNetwork,
+    CloudregionZone,
   },
   mixins: [DialogMixin, WindowsMixin, ResourceProps],
   data () {
+    const firstData = this.params.data[0]
+
+    const checkIpInSegment = (i, networkData) => {
+      return (rule, value, cb) => {
+        const isIn = isWithinRange(value, networkData.guest_ip_start, networkData.guest_ip_end)
+        if (isIn) {
+          cb()
+        } else {
+          cb(new Error(this.$t('compute.text_205')))
+        }
+      }
+    }
+
     return {
       loading: false,
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              this.$set(this.form.fd, key, values[key])
+            })
+          },
+        }),
+        fd: {},
+        fi: {
+          capability: {},
+        },
       },
       hosts: [],
       message: '',
@@ -60,6 +126,40 @@ export default {
             valuePropName: 'checked',
           },
         ],
+        projectDomain: {
+          domain: [
+            'domain',
+            {
+              initialValue: firstData.domain_id,
+            },
+          ],
+          project: [
+            'project',
+            {
+              initialValue: firstData.tenant_id,
+            },
+          ],
+        },
+        cloudregionZone: {
+          cloudregion: [
+            'cloudregion',
+            {
+              initialValue: { key: '', label: '' },
+              rules: [
+                { validator: isRequired(), message: this.$t('compute.text_212') },
+              ],
+            },
+          ],
+          zone: [
+            'zone',
+            {
+              initialValue: { key: '', label: '' },
+              rules: [
+                { validator: isRequired(), message: this.$t('compute.text_213') },
+              ],
+            },
+          ],
+        },
         host: [
           'host',
           {
@@ -68,6 +168,151 @@ export default {
             ],
           },
         ],
+        network: {
+          networkType: [
+            'networkType',
+            {
+              initialValue: NETWORK_OPTIONS_MAP.default.key,
+            },
+          ],
+          networkConfig: {
+            vpcs: i => [
+          `vpcs[${i}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+            rules: [{
+              required: true,
+              message: this.$t('compute.text_194'),
+            }],
+          },
+            ],
+            networks: i => [
+          `networks[${i}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+            rules: [{
+              required: true,
+              message: this.$t('compute.text_217'),
+            }],
+          },
+            ],
+            ips: (i, networkData) => [
+          `networkIps[${i}]`,
+          {
+            validateFirst: true,
+            validateTrigger: ['blur', 'change'],
+            rules: [
+              {
+                required: true,
+                message: this.$t('compute.text_218'),
+              },
+              {
+                validator: validateForm('IPv4'),
+              },
+              {
+                validator: checkIpInSegment(i, networkData),
+              },
+            ],
+          },
+            ],
+            macs: (i, networkData) => [
+          `networkMacs[${i}]`,
+          {
+            validateFirst: true,
+            validateTrigger: ['blur', 'change'],
+            rules: [
+              {
+                required: true,
+                message: this.$t('compute.text_806'),
+              },
+              {
+                validator: validateForm('mac'),
+              },
+            ],
+          },
+            ],
+            devices: i => [
+          `networkDevices[${i}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+            rules: [{
+              required: true,
+              message: this.$t('compute.sriov_device_tips'),
+            }],
+          },
+            ],
+          },
+          networkSchedtag: {
+            schedtags: i => [
+          `networkSchedtags[${i}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+            rules: [{
+              required: true,
+              message: this.$t('compute.text_123'),
+            }],
+          },
+            ],
+            policys: (i, networkData) => [
+          `networkPolicys[${i}]`,
+          {
+            validateTrigger: ['blur', 'change'],
+            rules: [{
+              required: true,
+              message: this.$t('common_256'),
+            }],
+          },
+            ],
+            devices: i => [
+          `networkDevices[${i}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+            rules: [{
+              required: true,
+              message: this.$t('compute.sriov_device_tips'),
+            }],
+          },
+            ],
+          },
+        },
+        schedPolicy: {
+          schedPolicyType: [
+            'schedPolicyType',
+            {
+              initialValue: 'default',
+            },
+          ],
+          schedPolicyHost: [
+            'schedPolicyHost',
+            {
+              rules: [
+                { required: true, message: this.$t('compute.text_219') },
+              ],
+            },
+          ],
+          policySchedtag: {
+            schedtags: i => [
+          `policySchedtagSchedtags[${i}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+            rules: [{
+              required: true,
+              message: this.$t('compute.text_123'),
+            }],
+          },
+            ],
+            policys: (i, networkData) => [
+          `policySchedtagPolicys[${i}]`,
+          {
+            validateTrigger: ['blur', 'change'],
+            rules: [{
+              required: true,
+              message: this.$t('common_256'),
+            }],
+          },
+            ],
+          },
+        },
       },
       formItemLayout: {
         wrapperCol: {
@@ -89,21 +334,21 @@ export default {
     },
     hostsParams () {
       const hostIds = this.forcastData?.filtered_candidates?.map(v => v.id) || []
-
+      const { domain, zone } = this.form.fd
       const ret = {
         scope: this.scope,
         limit: 10,
         enabled: 1,
         host_status: 'online',
         brand: typeClouds.brandMap.OneCloud.brand,
-        server_id_for_network: this.firstData.id,
         os_arch: this.firstData.os_arch,
-      }
-      if (this.isAdminMode && this.isSingle) {
-        ret.project_domain = this.params.data[0].domain_id
+        project_domain: domain,
       }
       if (hostIds && hostIds.length > 0) {
         ret.filter = `id.notin(${hostIds.join(',')})`
+      }
+      if (zone) {
+        ret.zone = zone.key
       }
       return ret
     },
@@ -143,47 +388,182 @@ export default {
         return fields.indexOf(field) > -1
       })
     },
+    networkParams () {
+      const ret = {
+        scope: this.scope,
+        usable: true,
+      }
+      const { host, domain, zone } = this.form.fd
+      if (host) {
+        ret.host = host
+      }
+      if (domain) {
+        ret.project_domain = domain
+      }
+      if (zone) {
+        ret.zone = zone.key
+      }
+      return ret
+    },
+    vpcResource () {
+      const { cloudregion } = this.form.fd
+      if (!cloudregion) return ''
+      return `cloudregions/${cloudregion.key}/vpcs`
+    },
+    resourcesParams () {
+      const schedtag = {
+        limit: 1024,
+        'filter.0': 'resource_type.equals(networks)',
+      }
+      const vpcParams = {
+        limit: 0,
+        usable: true,
+      }
+      const { domain, zone } = this.form.fd
+      if (domain) {
+        vpcParams.project_domain = domain
+      }
+      if (zone) {
+        vpcParams.zone_id = zone.key
+      }
+      return {
+        schedtag,
+        vpcParams,
+      }
+    },
+    cloudregionParams () {
+      return {
+        cloud_env: 'onpremise',
+        usable: true,
+        show_emulated: true,
+        scope: this.scope,
+      }
+    },
+    zoneParams () {
+      return {
+        usable: true,
+        show_emulated: true,
+        order_by: 'created_at',
+        order: 'asc',
+        scope: this.scope,
+      }
+    },
+  },
+  watch: {
+    'form.fd.zone' (newV, oldV) {
+      if (newV?.key && (newV.key !== oldV.key)) {
+        this.capability(newV.key)
+      }
+    },
   },
   created () {
-    // this.isSingle && this.queryForcastData()
+    this.capability = _.debounce(this._capability, 1000)
     this.queryHosts()
   },
   methods: {
-    queryForcastData () {
-      this.doForecast().then((res) => {
-        this.forcastData = res.data
-      }).catch((err) => {
-        console.log(err)
-        throw err
+    _capability (zoneId) { // 可用区查询
+      const data = { show_emulated: true, scope: this.scope }
+      const m = new this.$Manager('zones')
+      m.get({
+        id: `${zoneId}/capability`,
+        params: data,
+      }).then(({ data = {} }) => {
+        this.form.fi.capability = {
+          ...data,
+        }
       })
     },
-    doForecast () {
-      const manager = new this.$Manager('servers')
-
-      return manager.performAction({
-        id: this.firstData.id,
-        action: 'migrate-forecast',
-        data: {
-          convert_to_kvm: true,
-        },
-      })
-    },
-    doSingleTransfer (ids, values) {
-      const data = {
-        prefer_host: values.host,
+    vpcResourceMapper (list) {
+      if (this.firstData.hypervisor === HYPERVISORS_MAP.esxi.key) {
+        return list.filter(val => val.id === 'default')
       }
-      return this.params.onManager('performAction', {
-        id: this.firstData.id,
-        steadyStatus: ['running', 'ready'],
-        managerArgs: {
-          action: 'convert-to-kvm',
-          data,
-        },
-      })
+      return list
     },
-    doBatchTransfer (ids, values) {
+    networkResourceMapper (list) {
+      return list
+        .map(val => {
+          const remain = val.ports - val.ports_used
+          if (remain <= 0) {
+            return {
+              ...val,
+              __disabled: true,
+            }
+          }
+          return val
+        })
+        .sort((a, b) => (b.ports - b.ports_used) - (a.ports - a.ports_used))
+    },
+    /**
+   * 组装网络数据
+   *
+   * @returns { Array }
+   * @memberof GenCreateData
+   */
+    genNetworks (values) {
+      let ret = [{ exit: false }]
+      // 指定 IP 子网
+      if (this.form.fd.networkType === NETWORK_OPTIONS_MAP.manual.key) {
+        ret = []
+        R.forEachObjIndexed((value, key) => {
+          const obj = {
+            network: value,
+          }
+          if (this.form.fd.networkIps) {
+            const address = this.form.fd.networkIps[key]
+            if (address) {
+              obj.address = address
+            }
+          }
+          if (this.form.fd.networkMacs) {
+            const mac = this.form.fd.networkMacs[key]
+            if (mac) {
+              obj.mac = mac
+            }
+          }
+          if (this.form.fd.networkExits) {
+            const exit = this.form.fd.networkExits[key]
+            if (exit) {
+              obj.exit = true
+            }
+          }
+          if (this.form.fd.networkDevices) {
+            const device = this.form.fd.networkDevices[key]
+            if (device) {
+              obj.sriov_device = { model: device }
+            }
+          }
+          ret.push(obj)
+        }, values.networks)
+      }
+      // 指定 调度标签
+      if (this.form.fd.networkType === NETWORK_OPTIONS_MAP.schedtag.key) {
+        ret = []
+        R.forEachObjIndexed((value, key) => {
+          const obj = {
+            id: value,
+          }
+          const strategy = this.form.fd.networkPolicys[key]
+          if (strategy) {
+            obj.strategy = strategy
+          }
+          if (this.form.fd.networkDevices) {
+            const device = this.form.fd.networkDevices[key]
+            if (device) {
+              obj.sriov_device = { model: device }
+            }
+          }
+          ret.push({
+            schedtags: [obj],
+          })
+        }, values.networkSchedtags)
+      }
+      return ret
+    },
+    doTransfer (ids, values) {
       const data = {
         prefer_host: values.host,
+        target_hypervisor: this.firstData.hypervisor,
+        networks: this.genNetworks(values),
       }
       return this.params.onManager('batchPerformAction', {
         id: ids,
@@ -199,11 +579,7 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         const ids = this.params.data.map(item => item.id)
-        if (this.isSingle) {
-          await this.doSingleTransfer(ids, values)
-        } else {
-          await this.doBatchTransfer(ids, values)
-        }
+        await this.doTransfer(ids, values)
         this.cancelDialog()
       } finally {
         this.loading = false
@@ -229,3 +605,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.v2vtransfer-dialog .ant-col-20 {
+  width: 83%;
+}
+</style>
