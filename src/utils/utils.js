@@ -1100,3 +1100,24 @@ export const blobToJson = (blob) => {
     reader.readAsText(blob)
   })
 }
+
+/**
+ * 混合数组的排序方法 x,y 必须为字符串或者数字，
+ * @param {string || Number} x
+ * @param {String || Number} y
+ * @example [2,'x', 'a','哈哈', 'c'].sort((a,b)=>mixSortFunc(a,b))
+ */
+export const mixSortFunc = (x, y) => {
+  const reg = /[a-zA-Z0-9]/
+  if (reg.test(x) || reg.test(y)) {
+    if (x > y) {
+      return 1
+    } else if (x < y) {
+      return -1
+    } else {
+      return 0
+    }
+  } else {
+    return x.localeCompare(y)
+  }
+}

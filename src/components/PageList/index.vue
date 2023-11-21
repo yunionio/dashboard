@@ -34,11 +34,13 @@
       :fetch-distinct-field="fetchDistinctField"
       :before-show-menu-loaded="beforeShowMenuLoaded"
       :extTagParams="extTagParams"
+      :extTagParams2="extTagParams2"
       :show-ext-tags="showExtTags"
       :show-tag-config="showTagConfigCheck"
       :tag-config-params="tagConfigParams"
       :treeToggleOpen="treeToggleOpen"
       :show-no-value="showNoValue"
+      :tagFilterResource2="tagFilterResource2"
       @refresh="refresh"
       @clear-selected="clearSelected"
       @tag-filter-change="tagFilterChange"
@@ -257,6 +259,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    tagFilterResource2: String,
   },
   provide: {
     // 声明在List中

@@ -41,7 +41,7 @@
         <!-- 标签过滤器 -->
         <template v-if="showTagFilter2">
           <tag-filter
-            :resource="resource"
+            :resource="tagFilterResource2 || resource"
             :tag-manager-instance="tagManagerInstance2"
             :tag-filter="tagFilter2"
             :extTagParams="extTagParams2"
@@ -199,6 +199,7 @@ export default {
     treeToggleOpen: Boolean,
     showNoValue: Boolean,
     showNoValue2: Boolean,
+    tagFilterResource2: String,
   },
   computed: {
     _filterOptions () {
