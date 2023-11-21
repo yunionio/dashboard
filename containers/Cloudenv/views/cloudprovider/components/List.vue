@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -219,6 +220,15 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    exportDataOptions () {
+      return {
+        downloadType: 'local',
+        title: this.$t('cloudenv.text_318'),
+        items: this.columns,
+      }
+    },
   },
   created () {
     this.initSidePageTab('cloudaccount-detail')

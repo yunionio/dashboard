@@ -40,6 +40,11 @@ export default {
             ]
           },
         },
+        formatter: ({ row }) => {
+          const subscribeIds = (row.account && row.account.split('/')) || []
+          const text = subscribeIds.length > 1 ? subscribeIds[1] : subscribeIds[0]
+          return text
+        },
       },
       getEnabledTableColumn(),
       getStatusTableColumn({ statusModule: 'cloudaccount' }),
@@ -62,6 +67,18 @@ export default {
               }
             }
           },
+        },
+        formatter: ({ row }) => {
+          if (row.sync_status !== 'idle') { // 表示正在同步中
+            return row.sync_status
+          } else {
+            const time = this.$moment(row.last_sync)
+            if (time) {
+              return time.fromNow()
+            } else {
+              return '-'
+            }
+          }
         },
       },
       getLastSyncCostTableColumn(),
