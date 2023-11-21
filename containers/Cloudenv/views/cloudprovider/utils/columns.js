@@ -22,5 +22,19 @@ export const getResourceMatchProjectTableColumn = () => {
         return ret
       },
     },
+    formatter: ({ row }) => {
+      const ret = []
+      ret.push(row.tenant)
+      if (row.project_mapping) {
+        let label = ''
+        if (row.enable_resource_sync) {
+          label = i18n.t('cloudenv.resource_project_mapping')
+        } else if (row.enable_project_sync) {
+          label = i18n.t('cloudenv.project_project_mapping')
+        }
+        ret.push(`${label || i18n.t('cloudenv.text_580')}：${row.project_mapping}`)
+      }
+      return ret
+    },
   }
 }
