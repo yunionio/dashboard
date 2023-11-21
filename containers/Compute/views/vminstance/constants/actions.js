@@ -1623,9 +1623,15 @@ const getSingleActions = function () {
                 },
                 meta: () => {
                   const ret = { validate: true, tooltip: null }
+
                   if (!this.isAdminMode && !this.isDomainMode) {
                     ret.validate = false
                     ret.tooltip = this.$t('compute.tooltip.check_domain_permission')
+                    return ret
+                  }
+                  if (![typeClouds.hypervisorMap.cloudpods.key, typeClouds.hypervisorMap.esxi.key].includes(obj.hypervisor)) {
+                    ret.validate = false
+                    ret.tooltip = i18n.t('compute.brand_support', [`${typeClouds.hypervisorMap.cloudpods.label},${typeClouds.hypervisorMap.esxi.label}`])
                     return ret
                   }
                   if (!['ready'].includes(obj.status)) {
@@ -1633,21 +1639,12 @@ const getSingleActions = function () {
                     ret.tooltip = this.$t('compute.tooltip.check_ready_status_transfer')
                     return ret
                   }
-                  if (obj.hypervisor !== typeClouds.hypervisorMap.esxi.key) {
-                    ret.validate = false
-                    ret.tooltip = i18n.t('compute.brand_support', [typeClouds.hypervisorMap.esxi.label])
-                    return ret
-                  }
                   if (obj.backup_host_id) {
                     ret.validate = false
                     ret.tooltip = this.$t('compute.tooltip.check_backup_host_transfer')
                     return ret
                   }
-                  if (obj.is_gpu) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.tooltip.check_gpu_transfer')
-                    return ret
-                  }
+
                   ret.validate = cloudEnabled('v2vTransfer', obj)
                   ret.tooltip = cloudUnabledTip('v2vTransfer', obj)
                   return ret
