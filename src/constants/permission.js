@@ -1336,7 +1336,7 @@ export const PERMISSION = {
   dictionary_get: ['yunionconf', 'parameters', 'get'],
 
   //
-  price_infos_perform_discount: ['meter', 'price_infos', 'perform', 'discount'],
+  prices_perform_discount: ['meter', 'prices', 'perform', 'discount'],
 
   tapservices_list: ['compute', 'tap_services', 'list'],
   tapservices_perform_enabled: ['compute', 'tap_services', 'perform', 'enabled'],
