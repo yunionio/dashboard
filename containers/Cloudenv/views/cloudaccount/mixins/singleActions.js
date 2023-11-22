@@ -319,7 +319,7 @@ export default {
                 // 设置优惠率
                 {
                   label: i18n.t('cloudaccount.table.action.set_discount'),
-                  permission: 'price_infos_perform_discount',
+                  permission: 'prices_perform_discount',
                   action: () => {
                     this.createDialog('CloudaccountSetDiscountDialog', {
                       data: [obj],
