@@ -227,6 +227,7 @@ export default {
         downloadType: 'local',
         title: this.$t('cloudenv.text_318'),
         items: this.columns,
+        getParams: this.getParams,
       }
     },
   },
