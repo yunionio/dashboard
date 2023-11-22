@@ -243,7 +243,7 @@ export default {
       try {
         const response = await this.$http({
           method: 'GET',
-          url: `/v1/price_infos/discount/${this.data.id}`,
+          url: `/v1/prices/discount/${this.data.id}`,
         })
         this.discount = response.data.discount
       } finally {

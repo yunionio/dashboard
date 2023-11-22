@@ -69,7 +69,7 @@ export default {
       try {
         const response = await this.$http({
           method: 'GET',
-          url: `/v1/price_infos/discount/${this.params.data[0].id}`,
+          url: `/v1/prices/discount/${this.params.data[0].id}`,
         })
         this.fd.discount = (response.data.discount * 100).toFixed(2)
       } finally {
@@ -82,7 +82,7 @@ export default {
         await this.$refs.form.validate()
         await this.$http({
           method: 'PUT',
-          url: `/v1/price_infos/discount/${this.params.data[0].id}`,
+          url: `/v1/prices/discount/${this.params.data[0].id}`,
           data: {
             discount: this.fd.discount * 100 / 10000,
           },
