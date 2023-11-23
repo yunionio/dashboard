@@ -776,14 +776,15 @@ export default {
       }
     },
     setIsLocalDisk () {
-      const isSysLocal = _.get(this.form, 'fd.systemDiskType.key') === 'local'
+      const isLocal = (v = '') => { return v.startsWith('local') }
+      const isSysLocal = isLocal(_.get(this.form, 'fd.systemDiskType.key'))
       const fd = this.form.fc.getFieldsValue()
       let isDiskLocal = true
       const { dataDiskTypes } = fd
       if (!R.is(Object, dataDiskTypes)) return
       const diskTypeItem = dataDiskTypes[Object.keys(dataDiskTypes)[0]]
       if (diskTypeItem && diskTypeItem.key) {
-        isDiskLocal = diskTypeItem.key === 'local'
+        isDiskLocal = isLocal(diskTypeItem.key)
       }
       this.isLocalDisk = isSysLocal && isDiskLocal
     },
