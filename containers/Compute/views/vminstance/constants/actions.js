@@ -1619,6 +1619,7 @@ const getSingleActions = function () {
                     data: [obj],
                     columns: this.columns,
                     onManager: this.onManager,
+                    successCallback: this.refresh,
                   })
                 },
                 meta: () => {
