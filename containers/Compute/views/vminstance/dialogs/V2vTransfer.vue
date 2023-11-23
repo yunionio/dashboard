@@ -580,6 +580,8 @@ export default {
         const values = await this.form.fc.validateFields()
         const ids = this.params.data.map(item => item.id)
         await this.doTransfer(ids, values)
+        this.$message.success(this.$t('common.success'))
+        this.params.successCallback && this.params.successCallback()
         this.cancelDialog()
       } finally {
         this.loading = false
