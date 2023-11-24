@@ -754,6 +754,9 @@ export const RESOURCES_MAP = {
   isolated_device_models: {
     i18n: 'system.text_360',
   },
+  predictions: {
+    i18n: 'dictionary.predictions',
+  },
   ...extraResources,
 }
 
