@@ -37,6 +37,7 @@ import {
   getVpcFilter,
   getOsArchFilter,
   getRegionFilter,
+  getZoneFilter,
   getCloudProviderFilter,
   getDescriptionFilter,
   getCreatedAtFilter,
@@ -112,14 +113,9 @@ export default {
         label: this.$t('table.title.os'),
         dropdown: true,
         multiple: true,
-        items: [
-          { label: 'Windows', key: 'windows' },
-          { label: 'Linux', key: 'linux' },
-          { label: 'VMware', key: 'VMWare' },
-        ],
-        filter: true,
-        formatter: val => {
-          return `os_type.in(${val})`
+        distinctField: {
+          type: 'extra_field',
+          key: 'os_distribution',
         },
       },
       projects: getTenantFilter(),
@@ -148,6 +144,7 @@ export default {
         ],
       },
       region: getRegionFilter(),
+      zone: getZoneFilter(),
       vpc: getVpcFilter(),
       os_arch: getOsArchFilter(),
       // vmem_size: {
@@ -1381,6 +1378,10 @@ export default {
         } else if (col.field === 'password') {
           ret.items.push({ field: 'extra_user', title: this.$t('compute.text_566') })
           ret.items.push({ field: 'extra_password', title: this.$t('common_328') })
+        }
+
+        if (col.field === 'region') {
+          ret.items.push({ field: 'zone', title: this.$t('compute.text_270') })
         }
       })
       return ret

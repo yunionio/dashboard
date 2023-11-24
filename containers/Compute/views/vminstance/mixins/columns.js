@@ -242,7 +242,8 @@ export default {
       {
         field: 'os_type',
         title: i18nLocale.t('table.title.os'),
-        width: 50,
+        width: 100,
+        sortable: true,
         slots: {
           default: ({ row }) => {
             if (!row.metadata) return

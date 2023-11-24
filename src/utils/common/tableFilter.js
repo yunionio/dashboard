@@ -393,6 +393,45 @@ export function getRegionFilter () {
   }
 }
 
+export function getZoneFilter () {
+  return {
+    label: i18n.t('res.zone'),
+    dropdown: true,
+    multiple: true,
+    distinctField: {
+      type: 'extra_field',
+      key: 'zone',
+      afterFetch: async (items, extraParams = {}) => {
+        if (items.length === 0) {
+          return items
+        }
+
+        try {
+          const params = {
+            'filter.0': `name.in(${items.map(item => { return `"${item}"` }).join(',')})`,
+            order_by: 'name',
+            ...extraParams,
+          }
+          const manager = new Manager('zones', 'v2')
+          const { data: { data = [] } } = await manager.list({
+            params,
+          })
+
+          return data.map((zone) => {
+            if (zone._i18n && zone._i18n.name) {
+              return { key: zone.id, label: zone._i18n.name }
+            } else {
+              return { key: zone.id, label: zone.name }
+            }
+          })
+        } catch (error) {
+          return error
+        }
+      },
+    },
+  }
+}
+
 export function distinctFieldFilter ({ service = '', label = '', field = '', multiple = true, type = 'field' } = {}) {
   return {
     label: label || i18n.t(`${service}.title.${field}`),
