@@ -821,6 +821,7 @@
   "cloudenv.task_type.recalculate": "二次定价",
   "cloudenv.task_type.delete_bill": "删除账单",
   "cloudenv.task_type.sync_resource": "资源信息同步",
+  "cloudenv.task_type.predict": "费用预测",
   "cloudenv.month": "月份",
   "cloudenv.billtask_cannot_cancel": "当前账单任务无法取消",
   "cloudenv.title.project_type": "归属模式",

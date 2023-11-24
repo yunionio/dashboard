@@ -2735,7 +2735,8 @@
     "onpremise_env": "On-premise",
     "private_env": "Private cloud",
     "public_env": "Public cloud",
-    "project_tag": "Project tag"
+    "project_tag": "Project tag",
+    "predictions": "Bill prediction"
   },
   "res": {
     "role": "Role",
