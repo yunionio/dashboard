@@ -108,7 +108,7 @@ export default {
       },
       status: getStatusFilter('server'),
       power_states: getStatusFilter({ title: this.$t('compute.power_states'), statusModule: 'server', field: 'power_states' }),
-      os_type: {
+      os_dist: {
         label: this.$t('table.title.os'),
         dropdown: true,
         multiple: true,
