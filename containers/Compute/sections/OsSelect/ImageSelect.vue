@@ -18,8 +18,8 @@
           <a-select v-decorator="decorator.os" :loading="loading" @change="osChange" :placeholder="$t('compute.text_153')">
             <a-select-option v-for="item in imagesInfo.osOpts" :key="item.key">
               <div :key="item.key" class="d-flex align-items-center">
-                <image-icon :image="item.key" />
-                <span class="ml-2">{{ item.label }}</span>
+                <image-icon v-show="item.key !== 'all'" :image="item.key" />
+                <span :class="{ 'ml-2': item.key !== 'all' }">{{ item.label }}</span>
               </div>
             </a-select-option>
           </a-select>
@@ -524,8 +524,10 @@ export default {
           })
         }
       }
-      let osOpts = []
-      const imageOptsMap = {}
+      let osOpts = [{ label: '全部', key: 'all' }]
+      const imageOptsMap = {
+        all: [],
+      }
       let isOther = false
       for (let i = 0, len = images.length; i < len; i++) {
         const item = images[i]
@@ -595,6 +597,7 @@ export default {
         // if ((this.isPublic && !this.isPublicImage) || (this.isPrivate && !this.isPrivateImage)) {
         //   newItem.feData.cached = this.getImageCached(item)
         // }
+        imageOptsMap.all.push(newItem)
         imageOptsMap[osDistribution].push(newItem)
       }
       // make other os the last option
