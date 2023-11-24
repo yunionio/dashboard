@@ -821,6 +821,7 @@
   "cloudenv.task_type.recalculate": "Recalculate bills",
   "cloudenv.task_type.delete_bill": "Delete bills",
   "cloudenv.task_type.sync_resource": "Sync resource",
+  "cloudenv.task_type.predict": "Bill prediction",
   "cloudenv.month": "Month",
   "cloudenv.billtask_cannot_cancel": "The current billing task cannot be canceled",
   "cloudenv.title.project_type": "Assignment",

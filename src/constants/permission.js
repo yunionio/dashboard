@@ -1412,6 +1412,8 @@ export const PERMISSION = {
   identity_usages_list: ['identity', 'usages', 'list'],
   identity_usages_get: ['identity', 'usages', 'get'],
 
+  bill_predictions_query: ['meter', 'predictions', 'perform', 'query'],
+
   ...extraPermissions,
 }
 

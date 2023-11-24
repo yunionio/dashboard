@@ -2755,7 +2755,8 @@
     "onpremise_env": "ローカル IDC",
     "private_env": "プライベートクラウド",
     "public_env": "パブリッククラウド",
-    "project_tag": "プロジェクトラベル"
+    "project_tag": "プロジェクトラベル",
+    "predictions": "ひようよそく"
   },
   "res": {
     "role": "@:dictionary.role",

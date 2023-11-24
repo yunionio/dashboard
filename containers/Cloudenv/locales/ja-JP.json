@@ -820,6 +820,7 @@
   "cloudenv.task_type.recalculate": "二次価格",
   "cloudenv.task_type.delete_bill": "請求書を削除する",
   "cloudenv.task_type.sync_resource": "リソース情報の同期",
+  "cloudenv.task_type.predict": "ひようよそく",
   "cloudenv.month": "月",
   "cloudenv.billtask_cannot_cancel": "現在の請求タスクはキャンセルできません",
   "cloudenv.title.project_type": "アトリビューションモード",
