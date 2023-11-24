@@ -240,7 +240,7 @@ export default {
       {
         field: 'os_dist',
         title: i18nLocale.t('table.title.os'),
-        width: 50,
+        width: 100,
         sortable: true,
         slots: {
           default: ({ row }) => {
