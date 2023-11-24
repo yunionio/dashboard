@@ -12,7 +12,8 @@
             v-model="form.task_type"
             :options="taskTypeOpts"
             :select-props="{placeholder: $t('common.tips.select', [$t('cloudenv.task_type')])}"
-            :disabled-items="disabledActions" />
+            :disabled-items="disabledActions"
+            @change="taskTypeChange" />
         </a-form-model-item>
         <a-form-model-item v-if="isMonthShow" :label="$t('cloudenv.text_212')" v-bind="formItemLayout" prop="start_day">
           <a-form-model-item style="display:inline-block" prop="start_day">
@@ -42,14 +43,14 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const TaskTypeList = ['pull_bill', 'prepaid_amortizing', 'project_sharing', 'recalculate', 'delete_bill'].filter(key => {
+    const TaskTypeList = ['pull_bill', 'prepaid_amortizing', 'project_sharing', 'recalculate', 'predict', 'delete_bill'].filter(key => {
       if (key === 'recalculate' && !this.$store.state.common.bill.globalConfig.cost_conversion_available) return false
       return true
     })
     const { accountData = {} } = this.params
     const initDisabledActions = []
     if (accountData.status === 'deleted') {
-      initDisabledActions.push('pull_bill', 'prepaid_amortizing', 'project_sharing', 'recalculate')
+      initDisabledActions.push('pull_bill', 'prepaid_amortizing', 'project_sharing', 'recalculate', 'predict')
     } else if (accountData.brand) {
       if (accountData.cloud_env !== 'public') {
         initDisabledActions.push('project_sharing')
@@ -102,6 +103,16 @@ export default {
       return !(this.form.task_type === 'delete_bill' && this.params.accountData?.status === 'deleted')
     },
   },
+  watch: {
+    'form.task_type': {
+      handler (val, oldVal) {
+        if (oldVal === 'predict') {
+          this.form.start_day = this.$moment()
+          this.form.end_day = this.$moment()
+        }
+      },
+    },
+  },
   created () {
     this.$bM = new this.$Manager('billtasks/submit', 'v1')
   },
@@ -113,13 +124,13 @@ export default {
       }
     },
     dateDisabledStart (value) {
-      if (value > this.$moment()) return true
+      if (value > this.$moment()) return this.form.task_type !== 'predict'
       return false
     },
     dateDisabledEnd (value) {
       const dateStart = this.form.start_day
       if (dateStart && value < dateStart) return true
-      if (value > this.$moment()) return true
+      if (value > this.$moment()) return this.form.task_type !== 'predict'
       return false
     },
     validateForm () {
