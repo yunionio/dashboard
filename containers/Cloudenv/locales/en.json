@@ -870,5 +870,6 @@
   "cloudenv.cycle_type.month": "month",
   "cloudenv.cycle_once": "sync once",
   "cloudenv.input_cycle_num": "Please input frequency",
-  "cloudenv.each": "Each"
+  "cloudenv.each": "Each",
+  "cloudenv.syncing_account_disable_action": "The cloud account in synchronization does not support this operation"
 }
