@@ -115,7 +115,7 @@ export default {
         multiple: true,
         distinctField: {
           type: 'extra_field',
-          key: 'os_distribution',
+          key: 'os_dist',
         },
       },
       projects: getTenantFilter(),
