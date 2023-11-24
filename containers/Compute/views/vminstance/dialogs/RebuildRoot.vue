@@ -1,5 +1,5 @@
 <template>
-  <base-dialog @cancel="cancelDialog">
+  <base-dialog @cancel="cancelDialog" :width="1000">
     <div slot="header">{{action}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning" v-if="tips">
