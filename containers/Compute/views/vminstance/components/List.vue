@@ -112,14 +112,9 @@ export default {
         label: this.$t('table.title.os'),
         dropdown: true,
         multiple: true,
-        items: [
-          { label: 'Windows', key: 'windows' },
-          { label: 'Linux', key: 'linux' },
-          { label: 'VMware', key: 'VMWare' },
-        ],
-        filter: true,
-        formatter: val => {
-          return `os_type.in(${val})`
+        distinctField: {
+          type: 'extra_field',
+          key: 'os_dist',
         },
       },
       projects: getTenantFilter(),
