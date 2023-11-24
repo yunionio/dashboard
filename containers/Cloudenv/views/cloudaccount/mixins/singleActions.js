@@ -42,7 +42,15 @@ export default {
             },
           })
         },
-        meta: (obj) => this.syncPolicy(obj),
+        meta: (obj) => {
+          if (obj.sync_status !== 'idle') {
+            return {
+              validate: false,
+              tooltip: this.$t('cloudenv.syncing_account_disable_action'),
+            }
+          }
+          return this.syncPolicy(obj)
+        },
 
       },
       {

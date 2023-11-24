@@ -872,5 +872,6 @@
   "cloudenv.cycle_type.month": "月",
   "cloudenv.cycle_once": "同步一次",
   "cloudenv.input_cycle_num": "请输入频率",
-  "cloudenv.each": "每"
+  "cloudenv.each": "每",
+  "cloudenv.syncing_account_disable_action": "同步中的云账号不支持此操作"
 }
