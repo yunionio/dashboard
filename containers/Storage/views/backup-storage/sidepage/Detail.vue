@@ -16,10 +16,12 @@ import {
   getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
 import {
-  getStorageTypeColumns,
+  getStorageTypeColumn,
   // getCapacityMbColumns,
-  getNFSHostColumns,
-  getNFSSharedDirColumns,
+  getNFSHostColumn,
+  getNFSSharedDirColumn,
+  getObjectBucketURLColumn,
+  getObjectAccessKeyColumn,
 } from '../utils/columns'
 
 export default {
@@ -37,15 +39,21 @@ export default {
     columns: Array,
   },
   data () {
+    const baseInfo = [
+      getTagTableColumn({ onManager: this.onManager, resource: 'backupstorages', columns: () => this.columns }),
+      getPublicScopeTableColumn({ vm: this, resource: 'backupstorages' }),
+      getStorageTypeColumn(),
+    ]
+    console.log(this.data)
+    if (this.data.storage_type === 'nfs') {
+      baseInfo.push(getNFSHostColumn())
+      baseInfo.push(getNFSSharedDirColumn())
+    } else if (this.data.storage_type === 'object') {
+      baseInfo.push(getObjectBucketURLColumn())
+      baseInfo.push(getObjectAccessKeyColumn())
+    }
     return {
-      baseInfo: [
-        getTagTableColumn({ onManager: this.onManager, resource: 'backupstorages', columns: () => this.columns }),
-        getPublicScopeTableColumn({ vm: this, resource: 'backupstorages' }),
-        getStorageTypeColumns(),
-        getNFSHostColumns(),
-        getNFSSharedDirColumns(),
-        // getCapacityMbColumns(),
-      ],
+      baseInfo: baseInfo,
       extraInfo: [],
     }
   },

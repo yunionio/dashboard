@@ -332,7 +332,10 @@ export default {
       return isWindows
     },
     osType () {
-      const os_type = this.form.fi.imageMsg.info ? this.form.fi.imageMsg.info.properties?.os_type : this.form.fi.imageMsg.properties?.os_type
+      let os_type = this.form.fi.imageMsg.info ? this.form.fi.imageMsg.info.properties?.os_type : this.form.fi.imageMsg.properties?.os_type
+      if (!os_type && this.form.fi.imageMsg.os_type) {
+        os_type = this.form.fi.imageMsg.os_type
+      }
       return this.isWindows ? 'windows' : os_type?.toLowerCase()
     },
     enableEip () {

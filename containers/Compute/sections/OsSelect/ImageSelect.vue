@@ -115,6 +115,7 @@ export default {
         cacheimagesList: [], // idc: 镜像缓存list，用于对比哪些镜像已缓存，public|private: image-list
         hostimagesList: [], // 主机镜像 list
         instanceSnapshotsList: [], // 主机快照 list
+        instanceBackupsList: [], // 主机备份 list
       },
       imagesInfo: {
         osOpts: [],
@@ -157,6 +158,10 @@ export default {
     // 选择的镜像类型是否为主机快照
     isShapshotImage () {
       return this.imageType === IMAGES_TYPE_MAP.snapshot.key
+    },
+    // 选择的镜像类型是否为主机备份
+    isBackupImage () {
+      return this.imageType === IMAGES_TYPE_MAP.backup.key
     },
     cacheimageIds () {
       return this.images.cacheimagesList.map(item => item.id)
@@ -285,6 +290,7 @@ export default {
     this.cachedimagesM = new Manager('cachedimages', 'v2')
     this.guestimagesM = new Manager('guestimages', 'v1')
     this.instanceSnapshots = new Manager('instance_snapshots', 'v2')
+    this.instanceBackups = new Manager('instancebackups', 'v2')
     this.fetchData()
     this.fetchCacheimages = _.debounce(this._fetchCacheimages, 500)
     if (this.isPublicImage || this.isPrivateImage || this.isVMware) {
@@ -304,6 +310,10 @@ export default {
         case IMAGES_TYPE_MAP.snapshot.key: // 主机快照
           params = { ...this.imageParams, status: 'ready', provider: this.cloudproviderParamsExtra?.provider }
           this.fetchSnapshotImages(params)
+          break
+        case IMAGES_TYPE_MAP.backup.key: // 主机备份
+          params = { ...this.imageParams, status: 'ready', provider: this.cloudproviderParamsExtra?.provider }
+          this.fetchBackupImages(params)
           break
         default: // image list
           this.fetchImages()
@@ -354,7 +364,7 @@ export default {
         params.disk_formats = 'iso'
         if (params['filter.0'] && params['filter.0'] === 'disk_format.notequals(iso)') Reflect.deleteProperty(params, 'filter.0')
         Reflect.deleteProperty(params, 'is_standard')
-      } else {
+      } else if (this.imageType === IMAGES_TYPE_MAP.standard.key || this.imageType === IMAGES_TYPE_MAP.customize.key || this.imageType === IMAGES_TYPE_MAP.host.key) {
         params['filter.0'] = 'disk_format.notequals(iso)'
       }
       if (this.imageType === IMAGES_TYPE_MAP.customize.key) {
@@ -397,6 +407,19 @@ export default {
       this._resetImage()
       try {
         const { data: { data = [] } } = await this.instanceSnapshots.list({ params })
+        this.loading = false
+        this.images.list = data
+        this.getImagesInfo()
+      } catch (error) {
+        this.loading = false
+        throw error
+      }
+    },
+    async fetchBackupImages (params) {
+      this.loading = true
+      this._resetImage()
+      try {
+        const { data: { data = [] } } = await this.instanceBackups.list({ params })
         this.loading = false
         this.images.list = data
         this.getImagesInfo()
@@ -456,6 +479,9 @@ export default {
       if (this.isPublicImage || this.isPrivateImage || this.isVMwareImage) {
         return img.info?.properties
       }
+      if (this.isShapshotImage || this.isBackupImage) {
+        return img.server_metadata
+      }
       return img.properties
     },
     getOsDistribution (osDistribution) {
@@ -514,10 +540,10 @@ export default {
         if (this.uefi) {
           images = images.filter(item => item.properties?.uefi_support && item.properties?.uefi_support !== 'false')
         }
-        if (this.imageType !== IMAGES_TYPE_MAP.snapshot.key) {
+        if (this.imageType !== IMAGES_TYPE_MAP.host.key && this.imageType !== IMAGES_TYPE_MAP.snapshot.key && this.imageType !== IMAGES_TYPE_MAP.backup.key) {
           images = images.filter(item => {
             let diskFormat = item.disk_format
-            if (!diskFormat && item.info.disk_format) {
+            if (!diskFormat && item.info && item.info.disk_format) {
               diskFormat = item.info.disk_format
             }
             return diskFormat && diskFormat !== 'docker'
