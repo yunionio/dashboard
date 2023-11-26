@@ -18,15 +18,24 @@
             :placeholder="$t('common.tips.optional_input', [$t('common.description')])" />
         </a-form-item>
         <a-form-item :label="$t('storage.text_38')">
-          <a-radio-group v-decorator="decorators.storage_type">
+          <a-radio-group v-decorator="decorators.storage_type" @change="onStorageTypeChange">
               <a-radio-button v-for="obj in STORAGE_TYPES" :key="obj.key" :value="obj.key">{{ obj.value }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="NFS Host">
-          <a-input :placeholder="$t('storage.text_19')" v-decorator="decorators.nfs_host" />
+        <a-form-item label="NFS Host" v-if="isNfs">
+          <a-input :placeholder="$t('storage.host.input.place_holder')" v-decorator="decorators.nfs_host" />
         </a-form-item>
-        <a-form-item label="NFS Shared Dir">
-          <a-input :placeholder="$t('storage.text_22')" v-decorator="decorators.nfs_shared_dir" />
+        <a-form-item label="NFS Shared Dir" v-if="isNfs">
+          <a-input :placeholder="$t('storage.path.input.place_holder')" v-decorator="decorators.nfs_shared_dir" />
+        </a-form-item>
+        <a-form-item label="Bucket URL" v-if="isObjectStorage">
+          <a-input :placeholder="$t('storage.url.input.place_holder')" v-decorator="decorators.object_bucket_url" />
+        </a-form-item>
+        <a-form-item label="Access Key" v-if="isObjectStorage">
+          <a-input :placeholder="$t('storage.access_key.input.place_holder')" v-decorator="decorators.object_access_key" />
+        </a-form-item>
+        <a-form-item label="Secret" v-if="isObjectStorage">
+          <a-input-password :placeholder="$t('storage.access_secret.input.place_holder')" v-decorator="decorators.object_secret" />
         </a-form-item>
         <a-form-item :label="$t('storage.capacity')" v-show="false">
           <a-input-number :min="0" v-decorator="decorators.capacity_mb" /> GB
@@ -60,6 +69,10 @@ export default {
           key: 'nfs',
           value: 'NFS',
         },
+        {
+          key: 'object',
+          value: this.$t('storage.object_storage'),
+        },
       ],
       form: {
         fc: this.$form.createForm(this),
@@ -72,6 +85,7 @@ export default {
           span: 4,
         },
       },
+      storage_type: 'nfs',
     }
   },
   computed: {
@@ -130,7 +144,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: this.$t('storage.text_29'), trigger: 'blur' },
+              { required: true, message: this.$t('storage.nfs_host.validate.prompt'), trigger: 'blur' },
               { validator: hostCheckValid, trigger: 'blur' },
             ],
           },
@@ -139,7 +153,32 @@ export default {
           'nfs_shared_dir',
           {
             rules: [
-              { required: true, message: this.$t('storage.text_30'), trigger: 'blur' },
+              { required: true, message: this.$t('storage.nfs_shared_dir.validate.prompt'), trigger: 'blur' },
+            ],
+          },
+        ],
+        object_bucket_url: [
+          'object_bucket_url',
+          {
+            validateFirst: true,
+            rules: [
+              { required: true, message: this.$t('storage.object_bucket_url.validate.prompt'), trigger: 'blur' },
+            ],
+          },
+        ],
+        object_access_key: [
+          'object_access_key',
+          {
+            rules: [
+              { required: true, message: this.$t('storage.object_access_key.validate.prompt'), trigger: 'blur' },
+            ],
+          },
+        ],
+        object_secret: [
+          'object_secret',
+          {
+            rules: [
+              { required: true, message: this.$t('storage.object_secret.validate.prompt'), trigger: 'blur' },
             ],
           },
         ],
@@ -150,6 +189,12 @@ export default {
           },
         ],
       }
+    },
+    isNfs () {
+      return this.storage_type === 'nfs'
+    },
+    isObjectStorage () {
+      return this.storage_type === 'object'
     },
   },
   methods: {
@@ -163,6 +208,10 @@ export default {
       } catch (error) {
         throw error
       }
+    },
+    onStorageTypeChange (e) {
+      console.log(e, e.target.value)
+      this.storage_type = e.target.value
     },
   },
 }

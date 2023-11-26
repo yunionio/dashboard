@@ -1434,6 +1434,9 @@ export class GenCreateData {
     if (this.fd.imageType === IMAGES_TYPE_MAP.snapshot.key) {
       data.instance_snapshot_id = this.fd.image.key
       delete data.disks // 主机快照不需要 disks 字段
+    } else if (this.fd.imageType === IMAGES_TYPE_MAP.backup.key) {
+      data.instance_backup_id = this.fd.image.key
+      // delete data.disks // 主机备份可以保留 disks 字段
     }
     // 主机组
     if (this.fd.groupsEnable && this.fd.groups && this.fd.groups.length) {
