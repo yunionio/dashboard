@@ -238,7 +238,7 @@ export default {
         },
       },
       {
-        field: 'os_type',
+        field: 'os_dist',
         title: i18nLocale.t('table.title.os'),
         width: 50,
         slots: {
