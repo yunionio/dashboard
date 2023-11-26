@@ -59,7 +59,7 @@ export default {
      */
     {
       meta: {
-        label: i18n.t('storage.text_17'),
+        label: i18n.t('storage.object_storage'),
       },
       submenus: [
         {

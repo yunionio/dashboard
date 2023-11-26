@@ -82,13 +82,35 @@ export default {
       return text.toLowerCase().indexOf(input) >= 0
     },
     imgLabels (img) {
-      const min_disk = sizestr(img.min_disk, 'M', 1024)
-      const size = sizestr(img.size, 'B', 1024)
+      let min_disk_mb = 0
+      if (img.min_disk) {
+        min_disk_mb = img.min_disk
+      } else if (img.server_config && img.server_config.disks && img.server_config.disks.length > 0) {
+        min_disk_mb = img.server_config.disks[0].size
+      }
+      const min_disk = sizestr(min_disk_mb, 'M', 1024)
+      let size = img.size
+      if (img.size) {
+        size = img.size
+      } else if (img.size_mb) {
+        size = img.size_mb * 1024 * 1024
+      }
+      const sizeStr = sizestr(size, 'B', 1024)
       const props = img.properties || (img.info ? img.info.properties : undefined)
-      const arch = props && props.os_arch && props.os_arch === 'aarch64' ? this.$t('compute.cpu_arch.aarch64') : props?.os_arch || 'x86_64'
-      const bios = props && (!props.uefi_support || props.uefi_support === 'false') ? 'BIOS' : 'UEFI'
-      const part = props && props.partition_type ? props.partition_type.toUpperCase() : 'MBR'
-      return `${min_disk}|${size}|${arch}|${part}|${bios}`
+      const arch = img.os_arch || (props && props.os_arch && props.os_arch === 'aarch64' ? this.$t('compute.cpu_arch.aarch64') : props?.os_arch) || 'x86_64'
+      let bios = 'BIOS'
+      if (props) {
+        bios = (!props.uefi_support || props.uefi_support === 'false') ? 'BIOS' : 'UEFI'
+      } else if (img.server_config && img.server_config.bios) {
+        bios = img.server_config.bios
+      }
+      let part = 'MBR'
+      if (props && props.partition_type) {
+        part = props.partition_type.toUpperCase()
+      } else if (bios === 'UEFI') {
+        part = 'GPT'
+      }
+      return `${min_disk}|${sizeStr}|${arch}|${part}|${bios}`
     },
     isEncryped (img) {
       return !!img.encrypt_key_id

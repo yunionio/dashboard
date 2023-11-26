@@ -3,7 +3,7 @@
   <div>
     <template v-if="storage_type === 'rbd'">
       <a-form-item label="Ceph Mon Host" v-if="!edit">
-        <a-input :placeholder="$t('storage.text_19')" v-decorator="decorators.rbd_mon_host" />
+        <a-input :placeholder="$t('storage.host.input.place_holder')" v-decorator="decorators.rbd_mon_host" />
       </a-form-item>
       <a-form-item label="Ceph Pool" v-if="!edit">
           <a-input :placeholder="$t('storage.text_21')" v-decorator="decorators.rbd_pool" />
@@ -14,10 +14,10 @@
     </template>
     <template v-if="storage_type === 'nfs'">
       <a-form-item label="NFS Host">
-        <a-input :placeholder="$t('storage.text_19')" v-decorator="decorators.nfs_host" />
+        <a-input :placeholder="$t('storage.host.input.place_holder')" v-decorator="decorators.nfs_host" />
       </a-form-item>
       <a-form-item label="NFS Shared Dir">
-        <a-input :placeholder="$t('storage.text_22')" v-decorator="decorators.nfs_shared_dir" />
+        <a-input :placeholder="$t('storage.path.input.place_holder')" v-decorator="decorators.nfs_shared_dir" />
       </a-form-item>
     </template>
   </div>
@@ -104,7 +104,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: this.$t('storage.text_29'), trigger: 'blur' },
+              { required: true, message: this.$t('storage.nfs_host.validate.prompt'), trigger: 'blur' },
               { validator: hostCheckValid, trigger: 'blur' },
             ],
           },
@@ -113,7 +113,7 @@ export default {
           'nfs_shared_dir',
           {
             rules: [
-              { required: true, message: this.$t('storage.text_30'), trigger: 'blur' },
+              { required: true, message: this.$t('storage.nfs_shared_dir.validate.prompt'), trigger: 'blur' },
             ],
           },
         ],
