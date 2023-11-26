@@ -663,8 +663,8 @@ export default {
               })
             }
           }
-          if (this.form.fd.imageType === IMAGES_TYPE_MAP.snapshot.key) {
-            // 镜像类型为主机快照的话要回填数据并禁用
+          if (this.form.fd.imageType === IMAGES_TYPE_MAP.snapshot.key || this.form.fd.imageType === IMAGES_TYPE_MAP.backup.key) {
+            // 镜像类型为主机快照或主机备份的话要回填数据并禁用
             const snapshots = _.cloneDeep(this.form.fi.imageMsg.server_config.disks)
             if (!snapshots) return
             let sysDisk = snapshots.find(val => val.disk_type === 'sys')

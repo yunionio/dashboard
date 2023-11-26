@@ -1,13 +1,16 @@
 import i18n from '@/locales'
 import { sizestr } from '@/utils/utils'
 
-export const getStorageTypeColumns = () => {
+export const getStorageTypeColumn = () => {
   return {
     field: 'storage_type',
     title: i18n.t('storage.text_38'),
     slots: {
       default: ({ row }) => {
-        return row.storage_type
+        if (row.storage_type === 'object') {
+          return i18n.t('storage.object_storage')
+        }
+        return row.storage_type.toUpperCase()
       },
     },
   }
@@ -46,25 +49,57 @@ export const getProjectDomainTableColumns = () => {
   }
 }
 
-export const getNFSHostColumns = () => {
+export const getNFSHostColumn = () => {
   return {
     field: 'nfs_host',
     title: 'NFS Host',
     slots: {
-      default: ({ row }) => {
-        return row.nfs_host
+      default: ({ row }, h) => {
+        return [
+          <list-body-cell-wrap copy field="nfs_host" row={row} />,
+        ]
       },
     },
   }
 }
 
-export const getNFSSharedDirColumns = () => {
+export const getNFSSharedDirColumn = () => {
   return {
     field: 'nfs_shared_dir',
     title: 'NFS Shared Dir',
     slots: {
-      default: ({ row }) => {
-        return row.nfs_shared_dir
+      default: ({ row }, h) => {
+        return [
+          <list-body-cell-wrap copy field="nfs_shared_dir" row={row} />,
+        ]
+      },
+    },
+  }
+}
+
+export const getObjectBucketURLColumn = () => {
+  return {
+    field: 'object_bucket_url',
+    title: 'Object Bucket URL',
+    slots: {
+      default: ({ row }, h) => {
+        return [
+          <list-body-cell-wrap copy field="object_bucket_url" row={row} />,
+        ]
+      },
+    },
+  }
+}
+
+export const getObjectAccessKeyColumn = () => {
+  return {
+    field: 'object_access_key',
+    title: 'Object Access Key',
+    slots: {
+      default: ({ row }, h) => {
+        return [
+          <list-body-cell-wrap copy field="object_access_key" row={row} />,
+        ]
       },
     },
   }
