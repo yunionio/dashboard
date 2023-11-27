@@ -24,7 +24,7 @@
         <a-menu-item key="handleDownload" v-if="showActions.includes('export')"><a-icon type="download" />{{$t('dashboard.text_105')}}</a-menu-item>
         <a-menu-item key="handleImport" v-if="showActions.includes('import')"><a-icon type="file" />{{$t('dashboard.text_106')}}</a-menu-item>
         <a-menu-item key="handleCopy" v-if="showActions.includes('clone')"><a-icon type="copy" />{{$t('dashboard.text_107')}}</a-menu-item>
-        <a-menu-item key="handleShare" v-if="isAdminMode && isDefaultOption && showActions.includes('share')"><a-icon type="share-alt" />{{$t('common_104', [''])}}</a-menu-item>
+        <a-menu-item key="handleShare" v-if="isAdminRole && isDefaultOption && showActions.includes('share')"><a-icon type="share-alt" />{{$t('common_104', [''])}}</a-menu-item>
         <a-menu-item key="handleDelete" v-if="showActions.includes('reset')"><a-icon type="delete" />{{deleteText}}</a-menu-item>
       </a-menu>
     </a-dropdown>
@@ -78,7 +78,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scope', 'isAdminMode']),
+    ...mapGetters(['scope', 'userInfo']),
     options: {
       get () {
         return this.tabs
@@ -102,6 +102,11 @@ export default {
       return (['create', 'edit', 'export', 'import', 'share', 'reset', 'clone']).filter(key => {
         return !this.$isScopedPolicyMenuHidden(`dashboard_hidden_actions.${key}`)
       })
+    },
+    isAdminRole () {
+      const { projects = [] } = this.userInfo
+      const systemProj = projects.find(o => o.name === 'system')
+      return !!systemProj
     },
   },
   beforeDestroy () {
