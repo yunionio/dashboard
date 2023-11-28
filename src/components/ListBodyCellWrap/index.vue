@@ -21,9 +21,11 @@
       v-if="showEdit && isOwner.validate"
       @update="update"
       :label="labelCn"
+      :inputType="inputType"
       :formRules="formRulesComputer"
       :visible.sync="editVisible"
       :defaultValue="defaultValue"
+      :numberMin="numberMin"
       :showSuccessMessage="showSuccessMessage"
       :customEdit="customEdit"
       :customEditCallback="customEditCallback" />
@@ -108,6 +110,14 @@ export default {
     },
     customEditCallback: {
       type: Function,
+    },
+    inputType: {
+      type: String,
+      default: 'input',
+    },
+    numberMin: {
+      type: Number,
+      default: 0,
     },
   },
   inject: {

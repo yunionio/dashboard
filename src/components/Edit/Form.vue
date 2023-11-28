@@ -4,8 +4,11 @@
     :model="form"
     :rules="rules"
     :style="{ width: `${width}px` }">
-    <a-form-model-item :label="label" v-bind="formLayout" prop="input">
+    <a-form-model-item v-if="inputType === 'input'" :label="label" v-bind="formLayout" prop="input">
       <a-input class="w-100" v-model="form.input" :placeholder="placeholder" allowClear />
+    </a-form-model-item>
+    <a-form-model-item v-else-if="inputType === 'inputNumber'" :label="label" v-bind="formLayout" prop="input">
+      <a-input-number class="w-100" v-model="form.input" :min="numberMin" :placeholder="placeholder" />
     </a-form-model-item>
     <div class="text-right">
       <a-button type="primary" html-type="submit" @click="handleSubmit">{{ okText }}</a-button>
@@ -51,6 +54,11 @@ export default {
       type: String,
       default: i18n.t('common.cancel'),
     },
+    inputType: {
+      type: String,
+      default: 'input',
+    },
+    numberMin: Number,
   },
   data () {
     return {
