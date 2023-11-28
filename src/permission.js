@@ -111,6 +111,7 @@ router.beforeEach(async (to, from, next) => {
         'vpc_hidden_columns',
         'navbar_hidden_items',
         'dashboard_hidden_actions',
+        'fee_hidden_items',
       ],
     })
     !hasGlobalConfig && await store.dispatch('common/fetchGlobalConfig')
