@@ -8,6 +8,7 @@ export default {
     EditForm: Form,
   },
   props: {
+    inputType: String,
     label: {
       type: String,
       default: i18n.t('common.name'),
@@ -26,6 +27,7 @@ export default {
     customEditCallback: {
       type: Function,
     },
+    numberMin: Number,
   },
   data () {
     return {
