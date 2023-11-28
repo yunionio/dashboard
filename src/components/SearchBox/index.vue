@@ -49,9 +49,9 @@
 
 <script>
 import * as R from 'ramda'
+import i18n from '@/locales'
 import AutoCompleter from './AutoCompleter'
 import Tag from './Tag'
-import i18n from '@/locales'
 
 export default {
   name: 'SearchBox',
