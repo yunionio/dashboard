@@ -5411,6 +5411,7 @@
   "common.data_range.any_project_extra": "向接收人或角色分别发送每个项目的账单",
   "common.date_range": "时间范围",
   "common.select_time_little_current": "请选择小于当前时间的时间",
+  "common.select_time_after_current": "请选择大于当前时间的时间",
   "common.whole_month": "整月",
   "common.whole_quarter": "整季度",
   "common.whole_year": "整年",
