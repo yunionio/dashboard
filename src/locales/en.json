@@ -5394,6 +5394,7 @@
   "common.data_range.any_project_extra": "Send a separate bill for each project to a recipient or role",
   "common.date_range": "Time frame",
   "common.select_time_little_current": "Please select a time less than the current time",
+  "common.select_time_after_current": "Please select a time after than the current time",
   "common.whole_month": "Whole month",
   "common.whole_quarter": "Whome quarter",
   "common.whole_year": "Whole year",
