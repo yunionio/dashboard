@@ -274,6 +274,7 @@
   "compute.text_265": "ディスク (MB)",
   "compute.text_266": "インスタンスタイプ",
   "compute.text_267": "オペレーティング システム",
+  "compute.sub_ips.title": "セカンダリIP",
   "compute.text_268": "状態",
   "compute.text_269": "アカウント",
   "compute.text_270": "アベイラビリティーゾーン",

@@ -274,6 +274,7 @@
   "compute.text_265": "磁盘(MB)",
   "compute.text_266": "实例类型",
   "compute.text_267": "操作系统",
+  "compute.sub_ips.title": "辅助IP",
   "compute.text_268": "状态",
   "compute.text_269": "云账号",
   "compute.text_270": "可用区",

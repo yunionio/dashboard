@@ -66,6 +66,25 @@ export default {
           },
         },
       },
+      {
+        field: 'network_addresses',
+        title: i18n.t('compute.sub_ips.title'),
+        type: 'expand',
+        slots: {
+          default: ({ row }) => {
+            return i18n.t('compute.text_619', [row.network_addresses.length])
+          },
+          content: ({ row }) => {
+            let list = []
+            if (row.network_addresses && row.network_addresses.length > 0) {
+              list = row.network_addresses.map(val => (
+                <a-tag class='mb-2'>{ val.ip_addr }</a-tag>
+              ))
+            }
+            return list
+          },
+        },
+      },
       getTimeTableColumn(),
     ]
   },
