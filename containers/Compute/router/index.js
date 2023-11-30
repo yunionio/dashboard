@@ -318,6 +318,7 @@ export default {
           path: '/disk-snapshot',
           meta: {
             label: i18n.t('compute.text_101'),
+            t: 'compute.text_101',
             permission: 'snapshots_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.disk_snapshot')) {
@@ -339,6 +340,7 @@ export default {
           path: '/instance-snapshot',
           meta: {
             label: i18n.t('compute.text_102'),
+            t: 'compute.text_102',
             permission: 'instance_snapshots_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.instance_snapshot')) {
@@ -360,6 +362,7 @@ export default {
           path: '/snapshotpolicy',
           meta: {
             label: i18n.t('compute.text_103'),
+            t: 'compute.text_103',
             permission: 'snapshotpolicy_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.snapshotpolicy')) {
