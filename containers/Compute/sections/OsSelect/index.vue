@@ -126,7 +126,7 @@ export default {
     mirrorTypeOptions () {
       let ret = [IMAGES_TYPE_MAP.standard, IMAGES_TYPE_MAP.customize]
       if (this.isIDC && this.hypervisor === HYPERVISORS_MAP.kvm.key) {
-        ret.push(IMAGES_TYPE_MAP.iso, IMAGES_TYPE_MAP.host, { ...IMAGES_TYPE_MAP.snapshot, label: this.$t(IMAGES_TYPE_MAP.snapshot.t) }, IMAGES_TYPE_MAP.backup)
+        ret.push(IMAGES_TYPE_MAP.iso, IMAGES_TYPE_MAP.host, { ...IMAGES_TYPE_MAP.snapshot, label: this.$t(IMAGES_TYPE_MAP.snapshot.t) })
       } else if (this.hypervisor === HYPERVISORS_MAP.esxi.key) {
         ret.unshift(IMAGES_TYPE_MAP.vmware)
         ret.push(IMAGES_TYPE_MAP.iso)
