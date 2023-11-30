@@ -240,6 +240,8 @@ const getSingleActions = function () {
                   action: obj.id,
                   data: {
                     host: ipAddr,
+                    width: window.screen.width,
+                    height: window.screen.height,
                   },
                 }
                 this.webconsoleManager.performAction(params).then(({ data }) => {
