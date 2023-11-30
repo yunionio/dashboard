@@ -5912,5 +5912,10 @@
   "common.schedtag.extra": "How to use scheduling tags",
   "common.view.doc": "View Document",
   "common.private_iso": "@:dictionary.private_env ISO images",
-  "common.private_iso_tip": "ISO images of @:dictionary.private_env"
+  "common.private_iso_tip": "ISO images of @:dictionary.private_env",
+  "common.rdp_password_tip": "Please enter the RDP account password",
+  "common.rdp_login_err": "RDP remote login failed",
+  "common.rdp_login_err_msg": "Please enter the RDP login information and try logging in again",
+  "common.connect": "connect",
+  "common.setting": "setting"
 }
