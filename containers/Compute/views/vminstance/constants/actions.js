@@ -221,25 +221,56 @@ const getSingleActions = function () {
                     })
                   }
                   return <span style={styleObj} class='d-flex justify-content-between align-items-center'>
-                    <span>{`SSH ${ipAddr}`}</span>
+                    <span onClick={sshConnectHandle}>{`SSH ${ipAddr}`}</span>
                     <span>
-                      <a-tooltip title={i18n.t('common.connect')}>
-                        <a-icon class="ml-2" type="block" onClick={sshConnectHandle} />
-                      </a-tooltip>
-                      <a-tooltip title={i18n.t('common.setting')}>
-                        <a-icon class="ml-2" type="setting" onClick={sshSettingInfoHandle} />
+                      <a-tooltip title={i18n.t('compute.text_346')}>
+                        <a-icon class="ml-2" type="edit" onClick={sshSettingInfoHandle} />
                       </a-tooltip>
                     </span>
                   </span>
                 },
               })
             } else {
-              const handleRdpConnect = (obj) => {
+              const rdpSettingInfoHandle = () => {
+                this.createDialog('SmartFormDialog', {
+                  title: i18n.t('compute.text_346'),
+                  data: [obj],
+                  callback: async (data) => {
+                    handleRdpConnect(obj, data.port, 'rdp')
+                  },
+                  decorators: {
+                    port: [
+                      'port',
+                      {
+                        validateFirst: true,
+                        rules: [
+                          { required: true, message: i18n.t('compute.text_347') },
+                          {
+                            validator: (rule, value, _callback) => {
+                              const num = parseFloat(value)
+                              if (!/^\d+$/.test(value) || !num || num > 65535) {
+                                _callback(i18n.t('compute.text_348'))
+                              }
+                              _callback()
+                            },
+                          },
+                        ],
+                      },
+                      {
+                        label: i18n.t('compute.text_349'),
+                        placeholder: i18n.t('compute.text_350'),
+                      },
+                    ],
+                  },
+                })
+              }
+              const handleRdpConnect = (obj, port) => {
                 const params = {
                   id: 'server-rdp',
                   action: obj.id,
                   data: {
                     host: ipAddr,
+                    port: +port,
                     width: window.screen.width,
                     height: window.screen.height,
                   },
@@ -282,6 +313,11 @@ const getSingleActions = function () {
                   }
                   return <span style={styleObj} class='d-flex justify-content-between align-items-center'>
                     <span onClick={rdpConnectHandle}>{`RDP ${ipAddr}`}</span>
+                    <span>
+                      <a-tooltip title={i18n.t('compute.text_346')}>
+                        <a-icon class="ml-2" type="edit" onClick={rdpSettingInfoHandle} />
+                      </a-tooltip>
+                    </span>
                   </span>
                 },
               })
