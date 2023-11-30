@@ -9,7 +9,6 @@ export const IMAGES_TYPE_MAP = {
   iso: { key: 'iso', label: i18n.t('common.text00019'), tooltip: i18n.t('common.text00020') },
   host: { key: 'host', label: i18n.t('common.text00021'), tooltip: i18n.t('common.text00022') },
   snapshot: { key: 'snapshot', label: i18n.t('dictionary.instance_snapshot'), t: 'dictionary.instance_snapshot', tooltip: i18n.t('common.instance_snapshot.tooltip') },
-  backup: { key: 'backup', label: i18n.t('dictionary.instancebackup'), t: 'dictionary.instancebackup', tooltip: i18n.t('dictionary.instancebackup') },
   public: { key: 'public', label: i18n.t('common.text00025'), tooltip: i18n.t('common.text00026') },
   public_customize: { key: 'public_customize', label: i18n.t('common.public_cloud_customized_image'), tooltip: i18n.t('common.text00028'), enable_cloudaccount: true },
   private: { key: 'private', label: i18n.t('common.text00029'), tooltip: i18n.t('common.text00030'), enable_cloudaccount: true },
