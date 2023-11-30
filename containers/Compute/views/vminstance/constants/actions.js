@@ -1312,7 +1312,7 @@ const getSingleActions = function () {
                   ret.tooltip = cloudUnabledTip('createBackup', obj)
                   return ret
                 },
-                hidden: () => !hasSetupKey(['onecloud']),
+                hidden: () => !hasSetupKey(['onecloud']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_create_backup'),
               },
             ],
           },
