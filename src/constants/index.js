@@ -139,6 +139,7 @@ export const ENABLE_USER_CUSTOM_DICTIONARY = [
   'onpremise_env',
   'private_env',
   'public_env',
+  'snapshot',
 ]
 
 export const chartColors = getColorByCache()
