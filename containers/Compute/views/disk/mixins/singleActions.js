@@ -259,6 +259,7 @@ export default {
                   disabledProviders: ['BingoCloud', 'VolcEngine'],
                 })
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_create_backup'),
             },
             {
               label: i18n.t('compute.disk_perform_setup_snapshot_policy'),
