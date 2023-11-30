@@ -83,10 +83,10 @@ const getSingleActions = function () {
                 validate: false,
                 tooltip: null,
               }
-              if (obj.os_type === 'Windows') {
-                ret.tooltip = i18n.t('compute.text_344')
-                return ret
-              }
+              // if (obj.os_type === 'Windows') {
+              //   ret.tooltip = i18n.t('compute.text_344')
+              //   return ret
+              // }
               ret.validate = cloudEnabled(actionType, obj)
               ret.tooltip = cloudUnabledTip(actionType, obj)
               return ret
@@ -165,60 +165,134 @@ const getSingleActions = function () {
                 this.openWebConsole(obj, data, 'ws')
               })
             }
-
-            options.push({
-              label: `SSH ${ipAddr}`,
-              permission: 'server_perform_list_forward,server_perform_open_forward',
-              action: () => {
-                const success = () => {
-                  openWebconsole(22, obj.id)
-                }
-                if (this.enableMFA) {
-                  this.createDialog('SecretVertifyDialog', {
-                    success,
-                  })
-                } else {
-                  success()
-                }
-              },
-              meta,
-            })
-            options.push({
-              label: i18n.t('compute.text_345', [ipAddr]),
-              permission: 'server_perform_list_forward,server_perform_open_forward',
-              action: () => {
-                const success = () => {
-                  this.createDialog('SmartFormDialog', {
-                    title: i18n.t('compute.text_346'),
-                    data: [obj],
-                    callback: async (data) => {
-                      openWebconsole(data.port, obj.id)
-                    },
-                    decorators: {
-                      port: [
-                        'port',
-                        {
-                          validateFirst: true,
-                          rules: [
-                            { required: true, message: i18n.t('compute.text_347') },
-                            {
-                              validator: (rule, value, _callback) => {
-                                const num = parseFloat(value)
-                                if (!/^\d+$/.test(value) || !num || num > 65535) {
-                                  _callback(i18n.t('compute.text_348'))
-                                }
-                                _callback()
+            if (obj.os_type !== 'Windows') {
+              options.push({
+                label: `SSH ${ipAddr}`,
+                permission: 'server_perform_list_forward,server_perform_open_forward',
+                meta,
+                render: (obj, params, h) => {
+                  const styleObj = {
+                    padding: '0 10px',
+                    fontSize: '12px',
+                  }
+                  const sshConnectHandle = () => {
+                    const success = () => {
+                      openWebconsole(22, obj.id)
+                    }
+                    if (this.enableMFA) {
+                      this.createDialog('SecretVertifyDialog', {
+                        success,
+                      })
+                    } else {
+                      success()
+                    }
+                  }
+                  const sshSettingInfoHandle = () => {
+                    this.createDialog('SmartFormDialog', {
+                      title: i18n.t('compute.text_346'),
+                      data: [obj],
+                      callback: async (data) => {
+                        openWebconsole(data.port, obj.id)
+                      },
+                      decorators: {
+                        port: [
+                          'port',
+                          {
+                            validateFirst: true,
+                            rules: [
+                              { required: true, message: i18n.t('compute.text_347') },
+                              {
+                                validator: (rule, value, _callback) => {
+                                  const num = parseFloat(value)
+                                  if (!/^\d+$/.test(value) || !num || num > 65535) {
+                                    _callback(i18n.t('compute.text_348'))
+                                  }
+                                  _callback()
+                                },
                               },
+                            ],
+                          },
+                          {
+                            label: i18n.t('compute.text_349'),
+                            placeholder: i18n.t('compute.text_350'),
+                          },
+                        ],
+                      },
+                    })
+                  }
+                  return <span style={styleObj} class='d-flex justify-content-between align-items-center'>
+                    <span onClick={sshConnectHandle}>{`SSH ${ipAddr}`}</span>
+                    <span>
+                      <a-tooltip title={i18n.t('compute.text_346')}>
+                        <a-icon class="ml-2" type="edit" onClick={sshSettingInfoHandle} />
+                      </a-tooltip>
+                    </span>
+                  </span>
+                },
+              })
+            } else {
+              const rdpSettingInfoHandle = () => {
+                this.createDialog('SmartFormDialog', {
+                  title: i18n.t('compute.text_346'),
+                  data: [obj],
+                  callback: async (data) => {
+                    handleRdpConnect(obj, data.port, 'rdp')
+                  },
+                  decorators: {
+                    port: [
+                      'port',
+                      {
+                        validateFirst: true,
+                        rules: [
+                          { required: true, message: i18n.t('compute.text_347') },
+                          {
+                            validator: (rule, value, _callback) => {
+                              const num = parseFloat(value)
+                              if (!/^\d+$/.test(value) || !num || num > 65535) {
+                                _callback(i18n.t('compute.text_348'))
+                              }
+                              _callback()
                             },
-                          ],
-                        },
-                        {
-                          label: i18n.t('compute.text_349'),
-                          placeholder: i18n.t('compute.text_350'),
-                        },
-                      ],
+                          },
+                        ],
+                      },
+                      {
+                        label: i18n.t('compute.text_349'),
+                        placeholder: i18n.t('compute.text_350'),
+                      },
+                    ],
+                  },
+                })
+              }
+              const handleRdpConnect = (obj, port) => {
+                const params = {
+                  id: 'server-rdp',
+                  action: obj.id,
+                  data: {
+                    host: ipAddr,
+                    port: +port,
+                    width: window.screen.width,
+                    height: window.screen.height,
+                  },
+                }
+                this.webconsoleManager.performAction(params).then(({ data }) => {
+                  this.openWebConsole(obj, data, 'rdp')
+                }).catch((ex) => {
+                  const { details } = ex.response.data
+                  this.createDialog('RdpAuthDialog', {
+                    manager: this.webconsoleManager,
+                    params,
+                    errorMsg: details,
+                    data: { name: obj.name, ip: ipAddr },
+                    success: (data) => {
+                      this.openWebConsole(obj, data, 'rdp')
                     },
                   })
+                })
+              }
+              const rdpConnectHandle = () => {
+                const success = () => {
+                  handleRdpConnect(obj)
                 }
                 if (this.enableMFA) {
                   this.createDialog('SecretVertifyDialog', {
@@ -227,9 +301,27 @@ const getSingleActions = function () {
                 } else {
                   success()
                 }
-              },
-              meta,
-            })
+              }
+              options.push({
+                label: `RDP ${ipAddr}`,
+                permission: 'server_perform_list_forward,server_perform_open_forward',
+                meta,
+                render: (obj, params, h) => {
+                  const styleObj = {
+                    padding: '0 10px',
+                    fontSize: '12px',
+                  }
+                  return <span style={styleObj} class='d-flex justify-content-between align-items-center'>
+                    <span onClick={rdpConnectHandle}>{`RDP ${ipAddr}`}</span>
+                    <span>
+                      <a-tooltip title={i18n.t('compute.text_346')}>
+                        <a-icon class="ml-2" type="edit" onClick={rdpSettingInfoHandle} />
+                      </a-tooltip>
+                    </span>
+                  </span>
+                },
+              })
+            }
           })
           return options
         }
