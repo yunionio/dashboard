@@ -274,6 +274,7 @@
   "compute.text_265": "Disk (MB)",
   "compute.text_266": "Instance Type",
   "compute.text_267": "OS",
+  "compute.sub_ips.title": "Secondary IPs",
   "compute.text_268": "Status",
   "compute.text_269": "Cloud Account",
   "compute.text_270": "Zone",
