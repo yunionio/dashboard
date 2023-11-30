@@ -257,6 +257,23 @@ export default {
               hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.os_type'),
             },
             getIpsTableColumn({ field: 'ip', title: 'IP', vm: this, hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.ips') }),
+            {
+              field: 'sub_ips',
+              title: this.$t('compute.sub_ips.title'),
+              slots: {
+                default: ({ row }, h) => {
+                  if (!row.sub_ips) {
+                    return '-'
+                  }
+                  const ret = []
+                  for (var i = 0; i < row.sub_ips.length; i++) {
+                    ret.push(<list-body-cell-wrap copy field='ip' row={{ ip: row.sub_ips[i] }} />)
+                  }
+                  return ret
+                },
+              },
+              hidden: (row) => this.$isScopedPolicyMenuHidden('server_hidden_columns.ips'),
+            },
             getCopyWithContentTableColumn({
               field: 'macs',
               title: 'MAC',
