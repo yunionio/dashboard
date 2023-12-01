@@ -676,6 +676,7 @@ const getSingleActions = function () {
                     data: [obj],
                   })
                 },
+                hidden: () => !this.$appConfig.isPrivate,
               },
               // 续费
               {
