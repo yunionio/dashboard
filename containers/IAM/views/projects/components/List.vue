@@ -119,7 +119,10 @@ export default {
               onManager: this.onManager,
               params: {
                 resources: 'project',
+                with_cloud_meta: false,
+                service: 'identity',
               },
+              managerInstance: new this.$Manager('metadatas/tag-value-pairs', 'v2'),
               mode: 'add',
             })
           },
