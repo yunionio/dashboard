@@ -20,6 +20,11 @@ export default {
     success: ['available'],
     danger: ['deleted'],
   },
+  reservedip: {
+    info: ['offline'],
+    success: ['online'],
+    danger: ['unknown'],
+  },
   wire: {
     success: ['available'],
     danger: ['merge_network_failed'],
