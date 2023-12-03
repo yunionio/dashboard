@@ -41,6 +41,12 @@ export default {
         getParams: this.getParams,
         steadyStatus: Object.values(expectStatus.cloudaccount).flat(),
         filterOptions: {
+          external_id: {
+            label: this.$t('table.title.external_id'),
+          },
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: {
             label: this.$t('cloudenv.text_95'),
             filter: true,

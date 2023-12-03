@@ -670,6 +670,7 @@
   "network.text_666": "Release",
   "network.text_667": "Load Balancer",
   "network.text_668": "Notes",
+  "network.reserved_ip.expire.title": "Auto-Release Time",
   "network.text_669": "IP Usage",
   "network.text_670": "Add IP address",
   "network.text_671": "Please enter a note",

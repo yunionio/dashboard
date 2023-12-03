@@ -37,10 +37,12 @@ import Actions from '@/components/PageList/Actions'
 import K8sClusterMonitor from './Monitor'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import KubeClusterDetail from './Detail'
 
 export default {
   name: 'K8SClusterSidePage',
   components: {
+    KubeClusterDetail,
     Actions,
     KubeMachineList,
     K8sClusterMonitor,
@@ -49,6 +51,7 @@ export default {
   data () {
     return {
       detailTabs: [
+        { label: this.$t('compute.text_238'), key: 'kube-cluster-detail' },
         { label: this.$t('k8s.text_21'), key: 'kube-machine-list' },
         { label: this.$t('k8s.text_414'), key: 'k8s-cluster-monitor' },
         { label: this.$t('k8s.text_202'), key: 'event-drawer' },
