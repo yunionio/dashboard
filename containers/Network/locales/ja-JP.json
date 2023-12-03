@@ -669,6 +669,7 @@
   "network.text_666": "解放",
   "network.text_667": "負荷分散",
   "network.text_668": "所見",
+  "network.reserved_ip.expire.title": "自動リリース時間",
   "network.text_669": "IP 使用量",
   "network.text_670": "IP アドレスを追加する",
   "network.text_671": "コメントを入力してください",

@@ -669,6 +669,7 @@
   "network.text_666": "释放",
   "network.text_667": "负载均衡",
   "network.text_668": "备注",
+  "network.reserved_ip.expire.title": "自动释放时间",
   "network.text_669": "IP使用情况",
   "network.text_670": "添加IP地址",
   "network.text_671": "请输入备注",

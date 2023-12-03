@@ -32,6 +32,7 @@
 <script>
 import WindowsMixin from '@/mixins/windows.js'
 import i18n from '@/locales'
+import { getCopyWithContentTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 
 // eslint-disable-next-line no-unused-vars
 const IP_TYPES = {
@@ -41,6 +42,7 @@ const IP_TYPES = {
   networkinterfaces: i18n.t('network.text_241'),
   hosts: i18n.t('network.host_ip'),
   instancegroups: i18n.t('network.instancegroup_ip'),
+  networkaddresses: i18n.t('compute.sub_ips.title'),
 }
 export default {
   name: 'IPList',
@@ -62,16 +64,18 @@ export default {
       tableData: [],
       filterName: '',
       columns: [
-        {
+        getCopyWithContentTableColumn({
           field: 'ip_addr',
           title: this.$t('network.text_213'),
           sortable: true,
-        },
-        {
+          width: 150,
+        }),
+        getCopyWithContentTableColumn({
           field: 'mac_addr',
           title: this.$t('network.text_228'),
           sortable: true,
-        },
+          width: 200,
+        }),
         {
           field: 'owner_type',
           title: this.$t('network.text_663'),
@@ -90,6 +94,7 @@ export default {
             return row.owner
           },
         },
+        getTimeTableColumn(),
         {
           field: 'action',
           title: this.$t('network.text_665'),
