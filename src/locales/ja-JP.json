@@ -188,6 +188,11 @@
       "syncing": "同期",
       "sync_status": "同期"
     },
+    "reservedip": {
+      "offline": "オフライン",
+      "online": "オンライン",
+      "unknown": "未知"
+    },
     "wire": {
       "available": "正常",
       "merge_network": "ネットワークマージ",
