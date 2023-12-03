@@ -188,6 +188,11 @@
       "syncing": "Syncing",
       "sync_status": "Syncing"
     },
+    "reservedip": {
+      "offline": "Offline",
+      "online": "Online",
+      "unknown": "Unknown"
+    },
     "wire": {
       "available": "Normal",
       "merge_network": "Network merging",

@@ -188,6 +188,11 @@
       "syncing": "同步中",
       "sync_status": "同步中"
     },
+    "reservedip": {
+      "offline": "离线",
+      "online": "在线",
+      "unknown": "未知"
+    },
     "wire": {
       "available": "正常",
       "merge_network": "网络合并中",

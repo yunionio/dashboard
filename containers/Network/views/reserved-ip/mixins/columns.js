@@ -1,4 +1,4 @@
-import { getCopyWithContentTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getCopyWithContentTableColumn, getStatusTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 export default {
@@ -8,6 +8,7 @@ export default {
         field: 'ip_addr',
         title: i18n.t('network.text_213'),
       }),
+      getStatusTableColumn({ statusModule: 'reservedip' }),
       {
         field: 'notes',
         title: i18n.t('network.text_668'),
