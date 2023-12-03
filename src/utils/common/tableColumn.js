@@ -367,6 +367,9 @@ export const getCopyWithContentTableColumn = ({
       default: ({ row }, h) => {
         if (vm.isPreLoad && !row[field]) return [<data-loading />]
         const text = (message && R.type(message) === 'Function') ? message(row) : (message || (row[field] && row[field].toString()) || '-')
+        if (text === '-') {
+          return '-'
+        }
         return [
           <list-body-cell-wrap copy field={field} row={row} hideField={hideField} message={text} customEdit={customEdit} customEditCallback={() => customEditCallback(row)}>
             { slotCallback ? slotCallback(row) : null }
@@ -701,14 +704,23 @@ export const getTimeTableColumn = ({
     slots: {
       default: ({ row }, h) => {
         if (vm.isPreLoad && !row[field]) return [<data-loading />]
-        if (fromNow) return row[field] ? moment(row[field]).fromNow() : '-'
-        return row[field] ? moment(row[field]).format() : '-'
+        if (!row[field]) {
+          return '-'
+        }
+        if (fromNow) {
+          return [
+            <a-tooltip class="ml-1" title={ moment(row[field]).format() }>{ moment(row[field]).fromNow() }</a-tooltip>,
+          ]
+        }
+        return [
+          <a-tooltip class="ml-1" title={ moment(row[field]).fromNow() }>{ moment(row[field]).format() }</a-tooltip>,
+        ]
       },
     },
-    formatter: ({ row }) => {
-      if (fromNow) return row[field] ? moment(row[field]).fromNow() : '-'
-      return row[field] ? moment(row[field]).format() : '-'
-    },
+    // formatter: ({ row }) => {
+    //  if (fromNow) return row[field] ? moment(row[field]).fromNow() : '-'
+    //  return row[field] ? moment(row[field]).format() : '-'
+    // },
     hidden: () => {
       return R.is(Function, hidden) ? hidden() : hidden
     },

@@ -4,9 +4,13 @@ import {
   getProjectDomainTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
-import { HYPERVISORS_MAP } from '@/constants'
-import BrandIcon from '@/sections/BrandIcon'
 import i18n from '@/locales'
+import {
+  getK8sClusterProviderColumn,
+  getK8sClusterDistribution,
+  getK8sClusterModeColumn,
+  getK8sClusterResourceType,
+} from '../utils/columns'
 
 export default {
   created () {
@@ -21,81 +25,10 @@ export default {
           )
         },
       }),
-      {
-        title: i18n.t('k8s.platform'),
-        field: 'provider',
-        sortable: true,
-        slots: {
-          default: ({ row }, _) => {
-            if (!row.provider) return '-'
-            if (row.provider === 'onecloud') {
-              row.provider = 'kvm'
-            }
-            const data = HYPERVISORS_MAP[row.provider]
-            if (!data || !data.brand) return '-'
-            return [
-              <BrandIcon name={ data.brand } />,
-            ]
-          },
-        },
-      },
-      {
-        field: 'distribution',
-        title: i18n.t('k8s.text_401'),
-        minWidth: 100,
-        slots: {
-          default: ({ row }) => {
-            let title = ''
-            // let title = 'Kubernetes'
-            let type = 'k8s'
-            const styles = { color: 'rgb(50, 109, 230)', fontSize: '20px' }
-            if (row.distribution === 'openshift') {
-              // title = 'OpenShift'
-              type = 'openshift'
-              styles.color = 'rgb(225, 38, 52)'
-            }
-            if (row.distribution_info && row.distribution_info.version) {
-              title += `${row.distribution_info.version}`
-            } else if (row.version) {
-              title += `${row.version} `
-            }
-            return [
-              <div class="d-inline-flex align-items-right flex-column">
-                <Icon class="d-block text-left" type={ type } style={ styles } />
-                <div>{ title }</div>
-              </div>,
-            ]
-          },
-        },
-      },
-      {
-        field: 'mode',
-        title: i18n.t('k8s.text_186'),
-        formatter: ({ cellValue }) => {
-          switch (cellValue) {
-            case 'customize':
-              return i18n.t('k8s.text_187')
-            case 'import':
-              return i18n.t('k8s.text_143')
-            default:
-              return '-'
-          }
-        },
-      },
-      {
-        field: 'resource_type',
-        title: i18n.t('k8s.text_188'),
-        formatter: ({ cellValue }) => {
-          switch (cellValue) {
-            case 'guest':
-              return i18n.t('k8s.text_189')
-            case 'host':
-              return i18n.t('k8s.text_190')
-            default:
-              return '-'
-          }
-        },
-      },
+      getK8sClusterProviderColumn(),
+      getK8sClusterDistribution(),
+      getK8sClusterModeColumn(),
+      getK8sClusterResourceType(),
       /*
        * {
        *   field: 'version',
