@@ -72,7 +72,7 @@ export default {
         type: 'expand',
         slots: {
           default: ({ row }) => {
-            return i18n.t('compute.text_619', [row.network_addresses.length])
+            return i18n.t('compute.text_619', [row.network_addresses ? row.network_addresses.length : 0])
           },
           content: ({ row }) => {
             let list = []

@@ -31,6 +31,7 @@ export default {
           },
         },
       },
+      getTimeTableColumn({ field: 'expired_at', title: this.$t('network.reserved_ip.expire.title'), fromNow: true }),
       getTimeTableColumn(),
     ]
   },

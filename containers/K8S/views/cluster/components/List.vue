@@ -36,6 +36,9 @@ export default {
         apiVersion: 'v1',
         getParams: this.getParam,
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: getNameFilter(),
           created_at: getCreatedAtFilter(),
         },

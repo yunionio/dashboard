@@ -54,6 +54,9 @@ export default {
           sync_status: Object.values(expectStatus.cloudaccountSyncStatus).flat(),
         },
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: getNameFilter(),
           description: getDescriptionFilter(),
           // access_url: getFilter({
