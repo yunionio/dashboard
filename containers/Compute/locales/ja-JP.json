@@ -1740,5 +1740,10 @@
   "compute.volcengine.essd_pl0": "ESSD PL0",
   "compute.volcengine.essd_ptssd": "PTSSD",
   "compute.volcengine.sys_disk_resize_tip": "火山エンジン システム ディスクは、[{0}] 状態でのみこの操作をサポートします。",
-  "compute.volcengine.data_disk_resize_tip": "火山エンジン データ ディスクは、[{0}] 状態でのみこの操作をサポートします。"
+  "compute.volcengine.data_disk_resize_tip": "火山エンジン データ ディスクは、[{0}] 状態でのみこの操作をサポートします。",
+  "compute.preallocation": "ディスク準備タイプ",
+  "compute.preallocation.off": "オフ",
+  "compute.preallocation.metadata": "シン プロビジョニング",
+  "compute.preallocation.falloc": "シック プロビジョニングによるゼロ化の遅延",
+  "compute.preallocation.full": "シック プロビジョニングはすぐにゼロになります"
 }
