@@ -1745,5 +1745,6 @@
   "compute.preallocation.off": "关闭",
   "compute.preallocation.metadata": "精简置备",
   "compute.preallocation.falloc": "厚置备延迟归零",
-  "compute.preallocation.full": "厚置备快速归零"
+  "compute.preallocation.full": "厚置备快速归零",
+  "compute.assign_preallocation": "指定磁盘置备"
 }

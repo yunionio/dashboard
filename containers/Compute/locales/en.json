@@ -1741,5 +1741,6 @@
   "compute.preallocation.off": "off",
   "compute.preallocation.metadata": "Thin provisioning",
   "compute.preallocation.falloc": "Thick provisioning delayed zeroing",
-  "compute.preallocation.full": "Thick provisioning is zeroed quickly"
+  "compute.preallocation.full": "Thick provisioning is zeroed quickly",
+  "compute.assign_preallocation": "Specify disk provisioning"
 }
