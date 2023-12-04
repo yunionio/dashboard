@@ -45,6 +45,13 @@
       <storage style="min-width: 480px; max-width: 500px;" :diskKey="diskKey" :decorators="decorator" :storageParams="storageParams" v-if="showStorage" :form="form" :storageHostParams="storageHostParams" @storageHostChange="(val) => $emit('storageHostChange', val)" />
       <a-button v-if="!disabled" class="mt-1" type="link" @click="storageShowClick">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
     </template>
+    <a-form-item v-if="isVMware" class="mx-1" :wrapperCol="{ span: 24 }">
+      <base-select
+        v-if="showPreallocation"
+        v-decorator="decorator.preallocation"
+        :options="preallocationOptions" />
+    </a-form-item>
+    <a-button v-if="!disabled" class="mt-1" type="link" @click="preallocationShowClick">{{ showPreallocation ? $t('compute.text_135') : $t('compute.assign_preallocation') }}</a-button>
     <!-- iops 创建时可设置，修改时禁用 -->
     <template v-if="has('iops') && !disabled && isIopsShow">
       <a-form-item>
@@ -84,10 +91,11 @@
 
 <script>
 import * as R from 'ramda'
-import Storage from './components/Storage'
+import { PREALLOCATION_OPTIONS } from '@Compute/constants'
 import { HYPERVISORS_MAP } from '@/constants'
 import SchedtagPolicy from '@/sections/SchedtagPolicy'
 import DiskMountpoint from '@/sections/DiskMountpoint'
+import Storage from './components/Storage'
 
 export default {
   name: 'Disk',
@@ -192,7 +200,14 @@ export default {
       showStorage: false,
       showIops: false,
       showThroughput: false,
+      showPreallocation: false,
       snapshotObj: {},
+      preallocationOptions: PREALLOCATION_OPTIONS.map(item => {
+        return {
+          id: item.value,
+          name: item.label,
+        }
+      }),
     }
   },
   computed: {
@@ -214,6 +229,9 @@ export default {
     },
     storageClass () {
       return `${this.storageStatusMap.type}-color`
+    },
+    isVMware () {
+      return this.hypervisor === HYPERVISORS_MAP.esxi.key
     },
   },
   watch: {
@@ -267,6 +285,9 @@ export default {
         this.$emit('storageHostChange', { disk: this.diskKey, storageHosts: [] })
       }
       this.showStorage = !this.showStorage
+    },
+    preallocationShowClick () {
+      this.showPreallocation = !this.showPreallocation
     },
   },
 }

@@ -333,6 +333,12 @@ export const createVmDecorators = type => {
           }],
         },
       ],
+      preallocation: [
+        'systemDiskPreallocation',
+        {
+          initialValue: 'off',
+        },
+      ],
     },
     dataDisk: {
       type: i => [
@@ -429,6 +435,12 @@ export const createVmDecorators = type => {
             required: true,
             message: i18n.t('compute.throughput_input_tip'),
           }],
+        },
+      ],
+      preallocation: i => [
+        `dataDiskPreallocation[${i}]`,
+        {
+          initialValue: 'off',
         },
       ],
     },
@@ -984,6 +996,9 @@ export class GenCreateData {
     if (this.fd.systemDiskThroughput) {
       systemDisk.throughput = this.fd.systemDiskThroughput
     }
+    if (this.fd.systemDiskPreallocation) {
+      systemDisk.preallocation = this.fd.systemDiskPreallocation
+    }
     // #7356 新建vmware主机，数据盘没有传磁盘类型字段
     if (this.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
       dataDiskType = dataDiskType || sysDiskType
@@ -1023,6 +1038,9 @@ export class GenCreateData {
       }
       if (this.fi.dataDiskMedium) {
         diskObj.medium = this.fi.dataDiskMedium
+      }
+      if (this.fd.dataDiskPreallocation) {
+        diskObj.preallocation = this.fd.dataDiskPreallocation
       }
       dataDisk.push(diskObj)
     }, this.fd.dataDiskSizes)
