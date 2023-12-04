@@ -1378,7 +1378,7 @@
   "compute.storage_commit_rate": "ストレージ使用量",
   "compute.gpu_not_support_add_host": "パススルー デバイスにバインドされた仮想マシンがバックアップを追加できない",
   "compute.backup": "高可用性仮想マシン",
-  "compute.text_1377": "この操作は、オンライン サービスの状態のホストではサポートされていません",
+  "compute.text_1377": "サービス状態がオフラインのホストは本操作をサポートしていません",
   "compute.text_1378": "この操作は、共有スコープがプライベートである場合にのみサポートされます",
   "compute.secgroup.shared": "この操作は、共有セキュリティ グループではサポートされていません",
   "compute.text_1379": "新手",
