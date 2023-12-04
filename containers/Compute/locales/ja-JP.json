@@ -1745,5 +1745,6 @@
   "compute.preallocation.off": "オフ",
   "compute.preallocation.metadata": "シン プロビジョニング",
   "compute.preallocation.falloc": "シック プロビジョニングによるゼロ化の遅延",
-  "compute.preallocation.full": "シック プロビジョニングはすぐにゼロになります"
+  "compute.preallocation.full": "シック プロビジョニングはすぐにゼロになります",
+  "compute.assign_preallocation": "ディスク プロビジョニングを指定します"
 }
