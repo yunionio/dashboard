@@ -1740,5 +1740,10 @@
   "compute.volcengine.essd_pl0": "极速型SSD PL0",
   "compute.volcengine.essd_ptssd": "性能型SSD",
   "compute.volcengine.sys_disk_resize_tip": "火山引擎系统盘仅在【{0}】状态下支持此操作",
-  "compute.volcengine.data_disk_resize_tip": "火山引擎数据盘仅在【{0}】状态下支持此操作"
+  "compute.volcengine.data_disk_resize_tip": "火山引擎数据盘仅在【{0}】状态下支持此操作",
+  "compute.preallocation": "磁盘制备类型",
+  "compute.preallocation.off": "关闭",
+  "compute.preallocation.metadata": "精简置备",
+  "compute.preallocation.falloc": "厚置备延迟归零",
+  "compute.preallocation.full": "厚置备快速归零"
 }

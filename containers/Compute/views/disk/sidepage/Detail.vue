@@ -10,8 +10,6 @@
 </template>
 
 <script>
-import { MEDIUM_MAP, SERVER_TYPE } from '../../../constants'
-import { getUnusedTableColumn } from '../utils/columns'
 import {
   getUserTagColumn,
   getExtTagColumn,
@@ -20,6 +18,8 @@ import { sizestr } from '@/utils/utils'
 import { getBrandTableColumn, getBillingTypeTableColumn } from '@/utils/common/tableColumn'
 import { findPlatform } from '@/utils/common/hypervisor'
 import WindowsMixin from '@/mixins/windows'
+import { getUnusedTableColumn, getPreallocationTableColumn } from '../utils/columns'
+import { MEDIUM_MAP, SERVER_TYPE } from '../../../constants'
 
 export default {
   name: 'DiskDetail',
@@ -61,6 +61,7 @@ export default {
             return cellValue ? sizestr(cellValue, 'M', 1024) : '-'
           },
         },
+        getPreallocationTableColumn(),
         {
           field: 'iops',
           title: this.$t('compute.max_iops'),
