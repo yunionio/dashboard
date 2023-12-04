@@ -15,6 +15,7 @@ import i18n from '@/locales'
 import {
   getUnusedTableColumn,
   getStorageTypeTableColumn,
+  getPreallocationTableColumn,
 } from '../utils/columns'
 import { MEDIUM_MAP } from '../../../constants'
 
@@ -60,6 +61,7 @@ export default {
           return this.$isScopedPolicyMenuHidden('disk_hidden_columns.disk_size')
         },
       },
+      getPreallocationTableColumn(),
       {
         field: 'iops',
         title: i18n.t('compute.max_iops'),

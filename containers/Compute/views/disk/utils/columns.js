@@ -1,6 +1,7 @@
 import * as R from 'ramda'
-import i18n from '@/locales'
 import { STORAGE_TYPES } from '@Storage/constants'
+import { PREALLOCATION_OPTION_MAP } from '@Compute/constants'
+import i18n from '@/locales'
 
 export const getUnusedTableColumn = ({ hidden, vm = {} } = {}) => {
   return {
@@ -35,5 +36,19 @@ export const getStorageTypeTableColumn = ({ hidden } = {}) => {
     hidden: () => {
       return R.is(Function, hidden) ? hidden() : hidden
     },
+  }
+}
+
+export const getPreallocationTableColumn = () => {
+  return {
+    field: 'preallocation',
+    title: i18n.t('compute.preallocation'),
+    width: 170,
+    slots: {
+      default: ({ row }) => {
+        return PREALLOCATION_OPTION_MAP[row.preallocation]?.label || '-'
+      },
+    },
+    formatter: ({ row }) => row.preallocation ? PREALLOCATION_OPTION_MAP[row.preallocation].label : '-',
   }
 }
