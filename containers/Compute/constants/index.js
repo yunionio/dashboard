@@ -1203,3 +1203,12 @@ export const GPU_DEV_TYPE_OPTIONS = [
   { label: 'VGPU', value: 'VGPU' },
 ]
 export const GPU_DEV_TYPE_OPTION_MAP = arrayToObj(GPU_DEV_TYPE_OPTIONS, 'value')
+
+// 磁盘制备类型
+export const PREALLOCATION_OPTIONS = [
+  { label: i18n.t('compute.preallocation.off'), value: 'off' },
+  { label: i18n.t('compute.preallocation.metadata'), value: 'metadata' },
+  { label: i18n.t('compute.preallocation.falloc'), value: 'falloc' },
+  { label: i18n.t('compute.preallocation.full'), value: 'full' },
+]
+export const PREALLOCATION_OPTION_MAP = arrayToObj(PREALLOCATION_OPTIONS, 'value')
