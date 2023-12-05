@@ -271,8 +271,8 @@ const getSingleActions = function () {
                   data: {
                     host: ipAddr,
                     port: +port,
-                    width: window.screen.width,
-                    height: window.screen.height,
+                    // width: window.screen.width - 10,
+                    // height: window.screen.height - 180,
                   },
                 }
                 this.webconsoleManager.performAction(params).then(({ data }) => {
