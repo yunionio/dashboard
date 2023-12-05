@@ -45,13 +45,15 @@
       <storage style="min-width: 480px; max-width: 500px;" :diskKey="diskKey" :decorators="decorator" :storageParams="storageParams" v-if="showStorage" :form="form" :storageHostParams="storageHostParams" @storageHostChange="(val) => $emit('storageHostChange', val)" />
       <a-button v-if="!disabled" class="mt-1" type="link" @click="storageShowClick">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
     </template>
-    <a-form-item v-if="isVMware" class="mx-1" :wrapperCol="{ span: 24 }">
-      <base-select
-        v-if="showPreallocation"
-        v-decorator="decorator.preallocation"
-        :options="preallocationOptions" />
-    </a-form-item>
-    <a-button v-if="!disabled" class="mt-1" type="link" @click="preallocationShowClick">{{ showPreallocation ? $t('compute.text_135') : $t('compute.assign_preallocation') }}</a-button>
+    <template v-if="isVMware">
+      <a-form-item class="mx-1" :wrapperCol="{ span: 24 }">
+        <base-select
+          v-if="showPreallocation"
+          v-decorator="decorator.preallocation"
+          :options="preallocationOptions" />
+      </a-form-item>
+      <a-button v-if="!disabled" class="mt-1" type="link" @click="preallocationShowClick">{{ showPreallocation ? $t('compute.text_135') : $t('compute.assign_preallocation') }}</a-button>
+    </template>
     <!-- iops 创建时可设置，修改时禁用 -->
     <template v-if="has('iops') && !disabled && isIopsShow">
       <a-form-item>
