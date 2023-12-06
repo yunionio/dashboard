@@ -5934,5 +5934,10 @@
   "common.schedtag.extra": "スケジュールラベルの使用方法",
   "common.view.doc": "ドキュメントを確認する",
   "common.private_iso": "@:dictionary.private_env ISO ミラーリング",
-  "common.private_iso_tip": "@:dictionary.private_envプラットフォームのISOミラーリング"
+  "common.private_iso_tip": "@:dictionary.private_envプラットフォームのISOミラーリング",
+  "common.rdp_password_tip": "RDP アカウントのパスワードを入力してください",
+  "common.rdp_login_err": "RDP リモート ログインに失敗しました",
+  "common.rdp_login_err_msg": "RDP ログイン情報を入力して、再度ログインしてください。",
+  "common.connect": "接続",
+  "common.setting": "設定"
 }

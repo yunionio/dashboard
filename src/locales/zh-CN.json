@@ -5934,5 +5934,10 @@
   "common.schedtag.extra": "调度标签使用方法",
   "common.view.doc": "查看文档",
   "common.private_iso": "@:dictionary.private_env ISO镜像",
-  "common.private_iso_tip": "@:dictionary.private_env平台的ISO镜像"
+  "common.private_iso_tip": "@:dictionary.private_env平台的ISO镜像",
+  "common.rdp_password_tip": "请输入RDP账户密码",
+  "common.rdp_login_err": "RDP远程登录失败",
+  "common.rdp_login_err_msg": "请输入RDP登录信息再次重试登录",
+  "common.connect": "连接",
+  "common.setting": "设置"
 }
