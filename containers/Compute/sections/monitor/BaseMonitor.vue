@@ -115,7 +115,7 @@ export default {
       for (let idx = 0; idx < this.constants.length; idx++) {
         const val = { ...this.constants[idx], groupFunc: this.groupFunc }
         try {
-          const data = await this.helper.fetchFormatData(this.serverId, val, this.time, this.timeGroup, this.idKey, this.customTime)
+          const data = await this.helper.fetchFormatData(this.serverId, val, this.time, this.timeGroup, this.idKey, this.customTime, true)
           resList.push(data)
           if (idx === this.constants.length - 1) {
             this.loading = false
