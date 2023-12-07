@@ -1,7 +1,7 @@
 import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
 
-function genServerQueryData (vmId, val, scope, from, interval, idKey, customTime) {
+function genServerQueryData (vmId, val, scope, from, interval, idKey, customTime, skip_check_series) {
   const model = {
     measurement: val.fromItem,
     select: [
@@ -65,6 +65,9 @@ function genServerQueryData (vmId, val, scope, from, interval, idKey, customTime
     interval: interval,
     unit: false,
   }
+  if (skip_check_series) {
+    data.skip_check_series = true
+  }
   if (from === 'custom' && customTime && customTime.from && customTime.to) {
     data.from = customTime.from
     data.to = customTime.to
@@ -79,15 +82,15 @@ export class MonitorHelper {
     this.scope = scope
   }
 
-  genServerQueryData (vmId, val, from, interval, idKey, customTime) {
-    return genServerQueryData(vmId, val, this.scope, from, interval, idKey, customTime)
+  genServerQueryData (vmId, val, from, interval, idKey, customTime, skip_check_series) {
+    return genServerQueryData(vmId, val, this.scope, from, interval, idKey, customTime, skip_check_series)
   }
 
-  async fetchData (srvId, val, from, interval, idKey, customTime) {
+  async fetchData (srvId, val, from, interval, idKey, customTime, skip_check_series) {
     const params = {
       id: 'query',
       action: '',
-      data: this.genServerQueryData(srvId, val, from, interval, idKey, customTime),
+      data: this.genServerQueryData(srvId, val, from, interval, idKey, customTime, skip_check_series),
       params: { $t: getRequestT() },
     }
     try {
@@ -98,9 +101,9 @@ export class MonitorHelper {
     }
   }
 
-  async fetchFormatData (srvId, val, from, interval, idKey = 'vm_id', customTime) {
+  async fetchFormatData (srvId, val, from, interval, idKey = 'vm_id', customTime, skip_check_series = false) {
     try {
-      const data = await this.fetchData(srvId, val, from, interval, idKey, customTime)
+      const data = await this.fetchData(srvId, val, from, interval, idKey, customTime, skip_check_series)
       return {
         title: val.label,
         constants: val,
