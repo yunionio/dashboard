@@ -22,10 +22,15 @@
               :decorator="decorators.vcpu"
               :options="form.fi.cpuMem.cpus || []"
               :disable-options="disableCpus"
-              @change="cpuChange"
               :disabled="runningArm"
               :extra="cpuExtra"
-              :max="form.fd.vcpu < 32 ? 32 : 128" />
+              :max="form.fd.vcpu < 32 ? 32 : 128"
+              :form="form"
+              :hypervisor="hypervisor"
+              :showCpuSocketsInit="form.fi.showCpuSockets"
+              :cpuSocketsInit="form.fi.cpuSockets"
+              :serverStatus="selectedItem.status"
+              @change="cpuChange" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_369')" class="mb-0">
             <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :disable-options="disableMems" :disabled="runningArm" :extra="cpuExtra" />
@@ -187,6 +192,8 @@ export default {
           cpuMem: {}, // cpu 和 内存 的关联关系
           capability: {},
           imageMsg: {}, // 当前选中的 image
+          showCpuSockets: false,
+          cpuSockets: 1,
         },
       },
       beforeDataDisks: [],
@@ -743,6 +750,10 @@ export default {
 
       const dataDisks = this.selectedItem.disks_info.filter(item => item.disk_type === 'data')
       const { medium_type: dataDiskMedium } = dataDisks[0] || {}
+      if (this.selectedItem.cpu_sockets) {
+        this.form.fi.showCpuSockets = true
+        this.form.fi.cpuSockets = this.selectedItem.cpu_sockets
+      }
       this.$nextTick(() => {
         this.diskLoaded = true
         this.form.fc.setFieldsValue({ vcpu: this.form.fd.vcpu_count, vmem: this.form.fd.vmem })
@@ -838,9 +849,13 @@ export default {
         sku: values.sku.name,
         auto_start: values.autoStart,
       }
+      const { showCpuSockets, cpuSockets } = this.form.fi
       const ids = this.params.data.map(item => item.id)
       if (ids.length === 1) {
         params.disks = this.genDiskData(values)
+      }
+      if (showCpuSockets) {
+        params.cpu_sockets = cpuSockets
       }
       return this.serversManager.batchPerformAction({
         ids,

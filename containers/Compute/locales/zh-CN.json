@@ -1746,5 +1746,10 @@
   "compute.preallocation.metadata": "精简置备",
   "compute.preallocation.falloc": "厚置备延迟归零",
   "compute.preallocation.full": "厚置备快速归零",
-  "compute.assign_preallocation": "指定磁盘置备"
+  "compute.assign_preallocation": "指定磁盘置备",
+  "compute.cpu_sockets": "插槽内核数",
+  "compute.slots_number": "插槽数",
+  "compute.set_cpu_sockets": "设置插槽内核数",
+  "compute.core_per_sockets": "每个插槽内核数",
+  "compute.hot_action_notsupport": "热操作不支持该操作，请关机后重试！"
 }
