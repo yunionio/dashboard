@@ -30,6 +30,33 @@ async function getPdf (options) {
   })
 }
 
+/**
+ * 获取echart图，tooltip位置，以免超出可展示区域被隐藏
+ * @param {Array} point [x, y]
+ * @param {Dom} dom tooltip dom
+ * @param {Object} size { contentSize: [width, height], viewSize: [width, height] }
+ * @param {Boolean} inSidePage 是否在Sidepage页面内
+ * @returns {Object} { left, top }
+ */
+function getChartTooltipPosition (point, dom, size, inSidePage) {
+  const { contentSize, viewSize } = size
+  const echartY = dom.parentNode.getBoundingClientRect().y
+  let canShowTopLine = 0
+  let top = -echartY
+  if (inSidePage) {
+    const sidePageContentDom = document.getElementById('side-page-container')
+    if (sidePageContentDom) {
+      canShowTopLine = sidePageContentDom.getBoundingClientRect().y
+      top = -(echartY - canShowTopLine)
+    }
+  }
+  return {
+    left: point[0] + 20 + contentSize[0] < viewSize[0] ? point[0] + 20 : point[0] - (contentSize[0] + 20),
+    top: point[1] - 50 + echartY - contentSize[1] < canShowTopLine ? top : -(contentSize[1] - (point[1] - 50)),
+  }
+}
+
 export {
   getPdf,
+  getChartTooltipPosition,
 }
