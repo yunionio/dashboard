@@ -1746,5 +1746,10 @@
   "compute.preallocation.metadata": "シン プロビジョニング",
   "compute.preallocation.falloc": "シック プロビジョニングによるゼロ化の遅延",
   "compute.preallocation.full": "シック プロビジョニングはすぐにゼロになります",
-  "compute.assign_preallocation": "ディスク プロビジョニングを指定します"
+  "compute.assign_preallocation": "ディスク プロビジョニングを指定します",
+  "compute.cpu_sockets": "ソケットコアの数",
+  "compute.slots_number": "スロット数",
+  "compute.set_cpu_sockets": "ソケット コアの数を設定します",
+  "compute.core_per_sockets": "ソケットあたりのコア数",
+  "compute.hot_action_notsupport": "ホット操作はこの操作をサポートしていません。シャットダウンして再試行してください。"
 }

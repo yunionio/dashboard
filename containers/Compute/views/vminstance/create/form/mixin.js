@@ -113,6 +113,8 @@ export default {
           memDisabled: false,
           dataDiskMedium: '',
           networkVpcObj: {},
+          showCpuSockets: false,
+          cpuSockets: 1,
         },
         fd: { ...initFd, os: '' },
       },
