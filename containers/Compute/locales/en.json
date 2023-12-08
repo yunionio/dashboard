@@ -1742,5 +1742,10 @@
   "compute.preallocation.metadata": "Thin provisioning",
   "compute.preallocation.falloc": "Thick provisioning delayed zeroing",
   "compute.preallocation.full": "Thick provisioning is zeroed quickly",
-  "compute.assign_preallocation": "Specify disk provisioning"
+  "compute.assign_preallocation": "Specify disk provisioning",
+  "compute.cpu_sockets": "Number of socket cores",
+  "compute.slots_number": "Number of slots",
+  "compute.set_cpu_sockets": "Set the number of socket cores",
+  "compute.core_per_sockets": "Number of cores per socket",
+  "compute.hot_action_notsupport": "Hot operation does not support this operation, please shut down and try again!"
 }

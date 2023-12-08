@@ -356,6 +356,9 @@ export default {
               field: 'vcpu_count',
               title: 'CPU',
               formatter: ({ row }) => {
+                if (row.cpu_sockets) {
+                  return `CPU: ${row.vcpu_count}${this.$t('compute.text_167')}（${this.$t('compute.slots_number')}：${row.cpu_sockets}）`
+                }
                 return row.vcpu_count + this.$t('compute.text_167')
               },
               hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.vcpu_count'),

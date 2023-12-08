@@ -1317,6 +1317,14 @@ export class GenCreateData {
   }
 
   /**
+   * 获取CPU插槽数
+   * @returns
+   */
+  getCpuSockets () {
+    return this.fi.cpuSockets
+  }
+
+  /**
    * 获取内存
    *
    * @returns { String }
@@ -1488,6 +1496,9 @@ export class GenCreateData {
       if (this.fd.is_daemon) {
         data.is_daemon = this.fd.is_daemon
       }
+    }
+    if (this.fi.showCpuSockets) {
+      data.cpu_sockets = this.getCpuSockets()
     }
     return data
   }
