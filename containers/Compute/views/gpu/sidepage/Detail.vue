@@ -7,10 +7,10 @@
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows'
 import {
   getReserveResourceColumn,
 } from '../utils/columns'
-import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'GpuDetail',
@@ -67,10 +67,16 @@ export default {
             {
               field: 'framebuffer',
               title: this.$t('gpu.device_type.framebuffer'),
+              hidden: (row) => {
+                return row.dev_type !== 'LEGACY-VGPU'
+              },
             },
             {
               field: 'max_resolution',
               title: this.$t('gpu.device_type.max_resolution'),
+              hidden: (row) => {
+                return row.dev_type !== 'LEGACY-VGPU'
+              },
             },
           ],
         },
