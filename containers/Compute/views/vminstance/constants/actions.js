@@ -265,8 +265,8 @@ const getSingleActions = function () {
                 })
               }
               const handleRdpConnect = (obj, port) => {
-                const width = window.innerWidth * window.devicePixelRatio
-                const height = (window.innerHeight - 37) * window.devicePixelRatio
+                const width = window.innerWidth
+                const height = window.innerHeight - 37
                 const params = {
                   id: 'server-rdp',
                   action: obj.id,
