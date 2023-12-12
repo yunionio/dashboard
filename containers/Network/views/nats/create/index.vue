@@ -29,7 +29,7 @@
           :providerParams="providerParams"
           :cloudregionParams="regionParams"
           :isRequired="true"
-          filterBrandResource="nat_engine"
+          filterBrandResource="nat"
           @change="handleRegionChange" />
         <!-- 套餐 -->
         <s-k-u ref="REF_SKU" />
