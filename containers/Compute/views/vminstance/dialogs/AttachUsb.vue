@@ -167,7 +167,7 @@ export default {
   },
   methods: {
     initUsb () {
-      const { isolated_devices } = this.params.data[0]
+      const { isolated_devices = [] } = this.params.data[0]
       const devices = isolated_devices.filter(item => item.dev_type === 'USB')
       if (devices?.length > 0) {
         this.isOpenUsb = true
