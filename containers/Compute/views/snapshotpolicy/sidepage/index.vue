@@ -26,7 +26,6 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import SnapshotPolicyDetail from './Detail'
 import SnapshotPolicyDisk from './Disk'
-import SnapshotPolicyCache from './Cache'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -36,7 +35,6 @@ export default {
   components: {
     SnapshotPolicyDetail,
     SnapshotPolicyDisk,
-    SnapshotPolicyCache,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -45,7 +43,6 @@ export default {
       detailTabs: [
         { label: this.$t('compute.text_238'), key: 'snapshot-policy-detail' },
         { label: this.$t('compute.text_1084'), key: 'snapshot-policy-disk' },
-        { label: this.$t('compute.text_692'), key: 'snapshot-policy-cache' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
