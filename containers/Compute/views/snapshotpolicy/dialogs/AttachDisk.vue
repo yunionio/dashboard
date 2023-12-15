@@ -124,7 +124,7 @@ export default {
         const ids = values.disks
         const disk = this.getDisks(ids, this.bindedDisks)
         const data = {
-          snapshotpolicy: this.params.data[0].id,
+          snapshotpolicy_id: this.params.data[0].id,
         }
         if (disk.addDisks.length > 0) {
           await manager.batchPerformAction({
