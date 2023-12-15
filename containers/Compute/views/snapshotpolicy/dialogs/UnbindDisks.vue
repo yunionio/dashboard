@@ -34,7 +34,7 @@ export default {
     async doSubmit () {
       const ids = this.params.data.map(item => item.id)
       const params = {
-        snapshotpolicy: this.params.resId,
+        snapshotpolicy_id: this.params.resId,
       }
       return this.params.onManager('batchPerformAction', {
         id: ids,
