@@ -14,11 +14,16 @@ export default {
       diskProps: {
         list: this.$list.createList(this, {
           resource: 'disks',
-          getParams: {
-            tenant: this.params.data[0]?.tenant_id,
-            filter: 'status.in(\'ready\')',
-            unused: false,
-            brand: ['Aliyun', 'OneCloud', 'Qcloud'],
+          getParams: () => {
+            const params = {
+              filter: 'status.in(\'ready\')',
+            }
+            if (this.params.data[0]?.brand === 'OneCloud') {
+              params.unused = false
+            } else {
+              params.manager_id = this.params.data[0]?.manager_id
+            }
+            return params
           },
           filterOptions: {
             name: getNameFilter(),

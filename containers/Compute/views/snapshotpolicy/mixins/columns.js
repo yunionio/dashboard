@@ -2,7 +2,11 @@ import { weekOptions, timeOptions } from '../constants'
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
+  getTagTableColumn,
   getProjectTableColumn,
+  getRegionTableColumn,
+  getBrandTableColumn,
+  getAccountTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
@@ -20,6 +24,9 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'snapshotpolicy', vm: this }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'snapshotpolicy', columns: () => this.columns }),
+      getBrandTableColumn(),
+      getAccountTableColumn(),
       {
         field: 'binding_disk_count',
         title: i18n.t('table.title.bind_disk_count'),
@@ -35,31 +42,32 @@ export default {
         },
       },
       {
-        field: 'repeat_weekdays_display',
+        field: 'repeat_weekdays',
         title: i18n.t('table.title.strategy'),
         minWidth: 180,
         showOverflow: 'ellipsis',
         slots: {
           default: ({ row }, h) => {
-            if (row.repeat_weekdays_display === undefined) return [<data-loading />]
+            if (row.repeat_weekdays === undefined) return [<data-loading />]
             let text = ''
-            if (row.repeat_weekdays_display && row.repeat_weekdays_display.length) {
-              text += i18n.t('compute.text_1098') + row.repeat_weekdays_display.map(item => weekOptions[item - 1]).join('、')
+            if (row.repeat_weekdays && row.repeat_weekdays.length) {
+              text += i18n.t('compute.text_1098') + row.repeat_weekdays.map(item => weekOptions[item - 1]).join('、')
             }
-            if (row.time_points_display && row.time_points_display.length) {
-              text += '; ' + row.time_points_display.map(item => timeOptions[item]).join('、')
+            if (row.time_points && row.time_points.length) {
+              text += '; ' + row.time_points.map(item => timeOptions[item]).join('、')
             }
             if (text) {
               text += i18n.t('compute.text_1099')
             }
             return [
-              <list-body-cell-wrap copy field='repeat_weekdays_display' hideField row={row} message={text}>
+              <list-body-cell-wrap copy field='repeat_weekdays' hideField row={row} message={text}>
                 {{ text }}
               </list-body-cell-wrap>,
             ]
           },
         },
       },
+      getRegionTableColumn(),
       getTimeTableColumn(),
       getProjectTableColumn(),
     ]
