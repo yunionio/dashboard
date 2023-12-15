@@ -132,7 +132,7 @@ const getSingleActions = function () {
                     padding: '0 10px',
                     fontSize: '12px',
                   }
-                  const isRunning = obj.power_status === 'on'
+                  const isRunning = obj.power_states === 'on'
                   if (!isRunning) {
                     styleObj = {
                       ...styleObj,
@@ -282,7 +282,7 @@ const getSingleActions = function () {
                     padding: '0 10px',
                     fontSize: '12px',
                   }
-                  const isRunning = obj.power_status === 'on'
+                  const isRunning = obj.power_states === 'on'
                   if (!isRunning) {
                     styleObj = {
                       ...styleObj,
