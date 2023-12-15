@@ -93,44 +93,11 @@ const getSingleActions = function () {
             }
 
             const fetchWebconsoleAddr = async (port) => {
-              if (ipInfo.vpcId === 'default' || ipInfo.ipType === 'eip' || ipInfo.provider === 'InCloudSphere') {
+              if (ipInfo.vpcId === 'default' || ipInfo.ipType === 'eip' || ipInfo.provider === 'InCloudSphere' || ipInfo.provider === 'OneCloud') {
                 return {
                   ipAddr: ipAddr,
                   port: port,
                 }
-              }
-              if (ipInfo.provider === 'OneCloud') {
-                return new this.$Manager('servers').performAction({
-                  id: obj.id,
-                  action: 'list-forward',
-                  data: {
-                    proto: 'tcp',
-                    port: port,
-                  },
-                }).then(data => {
-                  const fwds = data.data.forwards
-                  if (fwds && fwds.length > 0) {
-                    const fwd = fwds[0]
-                    return {
-                      ipAddr: fwd.proxy_addr,
-                      port: fwd.proxy_port,
-                    }
-                  }
-                  return new this.$Manager('servers').performAction({
-                    id: obj.id,
-                    action: 'open-forward',
-                    data: {
-                      proto: 'tcp',
-                      port: port,
-                    },
-                  }).then(data => {
-                    const fwd = data.data
-                    return {
-                      ipAddr: fwd.proxy_addr,
-                      port: fwd.proxy_port,
-                    }
-                  })
-                })
               }
               return Promise.reject(Error(`unexpected ${ipInfo}`))
             }
