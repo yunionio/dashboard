@@ -92,24 +92,14 @@ const getSingleActions = function () {
               return ret
             }
 
-            const fetchWebconsoleAddr = async (port) => {
-              if (ipInfo.vpcId === 'default' || ipInfo.ipType === 'eip' || ipInfo.provider === 'InCloudSphere' || ipInfo.provider === 'OneCloud') {
-                return {
-                  ipAddr: ipAddr,
-                  port: port,
-                }
-              }
-              return Promise.reject(Error(`unexpected ${ipInfo}`))
-            }
-
             const openWebconsole = async (port, id) => {
-              const addr = await fetchWebconsoleAddr(port)
               const params = {
                 id: 'ssh',
-                action: addr.ipAddr,
+                action: id,
                 data: {
                   id,
-                  port: addr.port,
+                  ip: ipAddr,
+                  port: port,
                   type: 'server',
                 },
               }
@@ -121,7 +111,7 @@ const getSingleActions = function () {
                     manager: this.webconsoleManager,
                     params,
                     errorMsg: connectParams.login_error_message,
-                    data: { name: obj.name, ip: addr.ipAddr },
+                    data: { name: obj.name, ip: ipAddr },
                     success: (data) => {
                       this.openWebConsole(obj, data, 'ws')
                     },
