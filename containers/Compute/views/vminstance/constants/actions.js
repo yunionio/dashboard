@@ -128,9 +128,17 @@ const getSingleActions = function () {
                 permission: 'server_perform_list_forward,server_perform_open_forward',
                 meta,
                 render: (obj, params, h) => {
-                  const styleObj = {
+                  let styleObj = {
                     padding: '0 10px',
                     fontSize: '12px',
+                  }
+                  const isRunning = obj.power_status === 'on'
+                  if (!isRunning) {
+                    styleObj = {
+                      ...styleObj,
+                      cursor: 'not-allowed',
+                      color: 'rgba(0, 0, 0, 0.25)',
+                    }
                   }
                   const sshConnectHandle = () => {
                     const success = () => {
@@ -177,14 +185,18 @@ const getSingleActions = function () {
                       },
                     })
                   }
-                  return <span style={styleObj} class='d-flex justify-content-between align-items-center'>
-                    <span onClick={sshConnectHandle}>{`SSH ${ipAddr}`}</span>
-                    <span>
-                      <a-tooltip title={i18n.t('compute.text_346')}>
-                        <a-icon class="ml-2" type="edit" onClick={sshSettingInfoHandle} />
-                      </a-tooltip>
+                  return <a-tooltip placement="left" title={!isRunning ? i18n.t('compute.text_1309', [i18n.t('compute.text_574')]) : ''}>
+                    <span style={styleObj} class='d-flex justify-content-between align-items-center'>
+                      <span onClick={isRunning ? sshConnectHandle : () => { }}>{`SSH ${ipAddr}`}</span>
+                      {
+                        isRunning ? <span>
+                          <a-tooltip title={i18n.t('compute.text_346')}>
+                            <a-icon class="ml-2" type="edit" onClick={isRunning ? sshSettingInfoHandle : () => {}} />
+                          </a-tooltip>
+                        </span> : null
+                      }
                     </span>
-                  </span>
+                  </a-tooltip>
                 },
               })
             } else {
@@ -266,18 +278,30 @@ const getSingleActions = function () {
                 permission: 'server_perform_list_forward,server_perform_open_forward',
                 meta,
                 render: (obj, params, h) => {
-                  const styleObj = {
+                  let styleObj = {
                     padding: '0 10px',
                     fontSize: '12px',
                   }
-                  return <span style={styleObj} class='d-flex justify-content-between align-items-center'>
-                    <span onClick={rdpConnectHandle}>{`RDP ${ipAddr}`}</span>
-                    <span>
-                      <a-tooltip title={i18n.t('compute.text_346')}>
-                        <a-icon class="ml-2" type="edit" onClick={rdpSettingInfoHandle} />
-                      </a-tooltip>
+                  const isRunning = obj.power_status === 'on'
+                  if (!isRunning) {
+                    styleObj = {
+                      ...styleObj,
+                      cursor: 'not-allowed',
+                      color: 'rgba(0, 0, 0, 0.25)',
+                    }
+                  }
+                  return <a-tooltip placement="left" title={!isRunning ? i18n.t('compute.text_1309', [i18n.t('compute.text_574')]) : ''}>
+                    <span style={styleObj} class='d-flex justify-content-between align-items-center'>
+                      <span onClick={isRunning ? rdpConnectHandle : () => { }}>{`RDP ${ipAddr}`}</span>
+                      {
+                        isRunning ? <span>
+                          <a-tooltip title={!isRunning ? '' : i18n.t('compute.text_346')}>
+                            <a-icon class="ml-2" type="edit" onClick={isRunning ? rdpSettingInfoHandle : () => { }} />
+                          </a-tooltip>
+                        </span> : null
+                      }
                     </span>
-                  </span>
+                  </a-tooltip>
                 },
               })
             }
