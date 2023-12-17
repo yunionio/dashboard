@@ -21,6 +21,7 @@ export const HYPERVISORS = [
   { key: 'bingocloud', label: i18n.t('scopeCloudPrvidersMap.BingoCloud'), provider: 'BingoCloud', brand: 'BingoCloud', host_type: 'bingocloud', hypervisor: 'bingocloud', env: 'private', cloud_env: 'private' },
   { key: 'incloudsphere', label: 'InCloudSphere', provider: 'InCloudSphere', brand: 'InCloudSphere', host_type: 'incloudsphere', hypervisor: 'incloudsphere', env: 'private', cloud_env: 'private' },
   { key: 'remotefile', label: i18n.t('cloudPrvidersMap.RemoteFile'), provider: 'RemoteFile', brand: 'RemoteFile', host_type: 'remotefile', hypervisor: 'remotefile', env: 'private', cloud_env: 'private' },
+  { key: 'extdb', label: i18n.t('cloudPrvidersMap.extdb'), provider: 'extdb', brand: 'extdb', host_type: 'extdb', hypervisor: 'dxtdb', env: 'private', cloud_env: 'private' },
   { key: 'proxmox', label: i18n.t('cloudPrvidersMap.Proxmox'), provider: 'Proxmox', brand: 'Proxmox', host_type: 'proxmox', hypervisor: 'proxmox', env: 'private', cloud_env: 'private' },
   { key: 'h3c', label: i18n.t('cloudPrvidersMap.H3C'), provider: 'H3C', brand: 'H3C', host_type: 'h3c', hypervisor: 'h3c', env: 'private', cloud_env: 'private' },
   // Public
