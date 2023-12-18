@@ -1,3 +1,4 @@
+import { PREALLOCATION_OPTION_MAP } from '@Compute/constants'
 import {
   getNameDescriptionTableColumn,
   getBrandTableColumn,
@@ -15,7 +16,7 @@ import i18n from '@/locales'
 import {
   getUnusedTableColumn,
   getStorageTypeTableColumn,
-  getPreallocationTableColumn,
+  // getPreallocationTableColumn,
 } from '../utils/columns'
 import { MEDIUM_MAP } from '../../../constants'
 
@@ -54,6 +55,18 @@ export default {
         title: i18n.t('table.title.disk_size'),
         sortable: true,
         minWidth: 50,
+        slots: {
+          default: ({ row }, h) => {
+            const preallocation = PREALLOCATION_OPTION_MAP[row.preallocation]?.label
+
+            return [
+              <div class={'d-flex'}>
+                <span>{sizestr(row.disk_size, 'M', 1024)}</span>
+                <span class={'text-color-help'}>({ preallocation })</span>
+              </div>,
+            ]
+          },
+        },
         formatter: ({ row }) => {
           return sizestr(row.disk_size, 'M', 1024)
         },
@@ -61,7 +74,7 @@ export default {
           return this.$isScopedPolicyMenuHidden('disk_hidden_columns.disk_size')
         },
       },
-      getPreallocationTableColumn(),
+      // getPreallocationTableColumn(),
       {
         field: 'iops',
         title: i18n.t('compute.max_iops'),
