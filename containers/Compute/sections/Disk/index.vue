@@ -50,7 +50,8 @@
         <base-select
           v-if="showPreallocation"
           v-decorator="decorator.preallocation"
-          :options="preallocationOptions" />
+          :options="preallocationOptions"
+          :select-props="{ allowClear: true}" />
       </a-form-item>
       <a-button v-if="!disabled" class="mt-1" type="link" @click="preallocationShowClick">{{ showPreallocation ? $t('compute.text_135') : $t('compute.assign_preallocation') }}</a-button>
     </template>
@@ -204,7 +205,7 @@ export default {
       showThroughput: false,
       showPreallocation: false,
       snapshotObj: {},
-      preallocationOptions: PREALLOCATION_OPTIONS.map(item => {
+      preallocationOptions: PREALLOCATION_OPTIONS.filter(item => item.value !== 'off').map(item => {
         return {
           id: item.value,
           name: item.label,
