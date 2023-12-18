@@ -810,7 +810,7 @@
       "label": "CloudShell Switch",
       "desc": "After closing, the cloud management CloudShell entrance is hidden and users cannot use it!"
     },
-    "common$enable_watermark": {
+    "webconsole$enable_watermark": {
       "label": "WaterMark Switch",
       "desc": "It is on by default. After closing, the WebConsole watermark display will be hidden."
     },

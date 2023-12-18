@@ -1,5 +1,5 @@
 import { mapGetters } from 'vuex'
-import { Base64 } from 'js-base64'
+// import { Base64 } from 'js-base64'
 import qs from 'qs'
 import { typeClouds, getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
@@ -552,32 +552,8 @@ export default {
   },
   methods: {
     openWebConsole (obj, data, protocol) {
-      let connectParams = qs.parse(data.connect_params)
-      if (!connectParams.access_token) {
-        connectParams = {
-          data: data.connect_params,
-        }
-      } else {
-        connectParams = {
-          data: Base64.encode(data.connect_params),
-        }
-      }
-      const query = {
-        ...connectParams,
-        session: data.session,
-        hypervisor: obj.hypervisor,
-        os_type: obj.os_type,
-        ips: obj.access_ip,
-        instanceName: obj.name,
-      }
-      if (protocol) {
-        query.protocol = protocol
-      }
-      if (this.enableWaterMark) {
-        query.waterMark = `${this.userInfo.name}${this.userInfo.displayname ? `（${this.userInfo.displayname}）` : ''}<br />${obj.name}`
-      }
-      // const href = `${this.$appConfig.webConsolePath}?${qs.stringify(query)}`
-      const href = `${this.$store.getters.auth.regions.api_server}/web-console/?${qs.stringify(query)}`
+      // const href = `${this.$appConfig.webConsolePath}?data=${data.connect_params}`
+      const href = `${this.$store.getters.auth.regions.api_server}/web-console/?data=${data.connect_params}`
       window.open(href)
     },
   },
