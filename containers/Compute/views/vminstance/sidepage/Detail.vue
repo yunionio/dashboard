@@ -356,7 +356,7 @@ export default {
               field: 'vcpu_count',
               title: 'CPU',
               formatter: ({ row }) => {
-                if (row.cpu_sockets) {
+                if (row.hypervisor === HYPERVISORS_MAP.esxi.key && row.cpu_sockets) {
                   return `CPU: ${row.vcpu_count}${this.$t('compute.text_167')}（${this.$t('compute.slots_number')}：${row.cpu_sockets}）`
                 }
                 return row.vcpu_count + this.$t('compute.text_167')

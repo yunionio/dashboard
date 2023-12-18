@@ -109,6 +109,9 @@ export default {
     showCpuSocketsInit (v) {
       this.showCpuSockets = v
     },
+    cpuSocketsInit (v) {
+      this.cpuSockets = v
+    },
   },
   methods: {
     change (e) {
