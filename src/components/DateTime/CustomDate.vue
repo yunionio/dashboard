@@ -120,9 +120,11 @@ export default {
     async submit () {
       try {
         const valid = this.isAdvancedView ? await this.$refs.ruleForm.validate() : true
+        const customDate = this.getCustomTime()
         if (valid) {
           this.$emit('update:time', 'custom')
-          this.$emit('update:customDate', this.getCustomTime())
+          this.$emit('update:customDate', customDate)
+          this.$emit('change', customDate)
           this.visible = false
         } else {
           this.visible = true
