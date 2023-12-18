@@ -1834,6 +1834,7 @@
     "Nutanix": "Nutanix",
     "BingoCloud": "BingoCloud",
     "RemoteFile": "RemoteFile",
+    "extdb": "External resources",
     "Proxmox": "Proxmox",
     "H3C": "H3C"
   },
