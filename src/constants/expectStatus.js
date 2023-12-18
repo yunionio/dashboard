@@ -145,8 +145,9 @@ export default {
     info: ['unknown', 'stopped'],
   },
   snapshot: {
-    success: ['ready'],
-    danger: ['delete_failed'],
+    success: ['available'],
+    danger: ['delete_failed', 'apply_failed', 'cancel_failed'],
+    info: ['unknown'],
   },
   snapshotpolicy: {
     success: ['ready'],
