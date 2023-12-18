@@ -809,7 +809,7 @@
       "label": "CloudShell开关",
       "desc": "关闭后，云管CloudShell入口隐藏，用户无法使用！"
     },
-    "common$enable_watermark": {
+    "webconsole$enable_watermark": {
       "label": "水印开关",
       "desc": "默认开启，关闭后将隐藏WebConsole水印展示。"
     },

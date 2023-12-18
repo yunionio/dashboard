@@ -809,7 +809,7 @@
       "label": "クラウドシェルスイッチ",
       "desc": "閉じた後、CloudShellポータルは非表示になり、ユーザーは使用できなくなります。"
     },
-    "common$enable_watermark": {
+    "webconsole$enable_watermark": {
       "label": "透かしスイッチ",
       "desc": "これはデフォルトで有効になっており、WebConsoleの透かし表示はオフにすると非表示になります。"
     },
