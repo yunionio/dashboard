@@ -336,7 +336,7 @@ export const createVmDecorators = type => {
       preallocation: [
         'systemDiskPreallocation',
         {
-          initialValue: 'off',
+          initialValue: 'metadata',
         },
       ],
     },
@@ -440,7 +440,7 @@ export const createVmDecorators = type => {
       preallocation: i => [
         `dataDiskPreallocation[${i}]`,
         {
-          initialValue: 'off',
+          initialValue: 'metadata',
         },
       ],
     },
