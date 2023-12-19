@@ -1,4 +1,4 @@
-import { PREALLOCATION_OPTION_MAP } from '@Compute/constants'
+import { PREALLOCATION_OPTION_MAP, MEDIUM_MAP } from '@Compute/constants'
 import {
   getNameDescriptionTableColumn,
   getBrandTableColumn,
@@ -13,12 +13,12 @@ import {
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
+import { BRAND_MAP } from '@/constants'
 import {
   getUnusedTableColumn,
   getStorageTypeTableColumn,
   // getPreallocationTableColumn,
 } from '../utils/columns'
-import { MEDIUM_MAP } from '../../../constants'
 
 export default {
   created () {
@@ -58,11 +58,12 @@ export default {
         slots: {
           default: ({ row }, h) => {
             const preallocation = PREALLOCATION_OPTION_MAP[row.preallocation]?.label
+            const isVMware = row.brand === BRAND_MAP.VMware.key
 
             return [
               <div class={'d-flex'}>
-                <span>{sizestr(row.disk_size, 'M', 1024)}</span>
-                <span class={'text-color-help'}>({ preallocation })</span>
+                <span>{ sizestr(row.disk_size, 'M', 1024) }</span>
+                { isVMware && preallocation ? <span class={'text-color-help'}>({ preallocation })</span> : null }
               </div>,
             ]
           },
