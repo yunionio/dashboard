@@ -335,9 +335,6 @@ export const createVmDecorators = type => {
       ],
       preallocation: [
         'systemDiskPreallocation',
-        {
-          initialValue: 'metadata',
-        },
       ],
     },
     dataDisk: {
@@ -439,9 +436,6 @@ export const createVmDecorators = type => {
       ],
       preallocation: i => [
         `dataDiskPreallocation[${i}]`,
-        {
-          initialValue: 'metadata',
-        },
       ],
     },
     network: {
@@ -942,6 +936,9 @@ export class GenCreateData {
     if (item.throughput) {
       ret.throughput = item.throughput
     }
+    if (item.preallocation) {
+      ret.preallocation = item.preallocation
+    }
     // 磁盘区分介质
     if (diskSupportTypeMedium(this.fd.hypervisor)) {
       ret.backend = getOriginDiskKey(ret.backend)
@@ -1039,8 +1036,8 @@ export class GenCreateData {
       if (this.fi.dataDiskMedium) {
         diskObj.medium = this.fi.dataDiskMedium
       }
-      if (this.fd.dataDiskPreallocation) {
-        diskObj.preallocation = this.fd.dataDiskPreallocation
+      if (this.fd.dataDiskPreallocation && this.fd.dataDiskPreallocation[key]) {
+        diskObj.preallocation = this.fd.dataDiskPreallocation[key]
       }
       dataDisk.push(diskObj)
     }, this.fd.dataDiskSizes)
