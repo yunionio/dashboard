@@ -34,13 +34,13 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import { resolveValueChangeField } from '@/utils/common/ant'
+import validateForm, { isWithinRange, validate } from '@/utils/validate'
+import DomainSelect from '@/sections/DomainSelect'
 import ScriptAdd from './ScriptAdd'
 import PreAdd from './PreAdd'
 import ISOAdd from './ISOAdd'
 import PXEAdd from './PXEAdd'
-import { resolveValueChangeField } from '@/utils/common/ant'
-import validateForm, { isWithinRange, validate } from '@/utils/validate'
-import DomainSelect from '@/sections/DomainSelect'
 
 export default {
   name: 'PhysicalmachineAdd',
@@ -57,7 +57,7 @@ export default {
     }
   },
   data () {
-    const typeInitialValue = 'isoAdd'
+    const typeInitialValue = 'pxeAdd'
     const modeInitialValue = 'single'
     const projectDomainInitialValue = this.$store.getters.userInfo.projectDomainId
     return {
@@ -218,6 +218,13 @@ export default {
         ],
         access_mac: [
           'access_mac',
+          {
+            validateFirst: true,
+            rules: [
+              { required: true, message: this.$t('compute.text_806') },
+              { validator: validateForm('mac') },
+            ],
+          },
         ],
         __meta__: [
           '__meta__',
