@@ -1703,13 +1703,13 @@
     "project.cluster.node.memory.request": "当前项目内存使用量"
   },
   "physicalmachineAddTypes": {
-    "isoAdd": {
-      "label": "ISO引导注册",
-      "desc": "ISO引导注册：用于立即注册已配置 BMC 信息的服务器，该功能不要求服务器处于 DHCP relay 网络环境，但是要求服务器支持 Redfish 功能"
-    },
     "pxeAdd": {
       "label": "PXE引导注册",
       "desc": "PXE引导注册：用于立即注册已配置 BMC 信息的服务器，要求服务器处于 DHCP relay 网络环境"
+    },
+    "isoAdd": {
+      "label": "ISO引导注册",
+      "desc": "ISO引导注册：用于立即注册已配置 BMC 信息的服务器，该功能不要求服务器处于 DHCP relay 网络环境，但是要求服务器支持 Redfish 功能"
     },
     "preAdd": {
       "label": "预注册",
