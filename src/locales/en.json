@@ -1696,13 +1696,13 @@
     "project.cluster.node.memory.request": "Current project memory usage"
   },
   "physicalmachineAddTypes": {
-    "isoAdd": {
-      "label": "ISO boot registration",
-      "desc": "ISO boot registration: used to immediately register the server with configured BMC information. This function does not require the server to be in a DHCP relay network environment, but requires the server to support the Redfish function"
-    },
     "pxeAdd": {
       "label": "PXE boot registration",
       "desc": "PXE boot registration: used to immediately register the server with configured BMC information, and the server is required to be in a DHCP relay network environment"
+    },
+    "isoAdd": {
+      "label": "ISO boot registration",
+      "desc": "ISO boot registration: used to immediately register the server with configured BMC information. This function does not require the server to be in a DHCP relay network environment, but requires the server to support the Redfish function"
     },
     "preAdd": {
       "label": "Pre-registration",
