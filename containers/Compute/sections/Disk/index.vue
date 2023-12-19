@@ -51,7 +51,7 @@
           v-if="showPreallocation"
           v-decorator="decorator.preallocation"
           :options="preallocationOptions"
-          :select-props="{ allowClear: true}" />
+          :select-props="{ allowClear: true, placeholder: $t('common.select') }" />
       </a-form-item>
       <a-button v-if="!disabled" class="mt-1" type="link" @click="preallocationShowClick">{{ showPreallocation ? $t('compute.text_135') : $t('compute.assign_preallocation') }}</a-button>
     </template>
