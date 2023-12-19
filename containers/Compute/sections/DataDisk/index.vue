@@ -420,7 +420,7 @@ export default {
         }
       })
     },
-    add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath, min, disabled = false, sizeDisabled = false, medium, ...ret } = {}) {
+    add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath, min, disabled = false, sizeDisabled = false, medium, preallocation, ...ret } = {}) {
       const key = uuid()
       let newDiskType = diskType
       // 磁盘区分介质
@@ -481,6 +481,9 @@ export default {
         }
         if (mountPath) { // 磁盘挂载路径
           value[`dataDiskMountPaths[${key}]`] = mountPath
+        }
+        if (preallocation) {
+          value[`dataDiskPreallocation[${key}]`] = preallocation
         }
         this.form.fc.setFieldsValue(value)
         this.setDiskMedium(dataDiskTypes)
