@@ -2585,7 +2585,7 @@
     "parameter": "意気",
     "physicalmachine": "物理マシン",
     "policy": "権限",
-    "project": "プロジェクト",
+    "project": "業務アカウント",
     "proxysetting": "ブローカー",
     "redis": "レディス",
     "region": "地域",
@@ -2761,7 +2761,7 @@
     "onpremise_env": "ローカル IDC",
     "private_env": "プライベートクラウド",
     "public_env": "パブリッククラウド",
-    "project_tag": "プロジェクトラベル",
+    "project_tag": "業務タグ",
     "predictions": "業務タグ"
   },
   "res": {
@@ -3049,9 +3049,9 @@
     "date_time": {
       "week": "週",
       "last_week": "先週です",
-      "month": "当月",
+      "month": "今月",
       "last_month": "先月",
-      "quarter": "当四半期",
+      "quarter": "今四半期",
       "last_quarter": "前四半期",
       "year": "今年",
       "last_year": "去年",
@@ -4302,7 +4302,7 @@
   "common_92": "例",
   "common_93": "実行に成功しました",
   "common_94": "少なくとも 1 つのデータ列を選択する",
-  "common_95": "すべての",
+  "common_95": "すべて",
   "common_96": "現在のリストに基づくフィルター条件",
   "common_97": "空",
   "common_98": "このページですべて選択",
