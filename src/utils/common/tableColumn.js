@@ -717,10 +717,15 @@ export const getTimeTableColumn = ({
         ]
       },
     },
-    // formatter: ({ row }) => {
-    //  if (fromNow) return row[field] ? moment(row[field]).fromNow() : '-'
-    //  return row[field] ? moment(row[field]).format() : '-'
-    // },
+    formatter: ({ row }) => {
+      if (!row[field]) {
+        return '-'
+      }
+      if (fromNow) {
+        return moment(row[field]).fromNow()
+      }
+      return moment(row[field]).format()
+    },
     hidden: () => {
       return R.is(Function, hidden) ? hidden() : hidden
     },
