@@ -97,10 +97,11 @@ const getCellSign = (col, row) => {
  *   data: [['title1', 'title2'], ['value1', 'value2']], 一个sheet包含的数据
  *   t: [{col: 0, row: 0, value: 'n'}], 指定单元格格式：A1 指定为数字
  *   z: [{col: 0, row: 1, value: '$#,##0.00'}], 指定单元格格式化字符串：A2 指定为美元货币
+ *   ignoreColsIndex: [0, 1], 忽略哪些列不进行格式化
  * }
  * @returns ws
  */
-export const addDataToSheetAfterFormat = ({ data: originData = [], titleRowLen = 1, t = [], z = [] } = {}) => {
+export const addDataToSheetAfterFormat = ({ data: originData = [], titleRowLen = 1, t = [], z = [], ignoreColsIndex = [] } = {}) => {
   const data = R.clone(originData)
   const formatObj = {}
   if (t.length || z.length) {
@@ -113,22 +114,24 @@ export const addDataToSheetAfterFormat = ({ data: originData = [], titleRowLen =
         row.map((col, index2) => {
           const fData = matchDataFormat(col)
           const cellSign = getCellSign(index2, index)
-          if (fData.isBill) {
-            formatObj[cellSign] = formatObj[cellSign] || {}
-            formatObj[cellSign].t = 'n' // 数字格式
-            formatObj[cellSign].z = `${fData.currency} #,##0.00` // 货币format
-            data[index][index2] = fData.value
-          }
-          if (fData.isPercent) {
-            formatObj[cellSign] = formatObj[cellSign] || {}
-            formatObj[cellSign].t = 'n' // 数字格式
-            formatObj[cellSign].z = '0.00%' // 百分比format
-            data[index][index2] = fData.value
-          }
-          if (fData.isNumber) {
-            formatObj[cellSign] = formatObj[cellSign] || {}
-            formatObj[cellSign].t = 'n' // 数字格式
-            data[index][index2] = fData.value
+          if (!ignoreColsIndex.includes(index2)) {
+            if (fData.isBill) {
+              formatObj[cellSign] = formatObj[cellSign] || {}
+              formatObj[cellSign].t = 'n' // 数字格式
+              formatObj[cellSign].z = `${fData.currency} #,##0.00` // 货币format
+              data[index][index2] = fData.value
+            }
+            if (fData.isPercent) {
+              formatObj[cellSign] = formatObj[cellSign] || {}
+              formatObj[cellSign].t = 'n' // 数字格式
+              formatObj[cellSign].z = '0.00%' // 百分比format
+              data[index][index2] = fData.value
+            }
+            if (fData.isNumber) {
+              formatObj[cellSign] = formatObj[cellSign] || {}
+              formatObj[cellSign].t = 'n' // 数字格式
+              data[index][index2] = fData.value
+            }
           }
         })
       }
