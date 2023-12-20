@@ -3,7 +3,7 @@
     <a-form-item :extra="extra">
       <a-radio-group v-decorator="decorator" @change="change" :disabled="disabled">
         <a-radio-button v-show="showUnlimited" :key="0" :value="0">{{ $t('compute.unlimited') }}</a-radio-button>
-        <a-radio-button v-for="item in options" :value="item" :key="item" v-show="item < max || !showMore" :disabled="disableOptionHandle(item)">{{$t('compute.text_120', [ item ])}}</a-radio-button>
+        <a-radio-button v-for="item in realOptions" :value="item" :key="item" v-show="item < max || !showMore" :disabled="disableOptionHandle(item)">{{$t('compute.text_120', [ item ])}}</a-radio-button>
         <a-radio-button v-if="showMore" @click="showMore = !showMore">...</a-radio-button>
       </a-radio-group>
     </a-form-item>
@@ -78,7 +78,7 @@ export default {
       showMore,
       opta: this.options,
       cpu: this.decorator[1].initialValue,
-      cpuSockets: this.cpuSocketsInit || 1,
+      cpuSockets: 0,
       cpuSocketsOptions: [
         { label: '1', value: 1 },
         { label: '2', value: 2 },
@@ -92,10 +92,19 @@ export default {
       return this.hypervisor === HYPERVISORS_MAP.esxi.key
     },
     cpuSocketsExtra () {
-      return `${this.$t('compute.core_per_sockets')}: ` + (this.cpu / this.cpuSockets)
+      if (this.isServerRunning) {
+        return `${this.$t('compute.core_per_sockets')}: ` + (this.cpuSocketsInit)
+      }
+      return `${this.$t('compute.core_per_sockets')}: ` + (this.cpu / (this.cpuSockets || 1))
     },
     isServerRunning () {
       return this.serverStatus === 'running'
+    },
+    realOptions () {
+      if (this.isServerRunning) {
+        return this.options.filter(v => v % this.cpuSocketsInit === 0)
+      }
+      return this.options
     },
   },
   watch: {
@@ -109,14 +118,22 @@ export default {
     showCpuSocketsInit (v) {
       this.showCpuSockets = v
     },
-    cpuSocketsInit (v) {
-      this.cpuSockets = v
+    cpuSocketsInit: {
+      handler (v) {
+        if (this.isServerRunning) {
+          this.cpuSockets = this.cpu / v
+        } else {
+          this.cpuSockets = v
+        }
+      },
+      immediate: true,
     },
   },
   methods: {
     change (e) {
-      this.cpu = e.target.value
-      this.cpuSockets = 1
+      const cpu = e.target.value
+      this.cpuSockets = this.isServerRunning ? cpu / this.cpuSocketsInit : 1
+      this.cpu = cpu
       this.$emit('change', e.target.value)
     },
     disableOptionHandle (item) {
