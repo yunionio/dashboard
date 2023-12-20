@@ -552,8 +552,8 @@ export default {
   },
   methods: {
     openWebConsole (obj, data, protocol) {
-      // const href = `${this.$appConfig.webConsolePath}?data=${data.connect_params}`
-      const href = `${this.$store.getters.auth.regions.api_server}/web-console/?data=${data.connect_params}`
+      // const href = `${this.$appConfig.webConsolePath}${data.access_url.replace(/^.*?web-console\//, '')}`
+      const href = data.access_url
       window.open(href)
     },
   },
