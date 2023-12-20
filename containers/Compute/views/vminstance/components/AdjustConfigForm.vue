@@ -334,6 +334,9 @@ export default {
               }],
             },
           ],
+          preallocation: i => [
+            `dataDiskPreallocation[${i}]`,
+          ],
         },
         reason: [
           'reason',
@@ -1010,6 +1013,9 @@ export default {
         }
         if (values.dataDiskStorages && values.dataDiskStorages[key]) {
           diskObj.storage_id = values.dataDiskStorages[key]
+        }
+        if (values.dataDiskPreallocation && values.dataDiskPreallocation[key]) {
+          diskObj.preallocation = values.dataDiskPreallocation[key]
         }
         // 磁盘区分介质
         if (values.dataDiskTypes && values.dataDiskTypes[key]) {
