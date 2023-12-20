@@ -52,7 +52,7 @@ export default {
     if (accountData.status === 'deleted') {
       initDisabledActions.push('pull_bill', 'prepaid_amortizing', 'project_sharing', 'recalculate', 'predict')
     } else if (accountData.brand) {
-      if (accountData.cloud_env !== 'public') {
+      if (accountData.cloud_env !== 'public' && !accountData.is_public_cloud) {
         initDisabledActions.push('project_sharing')
       }
     }
