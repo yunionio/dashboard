@@ -17,7 +17,8 @@
           <a-switch
             :checkedChildren="$t('compute.text_115')"
             :unCheckedChildren="$t('compute.text_116')"
-            v-decorator="decorators.skip_cpu_check" />
+            v-decorator="decorators.skip_cpu_check"
+            @change="onSkipCpuCheck" />
         </a-form-item>
         <a-form-item
           :label="$t('compute.text_111')">
@@ -148,16 +149,55 @@ export default {
     isVMware () {
       return this.firstData.hypervisor === HYPERVISORS_MAP.esxi.key
     },
+    filteredCandidates () {
+      if (!this.forcastData) {
+        return []
+      }
+      const candsMap = {}
+      this.forcastData.data.map(results => {
+        if (results.data.filtered_candidates) {
+          results.data.filtered_candidates.map(candidate => {
+            if (candsMap[candidate.id]) {
+              candsMap[candidate.id].count++
+              candidate.reasons.map(reason => {
+                if (!candsMap[candidate.id].reasons.includes(reason)) {
+                  candsMap[candidate.id].reasons.push(reason)
+                }
+              })
+            } else {
+              candidate.count = 1
+              candsMap[candidate.id] = candidate
+            }
+          })
+        }
+      })
+      const ret = []
+      for (var id in candsMap) {
+        if (candsMap[id].count >= this.params.data.length) {
+          ret.push(candsMap[id])
+        }
+      }
+      return ret
+    },
+    canCreate () {
+      if (!this.forcastData) {
+        return true
+      }
+      let canCreate = false
+      this.forcastData.data.map(results => {
+        if (results.data.can_create) {
+          canCreate = true
+        }
+      })
+      return canCreate
+    },
     hostsParams () {
       let hostType = 'hypervisor'
-      const hostIds = this.forcastData?.filtered_candidates?.map(v => v.id) || []
+      const hostIds = this.filteredCandidates?.map(v => v.id) || []
       const managerIds = []
       this.params.data.map(item => {
         if (item.manager_id && !managerIds.includes(item.manager_id)) {
           managerIds.push(item.manager_id)
-        }
-        if (item.host_id) {
-          hostIds.push(item.host_id)
         }
       })
 
@@ -170,8 +210,13 @@ export default {
         limit: 10,
         enabled: 1,
         host_status: 'online',
-        server_id_for_network: this.firstData.id,
         os_arch: this.firstData.os_arch,
+      }
+      if (this.isSingle) {
+        ret.server_id_for_network = this.firstData.id
+        if (!hostIds.includes(this.firstData.host_id)) {
+          hostIds.push(this.firstData.host_id)
+        }
       }
       if (this.isAdminMode && this.isSingle) {
         ret.project_domain = this.params.data[0].domain_id
@@ -185,8 +230,8 @@ export default {
       return ret
     },
     hostsOptions () {
-      const hostIds = this.forcastData?.filtered_candidates?.map(v => v.id) || []
-      if (this.forcastData?.can_create === false) {
+      const hostIds = this.filteredCandidates?.map(v => v.id) || []
+      if (!this.canCreate) {
         return []
       }
       return this.hosts.filter(v => {
@@ -228,18 +273,24 @@ export default {
     isAllReady () {
       return this.params.data.every(item => item.status === 'ready')
     },
-    isExistManager () {
+    isESXiManager () {
       return this.params.data[0].manager_id
     },
     tabProps () {
+      const filtered = this.filteredCandidates
+      const filteredLabel = this.$t('compute.unavailable_host') + '(' + (filtered ? filtered.length : 0) + ')'
+      const availableLabel = this.$t('compute.available_host')
+      const tabs = [
+        { label: availableLabel, value: 'available' },
+      ]
+      if (filtered && filtered.length > 0) {
+        tabs.push({ label: filteredLabel, value: 'unavailable' })
+      }
       return {
         curTab: 'available',
-        tabs: [
-          { label: this.$t('compute.available_host'), value: 'available' },
-          { label: this.$t('compute.unavailable_host'), value: 'unavailable' },
-        ],
+        tabs: tabs,
         listProps: {
-          data: this.forcastData?.filtered_candidates || [],
+          data: filtered || [],
           columns: [
             {
               field: 'name',
@@ -268,7 +319,7 @@ export default {
     },
   },
   created () {
-    // this.isSingle && !this.isExistManager && this.queryForcastData()
+    !this.isESXiManager && this.queryForcastData()
     this.queryHosts()
   },
   methods: {
@@ -355,8 +406,12 @@ export default {
       if (live_migrate && skip_cpu_check) {
         params.skip_kernel_check = true
       }
-      return manager.performAction({
-        id: this.params.data[0].id,
+      const ids = []
+      this.params.data.map(item => {
+        ids.push(item.id)
+      })
+      return manager.batchPerformAction({
+        ids: ids, // this.params.data[0].id,
         action: 'migrate-forecast',
         data: params,
       })
@@ -384,6 +439,9 @@ export default {
       } else {
         this.message = ''
       }
+    },
+    onSkipCpuCheck (e) {
+      !this.isESXiManager && this.queryForcastData(e)
     },
   },
 }
