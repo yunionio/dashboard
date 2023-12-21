@@ -69,6 +69,12 @@ export default {
           },
         },
         formatter: ({ row }) => {
+          const preallocation = PREALLOCATION_OPTION_MAP[row.preallocation]?.label
+          const isVMware = row.brand === BRAND_MAP.VMware.key
+
+          if (isVMware && preallocation) {
+            return `${sizestr(row.disk_size, 'M', 1024)}(${preallocation})`
+          }
           return sizestr(row.disk_size, 'M', 1024)
         },
         hidden: () => {

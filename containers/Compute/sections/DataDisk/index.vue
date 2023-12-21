@@ -482,7 +482,7 @@ export default {
         if (mountPath) { // 磁盘挂载路径
           value[`dataDiskMountPaths[${key}]`] = mountPath
         }
-        if (preallocation) {
+        if (this.getHypervisor() === HYPERVISORS_MAP.esxi.key) {
           value[`dataDiskPreallocation[${key}]`] = preallocation
         }
         this.form.fc.setFieldsValue(value)
