@@ -291,6 +291,16 @@ export default {
     },
     preallocationShowClick () {
       this.showPreallocation = !this.showPreallocation
+      if (this.isVMware) {
+        const systemDiskPreallocation = this.form.fd.systemDiskPreallocation
+        this.$nextTick(() => {
+          if (this.diskKey !== 'system') {
+            this.form.fc.setFieldsValue({
+              [`dataDiskPreallocation[${this.diskKey}]`]: systemDiskPreallocation,
+            })
+          }
+        })
+      }
     },
   },
 }
