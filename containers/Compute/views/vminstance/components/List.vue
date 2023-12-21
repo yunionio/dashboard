@@ -37,6 +37,7 @@ import {
   getVpcFilter,
   getOsArchFilter,
   getRegionFilter,
+  getZoneFilter,
   getCloudProviderFilter,
   getDescriptionFilter,
   getCreatedAtFilter,
@@ -143,6 +144,7 @@ export default {
         ],
       },
       region: getRegionFilter(),
+      zone: getZoneFilter(),
       vpc: getVpcFilter(),
       os_arch: getOsArchFilter(),
       // vmem_size: {
@@ -1363,6 +1365,10 @@ export default {
         } else if (col.field === 'password') {
           ret.items.push({ field: 'extra_user', title: this.$t('compute.text_566') })
           ret.items.push({ field: 'extra_password', title: this.$t('common_328') })
+        }
+
+        if (col.field === 'region') {
+          ret.items.push({ field: 'zone', title: this.$t('compute.text_270') })
         }
       })
       return ret
