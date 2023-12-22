@@ -144,7 +144,7 @@ export default {
         ],
       },
       region: getRegionFilter(),
-      zone: getZoneFilter(),
+      zone_ids: getZoneFilter(),
       vpc: getVpcFilter(),
       os_arch: getOsArchFilter(),
       // vmem_size: {
