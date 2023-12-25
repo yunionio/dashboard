@@ -51,11 +51,7 @@
       <div :class="{ 'd-flex ml-1' : isBigScreen }">
         <template v-if="item.ipShow">
           <a-form-item class="mb-0"  :wrapperCol="{ span: 24 }">
-            <a-input
-              style="width: 164px"
-              :placeholder="$t('compute.text_197')"
-              @change="e => ipChange(e, i)"
-              v-decorator="decorator.ips(item.key, item.network)" />
+            <ip-select v-decorator="decorator.ips(item.key, item.network)" :value="item.ip" :network="item.network" @change="e => ipChange(e, i)" />
           </a-form-item>
           <a-button type="link" class="mt-1" @click="triggerShowIp(item)">{{$t('compute.text_135')}}</a-button>
         </template>
@@ -104,9 +100,13 @@
 <script>
 import * as R from 'ramda'
 import { uuid } from '@/utils/utils'
+import IpSelect from './IpSelect.vue'
 
 export default {
   name: 'NetworkConfig',
+  components: {
+    IpSelect,
+  },
   props: {
     count: {
       type: Number,
@@ -260,7 +260,7 @@ export default {
       }
     },
     ipChange (e, i) {
-      this.networkList[i].ip = e.target.value
+      this.networkList[i].ip = e
     },
     macChange (e, i) {
       this.networkList[i].mac = e.target.value
