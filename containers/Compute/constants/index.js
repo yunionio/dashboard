@@ -775,6 +775,15 @@ export const STORAGE_TYPES = {
       sysMax: 1024,
       sort: 1,
     },
+    GPSSD2: {
+      label: i18n.t('compute.text_76'),
+      value: 'GPSSD2',
+      min: 10,
+      max: 32768,
+      sysMin: 20,
+      sysMax: 1024,
+      sort: 4,
+    },
   },
   hcso: {
     SSD: {

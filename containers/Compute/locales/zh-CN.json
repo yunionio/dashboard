@@ -1751,5 +1751,6 @@
   "compute.slots_number": "插槽数",
   "compute.set_cpu_sockets": "设置插槽内核数",
   "compute.core_per_sockets": "每个插槽内核数",
-  "compute.hot_action_notsupport": "热操作不支持该操作，请关机后重试！"
+  "compute.hot_action_notsupport": "热操作不支持该操作，请关机后重试！",
+  "compute.huawei.ssd_genric_v2": "通用型SSD V2"
 }
