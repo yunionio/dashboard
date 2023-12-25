@@ -1747,5 +1747,6 @@
   "compute.slots_number": "Number of slots",
   "compute.set_cpu_sockets": "Set the number of socket cores",
   "compute.core_per_sockets": "Number of cores per socket",
-  "compute.hot_action_notsupport": "Hot operation does not support this operation, please shut down and try again!"
+  "compute.hot_action_notsupport": "Hot operation does not support this operation, please shut down and try again!",
+  "compute.huawei.ssd_genric_v2": "SSD-genric V2"
 }

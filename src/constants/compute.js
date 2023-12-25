@@ -740,6 +740,7 @@ export const HOST_CPU_ARCHS = {
 
 export const DISK_LABEL_MAP = {
   GPSSD: i18n.t('compute.disk.rotate_gpssd'),
+  GPSSD2: i18n.t('compute.huawei.ssd_genric_v2'),
   'Ceph RBD': i18n.t('compute.ceph_rbd'),
 }
 

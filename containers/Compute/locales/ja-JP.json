@@ -1751,5 +1751,6 @@
   "compute.slots_number": "スロット数",
   "compute.set_cpu_sockets": "ソケット コアの数を設定します",
   "compute.core_per_sockets": "ソケットあたりのコア数",
-  "compute.hot_action_notsupport": "ホット操作はこの操作をサポートしていません。シャットダウンして再試行してください。"
+  "compute.hot_action_notsupport": "ホット操作はこの操作をサポートしていません。シャットダウンして再試行してください。",
+  "compute.huawei.ssd_genric_v2": "ユニバーサルSSD V2"
 }
