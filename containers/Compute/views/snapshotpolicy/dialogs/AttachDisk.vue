@@ -27,11 +27,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import * as R from 'ramda'
-import DiskPropsMixin from '../mixins/diskProps'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
 import ListSelect from '@/sections/ListSelect'
+import DiskPropsMixin from '../mixins/diskProps'
 
 export default {
   name: 'AttachDiskDialog',

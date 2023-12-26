@@ -22,13 +22,13 @@
 </template>
 
 <script>
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import SnapshotPolicyDetail from './Detail'
 import SnapshotPolicyDisk from './Disk'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
 
 export default {
   name: 'SnapshotPolicySidePage',

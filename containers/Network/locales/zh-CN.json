@@ -1031,6 +1031,7 @@
   "network.text_771": "删除缓存将会删除已同步到@:dictionary.public_env平台的访问控制",
   "network.text_772": "删除缓存将会删除已同步到@:dictionary.public_env平台的证书",
   "network.vmware_extra_info": "VMWare信息",
+  "network.static_routes": "静态路由",
   "network.vmware_datacenter_prompt": "数据中心",
   "network.vmware_vm_ips_prompt": "虚拟机IP",
   "network.vmware_vm_macs_prompt": "虚拟机MAC",
