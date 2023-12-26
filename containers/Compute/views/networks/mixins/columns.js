@@ -1,4 +1,4 @@
-import { getCopyWithContentTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getCopyWithContentTableColumn, getTimeTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 export default {
@@ -66,6 +66,12 @@ export default {
           },
         },
       },
+      getStatusTableColumn({
+        field: 'is_default',
+        title: i18n.t('compute.nics.is_default'),
+        statusModule: 'enabled',
+        minWidth: 30,
+      }),
       {
         field: 'network_addresses',
         title: i18n.t('compute.sub_ips.title'),

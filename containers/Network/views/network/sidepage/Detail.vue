@@ -141,6 +141,21 @@ export default {
         ],
       },
     ]
+    if (this.data.cloud_env === 'onpremise') {
+      if (this.data.metadata && this.data.metadata.static_routes) {
+        extraInfo[0].items.push({
+          title: this.$t('network.static_routes'),
+          slots: {
+            default: ({ row }) => {
+              const routes = JSON.parse(row.metadata.static_routes)
+              console.log(routes)
+              const comps = []
+              return comps
+            },
+          },
+        })
+      }
+    }
     if (this.data.cloud_env === 'onpremise' && this.$store.getters.capability.brands.includes('VMware')) {
       extraInfo.push({
         title: this.$t('network.vmware_extra_info'),

@@ -4,6 +4,16 @@
     <div slot="body">
       <dialog-selected-tips :name="$t('compute.nic')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
+      <a-form-item>
+        <a-checkbox v-model="syncConfigImmediately">
+          {{ $t('compute.nics.sync_config_immediately') }}
+        </a-checkbox>
+      </a-form-item>
+      <a-form-item>
+        <a-checkbox v-model="forceRemove">
+          {{ $t('compute.nics.force_remove') }}
+        </a-checkbox>
+      </a-form-item>
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -24,6 +34,8 @@ export default {
     return {
       loading: false,
       action: this.$t('compute.detach_network_title'),
+      syncConfigImmediately: true,
+      forceRemove: false,
     }
   },
   computed: {
@@ -36,7 +48,9 @@ export default {
     async doDetachSubmit () {
       const manager = new this.$Manager('servers')
       const params = {
+        disable_sync_config: !this.syncConfigImmediately,
         ip_addr: this.params.data[0].ip_addr,
+        force: this.forceRemove,
       }
       return manager.performAction({
         id: this.params.data[0].guest_id,

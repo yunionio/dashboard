@@ -1031,6 +1031,7 @@
   "network.text_771": "キャッシュを削除すると、@:dictionary.public_env プラットフォームに同期されているアクセス制御が削除されます",
   "network.text_772": "キャッシュを削除すると、@:dictionary.public_env プラットフォームに同期された証明書が削除されます",
   "network.vmware_extra_info": "VMWare 情報",
+  "network.static_routes": "静的ルート",
   "network.vmware_datacenter_prompt": "データセンター",
   "network.vmware_vm_ips_prompt": "仮想マシンの IP",
   "network.vmware_vm_macs_prompt": "仮想マシン MAC",
