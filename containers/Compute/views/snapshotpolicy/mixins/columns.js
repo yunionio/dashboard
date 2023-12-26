@@ -1,4 +1,3 @@
-import { weekOptions, timeOptions } from '../constants'
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
@@ -10,6 +9,7 @@ import {
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import { weekOptions, timeOptions } from '../constants'
 
 export default {
   created () {

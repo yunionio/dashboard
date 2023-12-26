@@ -725,6 +725,7 @@
   "network.text_723": "Create VPC",
   "network.text_724": "Create EIP",
   "network.vmware_extra_info": "VMWare Information",
+  "network.static_routes": "Static Routes",
   "network.vmware_datacenter_prompt": "Datacenter",
   "network.vmware_vm_ips_prompt": "VM IPs",
   "network.vmware_vm_macs_prompt": "VM MACs",

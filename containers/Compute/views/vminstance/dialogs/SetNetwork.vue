@@ -20,6 +20,11 @@
           :showMacConfig="isKvm"
           :showDeviceConfig="isKvm" />
       </a-form>
+      <a-form-item>
+        <a-checkbox v-model="syncConfigImmediately">
+          {{ $t('compute.nics.sync_config_immediately') }}
+        </a-checkbox>
+      </a-form-item>
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -137,6 +142,7 @@ export default {
         id: this.params.data[0].vpc_id,
         name: this.params.data[0].vpc,
       },
+      syncConfigImmediately: true,
     }
   },
   computed: {
@@ -242,6 +248,7 @@ export default {
           id: this.params.data[0].id,
           action: 'attachnetwork',
           data: {
+            disable_sync_config: !this.syncConfigImmediately,
             nets,
           },
         })

@@ -29,6 +29,9 @@
 </template>
 
 <script>
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import NetworkList from './Network'
@@ -36,12 +39,9 @@ import WireDetail from './Detail'
 import BaremetalsList from './Baremetals'
 import HostsList from './Hosts'
 import Dashboard from './Dashboard'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
 import Topology from './Topology'
 import Monitor from './Monitor'
 import VminstanceList from './VminstanceList'
-import Actions from '@/components/PageList/Actions'
 
 export default {
   name: 'WireSidePage',
