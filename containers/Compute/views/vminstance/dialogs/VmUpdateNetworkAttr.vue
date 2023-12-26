@@ -23,6 +23,9 @@
               <a-select-option v-for="item of driverArr" :key="item.key" :value="item.key">{{item.label}}</a-select-option>
             </a-select>
         </a-form-item>
+        <a-form-item :label="$t('compute.nics.is_default')">
+            <a-switch v-decorator="decorators.is_default" :disabled="is_default_on_init" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -58,6 +61,13 @@ export default {
             initialValue: this.params.data[0].driver || 'virtio',
           },
         ],
+        is_default: [
+          'is_default',
+          {
+            valuePropName: 'checked',
+            initialValue: this.params.data[0].is_default || false,
+          },
+        ],
       },
       driverArr: [
         { key: 'virtio', label: 'virtio' },
@@ -79,6 +89,9 @@ export default {
     selectedItems () {
       return this.params.data
     },
+    is_default_on_init () {
+      return this.params.data[0].is_default
+    },
   },
   methods: {
     async doUpdateNetworkAttr (values) {
@@ -88,6 +101,7 @@ export default {
       const data = {
         num_queues: values.num_queues,
         driver: values.driver,
+        is_default: values.is_default,
       }
       return manager.update({
         id: `${sid}/networks/${nid}`,
