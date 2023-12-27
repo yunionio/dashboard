@@ -24,10 +24,7 @@
             </a-col>
             <a-col :span="10">
               <a-form-item>
-                <a-input
-                  class="w-100"
-                  v-decorator="decorators.ip"
-                  :placeholder="$t('compute.text_1190')" />
+                  <ip-select v-decorator="decorators.ip" :value="form.fi.ip" :network="form.fi.network" @change="ipChange" />
               </a-form-item>
             </a-col>
           </a-row>
@@ -48,6 +45,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import IpSelect from '@Compute/sections/ServerNetwork/IpSelect'
 import { validate, isWithinRange } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -56,6 +54,9 @@ import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'VmChangeIpDialog',
+  components: {
+    IpSelect,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const validateIp = (rule, value, callback) => {
@@ -82,6 +83,7 @@ export default {
         fc: this.$form.createForm(this),
         fi: {
           network: {},
+          ip: null,
         },
       },
       decorators: {
@@ -97,7 +99,7 @@ export default {
           'ip',
           {
             rules: [
-              { validator: validateIp },
+              { message: this.$t('common.tips.select', ['IP']), validator: validateIp },
             ],
           },
         ],
@@ -145,6 +147,9 @@ export default {
     },
   },
   methods: {
+    ipChange (e) {
+      this.form.fi.ip = e
+    },
     async handleConfirm () {
       this.loading = true
       let manager = new this.$Manager('servers')
