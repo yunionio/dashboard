@@ -28,7 +28,7 @@
               :form="form"
               :hypervisor="hypervisor"
               :showCpuSocketsInit="form.fi.showCpuSockets"
-              :cpuSocketsInit="selectedItem.cpu_sockets"
+              :cpuSocketsInit="selectedItem.vcpu_count / selectedItem.cpu_sockets"
               :serverStatus="selectedItem.status"
               @change="cpuChange" />
           </a-form-item>
