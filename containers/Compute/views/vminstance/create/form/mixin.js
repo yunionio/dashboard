@@ -31,7 +31,7 @@ import { getInitialValue } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
-import { uuid } from '@/utils/utils'
+import { uuid, deleteInvalid } from '@/utils/utils'
 import Tag from '../components/Tag'
 import SystemDisk from '../components/SystemDisk'
 import Servertemplate from '../components/Servertemplate'
@@ -774,6 +774,25 @@ export default {
       } catch (error) {
         throw error
       }
+    },
+    addShopCart () {
+      this.validateForm()
+        .then(async formData => {
+          this.submiting = true
+          const genCreateData = new GenCreateData(formData, this.form.fi)
+          const data = genCreateData.all()
+          const { __count__, ...parameter } = deleteInvalid(data)
+          const shopCart = {
+            action: 'create',
+            auto_execute: true,
+            count: __count__,
+            resource: 'servers',
+            parameter,
+          }
+          this._getProjectDomainInfo(shopCart)
+          this.$message.success(this.$t('common.success'))
+          this.$store.commit('shopcart/ADD_SHOP_CART', shopCart)
+        })
     },
   },
 }

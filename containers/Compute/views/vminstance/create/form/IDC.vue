@@ -255,7 +255,8 @@
         :isOpenWorkflow="isOpenWorkflow"
         :errors.sync="errors"
         :isServertemplate="isServertemplate"
-        :hasMeterService="hasMeterService" />
+        :hasMeterService="hasMeterService"
+        @add-cart="addShopCart" />
     </a-form>
   </div>
 </template>
