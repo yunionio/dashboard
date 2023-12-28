@@ -802,6 +802,10 @@
       "label": "Enable billing predict",
       "desc": "It is off by default. After it is on, you can view consumption trend and consumption forecast in the expense overview."
     },
+    "meter$share_resource_type": {
+      "label": "Allocated resource type",
+      "desc": "The default is cloud resource type. By setting the allocation type, this type will be used for project allocation when doing project allocation."
+    },
     "compute$enable_export_username_password": {
       "label": "Virtual Machine Password Export Switch",
       "desc": "When enabled, includes account password information when exporting the virtual machine list through the platform (caution advised for large quantities)"
