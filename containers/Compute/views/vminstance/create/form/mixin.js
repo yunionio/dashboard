@@ -244,6 +244,7 @@ export default {
       }
       if (this.form.fi.networkVpcObj && this.form.fi.networkVpcObj.id) {
         params.vpc_id = this.form.fi.networkVpcObj.id
+        delete params.cloudregion_id
       }
       return params
     },
