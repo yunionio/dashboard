@@ -9,6 +9,7 @@
     :showGroupActions="showActions && showGroupActions"
     :export-data-options="exportDataOptions"
     :show-tag-columns="true"
+    :show-tag-columns2="true"
     :show-tag-filter="true"
     :tag-config-params="tagConfigParams" />
 </template>

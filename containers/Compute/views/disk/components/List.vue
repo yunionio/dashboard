@@ -2,6 +2,7 @@
 <template>
   <page-list
     show-tag-columns
+    show-tag-columns2
     show-tag-filter
     :list="list"
     :columns="columns"

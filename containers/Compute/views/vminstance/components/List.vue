@@ -3,6 +3,7 @@
     :fixed="true"
     show-tag-filter
     show-tag-columns
+    show-tag-columns2
     show-tag-config
     :list="list"
     :columns="columns"

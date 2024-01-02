@@ -52,6 +52,25 @@
             </a-checkbox-group>
           </a-form-item>
         </template>
+        <!-- 项目标签 -->
+        <template v-if="showProjectTags">
+          <a-form-item>
+            <a-divider orientation="left">{{$t('common.project_tag_key')}}</a-divider>
+            <a-checkbox-group v-decorator="decorators.projectTagsSelected" class="w-100">
+              <div class="tag-fields-wrap">
+                <a-row>
+                  <a-col
+                    v-for="item of projectTagFields"
+                    :span="6"
+                    :key="item.property"
+                    class="mb-2 checkbox-item">
+                    <a-checkbox :value="item.property"><span :title="item.title">{{ item.title }}</span></a-checkbox>
+                  </a-col>
+                </a-row>
+              </div>
+            </a-checkbox-group>
+          </a-form-item>
+        </template>
       </a-form>
     </div>
     <div slot="footer">
@@ -67,7 +86,7 @@ import { mapGetters } from 'vuex'
 import draggable from 'vuedraggable'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { getTagTitle, isUserTag } from '@/utils/common/tag'
+import { getTagTitle, isUserTag, isExtTag } from '@/utils/common/tag'
 import { arrToObjByKey } from '@/utils/utils'
 
 export default {
@@ -79,15 +98,21 @@ export default {
   data () {
     // 普通的列
     const columnFields = this.params.customs.filter(item => {
-      return item.type !== 'checkbox' && item.type !== 'radio' && item.property !== '_action' && item.property !== '_action_placeholder' && !isUserTag(item.property) && !this.params.hidenColumns.includes(item.property)
+      return item.type !== 'checkbox' && item.type !== 'radio' && item.property !== '_action' && item.property !== '_action_placeholder' && !isUserTag(item.property) && !isExtTag(item.property) && !this.params.hidenColumns.includes(item.property)
     })
     const initialColumnsSelected = columnFields.filter(item => item.visible).map(item => item.property)
     // 标签列
     const tagFields = this.params.customs.filter(item => {
-      return item.type !== 'checkbox' && item.type !== 'radio' && item.property !== '_action' && item.property !== '_action_placeholder' && isUserTag(item.property)
+      return item.type !== 'checkbox' && item.type !== 'radio' && item.property !== '_action' && item.property !== '_action_placeholder' && (isUserTag(item.property) || isExtTag(item.property)) && (item.slots && item.slots.tag_type && item.slots.tag_type({}) === 'resource')
+    })
+    const projectTagFields = this.params.customs.filter(item => {
+      return item.type !== 'checkbox' && item.type !== 'radio' && item.property !== '_action' && item.property !== '_action_placeholder' && (isUserTag(item.property) || isExtTag(item.property)) && (item.slots && item.slots.tag_type && item.slots.tag_type({}) === 'project')
     })
     const initialTagsSelected = tagFields.filter(item => {
       return this.params.config.showTagKeys.includes(item.property)
+    }).map(item => item.property)
+    const initialProjectTagsSelected = projectTagFields.filter(item => {
+      return this.params.config.showProjectTagKeys.includes(item.property)
     }).map(item => item.property)
     return {
       loading: false,
@@ -110,9 +135,16 @@ export default {
             initialValue: initialTagsSelected,
           },
         ],
+        projectTagsSelected: [
+          'projectTagsSelected',
+          {
+            initialValue: initialProjectTagsSelected,
+          },
+        ],
       },
       columnFields,
       tagFields,
+      projectTagFields,
       columnsIndeterminate: initialColumnsSelected.length !== 0 && columnFields.length !== initialColumnsSelected.length,
       columnsCheckAll: columnFields.length === initialColumnsSelected.length,
     }
@@ -133,13 +165,30 @@ export default {
       }
       return ret
     },
+    projectTagParams () {
+      const ret = {
+        with_user_meta: true,
+        with_cloud_meta: true,
+        limit: 0,
+        scope: this.scope,
+        resources: 'project',
+        $t: new Date().getTime(),
+      }
+      return ret
+    },
     showTags () {
       return this.params.showTagColumns && this.tagFields.length > 0
+    },
+    showProjectTags () {
+      return this.params.showTagColumns2 && this.projectTagFields.length > 0
     },
   },
   created () {
     if (this.params.showTagColumns) {
       this.fetchTags()
+    }
+    if (this.params.showTagColumns2) {
+      this.fetchProjectTags()
     }
   },
   methods: {
@@ -171,6 +220,34 @@ export default {
         manager = null
       }
     },
+    async fetchProjectTags () {
+      let manager = new this.$Manager('metadatas')
+      try {
+        const response = await manager.get({
+          id: 'tag-value-pairs',
+          params: this.projectTagParams,
+        })
+        const data = response.data.data || []
+        // 将已显示的标签列进行合并
+        let tags = data.map(item => item.key)
+        R.forEach(item => {
+          tags.push(item.property)
+        }, this.projectTagFields)
+        tags = R.uniq(tags)
+        // 拼装数据
+        tags = tags.map(item => {
+          return {
+            property: item,
+            title: getTagTitle(item),
+          }
+        })
+        this.projectTagFields = tags
+      } catch (error) {
+        throw error
+      } finally {
+        manager = null
+      }
+    },
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((errors, values) => {
@@ -184,15 +261,17 @@ export default {
     },
     async handleConfirm () {
       try {
-        const { columnsSelected = [], tagsSelected = [] } = await this.validateForm()
+        const { columnsSelected = [], tagsSelected = [], projectTagsSelected = [] } = await this.validateForm()
         this.loading = true
         const sortColumnsMap = arrToObjByKey(this.columnFields, 'property', (item, i) => i)
         const unSelect = this.columnFields.filter(item => !columnsSelected.includes(item.property)).map(item => item.property)
         const showTagKeys = this.tagFields.filter(item => tagsSelected.includes(item.property)).map(item => item.property)
+        const showProjectTagKeys = this.projectTagFields.filter(item => projectTagsSelected.includes(item.property)).map(item => item.property)
         await this.params.update({
           ...this.params.config,
           hiddenColumns: unSelect,
           showTagKeys,
+          showProjectTagKeys,
           sortColumnsMap,
         })
         this.cancelDialog()

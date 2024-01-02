@@ -1,6 +1,7 @@
 <template>
   <page-list
     show-tag-columns
+    show-tag-columns2
     show-tag-filter
     :list="list"
     :columns="columns"
@@ -29,9 +30,9 @@ import {
   getStatusFilter,
 } from '@/utils/common/tableFilter'
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 
 export default {
   name: 'ImageList',

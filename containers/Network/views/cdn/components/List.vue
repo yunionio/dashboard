@@ -3,6 +3,7 @@
     :list="list"
     :columns="columns"
     :show-tag-columns="true"
+    :show-tag-columns2="true"
     :show-tag-filter="true"
     :export-data-options="exportDataOptions"
     :group-actions="groupActions"
@@ -14,8 +15,6 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
 import {
@@ -33,6 +32,8 @@ import WindowsMixin from '@/mixins/windows'
 import i18n from '@/locales'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'DomainList',

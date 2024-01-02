@@ -250,6 +250,7 @@ class CreateList {
     this.config = {
       hiddenColumns: hiddenColumns,
       showTagKeys: [],
+      showProjectTagKeys: [],
     }
     // 列表配置是否已经加载过
     this.configLoaded = false
