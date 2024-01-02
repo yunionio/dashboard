@@ -145,6 +145,7 @@ export default {
     config: Object,
     // 开启标签列
     showTagColumns: Boolean,
+    showTagColumns2: Boolean,
     getGrid: {
       type: Function,
       required: true,
@@ -257,6 +258,7 @@ export default {
         apiVersion: this.apiVersion,
         resource: this.resource,
         showTagColumns: this.showTagColumns,
+        showTagColumns2: this.showTagColumns2,
         callback: this.exportDataOptions.callback,
       })
     },
@@ -275,6 +277,7 @@ export default {
         config: this.config,
         update: this.updateConfig,
         showTagColumns: this.showTagColumns,
+        showTagColumns2: this.showTagColumns2,
         customs: grid.getTableColumn().collectColumn,
         resource: this.resource,
         hidenColumns,
