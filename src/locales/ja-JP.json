@@ -5940,5 +5940,6 @@
   "common.rdp_login_err": "RDP リモート ログインに失敗しました",
   "common.rdp_login_err_msg": "RDP ログイン情報を入力して、再度ログインしてください。",
   "common.connect": "接続",
-  "common.setting": "設定"
+  "common.setting": "設定",
+  "common.project_tag_key": "@:dictionary.projectタグキー"
 }

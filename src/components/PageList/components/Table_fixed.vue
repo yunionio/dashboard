@@ -297,6 +297,13 @@ export default {
         })
       }
     },
+    'config.showProjectTagKeys' (val, oldVal) {
+      if (!R.equals(val, oldVal)) {
+        this.$nextTick(() => {
+          this.tableColumns = this.genTableColumns()
+        })
+      }
+    },
     'config.sortColumnsMap' (val, oldVal) {
       if (!R.equals(val, oldVal)) {
         this.$nextTick(() => {
@@ -402,8 +409,46 @@ export default {
             showOverflow: 'title',
             sortable: true,
             slots: {
+              tag_type: ({ row }) => 'resource',
               default: ({ row }) => {
                 const message = row.metadata && row.metadata[item]
+                return [
+                  this.$createElement('list-body-cell-wrap', {
+                    props: {
+                      copy: true,
+                      field: item,
+                      row,
+                      message,
+                      hideField: true,
+                    },
+                  }, message),
+                ]
+              },
+            },
+          }
+        })
+        const insertIndex = this.checkboxEnabled ? 2 : 1
+        defaultColumns = R.insertAll(insertIndex, tagColumns, defaultColumns)
+      }
+      if (this.config && this.config.showProjectTagKeys && this.config.showProjectTagKeys.length) {
+        const tagColumns = this.config.showProjectTagKeys.map(item => {
+          const config = {
+            minWidth: 100,
+          }
+          if (this.storageConfig && this.storageConfig[item] && this.storageConfig[item].width) {
+            config.minWidth = this.storageConfig[item].width
+            config.width = this.storageConfig[item].width
+          }
+          return {
+            ...config,
+            field: item,
+            title: getTagTitle(item),
+            showOverflow: 'title',
+            sortable: true,
+            slots: {
+              tag_type: ({ row }) => 'project',
+              default: ({ row }) => {
+                const message = row.project_metadata && row.project_metadata[item]
                 return [
                   this.$createElement('list-body-cell-wrap', {
                     props: {

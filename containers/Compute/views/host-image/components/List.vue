@@ -1,6 +1,7 @@
 <template>
   <page-list
     show-tag-columns
+    show-tag-columns2
     show-tag-filter
     :list="list"
     :columns="columns"
@@ -19,9 +20,9 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 
 export default {
   name: 'HostImageList',

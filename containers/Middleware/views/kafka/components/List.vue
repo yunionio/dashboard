@@ -3,6 +3,7 @@
     :list="list"
     :columns="columns"
     :show-tag-columns="true"
+    :show-tag-columns2="true"
     :show-tag-filter="true"
     :export-data-options="exportDataOptions"
     :group-actions="groupActions"
