@@ -25,6 +25,7 @@
       :refresh-method="refreshMethod"
       :config="config"
       :show-tag-columns="showTagColumns"
+      :show-tag-columns2="showTagColumns2"
       :get-grid="getGrid"
       :total="total"
       :selected="selected"

@@ -82,6 +82,18 @@ export default {
         }
       }), exportOptionItems)
     }
+    const exportProjectTags = (this.params.showTagColumns2 && this.params.config.showProjectTagKeys) || []
+    if (exportProjectTags && exportProjectTags.length) {
+      allExportKeys = R.insertAll(0, exportProjectTags.map(item => {
+        return `projectTag:${item}`
+      }), allExportKeys)
+      exportOptionItems = R.insertAll(0, exportProjectTags.map(item => {
+        return {
+          label: getTagTitle(item),
+          key: `projectTag:${item}`,
+        }
+      }), exportOptionItems)
+    }
     return {
       loading: false,
       exportOptionItems,
@@ -387,7 +399,15 @@ export default {
               const data = column.formatter({ row: dataList[i - 1] })
               colData = data === '-' ? '' : data
             } else {
-              colData = dataList[i - 1][column.key || column.field] || ''
+              if (column.key?.startsWith('tag:')) {
+                const cKey = column.key.replace('tag:', '')
+                colData = dataList[i - 1].metadata?.[cKey] || ''
+              } else if (column.key?.startsWith('projectTag:')) {
+                const cKey = column.key.replace('projectTag:', '')
+                colData = dataList[i - 1].project_metadata?.[cKey] || ''
+              } else {
+                colData = dataList[i - 1][column.key || column.field] || ''
+              }
             }
             row.push(colData)
           })
@@ -424,8 +444,11 @@ export default {
             if (column.key?.startsWith('tag:')) {
               const cKey = column.key.replace('tag:', '')
               colData = dataList[i - 1].metadata?.[cKey] || ''
+            } else if (column.key?.startsWith('projectTag:')) {
+              const cKey = column.key.replace('projectTag:', '')
+              colData = dataList[i - 1].project_metadata?.[cKey] || ''
             } else {
-              colData = dataList[i - 1][column.key] || ''
+              colData = dataList[i - 1][column.key || column.field] || ''
             }
           }
           row.push(colData)

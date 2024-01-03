@@ -422,8 +422,8 @@ export default {
               field: 'isolated_devices',
               title: this.$t('compute.text_113'),
               formatter: ({ row }) => {
-                if (!row.isolated_devices) return '-'
-                const gpuArr = row.isolated_devices
+                if (!row.isolated_devices && !row.gpu_count) return '-'
+                const gpuArr = row.isolated_devices || []
                 const obj = {}
                 const devTypeMap = {}
                 const ids = {}
@@ -439,7 +439,11 @@ export default {
                   }
                 })
                 if (Object.keys(obj).length === 0) {
-                  return '-'
+                  if (row.gpu_count && row.gpu_model) {
+                    return this.$t('compute.text_370', [row.gpu_count, row.gpu_model])
+                  } else {
+                    return '-'
+                  }
                 }
                 return Object.keys(obj).map(k => {
                   const gpuLabel = `${GPU_DEV_TYPE_OPTION_MAP[devTypeMap[k]]?.label || devTypeMap[k]}-${k}`

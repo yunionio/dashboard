@@ -5935,5 +5935,6 @@
   "common.schedtag.extra": "调度标签使用方法",
   "common.view.doc": "查看文档",
   "common.private_iso": "@:dictionary.private_env ISO镜像",
-  "common.private_iso_tip": "@:dictionary.private_env平台的ISO镜像"
+  "common.private_iso_tip": "@:dictionary.private_env平台的ISO镜像",
+  "common.project_tag_key": "@:dictionary.project标签键"
 }

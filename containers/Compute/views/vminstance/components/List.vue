@@ -3,6 +3,7 @@
     :fixed="true"
     show-tag-filter
     show-tag-columns
+    show-tag-columns2
     show-tag-config
     :list="list"
     :columns="columns"
@@ -140,6 +141,7 @@ export default {
           { label: this.$t('compute.text_291', [this.$t('dictionary.server')]), key: 'normal' },
           { label: `USB${this.$t('dictionary.server')}`, key: 'usb' },
           { label: this.$t('compute.backup'), key: 'backup' },
+          { label: this.$t('compute.trans_device_server'), key: 'gpu' },
           ...devTypes,
         ],
       },
