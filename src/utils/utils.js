@@ -1121,3 +1121,17 @@ export const mixSortFunc = (x, y) => {
     return x.localeCompare(y)
   }
 }
+
+/**
+ * 去掉对象中的undefined和null的属性值
+ * @param {*} obj
+ * @returns
+ */
+export const deleteInvalid = obj => {
+  Object.keys(obj).forEach(item => {
+    if (!obj[item] && obj[item] !== 0) {
+      delete obj[item]
+    }
+  })
+  return obj
+}

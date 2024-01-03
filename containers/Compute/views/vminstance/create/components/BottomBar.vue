@@ -37,7 +37,28 @@
               </div>
             </div>
           </div>
+          <a-dropdown-button
+            v-if="$appConfig.isPrivate"
+            :title="confirmText"
+            class="text-truncate"
+            size="large"
+            type="primary"
+            native-type="submit"
+            html-type="submit"
+            style="width: 120px;"
+            :loading="loading"
+            placement="topLeft"
+            :disabled="disabled || !!errors.length">
+            {{ confirmText }}
+            <a-menu slot="overlay" @click="handleMenuClick">
+              <a-menu-item key="add">
+                {{ $t('scope.shopcart.add') }}
+              </a-menu-item>
+            </a-menu>
+            <a-icon slot="icon" type="down" />
+          </a-dropdown-button>
           <a-button
+            v-else
             :title="confirmText"
             class="text-truncate"
             size="large"
@@ -310,6 +331,11 @@ export default {
     })
   },
   methods: {
+    handleMenuClick (e) {
+      if (e.key === 'add') {
+        this.$emit('add-cart')
+      }
+    },
     changeErrors (errors) {
       this.$emit('update:errors', {})
     },
