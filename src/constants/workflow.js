@@ -12,6 +12,7 @@ export const WORKFLOW_TYPES = {
   APPLY_INTERNAL_RESOURCE: 'apply-internal-resource',
   APPLY_SERVER_STOP: 'apply-server-stop',
   APPLY_SERVER_RESTART: 'apply-server-restart',
+  EXECUTE_RESOURCE_ORDER_SET: 'execute-resource-order-set',
 }
 
 export const PROCESS_TYPES_OPTS = [
@@ -52,6 +53,10 @@ export const PROCESS_TYPES_OPTS = [
     name: i18n.t('common.workflow.restart'),
     value: WORKFLOW_TYPES.APPLY_SERVER_RESTART,
   },
+  {
+    name: i18n.t('common.workflow.order_set'),
+    value: WORKFLOW_TYPES.EXECUTE_RESOURCE_ORDER_SET,
+  },
 ]
 
 i18nSetProperty({
@@ -83,7 +88,12 @@ export const getWorkflowType = function (pdk) {
   return pdkObj
 }
 
-export const MULTIPLE_APPROVAL_PROCESS = [WORKFLOW_TYPES.APPLY_MACHINE, WORKFLOW_TYPES.APPLY_SERVER_DELETE, WORKFLOW_TYPES.APPLY_INTERNAL_RESOURCE]
+export const MULTIPLE_APPROVAL_PROCESS = [
+  WORKFLOW_TYPES.APPLY_MACHINE,
+  WORKFLOW_TYPES.APPLY_SERVER_DELETE,
+  WORKFLOW_TYPES.APPLY_INTERNAL_RESOURCE,
+  WORKFLOW_TYPES.EXECUTE_RESOURCE_ORDER_SET,
+]
 
 export const PRIORITY_OPTS = [
   { key: 'minor', value: i18n.t('common.workflow_priority_minor') },

@@ -205,7 +205,8 @@
         :isOpenWorkflow="isOpenWorkflow"
         :isServertemplate="isServertemplate"
         :hasMeterService="hasMeterService"
-        :cloudaccountId="cloudaccountId" />
+        :cloudaccountId="cloudaccountId"
+        @add-cart="addShopCart" />
     </a-form>
   </div>
 </template>
