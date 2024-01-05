@@ -126,6 +126,7 @@
     <slot name="frontNavbar" />
     <!-- 资源报警 -->
     <alertresource v-if="showAlertresource && showMenuMap.alert" :res_total="alertresource.total" :alert_total="alertrecords.total" class="navbar-item-icon primary-color-hover" />
+    <slot name="frontNavbar2" />
     <!-- 消息中心 -->
     <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify && showMenuMap.notification" />
     <!-- 工单 -->
