@@ -788,7 +788,10 @@ export default {
             count: __count__,
             resource: 'servers',
             user_id: this.$store.getters.userInfo.id,
-            parameter,
+            parameter: {
+              ...parameter,
+              price: this.price,
+            },
           }
           this._getProjectDomainInfo(shopCart)
           this.$message.success(this.$t('common.success'))
