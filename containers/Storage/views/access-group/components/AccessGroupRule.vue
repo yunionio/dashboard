@@ -9,6 +9,7 @@
 <script>
 import { getRwAccessTypeColumn, getUserAccessTypeColumn } from '../mixins/columns'
 import ListMixin from '@/mixins/list'
+import { getStatusTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -41,6 +42,7 @@ export default {
           showOverflow: 'ellipsis',
         },
         getRwAccessTypeColumn(),
+        getStatusTableColumn({ statusModule: 'accessGroupRule', vm: this }),
         getUserAccessTypeColumn(),
         {
           field: 'priority',
@@ -68,28 +70,6 @@ export default {
         },
       ],
       singleActions: [
-        {
-          label: this.$t('common.action.edit'),
-          permission: 'access_group_rules_update',
-          action: obj => {
-            this.createDialog('AccessGroupRuleEditDialog', {
-              data: [obj],
-              title: this.$t('common.action.edit'),
-              columns: this.columns,
-              onManager: this.onManager,
-              refresh: this.refresh,
-            })
-          },
-          meta: () => {
-            const ret = {
-              validate,
-            }
-            if (!validate) {
-              ret.tooltip = this.$t('storage.default.access.group.can.not.edit.rules')
-            }
-            return ret
-          },
-        },
         {
           label: this.$t('common.action.delete'),
           permission: 'access_group_rules_delete',

@@ -136,6 +136,12 @@ export default {
       const ret = {
         limit: 0,
         scope: this.scope,
+        manager: this.params.data.manager_id,
+        cloudregion_id: this.params.data.cloudregion_id,
+      }
+      if (this.isAdminMode) {
+        ret.project_domain = this.params.data.domain_id
+        delete ret.scope
       }
       return ret
     },

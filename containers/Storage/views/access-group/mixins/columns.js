@@ -4,6 +4,9 @@ import {
   getTimeTableColumn,
   getPublicScopeTableColumn,
   getProjectDomainTableColumn,
+  getRegionTableColumn,
+  getBrandTableColumn,
+  getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -61,7 +64,20 @@ export default {
           )
         },
       }),
+      {
+        field: 'mount_target_count',
+        title: this.$t('storage.mount.target.count'),
+        formatter: ({ cellValue }) => {
+          if (cellValue) {
+            return cellValue
+          }
+          return 0
+        },
+      },
       getStatusTableColumn({ statusModule: 'accessGroup', vm: this }),
+      getBrandTableColumn(),
+      getAccountTableColumn(),
+      getRegionTableColumn(),
       getPublicScopeTableColumn({ vm: this, resource: 'access_groups' }),
       getProjectDomainTableColumn(),
       getTimeTableColumn(),

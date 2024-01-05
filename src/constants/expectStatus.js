@@ -425,6 +425,11 @@ export default {
     info: ['unknown'],
     danger: ['delete_failed', 'sync_rules_failed'],
   },
+  accessGroupRule: {
+    success: ['available'],
+    info: ['unknown'],
+    danger: ['delete_failed', 'create_failed'],
+  },
   mountTarget: {
     success: ['available'],
     info: ['unavailable', 'unknown'],
