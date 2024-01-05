@@ -88,6 +88,7 @@ export default {
   position: absolute;
   top: 0;
   right:40px;
+  z-index: 10;
   &::after {
     display: block;
     content: "";
