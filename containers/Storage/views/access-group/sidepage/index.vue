@@ -37,7 +37,6 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import AccessGroupDetail from './Detail'
 import AccessGroupRule from './Rule'
-import AccessGroupCache from './Cache'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -47,7 +46,6 @@ export default {
   components: {
     AccessGroupDetail,
     AccessGroupRule,
-    AccessGroupCache,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -56,7 +54,6 @@ export default {
       detailTabs: [
         { label: this.$t('storage.text_81'), key: 'access-group-detail' },
         { label: this.$t('dictionary.access_group_rule'), key: 'access-group-rule' },
-        { label: this.$t('dictionary.access_group_cache'), key: 'access-group-cache' },
         { label: this.$t('dictionary.actions'), key: 'event-drawer' },
       ],
     }
