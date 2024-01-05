@@ -787,6 +787,7 @@ export default {
             auto_execute: true,
             count: __count__,
             resource: 'servers',
+            user_id: this.$store.getters.userInfo.id,
             parameter,
           }
           this._getProjectDomainInfo(shopCart)
