@@ -123,6 +123,14 @@ export const createVmDecorators = type => {
       ],
     },
     imageOS: {
+      prefer_manager: [
+        'prefer_manager',
+        {
+          rules: [
+            { required: true, message: i18n.t('compute.text_149') },
+          ],
+        },
+      ],
       os: [
         'os',
         {

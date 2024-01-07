@@ -170,7 +170,9 @@ export default {
       return storage.get(`${this.cloudType}${SELECT_IMAGE_KEY_SUFFIX}`)
     },
     showCloudaccount () {
-      return false
+      if (!this.decorator.prefer_manager) return false
+      const imageMsg = IMAGES_TYPE_MAP[this.imageType]
+      return imageMsg && imageMsg.enable_cloudaccount
     },
     cloudproviderParams () {
       const params = {
