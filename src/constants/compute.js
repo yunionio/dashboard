@@ -81,6 +81,14 @@ export const STORAGE_TYPES = {
       sysMin: 1261,
       sysMax: 2 * 1024,
     },
+    cloud_essd_entry: {
+      label: i18n.t('common.storage.cloud_essd_entry'),
+      key: 'cloud_essd_entry',
+      min: 10,
+      max: 32768,
+      sysMin: 10,
+      sysMax: 2 * 1024,
+    },
     cloud_auto: {
       label: i18n.t('common.storage.cloud_auto'),
       key: 'cloud_auto',
