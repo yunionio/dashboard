@@ -54,6 +54,7 @@
   "compute.text_54": "ESSD Cloud Disk PL1",
   "compute.text_55": "ESSD Cloud Disk PL2",
   "compute.text_56": "ESSD Cloud Disk PL3",
+  "compute.cloud_essd_entry": "ESSD Entry",
   "compute.text_57": "Efficient Cloud Disk",
   "compute.text_58": "Local SSD Disk",
   "compute.text_59": "Universal SSD",

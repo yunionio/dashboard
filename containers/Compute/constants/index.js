@@ -460,6 +460,14 @@ export const STORAGE_TYPES = {
       sysMin: 20,
       sysMax: 500,
     },
+    cloud_essd_entry: {
+      label: i18n.t('compute.cloud_essd_entry'),
+      value: 'cloud_essd_entry',
+      min: 10,
+      max: 32768,
+      sysMin: 10,
+      sysMax: 2048,
+    },
     cloud_efficiency: {
       label: i18n.t('compute.text_57'),
       value: 'cloud_efficiency',
