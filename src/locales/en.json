@@ -2943,6 +2943,7 @@
       "cloud_essd": "ESSD Cloud Disk PL1",
       "cloudessdpl2": "ESSD Cloud Disk PL2",
       "cloud_essd_pl2": "ESSD Cloud Disk PL2",
+      "cloud_essd_entry": "ESSD Entry",
       "cloudessdpl3": "ESSD Cloud Disk PL3",
       "cloud_essd_pl3": "ESSD Cloud Disk PL3",
       "cloud_auto": "ESSD AutoPL",
