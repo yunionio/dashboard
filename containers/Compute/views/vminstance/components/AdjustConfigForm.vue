@@ -753,9 +753,11 @@ export default {
 
       const dataDisks = this.selectedItem.disks_info.filter(item => item.disk_type === 'data')
       const { medium_type: dataDiskMedium } = dataDisks[0] || {}
-      if (this.selectedItem.cpu_sockets) {
-        this.form.fi.showCpuSockets = true
-        this.form.fi.cpuSockets = this.selectedItem.cpu_sockets
+      if ([HYPERVISORS_MAP.esxi.key].includes(this.hypervisor)) {
+        if (this.selectedItem.cpu_sockets) {
+          this.form.fi.showCpuSockets = true
+          this.form.fi.cpuSockets = this.selectedItem.cpu_sockets
+        }
       }
       this.$nextTick(() => {
         this.diskLoaded = true
