@@ -140,6 +140,15 @@ export const rolesColumn = roleList => ({
 
 export function getMetircAlertUtil (row, field, condition) {
   let strategy = '-'
+  const strategyConfig = {
+    measurement: '',
+    period: '', // 时间间隔 2h 14d
+    metric: '', // 监控指标
+    comparator: '', // > < within
+    threshold: null, // 阈值
+    unit: '', // 单位
+    time_from: row.time_from,
+  }
   const filters = []
   if (row[field] && ((R.type(row[field]) === 'Array') || R.type(row[field]) === 'Object') && !R.isEmpty(row[field])) {
     let detail = ''
@@ -150,10 +159,12 @@ export function getMetircAlertUtil (row, field, condition) {
     }
     let measurement = detail.measurement_display_name || detail.measurement_desc || detail.measurement
     if (metric_zh[measurement]) measurement = metric_zh[measurement]
+    strategyConfig.measurement = measurement
     let metric = _.get(detail, 'field_description.display_name') || detail.field_desc || detail.field
     if (metric) {
       metric = metric_zh[metric] || metric
     }
+    strategyConfig.metric = metric
     const reduce = (alertStrategyMaps[detail.reduce]) || ''
     const alert_duration = row.alert_duration ? i18n.t('monitor.list.duration.label', [row.alert_duration]) : row[field].alert_duration ? i18n.t('monitor.list.duration.label', [row[field].alert_duration]) : ''
     let preiod = ((preiodMaps[row.period] || {}).label) || row.period || ((preiodMaps[detail.period] || {}).label) || detail.period
@@ -180,7 +191,11 @@ export function getMetircAlertUtil (row, field, condition) {
     if (detail.comparator === 'within_range' && detail.within_range) {
       comparator = ''
       txt = `[${detail.within_range[0]}${threshold.unit}, ${detail.within_range[1]}${threshold.unit}]`
+      strategyConfig.within_range = detail.within_range
     }
+    strategyConfig.comparator = detail.comparator
+    strategyConfig.threshold = detail.threshold
+    strategyConfig.unit = unit
     strategy = i18n.t('monitor.text_6', [measurement, metric, reduce, alert_duration, comparator, txt])
     if (detail.condition_type === 'nodata_query') { // 系统上报数据为空
       strategy = i18n.t('monitor.text_108', [alert_duration])
@@ -189,6 +204,7 @@ export function getMetircAlertUtil (row, field, condition) {
     if (preiod) {
       preiod = preiod.replace(i18n.t('monitor.text_103'), '')
       strategy += `${i18n.t('monitor.text_102', [preiod])}`
+      strategyConfig.period = preiod
     }
     const silent_period = row.silent_period || row[field].silent_period
     if (silent_period) {
@@ -204,6 +220,7 @@ export function getMetircAlertUtil (row, field, condition) {
         p = i18n.t('monitor.duration.silent.hour', [p.replace('h', '')])
       }
       strategy += `${i18n.t('monitor.commonalerts.list.silent', [p])}`
+      strategyConfig.period = silent_period
     }
 
     if (detail.filters && detail.filters.length) {
@@ -220,6 +237,7 @@ export function getMetircAlertUtil (row, field, condition) {
   }
   return {
     strategy,
+    strategyConfig,
     filters,
   }
 }
