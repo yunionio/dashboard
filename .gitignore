@@ -21,6 +21,7 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+.history
 
 # local dev server config files
 dev.server.config.js
