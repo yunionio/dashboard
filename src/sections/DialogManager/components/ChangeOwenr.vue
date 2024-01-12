@@ -100,6 +100,9 @@ export default {
       return this.params.columns
     },
     getDomainList () {
+      if (this.params.ignoreCandidateDomains) {
+        return undefined
+      }
       if (this.params.data.length === 1) {
         return this.getCandidateDomains
       }

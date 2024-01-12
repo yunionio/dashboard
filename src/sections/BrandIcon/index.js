@@ -47,6 +47,7 @@ export default {
   },
   render (h) {
     const option = this.getBrand()
+    if (!option) return null
     const name = option.key.toLowerCase()
     const small = ['DStack', 'OpenStack']
     let fontSize = '20px'
