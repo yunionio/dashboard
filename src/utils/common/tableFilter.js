@@ -151,14 +151,14 @@ export function getStatusFilter (params) {
   }
 }
 
-export function getTenantFilter ({ hiddenField = 'tenant' } = {}) {
+export function getTenantFilter ({ hiddenField = 'tenant', distinctType = 'extra_field' } = {}) {
   return {
     label: i18n.t('res.project'),
     dropdown: true,
     multiple: true,
     hiddenField,
     distinctField: {
-      type: 'extra_field',
+      type: distinctType,
       key: 'tenant',
     },
   }
@@ -194,14 +194,14 @@ export function getAccountFilter ({ label = i18n.t('res.cloudaccount'), distinct
   return options
 }
 
-export function getCloudProviderFilter ({ hiddenField = 'account' } = {}) {
+export function getCloudProviderFilter ({ hiddenField = 'account', distinctType } = {}) {
   return {
     label: i18n.t('compute.text_653'),
     dropdown: true,
     multiple: true,
     hiddenField,
     distinctField: {
-      type: 'extra_field',
+      type: distinctType || 'extra_field',
       key: 'manager',
     },
     hidden: () => store.getters.isProjectMode,
@@ -304,14 +304,14 @@ export function getProjectFilter () {
   }
 }
 
-export function getDomainFilter (domain_key = 'domain', hiddenField = 'tenant') {
+export function getDomainFilter (domain_key = 'domain', hiddenField = 'tenant', distinctField = 'extra_field') {
   return {
     label: i18n.t('table.title.domain'),
     dropdown: true,
     multiple: true,
     hiddenField,
     distinctField: {
-      type: 'extra_field',
+      type: distinctField,
       key: domain_key,
     },
     hidden: () => store.getters.isProjectMode,
@@ -354,13 +354,13 @@ export const getOsArchFilter = (isCapabilityKey = false) => {
   }
 }
 
-export function getRegionFilter () {
+export function getRegionFilter ({ distinctType = 'extra_field' } = {}) {
   return {
     label: i18n.t('res.region'),
     dropdown: true,
     multiple: true,
     distinctField: {
-      type: 'extra_field',
+      type: distinctType,
       key: 'region',
       afterFetch: async (items, extraParams = {}) => {
         if (items.length === 0) {
