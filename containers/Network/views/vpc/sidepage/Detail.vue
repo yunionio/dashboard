@@ -55,7 +55,7 @@ export default {
         getBrandTableColumn(),
         {
           field: 'cidr_block',
-          title: this.$t('network.text_244'),
+          title: this.$t('network.vpc.cidr_block.ipv4.label'),
         },
         {
           field: 'wire_count',

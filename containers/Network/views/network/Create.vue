@@ -65,7 +65,8 @@
           <ip-subnets :decorator="decorators.ipSubnets" @clear-error="clearIpSubnetsError" />
         </a-form-item>
         <a-form-item :label="$t('network.text_575')" :extra="$t('network.text_578')" v-bind="formItemLayout" v-if="!show && !isGroupGuestIpPrefix">
-          <a-input v-decorator="decorators.guest_ip_prefix(0)" :placeholder="$t('network.text_579')" />
+          <a-input v-decorator="decorators.guest_ip_prefix(0)" :placeholder="$t('network.ipv4.prefix.prompt')" />
+          <a-input v-decorator="decorators.guest_ip6_prefix(0)" :placeholder="$t('network.ipv6.prefix.prompt')" />
         </a-form-item>
         <a-form-item :label="$t('network.text_575')" v-bind="formItemLayout" :validate-status="guestIpPrefixValidateStatus" :help="guestIpPrefixHelp" required v-if="isGroupGuestIpPrefix">
           <template slot="extra">
@@ -74,7 +75,8 @@
           </template>
           <div class="d-flex" v-for="(item, i) in guestIpPrefix" :key="item.key">
             <a-form-item>
-              <a-input style="width: 400px" v-decorator="decorators.guest_ip_prefix(i)" :placeholder="$t('network.text_581')" />
+              <a-input style="width: 400px" v-decorator="decorators.guest_ip_prefix(i)" :placeholder="$t('network.ipv4.subnet.input.prompt')" />
+              <a-input style="width: 400px" v-decorator="decorators.guest_ip6_prefix(i)" :placeholder="$t('network.ipv6.subnet.input.prompt')" />
             </a-form-item>
             <a-button shape="circle" icon="minus" size="small" v-if="guestIpPrefix.length > 1" @click="decrease(i)" class="mt-2 ml-2" />
           </div>
@@ -151,7 +153,7 @@ import { HYPERVISORS_MAP } from '@/constants'
 import Tag from '@/sections/Tag'
 import IpSubnets from './components/IpSubnets'
 
-const { networkSegment } = REGEXP
+const { networkSegment, networkSegment6 } = REGEXP
 const masks = {
   azure: { min: 8, max: 29 },
   qcloud: { min: 16, max: 28 },
@@ -180,6 +182,19 @@ function validateGateway (rule, value, callback) {
   return callback()
 }
 
+function validateGateway6 (rule, value, callback) {
+  if (!value) {
+    return callback()
+  }
+  // 只需要查看是否是以 0 结尾
+  const ipItems = value.split(':')
+  const msg = i18n.t('network.text_591')
+  if (ipItems[ipItems.length - 1] === '0') {
+    return callback(msg)
+  }
+  return callback()
+}
+
 export default {
   name: 'NetworkCreate',
   components: {
@@ -197,6 +212,7 @@ export default {
       cloudEnv = cloudEnvOptions[0].key
       routerQuery = cloudEnv === 'onpremise' ? 'idc' : cloudEnv
     }
+    const prefixKey = uuid()
     return {
       submiting: false,
       cloudEnvOptions,
@@ -361,6 +377,47 @@ export default {
               ],
             },
           ],
+          startip6: i => [
+            `startip6[${i}]`,
+            {
+              initialValue: '',
+              validateFirst: true,
+              rules: [
+                { validator: this.$validate('IPv6') },
+              ],
+            },
+          ],
+          endip6: i => [
+            `endip6[${i}]`,
+            {
+              initialValue: '',
+              validateFirst: true,
+              rules: [
+                { validator: this.$validate('IPv6') },
+              ],
+            },
+          ],
+          netmask6: i => [
+            `netmask6[${i}]`,
+            {
+              initialValue: '64',
+              rules: [
+                { required: true, message: this.$t('network.text_595') },
+              ],
+            },
+          ],
+          gateway6: i => [
+            `gateway6[${i}]`,
+            {
+              initialValue: '',
+              validateTrigger: ['change', 'blur'],
+              validateFirst: true,
+              rules: [
+                { validator: this.$validate('IPv6') },
+                { validator: validateGateway6 },
+              ],
+            },
+          ],
           vlan: i => [
             `vlan[${i}]`,
             {
@@ -376,6 +433,16 @@ export default {
             rules: [
               { required: true, message: this.$t('network.text_597') },
               { validator: this.validatePublicIpPrefix },
+            ],
+          },
+        ],
+        guest_ip6_prefix: i => [
+          `guest_ip6_prefix[${i}]`,
+          {
+            initialValue: '',
+            validateFirst: true,
+            rules: [
+              { validator: this.validatePublicIpPrefix6 },
             ],
           },
         ],
@@ -413,7 +480,8 @@ export default {
       show: true,
       regionProvider: '',
       regionId: '',
-      guestIpPrefix: [{ key: uuid() }],
+      guestIpPrefix: [{ key: prefixKey }],
+      guestIp6Prefix: [{ key: prefixKey }],
       zoneList: [],
       project_domain: '',
       vpcId: '',
@@ -587,9 +655,13 @@ export default {
       this.guestIpPrefix.push({
         key,
       })
+      this.guestIp6Prefix.push({
+        key,
+      })
     },
     decrease (index) {
       this.guestIpPrefix.splice(index, 1)
+      this.guestIp6Prefix.splice(index, 1)
     },
     handleRegionChange (data) {
       const hasCloudRegion = R.has('cloudregion')(data)
@@ -632,8 +704,8 @@ export default {
     vpcLabelFormat (item) {
       if (this.cloudEnv === 'public' || this.regionProvider === HYPERVISORS_MAP.hcso.provider || this.regionProvider === HYPERVISORS_MAP.hcs.provider) {
         if (item.manager) {
-          if (item.cidr_block) {
-            return (<div>{ item.name }<span v-if="item.cidr_block">（{ item.cidr_block }）</span><span class="ml-2 text-color-secondary">{ this.$t('common.cloudprovider_1var', [item.manager]) }</span></div>)
+          if (item.cidr_block || item.cidr_block6) {
+            return (<div>{ item.name }<span v-if="item.cidr_block">（{ item.cidr_block }）</span><span v-if="item.cidr_block6">（{ item.cidr_block6 }）</span><span class="ml-2 text-color-secondary">{ this.$t('common.cloudprovider_1var', [item.manager]) }</span></div>)
           }
           return (<div>{ item.name }<span class="ml-2 text-color-secondary">{ this.$t('common.cloudprovider_1var', [item.manager]) }</span></div>)
         }
@@ -663,6 +735,18 @@ export default {
       }
       callback()
     },
+    validatePublicIpPrefix6 (rule, value, callback) {
+      if (!networkSegment6.regexp.test(value)) {
+        callback(new Error(networkSegment6.message))
+      }
+      const maskNum = (value && value.split('/').length > 1) ? value.split('/')[1] : null
+      const min = 64
+      const max = 64
+      if (maskNum < min || maskNum > max) {
+        callback(new Error(this.$t('network.text_604', [min, max])))
+      }
+      callback()
+    },
     fetchZone (regionId) {
       new this.$Manager('cloudregions')
         .getSpecific({ id: regionId, spec: 'zones', params: this.zoneParams })
@@ -682,6 +766,7 @@ export default {
               guest_domain: values.guest_domain,
               guest_ntp: values.guest_ntp,
               guest_ip_prefix: value,
+              guest_ip6_prefix: values.guest_ip6_prefix[key],
               name: values.name,
               description: values.description,
               vpc: values.vpc,
@@ -700,10 +785,14 @@ export default {
               guest_dns: values.guest_dns,
               guest_domain: values.guest_domain,
               guest_ntp: values.guest_ntp,
-              guest_gateway: values.gateway[key],
+              guest_ip_start: values.startip[key],
               guest_ip_end: values.endip[key],
               guest_ip_mask: values.netmask[key],
-              guest_ip_start: values.startip[key],
+              guest_gateway: values.gateway[key],
+              guest_ip6_start: values.startip6[key],
+              guest_ip6_end: values.endip6[key],
+              guest_ip6_mask: values.netmask6[key],
+              guest_gateway6: values.gateway6[key],
               vlan_id: values.vlan[key] === '' ? '1' : values.vlan[key],
               name: values.name,
               description: values.description,
@@ -723,6 +812,7 @@ export default {
         return {
           project_id: values.project.key,
           guest_ip_prefix: values.guest_ip_prefix[0],
+          guest_ip6_prefix: values.guest_ip6_prefix[0],
           name: values.name,
           description: values.description,
           wire_id: values.wire,
@@ -733,6 +823,7 @@ export default {
       return {
         project_id: values.project.key,
         guest_ip_prefix: values.guest_ip_prefix[0],
+        guest_ip6_prefix: values.guest_ip6_prefix[0],
         name: values.name,
         description: values.description,
         vpc: values.vpc,

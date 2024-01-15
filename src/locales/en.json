@@ -1336,6 +1336,7 @@
     "cidr": "Please enter a valid CIDR",
     "ports": "Please enter a valid port number",
     "networkSegment": "Please enter a valid CIDR",
+    "networkSegment6": "Please enter a valid IPv6 CIDR",
     "wiresName": "Start with a letter, followed by a combination of digits and letters, excluding '.,_@, length 2-9",
     "dbName": "Start with a letter, followed by a combination of lowercase letters, digits or underscores, but cannot end with an underscore, length 4-16",
     "imageName": "Start with a letter, followed by a combination of digits and letters, including '.,-_, length 2-128",

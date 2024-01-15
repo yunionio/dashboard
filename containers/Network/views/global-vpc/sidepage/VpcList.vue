@@ -41,7 +41,7 @@ export default {
         }),
         {
           field: 'cidr_block',
-          title: this.$t('network.text_244'),
+          title: this.$t('network.vpc.cidr_block.ipv4.label'),
           slots: {
             default: ({ row }) => {
               const ips = row.cidr_block
