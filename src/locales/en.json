@@ -2743,7 +2743,8 @@
     "private_env": "Private cloud",
     "public_env": "Public cloud",
     "project_tag": "Project tag",
-    "predictions": "Bill prediction"
+    "predictions": "Bill prediction",
+    "instance_tag": "Resource tag"
   },
   "res": {
     "role": "Role",

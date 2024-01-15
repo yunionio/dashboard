@@ -2763,7 +2763,8 @@
     "private_env": "プライベートクラウド",
     "public_env": "クラウド",
     "project_tag": "業務タグ",
-    "predictions": "業務タグ"
+    "predictions": "業務タグ",
+    "instance_tag": "リソースタグ"
   },
   "res": {
     "role": "@:dictionary.role",

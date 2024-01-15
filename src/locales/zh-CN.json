@@ -2763,7 +2763,8 @@
     "private_env": "私有云",
     "public_env": "公有云",
     "project_tag": "项目标签",
-    "predictions": "费用预测"
+    "predictions": "费用预测",
+    "instance_tag": "资源标签"
   },
   "res": {
     "role": "@:dictionary.role",

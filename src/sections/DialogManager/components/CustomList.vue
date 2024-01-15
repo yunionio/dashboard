@@ -105,11 +105,17 @@ export default {
     const tagFields = this.params.customs.filter(item => {
       return item.type !== 'checkbox' && item.type !== 'radio' && item.property !== '_action' && item.property !== '_action_placeholder' && (isUserTag(item.property) || isExtTag(item.property)) && (item.slots && item.slots.tag_type && item.slots.tag_type({}) === 'resource')
     })
+    const instanceTagFields = this.params.customs.filter(item => {
+      return item.type !== 'checkbox' && item.type !== 'radio' && item.property !== '_action' && item.property !== '_action_placeholder' && (isUserTag(item.property) || isExtTag(item.property)) && (item.slots && item.slots.tag_type && item.slots.tag_type({}) === 'instance')
+    })
     const projectTagFields = this.params.customs.filter(item => {
       return item.type !== 'checkbox' && item.type !== 'radio' && item.property !== '_action' && item.property !== '_action_placeholder' && (isUserTag(item.property) || isExtTag(item.property)) && (item.slots && item.slots.tag_type && item.slots.tag_type({}) === 'project')
     })
     const initialTagsSelected = tagFields.filter(item => {
       return this.params.config.showTagKeys.includes(item.property)
+    }).map(item => item.property)
+    const initialInstanceTagsSelected = instanceTagFields.filter(item => {
+      return this.params.config.showInstanceTagKeys.includes(item.property)
     }).map(item => item.property)
     const initialProjectTagsSelected = projectTagFields.filter(item => {
       return this.params.config.showProjectTagKeys.includes(item.property)
@@ -135,6 +141,12 @@ export default {
             initialValue: initialTagsSelected,
           },
         ],
+        instanceTagsSelected: [
+          'instanceTagsSelected',
+          {
+            initialValue: initialInstanceTagsSelected,
+          },
+        ],
         projectTagsSelected: [
           'projectTagsSelected',
           {
@@ -144,6 +156,7 @@ export default {
       },
       columnFields,
       tagFields,
+      instanceTagFields,
       projectTagFields,
       columnsIndeterminate: initialColumnsSelected.length !== 0 && columnFields.length !== initialColumnsSelected.length,
       columnsCheckAll: columnFields.length === initialColumnsSelected.length,
@@ -165,6 +178,17 @@ export default {
       }
       return ret
     },
+    instanceTagParams () {
+      const ret = {
+        with_user_meta: true,
+        with_cloud_meta: true,
+        limit: 0,
+        scope: this.scope,
+        resources: 'instance',
+        $t: new Date().getTime(),
+      }
+      return ret
+    },
     projectTagParams () {
       const ret = {
         with_user_meta: true,
@@ -179,6 +203,9 @@ export default {
     showTags () {
       return this.params.showTagColumns && this.tagFields.length > 0
     },
+    showInstanceTags () {
+      return this.params.showTagColumns3 && this.instanceTagFields.length > 0
+    },
     showProjectTags () {
       return this.params.showTagColumns2 && this.projectTagFields.length > 0
     },
@@ -186,6 +213,9 @@ export default {
   created () {
     if (this.params.showTagColumns) {
       this.fetchTags()
+    }
+    if (this.params.showTagColumns3) {
+      this.fetchInstanceTags()
     }
     if (this.params.showTagColumns2) {
       this.fetchProjectTags()
@@ -214,6 +244,34 @@ export default {
           }
         })
         this.tagFields = tags
+      } catch (error) {
+        throw error
+      } finally {
+        manager = null
+      }
+    },
+    async fetchInstanceTags () {
+      let manager = new this.$Manager('metadatas')
+      try {
+        const response = await manager.get({
+          id: 'tag-value-pairs',
+          params: this.instanceTagParams,
+        })
+        const data = response.data.data || []
+        // 将已显示的标签列进行合并
+        let tags = data.map(item => item.key)
+        R.forEach(item => {
+          tags.push(item.property)
+        }, this.instanceTagFields)
+        tags = R.uniq(tags)
+        // 拼装数据
+        tags = tags.map(item => {
+          return {
+            property: item,
+            title: getTagTitle(item),
+          }
+        })
+        this.instanceTagFields = tags
       } catch (error) {
         throw error
       } finally {
