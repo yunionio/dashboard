@@ -48,7 +48,7 @@ export default {
           cloudaccount: getAccountFilter(),
           brand: getBrandFilter('brands', ['VMware']),
           cidr_block: {
-            label: this.$t('network.text_244'),
+            label: this.$t('network.vpc.cidr_block.ipv4.label'),
           },
           project_domains: getProjectDomainFilter(),
           region: {
@@ -61,7 +61,7 @@ export default {
           { label: 'ID', key: 'id' },
           { label: this.$t('network.text_21'), key: 'name' },
           { label: this.$t('network.text_27'), key: 'status' },
-          { label: this.$t('network.text_244'), key: 'cidr_block' },
+          { label: this.$t('network.vpc.cidr_block.ipv4.label'), key: 'cidr_block' },
           { label: this.$t('network.text_199'), key: 'region' },
           { label: this.$t('network.text_198'), key: 'provider' },
           { label: this.$t('network.text_196'), key: 'manager' },

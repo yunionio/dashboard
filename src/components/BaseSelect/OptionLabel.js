@@ -14,7 +14,17 @@ const resourceMode = {
         </div>
       )
     },
-    labelFormat: item => `${item.name}(${item.guest_ip_start} - ${item.guest_ip_end}, vlan=${item.vlan_id})`,
+    labelFormat: item => {
+      let label = item.name
+      const details = []
+      details.push(`${item.guest_ip_start} - ${item.guest_ip_end}/${item.guest_ip_mask}`)
+      if (item.guest_ip6_start && item.guest_ip6_end) {
+        details.push(`${item.guest_ip6_start} - ${item.guest_ip6_end}/${item.guest_ip6_mask}`)
+      }
+      details.push(`vlan=${item.vlan_id}`)
+      label += `(${details.join(',')})`
+      return label
+    },
   },
   vpcs: {
     vnode: (vm, h) => {
@@ -26,8 +36,18 @@ const resourceMode = {
       )
     },
     labelFormat: item => {
-      if (!item.cidr_block) return item.name
-      return `${item.name}（${item.cidr_block}）`
+      let label = item.name
+      if (item.cidr_block || item.cidr_block6) {
+        const cidrs = []
+        if (item.cidr_block) {
+          cidrs.push(item.cidr_block)
+        }
+        if (item.cidr_block6) {
+          cidrs.push(item.cidr_block6)
+        }
+        label += `(${cidrs.join(',')})`
+      }
+      return label
     },
   },
   servers: {

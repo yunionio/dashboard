@@ -27,8 +27,16 @@
         <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
           <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
         </a-form-item>
-        <a-form-item :label="$t('network.text_244')" v-bind="formItemLayout" :extra="cloudEnv !== 'onpremise' ? $t('network.text_685') : $t('network.text_686')">
+        <a-form-item :label="$t('network.vpc.cidr_block.ipv4.label')" v-bind="formItemLayout" :extra="cloudEnv !== 'onpremise' ? $t('network.text_685') : $t('network.text_686')">
           <a-input v-decorator="decorators.cidr_block" :placeholder="$t('network.text_687')" v-if="cloudEnv !== 'onpremise'" />
+          <a-select v-decorator="decorators.cidr_block" v-else>
+            <a-select-option value="192.168.0.0/16">192.168.0.0/16</a-select-option>
+            <a-select-option value="172.16.0.0/12">172.16.0.0/12</a-select-option>
+            <a-select-option value="10.0.0.0/8">10.0.0.0/8</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item :label="$t('network.vpc.cidr_block.ipv6.label')" v-bind="formItemLayout" :extra="cloudEnv !== 'onpremise' ? $t('network.text_685') : $t('network.text_686')">
+          <a-input v-decorator="decorators.cidr_block6" :placeholder="$t('network.text_687')" v-if="cloudEnv !== 'onpremise'" />
           <a-select v-decorator="decorators.cidr_block" v-else>
             <a-select-option value="192.168.0.0/16">192.168.0.0/16</a-select-option>
             <a-select-option value="172.16.0.0/12">172.16.0.0/12</a-select-option>
@@ -82,12 +90,12 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import { HYPERVISORS_MAP } from '../../../../../src/constants'
 import AreaSelects from '@/sections/AreaSelects'
 import DomainSelect from '@/sections/DomainSelect'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import Tag from '@/sections/Tag'
 import validateForm from '@/utils/validate'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'VPCCreate',
@@ -156,6 +164,16 @@ export default {
             rules: [
               { required: true, message: this.$t('network.text_690') },
               { validator: this.$validate('CIDR') },
+            ],
+          },
+        ],
+        cidr_block6: [
+          'cidr_block6',
+          {
+            validateFirst: true,
+            validateTrigger: ['blur'],
+            rules: [
+              { validator: this.$validate('CIDR6') },
             ],
           },
         ],
@@ -359,6 +377,9 @@ export default {
           }
         }
         params.cidr_block = values.cidr_block
+        if (values.cidr_block6) {
+          params.cidr_block6 = values.cidr_block6
+        }
         if (this.isGoogle) {
           params.globalvpc_id = values.globalvpc_id
         }

@@ -45,12 +45,30 @@ export default {
       }),
       getCopyWithContentTableColumn({
         field: 'cidr_block',
-        title: i18n.t('network.text_244'),
+        title: i18n.t('network.vpc.cidr_block.ipv4.label'),
+        width: 180,
         sortable: true,
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('vpc_hidden_columns.cidr_block')
         },
       }),
+      getCopyWithContentTableColumn({
+        field: 'cidr_block6',
+        title: i18n.t('network.vpc.cidr_block.ipv6.label'),
+        width: 180,
+        sortable: true,
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('vpc_hidden_columns.cidr_block6')
+        },
+      }),
+      {
+        field: 'external_access_mode',
+        title: this.$t('network.external_access_mode_label'),
+        formatter: ({ row }) => {
+          if (row.external_access_mode === 'none') return this.$t('status.enabled.false')
+          return this.$t('status.enabled.true')
+        },
+      },
       {
         field: 'wire_count',
         title: i18n.t('network.text_571'),
@@ -63,7 +81,7 @@ export default {
       {
         field: 'network_count',
         title: i18n.t('network.text_682'),
-        width: 100,
+        width: 80,
         sortable: true,
         slots: {
           default: ({ row }) => {
