@@ -82,7 +82,6 @@ export default {
       }
       return callback()
     }
-    console.log('params', this.params.data[0])
     return {
       loading: false,
       form: {

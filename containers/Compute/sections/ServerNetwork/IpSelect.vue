@@ -34,10 +34,10 @@ export default {
   },
   watch: {
     'network.id': {
-      handler (val) {
+      handler (val, oldVal) {
         if (val) {
           this.fetchIps(val)
-        } else {
+        } else if (oldVal && !val) {
           this.options = []
           this.$emit('change', null)
         }
@@ -71,7 +71,6 @@ export default {
             name: ip,
           }
         })
-        console.log('initial value ', this.value, addresses)
         if (!addresses.includes(this.value)) {
           this.options.unshift({
             ip: this.value,
