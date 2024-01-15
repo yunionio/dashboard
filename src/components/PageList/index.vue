@@ -8,10 +8,13 @@
       :group-actions="groupActions"
       :tag-manager-instance="tagManagerInstance"
       :tag-manager-instance2="tagManagerInstance2"
+      :tag-manager-instance3="tagManagerInstance3"
       :show-tag-filter="showTagFilter"
       :show-tag-filter2="showTagFilter2"
+      :show-tag-filter3="showTagFilter3"
       :tag-filter="tagFilter"
       :tag-filter2="tagFilter2"
+      :tag-filter3="tagFilter3"
       :resource="resource"
       :show-searchbox="showSearchbox"
       :filter-options="filterOptions"
@@ -156,12 +159,15 @@ export default {
     // 提供给标签过滤器自定义获取标签数据的Manager实例
     tagManagerInstance: Object,
     tagManagerInstance2: Object,
+    tagManagerInstance3: Object,
     // 开启标签过滤
     showTagFilter: Boolean,
     showTagFilter2: Boolean,
+    showTagFilter3: Boolean,
     // 开启标签列
     showTagColumns: Boolean,
     showTagColumns2: Boolean,
+    showTagColumns3: Boolean,
     // 是否显示搜索框
     showSearchbox: {
       type: Boolean,

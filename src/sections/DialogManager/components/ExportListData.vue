@@ -82,6 +82,18 @@ export default {
         }
       }), exportOptionItems)
     }
+    const exportInstanceTags = (this.params.showTagColumns3 && this.params.config.showInstanceTagKeys) || []
+    if (exportInstanceTags && exportInstanceTags.length) {
+      allExportKeys = R.insertAll(0, exportInstanceTags.map(item => {
+        return `instanceTag:${item}`
+      }), allExportKeys)
+      exportOptionItems = R.insertAll(0, exportInstanceTags.map(item => {
+        return {
+          label: getTagTitle(item),
+          key: `instanceTag:${item}`,
+        }
+      }), exportOptionItems)
+    }
     const exportProjectTags = (this.params.showTagColumns2 && this.params.config.showProjectTagKeys) || []
     if (exportProjectTags && exportProjectTags.length) {
       allExportKeys = R.insertAll(0, exportProjectTags.map(item => {
