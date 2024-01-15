@@ -24,7 +24,12 @@
             </a-col>
             <a-col :span="10">
               <a-form-item>
-                  <ip-select v-decorator="decorators.ip" :value="form.fi.ip" :network="form.fi.network" @change="ipChange" />
+                <ip-select v-decorator="decorators.ip" :value="form.fi.ip" :network="form.fi.network" @change="ipChange" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="10" v-if="isSupportIPv6">
+              <a-form-item>
+                <a-checkbox v-decorator="decorators.require_ipv6">{{ $t('compute.server_create.require_ipv6') }}</a-checkbox>
               </a-form-item>
             </a-col>
           </a-row>
@@ -77,19 +82,21 @@ export default {
       }
       return callback()
     }
+    console.log('params', this.params.data[0])
     return {
       loading: false,
       form: {
         fc: this.$form.createForm(this),
         fi: {
           network: {},
-          ip: null,
+          ip: this.params.data[0].ip_addr,
         },
       },
       decorators: {
         network: [
           'network',
           {
+            initialValue: this.params.data[0].network_id,
             rules: [
               { required: true, message: this.$t('compute.text_1191') },
             ],
@@ -98,10 +105,14 @@ export default {
         ip: [
           'ip',
           {
+            initialValue: this.params.data[0].ip_addr,
             rules: [
               { message: this.$t('common.tips.select', ['IP']), validator: validateIp },
             ],
           },
+        ],
+        require_ipv6: [
+          'require_ipv6',
         ],
         restartNetwork: [
           'restartNetwork',
@@ -145,6 +156,9 @@ export default {
       }
       return ''
     },
+    isSupportIPv6 () {
+      return !!this.form.fi.network.guest_ip6_start && !!this.form.fi.network.guest_ip6_end
+    },
   },
   methods: {
     ipChange (e) {
@@ -153,11 +167,18 @@ export default {
     async handleConfirm () {
       this.loading = true
       let manager = new this.$Manager('servers')
+      const values = await this.form.fc.validateFields()
+      let netDesc = `${values.network}`
+      if (values.ip) {
+        netDesc += ':' + values.ip
+      }
+      if (values.require_ipv6) {
+        netDesc += ':[ipv6]'
+      }
       try {
-        const values = await this.form.fc.validateFields()
         const data = {
           ip_addr: this.params.data[0].ip_addr,
-          net_desc: values.ip ? `${values.network}:${values.ip}` : values.network,
+          net_desc: netDesc,
           restart_network: values.restartNetwork,
         }
         await manager.performAction({

@@ -4,7 +4,11 @@
     :value="value"
     :options="options"
     @change="change"
-    :select-props="{loading: loading, placeholder: $t('common.tips.select', ['IP'])}" />
+    :select-props="{
+      allowClear: true,
+      loading: loading,
+      placeholder: $t('common.tips.select', ['IP']),
+    }" />
   <a-input v-else :value="value" @change="ipChange" />
 </template>
 
@@ -47,7 +51,7 @@ export default {
   methods: {
     async fetchIps (val) {
       const { ports = 0 } = this.network
-      if (ports > 1000) {
+      if (ports > 1024) {
         this.showType = 'input'
         this.$emit('change', null)
         return
@@ -67,8 +71,13 @@ export default {
             name: ip,
           }
         })
+        console.log('initial value ', this.value, addresses)
         if (!addresses.includes(this.value)) {
-          this.$emit('change', null)
+          this.options.unshift({
+            ip: this.value,
+            name: this.value,
+          })
+          // this.$emit('change', null)
         }
         this.showType = 'select'
         this.loading = false

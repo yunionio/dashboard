@@ -76,12 +76,28 @@ export default {
         {
           field: 'ip',
           title: this.$t('network.text_213'),
-          width: 160,
+          width: 180,
           slots: {
             default: ({ row }) => {
               return [
-                <div>{ this.$t('network.text_725', [row.guest_ip_start])}</div>,
-                <div>{ this.$t('network.text_726', [row.guest_ip_end])}</div>,
+                <div>{ this.$t('network.ip.start', [row.guest_ip_start, row.guest_ip_mask])}</div>,
+                <div>{ this.$t('network.ip.end', [row.guest_ip_end, row.guest_ip_mask])}</div>,
+              ]
+            },
+          },
+        },
+        {
+          field: 'ip6',
+          title: this.$t('network.ipv6.address'),
+          width: 180,
+          slots: {
+            default: ({ row }) => {
+              if (!row.guest_ip6_start || !row.guest_ip6_end) {
+                return '-'
+              }
+              return [
+                <div>{ this.$t('network.ip.start', [row.guest_ip6_start, row.guest_ip6_mask])}</div>,
+                <div>{ this.$t('network.ip.end', [row.guest_ip6_end, row.guest_ip6_mask])}</div>,
               ]
             },
           },

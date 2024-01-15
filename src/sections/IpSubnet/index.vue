@@ -22,6 +22,25 @@
     <a-form-item class="ml-2">
       <a-input :addon-before="$t('network.text_610')" v-decorator="decorator.gateway" :placeholder="$t('common_163')" />
     </a-form-item>
+    <a-form-item :class="{'ml-2': decorator.name}">
+      <a-input :addon-before="$t('network.ipv6.ip_start.label')" v-decorator="decorator.startip6" :placeholder="$t('network.ipv6.ip_start.label')" />
+    </a-form-item>
+    <a-form-item class="ml-2">
+      <a-input :addon-before="$t('network.ipv6.ip_end.label')" v-decorator="decorator.endip6" :placeholder="$t('network.ipv6.ip_end.label')" />
+    </a-form-item>
+    <a-form-item class="ml-2" style="width: 110px;">
+      <a-select v-decorator="decorator.netmask6" :placeholder="$t('network.ipv6.ip_mask.label')" dropdownClassName="oc-select-dropdown">
+        <a-select-option
+          v-for="item of net6MaskOptions"
+          :key="item.key"
+          :value="item.key">
+          <span class="text-color-secondary option-prefix">{{$t('common_600')}}: </span>{{item.label}}
+        </a-select-option>
+      </a-select>
+    </a-form-item>
+    <a-form-item class="ml-2">
+      <a-input :addon-before="$t('network.ipv6.gateway.label')" v-decorator="decorator.gateway6" :placeholder="$t('network.ipv6.gateway.label')" />
+    </a-form-item>
     <a-form-item class="ml-2" style="width: 180px;">
       <a-input addon-before="VLAN ID" v-decorator="decorator.vlan" placeholder="VLAN ID" />
     </a-form-item>
@@ -36,7 +55,7 @@ export default {
       type: Object,
       required: true,
       validator: val => {
-        const fields = ['startip', 'endip', 'netmask', 'gateway', 'vlan']
+        const fields = ['startip', 'endip', 'netmask', 'gateway', 'startip6', 'endip6', 'netmask6', 'gateway6', 'vlan']
         return fields.every(item => val.hasOwnProperty(item))
       },
     },
@@ -59,6 +78,9 @@ export default {
         { label: '28', key: '28' },
         { label: '29', key: '29' },
         { label: '30', key: '30' },
+      ],
+      net6MaskOptions: [
+        { label: '64', key: '64' },
       ],
     }
   },
