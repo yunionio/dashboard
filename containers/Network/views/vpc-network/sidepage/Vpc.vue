@@ -50,7 +50,7 @@ export default {
             },
           },
           cidr_block: {
-            label: this.$t('network.text_244'),
+            label: this.$t('network.vpc.cidr_block.ipv4.label'),
           },
           region: getRegionFilter(),
           cloudaccount: getAccountFilter(),
@@ -65,7 +65,7 @@ export default {
         }),
         getCopyWithContentTableColumn({
           field: 'cidr_block',
-          title: this.$t('network.text_244'),
+          title: this.$t('network.vpc.cidr_block.ipv4.label'),
           sortable: true,
         }),
         getRegionTableColumn(),

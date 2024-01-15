@@ -90,19 +90,29 @@ export default {
           },
           {
             field: 'guest_ip_start',
-            title: this.$t('network.text_653'),
+            title: this.$t('network.ipv4.range'),
             formatter: ({ cellValue, row }) => {
-              return `${cellValue}-${row.guest_ip_end}`
+              return `${cellValue} - ${row.guest_ip_end}/${row.guest_ip_mask}`
             },
           },
-          {
-            field: 'guest_ip_mask',
-            title: this.$t('network.text_609'),
-          },
-          {
+          getCopyWithContentTableColumn({
             field: 'guest_gateway',
-            title: this.$t('network.text_654'),
+            title: this.$t('network.ipv4.gateway'),
+          }),
+          {
+            field: 'guest_ip6_start',
+            title: this.$t('network.ipv6.range'),
+            formatter: ({ cellValue, row }) => {
+              if (!row.guest_ip6_start || !row.guest_ip6_end) {
+                return '-'
+              }
+              return `${cellValue} - ${row.guest_ip6_end}/${row.guest_ip6_mask}`
+            },
           },
+          getCopyWithContentTableColumn({
+            field: 'guest_gateway6',
+            title: this.$t('network.ipv6.gateway'),
+          }),
           {
             field: 'vlan_id',
             title: 'VLAN ID',

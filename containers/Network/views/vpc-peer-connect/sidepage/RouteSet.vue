@@ -83,7 +83,7 @@ export default {
       columns: [
         getCopyWithContentTableColumn({
           field: 'cidr',
-          title: this.$t('network.text_244'),
+          title: this.$t('network.vpc.cidr_block.ipv4.label'),
           sortable: true,
         }),
         getStatusTableColumn({ statusModule: 'routeSet' }),

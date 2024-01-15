@@ -509,6 +509,13 @@ export const createVmDecorators = type => {
             ],
           },
         ],
+        ipv6s: (i, networkData) => [
+          `networkIPv6s[${i}]`,
+          {
+            validateFirst: true,
+            validateTrigger: ['blur', 'change'],
+          },
+        ],
         devices: i => [
           `networkDevices[${i}]`,
           {
@@ -1102,6 +1109,12 @@ export class GenCreateData {
           const exit = this.fd.networkExits[key]
           if (exit) {
             obj.exit = true
+          }
+        }
+        if (this.fd.networkIPv6s) {
+          const ipv6 = this.fd.networkIPv6s[key]
+          if (ipv6) {
+            obj.require_ipv6 = true
           }
         }
         if (this.fd.networkDevices) {

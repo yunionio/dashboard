@@ -86,6 +86,11 @@
           </template>
           <a-button v-else type="link" class="mr-1 mt-1" @click="triggerShowDevice(item)">{{ $t('compute.config_transparent_net') }}</a-button>
         </template>
+        <template v-if="isSupportIPv6(item)">
+          <a-form-item class="mb-0" :wrapperCol="{ span: 24 }">
+            <a-checkbox v-decorator="decorator.ipv6s(item.key, item.network)">{{ $t('compute.server_create.require_ipv6') }}</a-checkbox>
+          </a-form-item>
+        </template>
         <a-button shape="circle" icon="minus" size="small" v-if="i !== 0" @click="decrease(item.key, i)" class="mt-2" />
       </div>
     </div>
@@ -251,9 +256,13 @@ export default {
       return { key: v.id, label: this.vpcLabelFormat(v), disabled: v.network_count === 0, ...v }
     },
     networkFormatter (v) {
+      let addrLabel = `${v.guest_ip_start} - ${v.guest_ip_end}/${v.guest_ip_mask}`
+      if (v.guest_ip6_start && v.guest_ip6_end) {
+        addrLabel += `,${v.guest_ip6_start} - ${v.guest_ip6_end}/${v.guest_ip6_mask}`
+      }
       return {
         key: v.id,
-        label: `${v.name}(${v.guest_ip_start} - ${v.guest_ip_end}, vlan=${v.vlan_id})`,
+        label: `${v.name}(${addrLabel}, vlan=${v.vlan_id})`,
         rightLabel: `${this.$t('common.text00001')}: ${v.ports - v.ports_used}`,
         disabled: v.ports <= v.ports_used,
         ...v,
@@ -401,6 +410,9 @@ export default {
     },
     onResize () {
       this.screenWidth = document.body.clientWidth
+    },
+    isSupportIPv6 (item) {
+      return !!item.network.guest_ip6_start && !!item.network.guest_ip6_end
     },
   },
 }

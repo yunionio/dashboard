@@ -41,6 +41,22 @@
         <a-form-item :label="$t('network.text_610')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.guest_gateway" :disabled="!isClassicNetwork" />
         </a-form-item>
+        <a-form-item :label="$t('network.ipv6.ip_start.label')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.guest_ip6_start" :disabled="!isClassicNetwork" />
+        </a-form-item>
+        <a-form-item :label="$t('network.ipv6.ip_end.label')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.guest_ip6_end" :disabled="!isClassicNetwork" />
+        </a-form-item>
+        <a-form-item :label="$t('network.ipv6.ip_mask.label')" v-bind="formItemLayout">
+          <a-select v-decorator="decorators.guest_ip6_mask" :disabled="!isClassicNetwork">
+            <a-select-option v-for="item in net6MaskOptions" :key="item.value" :value="item.value">
+              {{item.label}}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item :label="$t('network.ipv6.gateway.label')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.guest_gateway6" :disabled="!isClassicNetwork" />
+        </a-form-item>
         <a-form-item label="VLAN ID" v-bind="formItemLayout">
           <a-input v-decorator="decorators.vlan_id" :disabled="!isClassicNetwork" />
         </a-form-item>
@@ -173,6 +189,43 @@ export default {
             ],
           },
         ],
+        guest_ip6_start: [
+          'guest_ip6_start',
+          {
+            validateTrigger: ['change', 'blur'],
+            validateFirst: true,
+            rules: [
+              { validator: this.$validate('IPv6', false) },
+            ],
+          },
+        ],
+        guest_ip6_end: [
+          'guest_ip6_end',
+          {
+            validateTrigger: ['change', 'blur'],
+            validateFirst: true,
+            rules: [
+              { validator: this.$validate('IPv6', false) },
+            ],
+          },
+        ],
+        guest_ip6_mask: [
+          'guest_ip6_mask',
+          {
+            initialValue: '64',
+          },
+        ],
+        guest_gateway6: [
+          'guest_gateway6',
+          {
+            validateTrigger: ['change', 'blur'],
+            validateFirst: true,
+            rules: [
+              { validator: this.$validate('IPv6', false) },
+              { validator: this.validateGateway6 },
+            ],
+          },
+        ],
         vlan_id: [
           'vlan_id',
         ],
@@ -257,6 +310,9 @@ export default {
         { label: '29', value: '29' },
         { label: '30', value: '30' },
       ],
+      net6MaskOptions: [
+        { label: '64', value: '64' },
+      ],
       wire_id: '',
       cloudEnv: '',
       vpcId: '',
@@ -299,6 +355,10 @@ export default {
         guest_ip_end: data.guest_ip_end,
         guest_ip_mask: data.guest_ip_mask,
         guest_gateway: data.guest_gateway,
+        guest_ip6_start: data.guest_ip6_start,
+        guest_ip6_end: data.guest_ip6_end,
+        guest_ip6_mask: data.guest_ip6_mask,
+        guest_gateway6: data.guest_gateway6,
         vlan_id: data.vlan_id || '',
         alloc_policy: data.alloc_policy,
         guest_dns: data.guest_dns || '',
@@ -317,6 +377,18 @@ export default {
       }
       // 只需要查看是否是以 0 结尾
       const ipItems = value.split('.')
+      if (ipItems[ipItems.length - 1] === '0') {
+        callback(new Error(this.$t('network.text_591')))
+      } else {
+        callback()
+      }
+    },
+    validateGateway6 (rule, value, callback) {
+      if (!value) {
+        return callback()
+      }
+      // 只需要查看是否是以 0 结尾
+      const ipItems = value.split(':')
       if (ipItems[ipItems.length - 1] === '0') {
         callback(new Error(this.$t('network.text_591')))
       } else {
