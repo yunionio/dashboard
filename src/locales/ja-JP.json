@@ -22,10 +22,10 @@
       "false": "施行中"
     },
     "enabled": {
-      "true": "エネーブル",
-      "false": "無効にする",
-      "enable": "エネーブル",
-      "disable": "無効にする"
+      "true": "有効",
+      "false": "無効",
+      "enable": "有効",
+      "disable": "無効"
     },
     "host_status": {
       "online": "オンライン",
@@ -1854,7 +1854,7 @@
     "Ksyun": "キングソフトクラウド"
   },
   "shareScope": {
-    "system": "制",
+    "system": "システム",
     "domain": "@:dictionary.domain",
     "project": "@:dictionary.project",
     "none": "プライベート"
@@ -2883,7 +2883,7 @@
       "save": "セーブ",
       "cacel": "キャンセル",
       "delete": "削除",
-      "modify": "改める",
+      "modify": "修正",
       "set_tag": "ラベルを編集する",
       "clone": "クローン",
       "smal_login": "パスワードなしのログイン",
@@ -2902,7 +2902,7 @@
     }
   },
   "common": {
-    "more": "もっとその",
+    "more": "more",
     "sendState": "メッセージの状態",
     "batchAction": "一括操作",
     "action": "操作",
@@ -2922,7 +2922,7 @@
     "status": "状態",
     "description": "所見",
     "info": "基本情報",
-    "edit": "改める",
+    "edit": "修正",
     "success": "操作は成功しました",
     "failed": "操作に失敗しました",
     "loding": "積載",
@@ -3369,7 +3369,7 @@
   "scope.text_231": "現在ログイン中{0}",
   "scope.text_232": "{0}の管理",
   "scope.text_233": "メッセージ受信設定",
-  "scope.text_234": "改める",
+  "scope.text_234": "修正",
   "scope.text_235": "携帯電話番号:",
   "scope.text_236": "メールボックス：",
   "scope.text_237": "メッセージ通知の受信:",
@@ -3765,7 +3765,7 @@
   "scope.text_631": "認定に失敗しました",
   "scope.text_632": "認定されていません",
   "scope.text_633": "不明",
-  "scope.text_634": "改める",
+  "scope.text_634": "修正",
   "scope.text_635": "今すぐ認定資格を取得する",
   "scope.text_636": "アカウントにサインアップする",
   "scope.text_637": "登録者の電話番号",
@@ -4089,7 +4089,7 @@
   "scope.text_961": "セキュリティ アラート",
   "common.text00001": "利用できる",
   "common.text00002": "選択した",
-  "common.text00003": "切れ",
+  "common.text00003": "件",
   "common.text00004": "",
   "common.text00005": "します、よろしいでしょうか?",
   "common.text00006": "例",
