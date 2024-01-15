@@ -38,6 +38,21 @@
             :flexFill="!showTagFilter2"
             @tag-filter-change="(tagFilter) => $emit('tag-filter-change', tagFilter)" />
         </template>
+        <!-- 资源标签过滤器 -->
+        <template v-if="showTagFilter3">
+          <tag-filter
+            :resource="tagFilterResource3 || resource"
+            :tag-manager-instance="tagManagerInstance3"
+            :tag-filter="tagFilter3"
+            :extTagParams="extTagParams3"
+            :show-ext-tags="showExtTags3"
+            :show-no-value="showNoValue3"
+            :button-text="$t('dictionary.instance_tag')"
+            :filter-with-user-meta="false"
+            :filter-without-user-meta="false"
+            :flexFill="!showTagFilter2"
+            @tag-filter-change="(tagFilter) => $emit('tag-filter-change3', tagFilter)" />
+        </template>
         <!-- 标签过滤器 -->
         <template v-if="showTagFilter2">
           <tag-filter
@@ -124,11 +139,14 @@ export default {
     // 提供给标签过滤器自定义获取标签数据的Manager实例
     tagManagerInstance: Object,
     tagManagerInstance2: Object,
+    tagManagerInstance3: Object,
     // 开启标签过滤
     showTagFilter: Boolean,
     showTagFilter2: Boolean,
+    showTagFilter3: Boolean,
     tagFilter: Object,
     tagFilter2: Object,
+    tagFilter3: Object,
     // create list传递的resource
     resource: [String, Object, Function],
     showSearchbox: Boolean,
@@ -146,6 +164,7 @@ export default {
     // 开启标签列
     showTagColumns: Boolean,
     showTagColumns2: Boolean,
+    showTagColumns3: Boolean,
     getGrid: {
       type: Function,
       required: true,
@@ -192,7 +211,16 @@ export default {
         return {}
       },
     },
+    extTagParams3: {
+      type: Object,
+      default () {
+        return {}
+      },
+    },
     showExtTags2: {
+      type: Boolean,
+    },
+    showExtTags3: {
       type: Boolean,
     },
     showTagConfig: Boolean,
@@ -200,7 +228,9 @@ export default {
     treeToggleOpen: Boolean,
     showNoValue: Boolean,
     showNoValue2: Boolean,
+    showNoValue3: Boolean,
     tagFilterResource2: String,
+    tagFilterResource3: String,
   },
   computed: {
     _filterOptions () {
@@ -259,6 +289,7 @@ export default {
         resource: this.resource,
         showTagColumns: this.showTagColumns,
         showTagColumns2: this.showTagColumns2,
+        showTagColumns3: this.showTagColumns3,
         callback: this.exportDataOptions.callback,
       })
     },
@@ -278,6 +309,7 @@ export default {
         update: this.updateConfig,
         showTagColumns: this.showTagColumns,
         showTagColumns2: this.showTagColumns2,
+        showTagColumns3: this.showTagColumns3,
         customs: grid.getTableColumn().collectColumn,
         resource: this.resource,
         hidenColumns,
