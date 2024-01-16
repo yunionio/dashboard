@@ -21,6 +21,9 @@ const TIME_SIZE = {
   month: 'day', // 近一个月的时间粒度为1天
   year: 'month', // 近一年的时间密粒度1个月
   last_month: 'day',
+  month_before_last_month: 'day',
+  last_6_month: 'month',
+  last_12_month: 'month',
   quarter: 'month',
   last_quarter: 'month',
   half_year: 'month',
@@ -53,8 +56,9 @@ export default {
       default: () => [
         { key: 'month', label: i18n.t('common.date_time.month') },
         { key: 'last_month', label: i18n.t('common.date_time.last_month') },
-        { key: 'quarter', label: i18n.t('common.date_time.quarter') },
-        { key: 'last_quarter', label: i18n.t('common.date_time.last_quarter') },
+        { key: 'month_before_last_month', label: i18n.t('common.date_time.month_before_last_month') },
+        { key: 'last_6_month', label: i18n.t('common.date_time.last_6_month') },
+        { key: 'last_12_month', label: i18n.t('common.date_time.last_12_month') },
         { key: 'year', label: i18n.t('common.date_time.year') },
       ],
     },
@@ -149,7 +153,7 @@ export default {
     }
   },
   methods: {
-    handleDateModeChange () {
+    handleDateModeChange ({ ignoreEmitDataType = false } = {}) {
       let start = this.$moment()
       let end = this.$moment()
       if (this.time.dateMode === 'week') {
@@ -161,6 +165,15 @@ export default {
         start = this.$moment().startOf('month')
       } else if (this.time.dateMode === 'last_month') {
         start = this.$moment().subtract(1, 'month').startOf('month')
+        end = this.$moment().subtract(1, 'month').endOf('month')
+      } else if (this.time.dateMode === 'month_before_last_month') {
+        start = this.$moment().subtract(2, 'month').startOf('month')
+        end = this.$moment().subtract(2, 'month').endOf('month')
+      } else if (this.time.dateMode === 'last_6_month') {
+        start = this.$moment().subtract(6, 'month').startOf('month')
+        end = this.$moment().subtract(1, 'month').endOf('month')
+      } else if (this.time.dateMode === 'last_12_month') {
+        start = this.$moment().subtract(12, 'month').startOf('month')
         end = this.$moment().subtract(1, 'month').endOf('month')
       } else if (this.time.dateMode === 'quarter') {
         start = this.$moment().startOf('quarter')
@@ -192,7 +205,7 @@ export default {
           else data_type = 'month'
           params.data_type = data_type
         }
-        this.$emit('update:dateType', params.data_type)
+        this.$emit('update:dataType', params.data_type)
       }
       this.$emit('update:getParams', params)
       this.$emit('update:dateMode', this.time.dateMode)
