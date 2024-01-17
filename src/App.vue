@@ -17,6 +17,7 @@ import * as R from 'ramda'
 import { mapGetters, mapState } from 'vuex'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import enUS from 'ant-design-vue/es/locale/en_US'
+import jaJP from 'ant-design-vue/es/locale/ja_JP'
 import DefaultLayout from '@/layouts/Default'
 import FullScreenLayout from '@/layouts/FullScreen'
 import DialogManager from '@/sections/DialogManager'
@@ -36,6 +37,7 @@ import {
 const antdLocales = {
   'zh-CN': zhCN,
   en: enUS,
+  'ja-JP': jaJP,
 }
 
 export default {
