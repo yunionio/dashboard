@@ -131,7 +131,9 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const dnsTypes = getDnsTypes(this.params.detailData)
+    const dnsTypes = getDnsTypes(this.params.detailData).filter((item) => {
+      return item.value !== 'PTR'
+    })
     const dnsProviders = getDnsProviders(providers, this.params.detailData)
     const ttls = getTtls(this.params.detailData)
     const initPolicyType = this.params.data ? this.params.data[0]?.policy_type || 'Simple' : 'Simple'
