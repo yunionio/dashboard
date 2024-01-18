@@ -39,7 +39,7 @@
             @tag-filter-change="(tagFilter) => $emit('tag-filter-change', tagFilter)" />
         </template>
         <!-- 资源标签过滤器 -->
-        <template v-if="showTagFilter3">
+        <template v-if="!$isScopedPolicyMenuHidden('fee_hidden_items.instance_tag') && showTagFilter3">
           <tag-filter
             :resource="tagFilterResource3 || resource"
             :tag-manager-instance="tagManagerInstance3"
