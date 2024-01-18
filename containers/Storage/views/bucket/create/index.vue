@@ -271,7 +271,7 @@ export default {
       }
     },
     cloudregionParamsMapper (params) {
-      const p = { ...params }
+      const p = { ...params, capability: 'objectstore' }
       delete p.usable
       return p
     },
