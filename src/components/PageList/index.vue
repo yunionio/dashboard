@@ -29,6 +29,7 @@
       :config="config"
       :show-tag-columns="showTagColumns"
       :show-tag-columns2="showTagColumns2"
+      :show-tag-columns3="showTagColumns3"
       :get-grid="getGrid"
       :total="total"
       :selected="selected"
@@ -39,16 +40,20 @@
       :before-show-menu-loaded="beforeShowMenuLoaded"
       :extTagParams="extTagParams"
       :extTagParams2="extTagParams2"
+      :extTagParams3="extTagParams3"
       :show-ext-tags="showExtTags"
       :show-tag-config="showTagConfigCheck"
       :tag-config-params="tagConfigParams"
       :treeToggleOpen="treeToggleOpen"
       :show-no-value="showNoValue"
       :tagFilterResource2="tagFilterResource2"
+      :tagFilterResource3="tagFilterResource3"
+      :tagBtnText="tagBtnText"
       @refresh="refresh"
       @clear-selected="clearSelected"
       @tag-filter-change="tagFilterChange"
       @tag-filter-change2="tagFilterChange2"
+      @tag-filter-change3="tagFilterChange3"
       @filter-change="filterChange"
       @treeToggleClick="treeToggleClick">
       <slot name="group-actions-prepend" slot="group-actions-prepend" />
@@ -234,6 +239,12 @@ export default {
         return {}
       },
     },
+    extTagParams3: {
+      type: Object,
+      default () {
+        return {}
+      },
+    },
     showExtTags: {
       type: Boolean,
       default: false,
@@ -258,15 +269,13 @@ export default {
       type: Boolean,
       default: true,
     },
-    showNoValue2: {
-      type: Boolean,
-      default: true,
-    },
     enableVirtualScroll: {
       type: Boolean,
       default: false,
     },
     tagFilterResource2: String,
+    tagFilterResource3: String,
+    tagBtnText: String,
   },
   provide: {
     // 声明在List中
@@ -309,6 +318,9 @@ export default {
     },
     tagFilter2 () {
       return this.list.tagFilter2
+    },
+    tagFilter3 () {
+      return this.list.tagFilter3
     },
     filterOptions () {
       return this.list.filterOptions
@@ -387,6 +399,9 @@ export default {
     },
     tagFilterChange2 (tagFilter) {
       this.list.changeTagFilter2(tagFilter)
+    },
+    tagFilterChange3 (tagFilter) {
+      this.list.changeTagFilter3(tagFilter)
     },
     filterChange (filter) {
       this.list.changeFilter(filter)
