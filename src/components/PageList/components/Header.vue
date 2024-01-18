@@ -35,6 +35,7 @@
             :extTagParams="extTagParams"
             :show-ext-tags="showExtTags"
             :show-no-value="showNoValue"
+            :button-text="tagBtnText || $t('common.text00012')"
             :flexFill="!showTagFilter2"
             @tag-filter-change="(tagFilter) => $emit('tag-filter-change', tagFilter)" />
         </template>
@@ -231,6 +232,7 @@ export default {
     showNoValue3: Boolean,
     tagFilterResource2: String,
     tagFilterResource3: String,
+    tagBtnText: String,
   },
   computed: {
     _filterOptions () {
