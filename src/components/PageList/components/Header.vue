@@ -49,8 +49,8 @@
             :show-ext-tags="showExtTags3"
             :show-no-value="showNoValue3"
             :button-text="$t('dictionary.instance_tag')"
-            :filter-with-user-meta="false"
-            :filter-without-user-meta="false"
+            :filter-with-user-meta="true"
+            :filter-without-user-meta="true"
             :flexFill="!showTagFilter2"
             @tag-filter-change="(tagFilter) => $emit('tag-filter-change3', tagFilter)" />
         </template>
@@ -64,8 +64,8 @@
             :show-ext-tags="showExtTags2"
             :show-no-value="showNoValue2"
             :button-text="$t('dictionary.project_tag')"
-            :filter-with-user-meta="false"
-            :filter-without-user-meta="false"
+            :filter-with-user-meta="true"
+            :filter-without-user-meta="true"
             @tag-filter-change="(tagFilter) => $emit('tag-filter-change2', tagFilter)" />
         </template>
       </div>
