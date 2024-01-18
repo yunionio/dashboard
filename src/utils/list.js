@@ -182,6 +182,7 @@ class CreateList {
       // 标签的过滤项
       tagFilter = {},
       tagFilter2 = {},
+      tagFilter3 = {},
       // 标签层级过滤项
       projectTagFilter = {},
       // 外传responseData
@@ -257,6 +258,7 @@ class CreateList {
     // 标签的过滤项
     this.tagFilter = tagFilter
     this.tagFilter2 = tagFilter2
+    this.tagFilter3 = tagFilter3
     this.projectTagFilter = projectTagFilter
     // 外传responseData
     this.responseData = responseData
@@ -552,7 +554,7 @@ class CreateList {
       ...params,
       ...this.genFilterParams(params),
     }
-    if ((!R.isEmpty(this.tagFilter) && !R.isNil(this.tagFilter)) || (!R.isEmpty(this.projectTagFilter) && !R.isNil(this.projectTagFilter)) || (!R.isEmpty(this.tagFilter2) && !R.isNil(this.tagFilter2))) {
+    if ((!R.isEmpty(this.tagFilter) && !R.isNil(this.tagFilter)) || (!R.isEmpty(this.projectTagFilter) && !R.isNil(this.projectTagFilter)) || (!R.isEmpty(this.tagFilter2) && !R.isNil(this.tagFilter2)) || (!R.isEmpty(this.tagFilter3) && !R.isNil(this.tagFilter3))) {
       params = {
         ...params,
         ...this.genTagFilterParams(params),
@@ -791,6 +793,17 @@ class CreateList {
    */
   changeTagFilter2 (tagFilter) {
     this.tagFilter2 = tagFilter
+    this.reset()
+    this.fetchData(0, 0)
+  }
+
+  /**
+ * @description 标签过滤条件变更
+ * @param {*} tagFilter
+ * @memberof CreateList
+ */
+  changeTagFilter3 (tagFilter) {
+    this.tagFilter3 = tagFilter
     this.reset()
     this.fetchData(0, 0)
   }
@@ -1046,6 +1059,27 @@ class CreateList {
         }
       }
     }, this.tagFilter2)
+
+    R.forEachObjIndexed((value, key) => {
+      if (key === 'without_user_meta' && value && value[0] === true) {
+        ret.without_user_meta = true
+      } else if (key === 'with_user_meta' && value && value[0] === true) {
+        ret.with_user_meta = true
+      } else {
+        ret[`instancetags.${index2}.key`] = []
+        let len = 1
+        if (value && value.length) len = value.length
+        if (len > 0) {
+          for (let i = 0; i < len; i++) {
+            ret[`instancetags.${index2}.key`] = key
+            ret[`instancetags.${index2}.value`] = value[i]
+            index2++
+          }
+        } else {
+          ret[`instancetags.${index2}.value`] = ''
+        }
+      }
+    }, this.tagFilter3)
 
     if (ret.with_user_meta && ret.without_user_meta) {
       delete ret.with_user_meta
