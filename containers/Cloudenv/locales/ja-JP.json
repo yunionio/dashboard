@@ -873,5 +873,7 @@
   "cloudenv.cycle_once": "一度同期する",
   "cloudenv.input_cycle_num": "周波数を入力してください",
   "cloudenv.each": "毎",
-  "cloudenv.syncing_account_disable_action": "同期中のクラウドアカウントではサポートされていません"
+  "cloudenv.syncing_account_disable_action": "同期中のクラウドアカウントではサポートされていません",
+  "cloudenv.operation_info_input": "運営側アカウント入力（リソース情報の同期）",
+  "cloudenv.operation_and_maintenance_info_input": "運次元側アカウント入力（運営側インタフェースには監視関連インタフェースがなく、監視関連は運次元側インタフェースを通じて同期）"
 }

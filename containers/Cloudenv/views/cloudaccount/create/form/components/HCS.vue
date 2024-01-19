@@ -7,6 +7,8 @@
       <a-form-item :label="$t('common.description')">
         <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
       </a-form-item>
+      <!-- hcs 信息 -->
+      <h2 class="mb-3">{{ $t('cloudenv.operation_info_input') }}</h2>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
         <div slot="extra">
@@ -19,6 +21,14 @@
       </a-form-item>
       <a-form-item :label="$t('cloudenv.cloudaccount.hcs.auth_url')">
         <a-input v-decorator="decorators.auth_url" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.hcs.auth_url')])" />
+      </a-form-item>
+      <!-- hcsop 信息 -->
+      <h2 class="mb-3">{{ $t('cloudenv.operation_and_maintenance_info_input') }}</h2>
+      <a-form-item :label="$t('cloudenv.text_94')">
+        <a-input v-decorator="decorators.options.account" :placeholder="$t('common.tips.input', [$t('cloudenv.text_94')])" />
+      </a-form-item>
+      <a-form-item :label="$t('cloudenv.text_147')">
+        <a-input-password v-decorator="decorators.options.password" :placeholder="$t('common.tips.input', [$t('cloudenv.text_147')])" />
       </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <blocked-resources :decorators="{ isOpenBlockedResources: decorators.isOpenBlockedResources, blockedResources: decorators.blockedResources }" />
@@ -115,6 +125,10 @@ export default {
             ],
           },
         ],
+        options: {
+          account: ['options.account'],
+          password: ['options.password'],
+        },
       }
       return decorators
     },

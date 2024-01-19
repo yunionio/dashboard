@@ -872,5 +872,7 @@
   "cloudenv.cycle_once": "sync once",
   "cloudenv.input_cycle_num": "Please input frequency",
   "cloudenv.each": "Each",
-  "cloudenv.syncing_account_disable_action": "The cloud account in synchronization does not support this operation"
+  "cloudenv.syncing_account_disable_action": "The cloud account in synchronization does not support this operation",
+  "cloudenv.operation_info_input": "Operation side account entry (synchronizing resource information)",
+  "cloudenv.operation_and_maintenance_info_input": "Operation and maintenance account entry (there is no monitoring related interface on the operation side interface, and monitoring related information is synchronized through the operation and maintenance interface)"
 }
