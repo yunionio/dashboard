@@ -1356,6 +1356,14 @@ export class GenCreateData {
     return ret
   }
 
+  getPreferManagerId () {
+    let prefer_manager_id = ''
+    if (this.isPublic) {
+      prefer_manager_id = this.fd.cloudprovider
+    }
+    return prefer_manager_id
+  }
+
   /**
    * 组装所有的创建数据
    *
@@ -1442,6 +1450,10 @@ export class GenCreateData {
     const zoneId = this.getPreferZone()
     if (zoneId) {
       data.prefer_zone = zoneId
+    }
+    const prefer_manager_id = this.getPreferManagerId()
+    if (prefer_manager_id) {
+      data.prefer_manager_id = prefer_manager_id
     }
     // 只有kvm支持启动方式, VDI, VGA, Machine
     if (this.fd.hypervisor === HYPERVISORS_MAP.kvm.key) {
