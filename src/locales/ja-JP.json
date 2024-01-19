@@ -2658,7 +2658,7 @@
     "receiver": "受信者",
     "dns_zone": "DNS 解決",
     "dnszone": "DNS 解決",
-    "system": "システム構成",
+    "system": "システム設定",
     "costalerts": "リソース消費の警告",
     "dns_recordsets": "DNS 解決 - レコード",
     "dns_zonecaches": "DNS 解決 - キャッシュ",
