@@ -15,7 +15,6 @@ export const HYPERVISORS = [
   { key: 'apsara', label: i18n.t('scopeCloudPrvidersMap.Apsara'), provider: 'Apsara', brand: 'Apsara', host_type: 'apsara', hypervisor: 'apsara', env: 'private', cloud_env: 'private' },
   { key: 'cloudpods', label: i18n.t('scopeCloudPrvidersMap.Cloudpods'), provider: 'Cloudpods', brand: 'Cloudpods', host_type: 'cloudpods', hypervisor: 'cloudpods', env: 'private', cloud_env: 'private' },
   { key: 'hcso', label: i18n.t('cloudPrvidersMap.HCSO'), provider: 'HCSO', brand: 'HCSO', host_type: 'hcso', hypervisor: 'hcso', env: 'private', cloud_env: 'private' },
-  { key: 'hcsop', label: i18n.t('cloudPrvidersMap.HCSOP'), provider: 'HCSOP', brand: 'HCSOP', host_type: 'hcsop', hypervisor: 'hcsop', env: 'private', cloud_env: 'private' },
   { key: 'hcs', label: i18n.t('cloudPrvidersMap.HCS'), provider: 'HCS', brand: 'HCS', host_type: 'hcs', hypervisor: 'hcs', env: 'private', cloud_env: 'private' },
   { key: 'nutanix', label: i18n.t('scopeCloudPrvidersMap.Nutanix'), provider: 'Nutanix', brand: 'Nutanix', host_type: 'nutanix', hypervisor: 'nutanix', env: 'private', cloud_env: 'private' },
   { key: 'bingocloud', label: i18n.t('scopeCloudPrvidersMap.BingoCloud'), provider: 'BingoCloud', brand: 'BingoCloud', host_type: 'bingocloud', hypervisor: 'bingocloud', env: 'private', cloud_env: 'private' },
