@@ -11,7 +11,7 @@ export const IMAGES_TYPE_MAP = {
   snapshot: { key: 'snapshot', label: i18n.t('dictionary.instance_snapshot'), t: 'dictionary.instance_snapshot', tooltip: i18n.t('common.instance_snapshot.tooltip') },
   backup: { key: 'backup', label: i18n.t('dictionary.instancebackup'), t: 'dictionary.instancebackup', tooltip: i18n.t('dictionary.instancebackup') },
   public: { key: 'public', label: i18n.t('common.text00025'), tooltip: i18n.t('common.text00026') },
-  public_customize: { key: 'public_customize', label: i18n.t('common.public_cloud_customized_image'), tooltip: i18n.t('common.text00028'), enable_cloudaccount: true },
+  public_customize: { key: 'public_customize', label: i18n.t('common.public_cloud_customized_image'), tooltip: i18n.t('common.text00028'), enable_cloudaccount: false },
   private: { key: 'private', label: i18n.t('common.text00029'), tooltip: i18n.t('common.text00030'), enable_cloudaccount: true },
   vmware: { key: 'vmware', label: i18n.t('common.text00031'), tooltip: i18n.t('common.text00032'), enable_cloudaccount: true },
   private_iso: { key: 'private_iso', label: i18n.t('common.private_iso'), tooltip: i18n.t('common.private_iso_tip'), enable_cloudaccount: true },
