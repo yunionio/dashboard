@@ -474,8 +474,7 @@ export default {
         brand: this.form.fd.provider,
         cloudregion: this.form.fd.cloudregion,
         enabled: true,
-        'filter.0': 'status.equals(\'connected\')',
-        'filter.1': 'health_status.equals(\'normal\')',
+        filter: 'status.equals(\'connected\')',
         ...this.scopeParams,
       }
       if (this.form.fd.zone) {
