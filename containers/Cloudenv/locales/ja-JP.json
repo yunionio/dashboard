@@ -673,7 +673,6 @@
   "cloudenv.cloudaccount.hcso.default_subnet_dns.tips": "最大 2 つの DNS サーバーを指定し、英語の ',' で区切ります。 例: 10.125.0.26、10.125.0.27",
   "cloudenv.cloudaccount.hcso.endpoint_domain.tips": "例としてアドレス iam.cn-north-1.cloudpods.com を取り上げます。 その中で、「iam」は統一ID認証サービス、「cn-north-1」はエンドポイントエリア、「cloudpods.com」はエンドポイントドメイン名を指します",
   "cloudenv.cloudaccount.hcs.auth_url": "認証された住所",
-  "cloudenv.cloudaccount.hcsop.auth_url": "認証された住所",
   "cloudenv.text_572": "契約 ID とキー取得の参照",
   "cloudenv.text_573": "すべてのドメイン",
   "cloudenv.dentity_provider": "{0}#身份提供商",
