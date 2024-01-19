@@ -1260,7 +1260,9 @@ export class GenCreateData {
 
   getPreferManagerId () {
     let prefer_manager_id = ''
-    if (this.isPublic) {
+    const hypervisor = this.getHypervisor()
+    const privateHypervisors = [HYPERVISORS_MAP.hcso.key, HYPERVISORS_MAP.hcs.key]
+    if (this.isPublic || privateHypervisors.includes(hypervisor)) {
       prefer_manager_id = this.fd.cloudprovider
     }
     return prefer_manager_id
