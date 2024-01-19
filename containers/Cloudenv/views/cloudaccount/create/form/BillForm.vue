@@ -55,7 +55,7 @@
         <a-form-item :label="$t('cloudenv.billing_scope')" :extra="$t('cloudenv.billing_scope.extra')" v-if="billingType === 1">
           <a-radio-group v-decorator="decorators.billing_scope">
             <a-radio-button value="managed" key="managed">{{ $t('cloudenv.billing_scope.managed') }}</a-radio-button>
-            <a-radio-button value="all" key="all" :disabled="!isAws && !isAliyun">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>
+            <a-radio-button value="all" key="all" :disabled="!isAws && !isAliyun && !isVolcEngine">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <!-- google -->
@@ -160,8 +160,11 @@ export default {
     isAliyun () {
       return this.provider === 'Aliyun'
     },
+    isVolcEngine () {
+      return this.provider === 'VolcEngine'
+    },
     useBillingBucket () {
-      return this.provider === 'Aliyun' || this.provider === 'Aws' || this.provider === 'Huawei' || this.provider === 'Google'
+      return this.provider === 'Aliyun' || this.provider === 'Aws' || this.provider === 'Huawei' || this.provider === 'Google' || this.provider === 'VolcEngine'
     },
     brandCn () {
       const { brand } = this.cloudAccount
@@ -264,7 +267,7 @@ export default {
   },
   methods: {
     getDefaultBillingScope () {
-      if (this.isAliyun || this.isAzure || this.isAws) {
+      if (this.isAliyun || this.isAzure || this.isAws || this.isVolcEngine) {
         return 'all'
       } else {
         return 'managed'
