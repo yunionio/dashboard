@@ -874,5 +874,7 @@
   "cloudenv.cycle_once": "同步一次",
   "cloudenv.input_cycle_num": "请输入频率",
   "cloudenv.each": "每",
-  "cloudenv.syncing_account_disable_action": "同步中的云账号不支持此操作"
+  "cloudenv.syncing_account_disable_action": "同步中的云账号不支持此操作",
+  "cloudenv.operation_info_input": "运营侧账号录入（同步资源信息）",
+  "cloudenv.operation_and_maintenance_info_input": "运维侧账号录入（运营侧接口没有监控相关接口，监控相关通过运维侧接口同步）"
 }
