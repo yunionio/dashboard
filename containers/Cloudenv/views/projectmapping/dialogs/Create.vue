@@ -73,10 +73,10 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import Tag from '../components/Tag'
 import DomainSelect from '@/sections/DomainSelect'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import Tag from '../components/Tag'
 
 export default {
   name: 'ProjectMappingCreateDialog',
@@ -125,10 +125,10 @@ export default {
       },
       layout: {
         wrapperCol: {
-          span: 20,
+          span: 18,
         },
         labelCol: {
-          span: 4,
+          span: 6,
         },
       },
       offsetLayout: {
