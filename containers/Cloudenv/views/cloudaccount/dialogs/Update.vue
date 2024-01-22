@@ -22,6 +22,7 @@
           </a-form-item>
         </upload-json-file>
         <div v-else>
+          <h2 class="mt-3 mb-3" v-if="isHcs">{{ $t('cloudenv.operation_info_input') }}</h2>
           <a-form-item :label="field.label.k">
             <a-input v-decorator="decorators.keyId" :disabled="isVMware" :placeholder="field.placeholder.k" />
             <div slot="extra" class="d-flex">
@@ -66,6 +67,15 @@
               :value="item.key">{{ item.label }}</a-select-option>
           </a-select>
         </a-form-item>
+        <template v-if="isHcs">
+          <h2 class="mb-3">{{ $t('cloudenv.operation_and_maintenance_info_input') }}</h2>
+          <a-form-item :label="$t('cloudenv.text_94')">
+            <a-input v-decorator="decorators.options.account" :placeholder="$t('common.tips.input', [$t('cloudenv.text_94')])" />
+          </a-form-item>
+          <a-form-item :label="$t('cloudenv.text_147')">
+            <a-input-password v-decorator="decorators.options.password" :placeholder="$t('common.tips.input', [$t('cloudenv.text_147')])" />
+          </a-form-item>
+        </template>
       </a-form>
     </div>
     <div slot="footer">
@@ -78,12 +88,12 @@
 
 <script>
 import * as R from 'ramda'
-import { keySecretFields, getCloudaccountDocs } from '../constants'
 import UploadJsonFile from '@Cloudenv/views/cloudaccount/components/UploadJsonFile'
 import TestButton from '@/sections/TestButton'
 import { HYPERVISORS_MAP } from '@/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { keySecretFields, getCloudaccountDocs } from '../constants'
 
 export default {
   name: 'CloudaccountUpdateDialog',
@@ -171,6 +181,10 @@ export default {
             ],
           },
         ],
+        options: {
+          account: ['options.account'],
+          password: ['options.password'],
+        },
       },
       endpointTypeOpts: [
         { key: 'internal', label: 'internal' },
@@ -203,6 +217,9 @@ export default {
     },
     isVMware () {
       return this.provider === HYPERVISORS_MAP.esxi.provider.toLowerCase()
+    },
+    isHcs () {
+      return this.provider === HYPERVISORS_MAP.hcs.key
     },
     formItemLayout () {
       const ret = {
