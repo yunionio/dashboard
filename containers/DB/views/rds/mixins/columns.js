@@ -1,7 +1,7 @@
-import { DBINSTANCE_CATEGORY } from '../constants/index.js'
 import { sizestr } from '@/utils/utils'
 import { getProjectTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getBillingTableColumn, getTagTableColumn, getAccountTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import { DBINSTANCE_CATEGORY } from '../constants/index.js'
 
 export default {
   created () {
@@ -43,10 +43,8 @@ export default {
         field: 'category',
         title: i18n.t('db.text_61'),
         width: 100,
-        slots: {
-          default: ({ row }) => {
-            return DBINSTANCE_CATEGORY[row.category] || row.category || '-'
-          },
+        formatter: ({ row }) => {
+          return DBINSTANCE_CATEGORY[row.category] || row.category || '-'
         },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('rds_hidden_columns.category')
@@ -56,17 +54,15 @@ export default {
         field: 'vcpu_count',
         title: i18n.t('db.text_109'),
         width: 120,
-        slots: {
-          default: ({ row }) => {
-            if (!row.brand) return '-'
-            if (row.brand.toLowerCase() === 'qcloud') return i18n.t('db.text_349', [row.vcpu_count, sizestr(row.vmem_size_mb, 'M', 1024), row.disk_size_gb])
-            if (row.brand.toLowerCase() === 'azure') {
-              if (row.metadata && row.metadata['sys:DTU']) {
-                return row.metadata['sys:DTU'] + 'DTU'
-              }
+        formatter: ({ row }) => {
+          if (!row.brand) return '-'
+          if (row.brand.toLowerCase() === 'qcloud') return i18n.t('db.text_349', [row.vcpu_count, sizestr(row.vmem_size_mb, 'M', 1024), row.disk_size_gb])
+          if (row.brand.toLowerCase() === 'azure') {
+            if (row.metadata && row.metadata['sys:DTU']) {
+              return row.metadata['sys:DTU'] + 'DTU'
             }
-            return i18n.t('db.text_151', [row.vcpu_count, sizestr(row.vmem_size_mb, 'M', 1024)])
-          },
+          }
+          return i18n.t('db.text_151', [row.vcpu_count, sizestr(row.vmem_size_mb, 'M', 1024)])
         },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('rds_hidden_columns.vcpu_count')
@@ -76,10 +72,8 @@ export default {
         field: 'engine',
         title: i18n.t('db.text_57'),
         width: 100,
-        slots: {
-          default: ({ row }) => {
-            return `${row.engine} ${row.engine_version}`
-          },
+        formatter: ({ row }) => {
+          return `${row.engine} ${row.engine_version}`
         },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('rds_hidden_columns.engine')
@@ -124,6 +118,15 @@ export default {
             ]
           },
         },
+        formatter: ({ row }) => {
+          const pri = row.internal_connection_str
+          const pub = row.connection_str
+          const ip_addrs = (row.ip_addrs || '').split(',')
+          if (!pri && !pub) {
+            return '-'
+          }
+          return `${i18n.t('db.text_153') + ':' + pri},${i18n.t('db.text_154') + ':' + pub}, IP:${ip_addrs}`
+        },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('rds_hidden_columns.internal_connection_str')
         },
@@ -132,8 +135,8 @@ export default {
         title: i18n.t('db.text_64'),
         field: 'port',
         width: 120,
-        slots: {
-          default: ({ row }) => row.port || '-',
+        formatter: ({ row }) => {
+          return row.port || '-'
         },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('rds_hidden_columns.port')
@@ -182,6 +185,9 @@ export default {
             }
             return ret
           },
+        },
+        formatter: ({ row }) => {
+          return row.region
         },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('rds_hidden_columns.region')

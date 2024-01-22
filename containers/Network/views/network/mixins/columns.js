@@ -91,6 +91,9 @@ export default {
             ]
           },
         },
+        formatter: ({ row }) => {
+          return `${this.$t('network.ip.start', [row.guest_ip_start, row.guest_ip_mask])},${this.$t('network.ip.end', [row.guest_ip_end, row.guest_ip_mask])}`
+        },
         hidden: () => this.$isScopedPolicyMenuHidden('network_hidden_columns.ip'),
       },
       {
@@ -108,6 +111,12 @@ export default {
             ]
           },
         },
+        formatter: ({ row }) => {
+          if (!row.guest_ip6_start || !row.guest_ip6_end) {
+            return '-'
+          }
+          return `${this.$t('network.ip.start', [row.guest_ip6_start, row.guest_ip6_mask])},${this.$t('network.ip.end', [row.guest_ip6_end, row.guest_ip6_mask])}`
+        },
         hidden: () => this.$isScopedPolicyMenuHidden('network_hidden_columns.ip6'),
       },
       {
@@ -122,6 +131,9 @@ export default {
               <div class='text-truncate'>{ this.$t('network.text_728', [row.ports_used])}</div>,
             ]
           },
+        },
+        formatter: ({ row }) => {
+          return `${this.$t('network.text_727', [row.ports])},${this.$t('network.text_728', [row.ports_used])}`
         },
         hidden: () => this.$isScopedPolicyMenuHidden('network_hidden_columns.ports'),
       },
@@ -153,9 +165,16 @@ export default {
               return tags.map(tag => <a-tag class='mb-2' color='blue'>{tag.name}</a-tag>)
             }
             return [
-              <div class='text-color-help'>{ this.$t('network.text_729') }</div>,
+              <div class='text-color-help'>{this.$t('network.text_729')}</div>,
             ]
           },
+        },
+        formatter: ({ row }) => {
+          const tags = _.sortBy(row.schedtags, ['default', 'name'])
+          if (tags.length > 0) {
+            return tags.map(tag => tag.name).join(',')
+          }
+          return this.$t('network.text_729')
         },
         hidden: () => this.$isScopedPolicyMenuHidden('network_hidden_columns.schedtag'),
       },

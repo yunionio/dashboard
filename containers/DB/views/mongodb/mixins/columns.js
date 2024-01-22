@@ -52,6 +52,14 @@ export default {
             return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
           },
         },
+        formatter: ({ row }) => {
+          const ret = []
+          if (row.instance_type) {
+            ret.push(row.instance_type)
+          }
+          const config = row.vcpu_count + 'C' + sizestr(row.vmem_size_mb || 0, 'M', 1024) + sizestr(row.disk_size_mb || 0, 'M', 1024)
+          return ret.concat(config).join(',')
+        },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.instance_type')
         },
@@ -69,6 +77,13 @@ export default {
             return ret
           },
         },
+        formatter: ({ row }) => {
+          if (!row.ip_addr) return '-'
+          const ret = row.ip_addr.split(';').map(ip => {
+            return `${ip}:${row.port}`
+          })
+          return ret.join(',')
+        },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.ip_addr')
         },
@@ -84,6 +99,13 @@ export default {
             }
             return ret
           },
+        },
+        formatter: ({ row }) => {
+          let ret = `${row.engine} ${row.engine_version}`
+          if (row.disk_size_mb) {
+            ret += `,${sizestr(row.disk_size_mb, 'M', 1024)}`
+          }
+          return ret
         },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.engine_version')
