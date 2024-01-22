@@ -49,6 +49,18 @@ export default {
             return list
           },
         },
+        formatter: ({ row }) => {
+          let list = []
+          if (row.data_images && row.data_images.length > 0) {
+            list = row.data_images.map(val => (
+              val.name
+            ))
+          }
+          if (row.root_image?.name) {
+            list.push(row.root_image?.name)
+          }
+          return list.join(',')
+        },
       },
       {
         field: 'disk_format',
@@ -59,6 +71,9 @@ export default {
             if (!row.disk_format) return [<data-loading />]
             return row.disk_format.toUpperCase()
           },
+        },
+        formatter: ({ row }) => {
+          return (row.disk_format || '').toUpperCase()
         },
       },
       getOsArch(),
@@ -79,6 +94,13 @@ export default {
             ]
           },
         },
+        formatter: ({ row }) => {
+          let name = row.properties?.os_distribution ? decodeURI(row.properties?.os_distribution) : row.properties?.os_type || ''
+          if (name.includes('Windows') || name.includes('windows')) {
+            name = 'Windows'
+          }
+          return name
+        },
       },
       {
         field: 'size',
@@ -89,6 +111,9 @@ export default {
             if (this.isPreLoad && row.size === undefined) return [<data-loading />]
             return sizestr(row.size, 'B', 1024)
           },
+        },
+        formatter: ({ row }) => {
+          return sizestr(row.size, 'B', 1024)
         },
       },
       {

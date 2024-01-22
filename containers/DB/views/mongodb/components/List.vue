@@ -64,23 +64,6 @@ export default {
         responseData: this.responseData,
         autoHiddenFilterKey: 'mongodb_hidden_columns',
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('db.text_60'), key: 'name' },
-          { label: this.$t('db.text_152'), key: 'ip_addr' },
-          { label: this.$t('db.text_119'), key: 'category' },
-          { label: this.$t('db.text_109'), key: 'instance_type' },
-          { label: this.$t('db.text_57'), key: 'engine' },
-          { label: this.$t('db.text_377'), key: 'engine_version' },
-          { label: this.$t('db.text_67'), key: 'account' },
-          { label: this.$t('db.text_54'), key: 'billing_type' },
-          { label: this.$t('db.text_46'), key: 'status' },
-          { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: this.$t('db.text_51'), key: 'provider' },
-          { label: this.$t('db.text_40'), key: 'region' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('db.text_69'),
@@ -181,6 +164,16 @@ export default {
   computed: {
     showActions () {
       return !this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.perform_action')
+    },
+    exportDataOptions () {
+      return {
+        items: [
+          { label: 'ID', key: 'id' },
+          ...this.columns,
+        ],
+        title: this.$t('dictionary.mongodb'),
+        downloadType: 'local',
+      }
     },
   },
   created () {

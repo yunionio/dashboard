@@ -44,6 +44,9 @@ export default {
             ]
           },
         },
+        formatter: ({ row }) => {
+          return this.$te(`status.image.${row.status}`) ? this.$t(`status.image.${row.status}`) : row.status
+        },
       },
       getTagTableColumn({ onManager: this.onManager, resource: 'images', columns: () => this.columns }),
       {
@@ -85,6 +88,20 @@ export default {
               <SystemIcon tooltip={ tooltip } name={ name } />,
             ]
           },
+        },
+        formatter: ({ row }) => {
+          if (!row.properties) return
+          const dist = row.properties?.os_distribution || row.properties?.distro
+
+          let name = ''
+
+          name = dist || row.properties?.os_type || ''
+          if (name.includes('Windows') || name.includes('windows')) {
+            name = 'Windows'
+          } else if (name.includes('Linux') || name.includes('linux')) {
+            name = 'Linux'
+          }
+          return name
         },
       },
       {

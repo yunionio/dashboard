@@ -1,4 +1,3 @@
-import { ELK_STORAGE, ELK_CATEGORY } from '../constants/index.js'
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
@@ -11,6 +10,7 @@ import {
 } from '@/utils/common/tableColumn'
 
 import i18n from '@/locales'
+import { ELK_STORAGE, ELK_CATEGORY } from '../constants/index.js'
 
 export default {
   created () {
@@ -32,10 +32,8 @@ export default {
         field: 'category',
         title: i18n.t('middleware.category'),
         width: 100,
-        slots: {
-          default: ({ row }) => {
-            return ELK_CATEGORY[row.category] || row.category || '-'
-          },
+        formatter: ({ row }) => {
+          return ELK_CATEGORY[row.category] || row.category || '-'
         },
       },
       {
@@ -49,6 +47,9 @@ export default {
               <div>{row.instance_type || '-'}</div>
             </div>]
           },
+        },
+        formatter: ({ row }) => {
+          return `${i18n.t('middleware.config_size', [row.vcpu_count, row.vmem_size_gb])},row.instance_type || '-'`
         },
       },
       {
@@ -67,6 +68,9 @@ export default {
               <div>{i18n.t('middleware.size_gb', [row.disk_size_gb])}</div>
             </div>]
           },
+        },
+        formatter: ({ row }) => {
+          return `${ELK_STORAGE[row.storage_type] || row.storage_type || '-'},i18n.t('middleware.size_gb', [row.disk_size_gb])`
         },
       },
       getBillingTableColumn({ vm: this }),

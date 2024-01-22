@@ -81,26 +81,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('network.text_21'), key: 'name' },
-          { label: this.$t('network.text_27'), key: 'status' },
-          { label: this.$t('network.text_198'), key: 'provider' },
-          { label: this.$t('network.text_196'), key: 'manager' },
-          { label: this.$t('network.text_313'), key: 'created_at' },
-          { label: this.$t('network.cdn.service_type'), key: 'service_type' },
-          { label: this.$t('network.cdn.area'), key: 'area' },
-          {
-            label: this.$t('network.text_232'),
-            key: 'public_scope',
-            hidden: () => {
-              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('cdn_domains'))
-            },
-          },
-          { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('common.create'),
@@ -230,6 +210,16 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo']),
+    exportDataOptions () {
+      return {
+        items: [
+          { label: 'ID', key: 'id' },
+          ...this.columns,
+        ],
+        downloadType: 'local',
+        title: this.$t('dictionary.cdn_domain'),
+      }
+    },
   },
   created () {
     this.initSidePageTab('cdn-detail')

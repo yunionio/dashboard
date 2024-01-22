@@ -62,17 +62,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'created_at', 'is_standard'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.name'), key: 'name' },
-          { label: this.$t('table.title.disk_format'), key: 'disk_format' },
-          { label: this.$t('table.title.image_size'), key: 'size' },
-          { label: this.$t('res.project'), key: 'tenant' },
-          { label: this.$t('table.title.image_type'), key: 'is_standard' },
-          { label: this.$t('table.title.create_time'), key: 'created_at' },
-        ],
-      },
       groupActions: [
         getSetPublicAction(this, {
           name: this.$t('dictionary.guestimage'),
@@ -224,8 +213,15 @@ export default {
       ],
     }
   },
-  compute: {
+  computed: {
     ...mapGetters(['userInfo']),
+    exportDataOptions () {
+      return {
+        items: this.columns,
+        title: this.$t('dictionary.guestimage'),
+        downloadType: 'local',
+      }
+    },
   },
   created () {
     this.initSidePageTab('host-image-detail')
