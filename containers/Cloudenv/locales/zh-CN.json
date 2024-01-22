@@ -674,7 +674,6 @@
   "cloudenv.cloudaccount.hcso.default_subnet_dns.tips": "至多指定2个DNS服务器, 请使用英文','隔开.例如： 10.125.0.26,10.125.0.27",
   "cloudenv.cloudaccount.hcso.endpoint_domain.tips": "以地址iam.cn-north-1.cloudpods.com为例. 其中`iam`指统一身份认证服务,`cn-north-1`指端点区域,`cloudpods.com`即端点(Endpoint)域名",
   "cloudenv.cloudaccount.hcs.auth_url": "认证地址",
-  "cloudenv.cloudaccount.hcsop.auth_url": "认证地址",
   "cloudenv.text_572": "合约编号及密钥获取可参考",
   "cloudenv.text_573": "全部域",
   "cloudenv.dentity_provider": "{0}#身份提供商",
@@ -874,5 +873,7 @@
   "cloudenv.cycle_once": "同步一次",
   "cloudenv.input_cycle_num": "请输入频率",
   "cloudenv.each": "每",
-  "cloudenv.syncing_account_disable_action": "同步中的云账号不支持此操作"
+  "cloudenv.syncing_account_disable_action": "同步中的云账号不支持此操作",
+  "cloudenv.operation_info_input": "运营侧账号录入（同步资源信息）",
+  "cloudenv.operation_and_maintenance_info_input": "运维侧账号录入（运营侧接口没有监控相关接口，监控相关通过运维侧接口同步）"
 }

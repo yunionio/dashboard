@@ -131,10 +131,6 @@ const LicenseItems = [
     meta: meta('resource_managent', 'private', true),
   },
   {
-    key: 'hcsop',
-    meta: meta('resource_managent', 'private', true),
-  },
-  {
     key: 'hcs',
     meta: meta('resource_managent', 'private', true),
   },
