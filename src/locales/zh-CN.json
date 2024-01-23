@@ -5945,5 +5945,6 @@
   "common.rdp_login_err_msg": "请输入RDP登录信息再次重试登录",
   "common.connect": "连接",
   "common.setting": "设置",
-  "common.project_tag_key": "@:dictionary.project标签键"
+  "common.project_tag_key": "@:dictionary.project标签键",
+  "common.empty_value": "空值"
 }

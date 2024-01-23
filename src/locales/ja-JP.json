@@ -5945,5 +5945,6 @@
   "common.rdp_login_err_msg": "RDP ログイン情報を入力して、再度ログインしてください。",
   "common.connect": "接続",
   "common.setting": "設定",
-  "common.project_tag_key": "@:dictionary.projectタグキー"
+  "common.project_tag_key": "@:dictionary.projectタグキー",
+  "common.empty_value": "空の値"
 }
