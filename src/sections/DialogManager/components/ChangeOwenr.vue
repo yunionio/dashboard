@@ -53,7 +53,7 @@ export default {
         }),
         fd: {
           domain: _.get(this.params, 'data[0].domain_id'),
-          project: _.get(this.params, 'data[0].tenant_id'),
+          project: _.get(this.params, 'data[0].tenant_id') || _.get(this.params, 'data[0].project_id'),
         },
       },
       decorators: {
@@ -69,7 +69,7 @@ export default {
         project: [
           'project',
           {
-            initialValue: _.get(this.params, 'data[0].tenant_id'),
+            initialValue: _.get(this.params, 'data[0].tenant_id') || _.get(this.params, 'data[0].project_id'),
             rules: [
               { required: true, message: this.$t('rules.project'), trigger: 'change' },
             ],
