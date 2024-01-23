@@ -5940,5 +5940,6 @@
   "common.view.doc": "ドキュメントを確認する",
   "common.private_iso": "@:dictionary.private_env ISO ミラーリング",
   "common.private_iso_tip": "@:dictionary.private_envプラットフォームのISOミラーリング",
-  "common.project_tag_key": "@:dictionary.projectタグキー"
+  "common.project_tag_key": "@:dictionary.projectタグキー",
+  "common.empty_value": "空の値"
 }

@@ -414,7 +414,9 @@ export default {
       this.dropdownSearch = e.target.value
     },
     getItems () {
-      return this.config.items.filter(v => {
+      const items = this.config.items || []
+
+      return items.filter(v => {
         if (!v.label) return true
         const label = v.label.toLowerCase()
         return label.includes(this.dropdownSearch.toLowerCase())
