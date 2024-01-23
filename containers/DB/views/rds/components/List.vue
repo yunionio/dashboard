@@ -101,29 +101,6 @@ export default {
         hiddenColumns: ['metadata', 'vcpu_count', 'account', 'created_at'],
         autoHiddenFilterKey: 'rds_hidden_columns',
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.external_id'), key: 'external_id' },
-          { label: this.$t('db.text_60'), key: 'name' },
-          { label: this.$t('db.text_61'), key: 'category' },
-          { label: 'CPU', key: 'vcpu_count' },
-          { label: this.$t('db.text_62'), key: 'vmem_size_mb' },
-          { label: this.$t('db.text_57'), key: 'engine' },
-          { label: this.$t('db.text_63'), key: 'engine_version' },
-          { label: this.$t('db.text_64'), key: 'port' },
-          { label: this.$t('db.text_65'), key: 'internal_connection_str' },
-          { label: this.$t('db.text_66'), key: 'connection_str' },
-          { label: this.$t('db.text_67'), key: 'account' },
-          { label: this.$t('db.text_54'), key: 'billing_type' },
-          { label: this.$t('db.text_46'), key: 'status' },
-          { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: this.$t('db.text_51'), key: 'provider' },
-          { label: this.$t('db.text_40'), key: 'region' },
-          { label: this.$t('common.createdAt'), key: 'created_at' },
-          // { label: this.$t('db.intranet_ip'), key: 'ip_addrs' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('common.create'),
@@ -337,6 +314,16 @@ export default {
   computed: {
     showActions () {
       return !this.$isScopedPolicyMenuHidden('rds_hidden_columns.perform_action')
+    },
+    exportDataOptions () {
+      return {
+        items: [
+          { label: 'ID', key: 'id' },
+          ...this.columns,
+        ],
+        title: this.$t('dictionary.dbinstance'),
+        downloadType: 'local',
+      }
     },
   },
   created () {

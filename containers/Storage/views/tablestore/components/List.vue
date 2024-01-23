@@ -2,6 +2,8 @@
   <page-list
     :list="list"
     :columns="columns"
+    show-tag-columns
+    show-tag-columns2
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
     :showGroupActions="true" />
@@ -57,18 +59,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.name'), key: 'name' },
-          { label: this.$t('common.status'), key: 'status' },
-          { label: this.$t('common_283'), key: 'brand' },
-          { label: this.$t('common_310'), key: 'tenant' },
-          { label: this.$t('common.attribution_scope'), key: 'project_domain' },
-          { label: this.$t('dictionary.cloudregion'), key: 'cloudregion' },
-          { label: this.$t('common.createdAt'), key: 'created_at' },
-        ],
-      },
       // groupActions: [
       //   {
       //     label: this.$t('compute.perform_sync_status'),
@@ -87,6 +77,18 @@ export default {
       //   },
       // ],
     }
+  },
+  computed: {
+    exportDataOptions () {
+      return {
+        items: [
+          { label: 'ID', key: 'id' },
+          ...this.columns,
+        ],
+        downloadType: 'local',
+        title: this.$t('dictionary.tablestore'),
+      }
+    },
   },
   watch: {
     cloudEnv (val) {

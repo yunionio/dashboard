@@ -45,41 +45,38 @@ export default {
             </div>]
           },
         },
+        formatter: ({ row }) => {
+          return `${KAFKA_STORAGE[row.storage_type] || row.storage_type || '-'},${i18n.t('middleware.size_gb', [row.disk_size_gb])}`
+        },
       },
       {
         field: 'bandwidth_mb',
         title: i18n.t('middleware.bandwidth'),
-        slots: {
-          default: ({ row }) => {
-            if (row.bandwidth_mb && row.bandwidth_mb !== 0) {
-              return i18n.t('middleware.bandwidth_mb', [row.bandwidth_mb])
-            }
-            return '-'
-          },
+        formatter: ({ row }) => {
+          if (row.bandwidth_mb && row.bandwidth_mb !== 0) {
+            return i18n.t('middleware.bandwidth_mb', [row.bandwidth_mb])
+          }
+          return '-'
         },
       },
       {
         field: 'endpoint',
         title: i18n.t('middleware.endpoint'),
-        slots: {
-          default: ({ row }) => {
-            return row.endpoint || '-'
-          },
+        formatter: ({ row }) => {
+          return row.endpoint || '-'
         },
       },
       {
         field: 'msg_retention_minute',
         title: i18n.t('middleware.msg_retention_minute'),
-        slots: {
-          default: ({ row }) => {
-            if (row.msg_retention_minute && row.msg_retention_minute !== 0) {
-              if (row.msg_retention_minute / 60 > 0) {
-                return i18n.t('middleware.hours', [row.msg_retention_minute / 60])
-              }
-              return i18n.t('middleware.minutes', [row.msg_retention_minute])
+        formatter: ({ row }) => {
+          if (row.msg_retention_minute && row.msg_retention_minute !== 0) {
+            if (row.msg_retention_minute / 60 > 0) {
+              return i18n.t('middleware.hours', [row.msg_retention_minute / 60])
             }
-            return '-'
-          },
+            return i18n.t('middleware.minutes', [row.msg_retention_minute])
+          }
+          return '-'
         },
       },
       getBillingTableColumn({ vm: this }),

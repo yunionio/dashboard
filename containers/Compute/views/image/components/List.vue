@@ -87,20 +87,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'created_at', 'os_arch'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.name'), key: 'name' },
-          { label: this.$t('table.title.disk_format'), key: 'disk_format' },
-          { label: this.$t('table.title.image_size'), key: 'size' },
-          { label: this.$t('res.project'), key: 'tenant' },
-          { label: this.$t('table.title.image_type'), key: 'is_standard' },
-          { label: this.$t('table.title.create_time'), key: 'created_at' },
-          { label: this.$t('table.title.checksum'), key: 'checksum' },
-          { label: this.$t('table.title.user_tag'), key: 'user_tags' },
-          { label: this.$t('table.title.os_arch'), key: 'os_arch' },
-        ],
-      },
     }
   },
   computed: {
@@ -395,6 +381,13 @@ export default {
       }
       batchActions.unshift(ImageUpload)
       return batchActions
+    },
+    exportDataOptions () {
+      return {
+        downloadType: 'local',
+        title: this.$t('compute.text_97'),
+        items: this.columns,
+      }
     },
   },
   created () {

@@ -1,8 +1,8 @@
-import { ENGINE_ARCH } from '../constants/index.js'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { sizestr } from '@/utils/utils'
 import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getTagTableColumn, getBillingTableColumn, getAccountTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import { ENGINE_ARCH } from '../constants/index.js'
 
 export default {
   created () {
@@ -40,11 +40,9 @@ export default {
         field: 'arch_type',
         title: i18n.t('db.text_119'),
         width: 100,
-        slots: {
-          default: ({ row }) => {
-            const type = row.local_category || row.arch_type
-            return ENGINE_ARCH[type] || type
-          },
+        formatter: ({ row }) => {
+          const type = row.local_category || row.arch_type
+          return ENGINE_ARCH[type] || type
         },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('redis_hidden_columns.arch_type')
@@ -54,10 +52,8 @@ export default {
         field: 'instance_type',
         title: i18n.t('db.text_109'),
         width: 50,
-        slots: {
-          default: ({ row }) => {
-            return sizestr(row.capacity_mb, 'M', 1024)
-          },
+        formatter: ({ row }) => {
+          return sizestr(row.capacity_mb, 'M', 1024)
         },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('redis_hidden_columns.instance_type')
@@ -67,10 +63,8 @@ export default {
         field: 'engine',
         title: i18n.t('db.text_112'),
         width: 100,
-        slots: {
-          default: ({ row }) => {
-            return `${row.engine} ${row.engine_version}`
-          },
+        formatter: ({ row }) => {
+          return `${row.engine} ${row.engine_version}`
         },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('redis_hidden_columns.engine')
@@ -117,6 +111,14 @@ export default {
             ]
           },
         },
+        formatter: ({ row }) => {
+          const pri = row.private_dns || row.private_ip_addr
+          const pub = row.public_dns || row.public_ip_addr
+          if (!pri && !pub) {
+            return '-'
+          }
+          return `${i18n.t('db.text_153') + ':' + pri}, ${i18n.t('db.text_154') + ':' + pub}`
+        },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('redis_hidden_columns.private_dns')
         },
@@ -139,6 +141,19 @@ export default {
             }
             return ports
           },
+        },
+        formatter: ({ row }) => {
+          if (!row.private_connect_port && !row.public_connect_port) {
+            return '-'
+          }
+          const ports = []
+          if (row.private_connect_port && (row.private_dns || row.private_ip_addr)) {
+            ports.push(this.$t('common.intranet_1var', [row.private_connect_port]))
+          }
+          if (row.public_connect_port && (row.public_dns || row.public_ip_addr)) {
+            ports.push(this.$t('common.extranet_1var', [row.public_connect_port]))
+          }
+          return ports.join(',')
         },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('redis_hidden_columns.private_connect_port')

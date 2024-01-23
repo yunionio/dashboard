@@ -149,27 +149,6 @@ export default {
         hiddenColumns: ['metadata', 'vpc', 'wire', 'vlan_id', 'schedtag', 'account', 'public_scope', 'created_at'],
         autoHiddenFilterKey: 'network_hidden_columns',
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('network.text_21'), key: 'name' },
-          { label: this.$t('network.text_621'), key: 'guest_ip_start' },
-          { label: this.$t('network.text_608'), key: 'guest_ip_end' },
-          { label: this.$t('network.text_249'), key: 'server_type' },
-          { label: this.$t('network.text_27'), key: 'status' },
-          { label: this.$t('network.ports'), key: 'ports' },
-          { label: this.$t('network.ports_used'), key: 'ports_used' },
-          { label: this.$t('network.text_198'), key: 'brand' },
-          { label: this.$t('network.text_571'), key: 'wire' },
-          { label: 'VLAN', key: 'vlan_id' },
-          { label: 'VPC', key: 'vpc', hidden: this.$store.getters.isProjectMode },
-          { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: this.$t('network.text_196'), key: 'account', hidden: this.$store.getters.isProjectMode },
-          { label: this.$t('network.text_199'), key: 'region' },
-          { label: this.$t('network.text_24'), key: 'zone' },
-          { label: this.$t('common.createdAt'), key: 'created_at' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('network.text_26'),
@@ -545,6 +524,16 @@ export default {
     },
     showActions () {
       return !this.$isScopedPolicyMenuHidden('network_hidden_columns.perform_action')
+    },
+    exportDataOptions () {
+      return {
+        items: [
+          { label: 'ID', key: 'id' },
+          ...this.columns,
+        ],
+        title: this.$t('network.text_565'),
+        downloadType: 'local',
+      }
     },
   },
   watch: {

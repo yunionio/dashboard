@@ -91,27 +91,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['host_sn', 'created_at'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.name'), key: 'name' },
-          { label: 'IP', key: 'ips' },
-          { label: 'CPU', key: 'vcpu_count' },
-          { label: this.$t('table.title.memory_mb'), key: 'vmem_size' },
-          { label: this.$t('table.title.disk_mb'), key: 'disk' },
-          { label: this.$t('table.title.type'), key: 'instance_type' },
-          { label: this.$t('table.title.os'), key: 'os_distribution' },
-          { label: this.$t('common.status'), key: 'status' },
-          { label: this.$t('res.project'), key: 'tenant' },
-          { label: this.$t('table.title.brand'), key: 'hypervisor' },
-          { label: this.$t('res.cloudaccount'), key: 'manager', hidden: () => this.$store.getters.isProjectMode },
-          { label: this.$t('res.region'), key: 'region' },
-          { label: this.$t('res.zone'), key: 'zone' },
-          { label: this.$t('table.title.user_tag'), key: 'user_tags' },
-          { label: this.$t('common.createdAt'), key: 'created_at' },
-        ],
-        getParams: () => ({ hypervisor: 'baremetal' }),
-      },
       groupActions: [
         {
           label: this.$t('compute.perform_create'),
@@ -369,6 +348,14 @@ export default {
         return noRepeatArr.length === 1
       }
       return true
+    },
+    exportDataOptions () {
+      return {
+        items: this.columns,
+        downloadType: 'local',
+        title: this.$t('compute.text_92'),
+        getParams: () => ({ hypervisor: 'baremetal' }),
+      }
     },
   },
   watch: {
