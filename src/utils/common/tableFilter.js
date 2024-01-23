@@ -354,8 +354,9 @@ export const getOsArchFilter = (isCapabilityKey = false) => {
   }
 }
 
-export function getRegionFilter ({ distinctType = 'extra_field' } = {}) {
-  return {
+export function getRegionFilter ({ distinctType = 'extra_field', withEmptyValue = false } = {}) {
+  const emptyValue = i18n.t('common.empty_value')
+  const ret = {
     label: i18n.t('res.region'),
     dropdown: true,
     multiple: true,
@@ -378,7 +379,12 @@ export function getRegionFilter ({ distinctType = 'extra_field' } = {}) {
             params,
           })
 
-          return data.map((region) => {
+          const newData = withEmptyValue ? [emptyValue].concat(data) : data
+
+          return newData.map((region) => {
+            if (withEmptyValue && region === emptyValue) {
+              return { key: region, label: region }
+            }
             if (region._i18n && region._i18n.name) {
               return { key: region.id, label: region._i18n.name }
             } else {
@@ -391,6 +397,22 @@ export function getRegionFilter ({ distinctType = 'extra_field' } = {}) {
       },
     },
   }
+  if (withEmptyValue) {
+    ret.filter = true
+    ret.formatter = val => {
+      if (val.length === 1 && val[0] === emptyValue) {
+        return 'region.isnullorempty()'
+      }
+      const newItems = val.map(item => {
+        if (item === emptyValue) {
+          return '\' \''
+        }
+        return `'${item}'`
+      })
+      return `region.in(${newItems.join(',')})`
+    }
+  }
+  return ret
 }
 
 export function getZoneFilter () {

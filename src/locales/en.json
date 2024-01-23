@@ -5928,5 +5928,6 @@
   "common.rdp_login_err_msg": "Please enter the RDP login information and try logging in again",
   "common.connect": "connect",
   "common.setting": "setting",
-  "common.project_tag_key": "@:dictionary.project tag key"
+  "common.project_tag_key": "@:dictionary.project tag key",
+  "common.empty_value": "empty value"
 }
