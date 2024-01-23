@@ -97,24 +97,6 @@ export default {
         hiddenColumns: ['metadata', 'account', 'cluster', 'created_at'],
         autoHiddenFilterKey: 'slb_hidden_columns',
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.external_id'), key: 'external_id' },
-          { label: this.$t('network.text_21'), key: 'name' },
-          { label: this.$t('network.text_248'), key: 'address' },
-          { label: 'VPC', key: 'vpc', hidden: this.$store.getters.isProjectMode },
-          { label: this.$t('network.text_27'), key: 'status' },
-          { label: this.$t('network.text_192'), key: 'charge_type' },
-          { label: this.$t('network.text_249'), key: 'loadbalancer_spec' },
-          { label: this.$t('dictionary.domain'), key: 'project_domain', hidden: this.$store.getters.isProjectMode },
-          { label: this.$t('network.text_43'), key: 'tenant' },
-          { label: this.$t('network.text_199'), key: 'region' },
-          { label: this.$t('network.text_196'), key: 'account', hidden: this.$store.getters.isProjectMode },
-          { label: this.$t('common_715'), key: 'user_tags' },
-          { label: this.$t('common.createdAt'), key: 'created_at' },
-        ],
-      },
       tagConfigParams: {
         resource: 'loadbalancers',
         queryTreeId: 'project-tag-value-tree',
@@ -352,6 +334,16 @@ export default {
         },
       ]
       return actions
+    },
+    exportDataOptions () {
+      return {
+        items: [
+          { label: 'ID', key: 'id' },
+          ...this.columns,
+        ],
+        title: this.$t('network.text_714'),
+        downloadType: 'local',
+      }
     },
   },
   watch: {

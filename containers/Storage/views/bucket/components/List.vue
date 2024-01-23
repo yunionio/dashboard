@@ -87,29 +87,6 @@ export default {
         hiddenColumns: ['storage_class', 'account', 'public_scope'],
         autoHiddenFilterKey: 'oss_hidden_columns',
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.external_id'), key: 'external_id' },
-          { label: this.$t('storage.text_40'), key: 'name' },
-          { label: this.$t('storage.text_41'), key: 'status' },
-          { label: this.$t('storage.text_38'), key: 'storage_class' },
-          { label: this.$t('storage.text_93'), key: 'acl' },
-          { label: this.$t('storage.text_46'), key: 'provider' },
-          { label: this.$t('storage.text_94'), key: 'manager' },
-          { label: this.$t('storage.text_47'), key: 'region' },
-          {
-            label: this.$t('storage.text_48'),
-            key: 'public_scope',
-            hidden: () => {
-              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('buckets'))
-            },
-          },
-          { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: this.$t('common_715'), key: 'user_tags' },
-          { label: this.$t('common.createdAt'), key: 'created_at' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('storage.text_31'),
@@ -270,6 +247,16 @@ export default {
     ...mapGetters(['isProjectMode']),
     showActions () {
       return !this.$isScopedPolicyMenuHidden('oss_hidden_columns.perform_action')
+    },
+    exportDataOptions () {
+      return {
+        items: [
+          { label: 'ID', key: 'id' },
+          ...this.columns,
+        ],
+        downloadType: 'local',
+        title: this.$t('storage.text_18'),
+      }
     },
   },
   watch: {

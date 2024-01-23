@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="this.$t('dictionary.cdn_domain')">
+    <page-header :title="$t('dictionary.cdn_domain')">
       <div slot="res-status-tab" style="position: absolute; right: 0; top: 14px;">
         <res-status-tab
           :loading="statisticsLoading"
@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import DomainList from './components/List'
 import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import DomainList from './components/List'
 
 export default {
   name: 'DomainIndex',

@@ -65,25 +65,6 @@ export default {
         },
         responseData: this.responseData,
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.external_id'), key: 'external_id' },
-          { label: this.$t('middleware.name'), key: 'name' },
-          { label: this.$t('middleware.version'), key: 'version' },
-          { label: this.$t('middleware.storage'), key: 'storage_type' },
-          { label: this.$t('middleware.disk_size_gb'), key: 'disk_size_gb' },
-          { label: this.$t('middleware.bandwidth'), key: 'bandwidth_mb' },
-          { label: this.$t('middleware.endpoint'), key: 'endpoint' },
-          { label: this.$t('middleware.msg_retention_minute'), key: 'retention_minute' },
-          { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: this.$t('middleware.status'), key: 'status' },
-          { label: this.$t('middleware.cloudaccount'), key: 'account' },
-          { label: this.$t('middleware.billing_type'), key: 'billing_type' },
-          { label: this.$t('middleware.provider'), key: 'provider' },
-          { label: this.$t('middleware.cloudregion'), key: 'region' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('middleware.syncstatus'),
@@ -152,6 +133,18 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    exportDataOptions () {
+      return {
+        items: [
+          { label: 'ID', key: 'id' },
+          ...this.columns,
+        ],
+        title: this.$t('middleware.kafka'),
+        downloadType: 'local',
+      }
+    },
   },
   created () {
     this.initSidePageTab('kafka-detail')

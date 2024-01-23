@@ -65,23 +65,6 @@ export default {
         },
         responseData: this.responseData,
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.external_id'), key: 'external_id' },
-          { label: this.$t('middleware.name'), key: 'name' },
-          { label: this.$t('middleware.version'), key: 'version' },
-          { label: this.$t('middleware.category'), key: 'category' },
-          { label: this.$t('middleware.storage'), key: 'storage_type' },
-          { label: this.$t('middleware.disk_size_gb'), key: 'disk_size_gb' },
-          { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: this.$t('middleware.status'), key: 'status' },
-          { label: this.$t('middleware.cloudaccount'), key: 'account' },
-          { label: this.$t('middleware.billing_type'), key: 'billing_type' },
-          { label: this.$t('middleware.provider'), key: 'provider' },
-          { label: this.$t('middleware.cloudregion'), key: 'region' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('middleware.syncstatus'),
@@ -150,6 +133,18 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    exportDataOptions () {
+      return {
+        items: [
+          { label: 'ID', key: 'id' },
+          ...this.columns,
+        ],
+        downloadType: 'local',
+        title: this.$t('middleware.elasticsearch'),
+      }
+    },
   },
   created () {
     this.initSidePageTab('elastic-search-detail')
