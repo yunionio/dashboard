@@ -101,7 +101,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('compute.text_996') },
-              { validator: this.$validate(['cidr', 'IPv4'], true, 'some') },
+              { validator: this.$validate(['cidr', 'IPv4', 'cidr6', 'IPv6'], true, 'some') },
             ],
           },
         ],
@@ -156,7 +156,7 @@ export default {
         { label: 'TCP', value: 'tcp' },
         { label: 'UDP', value: 'udp' },
         { label: 'ICMP', value: 'icmp' },
-        { label: this.$t('compute.text_1009'), value: 'any' },
+        { label: this.$t('compute.any_protocol.text'), value: 'any' },
       ],
       actionOptions: [
         { label: this.$t('compute.text_976'), value: 'allow' },
