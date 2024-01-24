@@ -17,7 +17,7 @@ import expectStatus from '@/constants/expectStatus'
 import SingleActionsMixin from '../mixins/singleActions'
 
 const PROTOCOL = {
-  any: 'ANY',
+  any: i18n.t('compute.any_protocol.text'),
   tcp: 'TCP',
   udp: 'UDP',
   icmp: 'ICMP',
@@ -87,14 +87,24 @@ export default {
       columns: [
         getNameDescriptionTableColumn({
           field: 'cidr',
+          title: 'CIDR',
           edit: false,
           showDesc: false,
           hideField: true,
           slotCallback: row => {
-            const name = row.cidr ? `${row.cidr} (IP)` : '-'
-            return (
-              <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ name }</side-page-trigger>
-            )
+            if (row.cidr) {
+              if (row.cidr === '0.0.0.0/0' || row.cidr === '::/0') {
+                return this.$t('compute.any_cidr.text')
+              } else {
+                return row.cidr
+              }
+            } else {
+              return '-'
+            }
+            // const name = row.cidr ? `${row.cidr}` : '-'
+            // return (
+            //   <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ name }</side-page-trigger>
+            // )
           },
         }),
         {
@@ -108,7 +118,7 @@ export default {
           field: 'ports',
           title: this.$t('compute.text_349'),
           formatter: ({ cellValue, row }) => {
-            return cellValue === 'any' ? 'ALL' : !row.ports ? 'ALL' : row.ports
+            return cellValue === 'any' ? this.$t('compute.any_port.text') : !row.ports ? this.$t('compute.any_port.text') : row.ports
           },
         },
         getStatusTableColumn({ statusModule: 'common' }),
