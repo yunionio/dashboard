@@ -383,7 +383,7 @@ export default {
               initialValue: '',
               validateFirst: true,
               rules: [
-                { validator: this.$validate('IPv6') },
+                { validator: this.validateIpv6 },
               ],
             },
           ],
@@ -393,7 +393,7 @@ export default {
               initialValue: '',
               validateFirst: true,
               rules: [
-                { validator: this.$validate('IPv6') },
+                { validator: this.validateIpv6 },
               ],
             },
           ],
@@ -413,7 +413,7 @@ export default {
               validateTrigger: ['change', 'blur'],
               validateFirst: true,
               rules: [
-                { validator: this.$validate('IPv6') },
+                { validator: this.validateIpv6 },
                 { validator: validateGateway6 },
               ],
             },
@@ -616,6 +616,14 @@ export default {
     this.initState()
   },
   methods: {
+    validateIpv6 (rule, value, callback) {
+      if (!value) {
+        callback()
+      } else if (!REGEXP.IPv6.regexp.test(value)) {
+        callback(new Error(this.$t('common.tips.input', ['IPv6'])))
+      }
+      callback()
+    },
     initState () {
       if (this.cloudEnv === 'private') {
         this.show = false

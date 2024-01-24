@@ -44,10 +44,10 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import IpAddress from '../components/IpAddress'
 import { validate } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import IpAddress from '../components/IpAddress'
 
 export default {
   name: 'ReservedIpCreateDialog',
@@ -120,7 +120,7 @@ export default {
   },
   methods: {
     IPValidator (rule, value, callback) {
-      if (validate(value, 'IPv4') === false || validate(value, 'IPv4').result === false) {
+      if ((validate(value, 'IPv4') === false || validate(value, 'IPv4').result === false) && (validate(value, 'IPv6') === false || validate(value, 'IPv6').result === false)) {
         callback(new Error(this.$t('network.text_301')))
       } else {
         callback()
