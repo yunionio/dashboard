@@ -23,7 +23,7 @@
           :isRequired="true"
           filterBrandResource="security_group"
           @change="handleRegionChange" />
-        <a-form-item label="VPC" v-bind="formItemLayout">
+        <a-form-item label="VPC" v-bind="formItemLayout" v-if="regionId !== 'default'">
           <base-select
             v-decorator="decorators.vpc"
             resource="vpcs"

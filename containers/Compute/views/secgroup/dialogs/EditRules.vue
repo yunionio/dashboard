@@ -103,7 +103,7 @@ export default {
             validateFirst: true,
             initialValue: selectItem.cidr || '',
             rules: [
-              { validator: this.$validate(['cidr', 'IPv4'], true, 'some') },
+              { validator: this.$validate(['cidr', 'IPv4', 'cidr6', 'IPv6'], true, 'some') },
             ],
           },
         ],
@@ -171,6 +171,8 @@ export default {
         { value: '10.0.0.0/8' },
         { value: '172.16.0.0/12' },
         { value: '192.168.0.0/16' },
+        { value: '::/0' },
+        { value: 'fd::/64' },
       ],
       secgroupOpts: [
       ],
@@ -210,7 +212,7 @@ export default {
         { label: 'TCP', value: 'tcp' },
         { label: 'UDP', value: 'udp' },
         { label: 'ICMP', value: 'icmp' },
-        { label: this.$t('compute.text_1009'), value: 'any' },
+        { label: this.$t('compute.any_protocol.text'), value: 'any' },
       ]
       if (this.params.brand && this.params.brand.toLowerCase() === 'ucloud') {
         ret = ret.filter(item => item.value !== 'any')
