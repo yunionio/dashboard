@@ -7,7 +7,7 @@
         <a-form-item :label="$t('network.text_211')" v-bind="formItemLayout">
           <template v-if="hasNetwork">
             <div>
-              <span>{{ params.network.name }}（{{ params.network.guest_ip_start }} - {{ params.network.guest_ip_end }}，vlan={{ params.network.vlan_id }}）</span>
+              <span>{{ networkDesc }}</span>
               <span class="text-color-help">{{ $t('common.text00001') }}：{{ params.network.ports - params.network.ports_used }}</span>
             </div>
           </template>
@@ -116,6 +116,17 @@ export default {
     },
     hasNetwork () {
       return !R.isEmpty(this.params.network) && !R.isNil(this.params.network)
+    },
+    networkDesc () {
+      const netInfo = []
+      if (this.params.network.guest_ip_start && this.params.network.guest_ip_end) {
+        netInfo.push(this.params.network.guest_ip_start + '/' + this.params.network.guest_ip_mask + '-' + this.params.network.guest_ip_end + '/' + this.params.network.guest_ip_mask)
+      }
+      if (this.params.network.guest_ip6_start && this.params.network.guest_ip6_end) {
+        netInfo.push(this.params.network.guest_ip6_start + '/' + this.params.network.guest_ip6_mask + '-' + this.params.network.guest_ip6_end + '/' + this.params.network.guest_ip6_mask)
+      }
+      netInfo.push('vlan=' + this.params.network.vlan_id)
+      return this.params.network.name + '(' + netInfo.join(',') + ')'
     },
   },
   methods: {

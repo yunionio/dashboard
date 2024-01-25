@@ -29,14 +29,17 @@ export default {
       this.loading = true
       try {
         const manager = new this.$Manager('reservedips')
-        const ips = this.params.data.map(item => item.ip_addr)
-        const query = this.params.query || {}
-        query.scope = this.$store.getters.scope
-        const params = {
-          ips,
-          query,
-        }
-        await manager.rpc({ methodname: 'DoBatchReleaseReservedIps', params })
+        const ids = this.params.data.map(item => item.id)
+        // const query = this.params.query || {}
+        // query.scope = this.$store.getters.scope
+        // const params = {
+        //  ips,
+        //  query,
+        // }
+        // await manager.rpc({ methodname: 'DoBatchReleaseReservedIps', params })
+        await manager.batchDelete({
+          ids: ids,
+        })
         this.cancelDialog()
         this.params.refresh()
         this.$message.success(this.$t('network.text_290'))

@@ -21,9 +21,8 @@ export default {
     danger: ['deleted'],
   },
   reservedip: {
-    info: ['offline'],
+    info: ['offline', 'unknown'],
     success: ['online'],
-    danger: ['unknown'],
   },
   wire: {
     success: ['available'],
