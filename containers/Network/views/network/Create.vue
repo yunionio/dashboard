@@ -66,7 +66,7 @@
         </a-form-item>
         <a-form-item :label="$t('network.text_575')" :extra="$t('network.text_578')" v-bind="formItemLayout" v-if="!show && !isGroupGuestIpPrefix">
           <a-input v-decorator="decorators.guest_ip_prefix(0)" :placeholder="$t('network.ipv4.prefix.prompt')" />
-          <a-input v-decorator="decorators.guest_ip6_prefix(0)" :placeholder="$t('network.ipv6.prefix.prompt')" />
+          <!-- <a-input v-decorator="decorators.guest_ip6_prefix(0)" :placeholder="$t('network.ipv6.prefix.prompt')" /> -->
         </a-form-item>
         <a-form-item :label="$t('network.text_575')" v-bind="formItemLayout" :validate-status="guestIpPrefixValidateStatus" :help="guestIpPrefixHelp" required v-if="isGroupGuestIpPrefix">
           <template slot="extra">
@@ -76,6 +76,8 @@
           <div class="d-flex" v-for="(item, i) in guestIpPrefix" :key="item.key">
             <a-form-item>
               <a-input style="width: 400px" v-decorator="decorators.guest_ip_prefix(i)" :placeholder="$t('network.ipv4.subnet.input.prompt')" />
+            </a-form-item>
+            <a-form-item>
               <a-input style="width: 400px" v-decorator="decorators.guest_ip6_prefix(i)" :placeholder="$t('network.ipv6.subnet.input.prompt')" />
             </a-form-item>
             <a-button shape="circle" icon="minus" size="small" v-if="guestIpPrefix.length > 1" @click="decrease(i)" class="mt-2 ml-2" />
