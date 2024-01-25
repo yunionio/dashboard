@@ -4,20 +4,25 @@
     <template v-slot:title class="pl-0">
       <a-form-model hideRequiredMark v-if="isAdvancedView" ref="ruleForm" :model="formData" :rules="rules" v-bind="layout">
         <a-form-model-item :label="$t('common.date_range')" prop="date_range">
-          <a-range-picker
-            v-model="formData.date_range"
-            :format="showFormat"
-            :disabled-time="disabledDate" />
+          <div class="mr-2" style="width:356px">
+            <a-range-picker
+              v-model="formData.date_range"
+              :format="showFormat"
+              :disabled-time="disabledDate" />
+          </div>
         </a-form-model-item>
       </a-form-model>
       <a-form-model hideRequiredMark v-else ref="ruleForm" :model="formData" :rules="rules" v-bind="layout">
-        <a-form-model-item :label="$t('common.date_range')" prop="month_range">
-          <a-range-picker
-            v-model="formData.month_range"
-            format="YYYY-MM"
-            :mode="['month', 'month']"
-            :disabled-time="disabledDate"
-            @panelChange="handleMonthChange" />
+        <a-form-model-item :label="$t('common.date_range')" class="mb-0">
+          <div class="d-flex">
+            <a-form-model-item prop="start_month">
+              <a-month-picker v-model="formData.month_range[0]" @change="startChange" />
+            </a-form-model-item>
+            <span class="ml-2 mr-2">~</span>
+            <a-form-model-item prop="end_month">
+              <a-month-picker v-model="formData.month_range[1]" :disabled-date="dateDisabledEnd" />
+            </a-form-model-item>
+          </div>
         </a-form-model-item>
       </a-form-model>
       <a-button type="link" class="position-absolute" style="bottom: -28px;" @click="toggleView">{{ isAdvancedView ? $t('common.date_time.quick') : $t('common.date_time.advanced') }}</a-button>
@@ -34,7 +39,12 @@ export default {
   props: {
     customDate: {
       type: Object,
-      default: () => [moment(), moment()],
+      default: () => {
+        return {
+          start: moment(),
+          end: moment(),
+        }
+      },
     },
     customTimeLabel: String,
     canSelectTodayAfter: {
@@ -67,6 +77,17 @@ export default {
     }
   },
   methods: {
+    startChange (value) {
+      const dateEnd = this.formData.month_range[1]
+      if (dateEnd && value > dateEnd) {
+        this.formData.month_range[1] = value
+      }
+    },
+    dateDisabledEnd (value) {
+      const dateStart = this.formData.month_range[0]
+      if (dateStart && value < dateStart) return true
+      return false
+    },
     handleMonthChange (val) {
       this.formData.month_range = val
     },
