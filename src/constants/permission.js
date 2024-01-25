@@ -1423,6 +1423,15 @@ export const PERMISSION = {
 
   bill_predictions_query: ['meter', 'predictions', 'perform', 'query'],
 
+  // 异常消费
+  bill_alert_settings_list: ['meter', 'bill_alert_settings', 'list'],
+  bill_alert_settings_get: ['meter', 'bill_alert_settings', 'get'],
+  bill_alert_settings_update: ['meter', 'bill_alert_settings', 'update'],
+  bill_alert_settings_delete: ['meter', 'bill_alert_settings', 'delete'],
+  bill_alert_settings_perform_enabled: ['meter', 'bill_alert_settings', 'perform', 'enabled'],
+  bill_alert_settings_perform_disabled: ['meter', 'bill_alert_settings', 'perform', 'disabled'],
+  bill_alerts_list: ['meter', 'bill_alerts', 'list'],
+
   ...extraPermissions,
 }
 
