@@ -4835,7 +4835,7 @@
   "common_656": "请选择用户归属目标@:dictionary.domain",
   "common_657": "未配置【{0}】，无法开启",
   "common_658": "管理口MAC地址",
-  "common_659": "进行 PXE  启动网卡的 MAC 地址",
+  "common_659": "进行PXE启动网卡的MAC地址。如果PXE网卡是服务器主板网卡，可以不填写，系统能自动探测。否则必须填写PXE网卡的MAC地址。",
   "common_660": "增强型SSD云硬盘",
   "common_661": "新建DNS解析",
   "common_662": "PublicZone类型解析域不支持关联VPC",
