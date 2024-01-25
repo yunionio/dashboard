@@ -22,12 +22,12 @@
             @change="fetchSecgroups"
             option-filter-prop="children"
             :placeholder="$t('compute.secgroup.source.placeholder')"
-            :disabled="cidrDisabled"
+            :disabled="cidrDisabled || cidrChecked"
             v-decorator="decorators.source">
             <a-select-opt-group>
               <span slot="label">CIDR</span>
               <a-select-option v-for="item in cidrOptions" :key="item.value" :value="item.value">
-              {{item.value}}
+              {{item.label}}
               </a-select-option>
             </a-select-opt-group>
             <!-- <a-select-opt-group>
@@ -37,6 +37,7 @@
               </a-select-option>
             </a-select-opt-group> -->
           </a-select>
+          <a-checkbox class="right-checkbox" @change="cidrChange" :checked="cidrChecked">{{$t('compute.any_cidr.text')}}</a-checkbox>
         </a-form-item>
         <a-form-item :label="$t('compute.text_980')">
           <a-select v-decorator="decorators.protocol" @change="protocolChange" :disabled="protocolDisabled || cidrDisabled">
@@ -74,7 +75,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { validate } from '@/utils/validate'
+import { validate, REGEXP } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { priorityRuleMap } from '../constants'
@@ -101,9 +102,9 @@ export default {
           'source',
           {
             validateFirst: true,
-            initialValue: selectItem.cidr || '',
+            initialValue: selectItem.cidr || 'ALL',
             rules: [
-              { validator: this.$validate(['cidr', 'IPv4', 'cidr6', 'IPv6'], true, 'some') },
+              { validator: this.validateCIDR },
             ],
           },
         ],
@@ -167,15 +168,17 @@ export default {
         { label: this.$t('compute.text_977'), value: 'deny' },
       ],
       cidrOptions: [
-        { value: '0.0.0.0/0' },
-        { value: '10.0.0.0/8' },
-        { value: '172.16.0.0/12' },
-        { value: '192.168.0.0/16' },
-        { value: '::/0' },
-        { value: 'fd::/64' },
+        // { label: this.$t('compute.any_cidr.text'), value: '' },
+        { label: '0.0.0.0/0', value: '0.0.0.0/0' },
+        { label: '10.0.0.0/8', value: '10.0.0.0/8' },
+        { label: '172.16.0.0/12', value: '172.16.0.0/12' },
+        { label: '192.168.0.0/16', value: '192.168.0.0/16' },
+        { label: '::/0', value: '::/0' },
+        { label: 'fd::/64', value: 'fd::/64' },
       ],
       secgroupOpts: [
       ],
+      cidrChecked: JSON.stringify(selectItem) === '{}' ? true : !selectItem.cidr,
       typeDisabled: false,
       portsDisabled: JSON.stringify(selectItem) === '{}' ? false : !selectItem.ports,
       portsCheckboxDisabled: selectItem.protocol === 'any' || selectItem.protocol === 'icmp',
@@ -256,38 +259,52 @@ export default {
         }
       }
     },
+    validateCIDR (rule, value, callback) {
+      if (this.cidrChecked || !value) {
+        callback()
+      } else if (!REGEXP.IPv6.regexp.test(value) && !REGEXP.IPv4.regexp.test(value) && !REGEXP.cidr.regexp.test(value) && !REGEXP.cidr6.regexp.test(value)) {
+        callback(new Error(this.$t('common.tips.input', ['IPv6'])))
+      }
+      callback()
+    },
     typeChange (e) {
       if (e === 'windows') {
         this.form.fc.setFieldsValue({ ports: '3389', protocol: 'tcp' })
+        this.cidrChecked = true
         this.portsChecked = false
         this.portsDisabled = true
         this.portsCheckboxDisabled = true
         this.protocolDisabled = true
       } else if (e === 'linux') {
         this.form.fc.setFieldsValue({ ports: '22', protocol: 'tcp' })
+        this.cidrChecked = true
         this.portsChecked = false
         this.portsDisabled = true
         this.portsCheckboxDisabled = true
         this.protocolDisabled = true
       } else if (e === 'http') {
         this.form.fc.setFieldsValue({ ports: '80', protocol: 'tcp' })
+        this.cidrChecked = true
         this.portsChecked = false
         this.portsDisabled = true
         this.portsCheckboxDisabled = true
         this.protocolDisabled = true
       } else if (e === 'https') {
         this.form.fc.setFieldsValue({ ports: '443', protocol: 'tcp' })
+        this.cidrChecked = true
         this.portsChecked = false
         this.portsDisabled = true
         this.portsCheckboxDisabled = true
         this.protocolDisabled = true
       } else if (e === 'ping') {
         this.form.fc.setFieldsValue({ ports: 'ALL', protocol: 'icmp' })
+        this.cidrChecked = true
         this.portsChecked = true
         this.portsDisabled = true
         this.portsCheckboxDisabled = true
         this.protocolDisabled = true
       } else {
+        this.cidrChecked = true
         this.portsChecked = false
         this.portsDisabled = false
         this.form.fc.resetFields(['ports'])
@@ -347,6 +364,18 @@ export default {
         })
       }
     },
+    cidrChange (e) {
+      this.cidrChecked = !this.cidrChecked
+      if (e.target.checked) {
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({ source: 'ALL' })
+        })
+      } else {
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({ source: '0.0.0.0/0' })
+        })
+      }
+    },
     saveEdit (data) {
       if (this.params.title === 'clone') {
         let description = ''
@@ -395,7 +424,12 @@ export default {
         if (values.ports === 'ALL') {
           values.ports = ''
         }
-        if (values.source) {
+        if (this.cidrChecked) {
+          values.cidr = ''
+          if (values.source) {
+            delete values.source
+          }
+        } else if (values.source) {
           // const isCidr = validate(values.source, 'cidr')
           // if (!isCidr || isCidr.result === false) {
           //   values.peer_secgroup_id = values.source
@@ -403,6 +437,8 @@ export default {
           values.cidr = values.source
           // }
           delete values.source
+        } else {
+          values.cidr = ''
         }
         await this.saveEdit(values)
         this.loading = false

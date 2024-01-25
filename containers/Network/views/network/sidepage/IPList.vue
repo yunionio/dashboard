@@ -64,12 +64,25 @@ export default {
       tableData: [],
       filterName: '',
       columns: [
-        getCopyWithContentTableColumn({
-          field: 'ip_addr',
-          title: this.$t('network.text_213'),
-          sortable: true,
-          width: 150,
-        }),
+        {
+          field: 'addr',
+          title: i18n.t('network.text_213'),
+          width: 200,
+          slots: {
+            default: ({ row }, h) => {
+              let text = '-'
+              if (row.ip_addr) {
+                text = row.ip_addr
+              }
+              if (row.ip6_addr) {
+                text = row.ip6_addr
+              }
+              return [
+                <list-body-cell-wrap row={{ text: text }} field="text" copy />,
+              ]
+            },
+          },
+        },
         getCopyWithContentTableColumn({
           field: 'mac_addr',
           title: this.$t('network.text_228'),
@@ -95,7 +108,7 @@ export default {
           },
         },
         getTimeTableColumn(),
-        {
+        /* {
           field: 'action',
           title: this.$t('network.text_665'),
           slots: {
@@ -106,7 +119,7 @@ export default {
               return [<a onClick = {() => this.freed(row)}>{this.$t('network.text_666')}</a>]
             },
           },
-        },
+        }, */
       ],
     }
   },
@@ -114,7 +127,7 @@ export default {
     list () {
       const filterName = this.filterName.toString().trim().toLowerCase()
       if (filterName) {
-        const searchProps = ['ip_addr', 'mac_addr', 'owner_type', 'owner']
+        const searchProps = ['ip_addr', 'ip6_addr', 'mac_addr', 'owner_type', 'owner']
         return this.tableData.filter(item => searchProps.some(key => {
           if (item[key]) {
             return item[key].toString().toLowerCase().indexOf(filterName) > -1
@@ -149,9 +162,8 @@ export default {
     async fetchQueryAddresses () {
       this.loading = true
       try {
-        const { data: { addresses = [] } } = await this.manager.getSpecific({
+        const { data: { addresses = [], addresses6 = [] } } = await this.manager.getSpecific({
           id: this.resId,
-          // id: 'vnet222',
           spec: 'addresses',
           params: {
             details: true,
@@ -161,6 +173,11 @@ export default {
           },
         })
         this.tableData = addresses
+        if (addresses6) {
+          for (let i = 0; i < addresses6.length; i++) {
+            this.tableData.push(addresses6[i])
+          }
+        }
       } catch (err) {
         throw err
       } finally {
