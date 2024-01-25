@@ -9,9 +9,9 @@
 
 <script>
 import moment from 'moment'
+import CustomDate from './CustomDate'
 import i18n from '@/locales'
 import storage from '@/utils/storage'
-import CustomDate from './CustomDate'
 
 const localTimeKey = '__oc_date_time_'
 
@@ -195,7 +195,7 @@ export default {
           params.data_type = TIME_SIZE[this.time.dateMode]
         } else {
           let data_type = 'month'
-          const diffMonth = end.add(1, 'seconds').diff(start, 'months') // 相差几个月
+          const diffMonth = this.$moment(end).add(1, 'seconds').diff(start, 'months') // 相差几个月
           if (diffMonth <= 1) data_type = 'day'
           else data_type = 'month'
           params.data_type = data_type
