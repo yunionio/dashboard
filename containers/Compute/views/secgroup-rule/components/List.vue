@@ -93,18 +93,10 @@ export default {
           hideField: true,
           slotCallback: row => {
             if (row.cidr) {
-              if (row.cidr === '0.0.0.0/0' || row.cidr === '::/0') {
-                return this.$t('compute.any_cidr.text')
-              } else {
-                return row.cidr
-              }
+              return row.cidr
             } else {
-              return '-'
+              return this.$t('compute.any_cidr.text')
             }
-            // const name = row.cidr ? `${row.cidr}` : '-'
-            // return (
-            //   <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ name }</side-page-trigger>
-            // )
           },
         }),
         {
