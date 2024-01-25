@@ -70,8 +70,11 @@ export default {
         date_range: [
           { required: true, validator: this.dateRangeValidate },
         ],
-        month_range: [
-          { required: true, validator: this.monthRangeValidate },
+        start_month: [
+          { required: true, validator: this.monthStartValidate },
+        ],
+        end_month: [
+          { required: true, validator: this.monthEndValidate },
         ],
       },
     }
@@ -100,8 +103,14 @@ export default {
       }
       callback(new Error(this.$t('common.tips.select', [this.$t('common.date_range')])))
     },
-    monthRangeValidate (rule, value, callback) {
-      if (value && value[0] && value[1]) {
+    monthStartValidate (rule, value, callback) {
+      if (this.formData.month_range[0]) {
+        callback()
+      }
+      callback(new Error(this.$t('common.tips.select', [this.$t('common.date_range')])))
+    },
+    monthEndValidate (rule, value, callback) {
+      if (this.formData.month_range[1]) {
         callback()
       }
       callback(new Error(this.$t('common.tips.select', [this.$t('common.date_range')])))
