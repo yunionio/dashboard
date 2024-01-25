@@ -219,10 +219,8 @@ export default {
         access_mac: [
           'access_mac',
           {
-            validateFirst: true,
             rules: [
-              { required: true, message: this.$t('compute.text_806') },
-              { validator: validateForm('mac') },
+              { validator: validateForm('mac', false) },
             ],
           },
         ],
