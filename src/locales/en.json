@@ -4818,7 +4818,7 @@
   "common_656": "Please select destination @:dictionary.domain",
   "common_657": "unconfigured 【{0}】, cannot open",
   "common_658": "Management port MAC address",
-  "common_659": "PXE boot the MAC address of the network card",
+  "common_659": "Perform PXE boot on the MAC address of the network card. If the PXE network card is the server motherboard network card, you don’t need to fill it in, and the system can automatically detect it. Otherwise, you must fill in the MAC address of the PXE network card.",
   "common_660": "Enhanced SSD cloud hard drive",
   "common_661": "Create DNS Resolution",
   "common_662": "PublicZone type resolution domain does not support associated VPC",
