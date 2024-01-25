@@ -263,23 +263,26 @@ export default {
     },
   },
   watch: {
-    'form.fd.type' (val) {
-      if (val === 'isoAdd') {
-        this.ipmi_ip_addr_required = true
-        this.ipmi_username_required = true
-        this.ipmi_password_required = true
-        this.net_required = true
-      } else if (val === 'pxeAdd') {
-        this.ipmi_ip_addr_required = true
-        this.ipmi_username_required = true
-        this.ipmi_password_required = true
-        this.net_required = false
-      } else {
-        this.ipmi_ip_addr_required = false
-        this.ipmi_username_required = false
-        this.ipmi_password_required = false
-        this.net_required = false
-      }
+    'form.fd.type': {
+      handler (val) {
+        if (val === 'isoAdd') {
+          this.ipmi_ip_addr_required = true
+          this.ipmi_username_required = true
+          this.ipmi_password_required = true
+          this.net_required = true
+        } else if (val === 'pxeAdd') {
+          this.ipmi_ip_addr_required = true
+          this.ipmi_username_required = true
+          this.ipmi_password_required = true
+          this.net_required = false
+        } else {
+          this.ipmi_ip_addr_required = false
+          this.ipmi_username_required = false
+          this.ipmi_password_required = false
+          this.net_required = false
+        }
+      },
+      immediate: true,
     },
   },
   destroyed () {
