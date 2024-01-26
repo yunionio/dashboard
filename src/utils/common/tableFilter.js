@@ -669,3 +669,36 @@ export const getCustomDistinctFieldFilter = ({ label, multiple = true, fetchMeth
   }
   return ret
 }
+
+export const getBillProjectDomainFilter = () => {
+  return {
+    label: i18n.t('table.title.owner_domain'),
+    dropdown: true,
+    multiple: true,
+    distinctField: {
+      type: 'field',
+      key: 'domain_id',
+      afterFetch: async (items) => {
+        try {
+          const params = {
+            scope: store.getters.scope,
+            filter: `id.in(${items.join(',')})`,
+          }
+          const manager = new Manager('domains', 'v1')
+          const { data: { data = [] } } = await manager.list({
+            params,
+          })
+          return data.map(item => {
+            return { key: item.id, label: item.name }
+          })
+        } catch (error) {
+          return []
+        }
+      },
+    },
+    filter: true,
+    formatter: val => {
+      return `domain_id.in(${val.join(',')})`
+    },
+  }
+}
