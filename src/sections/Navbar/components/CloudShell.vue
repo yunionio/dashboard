@@ -34,6 +34,6 @@ export default {
   cursor: pointer;
 }
 .cloudsheel-icon {
-  font-size: 18px;
+  font-size: 22px;
 }
 </style>

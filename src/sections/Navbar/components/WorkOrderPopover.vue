@@ -5,7 +5,7 @@
         <span v-if="workOrderMenuTitleUsedText">{{$t('navbar.button.work_order')}}</span>
         <a-tooltip :title="$t('navbar.button.work_order')" placement="right" v-else>
           <a-badge :count="statistics" :overflowCount="99">
-            <icon type="navbar-process" style="font-size: 18px;" />
+            <icon type="navbar-process" style="font-size: 22px;" />
           </a-badge>
         </a-tooltip>
       </div>
