@@ -49,6 +49,7 @@
       :tagFilterResource2="tagFilterResource2"
       :tagFilterResource3="tagFilterResource3"
       :tagBtnText="tagBtnText"
+      :hiddenExportKeys="hiddenExportKeys"
       @refresh="refresh"
       @clear-selected="clearSelected"
       @tag-filter-change="tagFilterChange"
@@ -276,6 +277,12 @@ export default {
     tagFilterResource2: String,
     tagFilterResource3: String,
     tagBtnText: String,
+    hiddenExportKeys: {
+      type: Array,
+      default () {
+        return []
+      },
+    },
   },
   provide: {
     // 声明在List中

@@ -233,6 +233,7 @@ export default {
     tagFilterResource2: String,
     tagFilterResource3: String,
     tagBtnText: String,
+    hiddenExportKeys: Array,
   },
   computed: {
     _filterOptions () {
@@ -292,6 +293,7 @@ export default {
         showTagColumns: this.showTagColumns,
         showTagColumns2: this.showTagColumns2,
         showTagColumns3: this.showTagColumns3,
+        hiddenExportKeys: this.hiddenExportKeys,
         callback: this.exportDataOptions.callback,
       })
     },

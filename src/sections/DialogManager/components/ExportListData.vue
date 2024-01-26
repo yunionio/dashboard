@@ -63,13 +63,13 @@ export default {
         ...item,
       }
     })
+    const hiddenExportKeys = this.params.hiddenExportKeys || []
     // 导出备注信息（位置在 name 之后）
     const nameIndex = exportOptionItems.findIndex(item => item.field === 'name' || item.key === 'name')
-    if (nameIndex > -1) {
+    if (nameIndex > -1 && !hiddenExportKeys.includes('description')) {
       exportOptionItems = R.insert(nameIndex + 1, { label: this.$t('table.title.desc'), key: 'description' }, exportOptionItems)
     }
-
-    let allExportKeys = exportOptionItems.map(item => item.key)
+    let allExportKeys = exportOptionItems.filter(item => !hiddenExportKeys.includes(item.key)).map(item => item.key)
     const exportTags = (this.params.showTagColumns && this.params.config.showTagKeys) || []
     if (exportTags && exportTags.length) {
       allExportKeys = R.insertAll(0, exportTags.map(item => {
