@@ -45,6 +45,7 @@ import { download, getRequestT } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { getTagTitle } from '@/utils/common/tag'
+import { addDataToSheetAfterFormat } from '@/utils/xlsx'
 
 export default {
   name: 'ExportListDataDialog',
@@ -393,7 +394,7 @@ export default {
         if (idx !== sheetIdx) {
           // 保存旧表
           const ws_name = 'sheet' + sheetIdx
-          const ws = XLSX.utils.aoa_to_sheet([titles, ...sheetDatas])
+          const ws = addDataToSheetAfterFormat({ data: [titles, ...sheetDatas] })
           if (hasExpandColumn) {
             const sheetMerges = this.getSheetMerges({ titles, sheetOriginDatas, columns, expandColumns })
             ws['!merges'] = sheetMerges
@@ -438,7 +439,7 @@ export default {
           sheetDatas.push(row)
           sheetOriginDatas.push(dataList[i - 1])
           const ws_name = 'sheet' + sheetIdx
-          const ws = XLSX.utils.aoa_to_sheet([titles, ...sheetDatas])
+          const ws = addDataToSheetAfterFormat({ data: [titles, ...sheetDatas] })
           if (hasExpandColumn) {
             const sheetMerges = this.getSheetMerges({ titles, sheetOriginDatas, columns, expandColumns })
             ws['!merges'] = sheetMerges
