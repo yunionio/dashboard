@@ -120,7 +120,7 @@ export default {
               { row.metadata && getToolTip(row) }
               { row.status?.includes('fail') ? log : null }
               { row.status === 'live_migrating' ? cancel : null }
-              { row.shutdown_mode === 'stop_charging' ? shutdown : null }
+              { row.status === 'ready' && row.shutdown_mode === 'stop_charging' ? shutdown : null }
             </div>,
           ]
         },
