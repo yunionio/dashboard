@@ -3,7 +3,7 @@
     <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
       <a-tooltip :title="$t('common.more')" placement="right">
         <div class="trigger d-flex align-items-center justify-content-center">
-          <icon type="navbar-more" style="font-size: 18px;" />
+          <icon type="navbar-more" style="font-size: 20px;" />
         </div>
       </a-tooltip>
       <a-menu slot="overlay" @click="handleDropdownClick">

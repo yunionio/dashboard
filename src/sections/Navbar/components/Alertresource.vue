@@ -79,7 +79,7 @@ export default {
   text-decoration: none;
 }
 .alertresource-icon {
-  font-size: 18px;
+  font-size: 22px;
   // animation: glint 1.5s infinite; // !打开动画之后 Renderer CPU 会在13%～15%左右
 }
 .alertresource-error {
