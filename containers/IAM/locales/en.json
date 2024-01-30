@@ -806,6 +806,10 @@
       "label": "Allocated resource type",
       "desc": "The default is cloud resource type. By setting the allocation type, this type will be used for project allocation when doing project allocation."
     },
+    "meter$use_local_instance_project": {
+      "label": "Charging switch based on the current project of resources",
+      "desc": "After activation, the resource costs corresponding to the rerun bill will be attributed to the latest billing, and historical project changes will be ignored."
+    },
     "compute$enable_export_username_password": {
       "label": "Virtual Machine Password Export Switch",
       "desc": "When enabled, includes account password information when exporting the virtual machine list through the platform (caution advised for large quantities)"
