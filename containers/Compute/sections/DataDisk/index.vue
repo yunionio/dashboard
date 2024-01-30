@@ -320,6 +320,9 @@ export default {
       if (!R.equals(v, oldV)) {
         if (this.dataDisks && this.dataDisks.length) {
           this.dataDisks.forEach(disk => {
+            this.form.fc.setFieldsValue({
+              [`dataDiskSizes[${disk.key}]`]: Math.max((disk.value || 0), this.min),
+            })
             if (!disk.disabled) this.decrease(disk.key)
           })
         }
