@@ -460,7 +460,9 @@ export default {
     this.cronjobFetchAlerts()
     // 商业版数据处理
     if (process.env.VUE_APP_IS_PRIVATE) {
-      this.$store.dispatch('bill/fetchProjectSharingAccounts')
+      if (this.isAdminMode || this.isDomainMode) {
+        this.$store.dispatch('bill/fetchProjectSharingAccounts')
+      }
     }
   },
   methods: {
