@@ -9,9 +9,9 @@
 
 <script>
 import moment from 'moment'
-import CustomDate from './CustomDate'
 import i18n from '@/locales'
 import storage from '@/utils/storage'
+import CustomDate from './CustomDate'
 
 const localTimeKey = '__oc_date_time_'
 
