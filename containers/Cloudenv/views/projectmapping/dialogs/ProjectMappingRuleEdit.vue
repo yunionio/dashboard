@@ -127,7 +127,7 @@ export default {
     projectParams () {
       return {
         scope: this.scope,
-        project_domain_id: this.params.projectDomainId,
+        // project_domain_id: this.params.projectDomainId,
         limit: 20,
       }
     },
