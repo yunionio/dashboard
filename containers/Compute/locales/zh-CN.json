@@ -1762,5 +1762,11 @@
   "compute.core_per_sockets": "每个插槽内核数",
   "compute.hot_action_notsupport": "热操作不支持该操作，请关机后重试！",
   "compute.huawei.ssd_genric_v2": "通用型SSD V2",
-  "compute.trans_device_server": "透传设备虚拟机"
+  "compute.trans_device_server": "透传设备虚拟机",
+  "compute.rescue": "紧急模式",
+  "compute.start_rescue": "进入紧急模式",
+  "compute.start_rescue.validate_tooltip": "请退出紧急模式后重试",
+  "compute.start_rescue.message": "若虚机磁盘损坏无法进入系统修复，可通过此操作进入紧急模式临时进入。操作后，通过远程控制-VNC链接",
+  "compute.stop_rescue": "退出紧急模式",
+  "compute.stop_rescue.validate_tooltip": "请进入紧急模式后重试"
 }
