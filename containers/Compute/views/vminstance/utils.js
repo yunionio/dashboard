@@ -765,3 +765,20 @@ export const isSameDate = (date1, date2) => {
   }
   return isSame
 }
+
+export const validateRescueMode = (val) => {
+  const ret = { validate: true }
+  if (Array.isArray(val)) {
+    const isSomeRescueMode = val.some(item => item.rescue_mode === true)
+    if (isSomeRescueMode) {
+      ret.validate = false
+      ret.tooltip = i18n.t('compute.start_rescue.validate_tooltip')
+    }
+  } else {
+    if (val?.rescue_mode === true) {
+      ret.validate = false
+      ret.tooltip = i18n.t('compute.start_rescue.validate_tooltip')
+    }
+  }
+  return ret
+}

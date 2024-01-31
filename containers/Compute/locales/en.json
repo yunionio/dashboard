@@ -1758,5 +1758,11 @@
   "compute.core_per_sockets": "Number of cores per socket",
   "compute.hot_action_notsupport": "Hot operation does not support this operation, please shut down and try again!",
   "compute.huawei.ssd_genric_v2": "SSD-genric V2",
-  "compute.trans_device_server": "Passthrough VM instance"
+  "compute.trans_device_server": "Passthrough VM instance",
+  "compute.rescue": "Emergency mode",
+  "compute.start_rescue": "Enter emergency mode",
+  "compute.start_rescue.validate_tooltip": "Please exit emergency mode and try again",
+  "compute.start_rescue.message": "If the virtual machine disk is damaged and cannot be repaired, you can use this operation to enter the emergency mode temporarily. After the operation, use the remote control-VNC link",
+  "compute.stop_rescue": "Exit emergency mode",
+  "compute.stop_rescue.validate_tooltip": "Please enter emergency mode and try again"
 }

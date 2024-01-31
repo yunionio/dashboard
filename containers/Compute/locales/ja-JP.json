@@ -1762,5 +1762,11 @@
   "compute.core_per_sockets": "ソケットあたりのコア数",
   "compute.hot_action_notsupport": "ホット操作はこの操作をサポートしていません。シャットダウンして再試行してください。",
   "compute.huawei.ssd_genric_v2": "ユニバーサルSSD V2",
-  "compute.trans_device_server": "透過的な伝送デバイス仮想マシン"
+  "compute.trans_device_server": "透過的な伝送デバイス仮想マシン",
+  "compute.rescue": "緊急モード",
+  "compute.start_rescue": "緊急モードに入る",
+  "compute.start_rescue.validate_tooltip": "緊急モードを終了して再試行してください",
+  "compute.start_rescue.message": "仮想マシンのディスクが破損していて修復できない場合は、この操作を使用して一時的に緊急モードに入ることができます。操作後は、リモート コントロールと VNC のリンクを使用してください。",
+  "compute.stop_rescue": "緊急モードを終了",
+  "compute.stop_rescue.validate_tooltip": "緊急モードに入って再試行してください。"
 }
