@@ -46,6 +46,8 @@
       :tag-config-params="tagConfigParams"
       :treeToggleOpen="treeToggleOpen"
       :show-no-value="showNoValue"
+      :show-no-value2="showNoValue2"
+      :show-no-value3="showNoValue3"
       :tagFilterResource2="tagFilterResource2"
       :tagFilterResource3="tagFilterResource3"
       :tagBtnText="tagBtnText"
@@ -266,6 +268,14 @@ export default {
       type: Array,
     },
     showNoValue: {
+      type: Boolean,
+      default: true,
+    },
+    showNoValue2: {
+      type: Boolean,
+      default: true,
+    },
+    showNoValue3: {
       type: Boolean,
       default: true,
     },
