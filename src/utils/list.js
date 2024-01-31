@@ -993,6 +993,7 @@ class CreateList {
     const ret = {}
     let index = 0
     let index2 = 0
+    let index3 = 0
     const { projectTagFilter = {} } = this
     const { tagFilterKey = 'project_tags' } = projectTagFilter
     if (projectTagFilter[tagFilterKey]) {
@@ -1066,17 +1067,17 @@ class CreateList {
       } else if (key === 'with_user_meta' && value && value[0] === true) {
         ret.with_user_meta = true
       } else {
-        ret[`instancetags.${index2}.key`] = []
+        ret[`instancetags.${index3}.key`] = []
         let len = 1
         if (value && value.length) len = value.length
         if (len > 0) {
           for (let i = 0; i < len; i++) {
-            ret[`instancetags.${index2}.key`] = key
-            ret[`instancetags.${index2}.value`] = value[i]
-            index2++
+            ret[`instancetags.${index3}.key`] = key
+            ret[`instancetags.${index3}.value`] = value[i]
+            index3++
           }
         } else {
-          ret[`instancetags.${index2}.value`] = ''
+          ret[`instancetags.${index3}.value`] = ''
         }
       }
     }, this.tagFilter3)
