@@ -2,6 +2,7 @@
   <base-dialog :width="1000" @cancel="cancelDialog">
     <div slot="header">{{$t('cloudenv.text_583')}}</div>
     <div slot="body" style="max-height:calc(100vh - 320px);overflow-y:auto">
+      <a-alert class="mb-3" :message="$t('cloudenv.project_mapping_rule_priority')" />
       <a-form-model ref="ruleForm" :model="formData" :rules="rules" v-bind="layout">
         <!-- 域 -->
         <a-form-model-item :label="$t('dictionary.domain')" prop="project_domain_id">
@@ -36,19 +37,23 @@
               <template v-else>
                 <!-- 标签 -->
                 <a-form-model-item :label="$t('cloudenv.text_16')" v-bind="layout" :rules="rules.tags" :prop="`rules.${index}.tags`">
-                  <tag v-model="item.tags" @change="(val) => handleTagChange(val, index)" />
+                  <tag v-if="tagShow" :defaultChecked="item.tags" @change="(val) => handleTagChange(val, index)" />
                 </a-form-model-item>
                 <!-- 项目 -->
                 <a-form-model-item :label="$t('cloudenv.text_584')" :extra="$t('cloudenv.text_592')" v-bind="layout" :rules="rules.project_id" :prop="`rules.${index}.project_id`">
-                  <a-select v-model="item.project_id" show-search option-filter-prop="children" :filter-option="filterOption">
-                    <a-select-option v-for="item in projectOptions" :key="item.id" :value="item.id">
-                      {{item.name}}
-                    </a-select-option>
-                  </a-select>
+                  <base-select
+                    resource="projects"
+                    remote
+                    :params="{...projectParams, $t: index}"
+                    v-model="item.project_id" />
                 </a-form-model-item>
               </template>
             </a-card>
-            <a-button style="flex: 0 0 24px;margin-left: 20px" shape="circle" icon="minus" size="small" @click="deleteRule(item,index)" />
+            <div>
+              <div v-if="formData.rules.length > 1 && index !== 0"><a-button icon="vertical-align-top" style="flex: 0 0 24px;margin-left: 16px;border:none" @click="changeRuleIndex('up', item, index)" /></div>
+              <div><a-button style="flex: 0 0 24px;margin-left: 20px" shape="circle" icon="minus" size="small" @click="deleteRule(item,index)" /></div>
+              <div v-if="formData.rules.length > 1 && index !== formData.rules.length - 1"><a-button icon="vertical-align-bottom" style="flex: 0 0 24px;margin-left: 16px;border:none" @click="changeRuleIndex('down', item, index)" /></div>
+            </div>
           </div>
           <div class="d-flex align-items-center">
             <a-button type="primary" shape="circle" icon="plus" size="small" @click="addRule" />
@@ -144,13 +149,13 @@ export default {
       resourceAndTagOptions: [
         {
           id: 1,
-          name: this.$t('cloudenv.text_587'),
-          value: 'or',
+          name: this.$t('cloudenv.text_588'),
+          value: 'and',
         },
         {
           id: 2,
-          name: this.$t('cloudenv.text_588'),
-          value: 'and',
+          name: this.$t('cloudenv.text_587'),
+          value: 'or',
         },
         {
           id: 3,
@@ -160,47 +165,22 @@ export default {
       ],
       projectOptions: [],
       projectDomainId: projectDomainInitialValue,
+      tagShow: true,
     }
   },
   computed: {
     ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
-  },
-  watch: {
-    projectDomainId: {
-      handler: function (val) {
-        if (val) {
-          // this.fetchCloudAccount()
-          this.fetchProject()
-        }
-      },
-      immediate: true,
+    projectParams () {
+      return {
+        limit: 20,
+        scope: this.$store.getters.scope,
+        project_domain_id: this.projectDomainId,
+      }
     },
   },
   mounted () {
   },
   methods: {
-    async fetchProject () {
-      this.$p = new this.$Manager('projects', 'v1')
-      this.projectOptions = undefined
-      try {
-        const params = {
-          scope: this.$store.getters.scope,
-          project_domain_id: this.projectDomainId,
-        }
-        const { data } = await this.$p.list({ params })
-        const projects = data.data || []
-        this.projectOptions = projects.map(item => {
-          return {
-            id: item.id,
-            name: item.name,
-            value: item.name,
-          }
-        })
-      } catch (err) {
-        throw err
-      } finally {
-      }
-    },
     doCreate (data) {
       return new this.$Manager('project_mappings').create({ data: data })
     },
@@ -281,7 +261,7 @@ export default {
     },
     addRule () {
       this.formData.rules.push({
-        condition: 'or',
+        condition: 'and',
         tags: {},
         tag_key: '',
         project_id: '',
@@ -289,6 +269,19 @@ export default {
     },
     deleteRule (item, idx) {
       this.formData.rules = this.formData.rules.filter((item, index) => index !== idx)
+    },
+    changeRuleIndex (type, item, idx) {
+      const rules = R.clone(this.formData.rules)
+      if (type === 'up') {
+        [rules[idx - 1], [rules[idx]]] = [rules[idx], [rules[idx - 1]]]
+      } else {
+        [rules[idx], [rules[idx + 1]]] = [rules[idx + 1], [rules[idx]]]
+      }
+      this.tagShow = false
+      this.formData.rules = rules
+      this.$nextTick(() => {
+        this.tagShow = true
+      })
     },
     validateRules (rule, value, callback) {
       if (!this.formData.rules.length) {
