@@ -174,7 +174,7 @@ export default {
       return {
         limit: 20,
         scope: this.$store.getters.scope,
-        project_domain_id: this.projectDomainId,
+        // project_domain_id: this.projectDomainId,
       }
     },
   },
