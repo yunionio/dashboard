@@ -32,6 +32,7 @@
             <base-select
               resource="projects"
               :params="projectParams"
+              remote
               v-model="formData.project_id"
               :select-props="{placeholder: $t('common.tips.select', [$t('cloudenv.text_584')])}" />
           </a-form-model-item>
@@ -104,13 +105,13 @@ export default {
       resourceAndTagOptions: [
         {
           id: 1,
-          name: this.$t('cloudenv.text_587'),
-          value: 'or',
+          name: this.$t('cloudenv.text_588'),
+          value: 'and',
         },
         {
           id: 2,
-          name: this.$t('cloudenv.text_588'),
-          value: 'and',
+          name: this.$t('cloudenv.text_587'),
+          value: 'or',
         },
         {
           id: 3,
@@ -127,6 +128,7 @@ export default {
       return {
         scope: this.scope,
         project_domain_id: this.params.projectDomainId,
+        limit: 20,
       }
     },
     editIndex () {

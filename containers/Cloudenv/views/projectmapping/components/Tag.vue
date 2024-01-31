@@ -39,7 +39,7 @@
     <a-form-item :extra="$t('cloudenv.text_594')" class="mt-2">
       <div class="d-flex">
         <div style="line-height: 40px;">
-          <tag-select global v-model="checked" :params="params" :button-text="$t('compute.text_1147')" :defaultChecked="defaultChecked" />
+          <tag-select :allowNoValue="false" global v-model="checked" :params="params" :button-text="$t('compute.text_1147')" :defaultChecked="defaultChecked" />
           <a-button class="ml-2" v-if="!showForm" @click="() => showForm = true">{{$t('compute.text_1382')}}</a-button>
         </div>
         <a-form
@@ -106,6 +106,7 @@ export default {
         ],
       },
       checkedInfo,
+      flag: true,
     }
   },
   computed: {
@@ -119,8 +120,12 @@ export default {
       try {
         R.forEachObjIndexed((value, key) => {
           if (value.length > 0) {
-            for (let i = 0, len = value.length; i < len; i++) {
-              ret.push(this.genTag({ key, value: value[i], index: this.checkedInfo[key].index }))
+            if (R.is(Array, value)) {
+              for (let i = 0, len = value.length; i < len; i++) {
+                ret.push(this.genTag({ key, value: value[i], index: this.checkedInfo[key].index }))
+              }
+            } else {
+              ret.push(this.genTag({ key, value: value, index: this.checkedInfo[key].index }))
             }
           } else {
             ret.push(this.genTag({ key, value: null, index: this.checkedInfo[key].index }))
@@ -146,9 +151,13 @@ export default {
     },
     defaultChecked: {
       handler: function (val) {
-        this.checked = Object.assign({}, this.checked, this.defaultChecked || {})
+        if (this.flag) {
+          this.checked = Object.assign({}, this.checked, this.defaultChecked || {})
+          this.flag = false
+        }
       },
       immediate: true,
+      deep: true,
     },
     checked: {
       handler: function (val) {
