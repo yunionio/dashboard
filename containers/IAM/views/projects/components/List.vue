@@ -118,7 +118,7 @@ export default {
               columns: this.columns,
               onManager: this.onManager,
               params: {
-                resources: 'project',
+                resource: 'projects',
                 with_cloud_meta: false,
                 service: 'identity',
               },
