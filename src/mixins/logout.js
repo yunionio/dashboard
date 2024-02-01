@@ -96,8 +96,9 @@ export default {
         }
       }, 1000)
     },
-    handleAppAction () {
+    handleAppAction (e) {
       this.lastActionTime = new Date().getTime()
+      this.$bus.$emit('app-action', e)
     },
     logout () {
       store.dispatch('auth/logout').then(() => {

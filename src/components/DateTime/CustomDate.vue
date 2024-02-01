@@ -1,32 +1,27 @@
 <template>
-  <a-popconfirm placement="bottomRight" overlayClassName="custom-date-time" @confirm="submit" @cancel="cancel" v-model="visible">
-    <template v-slot:icon><i /></template>
-    <template v-slot:title class="pl-0">
-      <a-form-model hideRequiredMark v-if="isAdvancedView" ref="ruleForm" :model="formData" :rules="rules" v-bind="layout">
-        <a-form-model-item :label="$t('common.date_range')" prop="date_range">
-          <div class="mr-2" style="width:356px">
-            <a-range-picker
-              v-model="formData.date_range"
-              :format="showFormat"
-              :disabled-time="disabledDate" />
-          </div>
-        </a-form-model-item>
-      </a-form-model>
-      <a-form-model hideRequiredMark v-else ref="ruleForm" :model="formData" :rules="rules" v-bind="layout">
-        <a-form-model-item :label="$t('common.date_range')" class="mb-0">
-          <div class="d-flex">
-            <a-form-model-item prop="start_month">
-              <a-month-picker v-model="formData.month_range[0]" @change="startChange" />
+  <a-popconfirm ref="customDate" placement="bottomRight" overlayClassName="custom-date-time" @confirm="submit" @cancel="cancel" v-model="visible">
+      <template v-slot:icon><i /></template>
+      <template v-slot:title class="pl-0">
+        <div @click="hiddenMonthSelectVisble">
+          <a-form-model hideRequiredMark v-if="isAdvancedView" ref="ruleForm" :model="formData" :rules="rules" v-bind="layout">
+            <a-form-model-item :label="$t('common.date_range')" prop="date_range">
+              <div class="mr-2" style="width:356px">
+                <a-range-picker
+                  v-model="formData.date_range"
+                  :format="showFormat"
+                  :disabled-time="disabledDate" />
+              </div>
             </a-form-model-item>
-            <span class="ml-2 mr-2">~</span>
-            <a-form-model-item prop="end_month">
-              <a-month-picker v-model="formData.month_range[1]" :disabled-date="dateDisabledEnd" />
+          </a-form-model>
+          <a-form-model hideRequiredMark v-else ref="ruleForm" :model="formData" :rules="rules" v-bind="layout">
+            <a-form-model-item :label="$t('common.date_range')" prop="month_range">
+              <month-range-picker ref="monthSelect" v-model="formData.month_range" :panelVisible="visible" />
             </a-form-model-item>
-          </div>
-        </a-form-model-item>
-      </a-form-model>
-      <a-button type="link" class="position-absolute" style="bottom: -28px;" @click="toggleView">{{ isAdvancedView ? $t('common.date_time.quick') : $t('common.date_time.advanced') }}</a-button>
-    </template>
+          </a-form-model>
+          <a-button type="link" class="position-absolute" style="bottom: -28px;" @click="toggleView">{{ isAdvancedView ? $t('common.date_time.quick') : $t('common.date_time.advanced') }}</a-button>
+        </div>
+      </template>
+    <!-- </div> -->
     <a-radio-button value="custom">{{$t('common.date_time.custom')}}{{customTimeLabel}}</a-radio-button>
   </a-popconfirm>
 </template>
@@ -56,12 +51,14 @@ export default {
   data () {
     return {
       formData: {
-        month_range: [moment().startOf('month'), moment().endOf('month')],
+        month_range: [moment(this.customDate.start), moment(this.customDate.end)],
         date_range: [this.customDate.start, this.customDate.end],
       },
+      monthChangeIndex: 0,
       isAdvancedView: false, // 是否展示高级窗口
       confirmView: true, // 确认状态下的是否展示高级窗口
       visible: false,
+      monthSelectVisble: false,
       layout: {
         labelCol: { span: 5 },
         wrapperCol: { span: 19 },
@@ -79,7 +76,36 @@ export default {
       },
     }
   },
+  watch: {
+    isAdvancedView (val) {
+      if (!val && !this.visible) {
+        this.monthChangeIndex = 0
+      }
+    },
+    visible (val) {
+      if (!val && !this.isAdvancedView) {
+        this.monthChangeIndex = 0
+      }
+      if (!val) {
+        this.monthSelectVisble = false
+      }
+      if (val) {
+        this.$nextTick(() => {
+          const that = this
+          const tags = document.getElementsByClassName('ant-popover-inner-content')
+          for (let i = 0; i < tags.length; i++) {
+            tags[i].addEventListener('click', function () {
+              that.$refs.monthSelect && that.$refs.monthSelect.hiddenPanel()
+            })
+          }
+        })
+      }
+    },
+  },
   methods: {
+    hiddenMonthSelectVisble () {
+      this.$refs.monthSelect && this.$refs.monthSelect.hiddenPanel()
+    },
     startChange (value) {
       const dateEnd = this.formData.month_range[1]
       if (dateEnd && value > dateEnd) {
@@ -91,8 +117,32 @@ export default {
       if (dateStart && value < dateStart) return true
       return false
     },
-    handleMonthChange (val) {
-      this.formData.month_range = val
+    handleOpenChange (val) {
+      this.monthSelectVisble = val
+    },
+    handleMonthChange (val, str) {
+      const val0 = val[0].format('YYYYMM')
+      const val1 = val[1].format('YYYYMM')
+      const ori0 = this.formData.month_range[0].format('YYYYMM')
+      const ori1 = this.formData.month_range[0].format('YYYYMM')
+      let changeIndex = 0
+      if (val0 === ori0 && val1 !== ori1) {
+        changeIndex = 1
+      }
+      const changeVal = val[changeIndex]
+      if (this.monthChangeIndex === 0) {
+        const otherVal = this.formData.month_range[1] > changeVal ? this.formData.month_range[1] : changeVal
+        this.formData.month_range = [changeVal, otherVal]
+        this.monthChangeIndex = 1
+      } else {
+        if (changeVal < this.formData.month_range[0]) {
+          this.formData.month_range = [changeVal, this.formData.month_range[0]]
+        } else {
+          this.formData.month_range = [this.formData.month_range[0], changeVal]
+        }
+        this.monthChangeIndex = 0
+        this.monthSelectVisble = false
+      }
     },
     dateRangeValidate (rule, value, callback) {
       if (value && value[0] && value[1]) {
