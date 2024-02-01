@@ -56,15 +56,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('system.text_101'), key: 'name' },
-          { label: this.$t('system.text_163'), key: 'enabled' },
-          { label: this.$t('dictionary.domain'), key: 'project_domain' },
-          { label: this.$t('system.text_127'), key: 'created_at' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('system.text_128'),
@@ -190,7 +181,19 @@ export default {
       ],
     }
   },
-  computed: mapGetters(['isAdminMode', 'userInfo']),
+  computed: {
+    ...mapGetters(['isAdminMode', 'userInfo']),
+    exportDataOptions () {
+      return {
+        title: this.$t('dictionary.policy'),
+        downloadType: 'local',
+        items: [
+          { label: 'ID', field: 'id' },
+          ...this.columns,
+        ],
+      }
+    },
+  },
   watch: {
     type (val) {
       this.$nextTick(() => {

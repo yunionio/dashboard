@@ -7,6 +7,7 @@ import {
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import { isCE } from '@/utils/utils'
 
 export default {
   created () {
@@ -54,6 +55,7 @@ export default {
         title: this.$t('iam.project_tag'),
         field: 'project_tags',
         columns: () => this.columns,
+        hidden: () => isCE(),
       }),
       getTagTableColumn({
         customTitle: this.$t('iam.object_tag'),
@@ -61,12 +63,47 @@ export default {
         field: 'object_tags',
         columns: () => this.columns,
       }),
+      {
+        field: 'org_nodes',
+        title: this.$t('dictionary.organization'),
+        formatter: ({ row }) => {
+          const { org_nodes = [] } = row
+          if (org_nodes.length) {
+            const list = org_nodes.map(item => this.getTag(item))
+            return list.join(';')
+          }
+          return '-'
+        },
+        slots: {
+          default: ({ row }) => {
+            const { org_nodes = [] } = row
+            if (org_nodes.length) {
+              const list = org_nodes.map(item => <a-tag class="mr-1 mb-1">{this.getTag(item)}</a-tag>)
+              return [...list]
+            }
+            return '-'
+          },
+        },
+        hidden: () => isCE(),
+      },
       getPublicScopeTableColumn({ vm: this, resource: 'policies' }),
       getProjectDomainTableColumn(),
       getTimeTableColumn(),
     ]
   },
   methods: {
+    getTag (tag) {
+      const { tags = [] } = tag
+      const ret = tags.map(item => {
+        const { key, value } = item
+        if (value) {
+          return `${key.replace('org:', '')}:${value}`
+        } else {
+          return key.replace('org:', '')
+        }
+      })
+      return ret.join(' - ')
+    },
     isOwnerPublic (obj) {
       // fix by http://bug.yunion.io/zentao/bug-view-2958.html 共享的权限在其他域下时应该不能做任何操作
       if (obj.is_public) {

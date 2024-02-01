@@ -14,8 +14,9 @@ import {
   getEnabledTableColumn,
   getTagTableColumn,
 } from '@/utils/common/tableColumn'
-import PolicyViewer from '../components/PolicyViewer'
+import { isCE } from '@/utils/utils'
 import { getTagColor } from '@/utils/common/tag'
+import PolicyViewer from '../components/PolicyViewer'
 
 export default {
   name: 'PolicyDetail',
@@ -77,6 +78,7 @@ export default {
               return '-'
             },
           },
+          hidden: () => isCE(),
         },
         {
           field: 'object_tags',
@@ -96,6 +98,21 @@ export default {
               return '-'
             },
           },
+        },
+        {
+          field: 'org_nodes',
+          title: this.$t('dictionary.organization'),
+          slots: {
+            default: ({ row }) => {
+              const { org_nodes = [] } = row
+              if (org_nodes.length) {
+                const list = org_nodes.map(item => <a-tag class="mr-1 mb-1">{this.getTag(item)}</a-tag>)
+                return [...list]
+              }
+              return '-'
+            },
+          },
+          hidden: () => isCE(),
         },
         getTagTableColumn({
           columns: () => this.columns,
@@ -129,6 +146,20 @@ export default {
         { required: true, message: this.$t('system.text_168') },
       ],
     }
+  },
+  methods: {
+    getTag (tag) {
+      const { tags = [] } = tag
+      const ret = tags.map(item => {
+        const { key, value } = item
+        if (value) {
+          return `${key.replace('org:', '')}:${value}`
+        } else {
+          return key.replace('org:', '')
+        }
+      })
+      return ret.join(' - ')
+    },
   },
 }
 </script>
