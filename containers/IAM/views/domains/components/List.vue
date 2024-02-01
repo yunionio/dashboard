@@ -8,7 +8,8 @@
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :ext-tag-params="{ service: 'identity' }" />
 </template>
 
 <script>
@@ -107,6 +108,7 @@ export default {
                     columns: this.columns,
                     onManager: this.onManager,
                     params: {
+                      service: 'identity',
                       resources: 'domain',
                     },
                     mode: 'add',
