@@ -219,7 +219,7 @@ export default {
       if (this.params) {
         ret = Object.assign({}, ret, this.params)
       }
-      if (this.global) delete ret.resources
+      if (this.global && !this.params.resources) delete ret.resources
       return ret
     },
     currentTag () {
