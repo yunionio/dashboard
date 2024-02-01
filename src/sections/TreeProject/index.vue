@@ -16,7 +16,7 @@
           @select="handleTreeNodeSelect"
           style="padding:10px 0">
           <a-icon slot="switcherIcon" type="caret-down" style="font-size: 16px;color:#999" />
-          <icon slot="organization" style="font-size: 14px;color:#999" type="organization" />
+          <icon slot="organization" class="tree-node-icon" style="font-size: 14px;color:#999" type="organization" />
         </a-tree>
       </div>
     </div>
@@ -143,14 +143,16 @@ export default {
       const treeNode = tree
       treeNode.tag = treeNode.key
       if (treeNode.value === 'root') {
-        treeNode.title = `${this.$t('common_737')}(${treeNode.count})`
+        treeNode.title = (
+          <span class="tree-node-title">{this.$t('common_737')}({treeNode.count})</span>
+        )
       } else if (treeNode.value === '___no_value__') {
         treeNode.title = (
-          <span><span class="tag-title-budge">{treeNode.tag.replace('user:', '')}:</span>{`${this.$t('common_736')}(${treeNode.count})`}</span>
+          <span class="tree-node-title"><span class="tag-title-budge">{treeNode.tag.replace('user:', '')}:</span>{`${this.$t('common_736')}(${treeNode.count})`}</span>
         )
       } else {
         treeNode.title = (
-          <span><span class="tag-title-budge">{treeNode.tag.replace('user:', '')}:</span>{`${treeNode.value}(${treeNode.count})`}</span>
+          <span class="tree-node-title"><span class="tag-title-budge">{treeNode.tag.replace('user:', '')}:</span>{`${treeNode.value}(${treeNode.count})`}</span>
         )
       }
       treeNode.key = uuid()
@@ -223,5 +225,11 @@ export default {
   display: inline-block;
   color: #999;
   margin-right: 5px;
+}
+.tree-node-title:hover{
+  color: var(--antd-wave-shadow-color);
+  .tag-title-budge {
+    color: var(--antd-wave-shadow-color);
+  }
 }
 </style>
