@@ -808,7 +808,7 @@
     },
     "meter$use_local_instance_project": {
       "label": "Charging switch based on the current project of resources",
-      "desc": "After activation, the resource costs corresponding to the rerun bill will be attributed to the latest billing, and historical project changes will be ignored."
+      "desc": "After activation, the resource costs corresponding to the rerun bill will be attributed to the latest project, and historical project changes will be ignored."
     },
     "compute$enable_export_username_password": {
       "label": "Virtual Machine Password Export Switch",

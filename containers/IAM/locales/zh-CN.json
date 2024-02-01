@@ -807,7 +807,7 @@
     },
     "meter$use_local_instance_project": {
       "label": "根据资源当前项目计费开关",
-      "desc": "开启后，重跑账单相应资源费用均会归属到最新计费，会忽略历史项目变化情况。"
+      "desc": "开启后，重跑账单相应资源费用均会归属到最新项目，会忽略历史项目变化情况。"
     },
     "compute$enable_export_username_password": {
       "label": "虚拟机密码导出开关",

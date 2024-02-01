@@ -47,7 +47,7 @@
          @tagsChange="handleDomainTagsUpdate"
          :global="false" />
       </a-form-model-item>
-      <a-form-model-item v-if="model.scope !== 'project'" :label="$t('iam.project_tag')" prop="project_tags">
+      <a-form-model-item v-if="showOrg && model.scope !== 'project'" :label="$t('iam.project_tag')" prop="project_tags">
         <pairs-tag :value="project_tags" @change="handleProjectTagsChange" />
       </a-form-model-item>
       <a-form-model-item :label="$t('iam.object_tag')" prop="object_tags">
@@ -60,6 +60,9 @@
          @change="handleObjectTagsChange"
          @tagsChange="handleObjectTagsUpdate"
          :global="true" />
+      </a-form-model-item>
+      <a-form-model-item v-if="showOrg && model.scope !== 'project'" :label="$t('dictionary.organization')" prop="org_node_id">
+        <organization-select v-model="model.org_node_id" :params="orgParams" @change="handleOrgChange" />
       </a-form-model-item>
       <template v-if="editType === 'checkbox'">
         <template v-if="showPolicyCheckbox">
@@ -85,14 +88,16 @@ import { mapGetters } from 'vuex'
 import { SCOPES_MAP } from '@/constants'
 import i18n from '@/locales'
 import PairsTag from '@/sections/PairsTag'
+import OrganizationSelect from '@/sections/OrganizationSelect'
 import Tag from '@/sections/Tag'
 import validateForm from '@/utils/validate'
+import { isCE } from '@/utils/utils'
+import { getPolicyResCheckedList } from '@/utils/policy/policy-res-list'
+import { POLICY_WHITE_LIST } from '@/constants/policy'
 import { genPolicyGroups } from '../../utils'
 import { DEFAULT_ACTIONS_KEY } from '../../constants'
 import ScopeSelect from './ScopeSelect'
 import PolicyRuleCheckbox from './PolicyRuleCheckbox'
-import { getPolicyResCheckedList } from '@/utils/policy/policy-res-list'
-import { POLICY_WHITE_LIST } from '@/constants/policy'
 
 // 权限级别
 const policyLevel = {
@@ -222,6 +227,7 @@ export default {
     PolicyRuleCheckbox,
     PairsTag,
     Tag,
+    OrganizationSelect,
   },
   props: {
     policy: Object,
@@ -241,6 +247,7 @@ export default {
     const initialCheckboxPolicyValue = (this.policy && this.policy.policy) || {}
     const initialDescriptionValue = (this.policy && this.policy.description) || ''
     const initProjectTagsValue = (this.policy && this.policy.project_tags) || []
+    const initOrgIds = (this.policy && this.policy.org_node_id) || []
     const initObjectTagsValue = {}
     const initDomainTagsValue = {}
     if (this.policy && this.policy.object_tags) {
@@ -280,6 +287,7 @@ export default {
         scope: initialScopeValue,
         domain: initialDomainValue,
         description: initialDescriptionValue,
+        org_node_id: initOrgIds,
       },
       project_tags: initProjectTagsValue,
       object_tags: initObjectTagsValue,
@@ -339,6 +347,18 @@ export default {
       }
       return params
     },
+    orgParams () {
+      const params = {
+        scope: this.scope,
+      }
+      if (this.isAdminMode && this.model.domain) {
+        params.domain_id = this.model.domain
+      }
+      return params
+    },
+    showOrg () {
+      return !isCE()
+    },
   },
   watch: {
     policy (val) {
@@ -375,7 +395,7 @@ export default {
     async getData () {
       try {
         await this.$refs.form.validate()
-        const { name, scope, domain, description } = this.model
+        const { name, scope, domain, description, org_node_id } = this.model
         const { project_tags, objectTagsArray, domainTagsArray } = this
         let data = {}
         let policy
@@ -414,6 +434,9 @@ export default {
         }
         if (description) {
           data.description = description
+        }
+        if (org_node_id && org_node_id.length) {
+          data.org_node_id = org_node_id
         }
         data.project_tags = project_tags
         data.object_tags = objectTagsArray.map(item => {
@@ -494,6 +517,9 @@ export default {
         }
       }
       return ret
+    },
+    handleOrgChange (orgs) {
+      this.model.org_node_id = orgs
     },
     handleDomainChange (domain) {
       this.currentDomain = domain
