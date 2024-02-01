@@ -21,7 +21,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, resource: 'projects', params: { service: 'identity' }, columns: () => this.columns, tipName: this.$t('dictionary.project') }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'projects', params: { service: 'identity', resources: 'project' }, columns: () => this.columns, tipName: this.$t('dictionary.project') }),
       getProjectDomainTableColumn(),
       getTimeTableColumn(),
     ]
