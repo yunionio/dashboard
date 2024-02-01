@@ -472,6 +472,10 @@ export default {
       }
       this.sourceList = this.mergeListByIdKey(this.sourceList, sourceList)
       this.resList = this.mergeListByIdKey(this.resList, list)
+      if (this.mapper) {
+        this.resList = this.mapper(this.resList)
+        this.sourceList = this.mapper(this.sourceList)
+      }
 
       this.$emit('update:resList', this.resList)
       const resOpts = arrayToObj(this.resList)
@@ -513,6 +517,10 @@ export default {
             }
           })
           this.resList = this.mergeListByIdKey([...targetExtraOpts, ...list], expectedSelectedList)
+          if (this.mapper) {
+            this.resList = this.mapper(this.resList)
+            this.sourceList = this.mapper(this.sourceList)
+          }
           this.$emit('update:resList', this.resList)
           const resOpts = arrayToObj(this.resList)
           this.resOpts = resOpts
