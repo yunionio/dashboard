@@ -55,7 +55,7 @@ import { Manager } from '@/utils/manager'
 import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import { cloudEnabled, cloudUnabledTip, commonEnabled } from '../utils'
+import { cloudEnabled, cloudUnabledTip, commonEnabled, validateRescueMode } from '../utils'
 
 export default {
   name: 'VmInstanceList',
@@ -403,6 +403,82 @@ export default {
                     },
                     hidden: () => !hasSetupKey(['vmware']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_resume'),
                   },
+                  // 进入紧急模式
+                  {
+                    label: this.$t('compute.start_rescue'),
+                    permission: 'server_perform_start_rescue',
+                    action: () => {
+                      this.createDialog('VmStartRescueDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        refresh: this.refresh,
+                      })
+                    },
+                    meta: () => {
+                      const ret = { validate: true }
+                      let isAllKVM = true
+                      let isRescueMode = false
+                      this.list.selectedItems.forEach(item => {
+                        if (item.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                          isAllKVM = false
+                        }
+                        if (item.rescue_mode === true) {
+                          isRescueMode = true
+                        }
+                      })
+                      if (!isAllKVM) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1388')
+                        return ret
+                      }
+                      if (isRescueMode) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.start_rescue.validate_tooltip')
+                        return ret
+                      }
+                      return ret
+                    },
+                    hidden: () => !hasSetupKey(['onecloud']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_start_rescue'),
+                  },
+                  // 退出紧急模式
+                  {
+                    label: this.$t('compute.stop_rescue'),
+                    permission: 'server_perform_stop_rescue',
+                    action: () => {
+                      this.createDialog('VmStopRescueDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        refresh: this.refresh,
+                      })
+                    },
+                    meta: () => {
+                      const ret = { validate: true }
+                      let isAllKVM = true
+                      let isRescueMode = true
+                      this.list.selectedItems.forEach(item => {
+                        if (item.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                          isAllKVM = false
+                        }
+                        if (item.rescue_mode !== true) {
+                          isRescueMode = false
+                        }
+                      })
+                      if (!isAllKVM) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1388')
+                        return ret
+                      }
+                      if (!isRescueMode) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.stop_rescue.validate_tooltip')
+                        return ret
+                      }
+                      return ret
+                    },
+                    hidden: () => !hasSetupKey(['onecloud']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_stop_rescue'),
+                  },
                   // 推送配置
                   {
                     label: this.$t('compute.sync_config'),
@@ -454,6 +530,8 @@ export default {
                       })
                     },
                     meta: (row) => {
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
                       const isOneCloud = this.list.selectedItems.every(item => item.brand === 'OneCloud')
                       return {
                         validate: isOneCloud,
@@ -480,6 +558,8 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
                       if (!this.isAdminMode && !this.isDomainMode) {
                         ret.validate = false
                         ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
@@ -513,6 +593,8 @@ export default {
                         validate: false,
                         tooltip: null,
                       }
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
                       // 包年包月机器，不支持此操作
                       const isSomePrepaid = this.list.selectedItems.some((item) => {
                         return item.billing_type === 'prepaid'
@@ -562,6 +644,8 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
                       for (const obj of this.list.selectedItems) {
                         if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
                           ret.validate = false
@@ -599,6 +683,8 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
                       const isAllPublic = this.list.selectedItems.every(item => findPlatform(item.hypervisor) === SERVER_TYPE.public)
                       const isAllPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
                       if (!isAllPublic) {
@@ -630,6 +716,8 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
                       const isAllPublic = this.list.selectedItems.every(item => findPlatform(item.hypervisor) === SERVER_TYPE.public)
                       const isAllPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
                       if (!isAllPublic) {
@@ -661,6 +749,8 @@ export default {
                     },
                     meta: () => {
                       let ret = { validate: true }
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
                       // 某些云不支持
                       const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
                       if (!unenableCloudCheck.validate) {
@@ -692,7 +782,8 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
-
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
                       const isSameStopCharging = this.list.selectedItems.some((item) => { return item.shutdown_mode === 'stop_charging' })
                       if (isSameStopCharging) {
                         ret.validate = false
@@ -736,6 +827,8 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
                       if (this.isSameHyper) {
                         const isSomeBackupHost = this.list.selectedItems.some((item) => { return item.backup_host_id })
                         if (isSomeBackupHost) {
@@ -797,6 +890,8 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
                       const isAllIdc = this.list.selectedItems.every((item) => {
                         return findPlatform(item.hypervisor, 'hypervisor') === SERVER_TYPE.idc
                       })
@@ -843,6 +938,8 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
                       const isBindKeypair = this.list.selectedItems.some((item) => { return item.keypair_id && item.keypair_id.toLowerCase() !== 'none' })
                       if (isBindKeypair) {
                         ret.validate = false
@@ -872,7 +969,8 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
-
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
                       if (this.list.selectedItems) {
                         const project = this.list.selectedItems[0].project || ''
                         const isSame = this.list.selectedItems.every((item) => {
@@ -921,6 +1019,8 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
                       for (const obj of this.list.selectedItems) {
                         if (!commonEnabled(obj, ['running'])) {
                           ret.validate = false
@@ -975,6 +1075,8 @@ export default {
                         validate: false,
                         tooltip: null,
                       }
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
                       const isSomeBindEip = this.list.selectedItems.some((item) => { return item.eip && item.eip_mode === 'elastic_ip' })
                       const isAllBindPublicIp = this.list.selectedItems.every((item) => { return item.eip_mode === 'public_ip' })
                       if (isSomeBindEip) {
@@ -1007,6 +1109,8 @@ export default {
                     },
                     meta: () => {
                       const ret = { validate: true, tooltip: null }
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
                       const isAllOneCloud = this.list.selectedItems.every((item) => { return item.hypervisor === typeClouds.hypervisorMap.kvm.key })
                       const isOk = this.list.selectedItems.every((item) => { return ['running', 'ready'].includes(item.status) })
                       if (!isAllOneCloud) {
@@ -1042,6 +1146,8 @@ export default {
                     },
                     meta: () => {
                       const ret = { validate: true, tooltip: null }
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
                       // 运行中、关机、状态未知
                       const statusSet = new Set()
                       const hypervisors = new Set()
@@ -1110,6 +1216,8 @@ export default {
                     },
                     meta: () => {
                       const ret = { validate: true, tooltip: null }
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
                       const statusSet = new Set()
                       const hypervisorSet = new Set()
                       const backupHostSet = new Set()
@@ -1172,6 +1280,8 @@ export default {
                         validate: true,
                         tooltip: '',
                       }
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
                       const isAllOneCloud = this.list.selectedItems.every((item) => { return item.hypervisor === typeClouds.hypervisorMap.kvm.key })
                       if (!isAllOneCloud) {
                         ret.validate = false

@@ -113,6 +113,7 @@ export default {
               onManager: this.onManager,
             }) }>{ this.$t('common.cancel') }</a>
           const shutdown = <span class="text-color-help">({ this.$t('compute.server.shutdown_mode.stop_charging') })</span>
+          const rescue_mode = <span class="text-color-help">({ this.$t('compute.rescue') })</span>
 
           return [
             <div class='d-flex align-items-center text-truncate'>
@@ -121,6 +122,7 @@ export default {
               { row.status?.includes('fail') ? log : null }
               { row.status === 'live_migrating' ? cancel : null }
               { row.status === 'ready' && row.shutdown_mode === 'stop_charging' ? shutdown : null }
+              { row.rescue_mode === true ? rescue_mode : null }
             </div>,
           ]
         },

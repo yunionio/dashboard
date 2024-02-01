@@ -9,7 +9,7 @@ import { PROVIDER_MAP } from '@/constants'
 import { hasSetupKey } from '@/utils/auth'
 import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import { POLICY_RES_NAME_KEY_MAP } from '@/constants/policy'
-import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip } from '../utils'
+import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip, validateRescueMode } from '../utils'
 
 const getSingleActions = function () {
   return [
@@ -83,6 +83,8 @@ const getSingleActions = function () {
                 validate: false,
                 tooltip: null,
               }
+              const rescueModeValid = validateRescueMode(obj)
+              if (!rescueModeValid.validate) return rescueModeValid
               // if (obj.os_type === 'Windows') {
               //   ret.tooltip = i18n.t('compute.text_344')
               //   return ret
@@ -133,7 +135,7 @@ const getSingleActions = function () {
                     fontSize: '12px',
                   }
                   const isRunning = obj.power_states === 'on'
-                  if (!isRunning) {
+                  if (!isRunning || obj.rescue_mode === true) {
                     styleObj = {
                       ...styleObj,
                       cursor: 'not-allowed',
@@ -185,7 +187,7 @@ const getSingleActions = function () {
                       },
                     })
                   }
-                  return <a-tooltip placement="left" title={!isRunning ? i18n.t('compute.text_1309', [i18n.t('compute.text_574')]) : ''}>
+                  return <a-tooltip placement="left" title={obj.rescue_mode ? i18n.t('compute.start_rescue.validate_tooltip') : !isRunning ? i18n.t('compute.text_1309', [i18n.t('compute.text_574')]) : ''}>
                     <span style={styleObj} class='d-flex justify-content-between align-items-center'>
                       <span onClick={isRunning ? sshConnectHandle : () => { }}>{`SSH ${ipAddr}`}</span>
                       {
@@ -283,14 +285,14 @@ const getSingleActions = function () {
                     fontSize: '12px',
                   }
                   const isRunning = obj.power_states === 'on'
-                  if (!isRunning) {
+                  if (!isRunning || obj.rescue_mode === true) {
                     styleObj = {
                       ...styleObj,
                       cursor: 'not-allowed',
                       color: 'rgba(0, 0, 0, 0.25)',
                     }
                   }
-                  return <a-tooltip placement="left" title={!isRunning ? i18n.t('compute.text_1309', [i18n.t('compute.text_574')]) : ''}>
+                  return <a-tooltip placement="left" title={obj.rescue_mode ? i18n.t('compute.start_rescue.validate_tooltip') : !isRunning ? i18n.t('compute.text_1309', [i18n.t('compute.text_574')]) : ''}>
                     <span style={styleObj} class='d-flex justify-content-between align-items-center'>
                       <span onClick={isRunning ? rdpConnectHandle : () => { }}>{`RDP ${ipAddr}`}</span>
                       {
@@ -525,6 +527,64 @@ const getSingleActions = function () {
                 },
                 hidden: () => !(hasSetupKey(['vmware'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_resume'),
               },
+              // 进入紧急模式
+              {
+                label: i18n.t('compute.start_rescue'),
+                permission: 'server_perform_start_rescue',
+                action: () => {
+                  this.createDialog('VmStartRescueDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => {
+                  const ret = { validate: true }
+                  const provider = obj.provider
+                  if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                    ret.validate = false
+                    ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
+                    return ret
+                  }
+                  if (obj.rescue_mode === true) {
+                    ret.validate = false
+                    ret.tooltip = i18n.t('compute.start_rescue.validate_tooltip')
+                    return ret
+                  }
+                  return ret
+                },
+                hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_start_rescue'),
+              },
+              // 退出紧急模式
+              {
+                label: i18n.t('compute.stop_rescue'),
+                permission: 'server_perform_stop_rescue',
+                action: () => {
+                  this.createDialog('VmStopRescueDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => {
+                  const ret = { validate: true }
+                  const provider = obj.provider
+                  if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                    ret.validate = false
+                    ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
+                    return ret
+                  }
+                  if (obj.rescue_mode !== true) {
+                    ret.validate = false
+                    ret.tooltip = i18n.t('compute.stop_rescue.validate_tooltip')
+                    return ret
+                  }
+                  return ret
+                },
+                hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_stop_rescue'),
+              },
               // 推送配置
               {
                 label: i18n.t('compute.sync_config'),
@@ -576,6 +636,8 @@ const getSingleActions = function () {
                 meta: (row) => {
                   const isOneCloud = row.brand === 'OneCloud'
                   const provider = obj.provider
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   return {
                     validate: isOneCloud,
                     tooltip: !isOneCloud && i18n.t('compute.text_473', [PROVIDER_MAP[provider].label]),
@@ -601,6 +663,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.is_prepaid_recycle) {
                     ret.tooltip = i18n.t('compute.text_285')
                     return ret
@@ -634,6 +698,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (!this.isAdminMode && !this.isDomainMode) {
                     ret.tooltip = i18n.t('compute.text_613')
                     return ret
@@ -662,6 +728,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.billing_type === 'prepaid') {
                     ret.tooltip = i18n.t('compute.text_285')
                     return ret
@@ -694,6 +762,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
                     ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                     return ret
@@ -731,6 +801,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
                     ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                     return ret
@@ -756,6 +828,10 @@ const getSingleActions = function () {
                     data: [obj],
                   })
                 },
+                meta: () => {
+                  const rescueModeValid = validateRescueMode(obj)
+                  return rescueModeValid
+                },
                 hidden: () => !this.$appConfig.isPrivate,
               },
               // 续费
@@ -776,6 +852,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
                     ret.tooltip = i18n.t('compute.text_1118')
                     return ret
@@ -806,6 +884,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
                     ret.tooltip = i18n.t('compute.text_1118')
                     return ret
@@ -841,6 +921,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.shutdown_mode === 'stop_charging') {
                     ret.validate = false
                     ret.tooltip = i18n.t('compute.server.shutdown_mode.tooltip')
@@ -872,6 +954,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.backup_host_id) {
                     ret.tooltip = i18n.t('compute.text_1111')
                     return ret
@@ -909,6 +993,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (!this.isAdminMode && !this.isDomainMode) {
                     ret.tooltip = i18n.t('compute.text_1279', [i18n.t('dictionary.domain')])
                     return ret
@@ -940,6 +1026,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (!this.isAdminMode && !this.isDomainMode) {
                     ret.tooltip = i18n.t('compute.text_1279', [i18n.t('dictionary.domain')])
                     return ret
@@ -968,6 +1056,8 @@ const getSingleActions = function () {
                 meta: (row) => {
                   const isOneCloud = row.brand === 'OneCloud'
                   const provider = obj.provider
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   return {
                     validate: isOneCloud,
                     tooltip: !isOneCloud && i18n.t('compute.text_473', [PROVIDER_MAP[provider].label]),
@@ -992,6 +1082,8 @@ const getSingleActions = function () {
                   const ret = {
                     validate: true,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
                     ret.validate = false
                     ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
@@ -1022,6 +1114,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
                     ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[obj.provider].label])
                     return ret
@@ -1050,6 +1144,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
                     ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                     return ret
@@ -1085,6 +1181,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (commonUnabled(obj)) return ret
                   if (obj.keypair_id && obj.keypair_id.toLowerCase() !== 'none') {
                     ret.tooltip = i18n.t('compute.text_277')
@@ -1112,6 +1210,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.hypervisor === typeClouds.hypervisorMap.openstack.key) {
                     ret.tooltip = i18n.t('compute.text_1284')
                     return ret
@@ -1152,6 +1252,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (commonUnabled(obj)) return ret
                   if (!obj.keypair) {
                     ret.tooltip = i18n.t('compute.text_365')
@@ -1179,6 +1281,8 @@ const getSingleActions = function () {
                     validate: true,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   const isLinux = obj.os_type && obj.os_type.toLowerCase() === 'linux'
                   if (!isLinux) {
                     ret.validate = false
@@ -1210,6 +1314,8 @@ const getSingleActions = function () {
                     validate: true,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (!commonEnabled(obj, ['running'])) {
                     ret.validate = false
                     ret.tooltip = i18n.t('db.text_156')
@@ -1241,6 +1347,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   // if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
                   //   ret.tooltip = i18n.t('compute.text_1286')
                   //   return ret
@@ -1283,6 +1391,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.hypervisor === typeClouds.hypervisorMap.esxi.key) {
                     ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                     return ret
@@ -1320,6 +1430,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.hypervisor === typeClouds.hypervisorMap.esxi.key) {
                     ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                     return ret
@@ -1358,6 +1470,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.is_prepaid_recycle) {
                     ret.tooltip = i18n.t('compute.text_285')
                     return ret
@@ -1390,6 +1504,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.is_prepaid_recycle) {
                     ret.tooltip = i18n.t('compute.text_285')
                     return ret
@@ -1425,6 +1541,8 @@ const getSingleActions = function () {
                   })
                 },
                 meta: () => {
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   const ret = {
                     validate: cloudEnabled('assignSecgroup', obj),
                     tooltip: cloudUnabledTip('assignSecgroup', obj),
@@ -1450,6 +1568,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (commonUnabled(obj)) return ret
                   if (obj.eip_mode === 'public_ip' && obj.hypervisor !== 'aws') {
                     ret.tooltip = i18n.t('compute.public_ip_tooltip')
@@ -1490,6 +1610,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (commonUnabled(obj)) return ret
                   if (obj.eip_mode !== 'elastic_ip') {
                     ret.tooltip = i18n.t('compute.text_1293')
@@ -1522,6 +1644,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.eip && obj.eip_mode === 'elastic_ip') {
                     ret.tooltip = i18n.t('compute.text_1122')
                     return ret
@@ -1551,6 +1675,8 @@ const getSingleActions = function () {
                 meta: () => {
                   const provider = obj.provider
                   const ret = { validate: true, tooltip: null }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
                     ret.validate = false
                     ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
@@ -1588,6 +1714,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
                     ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                     return ret
@@ -1630,6 +1758,8 @@ const getSingleActions = function () {
                     validate: false,
                     tooltip: null,
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (!obj.backup_host_id) {
                     ret.tooltip = i18n.t('compute.text_1383')
                     return ret
@@ -1660,6 +1790,8 @@ const getSingleActions = function () {
                 },
                 meta: () => {
                   const ret = { validate: true, tooltip: null }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (!this.isAdminMode && !this.isDomainMode) {
                     ret.validate = false
                     ret.tooltip = this.$t('compute.tooltip.check_domain_permission')
@@ -1705,7 +1837,8 @@ const getSingleActions = function () {
                 },
                 meta: () => {
                   const ret = { validate: true, tooltip: null }
-
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (!this.isAdminMode && !this.isDomainMode) {
                     ret.validate = false
                     ret.tooltip = this.$t('compute.tooltip.check_domain_permission')
@@ -1748,6 +1881,8 @@ const getSingleActions = function () {
                     validate: true,
                     tooltip: '',
                   }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
                     ret.validate = false
                     ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[obj.provider].label])
