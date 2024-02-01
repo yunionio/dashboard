@@ -11,19 +11,25 @@
             v-decorator="decorators.domain"
             resource="domains"
             version="v1"
-            @change="handleDomainChange"
             remote
+            :isDefaultSelect="true"
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
-            :select-props="{ placeholder: $t('rules.domain') }" />
+            :select-props="{ placeholder: $t('rules.domain'), allowClear: true }"
+            @change="handleDomainChange" />
         </a-form-item>
         <a-form-item :label="$t('dictionary.user')">
           <base-select
             style="width: 300px;"
             v-decorator="decorators.user"
-            need-params
-            filterable
-            :options="userOptions"
-            :select-props="{ placeholder: $t('rules.user') }" />
+            resource="users"
+            version="v1"
+            remote
+            :isDefaultSelect="true"
+            :needParams="true"
+            :params="userParams"
+            :mapper="mapperUserData"
+            :remote-fn="q => ({ filter: `name.contains(${q})` })"
+            :select-props="{ placeholder: $t('rules.user'), allowClear: true }" />
         </a-form-item>
         <a-form-item :label="$t('system.text_131')">
           <mobile-input v-decorator="decorators.international_mobile" />
@@ -74,11 +80,7 @@ export default {
   data () {
     return {
       loading: false,
-      userParams: {
-        is_system_account: false,
-        have_contacts: false,
-        scope: this.$store.getters.scope,
-      },
+      userParams: {},
       form: {
         fc: this.$form.createForm(this),
       },
@@ -145,6 +147,7 @@ export default {
           span: 6,
         },
       },
+      receiverUserIds: [],
     }
   },
   computed: {
@@ -156,7 +159,8 @@ export default {
   created () {
     this.manager = new this.$Manager('receivers', 'v1')
     this.generateContactArrOpts()
-    this.isDomainMode && this.fetchUsers()
+    this.fetchReceivers()
+    // this.isDomainMode && this.fetchUsers()
   },
   methods: {
     async handleConfirm () {
@@ -188,10 +192,13 @@ export default {
         user: '',
       })
       this.userParams = {
-        ...this.userParams,
+        limit: 20,
+        is_system_account: false,
+        have_contacts: false,
+        scope: this.$store.getters.scope,
         domain_id: val,
       }
-      this.fetchUsers()
+      // this.fetchUsers()
       this.generateContactArrOpts({ domain_ids: [val] })
     },
     async generateContactArrOpts (params) {
@@ -255,6 +262,26 @@ export default {
         callback(this.$t('system.country_code'))
       }
       callback()
+    },
+    async fetchReceivers () {
+      const receiverManager = new this.$Manager('receivers', 'v1')
+      try {
+        const params = { scope: this.scope, force_no_paging: true }
+        const receiverRes = await receiverManager.list({ params })
+        const receivers = receiverRes.data.data
+        const receiverUserIds = receivers.map((item) => { return item.id })
+        this.receiverUserIds = receiverUserIds
+      } catch (error) {
+        throw error
+      }
+    },
+    mapperUserData (list) {
+      return list.map(item => {
+        if (this.receiverUserIds.includes(item.id)) {
+          item.__disabled = true
+        }
+        return item
+      }).sort((a, b) => a.__disabled ? 1 : -1)
     },
   },
 }
