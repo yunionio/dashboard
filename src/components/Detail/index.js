@@ -209,11 +209,14 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
               columns: columns,
               onManager: vm.onManager,
             })}>{vm.$t('common.cancel')}</a>
+          const rescue_mode = <span class="text-color-help">({ i18n.t('compute.rescue') })</span>
+
           if (statusModule && row[statusKey]) {
             return [
               <div class='d-flex align-items-center text-truncate'>
                 <status status={row[statusKey]} statusModule={statusModule} process={row.progress} />
-                {row.status === 'live_migrating' ? cancel : null}
+                { row.status === 'live_migrating' ? cancel : null }
+                { row.rescue_mode === true ? rescue_mode : null }
               </div>,
             ]
           }
