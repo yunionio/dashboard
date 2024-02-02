@@ -5953,5 +5953,23 @@
   "common.connect": "接続",
   "common.setting": "設定",
   "common.project_tag_key": "@:dictionary.projectタグキー",
-  "common.empty_value": "空の値"
+  "common.empty_value": "空の値",
+  "common_custom_date": {
+    "month": {
+      "1": "1月",
+      "2": "2月",
+      "3": "3月",
+      "4": "4月",
+      "5": "5月",
+      "6": "6月",
+      "7": "7月",
+      "8": "8月",
+      "9": "9月",
+      "10": "10月",
+      "11": "11月",
+      "12": "12月"
+    },
+    "prev_year": "前年",
+    "next_year": "次の年"
+  }
 }
