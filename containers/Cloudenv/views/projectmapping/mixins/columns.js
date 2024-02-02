@@ -1,4 +1,3 @@
-import { getTargetColumns } from '../utils'
 import {
   getNameDescriptionTableColumn,
   getProjectDomainTableColumn,
@@ -9,6 +8,7 @@ import {
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 import { getTagColor, getTagTitle } from '@/utils/common/tag'
+import { getTargetColumns } from '../utils'
 
 export default {
   created () {
@@ -78,7 +78,7 @@ export default {
                 field: 'project_name',
                 title: i18n.t('cloudenv.text_584'),
                 formatter: ({ row }) => {
-                  if (row.condition === 'and' && !row.hasOwnProperty('project_id')) {
+                  if (row.condition === 'and' && !row.hasOwnProperty('project_id') && !row.hasOwnProperty('project')) {
                     return i18n.t('cloudenv.project_same_as_tag_value')
                   }
                   return row.project ? row.project : '-'
@@ -146,7 +146,7 @@ export default {
       const { condition } = data
       if (condition === 'or') {
         return i18n.t('cloudenv.text_587')
-      } else if (data.hasOwnProperty('project_id')) {
+      } else if (data.hasOwnProperty('project_id') || data.hasOwnProperty('project')) {
         return i18n.t('cloudenv.text_588')
       } else {
         return i18n.t('cloudenv.match_by_tag_key')

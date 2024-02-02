@@ -876,5 +876,8 @@
   "cloudenv.syncing_account_disable_action": "同步中的云账号不支持此操作",
   "cloudenv.operation_info_input": "运营侧账号录入（同步资源信息）",
   "cloudenv.operation_and_maintenance_info_input": "运维侧账号录入（运营侧接口没有监控相关接口，监控相关通过运维侧接口同步）",
-  "cloudenv.project_mapping_rule_priority": "规则的优先级，由上到下逐渐降低"
+  "cloudenv.project_mapping_rule_priority": "规则的优先级，由上到下逐渐降低",
+  "cloudenv.belong_type": "归属类型",
+  "cloudenv.target_name": "指定名称",
+  "cloudenv.belong_project_name_tip": "根据云账号归属域设置项目，已有同名项目直接使用，否则自动创建"
 }

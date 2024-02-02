@@ -875,5 +875,8 @@
   "cloudenv.syncing_account_disable_action": "同期中のクラウドアカウントではサポートされていません",
   "cloudenv.operation_info_input": "運営側アカウント入力（リソース情報の同期）",
   "cloudenv.operation_and_maintenance_info_input": "運次元側アカウント入力（運営側インタフェースには監視関連インタフェースがなく、監視関連は運次元側インタフェースを通じて同期）",
-  "cloudenv.project_mapping_rule_priority": "上から下へ徐々に減少する規則の優先度"
+  "cloudenv.project_mapping_rule_priority": "上から下へ徐々に減少する規則の優先度",
+  "cloudenv.belong_type": "ホーム・タイプ",
+  "cloudenv.target_name": "名前の指定",
+  "cloudenv.belong_project_name_tip": "クラウドアカウントのホームドメイン設定プロジェクトに基づいて、同名のプロジェクトが直接使用されている場合、そうでない場合は自動的に作成されます"
 }

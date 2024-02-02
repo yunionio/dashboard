@@ -57,7 +57,7 @@ export default {
           field: 'accounts',
           slots: {
             default: ({ row }, h) => {
-              if (row.condition === 'and' && !row.hasOwnProperty('project_id')) {
+              if (row.condition === 'and' && !row.hasOwnProperty('project_id') && !row.hasOwnProperty('project')) {
                 return i18n.t('cloudenv.project_same_as_tag_value')
               }
               return [
@@ -80,7 +80,7 @@ export default {
                     buttonType: 'link',
                     buttonSize: 'small',
                     buttonStyle: {
-                      fontSize: '12px',
+                      fontSize: '14px',
                     },
                   },
                 }),
@@ -152,8 +152,17 @@ export default {
         label: i18n.t('cloudenv.text_108'),
         permission: 'projectmappings_delete',
         action: (row) => {
-          this.checkedRecords = [row]
-          this.deleteProjectMappingRules()
+          this.createDialog('DeleteResDialog', {
+            name: this.$t('cloudenv.text_582'),
+            vm: this,
+            data: [row],
+            columns: [this.normalColmns[0], this.normalColmns[1]],
+            title: this.$t('table.action.delete'),
+            ok: () => {
+              this.checkedRecords = [row]
+              this.deleteProjectMappingRules()
+            },
+          })
         },
         meta: (row) => {
           const ret = {
