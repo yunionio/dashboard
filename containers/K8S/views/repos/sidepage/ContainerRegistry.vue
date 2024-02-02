@@ -7,9 +7,6 @@
 </template>
 
 <script>
-import {
-  getNameFilter,
-} from '@/utils/common/tableFilter'
 import { uuid } from '@/utils/utils'
 
 export default {
@@ -29,7 +26,9 @@ export default {
         resource: () => this.fetchData(),
         getParams: this.getParams,
         filterOptions: {
-          name: getNameFilter(),
+          name: {
+            label: this.$t('k8s.repo.image.name'),
+          },
         },
       }),
       columns: [
