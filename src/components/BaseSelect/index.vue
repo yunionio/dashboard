@@ -470,11 +470,6 @@ export default {
       }
       this.sourceList = this.mergeListByIdKey(this.sourceList, sourceList)
       this.resList = this.mergeListByIdKey(this.resList, list)
-      if (this.mapper) {
-        this.resList = this.mapper(this.resList)
-        this.sourceList = this.mapper(this.sourceList)
-      }
-
       this.$emit('update:resList', this.resList)
       const resOpts = arrayToObj(this.resList)
       this.resOpts = resOpts
@@ -515,10 +510,6 @@ export default {
             }
           })
           this.resList = this.mergeListByIdKey([...targetExtraOpts, ...list], expectedSelectedList)
-          if (this.mapper) {
-            this.resList = this.mapper(this.resList)
-            this.sourceList = this.mapper(this.sourceList)
-          }
           this.$emit('update:resList', this.resList)
           const resOpts = arrayToObj(this.resList)
           this.resOpts = resOpts
@@ -547,10 +538,9 @@ export default {
         const { data } = await manager.list({ params, ctx: this.ctx, cancelToken: this.cancelToken })
         const _list = R.type(data) === 'Array' ? data : (R.type(data) === 'Object' && (data.data || []))
         let list = _list.map(val => ({ ...val, id: val[this.idKey], name: val[this.nameKey] }))
-        let sourceList = list
+        const sourceList = list
         if (this.mapper) {
-          list = this.mapper(list)
-          sourceList = this.mapper(sourceList)
+          list = this.mapper(R.clone(list))
         }
         this.loading = false
         this.isInitLoad = false
