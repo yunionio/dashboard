@@ -258,6 +258,7 @@ export default {
           path: '/k8s-repos',
           meta: {
             label: i18n.t('k8s.text_158'),
+            permission: 'k8s_container_registries_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_service')) {
                 return true

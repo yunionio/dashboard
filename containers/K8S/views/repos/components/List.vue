@@ -44,6 +44,7 @@ export default {
       groupActions: [
         {
           label: this.$t('common.create'),
+          permission: 'k8s_container_registries_create',
           action: () => {
             this.createDialog('ReposCreateDialog', {
               refresh: this.refresh,
@@ -58,6 +59,7 @@ export default {
         },
         {
           label: this.$t('table.action.delete'),
+          permission: 'k8s_container_registries_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
