@@ -126,7 +126,7 @@
           <div class="d-flex justify-content-center flex-wrap p-1">
             <div class="fast-login-items" :key="idx" v-for="(item, idx) of idps">
               <a class="fast-login-item d-flex align-items-center justify-content-center ml-2 mr-2" @click="handleClickIdp(item)">
-                <a-tooltip placement="top" :title="$t(`idpTmplTitles.${item.template || item.driver}`)">
+                <a-tooltip placement="top" :title="$t(`idpTmplTitles.${item.template || item.driver}`) + '/' + item.name">
                   <template slot="title">
                     <span>{{ item.tooltip }}</span>
                   </template>
