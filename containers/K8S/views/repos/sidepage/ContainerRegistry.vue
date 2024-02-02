@@ -94,8 +94,12 @@ export default {
           .getSpecific({
             id: this.resId,
             spec: 'images',
+            params: {
+              ...this.list.params,
+            },
           })
-        const repos = result.data.repositories.map((item, key) => {
+        const repositories = result?.data?.repositories || []
+        const repos = repositories.map((item, key) => {
           return {
             id: key,
             name: item,
