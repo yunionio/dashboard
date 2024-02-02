@@ -669,6 +669,11 @@ export const PERMISSION = {
   k8s_federatedclusterrolebindings_delete: ['k8s', 'federatedclusterrolebindings', 'delete'],
   k8s_federatedclusterrolebindings_perform_attach_cluster: ['k8s', 'federatedclusterrolebindings', 'perform', 'attach-cluster'],
   k8s_federatedclusterrolebindings_perform_detach_cluster: ['k8s', 'federatedclusterrolebindings', 'perform', 'detach-cluster'],
+  k8s_container_registries_list: ['k8s', 'container_registries', 'list'],
+  k8s_container_registries_get: ['k8s', 'container_registries', 'get'],
+  k8s_container_registries_create: ['k8s', 'container_registries', 'create'],
+  k8s_container_registries_update: ['k8s', 'container_registries', 'update'],
+  k8s_container_registries_delete: ['k8s', 'container_registries', 'delete'],
   /**
    * 负责均衡 相关操作
    */
@@ -1409,6 +1414,7 @@ export const PERMISSION = {
   month_reports_update: ['report', 'month_reports', 'update'],
   month_reports_perform_enabled: ['report', 'month_reports', 'perform', 'enabled'],
   month_reports_perform_disabled: ['report', 'month_reports', 'perform', 'disabled'],
+  daily_reports_list: ['report', 'daily_reports', 'list'],
 
   organizations_list: ['identity', 'organizations', 'list'],
   organizations_create: ['identity', 'organizations', 'create'],
@@ -1433,6 +1439,12 @@ export const PERMISSION = {
   bill_alert_settings_perform_enabled: ['meter', 'bill_alert_settings', 'perform', 'enabled'],
   bill_alert_settings_perform_disabled: ['meter', 'bill_alert_settings', 'perform', 'disabled'],
   bill_alerts_list: ['meter', 'bill_alerts', 'list'],
+
+  bastion_hosts_list: ['bastionhost', 'bastion_hosts', 'list'],
+  bastion_hosts_get: ['bastionhost', 'bastion_hosts', 'get'],
+  bastion_hosts_create: ['bastionhost', 'bastion_hosts', 'create'],
+  bastion_hosts_update: ['bastionhost', 'bastion_hosts', 'update'],
+  bastion_hosts_delete: ['bastionhost', 'bastion_hosts', 'delete'],
 
   ...extraPermissions,
 }
