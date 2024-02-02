@@ -2,6 +2,7 @@ export default {
   created () {
     this.singleActions = [{
       label: this.$t('table.action.delete'),
+      permission: 'k8s_container_registries_delete',
       action: obj => {
         this.createDialog('DeleteResDialog', {
           vm: this,
