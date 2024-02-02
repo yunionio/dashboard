@@ -1,17 +1,18 @@
 <template>
-  <base-select
+  <a-select
     v-model="selected"
-    :select-props="{placeholder:$t('common.tips.select', [$t('bill.organization_level')]), ...otherProps}"
+    :placeholder="$t('common.tips.select', [$t('bill.organization_level')])"
+    v-bind="otherProps"
     @change="selecteChange">
-    <template slot="optionTemplate">
-      <a-select-option v-for="(item, index) in orgNodeOpts" :key="index" :value="item.id">
-        <span class="oc-selected-display-none" :style="{paddingLeft: `${(item.level - 1) * 15}px`}" />{{ item.name }}
-      </a-select-option>
-    </template>
-  </base-select>
+    <a-select-option v-for="(item, index) in orgNodeOpts" :key="index" :value="item.id" :text="item.full_label" :children_tags="item.children_tags">
+      <span class="oc-selected-display-none" :style="{paddingLeft: `${(item.level - 1) * 15}px`}" :data="item.full_label" />
+      <span class="oc-dropdown-display-none" v-if="item.parent_label">{{ item.parent_label }}-</span>{{ item.name }}
+    </a-select-option>
+  </a-select>
 </template>
 
 <script>
+import _ from 'lodash'
 export default {
   name: 'OrganizationSelect',
   props: {
@@ -35,10 +36,16 @@ export default {
   },
   computed: {
     otherProps () {
-      if (this.multiple) {
-        return { mode: 'multiple' }
+      const ret = {
+        filterable: true,
+        optionFilterProp: 'children',
+        showSearch: true,
+        filterOption: this.filterOption,
       }
-      return {}
+      if (this.multiple) {
+        ret.mode = 'multiple'
+      }
+      return ret
     },
   },
   watch: {
@@ -55,6 +62,16 @@ export default {
     this.fetchData()
   },
   methods: {
+    filterOption (input, option) {
+      const text = _.get(option, 'data.attrs.text', '')
+      const childrenTags = _.get(option, 'data.attrs.children_tags', [])
+      if (text) {
+        const checkList = [text.toLowerCase().includes(input.toLowerCase())]
+        // 上级节点也展示
+        checkList.push(childrenTags.some(c => c.toLowerCase().includes(input.toLowerCase())))
+        return checkList.some(bool => bool)
+      }
+    },
     async fetchData () {
       try {
         const orgs = await this.$rM.list({
@@ -91,6 +108,22 @@ export default {
               ret.splice(idx + 1, 0, item)
             }
           }
+          const tags = item.tags || []
+          // 父级路径
+          if (tags.length) {
+            const target = tags.filter((item, index) => index !== tags.length - 1)
+            item.parent_label = target.map(item => item.value).join('-')
+          } else {
+            item.parent_label = ''
+          }
+          // 加入所有子节点的内容，方便过滤
+          const targets = data.filter(t => {
+            if (t.full_label && item.full_label && t.full_label.length > item.full_label.length && t.full_label.slice(0, item.full_label.length) === item.full_label) {
+              return true
+            }
+            return false
+          }).map(item => item.name)
+          item.children_tags = targets
         })
         this.orgNodeOpts = ret
       } catch (err) {}
