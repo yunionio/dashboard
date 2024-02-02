@@ -55,7 +55,7 @@
         <a-form-item :label="$t('cloudenv.billing_scope')" :extra="$t('cloudenv.billing_scope.extra')" v-if="billingType === 1">
           <a-radio-group v-decorator="decorators.billing_scope">
             <a-radio-button value="managed" key="managed">{{ $t('cloudenv.billing_scope.managed') }}</a-radio-button>
-            <a-radio-button value="all" key="all" :disabled="!isAws && !isAliyun && !isVolcEngine">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>
+            <a-radio-button value="all" key="all" :disabled="billingScopeDisabled">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <!-- google -->
@@ -87,6 +87,7 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { HYPERVISORS_MAP } from '@/constants'
 import { keySecretFields, getBillBucketUrlDocs, getEnrollmentNumberDocs } from '../../constants'
 
 export default {
@@ -143,28 +144,36 @@ export default {
       return provider || (this.cloudAccount && this.cloudAccount.provider)
     },
     isGoogle () {
-      return this.provider === 'Google'
+      return this.provider === HYPERVISORS_MAP.google.provider
     },
     isHuawei () {
-      return this.provider === 'Huawei'
+      return this.provider === HYPERVISORS_MAP.huawei.provider
     },
     isAzure () {
-      return this.provider === 'Azure'
+      return this.provider === HYPERVISORS_MAP.azure.provider
     },
     isQcloud () {
-      return this.provider === 'Qcloud'
+      return this.provider === HYPERVISORS_MAP.qcloud.provider
     },
     isAws () {
-      return this.provider === 'Aws'
+      return this.provider === HYPERVISORS_MAP.aws.provider
     },
     isAliyun () {
-      return this.provider === 'Aliyun'
+      return this.provider === HYPERVISORS_MAP.aliyun.provider
     },
     isVolcEngine () {
-      return this.provider === 'VolcEngine'
+      return this.provider === HYPERVISORS_MAP.volcengine.provider
     },
     useBillingBucket () {
-      return this.provider === 'Aliyun' || this.provider === 'Aws' || this.provider === 'Huawei' || this.provider === 'Google' || this.provider === 'VolcEngine'
+      const supportProviders = [
+        HYPERVISORS_MAP.aliyun.provider,
+        HYPERVISORS_MAP.aws.provider,
+        HYPERVISORS_MAP.huawei.provider,
+        HYPERVISORS_MAP.google.provider,
+        HYPERVISORS_MAP.volcengine.provider,
+        HYPERVISORS_MAP.qcloud.provider,
+      ]
+      return supportProviders.includes(this.provider)
     },
     brandCn () {
       const { brand } = this.cloudAccount
@@ -260,6 +269,15 @@ export default {
         ],
       }
     },
+    billingScopeDisabled () {
+      const supportProviders = [
+        HYPERVISORS_MAP.aws.provider,
+        HYPERVISORS_MAP.aliyun.provider,
+        HYPERVISORS_MAP.volcengine.provider,
+        HYPERVISORS_MAP.qcloud.provider,
+      ]
+      return !supportProviders.includes(this.provider)
+    },
   },
   created () {
     this.manager = new this.$Manager('cloudaccounts')
@@ -267,7 +285,7 @@ export default {
   },
   methods: {
     getDefaultBillingScope () {
-      if (this.isAliyun || this.isAzure || this.isAws || this.isVolcEngine) {
+      if (!this.billingScopeDisabled) {
         return 'all'
       } else {
         return 'managed'
