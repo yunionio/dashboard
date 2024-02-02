@@ -3,7 +3,7 @@
     <div slot="header">{{$t('cloudenv.text_583')}}</div>
     <div slot="body" style="max-height:calc(100vh - 320px);overflow-y:auto">
       <a-alert class="mb-3" :message="$t('cloudenv.project_mapping_rule_priority')" />
-      <a-form-model ref="ruleForm" :model="formData" :rules="rules" v-bind="layout">
+      <a-form-model ref="ruleForm" :model="formData" :rules="rules" v-bind="layout" :validateOnRuleChange="true">
         <!-- 域 -->
         <a-form-model-item :label="$t('dictionary.domain')" prop="project_domain_id">
           <domain-select v-model="formData.project_domain_id" v-if="isAdminMode && l3PermissionEnable" :params="domainParams" />
@@ -39,13 +39,22 @@
                 <a-form-model-item :label="$t('cloudenv.text_16')" v-bind="layout" :rules="rules.tags" :prop="`rules.${index}.tags`">
                   <tag v-if="tagShow" :defaultChecked="item.tags" @change="(val) => handleTagChange(val, index)" />
                 </a-form-model-item>
-                <!-- 项目 -->
-                <a-form-model-item :label="$t('cloudenv.text_584')" :extra="$t('cloudenv.text_592')" v-bind="layout" :rules="rules.project_id" :prop="`rules.${index}.project_id`">
-                  <base-select
-                    resource="projects"
-                    remote
-                    :params="{...projectParams, $t: index}"
-                    v-model="item.project_id" />
+                <a-form-model-item :label="$t('cloudenv.belong_type')" v-bind="layout" :rules="rules.belong_type" :prop="`rules.${index}.belong_type`">
+                  <a-form-model-item class="mb-0" :extra="item.belong_type === 'project_id' ? $t('cloudenv.text_592') : $t('cloudenv.belong_project_name_tip')">
+                    <a-radio-group v-model="item.belong_type" @change="validateBt(index)">
+                      <a-radio-button value="project_id">{{ $t('cloudenv.target_project') }}</a-radio-button>
+                      <a-radio-button value="project">{{ $t('cloudenv.target_name') }}</a-radio-button>
+                    </a-radio-group>
+                    <base-select
+                      v-if="item.belong_type === 'project_id'"
+                      resource="projects"
+                      remote
+                      :params="{...projectParams, $t: index}"
+                      v-model="item.project_id"
+                      :select-props="{placeholder: $t('common.tips.select', [$t('dictionary.project')])}"
+                      @change="validateBt(index)" />
+                    <a-input v-else type="text" v-model="item.project" :placeholder="$t('common.tips.input', [$t('dictionary.project')])" @change="validateBt(index)" />
+                  </a-form-model-item>
                 </a-form-model-item>
               </template>
             </a-card>
@@ -121,8 +130,8 @@ export default {
         tag_key: [
           { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.tag_key')]) },
         ],
-        project_id: [
-          { required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.text_584')]) },
+        belong_type: [
+          { required: true, validator: this.validateBelongType, trigger: 'change' },
         ],
         public_scope: [
           { required: true },
@@ -181,6 +190,20 @@ export default {
   mounted () {
   },
   methods: {
+    validateBt (index) {
+      this.$refs.ruleForm.validateField('rules.' + index + '.belong_type')
+    },
+    validateBelongType (rule, value, callback) {
+      const index = parseInt(rule.field.replace('rules.', '').replace('.belong_type', ''))
+      const target = this.formData.rules[index]
+      if (value === 'project_id' && !target[value]) {
+        callback(new Error(this.$t('common.tips.select', [this.$t('dictionary.project')])))
+      }
+      if (value === 'project' && !(target[value].trim())) {
+        callback(new Error(this.$t('common.tips.input', [this.$t('dictionary.project')])))
+      }
+      callback()
+    },
     doCreate (data) {
       return new this.$Manager('project_mappings').create({ data: data })
     },
@@ -234,11 +257,12 @@ export default {
             auto_create_project: true,
           }
         } else {
-          return {
+          const ret = {
             condition: item.condition,
-            project_id: item.project_id,
             tags: this.getTagValue(item.tags),
           }
+          ret[item.belong_type] = (item[item.belong_type] || '').trim()
+          return ret
         }
       }).filter(item => {
         return !!item
@@ -264,7 +288,9 @@ export default {
         condition: 'and',
         tags: {},
         tag_key: '',
-        project_id: '',
+        project_id: undefined,
+        project: '',
+        belong_type: 'project_id',
       })
     },
     deleteRule (item, idx) {

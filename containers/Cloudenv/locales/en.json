@@ -874,5 +874,8 @@
   "cloudenv.syncing_account_disable_action": "The cloud account in synchronization does not support this operation",
   "cloudenv.operation_info_input": "Operation side account entry (synchronizing resource information)",
   "cloudenv.operation_and_maintenance_info_input": "Operation and maintenance account entry (there is no monitoring related interface on the operation side interface, and monitoring related information is synchronized through the operation and maintenance interface)",
-  "cloudenv.project_mapping_rule_priority": "The priority of rules gradually decreases from top to bottom"
+  "cloudenv.project_mapping_rule_priority": "The priority of rules gradually decreases from top to bottom",
+  "cloudenv.belong_type": "Attribution type",
+  "cloudenv.target_name": "Specify a name",
+  "cloudenv.belong_project_name_tip": "According to the domain settings of the cloud account, if there is already a project with the same name, it will be used directly. Otherwise, it will be automatically created"
 }

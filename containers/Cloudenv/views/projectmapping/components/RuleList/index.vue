@@ -1,5 +1,6 @@
 <template>
     <div>
+      <a-alert class="mb-2" :message="$t('cloudenv.project_mapping_rule_priority')" />
       <div class="d-flex flex-fill mb-2">
         <!-- 刷新 -->
         <a-button

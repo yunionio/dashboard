@@ -23,18 +23,22 @@
             <tag :defaultChecked="formData.defaultTags" @change="handleTagChange" />
           </a-form-model-item>
           <!-- 项目 -->
-          <a-form-model-item :label="$t('cloudenv.text_584')" :extra="$t('cloudenv.text_592')" v-bind="layout" :rules="rules.project_id" prop="project_id">
-            <!-- <a-select v-model="formData.project_id" show-search option-filter-prop="children" :filter-option="filterOption">
-              <a-select-option v-for="item in projectOptions" :key="item.id" :value="item.id">
-                {{item.name}}
-              </a-select-option>
-            </a-select> -->
-            <base-select
-              resource="projects"
-              :params="projectParams"
-              remote
-              v-model="formData.project_id"
-              :select-props="{placeholder: $t('common.tips.select', [$t('cloudenv.text_584')])}" />
+          <a-form-model-item :label="$t('cloudenv.belong_type')" :extra="formData.belong_type === 'project_id' ? $t('cloudenv.text_592') : $t('cloudenv.belong_project_name_tip')" v-bind="layout" :rules="rules.belong_type" prop="belong_type">
+              <a-form-model-item class="mb-0">
+                <a-radio-group v-model="formData.belong_type" @change="validateBt">
+                  <a-radio-button value="project_id">{{ $t('cloudenv.target_project') }}</a-radio-button>
+                  <a-radio-button value="project">{{ $t('cloudenv.target_name') }}</a-radio-button>
+                </a-radio-group>
+                <base-select
+                  v-if="formData.belong_type === 'project_id'"
+                  resource="projects"
+                  remote
+                  :params="projectParams"
+                  v-model="formData.project_id"
+                  :select-props="{placeholder: $t('common.tips.select', [$t('dictionary.project')])}"
+                  @change="validateBt" />
+                <a-input v-else type="text" v-model="formData.project" :placeholder="$t('common.tips.select', [$t('dictionary.project')])" @change="validateBt" />
+              </a-form-model-item>
           </a-form-model-item>
         </template>
       </a-form-model>
@@ -66,15 +70,18 @@ export default {
       tags: {},
       tag_key: '',
       project_id: '',
+      belong_type: 'project_id',
+      project: '',
     }
     if (editType === 'edit') {
       const data = this.params.data[0]
-      const initCondition = data.condition === 'and' && !data.hasOwnProperty('project_id') ? 'and_copy' : data.condition
+      const initCondition = data.condition === 'and' && !data.hasOwnProperty('project_id') && !data.hasOwnProperty('project') ? 'and_copy' : data.condition
+      const initBelongType = data.hasOwnProperty('project_id') ? 'project_id' : 'project'
       const tags = this.initTags(data.tags)
       if (initCondition === 'and_copy') {
         initFormData = { condition: initCondition, tag_key: data.tags[0]?.key }
       } else {
-        initFormData = { condition: data.condition, tags: tags, defaultTags: R.clone(tags), project_id: data.project_id }
+        initFormData = { condition: data.condition, tags: tags, defaultTags: R.clone(tags), project_id: data.project_id, project: data.project, belong_type: initBelongType }
       }
     }
     return {
@@ -90,8 +97,8 @@ export default {
         tag_key: [
           { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.tag_key')]) },
         ],
-        project_id: [
-          { required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.text_584')]) },
+        belong_type: [
+          { required: true, validator: this.validateBelongType, trigger: 'change' },
         ],
       },
       layout: {
@@ -143,6 +150,18 @@ export default {
     },
   },
   methods: {
+    validateBt () {
+      this.$refs.ruleForm.validateField('belong_type')
+    },
+    validateBelongType (rule, value, callback) {
+      if (value === 'project_id' && !this.formData[value]) {
+        callback(new Error(this.$t('common.tips.select', [this.$t('dictionary.project')])))
+      }
+      if (value === 'project' && !((this.formData[value] || '').trim())) {
+        callback(new Error(this.$t('common.tips.input', [this.$t('dictionary.project')])))
+      }
+      callback()
+    },
     initTags (tagArr = []) {
       const tags = {}
       tagArr.map(item => {
@@ -163,7 +182,7 @@ export default {
       const index = editType === 'create' ? rules.length : this.editIndex
       let has = false
       rules.map((item, idx) => {
-        if (item.condition === 'and' && !item.hasOwnProperty('project_id') && index !== idx) {
+        if (item.condition === 'and' && !item.hasOwnProperty('project_id') && !item.hasOwnProperty('project') && index !== idx) {
           has = true
         }
       })
@@ -175,6 +194,8 @@ export default {
         const ret = { condition: item.condition, tags: item.tags, auto_create_project: item.auto_create_project }
         if (item.project_id) {
           ret.project_id = item.project_id
+          ret.project = item.project
+        } else if (ret.project) {
           ret.project = item.project
         }
         return ret
@@ -189,9 +210,9 @@ export default {
       } else {
         newRule = {
           condition: this.formData.condition,
-          project_id: this.formData.project_id,
           tags: this.getTagValue(this.formData.tags),
         }
+        newRule[this.formData.belong_type] = this.formData[this.formData.belong_type]
       }
       if (editType === 'create') {
         return [...ruleList, newRule]
