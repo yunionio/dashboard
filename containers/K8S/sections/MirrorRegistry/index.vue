@@ -196,7 +196,7 @@ export default {
       const curRegistry = this.registrys.find(o => o.value === registry)
       const url = curRegistry?.url
       if (url && image && tag) {
-        this.$emit('change', `${url}/${image}/${tag}`)
+        this.$emit('change', `${url}/${image}:${tag}`)
       } else {
         this.$emit('change', '')
       }
