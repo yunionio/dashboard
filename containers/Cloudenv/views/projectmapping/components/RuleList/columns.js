@@ -60,8 +60,16 @@ export default {
               if (row.condition === 'and' && !row.hasOwnProperty('project_id') && !row.hasOwnProperty('project')) {
                 return i18n.t('cloudenv.project_same_as_tag_value')
               }
+              let project = row.project
+              if (project) {
+                if (row.project_id) {
+                  project += ` (${this.$t('cloudenv.target_project')})`
+                } else {
+                  project += ` (${this.$t('cloudenv.target_name')})`
+                }
+              }
               return [
-                <span class="text-color-secondary">{ row.project || '-'}</span>]
+                <span class="text-color-secondary">{ project || '-'}</span>]
             },
           },
         },
