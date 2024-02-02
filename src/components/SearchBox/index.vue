@@ -166,20 +166,18 @@ export default {
             const ipKey = keys.find(v => v === 'ip') || keys.find(v => v.startsWith('ip') || v.endsWith('ip'))
             const idKey = keys.find(v => v === 'id') || keys.find(v => v.endsWith('id'))
             newValues = (value.map(item => { return item.split('|') })).flat()
-            const isIp = newValues.some(item => /(^[0-9]{1,3}\.)|(^\.[0-9]{1,3})/.test(item) && !/[a-zA-Z]+/.test(item))
+            const isIpv4 = newValues.some(item => {
+              return /(^[0-9]{1,3}\.)|(^\.[0-9]{1,3})/.test(item) &&
+               !/[a-zA-Z]+/.test(item) &&
+                value[0].split('.').every(v => v <= 255)
+            })
             const isUUID = newValues.some(item => /[a-f\d]{4}(?:[a-f\d]{4}-){4}[a-f\d]{12}/.test(item))
+            const ipv6Regexp = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/
+            const isIpv6 = newValues.some(item => ipv6Regexp.test(item) || /^([0-9a-fA-F]{1,4}:)/.test(item))
+            const isIp = isIpv4 || isIpv6
 
             if (isIp && ipKey) {
-              if (Array.isArray(value)) {
-                const isErrIp = value[0].split('.').some(v => v > 255)
-                if (isErrIp) {
-                  newKey = 'name'
-                } else {
-                  newKey = ipKey
-                }
-              } else {
-                newKey = ipKey
-              }
+              newKey = ipKey
             } else if (isUUID && idKey) {
               newKey = idKey
             } else {
