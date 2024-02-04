@@ -749,10 +749,11 @@ export function getBillBucketUrlDocs (scope) {
   const docsUrl = getDocsCloudaccountPath(scope)
   return {
     aliyun: i18n.t('cloudenv.text_164', [docsUrl]),
-    volcengine: i18n.t('cloudenv.text_166_1', [docsUrl]),
+    volcengine: i18n.t('cloudenv.bill_bucket_url', [docsUrl, 'url-4']),
     aws: i18n.t('cloudenv.text_165', [docsUrl]),
     huawei: i18n.t('cloudenv.text_166', [docsUrl]),
     google: i18n.t('cloudenv.text_167', [docsUrl]),
+    qcloud: i18n.t('cloudenv.bill_bucket_url', [docsUrl, 'url-3']),
   }
 }
 
