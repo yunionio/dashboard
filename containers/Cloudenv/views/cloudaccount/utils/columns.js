@@ -250,14 +250,14 @@ export const getBlockResourceTableColumn = () => {
         if (!row.skip_sync_resources) return '-'
         const skip_sync_resources = row.skip_sync_resources || []
         return skip_sync_resources.map(item => {
-          return <a-tag>{ BLOCKED_RESOURCES_MAP[item].label }</a-tag>
+          return <a-tag>{BLOCKED_RESOURCES_MAP[item]?.label || item }</a-tag>
         })
       },
     },
     formatter: ({ row }) => {
       const skip_sync_resources = row.skip_sync_resources || []
       return skip_sync_resources.map(item => {
-        return BLOCKED_RESOURCES_MAP[item].label
+        return BLOCKED_RESOURCES_MAP[item]?.label || item
       })
     },
   }
