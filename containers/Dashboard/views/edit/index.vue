@@ -26,11 +26,13 @@
                 :col-num="colNum"
                 :row-height="rowHeight"
                 :max-rows="maxRows"
-                :vertical-compact="true"
                 :is-draggable="true"
                 :is-resizable="true"
                 :is-mirrored="false"
+                :responsive="false"
                 :margin="colMargin"
+                :vertical-compact="false"
+                :prevent-collision="true"
                 :use-css-transforms="true">
                 <template v-for="item in layout">
                   <grid-item
