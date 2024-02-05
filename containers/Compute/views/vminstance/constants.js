@@ -222,7 +222,7 @@ export const ONECLOUD_MONITOR = [
   {
     name: 'mem',
     label: i18n.t('compute.text_518'),
-    seleteItem: '',
+    seleteItem: 'used_percent',
     fromItem: 'vm_mem',
     unit: '%',
     transfer: 1,
