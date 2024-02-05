@@ -26,7 +26,7 @@ export default {
         resource: () => this.fetchData(),
         getParams: this.getParams,
         filterOptions: {
-          name: {
+          repository_name: {
             label: this.$t('k8s.repo.image.name'),
           },
         },
