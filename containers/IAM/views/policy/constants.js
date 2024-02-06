@@ -94,6 +94,7 @@ export const RESOURCES_MAP = {
       { action: 'perform', label: i18n.t('cloudenv.text_527'), value: 'renew' },
       { action: 'perform', label: i18n.t('cloudenv.text_528'), value: 'set-auto-renew' },
       { action: 'perform', label: i18n.t('compute.text_360'), value: 'deploy' },
+      { action: 'perform', label: i18n.t('compute.text_276'), value: 'set-password' },
       { action: 'perform', label: i18n.t('compute.vminstance.actions.setup_ssh_authentication'), value: 'make-sshable' },
       { action: 'get', label: i18n.t('compute.vminstance.actions.detect_ssh_authentication'), value: 'sshable' },
       { action: 'perform', label: i18n.t('cloudenv.text_532'), value: 'save-image' },

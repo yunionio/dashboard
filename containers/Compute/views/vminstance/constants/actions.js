@@ -982,7 +982,7 @@ const getSingleActions = function () {
               // 重置密码
               {
                 label: i18n.t('compute.text_276'),
-                permission: 'server_perform_deploy',
+                permission: 'server_perform_set_password',
                 action: () => {
                   this.createDialog('VmResetPasswordDialog', {
                     data: [obj],
