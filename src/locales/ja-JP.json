@@ -2986,7 +2986,7 @@
         "ssd": "超高 IO",
         "sas": "高い IO",
         "sata": "通常の IO",
-        "fase_ssd": "ラッシュSSD",
+        "fast_ssd": "ラッシュSSD",
         "ssd_genric": "ユニバーサルSSD"
       },
       "localstorage": "ローカルクラウドディスク",
