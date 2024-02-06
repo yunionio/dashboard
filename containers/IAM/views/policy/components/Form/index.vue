@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-alert class="mb-2" :message="$t('system.text_322', [$t('dictionary.policy'),$t('dictionary.role')])" type="success" />
+    <a-alert class="mb-2" :message="$t('iam.policy.definition.hint', [$t('dictionary.policy'),$t('dictionary.role')])" type="success" />
     <a-form-model
       ref="form"
       :model="model"
@@ -29,12 +29,8 @@
         </template>
         <template v-else>{{ $t(`policyScopeLabel.${model.scope}`) }}</template>
       </a-form-model-item>
-      <a-form-model-item :label="$t('system.text_324')">
-        <a-radio-group :default-value="editType" :value="editType" @change="e => $emit('edit-type-change', e.target.value)">
-          <template v-for="item of editTypeOptions">
-            <a-radio-button :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
-          </template>
-        </a-radio-group>
+      <a-form-model-item v-if="showOrg && model.scope !== 'project'" :label="$t('dictionary.organization')" prop="org_node_id">
+        <organization-select v-model="model.org_node_id" :params="orgParams" @change="handleOrgChange" />
       </a-form-model-item>
       <a-form-model-item v-if="model.scope === 'system'" :label="$t('iam.domain_tag')" prop="domain_tags">
         <tag
@@ -61,8 +57,12 @@
          @tagsChange="handleObjectTagsUpdate"
          :global="true" />
       </a-form-model-item>
-      <a-form-model-item v-if="showOrg && model.scope !== 'project'" :label="$t('dictionary.organization')" prop="org_node_id">
-        <organization-select v-model="model.org_node_id" :params="orgParams" @change="handleOrgChange" />
+      <a-form-model-item :label="$t('iam.policy.editor.title')">
+        <a-radio-group :default-value="editType" :value="editType" @change="e => $emit('edit-type-change', e.target.value)">
+          <template v-for="item of editTypeOptions">
+            <a-radio-button :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
+          </template>
+        </a-radio-group>
       </a-form-model-item>
       <template v-if="editType === 'checkbox'">
         <template v-if="showPolicyCheckbox">
@@ -435,9 +435,7 @@ export default {
         if (description) {
           data.description = description
         }
-        if (org_node_id && org_node_id.length) {
-          data.org_node_id = org_node_id
-        }
+        data.org_node_id = !org_node_id ? [] : org_node_id
         data.project_tags = project_tags
         data.object_tags = objectTagsArray.map(item => {
           return {

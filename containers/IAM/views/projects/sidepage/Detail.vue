@@ -199,6 +199,29 @@ export default {
         getUserTagColumn({ onManager: this.onManager, resource: 'domain', params: { service: 'identity' }, columns: () => this.columns, tipName: this.$t('dictionary.project') }),
         getExtTagColumn({ onManager: this.onManager, resource: 'domain', params: { service: 'identity' }, columns: () => this.columns, tipName: this.$t('dictionary.project') }),
         {
+          field: 'organization',
+          title: this.$t('dictionary.organization'),
+          formatter: ({ row }) => {
+            const { organization = {} } = row
+            const tags = this.getTags(organization)
+            if (tags) {
+              return tags.join(';')
+            }
+            return '-'
+          },
+          slots: {
+            default: ({ row }) => {
+              const { organization = {} } = row
+              const tags = this.getTags(organization)
+              if (tags) {
+                const list = tags.map(item => <a-tag class="mr-1 mb-1">{item}</a-tag>)
+                return [...list]
+              }
+              return '-'
+            },
+          },
+        },
+        {
           field: 'group_count',
           title: this.$t('system.text_457'),
           slots: {
@@ -358,6 +381,17 @@ export default {
     },
     ok () {
       this.$bus.$emit('refresh-detail')
+    },
+    getTags (org) {
+      const tags = []
+      if (org && org.nodes && org.nodes.length > 0) {
+        const labels = org.nodes[org.nodes.length - 1].labels
+        const keys = org.keys
+        for (let i = 0; i < labels.length; i++) {
+          tags.push(`${keys[i].replace('org:', '')}:${labels[i]}`)
+        }
+      }
+      return tags
     },
   },
 }

@@ -1852,7 +1852,7 @@
     "none": "None"
   },
   "authChooser": {
-    "system": "System Manager View",
+    "system": "System View",
     "domain": "@:dictionary.domain Manager View",
     "project": "@:dictionary.project View"
   },
@@ -1875,9 +1875,9 @@
     "clouduser": "Please select @:dictionary.clouduser"
   },
   "policyScopeLabel": {
-    "system": "System Manager View",
-    "domain": "@:dictionary.domain Manager View",
-    "project": "Project View"
+    "system": "System View",
+    "domain": "@:dictionary.domain View",
+    "project": "@:dictionary.project View"
   },
   "storageAclTypes": {
     "private": "Read and write this account",
@@ -3036,7 +3036,7 @@
       "input": "Please enter {0}",
       "optional_input": "Optional, Please enter {0}"
     },
-    "adv_config": "Advanced configuration",
+    "adv_config": "Advanced configurations",
     "date_time": {
       "week": "This Week",
       "last_week": "Last Week",
@@ -4401,8 +4401,8 @@
   "common_219": "Your authorization certificate is about to expire. If you need to upgrade to another version or update your license, please email your server identification code and upgrade requirements to {0}, and we will contact you as soon as possible!",
   "common_220": "Your authorized CPU quota is about to reach the upper limit. If you need to upgrade to another version or renew your license, please email your server ID and upgrade requirements to {0}, and we will contact you as soon as possible !",
   "common_221": "Unauthorized server is found, you need to update the license in time, otherwise the system service may be unavailable. Please send your server ID and change request to {0}, we will contact you as soon as possible contact!",
-  "common_222": "The currently configured console address is: ",
-  "common_223": " Please use this address to access",
+  "common_222": "The configured Web console access address is ",
+  "common_223": ". Please use this address to access the Web console",
   "common_224": "View Details",
   "common_225": "Select",
   "common_226": "Please select VPC",
