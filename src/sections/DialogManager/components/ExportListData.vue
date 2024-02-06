@@ -430,6 +430,7 @@ export default {
               let colData = ''
               if (column.formatter) {
                 colData = column.formatter({ row: dataList[i - 1]._expandData, cellValue: dataList[i - 1]._expandData[column.key || column.field] })
+                colData = colData === '-' ? '' : colData
               } else {
                 colData = dataList[i - 1]._expandData[column.key || column.field] || ''
               }
@@ -453,6 +454,7 @@ export default {
           let colData = ''
           if (column.formatter) {
             colData = column.formatter({ row: dataList[i - 1], cellValue: dataList[i - 1][column.key || column.field] })
+            colData = colData === '-' ? '' : colData
           } else {
             if (column.key?.startsWith('tag:')) {
               const cKey = column.key.replace('tag:', '')
@@ -472,6 +474,7 @@ export default {
             let colData = ''
             if (column.formatter) {
               colData = column.formatter({ row: dataList[i - 1]._expandData, cellValue: dataList[i - 1]._expandData[column.key || column.field] })
+              colData = colData === '-' ? '' : colData
             } else {
               colData = dataList[i - 1]._expandData[column.key || column.field] || ''
             }
