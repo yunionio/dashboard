@@ -361,7 +361,7 @@
   "cloudenv.text_312": "Please enable cloud account first",
   "cloudenv.text_313": "Account is not idle",
   "cloudenv.text_314": "Unable to operate without three level permission model",
-  "cloudenv.text_315": "Only available in the system manager view",
+  "cloudenv.text_315": "Editable in system administrator view ONLY",
   "cloudenv.text_316": "Set up proxy",
   "cloudenv.text_317": "Account Information",
   "cloudenv.text_318": "Subscription",
