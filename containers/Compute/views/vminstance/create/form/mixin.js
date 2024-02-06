@@ -306,7 +306,7 @@ export default {
     },
     isWindows () {
       let isWindows = false
-      const osType = (_.get(this.form.fi, 'imageMsg.info.properties.os_type') || '').toLowerCase()
+      const osType = (_.get(this.form.fi, 'imageMsg.info.properties.os_type') || _.get(this.form.fi, 'imageMsg.properties.os_type') || '').toLowerCase()
       const os = (_.get(this.form.fd, 'os') || '').toLowerCase()
       if (~[osType, os].indexOf('windows')) {
         isWindows = true
