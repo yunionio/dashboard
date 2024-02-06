@@ -3,7 +3,7 @@
     <div class="tree-wrapper-content">
       <div v-if="!isInPopover" class="tree-wrapper-header d-flex justify-content-between">
         <a-button size="small" @click="initTree"><icon type="refresh" /></a-button>
-        <a-button size="small" @click="handleSetting"><icon type="setting" /></a-button>
+        <a-button size="small" v-if="!isHideTreeConfig" @click="handleSetting"><icon type="setting" /></a-button>
       </div>
       <data-empty v-if="!loading && !treeData.length" />
       <div :style="contentStyle">
@@ -86,6 +86,9 @@ export default {
       ret.maxHeight = (h - 60 - 60 - 30 - 48 - 38 - 66 - this.topAlertLen * 41) + 'px'
       return ret
     },
+    isHideTreeConfig () {
+      return this.tagConfigParams.useOrgLevel
+    },
   },
   watch: {
     projectTreeTags: {
@@ -94,26 +97,58 @@ export default {
       },
       immediate: true,
     },
+    // 'tagConfigParams.treeParams': {
+    //   handler: function (val = {}, oldVal = {}) {
+    //     if (!R.equals(val, oldVal)) {
+    //       this.initTree()
+    //     }
+    //   },
+    //   deep: true,
+    // },
   },
   created () {
     this.pM = new this.$Manager('parmeters', 'v1')
     this.tM = new this.$Manager(this.tagConfigParams.resource, 'v1')
+    this.oM = new this.$Manager('organizations', 'v1')
     this.initProjectTags()
   },
   methods: {
     ...mapActions({ getProjectTreeTags: 'projectTags/getProjectTreeTags' }),
     async initProjectTags () {
-      if (!this.isLoaded) {
-        await this.getProjectTreeTags()
+      if (this.tagConfigParams.useOrgLevel) {
+        this.initTree(true)
       } else {
-        this.initTree()
+        if (!this.isLoaded) {
+          await this.getProjectTreeTags()
+        } else {
+          this.initTree()
+        }
       }
     },
-    async initTree () {
+    async initTree (useOrgLevel) {
       const params = {
         limit: 0,
         scope: this.$store.getters.scope,
+        ...(this.tagConfigParams.treeParams || {}),
         // with_user_meta: true,
+      }
+      if (useOrgLevel) {
+        try {
+          this.loading = true
+          const res = await this.oM.list({
+            params: { scope: this.$store.getters.scope },
+          })
+          const list = res.data.data || []
+          if (list.length) {
+            list[0].keys.split('/').map((key, index) => {
+              params[`keys.${index}`] = `org:${key}`
+            })
+          }
+          this.loading = false
+        } catch (err) {
+          this.loading = false
+          throw err
+        }
       }
       this.projectTreeTags.map((item, index) => {
         params[`keys.${index}`] = item.key
@@ -128,7 +163,7 @@ export default {
         const newTree = this.getParsedTree(
           Object.assign(
             {},
-            { key: 'root', value: 'root', count },
+            { key: 'root', value: 'root', count: count },
             { children: R.clone(children) },
           ),
         )
@@ -139,20 +174,23 @@ export default {
         this.loading = false
       }
     },
+    formatCount (count) {
+      return this.tagConfigParams.countFormatter ? this.tagConfigParams.countFormatter(count) : `(${count})`
+    },
     getParsedTree (tree) {
       const treeNode = tree
       treeNode.tag = treeNode.key
       if (treeNode.value === 'root') {
         treeNode.title = (
-          <span class="tree-node-title">{this.$t('common_737')}({treeNode.count})</span>
+          <span class="tree-node-title">{this.$t('common_737')}{this.formatCount(treeNode.count)}</span>
         )
       } else if (treeNode.value === '___no_value__') {
         treeNode.title = (
-          <span class="tree-node-title"><span class="tag-title-budge">{treeNode.tag.replace('user:', '')}:</span>{`${this.$t('common_736')}(${treeNode.count})`}</span>
+          <span class="tree-node-title"><span class="tag-title-budge">{treeNode.tag.replace('user:', '').replace('org:', '')}:</span>{`${this.$t('common_736')}${this.formatCount(treeNode.count)}`}</span>
         )
       } else {
         treeNode.title = (
-          <span class="tree-node-title"><span class="tag-title-budge">{treeNode.tag.replace('user:', '')}:</span>{`${treeNode.value}(${treeNode.count})`}</span>
+          <span class="tree-node-title"><span class="tag-title-budge">{treeNode.tag.replace('user:', '').replace('org:', '')}:</span>{`${treeNode.value}${this.formatCount(treeNode.count)}`}</span>
         )
       }
       treeNode.key = uuid()
