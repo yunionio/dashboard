@@ -72,7 +72,7 @@ export default {
           provider: getBrandFilter(),
           created_at: getCreatedAtFilter(),
         },
-        hiddenColumns: ['postpaid_status', 'created_at'],
+        hiddenColumns: ['prepaid_status', 'created_at'],
       }),
       exportDataOptions: {
         items: [
