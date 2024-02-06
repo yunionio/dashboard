@@ -145,14 +145,14 @@ export const STORAGE_AUTO = {
 
 // GPU 块数选择配置
 export const GPU_COUNT_OPTIONS = [
-  { label: i18n.t('compute.text_6'), key: 1 },
-  { label: i18n.t('compute.text_7'), key: 2 },
-  { label: i18n.t('compute.text_8'), key: 3 },
-  { label: i18n.t('compute.text_9'), key: 4 },
-  { label: i18n.t('compute.text_10'), key: 5 },
-  { label: i18n.t('compute.text_11'), key: 6 },
-  { label: i18n.t('compute.text_12'), key: 7 },
-  { label: i18n.t('compute.text_13'), key: 8 },
+  { label: '1', key: 1 },
+  { label: '2', key: 2 },
+  { label: '3', key: 3 },
+  { label: '4', key: 4 },
+  { label: '5', key: 5 },
+  { label: '6', key: 6 },
+  { label: '7', key: 7 },
+  { label: '8', key: 8 },
 ]
 
 // 调度策略配置选项

@@ -33,7 +33,7 @@
           :form="form"
           :options="archOptions" />
       </a-form-item>
-      <a-form-item v-if="form.fd.hypervisor === 'kvm'" :label="$t('compute.text_1152')" :extra="$t('compute.text_1153')">
+      <a-form-item v-if="form.fd.hypervisor === 'kvm'" :label="$t('compute.text_1152')">
         <gpu :decorators="decorators.gpu" :gpu-options="gpuOptions" @change="gpuChange" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1058')" class="mb-0">
@@ -115,8 +115,8 @@ import { HYPERVISORS_MAP } from '@/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
 import OsArch from '@/sections/OsArch'
-import mixin from './mixin'
 import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
+import mixin from './mixin'
 
 export default {
   name: 'VM_IDCCreate',

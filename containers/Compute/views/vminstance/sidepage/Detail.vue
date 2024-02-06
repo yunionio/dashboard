@@ -252,7 +252,7 @@ export default {
               formatter: ({ row }) => {
                 const distribution = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type
                 const { os_version: version = '' } = row.metadata || {}
-                return distribution + (version === '-' ? '' : version)
+                return distribution + ' ' + (version === '-' ? '' : version)
               },
               hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.os_type'),
             },

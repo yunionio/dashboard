@@ -208,7 +208,7 @@
   "monitor.free_storage": "Free Storage",
   "monitor.storage_utilization_rate": "Storage Utilization Rate",
   "monitor.text_119": "Explorer",
-  "monitor.text_120": "Modify {0}",
+  "monitor.text_120": "Edit {0}",
   "monitor.text_121": "renamed?",
   "monitor.dashboard.create.chart.dashboard.tips": "Please select the dashboard",
   "monitor.dashboard.title": "Dashboard",
