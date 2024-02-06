@@ -2982,7 +2982,7 @@
         "ssd": "超高IO",
         "sas": "高IO",
         "sata": "普通IO",
-        "fase_ssd": "急速型SSD",
+        "fast_ssd": "极速型SSD",
         "ssd_genric": "通用型SSD"
       },
       "localstorage": "本地云盘",

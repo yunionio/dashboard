@@ -2965,7 +2965,7 @@
         "ssd": "Ultra-high IO",
         "sas": "High IO",
         "sata": "Common IO",
-        "fase_ssd": "FAST SSD",
+        "fast_ssd": "FAST SSD",
         "ssd_genric": "Genirc SSD"
       },
       "localstorage": "Local Cloud Disk",
