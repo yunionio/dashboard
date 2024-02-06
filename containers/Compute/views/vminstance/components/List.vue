@@ -815,7 +815,7 @@ export default {
                   // 重置密码
                   {
                     label: this.$t('compute.text_276'),
-                    permission: 'server_perform_deploy',
+                    permission: 'server_perform_set_password',
                     action: () => {
                       this.createDialog('VmResetPasswordDialog', {
                         data: this.list.selectedItems,

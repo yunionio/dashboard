@@ -388,6 +388,7 @@ export const PERMISSION = {
   server_perform_syncstatus: ['compute', 'servers', 'perform', 'syncstatus'],
   server_perform_change_owner: ['compute', 'servers', 'perform', 'change-owner'],
   server_perform_deploy: ['compute', 'servers', 'perform', 'deploy'],
+  server_perform_set_password: ['compute', 'servers', 'perform', 'set-password'],
   server_perform_save_image: ['compute', 'servers', 'perform', 'save-image'],
   server_perform_insertiso: ['compute', 'servers', 'perform', 'insertiso'],
   server_perform_ejectiso: ['compute', 'servers', 'perform', 'ejectiso'],
