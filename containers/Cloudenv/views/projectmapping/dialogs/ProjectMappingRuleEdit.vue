@@ -195,7 +195,7 @@ export default {
         if (item.project_id) {
           ret.project_id = item.project_id
           ret.project = item.project
-        } else if (ret.project) {
+        } else if (item.project) {
           ret.project = item.project
         }
         return ret
