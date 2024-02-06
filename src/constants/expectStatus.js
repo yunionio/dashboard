@@ -149,7 +149,7 @@ export default {
     info: ['unknown'],
   },
   snapshotpolicy: {
-    success: ['ready'],
+    success: ['ready', 'available'],
     info: ['unknown', 'init'],
     danger: ['delete_failed'],
   },
