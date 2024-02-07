@@ -229,6 +229,7 @@ export default {
         enabled: 1,
         details: true,
         scope: this.scope,
+        read_only: false,
         cloudregion: this.cloudregion,
       }
       if (this.isAdminMode) {

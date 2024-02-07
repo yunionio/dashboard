@@ -254,6 +254,7 @@ export default {
     cloudproviderParams () {
       return {
         scope: this.$store.getters.scope,
+        read_only: false,
         cloudaccount_id: this.form?.fd?.account,
       }
     },

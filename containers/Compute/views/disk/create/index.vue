@@ -408,6 +408,7 @@ export default {
       const params = {
         limit: 0,
         enabled: true,
+        read_only: false,
         'filter.0': 'status.equals("connected")',
         'filter.1': 'health_status.equals("normal")',
         cloudregion,
