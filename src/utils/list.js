@@ -1046,17 +1046,17 @@ class CreateList {
       } else if (key === 'with_user_meta' && value && value[0] === true) {
         ret.with_user_meta = true
       } else {
-        ret[`projecttags.${index2}.key`] = []
+        ret[`project_tags.0.${index2}.key`] = []
         let len = 1
         if (value && value.length) len = value.length
         if (len > 0) {
           for (let i = 0; i < len; i++) {
-            ret[`projecttags.${index2}.key`] = key
-            ret[`projecttags.${index2}.value`] = value[i]
+            ret[`project_tags.0.${index2}.key`] = key
+            ret[`project_tags.0.${index2}.value`] = value[i]
             index2++
           }
         } else {
-          ret[`projecttags.${index2}.value`] = ''
+          ret[`project_tags.0.${index2}.value`] = ''
         }
       }
     }, this.tagFilter2)
