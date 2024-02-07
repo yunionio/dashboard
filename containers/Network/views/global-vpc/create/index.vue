@@ -125,6 +125,7 @@ export default {
         enabled: 1,
         details: true,
         scope: this.scope,
+        read_only: false,
         provider: 'Google',
       }
       if (this.isAdminMode) {
