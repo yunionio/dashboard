@@ -113,7 +113,9 @@ export default {
       this.showMore = max > this.max
     },
     cpuSockets (v) {
-      this.form.fi.cpuSockets = v
+      if (this.form?.fi) {
+        this.form.fi.cpuSockets = v
+      }
     },
     showCpuSocketsInit (v) {
       this.showCpuSockets = v
