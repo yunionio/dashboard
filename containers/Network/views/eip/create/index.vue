@@ -285,6 +285,7 @@ export default {
       const params = {
         enabled: 1,
         details: true,
+        read_only: false,
         public_cloud: !this.isHCSO && !this.isHCS,
         scope: this.$store.getters.scope,
         usable: true,
