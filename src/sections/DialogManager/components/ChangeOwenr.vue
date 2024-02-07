@@ -128,7 +128,7 @@ export default {
         const ids = this.params.data.map(item => item.id)
         await this.params.onManager('batchPerformAction', {
           id: ids,
-          steadyStatus: this.params.steadyStatus || ['running', 'ready'],
+          steadyStatus: this.params.steadyStatus === undefined ? ['running', 'ready'] : this.params.steadyStatus,
           managerArgs: {
             action: this.params.action || 'change-owner',
             data: values,
