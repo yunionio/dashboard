@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { is } from 'ramda'
 import _ from 'lodash'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -136,6 +137,7 @@ export default {
         })
         this.loading = false
         this.cancelDialog()
+        is(Function, this.params.refresh) && this.params.refresh()
       } catch (error) {
         this.loading = false
       }
