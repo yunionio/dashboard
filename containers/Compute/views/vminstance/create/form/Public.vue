@@ -474,6 +474,7 @@ export default {
         brand: this.form.fd.provider,
         cloudregion: this.form.fd.cloudregion,
         enabled: true,
+        read_only: false,
         filter: 'status.equals(\'connected\')',
         ...this.scopeParams,
       }
