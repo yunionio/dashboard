@@ -185,9 +185,9 @@ export default {
         id: row.id,
         apiVersion: 'v1',
         resource: 'scheduledtasks',
-        getParams: { 
-          details: true, 
-          utc_offset: this.$moment().utcOffset() / 60 
+        getParams: {
+          details: true,
+          utc_offset: this.$moment().utcOffset() / 60,
         },
       }, {
         list: this.list,
