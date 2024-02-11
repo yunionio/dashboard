@@ -138,7 +138,8 @@ export default {
               show_fill_reason: true,
               account_id: 'accountList',
               limit: 1,
-              filter: ['currency.equals("CNY")', 'status.in("connected")'],
+              currency: 'CNY',
+              status: ['connected'],
             },
           }),
           new this.$Manager('bill_balances', 'v1').list({
@@ -148,7 +149,8 @@ export default {
               show_fill_reason: true,
               account_id: 'accountList',
               limit: 1,
-              filter: ['currency.equals("CNY")', 'status.notin("connected")'],
+              currency: 'CNY',
+              status: ['connected'],
             },
           }),
         ])

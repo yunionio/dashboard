@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { getMaintenanceTableColumn } from '../utils/columns'
 import {
   getUserTagColumn,
   getExtTagColumn,
@@ -18,9 +17,10 @@ import { getEnabledTableColumn, getCopyWithContentTableColumn, getPublicScopeTab
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
 import WindowsMixin from '@/mixins/windows'
+import { getMaintenanceTableColumn } from '../utils/columns'
 
 const storageType = {
-  rotate: i18n.t('compute.text_577'),
+  rotate: i18n.t('compute.text_47'),
   ssd: i18n.t('compute.text_48'),
   hybrid: i18n.t('compute.text_578'),
 }
