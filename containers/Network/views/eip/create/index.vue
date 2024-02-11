@@ -104,9 +104,9 @@ import DomainProject from '@/sections/DomainProject'
 import validateForm, { isRequired } from '@/utils/validate'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import Tag from '@/sections/Tag'
+import { BGP_TYPES, BGP_TYPES_MAP } from '@/constants/network'
 import { HYPERVISORS_MAP } from '../../../../../src/constants'
 import BottomBar from './components/BottomBar'
-import { BGP_TYPES, BGP_TYPES_MAP } from '@/constants/network'
 
 export default {
   name: 'EipCreate',

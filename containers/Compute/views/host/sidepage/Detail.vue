@@ -20,7 +20,7 @@ import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
 
 const storageType = {
-  rotate: i18n.t('compute.text_577'),
+  rotate: i18n.t('compute.text_47'),
   ssd: i18n.t('compute.text_48'),
   hybrid: i18n.t('compute.text_578'),
 }
