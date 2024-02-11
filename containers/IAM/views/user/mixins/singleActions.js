@@ -73,7 +73,7 @@ export default {
               },
             },
             {
-              label: `${i18n.t('common.reset')}MFA`,
+              label: `${i18n.t('common.reset')} MFA`,
               action: () => {
                 this.createDialog('ResetMFADialog', {
                   data: [row],
