@@ -85,12 +85,14 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import validateForm, { REGEXP } from '@/utils/validate'
 import AreaSelects from '@/sections/AreaSelects'
 import DomainSelect from '@/sections/DomainSelect'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import Tag from '@/sections/Tag'
-import validateForm from '@/utils/validate'
 import { HYPERVISORS_MAP } from '@/constants'
+
+const { networkSegment6 } = REGEXP
 
 export default {
   name: 'VPCCreate',
@@ -168,7 +170,7 @@ export default {
             validateFirst: true,
             validateTrigger: ['blur'],
             rules: [
-              { validator: this.$validate('CIDR6') },
+              { validator: this.validatePublicIpPrefix6 },
             ],
           },
         ],
@@ -313,6 +315,22 @@ export default {
     }
   },
   methods: {
+    validatePublicIpPrefix6 (rule, value, callback) {
+      if (value) {
+        if (!networkSegment6.regexp.test(value)) {
+          callback(new Error(networkSegment6.message))
+          return
+        }
+        const maskNum = (value && value.split('/').length > 1) ? value.split('/')[1] : null
+        const min = 48
+        const max = 64
+        if (maskNum < min || maskNum > max) {
+          callback(new Error(this.$t('network.text_604', [min, max])))
+          return
+        }
+      }
+      callback()
+    },
     handleRegionChange (data) {
       if (!R.isEmpty(data.cloudregion) && !R.isNil(data.cloudregion)) {
         const { provider } = data.cloudregion.value
