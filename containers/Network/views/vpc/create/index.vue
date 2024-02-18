@@ -27,7 +27,7 @@
         <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
           <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
         </a-form-item>
-        <a-form-item :label="$t('network.vpc.cidr_block.ipv4.label')" v-bind="formItemLayout" :extra="cloudEnv !== 'onpremise' ? $t('network.text_685') : $t('network.text_686')">
+        <a-form-item :label="$t('network.vpc.cidr_block.ipv4.label')" v-bind="formItemLayout" :extra="$t('network.text_686')">
           <a-input v-decorator="decorators.cidr_block" :placeholder="$t('network.text_687')" v-if="cloudEnv !== 'onpremise'" />
           <a-select v-decorator="decorators.cidr_block" v-else>
             <a-select-option value="192.168.0.0/16">192.168.0.0/16</a-select-option>
@@ -35,16 +35,11 @@
             <a-select-option value="10.0.0.0/8">10.0.0.0/8</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item :label="$t('network.vpc.cidr_block.ipv6.label')" v-bind="formItemLayout" :extra="cloudEnv !== 'onpremise' ? $t('network.text_685') : $t('network.text_686')">
-          <a-input v-decorator="decorators.cidr_block6" :placeholder="$t('network.text_687')" v-if="cloudEnv !== 'onpremise'" />
-          <a-select v-decorator="decorators.cidr_block" v-else>
-            <a-select-option value="192.168.0.0/16">192.168.0.0/16</a-select-option>
-            <a-select-option value="172.16.0.0/12">172.16.0.0/12</a-select-option>
-            <a-select-option value="10.0.0.0/8">10.0.0.0/8</a-select-option>
-          </a-select>
+        <a-form-item :label="$t('network.vpc.cidr_block.ipv6.label')" v-bind="formItemLayout" :extra="$t('network.text_686')">
+          <a-input v-decorator="decorators.cidr_block6" :placeholder="$t('network.vpc.prefix6.prompt')" />
         </a-form-item>
-        <a-form-item :label="$t('network.external_access_mode_label')" v-if="cloudEnv === 'public'" v-bind="formItemLayout">
-          <a-switch v-decorator="decorators.external_access_mode" :disabled="!isAws" />
+        <a-form-item :label="$t('network.external_access_mode_label')" v-if="cloudEnv === 'public' || cloudEnv === 'onpremise'" v-bind="formItemLayout">
+          <a-switch v-decorator="decorators.external_access_mode" :disabled="!isAws && cloudEnv !== 'onpremise'" />
           <template v-slot:extra>{{ $t('network.external_access_mode_extra') }}</template>
         </a-form-item>
         <template v-if="cloudEnv === 'public' || isHCSO || isHCS">
@@ -388,7 +383,9 @@ export default {
           params.project_domain = values.project_domain
         }
         params.__meta__ = values.__meta__
-        if (this.cloudEnv === 'public') params.external_access_mode = values.external_access_mode ? 'eip' : 'none'
+        if (this.cloudEnv === 'public' || this.cloudEnv === 'onpremise') {
+          params.external_access_mode = values.external_access_mode ? 'eip' : 'none'
+        }
         await this.doCreate(params)
         this.loading = false
         this.$message.success(this.$t('k8s.text_184'))

@@ -700,6 +700,7 @@
   "network.text_685": "Once the creation is successful, the network segment cannot be modified. ",
   "network.text_686": "Once created successfully, the network segment cannot be modified.",
   "network.text_687": "Please enter a CIDR, e.g. 192.168.0.0/16",
+  "network.vpc.prefix6.prompt": "Please enter an IPv6 CIDR, e.g. fd:3ffe:3200::/48",
   "network.text_688": "Please enter the VPC name",
   "network.text_689": "Please enter the area",
   "network.text_690": "The target network segment cannot be empty",
