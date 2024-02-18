@@ -29,7 +29,7 @@
         <!-- 标签过滤器 -->
         <template v-if="showTagFilter">
           <tag-filter
-            :resource="resource"
+            :resource="tagFilterResource || resource"
             :tag-manager-instance="tagManagerInstance"
             :tag-filter="tagFilter"
             :extTagParams="extTagParams"
@@ -230,6 +230,7 @@ export default {
     showNoValue: Boolean,
     showNoValue2: Boolean,
     showNoValue3: Boolean,
+    tagFilterResource: String,
     tagFilterResource2: String,
     tagFilterResource3: String,
     tagBtnText: String,
