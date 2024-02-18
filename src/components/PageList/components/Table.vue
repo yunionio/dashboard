@@ -34,7 +34,7 @@
             <deny v-if="isResDeny" />
             <loader v-else :loading="loading" :noDataText="noDataText" />
           </template>
-          <template v-if="!isResDeny && pagerType === 'pager'" v-slot:pager>
+          <template v-if="showPage && !isResDeny && pagerType === 'pager'" v-slot:pager>
             <vxe-pager
               :layouts="tablePage.layouts"
               :current-page="tablePage.currentPage"
