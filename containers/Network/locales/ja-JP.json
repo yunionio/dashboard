@@ -699,6 +699,7 @@
   "network.text_685": "一度作成した CIDR ブロックは変更できません。",
   "network.text_686": "一度作成した CIDR ブロックは変更できません。",
   "network.text_687": "CIDR フィールドに 192.168.0.0/16 などを入力します。",
+  "network.vpc.prefix6.prompt": "IPv6 ネットワーク セグメントを入力してください (例: fd:3ffe:3200::/48)",
   "network.text_688": "VPC の名前を入力します",
   "network.text_689": "地域を入力してください",
   "network.text_690": "宛先 CIDR ブロックを空にすることはできません",

@@ -127,6 +127,13 @@ export default {
             ],
           },
         ],
+        ipv6s: (i, networkData) => [
+          `networkIPv6s[${i}]`,
+          {
+            validateFirst: true,
+            validateTrigger: ['blur', 'change'],
+          },
+        ],
         devices: i => [
           `networkDevices[${i}]`,
           {
@@ -221,7 +228,7 @@ export default {
       this.loading = true
       try {
         const nets = []
-        const { networks, networkIps, networkMacs, networkDevices } = await this.form.fc.validateFields()
+        const { networks, networkIps, networkMacs, networkIPv6s, networkDevices } = await this.form.fc.validateFields()
         if (!networks || R.isEmpty(networks)) {
           this.cancelDialog()
           return false
@@ -235,6 +242,9 @@ export default {
           }
           if (networkMacs && networkMacs[key]) {
             o.mac = networkMacs[key]
+          }
+          if (networkIPv6s && networkIPv6s[key]) {
+            o.require_ipv6 = true
           }
           if (networkDevices && networkDevices[key]) {
             o.sriov_device = {
