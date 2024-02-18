@@ -785,7 +785,7 @@ export default {
               description: values.description,
               vpc: values.vpc,
               zone: values.zone,
-              project_id: values.project.key,
+              project_id: values.project?.key,
               is_auto_alloc: values.is_auto_alloc,
               __meta__: values.__meta__,
             }
@@ -810,7 +810,7 @@ export default {
               vlan_id: values.vlan[key] === '' ? '1' : values.vlan[key],
               name: values.name,
               description: values.description,
-              project_id: values.project.key,
+              project_id: values.project?.key,
               server_type: values.server_type,
               wire_id: values.wire,
               is_auto_alloc: values.is_auto_alloc,
@@ -824,7 +824,7 @@ export default {
       if (this.regionProvider === typeClouds.providerMap.ZStack.key ||
         (this.cloudEnv === 'private' && this.curVpc?.brand === 'Cloudpods' && this.curVpc?.external_id === 'default')) {
         return {
-          project_id: values.project.key,
+          project_id: values.project?.key,
           guest_ip_prefix: values.guest_ip_prefix[0],
           guest_ip6_prefix: values.guest_ip6_prefix[0],
           name: values.name,
@@ -835,7 +835,7 @@ export default {
         }
       }
       return {
-        project_id: values.project.key,
+        project_id: values.project?.key,
         guest_ip_prefix: values.guest_ip_prefix[0],
         guest_ip6_prefix: values.guest_ip6_prefix[0],
         name: values.name,
