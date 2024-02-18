@@ -48,6 +48,7 @@
       :show-no-value="showNoValue"
       :show-no-value2="showNoValue2"
       :show-no-value3="showNoValue3"
+      :tagFilterResource="tagFilterResource"
       :tagFilterResource2="tagFilterResource2"
       :tagFilterResource3="tagFilterResource3"
       :tagBtnText="tagBtnText"
@@ -283,6 +284,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    tagFilterResource: String,
     tagFilterResource2: String,
     tagFilterResource3: String,
     tagBtnText: String,
