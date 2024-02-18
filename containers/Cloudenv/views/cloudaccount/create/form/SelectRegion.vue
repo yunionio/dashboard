@@ -6,6 +6,7 @@
     <page-list
       :showSync="false"
       :showSearchbox="false"
+      :showPage="false"
       :list="list"
       :columns="columns"
       :group-actions="groupActions"
