@@ -127,14 +127,23 @@ export default {
       try {
         const values = await this.validateForm()
         const ids = this.params.data.map(item => item.id)
-        await this.params.onManager('batchPerformAction', {
-          id: ids,
-          steadyStatus: this.params.steadyStatus === undefined ? ['running', 'ready'] : this.params.steadyStatus,
-          managerArgs: {
+        const { manager } = this.params
+        if (manager) {
+          await manager.batchPerformAction({
+            ids,
             action: this.params.action || 'change-owner',
             data: values,
-          },
-        })
+          })
+        } else {
+          await this.params.onManager('batchPerformAction', {
+            id: ids,
+            steadyStatus: this.params.steadyStatus === undefined ? ['running', 'ready'] : this.params.steadyStatus,
+            managerArgs: {
+              action: this.params.action || 'change-owner',
+              data: values,
+            },
+          })
+        }
         this.loading = false
         this.cancelDialog()
         is(Function, this.params.refresh) && this.params.refresh()
