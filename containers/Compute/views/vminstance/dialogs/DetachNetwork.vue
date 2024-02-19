@@ -5,12 +5,12 @@
       <dialog-selected-tips :name="$t('compute.nic')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form-item>
-        <a-checkbox v-model="syncConfigImmediately">
+        <a-checkbox v-model="syncConfigImmediately" :disabled="!isVmPoweroff">
           {{ $t('compute.nics.sync_config_immediately') }}
         </a-checkbox>
       </a-form-item>
       <a-form-item>
-        <a-checkbox v-model="forceRemove">
+        <a-checkbox v-model="forceRemove" :disabled="!isVmPoweroff">
           {{ $t('compute.nics.force_remove') }}
         </a-checkbox>
       </a-form-item>
@@ -42,6 +42,9 @@ export default {
     columns () {
       const showFields = ['ifname', 'ip_addr', 'mac_addr']
       return this.params.columns.filter((item) => { return showFields.includes(item.field) })
+    },
+    isVmPoweroff () {
+      return this.params.server.power_states === 'off'
     },
   },
   methods: {

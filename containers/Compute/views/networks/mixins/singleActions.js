@@ -90,6 +90,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   refresh: this.refresh,
+                  server: this.data,
                 })
               },
               meta: (obj) => {
