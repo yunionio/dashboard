@@ -270,7 +270,7 @@ const actionEableMap = {
       apsara: ['running'],
       jdcloud: ['running'],
       ecloud: ['running'],
-      proxmox: false,
+      proxmox: ['running'],
       nutanix: false,
       bingocloud: false,
       incloudsphere: ['running'],

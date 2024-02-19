@@ -59,6 +59,11 @@ const getSingleActions = function () {
               validate: obj.power_states === 'unknown' ? cloudEnabled('vnc', obj) : obj.power_states === 'on',
               tooltip: obj.power_states === 'unknown' ? cloudUnabledTip('vnc', obj) : '',
             }
+            if (cloudEnabled('vnc', obj) === false) {
+              ret.validate = false
+              ret.tooltip = cloudUnabledTip('vnc', obj)
+              return ret
+            }
             return ret
           },
         }
