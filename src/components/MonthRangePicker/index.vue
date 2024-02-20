@@ -116,7 +116,7 @@ export default {
     let value2 = null
     let textLeft = ''
     let textRight = ''
-    if (this.value && this.value.length === 2) {
+    if (this.value && this.value.length === 2 && this.value[0] && this.value[1]) {
       currentLeftYear = parseInt(this.$moment(this.value[0]).format('YYYY'))
       const rightYear = parseInt(this.$moment(this.value[1]).format('YYYY'))
       currentRightYear = rightYear === currentLeftYear ? rightYear + 1 : rightYear
@@ -239,11 +239,21 @@ export default {
       if (this.changeIndex === 0) {
         this.selected = [value, null]
         this.changeIndex = 1
+        if (!this.textLeft) {
+          const left = String(this.selected[0])
+          this.textLeft = `${left.slice(0, 4)}-${left.slice(4)}`
+        }
       } else {
         if (this.selected[0] > value) {
           this.selected = [value, this.selected[0]]
         } else {
           this.selected = [this.selected[0], value]
+        }
+        if (!this.textRight || !this.textLeft) {
+          const left = String(this.selected[0])
+          const right = String(this.selected[1])
+          this.textLeft = `${left.slice(0, 4)}-${left.slice(4)}`
+          this.textRight = `${right.slice(0, 4)}-${right.slice(4)}`
         }
         this.changeIndex = 0
         const that = this
