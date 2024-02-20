@@ -1,10 +1,10 @@
 import { Manager } from '@/utils/manager'
 
 export const objectsModel = {
-  async getAcl (resName, key) {
+  async getAcl (resId, key) {
     let bucketsManager = new Manager('buckets', 'v2')
     try {
-      const { data = {} } = await bucketsManager.getSpecific({ id: resName, spec: 'acl', params: { key } })
+      const { data = {} } = await bucketsManager.getSpecific({ id: resId, spec: 'acl', params: { key } })
       return data
     } catch (err) {
       throw err
@@ -12,9 +12,9 @@ export const objectsModel = {
       bucketsManager = null
     }
   },
-  async getUrl (row, resName, accessUrl) {
+  async getUrl (row, resId, accessUrl) {
     const { key } = row
-    // const { acl } = await this.getAcl(resName, key)
+    // const { acl } = await this.getAcl(resId, key)
     let bucketsManager = new Manager('buckets', 'v2')
     try {
       const params = {
@@ -26,7 +26,7 @@ export const objectsModel = {
         params.expire_seconds = row.expire_seconds
       }
       const { data = {} } = await bucketsManager.performAction({
-        id: resName,
+        id: resId,
         action: 'temp-url',
         data: params,
       })
