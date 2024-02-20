@@ -171,12 +171,12 @@ export default {
                 default: ({ row }) => {
                   const pub = row.public_dns || row.public_ip_addr
                   const port = row.public_connect_port
-                  const btnTxt = port ? this.$t('db.text_174') : this.$t('db.text_175')
+                  const btnTxt = pub ? this.$t('db.text_174') : this.$t('db.text_175')
                   const isRunning = row.status === 'running'
                   const notRunninTip = !isRunning ? this.$t('db.text_156') : null
                   let RenderSwitchBtn = null
                   if (isRunning) {
-                    RenderSwitchBtn = (<a-button type="link" onClick={() => this.handleSwitchPublicAddress(!port)}>{btnTxt}</a-button>)
+                    RenderSwitchBtn = (<a-button type="link" onClick={() => this.handleSwitchPublicAddress(!pub)}>{btnTxt}</a-button>)
                   } else {
                     RenderSwitchBtn = (
                       <a-tooltip placement='top' title={notRunninTip}>
@@ -185,7 +185,7 @@ export default {
                     )
                   }
                   if (row.provider === 'Huawei' || row.provider === 'Qcloud') {
-                    return '-'
+                    RenderSwitchBtn = null
                   }
                   return (
                     <div>
