@@ -74,9 +74,9 @@ export default {
         if (e && e.target) {
           seconds = parseInt(e.target.value) || 0
         }
-        const { data, resName, accessUrl } = this.params
+        const { data, resId, accessUrl } = this.params
         const row = data && data.length > 0 ? data[0] : {}
-        const url = await objectsModel.getUrl(Object.assign({}, row, { expire_seconds: seconds }), resName, accessUrl)
+        const url = await objectsModel.getUrl(Object.assign({}, row, { expire_seconds: seconds }), resId, accessUrl)
         this.url = url
       } catch (err) {
         throw err
