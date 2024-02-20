@@ -5,6 +5,14 @@
         <a-button size="small" @click="initTree"><icon type="refresh" /></a-button>
         <a-button size="small" v-if="!isHideTreeConfig" @click="handleSetting"><icon type="setting" /></a-button>
       </div>
+      <div class="search-box mt-2 mb-2">
+        <a-input-search
+          class="search"
+          v-model="searchValue"
+          :placeholder="$t('common.search')"
+          allowClear
+          @search="onSearch" />
+      </div>
       <data-empty v-if="!loading && !treeData.length" />
       <div :style="contentStyle">
         <a-tree
@@ -12,7 +20,7 @@
           default-expand-all
           show-icon
           :selectedKeys.sync="selectedKeys"
-          :treeData="treeData"
+          :treeData="filteredTreeData"
           @select="handleTreeNodeSelect"
           style="padding:10px 0">
           <a-icon slot="switcherIcon" type="caret-down" style="font-size: 16px;color:#999" />
@@ -43,6 +51,7 @@ export default {
       loading: false,
       treeData: [],
       selectedKeys: [],
+      searchValue: '',
     }
   },
   computed: {
@@ -89,6 +98,13 @@ export default {
     isHideTreeConfig () {
       return this.tagConfigParams.useOrgLevel
     },
+    filteredTreeData () {
+      if (this.searchValue) {
+        const treeData = this.deepFilter(this.treeData)
+        return treeData
+      }
+      return this.treeData
+    },
   },
   watch: {
     projectTreeTags: {
@@ -114,6 +130,21 @@ export default {
   },
   methods: {
     ...mapActions({ getProjectTreeTags: 'projectTags/getProjectTreeTags' }),
+    deepFilter (list) {
+      const cloneList = list.map(item => {
+        const ret = { ...item }
+        if (item.children) {
+          ret.children = [...item.children]
+        }
+        return ret
+      })
+      return cloneList.filter(item => {
+        if (item.children) {
+          item.children = this.deepFilter(item.children)
+        }
+        return item.filterKeys && item.filterKeys.some(key => key.toLowerCase().includes(this.searchValue.toLowerCase()))
+      })
+    },
     async initProjectTags () {
       if (this.tagConfigParams.useOrgLevel) {
         this.initTree(true)
@@ -149,10 +180,11 @@ export default {
           this.loading = false
           throw err
         }
+      } else {
+        this.projectTreeTags.map((item, index) => {
+          params[`keys.${index}`] = item.key
+        })
       }
-      this.projectTreeTags.map((item, index) => {
-        params[`keys.${index}`] = item.key
-      })
       try {
         this.loading = true
         const res = await this.tM.get({
@@ -167,12 +199,49 @@ export default {
             { children: R.clone(children) },
           ),
         )
+        this.addFilterKeysToTree(newTree)
         this.treeData = [newTree]
         this.$emit('select', this.genProjectTagFilter({}))
         this.loading = false
       } catch (err) {
         this.loading = false
       }
+    },
+    addFilterKeysToTree (tree) {
+      const treeLabels = (tree.tags || []).map(item => item.value === '___no_value__' ? this.$t('common_736') : item.value)
+      if (!tree.filterKeys) tree.filterKeys = []
+      if (treeLabels.length && !tree.filterKeys.includes(treeLabels[treeLabels.length - 1])) {
+        tree.filterKeys.push(treeLabels[treeLabels.length - 1])
+      }
+      if (tree.children && tree.children.length) {
+        tree.children.map(child => {
+          const nodeLabels = this.getTreeLabels(child)
+          nodeLabels.map(val => {
+            if (!tree.filterKeys.includes(val)) {
+              tree.filterKeys.push(val)
+            }
+          })
+          this.addFilterKeysToTree(child)
+        })
+      }
+    },
+    getTreeLabels (tree) {
+      const ret = []
+      if (tree.tags.length) {
+        const value = tree.tags[tree.tags.length - 1].value
+        ret.push(value === '___no_value__' ? this.$t('common_736') : value)
+      }
+      if (tree.children && tree.children.length) {
+        tree.children.map(child => {
+          const keys = this.getTreeLabels(child)
+          keys.map(key => {
+            if (!ret.includes(key)) {
+              ret.push(key)
+            }
+          })
+        })
+      }
+      return ret
     },
     formatCount (count) {
       return this.tagConfigParams.countFormatter ? this.tagConfigParams.countFormatter(count) : `(${count})`
@@ -237,6 +306,19 @@ export default {
   border: 1px solid #f1f1f1;
   position: relative;
 }
+
+.search-box {
+    width: 100%;
+    height: 32px;
+    position: relative;
+    .search {
+      position: absolute;
+      left: 10px;
+      top:0;
+      right: 10px;
+      width: calc(100% - 20px);
+    }
+  }
 .ant-tree-switcher {
   display: none !important;
 }
