@@ -150,7 +150,7 @@ export default {
             this.createDialog('ObjectsUploadFileDialog', {
               title: this.$t('storage.text_157'),
               list: this.list,
-              resId: this.data.id,
+              resId: this.resId,
               resItem: this.data,
               resName: this.resName,
               prefix: this.prefix,
@@ -284,7 +284,7 @@ export default {
         {
           label: this.$t('storage.text_165'),
           action: (row) => {
-            objectsModel.getUrl(row, this.data.name, this.accessUrl).then((url) => {
+            objectsModel.getUrl(row, this.data.id, this.accessUrl).then((url) => {
               // url && window.open(url, '__blank')
               const a = document.createElement('a')
               document.body.appendChild(a)
@@ -310,6 +310,7 @@ export default {
                   this.createDialog('ObjectsCreateUrlDialog', {
                     title: this.$t('storage.text_167'),
                     data: [row],
+                    resId: this.resId,
                     resName: this.resName,
                     accessUrl: this.accessUrl,
                     columns: this.columns,
@@ -388,6 +389,9 @@ export default {
     }
   },
   computed: {
+    resId () {
+      return this.data.id
+    },
     resName () {
       return this.data.name
     },
