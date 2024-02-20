@@ -51,7 +51,7 @@ export default {
   data () {
     return {
       formData: {
-        month_range: [moment(this.customDate.start), moment(this.customDate.end)],
+        month_range: this.customDate.start ? [moment(this.customDate.start), moment(this.customDate.end)] : [null, null],
         date_range: [this.customDate.start, this.customDate.end],
       },
       monthChangeIndex: 0,
