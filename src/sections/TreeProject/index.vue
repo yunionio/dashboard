@@ -307,6 +307,10 @@ export default {
   position: relative;
 }
 
+.tree-wrapper-content {
+  min-width: 200px;
+}
+
 .search-box {
     width: 100%;
     height: 32px;
