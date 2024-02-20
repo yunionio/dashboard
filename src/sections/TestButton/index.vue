@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     async handleTest () {
-      if (!this.post || R.type(this.post) !== 'Function') return false
+      if (!this.post || !['AsyncFunction', 'Function'].includes(R.type(this.post))) return false
       this.loading = true
       try {
         await this.post()
