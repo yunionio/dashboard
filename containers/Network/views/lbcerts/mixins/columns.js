@@ -1,9 +1,12 @@
 import {
   getNameDescriptionTableColumn,
+  getBrandTableColumn,
   getProjectTableColumn,
   getPublicScopeTableColumn,
   getTagTableColumn,
   getTimeTableColumn,
+  getRegionTableColumn,
+  getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -87,6 +90,9 @@ export default {
       },
       getPublicScopeTableColumn({ vm: this, resource: 'loadbalancercertificates' }),
       getProjectTableColumn(),
+      getBrandTableColumn(),
+      getAccountTableColumn(),
+      getRegionTableColumn(),
       getTimeTableColumn(),
     ]
   },
