@@ -30,7 +30,6 @@
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import LbaclDetail from './Detail'
-import LbaclCacheList from './Cache'
 import LbaclListenersList from '@Network/views/loadbalancerlistener/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
@@ -41,7 +40,6 @@ export default {
   components: {
     LbaclDetail,
     LbaclListenersList,
-    LbaclCacheList,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -50,14 +48,13 @@ export default {
       detailTabs: [
         { label: this.$t('network.text_67'), key: 'lbacl-detail' },
         { label: this.$t('network.text_138'), key: 'lbacl-listeners-list' },
-        { label: this.$t('network.text_316'), key: 'lbacl-cache-list' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
   },
   computed: {
     getParams () {
-      if (['lbacl-listeners-list', 'lbacl-cache-list'].indexOf(this.params.windowData.currentTab) > -1) {
+      if (['lbacl-listeners-list'].indexOf(this.params.windowData.currentTab) > -1) {
         return {
           details: true,
           acl_id: this.detailData.id,
@@ -71,8 +68,6 @@ export default {
           return 'EventListForLbaclSidePage'
         case 'lbacl-listeners-list':
           return 'LbaclListenersListForLbaclSidePage'
-        case 'lbacl-cache-list':
-          return 'LbaclCacheListForLbaclSidePage'
         default:
           return ''
       }

@@ -287,6 +287,16 @@ export default {
     success: ['enabled'],
     danger: [],
   },
+  lbacl: {
+    info: ['disabled'],
+    success: ['enabled', 'available'],
+    danger: [],
+  },
+  lbcert: {
+    info: ['disabled'],
+    success: ['enabled', 'available'],
+    danger: [],
+  },
   ipv6_gateway: {
     info: ['info', 'unknown'],
     success: ['running', 'available', 'enabled'],
