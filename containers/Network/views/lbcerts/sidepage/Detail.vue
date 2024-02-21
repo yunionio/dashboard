@@ -27,25 +27,6 @@ export default {
   data () {
     return {
       baseInfo: [
-        {
-          field: 'is_complete',
-          title: this.$t('network.text_27') + ' ',
-          slots: {
-            default: ({ row }) => {
-              if (row.is_complete === false) {
-                return [<div slot="label">
-                  <span class="status-dot warning"/>
-                  <span class="mr-1"> {this.$t('network.lbcert.is_complete.false')} </span>
-                  <a-tooltip title={this.$t('network.text_753')}>
-                    <a-icon type="question-circle-o" />
-                  </a-tooltip>
-                </div>]
-              } else {
-                return [<div slot="label"><span class="status-dot success"/><span class="mr-1"> {this.$t('network.lbcert.is_complete.true')} </span></div>]
-              }
-            },
-          },
-        },
         isPublicTableColumn(),
         {
           field: 'fingerprint',

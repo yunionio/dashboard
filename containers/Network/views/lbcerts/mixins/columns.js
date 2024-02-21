@@ -5,6 +5,7 @@ import {
   getPublicScopeTableColumn,
   getTagTableColumn,
   getTimeTableColumn,
+  getStatusTableColumn,
   getRegionTableColumn,
   getAccountTableColumn,
 } from '@/utils/common/tableColumn'
@@ -24,26 +25,7 @@ export default {
         },
       }),
       getTagTableColumn({ onManager: this.onManager, resource: 'lb_loadbalancercertificates', columns: () => this.columns }),
-      {
-        field: 'is_complete',
-        title: i18n.t('network.text_27'),
-        width: 90,
-        slots: {
-          default: ({ row }) => {
-            if (row.is_complete === false) {
-              return [<div slot="label">
-                <span class="status-dot warning"/>
-                <span class="mr-1"> {i18n.t('network.lbcert.is_complete.false')} </span>
-                <a-tooltip title={i18n.t('network.text_753')}>
-                  <a-icon type="question-circle-o" />
-                </a-tooltip>
-              </div>]
-            } else {
-              return [<div slot="label"><span class="status-dot success"/><span class="mr-1"> {i18n.t('network.lbcert.is_complete.true')} </span></div>]
-            }
-          },
-        },
-      },
+      getStatusTableColumn({ statusModule: 'lbcert', vm: this }),
       {
         field: 'common_name',
         title: i18n.t('network.text_318'),

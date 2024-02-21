@@ -31,7 +31,6 @@
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import LbcertDetail from './Detail'
-import LbcertCacheList from './Cache'
 import LoadbalancerlistenersList from '@Network/views/loadbalancerlistener/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
@@ -41,7 +40,6 @@ export default {
   name: 'LbcertSidePage',
   components: {
     LbcertDetail,
-    LbcertCacheList,
     LoadbalancerlistenersList,
     Actions,
   },
@@ -51,14 +49,13 @@ export default {
       detailTabs: [
         { label: this.$t('network.text_67'), key: 'lbcert-detail' },
         { label: this.$t('network.text_138'), key: 'loadbalancerlisteners-list' },
-        { label: this.$t('network.text_316'), key: 'lbcert-cache-list' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
   },
   computed: {
     getParams () {
-      if (['loadbalancerlisteners-list', 'lbcert-cache-list'].indexOf(this.params.windowData.currentTab) > -1) {
+      if (['loadbalancerlisteners-list'].indexOf(this.params.windowData.currentTab) > -1) {
         return {
           details: true,
           certificate_id: this.detailData.id,
@@ -72,8 +69,6 @@ export default {
           return 'EventListForLbcertSidePage'
         case 'loadbalancerlisteners-list':
           return 'LoadbalancerlistenersListForLbcertSidePage'
-        case 'lbcert-cache-list':
-          return 'LbcertCacheListForLbcertSidePage'
         default:
           return ''
       }
