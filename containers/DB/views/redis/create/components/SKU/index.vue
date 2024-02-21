@@ -11,10 +11,10 @@
   </div>
 </template>
 <script>
-import ItemFilters from './components/ItemFilters'
-import SkuList from './components/List'
 import { isRequiredData } from '@DB/views/utils'
 import { CAPABILIT_PARAMS, SPECS_PARAMS, SKU_PARAMS } from '@DB/views/redis/constants'
+import ItemFilters from './components/ItemFilters'
+import SkuList from './components/List'
 
 export default {
   name: 'RedisCreateSku',
@@ -39,6 +39,8 @@ export default {
       const values = this.form.getFieldsValue(keys)
       const params = {
         usable: true,
+        provider: this.form.fd.provider,
+        cloudregion: this.form.fd.cloudregion,
         ...values,
         ...this.scopeParams,
       }

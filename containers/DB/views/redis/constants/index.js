@@ -89,7 +89,7 @@ export const PERFORMANCE_TYPE = {
 export const CAPABILIT_PARAMS = ['billing_type', 'city', 'provider', 'cloudregion', 'zone']
 
 // elasticcacheskus/instance-specs接口所需要的参数
-export const SPECS_PARAMS = ['billing_type', 'engine', 'engine_version', 'local_category', 'node_type', 'performance_type']
+export const SPECS_PARAMS = ['billing_type', 'engine', 'engine_version', 'local_category', 'node_type', 'performance_type', 'provider', 'cloudregion']
 
 // elasticcacheskus接口所需要的参数
 export const SKU_PARAMS = ['project_domian', 'memory_size_mb', ...CAPABILIT_PARAMS, ...SPECS_PARAMS]
