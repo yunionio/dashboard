@@ -1,8 +1,11 @@
 import {
   getNameDescriptionTableColumn,
+  getBrandTableColumn,
   getTimeTableColumn,
   getPublicScopeTableColumn,
   getProjectTableColumn,
+  getRegionTableColumn,
+  getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -63,6 +66,8 @@ export default {
         field: 'lb_listener_count',
         title: this.$t('network.text_750'),
       },
+      getBrandTableColumn(),
+      getAccountTableColumn(),
       getTimeTableColumn(),
       {
         field: 'updated_at',
@@ -73,6 +78,7 @@ export default {
         },
       },
       getPublicScopeTableColumn({ vm: this, resource: 'loadbalanceracls' }),
+      getRegionTableColumn(),
       getProjectTableColumn(),
     ]
   },
