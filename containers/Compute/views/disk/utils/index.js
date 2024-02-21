@@ -552,7 +552,8 @@ export const diskCreateSnapshotConfig = {
   },
   volcengine (obj) {
     return {
-      validate: false,
+      validate: true,
+      tooltip: '',
     }
   },
 }
