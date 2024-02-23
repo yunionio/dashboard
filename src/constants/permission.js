@@ -304,6 +304,7 @@ export const PERMISSION = {
   projects_perform_set_user_metadata: ['identity', 'projects', 'perform', 'set-user-metadata'],
   projects_perform_join: ['identity', 'projects', 'perform', 'join'],
   projects_perform_leave: ['identity', 'projects', 'perform', 'leave'],
+  projects_perform_set_admin: ['identity', 'projects', 'perform', 'set-admin'],
 
   // 角色
   roles_list: ['identity', 'roles', 'list'],

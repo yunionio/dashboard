@@ -24,7 +24,8 @@
               resource="users"
               filterable
               remote
-              :params="userParams" />
+              :params="userParams"
+              :select-props="{allowClear: true, placeholder: $t('common.tips.select', [$t('iam.project_admin')])}" />
           </a-form-model-item>
           <div class="text-right">
             <a-button type="primary" @click="handleConfirm">{{ $t('dialog.ok') }}</a-button>
@@ -67,10 +68,10 @@ export default {
         wrapperCol: { span: 16 },
       },
       form: {
-        admin_id: this.row.admin_id,
+        admin_id: this.row.admin_id || undefined,
       },
       rules: {
-        admin_id: [{ required: true, message: this.$t('common.tips.select', [this.$t('system.text_6')]) }],
+        admin_id: [{ required: false, message: this.$t('common.tips.select', [this.$t('system.text_6')]) }],
       },
     }
   },
