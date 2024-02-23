@@ -101,7 +101,17 @@ export default {
           permission: 'projectmappings_update',
           group: true,
           action: () => {
-            this.deleteProjectMappingRules()
+            // this.deleteProjectMappingRules()
+            this.createDialog('DeleteResDialog', {
+              name: this.$t('cloudenv.text_582'),
+              vm: this,
+              data: this.checkedRecords,
+              columns: [this.normalColmns[0], this.normalColmns[1]],
+              title: this.$t('table.action.delete'),
+              ok: () => {
+                this.deleteProjectMappingRules()
+              },
+            })
           },
           meta: () => {
             const ret = {
