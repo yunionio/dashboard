@@ -174,7 +174,7 @@
       "security_group_fail": "セキュリティグループの作成に失敗しました",
       "qga_set_network_failed": "QGA はネットワークの設定に失敗しました",
       "start_rescue": "緊急モードに入る",
-      "rescuing": "緊急モード",
+      "rescue": "緊急モード",
       "stop_rescue": "緊急モードを終了",
       "start_rescue_failed": "緊急モードへの移行に失敗しました",
       "stop_rescue_failed": "緊急モードの終了に失敗しました"
