@@ -316,10 +316,13 @@ export const getNameDescriptionTableColumn = ({
           }),
         ]
         if ((R.type(showDesc) === 'Function' && showDesc(row)) || showDesc === true) {
-          descriptionRules.push({
-            max: 256,
-            message: i18n.t('validator.maxLength', ['256']),
-          })
+          const realDescRules = [
+            ...descriptionRules,
+            {
+              max: 256,
+              message: i18n.t('validator.maxLength', ['256']),
+            },
+          ]
           let field = descField
           if (_.get(row, '_i18n.description')) field = '_i18n.description' // 如果多语言里面有备注，则取多语言里的字段
           ret.push(h('list-body-cell-wrap', {
@@ -330,7 +333,7 @@ export const getNameDescriptionTableColumn = ({
               row,
               onManager,
               steadyStatus,
-              formRules: descriptionRules,
+              formRules: realDescRules,
               copy: copyDesc,
             },
           }))
