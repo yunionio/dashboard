@@ -147,11 +147,11 @@ export default {
         for (let j = 1; j <= 3; j++) {
           const left = {
             label: this.$t(`common_custom_date.month.${start}`),
-            value: parseInt(this.$moment(`${this.currentLeftYear}-${start}`).format('YYYYMM')),
+            value: parseInt(this.$moment(`${this.currentLeftYear}-${start < 10 ? '0' : ''}${start}`).format('YYYYMM')),
           }
           const right = {
             label: this.$t(`common_custom_date.month.${start}`),
-            value: parseInt(this.$moment(`${this.currentRightYear}-${start}`).format('YYYYMM')),
+            value: parseInt(this.$moment(`${this.currentRightYear}-${start < 10 ? '0' : ''}${start}`).format('YYYYMM')),
           }
           left.showShadow = this.getShadowShow(left.value)
           right.showShadow = this.getShadowShow(right.value)
