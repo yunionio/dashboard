@@ -174,7 +174,7 @@
       "security_group_fail": "创建安全组失败",
       "qga_set_network_failed": "QGA设置网络失败",
       "start_rescue": "进入紧急模式中",
-      "rescuing": "紧急模式",
+      "rescue": "紧急模式",
       "stop_rescue": "退出紧急模式",
       "start_rescue_failed": "进入紧急模式失败",
       "stop_rescue_failed": "退出紧急模式失败"
