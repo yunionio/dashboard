@@ -1069,5 +1069,6 @@
   "iam.before_expiration": "有効期限前",
   "iam.day": "空",
   "iam.add_notify_time": "通知時間を増やす",
-  "iam.notify_time_not_repeat": "通知時間に重複があります"
+  "iam.notify_time_not_repeat": "通知時間に重複があります",
+  "iam.set_project_admin": "設定@:dictionary.project管理者"
 }

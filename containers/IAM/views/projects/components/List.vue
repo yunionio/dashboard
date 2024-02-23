@@ -19,7 +19,7 @@
 import { mapGetters } from 'vuex'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
+import { getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter, getDistinctFieldFilter } from '@/utils/common/tableFilter'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -66,6 +66,7 @@ export default {
           user_id: {
             label: this.$t('dictionary.user'),
           },
+          admin: getDistinctFieldFilter({ label: this.$t('iam.project_admin'), field: 'admin' }),
           group_id: {
             label: this.$t('dictionary.group'),
           },
@@ -76,14 +77,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('system.text_101'), key: 'name' },
-          { label: this.$t('dictionary.domain'), key: 'project_domain' },
-          { label: this.$t('common.createdAt'), key: 'created_at' },
-        ],
-      },
       tagConfigParams: {
         id: this.id,
         title: this.$t('common.text00124'),
@@ -133,6 +126,25 @@ export default {
           },
         },
         {
+          label: this.$t('iam.set_project_admin'),
+          permission: 'projects_perform_set_admin',
+          action: () => {
+            this.createDialog('ProjectSetAdminDialog', {
+              vm: this,
+              title: this.$t('iam.set_project_admin'),
+              name: this.$t('system.text_9'),
+              data: this.list.selectedItems,
+              columns: this.columns,
+              onManager: this.onManager,
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.selectedItems.length > 0,
+            }
+          },
+        },
+        {
           label: this.$t('system.text_129'),
           permission: 'projects_delete',
           action: () => {
@@ -154,6 +166,16 @@ export default {
       ]
       if (!this.isAllowCreate) actions.shift()
       return actions
+    },
+    exportDataOptions () {
+      return {
+        downloadType: 'local',
+        title: this.$t('dictionary.project'),
+        items: [
+          { label: 'ID', key: 'id' },
+          ...this.columns,
+        ],
+      }
     },
   },
   created () {
