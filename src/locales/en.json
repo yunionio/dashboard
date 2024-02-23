@@ -174,7 +174,7 @@
       "security_group_fail": "Failed to create security group",
       "qga_set_network_failed": "QGA failed to set the network",
       "start_rescue": "Enter emergency mode",
-      "rescving": "Emergency mode",
+      "rescuing": "Emergency mode",
       "stop_rescue": "Exit emergency mode",
       "start_rescue_failed": "Enter emergency mode failed",
       "stop_rescue_failed": "Exiting emergency mode failed"
