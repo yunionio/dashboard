@@ -3,6 +3,7 @@ import {
   getProjectDomainTableColumn,
   getTagTableColumn,
   getTimeTableColumn,
+  getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -22,6 +23,13 @@ export default {
         },
       }),
       getTagTableColumn({ onManager: this.onManager, resource: 'projects', params: { service: 'identity', resource: 'projects' }, columns: () => this.columns, tipName: this.$t('dictionary.project') }),
+      getCopyWithContentTableColumn({
+        field: 'admin',
+        title: i18n.t('iam.project_admin'),
+        message: (row) => {
+          return row.admin || '-'
+        },
+      }),
       getProjectDomainTableColumn(),
       getTimeTableColumn(),
     ]

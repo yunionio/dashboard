@@ -34,6 +34,20 @@ export default {
               },
             },
             {
+              label: i18n.t('iam.set_project_admin'),
+              permission: 'projects_perform_set_admin',
+              action: () => {
+                this.createDialog('ProjectSetAdminDialog', {
+                  vm: this,
+                  title: i18n.t('iam.set_project_admin'),
+                  name: i18n.t('system.text_9'),
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+            },
+            {
               label: i18n.t('system.text_129'),
               permission: 'projects_delete',
               action: () => {

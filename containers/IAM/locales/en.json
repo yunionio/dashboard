@@ -1070,5 +1070,6 @@
   "iam.before_expiration": "",
   "iam.day": "day(s) before expiration",
   "iam.add_notify_time": "Increase notification time",
-  "iam.notify_time_not_repeat": "Notification time is duplicated"
+  "iam.notify_time_not_repeat": "Notification time is duplicated",
+  "iam.set_project_admin": "Set @:dictionary.project admin"
 }
