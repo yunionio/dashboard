@@ -13,6 +13,16 @@ import i18n from '@/locales'
 
 const STORAGE_LIST_LIMIT_KEY = '__oc_list_limit__'
 
+const TAG_FILGER_KEYS = [
+  'user_meta',
+  'bill_tags',
+  'project_tags',
+  'instance_tags',
+]
+
+const FULL_TAG_FILTER_KEYS = []
+TAG_FILGER_KEYS.map(key => FULL_TAG_FILTER_KEYS.push(`with_${key}`, `without_${key}`))
+
 class WaitStatusJob {
   constructor (status, data) {
     this.status = status
@@ -1020,10 +1030,8 @@ class CreateList {
     //   })
     // }
     R.forEachObjIndexed((value, key) => {
-      if (key === 'without_user_meta' && value && value[0] === true) {
-        ret.without_user_meta = true
-      } else if (key === 'with_user_meta' && value && value[0] === true) {
-        ret.with_user_meta = true
+      if (FULL_TAG_FILTER_KEYS.includes(key) && value && value[0] === true) {
+        ret[key] = true
       } else {
         ret[`tags.${index}.key`] = []
         let len = 1
@@ -1041,10 +1049,8 @@ class CreateList {
     }, this.tagFilter)
 
     R.forEachObjIndexed((value, key) => {
-      if (key === 'without_user_meta' && value && value[0] === true) {
-        ret.without_user_meta = true
-      } else if (key === 'with_user_meta' && value && value[0] === true) {
-        ret.with_user_meta = true
+      if (FULL_TAG_FILTER_KEYS.includes(key) && value && value[0] === true) {
+        ret[key] = true
       } else {
         ret[`project_tags.0.${index2}.key`] = []
         let len = 1
@@ -1062,10 +1068,8 @@ class CreateList {
     }, this.tagFilter2)
 
     R.forEachObjIndexed((value, key) => {
-      if (key === 'without_user_meta' && value && value[0] === true) {
-        ret.without_user_meta = true
-      } else if (key === 'with_user_meta' && value && value[0] === true) {
-        ret.with_user_meta = true
+      if (FULL_TAG_FILTER_KEYS.includes(key) && value && value[0] === true) {
+        ret[key] = true
       } else {
         ret[`instancetags.${index3}.key`] = []
         let len = 1
@@ -1082,10 +1086,12 @@ class CreateList {
       }
     }, this.tagFilter3)
 
-    if (ret.with_user_meta && ret.without_user_meta) {
-      delete ret.with_user_meta
-      delete ret.without_user_meta
-    }
+    TAG_FILGER_KEYS.map(key => {
+      if (ret[`with_${key}`] && ret[`without_${key}`]) {
+        delete ret[`with_${key}`]
+        delete ret[`without_${key}`]
+      }
+    })
 
     return ret
   }

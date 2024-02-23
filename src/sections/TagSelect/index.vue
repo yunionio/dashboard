@@ -176,6 +176,14 @@ export default {
       type: Boolean,
       default: true,
     },
+    withoutTagKey: {
+      type: String,
+      default: 'without_user_meta',
+    },
+    withTagKey: {
+      type: String,
+      default: 'with_user_meta',
+    },
   },
   data () {
     return {
@@ -191,8 +199,8 @@ export default {
       mouseenterKey: null,
       mouseenterType: null,
       search: '',
-      withoutUserMetaKey: 'without_user_meta',
-      withUserMetaKey: 'with_user_meta',
+      withoutUserMetaKey: this.withoutTagKey,
+      withUserMetaKey: this.withTagKey,
       composing: false, // 中文输入法时的正在输入
       composingTag: false,
       // 所有tag源数据
