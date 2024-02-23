@@ -106,6 +106,9 @@ export default {
       } else {
         params.project_domain_id = this.projectDomainId
       }
+      if (this.isDomainMode) {
+        delete params.project_domain_id
+      }
       return params
     },
   },
