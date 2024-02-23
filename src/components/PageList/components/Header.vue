@@ -35,6 +35,8 @@
             :extTagParams="extTagParams"
             :show-ext-tags="showExtTags"
             :show-no-value="showNoValue"
+            :with-tag-key="tagFilterKeys[0]"
+            :without-tag-key="tagFilterKeys[1]"
             :button-text="tagBtnText || $t('common.text00012')"
             :flexFill="!showTagFilter2"
             @tag-filter-change="(tagFilter) => $emit('tag-filter-change', tagFilter)" />
@@ -48,6 +50,8 @@
             :extTagParams="extTagParams3"
             :show-ext-tags="showExtTags3"
             :show-no-value="showNoValue3"
+            :with-tag-key="tagFilterKeys3[0]"
+            :without-tag-key="tagFilterKeys3[1]"
             :button-text="$t('dictionary.instance_tag')"
             :filter-with-user-meta="true"
             :filter-without-user-meta="true"
@@ -63,6 +67,8 @@
             :extTagParams="extTagParams2"
             :show-ext-tags="showExtTags2"
             :show-no-value="showNoValue2"
+            :with-tag-key="tagFilterKeys2[0]"
+            :without-tag-key="tagFilterKeys2[1]"
             :button-text="$t('dictionary.project_tag')"
             :filter-with-user-meta="true"
             :filter-without-user-meta="true"
@@ -230,6 +236,9 @@ export default {
     showNoValue: Boolean,
     showNoValue2: Boolean,
     showNoValue3: Boolean,
+    tagFilterKeys: Array,
+    tagFilterKeys2: Array,
+    tagFilterKeys3: Array,
     tagFilterResource: String,
     tagFilterResource2: String,
     tagFilterResource3: String,
