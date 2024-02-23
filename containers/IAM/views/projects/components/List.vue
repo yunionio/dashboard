@@ -66,7 +66,7 @@ export default {
           user_id: {
             label: this.$t('dictionary.user'),
           },
-          admin: getDistinctFieldFilter({ label: this.$t('iam.project_admin'), field: 'admin' }),
+          admin_id: getDistinctFieldFilter({ label: this.$t('iam.project_admin'), field: 'admin', type: 'extra_field' }),
           group_id: {
             label: this.$t('dictionary.group'),
           },
