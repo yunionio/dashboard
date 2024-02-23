@@ -48,6 +48,9 @@
       :show-no-value="showNoValue"
       :show-no-value2="showNoValue2"
       :show-no-value3="showNoValue3"
+      :tagFilterKeys="tagFilterKeys"
+      :tagFilterKeys2="tagFilterKeys2"
+      :tagFilterKeys3="tagFilterKeys3"
       :tagFilterResource="tagFilterResource"
       :tagFilterResource2="tagFilterResource2"
       :tagFilterResource3="tagFilterResource3"
@@ -279,6 +282,18 @@ export default {
     showNoValue3: {
       type: Boolean,
       default: true,
+    },
+    tagFilterKeys: {
+      type: Array,
+      default: () => ['with_user_meta', 'without_user_meta'],
+    },
+    tagFilterKeys2: {
+      type: Array,
+      default: () => ['with_user_meta', 'without_user_meta'],
+    },
+    tagFilterKeys3: {
+      type: Array,
+      default: () => ['with_user_meta', 'without_user_meta'],
     },
     enableVirtualScroll: {
       type: Boolean,

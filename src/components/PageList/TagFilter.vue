@@ -9,6 +9,8 @@
       :show-no-value="showNoValue"
       :filter-with-user-meta="filterWithUserMeta"
       :filter-without-user-meta="filterWithoutUserMeta"
+      :withTagKey="withTagKey"
+      :withoutTagKey="withoutTagKey"
       @change="handleTagFilterChange">
       <template v-slot:trigger>
         <a-button class="flex-shrink-0" style="margin-right: -1px;"><icon type="res-tag" />{{buttonText || $t('common.text00012')}}</a-button>
@@ -68,6 +70,14 @@ export default {
       type: Boolean,
       default: true,
     },
+    withTagKey: {
+      type: String,
+      default: 'with_user_meta',
+    },
+    withoutTagKey: {
+      type: String,
+      default: 'without_user_meta',
+    },
   },
   computed: {
     params () {
@@ -110,8 +120,8 @@ export default {
       const rgb = getTagColor(key, value, 'rgb')
       const strRgb = rgb.join(',')
       let title = getTagTitle(key, value)
-      if (key === 'without_user_meta') title = this.$t('common.text00013')
-      if (key === 'with_user_meta') title = this.$t('common.with_user_meta')
+      if (key === this.withoutTagKey) title = this.$t('common.text00013')
+      if (key === this.withTagKey) title = this.$t('common.with_user_meta')
       return {
         key,
         value,
