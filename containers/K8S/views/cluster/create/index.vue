@@ -432,7 +432,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userInfo', 'scope', 'isAdminMode']),
+    ...mapGetters(['userInfo', 'scope', 'isAdminMode', 'isDomainMode']),
     cloudregionParams () {
       const provider = this.provider
       /* const type = findPlatform(provider, 'hypervisor') */
@@ -470,6 +470,7 @@ export default {
     this.clustersM = new this.$Manager('kubeclusters', 'v1')
     this.form.fc.getFieldDecorator('cloudregion', { preserve: true })
     /* this.form.fc.getFieldDecorator('zone', { preserve: true }) */
+    this.isDomainMode && this.fetchCapability(this.userInfo.projectDomainId)
   },
   methods: {
     /*
