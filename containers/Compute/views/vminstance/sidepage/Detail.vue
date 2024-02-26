@@ -408,7 +408,7 @@ export default {
                 const devTypeMap = {}
                 const ids = {}
                 gpuArr.forEach(val => {
-                  if (val.dev_type) {
+                  if (['GPU-HPC', 'GPU-VGA'].includes(val.dev_type)) {
                     if (!obj[val.model]) {
                       obj[val.model] = 1
                     } else {
