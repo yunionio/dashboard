@@ -879,5 +879,6 @@
   "cloudenv.belong_type": "ホーム・タイプ",
   "cloudenv.target_name": "名前の指定",
   "cloudenv.belong_project_name_tip": "クラウドアカウントのホームドメイン設定プロジェクトに基づいて、同名のプロジェクトが直接使用されている場合、そうでない場合は自動的に作成されます",
-  "cloudenv.bill_bucket_url": "{0}#請求書バケットの取得方法{1}"
+  "cloudenv.bill_bucket_url": "{0}#請求書バケットの取得方法{1}",
+  "cloudenv.bill_bucket": "請求書バケット"
 }

@@ -880,5 +880,6 @@
   "cloudenv.belong_type": "归属类型",
   "cloudenv.target_name": "指定名称",
   "cloudenv.belong_project_name_tip": "根据云账号归属域设置项目，已有同名项目直接使用，否则自动创建",
-  "cloudenv.bill_bucket_url": "{0}#如何获取账单存储桶{1}"
+  "cloudenv.bill_bucket_url": "{0}#如何获取账单存储桶{1}",
+  "cloudenv.bill_bucket": "账单存储桶"
 }
