@@ -1,6 +1,7 @@
 import { typeClouds } from '@/utils/common/hypervisor'
 import { getDocsUrl } from '@/utils/utils'
 import i18n from '@/locales'
+import { arrayToObj } from '@/utils/utils'
 const providerMap = typeClouds.getProviderlowcase()
 const aliyunLogo = require('@/assets/images/providers/aliyun.svg')
 const awsLogo = require('@/assets/images/providers/aws.svg')
@@ -786,3 +787,9 @@ export const notSupportSelectRegion = [
   providerMap.h3c.key,
   providerMap.proxmox.key,
 ]
+
+export const BILL_TYPES = [
+  { label: i18n.t('cloudenv.text_344'), value: 'EA' },
+  { label: i18n.t('cloudenv.bill_bucket'), value: 'Bucket' },
+]
+export const BILL_TYPE_MAP = arrayToObj(BILL_TYPES, 'value')
