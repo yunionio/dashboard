@@ -878,5 +878,6 @@
   "cloudenv.belong_type": "Attribution type",
   "cloudenv.target_name": "Specify a name",
   "cloudenv.belong_project_name_tip": "According to the domain settings of the cloud account, if there is already a project with the same name, it will be used directly. Otherwise, it will be automatically created",
-  "cloudenv.bill_bucket_url": "{0}#How to get the bill bucket{1}"
+  "cloudenv.bill_bucket_url": "{0}#How to get the bill bucket{1}",
+  "cloudenv.bill_bucket": "Bill Bucket"
 }
