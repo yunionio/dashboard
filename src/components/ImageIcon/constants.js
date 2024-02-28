@@ -112,4 +112,20 @@ export const CUSTOME_IMG = {
     label: 'Anolis',
     url: 'anolis',
   },
+  opencloudos: {
+    label: 'OpenCloudOS',
+    url: 'opencloudos',
+  },
+  almalinux: {
+    label: 'AlmaLinux',
+    url: 'almalinux',
+  },
+  openkylin: {
+    label: 'OpenKylin',
+    url: 'openkylin',
+  },
+  uosdesktop: {
+    label: 'UOSDesktop',
+    url: 'uosdesktop',
+  },
 }

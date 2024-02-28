@@ -24,6 +24,8 @@ const cirros = require('./assets/cirros.png')
 const neokylin = require('./assets/neokylin.png')
 const rocky = require('./assets/rocky.png')
 const anolis = require('./assets/anolis.png')
+const opencloudos = require('./assets/opencloudos.png')
+const almalinux = require('./assets/almalinux.png')
 
 export default {
   name: 'ImageIcon',
@@ -139,6 +141,18 @@ export default {
             break
           case 'anolis':
             curImg = anolis
+            break
+          case 'opencloudos':
+            curImg = opencloudos
+            break
+          case 'almalinux':
+            curImg = almalinux
+            break
+          case 'openkylin':
+            curImg = kylin
+            break
+          case 'uosdesktop':
+            curImg = uos
             break
           default:
             break
