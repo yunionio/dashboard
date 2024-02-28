@@ -2,16 +2,18 @@
   <div>
     <a-alert :showIcon="false" :message="$t('cloudenv.text_194')" banner />
     <a-form class="pt-3" :form="form.fc" v-bind="formLayout">
-      <template v-if="isAzure">
+      <a-form-item v-if="isAzurePublicCloud" :label="$t('cloudenv.text_360')">
+        <a-radio-group v-model="billType">
+          <a-radio-button v-for="item in billTypeOptions" :key="item.value" :value="item.value">
+            {{ item.label }}
+          </a-radio-button>
+        </a-radio-group>
+      </a-form-item>
+      <template v-if="isAzurePublicCloud && isEA">
         <a-form-item :label="$t('cloudenv.text_195')">
           <a-input v-decorator="decorators.enrollment_number" />
           <span slot="extra">
-            <template v-if="isAzure">
-              {{$t('cloudenv.text_572')}} <help-link :href="enrollmentNumberUrl">{{$t('cloudenv.text_197')}}</help-link>
-            </template>
-            <template v-else>
-              {{$t('cloudenv.text_196')}} <help-link :href="enrollmentNumberUrl">{{$t('cloudenv.text_197')}}</help-link>
-            </template>
+            {{$t('cloudenv.text_572')}} <help-link :href="enrollmentNumberUrl">{{$t('cloudenv.text_197')}}</help-link>
           </span>
         </a-form-item>
         <a-form-item :label="$t('cloudenv.text_198')">
@@ -28,15 +30,15 @@
           </div>
         </a-form-item>
       </template>
-      <template v-if="useBillingBucket">
-        <a-divider orientation="left">{{$t('cloudenv.text_199')}}</a-divider>
+      <template v-if="useBillingBucket && !isEA">
+        <a-divider v-if="!isHiddenDriver" orientation="left">{{$t('cloudenv.text_199')}}</a-divider>
         <a-form-item :label="$t('cloudenv.text_200')">
-          <a-radio-group v-model="billingType">
+          <a-radio-group v-model="cloudAccountType">
             <a-radio-button :value="1">{{$t('cloudenv.text_201')}}</a-radio-button>
             <a-radio-button v-if="!isHuawei" :value="2">{{$t('cloudenv.text_202')}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item :label="$t('cloudenv.text_201')" v-if="billingType === 2" :extra="$t('cloudenv.text_203')">
+        <a-form-item :label="$t('cloudenv.text_201')" v-if="cloudAccountType === 2" :extra="$t('cloudenv.text_203')">
           <a-select :filterOption="filterOption" showSearch :loading="cloudAccountLoading" v-decorator="decorators.billing_bucket_account">
           <template v-for="item in cloudAccounts">
             <a-select-option  v-if="id !== item.id" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
@@ -52,7 +54,11 @@
         <a-form-item v-if="!isHuawei" :label="$t('cloudenv.text_206')" :extra="$t('cloudenv.text_207')">
           <a-input v-decorator="decorators.billing_file_prefix" />
         </a-form-item>
-        <a-form-item :label="$t('cloudenv.billing_scope')" :extra="$t('cloudenv.billing_scope.extra')" v-if="billingType === 1">
+        <a-form-item :label="$t('cloudenv.billing_scope')" v-if="cloudAccountType === 1">
+          <div slot="extra">
+            <div>{{$t('cloudenv.billing_scope.extra')}}</div>
+            <div>{{$t('cloudenv.billing_scope.extra_note')}}</div>
+          </div>
           <a-radio-group v-decorator="decorators.billing_scope">
             <a-radio-button value="managed" key="managed">{{ $t('cloudenv.billing_scope.managed') }}</a-radio-button>
             <a-radio-button value="all" key="all" :disabled="billingScopeDisabled">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>
@@ -88,7 +94,7 @@
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
-import { keySecretFields, getBillBucketUrlDocs, getEnrollmentNumberDocs } from '../../constants'
+import { keySecretFields, getBillBucketUrlDocs, getEnrollmentNumberDocs, BILL_TYPES, BILL_TYPE_MAP } from '../../constants'
 
 export default {
   name: 'BillConfig',
@@ -104,7 +110,9 @@ export default {
       cloudAccounts: [],
       cloudAccountLoading: false,
       cloudAccount: {},
-      billingType: 1,
+      cloudAccountType: 1, // 1 --> 主账号 | 2 --> 关联账号
+      billTypeOptions: BILL_TYPES,
+      billType: BILL_TYPE_MAP.EA.value, // EA --> EA账号 | Bucket --> 存储桶
       form: {
         fc: this.$form.createForm(this),
       },
@@ -152,6 +160,9 @@ export default {
     isAzure () {
       return this.provider === HYPERVISORS_MAP.azure.provider
     },
+    isAzurePublicCloud () {
+      return this.cloudAccount.access_url === 'AzurePublicCloud'
+    },
     isQcloud () {
       return this.provider === HYPERVISORS_MAP.qcloud.provider
     },
@@ -172,6 +183,7 @@ export default {
         HYPERVISORS_MAP.google.provider,
         HYPERVISORS_MAP.volcengine.provider,
         HYPERVISORS_MAP.qcloud.provider,
+        HYPERVISORS_MAP.azure.provider
       ]
       return supportProviders.includes(this.provider)
     },
@@ -275,9 +287,22 @@ export default {
         HYPERVISORS_MAP.aliyun.provider,
         HYPERVISORS_MAP.volcengine.provider,
         HYPERVISORS_MAP.qcloud.provider,
+        HYPERVISORS_MAP.azure.provider
       ]
       return !supportProviders.includes(this.provider)
     },
+    isEA () {
+      return this.billType === BILL_TYPE_MAP.EA.value
+    },
+    isHiddenDriver () {
+      return this.isAzurePublicCloud
+    }
+  },
+  watch: {
+    cloudAccount (val) {
+      const { enrollment_number } = val.options || {}
+      this.billType = enrollment_number ? BILL_TYPE_MAP.EA.value : BILL_TYPE_MAP.Bucket.value
+    }
   },
   created () {
     this.manager = new this.$Manager('cloudaccounts')
@@ -335,7 +360,7 @@ export default {
         }
         this.cloudAccount = data
         if (data && data.options && data.options.billing_bucket_account) {
-          this.billingType = 2
+          this.cloudAccountType = 2
         }
         return data
       } catch (err) {
@@ -374,10 +399,24 @@ export default {
             options: values,
           },
         }
-        if (this.billingType === 1) {
+        if (this.cloudAccountType === 1) {
           params.data = {
             remove_options: ['billing_bucket_account', 'billing_bigquery_table'],
             ...params.data,
+          }
+        }
+        if (this.isAzurePublicCloud) {
+          const { remove_options = [] } = params.data
+          if (this.isEA) {
+            params.data = {
+              ...params.data,
+              remove_options: [...remove_options, 'billing_report_bucket'],
+            }
+          } else {
+            params.data = {
+              ...params.data,
+              remove_options: [...remove_options, 'enrollment_number', 'balance_key'],
+            }
           }
         }
         await this.manager.update(params)
