@@ -551,6 +551,8 @@ export default {
             osVal = 'Amazon Linux'
           } else if (osVal.includes('RedHat Enterprise Linux')) {
             osVal = 'RHEL'
+          } else if (osVal.toLowerCase().includes('almalinux')) {
+            osVal = 'AlmaLinux'
           } else {
             osVal = 'Linux'
           }

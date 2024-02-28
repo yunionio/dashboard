@@ -263,7 +263,7 @@ export default {
             name = dist || row.metadata.os_type || row.os_type || ''
             if (name.includes('Windows') || name.includes('windows')) {
               name = 'Windows'
-            } else if (name.includes('Linux') || name.includes('linux')) {
+            } else if (name.startsWith('Linux') || name.startsWith('linux')) {
               name = 'Linux'
             }
             return [
