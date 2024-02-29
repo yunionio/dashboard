@@ -16,16 +16,16 @@
 </template>
 
 <script>
-import serverProps from '../mixins/serverProps'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import serverProps from '../mixins/serverProps'
 
 export default {
   name: 'AssociateVirtualMachineDialog',
   mixins: [DialogMixin, WindowsMixin, serverProps],
   data () {
     return {
-      action: this.$t('compute.text_483', [this.$t('dictionary.server')]),
+      action: this.$t('compute.associated_instances'),
       loading: false,
     }
   },

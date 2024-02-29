@@ -1760,5 +1760,6 @@
   "compute.start_rescue.validate_tooltip": "请退出紧急模式后重试",
   "compute.start_rescue.message": "若虚机磁盘损坏无法进入系统修复，可通过此操作进入紧急模式临时进入。操作后，通过远程控制-VNC链接",
   "compute.stop_rescue": "退出紧急模式",
-  "compute.stop_rescue.validate_tooltip": "请进入紧急模式后重试"
+  "compute.stop_rescue.validate_tooltip": "请进入紧急模式后重试",
+  "compute.associated_instances": "关联实例"
 }
