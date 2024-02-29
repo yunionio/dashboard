@@ -34,7 +34,7 @@ import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import VminstanceList from './Server'
+import AssociatedInstances from './AssociatedInstances'
 import SecgroupDetail from './Detail'
 import InDirection from './InDirection'
 import OutDirection from './OutDirection'
@@ -48,7 +48,7 @@ export default {
     OutDirection,
     InDirection,
     // CacheList,
-    VminstanceList,
+    AssociatedInstances,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -56,12 +56,12 @@ export default {
       { label: this.$t('compute.text_238'), key: 'secgroup-detail' },
       { label: this.$t('compute.text_993'), key: 'in-direction' },
       { label: this.$t('compute.text_994'), key: 'out-direction' },
-      { label: this.$t('compute.text_1023'), key: 'vminstance-list' },
+      { label: this.$t('compute.associated_instances'), key: 'associated-instances' },
       // { label: this.$t('compute.text_692'), key: 'cache-list' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
     ]
-    if (this.params.hiddenSidepageTabs && this.params.hiddenSidepageTabs.includes('vminstance-list')) {
-      detailTabs = R.remove(R.findIndex(R.propEq('key', 'vminstance-list'))(detailTabs), 1, detailTabs)
+    if (this.params.hiddenSidepageTabs && this.params.hiddenSidepageTabs.includes('associated-instances')) {
+      detailTabs = R.remove(R.findIndex(R.propEq('key', 'associated-instances'))(detailTabs), 1, detailTabs)
     }
     if (this.params.row && this.params.row.brand && this.params.row.brand.toLowerCase() === 'ucloud') {
       detailTabs = R.remove(R.findIndex(R.propEq('key', 'out-direction'))(detailTabs), 1, detailTabs)
@@ -84,10 +84,10 @@ export default {
           id: this.data.id,
           listId: 'LIST_Secgroup_Outlist',
         }
-      } else if (this.params.windowData.currentTab === 'vminstance-list') {
+      } else if (this.params.windowData.currentTab === 'associated-instances') {
         return {
-          secgroup: this.detailData.id,
-          listId: 'LIST_Secgroup_Vmlist',
+          secgroup_id: this.detailData.id,
+          brand: this.detailData.brand,
         }
       }
       return null

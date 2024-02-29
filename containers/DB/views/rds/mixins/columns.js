@@ -142,6 +142,23 @@ export default {
           return this.$isScopedPolicyMenuHidden('rds_hidden_columns.port')
         },
       },
+      {
+        field: 'secgroups',
+        title: i18n.t('res.secgroup'),
+        minWidth: 80,
+        showOverflow: 'ellipsis',
+        slots: {
+          default: ({ row }) => {
+            return row.secgroups?.map(item => item.name).join(',')
+          },
+        },
+        formatter: ({ row }) => {
+          return row.secgroups?.map(item => item.name).join(',')
+        },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('slb_hidden_columns.secgroups')
+        },
+      },
       getBillingTableColumn({
         vm: this,
         hidden: () => {
