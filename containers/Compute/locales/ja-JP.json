@@ -1760,5 +1760,6 @@
   "compute.start_rescue.validate_tooltip": "緊急モードを終了して再試行してください",
   "compute.start_rescue.message": "仮想マシンのディスクが破損していて修復できない場合は、この操作を使用して一時的に緊急モードに入ることができます。操作後は、リモート コントロールと VNC のリンクを使用してください。",
   "compute.stop_rescue": "緊急モードを終了",
-  "compute.stop_rescue.validate_tooltip": "緊急モードに入って再試行してください。"
+  "compute.stop_rescue.validate_tooltip": "緊急モードに入って再試行してください。",
+  "compute.associated_instances": "関連付けられたインスタンス"
 }

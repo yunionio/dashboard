@@ -108,14 +108,12 @@ export default {
       getAccountTableColumn(),
       {
         field: 'guest_cnt',
-        title: i18n.t('compute.text_1023'),
+        title: i18n.t('compute.associated_instances'),
         width: 80,
         slots: {
           default: ({ row }, h) => {
             if (row.guest_cnt === undefined) return [<data-loading />]
-            return [
-              <span class={{ 'link-color oc-pointer': true }} onClick={ () => this.openAssociateVirtualMachineDialog(row) }>{ row.guest_cnt }</span>,
-            ]
+            return row.total_cnt || 0
           },
         },
         hidden: () => this.hiddenColumns.includes('guest_cnt'),

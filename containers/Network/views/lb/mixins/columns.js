@@ -112,6 +112,23 @@ export default {
         },
       },
       {
+        field: 'secgroups',
+        title: i18n.t('res.secgroup'),
+        minWidth: 80,
+        showOverflow: 'ellipsis',
+        slots: {
+          default: ({ row }) => {
+            return row.secgroups?.map(item => item.name).join(',')
+          },
+        },
+        formatter: ({ row }) => {
+          return row.secgroups?.map(item => item.name).join(',')
+        },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('slb_hidden_columns.secgroups')
+        },
+      },
+      {
         field: 'charge_type',
         title: i18n.t('network.text_192'),
         minWidth: 100,

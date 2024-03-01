@@ -41,7 +41,7 @@ export default {
     return {
       hideColumnFields: ['is_gpu', 'instance_type', 'os_type', 'host', 'account'],
       list: this.$list.createList(this, {
-        id: this.getParams.listId,
+        id: this.id,
         resource: 'servers',
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.server).flat(),
@@ -215,7 +215,6 @@ export default {
         filter: 'hypervisor.notin(baremetal,container)',
         ...this.getParams,
       }
-      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
     handleOpenSidepage (row) {

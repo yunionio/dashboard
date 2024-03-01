@@ -3,7 +3,7 @@
     ref="secgroupList"
     :hiddenActions="['openSecgroupSidepageTab']"
     :hiddenColumns="['guest_cnt']"
-    :hiddenSidepageTabs="['vminstance-list']"
+    :hiddenSidepageTabs="['associated-instances']"
     :id="id"
     :getParams="getParams"
     :show-create-action="false"
