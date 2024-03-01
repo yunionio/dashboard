@@ -502,10 +502,14 @@ export function getImageDistributionFilter () {
       { label: 'Linux', key: 'Linux' },
       { label: 'VMWare', key: 'VMWare' },
       { label: 'UOS', key: 'UOS' },
+      { label: 'UOSDesktop', key: 'UOSDesktop' },
       { label: 'Kylin', key: 'Kylin' },
       { label: 'NeoKylin', key: 'NeoKylin' },
+      { label: 'OpenKylin', key: 'OpenKylin' },
       { label: 'RedHat', key: 'RedHat' },
       { label: 'NFS', key: 'nfs' },
+      { label: 'AlmaLinux', key: 'AlmaLinux' },
+      { label: 'OpenCloudOS', key: 'OpenCloudOS' },
     ],
   }
 }
