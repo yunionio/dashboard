@@ -1448,6 +1448,19 @@ export const PERMISSION = {
   bastion_hosts_update: ['bastionhost', 'bastion_hosts', 'update'],
   bastion_hosts_delete: ['bastionhost', 'bastion_hosts', 'delete'],
 
+  // 自定义数据
+  ext_resources_list: ['report', 'ext_resources', 'list'],
+  ext_resources_update: ['report', 'ext_resources', 'update'],
+  ext_resources_create: ['report', 'ext_resources', 'create'],
+  ext_resources_delete: ['report', 'ext_resources', 'delete'],
+
+  ext_resource_types_list: ['report', 'ext_resource_types', 'list'],
+  ext_resource_types_create: ['report', 'ext_resource_types', 'create'],
+  ext_resource_types_delete: ['report', 'ext_resource_types', 'delete'],
+  ext_resource_types_perform_set_attributes: ['report', 'ext_resource_types', 'perform', 'set-attributes'],
+  ext_resource_types_perform_enable: ['report', 'ext_resource_types', 'perform', 'enable'],
+  ext_resource_types_perform_disable: ['report', 'ext_resource_types', 'perform', 'disable'],
+
   ...extraPermissions,
 }
 
