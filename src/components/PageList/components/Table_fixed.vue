@@ -232,6 +232,7 @@ export default {
       if (this.id) {
         ret['resizable-change'] = this.handleResizeableChange
       }
+      ret['edit-closed'] = this.handleEditClosed
       return ret
     },
     // 动态生成额外Props
@@ -527,6 +528,9 @@ export default {
       const newConfig = R.mergeDeepRight({ ...this.storageConfig }, config)
       storage.set(this.storageKey, newConfig)
       this.storageConfig = newConfig
+    },
+    handleEditClosed () {
+      this.$emit('edit-closed')
     },
     treeDrop () {
       this.$nextTick(() => {
