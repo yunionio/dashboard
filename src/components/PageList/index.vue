@@ -117,7 +117,8 @@
         @change-load-more-size="changeLoadMoreSize"
         @change-next-marker="changeNextMarker"
         @radio-change="radioChange"
-        @project-tag-filter-change="projectTagFilterChange" />
+        @project-tag-filter-change="projectTagFilterChange"
+        @edit-closed="editClosed" />
     </template>
     <template v-if="!loading && !configLoaded">
       <loader :loading="loading" :noDataText="noDataText" />
@@ -443,6 +444,9 @@ export default {
     },
     projectTagFilterChange (projectTagFilter) {
       this.list.changeProjectTagFilter(projectTagFilter)
+    },
+    editClosed () {
+      this.$emit('edit-closed')
     },
     onManager () {
       return this.list.onManager(...arguments)
