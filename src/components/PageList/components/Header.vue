@@ -265,7 +265,7 @@ export default {
       Object.keys(filterOptions).forEach(k => {
         const _k = k.toLowerCase()
         if (!ret[_k]) {
-          ret[_k] = filterOptions[_k]
+          ret[_k] = filterOptions[_k] || filterOptions[k]
         }
       })
       return ret
