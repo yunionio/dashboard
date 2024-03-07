@@ -2,7 +2,7 @@
   <div :class="`${isInPopover?'':'tree-wrapper mr-2'}`" style="position: relative">
     <div class="tree-wrapper-content">
       <div v-if="!isInPopover" class="tree-wrapper-header d-flex justify-content-between">
-        <a-button size="small" @click="initTree"><icon type="refresh" /></a-button>
+        <a-button size="small" @click="initTree(tagConfigParams.useOrgLevel)"><icon type="refresh" /></a-button>
         <a-button size="small" v-if="!isHideTreeConfig" @click="handleSetting"><icon type="setting" /></a-button>
       </div>
       <div class="search-box mt-2 mb-2">
