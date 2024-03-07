@@ -26,9 +26,13 @@ export default {
   },
   methods: {
     openWebConsole (obj, data, protocol) {
-      // const href = `${this.$appConfig.webConsolePath}${data.access_url.replace(/^.*?web-console\//, '')}`
-      const href = data.access_url
-      window.open(href)
+      let href = ''
+      if (process.env.NODE_ENV === 'development') {
+        href = `${this.$appConfig.webConsolePath}${data.access_url.replace(/^.*?web-console\//, '')}`
+      } else {
+        href = data.access_url
+      }
+      window.open(`${href}&session_id=${data.session}`)
     },
     open (obj, url) {
       if (obj.hypervisor === typeClouds.hypervisorMap.esxi.key) {
