@@ -2,9 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('compute.text_247')}}</div>
     <div slot="body">
-      <a-form
-        v-bind="formItemLayout"
-        :form="form.fc">
+      <a-form v-bind="formItemLayout" :form="form.fc">
         <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :plcaeholder="$t('compute.text_627')" />
         </a-form-item>
@@ -13,61 +11,84 @@
             <a-radio-button value="true">{{$t('compute.text_656')}}</a-radio-button>
             <a-radio-button value="false">{{$t('compute.text_569')}}</a-radio-button>
           </a-radio-group>
-        </a-form-item> -->
+        </a-form-item>-->
         <a-form-item :label="$t('compute.text_1365')">
-          <os-arch
-            v-on:change="osArchChangeHandle"
-            v-decorator="decorators.os_arch"
-            :form="form" />
+          <os-arch v-on:change="osArchChangeHandle" v-decorator="decorators.os_arch" :form="form" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_267')" v-bind="formItemLayout">
           <a-radio-group @change="osTypeChangeHandle" v-decorator="decorators.osType">
-            <a-radio-button value="Linux">
-              Linux
-            </a-radio-button>
-            <a-radio-button value="Windows">
-              Windows Server
-            </a-radio-button>
+            <a-radio-button value="Linux">Linux</a-radio-button>
+            <a-radio-button value="Windows">Windows Server</a-radio-button>
             <a-radio-button value="Other">{{$t('compute.text_151')}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item :label="$t('compute.text_657')" v-bind="formItemLayout">
-          <a-select :placeholder="$t('compute.text_658')" v-decorator="decorators.osDistribution" @change="osDistributionChange">
-            <a-select-option v-for="item in osNewDisOptions" :key="item.value" :value="item.value">
-              {{item.text}}
-            </a-select-option>
+          <a-select
+            :placeholder="$t('compute.text_658')"
+            v-decorator="decorators.osDistribution"
+            @change="osDistributionChange"
+          >
+            <a-select-option
+              v-for="item in osNewDisOptions"
+              :key="item.value"
+              :value="item.value"
+            >{{item.text}}</a-select-option>
           </a-select>
-          <a-input v-if="isDisOther" v-decorator="decorators.osOtherDistribution" :placeholder="$t('compute.text_659')" />
+          <a-input
+            v-if="isDisOther"
+            v-decorator="decorators.osOtherDistribution"
+            :placeholder="$t('compute.text_659')"
+          />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_633')" :extra="$t('compute.image.min_disk.extra')" v-bind="formItemLayout" v-if="!isHostImage">
-          <a-input-number :min="1" :max="1000" :step="50" :precision="0" v-decorator="decorators.minDisk" /> GB
+        <a-form-item
+          :label="$t('compute.text_633')"
+          :extra="$t('compute.image.min_disk.extra')"
+          v-bind="formItemLayout"
+          v-if="!isHostImage"
+        >
+          <a-input-number
+            :min="1"
+            :max="1000"
+            :step="50"
+            :precision="0"
+            v-decorator="decorators.minDisk"
+          />GB
         </a-form-item>
         <a-form-item :label="$t('compute.text_634')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.diskDriver">
-            <a-radio-button v-for="(item, index) in diskDriverOptions" :value="item.value" :key="index">
-              {{item.text}}
-            </a-radio-button>
+            <a-radio-button
+              v-for="(item, index) in diskDriverOptions"
+              :value="item.value"
+              :key="index"
+            >{{item.text}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item :label="$t('compute.text_635')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.netDriver">
-            <a-radio-button v-for="(item, index) in netDriverOptions" :value="item.value" :key="index">
-              {{item.text}}
-            </a-radio-button>
+            <a-radio-button
+              v-for="(item, index) in netDriverOptions"
+              :value="item.value"
+              :key="index"
+            >{{item.text}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item :label="$t('compute.text_1155')">
           <a-radio-group v-decorator="decorators.bios">
-            <a-radio-button v-for="(item, index) in biosOptions" :value="item.value" :key="index" :disabled="isArm && item.value==='BIOS'">
-              {{item.text}}
-            </a-radio-button>
+            <a-radio-button
+              v-for="(item, index) in biosOptions"
+              :value="item.value"
+              :key="index"
+              :disabled="isArm && item.value==='BIOS'"
+            >{{item.text}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item :label="$t('compute.vdi_protocol')">
           <a-radio-group v-decorator="decorators.vdi">
-            <a-radio-button v-for="(item, index) in vdiOptions" :value="item.value" :key="index">
-              {{item.text}}
-            </a-radio-button>
+            <a-radio-button
+              v-for="(item, index) in vdiOptions"
+              :value="item.value"
+              :key="index"
+            >{{item.text}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
       </a-form>
@@ -224,6 +245,7 @@ export default {
         { text: 'OpenCloudOS', value: 'OpenCloudOS' },
         { text: 'AlmaLinux', value: 'AlmaLinux' },
         { text: 'UOSDesktop', value: 'UOSDesktop' },
+        { text: 'OpenEuler', value: 'OpenEuler' },
         { text: this.$t('compute.os.kylin'), value: 'Kylin' },
         { text: this.$t('compute.os.neokylin'), value: 'NeoKylin' },
         { text: this.$t('compute.os.nfs'), value: 'nfs' },
