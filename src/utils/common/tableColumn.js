@@ -38,7 +38,7 @@ export const getProjectTableColumn = ({ vm = {}, field = 'tenant', title = i18n.
         if (domain) {
           ret.push(
             <list-body-cell-wrap hide-field copy field="domain" row={{ domain }}>
-              <span class='text-weak'>{ domain }</span>
+              <span class='text-weak'>{domain}</span>
             </list-body-cell-wrap>,
           )
         }
@@ -64,20 +64,20 @@ export const getRegionTableColumn = ({ field = 'region', title = i18n.t('res.reg
         const ret = []
         ret.push(
           <list-body-cell-wrap hide-field copy field={field} row={row}>
-            <span style={{ color: '#0A1F44' }}>{ val }</span>
+            <span style={{ color: '#0A1F44' }}>{val}</span>
           </list-body-cell-wrap>,
         )
         if (row.zone) {
           ret.push(
             <list-body-cell-wrap hide-field copy field="zone" row={row}>
-              <span style={{ color: '#53627C' }}>{ row.zone }</span>
+              <span style={{ color: '#53627C' }}>{row.zone}</span>
             </list-body-cell-wrap>,
           )
         }
         if (row.zone_1_name) {
           ret.push(
             <list-body-cell-wrap hide-field copy field="zone_1_name" row={row}>
-              <span style={{ color: '#53627C' }}>{ i18n.t('scope.text_958', [row.zone_1_name]) }</span>
+              <span style={{ color: '#53627C' }}>{i18n.t('scope.text_958', [row.zone_1_name])}</span>
             </list-body-cell-wrap>,
           )
         }
@@ -105,7 +105,7 @@ export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.tit
           customStyle = { fontSize: '16px', marginLeft: '2px' }
         }
         return [
-          <BrandIcon name={val} customStyle={ customStyle } />,
+          <BrandIcon name={val} customStyle={customStyle} />,
         ]
       },
     },
@@ -187,14 +187,14 @@ export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t
         if (!statusModule) return 'status module undefined'
         const val = _.get(row, field) || false
         if (R.isNil(val) || _.get(row, field) === undefined) return '-'
-        const log = <side-page-trigger class="ml-1" onTrigger={ () => vm.handleOpenSidepage(row, 'event-drawer') }>{ i18n.t('common.view_logs') }</side-page-trigger>
+        const log = <side-page-trigger class="ml-1" onTrigger={() => vm.handleOpenSidepage(row, 'event-drawer')}>{i18n.t('common.view_logs')}</side-page-trigger>
         const isError = field === 'status' ? !hiddenLogView && vm.handleOpenSidepage && (['invalid', 'unknown'].includes(val) || /failed|fail$/.test(val)) : false
         const help = <a-tooltip class="ml-1" title={helpTool.title}><icon type="question" /></a-tooltip>
         return [
           <div class='d-flex align-items-center text-truncate'>
-            <status status={ val } statusModule={ statusModule } />
-            { isError ? log : null }
-            { helpTool.isOpen && helpTool.status?.includes(row.status) ? help : null }
+            <status status={val} statusModule={statusModule} />
+            {isError ? log : null}
+            {helpTool.isOpen && helpTool.status?.includes(row.status) ? help : null}
           </div>,
         ]
       },
@@ -358,7 +358,7 @@ export const getCopyWithContentTableColumn = ({
   minWidth = 100,
   vm = {},
   customEdit = false,
-  customEditCallback = () => {},
+  customEditCallback = () => { },
 } = {}) => {
   return {
     field,
@@ -375,7 +375,7 @@ export const getCopyWithContentTableColumn = ({
         }
         return [
           <list-body-cell-wrap copy field={field} row={row} hideField={hideField} message={text} customEdit={customEdit} customEditCallback={() => customEditCallback(row)}>
-            { slotCallback ? slotCallback(row) : null }
+            {slotCallback ? slotCallback(row) : null}
           </list-body-cell-wrap>,
         ]
       },
@@ -438,7 +438,7 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {}, sortab
         if (row.ips) {
           const iparr = row.ips.split(',')
           const ips = iparr.map(ip => {
-            return <list-body-cell-wrap copy row={{ ip }} hide-field field="ip">{ ip }<span class="text-color-help">({ i18n.t('common_287') })</span></list-body-cell-wrap>
+            return <list-body-cell-wrap copy row={{ ip }} hide-field field="ip">{ip}<span class="text-color-help">({i18n.t('common_287')})</span></list-body-cell-wrap>
           })
           ret = ret.concat(ips)
         }
@@ -465,7 +465,7 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {}, sortab
         if (row.metadata && row.metadata.sync_ips) {
           const iparr = row.metadata.sync_ips.split(',')
           const ips = iparr.map(ip => {
-            return <list-body-cell-wrap copy row={{ ip }} hide-field field="ip">{ ip }<span class="text-color-help">({i18n.t('compute.esxi.sync_ips_outofrange')}<a-icon class="ml-1" style="color:red" type="warning" title={ i18n.t('compute.esxi.sync_ips_outofrange_alert') } />)</span></list-body-cell-wrap>
+            return <list-body-cell-wrap copy row={{ ip }} hide-field field="ip">{ip}<span class="text-color-help">({i18n.t('compute.esxi.sync_ips_outofrange')}<a-icon class="ml-1" style="color:red" type="warning" title={i18n.t('compute.esxi.sync_ips_outofrange_alert')} />)</span></list-body-cell-wrap>
           })
           ret = ret.concat(ips)
         }
@@ -540,7 +540,7 @@ export const getSwitchTableColumn = ({ field, title, change, disabled, hidden })
           if (checked === 'false') checked = false
         }
         return [
-          <a-switch checked={ checked } disabled={ disabled } checkedChildren={i18n.t('common_292')} unCheckedChildren={i18n.t('common_293')} onChange={ change } />,
+          <a-switch checked={checked} disabled={disabled} checkedChildren={i18n.t('common_292')} unCheckedChildren={i18n.t('common_293')} onChange={change} />,
         ]
       },
     },
@@ -567,6 +567,8 @@ export const getTagTableColumn = ({
   params = {}, // 请求已有标签传入参数
   editCheck = (row) => true,
   hidden,
+  manager,
+  vm = {}
 } = {}) => {
   return {
     field,
@@ -610,6 +612,8 @@ export const getTagTableColumn = ({
               customTitle,
               list,
               tagParams: params,
+              manager: manager,
+              refresh: vm.refresh,
               canEdit: editCheck(row),
             },
           }),
@@ -712,11 +716,11 @@ export const getTimeTableColumn = ({
         }
         if (fromNow) {
           return [
-            <a-tooltip class="ml-1" title={ moment(row[field]).format() }>{ moment(row[field]).fromNow() }</a-tooltip>,
+            <a-tooltip class="ml-1" title={moment(row[field]).format()}>{moment(row[field]).fromNow()}</a-tooltip>,
           ]
         }
         return [
-          <a-tooltip class="ml-1" title={ moment(row[field]).fromNow() }>{ moment(row[field]).format() }</a-tooltip>,
+          <a-tooltip class="ml-1" title={moment(row[field]).fromNow()}>{moment(row[field]).format()}</a-tooltip>,
         ]
       },
     },
@@ -837,14 +841,14 @@ export const getAccountTableColumn = ({
         const ret = []
         ret.push(
           <list-body-cell-wrap hide-field copy field={field} row={{ [field]: val }}>
-            <span style={{ color: '#0A1F44' }}>{ val || '-' }</span>
+            <span style={{ color: '#0A1F44' }}>{val || '-'}</span>
           </list-body-cell-wrap>,
         )
         const managerVal = _.get(row, managerField)
         if (managerVal) {
           ret.push(
             <list-body-cell-wrap hide-field copy field={managerField} row={row}>
-              <span style={{ color: '#53627C' }}>{ managerVal }</span>
+              <span style={{ color: '#53627C' }}>{managerVal}</span>
             </list-body-cell-wrap>,
           )
         }
@@ -874,7 +878,7 @@ export const getBillingTypeTableColumn = ({ field = 'billing_type', title = i18n
           const seconds = moment(row.expired_at).diff(new Date()) / 1000
           const textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
           const text = seconds < 0 ? i18n.t('common_296') : i18n.t('common_297', [date])
-          ret.push(<div style={{ color: textColor }}>{ text }</div>)
+          ret.push(<div style={{ color: textColor }}>{text}</div>)
         }
         return ret
       },
@@ -926,10 +930,10 @@ export const getPublicScopeTableColumn = ({
                 header: i18n.t('common_101'),
                 body: () => {
                   return [
-                    <a-alert class='mb-2' message={ i18n.t('common_298', [sharedProjects.length]) } />,
+                    <a-alert class='mb-2' message={i18n.t('common_298', [sharedProjects.length])} />,
                     <dialog-table
                       vxeGridProps={{ showOverflow: 'title' }}
-                      data={ sharedProjects }
+                      data={sharedProjects}
                       columns={
                         [
                           getCopyWithContentTableColumn({
@@ -950,7 +954,7 @@ export const getPublicScopeTableColumn = ({
                   ]
                 },
               })
-            }}>{ i18n.t(`${i18nPrefix}.project`) }</a>,
+            }}>{i18n.t(`${i18nPrefix}.project`)}</a>,
           ]
         }
         if (publicScope === 'domain') {
@@ -962,10 +966,10 @@ export const getPublicScopeTableColumn = ({
                   header: i18n.t('common_101'),
                   body: () => {
                     return [
-                      <a-alert class='mb-2' message={ i18n.t('common_300', [sharedDomains.length]) } />,
+                      <a-alert class='mb-2' message={i18n.t('common_300', [sharedDomains.length])} />,
                       <dialog-table
                         vxeGridProps={{ showOverflow: 'title' }}
-                        data={ sharedDomains }
+                        data={sharedDomains}
                         columns={
                           [
                             getCopyWithContentTableColumn({
@@ -982,7 +986,7 @@ export const getPublicScopeTableColumn = ({
                     ]
                   },
                 })
-              }}>{ i18n.t(`${i18nPrefix}.domain`) }</a>,
+              }}>{i18n.t(`${i18nPrefix}.domain`)}</a>,
             ]
           }
           return i18n.t(`${i18nPrefix}.projectAll`)
@@ -1043,9 +1047,9 @@ export const getBillingTableColumn = ({
           })
         }
         if (billingType === 'postpaid') {
-          ret.push(<div style={{ color: '#0A1F44' }}>{ i18n.t('billingType.postpaid') }</div>)
+          ret.push(<div style={{ color: '#0A1F44' }}>{i18n.t('billingType.postpaid')}</div>)
         } else if (billingType === 'prepaid') {
-          ret.push(<div style={{ color: '#0A1F44' }}>{ i18n.t('billingType.prepaid') }</div>)
+          ret.push(<div style={{ color: '#0A1F44' }}>{i18n.t('billingType.prepaid')}</div>)
         }
         if (row.expired_at) {
           const time = vm.$moment(row.expired_at).format()
@@ -1053,20 +1057,20 @@ export const getBillingTableColumn = ({
           if (billingType === 'postpaid') {
             const isHiddenSetButton = R.is(Function, hiddenSetBtn) ? hiddenSetBtn() : hiddenSetBtn
             if (hasPermission({ key: 'server_perform_cancel_expire' }) && !isHiddenSetButton) {
-              tooltipCon = <div slot="help">{ i18n.t('common_301', [time]) }<span class="link-color" style="cursor: pointer" onClick={ openVmSetDurationDialog }>{ i18n.t('common_453') }</span></div>
+              tooltipCon = <div slot="help">{i18n.t('common_301', [time])}<span class="link-color" style="cursor: pointer" onClick={openVmSetDurationDialog}>{i18n.t('common_453')}</span></div>
             } else {
-              tooltipCon = <div slot="help">{ i18n.t('common_301', [time]) }</div>
+              tooltipCon = <div slot="help">{i18n.t('common_301', [time])}</div>
             }
           } else if (billingType === 'prepaid') {
             if (row.auto_renew) {
-              tooltipCon = <div slot="help">{ i18n.t('common_301', [time]) }{ i18n.t('common_451') }</div>
+              tooltipCon = <div slot="help">{i18n.t('common_301', [time])}{i18n.t('common_451')}</div>
             } else {
-              tooltipCon = <div slot="help">{ i18n.t('common_301', [time]) }{ i18n.t('common_452')}</div>
+              tooltipCon = <div slot="help">{i18n.t('common_301', [time])}{i18n.t('common_452')}</div>
             }
           }
           const help = <a-tooltip>
             <template slot="title">
-              { tooltipCon }
+              {tooltipCon}
             </template>
             <icon type="help" />
           </a-tooltip>
@@ -1075,7 +1079,7 @@ export const getBillingTableColumn = ({
           const seconds = vm.$moment(row.expired_at).diff(new Date()) / 1000
           const textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
           const text = seconds < 0 ? i18n.t('common_296') : i18n.t('common_297', [date])
-          ret.push(<div class='text-truncate' title={text} style={{ color: textColor }}>{ text } { help }</div>)
+          ret.push(<div class='text-truncate' title={text} style={{ color: textColor }}>{text} {help}</div>)
         }
         return ret
       },
@@ -1112,17 +1116,17 @@ export const getZone1TableColumn = ({
         let node
         if (p) {
           node = (
-            <list-body-cell-wrap copy row={ row } field={field} title={ row[field] } hideField={ true }>
-              <side-page-trigger permission='zones_get' name='ZoneSidePage' id={row[idField]} vm={vm}>{ row[field] }</side-page-trigger>
+            <list-body-cell-wrap copy row={row} field={field} title={row[field]} hideField={true}>
+              <side-page-trigger permission='zones_get' name='ZoneSidePage' id={row[idField]} vm={vm}>{row[field]}</side-page-trigger>
             </list-body-cell-wrap>
           )
         } else {
           node = (
-            <list-body-cell-wrap copy row={ row } field={field} title={ row[field] } />
+            <list-body-cell-wrap copy row={row} field={field} title={row[field]} />
           )
         }
         return [
-          <div class='text-truncate'>{ node }</div>,
+          <div class='text-truncate'>{node}</div>,
         ]
       },
     },
@@ -1265,17 +1269,17 @@ export const getDomainColumn = ({ vm, hidden }) => {
         let node
         if (p) {
           node = (
-            <list-body-cell-wrap copy row={ vm.data } onManager={ vm.onManager } field='project_domain' title={ row.project_domain } message={domain} hideField={ true }>
-              <side-page-trigger permission='domains_get' name='DomainSidePage' id={row.project_domain} vm={vm}>{ domain }</side-page-trigger>
+            <list-body-cell-wrap copy row={vm.data} onManager={vm.onManager} field='project_domain' title={row.project_domain} message={domain} hideField={true}>
+              <side-page-trigger permission='domains_get' name='DomainSidePage' id={row.project_domain} vm={vm}>{domain}</side-page-trigger>
             </list-body-cell-wrap>
           )
         } else {
           node = (
-            <list-body-cell-wrap copy row={ vm.data } onManager={ vm.onManager } field='project_domain' title={ row.project_domain } message={domain} />
+            <list-body-cell-wrap copy row={vm.data} onManager={vm.onManager} field='project_domain' title={row.project_domain} message={domain} />
           )
         }
         return [
-          <div class='text-truncate'>{ node }</div>,
+          <div class='text-truncate'>{node}</div>,
         ]
       },
     },
