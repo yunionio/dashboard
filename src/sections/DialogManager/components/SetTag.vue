@@ -2,7 +2,11 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('common_105')}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="$t('common_105')" :name="params.tipName" />
+      <dialog-selected-tips
+        :count="params.data.length"
+        :action="$t('common_105')"
+        :name="params.tipName"
+      />
       <template v-if="params.columns">
         <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       </template>
@@ -27,7 +31,7 @@
             </template>
           </template>
         </div>
-      </div> -->
+      </div>-->
       <!-- 标签 -->
       <div class="tag-wrap">
         <a-divider orientation="left">
@@ -39,24 +43,38 @@
           </template>
           <template v-else>
             <template v-for="item of userTags">
-              <a-popover trigger="click" v-model="checkedInfo[item.key].visible" :key="`${item.key}${item.value}`" destroyTooltipOnHide @visibleChange="visible => handleTagVisibleChange(item, visible)">
+              <a-popover
+                trigger="click"
+                v-model="checkedInfo[item.key].visible"
+                :key="`${item.key}${item.value}`"
+                destroyTooltipOnHide
+                @visibleChange="visible => handleTagVisibleChange(item, visible)"
+              >
                 <template #content>
                   <div class="tag-update-wrap">
                     <div class="mb-1">{{ $t('common_112') }}</div>
                     <div>
-                      <div><a-input size="small" v-model="checkedInfo[item.key].title" /></div>
+                      <div>
+                        <a-input size="small" v-model="checkedInfo[item.key].title" />
+                      </div>
                       <template v-if="checkedInfo[item.key].titleErrorMessage">
                         <div class="error-color mt-1">{{ checkedInfo[item.key].titleErrorMessage }}</div>
                       </template>
                     </div>
                     <div class="mt-2 mb-1">{{ $t('common_113') }}</div>
-                    <div><a-input size="small" v-model="checkedInfo[item.key].value" /></div>
+                    <div>
+                      <a-input size="small" v-model="checkedInfo[item.key].value" />
+                    </div>
                     <a-row :gutter="8" class="mt-2">
                       <a-col :span="12">
                         <a-button size="small" block @click="updateTag(item)">{{ $t('common.ok') }}</a-button>
                       </a-col>
                       <a-col :span="12">
-                        <a-button size="small" block @click="() => handleTagPopoverCancel(item)">{{ $t('common.cancel') }}</a-button>
+                        <a-button
+                          size="small"
+                          block
+                          @click="() => handleTagPopoverCancel(item)"
+                        >{{ $t('common.cancel') }}</a-button>
                       </a-col>
                     </a-row>
                   </div>
@@ -64,16 +82,20 @@
                 <div
                   class="tag mb-1 d-inline-block"
                   :title="item.title"
-                  :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">
+                  :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }"
+                >
                   <div class="d-flex align-items-center">
                     <a-tooltip v-if="isSysTag(item.key)">
-                      <template slot="title">
-                        {{ $t('common.tag.sys_tag_tooltip') }}
-                      </template>
+                      <template slot="title">{{ $t('common.tag.sys_tag_tooltip') }}</template>
                       <span class="flex-fill text-truncate">{{ item.title }}</span>
                     </a-tooltip>
                     <span v-else class="flex-fill text-truncate">{{ item.title }}</span>
-                    <a-icon v-if="!isSysTag(item.key)" class="ml-1 remove-tag flex-grow-0 flex-shrink-0" type="close" @click.stop="removeTag(item)" />
+                    <a-icon
+                      v-if="!isSysTag(item.key)"
+                      class="ml-1 remove-tag flex-grow-0 flex-shrink-0"
+                      type="close"
+                      @click.stop="removeTag(item)"
+                    />
                   </div>
                 </div>
               </a-popover>
@@ -92,14 +114,15 @@
             @input="handleSelectInput"
             :params="params.params"
             :managerInstance="params.managerInstance"
-            :allowNoValue="false" />
-          <a-button class="ml-2" v-if="!showForm" @click="() => showForm = true">{{$t('common_111')}}</a-button>
+            :allowNoValue="false"
+          />
+          <a-button
+            class="ml-2"
+            v-if="!showForm"
+            @click="() => showForm = true"
+          >{{$t('common_111')}}</a-button>
         </div>
-        <a-form
-          class="ml-2"
-          layout="inline"
-          :form="form.fc"
-          v-if="showForm">
+        <a-form class="ml-2" layout="inline" :form="form.fc" v-if="showForm">
           <a-form-item>
             <a-input v-decorator="decorators.key" :placeholder="$t('common_112')" />
           </a-form-item>
@@ -291,15 +314,25 @@ export default {
         }
         const ids = this.params.data.map(item => item.id)
         const action = this.isBatchAddMode ? 'user-metadata' : 'set-user-metadata'
-        await this.params.onManager('batchPerformAction', {
-          id: ids,
-          steadyStatus: this.params.list?.steadyStatus || ['running', 'ready'],
-          managerArgs: {
+        const { manager } = this.params
+        if (manager) {
+          await manager.batchPerformAction({
+            ids,
             action,
             data,
-          },
-        })
+          })
+        } else {
+          await this.params.onManager('batchPerformAction', {
+            id: ids,
+            steadyStatus: this.params.list?.steadyStatus || ['running', 'ready'],
+            managerArgs: {
+              action,
+              data,
+            },
+          })
+        }
         this.cancelDialog()
+        R.is(Function, this.params.refresh) && this.params.refresh()
       } catch (error) {
         throw error
       } finally {
@@ -402,7 +435,7 @@ export default {
   }
   & ::v-deep .ant-empty-image {
     height: 46px;
-    .data-empty{
+    .data-empty {
       margin-top: 0;
     }
   }

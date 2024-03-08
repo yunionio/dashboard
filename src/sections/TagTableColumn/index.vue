@@ -1,12 +1,15 @@
 <template>
-  <a-popover
-    destroy-tooltip-on-hide
-    overlay-class-name="tag-table-column-wrap">
+  <a-popover destroy-tooltip-on-hide overlay-class-name="tag-table-column-wrap">
     <template slot="title">
       <div class="d-flex align-items-center">
         <div class="flex-fill">{{customTitle ? customTitle : $t('common_267')}}</div>
         <template v-if="validate.validate">
-          <a-button type="link" class="font-weight-normal p-0" @click="handleEdit" v-if="!inBaseDialog && !!onManager">{{$t('common_105')}}</a-button>
+          <a-button
+            type="link"
+            class="font-weight-normal p-0"
+            @click="handleEdit"
+            v-if="!inBaseDialog && !!onManager"
+          >{{$t('common_105')}}</a-button>
         </template>
         <template v-else>
           <a-tooltip :title="validate.tooltip">
@@ -26,9 +29,8 @@
               class="tag mb-1 text-truncate d-inline-block"
               :title="item.title"
               :key="`${item.key}${item.value}`"
-              :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">
-              {{ item.title }}
-            </span>
+              :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }"
+            >{{ item.title }}</span>
           </template>
         </template>
       </div>
@@ -79,6 +81,12 @@ export default {
       type: Object,
       default: () => { return {} },
     },
+    refresh: {
+      type: Function
+    },
+    manager: {
+      type: Object
+    }
   },
   inject: {
     // 是否处于BaseDialog中
@@ -140,10 +148,12 @@ export default {
       this.createDialog('SetTagDialog', {
         data: [this.row],
         columns,
+        manager: this.manager,
         onManager: this.onManager,
         params: this.params,
         tipName: this.tipName,
         list: this.list,
+        refresh: this.refresh
       })
     },
   },
@@ -158,7 +168,7 @@ export default {
   }
   & ::v-deep .ant-empty-image {
     height: 46px;
-    .data-empty{
+    .data-empty {
       margin-top: 0;
     }
   }
