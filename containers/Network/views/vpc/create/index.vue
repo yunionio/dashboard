@@ -401,8 +401,10 @@ export default {
           params.project_domain = values.project_domain
         }
         params.__meta__ = values.__meta__
-        if (this.cloudEnv === 'public' || this.cloudEnv === 'onpremise') {
+        if (this.cloudEnv === 'public') {
           params.external_access_mode = values.external_access_mode ? 'eip' : 'none'
+        } else if (this.cloudEnv === 'onpremise') {
+          params.external_access_mode = values.external_access_mode ? 'eip-distgw' : 'none'
         }
         await this.doCreate(params)
         this.loading = false
