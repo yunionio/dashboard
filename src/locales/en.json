@@ -172,12 +172,13 @@
       "qga_exec_command_failed": "QGA execution failed",
       "convert_failed": "Convert Failed",
       "security_group_fail": "Failed to create security group",
-      "qga_set_network_failed": "QGA failed to set the network",
+      "qga_set_network_failed": "QGA configuration network card failed",
       "start_rescue": "Enter emergency mode",
       "rescue": "Emergency mode",
       "stop_rescue": "Exit emergency mode",
       "start_rescue_failed": "Enter emergency mode failed",
-      "stop_rescue_failed": "Exiting emergency mode failed"
+      "stop_rescue_failed": "Exiting emergency mode failed",
+      "qga_set_network": "QGA configuration network card"
     },
     "network": {
       "init": "Initialize",
