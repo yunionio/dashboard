@@ -171,7 +171,8 @@
       "off": "关机",
       "qga_exec_command_failed": "QGA执行失败",
       "convert_failed": "转换失败",
-      "qga_set_network_failed": "QGA设置网络失败"
+      "qga_set_network_failed": "QGA配置网卡失败",
+      "qga_set_network": "QGA配置网卡"
     },
     "network": {
       "init": "初始化",
@@ -2862,7 +2863,6 @@
       "cpu_usage": "CPU使用率",
       "mem_usage": "内存使用率",
       "disk_usage": "磁盘使用率"
-
     },
     "action": {
       "save": "保存",

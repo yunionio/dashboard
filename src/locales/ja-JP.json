@@ -172,7 +172,8 @@
       "qga_exec_command_failed": "QGA の実行に失敗しました",
       "convert_failed": "変換に失敗しました",
       "security_group_fail": "セキュリティグループの作成に失敗しました",
-      "qga_set_network_failed": "QGA はネットワークの設定に失敗しました"
+      "qga_set_network_failed": "QGA 構成ネットワーク カードに障害が発生しました",
+      "qga_set_network": "QGA 構成ネットワーク カード"
     },
     "network": {
       "init": "初期化する",
