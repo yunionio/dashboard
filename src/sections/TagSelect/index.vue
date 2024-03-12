@@ -334,15 +334,23 @@ export default {
       }
       if (this.showNoValue) {
         userRet = userRet.map(item => {
+          const value = item.value || []
+          if (!value.includes('___no_value__')) {
+            value.unshift('___no_value__')
+          }
           return {
             ...item,
-            value: ['___no_value__', ...item.value],
+            value,
           }
         })
         extRet = extRet.map(item => {
+          const value = item.value || []
+          if (!value.includes('___no_value__')) {
+            value.unshift('___no_value__')
+          }
           return {
             ...item,
-            value: ['___no_value__', ...item.value],
+            value,
           }
         })
       }
