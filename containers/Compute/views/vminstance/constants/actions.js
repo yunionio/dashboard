@@ -681,7 +681,7 @@ const getSingleActions = function () {
                     data: [obj],
                   })
                 },
-                hidden: () => !this.$appConfig.isPrivate,
+                hidden: () => !this.$appConfig.isPrivate || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_add_to_bastion'),
               },
               // 续费
               {
@@ -946,7 +946,7 @@ const getSingleActions = function () {
                     validate: true,
                   }
                 },
-                hidden: () => !hasSetupKey(['onecloud']),
+                hidden: () => !hasSetupKey(['onecloud']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_cpuset_cores'),
               },
               // 设置磁盘速度
               {
@@ -1681,7 +1681,7 @@ const getSingleActions = function () {
                   }
                   return ret
                 },
-                hidden: () => !hasSetupKey(['onecloud']),
+                hidden: () => !hasSetupKey(['onecloud']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_migrate'),
               },
             ],
           },

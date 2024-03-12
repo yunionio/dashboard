@@ -1178,7 +1178,7 @@ export default {
                       }
                       return ret
                     },
-                    hidden: () => !hasSetupKey(['onecloud']),
+                    hidden: () => !hasSetupKey(['onecloud']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_migrate'),
                   },
                 ],
               },
