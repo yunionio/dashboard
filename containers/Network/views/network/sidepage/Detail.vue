@@ -39,7 +39,7 @@ export default {
     const extraInfo = [
       {
         title: this.$t('network.text_308'),
-        items: [
+        items: ([
           getCopyWithContentTableColumn({
             field: 'vpc',
             title: 'VPC',
@@ -148,7 +148,9 @@ export default {
               return cellValue || '-'
             },
           },
-        ],
+        ]).filter(item => {
+          return !this.$isScopedPolicyMenuHidden(`network_hidden_columns.${item.field}`)
+        }),
       },
     ]
     if (this.data.cloud_env === 'onpremise') {

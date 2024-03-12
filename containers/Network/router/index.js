@@ -216,6 +216,9 @@ export default {
             label: i18n.t('dictionary.route_table'),
             permission: 'route_tables_list',
             hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.routetable')) {
+                return true
+              }
               if (store.getters.isProjectMode) return true
               return !hasSetupKey(['aliyun', 'qcloud', 'huawei', 'aws', 'hcs'])
             },
