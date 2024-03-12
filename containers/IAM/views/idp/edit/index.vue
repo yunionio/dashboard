@@ -23,6 +23,7 @@
                 @change="handleDomain"
                 resource="domains"
                 filterable
+                :params="{limit: 20}"
                 version="v1"
                 :select-props="{
                   placeholder: $t('common_515', [$t('dictionary.domain')])

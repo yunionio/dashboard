@@ -32,11 +32,11 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import CommonFormItems from '../components/CommonFormItems'
 import DomainSelect from '@/sections/DomainSelect'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import TestButton from '@/sections/TestButton'
+import CommonFormItems from '../components/CommonFormItems'
 
 export default {
   name: 'ProxysettingCreateDialog',
@@ -90,7 +90,7 @@ export default {
         },
       },
       domainParams: {
-        limit: 0,
+        limit: 20,
         filter: 'enabled.equals(1)',
       },
     }
