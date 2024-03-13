@@ -209,6 +209,55 @@ const getSingleActions = function () {
                                 }
                                 _callback()
                               },
+<<<<<<< HEAD
+=======
+                            ],
+                          },
+                          {
+                            label: i18n.t('compute.text_349'),
+                            placeholder: i18n.t('compute.text_350'),
+                          },
+                        ],
+                      },
+                    })
+                  }
+                  return <a-tooltip placement="left" title={obj.rescue_mode ? i18n.t('compute.start_rescue.validate_tooltip') : !isRunning ? i18n.t('compute.text_1309', [i18n.t('compute.text_574')]) : ''}>
+                    <span style={styleObj} class='d-flex justify-content-between align-items-center'>
+                      <span onClick={isRunning ? sshConnectHandle : () => { }}>{`SSH ${ipAddr}`}</span>
+                      {
+                        isRunning ? <span>
+                          <a-tooltip title={i18n.t('compute.text_346')}>
+                            <a-icon class="ml-2" type="edit" onClick={isRunning ? sshSettingInfoHandle : () => { }} />
+                          </a-tooltip>
+                        </span> : null
+                      }
+                    </span>
+                  </a-tooltip>
+                },
+              })
+            } else {
+              const rdpSettingInfoHandle = () => {
+                this.createDialog('SmartFormDialog', {
+                  title: i18n.t('compute.text_346'),
+                  data: [obj],
+                  callback: async (data) => {
+                    handleRdpConnect(obj, data.port, 'rdp')
+                  },
+                  decorators: {
+                    port: [
+                      'port',
+                      {
+                        validateFirst: true,
+                        rules: [
+                          { required: true, message: i18n.t('compute.text_347') },
+                          {
+                            validator: (rule, value, _callback) => {
+                              const num = parseFloat(value)
+                              if (!/^\d+$/.test(value) || !num || num > 65535) {
+                                _callback(i18n.t('compute.text_348'))
+                              }
+                              _callback()
+>>>>>>> feat(v3.9/4693): 块存储支持共享LVM存储
                             },
                           ],
                         },
@@ -1521,6 +1570,11 @@ const getSingleActions = function () {
                   }
                   if (!this.isAdminMode && !this.isDomainMode) {
                     ret.tooltip = i18n.t('migration.project.error')
+                    return ret
+                  }
+                  const isLvm = obj.disks_info.some(item => item.storage_type.includes('lvm'))
+                  if (isLvm) {
+                    ret.tooltip = i18n.t('compute.lvm_shared_storage.validate_tooltip')
                     return ret
                   }
                   ret.validate = true

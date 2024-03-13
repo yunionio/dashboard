@@ -655,6 +655,14 @@ export const STORAGE_TYPES = {
       sysMin: 10,
       sysMax: 500,
     },
+    slvm: {
+      label: i18n.t('storage.slvm'),
+      value: 'slvm',
+      min: 1,
+      max: 3072,
+      sysMin: 10,
+      sysMax: 500,
+    },
   },
   onecloud: {
     local: {
@@ -717,6 +725,14 @@ export const STORAGE_TYPES = {
     rbd: {
       label: 'Ceph RBD',
       value: 'rbd',
+      min: 1,
+      max: 3072,
+      sysMin: 10,
+      sysMax: 500,
+    },
+    slvm: {
+      label: i18n.t('storage.slvm'),
+      value: 'slvm',
       min: 1,
       max: 3072,
       sysMin: 10,
