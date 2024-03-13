@@ -30,8 +30,8 @@
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import ListSelect from '@/sections/ListSelect'
-import StorageResourcePropsMixin from '../mixins/storageResourceProps'
 import { STORAGE_TYPES } from '@Storage/constants'
+import StorageResourcePropsMixin from '../mixins/storageResourceProps'
 
 export default {
   name: 'VmChangeBlockStorageDialog',
@@ -99,7 +99,7 @@ export default {
   methods: {
     formatterVal (v) {
       if (v) {
-        return `${STORAGE_TYPES[v.storage_type]}(${v.name})`
+        return `${STORAGE_TYPES[v.storage_type] || v.storage_type}(${v.name})`
       }
     },
     doSingleHandle (id, values) {
@@ -137,5 +137,4 @@ export default {
 </script>
 
 <style>
-
 </style>
