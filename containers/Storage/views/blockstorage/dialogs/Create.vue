@@ -97,7 +97,7 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode', 'userInfo', 'l3PermissionEnable']),
     storageTypes () {
-      return this.params.storageTypes || ['rbd', 'nfs', 'gpfs', 'local']
+      return this.params.storageTypes || ['rbd', 'slvm', 'nfs', 'gpfs', 'local']
     },
     getFieldValue () {
       return this.form.fc.getFieldValue
@@ -176,13 +176,15 @@ export default {
         this.form.fc.validateFields((err, values) => {
           if (err) return reject(err)
           // eslint-disable-next-line camelcase
-          const { storage_type, zone, cloudregion } = values
+          const { storage_type, zone, cloudregion, slvm_vg_name } = values
           const deleteRbdKeys = ['nfs_host', 'nfs_shared_dir']
           const deleteNfsKeys = ['rbd_mon_host', 'rbd_key', 'rbd_pool']
+          const deleteSlvmKeys = [...deleteRbdKeys, ...deleteNfsKeys]
           const deleteKeys = {
-            rbd: deleteRbdKeys,
-            nfs: deleteNfsKeys,
-            gpfs: [...deleteRbdKeys, ...deleteNfsKeys],
+            rbd: [...deleteRbdKeys, 'slvm_vg_name'],
+            slvm: deleteSlvmKeys,
+            nfs: [...deleteNfsKeys, 'slvm_vg_name'],
+            gpfs: [...deleteRbdKeys, ...deleteNfsKeys, 'slvm_vg_name'],
           }
           if (zone) {
             values.zone = zone.key
@@ -190,6 +192,9 @@ export default {
           if (cloudregion) {
             values.area = cloudregion.key
             delete values.cloudregion
+          }
+          if (slvm_vg_name) {
+            values.lvmlockd = true
           }
           deleteKeys[storage_type].forEach(key => {
             delete values[key]
