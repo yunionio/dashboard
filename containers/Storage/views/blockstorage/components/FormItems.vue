@@ -20,6 +20,11 @@
         <a-input :placeholder="$t('storage.path.input.place_holder')" v-decorator="decorators.nfs_shared_dir" />
       </a-form-item>
     </template>
+    <template v-if="storage_type === 'slvm'">
+      <a-form-item label="SlvmVgName">
+        <a-input :placeholder="$t('common.tips.input', ['SlvmVgName'])" v-decorator="decorators.slvm_vg_name" />
+      </a-form-item>
+    </template>
   </div>
 </template>
 
@@ -117,6 +122,14 @@ export default {
             ],
           },
         ],
+        slvm_vg_name: [
+          'slvm_vg_name',
+          {
+            rules: [
+              { required: true, message: this.$t('common.tips.input', ['SlvmVgName']), trigger: 'blur' }
+            ]
+          }
+        ]
       }
     },
   },

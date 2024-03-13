@@ -383,10 +383,10 @@ export default {
             params.storage_id = this.form.fd[this.decorators.systemDisk.storage[0]]
           }
           if (this.storageHostParams.disk &&
-          this.storageHostParams.disk !== 'system' &&
-          this.storageHostParams.storageHosts &&
-          this.storageHostParams.storageHosts.length &&
-          !params.storage_id) {
+            this.storageHostParams.disk !== 'system' &&
+            this.storageHostParams.storageHosts &&
+            this.storageHostParams.storageHosts.length &&
+            !params.storage_id) {
             if (this.form.fd[`dataDiskStorages[${this.storageHostParams.disk}]`]) {
               params.storage_id = this.form.fd[`dataDiskStorages[${this.storageHostParams.disk}]`]
             }
@@ -431,10 +431,10 @@ export default {
           params.storage_id = this.form.fd[this.decorators.systemDisk.storage[0]]
         }
         if (this.storageHostParams.disk &&
-        this.storageHostParams.disk !== 'system' &&
-        this.storageHostParams.storageHosts &&
-        this.storageHostParams.storageHosts.length &&
-        !params.storage_id) {
+          this.storageHostParams.disk !== 'system' &&
+          this.storageHostParams.storageHosts &&
+          this.storageHostParams.storageHosts.length &&
+          !params.storage_id) {
           if (this.form.fd[`dataDiskStorages[${this.storageHostParams.disk}]`]) {
             params.storage_id = this.form.fd[`dataDiskStorages[${this.storageHostParams.disk}]`]
           }
@@ -588,9 +588,9 @@ export default {
           return true
         }
         if (this.storageHostParams.disk &&
-        this.storageHostParams.disk !== 'system' &&
-        this.storageHostParams.storageHosts &&
-        this.storageHostParams.storageHosts.length) {
+          this.storageHostParams.disk !== 'system' &&
+          this.storageHostParams.storageHosts &&
+          this.storageHostParams.storageHosts.length) {
           if (this.form.fd[`dataDiskStorages[${this.storageHostParams.disk}]`]) {
             return true
           }
@@ -783,10 +783,11 @@ export default {
       const fd = this.form.fc.getFieldsValue()
       let isDiskLocal = true
       const { dataDiskTypes } = fd
-      if (!R.is(Object, dataDiskTypes)) return
-      const diskTypeItem = dataDiskTypes[Object.keys(dataDiskTypes)[0]]
-      if (diskTypeItem && diskTypeItem.key) {
-        isDiskLocal = isLocal(diskTypeItem.key)
+      if (R.is(Object, dataDiskTypes)) {
+        const diskTypeItem = dataDiskTypes[Object.keys(dataDiskTypes)[0]]
+        if (diskTypeItem && diskTypeItem.key) {
+          isDiskLocal = isLocal(diskTypeItem.key)
+        }
       }
       this.isLocalDisk = isSysLocal && isDiskLocal
     },

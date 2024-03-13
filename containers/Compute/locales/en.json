@@ -1759,5 +1759,6 @@
   "compute.start_rescue.message": "If the virtual machine disk is damaged and cannot be repaired, you can use this operation to enter the emergency mode temporarily. After the operation, use the remote control-VNC link",
   "compute.stop_rescue": "Exit emergency mode",
   "compute.stop_rescue.validate_tooltip": "Please enter emergency mode and try again",
-  "compute.associated_instances": "associated instances"
+  "compute.associated_instances": "associated instances",
+  "compute.lvm_shared_storage.validate_tooltip": "LVM disk host does not support this operation"
 }

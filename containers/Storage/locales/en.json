@@ -340,5 +340,6 @@
   "storage.volcengine.storage_class.ia": "IA",
   "storage.volcengine.storage_class.archive_fr": "ARCHIVE_FR",
   "storage.volcengine.storage_class.archive": "ARCHIVE",
-  "storage.volcengine.storage_class.cold_archive": "COLD_ARCHIVE"
+  "storage.volcengine.storage_class.cold_archive": "COLD_ARCHIVE",
+  "storage.slvm": "Shared LVM"
 }
