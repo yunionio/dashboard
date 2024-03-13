@@ -3,6 +3,7 @@ export const STORAGE_TYPES = {
   baremetal: i18n.t('storage.text_2'),
   sheepdog: 'Sheepdog',
   rbd: 'Ceph',
+  slvm: i18n.t('storage.slvm'),
   docker: i18n.t('storage.text_3'),
   nas: 'NAS',
   vsan: 'vSAN',

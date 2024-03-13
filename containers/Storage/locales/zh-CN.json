@@ -329,5 +329,6 @@
   "storage.usage_active": "存储使用率",
   "storage.local_storage.help_link": "参考文档",
   "storage.local_storage.help_alert_message": "若要添加本地存储类型，需登录要添加存储的宿主机进行操作，修改 /etc/yunion/host.conf， 将该目录添加到local_image_paths下，具体请",
-  "storage.bucket_object_search_placeholder": "请输入文件名前缀匹配"
+  "storage.bucket_object_search_placeholder": "请输入文件名前缀匹配",
+  "storage.slvm": "共享LVM"
 }

@@ -1719,5 +1719,6 @@
   "compute.bios": "Boot Mode",
   "compute.not_limited": "0 means no limit",
   "compute.iops": "IOPS",
-  "compute.bps": "Throughput"
+  "compute.bps": "Throughput",
+  "compute.lvm_shared_storage.validate_tooltip": "LVM disk host does not support this operation"
 }
