@@ -1298,7 +1298,7 @@ export default {
                       const isAllKVMShareStorages = allStorages.every(item => KVM_SHARE_STORAGES.includes(item.storage_type))
                       if (!isAllKVMShareStorages) {
                         ret.validate = false
-                        ret.tooltip = this.$t('compute.quick.recovery.validate.host_status_tooltip')
+                        ret.tooltip = this.$t('compute.shared_storage.validate_tooltip')
                         return ret
                       }
                       return ret
