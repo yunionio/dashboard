@@ -1,7 +1,6 @@
 import { typeClouds } from '@/utils/common/hypervisor'
-import { getDocsUrl } from '@/utils/utils'
+import { arrayToObj, getDocsUrl } from '@/utils/utils'
 import i18n from '@/locales'
-import { arrayToObj } from '@/utils/utils'
 const providerMap = typeClouds.getProviderlowcase()
 const aliyunLogo = require('@/assets/images/providers/aliyun.svg')
 const awsLogo = require('@/assets/images/providers/aws.svg')
