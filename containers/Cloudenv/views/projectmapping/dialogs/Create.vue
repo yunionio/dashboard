@@ -152,7 +152,7 @@ export default {
         },
       },
       domainParams: {
-        limit: 0,
+        limit: 20,
         filter: 'enabled.equals(1)',
       },
       resourceAndTagOptions: [
