@@ -1868,7 +1868,7 @@
   },
   "authChooser": {
     "system": "バックオフィスの管理",
-    "domain": "@:dictionary.domainadmin backend",
+    "domain": "@:dictionary.domainバックグラウンドの管理",
     "project": "通常の@:dictionary.project"
   },
   "rules": {
@@ -1891,7 +1891,7 @@
   },
   "policyScopeLabel": {
     "system": "バックオフィスの管理",
-    "domain": "@:dictionary.domainadmin backend",
+    "domain": "@:dictionary.domainバックグラウンドの管理",
     "project": "管理バックエンドなし"
   },
   "storageAclTypes": {
@@ -3079,9 +3079,9 @@
       "switch": "ビューの切り替え",
       "manager": "バックオフィスの管理",
       "system_manager": "バックオフィスの管理",
-      "domain_manager": "@:dictionary.domainadmin backend",
+      "domain_manager": "@:dictionary.domainバックグラウンドの管理",
       "project": "通常の@:dictionary.project",
-      "domain_manager_1var": "{domain} @:dictionary.domainadmin background"
+      "domain_manager_1var": "{domain} @:dictionary.domainバックグラウンドの管理"
     },
     "button": {
       "expenses": "費用",
