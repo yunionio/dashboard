@@ -81,7 +81,7 @@ export default {
     },
     params () {
       const params = {
-        limit: 0,
+        limit: 20,
         scope: this.$store.getters.scope,
         ...this.secgroupParams,
       }
