@@ -84,7 +84,7 @@ export default {
       const ids = this.params.data.map(item => item.guest_id)
       const data = {
         bandwidth: values.bandwidth,
-        index: this.params.data[0].index,
+        mac: this.params.data[0].mac_addr,
       }
       return manager.batchPerformAction({
         ids,
@@ -96,7 +96,7 @@ export default {
       const curData = this.params.data[0]
       const params = {
         bandwidth: values.bandwidth,
-        index: curData.index,
+        mac: curData.mac_addr,
       }
       const resData = this.params.resData
       const serverConf = resData.map((item) => {
