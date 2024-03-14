@@ -181,6 +181,20 @@ export default {
           },
         },
         {
+          label: this.$t('cloudenv.set_priority'),
+          permission: 'externalprojects_update',
+          action: obj => {
+            this.createDialog('ExternalProjectSetPriorityDialog', {
+              data: [obj],
+              cloudaccount: this.cloudaccount,
+              title: this.$t('cloudenv.set_priority'),
+              name: this.$t('cloudenv.text_386'),
+              columns: this.columns,
+              onManager: this.onManager,
+            })
+          }
+        },
+        {
           label: this.$t('cloudenv.view_record'),
           permission: 'log_list',
           action: obj => {
@@ -254,6 +268,10 @@ export default {
         }),
         getProjectDomainTableColumn(),
         projectColumn,
+        {
+          field: 'priority',
+          title: this.$t('cloudenv.priority')
+        },
         getTimeTableColumn({
           field: 'created_at',
           title: this.$t('cloudenv.text_103'),
