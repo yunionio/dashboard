@@ -805,7 +805,8 @@ export const mathRoundFix = (num, precision = 2, needFixZero) => {
   if (!needFixZero) res = parseFloat(res)
   return res
 }
-export const language = getLanguage() === 'zh-CN' ? 'zh' : 'en'
+// 中文文档较全，默认使用中文文档
+export const language = getLanguage() === 'en' ? 'en' : 'zh'
 
 export function isCE () {
   return !process.env.VUE_APP_IS_PRIVATE
@@ -819,6 +820,7 @@ export function getDocsUrl (scope) {
   if (scope === 'domain' || scope === 'project') {
     prefix = prefix + '/domain'
   }
+  console.log(getLanguage())
   return `${window.location.origin}/${prefix}/${language}/docs/`
 }
 

@@ -1580,7 +1580,7 @@
   "compute.disk.rotate_gpssd": "ユニバーサルSSD",
   "compute.is_daemon": "デーモン仮想マシン",
   "compute.qemu_cmdline": "コマンドラインを起動する",
-  "compute.vpc_extrnal_id": "The VPC ID",
+  "compute.vpc_extrnal_id": "The VPC @:dictionary.external_id",
   "compute.mainternance_in_disabled_tip": "ホスト上の仮想マシンの数は 0 です",
   "compute.target_name": "インテント名",
   "compute.target_ip": "宛先 IP",

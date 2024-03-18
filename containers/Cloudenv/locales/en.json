@@ -879,5 +879,8 @@
   "cloudenv.target_name": "Specify a name",
   "cloudenv.belong_project_name_tip": "According to the domain settings of the cloud account, if there is already a project with the same name, it will be used directly. Otherwise, it will be automatically created",
   "cloudenv.bill_bucket_url": "{0}#How to get the bill bucket{1}",
-  "cloudenv.bill_bucket": "Bill Bucket"
+  "cloudenv.bill_bucket": "Bill Bucket",
+  "cloudenv.priority": "Priority",
+  "cloudenv.set_priority": "Set the priority",
+  "cloudenv.priority_extra": "The larger the number, the higher the priority. When creating resources, if the selected local project maps multiple cloud projects simultaneously, the cloud project with the highest priority will be selected to create resources"
 }
