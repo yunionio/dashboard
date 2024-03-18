@@ -1191,7 +1191,8 @@
       "running": "Running",
       "fail": "Failed",
       "done": "Done",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "blocking_cancel": "Cancel (account closed)"
     },
     "k8s_repo": {
       "init": "Initialize"

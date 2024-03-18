@@ -568,7 +568,7 @@ export default {
   },
   billtasks: {
     success: ['done'],
-    info: ['cancel'],
+    info: ['cancel', 'blocking_cancel'],
     danger: ['fail'],
   },
   k8s_repo: {
