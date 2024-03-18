@@ -1206,7 +1206,8 @@
       "running": "执行中",
       "fail": "失败",
       "done": "完成",
-      "cancel": "取消"
+      "cancel": "取消",
+      "blocking_cancel": "取消（已封账）"
     },
     "k8s_repo": {
       "init": "正常"

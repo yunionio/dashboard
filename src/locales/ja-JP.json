@@ -1206,7 +1206,8 @@
       "running": "実行",
       "fail": "失敗する",
       "done": "終える",
-      "cancel": "キャンセル"
+      "cancel": "キャンセル",
+      "blocking_cancel": "取消（封入済）"
     },
     "k8s_repo": {
       "init": "正常"
