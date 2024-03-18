@@ -84,6 +84,7 @@ export default {
             label: this.$t('cloudevent.title.manager'),
           },
           { label: this.$t('cloudenv.text_98'), key: 'status' },
+          { label: this.$t('cloudenv.priority'), key: 'priority' },
           {
             label: this.$t('table.title.owner_domain'),
             key: 'project_domain',
@@ -270,7 +271,8 @@ export default {
         projectColumn,
         {
           field: 'priority',
-          title: this.$t('cloudenv.priority')
+          title: this.$t('cloudenv.priority'),
+          sortable: true,
         },
         getTimeTableColumn({
           field: 'created_at',
