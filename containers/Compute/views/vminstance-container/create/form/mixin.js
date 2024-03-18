@@ -573,7 +573,7 @@ export default {
           if (isSuccess(res)) {
             this.$message.success(i18n.t('compute.text_322'))
           }
-          this.$router.push('/vminstance')
+          this.$router.push('/vminstance-container')
         })
         .catch(error => {
           throw error
