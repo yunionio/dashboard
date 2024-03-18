@@ -868,7 +868,7 @@
   "network.text_757": "Manage rules",
   "network.text_758": "Manage resources",
   "network.waf.id": "ID",
-  "network.waf.cloudId": "Cloud ID",
+  "network.waf.cloudId": "@:dictionary.external_id",
   "network.waf.rule": "Rules",
   "network.waf.resource": "Associated resources",
   "network.waf.type": "WAF type",

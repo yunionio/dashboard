@@ -148,6 +148,7 @@ export const ENABLE_USER_CUSTOM_DICTIONARY = [
   'public_env',
   'project_tag',
   'snapshot',
+  'external_id',
 ]
 
 export const chartColors = getColorByCache()
