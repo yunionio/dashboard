@@ -2750,7 +2750,8 @@
     "public_env": "Public cloud",
     "project_tag": "Project tag",
     "predictions": "Bill prediction",
-    "instance_tag": "Resource tag"
+    "instance_tag": "Resource tag",
+    "external_id": "External ID"
   },
   "res": {
     "role": "Role",

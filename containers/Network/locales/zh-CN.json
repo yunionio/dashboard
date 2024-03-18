@@ -861,7 +861,7 @@
   "network.text_757": "管理规则",
   "network.text_758": "管理资源",
   "network.waf.id": "ID",
-  "network.waf.cloudId": "云上ID",
+  "network.waf.cloudId": "@:dictionary.external_id",
   "network.waf.rule": "规则",
   "network.waf.resource": "关联资源",
   "network.waf.type": "WAF类型",
