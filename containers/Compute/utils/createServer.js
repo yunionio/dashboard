@@ -868,7 +868,7 @@ const decoratorGroup = {
 
 export class Decorator {
   decorators = {}
-  constructor (type) {
+  constructor(type) {
     this.type = type
   }
 
@@ -895,7 +895,7 @@ export class Decorator {
  * @class GenCreateData
  */
 export class GenCreateData {
-  constructor (fd, fi) {
+  constructor(fd, fi) {
     if (R.isNil(fd)) return
     this.fd = fd
     this.fi = fi
@@ -922,7 +922,9 @@ export class GenCreateData {
       size: item.size * 1024,
     }
     if (type === 'sys' && this.fd.imageType !== IMAGES_TYPE_MAP.iso.key && this.fd.hypervisor !== HYPERVISORS_MAP.proxmox.key) {
-      ret.image_id = this.fd.image.key
+      if (this.fd.image && this.fd.image.key) {
+        ret.image_id = this.fd.image.key
+      }
     }
     if (type === 'sys' && this.fd.imageType === IMAGES_TYPE_MAP.iso.key && this.isWindows()) {
       ret.driver = 'ide'
@@ -1419,7 +1421,9 @@ export class GenCreateData {
         data.auto_renew = this.fd.autoRenew
       }
       // 线路类型
-      data.eip_bgp_type = this.fd.eip_bgp_type
+      if (this.fd.eip_bgp_type) {
+        data.eip_bgp_type = this.fd.eip_bgp_type
+      }
     }
     // gpu
     // if (this.fd.gpuEnable) {
@@ -1444,7 +1448,7 @@ export class GenCreateData {
       data[schedPolicyValueKey.key] = schedPolicyValueKey.value
     }
     // 是否需要 拼装 高可用备份机
-    if (this.fd.backupEnable) {
+    if (this.fd.backupEnable && this.fd.backup) {
       data.backup = true
       data.prefer_backup_host = this.fd.backup
     }
@@ -1531,6 +1535,31 @@ export class GenCreateData {
     }
     if (this.fi.showCpuSockets) {
       data.cpu_sockets = this.getCpuSockets()
+    }
+    if (this.fd.podImage) {
+      data.hypervisor = 'pod'
+      data.pod = {
+        containers: [
+          {
+            image: this.fd.podImage
+          }
+        ]
+      }
+      if (data.isolated_devices) {
+        data.pod.containers = [
+          {
+            image: this.fd.podImage,
+            devices: data.isolated_devices.map((item, idx) => {
+              return {
+                type: 'isolated_device',
+                isolated_device: {
+                  index: idx
+                }
+              }
+            })
+          }
+        ]
+      }
     }
     return data
   }
