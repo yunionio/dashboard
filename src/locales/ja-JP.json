@@ -179,7 +179,7 @@
       "start_rescue_failed": "緊急モードへの移行に失敗しました",
       "stop_rescue_failed": "緊急モードの終了に失敗しました",
       "qga_set_network": "QGA 構成ネットワーク カード",
-      "create_container": "作成中",
+      "creating_container": "作成中",
       "create_container_failed": "作成に失敗しました"
     },
     "network": {

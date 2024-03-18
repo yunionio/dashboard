@@ -179,7 +179,7 @@
       "start_rescue_failed": "Enter emergency mode failed",
       "stop_rescue_failed": "Exiting emergency mode failed",
       "qga_set_network": "QGA configuration network card",
-      "create_container": "Creating",
+      "creating_container": "Creating",
       "create_container_failed": "Creation failed"
     },
     "network": {

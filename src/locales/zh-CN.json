@@ -179,7 +179,7 @@
       "start_rescue_failed": "进入紧急模式失败",
       "stop_rescue_failed": "退出紧急模式失败",
       "qga_set_network": "QGA配置网卡",
-      "create_container": "创建中",
+      "creating_container": "创建中",
       "create_container_failed": "创建失败"
     },
     "network": {
