@@ -55,7 +55,7 @@
           :form="form"
           :options="archOptions" />
       </a-form-item>
-      <a-form-item v-if="form.fd.hypervisor === 'kvm'">
+      <a-form-item>
         <span slot="label">
           {{ $t('compute.text_1152') }}&nbsp;
           <a-tooltip :title="$t('compute.vgpu_check.tooltip')">
