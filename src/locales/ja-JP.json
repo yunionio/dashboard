@@ -2770,7 +2770,8 @@
     "public_env": "クラウド",
     "project_tag": "業務タグ",
     "predictions": "業務タグ",
-    "instance_tag": "リソースタグ"
+    "instance_tag": "リソースタグ",
+    "external_id": "クラウド上のID"
   },
   "res": {
     "role": "@:dictionary.role",

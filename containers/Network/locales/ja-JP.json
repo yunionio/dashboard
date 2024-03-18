@@ -861,7 +861,7 @@
   "network.text_757": "ルールの管理",
   "network.text_758": "リソースの管理",
   "network.waf.id": "身分証明書",
-  "network.waf.cloudId": "クラウド上の ID",
+  "network.waf.cloudId": "@:dictionary.external_id",
   "network.waf.rule": "準則",
   "network.waf.resource": "リソースの関連付け",
   "network.waf.type": "WAF タイプ",

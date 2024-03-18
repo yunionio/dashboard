@@ -2770,7 +2770,8 @@
     "public_env": "公有云",
     "project_tag": "项目标签",
     "predictions": "费用预测",
-    "instance_tag": "资源标签"
+    "instance_tag": "资源标签",
+    "external_id": "云上ID"
   },
   "res": {
     "role": "@:dictionary.role",
@@ -2834,7 +2835,7 @@
       "create_time": "创建时间",
       "update_time": "更新时间",
       "_action": "操作",
-      "external_id": "云上ID",
+      "external_id": "@:dictionary.external_id",
       "memory_mb": "内存（MB）",
       "disk_mb": "磁盘（MB）",
       "user_tag": "标签",
