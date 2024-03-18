@@ -947,7 +947,7 @@ export default {
     },
     genDiskData (values) {
       const dataDisk = []
-      const len = this.form.fd.sysdisks?.length || 0
+      const len = this.form.fd.sysdisks?.length || -1
       let index = len >= 1 ? len - 1 : len
       const dataDisks = this.$refs.dataDiskRef.dataDisks
       R.forEachObjIndexed((value, key) => {
