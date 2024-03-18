@@ -124,9 +124,9 @@ export default {
           bottom: '10px',
           top: '50px',
         },
-        dataZoom: {
-          type: 'inside', /* 数据缩放 **/
-        },
+        // dataZoom: {
+        //   type: 'inside', /* 数据缩放 **/
+        // },
       }
     },
     chartConfig () {
