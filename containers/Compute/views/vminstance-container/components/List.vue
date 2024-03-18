@@ -189,7 +189,7 @@ export default {
           action: () => {
             this.$openNewWindowForMenuHook('vminstance_configured_callback_address.create_callback_address', () => {
               this.$router.push({
-                path: '/vminstance/create',
+                path: '/vminstance-container/create',
                 query: {
                   type: this.cloudEnv === 'onpremise' ? 'idc' : this.cloudEnv || 'idc',
                 },
@@ -1527,7 +1527,7 @@ export default {
       const ret = {
         details: true,
         with_meta: true,
-        filter: 'hypervisor.notin(baremetal,container,pod)',
+        filter: 'hypervisor.in(pod)',
         ...this.getParams,
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv

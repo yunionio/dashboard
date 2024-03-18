@@ -51,6 +51,8 @@ const Baremetal = () => import(/* webpackChunkName: "compute" */ /* webpackPrefe
 const WebApp = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/webapp')
 const BaremetalCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/baremetal/create/index')
 const Image = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/image')
+const VMContainerInstance = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/vminstance-container')
+const VMContainerInstanceCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/vminstance-container/create/index')
 
 export default {
   index: 20,
@@ -92,6 +94,32 @@ export default {
               name: 'VMInstanceAdjustConfig',
               path: 'adjust-config',
               component: VMInstanceAdjustConfig,
+            },
+          ],
+        },
+        {
+          path: '/vminstance-container',
+          meta: {
+            label: i18n.t('compute.vminstance-container'),
+            permission: 'servers_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.vminstance')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'private', 'public', 'vmware'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'VMContainerInstance',
+              path: '',
+              component: VMContainerInstance,
+            },
+            {
+              name: 'VMContainerInstanceCreate',
+              path: 'create',
+              component: VMContainerInstanceCreate,
             },
           ],
         },
