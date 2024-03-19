@@ -1,3 +1,4 @@
 {
-  "compute.vminstance-container": "容器主机"
+  "compute.vminstance-container": "容器主机",
+  "compute.pod-image": "镜像"
 }

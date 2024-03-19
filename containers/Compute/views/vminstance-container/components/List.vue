@@ -21,10 +21,8 @@
 </template>
 
 <script>
-import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import _ from 'lodash'
-import { SERVER_TYPE } from '@Compute/constants'
 import ListMixin from '@/mixins/list'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import {
@@ -47,15 +45,12 @@ import { getIpsTableColumn } from '@/utils/common/tableColumn'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
-import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
+import { typeClouds } from '@/utils/common/hypervisor'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import regexp from '@/utils/regexp'
-import { hasSetupKey } from '@/utils/auth'
 import { Manager } from '@/utils/manager'
-import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import { cloudEnabled, cloudUnabledTip, commonEnabled, validateRescueMode } from '../utils'
 
 export default {
   name: 'VmInstanceList',

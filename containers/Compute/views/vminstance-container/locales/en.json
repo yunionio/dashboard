@@ -1,3 +1,4 @@
 {
-  "compute.vminstance-container": "Container host"
+  "compute.vminstance-container": "Container host",
+  "compute.pod-image": "Image"
 }

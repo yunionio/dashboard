@@ -1,3 +1,4 @@
 {
-  "compute.vminstance-container": "コンテナホスト"
+  "compute.vminstance-container": "コンテナホスト",
+  "compute.pod-image": "ミラー"
 }
