@@ -295,6 +295,14 @@ export const STORAGE_TYPES = {
       sysMax: 500,
       unCreateCloud: true, // 不支持创建云硬盘
     },
+    slvm: {
+      label: i18n.t('storage.slvm'),
+      key: 'slvm',
+      min: 1,
+      max: 20 * 1024,
+      sysMin: 10,
+      sysMax: 2 * 1024,
+    },
   },
   [HYPERVISORS_MAP.esxi.key]: {
     local: {

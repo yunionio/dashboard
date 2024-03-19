@@ -1722,5 +1722,6 @@
   "compute.bios": "引导模式",
   "compute.not_limited": "0代表不限制",
   "compute.iops": "IOPS",
-  "compute.bps": "吞吐量"
+  "compute.bps": "吞吐量",
+  "compute.lvm_shared_storage.validate_tooltip": "LVM磁盘主机不支持该操作"
 }

@@ -1523,6 +1523,11 @@ const getSingleActions = function () {
                     ret.tooltip = i18n.t('migration.project.error')
                     return ret
                   }
+                  const isLvm = obj.disks_info.some(item => item.storage_type.includes('lvm'))
+                  if (isLvm) {
+                    ret.tooltip = i18n.t('compute.lvm_shared_storage.validate_tooltip')
+                    return ret
+                  }
                   ret.validate = true
                   return ret
                 },

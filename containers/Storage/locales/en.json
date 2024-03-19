@@ -329,5 +329,6 @@
   "storage.usage_active": "Storage Usage (usage_active)",
   "storage.local_storage.help_link": "refer to the document configuration",
   "storage.local_storage.help_alert_message": "If you want to add a local storage type, you need to log in to the host where you want to add storage, modify /etc/yunion/host.conf, and add this directory to local_image_paths. For details, please",
-  "storage.bucket_object_search_placeholder": "Please enter a file name prefix to match"
+  "storage.bucket_object_search_placeholder": "Please enter a file name prefix to match",
+  "storage.slvm": "Shared LVM"
 }
