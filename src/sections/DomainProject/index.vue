@@ -90,6 +90,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    ignoreStorage: {
+      type: Boolean,
+      default: false,
+    }
   },
   data () {
     return {
@@ -142,9 +146,11 @@ export default {
         } else if (R.is(String, initialValue) && initialValue) {
           defaultDomain = { key: initialValue }
         }
-        const domainData = await this.$store.dispatch('storage/getDomainById', this.domain)
-        if (domainData) {
-          defaultDomain = this.domain
+        if (!this.ignoreStorage) {
+          const domainData = await this.$store.dispatch('storage/getDomainById', this.domain)
+          if (domainData) {
+            defaultDomain = this.domain
+          }
         }
         const projectInitialValue = _.get(this.decorators, 'project[1].initialValue')
         const domainChange = () => {
