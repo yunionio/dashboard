@@ -882,5 +882,6 @@
   "cloudenv.bill_bucket": "Bill Bucket",
   "cloudenv.priority": "Priority",
   "cloudenv.set_priority": "Set the priority",
-  "cloudenv.priority_extra": "The larger the number, the higher the priority. When creating resources, if the selected local project maps multiple cloud projects simultaneously, the cloud project with the highest priority will be selected to create resources"
+  "cloudenv.priority_extra": "The larger the number, the higher the priority. When creating resources, if the selected local project maps multiple cloud projects simultaneously, the cloud project with the highest priority will be selected to create resources",
+  "cloudenv.block_month_tip": "{0} has been suspended. It is recommended to go to the cloud account details page - billing period list to lift the suspension and try again. Otherwise, the corresponding billing task will be cancelled after confirmation."
 }
