@@ -98,7 +98,7 @@ export default {
       return null
     },
     isBlockStorage () {
-      return ['rbd', 'nfs', 'gpfs'].includes(this.detailData.storage_type)
+      return ['rbd', 'slvm', 'nfs', 'gpfs'].includes(this.detailData.storage_type)
     },
     hostListActions () {
       const me = this

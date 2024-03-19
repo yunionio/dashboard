@@ -1468,12 +1468,12 @@
   "compute.webapp.instance_type": "套餐",
   "compute.webapp.instance_number": "实例数量",
   "compute.disk.detach": "同时删除硬盘",
-  "compute.image.export":  "导出方式",
-  "compute.image.export.file":  "文件下载",
-  "compute.image.export.url":  "生成URL",
-  "compute.image.export.url.title":  "URL信息",
-  "compute.image.export.url.title.tips":  "镜像URL信息如下(有效期24小时):",
-  "compute.image.export.url.confirm":  "复制且关闭",
+  "compute.image.export": "导出方式",
+  "compute.image.export.file": "文件下载",
+  "compute.image.export.url": "生成URL",
+  "compute.image.export.url.title": "URL信息",
+  "compute.image.export.url.title.tips": "镜像URL信息如下(有效期24小时):",
+  "compute.image.export.url.confirm": "复制且关闭",
   "compute.perform_image_probe": "检测镜像",
   "compute.image_probe_prompt": "不支持该镜像状态",
   "compute.text_1387": "请选择云订阅",
@@ -1660,5 +1660,6 @@
   "compute.tooltip.check_ready_status_transfer": "请选择状态为关机状态的虚拟机",
   "compute.tooltip.check_fake_baremetal_server": "托管的机器不支持该操作",
   "compute.transfer.bandwidth.number.check": "只能输入正整数",
-  "compute.bios": "引导模式"
+  "compute.bios": "引导模式",
+  "compute.lvm_shared_storage.validate_tooltip": "LVM磁盘主机不支持该操作"
 }
