@@ -89,7 +89,7 @@
           :cloudproviderParamsExtra="cloudproviderParamsExtra"
           @updateImageMsg="updateFi" />
       </a-form-item> -->
-      <a-form-item label="镜像">
+      <a-form-item :label="$t('compute.pod-image')">
         <a-input v-decorator="decorators.podImage" />
       </a-form-item>
       <a-form-item v-if="isShowAgent" :label="$t('compute.agent.label')" :extra="$t('compute.agent.extra')">
