@@ -884,5 +884,6 @@
   "cloudenv.bill_bucket": "账单存储桶",
   "cloudenv.priority": "优先级",
   "cloudenv.set_priority": "设置优先级",
-  "cloudenv.priority_extra": "数字越大，优先级越高。创建资源时，若所选的本地项目同时映射多个云上项目，会选择优先级最高的云上项目创建资源"
+  "cloudenv.priority_extra": "数字越大，优先级越高。创建资源时，若所选的本地项目同时映射多个云上项目，会选择优先级最高的云上项目创建资源",
+  "cloudenv.block_month_tip": "{0}已封账，建议到云账号详情页--账期列表解除封账后重试，否则确认后相应账单任务会被取消。"
 }

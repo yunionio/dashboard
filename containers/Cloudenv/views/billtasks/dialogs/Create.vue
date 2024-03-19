@@ -16,6 +16,7 @@
             @change="taskTypeChange" />
         </a-form-model-item>
         <a-form-model-item v-if="isMonthShow" :label="$t('cloudenv.text_212')" v-bind="formItemLayout" prop="start_day">
+          <span slot="extra" style="color:red;">{{ blockTip }}</span>
           <a-form-model-item style="display:inline-block" prop="start_day">
             <a-month-picker v-model="form.start_day" :disabled-date="dateDisabledStart" @change="startChange" />
           </a-form-model-item>
@@ -92,11 +93,38 @@ export default {
         scope: this.$store.getters.scope,
       },
       disabledActions: initDisabledActions,
+      blockMonths: [],
     }
   },
   computed: {
     isMonthShow () {
       return !(this.form.task_type === 'delete_bill' && this.params.accountData?.status === 'deleted')
+    },
+    start () {
+      return this.$moment(this.form.start_day).format('YYYY-MM')
+    },
+    end () {
+      return this.$moment(this.form.end_day).format('YYYY-MM')
+    },
+    selectedMonths () {
+      const list = []
+      const start = this.$moment(this.start)
+      const end = this.$moment(this.end)
+      // eslint-disable-next-line
+      while (end > start || start.format('M') === end.format('M')) {
+        list.push(start.format('YYYYMM'))
+        start.add(1, 'month')
+      }
+      return list
+    },
+    blockTip () {
+      const blockMonths = []
+      this.selectedMonths.map(month => {
+        if (this.blockMonths.includes(month)) {
+          blockMonths.push(`${month.slice(0, 4)}-${month.slice(4, 6)}`)
+        }
+      })
+      return blockMonths.length ? this.$t('cloudenv.block_month_tip', [blockMonths.join('、')]) : ''
     },
   },
   watch: {
@@ -108,11 +136,34 @@ export default {
         }
       },
     },
+    start: {
+      handler (val) {
+        this.fetchBlockAccount()
+      },
+    },
+    end: {
+      handler (val) {
+        this.fetchBlockAccount()
+      },
+    },
   },
   created () {
     this.$bM = new this.$Manager('billtasks/submit', 'v1')
+    this.fetchBlockAccount()
   },
   methods: {
+    fetchBlockAccount () {
+      new this.$Manager('blocking_accounts', 'v1').list({
+        params: {
+          account_id: this.params.account_id,
+          enabled: true,
+          filter: `month.in(${this.selectedMonths.join(',')})`,
+        },
+      }).then(res => {
+        const { data = [] } = res.data
+        this.blockMonths = data.map(item => `${item.month}`)
+      })
+    },
     startChange (value) {
       const dateEnd = this.form.end_day
       if (dateEnd && value > dateEnd) {
