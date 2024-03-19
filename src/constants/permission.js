@@ -996,6 +996,11 @@ export const PERMISSION = {
   billing_exchange_rates_update: ['meter', 'billing_exchange_rates', 'update'],
   billing_exchange_rates_delete: ['meter', 'billing_exchange_rates', 'delete'],
 
+  // 封账
+  block_accounts_list: ['meter', 'block_accounts', 'list'],
+  block_accounts_create: ['meter', 'block_accounts', 'create'],
+  block_accounts_update: ['meter', 'block_accounts', 'update'],
+
   /**
    * cloudwatcher 相关操作
    */
