@@ -193,7 +193,7 @@ const getSingleActions = function () {
                       {
                         isRunning ? <span>
                           <a-tooltip title={i18n.t('compute.text_346')}>
-                            <a-icon class="ml-2" type="edit" onClick={isRunning ? sshSettingInfoHandle : () => {}} />
+                            <a-icon class="ml-2" type="edit" onClick={isRunning ? sshSettingInfoHandle : () => { }} />
                           </a-tooltip>
                         </span> : null
                       }
@@ -1734,6 +1734,11 @@ const getSingleActions = function () {
                   }
                   if (!this.isAdminMode && !this.isDomainMode) {
                     ret.tooltip = i18n.t('migration.project.error')
+                    return ret
+                  }
+                  const isLvm = obj.disks_info.some(item => item.storage_type.includes('lvm'))
+                  if (isLvm) {
+                    ret.tooltip = i18n.t('compute.lvm_shared_storage.validate_tooltip')
                     return ret
                   }
                   ret.validate = true

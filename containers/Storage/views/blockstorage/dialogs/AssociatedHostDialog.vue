@@ -65,7 +65,7 @@ export default {
       }
     },
     isHiddenDir () {
-      return ['rbd'].includes(this.params.data[0].storage_type)
+      return ['rbd', 'slvm'].includes(this.params.data[0].storage_type)
     },
   },
   created () {
