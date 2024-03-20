@@ -83,7 +83,7 @@ export default {
         hiddenField: 'ip',
         filter: true,
         formatter: val => {
-          return `guest_ip_start.contains(${val})`
+          return `guest_ip_start.contains('${val}')`
         },
       },
       guest_ip_end: {
@@ -91,7 +91,7 @@ export default {
         hiddenField: 'ip',
         filter: true,
         formatter: val => {
-          return `guest_ip_end.contains(${val})`
+          return `guest_ip_end.contains('${val}')`
         },
       },
       status: getStatusFilter('network'),
