@@ -450,6 +450,10 @@ export default {
               data.user_data = customData
             }
           }
+          if (this.form.fd.bastion_host_enable) {
+            const bastionServer = this.getBationServerData()
+            data.bastion_server = bastionServer
+          }
           if (this.isServertemplate) { // 创建主机模板
             this.doCreateServertemplate(data)
           } else if (this.isOpenWorkflow) { // 提交工单
@@ -489,16 +493,12 @@ export default {
         })
     },
     doCreateWorkflow (data) {
-      const bastionData = this.getBationServerData()
       const variables = {
         process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
         initiator: this.$store.getters.userInfo.id,
         description: this.form.fd.reason,
         'server-create-paramter': JSON.stringify(data),
         price: this.price,
-      }
-      if (this.form.fd.bastion_host_enable) {
-        variables['bastion-parameter'] = JSON.stringify(bastionData)
       }
       this._getProjectDomainInfo(variables)
       new this.$Manager('process-instances', 'v1')
@@ -542,21 +542,6 @@ export default {
               const image = imageObj.image_id
               storage.set(`${this.form.fi.createType}${SELECT_IMAGE_KEY_SUFFIX}`, `${this.form.fd.os}:${image}`)
             }
-          }
-          if (this.form.fd.bastion_host_enable) {
-            let servers = []
-            if (R.is(Array, res.data.data)) {
-              res.data.data.forEach(o => {
-                if (o.status === 200) {
-                  servers.push(o.data)
-                }
-              })
-            } else {
-              servers = [res.data]
-            }
-            servers.forEach((o) => {
-              this.createBastionServer({ server_id: o.id, name: o.name, os_type: o.os_type })
-            })
           }
           if (isSuccess(res)) {
             this.$message.success(i18n.t('compute.text_322'))
@@ -762,25 +747,16 @@ export default {
         accounts: [privileged_accounts].concat(accounts),
       }
     },
-    async createBastionServer (params) {
-      const bsManager = new this.$Manager('bastion_servers')
-      const bastionData = this.getBationServerData()
-      const data = {
-        ...bastionData,
-        ...params,
-      }
-      try {
-        return bsManager.create({ data, params: { $t: uuid() } })
-      } catch (error) {
-        throw error
-      }
-    },
     addShopCart () {
       this.validateForm()
         .then(async formData => {
           this.submiting = true
           const genCreateData = new GenCreateData(formData, this.form.fi)
           const data = genCreateData.all()
+          if (this.form.fd.bastion_host_enable) {
+            const bastionServer = this.getBationServerData()
+            data.bastion_server = bastionServer
+          }
           const { __count__, ...parameter } = deleteInvalid(data)
           const shopCart = {
             action: 'create',
