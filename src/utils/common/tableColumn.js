@@ -245,6 +245,7 @@ export const getNameDescriptionTableColumn = ({
     slots: {
       default: ({ row }, h) => {
         const text = (message && R.type(message) === 'Function') ? message(row) : (message || (row[field] && row[field].toString()) || '-')
+        const _steadyStatus = steadyStatus || (expectStatus[statusModule] && Object.values(expectStatus[statusModule]).flat())
         const ret = [
           h('list-body-cell-wrap', {
             props: {
@@ -255,7 +256,7 @@ export const getNameDescriptionTableColumn = ({
               field,
               row,
               onManager,
-              steadyStatus: steadyStatus || (expectStatus[statusModule] && Object.values(expectStatus[statusModule]).flat()),
+              steadyStatus: _steadyStatus,
               hideField,
               addLock,
               addEncrypt,
@@ -286,7 +287,7 @@ export const getNameDescriptionTableColumn = ({
               field,
               row,
               onManager,
-              steadyStatus,
+              steadyStatus: _steadyStatus,
               formRules: realDescRules,
               copy: copyDesc,
             },
