@@ -58,6 +58,18 @@ export default {
           },
           description: getDescriptionFilter(),
           status: getStatusFilter('nat'),
+          network_type: {
+            label: this.$t('network.text_249'),
+            dropdown: true,
+            filter: true,
+            items: [
+              { key: 'internet', label: this.$t('network.text_270') },
+              { key: 'intranet', label: this.$t('network.text_271') },
+            ],
+            formatter: (val) => {
+              return `network_type.equals(${val})`
+            },
+          },
           cloudaccount: getAccountFilter(),
           brand: getBrandFilter('nat_brands'),
           vpc: {
