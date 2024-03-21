@@ -1075,7 +1075,10 @@
       "rejected": "被拒绝",
       "online": "已启动",
       "deleting": "删除中",
-      "delete_failed": "删除失败"
+      "delete_failed": "删除失败",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "unknown": "未知"
     },
     "robot": {
       "ready": "可用"
