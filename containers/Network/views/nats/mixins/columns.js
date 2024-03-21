@@ -45,6 +45,19 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'nat', vm: this }),
+      {
+        field: 'network_type',
+        title: this.$t('network.text_249'),
+        formatter: ({ row }) => {
+          if (row.network_type === 'intranet') {
+            return this.$t('network.text_271')
+          }
+          if (row.network_type === 'internet') {
+            return this.$t('network.text_270')
+          }
+          return '-'
+        },
+      },
       getTagTableColumn({ onManager: this.onManager, resource: 'natgateways', columns: () => this.columns }),
       getNatSpecColumn({}),
       getBillingTableColumn({ vm: this }),
