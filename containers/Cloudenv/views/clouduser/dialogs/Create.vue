@@ -60,6 +60,7 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import UserSelect from '../components/UserSelect'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -78,7 +79,7 @@ export default {
   props: {
     params: {
       type: Object,
-      defualt: () => {},
+      defualt: () => { },
     },
   },
   data () {
@@ -199,7 +200,7 @@ export default {
                 return [
                   <vxe-grid
                     showOverflow='title'
-                    data={ row.cloudpolicies }
+                    data={row.cloudpolicies}
                     columns={[
                       {
                         field: 'name',
@@ -230,6 +231,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['userInfo']),
     cloudproviderParams () {
       return {
         scope: this.$store.getters.scope,
@@ -313,13 +315,14 @@ export default {
     async fetchConfigEmail () {
       this.isEnableMail = false
       try {
-        const res = await new this.$Manager('notifyconfigs', 'v1').list({
-          params: {
-            type: 'email',
-            scope: this.$store.getters.scope,
-          },
-        })
-        if (res.data.data.length > 0) {
+        const res = await new this.$Manager('notifyconfigs/capability', 'v1').list({})
+        const domainData = res.data.domain || {}
+        const systemData = res.data.system || []
+        if (domainData[this.userInfo.projectDomainId] && domainData[this.userInfo.projectDomainId].includes('email')) {
+          this.isEnableMail = true
+          return
+        }
+        if (systemData.includes('email')) {
           this.isEnableMail = true
         }
       } catch (error) {
