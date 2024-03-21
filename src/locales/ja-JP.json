@@ -1065,7 +1065,10 @@
       "rejected": "拒否",
       "online": "開始",
       "deleting": "削除",
-      "delete_failed": "削除に失敗しました"
+      "delete_failed": "削除に失敗しました",
+      "creating": "作成中",
+      "create_failed": "作成に失敗しました",
+      "unknown": "不明"
     },
     "robot": {
       "ready": "利用できる"
