@@ -5462,5 +5462,9 @@
   "common.ssh_login_err_msg": "请输入SSH登录信息再次重试登录",
   "common.intranet": "内网",
   "common.schedtag.extra": "调度标签使用方法",
-  "common.view.doc": "查看文档"
+  "common.view.doc": "查看文档",
+  "common.no_data_start_month": "月初费用为空说明",
+  "common.no_data_start_month_tip": "由于公有云账单延迟一天出账，所以每月1号账单需在2号同步，建议您切换查询时间范围。",
+  "common.switch_to_last_month": "切换到上月",
+  "common.no_tip_in_this_month": "本月不再提示"
 }
