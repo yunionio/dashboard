@@ -530,7 +530,6 @@ export function getGuestStatusFilter ({ hiddenField = 'guest_status' } = {}) {
   return {
     label: i18n.t('compute.guest.status'),
     dropdown: true,
-    multiple: true,
     hiddenField,
     distinctField: {
       type: 'extra_field',
