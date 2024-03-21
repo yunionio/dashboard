@@ -461,10 +461,10 @@ export default {
               data.user_data = customData
             }
           }
-          if (this.form.fd.bastion_host_enable) {
-            const bastionServer = this.getBationServerData()
-            data.bastion_server = bastionServer
-          }
+          // if (this.form.fd.bastion_host_enable) {
+          //   const bastionServer = this.getBationServerData()
+          //   data.bastion_server = bastionServer
+          // }
           if (this.isServertemplate) { // 创建主机模板
             this.doCreateServertemplate(data)
           } else if (this.isOpenWorkflow) { // 提交工单
@@ -765,10 +765,10 @@ export default {
           this.submiting = true
           const genCreateData = new GenCreateData(formData, this.form.fi)
           const data = genCreateData.all()
-          if (this.form.fd.bastion_host_enable) {
-            const bastionServer = this.getBationServerData()
-            data.bastion_server = bastionServer
-          }
+          // if (this.form.fd.bastion_host_enable) {
+          //   const bastionServer = this.getBationServerData()
+          //   data.bastion_server = bastionServer
+          // }
           const { __count__, ...parameter } = deleteInvalid(data)
           const shopCart = {
             action: 'create',
