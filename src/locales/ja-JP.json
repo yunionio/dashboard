@@ -5974,5 +5974,9 @@
     },
     "prev_year": "前年",
     "next_year": "次の年"
-  }
+  },
+  "common.no_data_start_month": "月初め費用が空の場合の説明",
+  "common.no_data_start_month_tip": "パブリッククラウド請求書の出庫が1日遅れるため、毎月1日の請求書は2日に同期する必要があります。照会時間の範囲を切り替えることをお勧めします。",
+  "common.switch_to_last_month": "先月に切り替え",
+  "common.no_tip_in_this_month": "今月は提示しない"
 }
