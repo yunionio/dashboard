@@ -1062,7 +1062,10 @@
       "rejected": "Rejected",
       "online": "Online",
       "deleting": "Deleting",
-      "delete_failed": "Deletion failed"
+      "delete_failed": "Deletion failed",
+      "creating": "Creating",
+      "create_failed": "Create failed",
+      "unknown": "Unknown"
     },
     "robot": {
       "ready": "Ready"
