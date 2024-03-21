@@ -11,9 +11,11 @@
 import moment from 'moment'
 import i18n from '@/locales'
 import storage from '@/utils/storage'
+import WindowsMixin from '@/mixins/windows'
 import CustomDate from './CustomDate'
 
 const localTimeKey = '__oc_date_time_'
+const ignoreTipTime = '__oc_ignore_tip_time_'
 
 const TIME_SIZE = {
   week: 'day',
@@ -31,6 +33,7 @@ export default {
   components: {
     CustomDate,
   },
+  mixins: [WindowsMixin],
   props: {
     getParams: {
       type: Object,
@@ -107,6 +110,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    showStartMonthTip: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     let initDateMode = this.hasDefaultTime ? this.defaultDateMode : ''
@@ -140,6 +147,7 @@ export default {
     },
     'time.dateMode' (v) {
       this.$emit('update:dateMode', v)
+      this.initTipModel()
     },
   },
   created () {
@@ -147,8 +155,25 @@ export default {
       this.handleDateModeChange()
       this.$emit('update:dateMode', this.time.dateMode)
     }
+    this.initTipModel()
   },
   methods: {
+    initTipModel () {
+      if (!this.showStartMonthTip) return
+      const { dateMode = '' } = this.time
+      const ignoreTime = storage.get(ignoreTipTime)
+      if (ignoreTime && this.$moment(ignoreTime).format('YYYYMM') === this.$moment().format('YYYYMM')) return
+      if (dateMode !== 'month' || new Date().getDate() !== 1) return
+      setTimeout(() => {
+        this.createDialog('BillNoDataTipDialog', {
+          ignoreTipTimeKey: ignoreTipTime,
+          switchMethod: () => {
+            this.time.dateMode = 'last_month'
+            this.handleDateModeChange()
+          },
+        })
+      }, 1000)
+    },
     handleDateModeChange () {
       let start = this.$moment()
       let end = this.$moment()
