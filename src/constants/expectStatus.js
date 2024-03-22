@@ -574,4 +574,9 @@ export default {
   k8s_repo: {
     success: ['init'],
   },
+  reportTasks: {
+    success: ['success'],
+    info: ['cancel'],
+    danger: ['failed'],
+  },
 }
