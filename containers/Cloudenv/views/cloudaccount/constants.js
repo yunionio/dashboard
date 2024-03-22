@@ -248,6 +248,12 @@ export const CLOUDACCOUNT_TYPES = {
       component: 'CephCreate',
       provider: providerMap.ceph.key,
     },
+    cephfs: {
+      name: providerMap.cephfs.label,
+      logo: cephLogo,
+      component: 'CephFSCreate',
+      provider: providerMap.cephfs.key,
+    },
     xsky: {
       name: providerMap.xsky.label,
       logo: xskyLogo,
@@ -260,7 +266,7 @@ export const CLOUDACCOUNT_TYPES = {
 
 export const ENV_TITLE = {
   public: i18n.t('cloudenv.text_122'),
-  storage: i18n.t('cloudenv.text_123'),
+  storage: i18n.t('cloudenv.other'),
   private: i18n.t('cloudenv.text_124'),
 }
 
@@ -279,6 +285,7 @@ export function getCloudaccountDocs (scope) {
     vmware: i18n.t('cloudenv.text_133', [docs_path]),
     s3: i18n.t('cloudenv.text_134', [docs_path]),
     ceph: i18n.t('cloudenv.text_135', [docs_path]),
+    cephfs: i18n.t('cloudenv.text_135', [docs_path]),
     xsky: i18n.t('cloudenv.text_136', [docs_path]),
     google: i18n.t('cloudenv.text_137', [docs_path]),
     ctyun: i18n.t('cloudenv.text_138', [docs_path]),
@@ -743,6 +750,19 @@ export const keySecretFields = {
       s: i18n.t('cloudenv.text_147'),
     },
   },
+  cephfs: {
+    k: 'username',
+    s: 'password',
+    text: 'CephFS',
+    placeholder: {
+      k: i18n.t('cloudenv.text_144'),
+      s: i18n.t('cloudenv.text_145'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_146'),
+      s: i18n.t('cloudenv.text_147'),
+    },
+  },
 }
 
 export function getBillBucketUrlDocs (scope) {
@@ -771,6 +791,7 @@ export const notSupportSelectRegion = [
   providerMap.vmware.key,
   providerMap.nutanix.key,
   providerMap.ceph.key,
+  providerMap.cephfs.key,
   providerMap.s3.key,
   providerMap.xsky.key,
   providerMap.bingocloud.key,

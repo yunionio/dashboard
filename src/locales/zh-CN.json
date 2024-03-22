@@ -5300,6 +5300,7 @@
   "license.provider.volcengine": "@:scopeCloudPrvidersMap.VolcEngine",
   "license.provider.s3": "S3",
   "license.provider.ceph": "Ceph",
+  "license.provider.cephfs": "CephFS",
   "license.provider.xsky": "XSKY",
   "license.feature.baremetal": "@:scope.text_104",
   "license.feature.lb": "@:common_248",
