@@ -1216,6 +1216,12 @@
     },
     "k8s_repo": {
       "init": "正常"
+    },
+    "reportTasks": {
+      "success": "完成",
+      "process": "执行中",
+      "failed": "失败",
+      "cancel": "取消"
     }
   },
   "skuCategoryOptions": {
