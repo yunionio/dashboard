@@ -715,10 +715,6 @@
       "label": "IPスイッチの自動割り当て",
       "desc": "オープン後、新しいリソースを作成するときにIPを自動的に割り当てますが、クローズ後にIPを自動的に割り当てることはなくなり、このシステムで予約されたIPが割り当てられないことを保証することはできません! (@:dictionary.private_env および @:dictionary.public_env のみ)"
     },
-    "compute$enable_auto_merge_security_group": {
-      "label": "セキュリティグループを自動的にマージする",
-      "desc": "開いた後、クラウド上のセキュリティグループ情報を取得すると、同等のセキュリティグループルールに従ってセキュリティグループが自動的にマージされます。 (@:dictionary.private_env および @:dictionary.public_env のみ)"
-    },
     "compute$cloudaccount_health_status_check": {
       "label": "Alibaba Cloud アカウントのヘルスチェックスイッチ",
       "desc": "開設後、アカウントに残高情報に従ってリソースを作成する機能があるかどうかを自動的にチェックし、特別なアカウントの場合はヘルスチェックをオフにすることができます! (@:dictionary.public_envのみ)"

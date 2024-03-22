@@ -715,10 +715,6 @@
       "label": "自动分配IP开关",
       "desc": "打开后，新建资源时我们会自动分配IP，关闭后我们不再自动分配IP，且在本系统预留的IP无法保证不被分配！（仅限@:dictionary.private_env及@:dictionary.public_env）"
     },
-    "compute$enable_auto_merge_security_group": {
-      "label": "自动合并安全组",
-      "desc": "打开后，拉取云上安全组信息时，根据等效安全组规则，自动合并安全组！（仅限@:dictionary.private_env及@:dictionary.public_env）"
-    },
     "compute$cloudaccount_health_status_check": {
       "label": "云账号健康检查开关",
       "desc": "打开后，会根据余额信息自动检查云账号是否具备创建资源的能力, 若是特殊账号可以关闭健康检查！（仅限@:dictionary.public_env）"

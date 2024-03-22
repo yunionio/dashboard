@@ -716,10 +716,6 @@
       "label": "Automatically assign IP switch",
       "desc": "After opening, we will automatically allocate IP when creating a new resource. After closing, we will no longer automatically allocate IP, and the IP reserved in this system cannot be guaranteed not to be allocated! (Only @:dictionary.private_env and @:dictionary.public_env)"
     },
-    "compute$enable_auto_merge_security_group": {
-      "label": "Automatically Merge Security Group",
-      "desc": "After opening, pull the cloud security group information, according to the rules of the equivalent security group, automerge security group! (Only @:dictionary.private_env and @:dictionary.public_env)"
-    },
     "compute$cloudaccount_health_status_check": {
       "label": "Account Health Check switch",
       "desc": "After opening, it will automatically check whether the cloud has the ability to create resources according to the balance information, and the health check can be closed under special circumstances! (Only @:dictionary.public_env)"
