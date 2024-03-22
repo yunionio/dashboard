@@ -87,6 +87,11 @@ export default {
               dictionary: val.zh,
             })
           }
+          if (!R.isNil(val.ja) && !R.isEmpty(val.ja)) {
+            i18n.mergeLocaleMessage('ja-JP', {
+              dictionary: val.ja,
+            })
+          }
         }
       },
       immediate: true,
