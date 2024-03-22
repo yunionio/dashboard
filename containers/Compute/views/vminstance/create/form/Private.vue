@@ -45,7 +45,7 @@
             :default-text="$t('compute.text_893')" />
         </template>
       </a-form-item>
-      <a-form-item :label="$t('common.description')" v-if="!isServertemplate && !isOpenWorkflow">
+      <a-form-item :label="$t('common.description')" v-if="!isServertemplate">
         <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1041')" v-if="isOpenWorkflow">
