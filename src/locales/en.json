@@ -1201,6 +1201,12 @@
     },
     "k8s_repo": {
       "init": "Initialize"
+    },
+    "reportTasks": {
+      "success": "Done",
+      "process": "Running",
+      "failed": "Failed",
+      "cancel": "Cancel"
     }
   },
   "skuCategoryOptions": {
