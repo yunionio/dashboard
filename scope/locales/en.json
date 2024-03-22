@@ -11,6 +11,7 @@
     "HCSO": "HCSO",
     "HCS": "HCS",
     "Ecloud": "mCloud",
+    "Cloudpods": "Cloudpods",
     "Nutanix": "Nutanix"
   },
   "scopeProviders": {
