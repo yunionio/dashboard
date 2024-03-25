@@ -50,13 +50,13 @@
                     :style="{ outline: item.isTemplate ? '2px dashed darkmagenta' : '' }">
                     <component :is="item.component" :options="item" :params="dashboardParams[item.i]" @update="handleUpdateDashboardParams" edit>
                       <template v-slot:actions="{ handleEdit }">
-                        <a-button class="p-0 h-auto" type="link" @click="handleRemove(item)">
+                        <a-button class="p-0 h-auto" type="link" :style="getActionStyle(dashboardParams[item.i])" @click="handleRemove(item)">
                           <icon type="delete" />
                         </a-button>
-                        <a-button class="p-0 h-auto ml-2" type="link" @click="handleCopy(item, dashboardParams[item.i])">
+                        <a-button class="p-0 h-auto ml-2" type="link" :style="getActionStyle(dashboardParams[item.i])" @click="handleCopy(item, dashboardParams[item.i])">
                           <icon type="copy" />
                         </a-button>
-                        <a-button class="p-0 h-auto ml-2" type="link" @click="handleEdit">
+                        <a-button class="p-0 h-auto ml-2" type="link" :style="getActionStyle(dashboardParams[item.i])" @click="handleEdit">
                           <icon type="setting" />
                         </a-button>
                       </template>
@@ -81,9 +81,9 @@ import extendsComponents from '@scope/extends'
 import GridShadow from '@Dashboard/components/GridShadow'
 import ExtendGallery from '@Dashboard/sections/ExtendGallery'
 import { clear as clearCache } from '@Dashboard/utils/cache'
+import { generateFitLayout } from '@Dashboard/utils/fit'
 import { uuid } from '@/utils/utils'
 import storage from '@/utils/storage'
-import { generateFitLayout } from '@Dashboard/utils/fit'
 
 export default {
   name: 'DashboardEdit',
@@ -185,6 +185,12 @@ export default {
     this.debounceUpdateGridItem = debounce(this.updateGridItem, 500)
   },
   methods: {
+    getActionStyle (params) {
+      if (params.color && params.color !== '#FFFFFF') {
+        return { color: '#fff' }
+      }
+      return {}
+    },
     recovery () {
       this.layout = R.clone(this.layoutInit)
     },
