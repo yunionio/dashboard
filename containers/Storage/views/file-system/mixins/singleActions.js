@@ -24,6 +24,32 @@ export default {
         label: i18n.t('storage.text_65'),
         actions: (obj) => {
           return [
+            {
+              label: this.$t('common_641', [this.$t('dictionary.project')]),
+              action: () => {
+                this.createDialog('ChangeOwenrDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  name: this.$t('dictionary.filesystem'),
+                  onManager: this.onManager,
+                  resource: 'file_systems',
+                  ignoreCandidateDomains: true
+                })
+              },
+              meta: () => {
+                const ret = {
+                  validate: false,
+                  tooltip: '',
+                }
+                if (this.isProjectMode) {
+                  ret.tooltip = this.$t('storage.check_sys_permission', [this.$t('dictionary.domain')])
+                  return ret
+                }
+                return {
+                  validate: true,
+                }
+              }
+            },
             disableDeleteAction(this, {
               name: this.$t('dictionary.nas'),
             }),

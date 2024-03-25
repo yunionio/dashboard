@@ -15,7 +15,16 @@
 import * as R from 'ramda'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
-import { getFilter, getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
+import {
+  getFilter,
+  getStatusFilter,
+  getBrandFilter,
+  getAccountFilter,
+  getTenantFilter,
+  getDomainFilter,
+  getDescriptionFilter,
+  getCreatedAtFilter
+} from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -65,7 +74,8 @@ export default {
               { label: this.$t('billingType.prepaid'), key: 'prepaid' },
             ],
           }),
-          project_domains: getProjectDomainFilter(),
+          projects: getTenantFilter(),
+          project_domains: getDomainFilter(),
           created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
@@ -76,6 +86,7 @@ export default {
           { label: 'ID', key: 'id' },
           { label: this.$t('storage.text_40'), key: 'name' },
           { label: this.$t('storage.text_41'), key: 'status' },
+          { label: this.$t('storage.capacity'), key: 'capacity' },
           { label: this.$t('storage.text_46'), key: 'provider' },
           { label: this.$t('storage.filesystem.storage.type'), key: 'storage_type' },
           { label: this.$t('storage.filesystem.type'), key: 'file_system_type' },
@@ -147,6 +158,31 @@ export default {
                   validate: selectedLength,
                   tooltip: notSelectedTooltip,
                 }),
+              },
+              {
+                label: this.$t('common_641', [this.$t('dictionary.project')]),
+                action: () => {
+                  this.createDialog('ChangeOwenrDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    name: this.$t('dictionary.filesystem'),
+                    onManager: this.onManager,
+                    resource: 'file_systems',
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: '',
+                  }
+                  if (this.isProjectMode) {
+                    ret.tooltip = this.$t('storage.check_sys_permission', [this.$t('dictionary.domain')])
+                    return ret
+                  }
+                  return {
+                    validate: true,
+                  }
+                }
               },
               disableDeleteAction(Object.assign(this, {
                 permission: 'file_systems_update',
