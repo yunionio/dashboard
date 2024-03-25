@@ -177,6 +177,10 @@ const LicenseItems = [
     meta: meta('resource_managent', 'storage', true),
   },
   {
+    key: 'cephfs',
+    meta: meta('resource_managent', 'storage', true),
+  },
+  {
     key: 'xsky',
     meta: meta('resource_managent', 'storage', true),
     hiddenName: true,
