@@ -296,5 +296,10 @@
   "dashboard.count": "Total",
   "dashboard.host_type": "Host Type",
   "dashboard.hypervisor": "Hypervisor",
-  "dashboard.baremetal": "Baremetal"
+  "dashboard.baremetal": "Baremetal",
+  "dashboard.title_bar": "Title bar",
+  "dashboard.title_bar_desc": "Display custom copy or tile categories",
+  "dashboard.explain": "Explain",
+  "dashboard.background": "Background",
+  "dashboard.color_white": "White"
 }
