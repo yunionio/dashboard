@@ -15,13 +15,12 @@ import {
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
 import {
-  getPublicScopeTableColumn,
   getBrandTableColumn,
   getBillingTypeTableColumn,
   getSwitchTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
-import ColumnsMixin, { getFileSystemTypeColumn, getFileSystemStorageTypeColumn } from '../mixins/columns'
+import ColumnsMixin, { getFileSystemTypeColumn, getFileSystemStorageTypeColumn, getCapacityColumn } from '../mixins/columns'
 
 export default {
   name: 'FileSystemDetail',
@@ -41,7 +40,6 @@ export default {
       baseInfo: [
         getUserTagColumn({ onManager: this.onManager, resource: 'file_system', columns: () => this.columns, tipName: this.$t('dictionary.filesystem') }),
         getExtTagColumn({ onManager: this.onManager, resource: 'file_system', columns: () => this.columns, tipName: this.$t('dictionary.filesystem') }),
-        getPublicScopeTableColumn({ vm: this, resource: 'file_systems' }),
         getBrandTableColumn(),
         getBillingTypeTableColumn(),
       ],
@@ -49,12 +47,13 @@ export default {
         {
           title: this.$t('storage.text_80'),
           items: [
+            getCapacityColumn(),
             getFileSystemTypeColumn(),
             getFileSystemStorageTypeColumn(),
             {
               field: 'protocol',
               title: this.$t('storage.filesystem.protocol'),
-            },
+            }
           ],
         },
         {

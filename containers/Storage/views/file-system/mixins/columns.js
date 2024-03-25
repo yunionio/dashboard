@@ -6,10 +6,10 @@ import {
   getAccountTableColumn,
   getTimeTableColumn,
   getBillingTableColumn,
-  getPublicScopeTableColumn,
-  getProjectDomainTableColumn,
+  getProjectTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import { sizestr } from '@/utils/utils'
 
 export const getFileSystemTypeColumn = ({
   field = 'file_system_type',
@@ -81,6 +81,17 @@ export const getFileSystemProtocolColumn = ({
   }
 }
 
+export const getCapacityColumn = () => {
+  return {
+    field: 'capacity',
+    title: i18n.t('storage.capacity'),
+    sortable: true,
+    formatter: ({ row }) => {
+      return sizestr(row.capacity, 'G', 1024)
+    }
+  }
+}
+
 export default {
   created () {
     this.columns = [
@@ -90,20 +101,20 @@ export default {
         addLock: true,
         slotCallback: row => {
           return (
-            <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
+            <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{row.name}</side-page-trigger>
           )
         },
       }),
       getTagTableColumn({ onManager: this.onManager, resource: 'file_systems', columns: () => this.columns }),
       getStatusTableColumn({ statusModule: 'nas', vm: this }),
+      getCapacityColumn(),
       getFileSystemTypeColumn(),
       getFileSystemStorageTypeColumn(),
       getFileSystemProtocolColumn(),
       getBillingTableColumn({ vm: this }),
       getBrandTableColumn(),
       getAccountTableColumn(),
-      getPublicScopeTableColumn({ vm: this, resource: 'file_systems' }),
-      getProjectDomainTableColumn(),
+      getProjectTableColumn(),
       getTimeTableColumn(),
       {
         field: 'region',

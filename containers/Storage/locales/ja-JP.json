@@ -341,5 +341,6 @@
   "storage.volcengine.storage_class.archive_fr": "ARCHIVE_FR",
   "storage.volcengine.storage_class.archive": "ARCHIVE",
   "storage.volcengine.storage_class.cold_archive": "COLD_ARCHIVE",
-  "storage.slvm": "共有LVM"
+  "storage.slvm": "共有LVM",
+  "storage.check_sys_permission": "この操作はシステム管理者または {0} 管理者のみがサポートしています"
 }

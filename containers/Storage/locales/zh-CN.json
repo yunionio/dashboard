@@ -341,5 +341,6 @@
   "storage.volcengine.storage_class.archive_fr": "归档闪回存储",
   "storage.volcengine.storage_class.archive": "归档存储",
   "storage.volcengine.storage_class.cold_archive": "冷归档存储",
-  "storage.slvm": "共享LVM"
+  "storage.slvm": "共享LVM",
+  "storage.check_sys_permission": "仅系统或{0}管理员支持该操作"
 }
