@@ -296,5 +296,10 @@
   "dashboard.count": "量",
   "dashboard.host_type": "ホストの種類",
   "dashboard.hypervisor": "仮想マシン",
-  "dashboard.baremetal": "ベアメタル"
+  "dashboard.baremetal": "ベアメタル",
+  "dashboard.title_bar": "タイトルバー",
+  "dashboard.title_bar_desc": "カスタムファイルまたは磁気ペースト分類を表示する",
+  "dashboard.explain": "説明",
+  "dashboard.background": "背景色",
+  "dashboard.color_white": "クリーム入り"
 }

@@ -296,5 +296,10 @@
   "dashboard.count": "数量",
   "dashboard.host_type": "主机类型",
   "dashboard.hypervisor": "虚拟机",
-  "dashboard.baremetal": "裸金属"
+  "dashboard.baremetal": "裸金属",
+  "dashboard.title_bar": "标题栏",
+  "dashboard.title_bar_desc": "显示自定义文案或磁贴分类",
+  "dashboard.explain": "说明",
+  "dashboard.background": "背景颜色",
+  "dashboard.color_white": "乳白"
 }
