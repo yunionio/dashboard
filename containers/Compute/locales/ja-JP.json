@@ -1575,7 +1575,7 @@
   "compute.instance_backup_not_ready_alert": "バックアップは利用できません",
   "compute.delete_limit": "この操作は実行状態ではサポートされていません。シャットダウンして再試行してください。",
   "compute.host_use_core_tips": "コアは既に使用されています。別のコアを選択してください",
-  "compute.create_snapshot_backup": "@:dictionary.snapshot/バックアップの作成",
+  "compute.create_snapshot_backup": "@:dictionary.snapshot / バックアップの作成",
   "compute.set_usb_gpu": "GPU カード/USB 透過伝送を設定する",
   "compute.disk.rotate_gpssd": "ユニバーサルSSD",
   "compute.is_daemon": "デーモン仮想マシン",
