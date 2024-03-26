@@ -1574,7 +1574,7 @@
   "compute.instance_backup_not_ready_alert": "The backup is not ready",
   "compute.delete_limit": "This operation is not supported in running state. Please shut down and try again!",
   "compute.host_use_core_tips": "This core has already been used, please select another core",
-  "compute.create_snapshot_backup": "Create @:dictionary.snapshot/Backup",
+  "compute.create_snapshot_backup": "Create @:dictionary.snapshot / Backup",
   "compute.set_usb_gpu": "Set GPU Card/USB",
   "compute.disk.rotate_gpssd": "GPSSD",
   "compute.is_daemon": "Daemon VM",
