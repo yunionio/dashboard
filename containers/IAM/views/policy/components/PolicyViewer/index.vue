@@ -5,7 +5,10 @@
     </template>
     <template v-else>
       <!-- service -->
-      <template v-for="service of options">
+      <template v-if="service">
+        <group :key="service" v-if="!isServiceDataEmpty" :data="getServiceData(options)" :get-tag-color="getTagColor" />
+      </template>
+      <template v-else v-for="service of options">
         <group :key="service.key" :data="service" :get-tag-color="getTagColor" />
       </template>
     </template>
@@ -14,6 +17,7 @@
 
 <script>
 import * as R from 'ramda'
+import { uuid } from '@/utils/utils'
 import { SERVICES_MAP, RESOURCES_MAP, DEFAULT_ACTIONS_KEY } from '../../constants'
 import { genPolicyGroups } from '../../utils'
 import Group from './Group'
@@ -28,6 +32,15 @@ export default {
       type: Object,
       required: true,
     },
+    service: {
+      type: String
+    },
+    resource: {
+      type: String
+    },
+    excludeResources: {
+      type: Array
+    }
   },
   data () {
     return {
@@ -82,11 +95,21 @@ export default {
                 options[service].children[resource].actions.push(actionRet)
               }
             }
+
+            // 排除资源
+            if (this.excludeResources && this.excludeResources.length > 0) {
+              this.excludeResources.forEach(v => {
+                delete options[service].children[v]
+              })
+            }
           }
         }
       }, this.permission)
       return options
     },
+    isServiceDataEmpty () {
+      return !!(Object.keys(this.options)?.length)
+    }
   },
   created () {
     this.POLICY_GROUPS = genPolicyGroups()
@@ -96,7 +119,7 @@ export default {
     async getPermissions () {
       try {
         const bodyData = this.genPermissionsBodyData()
-        const response = await this.$http.post(`/v1/auth/permissions?policy=${this.policy.id}`, bodyData)
+        const response = await this.$http.post(`/v1/auth/permissions?policy=${this.policy.id}&$t=${uuid()}`, bodyData)
         const permission = response.data || []
         this.permission = permission
       } catch (error) {
@@ -130,6 +153,19 @@ export default {
       if (value) str += value
       return this.colorHash.rgb(str)
     },
+    getServiceData (options) {
+      const computeChildren = options[this.service]?.children
+      const getService = (computeChildren = []) => {
+        return {
+          [this.resource]: computeChildren[this.resource]
+        }
+      }
+      return {
+        key: this.service,
+        label: this.$t('dictionary.compute'),
+        children: getService(computeChildren)
+      }
+    }
   },
 }
 </script>
