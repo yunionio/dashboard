@@ -519,6 +519,10 @@ export default {
       if (migrate) {
         policy.compute.servers.perform['live-migrate'] = migrate
       }
+      const cpuset = policy.compute.servers.perform.cpuset
+      if (cpuset) {
+        policy.compute.servers.get['cpuset-cores'] = cpuset
+      }
     },
     checkMenuOptionsChange (v) {
       this.policyResCheckedList = v
