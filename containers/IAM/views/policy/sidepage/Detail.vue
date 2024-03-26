@@ -132,10 +132,19 @@ export default {
             },
             {
               field: 'policy.policy',
-              title: this.$t('system.text_438'),
+              title: this.$t('iam.res_policy'),
               slots: {
                 default: ({ row }) => {
-                  return <PolicyViewer policy={ row } />
+                  return <PolicyViewer policy={row} service={'compute'} resource={'servers'} />
+                },
+              },
+            },
+            {
+              field: 'policy.policy',
+              title: this.$t('iam.other_policy'),
+              slots: {
+                default: ({ row }) => {
+                  return <PolicyViewer policy={row} excludeResources={['servers']} />
                 },
               },
             },
