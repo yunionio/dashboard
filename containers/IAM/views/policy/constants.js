@@ -77,6 +77,8 @@ export const RESOURCES_MAP = {
       { action: 'perform', label: i18n.t('cloudenv.text_514'), value: 'reset' },
       { action: 'perform', label: i18n.t('cloudenv.text_515'), value: 'suspend' },
       { action: 'perform', label: i18n.t('cloudenv.text_516'), value: 'resume' },
+      { action: 'perform', label: i18n.t('compute.start_rescue'), value: 'start-rescue' },
+      { action: 'perform', label: i18n.t('compute.stop_rescue'), value: 'stop-rescue' },
       { action: 'perform', label: i18n.t('compute.sync_config'), value: 'sync' },
       { action: 'update', label: i18n.t('cloudenv.text_406'), value: '*' }, // 修改属性 同 update
       { action: 'perform', label: i18n.t('cloudenv.text_517'), value: 'rebuild-root' },
@@ -87,7 +89,8 @@ export const RESOURCES_MAP = {
       { action: 'create', label: i18n.t('cloudenv.text_521'), value: '*' }, // 创建相同配置 同 create
       { action: 'perform', label: i18n.t('compute.set_usb_gpu'), value: 'set-isolated-device' },
       { action: 'perform', label: i18n.t('cloudenv.text_523'), value: 'io-throttle' },
-      { action: 'get', label: i18n.t('compute.bind_physical_cpu'), value: 'cpuset-cores' },
+      // { action: 'get', label: i18n.t('compute.bind_physical_cpu'), value: 'cpuset-cores' },
+      { action: 'perform', label: i18n.t('compute.bind_physical_cpu'), value: 'cpuset' },
       { action: 'perform', label: i18n.t('cloudenv.text_524'), value: 'cancel-expire' },
       { action: 'perform', label: i18n.t('cloudenv.text_525'), value: 'snapshot-and-clone' },
       { action: 'perform', label: i18n.t('cloudenv.text_526'), value: 'bind-groups' },
@@ -109,6 +112,7 @@ export const RESOURCES_MAP = {
       { action: 'perform', label: i18n.t('cloudenv.text_541'), value: 'delete-backup' },
       { action: 'perform', label: i18n.t('cloudenv.text_542'), value: 'migrate' },
       { action: 'perform', label: i18n.t('compute.change_boot_index'), value: 'set-boot-index' },
+      { action: 'perform', label: i18n.t('compute.vminstance.change_disk_storage'), value: 'change-storage' },
       { action: 'perform', label: i18n.t('common_105'), value: 'set-user-metadata' },
       { action: 'perform', label: i18n.t('compute.text_674'), value: '*' },
     ],

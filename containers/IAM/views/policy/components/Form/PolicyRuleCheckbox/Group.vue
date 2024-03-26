@@ -121,6 +121,7 @@ export default {
       let checkAll = true
       let checkedActionsTotal = 0
       let allActionsTotal = 0
+
       for (let i = 0, len = this.group.resources.length; i < len; i++) {
         const item = this.group.resources[i]
         let isContinue = true
@@ -129,7 +130,7 @@ export default {
         } else if (this.scope === SCOPES_MAP.domain.key) {
           if (item.isSystemRes) isContinue = false
         }
-        if (!isContinue) continue
+        if (!isContinue || item.resource === 'servers') continue
         const checkedCount = item.checked.length
         checkedActionsTotal += checkedCount
         allActionsTotal += item.actions.length
@@ -191,7 +192,7 @@ export default {
 .group-wrap {
   .arrow-icon {
     > i {
-      transition: transform .3s ease;
+      transition: transform 0.3s ease;
     }
   }
 }
