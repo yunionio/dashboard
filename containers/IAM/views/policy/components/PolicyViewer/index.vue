@@ -7,6 +7,7 @@
       <!-- service -->
       <template v-if="service">
         <group :key="service" v-if="!isServiceDataEmpty" :data="getServiceData(options)" :get-tag-color="getTagColor" />
+        <span>{{ $t('iam.no_resource_policy') }}</span>
       </template>
       <template v-else v-for="service of options">
         <group :key="service.key" :data="service" :get-tag-color="getTagColor" />
@@ -108,7 +109,7 @@ export default {
       return options
     },
     isServiceDataEmpty () {
-      return !!(Object.keys(this.options)?.length)
+      return Object.keys(this.options)?.length === 0
     }
   },
   created () {
