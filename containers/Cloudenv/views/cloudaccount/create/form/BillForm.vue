@@ -7,8 +7,7 @@
           <a-radio-button
             v-for="item in billTypeOptions"
             :key="item.value"
-            :value="item.value"
-          >{{ item.label }}</a-radio-button>
+            :value="item.value">{{ item.label }}</a-radio-button>
         </a-radio-group>
       </a-form-item>
       <template v-if="isAzure && isEA">
@@ -44,14 +43,12 @@
         <a-form-item
           :label="$t('cloudenv.text_201')"
           v-if="cloudAccountType === 2"
-          :extra="$t('cloudenv.text_203')"
-        >
+          :extra="$t('cloudenv.text_203')">
           <a-select
             :filterOption="filterOption"
             showSearch
             :loading="cloudAccountLoading"
-            v-decorator="decorators.billing_bucket_account"
-          >
+            v-decorator="decorators.billing_bucket_account">
             <template v-for="item in cloudAccounts">
               <a-select-option v-if="id !== item.id" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
             </template>
@@ -68,8 +65,7 @@
         <a-form-item
           v-if="!isHuawei"
           :label="$t('cloudenv.text_206')"
-          :extra="$t('cloudenv.text_207')"
-        >
+          :extra="$t('cloudenv.text_207')">
           <a-input v-decorator="decorators.billing_file_prefix" />
         </a-form-item>
         <a-form-item :label="$t('cloudenv.billing_scope')" v-if="cloudAccountType === 1">
@@ -82,8 +78,7 @@
             <a-radio-button
               value="all"
               key="all"
-              :disabled="billingScopeDisabled"
-            >{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>
+              :disabled="billingScopeDisabled">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <!-- google -->
@@ -103,22 +98,19 @@
       <a-form-item
         :label="$t('cloudenv.text_212')"
         v-if="form.fc.getFieldValue('sync_info')"
-        :extra="$t('cloudenv.text_213')"
-      >
+        :extra="$t('cloudenv.text_213')">
         <a-form-item style="display: inline-block">
           <a-month-picker
             v-decorator="decorators.start_day"
             :disabled-date="dateDisabledStart"
-            format="YYYY-MM"
-          />
+            format="YYYY-MM" />
         </a-form-item>
         <span class="ml-2 mr-2">~</span>
         <a-form-item style="display: inline-block">
           <a-month-picker
             v-decorator="decorators.end_day"
             :disabled-date="dateDisabledEnd"
-            format="YYYY-MM"
-          />
+            format="YYYY-MM" />
         </a-form-item>
       </a-form-item>
     </a-form>
@@ -218,6 +210,9 @@ export default {
     isVolcEngine () {
       return this.provider === HYPERVISORS_MAP.volcengine.provider
     },
+    isKsyun () {
+      return this.provider === HYPERVISORS_MAP.ksyun.provider
+    },
     useBillingBucket () {
       const supportProviders = [
         HYPERVISORS_MAP.aliyun.provider,
@@ -226,7 +221,8 @@ export default {
         HYPERVISORS_MAP.google.provider,
         HYPERVISORS_MAP.volcengine.provider,
         HYPERVISORS_MAP.qcloud.provider,
-        HYPERVISORS_MAP.azure.provider
+        HYPERVISORS_MAP.azure.provider,
+        HYPERVISORS_MAP.ksyun.provider,
       ]
       return supportProviders.includes(this.provider)
     },
