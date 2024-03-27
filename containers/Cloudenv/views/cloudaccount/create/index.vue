@@ -98,7 +98,7 @@ export default {
       return this.step.steps[this.step.currentStep].key
     },
     isBill () {
-      return ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure', 'Qcloud', 'JDcloud', 'VolcEngine'].indexOf(this.currentItem.provider) > -1 && this.$appConfig.isPrivate
+      return ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure', 'Qcloud', 'JDcloud', 'VolcEngine', 'Ksyun'].indexOf(this.currentItem.provider) > -1 && this.$appConfig.isPrivate
     },
     isGoogle () {
       return this.currentItem.provider === 'Google'
