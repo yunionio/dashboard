@@ -28,6 +28,7 @@ export default {
     globalConfig: {},
     openCloudShell: false,
     globalServices: [],
+    computeV2GlobalConfig: {}
   },
   mutations: {
     UPDATE_OBJECT (state, { name, data }) {
@@ -102,6 +103,9 @@ export default {
     SET_GLOBAL_SERVICE (state, payload) {
       state.globalServices = payload
     },
+    SET_COMPUTEV2_GLOBAL_CONFIG (state, payload) {
+      state.computeV2GlobalConfig = payload
+    }
   },
   actions: {
     updateObject ({ commit }, payload) {
@@ -162,7 +166,7 @@ export default {
       try {
         const response = await manager.list({
           params: {
-            type: ['common', 'yunionapi', 'meter', 'identity'],
+            type: ['common', 'yunionapi', 'meter', 'identity', 'compute_v2'],
           },
         })
         const resData = response?.data?.data
@@ -201,6 +205,15 @@ export default {
           })
           const config = (configResponse.data.config && configResponse.data.config.default) || {}
           commit('auth/SET_NO_ACTION_LOGOUT_SECONDS', config.no_action_logout_seconds, { root: true })
+        }
+        const computeV2Id = resData.find(v => v.type === 'compute_v2')?.id || ''
+        if (computeV2Id) {
+          const configResponse = await manager.getSpecific({
+            id: computeV2Id,
+            spec: 'config',
+          })
+          const config = (configResponse.data.config && configResponse.data.config.default) || {}
+          commit('SET_COMPUTEV2_GLOBAL_CONFIG', config)
         }
       } catch (error) {
         throw error
