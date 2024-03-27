@@ -185,7 +185,7 @@ export default {
     this.debounceUpdateGridItem = debounce(this.updateGridItem, 500)
   },
   methods: {
-    getActionStyle (params) {
+    getActionStyle (params = {}) {
       if (params.color && params.color !== '#FFFFFF') {
         return { color: '#fff' }
       }
@@ -519,7 +519,8 @@ export default {
 }
 .edit-topbar {
   z-index: 5;
-  box-shadow: 0 2px 4px 0 rgba(237, 237, 237, 0.5), 0 2px 4px 0 rgba(237, 237, 237, 0.5);
+  box-shadow: 0 2px 4px 0 rgba(237, 237, 237, 0.5),
+    0 2px 4px 0 rgba(237, 237, 237, 0.5);
   height: 50px;
 }
 .edit-main {
@@ -547,7 +548,7 @@ export default {
 
 .edit-grid-item {
   user-select: none;
-  background: rgba(0, 0, 0, .2);
+  background: rgba(0, 0, 0, 0.2);
 }
 ::v-deep .drop-active {
   border: 2px dashed skyblue;
