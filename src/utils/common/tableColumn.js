@@ -569,7 +569,7 @@ export const getTagTableColumn = ({
   editCheck = (row) => true,
   hidden,
   manager,
-  vm = {}
+  vm = {},
 } = {}) => {
   return {
     field,
