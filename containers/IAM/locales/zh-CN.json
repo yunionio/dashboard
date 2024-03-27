@@ -1048,5 +1048,6 @@
   "iam.before_expiration": "到期前第",
   "iam.day": "天",
   "iam.add_notify_time": "增加通知时间",
-  "iam.notify_time_not_repeat": "通知时间有重复"
+  "iam.notify_time_not_repeat": "通知时间有重复",
+  "iam.no_resource_policy": "无资源权限"
 }
