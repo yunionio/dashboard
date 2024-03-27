@@ -315,6 +315,7 @@ export default {
                       BRAND_MAP.Qcloud.key,
                       BRAND_MAP.JDcloud.key,
                       BRAND_MAP.VolcEngine.key,
+                      BRAND_MAP.Ksyun.key,
                     ]
 
                     return {
