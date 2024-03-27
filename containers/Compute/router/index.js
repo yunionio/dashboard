@@ -863,6 +863,9 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.serverrecovery')) {
                 return true
               }
+              if (!store.state.common.computeV2GlobalConfig.enable_pending_delete) {
+                return true
+              }
               return !hasSetupKey(['onestack', 'public', 'private', 'vmware'])
             },
           },
@@ -882,6 +885,9 @@ export default {
             permission: 'disks_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.diskrecovery')) {
+                return true
+              }
+              if (!store.state.common.computeV2GlobalConfig.enable_pending_delete) {
                 return true
               }
               return !hasSetupKey(['onestack', 'public', 'private', 'vmware'])
