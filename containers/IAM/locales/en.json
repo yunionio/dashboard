@@ -959,7 +959,7 @@
   "system.robot": "Robot",
   "system.robot_manage": "Bot",
   "system.corp_id_require_msg": "Please enter the company ID",
-  "system.agent_id_require_msg": "Please enter the AgentId", 
+  "system.agent_id_require_msg": "Please enter the AgentId",
   "system.secret_require_msg": "Please enter the Secret",
   "system.robot_address": "Address",
   "system.companyinfo.name": "Product Name (Chinese)",
@@ -1049,5 +1049,6 @@
   "iam.before_expiration": "",
   "iam.day": "day(s) before expiration",
   "iam.add_notify_time": "Increase notification time",
-  "iam.notify_time_not_repeat": "Notification time is duplicated"
+  "iam.notify_time_not_repeat": "Notification time is duplicated",
+  "iam.no_resource_policy": "No resource permissions"
 }
