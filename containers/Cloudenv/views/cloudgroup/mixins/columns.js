@@ -5,6 +5,7 @@ import {
   getStatusTableColumn,
   getProjectDomainTableColumn,
   getPublicScopeTableColumn,
+  getCopyWithContentTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
@@ -55,6 +56,10 @@ export default {
         },
       },
       getBrandTableColumn({ field: 'provider' }),
+      getCopyWithContentTableColumn({
+        field: 'cloudaccount',
+        title: this.$t('common.text00108'),
+      }),
       getPublicScopeTableColumn({ vm: this, resource: 'cloudgroups' }),
       getProjectDomainTableColumn(),
       getTimeTableColumn(),
