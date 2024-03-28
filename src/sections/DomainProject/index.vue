@@ -93,7 +93,7 @@ export default {
     ignoreStorage: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   data () {
     return {
