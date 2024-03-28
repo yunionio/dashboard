@@ -7,7 +7,7 @@
       <!-- service -->
       <template v-if="service">
         <group :key="service" v-if="!isServiceDataEmpty" :data="getServiceData(options)" :get-tag-color="getTagColor" />
-        <span>{{ $t('iam.no_resource_policy') }}</span>
+        <span v-else>{{ $t('iam.no_resource_policy') }}</span>
       </template>
       <template v-else v-for="service of options">
         <group :key="service.key" :data="service" :get-tag-color="getTagColor" />
@@ -47,6 +47,7 @@ export default {
     return {
       loaded: false,
       permission: {},
+      isServiceDataEmpty: false
     }
   },
   computed: {
@@ -107,9 +108,16 @@ export default {
         }
       }, this.permission)
       return options
-    },
-    isServiceDataEmpty () {
-      return Object.keys(this.options)?.length === 0
+    }
+  },
+  watch: {
+    options: {
+      handler (val) {
+        if (val[this.service]?.children[this.resource]?.actions?.length > 2) {
+          this.isServiceDataEmpty = true
+        }
+      },
+      deep: true
     }
   },
   created () {
@@ -154,9 +162,9 @@ export default {
       if (value) str += value
       return this.colorHash.rgb(str)
     },
-    getServiceData (options) {
+    getServiceData (options = {}) {
       const computeChildren = options[this.service]?.children
-      const getService = (computeChildren = []) => {
+      const getService = (computeChildren = {}) => {
         return {
           [this.resource]: computeChildren[this.resource]
         }
