@@ -414,7 +414,9 @@ export default {
       this.dropdownSearch = e.target.value
     },
     getItems () {
-      return this.config.items.filter(v => {
+      const items = (this.config && this.config.items) || []
+      if (!items.length) return []
+      return items.filter(v => {
         if (!v.label) return true
         const label = v.label.toLowerCase()
         return label.includes(this.dropdownSearch.toLowerCase())
@@ -433,7 +435,7 @@ export default {
   top: 38px;
   text-align: left;
   width: 200px;
-  box-shadow: 1px 1.73px 3px 0 rgba(0,0,0,.1);
+  box-shadow: 1px 1.73px 3px 0 rgba(0, 0, 0, 0.1);
   border: 1px solid #ddd;
   background-color: #fff;
   z-index: 88;
