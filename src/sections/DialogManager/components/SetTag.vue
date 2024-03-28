@@ -5,8 +5,7 @@
       <dialog-selected-tips
         :count="params.data.length"
         :action="$t('common_105')"
-        :name="params.tipName"
-      />
+        :name="params.tipName" />
       <template v-if="params.columns">
         <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       </template>
@@ -48,8 +47,7 @@
                 v-model="checkedInfo[item.key].visible"
                 :key="`${item.key}${item.value}`"
                 destroyTooltipOnHide
-                @visibleChange="visible => handleTagVisibleChange(item, visible)"
-              >
+                @visibleChange="visible => handleTagVisibleChange(item, visible)">
                 <template #content>
                   <div class="tag-update-wrap">
                     <div class="mb-1">{{ $t('common_112') }}</div>
@@ -73,8 +71,7 @@
                         <a-button
                           size="small"
                           block
-                          @click="() => handleTagPopoverCancel(item)"
-                        >{{ $t('common.cancel') }}</a-button>
+                          @click="() => handleTagPopoverCancel(item)">{{ $t('common.cancel') }}</a-button>
                       </a-col>
                     </a-row>
                   </div>
@@ -82,8 +79,7 @@
                 <div
                   class="tag mb-1 d-inline-block"
                   :title="item.title"
-                  :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }"
-                >
+                  :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">
                   <div class="d-flex align-items-center">
                     <a-tooltip v-if="isSysTag(item.key)">
                       <template slot="title">{{ $t('common.tag.sys_tag_tooltip') }}</template>
@@ -94,8 +90,7 @@
                       v-if="!isSysTag(item.key)"
                       class="ml-1 remove-tag flex-grow-0 flex-shrink-0"
                       type="close"
-                      @click.stop="removeTag(item)"
-                    />
+                      @click.stop="removeTag(item)" />
                   </div>
                 </div>
               </a-popover>
@@ -114,13 +109,11 @@
             @input="handleSelectInput"
             :params="params.params"
             :managerInstance="params.managerInstance"
-            :allowNoValue="false"
-          />
+            :allowNoValue="false" />
           <a-button
             class="ml-2"
             v-if="!showForm"
-            @click="() => showForm = true"
-          >{{$t('common_111')}}</a-button>
+            @click="() => showForm = true">{{$t('common_111')}}</a-button>
         </div>
         <a-form class="ml-2" layout="inline" :form="form.fc" v-if="showForm">
           <a-form-item>
