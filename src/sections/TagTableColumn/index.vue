@@ -8,8 +8,7 @@
             type="link"
             class="font-weight-normal p-0"
             @click="handleEdit"
-            v-if="!inBaseDialog && !!onManager"
-          >{{$t('common_105')}}</a-button>
+            v-if="!inBaseDialog && !!onManager">{{$t('common_105')}}</a-button>
         </template>
         <template v-else>
           <a-tooltip :title="validate.tooltip">
@@ -29,8 +28,7 @@
               class="tag mb-1 text-truncate d-inline-block"
               :title="item.title"
               :key="`${item.key}${item.value}`"
-              :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }"
-            >{{ item.title }}</span>
+              :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">{{ item.title }}</span>
           </template>
         </template>
       </div>
@@ -82,11 +80,11 @@ export default {
       default: () => { return {} },
     },
     refresh: {
-      type: Function
+      type: Function,
     },
     manager: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   inject: {
     // 是否处于BaseDialog中
@@ -153,7 +151,7 @@ export default {
         params: this.params,
         tipName: this.tipName,
         list: this.list,
-        refresh: this.refresh
+        refresh: this.refresh,
       })
     },
   },
