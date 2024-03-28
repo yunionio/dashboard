@@ -114,7 +114,7 @@ export default {
         }
       } else {
         ret += this.value.map(value => {
-          if (this.options[this.id].items) {
+          if (this.options[this.id].items && this.options[this.id].items.length) {
             const target = this.options[this.id].items.find(item => item.key === value)
             if (target) return target.label
           }
@@ -167,8 +167,9 @@ export default {
       this.dropdownSearch = e.target.value
     },
     getItems () {
-      if (!this.config.items) return []
-      return this.config.items.filter(v => {
+      const items = (this.config && this.config.items) || []
+      if (!items.length) return []
+      return items.filter(v => {
         if (!v.label) return true
         const label = v.label.toLowerCase()
         return label.includes(this.dropdownSearch.toLowerCase())
