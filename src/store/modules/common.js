@@ -28,7 +28,7 @@ export default {
     globalConfig: {},
     openCloudShell: false,
     globalServices: [],
-    computeV2GlobalConfig: {}
+    computeV2GlobalConfig: {},
   },
   mutations: {
     UPDATE_OBJECT (state, { name, data }) {
@@ -105,7 +105,7 @@ export default {
     },
     SET_COMPUTEV2_GLOBAL_CONFIG (state, payload) {
       state.computeV2GlobalConfig = payload
-    }
+    },
   },
   actions: {
     updateObject ({ commit }, payload) {
