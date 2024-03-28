@@ -820,7 +820,6 @@ export function getDocsUrl (scope) {
   if (scope === 'domain' || scope === 'project') {
     prefix = prefix + '/domain'
   }
-  console.log(getLanguage())
   return `${window.location.origin}/${prefix}/${language}/docs/`
 }
 
