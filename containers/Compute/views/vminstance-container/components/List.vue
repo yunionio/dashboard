@@ -53,7 +53,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
 export default {
-  name: 'VmInstanceList',
+  name: 'VMContainerInstanceList',
   mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
   props: {
     id: String,
@@ -105,15 +105,6 @@ export default {
       },
       status: getStatusFilter('server'),
       power_states: getStatusFilter({ title: this.$t('compute.power_states'), statusModule: 'server', field: 'power_states' }),
-      os_dist: {
-        label: this.$t('table.title.os'),
-        dropdown: true,
-        multiple: true,
-        distinctField: {
-          type: 'extra_field',
-          key: 'os_dist',
-        },
-      },
       projects: getTenantFilter(),
       project_domains: getDomainFilter(),
       billing_type: {

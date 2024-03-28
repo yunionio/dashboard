@@ -25,7 +25,7 @@
           :isThroughputShow="isThroughputShow"
           :iopsLimit="iopsLimit[item.key]"
           @snapshotChange="val => snapshotChange(item, val, i)"
-          @diskTypeChange="val => diskTypeChange(item, val)"
+          @diskTypeChange="val => diskTypeChange(item, val, i)"
           @storageHostChange="(val) => $emit('storageHostChange', val)" />
         <a-button v-if="!getDisabled(item, 'minus') && (dataDisks.length > 1 ? (i !== 0) : true)" shape="circle" icon="minus" size="small" @click="decrease(item.key)" class="mt-2" />
       </div>
@@ -431,23 +431,30 @@ export default {
         newDiskType = `${diskType}/${medium}`
       }
       const typeObj = this.typesMap[newDiskType]
+      const idx = this.dataDisks?.length || 0
       let dataDiskTypes = {
         key: _.get(this.dataDisks, '[0].diskType.key'),
         label: _.get(this.dataDisks, '[0].diskType.label'),
+        index: idx,
       }
       if (R.is(Object, typeObj)) { // 传入diskType，回填
         dataDiskTypes = {
           key: typeObj.key || diskType,
           label: typeObj.label || diskType,
+          index: idx,
         }
       } else if (!diskType && !_.get(this.dataDisks, '[0].diskType')) { // 表单中数据盘无第一项，需要 set 磁盘类型默认值
         const defaultKey = Object.keys(this.typesMap)[0]
         if (R.is(Object, this.defaultType) && this.defaultType.key && this.defaultType.label && this.typesMap[this.defaultType.key]) {
-          dataDiskTypes = this.defaultType
+          dataDiskTypes = {
+            ...this.defaultType,
+            index: idx,
+          }
         } else if (defaultKey) {
           dataDiskTypes = {
             key: this.typesMap[defaultKey].key,
             label: this.typesMap[defaultKey].label,
+            index: idx,
           }
         }
       }
@@ -540,7 +547,7 @@ export default {
         ...scopeParams,
       }
     },
-    diskTypeChange (item, val) {
+    diskTypeChange (item, val, idx) {
       item.sizeDisabled = false
       // 仅有第一块盘可以更改磁盘类型
       this.$nextTick(() => {
@@ -561,7 +568,7 @@ export default {
           for (const diskId in dataDiskSizes) {
             if (this.form.fd[`dataDiskTypes[${diskId}]`]) {
               this.form.fc.setFieldsValue({
-                [`dataDiskTypes[${diskId}]`]: val,
+                [`dataDiskTypes[${diskId}]`]: { ...val, index: idx },
               })
             }
           }

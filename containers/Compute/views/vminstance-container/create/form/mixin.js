@@ -8,11 +8,9 @@ import MemRadio from '@Compute/sections/MemRadio'
 import sku from '@Compute/sections/SKU'
 import gpu from '@Compute/sections/GPU/index'
 import pci from '@Compute/sections/PCI'
-import { Decorator, GenCreateData } from '@Compute/utils/createServer'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import ServerAccount from '@Compute/sections/ServerAccount'
 import SchedPolicy from '@Compute/sections/SchedPolicy'
-import Bios from '@Compute/sections/BIOS'
 import Backup from '@Compute/sections/Backup'
 import Duration from '@Compute/sections/Duration'
 import InstanceGroups from '@Compute/sections/InstanceGroups'
@@ -33,11 +31,10 @@ import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
 import { deleteInvalid } from '@/utils/utils'
 import Tag from '../components/Tag'
+import { Decorator, GenCreateData } from '../../utils/createServer'
 import SystemDisk from '../components/SystemDisk'
 import Servertemplate from '../components/Servertemplate'
 import BottomBar from '../components/BottomBar'
-import CustomData from '../components/CustomData'
-import BastionHost from '../components/BastionHost'
 
 const CreateServerForm = {
   wrapperCol: {
@@ -68,7 +65,6 @@ export default {
     DataDisk,
     gpu,
     SchedPolicy,
-    Bios,
     Backup,
     DomainProject,
     Duration,
@@ -79,8 +75,6 @@ export default {
     ServerAccount,
     HostName,
     pci,
-    CustomData,
-    BastionHost,
   },
   mixins: [workflowMixin],
   props: {
@@ -92,17 +86,6 @@ export default {
   },
   data () {
     const decorators = new Decorator(SERVER_TYPE[this.type]).createDecorators()
-    const podDecorators = {
-      ...decorators,
-      podImage: [
-        'podImage',
-        {
-          rules: [
-            { required: true, message: '请输入镜像地址' },
-          ],
-        },
-      ],
-    }
     const initFd = getInitialValue(decorators)
     return {
       submiting: false,
@@ -126,10 +109,12 @@ export default {
           networkVpcObj: {},
           showCpuSockets: false,
           cpuSockets: 1,
+          errPanes: [], // 表单校验错误的tabs
+          containerPanes: [], // 子组件同步的tabs
         },
-        fd: { ...initFd, os: '', podImage: '' },
+        fd: { ...initFd, os: '' },
       },
-      decorators: podDecorators,
+      decorators,
       capabilityParams: {}, // 防止 capability 反复调用，这里对当前的接口参数做记录
       price: null,
       collapseActive: [],
@@ -137,7 +122,6 @@ export default {
         validateStatus: '',
         errorMsg: '',
       },
-      custom_data: [],
     }
   },
   provide () {

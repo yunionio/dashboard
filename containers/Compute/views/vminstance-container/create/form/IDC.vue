@@ -6,12 +6,12 @@
       v-bind="formItemLayout"
       @submit="submit"
       hideRequiredMark>
+      <container-title :title="$t('compute.eci.container_group_config')" />
       <servertemplate v-if="isServertemplate" :decorators="decorators.servertemplate">
         <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])">
           <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
         </a-form-item>
       </servertemplate>
-      <!-- <a-divider orientation="left">{{$t('compute.text_300')}}</a-divider> -->
       <a-form-item v-if="!isServertemplate" :label="$t('compute.text_297', [$t('dictionary.project')])">
         <domain-project
           :fc="form.fc"
@@ -45,9 +45,9 @@
       <a-form-item :label="$t('compute.text_294')" v-show="!isServertemplate">
         <a-input-number v-decorator="decorators.count" @blur="countBlur" :min="1" :max="100" />
       </a-form-item>
-      <!-- <a-form-item :label="$t('compute.text_176')" :extra="$t('compute.text_1151')">
+      <a-form-item :label="$t('compute.text_176')" :extra="$t('compute.text_1151')" v-show="false">
         <hypervisor-radio :decorator="decorators.hypervisor" :type="form.fi.createType" :hypervisors="hypervisors" />
-      </a-form-item> -->
+      </a-form-item>
       <a-form-item
         :label="$t('compute.text_1365')" v-if="isKvm" v-show="form.fi.capability.host_cpu_archs && form.fi.capability.host_cpu_archs.length > 1">
         <os-arch
@@ -77,25 +77,10 @@
           :sku-params="skuParam"
           :hypervisor="form.fd.hypervisor" />
       </a-form-item>
-      <!-- <a-form-item :label="$t('compute.text_267')" :extra="extra">
-        <os-select
-          :type="type"
-          :uefi="uefi"
-          :form="form"
-          :hypervisor="form.fd.hypervisor"
-          :decorator="decorators.imageOS"
-          :image-params="imageParams"
-          :cacheImageParams="cacheImageParams"
-          :cloudproviderParamsExtra="cloudproviderParamsExtra"
-          @updateImageMsg="updateFi" />
-      </a-form-item> -->
-      <a-form-item :label="$t('compute.pod-image')">
-        <a-input v-decorator="decorators.podImage" />
-      </a-form-item>
       <a-form-item v-if="isShowAgent" :label="$t('compute.agent.label')" :extra="$t('compute.agent.extra')">
         <a-checkbox v-decorator="decorators.deploy_telegraf">{{ $t('compute.agent.install.plugin') }}</a-checkbox>
       </a-form-item>
-      <a-form-item :label="$t('compute.text_49')" class="mb-0">
+      <a-form-item :label="$t('compute.text_49')" class="mb-0" v-show="false">
         <system-disk
           v-if="form.fd.hypervisor"
           :decorator="decorators.systemDisk"
@@ -165,7 +150,6 @@
         <tag
           v-decorator="decorators.tag" />
       </a-form-item>
-      <!-- <a-divider orientation="left" v-if="showAdvanceConfig">{{$t('compute.text_309')}}</a-divider> -->
       <a-collapse :bordered="false" v-model="collapseActive">
         <a-collapse-panel :header="$t('compute.text_309')" key="1">
           <eip-config
@@ -210,46 +194,26 @@
               :showSchedCloudprovider="showSchedCloudprovider"
               :cloudproviderParamsExtra="cloudproviderParamsExtra" />
           </a-form-item>
-          <a-form-item :label="$t('compute.text_1155')" class="mb-0" v-if="isKvm">
-            <bios :decorator="decorators.bios" :uefi="uefi" :isArm="isArm" :showDefault="true" />
-          </a-form-item>
-          <a-form-item :label="$t('compute.vdi_protocol')" class="mb-0" v-if="isKvm">
-            <vdi :decorator="decorators.vdi" :showDefault="true" />
-          </a-form-item>
-          <a-form-item :label="$t('compute.vga')" class="mb-0" v-if="isKvm">
-            <vga :decorator="decorators.vga" :vdi="vdi" :form="form" :showDefault="true" />
-          </a-form-item>
-          <a-form-item :label="$t('compute.machine')" class="mb-0" v-if="isKvm">
-            <machine :decorator="getMachineDecorator()" :isArm="isArm" :showDefault="true" />
-          </a-form-item>
-          <a-form-item v-show="!isServertemplate" v-if="isKvm && isLocalDisk" :label="$t('compute.text_1156')" :extra="$t('compute.text_1157')">
-            <backup
-              :decorator="decorators.backup"
-              :disabled="form.fd.systemDiskType"
-              :disabled-items="backupDisableds"
-              :domain="form.fd.domain"
-              :availableHostCount="availableHostCount"
-              :hostParams="backupHostParams" />
-          </a-form-item>
-          <a-form-item v-if="isKvm" :label="$t('compute.text_494')" :extra="$t('compute.daemon.tooltip')">
-            <a-switch
-              v-decorator="decorators.is_daemon"
-              :checkedChildren="$t('compute.text_115')"
-              :unCheckedChildren="$t('compute.text_116')" />
-          </a-form-item>
           <a-form-item v-show="!isServertemplate" v-if="isKvm" :label="$t('dictionary.instancegroup')" :extra="$t('compute.text_1158')">
             <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
           </a-form-item>
-          <a-form-item v-show="!isServertemplate" v-if="isKvm && enableEncryption" :label="$t('compute.server.encryption')" :extra="$t('compute.server.encryption.extra')">
-            <encrypt-keys :decorators="decorators.encrypt_keys" />
+          <a-form-item :label="$t('compute.repo.port_mapping')">
+            <labels
+              :decorators="decorators.portMapping"
+              :title="$t('compute.repo.port_mapping')"
+              :keyLabel="$t('compute.repo.container_port')"
+              :valueLabel="$t('compute.repo.host_port')"
+              :keyPlaceholder="$t('compute.repo.example', ['443'])"
+              :valuePlaceholder="$t('compute.repo.example', ['443'])" />
           </a-form-item>
-          <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" />
-          <!-- <a-form-item v-if="!isOpenSourceVersion" :label="$t('compute.bastionHost.bastion_host')">
-            <bastion-host :decorator="decorators.bastion_host" :form="form" />
-          </a-form-item> -->
-          <!-- <bastion-host v-if="!isOpenSourceVersion" :decorator="decorators.bastion_host" :form="form" /> -->
         </a-collapse-panel>
       </a-collapse>
+      <container-title :title="$t('compute.eci.container_config')" />
+      <spec-container
+        :form="form"
+        :panes.sync="form.fi.containerPanes"
+        :errPanes="form.fi.errPanes"
+        :decorators="decorators.containers" />
       <bottom-bar
         :loading="submiting"
         :form="form"
@@ -268,10 +232,8 @@ import _ from 'lodash'
 import * as R from 'ramda'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import EipConfig from '@Compute/sections/EipConfig'
-import EncryptKeys from '@Compute/sections/encryptkeys'
-import Vdi from '@Compute/sections/VDI'
-import Vga from '@Compute/sections/VGA'
-import Machine from '@Compute/sections/Machine'
+import Labels from '@Compute/sections/Labels'
+import SpecContainer from '@Compute/sections/SpecContainer'
 import { NETWORK_OPTIONS_MAP, GPU_DEV_TYPE_OPTIONS } from '@Compute/constants'
 import OsArch from '@/sections/OsArch'
 import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
@@ -279,6 +241,7 @@ import { resolveValueChangeField } from '@/utils/common/ant'
 import { HYPERVISORS_MAP } from '@/constants'
 import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
 import mixin from './mixin'
+import ContainerTitle from '../components/ContainerTitle'
 
 export default {
   name: 'VMContainer_IDCCreate',
@@ -286,10 +249,9 @@ export default {
     SecgroupConfig,
     EipConfig,
     OsArch,
-    Vdi,
-    Vga,
-    Machine,
-    EncryptKeys,
+    ContainerTitle,
+    SpecContainer,
+    Labels,
   },
   mixins: [mixin],
   data () {
@@ -377,7 +339,7 @@ export default {
           enabled: 1,
           usable: true,
           zone,
-          hypervisor: this.form.fd.hypervisor,
+          hypervisor: 'container',
           os_arch: HOST_CPU_ARCHS.x86.key,
           ...this.scopeParams,
         }
