@@ -5469,5 +5469,9 @@
   "common.no_data_start_month": "月初费用为空说明",
   "common.no_data_start_month_tip": "由于公有云账单延迟一天出账，所以每月1号账单需在2号同步，建议您切换查询时间范围。",
   "common.switch_to_last_month": "切换到上月",
-  "common.no_tip_in_this_month": "本月不再提示"
+  "common.no_tip_in_this_month": "本月不再提示",
+  "scope.licenses.expire_label": "授权过期时间",
+  "scope.licenses.maintenance_expire_label": "技术支持过期时间",
+  "common.licenses.maintenance_adverb_expire.alert": "您的技术支持服务即将过期，请及时进行技术支持续约，否则将无法获得官方技术支持，请将您的服务器识别码和需求发送电子邮件至 {0}，我们将尽快与您联系！",
+  "common.licenses.maintenance_already_expire.alert": "您的技术支持服务已过期，目前无法获得官方技术服务支持，如您需要续期技术支持，请将您的服务器识别码和需求发送电子邮件至 {0}，我们将尽快与您联系！"
 }

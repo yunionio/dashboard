@@ -362,6 +362,25 @@ export default {
       }
       return null
     },
+    maintenanceMessage () {
+      const days = (this.computeLicense.maintenance_expire - Date.now() / 1000) / 24 / 3600
+
+      if (this.computeLicense.maintenance_expire > 0) {
+        // 即将过期
+        if (days < 30) {
+          return {
+            message: this.$t('common.licenses.maintenance_adverb_expire.alert', [this.email]),
+          }
+        }
+        // 已经过期
+        if (days < 0) {
+          return {
+            message: this.$t('common.licenses.maintenance_already_expire.alert', [this.email]),
+          }
+        }
+      }
+      return null
+    },
     licenseClosable () {
       return this.computeStatus.prohibited || this.computeStatus.exceeded
     },
@@ -443,6 +462,16 @@ export default {
         if (val) {
           this.$nextTick(() => {
             this.pushLicenseAlert()
+          })
+        }
+      },
+      immediate: true,
+    },
+    maintenanceMessage: {
+      handler (val) {
+        if (val) {
+          this.$nextTick(() => {
+            this.pushLicenseAlert('maintenance')
           })
         }
       },
@@ -597,10 +626,19 @@ export default {
         throw error
       }
     },
-    pushLicenseAlert () {
+    pushLicenseAlert (type) {
       if (!this.isAdminMode) return false
-      const messageOptions = [this.licenseMessage.message]
-      if (this.licenseMessage.to) {
+      const messageOptions = []
+      if (type === 'maintenance') {
+        if (this.maintenanceMessage?.message) {
+          messageOptions.push(this.maintenanceMessage?.message)
+        }
+      } else {
+        if (this.licenseMessage?.message) {
+          messageOptions.push(this.licenseMessage?.message)
+        }
+      }
+      if (this.licenseMessage?.to) {
         messageOptions.push([
           'router-link',
           { class: 'ml-2', props: { to: this.licenseMessage.to } },
@@ -764,7 +802,7 @@ export default {
   padding: 0;
   font-weight: 400;
   font-size: 18px;
-  color: rgba(0,0,0,.85);
+  color: rgba(0, 0, 0, 0.85);
 }
 .products-label {
   max-width: 150px;
@@ -803,7 +841,7 @@ export default {
   padding: 0 !important;
   position: relative;
   &::after {
-    content: "";
+    content: '';
     left: 0;
     top: 0;
     right: 0;
@@ -812,7 +850,7 @@ export default {
     background: #fff;
     border-radius: 50%;
     z-index: -1;
-    transition: all .3s ease;
+    transition: all 0.3s ease;
   }
 }
 @media only screen and (max-width: 1100px) {
