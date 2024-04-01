@@ -5982,5 +5982,7 @@
   "common.no_data_start_month": "月初め費用が空の場合の説明",
   "common.no_data_start_month_tip": "パブリッククラウド請求書の出庫が1日遅れるため、毎月1日の請求書は2日に同期する必要があります。照会時間の範囲を切り替えることをお勧めします。",
   "common.switch_to_last_month": "先月に切り替え",
-  "common.no_tip_in_this_month": "今月は提示しない"
+  "common.no_tip_in_this_month": "今月は提示しない",
+  "common.licenses.maintenance_adverb_expire.alert": "テクニカル サポート サービスの有効期限が近づいています。期限内にテクニカル サポートを更新してください。そうしないと、正式なテクニカル サポートを受けることができなくなります。サーバー ID コードと要件を { に送信してください。 0 },できるだけ早くご連絡させていただきます!",
+  "common.licenses.maintenance_already_expire.alert": "テクニカル サポート サービスの有効期限が切れており、公式のテクニカル サービス サポートは現在利用できません。テクニカル サポートを更新する必要がある場合は、サーバー ID コードと要件を記載した電子メールを {0} に送信してください。できるだけ早くご連絡させていただきます！」"
 }
