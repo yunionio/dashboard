@@ -2,13 +2,12 @@
   <div>
     <div class="d-flex" v-for="(item) in labelList" :key="item.key">
       <a-form-item :wrapperCol="{ span: 24 }">
-        <base-select v-if="keyBaseSelectProps" v-decorator="decorators.key(item.key)" v-bind="keyBaseSelectProps"  />
-        <!-- <a-input-group compact v-if="keyBaseSelectProps">
+        <a-input-group compact v-if="keyBaseSelectProps">
           <div class="d-flex">
             <a-input class="oc-addonBefore ant-input-group-addon" style="width: 80px;" :defaultValue="keyLabel" readonly />
-            <base-select v-decorator="decorators.key(item.key)" v-bind="keyBaseSelectProps"  />
+            <base-select v-decorator="decorators.key(item.key)" v-bind="getBindProps(item.key)" />
           </div>
-        </a-input-group> -->
+        </a-input-group>
         <a-input v-else :addonBefore="keyLabel" v-decorator="decorators.key(item.key)" :placeholder="keyPlaceholder" />
       </a-form-item>
       <div class="mx-3"> = </div>
@@ -60,11 +59,23 @@ export default {
       type: Boolean,
       default: true,
     },
+    checkedValues: {
+      type: Array,
+      default: () => [],
+    },
   },
   data () {
     return {
       labelList: [],
     }
+  },
+  watch: {
+    labelList: {
+      handler (val) {
+        this.$emit('label-change', val)
+      },
+      deep: true,
+    },
   },
   methods: {
     add () {
@@ -73,6 +84,18 @@ export default {
     del (item) {
       const index = this.labelList.findIndex(val => val.key === item.key)
       this.labelList.splice(index, 1)
+    },
+    getBindProps (key) {
+      const { options } = this.keyBaseSelectProps
+      return {
+        ...this.keyBaseSelectProps,
+        options: options.filter(v => {
+          if (this.checkedValues?.length) {
+            return !this.checkedValues.includes(v.id)
+          }
+          return true
+        }),
+      }
     },
   },
 }

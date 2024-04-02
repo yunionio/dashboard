@@ -7,7 +7,7 @@
             <span>{{$t('compute.container', [i+1])}}</span>
           </a-badge>
         </template>
-        <spec-container-form :decorators="getDecorators(pane.key)" :cluster="cluster" :namespace="namespace" :form="form" />
+        <spec-container-form :decorators="getDecorators(pane.key)" :cluster="cluster" :namespace="namespace" :form="form" :paneKey="pane.key" />
       </a-tab-pane>
       <template v-slot:tabBarExtraContent>
         <a-button type="link" @click="add">{{$t('compute.add_container')}}</a-button>
@@ -18,8 +18,8 @@
 
 <script>
 import * as R from 'ramda'
-import SpecContainerForm from './Form'
 import { uuid } from '@/utils/utils'
+import SpecContainerForm from './Form'
 
 export default {
   name: 'SpecContainers',

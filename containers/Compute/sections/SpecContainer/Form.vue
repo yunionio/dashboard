@@ -51,7 +51,9 @@
         :valueLabel="$t('compute.repo.mount_point')"
         :keyPlaceholder="$t('common.tips.select', [$t('compute.repo.storage_volume')])"
         :valuePlaceholder="$t('compute.repo.mount_point.example')"
-        :keyBaseSelectProps="keyBaseSelectProps" />
+        :keyBaseSelectProps="keyBaseSelectProps"
+        :checkedValues="checkedValues"
+        @label-change="labelChangeHandle" />
     </a-form-item>
     <a-form-item :label="$t('compute.repo.env_variables')">
       <labels :decorators="decorators.env" :title="$t('compute.repo.variables')" :keyLabel="$t('compute.repo.variables')" />
@@ -84,10 +86,12 @@ export default {
       tpye: Object,
       validator: val => val.fc,
     },
+    paneKey: String,
   },
   data () {
     return {
       source: 'custom', // custom or registry
+      labelList: [],
     }
   },
   computed: {
@@ -108,6 +112,18 @@ export default {
       }
       return props
     },
+    checkedValues () {
+      const { fc } = this.form
+      let checkedValues = []
+
+      if (this.labelList) {
+        const mountNames = fc.getFieldValue('containerVolumeMountNames')
+        if (mountNames && mountNames[this.paneKey]) {
+          checkedValues = Object.values(mountNames[this.paneKey])
+        }
+      }
+      return checkedValues
+    },
   },
   methods: {
     formatInput (e, field) {
@@ -123,6 +139,9 @@ export default {
     },
     handleSourceChange (e) {
       this.source = e.target.value
+    },
+    labelChangeHandle (val) {
+      this.labelList = val
     },
   },
 }
