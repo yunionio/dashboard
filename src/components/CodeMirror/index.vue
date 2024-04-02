@@ -8,6 +8,16 @@
 <script>
 // lib
 import _CodeMirror from 'codemirror'
+import 'codemirror/addon/scroll/annotatescrollbar.js'
+import 'codemirror/addon/search/matchesonscrollbar.js'
+import 'codemirror/addon/search/match-highlighter.js'
+import 'codemirror/addon/search/jump-to-line.js'
+
+import 'codemirror/addon/dialog/dialog.js'
+import 'codemirror/addon/dialog/dialog.css'
+import 'codemirror/addon/search/searchcursor.js'
+import 'codemirror/addon/search/search.js'
+
 const CodeMirror = window.CodeMirror || _CodeMirror
 // export
 export default {
@@ -80,7 +90,7 @@ export default {
   },
   methods: {
     initialize () {
-      const cmOptions = Object.assign({}, this.globalOptions, this.options)
+      const cmOptions = Object.assign({}, this.globalOptions, this.options, { search: { bottom: 0 } })
       if (this.merge) {
         this.codemirror = CodeMirror.MergeView(this.$refs.mergeview, cmOptions)
         this.cminstance = this.codemirror.edit
