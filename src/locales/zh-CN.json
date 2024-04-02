@@ -180,7 +180,8 @@
       "stop_rescue_failed": "退出紧急模式失败",
       "qga_set_network": "QGA配置网卡",
       "creating_container": "创建中",
-      "create_container_failed": "创建失败"
+      "create_container_failed": "创建失败",
+      "delete_container_failed": "删除失败"
     },
     "network": {
       "init": "初始化",
@@ -1222,6 +1223,25 @@
       "process": "执行中",
       "failed": "失败",
       "cancel": "取消"
+    },
+    "container": {
+      "pulling_image": "拉取镜像",
+      "pulling_image_failed": "拉取镜像失败",
+      "pulled_image": "拉取镜像成功",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "starting": "启动中",
+      "start_failed": "启动失败",
+      "stopping": "停止中",
+      "stop_failed": "停止失败",
+      "sync_status": "同步状态",
+      "sync_status_failed": "同步状态失败",
+      "unknown": "未知",
+      "created": "创建完成",
+      "exited": "退出",
+      "running": "运行中",
+      "deleting": "删除中",
+      "delete_failed": "删除失败"
     }
   },
   "skuCategoryOptions": {

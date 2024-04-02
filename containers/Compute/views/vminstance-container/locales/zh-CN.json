@@ -35,5 +35,7 @@
   "compute.repo.container_port": "容器端口",
   "compute.repo.host_port": "宿主机端口",
   "compute.repo.mount_point.check_content": "挂载点不能为 /",
-  "compute.repo.mount_point.check_start": "挂载点以 / 开头"
+  "compute.repo.mount_point.check_start": "挂载点以 / 开头",
+  "compute.repo.start": "启动",
+  "compute.repo.stop": "停止"
 }

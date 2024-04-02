@@ -35,5 +35,7 @@
   "compute.repo.container_port": "Container port",
   "compute.repo.host_port": "Host port",
   "compute.repo.mount_point.check_content": "The mount point cannot be /",
-  "compute.repo.mount_point.check_start": "Mount point starts with /"
+  "compute.repo.mount_point.check_start": "Mount point starts with /",
+  "compute.repo.start": "start",
+  "compute.repo.stop": "stop"
 }

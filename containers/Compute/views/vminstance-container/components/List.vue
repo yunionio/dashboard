@@ -514,7 +514,7 @@ export default {
     },
   },
   created () {
-    this.initSidePageTab('vm-instance-detail')
+    this.initSidePageTab('detail')
     this.list.fetchData().then(() => {
       this.$nextTick(() => {
         if (this.$route.query.id && this.list.data[this.$route.query.id]) {
@@ -541,7 +541,7 @@ export default {
       return ret
     },
     handleOpenSidepage (row, tab) {
-      this.sidePageTriggerHandle(this, 'VmInstanceSidePage', {
+      this.sidePageTriggerHandle(this, 'VmContainerInstanceSidePage', {
         id: row.id,
         resource: 'servers',
         getParams: this.getParam,
