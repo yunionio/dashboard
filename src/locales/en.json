@@ -5966,6 +5966,8 @@
   "common.no_data_start_month_tip": "Due to a one-day delay in the public cloud billing, the billing on the 1st of each month needs to be synchronized on the 2nd. We suggest that you switch the query time range.",
   "common.switch_to_last_month": "Switch to last month",
   "common.no_tip_in_this_month": "No more prompts this month",
+  "scope.licenses.expire_label": "License expiration time",
+  "scope.licenses.maintenance_expire_label": "Technical support expiration time",
   "common.licenses.maintenance_adverb_expire.alert": "Your technical support service is about to expire. Please renew your technical support in time, otherwise you will not be able to obtain official technical support. Please send your server identification code and requirements to {0 },We will contact you as soon as possible!",
   "common.licenses.maintenance_already_expire.alert": "Your technical support service has expired and official technical service support is currently unavailable. If you need to renew technical support, please send an email with your server identification code and requirements to {0 },We will contact you as soon as possible!"
 }
