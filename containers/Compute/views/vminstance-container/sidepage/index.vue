@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="$t('compute.text_91')"
+    :title="$t('compute.vminstance-container')"
     icon="res-vminstance"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -27,9 +27,6 @@
       :on-manager="onManager"
       :show-create-action="false"
       :isPageDestroyed="isPageDestroyed"
-      :hiddenColumns="hiddenColumns"
-      :hiddenSingleActions="hiddenSingleActions"
-      :hiddenActionKeys="['SetReserveResource']"
       :is-server="true"
       @refresh="refresh"
       @single-refresh="singleRefresh"
@@ -39,9 +36,7 @@
 
 <script>
 import * as R from 'ramda'
-// import HostList from '@Compute/views/host/components/List'
 import GpuList from '@Compute/views/gpu/components/List'
-import ScheduledtasksList from '@Cloudenv/views/scheduledtask/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -50,51 +45,36 @@ import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 import NetworkListForVmInstanceSidepage from './Network'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-// import { cloudEnabled, cloudUnabledTip } from '../utils'
-import VmInstanceDetail from './Detail'
+import Detail from './Detail'
 import VmInstanceMonitorSidepage from './Monitor'
 import VmInstanceAlertSidepage from './Alert'
-import VmSnapshotSidepage from './Snapshot'
 import SecgroupList from './Secgroup'
 import DiskListForVmInstanceSidepage from './DiskList'
-// import DiskSnapshotListForVmInstanceSidepage from '@Compute/views/snapshot/components/List'
-// import InstanceSnapshotListForVmInstanceSidepage from '@Compute/views/snapshot-instance/components/List'
-// import EipListForVmInstanceSidepage from './EipList'
+import ContainerList from './Container'
 
 export default {
-  name: 'VmInstanceSidePage',
+  name: 'VmContainerInstanceSidePage',
   components: {
     Actions,
-    VmInstanceDetail,
+    Detail,
+    ContainerList,
     NetworkListForVmInstanceSidepage,
-    // DiskSnapshotListForVmInstanceSidepage,
-    // InstanceSnapshotListForVmInstanceSidepage,
     DiskListForVmInstanceSidepage,
     SecgroupList,
-    // HostList,
     VmInstanceMonitorSidepage,
     VmInstanceAlertSidepage,
-    VmSnapshotSidepage,
     GpuList,
-    ScheduledtasksList,
-    // EipListForVmInstanceSidepage,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     let detailTabs = [
-      { label: this.$t('compute.text_238'), key: 'vm-instance-detail' },
+      { label: this.$t('compute.text_238'), key: 'detail' },
+      { label: this.$t('compute.container', []), key: 'container-list' },
       { label: this.$t('compute.text_105'), key: 'secgroup-list' },
-      // { label: '宿主机', key: 'host-list' },
       { label: this.$t('compute.text_104'), key: 'network-list-for-vm-instance-sidepage' },
-      // { label: this.$t('compute.text_107'), key: 'eip-list-for-vm-instance-sidepage' },
       { label: this.$t('compute.text_376'), key: 'disk-list-for-vm-instance-sidepage' },
-      { label: this.$t('compute.text_462'), key: 'vm-snapshot-sidepage' },
-      // { label: this.$t('compute.text_101'), key: 'disk-snapshot-list-for-vm-instance-sidepage' },
-      // { label: this.$t('compute.text_102'), key: 'instance-snapshot-list-for-vm-instance-sidepage' },
       { label: this.$t('compute.text_113'), key: 'gpu-list' },
       { label: this.$t('compute.text_608'), key: 'vm-instance-monitor-sidepage' },
-      { label: this.$t('compute.text_1301'), key: 'vm-instance-alert-sidepage' },
-      { label: this.$t('cloudenv.text_431'), key: 'scheduledtasks-list' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
     ]
     if (!hasPermission({ key: 'guestsecgroups_list' }) || isScopedPolicyMenuHidden('server_hidden_columns.secgroups')) {
@@ -112,12 +92,6 @@ export default {
     if (this.$store.getters.isProjectMode) {
       detailTabs = R.remove(R.findIndex(R.propEq('key', 'gpu-list'))(detailTabs), 1, detailTabs)
     }
-    if (isScopedPolicyMenuHidden('sub_hidden_menus.disk_snapshot') && isScopedPolicyMenuHidden('sub_hidden_menus.instance_snapshot')) {
-      detailTabs = R.remove(R.findIndex(R.propEq('key', 'vm-snapshot-sidepage'))(detailTabs), 1, detailTabs)
-    }
-    if (isScopedPolicyMenuHidden('sub_hidden_menus.scheduledtask')) {
-      detailTabs = R.remove(R.findIndex(R.propEq('key', 'scheduledtasks-list'))(detailTabs), 1, detailTabs)
-    }
     return {
       detailTabs,
       agent_status: '',
@@ -129,7 +103,7 @@ export default {
   computed: {
     componentParams () {
       const tabs = ['secgroup-list', 'disk-list-for-vm-instance-sidepage']
-      const snapshotsTabs = ['vm-snapshot-sidepage']
+
       if (tabs.includes(this.params.windowData.currentTab)) {
         return {
           detail: true,
@@ -148,19 +122,9 @@ export default {
           detail: true,
         }
       }
-      if (snapshotsTabs.includes(this.params.windowData.currentTab)) {
-        return {
-          server_id: this.detailData.id,
-        }
-      }
       if (this.params.windowData.currentTab === 'gpu-list') {
         return {
           guest_id: this.data.id,
-        }
-      }
-      if (this.params.windowData.currentTab === 'scheduledtasks-list') {
-        return {
-          label: this.data.id,
         }
       }
       return null
@@ -301,7 +265,7 @@ export default {
             this.agent_fail_code = data[0].fail_code || ''
           }
         }
-      } catch (e) {}
+      } catch (e) { }
     },
     beforeShowMenu () {
       return this.$store.dispatch('scopedPolicy/get', {
@@ -327,7 +291,7 @@ export default {
           maxTry -= 1
           await new Promise(resolve => setTimeout(resolve, 6000))
         }
-      } catch (e) {}
+      } catch (e) { }
     },
   },
 }

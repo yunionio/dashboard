@@ -53,6 +53,7 @@ const BaremetalCreate = () => import(/* webpackChunkName: "compute" */ /* webpac
 const Image = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/image')
 const VMContainerInstance = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/vminstance-container')
 const VMContainerInstanceCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/vminstance-container/create/index')
+const VMContainerInstanceAdjustConfig = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/vminstance-container/adjustConfig')
 
 export default {
   index: 20,
@@ -106,7 +107,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.vminstance')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'private', 'public', 'vmware'])
+              return !hasSetupKey(['onestack'])
             },
           },
           component: Layout,
@@ -120,6 +121,11 @@ export default {
               name: 'VMContainerInstanceCreate',
               path: 'create',
               component: VMContainerInstanceCreate,
+            },
+            {
+              name: 'VMContainerInstanceAdjustConfig',
+              path: 'container-adjust-config',
+              component: VMContainerInstanceAdjustConfig,
             },
           ],
         },

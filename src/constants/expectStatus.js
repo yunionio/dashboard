@@ -579,4 +579,9 @@ export default {
     info: ['cancel'],
     danger: ['failed'],
   },
+  container: {
+    success: ['running'],
+    info: ['exited'],
+    danger: ['start_failed'],
+  },
 }

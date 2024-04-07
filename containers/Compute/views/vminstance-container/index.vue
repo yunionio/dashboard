@@ -33,7 +33,7 @@ export default {
   mixins: [ResStatisticsMixin],
   data () {
     return {
-      listId: 'VMInstanceList',
+      listId: 'VMContainerInstanceList',
       cloudEnv: '',
       resStaticsResource: 'servers',
     }
@@ -41,7 +41,7 @@ export default {
   computed: {
     cloudEnvOptions () {
       return [
-        { key: 'onpremise', label: this.$t('dictionary.onpremise_env') }
+        { key: 'onpremise', label: this.$t('dictionary.onpremise_env') },
       ]
     },
   },

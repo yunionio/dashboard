@@ -34,8 +34,7 @@ import {
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { BRAND_MAP, HYPERVISORS_MAP } from '@/constants'
-import { sizestr, sizestrWithUnit } from '@/utils/utils'
-import { hasPermission } from '@/utils/auth'
+import { sizestr } from '@/utils/utils'
 
 export default {
   name: 'VmInstanceDetail',
@@ -65,7 +64,7 @@ export default {
           title: this.$t('dictionary.domain'),
           formatter: ({ row }) => {
             if (!row.domain_id) return '-'
-            return <side-page-trigger permission="domains_get" name="DomainSidePage" id={row.domain_id} vm={this}>{ row.project_domain }</side-page-trigger>
+            return <side-page-trigger permission="domains_get" name="DomainSidePage" id={row.domain_id} vm={this}>{row.project_domain}</side-page-trigger>
           },
         },
         {
@@ -73,7 +72,7 @@ export default {
           title: this.$t('dictionary.project'),
           formatter: ({ row }) => {
             if (!row.tenant_id) return '-'
-            return <side-page-trigger permission="projects_get" name="ProjectSidePage" id={row.tenant_id} vm={this}>{ row.tenant }</side-page-trigger>
+            return <side-page-trigger permission="projects_get" name="ProjectSidePage" id={row.tenant_id} vm={this}>{row.tenant}</side-page-trigger>
           },
         },
         getNameDescriptionTableColumn({
@@ -109,7 +108,7 @@ export default {
           minWidth: 50,
           slots: {
             default: ({ row }) => {
-              return [<PasswordFetcher serverId={ row.id } resourceType='servers' />]
+              return [<PasswordFetcher serverId={row.id} resourceType='servers' />]
             },
           },
         },
@@ -210,7 +209,7 @@ export default {
                   return [
                     <div class='d-flex'>
                       <div class='text-truncate'>
-                        <status status={ row.backup_guest_status } statusModule={ 'server' } />
+                        <status status={row.backup_guest_status} statusModule={'server'} />
                       </div>
                       <div>
                         <a-button type='link' style="height: 14px" disabled={row.backup_guest_status !== 'ready'} onClick={this.startBackup}><icon type='start' style="transform:translateX(4px)" />{this.$t('compute.start_backup')}</a-button>
@@ -228,7 +227,7 @@ export default {
                   return [
                     <div class='d-flex'>
                       <div class='text-truncate'>
-                        <status status={ row.backup_guest_sync_status } statusModule={ 'backup_sync' } />
+                        <status status={row.backup_guest_sync_status} statusModule={'backup_sync'} />
                       </div>
                       <div>
                         <a-button type='link' style="height: 14px" disabled={row.backup_guest_sync_status !== 'ready'} onClick={this.switchBackup}><icon type='switch' style="transform:translateX(4px)" />{this.$t('compute.switch_backup')}</a-button>
@@ -246,16 +245,6 @@ export default {
         {
           title: this.$t('compute.text_368'),
           items: [
-            {
-              field: 'os_type',
-              title: this.$t('compute.text_267'),
-              formatter: ({ row }) => {
-                const distribution = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type
-                const { os_version: version = '' } = row.metadata || {}
-                return distribution + ' ' + (version === '-' ? '' : version)
-              },
-              hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.os_type'),
-            },
             getIpsTableColumn({ field: 'ip', title: 'IP', vm: this, hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.ips') }),
             {
               field: 'sub_ips',
@@ -282,27 +271,6 @@ export default {
                 return row.macs || '-'
               },
               hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.macs'),
-            }),
-            getCopyWithContentTableColumn({
-              field: 'image',
-              title: this.$t('compute.text_97'),
-              hideField: true,
-              message: this.diskInfos.image,
-              customEdit: hasPermission({ key: 'server_perform_rebuild_root' }) && this.data.status === 'ready',
-              customEditCallback: (row) => {
-                this.createDialog('VmRebuildRootDialog', {
-                  data: [row],
-                  columns: this.columns,
-                  onManager: this.onManager,
-                })
-              },
-              slotCallback: (row) => {
-                if (!this.diskInfos.image || this.diskInfos.image === '-') return '-'
-                if (!this.imageExist) return this.diskInfos.image
-                return [
-                  <side-page-trigger permission='images_get' name='SystemImageSidePage' id={this.diskInfos.imageId} vm={this}>{ this.diskInfos.image }</side-page-trigger>,
-                ]
-              },
             }),
             {
               field: 'host',
@@ -333,7 +301,7 @@ export default {
                   if (!row.secgroups) return '-'
                   return row.secgroups.map((item) => {
                     return <list-body-cell-wrap copy hideField={true} field='name' row={item} message={item.name}>
-                      <side-page-trigger permission='secgroups_get' name='SecGroupSidePage' id={item.id} vm={this}>{ item.name }</side-page-trigger>
+                      <side-page-trigger permission='secgroups_get' name='SecGroupSidePage' id={item.id} vm={this}>{item.name}</side-page-trigger>
                     </list-body-cell-wrap>
                   })
                 },
@@ -347,7 +315,7 @@ export default {
               slotCallback: row => {
                 if (!row.vpc) return '-'
                 return [
-                  <side-page-trigger permission='vpcs_get' name='VpcSidePage' id={row.vpc_id} vm={this}>{ row.vpc }</side-page-trigger>,
+                  <side-page-trigger permission='vpcs_get' name='VpcSidePage' id={row.vpc_id} vm={this}>{row.vpc}</side-page-trigger>,
                 ]
               },
               hidden: () => this.$store.getters.isProjectMode || this.$isScopedPolicyMenuHidden('server_hidden_columns.vpc'),
@@ -376,7 +344,7 @@ export default {
               title: this.$t('compute.text_49'),
               formatter: ({ row }) => {
                 if (!this.diskInfos.sysDisk) return '-'
-                return <a onClick={ () => this.$emit('tab-change', 'disk-list-for-vm-instance-sidepage') }>{this.diskInfos.sysDisk}</a>
+                return <a onClick={() => this.$emit('tab-change', 'disk-list-for-vm-instance-sidepage')}>{this.diskInfos.sysDisk}</a>
               },
               hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.disk'),
             },
@@ -385,7 +353,7 @@ export default {
               title: this.$t('compute.text_50'),
               formatter: ({ row }) => {
                 if (!this.diskInfos.dataDisk) return '-'
-                return <a onClick={ () => this.$emit('tab-change', 'disk-list-for-vm-instance-sidepage') }>{this.diskInfos.dataDisk}</a>
+                return <a onClick={() => this.$emit('tab-change', 'disk-list-for-vm-instance-sidepage')}>{this.diskInfos.dataDisk}</a>
               },
               hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.disk'),
             },
@@ -413,7 +381,7 @@ export default {
                   const idx = cdrom.indexOf('(')
                   const id = cdrom.substring(idx + 1, cdrom.indexOf('/'))
                   return [
-                    <side-page-trigger permission='images_get' name='SystemImageSidePage' id={id} vm={this}>{ cdrom.substring(0, idx) || '-' }</side-page-trigger>,
+                    <side-page-trigger permission='images_get' name='SystemImageSidePage' id={id} vm={this}>{cdrom.substring(0, idx) || '-'}</side-page-trigger>,
                   ]
                 },
               })
@@ -478,89 +446,14 @@ export default {
               },
             },
             {
-              field: 'is_daemon',
-              title: () => {
-                return [
-                  this.$t('compute.text_494'),
-                  <help-tooltip class="ml-1" text={ this.$t('compute.daemon.tooltip') } />,
-                ]
-              },
-              formatter: ({ row }) => {
-                if (row.is_daemon) {
-                  return this.$t('table.title.on')
-                } else {
-                  return this.$t('table.title.off')
-                }
-              },
-            },
-            {
-              field: 'bandwidth',
-              title: this.$t('compute.max_bandwidth'),
-              slots: {
-                default: ({ row }) => {
-                  return row.internet_max_bandwidth_out ? sizestrWithUnit(row.internet_max_bandwidth_out, 'M', 1024) + '/s' : '-'
-                },
-              },
-            },
-            {
               field: 'monitor_url',
               title: this.$t('compute.monitor_url.prompt'),
               formatter: ({ row }) => {
                 return row.monitor_url
               },
             },
-            {
-              field: 'bios',
-              title: this.$t('compute.bios'),
-              formatter: ({ row }) => {
-                return row.bios || 'BIOS'
-              },
-            },
           ],
           hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.os_arch'),
-        },
-        {
-          title: this.$t('compute.title.encryption'),
-          items: [
-            {
-              field: 'encrypt_key_id',
-              title: this.$t('compute.title.encryption_key'),
-              formatter: ({ callValue, row }) => {
-                if (row.encrypt_key_id) {
-                  if (row.encrypt_key && row.encrypt_alg) {
-                    return row.encrypt_key + ' (' + row.encrypt_key_id + ')'
-                  } else {
-                    return row.encrypt_key_id
-                  }
-                } else {
-                  return this.$t('compute.no_encryption')
-                }
-              },
-            },
-            {
-              field: 'encrypt_alg',
-              title: this.$t('compute.title.encrypt_alg'),
-              formatter: ({ callValue, row }) => {
-                if (row.encrypt_alg) {
-                  return row.encrypt_alg.toUpperCase()
-                } else {
-                  return '-'
-                }
-              },
-            },
-            {
-              field: 'encrypt_key_user',
-              title: this.$t('compute.title.encrypt_key_user'),
-              formatter: ({ callValue, row }) => {
-                if (row.encrypt_key_user) {
-                  return row.encrypt_key_user + ' / ' + row.encrypt_key_user_domain
-                } else {
-                  return '-'
-                }
-              },
-            },
-          ],
-          hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.password'),
         },
         ...backupInfo,
         {
@@ -589,8 +482,8 @@ export default {
           slots: {
             default: ({ row }, h) => {
               return [
-                <a-button type="link" class="mb-2" style="height: 21px;padding:0" onclick={this.viewCmdline}>{ this.showCmdline ? this.$t('table.title.off') : this.$t('compute.text_958') }</a-button>,
-                <code-mirror style={this.showCmdline ? { } : { visibility: 'hidden', height: '0px' }} value={this.cmdline} view-height="300px" options={this.cmOptions} />]
+                <a-button type="link" class="mb-2" style="height: 21px;padding:0" onclick={this.viewCmdline}>{this.showCmdline ? this.$t('table.title.off') : this.$t('compute.text_958')}</a-button>,
+                <code-mirror style={this.showCmdline ? {} : { visibility: 'hidden', height: '0px' }} value={this.cmdline} view-height="300px" options={this.cmOptions} />]
             },
           },
         })

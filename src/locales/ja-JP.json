@@ -180,7 +180,8 @@
       "stop_rescue_failed": "緊急モードの終了に失敗しました",
       "qga_set_network": "QGA 構成ネットワーク カード",
       "creating_container": "作成中",
-      "create_container_failed": "作成に失敗しました"
+      "create_container_failed": "作成に失敗しました",
+      "delete_container_failed": "削除に失敗しました"
     },
     "network": {
       "init": "初期化する",
@@ -1222,6 +1223,30 @@
       "process": "実行",
       "failed": "失敗する",
       "cancel": "キャンセル"
+    },
+    "container": {
+      "pulling_image": "画像をプル",
+      "pulling_image_failed": "イメージの取得に失敗しました",
+      "pulled_image": "イメージは正常にプルされました",
+      "creating": "作成中",
+      "create_failed": "作成に失敗しました",
+      "starting": "開始",
+      "start_failed": "開始に失敗しました",
+      "stopping": "停止",
+      "stop_failed": "停止に失敗しました",
+      "sync_status": "同期ステータス",
+      "sync_status_failed": "同期ステータスが失敗しました",
+      "unknown": "不明",
+      "created": "作成が完了しました",
+      "exited": "終了",
+      "running": "ランニング",
+      "deleting": "削除",
+      "delete_failed": "削除に失敗しました",
+      "deleting_container": "削除中",
+      "stopping_container": "停止中",
+      "starting_container": "開始中",
+      "stop_container_failed": "開始に失敗しました",
+      "stop_fail": "停止に失敗しました"
     }
   },
   "skuCategoryOptions": {

@@ -53,7 +53,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
 export default {
-  name: 'VmInstanceList',
+  name: 'VMContainerInstanceList',
   mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
   props: {
     id: String,
@@ -105,15 +105,6 @@ export default {
       },
       status: getStatusFilter('server'),
       power_states: getStatusFilter({ title: this.$t('compute.power_states'), statusModule: 'server', field: 'power_states' }),
-      os_dist: {
-        label: this.$t('table.title.os'),
-        dropdown: true,
-        multiple: true,
-        distinctField: {
-          type: 'extra_field',
-          key: 'os_dist',
-        },
-      },
       projects: getTenantFilter(),
       project_domains: getDomainFilter(),
       billing_type: {
@@ -165,10 +156,7 @@ export default {
         resource: 'servers',
         getParams: this.getParam,
         steadyStatus: {
-          status: Object.values(expectStatus.server).flat(),
-          checkBackup: (val) => {
-            return val.metadata && (val.metadata.create_backup || val.metadata.switch_backup)
-          },
+          status: Object.values(expectStatus.container).flat(),
         },
         filter,
         filterOptions,
@@ -240,7 +228,7 @@ export default {
           label: this.$t('compute.text_273'),
           permission: 'server_perform_stop',
           action: () => {
-            this.createDialog('VmShutDownDialog', {
+            this.createDialog('VmContainerShutDownDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
               onManager: this.onManager,
@@ -272,7 +260,7 @@ export default {
           label: this.$t('compute.text_274'),
           permission: 'server_perform_restart',
           action: () => {
-            this.createDialog('VmRestartDialog', {
+            this.createDialog('VmContainerRestartDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
               onManager: this.onManager,
@@ -523,7 +511,7 @@ export default {
     },
   },
   created () {
-    this.initSidePageTab('vm-instance-detail')
+    this.initSidePageTab('detail')
     this.list.fetchData().then(() => {
       this.$nextTick(() => {
         if (this.$route.query.id && this.list.data[this.$route.query.id]) {
@@ -550,7 +538,7 @@ export default {
       return ret
     },
     handleOpenSidepage (row, tab) {
-      this.sidePageTriggerHandle(this, 'VmInstanceSidePage', {
+      this.sidePageTriggerHandle(this, 'VmContainerInstanceSidePage', {
         id: row.id,
         resource: 'servers',
         getParams: this.getParam,

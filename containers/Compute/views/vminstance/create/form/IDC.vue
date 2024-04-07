@@ -313,7 +313,7 @@ export default {
     },
     hypervisors () {
       const { hypervisors = [] } = this.form.fi.capability
-      return hypervisors
+      return hypervisors.filter(v => v !== 'pod')
     },
     cloudregionParams () {
       return {

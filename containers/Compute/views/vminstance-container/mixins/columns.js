@@ -1,4 +1,3 @@
-import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { SERVER_TYPE } from '@Compute/constants'
 import {
   getProjectTableColumn,
@@ -14,7 +13,6 @@ import {
   getOsArch,
   getAccountTableColumn,
 } from '@/utils/common/tableColumn'
-import SystemIcon from '@/sections/SystemIcon'
 import { sizestr } from '@/utils/utils'
 import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 import i18nLocale from '@/locales'
@@ -47,7 +45,7 @@ export default {
       const num = row.metadata.create_backup_count || row.metadata.switch_backup_count
       let time = row.metadata.create_backup || row.metadata.switch_backup
       if (time) {
-        const aLink = <a-button type="link" class="oc-pointer" disabled={ this.execLoading } style="padding: 0;" onClick={() => doCreateOrSwitchBackup(row)}>{ this.$t('compute.text_1341') }</a-button>
+        const aLink = <a-button type="link" class="oc-pointer" disabled={this.execLoading} style="padding: 0;" onClick={() => doCreateOrSwitchBackup(row)}>{this.$t('compute.text_1341')}</a-button>
         const aIcon = <a-icon type="exclamation-circle" class="ml-1 error-color oc-pointer" />
         try {
           time = this.$moment(JSON.parse(time)).format()
@@ -58,23 +56,23 @@ export default {
           return <a-tooltip placement="right">
             <template slot="title">
               <i18n path="compute.text_1342">
-                <template slot="num">{ num }</template>
-                <template slot="time">{ time }</template>
-                <template slot="link">{ aLink }</template>
+                <template slot="num">{num}</template>
+                <template slot="time">{time}</template>
+                <template slot="link">{aLink}</template>
               </i18n>
             </template>
-            { aIcon }
+            {aIcon}
           </a-tooltip>
         } else if (row.metadata.switch_backup) {
           return <a-tooltip placement="right">
             <template slot="title">
               <i18n path="compute.text_1343">
-                <template slot="num">{ num }</template>
-                <template slot="time">{ time }</template>
-                <template slot="link">{ aLink }</template>
+                <template slot="num">{num}</template>
+                <template slot="time">{time}</template>
+                <template slot="link">{aLink}</template>
               </i18n>
             </template>
-            { aIcon }
+            {aIcon}
           </a-tooltip>
         }
       }
@@ -91,10 +89,10 @@ export default {
           { required: true, message: i18nLocale.t('compute.text_210') },
           // { validator: this.$validate('resourceCreateName') },
         ],
-        statusModule: 'server',
+        statusModule: 'container',
         slotCallback: row => {
           return (
-            <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
+            <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{row.name}</side-page-trigger>
           )
         },
         hidden: () => {
@@ -103,26 +101,26 @@ export default {
       }),
       getStatusTableColumn({
         minWidth: 180,
-        statusModule: 'server',
+        statusModule: 'container',
         slotCallback: row => {
-          const log = <side-page-trigger class="ml-1" onTrigger={ () => this.handleOpenSidepage(row, 'event-drawer') }>{ this.$t('common.view_logs') }</side-page-trigger>
+          const log = <side-page-trigger class="ml-1" onTrigger={() => this.handleOpenSidepage(row, 'event-drawer')}>{this.$t('common.view_logs')}</side-page-trigger>
           const cancel = <a class="ml-1"
-            onClick={ () => this.createDialog('VmLiveMigrateCancelDialog', {
+            onClick={() => this.createDialog('VmLiveMigrateCancelDialog', {
               data: [row],
               columns: this.columns,
               onManager: this.onManager,
-            }) }>{ this.$t('common.cancel') }</a>
-          const shutdown = <span class="text-color-help">({ this.$t('compute.server.shutdown_mode.stop_charging') })</span>
-          const rescue_mode = <span class="text-color-help">({ this.$t('compute.rescue') })</span>
+            })}>{this.$t('common.cancel')}</a>
+          const shutdown = <span class="text-color-help">({this.$t('compute.server.shutdown_mode.stop_charging')})</span>
+          const rescue_mode = <span class="text-color-help">({this.$t('compute.rescue')})</span>
 
           return [
             <div class='d-flex align-items-center text-truncate'>
-              <status status={ row.status } statusModule='server' process={ row.progress } />
-              { row.metadata && getToolTip(row) }
-              { row.status?.includes('fail') ? log : null }
-              { row.status === 'live_migrating' ? cancel : null }
-              { row.status === 'ready' && row.shutdown_mode === 'stop_charging' ? shutdown : null }
-              { row.rescue_mode === true ? rescue_mode : null }
+              <status status={row.status} statusModule='container' process={row.progress} />
+              {row.metadata && getToolTip(row)}
+              {row.status?.includes('fail') ? log : null}
+              {row.status === 'live_migrating' ? cancel : null}
+              {row.status === 'ready' && row.shutdown_mode === 'stop_charging' ? shutdown : null}
+              {row.rescue_mode === true ? rescue_mode : null}
             </div>,
           ]
         },
@@ -133,7 +131,7 @@ export default {
       getStatusTableColumn({
         field: 'power_states',
         title: this.$t('compute.power_states'),
-        statusModule: 'server',
+        statusModule: 'container',
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('server_hidden_columns.power_states')
         },
@@ -198,7 +196,7 @@ export default {
             if (this.isPreLoad && !row.macs) return [<data-loading />]
             if (row.macs) {
               return row.macs.split(',').map(mac => {
-                return <list-body-cell-wrap copy row={{ mac }} hide-field field="mac">{ mac }</list-body-cell-wrap>
+                return <list-body-cell-wrap copy row={{ mac }} hide-field field="mac">{mac}</list-body-cell-wrap>
               })
             }
             return []
@@ -223,10 +221,10 @@ export default {
           default: ({ row }) => {
             const ret = []
             if (row.instance_type) {
-              ret.push(<div class='text-truncate' style={{ color: '#0A1F44' }}>{ row.instance_type }</div>)
+              ret.push(<div class='text-truncate' style={{ color: '#0A1F44' }}>{row.instance_type}</div>)
             }
             const config = row.vcpu_count + 'C' + (row.vmem_size / 1024) + 'G' + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
-            return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
+            return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{config}</div>)
           },
         },
         formatter: ({ row }) => {
@@ -242,62 +240,6 @@ export default {
         },
       },
       {
-        field: 'os_dist',
-        title: i18nLocale.t('table.title.os'),
-        width: 100,
-        sortable: true,
-        slots: {
-          default: ({ row }) => {
-            if (!row.metadata) return
-            const dist = row.metadata.os_distribution || row.metadata.distro
-            const version = row.metadata.os_version || row.metadata.version
-
-            let name = ''
-            let tooltip = ''
-            if (dist) {
-              tooltip = version ? (version.includes(dist) ? version : `${decodeURI(dist)} ${version}`) : dist
-            } else if (row.metadata.os_type) {
-              tooltip = row.metadata.os_type
-            } else if (row.os_type) {
-              tooltip = row.os_type
-            } else {
-              tooltip = i18nLocale.t('compute.text_339')
-            }
-
-            name = dist || row.metadata.os_type || row.os_type || ''
-            if (name.includes('Windows') || name.includes('windows')) {
-              name = 'Windows'
-            } else if (name.startsWith('Linux') || name.startsWith('linux')) {
-              name = 'Linux'
-            }
-            return [
-              <SystemIcon tooltip={ tooltip } name={ name } />,
-            ]
-          },
-        },
-        formatter: ({ row }) => {
-          if (!row.metadata) return
-          const dist = row.metadata.os_distribution || row.metadata.distro
-          const version = row.metadata.os_version || row.metadata.version
-          let tooltip = ''
-
-          if (dist) {
-            tooltip = version ? (version.includes(dist) ? version : `${decodeURI(dist)} ${version}`) : dist
-          } else if (row.metadata.os_type) {
-            tooltip = row.metadata.os_type
-          } else if (row.os_type) {
-            tooltip = row.os_type
-          } else {
-            tooltip = i18nLocale.t('compute.text_339')
-          }
-
-          return tooltip
-        },
-        hidden: () => {
-          return this.$isScopedPolicyMenuHidden('server_hidden_columns.os_type')
-        },
-      },
-      {
         field: 'vcpu_count',
         title: 'CPU',
         sortable: true,
@@ -305,7 +247,7 @@ export default {
         slots: {
           default: ({ row }) => {
             if (row.vcpu_count) {
-              return [<list-body-cell-wrap row={{ row }} hide-field field="vcpu_count">{ row.vcpu_count }</list-body-cell-wrap>]
+              return [<list-body-cell-wrap row={{ row }} hide-field field="vcpu_count">{row.vcpu_count}</list-body-cell-wrap>]
             }
             return []
           },
@@ -323,7 +265,7 @@ export default {
           default: ({ row }) => {
             if (row.vmem_size) {
               const config = (row.vmem_size / 1024) + 'G'
-              return [<list-body-cell-wrap row={{ row }} hide-field field="vmem_size">{ config }</list-body-cell-wrap>]
+              return [<list-body-cell-wrap row={{ row }} hide-field field="vmem_size">{config}</list-body-cell-wrap>]
             }
             return []
           },
@@ -348,7 +290,7 @@ export default {
           default: ({ row }) => {
             if (this.isPreLoad && !row.disk) return [<data-loading />]
             const config = row.disk ? sizestr(row.disk, 'M', 1024) : ''
-            return [<list-body-cell-wrap row={{ row }} hide-field field="disk">{ config }</list-body-cell-wrap>]
+            return [<list-body-cell-wrap row={{ row }} hide-field field="disk">{config}</list-body-cell-wrap>]
           },
         },
         formatter: ({ row }) => {
@@ -369,9 +311,9 @@ export default {
         slots: {
           default: ({ row }) => {
             if (row.cpu_usage) {
-              return [<a-progress percent={ row.cpu_usage.toFixed(4) * 100 } size="small" />]
+              return [<a-progress percent={row.cpu_usage.toFixed(4) * 100} size="small" />]
             }
-            return [<a-progress percent={ 0 } size="small" />]
+            return [<a-progress percent={0} size="small" />]
           },
         },
       },
@@ -384,9 +326,9 @@ export default {
         slots: {
           default: ({ row }) => {
             if (row.mem_usage) {
-              return [<a-progress percent={ row.mem_usage.toFixed(4) * 100 } size="small" />]
+              return [<a-progress percent={row.mem_usage.toFixed(4) * 100} size="small" />]
             }
-            return [<a-progress percent={ 0 } size="small" />]
+            return [<a-progress percent={0} size="small" />]
           },
         },
       },
@@ -399,23 +341,10 @@ export default {
         slots: {
           default: ({ row }) => {
             if (row.disk_usage) {
-              return [<a-progress percent={ row.disk_usage.toFixed(4) * 100 } size="small" />]
+              return [<a-progress percent={row.disk_usage.toFixed(4) * 100} size="small" />]
             }
-            return [<a-progress percent={ 0 } size="small" />]
+            return [<a-progress percent={0} size="small" />]
           },
-        },
-      },
-      {
-        field: 'password',
-        title: i18nLocale.t('table.title.init_keypair'),
-        minWidth: 50,
-        slots: {
-          default: ({ row }) => {
-            return [<PasswordFetcher serverId={ row.id } resourceType='servers' />]
-          },
-        },
-        hidden: () => {
-          return this.$isScopedPolicyMenuHidden('server_hidden_columns.password')
         },
       },
       {

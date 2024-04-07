@@ -6,6 +6,27 @@ import { POLICY_RES_NAME_KEY_MAP } from '@/constants/policy'
 const getSingleActions = function () {
   return [
     {
+      label: i18n.t('compute.text_1100'),
+      action: (obj) => {
+        this.$router.push({
+          name: 'VMContainerInstanceAdjustConfig',
+          query: {
+            id: obj.id,
+          },
+        })
+      },
+      meta: (obj) => {
+        const ret = {
+          validate: true,
+          tooltip: null,
+        }
+        if (obj.status !== 'ready') {
+          ret.validate = false
+        }
+        return ret
+      },
+    },
+    {
       label: i18n.t('compute.text_352'),
       actions: (obj) => {
         return [
@@ -17,7 +38,7 @@ const getSingleActions = function () {
               disableDeleteAction(Object.assign(this, {
                 permission: 'server_update',
               }), {
-                name: i18n.t('dictionary.server'),
+                name: i18n.t('compute.vminstance-container'),
                 meta: () => {
                   const ret = { validate: true }
                   if (obj.hypervisor === typeClouds.hypervisorMap.bingocloud.key) {

@@ -1,45 +1,36 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('compute.text_247')}}</div>
+    <div slot="header">{{action}}</div>
     <div slot="body">
-      <a-alert class="mb-2" :message="$t('compute.need_reboot_prompt')" banner />
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_247')" />
-      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <a-form
-        :form="form.fc">
-        <!-- <a-form-item :label="$t('common.text00076')" v-bind="formItemLayout">
-          <a-radio-group v-decorator="decorators.disable_delete">
-            <a-radio-button
-              v-for="item of disableDeleteOptions"
-              :key="item.key"
-              :value="item.key">{{ item.label }}</a-radio-button>
+      <dialog-selected-tips :name="$t('compute.container', [])" :count="params.data.length" :action="action" />
+      <dialog-table :data="params.data" :columns="columns" />
+      <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.repo.image.source')">
+          <a-radio-group default-value="custom" @change="handleSourceChange">
+            <a-radio-button value="custom">{{ $t('compute.repo.image.custom') }}</a-radio-button>
+            <a-radio-button value="registry">{{ $t('compute.repo.image.registry') }}</a-radio-button>
           </a-radio-group>
-        </a-form-item> -->
-        <template v-if="isKvm">
-          <!-- <a-form-item :label="$t('compute.text_1269')" v-bind="formItemLayout">
-            <a-radio-group v-decorator="decorators.boot_order">
-              <a-radio-button
-                v-for="item of bootOrderOptions"
-                :key="item.key"
-                :value="item.key">{{ item.label }}</a-radio-button>
-            </a-radio-group>
-          </a-form-item> -->
-          <a-form-item :label="$t('compute.text_1155')" v-bind="formItemLayout">
-            <bios :decorator="decorators.bios" :isArm="isArm" />
-          </a-form-item>
-          <a-form-item :label="$t('compute.vdi_protocol')" v-bind="formItemLayout">
-            <vdi :decorator="decorators.vdi" @change="handleVdiChange" />
-          </a-form-item>
-          <a-form-item :label="$t('compute.vga')" v-bind="formItemLayout">
-            <vga :decorator="decorators.vga" :vdi="vdi" :form="form" />
-          </a-form-item>
-          <a-form-item :label="$t('compute.machine')" v-bind="formItemLayout">
-            <machine :decorator="decorators.machine" :isArm="isArm" />
-          </a-form-item>
-          <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.daemon.tooltip')" v-bind="formItemLayout" v-if="canAdminUpdate">
-            <a-switch v-model="is_daemon" />
-          </a-form-item>
-        </template>
+        </a-form-item>
+        <a-form-item v-if="source === 'custom'" :label="$t('compute.repo.container_image')">
+          <a-input
+            v-decorator="decorators.image"
+            :placeholder="$t('common.tips.input', [$t('compute.repo.container_image')])" />
+        </a-form-item>
+        <a-form-item v-else :label="$t('compute.repo.container_image')">
+          <mirror-registry v-decorator="decorators.registryImage" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.repo.command')">
+          <a-input v-decorator="decorators.command" :placeholder="$t('compute.repo.command.placeholder')" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.repo.command.params')">
+          <a-input v-decorator="decorators.arg" :placeholder="$t('compute.repo.command.params.placeholder')" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.repo.env_variables')">
+          <labels ref="envRef" :decorators="decorators.env(0)" :title="$t('compute.repo.variables')" :keyLabel="$t('compute.repo.variables')" />
+        </a-form-item>
+        <a-form-item label="">
+          <a-checkbox v-decorator="decorators.privileged">{{$t('compute.repo.privileged_mode')}}</a-checkbox>
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -52,175 +43,180 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { hasPermission } from '@/utils/auth'
-import Bios from '@Compute/sections/BIOS'
-import Vdi from '@Compute/sections/VDI'
-import Vga from '@Compute/sections/VGA'
-import Machine from '@Compute/sections/Machine'
+import MirrorRegistry from '@Compute/sections/MirrorRegistry'
+import Labels from '@Compute/sections/Labels'
 
 export default {
-  name: 'VmUpdateDialog',
+  name: 'ContainerUpdateDialog',
   components: {
-    Bios,
-    Vdi,
-    Vga,
-    Machine,
+    MirrorRegistry,
+    Labels,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const specData = this.params.data[0].spec || {}
+
     return {
       loading: false,
+      action: this.$t('common.edit'),
+      source: 'custom', // custom or registry
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              this.$set(this.form.fd, key, values[key])
+            })
+          },
+        }),
+        fd: {},
       },
-      vdi: 'vnc',
-      is_daemon: false,
       decorators: {
-        disable_delete: [
-          'disable_delete',
+        registryImage: [
+          'registryImage',
           {
             rules: [
-              { required: true, message: this.$t('compute.text_1270') },
+              { required: true, message: this.$t('common.tips.select', [this.$t('compute.eci.repo.image.registry')]) },
             ],
           },
         ],
-        // boot_order: [
-        //   'boot_order',
-        //   {
-        //     rules: [
-        //       { required: true, message: this.$t('compute.text_1271') },
-        //     ],
-        //   },
-        // ],
-        bios: [
-          'bios',
+        image: [
+          'image',
           {
+            initialValue: specData.image,
             rules: [
-              { required: true, message: this.$t('compute.text_1272') },
+              { required: true, message: `${this.$t('common.placeholder')}${this.$t('compute.repo.container_image')}` },
             ],
           },
         ],
-        vdi: [
-          'vdi',
+        command: [
+          'command',
           {
-            rules: [
-              { required: true, message: this.$t('compute.prompt_vdi') },
-            ],
+            initialValue: specData.command?.join(' '),
           },
         ],
-        vga: [
-          'vga',
+        arg: [
+          'arg',
           {
-            rules: [
-              { required: true, message: this.$t('compute.prompt_vga') },
-            ],
+            initialValue: specData.args?.join(' '),
           },
         ],
-        machine: [
-          'machine',
+        env: i => ({
+          key: j => [
+            `envNames[${i}][${j}]`,
+            {
+              rules: [
+                { required: true, message: this.$t('common.tips.input', [this.$t('compute.repo.variables')]) },
+              ],
+            },
+          ],
+          value: j => [
+            `envValues[${i}][${j}]`,
+            {
+              rules: [
+                { required: true, message: this.$t('common.tips.input', [this.$t('compute.repo.value')]) },
+              ],
+            },
+          ],
+        }),
+        privileged: [
+          'privileged',
           {
-            rules: [
-              { required: true, message: this.$t('compute.prompt_machine') },
-            ],
+            valuePropName: 'checked',
+            initialValue: specData.privileged,
           },
         ],
       },
-      bootOrderOptions: [
-        {
-          label: this.$t('compute.text_100'),
-          key: 'cdn',
-        },
-        {
-          label: this.$t('compute.text_1273'),
-          key: 'dcn',
-        },
-        {
-          label: this.$t('compute.text_104'),
-          key: 'ncd',
-        },
-      ],
-      disableDeleteOptions: [
-        {
-          label: this.$t('compute.text_656'),
-          key: true,
-        },
-        {
-          label: this.$t('compute.text_569'),
-          key: false,
-        },
-      ],
       formItemLayout: {
         wrapperCol: {
-          span: 20,
+          span: 21,
         },
         labelCol: {
-          span: 4,
+          span: 3,
         },
       },
     }
   },
   computed: {
-    isKvm () {
-      return this.params.data.length >= 1 && this.params.data[0].hypervisor === 'kvm'
+    columns () {
+      const showFields = ['name', 'status']
+      return this.params.columns.filter((item) => { return showFields.includes(item.field) })
     },
-    isArm () {
-      return this.params.data.length >= 1 && (this.params.data[0].os_arch === 'arm' || this.params.data[0].os_arch === 'aarch64')
-    },
-    canAdminUpdate () {
-      return hasPermission({ key: 'server_update', resourceData: this.params.data[0] }) && this.$store.getters.isAdminMode
+    selectItems () {
+      return this.params.data
     },
   },
-  created () {
-    this.initFormValue(this.params.data[0])
+  mounted () {
+    setTimeout(() => {
+      const envs = this.selectItems[0].spec?.envs || []
+
+      envs.forEach((v, idx) => {
+        this.$refs.envRef.add()
+        this.$nextTick(() => {
+          const labelList = this.$refs.envRef.labelList
+          this.form.fc.setFieldsValue({
+            [`envNames[0][${labelList[idx].key}]`]: v.key,
+            [`envValues[0][${labelList[idx].key}]`]: v.value,
+          })
+        })
+      })
+    }, 500)
   },
   methods: {
+    handleSourceChange (e) {
+      this.source = e.target.value
+    },
+    async doSubmit (values) {
+      console.log(values)
+      const { id, spec } = this.params.data[0]
+      const getEnvs = (names, values) => {
+        const envs = []
+        if (names) {
+          for (const k in names) {
+            envs.push({ key: names[k], value: values[k] })
+          }
+        }
+        return envs
+      }
+      const specData = {
+        ...spec,
+      }
+      const { image, registryImage, command, arg, envNames, envValues } = values
+      if (image || registryImage) {
+        specData.image = image || registryImage
+      }
+      if (command) {
+        specData.command = command.split(' ')
+      }
+      if (arg) {
+        specData.args = arg.split(' ')
+      }
+      if (envNames) {
+        specData.envs = getEnvs(envNames[0], envValues[0])
+      } else {
+        specData.envs = []
+      }
+      return this.params.onManager('update', {
+        id,
+        managerArgs: {
+          data: {
+            spec: specData,
+          },
+        },
+      })
+    },
     async handleConfirm () {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        values.is_daemon = this.is_daemon
-        const ids = this.params.data.map(item => item.id)
-        await this.params.onManager('batchUpdate', {
-          id: ids,
-          managerArgs: {
-            data: values,
-          },
-        })
-        const syncIds = this.params.data.filter(item => item.status === 'ready').map(item => item.id)
-        if (syncIds && syncIds.length > 0) {
-          await this.params.onManager('batchPerformAction', {
-            id: syncIds,
-            managerArgs: {
-              action: 'sync',
-            },
-          })
-        }
+        await this.doSubmit(values)
         this.loading = false
+        this.$message.success(this.$t('common.success'))
         this.cancelDialog()
       } catch (error) {
         this.loading = false
+        this.$message.error(this.$t('common.failed'))
+        throw error
       }
-    },
-    initFormValue (data) {
-      this.$nextTick(() => {
-        const updateObj = {
-          disable_delete: data.disable_delete,
-        }
-        if (this.isKvm) {
-          // updateObj.boot_order = data.boot_order
-          updateObj.bios = data.bios || (this.isArm ? 'UEFI' : 'BIOS')
-          updateObj.vdi = data.vdi ? data.vdi : 'vnc'
-          updateObj.vga = data.vga ? data.vga : 'std'
-          this.vdi = updateObj.vdi
-          updateObj.machine = data.machine ? data.machine : (this.isArm ? 'virt' : 'pc')
-          // updateObj.is_daemon = data.is_daemon
-          this.is_daemon = data.is_daemon
-        }
-        this.form.fc.setFieldsValue(updateObj)
-      })
-    },
-    handleVdiChange (data) {
-      this.vdi = data.value
     },
   },
 }
