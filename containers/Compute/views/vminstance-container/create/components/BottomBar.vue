@@ -223,7 +223,6 @@ export default {
         ],
         [
           { label: this.$t('compute.text_295'), labelClass: 'label-w-80', value: this.config },
-          { label: this.$t('compute.text_267'), labelClass: 'label-w-80', value: this.image },
         ],
       ]
       return ret
@@ -420,7 +419,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../../../../../../src/styles/less/theme";
+@import '../../../../../../src/styles/less/theme';
 .create-server-result-wrap {
   position: relative;
   font-size: 12px;

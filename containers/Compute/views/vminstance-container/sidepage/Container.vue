@@ -70,7 +70,7 @@ export default {
           slots: {
             default: ({ row }, h) => {
               if (!row.spec.envs || !row.spec.envs.length) return '-'
-              return row.spec.envs.forEach(v => {
+              return row.spec.envs.map(v => {
                 return (
                   <a-tooltip title={`${v.key}: ${v.value}`}>
                     <a-tag class="d-block text-truncate mb-1" style="max-width: 400px;">{v.key}: {v.value}</a-tag>
@@ -187,6 +187,16 @@ export default {
             return {
               validate: obj.status === 'running',
             }
+          },
+        },
+        {
+          label: this.$t('table.action.modify'),
+          action: (obj) => {
+            this.createDialog('ContainerUpdateDialog', {
+              data: [obj],
+              columns: this.columns,
+              onManager: this.onManager,
+            })
           },
         },
       ],

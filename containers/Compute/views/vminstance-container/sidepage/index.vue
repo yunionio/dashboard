@@ -69,7 +69,7 @@ export default {
   data () {
     let detailTabs = [
       { label: this.$t('compute.text_238'), key: 'detail' },
-      { label: '容器', key: 'container-list' },
+      { label: this.$t('compute.container', []), key: 'container-list' },
       { label: this.$t('compute.text_105'), key: 'secgroup-list' },
       { label: this.$t('compute.text_104'), key: 'network-list-for-vm-instance-sidepage' },
       { label: this.$t('compute.text_376'), key: 'disk-list-for-vm-instance-sidepage' },

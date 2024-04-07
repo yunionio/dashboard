@@ -858,6 +858,7 @@ export class GenCreateData {
       index,
       backend: item.type === STORAGE_AUTO.key ? '' : item.type,
       size: item.size * 1024,
+      format: 'raw',
     }
     if (type === 'sys' && this.fd.imageType !== IMAGES_TYPE_MAP.iso.key && this.fd.hypervisor !== HYPERVISORS_MAP.proxmox.key) {
       if (this.fd.image && this.fd.image.key) {
@@ -921,41 +922,9 @@ export class GenCreateData {
   }
 
   _genDisksArr () {
-    const sysDiskType = this.fd.systemDiskType.key
-    let dataDiskType = this._getDataDiskType(this.fd.dataDiskTypes)
-    const systemDisk = {
-      type: sysDiskType,
-      size: this.fd.systemDiskSize,
-    }
-    // 磁盘介质
-    if (this.fi.systemDiskMedium) {
-      systemDisk.medium = this.fi.systemDiskMedium
-    }
-    if (this.fd.systemDiskSchedtag) {
-      systemDisk.schedtags = [
-        { id: this.fd.systemDiskSchedtag },
-      ]
-      if (this.fd.systemDiskPolicy && this.fd.systemDiskPolicy) {
-        systemDisk.schedtags[0].strategy = this.fd.systemDiskPolicy
-      }
-    }
-    if (this.fd.systemDiskStorage) {
-      systemDisk.storage_id = this.fd.systemDiskStorage
-    }
-    if (this.fd.systemDiskIops) {
-      systemDisk.iops = this.fd.systemDiskIops
-    }
-    if (this.fd.systemDiskThroughput) {
-      systemDisk.throughput = this.fd.systemDiskThroughput
-    }
-    if (this.fd.systemDiskPreallocation) {
-      systemDisk.preallocation = this.fd.systemDiskPreallocation
-    }
-    // #7356 新建vmware主机，数据盘没有传磁盘类型字段
-    if (this.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
-      dataDiskType = dataDiskType || sysDiskType
-    }
+    const dataDiskType = this._getDataDiskType(this.fd.dataDiskTypes)
     const dataDisk = []
+
     R.forEachObjIndexed((value, key) => {
       const diskObj = {
         size: value,
@@ -996,12 +965,12 @@ export class GenCreateData {
       }
       dataDisk.push(diskObj)
     }, this.fd.dataDiskSizes)
-    const disks = { data: dataDisk, system: systemDisk }
+    const disks = { data: dataDisk }
     return disks
   }
 
   /**
-   * 组装所有磁盘数据，包含系统盘及数据盘
+   * 组装所有磁盘数据，数据盘
    *
    * @returns { Array }
    * @memberof GenCreateData
@@ -1011,7 +980,7 @@ export class GenCreateData {
     if (this.isPublic && this.isPrepaid) {
       return this.fd.spec.disks
     }
-    const ret = [this.genDisk(disks.system, 'sys', 0)]
+    const ret = []
     for (let i = 0, len = disks.data.length; i < len; i++) {
       ret.push(this.genDisk(disks.data[i], 'data', i + 1))
     }

@@ -16,11 +16,10 @@
 import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import WorkflowMixin from '@/mixins/workflow'
 
 export default {
   name: 'ContainerShutDownDialog',
-  mixins: [DialogMixin, WindowsMixin, WorkflowMixin],
+  mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
       loading: false,
