@@ -1241,7 +1241,9 @@
       "exited": "退出",
       "running": "运行中",
       "deleting": "删除中",
-      "delete_failed": "删除失败"
+      "delete_failed": "删除失败",
+      "deleting_container": "删除容器中",
+      "stopping_container": "停止容器中"
     }
   },
   "skuCategoryOptions": {

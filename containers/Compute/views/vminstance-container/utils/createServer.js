@@ -859,6 +859,7 @@ export class GenCreateData {
       backend: item.type === STORAGE_AUTO.key ? '' : item.type,
       size: item.size * 1024,
       format: 'raw',
+      fs: 'ext4',
     }
     if (type === 'sys' && this.fd.imageType !== IMAGES_TYPE_MAP.iso.key && this.fd.hypervisor !== HYPERVISORS_MAP.proxmox.key) {
       if (this.fd.image && this.fd.image.key) {
@@ -1301,7 +1302,7 @@ export class GenCreateData {
 
       return {
         name: this.fd.containerNames?.[k],
-        image: this.fd.containerimages?.[k],
+        image: this.fd.containerimages?.[k] || this.fd.registryImages?.[k],
         command: this.fd.containerCommands?.[k]?.split(' '),
         args: this.fd.containerArgs?.[k]?.split(' '),
         privileged: this.fd.containerPrivilegeds?.[k],

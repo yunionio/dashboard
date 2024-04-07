@@ -137,6 +137,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isVminstanceContainer: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -160,6 +164,7 @@ export default {
       const ret = []
       if (this.isSnapshotImageType) return ret
       if (this.isHostImageType) return ['snapshot', 'schedtag']
+      if (this.isVminstanceContainer) return ['storage', 'schedtag']
       if (this.enableMointpoint) {
         if (!this.isWindows) {
           if (this.hypervisor === HYPERVISORS_MAP.kvm.key) {

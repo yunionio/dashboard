@@ -8,7 +8,7 @@
     </a-alert>
     <a-card :bordered="false" size="small">
       <template #title>
-        <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1100')" />
+        <dialog-selected-tips :name="$t('compute.vminstance-container')" :count="params.data.length" :action="$t('compute.text_1100')" />
       </template>
       <dialog-table :data="params.data" :columns="columns" />
     </a-card>
@@ -51,7 +51,7 @@
           </a-form-item>
           <a-form-item :label="$t('compute.text_49')" v-show="selectedItems.length === 1 && form.fd.defaultType">
             <system-disk
-              v-if="isRenderSystemDisk"
+              v-if="false && isRenderSystemDisk"
               :decorator="decorators.systemDisk"
               :type="type"
               :hypervisor="hypervisor"
@@ -509,7 +509,7 @@ export default {
           editDesc: false,
           slotCallback: row => {
             return (
-              <side-page-trigger>{ row.name }</side-page-trigger>
+              <side-page-trigger>{row.name}</side-page-trigger>
             )
           },
         }),
@@ -524,10 +524,10 @@ export default {
             default: ({ row }) => {
               const ret = []
               if (row.instance_type) {
-                ret.push(<div class='text-truncate' style={{ color: '#0A1F44' }}>{ row.instance_type }</div>)
+                ret.push(<div class='text-truncate' style={{ color: '#0A1F44' }}>{row.instance_type}</div>)
               }
               const config = row.vcpu_count + 'C' + sizestr(row.vmem_size, 'M', 1024) + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
-              return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
+              return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{config}</div>)
             },
           },
         },
@@ -544,7 +544,7 @@ export default {
               const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
               const tooltip = (version.includes(name) ? version : `${name} ${version}`) || this.$t('compute.text_339') // 去重
               return [
-                <SystemIcon tooltip={ tooltip } name={ name } />,
+                <SystemIcon tooltip={tooltip} name={name} />,
               ]
             },
           },
@@ -726,7 +726,7 @@ export default {
         try {
           const { data } = await this.capability(this.data[0].zone_id)
           this.form.fi.capability = data
-        } catch (error) {}
+        } catch (error) { }
       }
       const conf = this.maxConfig()
       this.form.fd.vcpu_count = conf[0]
@@ -1036,7 +1036,7 @@ export default {
       return dataDisk
     },
     cancel () {
-      this.$router.push({ name: 'VMInstance' })
+      this.$router.push({ name: 'VMContainerInstance' })
     },
     baywatch (props, watcher) {
       const iterator = function (prop) {

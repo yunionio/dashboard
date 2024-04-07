@@ -1226,7 +1226,9 @@
       "exited": "exited",
       "running": "running",
       "deleting": "deleting",
-      "delete_failed": "delete_failed"
+      "delete_failed": "delete_failed",
+      "deleting_container": "deleting_container",
+      "stopping_container": "stopping_container"
     }
   },
   "skuCategoryOptions": {

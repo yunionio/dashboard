@@ -72,6 +72,7 @@ import ElasticSearchList from '@Middleware/views/elasticsearch/components/List'
 import CdnDomainList from '@Network/views/cdn/components/List'
 import WafList from '@Network/views/waf/components/List'
 import FileSystemList from '@Storage/views/file-system/components/List'
+import VmContainerInstanceList from '@Compute/views/vminstance-container/components/List'
 import { getSearchMaps } from '@/constants/globalSearch'
 
 export default {
@@ -123,6 +124,7 @@ export default {
     WafList,
     FileSystemList,
     GpuList,
+    VmContainerInstanceList,
   },
   data () {
     const maps = getSearchMaps()

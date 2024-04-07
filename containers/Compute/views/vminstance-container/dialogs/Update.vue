@@ -166,6 +166,7 @@ export default {
       this.source = e.target.value
     },
     async doSubmit (values) {
+      console.log(values)
       const { id, spec } = this.params.data[0]
       const getEnvs = (names, values) => {
         const envs = []
@@ -176,14 +177,29 @@ export default {
         }
         return envs
       }
+      const specData = {
+        ...spec,
+      }
+      const { image, registryImage, command, arg, envNames, envValues } = values
+      if (image || registryImage) {
+        specData.image = image || registryImage
+      }
+      if (command) {
+        specData.command = command.split(' ')
+      }
+      if (arg) {
+        specData.args = arg.split(' ')
+      }
+      if (envNames) {
+        specData.envs = getEnvs(envNames[0], envValues[0])
+      } else {
+        specData.envs = []
+      }
       return this.params.onManager('update', {
         id,
         managerArgs: {
           data: {
-            spec: {
-              ...spec,
-              envs: values.envNames ? getEnvs(values.envNames[0], values.envValues[0]) : [],
-            },
+            spec: specData,
           },
         },
       })

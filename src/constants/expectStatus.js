@@ -581,6 +581,7 @@ export default {
   },
   container: {
     success: ['running'],
+    info: ['exited'],
     danger: ['start_failed'],
   },
 }

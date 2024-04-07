@@ -111,18 +111,13 @@
           :hypervisor="form.fd.hypervisor"
           :sku="form.fd.sku"
           :capability-data="form.fi.capability"
-          :isSnapshotImageType="isSnapshotImageType"
-          :isHostImageType="isHostImageType"
           :disabled="form.fi.dataDiskDisabled"
           :defaultType="form.fd.systemDiskType"
           :domain="project_domain"
-          :isWindows="isWindows"
-          :isStorageShow="isStorageShow"
-          :enableMointpoint="true"
+          :isVminstanceContainer="true"
           :storageParams="dataDiskStorageParams"
           :storageHostParams="storageHostParams"
           @storageHostChange="storageHostChange" />
-        <div slot="extra" class="warning-color" v-if="isStorageShow">{{ $t('compute.select_storage_no_schetag') }}</div>
       </a-form-item>
       <a-form-item :label="$t('compute.text_1372')" v-if="showServerAccount">
         <server-account :form="form" :hypervisor="form.fd.hypervisor" :instance_capabilities="form.fi.capability.instance_capabilities" :osType="osType" />

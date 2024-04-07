@@ -1175,6 +1175,28 @@ export const getSearchMaps = (searchRes = {}) => {
       },
       resData: {},
     },
+    vminstanceContainer: {
+      menu_key: 'vminstance-container',
+      res_name: 'servers',
+      label: i18n.t('compute.vminstance-container'),
+      id: 'vminstanceContainer',
+      component: 'VmContainerInstanceList',
+      hasPermission: hasPermission({ key: 'servers_list' }),
+      params: {
+        common: {
+          ...commonSearchQuery,
+          hypervisor: 'pod',
+          with_meta: true,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        id: {
+          id: searchRes.id,
+        },
+      },
+      resData: {},
+    },
   }
 
   const validMaps = R.filter((val, key) => {
