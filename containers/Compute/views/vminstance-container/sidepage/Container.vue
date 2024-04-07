@@ -198,6 +198,11 @@ export default {
               onManager: this.onManager,
             })
           },
+          meta: (obj) => {
+            return {
+              validate: obj.status === 'running',
+            }
+          },
         },
       ],
     }

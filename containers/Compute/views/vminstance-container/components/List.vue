@@ -156,10 +156,7 @@ export default {
         resource: 'servers',
         getParams: this.getParam,
         steadyStatus: {
-          status: Object.values(expectStatus.server).flat(),
-          checkBackup: (val) => {
-            return val.metadata && (val.metadata.create_backup || val.metadata.switch_backup)
-          },
+          status: Object.values(expectStatus.container).flat(),
         },
         filter,
         filterOptions,
@@ -231,7 +228,7 @@ export default {
           label: this.$t('compute.text_273'),
           permission: 'server_perform_stop',
           action: () => {
-            this.createDialog('VmShutDownDialog', {
+            this.createDialog('VmContainerShutDownDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
               onManager: this.onManager,
@@ -263,7 +260,7 @@ export default {
           label: this.$t('compute.text_274'),
           permission: 'server_perform_restart',
           action: () => {
-            this.createDialog('VmRestartDialog', {
+            this.createDialog('VmContainerRestartDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
               onManager: this.onManager,

@@ -1242,8 +1242,11 @@
       "running": "ランニング",
       "deleting": "削除",
       "delete_failed": "削除に失敗しました",
-      "deleting_container": "コンテナを削除する",
-      "stopping_container": "コンテナを停止しています"
+      "deleting_container": "削除中",
+      "stopping_container": "停止中",
+      "starting_container": "開始中",
+      "stop_container_failed": "開始に失敗しました",
+      "stop_fail": "停止に失敗しました"
     }
   },
   "skuCategoryOptions": {

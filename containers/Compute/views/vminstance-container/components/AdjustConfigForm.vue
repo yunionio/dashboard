@@ -1,11 +1,6 @@
 <template>
   <div>
     <page-header :title="$t('compute.text_1100')" style="margin-bottom: 7px;" />
-    <a-alert class="mb-2" type="warning" v-if="tips">
-      <div slot="message">
-        {{ tips }}
-      </div>
-    </a-alert>
     <a-card :bordered="false" size="small">
       <template #title>
         <dialog-selected-tips :name="$t('compute.vminstance-container')" :count="params.data.length" :action="$t('compute.text_1100')" />
@@ -430,15 +425,6 @@ export default {
     },
     hypervisor () {
       return this.selectedItem.hypervisor
-    },
-    tips () {
-      if (this.hotplug) {
-        return this.$t('compute.text_1107')
-      }
-      if ([HYPERVISORS_MAP.kvm.hypervisor, HYPERVISORS_MAP.azure.hypervisor].includes(this.hypervisor)) {
-        return this.$t('compute.text_1108')
-      }
-      return ''
     },
     type () {
       const brand = this.selectedItem.brand

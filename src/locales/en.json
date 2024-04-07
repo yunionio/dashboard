@@ -1228,7 +1228,10 @@
       "deleting": "deleting",
       "delete_failed": "delete_failed",
       "deleting_container": "deleting_container",
-      "stopping_container": "stopping_container"
+      "stopping_container": "stopping_container",
+      "starting_container": "starting_container",
+      "stop_container_failed": "start_container_failed",
+      "stop_fail": "stop_fail"
     }
   },
   "skuCategoryOptions": {

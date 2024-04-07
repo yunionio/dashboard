@@ -38,7 +38,7 @@ const getSingleActions = function () {
               disableDeleteAction(Object.assign(this, {
                 permission: 'server_update',
               }), {
-                name: i18n.t('dictionary.server'),
+                name: i18n.t('compute.vminstance-container'),
                 meta: () => {
                   const ret = { validate: true }
                   if (obj.hypervisor === typeClouds.hypervisorMap.bingocloud.key) {

@@ -89,7 +89,7 @@ export default {
           { required: true, message: i18nLocale.t('compute.text_210') },
           // { validator: this.$validate('resourceCreateName') },
         ],
-        statusModule: 'server',
+        statusModule: 'container',
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{row.name}</side-page-trigger>
@@ -101,7 +101,7 @@ export default {
       }),
       getStatusTableColumn({
         minWidth: 180,
-        statusModule: 'server',
+        statusModule: 'container',
         slotCallback: row => {
           const log = <side-page-trigger class="ml-1" onTrigger={() => this.handleOpenSidepage(row, 'event-drawer')}>{this.$t('common.view_logs')}</side-page-trigger>
           const cancel = <a class="ml-1"
@@ -115,7 +115,7 @@ export default {
 
           return [
             <div class='d-flex align-items-center text-truncate'>
-              <status status={row.status} statusModule='server' process={row.progress} />
+              <status status={row.status} statusModule='container' process={row.progress} />
               {row.metadata && getToolTip(row)}
               {row.status?.includes('fail') ? log : null}
               {row.status === 'live_migrating' ? cancel : null}
@@ -131,7 +131,7 @@ export default {
       getStatusTableColumn({
         field: 'power_states',
         title: this.$t('compute.power_states'),
-        statusModule: 'server',
+        statusModule: 'container',
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('server_hidden_columns.power_states')
         },
