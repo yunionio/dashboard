@@ -4,6 +4,7 @@
     :extra-info="extraInfo"
     :base-info="baseInfo"
     status-module="server"
+    resource="servers"
     :on-manager="onManager" />
 </template>
 
@@ -14,11 +15,15 @@ import {
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
 import {
+  getNameDescriptionTableColumn,
+  getStatusTableColumn,
+  getOsArch,
   getCopyWithContentTableColumn,
   getBrandTableColumn,
   getSwitchTableColumn,
   getServerMonitorAgentInstallStatus,
 } from '@/utils/common/tableColumn'
+import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 
@@ -39,6 +44,22 @@ export default {
   data () {
     return {
       baseInfo: [
+        getStatusTableColumn({
+          field: 'power_states',
+          title: this.$t('compute.power_states'),
+          statusModule: 'server',
+        }),
+        getNameDescriptionTableColumn({
+          onManager: this.onManager,
+          field: 'hostname',
+          hiddenField: 'name',
+          title: this.$t('common_388'),
+          label: this.$t('common_388'),
+          showDesc: false,
+          resource: 'servers',
+          formRules: [{ required: true, message: this.$t('common.tips.input', [this.$t('common_388')]) }],
+        }),
+        getOsArch({ field: 'metadata.os_arch' }),
         getUserTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.columns, tipName: this.$t('compute.text_92') }),
         getExtTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.columns, tipName: this.$t('compute.text_92') }),
         getServerMonitorAgentInstallStatus(),
@@ -47,6 +68,16 @@ export default {
           title: this.$t('compute.text_33'),
         },
         getBrandTableColumn(),
+        {
+          field: 'password',
+          title: this.$t('table.title.init_keypair'),
+          minWidth: 50,
+          slots: {
+            default: ({ row }) => {
+              return [<PasswordFetcher serverId={row.id} resourceType='servers' />]
+            },
+          },
+        },
       ],
     }
   },
@@ -107,16 +138,48 @@ export default {
             },
             getCopyWithContentTableColumn({ field: 'ips', title: 'IP' }),
             getCopyWithContentTableColumn({
+              field: 'macs',
+              title: 'MAC',
+              hideField: true,
+              slotCallback: row => {
+                return row.macs || '-'
+              },
+            }),
+            getCopyWithContentTableColumn({
               field: 'image',
               title: this.$t('compute.text_97'),
               hideField: true,
               message: this.diskInfos.image,
               slotCallback: row => {
                 if (this.diskInfos.image) {
-                  return [<side-page-trigger onTrigger={ () => this.handleOpenSystemImageDetail(this.diskInfos.imageId) }>{ this.diskInfos.image }</side-page-trigger>]
+                  return [<side-page-trigger onTrigger={() => this.handleOpenSystemImageDetail(this.diskInfos.imageId)}>{this.diskInfos.image}</side-page-trigger>]
                 }
                 return '-'
               },
+            }),
+            getCopyWithContentTableColumn({
+              field: 'host',
+              title: this.$t('compute.text_112'),
+              hideField: true,
+              slotCallback: row => {
+                if (!row.host) return '-'
+                return [
+                  <side-page-trigger permission='hosts_get' name='PhysicalmachineSidePage' id={row.host_id} vm={this}>{row.host}</side-page-trigger>,
+                ]
+              },
+              hidden: () => this.$store.getters.isProjectMode,
+            }),
+            getCopyWithContentTableColumn({
+              field: 'vpc',
+              title: 'VPC',
+              hideField: true,
+              slotCallback: row => {
+                if (!row.vpc) return '-'
+                return [
+                  <side-page-trigger permission='vpcs_get' name='VpcSidePage' id={row.vpc_id} vm={this}>{row.vpc}</side-page-trigger>,
+                ]
+              },
+              hidden: () => this.$store.getters.isProjectMode,
             }),
             {
               field: 'vcpu_count',
@@ -136,7 +199,7 @@ export default {
               field: 'sysDisk',
               title: this.$t('compute.text_49'),
               formatter: ({ row }) => {
-                if (this.diskInfos.sysDisk) return <a onClick={ () => this.$emit('tab-change', 'disk-list-for-baremetal-sidepage') }>{this.diskInfos.sysDisk}</a>
+                if (this.diskInfos.sysDisk) return <a onClick={() => this.$emit('tab-change', 'disk-list-for-baremetal-sidepage')}>{this.diskInfos.sysDisk}</a>
                 return '-'
               },
             },
@@ -144,7 +207,7 @@ export default {
               field: 'dataDisk',
               title: this.$t('compute.text_50'),
               formatter: ({ row }) => {
-                if (this.diskInfos.dataDisk) return <a onClick={ () => this.$emit('tab-change', 'disk-list-for-baremetal-sidepage') }>{this.diskInfos.dataDisk}</a>
+                if (this.diskInfos.dataDisk) return <a onClick={() => this.$emit('tab-change', 'disk-list-for-baremetal-sidepage')}>{this.diskInfos.dataDisk}</a>
                 return '-'
               },
             },
@@ -157,7 +220,7 @@ export default {
                 const idx = row.cdrom.indexOf('(')
                 const id = row.cdrom.substring(idx + 1, row.cdrom.indexOf('/'))
                 return [
-                  <side-page-trigger permission='images_get' name='SystemImageSidePage' id={id} vm={this}>{ row.cdrom.substring(0, idx) || '-' }</side-page-trigger>,
+                  <side-page-trigger permission='images_get' name='SystemImageSidePage' id={id} vm={this}>{row.cdrom.substring(0, idx) || '-'}</side-page-trigger>,
                 ]
               },
             }),
@@ -182,18 +245,6 @@ export default {
                 })
               },
             },
-            getCopyWithContentTableColumn({
-              field: 'host',
-              title: this.$t('compute.text_112'),
-              hideField: true,
-              slotCallback: row => {
-                if (!row.host) return '-'
-                return [
-                  <side-page-trigger permission='hosts_get' name='PhysicalmachineSidePage' id={row.host_id} vm={this}>{ row.host }</side-page-trigger>,
-                ]
-              },
-              hidden: () => this.$store.getters.isProjectMode,
-            }),
             getCopyWithContentTableColumn({ field: 'host_sn', title: 'SN' }),
           ],
         },
@@ -217,7 +268,7 @@ export default {
       ]
     },
   },
-  created () {},
+  created () { },
   methods: {
     _diskStringify (diskObj) {
       let str = ''
