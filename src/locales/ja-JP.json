@@ -2422,7 +2422,7 @@
     "REDIS_UNREASONABLE": "アイドルレディス",
     "SECGROUPRULEINSERVER_ALLIN": "セキュリティグループルールの in ルールは、すべてオープンな仮想マシンです",
     "SNAPSHOT_UNUSED": "未使用の@:dictionary.snapshot",
-    "OSS_SEC_ACL": "オブジェクト・ストレージの権限は、バケットおよびファイルの読み取りおよび書き込みに対して開かれています",
+    "OSS_SEC_ACL": "オブジェクトのストレージ権限はオープン読み取り/書き込み用のストレージバケットです",
     "CLOUDACCOUNT_AMOUNT_DAILY": "アカウントの消費が異常です",
     "CLOUDACCOUNT_AMOUNT_MONTH": "アリババアカウントの月間消費量が異常です",
     "TIMING_SERVER": "定期的な使用パターンを持つ仮想マシン",
