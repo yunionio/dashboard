@@ -2,7 +2,7 @@
   <div>
     <a-alert :showIcon="false" :message="$t('cloudenv.text_194')" banner />
     <a-form class="pt-3" :form="form.fc" v-bind="formLayout">
-      <a-form-item v-if="isAzurePublicCloud" :label="$t('cloudenv.text_360')">
+      <a-form-item v-if="isAzure" :label="$t('cloudenv.text_360')">
         <a-radio-group v-model="billType">
           <a-radio-button
             v-for="item in billTypeOptions"
@@ -354,7 +354,7 @@ export default {
       return this.billType === BILL_TYPE_MAP.EA.value
     },
     isHiddenDriver () {
-      return this.isAzurePublicCloud
+      return this.isAzure
     }
   },
   watch: {
@@ -486,7 +486,7 @@ export default {
             ...params.data
           }
         }
-        if (this.isAzurePublicCloud) {
+        if (this.isAzure) {
           const { remove_options = [] } = params.data
           if (this.isEA) {
             params.data = {
