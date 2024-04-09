@@ -75,28 +75,6 @@ const DISK_IO_WRITE_RATES = {
   metric: metricItems['vm_diskio.write_bps'].key,
 }
 
-// const NET_SEND_BYTES = {
-//   name: 'net',
-//   label: i18n.t('compute.text_524'),
-//   seleteItem: 'bytes_sent',
-//   selectFunction: 'derivative',
-//   fromItem: 'agent_net',
-//   unit: 'bps',
-//   transfer: 1024,
-//   metric: metricItems['vm_mem.used_percent'].key,
-// }
-//
-// const NET_RECV_BYTES = {
-//   name: 'net',
-//   label: i18n.t('compute.text_525'),
-//   seleteItem: 'bytes_recv',
-//   selectFunction: 'derivative',
-//   fromItem: 'agent_net',
-//   unit: 'bps',
-//   transfer: 1024,
-//   metric: metricItems['vm_mem.used_percent'].key,
-// }
-
 const NET_RECV_BPS = {
   name: 'net',
   label: i18n.t('compute.text_524'),
@@ -118,8 +96,6 @@ const NET_SENT_BPS = {
 }
 
 const COND_AND = 'AND'
-// const COND_OR = 'OR'
-// const COND_NULL = ''
 
 function newWhereField (key, operator, val, cond) {
   return {
@@ -145,7 +121,6 @@ const TEMPERATURE_CPU_INPUT = {
   label: i18n.t('compute.monitor.temperature.cpu'),
   seleteItem: 'temp_input',
   fromItem: 'agent_sensors',
-  // groupBy: ['chip', 'feature'],
   groupBy: ['chip'],
   where: [
     newWhereField('chip', '=~', '/^coretemp-isa-/', COND_AND),
@@ -174,7 +149,6 @@ const TEMPERATURE_PCI_INPUT = {
   label: i18n.t('compute.monitor.temperature.pci'),
   seleteItem: 'temp_input',
   fromItem: 'agent_sensors',
-  // groupBy: ['chip', 'feature'],
   groupBy: ['chip'],
   where: [
     newWhereField('chip', '=~', '/.+-pci-.+/', COND_AND),
@@ -190,7 +164,6 @@ const TEMPERATURE_VIRTUAL_INPUT = {
   label: i18n.t('compute.monitor.temperature.other_device'),
   seleteItem: 'temp_input',
   fromItem: 'agent_sensors',
-  // groupBy: ['chip', 'feature'],
   groupBy: ['chip'],
   where: [
     newWhereField('chip', '=~', '/.+-virtual-.+/', COND_AND),

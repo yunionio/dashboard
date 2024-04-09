@@ -118,16 +118,16 @@ export default {
             })
           },
           meta: () => {
-            let ret = {
-              validate: true,
-              tooltip: null,
-            }
-            ret.validate = this.list.selectedItems.length > 0
-            if (!ret.validate) return ret
-            ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
-              ret.validate = this.list.selectedItems.every(item => item.status !== 'starting')
+            const ret = { validate: true, tooltip: null }
+            if (this.list.selectedItems.length === 0) {
+              ret.validate = false
               return ret
-            })
+            }
+            const isStatusOk = this.list.selectedItems.every(item => ['exited'].includes(item.status))
+            if (!isStatusOk) {
+              ret.validate = false
+              return ret
+            }
             return ret
           },
         },
@@ -135,60 +135,28 @@ export default {
         {
           label: this.$t('compute.repo.stop'),
           action: () => {
-            this.createDialog('VmShutDownDialog', {
+            this.createDialog('ContainerShutDownDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
               onManager: this.onManager,
             })
           },
           meta: () => {
-            let ret = {
-              validate: true,
-              tooltip: null,
-            }
-            ret.validate = this.list.selectedItems.length > 0
-            if (!ret.validate) return ret
-            ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
-              ret.validate = this.list.selectedItems.every(item => item.status === 'running')
+            const ret = { validate: true, tooltip: null }
+            if (this.list.selectedItems.length === 0) {
+              ret.validate = false
               return ret
-            })
+            }
+            const isStatusOk = this.list.selectedItems.every(item => ['running'].includes(item.status))
+            if (!isStatusOk) {
+              ret.validate = false
+              return ret
+            }
             return ret
           },
         },
       ],
       singleActions: [
-        {
-          label: this.$t('compute.repo.start'),
-          action: (obj) => {
-            this.onManager('performAction', {
-              steadyStatus: 'running',
-              id: obj.id,
-              managerArgs: {
-                action: 'start',
-              },
-            })
-          },
-          meta: (obj) => {
-            return {
-              validate: obj.status !== 'starting',
-            }
-          },
-        },
-        {
-          label: this.$t('compute.repo.stop'),
-          action: (obj) => {
-            this.createDialog('ContainerShutDownDialog', {
-              data: [obj],
-              columns: this.columns,
-              onManager: this.onManager,
-            })
-          },
-          meta: (obj) => {
-            return {
-              validate: obj.status === 'running',
-            }
-          },
-        },
         {
           label: this.$t('table.action.modify'),
           action: (obj) => {
@@ -199,9 +167,51 @@ export default {
             })
           },
           meta: (obj) => {
-            return {
-              validate: obj.status === 'running',
+            const ret = { validate: true }
+            if (obj.status !== 'exited') {
+              ret.tooltip = this.$t('compute.repo.helper.modify')
+              ret.validate = false
             }
+            return ret
+          },
+        },
+        {
+          label: this.$t('common.more'),
+          actions: (obj) => {
+            return [
+              {
+                label: this.$t('compute.repo.start'),
+                action: () => {
+                  this.onManager('performAction', {
+                    steadyStatus: 'running',
+                    id: obj.id,
+                    managerArgs: {
+                      action: 'start',
+                    },
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: obj.status === 'exited',
+                  }
+                },
+              },
+              {
+                label: this.$t('compute.repo.stop'),
+                action: () => {
+                  this.createDialog('ContainerShutDownDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: obj.status === 'running',
+                  }
+                },
+              },
+            ]
           },
         },
       ],
