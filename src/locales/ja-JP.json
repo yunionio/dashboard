@@ -1246,7 +1246,12 @@
       "stopping_container": "停止中",
       "starting_container": "開始中",
       "stop_container_failed": "開始に失敗しました",
-      "stop_fail": "停止に失敗しました"
+      "stop_fail": "停止に失敗しました",
+      "ready": "シャットダウン",
+      "delete_container_failed": "削除に失敗しました",
+      "on": "実行中",
+      "off": "シャットダウン",
+      "start_fail": "開始に失敗しました"
     }
   },
   "skuCategoryOptions": {

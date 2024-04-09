@@ -37,5 +37,6 @@
   "compute.repo.mount_point.check_content": "挂载点不能为 /",
   "compute.repo.mount_point.check_start": "挂载点以 / 开头",
   "compute.repo.start": "启动",
-  "compute.repo.stop": "停止"
+  "compute.repo.stop": "停止",
+  "compute.repo.helper.change_config": "关机的容器主机才可以调整配置"
 }
