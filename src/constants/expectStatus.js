@@ -580,8 +580,8 @@ export default {
     danger: ['failed'],
   },
   container: {
-    success: ['running'],
-    info: ['exited'],
+    success: ['running', 'on'],
+    info: ['exited', 'ready', 'unknown', 'off'],
     danger: ['start_failed'],
   },
 }

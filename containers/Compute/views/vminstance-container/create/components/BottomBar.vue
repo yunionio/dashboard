@@ -111,14 +111,6 @@ export default {
     resourceType: { // 资源池类型
       type: String,
     },
-    isOpenWorkflow: {
-      type: Boolean,
-      default: false,
-    },
-    isServertemplate: {
-      type: Boolean,
-      default: false,
-    },
     hasMeterService: {
       type: Boolean,
       default: true,
@@ -241,8 +233,7 @@ export default {
       return 0
     },
     confirmText () {
-      if (this.isServertemplate) return this.$t('compute.text_1139')
-      return this.isOpenWorkflow ? this.$t('compute.text_288') : this.$t('compute.text_289')
+      return this.$t('compute.text_289')
     },
     dataDiskObj () {
       if (R.is(Object, this.fd.dataDiskTypes)) {
