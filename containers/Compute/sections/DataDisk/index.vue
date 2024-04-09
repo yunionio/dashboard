@@ -552,7 +552,7 @@ export default {
         ...scopeParams,
       }
     },
-    diskTypeChange (item, val, idx) {
+    diskTypeChange (item, val) {
       item.sizeDisabled = false
       // 仅有第一块盘可以更改磁盘类型
       this.$nextTick(() => {
@@ -571,9 +571,10 @@ export default {
         if (val.key !== item.diskType?.key) {
           const { dataDiskSizes = {} } = this.form.fd
           for (const diskId in dataDiskSizes) {
-            if (this.form.fd[`dataDiskTypes[${diskId}]`]) {
+            const curDiskType = this.form.fd[`dataDiskTypes[${diskId}]`]
+            if (curDiskType) {
               this.form.fc.setFieldsValue({
-                [`dataDiskTypes[${diskId}]`]: { ...val, index: idx },
+                [`dataDiskTypes[${diskId}]`]: { ...val, index: curDiskType?.index },
               })
             }
           }

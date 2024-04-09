@@ -37,5 +37,6 @@
   "compute.repo.mount_point.check_content": "マウント ポイントを / にすることはできません",
   "compute.repo.mount_point.check_start": "マウント ポイントは / で始まります",
   "compute.repo.start": "開始",
-  "compute.repo.stop": "停止"
+  "compute.repo.stop": "停止",
+  "compute.repo.helper.change_config": "シャットダウンしたコンテナー ホストのみが構成を調整できます"
 }

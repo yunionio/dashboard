@@ -1246,7 +1246,12 @@
       "stopping_container": "停止中",
       "starting_container": "启动中",
       "stop_container_failed": "启动失败",
-      "stop_fail": "停止失败"
+      "stop_fail": "停止失败",
+      "ready": "关机",
+      "delete_container_failed": "删除失败",
+      "on": "运行中",
+      "off": "关机",
+      "start_fail": "启动失败"
     }
   },
   "skuCategoryOptions": {

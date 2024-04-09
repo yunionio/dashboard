@@ -11,12 +11,15 @@
         <a-input v-else :addonBefore="keyLabel" v-decorator="decorators.key(item.key)" :placeholder="keyPlaceholder" />
       </a-form-item>
       <div class="mx-3"> = </div>
-      <a-form-item :wrapperCol="{ span: 24 }">
+      <a-form-item :wrapperCol="{ span: 24 }" :extra="valueExtra">
         <a-input :addonBefore="valueLabel" v-decorator="decorators.value(item.key)" :placeholder="valuePlaceholder" />
       </a-form-item>
-      <a-button v-if="firstCanDelete || labelList.length > 1" type="danger" shape="circle" icon="delete" @click="del(item)" class="mt-1 ml-3" />
+      <a-button v-if="firstCanDelete || labelList.length > 1" shape="circle" icon="minus" size="small" @click="del(item)" class="mt-2 ml-2" />
     </div>
-    <a-button type="primary" icon="plus" @click="add">{{$t('compute.repo.add', [ title ])}}</a-button>
+    <div class="d-flex align-items-center">
+      <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
+      <a-button type="link" @click="add">{{$t('compute.repo.add', [ title ])}}</a-button>
+    </div>
   </div>
 </template>
 
@@ -87,7 +90,7 @@ export default {
     },
     getBindProps (key) {
       const { options } = this.keyBaseSelectProps
-      return {
+      const bindProps = {
         ...this.keyBaseSelectProps,
         options: options.filter(v => {
           if (this.checkedValues?.length) {
@@ -96,6 +99,7 @@ export default {
           return true
         }),
       }
+      return bindProps
     },
   },
 }

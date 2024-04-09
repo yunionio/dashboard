@@ -1,4 +1,3 @@
-// 创建主机相应组件的参数
 import * as R from 'ramda'
 import _ from 'lodash'
 import {
@@ -7,16 +6,13 @@ import {
   EIP_TYPES_MAP,
   EIP_CHARGE_TYPES_MAP,
   BILL_TYPES_MAP,
-  LOGIN_TYPES_MAP,
   SCHED_POLICY_OPTIONS_MAP,
   STORAGE_AUTO,
   SECGROUP_OPTIONS_MAP,
   FORECAST_FILTERS_MAP,
   RESOURCE_TYPES_MAP,
-  // GPU_DEV_TYPE_OPTION_MAP,
 } from '@Compute/constants'
 import { IMAGES_TYPE_MAP, HOST_CPU_ARCHS } from '@/constants/compute'
-
 import { HYPERVISORS_MAP } from '@/constants'
 import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
 import store from '@/store'
@@ -103,9 +99,6 @@ export const createVmDecorators = () => {
         initialValue: '',
       },
     ],
-    reason: [
-      'reason',
-    ],
     count: [
       'count',
       {
@@ -169,42 +162,6 @@ export const createVmDecorators = () => {
         },
       ],
     },
-    loginConfig: {
-      loginType: [
-        'loginType',
-        {
-          initialValue: 'random',
-        },
-      ],
-      keypair: [
-        'loginKeypair',
-        {
-          initialValue: undefined,
-          rules: [
-            { required: true, message: i18n.t('compute.text_203') },
-          ],
-        },
-      ],
-      password: [
-        'loginPassword',
-        {
-          initialValue: '',
-          validateFirst: true,
-          rules: [
-            { required: true, message: i18n.t('compute.text_204') },
-            { validator: validateForm('sshPassword') },
-          ],
-        },
-      ],
-    },
-    hypervisor: [
-      'hypervisor',
-      {
-        rules: [
-          { required: true, message: i18n.t('compute.text_215') },
-        ],
-      },
-    ],
     cloudprovider: [
       'cloudprovider',
       {
@@ -259,75 +216,6 @@ export const createVmDecorators = () => {
         ],
       },
     ],
-    systemDisk: {
-      type: [
-        'systemDiskType',
-        {
-          rules: [
-            { validator: isRequired(), message: i18n.t('compute.text_121') },
-          ],
-        },
-      ],
-      size: [
-        'systemDiskSize',
-        {
-          rules: [
-            { required: true, message: i18n.t('compute.text_122') },
-          ],
-        },
-      ],
-      schedtag: [
-        'systemDiskSchedtag',
-        {
-          validateTrigger: ['change', 'blur'],
-          rules: [{
-            required: true,
-            message: i18n.t('compute.text_123'),
-          }],
-        },
-      ],
-      policy: [
-        'systemDiskPolicy',
-        {
-          initialValue: '',
-          validateTrigger: ['blur', 'change'],
-          rules: [{
-            required: true,
-            message: i18n.t('compute.text_123'),
-          }],
-        },
-      ],
-      storage: [
-        'systemDiskStorage',
-        {
-          rules: [{
-            required: true,
-            message: i18n.t('compute.text_1351'),
-          }],
-        },
-      ],
-      iops: [
-        'systemDiskIops',
-        {
-          rules: [{
-            required: true,
-            message: i18n.t('compute.iops_input_tip'),
-          }],
-        },
-      ],
-      throughput: [
-        'systemDiskThroughput',
-        {
-          rules: [{
-            required: true,
-            message: i18n.t('compute.throuthput_input_tip'),
-          }],
-        },
-      ],
-      preallocation: [
-        'systemDiskPreallocation',
-      ],
-    },
     dataDisk: {
       type: i => [
         `dataDiskTypes[${i}]`,
@@ -701,13 +589,6 @@ export const createVmDecorators = () => {
     hostName: [
       'hostName',
     ],
-    deploy_telegraf: [
-      'deploy_telegraf',
-      {
-        valuePropName: 'checked',
-        initialValue: true,
-      },
-    ],
     portMapping: {
       key: i => [
         `containerPorts[${i}]`,
@@ -838,7 +719,6 @@ export class GenCreateData {
     this.fd = fd
     this.fi = fi
     this.createType = this.fi.createType
-    this.isPublic = this.createType === SERVER_TYPE.public
     this.isIDC = this.createType === SERVER_TYPE.idc
     this.isPrepaid = this.fd.resourceType === RESOURCE_TYPES_MAP.prepaid.key
   }
@@ -861,11 +741,6 @@ export class GenCreateData {
       format: 'raw',
       fs: 'ext4',
     }
-    if (type === 'sys' && this.fd.imageType !== IMAGES_TYPE_MAP.iso.key && this.fd.hypervisor !== HYPERVISORS_MAP.proxmox.key) {
-      if (this.fd.image && this.fd.image.key) {
-        ret.image_id = this.fd.image.key
-      }
-    }
     if (type === 'sys' && this.fd.imageType === IMAGES_TYPE_MAP.iso.key && this.isWindows()) {
       ret.driver = 'ide'
     }
@@ -880,9 +755,6 @@ export class GenCreateData {
       if (item.filetype !== 'swap') {
         ret.mountpoint = item.mountpoint
       }
-    }
-    if (item.snapshot_id) {
-      ret.snapshot_id = item.snapshot_id
     }
     if (item.storage_id) {
       ret.storage_id = item.storage_id
@@ -1062,27 +934,6 @@ export class GenCreateData {
   }
 
   /**
-   * 获取配置的GPU数据
-   *
-   * @returns { Array }
-   * @memberof GenCreateData
-   */
-  genDevices () {
-    const ret = []
-    for (let i = 0, len = this.fd.gpuCount; i < len; i++) {
-      const regexp = /vendor=(.+):(.+)/
-      const matched = this.fd.gpu.match(regexp)
-      const model = matched[2]
-      const vendor = matched[1]
-      ret.push({
-        model,
-        vendor,
-      })
-    }
-    return ret
-  }
-
-  /**
    * 获取配置的PCI数据
    *
    * @returns { Array }
@@ -1108,33 +959,6 @@ export class GenCreateData {
   }
 
   /**
-   * 获取管理员密码所提交的 key 与 value
-   *
-   * @returns { String }
-   * @memberof GenCreateData
-   */
-  getLoginValueKey () {
-    const ret = {}
-    switch (this.fd.loginType) {
-      case LOGIN_TYPES_MAP.keypair.key:
-        ret.key = 'keypair'
-        ret.value = this.fd.loginKeypair
-        break
-      case LOGIN_TYPES_MAP.image.key:
-        ret.key = 'reset_password'
-        ret.value = false
-        break
-      case LOGIN_TYPES_MAP.password.key:
-        ret.key = 'password'
-        ret.value = this.fd.loginPassword
-        break
-      default:
-        break
-    }
-    return ret
-  }
-
-  /**
    * 获取调度策略所提交的 key 与 value
    *
    * @returns
@@ -1154,11 +978,7 @@ export class GenCreateData {
       ret.key = 'prefer_manager'
       ret.value = this.fd.prefer_manager
     }
-    // 调度策略选择为 云账号
-    // if (this.fd.schedPolicyType === SCHED_POLICY_OPTIONS_MAP.cloudprovider.key) {
-    //   ret.key = 'prefer_manager'
-    //   ret.value = this.fd.cloudprovider
-    // }
+
     // 调度策略选择为 调度标签
     if (this.fd.schedPolicyType === SCHED_POLICY_OPTIONS_MAP.schedtag.key) {
       ret.key = 'schedtags'
@@ -1365,48 +1185,39 @@ export class GenCreateData {
       data.sku = this.fd.sku.name
     }
     // 弹性IP
-    if (this.isPublic || this.isIDC) {
-      if (this.fd.eip_type === EIP_TYPES_MAP.new.key || this.fd.eip_type === EIP_TYPES_MAP.public.key) {
-        if (
-          this.fd.eip_charge_type === EIP_CHARGE_TYPES_MAP.traffic.key ||
-          this.fd.eip_charge_type === EIP_CHARGE_TYPES_MAP.bandwidth.key
-        ) {
-          if (this.fd.eip_type === EIP_TYPES_MAP.public.key) {
-            data.public_ip_charge_type = this.fd.eip_charge_type
-            data.public_ip_bw = this.fd.eip_bw
-          } else {
-            data.eip_charge_type = this.fd.eip_charge_type
-            data.eip_bw = this.fd.eip_bw
-          }
+    if (this.fd.eip_type === EIP_TYPES_MAP.new.key || this.fd.eip_type === EIP_TYPES_MAP.public.key) {
+      if (
+        this.fd.eip_charge_type === EIP_CHARGE_TYPES_MAP.traffic.key ||
+        this.fd.eip_charge_type === EIP_CHARGE_TYPES_MAP.bandwidth.key
+      ) {
+        if (this.fd.eip_type === EIP_TYPES_MAP.public.key) {
+          data.public_ip_charge_type = this.fd.eip_charge_type
+          data.public_ip_bw = this.fd.eip_bw
+        } else {
+          data.eip_charge_type = this.fd.eip_charge_type
+          data.eip_bw = this.fd.eip_bw
         }
       }
-      if (this.fd.eip_type === EIP_TYPES_MAP.bind.key) {
-        data.eip = this.fd.eip
-      }
-      // 包年包月参数
-      if (this.fd.billType === BILL_TYPES_MAP.package.key) {
-        data.duration = this.fd.duration
-        // 自动续费
-        data.auto_renew = this.fd.autoRenew
-      }
-      // 线路类型
-      if (this.fd.eip_bgp_type) {
-        data.eip_bgp_type = this.fd.eip_bgp_type
-      }
     }
-    // gpu
-    // if (this.fd.gpuEnable) {
-    //   data.isolated_devices = this.genDevices()
-    // }
+    if (this.fd.eip_type === EIP_TYPES_MAP.bind.key) {
+      data.eip = this.fd.eip
+    }
+    // 包年包月参数
+    if (this.fd.billType === BILL_TYPES_MAP.package.key) {
+      data.duration = this.fd.duration
+      // 自动续费
+      data.auto_renew = this.fd.autoRenew
+    }
+    // 线路类型
+    if (this.fd.eip_bgp_type) {
+      data.eip_bgp_type = this.fd.eip_bgp_type
+    }
+
     // pci
     if (this.fd.pciEnable) {
       data.isolated_devices = this.genPciDevices()
     }
-    // 管理员密码非默认的情况下进行传参设置
-    if (this.fd.loginType !== LOGIN_TYPES_MAP.random.key) {
-      const loginValueKey = this.getLoginValueKey()
-      data[loginValueKey.key] = loginValueKey.value
-    }
+
     // 安全组
     if (this.fd.secgroup_type && this.fd.secgroup_type === SECGROUP_OPTIONS_MAP.bind.key) {
       data.secgroups = this.fd.secgroup
@@ -1442,10 +1253,8 @@ export class GenCreateData {
     if (this.fd.imageType === IMAGES_TYPE_MAP.host.key) {
       data.guest_image_id = this.fd.image.key
       data.disks.forEach((val, i) => {
-        if (i === 0) { // 系统盘
-          data.disks[i] = { ...val, image_id: this.fi.imageMsg.root_image.id }
-        } else if (this.fi.imageMsg.data_images && i - 1 < this.fi.imageMsg.data_images.length) {
-          data.disks[i] = { ...val, image_id: this.fi.imageMsg.data_images[i - 1].id }
+        if (this.fi.imageMsg.data_images && i < this.fi.imageMsg.data_images.length) {
+          data.disks[i] = { ...val, image_id: this.fi.imageMsg.data_images[i].id }
         }
       })
     }
@@ -1465,14 +1274,7 @@ export class GenCreateData {
     if (this.fd.tag) {
       data.__meta__ = this.fd.tag
     }
-    // 安装监控 agent
-    if (this.isIDC) {
-      if ((this.isWindows() && this.fd.os_arch !== HOST_CPU_ARCHS.arm.key) || !this.isWindows()) {
-        if (this.fd.deploy_telegraf) {
-          data.deploy_telegraf = this.fd.deploy_telegraf
-        }
-      }
-    }
+    // 插槽数
     if (this.fi.showCpuSockets) {
       data.cpu_sockets = this.getCpuSockets()
     }
