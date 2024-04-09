@@ -36,21 +36,20 @@
 
 <script>
 import * as R from 'ramda'
-import GpuList from '@Compute/views/gpu/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 import { hasPermission } from '@/utils/auth'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
+import GpuList from '@Compute/views/gpu/components/List'
+import Detail from './Detail'
+import ContainerList from './Container'
+import SecgroupList from './Secgroup'
 import NetworkListForVmInstanceSidepage from './Network'
+import DiskListForVmInstanceSidepage from './DiskList'
+import VmInstanceMonitorSidepage from './Monitor'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import Detail from './Detail'
-import VmInstanceMonitorSidepage from './Monitor'
-import VmInstanceAlertSidepage from './Alert'
-import SecgroupList from './Secgroup'
-import DiskListForVmInstanceSidepage from './DiskList'
-import ContainerList from './Container'
 
 export default {
   name: 'VmContainerInstanceSidePage',
@@ -62,7 +61,6 @@ export default {
     DiskListForVmInstanceSidepage,
     SecgroupList,
     VmInstanceMonitorSidepage,
-    VmInstanceAlertSidepage,
     GpuList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -85,9 +83,6 @@ export default {
     }
     if (!hasPermission({ key: 'guestdisks_list' }) || isScopedPolicyMenuHidden('server_hidden_columns.disk')) {
       detailTabs = R.remove(R.findIndex(R.propEq('key', 'disk-list-for-vm-instance-sidepage'))(detailTabs), 1, detailTabs)
-    }
-    if (!hasPermission({ key: 'eip_list' })) {
-      detailTabs = R.remove(R.findIndex(R.propEq('key', 'eip-list-for-vm-instance-sidepage'))(detailTabs), 1, detailTabs)
     }
     if (this.$store.getters.isProjectMode) {
       detailTabs = R.remove(R.findIndex(R.propEq('key', 'gpu-list'))(detailTabs), 1, detailTabs)
