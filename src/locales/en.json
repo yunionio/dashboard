@@ -1231,7 +1231,12 @@
       "stopping_container": "stopping_container",
       "starting_container": "starting_container",
       "stop_container_failed": "start_container_failed",
-      "stop_fail": "stop_fail"
+      "stop_fail": "stop_fail",
+      "ready": "ready",
+      "delete_container_failed": "delete_container_failed",
+      "on": "on",
+      "off": "off",
+      "start_fail": "start_fail"
     }
   },
   "skuCategoryOptions": {

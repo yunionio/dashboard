@@ -11,7 +11,6 @@ import {
   getBillingTableColumn,
   getTimeTableColumn,
   getOsArch,
-  getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
@@ -104,23 +103,12 @@ export default {
         statusModule: 'container',
         slotCallback: row => {
           const log = <side-page-trigger class="ml-1" onTrigger={() => this.handleOpenSidepage(row, 'event-drawer')}>{this.$t('common.view_logs')}</side-page-trigger>
-          const cancel = <a class="ml-1"
-            onClick={() => this.createDialog('VmLiveMigrateCancelDialog', {
-              data: [row],
-              columns: this.columns,
-              onManager: this.onManager,
-            })}>{this.$t('common.cancel')}</a>
-          const shutdown = <span class="text-color-help">({this.$t('compute.server.shutdown_mode.stop_charging')})</span>
-          const rescue_mode = <span class="text-color-help">({this.$t('compute.rescue')})</span>
 
           return [
             <div class='d-flex align-items-center text-truncate'>
               <status status={row.status} statusModule='container' process={row.progress} />
               {row.metadata && getToolTip(row)}
               {row.status?.includes('fail') ? log : null}
-              {row.status === 'live_migrating' ? cancel : null}
-              {row.status === 'ready' && row.shutdown_mode === 'stop_charging' ? shutdown : null}
-              {row.rescue_mode === true ? rescue_mode : null}
             </div>,
           ]
         },
@@ -388,17 +376,6 @@ export default {
       getBrandTableColumn({
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('server_hidden_columns.brand')
-        },
-      }),
-      // getCopyWithContentTableColumn({
-      //   field: 'account',
-      //   title: i18nLocale.t('res.cloudaccount'),
-      //   hidden: () => this.$store.getters.isProjectMode,
-      // }),
-      getAccountTableColumn({
-        vm: this,
-        hidden: () => {
-          return this.$isScopedPolicyMenuHidden('server_hidden_columns.account')
         },
       }),
       {

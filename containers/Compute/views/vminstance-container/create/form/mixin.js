@@ -1,29 +1,24 @@
 import * as R from 'ramda'
 import _ from 'lodash'
-import { SCHED_POLICY_OPTIONS_MAP, SERVER_TYPE, SELECT_IMAGE_KEY_SUFFIX, LOGIN_TYPES_MAP } from '@Compute/constants'
+import { SCHED_POLICY_OPTIONS_MAP, SERVER_TYPE, SELECT_IMAGE_KEY_SUFFIX } from '@Compute/constants'
 import OsSelect from '@Compute/sections/OsSelect'
-import ServerPassword from '@Compute/sections/ServerPassword'
 import CpuRadio from '@Compute/sections/CpuRadio'
 import MemRadio from '@Compute/sections/MemRadio'
 import sku from '@Compute/sections/SKU'
 import gpu from '@Compute/sections/GPU/index'
 import pci from '@Compute/sections/PCI'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
-import ServerAccount from '@Compute/sections/ServerAccount'
 import SchedPolicy from '@Compute/sections/SchedPolicy'
-import Backup from '@Compute/sections/Backup'
 import Duration from '@Compute/sections/Duration'
 import InstanceGroups from '@Compute/sections/InstanceGroups'
 import DataDisk from '@Compute/sections/DataDisk'
 import HostName from '@Compute/sections/HostName'
 import storage from '@/utils/storage'
-import { WORKFLOW_TYPES } from '@/constants/workflow'
 import workflowMixin from '@/mixins/workflow'
 import { Manager } from '@/utils/manager'
 import { isSuccess } from '@/utils/http'
 import NameRepeated from '@/sections/NameRepeated'
 import CloudregionZone from '@/sections/CloudregionZone'
-import HypervisorRadio from '@/sections/HypervisorRadio'
 import DomainProject from '@/sections/DomainProject'
 import { getInitialValue } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
@@ -32,8 +27,6 @@ import i18n from '@/locales'
 import { deleteInvalid } from '@/utils/utils'
 import Tag from '../components/Tag'
 import { Decorator, GenCreateData } from '../../utils/createServer'
-import SystemDisk from '../components/SystemDisk'
-import Servertemplate from '../components/Servertemplate'
 import BottomBar from '../components/BottomBar'
 
 const CreateServerForm = {
@@ -55,24 +48,18 @@ export default {
     OsSelect,
     CloudregionZone,
     BottomBar,
-    ServerPassword,
-    HypervisorRadio,
     CpuRadio,
     MemRadio,
     sku,
     ServerNetwork,
-    SystemDisk,
     DataDisk,
     gpu,
     SchedPolicy,
-    Backup,
     DomainProject,
     Duration,
     InstanceGroups,
     Tag,
-    Servertemplate,
     NameRepeated,
-    ServerAccount,
     HostName,
     pci,
   },
@@ -130,25 +117,6 @@ export default {
     }
   },
   computed: {
-    isServertemplate () { // 主机模板
-      return this.$route.query.source === 'servertemplate'
-    },
-    loginTypes () { // 主机模板隐藏手工输入密码
-      let maps = R.clone(LOGIN_TYPES_MAP)
-      if (this.isWindows) {
-        delete maps.keypair
-      }
-      if (this.isInCloudSphere) {
-        maps = {
-          image: LOGIN_TYPES_MAP.image,
-        }
-      }
-      const loginTypes = Object.keys(maps)
-      // if (this.isServertemplate) {
-      //   return loginTypes.filter(val => (val !== LOGIN_TYPES_MAP.password.key && val !== LOGIN_TYPES_MAP.keypair.key))
-      // }
-      return loginTypes
-    },
     project_domain () {
       return this.form.fd.domain ? this.form.fd.domain.key : this.$store.getters.userInfo.projectDomainId
     },
@@ -246,10 +214,6 @@ export default {
     showSecgroupBind () {
       return this.form.fd.networkType === 'manual'
     },
-    isOpenWorkflow () {
-      if (this.isServertemplate) return false
-      return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_MACHINE)
-    },
     isHostImageType () { // 镜像类型为主机镜像
       return this.form.fd.imageType === IMAGES_TYPE_MAP.host.key
     },
@@ -287,14 +251,9 @@ export default {
     networkVpcParams () {
       const zone = _.get(this.form.fd, 'zone.key')
       const params = {
-        // usable: true,
         limit: 0,
-        // show_emulated: true,
         manager_id: this.form.fd.cloudprovider,
         ...this.scopeParams,
-      }
-      if (this.isZStack || this.isInCloudSphere || this.isPve) {
-        params.show_emulated = true
       }
       if (zone) {
         params.usable = true
@@ -347,37 +306,12 @@ export default {
     isInCloudSphere () {
       return this.form.fd.hypervisor === HYPERVISORS_MAP.incloudsphere.key
     },
-    isHCSO () {
-      return this.form.fd.hypervisor === HYPERVISORS_MAP.hcso.key
-    },
-    isHCS () {
-      return this.form.fd.hypervisor === HYPERVISORS_MAP.hcs.key
-    },
-    isPve () {
-      return this.form.fd.hypervisor === HYPERVISORS_MAP.proxmox.key
-    },
-    showServerAccount () {
-      return this.form.fd.loginType !== LOGIN_TYPES_MAP.image.key
-    },
     hostNameTips () {
       if (this.isWindows) {
         return `${this.$t('compute.host_name_tips')} ${this.$t('compute.validate.windows')}`
       } else {
         return `${this.$t('compute.host_name_tips')} ${this.$t('compute.validate.others')}`
       }
-    },
-    showCustomData () {
-      const showCustomDataHypervisors = [
-        HYPERVISORS_MAP.kvm.key,
-        HYPERVISORS_MAP.esxi.key,
-        HYPERVISORS_MAP.aliyun.key,
-        HYPERVISORS_MAP.google.key,
-        HYPERVISORS_MAP.aws.key,
-        HYPERVISORS_MAP.huawei.key,
-        HYPERVISORS_MAP.azure.key,
-        HYPERVISORS_MAP.qcloud.key,
-      ]
-      return showCustomDataHypervisors.includes(this.form.fd.hypervisor || this.hypervisor)
     },
     isOpenSourceVersion () {
       return !this.$appConfig.isPrivate
@@ -438,73 +372,16 @@ export default {
           this.submiting = true
           const genCreteData = new GenCreateData(formData, this.form.fi)
           const data = genCreteData.all()
-          if (data.custom_data_type) {
-            delete data.custom_data_type
-            const { customData } = this.$refs.customData
-            if (customData.length) {
-              data.user_data = customData
-            }
-          }
-          // if (this.form.fd.bastion_host_enable) {
-          //   const bastionServer = this.getBationServerData()
-          //   data.bastion_server = bastionServer
-          // }
-          if (this.isServertemplate) { // 创建主机模板
-            this.doCreateServertemplate(data)
-          } else if (this.isOpenWorkflow) { // 提交工单
-            await this.checkCreateData(data)
-            await this.doForecast(genCreteData, data)
-            await this.doCreateWorkflow(data)
-          } else { // 创建主机
-            console.log(data)
-            await this.checkCreateData(data)
-            await this.doForecast(genCreteData, data)
-            await this.createServer(data)
-          }
+
+          await this.checkCreateData(data)
+          await this.doForecast(genCreteData, data)
+          await this.createServer(data)
         })
         .catch(error => {
           throw error
         })
         .finally(() => {
           this.submiting = false
-        })
-    },
-    doCreateServertemplate (data) {
-      const { project_id, description, ...rest } = data
-      const templateData = {
-        name: this.form.fc.getFieldValue('servertemplate_name'),
-        project: project_id,
-        description,
-        content: {
-          ...rest,
-        },
-      }
-      this.servertemplateM.create({ data: templateData })
-        .then(() => {
-          this.$message.success(i18n.t('compute.text_423'))
-          this.$router.push('/servertemplate')
-        })
-        .catch((error) => {
-          throw error
-        })
-    },
-    doCreateWorkflow (data) {
-      const variables = {
-        process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
-        initiator: this.$store.getters.userInfo.id,
-        description: this.form.fd.reason,
-        'server-create-paramter': JSON.stringify(data),
-        price: this.price,
-      }
-      this._getProjectDomainInfo(variables)
-      new this.$Manager('process-instances', 'v1')
-        .create({ data: { variables } })
-        .then(() => {
-          this.$message.success(i18n.t('compute.text_1045', [data.generate_name]))
-          this.$router.push('/workflow')
-        })
-        .catch((error) => {
-          throw error
         })
     },
     async checkCreateData (data) {
@@ -528,8 +405,6 @@ export default {
       })
     },
     createServer (data) {
-      // delete data.vcpu_count
-      // delete data.vmem_size
       return this.serverM.create({ data })
         .then(res => {
           if (R.is(Array, data.disks)) {

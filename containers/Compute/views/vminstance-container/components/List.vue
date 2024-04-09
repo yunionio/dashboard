@@ -22,7 +22,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import _ from 'lodash'
 import ListMixin from '@/mixins/list'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import {
@@ -31,13 +30,11 @@ import {
   getStatusFilter,
   getDomainFilter,
   getTenantFilter,
-  getAccountFilter,
   getHostFilter,
   getVpcFilter,
   getOsArchFilter,
   getRegionFilter,
   getZoneFilter,
-  getCloudProviderFilter,
   getDescriptionFilter,
   getCreatedAtFilter,
 } from '@/utils/common/tableFilter'
@@ -83,12 +80,6 @@ export default {
       filter.id = [this.$route.query.id]
     }
 
-    const pci_model_types = this.$store.getters.capability?.pci_model_types || []
-    let devTypes = pci_model_types.map(item => {
-      return { key: item.dev_type, label: item.dev_type }
-    })
-    devTypes = _.unionWith(devTypes, _.isEqual)
-
     const filterOptions = {
       external_id: {
         label: this.$t('table.title.external_id'),
@@ -115,35 +106,14 @@ export default {
           { label: this.$t('billingType.prepaid'), key: 'prepaid' },
         ],
       },
-      cloudaccount: getAccountFilter(),
-      manager: getCloudProviderFilter(),
       host: getHostFilter(),
-      server_type: {
-        label: this.$t('table.title.type'),
-        dropdown: true,
-        multiple: true,
-        hiddenField: 'is_gpu',
-        items: [
-          { label: this.$t('compute.text_291', [this.$t('dictionary.server')]), key: 'normal' },
-          { label: `USB${this.$t('dictionary.server')}`, key: 'usb' },
-          { label: this.$t('compute.backup'), key: 'backup' },
-          { label: this.$t('compute.trans_device_server'), key: 'gpu' },
-          ...devTypes,
-        ],
-      },
       region: getRegionFilter(),
       zone_ids: getZoneFilter(),
       vpc: getVpcFilter(),
       os_arch: getOsArchFilter(),
-      // vmem_size: {
-      //   label: this.$t('table.title.vmem_size'),
-      // },
       vcpu_count: {
         label: 'CPU',
       },
-      // disk: {
-      //   label: this.$t('table.title.disk'),
-      // },
       created_at: getCreatedAtFilter(),
     }
     this.hiddenFilterOptions.forEach(key => {
@@ -203,22 +173,16 @@ export default {
             })
           },
           meta: () => {
-            let ret = {
-              validate: true,
-              tooltip: null,
-            }
-            ret.validate = this.list.selectedItems.length > 0
-            if (!ret.validate) return ret
-            // 某些云不支持
-            const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
-            if (!unenableCloudCheck.validate) {
-              ret = unenableCloudCheck
+            const ret = { validate: true, tooltip: null }
+            if (this.list.selectedItems.length === 0) {
+              ret.validate = false
               return ret
             }
-            ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
-              ret.validate = this.list.selectedItems.every(item => item.status === 'ready')
+            const isStatusOk = this.list.selectedItems.every(item => ['ready'].includes(item.status))
+            if (!isStatusOk) {
+              ret.validate = false
               return ret
-            })
+            }
             return ret
           },
           hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_start'),
@@ -235,22 +199,16 @@ export default {
             })
           },
           meta: () => {
-            let ret = {
-              validate: true,
-              tooltip: null,
-            }
-            ret.validate = this.list.selectedItems.length > 0
-            if (!ret.validate) return ret
-            // 某些云不支持
-            const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
-            if (!unenableCloudCheck.validate) {
-              ret = unenableCloudCheck
+            const ret = { validate: true, tooltip: null }
+            if (this.list.selectedItems.length === 0) {
+              ret.validate = false
               return ret
             }
-            ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
-              ret.validate = this.list.selectedItems.every(item => item.status === 'running')
+            const isStatusOk = this.list.selectedItems.every(item => ['running'].includes(item.status))
+            if (!isStatusOk) {
+              ret.validate = false
               return ret
-            })
+            }
             return ret
           },
           hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_stop'),
@@ -267,22 +225,16 @@ export default {
             })
           },
           meta: () => {
-            let ret = {
-              validate: true,
-              tooltip: null,
-            }
-            ret.validate = this.list.selectedItems.length > 0
-            if (!ret.validate) return ret
-            // 某些云不支持
-            const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
-            if (!unenableCloudCheck.validate) {
-              ret = unenableCloudCheck
+            const ret = { validate: true, tooltip: null }
+            if (this.list.selectedItems.length === 0) {
+              ret.validate = false
               return ret
             }
-            ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
-              ret.validate = this.list.selectedItems.every(item => ['running', 'stop_fail'].includes(item.status))
+            const isStatusOk = this.list.selectedItems.every(item => ['running'].includes(item.status))
+            if (!isStatusOk) {
+              ret.validate = false
               return ret
-            })
+            }
             return ret
           },
           hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_restart'),
@@ -311,55 +263,30 @@ export default {
           label: this.$t('compute.text_275'),
           actions: () => {
             return [
+              // 设置删除保护
+              disableDeleteAction(Object.assign(this, {
+                permission: 'server_update',
+              }), {
+                name: this.$t('compute.vminstance-container'),
+                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_set_delete_protection'),
+              }),
+              // 删除
               {
-                // * 删除
                 label: this.$t('compute.perform_delete'),
-                submenus: [
-                  // 设置删除保护
-                  disableDeleteAction(Object.assign(this, {
-                    permission: 'server_update',
-                  }), {
-                    name: this.$t('dictionary.server'),
-                    meta: () => {
-                      // 某些云不支持
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
-                      return unenableCloudCheck
-                    },
-                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_set_delete_protection'),
-                  }),
-                  // 删除
-                  {
-                    label: this.$t('compute.perform_delete'),
-                    permission: 'server_delete',
-                    action: () => {
-                      this.$openNewWindowForMenuHook('vminstance_configured_callback_address.delete_callback_address', () => {
-                        this.createDialog('DeleteVmDialog', {
-                          vm: this,
-                          data: this.list.selectedItems,
-                          columns: this.columns,
-                          onManager: this.onManager,
-                          title: this.$t('compute.perform_delete'),
-                        })
-                      })
-                    },
-                    meta: () => {
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
-                      if (!unenableCloudCheck.validate) {
-                        return unenableCloudCheck
-                      }
-                      const isHasRunning = this.list.selectedItems.some((item) => item.status === 'running')
-                      const { server_delete_limit = false } = this.$store.getters.globalSetting.value || {}
-                      if (server_delete_limit && isHasRunning) {
-                        return {
-                          validate: false,
-                          tooltip: this.$t('compute.delete_limit'),
-                        }
-                      }
-                      return this.$getDeleteResult(this.list.selectedItems)
-                    },
-                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_delete'),
-                  },
-                ],
+                permission: 'server_delete',
+                action: () => {
+                  this.createDialog('DeleteVmContainerDialog', {
+                    vm: this,
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    title: this.$t('compute.perform_delete'),
+                  })
+                },
+                meta: () => {
+                  return this.$getDeleteResult(this.list.selectedItems)
+                },
+                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_delete'),
               },
             ]
           },

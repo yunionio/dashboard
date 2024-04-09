@@ -1,7 +1,7 @@
 <template>
   <disk-list
-    :hiddenColumns="['unused', 'guest', 'medium_type']"
-    :hiddenFilterOptions="['guest_id', 'unused', 'brand', 'region']"
+    :hiddenColumns="['unused', 'guest', 'medium_type', 'account']"
+    :hiddenFilterOptions="['guest_id', 'unused', 'brand', 'region', 'account']"
     :id="id"
     :getParams="getParams"
     :show-create-action="false" />
