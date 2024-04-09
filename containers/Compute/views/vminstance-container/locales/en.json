@@ -38,5 +38,6 @@
   "compute.repo.mount_point.check_start": "Mount point starts with /",
   "compute.repo.start": "start",
   "compute.repo.stop": "stop",
-  "compute.repo.helper.change_config": "Only the shutdown container host can adjust the configuration"
+  "compute.repo.helper.change_config": "Only the shutdown container host can adjust the configuration",
+  "compute.repo.helper.modify": "Only exited containers can be modified"
 }
