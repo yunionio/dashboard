@@ -878,6 +878,9 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.imagerecovery')) {
                 return true
               }
+              if (!store.state.common.imageGlobalConfig.enable_pending_delete) {
+                return true
+              }
               return !hasSetupKey(['onestack', 'public', 'private', 'vmware'])
             },
           },
