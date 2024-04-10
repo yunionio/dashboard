@@ -87,6 +87,8 @@ export default {
         min_disk_mb = img.min_disk
       } else if (img.server_config && img.server_config.disks && img.server_config.disks.length > 0) {
         min_disk_mb = img.server_config.disks[0].size
+      } else if (img.info && (img.info.min_disk || img.info.min_disk_mb)) {
+        min_disk_mb = img.info.min_disk || img.info.min_disk_mb
       }
       const min_disk = sizestr(min_disk_mb, 'M', 1024)
       let size = img.size
