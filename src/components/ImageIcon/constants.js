@@ -72,6 +72,10 @@ export const CUSTOME_IMG = {
     label: 'Aliyun',
     url: 'aliyun',
   },
+  alibaba: {
+    label: 'Aliyun',
+    url: 'aliyun',
+  },
   tencent: {
     label: 'Tencent',
     url: 'tencent',
