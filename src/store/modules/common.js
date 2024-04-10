@@ -29,6 +29,7 @@ export default {
     openCloudShell: false,
     globalServices: [],
     computeV2GlobalConfig: {},
+    imageGlobalConfig: {},
   },
   mutations: {
     UPDATE_OBJECT (state, { name, data }) {
@@ -106,6 +107,9 @@ export default {
     SET_COMPUTEV2_GLOBAL_CONFIG (state, payload) {
       state.computeV2GlobalConfig = payload
     },
+    SET_IMAGE_GLOBAL_CONFIG (state, payload) {
+      state.imageGlobalConfig = payload
+    },
   },
   actions: {
     updateObject ({ commit }, payload) {
@@ -166,7 +170,7 @@ export default {
       try {
         const response = await manager.list({
           params: {
-            type: ['common', 'yunionapi', 'meter', 'identity', 'compute_v2'],
+            type: ['common', 'yunionapi', 'meter', 'identity', 'compute_v2', 'image'],
           },
         })
         const resData = response?.data?.data
@@ -214,6 +218,15 @@ export default {
           })
           const config = (configResponse.data.config && configResponse.data.config.default) || {}
           commit('SET_COMPUTEV2_GLOBAL_CONFIG', config)
+        }
+        const imageId = resData.find(v => v.type === 'image')?.id || ''
+        if (imageId) {
+          const configResponse = await manager.getSpecific({
+            id: imageId,
+            spec: 'config',
+          })
+          const config = (configResponse.data.config && configResponse.data.config.default) || {}
+          commit('SET_IMAGE_GLOBAL_CONFIG', config)
         }
       } catch (error) {
         throw error
