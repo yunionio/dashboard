@@ -5305,6 +5305,7 @@
   "license.provider.s3": "S3",
   "license.provider.ceph": "セフ",
   "license.provider.xsky": "エクススカイ",
+  "license.provider.oraclecloud": "OracleCloud",
   "license.feature.baremetal": "@:scope.text_104",
   "license.feature.lb": "@:common_248",
   "license.feature.k8s": "@:scope.text_78",

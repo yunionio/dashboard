@@ -27,6 +27,7 @@ import BaiduCloud from './components/BaiduCloud'
 import Qingcloud from './components/Qingcloud'
 import ChinaUnion from './components/ChinaUnion'
 import VolcEngine from './components/VolcEngine'
+import OracleCloud from './components/OracleCloud'
 
 export default {
   name: 'CreateCloudaccount',
@@ -63,6 +64,7 @@ export default {
     QingcloudCreate: Qingcloud,
     ChinaUnionCreate: ChinaUnion,
     VolcEngineCreate: VolcEngine,
+    OracleCloudCreate: OracleCloud,
   },
   props: {
     currentItem: {

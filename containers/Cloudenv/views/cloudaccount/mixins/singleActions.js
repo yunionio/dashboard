@@ -320,8 +320,8 @@ export default {
 
                     return {
                       validate: this.$appConfig.isPrivate &&
-                      (supportBrands.indexOf(obj.brand) > -1 || obj.cloud_env === CLOUD_ENVS.private) &&
-                      ownerDomain,
+                        (supportBrands.indexOf(obj.brand) > -1 || obj.cloud_env === CLOUD_ENVS.private) &&
+                        ownerDomain,
                     }
                   },
                   hidden: !this.$appConfig.isPrivate,
@@ -385,7 +385,7 @@ export default {
                       onManager: this.onManager,
                       content: () => {
                         if (this.$appConfig.isPrivate) {
-                          return <a-checkbox v-model={ this.deleteBill }>{ this.$t('cloudenv.text_497') }</a-checkbox>
+                          return <a-checkbox v-model={this.deleteBill}>{this.$t('cloudenv.text_497')}</a-checkbox>
                         }
                         return null
                       },
