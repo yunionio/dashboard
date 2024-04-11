@@ -112,10 +112,10 @@ export default {
 }
 </script>
 <style>
-  .google-account-file .ant-upload-drag-container{
-    display: block !important;
-  }
-  .google-account-file .ant-form-item-label{
-    visibility: hidden
-  }
+.google-account-file .ant-upload-drag-container {
+  display: block !important;
+}
+.google-account-file .ant-form-item-label {
+  visibility: hidden;
+}
 </style>

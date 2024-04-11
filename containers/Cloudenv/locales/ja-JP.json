@@ -681,7 +681,7 @@
   "cloudenv.text_575": "公式ウェブサイトのドキュメント",
   "cloudaccount.tooltip.already_enable_sso": "Alibaba Cloud アカウントでパスワードなしの認証が有効になっている",
   "cloudaccount.tooltip.not_support_sso": "{0} パスワードレス認証はサポートされていません",
-  "cloudenv.text_576": "パスワード不要モード", 
+  "cloudenv.text_576": "パスワード不要モード",
   "table.title.sso_status": "パスワード不要の認証",
   "cloudenv.res_servers": "仮想マシン",
   "cloudenv.res_loadbalancer": "LB インスタンス",
@@ -884,5 +884,10 @@
   "cloudenv.priority": "優先度",
   "cloudenv.set_priority": "優先度の設定",
   "cloudenv.priority_extra": "数値が大きいほど優先度が高くなります。リソースを作成する際に、選択したローカルプロジェクトが複数のクラウド上プロジェクトを同時にマッピングする場合、最も優先度の高いクラウド上プロジェクトを選択してリソースを作成します",
-  "cloudenv.block_month_tip": "{0}封帳しました。クラウドアカウントの詳細ページ--帳簿期間リストは封帳を解除してから再試行することをお勧めします。そうしないと、確認後に対応する請求書タスクがキャンセルされます。"
+  "cloudenv.block_month_tip": "{0}封帳しました。クラウドアカウントの詳細ページ--帳簿期間リストは封帳を解除してから再試行することをお勧めします。そうしないと、確認後に対応する請求書タスクがキャンセルされます。",
+  "cloudenv.private_key": "秘密鍵",
+  "cloudenv.private_key.upload_certificate": "証明書をアップロード",
+  "cloudenv.private_key.text_input": "テキスト入力",
+  "cloudenv.private_key.upload_pem_file": ".pem ファイルのみをアップロードできます",
+  "cloudenv.private_pem_message": "秘密鍵をアップロードしてください"
 }
