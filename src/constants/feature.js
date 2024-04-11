@@ -257,16 +257,20 @@ const LicenseItems = [
     key: 'volcengine',
     meta: meta('resource_managent', 'public', true),
   },
+  {
+    key: 'oraclecloud',
+    meta: meta('resource_managent', 'public', true),
+  },
 ]
 
 function fullfillLicenseItems () {
   LicenseItems.map(item => {
     const key = item.origin_key || item.key
     if (item.meta.is_account) {
-      item.label = i18n.t(`license.provider.${key}`)
+      item.label = i18n.te(`license.provider.${key}`) ? i18n.t(`license.provider.${key}`) : key
       item.icon = require(`@/assets/images/providers/${key}.svg`)
     } else {
-      item.label = i18n.t(`license.feature.${key}`)
+      item.label = i18n.te(`license.feature.${key}`) ? i18n.t(`license.feature.${key}`) : key
       item.icon = require(`@/assets/images/features/${key}.svg`)
     }
     item.value = item.key
