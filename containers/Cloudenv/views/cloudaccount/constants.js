@@ -34,6 +34,7 @@ const baiduLogo = require('@/assets/images/providers/baidu.svg')
 const qingcloudLogo = require('@/assets/images/providers/qingcloud.svg')
 const chinaUnionLogo = require('@/assets/images/providers/chinaunion.svg')
 const volcEngineLogo = require('@/assets/images/providers/volcengine.svg')
+const oraclecloudLogo = require('@/assets/images/providers/oraclecloud.svg')
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
@@ -135,6 +136,17 @@ export const CLOUDACCOUNT_TYPES = {
       logo: volcEngineLogo,
       component: 'volcEngineCreate',
       provider: providerMap.volcengine.key,
+    },
+    oraclecloud: {
+      name: providerMap.oraclecloud.label,
+      logo: oraclecloudLogo,
+      component: 'OracleCloudCreate',
+      provider: providerMap.oraclecloud.key,
+      logoStyle: {
+        position: 'relative',
+        right: '1px',
+        width: '28px',
+      },
     },
   },
   private: {
@@ -763,6 +775,19 @@ export const keySecretFields = {
       s: i18n.t('cloudenv.text_147'),
     },
   },
+  oraclecloud: {
+    s: 'oracle_tenancy_ocid',
+    k: 'oracle_user_ocid',
+    text: 'OracleCloud',
+    placeholder: {
+      s: i18n.t('common.tips.input', ['tenancy']),
+      k: i18n.t('common.tips.input', ['user']),
+    },
+    label: {
+      s: 'tenancy',
+      k: 'user',
+    },
+  },
 }
 
 export function getBillBucketUrlDocs (scope) {
@@ -806,6 +831,7 @@ export const notSupportSelectRegion = [
   providerMap.remotefile.key,
   providerMap.h3c.key,
   providerMap.proxmox.key,
+  providerMap.oraclecloud.key,
 ]
 
 export const BILL_TYPES = [

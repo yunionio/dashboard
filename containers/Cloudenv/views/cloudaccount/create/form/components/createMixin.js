@@ -99,6 +99,11 @@ export default {
         delete params.isOpenBlockedResources
         delete params.blockedResources
       }
+      // 针对oracle cloud oracle_private_pem参数做转换处理
+      if (params.oracle_private_pem) {
+        params.oracle_private_key = params.oracle_private_pem
+        delete params.oracle_private_pem
+      }
       return params
     },
     validateForm () {
