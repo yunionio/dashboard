@@ -28,6 +28,7 @@ import Qingcloud from './components/Qingcloud'
 import ChinaUnion from './components/ChinaUnion'
 import VolcEngine from './components/VolcEngine'
 import CephFS from './components/CephFS'
+import OracleCloud from './components/OracleCloud'
 
 export default {
   name: 'CreateCloudaccount',
@@ -65,6 +66,7 @@ export default {
     ChinaUnionCreate: ChinaUnion,
     VolcEngineCreate: VolcEngine,
     CephFSCreate: CephFS,
+    OracleCloudCreate: OracleCloud,
   },
   props: {
     currentItem: {
