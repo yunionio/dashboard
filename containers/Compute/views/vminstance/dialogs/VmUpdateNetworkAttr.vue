@@ -90,7 +90,7 @@ export default {
       return this.params.data
     },
     is_default_on_init () {
-      return this.params.data[0].is_default
+      return this.params.data[0].is_default || this.params.data[0].virtual
     },
   },
   methods: {
@@ -103,9 +103,13 @@ export default {
         driver: values.driver,
         is_default: values.is_default,
       }
+      const params = {
+        mac: this.params.data[0].mac_addr,
+      }
       return manager.update({
         id: `${sid}/networks/${nid}`,
         data,
+        params,
       })
     },
     async handleConfirm () {
