@@ -317,6 +317,7 @@ export function getCloudaccountDocs (scope) {
     qingcloud: i18n.t('cloudenv.create_qingcloud', [docs_path]),
     chinaunion: i18n.t('cloudenv.create_chinaunion', [docs_path]),
     volcengine: i18n.t('cloudenv.create_volcengine', [docs_path]),
+    oraclecloud: i18n.t('cloudenv.create_oraclecloud', [docs_path]),
   }
   // if (isCE()) {
   //   Object.keys(docs).forEach(v => {

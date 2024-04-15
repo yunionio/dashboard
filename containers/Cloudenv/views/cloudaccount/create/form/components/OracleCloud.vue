@@ -9,6 +9,10 @@
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.oracle_user_ocid" :placeholder="keySecretField.placeholder.k" />
+        <div slot="extra">
+          {{$t('cloudenv.text_236', [keySecretField.text, keySecretField.label.k])}}
+          <help-link :href="docs[provider.toLowerCase()]">{{$t('cloudenv.text_237')}}</help-link>
+        </div>
       </a-form-item>
       <a-form-item :label="keySecretField.label.s">
         <a-input v-decorator="decorators.oracle_tenancy_ocid" :placeholder="keySecretField.placeholder.s" />
