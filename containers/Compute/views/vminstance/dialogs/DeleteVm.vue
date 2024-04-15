@@ -4,6 +4,7 @@
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <div slot="message">{{$t('compute.text_1392')}}</div>
+        <div v-if="isSomePrepaid" slot="message" class="mt-2">{{$t('compute.prepaid_delete_server.alert')}}</div>
       </a-alert>
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="this.params.title" />
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
@@ -231,6 +232,9 @@ export default {
         return this.$t('compute.disable_delete_snapshot_tooltip')
       }
       return ''
+    },
+    isSomePrepaid () {
+      return this.params.data.some(item => item.billing_type === 'prepaid')
     },
   },
   methods: {
