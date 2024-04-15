@@ -112,7 +112,7 @@
   "system.text_110": "Failed to set infrastructure quota",
   "system.text_111": "Within 25 characters",
   "system.text_112": "Copyright Information",
-  "system.text_113": "Within 40 words; used to display the copyright information in the footer, e.g. Beijing xxxx Technology Co., Ltd. 2017-2018",
+  "system.text_113": "Used to display the copyright information in the footer, e.g. Beijing xxxx Technology Co., Ltd. 2017-2018",
   "system.text_114": "System Logo",
   "system.text_115": "Only supports .png format (width 76 * height 52)",
   "system.text_116": "Login Page Logo",
