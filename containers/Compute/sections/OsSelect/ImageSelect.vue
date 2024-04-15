@@ -584,25 +584,23 @@ export default {
             osVal = 'RHEL'
           } else if (osVal.toLowerCase().includes('almalinux')) {
             osVal = 'AlmaLinux'
+          } else if (osVal.toLowerCase().includes('rocky')) {
+            osVal = 'Rocky'
           } else {
             osVal = 'Linux'
           }
         }
         if (osVal.toLowerCase().includes('ubuntu')) {
           osVal = 'Ubuntu'
-        }
-        if (osVal.toLowerCase().includes('suse')) {
+        } else if (osVal.toLowerCase().includes('suse')) {
           osVal = 'SUSE'
-        }
-        if (osVal.toLowerCase() === 'kylin') {
+        } else if (osVal.toLowerCase() === 'kylin') {
           osLabel = this.$t('compute.os.kylin')
           osVal = 'Kylin'
-        }
-        if (osVal.toLowerCase() === 'neokylin') {
+        } else if (osVal.toLowerCase() === 'neokylin') {
           osLabel = this.$t('compute.os.neokylin')
           osVal = 'NeoKylin'
-        }
-        if (osVal.toLowerCase().includes('nfs')) {
+        } else if (osVal.toLowerCase().includes('nfs')) {
           osLabel = this.$t('compute.os.nfs')
           osVal = 'nfs'
         }
