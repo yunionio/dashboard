@@ -847,6 +847,7 @@
   "cloudenv.create_chinaunion": "{0}#create-chinaunion-account",
   "cloudenv.volcengine": "Volc Engine",
   "cloudenv.create_volcengine": "{0}#create-volcengine-account",
+  "cloudenv.create_oraclecloud": "{0}#create-oraclecloud-account",
   "cloudenv.view_record": "View records",
   "cloudenv.old_sth": "Origin {0}",
   "cloudenv.new_sth": "Current {0}",
