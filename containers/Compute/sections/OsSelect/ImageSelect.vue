@@ -185,7 +185,7 @@ export default {
       if (!params.scope && !params.project_domain) {
         params.scope = this.$store.getters.scope
       }
-      if (this.isVMware && this.form.fd.zone) {
+      if (this.showCloudaccount && this.form.fd.zone) {
         params.zone_id = this.form.fd.zone.key
       }
       return params
