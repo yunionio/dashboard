@@ -61,8 +61,8 @@ export class Manager {
     return Vue.http.post(`${this.contextPath(ctx)}${this.resource}`, data, { params: params || { id: ids } })
   }
 
-  update ({ id, data, ctx = [] } = {}) {
-    return Vue.http.put(`${this.contextPath(ctx)}${this.resource}/${id}`, data)
+  update ({ id, data, ctx = [], params } = {}) {
+    return Vue.http.put(`${this.contextPath(ctx)}${this.resource}/${id}`, data, { params })
   }
 
   batchUpdate ({ ids, data, ctx = [], params = {} } = {}) {
