@@ -76,6 +76,12 @@
             <a-input-password v-decorator="decorators.options.password" :placeholder="$t('common.tips.input', [$t('cloudenv.text_147')])" />
           </a-form-item>
         </template>
+        <upload-pem-file :fc="form.fc" :decorators="decorators" v-if="isOraclecloud">
+          <a-textarea
+            v-decorator="decorators.oracle_private_key"
+            :placeholder="$t('common.tips.input', [$t('cloudenv.private_key')])"
+            :auto-size="{ minRows: 6, maxRows: 8 }" />
+        </upload-pem-file>
       </a-form>
     </div>
     <div slot="footer">
@@ -89,6 +95,7 @@
 <script>
 import * as R from 'ramda'
 import UploadJsonFile from '@Cloudenv/views/cloudaccount/components/UploadJsonFile'
+import UploadPemFile from '@Cloudenv/views/cloudaccount/components/UploadPemFile'
 import TestButton from '@/sections/TestButton'
 import { HYPERVISORS_MAP } from '@/constants'
 import DialogMixin from '@/mixins/dialog'
@@ -97,7 +104,7 @@ import { keySecretFields, getCloudaccountDocs } from '../constants'
 
 export default {
   name: 'CloudaccountUpdateDialog',
-  components: { UploadJsonFile, TestButton },
+  components: { UploadJsonFile, TestButton, UploadPemFile },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const provider = this.params.data[0].brand.toLowerCase()
@@ -109,6 +116,22 @@ export default {
       },
       provider,
       decorators: {
+        oracle_private_key: [
+          'oracle_private_key',
+          {
+            rules: [
+              { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.private_key')]) },
+            ],
+          },
+        ],
+        oracle_private_pem: [
+          'oracle_private_pem',
+          {
+            rules: [
+              { required: true, message: this.$t('cloudenv.private_pem_message') },
+            ],
+          },
+        ],
         keyId: [
           keySecretFields[provider].k,
           {
@@ -221,6 +244,9 @@ export default {
     isHcs () {
       return this.provider === HYPERVISORS_MAP.hcs.key
     },
+    isOraclecloud () {
+      return this.provider === HYPERVISORS_MAP.oracle.provider.toLowerCase()
+    },
     formItemLayout () {
       const ret = {
         wrapperCol: {
@@ -275,6 +301,11 @@ export default {
                 params[key] = value
               }
             }, values)
+            // 针对oracle cloud oracle_private_pem参数做转换处理
+            if (params.oracle_private_pem) {
+              params.oracle_private_key = params.oracle_private_pem
+              delete params.oracle_private_pem
+            }
             resolve(params)
           }
         })
