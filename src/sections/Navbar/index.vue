@@ -125,13 +125,13 @@
     </div>
     <slot name="frontNavbar" />
     <!-- 资源报警 -->
-    <alertresource v-if="showAlertresource" :res_total="alertresource.total" :alert_total="alertrecords.total" class="navbar-item-icon primary-color-hover" />
+    <alertresource v-if="showAlertresource && showMenuMap.alert" :res_total="alertresource.total" :alert_total="alertrecords.total" class="navbar-item-icon primary-color-hover" />
     <!-- 消息中心 -->
-    <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
+    <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify && showMenuMap.notification" />
     <!-- 工单 -->
-    <work-order-popover class="navbar-item-icon primary-color-hover" :workOrderMenuTitleUsedText="workOrderMenuTitleUsedText" v-if="showWorkFlow && itsmServiceEnable" />
+    <work-order-popover class="navbar-item-icon primary-color-hover" :workOrderMenuTitleUsedText="workOrderMenuTitleUsedText" v-if="showWorkFlow && itsmServiceEnable && showMenuMap.workflow" />
     <!-- 大屏监控 -->
-    <div class="navbar-item-icon primary-color-hover" v-if="isCMPPrivate && (isAdminMode || isDomainMode)">
+    <div class="navbar-item-icon primary-color-hover" v-if="isCMPPrivate && (isAdminMode || isDomainMode) && showMenuMap.monitor_dashboard">
       <a-tooltip :title="$t('navbar.button.monitor')" placement="right">
         <div class="d-flex align-items-center justify-content-center h-100" style="cursor: pointer;" @click="handleOpenOverview">
           <icon type="daping" style="font-size: 20px;" />
@@ -139,10 +139,10 @@
       </a-tooltip>
     </div>
     <!-- cloudsheel -->
-    <cloud-shell v-if="isAdminMode" class="navbar-item-icon primary-color-hover" />
+    <cloud-shell v-if="isAdminMode && showMenuMap.cloudshell" class="navbar-item-icon primary-color-hover" />
     <slot name="behindNavbar" />
     <!-- 更多 -->
-    <slot name="morePopover">
+    <slot name="morePopover" v-if="showMenuMap.more">
       <more-popover class="navbar-item-icon primary-color-hover" />
     </slot>
     <!-- 用户 -->
@@ -155,10 +155,6 @@ import get from 'lodash/get'
 import * as R from 'ramda'
 import Cookies from 'js-cookie'
 import { mapGetters, mapState } from 'vuex'
-import UserProjectSelect from '@/sections/UserProjectSelect'
-import WindowsMixin from '@/mixins/windows'
-import { getSetupInStorage } from '@/utils/auth'
-import { uuid } from '@/utils/utils'
 import NotifyPopover from './components/NotifyPopover'
 // import SettingPopover from './components/SettingPopover'
 import WorkOrderPopover from './components/WorkOrderPopover'
@@ -166,6 +162,10 @@ import MorePopover from './components/MorePopover'
 import GlobalSearch from './components/GlobalSearch'
 import Alertresource from './components/Alertresource'
 import CloudShell from './components/CloudShell'
+import { uuid } from '@/utils/utils'
+import { getSetupInStorage } from '@/utils/auth'
+import WindowsMixin from '@/mixins/windows'
+import UserProjectSelect from '@/sections/UserProjectSelect'
 
 export default {
   name: 'Navbar',
@@ -382,6 +382,14 @@ export default {
         }
       }
       return false
+    },
+    showMenuMap () {
+      const ret = {}
+      const list = ['alert', 'notification', 'workflow', 'monitor_dashboard', 'cloudshell', 'more']
+      list.map(item => {
+        ret[item] = !this.$isScopedPolicyMenuHidden(`navbar_hidden_items.${item}`)
+      })
+      return ret
     },
     domainManagerTitle () {
       return this.$t('navbar.view.domain_manager')
