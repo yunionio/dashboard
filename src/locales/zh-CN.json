@@ -1252,6 +1252,12 @@
       "on": "运行中",
       "off": "关机",
       "start_fail": "启动失败"
+    },
+    "phoneModel": {
+      "ready": "可用"
+    },
+    "phoneImage": {
+      "ready": "可用"
     }
   },
   "skuCategoryOptions": {

@@ -584,4 +584,10 @@ export default {
     info: ['exited', 'ready', 'unknown', 'off'],
     danger: ['start_failed'],
   },
+  phoneModel: {
+    success: ['ready'],
+  },
+  phoneImage: {
+    success: ['ready'],
+  },
 }
