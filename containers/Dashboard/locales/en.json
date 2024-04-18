@@ -329,5 +329,6 @@
   "dashboard.show_as_dimension": "Display by dimension",
   "dashboard.aggregation": "Group",
   "dashboard.chart_type.bar": "Bar chart",
-  "dashboard.chart_type.stack": "Stacking chart"
+  "dashboard.chart_type.stack": "Stacking chart",
+  "dashboard.bill_kpi": "Cost Proportional Chart"
 }

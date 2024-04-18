@@ -36,9 +36,10 @@ async function getPdf (options) {
  * @param {Dom} dom tooltip dom
  * @param {Object} size { contentSize: [width, height], viewSize: [width, height] }
  * @param {Boolean} inSidePage 是否在Sidepage页面内
+ * @param {Boolean} inDashboard 是否在Dashboard页面内
  * @returns {Object} { left, top }
  */
-function getChartTooltipPosition (point, dom, size, inSidePage) {
+function getChartTooltipPosition (point, dom, size, inSidePage, inDashboard) {
   const { contentSize, viewSize } = size
   const echartY = dom.parentNode.getBoundingClientRect().y
   let canShowTopLine = 0
@@ -47,6 +48,13 @@ function getChartTooltipPosition (point, dom, size, inSidePage) {
     const sidePageContentDom = document.getElementById('side-page-container')
     if (sidePageContentDom) {
       canShowTopLine = sidePageContentDom.getBoundingClientRect().y
+      top = -(echartY - canShowTopLine)
+    }
+  }
+  if (inDashboard) {
+    const dashboardHeaderDom = document.getElementById('dashboard-header')
+    if (dashboardHeaderDom) {
+      canShowTopLine = dashboardHeaderDom.getBoundingClientRect().y + dashboardHeaderDom.getBoundingClientRect().height + 10
       top = -(echartY - canShowTopLine)
     }
   }
