@@ -3,7 +3,8 @@ import _ from 'lodash'
 import i18n from '@/locales'
 
 class WaitStatusJob {
-  constructor (status, data) {
+  // eslint-disable-next-line
+  constructor(status, data) {
     this.status = status
     this.data = data
     this.timer = null
@@ -62,7 +63,8 @@ class WaitStatusJob {
 }
 
 class DataWrap {
-  constructor (detail, data, idKey) {
+  // eslint-disable-next-line
+  constructor(detail, data, idKey) {
     this.detail = detail
     this.id = data[idKey]
     this.data = data

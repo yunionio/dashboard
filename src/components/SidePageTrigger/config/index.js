@@ -169,4 +169,8 @@ export default {
   VpcNetworkSidePage: {
     resource: 'inter_vpc_networks',
   },
+  PhoneSidePage: {
+    resource: 'phones',
+    steadyStatus: Object.values(expectStatus.server).flat(),
+  },
 }
