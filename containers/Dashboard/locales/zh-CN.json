@@ -329,5 +329,6 @@
   "dashboard.show_as_dimension": "按维度展示",
   "dashboard.aggregation": "聚合",
   "dashboard.chart_type.bar": "柱状图",
-  "dashboard.chart_type.stack": "堆叠图"
+  "dashboard.chart_type.stack": "堆叠图",
+  "dashboard.bill_kpi": "费用-比例图"
 }
