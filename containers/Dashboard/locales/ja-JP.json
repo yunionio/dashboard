@@ -329,5 +329,6 @@
   "dashboard.show_as_dimension": "次元別に表示",
   "dashboard.aggregation": "集約＃シュウヤク＃",
   "dashboard.chart_type.bar": "ヒストグラム",
-  "dashboard.chart_type.stack": "スタック図"
+  "dashboard.chart_type.stack": "スタック図",
+  "dashboard.bill_kpi": "費用-スケール図"
 }
