@@ -153,10 +153,16 @@ export default {
       return new this.$Manager(this.isDiskBackup ? 'diskbackups' : 'instancebackups', 'v2')
     },
     storageParams () {
-      return {
+      const params = {
         scope: this.scope,
         project_domain: this.params.data[0].project_domain,
       }
+      if (this.isDiskBackup) {
+        params.disk_id = this.selectDisk.id
+      } else {
+        params.server_id = this.params.data[0].id
+      }
+      return params
     },
   },
   watch: {
