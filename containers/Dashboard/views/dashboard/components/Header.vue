@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap d-flex align-items-center">
+  <div id="dashboard-header" class="wrap d-flex align-items-center">
     <draggable v-model="options" tag="ul" class="d-flex flex-fill flex-wrap list-unstyled m-0" handle=".handle">
       <li
         class="item"
