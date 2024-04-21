@@ -326,7 +326,7 @@
   "dashboard.chart_show_type": "ディスプレイモード",
   "dashboard.show_as_day": "日単位で表示",
   "dashboard.show_as_month": "月別に展示する",
-  "dashboard.show_as_dimension": "次元別に表示",
+  "dashboard.show_as_dimension": "次元1で表示",
   "dashboard.aggregation": "集約＃シュウヤク＃",
   "dashboard.chart_type.bar": "ヒストグラム",
   "dashboard.chart_type.stack": "スタック図",

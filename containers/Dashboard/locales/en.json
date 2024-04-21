@@ -326,7 +326,7 @@
   "dashboard.chart_show_type": "Display method",
   "dashboard.show_as_day": "Display by day",
   "dashboard.show_as_month": "Display by month",
-  "dashboard.show_as_dimension": "Display by dimension",
+  "dashboard.show_as_dimension": "Display by dimension 1",
   "dashboard.aggregation": "Group",
   "dashboard.chart_type.bar": "Bar chart",
   "dashboard.chart_type.stack": "Stacking chart",
