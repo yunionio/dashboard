@@ -1083,7 +1083,7 @@
   "network.topology.res_type.esxi": "ESXI Host",
   "network.topology.res_type.instancegroups": "Instancegroups",
   "network.topology.res_type.networkinterfaces": "Networkinterfaces",
-  "network.topology.start": "Start", 
+  "network.topology.start": "Start",
   "network.topology.end": "End",
   "network.topology": "Topology",
   "network.topology.view": "View",
@@ -1117,5 +1117,7 @@
   "network.priority.extra": "Priority: a positive integer between 1 and 255.",
   "network.interface": "Interface",
   "network.not_support": "Not supported",
-  "network.additional_wires.title.tooltip": "Allow VMware IP network to be associated with more than one layer-2 network. All the additional layer-2 networks of this IP network are listed here. You may also set IP network's additional layer-2 networks manually."
+  "network.additional_wires.title.tooltip": "Allow VMware IP network to be associated with more than one layer-2 network. All the additional layer-2 networks of this IP network are listed here. You may also set IP network's additional layer-2 networks manually.",
+  "network.guest_ip6_start": "IPv6 starting IP",
+  "network.guest_ip6_end": "IPv6 end IP"
 }
