@@ -100,14 +100,14 @@
 </template>
 
 <script>
-import BindLb from '../components/BindLb'
-import { DECORATORS, BRANDS } from '../constants'
 import { HYPERVISORS_MAP } from '@/constants'
 import DomainProject from '@/sections/DomainProject'
 // import NameRepeated from '@/sections/NameRepeated'
 import NetworkSelects from '@/sections/NetworkSelects'
 import { getInitialValue } from '@/utils/common/ant'
 import { typeClouds } from '@/utils/common/hypervisor'
+import BindLb from '../components/BindLb'
+import { DECORATORS, BRANDS } from '../constants'
 
 export default {
   name: 'ScalingGroupCreae',
@@ -165,7 +165,9 @@ export default {
       let supportBrands = BRANDS.filter(brand => {
         return this.capabilityBrands.indexOf(brand) > -1
       })
-      supportBrands = [...Object.values(HYPERVISORS_MAP)].filter(item => supportBrands.includes(item.brand))
+      supportBrands = [...Object.values(HYPERVISORS_MAP)].filter(item => {
+        return supportBrands.includes(item.brand) && item.hypervisor !== HYPERVISORS_MAP.pod.key
+      })
       return supportBrands
     },
     project_domain () {
@@ -430,5 +432,4 @@ export default {
 </script>
 
 <style>
-
 </style>
