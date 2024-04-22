@@ -1082,7 +1082,7 @@
   "network.topology.res_type.esxi": "ESXI ホスト",
   "network.topology.res_type.instancegroups": "インスタンスグループ",
   "network.topology.res_type.networkinterfaces": "エニ",
-  "network.topology.start": "上がる", 
+  "network.topology.start": "上がる",
   "network.topology.end": "止める",
   "network.topology": "位相幾何学",
   "network.topology.view": "眺める",
@@ -1119,5 +1119,7 @@
   "network.additional_wires.title.tooltip": "VMware IP サブネットが複数のレイヤ 2 ネットワークを関連付けることを許可し、IP サブネットに関連付けられているすべての追加のレイヤ 2 ネットワークがここに表示され、設定が許可されます",
   "network.additional_wires.set": "セカンダリ レイヤ 2 ネットワークのセットアップ",
   "network.additional_wires.type.auto": "自動検出",
-  "network.additional_wires.type.manual": "手動構成"
+  "network.additional_wires.type.manual": "手動構成",
+  "network.guest_ip6_start": "IPv6 開始 IP",
+  "network.guest_ip6_end": "IPv6 終了 IP"
 }
