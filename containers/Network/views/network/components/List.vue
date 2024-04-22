@@ -94,6 +94,22 @@ export default {
           return `guest_ip_end.contains('${val}')`
         },
       },
+      guest_ip6_start: {
+        label: this.$t('network.guest_ip6_start'),
+        hiddenField: 'ip',
+        filter: true,
+        formatter: val => {
+          return `guest_ip6_start.contains('${val}')`
+        },
+      },
+      guest_ip6_end: {
+        label: this.$t('network.guest_ip6_end'),
+        hiddenField: 'ip',
+        filter: true,
+        formatter: val => {
+          return `guest_ip6_end.contains('${val}')`
+        },
+      },
       status: getStatusFilter('network'),
       is_auto_alloc: {
         label: this.$t('common_498'),

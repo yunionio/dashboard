@@ -1082,7 +1082,7 @@
   "network.topology.res_type.esxi": "ESXI宿主机",
   "network.topology.res_type.instancegroups": "实例组",
   "network.topology.res_type.networkinterfaces": "弹性网卡",
-  "network.topology.start": "起", 
+  "network.topology.start": "起",
   "network.topology.end": "止",
   "network.topology": "拓扑",
   "network.topology.view": "视图",
@@ -1119,5 +1119,7 @@
   "network.additional_wires.title.tooltip": "允许VMware IP子网关联多个二层网络，此处展示该IP子网额外关联的所有二层网络，并且允许设置",
   "network.additional_wires.set": "设置附属二层网络",
   "network.additional_wires.type.auto": "自动探测",
-  "network.additional_wires.type.manual": "手动配置"
+  "network.additional_wires.type.manual": "手动配置",
+  "network.guest_ip6_start": "IPv6起始IP",
+  "network.guest_ip6_end": "IPv6结束IP"
 }
