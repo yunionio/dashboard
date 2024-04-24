@@ -30,8 +30,8 @@
 
 <script>
 import * as R from 'ramda'
-import thresholdInput from './thresholdInput'
 import { preiodMaps } from '@Monitor/constants'
+import thresholdInput from './thresholdInput'
 
 export default {
   name: 'AlertCondition',
