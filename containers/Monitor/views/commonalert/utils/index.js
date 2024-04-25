@@ -54,20 +54,31 @@ export const strategyColumn = (field = 'common_alert_metric_details', title = i1
   minWidth: 120,
   slots: {
     default: ({ row }, h) => {
-      const { filters, strategy } = getMetircAlertUtil(row, field)
+      const { filters, strategy, strategyArr = [] } = getMetircAlertUtil(row, field)
+      if (!row[field]) return '-'
       let filterNode = null
       if (filters.length > 0) {
         filterNode = (
           <a-tag class="w-100">
-            <div>{ i18n.t('monitor.text_101') }: </div>
-            { filters.map(v => <div class="w-100 text-truncate" title={v}>{v}</div>) }
+            <div>{i18n.t('monitor.text_101')}: </div>
+            {filters.map(v => <div class="w-100 text-truncate" title={v}>{v}</div>)}
           </a-tag>
         )
+      }
+      const strategys = strategyArr.map(item => <div>{item}</div>)
+      if (row.common_alert_metric_details?.length > 1) {
+        return [
+          <div>
+            <div>{i18n.t('monitor.commonalert.alert_condition.content')}:</div>
+            <div>{strategys}</div>
+            {filterNode}
+          </div>,
+        ]
       }
       return [
         <div>
           <div>{strategy}</div>
-          { filterNode }
+          {filterNode}
         </div>,
       ]
     },
@@ -90,7 +101,7 @@ export const projectTableColumn = {
         return [
           <list-body-cell-wrap copy field='tenant' row={row} />,
           <list-body-cell-wrap hide-field copy field="domain" row={{ domain }}>
-            <span class='text-weak'>{ domain }</span>
+            <span class='text-weak'>{domain}</span>
           </list-body-cell-wrap>,
         ]
       }
@@ -140,14 +151,19 @@ export const rolesColumn = roleList => ({
 
 export function getMetircAlertUtil (row, field, condition) {
   let strategy = '-'
+  let strategyConfig = {
+    measurement: '',
+    period: '', // 时间间隔 2h 14d
+    metric: '', // 监控指标
+    comparator: '', // > < within
+    threshold: null, // 阈值
+    unit: '', // 单位
+    time_from: row.time_from,
+  }
+  const strategyArr = []
+  const strategyConfigArr = []
   const filters = []
-  if (row[field] && ((R.type(row[field]) === 'Array') || R.type(row[field]) === 'Object') && !R.isEmpty(row[field])) {
-    let detail = ''
-    if (R.type(row[field]) === 'Array') {
-      detail = row[field][0]
-    } else if (R.type(row[field]) === 'Object') {
-      detail = row[field]
-    }
+  const getStrategyInfo = (detail) => {
     let measurement = detail.measurement_display_name || detail.measurement_desc || detail.measurement
     if (metric_zh[measurement]) measurement = metric_zh[measurement]
     let metric = _.get(detail, 'field_description.display_name') || detail.field_desc || detail.field
@@ -205,6 +221,26 @@ export function getMetircAlertUtil (row, field, condition) {
       }
       strategy += `${i18n.t('monitor.commonalerts.list.silent', [p])}`
     }
+    return {
+      strategy,
+      strategyConfig,
+    }
+  }
+  if (row[field] && ((R.type(row[field]) === 'Array') || R.type(row[field]) === 'Object') && !R.isEmpty(row[field])) {
+    let detail = ''
+    if (R.type(row[field]) === 'Array') {
+      detail = row[field][0]
+      row[field].forEach(item => {
+        const strategyInfo = getStrategyInfo(item)
+        strategyArr.push(strategyInfo.strategy)
+        strategyConfigArr.push(strategyInfo.strategyConfig)
+      })
+    } else if (R.type(row[field]) === 'Object') {
+      detail = row[field]
+      const strategyInfo = getStrategyInfo(detail)
+      strategy = strategyInfo.strategy
+      strategyConfig = strategyInfo.strategyConfig
+    }
 
     if (detail.filters && detail.filters.length) {
       detail.filters.forEach((val, i) => {
@@ -221,6 +257,8 @@ export function getMetircAlertUtil (row, field, condition) {
   return {
     strategy,
     filters,
+    strategyArr,
+    strategyConfigArr,
   }
 }
 
