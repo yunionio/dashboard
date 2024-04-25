@@ -1496,6 +1496,14 @@ export default {
           ret.items.push({ field: 'zone', title: this.$t('compute.text_270') })
         }
       })
+      ret.items.push({
+        field: 'expired_at',
+        title: this.$t('scope.text_791'),
+        formatter: (row) => {
+          if (!row.expired_at) return '-'
+          return this.$moment(row.expired_at).format()
+        },
+      })
       return ret
     },
   },
