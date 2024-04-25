@@ -181,7 +181,7 @@ export default {
     },
     async submit () {
       try {
-        const { fd, monitorParams } = await this.$refs.alertFormRef.validate()
+        const { fd, metric_query } = await this.$refs.alertFormRef.validate()
         const data = {
           scope: fd.scope,
           // interval: this.timeGroup,
@@ -193,12 +193,7 @@ export default {
           recipients: fd.recipients,
           alert_type: 'normal', // normal(自定义) system(系统内置)
           level: fd.level,
-          metric_query: [{
-            model: monitorParams,
-            reduce: fd.reduce,
-            comparator: fd.comparator,
-            threshold: fd.threshold,
-          }],
+          metric_query,
         }
 
         if (fd.silent_period) {
