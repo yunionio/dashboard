@@ -297,5 +297,16 @@
   "monitor.inside_addr": "イントラネット アドレス",
   "monitor.outside_addr": "インターネットアドレス",
   "monitor.currency": "通貨",
-  "monitor.currency_select_tip": "通貨の選択に注意してください"
+  "monitor.currency_select_tip": "通貨の選択に注意してください",
+  "monitor.commonalert.base_info": "基本情報",
+  "monitor.commonalert.alarm_strategy": "アラーム戦略",
+  "monitor.commonalert.alarm_notify": "アラーム通知",
+  "monitor.commonalert.monitor_info": "監視情報",
+  "monitor.commonalert.res_scope.all": "すべてのリソース",
+  "monitor.commonalert.res_scope.custom": "指定されたリソース",
+  "monitor.commonalert.alert_condition": "アラーム条件",
+  "monitor.commonalert.alert_condition.content": "いずれかのトリガー条件が満たされた場合にアラームをトリガーできます",
+  "monitor.commonalert.query_condition": "クエリ条件",
+  "monitor.commonalert.threshold.message": "インジケーターの値を入力してください",
+  "monitor.commonalert.add_condition": "トリガー条件を追加"
 }

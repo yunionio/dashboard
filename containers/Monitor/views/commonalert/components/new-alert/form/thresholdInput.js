@@ -85,6 +85,12 @@ export default {
 
       this.handleUnitChange(targetUnit)
     },
+    value (v) {
+      this.threshold = {
+        ...this.threshold,
+        value: v,
+      }
+    },
   },
   methods: {
     handleUnitChange (v) {
@@ -114,15 +120,15 @@ export default {
         return ''
       }
       if (this.options) {
-        return <a-select slot="addonAfter" default-value={ option.value || unit || '' } style="width: 80px" onChange={ this.handleUnitChange } disabled={ this.disabled }>
+        return <a-select slot="addonAfter" default-value={option.value || unit || ''} style="width: 80px" onChange={this.handleUnitChange} disabled={this.disabled}>
           {
             this.options.map((item) => {
-              return <a-select-option value={ item.value } key={ item.key }> { item.label } </a-select-option>
+              return <a-select-option value={item.value} key={item.key}> {item.label} </a-select-option>
             })
           }
         </a-select>
       } else {
-        return <span slot="addonAfter">{ unit }</span>
+        return <span slot="addonAfter">{unit}</span>
       }
     },
   },
