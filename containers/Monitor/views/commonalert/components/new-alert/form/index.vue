@@ -1,6 +1,6 @@
 <template>
   <a-form v-bind="formItemLayout" :form="form.fc">
-    <container-title title="基础信息" />
+    <container-title :title="$t('monitor.commonalert.base_info')" />
     <scope-radio :decorators="decorators" @change="scopeChange" :form="form" :disabled="disabled" :label="label" />
     <a-form-item :label="$t('common.name')">
       <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" :disabled="disabled" />
@@ -8,46 +8,61 @@
     <a-form-item :label="$t('common.description')">
       <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
     </a-form-item>
-    <a-form-item label="资源类型">
+    <a-form-item :label="$t('monitor.text_97')">
       <base-select
         v-decorator="decorators.metric_res_type"
         :options="metricTypeOpts"
         filterable
-        :select-props="{ placeholder: $t('monitor.text_111'), loading }" />
+        :select-props="{ placeholder: $t('monitor.text_111'), loading }"
+        @change="metricTypeHandle" />
     </a-form-item>
-    <container-title title="告警策略" />
-    <a-form-item label="告警条件">满足任意一条触发条件即可触发告警</a-form-item>
-    <a-form-item label="查询条件" class="mb-0">
-      <a-col :span="6">
-        <a-form-item>
-          <base-select v-decorator="decorators.period" :options="preiodOpts" minWidth="90px" />
-        </a-form-item>
-      </a-col>
-      <a-col :span="6">
-        <a-form-item>
-          <base-select v-decorator="decorators.alert_duration" :options="durationOpts" minWidth="120px" />
-        </a-form-item>
-      </a-col>
+    <container-title :title="$t('monitor.commonalert.alarm_strategy')" />
+    <a-form-item :label="$t('monitor.commonalert.alert_condition')">{{$t('monitor.commonalert.alert_condition.content')}}</a-form-item>
+    <a-form-item :label="$t('monitor.commonalert.query_condition')" class="mb-0">
+      <a-row :gutter="2">
+        <a-col :span="6">
+          <a-form-item>
+            <base-select v-decorator="decorators.period" :options="preiodOpts" />
+          </a-form-item>
+        </a-col>
+        <a-col :span="6">
+          <a-form-item>
+            <base-select v-decorator="decorators.alert_duration" :options="durationOpts" />
+          </a-form-item>
+        </a-col>
+      </a-row>
     </a-form-item>
     <a-form-item :label="$t('monitor.condition')">
       <condition
+        ref="conditionRef"
         :decorators="decorators.condition"
         :res_type_measurements="res_type_measurements"
+        :metric_res_type="form.fd.metric_res_type"
         :disabled="disabled"
         @metricChange="metricChangeHandle" />
     </a-form-item>
     <a-form-item :label="$t('monitor.monitor_filters')">
-      <filters
-        :form="form"
-        ref="filtersRef"
-        :tags="tags"
-        :disabled="disabled"
-        :decorators="decorators.filters"
-        @remove="$nextTick(toParams)"
-        :loading="metricInfoLoading"
-        :metricInfo="metricInfo" />
+      <a-row>
+        <a-col>
+          <a-radio-group v-decorator="decorators.res_scope" @change="resScopeChangeHandle">
+            <a-radio-button value="all">{{$t('monitor.commonalert.res_scope.all')}}</a-radio-button>
+            <a-radio-button value="custom">{{$t('monitor.commonalert.res_scope.custom')}}</a-radio-button>
+          </a-radio-group>
+        </a-col>
+      </a-row>
+      <a-row class="mt-4" v-if="form.fd.res_scope === 'custom'">
+        <filters
+          :form="form"
+          ref="filtersRef"
+          :tags="tags"
+          :disabled="disabled"
+          :decorators="decorators.filters"
+          @remove="$nextTick(toParams)"
+          :loading="metricInfoLoading"
+          :metricInfo="metricInfo" />
+      </a-row>
     </a-form-item>
-    <container-title title="告警通知" />
+    <container-title :title="$t('monitor.commonalert.alarm_notify')" />
     <a-form-item :label="$t('monitor.commonalerts.form.column.silent')" class="mb-0">
       <a-form-item class="mr-1">
         <base-select v-decorator="decorators.silent_period" :options="silentOpts" style="display: inline-flex;" />
@@ -134,7 +149,7 @@ import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import Filters from '@Monitor/sections/Filters'
 import ScopeRadio from '@/sections/ScopeRadio'
-import { levelMaps, metric_zh, preiodMaps } from '@Monitor/constants'
+import { levelMaps, preiodMaps } from '@Monitor/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import NotifyTypes from '@/sections/NotifyTypes'
 import Condition from './Condition'
@@ -194,10 +209,8 @@ export default {
       initialValue.project = this.alertData.tenant_id
       initialValue.silent_period = this.alertData.silent_period
       initialValue.res_type = _.get(this.alertData, 'common_alert_metric_details[0].res_type')
-      tags = _.get(this.alertData, 'settings.conditions[0].query.model.tags') || []
-      initialValue.metric_key = _.get(this.alertData, 'settings.conditions[0].query.model.measurement')
-      initialValue.metric_value = _.get(this.alertData, 'settings.conditions[0].query.model.select[0][0].params[0]')
-      initialValue.threshold = _.get(this.alertData, 'settings.conditions[0].evaluator.params[0]')
+      tags = _.get(this.alertData, 'common_alert_metric_details[0].filters') || []
+
       if (this.alertData.robot_ids && this.alertData.robot_ids.length) {
         initialValue.robot_ids = this.alertData.robot_ids
         initialValue.notifyTypes.push('robot')
@@ -217,15 +230,9 @@ export default {
           initialValue.channel = this.alertData.channel.filter((c) => !c.endsWith('robot'))
         }
       }
-
-      initialValue.comparator = _.get(this.alertData, 'common_alert_metric_details[0].comparator')
-      if (initialValue.comparator === 'lt') initialValue.comparator = '<='
-      if (initialValue.comparator === 'gt') initialValue.comparator = '>='
       if (!initialValue.project && !initialValue.domain) {
         initialValue.scope = 'system'
       }
-      const reduce = _.get(this.alertData, 'common_alert_metric_details[0].reduce')
-      if (reduce) initialValue.reduce = reduce
       if (this.alertData.alert_duration) initialValue.alert_duration = this.alertData.alert_duration
       if (!initialValue.project && initialValue.domain) {
         initialValue.scope = 'domain'
@@ -294,13 +301,19 @@ export default {
             ],
           },
         ],
+        res_scope: [
+          'res_scope',
+          {
+            initialValue: 'all',
+          },
+        ],
         condition: {
           metric_key: i => [
             `metric_key[${i}]`,
             {
               initialValue: initialValue.metric_key,
               rules: [
-                { required: true, message: this.$t('common.select') },
+                { required: true, message: this.$t('monitor.text_112') },
               ],
             },
           ],
@@ -309,7 +322,7 @@ export default {
             {
               initialValue: initialValue.metric_value,
               rules: [
-                { required: true, message: this.$t('common.select') },
+                { required: true, message: this.$t('monitor.text_113') },
               ],
             },
           ],
@@ -334,9 +347,9 @@ export default {
           threshold: i => [
             `threshold[${i}]`,
             {
-              initialValue: initialValue.threshold,
+              initialValue: initialValue.threshold || 1,
               rules: [
-                { required: true, message: this.$t('common.placeholder') },
+                { required: true, message: this.$t('monitor.commonalert.threshold.message') },
               ],
             },
           ],
@@ -355,7 +368,7 @@ export default {
             `tagKeys[${i}]`,
             {
               rules: [
-                // { required: true, message: this.$t('common.select') },
+                { required: true, message: this.$t('monitor.text_109') },
               ],
             },
           ],
@@ -372,7 +385,7 @@ export default {
             `tagValues[${i}]`,
             {
               rules: [
-                // { required: true, message: this.$t('common.select') },
+                { required: true, message: this.$t('monitor.text_110') },
               ],
             },
           ],
@@ -573,11 +586,43 @@ export default {
     this.initContactParams(this.contactParams)
   },
   mounted () {
-    if (R.is(Object, this.alertData)) {
-      // this.emitThreshold(this.decorators.threshold[1].initialValue)
+    if (this.isUpdate) {
+      this.initResType()
+    } else {
+      this.$refs.conditionRef.add()
     }
   },
   methods: {
+    initResType () {
+      this.form.fd.metric_res_type = this.alertData.common_alert_metric_details[0].res_type
+    },
+    initCondition () {
+      const metric_details = this.alertData.common_alert_metric_details
+      const conditionRef = this.$refs.conditionRef
+      metric_details.forEach((item, idx) => {
+        conditionRef.add()
+        this.$nextTick(() => {
+          const conditionList = conditionRef.conditionList
+          this.form.fc.setFieldsValue({
+            [`metric_key[${conditionList[idx].key}]`]: item.measurement,
+            [`reduce[${conditionList[idx].key}]`]: item.reduce,
+            [`comparator[${conditionList[idx].key}]`]: item.comparator,
+            [`threshold[${conditionList[idx].key}]`]: item.threshold,
+          })
+          conditionRef.metricKeyChange(item.measurement, { key: conditionList[idx].key })
+          this.form.fc.setFieldsValue({
+            [`metric_value[${conditionList[idx].key}]`]: item.field,
+          })
+          conditionRef.metricValueChange(item.field, { key: conditionList[idx].key })
+        })
+      })
+    },
+    initFilter () {
+      const { filters = [] } = this.alertData.common_alert_metric_details[0]
+      this.form.fc.setFieldsValue({
+        res_scope: filters.length > 0 ? 'custom' : 'all',
+      })
+    },
     contactArrOptsChange (rs) {
       const getLabel = (val) => {
         if (val === 'mobile') val = 'message' // mobile 应该翻译为 短信
@@ -613,8 +658,12 @@ export default {
         const { data: { res_type_measurements, res_types } } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', params: { ...params, ...this.timeRangeParams } })
         this.res_type_measurements = res_type_measurements
         this.res_types = res_types
-        if (R.is(Object, this.alertData)) { // 说明是 更新
+        if (R.is(Object, this.alertData)) {
           this.toParams()
+        }
+        if (this.isUpdate) {
+          this.initCondition()
+          this.initFilter()
         }
         this.metricLoading = false
       } catch (error) {
@@ -623,11 +672,11 @@ export default {
       }
     },
     async validate () {
-      const monitorParams = this.toParams(false)
+      const metric_query = this.toParams(false)
       const fd = await this.form.fc.validateFields()
-      if (this.projectItem && this.projectItem.domain_id) fd.domain_id = this.projectItem.domain_id // 其实不传domain后端也会根据project定位domain，这里保险起见
+      if (this.projectItem && this.projectItem.domain_id) fd.domain_id = this.projectItem.domain_id
       return {
-        monitorParams,
+        metric_query,
         fd,
       }
     },
@@ -641,24 +690,20 @@ export default {
         }
       }, newField)
       this.$nextTick(this.toParams)
-      if ((values.hasOwnProperty('metric_key') && !values.metric_key) || (values.hasOwnProperty('metric_value') && !values.metric_value)) {
-        this.resetChart()
-      }
       if (newField.hasOwnProperty('notify_type')) {
         this.notifyTypes = newField.notify_type
       }
     },
-    metricChangeHandle ({ metricKey, mertric, mertricItem, metricKeyItem }) {
-      this.$refs.filtersRef.reset()
-      this.conditionMap.set(`${metricKey}-${mertric}`, { metricKey, mertric, mertricItem, metricKeyItem })
-      console.log(this.conditionMap)
-      this.getMetricInfo({ metricKey, mertric, mertricItem, metricKeyItem })
+    metricChangeHandle (metricMap) {
+      const conditionList = this.$refs.conditionRef.conditionList
+      const firstMetricKey = conditionList[0].key
+      const firstMetric = metricMap[firstMetricKey]
+      this.getMetricInfo(firstMetric)
     },
     async getMetricInfo ({ metricKey, mertric, mertricItem, metricKeyItem }) {
       try {
         this.metricKeyItem = metricKeyItem || {}
         this.conditionUnit = _.get(mertricItem, 'description.unit') || ''
-        this.$emit('mertricItemChange', { ...mertricItem, title: this.getTitle(mertricItem) })
         const scopeFormValues = this.form.fc.getFieldsValue([this.decorators.scope[0], this.decorators.domain[0], this.decorators.project[0]])
         const scopeParams = {}
         for (const k in scopeFormValues) {
@@ -701,69 +746,73 @@ export default {
         throw error
       }
     },
-    toParams (needEmit = true) {
+    toParams () {
       const fd = this.form.fc.getFieldsValue()
-      const params = {
-        database: this.metricKeyItem.database || _.get(this.alertData, 'common_alert_metric_details[0].db', 'telegraf'),
-      }
-      const tags = []
-      if (fd.metric_key) params.measurement = fd.metric_key
-      if (fd.metric_value) params.select = [[{ type: 'field', params: [fd.metric_value] }]]
-      if (R.is(Object, fd.tagValues)) {
-        R.forEachObjIndexed((value, key) => {
-          if (value) {
-            const tag = {
-              key: fd.tagKeys[key],
-              value,
-              operator: fd.tagOperators[key],
+      const metric_query = []
+      const conditionList = this.$refs.conditionRef.conditionList
+      conditionList.forEach(({ key }) => {
+        const params = {
+          from: '24h',
+        }
+        const model = {
+          database: this.metricKeyItem.database || _.get(this.alertData, 'common_alert_metric_details[0].db', 'telegraf'),
+        }
+        const tags = []
+        if (fd.metric_key[key]) model.measurement = fd.metric_key[key]
+        if (fd.reduce[key]) params.reduce = fd.reduce[key]
+        if (fd.threshold[key]) params.threshold = fd.threshold[key]
+        if (fd.comparator[key]) params.comparator = fd.comparator[key]
+        if (fd.metric_value[key]) model.select = [[{ type: 'field', params: [fd.metric_value[key]] }]]
+        if (R.is(Object, fd.tagValues)) {
+          R.forEachObjIndexed((value, key) => {
+            if (value) {
+              const tag = {
+                key: fd.tagKeys[key],
+                value,
+                operator: fd.tagOperators[key],
+              }
+              if (fd.tagConditions && fd.tagConditions[key]) {
+                tag.condition = fd.tagConditions[key]
+              }
+              tags.push(tag)
             }
-            if (fd.tagConditions && fd.tagConditions[key]) {
-              tag.condition = fd.tagConditions[key]
-            }
-            tags.push(tag)
-          }
-        }, fd.tagValues)
-      }
-      if (tags.length) {
-        params.tags = tags
-      }
-      if (fd.group_by) {
-        // eslint-disable-next-line no-template-curly-in-string
-        params.group_by = [{ type: 'tag', params: [fd.group_by] }]
-      }
-      if (params.select && R.is(String, fd.function)) {
-        params.select[0].push({ type: fd.function.toLowerCase(), params: [] })
-      }
-      if (R.equals(this.oldParams, params)) return params
-      if (needEmit) this.$emit('refresh', params)
-      this.oldParams = params // 记录为上一次 params
-      return params
-    },
-    resetMetric () {
-      this.tags = []
-      this.resetChart()
-    },
-    resetChart () {
-      this.$emit('resetChart')
-      this.$refs.filtersRef.reset()
-    },
-    getTitle (mertricItem) {
-      let padding = ' '
-      if (this.$store.getters.setting.language === 'zh-CN') {
-        padding = ''
-      }
-      let label = this.metricKeyItem && this.metricKeyItem.metric_res_type ? this.$t(`dictionary.${this.metricKeyItem.metric_res_type}`) + padding : ''
-      label += this.metricKeyItem && this.metricKeyItem.label ? this.metricKeyItem.label : '-'
-      const metricLabel = _.get(mertricItem, 'description.display_name')
-      if (metricLabel) {
-        label += `(${metric_zh[metricLabel] ? metric_zh[metricLabel] : metricLabel})`
-      }
-      return label
+          }, fd.tagValues)
+        }
+        if (tags.length) {
+          model.tags = tags
+        }
+        if (fd.group_by) {
+          // eslint-disable-next-line no-template-curly-in-string
+          params.group_by = [{ type: 'tag', params: [fd.group_by] }]
+        }
+        if (params.select && R.is(String, fd.function)) {
+          model.select[0].push({ type: fd.function.toLowerCase(), params: [] })
+        }
+        params.model = model
+        metric_query.push(params)
+      })
+      return metric_query
     },
     initContactParams (contactParams) {
       contactParams.scope = this.scope
       if (this.isDomainMode) {
         contactParams.project_domain_filter = true
+      }
+    },
+    resScopeChangeHandle () {
+      this.$nextTick(() => {
+        if (this.$refs.filtersRef) {
+          this.$refs.filtersRef.reset()
+        }
+      })
+    },
+    metricTypeHandle () {
+      if (this.$refs.conditionRef) {
+        this.$refs.conditionRef.reset()
+      }
+      if (this.$refs.filtersRef) {
+        this.$refs.filtersRef.reset()
+        this.metricInfo = {}
       }
     },
   },
