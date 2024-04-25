@@ -131,7 +131,7 @@ export default {
       return {
         ...params,
         res_type: this.detailData.res_type,
-        monitor_resource_id: this.detailData.id,
+        monitor_resource_id: this.detailData.res_id,
       }
     },
     handleOpenSidepage (row, tab) {
