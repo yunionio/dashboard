@@ -119,7 +119,7 @@ export default {
             this.agent_fail_code = data[0].fail_code || ''
           }
         }
-      } catch (e) {}
+      } catch (e) { }
     },
     listParams () {
       let params = {}
@@ -131,6 +131,7 @@ export default {
       return {
         ...params,
         res_type: this.detailData.res_type,
+        monitor_resource_id: this.detailData.id,
       }
     },
     handleOpenSidepage (row, tab) {
@@ -155,12 +156,11 @@ export default {
           maxTry -= 1
           await new Promise(resolve => setTimeout(resolve, 6000))
         }
-      } catch (e) {}
+      } catch (e) { }
     },
   },
 }
 </script>
 
 <style scoped>
-
 </style>
