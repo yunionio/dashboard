@@ -297,5 +297,16 @@
   "monitor.inside_addr": "内网地址",
   "monitor.outside_addr": "外网地址",
   "monitor.currency": "货币",
-  "monitor.currency_select_tip": "请注意选择货币"
+  "monitor.currency_select_tip": "请注意选择货币",
+  "monitor.commonalert.base_info": "基础信息",
+  "monitor.commonalert.alarm_strategy": "告警策略",
+  "monitor.commonalert.alarm_notify": "告警通知",
+  "monitor.commonalert.monitor_info": "监控信息",
+  "monitor.commonalert.res_scope.all": "全部资源",
+  "monitor.commonalert.res_scope.custom": "指定资源",
+  "monitor.commonalert.alert_condition": "告警条件",
+  "monitor.commonalert.alert_condition.content": "满足任意一条触发条件即可触发告警",
+  "monitor.commonalert.query_condition": "查询条件",
+  "monitor.commonalert.threshold.message": "请输入指标值",
+  "monitor.commonalert.add_condition": "增加触发条件"
 }

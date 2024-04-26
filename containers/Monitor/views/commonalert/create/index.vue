@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Alert from '../components/alert'
+import Alert from '../components/new-alert'
 
 export default {
   name: 'CommonalertCreate',
