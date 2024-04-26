@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { getEnabledTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
 import {
   levelColumn,
   strategyColumn,
@@ -21,7 +22,6 @@ import {
   robotsColumn,
   rolesColumn,
 } from '../utils'
-import { getEnabledTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'CommonalertDetail',
@@ -42,12 +42,18 @@ export default {
         getResTypeColumn(),
         projectTableColumn,
         getEnabledTableColumn(),
-        strategyColumn(),
         levelColumn,
         getProjectTableColumn(),
         getVerifiedContactTypesTableColumn({ vm: this }),
       ],
-      extraInfo: [],
+      extraInfo: [
+        {
+          title: this.$t('monitor.commonalert.alarm_strategy'),
+          items: [
+            strategyColumn(),
+          ],
+        },
+      ],
       hiddenKeys: ['project_domain', 'tenant'],
       nameRules: [{ required: true, message: `${this.$t('common.placeholder')}${this.$t('common.name')}` }],
     }
