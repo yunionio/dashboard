@@ -43,10 +43,7 @@
             :select-props="{ placeholder: $t('monitor.text_110'), allowClear: true, loading }" />
         </a-form-item>
         <a-form-item style="width: 20px;" v-if="!disabled && i !== 0">
-          <a-icon
-            class="dynamic-delete-button ml-1"
-            type="minus-circle-o"
-            @click="remove(i)" />
+          <a-button shape="circle" icon="minus" size="small" @click="remove(i)" class="mt-2 ml-2" />
         </a-form-item>
       </a-col>
     </a-row>

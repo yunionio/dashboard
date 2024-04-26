@@ -297,5 +297,16 @@
   "monitor.inside_addr": "Intranet address",
   "monitor.outside_addr": "External network address",
   "monitor.currency": "Currency",
-  "monitor.currency_select_tip": "Please pay attention to selecting currency condition"
+  "monitor.currency_select_tip": "Please pay attention to selecting currency condition",
+  "monitor.commonalert.base_info": "Basic information",
+  "monitor.commonalert.alarm_strategy": "Alarm strategy",
+  "monitor.commonalert.alarm_notify": "Alarm notification",
+  "monitor.commonalert.monitor_info": "Monitoring information",
+  "monitor.commonalert.res_scope.all": "All resources",
+  "monitor.commonalert.res_scope.custom": "Specified resource",
+  "monitor.commonalert.alert_condition": "Alarm condition",
+  "monitor.commonalert.alert_condition.content": "The alarm can be triggered if any trigger condition is met",
+  "monitor.commonalert.query_condition": "query condition",
+  "monitor.commonalert.threshold.message": "Please enter the indicator value",
+  "monitor.commonalert.add_condition": "Add trigger condition"
 }

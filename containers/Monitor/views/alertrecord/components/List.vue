@@ -227,8 +227,17 @@ export default {
                 if (!brand) return [<data-loading />]
                 if (brand === 'kvm') brand = 'OneCloud'
                 return [
-                  <BrandIcon name={ brand } />,
+                  <BrandIcon name={brand} />,
                 ]
+              },
+            },
+          },
+          {
+            field: 'metric',
+            title: this.$t('monitor.monitor_metric'),
+            slots: {
+              default: ({ row }, h) => {
+                return row.metric
               },
             },
           },
@@ -271,8 +280,17 @@ export default {
                         if (!brand) return [<data-loading />]
                         if (brand === 'kvm') brand = 'OneCloud'
                         return [
-                          <BrandIcon name={ brand } />,
+                          <BrandIcon name={brand} />,
                         ]
+                      },
+                    },
+                  },
+                  {
+                    field: 'metric',
+                    title: this.$t('monitor.monitor_metric'),
+                    slots: {
+                      default: ({ row }, h) => {
+                        return row.metric
                       },
                     },
                   },
@@ -299,7 +317,7 @@ export default {
           onManager: this.onManager,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ row.alert_name }</side-page-trigger>
+              <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{row.alert_name}</side-page-trigger>
             )
           },
         }),
