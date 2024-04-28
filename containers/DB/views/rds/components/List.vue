@@ -316,7 +316,7 @@ export default {
       return !this.$isScopedPolicyMenuHidden('rds_hidden_columns.perform_action')
     },
     exportDataOptions () {
-      return {
+      const ret = {
         items: [
           { label: 'ID', key: 'id' },
           ...this.columns,
@@ -324,6 +324,15 @@ export default {
         title: this.$t('dictionary.dbinstance'),
         downloadType: 'local',
       }
+      ret.items.push({
+        field: 'expired_at',
+        title: this.$t('scope.text_791'),
+        formatter: ({ row }) => {
+          if (!row.expired_at) return '-'
+          return this.$moment(row.expired_at).format()
+        },
+      })
+      return ret
     },
   },
   created () {
