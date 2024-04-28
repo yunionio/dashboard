@@ -14,7 +14,7 @@ import ListMixin from '@/mixins/list'
 import BrandIcon from '@/sections/BrandIcon'
 import { getNameFilter, getTimeRangeFilter, getStatusFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { getTimeTableColumn, getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
-import { strategyColumn, levelColumn } from '@Monitor/views/commonalert/utils'
+import { strategyColumn, levelColumn, getMetircAlertUtil } from '@Monitor/views/commonalert/utils'
 import ColumnsMixin from '../mixins/columns'
 
 export default {
@@ -233,15 +233,6 @@ export default {
             },
           },
           {
-            field: 'metric',
-            title: this.$t('monitor.monitor_metric'),
-            slots: {
-              default: ({ row }, h) => {
-                return row.metric
-              },
-            },
-          },
-          {
             field: 'value_str',
             title: this.$t('monitor.text_16'),
             align: 'right',
@@ -259,7 +250,7 @@ export default {
               default: ({ row }) => {
                 return row.res_num
               },
-              content: ({ row }) => {
+              content: (obj) => {
                 const columns = [
                   {
                     field: 'name',
@@ -286,22 +277,41 @@ export default {
                     },
                   },
                   {
-                    field: 'metric',
-                    title: this.$t('monitor.monitor_metric'),
+                    field: 'condition',
+                    title: this.$t('monitor.condition'),
                     slots: {
-                      default: ({ row }, h) => {
-                        return row.metric
+                      default: (crow, h) => {
+                        const { strategy, strategyArr = [] } = getMetircAlertUtil(obj.row, 'alert_rule')
+
+                        if (strategyArr?.length > 0) {
+                          return [
+                            <a-tooltip>
+                              <template slot="title">
+                                {crow.row.metric}
+                              </template>
+                              {strategyArr[crow.rowIndex]}
+                            </a-tooltip>
+                          ]
+                        }
+                        return [
+                          <a-tooltip>
+                            <template slot="title">
+                              {crow.row.metric}
+                            </template>
+                            {strategy}
+                          </a-tooltip>
+                        ]
                       },
                     },
                   },
                   {
                     field: 'value_str',
-                    title: row.state === 'ok' ? this.$t('monitor.text_106') : this.$t('monitor.text_105'),
+                    title: obj.row.state === 'ok' ? this.$t('monitor.text_106') : this.$t('monitor.text_105'),
                     align: 'right',
                     formatter: ({ row }) => row.value_str,
                   },
                 ]
-                return <vxe-grid size="mini" border columns={columns} data={row.eval_data} />
+                return <vxe-grid size="mini" border columns={columns} data={obj.row.eval_data} />
               },
             },
           }]
@@ -328,9 +338,13 @@ export default {
           title: this.$t('monitor.text_97'),
           minWidth: 80,
           formatter: ({ row }) => {
-            if (row.alert_rule && row.alert_rule.res_type) {
-              if (this.$te(`dictionary.${row.alert_rule.res_type}`)) {
-                return this.$t(`dictionary.${row.alert_rule.res_type}`)
+            let rule = row.alert_rule
+            if (R.is(Array, rule)) {
+              rule = row.alert_rule[0]
+            }
+            if (rule && rule.res_type) {
+              if (this.$te(`dictionary.${rule.res_type}`)) {
+                return this.$t(`dictionary.${rule.res_type}`)
               }
             }
             return '-'
