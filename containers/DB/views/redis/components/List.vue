@@ -359,7 +359,7 @@ export default {
       return !this.$isScopedPolicyMenuHidden('redis_hidden_columns.perform_action')
     },
     exportDataOptions () {
-      return {
+      const ret = {
         items: [
           { label: 'ID', key: 'id' },
           ...this.columns,
@@ -367,6 +367,15 @@ export default {
         title: this.$t('dictionary.elasticcache'),
         downloadType: 'local',
       }
+      ret.items.push({
+        field: 'expired_at',
+        title: this.$t('scope.text_791'),
+        formatter: ({ row }) => {
+          if (!row.expired_at) return '-'
+          return this.$moment(row.expired_at).format()
+        },
+      })
+      return ret
     },
   },
   created () {
@@ -414,11 +423,11 @@ export default {
 }
 </script>
 <style lang="less">
- .td-ellipsis{
-    width: 150px;
-    word-break: keep-all;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
- }
+.td-ellipsis {
+  width: 150px;
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 </style>
