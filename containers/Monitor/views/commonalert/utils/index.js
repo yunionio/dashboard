@@ -66,7 +66,7 @@ export const strategyColumn = (field = 'common_alert_metric_details', title = i1
         )
       }
       const strategys = strategyArr.map(item => <div>{item}</div>)
-      if (row.common_alert_metric_details?.length > 1) {
+      if (row[field]?.length > 1) {
         return [
           <div>
             <div>{i18n.t('monitor.commonalert.alert_condition.content')}:</div>
