@@ -62,11 +62,11 @@ const LicenseItems = [
     meta: meta('resource_managent', 'onecloud', false),
     validators: [validators.onestackSelected],
   },
-  {
-    key: 'pod',
-    meta: meta('resource_managent', 'onecloud', false),
-    validators: [validators.onestackSelected],
-  },
+  // {
+  //   key: 'pod',
+  //   meta: meta('resource_managent', 'onecloud', false),
+  //   validators: [validators.onestackSelected],
+  // },
   {
     key: 'aliyun',
     meta: meta('resource_managent', 'public', true),
