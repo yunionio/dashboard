@@ -308,5 +308,6 @@
   "monitor.commonalert.alert_condition.content": "The alarm can be triggered if any trigger condition is met",
   "monitor.commonalert.query_condition": "query condition",
   "monitor.commonalert.threshold.message": "Please enter the indicator value",
-  "monitor.commonalert.add_condition": "Add trigger condition"
+  "monitor.commonalert.add_condition": "Add trigger condition",
+  "monitor.validate_number": "Please enter a number"
 }

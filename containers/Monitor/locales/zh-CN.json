@@ -308,5 +308,6 @@
   "monitor.commonalert.alert_condition.content": "满足任意一条触发条件即可触发告警",
   "monitor.commonalert.query_condition": "查询条件",
   "monitor.commonalert.threshold.message": "请输入指标值",
-  "monitor.commonalert.add_condition": "增加触发条件"
+  "monitor.commonalert.add_condition": "增加触发条件",
+  "monitor.validate_number": "请输入数字"
 }
