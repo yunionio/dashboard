@@ -348,8 +348,17 @@ export default {
             `threshold[${i}]`,
             {
               initialValue: initialValue.threshold || 1,
+              validateFirst: true,
               rules: [
                 { required: true, message: this.$t('monitor.commonalert.threshold.message') },
+                {
+                  validator: (rule, value, callback) => {
+                    if (!(/^\d+(\.\d+)?$/.test(value))) {
+                      callback(this.$t('monitor.validate_number'))
+                    }
+                    callback()
+                  },
+                },
               ],
             },
           ],
@@ -607,13 +616,17 @@ export default {
             [`metric_key[${conditionList[idx].key}]`]: item.measurement,
             [`reduce[${conditionList[idx].key}]`]: item.reduce,
             [`comparator[${conditionList[idx].key}]`]: item.comparator,
-            [`threshold[${conditionList[idx].key}]`]: item.threshold,
           })
           conditionRef.metricKeyChange(item.measurement, { key: conditionList[idx].key })
           this.form.fc.setFieldsValue({
             [`metric_value[${conditionList[idx].key}]`]: item.field,
           })
           conditionRef.metricValueChange(item.field, { key: conditionList[idx].key })
+          setTimeout(() => {
+            this.form.fc.setFieldsValue({
+              [`threshold[${conditionList[idx].key}]`]: item.threshold,
+            })
+          }, 100)
         })
       })
     },
