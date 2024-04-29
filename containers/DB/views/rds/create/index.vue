@@ -2,7 +2,7 @@
   <div class="rds-create-index pb-5">
     <page-header :title="$t('db.text_140')" />
     <a-form hideRequiredMark :form="form.fc" class="mt-3"  v-bind="formItemLayout">
-      <a-form-item class="mb-0" :label="$t('db.text_139', [$t('dictionary.project')])" v-bind="formItemLayout">
+      <a-form-item :label="$t('db.text_139', [$t('dictionary.project')])" v-bind="formItemLayout">
         <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
       </a-form-item>
       <a-form-item :label="$t('db.text_60')" v-bind="formItemLayout">
