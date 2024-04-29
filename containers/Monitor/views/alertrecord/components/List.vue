@@ -14,7 +14,7 @@ import ListMixin from '@/mixins/list'
 import BrandIcon from '@/sections/BrandIcon'
 import { getNameFilter, getTimeRangeFilter, getStatusFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { getTimeTableColumn, getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
-import { strategyColumn, levelColumn, getMetircAlertUtil } from '@Monitor/views/commonalert/utils'
+import { strategyColumn, levelColumn, getStrategyInfo } from '@Monitor/views/commonalert/utils'
 import ColumnsMixin from '../mixins/columns'
 
 export default {
@@ -250,7 +250,7 @@ export default {
               default: ({ row }) => {
                 return row.res_num
               },
-              content: (obj) => {
+              content: ({ row }) => {
                 const columns = [
                   {
                     field: 'name',
@@ -280,38 +280,29 @@ export default {
                     field: 'condition',
                     title: this.$t('monitor.condition'),
                     slots: {
-                      default: (crow, h) => {
-                        const { strategy, strategyArr = [] } = getMetircAlertUtil(obj.row, 'alert_rule')
+                      default: ({ row }, h) => {
+                        if (!row.alert_details) return '-'
+                        const { strategy } = getStrategyInfo(row.alert_details)
 
-                        if (strategyArr?.length > 0) {
-                          return [
-                            <a-tooltip>
-                              <template slot="title">
-                                {crow.row.metric}
-                              </template>
-                              {strategyArr[crow.rowIndex]}
-                            </a-tooltip>
-                          ]
-                        }
                         return [
                           <a-tooltip>
                             <template slot="title">
-                              {crow.row.metric}
+                              {row.metric}
                             </template>
                             {strategy}
-                          </a-tooltip>
+                          </a-tooltip>,
                         ]
                       },
                     },
                   },
                   {
                     field: 'value_str',
-                    title: obj.row.state === 'ok' ? this.$t('monitor.text_106') : this.$t('monitor.text_105'),
+                    title: row.state === 'ok' ? this.$t('monitor.text_106') : this.$t('monitor.text_105'),
                     align: 'right',
                     formatter: ({ row }) => row.value_str,
                   },
                 ]
-                return <vxe-grid size="mini" border columns={columns} data={obj.row.eval_data} />
+                return <vxe-grid size="mini" border columns={columns} data={row.eval_data} />
               },
             },
           }]
