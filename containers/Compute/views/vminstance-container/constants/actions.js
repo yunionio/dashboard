@@ -4,32 +4,62 @@ import { POLICY_RES_NAME_KEY_MAP } from '@/constants/policy'
 
 const getSingleActions = function () {
   return [
+    // 同步状态
     {
-      label: i18n.t('compute.text_1100'),
+      label: this.$t('compute.perform_sync_status'),
+      permission: 'server_perform_syncstatus',
       action: (obj) => {
-        this.$router.push({
-          name: 'VMContainerInstanceAdjustConfig',
-          query: {
-            id: obj.id,
+        this.onManager('batchPerformAction', {
+          steadyStatus: ['running', 'ready'],
+          id: [obj.id],
+          managerArgs: {
+            action: 'syncstatus',
           },
         })
       },
-      meta: (obj) => {
-        const ret = {
-          validate: true,
-          tooltip: null,
-        }
-        if (obj.status !== 'ready') {
-          ret.tooltip = this.$t('compute.repo.helper.change_config')
-          ret.validate = false
-        }
-        return ret
-      },
+      hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_syncstatus'),
     },
     {
       label: i18n.t('compute.text_352'),
       actions: (obj) => {
         return [
+          // 更改项目
+          {
+            label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
+            permission: 'servers_perform_public',
+            action: (obj) => {
+              this.createDialog('ChangeOwenrDialog', {
+                data: [obj],
+                columns: this.columns,
+                onManager: this.onManager,
+                refresh: this.refresh,
+                resource: 'servers',
+              })
+            },
+          },
+          // 更改配置
+          {
+            label: i18n.t('compute.text_1100'),
+            action: (obj) => {
+              this.$router.push({
+                name: 'VMContainerInstanceAdjustConfig',
+                query: {
+                  id: obj.id,
+                },
+              })
+            },
+            meta: (obj) => {
+              const ret = {
+                validate: true,
+                tooltip: null,
+              }
+              if (obj.status !== 'ready') {
+                ret.tooltip = this.$t('compute.repo.helper.change_config')
+                ret.validate = false
+              }
+              return ret
+            },
+          },
           // 开机
           {
             label: i18n.t('compute.text_272'),
