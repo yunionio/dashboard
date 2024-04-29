@@ -7,7 +7,7 @@
         v-bind="formItemLayout"
         :form="form.fc"
         hideRequiredMark>
-        <a-form-item :label="$t('db.text_281')" class="mb-0">
+        <a-form-item :label="$t('db.text_281')">
           <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
         </a-form-item>
         <a-form-item :label="$t('db.text_60')">
