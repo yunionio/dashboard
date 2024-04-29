@@ -70,6 +70,7 @@
 <script>
 import debounce from 'lodash/debounce'
 import { Manager } from '@/utils/manager'
+import { BRAND_MAP } from '@/constants'
 
 export default {
   name: 'OcSelect',
@@ -161,7 +162,7 @@ export default {
     resGroupOptObj () {
       const groupOptObj = {}
       this.resOpts.forEach(item => {
-        if (item[this.groupKey]) {
+        if (item.id === 'default' || (item.brand === BRAND_MAP.Cloudpods.key && item.external_id === 'default')) {
           if (!groupOptObj.classic) groupOptObj.classic = []
           groupOptObj.classic.push(item)
         } else {
