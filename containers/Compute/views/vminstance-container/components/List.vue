@@ -263,6 +263,20 @@ export default {
           label: this.$t('compute.text_275'),
           actions: () => {
             return [
+              // 更改项目
+              {
+                label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
+                permission: 'servers_perform_public',
+                action: (obj) => {
+                  this.createDialog('ChangeOwenrDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                    resource: 'servers',
+                  })
+                },
+              },
               // 设置删除保护
               disableDeleteAction(Object.assign(this, {
                 permission: 'server_update',

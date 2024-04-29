@@ -173,4 +173,12 @@ export default {
     resource: 'phones',
     steadyStatus: Object.values(expectStatus.server).flat(),
   },
+  VmContainerInstanceSidePage: {
+    resource: 'servers',
+    steadyStatus: Object.values(expectStatus.server).flat(),
+  },
+  PhoneDiskSidePage: {
+    resource: 'volumes',
+    steadyStatus: Object.values(expectStatus.disk).flat(),
+  },
 }
