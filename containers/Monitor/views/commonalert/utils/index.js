@@ -332,3 +332,84 @@ export const getValueWithUnit = (value = 0, unit = '') => {
   }
   return value
 }
+
+export const getStrategyInfo = (detail) => {
+  let strategy = '-'
+  const strategyConfig = {
+    measurement: '',
+    period: '', // 时间间隔 2h 14d
+    metric: '', // 监控指标
+    comparator: '', // > < within
+    threshold: null, // 阈值
+    unit: '', // 单位
+    time_from: detail.time_from,
+  }
+  let measurement = detail.measurement_display_name || detail.measurement_desc || detail.measurement
+  if (metric_zh[measurement]) measurement = metric_zh[measurement]
+  strategyConfig.measurement = measurement
+  let metric = _.get(detail, 'field_description.display_name') || detail.field_desc || detail.field
+  if (metric) {
+    metric = metric_zh[metric] || metric
+  }
+  strategyConfig.metric = metric
+  const reduce = (alertStrategyMaps[detail.reduce]) || ''
+  const alert_duration = detail.alert_duration ? i18n.t('monitor.list.duration.label', [detail.alert_duration]) : detail.alert_duration ? i18n.t('monitor.list.duration.label', [detail.alert_duration]) : ''
+  let preiod = ((preiodMaps[detail.period] || {}).label) || detail.period || ((preiodMaps[detail.period] || {}).label) || detail.period
+  let unit = detail.field_description ? _.get(detail, 'field_description.unit') : (R.type(detail.eval_data) === 'Array' ? (_.get(detail, 'eval_data[0].unit') || '') : '')
+  let threshold = R.is(String, detail.threshold) ? { text: detail.threshold } : transformUnit(detail.threshold, unit)
+  if (detail.measurement === 'cloudaccount_balance' && unit === 'RMB') {
+    unit = ''
+    if (detail.filters && detail.filters.length) {
+      const targets = detail.filters.filter(item => item.key === 'currency')
+      const cs = []
+      targets.map(item => {
+        if (item.value && !cs.includes(item.value)) {
+          cs.push(item.value)
+        }
+      })
+      if (cs.length === 1) {
+        unit = currencyUnitMap[cs[0]]?.sign || ''
+      }
+    }
+    threshold = R.is(String, detail.threshold) ? { text: detail.threshold } : unit ? { text: `${unit}${detail.threshold}` } : { text: detail.threshold }
+  }
+  let comparator = detail.comparator
+  let txt = threshold.text
+  if (detail.comparator === 'within_range' && detail.within_range) {
+    comparator = ''
+    txt = `[${detail.within_range[0]}${threshold.unit}, ${detail.within_range[1]}${threshold.unit}]`
+    strategyConfig.within_range = detail.within_range
+  }
+  strategyConfig.comparator = detail.comparator
+  strategyConfig.threshold = detail.threshold
+  strategyConfig.unit = unit
+  strategy = i18n.t('monitor.text_6', [measurement, metric, reduce, alert_duration, comparator, txt])
+  if (detail.condition_type === 'nodata_query') { // 系统上报数据为空
+    strategy = i18n.t('monitor.text_108', [alert_duration])
+  }
+  if (preiod) {
+    preiod = preiod.replace(i18n.t('monitor.text_103'), '')
+    strategy += `${i18n.t('monitor.text_102', [preiod])}`
+    strategyConfig.period = preiod
+  }
+  const silent_period = detail.silent_period
+  if (silent_period) {
+    let p = silent_period
+    if (p.endsWith('m')) {
+      const pi = parseInt(p.replace('m', ''))
+      if (pi && pi >= 60 && pi % 60 === 0) {
+        p = i18n.t('monitor.duration.silent.hour', [pi / 60])
+      } else {
+        p = i18n.t('monitor.duration.silent.minute', [p.replace('m', '')])
+      }
+    } else if (p.endsWith('h')) {
+      p = i18n.t('monitor.duration.silent.hour', [p.replace('h', '')])
+    }
+    strategy += `${i18n.t('monitor.commonalerts.list.silent', [p])}`
+    strategyConfig.period = silent_period
+  }
+  return {
+    strategy,
+    strategyConfig,
+  }
+}
