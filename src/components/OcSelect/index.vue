@@ -162,7 +162,7 @@ export default {
     resGroupOptObj () {
       const groupOptObj = {}
       this.resOpts.forEach(item => {
-        if (item.id === 'default' || (item.brand === BRAND_MAP.Cloudpods.key && item.external_id === 'default')) {
+        if (item[this.groupKey]) {
           if (!groupOptObj.classic) groupOptObj.classic = []
           groupOptObj.classic.push(item)
         } else {
