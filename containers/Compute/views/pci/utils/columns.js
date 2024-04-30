@@ -15,7 +15,7 @@ export const getDevTypeColumn = ({ vm }) => {
     field: 'dev_type',
     slotCallback: (row, h) => {
       return (
-        <side-page-trigger onTrigger={ () => vm.handleOpenSidepage(row) }>{ row.dev_type }</side-page-trigger>
+        <side-page-trigger onTrigger={() => vm.handleOpenSidepage(row)}>{row.dev_type}</side-page-trigger>
       )
     },
   })
@@ -53,6 +53,19 @@ export const getHotPluggableColumn = () => {
     slots: {
       default: ({ row }, h) => {
         return row.hot_pluggable ? i18n.t('table.title.on') : i18n.t('table.title.off')
+      },
+    },
+  }
+}
+
+// 自动探测
+export const getDisableAutoDetectColumn = () => {
+  return {
+    field: 'disable_auto_detect',
+    title: i18n.t('compute.pci.disable_auto_detect'),
+    slots: {
+      default: ({ row }, h) => {
+        return row.disable_auto_detect ? i18n.t('table.title.on') : i18n.t('table.title.off')
       },
     },
   }
