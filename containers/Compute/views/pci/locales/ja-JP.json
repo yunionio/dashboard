@@ -18,5 +18,6 @@
   "compute.pci.host.extra": "ホストを選択した後、対応するホストマシンは対応する透過デバイスを自動的に報告し、デバイスが選択されていない場合は、ホストサービスを再起動して有効にする必要があります。",
   "compute.pci.document": "ドキュメンテーション",
   "compute.pci.hot_pluggable": "ホットスワップ対応",
-  "compute.pci.hot_pluggable.tips": "透過デバイスがホットプラグをサポートしているかどうかは、デバイス自体によって決定され、検証後にホットプラグを有効にするかどうかを選択します"
+  "compute.pci.hot_pluggable.tips": "透過デバイスがホットプラグをサポートしているかどうかは、デバイス自体によって決定され、検証後にホットプラグを有効にするかどうかを選択します",
+  "compute.pci.disable_auto_detect": "自動検出"
 }
