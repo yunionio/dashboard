@@ -4,6 +4,7 @@ import {
   getVendorIdColumn,
   getDeviceIdColumn,
   getHotPluggableColumn,
+  getDisableAutoDetectColumn,
 } from '../utils/columns'
 
 export default {
@@ -14,6 +15,7 @@ export default {
       getVendorIdColumn(),
       getDeviceIdColumn(),
       getHotPluggableColumn({ vm: this }),
+      getDisableAutoDetectColumn(),
     ]
   },
 }

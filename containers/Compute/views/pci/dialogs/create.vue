@@ -23,7 +23,10 @@
           </template>
           <a-input v-decorator="decorators.device_id" :placeholder="$t('compute.pci.device_id.placeholder')" />
         </a-form-item>
-        <a-form-item :label="$t('compute.pci.host')" :extra="$t('compute.pci.host.extra')">
+        <a-form-item :label="$t('compute.pci.disable_auto_detect')">
+          <a-switch v-decorator="decorators.disable_auto_detect" :checked-children="$t('table.title.on')" :un-checked-children="$t('table.title.off')" />
+        </a-form-item>
+        <a-form-item v-if="!form.fd.disable_auto_detect" :label="$t('compute.pci.host')" :extra="$t('compute.pci.host.extra')">
           <list-select
             v-decorator="decorators.hosts"
             :list-props="resourceProps"
@@ -69,7 +72,14 @@ export default {
       loading: false,
       baseDocURL: getDocsUrl(this.$store.getters.scope),
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              this.form.fd[key] = values[key]
+            })
+          },
+        }),
+        fd: {},
       },
       decorators: {
         dev_type: [
@@ -113,6 +123,12 @@ export default {
         ],
         hot_pluggable: [
           'hot_pluggable',
+          {
+            initialValue: false,
+          },
+        ],
+        disable_auto_detect: [
+          'disable_auto_detect',
           {
             initialValue: false,
           },
@@ -178,6 +194,7 @@ export default {
           device_id: values.device_id.trim(),
           hosts: values.hosts,
           hot_pluggable: values.hot_pluggable,
+          disable_auto_detect: values.disable_auto_detect,
         }
         await this.doSubmit(data)
         this.loading = false
