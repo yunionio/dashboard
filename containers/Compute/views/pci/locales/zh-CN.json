@@ -18,5 +18,6 @@
   "compute.pci.host.extra": "选择宿主机后，相应宿主机会自动上报相应透传设备，未选择设备需重启host服务生效！",
   "compute.pci.document": "文档",
   "compute.pci.hot_pluggable": "热插拔",
-  "compute.pci.hot_pluggable.tips": "透传设备是否支持热插拔由设备本身决定，验证后再选择是否启用热插拔"
+  "compute.pci.hot_pluggable.tips": "透传设备是否支持热插拔由设备本身决定，验证后再选择是否启用热插拔",
+  "compute.pci.disable_auto_detect": "自动探测"
 }
