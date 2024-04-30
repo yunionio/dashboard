@@ -18,5 +18,6 @@
   "compute.pci.host.extra": "After the host is selected, the corresponding host will automatically report the corresponding transparent transmission device. If no device is selected, the host service needs to be restarted to take effect!",
   "compute.pci.document": "Document",
   "compute.pci.hot_pluggable": "Hot Pluggable",
-  "compute.pci.hot_pluggable.tips": "The support for hot swap of the pass-through device is determined by the device itself. After verification, you can decide whether or not to enable hot swapping."
+  "compute.pci.hot_pluggable.tips": "The support for hot swap of the pass-through device is determined by the device itself. After verification, you can decide whether or not to enable hot swapping.",
+  "compute.pci.disable_auto_detect": "Automatic detection"
 }
