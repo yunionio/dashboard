@@ -3,9 +3,9 @@ import * as R from 'ramda'
 
 // 定义某种类型字符串中会包含哪些字符
 const strMatchMap = {
-  $Bill: ['$', ',', ' ', '.', /\d/],
-  '￥Bill': ['￥', ',', ' ', '.', /\d/],
-  R$Bill: ['R', '$', ',', ' ', '.', /\d/],
+  $Bill: ['$', ',', ' ', '.', '-', /\d/],
+  '￥Bill': ['￥', ',', ' ', '.', '-', /\d/],
+  R$Bill: ['R', '$', ',', ' ', '.', '-', /\d/],
   percent: ['.', '%', ' ', /\d/],
   number: ['.', /\d/],
 }
@@ -69,7 +69,7 @@ const matchDataFormat = (data) => {
     ret.value = Number(d.replace('%', '').replaceAll(' ', '')) / 100
   }
   // 数字
-  if (isOnlyMatchChars(d, strMatchMap.number)) {
+  if (isOnlyMatchChars(d, strMatchMap.number) || (d.startsWith('-') && isOnlyMatchChars(d, [...strMatchMap.number, '-']))) {
     ret.isNumber = true
     ret.value = data
   }
