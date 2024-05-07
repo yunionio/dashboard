@@ -4,25 +4,40 @@ import { POLICY_RES_NAME_KEY_MAP } from '@/constants/policy'
 
 const getSingleActions = function () {
   return [
-    // 同步状态
     {
-      label: i18n.t('compute.perform_sync_status'),
-      permission: 'server_perform_syncstatus',
+      label: i18n.t('compute.repo.terminal'),
       action: (obj) => {
-        this.onManager('batchPerformAction', {
-          steadyStatus: ['running', 'ready'],
-          id: [obj.id],
-          managerArgs: {
-            action: 'syncstatus',
-          },
-        })
+        this.handleOpenSidepage(obj, 'terminal')
       },
-      hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_syncstatus'),
+      meta: (obj) => {
+        const ret = { validate: true }
+        if (obj.status !== 'running') {
+          ret.validate = false
+          ret.tooltip = i18n.t('compute.repo.helper.terminal')
+          return ret
+        }
+        return ret
+      },
     },
     {
       label: i18n.t('compute.text_352'),
       actions: (obj) => {
         return [
+          // 同步状态
+          {
+            label: i18n.t('compute.perform_sync_status'),
+            permission: 'server_perform_syncstatus',
+            action: (obj) => {
+              this.onManager('batchPerformAction', {
+                steadyStatus: ['running', 'ready'],
+                id: [obj.id],
+                managerArgs: {
+                  action: 'syncstatus',
+                },
+              })
+            },
+            hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_syncstatus'),
+          },
           // 更改项目
           {
             label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),

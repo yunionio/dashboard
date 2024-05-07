@@ -39,5 +39,7 @@
   "compute.repo.start": "start",
   "compute.repo.stop": "stop",
   "compute.repo.helper.change_config": "Only the shutdown container host can adjust the configuration",
-  "compute.repo.helper.modify": "Only exited containers can be modified"
+  "compute.repo.helper.modify": "Only exited containers can be modified",
+  "compute.repo.terminal": "Terminal",
+  "compute.repo.helper.terminal": "Only the running container host can enter the terminal"
 }

@@ -39,5 +39,7 @@
   "compute.repo.start": "启动",
   "compute.repo.stop": "停止",
   "compute.repo.helper.change_config": "关机的容器主机才可以调整配置",
-  "compute.repo.helper.modify": "退出的容器才可以修改"
+  "compute.repo.helper.modify": "退出的容器才可以修改",
+  "compute.repo.terminal": "终端",
+  "compute.repo.helper.terminal": "运行中的容器主机才可以进入终端"
 }

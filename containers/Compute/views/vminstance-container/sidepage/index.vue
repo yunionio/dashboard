@@ -45,6 +45,7 @@ import GpuList from '@Compute/views/gpu/components/List'
 import Detail from './Detail'
 import ContainerList from './Container'
 import SecgroupList from './Secgroup'
+import Terminal from './Terminal'
 import NetworkListForVmInstanceSidepage from './Network'
 import DiskListForVmInstanceSidepage from './DiskList'
 import VmInstanceMonitorSidepage from './Monitor'
@@ -62,6 +63,7 @@ export default {
     SecgroupList,
     VmInstanceMonitorSidepage,
     GpuList,
+    Terminal,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -73,6 +75,7 @@ export default {
       { label: this.$t('compute.text_376'), key: 'disk-list-for-vm-instance-sidepage' },
       { label: this.$t('compute.text_113'), key: 'gpu-list' },
       { label: this.$t('compute.text_608'), key: 'vm-instance-monitor-sidepage' },
+      { label: this.$t('compute.repo.terminal'), key: 'terminal' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
     ]
     if (!hasPermission({ key: 'guestsecgroups_list' }) || isScopedPolicyMenuHidden('server_hidden_columns.secgroups')) {
@@ -235,6 +238,10 @@ export default {
       }
       if (this.listRowData.brand === 'VolcEngine') {
         this.detailTabs = R.remove(R.findIndex(R.propEq('key', 'vm-snapshot-sidepage'))(this.detailTabs), 1, this.detailTabs)
+      }
+      if (this.listRowData.status !== 'running') {
+        this.detailTabs = R.remove(R.findIndex(R.propEq('key', 'terminal'))(this.detailTabs), 1, this.detailTabs)
+        this.handleTabChange(this.params.tab)
       }
     },
     initChangeTab () {
