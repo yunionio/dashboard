@@ -70,7 +70,6 @@
 <script>
 import debounce from 'lodash/debounce'
 import { Manager } from '@/utils/manager'
-import { BRAND_MAP } from '@/constants'
 
 export default {
   name: 'OcSelect',
