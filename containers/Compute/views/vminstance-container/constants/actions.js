@@ -6,7 +6,7 @@ const getSingleActions = function () {
   return [
     // 同步状态
     {
-      label: this.$t('compute.perform_sync_status'),
+      label: i18n.t('compute.perform_sync_status'),
       permission: 'server_perform_syncstatus',
       action: (obj) => {
         this.onManager('batchPerformAction', {
