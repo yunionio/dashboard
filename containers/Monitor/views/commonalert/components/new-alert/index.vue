@@ -228,6 +228,11 @@ export default {
         } else {
           data.from = (periodNum * fd.alert_duration) + unit
         }
+        if (data.metric_query && data.metric_query.length > 1) {
+          data.metric_query.map(item => {
+            item.operator = 'or'
+          })
+        }
         this.$emit('update:loading', true)
         if (this.isUpdate) {
           await new this.$Manager('commonalerts', 'v1').update({ id: this.commonalertId, data })
