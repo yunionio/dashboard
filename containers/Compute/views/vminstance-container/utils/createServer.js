@@ -17,6 +17,7 @@ import { HYPERVISORS_MAP } from '@/constants'
 import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
 import store from '@/store'
 import i18n from '@/locales'
+import { removeHttp } from '@/utils/url'
 import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
 
 export function checkIpInSegment (i, networkData) {
@@ -1119,10 +1120,11 @@ export class GenCreateData {
     }
     const containers = tabKeys.map(k => {
       const pciDevices = (this.fd.pciEnable && this.genPciDevices()) || []
+      const image = this.fd.registryImages?.[k] || ''
 
       return {
         name: this.fd.containerNames?.[k],
-        image: this.fd.containerimages?.[k] || this.fd.registryImages?.[k],
+        image: removeHttp(image) || this.fd.containerimages?.[k],
         command: this.fd.containerCommands?.[k]?.split(' '),
         args: this.fd.containerArgs?.[k]?.split(' '),
         privileged: this.fd.containerPrivilegeds?.[k],
