@@ -39,5 +39,7 @@
   "compute.repo.start": "開始",
   "compute.repo.stop": "停止",
   "compute.repo.helper.change_config": "シャットダウンしたコンテナー ホストのみが構成を調整できます",
-  "compute.repo.helper.modify": "終了したコンテナのみを変更できます"
+  "compute.repo.helper.modify": "終了したコンテナのみを変更できます",
+  "compute.repo.terminal": "ターミナル",
+  "compute.repo.helper.terminal": "実行中のコンテナー ホストのみがターミナルに入ることができます"
 }
