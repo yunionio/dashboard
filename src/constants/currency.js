@@ -16,6 +16,11 @@ export const currencyUnitMap = {
     cn: i18n.t('common.currency_brl'),
     label: i18n.t('common.currency_brl'),
   },
+  EUR: {
+    sign: '€',
+    cn: i18n.t('common.currency_eur'),
+    label: i18n.t('common.currency_eur'),
+  },
   _CNY: {
     sign: '￥',
     cn: i18n.t('currencys.CNY'),
@@ -30,6 +35,11 @@ export const currencyUnitMap = {
     sign: 'R$',
     cn: i18n.t('common.currency_brl'),
     label: i18n.t('common.currency_brl'),
+  },
+  _EUR: {
+    sign: '€',
+    cn: i18n.t('common.currency_eur'),
+    label: i18n.t('common.currency_eur'),
   },
   '*CNY': {
     sign: '￥',
@@ -46,6 +56,11 @@ export const currencyUnitMap = {
     cn: i18n.t('common.currency_brl'),
     label: i18n.t('common.currency_brl'),
   },
+  '*EUR': {
+    sign: '€',
+    cn: i18n.t('common.currency_eur'),
+    label: i18n.t('common.currency.eur'),
+  },
   '*_CNY': {
     sign: '￥',
     cn: i18n.t('currencys.CNY'),
@@ -60,5 +75,10 @@ export const currencyUnitMap = {
     sign: 'R$',
     cn: i18n.t('common.currency_brl'),
     label: i18n.t('common.currency_brl'),
+  },
+  '*_EUR': {
+    sign: '€',
+    cn: i18n.t('common.currency_eur'),
+    label: i18n.t('common.currency_eur'),
   },
 }

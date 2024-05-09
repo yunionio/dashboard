@@ -5011,6 +5011,7 @@
   "common.currency_cny": "人民币",
   "common.currency_usd": "美元",
   "common.currency_brl": "巴西雷亚尔",
+  "common.currency_eur": "欧元",
   "auth.clean.scope.domain": "平台登录",
   "auth.current.domain": "当前登录域",
   "auth.set.current.domain": "指定登录域",
