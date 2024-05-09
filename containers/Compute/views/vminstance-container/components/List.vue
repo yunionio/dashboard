@@ -7,14 +7,10 @@
     show-tag-config
     :list="list"
     :columns="columns"
-    :show-single-actions="showActions"
-    :show-group-actions="showGroupActions && showActions"
     :group-actions="groupActions"
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
-    :showSearchbox="showSearchbox"
     :defaultSearchKey="defaultSearchKey"
-    :before-show-menu="beforeShowMenu"
     :refresh-method="handleListRefresh"
     :tag-config-params="tagConfigParams"
     :tableOverviewIndexs="tableOverviewIndexs" />
@@ -138,7 +134,6 @@ export default {
         // 新建
         {
           label: this.$t('compute.perform_create'),
-          permission: 'server_create',
           action: () => {
             this.$openNewWindowForMenuHook('vminstance_configured_callback_address.create_callback_address', () => {
               this.$router.push({
@@ -156,12 +151,10 @@ export default {
               tooltip: this.cloudEnvEmpty ? this.$t('common.no_platform_available') : '',
             }
           },
-          hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_create') || this.hiddenActions.includes('create'),
         },
         // 开机
         {
           label: this.$t('compute.text_272'),
-          permission: 'server_perform_start',
           action: () => {
             const ids = this.list.selectedItems.map(item => item.id)
             this.list.onManager('batchPerformAction', {
@@ -185,12 +178,10 @@ export default {
             }
             return ret
           },
-          hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_start'),
         },
         // 关机
         {
           label: this.$t('compute.text_273'),
-          permission: 'server_perform_stop',
           action: () => {
             this.createDialog('VmContainerShutDownDialog', {
               data: this.list.selectedItems,
@@ -211,12 +202,10 @@ export default {
             }
             return ret
           },
-          hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_stop'),
         },
         // 重启
         {
           label: this.$t('compute.text_274'),
-          permission: 'server_perform_restart',
           action: () => {
             this.createDialog('VmContainerRestartDialog', {
               data: this.list.selectedItems,
@@ -237,12 +226,10 @@ export default {
             }
             return ret
           },
-          hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_restart'),
         },
         // 同步状态
         {
           label: this.$t('compute.perform_sync_status'),
-          permission: 'server_perform_syncstatus',
           action: () => {
             this.onManager('batchPerformAction', {
               steadyStatus: ['running', 'ready'],
@@ -256,7 +243,6 @@ export default {
               validate: this.list.selectedItems.length > 0,
             }
           },
-          hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_syncstatus'),
         },
         /* 批量操作 */
         {
@@ -266,7 +252,6 @@ export default {
               // 更改项目
               {
                 label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
-                permission: 'servers_perform_public',
                 action: (obj) => {
                   this.createDialog('ChangeOwenrDialog', {
                     data: this.list.selectedItems,
@@ -277,17 +262,71 @@ export default {
                   })
                 },
               },
+              // 到期释放
+              {
+                label: this.$t('compute.text_1132'),
+                action: () => {
+                  this.createDialog('SetDurationDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                    name: this.$t('compute.vminstance-container'),
+                    alert: this.$t('compute.repo.helper.set_duration.alert'),
+                  })
+                },
+                meta: () => {
+                  const ret = { validate: true }
+                  // 包年包月机器，不支持此操作
+                  const isSomePrepaid = this.list.selectedItems.some((item) => {
+                    return item.billing_type === 'prepaid'
+                  })
+                  if (isSomePrepaid) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('compute.text_285')
+                    return ret
+                  }
+                  // 暂只支持同时操作已设置到期或未设置到期释放的机器
+                  const isSomeExpired = this.list.selectedItems.some((item) => {
+                    return item.expired_at
+                  })
+                  const isSomeNotExpired = this.list.selectedItems.some((item) => {
+                    return !item.expired_at
+                  })
+                  if (isSomeExpired && isSomeNotExpired) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('compute.text_1133')
+                    return ret
+                  }
+                  return ret
+                },
+              },
+              // 编辑标签
+              {
+                label: this.$t('compute.text_283'),
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    params: {
+                      resources: 'server',
+                    },
+                    mode: 'add',
+                  })
+                },
+                meta: () => {
+                  const ret = { validate: true }
+                  return ret
+                },
+              },
               // 设置删除保护
-              disableDeleteAction(Object.assign(this, {
-                permission: 'server_update',
-              }), {
+              disableDeleteAction(Object.assign(this, {}), {
                 name: this.$t('compute.vminstance-container'),
-                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_set_delete_protection'),
               }),
               // 删除
               {
                 label: this.$t('compute.perform_delete'),
-                permission: 'server_delete',
                 action: () => {
                   this.createDialog('DeleteVmContainerDialog', {
                     vm: this,
@@ -300,7 +339,6 @@ export default {
                 meta: () => {
                   return this.$getDeleteResult(this.list.selectedItems)
                 },
-                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_delete'),
               },
             ]
           },
@@ -335,15 +373,7 @@ export default {
       return true
     },
     isSameArch () {
-      if (this.list.selectedItems[0] && (this.list.selectedItems[0].hypervisor.toLowerCase() === 'hcso' || this.list.selectedItems[0].hypervisor.toLowerCase() === 'hcs')) {
-        const instancetype = this.list.selectedItems[0].instance_type || ''
-        const isArm = instancetype.startsWith('k')
-        return this.list.selectedItems.every(item => item.instance_type && item.instance_type.startsWith('k') === isArm)
-      }
       return true
-    },
-    showActions () {
-      return !this.$isScopedPolicyMenuHidden('server_hidden_columns.perform_action')
     },
     exportDataOptions () {
       const ret = {
@@ -487,11 +517,6 @@ export default {
       }, {
         list: this.list,
         tab,
-      })
-    },
-    beforeShowMenu () {
-      return this.$store.dispatch('scopedPolicy/get', {
-        category: ['vminstance_hidden_menus', 'vminstance_configured_callback_address'],
       })
     },
     defaultSearchKey (search) {
