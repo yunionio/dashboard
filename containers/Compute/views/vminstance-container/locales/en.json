@@ -41,5 +41,6 @@
   "compute.repo.helper.change_config": "Only the shutdown container host can adjust the configuration",
   "compute.repo.helper.modify": "Only exited containers can be modified",
   "compute.repo.terminal": "Terminal",
-  "compute.repo.helper.terminal": "Only the running container host can enter the terminal"
+  "compute.repo.helper.terminal": "Only the running container host can enter the terminal",
+  "compute.repo.helper.set_duration.alert": "After expiration, the container host of the corresponding platform will be deleted. There is a certain discrepancy between the actual release time and the set time. The specific release time shall prevail."
 }
