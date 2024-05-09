@@ -136,6 +136,8 @@ export default {
                 const currencys = {
                   USD: '$',
                   CNY: '¥',
+                  BRL: 'R$',
+                  EUR: '€',
                 }
                 return [
                   <span style="color: rgb(230, 139, 80);">{currencys[rate.currency]} { numerify(price, '0,0.00') }</span>,
