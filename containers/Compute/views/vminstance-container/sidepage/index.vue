@@ -295,6 +295,9 @@ export default {
         }
       } catch (e) { }
     },
+    handleOpenSidepage (row, tab) {
+      this.handleTabChange(tab)
+    },
   },
 }
 </script>
