@@ -345,7 +345,15 @@ export default {
         if (isNaN(parseFloat(originPrice))) {
           return '-'
         }
-        return `${sku.currency === 'USD' ? '$' : '¥'}${parseFloat(originPrice).toFixed(2)}`
+        let currency = '¥'
+        if (sku.currency === 'USD') {
+          currency = '$'
+        } else if (sku.currency === 'BRL') {
+          currency = 'R$'
+        } else if (sku.currency === 'EUR') {
+          currency = '€'
+        }
+        return `${currency}${parseFloat(originPrice).toFixed(2)}`
       }
       const getBrand = (v) => {
         const vs = {

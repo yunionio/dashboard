@@ -138,6 +138,12 @@ export default {
         case 'USD':
           format = '0.00'
           break
+        case 'BRL':
+          format = '0.00'
+          break
+        case 'EUR':
+          format = '0.00'
+          break
         case 'ms':
           format = '0.00'
           break
