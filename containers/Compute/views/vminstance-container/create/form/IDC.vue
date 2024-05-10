@@ -292,7 +292,7 @@ export default {
           enabled: 1,
           usable: true,
           zone,
-          hypervisor: 'container',
+          host_type: 'container',
           os_arch: HOST_CPU_ARCHS.x86.key,
           ...this.scopeParams,
         }
