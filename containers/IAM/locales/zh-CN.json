@@ -793,7 +793,7 @@
       "label": "网络ping探测",
       "desc": "默认开启，允许自动探测经典网络中已使用的ip，并将ip放置到预留ip中，关闭后无法自动探测。"
     },
-    "meter$enable_bill_predict": {
+    "meter$enable_prediction": {
       "label": "启用消费预测",
       "desc": "默认关闭，开启后可在费用总览查看消费趋势及消费预测。"
     },
