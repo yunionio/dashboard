@@ -151,7 +151,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode', 'isDomainMode', 'scope']),
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'scope', 'userInfo']),
   },
   destroyed () {
     this.manager = null
@@ -161,6 +161,9 @@ export default {
     this.generateContactArrOpts()
     this.fetchReceivers()
     // this.isDomainMode && this.fetchUsers()
+    if (!this.isAdminMode) {
+      this.handleDomainChange(this.userInfo.domain?.id)
+    }
   },
   methods: {
     async handleConfirm () {
