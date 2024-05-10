@@ -104,7 +104,7 @@ export default {
             label: i18n.t('compute.vminstance-container'),
             permission: 'servers_list',
             hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.vminstance')) {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.vminstance_container')) {
                 return true
               }
               return !hasSetupKey(['onestack'])
