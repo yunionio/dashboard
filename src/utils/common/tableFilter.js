@@ -87,6 +87,7 @@ export function getBillBrandFilter ({ key, outBrands, formatter } = {}) {
     ret.items.push({ key: 'k8s', label: 'K8S' })
     ret.items.push({ key: 'openshift', label: 'OpenShift' })
   }
+  ret.items.push({ key: 'extdb', label: i18n.t('cloudPrvidersMap.extdb') })
   if (formatter) ret.formatter = formatter
   return ret
 }
@@ -116,6 +117,7 @@ export function getBrandDistinctFilter ({ getParams = {} } = {}) {
         ...getBrandItems(),
         { key: 'k8s', label: 'K8S' },
         { key: 'openshift', label: 'OpenShift' },
+        { key: 'extdb', label: i18n.t('cloudPrvidersMap.extdb') },
       ].filter(v => data.some(item => item.key === v.key))
     },
   }
