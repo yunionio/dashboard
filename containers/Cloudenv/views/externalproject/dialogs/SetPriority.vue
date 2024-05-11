@@ -36,7 +36,7 @@ export default {
       },
       rules: {
         priority: [
-          { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.prioriry')]) },
+          { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.priority')]) },
         ],
       },
       formItemLayout: this.params.formItemLayout || {
