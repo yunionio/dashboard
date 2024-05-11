@@ -47,6 +47,151 @@ export default {
     },
   },
   data () {
+    const baseInfo = [
+      {
+        field: 'hostname',
+        title: this.$t('common_388'),
+      },
+      getUserTagColumn({
+        onManager: this.onManager,
+        resource: 'host',
+        columns: () => this.columns,
+        tipName: this.$t('dictionary.host'),
+        editCheck: (row) => (row.provider || '').toLowerCase() !== 'bingocloud',
+      }),
+      getExtTagColumn({
+        onManager: this.onManager,
+        resource: 'host',
+        columns: () => this.columns,
+        tipName: this.$t('dictionary.host'),
+        editCheck: (row) => (row.provider || '').toLowerCase() !== 'bingocloud',
+      }),
+      getPublicScopeTableColumn({ vm: this, resource: 'hosts' }),
+      getBrandTableColumn(),
+      getEnabledTableColumn(),
+      {
+        field: 'access_ip',
+        title: 'IP',
+        slots: {
+          default: ({ row, cellValue }) => {
+            const ret = [
+              <list-body-cell-wrap copy row={ row } field="access_ip" title={ cellValue } />,
+            ]
+            if (row.public_ip) {
+              ret.push(
+                <list-body-cell-wrap copy row={ row } field="public_ip" title={ cellValue } />,
+              )
+            }
+            return ret
+          },
+        },
+      },
+      {
+        field: 'access_mac',
+        title: this.$t('compute.text_385'),
+        slots: {
+          default: ({ row, cellValue }) => {
+            return [
+              <list-body-cell-wrap copy row={ row } field="access_mac" title={ cellValue } />,
+            ]
+          },
+        },
+      },
+      getStatusTableColumn({ field: 'host_status', statusModule: 'host_status', title: this.$t('compute.text_502') }),
+      {
+        field: 'nonsystem_guests',
+        title: '#VM',
+        width: 60,
+        slots: {
+          default: ({ row }, h) => {
+            if (row.nonsystem_guests <= 0) return row.nonsystem_guests
+            const ret = [
+              <a onClick={ () => this.$emit('tab-change', 'vminstance-list') }>{row.nonsystem_guests}</a>,
+            ]
+            return ret
+          },
+        },
+      },
+      {
+        field: 'schedtags',
+        title: this.$t('compute.text_541'),
+        formatter: ({ cellValue, row }) => {
+          if (row.schedtags && row.schedtags.length > 0) {
+            const schedtags = row.schedtags.map(v => v.name)
+            return schedtags.join('，')
+          }
+          return '-'
+        },
+      },
+      {
+        field: 'version',
+        title: this.$t('compute.text_585'),
+        slots: {
+          default: ({ row, cellValue }) => {
+            return [
+              <div class='text-truncate'>
+                <list-body-cell-wrap copy row={ row } field="version" title={ cellValue } />
+              </div>,
+            ]
+          },
+        },
+      },
+      {
+        field: 'kvm_module',
+        title: this.$t('compute.text_586'),
+        formatter: ({ cellData, row }) => {
+          const kvmModuleMap = {
+            'kvm-intel': 'Intel',
+            'kvm-amd': 'AMD',
+            buildin: 'Buildin',
+            unsupport: this.$t('compute.text_587'),
+          }
+          if (!row.sys_info) return '-'
+          return kvmModuleMap[row.sys_info.kvm_module] || '-'
+        },
+      },
+      {
+        field: 'cdrom_boot',
+        title: this.$t('compute.text_588'),
+        formatter: ({ cellData, row }) => {
+          let ret = '-'
+          if (row.ipmi_info && row.ipmi_info.cdrom_boot === 'true') {
+            ret = this.$t('compute.text_589')
+          } else {
+            ret = this.$t('compute.text_587')
+          }
+          return ret
+        },
+      },
+      {
+        field: 'isolated_device_count',
+        title: this.$t('compute.passthrough_device_count'),
+        slots: {
+          default: ({ row }, h) => {
+            return [
+              <a onClick={ () => this.$emit('tab-change', 'gpu-list') }>{row.isolated_device_count || 0}</a>,
+            ]
+          },
+        },
+      },
+      {
+        field: 'host_type',
+        title: this.$t('compute.host.host_type.title'),
+        formatter: ({ cellData, row }) => {
+          let ret = '-'
+          if (row.host_type === 'container') {
+            ret = this.$t('compute.host.host_type.container.title')
+          } else if (row.host_type === 'kvm' || row.host_type === 'hypervisor') {
+            ret = this.$t('compute.host.host_type.kvm.title')
+          } else if (row.host_type === 'baremetal') {
+            ret = this.$t('compute.host.host_type.baremetal.title')
+          } else if (row.host_type) {
+            ret = row.host_type
+          }
+          return ret
+        },
+      },
+    ]
     return {
       // itemData: {
       //   status: 'ready',
@@ -115,125 +260,7 @@ export default {
           title: this.$t('compute.text_584'),
         },
       ],
-      baseInfo: [
-        {
-          field: 'hostname',
-          title: this.$t('common_388'),
-        },
-        getUserTagColumn({
-          onManager: this.onManager,
-          resource: 'host',
-          columns: () => this.columns,
-          tipName: this.$t('dictionary.host'),
-          editCheck: (row) => (row.provider || '').toLowerCase() !== 'bingocloud',
-        }),
-        getExtTagColumn({
-          onManager: this.onManager,
-          resource: 'host',
-          columns: () => this.columns,
-          tipName: this.$t('dictionary.host'),
-          editCheck: (row) => (row.provider || '').toLowerCase() !== 'bingocloud',
-        }),
-        getPublicScopeTableColumn({ vm: this, resource: 'hosts' }),
-        getBrandTableColumn(),
-        getEnabledTableColumn(),
-        {
-          field: 'access_ip',
-          title: 'IP',
-        },
-        {
-          field: 'access_mac',
-          title: this.$t('compute.text_385'),
-        },
-        getStatusTableColumn({ field: 'host_status', statusModule: 'host_status', title: this.$t('compute.text_502') }),
-        {
-          field: 'nonsystem_guests',
-          title: '#VM',
-          width: 60,
-          slots: {
-            default: ({ row }, h) => {
-              if (row.nonsystem_guests <= 0) return row.nonsystem_guests
-              const ret = [
-                <a onClick={ () => this.$emit('tab-change', 'vminstance-list') }>{row.nonsystem_guests}</a>,
-              ]
-              return ret
-            },
-          },
-        },
-        {
-          field: 'access_mac',
-          title: this.$t('compute.text_385'),
-        },
-        {
-          field: 'schedtags',
-          title: this.$t('compute.text_541'),
-          formatter: ({ cellValue, row }) => {
-            if (row.schedtags && row.schedtags.length > 0) {
-              const schedtags = row.schedtags.map(v => v.name)
-              return schedtags.join('，')
-            }
-            return '-'
-          },
-        },
-        {
-          field: 'version',
-          title: this.$t('compute.text_585'),
-          slots: {
-            default: ({ row, cellValue }) => {
-              // if (row.brand && row.brand.toLowerCase() === 'onecloud') {
-              //   const data = row.version.split('/')[1].split('^')[0]
-              //   return [
-              //     <div class='text-truncate'>
-              //       { data }
-              //     </div>,
-              //   ]
-              // }
-              return [
-                <div class='text-truncate'>
-                  <list-body-cell-wrap copy row={ row } field="version" title={ cellValue } />
-                </div>,
-              ]
-            },
-          },
-        },
-        {
-          field: 'kvm_module',
-          title: this.$t('compute.text_586'),
-          formatter: ({ cellData, row }) => {
-            const kvmModuleMap = {
-              'kvm-intel': 'Intel',
-              'kvm-amd': 'AMD',
-              unsupport: this.$t('compute.text_587'),
-            }
-            if (!row.sys_info) return '-'
-            return kvmModuleMap[row.sys_info.kvm_module] || '-'
-          },
-        },
-        {
-          field: 'cdrom_boot',
-          title: this.$t('compute.text_588'),
-          formatter: ({ cellData, row }) => {
-            let ret = '-'
-            if (row.ipmi_info && row.ipmi_info.cdrom_boot === 'true') {
-              ret = this.$t('compute.text_589')
-            } else {
-              ret = this.$t('compute.text_587')
-            }
-            return ret
-          },
-        },
-        {
-          field: 'isolated_device_count',
-          title: this.$t('compute.passthrough_device_count'),
-          slots: {
-            default: ({ row }, h) => {
-              return [
-                <a onClick={ () => this.$emit('tab-change', 'gpu-list') }>{row.isolated_device_count || 0}</a>,
-              ]
-            },
-          },
-        },
-      ],
+      baseInfo: baseInfo,
       extraInfo: [
         {
           title: this.$t('compute.text_590'),

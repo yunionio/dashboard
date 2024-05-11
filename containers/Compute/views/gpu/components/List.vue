@@ -26,7 +26,7 @@ export default {
       type: [Function, Object],
     },
     resId: String,
-    isServer: Boolean,
+    probeHostDevices: Boolean,
     hiddenActionKeys: Array,
   },
   data () {
@@ -235,7 +235,7 @@ export default {
     },
     async init () {
       if (this.resId) {
-        if (!this.isServer) {
+        if (this.probeHostDevices) {
           await this.updateHostProbeIsolatedDevices()
         }
       }

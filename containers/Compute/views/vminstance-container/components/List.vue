@@ -46,7 +46,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
 export default {
-  name: 'VMContainerInstanceList',
+  name: 'VmContainerInstanceList',
   mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
   props: {
     id: String,
