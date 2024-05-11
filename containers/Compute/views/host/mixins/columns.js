@@ -1,6 +1,19 @@
 import _ from 'lodash'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
-import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn, getTagTableColumn, getAccountTableColumn, getOsArch, getTimeTableColumn } from '@/utils/common/tableColumn'
+import {
+  getRegionTableColumn,
+  getStatusTableColumn,
+  getBrandTableColumn,
+  getEnabledTableColumn,
+  getNameDescriptionTableColumn,
+  getPublicScopeTableColumn,
+  getProjectDomainTableColumn,
+  getTagTableColumn,
+  getAccountTableColumn,
+  getOsArch,
+  getTimeTableColumn,
+  getCopyWithContentTableColumn,
+} from '@/utils/common/tableColumn'
 import { sizestr, percentstr } from '@/utils/utils'
 import i18n from '@/locales'
 
@@ -100,6 +113,13 @@ export default {
               cellWrap.push(
                 <div class="d-flex">
                   <list-body-cell-wrap row={row} field="ipmi_ip" copy><span class="text-color-help">{this.$t('compute.text_1320')}</span></list-body-cell-wrap>
+                </div>,
+              )
+            }
+            if (row.public_ip) {
+              cellWrap.push(
+                <div class="d-flex">
+                  <list-body-cell-wrap row={row} field="public_ip" copy><span class="text-color-help">EIP</span></list-body-cell-wrap>
                 </div>,
               )
             }
@@ -253,11 +273,27 @@ export default {
           return ((row.sys_info || {}).model) || '-'
         },
       },
-      {
+      getCopyWithContentTableColumn({
         field: 'sn',
-        title: 'SN',
-        width: 100,
-        showOverflow: 'title',
+        title: this.$t('compute.text_591'),
+      }),
+      {
+        field: 'host_type',
+        title: this.$t('compute.host.host_type.title'),
+        width: 80,
+        formatter: ({ cellValue, row }) => {
+          let ret = '-'
+          if (row.host_type === 'container') {
+            ret = this.$t('compute.host.host_type.container.title')
+          } else if (row.host_type === 'kvm' || row.host_type === 'hypervisor') {
+            ret = this.$t('compute.host.host_type.kvm.title')
+          } else if (row.host_type === 'baremetal') {
+            ret = this.$t('compute.host.host_type.baremetal.title')
+          } else if (row.host_type) {
+            ret = row.host_type
+          }
+          return ret
+        },
       },
       {
         field: 'schedtag',

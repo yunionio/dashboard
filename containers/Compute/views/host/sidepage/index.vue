@@ -21,36 +21,34 @@
       :on-manager="onManager"
       :refresh="refresh"
       :getParams="getParams"
+      :probeHostDevices="probeHostDevices"
       @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
 <script>
 import * as R from 'ramda'
+import { hasPermission } from '@/utils/auth'
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
+import NetworkList from '@Compute/views/physicalmachine/sidepage/Network'
+import ServerRecovery from '@Compute/views/server-recovery/components/List'
+import GpuList from '@Compute/views/gpu/components/List'
+import BmcLog from '@Compute/views/physicalmachine/sidepage/BMCLog'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import HostDetail from './Detail'
 import Dashboard from './Dashboard'
-// import Alert from './Alert'
-import NetworkList from '@Compute/views/physicalmachine/sidepage/Network'
 import StorageList from './Storage'
-// import GpuList from './Gpu'
 import Monitor from './Monitor'
 import VminstanceList from './VminstanceList'
-import ServerRecovery from '@Compute/views/server-recovery/components/List'
-import GpuList from '@Compute/views/gpu/components/List'
-import BmcLog from '@Compute/views/physicalmachine/sidepage/BMCLog'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
-import { hasPermission } from '@/utils/auth'
 
 export default {
   name: 'HostSidePage',
   components: {
     HostDetail,
     Dashboard,
-    // Alert,
     VminstanceList,
     NetworkList,
     StorageList,
@@ -63,16 +61,19 @@ export default {
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   computed: {
     detailTabs () {
+      let vmListText = this.$t('compute.text_91')
+      if (this.data && this.data.data && this.data.data.host_type === 'container') {
+        vmListText = this.$t('compute.host.host_type.container.title')
+      }
       let tabs = [
         { label: this.$t('compute.text_238'), key: 'host-detail' },
         { label: this.$t('compute.text_606'), key: 'dashboard' },
-        { label: this.$t('compute.text_91'), key: 'vminstance-list' },
+        { label: vmListText, key: 'vminstance-list' },
         { label: this.$t('compute.text_104'), key: 'network-list' },
         { label: this.$t('compute.text_99'), key: 'storage-list' },
         { label: this.$t('compute.text_113'), key: 'gpu-list' },
         { label: this.$t('compute.text_114'), key: 'server-recovery' },
         { label: this.$t('compute.text_608'), key: 'monitor' },
-        // { label: '报警', key: 'alert' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ]
       if (!hasPermission({ key: 'baremetalnetworks_list' })) {
@@ -85,6 +86,9 @@ export default {
         tabs = R.insert(tabs.length - 1, { label: this.$t('compute.text_865'), key: 'bmc-log' }, tabs)
       }
       return tabs
+    },
+    probeHostDevices () {
+      return this.data && this.data.data && this.data.data.host_type === 'hypervisor'
     },
     getParams () {
       if (this.params.windowData.currentTab === 'vminstance-list') {
