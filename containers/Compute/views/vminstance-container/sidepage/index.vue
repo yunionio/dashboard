@@ -211,12 +211,17 @@ export default {
             disabled: true,
           }
         }
+        if (item.key === 'terminal' && this.detailData.status !== 'running') {
+          return {
+            ...item,
+            disabled: true,
+          }
+        }
         return item
       })
     },
   },
   created () {
-    this.initHiddenTab()
     this.initChangeTab()
     this.$bus.$on('agentStatusQuery', (val) => {
       if (this.agent_status === 'failed') {
@@ -237,10 +242,6 @@ export default {
       }
       if (this.listRowData.brand === 'VolcEngine') {
         this.detailTabs = R.remove(R.findIndex(R.propEq('key', 'vm-snapshot-sidepage'))(this.detailTabs), 1, this.detailTabs)
-      }
-      if (this.listRowData.status !== 'running') {
-        this.detailTabs = R.remove(R.findIndex(R.propEq('key', 'terminal'))(this.detailTabs), 1, this.detailTabs)
-        this.handleTabChange(this.params.tab)
       }
     },
     initChangeTab () {
