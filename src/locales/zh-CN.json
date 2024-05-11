@@ -1903,7 +1903,7 @@
     "Nutanix": "Nutanix",
     "BingoCloud": "BingoCloud",
     "RemoteFile": "外部数据",
-    "extdb": "外部数据",
+    "extdb": "自定义数据",
     "Proxmox": "Proxmox",
     "H3C": "H3C",
     "Ksyun": "金山云"
