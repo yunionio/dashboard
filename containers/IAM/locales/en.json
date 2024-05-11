@@ -794,7 +794,7 @@
       "label": "Network ping detection",
       "desc": "It is enabled by default, allowing automatic detection of the used IP in the classic network, and placing the IP in the reserved IP. When it is closed, it cannot be automatically detected."
     },
-    "meter$enable_bill_predict": {
+    "meter$enable_prediction": {
       "label": "Enable billing predict",
       "desc": "It is off by default. After it is on, you can view consumption trend and consumption forecast in the expense overview."
     },
