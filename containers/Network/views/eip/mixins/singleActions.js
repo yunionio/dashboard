@@ -120,6 +120,7 @@ export default {
                   name: this.$t('dictionary.eip'),
                   onManager: this.onManager,
                   resource: 'eips',
+                  refresh: this.refresh,
                 })
               },
               meta: () => {
