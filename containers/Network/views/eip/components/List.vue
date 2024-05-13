@@ -83,6 +83,33 @@ export default {
               },
             },
             {
+              label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
+              permission: 'eips_perform_change_owner',
+              action: () => {
+                this.createDialog('ChangeOwenrDialog', {
+                  data: this.list.selectedItems,
+                  columns: this.columns,
+                  name: this.$t('dictionary.eip'),
+                  onManager: this.onManager,
+                  resource: 'eips',
+                  refresh: this.refresh,
+                })
+              },
+              meta: () => {
+                const ret = {
+                  validate: false,
+                  tooltip: '',
+                }
+                if (this.isProjectMode) {
+                  ret.tooltip = this.$t('common_601')
+                  return ret
+                }
+                return {
+                  validate: true,
+                }
+              },
+            },
+            {
               label: this.$t('table.action.set_tag'),
               permission: 'eips_perform_set_user_metadata',
               action: () => {
