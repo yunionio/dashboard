@@ -1,6 +1,18 @@
 import Vue from 'vue'
+import * as R from 'ramda'
 import { GLOBAL_SETTINGS } from '@/constants'
+import { fillBillSupportFeatures } from '@/utils/auth'
+import c from '@/constants/feature'
 import http from '@/utils/http'
+
+function getGroups (items) {
+  const groups = c.items.map(i => {
+    if (items.indexOf(i.value) >= 0 && i.meta && i.meta.group) {
+      return i.meta.group
+    }
+  }).filter(i => { return i })
+  return R.uniq(groups)
+}
 
 export default {
   state: {
@@ -29,10 +41,17 @@ export default {
     /**
      * @description 获取globalSettings
      */
-    async getFetchGlobalSetting ({ state, commit, dispatch }, payload = {}) {
+    async getFetchGlobalSetting ({ state, commit, dispatch, rootState }, payload = {}) {
       try {
         const { data } = await http.get('/v1/rpc/parameters/global-settings')
+        const licenseFeatures = rootState?.app?.license?.compute?.features || []
         commit('UPDATE', data)
+        if (licenseFeatures.length && data.value && data.value.setupKeys) {
+          const licenseKeys = fillBillSupportFeatures([...licenseFeatures, ...getGroups(licenseFeatures)], true)
+          data.value.setupKeys = data.value.setupKeys.filter(key => {
+            return licenseKeys.includes(key)
+          })
+        }
         return Promise.resolve(data)
       } catch (err) {
         console.log(err)
