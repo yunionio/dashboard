@@ -1,7 +1,7 @@
 import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
 
-function genServerQueryData (vmId, val, scope, from, interval, idKey, customTime, skip_check_series) {
+function genServerQueryData (vmId, val, scope, from, interval, idKey, customTime, skip_check_series, extraTags = []) {
   const model = {
     measurement: val.fromItem,
     select: [
@@ -26,6 +26,7 @@ function genServerQueryData (vmId, val, scope, from, interval, idKey, customTime
         value: vmId,
         operator: '=',
       },
+      ...extraTags,
     ],
     group_by: [{
       type: 'tag',
@@ -77,20 +78,21 @@ function genServerQueryData (vmId, val, scope, from, interval, idKey, customTime
 }
 
 export class MonitorHelper {
-  constructor (ManagerFactory, scope) {
+  // eslint-disable-next-line
+  constructor(ManagerFactory, scope) {
     this.manager = new ManagerFactory('unifiedmonitors', 'v1')
     this.scope = scope
   }
 
-  genServerQueryData (vmId, val, from, interval, idKey, customTime, skip_check_series) {
-    return genServerQueryData(vmId, val, this.scope, from, interval, idKey, customTime, skip_check_series)
+  genServerQueryData (vmId, val, from, interval, idKey, customTime, skip_check_series, extraTags) {
+    return genServerQueryData(vmId, val, this.scope, from, interval, idKey, customTime, skip_check_series, extraTags)
   }
 
-  async fetchData (srvId, val, from, interval, idKey, customTime, skip_check_series) {
+  async fetchData (srvId, val, from, interval, idKey, customTime, skip_check_series, extraTags) {
     const params = {
       id: 'query',
       action: '',
-      data: this.genServerQueryData(srvId, val, from, interval, idKey, customTime, skip_check_series),
+      data: this.genServerQueryData(srvId, val, from, interval, idKey, customTime, skip_check_series, extraTags),
       params: { $t: getRequestT() },
     }
     try {
@@ -101,9 +103,9 @@ export class MonitorHelper {
     }
   }
 
-  async fetchFormatData (srvId, val, from, interval, idKey = 'vm_id', customTime, skip_check_series = false) {
+  async fetchFormatData (srvId, val, from, interval, idKey = 'vm_id', customTime, skip_check_series = false, extraTags) {
     try {
-      const data = await this.fetchData(srvId, val, from, interval, idKey, customTime, skip_check_series)
+      const data = await this.fetchData(srvId, val, from, interval, idKey, customTime, skip_check_series, extraTags)
       return {
         title: val.label,
         constants: val,

@@ -41,6 +41,9 @@ export default {
     idKey: {
       type: String, // vm_id, host_id
     },
+    extraTags: {
+      type: Array,
+    },
   },
   data () {
     return {
@@ -115,7 +118,7 @@ export default {
       for (let idx = 0; idx < this.constants.length; idx++) {
         const val = { ...this.constants[idx], groupFunc: this.groupFunc }
         try {
-          const data = await this.helper.fetchFormatData(this.serverId, val, this.time, this.timeGroup, this.idKey, this.customTime, true)
+          const data = await this.helper.fetchFormatData(this.serverId, val, this.time, this.timeGroup, this.idKey, this.customTime, true, this.extraTags)
           resList.push(data)
           if (idx === this.constants.length - 1) {
             this.loading = false

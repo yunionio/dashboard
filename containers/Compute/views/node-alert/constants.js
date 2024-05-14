@@ -60,6 +60,9 @@ export const metricItems = {
   'pod_cpu.usage_rate': { key: 'pod_cpu.usage_rate', label: i18n.t('compute.text_523'), unit: '%' },
   'pod_mem.usage_rate': { key: 'pod_mem.usage_rate', label: i18n.t('compute.text_518'), unit: '%' },
   'pod_mem.working_set_bytes': { key: 'pod_mem.working_set_bytes', label: i18n.t('compute.container.monitor.pod_mem_used'), unit: 'B' },
+  'container_cpu.usage_rate': { key: 'container_cpu.usage_rate', label: i18n.t('compute.text_523'), unit: '%' },
+  'container_mem.usage_rate': { key: 'container_mem.usage_rate', label: i18n.t('compute.text_518'), unit: '%' },
+  'container_mem.working_set_bytes': { key: 'container_mem.working_set_bytes', label: i18n.t('compute.container.monitor.pod_mem_used'), unit: 'B' },
 }
 
 export const TIME_CN = {

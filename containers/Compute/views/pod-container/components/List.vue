@@ -11,18 +11,17 @@ import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
 import {
-  getCopyWithContentTableColumn,
-  getStatusTableColumn,
-} from '@/utils/common/tableColumn'
-import {
   getNameFilter,
   getStatusFilter,
 } from '@/utils/common/tableFilter'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
-  name: 'ContainerListForVmContainerInstanceSidepage',
-  mixins: [ListMixin, WindowsMixin],
+  name: 'ContainerList',
+  mixins: [ListMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
   props: {
+    id: String,
     resId: String,
     data: {
       type: Object,
@@ -32,6 +31,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'containers',
         getParams: {
           guest_id: this.resId,
@@ -42,67 +42,6 @@ export default {
           status: getStatusFilter('container'),
         },
       }),
-      columns: [
-        getCopyWithContentTableColumn({
-          field: 'name',
-          title: this.$t('common.name'),
-          hideField: true,
-          message: (row) => {
-            return row.name
-          },
-          slotCallback: (row) => {
-            return row.name
-          },
-        }),
-        getStatusTableColumn({ statusModule: 'container' }),
-        {
-          field: 'image',
-          title: this.$t('compute.pod-image'),
-          width: 350,
-          formatter: ({ row }) => {
-            return row.spec?.image || '-'
-          },
-        },
-        {
-          field: 'env',
-          title: this.$t('compute.repo.env_variables'),
-          minWidth: 200,
-          slots: {
-            default: ({ row }, h) => {
-              if (!row.spec.envs || !row.spec.envs.length) return '-'
-              return row.spec.envs.map(v => {
-                return (
-                  <a-tooltip title={`${v.key}: ${v.value}`}>
-                    <a-tag class="d-block text-truncate mb-1" style="max-width: 400px;">{v.key}: {v.value}</a-tag>
-                  </a-tooltip>
-                )
-              })
-            },
-          },
-        },
-        {
-          field: 'command',
-          title: this.$t('compute.repo.command'),
-          minWidth: 200,
-          slots: {
-            default: ({ row }, h) => {
-              const command = row.spec?.command || []
-              return command.join(' ') || '-'
-            },
-          },
-        },
-        {
-          field: 'args',
-          title: this.$t('compute.repo.command.params'),
-          minWidth: 200,
-          slots: {
-            default: ({ row }, h) => {
-              const args = row.spec?.args
-              return args?.length ? `[${args}]` : '-'
-            },
-          },
-        },
-      ],
       groupActions: [
         // 启动
         {
@@ -161,6 +100,17 @@ export default {
   created () {
     this.list.fetchData()
   },
-  methods: {},
+  methods: {
+    handleOpenSidepage (row, tab) {
+      this.sidePageTriggerHandle(this, 'VmPodContainerSidePage', {
+        id: row.id,
+        resource: 'containers',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+        tab,
+      })
+    },
+  },
 }
 </script>

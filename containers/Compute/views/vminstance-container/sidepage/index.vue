@@ -8,7 +8,7 @@
     :tabs="filterDetailTabs"
     :loaded="loaded"
     @tab-change="handleTabChange">
-    <template v-slot:actions v-if="showActions">
+    <template v-slot:actions>
       <actions
         :options="singleActions"
         :row="detailData"
@@ -41,13 +41,13 @@ import Actions from '@/components/PageList/Actions'
 import { hasPermission } from '@/utils/auth'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 import GpuList from '@Compute/views/gpu/components/List'
+import ContainerList from '@Compute/views/pod-container/components/List'
 import Detail from './Detail'
-import ContainerList from './Container'
 import SecgroupList from './Secgroup'
 import Terminal from './Terminal'
-import NetworkListForVmInstanceSidepage from './Network'
-import DiskListForVmInstanceSidepage from './DiskList'
-import VmInstanceMonitorSidepage from './Monitor'
+import NetworkListForVmContainerInstanceSidePage from './Network'
+import DiskListForVmContainerInstanceSidePage from './DiskList'
+import Monitor from './Monitor'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
@@ -57,10 +57,10 @@ export default {
     Actions,
     Detail,
     ContainerList,
-    NetworkListForVmInstanceSidepage,
-    DiskListForVmInstanceSidepage,
+    NetworkListForVmContainerInstanceSidePage,
+    DiskListForVmContainerInstanceSidePage,
     SecgroupList,
-    VmInstanceMonitorSidepage,
+    Monitor,
     GpuList,
     Terminal,
   },
@@ -70,22 +70,13 @@ export default {
       { label: this.$t('compute.text_238'), key: 'detail' },
       { label: this.$t('compute.container', []), key: 'container-list' },
       { label: this.$t('compute.text_105'), key: 'secgroup-list' },
-      { label: this.$t('compute.text_104'), key: 'network-list-for-vm-instance-sidepage' },
-      { label: this.$t('compute.text_376'), key: 'disk-list-for-vm-instance-sidepage' },
+      { label: this.$t('compute.text_104'), key: 'network-list-for-vm-container-instance-sidepage' },
+      { label: this.$t('compute.text_376'), key: 'disk-list-for-vm-container-instance-sidepage' },
       { label: this.$t('compute.text_113'), key: 'gpu-list' },
-      { label: this.$t('compute.text_608'), key: 'vm-instance-monitor-sidepage' },
+      { label: this.$t('compute.text_608'), key: 'monitor' },
       { label: this.$t('compute.repo.terminal'), key: 'terminal' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
     ]
-    if (!hasPermission({ key: 'guestsecgroups_list' }) || isScopedPolicyMenuHidden('server_hidden_columns.secgroups')) {
-      detailTabs = R.remove(R.findIndex(R.propEq('key', 'secgroup-list'))(detailTabs), 1, detailTabs)
-    }
-    if (!hasPermission({ key: 'guestnetworks_list' }) || isScopedPolicyMenuHidden('server_hidden_columns.ips')) {
-      detailTabs = R.remove(R.findIndex(R.propEq('key', 'network-list-for-vm-instance-sidepage'))(detailTabs), 1, detailTabs)
-    }
-    if (!hasPermission({ key: 'guestdisks_list' }) || isScopedPolicyMenuHidden('server_hidden_columns.disk')) {
-      detailTabs = R.remove(R.findIndex(R.propEq('key', 'disk-list-for-vm-instance-sidepage'))(detailTabs), 1, detailTabs)
-    }
     if (this.$store.getters.isProjectMode) {
       detailTabs = R.remove(R.findIndex(R.propEq('key', 'gpu-list'))(detailTabs), 1, detailTabs)
     }
@@ -99,7 +90,7 @@ export default {
   },
   computed: {
     componentParams () {
-      const tabs = ['secgroup-list', 'disk-list-for-vm-instance-sidepage']
+      const tabs = ['secgroup-list', 'disk-list-for-vm-container-instance-sidepage']
 
       if (tabs.includes(this.params.windowData.currentTab)) {
         return {
@@ -113,7 +104,7 @@ export default {
           id: this.detailData.host_id,
         }
       }
-      if (this.params.windowData.currentTab === 'network-list-for-vm-instance-sidepage') {
+      if (this.params.windowData.currentTab === 'network-list-for-vm-container-instance-sidepage') {
         return {
           associate_id: this.detailData.id,
           detail: true,
@@ -168,22 +159,18 @@ export default {
     },
     listId () {
       switch (this.params.windowData.currentTab) {
-        case 'network-list-for-vm-instance-sidepage':
-          return 'NetworkListForVminstanceSidepage'
-        case 'disk-list-for-vm-instance-sidepage':
-          return 'DiskLiskForVminstanceSidepage'
+        case 'network-list-for-vm-container-instance-sidepage':
+          return 'NetworkListForVmContainerInstanceSidePage'
+        case 'disk-list-for-vm-container-instance-sidepage':
+          return 'DiskLiskForVmContainerInstanceSidePage'
         case 'secgroup-list':
-          return 'SecgroupLiskForVminstanceSidepage'
-        case 'vm-instance-alert-sidepage':
-          return 'AlertLiskForVminstanceSidepage'
+          return 'SecgroupLiskForVmContainerInstanceSidePage'
         case 'event-drawer':
-          return 'EventListForVminstanceSidepage'
+          return 'EventListForVmContainerInstanceSidePage'
         case 'gpu-list':
-          return 'GpuListForVminstanceSidePage'
-        case 'scheduledtasks-list':
-          return 'ScheduledtasksListForVminstancesidePage'
-        // case 'eip-list-for-vm-instance-sidepage':
-        //   return 'EipListForVmInstanceSidepage'
+          return 'GpuListForVmContainerInstanceSidePage'
+        case 'container-list':
+          return 'ContainerListForVmContainerInstanceSidePage'
         default:
           return ''
       }
@@ -199,9 +186,6 @@ export default {
     },
     hiddenSingleActions () {
       return this.params.windowData.currentTab === 'scheduledtasks-list'
-    },
-    showActions () {
-      return !this.$isScopedPolicyMenuHidden('server_hidden_columns.perform_action')
     },
     filterDetailTabs () {
       return this.detailTabs.map(item => {
@@ -239,9 +223,6 @@ export default {
     initHiddenTab () {
       if (this.listRowData.brand !== 'OneCloud') {
         this.detailTabs = R.remove(R.findIndex(R.propEq('key', 'gpu-list'))(this.detailTabs), 1, this.detailTabs)
-      }
-      if (this.listRowData.brand === 'VolcEngine') {
-        this.detailTabs = R.remove(R.findIndex(R.propEq('key', 'vm-snapshot-sidepage'))(this.detailTabs), 1, this.detailTabs)
       }
     },
     initChangeTab () {
