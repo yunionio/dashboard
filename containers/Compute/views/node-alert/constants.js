@@ -56,6 +56,10 @@ export const metricItems = {
   'modelarts_pool_disk.available_capacity': { key: 'modelarts_pool_disk.available_capacity', label: i18n.t('compute.modelarts.monitor.disk.available_capacity'), unit: 'G' },
   'modelarts_pool_disk.capacity': { key: 'modelarts_pool_disk.available_capacity', label: i18n.t('compute.modelarts.monitor.disk.capacity'), unit: 'G' },
   'modelarts_pool_disk.usage_percent': { key: 'modelarts_pool_disk.usage_percent', label: i18n.t('compute.text_533'), unit: '%', rules: [{ max: 100, type: 'integer', message: i18n.t('compute.text_754') }] },
+  // 容器主机
+  'pod_cpu.usage_rate': { key: 'pod_cpu.usage_rate', label: i18n.t('compute.text_523'), unit: '%' },
+  'pod_mem.usage_rate': { key: 'pod_mem.usage_rate', label: i18n.t('compute.text_518'), unit: '%' },
+  'pod_mem.working_set_bytes': { key: 'pod_mem.working_set_bytes', label: i18n.t('compute.container.monitor.pod_mem_used'), unit: 'B' },
 }
 
 export const TIME_CN = {

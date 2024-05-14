@@ -308,7 +308,7 @@ export const autoComputeUnit = (series, sourceUnit = 'bps', base = 1000) => { //
   if (unit.toLowerCase() === 'b') {
     unit = 'b'
   } else {
-    unit += 'b'
+    unit += 'B'
   }
   if (sourceUnit === 'bps') unit += '/s'
   return { // 主要作用是 改变 values(单位缩进), 加入当前单位 unit
@@ -955,18 +955,20 @@ export function getKeyIgnoreCase (dict, needle) {
   return null
 }
 
+/* eslint-disable */
 export const escapeHTML = str =>
   str.replace(
     /[&<>'"]/g,
     tag =>
-      ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        "'": '&#39;',
-        '"': '&quot;',
-      }[tag] || tag),
+    ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;',
+    }[tag] || tag),
   )
+/* eslint-enable */
 
 /**
  * 替换云账号中OneStack、费用云账号中的YunionCloud为oem.brand.en

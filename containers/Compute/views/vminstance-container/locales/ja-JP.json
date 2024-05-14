@@ -42,5 +42,6 @@
   "compute.repo.helper.modify": "終了したコンテナのみを変更できます",
   "compute.repo.terminal": "ターミナル",
   "compute.repo.helper.terminal": "実行中のコンテナー ホストのみがターミナルに入ることができます",
-  "compute.repo.helper.set_duration.alert": "有効期限が切れると、対応するプラットフォームのコンテナ ホストは削除されます。実際のリリース時間と設定された時間の間には一定の不一致があります。特定のリリース時間が優先されます。"
+  "compute.repo.helper.set_duration.alert": "有効期限が切れると、対応するプラットフォームのコンテナ ホストは削除されます。実際のリリース時間と設定された時間の間には一定の不一致があります。特定のリリース時間が優先されます。",
+  "compute.container.monitor.pod_mem_used": "使用されたメモリ"
 }
