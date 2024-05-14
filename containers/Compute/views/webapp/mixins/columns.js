@@ -8,9 +8,11 @@ import {
   getTagTableColumn,
 } from '@/utils/common/tableColumn'
 import {
-  getTypeTableColumn,
-  getKindTableColumn,
   getTechStackTableColumn,
+  getOsTypeTableColumn,
+  getIpAddrTableColumn,
+  getDomainTableColumn,
+  getServerFarmTableColumn,
 } from '../utils/columns'
 
 export default {
@@ -27,9 +29,11 @@ export default {
       }),
       getTagTableColumn({ onManager: this.onManager, resource: 'webapps', tipName: this.$t('compute.webapp'), columns: () => this.columns }),
       getStatusTableColumn({ statusModule: 'webapp', vm: this }),
-      getTypeTableColumn(),
-      getKindTableColumn(),
       getTechStackTableColumn(),
+      getOsTypeTableColumn(),
+      getIpAddrTableColumn(),
+      getDomainTableColumn(),
+      getServerFarmTableColumn(),
       getBrandTableColumn(),
       getAccountTableColumn({ vm: this }),
       getRegionTableColumn(),

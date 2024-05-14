@@ -9,8 +9,6 @@
 
 <script>
 import {
-  getTypeTableColumn,
-  getKindTableColumn,
   getTechStackTableColumn,
 } from '../utils/columns'
 import {
@@ -39,8 +37,6 @@ export default {
         getUserTagColumn({ onManager: this.onManager, resource: 'webapp', columns: () => this.columns, tipName: this.$t('compute.webapp') }),
         getExtTagColumn({ onManager: this.onManager, resource: 'webapp', columns: () => this.columns, tipName: this.$t('compute.webapp') }),
         getBrandTableColumn(),
-        getTypeTableColumn(),
-        getKindTableColumn(),
         getTechStackTableColumn(),
       ],
     }
