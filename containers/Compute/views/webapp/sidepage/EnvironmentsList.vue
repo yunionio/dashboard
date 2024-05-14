@@ -39,8 +39,6 @@ export default {
         items: [
           { label: 'ID', key: 'id' },
           { label: this.$t('compute.webapp.env'), key: 'name' },
-          { label: this.$t('compute.webapp.instance_type'), key: 'instance_type' },
-          { label: this.$t('compute.webapp.instance_number'), key: 'instance_number' },
         ],
       },
       columns: [
@@ -54,22 +52,6 @@ export default {
             )
           },
         }),
-        {
-          field: 'instance_type',
-          title: this.$t('compute.webapp.instance_type'),
-          minWidth: 100,
-          formatter: ({ row }) => {
-            return row.instance_type
-          },
-        },
-        {
-          field: 'instance_number',
-          title: this.$t('compute.webapp.instance_number'),
-          minWidth: 100,
-          formatter: ({ row }) => {
-            return row.instance_number
-          },
-        },
       ],
       singleActions: [],
       groupActions: [],
