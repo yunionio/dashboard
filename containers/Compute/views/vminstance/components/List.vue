@@ -51,6 +51,7 @@ import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import regexp from '@/utils/regexp'
 import { hasSetupKey } from '@/utils/auth'
+import { sizeToDesignatedUnit } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
 import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -1482,11 +1483,32 @@ export default {
           ret.items.push(getIpsTableColumn({ field: 'elastic_ip', title: this.$t('common.eip'), vm: this, onlyElastic: true }))
           ret.items.push(getIpsTableColumn({ field: 'ip', title: 'IP', vm: this, noElastic: true }))
         } else if (!(col.hidden && col.hidden()) && col.field !== 'password') {
-          ret.items.push({
+          const item = {
             field: col.field,
             title: col.title || col.label,
             formatter: col.formatter,
-          })
+          }
+          if (col.field === 'vmem_size') {
+            item.title = `${item.title}(G)`
+            item.formatter = ({ row }) => {
+              if (row.vmem_size) {
+                const config = (row.vmem_size / 1024)
+                return config
+              }
+              return ''
+            }
+          }
+          if (col.field === 'disk') {
+            item.title = `${item.title}(G)`
+            item.formatter = ({ row }) => {
+              if (row.disk) {
+                const size = sizeToDesignatedUnit(row.disk, 'M', 'G', 1024, false, 2)
+                return size
+              }
+              return ''
+            }
+          }
+          ret.items.push(item)
         } else if (col.field === 'password') {
           ret.items.push({ field: 'extra_user', title: this.$t('compute.text_566') })
           ret.items.push({ field: 'extra_password', title: this.$t('common_328') })
