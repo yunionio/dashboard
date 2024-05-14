@@ -1,27 +1,4 @@
 import i18n from '@/locales'
-import { WEBAPP_TYPE } from '../constants'
-
-export const getTypeTableColumn = () => {
-  return {
-    field: 'type',
-    title: i18n.t('compute.webapp.type'),
-    minWidth: 100,
-    formatter: ({ row }) => {
-      return WEBAPP_TYPE[row.type]?.label
-    },
-  }
-}
-
-export const getKindTableColumn = () => {
-  return {
-    field: 'kind',
-    title: i18n.t('compute.webapp.kind'),
-    minWidth: 100,
-    formatter: ({ row }) => {
-      return row.kind
-    },
-  }
-}
 
 export const getTechStackTableColumn = () => {
   return {
@@ -30,6 +7,50 @@ export const getTechStackTableColumn = () => {
     minWidth: 100,
     formatter: ({ row }) => {
       return row.tech_stack
+    },
+  }
+}
+
+export const getOsTypeTableColumn = () => {
+  return {
+    field: 'os_type',
+    title: i18n.t('compute.webapp.os_type'),
+    minWidth: 100,
+    formatter: ({ row }) => {
+      return row.os_type
+    },
+  }
+}
+
+export const getDomainTableColumn = () => {
+  return {
+    field: 'hostname',
+    title: i18n.t('compute.webapp.domain'),
+    minWidth: 100,
+    formatter: ({ row }) => {
+      return row.hostname
+    },
+  }
+}
+
+export const getIpAddrTableColumn = () => {
+  return {
+    field: 'ip_addr',
+    title: i18n.t('compute.webapp.ip_addr'),
+    minWidth: 100,
+    formatter: ({ row }) => {
+      return row.ip_addr
+    },
+  }
+}
+
+export const getServerFarmTableColumn = () => {
+  return {
+    field: 'server_farm',
+    title: i18n.t('compute.webapp.server_farm'),
+    minWidth: 100,
+    formatter: ({ row }) => {
+      return row.server_farm
     },
   }
 }
