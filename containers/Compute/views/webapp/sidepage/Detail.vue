@@ -9,15 +9,15 @@
 
 <script>
 import {
-  getTechStackTableColumn,
-} from '../utils/columns'
-import {
   getBrandTableColumn,
 } from '@/utils/common/tableColumn'
 import {
   getUserTagColumn,
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
+import {
+  getTechStackTableColumn,
+} from '../utils/columns'
 
 export default {
   name: 'WebAppDetail',
