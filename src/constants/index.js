@@ -2,6 +2,10 @@ import * as R from 'ramda'
 import i18n from '@/locales'
 import { arrayToObj, getColorByCache } from '@/utils/utils'
 
+function getProviderName (key) {
+  return i18n.getI18n([`scopeCloudProvidersMap.${key}`, `scopeProviders.${key}`, `license.provider.${key}`])
+}
+
 // 平台的配置
 export const HYPERVISORS = [
   // IDC
@@ -13,33 +17,33 @@ export const HYPERVISORS = [
   { key: 'openstack', label: 'OpenStack', provider: 'OpenStack', brand: 'OpenStack', host_type: 'openstack', hypervisor: 'openstack', env: 'private', cloud_env: 'private' },
   { key: 'dstack', label: 'DStack', provider: 'ZStack', brand: 'DStack', host_type: 'dstack', hypervisor: 'dstack', env: 'private', cloud_env: 'private' },
   { key: 'zstack', label: 'ZStack', provider: 'ZStack', brand: 'ZStack', host_type: 'zstack', hypervisor: 'zstack', env: 'private', cloud_env: 'private' },
-  { key: 'apsara', label: i18n.t('scopeCloudPrvidersMap.Apsara'), provider: 'Apsara', brand: 'Apsara', host_type: 'apsara', hypervisor: 'apsara', env: 'private', cloud_env: 'private' },
-  { key: 'cloudpods', label: i18n.t('scopeCloudPrvidersMap.Cloudpods'), provider: 'Cloudpods', brand: 'Cloudpods', host_type: 'cloudpods', hypervisor: 'cloudpods', env: 'private', cloud_env: 'private' },
+  { key: 'apsara', label: getProviderName('apsara'), provider: 'Apsara', brand: 'Apsara', host_type: 'apsara', hypervisor: 'apsara', env: 'private', cloud_env: 'private' },
+  { key: 'cloudpods', label: getProviderName('cloudpods'), provider: 'Cloudpods', brand: 'Cloudpods', host_type: 'cloudpods', hypervisor: 'cloudpods', env: 'private', cloud_env: 'private' },
   { key: 'hcso', label: i18n.t('cloudPrvidersMap.HCSO'), provider: 'HCSO', brand: 'HCSO', host_type: 'hcso', hypervisor: 'hcso', env: 'private', cloud_env: 'private' },
   { key: 'hcs', label: i18n.t('cloudPrvidersMap.HCS'), provider: 'HCS', brand: 'HCS', host_type: 'hcs', hypervisor: 'hcs', env: 'private', cloud_env: 'private' },
-  { key: 'nutanix', label: i18n.t('scopeCloudPrvidersMap.Nutanix'), provider: 'Nutanix', brand: 'Nutanix', host_type: 'nutanix', hypervisor: 'nutanix', env: 'private', cloud_env: 'private' },
-  { key: 'bingocloud', label: i18n.t('scopeCloudPrvidersMap.BingoCloud'), provider: 'BingoCloud', brand: 'BingoCloud', host_type: 'bingocloud', hypervisor: 'bingocloud', env: 'private', cloud_env: 'private' },
+  { key: 'nutanix', label: getProviderName('nutanix'), provider: 'Nutanix', brand: 'Nutanix', host_type: 'nutanix', hypervisor: 'nutanix', env: 'private', cloud_env: 'private' },
+  { key: 'bingocloud', label: getProviderName('bingocloud'), provider: 'BingoCloud', brand: 'BingoCloud', host_type: 'bingocloud', hypervisor: 'bingocloud', env: 'private', cloud_env: 'private' },
   { key: 'incloudsphere', label: 'InCloudSphere', provider: 'InCloudSphere', brand: 'InCloudSphere', host_type: 'incloudsphere', hypervisor: 'incloudsphere', env: 'private', cloud_env: 'private' },
   { key: 'remotefile', label: i18n.t('cloudPrvidersMap.RemoteFile'), provider: 'RemoteFile', brand: 'RemoteFile', host_type: 'remotefile', hypervisor: 'remotefile', env: 'private', cloud_env: 'private' },
   { key: 'extdb', label: i18n.t('cloudPrvidersMap.extdb'), provider: 'extdb', brand: 'extdb', host_type: 'extdb', hypervisor: 'dxtdb', env: 'private', cloud_env: 'private' },
   { key: 'proxmox', label: i18n.t('cloudPrvidersMap.Proxmox'), provider: 'Proxmox', brand: 'Proxmox', host_type: 'proxmox', hypervisor: 'proxmox', env: 'private', cloud_env: 'private' },
   { key: 'h3c', label: i18n.t('cloudPrvidersMap.H3C'), provider: 'H3C', brand: 'H3C', host_type: 'h3c', hypervisor: 'h3c', env: 'private', cloud_env: 'private' },
   // Public
-  { key: 'aliyun', label: i18n.t('scopeCloudPrvidersMap.Aliyun'), provider: 'Aliyun', brand: 'Aliyun', host_type: 'aliyun', hypervisor: 'aliyun', env: 'public', cloud_env: 'public' },
+  { key: 'aliyun', label: getProviderName('aliyun'), provider: 'Aliyun', brand: 'Aliyun', host_type: 'aliyun', hypervisor: 'aliyun', env: 'public', cloud_env: 'public' },
   { key: 'azure', label: 'Azure', provider: 'Azure', brand: 'Azure', host_type: 'azure', hypervisor: 'azure', env: 'public', cloud_env: 'public' },
   { key: 'aws', label: 'AWS', provider: 'Aws', brand: 'Aws', host_type: 'aws', hypervisor: 'aws', env: 'public', cloud_env: 'public' },
-  { key: 'qcloud', label: i18n.t('scopeCloudPrvidersMap.Qcloud'), provider: 'Qcloud', brand: 'Qcloud', host_type: 'qcloud', hypervisor: 'qcloud', env: 'public', cloud_env: 'public' },
-  { key: 'huawei', label: i18n.t('scopeCloudPrvidersMap.Huawei'), provider: 'Huawei', brand: 'Huawei', host_type: 'huawei', hypervisor: 'huawei', env: 'public', cloud_env: 'public' },
+  { key: 'qcloud', label: getProviderName('qcloud'), provider: 'Qcloud', brand: 'Qcloud', host_type: 'qcloud', hypervisor: 'qcloud', env: 'public', cloud_env: 'public' },
+  { key: 'huawei', label: getProviderName('huawei'), provider: 'Huawei', brand: 'Huawei', host_type: 'huawei', hypervisor: 'huawei', env: 'public', cloud_env: 'public' },
   { key: 'ucloud', label: 'UCloud', provider: 'Ucloud', brand: 'Ucloud', host_type: 'ucloud', hypervisor: 'ucloud', env: 'public', cloud_env: 'public' },
   { key: 'google', label: 'Google', provider: 'Google', brand: 'Google', host_type: 'google', hypervisor: 'google', env: 'public', cloud_env: 'public' },
-  { key: 'ctyun', label: i18n.t('scopeCloudPrvidersMap.Ctyun'), provider: 'Ctyun', brand: 'Ctyun', host_type: 'ctyun', hypervisor: 'ctyun', env: 'public', cloud_env: 'public' },
-  { key: 'ecloud', label: i18n.t('scopeCloudPrvidersMap.Ecloud'), provider: 'Ecloud', brand: 'Ecloud', host_type: 'ecloud', hypervisor: 'ecloud', env: 'public', cloud_env: 'public' },
-  { key: 'jdcloud', label: i18n.t('scopeCloudPrvidersMap.JDcloud'), provider: 'JDcloud', brand: 'JDcloud', host_type: 'jdcloud', hypervisor: 'jdcloud', env: 'public', cloud_env: 'public' },
-  { key: 'ksyun', label: i18n.t('scopeCloudPrvidersMap.Ksyun'), provider: 'Ksyun', brand: 'Ksyun', host_type: 'ksyun', hypervisor: 'ksyun', env: 'public', cloud_env: 'public' },
-  { key: 'baidu', label: i18n.t('scopeCloudPrvidersMap.Baidu'), provider: 'Baidu', brand: 'Baidu', host_type: 'baidu', hypervisor: 'baidu', env: 'public', cloud_env: 'public' },
-  { key: 'qingcloud', label: i18n.t('scopeCloudPrvidersMap.Qingcloud'), provider: 'QingCloud', brand: 'QingCloud', host_type: 'qingcloud', hypervisor: 'qingcloud', env: 'public', cloud_env: 'public' },
-  { key: 'chinaunion', label: i18n.t('scopeCloudPrvidersMap.ChinaUnion'), provider: 'ChinaUnion', brand: 'ChinaUnion', host_type: 'cucloud', hypervisor: 'cucloud', env: 'public', cloud_env: 'public' },
-  { key: 'volcengine', label: i18n.t('scopeCloudPrvidersMap.VolcEngine'), provider: 'VolcEngine', brand: 'VolcEngine', host_type: 'volcengine', hypervisor: 'volcengine', env: 'public', cloud_env: 'public' },
+  { key: 'ctyun', label: getProviderName('ctyun'), provider: 'Ctyun', brand: 'Ctyun', host_type: 'ctyun', hypervisor: 'ctyun', env: 'public', cloud_env: 'public' },
+  { key: 'ecloud', label: getProviderName('ecloud'), provider: 'Ecloud', brand: 'Ecloud', host_type: 'ecloud', hypervisor: 'ecloud', env: 'public', cloud_env: 'public' },
+  { key: 'jdcloud', label: getProviderName('jdcloud'), provider: 'JDcloud', brand: 'JDcloud', host_type: 'jdcloud', hypervisor: 'jdcloud', env: 'public', cloud_env: 'public' },
+  { key: 'ksyun', label: getProviderName('ksyun'), provider: 'Ksyun', brand: 'Ksyun', host_type: 'ksyun', hypervisor: 'ksyun', env: 'public', cloud_env: 'public' },
+  { key: 'baidu', label: getProviderName('baidu'), provider: 'Baidu', brand: 'Baidu', host_type: 'baidu', hypervisor: 'baidu', env: 'public', cloud_env: 'public' },
+  { key: 'qingcloud', label: getProviderName('qingcloud'), provider: 'QingCloud', brand: 'QingCloud', host_type: 'qingcloud', hypervisor: 'qingcloud', env: 'public', cloud_env: 'public' },
+  { key: 'chinaunion', label: getProviderName('chinaunion'), provider: 'ChinaUnion', brand: 'ChinaUnion', host_type: 'cucloud', hypervisor: 'cucloud', env: 'public', cloud_env: 'public' },
+  { key: 'volcengine', label: getProviderName('volcengine'), provider: 'VolcEngine', brand: 'VolcEngine', host_type: 'volcengine', hypervisor: 'volcengine', env: 'public', cloud_env: 'public' },
   { key: 'oracle', label: 'OracleCloud', provider: 'OracleCloud', brand: 'OracleCloud', host_type: 'oracle', hypervisor: 'oracle', env: 'public', cloud_env: 'public' },
 ]
 

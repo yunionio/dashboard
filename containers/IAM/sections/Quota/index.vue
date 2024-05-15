@@ -220,8 +220,8 @@ export default {
           editRender: { name: 'select', options: [{ label: this.$t('system.text_25'), value: '' }], events: { change: this.brandChangeHandle }, attrs: { disabled: false } },
           formatter: ({ row }) => {
             if (row.brand) {
-              const hasKey = this.$te(`scopeProviders['${row.brand.toLowerCase()}']`)
-              return hasKey ? this.$t(`scopeProviders['${row.brand.toLowerCase()}']`) : row.brand
+              const brand = row.brand.toLowerCase()
+              return this.$getI18n([`scopeProviders['${brand}']`, `license.provider.${brand}`], row.brand)
             }
             return this.$t('system.text_25')
           },
@@ -314,9 +314,9 @@ export default {
             return brands.find((item) => { return item.toLowerCase() === v.toLowerCase() })
           })
           options = options.map((item) => {
-            const hasKey = this.$te(`scopeProviders['${item.toLowerCase()}']`)
+            const brand = item.toLowerCase()
             return {
-              label: hasKey ? this.$t(`scopeProviders['${item.toLowerCase()}']`) : item,
+              label: this.$getI18n([`scopeProviders['${brand}']`, `license.provider.${brand}`], item),
               value: item,
             }
           })
@@ -531,9 +531,9 @@ export default {
               return brands.find((item) => { return item.toLowerCase() === v.toLowerCase() })
             })
             options = options.map((item) => {
-              const hasKey = this.$te(`scopeProviders['${item.toLowerCase()}']`)
+              const brand = item.toLowerCase()
               return {
-                label: hasKey ? this.$t(`scopeProviders['${item.toLowerCase()}']`) : item,
+                label: this.$getI18n([`scopeProviders['${brand}']`, `license.provider.${brand}`], item),
                 value: item,
               }
             })

@@ -597,7 +597,7 @@ export const keySecretFields = {
   ecloud: {
     k: 'access_key_id',
     s: 'access_key_secret',
-    text: i18n.t('scopeCloudPrvidersMap.Ecloud'),
+    text: i18n.getI18n(['scopeCloudProvidersMap.ecloud', 'scopeProviders.ecloud', 'license.provider.ecloud']),
     placeholder: {
       k: i18n.t('cloudenv.text_144'),
       s: i18n.t('cloudenv.text_145'),

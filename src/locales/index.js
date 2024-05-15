@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
+import * as R from 'ramda'
 import vxeTableCN from 'vxe-table/lib/locale/lang/zh-CN'
 import vxeTableEN from 'vxe-table/lib/locale/lang/en-US'
 import vxeTableJP from 'vxe-table/lib/locale/lang/ja-JP'
@@ -41,5 +42,17 @@ const i18n = new VueI18n({
   fallbackLocale: 'en',
   // silentTranslationWarn: true,
 })
+
+i18n.getI18n = (key, defaultValue) => {
+  const keys = R.is(Array, key) ? key : [key]
+  let value = defaultValue === undefined ? keys[0] : defaultValue
+  for (let i = 0; i < keys.length; i++) {
+    if (i18n.te(keys[i])) {
+      value = i18n.t(keys[i])
+      return value
+    }
+  }
+  return value
+}
 
 export default i18n
