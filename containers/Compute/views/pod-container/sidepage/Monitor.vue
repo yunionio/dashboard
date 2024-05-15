@@ -38,11 +38,11 @@ export default {
       extraTags: [{
         key: 'container_name',
         operator: '=',
-        value: this.data.name
+        value: this.data.name,
       }, {
         key: 'pod_id',
         operator: '=',
-        value: this.data.guest_id
+        value: this.data.guest_id,
       }],
     }
   },
