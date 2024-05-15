@@ -18,7 +18,7 @@ export const ttls = [
 ]
 
 export const providers = [
-  { label: i18n.t('scopeCloudPrvidersMap.Qcloud'), value: 'Qcloud' }, // 腾讯云
+  { label: i18n.getI18n(['scopeCloudProvidersMap.qcloud', 'scopeProviders.qcloud', 'license.provider.qcloud']), value: 'Qcloud' }, // 腾讯云
   { label: 'AWS', value: 'Aws' }, // AWS
   { label: i18n.t('network.text_250'), value: 'Aliyun' }, // 阿里云
 ]
