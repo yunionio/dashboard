@@ -774,7 +774,12 @@ export default {
         if (fd.metric_key[key]) model.measurement = fd.metric_key[key]
         if (fd.reduce[key]) params.reduce = fd.reduce[key]
         if (fd.threshold[key]) params.threshold = fd.threshold[key]
-        if (fd.comparator[key]) params.comparator = fd.comparator[key]
+        if (fd.comparator[key]) {
+          params.comparator = fd.comparator[key]
+          if (params.comparator === 'nodata') {
+            params.condition_type = 'nodata_query'
+          }
+        }
         if (fd.metric_value[key]) model.select = [[{ type: 'field', params: [fd.metric_value[key]] }]]
         if (R.is(Object, fd.tagValues)) {
           R.forEachObjIndexed((value, key) => {
