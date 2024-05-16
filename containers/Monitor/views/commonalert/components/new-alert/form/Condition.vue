@@ -128,7 +128,7 @@ export default {
       this.conditionList.splice(index, 1)
       delete this.metricMap[item.key]
     },
-    reset () {
+    reset (execAdd = true) {
       this.conditionList.forEach(item => {
         const fields = ['metric_key', 'metric_value', 'reduce', 'comparator', 'threshold']
         fields.forEach(f => {
@@ -144,7 +144,7 @@ export default {
       this.metricKeyItemMap = {}
       this.conditionList = []
 
-      this.add()
+      execAdd && this.add()
     },
     onComparatorChange (v, item) {
       if (v === 'nodata') {
