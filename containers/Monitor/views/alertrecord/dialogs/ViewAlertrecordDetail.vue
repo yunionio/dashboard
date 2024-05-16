@@ -7,9 +7,9 @@
         <div class="Rheader"><span>{{ $t('common.current_value') }}： </span><span>{{ item.value_str }}</span></div>
         <div class="tag-title mt-3">{{ $t('common.text00012') }}</div>
         <div class="tag-wrapper">
-          <div class="tag-item d-flex align-items-center" v-for="(v, k) in item.tags" :key="k">
+          <div class="tag-item d-flex" v-for="(v, k) in item.tags" :key="k">
             <span class="tag-item-key text-truncate" :title="k">{{ k }}： </span>
-            <span>{{ format(k, v) }}</span>
+            <span class="tag-item-value">{{ format(k, v) }}</span>
           </div>
         </div>
       </a-card>
@@ -73,11 +73,17 @@ export default {
     font-weight: 500;
   }
   .tag-item {
-    height: 26px;
+    min-height: 26px;
     line-height: 26px;
   }
   .tag-item-key {
     width: 120px;
+  }
+  .tag-item-value {
+    width: 80%;
+    margin-left: 20px;
+    word-wrap: break-word;
+    word-break: break-all;
   }
 }
 </style>
