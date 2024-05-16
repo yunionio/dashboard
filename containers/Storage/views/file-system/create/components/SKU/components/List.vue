@@ -87,7 +87,7 @@ export default {
               if (this.rateLoading) {
                 return [<a-icon type="loading" />]
               }
-              const isPackage = this.form.getFieldValue('billing_type') === 'prepaid'
+              const isPackage = this.form.fc.getFieldValue('billing_type') === 'prepaid'
               if (rate) {
                 const unit = this.$t('network.unit.month')
                 let price = rate.hour_price * 24 * 30
@@ -95,8 +95,8 @@ export default {
                   price = rate.month_price
                 }
                 return [
-                  <span style="color: rgb(230, 139, 80);">{ price.toFixed(2) }</span>,
-                  <span> { this.$t('currencys.CNY') } / GB / {unit}</span>,
+                  <span style="color: rgb(230, 139, 80);">{price.toFixed(2)}</span>,
+                  <span> {this.$t('currencys.CNY')} / GB / {unit}</span>,
                 ]
               }
               return '-'
@@ -194,7 +194,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-::v-deep .nas-sku-valid .ant-form-item-control{
+::v-deep .nas-sku-valid .ant-form-item-control {
   line-height: 0;
 }
 </style>
