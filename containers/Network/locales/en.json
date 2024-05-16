@@ -1119,5 +1119,14 @@
   "network.not_support": "Not supported",
   "network.additional_wires.title.tooltip": "Allow VMware IP network to be associated with more than one layer-2 network. All the additional layer-2 networks of this IP network are listed here. You may also set IP network's additional layer-2 networks manually.",
   "network.guest_ip6_start": "IPv6 starting IP",
-  "network.guest_ip6_end": "IPv6 end IP"
+  "network.guest_ip6_end": "IPv6 end IP",
+  "network.hybird_connections": "Hybrid connection",
+  "network.custom_domain": "Custom Fields",
+  "network.binding_type": "Binding type",
+  "network.certificate_domain": "Certificate Domain Name",
+  "network.thumbprint": "fingerprint",
+  "network.expire_time": "Expiration time",
+  "network.time": "time",
+  "network.backup.auto": "Automatic",
+  "network.backup.hand": "Manual"
 }

@@ -1243,6 +1243,10 @@
     },
     "phoneImage": {
       "ready": "available"
+    },
+    "webappDomains": {
+      "available": "available",
+      "no_bind": "No bind"
     }
   },
   "skuCategoryOptions": {

@@ -46,6 +46,7 @@ const LBClusterUpdate = () => import(/* webpackChunkName: "network" */ /* webpac
 const SshProxyList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/ssh-proxy')
 const SshProxyCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/ssh-proxy/form')
 const SshAgentList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/ssh-agent')
+const WebApp = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/webapp')
 
 export default {
   index: 40,
@@ -478,6 +479,27 @@ export default {
               name: 'WafList',
               path: '',
               component: Waf,
+            },
+          ],
+        },
+        {
+          path: '/webapp',
+          meta: {
+            label: i18n.t('compute.webapp'),
+            permission: 'webapps_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.webapp')) {
+                return true
+              }
+              return !hasSetupKey(['azure'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'WebApp',
+              path: '',
+              component: WebApp,
             },
           ],
         },

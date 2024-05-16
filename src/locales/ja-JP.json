@@ -1258,6 +1258,10 @@
     },
     "phoneImage": {
       "ready": "利用可能"
+    },
+    "webappDomains": {
+      "available": "保護された",
+      "no_bind": "バインドなし"
     }
   },
   "skuCategoryOptions": {

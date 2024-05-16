@@ -590,4 +590,8 @@ export default {
   phoneImage: {
     success: ['ready'],
   },
+  webappDomains: {
+    success: ['available'],
+    danger: ['no_bind'],
+  },
 }
