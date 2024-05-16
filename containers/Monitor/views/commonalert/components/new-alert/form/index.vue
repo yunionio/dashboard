@@ -608,6 +608,7 @@ export default {
     initCondition () {
       const metric_details = this.alertData.common_alert_metric_details
       const conditionRef = this.$refs.conditionRef
+      conditionRef.reset(false)
       metric_details.forEach((item, idx) => {
         conditionRef.add()
         this.$nextTick(() => {
