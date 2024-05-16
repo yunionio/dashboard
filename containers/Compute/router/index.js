@@ -48,7 +48,6 @@ const InstanceBackup = () => import(/* webpackChunkName: "compute" */ /* webpack
 const DiskCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/disk/create/index')
 const VMInstance = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/vminstance')
 const Baremetal = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/baremetal')
-const WebApp = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/webapp')
 const BaremetalCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/baremetal/create/index')
 const Image = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/image')
 
@@ -203,27 +202,6 @@ export default {
               path: 'create',
               meta: {},
               component: ScalingGroupCreate,
-            },
-          ],
-        },
-        {
-          path: '/webapp',
-          meta: {
-            label: i18n.t('compute.webapp'),
-            permission: 'webapps_list',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.webapp')) {
-                return true
-              }
-              return !hasSetupKey(['azure'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'WebApp',
-              path: '',
-              component: WebApp,
             },
           ],
         },

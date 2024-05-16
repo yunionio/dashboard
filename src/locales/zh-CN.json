@@ -1220,6 +1220,10 @@
       "process": "执行中",
       "failed": "失败",
       "cancel": "取消"
+    },
+    "webappDomains": {
+      "available": "受保护",
+      "no_bind": "无绑定"
     }
   },
   "skuCategoryOptions": {
