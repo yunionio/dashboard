@@ -1220,6 +1220,10 @@
       "process": "実行",
       "failed": "失敗する",
       "cancel": "キャンセル"
+    },
+    "webappDomains": {
+      "available": "保護された",
+      "no_bind": "バインドなし"
     }
   },
   "skuCategoryOptions": {

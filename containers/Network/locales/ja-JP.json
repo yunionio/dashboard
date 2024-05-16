@@ -1121,5 +1121,14 @@
   "network.additional_wires.type.auto": "自動検出",
   "network.additional_wires.type.manual": "手動構成",
   "network.guest_ip6_start": "IPv6 開始 IP",
-  "network.guest_ip6_end": "IPv6 終了 IP"
+  "network.guest_ip6_end": "IPv6 終了 IP",
+  "network.hybird_connections": "ハイブリッド接続",
+  "network.custom_domain": "カスタムドメイン",
+  "network.binding_type": "バインドタイプ",
+  "network.certificate_domain": "証明書ドメイン名",
+  "network.thumbprint": "指紋",
+  "network.expire_time": "時間",
+  "network.time": "時間",
+  "network.backup.auto": "自動",
+  "network.backup.hand": "手動"
 }

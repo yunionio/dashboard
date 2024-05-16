@@ -579,4 +579,8 @@ export default {
     info: ['cancel'],
     danger: ['failed'],
   },
+  webappDomains: {
+    success: ['available'],
+    danger: ['no_bind'],
+  },
 }
