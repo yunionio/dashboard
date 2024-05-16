@@ -1237,6 +1237,10 @@
       "on": "on",
       "off": "off",
       "start_fail": "start_fail"
+    },
+    "webappDomains": {
+      "available": "available",
+      "no_bind": "No bind"
     }
   },
   "skuCategoryOptions": {

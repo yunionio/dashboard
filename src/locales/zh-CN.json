@@ -1252,6 +1252,10 @@
       "on": "运行中",
       "off": "关机",
       "start_fail": "启动失败"
+    },
+    "webappDomains": {
+      "available": "受保护",
+      "no_bind": "无绑定"
     }
   },
   "skuCategoryOptions": {

@@ -1252,6 +1252,10 @@
       "on": "実行中",
       "off": "シャットダウン",
       "start_fail": "開始に失敗しました"
+    },
+    "webappDomains": {
+      "available": "保護された",
+      "no_bind": "バインドなし"
     }
   },
   "skuCategoryOptions": {

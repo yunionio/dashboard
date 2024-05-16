@@ -584,4 +584,8 @@ export default {
     info: ['exited', 'ready', 'unknown', 'off'],
     danger: ['start_failed'],
   },
+  webappDomains: {
+    success: ['available'],
+    danger: ['no_bind'],
+  },
 }

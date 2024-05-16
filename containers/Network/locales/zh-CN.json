@@ -1121,5 +1121,14 @@
   "network.additional_wires.type.auto": "自动探测",
   "network.additional_wires.type.manual": "手动配置",
   "network.guest_ip6_start": "IPv6起始IP",
-  "network.guest_ip6_end": "IPv6结束IP"
+  "network.guest_ip6_end": "IPv6结束IP",
+  "network.hybird_connections": "混合连接",
+  "network.custom_domain": "自定义域",
+  "network.binding_type": "绑定类型",
+  "network.certificate_domain": "证书域名",
+  "network.thumbprint": "指纹",
+  "network.expire_time": "过期时间",
+  "network.time": "时间",
+  "network.backup.auto": "自动",
+  "network.backup.hand": "手动"
 }
