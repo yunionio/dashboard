@@ -200,9 +200,9 @@ export default {
           data.silent_period = fd.silent_period
         }
 
-        if (fd.comparator === 'nodata') {
-          data.metric_query[0].condition_type = 'nodata_query'
-        }
+        // if (fd.comparator === 'nodata') {
+        //   data.metric_query[0].condition_type = 'nodata_query'
+        // }
         if (fd.channel) {
           data.channel = fd.channel
         } else {
