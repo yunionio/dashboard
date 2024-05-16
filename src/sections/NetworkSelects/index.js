@@ -199,16 +199,16 @@ export default {
       }
       const options = this.vpcList.map((item) => {
         const { id, name } = item
-        return <a-select-option key={id} value={id}>{ this.vpcFormat ? this.vpcFormat(item) : name }</a-select-option>
+        return <a-select-option key={id} value={id}>{this.vpcFormat ? this.vpcFormat(item) : name}</a-select-option>
       })
       const renderStatusDesc = () => {
         return <a-select-option key="-1" value="-1" disabled>
-          <a-badge status="success" class="oc-custom-badge text-left text-wrap" text={ this.$t('compute.vpc_status_desc') } />
+          <a-badge status="success" class="oc-custom-badge text-left text-wrap" text={this.$t('compute.vpc_status_desc')} />
         </a-select-option>
       }
       return (
         <a-select disabled={disabled} onChange={_handleChange} showSearch placeholder={i18n.t('common_226')} loading={vpcLoading} filterOption={filterOption} >
-          { renderStatusDesc() }
+          {renderStatusDesc()}
           {options}
         </a-select>
       )
@@ -281,8 +281,8 @@ export default {
             ? this.networkFormat(item)
             : (
               <div class='d-flex'>
-                <span class='text-truncate flex-fill mr-2' title={ text }>{ text }</span>
-                <span style="color: #8492a6; font-size: 13px">{ this.$t('common.available_1var', [item.ports - item.ports_used]) }</span>
+                <span class='text-truncate flex-fill mr-2' title={text}>{text}</span>
+                <span style="color: #8492a6; font-size: 13px">{this.$t('common.available_1var', [item.ports - item.ports_used])}</span>
               </div>
             )
           }
@@ -317,7 +317,7 @@ export default {
             <a-form-item wrapperCol={{ span: 24 }}>
               {getFieldDecorator(name, _options)(Render)}
               <div slot="extra" key={name}>
-                { name === 'network' ? this.$slots.helplink : null }
+                {name === 'network' ? this.$slots.helplink : null}
               </div>
             </a-form-item>
           </a-col>
