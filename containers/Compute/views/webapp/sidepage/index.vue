@@ -27,13 +27,16 @@
 </template>
 
 <script>
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import Detail from './Detail'
 import EnvironmentsList from './EnvironmentsList'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
+import DomainList from './DomainList'
+import CertificateList from './CertificateList'
+import BackupList from './BackupList'
 
 export default {
   name: 'WebAppSidePage',
@@ -41,6 +44,9 @@ export default {
     Detail,
     EnvironmentsList,
     Actions,
+    DomainList,
+    CertificateList,
+    BackupList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -48,6 +54,9 @@ export default {
       detailTabs: [
         { label: this.$t('compute.text_238'), key: 'detail' },
         { label: this.$t('compute.webapp.env'), key: 'environments-list' },
+        { label: this.$t('network.custom_domain'), key: 'domain-list' },
+        { label: this.$t('network.text_143'), key: 'certificate-list' },
+        { label: this.$t('common.backup'), key: 'backup-list' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
