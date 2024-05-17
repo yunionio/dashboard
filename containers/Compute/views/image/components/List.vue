@@ -31,6 +31,7 @@ import {
 } from '@/utils/common/tableFilter'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
+import { isCE } from '@/utils/utils'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 
@@ -100,7 +101,11 @@ export default {
         permission: 'images_create',
         action: () => {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          this.$router.push({ name: 'ImageImport' })
+          if (isCE()) {
+            this.$router.push({ name: 'ImageImportCe' })
+          } else {
+            this.$router.push({ name: 'ImageImport' })
+          }
         },
         meta: () => ({
           buttonType: 'primary',
@@ -374,10 +379,8 @@ export default {
           },
         },
       ]
-      if (this.$appConfig.isPrivate) {
-        if (this.isAdminMode) {
-          batchActions.unshift(ImageImport)
-        }
+      if (this.isAdminMode) {
+        batchActions.unshift(ImageImport)
       }
       batchActions.unshift(ImageUpload)
       return batchActions
