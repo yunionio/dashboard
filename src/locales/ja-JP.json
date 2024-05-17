@@ -5991,5 +5991,11 @@
   "scope.licenses.expire_label": "ライセンスの有効期限",
   "scope.licenses.maintenance_expire_label": "テクニカル サポートの有効期限",
   "common.licenses.maintenance_adverb_expire.alert": "テクニカル サポート サービスの有効期限が近づいています。期限内にテクニカル サポートを更新してください。そうしないと、正式なテクニカル サポートを受けることができなくなります。サーバー ID コードと要件を { に送信してください。 0 },できるだけ早くご連絡させていただきます!",
-  "common.licenses.maintenance_already_expire.alert": "テクニカル サポート サービスの有効期限が切れており、公式のテクニカル サービス サポートは現在利用できません。テクニカル サポートを更新する必要がある場合は、サーバー ID コードと要件を記載した電子メールを {0} に送信してください。できるだけ早くご連絡させていただきます！」"
+  "common.licenses.maintenance_already_expire.alert": "テクニカル サポート サービスの有効期限が切れており、公式のテクニカル サービス サポートは現在利用できません。テクニカル サポートを更新する必要がある場合は、サーバー ID コードと要件を記載した電子メールを {0} に送信してください。できるだけ早くご連絡させていただきます！」",
+  "common.arch": "スキーマ＃スキーマ＃",
+  "common.image_source": "ミラーソース",
+  "common.download_url": "ダウンロードアドレス",
+  "common.select_import_image": "インポートするミラーを選択してください",
+  "common.image_url_tip": "ミラーリングは各システムの公式サイトに由来しており、Cloudpodsは変更されていません。他のバージョンが必要な場合は、各システムの公式プラットフォームを通じて導入して使用することができ、各公式リンクは以下を参照してください：",
+  "common.normal_open_image": "共通オープンソースミラーリング"
 }

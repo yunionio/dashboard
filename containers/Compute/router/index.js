@@ -44,6 +44,7 @@ const DiskSnapshot = () => import(/* webpackChunkName: "compute" */ /* webpackPr
 const InstanceSnapshot = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/snapshot-instance')
 const SnapshotPolicy = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/snapshotpolicy')
 const ImageImport = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/image/image-import/index')
+const ImageImportCe = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/image/image-import-ce/index')
 const InstanceBackup = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/instance-backup')
 const DiskCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/disk/create/index')
 const VMInstance = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/vminstance')
@@ -235,6 +236,11 @@ export default {
               name: 'ImageImport',
               path: 'import',
               component: ImageImport,
+            },
+            {
+              name: 'ImageImportCe',
+              path: 'market',
+              component: ImageImportCe,
             },
           ],
         },
