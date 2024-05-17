@@ -6020,5 +6020,11 @@
   "scope.licenses.expire_label": "License expiration time",
   "scope.licenses.maintenance_expire_label": "Technical support expiration time",
   "common.licenses.maintenance_adverb_expire.alert": "Your technical support service is about to expire. Please renew your technical support in time, otherwise you will not be able to obtain official technical support. Please send your server identification code and requirements to {0 },We will contact you as soon as possible!",
-  "common.licenses.maintenance_already_expire.alert": "Your technical support service has expired and official technical service support is currently unavailable. If you need to renew technical support, please send an email with your server identification code and requirements to {0 },We will contact you as soon as possible!"
+  "common.licenses.maintenance_already_expire.alert": "Your technical support service has expired and official technical service support is currently unavailable. If you need to renew technical support, please send an email with your server identification code and requirements to {0 },We will contact you as soon as possible!",
+  "common.arch": "Architecture",
+  "common.image_source": "Mirror source",
+  "common.download_url": "Download address",
+  "common.select_import_image": "Please select the image to import",
+  "common.image_url_tip": "The image is sourced from the official websites of various systems, and Cloudpods has not made any modifications. If other versions are needed, they can be imported and used through the official platforms of various systems. Please refer to the official links below:",
+  "common.normal_open_image": "Common open source images"
 }

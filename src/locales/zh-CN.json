@@ -6038,5 +6038,11 @@
   "scope.licenses.expire_label": "授权过期时间",
   "scope.licenses.maintenance_expire_label": "技术支持过期时间",
   "common.licenses.maintenance_adverb_expire.alert": "您的技术支持服务即将过期，请及时进行技术支持续约，否则将无法获得官方技术支持，请将您的服务器识别码和需求发送电子邮件至 {0}，我们将尽快与您联系！",
-  "common.licenses.maintenance_already_expire.alert": "您的技术支持服务已过期，目前无法获得官方技术服务支持，如您需要续期技术支持，请将您的服务器识别码和需求发送电子邮件至 {0}，我们将尽快与您联系！"
+  "common.licenses.maintenance_already_expire.alert": "您的技术支持服务已过期，目前无法获得官方技术服务支持，如您需要续期技术支持，请将您的服务器识别码和需求发送电子邮件至 {0}，我们将尽快与您联系！",
+  "common.arch": "架构",
+  "common.image_source": "镜像源",
+  "common.download_url": "下载地址",
+  "common.select_import_image": "请选择要导入的镜像",
+  "common.image_url_tip": "镜像来源于各系统官网，Cloudpods未做任何修改。若需其他版本，可通过各系统官方平台导入使用，各官方链接参考：",
+  "common.normal_open_image": "常用开源镜像"
 }
