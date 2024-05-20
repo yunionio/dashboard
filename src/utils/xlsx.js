@@ -1,6 +1,54 @@
 import XLSX from 'xlsx'
 import * as R from 'ramda'
 
+/**
+ * 获取当前机器时间时区是否存在时间误差
+ * @param {Date} date 比对的误差时间
+ * @returns {Number} 误差毫秒
+ */
+function getTimezoneOffsetMS (date) {
+  const time = date.getTime()
+  const utcTime = Date.UTC(date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    date.getHours(),
+    date.getMinutes(),
+    date.getSeconds(),
+    date.getMilliseconds())
+  return time - utcTime
+}
+
+/**
+ * 矫正日期误差
+ * @param {Date} date 需要矫正的日期
+ * @returns {Date} 返回矫正后的日期
+ */
+function fixDate (date) {
+  const importBugHotfixDiff = (function () {
+    const basedate = new Date(1899, 11, 30, 0, 0, 0)
+    const dnthreshAsIs = (new Date().getTimezoneOffset() - basedate.getTimezoneOffset()) * 60000
+    const dnthreshToBe = getTimezoneOffsetMS(new Date()) - getTimezoneOffsetMS(basedate)
+    return dnthreshAsIs - dnthreshToBe
+  }())
+  return (new Date(date.getTime() + importBugHotfixDiff))
+}
+
+/**
+ * 是否需要矫正日期，返回正确日期
+ * @param {Date} date 需要判断的日期
+ * @returns {Date} 返回矫正后的日期
+ */
+function getFixedDate (date) {
+  const baseDate = new Date(1899, 11, 30, 0, 0, 0)
+  const baseDateUtc = new Date(Date.UTC(1899, 11, 30, 0, 0, 0))
+  const timezoneOffsetFix =
+    baseDateUtc.valueOf() +
+    baseDate.getTimezoneOffset() * 60000 -
+    baseDate.valueOf()
+  const isNeedFixDate = new Date(date.valueOf() - timezoneOffsetFix).getTimezoneOffset() !== baseDate.getTimezoneOffset()
+  return isNeedFixDate ? fixDate(date) : date
+}
+
 // 定义某种类型字符串中会包含哪些字符
 const strMatchMap = {
   $Bill: ['$', ',', ' ', '.', '-', /\d/],
@@ -43,6 +91,8 @@ const matchDataFormat = (data) => {
     isBill: false,
     isPercent: false,
     isNumber: false,
+    isDate: false,
+    isTime: false,
     currency: '',
     value: null,
   }
@@ -71,6 +121,16 @@ const matchDataFormat = (data) => {
   // 数字
   if (isOnlyMatchChars(d, strMatchMap.number) || (d.startsWith('-') && isOnlyMatchChars(d, [...strMatchMap.number, '-']))) {
     ret.isNumber = true
+    ret.value = data
+  }
+  // 日期
+  if (/^\d{4}-\d{2}-\d{2}$/.test(d)) {
+    ret.isDate = true
+    ret.value = data
+  }
+  // 时间
+  if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(d)) {
+    ret.isTime = true
     ret.value = data
   }
   return ret
@@ -130,6 +190,23 @@ export const addDataToSheetAfterFormat = ({ data: originData = [], titleRowLen =
             if (fData.isNumber) {
               formatObj[cellSign] = formatObj[cellSign] || {}
               formatObj[cellSign].t = 'n' // 数字格式
+              data[index][index2] = fData.value
+            }
+            if (fData.isDate) {
+              console.log('isDate')
+              formatObj[cellSign] = formatObj[cellSign] || {}
+              formatObj[cellSign].t = 'd'
+              formatObj[cellSign].z = 'yyyy-mm-dd'
+              formatObj[cellSign].w = '2024-01-01'
+              formatObj[cellSign].v = getFixedDate(new Date(fData.value))
+              data[index][index2] = fData.value
+            }
+            if (fData.isTime) {
+              formatObj[cellSign] = formatObj[cellSign] || {}
+              formatObj[cellSign].t = 'd'
+              formatObj[cellSign].z = 'yyyy-mm-dd hh:mm:ss'
+              formatObj[cellSign].w = '2024-01-01 00:00:00'
+              formatObj[cellSign].v = getFixedDate(new Date(fData.value))
               data[index][index2] = fData.value
             }
           }
