@@ -319,11 +319,10 @@ export default {
     networkParam () {
       if (!this.cloudregionZoneParams.cloudregion) return {}
       const params = {
-        filter: 'server_type.notin(ipmi, pxe, eip)',
+        filter: 'server_type.notin(ipmi, pxe, eip, baremetal)',
         usable: true,
         ...this.cloudregionZoneParams,
         ...this.scopeParams,
-        host_type: 'container',
       }
       if ([HYPERVISORS_MAP.kvm.key].includes(this.form.fd.hypervisor)) {
         if (this.storageHostParams.disk &&
