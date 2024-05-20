@@ -2823,7 +2823,8 @@
     "project_tag": "项目标签",
     "predictions": "费用预测",
     "instance_tag": "资源标签",
-    "external_id": "云上ID"
+    "external_id": "云上ID",
+    "custom_data": "自定义数据"
   },
   "res": {
     "role": "@:dictionary.role",
