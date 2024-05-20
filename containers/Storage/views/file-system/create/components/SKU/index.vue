@@ -41,16 +41,16 @@ export default {
         ...values,
         scope: 'domain',
       }
-      if (this.form.getFieldValue('billing_type') === 'postpaid') {
+      if (this.form.fc.getFieldValue('billing_type') === 'postpaid') {
         params.postpaid_status = 'available'
       } else {
         params.prepaid_status = 'available'
       }
       return params
     },
-    async fetchSkus () {
+    async fetchSkus (extraParams) {
       const { fetchSkus } = this.$refs.SKU_LIST
-      const values = this.getParams(['cloudregion_id'])
+      const values = this.getParams(extraParams || ['cloudregion_id'])
       try {
         await fetchSkus(values)
       } catch (err) {
