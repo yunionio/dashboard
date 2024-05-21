@@ -101,11 +101,20 @@ export default {
         permission: 'images_create',
         action: () => {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          if (isCE()) {
-            this.$router.push({ name: 'ImageImportCe' })
-          } else {
-            this.$router.push({ name: 'ImageImport' })
-          }
+          this.$router.push({ name: 'ImageImport' })
+        },
+        meta: () => ({
+          buttonType: 'primary',
+        }),
+        hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_store'),
+      }
+
+      const ImageImportCe = {
+        label: this.$t('compute.open_image_market'),
+        permission: 'images_create',
+        action: () => {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.$router.push({ name: 'ImageImportCe' })
         },
         meta: () => ({
           buttonType: 'primary',
@@ -379,8 +388,11 @@ export default {
           },
         },
       ]
-      if (this.isAdminMode) {
+      if (this.isAdminMode && !isCE()) {
         batchActions.unshift(ImageImport)
+      }
+      if (this.isAdminMode && isCE()) {
+        batchActions.unshift(ImageImportCe)
       }
       batchActions.unshift(ImageUpload)
       return batchActions
