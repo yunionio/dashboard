@@ -181,4 +181,8 @@ export default {
     resource: 'volumes',
     steadyStatus: Object.values(expectStatus.disk).flat(),
   },
+  TaskSidePage: {
+    resource: 'cloud-phone-tasks',
+    steadyStatus: Object.values(expectStatus.parentTaskStatus).flat(),
+  },
 }

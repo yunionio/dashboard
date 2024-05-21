@@ -14,7 +14,7 @@
 const components = {}
 const requireSidePages = require.context('../../../containers', true, /^((?![\\/]node_modules).)*.\/views\/.*\/sidepage\/index\.(jsx?|vue)$/)
 const scopeSidePages = require.context('../../../scope', true, /^((?![\\/]node_modules).)*.\/views\/.*\/sidepage\/index\.(jsx?|vue)$/)
-const commonSidePages = require.context('./components', false, /.\/\w+\.(jsx?|vue)$/)
+const commonSidePages = require.context('./components', true, /.\/index\.(jsx?|vue)$/)
 const srcViewsSidePages = require.context('../../views', true, /^((?![\\/]node_modules).).*\/sidepage\/index\.(jsx?|vue)$/)
 const sidePageNames = []
 const registerSidePages = (sidePages) => {
@@ -57,6 +57,6 @@ export default {
   right: 0;
   bottom: 0;
   top: 60px;
-  box-shadow: -5px 0 3px rgba(197, 219, 232, .4);
+  box-shadow: -5px 0 3px rgba(197, 219, 232, 0.4);
 }
 </style>

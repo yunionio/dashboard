@@ -2938,7 +2938,12 @@
       "disk": "磁盘",
       "cpu_usage": "CPU使用率",
       "mem_usage": "内存使用率",
-      "disk_usage": "磁盘使用率"
+      "disk_usage": "磁盘使用率",
+      "task": "任务",
+      "children_task": "子任务",
+      "stage": "阶段",
+      "task_name": "任务名称",
+      "progress": "进度"
     },
     "action": {
       "save": "保存",

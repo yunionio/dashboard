@@ -594,4 +594,12 @@ export default {
     success: ['available'],
     danger: ['no_bind'],
   },
+  parentTaskStatus: {
+    success: ['done'],
+    danger: ['failed'],
+  },
+  parentTaskStage: {
+    success: ['complete'],
+    danger: ['failed'],
+  },
 }
