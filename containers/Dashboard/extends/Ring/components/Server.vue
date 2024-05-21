@@ -311,7 +311,7 @@ export default {
       if (percent > 0 && percent < 0.01) {
         return '0.004'
       }
-      return numerify(this.usageNumber / this.allUsageNumber, '0.00')
+      return numerify(this.usageNumber / this.allUsageNumber, '0.0000')
     },
     percent () {
       if (this.isResDeny) return '0'
@@ -319,14 +319,17 @@ export default {
       if (data > 0 && data < 0.01) {
         return 0.4
       }
-      return numerify(data * 100, 0.0)
+      return data * 100
     },
     percentTips () {
       if (this.percent === 0) return '0%'
       if (this.percent < 1) {
         return '< 1%'
       }
-      return `${this.percent} %`
+      if (this.percent > 99 && this.percent < 100) {
+        return '> 99%'
+      }
+      return `${numerify(this.percent, 0.0)} %`
     },
     percentColor () {
       switch (this.colorConfig) {
