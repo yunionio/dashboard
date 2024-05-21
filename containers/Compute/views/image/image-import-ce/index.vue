@@ -3,27 +3,25 @@
     <a-alert type="warning">
       <span slot="message">{{ $t('common.image_url_tip') }} <a href="https://www.cloudpods.org/docs/guides/onpremise/glance/common-image-url" target="_blank">{{ $t('common.normal_open_image') }}</a></span>
     </a-alert>
-    <page-header :title="$t('compute.text_642')" />
-    <page-body needMarginBottom>
-      <page-list
-        class="mt-2"
-        :list="list"
-        :columns="columns"
-        :showPage="false"
-        :showSync="false"
-        @filterChange="handleFilterChange"
-        @change-selected="handleSelected">
-        <template slot="group-actions-append">
-          <div class="mb-2">{{ $t('common.select_import_image') }}</div>
-        </template>
-      </page-list>
-    </page-body>
-    <page-footer>
-      <div slot="right">
-        <a-button class="mr-3" type="primary" @click="handleConfirm" :disabled="selectedImages.length === 0" :loading="loading">{{$t('cloudenv.text_169')}}</a-button>
-        <a-button @click="cancel">{{$t('cloudenv.text_170')}}</a-button>
-      </div>
-    </page-footer>
+    <page-header :title="$t('compute.open_image_market')" />
+    <a-form-model class="mt-3 mb-2" v-bind="layout">
+      <a-form-model-item>
+        <a-radio-group v-model="form.os_arch">
+          <a-radio-button v-for="(item, index) in archList" :key="index" :value="item.value">{{ item.label }}</a-radio-button>
+        </a-radio-group>
+      </a-form-model-item>
+      <a-form-model-item>
+        <a-radio-group v-model="form.distribution" size="large">
+          <a-radio-button v-for="(item, index) in distributionList" :key="index" :value="item.value" style="width:60px;height:60px;text-align:center;line-height:60px;vertical-align:middle;padding:0;"><img v-if="item.os" :src="item.os" style="height:40px;" /></a-radio-button>
+        </a-radio-group>
+      </a-form-model-item>
+    </a-form-model>
+    <page-card-list
+      :list="list"
+      :card-fields="cardFields"
+      :showPageer="false"
+      :isRefreshed="false"
+      :singleActions="singleActions" />
   </div>
 </template>
 
@@ -31,9 +29,16 @@
 import { mapGetters } from 'vuex'
 import axios from 'axios'
 import WindowsMixin from '@/mixins/windows'
-import { getNameFilter } from '@/utils/common/tableFilter'
+const path = require('path')
+const imagesLogoFiles = require.context('@/assets/images/os-images', false, /.svg$/)
+const imagesLogos = []
+imagesLogoFiles.keys().forEach(key => {
+  const name = path.basename(key, '.svg') // 返回文件名 不含后缀名
+  imagesLogos.push(name)
+})
 
 const fileUrl = 'http://www.cloudpods.org/openimages.yaml'
+// const fileUrl = 'http://127.0.0.1:8080/openimages.yaml'
 const attributes = ['distribution', 'os_name', 'os_arch', 'os_version', 'build', 'source', 'url']
 
 export default {
@@ -43,67 +48,90 @@ export default {
     return {
       loading: false,
       imageList: [],
-      list: this.$list.createList(this, {
-        id: 'ImageMarketList',
-        filterOptions: {
-          distribution: getNameFilter({ label: this.$t('compute.text_657') }),
-          os: getNameFilter({ label: this.$t('scope.text_160') }),
-          os_arch: getNameFilter({ label: this.$t('common.arch') }),
-          source: getNameFilter({ label: this.$t('common.image_source') }),
-          url: getNameFilter({ label: this.$t('common.download_url') }),
+      cardFields: {
+        url: 'os',
+        title: 'title',
+        description: 'os_name',
+        desc: 'desc',
+      },
+      list: {
+        data: [],
+        loading: false,
+      },
+      layout: {
+        wrapperCol: {
+          span: 20,
         },
-      }),
-      columns: [
+        labelCol: {
+          span: 4,
+        },
+      },
+      singleActions: [
         {
-          field: 'distribution',
-          title: this.$t('compute.text_657'),
-          minWidth: 150,
-          formatter: ({ row }) => {
-            return row.distribution || '-'
+          label: this.$t('compute.text_679'),
+          action: async (data) => {
+            try {
+              await new this.$Manager('images', 'v2').create({
+                data: {
+                  domain_id: this.userInfo.projectDomainId,
+                  project_id: this.userInfo.projectId,
+                  copy_from: data.url,
+                  name: data.name,
+                  os_arch: data.os_arch,
+                  properties: {
+                    os_type: data.os_name,
+                    os_version: data.os_version,
+                    os_arch: data.os_arch,
+                  },
+                },
+              })
+              this.$message.success(this.$t('compute.text_423'))
+            } catch (error) {
+              throw error
+            }
           },
-        },
-        {
-          field: 'os_name',
-          title: this.$t('scope.text_160'),
-          minWidth: 200,
-          formatter: ({ row }) => {
-            return `${row.os_name} ${row.os_version}`
-          },
-        },
-        {
-          field: 'os_arch',
-          title: this.$t('common.arch'),
-          minWidth: 150,
-          formatter: ({ row }) => {
-            return row.os_arch || '-'
-          },
-        },
-        {
-          field: 'source',
-          title: this.$t('common.image_source'),
-          minWidth: 200,
-          formatter: ({ row }) => {
-            return row.source || '-'
-          },
-        },
-        {
-          field: 'url',
-          title: this.$t('common.download_url'),
-          minWidth: 300,
-          slots: {
-            default: ({ row }) => {
-              return [<list-body-cell-wrap copy field='url' row={row} hideField={true} message={row.url}>
-                {row.url}
-              </list-body-cell-wrap>]
-            },
+          meta: (obj) => {
+            return {
+              buttonType: 'primary',
+            }
           },
         },
       ],
-      selectedImages: [],
+      imagesLogos,
+      form: {
+        os_arch: 'x86_64',
+        distribution: 'Debian',
+      },
     }
   },
   computed: {
     ...mapGetters(['userInfo']),
+    archList () {
+      const ret = []
+      this.imageList.map(item => {
+        if (item.data.os_arch && !ret.some(l => l.value === item.data.os_arch)) {
+          ret.push({ value: item.data.os_arch, label: item.data.os_arch })
+        }
+      })
+      return ret
+    },
+    distributionList () {
+      const ret = []
+      this.imageList.map(item => {
+        if (item.data.distribution && !ret.some(l => l.value === item.data.distribution)) {
+          ret.push({ value: item.data.distribution, label: item.data.distribution, os: item.data.os })
+        }
+      })
+      return ret
+    },
+  },
+  watch: {
+    form: {
+      handler (val) {
+        this.initList()
+      },
+      deep: true,
+    },
   },
   created () {
     this.fetchData()
@@ -153,24 +181,48 @@ export default {
     handleSelected (selected) {
       this.selectedImages = selected
     },
+    getOsName (item) {
+      let ret = ''
+      const os_name = (item.distribution || '').toLowerCase()
+      ret = this.imagesLogos.includes(os_name) ? os_name : ''
+      if (!ret && os_name.includes('ubuntu')) {
+        ret = 'ubuntu'
+      }
+      if (!ret && os_name.includes('anolis')) {
+        ret = 'anolis'
+      }
+      return ret || 'unknow'
+    },
     fetchData () {
-      this.loading = true
+      this.list.loading = true
       axios.get(fileUrl).then(res => {
         const { data = '' } = res
-        this.imageList = this.parseImageData(data)
-        this.list.responseData = {
-          data: this.imageList.map(item => {
-            item.os = `${item.os_name} ${item.os_version}`
-            item.name = `${item.distribution}-${item.os_name}-${item.os_version}-${item.os_arch}`
-            return item
-          }),
-        }
-        this.loading = false
-        this.list.fetchData()
+        this.imageList = this.parseImageData(data).map(item => {
+          const ret = { data: { ...item } }
+          ret.data.title = `${item.distribution} ${item.os_version}`
+          ret.data.desc = this.$t('compute.image_market.desc', [item.os_arch, item.source])
+          ret.data.name = `${item.distribution}-${item.os_name}-${item.os_version}-${item.os_arch}`
+          const os_name = this.getOsName(item)
+          ret.data.os = require(`@/assets/images/os-images/${this.imagesLogos.includes(os_name) ? os_name : 'unknow'}.svg`) || ''
+          return ret
+        })
+        this.initList()
+        this.list.loading = false
       }).catch(err => {
-        this.list.fetchDta()
-        this.loading = false
+        this.list.loading = false
         throw err
+      })
+    },
+    initList () {
+      this.list.data = this.imageList.filter(item => {
+        const { os_arch, distribution } = item.data
+        if (this.form.os_arch && this.form.os_arch !== 'all' && os_arch !== this.form.os_arch) {
+          return false
+        }
+        if (this.form.distribution && this.form.distribution !== 'all' && distribution !== this.form.distribution) {
+          return false
+        }
+        return true
       })
     },
     async handleConfirm () {

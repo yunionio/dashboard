@@ -82,5 +82,6 @@ export default {
     UserLocked: '用户锁定',
     InvalidIdpStatus: '无效的认证源状态',
     InvalidIdpStatusDetail: '请检查用户归属认证源是否被禁用或状态无效',
+    DuplicateNameError: '名称重复',
   },
 }
