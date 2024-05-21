@@ -4,7 +4,7 @@
       :list="list"
       :columns="columns"
       :export-data-options="exportDataOptions"
-      default-search-key="obj_name" />
+      default-search-key="task_name" />
   </div>
 </template>
 
@@ -31,8 +31,8 @@ export default {
   },
   data () {
     const filterOptions = {
-      obj_name: {
-        label: this.$t('table.title.res_name'),
+      task_name: {
+        label: this.$t('table.title.task_name'),
       },
       created_at: getTimeRangeFilter({ label: this.$t('table.title.create_time'), field: 'created_at' }),
     }
