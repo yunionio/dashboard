@@ -9,6 +9,7 @@ export default {
   InputParameterError: i18n.t('notify.InputParameterError'),
   UserLocked: i18n.t('notify.UserLocked'),
   InvalidIdpStatus: i18n.t('notify.InvalidIdpStatus'),
+  DuplicateNameError: i18n.t('notify.DuplicateNameError'),
 }
 
 export const DETAIL_ERRMSG = {

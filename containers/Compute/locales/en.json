@@ -1762,5 +1762,9 @@
   "compute.stop_rescue.validate_tooltip": "Please enter emergency mode and try again",
   "compute.associated_instances": "associated instances",
   "compute.lvm_shared_storage.validate_tooltip": "LVM disk host does not support this operation",
-  "compute.prepaid_delete_server.alert": "Deletion of yearly and monthly hosts on some platforms will be converted to pay-as-you-go before deletion."
+  "compute.prepaid_delete_server.alert": "Deletion of yearly and monthly hosts on some platforms will be converted to pay-as-you-go before deletion.",
+  "compute.open_image_market": "Open source mirror market",
+  "compute.image_market.desc": "System architecture: {0}, image source: {1}",
+  "compute.os_arch": "system architecture ",
+  "compute.distribution": "Distribution version"
 }
