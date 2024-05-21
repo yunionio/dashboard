@@ -81,5 +81,6 @@ export default {
     UserLocked: 'UserLocked',
     InvalidIdpStatus: 'Invalid IDP Status',
     InvalidIdpStatusDetail: 'Please check user\'s IDP was disabled or in invalid status.',
+    DuplicateNameError: 'Name duplication',
   },
 }

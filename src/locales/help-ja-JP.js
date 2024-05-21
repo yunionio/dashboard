@@ -82,5 +82,6 @@ export default {
     UserLocked: 'ユーザーのロック',
     InvalidIdpStatus: '無効な認証ソースステータス',
     InvalidIdpStatusDetail: 'ユーザーホーム認証ソースが無効になっているか、またはステータスが無効であるかを確認してください',
+    DuplicateNameError: '名前が重複しています',
   },
 }
