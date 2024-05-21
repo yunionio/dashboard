@@ -2938,7 +2938,11 @@
       "disk": "ディスク",
       "cpu_usage": "CPU 使用率",
       "mem_usage": "メモリ使用量",
-      "disk_usage": "ディスク使用量"
+      "disk_usage": "ディスク使用量",
+      "task": "任務",
+      "stage": "阶段",
+      "task_name": "任務名稱",
+      "progress": "進捗状況"
     },
     "action": {
       "save": "セーブ",

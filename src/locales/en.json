@@ -2921,7 +2921,12 @@
       "disk": "Disk",
       "cpu_usage": "CPU USAGE",
       "mem_usage": "MEM USAGE",
-      "disk_usage": "Disk USAGE"
+      "disk_usage": "Disk USAGE",
+      "task": "Task",
+      "children_task": "Children Task",
+      "stage": "Stage",
+      "task_name": "Task Name",
+      "progress": "progress"
     },
     "action": {
       "save": "Save",
