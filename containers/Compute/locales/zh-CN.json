@@ -1768,5 +1768,9 @@
   "compute.stop_rescue.validate_tooltip": "请进入紧急模式后重试",
   "compute.associated_instances": "关联实例",
   "compute.lvm_shared_storage.validate_tooltip": "LVM磁盘主机不支持该操作",
-  "compute.prepaid_delete_server.alert": "部分平台包年包月主机删除会先转化为按量付费再进行删除操作。"
+  "compute.prepaid_delete_server.alert": "部分平台包年包月主机删除会先转化为按量付费再进行删除操作。",
+  "compute.open_image_market": "开源镜像市场",
+  "compute.image_market.desc": "系统架构：{0}，镜像源：{1}",
+  "compute.os_arch": "系统架构",
+  "compute.distribution": "发行版"
 }
