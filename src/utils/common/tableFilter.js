@@ -488,7 +488,7 @@ function time (v) {
   return moment(v).format('YYYY-MM-DD HH:mm:ss')
 }
 
-export function getTimeRangeFilter ({ label = '', field = '' }) {
+export function getTimeRangeFilter ({ label = '', field = '', utc = true }) {
   return {
     label: label,
     dropdown: true,
@@ -497,12 +497,12 @@ export function getTimeRangeFilter ({ label = '', field = '' }) {
     is_time: true,
     formatter: (val, type) => {
       if (type === 'before') {
-        return `${field}.le("${utcTime(val)}")`
+        return `${field}.le("${utc ? utcTime(val) : time(val)}")`
       }
       if (type === 'after') {
-        return `${field}.ge("${utcTime(val)}")`
+        return `${field}.ge("${utc ? utcTime(val) : time(val)}")`
       }
-      return `${field}.between("${utcTime(val[0])}", "${utcTime(val[1])}")`
+      return `${field}.between("${utc ? utcTime(val[0]) : time(val[0])}", "${utc ? utcTime(val[1]) : time(val[1])}")`
     },
   }
 }
