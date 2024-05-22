@@ -45,7 +45,9 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const TaskTypeList = ['pull_bill', 'prepaid_amortizing', 'project_sharing', 'recalculate', 'predict', 'delete_bill'].filter(key => {
-      if (key === 'recalculate' && !this.$store.state.common.bill.globalConfig.cost_conversion_available) return false
+      const { cost_conversion_available, enable_prediction } = this.$store.state.common.bill?.globalConfig || {}
+      if (key === 'recalculate' && !cost_conversion_available) return false
+      if (key === 'predict' && !enable_prediction) return false
       return true
     })
     const { accountData = {} } = this.params
