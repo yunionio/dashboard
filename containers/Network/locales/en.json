@@ -871,7 +871,7 @@
   "network.waf.cloudId": "@:dictionary.external_id",
   "network.waf.rule": "Rules",
   "network.waf.resource": "Associated resources",
-  "network.waf.type": "WAF type",
+  "network.waf.type": "Type",
   "network.waf.resource_type": "Resource type",
   "network.waf.resource_id": "Resource ID",
   "network.waf.resource_name": "Resource Name",

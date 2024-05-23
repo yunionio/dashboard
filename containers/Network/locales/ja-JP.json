@@ -864,7 +864,7 @@
   "network.waf.cloudId": "@:dictionary.external_id",
   "network.waf.rule": "準則",
   "network.waf.resource": "リソースの関連付け",
-  "network.waf.type": "WAF タイプ",
+  "network.waf.type": "タイプ",
   "network.waf.resource_type": "リソースの種類",
   "network.waf.resource_id": "リソース ID",
   "network.waf.resource_name": "リソース名",
