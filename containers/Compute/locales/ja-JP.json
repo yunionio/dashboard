@@ -1768,5 +1768,7 @@
   "compute.open_image_market": "オープンソースミラー市場",
   "compute.image_market.desc": "システムスキーマ:{0}、ミラーソース:{1}",
   "compute.os_arch": "システムアーキテクチャ",
-  "compute.distribution": "リリース"
+  "compute.distribution": "リリース",
+  "compute.status_normal": "通常",
+  "compute.status_expired": "期限切れ"
 }

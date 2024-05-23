@@ -1768,5 +1768,7 @@
   "compute.open_image_market": "开源镜像市场",
   "compute.image_market.desc": "系统架构：{0}，镜像源：{1}",
   "compute.os_arch": "系统架构",
-  "compute.distribution": "发行版"
+  "compute.distribution": "发行版",
+  "compute.status_normal": "正常",
+  "compute.status_expired": "已到期"
 }
