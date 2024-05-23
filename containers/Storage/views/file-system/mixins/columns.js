@@ -88,7 +88,7 @@ export const getCapacityColumn = () => {
     sortable: true,
     formatter: ({ row }) => {
       return sizestr(row.capacity, 'G', 1024)
-    }
+    },
   }
 }
 
@@ -105,7 +105,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, resource: 'file_systems', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'file_system', columns: () => this.columns }),
       getStatusTableColumn({ statusModule: 'nas', vm: this }),
       getCapacityColumn(),
       getFileSystemTypeColumn(),
