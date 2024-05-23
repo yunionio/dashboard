@@ -13,7 +13,7 @@
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 // import { getNameFilter } from '@/utils/common/tableFilter'
-import { getNameDescriptionTableColumn, getStatusTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'CertificateListForWebAppSidepage',
@@ -48,7 +48,28 @@ export default {
             )
           },
         }),
-        getStatusTableColumn({ statusModule: 'common' }),
+        {
+          field: 'status',
+          title: this.$t('compute.text_268'),
+          slots: {
+            default: ({ row }) => {
+              const { expire_time } = row
+              if (expire_time) {
+                const time = new Date(expire_time).getTime() - new Date('2024-03-27 08:00:00')
+                return time > 0 ? [<status specifyStatus={{ class: 'status-success', text: this.$t('compute.status_normal') }} />] : [<status specifyStatus={{ class: 'status-danger', text: this.$t('compute.status_expired') }} />]
+              }
+              return '-'
+            },
+          },
+          formatter: ({ row }) => {
+            const { expire_time } = row
+            if (expire_time) {
+              const time = new Date(expire_time).getTime() - new Date('2024-03-27 08:00:00')
+              return time > 0 ? this.$t('compute.status_normal') : this.$t('compute.status_expired')
+            }
+            return '-'
+          },
+        },
         getCopyWithContentTableColumn({
           field: 'subject_name',
           title: this.$t('network.certificate_domain'),
