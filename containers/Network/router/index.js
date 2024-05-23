@@ -470,7 +470,7 @@ export default {
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.waf')) return true
               if (!(store.getters.isDomainMode || store.getters.isAdminMode)) return true
-              return !hasSetupKey(['aws', 'azure', 'aliyun'])
+              return !hasSetupKey(['aws', 'azure', 'aliyun', 'qcloud'])
             },
           },
           component: Layout,

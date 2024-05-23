@@ -864,7 +864,7 @@
   "network.waf.cloudId": "@:dictionary.external_id",
   "network.waf.rule": "规则",
   "network.waf.resource": "关联资源",
-  "network.waf.type": "WAF类型",
+  "network.waf.type": "类型",
   "network.waf.resource_type": "资源类型",
   "network.waf.resource_id": "资源ID",
   "network.waf.resource_name": "资源名称",
@@ -1130,5 +1130,12 @@
   "network.expire_time": "过期时间",
   "network.time": "时间",
   "network.backup.auto": "自动",
-  "network.backup.hand": "手动"
+  "network.backup.hand": "手动",
+  "network.domain_info": "域名信息",
+  "network.protocol_port": "协议端口",
+  "network.upstream_scheme": "HTTPS回源方式",
+  "network.upstream_port": "HTTPS回源端口",
+  "network.source_ips": "源站地址",
+  "network.waf.type.SaaS": "SaaS型",
+  "network.waf.type.Loadbalancer": "负载均衡型"
 }
