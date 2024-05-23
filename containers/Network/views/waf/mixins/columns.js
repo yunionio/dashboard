@@ -29,6 +29,28 @@ export default {
       {
         field: 'type',
         title: i18n.t('network.waf.type'),
+        slots: {
+          default: ({ row }) => {
+            const ret = []
+            const type = this.$getI18n(`network.waf.type.${row.type}`, row.type)
+            ret.push(<div>{type}</div>)
+            if (row.brand === 'Qcloud') {
+              ret.push(<list-body-cell-wrap hide-field copy field="cname" row={row}>
+                <span class='text-weak'>{row.cname}</span>
+              </list-body-cell-wrap>)
+            }
+            return ret
+          },
+        },
+        formatter: ({ row }) => {
+          const ret = []
+          const type = this.$getI18n(`network.waf.type.${row.type}`, row.type)
+          ret.push(type)
+          if (row.brand === 'Qcloud') {
+            ret.push(row.cname)
+          }
+          return ret.join(',')
+        },
       },
       getBrandTableColumn(),
       getAccountTableColumn(),

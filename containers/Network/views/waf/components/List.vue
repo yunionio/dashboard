@@ -103,19 +103,19 @@ export default {
           },
         },
       ],
-      exportDataOptions: {
+    }
+  },
+  computed: {
+    exportDataOptions () {
+      return {
         items: [
           { label: 'ID', key: 'id' },
-          { label: this.$t('cloudenv.text_95'), key: 'name' },
-          { label: this.$t('network.waf.type'), key: 'type' },
-          { label: this.$t('table.title.brand'), key: 'brand' },
-          { label: this.$t('res.cloudaccount'), key: 'account' },
-          { label: this.$t('network.waf.manager'), key: 'manager' },
-          { label: this.$t('res.region'), key: 'region' },
-          { label: this.$t('table.title.user_tag'), key: 'user_tags' },
+          ...this.columns,
         ],
-      },
-    }
+        downloadType: 'local',
+        title: this.$t('dictionary.waf_instance'),
+      }
+    },
   },
   created () {
     this.list.fetchData()

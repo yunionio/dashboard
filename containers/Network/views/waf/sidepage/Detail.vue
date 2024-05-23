@@ -3,6 +3,7 @@
     :data="data"
     :onManager="onManager"
     :base-info="baseInfo"
+    :extra-info="extraInfo"
     status-module="waf" />
 </template>
 
@@ -39,8 +40,21 @@ export default {
         getUserTagColumn({ onManager: this.onManager, resource: 'waf_instance', columns: () => this.columns, tipName: this.$t('network.waf') }),
         getExtTagColumn({ onManager: this.onManager, resource: 'waf_instance', columns: () => this.columns, tipName: this.$t('network.waf') }),
         {
-          title: i18n.t('network.waf.type'),
           field: 'type',
+          title: i18n.t('network.waf.type'),
+          slots: {
+            default: ({ row }) => {
+              const ret = []
+              const type = this.$getI18n(`network.waf.type.${row.type}`, row.type)
+              ret.push(<div>{type}</div>)
+              if (row.brand === 'Qcloud') {
+                ret.push(<list-body-cell-wrap hide-field copy field="cname" row={row}>
+                  <span class='text-weak'>{row.cname}</span>
+                </list-body-cell-wrap>)
+              }
+              return ret
+            },
+          },
         },
         {
           field: 'action',
@@ -74,6 +88,61 @@ export default {
               </list-body-cell-wrap>
             },
           },
+        },
+      ],
+      extraInfo: [
+        {
+          title: this.$t('network.domain_info'),
+          items: [
+            {
+              field: 'port',
+              title: this.$t('network.protocol_port'),
+              slots: {
+                default: ({ row }) => {
+                  const ret = []
+                  if (row.http_ports && row.http_ports.length) {
+                    ret.push(<div class="mb-2"><a-tag color='blue'>HTTP: { row.http_ports.join('、') }</a-tag></div>)
+                  }
+                  if (row.https_ports && row.https_ports.length) {
+                    ret.push(<div><a-tag color='blue'>HTTPS: { row.https_ports.join('、') }</a-tag></div>)
+                  }
+                  return ret.length ? ret : '-'
+                },
+              },
+            },
+            {
+              field: 'upstream_scheme',
+              title: this.$t('network.upstream_scheme'),
+              formatter: ({ row }) => {
+                return row.upstream_scheme || '-'
+              },
+            },
+            {
+              field: 'upstream_port',
+              title: this.$t('network.upstream_port'),
+              formatter: ({ row }) => {
+                return row.upstream_port || '-'
+              },
+            },
+            {
+              field: 'source_ips',
+              title: this.$t('network.source_ips'),
+              slots: {
+                default: ({ row }) => {
+                  if (row.source_ips && row.source_ips.length) {
+                    const ret = []
+                    row.source_ips.map(item => {
+                      ret.push(<list-body-cell-wrap hide-field copy field="ip" row={{ ip: item }}>
+                        <span>{item}</span>
+                      </list-body-cell-wrap>)
+                    })
+                    return ret
+                  }
+                  return '-'
+                },
+              },
+            },
+          ],
         },
       ],
     }
