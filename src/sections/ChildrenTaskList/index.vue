@@ -3,8 +3,7 @@
     <page-list
       :list="list"
       :columns="columns"
-      :export-data-options="exportDataOptions"
-      default-search-key="task_name" />
+      :export-data-options="exportDataOptions" />
   </div>
 </template>
 
@@ -12,6 +11,7 @@
 import * as R from 'ramda'
 import { getTimeRangeFilter } from '@/utils/common/tableFilter'
 import {
+  getNameDescriptionTableColumn,
   getCopyWithContentTableColumn,
   getTimeTableColumn,
   getProjectTableColumn,
@@ -31,6 +31,9 @@ export default {
   },
   data () {
     const filterOptions = {
+      id: {
+        label: this.$t('table.title.id'),
+      },
       task_name: {
         label: this.$t('table.title.task_name'),
       },
@@ -48,12 +51,19 @@ export default {
         },
       }),
       columns: [
-        {
+        getNameDescriptionTableColumn({
           title: '#ID',
           field: 'id',
-          minWidth: 160,
-          showOverflow: 'ellipsis',
-        },
+          showDesc: false,
+          edit: false,
+          onManager: this.onManager,
+          hideField: true,
+          slotCallback: row => {
+            return (
+              <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{row.id}</side-page-trigger>
+            )
+          },
+        }),
         getStatusTableColumn({
           minWidth: 80,
           statusModule: 'parentTaskStatus',
@@ -124,7 +134,7 @@ export default {
   },
   methods: {
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'TaskSidePage', {
+      this.sidePageTriggerHandle(this, 'ChildrenTaskSidePage', {
         id: row.id,
         resource: 'cloud-phone-tasks',
         getParams: this.getParam,
