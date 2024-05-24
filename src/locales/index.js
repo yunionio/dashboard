@@ -42,4 +42,16 @@ const i18n = new VueI18n({
   // silentTranslationWarn: true,
 })
 
+i18n.getI18n = (key, defaultValue) => {
+  const keys = R.is(Array, key) ? key : [key]
+  let value = defaultValue === undefined ? keys[0] : defaultValue
+  for (let i = 0; i < keys.length; i++) {
+    if (i18n.te(keys[i])) {
+      value = i18n.t(keys[i])
+      return value
+    }
+  }
+  return value
+}
+
 export default i18n
