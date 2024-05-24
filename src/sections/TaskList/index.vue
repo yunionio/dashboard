@@ -3,8 +3,7 @@
     <page-list
       :list="list"
       :columns="columns"
-      :export-data-options="exportDataOptions"
-      default-search-key="task_name" />
+      :export-data-options="exportDataOptions" />
   </div>
 </template>
 
@@ -35,6 +34,9 @@ export default {
   },
   data () {
     const filterOptions = {
+      id: {
+        label: this.$t('table.title.id'),
+      },
       task_name: {
         label: this.$t('table.title.task_name'),
       },

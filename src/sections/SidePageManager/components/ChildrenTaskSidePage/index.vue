@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="$t('table.title.task')"
+    :title="$t('table.title.children_task')"
     icon="res-phone"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -34,7 +34,7 @@ import ChildrenTaskList from '@/sections/ChildrenTaskList'
 import Detail from './Detail'
 
 export default {
-  name: 'TaskSidePage',
+  name: 'ChildrenTaskSidePage',
   components: {
     Detail,
     ChildrenTaskList,
