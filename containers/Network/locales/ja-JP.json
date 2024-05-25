@@ -224,6 +224,7 @@
   "network.text_219": "解く",
   "network.text_220": "帯域幅を変更する",
   "network.text_221": "ティッカー",
+  "network.server_type.hostlocal.text": "Host Local Network",
   "network.text_222": "最初にマシンをバインドしてください",
   "network.text_223": "{0}帯域幅は変更できません",
   "network.text_224": "@:dictionary.public_env eipのみが帯域幅の変更をサポートしています",

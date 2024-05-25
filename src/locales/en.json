@@ -2259,7 +2259,8 @@
     "guest": "Server",
     "pxe": "PXE",
     "ipmi": "IPMI",
-    "eip": "EIP"
+    "eip": "EIP",
+    "hostlocal": "Host Local"
   },
   "passwordInputTypes": {
     "random": "Randomly Generated",

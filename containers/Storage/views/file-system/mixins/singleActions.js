@@ -33,7 +33,7 @@ export default {
                   name: this.$t('dictionary.filesystem'),
                   onManager: this.onManager,
                   resource: 'file_systems',
-                  ignoreCandidateDomains: true
+                  ignoreCandidateDomains: true,
                 })
               },
               meta: () => {
@@ -48,7 +48,7 @@ export default {
                 return {
                   validate: true,
                 }
-              }
+              },
             },
             disableDeleteAction(this, {
               name: this.$t('dictionary.nas'),
