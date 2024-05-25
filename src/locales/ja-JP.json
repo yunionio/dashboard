@@ -2273,7 +2273,8 @@
     "guest": "仮想マシン",
     "pxe": "ティッカー",
     "ipmi": "ティッカー",
-    "eip": "ティッカー"
+    "eip": "ティッカー",
+    "hostlocal": "Host Local"
   },
   "passwordInputTypes": {
     "random": "ランダムに生成",

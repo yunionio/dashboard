@@ -225,6 +225,7 @@
   "network.text_219": "Dissociate",
   "network.text_220": "Modify Bandwidth",
   "network.text_221": "EIP",
+  "network.server_type.hostlocal.text": "Host Local Network",
   "network.text_222": "Please associate a machine first",
   "network.text_223": "{0} Cannot modify bandwidth",
   "network.text_224": "Only @:dictionary.public_env EIP supports changing bandwidth",

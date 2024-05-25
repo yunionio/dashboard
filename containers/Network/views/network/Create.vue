@@ -470,6 +470,7 @@ export default {
         { label: 'PXE', key: 'pxe' },
         { label: 'IPMI', key: 'ipmi' },
         { label: this.$t('network.text_221'), key: 'eip' },
+        { label: this.$t('network.server_type.hostlocal.text'), key: 'hostlocal' },
       ],
       allocPolicyoptions: [
         { label: this.$t('network.text_600'), key: 'none' },

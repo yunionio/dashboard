@@ -53,7 +53,7 @@ export default {
             {
               field: 'protocol',
               title: this.$t('storage.filesystem.protocol'),
-            }
+            },
           ],
         },
         {

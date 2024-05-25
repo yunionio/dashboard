@@ -2273,7 +2273,8 @@
     "guest": "虚拟机",
     "pxe": "PXE",
     "ipmi": "IPMI",
-    "eip": "弹性公网IP"
+    "eip": "弹性公网IP",
+    "hostlocal": "宿主机本地"
   },
   "passwordInputTypes": {
     "random": "随机生成",

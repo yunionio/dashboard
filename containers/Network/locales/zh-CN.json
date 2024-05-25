@@ -224,6 +224,7 @@
   "network.text_219": "解绑",
   "network.text_220": "修改带宽",
   "network.text_221": "弹性公网IP",
+  "network.server_type.hostlocal.text": "宿主机本地网络",
   "network.text_222": "请您先绑定机器",
   "network.text_223": "{0}无法修改带宽",
   "network.text_224": "仅@:dictionary.public_enveip支持修改带宽",
