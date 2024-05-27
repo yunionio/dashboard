@@ -22,7 +22,9 @@
       :data="detailData"
       :getParams="getParams"
       :on-manager="onManager"
-      :columns="columns" />
+      :columns="columns"
+      resource="cloud-phone-tasks"
+      :isRoot="false" />
   </base-side-page>
 </template>
 
@@ -30,7 +32,7 @@
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import ChildrenTaskList from '@/sections/ChildrenTaskList'
+import ChildrenTaskList from '@/sections/TaskList'
 import Detail from './Detail'
 
 export default {
@@ -53,6 +55,7 @@ export default {
     getParams () {
       if (this.params.windowData.currentTab === 'children-task-list') {
         return {
+          is_root: false,
           parent_id: this.data.id,
         }
       }

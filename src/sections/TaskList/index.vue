@@ -12,10 +12,11 @@ import * as R from 'ramda'
 import { getTimeRangeFilter } from '@/utils/common/tableFilter'
 import {
   getNameDescriptionTableColumn,
-  getCopyWithContentTableColumn,
   getTimeTableColumn,
   getProjectTableColumn,
   getStatusTableColumn,
+  getObjTypeTableColumn,
+  getTaskNameTableColumn,
 } from '@/utils/common/tableColumn'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -24,8 +25,15 @@ export default {
   name: 'TaskList',
   mixins: [WindowsMixin],
   props: {
+    resource: {
+      type: String,
+    },
     objId: {
       type: String,
+    },
+    isRoot: {
+      type: Boolean,
+      default: false,
     },
     listId: {
       type: String,
@@ -45,7 +53,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.listId,
-        resource: 'cloud-phone-tasks',
+        resource: this.resource,
         apiVersion: 'v1',
         getParams: this.getParam,
         filterOptions,
@@ -84,20 +92,8 @@ export default {
           field: 'stage',
           statusModule: 'parentTaskStage',
         }),
-        getCopyWithContentTableColumn({
-          title: this.$t('table.title.obj_type'),
-          field: 'obj_name',
-          formatter ({ row }) {
-            return row.obj_name
-          },
-        }),
-        getCopyWithContentTableColumn({
-          title: this.$t('table.title.task_name'),
-          field: 'task_name',
-          formatter ({ row }) {
-            return row.task_name
-          },
-        }),
+        getObjTypeTableColumn(),
+        getTaskNameTableColumn(),
         getProjectTableColumn({
           title: this.$t('table.title.owner_project'),
         }),
@@ -139,7 +135,7 @@ export default {
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'TaskSidePage', {
         id: row.id,
-        resource: 'cloud-phone-tasks',
+        resource: this.resource,
         getParams: this.getParam,
       }, {
         list: this.list,
@@ -147,7 +143,7 @@ export default {
     },
     getParam () {
       const param = {
-        is_root: true,
+        is_root: this.isRoot,
       }
       const filter = []
       if (this.objId) {
