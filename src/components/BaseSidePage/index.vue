@@ -8,7 +8,7 @@
     :wrapStyle="wrapStyle"
     :mask="false"
     :closable="false">
-    <div class="side-page-header">
+    <div class="side-page-header" id="side-page-header">
       <!-- close button -->
       <div class="side-page-close">
         <div class="side-page-close-inner" @click="cancel">
