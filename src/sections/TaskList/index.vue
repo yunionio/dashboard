@@ -9,14 +9,16 @@
 
 <script>
 import * as R from 'ramda'
+import moment from 'moment'
 import { getTimeRangeFilter } from '@/utils/common/tableFilter'
 import {
   getNameDescriptionTableColumn,
   getTimeTableColumn,
   getProjectTableColumn,
   getStatusTableColumn,
-  getObjTypeTableColumn,
+  getObjnameTableColumn,
   getTaskNameTableColumn,
+  getSubtaskCountTableColumn,
 } from '@/utils/common/tableColumn'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -33,6 +35,9 @@ export default {
     },
     listId: {
       type: String,
+    },
+    root: {
+      type: Boolean,
     },
     getParams: [Object, Function],
   },
@@ -63,6 +68,7 @@ export default {
           field: 'id',
           showDesc: false,
           edit: false,
+          minWidth: 200,
           onManager: this.onManager,
           hideField: true,
           slotCallback: row => {
@@ -88,15 +94,28 @@ export default {
           field: 'stage',
           statusModule: 'parentTaskStage',
         }),
-        getObjTypeTableColumn(),
+        getObjnameTableColumn(),
         getTaskNameTableColumn(),
+        getSubtaskCountTableColumn(),
         getProjectTableColumn({
           title: this.$t('table.title.owner_project'),
         }),
         getTimeTableColumn({
-          field: 'created_at',
-          title: this.$t('table.title.create_time'),
+          field: 'start_at',
+          title: this.$t('task.stages.title.start_at'),
         }),
+        getTimeTableColumn({
+          field: 'end_at',
+          title: this.$t('task.stages.title.complete_at'),
+        }),
+        {
+          field: 'duration',
+          title: this.$t('task.stages.title.duration'),
+          width: 80,
+          formatter ({ row }) {
+            return (moment(row.end_at) - moment(row.start_at)) / 1000
+          },
+        },
       ],
     }
   },
@@ -138,10 +157,15 @@ export default {
       })
     },
     getParam () {
-      const param = {}
+      const param = {
+        details: true,
+      }
       const filter = []
       if (this.objId) {
         param.obj_id = this.objId
+      }
+      if (this.root) {
+        param.is_root = true
       }
       param.filter = filter
       const params = R.is(Function, this.getParams) ? this.getParams() : this.getParams || {}

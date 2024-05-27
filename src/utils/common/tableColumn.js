@@ -1304,22 +1304,49 @@ export const getCloudEnvTableColumn = ({ field = 'cloud_env', title = i18n.t('co
   }
 }
 
-export const getObjTypeTableColumn = () => {
-  return getCopyWithContentTableColumn({
-    title: i18n.t('table.title.obj_type'),
-    field: 'obj_type',
-    formatter ({ row }) {
-      return row.obj_type
+export const getObjnameTableColumn = () => {
+  return {
+    title: i18n.t('table.title.res_name'),
+    field: 'object',
+    formatter: ({ row }) => {
+      let objName = ''
+      if (row.object) {
+        objName = row.object
+      } else if (row.obj_id) {
+        objName = row.obj_id
+      }
+      if (objName) {
+        if (objName === '[--MULTI_OBJECTS--]') {
+          return i18n.t('task.stages.title.multi_objects')
+        } else {
+          return objName
+        }
+      }
+      return '-'
     },
-  })
+  }
 }
 
 export const getTaskNameTableColumn = () => {
-  return getCopyWithContentTableColumn({
+  return {
     title: i18n.t('table.title.task_name'),
     field: 'task_name',
-    formatter ({ row }) {
+    formatter: ({ row }) => {
       return row.task_name
     },
-  })
+  }
+}
+
+export const getSubtaskCountTableColumn = () => {
+  return {
+    title: i18n.t('table.title.children_task'),
+    field: 'sub_task_count',
+    formatter ({ row }) {
+      if (row.sub_task_count > 0) {
+        return row.sub_task_count + '(' + row.succ_sub_task_cnt + '/' + row.fail_sub_task_cnt + ')'
+      } else {
+        return '-'
+      }
+    },
+  }
 }

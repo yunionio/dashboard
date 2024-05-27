@@ -6003,6 +6003,14 @@
       "Wallis": "ウォリス"
     }
   },
+  "task.title.parameters": "タスクパラメータ",
+  "task.title.stages": "ミッションフェーズ",
+  "task.title.failed_reason": "失敗メッセージ",
+  "task.stages.title.multi_objects": "バッチタスク",
+  "task.stages.title.name": "芸名",
+  "task.stages.title.start_at": "開始時間",
+  "task.stages.title.complete_at": "完了時間",
+  "task.stages.title.duration": "かかった時間（秒）",
   "common.workflow.shut_down": "メインマシンの電源がオフになっています",
   "common.workflow.restart": "ホストの再起動",
   "common.workflow.order_set": "リソース注文アプリケーション",

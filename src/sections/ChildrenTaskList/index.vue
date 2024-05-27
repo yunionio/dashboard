@@ -9,6 +9,7 @@
 
 <script>
 import * as R from 'ramda'
+import moment from 'moment'
 import { getTimeRangeFilter } from '@/utils/common/tableFilter'
 import {
   getNameDescriptionTableColumn,
@@ -99,9 +100,21 @@ export default {
           title: this.$t('table.title.owner_project'),
         }),
         getTimeTableColumn({
-          field: 'created_at',
-          title: this.$t('table.title.create_time'),
+          field: 'start_at',
+          title: this.$t('task.stages.title.start_at'),
         }),
+        getTimeTableColumn({
+          field: 'end_at',
+          title: this.$t('task.stages.title.complete_at'),
+        }),
+        {
+          field: 'duration',
+          title: this.$t('task.stages.title.duration'),
+          width: 80,
+          formatter ({ row }) {
+            return return (moment(row.end_at) - moment(row.start_at)) / 1000
+          },
+        },
       ],
     }
   },

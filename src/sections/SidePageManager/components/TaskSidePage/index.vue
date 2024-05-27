@@ -45,21 +45,30 @@ export default {
   mixins: [SidePageMixin, WindowsMixin],
   data () {
     return {
-      detailTabs: [
-        { label: this.$t('scope.cloudphone.detail'), key: 'detail' },
-        { label: this.$t('table.title.children_task'), key: 'children-task-list' },
-      ],
     }
   },
   computed: {
+    detailTabs () {
+      const detailTabs = [
+        { label: this.$t('scope.cloudphone.detail'), key: 'detail' },
+      ]
+      console.log('TaskSidePage', this)
+      if (this.data && this.data.data && this.data.data.sub_task_count > 0) {
+        detailTabs.push({ label: this.$t('table.title.children_task'), key: 'children-task-list' })
+      }
+      return detailTabs
+    },
     getParams () {
       if (this.params.windowData.currentTab === 'children-task-list') {
         return {
           is_root: false,
           parent_id: this.data.id,
         }
+      } else {
+        return {
+          is_root: true,
+        }
       }
-      return null
     },
     listId () {
       switch (this.params.windowData.currentTab) {
