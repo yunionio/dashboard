@@ -31,10 +31,6 @@ export default {
     objId: {
       type: String,
     },
-    isRoot: {
-      type: Boolean,
-      default: false,
-    },
     listId: {
       type: String,
     },
@@ -142,9 +138,7 @@ export default {
       })
     },
     getParam () {
-      const param = {
-        is_root: this.isRoot,
-      }
+      const param = {}
       const filter = []
       if (this.objId) {
         param.obj_id = this.objId
