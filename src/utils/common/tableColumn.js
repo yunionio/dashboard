@@ -1303,3 +1303,23 @@ export const getCloudEnvTableColumn = ({ field = 'cloud_env', title = i18n.t('co
     },
   }
 }
+
+export const getObjTypeTableColumn = () => {
+  return getCopyWithContentTableColumn({
+    title: i18n.t('table.title.obj_type'),
+    field: 'obj_type',
+    formatter ({ row }) {
+      return row.obj_type
+    },
+  })
+}
+
+export const getTaskNameTableColumn = () => {
+  return getCopyWithContentTableColumn({
+    title: i18n.t('table.title.task_name'),
+    field: 'task_name',
+    formatter ({ row }) {
+      return row.task_name
+    },
+  })
+}

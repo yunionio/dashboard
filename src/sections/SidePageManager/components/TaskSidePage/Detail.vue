@@ -12,8 +12,9 @@
 <script>
 import WindowsMixin from '@/mixins/windows'
 import {
-  getCopyWithContentTableColumn,
   getStatusTableColumn,
+  getObjTypeTableColumn,
+  getTaskNameTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -45,20 +46,8 @@ export default {
           field: 'stage',
           statusModule: 'parentTaskStage',
         }),
-        getCopyWithContentTableColumn({
-          title: this.$t('table.title.res_name'),
-          field: 'obj_name',
-          formatter ({ row }) {
-            return row.obj_name
-          },
-        }),
-        getCopyWithContentTableColumn({
-          title: this.$t('table.title.task_name'),
-          field: 'task_name',
-          formatter ({ row }) {
-            return row.task_name
-          },
-        }),
+        getObjTypeTableColumn(),
+        getTaskNameTableColumn(),
       ],
     }
   },
