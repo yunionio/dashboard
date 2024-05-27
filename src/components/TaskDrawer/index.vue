@@ -1,7 +1,6 @@
 <template>
   <task-list
     resource="cloud-phone-tasks"
-    :isRoot="true"
     :obj-id="resId"
     :list-id="id"
     :getParams="getParams" />
