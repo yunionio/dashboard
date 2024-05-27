@@ -44,10 +44,16 @@ function getChartTooltipPosition (point, dom, size, inSidePage) {
   let canShowTopLine = 0
   let top = -echartY
   if (inSidePage) {
-    const sidePageContentDom = document.getElementById('side-page-container')
-    if (sidePageContentDom) {
-      canShowTopLine = sidePageContentDom.getBoundingClientRect().y
+    const sidePageHeaderDom = document.getElementById('side-page-header')
+    if (sidePageHeaderDom) {
+      canShowTopLine = sidePageHeaderDom.getBoundingClientRect().bottom
       top = -(echartY - canShowTopLine)
+    } else {
+      const sidePageContentDom = document.getElementById('side-page-container')
+      if (sidePageContentDom) {
+        canShowTopLine = sidePageContentDom.getBoundingClientRect().y
+        top = -(echartY - canShowTopLine)
+      }
     }
   }
   return {
