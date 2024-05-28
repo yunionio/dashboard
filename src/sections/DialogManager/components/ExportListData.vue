@@ -381,6 +381,14 @@ export default {
       const colWidthList = columns.map(item => {
         return { wch: item.width ? Math.ceil(Number(item.width) / 8) : 20 }
       })
+      // 未添加 needExportFormat 视为忽略单元格格式处理
+      const allColumns = [...columns, ...expandColumns]
+      const ignoreColsIndex = []
+      allColumns.map((item, index) => {
+        if (!item.needExportFormat) {
+          ignoreColsIndex.push(index)
+        }
+      })
       const filename = `${this.params.options.exportTitle || this.params.title}.xlsx`
       const wb = XLSX.utils.book_new()
       const allLength = dataList.length
@@ -394,7 +402,7 @@ export default {
         if (idx !== sheetIdx) {
           // 保存旧表
           const ws_name = 'sheet' + sheetIdx
-          const ws = addDataToSheetAfterFormat({ data: [titles, ...sheetDatas] })
+          const ws = addDataToSheetAfterFormat({ data: [titles, ...sheetDatas], ignoreColsIndex })
           if (hasExpandColumn) {
             const sheetMerges = this.getSheetMerges({ titles, sheetOriginDatas, columns, expandColumns })
             ws['!merges'] = sheetMerges
@@ -440,7 +448,7 @@ export default {
           sheetDatas.push(row)
           sheetOriginDatas.push(dataList[i - 1])
           const ws_name = 'sheet' + sheetIdx
-          const ws = addDataToSheetAfterFormat({ data: [titles, ...sheetDatas] })
+          const ws = addDataToSheetAfterFormat({ data: [titles, ...sheetDatas], ignoreColsIndex })
           if (hasExpandColumn) {
             const sheetMerges = this.getSheetMerges({ titles, sheetOriginDatas, columns, expandColumns })
             ws['!merges'] = sheetMerges
