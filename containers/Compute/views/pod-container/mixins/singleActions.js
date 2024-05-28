@@ -2,18 +2,15 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: this.$t('table.action.modify'),
-        action: (obj) => {
-          this.createDialog('ContainerUpdateDialog', {
-            data: [obj],
-            columns: this.columns,
-            onManager: this.onManager,
-          })
+        label: this.$t('compute.repo.terminal'),
+        action: async (obj) => {
+          const connectRes = await this.fetchConnectUrl(obj)
+          this.openWebConsole(connectRes)
         },
         meta: (obj) => {
           const ret = { validate: true }
-          if (obj.status !== 'exited') {
-            ret.tooltip = this.$t('compute.repo.helper.modify')
+          if (this.data.status !== 'running') {
+            ret.tooltip = this.$t('compute.repo.helper.terminal')
             ret.validate = false
           }
           return ret
@@ -53,6 +50,24 @@ export default {
                 return {
                   validate: obj.status === 'running',
                 }
+              },
+            },
+            {
+              label: this.$t('table.action.modify'),
+              action: (obj) => {
+                this.createDialog('ContainerUpdateDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+              meta: (obj) => {
+                const ret = { validate: true }
+                if (obj.status !== 'exited') {
+                  ret.tooltip = this.$t('compute.repo.helper.modify')
+                  ret.validate = false
+                }
+                return ret
               },
             },
           ]

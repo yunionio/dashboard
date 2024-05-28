@@ -4,38 +4,23 @@ import i18n from '@/locales'
 
 const getSingleActions = function () {
   return [
+    // 同步状态
     {
-      label: i18n.t('compute.repo.terminal'),
+      label: i18n.t('compute.perform_sync_status'),
       action: (obj) => {
-        this.handleOpenSidepage(obj, 'terminal')
-      },
-      meta: (obj) => {
-        const ret = { validate: true }
-        if (obj.status !== 'running') {
-          ret.validate = false
-          ret.tooltip = i18n.t('compute.repo.helper.terminal')
-          return ret
-        }
-        return ret
+        this.onManager('batchPerformAction', {
+          steadyStatus: ['running', 'ready'],
+          id: [obj.id],
+          managerArgs: {
+            action: 'syncstatus',
+          },
+        })
       },
     },
     {
       label: i18n.t('compute.text_352'),
       actions: (obj) => {
         return [
-          // 同步状态
-          {
-            label: i18n.t('compute.perform_sync_status'),
-            action: (obj) => {
-              this.onManager('batchPerformAction', {
-                steadyStatus: ['running', 'ready'],
-                id: [obj.id],
-                managerArgs: {
-                  action: 'syncstatus',
-                },
-              })
-            },
-          },
           // 开机
           {
             label: i18n.t('compute.text_272'),
