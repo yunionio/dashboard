@@ -11,7 +11,7 @@
 import DiskList from '@Compute/views/disk/components/List'
 
 export default {
-  name: 'DiskListForVminstanceSidepage',
+  name: 'DiskList',
   components: {
     DiskList,
   },
