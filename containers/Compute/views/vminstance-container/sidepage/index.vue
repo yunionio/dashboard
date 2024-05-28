@@ -43,8 +43,8 @@ import ContainerList from '@Compute/views/pod-container/components/List'
 import Detail from './Detail'
 import SecgroupList from './Secgroup'
 // import Terminal from './Terminal'
-import NetworkListForVmContainerInstanceSidePage from './Network'
-import DiskListForVmContainerInstanceSidePage from './DiskList'
+import NetworkList from './Network'
+import DiskList from './DiskList'
 import Monitor from './Monitor'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -55,8 +55,8 @@ export default {
     Actions,
     Detail,
     ContainerList,
-    NetworkListForVmContainerInstanceSidePage,
-    DiskListForVmContainerInstanceSidePage,
+    NetworkList,
+    DiskList,
     SecgroupList,
     Monitor,
     GpuList,
@@ -68,8 +68,8 @@ export default {
       { label: this.$t('compute.text_238'), key: 'detail' },
       { label: this.$t('compute.container', []), key: 'container-list' },
       { label: this.$t('compute.text_105'), key: 'secgroup-list' },
-      { label: this.$t('compute.text_104'), key: 'network-list-for-vm-container-instance-sidepage' },
-      { label: this.$t('compute.text_376'), key: 'disk-list-for-vm-container-instance-sidepage' },
+      { label: this.$t('compute.text_104'), key: 'network-list' },
+      { label: this.$t('compute.text_376'), key: 'disk-list' },
       { label: this.$t('compute.text_113'), key: 'gpu-list' },
       { label: this.$t('compute.text_608'), key: 'monitor' },
       // { label: this.$t('compute.repo.terminal'), key: 'terminal' },
@@ -88,7 +88,7 @@ export default {
   },
   computed: {
     componentParams () {
-      const tabs = ['secgroup-list', 'disk-list-for-vm-container-instance-sidepage']
+      const tabs = ['secgroup-list', 'disk-list']
 
       if (tabs.includes(this.params.windowData.currentTab)) {
         return {
@@ -102,7 +102,7 @@ export default {
           id: this.detailData.host_id,
         }
       }
-      if (this.params.windowData.currentTab === 'network-list-for-vm-container-instance-sidepage') {
+      if (this.params.windowData.currentTab === 'network-list') {
         return {
           associate_id: this.detailData.id,
           detail: true,
@@ -157,9 +157,9 @@ export default {
     },
     listId () {
       switch (this.params.windowData.currentTab) {
-        case 'network-list-for-vm-container-instance-sidepage':
+        case 'network-list':
           return 'NetworkListForVmContainerInstanceSidePage'
-        case 'disk-list-for-vm-container-instance-sidepage':
+        case 'disk-list':
           return 'DiskLiskForVmContainerInstanceSidePage'
         case 'secgroup-list':
           return 'SecgroupLiskForVmContainerInstanceSidePage'
