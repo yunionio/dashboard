@@ -80,7 +80,12 @@ export default {
   data () {
     return {
       loading: false,
-      userParams: {},
+      userParams: {
+        limit: 20,
+        is_system_account: false,
+        have_contacts: false,
+        scope: this.$store.getters.scope,
+      },
       form: {
         fc: this.$form.createForm(this),
       },
@@ -161,9 +166,6 @@ export default {
     this.generateContactArrOpts()
     this.fetchReceivers()
     // this.isDomainMode && this.fetchUsers()
-    if (!this.isAdminMode) {
-      this.handleDomainChange(this.userInfo.projectDomainId)
-    }
   },
   methods: {
     async handleConfirm () {
