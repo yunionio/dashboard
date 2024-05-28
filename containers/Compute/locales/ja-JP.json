@@ -1765,7 +1765,7 @@
   "compute.associated_instances": "関連付けられたインスタンス",
   "compute.lvm_shared_storage.validate_tooltip": "LVM ディスク ホストはこの操作をサポートしていません",
   "compute.prepaid_delete_server.alert": "一部のプラットフォームでの年単位および月単位のホストの削除は、削除前に従量課金制に変換されます。",
-  "compute.open_image_market": "オープンソースミラー市場",
+  "compute.open_image_market": "コミュニティミラーリング",
   "compute.image_market.desc": "システムスキーマ:{0}、ミラーソース:{1}",
   "compute.os_arch": "システムアーキテクチャ",
   "compute.distribution": "リリース",
