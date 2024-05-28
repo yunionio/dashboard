@@ -42,7 +42,7 @@ import GpuList from '@Compute/views/gpu/components/List'
 import ContainerList from '@Compute/views/pod-container/components/List'
 import Detail from './Detail'
 import SecgroupList from './Secgroup'
-import Terminal from './Terminal'
+// import Terminal from './Terminal'
 import NetworkListForVmContainerInstanceSidePage from './Network'
 import DiskListForVmContainerInstanceSidePage from './DiskList'
 import Monitor from './Monitor'
@@ -60,7 +60,7 @@ export default {
     SecgroupList,
     Monitor,
     GpuList,
-    Terminal,
+    // Terminal,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -72,7 +72,7 @@ export default {
       { label: this.$t('compute.text_376'), key: 'disk-list-for-vm-container-instance-sidepage' },
       { label: this.$t('compute.text_113'), key: 'gpu-list' },
       { label: this.$t('compute.text_608'), key: 'monitor' },
-      { label: this.$t('compute.repo.terminal'), key: 'terminal' },
+      // { label: this.$t('compute.repo.terminal'), key: 'terminal' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
     ]
     if (this.$store.getters.isProjectMode) {
