@@ -103,9 +103,6 @@ export default {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.$router.push({ name: 'ImageImport' })
         },
-        meta: () => ({
-          buttonType: 'primary',
-        }),
         hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_store'),
       }
 
@@ -116,9 +113,6 @@ export default {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.$router.push({ name: 'ImageImportCe' })
         },
-        meta: () => ({
-          buttonType: 'primary',
-        }),
         hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_store'),
       }
       const ImageUpload = {
@@ -131,6 +125,9 @@ export default {
             refresh: this.refresh,
           })
         },
+        meta: () => ({
+          buttonType: 'primary',
+        }),
         hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_upload'),
       }
       const batchActions = [
@@ -388,11 +385,11 @@ export default {
           },
         },
       ]
+      if (this.isAdminMode) {
+        batchActions.unshift(ImageImportCe)
+      }
       if (this.isAdminMode && !isCE()) {
         batchActions.unshift(ImageImport)
-      }
-      if (this.isAdminMode && isCE()) {
-        batchActions.unshift(ImageImportCe)
       }
       batchActions.unshift(ImageUpload)
       return batchActions

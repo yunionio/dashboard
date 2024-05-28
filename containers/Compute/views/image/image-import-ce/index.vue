@@ -37,8 +37,7 @@ imagesLogoFiles.keys().forEach(key => {
   imagesLogos.push(name)
 })
 
-const fileUrl = 'http://www.cloudpods.org/openimages.yaml'
-// const fileUrl = 'http://127.0.0.1:8080/openimages.yaml'
+const fileUrl = 'https://www.cloudpods.org/openimages.yaml'
 const attributes = ['distribution', 'os_name', 'os_arch', 'os_version', 'build', 'source', 'url']
 
 export default {
