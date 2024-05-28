@@ -636,6 +636,41 @@ export function getDistinctFieldFilter ({
   return ret
 }
 
+export function getDistinctFieldsFilter ({
+  service = '',
+  label = '',
+  field = [],
+  multiple = true,
+  type = 'field',
+  allowNull = false,
+  mapper,
+  filter = false,
+  formatter,
+  getParams,
+} = {}) {
+  const ret = {
+    label: label || i18n.t(`${service}.title.${field}`),
+    dropdown: true,
+    filter,
+    multiple: multiple,
+    distinctField: {
+      type,
+      key: field,
+    },
+    distinctFieldId: 'distinct-fields',
+  }
+  if (mapper) {
+    ret.mapper = mapper
+  } else if (!allowNull) {
+    ret.mapper = (list) => {
+      return list.filter(item => item.key && item.label)
+    }
+  }
+  if (formatter) ret.formatter = formatter
+  if (getParams) ret.getParams = getParams
+  return ret
+}
+
 /**
  * 自定义列表distinct
  * @param {*} param0

@@ -940,7 +940,7 @@ class CreateList {
       } else {
         response = await this.onManager('get', {
           managerArgs: {
-            id: 'distinct-field',
+            id: item.distinctFieldId || 'distinct-field',
             params: {
               ...params,
             },
@@ -948,7 +948,7 @@ class CreateList {
         })
       }
       let options = []
-      const values = response.data[item.distinctField.key] || []
+      const values = response.data[item.distinctFieldId === 'distinct-fields' ? item.distinctField.type + 's' : item.distinctField.key] || []
       if (
         item.distinctField.afterFetch &&
         R.is(Function, item.distinctField.afterFetch)
@@ -957,7 +957,16 @@ class CreateList {
           scope: this.templateContext.$store.getters.scope,
         })
       } else {
-        options = values.map(item => ({ label: item, key: item }))
+        if (item.distinctFieldId === 'distinct-fields') {
+          options = values.map(l => {
+            return {
+              label: l[item.distinctField.key[0]],
+              key: l[item.distinctField.key[0]],
+            }
+          })
+        } else {
+          options = values.map(item => ({ label: item, key: item }))
+        }
       }
 
       if (item.mapper) {
