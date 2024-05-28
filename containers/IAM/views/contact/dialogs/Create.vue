@@ -162,7 +162,7 @@ export default {
     this.fetchReceivers()
     // this.isDomainMode && this.fetchUsers()
     if (!this.isAdminMode) {
-      this.handleDomainChange(this.userInfo.domain?.id)
+      this.handleDomainChange(this.userInfo.projectDomainId)
     }
   },
   methods: {
