@@ -172,9 +172,9 @@ export const addDataToSheetAfterFormat = ({ data: originData = [], titleRowLen =
     data.map((row, index) => {
       if (index > titleRowLen - 1) {
         row.map((col, index2) => {
-          const fData = matchDataFormat(col)
-          const cellSign = getCellSign(index2, index)
           if (!ignoreColsIndex.includes(index2)) {
+            const fData = matchDataFormat(col)
+            const cellSign = getCellSign(index2, index)
             if (fData.isBill) {
               formatObj[cellSign] = formatObj[cellSign] || {}
               formatObj[cellSign].t = 'n' // 数字格式
@@ -193,7 +193,6 @@ export const addDataToSheetAfterFormat = ({ data: originData = [], titleRowLen =
               data[index][index2] = fData.value
             }
             if (fData.isDate) {
-              console.log('isDate')
               formatObj[cellSign] = formatObj[cellSign] || {}
               formatObj[cellSign].t = 'd'
               formatObj[cellSign].z = 'yyyy-mm-dd'
