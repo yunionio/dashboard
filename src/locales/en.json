@@ -2805,7 +2805,10 @@
     "predictions": "Bill prediction",
     "instance_tag": "Resource tag",
     "external_id": "External ID",
-    "custom_data": "Custom Data"
+    "custom_data": "Custom Data",
+    "ext_resource_type": "Resource type management",
+    "month_report": "Month report",
+    "daily_report": "Daily report"
   },
   "res": {
     "role": "Role",

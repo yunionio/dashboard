@@ -2825,7 +2825,10 @@
     "predictions": "業務タグ",
     "instance_tag": "リソースタグ",
     "external_id": "クラウド上のID",
-    "custom_data": "カスタムデータ"
+    "custom_data": "カスタムデータ",
+    "ext_resource_type": "リソースタイプ管理",
+    "month_report": "月報",
+    "daily_report": "日報"
   },
   "res": {
     "role": "@:dictionary.role",
