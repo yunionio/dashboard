@@ -462,9 +462,7 @@ export default {
   },
   methods: {
     openWebConsole (obj, data, protocol) {
-      // const href = `${this.$appConfig.webConsolePath}${data.access_url.replace(/^.*?web-console\//, '')}`
-      const href = data.access_url
-      window.open(href)
+      this.$openWebConsole(data)
     },
   },
 }
