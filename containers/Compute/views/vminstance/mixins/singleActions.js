@@ -27,7 +27,7 @@ export default {
   methods: {
     openWebConsole (obj, data, protocol) {
       let href = ''
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.VUE_APP_WEBCONSOLE_DEBUG === 'true') {
         href = `${this.$appConfig.webConsolePath}${data.access_url.replace(/^.*?web-console\//, '')}`
       } else {
         href = data.access_url
