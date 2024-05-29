@@ -2825,7 +2825,10 @@
     "predictions": "费用预测",
     "instance_tag": "资源标签",
     "external_id": "云上ID",
-    "custom_data": "自定义数据"
+    "custom_data": "自定义数据",
+    "ext_resource_type": "资源类型管理",
+    "month_report": "月报",
+    "daily_report": "日报"
   },
   "res": {
     "role": "@:dictionary.role",
@@ -3186,7 +3189,8 @@
     "yunionconf": "配置",
     "cloudevent": "云上日志",
     "suggestion": "优化建议",
-    "report": "报表"
+    "report": "报表",
+    "extdb": "外部数据"
   },
   "scope.text_1": "实例列表",
   "scope.text_2": "用户信息",
