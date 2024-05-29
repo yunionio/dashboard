@@ -6002,5 +6002,6 @@
   "common.download_url": "下载地址",
   "common.select_import_image": "请选择要导入的镜像",
   "common.image_url_tip": "镜像来源于各系统官网，Cloudpods未做任何修改。若需其他版本，可通过各系统官方平台导入使用，各官方链接参考：",
+  "common.image_url_tip2": "镜像来源于各系统官网，未做任何修改。若需其他版本，可通过各系统官方平台导入使用。",
   "common.normal_open_image": "常用开源镜像"
 }
