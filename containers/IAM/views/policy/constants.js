@@ -62,6 +62,9 @@ export const SERVICES_MAP = {
   report: {
     i18n: 'service.report',
   },
+  extdb: {
+    i18n: 'service.extdb',
+  },
   ...extraServices,
 }
 // 定义资源的映射
@@ -761,6 +764,18 @@ export const RESOURCES_MAP = {
   },
   predictions: {
     i18n: 'dictionary.predictions',
+  },
+  ext_resources: {
+    i18n: 'dictionary.custom_data',
+  },
+  ext_resource_types: {
+    i18n: 'dictionary.ext_resource_type',
+  },
+  month_reports: {
+    i18n: 'dictionary.month_report',
+  },
+  daily_reports: {
+    i18n: 'dictionary.daily_report',
   },
   ...extraResources,
 }
