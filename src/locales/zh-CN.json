@@ -6003,6 +6003,14 @@
       "Wallis": "沃利斯"
     }
   },
+  "task.title.parameters": "任务参数",
+  "task.title.stages": "任务阶段",
+  "task.title.failed_reason": "失败信息",
+  "task.stages.title.multi_objects": "批量任务",
+  "task.stages.title.name": "阶段名称",
+  "task.stages.title.start_at": "开始时间",
+  "task.stages.title.complete_at": "完成时间",
+  "task.stages.title.duration": "耗时(秒)",
   "common.workflow.shut_down": "主机关机",
   "common.workflow.restart": "主机重启",
   "common.workflow.order_set": "资源订单申请",

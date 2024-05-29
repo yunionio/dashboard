@@ -5985,6 +5985,14 @@
       "Wallis": "Wallis"
     }
   },
+  "task.title.parameters": "Task Parameters",
+  "task.title.stages": "Task Stages",
+  "task.title.failed_reason": "Failed Cause",
+  "task.stages.title.multi_objects": "Batch Task",
+  "task.stages.title.name": "Stage",
+  "task.stages.title.start_at": "Start",
+  "task.stages.title.complete_at": "Complete",
+  "task.stages.title.duration": "Duration(Secs)",
   "common.workflow.shut_down": "Host shuts down",
   "common.workflow.restart": "Host restart",
   "common.workflow.order_set": "Resource Order Application",
