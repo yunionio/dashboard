@@ -15,6 +15,7 @@ import 'codemirror/theme/material.css'
 import 'codemirror/mode/yaml/yaml.js'
 
 import { uuid } from '@/utils/utils'
+import { openWebConsole } from '@/utils/webconsole'
 import '@/utils/polyfill'
 import '@/config/appBuryPoint'
 
@@ -44,6 +45,7 @@ Vue.prototype.$appConfig = {
   isPrivate: process.env.VUE_APP_IS_PRIVATE,
   webConsolePath: process.env.VUE_APP_WEB_CONSOLE_PATH,
 }
+Vue.prototype.$openWebConsole = openWebConsole
 
 VXETable.use(VXETablePluginAntd)
 
