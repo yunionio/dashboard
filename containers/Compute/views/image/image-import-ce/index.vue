@@ -1,7 +1,10 @@
 <template>
   <div>
-    <a-alert type="warning">
+    <a-alert type="warning" v-if="isCE">
       <span slot="message">{{ $t('common.image_url_tip') }} <a href="https://www.cloudpods.org/docs/guides/onpremise/glance/common-image-url" target="_blank">{{ $t('common.normal_open_image') }}</a></span>
+    </a-alert>
+    <a-alert type="warning" v-else>
+      <span slot="message">{{ $t('common.image_url_tip2') }}</span>
     </a-alert>
     <page-header :title="$t('compute.open_image_market')" />
     <a-form-model class="mt-3 mb-2" v-bind="layout">
@@ -29,6 +32,7 @@
 import { mapGetters } from 'vuex'
 import axios from 'axios'
 import WindowsMixin from '@/mixins/windows'
+import { isCE } from '@/utils/utils'
 const path = require('path')
 const imagesLogoFiles = require.context('@/assets/images/os-images', false, /.svg$/)
 const imagesLogos = []
@@ -85,6 +89,7 @@ export default {
                 },
               })
               this.$message.success(this.$t('compute.text_423'))
+              this.$router.push({ name: 'Image' })
             } catch (error) {
               throw error
             }
@@ -122,6 +127,9 @@ export default {
         }
       })
       return ret
+    },
+    isce () {
+      return isCE()
     },
   },
   watch: {
