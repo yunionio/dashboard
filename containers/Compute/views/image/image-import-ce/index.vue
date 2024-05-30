@@ -209,6 +209,9 @@ export default {
           ret.data.title = `${item.distribution} ${item.os_version}`
           ret.data.desc = this.$t('compute.image_market.desc', [item.os_arch, item.source, item.build || '-'])
           ret.data.name = `${item.distribution}-${item.os_name}-${item.os_version}-${item.os_arch}`
+          if (item.build) {
+            ret.data.name += `-${item.build}`
+          }
           const os_name = this.getOsName(item)
           ret.data.os = require(`@/assets/images/os-images/${this.imagesLogos.includes(os_name) ? os_name : 'unknow'}.svg`) || ''
           return ret
