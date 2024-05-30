@@ -1774,5 +1774,6 @@
   "compute.os_arch": "系统架构",
   "compute.distribution": "发行版",
   "compute.status_normal": "正常",
-  "compute.status_expired": "已到期"
+  "compute.status_expired": "已到期",
+  "compute.force_delete.extra": "强制删除（仅删除数据库记录，不会真实删除，非必要无需勾选）"
 }
