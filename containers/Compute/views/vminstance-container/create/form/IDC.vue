@@ -153,7 +153,9 @@
           </a-form-item>
           <a-form-item :label="$t('compute.repo.port_mapping')">
             <labels
+              ref="labelRef"
               :decorators="decorators.portMapping"
+              :disableConf="portMappingDisableConf"
               :title="$t('compute.repo.port_mapping')"
               :keyLabel="$t('compute.repo.container_port')"
               :valueLabel="$t('compute.repo.host_port')"
@@ -485,6 +487,15 @@ export default {
     enableEncryption () {
       return this.$appConfig.isPrivate
     },
+    isMultiServer () {
+      return this.form.fd.count > 1
+    },
+    portMappingDisableConf () {
+      return {
+        tooltip: this.isMultiServer ? this.$t('compute.container.port_mapping.tooltip') : '',
+        disabled: this.isMultiServer,
+      }
+    },
   },
   watch: {
     'form.fi.imageMsg': {
@@ -560,6 +571,13 @@ export default {
           }
         })
       },
+    },
+    isMultiServer (val) {
+      if (val && this.$refs.labelRef) {
+        this.$refs.labelRef.reset()
+        this.form.fd.containerPorts = {}
+        this.form.fd.hostPorts = {}
+      }
     },
   },
   destroyed () {
