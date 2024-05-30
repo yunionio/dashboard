@@ -45,10 +45,19 @@ export default {
       try {
         if (state && state.id) {
           const stateValue = state.value ? { ...state.value } : {}
+          const values = { ...payload }
+          if (values.setupKeys) {
+            const allFeatures = [...(c.items || []).map(item => item.key), ...(c.groups || [])]
+            const userDefinedKeys = {}
+            allFeatures.map(key => {
+              userDefinedKeys[key] = values.setupKeys.includes(key)
+            })
+            values.userDefinedKeys = userDefinedKeys
+          }
           const params = {
             value: {
               ...stateValue,
-              ...payload,
+              ...values,
             },
           }
           const { data } = await http.put(`/v1/parameters/${state.id}`, params)
