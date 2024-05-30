@@ -12,7 +12,8 @@
             slot="cover" />
         </div>
         <div class="text-wrap position-relative">
-          <a-card-meta :title="getData(listItem.data, 'title')">
+          <a-card-meta>
+            <div class="card-title" :title="getData(listItem.data, 'title')" slot="title">{{ getData(listItem.data, 'title') }}</div>
             <template slot="description" v-if="cardFields['content']">
               <div class="mutiline-text-truncate mb-2" style="font-size: 12px" v-for="value in getData(listItem.data, 'content')" :key="value.field">
                 <span>{{value.title}}</span>：<slot-dom :dom="getDom(value, listItem.data)" />
@@ -91,6 +92,10 @@ export default {
       left: 24px;
       right: 24px;
     }
+  }
+  .card-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   ::v-deep {
     .ant-card-body {
