@@ -17,8 +17,10 @@
       <a-button v-if="firstCanDelete || labelList.length > 1" shape="circle" icon="minus" size="small" @click="del(item)" class="mt-2 ml-2" />
     </div>
     <div class="d-flex align-items-center">
-      <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
-      <a-button type="link" @click="add">{{$t('compute.repo.add', [ title ])}}</a-button>
+      <a-tooltip :title="disableConf?.tooltip">
+        <a-button type="primary" :disabled="disableConf?.disabled" shape="circle" icon="plus" size="small" @click="add" />
+        <a-button type="link" :disabled="disableConf?.disabled" @click="add">{{$t('compute.repo.add', [ title ])}}</a-button>
+      </a-tooltip>
     </div>
   </div>
 </template>
@@ -66,6 +68,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    disableConf: {
+      type: Object,
+      default: () => { },
+    },
   },
   data () {
     return {
@@ -87,6 +93,9 @@ export default {
     del (item) {
       const index = this.labelList.findIndex(val => val.key === item.key)
       this.labelList.splice(index, 1)
+    },
+    reset () {
+      this.labelList = []
     },
     getBindProps (key) {
       const { options } = this.keyBaseSelectProps
