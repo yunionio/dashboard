@@ -16,7 +16,8 @@
         </a-col>
         <a-col :span="16">
           <div class="text-wrap position-relative">
-            <a-card-meta :title="getData(item.data, 'title')">
+            <a-card-meta>
+              <div slot="title" class="card-title" :title="getData(item.data, 'title')">{{ getData(item.data, 'title') }}</div>
               <template slot="description" v-if="cardFields['content']">
                 <div class="mutiline-text-truncate mb-2" style="font-size: 12px" v-for="value in getData(item.data, 'content')" :key="value.field">
                   <span>{{value.title}}</span>：<slot-dom :dom="getDom(value, item.data)" />
@@ -93,6 +94,10 @@ export default {
       left: 24px;
       right: 24px;
     }
+  }
+  .card-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   ::v-deep {
     .ant-card-head {
