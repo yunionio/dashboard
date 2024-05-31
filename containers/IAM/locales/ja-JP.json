@@ -1067,5 +1067,6 @@
   "iam.add_notify_time": "通知時間を増やす",
   "iam.notify_time_not_repeat": "通知時間に重複があります",
   "iam.set_project_admin": "設定@:dictionary.project管理者",
-  "iam.no_resource_policy": "リソース権限がありません"
+  "iam.no_resource_policy": "リソース権限がありません",
+  "iam.joined_user": "参加ユーザー"
 }
