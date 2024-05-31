@@ -12,7 +12,6 @@ import {
   getStatusTableColumn,
   getTimeTableColumn,
   getBrandTableColumn,
-  getRegionTableColumn,
 } from '@/utils/common/tableColumn'
 import { getBrandFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
@@ -52,22 +51,21 @@ export default {
         //   showOverflow: 'title',
         // },
         {
-          field: 'storagecache',
+          field: 'path',
           title: this.$t('compute.text_654'),
           minWidth: 150,
           showOverflow: 'title',
           slots: {
             default: ({ row }) => {
-              return row.storagecache
+              return row.path || '-'
             },
           },
         },
         getStatusTableColumn({ statusModule: 'imageCache' }),
         getTimeTableColumn({ title: this.$t('compute.text_691'), field: 'updated_at' }),
-        getBrandTableColumn({ field: 'host.brand' }),
-        getRegionTableColumn({ field: 'host.region' }),
+        getBrandTableColumn({ field: 'brand' }),
         {
-          field: 'host.account',
+          field: 'account',
           title: this.$t('compute.text_269'),
           width: 100,
         },
