@@ -19,30 +19,30 @@
 import { mapGetters } from 'vuex'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { Manager } from '@/utils/manager'
-import store from '@/store'
+// import { Manager } from '@/utils/manager'
+// import store from '@/store'
 import { getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter, getDistinctFieldFilter } from '@/utils/common/tableFilter'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
-const genUserProjectData = (data) => {
-  const userList = []
-  const groupList = []
-  data.forEach((item) => {
-    const { groups } = item
-    groups.forEach((group, index) => {
-      const { name } = item
-      const { id: groupId, name: groupName } = group
-      if (groupId && groupName) {
-        groupList.push(groupName)
-      } else {
-        userList.push(name)
-      }
-    })
-  })
-  return { groupList, userList }
-}
+// const genUserProjectData = (data) => {
+//   const userList = []
+//   const groupList = []
+//   data.forEach((item) => {
+//     const { groups } = item
+//     groups.forEach((group, index) => {
+//       const { name } = item
+//       const { id: groupId, name: groupName } = group
+//       if (groupId && groupName) {
+//         groupList.push(groupName)
+//       } else {
+//         userList.push(name)
+//       }
+//     })
+//   })
+//   return { groupList, userList }
+// }
 
 export default {
   name: 'ProjectList',
@@ -194,60 +194,60 @@ export default {
         items: [
           { label: 'ID', key: 'id' },
           ...this.columns,
-          {
-            key: 'users',
-            label: this.$t('iam.joined_user'),
-          },
-          {
-            key: 'groups',
-            label: this.$t('common_495'),
-          },
+          // {
+          //   key: 'users',
+          //   label: this.$t('iam.joined_user'),
+          // },
+          // {
+          //   key: 'groups',
+          //   label: this.$t('common_495'),
+          // },
         ],
-        async callback (data, selectedExportKeys) {
-          if (!selectedExportKeys.includes('users') && !selectedExportKeys.includes('groups')) {
-            return data
-          }
+        // async callback (data, selectedExportKeys) {
+        //   if (!selectedExportKeys.includes('users') && !selectedExportKeys.includes('groups')) {
+        //     return data
+        //   }
 
-          const manager = new Manager('role_assignments', 'v1')
-          const allPromise = data.map(async item => {
-            let groupStr = ''
-            let userStr = ''
+        //   const manager = new Manager('role_assignments', 'v1')
+        //   const allPromise = data.map(async item => {
+        //     let groupStr = ''
+        //     let userStr = ''
 
-            try {
-              const { data: { data } } = await manager.objectRpc({
-                methodname: 'GetProjectRole',
-                objId: item.id,
-                params: {
-                  scope: store.getters.scope,
-                  show_fail_reason: true,
-                  effective: true,
-                  resource: 'project',
-                  group_by: 'user',
-                },
-              })
-              const { userList, groupList } = genUserProjectData(data)
-              groupStr = groupList.join(',')
-              userStr = userList.join(',')
-            } catch (error) {
-              console.log(`project: ${item.id}, user info fetch error!!!`)
-              throw error
-            }
-            return Promise.resolve({ id: item.id, groups: groupStr, users: userStr })
-          })
+        //     try {
+        //       const { data: { data } } = await manager.objectRpc({
+        //         methodname: 'GetProjectRole',
+        //         objId: item.id,
+        //         params: {
+        //           scope: store.getters.scope,
+        //           show_fail_reason: true,
+        //           effective: true,
+        //           resource: 'project',
+        //           group_by: 'user',
+        //         },
+        //       })
+        //       const { userList, groupList } = genUserProjectData(data)
+        //       groupStr = groupList.join(',')
+        //       userStr = userList.join(',')
+        //     } catch (error) {
+        //       console.log(`project: ${item.id}, user info fetch error!!!`)
+        //       throw error
+        //     }
+        //     return Promise.resolve({ id: item.id, groups: groupStr, users: userStr })
+        //   })
 
-          const results = Promise.all(allPromise).then(values => {
-            const realData = data.map(item => {
-              const curObj = values.find(v => v.id === item.id)
-              return {
-                ...item,
-                groups: curObj.groups,
-                users: curObj.users,
-              }
-            })
-            return realData
-          })
-          return results
-        },
+        //   const results = Promise.all(allPromise).then(values => {
+        //     const realData = data.map(item => {
+        //       const curObj = values.find(v => v.id === item.id)
+        //       return {
+        //         ...item,
+        //         groups: curObj.groups,
+        //         users: curObj.users,
+        //       }
+        //     })
+        //     return realData
+        //   })
+        //   return results
+        // },
       }
 
       return ret
