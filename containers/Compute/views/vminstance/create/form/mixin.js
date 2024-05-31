@@ -31,7 +31,7 @@ import { getInitialValue } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
-import { uuid, deleteInvalid } from '@/utils/utils'
+import { deleteInvalid } from '@/utils/utils'
 import Tag from '../components/Tag'
 import SystemDisk from '../components/SystemDisk'
 import Servertemplate from '../components/Servertemplate'
@@ -739,11 +739,13 @@ export default {
         port,
         privileged_accounts,
         accounts,
+        reason,
       } = this.form.fd
       return {
         bastion_host_id,
         nodes,
         port,
+        description: reason,
         accounts: [privileged_accounts].concat(accounts),
       }
     },
