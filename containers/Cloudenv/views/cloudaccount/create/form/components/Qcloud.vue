@@ -7,13 +7,6 @@
       <a-form-item :label="$t('common.description')">
         <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
       </a-form-item>
-      <a-form-item label="App ID">
-        <a-input v-decorator="decorators.app_id" :placeholder="$t('cloudenv.text_260')" />
-        <div slot="extra">
-          {{$t('cloudenv.text_236', [keySecretField.text, keySecretField.label.k])}}
-          <help-link :href="docs[provider.toLowerCase()]">{{$t('cloudenv.text_237')}}</help-link>
-        </div>
-      </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
       </a-form-item>
@@ -77,14 +70,6 @@ export default {
           },
         ],
         description: ['description'],
-        app_id: [
-          'app_id',
-          {
-            rules: [
-              { required: true, message: this.$t('cloudenv.text_260') },
-            ],
-          },
-        ],
         username: [
           keySecretField.k,
           {
