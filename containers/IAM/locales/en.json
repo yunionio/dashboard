@@ -1068,5 +1068,6 @@
   "iam.add_notify_time": "Increase notification time",
   "iam.notify_time_not_repeat": "Notification time is duplicated",
   "iam.set_project_admin": "Set @:dictionary.project admin",
-  "iam.no_resource_policy": "No resource permissions"
+  "iam.no_resource_policy": "No resource permissions",
+  "iam.joined_user": "Joined user"
 }
