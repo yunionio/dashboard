@@ -17,10 +17,30 @@
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getEnabledFilter, getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
+import { Manager } from '@/utils/manager'
+import store from '@/store'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
+
+const genProjectGroupData = (data) => {
+  const projectList = []
+  const groupList = []
+  data.forEach((item) => {
+    const { groups } = item
+    groups.forEach((group, index) => {
+      const { name } = item
+      const { id: groupId, name: groupName } = group
+      if (groupId && groupName) {
+        groupList.push(groupName)
+      } else {
+        projectList.push(name)
+      }
+    })
+  })
+  return { groupList, projectList }
+}
 
 export default {
   name: 'UserList',
@@ -80,17 +100,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('system.text_101'), key: 'name' },
-          { label: this.$t('scope.text_245'), key: 'displayname' },
-          { label: this.$t('dictionary.domain'), key: 'project_domain' },
-          { label: this.$t('system.text_163'), key: 'enabled' },
-          { label: this.$t('system.text_475'), key: 'allow_web_console' },
-          { label: this.$t('common.createdAt'), key: 'created_at' },
-        ],
-      },
       userTotal: 0,
     }
   },
@@ -186,6 +195,72 @@ export default {
         actions.shift()
       }
       return actions
+    },
+    exportDataOptions () {
+      const ret = {
+        downloadType: 'local',
+        title: this.$t('dictionary.user'),
+        items: [
+          { key: 'id', label: 'ID' },
+          ...this.columns,
+          {
+            key: 'projects',
+            label: this.$t('common_494'),
+          },
+          {
+            key: 'groups',
+            label: this.$t('common_495'),
+          },
+        ],
+        async callback (data, selectedExportKeys) {
+          if (!selectedExportKeys.includes('groups') && !selectedExportKeys.includes('groups')) {
+            return data
+          }
+
+          const manager = new Manager('role_assignments', 'v1')
+          const allPromise = data.map(async item => {
+            let projectStr = ''
+            let groupStr = ''
+
+            try {
+              const { data: { data } } = await manager.objectRpc({
+                methodname: 'GetProjectRole',
+                objId: item.id,
+                params: {
+                  scope: store.getters.scope,
+                  show_fail_reason: true,
+                  effective: true,
+                  resource: 'user',
+                  group_by: 'project',
+                },
+              })
+              console.log(data)
+              const { projectList, groupList } = genProjectGroupData(data)
+              projectStr = projectList.join(',')
+              groupStr = groupList.join(',')
+            } catch (error) {
+              console.log(`user: ${item.id}, project info fetch error!!!`)
+              throw error
+            }
+            return Promise.resolve({ id: item.id, projects: projectStr, groups: groupStr })
+          })
+
+          const results = Promise.all(allPromise).then(values => {
+            console.log('values', values)
+            const realData = data.map(item => {
+              const curObj = values.find(v => v.id === item.id)
+              return {
+                ...item,
+                projects: curObj.projects,
+                groups: curObj.groups,
+              }
+            })
+            return realData
+          })
+          return results
+        },
+      }
+      return ret
     },
   },
   created () {
