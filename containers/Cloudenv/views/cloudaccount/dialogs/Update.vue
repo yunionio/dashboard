@@ -7,12 +7,6 @@
       <a-form
         :form="form.fc"
          v-bind="formItemLayout">
-        <a-form-item label="AppID" v-if="isQcloud">
-          <a-input v-decorator="decorators.app_id" :placeholder="$t('cloudenv.text_260')" />
-          <div slot="extra">
-            <help-link :href="doc">{{$t('cloudenv.text_299')}}</help-link>
-          </div>
-        </a-form-item>
         <upload-json-file :fc="form.fc" v-if="isGoogle">
           <a-form-item :label="field.label.k">
             <a-textarea :autosize="{ minRows: 3, maxRows: 7 }" v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
@@ -167,14 +161,6 @@ export default {
         ],
         balanceKey: [
           'balanceKey',
-        ],
-        app_id: [
-          'app_id',
-          {
-            rules: [
-              { required: true, message: this.$t('cloudenv.text_307') },
-            ],
-          },
         ],
         endpoint_type: [
           'endpoint_type',
