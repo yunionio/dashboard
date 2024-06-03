@@ -228,6 +228,9 @@ export const getEnabledTableColumn = ({ field = 'enabled', title = i18n.t('table
     statusModule: 'enabled',
     minWidth,
     hidden,
+    formatter: ({ row }) => {
+      return row[field] ? i18n.t('status.enabled.true') : i18n.t('status.enabled.false')
+    },
   })
 }
 
