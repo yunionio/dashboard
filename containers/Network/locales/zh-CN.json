@@ -1138,5 +1138,7 @@
   "network.upstream_port": "HTTPS回源端口",
   "network.source_ips": "源站地址",
   "network.waf.type.SaaS": "SaaS型",
-  "network.waf.type.Loadbalancer": "负载均衡型"
+  "network.waf.type.Loadbalancer": "负载均衡型",
+  "network.waf.source_site_address": "回源地址",
+  "network.cert_id": "证书ID"
 }
