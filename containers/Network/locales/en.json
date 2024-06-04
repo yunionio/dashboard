@@ -1129,5 +1129,7 @@
   "network.expire_time": "Expiration time",
   "network.time": "time",
   "network.backup.auto": "Automatic",
-  "network.backup.hand": "Manual"
+  "network.backup.hand": "Manual",
+  "network.waf.source_site_address": "Source site address",
+  "network.cert_id": "Certificate ID"
 }
