@@ -63,7 +63,8 @@
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
             :cancel-token="usersCancelToken"
             :destroyedCallBack="userDestroyed"
-            :select-props="{ mode: 'multiple' }">
+            :select-props="{ mode: 'multiple' }"
+            @update:items="userSelectChange">
             <template v-slot:optionTemplate="{ options }">
               <a-select-option v-for="item in options" :key="item.id" :value="item.id" :disabled="item.__disabled">
                 <div class="d-flex">
@@ -96,6 +97,12 @@
               </a-select-option>
             </template>
           </base-select>
+        </a-form-item>
+        <a-form-item v-if="type === 'user' && isSelectedUserDisabled" :label="$t('iam.enabled_user')" v-bind="formItemLayout" :extra="$t('iam.some_user_can_enabled')">
+          <a-switch
+            :checkedChildren="$t('common_292')"
+            :unCheckedChildren="$t('common_293')"
+            v-decorator="decorators.enabled" />
         </a-form-item>
       </a-form>
     </div>
@@ -163,13 +170,19 @@ export default {
             ],
           },
         ],
+        enabled: [
+          'enabled',
+          {
+            initialValue: false,
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
-          span: 22,
+          span: 20,
         },
         labelCol: {
-          span: 2,
+          span: 4,
         },
       },
       type: 'user',
@@ -183,6 +196,7 @@ export default {
           value: 'group',
         },
       ],
+      selectedUsers: [],
     }
   },
   computed: {
@@ -230,6 +244,9 @@ export default {
       return {
         scope: this.scope,
       }
+    },
+    isSelectedUserDisabled () {
+      return this.selectedUsers.some(item => !item.enabled)
     },
   },
   // watch: {
@@ -279,6 +296,9 @@ export default {
     },
     domainChange (val) {
       this.domain_id = val
+    },
+    userSelectChange (val) {
+      this.selectedUsers = val
     },
   },
 }

@@ -397,6 +397,18 @@ export default {
     },
     syncItem (value) {
       if (value) {
+        // 多选模式
+        if (_.get(this.selectProps, 'mode') === 'multiple') {
+          const items = []
+          value.map(item => {
+            const syncValue = R.is(Object, item) ? this.resOpts[item.key] : this.resOpts[item]
+            if (R.is(Object, syncValue)) {
+              items.push(syncValue)
+            }
+          })
+          this.$emit('update:items', items)
+        }
+        // 单选模式
         const syncValue = R.is(Object, value) ? this.resOpts[value.key] : this.resOpts[value]
         if (R.is(Object, syncValue)) {
           this.currentItem = syncValue
