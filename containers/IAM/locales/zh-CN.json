@@ -1068,5 +1068,8 @@
   "iam.notify_time_not_repeat": "通知时间有重复",
   "iam.set_project_admin": "设置@:dictionary.project管理员",
   "iam.no_resource_policy": "无资源权限",
-  "iam.joined_user": "已加入用户"
+  "iam.joined_user": "已加入用户",
+  "iam.enabled_user": "同时启用用户",
+  "iam.some_user_can_enabled": "部分用户是禁用状态，是否同步启用",
+  "iam.user_can_enabled": "用户是禁用状态，是否同步启用"
 }

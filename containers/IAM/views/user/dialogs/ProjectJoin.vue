@@ -47,6 +47,12 @@
             </template>
           </base-select>
         </a-form-item>
+        <a-form-item v-if="isUserDisabled" :label="$t('iam.enabled_user')" v-bind="formItemLayout" :extra="$t('iam.user_can_enabled')">
+          <a-switch
+            :checkedChildren="$t('common_292')"
+            :unCheckedChildren="$t('common_293')"
+            v-decorator="decorators.enabled" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -101,13 +107,19 @@ export default {
             ],
           },
         ],
+        enabled: [
+          'enabled',
+          {
+            initialValue: false,
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 20,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
     }
@@ -140,6 +152,9 @@ export default {
         limit: 20,
       }
       return ret
+    },
+    isUserDisabled () {
+      return !this.params.data[0].enabled
     },
   },
   created () {

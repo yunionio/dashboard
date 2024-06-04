@@ -19,6 +19,12 @@
             </a-select-option>
           </a-select>
         </a-form-item>
+        <a-form-item v-if="isUserDisabled" :label="$t('iam.enabled_user')" v-bind="formItemLayout" :extra="$t('iam.user_can_enabled')">
+          <a-switch
+            :checkedChildren="$t('common_292')"
+            :unCheckedChildren="$t('common_293')"
+            v-decorator="decorators.enabled" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -53,16 +59,27 @@ export default {
             ],
           },
         ],
+        enabled: [
+          'enabled',
+          {
+            initialValue: false,
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
-          span: 22,
+          span: 20,
         },
         labelCol: {
-          span: 2,
+          span: 4,
         },
       },
     }
+  },
+  computed: {
+    isUserDisabled () {
+      return !this.params.data[0].enabled
+    },
   },
   created () {
     this.fetchGroups()
@@ -95,13 +112,15 @@ export default {
       const { refresh } = this.params
       try {
         const values = await this.form.fc.validateFields()
+        const data = {
+          gids: values.groups,
+          action: 'join',
+        }
+        if (values.enabled) data.enabled = true
         await new this.$Manager('users', 'v1').objectRpc({
           objId: this.params.resItem.id,
           methodname: 'DoJoinGroups',
-          params: {
-            gids: values.groups,
-            action: 'join',
-          },
+          params: data,
         })
         refresh()
         this.cancelDialog()
