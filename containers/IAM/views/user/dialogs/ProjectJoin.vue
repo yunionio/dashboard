@@ -175,6 +175,9 @@ export default {
         })
         this.cancelDialog()
         this.$bus.$emit('UserSidepageProjectsListRefresh')
+        if (values.enabled) {
+          this.$bus.$emit('RefreshUser', this.params.data[0].id)
+        }
       } catch (error) {
         this.loading = false
         throw error

@@ -102,7 +102,7 @@
           <a-switch
             :checkedChildren="$t('common_292')"
             :unCheckedChildren="$t('common_293')"
-            v-decorator="decorators.enabled" />
+            v-decorator="decorators.enable_all_users" />
         </a-form-item>
       </a-form>
     </div>
@@ -170,8 +170,8 @@ export default {
             ],
           },
         ],
-        enabled: [
-          'enabled',
+        enable_all_users: [
+          'enable_all_users',
           {
             initialValue: false,
           },
