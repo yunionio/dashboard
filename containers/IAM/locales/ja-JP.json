@@ -1068,5 +1068,8 @@
   "iam.notify_time_not_repeat": "通知時間に重複があります",
   "iam.set_project_admin": "設定@:dictionary.project管理者",
   "iam.no_resource_policy": "リソース権限がありません",
-  "iam.joined_user": "参加ユーザー"
+  "iam.joined_user": "参加ユーザー",
+  "iam.enabled_user": "同時にユーザーを有効にする",
+  "iam.some_user_can_enabled": "一部のユーザーは無効状態であり、同期可能かどうか",
+  "iam.user_can_enabled": "ユーザーは無効状態、同期は有効か"
 }
