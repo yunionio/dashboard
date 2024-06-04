@@ -1130,5 +1130,7 @@
   "network.expire_time": "時間",
   "network.time": "時間",
   "network.backup.auto": "自動",
-  "network.backup.hand": "手動"
+  "network.backup.hand": "手動",
+  "network.waf.source_site_address": "バックソースアドレス",
+  "network.cert_id": "証明書ID"
 }
