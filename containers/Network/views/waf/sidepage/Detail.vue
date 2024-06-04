@@ -142,6 +142,38 @@ export default {
                 },
               },
             },
+            {
+              field: 'cc_list',
+              title: this.$t('network.waf.source_site_address'),
+              slots: {
+                default: ({ row }) => {
+                  if (row.cc_list && row.cc_list.length) {
+                    const ret = []
+                    row.cc_list.map(item => {
+                      ret.push(<list-body-cell-wrap hide-field copy field="ip" row={{ ip: item }}>
+                        <span>{item}</span>
+                      </list-body-cell-wrap>)
+                    })
+                    return ret
+                  }
+                  return '-'
+                },
+              },
+            },
+            {
+              field: 'cert_name',
+              title: this.$t('network.text_317'),
+              formatter: ({ row }) => {
+                return row.cert_name || '-'
+              },
+            },
+            {
+              field: 'cert_id',
+              title: this.$t('network.cert_id'),
+              formatter: ({ row }) => {
+                return row.cert_id || '-'
+              },
+            },
           ],
         },
       ],
