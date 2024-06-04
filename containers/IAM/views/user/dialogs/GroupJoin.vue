@@ -122,6 +122,9 @@ export default {
           methodname: 'DoJoinGroups',
           params: data,
         })
+        if (values.enabled) {
+          this.$bus.$emit('RefreshUser', this.params.resItem.id)
+        }
         refresh()
         this.cancelDialog()
       } catch (error) {

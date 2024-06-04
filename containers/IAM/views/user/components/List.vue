@@ -206,6 +206,9 @@ export default {
   },
   created () {
     this.initSidePageTab('user-detail')
+    this.$bus.$on('RefreshUser', (id) => {
+      this.list.singleRefresh(id)
+    })
     this.list.fetchData()
   },
   methods: {
