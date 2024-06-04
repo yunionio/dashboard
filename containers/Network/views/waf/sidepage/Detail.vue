@@ -111,20 +111,6 @@ export default {
               },
             },
             {
-              field: 'upstream_scheme',
-              title: this.$t('network.upstream_scheme'),
-              formatter: ({ row }) => {
-                return row.upstream_scheme || '-'
-              },
-            },
-            {
-              field: 'upstream_port',
-              title: this.$t('network.upstream_port'),
-              formatter: ({ row }) => {
-                return row.upstream_port || '-'
-              },
-            },
-            {
               field: 'source_ips',
               title: this.$t('network.source_ips'),
               slots: {
@@ -140,6 +126,20 @@ export default {
                   }
                   return '-'
                 },
+              },
+            },
+            {
+              field: 'upstream_scheme',
+              title: this.$t('network.upstream_scheme'),
+              formatter: ({ row }) => {
+                return row.upstream_scheme || '-'
+              },
+            },
+            {
+              field: 'upstream_port',
+              title: this.$t('network.upstream_port'),
+              formatter: ({ row }) => {
+                return row.upstream_port || '-'
               },
             },
             {
