@@ -101,18 +101,6 @@ export default {
     this.list.fetchData()
   },
   methods: {
-    openWebConsole (data) {
-      this.$openWebConsole(data)
-    },
-    async fetchConnectUrl (obj) {
-      const { data } = await new this.$Manager('webconsole', 'v1').objectRpc({
-        methodname: 'DoContainerExec',
-        params: {
-          container_id: obj.id,
-        },
-      })
-      return Promise.resolve(data)
-    },
     handleOpenSidepage (row, tab) {
       this.sidePageTriggerHandle(this, 'VmPodContainerSidePage', {
         id: row.id,
