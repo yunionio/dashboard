@@ -114,6 +114,7 @@
             :eip-params="eipParams"
             :hypervisor="form.fd.hypervisor"
             :showBind="false"
+            :showNew="false"
             :cloud-env="type"
             :form="form"
             :formItemLayout="formItemLayout" />
