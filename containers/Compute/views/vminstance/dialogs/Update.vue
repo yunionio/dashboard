@@ -37,7 +37,7 @@
           <a-form-item :label="$t('compute.machine')">
             <machine :decorator="decorators.machine" :isArm="isArm" />
           </a-form-item>
-          <a-form-item label="USB键盘">
+          <a-form-item v-if="isKvm" :label="$t('compute.usb_kbd')">
             <a-switch v-decorator="decorators.disable_usb_kbd" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.daemon.tooltip')" v-if="canAdminUpdate">
@@ -206,15 +206,17 @@ export default {
             },
           })
         }
-        await this.params.onManager('batchPerformAction', {
-          id: ids,
-          managerArgs: {
-            action: 'set-qemu-params',
-            data: {
-              disable_usb_kbd: values.disable_usb_kbd,
+        if (this.isKvm) {
+          await this.params.onManager('batchPerformAction', {
+            id: ids,
+            managerArgs: {
+              action: 'set-qemu-params',
+              data: {
+                disable_usb_kbd: values.disable_usb_kbd,
+              },
             },
-          },
-        })
+          })
+        }
         this.loading = false
         this.cancelDialog()
       } catch (error) {
