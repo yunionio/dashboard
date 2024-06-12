@@ -6,12 +6,12 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
         <a-form-item :label="$t('compute.text_1186')">
-          <a-tooltip placement="top" :title="$t('compute.text_1338', [[10000]])">
+          <a-tooltip placement="top" :title="$t('compute.text_1338', [[bandwidthMax]])">
             <a-input-number
               v-decorator="decorators.bandwidth"
               :parser="getParser"
               :min="0"
-              :max="10000" />
+              :max="bandwidthMax" />
             Mbps
           </a-tooltip>
         </a-form-item>
@@ -67,6 +67,7 @@ export default {
           span: 3,
         },
       },
+      bandwidthMax: 100000,
     }
   },
   computed: {
