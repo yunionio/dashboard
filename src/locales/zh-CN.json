@@ -1065,7 +1065,8 @@
       "delete_failed": "删除失败",
       "rebooting": "重启中",
       "unknown": "未知",
-      "sync_status": "同步状态"
+      "sync_status": "同步状态",
+      "processing": "流程进行中"
     },
     "mongodbBackup": {
       "available": "正常",

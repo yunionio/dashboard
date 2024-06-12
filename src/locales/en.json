@@ -1050,7 +1050,8 @@
       "delete_failed": "Delete Failed",
       "rebooting": "Rebotting",
       "unknown": "Unknown",
-      "sync_status": "Sync Status"
+      "sync_status": "Sync Status",
+      "processing": "Processing"
     },
     "mongodbBackup": {
       "available": "Available",

@@ -1065,7 +1065,8 @@
       "delete_failed": "削除に失敗しました",
       "rebooting": "再起動",
       "unknown": "不明",
-      "sync_status": "同期ステータス"
+      "sync_status": "同期ステータス",
+      "processing": "処理"
     },
     "mongodbBackup": {
       "available": "正常",
