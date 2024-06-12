@@ -59,7 +59,7 @@
         :params="recipientParams"
         :resList.sync="recipientOpts"
         :initLoaded.sync="recipientsLoaded"
-        :select-props="{ placeholder: $t('compute.text_741'), allowClear: true, mode: 'multiple' }" />
+        :select-props="{ placeholder: $t('common.tips.select', [$t('compute.text_740')]), allowClear: true, mode: 'multiple' }" />
     </a-form-item>
   </a-form>
 </template>
@@ -147,7 +147,7 @@ export default {
           {
             initialValue: this.fdInitailValue.recipients,
             rules: [
-              { required: true, message: this.$t('compute.text_742'), type: 'array' },
+              { required: true, message: this.$t('common.tips.select', [this.$t('compute.text_740')]), type: 'array' },
             ],
           },
         ],
