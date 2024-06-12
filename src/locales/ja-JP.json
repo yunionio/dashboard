@@ -3178,7 +3178,8 @@
     "yunionconf": "意気",
     "cloudevent": "クラウド上のログ",
     "suggestion": "最適化の推奨事項",
-    "report": "レポート"
+    "report": "レポート",
+    "devtool": "開発ツール"
   },
   "scope.text_1": "インスタンスのリスト",
   "scope.text_2": "ユーザー情報",

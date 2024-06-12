@@ -3179,7 +3179,8 @@
     "cloudevent": "云上日志",
     "suggestion": "优化建议",
     "report": "报表",
-    "extdb": "外部数据"
+    "extdb": "外部数据",
+    "devtool": "devtool"
   },
   "scope.text_1": "实例列表",
   "scope.text_2": "用户信息",
