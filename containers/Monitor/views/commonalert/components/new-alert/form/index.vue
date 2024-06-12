@@ -100,7 +100,7 @@
         show-sync
         @change="contactArrOptsChange"
         :resList.sync="recipientOpts"
-        :select-props="{ mode: 'multiple', placeholder: $t('compute.text_741') }"
+        :select-props="{ mode: 'multiple', placeholder: $t('common.tips.select', [$t('monitor.recipient')]) }"
         :params="contactParams" />
     </a-form-item>
     <a-form-item v-if="notifyTypes.includes('recipient')" :label="$t('monitor.channel')">
@@ -132,7 +132,7 @@
         version="v1"
         filterable
         show-sync
-        :select-props="{ mode: 'multiple', placeholder: $t('compute.text_741') }"
+        :select-props="{ mode: 'multiple', placeholder: $t('common.tips.select', [$t('monitor.role')]) }"
         :params="rolesParams" />
     </a-form-item>
     <notify-types
@@ -297,7 +297,7 @@ export default {
           {
             initialValue: initialValue.res_type,
             rules: [
-              { required: true, message: this.$t('common.select') },
+              { required: true, message: this.$t('monitor.text_111') },
             ],
           },
         ],
@@ -435,7 +435,7 @@ export default {
           {
             initialValue: initialValue.notifyTypes,
             rules: [
-              { required: true, message: this.$t('common.select') },
+              { required: true, message: this.$t('common.tips.select', [this.$t('monitor.notification_type')]) },
             ],
           },
         ],
@@ -443,6 +443,9 @@ export default {
           'roles',
           {
             initialValue: initialValue.roles,
+            rules: [
+              { required: true, message: this.$t('common.tips.select', [this.$t('monitor.role')]) },
+            ],
           },
         ],
         recipients: [
@@ -450,7 +453,7 @@ export default {
           {
             initialValue: initialValue.recipients,
             rules: [
-              { required: true, message: this.$t('common.select') },
+              { required: true, message: this.$t('common.tips.select', [this.$t('monitor.recipient')]) },
             ],
           },
         ],
@@ -458,6 +461,9 @@ export default {
           'robot_ids',
           {
             initialValue: initialValue.robot_ids,
+            rules: [
+              { required: true, message: this.$t('common.tips.select', [this.$t('monitor.text_11')]) },
+            ],
           },
         ],
         channel: [
