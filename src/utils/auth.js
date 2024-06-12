@@ -5,6 +5,7 @@ import { Base64 } from 'js-base64'
 import store from '@/store'
 import { typeClouds } from '@/utils/common/hypervisor'
 import storage from '@/utils/storage'
+import * as Features from '@/constants/feature'
 
 const ONECLOUD_AUTH_KEY = 'yunionauth'
 const HISTORY_USERS_STORAGE_KEY = '__oc_history_users__'
@@ -278,6 +279,17 @@ const GlobalSetupKeys = class {
     let f = false
     for (let i = 0; i < _envs.length; i++) {
       const env = _envs[i]
+      // 若为组，则同时判断该组下的成员信息
+      if (Features.default.groups.includes(env)) {
+        const childs = Features.default.items.filter(item => item.meta?.group === env)
+        for (let j = 0; j < childs.length; j++) {
+          if (this.setupKeys.indexOf(childs[j].key) > -1) {
+            f = true
+            break
+          }
+        }
+        if (f) break
+      }
       if (this.setupKeys.indexOf(env) > -1) {
         f = true
         break
@@ -344,6 +356,17 @@ export function hasSetupKey (envs) {
   let f = false
   for (let i = 0; i < _envs.length; i++) {
     const env = _envs[i]
+    // 若为组，则同时判断该组下的成员信息
+    if (Features.default.groups.includes(env)) {
+      const childs = Features.default.items.filter(item => item.meta?.group === env)
+      for (let j = 0; j < childs.length; j++) {
+        if (setupKeys.indexOf(childs[j].key) > -1) {
+          f = true
+          break
+        }
+      }
+      if (f) break
+    }
     if (setupKeys.indexOf(env) > -1) {
       f = true
       break
