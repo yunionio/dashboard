@@ -65,6 +65,9 @@ export const SERVICES_MAP = {
   extdb: {
     i18n: 'service.extdb',
   },
+  devtool: {
+    i18n: 'service.devtool',
+  },
   ...extraServices,
 }
 // 定义资源的映射
@@ -776,6 +779,12 @@ export const RESOURCES_MAP = {
   },
   daily_reports: {
     i18n: 'dictionary.daily_report',
+  },
+  scirptapplys: {
+    i18n: 'system.scirptapplys',
+  },
+  scriptapplyrecords: {
+    i18n: 'system.scriptapplyrecords',
   },
   ...extraResources,
 }

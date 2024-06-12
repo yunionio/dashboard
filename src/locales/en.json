@@ -3129,7 +3129,8 @@
     "yunionconf": "Configuration",
     "cloudevent": "Cloud Log",
     "suggestion": "Recommendation",
-    "report": "Report"
+    "report": "Report",
+    "devtool": "Devtool"
   },
   "scope.text_1": "Instance List",
   "scope.text_2": "User Profile",
