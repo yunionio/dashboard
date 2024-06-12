@@ -1466,6 +1466,15 @@ export const PERMISSION = {
   ext_resource_types_perform_enable: ['extdb', 'ext_resource_types', 'perform', 'enable'],
   ext_resource_types_perform_disable: ['extdb', 'ext_resource_types', 'perform', 'disable'],
 
+  scirptapplys_list: ['devtool', 'scirptapplys', 'list'],
+  scirptapplys_update: ['devtool', 'scirptapplys', 'update'],
+  scirptapplys_create: ['devtool', 'scirptapplys', 'create'],
+  scirptapplys_delete: ['devtool', 'scirptapplys', 'delete'],
+  scriptapplyrecords_list: ['devtool', 'scriptapplyrecords', 'list'],
+  scriptapplyrecords_update: ['devtool', 'scriptapplyrecords', 'update'],
+  scriptapplyrecords_create: ['devtool', 'scriptapplyrecords', 'create'],
+  scriptapplyrecords_delete: ['devtool', 'scriptapplyrecords', 'delete'],
+
   ...extraPermissions,
 }
 
