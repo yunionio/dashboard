@@ -6,7 +6,8 @@
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_247')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
-        :form="form.fc">
+        :form="form.fc"
+        v-bind="formItemLayout">
         <!-- <a-form-item :label="$t('common.text00076')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.disable_delete">
             <a-radio-button
@@ -24,19 +25,22 @@
                 :value="item.key">{{ item.label }}</a-radio-button>
             </a-radio-group>
           </a-form-item> -->
-          <a-form-item :label="$t('compute.text_1155')" v-bind="formItemLayout">
+          <a-form-item :label="$t('compute.text_1155')">
             <bios :decorator="decorators.bios" :isArm="isArm" />
           </a-form-item>
-          <a-form-item :label="$t('compute.vdi_protocol')" v-bind="formItemLayout">
+          <a-form-item :label="$t('compute.vdi_protocol')">
             <vdi :decorator="decorators.vdi" @change="handleVdiChange" />
           </a-form-item>
-          <a-form-item :label="$t('compute.vga')" v-bind="formItemLayout">
+          <a-form-item :label="$t('compute.vga')">
             <vga :decorator="decorators.vga" :vdi="vdi" :form="form" />
           </a-form-item>
-          <a-form-item :label="$t('compute.machine')" v-bind="formItemLayout">
+          <a-form-item :label="$t('compute.machine')">
             <machine :decorator="decorators.machine" :isArm="isArm" />
           </a-form-item>
-          <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.daemon.tooltip')" v-bind="formItemLayout" v-if="canAdminUpdate">
+          <a-form-item label="USB键盘">
+            <a-switch v-decorator="decorators.disable_usb_kbd" />
+          </a-form-item>
+          <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.daemon.tooltip')" v-if="canAdminUpdate">
             <a-switch v-model="is_daemon" />
           </a-form-item>
         </template>
@@ -124,6 +128,13 @@ export default {
             ],
           },
         ],
+        disable_usb_kbd: [
+          'disable_usb_kbd',
+          {
+            initialValue: this.params.data[0]?.metadata?.disable_usb_kbd === 'true',
+            valuePropName: 'checked',
+          },
+        ],
       },
       bootOrderOptions: [
         {
@@ -195,6 +206,15 @@ export default {
             },
           })
         }
+        await this.params.onManager('batchPerformAction', {
+          id: ids,
+          managerArgs: {
+            action: 'set-qemu-params',
+            data: {
+              disable_usb_kbd: values.disable_usb_kbd,
+            },
+          },
+        })
         this.loading = false
         this.cancelDialog()
       } catch (error) {
