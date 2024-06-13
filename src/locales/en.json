@@ -1377,6 +1377,7 @@
     "serverCreateName": "Start with a lowercase letter, followed by a combination of lowercase letters, digits or hyphens '-', but cannot end with a hyphen '-', length 2-62",
     "email": "Please enter a valid email address",
     "phone": "Please enter a legal mobile number",
+    "mobile": "Please enter a legal mobile number",
     "isChinese": "Please enter Chinese characters",
     "domain": "Please enter a legal domain name",
     "domains": "Please enter multiple legal domain names, separated by ,",
