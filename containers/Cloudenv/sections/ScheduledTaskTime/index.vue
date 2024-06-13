@@ -112,7 +112,7 @@ export default {
         hourMinute: [
           'hourMinute',
           {
-            // initialValue: [1],
+            initialValue: this.$moment().startOf('day').add(2, 'h'),
             rules: [
               { required: true, message: this.$t('cloudenv.text_446') },
             ],
