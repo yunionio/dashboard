@@ -102,7 +102,7 @@ export function getInBrandFilter (key, inBrands = []) {
   }
 }
 
-export function getBrandDistinctFilter ({ getParams = {} } = {}) {
+export function getBrandDistinctFilter ({ getParams = {}, supportNegation = false } = {}) {
   return {
     label: i18n.t('table.title.brand'),
     dropdown: true,
@@ -112,6 +112,7 @@ export function getBrandDistinctFilter ({ getParams = {} } = {}) {
       key: 'brand',
       getParams,
     },
+    supportNegation,
     mapper: data => {
       return [
         ...getBrandItems(),
@@ -166,7 +167,7 @@ export function getTenantFilter ({ hiddenField = 'tenant', distinctType = 'extra
   }
 }
 
-export function getAccountFilter ({ label = i18n.t('res.cloudaccount'), distinctType = 'extra_field', field = 'account', hiddenField = 'account', formatter, getParams } = {}) {
+export function getAccountFilter ({ label = i18n.t('res.cloudaccount'), distinctType = 'extra_field', field = 'account', hiddenField = 'account', formatter, getParams, supportNegation = false } = {}) {
   const options = {
     label,
     dropdown: true,
@@ -176,6 +177,7 @@ export function getAccountFilter ({ label = i18n.t('res.cloudaccount'), distinct
       key: field,
     },
     hiddenField,
+    supportNegation,
     mapper: data => {
       return data.map(item => {
         if (item.label && item.label === 'OneStack') {
@@ -613,6 +615,7 @@ export function getDistinctFieldFilter ({
   filter = false,
   formatter,
   getParams,
+  supportNegation = false,
 } = {}) {
   const ret = {
     label: label || i18n.t(`${service}.title.${field}`),
@@ -623,6 +626,7 @@ export function getDistinctFieldFilter ({
       type,
       key: `${field}`,
     },
+    supportNegation,
   }
   if (mapper) {
     ret.mapper = mapper
@@ -647,6 +651,7 @@ export function getDistinctFieldsFilter ({
   filter = false,
   formatter,
   getParams,
+  supportNegation = false,
 } = {}) {
   const ret = {
     label: label || i18n.t(`${service}.title.${field}`),
@@ -658,6 +663,7 @@ export function getDistinctFieldsFilter ({
       key: field,
     },
     distinctFieldId: 'distinct-fields',
+    supportNegation,
   }
   if (mapper) {
     ret.mapper = mapper

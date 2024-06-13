@@ -9,6 +9,12 @@
       @keydown.delete="handleInputDelete"
       @input="handleInput" />
     <div class="auto-completer-wrap" v-show="show" :style="completerWrapStyle">
+      <div class="pt-2 pb-2 pl-2" v-if="isDropdown && config.supportNegation && config.items">
+        <a-radio-group v-model="condition">
+          <a-radio value="equals">{{ $t('common.contains') }}</a-radio>
+          <a-radio value="not_equals">{{ $t('common.not_contains') }}</a-radio>
+        </a-radio-group>
+      </div>
       <a-input-search
         v-if="isDropdown && config.items"
         id="dropdownSearchInput"
@@ -114,9 +120,16 @@ export default {
       search: '',
       completerWrapStyle: {},
       dropdownSearch: '',
+      condition: 'equals',
     }
   },
   computed: {
+    newValueSeparator () {
+      return this.condition === 'equals' ? this.valueSeparator : '&'
+    },
+    newKeySeparator () {
+      return this.condition === 'equals' ? this.keySeparator : ' != '
+    },
     // 获取当前选择的key的配置
     config () {
       return this.selectKey && this.options[this.selectKey]
@@ -134,6 +147,9 @@ export default {
     search (val) {
       this.$emit('update:search', val)
     },
+    condition (val) {
+      this.search = val === 'equals' ? this.search.replace(' != ', this.keySeparator) : this.search.replace(this.keySeparator, ' != ')
+    },
   },
   methods: {
     clear () {
@@ -142,6 +158,7 @@ export default {
       this.search = ''
       this.selectKey = null
       this.selectValue = []
+      this.condition = 'equals'
     },
     /**
      * @description key选中事件
@@ -155,7 +172,7 @@ export default {
         this.completerWrapStyle = { width: '360px', right: '-300px' }
       }
       this.selectKey = key
-      const prefix = `${item.label}${this.keySeparator}`
+      const prefix = `${item.label}${this.newKeySeparator}`
       if (!this.search.startsWith(prefix) && !prefix.startsWith(this.search)) {
         this.search = prefix + this.search
       } else if (prefix.startsWith(this.search)) {
@@ -183,7 +200,7 @@ export default {
     isKeyClickable (curItem) {
       for (var key in this.options) {
         const item = this.options[key]
-        if (this.search.startsWith(`${item.label}${this.keySeparator}`)) {
+        if (this.search.startsWith(`${item.label}${this.newKeySeparator}`)) {
           if (item.label === curItem.label) {
             return true
           } else {
@@ -222,7 +239,7 @@ export default {
           return item
         })
       }
-      this.search = `${this.config.label}${this.keySeparator}${labels.join(this.valueSeparator)}`
+      this.search = `${this.config.label}${this.newKeySeparator}${labels.join(this.newValueSeparator)}`
     },
     /**
      * @description date类型的修改
@@ -238,7 +255,7 @@ export default {
       } else if (values[1]) {
         labelStr = `>${values[1].local().format('YYYY-MM-DD HH:mm:ss')}`
       }
-      this.search = `${this.config.label}${this.keySeparator}${labelStr}`
+      this.search = `${this.config.label}${this.newKeySeparator}${labelStr}`
     },
     /**
      * @description 拼装参数，调用搜索
@@ -268,7 +285,7 @@ export default {
           if (this.options[key]) {
             this.selectValue = [this.search]
             this.selectKey = key
-            this.search = `${this.options[key].label}${this.keySeparator}${this.search}`
+            this.search = `${this.options[key].label}${this.newKeySeparator}${this.search}`
           } else {
             console.log('key', key, 'not exist in options', this.options)
             return
@@ -285,7 +302,7 @@ export default {
       if (selectValueEmpty) {
         return
       }
-      let value = this.search.split(this.keySeparator)[1]
+      let value = this.search.split(this.newKeySeparator)[1]
       if (this.isDate) {
         if (value.startsWith('<')) {
           value = value.split('<')
@@ -298,7 +315,7 @@ export default {
           value = [value[0], value[1]]
         }
       } else {
-        value = value.split(this.valueSeparator)
+        value = value.split(this.newValueSeparator)
         /* ======================TASK4351 列表查询多个IP、多个UUID start=========================== */
         if (this.search && this.search.indexOf('|') !== -1) {
           if (this.selectKey?.endsWith('id')) {
@@ -324,6 +341,7 @@ export default {
         ...this.value,
       }
       newValue[this.selectKey] = value
+      newValue['__condition_' + this.selectKey] = this.condition
       this.$emit('confirm', newValue)
       this.clear()
     },
@@ -371,8 +389,8 @@ export default {
     handleInput (e) {
       e.stopPropagation()
       this.search = e.target.value
-      let value = (e.target.value && e.target.value.split(this.keySeparator)) || []
-      value = (value[1] && value[1].split(this.valueSeparator)) || value[0]
+      let value = (e.target.value && e.target.value.split(this.newKeySeparator)) || []
+      value = (value[1] && value[1].split(this.newValueSeparator)) || value[0]
       /* ======================TASK4351 列表查询多个IP、多个UUID start=========================== */
       const val = e.target.value
       if (val && val.indexOf('|') !== -1) {
@@ -392,7 +410,7 @@ export default {
       }
       /* ======================TASK4351 列表查询多个IP、多个UUID end=========================== */
       if (this.isDropdown && !this.isDate) {
-        const searchValue = ((e.target.value && e.target.value.split(this.keySeparator)) || [])[1] || ''
+        const searchValue = ((e.target.value && e.target.value.split(this.newKeySeparator)) || [])[1] || ''
         if (!value) {
           this.selectKey = null
           return
@@ -524,6 +542,7 @@ export default {
 .dropdown-search-input ::v-deep .ant-input {
   border: none;
   border-bottom: 1px solid #d9d9d9;
+  border-top: 1px solid #d9d9d9;
 }
 
 @media only screen and (max-height: 720px) {
