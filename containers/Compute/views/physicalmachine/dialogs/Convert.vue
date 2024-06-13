@@ -53,7 +53,7 @@
                   </template>
                   <a href="javascript:;" slot="extra" @click="handleDiskItemRemove(idx)" v-show="idx === diskOptionsDate.length - 1">{{$t('compute.perform_delete')}}</a>
                   <div class="d-flex align-items-center">
-                    <ve-pie :data="item.chartData" :settings="chartSettings" :events="chartFun(idx)" width="200px" height="200px" :legend-visible="false" />
+                    <ve-pie :data="item.chartData" :settings="chartSettings" :events="chartFun(idx)" width="200px" height="200px" :legend-visible="false" :tooltip="tooltip" />
                     <div class="flex-fill ml-2">
                       <template v-for="k in item.diskInfo">
                         <div :key="k">
@@ -274,6 +274,19 @@ export default {
         offsetY: 100,
         dataType: function (v) {
           return v + ' G'
+        },
+      },
+      tooltip: {
+        trigger: 'item',
+        axisPointer: {
+          type: 'line',
+          shadowStyle: {
+            color: 'rgb(77, 161, 255)',
+            opacity: 0.1,
+          },
+        },
+        position: (point, params, dom, rect, size) => {
+          return { left: point[0] - 30, top: point[1] - 20 }
         },
       },
       diskData: this.params.data[0].spec.disk, // 规格中的硬盘数据
