@@ -48,13 +48,14 @@
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows'
+import NameRepeated from '@/sections/NameRepeated/index'
+import ScopeRadio from '@/sections/ScopeRadio'
 import Email from './components/Email'
 import Mobile from './components/Mobile'
 import Dingtalk from './components/Dingtalk'
 import Feishu from './components/Feishu'
 import Workwx from './components/Workwx'
-import NameRepeated from '@/sections/NameRepeated/index'
-import ScopeRadio from '@/sections/ScopeRadio'
 import { getNotifyDocsUrl } from '../utils/docs'
 
 export default {
@@ -68,6 +69,7 @@ export default {
     Feishu,
     Workwx,
   },
+  mixins: [WindowsMixin],
   data () {
     const scope = this.$store.getters.scope
     return {
@@ -244,26 +246,35 @@ export default {
         Promise.all([commonForm, typeForm]).then(async values => {
           const [common, content] = values
           const { type } = common
-          this.testLoading = true
-          const res = await this.manager.performClassAction({
-            action: 'validate',
-            data: {
-              content,
-              type: type,
-            },
-          })
-          const { is_valid, message } = res.data
-          if (is_valid) {
-            this.$notification.success({
-              message: this.$t('common_270'),
-              description: this.$t('common_271'),
+          if (type === 'mobile') {
+            this.createDialog('NotifyTestMobileDialog', {
+              data: {
+                content,
+                type: type,
+              },
             })
           } else {
-            this.$notification.error({
-              message: message,
+            this.testLoading = true
+            const res = await this.manager.performClassAction({
+              action: 'validate',
+              data: {
+                content,
+                type: type,
+              },
             })
+            const { is_valid, message } = res.data
+            if (is_valid) {
+              this.$notification.success({
+                message: this.$t('common_270'),
+                description: this.$t('common_271'),
+              })
+            } else {
+              this.$notification.error({
+                message: message,
+              })
+            }
+            this.testLoading = false
           }
-          this.testLoading = false
         }).catch((err) => {
           this.testLoading = false
           console.error(err)
