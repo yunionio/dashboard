@@ -183,7 +183,7 @@ export default {
                 },
               },
               callback: async (data) => {
-                const manager = new this.$Manager(`buckets/${this.resName}/makedir`, 'v2')
+                const manager = new this.$Manager(`buckets/${this.resId}/makedir`, 'v2')
                 data.key = `${this.prefix}${data.key}/`
                 await manager.create({ data })
                 this.list.fetchData()
