@@ -1351,7 +1351,7 @@
   "compute.text_1358": "VMware does not currently support creating disk @:dictionary.snapshot",
   "compute.text_1359": "Line type",
   "compute.text_1360": "Billing type",
-  "compute.text_1361": "The default is the storage pool mount point {0}, which can be modified according to the actual use",
+  "compute.text_1361": "The default is the storage pool mount point {0}, which can be modified according to the actual purpose. The mount path of the disk can only be the directory starting with {0}",
   "compute.public_ip_tooltip": "Servers that have been assigned a public IP do not support binding/unbinding an elastic public IP",
   "compute.rule": "rule",
   "compute.norule": "No Rules",
