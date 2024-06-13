@@ -75,6 +75,10 @@ export const REGEXP = {
     regexp: /^[0-9-]{6,14}$/,
     message: i18n.t('validator.phone'),
   },
+  mobile: {
+    regexp: /^[1][3,4,5,6,7,8,9]\d{9}$/,
+    message: i18n.t('validator.mobile'),
+  },
   isChinese: {
     regexp: /[\u4e00-\u9fa5]/,
     message: i18n.t('validator.isChinese'),
