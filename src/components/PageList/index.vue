@@ -473,10 +473,10 @@ export default {
     clearSelected () {
       this.list.clearSelected()
       if (this.selectionType === 'checkbox') {
-        this.$refs.table.clearCheckbox()
+        this.$refs.table && this.$refs.table.clearCheckbox()
       }
       if (this.selectionType === 'radio') {
-        this.$refs.table.clearRadio()
+        this.$refs.table && this.$refs.table.clearRadio()
       }
     },
     updateConfig (value) {

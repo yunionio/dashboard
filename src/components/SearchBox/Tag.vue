@@ -11,6 +11,12 @@
       <div class="auto-completer-wrap" slot="content" :style="{ width: isDate ? '300px' : '200px' }">
         <ul class="auto-completer-items">
           <template v-if="isDropdown">
+            <div class="pt-2 pb-2 pl-2" v-if="config.supportNegation && config.items">
+              <a-radio-group v-model="condition">
+                <a-radio value="equals">{{ $t('common.contains') }}</a-radio>
+                <a-radio value="not_equals">{{ $t('common.not_contains') }}</a-radio>
+              </a-radio-group>
+            </div>
             <!-- 如果有配置项则渲染 -->
             <template v-if="config.items">
               <a-input-search
@@ -40,7 +46,7 @@
             </template>
           </template>
           <template v-else>
-            <a-input :value="newValue.join(valueSeparator)" ref="input" @keydown.13="handleConfirm" @change="handleInputChange" />
+            <a-input :value="newValue.join(newValueSeparator)" ref="input" @keydown.13="handleConfirm" @change="handleInputChange" />
           </template>
         </ul>
         <div class="actions">
@@ -98,12 +104,16 @@ export default {
       visible: false,
       newValue: [...this.value],
       dropdownSearch: '',
+      condition: this.allValue['__condition_' + this.id] || 'equals',
     }
   },
   computed: {
+    newValueSeparator () {
+      return this.condition === 'equals' ? this.valueSeparator : '&'
+    },
     label () {
       const label = this.options[this.id].label
-      let ret = `${label}${this.keySeparator}`
+      let ret = `${label}${this.condition === 'equals' ? this.keySeparator : ' != '}`
       if (this.isDate) {
         if (this.value[0] && this.value[1]) {
           ret += this.value.join('~')
@@ -119,7 +129,7 @@ export default {
             if (target) return target.label
           }
           return value
-        }).filter(item => !!item).join(this.valueSeparator)
+        }).filter(item => !!item).join(this.newValueSeparator)
       }
       return ret
     },
@@ -195,6 +205,7 @@ export default {
       this.$emit('update-focus', false)
       this.$emit('confirm', {
         ...this.allValue,
+        [`__condition_${this.id}`]: this.condition,
         [this.id]: this.newValue,
       })
       this.dropdownSearch = ''
@@ -238,7 +249,7 @@ export default {
     },
     handleInputChange (e) {
       let val = e.target.value
-      val = val.split(this.valueSeparator)
+      val = val.split(this.newValueSeparator)
       this.newValue = val
     },
     getPopupContainer (trigger) {
@@ -345,5 +356,6 @@ export default {
 .dropdown-search-input ::v-deep .ant-input {
   border: none;
   border-bottom: 1px solid #d9d9d9;
+  border-top: 1px solid #d9d9d9;
 }
 </style>
