@@ -1050,5 +1050,7 @@
   "iam.day": "day(s) before expiration",
   "iam.add_notify_time": "Increase notification time",
   "iam.notify_time_not_repeat": "Notification time is duplicated",
-  "iam.no_resource_policy": "No resource permissions"
+  "iam.no_resource_policy": "No resource permissions",
+  "iam.mobile": "Mobile phone number",
+  "iam.sms_mobile": "Please enter the user's mobile phone number for receiving test messages"
 }
