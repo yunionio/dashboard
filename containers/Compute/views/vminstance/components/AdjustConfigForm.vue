@@ -664,10 +664,10 @@ export default {
       }
     },
     isRenderSystemDisk () {
-      return this.hypervisor && this.form.fi.capability.storage_types && this.form.fd.defaultType
+      return this.hypervisor && this.form.fi.capability.storage_types3 && this.form.fd.defaultType
     },
     isRenderDataDisk () {
-      return this.hypervisor && this.form.fi.capability.storage_types && this.form.fd.sku
+      return this.hypervisor && this.form.fi.capability.storage_types3 && this.form.fd.sku
     },
   },
   watch: {
