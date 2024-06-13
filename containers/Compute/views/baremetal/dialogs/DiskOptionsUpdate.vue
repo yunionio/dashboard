@@ -5,7 +5,10 @@
       <a-form
         :form="form.fc">
         <a-form-item :label="$t('compute.text_327')" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" :disabled="isDisabled" />
+          <a-input v-decorator="decorators.name" v-if="!isDisabled" class="workspace-prefix-wrapper">
+            <span class="workspace-prefix" slot="prefix">{{prefix}}</span>
+          </a-input>
+          <a-input v-else :disabled="isDisabled" v-decorator="decorators.name" />
           <template #extra v-if="!isDisabled">
             {{$t('compute.text_1361', ['/opt/cloud/workspace'])}}
           </template>
@@ -51,8 +54,12 @@ export default {
   name: 'DiskOptionsUpdateDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const prefix = '/opt/cloud/workspace'
+    const initNameValue = this.params.selectedArea.name.replace(prefix, '')
+
     return {
       loading: false,
+      prefix,
       formItemLayout: {
         wrapperCol: {
           span: 16,
@@ -76,11 +83,10 @@ export default {
         name: [
           'name',
           {
-            initialValue: this.params.title === this.$t('compute.text_318') ? this.params.selectedArea.name : '/opt/cloud/workspace',
+            initialValue: this.params.title === this.$t('compute.text_318') ? initNameValue : '',
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
             rules: [
-              { required: true, message: this.$t('compute.text_333') },
               { validator: this.checkMountpoint },
             ],
           },
@@ -129,8 +135,14 @@ export default {
       }
       return this.$t('compute.text_334', [this.params.item.remainder])
     },
+    selectedAreaName () {
+      return this.params.selectedArea.name.replace(this.prefix, '')
+    },
+    isSystem () {
+      return this.selectedAreaName === this.$t('compute.text_316')
+    },
     isDisabled () {
-      if (this.params.title === this.$t('compute.text_318') && (this.params.selectedArea.name === this.$t('compute.text_316') || this.params.selectedArea.name === '/')) {
+      if (this.params.title === this.$t('compute.text_318') && this.isSystem) {
         return true
       }
       return false
@@ -146,15 +158,17 @@ export default {
     },
     checkMountpoint (rule, value, callback) {
       const pathReg = new RegExp('^(/[^/ ]*)+')
-      if (!pathReg.test(value)) {
-        callback(new Error(this.$t('compute.text_335')))
-      }
-      const checkName = this.params.nameArr.filter(item => item.name === value)
-      if (this.params.title === this.$t('compute.text_318') && checkName.length > 1) {
-        callback(new Error(this.$t('compute.text_337')))
-      }
-      if (this.params.title === this.$t('compute.text_317') && checkName.length > 0) {
-        callback(new Error(this.$t('compute.text_337')))
+      if (value) {
+        if (!pathReg.test(value)) {
+          callback(new Error(this.$t('compute.text_335')))
+        }
+        const checkName = this.params.nameArr.filter(item => item.name === `${this.prefix}${value}`)
+        if (this.params.title === this.$t('compute.text_318') && checkName.length > 1) {
+          callback(new Error(this.$t('compute.text_337')))
+        }
+        if (this.params.title === this.$t('compute.text_317') && checkName.length > 0) {
+          callback(new Error(this.$t('compute.text_337')))
+        }
       }
       callback()
     },
@@ -183,9 +197,18 @@ export default {
           size: this.params.item.remainder + this.params.selectedArea.size,
         }
       }
+      values.name = this.isDisabled ? values.name : `${this.prefix}${values.name}`
       this.params.updateData(values)
       this.cancelDialog()
     },
   },
 }
 </script>
+
+<style lang="scss">
+.ant-input-affix-wrapper.workspace-prefix-wrapper {
+  .ant-input:not(:first-child) {
+    padding-left: 143px;
+  }
+}
+</style>
