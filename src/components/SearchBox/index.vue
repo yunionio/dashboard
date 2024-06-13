@@ -6,7 +6,7 @@
     @click="handleWrapClick"
     ref="search-box-wrap">
     <ul class="clearfix">
-      <template v-for="(item, key) of value">
+      <template v-for="(item, key) of filteredValue">
         <li :key="key" class="mb-1 mt-1">
           <tag
             :value="item"
@@ -93,6 +93,21 @@ export default {
     hidePlaceholder () {
       return (!R.isEmpty(this.autocompleterSearch) && this.focus) || !R.isEmpty(this.value)
     },
+    filteredValue () {
+      const filteredValue = {}
+      const keys = Object.keys(this.value).filter(key => !key.startsWith('__condition_'))
+      keys.map(key => {
+        filteredValue[key] = this.value[key]
+      })
+      return filteredValue
+    },
+  },
+  watch: {
+    value (val) {
+      if (R.isEmpty(this.newValues) && !R.isEmpty(val)) {
+        this.handleSearch(val)
+      }
+    },
   },
   created () {
     // 选择的key分隔符
@@ -132,6 +147,10 @@ export default {
     handleSearch (values) {
       this.newValues = {}
       R.forEachObjIndexed((value, key) => {
+        if (key.startsWith('__condition_')) {
+          this.newValues[key] = value
+          return
+        }
         if (Array.isArray(value)) {
           const whiteList = ['created_at', 'received_at', 'recv_at', 'start_time']
           if (!whiteList.includes(key) && !this.options[key].is_time) {
@@ -153,7 +172,7 @@ export default {
             this.newValues[key] = value
           } else {
             this.newValues[key] = value.map(item => {
-              const op = R.find(R.propEq('label', item))(config.items)
+              const op = R.find(R.propEq('label', item))(config.items || [])
               if (op) return op.key
               return item
             })
@@ -197,6 +216,7 @@ export default {
     handleRemoveTag (key) {
       const newValues = { ...this.value }
       delete newValues[key]
+      delete newValues[`__condition_${key}`]
       this.showCompleter = false
       this.newValues = newValues
       this.$emit('input', newValues)

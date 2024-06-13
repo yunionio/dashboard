@@ -182,6 +182,7 @@ class CreateList {
       idKey = 'id',
       filterOptions = {},
       filter = {},
+      filterCondition = {},
       autoHiddenFilterKey = '',
       // 期望的状态，如果不符合预期，则进行定时更新
       steadyStatus = null,
@@ -876,6 +877,16 @@ class CreateList {
     }
     // 生成自定义过滤的params
     for (const key in this.filter) {
+      if (key.startsWith('__condition_')) {
+        if (this.filter[key] === 'not_equals') {
+          const condition_origin_key = key.replace('__condition_', '')
+          const option = this.filterOptions[condition_origin_key]
+          if (!option.formatter) {
+            ret[`${condition_origin_key}_negation`] = true
+          }
+        }
+        continue
+      }
       const option = this.filterOptions[key]
       let val = this.filter[key]
       if (option.formatter) {
@@ -888,7 +899,7 @@ class CreateList {
             val = option.formatter(val[1], 'after')
           }
         } else {
-          val = option.formatter(val)
+          val = option.formatter(val, this.filter[`__condition_${key}`])
         }
       }
       if (option.filterAny) {
