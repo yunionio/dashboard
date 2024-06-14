@@ -17,21 +17,6 @@ export default {
         },
       },
       {
-        label: this.$t('common.view_logs'),
-        action: async (obj) => {
-          const connectRes = await this.fetchLogUrl(obj)
-          this.openWebConsole(connectRes)
-        },
-        meta: (obj) => {
-          const ret = { validate: true }
-          if (!['running', 'exited'].includes(obj.status)) {
-            ret.tooltip = this.$t('compute.repo.helper.view_log', [this.$t('dictionary.container')])
-            ret.validate = false
-          }
-          return ret
-        },
-      },
-      {
         label: this.$t('common.more'),
         actions: (obj) => {
           return [
@@ -99,16 +84,6 @@ export default {
         methodname: 'DoContainerExec',
         params: {
           container_id: obj.id,
-        },
-      })
-      return Promise.resolve(data)
-    },
-    async fetchLogUrl (obj) {
-      const { data } = await new this.$Manager('webconsole', 'v1').objectRpc({
-        methodname: 'DoContainerLog',
-        params: {
-          container_id: obj.id,
-          follow: true,
         },
       })
       return Promise.resolve(data)

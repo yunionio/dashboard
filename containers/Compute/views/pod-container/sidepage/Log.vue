@@ -3,7 +3,7 @@
     <a-form-model :model="form" layout="inline">
       <a-form-model-item :label="$t('k8s.text_1')">
         <a-select style="min-width: 200px;" v-model="form.activeContainer">
-          <a-select-option v-for="item in containers" :value="item.name" :key="item.name">{{ item.name }}</a-select-option>
+          <a-select-option v-for="item in containers" :value="item.id" :key="item.id">{{ item.name }}</a-select-option>
         </a-select>
       </a-form-model-item>
       <a-form-model-item :label="$t('k8s.text_320')">
@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  name: 'K8SPodLog',
+  name: 'Log',
   props: {
     data: {
       type: Object,
@@ -74,28 +74,25 @@ export default {
     },
   },
   created () {
-    this.manager = new this.$Manager('pods', 'v1')
+    this.manager = new this.$Manager('containers')
     this.fetchData()
   },
   methods: {
     async fetchData () {
-      const { data: { containers } } = await this.manager.get({
-        id: this.data.id,
+      const { data } = await this.manager.list({
         params: {
-          cluster: this.data.cluster_id,
-          namespace: this.data.namespace,
+          guest_id: this.data.guest_id,
         },
       })
-      this.containers = containers
-      this.form.activeContainer = containers[0].name
-      this.fetchUrl(this.form.activeContainer)
+      this.containers = data.data
+      const firstContainer = data.data?.[0]
+      this.form.activeContainer = firstContainer.id
+      this.fetchUrl()
     },
-    async fetchUrl (container) {
+    async fetchUrl () {
       const params = {
-        cluster: this.data.cluster_id,
-        namespace: this.data.namespace,
-        name: this.data.name,
-        container,
+        container_id: this.form.activeContainer,
+        follow: true,
       }
       if (!this.isAllTime) {
         if (this.isCustomTime) {
@@ -105,8 +102,7 @@ export default {
         }
       }
       const { data } = await new this.$Manager('webconsole', 'v1').objectRpc({
-        methodname: 'DoK8sLogConnect',
-        objId: this.data.name,
+        methodname: 'DoContainerLog',
         params,
       })
       this.connectParams = data.connect_params

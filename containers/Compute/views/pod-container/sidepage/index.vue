@@ -33,6 +33,7 @@
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import Log from './Log'
 import Monitor from './Monitor'
 import Detail from './Detail'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -42,6 +43,7 @@ export default {
   name: 'VmPodContainerSidePage',
   components: {
     Actions,
+    Log,
     Monitor,
     Detail,
   },
@@ -49,6 +51,7 @@ export default {
   data () {
     const detailTabs = [
       { label: this.$t('compute.text_238'), key: 'detail' },
+      { label: this.$t('k8s.text_325'), key: 'log' },
       { label: this.$t('compute.text_608'), key: 'monitor' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
     ]
