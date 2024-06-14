@@ -108,6 +108,7 @@ export default {
         methodname: 'DoContainerLog',
         params: {
           container_id: obj.id,
+          follow: true,
         },
       })
       return Promise.resolve(data)

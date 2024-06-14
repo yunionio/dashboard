@@ -3,19 +3,22 @@ import Vue from 'vue'
 import { camel2Words } from './utils'
 
 export class UnknownRpcMethodException {
-  constructor (method) {
+  // eslint-disable-next-line
+  constructor(method) {
     this.method = method
   }
 }
 
 export class UnknownCsrfMethodException {
-  constructor (method) {
+  // eslint-disable-next-line
+  constructor(method) {
     this.method = method
   }
 }
 
 export class Manager {
-  constructor (res, apiVer) {
+  // eslint-disable-next-line
+  constructor(res, apiVer) {
     this.resource = res
     if (apiVer) {
       this.apiVersion = apiVer
