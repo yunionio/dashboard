@@ -110,14 +110,20 @@ export default {
           slots: {
             default: ({ row }) => {
               const colors = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple']
-              const port_mappings = row.metadata?.port_mappings
-              if (port_mappings) {
-                const portMappingArr = JSON.parse(port_mappings)
-                return portMappingArr.map((item, idx) => {
+              let port_mappings = []
+              if (row.nics) {
+                row.nics.forEach(item => {
+                  if (item.port_mappings) {
+                    port_mappings = port_mappings.concat(item.port_mappings)
+                  }
+                })
+              }
+              if (port_mappings.length > 0) {
+                return port_mappings.map((item, idx) => {
                   const color = colors[idx % 7]
                   return <p>
                     <a-tag color={color}>
-                      {this.$t('compute.repo.container_port')}: {item.container_port} = {this.$t('compute.repo.host_port')}: {item.host_port}
+                      {this.$t('compute.repo.container_port')}: {item.port} = {this.$t('compute.repo.host_port')}: {item.host_port}
                     </a-tag>
                   </p>
                 })
@@ -256,7 +262,7 @@ export default {
               title: this.$t('compute.text_50'),
               formatter: ({ row }) => {
                 if (!this.diskInfos.dataDisk) return '-'
-                return <a onClick={() => this.$emit('tab-change', 'disk-list-for-vm-instance-sidepage')}>{this.diskInfos.dataDisk}</a>
+                return <a onClick={() => this.$emit('tab-change', 'disk-list')}>{this.diskInfos.dataDisk}</a>
               },
               hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.disk'),
             },
