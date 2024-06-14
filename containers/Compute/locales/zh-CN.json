@@ -270,7 +270,7 @@
   "compute.sub_ips.title": "辅助IP",
   "compute.port_mappings.title": "端口映射",
   "compute.port_mappings.port.title": "内部端口",
-  "compute.port_mappings.host_port.title": "ホストポート",
+  "compute.port_mappings.host_port.title": "宿主机端口",
   "compute.text_268": "状态",
   "compute.text_269": "云账号",
   "compute.text_270": "可用区",

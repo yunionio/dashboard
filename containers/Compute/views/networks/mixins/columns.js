@@ -29,8 +29,8 @@ export default {
         slots: {
           default: ({ row }, h) => {
             const ret = [
-              <list-body-cell-wrap copy row={row} field="network" hideField={ true }>
-                <side-page-trigger onTrigger={ () => this.handleOpenNetworkDetail(row.network_id) }>{ row.network }</side-page-trigger>
+              <list-body-cell-wrap copy row={row} field="network" hideField={true}>
+                <side-page-trigger onTrigger={() => this.handleOpenNetworkDetail(row.network_id)}>{row.network}</side-page-trigger>
               </list-body-cell-wrap>,
             ]
             return ret
@@ -76,44 +76,37 @@ export default {
       {
         field: 'network_addresses',
         title: i18n.t('compute.sub_ips.title'),
-        type: 'expand',
         slots: {
           default: ({ row }) => {
-            return i18n.t('compute.text_619', [row.network_addresses ? row.network_addresses.length : 0])
-          },
-          content: ({ row }) => {
-            let list = []
-            if (row.network_addresses && row.network_addresses.length > 0) {
-              list = row.network_addresses.map(val => (
-                <a-tag class='mb-2'>{ val.ip_addr }</a-tag>
-              ))
-            }
-            return list
+            return [
+              this.$t('compute.text_619', [row.network_addresses ? row.network_addresses.length : 0]),
+              <a-button type="link" class={'pl-1'} onClick={() => this.viewContentDialog(row.network_addresses, this.$t('compute.sub_ips.title'), 'network')}>{i18n.t('common.view')}</a-button>,
+            ]
           },
         },
       },
       {
         field: 'port_mappings',
-        title: i18n.t('compute.port_mappings.title'),
-        type: 'expand',
+        title: i18n.t('compute.port_mappings.title', 'port'),
         slots: {
           default: ({ row }) => {
-            return i18n.t('compute.text_619', [row.port_mappings ? row.port_mappings.length : 0])
-          },
-          content: ({ row }) => {
-            const colors = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple']
-            let list = []
-            if (row.port_mappings && row.port_mappings.length > 0) {
-              list = row.port_mappings.map((item, idx) => (
-                // <a-tag color={colors[idx % 7]} style={{ width: '250px' }}> {this.$t('compute.port_mappings.port.title')}: {item.port} = {this.$t('compute.port_mappings.host_port.title')}: {item.host_port} ({item.protocol.toUpperCase()}) </a-tag>
-                colors[idx % 7] + item.protocol
-              ))
-            }
-            return list
+            return [
+              this.$t('compute.text_619', [row.port_mappings ? row.port_mappings.length : 0]),
+              <a-button type="link" class={'pl-1'} onClick={() => this.viewContentDialog(row.port_mappings, this.$t('compute.port_mappings.title'), 'port')}>{this.$t('common.view')}</a-button>,
+            ]
           },
         },
       },
       getTimeTableColumn(),
     ]
+  },
+  methods: {
+    viewContentDialog (data, title, type) {
+      this.createDialog('ViewContentDialog', {
+        title,
+        data,
+        type,
+      })
+    },
   },
 }
