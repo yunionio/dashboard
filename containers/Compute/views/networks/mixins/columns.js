@@ -92,6 +92,27 @@ export default {
           },
         },
       },
+      {
+        field: 'port_mappings',
+        title: i18n.t('compute.port_mappings.title'),
+        type: 'expand',
+        slots: {
+          default: ({ row }) => {
+            return i18n.t('compute.text_619', [row.port_mappings ? row.port_mappings.length : 0])
+          },
+          content: ({ row }) => {
+            const colors = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple']
+            let list = []
+            if (row.port_mappings && row.port_mappings.length > 0) {
+              list = row.port_mappings.map((item, idx) => (
+                // <a-tag color={colors[idx % 7]} style={{ width: '250px' }}> {this.$t('compute.port_mappings.port.title')}: {item.port} = {this.$t('compute.port_mappings.host_port.title')}: {item.host_port} ({item.protocol.toUpperCase()}) </a-tag>
+                colors[idx % 7] + item.protocol
+              ))
+            }
+            return list
+          },
+        },
+      },
       getTimeTableColumn(),
     ]
   },
