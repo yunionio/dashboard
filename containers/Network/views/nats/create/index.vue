@@ -5,7 +5,8 @@
       <a-form
         class="mt-3"
         v-bind="formItemLayout"
-        :form="form.fc">
+        :form="form.fc"
+        hideRequiredMark>
         <a-form-item :label="$t('network.text_205', [$t('dictionary.domain')])" v-if="$store.getters.isAdminMode">
           <domain-select v-decorator="decorators.project_domain" @change="handleDomainChange" />
         </a-form-item>

@@ -5314,6 +5314,7 @@
   "license.provider.qingcloud": "@:scopeProviders.qingcloud",
   "license.provider.chinaunion": "@:scopeProviders.chinaunion",
   "license.provider.volcengine": "@:scopeCloudPrvidersMap.VolcEngine",
+  "license.provider.sangfor": "深信服超融合",
   "license.provider.s3": "S3",
   "license.provider.ceph": "Ceph",
   "license.provider.xsky": "XSKY",
