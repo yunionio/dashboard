@@ -256,7 +256,8 @@
         :errors.sync="errors"
         :isServertemplate="isServertemplate"
         :hasMeterService="hasMeterService"
-        @add-cart="addShopCart" />
+        @add-cart="addShopCart"
+        @cancel="handleCancel" />
     </a-form>
   </div>
 </template>

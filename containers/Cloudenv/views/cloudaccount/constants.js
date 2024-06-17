@@ -35,6 +35,7 @@ const qingcloudLogo = require('@/assets/images/providers/qingcloud.svg')
 const chinaUnionLogo = require('@/assets/images/providers/chinaunion.svg')
 const volcEngineLogo = require('@/assets/images/providers/volcengine.svg')
 const oraclecloudLogo = require('@/assets/images/providers/oraclecloud.svg')
+const sangforLogo = require('@/assets/images/providers/sangfor.svg')
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
@@ -246,6 +247,12 @@ export const CLOUDACCOUNT_TYPES = {
       component: 'H3CCreate',
       provider: providerMap.h3c.key,
     },
+    sangfor: {
+      name: providerMap.sangfor.label,
+      logo: sangforLogo,
+      component: 'SangforCreate',
+      provider: providerMap.sangfor.key,
+    },
   },
   storage: {
     s3: {
@@ -311,6 +318,7 @@ export function getCloudaccountDocs (scope) {
     chinaunion: i18n.t('cloudenv.create_chinaunion', [docs_path]),
     volcengine: i18n.t('cloudenv.create_volcengine', [docs_path]),
     oraclecloud: i18n.t('cloudenv.create_oraclecloud', [docs_path]),
+    sangfor: i18n.t('cloudenv.create_sangfor', [docs_path]),
   }
   // if (isCE()) {
   //   Object.keys(docs).forEach(v => {
@@ -767,6 +775,19 @@ export const keySecretFields = {
     label: {
       s: 'tenancy',
       k: 'user',
+    },
+  },
+  sangfor: {
+    k: 'username',
+    s: 'password',
+    text: i18n.t('cloudenv.sangforcloud'),
+    placeholder: {
+      k: i18n.t('cloudenv.text_151'),
+      s: i18n.t('cloudenv.text_150'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_94'),
+      s: i18n.t('cloudenv.text_147'),
     },
   },
 }

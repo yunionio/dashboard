@@ -7,8 +7,8 @@
     </page-body>
     <page-footer>
       <template v-slot:right>
-        <a-button type="primary" size="large" :loading="loading" @click="handleSubmit">{{ createTxt }}</a-button>
-        <a-button class="ml-2" size="large" @click="handleCancel">{{ stepComponent === 'create-project' ? $t('dialog.cancel') : $t('common.skip') }}</a-button>
+        <a-button type="primary" :loading="loading" @click="handleSubmit">{{ createTxt }}</a-button>
+        <a-button class="ml-3" @click="handleCancel">{{ stepComponent === 'create-project' ? $t('dialog.cancel') : $t('common.skip') }}</a-button>
       </template>
     </page-footer>
   </div>

@@ -48,7 +48,7 @@
       <a-form-item :label="$t('table.title.tag')" class="mb-3">
         <tag v-decorator="decorators.__meta__" :allowNoValue="false" />
       </a-form-item>
-      <bottom-bar :provider="provider" :values="form.getFieldsValue()" :cloudAccountId="cloudAccountId" />
+      <bottom-bar :provider="provider" :values="form.getFieldsValue()" :cloudAccountId="cloudAccountId" @cancel="handleCancel" />
     </a-form>
   </div>
 </template>
@@ -176,6 +176,9 @@ export default {
     },
     handleVpcListChange (list) {
       this.vpcList = list
+    },
+    handleCancel () {
+      this.$router.push({ name: 'RDSIndex' })
     },
   },
 }

@@ -510,7 +510,7 @@ export default {
                 extraMeta: obj => {
                   return getDisabledProvidersActionMeta({
                     rows: this.list.selectedItems,
-                    disabledProviders: ['BingoCloud'],
+                    disabledProviders: ['BingoCloud', 'SangFor'],
                   })
                 },
               },
