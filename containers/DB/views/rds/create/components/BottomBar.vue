@@ -23,6 +23,7 @@
       <price-fetcher v-if="!isPrivate" :values="values" :customPriceKey="customPriceKey" :extraPriceItems="extraPriceItems" :cloudAccountId="cloudAccountId" />
       <div class="btns-wrapper d-flex align-items-center">
         <a-button @click="doCreate" :loading="loading" type="primary" class="ml-3">{{$t('db.text_41')}}</a-button>
+        <a-button class="ml-3" @click="handleCancel">{{$t('common.cancel')}}</a-button>
       </div>
     </template>
   </page-footer>
@@ -159,6 +160,9 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    handleCancel () {
+      this.$emit('cancel')
     },
   },
 }

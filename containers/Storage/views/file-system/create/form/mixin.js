@@ -38,4 +38,9 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'userInfo', 'capability']),
   },
+  methods: {
+    handleCancel () {
+      this.$router.push({ name: 'FileSystem' })
+    },
+  },
 }
