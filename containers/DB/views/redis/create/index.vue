@@ -49,7 +49,7 @@
         <a-form-item :label="$t('table.title.tag')">
           <tag v-decorator="decorators.__meta__" :allowNoValue="false" />
         </a-form-item>
-        <bottom-bar :provider="provider" :values="form.fc.getFieldsValue()" :cloudAccountId="cloudAccountId" />
+        <bottom-bar :provider="provider" :values="form.fc.getFieldsValue()" :cloudAccountId="cloudAccountId" @cancel="handleCancel" />
       </a-form>
     </page-body>
   </div>
@@ -150,6 +150,9 @@ export default {
   methods: {
     handleVpcListChange (list) {
       this.vpcList = list
+    },
+    handleCancel () {
+      this.$router.push({ name: 'Redis' })
     },
   },
 }

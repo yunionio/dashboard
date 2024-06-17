@@ -206,7 +206,8 @@
         :isServertemplate="isServertemplate"
         :hasMeterService="hasMeterService"
         :cloudaccountId="cloudaccountId"
-        @add-cart="addShopCart" />
+        @add-cart="addShopCart"
+        @cancel="handleCancel" />
     </a-form>
   </div>
 </template>
