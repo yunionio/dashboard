@@ -6,7 +6,8 @@
         class="mt-3"
         :form="form.fc"
         @submit.prevent="handleSubmit"
-        v-bind="formItemLayout">
+        v-bind="formItemLayout"
+        hideRequiredMark>
         <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" v-if="isAdminMode">
           <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" @update:domain="domainChange" />
         </a-form-item>

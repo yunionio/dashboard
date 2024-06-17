@@ -868,7 +868,7 @@ const decoratorGroup = {
 
 export class Decorator {
   decorators = {}
-  constructor(type) {
+  constructor (type) {
     this.type = type
   }
 
@@ -895,7 +895,7 @@ export class Decorator {
  * @class GenCreateData
  */
 export class GenCreateData {
-  constructor(fd, fi) {
+  constructor (fd, fi) {
     if (R.isNil(fd)) return
     this.fd = fd
     this.fi = fi
@@ -921,7 +921,7 @@ export class GenCreateData {
       backend: item.type === STORAGE_AUTO.key ? '' : item.type,
       size: item.size * 1024,
     }
-    if (type === 'sys' && this.fd.imageType !== IMAGES_TYPE_MAP.iso.key && this.fd.hypervisor !== HYPERVISORS_MAP.proxmox.key) {
+    if (type === 'sys' && this.fd.imageType !== IMAGES_TYPE_MAP.iso.key && this.fd.hypervisor !== HYPERVISORS_MAP.proxmox.key && this.fd.hypervisor !== HYPERVISORS_MAP.sangfor.key) {
       if (this.fd.image && this.fd.image.key) {
         ret.image_id = this.fd.image.key
       }
@@ -1478,6 +1478,7 @@ export class GenCreateData {
       data.billing_type = 'postpaid'
     }
     // 镜像类型为 iso 需要加参数 cdrom
+    console.log('查看imagetype', this.fd.imageType, IMAGES_TYPE_MAP.private_iso.key)
     if (this.fd.imageType === IMAGES_TYPE_MAP.iso.key || this.fd.imageType === IMAGES_TYPE_MAP.private_iso.key) {
       data.cdrom = this.fd.image.key
     }
@@ -1541,9 +1542,9 @@ export class GenCreateData {
       data.pod = {
         containers: [
           {
-            image: this.fd.podImage
-          }
-        ]
+            image: this.fd.podImage,
+          },
+        ],
       }
       if (data.isolated_devices) {
         data.pod.containers = [
@@ -1553,11 +1554,11 @@ export class GenCreateData {
               return {
                 type: 'isolated_device',
                 isolated_device: {
-                  index: idx
-                }
+                  index: idx,
+                },
               }
-            })
-          }
+            }),
+          },
         ]
       }
     }

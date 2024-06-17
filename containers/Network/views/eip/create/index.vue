@@ -3,7 +3,8 @@
     <page-header :title="$t('network.text_724')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body needMarginBottom>
       <a-form
-        :form="form.fc">
+        :form="form.fc"
+        hideRequiredMark>
         <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" v-bind="formItemLayout">
           <domain-project :fc="form.fc" :form-layout="formItemLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="domainChange" />
         </a-form-item>
