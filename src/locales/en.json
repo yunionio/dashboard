@@ -5337,6 +5337,7 @@
   "license.provider.remotefile": "@:cloudPrvidersMap.RemoteFile",
   "license.provider.proxmox": "@:cloudPrvidersMap.Proxmox",
   "license.provider.h3c": "@:cloudPrvidersMap.H3C",
+  "license.provider.sangfor": "SangFor",
   "license.provider.ksyun": "Ksyun",
   "license.provider.baidu": "Baidu Cloud",
   "license.provider.qingcloud": "Qing Cloud",

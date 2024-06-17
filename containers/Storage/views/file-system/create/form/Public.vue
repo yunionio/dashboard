@@ -3,7 +3,8 @@
     <a-form
       class="mt-3"
       v-bind="formItemLayout"
-      :form="form.fc">
+      :form="form.fc"
+      hideRequiredMark>
       <a-form-item :label="$t('storage.text_55', [$t('dictionary.project')])" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="handleDomainChange" />
       </a-form-item>
@@ -75,7 +76,8 @@
     <bottom-bar
       :values="form.fc.getFieldsValue()"
       :cloudAccountId="cloudAccountId"
-      @submit="handleConfirm" />
+      @submit="handleConfirm"
+      @cancel="handleCancel" />
   </div>
 </template>
 

@@ -25,6 +25,7 @@
           html-type="submit"
           @click="handleConfirm"
           :loading="loading">{{ $t('common_258') }}</a-button>
+        <a-button class="ml-3" @click="() => $router.back()">{{$t('common.cancel')}}</a-button>
       </div>
     </template>
   </page-footer>

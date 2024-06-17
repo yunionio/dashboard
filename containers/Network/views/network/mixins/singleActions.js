@@ -291,6 +291,12 @@ export default {
                 }
                 return ret
               },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['SangFor'],
+                })
+              },
             },
             {
               label: i18n.t('network.text_201'),
@@ -356,7 +362,7 @@ export default {
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
                   row: obj,
-                  disabledProviders: ['BingoCloud'],
+                  disabledProviders: ['BingoCloud', 'SangFor'],
                 })
               },
             },

@@ -450,7 +450,7 @@ export default {
         usable: true,
         enabled: true,
         cpu_core_count: this.form.fd.vcpu || this.decorators.vcpu[1].initialValue,
-        memory_size_mb: this.form.fd.vmem,
+        memory_size_mb: this.form.fd.vmem || this.decorators.vmem[1].initialValue,
       }
       if (this.type === SERVER_TYPE.idc) {
         params.provider = HYPERVISORS_MAP.kvm.provider
@@ -461,13 +461,16 @@ export default {
         }
       }
       if (this.type === SERVER_TYPE.private) {
-        // nutanix vmware incloudshpere
-        if (this.selectedItem && (this.selectedItem.provider === HYPERVISORS_MAP.nutanix.provider || this.selectedItem.provider === HYPERVISORS_MAP.incloudsphere.provider || this.selectedItem.provider === HYPERVISORS_MAP.proxmox.provider)) {
+        // nutanix vmware incloudshpere proxmox sangfor
+        if (this.selectedItem && (this.selectedItem.provider === HYPERVISORS_MAP.nutanix.provider || this.selectedItem.provider === HYPERVISORS_MAP.incloudsphere.provider || this.selectedItem.provider === HYPERVISORS_MAP.proxmox.provider || this.selectedItem.provider === HYPERVISORS_MAP.sangfor.provider)) {
           params['provider.0'] = HYPERVISORS_MAP.kvm.provider
         } else {
           params.cloudregion_id = this.selectedItem.cloudregion_id
         }
         params.postpaid_status = 'available'
+        if (this.selectedItem.provider === HYPERVISORS_MAP.sangfor.provider) {
+          delete params.usable
+        }
       }
       if (this.type === SERVER_TYPE.public) {
         params.public_cloud = true
@@ -922,7 +925,9 @@ export default {
         } else {
           params.provider = HYPERVISORS_MAP.kvm.provider
         }
-
+        if (this.selectedItem.provider === HYPERVISORS_MAP.sangfor.provider) {
+          delete params.usable
+        }
         delete params.zone
       }
       if (this.type === SERVER_TYPE.public) {
