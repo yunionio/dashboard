@@ -1478,7 +1478,6 @@ export class GenCreateData {
       data.billing_type = 'postpaid'
     }
     // 镜像类型为 iso 需要加参数 cdrom
-    console.log('查看imagetype', this.fd.imageType, IMAGES_TYPE_MAP.private_iso.key)
     if (this.fd.imageType === IMAGES_TYPE_MAP.iso.key || this.fd.imageType === IMAGES_TYPE_MAP.private_iso.key) {
       data.cdrom = this.fd.image.key
     }
