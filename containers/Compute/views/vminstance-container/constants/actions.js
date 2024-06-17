@@ -1,26 +1,53 @@
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 // import { POLICY_RES_NAME_KEY_MAP } from '@/constants/policy'
-
 const getSingleActions = function () {
   return [
-    // 同步状态
+    // 终端
     {
-      label: i18n.t('compute.perform_sync_status'),
-      action: (obj) => {
-        this.onManager('batchPerformAction', {
-          steadyStatus: ['running', 'ready'],
-          id: [obj.id],
-          managerArgs: {
-            action: 'syncstatus',
-          },
+      label: i18n.t('compute.repo.terminal'),
+      actions: (obj) => {
+        const containers = obj.containers || []
+        return containers.map(item => {
+          return {
+            label: item.name,
+            action: async () => {
+              const connectRes = await this.fetchConnectUrl(item.id)
+              this.openWebConsole(connectRes)
+            },
+          }
         })
+      },
+      meta: (obj) => {
+        const ret = { validate: true }
+        if (!obj.containers?.length) {
+          ret.validate = false
+          return ret
+        }
+        if (obj.status !== 'running') {
+          ret.tooltip = this.$t('compute.repo.helper.terminal', [this.$t('compute.vminstance-container')])
+          ret.validate = false
+        }
+        return ret
       },
     },
     {
       label: i18n.t('compute.text_352'),
       actions: (obj) => {
         return [
+          // 同步状态
+          {
+            label: i18n.t('compute.repo.terminal'),
+            action: (obj) => {
+              this.onManager('batchPerformAction', {
+                steadyStatus: ['running', 'ready'],
+                id: [obj.id],
+                managerArgs: {
+                  action: 'syncstatus',
+                },
+              })
+            },
+          },
           // 开机
           {
             label: i18n.t('compute.text_272'),
