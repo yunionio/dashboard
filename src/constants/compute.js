@@ -13,6 +13,7 @@ export const IMAGES_TYPE_MAP = {
   public_customize: { key: 'public_customize', label: i18n.t('common.public_cloud_customized_image'), tooltip: i18n.t('common.text00028'), enable_cloudaccount: false },
   private: { key: 'private', label: i18n.t('common.text00029'), tooltip: i18n.t('common.text00030'), enable_cloudaccount: true },
   vmware: { key: 'vmware', label: i18n.t('common.text00031'), tooltip: i18n.t('common.text00032'), enable_cloudaccount: true },
+  private_iso: { key: 'private_iso', label: i18n.t('common.private_iso'), tooltip: i18n.t('common.private_iso_tip'), enable_cloudaccount: false },
 }
 
 // 镜像图标

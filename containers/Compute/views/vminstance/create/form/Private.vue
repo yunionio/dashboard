@@ -169,7 +169,8 @@
         :isOpenWorkflow="isOpenWorkflow"
         :errors.sync="errors"
         :isServertemplate="isServertemplate"
-        :hasMeterService="hasMeterService" />
+        :hasMeterService="hasMeterService"
+        @cancel="handleCancel" />
     </a-form>
   </div>
 </template>
@@ -258,7 +259,7 @@ export default {
         enabled: true,
         ...this.scopeParams,
       }
-      if (this.form.fd.hypervisor === 'nutanix' || this.form.fd.hypervisor === 'incloudsphere' || this.form.fd.hypervisor === 'proxmox') {
+      if (this.form.fd.hypervisor === 'nutanix' || this.form.fd.hypervisor === 'incloudsphere' || this.form.fd.hypervisor === 'proxmox' || this.form.fd.hypervisor === 'sangfor') {
         params.is_on_premise = true
         params.usable = false
       } else {
@@ -304,12 +305,16 @@ export default {
         }
         return params
       } else {
-        return {
+        const ret = {
           usable: true,
           enabled: true,
           'provider.0': HYPERVISORS_MAP.kvm.provider,
           'provider.1': _.get(HYPERVISORS_MAP, `[${this.form.fd.hypervisor}].provider`),
         }
+        if (this.form.fd.hypervisor === HYPERVISORS_MAP.sangfor.hypervisor) {
+          delete ret.usable
+        }
+        return ret
       }
     },
     cloudprovider () {

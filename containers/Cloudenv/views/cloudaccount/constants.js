@@ -29,6 +29,7 @@ const incloudsphereLogo = require('../../../../src/assets/images/providers/inclo
 const remotefileLogo = require('../../../../src/assets/images/providers/remotefile.svg')
 const proxmoxLogo = require('../../../../src/assets/images/providers/proxmox.svg')
 const h3cLogo = require('../../../../src/assets/images/providers/h3c.svg')
+const sangforLogo = require('@/assets/images/providers/sangfor.svg')
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
@@ -191,6 +192,12 @@ export const CLOUDACCOUNT_TYPES = {
       component: 'H3CCreate',
       provider: providerMap.h3c.key,
     },
+    sangfor: {
+      name: providerMap.sangfor.label,
+      logo: sangforLogo,
+      component: 'SangforCreate',
+      provider: providerMap.sangfor.key,
+    },
   },
   storage: {
     s3: {
@@ -250,6 +257,7 @@ export function getCloudaccountDocs (scope) {
     incloudsphere: i18n.t('cloudenv.create_incloudsphere', [docs_path]),
     proxmox: i18n.t('cloudenv.create_proxmox', [docs_path]),
     h3c: i18n.t('cloudenv.create_h3c', [docs_path]),
+    sangfor: i18n.t('cloudenv.create_sangfor', [docs_path]),
   }
   // if (isCE()) {
   //   Object.keys(docs).forEach(v => {
@@ -621,6 +629,19 @@ export const keySecretFields = {
     k: 'username',
     s: 'password',
     text: 'H3C',
+    placeholder: {
+      k: i18n.t('cloudenv.text_151'),
+      s: i18n.t('cloudenv.text_150'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_94'),
+      s: i18n.t('cloudenv.text_147'),
+    },
+  },
+  sangfor: {
+    k: 'username',
+    s: 'password',
+    text: i18n.t('cloudenv.sangforcloud'),
     placeholder: {
       k: i18n.t('cloudenv.text_151'),
       s: i18n.t('cloudenv.text_150'),

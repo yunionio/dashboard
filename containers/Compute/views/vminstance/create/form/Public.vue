@@ -198,7 +198,8 @@
         :isOpenWorkflow="isOpenWorkflow"
         :isServertemplate="isServertemplate"
         :hasMeterService="hasMeterService"
-        :cloudaccountId="cloudaccountId" />
+        :cloudaccountId="cloudaccountId"
+        @cancel="handleCancel" />
     </a-form>
   </div>
 </template>

@@ -3,7 +3,8 @@
     <page-header :title="$t('compute.perform_create')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <a-form
       class="mt-3"
-      :form="form.fc">
+      :form="form.fc"
+      hideRequiredMark>
       <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>

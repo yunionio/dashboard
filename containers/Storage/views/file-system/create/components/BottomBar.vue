@@ -10,6 +10,7 @@
           html-type="submit"
           @click="handleConfirm"
           :loading="loading">{{ $t('common_258') }}</a-button>
+        <a-button class="ml-3" @click="handleCancel">{{$t('common.cancel')}}</a-button>
       </div>
     </template>
   </page-footer>
@@ -88,6 +89,9 @@ export default {
         this.loading = false
         throw error
       }
+    },
+    handleCancel () {
+      this.$emit('cancel')
     },
   },
 }

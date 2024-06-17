@@ -2,7 +2,7 @@
   <div>
     <page-header :title="$t('compute.text_892')" />
     <page-body needMarginBottom>
-      <a-form :form="form.fc" class="mt-3" v-bind="formItemLayout">
+      <a-form :form="form.fc" class="mt-3" v-bind="formItemLayout" hideRequiredMark>
         <a-form-item class="mb-0" :label="$t('compute.text_297', [$t('dictionary.project')])">
           <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
         </a-form-item>
