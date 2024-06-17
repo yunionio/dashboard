@@ -406,10 +406,8 @@ export default {
       }
     },
     async _fetchCacheimages () {
-      console.log('fetch cached images')
       if (R.isNil(this.cacheImageParams) || R.isEmpty(this.cacheImageParams)) return
       if (!this.isPublicImage && !this.isPrivateImage && !this.isVMware) return // 阻止不必要的请求，仅这三种情况需要渲染的是cacheimage，而且现在没有[需要标出哪些已缓存]的功能了
-      console.log('成功fetch')
       const params = {
         details: false,
         order_by: 'ref_count',
@@ -666,7 +664,6 @@ export default {
       }
     },
     getImageOpts (imageOpts = []) {
-      console.log('imageOpts', imageOpts)
       let images = imageOpts.slice()
       if (images && images.length > 0) {
         images = images.filter((item) => {
@@ -678,7 +675,6 @@ export default {
           return true
         })
       }
-      console.log('images', images.length)
       if (images && images.length > 0) {
         images.sort((a, b) => {
           const aVersion = a.info && a.info.properties && a.info.properties.os_version
