@@ -133,6 +133,8 @@ export default {
         ret.push({ ...IMAGES_TYPE_MAP.snapshot, label: this.$t(IMAGES_TYPE_MAP.snapshot.t) })
       } else if (this.hypervisor === HYPERVISORS_MAP.proxmox.key) {
         ret = [IMAGES_TYPE_MAP.private, IMAGES_TYPE_MAP.iso]
+      } else if (this.hypervisor === HYPERVISORS_MAP.sangfor.key) {
+        ret = [IMAGES_TYPE_MAP.private_iso]
       } else if (this.isPublic) {
         ret.unshift(IMAGES_TYPE_MAP.public_customize)
         ret.unshift(IMAGES_TYPE_MAP.public)

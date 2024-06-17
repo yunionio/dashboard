@@ -73,6 +73,7 @@
     </page-body>
     <page-footer>
       <div slot="right">
+        <a-button class="ml-3 float-right" @click="() => $router.back()">{{$t('common.cancel')}}</a-button>
         <a-button class="float-right" type="primary" @click="handleConfirm" :loading="loading">{{ $t('common_258') }}</a-button>
       </div>
     </page-footer>

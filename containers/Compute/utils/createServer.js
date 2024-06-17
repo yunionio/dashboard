@@ -864,8 +864,10 @@ export class GenCreateData {
       backend: item.type === STORAGE_AUTO.key ? '' : item.type,
       size: item.size * 1024,
     }
-    if (type === 'sys' && this.fd.imageType !== IMAGES_TYPE_MAP.iso.key && this.fd.hypervisor !== HYPERVISORS_MAP.proxmox.key) {
-      ret.image_id = this.fd.image.key
+    if (type === 'sys' && this.fd.imageType !== IMAGES_TYPE_MAP.iso.key && this.fd.hypervisor !== HYPERVISORS_MAP.proxmox.key && this.fd.hypervisor !== HYPERVISORS_MAP.sangfor.key) {
+      if (this.fd.image && this.fd.image.key) {
+        ret.image_id = this.fd.image.key
+      }
     }
     if (type === 'sys' && this.fd.imageType === IMAGES_TYPE_MAP.iso.key && this.isWindows()) {
       ret.driver = 'ide'
@@ -1376,7 +1378,7 @@ export class GenCreateData {
       data.billing_type = 'postpaid'
     }
     // 镜像类型为 iso 需要加参数 cdrom
-    if ((this.fd.imageType === IMAGES_TYPE_MAP.iso.key)) {
+    if (this.fd.imageType === IMAGES_TYPE_MAP.iso.key || this.fd.imageType === IMAGES_TYPE_MAP.private_iso.key) {
       data.cdrom = this.fd.image.key
     }
     // 主机镜像需要guest image id参数，并且把磁盘中的镜像ID回填回去

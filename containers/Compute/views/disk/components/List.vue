@@ -147,6 +147,12 @@ export default {
                 }
                 return ret
               },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  rows: this.list.selectedItems,
+                  disabledProviders: ['SangFor'],
+                })
+              },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_syncstatus'),
             },
             {

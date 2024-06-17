@@ -2,7 +2,7 @@
   <div>
     <page-header :title="$t('network.text_570')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body need-margin-bottom>
-      <a-form class="mt-3" :form="form.fc" @submit.prevent="handleSubmit" v-bind="formItemLayout">
+      <a-form class="mt-3" :form="form.fc" @submit.prevent="handleSubmit" v-bind="formItemLayout" hideRequiredMark>
         <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" class="mt-3 mb-0" v-bind="formItemLayout">
           <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="handleDomainChange" />
         </a-form-item>
@@ -128,8 +128,8 @@
         </a-collapse>
         <page-footer>
           <template v-slot:right>
-            <a-button type="primary" html-type="submit" class="ml-3" :loading="submiting" size="large">{{$t('network.text_30')}}</a-button>
-            <a-button class="ml-3" size="large" @click="() => $router.back()">{{$t('common.cancel')}}</a-button>
+            <a-button type="primary" html-type="submit" class="ml-3" :loading="submiting">{{$t('network.text_30')}}</a-button>
+            <a-button class="ml-3" @click="() => $router.back()">{{$t('common.cancel')}}</a-button>
           </template>
         </page-footer>
       </a-form>

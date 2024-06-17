@@ -417,6 +417,7 @@ export default {
       this.validateForm()
         .then(async formData => {
           this.submiting = true
+          console.log('formData', formData)
           const genCreteData = new GenCreateData(formData, this.form.fi)
           const data = genCreteData.all()
           if (data.custom_data_type) {
@@ -750,6 +751,11 @@ export default {
       } catch (error) {
         throw error
       }
+    },
+    handleCancel () {
+      this.$router.push({
+        name: this.isServertemplate ? 'Servertemplate' : 'VMInstance',
+      })
     },
   },
 }

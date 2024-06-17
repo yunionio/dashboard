@@ -5,7 +5,7 @@
         <div
           v-for="(tip, idx) of tips"
           :key="idx"
-          class="d-flex flex-column justify-content-center flex-grow-1 content">
+          :class="`d-flex flex-column justify-content-center ${idx === tips.length - 1 ? 'flex-grow-2' : 'flex-grow-1'} content mr-3`">
           <div
             v-for="obj of tip"
             :key="obj.label"
@@ -40,13 +40,13 @@
           <a-button
             :title="confirmText"
             class="text-truncate"
-            size="large"
             type="primary"
             native-type="submit"
             html-type="submit"
             style="width: 120px;"
             :loading="loading"
             :disabled="disabled || !!errors.length">{{ confirmText }}</a-button>
+          <a-button class="ml-3" @click="handleCancel">{{$t('common.cancel')}}</a-button>
         </div>
         <side-errors :error-title="$t('compute.text_290')" :errors="errors" @update:errors="changeErrors" />
       </template>
@@ -477,6 +477,9 @@ export default {
       this.origin_price = price.originPrice
       this.priceTips = price.priceTips
     },
+    handleCancel () {
+      this.$emit('cancel')
+    },
   },
 }
 </script>
@@ -487,7 +490,7 @@ export default {
   position: relative;
   font-size: 12px;
   .content {
-    width: 80%;
+    // width: 80%;
     .label {
       &.label-w-50 {
         width: 50px;
@@ -525,5 +528,8 @@ export default {
     position: absolute;
     right: 20px;
   }
+}
+.flex-grow-2 {
+  flex-grow: 2 !important;
 }
 </style>

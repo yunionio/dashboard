@@ -20,8 +20,8 @@
     </page-body>
     <page-footer>
       <div slot="right">
-        <a-button type="primary" @click="handleConfirm" :loading="loading" size="large">{{ $t('common.create') }}</a-button>
-        <a-button class="ml-2" size="large" @click="handleCancel">{{ $t('dialog.cancel') }}</a-button>
+        <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('common.create') }}</a-button>
+        <a-button class="ml-3" @click="handleCancel">{{ $t('dialog.cancel') }}</a-button>
       </div>
     </page-footer>
   </div>

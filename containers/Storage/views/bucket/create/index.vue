@@ -2,7 +2,7 @@
   <div>
     <page-header :title="$t('storage.text_95')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body needMarginBottom>
-      <a-form :form="form.fc" v-bind="formItemLayout">
+      <a-form :form="form.fc" v-bind="formItemLayout" hideRequiredMark>
         <a-form-item :label="$t('storage.text_55', [$t('dictionary.project')])" v-bind="formItemLayout">
           <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="handleDomainChange" />
         </a-form-item>
@@ -44,6 +44,7 @@
     </page-body>
     <page-footer>
       <div slot="right">
+        <a-button class="ml-3 float-right" @click="() => $router.back()">{{$t('common.cancel')}}</a-button>
         <a-button class="float-right" type="primary" @click="handleConfirm" :loading="loading">{{ $t('common_258') }}</a-button>
       </div>
     </page-footer>

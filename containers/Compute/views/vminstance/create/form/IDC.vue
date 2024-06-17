@@ -254,7 +254,8 @@
         :isOpenWorkflow="isOpenWorkflow"
         :errors.sync="errors"
         :isServertemplate="isServertemplate"
-        :hasMeterService="hasMeterService" />
+        :hasMeterService="hasMeterService"
+        @cancel="handleCancel" />
     </a-form>
   </div>
 </template>

@@ -835,6 +835,7 @@
   "cloudenv.cloudaccount.project_mapping": "资源归属项目到",
   "cloudenv.block_resources": "屏蔽同步资源",
   "cloudenv.block_resources_type": "屏蔽资源类型",
+  "cloudenv.create_sangfor": "{0}#新建深信服超融合账号",
   "cloudenv.project_same_as_cloudprovider": "与云订阅同名的本地项目",
   "cloudenv.view_record": "查看记录",
   "cloudenv.old_sth": "原{0}",

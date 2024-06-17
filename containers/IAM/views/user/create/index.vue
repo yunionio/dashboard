@@ -11,10 +11,10 @@
           <template slot="title">
             {{ $t('iam.disabled_join_project.tips') }}
           </template>
-          <a-button type="primary" size="large" :loading="loading" :disabled="disabledJoinProject" @click="handleSubmit">{{ createTxt }}</a-button>
+          <a-button type="primary" :loading="loading" :disabled="disabledJoinProject" @click="handleSubmit">{{ createTxt }}</a-button>
         </a-tooltip>
-        <a-button v-else type="primary" size="large" :loading="loading" @click="handleSubmit">{{ createTxt }}</a-button>
-        <a-button class="ml-2" size="large" @click="handleCancel">{{ cancelTxt }}</a-button>
+        <a-button v-else type="primary" :loading="loading" @click="handleSubmit">{{ createTxt }}</a-button>
+        <a-button class="ml-3" @click="handleCancel">{{ cancelTxt }}</a-button>
       </template>
     </page-footer>
   </div>
