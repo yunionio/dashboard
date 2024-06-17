@@ -13,5 +13,18 @@ export default {
   created () {
     this.singleActions = Actions.getSingleActions.call(this)
   },
-  methods: {},
+  methods: {
+    openWebConsole (data) {
+      this.$openWebConsole(data)
+    },
+    async fetchConnectUrl (containerId) {
+      const { data } = await new this.$Manager('webconsole', 'v1').objectRpc({
+        methodname: 'DoContainerExec',
+        params: {
+          container_id: containerId,
+        },
+      })
+      return Promise.resolve(data)
+    },
+  },
 }
