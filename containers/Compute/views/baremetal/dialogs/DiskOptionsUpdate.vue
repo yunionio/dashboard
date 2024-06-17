@@ -158,15 +158,16 @@ export default {
     },
     checkMountpoint (rule, value, callback) {
       const pathReg = new RegExp('^(/[^/ ]*)+')
+      const checkName = this.params.nameArr.filter(item => item.name === `${this.prefix}${value}`)
+      if (this.params.title === this.$t('compute.text_317') && checkName.length > 0) {
+        callback(new Error(this.$t('compute.text_337')))
+      }
       if (value) {
         if (!pathReg.test(value)) {
           callback(new Error(this.$t('compute.text_335')))
         }
         const checkName = this.params.nameArr.filter(item => item.name === `${this.prefix}${value}`)
         if (this.params.title === this.$t('compute.text_318') && checkName.length > 1) {
-          callback(new Error(this.$t('compute.text_337')))
-        }
-        if (this.params.title === this.$t('compute.text_317') && checkName.length > 0) {
           callback(new Error(this.$t('compute.text_337')))
         }
       }
