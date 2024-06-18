@@ -145,7 +145,7 @@ export default {
     },
     // 选择的镜像类型是否为私有云镜像
     isPrivateImage () {
-      return this.imageType === IMAGES_TYPE_MAP.private.key
+      return this.imageType === IMAGES_TYPE_MAP.private.key || this.imageType === IMAGES_TYPE_MAP.private_iso.key
     },
     isVMwareImage () {
       return this.imageType === IMAGES_TYPE_MAP.vmware.key
