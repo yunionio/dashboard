@@ -206,6 +206,29 @@ export default {
           ],
         },
         {
+          path: '/alertresource',
+          meta: {
+            label: i18n.t('monitor.text_17'),
+            // t: 'dictionary.alertresource',
+            permission: 'alertresources_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.alertresource')) {
+                return true
+              }
+              if (!store.getters.isAdminMode) return true
+              return !setupKeys.hasVersionedSetupKey({ '3.0': ['monitor'] }, !(!store.getters.isAdminMode && process.env.VUE_APP_IS_PRIVATE))
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'alertresourceIndex',
+              path: '',
+              component: AlertresourceIndex,
+            },
+          ],
+        },
+        {
           path: '/alertrecord',
           meta: {
             label: i18n.t('dictionary.alertrecord'),
@@ -226,29 +249,6 @@ export default {
               name: 'AlertrecordIndex',
               path: '',
               component: AlertrecordIndex,
-            },
-          ],
-        },
-        {
-          path: '/alertresource',
-          meta: {
-            label: i18n.t('monitor.text_17'),
-            // t: 'dictionary.alertresource',
-            permission: 'alertresources_list',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.alertresource')) {
-                return true
-              }
-              if (!store.getters.isAdminMode) return true
-              return !setupKeys.hasVersionedSetupKey({ '3.0': ['monitor'] }, !(!store.getters.isAdminMode && process.env.VUE_APP_IS_PRIVATE))
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'alertresourceIndex',
-              path: '',
-              component: AlertresourceIndex,
             },
           ],
         },
