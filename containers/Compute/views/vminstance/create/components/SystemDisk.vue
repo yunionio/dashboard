@@ -151,7 +151,7 @@ export default {
     },
     elements () {
       const ret = ['disk-select']
-      if (this.isIDC && !this.isServertemplate) {
+      if (this.isIDC) {
         ret.push('schedtag')
         if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key || this.form.fd.hypervisor === HYPERVISORS_MAP.kvm.key) {
           ret.push('storage') // vmware,kvm 支持指定块存储
@@ -162,7 +162,7 @@ export default {
         //   ret.push('schedtag')
         // }
       }
-      if (this.isAws && !this.isServertemplate) {
+      if (this.isAws) {
         if (this.currentTypeObj?.key === 'gp3') {
           ret.push('iops', 'throughput')
         }
@@ -174,7 +174,7 @@ export default {
     },
     iopsLimit () {
       let ret = { min: 0 }
-      if (this.isAws && !this.isServertemplate) {
+      if (this.isAws) {
         // gp3 iops 不能超过磁盘500倍
         if (this.currentTypeObj?.key === 'gp3') {
           ret = { min: 3000, max: 16000 }
