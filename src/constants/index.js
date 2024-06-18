@@ -40,7 +40,7 @@ export const HYPERVISORS = [
   { key: 'chinaunion', label: i18n.t('scopeCloudPrvidersMap.ChinaUnion'), provider: 'ChinaUnion', brand: 'ChinaUnion', host_type: 'cucloud', hypervisor: 'cucloud', env: 'public', cloud_env: 'public' },
   { key: 'volcengine', label: i18n.t('scopeCloudPrvidersMap.VolcEngine'), provider: 'VolcEngine', brand: 'VolcEngine', host_type: 'volcengine', hypervisor: 'volcengine', env: 'public', cloud_env: 'public' },
   { key: 'oracle', label: 'OracleCloud', provider: 'OracleCloud', brand: 'OracleCloud', host_type: 'oracle', hypervisor: 'oracle', env: 'public', cloud_env: 'public' },
-  { key: 'sangfor', label: getProviderName('sangfor'), provider: 'SangFor', brand: 'SangFor', host_type: 'sangfor', hypervisor: 'sangfor', env: 'private', cloud_env: 'private' },
+  { key: 'sangfor', label: i18n.t('license.provider.sangfor'), provider: 'SangFor', brand: 'SangFor', host_type: 'sangfor', hypervisor: 'sangfor', env: 'private', cloud_env: 'private' },
 ]
 
 export const HYPERVISORS_MAP = arrayToObj(HYPERVISORS, 'key')
