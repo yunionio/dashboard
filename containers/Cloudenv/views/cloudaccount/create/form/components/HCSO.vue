@@ -17,8 +17,8 @@
       <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.hcso.default_region')">
-        <a-input v-decorator="decorators.default_region" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.hcso.default_region')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.region_id')">
+        <a-input v-decorator="decorators.region_id" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.region_id')])" />
         <div slot="extra">
           {{$t('cloudenv.cloudaccount.hcso.endpoint_domain.tips')}}
         </div>
@@ -108,7 +108,7 @@ export default {
   data () {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
     this.endpoint_domain_change = _.debounce(this.endpoint_domain_change, 500)
-    this.default_region_change = _.debounce(this.default_region_change, 500)
+    this.region_id_change = _.debounce(this.region_id_change, 500)
     return {
       docs: getCloudaccountDocs(this.$store.getters.scope),
       decorators: this.getDecorators(keySecretField),
@@ -129,7 +129,7 @@ export default {
         sfs_turbo: 'sfs-turbo',
       },
       prevs: {
-        default_region: '',
+        region_id: '',
         endpoint_domain: '',
       },
     }
@@ -192,11 +192,11 @@ export default {
             ],
           },
         ],
-        default_region: [
-          'default_region',
+        region_id: [
+          'region_id',
           {
             rules: [
-              { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.cloudaccount.hcso.default_region')]) },
+              { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.cloudaccount.region_id')]) },
             ],
           },
         ],
@@ -262,7 +262,7 @@ export default {
             prevs[k] = prevs[k].substring(0, i) + domain
           }
           if (region && region.length > 0) {
-            prevs[k] = prevs[k].replace(this.prevs.default_region, region)
+            prevs[k] = prevs[k].replace(this.prevs.region_id, region)
           }
           currents[k] = prevs[k]
         } else {
@@ -276,15 +276,15 @@ export default {
     },
     endpoint_domain_change () {
       const d = this.form.fc.getFieldValue('endpoint_domain')
-      const r = this.form.fc.getFieldValue('default_region')
+      const r = this.form.fc.getFieldValue('region_id')
       this.form.fc.setFieldsValue(this.endpoints(d, r))
       this.prevs.endpoint_domain = d
     },
-    default_region_change () {
+    region_id_change () {
       const d = this.form.fc.getFieldValue('endpoint_domain')
-      const r = this.form.fc.getFieldValue('default_region')
+      const r = this.form.fc.getFieldValue('region_id')
       this.form.fc.setFieldsValue(this.endpoints(d, r))
-      this.prevs.default_region = r
+      this.prevs.region_id = r
     },
   },
 }
