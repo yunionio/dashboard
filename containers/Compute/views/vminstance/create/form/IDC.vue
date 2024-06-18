@@ -188,7 +188,7 @@
               :secgroup-params="secgroupParams"
               :hypervisor="form.fd.hypervisor" />
           </a-form-item>
-          <a-form-item v-show="!isServertemplate" :label="$t('compute.text_311')" class="mb-0">
+          <a-form-item :label="$t('compute.text_311')" class="mb-0">
             <sched-policy
               :form="form"
               :server-type="form.fi.createType"
