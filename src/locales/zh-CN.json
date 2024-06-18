@@ -3052,7 +3052,8 @@
       "custom": "自定义",
       "advanced": "高级",
       "please_select": "请选择"
-    }
+    },
+    "view_action": "查看{0}"
   },
   "navbar": {
     "view": {

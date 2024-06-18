@@ -3036,7 +3036,8 @@
       "custom": "Custom",
       "advanced": "Advanced",
       "please_select": "Please Select"
-    }
+    },
+    "view_action": "View {0}"
   },
   "navbar": {
     "view": {

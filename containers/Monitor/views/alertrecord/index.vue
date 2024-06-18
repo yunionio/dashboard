@@ -1,8 +1,8 @@
 <template>
   <div>
-    <page-header :title="$t('dictionary.alertrecord')" :current-tab.sync="alertType" :tabs="cloudEnvOptions" />
+    <page-header :title="$t('dictionary.alertrecord')" />
     <page-body>
-      <list listId="AlertrecordList" :alertType="alertType" :resType="resType" />
+      <list listId="AlertrecordList" :resType="resType" />
     </page-body>
   </div>
 </template>
@@ -20,11 +20,7 @@ export default {
     if (this.$route.query.res_type) {
       resType = this.$route.query.res_type
     }
-    const cloudEnvOptions = [{ key: 'un-recovered', label: this.$t('monitor.overview_alert_sum') }, { key: 'all', label: this.$t('monitor.text_19') }]
-    const alertType = cloudEnvOptions[0].key
     return {
-      cloudEnvOptions,
-      alertType,
       resType,
     }
   },

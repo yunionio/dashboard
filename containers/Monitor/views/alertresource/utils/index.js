@@ -54,9 +54,7 @@ export const strategyColumn = (field = 'common_alert_metric_details', title = i1
   minWidth: 120,
   slots: {
     default: ({ row }, h) => {
-      const { filters, strategyConfig, strategyArr = [] } = getMetircAlertUtil(row, field)
-      const periodTxt = i18n.t('monitor.text_102', [strategyConfig.period])
-
+      const { filters, strategy, strategyArr = [] } = getMetircAlertUtil(row, field)
       if (!row[field]) return '-'
       let filterNode = null
       if (filters.length > 0) {
@@ -68,10 +66,18 @@ export const strategyColumn = (field = 'common_alert_metric_details', title = i1
         )
       }
       const strategys = strategyArr.map(item => <div>{item}</div>)
+      if (row[field]?.length > 1) {
+        return [
+          <div>
+            <div>{i18n.t('monitor.commonalert.alert_condition.content')}:</div>
+            <div>{strategys}</div>
+            {filterNode}
+          </div>,
+        ]
+      }
       return [
         <div>
-          <div>{i18n.t('monitor.commonalert.alert_condition.content')}{periodTxt}:</div>
-          <div>{strategys}</div>
+          <div>{strategy}</div>
           {filterNode}
         </div>,
       ]
@@ -160,14 +166,15 @@ export function getMetircAlertUtil (row, field, condition) {
   const getStrategyInfo = (detail) => {
     let measurement = detail.measurement_display_name || detail.measurement_desc || detail.measurement
     if (metric_zh[measurement]) measurement = metric_zh[measurement]
+    strategyConfig.measurement = measurement
     let metric = _.get(detail, 'field_description.display_name') || detail.field_desc || detail.field
     if (metric) {
       metric = metric_zh[metric] || metric
     }
     strategyConfig.metric = metric
-    const reduce = (alertStrategyMaps[detail.reduce || detail.reducer || 'avg']) || ''
+    const reduce = (alertStrategyMaps[detail.reduce]) || ''
     const alert_duration = row.alert_duration ? i18n.t('monitor.list.duration.label', [row.alert_duration]) : row[field].alert_duration ? i18n.t('monitor.list.duration.label', [row[field].alert_duration]) : ''
-    let preiod = ((preiodMaps[row.period] || {}).label) || ((preiodMaps[detail.period] || {}).label) || row.period || detail.period
+    let preiod = ((preiodMaps[row.period] || {}).label) || row.period || ((preiodMaps[detail.period] || {}).label) || detail.period
     let unit = detail.field_description ? _.get(detail, 'field_description.unit') : (R.type(row.eval_data) === 'Array' ? (_.get(row, 'eval_data[0].unit') || '') : '')
     let threshold = R.is(String, detail.threshold) ? { text: detail.threshold } : transformUnit(detail.threshold, unit)
     if (detail.measurement === 'cloudaccount_balance' && unit === 'RMB') {
@@ -191,7 +198,11 @@ export function getMetircAlertUtil (row, field, condition) {
     if (detail.comparator === 'within_range' && detail.within_range) {
       comparator = ''
       txt = `[${detail.within_range[0]}${threshold.unit}, ${detail.within_range[1]}${threshold.unit}]`
+      strategyConfig.within_range = detail.within_range
     }
+    strategyConfig.comparator = detail.comparator
+    strategyConfig.threshold = detail.threshold
+    strategyConfig.unit = unit
     strategy = i18n.t('monitor.text_6', [measurement, metric, reduce, alert_duration, comparator, txt])
     if (detail.condition_type === 'nodata_query') { // 系统上报数据为空
       strategy = i18n.t('monitor.text_108', [alert_duration])
@@ -199,7 +210,7 @@ export function getMetircAlertUtil (row, field, condition) {
     if (condition) return strategy // 只要触发条件信息
     if (preiod) {
       preiod = preiod.replace(i18n.t('monitor.text_103'), '')
-      // strategy += `${i18n.t('monitor.text_102', [preiod])}`
+      strategy += `${i18n.t('monitor.text_102', [preiod])}`
       strategyConfig.period = preiod
     }
     const silent_period = row.silent_period || row[field].silent_period
@@ -216,7 +227,7 @@ export function getMetircAlertUtil (row, field, condition) {
         p = i18n.t('monitor.duration.silent.hour', [p.replace('h', '')])
       }
       strategy += `${i18n.t('monitor.commonalerts.list.silent', [p])}`
-      strategyConfig.silent_period = silent_period
+      strategyConfig.period = silent_period
     }
     return {
       strategy,
@@ -253,6 +264,7 @@ export function getMetircAlertUtil (row, field, condition) {
   }
   return {
     strategy,
+    strategyConfig,
     filters,
     strategyArr,
     strategyConfigArr,
@@ -340,9 +352,9 @@ export const getStrategyInfo = (detail) => {
     metric = metric_zh[metric] || metric
   }
   strategyConfig.metric = metric
-  const reduce = (alertStrategyMaps[detail.reduce || detail.reducer || 'avg']) || ''
+  const reduce = (alertStrategyMaps[detail.reduce]) || ''
   const alert_duration = detail.alert_duration ? i18n.t('monitor.list.duration.label', [detail.alert_duration]) : detail.alert_duration ? i18n.t('monitor.list.duration.label', [detail.alert_duration]) : ''
-  let preiod = ((preiodMaps[detail.period] || {}).label) || detail.period
+  let preiod = ((preiodMaps[detail.period] || {}).label) || detail.period || ((preiodMaps[detail.period] || {}).label) || detail.period
   let unit = detail.field_description ? _.get(detail, 'field_description.unit') : (R.type(detail.eval_data) === 'Array' ? (_.get(detail, 'eval_data[0].unit') || '') : '')
   let threshold = R.is(String, detail.threshold) ? { text: detail.threshold } : transformUnit(detail.threshold, unit)
   if (detail.measurement === 'cloudaccount_balance' && unit === 'RMB') {
@@ -377,7 +389,7 @@ export const getStrategyInfo = (detail) => {
   }
   if (preiod) {
     preiod = preiod.replace(i18n.t('monitor.text_103'), '')
-    // strategy += `${i18n.t('monitor.text_102', [preiod])}`
+    strategy += `${i18n.t('monitor.text_102', [preiod])}`
     strategyConfig.period = preiod
   }
   const silent_period = detail.silent_period
@@ -394,7 +406,7 @@ export const getStrategyInfo = (detail) => {
       p = i18n.t('monitor.duration.silent.hour', [p.replace('h', '')])
     }
     strategy += `${i18n.t('monitor.commonalerts.list.silent', [p])}`
-    strategyConfig.silent_period = silent_period
+    strategyConfig.period = silent_period
   }
   return {
     strategy,

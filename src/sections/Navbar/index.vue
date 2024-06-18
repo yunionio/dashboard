@@ -125,7 +125,8 @@
     </div>
     <slot name="frontNavbar" />
     <!-- 资源报警 -->
-    <alertresource v-if="showAlertresource && showMenuMap.alert" :res_total="alertresource.total" :alert_total="alertrecords.total" class="navbar-item-icon primary-color-hover" />
+    <alertresource v-if="showAlertresource && showMenuMap.alert" :res_total="alertresource.total" class="navbar-item-icon primary-color-hover" />
+    <slot name="frontNavbar2" />
     <!-- 消息中心 -->
     <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify && showMenuMap.notification" />
     <!-- 工单 -->
@@ -252,8 +253,7 @@ export default {
       computeLicense: state => state.license.compute,
       computeServiceNumbers: state => state.license.service_numbers,
       oem: state => state.oem,
-      alertresource: state => state.alertresource,
-      alertrecords: state => state.alertrecords,
+      alertresource: state => state.alertrecords,
     }),
     enableCloudShell () {
       const { globalConfig = {} } = this.common
@@ -396,10 +396,6 @@ export default {
       return globalSetting.value.key.length > 0
     },
     showAlertresource () {
-      if (this.alertrecords && this.alertrecords.total > 0) {
-        return true
-      }
-
       if (this.isAdminMode && this.$appConfig.isPrivate) {
         if (this.alertresource) {
           return this.alertresource.total > 0
@@ -725,10 +721,10 @@ export default {
       }, 5 * 60 * 1000)
 
       if (this.isAdminMode && this.$appConfig.isPrivate && this.$store._actions['app/fetchAlertresource']) {
-        this.$store.dispatch('app/fetchAlertresource')
-        setInterval(() => {
-          this.$store.dispatch('app/fetchAlertresource')
-        }, 5 * 60 * 1000)
+        // this.$store.dispatch('app/fetchAlertresource')
+        // setInterval(() => {
+        //   this.$store.dispatch('app/fetchAlertresource')
+        // }, 5 * 60 * 1000)
       } else {
         this.$store.commit('app/SET_ALERTRESOURCE', {
           data: [],
