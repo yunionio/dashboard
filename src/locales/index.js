@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import * as R from 'ramda'
 import VueI18n from 'vue-i18n'
 import vxeTableCN from 'vxe-table/lib/locale/lang/zh-CN'
 import vxeTableEN from 'vxe-table/lib/locale/lang/en-US'
