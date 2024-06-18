@@ -137,7 +137,7 @@ export default {
     },
     elements () {
       const ret = ['disk-select']
-      if (this.isIDC && !this.isServertemplate) {
+      if (this.isIDC) {
         ret.push('schedtag')
         if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key || this.form.fd.hypervisor === HYPERVISORS_MAP.kvm.key) {
           ret.push('storage') // vmware,kvm 支持指定块存储
