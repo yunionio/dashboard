@@ -143,7 +143,7 @@ export default {
       if (this.isWindows) {
         delete maps.keypair
       }
-      if (this.isInCloudSphere) {
+      if (this.isInCloudSphere || this.isSangFor) {
         maps = {
           image: LOGIN_TYPES_MAP.image,
         }
@@ -350,6 +350,9 @@ export default {
       return this.form.fd.hypervisor === HYPERVISORS_MAP.zstack.key
     },
     isInCloudSphere () {
+      return this.form.fd.hypervisor === HYPERVISORS_MAP.incloudsphere.key
+    },
+    isSangFor () {
       return this.form.fd.hypervisor === HYPERVISORS_MAP.incloudsphere.key
     },
     isHCSO () {
