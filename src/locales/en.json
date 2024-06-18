@@ -5460,5 +5460,7 @@
   "scope.licenses.expire_label": "License expiration time",
   "scope.licenses.maintenance_expire_label": "Technical support expiration time",
   "common.licenses.maintenance_adverb_expire.alert": "Your technical support service is about to expire. Please renew your technical support in time, otherwise you will not be able to obtain official technical support. Please send your server identification code and requirements to {0 },We will contact you as soon as possible!",
-  "common.licenses.maintenance_already_expire.alert": "Your technical support service has expired and official technical service support is currently unavailable. If you need to renew technical support, please send an email with your server identification code and requirements to {0 },We will contact you as soon as possible!"
+  "common.licenses.maintenance_already_expire.alert": "Your technical support service has expired and official technical service support is currently unavailable. If you need to renew technical support, please send an email with your server identification code and requirements to {0 },We will contact you as soon as possible!",
+  "common.private_iso": "@:dictionary.private_env ISO images",
+  "common.private_iso_tip": "ISO images of @:dictionary.private_env"
 }

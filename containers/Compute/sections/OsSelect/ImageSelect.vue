@@ -145,7 +145,7 @@ export default {
     },
     // 选择的镜像类型是否为私有云镜像
     isPrivateImage () {
-      return this.imageType === IMAGES_TYPE_MAP.private.key
+      return this.imageType === IMAGES_TYPE_MAP.private.key || this.imageType === IMAGES_TYPE_MAP.private_iso.key
     },
     isVMwareImage () {
       return this.imageType === IMAGES_TYPE_MAP.vmware.key
@@ -664,17 +664,20 @@ export default {
       }
     },
     getImageOpts (imageOpts = []) {
+      console.log('len', imageOpts.length)
       let images = imageOpts.slice()
       if (images && images.length > 0) {
         images = images.filter((item) => {
           const minRam = (item.info && item.info.min_ram) || item.min_ram
-          const vmem = this.form.fd.vmem || this.form.fd.sku?.memory_size_mb
-          if (minRam > 0 && R.is(Number, vmem)) {
-            return minRam <= vmem
+          // const vmem = this.form.fd.vmem || this.form.fd.sku?.memory_size_mb
+          console.log(minRam, this.form.fd.vmem)
+          if (minRam > 0 && R.is(Number, this.form.fd.vmem)) {
+            return minRam <= this.form.fd.vmem
           }
           return true
         })
       }
+      console.log('len2', images.length)
       if (images && images.length > 0) {
         images.sort((a, b) => {
           const aVersion = a.info && a.info.properties && a.info.properties.os_version
