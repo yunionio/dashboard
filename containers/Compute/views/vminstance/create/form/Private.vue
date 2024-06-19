@@ -355,7 +355,7 @@ export default {
       return params
     },
     showSecgroup () {
-      const hiddenSecCloudprovider = ['Nutanix']
+      const hiddenSecCloudprovider = ['Nutanix', 'SangFor']
       return !hiddenSecCloudprovider.includes(this.cloudprovider)
     },
     systemDiskTypeDisabled () {
