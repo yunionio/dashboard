@@ -77,9 +77,9 @@ export default {
       const showFields = ['name', 'ip', 'instance_type']
       return this.params.columns.filter((item) => { return showFields.includes(item.field) })
     },
-    // 腾讯云、阿里云的按量付费机器，关机可停止付费
+    // 腾讯云、阿里云、火山云的按量付费机器，关机可停止付费
     canStopPaying () {
-      const canStopPayingBrands = ['qcloud', 'aliyun']
+      const canStopPayingBrands = ['qcloud', 'aliyun', 'volcengine']
       return this.params.data.every(item => {
         return canStopPayingBrands.includes(item.brand.toLocaleLowerCase()) && item.billing_type === 'postpaid'
       })
