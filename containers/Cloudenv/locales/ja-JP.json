@@ -849,7 +849,6 @@
   "cloudenv.volcengine": "火山エンジン",
   "cloudenv.create_volcengine": "{0}#新建火山引擎账号",
   "cloudenv.create_oraclecloud": "{0}#新建oracle云账号",
-  "cloudenv.create_sangfor": "{0}#新建深信服超融合云账号",
   "cloudenv.view_record": "レコードの表示",
   "cloudenv.old_sth": "原作{0}",
   "cloudenv.new_sth": "現在の{0}",

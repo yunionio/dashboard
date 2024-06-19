@@ -294,7 +294,7 @@ export default {
             ret.validate = this.list.selectedItems.length > 0
             if (!ret.validate) return ret
             // 某些云不支持
-            const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.bingocloud.key, typeClouds.hypervisorMap.sangfor.key])
+            const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.bingocloud.key])
             if (!unenableCloudCheck.validate) {
               ret = unenableCloudCheck
               return ret
@@ -607,7 +607,7 @@ export default {
                         return ret
                       }
                       // 某些云不支持
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.bingocloud.key, typeClouds.hypervisorMap.sangfor.key])
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.bingocloud.key])
                       if (!unenableCloudCheck.validate) {
                         ret = unenableCloudCheck
                         return ret
@@ -968,18 +968,12 @@ export default {
                       })
                     },
                     meta: () => {
-                      let ret = {
+                      const ret = {
                         validate: true,
                         tooltip: null,
                       }
                       const rescueModeValid = validateRescueMode(this.list.selectedItems)
                       if (!rescueModeValid.validate) return rescueModeValid
-                      // 某些云不支持
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.sangfor.key])
-                      if (!unenableCloudCheck.validate) {
-                        ret = unenableCloudCheck
-                        return ret
-                      }
                       if (this.list.selectedItems) {
                         const project = this.list.selectedItems[0].project || ''
                         const isSame = this.list.selectedItems.every((item) => {
@@ -1024,18 +1018,12 @@ export default {
                       })
                     },
                     meta: () => {
-                      let ret = {
+                      const ret = {
                         validate: true,
                         tooltip: null,
                       }
                       const rescueModeValid = validateRescueMode(this.list.selectedItems)
                       if (!rescueModeValid.validate) return rescueModeValid
-                      // 某些云不支持
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.sangfor.key])
-                      if (!unenableCloudCheck.validate) {
-                        ret = unenableCloudCheck
-                        return ret
-                      }
                       for (const obj of this.list.selectedItems) {
                         if (!commonEnabled(obj, ['running'])) {
                           ret.validate = false

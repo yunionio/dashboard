@@ -671,7 +671,6 @@ const getSingleActions = function () {
                   }
                   if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key &&
                     obj.hypervisor !== typeClouds.hypervisorMap.esxi.key &&
-                    obj.hypervisor !== typeClouds.hypervisorMap.sangfor.key &&
                     findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
                     ret.tooltip = i18n.t('compute.text_473', [typeClouds.hypervisorMap[obj.hypervisor]?.label || ''])
                     return ret
@@ -737,10 +736,6 @@ const getSingleActions = function () {
                   }
                   if (obj.hypervisor === typeClouds.hypervisorMap.bingocloud.key) {
                     ret.tooltip = i18n.t('compute.text_473', [typeClouds.hypervisorMap.bingocloud.label])
-                    return ret
-                  }
-                  if (obj.hypervisor === typeClouds.hypervisorMap.sangfor.key) {
-                    ret.tooltip = i18n.t('compute.text_473', [typeClouds.hypervisorMap.sangfor.label])
                     return ret
                   }
                   ret.validate = true
@@ -1286,11 +1281,6 @@ const getSingleActions = function () {
                     validate: true,
                     tooltip: null,
                   }
-                  if (obj.hypervisor === typeClouds.hypervisorMap.sangfor.key) {
-                    ret.validate = false
-                    ret.tooltip = i18n.t('compute.text_473', [typeClouds.hypervisorMap.sangfor.label])
-                    return ret
-                  }
                   const rescueModeValid = validateRescueMode(obj)
                   if (!rescueModeValid.validate) return rescueModeValid
                   const isLinux = obj.os_type && obj.os_type.toLowerCase() === 'linux'
@@ -1323,11 +1313,6 @@ const getSingleActions = function () {
                   const ret = {
                     validate: true,
                     tooltip: null,
-                  }
-                  if (obj.hypervisor === typeClouds.hypervisorMap.sangfor.key) {
-                    ret.validate = false
-                    ret.tooltip = i18n.t('compute.text_473', [typeClouds.hypervisorMap.sangfor.label])
-                    return ret
                   }
                   const rescueModeValid = validateRescueMode(obj)
                   if (!rescueModeValid.validate) return rescueModeValid
@@ -1376,7 +1361,6 @@ const getSingleActions = function () {
                     typeClouds.hypervisorMap.ctyun.brand,
                     typeClouds.hypervisorMap.nutanix.brand,
                     typeClouds.hypervisorMap.proxmox.brand,
-                    typeClouds.hypervisorMap.sangfor.brand,
                   ]
                   if (noSupportBrand.includes(obj.brand)) {
                     ret.tooltip = i18n.t('compute.text_1287', [obj.brand])
@@ -1417,10 +1401,6 @@ const getSingleActions = function () {
                     ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                     return ret
                   }
-                  if (obj.hypervisor === typeClouds.hypervisorMap.sangfor.key) {
-                    ret.tooltip = i18n.t('compute.text_473', [typeClouds.hypervisorMap.sangfor.label])
-                    return ret
-                  }
                   if (commonUnabled(obj)) return ret
                   if (obj.cdrom) {
                     ret.tooltip = i18n.t('compute.text_1288')
@@ -1458,10 +1438,6 @@ const getSingleActions = function () {
                   }
                   if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
                     ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
-                    return ret
-                  }
-                  if (obj.hypervisor === typeClouds.hypervisorMap.sangfor.key) {
-                    ret.tooltip = i18n.t('compute.text_473', [typeClouds.hypervisorMap.sangfor.label])
                     return ret
                   }
                   if (commonUnabled(obj)) return ret

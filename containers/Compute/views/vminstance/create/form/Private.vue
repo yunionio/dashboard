@@ -264,7 +264,7 @@ export default {
         enabled: true,
         ...this.scopeParams,
       }
-      if (this.form.fd.hypervisor === 'nutanix' || this.form.fd.hypervisor === 'incloudsphere' || this.form.fd.hypervisor === 'proxmox' || this.form.fd.hypervisor === 'sangfor') {
+      if (this.form.fd.hypervisor === 'nutanix' || this.form.fd.hypervisor === 'incloudsphere' || this.form.fd.hypervisor === 'proxmox') {
         params.is_on_premise = true
         params.usable = false
       } else {
@@ -316,9 +316,6 @@ export default {
           'provider.0': HYPERVISORS_MAP.kvm.provider,
           'provider.1': _.get(HYPERVISORS_MAP, `[${this.form.fd.hypervisor}].provider`),
         }
-        if (this.form.fd.hypervisor === HYPERVISORS_MAP.sangfor.hypervisor) {
-          delete ret.usable
-        }
         return ret
       }
     },
@@ -360,7 +357,7 @@ export default {
       return params
     },
     showSecgroup () {
-      const hiddenSecCloudprovider = ['Nutanix', 'SangFor']
+      const hiddenSecCloudprovider = ['Nutanix']
       return !hiddenSecCloudprovider.includes(this.cloudprovider)
     },
     systemDiskTypeDisabled () {
