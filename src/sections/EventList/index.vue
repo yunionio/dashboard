@@ -244,8 +244,14 @@ export default {
           title: this.$t('scope.text_653'),
           field: 'obj_type',
           hideField: true,
-          message: row => this.$te(`dictionary.${row.obj_type}`) ? this.$t(`dictionary.${row.obj_type}`) : row.obj_type,
-          slotCallback: row => this.$te(`dictionary.${row.obj_type}`) ? this.$t(`dictionary.${row.obj_type}`) : row.obj_type,
+          message: row => {
+            const { _i18n = {} } = row
+            return _i18n.obj_type || (this.$te(`dictionary.${row.obj_type}`) ? this.$t(`dictionary.${row.obj_type}`) : row.obj_type)
+          },
+          slotCallback: row => {
+            const { _i18n = {} } = row
+            return _i18n.obj_type || (this.$te(`dictionary.${row.obj_type}`) ? this.$t(`dictionary.${row.obj_type}`) : row.obj_type)
+          },
         }),
         {
           title: this.$t('common.operation_type'),
