@@ -251,6 +251,11 @@ export default {
           }
         }
         return item
+      }).filter(item => {
+        if (this.detailData?.hypervisor === 'sangfor' && item.key === 'secgroup-list') {
+          return false
+        }
+        return true
       })
     },
   },
