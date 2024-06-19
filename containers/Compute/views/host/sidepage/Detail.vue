@@ -471,8 +471,9 @@ export default {
           field: 'nic_info',
           slots: {
             default: ({ row }, h) => {
+              const { nic_info = [] } = row
               return [
-                <vxe-grid class="mb-2" data={ row.nic_info.filter(nic => !nic.mac.startsWith('ff:')) } columns={ this.hostColumns } />,
+                <vxe-grid class="mb-2" data={ nic_info.filter(nic => !nic.mac.startsWith('ff:')) } columns={ this.hostColumns } />,
               ]
             },
           },
