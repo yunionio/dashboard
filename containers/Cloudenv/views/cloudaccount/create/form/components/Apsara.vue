@@ -17,8 +17,8 @@
       <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.default_region')">
-        <a-input v-decorator="decorators.default_region" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.default_region')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.region_id')">
+        <a-input v-decorator="decorators.region_id" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.region_id')])" />
       </a-form-item>
       <a-form-item :label="$t('cloudenv.cloudaccount.apsara.endpoint')">
         <a-input v-decorator="decorators.endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.endpoint')])" />
@@ -122,11 +122,11 @@ export default {
             ],
           },
         ],
-        default_region: [
-          'default_region',
+        region_id: [
+          'region_id',
           {
             rules: [
-              { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.cloudaccount.apsara.default_region')]) },
+              { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.cloudaccount.region_id')]) },
             ],
           },
         ],

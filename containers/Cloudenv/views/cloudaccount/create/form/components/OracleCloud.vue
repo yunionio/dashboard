@@ -23,6 +23,9 @@
           :placeholder="$t('common.tips.input', [$t('cloudenv.private_key')])"
           :auto-size="{ minRows: 6, maxRows: 8 }" />
       </upload-pem-file>
+      <a-form-item :label="$t('cloudenv.cloudaccount.region_id')">
+        <a-input v-decorator="decorators.region_id" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.region_id')])" />
+      </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <blocked-resources :decorators="{ isOpenBlockedResources: decorators.isOpenBlockedResources, blockedResources: decorators.blockedResources }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
@@ -122,6 +125,14 @@ export default {
             },
             rules: [
               { validator: isRequired(), message: this.$t('rules.domain'), trigger: 'change' },
+            ],
+          },
+        ],
+        region_id: [
+          'region_id',
+          {
+            rules: [
+              { required: false, message: this.$t('common.tips.input', [this.$t('cloudenv.cloudaccount.region_id')]) },
             ],
           },
         ],
