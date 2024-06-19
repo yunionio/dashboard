@@ -671,6 +671,7 @@ const getSingleActions = function () {
                   }
                   if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key &&
                     obj.hypervisor !== typeClouds.hypervisorMap.esxi.key &&
+                    obj.hypervisor !== typeClouds.hypervisorMap.sangfor.key &&
                     findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
                     ret.tooltip = i18n.t('compute.text_473', [typeClouds.hypervisorMap[obj.hypervisor]?.label || ''])
                     return ret
