@@ -1,56 +1,300 @@
-
 <template>
   <page-list
     :list="list"
     :columns="columns"
-    ref="pagelist"
-    @refresh="setNavbarAlert"
     :single-actions="singleActions"
-    :expandConfig="expandConfig" />
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
+import * as R from 'ramda'
+import { levelMaps } from '@Monitor/constants'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import BrandIcon from '@/sections/BrandIcon'
+import { getNameFilter, getTimeRangeFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import { getTimeTableColumn, getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import { strategyColumn, levelColumn, getStrategyInfo } from '@Monitor/views/commonalert/utils'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
-  name: 'AlertresourceList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  name: 'AlertResourceList',
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin],
   props: {
+    getParams: {
+      type: Object,
+      default: () => ({}),
+    },
+    data: {
+      type: Object,
+      required: false,
+    },
+    resType: String,
     listId: String,
+    hiddenColumns: {
+      type: Array,
+      default: () => [],
+    },
   },
   data () {
     return {
-      list: this.$list.createList(this, {
-        id: this.listId,
-        resource: 'alertresources',
-        apiVersion: 'v1',
-        filterOptions: {
-          name: getNameFilter(),
-          description: getDescriptionFilter(),
-        },
-      }),
+      list: this.$list.createList(this, this.listOptions('monitorresourcealerts')),
+      exportDataOptions: {
+        items: [
+          { key: 'alert_name', label: this.$t('monitor.text_99') },
+          { key: 'created_at', label: this.$t('monitor.text_14') },
+          { key: 'state', label: this.$t('common.status') },
+          { key: 'res_type', label: this.$t('monitor.text_97') },
+          { key: 'alert_rule', label: this.$t('monitor.strategy_detail') },
+          { key: 'level', label: this.$t('monitor.level') },
+          { key: 'res_num', label: this.$t('cloudenv.text_417') },
+          { key: 'send_state', label: this.$t('common.sendState') },
+        ].filter(item => {
+          return !this.hiddenColumns.some(item2 => item2 === item.key)
+        }),
+      },
+      resTypeItems: [],
     }
   },
+  computed: {
+    columns () {
+      let columns = this.listColumns()
+      if (this.hiddenColumns.length) {
+        columns = columns.filter(item => {
+          return !this.hiddenColumns.some(item2 => item2 === item.field)
+        })
+      }
+      return columns
+    },
+    singleActions () {
+      const actions = [
+        {
+          label: this.$t('common.view_action', [this.$t('monitor.text_0')]),
+          action: (obj) => {
+            if (obj.data) {
+              obj.eval_data = [obj.data]
+            }
+            this.createDialog('ViewMonitorDialog', {
+              vm: this,
+              title: this.$t('common.view_action', [this.$t('monitor.text_0')]),
+              columns: this.columns,
+              onManager: this.onManager,
+              data: [obj],
+            })
+          },
+        },
+        {
+          label: this.$t('monitor.alerts.shield.shield'),
+          permission: 'alertrecordshields_create',
+          action: (obj) => {
+            this.createDialog('ShieldAlertrecord', {
+              vm: this,
+              columns: this.columns,
+              onManager: this.onManager,
+              refresh: this.refresh,
+              data: [obj],
+            })
+          },
+          meta: (obj) => {
+            const ret = {
+              validate: true,
+            }
+            if (obj.is_set_shield === true) {
+              return {
+                validate: false,
+                tooltip: this.$t('monitor.alerts.shield.tips2'),
+              }
+            }
+            return ret
+          },
+        },
+      ]
+      return actions
+    },
+  },
+  watch: {
+    resTypeItems (val) {
+      this.$nextTick(() => {
+        this.list.filterOptions = this.filters()
+      })
+    },
+  },
   created () {
-    this.fetchData()
+    this.allAlertManager = new this.$Manager('alertrecords', 'v1')
+    this.list.fetchData()
+    this.initResType()
   },
   methods: {
-    setNavbarAlert (data) {
-      if (this.$appConfig.isPrivate) {
-        this.$store.commit('app/SET_ALERTRESOURCE', data)
+    refresh () {
+      this.list.fetchData()
+    },
+    filters () {
+      const options = {
+        name: getNameFilter({ field: 'name', label: this.$t('monitor.text_99') }),
+        description: getDescriptionFilter(),
+        level: {
+          label: this.$t('monitor.level'),
+          dropdown: true,
+          items: Object.values(levelMaps),
+        },
+        send_state: {
+          label: this.$t('common.sendState'),
+          dropdown: true,
+          filter: true,
+          items: [
+            { key: 'ok', label: this.$t('status.alertSendState.ok') },
+            { key: 'silent', label: this.$t('status.alertSendState.silent') },
+            { key: 'shield', label: this.$t('status.alertSendState.shield') },
+          ],
+          formatter: (val) => {
+            return `send_state.equals(${val})`
+          },
+        },
+        res_type: {
+          label: this.$t('monitor.text_97'),
+          dropdown: true,
+          items: this.resTypeItems,
+        },
+        res_name: {
+          field: 'res_name',
+          label: this.$t('common_151'),
+        },
+        created_at: getTimeRangeFilter({ label: this.$t('monitor.text_14'), field: 'trigger_time' }),
+      }
+      for (const key of Object.keys(options)) {
+        if (this.hiddenColumns.some(item => item === key)) {
+          delete options[key]
+        }
+      }
+      return options
+    },
+    listOptions (resource) {
+      return {
+        id: this.listId,
+        idKey: 'row_id',
+        resource: resource,
+        apiVersion: 'v1',
+        getParams: this.getParam,
+        genParamsCb: (params) => { return Object.assign({}, params, { details: true }) },
+        filter: this.resType ? { res_type: [this.resType] } : {},
+        filterOptions: this.filters(),
+        hiddenColumns: ['alert_rule'],
       }
     },
-    async fetchData () {
-      try {
-        const data = await this.list.fetchData()
-        this.setNavbarAlert(data)
-      } catch (error) {
-        throw error
+    listColumns () {
+      return [
+        getNameDescriptionTableColumn({
+          edit: false,
+          showDesc: false,
+          editDesc: false,
+          title: this.$t('common_151'),
+          hideField: true,
+          field: 'res_name',
+          onManager: this.onManager,
+          slotCallback: row => {
+            return (
+              <span>{row.res_name}</span>
+            )
+          },
+        }),
+        getTimeTableColumn({ field: 'trigger_time', title: this.$t('monitor.text_14') }),
+        getStatusTableColumn({ statusModule: 'alertrecord', field: 'state' }),
+        {
+          field: 'type',
+          title: this.$t('monitor.text_97'),
+          minWidth: 80,
+          formatter: ({ row }) => {
+            let rule = row.alert_rule
+            if (R.is(Array, rule)) {
+              rule = row.alert_rule[0]
+            }
+            if (rule && rule.res_type) {
+              if (this.$te(`dictionary.${rule.res_type}`)) {
+                return this.$t(`dictionary.${rule.res_type}`)
+              }
+            }
+            return '-'
+          },
+        },
+        strategyColumn('alert_rule'),
+        {
+          field: 'alert_details',
+          title: this.$t('monitor.condition'),
+          formatter: ({ row }) => {
+            const { strategy } = getStrategyInfo(row.data.alert_details)
+            return strategy
+          },
+        },
+        levelColumn,
+        {
+          field: 'alert_name',
+          title: this.$t('monitor.text_99'),
+          formatter: ({ row }) => row.alert_name || '-',
+        },
+        {
+          field: 'brand',
+          title: this.$t('compute.text_176'),
+          slots: {
+            default: ({ row }, h) => {
+              let brand = R.path(['data', 'tags', 'brand'], row)
+              if (!brand) return [<data-loading />]
+              if (brand === 'kvm') brand = 'OneCloud'
+              return [
+                <BrandIcon name={brand} />,
+              ]
+            },
+          },
+        },
+        {
+          field: 'value_str',
+          title: this.$t('monitor.text_16'),
+          align: 'right',
+          formatter: ({ row }) => row.data ? row.data.value_str : '-',
+        },
+        {
+          field: 'send_state',
+          title: this.$t('common.sendState'),
+          formatter: ({ row }) => this.$t(`status.alertSendState.${row.send_state}`),
+        },
+      ]
+    },
+    getParam () {
+      const ret = {
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+        details: true,
+        alertinng: true,
       }
+      return ret
+    },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'AlertResourceSidePage', {
+        id: row.res_id,
+        resource: 'monitorresourcealerts',
+        apiVersion: 'v1',
+        getParams: this.getParam,
+      })
+    },
+    initResType () {
+      this.allAlertManager.get({
+        id: 'distinct-field',
+        params: {
+          scope: this.$store.getters.scope,
+          extra_field: 'res_type',
+          details: true,
+        },
+      }).then(res => {
+        const { res_type = [] } = res.data || {}
+        this.resTypeItems = res_type.map(item => {
+          let label = item
+          if (this.$te(`dictionary.${item}`)) {
+            label = this.$t(`dictionary.${item}`)
+          }
+          return {
+            key: item,
+            label,
+          }
+        })
+      })
     },
   },
 }
