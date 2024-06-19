@@ -451,16 +451,13 @@ export default {
         }
       }
       if (this.type === SERVER_TYPE.private) {
-        // nutanix vmware incloudshpere proxmox sangfor
-        if (this.selectedItem && (this.selectedItem.provider === HYPERVISORS_MAP.nutanix.provider || this.selectedItem.provider === HYPERVISORS_MAP.incloudsphere.provider || this.selectedItem.provider === HYPERVISORS_MAP.proxmox.provider || this.selectedItem.provider === HYPERVISORS_MAP.sangfor.provider)) {
+        // nutanix vmware incloudshpere proxmox
+        if (this.selectedItem && (this.selectedItem.provider === HYPERVISORS_MAP.nutanix.provider || this.selectedItem.provider === HYPERVISORS_MAP.incloudsphere.provider || this.selectedItem.provider === HYPERVISORS_MAP.proxmox.provider)) {
           params['provider.0'] = HYPERVISORS_MAP.kvm.provider
         } else {
           params.cloudregion_id = this.selectedItem.cloudregion_id
         }
         params.postpaid_status = 'available'
-        if (this.selectedItem.provider === HYPERVISORS_MAP.sangfor.provider) {
-          delete params.usable
-        }
       }
       if (this.type === SERVER_TYPE.public) {
         params.public_cloud = true
@@ -904,9 +901,6 @@ export default {
           params.cloudregion_id = this.selectedItem.cloudregion_id
         } else {
           params.provider = HYPERVISORS_MAP.kvm.provider
-        }
-        if (this.selectedItem.provider === HYPERVISORS_MAP.sangfor.provider) {
-          delete params.usable
         }
         delete params.zone
       }

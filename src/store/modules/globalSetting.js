@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import { GLOBAL_SETTINGS } from '@/constants'
 import http from '@/utils/http'
+import c from '@/constants/feature'
 
 export default {
   state: {

@@ -526,9 +526,4 @@ export const diskCreateSnapshotConfig = {
       validate: false,
     }
   },
-  sangfor (obj) {
-    return {
-      validate: false,
-    }
-  },
 }

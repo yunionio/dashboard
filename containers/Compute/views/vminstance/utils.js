@@ -45,7 +45,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: ['ready'],
       remotefile: false,
-      sangfor: ['ready'],
     },
   },
   stop: {
@@ -76,7 +75,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: ['running'],
       remotefile: false,
-      sangfor: ['running'],
     },
   },
   restart: {
@@ -107,7 +105,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: ['running', 'stop_fail'],
       remotefile: false,
-      sangfor: false,
     },
   },
   rebuildRoot: {
@@ -136,7 +133,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
-      sangfor: false,
     },
   },
   resetPassword: {
@@ -165,7 +161,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: ['running'],
       remotefile: false,
-      sangfor: false,
     },
   },
   bindKeyPair: {
@@ -194,7 +189,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: ['running'],
       remotefile: false,
-      sangfor: false,
     },
   },
   unBindKeyPair: {
@@ -223,7 +217,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
-      sangfor: false,
     },
   },
   adjustConfig: {
@@ -252,7 +245,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: ['ready', 'running'],
       remotefile: false,
-      sangfor: ['ready'],
     },
   },
   vnc: {
@@ -283,7 +275,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: ['running'],
       remotefile: false,
-      sangfor: ['running'],
     },
   },
   'EIP SSH': {
@@ -313,7 +304,6 @@ const actionEableMap = {
       proxmox: false,
       bingocloud: false,
       remotefile: false,
-      sangfor: ['running'],
     },
   },
   'IP SSH': {
@@ -344,7 +334,6 @@ const actionEableMap = {
       incloudsphere: ['running'],
       proxmox: false,
       remotefile: false,
-      sangfor: ['running'],
     },
   },
   createSnapshot: {
@@ -373,7 +362,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
-      sangfor: false,
     },
   },
   createBackup: {
@@ -402,7 +390,6 @@ const actionEableMap = {
       proxmox: false,
       incloudsphere: false,
       remotefile: false,
-      sangfor: false,
     },
   },
   transfer: {
@@ -431,7 +418,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
-      sangfor: false,
     },
   },
   v2vTransfer: {
@@ -460,7 +446,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
-      sangfor: false,
     },
   },
   assignSecgroup: {
@@ -489,7 +474,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
-      sangfor: false,
     },
   },
   insertiso: {
@@ -517,7 +501,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
-      sangfor: false,
     },
   },
   ejectiso: {
@@ -545,7 +528,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
-      sangfor: false,
     },
   },
   bindEip: {
@@ -574,7 +556,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
-      sangfor: false,
     },
   },
   unbindEip: {
@@ -603,7 +584,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
-      sangfor: false,
     },
   },
   acttachGpu: {
@@ -614,7 +594,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
-      sangfor: false,
     },
   },
   acttachUsb: {
@@ -625,7 +604,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
-      sangfor: false,
     },
   },
   publicIpToEip: {
@@ -638,7 +616,6 @@ const actionEableMap = {
       bingocloud: false,
       incloudsphere: false,
       remotefile: false,
-      sangfor: false,
     },
   },
   changeBlockStorage: {
@@ -646,14 +623,12 @@ const actionEableMap = {
     brand: {
       onecloud: ['ready', 'running'],
       remotefile: false,
-      sangfor: false,
     },
   },
   addBackup: {
     cn: i18n.t('compute.text_1162'),
     brand: {
       onecloud: ['ready'],
-      sangfor: false,
     },
   },
 }
