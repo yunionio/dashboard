@@ -522,7 +522,7 @@ export default {
                         return ret
                       }
                       // 某些云不支持
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.bingocloud.key, typeClouds.hypervisorMap.sangfor.key])
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.bingocloud.key])
                       if (!unenableCloudCheck.validate) {
                         ret = unenableCloudCheck
                         return ret
@@ -855,15 +855,9 @@ export default {
                       })
                     },
                     meta: () => {
-                      let ret = {
+                      const ret = {
                         validate: true,
                         tooltip: null,
-                      }
-                      // 某些云不支持
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.sangfor.key])
-                      if (!unenableCloudCheck.validate) {
-                        ret = unenableCloudCheck
-                        return ret
                       }
                       if (this.list.selectedItems) {
                         const project = this.list.selectedItems[0].project || ''
@@ -909,15 +903,9 @@ export default {
                       })
                     },
                     meta: () => {
-                      let ret = {
+                      const ret = {
                         validate: true,
                         tooltip: null,
-                      }
-                      // 某些云不支持
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.sangfor.key])
-                      if (!unenableCloudCheck.validate) {
-                        ret = unenableCloudCheck
-                        return ret
                       }
                       for (const obj of this.list.selectedItems) {
                         if (!commonEnabled(obj, ['running'])) {
