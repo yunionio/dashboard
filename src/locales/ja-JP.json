@@ -5313,7 +5313,6 @@
   "license.provider.qingcloud": "@:scopeProviders.qingcloud",
   "license.provider.chinaunion": "@:scopeProviders.chinaunion",
   "license.provider.volcengine": "@:scopeCloudPrvidersMap.VolcEngine",
-  "license.provider.sangfor": "SangFor",
   "license.provider.s3": "S3",
   "license.provider.ceph": "セフ",
   "license.provider.xsky": "エクススカイ",
