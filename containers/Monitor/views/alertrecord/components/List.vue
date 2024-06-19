@@ -29,7 +29,6 @@ export default {
       type: Object,
       required: false,
     },
-    alertType: String,
     resType: String,
     listId: String,
     hiddenColumns: {
@@ -39,8 +38,7 @@ export default {
   },
   data () {
     return {
-      allList: this.$list.createList(this, this.listOptions('alertrecords')),
-      unrecoverList: this.$list.createList(this, this.listOptions('monitorresourcealerts')),
+      list: this.$list.createList(this, this.listOptions('alertrecords')),
       exportDataOptions: {
         items: [
           { key: 'alert_name', label: this.$t('monitor.text_99') },
@@ -59,15 +57,8 @@ export default {
     }
   },
   computed: {
-    list () {
-      if (this.alertType === 'un-recovered') {
-        return this.unrecoverList
-      } else {
-        return this.allList
-      }
-    },
     columns () {
-      let columns = this.listColumns(this.alertType)
+      let columns = this.listColumns()
       if (this.hiddenColumns.length) {
         columns = columns.filter(item => {
           return !this.hiddenColumns.some(item2 => item2 === item.field)
@@ -80,9 +71,6 @@ export default {
         {
           label: this.$t('cloudenv.text_463'),
           action: (obj) => {
-            if (this.alertType === 'un-recovered' && obj.data) {
-              obj.eval_data = [obj.data]
-            }
             this.createDialog('ViewAlertrecordDetailDialog', {
               vm: this,
               columns: this.columns,
@@ -92,50 +80,10 @@ export default {
           },
         },
       ]
-
-      if (this.alertType === 'un-recovered') {
-        actions.push({
-          label: this.$t('monitor.alerts.shield.shield'),
-          permission: 'alertrecordshields_create',
-          action: (obj) => {
-            this.createDialog('ShieldAlertrecord', {
-              vm: this,
-              columns: this.columns,
-              onManager: this.onManager,
-              refresh: this.refresh,
-              data: [obj],
-            })
-          },
-          meta: (obj) => {
-            const ret = {
-              validate: true,
-            }
-            // if (obj.send_state === 'shield') {
-            //   return {
-            //     validate: false,
-            //     tooltip: this.$t('monitor.alerts.shield.tips'),
-            //   }
-            // }
-            if (obj.is_set_shield === true) {
-              return {
-                validate: false,
-                tooltip: this.$t('monitor.alerts.shield.tips2'),
-              }
-            }
-            return ret
-          },
-        })
-      }
       return actions
     },
   },
   watch: {
-    alertType (val) {
-      this.$nextTick(() => {
-        this.list.fetchData()
-        if (this.resTypeItems.length) this.list.filterOptions = this.filters()
-      })
-    },
     resTypeItems (val) {
       this.$nextTick(() => {
         this.list.filterOptions = this.filters()
@@ -152,10 +100,7 @@ export default {
       this.list.fetchData()
     },
     getStatusTableFilter () {
-      if (this.alertType !== 'un-recovered') {
-        return [getStatusFilter({ field: 'state', statusModule: 'alertrecord' })]
-      }
-      return []
+      return [getStatusFilter({ field: 'state', statusModule: 'alertrecord' })]
     },
     filters () {
       const options = {
@@ -201,7 +146,7 @@ export default {
     listOptions (resource) {
       return {
         id: this.listId,
-        idKey: resource === 'monitorresourcealerts' ? 'row_id' : 'id',
+        idKey: 'id',
         resource: resource,
         apiVersion: 'v1',
         getParams: this.getParam,
@@ -210,105 +155,7 @@ export default {
         filterOptions: this.filters(),
       }
     },
-    resourceColumns (alertType) {
-      if (alertType === 'un-recovered') {
-        return [
-          {
-            field: 'name',
-            title: this.$t('common_151'),
-            formatter: ({ row }) => R.path(['data', 'tags', 'name'], row) || '-',
-          },
-          {
-            field: 'brand',
-            title: this.$t('compute.text_176'),
-            slots: {
-              default: ({ row }, h) => {
-                let brand = R.path(['data', 'tags', 'brand'], row)
-                if (!brand) return [<data-loading />]
-                if (brand === 'kvm') brand = 'OneCloud'
-                return [
-                  <BrandIcon name={brand} />,
-                ]
-              },
-            },
-          },
-          {
-            field: 'value_str',
-            title: this.$t('monitor.text_16'),
-            align: 'right',
-            formatter: ({ row }) => row.data ? row.data.value_str : '-',
-          },
-        ]
-      } else {
-        return [
-          {
-            field: 'res_num',
-            title: this.$t('cloudenv.text_417'),
-            minWidth: 80,
-            type: 'expand',
-            slots: {
-              default: ({ row }) => {
-                return row.res_num
-              },
-              content: ({ row }) => {
-                const columns = [
-                  {
-                    field: 'name',
-                    title: this.$t('dashboard.text_110'),
-                    formatter: ({ row }) => R.path(['tags', 'name'], row) || '-',
-                  },
-                  {
-                    field: 'ip',
-                    title: 'IP',
-                    formatter: ({ row }) => R.path(['tags', 'ip'], row) || '-',
-                  },
-                  {
-                    field: 'brand',
-                    title: this.$t('compute.text_176'),
-                    slots: {
-                      default: ({ row }, h) => {
-                        let brand = R.path(['tags', 'brand'], row)
-                        if (!brand) return [<data-loading />]
-                        if (brand === 'kvm') brand = 'OneCloud'
-                        return [
-                          <BrandIcon name={brand} />,
-                        ]
-                      },
-                    },
-                  },
-                  {
-                    field: 'condition',
-                    title: this.$t('monitor.condition'),
-                    slots: {
-                      default: ({ row }, h) => {
-                        if (!row.alert_details) return '-'
-                        const { strategy } = getStrategyInfo(row.alert_details)
-
-                        return [
-                          <a-tooltip>
-                            <template slot="title">
-                              {row.metric}
-                            </template>
-                            {strategy}
-                          </a-tooltip>,
-                        ]
-                      },
-                    },
-                  },
-                  {
-                    field: 'value_str',
-                    title: row.state === 'ok' ? this.$t('monitor.text_106') : this.$t('monitor.text_105'),
-                    align: 'right',
-                    formatter: ({ row }) => row.value_str,
-                  },
-                ]
-                return <vxe-grid size="mini" border columns={columns} data={row.eval_data} />
-              },
-            },
-          }]
-      }
-    },
-    listColumns (alertType) {
+    listColumns () {
       return [
         getNameDescriptionTableColumn({
           edit: false,
@@ -343,7 +190,71 @@ export default {
         },
         strategyColumn('alert_rule'),
         levelColumn,
-        ...this.resourceColumns(alertType),
+        {
+          field: 'res_num',
+          title: this.$t('cloudenv.text_417'),
+          minWidth: 80,
+          type: 'expand',
+          slots: {
+            default: ({ row }) => {
+              return row.res_num
+            },
+            content: ({ row }) => {
+              const columns = [
+                {
+                  field: 'name',
+                  title: this.$t('dashboard.text_110'),
+                  formatter: ({ row }) => R.path(['tags', 'name'], row) || '-',
+                },
+                {
+                  field: 'ip',
+                  title: 'IP',
+                  formatter: ({ row }) => R.path(['tags', 'ip'], row) || '-',
+                },
+                {
+                  field: 'brand',
+                  title: this.$t('compute.text_176'),
+                  slots: {
+                    default: ({ row }, h) => {
+                      let brand = R.path(['tags', 'brand'], row)
+                      if (!brand) return [<data-loading />]
+                      if (brand === 'kvm') brand = 'OneCloud'
+                      return [
+                        <BrandIcon name={brand} />,
+                      ]
+                    },
+                  },
+                },
+                {
+                  field: 'condition',
+                  title: this.$t('monitor.condition'),
+                  slots: {
+                    default: ({ row }, h) => {
+                      if (!row.alert_details) return '-'
+                      const { strategy } = getStrategyInfo(row.alert_details)
+
+                      return [
+                        <a-tooltip>
+                          <template slot="title">
+                            {row.metric}
+                          </template>
+                          {strategy}
+                        </a-tooltip>,
+                      ]
+                    },
+                  },
+                },
+                {
+                  field: 'value_str',
+                  title: row.state === 'ok' ? this.$t('monitor.text_106') : this.$t('monitor.text_105'),
+                  align: 'right',
+                  formatter: ({ row }) => row.value_str,
+                },
+              ]
+              return <vxe-grid size="mini" border columns={columns} data={row.eval_data} />
+            },
+          },
+        },
         {
           field: 'send_state',
           title: this.$t('common.sendState'),
@@ -356,7 +267,6 @@ export default {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
         details: true,
       }
-      if (this.alertType === 'un-recovered') ret.alertinng = true
       return ret
     },
     handleOpenSidepage (row) {

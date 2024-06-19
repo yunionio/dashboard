@@ -3125,7 +3125,8 @@
       "custom": "カスタマイズ",
       "advanced": "戻る",
       "please_select": "選択してください"
-    }
+    },
+    "view_action": "{0} を表示"
   },
   "navbar": {
     "view": {
