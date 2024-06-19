@@ -16,7 +16,6 @@
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
         <div slot="extra">
-           <span class="mr-3">{{$t('cloudenv.text_267')}}</span>
            {{$t('cloudenv.text_236', [keySecretField.text, keySecretField.label.k])}}
            <help-link :href="docs[provider.toLowerCase()]">{{$t('cloudenv.text_237')}}</help-link>
         </div>

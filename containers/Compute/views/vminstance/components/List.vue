@@ -294,7 +294,7 @@ export default {
             ret.validate = this.list.selectedItems.length > 0
             if (!ret.validate) return ret
             // 某些云不支持
-            const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
+            const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.bingocloud.key, typeClouds.hypervisorMap.sangfor.key])
             if (!unenableCloudCheck.validate) {
               ret = unenableCloudCheck
               return ret

@@ -780,7 +780,7 @@ export const keySecretFields = {
   sangfor: {
     k: 'username',
     s: 'password',
-    text: i18n.t('cloudenv.sangforcloud'),
+    text: i18n.t('license.provider.sangfor'),
     placeholder: {
       k: i18n.t('cloudenv.text_151'),
       s: i18n.t('cloudenv.text_150'),
