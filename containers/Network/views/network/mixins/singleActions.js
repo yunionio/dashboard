@@ -4,7 +4,6 @@ import { findPlatform, getDisabledProvidersActionMeta } from '@/utils/common/hyp
 import { getSetPublicAction } from '@/utils/common/tableActions'
 // import { PROVIDER_MAP } from '@/constants'
 
-const PROVIDER_FILTER_CN = i18n.t('env')
 const disableAdjustConfig = ['private', 'public']
 const canAdjustConfig = (obj) => {
   const config = {
@@ -61,7 +60,7 @@ export default {
                 const { brand, canUpdate } = canAdjustConfig(obj)
                 const platform = findPlatform(brand)
                 if (!canUpdate) {
-                  tooltip = i18n.t('network.text_649', [PROVIDER_FILTER_CN[platform]])
+                  tooltip = i18n.t('network.text_649', [i18n.t(`env.${platform}`)])
                 }
                 if (this.isPower(obj)) {
                   const { hasbrand, canUpdate } = canAdjustConfig(obj)
