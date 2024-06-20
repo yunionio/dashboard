@@ -1770,5 +1770,6 @@
   "compute.status_normal": "Normal",
   "compute.status_expired": "Expired",
   "compute.force_delete.extra": "Force deletion (only deletes database records, not actual deletion, no need to check if necessary)",
-  "compute.usb_kbd": "USB keyboard"
+  "compute.usb_kbd": "USB keyboard",
+  "compute.mount_point_tips": "The default is the storage pool mount point {0}, which can be modified according to actual use"
 }
