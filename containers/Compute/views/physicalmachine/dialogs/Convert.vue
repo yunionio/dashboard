@@ -583,6 +583,7 @@ export default {
         title: e.name === this.$t('compute.text_315') ? this.$t('compute.text_317') : this.$t('compute.text_318'),
         item: this.diskOptionsDate[idx],
         nameArr,
+        type: 'Convert',
         selectedArea: selectedArea[0],
         updateData: (values) => {
           const updateItem = this.diskOptionsDate[idx].chartData.rows

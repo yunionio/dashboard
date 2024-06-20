@@ -1772,5 +1772,6 @@
   "compute.status_normal": "通常",
   "compute.status_expired": "期限切れ",
   "compute.force_delete.extra": "強制削除 (データベース レコードのみを削除し、実際の削除は行いません。必要に応じて確認する必要はありません)",
-  "compute.usb_kbd": "USB キーボード"
+  "compute.usb_kbd": "USB キーボード",
+  "compute.mount_point_tips": "デフォルトはストレージ プールのマウント ポイント {0} ですが、実際の使用状況に応じて変更できます。"
 }
