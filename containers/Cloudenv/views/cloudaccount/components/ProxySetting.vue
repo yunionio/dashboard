@@ -60,7 +60,7 @@ export default {
     },
   },
   created () {
-    if (this.account && this.isPermission) {
+    if (this.isPermission) {
       this.fetchQueryProxy()
     }
   },
