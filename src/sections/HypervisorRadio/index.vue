@@ -1,7 +1,16 @@
 <template>
   <a-form-item class="mb-0">
-    <a-radio-group v-decorator="decorator">
-      <a-radio-button v-for="item in hypervisorOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
+    <span v-if="isEmpty">{{$t('compute.hypervisor_empty_tips')}}</span>
+    <a-radio-group v-else v-decorator="decorator">
+      <template v-for="item in hypervisorOpts">
+        <a-tooltip :title="disabledHypervisorMap[item.key]" :key="item.key">
+          <a-radio-button
+            :value="item.key"
+            :disabled="disabledHypervisorMap[item.key]">
+            {{ item.label }}
+          </a-radio-button>
+        </a-tooltip>
+      </template>
     </a-radio-group>
   </a-form-item>
 </template>
@@ -29,6 +38,9 @@ export default {
       type: Boolean,
       default: true,
     },
+    disabledHypervisorMap: {
+      type: Object,
+    },
   },
   computed: {
     hypervisorOpts () {
@@ -42,6 +54,9 @@ export default {
         hyperItems = hyperItems.filter(val => val.key !== 'baremetal')
       }
       return hyperItems
+    },
+    isEmpty () {
+      return !this.hypervisorOpts?.length
     },
   },
 }

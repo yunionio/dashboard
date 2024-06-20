@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('compute.perform_create')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-header :title="$t('compute.text_709', [$t('compute.text_100')])" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <a-form
       class="mt-3"
       :form="form.fc"
@@ -26,6 +26,13 @@
       </a-form-item>
       <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
         <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+      </a-form-item>
+      <a-form-item :label="$t('compute.text_176')" :extra="$t('compute.hypervisor_extra')" v-bind="formItemLayout">
+        <hypervisor-radio
+          :decorator="decorators.hypervisor"
+          :type="form.fi.createType"
+          :hypervisors="hypervisors"
+          :disabledHypervisorMap="disabledHypervisorMap" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_100')" v-bind="formItemLayout">
         <a-row>
@@ -107,6 +114,7 @@ import WindowsMixin from '@/mixins/windows'
 import validateForm, { isRequired } from '@/utils/validate'
 import i18n from '@/locales'
 import DomainProject from '@/sections/DomainProject'
+import HypervisorRadio from '@/sections/HypervisorRadio'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import Tag from '@/sections/Tag'
 import BottomBar from './components/BottomBar'
@@ -123,6 +131,7 @@ export default {
     EncryptKeys,
     HostServer,
     DiskStorageSelect,
+    HypervisorRadio,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -142,34 +151,31 @@ export default {
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
-            if (values.domain && values.domain.key) {
-              this.form.fd.domain = values.domain.key
-            }
-            if (values.project && values.project.key) {
-              this.form.fd.project = values.project.key
-            }
+            Object.keys(values).forEach((key) => {
+              switch (key) {
+                case 'domain':
+                  this.$set(this.form.fd, key, values[key]?.key)
+                  break
+                case 'project':
+                  this.$set(this.form.fd, key, values[key]?.key)
+                  break
+                default:
+                  this.$set(this.form.fd, key, values[key])
+              }
+            })
             if (values.hasOwnProperty('zone')) {
               if (values.zone) {
                 this.fetchStorageList(values.zone)
-                this.form.fd.zone = values.zone
               } else {
                 this.storageOpts = []
                 this.form.fc.resetFields(['backend'])
               }
             }
-            if (values.cloudregion) {
-              this.form.fd.cloudregion = values.cloudregion
-            }
-            if (values.size) {
-              this.form.fd.size = values.size
-            }
           },
         }),
-        fd: {
-          domain: '',
-          project: '',
-          cloudregion: '',
-          zone: '',
+        fd: {},
+        fi: {
+          createType: 'idc',
         },
       },
       decorators: {
@@ -264,6 +270,14 @@ export default {
             }],
           },
         ],
+        hypervisor: [
+          'hypervisor',
+          {
+            rules: [
+              { required: true, message: i18n.t('compute.text_215') },
+            ],
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -288,6 +302,12 @@ export default {
       zoneList: {},
       instance_capabilities: [],
       showStorage: false,
+      hypervisors: [],
+      capbilityData: {},
+      disabledHypervisorMap: {
+        esxi: this.$t('compute.hypervisor_disabled_tips', ['VMware']),
+        pod: this.$t('compute.hypervisor_disabled_tips', [this.$t('compute.vminstance-container')]),
+      },
     }
   },
   computed: {
@@ -423,7 +443,7 @@ export default {
     },
     instanceCapabilitieStorage () {
       if (R.isEmpty(this.instance_capabilities)) return {}
-      return this.instance_capabilities[0].storages
+      return this.instance_capabilities?.[0]?.storages
     },
     instanceCapabilitieDataDisk () {
       if (R.isEmpty(this.instanceCapabilitieStorage)) return []
@@ -452,26 +472,39 @@ export default {
         const storage_type = storageVal?.split('__')[0]
         const medium_type = storageVal?.split('__')[1]
         params.filter = [
-            `storage_type.contains("${storage_type}")`,
-            `medium_type.contains("${medium_type}")`,
+          `storage_type.contains("${storage_type}")`,
+          `medium_type.contains("${medium_type}")`,
         ]
       }
       return params
     },
     hostQuery () {
+      const hostQuery = {}
       const value = this.storageItem?.value
       if (value) {
         const storageArr = value.split('__')
         const storage_type = storageArr[1]
-        return {
-          storage_type,
-        }
+        hostQuery.storage_type = storage_type
       }
-      return {}
+      hostQuery.host_type = this.form.fd.hypervisor === 'kvm' ? 'hypervisor' : this.form.fd.hypervisor
+      return hostQuery
+    },
+    dataStorageTypes () {
+      return this.capbilityData.data_storage_types
+    },
+    dataStorageProviderTypes () {
+      return this.dataStorageTypes[this.currentCloudregion.provider]
     },
   },
   watch: {
     cloudEnv (val) {
+      this.$nextTick(() => {
+        const { query, path } = this.$router.history.current
+        const newQuery = JSON.parse(JSON.stringify(query))
+        newQuery.type = val === 'onpremise' ? 'idc' : val
+        this.form.fi.createType = newQuery.type
+        this.$router.push({ path, query: newQuery })
+      })
       this.$refs.areaSelects.fetchs(['provider', 'cloudregion', 'zone'])
       this.storageItem = {}
     },
@@ -499,8 +532,21 @@ export default {
         .then(({ data }) => {
           try {
             const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
+            this.capbilityData = data
             this.instance_capabilities = data.instance_capabilities
-            this.storageOpts = data.data_storage_types.map((item) => {
+            const hypervisors = Object.keys(this.dataStorageProviderTypes || {})
+            let data_storage_types = []
+            this.hypervisors = hypervisors
+            if (hypervisors && hypervisors.length > 0) {
+              const firstHypervisor = hypervisors[0]
+              this.$nextTick(() => {
+                this.form.fc.setFieldsValue({
+                  hypervisor: firstHypervisor,
+                })
+              })
+              data_storage_types = Object.keys(this.dataStorageProviderTypes[firstHypervisor])
+            }
+            this.storageOpts = data_storage_types.map((item) => {
               const types = item.split('/')
               const backend = types[0]
               const medium = types[1]
@@ -512,7 +558,7 @@ export default {
                 }
               }
               const getLabel = (backend) => { return backend.includes('rbd') ? `Ceph(${MEDIUM_MAP[medium]})` : `${backend}(${MEDIUM_MAP[medium]})` }
-              const backends = data.data_storage_types.filter(v => v.includes(backend))
+              const backends = data_storage_types.filter(v => v.includes(backend))
               return {
                 value: `${backend}__${medium}`,
                 label: opt ? opt.label : getLabel(backend),
@@ -520,11 +566,7 @@ export default {
                 multiple: backends.length > 1,
               }
             })
-            if (this.diskType === 'onpremise') {
-              // this.storageOpts = this.storageOpts.filter((item) => {
-              //   return !item.value.includes('local')
-              // })
-            } else if (this.diskType === 'private') {
+            if (this.diskType === 'private') {
               this.storageOpts = this.storageOpts.filter((item) => {
                 return !item.value.includes('nova')
               })
@@ -542,9 +584,6 @@ export default {
             }
             this.form.fc.setFieldsValue({ backend: '' })
             if (this.storageOpts.length > 0) {
-              // if (this.cloudEnv === 'onpremise') {
-              //   this.storageOpts = this.storageOpts.filter(item => { return !item.value.includes('local') })
-              // }
               this.form.fc.setFieldsValue({ backend: this.storageOpts[0].value })
               this.__newStorageChange(this.storageOpts[0].value)
             }
