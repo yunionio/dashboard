@@ -224,7 +224,7 @@ export default {
                     let tooltip
                     if (obj.saml_auth) tooltip = this.$t('cloudaccount.tooltip.already_enable_sso')
                     const isSupportSAMLAuth = ['Aws', 'Aliyun', 'Huawei', 'Qcloud', 'Azure', 'HCSO', 'HCS'].includes(obj.brand)
-                    if (!isSupportSAMLAuth) tooltip = this.$t('cloudaccount.tooltip.not_support_sso', [obj.brand])
+                    if (!isSupportSAMLAuth) tooltip = this.$t('cloudaccount.tooltip.not_support_sso', [BRAND_MAP[obj.brand]?.label || obj.brand])
                     if (obj.brand === 'Azure' && obj.access_url !== 'AzurePublicCloud') {
                       let txt
                       Object.keys(i18n.t('cloudAccountAccessType')).forEach(k => {
@@ -232,7 +232,7 @@ export default {
                           txt = i18n.t('cloudAccountAccessType')[k]
                         }
                       })
-                      tooltip = this.$t('cloudaccount.tooltip.not_support_sso', [`${obj.brand} ${txt}`])
+                      tooltip = this.$t('cloudaccount.tooltip.not_support_sso', [`${BRAND_MAP[obj.brand]?.label || obj.brand} ${txt}`])
                       return { validate: false, tooltip }
                     }
                     return {
