@@ -253,6 +253,7 @@ export function getMetircAlertUtil (row, field, condition) {
   }
   return {
     strategy,
+    strategyConfig,
     filters,
     strategyArr,
     strategyConfigArr,
