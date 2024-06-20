@@ -4,13 +4,19 @@
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item :label="$t('compute.text_327')" v-bind="formItemLayout">
+        <a-form-item v-if="isConvert" :label="$t('compute.text_327')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" v-if="!isDisabled" class="workspace-prefix-wrapper">
             <span class="workspace-prefix" slot="prefix">{{prefix}}</span>
           </a-input>
           <a-input v-else :disabled="isDisabled" v-decorator="decorators.name" />
           <template #extra v-if="!isDisabled">
             {{$t('compute.text_1361', ['/opt/cloud/workspace'])}}
+          </template>
+        </a-form-item>
+        <a-form-item v-else :label="$t('compute.text_327')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :disabled="isDisabled" />
+          <template #extra v-if="!isDisabled">
+            {{$t('compute.mount_point_tips', ['/opt/cloud/workspace'])}}
           </template>
         </a-form-item>
         <a-form-item :label="$t('compute.text_328')" v-bind="formItemLayout" v-if="!isDisabled">
@@ -55,7 +61,10 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const prefix = '/opt/cloud/workspace'
-    const initNameValue = this.params.selectedArea.name.replace(prefix, '')
+    const nameValue = this.params.selectedArea.name.replace(prefix, '')
+    const isConvert = this.params.type === 'Convert'
+    const initNameValue = this.params.title === this.$t('compute.text_318') ? this.params.selectedArea.name : '/opt/cloud/workspace'
+    const initConvertNameValue = this.params.title === this.$t('compute.text_318') ? nameValue : ''
 
     return {
       loading: false,
@@ -83,11 +92,12 @@ export default {
         name: [
           'name',
           {
-            initialValue: this.params.title === this.$t('compute.text_318') ? initNameValue : '',
+            initialValue: isConvert ? initConvertNameValue : initNameValue,
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
             rules: [
-              { validator: this.checkMountpoint },
+              { required: !isConvert, message: this.$t('compute.text_333') },
+              { validator: isConvert ? this.checkConvertMountpoint : this.checkMountpoint },
             ],
           },
         ],
@@ -138,6 +148,9 @@ export default {
     selectedAreaName () {
       return this.params.selectedArea.name.replace(this.prefix, '')
     },
+    isConvert () {
+      return this.params.type === 'Convert'
+    },
     isSystem () {
       return this.selectedAreaName === this.$t('compute.text_316')
     },
@@ -156,7 +169,7 @@ export default {
         this.isManual = true
       }
     },
-    checkMountpoint (rule, value, callback) {
+    checkConvertMountpoint (rule, value, callback) {
       const pathReg = new RegExp('^(/[^/ ]*)+')
       const checkName = this.params.nameArr.filter(item => item.name === `${this.prefix}${value}`)
       if (this.params.title === this.$t('compute.text_317') && checkName.length > 0) {
@@ -170,6 +183,20 @@ export default {
         if (this.params.title === this.$t('compute.text_318') && checkName.length > 1) {
           callback(new Error(this.$t('compute.text_337')))
         }
+      }
+      callback()
+    },
+    checkMountpoint (rule, value, callback) {
+      const pathReg = new RegExp('^(/[^/ ]*)+')
+      if (!pathReg.test(value)) {
+        callback(new Error(this.$t('compute.text_335')))
+      }
+      const checkName = this.params.nameArr.filter(item => item.name === value)
+      if (this.params.title === this.$t('compute.text_318') && checkName.length > 1) {
+        callback(new Error(this.$t('compute.text_337')))
+      }
+      if (this.params.title === this.$t('compute.text_317') && checkName.length > 0) {
+        callback(new Error(this.$t('compute.text_337')))
       }
       callback()
     },
@@ -198,7 +225,9 @@ export default {
           size: this.params.item.remainder + this.params.selectedArea.size,
         }
       }
-      values.name = this.isDisabled ? values.name : `${this.prefix}${values.name}`
+      if (this.isConvert) {
+        values.name = this.isDisabled ? values.name : `${this.prefix}${values.name}`
+      }
       this.params.updateData(values)
       this.cancelDialog()
     },
