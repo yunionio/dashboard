@@ -253,7 +253,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '../../../../../../src/styles/less/theme';
+@import "../../../../../../src/styles/less/theme";
 
 .prices {
   .hour {
