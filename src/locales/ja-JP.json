@@ -2855,7 +2855,7 @@
       "create_time": "作成時間",
       "update_time": "更新時刻",
       "_action": "操作",
-      "external_id": "クラウド上の ID",
+      "external_id": "@:dictionary.external_id",
       "memory_mb": "メモリ (メガバイト)",
       "disk_mb": "ディスク (MB)",
       "user_tag": "ラベル",
