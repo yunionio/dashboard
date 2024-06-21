@@ -179,7 +179,8 @@
         :isOpenWorkflow="isOpenWorkflow"
         :errors.sync="errors"
         :hasMeterService="hasMeterService"
-        @add-cart="addShopCart" />
+        @add-cart="addShopCart"
+        @cancel="handleCancel" />
     </a-form>
   </div>
 </template>
