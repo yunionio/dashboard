@@ -645,5 +645,10 @@ export default {
           this.$store.commit('shopcart/ADD_SHOP_CART', shopCart)
         })
     },
+    handleCancel () {
+      this.$router.push({
+        name: 'VMContainerInstance',
+      })
+    },
   },
 }

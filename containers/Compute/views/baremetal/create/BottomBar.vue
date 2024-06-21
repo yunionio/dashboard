@@ -38,13 +38,12 @@
             </div>
           </div> -->
           <a-button
-            size="large"
             type="primary"
             native-type="submit"
             html-type="submit"
-            style="width: 120px;"
             :loading="loading"
             :disabled="!!errors.length">{{ isOpenWorkflow && !isInstallOperationSystem ? $t('compute.text_288') : $t('compute.text_289') }}</a-button>
+          <a-button class="ml-3" @click="handleCancel">{{$t('common.cancel')}}</a-button>
         </div>
         <side-errors :error-title="$t('compute.text_290')" :errors="errors" @update:errors="changeErrors" />
       </template>
@@ -203,6 +202,9 @@ export default {
       }
       ret += this.$t('compute.text_296')
       return ret
+    },
+    handleCancel () {
+      this.$emit('cancel')
     },
   },
 }
