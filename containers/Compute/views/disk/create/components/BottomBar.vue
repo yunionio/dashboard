@@ -173,7 +173,7 @@ export default {
       this.loading = true
       try {
         let values = await this.form.fc.validateFields()
-        const { project, domain, cloudregion, zone, manager_id, backend, encryptEnable, encrypt_key_id, encrypt_key_alg, server, host, storage, ...rest } = values
+        const { project, domain, cloudregion, zone, manager_id, backend, encryptEnable, encrypt_key_id, encrypt_key_alg, storage, ...rest } = values
         const oProvider = PROVIDER_MAP[this.currentCloudregion.provider]
         const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
         values = {
@@ -195,36 +195,17 @@ export default {
           values.encrypt_key_alg = encrypt_key_alg
           values.encrypt_key_user_id = this.userInfo.id
         }
-        if (host) {
-          values.prefer_host_id = host
-        }
         if (storage) {
           values.storage_id = storage
         }
         Reflect.deleteProperty(values, 'cloudregion')
         Reflect.deleteProperty(values, 'zone')
-        const { data } = await this.doCreate(values)
+        await this.doCreate(values)
         const successBack = () => {
           this.$message.success(this.$t('k8s.text_184'))
           this.$router.push('/disk')
         }
-        if (server) {
-          let timer = null
-          timer = setInterval(async () => {
-            const res = await this.fetchDiskInfo(data.id)
-
-            if (res.data.status === 'ready') {
-              clearInterval(timer)
-              await this.attachServers(data, server)
-              successBack()
-            } else if (res.data.status.includes('fail')) {
-              clearInterval(timer)
-              successBack()
-            }
-          }, 1000)
-        } else {
-          successBack()
-        }
+        successBack()
       } catch (error) {
         this.loading = false
         throw error
@@ -235,18 +216,6 @@ export default {
       const type = curVal.substring(0, curIndex)
       const backend = curVal.substr(curIndex + 2)
       return { type, backend }
-    },
-    async attachServers (disk, server) {
-      return new this.$Manager('servers').batchPerformAction({
-        action: 'attachdisk',
-        ids: [server],
-        data: {
-          disk_id: disk.id,
-        },
-      })
-    },
-    async fetchDiskInfo (id) {
-      return new this.$Manager('disks').get({ id })
     },
   },
 }

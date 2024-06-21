@@ -65,9 +65,6 @@
           </a-col>
         </a-row>
       </a-form-item>
-      <a-form-item :label="$t('common.choose.server.label')" v-bind="formItemLayout" v-if="isIDC">
-        <host-server :form="form" :decorators="decorators" :query="hostQuery" />
-      </a-form-item>
       <a-form-item v-if="enableEncryption" v-bind="formItemLayout" :label="$t('compute.disk.encryption')" :extra="$t('compute.disk.encryption.extra')">
         <encrypt-keys :decorators="decorators.encrypt_keys" />
       </a-form-item>
@@ -119,8 +116,6 @@ import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import Tag from '@/sections/Tag'
 import BottomBar from './components/BottomBar'
 
-import HostServer from './components/HostServer'
-
 export default {
   name: 'DiskCreate',
   components: {
@@ -129,7 +124,6 @@ export default {
     BottomBar,
     Tag,
     EncryptKeys,
-    HostServer,
     DiskStorageSelect,
     HypervisorRadio,
   },
@@ -477,17 +471,6 @@ export default {
         ]
       }
       return params
-    },
-    hostQuery () {
-      const hostQuery = {}
-      const value = this.storageItem?.value
-      if (value) {
-        const storageArr = value.split('__')
-        const storage_type = storageArr[1]
-        hostQuery.storage_type = storage_type
-      }
-      hostQuery.host_type = this.form.fd.hypervisor === 'kvm' ? 'hypervisor' : this.form.fd.hypervisor
-      return hostQuery
     },
     dataStorageTypes () {
       return this.capbilityData.data_storage_types
