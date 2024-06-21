@@ -46,9 +46,6 @@
           </a-col>
         </a-row>
       </a-form-item>
-      <a-form-item :label="$t('common.choose.server.label')" v-bind="formItemLayout" v-if="isIDC && isLocalDisk">
-        <host-server :form="form" :decorators="decorators" />
-      </a-form-item>
       <a-form-item v-if="enableEncryption" v-bind="formItemLayout" :label="$t('compute.disk.encryption')" :extra="$t('compute.disk.encryption.extra')">
         <encrypt-keys :decorators="decorators.encrypt_keys" />
       </a-form-item>
@@ -98,8 +95,6 @@ import Tag from '@/sections/Tag'
 import EncryptKeys from '@Compute/sections/encryptkeys'
 import BottomBar from './components/BottomBar'
 
-import HostServer from './components/HostServer'
-
 export default {
   name: 'DiskCreate',
   components: {
@@ -108,7 +103,6 @@ export default {
     BottomBar,
     Tag,
     EncryptKeys,
-    HostServer,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
