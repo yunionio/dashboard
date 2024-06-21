@@ -58,9 +58,6 @@
           </a-col>
         </a-row>
       </a-form-item>
-      <a-form-item :label="$t('common.choose.server.label')" v-bind="formItemLayout" v-if="isIDC">
-        <host-server :form="form" :decorators="decorators" :query="hostQuery" />
-      </a-form-item>
       <a-form-item v-if="enableEncryption" v-bind="formItemLayout" :label="$t('compute.disk.encryption')" :extra="$t('compute.disk.encryption.extra')">
         <encrypt-keys :decorators="decorators.encrypt_keys" />
       </a-form-item>
@@ -111,8 +108,6 @@ import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import Tag from '@/sections/Tag'
 import BottomBar from './components/BottomBar'
 
-import HostServer from './components/HostServer'
-
 export default {
   name: 'DiskCreate',
   components: {
@@ -121,7 +116,6 @@ export default {
     BottomBar,
     Tag,
     EncryptKeys,
-    HostServer,
     DiskStorageSelect,
   },
   mixins: [DialogMixin, WindowsMixin],
@@ -452,22 +446,17 @@ export default {
         const storage_type = storageVal?.split('__')[0]
         const medium_type = storageVal?.split('__')[1]
         params.filter = [
-            `storage_type.contains("${storage_type}")`,
-            `medium_type.contains("${medium_type}")`,
+          `storage_type.contains("${storage_type}")`,
+          `medium_type.contains("${medium_type}")`,
         ]
       }
       return params
     },
-    hostQuery () {
-      const value = this.storageItem?.value
-      if (value) {
-        const storageArr = value.split('__')
-        const storage_type = storageArr[1]
-        return {
-          storage_type,
-        }
-      }
-      return {}
+    dataStorageTypes () {
+      return this.capbilityData.data_storage_types
+    },
+    dataStorageProviderTypes () {
+      return this.dataStorageTypes[this.currentCloudregion.provider]
     },
   },
   watch: {
