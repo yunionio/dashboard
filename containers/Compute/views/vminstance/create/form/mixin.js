@@ -759,5 +759,10 @@ export default {
         name: this.isServertemplate ? 'Servertemplate' : 'VMInstance',
       })
     },
+    handleCancel () {
+      this.$router.push({
+        name: 'VMContainerInstance',
+      })
+    },
   },
 }

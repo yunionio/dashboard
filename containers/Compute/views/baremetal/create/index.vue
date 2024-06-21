@@ -127,7 +127,8 @@
         :isOpenWorkflow="isOpenWorkflow"
         :errors.sync="errors"
         :isServertemplate="false"
-        :hasMeterService="hasMeterService" />
+        :hasMeterService="hasMeterService"
+        @cancel="handleCancel" />
     </a-form>
   </div>
 </template>
@@ -1361,6 +1362,9 @@ export default {
           this.wires = newWireIds
         }
       })
+    },
+    handleCancel () {
+      this.$router.push({ name: 'Baremetal' })
     },
   },
 }

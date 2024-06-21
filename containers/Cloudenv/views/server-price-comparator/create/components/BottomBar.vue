@@ -39,7 +39,6 @@
           <a-button
             :title="confirmText"
             class="text-truncate"
-            size="large"
             type="primary"
             native-type="submit"
             html-type="submit"
