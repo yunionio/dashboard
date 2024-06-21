@@ -1773,5 +1773,8 @@
   "compute.status_expired": "已到期",
   "compute.force_delete.extra": "强制删除（仅删除数据库记录，不会真实删除，非必要无需勾选）",
   "compute.usb_kbd": "USB键盘",
-  "compute.mount_point_tips": "默认为存储池挂载点{0}，可根据实际用途修改"
+  "compute.mount_point_tips": "默认为存储池挂载点{0}，可根据实际用途修改",
+  "compute.hypervisor_extra": "根据选择的区域不同，平台的可用类型不同",
+  "compute.hypervisor_empty_tips": "该区域无可用平台",
+  "compute.hypervisor_disabled_tips": "{0}不支持该操作，需到资源列表进行调整配置操作"
 }
