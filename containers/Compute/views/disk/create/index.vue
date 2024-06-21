@@ -452,12 +452,6 @@ export default {
       }
       return params
     },
-    dataStorageTypes () {
-      return this.capbilityData.data_storage_types
-    },
-    dataStorageProviderTypes () {
-      return this.dataStorageTypes[this.currentCloudregion.provider]
-    },
   },
   watch: {
     cloudEnv (val) {
