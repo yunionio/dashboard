@@ -34,6 +34,7 @@
             :names="areaselectsName"
             :cloudregionParams="renderOrders.region.params"
             :providerParams="renderOrders.brand.params"
+            :cloudregionParamsMapper="cloudregionParamsMapper"
             filterBrandResource="compute_engine" />
           <a-form-item :label="$t('cloudenv.text_7')">
             <a-row :gutter="9">
@@ -398,6 +399,13 @@ export default {
           this.sshableStatus = newStatus
         }
       }
+    },
+    cloudregionParamsMapper (params) {
+      const ret = { ...params }
+      if (ret.provider === 'OneCloud') {
+        delete ret.capability
+      }
+      return ret
     },
     handleCancel () {
       this.$router.push('/ssh-proxy')
