@@ -43,7 +43,6 @@
             type="primary"
             native-type="submit"
             html-type="submit"
-            style="width: 120px;"
             :loading="loading"
             :disabled="disabled || !!errors.length">{{ confirmText }}</a-button>
           <a-button class="ml-3" @click="handleCancel">{{$t('common.cancel')}}</a-button>

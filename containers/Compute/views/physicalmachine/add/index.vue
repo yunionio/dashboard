@@ -24,8 +24,8 @@
     </page-body>
     <page-footer>
       <template v-slot:right>
-        <a-button type="primary" size="large" :loading="adding" @click="handleAdd" v-if="!isScriptAdd">{{$t('compute.text_162')}}</a-button>
-        <a-button class="ml-2" size="large" @click="handleBack">{{$t('compute.text_135')}}</a-button>
+        <a-button type="primary" :loading="adding" @click="handleAdd" v-if="!isScriptAdd">{{$t('compute.text_162')}}</a-button>
+        <a-button class="ml-2" @click="handleBack">{{$t('compute.text_135')}}</a-button>
       </template>
     </page-footer>
   </div>
