@@ -2877,7 +2877,7 @@
       "create_time": "Created At",
       "update_time": "Updated At",
       "_action": "Operations",
-      "external_id": "Cloud ID",
+      "external_id": "@:dictionary.external_id",
       "memory_mb": "Memory(MB)",
       "disk_mb": "Disk(MB)",
       "user_tag": "Tag",
