@@ -1778,5 +1778,8 @@
   "compute.status_expired": "Expired",
   "compute.force_delete.extra": "Force deletion (only deletes database records, not actual deletion, no need to check if necessary)",
   "compute.usb_kbd": "USB keyboard",
-  "compute.mount_point_tips": "The default is the storage pool mount point {0}, which can be modified according to actual use"
+  "compute.mount_point_tips": "The default is the storage pool mount point {0}, which can be modified according to actual use",
+  "compute.hypervisor_extra": "The available types of platforms vary depending on the selected region",
+  "compute.hypervisor_empty_tips": "No platform available in this area",
+  "compute.hypervisor_disabled_tips": "{0} does not support this operation. You need to go to the resource list to adjust the configuration operation."
 }
