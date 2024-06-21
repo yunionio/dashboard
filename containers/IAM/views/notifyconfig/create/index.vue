@@ -101,6 +101,7 @@ export default {
           'scope',
           {
             initialValue: scope,
+            rules: [{ required: true, message: `${this.$t('common.select')}` }],
           },
         ],
         domain: [
@@ -143,6 +144,15 @@ export default {
     typesOpts () {
       if (this.form.fd.scope === 'system') return this.types
       return this.types.filter(v => !['email', 'mobile'].includes(v.key))
+    },
+  },
+  watch: {
+    'form.fd.scope' (val) {
+      if (!this.typesOpts.some(item => item.key === val)) {
+        this.form.fc.setFieldsValue({
+          type: '',
+        })
+      }
     },
   },
   created () {
