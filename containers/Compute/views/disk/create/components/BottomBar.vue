@@ -172,7 +172,7 @@ export default {
       this.loading = true
       try {
         let values = await this.form.fc.validateFields()
-        const { project, domain, cloudregion, zone, manager_id, backend, encryptEnable, encrypt_key_id, encrypt_key_alg, storage, ...rest } = values
+        const { project, domain, cloudregion, zone, manager_id, backend, encryptEnable, encrypt_key_id, encrypt_key_alg, ...rest } = values
         const oProvider = PROVIDER_MAP[this.currentCloudregion.provider]
         const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
         values = {
@@ -193,9 +193,6 @@ export default {
           values.encrypt_key_new = true
           values.encrypt_key_alg = encrypt_key_alg
           values.encrypt_key_user_id = this.userInfo.id
-        }
-        if (storage) {
-          values.storage_id = storage
         }
         Reflect.deleteProperty(values, 'cloudregion')
         Reflect.deleteProperty(values, 'zone')
