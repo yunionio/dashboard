@@ -41,11 +41,9 @@
             v-if="$appConfig.isPrivate"
             :title="confirmText"
             class="text-truncate"
-            size="large"
             type="primary"
             native-type="submit"
             html-type="submit"
-            style="width: 120px;"
             :loading="loading"
             placement="topLeft"
             :disabled="disabled || !!errors.length">
@@ -61,13 +59,12 @@
             v-else
             :title="confirmText"
             class="text-truncate"
-            size="large"
             type="primary"
             native-type="submit"
             html-type="submit"
-            style="width: 120px;"
             :loading="loading"
             :disabled="disabled || !!errors.length">{{ confirmText }}</a-button>
+          <a-button class="ml-3" @click="handleCancel">{{$t('common.cancel')}}</a-button>
         </div>
         <side-errors :error-title="$t('compute.text_290')" :errors="errors" @update:errors="changeErrors" />
       </template>
@@ -404,6 +401,9 @@ export default {
       this.priceFormat = price.priceFormat
       this.origin_price = price.originPrice
       this.priceTips = price.priceTips
+    },
+    handleCancel () {
+      this.$emit('cancel')
     },
   },
 }
