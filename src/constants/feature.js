@@ -266,6 +266,10 @@ const LicenseItems = [
     key: 'oraclecloud',
     meta: meta('resource_managent', 'public', true),
   },
+  {
+    key: 'sangfor',
+    meta: meta('resource_managent', 'private', true),
+  },
 ]
 
 function fullfillLicenseItems () {
