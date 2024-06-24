@@ -25,6 +25,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    footerStyle: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   computed: {
     ...mapState({
@@ -45,9 +49,9 @@ export default {
     },
     pageFooterStyle () {
       if (!this.l2MenuVisibleForStore) {
-        return { left: 0 }
+        return { left: 0, ...this.footerStyle }
       }
-      return {}
+      return { ...this.footerStyle }
     },
   },
 }
