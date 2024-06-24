@@ -40,6 +40,9 @@ export default {
     },
     disabledHypervisorMap: {
       type: Object,
+      default () {
+        return {}
+      },
     },
   },
   computed: {
