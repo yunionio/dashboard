@@ -54,7 +54,19 @@ export default {
   data () {
     const metricQuery = this.params.data.map(item => {
       const alert_detail = item.data.alert_details
-      const tags = item.data.tags
+      const tag = item.data.tags
+      const originTags = [{
+        key: 'vm_id',
+        operator: '=',
+        value: tag.vm_id,
+      }]
+      if (alert_detail.measurement === 'agent_cpu') {
+        originTags.push({
+          key: 'cpu',
+          operator: '=',
+          value: 'cpu-total',
+        })
+      }
 
       return {
         model: {
@@ -70,13 +82,7 @@ export default {
               },
             ],
           ],
-          tags: [
-            {
-              key: 'vm_id',
-              operator: '=',
-              value: tags.vm_id,
-            },
-          ],
+          tags: originTags,
         },
       }
     })
