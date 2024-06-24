@@ -10,6 +10,13 @@
       <a-form-item :label="$t('common.description')">
         <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
       </a-form-item>
+      <a-form-item :label="$t('cloudenv.text_10')" class="mb-0">
+        <cloudregion-zone
+          :zone-params="zoneParams"
+          :cloudregion-params="cloudregionParams"
+          :decorator="decorators.cloudregionZone"
+          filterBrandResource="compute_engine" />
+      </a-form-item>
       <a-form-item :label="$t('cloudenv.text_264')" :extra="this.$t('common_572')">
         <a-input v-decorator="decorators.host" />
       </a-form-item>
@@ -41,6 +48,7 @@ import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
 import ShareMode from '@Cloudenv/views/cloudaccount/components/ShareMode'
 import { getCloudaccountDocs, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
+import CloudregionZone from '@/sections/CloudregionZone'
 import { isRequired } from '@/utils/validate'
 import { getDocsUrl } from '@/utils/utils'
 import createMixin from './createMixin'
@@ -53,6 +61,12 @@ export default {
     DomainProject,
     ProxySetting,
     ShareMode,
+    CloudregionZone,
+  },
+  provide () {
+    return {
+      form: this.form,
+    }
   },
   mixins: [createMixin],
   data () {
@@ -126,6 +140,26 @@ export default {
             valuePropName: 'checked',
           },
         ],
+        cloudregionZone: {
+          cloudregion: [
+            'cloudregion',
+            {
+              initialValue: { key: '', label: '' },
+              rules: [
+                { validator: isRequired(), message: this.$t('compute.text_212') },
+              ],
+            },
+          ],
+          zone: [
+            'zone',
+            {
+              initialValue: { key: '', label: '' },
+              rules: [
+                { validator: isRequired(), message: this.$t('compute.text_213') },
+              ],
+            },
+          ],
+        },
       },
       keepAliveFields: true,
     }
@@ -133,6 +167,23 @@ export default {
   computed: {
     vmDocLink () {
       return `${this.baseDocURL}function_principle/multicloud/cloudaccounts/vmware_net/`
+    },
+    cloudregionParams () {
+      return {
+        cloud_env: 'onpremise',
+        usable: true,
+        show_emulated: true,
+        scope: this.$store.getters.scope,
+      }
+    },
+    zoneParams () {
+      return {
+        usable: true,
+        show_emulated: true,
+        order_by: 'created_at',
+        order: 'asc',
+        scope: this.$store.getters.scope,
+      }
     },
   },
 }
