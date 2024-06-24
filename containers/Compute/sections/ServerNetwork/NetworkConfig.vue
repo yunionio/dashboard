@@ -177,6 +177,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    hiddenAdd: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -189,6 +193,7 @@ export default {
   },
   computed: {
     networkCountRemaining () {
+      if (this.hiddenAdd) return 0
       return this.limit - this.networkList.length
     },
     networkParamsC () {
