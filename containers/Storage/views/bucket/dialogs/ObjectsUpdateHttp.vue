@@ -82,9 +82,9 @@ export default {
             valies[k] = [valies[k]]
           }
         }
-        const { resName, data } = this.params
+        const { resId, data } = this.params
         await new this.$Manager('buckets', 'v2').performAction({
-          id: resName,
+          id: resId,
           action: 'metadata',
           data: {
             key: data.map(({ key }) => key),
