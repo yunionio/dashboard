@@ -30,11 +30,11 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        const { resName, data } = this.params
+        const { resId, data } = this.params
         const manager = new this.$Manager('buckets', 'v2')
         const keys = data.map(({ key }) => key)
         await manager.performAction({
-          id: resName,
+          id: resId,
           action: 'delete',
           data: {
             keys,
