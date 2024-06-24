@@ -225,6 +225,7 @@ export default {
                   this.createDialog('ObjectsUpdateHttpDialog', {
                     title: this.$t('storage.text_163'),
                     data: this.list.selectedItems,
+                    resId: this.resId,
                     resName: this.resName,
                     columns: this.columns,
                     list: this.list,
@@ -266,7 +267,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     title: this.$t('storage.text_36'),
-                    resName: this.resName,
+                    resId: this.resId,
                     list: this.list,
                     name: this.$t('storage.text_112'),
                   })
@@ -351,6 +352,7 @@ export default {
                     title: this.$t('storage.text_163'),
                     data: [row],
                     resName: this.resName,
+                    resId: this.resId,
                     columns: this.columns,
                     list: this.list,
                     refresh: () => {
@@ -373,6 +375,7 @@ export default {
                     columns: this.columns,
                     title: this.$t('storage.text_36'),
                     resName: this.resName,
+                    resId: this.resId,
                     list: this.list,
                     name: this.isDir(row.key) ? this.$t('storage.text_168') : this.$t('storage.text_112'),
                   })
