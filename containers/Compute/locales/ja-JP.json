@@ -1773,5 +1773,19 @@
   "compute.status_expired": "期限切れ",
   "compute.force_delete.extra": "強制削除 (データベース レコードのみを削除し、実際の削除は行いません。必要に応じて確認する必要はありません)",
   "compute.usb_kbd": "USB キーボード",
-  "compute.mount_point_tips": "デフォルトはストレージ プールのマウント ポイント {0} ですが、実際の使用状況に応じて変更できます。"
+  "compute.mount_point_tips": "デフォルトはストレージ プールのマウント ポイント {0} ですが、実際の使用状況に応じて変更できます。",
+  "compute.hypervisor_extra": "利用可能なプラットフォームの種類は、選択したリージョンによって異なります。",
+  "compute.hypervisor_empty_tips": "この領域では利用可能なプラットフォームがありません",
+  "compute.hypervisor_disabled_tips": "{0} はこの操作をサポートしていません。構成操作を調整するにはリソース リストに移動する必要があります。",
+  "compute.network_mode": "ネットワーク モード",
+  "compute.network_mode.old": "元の IP を保持します",
+  "compute.network_mode.new": "新しい IP を割り当てる",
+  "compute.network_mode.old_tips": "このモードでは、対応するネットワークが事前に準備されている必要があります",
+  "compute.network_mode.new_tips": "バッチ移行はこの操作をまだサポートしていません",
+  "compute.network_check_result": "ネットワークチェック結果",
+  "compute.network_check_result.success": "保持できます",
+  "compute.network_check_result.error": "一致するネットワークが見つかりませんでした。新しいネットワークを手動で作成して、再試行できます。",
+  "compute.network_check_result.new_create": "新しいものを作成します",
+  "compute.fill_ips_tooltip": "一部のリソースには IP 情報がありません。IP を入力して再試行してください。",
+  "compute.fill_ip_tooltip": "このリソースには IP 情報がありません。IP を入力して再試行してください。"
 }

@@ -54,6 +54,7 @@ import regexp from '@/utils/regexp'
 import { hasSetupKey } from '@/utils/auth'
 import { sizeToDesignatedUnit } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
+import { BRAND_MAP } from '@/constants'
 import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -351,14 +352,14 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
-                      const isAllSupportHypervisor = this.list.selectedItems.every(item => {
+                      const isAllSupportBrand = this.list.selectedItems.every(item => {
                         return [
-                          typeClouds.hypervisorMap.esxi.key,
-                          typeClouds.hypervisorMap.kvm.key,
-                        ].includes(item.hypervisor)
+                          BRAND_MAP.VMware.key,
+                          BRAND_MAP.OneCloud.key,
+                        ].includes(item.brand)
                       })
                       const isAllRunning = this.list.selectedItems.every(item => item.status === 'running')
-                      if (!isAllSupportHypervisor) {
+                      if (!isAllSupportBrand) {
                         ret.validate = false
                         ret.tooltip = this.$t('compute.text_1129')
                         return ret
@@ -389,7 +390,7 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
-                      const isAllVMware = this.list.selectedItems.every(item => item.hypervisor === typeClouds.hypervisorMap.esxi.key || item.hypervisor === typeClouds.hypervisorMap.kvm.key)
+                      const isAllVMware = this.list.selectedItems.every(item => item.brand === BRAND_MAP.VMware.key || item.brand === BRAND_MAP.OneCloud.key)
                       const isAllSuspend = this.list.selectedItems.every(item => item.status === 'suspend')
                       if (!isAllVMware) {
                         ret.validate = false
@@ -423,7 +424,7 @@ export default {
                       let isAllKVM = true
                       let isRescueMode = false
                       this.list.selectedItems.forEach(item => {
-                        if (item.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                        if (item.brand !== BRAND_MAP.OneCloud.key) {
                           isAllKVM = false
                         }
                         if (item.rescue_mode === true) {
@@ -461,7 +462,7 @@ export default {
                       let isAllKVM = true
                       let isRescueMode = true
                       this.list.selectedItems.forEach(item => {
-                        if (item.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                        if (item.brand !== BRAND_MAP.OneCloud.key) {
                           isAllKVM = false
                         }
                         if (item.rescue_mode !== true) {
@@ -498,7 +499,7 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
-                      const isAllKVM = this.list.selectedItems.every(item => item.hypervisor === typeClouds.hypervisorMap.kvm.key)
+                      const isAllKVM = this.list.selectedItems.every(item => item.brand === BRAND_MAP.OneCloud.key)
                       const isAllRunningReady = this.list.selectedItems.every(item => (item.status === 'running' || item.status === 'ready'))
                       if (!isAllKVM) {
                         ret.validate = false
@@ -650,7 +651,7 @@ export default {
                       const rescueModeValid = validateRescueMode(this.list.selectedItems)
                       if (!rescueModeValid.validate) return rescueModeValid
                       for (const obj of this.list.selectedItems) {
-                        if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                        if (obj.brand !== BRAND_MAP.OneCloud.key) {
                           ret.validate = false
                           ret.tooltip = this.$t('compute.text_355')
                           break
@@ -1114,7 +1115,7 @@ export default {
                       const ret = { validate: true, tooltip: null }
                       const rescueModeValid = validateRescueMode(this.list.selectedItems)
                       if (!rescueModeValid.validate) return rescueModeValid
-                      const isAllOneCloud = this.list.selectedItems.every((item) => { return item.hypervisor === typeClouds.hypervisorMap.kvm.key })
+                      const isAllOneCloud = this.list.selectedItems.every((item) => { return item.brand === BRAND_MAP.OneCloud.key })
                       const isOk = this.list.selectedItems.every((item) => { return ['running', 'ready'].includes(item.status) })
                       if (!isAllOneCloud) {
                         ret.validate = false
@@ -1153,10 +1154,10 @@ export default {
                       if (!rescueModeValid.validate) return rescueModeValid
                       // 运行中、关机、状态未知
                       const statusSet = new Set()
-                      const hypervisors = new Set()
+                      const brandSet = new Set()
                       this.list.selectedItems.forEach(item => {
                         statusSet.add(item.status)
-                        hypervisors.add(item.hypervisor)
+                        brandSet.add(item.brand)
                       })
                       if (!this.isAdminMode && !this.isDomainMode) {
                         ret.validate = false
@@ -1194,7 +1195,7 @@ export default {
                         ret.validate = false
                         return ret
                       }
-                      if (hypervisors.size > 1) {
+                      if (brandSet.size > 1) {
                         ret.validate = false
                         ret.tooltip = this.$t('compute.v2vtransfer.same_brand')
                         return ret
@@ -1222,8 +1223,9 @@ export default {
                       const rescueModeValid = validateRescueMode(this.list.selectedItems)
                       if (!rescueModeValid.validate) return rescueModeValid
                       const statusSet = new Set()
-                      const hypervisorSet = new Set()
+                      const brandSet = new Set()
                       const backupHostSet = new Set()
+                      let isIpEmpty = false
 
                       if (!this.isAdminMode && !this.isDomainMode) {
                         ret.validate = false
@@ -1233,9 +1235,12 @@ export default {
 
                       this.list.selectedItems.forEach((item) => {
                         statusSet.add(item.status)
-                        hypervisorSet.add(item.hypervisor)
+                        brandSet.add(item.brand)
                         if (item.backup_host_id) {
                           backupHostSet.add(item.backup_host_id)
+                        }
+                        if (!item.ips) {
+                          isIpEmpty = true
                         }
                       })
 
@@ -1244,20 +1249,25 @@ export default {
                         ret.validate = false
                         return ret
                       }
-                      if (hypervisorSet.size > 1) {
+                      if (brandSet.size > 1) {
                         ret.tooltip = this.$t('compute.v2vtransfer.same_brand')
                         ret.validate = false
                         return ret
                       } else {
-                        if (!hypervisorSet.has(typeClouds.hypervisorMap.cloudpods.key) &&
-                          !hypervisorSet.has(typeClouds.hypervisorMap.esxi.key)) {
-                          ret.tooltip = this.$t('compute.brand_support', [`${typeClouds.hypervisorMap.cloudpods.label},${typeClouds.hypervisorMap.esxi.label}`])
+                        if (!brandSet.has(BRAND_MAP.Cloudpods.key) &&
+                          !brandSet.has(BRAND_MAP.VMware.key)) {
+                          ret.tooltip = this.$t('compute.brand_support', [`${BRAND_MAP.Cloudpods.label},${BRAND_MAP.VMware.label}`])
                           ret.validate = false
                           return ret
                         }
                       }
                       if (backupHostSet.size > 0) {
                         ret.tooltip = this.$t('compute.tooltip.check_backup_host_transfer')
+                        ret.validate = false
+                        return ret
+                      }
+                      if (isIpEmpty) {
+                        ret.tooltip = this.$t('compute.fill_ips_tooltip')
                         ret.validate = false
                         return ret
                       }
@@ -1285,7 +1295,7 @@ export default {
                       }
                       const rescueModeValid = validateRescueMode(this.list.selectedItems)
                       if (!rescueModeValid.validate) return rescueModeValid
-                      const isAllOneCloud = this.list.selectedItems.every((item) => { return item.hypervisor === typeClouds.hypervisorMap.kvm.key })
+                      const isAllOneCloud = this.list.selectedItems.every((item) => { return item.brand === BRAND_MAP.OneCloud.key })
                       if (!isAllOneCloud) {
                         ret.validate = false
                         ret.tooltip = this.$t('compute.text_1125')
