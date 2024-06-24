@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import { PROVIDER_MAP } from '@/constants'
 import { keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import BlockedResources from '@Cloudenv/views/cloudaccount/components/BlockedResources'
 
@@ -103,6 +104,12 @@ export default {
       if (params.oracle_private_pem) {
         params.oracle_private_key = params.oracle_private_pem
         delete params.oracle_private_pem
+      }
+      if (this.provider === PROVIDER_MAP.VMware.key) {
+        if (params.zone) {
+          params.zone = params.zone?.key
+          delete params.cloudregion
+        }
       }
       return params
     },
