@@ -103,10 +103,10 @@ export default {
   methods: {
     async fetchRemoveFile (key) {
       try {
-        const { resName } = this.params
+        const { resId } = this.params
         const manager = new this.$Manager('buckets', 'v2')
         await manager.performAction({
-          id: resName,
+          id: resId,
           action: 'delete',
           data: {
             keys: [key],
