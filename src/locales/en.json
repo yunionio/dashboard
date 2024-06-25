@@ -5989,5 +5989,7 @@
   "common.select_import_image": "Please select the image to import",
   "common.image_url_tip": "The image is sourced from the official websites of various systems, and Cloudpods has not made any modifications. If other versions are needed, they can be imported and used through the official platforms of various systems. Please refer to the official links below:",
   "common.image_url_tip2": "The image is sourced from the official websites of various systems and has not been modified. If other versions are needed, they can be imported and used through the official platforms of various systems.",
-  "common.normal_open_image": "Common open source images"
+  "common.normal_open_image": "Common open source images",
+  "common.hide_ipv6": "Hide IPv6",
+  "common.config_ipv6": "Config IPv6"
 }
