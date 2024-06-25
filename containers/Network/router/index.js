@@ -69,7 +69,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.cloudregion')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'private', 'vmware'])
+              return !hasSetupKey(['onestack', 'private', 'vmware', 'baremetal'])
             },
           },
           component: Layout,
@@ -90,7 +90,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.zone')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'private', 'vmware'])
+              return !hasSetupKey(['onestack', 'private', 'vmware', 'baremetal'])
             },
           },
           component: Layout,
@@ -243,7 +243,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.wire')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'vmware', 'zstack', 'dstack', 'nutanix'])
+              return !hasSetupKey(['onestack', 'vmware', 'zstack', 'dstack', 'nutanix', 'baremetal'])
             },
             // hidden: () => !hasServices(['esxiagent', 'hostagent', 'bmagent']) && !hasBrands('ZStack'),
           },
