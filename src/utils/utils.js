@@ -812,6 +812,10 @@ export function isCE () {
   return !process.env.VUE_APP_IS_PRIVATE
 }
 
+export function isSAAS () {
+  return !!process.env.VUE_APP_IS_SAAS
+}
+
 export function getDocsUrl (scope) {
   let prefix = 'docs'
   if (isCE()) {
