@@ -18,6 +18,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import { typeClouds } from '@/utils/common/hypervisor'
+import { isCE } from '@/utils/utils'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
@@ -184,6 +185,36 @@ export default {
                     validate: !!this.list.selectedItems.length,
                   }
                 },
+              },
+              {
+                label: this.$t('cloudenv.action.update_credential'),
+                permission: 'cloudaccounts_perform_update_credential',
+                action: () => {
+                  this.createDialog('CloudaccountRerunBillDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  const ret = { validate: !!this.list.selectedItems.length }
+                  if (!ret.validate) return ret
+                  this.list.selectedItems.map(obj => {
+                    const ownerDomain = this.isAdminMode || obj.domain_id === this.userInfo.projectDomainId
+                    if (!ownerDomain) {
+                      ret.validate = false
+                    }
+                    if (obj.status === 'deleted') {
+                      ret.validate = false
+                    }
+                    if (!obj.tenant_id) {
+                      ret.validate = false
+                      ret.tooltip = this.$t('bill.please_set_project_mapping')
+                    }
+                  })
+                  return ret
+                },
+                hidden: () => isCE(),
               },
               ...getEnabledSwitchActions(this, undefined, ['cloudaccounts_perform_enable', 'cloudaccounts_perform_disable'], {
                 actions: [
