@@ -6054,5 +6054,7 @@
   "common.image_url_tip2": "The image is sourced from the official websites of various systems and has not been modified. If other versions are needed, they can be imported and used through the official platforms of various systems.",
   "common.normal_open_image": "Common open source images",
   "common.contains": "Contains",
-  "common.not_contains": "Exclude"
+  "common.not_contains": "Exclude",
+  "common.hide_ipv6": "Hide IPv6",
+  "common.config_ipv6": "Config IPv6"
 }

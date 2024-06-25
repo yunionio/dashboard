@@ -57,6 +57,7 @@
               :value="item.key">{{ item.label }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
+        <!-- 网段 -->
         <a-form-item :label="$t('network.text_575')" v-bind="formItemLayout" :validate-status="ipSubnetsValidateStatus" :help="ipSubnetsHelp" required v-if="show">
           <template slot="extra">
             <div>{{$t('network.text_576')}}</div>
@@ -73,15 +74,22 @@
             <div>{{$t('network.text_578')}}</div>
             <div>{{$t('network.text_580')}}</div>
           </template>
-          <div class="d-flex" v-for="(item, i) in guestIpPrefix" :key="item.key">
-            <a-form-item>
-              <a-input style="width: 400px" v-decorator="decorators.guest_ip_prefix(i)" :placeholder="$t('network.ipv4.subnet.input.prompt')" />
-            </a-form-item>
-            <a-form-item>
-              <a-input style="width: 400px" v-decorator="decorators.guest_ip6_prefix(i)" :placeholder="$t('network.ipv6.subnet.input.prompt')" />
-            </a-form-item>
-            <a-button shape="circle" icon="minus" size="small" v-if="guestIpPrefix.length > 1" @click="decrease(i)" class="mt-2 ml-2" />
-          </div>
+          <!-- 网段 -->
+          <a-row :gutter="8" v-for="(item, i) in guestIpPrefix" :key="item.key">
+            <a-col :span="11">
+              <a-form-item>
+                <a-input v-decorator="decorators.guest_ip_prefix(i)" :placeholder="$t('network.ipv4.subnet.input.prompt')" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="11">
+              <a-form-item>
+                <a-input v-decorator="decorators.guest_ip6_prefix(i)" :placeholder="$t('network.ipv6.subnet.input.prompt')" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="2">
+              <a-button shape="circle" icon="minus" size="small" v-if="guestIpPrefix.length > 1" @click="decrease(i)" class="mt-2 ml-2" />
+            </a-col>
+          </a-row>
           <div class="d-flex align-items-center" v-if="remain > 0">
             <a-button type="primary" shape="circle" icon="plus" size="small" @click="addGuestIpPrefix" />
             <a-button type="link" @click="addGuestIpPrefix">{{$t('network.text_582')}}</a-button>

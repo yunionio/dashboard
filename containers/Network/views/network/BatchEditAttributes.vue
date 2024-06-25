@@ -20,7 +20,7 @@
           </a-form-item>
           <page-footer>
             <template v-slot:right>
-              <a-button type="primary" html-type="submit" class="ml-3" :loading="submiting">{{$t('network.text_30')}}</a-button>
+              <a-button type="primary" html-type="submit" class="ml-3" :loading="submiting">{{$t('network.text_606')}}</a-button>
             </template>
           </page-footer>
         </a-form>
@@ -31,10 +31,10 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from './mixins/columns'
-import IpSubnets from './components/IpSubnets'
 import { uuid } from '@/utils/utils'
 import i18n from '@/locales'
+import ColumnsMixin from './mixins/columns'
+import IpSubnets from './components/IpSubnets'
 
 const validateGateway = function (rule, value, callback) {
   const ipItems = value.split('.')
