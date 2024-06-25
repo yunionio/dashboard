@@ -782,7 +782,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.schedtag')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'public', 'private'])
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'public', 'private', 'baremetal'])
             },
           },
           component: Layout,
@@ -803,7 +803,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.schedpolicy')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'public', 'private'])
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'public', 'private', 'baremetal'])
             },
           },
           component: Layout,
@@ -824,7 +824,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.dynamicschedtag')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'public', 'private'])
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'public', 'private', 'baremetal'])
             },
           },
           component: Layout,
@@ -856,7 +856,7 @@ export default {
               if (!store.state.common.computeV2GlobalConfig.enable_pending_delete) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'public', 'private', 'vmware'])
+              return !hasSetupKey(['onestack', 'public', 'private', 'vmware', 'baremetal'])
             },
           },
           component: Layout,
@@ -880,7 +880,7 @@ export default {
               if (!store.state.common.computeV2GlobalConfig.enable_pending_delete) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'public', 'private', 'vmware'])
+              return !hasSetupKey(['onestack', 'public', 'private', 'vmware', 'baremetal'])
             },
           },
           component: Layout,
@@ -905,7 +905,7 @@ export default {
               if (!store.state.common.imageGlobalConfig.enable_pending_delete) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'public', 'private', 'vmware'])
+              return !hasSetupKey(['onestack', 'public', 'private', 'vmware', 'baremetal'])
             },
           },
           component: Layout,
