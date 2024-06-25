@@ -6050,5 +6050,7 @@
   "common.image_url_tip2": "ミラーリングは各システムの公式サイトに由来しており、変更はありません。他のバージョンが必要な場合は、各システムの公式プラットフォームから導入して使用することができます。",
   "common.normal_open_image": "共通オープンソースミラーリング",
   "common.contains": "含める",
-  "common.not_contains": "含まない"
+  "common.not_contains": "含まない",
+  "common.hide_ipv6": "IPv6を隠す",
+  "common.config_ipv6": "IPv6の構成"
 }
