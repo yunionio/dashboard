@@ -280,7 +280,7 @@ export const arrToObjByKey = (arr, key, cb) => {
  * @param {String} series.name 名称
  * @param {Array} series.values 二维数组，表示每列的数据
  */
-export const autoComputeUnit = (series, sourceUnit = 'bps', base = 1000) => { // 单位自动缩进
+export const autoComputeUnit = (series, sourceUnit = 'bps', base = 1000, seleteItem) => { // 单位自动缩进
   let points = series.points
   let unit = 'b'
   const timeColumnIndex = series.columns.findIndex(val => val === 'time') || 1
@@ -307,6 +307,8 @@ export const autoComputeUnit = (series, sourceUnit = 'bps', base = 1000) => { //
   }
   if (unit.toLowerCase() === 'b') {
     unit = 'b'
+  } else if (['bps_recv', 'bps_sent'].includes(seleteItem)) {
+    unit += 'b'
   } else {
     unit += 'B'
   }
