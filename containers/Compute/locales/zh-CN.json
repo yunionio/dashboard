@@ -1773,5 +1773,19 @@
   "compute.status_expired": "已到期",
   "compute.force_delete.extra": "强制删除（仅删除数据库记录，不会真实删除，非必要无需勾选）",
   "compute.usb_kbd": "USB键盘",
-  "compute.mount_point_tips": "默认为存储池挂载点{0}，可根据实际用途修改"
+  "compute.mount_point_tips": "默认为存储池挂载点{0}，可根据实际用途修改",
+  "compute.hypervisor_extra": "根据选择的区域不同，平台的可用类型不同",
+  "compute.hypervisor_empty_tips": "该区域无可用平台",
+  "compute.hypervisor_disabled_tips": "{0}不支持该操作，需到资源列表进行调整配置操作",
+  "compute.network_mode": "网络模式",
+  "compute.network_mode.old": "保留原IP",
+  "compute.network_mode.new": "分配新IP",
+  "compute.network_mode.old_tips": "该模式要求已提前准备好相应网络",
+  "compute.network_mode.new_tips": "批量迁移暂不支持该操作",
+  "compute.network_check_result": "网络检查结果",
+  "compute.network_check_result.success": "可以保留",
+  "compute.network_check_result.error": "没有找到符合的网络，可以手动新建后重试",
+  "compute.network_check_result.new_create": "去新建",
+  "compute.fill_ips_tooltip": "部分资源没有IP信息，请补充IP后重试",
+  "compute.fill_ip_tooltip": "该资源没有IP信息，请补充IP后重试"
 }

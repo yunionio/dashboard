@@ -1771,5 +1771,19 @@
   "compute.status_expired": "Expired",
   "compute.force_delete.extra": "Force deletion (only deletes database records, not actual deletion, no need to check if necessary)",
   "compute.usb_kbd": "USB keyboard",
-  "compute.mount_point_tips": "The default is the storage pool mount point {0}, which can be modified according to actual use"
+  "compute.mount_point_tips": "The default is the storage pool mount point {0}, which can be modified according to actual use",
+  "compute.hypervisor_extra": "The available types of platforms vary depending on the selected region",
+  "compute.hypervisor_empty_tips": "No platform available in this area",
+  "compute.hypervisor_disabled_tips": "{0} does not support this operation. You need to go to the resource list to adjust the configuration operation.",
+  "compute.network_mode": "Network mode",
+  "compute.network_mode.old": "Keep original IP",
+  "compute.network_mode.new": "Assign new IP",
+  "compute.network_mode.old_tips": "This mode requires that the corresponding network has been prepared in advance",
+  "compute.network_mode.new_tips": "Batch migration does not support this operation yet",
+  "compute.network_check_result": "Network check result",
+  "compute.network_check_result.success": "can be retained",
+  "compute.network_check_result.error": "No matching network was found. You can create a new one manually and try again.",
+  "compute.network_check_result.new_create": "Go to create a new one",
+  "compute.fill_ips_tooltip": "Some resources do not have IP information, please fill in the IP and try again",
+  "compute.fill_ip_tooltip": "This resource does not have IP information, please fill in the IP and try again"
 }
