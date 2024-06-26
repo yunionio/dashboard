@@ -2,7 +2,7 @@
   <div>
     <a-form-item>
       <a-radio-group v-decorator="decorator.networkType" @change="change">
-        <template  v-for="(item, key) in networkMaps">
+        <template  v-for="(item, key) in originNetworkMaps">
           <a-radio-button v-if="(isServertemplate && (key !== 'schedtag')) || !isServertemplate" :value="key" :key="key">
             {{ item.t ? $t(item.t) : item.label }}
             <help-tooltip v-if="key === 'default'" :name="`${key}ServerNetwork`" class="ml-2" />
@@ -27,7 +27,8 @@
         :show-vpc="showVpc"
         :is-dialog="isDialog"
         :showMacConfig="showMacConfig"
-        :showDeviceConfig="showDeviceConfig" />
+        :showDeviceConfig="showDeviceConfig"
+        :hiddenAdd="hiddenAdd" />
     </a-form-item>
     <a-form-item v-if="networkComponent === 'schedtag'">
       <network-schedtag
@@ -132,6 +133,16 @@ export default {
       type: Boolean,
       default: false,
     },
+    hiddenNetworkOptions: {
+      type: Array,
+    },
+    defaultNetworkType: {
+      type: String,
+    },
+    hiddenAdd: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     const { auto_alloc_network_count } = this.$store.getters.capability
@@ -164,6 +175,14 @@ export default {
         }
       }
       return {}
+    },
+    originNetworkMaps () {
+      if (this.hiddenNetworkOptions?.length > 0) {
+        this.hiddenNetworkOptions.forEach(v => {
+          this.$delete(this.networkMaps, v)
+        })
+      }
+      return this.networkMaps
     },
   },
   watch: {
@@ -208,6 +227,24 @@ export default {
       if (val !== oldVal && (val === 1 || oldVal === 1)) {
         this.changeIpDisable(val > 1)
       }
+    },
+    defaultNetworkType: {
+      handler (val) {
+        if (val) {
+          switch (val) {
+            case NETWORK_OPTIONS_MAP.default.key:
+              this.networkComponent = ''
+              break
+            case NETWORK_OPTIONS_MAP.manual.key:
+              this.networkComponent = 'config'
+              break
+            case NETWORK_OPTIONS_MAP.schedtag.key:
+              this.networkComponent = 'schedtag'
+              break
+          }
+        }
+      },
+      immediate: true,
     },
   },
   methods: {

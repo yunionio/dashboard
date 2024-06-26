@@ -3,7 +3,7 @@
     <a-row :gutter="8">
       <a-col :span="12">
         <a-form-item :wrapperCol="{ span: 24 }">
-          <cloudregion v-decorator="decorator.cloudregion" @change="handleChange" :options="regionOpts" />
+          <cloudregion v-decorator="decorator.cloudregion" @change="handleChange" :options="regionOpts" :disabledRegion="disabledRegion" />
         </a-form-item>
       </a-col>
       <a-col :span="12">
@@ -45,6 +45,7 @@ export default {
     },
     // 选择过滤掉哪些资源的只读云
     filterBrandResource: String,
+    disabledRegion: Boolean,
   },
   inject: ['form'],
   data () {

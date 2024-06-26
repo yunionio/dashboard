@@ -1,5 +1,12 @@
 <template>
-  <a-select dropdownClassName="oc-select-dropdown" :value="valueC" allow-clear @change="handleChange" showSearch :filterOption="filterOption">
+  <a-select
+    dropdownClassName="oc-select-dropdown"
+    allow-clear
+    showSearch
+    :value="valueC"
+    :filterOption="filterOption"
+    :disabled="disabledRegion"
+    @change="handleChange">
     <a-select-option v-for="item in options" :key="item.id">
       <span class="text-color-secondary option-prefix">{{ $t('dictionary.region') }}: </span>{{ _$t(item) }}
     </a-select-option>
@@ -18,6 +25,7 @@ export default {
       type: Array,
       default: () => [],
     },
+    disabledRegion: Boolean,
   },
   computed: {
     valueC () {
