@@ -269,6 +269,10 @@ const LicenseItems = [
     key: 'sangfor',
     meta: meta('resource_managent', 'private', true),
   },
+  {
+    key: 'report',
+    meta: meta('resource_managent', 'report', false),
+  },
 ]
 
 function fullfillLicenseItems () {
