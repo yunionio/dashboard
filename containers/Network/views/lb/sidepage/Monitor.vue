@@ -119,13 +119,13 @@ export default {
         },
       }
       this.monitorList = resList.map(result => {
-        const { unit, transfer } = result.constants
+        const { unit, transfer, seleteItem } = result.constants
         const isSizestrUnit = UNITS.includes(unit)
         let series = result.series
         if (!series) series = []
         if (isSizestrUnit || unit === 'bps') {
           series = series.map(serie => {
-            return autoComputeUnit(serie, unit, transfer)
+            return autoComputeUnit(serie, unit, transfer, seleteItem)
           })
         }
         return {
