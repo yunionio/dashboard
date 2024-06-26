@@ -256,6 +256,10 @@ const LicenseItems = [
     key: 'oraclecloud',
     meta: meta('resource_managent', 'public', true),
   },
+  {
+    key: 'report',
+    meta: meta('resource_managent', 'report', false),
+  },
 ]
 
 function fullfillLicenseItems () {
