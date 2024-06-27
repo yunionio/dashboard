@@ -433,10 +433,7 @@ export default {
         usable: true,
         brand: typeClouds.brandMap.OneCloud.brand,
       }
-      const { host, domain, zone } = this.form.fd
-      if (host) {
-        ret.host = host
-      }
+      const { domain, zone } = this.form.fd
       if (domain) {
         ret.project_domain = domain
       }
