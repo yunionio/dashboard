@@ -125,7 +125,7 @@ import {
   getBillBucketUrlDocs,
   getEnrollmentNumberDocs,
   BILL_TYPES,
-  BILL_TYPE_MAP
+  BILL_TYPE_MAP,
 } from '../../constants'
 
 export default {
@@ -133,8 +133,8 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   props: {
     account: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   data () {
     return {
@@ -146,33 +146,33 @@ export default {
       billTypeOptions: BILL_TYPES,
       billType: BILL_TYPE_MAP.EA.value, // EA --> EA账号 | Bucket --> 存储桶
       form: {
-        fc: this.$form.createForm(this)
+        fc: this.$form.createForm(this),
       },
       billTasks: {
         '7 days': this.$t('cloudenv.text_214'),
         '1 months': this.$t('cloudenv.text_215'),
         '3 months': this.$t('cloudenv.text_216'),
-        '6 months': this.$t('cloudenv.text_217')
+        '6 months': this.$t('cloudenv.text_217'),
       },
       formLayout: {
         wrapperCol: {
           md: { span: 18 },
           xl: { span: 20 },
-          xxl: { span: 22 }
+          xxl: { span: 22 },
         },
         labelCol: {
           md: { span: 6 },
           xl: { span: 3 },
-          xxl: { span: 2 }
-        }
+          xxl: { span: 2 },
+        },
       },
       offsetFormLayout: {
         wrapperCol: {
           md: { span: 18, offset: 6 },
           xl: { span: 20, offset: 3 },
-          xxl: { span: 22, offset: 2 }
-        }
-      }
+          xxl: { span: 22, offset: 2 },
+        },
+      },
     }
   },
   computed: {
@@ -245,21 +245,21 @@ export default {
         billing_bucket_account: [
           'billing_bucket_account',
           {
-            initialValue: options.billing_bucket_account
-          }
+            initialValue: options.billing_bucket_account,
+          },
         ],
         billing_report_bucket: [
           'billing_report_bucket',
           {
             initialValue: options.billing_report_bucket,
-            rules: [{ required: true, message: this.$t('cloudenv.text_220') }]
-          }
+            rules: [{ required: true, message: this.$t('cloudenv.text_220') }],
+          },
         ],
         billing_file_prefix: [
           'billing_file_prefix',
           {
-            initialValue: options.billing_file_prefix
-          }
+            initialValue: options.billing_file_prefix,
+          },
         ],
         usage_report_bucket: [
           'usage_report_bucket',
@@ -267,35 +267,35 @@ export default {
             initialValue: options.usage_report_bucket,
             rules: [
               // { required: true, message: '请输入存储桶URL' },
-            ]
-          }
+            ],
+          },
         ],
         usage_file_prefix: [
           'usage_file_prefix',
           {
-            initialValue: options.usage_file_prefix
-          }
+            initialValue: options.usage_file_prefix,
+          },
         ],
         sync_info: [
           'sync_info',
           {
             initialValue: false,
-            valuePropName: 'checked'
-          }
+            valuePropName: 'checked',
+          },
         ],
         enrollment_number: [
           'enrollment_number',
           {
             initialValue: options.enrollment_number,
-            rules: [{ required: true, message: this.$t('cloudenv.text_221') }]
-          }
+            rules: [{ required: true, message: this.$t('cloudenv.text_221') }],
+          },
         ],
         balance_key: [
           'balance_key',
           {
             initialValue: options.balance_key,
-            rules: [{ required: true, message: this.$t('cloudenv.text_222') }]
-          }
+            rules: [{ required: true, message: this.$t('cloudenv.text_222') }],
+          },
         ],
         start_day: [
           'start_day',
@@ -305,11 +305,11 @@ export default {
               {
                 required: true,
                 message: this.$t('common.tips.select', [
-                  this.$t('cloudenv.text_461')
-                ])
-              }
-            ]
-          }
+                  this.$t('cloudenv.text_461'),
+                ]),
+              },
+            ],
+          },
         ],
         end_day: [
           'end_day',
@@ -319,11 +319,11 @@ export default {
               {
                 required: true,
                 message: this.$t('common.tips.select', [
-                  this.$t('cloudenv.text_462')
-                ])
-              }
-            ]
-          }
+                  this.$t('cloudenv.text_462'),
+                ]),
+              },
+            ],
+          },
         ],
         billing_scope: [
           'billing_scope',
@@ -333,11 +333,11 @@ export default {
             rules: [
               {
                 required: true,
-                message: this.$t('cloudenv.billing_scope.prompt')
-              }
-            ]
-          }
-        ]
+                message: this.$t('cloudenv.billing_scope.prompt'),
+              },
+            ],
+          },
+        ],
       }
     },
     billingScopeDisabled () {
@@ -346,7 +346,8 @@ export default {
         HYPERVISORS_MAP.aliyun.provider,
         HYPERVISORS_MAP.volcengine.provider,
         HYPERVISORS_MAP.qcloud.provider,
-        HYPERVISORS_MAP.azure.provider
+        HYPERVISORS_MAP.azure.provider,
+        HYPERVISORS_MAP.ksyun.provider,
       ]
       return !supportProviders.includes(this.provider)
     },
@@ -355,7 +356,7 @@ export default {
     },
     isHiddenDriver () {
       return this.isAzure
-    }
+    },
   },
   watch: {
     cloudAccount (val) {
@@ -369,7 +370,7 @@ export default {
       } else {
         this.billType = BILL_TYPE_MAP.Bucket.value
       }
-    }
+    },
   },
   created () {
     this.manager = new this.$Manager('cloudaccounts')
@@ -399,7 +400,7 @@ export default {
       try {
         const params = {
           scope: this.$store.getters.scope,
-          brand: this.provider || this.cloudAccount.brand
+          brand: this.provider || this.cloudAccount.brand,
         }
         const { data } = await this.manager.list({ params })
         this.cloudAccounts = data.data || []
@@ -419,8 +420,8 @@ export default {
         const { data } = await this.manager.get({
           id,
           params: {
-            details: true
-          }
+            details: true,
+          },
         })
         // billing_scope没有默认选中一个，选中规则与新建相同
         if (!data.options || !data.options.billing_scope) {
@@ -447,16 +448,16 @@ export default {
           start_day: parseInt(
             this.$moment(start_day)
               .startOf('month')
-              .format('YYYYMMDD')
+              .format('YYYYMMDD'),
           ),
           end_day: parseInt(
             this.$moment(end_day)
               .endOf('month')
-              .format('YYYYMMDD')
-          )
+              .format('YYYYMMDD'),
+          ),
         }
         await manager.create({
-          data
+          data,
         })
       } catch (err) {
         throw err
@@ -474,16 +475,16 @@ export default {
         const params = {
           id,
           data: {
-            options: values
-          }
+            options: values,
+          },
         }
         if (this.cloudAccountType === 1) {
           params.data = {
             remove_options: [
               'billing_bucket_account',
-              'billing_bigquery_table'
+              'billing_bigquery_table',
             ],
-            ...params.data
+            ...params.data,
           }
         }
         if (this.isAzure) {
@@ -491,7 +492,7 @@ export default {
           if (this.isEA) {
             params.data = {
               ...params.data,
-              remove_options: [...remove_options, 'billing_report_bucket']
+              remove_options: [...remove_options, 'billing_report_bucket'],
             }
           } else {
             params.data = {
@@ -499,8 +500,8 @@ export default {
               remove_options: [
                 ...remove_options,
                 'enrollment_number',
-                'balance_key'
-              ]
+                'balance_key',
+              ],
             }
           }
         }
@@ -519,16 +520,16 @@ export default {
       delete values.month
       const res = await new this.$Manager(
         'bucket_options',
-        'v1'
+        'v1',
       ).performClassAction({
         action: 'verify',
-        data: values
+        data: values,
       })
       if (!res || !res.data || !res.data.status) return false
       if (res.data.status === 'success') {
         this.$notification.success({
           message: this.$t('common_270'),
-          description: this.$t('common_271')
+          description: this.$t('common_271'),
         })
       } else if (res.data.msg && res.data.msg === 'bucket file not found') {
         this.$notification.warning({
@@ -539,7 +540,7 @@ export default {
               <br />
               {this.$t('cloudenv.text_579')}
             </div>
-          )
+          ),
         })
       } else return false
     },
@@ -554,7 +555,7 @@ export default {
       if (dateStart && value < dateStart) return true
       if (value > this.$moment()) return true
       return false
-    }
-  }
+    },
+  },
 }
 </script>
