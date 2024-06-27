@@ -5,7 +5,8 @@ import { PROVIDER_MAP } from '@/constants'
 import { Manager } from '@/utils/manager'
 
 export class PriceFetcher {
-  constructor ({ scope = '', provider = '', region = '', zone = '', cloudaccountId = '', price_unit = 'hour', period = 1 } = {}) {
+  // eslint-disable-next-line
+  constructor({ scope = '', provider = '', region = '', zone = '', cloudaccountId = '', price_unit = 'hour', period = 1 } = {}) {
     this.manager = new Manager('prices', 'v1')
     this.scope = scope
     this.provider = provider
@@ -66,17 +67,21 @@ export class PriceFetcher {
     this.price_unit = price_unit || 'hour'
   }
 
-  addItem ({ resource_type, resource_key = '', amount = 1 }) {
-    this.items.push({ resource_type: resource_type, resource_key: resource_key, amount: amount })
+  addItem ({ resource_type, resource_key = '', amount = 1, disk_type = 'data' }) {
+    if (resource_type === 'disk') {
+      this.items.push({ resource_type: resource_type, resource_key: resource_key, amount: amount, disk_type })
+    } else {
+      this.items.push({ resource_type: resource_type, resource_key: resource_key, amount: amount })
+    }
   }
 
-  addDisk (sku = '', Gb = 1) {
-    this.addItem({ resource_type: 'disk', resource_key: sku, amount: Gb })
+  addDisk (sku = '', Gb = 1, type = 'data') {
+    this.addItem({ resource_type: 'disk', resource_key: sku, amount: Gb, disk_type: type })
   }
 
-  addDisks (sku = '', sizes = []) {
+  addDisks (sku = '', sizes = [], type = 'data') {
     sizes.map((sizeGb) => {
-      this.addDisk(sku, sizeGb || 0)
+      this.addDisk(sku, sizeGb || 0, type)
     })
   }
 
@@ -150,7 +155,8 @@ export class PriceFetcher {
 }
 
 export class PriceFetcherByPriceKey {
-  constructor ({ scope = '', priceKey = '', duration = '1h', billType = '', amount = 1, cloudaccountId = '' }) {
+  // eslint-disable-next-line
+  constructor({ scope = '', priceKey = '', duration = '1h', billType = '', amount = 1, cloudaccountId = '' }) {
     this.priceFetcher = new PriceFetcher({ scope: scope, cloudaccountId })
     const d = this.priceFetcher.parseDuration(duration, billType)
     this.priceFetcher.setPeriod(d.period)
@@ -164,10 +170,11 @@ export class PriceFetcherByPriceKey {
     if (provider.length > 0) {
       provider = provider[0].toUpperCase() + provider.substr(1)
     }
+    const resource_key = segs[4] ? segs[4]?.replaceAll('.', '::') : ''
     this.priceFetcher.provider = provider || ''
     this.priceFetcher.region = segs[1] || ''
     this.priceFetcher.zone = segs[2] || ''
-    this.priceFetcher.addItem({ resource_type: segs[3] || '', resource_key: segs[4] || '', amount: amount })
+    this.priceFetcher.addItem({ resource_type: segs[3] || '', resource_key, amount })
   }
 
   async getPriceObj () {
@@ -180,7 +187,8 @@ export class PriceFetcherByPriceKey {
 }
 
 export class Price {
-  constructor (priceObj, price_unit = 'hour', period = 1) {
+  // eslint-disable-next-line
+  constructor(priceObj, price_unit = 'hour', period = 1) {
     this.priceObj = priceObj
     this.price_unit = price_unit || 'hour'
     this.period = period || 1

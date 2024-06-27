@@ -144,10 +144,11 @@ export default {
             key = `${backend}.${type}`
           }
           pv = cloudregionExternalArr[0]
+        } else {
+          key = `${backend}.${type}`
         }
         this.key = key
         const price_key = `${pv}::${region}::${zone}::disk::${key}`
-
         const pf = new PriceFetcherByPriceKey({
           scope: this.$store.getters.scope,
           priceKey: price_key,
