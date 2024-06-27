@@ -892,5 +892,6 @@
   "cloudenv.private_key.upload_certificate": "上传证书",
   "cloudenv.private_key.text_input": "文本输入",
   "cloudenv.private_key.upload_pem_file": "只能上传.pem文件",
-  "cloudenv.private_pem_message": "请上传私有密钥"
+  "cloudenv.private_pem_message": "请上传私有密钥",
+  "cloudenv.ksyun_bucket_url": "{0}#如何获取金山云账单存储桶url"
 }

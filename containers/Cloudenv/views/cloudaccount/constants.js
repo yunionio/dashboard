@@ -780,6 +780,7 @@ export function getBillBucketUrlDocs (scope) {
     huawei: i18n.t('cloudenv.text_166', [docsUrl]),
     google: i18n.t('cloudenv.text_167', [docsUrl]),
     qcloud: i18n.t('cloudenv.bill_bucket_url', [docsUrl, 'url-3']),
+    ksyun: i18n.t('cloudenv.ksyun_bucket_url', [docsUrl]),
   }
 }
 

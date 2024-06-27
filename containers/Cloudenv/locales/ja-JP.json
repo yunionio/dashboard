@@ -890,5 +890,6 @@
   "cloudenv.private_key.upload_certificate": "証明書をアップロード",
   "cloudenv.private_key.text_input": "テキスト入力",
   "cloudenv.private_key.upload_pem_file": ".pem ファイルのみをアップロードできます",
-  "cloudenv.private_pem_message": "秘密鍵をアップロードしてください"
+  "cloudenv.private_pem_message": "秘密鍵をアップロードしてください",
+  "cloudenv.ksyun_bucket_url": "{0}#金山クラウド請求書ストレージバレルurlを取得する方法"
 }
