@@ -95,7 +95,6 @@ import WindowsMixin from '@/mixins/windows'
 import ListSelect from '@/sections/ListSelect'
 import DomainProject from '@/sections/DomainProject'
 import CloudregionZone from '@/sections/CloudregionZone'
-import { HYPERVISORS_MAP } from '@/constants'
 import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
 import ResourceProps from '../mixins/resourceProps'
 
