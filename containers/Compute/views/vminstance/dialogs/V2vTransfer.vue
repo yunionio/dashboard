@@ -258,6 +258,13 @@ export default {
                 ],
               },
             ],
+            ipv6s: (i, networkData) => [
+              `networkIPv6s[${i}]`,
+              {
+                validateFirst: true,
+                validateTrigger: ['blur', 'change'],
+              },
+            ],
             devices: i => [
               `networkDevices[${i}]`,
               {
