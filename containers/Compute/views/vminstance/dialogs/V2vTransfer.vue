@@ -52,7 +52,6 @@
             :schedtag-params="resourcesParams.schedtag"
             :vpcResource="vpcResource"
             :networkVpcParams="resourcesParams.vpcParams"
-            :vpcResourceMapper="vpcResourceMapper"
             :showMacConfig="firstData.hypervisor === 'kvm'"
             :showDeviceConfig="firstData.hypervisor === 'kvm'"
             :isDialog="true"
@@ -557,12 +556,6 @@ export default {
           ...data,
         }
       })
-    },
-    vpcResourceMapper (list) {
-      if (this.firstData.hypervisor === HYPERVISORS_MAP.esxi.key) {
-        return list.filter(val => val.id === 'default')
-      }
-      return list
     },
     networkResourceMapper (list) {
       return list
