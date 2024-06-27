@@ -890,5 +890,6 @@
   "cloudenv.private_key.upload_certificate": "Upload certificate",
   "cloudenv.private_key.text_input": "Text input",
   "cloudenv.private_key.upload_pem_file": "Only .pem files can be uploaded",
-  "cloudenv.private_pem_message": "Please upload the private key"
+  "cloudenv.private_pem_message": "Please upload the private key",
+  "cloudenv.ksyun_bucket_url": "{0}#how-to-obtain-the-URL-of-Kingsoft-Cloud-billing-storage-bucket"
 }
