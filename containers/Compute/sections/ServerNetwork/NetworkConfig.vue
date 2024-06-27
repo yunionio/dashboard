@@ -88,7 +88,7 @@
         </template>
         <template v-if="isSupportIPv6(item)">
           <a-form-item class="mb-0" :wrapperCol="{ span: 24 }">
-            <a-checkbox v-decorator="decorator.ipv6s(item.key, item.network)">{{ $t('compute.server_create.require_ipv6') }}</a-checkbox>
+            <a-checkbox style="width: 164px" v-decorator="decorator.ipv6s(item.key, item.network)">{{ $t('compute.server_create.require_ipv6') }}</a-checkbox>
           </a-form-item>
         </template>
         <a-button shape="circle" icon="minus" size="small" v-if="i !== 0" @click="decrease(item.key, i)" class="mt-2" />

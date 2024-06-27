@@ -154,7 +154,7 @@ export default {
     destroyedCallBack: {
       type: Function,
       required: false,
-      default: () => {},
+      default: () => { },
     },
     cancelToken: {
       type: Object,
@@ -322,7 +322,7 @@ export default {
           }
           this.concatFirstOpts = true // 做标识，标识已和初始化数据做过合并
           if (this.firstTotal > this.sourceList.length) {
-          // if (!this.mapper && this.firstTotal > list.length) { 暂时先不用mapper这种hack的修复方式
+            // if (!this.mapper && this.firstTotal > list.length) { 暂时先不用mapper这种hack的修复方式
             this.showLoadMore = true
           }
         }
@@ -365,9 +365,9 @@ export default {
       if (
         (this.resource && (!this.options || !this.options.length)) &&
         ((!this.needParams && !this.needCtx) ||
-        (this.needParams && !R.isEmpty(params)) ||
-        (this.needCtx && !R.isEmpty(this.ctx)) ||
-        (this.needCtx && this.needParams && !R.isEmpty(this.ctx) && !R.isEmpty(params)))
+          (this.needParams && !R.isEmpty(params)) ||
+          (this.needCtx && !R.isEmpty(this.ctx)) ||
+          (this.needCtx && this.needParams && !R.isEmpty(this.ctx) && !R.isEmpty(params)))
       ) {
         return true
       }
