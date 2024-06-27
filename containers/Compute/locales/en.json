@@ -1792,5 +1792,6 @@
   "compute.network_check_result.error": "No matching network was found. You can create a new one manually and try again.",
   "compute.network_check_result.new_create": "Go to create a new one",
   "compute.fill_ips_tooltip": "Some resources do not have IP information, please fill in the IP and try again",
-  "compute.fill_ip_tooltip": "This resource does not have IP information, please fill in the IP and try again"
+  "compute.fill_ip_tooltip": "This resource does not have IP information, please fill in the IP and try again",
+  "compute.v2v_transfer.host_tooltip": "Prompt message: When the host is empty, the system will automatically select the host."
 }
