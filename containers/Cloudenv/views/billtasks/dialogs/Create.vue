@@ -179,6 +179,7 @@ export default {
     dateDisabledEnd (value) {
       const dateStart = this.form.start_day
       if (dateStart && value < dateStart) return true
+      if (this.params.accountData?.provider === 'extdb' && this.form.task_type === 'pull_bill') return false
       if (value > this.$moment()) return this.form.task_type !== 'predict'
       return false
     },
