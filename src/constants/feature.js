@@ -53,13 +53,13 @@ const LicenseItems = [
     meta: meta('resource_managent', 'onecloud', true),
   },
   {
-    key: 'pod',
-    meta: meta('resource_managent', 'onecloud', false),
-    validators: [validators.onestackSelected],
-  },
-  {
     key: 'baremetal',
     meta: meta('resource_managent', 'onecloud', false),
+  },
+  {
+    key: 'lb',
+    meta: meta('resource_managent', 'onecloud', false),
+    validators: [validators.onestackSelected],
   },
   {
     key: 'aliyun',
