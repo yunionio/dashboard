@@ -412,7 +412,7 @@ export default {
       if (this.forcastData && this.hostsOptions?.length === 0) {
         return this.$t('compute.transfer_host')
       }
-      return this.$t('compute.text_1384')
+      return this.$t('compute.v2v_transfer.host_tooltip')
     },
     columns () {
       const fields = ['name', 'status', 'host', 'ips', 'region', 'tenant']

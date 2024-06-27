@@ -1787,5 +1787,6 @@
   "compute.network_check_result.error": "没有找到符合的网络，可以手动新建后重试",
   "compute.network_check_result.new_create": "去新建",
   "compute.fill_ips_tooltip": "部分资源没有IP信息，请补充IP后重试",
-  "compute.fill_ip_tooltip": "该资源没有IP信息，请补充IP后重试"
+  "compute.fill_ip_tooltip": "该资源没有IP信息，请补充IP后重试",
+  "compute.v2v_transfer.host_tooltip": "提示信息：宿主机为空时，系统会自动选择宿主机"
 }
