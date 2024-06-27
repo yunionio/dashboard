@@ -381,7 +381,7 @@ export default {
         systemDisk = getOriginDiskKey(systemDisk)
       }
       if (this.fi.createType !== SERVER_TYPE.public) systemDisk = `${systemDiskMedium}::${systemDisk}`
-      pf.addDisk(systemDisk, systemDiskSize)
+      pf.addDisk(systemDisk, systemDiskSize, 'sys')
       if (this.dataDiskType) {
         const datadisks = this.dataDiskSizes || (this.dataDisk ? [this.dataDisk] : [])
         let dataDisk = this.dataDiskType
@@ -390,7 +390,7 @@ export default {
           dataDisk = getOriginDiskKey(dataDisk)
         }
         if (this.fi.createType !== SERVER_TYPE.public) dataDisk = `${dataDiskMedium}::${dataDisk}`
-        pf.addDisks(dataDisk, datadisks)
+        pf.addDisks(dataDisk, datadisks, 'data')
       }
 
       // eip
@@ -421,7 +421,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../../../../../../src/styles/less/theme";
+@import '../../../../../../src/styles/less/theme';
 .create-server-result-wrap {
   position: relative;
   font-size: 12px;
