@@ -32,7 +32,8 @@
           :decorator="decorators.hypervisor"
           :type="form.fi.createType"
           :hypervisors="hypervisors"
-          :disabledHypervisorMap="disabledHypervisorMap" />
+          :disabledHypervisorMap="disabledHypervisorMap"
+          @change="changeHandle" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_100')" v-bind="formItemLayout">
         <a-row>
@@ -441,7 +442,7 @@ export default {
     },
     instanceCapabilitieDataDisk () {
       if (R.isEmpty(this.instanceCapabilitieStorage)) return []
-      return this.instanceCapabilitieStorage.data_disk
+      return this.instanceCapabilitieStorage?.data_disk
     },
     isIDC () {
       return this.cloudEnv === 'onpremise'
@@ -521,7 +522,8 @@ export default {
             let data_storage_types = []
             this.hypervisors = hypervisors
             if (hypervisors && hypervisors.length > 0) {
-              const firstHypervisor = hypervisors[0]
+              const supportHypervisors = hypervisors.filter(item => ![HYPERVISORS_MAP.esxi.key, HYPERVISORS_MAP.pod.key].includes(item))
+              const firstHypervisor = supportHypervisors[0]
               this.$nextTick(() => {
                 this.form.fc.setFieldsValue({
                   hypervisor: firstHypervisor,
@@ -529,51 +531,54 @@ export default {
               })
               data_storage_types = Object.keys(this.dataStorageProviderTypes[firstHypervisor])
             }
-            this.storageOpts = data_storage_types.map((item) => {
-              const types = item.split('/')
-              const backend = types[0]
-              const medium = types[1]
-              let opt = STORAGE_TYPES[provider][backend]
-              if (!this.isPublic && opt) {
-                opt = {
-                  ...opt,
-                  label: `${opt.label}(${MEDIUM_MAP[medium]})`,
-                }
-              }
-              const getLabel = (backend) => { return backend.includes('rbd') ? `Ceph(${MEDIUM_MAP[medium]})` : `${backend}(${MEDIUM_MAP[medium]})` }
-              const backends = data_storage_types.filter(v => v.includes(backend))
-              return {
-                value: `${backend}__${medium}`,
-                label: opt ? opt.label : getLabel(backend),
-                medium: MEDIUM_MAP[medium] || medium,
-                multiple: backends.length > 1,
-              }
-            })
-            if (this.diskType === 'private') {
-              this.storageOpts = this.storageOpts.filter((item) => {
-                return !item.value.includes('nova')
-              })
-            } else {
-              // 公有云隐藏带local关键字的硬盘类型
-              this.storageOpts = this.storageOpts.filter(({ value }) => {
-                if (value.includes('local')) return false
-                return true
-              })
-            }
-            if (provider === 'qcloud' || provider === 'ucloud') {
-              this.storageOpts = this.storageOpts.filter((item) => {
-                return !(item.value && item.value.toLowerCase().startsWith('local_'))
-              })
-            }
-            this.form.fc.setFieldsValue({ backend: '' })
-            if (this.storageOpts.length > 0) {
-              this.form.fc.setFieldsValue({ backend: this.storageOpts[0].value })
-              this.__newStorageChange(this.storageOpts[0].value)
-            }
+            this.getStorageOpts(data_storage_types, provider)
           } catch (error) {
             throw new Error(this.$t('common_589') + error)
           }
         })
+    },
+    getStorageOpts (data_storage_types, provider) {
+      this.storageOpts = data_storage_types.map((item) => {
+        const types = item.split('/')
+        const backend = types[0]
+        const medium = types[1]
+        let opt = STORAGE_TYPES[provider][backend]
+        if (!this.isPublic && opt) {
+          opt = {
+            ...opt,
+            label: `${opt.label}(${MEDIUM_MAP[medium]})`,
+          }
+        }
+        const getLabel = (backend) => { return backend.includes('rbd') ? `Ceph(${MEDIUM_MAP[medium]})` : `${backend}(${MEDIUM_MAP[medium]})` }
+        const backends = data_storage_types.filter(v => v.includes(backend))
+        return {
+          value: `${backend}__${medium}`,
+          label: opt ? opt.label : getLabel(backend),
+          medium: MEDIUM_MAP[medium] || medium,
+          multiple: backends.length > 1,
+        }
+      })
+      if (this.diskType === 'private') {
+        this.storageOpts = this.storageOpts.filter((item) => {
+          return !item.value.includes('nova')
+        })
+      } else {
+        // 公有云隐藏带local关键字的硬盘类型
+        this.storageOpts = this.storageOpts.filter(({ value }) => {
+          if (value.includes('local')) return false
+          return true
+        })
+      }
+      if (provider === 'qcloud' || provider === 'ucloud') {
+        this.storageOpts = this.storageOpts.filter((item) => {
+          return !(item.value && item.value.toLowerCase().startsWith('local_'))
+        })
+      }
+      this.form.fc.setFieldsValue({ backend: '' })
+      if (this.storageOpts.length > 0) {
+        this.form.fc.setFieldsValue({ backend: this.storageOpts[0].value })
+        this.__newStorageChange(this.storageOpts[0].value)
+      }
     },
     _translateStorageOps (data) {
       const findStorageProvider = optItem => {
@@ -668,6 +673,11 @@ export default {
         return curDisk.step_size_gb
       }
       return 10
+    },
+    changeHandle (v) {
+      const data_storage_types = Object.keys(this.dataStorageProviderTypes[v])
+      const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
+      this.getStorageOpts(data_storage_types, provider)
     },
   },
 }
