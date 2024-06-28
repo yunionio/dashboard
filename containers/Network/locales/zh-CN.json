@@ -1140,5 +1140,8 @@
   "network.waf.type.SaaS": "SaaS型",
   "network.waf.type.Loadbalancer": "负载均衡型",
   "network.waf.source_site_address": "回源地址",
-  "network.cert_id": "证书ID"
+  "network.cert_id": "证书ID",
+  "network.associate_resource_type": "绑定资源类型",
+  "network.associate_resource_name": "绑定资源名称",
+  "network.associate_resource_id": "绑定资源ID"
 }
