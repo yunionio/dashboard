@@ -1096,5 +1096,8 @@
   "network.switch_wire": "更换二层网络",
   "network.priority": "优先级",
   "network.priority.extra": "优先级：1-255之间的正整数",
-  "network.interface": "网口"
+  "network.interface": "网口",
+  "network.associate_resource_type": "绑定资源类型",
+  "network.associate_resource_name": "绑定资源名称",
+  "network.associate_resource_id": "绑定资源ID"
 }
