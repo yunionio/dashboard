@@ -209,7 +209,7 @@ export default {
               })
             },
           }),
-          associate_name: getNameFilter({ field: 'associate_name', label: this.$t('network.associate_resource_name') }),
+          associate_name: { label: this.$t('network.associate_resource_name') },
           associate_id: { label: this.$t('network.associate_resource_id') },
           charge_type: {
             label: this.$t('network.text_192'),
