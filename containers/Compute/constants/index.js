@@ -739,6 +739,81 @@ export const STORAGE_TYPES = {
       sysMax: 500,
     },
   },
+  cloudpods: {
+    local: {
+      label: i18n.t('compute.text_70'),
+      value: 'local',
+      min: 1,
+      max: 3 * 1024, // 鹏博士需求，数据盘上限扩大到 3T
+      default: true,
+      sysMin: 10,
+      sysMax: 500,
+      unCreateCloud: true, // 不支持创建云硬盘
+    },
+    'local-ssd': {
+      label: i18n.t('common.storage.local-ssd'),
+      key: 'local-ssd',
+      min: 1,
+      max: 20 * 1024,
+      default: true,
+      sysMin: 10,
+      sysMax: 2 * 1024,
+      unCreateCloud: true, // 不支持创建云硬盘
+    },
+    'local-rotate': {
+      label: i18n.t('common.storage.local-rotate'),
+      key: 'local-rotate',
+      min: 1,
+      max: 20 * 1024,
+      default: true,
+      sysMin: 10,
+      sysMax: 2 * 1024,
+      unCreateCloud: true, // 不支持创建云硬盘
+    },
+    'local-hybrid': {
+      label: i18n.t('common.storage.local-hybrid'),
+      key: 'local-hybrid',
+      min: 1,
+      max: 20 * 1024,
+      default: true,
+      sysMin: 10,
+      sysMax: 2 * 1024,
+      unCreateCloud: true, // 不支持创建云硬盘
+    },
+    nfs: {
+      label: 'NFS',
+      value: 'nfs',
+      min: 1,
+      max: 3 * 1024,
+      sysMin: 10,
+      sysMax: 500,
+      unCreateCloud: true, // 不支持创建云硬盘
+    },
+    gpfs: {
+      label: 'GPFS',
+      value: 'gpfs',
+      min: 1,
+      max: 3 * 1024,
+      sysMin: 10,
+      sysMax: 500,
+    },
+    rbd: {
+      label: 'Ceph RBD',
+      value: 'rbd',
+      min: 1,
+      max: 3072,
+      sysMin: 10,
+      sysMax: 500,
+    },
+    slvm: {
+      label: i18n.t('storage.slvm'),
+      value: 'slvm',
+      min: 1,
+      max: 3072,
+      sysMin: 10,
+      sysMax: 500,
+    },
+  },
   esxi: {
     local: {
       label: i18n.t('compute.text_70'),
