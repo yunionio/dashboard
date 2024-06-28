@@ -1,13 +1,13 @@
 <template>
   <a-form-item class="mb-0">
     <span v-if="isEmpty">{{$t('compute.hypervisor_empty_tips')}}</span>
-    <a-radio-group v-else v-decorator="decorator">
+    <a-radio-group v-else v-decorator="decorator" @change="changeHandle">
       <template v-for="item in hypervisorOpts">
         <a-tooltip :title="disabledHypervisorMap[item.key]" :key="item.key">
           <a-radio-button
             :value="item.key"
             :disabled="disabledHypervisorMap[item.key]">
-            {{ item.label }}
+            {{ getLabel(item) }}
           </a-radio-button>
         </a-tooltip>
       </template>
@@ -60,6 +60,17 @@ export default {
     },
     isEmpty () {
       return !this.hypervisorOpts?.length
+    },
+  },
+  methods: {
+    changeHandle (e) {
+      this.$emit('change', e.target.value)
+    },
+    getLabel (item) {
+      if (item.key === HYPERVISORS_MAP.kvm.key) {
+        return this.type === 'private' ? HYPERVISORS_MAP.cloudpods.label : HYPERVISORS_MAP.kvm.label
+      }
+      return item.label
     },
   },
 }
