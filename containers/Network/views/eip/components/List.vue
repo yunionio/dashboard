@@ -17,7 +17,17 @@
 <script>
 import { mapGetters } from 'vuex'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getStatusFilter, getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
+import {
+  getNameFilter,
+  getStatusFilter,
+  getBrandFilter,
+  getAccountFilter,
+  getTenantFilter,
+  getDomainFilter,
+  getDescriptionFilter,
+  getCreatedAtFilter,
+  getDistinctFieldFilter,
+} from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -25,6 +35,7 @@ import regexp from '@/utils/regexp'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
+import { ASSOCIATE_MAP } from '../constants'
 
 export default {
   name: 'EipList',
@@ -186,6 +197,20 @@ export default {
           region: {
             label: this.$t('common_282'),
           },
+          associate_type: getDistinctFieldFilter({
+            label: this.$t('network.associate_resource_type'),
+            field: 'associate_type',
+            mapper: (list) => {
+              return list.filter(item => item.key).map(item => {
+                return {
+                  key: item.key,
+                  label: ASSOCIATE_MAP[item.key]?.name || item.label,
+                }
+              })
+            },
+          }),
+          associate_name: { label: this.$t('network.associate_resource_name') },
+          associate_id: { label: this.$t('network.associate_resource_id') },
           charge_type: {
             label: this.$t('network.text_192'),
             dropdown: true,
