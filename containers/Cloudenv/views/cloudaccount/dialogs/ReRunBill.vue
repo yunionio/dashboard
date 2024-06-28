@@ -112,6 +112,7 @@ export default {
     dateDisabledEnd (value) {
       const dateStart = this.form.fc.getFieldValue('start_day')
       if (dateStart && value < dateStart) return true
+      if (this.params.data.every(item => item.provider === 'extdb')) return false
       if (value > this.$moment()) return true
       return false
     },
