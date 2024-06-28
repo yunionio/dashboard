@@ -1131,5 +1131,8 @@
   "network.backup.auto": "Automatic",
   "network.backup.hand": "Manual",
   "network.waf.source_site_address": "Source site address",
-  "network.cert_id": "Certificate ID"
+  "network.cert_id": "Certificate ID",
+  "network.associate_resource_type": "Bind resource type",
+  "network.associate_resource_name": "Bind resource name",
+  "network.associate_resource_id": "Bind resource ID"
 }
