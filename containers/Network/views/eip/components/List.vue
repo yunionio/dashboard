@@ -200,7 +200,6 @@ export default {
           associate_type: getDistinctFieldFilter({
             label: this.$t('network.associate_resource_type'),
             field: 'associate_type',
-            multiple: false,
             mapper: (list) => {
               return list.filter(item => item.key).map(item => {
                 return {
