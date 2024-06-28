@@ -132,4 +132,8 @@ export const CUSTOME_IMG = {
     label: 'UOSDesktop',
     url: 'uosdesktop',
   },
+  tencentos: {
+    label: 'TenecnetOS Server',
+    url: 'tencentos',
+  },
 }
