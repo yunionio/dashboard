@@ -154,6 +154,9 @@ export default {
           case 'uosdesktop':
             curImg = uos
             break
+          case 'tencentos':
+            curImg = tencent
+            break
           default:
             break
         }
