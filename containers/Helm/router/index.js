@@ -45,7 +45,7 @@ export default {
               return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
                 default: ['onestack', 'private', 'public', 'vmware'],
-              }) : false
+              }) : !setupKeys.hasVersionedSetupKey({ '3.0': ['onecloud'] })
             },
             label: i18n.t('helm.text_8'),
             permission: 'scheduledtasks_list',
@@ -104,7 +104,7 @@ export default {
               return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
                 default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso', 'hcs'],
-              }) : false
+              }) : !setupKeys.hasVersionedSetupKey({ '3.0': ['k8s'] })
             },
             // invisible: () => true,
           },
@@ -163,7 +163,7 @@ export default {
               return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
                 default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso', 'hcs'],
-              }) : false
+              }) : !setupKeys.hasVersionedSetupKey({ '3.0': ['k8s'] })
             },
             // invisible: () => true,
           },
@@ -193,7 +193,7 @@ export default {
               return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
                 default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso', 'hcs'],
-              }) : false
+              }) : !setupKeys.hasVersionedSetupKey({ '3.0': ['k8s'] })
             },
             // invisible: () => true,
           },
