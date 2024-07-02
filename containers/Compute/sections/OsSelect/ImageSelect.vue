@@ -697,9 +697,11 @@ export default {
       if (images && images.length > 0) {
         images = images.filter((item) => {
           const minRam = (item.info && item.info.min_ram) || item.min_ram
-          const vmem = this.form.fd.vmem || this.form.fd.sku?.memory_size_mb
-          if (minRam > 0 && R.is(Number, vmem)) {
-            return minRam <= vmem
+          if (this.form && this.form.fd) {
+            const vmem = this.form.fd.vmem || this.form.fd.sku?.memory_size_mb
+            if (minRam > 0 && R.is(Number, vmem)) {
+              return minRam <= vmem
+            }
           }
           return true
         })
