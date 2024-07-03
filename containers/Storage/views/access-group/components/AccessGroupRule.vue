@@ -7,10 +7,10 @@
 </template>
 
 <script>
-import { getRwAccessTypeColumn, getUserAccessTypeColumn } from '../mixins/columns'
 import ListMixin from '@/mixins/list'
 import { getStatusTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
+import { getRwAccessTypeColumn, getUserAccessTypeColumn } from '../mixins/columns'
 
 export default {
   name: 'AccessGroupRuleList',
