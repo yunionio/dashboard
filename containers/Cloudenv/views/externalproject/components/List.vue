@@ -193,7 +193,7 @@ export default {
               columns: this.columns,
               onManager: this.onManager,
             })
-          }
+          },
         },
         {
           label: this.$t('cloudenv.view_record'),

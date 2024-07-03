@@ -1,9 +1,6 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
-import BottomBar from '../components/BottomBar'
-import SystemDisk from '../components/SystemDisk'
-import Tag from '../components/Tag'
 import { SCHED_POLICY_OPTIONS_MAP, SERVER_TYPE, LOGIN_TYPES_MAP } from '@Compute/constants'
 import OsSelect from '@Compute/sections/OsSelect'
 import ServerPassword from '@Compute/sections/ServerPassword'
@@ -34,6 +31,9 @@ import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
 import { PRICE_COMPARA_KEY_SUFFIX } from '@Cloudenv/constants'
 import { uuid } from '@/utils/utils'
+import BottomBar from '../components/BottomBar'
+import SystemDisk from '../components/SystemDisk'
+import Tag from '../components/Tag'
 
 const CreateServerForm = {
   wrapperCol: {
