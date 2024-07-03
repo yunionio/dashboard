@@ -741,7 +741,7 @@ export default {
         }
       }
 
-      const dataDisks = this.selectedItem.disks_info.filter(item => item.disk_type === 'data')
+      const dataDisks = this.selectedItem.disks_info.filter(item => item.disk_type === 'data' || item.disk_type === 'swap')
       const { medium_type: dataDiskMedium } = dataDisks[0] || {}
       this.$nextTick(() => {
         this.diskLoaded = true
