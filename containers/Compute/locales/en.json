@@ -1667,6 +1667,8 @@
   "compute.ceph_rbd": "Ceph RBD",
   "compute.brand_support": "Only the {0} platform is currently supported",
   "compute.large_page_memory_tips": "Opened large page memory",
+  "compute.group_action.update_config": "Configuration modification",
+  "compute.group_action.mirror_disk": "Mirrors and disks",
   "compute.config_transparent_net": "Configure transparent network card",
   "compute.available_host": "Available host",
   "compute.unavailable_host": "Unavailable host",
