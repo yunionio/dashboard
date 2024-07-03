@@ -12,14 +12,12 @@
       <a-form-item
         :label="$t('cloudenv.text_201')"
         v-if="billingType === 2"
-        :extra="$t('cloudenv.text_203')"
-      >
+        :extra="$t('cloudenv.text_203')">
         <a-select
           :filterOption="filterOption"
           showSearch
           :loading="cloudAccountLoading"
-          v-decorator="decorators.billing_bigquery_account"
-        >
+          v-decorator="decorators.billing_bigquery_account">
           <template v-for="item in cloudAccounts">
             <a-select-option v-if="id !== item.id" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
           </template>
@@ -40,22 +38,19 @@
       <a-form-item
         :label="$t('cloudenv.text_212')"
         v-if="form.fc.getFieldValue('sync_info')"
-        :extra="$t('cloudenv.text_213')"
-      >
+        :extra="$t('cloudenv.text_213')">
         <a-form-item style="display:inline-block">
           <a-month-picker
             v-decorator="decorators.start_day"
             :disabled-date="dateDisabledStart"
-            format="YYYY-MM"
-          />
+            format="YYYY-MM" />
         </a-form-item>
         <span class="ml-2 mr-2">~</span>
         <a-form-item style="display:inline-block">
           <a-month-picker
             v-decorator="decorators.end_day"
             :disabled-date="dateDisabledEnd"
-            format="YYYY-MM"
-          />
+            format="YYYY-MM" />
         </a-form-item>
       </a-form-item>
     </a-form>
@@ -247,7 +242,7 @@ export default {
           account_id: id,
           start_day: parseInt(this.$moment(start_day).startOf('month').format('YYYYMMDD')),
           end_day: parseInt(this.$moment(end_day).endOf('month').format('YYYYMMDD')),
-          task_type: 'pull_bill'
+          task_type: 'pull_bill',
         }
         await manager.create({
           data,
