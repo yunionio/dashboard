@@ -50,17 +50,18 @@ export default {
         {
           field: 'adapter',
           title: this.$t('compute.text_579'),
+          width: 70,
         },
         {
           field: 'driver',
           title: this.$t('compute.text_378'),
-          width: 80,
+          width: 140,
         },
         {
           field: 'model',
           title: this.$t('compute.text_580'),
           showOverflow: 'ellipsis',
-          minWidth: 100,
+          minWidth: 200,
         },
         {
           field: 'rotate',
