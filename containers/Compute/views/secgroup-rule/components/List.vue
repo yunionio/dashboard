@@ -165,6 +165,7 @@ export default {
               type: this.type,
               secgroup: this.id,
               brand: this.data.brand,
+              cloud_env: this.data.cloud_env,
             })
           },
           meta: () => {
