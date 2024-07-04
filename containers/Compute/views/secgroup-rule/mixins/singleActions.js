@@ -13,6 +13,7 @@ export default {
             refresh: this.refresh,
             type: this.type,
             brand: this.data.brand,
+            cloud_env: this.data.cloud_env,
           })
         },
         meta: (obj) => {
