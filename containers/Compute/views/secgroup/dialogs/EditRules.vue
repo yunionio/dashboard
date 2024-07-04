@@ -37,7 +37,7 @@
               </a-select-option>
             </a-select-opt-group> -->
           </a-select>
-          <a-checkbox class="right-checkbox" @change="cidrChange" :checked="cidrChecked">{{$t('compute.any_cidr.text')}}</a-checkbox>
+          <a-checkbox v-if="cidrCheckedShow" class="right-checkbox" @change="cidrChange" :checked="cidrChecked">{{$t('compute.any_cidr.text')}}</a-checkbox>
         </a-form-item>
         <a-form-item :label="$t('compute.text_980')">
           <a-select v-decorator="decorators.protocol" @change="protocolChange" :disabled="protocolDisabled || cidrDisabled">
@@ -85,10 +85,16 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const selectItem = this.params.data[0]
-    const { brand } = this.params
+    const { brand, cloud_env } = this.params
     const item = brand ? priorityRuleMap[brand.toLowerCase()] || {} : {}
     const priorityMin = !item.priorityNoSupport ? item.min : 1
     const priorityMax = !item.priorityNoSupport ? item.max : 1
+    let cidrChecked = JSON.stringify(selectItem) === '{}' ? true : !selectItem.cidr
+    let cidrCheckedShow = true
+    if (cloud_env === 'public') {
+      cidrCheckedShow = false
+      cidrChecked = false
+    }
     return {
       loading: false,
       form: {
@@ -102,9 +108,9 @@ export default {
           'source',
           {
             validateFirst: true,
-            initialValue: selectItem.cidr || 'ALL',
+            initialValue: selectItem.cidr || (cidrCheckedShow ? 'ALL' : '0.0.0.0/0'),
             rules: [
-              { validator: this.validateCIDR },
+              { validator: this.validateCIDR, required: !cidrCheckedShow },
             ],
           },
         ],
@@ -178,7 +184,8 @@ export default {
       ],
       secgroupOpts: [
       ],
-      cidrChecked: JSON.stringify(selectItem) === '{}' ? true : !selectItem.cidr,
+      cidrChecked,
+      cidrCheckedShow,
       typeDisabled: false,
       portsDisabled: JSON.stringify(selectItem) === '{}' ? false : !selectItem.ports,
       portsCheckboxDisabled: selectItem.protocol === 'any' || selectItem.protocol === 'icmp',
@@ -189,6 +196,7 @@ export default {
       priorityMax,
       isPrioritySupport: !item.priorityNoSupport,
       priorityItem: item,
+      cloud_env,
     }
   },
   computed: {
@@ -260,6 +268,9 @@ export default {
       }
     },
     validateCIDR (rule, value, callback) {
+      if (!this.cidrCheckedShow && !value) {
+        callback(new Error(this.$t('common.tips.input', [this.decLabel])))
+      }
       if (this.cidrChecked || !value) {
         callback()
       } else if (!REGEXP.IPv6.regexp.test(value) && !REGEXP.IPv4.regexp.test(value) && !REGEXP.cidr.regexp.test(value) && !REGEXP.cidr6.regexp.test(value)) {
@@ -267,44 +278,47 @@ export default {
       }
       callback()
     },
+    changeCidrChecked (bool) {
+      this.cidrChecked = this.cidrCheckedShow ? bool : this.cidrCheckedShow
+    },
     typeChange (e) {
       if (e === 'windows') {
         this.form.fc.setFieldsValue({ ports: '3389', protocol: 'tcp' })
-        this.cidrChecked = true
+        this.changeCidrChecked(true)
         this.portsChecked = false
         this.portsDisabled = true
         this.portsCheckboxDisabled = true
         this.protocolDisabled = true
       } else if (e === 'linux') {
         this.form.fc.setFieldsValue({ ports: '22', protocol: 'tcp' })
-        this.cidrChecked = true
+        this.changeCidrChecked(true)
         this.portsChecked = false
         this.portsDisabled = true
         this.portsCheckboxDisabled = true
         this.protocolDisabled = true
       } else if (e === 'http') {
         this.form.fc.setFieldsValue({ ports: '80', protocol: 'tcp' })
-        this.cidrChecked = true
+        this.changeCidrChecked(true)
         this.portsChecked = false
         this.portsDisabled = true
         this.portsCheckboxDisabled = true
         this.protocolDisabled = true
       } else if (e === 'https') {
         this.form.fc.setFieldsValue({ ports: '443', protocol: 'tcp' })
-        this.cidrChecked = true
+        this.changeCidrChecked(true)
         this.portsChecked = false
         this.portsDisabled = true
         this.portsCheckboxDisabled = true
         this.protocolDisabled = true
       } else if (e === 'ping') {
         this.form.fc.setFieldsValue({ ports: 'ALL', protocol: 'icmp' })
-        this.cidrChecked = true
+        this.changeCidrChecked(true)
         this.portsChecked = true
         this.portsDisabled = true
         this.portsCheckboxDisabled = true
         this.protocolDisabled = true
       } else {
-        this.cidrChecked = true
+        this.changeCidrChecked(true)
         this.portsChecked = false
         this.portsDisabled = false
         this.form.fc.resetFields(['ports'])
