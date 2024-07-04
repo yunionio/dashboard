@@ -86,8 +86,7 @@ export default {
       if (
         this.cloudaccount &&
         this.cloudaccount.enabled &&
-        this.cloudaccount.status === 'connected' &&
-        this.cloudaccount.health_status === 'normal'
+        this.cloudaccount.status === 'connected'
       ) {
         normalStatus = true
       }
