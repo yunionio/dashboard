@@ -131,7 +131,7 @@ export default {
         ret.unshift(IMAGES_TYPE_MAP.vmware)
         ret.push(IMAGES_TYPE_MAP.iso)
         ret.push({ ...IMAGES_TYPE_MAP.snapshot, label: this.$t(IMAGES_TYPE_MAP.snapshot.t) })
-      } else if (this.hypervisor === HYPERVISORS_MAP.proxmox.key) {
+      } else if (this.hypervisor === HYPERVISORS_MAP.proxmox.key || (this.isPrivate && this.hypervisor === HYPERVISORS_MAP.kvm.key)) {
         ret = [IMAGES_TYPE_MAP.private, IMAGES_TYPE_MAP.iso, IMAGES_TYPE_MAP.private_iso]
       } else if (this.hypervisor === HYPERVISORS_MAP.sangfor.key) {
         ret = [IMAGES_TYPE_MAP.private_iso]
