@@ -30,8 +30,6 @@
   "cloudenv.cloudgroup_delete_tip": "Delete@:dictionary.cloudgroup",
   "cloudenv.coludgroup_text001": "Cloud Users",
   "cloudenv.coludgroup_text002": "Delete cloud users",
-  "cloudenv.coludgroup_text003": "Delete cache",
-  "cloudenv.coludgroup_text004": "Permission group cache",
   "cloudenv.coludgroup_text005": "Number of Permissions",
   "cloudenv.coludgroup_text006": "Number of Users",
   "cloudenv.clouduser_list_t1": "Username",

@@ -38,7 +38,6 @@ import AssociatedInstances from './AssociatedInstances'
 import SecgroupDetail from './Detail'
 import InDirection from './InDirection'
 import OutDirection from './OutDirection'
-// import CacheList from './Cache'
 
 export default {
   name: 'SecGroupSidePage',
@@ -47,7 +46,6 @@ export default {
     Actions,
     OutDirection,
     InDirection,
-    // CacheList,
     AssociatedInstances,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -57,7 +55,6 @@ export default {
       { label: this.$t('compute.text_993'), key: 'in-direction' },
       { label: this.$t('compute.text_994'), key: 'out-direction' },
       { label: this.$t('compute.associated_instances'), key: 'associated-instances' },
-      // { label: this.$t('compute.text_692'), key: 'cache-list' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
     ]
     if (this.params.hiddenSidepageTabs && this.params.hiddenSidepageTabs.includes('associated-instances')) {
