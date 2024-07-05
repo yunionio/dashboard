@@ -372,9 +372,6 @@ export default {
     info: 'unknown',
     success: ['available'],
   },
-  cloudgroupcache: {
-    success: ['available'],
-  },
   commonalert: {
     info: [],
     success: ['ready'],
@@ -409,9 +406,6 @@ export default {
     info: [],
     success: ['ok', 'silent'],
     danger: [''],
-  },
-  dnszonecache: {
-    success: ['available'],
   },
   alertresource: {
     success: [],
