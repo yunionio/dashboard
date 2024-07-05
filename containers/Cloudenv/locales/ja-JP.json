@@ -29,8 +29,6 @@
   "cloudenv.cloudgroup_delete_tip": "削除@:dictionary.cloudgroup",
   "cloudenv.coludgroup_text001": "クラウドユーザー",
   "cloudenv.coludgroup_text002": "クラウドユーザーの削除",
-  "cloudenv.coludgroup_text003": "キャッシュの削除",
-  "cloudenv.coludgroup_text004": "権限グループキャッシュ",
   "cloudenv.coludgroup_text005": "権限の数",
   "cloudenv.coludgroup_text006": "ユーザーの数",
   "cloudenv.clouduser_list_t1": "ユーザー名",

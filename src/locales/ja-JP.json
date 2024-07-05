@@ -887,15 +887,6 @@
       "reset_password": "パスワードのリセット",
       "reset_password_failed": "パスワードのリセットに失敗しました"
     },
-    "cloudgroupcache": {
-      "available": "利用できる",
-      "creating": "作成",
-      "create_failed": "作成に失敗しました",
-      "deleting": "削除",
-      "delete_failed": "削除に失敗しました",
-      "sync_status": "同期ステータス",
-      "unknown": "不明"
-    },
     "commonalert": {
       "init": "作成",
       "ready": "利用できる",
@@ -952,14 +943,6 @@
       "ok": "送信",
       "silent": "収束",
       "shield": "ブロック"
-    },
-    "dnszonecache": {
-      "init": "初期化する",
-      "deleting": "削除",
-      "delete_failed": "削除に失敗しました",
-      "creating": "作成",
-      "create_failed": "作成に失敗しました",
-      "available": "利用できる"
     },
     "alertresource": {
       "alerted": "アラームが発生しました"
@@ -2585,7 +2568,6 @@
     "loadbalancerbackend": "負荷分散 - バックエンド サーバー",
     "loadbalancerbackendgroup": "負荷分散 - バックエンド サーバー グループ",
     "loadbalancercertificate": "負荷分散 - 証明書",
-    "cachedloadbalancercertificates": "負荷分散証明書キャッシュ",
     "loadbalancerlistener": "負荷分散 - リスニング",
     "loadbalancerlistenerrule": "負荷分散転送ポリシー",
     "loadbalancercluster": "負荷分散 - クラスタリング",
@@ -2619,7 +2601,6 @@
     "schedpolicie": "スケジューリング・ポリシー",
     "schedtag": "ラベルのスケジュール設定",
     "secgroup": "セキュリティ グループ",
-    "secgroupcache": "セキュリティグループのキャッシュ",
     "secgrouprule": "セキュリティグループのルール",
     "server": "仮想マシン",
     "serverip": "仮想マシンの IP",
@@ -2664,7 +2645,6 @@
     "cloudgroup": "クラウドユーザーグループ",
     "cloudusergroup": "クラウドユーザーグループ",
     "clouduser": "クラウドユーザー",
-    "cloudgroupcache": "アクセス許可グループのキャッシュ",
     "cloudpolicy": "クラウドのアクセス許可",
     "commonalert": "アラートポリシー",
     "monitorresourcealerts": "リソースのマスキング",
@@ -2710,7 +2690,6 @@
     "filesystem": "ファイルシステム",
     "access_group": "NAS 権限グループ",
     "access_group_rule": "NAS 権限グループのルール",
-    "access_group_cache": "NAS 権限グループのキャッシュ",
     "mount_target": "NAS マウント ポイント",
     "waf_instance": "WAF ポリシー",
     "waf": "WAF ポリシー",
