@@ -26,41 +26,35 @@
           <a-select
             :placeholder="$t('compute.text_658')"
             v-decorator="decorators.osDistribution"
-            @change="osDistributionChange"
-          >
+            @change="osDistributionChange">
             <a-select-option
               v-for="item in osNewDisOptions"
               :key="item.value"
-              :value="item.value"
-            >{{item.text}}</a-select-option>
+              :value="item.value">{{item.text}}</a-select-option>
           </a-select>
           <a-input
             v-if="isDisOther"
             v-decorator="decorators.osOtherDistribution"
-            :placeholder="$t('compute.text_659')"
-          />
+            :placeholder="$t('compute.text_659')" />
         </a-form-item>
         <a-form-item
           :label="$t('compute.text_633')"
           :extra="$t('compute.image.min_disk.extra')"
           v-bind="formItemLayout"
-          v-if="!isHostImage"
-        >
+          v-if="!isHostImage">
           <a-input-number
             :min="1"
             :max="1000"
             :step="50"
             :precision="0"
-            v-decorator="decorators.minDisk"
-          />GB
+            v-decorator="decorators.minDisk" />GB
         </a-form-item>
         <a-form-item :label="$t('compute.text_634')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.diskDriver">
             <a-radio-button
               v-for="(item, index) in diskDriverOptions"
               :value="item.value"
-              :key="index"
-            >{{item.text}}</a-radio-button>
+              :key="index">{{item.text}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item :label="$t('compute.text_635')" v-bind="formItemLayout">
@@ -68,8 +62,7 @@
             <a-radio-button
               v-for="(item, index) in netDriverOptions"
               :value="item.value"
-              :key="index"
-            >{{item.text}}</a-radio-button>
+              :key="index">{{item.text}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item :label="$t('compute.text_1155')">
@@ -78,8 +71,7 @@
               v-for="(item, index) in biosOptions"
               :value="item.value"
               :key="index"
-              :disabled="isArm && item.value==='BIOS'"
-            >{{item.text}}</a-radio-button>
+              :disabled="isArm && item.value==='BIOS'">{{item.text}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item :label="$t('compute.vdi_protocol')">
@@ -87,8 +79,7 @@
             <a-radio-button
               v-for="(item, index) in vdiOptions"
               :value="item.value"
-              :key="index"
-            >{{item.text}}</a-radio-button>
+              :key="index">{{item.text}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
       </a-form>
