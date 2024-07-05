@@ -327,12 +327,11 @@ export default {
     },
     cloudproviderParamsExtra () {
       const params = {
-        cloud_env: 'private',
         manager_id: this.form.fd.cloudprovider,
         ...this.scopeParams,
       }
-      if (this.form.fd.hypervisor && this.form.fd.hypervisor) {
-        params.provider = HYPERVISORS_MAP[this.form.fd.hypervisor].provider
+      if (this.cloudregionZoneParams.cloudregion) {
+        params.cloudregion_id = this.cloudregionZoneParams.cloudregion
       }
       return params
     },
