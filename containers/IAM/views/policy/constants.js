@@ -135,9 +135,6 @@ export const RESOURCES_MAP = {
   secgroups: {
     i18n: 'system.text_97',
   },
-  secgroupcaches: {
-    i18n: 'dictionary.secgroupcache',
-  },
   eips: {
     i18n: 'system.text_92',
   },
@@ -495,9 +492,6 @@ export const RESOURCES_MAP = {
   cloudpolicies: {
     i18n: 'dictionary.cloudpolicy',
   },
-  cloudgroupcaches: {
-    i18n: 'dictionary.cloudgroupcache',
-  },
   commonalerts: {
     i18n: 'dictionary.commonalert',
   },
@@ -509,9 +503,6 @@ export const RESOURCES_MAP = {
   },
   dns_recordsets: {
     i18n: 'dictionary.dns_recordsets',
-  },
-  dns_zonecaches: {
-    i18n: 'dictionary.dns_zonecaches',
   },
   rbacclusterroles: {
     i18n: 'dictionary.rbacclusterroles',
@@ -591,9 +582,6 @@ export const RESOURCES_MAP = {
   access_groups: {
     i18n: 'dictionary.access_group',
   },
-  access_group_caches: {
-    i18n: 'dictionary.access_group_cache',
-  },
   access_group_rules: {
     i18n: 'dictionary.access_group_rule',
   },
@@ -608,9 +596,6 @@ export const RESOURCES_MAP = {
   },
   exchange_rates: {
     i18n: 'dictionary.billing_exchange_rates',
-  },
-  snapshotpolicycaches: {
-    i18n: 'dictionary.snapshotpolicycaches',
   },
   webapps: {
     i18n: 'dictionary.webapp',
