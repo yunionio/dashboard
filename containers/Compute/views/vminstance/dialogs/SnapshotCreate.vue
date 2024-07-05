@@ -20,7 +20,7 @@
               </template>
               <a-radio value="disk" :disabled="isEsxi">{{$t('compute.text_101')}}</a-radio>
             </a-tooltip>
-            <a-radio value="instance" :disabled="isCloudpods">{{$t('compute.text_102')}}</a-radio>
+            <a-radio value="instance">{{$t('compute.text_102')}}</a-radio>
           </a-radio-group>
         </a-form-item>
         <a-form-item
@@ -146,9 +146,6 @@ export default {
     },
     isEsxi () {
       return this.params.data[0].hypervisor === hypervisorMap.esxi.key
-    },
-    isCloudpods () {
-      return this.params.data[0].brand === 'Cloudpods'
     },
     diskParams () {
       return {
