@@ -41,17 +41,12 @@ export const PERMISSION = {
   snapshotpolicy_create: ['compute', 'snapshotpolicies', 'create'],
   snapshotpolicy_delete: ['compute', 'snapshotpolicies', 'delete'],
 
-  // 快照策略缓存
-  snapshotpolicycaches_delete: ['compute', 'snapshotpolicycaches', 'delete'],
   // 主机快照
   instance_snapshots_list: ['compute', 'instance_snapshots', 'list'],
   instance_snapshots_delete: ['compute', 'instance_snapshots', 'delete'],
   instance_snapshots_perform_set_user_metadata: ['compute', 'instance_snapshots', 'set-user-metadata'],
   // 安全组
   secgroups_list: ['compute', 'secgroups', 'list'],
-  // 安全组缓存
-  secgroupcaches_list: ['compute', 'secgroupcaches', 'list'],
-  secgroupcaches_delete: ['compute', 'secgroupcaches', 'delete'],
   // 弹性公网IP
   eips_list: ['compute', 'eips', 'list'],
   // 弹性网卡
@@ -517,13 +512,6 @@ export const PERMISSION = {
   secgroups_perform_add_rules: ['compute', 'secgroups', 'perform', 'add-rules'],
   secgroups_perform_import_rules: ['compute', 'secgroups', 'perform', 'import-rules'],
   secgroups_perform_set_user_metadata: ['compute', 'secgroups', 'perform', 'set-user-metadata'],
-  /**
-   * secgroupcache 相关操作
-   */
-  secgroupcache_create: ['compute', 'secgroupcaches', 'create'],
-  secgroupcache_update: ['compute', 'secgroupcaches', 'update'],
-  secgroupcache_delete: ['compute', 'secgroupcaches', 'delete'],
-  secgroupcache_get: ['compute', 'secgroupcaches', 'get'],
   /**
    * secgroups 相关操作
    */
@@ -1217,9 +1205,6 @@ export const PERMISSION = {
   clouduser_perform_change_owner: ['cloudid', 'cloudusers', 'perform', 'change-owner'],
   clouduser_perform_set_groups: ['cloudid', 'cloudusers', 'perform', 'set-groups'],
   clouduser_perform_syncstatus: ['cloudid', 'cloudusers', 'perform', 'syncstatus'],
-  // 权限组缓存
-  cloudgroupcache_get: ['cloudid', 'cloudgroupcaches', 'get'],
-  cloudgroupcache_delete: ['cloudid', 'cloudgroupcaches', 'delete'],
   // 监控报警
   unifiedmonitors_get: ['monitor', 'unifiedmonitors', 'get'],
   // 监控资源
@@ -1266,9 +1251,6 @@ export const PERMISSION = {
   dns_recordsets_disable: ['compute', 'dns_recordsets', 'perform', 'disable'],
   dns_recordsets_enable: ['compute', 'dns_recordsets', 'perform', 'enable'],
   dns_recordsets_perform_set_user_metadata: ['compute', 'dns_recordsets', 'perform', 'set-user-metadata'],
-  dns_zonecaches_get: ['compute', 'dns_zonecaches', 'get'],
-  dns_zonecaches_create: ['compute', 'dns_zonecaches', 'create'],
-  dns_zonecaches_delete: ['compute', 'dns_zonecaches', 'delete'],
   // 策略相关
   scopedpolicybindings_delete: ['yunionconf', 'scopedpolicybindings', 'delete'],
   scopedpolicybindings_list: ['yunionconf', 'scopedpolicybindings', 'list'],
@@ -1298,11 +1280,6 @@ export const PERMISSION = {
   access_groups_delete: ['compute', 'access_groups', 'delete'],
   access_groups_set_user_metadata: ['compute', 'access_groups', 'perform', 'set-user-metadata'],
   access_groups_perform_syncstatus: ['compute', 'access_groups', 'perform', 'syncstatus'],
-
-  // NAS权限组缓存
-  access_group_caches_list: ['compute', 'access_group_caches', 'list'],
-  access_group_caches_delete: ['compute', 'access_group_caches', 'delete'],
-  access_group_caches_perform_syncstatus: ['compute', 'access_group_caches', 'perform', 'syncstatus'],
 
   // NAS权限组规则
   access_group_rules_list: ['compute', 'access_group_rules', 'list'],

@@ -37,7 +37,6 @@ import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 import DnsRecordsetListForDnsZoneSidepage from '@Network/views/dns-recordset/components/List'
-import DnsZonecacheListForDnsZoneSidepage from '@Network/views/dns-zonecache/components/List'
 
 export default {
   name: 'DnsZoneSidePage',
@@ -46,7 +45,6 @@ export default {
     Actions,
     DnsRecordsetListForDnsZoneSidepage,
     DnsAssociateVpcList,
-    DnsZonecacheListForDnsZoneSidepage,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -58,7 +56,6 @@ export default {
       const detailTabs = [
         { label: this.$t('network.text_67'), key: 'dns-zone-detail' },
         { label: this.$t('common_663'), key: 'dns-recordset-list-for-dns-zone-sidepage' },
-        // { label: this.$t('network.text_316'), key: 'dns-zonecache-list-for-dns-zone-sidepage' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ]
       if (data.cloud_env === 'public' && data.zone_type === 'PrivateZone') {
@@ -77,11 +74,6 @@ export default {
           detail: true,
           dns_zone_id: this.detailData.id,
         }
-      } else if (this.params.windowData.currentTab === 'dns-zonecache-list-for-dns-zone-sidepage') {
-        return {
-          detail: true,
-          dns_zone_id: this.detailData.id,
-        }
       }
       return null
     },
@@ -91,8 +83,6 @@ export default {
           return 'EventListForDnsZoneSidePage'
         case 'dns-recordset-list-for-dns-zone-sidepage':
           return 'DnsRecordsetListForDnsZoneSidePage'
-        case 'dns-zonecache-list-for-dns-zone-sidepage':
-          return 'DnsZonecacheListForDnsZoneSidePage'
         case 'dns-associate-vpc-list':
           return 'DnsAssociateListForDnsZoneSidePage'
         default:

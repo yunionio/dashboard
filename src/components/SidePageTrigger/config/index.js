@@ -152,11 +152,6 @@ export default {
     resource: 'users',
     apiVersion: 'v1',
   },
-  // 权限组缓存
-  CloudgroupcacheSidePage: {
-    resource: 'cloudgroupcaches',
-    apiVersion: 'v1',
-  },
   LoadbalancerbackendgroupSidePage: {
     resource: 'loadbalancerbackendgroups',
   },
