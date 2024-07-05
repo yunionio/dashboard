@@ -1490,6 +1490,19 @@ export class GenCreateData {
         }
       })
     }
+    // cloudpods iso 镜像需加参数 cdrom,并移除磁盘中的image_id参数
+    if (this.fi.imageMsg?.disk_format === 'iso' || this.fi.imageMsg?.info?.disk_format === 'iso' || (this.fd.image?.label || '').endsWith('.iso')) {
+      const { hypervisor_info = {} } = this.fi.capability || {}
+      const keys = Object.keys(hypervisor_info)
+      if (keys.length === 1 && keys[0] === HYPERVISORS_MAP.cloudpods.provider) {
+        data.cdrom = this.fd.image.key
+        data.disks = (data.disks || []).map(item => {
+          const ret = { ...item }
+          delete ret.image_id
+          return ret
+        })
+      }
+    }
     // 主机快照需要instance_snapshot_id参数
     if (this.fd.imageType === IMAGES_TYPE_MAP.snapshot.key) {
       data.instance_snapshot_id = this.fd.image.key
