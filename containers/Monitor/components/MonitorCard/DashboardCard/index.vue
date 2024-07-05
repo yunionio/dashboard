@@ -31,15 +31,15 @@
 
 <script>
 import _ from 'lodash'
-import OverviewCardLayout from '../layout'
-import OverviewLine from '../sections/chart/line'
-import OverviewTable from '../sections/table'
 import WindowsMixin from '@/mixins/windows'
 import DialogMixin from '@/mixins/dialog'
 import { metric_zh } from '@Monitor/constants'
 import { getSignature } from '@/utils/crypto'
 import { getRequestT } from '@/utils/utils'
 import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import OverviewCardLayout from '../layout'
+import OverviewLine from '../sections/chart/line'
+import OverviewTable from '../sections/table'
 
 export default {
   name: 'DashboardCard',
