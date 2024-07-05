@@ -92,6 +92,10 @@ export const CUSTOME_IMG = {
     label: 'UOS',
     url: 'uos',
   },
+  'uos/server': {
+    label: 'UOS',
+    url: 'uos',
+  },
   android: {
     label: 'Android',
     url: 'android',
