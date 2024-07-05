@@ -370,7 +370,13 @@ export default {
         if (params['filter.0'] && params['filter.0'] === 'disk_format.notequals(iso)') Reflect.deleteProperty(params, 'filter.0')
         Reflect.deleteProperty(params, 'is_standard')
       } else if (this.imageType === IMAGES_TYPE_MAP.standard.key || this.imageType === IMAGES_TYPE_MAP.customize.key || this.imageType === IMAGES_TYPE_MAP.host.key) {
-        params['filter.0'] = 'disk_format.notequals(iso)'
+        // Cloudpods 支持选择iso
+        const target = (this.cloudproviderList || []).filter(item => item.id === this.cloudprovider)
+        if (target.length && target[0].provider === 'Cloudpods') {
+          if (params['filter.0'] && params['filter.0'] === 'disk_format.notequals(iso)') Reflect.deleteProperty(params, 'filter.0')
+        } else {
+          params['filter.0'] = 'disk_format.notequals(iso)'
+        }
       }
       if (this.imageType === IMAGES_TYPE_MAP.customize.key) {
         params.owner = this.$store.getters.userInfo.projectId
