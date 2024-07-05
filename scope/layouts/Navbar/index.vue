@@ -146,7 +146,7 @@
               <span class="mr-2" style="cursor: pointer">日本語</span><a-icon v-show="language === 'ja-JP'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
             </a-menu-item>
           </a-sub-menu>
-          <a-menu-item key="toClouduser"><a-icon class="mr-2 ml-2" type="cloud-upload" />{{ $t('scope.cloudid') }}</a-menu-item>
+          <a-menu-item key="toClouduser" v-if="showClouduser"><a-icon class="mr-2 ml-2" type="cloud-upload" />{{ $t('scope.cloudid') }}</a-menu-item>
           <a-menu-item key="handleUpdatePassword"><a-icon class="mr-2 ml-2" type="usergroup-delete" />{{ $t('scope.text_5') }}</a-menu-item>
           <a-menu-item key="logout"><a-icon class="mr-2 ml-2" type="logout" />{{ $t('scope.text_6') }}</a-menu-item>
         </a-menu>
@@ -165,6 +165,7 @@ import CloudShell from '@/sections/Navbar/components/CloudShell'
 import NotifyPopover from '@/sections/Navbar/components/NotifyPopover'
 import MorePopover from '@/sections/Navbar/components/MorePopover'
 import WindowsMixin from '@/mixins/windows'
+import { hasSetupKey } from '@/utils/auth'
 
 export default {
   name: 'Navbar',
@@ -265,6 +266,9 @@ export default {
         }
       }
       return false
+    },
+    showClouduser () {
+      return hasSetupKey(['public', 'hcso'])
     },
   },
   watch: {
