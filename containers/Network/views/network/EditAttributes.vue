@@ -60,6 +60,9 @@
         <a-form-item label="VLAN ID" v-bind="formItemLayout">
           <a-input v-decorator="decorators.vlan_id" :disabled="!isClassicNetwork" />
         </a-form-item>
+        <a-form-item label="dhcp_relay" v-bind="formItemLayout" :extra="$t('network.dhcp_tooltip')">
+          <a-input class="w-50" v-decorator="decorators.guest_dhcp" :placeholder="$t('common.tips.input', ['IPv4'])" />
+        </a-form-item>
         <a-collapse :bordered="false" :active-key="getDefaultActiveKey">
           <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
             <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="server_type === 'eip'">
@@ -99,6 +102,7 @@
 </template>
 
 <script>
+import { REGEXP } from '@/utils/validate'
 export default {
   name: 'EditAttributes',
   data () {
@@ -235,6 +239,15 @@ export default {
             initialValue: 'none',
           },
         ],
+        guest_dhcp: [
+          'guest_dhcp',
+          {
+            validateFirst: true,
+            rules: [
+              { validator: this.validateDhcpRelay },
+            ],
+          },
+        ],
         guest_dns: [
           'guest_dns',
           {
@@ -364,6 +377,7 @@ export default {
         guest_dns: data.guest_dns || '',
         guest_domain: data.guest_domain || '',
         guest_ntp: data.guest_ntp || '',
+        guest_dhcp: data.guest_dhcp || '',
       })
       this.form.fc.getFieldDecorator('bgp_type', { initialValue: data.bgp_type })
       this.wire_id = data.wire_id
@@ -395,6 +409,14 @@ export default {
         callback()
       }
     },
+    validateDhcpRelay (rule, value, callback) {
+      if (!value) {
+        callback()
+      } else if (!REGEXP.IPv4s.regexp.test(value)) {
+        callback(new Error(this.$t('common.tips.input', ['IPv4'])))
+      }
+      callback()
+    },
     doUpdate (data) {
       return new this.$Manager('networks').update({
         id: this.$route.query.network_id,
@@ -402,7 +424,6 @@ export default {
       })
     },
     async handleSubmit () {
-      console.log('submit')
       this.submiting = true
       try {
         let values = await this.form.fc.validateFields()
