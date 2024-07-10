@@ -96,6 +96,9 @@
             <span class="count-tips">{{$t('network.text_169')}}<span class="remain-num">{{ remain }}</span>{{$t('network.text_170')}}</span>
           </div>
         </a-form-item>
+        <a-form-item label="dhcp_relay" :extra="$t('network.dhcp_tooltip')">
+          <a-input class="w-50" v-decorator="decorators.guest_dhcp" :placeholder="$t('common.tips.input', ['IPv4'])" />
+        </a-form-item>
         <a-form-item :label="$t('common_498')" v-if="isShowIsAutoAlloc">
           <a-switch v-decorator="decorators.is_auto_alloc" />
           <template slot="extra">{{$t('common_500')}}</template>
@@ -456,6 +459,16 @@ export default {
             ],
           },
         ],
+        guest_dhcp: [
+          'guest_dhcp',
+          {
+            initialValue: '',
+            validateFirst: true,
+            rules: [
+              { validator: this.validateDhcpRelay },
+            ],
+          },
+        ],
         is_auto_alloc: ['is_auto_alloc', {
           valuePropName: 'checked',
         }],
@@ -634,6 +647,14 @@ export default {
       }
       callback()
     },
+    validateDhcpRelay (rule, value, callback) {
+      if (!value) {
+        callback()
+      } else if (!REGEXP.IPv4s.regexp.test(value)) {
+        callback(new Error(this.$t('common.tips.input', ['IPv4'])))
+      }
+      callback()
+    },
     initState () {
       if (this.cloudEnv === 'private') {
         this.show = false
@@ -778,6 +799,7 @@ export default {
         })
     },
     genData (values) {
+      const guest_dhcp = values.guest_dhcp
       if (this.cloudEnv === 'onpremise') {
         const data = []
         if (this.isGroupGuestIpPrefix) {
@@ -795,6 +817,7 @@ export default {
               zone: values.zone,
               project_id: values.project?.key,
               is_auto_alloc: values.is_auto_alloc,
+              guest_dhcp,
               __meta__: values.__meta__,
             }
             data.push(obj)
@@ -822,6 +845,7 @@ export default {
               server_type: values.server_type,
               wire_id: values.wire,
               is_auto_alloc: values.is_auto_alloc,
+              guest_dhcp,
               __meta__: values.__meta__,
             }
             data.push(obj)
@@ -839,6 +863,7 @@ export default {
           description: values.description,
           wire_id: values.wire,
           is_auto_alloc: values.is_auto_alloc,
+          guest_dhcp,
           __meta__: values.__meta__,
         }
       }
@@ -851,6 +876,7 @@ export default {
         vpc: values.vpc,
         zone: values?.zone,
         is_auto_alloc: values.is_auto_alloc,
+        guest_dhcp,
         __meta__: values.__meta__,
       }
     },
