@@ -1136,5 +1136,6 @@
   "network.cert_id": "証明書ID",
   "network.associate_resource_type": "バインドリソースタイプ",
   "network.associate_resource_name": "バインドリソース名",
-  "network.associate_resource_id": "バインドリソースID"
+  "network.associate_resource_id": "バインドリソースID",
+  "network.dhcp_tooltip": "複数のIPv 4アドレスの入力を許可します。"
 }

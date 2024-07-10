@@ -114,6 +114,23 @@ export default {
             title: this.$t('network.ipv6.gateway'),
           }),
           {
+            field: 'guest_dhcp',
+            title: 'dhcp_relay',
+            slots: {
+              default: ({ row }) => {
+                const ips = (row.guest_dhcp || '').split(',')
+                if (!ips.length) return '-'
+                const ret = ips.map(item => {
+                  const obj = { ip: item }
+                  return <list-body-cell-wrap copy field='ip' row={obj} hideField={true} message={item}>
+                    {item}
+                  </list-body-cell-wrap>
+                })
+                return ret
+              },
+            },
+          },
+          {
             field: 'vlan_id',
             title: 'VLAN ID',
             formatter: ({ cellValue }) => {
