@@ -1793,5 +1793,6 @@
   "compute.network_check_result.new_create": "Go to create a new one",
   "compute.fill_ips_tooltip": "Some resources do not have IP information, please fill in the IP and try again",
   "compute.fill_ip_tooltip": "This resource does not have IP information, please fill in the IP and try again",
-  "compute.v2v_transfer.host_tooltip": "Prompt message: When the host is empty, the system will automatically select the host."
+  "compute.v2v_transfer.host_tooltip": "Prompt message: When the host is empty, the system will automatically select the host.",
+  "compute.access_mac_required": "This physical machine does not support redfish out of band control and requires the MAC address of the management port to be filled in"
 }
