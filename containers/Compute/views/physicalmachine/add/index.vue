@@ -291,6 +291,7 @@ export default {
   },
   created () {
     this.hm = new this.$Manager('hosts')
+    this.hvm = new this.$Manager('hosts/validate-ipmi', 'v1')
     this.um = new this.$Manager('uploads', 'v1')
   },
   methods: {
@@ -440,13 +441,29 @@ export default {
         throw error
       })
     },
+    async checkMac (values) {
+      const res = await this.hvm.create({
+        data: {
+          ip: values.ipmi_ip_addr,
+          username: values.ipmi_username,
+          password: values.ipmi_password,
+        },
+      })
+      if (res.data?.is_redfish_supported || (!res.data?.is_redfish_supported && values.access_mac)) {
+        return Promise.resolve()
+      } else {
+        this.$message.error(this.$t('compute.access_mac_required'))
+        return Promise.reject(new Error('mac'))
+      }
+    },
     handleBack () {
       this.$router.push('/physicalmachine')
     },
     async handleAdd () {
       try {
-        await this.form.fc.validateFields()
+        const values = await this.form.fc.validateFields()
         this.adding = true
+        await this.checkMac(values)
         if (this.isPreSingleAdd) {
           await this.doPreSingleAdd()
         }
