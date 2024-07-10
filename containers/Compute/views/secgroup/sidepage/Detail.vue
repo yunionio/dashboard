@@ -58,13 +58,6 @@ export default {
           },
           hidden: () => this.hiddenColumns.includes('guest_cnt'),
         },
-        // {
-        //   field: 'cache_cnt',
-        //   title: this.$t('compute.text_1030'),
-        //   formatter: ({ row }) => {
-        //     return <a onClick={ () => this.$emit('tab-change', 'cache-list') }>{row.cache_cnt}</a>
-        //   },
-        // },
         getRegionTableColumn(),
         getCopyWithContentTableColumn({
           field: 'vpc',
