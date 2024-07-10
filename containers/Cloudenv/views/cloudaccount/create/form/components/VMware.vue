@@ -171,15 +171,15 @@ export default {
     cloudregionParams () {
       return {
         cloud_env: 'onpremise',
-        usable: true,
-        show_emulated: true,
+        // usable: true,
+        show_emulated: false,
         scope: this.$store.getters.scope,
       }
     },
     zoneParams () {
       return {
-        usable: true,
-        show_emulated: true,
+        // usable: true,
+        show_emulated: false,
         order_by: 'created_at',
         order: 'asc',
         scope: this.$store.getters.scope,
