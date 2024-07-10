@@ -1133,5 +1133,6 @@
   "network.cert_id": "Certificate ID",
   "network.associate_resource_type": "Bind resource type",
   "network.associate_resource_name": "Bind resource name",
-  "network.associate_resource_id": "Bind resource ID"
+  "network.associate_resource_id": "Bind resource ID",
+  "network.dhcp_tooltip": "Allow multiple IPv4 addresses to be filled in, separated by commas in English"
 }
