@@ -881,15 +881,6 @@
       "reset_password": "Resetting password",
       "reset_password_failed": "Failed to reset password"
     },
-    "cloudgroupcache": {
-      "available": "Available",
-      "creating": "Creating",
-      "create_failed": "Create failed",
-      "deleting": "Deleting",
-      "delete_failed": "Deletion failed",
-      "sync_status": "Syncing status",
-      "unknown": "Unknown"
-    },
     "commonalert": {
       "init": "Created",
       "ready": "Available",
@@ -946,14 +937,6 @@
       "ok": "Sent",
       "silent": "Muted",
       "shield": "Shielded"
-    },
-    "dnszonecache": {
-      "init": "Initialize",
-      "deleting": "Deleting",
-      "delete_failed": "Deletion failed",
-      "creating": "Creating",
-      "create_failed": "Create failed",
-      "available": "available"
     },
     "alertresource": {
       "alerted": "alerted"
@@ -2610,7 +2593,6 @@
     "loadbalancerbackend": "Load Balance-Backend Server",
     "loadbalancerbackendgroup": "Load Balance-Backend Server Group",
     "loadbalancercertificate": "Load Balance-Certificate",
-    "cachedloadbalancercertificates": "Load Balance-Certificate-Cache",
     "loadbalancerlistener": "Load Balancer Listener",
     "loadbalancerlistenerrule": "Load Balance-Forwarding Strategy",
     "loadbalancercluster": "Load Balance-Cluster",
@@ -2644,7 +2626,6 @@
     "schedpolicie": "Scheduling Policy",
     "schedtag": "Scheduler Tag",
     "secgroup": "Security Group",
-    "secgroupcache": "Security Group Cache",
     "secgrouprule": "Security Group Rule",
     "server": "Server",
     "serverip": "Server IP",
@@ -2689,7 +2670,6 @@
     "cloudgroup": "Cloud User Groups",
     "cloudusergroup": "Groups",
     "clouduser": "Cloud Users",
-    "cloudgroupcache": "Permission group cache",
     "cloudpolicy": "Cloud Permission",
     "commonalert": "Policies",
     "monitorresourcealerts": "Shielding Resources",
@@ -2735,7 +2715,6 @@
     "filesystem": "File System",
     "access_group": "Access Group",
     "access_group_rule": "Access Group Rule",
-    "access_group_cache": "Access Group Cache",
     "mount_target": "Mount Target",
     "waf_instance": "WAF Strategy",
     "message_queue": "Message Queue",
