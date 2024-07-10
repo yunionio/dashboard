@@ -120,7 +120,11 @@ export default {
         })
     },
     fetchZones (cloudregionId) {
-      const params = Object.assign({}, this.zoneParams, { cloudregion_id: cloudregionId, usable: true, order_by: 'created_at', order: 'asc' })
+      let zoneUsable = false
+      if (this.cloudregionParams && this.cloudregionParams.usable) {
+        zoneUsable = true
+      }
+      const params = Object.assign({}, this.zoneParams, { cloudregion_id: cloudregionId, usable: zoneUsable, order_by: 'created_at', order: 'asc' })
       // 清空可用区
       this.zoneOpts = []
       this.emit({}, 'zone')
