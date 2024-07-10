@@ -890,15 +890,6 @@
       "reset_password": "重置密码中",
       "reset_password_failed": "重置密码失败"
     },
-    "cloudgroupcache": {
-      "available": "可用",
-      "creating": "创建中",
-      "create_failed": "创建失败",
-      "deleting": "删除中",
-      "delete_failed": "删除失败",
-      "sync_status": "同步状态中",
-      "unknown": "未知"
-    },
     "commonalert": {
       "init": "创建中",
       "ready": "可用",
@@ -955,14 +946,6 @@
       "ok": "已发送",
       "silent": "已收敛",
       "shield": "已屏蔽"
-    },
-    "dnszonecache": {
-      "init": "初始化",
-      "deleting": "删除中",
-      "delete_failed": "删除失败",
-      "creating": "创建中",
-      "create_failed": "创建失败",
-      "available": "可用"
     },
     "alertresource": {
       "alerted": "发生告警"
@@ -2617,7 +2600,6 @@
     "loadbalancerbackend": "负载均衡-后端服务器",
     "loadbalancerbackendgroup": "负载均衡-后端服务器组",
     "loadbalancercertificate": "负载均衡-证书",
-    "cachedloadbalancercertificates": "负载均衡-证书-缓存",
     "loadbalancerlistener": "负载均衡-监听",
     "loadbalancerlistenerrule": "负载均衡-转发策略",
     "loadbalancercluster": "负载均衡-集群",
@@ -2651,7 +2633,6 @@
     "schedpolicie": "调度策略",
     "schedtag": "调度标签",
     "secgroup": "安全组",
-    "secgroupcache": "安全组缓存",
     "secgrouprule": "安全组规则",
     "server": "虚拟机",
     "serverip": "虚拟机IP",
@@ -2696,7 +2677,6 @@
     "cloudgroup": "云用户组",
     "cloudusergroup": "云用户组",
     "clouduser": "云用户",
-    "cloudgroupcache": "权限组缓存",
     "cloudpolicy": "云权限",
     "commonalert": "告警策略",
     "monitorresourcealerts": "屏蔽资源",
@@ -2742,7 +2722,6 @@
     "filesystem": "文件系统",
     "access_group": "NAS权限组",
     "access_group_rule": "NAS权限组规则",
-    "access_group_cache": "NAS权限组缓存",
     "mount_target": "NAS挂载点",
     "waf_instance": "WAF策略",
     "waf": "WAF策略",

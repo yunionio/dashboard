@@ -30,8 +30,6 @@
   "cloudenv.cloudgroup_delete_tip": "删除@:dictionary.cloudgroup",
   "cloudenv.coludgroup_text001": "云用户",
   "cloudenv.coludgroup_text002": "删除云用户",
-  "cloudenv.coludgroup_text003": "删除缓存",
-  "cloudenv.coludgroup_text004": "权限组缓存",
   "cloudenv.coludgroup_text005": "权限数量",
   "cloudenv.coludgroup_text006": "用户数量",
   "cloudenv.clouduser_list_t1": "用户名",

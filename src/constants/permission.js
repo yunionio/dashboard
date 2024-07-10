@@ -131,8 +131,6 @@ export const PERMISSION = {
   lb_loadbalancercertificates_perform_set_user_metadata: ['compute', 'loadbalancercertificates', 'perform', 'set-user-metadata'],
   lb_loadbalancercertificates_change_owner: ['compute', 'loadbalancercertificates', 'perform', 'change-owner'],
   lb_loadbalancercertificates_perform_public: ['compute', 'loadbalancercertificates', 'perform', 'public'],
-  // 证书缓存
-  cachedloadbalancercertificates_delete: ['compute', 'cachedloadbalancercertificates', 'delete'],
   // 负载均衡集群
   lb_loadbalancerclusters_list: ['compute', 'loadbalancerclusters', 'list'],
   lb_loadbalancerclusters_delete: ['compute', 'loadbalancerclusters', 'delete'],
