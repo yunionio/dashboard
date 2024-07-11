@@ -65,6 +65,9 @@ export default {
           return hasPermission({ key: this.item.permission, resourceData: item })
         })
       }
+      if (this.item.permission && !this.row && (!this.rows || !this.rows.length) && this.meta.buttonType !== 'primary') {
+        isPermission = hasPermission({ key: this.item.permission, resourceData: {} })
+      }
       return !isValidate || !isPermission || !isExtraValidate
     },
     tooltip () {
