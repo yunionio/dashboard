@@ -184,6 +184,10 @@ export default {
       type: String,
       default: 'with_user_meta',
     },
+    ignoreWithUserMetaParam: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -228,6 +232,7 @@ export default {
         ret = Object.assign({}, ret, this.params)
       }
       if (this.global && !this.params.resources) delete ret.resources
+      if (this.ignoreWithUserMetaParam) delete ret.with_user_meta
       return ret
     },
     currentTag () {
