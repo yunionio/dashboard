@@ -54,6 +54,9 @@
       :tagFilterResource="tagFilterResource"
       :tagFilterResource2="tagFilterResource2"
       :tagFilterResource3="tagFilterResource3"
+      :ignoreWithUserMetaParam="ignoreWithUserMetaParam"
+      :ignoreWithUserMetaParam2="ignoreWithUserMetaParam2"
+      :ignoreWithUserMetaParam3="ignoreWithUserMetaParam3"
       :tagBtnText="tagBtnText"
       :hiddenExportKeys="hiddenExportKeys"
       @refresh="refresh"
@@ -304,6 +307,9 @@ export default {
     tagFilterResource: String,
     tagFilterResource2: String,
     tagFilterResource3: String,
+    ignoreWithUserMetaParam: Boolean,
+    ignoreWithUserMetaParam2: Boolean,
+    ignoreWithUserMetaParam3: Boolean,
     tagBtnText: String,
     hiddenExportKeys: {
       type: Array,
