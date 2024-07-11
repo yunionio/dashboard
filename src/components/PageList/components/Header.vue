@@ -31,6 +31,7 @@
           <tag-filter
             :resource="tagFilterResource || resource"
             :tag-manager-instance="tagManagerInstance"
+            :ignoreWithUserMetaParam="ignoreWithUserMetaParam"
             :tag-filter="tagFilter"
             :extTagParams="extTagParams"
             :show-ext-tags="showExtTags"
@@ -46,6 +47,7 @@
           <tag-filter
             :resource="tagFilterResource3 || resource"
             :tag-manager-instance="tagManagerInstance3"
+            :ignoreWithUserMetaParam="ignoreWithUserMetaParam3"
             :tag-filter="tagFilter3"
             :extTagParams="extTagParams3"
             :show-ext-tags="showExtTags3"
@@ -63,6 +65,7 @@
           <tag-filter
             :resource="tagFilterResource2 || resource"
             :tag-manager-instance="tagManagerInstance2"
+            :ignoreWithUserMetaParam="ignoreWithUserMetaParam2"
             :tag-filter="tagFilter2"
             :extTagParams="extTagParams2"
             :show-ext-tags="showExtTags2"
@@ -242,6 +245,9 @@ export default {
     tagFilterResource: String,
     tagFilterResource2: String,
     tagFilterResource3: String,
+    ignoreWithUserMetaParam: Boolean,
+    ignoreWithUserMetaParam2: Boolean,
+    ignoreWithUserMetaParam3: Boolean,
     tagBtnText: String,
   },
   computed: {

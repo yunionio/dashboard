@@ -5,6 +5,7 @@
       :params="params"
       :value="tagFilter"
       :managerInstance="tagManagerInstance"
+      :ignoreWithUserMetaParam="ignoreWithUserMetaParam"
       :show-ext-tags="showExtTags"
       :show-no-value="showNoValue"
       :filter-with-user-meta="filterWithUserMeta"
@@ -47,6 +48,7 @@ export default {
   },
   props: {
     tagManagerInstance: Object,
+    ignoreWithUserMetaParam: Boolean,
     tagFilter: Object,
     resource: [String, Object],
     extTagParams: {
