@@ -1789,5 +1789,9 @@
   "compute.fill_ips_tooltip": "一部のリソースには IP 情報がありません。IP を入力して再試行してください。",
   "compute.fill_ip_tooltip": "このリソースには IP 情報がありません。IP を入力して再試行してください。",
   "compute.v2v_transfer.host_tooltip": "プロンプト メッセージ: ホストが空の場合、システムは自動的にホストを選択します。",
-  "compute.access_mac_required": "この物理機はredfish帯域外制御をサポートしておらず、管理口macアドレスを記入する必要がある"
+  "compute.access_mac_required": "この物理機はredfish帯域外制御をサポートしておらず、管理口macアドレスを記入する必要がある",
+  "compute.change_sub_ip": "補助IPの変更",
+  "compute.sub_ip": "補助IP",
+  "compute.automatic_allocation": "自動割り当て",
+  "compute.manually_specify": "手動指定"
 }
