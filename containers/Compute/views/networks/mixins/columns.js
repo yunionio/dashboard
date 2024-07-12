@@ -79,16 +79,14 @@ export default {
         type: 'expand',
         slots: {
           default: ({ row }) => {
-            return i18n.t('compute.text_619', [row.network_addresses ? row.network_addresses.length : 0])
-          },
-          content: ({ row }) => {
-            let list = []
-            if (row.network_addresses && row.network_addresses.length > 0) {
-              list = row.network_addresses.map(val => (
-                <a-tag class='mb-2'>{ val.ip_addr }</a-tag>
-              ))
-            }
-            return list
+            const { network_addresses = [] } = row
+            const ret = []
+            network_addresses.map(item => {
+              if (item.type === 'sub_ip') {
+                ret.push(<list-body-cell-wrap copy row={{ ip: item.ip_addr }} field="ip" hideField={true}>{item.ip_addr}</list-body-cell-wrap>)
+              }
+            })
+            return ret.length ? ret : '-'
           },
         },
       },
