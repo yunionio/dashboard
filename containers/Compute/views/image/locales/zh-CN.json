@@ -5,5 +5,6 @@
   "compute.image.merge_mirror.placeholder": "请输入合并后的主机镜像名称",
   "compute.image.merge_mirror.system_image.select_validate": "ISO格式镜像不支持合并为主机镜像",
   "compute.image.merge_mirror.order": "镜像顺序",
-  "compute.image.merge_mirror.order_extra": "镜像顺序对应创建主机时磁盘顺序，系统盘、数据盘1、数据盘2、数据盘n，请保证顺序与实际一致！"
+  "compute.image.merge_mirror.order_extra": "镜像顺序对应创建主机时磁盘顺序，系统盘、数据盘1、数据盘2、数据盘n，请保证顺序与实际一致！",
+  "compute.standard_not_export": "公共镜像不支持该操作"
 }
