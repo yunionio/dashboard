@@ -703,10 +703,6 @@ export const PERMISSION = {
   lb_loadbalancercertificates_delete: ['compute', 'loadbalancercertificates', 'delete'],
   lb_loadbalancercertificates_get: ['compute', 'loadbalancercertificates', 'get'],
 
-  // ipv6网关
-  ipv6_gateway_list: ['compute', 'ipv6_gateway', 'list'],
-  ipv6_gateway_get: ['compute', 'ipv6_gateway', 'get'],
-
   // 访问控制
   loadbalanceracls_list: ['compute', 'loadbalanceracls', 'list'],
   loadbalanceracls_create: ['compute', 'loadbalanceracls', 'create'],
@@ -1427,6 +1423,8 @@ export const PERMISSION = {
   bastion_hosts_create: ['bastionhost', 'bastion_hosts', 'create'],
   bastion_hosts_update: ['bastionhost', 'bastion_hosts', 'update'],
   bastion_hosts_delete: ['bastionhost', 'bastion_hosts', 'delete'],
+
+  bastion_servers_create: ['bastionhost', 'bastion_servers', 'create'],
 
   // 自定义数据
   ext_resources_list: ['extdb', 'ext_resources', 'list'],
