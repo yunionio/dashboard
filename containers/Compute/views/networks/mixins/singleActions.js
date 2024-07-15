@@ -83,6 +83,19 @@ export default {
               hidden: this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_change_ip'),
             },
             {
+              label: i18n.t('compute.change_sub_ip'),
+              permission: 'server_perform_update_sub_ips',
+              action: (obj) => {
+                this.createDialog('VmNetworkChangeSubIpDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  refresh: this.refresh,
+                  server: this.data,
+                })
+              },
+              hidden: this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_change_sub_ip'),
+            },
+            {
               label: i18n.t('compute.detach_network'),
               permission: 'server_perform_detachnetwork',
               action: (obj) => {
