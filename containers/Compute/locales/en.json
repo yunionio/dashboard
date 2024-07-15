@@ -1787,5 +1787,9 @@
   "compute.fill_ips_tooltip": "Some resources do not have IP information, please fill in the IP and try again",
   "compute.fill_ip_tooltip": "This resource does not have IP information, please fill in the IP and try again",
   "compute.v2v_transfer.host_tooltip": "Prompt message: When the host is empty, the system will automatically select the host.",
-  "compute.access_mac_required": "This physical machine does not support redfish out of band control and requires the MAC address of the management port to be filled in"
+  "compute.access_mac_required": "This physical machine does not support redfish out of band control and requires the MAC address of the management port to be filled in",
+  "compute.change_sub_ip": "Modify auxiliary IP",
+  "compute.sub_ip": "Auxiliary IP",
+  "compute.automatic_allocation": "Automatic allocation",
+  "compute.manually_specify": "Manually specify"
 }
