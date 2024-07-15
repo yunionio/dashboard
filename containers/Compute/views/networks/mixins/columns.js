@@ -78,10 +78,14 @@ export default {
         title: i18n.t('compute.sub_ips.title'),
         slots: {
           default: ({ row }) => {
-            return [
-              this.$t('compute.text_619', [row.network_addresses ? row.network_addresses.length : 0]),
-              <a-button type="link" class={'pl-1'} onClick={() => this.viewContentDialog(row.network_addresses, this.$t('compute.sub_ips.title'), 'network')}>{i18n.t('common.view')}</a-button>,
-            ]
+            const { network_addresses = [] } = row
+            const ret = []
+            network_addresses.map(item => {
+              if (item.type === 'sub_ip') {
+                ret.push(<list-body-cell-wrap copy row={{ ip: item.ip_addr }} field="ip" hideField={true}>{item.ip_addr}</list-body-cell-wrap>)
+              }
+            })
+            return ret.length ? ret : '-'
           },
         },
       },
