@@ -2748,7 +2748,17 @@
     "custom_data": "Custom Data",
     "ext_resource_type": "Resource type management",
     "month_report": "Month report",
-    "daily_report": "Daily report"
+    "daily_report": "Daily report",
+    "meter_instance": "Billing Resources",
+    "container_registry": "Mirror repository",
+    "block_account": "Seal accounts",
+    "price": "Example cost",
+    "bill_alert_setting": "Abnormal consumption rules",
+    "bill_alert": "Abnormal consumption",
+    "report": "report form",
+    "bastion_host_server": "Fortress host",
+    "bastion_server": "Fortress Virtual Machine",
+    "check": "Environmental inspection"
   },
   "res": {
     "role": "Role",

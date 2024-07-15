@@ -68,6 +68,15 @@ export const SERVICES_MAP = {
   devtool: {
     i18n: 'service.devtool',
   },
+  bastionhost: {
+    i18n: 'service.bastionhost',
+  },
+  scheduledtask: {
+    i18n: 'service.scheduledtask',
+  },
+  autoupdate: {
+    i18n: 'service.autoupdate',
+  },
   ...extraServices,
 }
 // 定义资源的映射
@@ -481,7 +490,7 @@ export const RESOURCES_MAP = {
     i18n: 'system.text_429',
   },
   scheduledtasks: {
-    i18n: 'system.text_382',
+    i18n: 'service.scheduledtask',
   },
   cloudgroups: {
     i18n: 'dictionary.cloudgroup',
@@ -732,7 +741,7 @@ export const RESOURCES_MAP = {
   backupstorages: {
     i18n: 'dictionary.backupstorage',
   },
-  ipv6_gateway: {
+  ipv6_gateways: {
     i18n: 'dictionary.ipv6_gateway',
   },
   tap_services: {
@@ -770,6 +779,45 @@ export const RESOURCES_MAP = {
   },
   scriptapplyrecords: {
     i18n: 'system.scriptapplyrecords',
+  },
+  meter_instances: {
+    i18n: 'dictionary.meter_instance',
+  },
+  modelarts_pools: {
+    i18n: 'ModelArts',
+  },
+  container_registries: {
+    i18n: 'dictionary.container_registry',
+  },
+  organizations: {
+    i18n: 'dictionary.organization',
+  },
+  ratesets: {
+    i18n: 'dictionary.rateset',
+  },
+  block_accounts: {
+    i18n: 'dictionary.block_account',
+  },
+  prices: {
+    i18n: 'dictionary.price',
+  },
+  bill_alert_settings: {
+    i18n: 'dictionary.bill_alert_setting',
+  },
+  bill_alerts: {
+    i18n: 'dictionary.bill_alert',
+  },
+  reports: {
+    i18n: 'dictionary.report',
+  },
+  bastion_hosts: {
+    i18n: 'dictionary.bastion_host',
+  },
+  bastion_servers: {
+    i18n: 'dictionary.bastion_server',
+  },
+  checks: {
+    i18n: 'dictionary.check',
   },
   ...extraResources,
 }
