@@ -26,6 +26,8 @@ export const metricItems = {
   'vm_mem.used': { key: 'vm_mem.used', label: i18n.t('monitor.text_127'), unit: 'G' },
   'vm_netio.bps_recv': { key: 'vm_netio.bps_recv', label: i18n.t('compute.text_756'), unit: 'bps' },
   'vm_netio.bps_sent': { key: 'vm_netio.bps_sent', label: i18n.t('compute.text_757'), unit: 'bps' },
+  'vm_netio.pps_recv': { key: 'vm_netio.pps_recv', label: i18n.t('compute.netio.pps_recv'), unit: 'pps' },
+  'vm_netio.pps_sent': { key: 'vm_netio.pps_sent', label: i18n.t('compute.netio.pps_sent'), unit: 'pps' },
   'vm_diskio.read_bps': { key: 'vm_diskio.read_bps', label: i18n.t('compute.text_758'), unit: 'bps' },
   'vm_diskio.write_bps': { key: 'vm_diskio.write_bps', label: i18n.t('compute.text_759'), unit: 'bps' },
   // KVM宿主机

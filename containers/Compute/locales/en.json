@@ -529,6 +529,8 @@
   "compute.text_523": "CPU Usage",
   "compute.text_524": "Network Inbound Traffic",
   "compute.text_525": "Network Outbound Traffic",
+  "compute.netio.pps_sent": "Packet Sent Per Second",
+  "compute.netio.pps_recv": "Packet Received Per Second",
   "compute.text_526": "Disk Read Rate",
   "compute.text_527": "Disk Write Rate",
   "compute.text_528": "CPU usage rate, CPU idle rate, user space occupied by CPU, kernel space occupied by CPU, proportion of CPU time waiting for input and output",

@@ -529,6 +529,8 @@
   "compute.text_523": "CPU 使用率",
   "compute.text_524": "ネットワーク受信トラフィック",
   "compute.text_525": "ネットワーク エグレス トラフィック",
+  "compute.netio.pps_sent": "1 秒あたりの送信パケット数",
+  "compute.netio.pps_recv": "1 秒あたりの受信パケット数",
   "compute.text_526": "ディスク読み取り速度",
   "compute.text_527": "ディスク書き込み速度",
   "compute.text_528": "CPU 使用率、CPU アイドル率、ユーザー領域が CPU を占有、カーネル領域が CPU を占有、入出力を待機する CPU 時間",
