@@ -117,6 +117,26 @@ const NET_SENT_BPS = {
   transfer: 1024,
 }
 
+const NET_RECV_PPS = {
+  name: 'net',
+  label: i18n.t('compute.netio.pps_recv'),
+  seleteItem: 'pps_recv',
+  fromItem: 'agent_net',
+  groupBy: ['interface'],
+  unit: 'pps',
+  transfer: 1,
+}
+
+const NET_SENT_PPS = {
+  name: 'net',
+  label: i18n.t('compute.netio.pps_sent'),
+  seleteItem: 'pps_sent',
+  fromItem: 'agent_net',
+  groupBy: ['interface'],
+  unit: 'pps',
+  transfer: 1,
+}
+
 const COND_AND = 'AND'
 // const COND_OR = 'OR'
 // const COND_NULL = ''
@@ -138,6 +158,8 @@ export const AGENT_MONITOR = [
   DISK_IO_WRITE_RATES,
   NET_RECV_BPS,
   NET_SENT_BPS,
+  NET_RECV_PPS,
+  NET_SENT_PPS,
 ]
 
 const TEMPERATURE_CPU_INPUT = {
@@ -208,6 +230,8 @@ export const AGENT_TEMPERATURE_MONITOR = [
   TEMPERATURE_VIRTUAL_INPUT,
 ]
 
+const NETIO_GROUP_BY_TAG = ['interface', 'host_interface', 'ip', 'mac']
+
 // OneCloud 虚拟机监控数据
 export const ONECLOUD_MONITOR = [
   {
@@ -228,7 +252,7 @@ export const ONECLOUD_MONITOR = [
     transfer: 1,
     metric: metricItems['vm_mem.used_percent'].key,
   },
-  BASIC_DISK_USED_PERCENT,
+  // BASIC_DISK_USED_PERCENT,
   {
     name: 'netio',
     label: i18n.t('compute.text_524'),
@@ -237,6 +261,7 @@ export const ONECLOUD_MONITOR = [
     unit: 'bps',
     transfer: 1024,
     metric: metricItems['vm_netio.bps_recv'].key,
+    groupBy: NETIO_GROUP_BY_TAG,
   },
   {
     name: 'netio',
@@ -246,6 +271,27 @@ export const ONECLOUD_MONITOR = [
     unit: 'bps',
     transfer: 1024,
     metric: metricItems['vm_netio.bps_sent'].key,
+    groupBy: NETIO_GROUP_BY_TAG,
+  },
+  {
+    name: 'netio',
+    label: i18n.t('compute.netio.pps_sent'),
+    seleteItem: 'pps_sent',
+    fromItem: 'vm_netio',
+    transfer: 1,
+    unit: 'pps',
+    metric: metricItems['vm_netio.pps_sent'].key,
+    groupBy: NETIO_GROUP_BY_TAG,
+  },
+  {
+    name: 'netio',
+    label: i18n.t('compute.netio.pps_recv'),
+    seleteItem: 'pps_recv',
+    fromItem: 'vm_netio',
+    transfer: 1,
+    unit: 'pps',
+    metric: metricItems['vm_netio.pps_recv'].key,
+    groupBy: NETIO_GROUP_BY_TAG,
   },
   {
     name: 'diskio',

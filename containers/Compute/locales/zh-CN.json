@@ -526,6 +526,8 @@
   "compute.text_523": "CPU使用率",
   "compute.text_524": "网络入流量",
   "compute.text_525": "网络出流量",
+  "compute.netio.pps_sent": "网络发包数/秒",
+  "compute.netio.pps_recv": "网络收包数/秒",
   "compute.text_526": "磁盘读速率",
   "compute.text_527": "磁盘写速率",
   "compute.text_528": "CPU使用率,CPU空闲率,用户空间占用CPU,内核空间占用CPU,等待输入输出的CPU时间占比",
