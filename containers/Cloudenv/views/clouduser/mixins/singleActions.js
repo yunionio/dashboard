@@ -29,6 +29,18 @@ export default {
         actions: obj => {
           return [
             {
+              label: this.$t('cloudenv.text_529'),
+              permission: 'clouduser_perform_set_password',
+              action: () => {
+                this.createDialog('ClouduserSetPasswordDialog', {
+                  data: [obj],
+                  onManager: this.onManager,
+                  columns: this.columns,
+                  cloudaccount: this.cloudaccount,
+                })
+              },
+            },
+            {
               label: this.$t('cloudenv.clouduser_list_a2'),
               permission: 'clouduser_perform_change_owner',
               action: () => {
@@ -82,15 +94,16 @@ export default {
   },
   methods: {
     isNormalStatus () {
-      let normalStatus = false
-      if (
-        this.cloudaccount &&
-        this.cloudaccount.enabled &&
-        this.cloudaccount.status === 'connected'
-      ) {
-        normalStatus = true
-      }
-      return normalStatus
+      // let normalStatus = false
+      // if (
+      //   this.cloudaccount &&
+      //   this.cloudaccount.enabled &&
+      //   this.cloudaccount.status === 'connected'
+      // ) {
+      //   normalStatus = true
+      // }
+      // return normalStatus
+      return true
     },
     isOwner () {
       return this.isAdminMode || (this.cloudaccount && this.cloudaccount.domain_id === this.userInfo.projectDomainId)

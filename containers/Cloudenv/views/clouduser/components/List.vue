@@ -11,11 +11,12 @@
 import get from 'lodash/get'
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
+import { getDistinctFieldFilter } from '@/utils/common/tableFilter'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'ClouduserList',
@@ -43,18 +44,18 @@ export default {
           owner_name: {
             label: this.$t('cloudenv.clouduser_list_t4'),
           },
+          cloudaccount: getDistinctFieldFilter({
+            field: 'account',
+            type: 'extra_field',
+            label: this.$t('common.text00108'),
+          }),
+          manager: getDistinctFieldFilter({
+            field: 'manager',
+            type: 'extra_field',
+            label: this.$t('common_624', [this.$t('dictionary.cloudprovider')]),
+          }),
         },
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('cloudenv.clouduser_list_t1'), key: 'name' },
-          { label: this.$t('cloudenv.clouduser_list_t5'), key: 'is_console_login' },
-          { label: this.$t('cloudenv.text_98'), key: 'status' },
-          { label: this.$t('cloudenv.clouduser_list_t3'), key: 'iam_login_url' },
-          { label: this.$t('cloudenv.clouduser_list_t4'), key: 'owner_name' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('common.create'),
@@ -107,6 +108,13 @@ export default {
   },
   computed: {
     ...mapGetters(['userInfo']),
+    exportDataOptions () {
+      return {
+        title: this.$t('dictionary.clouduser'),
+        downloadType: 'local',
+        items: this.columns,
+      }
+    },
   },
   created () {
     this.initSidePageTab('clouduser-detail')
