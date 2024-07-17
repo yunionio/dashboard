@@ -66,6 +66,9 @@ export default {
                 if (value > 0 && value < 0.01) {
                   return '< 1%'
                 }
+                if (value > 0.99 && value < 1) {
+                  return '> 99%'
+                }
               },
             },
           }],
