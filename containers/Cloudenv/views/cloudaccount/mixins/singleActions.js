@@ -208,21 +208,18 @@ export default {
                 },
                 // 开启免密登录
                 {
-                  label: i18n.t('cloudenv.text_576'),
+                  label: i18n.t('cloudenv.setup_ssh_authentication'),
                   permission: 'cloudaccounts_update',
                   action: () => {
-                    this.onManager('update', {
-                      id: obj.id,
-                      managerArgs: {
-                        data: {
-                          saml_auth: true,
-                        },
-                      },
+                    this.createDialog('CloudaccountSetSamlAuthDialog', {
+                      data: [obj],
+                      columns: this.columns,
+                      onManager: this.onManager,
+                      refresh: this.refresh,
                     })
                   },
                   meta: () => {
                     let tooltip
-                    if (obj.saml_auth) tooltip = this.$t('cloudaccount.tooltip.already_enable_sso')
                     const isSupportSAMLAuth = ['Aws', 'Aliyun', 'Huawei', 'Qcloud', 'Azure', 'HCSO', 'HCS'].includes(obj.brand)
                     if (!isSupportSAMLAuth) tooltip = this.$t('cloudaccount.tooltip.not_support_sso', [BRAND_MAP[obj.brand]?.label || obj.brand])
                     if (obj.brand === 'Azure' && obj.access_url !== 'AzurePublicCloud') {
@@ -236,7 +233,7 @@ export default {
                       return { validate: false, tooltip }
                     }
                     return {
-                      validate: !obj.saml_auth && ownerDomain && isSupportSAMLAuth,
+                      validate: ownerDomain && isSupportSAMLAuth,
                       tooltip,
                     }
                   },

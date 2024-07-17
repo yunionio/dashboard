@@ -54,11 +54,18 @@ export default {
             ]
           },
         },
+        formatter: ({ row }) => {
+          return [i18n.t('cloudenv.text_245', [(row.cloudpolicies && row.cloudpolicies.length) || 0])]
+        },
       },
       getBrandTableColumn({ field: 'provider' }),
       getCopyWithContentTableColumn({
         field: 'cloudaccount',
         title: this.$t('common.text00108'),
+      }),
+      getCopyWithContentTableColumn({
+        field: 'manager',
+        title: this.$t('common_624', [this.$t('dictionary.cloudprovider')]),
       }),
       getPublicScopeTableColumn({ vm: this, resource: 'cloudgroups' }),
       getProjectDomainTableColumn(),

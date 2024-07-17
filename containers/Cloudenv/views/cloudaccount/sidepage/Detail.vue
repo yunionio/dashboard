@@ -120,7 +120,7 @@ export default {
           },
         },
         getEnabledTableColumn(),
-        getStatusTableColumn({ statusModule: 'enabled', field: 'saml_auth', title: this.$t('table.title.sso_status') }),
+        getStatusTableColumn({ statusModule: 'enabled', field: 'saml_auth', title: this.$t('cloudenv.ssh_authentication') }),
         {
           field: 'read_only',
           title: this.$t('cloudenv.read_only'),
