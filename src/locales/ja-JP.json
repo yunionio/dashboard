@@ -2807,7 +2807,17 @@
     "custom_data": "カスタムデータ",
     "ext_resource_type": "リソースタイプ管理",
     "month_report": "月報",
-    "daily_report": "日報"
+    "daily_report": "日報",
+    "meter_instance": "請求書リソース",
+    "container_registry": "ミラーウェアハウス",
+    "block_account": "帳簿を封する",
+    "price": "インスタンス費用",
+    "bill_alert_setting": "異常消費ルール",
+    "bill_alert": "異常消費",
+    "report": "レポート＃レポート＃",
+    "bastion_host_server": "バリアホスト",
+    "bastion_server": "バリア仮想マシン",
+    "check": "環境パトロール"
   },
   "res": {
     "role": "@:dictionary.role",
