@@ -889,5 +889,13 @@
   "cloudenv.private_key.text_input": "テキスト入力",
   "cloudenv.private_key.upload_pem_file": ".pem ファイルのみをアップロードできます",
   "cloudenv.private_pem_message": "秘密鍵をアップロードしてください",
-  "cloudenv.ksyun_bucket_url": "{0}#金山クラウド請求書ストレージバレルurlを取得する方法"
+  "cloudenv.ksyun_bucket_url": "{0}#金山クラウド請求書ストレージバレルurlを取得する方法",
+  "cloudenv.ssh_authentication": "機密解除されたログイン",
+  "cloudenv.turn_on": "オープン",
+  "cloudenv.turn_off": "閉じる",
+  "cloudenv.setup_ssh_authentication": "非機密ログインの設定",
+  "cloudenv.saml_provider": "アイデンティティプロバイダ",
+  "cloudenv.entity_id": "エンティティID",
+  "cloudenv.auth_url": "認証アドレス",
+  "cloudenv.smal_provider_tips": "クラウドアカウントが非機密ログインをオンにすると、クラウド管理の認証情報がクラウド上に同期され、非機密SSO方式でジャンプログインできるようになります。"
 }
