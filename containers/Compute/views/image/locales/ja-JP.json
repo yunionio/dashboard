@@ -5,5 +5,6 @@
   "compute.image.merge_mirror.placeholder": "マージされたホストイメージの名前を入力します",
   "compute.image.merge_mirror.system_image.select_validate": "ISO イメージをホスト イメージにマージできない",
   "compute.image.merge_mirror.order": "ミラーの順序",
-  "compute.image.merge_mirror.order_extra": "イメージの順序は、ホストが作成されたときのディスクの順序に対応し、システムディスク、データディスク1、データディスク2、データディスクN、順序が実際のディスクと一致していることを確認してください。"
+  "compute.image.merge_mirror.order_extra": "イメージの順序は、ホストが作成されたときのディスクの順序に対応し、システムディスク、データディスク1、データディスク2、データディスクN、順序が実際のディスクと一致していることを確認してください。",
+  "compute.standard_not_export": "パブリックミラーはこの操作をサポートしていません"
 }

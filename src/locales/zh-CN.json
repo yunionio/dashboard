@@ -2800,7 +2800,17 @@
     "custom_data": "自定义数据",
     "ext_resource_type": "资源类型管理",
     "month_report": "月报",
-    "daily_report": "日报"
+    "daily_report": "日报",
+    "meter_instance": "账单资源",
+    "container_registry": "镜像仓库",
+    "block_account": "封账",
+    "price": "实例费用",
+    "bill_alert_setting": "异常消费规则",
+    "bill_alert": "异常消费",
+    "report": "报表",
+    "bastion_host_server": "堡垒主机",
+    "bastion_server": "堡垒虚拟机",
+    "check": "环境巡检"
   },
   "res": {
     "role": "@:dictionary.role",
@@ -3159,7 +3169,10 @@
     "suggestion": "优化建议",
     "report": "报表",
     "extdb": "外部数据",
-    "devtool": "devtool"
+    "devtool": "devtool",
+    "bastionhost": "堡垒机",
+    "scheduledtask": "定时任务",
+    "autoupdate": "巡检"
   },
   "scope.text_1": "实例列表",
   "scope.text_2": "用户信息",
