@@ -319,6 +319,7 @@ export default {
       const ret = {
         items: [
           { label: 'ID', key: 'id' },
+          { label: this.$t('dictionary.external_id'), key: 'external_id' },
           ...this.columns,
         ],
         title: this.$t('dictionary.dbinstance'),
