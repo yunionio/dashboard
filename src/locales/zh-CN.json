@@ -5508,6 +5508,8 @@
   "common.min": "最小值",
   "common.max": "最大值",
   "common.mean": "平均值",
+  "common.p95": "P95",
+  "common.p50": "P50",
   "common.eip": "弹性IP",
   "common.show_origin_1": "仅显示{0}账单-原账单",
   "common.show_origin_2": "以{0}为单位显示所有账单-原账单",

@@ -5504,6 +5504,8 @@
   "common.min": "最低限",
   "common.max": "最大",
   "common.mean": "平均値",
+  "common.p95": "P95",
+  "common.p50": "P50",
   "common.eip": "エラスティック IP",
   "common.show_origin_1": "{0} つの請求書 (元の請求書) のみが表示されます",
   "common.show_origin_2": "{0}のすべての請求書 (元の請求書) を表示します。",

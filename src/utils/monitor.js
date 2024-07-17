@@ -2,6 +2,22 @@ import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
 
 function genServerQueryData (vmId, val, scope, from, interval, idKey, customTime, skip_check_series, extraTags = []) {
+  // 对应 mean(val.seleteItem)
+  const aggregateParams = {
+    type: val.groupFunc || val.selectFunction || 'mean',
+    params: [],
+  }
+  const PERCENTILE = 'percentile'
+  const aggrFunc = val.groupFunc
+  if (aggrFunc === 'p95') {
+    aggregateParams.type = PERCENTILE
+    aggregateParams.params = [95]
+  }
+  if (aggrFunc === 'p50') {
+    aggregateParams.type = PERCENTILE
+    aggregateParams.params = [50]
+  }
+
   const model = {
     measurement: val.fromItem,
     select: [
@@ -10,10 +26,7 @@ function genServerQueryData (vmId, val, scope, from, interval, idKey, customTime
           type: 'field',
           params: [val.seleteItem],
         },
-        { // 对应 mean(val.seleteItem)
-          type: val.groupFunc || val.selectFunction || 'mean',
-          params: [],
-        },
+        aggregateParams,
         { // 确保后端返回columns有 val.label 的别名
           type: 'alias',
           params: [val.label],
