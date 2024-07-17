@@ -1795,5 +1795,11 @@
   "compute.change_sub_ip": "補助IPの変更",
   "compute.sub_ip": "補助IP",
   "compute.automatic_allocation": "自動割り当て",
-  "compute.manually_specify": "手動指定"
+  "compute.manually_specify": "手動指定",
+  "compute.kvm_rebuild_tip1": "1.システムをインストールすると、新しいシステムディスクが再割り当てされ、システムディスク上の元のデータが消去されます",
+  "compute.kvm_rebuild_tip2": "2.システムミラーの再ロードはクロスアーキテクチャをサポートしていない、例えばx 86ホストはx 86アーキテクチャのミラーのみを選択できる",
+  "compute.kvm_rebuild_tip3": "3.Windowsマシン再ロードシステムはWindowsシステムしか選択できない、Linuxマシンは同じである",
+  "compute.kvm_rebuild_tip4": "4.ホストシステムのディスク容量は、ミラーリングの最小ディスク要件を満たす必要があります。そうしないと、対応するミラーリングを選択できません",
+  "compute.kvm_rebuild_tip5": "5.再ロードシステムはローカルISOフォーマットミラーリングの選択をサポートしていない",
+  "compute.kvm_rebuild_tip6": "6.ミラー状態は使用可能な状態である必要がある"
 }
