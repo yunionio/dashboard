@@ -5,16 +5,6 @@
       <a-form
         :form="form.fc"
         v-bind="formItemLayout">
-        <template v-if="isGoogle">
-          <a-form-item :label="$t('dictionary.cloudprovider')">
-            <base-select
-              v-decorator="decorators.cloudprovider_id"
-              resource="cloudproviders"
-              filterable
-              :params="cloudproviderParams"
-              :item.sync="form.fi.cloudprovider" />
-          </a-form-item>
-        </template>
         <a-form-item :label="$t('cloudenv.text_375')" :extra="nameExtra">
           <a-input v-decorator="decorators.generate_name" :placeholder="namePlaceholder"  @change="e => { form.fi.generate_name = e.target.value }" />
           <template v-slot:extra>
@@ -25,13 +15,17 @@
               :params="nameRepeatParams" />
           </template>
         </a-form-item>
-        <a-form-item :label="$t('dictionary.cloudusergroup')" :extra="$t('cloudenv.clouduser_text2')">
-          <list-select
-            v-decorator="decorators.cloudgroup_ids"
-            :listProps="cloudgroupListSelectProps"
-            :formatter="formatterLabel"
-            :dialog-params="{ mask: false }" />
-        </a-form-item>
+        <template>
+          <a-form-item :label="$t('dictionary.cloudprovider')">
+            <base-select
+              v-decorator="decorators.manager_id"
+              resource="cloudproviders"
+              filterable
+              isDefaultSelect
+              :params="cloudproviderParams"
+              :item.sync="form.fi.cloudprovider" />
+          </a-form-item>
+        </template>
         <a-form-item :label="$t('cloudenv.clouduser_list_t4')" :extra="$t('common_625')">
           <user-select
             v-decorator="decorators.owner_id"
@@ -61,19 +55,19 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import UserSelect from '../components/UserSelect'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import NameRepeated from '@/sections/NameRepeated'
-import ListSelect from '@/sections/ListSelect'
+// import ListSelect from '@/sections/ListSelect'
 import { getNameFilter } from '@/utils/common/tableFilter'
+import UserSelect from '../components/UserSelect'
 
 export default {
   name: 'ClouduserCreateDialog',
   components: {
     NameRepeated,
     UserSelect,
-    ListSelect,
+    // ListSelect,
   },
   mixins: [DialogMixin, WindowsMixin],
   props: {
@@ -128,8 +122,8 @@ export default {
             ],
           },
         ],
-        cloudprovider_id: [
-          'cloudprovider_id',
+        manager_id: [
+          'manager_id',
           {
             rules: [
               { required: true, message: this.$t('common.select') },
@@ -252,7 +246,7 @@ export default {
     },
     nameRepeatParams () {
       if (this.isGoogle) {
-        return { cloudprovider_id: this.form.fi.cloudprovider.id }
+        return { manager_id: this.form.fi.cloudprovider.id }
       }
       return { cloudaccount_id: this.params.cloudaccount.id }
     },
