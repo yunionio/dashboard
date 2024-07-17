@@ -10,12 +10,12 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import { getNameFilter, getBrandFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getBrandFilter, getDescriptionFilter, getCreatedAtFilter, getDistinctFieldFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'CloudaccountList',
@@ -43,22 +43,20 @@ export default {
           name: getNameFilter(),
           description: getDescriptionFilter(),
           provider: getBrandFilter('cloud_id_brands'),
+          cloudaccount: getDistinctFieldFilter({
+            field: 'account',
+            type: 'extra_field',
+            label: this.$t('common.text00108'),
+          }),
+          manager: getDistinctFieldFilter({
+            field: 'manager',
+            type: 'extra_field',
+            label: this.$t('common_624', [this.$t('dictionary.cloudprovider')]),
+          }),
           created_at: getCreatedAtFilter(),
         },
         hiddenColumns: ['created_at'],
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.name'), key: 'name' },
-          { label: this.$t('cloudenv.text_98'), key: 'status' },
-          { label: this.$t('cloudenv.text_329'), key: 'cloudpolicies' },
-          { label: this.$t('table.title.brand'), key: 'provider' },
-          { label: this.$t('table.title.share_range'), key: 'public_scope' },
-          { label: this.$t('table.title.owner_domain'), key: 'project_domain' },
-          { label: this.$t('common.createdAt'), key: 'created_at' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('common.create'),
@@ -67,6 +65,7 @@ export default {
             this.createDialog('CloudgroupCreateDialog', {
               onManager: this.onManager,
               provider: this.cloudaccount.provider,
+              cloudaccount: this.cloudaccount || {},
             })
           },
           meta: () => {
@@ -92,6 +91,18 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    exportDataOptions () {
+      return {
+        title: this.$t('cloudenv.text_491'),
+        downloadType: 'local',
+        items: [
+          { field: 'id', title: 'ID' },
+          ...this.columns,
+        ],
+      }
+    },
   },
   created () {
     this.initSidePageTab('cloudgroup-detail')

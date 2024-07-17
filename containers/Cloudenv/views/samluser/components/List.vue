@@ -11,12 +11,12 @@
 import get from 'lodash/get'
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
 import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'CloudaccountList',
