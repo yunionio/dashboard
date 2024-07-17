@@ -888,5 +888,13 @@
   "cloudenv.private_key.text_input": "Text input",
   "cloudenv.private_key.upload_pem_file": "Only .pem files can be uploaded",
   "cloudenv.private_pem_message": "Please upload the private key",
-  "cloudenv.ksyun_bucket_url": "{0}#how-to-obtain-the-URL-of-Kingsoft-Cloud-billing-storage-bucket"
+  "cloudenv.ksyun_bucket_url": "{0}#how-to-obtain-the-URL-of-Kingsoft-Cloud-billing-storage-bucket",
+  "cloudenv.ssh_authentication": "SSH Authentication",
+  "cloudenv.turn_on": "Turn on",
+  "cloudenv.turn_off": "Turn off",
+  "cloudenv.setup_ssh_authentication": "Setup SSH Authentication",
+  "cloudenv.saml_provider": "SAML Provider",
+  "cloudenv.entity_id": "Entity ID",
+  "cloudenv.auth_url": "Auth URL",
+  "cloudenv.smal_provider_tips": "After enabling password free login for the cloud account, the authentication information of the cloud management will be synchronized to the cloud, so that login can be redirected through password free SSO."
 }
