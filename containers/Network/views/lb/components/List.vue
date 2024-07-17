@@ -339,6 +339,7 @@ export default {
       return {
         items: [
           { label: 'ID', key: 'id' },
+          { label: this.$t('dictionary.external_id'), key: 'external_id' },
           ...this.columns,
         ],
         title: this.$t('network.text_714'),
