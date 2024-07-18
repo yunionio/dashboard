@@ -577,4 +577,7 @@ export default {
     success: ['available'],
     danger: ['no_bind'],
   },
+  pod: {
+    info: ['stop'],
+  },
 }
