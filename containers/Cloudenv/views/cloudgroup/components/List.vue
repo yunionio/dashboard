@@ -32,6 +32,25 @@ export default {
     },
   },
   data () {
+    const filterOptions = {
+      name: getNameFilter(),
+      description: getDescriptionFilter(),
+      provider: getBrandFilter('cloud_id_brands'),
+      cloudaccount: getDistinctFieldFilter({
+        field: 'account',
+        type: 'extra_field',
+        label: this.$t('common.text00108'),
+      }),
+      manager: getDistinctFieldFilter({
+        field: 'manager',
+        type: 'extra_field',
+        label: this.$t('common_624', [this.$t('dictionary.cloudprovider')]),
+      }),
+      created_at: getCreatedAtFilter(),
+    }
+    if (this.inBaseSidePage) {
+      delete filterOptions.cloudaccount
+    }
     return {
       list: this.$list.createList(this, {
         id: this.id,
@@ -39,22 +58,7 @@ export default {
         apiVersion: 'v1',
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.cloudgroup).flat(),
-        filterOptions: {
-          name: getNameFilter(),
-          description: getDescriptionFilter(),
-          provider: getBrandFilter('cloud_id_brands'),
-          cloudaccount: getDistinctFieldFilter({
-            field: 'account',
-            type: 'extra_field',
-            label: this.$t('common.text00108'),
-          }),
-          manager: getDistinctFieldFilter({
-            field: 'manager',
-            type: 'extra_field',
-            label: this.$t('common_624', [this.$t('dictionary.cloudprovider')]),
-          }),
-          created_at: getCreatedAtFilter(),
-        },
+        filterOptions,
         hiddenColumns: ['created_at'],
       }),
       groupActions: [
@@ -100,6 +104,7 @@ export default {
         items: [
           { field: 'id', title: 'ID' },
           ...this.columns,
+          { field: 'manager', title: this.$t('common_624', [this.$t('dictionary.cloudprovider')]) },
         ],
       }
     },
