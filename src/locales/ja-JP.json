@@ -1240,6 +1240,9 @@
     "webappDomains": {
       "available": "保護された",
       "no_bind": "バインドなし"
+    },
+    "pod": {
+      "stop": "電源を切る"
     }
   },
   "skuCategoryOptions": {
