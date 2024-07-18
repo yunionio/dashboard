@@ -5436,6 +5436,8 @@
   "common.min": "Min",
   "common.max": "Max",
   "common.mean": "Average",
+  "common.p95": "P95",
+  "common.p50": "P50",
   "common.eip": "Eip",
   "common.show_origin_1": "Only show {0} bills - original bills",
   "common.show_origin_2": "Show all bills in units of {0} - the original bill",
