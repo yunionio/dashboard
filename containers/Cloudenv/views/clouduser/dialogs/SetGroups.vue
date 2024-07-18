@@ -66,7 +66,8 @@ export default {
           getParams: () => {
             return {
               scope: this.$store.getters.scope,
-              provider: this.params.cloudaccount.provider,
+              mamager_id: this.params.data[0].manager_id,
+              cloudaccount_id: this.params.data[0].cloudaccount_id,
             }
           },
           filterOptions: {

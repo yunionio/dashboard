@@ -16,6 +16,18 @@
             :defaultProjectId="params.defaultProjectId"
             :defaultUserId="params.userId" />
         </a-form-item>
+        <template>
+          <a-form-item :label="$t('dictionary.cloudprovider')">
+            <base-select
+              v-decorator="decorators.cloudprovider_id"
+              resource="cloudproviders"
+              filterable
+              isDefaultSelect
+              :params="cloudproviderParams"
+              :item.sync="form.fi.cloudprovider"
+              @change="cloudproviderChange" />
+          </a-form-item>
+        </template>
         <a-form-item :label="$t('dictionary.cloudusergroup')" :extra="$t('samluser.create_cloudgroup_extra')">
           <list-select
             v-decorator="decorators.cloudgroup_id"
@@ -35,11 +47,11 @@
 
 <script>
 import * as R from 'ramda'
-import UserSelect from '../components/UserSelect'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter } from '@/utils/common/tableFilter'
 import ListSelect from '@/sections/ListSelect'
+import UserSelect from '../components/UserSelect'
 
 export default {
   name: 'SamluserCreateDialog',
@@ -99,7 +111,7 @@ export default {
           apiVersion: 'v1',
           getParams: () => {
             const params = {
-              provider: this.params.cloudaccount.provider,
+              manager_id: this.form.fi.cloudprovider.id,
             }
             if (this.$store.getters.isAdminMode) {
               params.domain_id = this.params.cloudaccount.domain_id
@@ -195,6 +207,11 @@ export default {
     },
   },
   methods: {
+    cloudproviderChange () {
+      this.form.fc.setFieldsValue({
+        cloudgroup_id: null,
+      })
+    },
     async handleConfirm () {
       this.loading = true
       try {

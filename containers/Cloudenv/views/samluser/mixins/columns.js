@@ -3,6 +3,7 @@ import {
   getStatusTableColumn,
   getBrandTableColumn,
   getCopyWithContentTableColumn,
+  getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -38,14 +39,7 @@ export default {
         },
       }),
       getBrandTableColumn(),
-      getCopyWithContentTableColumn({
-        field: 'cloudaccount',
-        title: this.$t('common.text00108'),
-      }),
-      getCopyWithContentTableColumn({
-        field: 'manager',
-        title: this.$t('common_624', [this.$t('dictionary.cloudprovider')]),
-      }),
+      getAccountTableColumn({ field: 'cloudaccount', title: this.$t('common.text00108') }),
     ]
   },
 }

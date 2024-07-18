@@ -49,11 +49,6 @@ export default {
             type: 'extra_field',
             label: this.$t('common.text00108'),
           }),
-          manager: getDistinctFieldFilter({
-            field: 'manager',
-            type: 'extra_field',
-            label: this.$t('common_624', [this.$t('dictionary.cloudprovider')]),
-          }),
         },
       }),
       groupActions: [
@@ -112,7 +107,11 @@ export default {
       return {
         title: this.$t('dictionary.clouduser'),
         downloadType: 'local',
-        items: this.columns,
+        items: [
+          { field: 'id', title: 'ID' },
+          ...this.columns,
+          { field: 'manager', title: this.$t('common_624', [this.$t('dictionary.cloudprovider')]) },
+        ],
       }
     },
   },
