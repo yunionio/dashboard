@@ -55,6 +55,13 @@ export default {
           }
         }
       }
+      if (this.params.windowData.currentTab === 'saml-provider') {
+        return () => {
+          return {
+            manager_id: this.data.id,
+          }
+        }
+      }
       return null
     },
     brand () {
