@@ -2,14 +2,16 @@
   <base-dialog @cancel="cancelDialog" :width="1000">
     <div slot="header">{{action}}</div>
     <div slot="body">
-      <a-alert class="mb-2" type="warning" v-if="tips">
-        <div slot="message">
-          {{ tips }}
-        </div>
+      <a-alert type="warning" class="mb-2" v-if="tips.length">
+        <template v-slot:message>
+          <div class="messages-list">
+            <p v-for="(item,index) in tips" :key="index" class="mb-1">{{ item }}</p>
+          </div>
+        </template>
       </a-alert>
       <template v-if="isShowColumns">
         <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
-        <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
+        <dialog-table :data="params.data" :columns="params.columns.filter(item => ['name', 'os_dist', 'instance_type'].includes(item.field))" />
       </template>
       <a-form
         v-bind="formItemLayout"
@@ -301,13 +303,23 @@ export default {
     },
     tips () {
       if (this.hypervisor === HYPERVISORS_MAP.openstack.key) {
-        return this.$t('compute.text_1222')
+        return [this.$t('compute.text_1222')]
       }
       if (this.hypervisor === HYPERVISORS_MAP.zstack.key) {
-        return this.$t('compute.text_1223')
+        return [this.$t('compute.text_1223')]
+      }
+      if (this.params.data.every(item => item.hypervisor === HYPERVISORS_MAP.kvm.key)) {
+        return [
+          this.$t('compute.kvm_rebuild_tip1'),
+          this.$t('compute.kvm_rebuild_tip2'),
+          this.$t('compute.kvm_rebuild_tip3'),
+          this.$t('compute.kvm_rebuild_tip4'),
+          this.$t('compute.kvm_rebuild_tip5'),
+          this.$t('compute.kvm_rebuild_tip6'),
+        ]
       }
       if (this.params.data.length === 1) {
-        return this.$t('compute.text_1224')
+        return [this.$t('compute.text_1224')]
       }
       return ''
     },

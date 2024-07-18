@@ -1800,5 +1800,11 @@
   "compute.change_sub_ip": "Modify auxiliary IP",
   "compute.sub_ip": "Auxiliary IP",
   "compute.automatic_allocation": "Automatic allocation",
-  "compute.manually_specify": "Manually specify"
+  "compute.manually_specify": "Manually specify",
+  "compute.kvm_rebuild_tip1": "1. Installing the system will reassign a new system disk, and all original data on the system disk will be cleared",
+  "compute.kvm_rebuild_tip2": "2. Reinstalling the system image does not support cross architecture, for example, x86 hosts can only choose x86 architecture images",
+  "compute.kvm_rebuild_tip3": "3. When reinstalling the system on a Windows machine, only the Windows system can be selected, and the same applies to Linux machines",
+  "compute.kvm_rebuild_tip4": "4. The host system disk capacity must meet the minimum disk requirements for the image, otherwise the corresponding image cannot be selected",
+  "compute.kvm_rebuild_tip5": "5. Reinstalling the system does not support selecting local ISO format images",
+  "compute.kvm_rebuild_tip6": "6. The mirror status must be in an available state"
 }
