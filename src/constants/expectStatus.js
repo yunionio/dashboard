@@ -596,4 +596,7 @@ export default {
     success: ['complete'],
     danger: ['failed'],
   },
+  pod: {
+    info: ['stop'],
+  },
 }
