@@ -142,6 +142,8 @@ export default {
         { key: 'min', label: this.$t('common.min') },
         { key: 'max', label: this.$t('common.max') },
         { key: 'mean', label: this.$t('common.mean') },
+        { key: 'p95', label: this.$t('common.p95') },
+        { key: 'p50', label: this.$t('common.p50') },
       ],
     }
   },
