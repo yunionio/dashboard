@@ -4,6 +4,7 @@ import {
   getStatusTableColumn,
   getCopyWithContentTableColumn,
   getEnabledTableColumn,
+  getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 
@@ -59,14 +60,7 @@ export default {
         title: this.$t('cloudenv.clouduser_list_t4'),
       }),
       getBrandTableColumn({ field: 'provider' }),
-      getCopyWithContentTableColumn({
-        field: 'cloudaccount',
-        title: this.$t('common.text00108'),
-      }),
-      getCopyWithContentTableColumn({
-        field: 'manager',
-        title: this.$t('common_624', [this.$t('dictionary.cloudprovider')]),
-      }),
+      getAccountTableColumn({ field: 'cloudaccount', title: this.$t('common.text00108') }),
     ]
   },
 }
