@@ -41,10 +41,11 @@ export default {
         type: 'extra_field',
         label: this.$t('common.text00108'),
       }),
-      manager: getDistinctFieldFilter({
+      manager_id: getDistinctFieldFilter({
         field: 'manager',
         type: 'extra_field',
         label: this.$t('common_624', [this.$t('dictionary.cloudprovider')]),
+        multiple: false,
       }),
       created_at: getCreatedAtFilter(),
     }
