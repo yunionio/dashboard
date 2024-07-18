@@ -41,11 +41,6 @@ export default {
           name: getNameFilter(),
         },
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('cloudenv.text_104'),
@@ -86,6 +81,17 @@ export default {
   },
   computed: {
     ...mapGetters(['userInfo']),
+    exportDataOptions () {
+      return {
+        title: this.$t('dictionary.samluser'),
+        downloadType: 'local',
+        items: [
+          { field: 'id', title: 'ID' },
+          ...this.columns,
+          { field: 'manager', title: this.$t('common_624', [this.$t('dictionary.cloudprovider')]) },
+        ],
+      }
+    },
   },
   watch: {
     cloudEnv (val) {
