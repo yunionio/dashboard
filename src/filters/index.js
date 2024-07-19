@@ -73,6 +73,12 @@ export const numerify = (num, format = '0.00') => {
   if (num === '-') return '-'
   num = Number(num)
   if (!num) return 0
+  // 适配科学计数法
+  const str = num + ''
+  if (str.includes('e-') || str.includes('e+')) {
+    const fixedLen = format.split('.')[1]?.length || 0
+    num = num.toFixed(fixedLen)
+  }
   return n(num, format)
 }
 
