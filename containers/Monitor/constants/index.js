@@ -255,6 +255,7 @@ export const metric_zh = {
   'CPU system state utilization rate': i18n.t('monitor_metric_14'),
   'CPU user mode utilization rate': i18n.t('monitor_metric_15'),
   'Free space size': i18n.t('monitor_metric_16'),
+  'Percentage of used inodes': i18n.t('monitor_metric_inodes_used_percent'),
   'Available inode': i18n.t('monitor_metric_17'),
   'Total inodes': i18n.t('monitor_metric_18'),
   'Number of inodes used': i18n.t('monitor_metric_19'),
