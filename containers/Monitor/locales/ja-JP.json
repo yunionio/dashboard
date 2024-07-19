@@ -15,6 +15,7 @@
   "monitor_metric_14": "CPU システム状態の使用率",
   "monitor_metric_15": "CPU ユーザー モードの使用状況",
   "monitor_metric_16": "ディスクは使用されていません",
+  "monitor_metric_inodes_used_percent": "inode使用率",
   "monitor_metric_17": "使用可能な i ノードの数",
   "monitor_metric_18": "i ノードの総数",
   "monitor_metric_19": "使用される i ノードの数",
