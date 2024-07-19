@@ -15,6 +15,7 @@
   "monitor_metric_14": "CPU 系统态使用率",
   "monitor_metric_15": "CPU 用户态使用率",
   "monitor_metric_16": "未使用磁盘",
+  "monitor_metric_inodes_used_percent": "inode使用率",
   "monitor_metric_17": "可用inode数",
   "monitor_metric_18": "inode总数",
   "monitor_metric_19": "已使用的inode数",
