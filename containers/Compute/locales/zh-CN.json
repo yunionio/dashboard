@@ -1716,6 +1716,7 @@
   "compute.bastionHost.privileged_account.placeholder": "@:common.select堡垒机特权用户",
   "compute.bastionHost.account.placeholder": "@:common.select堡垒机普通用户",
   "compute.custom_data.extra": "优先使用#cloud-config yaml格式，该操作依赖Cloud-init组件，需保证镜像中包含该组件，同时也支持shell脚本。",
+  "compute.custom_data.esxi_extra": "优先使用#cloud-config yaml格式，支持shell脚本。",
   "compute.tooltip.check_domain_permission": "仅系统或@:dictionary.domain管理员支持该操作",
   "compute.tooltip.check_backup_host_transfer": "高可用机器不支持该操作",
   "compute.tooltip.check_gpu_transfer": "GPU虚拟机不支持该操作",

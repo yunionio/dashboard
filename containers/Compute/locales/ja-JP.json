@@ -1716,6 +1716,7 @@
   "compute.bastionHost.privileged_account.placeholder": "@:common.select bastionhost 特権ユーザー",
   "compute.bastionHost.account.placeholder": "@:common.select 踏み台ホストの通常のユーザー",
   "compute.custom_data.extra": "イメージに含める必要があり、シェルスクリプトもサポートするCloud-initコンポーネントに依存する #cloud-configyaml形式が推奨されます。",
+  "compute.custom_data.esxi_extra": "優先的に#cloud-config yamlフォーマットを使用して、shellスクリプトをサポートします。",
   "compute.tooltip.check_domain_permission": "この操作は、システム管理者または @:dictionary.domain 管理者のみがサポートします",
   "compute.tooltip.check_backup_host_transfer": "この操作は、高可用性マシンではサポートされていません",
   "compute.tooltip.check_gpu_transfer": "この操作は、GPU 仮想マシンではサポートされていません",
