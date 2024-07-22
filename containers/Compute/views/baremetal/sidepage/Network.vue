@@ -49,37 +49,8 @@ export default {
         getCopyWithContentTableColumn({ field: 'mac_addr', title: this.$t('compute.text_385'), sortable: true }),
         getCopyWithContentTableColumn({ field: 'ip_addr', title: this.$t('compute.text_386'), sortable: true }),
         getCopyWithContentTableColumn({ field: 'driver', title: this.$t('compute.text_378') }),
-        {
-          field: 'bw_limit',
-          title: this.$t('compute.text_387'),
-          width: 100,
-          formatter: ({ row }) => {
-            return `${row.bw_limit}Mbps`
-          },
-          slots: {
-            header: ({ column }) => {
-              return [
-                <a-tooltip title={this.$t('compute.text_388')}>
-                  <span class='mr-1'>{ column.title }</span>
-                  <icon type="question" />
-                </a-tooltip>,
-              ]
-            },
-          },
-        },
       ],
       singleActions: [
-        {
-          label: this.$t('compute.text_389'),
-          action: (obj) => {
-            this.createDialog('VmChangeBandwidthDialog', {
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-              refresh: this.refresh,
-            })
-          },
-        },
         {
           label: this.$t('compute.text_390'),
           action: (obj) => {
