@@ -1208,6 +1208,9 @@
     "webappDomains": {
       "available": "受保护",
       "no_bind": "无绑定"
+    },
+    "pod": {
+      "stop": "关机"
     }
   },
   "skuCategoryOptions": {
