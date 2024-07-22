@@ -1713,6 +1713,7 @@
   "compute.bastionHost.privileged_account.placeholder": "@:common.select bastion host privileged user",
   "compute.bastionHost.account.placeholder": "@:common.select common user of the bastion host",
   "compute.custom_data.extra": "The #cloud-config yaml format is preferred. This operation depends on the Cloud-init component, which needs to be included in the image, and shell scripts are also supported.",
+  "compute.custom_data.esxi_extra": "The #cloud-config yaml format is preferred, and shell scripts are also supported.",
   "compute.tooltip.check_domain_permission": "Only system or @:dictionary.domain administrators support this operation",
   "compute.tooltip.check_backup_host_transfer": "Highly available machines do not support this operation",
   "compute.tooltip.check_gpu_transfer": "GPU virtual machine does not support this operation",
