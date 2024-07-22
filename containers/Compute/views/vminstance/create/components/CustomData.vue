@@ -32,6 +32,7 @@
 <script>
 import 'codemirror/theme/material.css'
 import 'codemirror/addon/edit/matchbrackets'
+import { HYPERVISORS_MAP } from '@/constants'
 // import yaml from 'js-yaml'
 // import * as R from 'ramda'
 
@@ -63,8 +64,11 @@ export default {
     isKvm () {
       return this.form.fd.hypervisor === 'kvm'
     },
+    isEsxi () {
+      return this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key
+    },
     customDataExtra () {
-      return this.$t('compute.custom_data.extra')
+      return this.isEsxi ? this.$t('compute.custom_data.esxi_extra') : this.$t('compute.custom_data.extra')
     },
   },
   methods: {
