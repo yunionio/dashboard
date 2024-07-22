@@ -1225,6 +1225,9 @@
     "webappDomains": {
       "available": "available",
       "no_bind": "No bind"
+    },
+    "pod": {
+      "stop": "Stop"
     }
   },
   "skuCategoryOptions": {
