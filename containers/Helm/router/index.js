@@ -1,7 +1,7 @@
 // import AnsibleTemplate from '@Compute/views/ansible-template'
 // import AnsibleTemplateCreate from '@Compute/views/ansible-template/create'
 import Layout from '@/layouts/RouterView'
-import { setupKeys } from '@/utils/auth'
+import { setupKeys, isBaremetalProduct } from '@/utils/auth'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 
@@ -45,7 +45,7 @@ export default {
               return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
                 default: ['onestack', 'private', 'public', 'vmware'],
-              }) : !setupKeys.hasVersionedSetupKey({ '3.0': ['onecloud'] })
+              }) : (!setupKeys.hasVersionedSetupKey({ '3.0': ['onecloud'] }) || isBaremetalProduct())
             },
             label: i18n.t('helm.text_8'),
             permission: 'scheduledtasks_list',
