@@ -412,3 +412,8 @@ export const fillBillSupportFeatures = (data = [], fillOriginBrand = false) => {
   }
   return list
 }
+
+export const isBaremetalProduct = () => {
+  const { globalSetting = {} } = store.state
+  return globalSetting?.value?.productVersion === 'Baremetal'
+}
