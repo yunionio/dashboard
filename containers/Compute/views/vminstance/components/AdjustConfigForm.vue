@@ -8,9 +8,9 @@
     </a-alert>
     <a-card :bordered="false" size="small">
       <template #title>
-        <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1100')" />
+        <dialog-selected-tips :name="$t('dictionary.server')" :count="dataList.length" :action="$t('compute.text_1100')" />
       </template>
-      <dialog-table :data="params.data" :columns="columns" />
+      <dialog-table :data="dataList" :columns="columns" />
     </a-card>
     <page-body needMarginBottom>
       <div class="form-wrapper">
@@ -171,11 +171,14 @@ export default {
       }
       callback()
     }
-    const itemData = this.params.data[0]
-    const autoStart = this.params.data.some(val => val.status === 'running')
+    const dataList = [...this.params.data]
+    dataList.sort((a, b) => b.vcpu_count - a.vcpu_count)
+    const itemData = dataList[0]
+    const autoStart = dataList.some(val => val.status === 'running')
     return {
       loading: false,
       action: this.$t('compute.text_1100'),
+      dataList,
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: this.onValuesChange,
@@ -385,22 +388,22 @@ export default {
     scopeParams () {
       if (this.$store.getters.isAdminMode) {
         return {
-          project_domain: this.params.data[0].domain_id,
+          project_domain: this.dataList[0].domain_id,
         }
       }
       return { scope: this.$store.getters.scope }
     },
     selectedItems () {
-      return this.params.data
+      return this.dataList
     },
     selectedItem () {
-      return this.params.data[0]
+      return this.dataList[0]
     },
     count () {
       return this.selectedItems.length || 1
     },
     isSomeRunning () {
-      return this.params.data.some(val => val.status === 'running')
+      return this.dataList.some(val => val.status === 'running')
     },
     isSomeArm () {
       return this.selectedItem.os_arch === 'arm'
@@ -409,10 +412,10 @@ export default {
       return this.isSomeArm && this.isSomeRunning
     },
     hotplug () { // 做热扩容校验，true 表示置灰 CPU 和 内存，不支持热扩容
-      if (this.params.data.every(val => val.status === 'ready')) {
+      if (this.dataList.every(val => val.status === 'ready')) {
         return false
       } else {
-        if (this.params.data.every(val => {
+        if (this.dataList.every(val => {
           if ([HYPERVISORS_MAP.kvm.hypervisor, HYPERVISORS_MAP.zstack.hypervisor].includes(val.hypervisor)) {
             if (val.status === 'ready') {
               return true
@@ -608,7 +611,7 @@ export default {
       return null
     },
     isPublic () {
-      return this.params.data[0].cloud_env === SERVER_TYPE.public
+      return this.dataList[0].cloud_env === SERVER_TYPE.public
     },
     originPrice () {
       if (this.origin_price) {
@@ -647,7 +650,7 @@ export default {
         brand: this.selectedItem.brand, // kvm,vmware支持指定存储
         manager: prefer_manager,
         host_schedtag_id: schedtag,
-        host_id: this.params.data[0].host_id,
+        host_id: this.dataList[0].host_id,
       }
       if (key) {
         params.filter = [`storage_type.contains("${key}")`]
@@ -692,7 +695,7 @@ export default {
     this.serversManager = new Manager('servers', 'v2')
     this.zonesM2 = new Manager('zones', 'v2')
     this.serverskusM = new Manager('serverskus')
-    this.loadData(this.params.data)
+    this.loadData(this.dataList)
     this.fetchInstanceSpecs()
     this.getPriceList = _.debounce(this._getPriceList2, 500)
     this.baywatch([
@@ -806,7 +809,7 @@ export default {
         sku: values.sku.name,
         auto_start: values.autoStart,
       }
-      const ids = this.params.data.map(item => item.id)
+      const ids = this.dataList.map(item => item.id)
       params.disks = this.genDiskData(values)
       const datadisks = this.form.fc.getFieldValue('dataDiskSizes')
       let diskSize = 0
@@ -839,8 +842,8 @@ export default {
       params.project_id = this.userInfo.projectId
       params.domain = this.userInfo.projectDomainId
       const variables = {
-        project: this.params.data[0].tenant_id,
-        project_domain: this.params.data[0].domain_id,
+        project: this.dataList[0].tenant_id,
+        project_domain: this.dataList[0].domain_id,
         process_definition_key: this.WORKFLOW_TYPES.APPLY_SERVER_CHANGECONFIG,
         initiator: this.userInfo.id,
         paramter: JSON.stringify(params),
@@ -858,7 +861,7 @@ export default {
         auto_start: values.autoStart,
       }
       const { showCpuSockets, cpuSockets } = this.form.fi
-      const ids = this.params.data.map(item => item.id)
+      const ids = this.dataList.map(item => item.id)
       if (ids.length === 1) {
         params.disks = this.genDiskData(values)
       }
@@ -881,7 +884,7 @@ export default {
         }
         const values = await this.form.fc.validateFields()
         if (this.isOpenWorkflow) {
-          const projects = new Set(this.params.data.map(item => item.tenant_id))
+          const projects = new Set(this.dataList.map(item => item.tenant_id))
           if (projects.size > 1) {
             this.$message.error(this.$t('compute.text_1348'))
             this.loading = false
@@ -909,6 +912,7 @@ export default {
           this.form.fi.cpuMem.mems_mb = memOpts
           this.form.fc.setFieldsValue({
             vmem: Math.max(this.selectedItem.vmem_size, memOpts[0]),
+            vcpu: cpu,
           })
         }
       }
@@ -1053,7 +1057,7 @@ export default {
       const f = this.form.fd
       if (!this.hasMeterService) return // 如果没有 meter 服务则取消调用
       if (R.isEmpty(f.sku) || R.isNil(f.sku)) return
-      const isPublic = this.params.data[0].cloud_env === SERVER_TYPE.public
+      const isPublic = this.dataList[0].cloud_env === SERVER_TYPE.public
       if (isPublic && (R.isNil(f.sku.region_ext_id) || R.isEmpty(f.sku.region_ext_id))) return
       if (R.isNil(f.systemDiskSize)) return
 
