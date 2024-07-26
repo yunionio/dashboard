@@ -487,7 +487,8 @@ export default {
       return params
     },
     disableCpus () {
-      const cpu = this.selectedItem.vcpu_count
+      const runningList = this.dataList.filter(item => item.status === 'running')
+      const cpu = runningList.length ? runningList[0].vcpu_count : this.selectedItem.vcpu_count
       const cpus = this.form.fi.cpuMem.cpus || []
       if (this.isSomeRunning && cpus.length > 0) {
         return cpus.filter((item) => { return item < cpu })
@@ -495,7 +496,9 @@ export default {
       return []
     },
     disableMems () {
-      const vmem = this.selectedItem.vmem_size
+      const runningList = this.dataList.filter(item => item.status === 'running')
+      runningList.sort((a, b) => b.vmem_size - a.vmem_size)
+      const vmem = runningList.length ? runningList[0].vmem_size : this.selectedItem.vmem_size
       const mems = this.form.fi.cpuMem.mems_mb || []
       if (this.isSomeRunning && mems.length > 0) {
         return mems.filter((item) => { return item < vmem })
