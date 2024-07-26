@@ -1143,5 +1143,6 @@
   "network.associate_resource_type": "绑定资源类型",
   "network.associate_resource_name": "绑定资源名称",
   "network.associate_resource_id": "绑定资源ID",
-  "network.dhcp_tooltip": "允许填写多个IPv4地址，中间用英文逗号分隔"
+  "network.dhcp_tooltip": "允许填写多个IPv4地址，中间用英文逗号分隔",
+  "network.public_ip": "公网IP"
 }
