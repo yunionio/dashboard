@@ -224,6 +224,15 @@ export default {
               { label: this.$t('network.text_194'), key: 'bandwidth' },
             ],
           },
+          mode: {
+            label: this.$t('network.text_249'),
+            dropdown: true,
+            multiple: false,
+            items: [
+              { label: this.$t('network.text_221'), key: 'elastic_ip' },
+              { label: this.$t('network.public_ip'), key: 'public_ip' },
+            ],
+          },
           created_at: getCreatedAtFilter(),
         },
         autoHiddenFilterKey: 'eip_hidden_columns',
@@ -267,6 +276,7 @@ export default {
       const ret = {
         ...this.getParams,
         details: true,
+        show_emulated: true,
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
