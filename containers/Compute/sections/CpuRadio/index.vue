@@ -101,7 +101,7 @@ export default {
       return this.serverStatus === 'running'
     },
     realOptions () {
-      if (this.isServerRunning) {
+      if (this.isServerRunning && this.showCpuSockets) {
         return this.options.filter(v => v % this.cpuSocketsInit === 0)
       }
       return this.options
