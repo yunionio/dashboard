@@ -55,6 +55,18 @@ export default {
         },
       }),
       {
+        field: 'mode',
+        title: this.$t('network.text_249'),
+        formatter: ({ row }) => {
+          if (row.mode === 'elastic_ip') {
+            return this.$t('network.text_221')
+          } else if (row.mode === 'public_ip') {
+            return this.$t('network.public_ip')
+          }
+          return '-'
+        },
+      },
+      {
         field: 'bandwidth',
         title: i18n.t('network.text_195'),
         minWidth: 80,
