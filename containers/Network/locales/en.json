@@ -1136,5 +1136,6 @@
   "network.associate_resource_name": "Bind resource name",
   "network.associate_resource_id": "Bind resource ID",
   "network.dhcp_tooltip": "Allow multiple IPv4 addresses to be filled in, separated by commas in English",
-  "network.public_ip": "Public IP"
+  "network.public_ip": "Public IP",
+  "network.public_ip_donot_disassociate": "Public IP does not allow unbinding"
 }
