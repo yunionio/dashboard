@@ -16,10 +16,11 @@ import { getNameFilter, getTimeRangeFilter, getDescriptionFilter } from '@/utils
 import { getTimeTableColumn, getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import { strategyColumn, levelColumn, getStrategyInfo } from '@Monitor/views/commonalert/utils'
 import ColumnsMixin from '../mixins/columns'
+import SingleAction from '../mixins/singleActions'
 
 export default {
   name: 'AlertResourceList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleAction],
   props: {
     getParams: {
       type: Object,
@@ -65,51 +66,6 @@ export default {
         })
       }
       return columns
-    },
-    singleActions () {
-      const actions = [
-        {
-          label: this.$t('common.view_action', [this.$t('monitor.text_0')]),
-          action: (obj) => {
-            if (obj.data) {
-              obj.eval_data = [obj.data]
-            }
-            this.createDialog('ViewMonitorDialog', {
-              vm: this,
-              title: this.$t('common.view_action', [this.$t('monitor.text_0')]),
-              columns: this.columns,
-              onManager: this.onManager,
-              data: [obj],
-            })
-          },
-        },
-        {
-          label: this.$t('monitor.alerts.shield.shield'),
-          permission: 'alertrecordshields_create',
-          action: (obj) => {
-            this.createDialog('ShieldAlertrecord', {
-              vm: this,
-              columns: this.columns,
-              onManager: this.onManager,
-              refresh: this.refresh,
-              data: [obj],
-            })
-          },
-          meta: (obj) => {
-            const ret = {
-              validate: true,
-            }
-            if (obj.is_set_shield === true) {
-              return {
-                validate: false,
-                tooltip: this.$t('monitor.alerts.shield.tips2'),
-              }
-            }
-            return ret
-          },
-        },
-      ]
-      return actions
     },
   },
   watch: {
@@ -193,7 +149,7 @@ export default {
           onManager: this.onManager,
           slotCallback: row => {
             return (
-              <span>{row.res_name}</span>
+              <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ row.res_name }</side-page-trigger>
             )
           },
         }),
@@ -267,11 +223,19 @@ export default {
       return ret
     },
     handleOpenSidepage (row) {
+      const { tags = {} } = row.data || {}
+      const data = { ...tags }
+      data.id = data.vm_id
+      data.ip = data.vm_ip
       this.sidePageTriggerHandle(this, 'AlertResourceSidePage', {
         id: row.res_id,
-        resource: 'monitorresourcealerts',
-        apiVersion: 'v1',
+        resource: () => {
+          return {
+            data,
+          }
+        },
         getParams: this.getParam,
+        alert_id: row.alert_id,
       })
     },
     initResType () {
