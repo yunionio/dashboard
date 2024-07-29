@@ -347,6 +347,8 @@ export const metric_zh = {
   'amount': i18n.t('monitor_metric_100'),
   'Guest disk': i18n.t('monitor_metric_59'),
   'Used vm disk rate': i18n.t('monitor_metric_22'),
+  'Send packets per second': i18n.t('monitor.pps_sent'),
+  'Received packets per second': i18n.t('monitor.pps_recv'),
 }
 
 export const filterKeyMap = {
