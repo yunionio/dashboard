@@ -84,7 +84,16 @@ export default {
                     tooltip: this.$t('common.check_readonly', ['Aws', i18n.t('network.unbind_net_gateway')]),
                   }
                 }
+                if (obj.mode === 'public_ip' && obj.associate_id) {
+
+                }
                 if (obj.associate_id) {
+                  if (obj.mode === 'public_ip') {
+                    return {
+                      validate: false,
+                      tooltip: this.$t('network.public_ip_donot_disassociate'),
+                    }
+                  }
                   return {
                     validate: true,
                   }

@@ -1137,5 +1137,6 @@
   "network.associate_resource_name": "バインドリソース名",
   "network.associate_resource_id": "バインドリソースID",
   "network.dhcp_tooltip": "複数のIPv 4アドレスの入力を許可します。",
-  "network.public_ip": "パブリックネットワークIP"
+  "network.public_ip": "パブリックネットワークIP",
+  "network.public_ip_donot_disassociate": "パブリックネットワークIPではバインド解除は許可されていません"
 }
