@@ -312,5 +312,7 @@
   "monitor.commonalert.query_condition": "クエリ条件",
   "monitor.commonalert.threshold.message": "インジケーターの値を入力してください",
   "monitor.commonalert.add_condition": "トリガー条件を追加",
-  "monitor.validate_number": "数値を入力してください"
+  "monitor.validate_number": "数値を入力してください",
+  "monitor.associate_alarm_strategy": "関連アラームポリシー",
+  "monitor.view_monitor": "監視の表示"
 }
