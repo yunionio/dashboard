@@ -74,6 +74,8 @@
   "monitor_metric_72": "CPU使用情况",
   "monitor_metric_73": "内存使用情况",
   "monitor_metric_74": "CPU使用情况",
+  "monitor.pps_recv": "网络收包数/秒",
+  "monitor.pps_sent": "网络发包数/秒",
   "monitor_metric_77": "余额",
   "monitor_metric_76": "云账号余额",
   "monitor_metric_78": "共 {0} 条记录",
