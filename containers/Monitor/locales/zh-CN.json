@@ -309,5 +309,7 @@
   "monitor.commonalert.query_condition": "查询条件",
   "monitor.commonalert.threshold.message": "请输入指标值",
   "monitor.commonalert.add_condition": "增加触发条件",
-  "monitor.validate_number": "请输入数字"
+  "monitor.validate_number": "请输入数字",
+  "monitor.associate_alarm_strategy": "关联告警策略",
+  "monitor.view_monitor": "查看监控"
 }
