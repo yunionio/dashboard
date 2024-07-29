@@ -72,6 +72,8 @@
   "monitor_metric_70": "Redis network traffic",
   "monitor_metric_71": "Redis memory",
   "monitor_metric_72": "Redis CPU usage",
+  "monitor.pps_recv": "Packet Received Per Second",
+  "monitor.pps_sent": "Packet Sent Per Second",
   "monitor_metric_73": "Memory usage",
   "monitor_metric_74": "CPU usage",
   "monitor_metric_77": "balance",
