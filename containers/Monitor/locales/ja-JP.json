@@ -73,6 +73,8 @@
   "monitor_metric_71": "メモリ使用量",
   "monitor_metric_72": "CPU 使用率",
   "monitor_metric_73": "メモリ使用量",
+  "monitor.pps_recv": "1 秒あたりの受信パケット数",
+  "monitor.pps_sent": "1 秒あたりの送信パケット数",
   "monitor_metric_74": "CPU 使用率",
   "monitor_metric_77": "秤",
   "monitor_metric_76": "アカウント残高",
