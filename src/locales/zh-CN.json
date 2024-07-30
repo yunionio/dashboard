@@ -951,7 +951,9 @@
       "available": "可用"
     },
     "alertresource": {
-      "alerted": "发生告警"
+      "alerted": "发生告警",
+      "alerting": "发生告警",
+      "ok": "正常"
     },
     "samluser": {
       "available": "可用"

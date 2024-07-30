@@ -942,7 +942,9 @@
       "available": "available"
     },
     "alertresource": {
-      "alerted": "alerted"
+      "alerted": "alerted",
+      "alerting": "Alerting",
+      "ok": "Normal"
     },
     "samluser": {
       "available": "available"
