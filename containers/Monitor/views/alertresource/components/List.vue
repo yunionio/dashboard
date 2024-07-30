@@ -225,8 +225,8 @@ export default {
     handleOpenSidepage (row) {
       const { tags = {} } = row.data || {}
       const data = { ...tags }
-      data.id = data.vm_id
-      data.ip = data.vm_ip
+      data.id = row.monitor_resource_id
+      data.ip = data.ip || data.vm_ip
       this.sidePageTriggerHandle(this, 'AlertResourceSidePage', {
         id: row.res_id,
         resource: () => {
