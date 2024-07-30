@@ -399,8 +399,8 @@ export default {
     success: ['available'],
   },
   alertresource: {
-    success: [],
-    danger: ['alerted'],
+    success: ['ok'],
+    danger: ['alerted', 'alerting'],
   },
   samluser: {
     success: ['available'],
