@@ -119,8 +119,8 @@ import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import Metric from '@Monitor/sections/Metric'
 import Filters from '@Monitor/sections/Filters'
-import ScopeRadio from '@/sections/ScopeRadio'
 import { levelMaps, metric_zh } from '@Monitor/constants'
+import ScopeRadio from '@/sections/ScopeRadio'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import NotifyTypes from '@/sections/NotifyTypes'
 import Condition from './Condition'
@@ -184,6 +184,13 @@ export default {
       tags = _.get(this.alertData, 'settings.conditions[0].query.model.tags') || []
       initialValue.metric_key = _.get(this.alertData, 'settings.conditions[0].query.model.measurement')
       initialValue.metric_value = _.get(this.alertData, 'settings.conditions[0].query.model.select[0][0].params[0]')
+      // 默认策略适配
+      if (this.$route.query.alertType === 'system') {
+        const metricValue = _.get(this.alertData, 'common_alert_metric_details[0].field')
+        if (initialValue.metric_key === 'disk' && (metricValue === 'free/total' || metricValue === 'inodes_free/inodes_total')) {
+          initialValue.metric_value = metricValue
+        }
+      }
       initialValue.threshold = _.get(this.alertData, 'settings.conditions[0].evaluator.params[0]')
       if (this.alertData.robot_ids && this.alertData.robot_ids.length) {
         initialValue.robot_ids = this.alertData.robot_ids
@@ -486,6 +493,12 @@ export default {
         limit: 0,
       }
     },
+    metircField () {
+      return _.get(this.alertData, 'common_alert_metric_details[0].field')
+    },
+    metircMeasurement () {
+      return _.get(this.alertData, 'common_alert_metric_details[0].measurement')
+    },
   },
   watch: {
     timeRangeParams () {
@@ -547,6 +560,10 @@ export default {
           if (k === data.metric_value && ds[k].unit) {
             this.conditionUnit = ds[k].unit
           }
+        }
+        // 默认策略适配
+        if (!this.conditionUnit && (this.metircField === 'free/total' || this.metircField === 'inodes_free/inodes_total') && this.metircMeasurement === 'disk') {
+          this.conditionUnit = '%'
         }
       }
     },
@@ -705,7 +722,23 @@ export default {
       }
       const tags = []
       if (fd.metric_key) params.measurement = fd.metric_key
-      if (fd.metric_value) params.select = [[{ type: 'field', params: [fd.metric_value] }]]
+      if (fd.metric_value) {
+        params.select = [[{ type: 'field', params: [fd.metric_value] }]]
+        // 默认策略适配
+        if ((this.metircField === 'free/total' || this.metircField === 'inodes_free/inodes_total') && this.metircMeasurement === 'disk') {
+          params.select = [[{
+            type: 'field',
+            params: [this.metircField.split('/')[0]],
+          },
+          {
+            type: 'mean',
+          },
+          {
+            type: 'math',
+            params: [`/ mean("${this.metircField.split('/')[1]}")`],
+          }]]
+        }
+      }
       if (R.is(Object, fd.tagValues)) {
         R.forEachObjIndexed((value, key) => {
           if (value) {
