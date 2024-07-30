@@ -12,8 +12,8 @@
 
 <script>
 import WindowsMixin from '@/mixins/windows'
-import { getCopyWithContentTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
-import { strategyColumn, levelColumn } from '@Monitor/views/commonalert/utils'
+import { getCopyWithContentTableColumn, getBrandTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
+import { strategyColumn } from '@Monitor/views/commonalert/utils'
 
 export default {
   name: 'AlertResourceDetail',
@@ -58,7 +58,11 @@ export default {
       alertColumns: [
         getCopyWithContentTableColumn({ field: 'alert_name' }),
         strategyColumn('alert_rule'),
-        levelColumn,
+        getStatusTableColumn({ field: 'alert_state', statusModule: 'alertrecord' }),
+        {
+          field: 'metric',
+          title: this.$t('monitor.monitor_metric'),
+        },
         {
           field: '_option',
           title: this.$t('table.title._action'),
