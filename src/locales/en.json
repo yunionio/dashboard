@@ -936,7 +936,9 @@
       "shield": "Shielded"
     },
     "alertresource": {
-      "alerted": "alerted"
+      "alerted": "alerted",
+      "alerting": "Alerting",
+      "ok": "Normal"
     },
     "samluser": {
       "available": "available"
