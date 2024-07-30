@@ -115,7 +115,7 @@
       </div>
     </div>
     <!-- 资源报警 -->
-    <alertresource v-if="showAlertresource" :res_total="alertresource.total" :alert_total="alertrecords.total" class="navbar-item-icon primary-color-hover" />
+    <alertresource v-if="showAlertresource" :res_total="alertresource.total" class="navbar-item-icon primary-color-hover" />
     <!-- 消息中心 -->
     <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
     <!-- cloudshell -->

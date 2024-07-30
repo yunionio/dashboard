@@ -948,7 +948,9 @@
       "shield": "ブロック"
     },
     "alertresource": {
-      "alerted": "アラームが発生しました"
+      "alerted": "アラームが発生しました",
+      "alerting": "アラームが発生しました",
+      "ok": "通常"
     },
     "samluser": {
       "available": "利用できる"
