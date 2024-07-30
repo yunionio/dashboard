@@ -408,8 +408,8 @@ export default {
     danger: [''],
   },
   alertresource: {
-    success: [],
-    danger: ['alerted'],
+    success: ['ok'],
+    danger: ['alerted', 'alerting'],
   },
   samluser: {
     success: ['available'],
