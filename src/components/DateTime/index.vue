@@ -113,6 +113,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    useMonthlyMonth: {
+      type: Number,
+      default: 1,
+    },
   },
   data () {
     let initDateMode = this.hasDefaultTime ? this.defaultDateMode : ''
@@ -218,10 +222,12 @@ export default {
       if (this.supportDatatype) {
         if (this.time.dateMode !== 'custom') {
           params.data_type = TIME_SIZE[this.time.dateMode]
+          const diffMonth = this.$moment(end).add(1, 'seconds').diff(start, 'months') // 相差几个月
+          if (diffMonth > this.useMonthlyMonth && params.data_type === 'day') params.data_type = 'month'
         } else {
           let data_type = 'month'
           const diffMonth = this.$moment(end).add(1, 'seconds').diff(start, 'months') // 相差几个月
-          if (diffMonth <= 1) data_type = 'day'
+          if (diffMonth <= Math.min(1, this.useMonthlyMonth)) data_type = 'day'
           else data_type = 'month'
           params.data_type = data_type
         }
