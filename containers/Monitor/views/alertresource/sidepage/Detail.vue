@@ -58,7 +58,7 @@ export default {
       alertColumns: [
         getCopyWithContentTableColumn({ field: 'alert_name' }),
         strategyColumn('alert_rule'),
-        getStatusTableColumn({ field: 'alert_state', statusModule: 'alertrecord' }),
+        getStatusTableColumn({ field: 'alert_state', statusModule: 'alertresource' }),
         {
           field: 'metric',
           title: this.$t('monitor.monitor_metric'),
