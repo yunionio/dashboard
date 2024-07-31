@@ -24,6 +24,7 @@ export default {
       return _frontSingleActions.concat([
         {
           label: i18n.t('compute.text_567'),
+          permission: 'hosts_perform_login_info',
           actions: obj => {
             const ret = []
             if (obj.is_baremetal || obj.host_type === 'baremetal') {

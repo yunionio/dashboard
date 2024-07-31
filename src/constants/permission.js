@@ -200,6 +200,7 @@ export const PERMISSION = {
   hosts_get_ipmi: ['compute', 'hosts', 'get', 'ipmi'],
   // 服务器详情
   hosts_get: ['compute', 'hosts', 'get'],
+  hosts_perform_login_info: ['compute', 'hosts', 'perform', 'login-info'],
 
   // 调度策略
   schedpolicies_list: ['compute', 'schedpolicies', 'list'],
