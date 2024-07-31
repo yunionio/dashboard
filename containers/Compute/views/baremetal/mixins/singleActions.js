@@ -29,6 +29,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('compute.text_341'),
+        permission: 'server_get_vnc',
         actions: obj => {
           let ret = []
           ret.push(solWebConsole(this.webconsoleManager, obj, this.openWebConsole, this.createDialog))
