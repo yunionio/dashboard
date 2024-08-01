@@ -86,7 +86,7 @@ export default {
       return {}
     },
     extraParams () {
-      const scope = this.dashboard.scope || this.scope
+      const scope = this.scope
       const params = { scope: scope }
       if (this.dashboard.domain_id) {
         params.domain_id = this.dashboard.domain_id
