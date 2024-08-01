@@ -27,6 +27,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('compute.text_567'),
+        permission: 'hosts_perform_login_info',
         actions: obj => {
           const ret = []
           if (obj.host_type === 'baremetal') {
