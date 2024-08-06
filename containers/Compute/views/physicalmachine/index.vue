@@ -14,21 +14,22 @@
         :id="listId"
         :filterParams="filterParams"
         statusResKey="host"
-        @refresh="refreshHandle" />
+        @refresh="refreshHandle"
+        @resStatisticsChange="resStatisticsChange" />
     </page-body>
   </div>
 </template>
 
 <script>
 import PhysicalmachineList from './components/List'
-import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 
 export default {
   name: 'PhysicalmachineIndex',
   components: {
     PhysicalmachineList,
   },
-  mixins: [ResStatisticsMixin],
+  mixins: [ResStatisticsV2Mixin],
   data () {
     return {
       listId: 'PhysicalmachineList',

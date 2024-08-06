@@ -108,6 +108,10 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'instance_type', 'created_at'],
         autoHiddenFilterKey: 'redis_hidden_columns',
+        fetchDataCb: (res) => {
+          const { totals = {} } = res.data
+          this.$emit('resStatisticsChange', totals)
+        },
       }),
       groupActions: [
         {

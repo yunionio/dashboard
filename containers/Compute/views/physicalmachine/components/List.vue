@@ -99,6 +99,10 @@ export default {
         },
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'access_mac', 'sn', 'public_scope', 'project_domain', 'region', 'created_at'],
+        fetchDataCb: (res) => {
+          const { totals = {} } = res.data
+          this.$emit('resStatisticsChange', totals)
+        },
       }),
       exportDataOptions: {
         items: [

@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import { statisticsRes } from '@/constants/statisticsRes'
+// import { statisticsRes } from '@/constants/statisticsRes'
 
 export default {
   inject: ['inBaseSidePage'],
@@ -22,9 +22,9 @@ export default {
     isOperateInSidepage () {
       return this.inBaseSidePage
     },
-    isStatisticsRes () {
-      return statisticsRes.includes(this.list.resource)
-    },
+    // isStatisticsRes () {
+    //   return statisticsRes.includes(this.list.resource)
+    // },
   },
   watch: {
     filterParams: {
@@ -58,25 +58,25 @@ export default {
       },
       deep: true,
     },
-    'list.params': {
-      handler: function (val) {
-        if (val) {
-          this.isStatisticsRes &&
-            !this.isOperateInSidepage &&
-            this.$bus.$emit('ListParamsChange', val)
-        }
-      },
-      deep: true,
-    },
+    // 'list.params': {
+    //   handler: function (val) {
+    //     if (val) {
+    //       this.isStatisticsRes &&
+    //         !this.isOperateInSidepage &&
+    //         this.$bus.$emit('ListParamsChange', val)
+    //     }
+    //   },
+    //   deep: true,
+    // },
   },
   methods: {
     onManager () {
       return this.list.onManager(...arguments)
     },
     refresh () {
-      this.isStatisticsRes &&
-        !this.isOperateInSidepage &&
-        this.$bus.$emit('ListParamsChange', { ...arguments })
+      // this.isStatisticsRes &&
+      //   !this.isOperateInSidepage &&
+      //   this.$bus.$emit('ListParamsChange', { ...arguments })
       return this.list.refresh(...arguments)
     },
     singleRefresh () {

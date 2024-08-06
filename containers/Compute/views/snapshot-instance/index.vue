@@ -13,14 +13,15 @@
         :id="listId"
         :cloud-env="cloudEnv"
         :filterParams="filterParams"
-        statusResKey="snapshot" />
+        statusResKey="snapshot"
+        @resStatisticsChange="resStatisticsChange" />
     </page-body>
   </div>
 </template>
 
 <script>
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
-import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 import SnapshotList from './components/List'
 
 export default {
@@ -28,7 +29,7 @@ export default {
   components: {
     SnapshotList,
   },
-  mixins: [ResStatisticsMixin],
+  mixins: [ResStatisticsV2Mixin],
   data () {
     return {
       listId: 'VmInstanceSnapshotsList',
