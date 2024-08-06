@@ -14,14 +14,15 @@
       :cloud-env="cloudEnv"
       :cloudEnvOptions="cloudEnvOptions"
       :filterParams="filterParams"
-      statusResKey="wire" />
+      statusResKey="wire"
+      @resStatisticsChange="resStatisticsChange" />
     </page-body>
   </div>
 </template>
 
 <script>
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
-import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 import WireList from './components/List'
 
 export default {
@@ -29,7 +30,7 @@ export default {
   components: {
     WireList,
   },
-  mixins: [ResStatisticsMixin],
+  mixins: [ResStatisticsV2Mixin],
   data () {
     return {
       listId: 'WireList',

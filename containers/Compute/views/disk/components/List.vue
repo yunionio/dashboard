@@ -275,6 +275,10 @@ export default {
         responseData: this.responseData,
         hiddenColumns: this.hiddenColumns, // ['metadata', 'disk_format', 'storage', 'medium_type', 'created_at'],
         autoHiddenFilterKey: 'disk_hidden_columns',
+        fetchDataCb: (res) => {
+          const { totals = {} } = res.data
+          this.$emit('resStatisticsChange', totals)
+        },
       }),
       groupActions,
     }

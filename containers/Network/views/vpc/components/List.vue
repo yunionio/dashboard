@@ -101,6 +101,10 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'wire_count', 'created_at'],
         autoHiddenFilterKey: 'vpc_hidden_columns',
+        fetchDataCb: (res) => {
+          const { totals = {} } = res.data
+          this.$emit('resStatisticsChange', totals)
+        },
       }),
       exportDataOptions: {
         items: [

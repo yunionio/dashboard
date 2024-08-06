@@ -374,10 +374,11 @@ class CreateList {
     this.params = this.genParams(offset, limit, showDetails)
     if (!showDetails) this.isPreLoad = true
     try {
+      const fetchList = []
       // 如果有id并且没有获取过列表配置则获取列表配置
       if (this.id) {
         if (!this.configLoaded) {
-          await this.fetchConfig()
+          fetchList.push(this.fetchConfig())
         }
       } else {
         this.configLoaded = true
@@ -386,12 +387,18 @@ class CreateList {
       if (this.responseData && this.responseData.data) {
         response = { data: this.responseData }
       } else if (R.is(String, this.resource)) {
-        response = await this.manager.list({
+        fetchList.push(this.manager.list({
           params: this.params,
           ctx: this.ctx,
-        })
+        }))
       } else {
-        response = await this.resource(this.params)
+        fetchList.push(this.resource(this.params))
+      }
+      if (fetchList.length) {
+        const res = await Promise.all(fetchList)
+        if (!(this.responseData && this.responseData.data)) {
+          response = res[res.length - 1]
+        }
       }
       if (this.templateContext._isDestroyed) return
       const {
