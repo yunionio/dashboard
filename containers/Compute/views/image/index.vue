@@ -12,13 +12,14 @@
       <image-list
         :id="listId"
         :filterParams="filterParams"
-        statusResKey="image" />
+        statusResKey="image"
+        @resStatisticsChange="resStatisticsChange" />
     </page-body>
   </div>
 </template>
 
 <script>
-import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 import ImageList from './components/List'
 
 export default {
@@ -26,7 +27,7 @@ export default {
   components: {
     ImageList,
   },
-  mixins: [ResStatisticsMixin],
+  mixins: [ResStatisticsV2Mixin],
   data () {
     return {
       listId: 'ImageList',

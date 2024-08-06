@@ -87,6 +87,10 @@ export default {
         },
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'created_at', 'os_arch'],
+        fetchDataCb: (res) => {
+          const { totals = {} } = res.data
+          this.$emit('resStatisticsChange', totals)
+        },
       }),
     }
   },

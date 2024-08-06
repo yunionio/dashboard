@@ -14,14 +14,15 @@
         :cloud-env="cloudEnv"
         :cloudEnvOptions="cloudEnvOptions"
         :filterParams="filterParams"
-        statusResKey="network" />
+        statusResKey="network"
+        @resStatisticsChange="resStatisticsChange" />
     </page-body>
   </div>
 </template>
 
 <script>
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
-import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 import NetworkList from './components/List'
 
 export default {
@@ -29,7 +30,7 @@ export default {
   components: {
     NetworkList,
   },
-  mixins: [ResStatisticsMixin],
+  mixins: [ResStatisticsV2Mixin],
   data () {
     return {
       listId: 'NetworkList',
