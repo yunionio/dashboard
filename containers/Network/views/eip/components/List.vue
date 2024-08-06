@@ -204,6 +204,10 @@ export default {
         steadyStatus: Object.values(expectStatus.eip).flat(),
         responseData: this.responseData,
         hiddenColumns: this.hiddenColumns, // ['metadata', 'account'],
+        fetchDataCb: (res) => {
+          const { totals = {} } = res.data
+          this.$emit('resStatisticsChange', totals)
+        },
       }),
       groupActions: groupActions,
     }

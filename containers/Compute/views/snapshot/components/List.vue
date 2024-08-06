@@ -88,6 +88,10 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['storage_type', 'created_at', 'os_arch'],
         autoHiddenFilterKey: 'snapshot_hidden_columns',
+        fetchDataCb: (res) => {
+          const { totals = {} } = res.data
+          this.$emit('resStatisticsChange', totals)
+        },
       }),
       groupActions: [
         {

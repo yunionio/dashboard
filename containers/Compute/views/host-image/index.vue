@@ -12,21 +12,22 @@
       <host-image-list
         :id="listId"
         :filterParams="filterParams"
-        statusResKey="image" />
+        statusResKey="image"
+        @resStatisticsChange="resStatisticsChange" />
     </page-body>
   </div>
 </template>
 
 <script>
 import HostImageList from './components/List'
-import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 
 export default {
   name: 'HostImageIndex',
   components: {
     HostImageList,
   },
-  mixins: [ResStatisticsMixin],
+  mixins: [ResStatisticsV2Mixin],
   data () {
     return {
       listId: 'HostImageList',

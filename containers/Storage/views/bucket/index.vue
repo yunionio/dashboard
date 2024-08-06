@@ -14,22 +14,23 @@
         :cloud-env="cloudEnv"
         :cloudEnvOptions="cloudEnvOptions"
         :filterParams="filterParams"
-        statusResKey="bucket" />
+        statusResKey="bucket"
+        @resStatisticsChange="resStatisticsChange" />
     </page-body>
   </div>
 </template>
 
 <script>
-import List from './components/List'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
-import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
+import List from './components/List'
 
 export default {
   name: 'BucketStorage',
   components: {
     List,
   },
-  mixins: [ResStatisticsMixin],
+  mixins: [ResStatisticsV2Mixin],
   data () {
     return {
       listId: 'BucketList',

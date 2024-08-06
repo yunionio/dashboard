@@ -89,6 +89,10 @@ export default {
         steadyStatus: Object.values(expectStatus.server).flat(),
         responseData: this.responseData,
         hiddenColumns: ['host_sn', 'created_at'],
+        fetchDataCb: (res) => {
+          const { totals = {} } = res.data
+          this.$emit('resStatisticsChange', totals)
+        },
       }),
       exportDataOptions: {
         items: [

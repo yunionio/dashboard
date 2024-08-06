@@ -99,6 +99,10 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'vcpu_count', 'account', 'created_at'],
         autoHiddenFilterKey: 'rds_hidden_columns',
+        fetchDataCb: (res) => {
+          const { totals = {} } = res.data
+          this.$emit('resStatisticsChange', totals)
+        },
       }),
       exportDataOptions: {
         items: [

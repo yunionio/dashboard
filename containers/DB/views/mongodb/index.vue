@@ -12,21 +12,22 @@
       <mongodb-list
         :id="listId"
         :filterParams="filterParams"
-        statusResKey="mongodb" />
+        statusResKey="mongodb"
+        @resStatisticsChange="resStatisticsChange" />
     </page-body>
   </div>
 </template>
 
 <script>
 import mongodbList from './components/List'
-import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 
 export default {
   name: 'MongoDBIndex',
   components: {
     mongodbList,
   },
-  mixins: [ResStatisticsMixin],
+  mixins: [ResStatisticsV2Mixin],
   data () {
     return {
       listId: 'MongoDBList',

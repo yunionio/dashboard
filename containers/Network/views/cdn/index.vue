@@ -12,21 +12,22 @@
       <domain-list
         :id="listId"
         :filterParams="filterParams"
-        statusResKey="cdnDomain" />
+        statusResKey="cdnDomain"
+        @resStatisticsChange="resStatisticsChange" />
     </page-body>
   </div>
 </template>
 
 <script>
+import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 import DomainList from './components/List'
-import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
 
 export default {
   name: 'DomainIndex',
   components: {
     DomainList,
   },
-  mixins: [ResStatisticsMixin],
+  mixins: [ResStatisticsV2Mixin],
   data () {
     return {
       listId: 'DomainList',

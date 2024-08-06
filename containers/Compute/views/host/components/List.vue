@@ -113,6 +113,10 @@ export default {
         filterOptions,
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'id', 'server_id', 'sn', 'manufacture', 'model', 'schedtag', 'nonsystem_guests', 'public_scope', 'project_domain', 'region', 'os_arch', 'created_at'],
+        fetchDataCb: (res) => {
+          const { totals = {} } = res.data
+          this.$emit('resStatisticsChange', totals)
+        },
       }),
     }
   },
