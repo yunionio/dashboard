@@ -3,7 +3,6 @@
     <page-header :title="$t('compute.text_91')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv">
       <div slot="res-status-tab" style="position: absolute; right: 0; top: 14px;">
         <res-status-tab
-          :loading="statisticsLoading"
           :status-opts="statusOpts"
           @click="statusClickHandle" />
       </div>
@@ -15,14 +14,15 @@
         :cloudEnvOptions="cloudEnvOptions"
         :filterParams="filterParams"
         :tableOverviewIndexs="tableOverviewIndexs"
-        @updateCloudEnvOptions="updateCloudEnvOptions" />
+        @updateCloudEnvOptions="updateCloudEnvOptions"
+        @resStatisticsChange="resStatisticsChange" />
     </page-body>
   </div>
 </template>
 
 <script>
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
-import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 import VmInstanceList from './components/List'
 
 export default {
@@ -30,7 +30,7 @@ export default {
   components: {
     VmInstanceList,
   },
-  mixins: [ResStatisticsMixin],
+  mixins: [ResStatisticsV2Mixin],
   data () {
     return {
       listId: 'VMInstanceList',

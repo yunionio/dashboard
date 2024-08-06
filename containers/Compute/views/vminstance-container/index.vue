@@ -15,14 +15,15 @@
         :cloudEnvOptions="cloudEnvOptions"
         :filterParams="filterParams"
         :tableOverviewIndexs="tableOverviewIndexs"
-        @updateCloudEnvOptions="updateCloudEnvOptions" />
+        @updateCloudEnvOptions="updateCloudEnvOptions"
+        @resStatisticsChange="resStatisticsChange" />
     </page-body>
   </div>
 </template>
 
 <script>
 // import { getCloudEnvOptions } from '@/utils/common/hypervisor'
-import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 import VmInstanceList from './components/List'
 
 export default {
@@ -30,7 +31,7 @@ export default {
   components: {
     VmInstanceList,
   },
-  mixins: [ResStatisticsMixin],
+  mixins: [ResStatisticsV2Mixin],
   data () {
     return {
       listId: 'VMContainerInstanceList',

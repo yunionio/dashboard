@@ -15,7 +15,8 @@
         :cloudEnvOptions="cloudEnvOptions"
         :filterParams="filterParams"
         statusResKey="rds"
-        @refresh="refreshHandle" />
+        @refresh="refreshHandle"
+        @resStatisticsChange="resStatisticsChange" />
     </page-body>
   </div>
 </template>
@@ -23,14 +24,14 @@
 <script>
 import rdsList from './components/List'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
-import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 
 export default {
   name: 'RDSIndex',
   components: {
     rdsList,
   },
-  mixins: [ResStatisticsMixin],
+  mixins: [ResStatisticsV2Mixin],
   data () {
     return {
       listId: 'RDSList',
