@@ -173,6 +173,10 @@ export const RESOURCES_MAP = {
   },
   hosts: {
     i18n: 'system.text_358',
+    extras: [
+      { action: 'perform', label: i18n.t('compute.text_567'), value: 'login-info' },
+      { action: 'perform', label: i18n.t('compute.text_674'), value: '*' },
+    ],
   },
   schedtags: {
     i18n: 'system.text_359',
