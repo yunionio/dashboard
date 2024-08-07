@@ -2783,7 +2783,10 @@
     "report": "报表",
     "bastion_host_server": "堡垒主机",
     "bastion_server": "堡垒虚拟机",
-    "check": "环境巡检"
+    "check": "环境巡检",
+    "private_envlogo": "私有云logo",
+    "private_env-1": "私有云1",
+    "private_env-2": "私有云2"
   },
   "res": {
     "role": "@:dictionary.role",
