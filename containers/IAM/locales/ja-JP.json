@@ -1001,6 +1001,8 @@
   "system.companyinfo.monitor_dashboard_style.overview_private": "@:dictionary.private_env-1",
   "system.companyinfo.monitor_dashboard_style.overview_private2": "@:dictionary.private_env-2",
   "system.companyinfo.monitor_dashboard_style.overview_custom": "デフォルト",
+  "system.companyinfo.monitor_dashboard_style.custom_url": "カスタムアドレス",
+  "system.companyinfo.monitor_dashboard_custom_url": "モニタ大画面アドレス",
   "system.robot.shared": "共有ボットはアクションをサポートしていません",
   "system.displayname_tip": "表示名を入力してください",
   "IAM.user.limit": "オープンソースバージョンは最大5人のユーザーの作成をサポートします",
