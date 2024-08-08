@@ -2822,7 +2822,10 @@
     "report": "レポート＃レポート＃",
     "bastion_host_server": "バリアホスト",
     "bastion_server": "バリア仮想マシン",
-    "check": "環境パトロール"
+    "check": "環境パトロール",
+    "private_envlogo": "プライベートクラウド logo",
+    "private_env-1": "プライベートクラウド1",
+    "private_env-2": "プライベートクラウド2"
   },
   "res": {
     "role": "@:dictionary.role",
