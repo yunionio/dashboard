@@ -14,8 +14,7 @@
         <cloudregion-zone
           :zone-params="zoneParams"
           :cloudregion-params="cloudregionParams"
-          :decorator="decorators.cloudregionZone"
-          filterBrandResource="compute_engine" />
+          :decorator="decorators.cloudregionZone" />
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_264')" :extra="this.$t('common_572')">
         <a-input v-decorator="decorators.host" />
