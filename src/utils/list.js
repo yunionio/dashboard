@@ -373,7 +373,7 @@ class CreateList {
     // }
     this.params = this.genParams(offset, limit, showDetails)
     // if (!showDetails) this.isPreLoad = true
-    this.isPreLoad = true
+    this.isPreLoad = false
     try {
       const fetchList = []
       // 如果有id并且没有获取过列表配置则获取列表配置
