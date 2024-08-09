@@ -63,6 +63,10 @@ export default {
         },
         responseData: this.responseData,
         autoHiddenFilterKey: 'mongodb_hidden_columns',
+        fetchDataCb: (res) => {
+          const { totals = {} } = res.data
+          this.$emit('resStatisticsChange', totals)
+        },
       }),
       groupActions: [
         {

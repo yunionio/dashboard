@@ -13,21 +13,22 @@
         :id="listId"
         :cloud-env="cloudEnv"
         :filterParams="filterParams"
-        @refresh="refreshHandle" />
+        @refresh="refreshHandle"
+        @resStatisticsChange="resStatisticsChange" />
     </page-body>
   </div>
 </template>
 
 <script>
 import BaremetalList from './components/List'
-import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 
 export default {
   name: 'BaremetalIndex',
   components: {
     BaremetalList,
   },
-  mixins: [ResStatisticsMixin],
+  mixins: [ResStatisticsV2Mixin],
   data () {
     return {
       listId: 'BaremetalList',
