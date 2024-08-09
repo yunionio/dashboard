@@ -60,6 +60,10 @@ export default {
         },
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'created_at', 'is_standard'],
+        fetchDataCb: (res) => {
+          const { totals = {} } = res.data
+          this.$emit('resStatisticsChange', totals)
+        },
       }),
       exportDataOptions: {
         items: [

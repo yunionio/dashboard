@@ -85,6 +85,10 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['storage_class', 'account', 'public_scope'],
         autoHiddenFilterKey: 'oss_hidden_columns',
+        fetchDataCb: (res) => {
+          const { totals = {} } = res.data
+          this.$emit('resStatisticsChange', totals)
+        },
       }),
       exportDataOptions: {
         items: [

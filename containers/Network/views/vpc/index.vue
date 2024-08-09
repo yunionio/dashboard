@@ -15,22 +15,23 @@
       :get-params="getParams"
       :cloudEnvOptions="cloudEnvOptions"
       :filterParams="filterParams"
-      statusResKey="vpc" />
+      statusResKey="vpc"
+      @resStatisticsChange="resStatisticsChange" />
    </page-body>
   </div>
 </template>
 
 <script>
-import List from './components/List'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
-import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
+import List from './components/List'
 
 export default {
   name: 'VPCIndex',
   components: {
     List,
   },
-  mixins: [ResStatisticsMixin],
+  mixins: [ResStatisticsV2Mixin],
   data () {
     return {
       listId: 'VpcList',

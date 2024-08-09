@@ -95,6 +95,10 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'account', 'cluster', 'created_at'],
         autoHiddenFilterKey: 'slb_hidden_columns',
+        fetchDataCb: (res) => {
+          const { totals = {} } = res.data
+          this.$emit('resStatisticsChange', totals)
+        },
       }),
       exportDataOptions: {
         items: [
