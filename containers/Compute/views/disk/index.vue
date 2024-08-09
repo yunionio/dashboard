@@ -15,14 +15,15 @@
         :cloud-env="cloudEnv"
         :cloudEnvOptions="cloudEnvOptions"
         :filterParams="filterParams"
-        statusResKey="disk" />
+        statusResKey="disk"
+        @resStatisticsChange="resStatisticsChange" />
     </page-body>
   </div>
 </template>
 
 <script>
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
-import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
+import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 import DiskList from './components/List'
 
 export default {
@@ -30,7 +31,7 @@ export default {
   components: {
     DiskList,
   },
-  mixins: [ResStatisticsMixin],
+  mixins: [ResStatisticsV2Mixin],
   data () {
     return {
       listId: 'DiskList',

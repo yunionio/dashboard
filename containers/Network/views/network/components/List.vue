@@ -164,6 +164,10 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'vpc', 'wire', 'vlan_id', 'schedtag', 'account', 'public_scope', 'created_at'],
         autoHiddenFilterKey: 'network_hidden_columns',
+        fetchDataCb: (res) => {
+          const { totals = {} } = res.data
+          this.$emit('resStatisticsChange', totals)
+        },
       }),
       groupActions: [
         {
