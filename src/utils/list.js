@@ -368,11 +368,11 @@ class CreateList {
 
   async fetchData (offset, limit, showDetails) {
     this.loading = true
-    if (this.noPreLoad) {
-      showDetails = true
-    }
+    // if (this.noPreLoad) {
+    showDetails = true
+    // }
     this.params = this.genParams(offset, limit, showDetails)
-    if (!showDetails) this.isPreLoad = true
+    // if (!showDetails) this.isPreLoad = true
     try {
       // 如果有id并且没有获取过列表配置则获取列表配置
       if (this.id) {
@@ -403,11 +403,14 @@ class CreateList {
         },
       } = response
       this.clearWaitJob()
+      let allData = {}
       if (response.data.marker_order) {
-        this.data = Object.assign({}, this.wrapData(data), this.data)
+        allData = Object.assign({}, this.wrapData(data), this.data)
       } else {
-        this.data = this.wrapData(data)
+        allData = this.wrapData(data)
       }
+      // 分页渲染
+      this.pageRender(allData)
       this.nextMarker = response.data.next_marker
       this.pagerType = response.data.marker_field ? 'loadMore' : 'pager'
       this.syncSelected()
@@ -435,20 +438,41 @@ class CreateList {
       if (R.is(Function, this.fetchDataCb)) {
         this.fetchDataCb(response)
       }
-      if (!showDetails && this.total > 0 && !response.data.marker_field) {
-        setTimeout(() => {
-          this.fetchData(offset, limit, true)
-        }, 1)
-      }
-      if (showDetails) {
-        this.isPreLoad = false
-      }
+      // if (!showDetails && this.total > 0 && !response.data.marker_field) {
+      // setTimeout(() => {
+      // this.fetchData(offset, limit, true)
+      // }, 1)
+      // }
+      // if (showDetails) {
+      //   this.isPreLoad = false
+      // }
       return response.data
     } catch (error) {
       throw error
     } finally {
       this.loaded = true
       this.loading = false
+    }
+  }
+
+  pageRender (allData) {
+    this.data = {}
+    const data = {}
+    const keys = Object.keys(allData)
+    for (let i = 0; i < keys.length; i += 20) {
+      if (i === 0) {
+        keys.slice(i, i + 20).map(key => {
+          data[key] = allData[key]
+          this.data = { ...data }
+        })
+      } else {
+        setTimeout(() => {
+          keys.slice(i, i + 20).map(key => {
+            data[key] = allData[key]
+            this.data = { ...data }
+          })
+        }, 0)
+      }
     }
   }
 
