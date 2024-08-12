@@ -234,12 +234,12 @@ export default {
       })
     },
     async init () {
+      this.list.fetchData()
       if (this.resId) {
         if (!this.isServer) {
-          await this.updateHostProbeIsolatedDevices()
+          this.updateHostProbeIsolatedDevices()
         }
       }
-      await this.list.fetchData()
     },
     async updateServerProbeIsolatedDevices () {
       try {
@@ -253,9 +253,11 @@ export default {
     },
     async updateHostProbeIsolatedDevices () {
       try {
-        await new this.$Manager('hosts', 'v1').performAction({
+        new this.$Manager('hosts', 'v1').performAction({
           id: this.resId,
           action: 'probe-isolated-devices',
+        }).then(res => {
+          this.list.refresh()
         })
       } catch (err) {
         throw err
