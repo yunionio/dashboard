@@ -30,6 +30,8 @@
       :show-tag-columns="showTagColumns"
       :show-tag-columns2="showTagColumns2"
       :show-tag-columns3="showTagColumns3"
+      :tag-column2-resource="tagColumn2Resource"
+      :tag-column2-params-formatter="tagColumn2ParamsFormatter"
       :get-grid="getGrid"
       :total="total"
       :selected="selected"
@@ -184,6 +186,9 @@ export default {
     showTagColumns: Boolean,
     showTagColumns2: Boolean,
     showTagColumns3: Boolean,
+    tagColumn2Resource: String,
+    tagColumn2ParamsFormatter: Function,
+    tagColumns2Generator: Function,
     // 是否显示搜索框
     showSearchbox: {
       type: Boolean,
