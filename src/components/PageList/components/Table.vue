@@ -579,7 +579,7 @@ export default {
             }
           })
         }
-        const insertIndex = this.checkboxEnabled ? 2 : 1
+        const insertIndex = 1
         defaultColumns = R.insertAll(insertIndex, tagColumns, defaultColumns)
       }
       // 扩展
