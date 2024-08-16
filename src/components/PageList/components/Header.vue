@@ -175,6 +175,8 @@ export default {
     showTagColumns: Boolean,
     showTagColumns2: Boolean,
     showTagColumns3: Boolean,
+    tagColumn2Resource: String,
+    tagColumn2ParamsFormatter: Function,
     getGrid: {
       type: Function,
       required: true,
@@ -332,6 +334,8 @@ export default {
         showTagColumns3: this.showTagColumns3,
         customs: grid.getTableColumn().collectColumn,
         resource: this.resource,
+        tagColumn2Resource: this.tagColumn2Resource,
+        tagColumn2ParamsFormatter: this.tagColumn2ParamsFormatter,
         hidenColumns,
       })
     },

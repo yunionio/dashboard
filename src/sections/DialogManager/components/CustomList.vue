@@ -109,7 +109,7 @@ export default {
       return item.type !== 'checkbox' && item.type !== 'radio' && item.property !== '_action' && item.property !== '_action_placeholder' && (isUserTag(item.property) || isExtTag(item.property)) && (item.slots && item.slots.tag_type && item.slots.tag_type({}) === 'instance')
     })
     const projectTagFields = this.params.customs.filter(item => {
-      return item.type !== 'checkbox' && item.type !== 'radio' && item.property !== '_action' && item.property !== '_action_placeholder' && (isUserTag(item.property) || isExtTag(item.property)) && (item.slots && item.slots.tag_type && item.slots.tag_type({}) === 'project')
+      return item.type !== 'checkbox' && item.type !== 'radio' && item.property !== '_action' && item.property !== '_action_placeholder' && (item.slots && item.slots.tag_type && item.slots.tag_type({}) === 'project')
     })
     const initialTagsSelected = tagFields.filter(item => {
       return this.params.config.showTagKeys.includes(item.property)
@@ -190,13 +190,16 @@ export default {
       return ret
     },
     projectTagParams () {
-      const ret = {
+      let ret = {
         with_user_meta: true,
         // with_cloud_meta: true,
         limit: 0,
         scope: this.scope,
         resources: 'project',
         $t: new Date().getTime(),
+      }
+      if (this.params.tagColumn2ParamsFormatter) {
+        ret = this.params.tagColumn2ParamsFormatter(ret)
       }
       return ret
     },
@@ -279,7 +282,7 @@ export default {
       }
     },
     async fetchProjectTags () {
-      let manager = new this.$Manager('metadatas')
+      let manager = new this.$Manager(this.params.tagColumn2Resource || 'metadatas')
       try {
         const response = await manager.get({
           id: 'tag-value-pairs',
