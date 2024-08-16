@@ -114,6 +114,7 @@
         :edit-config="editConfig"
         :tableOverviewIndexs="tableOverviewIndexs"
         :enableVirtualScroll="enableVirtualScroll"
+        :tagColumns2Generator="tagColumns2Generator"
         @change-current-page="changeCurrentPage"
         @change-page-size="changePageSize"
         @do-sort="doSort"
