@@ -119,7 +119,7 @@ export default {
             if (row.public_ip) {
               cellWrap.push(
                 <div class="d-flex">
-                  <list-body-cell-wrap row={row} field="public_ip" copy><span class="text-color-help">EIP</span></list-body-cell-wrap>
+                  <list-body-cell-wrap row={row} field="public_ip" copy><span class="text-color-help"> (EIP) </span></list-body-cell-wrap>
                 </div>,
               )
             }

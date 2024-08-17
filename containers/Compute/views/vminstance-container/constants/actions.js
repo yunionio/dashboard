@@ -37,16 +37,18 @@ const getSingleActions = function () {
         return [
           // 同步状态
           {
-            label: i18n.t('compute.repo.terminal'),
-            action: (obj) => {
-              this.onManager('batchPerformAction', {
+            label: i18n.t('compute.perform_sync_status'),
+            permission: 'server_perform_syncstatus',
+            action: () => {
+              this.onManager('performAction', {
                 steadyStatus: ['running', 'ready'],
-                id: [obj.id],
+                id: obj.id,
                 managerArgs: {
                   action: 'syncstatus',
                 },
               })
             },
+            hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_syncstatus'),
           },
           // 开机
           {
