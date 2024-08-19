@@ -1251,6 +1251,11 @@
     },
     "pod": {
       "stop": "关机"
+    },
+    "offlineExport": {
+      "expired": "已过期",
+      "available": "可用",
+      "creating": "创建中"
     }
   },
   "skuCategoryOptions": {
@@ -6077,5 +6082,7 @@
   "common.contains": "包含",
   "common.not_contains": "不包含",
   "common.hide_ipv6": "隐藏IPv6",
-  "common.config_ipv6": "配置IPv6"
+  "common.config_ipv6": "配置IPv6",
+  "common.offline_export": "离线下载",
+  "common.file_size": "文件大小"
 }

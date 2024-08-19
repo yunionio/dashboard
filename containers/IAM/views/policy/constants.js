@@ -823,6 +823,9 @@ export const RESOURCES_MAP = {
   checks: {
     i18n: 'dictionary.check',
   },
+  offline_exports: {
+    i18n: 'common.offline_export',
+  },
   ...extraResources,
 }
 

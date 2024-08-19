@@ -1251,6 +1251,11 @@
     },
     "pod": {
       "stop": "電源を切る"
+    },
+    "offlineExport": {
+      "expired": "期限切れ",
+      "available": "使用可能",
+      "creating": "作成中"
     }
   },
   "skuCategoryOptions": {
@@ -6073,5 +6078,7 @@
   "common.contains": "含める",
   "common.not_contains": "含まない",
   "common.hide_ipv6": "IPv6を隠す",
-  "common.config_ipv6": "IPv6の構成"
+  "common.config_ipv6": "IPv6の構成",
+  "common.offline_export": "オフラインダウンロード",
+  "common.file_size": "ファイルサイズ"
 }

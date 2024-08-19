@@ -1236,6 +1236,11 @@
     },
     "pod": {
       "stop": "Stop"
+    },
+    "offlineExport": {
+      "expired": "Expired",
+      "available": "Available",
+      "creating": "Creating"
     }
   },
   "skuCategoryOptions": {
@@ -6055,5 +6060,7 @@
   "common.contains": "Contains",
   "common.not_contains": "Exclude",
   "common.hide_ipv6": "Hide IPv6",
-  "common.config_ipv6": "Config IPv6"
+  "common.config_ipv6": "Config IPv6",
+  "common.offline_export": "Offline Download",
+  "common.file_size": "File size"
 }
