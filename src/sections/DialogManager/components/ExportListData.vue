@@ -32,6 +32,7 @@
       </a-form>
     </div>
     <div slot="footer">
+      <a-button v-if="showOfflineExport" type="primary" @click="handleOfflineConfirm" :loading="loading">{{ $t("common.offline_export") }}</a-button>
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
@@ -46,6 +47,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { getTagTitle } from '@/utils/common/tag'
 import { addDataToSheetAfterFormat } from '@/utils/xlsx'
+import { hasPermission } from '@/utils/auth'
 
 export default {
   name: 'ExportListDataDialog',
@@ -148,18 +150,23 @@ export default {
       }
       return this.params.resource.resource.substr(0, this.params.resource.resource.length - 1)
     },
+    showOfflineExport () {
+      return hasPermission({ key: 'offline_exports_create' }) && this.params.options?.supportOfflineExport
+    },
     downloadType () {
       return this.params.options.downloadType === 'local' ? 'local' : 'remote'
     },
   },
   methods: {
-    genParams (formValues, total) {
+    genParams (formValues, total, offline) {
       const keys = []
       const texts = []
+      const textKeyMap = {}
       for (let i = 0, len = formValues.selected.length; i < len; i++) {
         const item = R.find(R.propEq('key', formValues.selected[i]))(this.exportOptionItems)
         keys.push(item.key)
         texts.push(item.label)
+        textKeyMap[item.label] = item.key
       }
       let params = {
         export: this.params.options.fileType || 'xls',
@@ -208,6 +215,20 @@ export default {
           }
         }
       }
+      if (offline) {
+        params.keys = textKeyMap
+        params.force_no_paging = true
+        params.limit = params.export_limit
+        delete params.export
+        delete params.export_keys
+        delete params.export_texts
+        delete params.export_limit
+        params.filter = params.filter.filter(item => item)
+        if (!params.filter.length) {
+          delete params.filter
+        }
+        return params
+      }
       if (this.downloadType === 'local') {
         params.limit = params.export_limit
         params.details = true
@@ -236,6 +257,32 @@ export default {
           }
         })
       })
+    },
+    async handleOfflineConfirm () {
+      try {
+        const values = await this.validateForm()
+        this.loading = true
+        const resource = this.params.options.resource || this.params.resource
+        const total = this.params.options.resource && await this.getResourceTotal(resource)
+        const params = this.genParams(values, total, true)
+        const keys = params.keys
+        delete params.keys
+        await new this.$Manager('offline_exports').create({
+          data: {
+            query: new URLSearchParams(params).toString(),
+            keys: keys,
+            service: this.params.options.service || 'meter',
+            resource: this.params.options.resource || this.params.resource,
+            description: this.params.options.offlineExportDescription || '',
+          },
+        })
+        this.$message.success(this.$t('common.success'))
+        this.cancelDialog()
+      } catch (error) {
+        throw error
+      } finally {
+        this.loading = false
+      }
     },
     async handleConfirm () {
       try {
