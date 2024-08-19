@@ -599,4 +599,8 @@ export default {
   pod: {
     info: ['stop'],
   },
+  offlineExport: {
+    danger: ['expired'],
+    success: ['available'],
+  },
 }

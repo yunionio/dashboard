@@ -1449,6 +1449,11 @@ export const PERMISSION = {
   scriptapplyrecords_create: ['devtool', 'scriptapplyrecords', 'create'],
   scriptapplyrecords_delete: ['devtool', 'scriptapplyrecords', 'delete'],
 
+  // 离线下载
+  offline_exports_list: ['meter', 'offline_exports', 'list'],
+  offline_exports_create: ['meter', 'offline_exports', 'create'],
+  offline_exports_delete: ['meter', 'offline_exports', 'delete'],
+
   ...extraPermissions,
 }
 
