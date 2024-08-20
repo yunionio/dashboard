@@ -2,7 +2,7 @@
   <div>
     <a-radio-group v-model="time.dateMode" @change="handleDateModeChange">
       <a-radio-button v-for="item in timeOpts" :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
-      <custom-date :customDate.sync="customDate" :time.sync="time.dateMode" :customTimeLabel="customTimeLabel" :showFormat="customTimeFormat" :canSelectTodayAfter="canSelectTodayAfter" />
+      <custom-date :customDate.sync="customDate" :time.sync="time.dateMode" :customTimeLabel="customTimeLabel" :showFormat="customTimeFormat" :canSelectTodayAfter="canSelectTodayAfter" :isHideCustomAdvanced="isHideCustomAdvanced" />
     </a-radio-group>
   </div>
 </template>
@@ -115,6 +115,10 @@ export default {
       default: false,
     },
     showStartMonthTip: {
+      type: Boolean,
+      default: false,
+    },
+    isHideCustomAdvanced: {
       type: Boolean,
       default: false,
     },
