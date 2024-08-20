@@ -18,7 +18,7 @@
               <month-range-picker ref="monthSelect" v-model="formData.month_range" :panelVisible="visible" />
             </a-form-model-item>
           </a-form-model>
-          <a-button type="link" class="position-absolute" style="bottom: -28px;" @click="toggleView">{{ isAdvancedView ? $t('common.date_time.quick') : $t('common.date_time.advanced') }}</a-button>
+          <a-button v-if="!isHideCustomAdvanced" type="link" class="position-absolute" style="bottom: -28px;" @click="toggleView">{{ isAdvancedView ? $t('common.date_time.quick') : $t('common.date_time.advanced') }}</a-button>
         </div>
       </template>
     <!-- </div> -->
@@ -47,6 +47,7 @@ export default {
       default: true,
     },
     showFormat: String,
+    isHideCustomAdvanced: Boolean,
   },
   data () {
     return {
