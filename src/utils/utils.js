@@ -1058,7 +1058,9 @@ export const getWorkflowParamter = (variables = {}, defaultValue = {}) => {
   const paramKey = variables.parameter ? 'parameter' : 'paramter'
   const p_list = keys.filter(key => key.startsWith(`${paramKey}_`))
   const paramterList = p_list.length ? p_list : [paramKey]
-  paramterList.sort()
+  paramterList.sort((a, b) => {
+    return Number(a.replace(paramKey + '_', '')) - Number(b.replace(paramKey + '_', ''))
+  })
   let paramter = ''
   paramterList.map(key => {
     paramter += variables[key] || ''
