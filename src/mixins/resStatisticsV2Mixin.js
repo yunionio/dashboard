@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     resStatisticsChange (res) {
-      const statusObj = arrayToObj(res.status_info, 'status')
+      const statusObj = arrayToObj(res.status_info || [], 'status')
       this.statusOpts = this.getStatusOpts(statusObj)
       this.statusArr = Object.keys(statusObj)
       this.generateTableOverviewIndexs(res)

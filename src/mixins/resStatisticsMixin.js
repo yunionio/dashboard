@@ -36,7 +36,7 @@ export default {
       const m = new this.$Manager(`${this.resStaticsResource}/statistics`, this.apiVersion ? this.apiVersion : 'v2')
       this.statisticsLoading = true
       m.list({ params }).then(res => {
-        const statusObj = arrayToObj(res.data.status_info, 'status')
+        const statusObj = arrayToObj(res.data.status_info || [], 'status')
         this.statusOpts = this.getStatusOpts(statusObj)
         this.statusArr = Object.keys(statusObj)
         this.generateTableOverviewIndexs(res.data)
