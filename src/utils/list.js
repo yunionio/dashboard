@@ -365,6 +365,14 @@ class CreateList {
     // 重置数据
     this.data = {}
     this.clearSelected()
+    if (R.is(Function, this.fetchDataCb)) {
+      this.fetchDataCb({
+        data: {
+          totals: {},
+          data: [],
+        },
+      })
+    }
   }
 
   async fetchData (offset, limit, showDetails) {
