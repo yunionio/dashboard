@@ -141,7 +141,7 @@ export default {
       if (this.isWindows) {
         delete maps.keypair
       }
-      if (this.isInCloudSphere || this.isSangFor) {
+      if (this.isInCloudSphere) {
         maps = {
           image: LOGIN_TYPES_MAP.image,
         }
@@ -327,9 +327,6 @@ export default {
     },
     isInCloudSphere () {
       return this.form.fd.hypervisor === HYPERVISORS_MAP.incloudsphere.key
-    },
-    isSangFor () {
-      return this.form.fd.hypervisor === HYPERVISORS_MAP.sangfor.key
     },
     isHCSO () {
       return this.form.fd.hypervisor === HYPERVISORS_MAP.hcso.key
@@ -757,11 +754,6 @@ export default {
     handleCancel () {
       this.$router.push({
         name: this.isServertemplate ? 'Servertemplate' : 'VMInstance',
-      })
-    },
-    handleCancel () {
-      this.$router.push({
-        name: 'VMContainerInstance',
       })
     },
   },
