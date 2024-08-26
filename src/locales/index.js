@@ -55,4 +55,18 @@ i18n.getI18n = (key, defaultValue) => {
   return value
 }
 
+i18n.setOriginDictionary = () => {
+  if (!i18n.te('originDictionary.agent')) {
+    i18n.mergeLocaleMessage('en', {
+      originDictionary: R.clone(en.dictionary),
+    })
+    i18n.mergeLocaleMessage('zh-CN', {
+      originDictionary: R.clone(zhCN.dictionary),
+    })
+    i18n.mergeLocaleMessage('ja-JP', {
+      originDictionary: R.clone(jaJP.dictionary),
+    })
+  }
+}
+
 export default i18n
