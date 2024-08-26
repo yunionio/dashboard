@@ -2832,6 +2832,7 @@
     "private_env-1": "プライベートクラウド1",
     "private_env-2": "プライベートクラウド2"
   },
+  "originDictionary": {},
   "res": {
     "role": "@:dictionary.role",
     "roles": "@:dictionary.role",
