@@ -91,7 +91,7 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
   if (!vm) {
     throw Error('not found vm instance')
   }
-  const { name = i18n.t('common_92'), scope, resource, apiVersion, noCandidateDomains, projectExtraParams = {} } = dialogParams
+  const { name = i18n.t('common_92'), scope, resource, apiVersion, noCandidateDomains, projectExtraParams = {}, ignorel3PermissionEnable = false } = dialogParams
   const options = {
     label: i18n.t('common_100'),
     action: row => {
@@ -110,7 +110,7 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
       })
     },
     meta: row => {
-      if (!store.getters.l3PermissionEnable && (scope === 'domain' || (store.getters.scopeResource && store.getters.scopeResource.domain.includes(resource)))) {
+      if (!ignorel3PermissionEnable && !store.getters.l3PermissionEnable && (scope === 'domain' || (store.getters.scopeResource && store.getters.scopeResource.domain.includes(resource)))) {
         return {
           validate: false,
           tooltip: i18n.t('common_281'),
