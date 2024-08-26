@@ -1,86 +1,88 @@
 <template>
   <div>
     <page-header :title="$t('compute.perform_create')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
-    <a-form
-      class="mt-3"
-      :form="form.fc"
-      hideRequiredMark>
-      <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" v-bind="formItemLayout">
-        <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
-      </a-form-item>
-      <area-selects
-        class="mb-0"
-        ref="areaSelects"
-        :wrapperCol="formItemLayout.wrapperCol"
-        :labelCol="formItemLayout.labelCol"
-        :names="areaselectsName"
-        :cloudregionParams="param.region"
-        :zoneParams="param.zone"
-        :providerParams="param.provider"
-        :isRequired="true"
-        :region.sync="regionList"
-        filterBrandResource="compute_engine"
-        :zone.sync="zoneList" />
-      <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
-        <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
-      </a-form-item>
-      <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
-        <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_100')" v-bind="formItemLayout">
-        <a-row>
-          <a-col :span="6" class="mr-2">
-            <a-select v-decorator="decorators.backend" @change="__newStorageChange">
-              <a-select-option v-for="item in storageOpts" :key="item.value">
-                <div class="d-flex">
-                  <span class="text-truncate flex-fill mr-2" :title="item.label">{{ item.label }}</span>
-                </div>
-              </a-select-option>
-            </a-select>
-          </a-col>
-          <a-col :span="2">
-            <a-form-item>
-              <a-tooltip :title="tooltip" placement="top">
-                <a-input-number :min="minDiskData" :max="maxDiskData" :step="step" v-decorator="decorators.size" /> GB
-              </a-tooltip>
+    <page-body needMarginBottom>
+      <a-form
+        class="mt-3"
+        :form="form.fc"
+        hideRequiredMark>
+        <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" v-bind="formItemLayout">
+          <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+        </a-form-item>
+        <area-selects
+          class="mb-0"
+          ref="areaSelects"
+          :wrapperCol="formItemLayout.wrapperCol"
+          :labelCol="formItemLayout.labelCol"
+          :names="areaselectsName"
+          :cloudregionParams="param.region"
+          :zoneParams="param.zone"
+          :providerParams="param.provider"
+          :isRequired="true"
+          :region.sync="regionList"
+          filterBrandResource="compute_engine"
+          :zone.sync="zoneList" />
+        <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
+        </a-form-item>
+        <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_100')" v-bind="formItemLayout">
+          <a-row>
+            <a-col :span="6" class="mr-2">
+              <a-select v-decorator="decorators.backend" @change="__newStorageChange">
+                <a-select-option v-for="item in storageOpts" :key="item.value">
+                  <div class="d-flex">
+                    <span class="text-truncate flex-fill mr-2" :title="item.label">{{ item.label }}</span>
+                  </div>
+                </a-select-option>
+              </a-select>
+            </a-col>
+            <a-col :span="2">
+              <a-form-item>
+                <a-tooltip :title="tooltip" placement="top">
+                  <a-input-number :min="minDiskData" :max="maxDiskData" :step="step" v-decorator="decorators.size" /> GB
+                </a-tooltip>
+              </a-form-item>
+            </a-col>
+            <a-col :span="5">
+              <div v-if="isIDC" class="d-flex">
+                <disk-storage-select
+                  v-if="showStorage"
+                  style="min-width: 480px; max-width: 500px;"
+                  :decorators="decorators"
+                  :form="form"
+                  :storageParams="storageParams" />
+                <a-button class="mt-1" type="link" @click="showStorage = !showStorage">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
+              </div>
+            </a-col>
+          </a-row>
+        </a-form-item>
+        <a-form-item v-if="enableEncryption" v-bind="formItemLayout" :label="$t('compute.disk.encryption')" :extra="$t('compute.disk.encryption.extra')">
+          <encrypt-keys :decorators="decorators.encrypt_keys" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_1154')" class="mb-0" v-bind="formItemLayout">
+          <tag
+            v-decorator="decorators.__meta__" :allowNoValue="false" />
+        </a-form-item>
+        <a-collapse :bordered="false" v-if="cloudEnv === 'public' || isHCSO || isHCS">
+          <a-collapse-panel :header="$t('compute.text_309')" key="1">
+            <a-form-item :label="$t('compute.text_15')" v-bind="formItemLayout">
+              <base-select
+                class="w-50"
+                v-decorator="decorators.manager_id"
+                resource="cloudproviders"
+                :params="cloudproviderParams"
+                :isDefaultSelect="true"
+                :showSync="true"
+                :select-props="{ placeholder: $t('compute.text_149') }"
+                :resList.sync="cloudproviderData" />
             </a-form-item>
-          </a-col>
-          <a-col :span="5">
-            <div v-if="isIDC" class="d-flex">
-              <disk-storage-select
-                v-if="showStorage"
-                style="min-width: 480px; max-width: 500px;"
-                :decorators="decorators"
-                :form="form"
-                :storageParams="storageParams" />
-              <a-button class="mt-1" type="link" @click="showStorage = !showStorage">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
-            </div>
-          </a-col>
-        </a-row>
-      </a-form-item>
-      <a-form-item v-if="enableEncryption" v-bind="formItemLayout" :label="$t('compute.disk.encryption')" :extra="$t('compute.disk.encryption.extra')">
-        <encrypt-keys :decorators="decorators.encrypt_keys" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_1154')" class="mb-0" v-bind="formItemLayout">
-        <tag
-          v-decorator="decorators.__meta__" :allowNoValue="false" />
-      </a-form-item>
-      <a-collapse :bordered="false" v-if="cloudEnv === 'public' || isHCSO || isHCS">
-        <a-collapse-panel :header="$t('compute.text_309')" key="1">
-          <a-form-item :label="$t('compute.text_15')" v-bind="formItemLayout">
-            <base-select
-              class="w-50"
-              v-decorator="decorators.manager_id"
-              resource="cloudproviders"
-              :params="cloudproviderParams"
-              :isDefaultSelect="true"
-              :showSync="true"
-              :select-props="{ placeholder: $t('compute.text_149') }"
-              :resList.sync="cloudproviderData" />
-          </a-form-item>
-        </a-collapse-panel>
-      </a-collapse>
-    </a-form>
+          </a-collapse-panel>
+        </a-collapse>
+      </a-form>
+    </page-body>
     <bottom-bar
       :current-cloudregion="currentCloudregion"
       :current-cloudzone="currentCloudzone"

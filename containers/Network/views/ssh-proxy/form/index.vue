@@ -1,7 +1,7 @@
 <template>
   <a-spin :spinning="loading">
     <page-header :title="title" />
-    <page-body>
+    <page-body needMarginBottom>
       <steps class="my-3" v-model="step" />
       <div class="step1" v-show="isSetpOne">
         <a-form :form="endpointForm" ref="endpointFormRef" v-bind="formItemLayout">

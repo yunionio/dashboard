@@ -2755,7 +2755,10 @@
     "bastion_host": "堡垒机",
     "onpremise_env": "本地IDC",
     "private_env": "私有云",
-    "public_env": "公有云"
+    "public_env": "公有云",
+    "private_envlogo": "私有云logo",
+    "private_env-1": "私有云1",
+    "private_env-2": "私有云2"
   },
   "res": {
     "role": "@:dictionary.role",
