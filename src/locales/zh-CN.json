@@ -2788,6 +2788,7 @@
     "private_env-1": "私有云1",
     "private_env-2": "私有云2"
   },
+  "originDictionary": {},
   "res": {
     "role": "@:dictionary.role",
     "roles": "@:dictionary.role",
