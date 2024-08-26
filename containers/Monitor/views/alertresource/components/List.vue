@@ -44,7 +44,7 @@ export default {
         items: [
           { key: 'alert_name', label: this.$t('monitor.text_99') },
           { key: 'created_at', label: this.$t('monitor.text_14') },
-          { key: 'state', label: this.$t('common.status') },
+          { key: 'alert_state', label: this.$t('common.status') },
           { key: 'res_type', label: this.$t('monitor.text_97') },
           { key: 'alert_rule', label: this.$t('monitor.strategy_detail') },
           { key: 'level', label: this.$t('monitor.level') },
@@ -154,7 +154,7 @@ export default {
           },
         }),
         getTimeTableColumn({ field: 'trigger_time', title: this.$t('monitor.text_14') }),
-        getStatusTableColumn({ statusModule: 'alertrecord', field: 'state' }),
+        getStatusTableColumn({ statusModule: 'alertrecord', field: 'alert_state' }),
         {
           field: 'type',
           title: this.$t('monitor.text_97'),
@@ -218,7 +218,7 @@ export default {
       const ret = {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
         details: true,
-        alertinng: true,
+        alerting: true,
       }
       return ret
     },
