@@ -76,6 +76,7 @@ export default {
     },
     'globalSetting.value.dictionary': {
       handler (val, oldVal) {
+        i18n.setOriginDictionary()
         if (!R.equals(val, oldVal) && !R.isNil(val) && !R.isEmpty(val)) {
           if (!R.isNil(val.en) && !R.isEmpty(val.en)) {
             i18n.mergeLocaleMessage('en', {
