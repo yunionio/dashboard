@@ -69,4 +69,17 @@ i18n.setOriginDictionary = () => {
   }
 }
 
+i18n.getOriginDictionaryI18n = (key, defaultValue) => {
+  const l = getLanguage()
+  let f = {}
+  if (l === 'en') {
+    f = R.clone(en.dictionary)
+  } else if (l === 'zh-CN') {
+    f = R.clone(zhCN.dictionary)
+  } else if (l === 'ja-JP') {
+    f = R.clone(jaJP.dictionary)
+  }
+  return f[key] || defaultValue
+}
+
 export default i18n

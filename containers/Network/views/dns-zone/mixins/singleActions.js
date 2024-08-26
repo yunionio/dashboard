@@ -98,6 +98,7 @@ export default {
               name: this.$t('dictionary.dns_zone'),
               scope: 'domain',
               resource: 'dns_zones',
+              ignorel3PermissionEnable: true,
             }),
             {
               label: this.$t('network.text_131'),
