@@ -14,17 +14,17 @@
         <liquid-fill v-else :value="decimalPercent" />
         <div class="flex-fill ml-4">
           <div class="d-flex bottomborder-box align-items-end">
-            <div class="label-unit">{{ useLabel }}</div>
+            <div :class="`label-unit ${jumpParams.usedPath ? 'label-jump' : ''}`" @click="goJump('used')">{{ useLabel }}</div>
             <div class="flex-number mr-2 ml-1 text-right">{{usage.usage}}</div>
             <div class="label-unit">{{ usage.unit }}</div>
           </div>
           <div class="d-flex bottomborder-box align-items-end">
-            <div class="label-unit">{{ unUseLabel }}</div>
+            <div :class="`label-unit ${jumpParams.reservedPath ? 'label-jump' : ''}`" @click="goJump('reserved')">{{ unUseLabel }}</div>
             <div class="flex-number mr-2 ml-1 text-right">{{displayUnUsage.usage}}</div>
             <div class="label-unit">{{displayUnUsage.unit}}</div>
           </div>
           <div class="d-flex bottomborder-box align-items-end">
-            <div class="label-unit">{{ $t('dashboard.text_44') }}</div>
+            <div :class="`label-unit ${jumpParams.allPath ? 'label-jump' : ''}`" @click="goJump('all')">{{ $t('dashboard.text_44') }}</div>
             <div class="flex-number mr-2 ml-1 text-right">{{allUsage.usage}}</div>
             <div class="label-unit">{{allUsage.unit}}</div>
           </div>
@@ -66,6 +66,7 @@
 
 <script>
 import _ from 'lodash'
+import { mapGetters } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { K8S_USAGE_CONFIG } from '@Dashboard/constants'
 import { load } from '@Dashboard/utils/cache'
@@ -167,6 +168,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['userInfo']),
     isRing () {
       return this.form.fd.chart_type === 'ring'
     },
@@ -297,6 +299,10 @@ export default {
       }
       return this.$t('dashboard.text_34')
     },
+    jumpParams () {
+      const params = this.parseUsageKey(this.form.fd.all_usage_key || '', this.form.fd.usage_key || '')
+      return params
+    },
   },
   watch: {
     'form.fd' (val) {
@@ -331,6 +337,65 @@ export default {
     },
     refresh () {
       return this.fetchUsage()
+    },
+    parseUsageKey (allKey, usageKey) {
+      const str = allKey.replace(/^(all\.)|(domain\.)|(project\.)/, '')
+      const list = str.split('.')
+      const allFilterKey = list[1]
+      const allFilterValue = list[2]
+      const usageStr = usageKey.replace(/^(all\.)|(domain\.)|(project\.)/, '')
+      const usageList = usageStr.split('.')
+      // const usageResource = usageList[0]
+      // const usageFilterKey = usageList[1]
+      const usageFilterValue = usageList[2]
+      // const usageFilterValue = usageList[2]
+      let allPath = ''
+      let usedPath = ''
+      let reservedPath = ''
+      const allParams = {}
+      const usedParams = {}
+      const reservedParams = {}
+      switch (list[0]) {
+        case 'cluster':
+          if (allFilterKey === 'count') {
+            allPath = '/k8s-cluster'
+            usedPath = '/k8s-cluster'
+            if (usageKey.startsWith('domain.')) {
+              usedParams.domain = this.userInfo.projectDomain || ''
+            }
+          } else if (allFilterKey === 'node' && allFilterValue === 'count') {
+            allPath = '/k8s-node'
+            usedPath = '/k8s-node'
+            reservedPath = '/k8s-node'
+            if (usageFilterValue === 'ready_count') {
+              usedParams.status = 'Ready'
+              reservedParams.status = 'NotReady'
+            } else if (usageFilterValue === 'not_ready_count') {
+              usedParams.status = 'NotReady'
+              reservedParams.status = 'Ready'
+            }
+            if (usageKey.startsWith('domain.')) {
+              usedParams.domain = this.userInfo.projectDomain || ''
+            }
+            if (allKey.startsWith('domain.')) {
+              allParams.domain = this.userInfo.projectDomain || ''
+            }
+          }
+      }
+      return {
+        allPath,
+        allParams,
+        usedPath,
+        usedParams,
+        reservedPath,
+        reservedParams,
+      }
+    },
+    goJump (type) {
+      this.$router.push({
+        path: this.jumpParams[`${type}Path`],
+        query: this.jumpParams[`${type}Params`],
+      })
     },
     genUsageParams () {
       const params = {
@@ -388,6 +453,11 @@ export default {
 }
 .label-unit{
   color: #837F89;
+}
+
+.label-jump{
+  color: var(--antd-wave-shadow-color);
+  cursor: pointer;
 }
 .percent-tips {
   font-size: 22px;

@@ -17,25 +17,25 @@
         <liquid-fill v-else :value="decimalPercent" />
         <div class="flex-fill ml-4">
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle">
-            <div class="label-unit">{{ useLabel }}</div>
+            <div :class="`label-unit ${jumpParams.usedPath ? 'label-jump' : ''}`" @click="goJump('used')">{{ useLabel }}</div>
             <div class="flex-number mr-1 ml-1 text-right">{{isResDeny ? '-' : usage.usage}}</div>
             <div class="label-unit">{{usage.unit}}</div>
           </div>
 
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle">
-            <div class="label-unit">{{ unUseLabel }}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.un_usage_tips')"><icon type="help" /></a-tooltip></div>
+            <div :class="`label-unit ${jumpParams.reservedPath ? 'label-jump' : ''}`" @click="goJump('reserved')">{{ unUseLabel }}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.un_usage_tips')"><icon type="help" /></a-tooltip></div>
             <div class="flex-number mr-1 ml-1 text-right">{{isResDeny ? '-' : displayUnUsage.usage}}</div>
             <div class="label-unit">{{displayUnUsage.unit}}</div>
           </div>
 
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle" v-if="showReserved">
-            <div class="flex-shrink-0 flex-grow-0 label-unit">{{$t('dashboard.text_182')}}</div>
+            <div :class="`flex-shrink-0 flex-grow-0 label-unit ${jumpParams.reservedPath ? 'label-jump' : ''}`" @click="goJump('reserved')">{{$t('dashboard.text_182')}}</div>
             <div class="flex-number mr-1 ml-1 text-right">{{isResDeny ? '-' : reserved.usage}}</div>
             <div class="label-unit">{{reserved.unit}}</div>
           </div>
 
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle" v-if="showGpuReserved">
-            <div class="flex-shrink-0 flex-grow-0 label-unit">
+            <div :class="`flex-shrink-0 flex-grow-0 label-unit ${jumpParams.reservedPath ? 'label-jump' : ''}`" @click="goJump('reserved')">
               {{$t('dashboard.text_183')}}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.gpu_reserved_tips')"><icon type="help" /></a-tooltip>
             </div>
             <div class="flex-number mr-1 ml-1 text-right">{{isResDeny ? '-' : gpuReserved.usage}}</div>
@@ -43,7 +43,7 @@
           </div>
 
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle">
-            <div class="label-unit">{{ $t('dashboard.text_181') }}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.all_usage_tips')"><icon type="help" /></a-tooltip></div>
+            <div :class="`label-unit ${jumpParams.allPath ? 'label-jump' : ''}`" @click="goJump('all')">{{ $t('dashboard.text_181') }}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.all_usage_tips')"><icon type="help" /></a-tooltip></div>
             <div class="flex-number mr-1 ml-1 text-right">{{isResDeny ? '-' : allUsage.usage}}</div>
             <div class="label-unit">{{allUsage.unit}}</div>
           </div>
@@ -423,6 +423,17 @@ export default {
       }
       return false
     },
+    isCanJump () {
+      return {
+        all: true,
+        used: true,
+        reserved: true,
+      }
+    },
+    jumpParams () {
+      const params = this.parseUsageKey(this.form.fd.all_usage_key || '', this.form.fd.usage_key || '')
+      return params
+    },
   },
   watch: {
     'form.fd' (val) {
@@ -502,6 +513,117 @@ export default {
     updateVisible (val) {
       this.$emit('update:visible', val)
     },
+    parseUsageKey (allKey, usageKey) {
+      const str = allKey.replace(/^(all\.)|(domain\.)|(project\.)/, '')
+      const list = str.split('.')
+      const allFilterKey = list[1]
+      const allFilterValue = list[2]
+      const usageStr = usageKey.replace(/^(all\.)|(domain\.)|(project\.)/, '')
+      const usageList = usageStr.split('.')
+      const usageResource = usageList[0]
+      const usageFilterKey = usageList[1]
+      const usageFilterValue = usageList[2]
+      // const usageFilterValue = usageList[2]
+      let allPath = ''
+      let usedPath = ''
+      let reservedPath = ''
+      const allParams = {}
+      const usedParams = {}
+      const reservedParams = {}
+      switch (list[0]) {
+        case 'servers':
+          allPath = '/vminstance'
+          usedPath = '/vminstance'
+          // reservedPath = '/vminstance'
+          // allParams.status = ['running', 'ready']
+          if (usageResource === 'running_servers') {
+            usedParams.status = ['running']
+            // reservedParams.status = ['ready']
+          } else if (usageResource === 'ready_servers') {
+            usedParams.status = ['ready']
+            // reservedParams.status = ['running']
+          } else if (usageResource === 'pending_delete_servers') {
+            usedPath = '/serverrecovery'
+            reservedPath = '/vminstance'
+            // reservedParams.status = ['running', 'ready']
+          }
+          break
+        case 'disks':
+          allPath = '/disk'
+          usedPath = '/disk'
+          reservedPath = '/disk'
+          if (usageFilterKey === 'mounted') {
+            usedParams.unused = false
+            reservedParams.unused = true
+          } else if (usageFilterKey === 'unmounted') {
+            usedParams.unused = true
+            reservedParams.unused = false
+          }
+          break
+        case 'storages':
+          if (allFilterKey === 'medium_type') {
+            allPath = '/disk'
+            usedPath = '/disk'
+            reservedPath = '/disk'
+            allParams.medium_type = allFilterValue
+            usedParams.medium_type = allFilterValue
+            reservedParams.medium_type = allFilterValue
+            reservedParams.unused = true
+            allParams.unused = false
+            usedParams.unused = false
+          }
+          break
+        case 'eip':
+          allPath = '/eip'
+          usedPath = '/eip'
+          reservedPath = '/eip'
+          if (usageFilterKey === 'floating_ip' && usageFilterValue === 'used') {
+            usedParams.is_associated = true
+            reservedParams.is_associated = false
+          }
+          break
+          // case 'ports':
+          //   allPath = '/network2'
+          //   break
+        case 'hosts':
+          allPath = '/host'
+          usedPath = '/host'
+          reservedPath = '/host'
+          if (usageResource === 'enabled_hosts') {
+            usedParams.enabled = true
+            reservedParams.enabled = false
+          }
+          break
+        // case 'baremetals':
+        //   allPath = '/baremetal'
+        //   usedPath = '/vminstance'
+        case 'isolated_devices':
+          allPath = '/gpu'
+          usedPath = '/gpu'
+          reservedPath = '/gpu'
+          if (usageResource === 'servers' && usageFilterKey === 'isolated_devices') {
+            usedParams.is_associated = true
+            reservedParams.is_associated = false
+          }
+          break
+        // case 'imgiso':
+        //   path = ''
+      }
+      return {
+        allPath,
+        allParams,
+        usedPath,
+        usedParams,
+        reservedPath,
+        reservedParams,
+      }
+    },
+    goJump (type) {
+      this.$router.push({
+        path: this.jumpParams[`${type}Path`],
+        query: this.jumpParams[`${type}Params`],
+      })
+    },
     async handleSubmit () {
       try {
         const values = await this.form.fc.validateFields()
@@ -526,6 +648,10 @@ export default {
 }
 .label-unit{
   color: #666666;
+}
+.label-jump{
+  color: var(--antd-wave-shadow-color);
+  cursor: pointer;
 }
 .percent-tips {
   font-size: 20px;

@@ -4,7 +4,7 @@
       <usage-select
         class="w-100"
         v-decorator="decorators.all_usage_key"
-        :usages="usages"
+        :usages="allUsages"
         @change="allUsageChange" />
       <div slot="extra">
         <i18n path="metricConfig.create_form.all_usage_extra">
@@ -74,14 +74,32 @@ export default {
   },
   computed: {
     ...mapGetters(['scope']),
-    usages () {
+    allUsages () {
       const ret = []
       for (const key in K8S_USAGE_CONFIG) {
-        ret.push({
-          key,
-          scope: K8S_USAGE_CONFIG[key].scope,
-          label: this.translateUsage[key] ? this.translateUsage[key] : key,
-        })
+        if (K8S_USAGE_CONFIG[key].isOnlyAllPartKey) {
+          ret.push({
+            key,
+            scope: K8S_USAGE_CONFIG[key].scope,
+            label: this.translateUsage[key] ? this.translateUsage[key] : key,
+          })
+        }
+      }
+      return ret
+    },
+    usages () {
+      const ret = []
+      const allUsageKey = this.fd?.all_usage_key || ''
+      for (const key in K8S_USAGE_CONFIG) {
+        const { isOnlyAllPartKey, belongAllPartKeys } = K8S_USAGE_CONFIG[key]
+        if (!isOnlyAllPartKey && belongAllPartKeys && belongAllPartKeys.includes(allUsageKey)) {
+          ret.push({
+            key,
+            scope: K8S_USAGE_CONFIG[key].scope,
+            label: this.translateUsage[key] ? this.translateUsage[key] : key,
+            belongAllPartKeys: K8S_USAGE_CONFIG[key].belongAllPartKeys,
+          })
+        }
       }
       return ret
     },
