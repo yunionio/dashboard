@@ -11,12 +11,12 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ClusterNamespace from '@K8S/sections/ClusterNamespace'
-import { getNameFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getStatusFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'K8SNodeList',
@@ -32,6 +32,13 @@ export default {
     },
   },
   data () {
+    const filter = {}
+    if (this.$route.query.status) {
+      filter.status = [this.$route.query.status]
+    }
+    if (this.$route.query.domain) {
+      filter.domain = [this.$route.query.domain]
+    }
     return {
       list: this.$list.createList(this, {
         id: this.id,
@@ -40,7 +47,10 @@ export default {
         getParams: this.getParams,
         filterOptions: {
           name: getNameFilter(),
+          status: getStatusFilter({ statusMoule: 'kubecluster' }),
+          domain: getDomainFilter(),
         },
+        filter,
       }),
     }
   },

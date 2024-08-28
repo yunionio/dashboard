@@ -47,6 +47,10 @@ export default {
     },
   },
   data () {
+    const filter = {}
+    if (this.$route.query.hasOwnProperty('enabled')) {
+      filter.enabled = [this.$route.query.enabled]
+    }
     const brandFilter = getBrandFilter()
     const notSupportBrand = [
       ...Object.values(HYPERVISORS_MAP).filter(item => item.cloud_env === 'public').map(item => item.brand),
@@ -111,6 +115,7 @@ export default {
         resource: 'hosts',
         getParams: this.getParam,
         filterOptions,
+        filter,
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'id', 'server_id', 'sn', 'manufacture', 'model', 'schedtag', 'nonsystem_guests', 'public_scope', 'project_domain', 'region', 'os_arch', 'created_at'],
         fetchDataCb: (res) => {
