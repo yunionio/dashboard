@@ -39,6 +39,7 @@
               :description="seriesDescription[i]"
               :metricInfo="metricList[i][0]"
               :series="item"
+              :reducedResult="resultList[i]"
               :timeFormatStr="timeFormatStr"
               @pageChange="pageChange"
               @chartInstance="setChartInstance" />
@@ -106,6 +107,7 @@ export default {
       timeOpts,
       metricList: [],
       seriesList: [],
+      resultList: [],
       seriesListPager: [],
       chartInstanceList: [], // e-chart 实例
       loadingList: [],
@@ -184,6 +186,7 @@ export default {
       this.metricList.splice(i, 1)
       this.chartInstanceList.splice(i, 1)
       this.seriesList.splice(i, 1)
+      this.resultList.splice(i, 1)
       this.loadingList.splice(i, 1)
     },
     setChartInstance (val, i) {
@@ -193,6 +196,7 @@ export default {
     resetChart (i) {
       if (this.seriesList && this.seriesList.length && this.seriesList[i]) {
         this.$set(this.seriesList, i, [])
+        this.$set(this.resultList, i, [])
         this.$set(this.metricList, i, [])
         this.$set(this.seriesDescription[i], 'title', '')
       }
@@ -217,6 +221,7 @@ export default {
       try {
         const res = await Promise.all(jobs)
         this.seriesList = res.map(val => get(val, 'series') || [])
+        this.resultList = res.map(val => get(val, 'reduced_result') || [])
         this.seriesListPager = res.map((val, index) => ({ seriesIndex: index, total: get(val, 'series_total') || 0, page: 1, limit: 10 }))
         this.loadingList = this.loadingList.map(v => false)
       } catch (error) {
@@ -227,18 +232,24 @@ export default {
     async _refresh (i, limit, offset) {
       try {
         this.$set(this.loadingList, i, true)
-        const { series = [], series_total = 0 } = await this.fetchData(this.metricList[i], limit, offset)
+        const { series = [], reduced_result = [], series_total = 0 } = await this.fetchData(this.metricList[i], limit, offset)
         this.$set(this.seriesList, i, series)
+        this.$set(this.resultList, i, reduced_result)
         this.$set(this.seriesListPager, i, { seriesIndex: i, total: series_total, page: 1 + offset / limit, limit: limit })
         this.loadingList[i] = false
       } catch (error) {
         this.$set(this.seriesList, i, [])
+        this.$set(this.resultList, i, [])
         this.$set(this.loadingList, i, false)
         throw error
       }
     },
-    async refresh (params, i) { // 将多个查询 分开调用
-      const metric_query = [{ model: params }]
+    async refresh (params, resParams, i) { // 将多个查询 分开调用
+      const val = { model: params }
+      if (resParams.type) {
+        val.result_reducer = resParams
+      }
+      const metric_query = [val]
       this.$set(this.metricList, i, metric_query)
       await this._refresh(i, 10, 0)
     },

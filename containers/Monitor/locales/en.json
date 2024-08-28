@@ -314,5 +314,7 @@
   "monitor.commonalert.add_condition": "Add trigger condition",
   "monitor.validate_number": "Please enter a number",
   "monitor.associate_alarm_strategy": "Associated alarm strategy",
-  "monitor.view_monitor": "View monitoring"
+  "monitor.view_monitor": "View monitoring",
+  "monitor.monitor_result_function": "Result aggregation function",
+  "monitor.monitor_percentile": "Percentile"
 }

@@ -314,5 +314,7 @@
   "monitor.commonalert.add_condition": "トリガー条件を追加",
   "monitor.validate_number": "数値を入力してください",
   "monitor.associate_alarm_strategy": "関連アラームポリシー",
-  "monitor.view_monitor": "監視の表示"
+  "monitor.view_monitor": "監視の表示",
+  "monitor.monitor_result_function": "結果集約関数",
+  "monitor.monitor_percentile": "数値"
 }
