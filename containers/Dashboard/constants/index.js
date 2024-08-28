@@ -8,6 +8,8 @@ import { SCOPES_MAP, CLOUD_ENVS } from '@/constants'
 // CPU 单位为：核
 // GPU（isolated_device） 单位为：块
 // nics 和 ports 的区别：ports是所有的IP，nics是被占用的IP，ports包含nics。nics和ports的单位都是个。
+// isOnlyAllPartKey: true 只能作为总量指标出现
+// belongAllPartKeys 所归属的总量指标
 export const USAGE_CONFIG = {
   'all.bucket_bytes': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
@@ -1584,165 +1586,189 @@ export const K8S_USAGE_CONFIG = {
   'all.cluster.count': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.system.key,
+    isOnlyAllPartKey: true,
   },
   'all.cluster.node.count': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.system.key,
+    isOnlyAllPartKey: true,
   },
   'all.cluster.node.not_ready_count': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.system.key,
+    belongAllPartKeys: ['all.cluster.node.count'],
   },
   'all.cluster.node.ready_count': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.system.key,
+    belongAllPartKeys: ['all.cluster.node.count'],
   },
   'all.cluster.node.pod.capacity': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.system.key,
+    isOnlyAllPartKey: true,
   },
   'all.cluster.node.pod.count': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.system.key,
+    belongAllPartKeys: ['all.cluster.node.pod.capacity'],
   },
   'all.cluster.node.cpu.capacity': {
     unit: i18n.t('dashboard.text_3'),
     scope: SCOPES_MAP.system.key,
+    isOnlyAllPartKey: true,
   },
   'all.cluster.node.cpu.limit': {
     unit: i18n.t('dashboard.text_3'),
     scope: SCOPES_MAP.system.key,
+    belongAllPartKeys: ['all.cluster.node.cpu.capacity'],
   },
   'all.cluster.node.cpu.request': {
     unit: i18n.t('dashboard.text_3'),
     scope: SCOPES_MAP.system.key,
+    belongAllPartKeys: ['all.cluster.node.cpu.capacity'],
   },
   'all.cluster.node.memory.capacity': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.system.key,
+    isOnlyAllPartKey: true,
   },
   'all.cluster.node.memory.limit': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.system.key,
+    belongAllPartKeys: ['all.cluster.node.memory.capacity'],
   },
   'all.cluster.node.memory.request': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.system.key,
+    belongAllPartKeys: ['all.cluster.node.memory.capacity'],
   },
   'domain.cluster.count': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.domain.key,
+    belongAllPartKeys: ['all.cluster.count'],
   },
   'domain.cluster.node.count': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.domain.key,
+    isOnlyAllPartKey: true,
   },
   'domain.cluster.node.not_ready_count': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.domain.key,
+    belongAllPartKeys: ['all.cluster.node.count', 'domain.cluster.node.count'],
   },
   'domain.cluster.node.ready_count': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.domain.key,
+    belongAllPartKeys: ['all.cluster.node.count', 'domain.cluster.node.count'],
   },
   'domain.cluster.node.pod.capacity': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.domain.key,
+    isOnlyAllPartKey: true,
   },
   'domain.cluster.node.pod.count': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.domain.key,
+    belongAllPartKeys: ['all.cluster.node.pod.capacity', 'domain.cluster.node.pod.capacity'],
   },
   'domain.cluster.node.cpu.capacity': {
     unit: i18n.t('dashboard.text_3'),
     scope: SCOPES_MAP.domain.key,
+    isOnlyAllPartKey: true,
   },
   'domain.cluster.node.cpu.limit': {
     unit: i18n.t('dashboard.text_3'),
     scope: SCOPES_MAP.domain.key,
+    belongAllPartKeys: ['all.cluster.node.cpu.capacity', 'domain.cluster.node.cpu.capacity'],
   },
   'domain.cluster.node.cpu.request': {
     unit: i18n.t('dashboard.text_3'),
     scope: SCOPES_MAP.domain.key,
+    belongAllPartKeys: ['all.cluster.node.cpu.capacity', 'domain.cluster.node.cpu.capacity'],
   },
   'domain.cluster.node.memory.capacity': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.domain.key,
+    isOnlyAllPartKey: true,
   },
   'domain.cluster.node.memory.limit': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.domain.key,
+    belongAllPartKeys: ['all.cluster.node.memory.capacity', 'domain.cluster.node.memory.capacity'],
   },
   'domain.cluster.node.memory.request': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.domain.key,
+    belongAllPartKeys: ['all.cluster.node.memory.capacity', 'domain.cluster.node.memory.capacity'],
   },
-  'project.cluster.count': {
-    unit: i18n.t('dashboard.text_1'),
-    scope: SCOPES_MAP.project.key,
-  },
-  'project.cluster.node.count': {
-    unit: i18n.t('dashboard.text_1'),
-    scope: SCOPES_MAP.project.key,
-  },
-  'project.cluster.node.not_ready_count': {
-    unit: i18n.t('dashboard.text_1'),
-    scope: SCOPES_MAP.project.key,
-  },
-  'project.cluster.node.ready_count': {
-    unit: i18n.t('dashboard.text_1'),
-    scope: SCOPES_MAP.project.key,
-  },
-  'project.cluster.node.pod.capacity': {
-    unit: i18n.t('dashboard.text_1'),
-    scope: SCOPES_MAP.project.key,
-  },
-  'project.cluster.node.pod.count': {
-    unit: i18n.t('dashboard.text_1'),
-    scope: SCOPES_MAP.project.key,
-  },
-  'project.cluster.node.cpu.capacity': {
-    unit: i18n.t('dashboard.text_3'),
-    scope: SCOPES_MAP.project.key,
-  },
-  'project.cluster.node.cpu.limit': {
-    unit: i18n.t('dashboard.text_3'),
-    scope: SCOPES_MAP.project.key,
-  },
-  'project.cluster.node.cpu.request': {
-    unit: i18n.t('dashboard.text_3'),
-    scope: SCOPES_MAP.project.key,
-  },
-  'project.cluster.node.memory.capacity': {
-    formatter: val => sizestrWithUnit(val, 'B', 1024),
-    canUseUserUnit: true,
-    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
-    scope: SCOPES_MAP.project.key,
-  },
-  'project.cluster.node.memory.limit': {
-    formatter: val => sizestrWithUnit(val, 'B', 1024),
-    canUseUserUnit: true,
-    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
-    scope: SCOPES_MAP.project.key,
-  },
-  'project.cluster.node.memory.request': {
-    formatter: val => sizestrWithUnit(val, 'B', 1024),
-    canUseUserUnit: true,
-    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
-    scope: SCOPES_MAP.project.key,
-  },
+  // 'project.cluster.count': {
+  //   unit: i18n.t('dashboard.text_1'),
+  //   scope: SCOPES_MAP.project.key,
+  // },
+  // 'project.cluster.node.count': {
+  //   unit: i18n.t('dashboard.text_1'),
+  //   scope: SCOPES_MAP.project.key,
+  // },
+  // 'project.cluster.node.not_ready_count': {
+  //   unit: i18n.t('dashboard.text_1'),
+  //   scope: SCOPES_MAP.project.key,
+  // },
+  // 'project.cluster.node.ready_count': {
+  //   unit: i18n.t('dashboard.text_1'),
+  //   scope: SCOPES_MAP.project.key,
+  // },
+  // 'project.cluster.node.pod.capacity': {
+  //   unit: i18n.t('dashboard.text_1'),
+  //   scope: SCOPES_MAP.project.key,
+  // },
+  // 'project.cluster.node.pod.count': {
+  //   unit: i18n.t('dashboard.text_1'),
+  //   scope: SCOPES_MAP.project.key,
+  // },
+  // 'project.cluster.node.cpu.capacity': {
+  //   unit: i18n.t('dashboard.text_3'),
+  //   scope: SCOPES_MAP.project.key,
+  // },
+  // 'project.cluster.node.cpu.limit': {
+  //   unit: i18n.t('dashboard.text_3'),
+  //   scope: SCOPES_MAP.project.key,
+  // },
+  // 'project.cluster.node.cpu.request': {
+  //   unit: i18n.t('dashboard.text_3'),
+  //   scope: SCOPES_MAP.project.key,
+  // },
+  // 'project.cluster.node.memory.capacity': {
+  //   formatter: val => sizestrWithUnit(val, 'B', 1024),
+  //   canUseUserUnit: true,
+  //   userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
+  //   scope: SCOPES_MAP.project.key,
+  // },
+  // 'project.cluster.node.memory.limit': {
+  //   formatter: val => sizestrWithUnit(val, 'B', 1024),
+  //   canUseUserUnit: true,
+  //   userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
+  //   scope: SCOPES_MAP.project.key,
+  // },
+  // 'project.cluster.node.memory.request': {
+  //   formatter: val => sizestrWithUnit(val, 'B', 1024),
+  //   canUseUserUnit: true,
+  //   userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
+  //   scope: SCOPES_MAP.project.key,
+  // },
 }
 
 export const PROJECT_QUOTA_CONFIG = {
