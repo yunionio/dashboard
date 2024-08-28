@@ -15,7 +15,7 @@
         </div>
       </div>
       <vxe-grid
-        v-if="tableData && tableData.length"
+        v-if="tableData && tableData.length && showTable"
         max-height="200"
         size="mini"
         border
@@ -73,6 +73,10 @@ export default {
       type: Array,
       required: true,
     },
+    reducedResult: {
+      type: Object,
+      default: () => ({}),
+    },
     pager: {
       type: Object,
       required: false,
@@ -127,6 +131,33 @@ export default {
     groupBy () {
       return _.get(this.metricInfo, 'model.group_by')
     },
+    resultReducer () {
+      return _.get(this.metricInfo, 'result_reducer')
+    },
+    isSelectFunction () {
+      const select = _.get(this.metricInfo, 'model.select') || []
+      let ret = ''
+      select.map(item => {
+        if (R.is(Array, item)) {
+          item.map(l => {
+            if (l.type === 'mean' || l.type === 'sum') {
+              ret = l.type
+            }
+          })
+        } else if (R.is(Object, item)) {
+          if (item.type === 'mean' || item.type === 'sum') {
+            ret = item.type
+          }
+        }
+      })
+      return ret
+    },
+    showTable () {
+      if (!this.groupBy && !this.resultReducer && this.isSelectFunction) {
+        return false
+      }
+      return true
+    },
     tableData () {
       return this.series.map((val, i) => {
         const ret = { ...val.tags, raw_name: val.raw_name }
@@ -138,6 +169,9 @@ export default {
         const colors = series.map(val => val.itemStyle.color)
         const c = colors[i] || color[0]
         ret.__color = c
+        if (this.reducedResult && this.reducedResult.result) {
+          ret.result = this.reducedResult.result[i]
+        }
         return ret
       })
     },
@@ -166,7 +200,15 @@ export default {
                 return
               }
             }
-            columns.push(value)
+            columns.push({
+              ...value,
+              formatter: ({ cellValue }) => {
+                if (cellValue === 'value') {
+                  return `${this.description.label}${this.isSelectFunction ? `(${this.isSelectFunction.toUpperCase()})` : ''}` || cellValue
+                }
+                return cellValue
+              },
+            })
           }
         }, tableColumnMaps)
       }
@@ -180,6 +222,19 @@ export default {
             formatter: ({ row }) => row[groupByField] || '-',
           })
         }
+      }
+      if (this.reducedResult && this.reducedResult.result) {
+        const { reducer = {} } = this.reducedResult
+        const title = reducer.type === 'percentile' ? `P${reducer.params && reducer.params[0]}` : reducer.type.toUpperCase()
+        columns.push({
+          field: 'result',
+          title,
+          formatter: ({ cellValue }) => {
+            const unit = _.get(this.description, 'description.unit')
+            const val = transformUnit(cellValue, unit)
+            return val.text
+          },
+        })
       }
       return columns.slice(0, MAX_COLUMNS)
     },
@@ -432,7 +487,25 @@ export default {
               value = unit ? `${unit} ${_.get(val, 'value' || line.value[0])}` : _.get(val, 'value' || line.value[0])
             }
             const color = i === this.highlight.index ? this.highlight.color : '#616161'
-            return `<div style="color: ${color};" class="d-flex align-items-center"><span>${line.marker}</span> <span class="text-truncate" style="max-width: 500px;">${line.seriesName || ' '}</span>:&nbsp;<span>${value}</span></div>`
+            let name = line.seriesName
+            if (!this.showTable) {
+              name = this.isSelectFunction.toUpperCase()
+            } else {
+              if (name.startsWith('{') && name.endsWith('}')) {
+                try {
+                  const str = name.substring(1, name.length - 1)
+                  const list = str.split(',')
+                  const obj = {}
+                  list.forEach(item => {
+                    const [key, value] = item.split('=')
+                    obj[key] = value
+                  })
+                  const field = (this.columns.length > 1 && this.columns[1].field)
+                  name = obj[field] || name
+                } catch (err) { }
+              }
+            }
+            return `<div style="color: ${color};" class="d-flex align-items-center"><span>${line.marker}</span> <span class="text-truncate" style="max-width: 500px;">${name || ' '}</span>:&nbsp;<span>${value}</span></div>`
           }).join('')
           const wrapper = `<div class="chart-tooltip-wrapper">
                         <div style="color: #5D6F80;">${params[0].name}</div>

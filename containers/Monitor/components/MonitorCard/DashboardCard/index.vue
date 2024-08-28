@@ -160,10 +160,14 @@ export default {
         return
       }
       const query = conditions[0].query
+      const metric_query = [{ model: query.model }]
+      if (query.result_reducer) {
+        metric_query[0].result_reducer = query.result_reducer
+      }
       return {
         from: query.from,
         to: query.to,
-        metric_query: [{ model: query.model }],
+        metric_query,
         ...this.extraParams,
       }
     },
