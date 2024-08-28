@@ -18,7 +18,7 @@
         :extraParams="extraParams"
         @mertricItemChange="val => mertricItemChange(val, i)"
         @resetChart="() => resetChart(i)"
-        @paramsChange="val => paramsChange(val, i)"
+        @paramsChange="(val, resVal) => paramsChange(val, resVal, i)"
         @remove="() => remove(i)" />
     </div>
     <div class="d-flex align-items-center" v-if="multiQuery">
@@ -29,8 +29,8 @@
 </template>
 
 <script>
-import MonitorForm from './form'
 import { uuid } from '@/utils/utils'
+import MonitorForm from './form'
 
 export default {
   name: 'MonitorForms',
@@ -95,9 +95,10 @@ export default {
       const list = this.formList.map(val => ({ ...val, show: false }))
       this.formList = list.concat({ key: uuid(), show: true })
     },
-    paramsChange (params, i) {
+    paramsChange (params, resParams, i) {
       this.$set(this.formList[i], 'model', params)
-      this.$emit('refresh', params, i)
+      this.$set(this.formList[i], 'result_reducer', resParams)
+      this.$emit('refresh', params, resParams, i)
     },
     remove (idx) {
       this.formList.splice(idx, 1)
