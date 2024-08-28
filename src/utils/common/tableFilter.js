@@ -244,8 +244,8 @@ export function getEnabledFilter (params = {}) {
     label,
     dropdown: true,
     items: [
-      { label: i18n.t('status.enabled.true'), key: true },
-      { label: i18n.t('status.enabled.false'), key: false },
+      { label: i18n.t('status.enabled.true'), key: 'true' },
+      { label: i18n.t('status.enabled.false'), key: 'false' },
     ],
   }
 }

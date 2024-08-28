@@ -30,11 +30,16 @@ export default {
     hiddenActionKeys: Array,
   },
   data () {
+    const filter = {}
+    if (this.$route.query.hasOwnProperty('is_associated')) {
+      filter.is_associated = [this.$route.query.is_associated]
+    }
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'isolated_devices',
         getParams: this.getParam,
+        filter,
         filterOptions: {
           id: {
             label: this.$t('table.title.id'),
@@ -61,6 +66,18 @@ export default {
             jointFilter: true,
             formatter: val => {
               return `servers.id(guest_id).name.contains("${val}")`
+            },
+          },
+          is_associated: {
+            label: this.$t('network.is_associated'),
+            dropdown: true,
+            items: [
+              { label: this.$t('network.associated'), key: 'true' },
+              { label: this.$t('network.un_associated'), key: 'false' },
+            ],
+            filter: true,
+            formatter: (val) => {
+              return val[0] === 'true' ? 'guest_id.isnotempty()' : 'guest_id.isnullorempty()'
             },
           },
           host: {
