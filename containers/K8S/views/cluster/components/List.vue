@@ -11,7 +11,7 @@
 
 <script>
 import * as R from 'ramda'
-import { getNameFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getCreatedAtFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -29,6 +29,10 @@ export default {
     },
   },
   data () {
+    const filter = {}
+    if (this.$route.query.domain) {
+      filter.domain = [this.$route.query.domain]
+    }
     return {
       list: this.$list.createList(this, {
         id: this.id,
@@ -40,8 +44,10 @@ export default {
             label: this.$t('table.title.id'),
           },
           name: getNameFilter(),
+          domain: getDomainFilter(),
           created_at: getCreatedAtFilter(),
         },
+        filter,
         steadyStatus: {
           status: Object.values(expectStatus.kubecluster).flat(),
           sync_status: Object.values(expectStatus.kubecluster_sync_status).flat(),

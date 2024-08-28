@@ -59,6 +59,10 @@ export default {
     },
   },
   data () {
+    const filter = {}
+    if (this.$route.query.hasOwnProperty('is_associated')) {
+      filter.is_associated = [this.$route.query.is_associated]
+    }
     const createAction = {
       label: this.$t('network.text_26'),
       permission: 'eips_create',
@@ -173,6 +177,7 @@ export default {
         id: this.id,
         resource: 'eips',
         getParams: this.getParam,
+        filter,
         filterOptions: {
           external_id: {
             label: this.$t('table.title.external_id'),
@@ -191,6 +196,14 @@ export default {
             },
           },
           status: getStatusFilter('eip'),
+          is_associated: {
+            label: this.$t('network.is_associated'),
+            dropdown: true,
+            items: [
+              { label: this.$t('network.associated'), key: 'true' },
+              { label: this.$t('network.un_associated'), key: 'false' },
+            ],
+          },
           cloudaccount: getAccountFilter(),
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),

@@ -1143,5 +1143,8 @@
   "network.associate_resource_type": "绑定资源类型",
   "network.associate_resource_name": "绑定资源名称",
   "network.associate_resource_id": "绑定资源ID",
-  "network.dhcp_tooltip": "允许填写多个IPv4地址，中间用英文逗号分隔"
+  "network.dhcp_tooltip": "允许填写多个IPv4地址，中间用英文逗号分隔",
+  "network.is_associated": "是否绑定",
+  "network.associated": "已绑定",
+  "network.un_associated": "未绑定"
 }

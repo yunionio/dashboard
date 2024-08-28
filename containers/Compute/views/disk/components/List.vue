@@ -66,6 +66,14 @@ export default {
     },
   },
   data () {
+    const filter = {}
+    if (this.$route.query.hasOwnProperty('unused')) {
+      filter.unused = [this.$route.query.unused]
+    }
+    const { medium_type } = this.$route.query
+    if (medium_type) {
+      filter.medium_type = R.is(Array, medium_type) ? medium_type : [medium_type]
+    }
     const createAction = {
       label: this.$t('compute.perform_create'),
       permission: 'disks_create',
@@ -234,8 +242,8 @@ export default {
         hiddenField: 'guest_count',
         dropdown: true,
         items: [
-          { label: this.$t('compute.text_394'), key: false },
-          { label: this.$t('compute.text_395'), key: true },
+          { label: this.$t('compute.text_394'), key: 'false' },
+          { label: this.$t('compute.text_395'), key: 'true' },
         ],
       },
       brand: getBrandFilter(),
@@ -268,6 +276,7 @@ export default {
         resource: 'disks',
         getParams: this.getParam,
         filterOptions,
+        filter,
         steadyStatus: {
           status: Object.values(expectStatus.disk).flat(),
           guest_status: [...Object.values(expectStatus.server).flat(), '', undefined],
