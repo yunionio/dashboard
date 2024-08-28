@@ -43,6 +43,16 @@
           class="w-100"
           :select-props="{ placeholder: $t('monitor.text_115'), allowClear: true }" />
       </a-form-item>
+      <a-form-item :label="$t('monitor.monitor_result_function')">
+        <base-select
+          v-decorator="decorators.result_function"
+          :options="resultFunctionOpts"
+          class="w-100"
+          :select-props="{ placeholder: $t('monitor.text_115'), allowClear: true }" />
+      </a-form-item>
+      <a-form-item v-if="form.fd.result_function === 'percentile'" :label="$t('monitor.monitor_percentile')">
+        <a-input-number :min="1" :max="100" v-decorator="decorators.percentile" />
+      </a-form-item>
       <a-form-item :label="$t('common.name')" v-if="!queryOnly">
         <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" />
       </a-form-item>
@@ -107,6 +117,7 @@ export default {
     if (this.panel && this.panel.common_alert_metric_details && this.panel.common_alert_metric_details.length > 0) {
       const f = this.panel.common_alert_metric_details[0]
       const q = _.get(this.panel, 'settings.conditions[0].query.model')
+      const r = _.get(this.panel, 'settings.conditions[0].query.result_reducer')
       initialValue.name = this.panel.name || this.panel.panel_name || ''
       initialValue.res_type = f.res_type
       initialValue.metric_key = f.measurement
@@ -129,6 +140,12 @@ export default {
           const s = q.select[0]
           const _t = s[s.length - 1].type
           if (_t) initialValue.function = _t.toUpperCase()
+        }
+      }
+      if (r) {
+        initialValue.result_function = r.type
+        if (r.params && r.params.length) {
+          initialValue.percentile = r.params[0]
         }
       }
     }
@@ -218,6 +235,19 @@ export default {
           initialValue: initialValue.function,
         },
       ],
+      result_function: [
+        'result_function',
+        {
+          initialValue: initialValue.result_function,
+        },
+      ],
+      percentile: [
+        'percentile',
+        {
+          initialValue: initialValue.percentile,
+          rules: [{ required: true, message: this.$t('common.tips.input', [this.$t('monitor.monitor_percentile')]) }],
+        },
+      ],
     }
 
     if (!this.queryOnly) {
@@ -238,18 +268,47 @@ export default {
         fc: this.$form.createForm(this, {
           onValuesChange: this.onValuesChange,
         }),
-        fd: {},
+        fd: {
+          result_function: initialValue.result_function,
+        },
       },
       decorators: decorators,
       initFilters: initFilters,
       groupbyOpts: [],
       functionOpts: [],
+      resultFunctionOpts: [
+        {
+          key: 'percentile',
+          label: 'Percentile',
+        },
+        {
+          key: 'min',
+          label: 'MIN',
+        },
+        {
+          key: 'max',
+          label: 'MAX',
+        },
+        {
+          key: 'avg',
+          label: 'AVG',
+        },
+        {
+          key: 'sum',
+          label: 'SUM',
+        },
+        {
+          key: 'count',
+          label: 'COUNT',
+        },
+      ],
       metricKeyOpts: [],
       metricInfo: {},
       metricKeyItem: {},
       mertricItem: {},
       panelShow: this.defaultPanelShow,
       oldParams: {},
+      oldResParams: {},
       metricLoading: false,
       metricInfoLoading: false,
       res_type_measurements: {},
@@ -362,10 +421,10 @@ export default {
         }
         const { group_by: groupBy, function: func } = this.form.fc.getFieldsValue([this.decorators.group_by[0], this.decorators.function[0]])
         const resetFields = {}
-        if (!~this.metricInfo.tag_key.indexOf(groupBy)) {
+        if (!~(this.metricInfo?.tag_key || []).indexOf(groupBy)) {
           resetFields[this.decorators.group_by[0]] = undefined
         }
-        if (!~Aggregations.indexOf(func)) {
+        if (!~(Aggregations || []).indexOf(func)) {
           resetFields[this.decorators.function[0]] = undefined
         }
         this.form.fc.setFieldsValue(resetFields)
@@ -385,6 +444,7 @@ export default {
       const params = {
         database: this.metricKeyItem && this.metricKeyItem.database ? this.metricKeyItem.database : 'telegraf',
       }
+      const resParams = {}
       const tags = []
       if (!this.queryOnly) {
         let formErr
@@ -416,6 +476,17 @@ export default {
         // eslint-disable-next-line no-template-curly-in-string
         params.group_by = [{ type: 'tag', params: [fd.group_by] }]
       }
+      if (fd.result_function) {
+        resParams.type = fd.result_function
+        if (fd.result_function === 'percentile') {
+          if (fd.percentile) {
+            resParams.params = [fd.percentile]
+          } else {
+            delete resParams.params
+            delete resParams.type
+          }
+        }
+      }
       if (!fd.metric_key || !fd.metric_value) {
         this.oldParams = params
         return params
@@ -423,8 +494,9 @@ export default {
       if (R.is(String, fd.function)) {
         params.select[0].push({ type: fd.function.toLowerCase(), params: [] })
       }
-      if (R.equals(this.oldParams, params)) return params
-      this.$emit('paramsChange', params)
+      if (R.equals(this.oldParams, params) && R.equals(this.oldResParams, resParams)) return params
+      this.$emit('paramsChange', params, resParams)
+      this.oldResParams = resParams
       this.oldParams = params // 记录为上一次 params
     },
   },
