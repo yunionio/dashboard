@@ -957,8 +957,8 @@ export const PERMISSION = {
   meter_instances_create: ['meter', 'meter_instances', 'create'],
   meter_instances_update: ['meter', 'meter_instances', 'post'],
   meter_instances_delete: ['meter', 'meter_instances', 'delete'],
-  meter_instances_perform_change_owner: ['compute', 'meter_instances', 'perform', 'change-owner'],
-  meter_instances_perform_set_user_metadata: ['compute', 'meter_instances', 'perform', 'set-user-metadata'],
+  meter_instances_perform_change_owner: ['meter', 'meter_instances', 'perform', 'change-owner'],
+  meter_instances_perform_set_user_metadata: ['meter', 'meter_instances', 'perform', 'set-user-metadata'],
 
   /**
    * billsdimensions 维度管理
