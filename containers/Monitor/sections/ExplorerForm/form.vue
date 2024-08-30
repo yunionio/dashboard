@@ -51,7 +51,7 @@
           :select-props="{ placeholder: $t('monitor.text_115'), allowClear: true }" />
       </a-form-item>
       <a-form-item v-if="form.fd.result_function === 'percentile'" :label="$t('monitor.monitor_percentile')">
-        <a-input-number :min="1" :max="100" v-decorator="decorators.percentile" />
+        <a-input-number :min="1" :max="99" v-decorator="decorators.percentile" placeholder="1~99" />
       </a-form-item>
       <a-form-item :label="$t('common.name')" v-if="!queryOnly">
         <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" />
@@ -145,7 +145,13 @@ export default {
       if (r) {
         initialValue.result_function = r.type
         if (r.params && r.params.length) {
-          initialValue.percentile = r.params[0]
+          if (r.params[0] === 50) {
+            initialValue.result_function = 'p50'
+          } else if (r.params[0] === 95) {
+            initialValue.result_function = 'p95'
+          } else {
+            initialValue.percentile = r.params[0]
+          }
         }
       }
     }
@@ -278,8 +284,12 @@ export default {
       functionOpts: [],
       resultFunctionOpts: [
         {
-          key: 'percentile',
-          label: 'Percentile',
+          key: 'p50',
+          label: 'P50',
+        },
+        {
+          key: 'p95',
+          label: 'P95',
         },
         {
           key: 'min',
@@ -300,6 +310,10 @@ export default {
         {
           key: 'count',
           label: 'COUNT',
+        },
+        {
+          key: 'percentile',
+          label: 'PERCENTILE',
         },
       ],
       metricKeyOpts: [],
@@ -480,11 +494,17 @@ export default {
         resParams.type = fd.result_function
         if (fd.result_function === 'percentile') {
           if (fd.percentile) {
-            resParams.params = [fd.percentile]
+            resParams.params = [Math.max(1, Math.min(fd.percentile, 99))]
           } else {
             delete resParams.params
             delete resParams.type
           }
+        } else if (fd.result_function === 'p50') {
+          resParams.type = 'percentile'
+          resParams.params = [50]
+        } else if (fd.result_function === 'p95') {
+          resParams.type = 'percentile'
+          resParams.params = [95]
         }
       }
       if (!fd.metric_key || !fd.metric_value) {
