@@ -30,7 +30,7 @@
       <div class="vxe-grid--pager-wrapper">
         <div class="vxe-pager size--mini">
           <div class="vxe-pager--wrapper">
-            <span class="vxe-pager--total" v-if="!pager">{{ total }}</span>
+            <span class="vxe-pager--total" v-if="!pager || (pager && pager.total < 11)">{{ total }}</span>
             <vxe-pager
               v-else
               size="mini"
