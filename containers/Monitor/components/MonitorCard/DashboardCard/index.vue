@@ -22,7 +22,7 @@
         <a-radio :checked="focusPanelId == panel.panel_id" @click="(e)=>{chose_panel(panel.panel_id,panel.panel_name)}">{{panel.panel_name}}</a-radio>
       </div>
     </template>
-    <overview-line v-if="resizeStatus" :class="card_style" :chartHeigth="chartHeigth" style="padding-top: 10px;" :chartData="chart.chartData" :yAxisFormat="chart.metric && chart.metric.format ? chart.metric.format : '0.[00]'" :loading="loading" :exportName="panel.panel_name || (chart.metric && chart.metric.label)" />
+    <overview-line v-if="resizeStatus" :class="card_style" :chartHeigth="chartHeigth" style="padding-top: 10px;" :chartData="chart.chartData" :yAxisFormat="chart.metric && chart.metric.format ? chart.metric.format : '0.[00]'" :loading="loading" :exportName="panel.panel_name || (chart.metric && chart.metric.label)" :chartExtend="chartSetting" />
     <template #footer>
       <overview-table :table-data="table" :loading="tableLoading" />
     </template>
@@ -31,12 +31,14 @@
 
 <script>
 import _ from 'lodash'
+import * as R from 'ramda'
 import WindowsMixin from '@/mixins/windows'
 import DialogMixin from '@/mixins/dialog'
-import { metric_zh } from '@Monitor/constants'
+import { metric_zh, tableColumnMaps } from '@Monitor/constants'
 import { getSignature } from '@/utils/crypto'
-import { getRequestT } from '@/utils/utils'
+import { getRequestT, transformUnit } from '@/utils/utils'
 import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+// import { currencyUnitMap } from '@/constants/currency'
 import OverviewCardLayout from '../layout'
 import OverviewLine from '../sections/chart/line'
 import OverviewTable from '../sections/table'
@@ -105,6 +107,10 @@ export default {
     }
   },
   computed: {
+    description () {
+      const { common_alert_metric_details = [] } = this.panel
+      return common_alert_metric_details.length ? common_alert_metric_details[0].field_description || {} : {}
+    },
     metric () {
       const detail = _.get(this.panel, 'common_alert_metric_details[0]')
       if (!detail) {
@@ -170,6 +176,93 @@ export default {
         metric_query,
         ...this.extraParams,
       }
+    },
+    metricInfo () {
+      const { metric_query = [] } = this.chartQueryData
+      return metric_query.length ? metric_query[0] : {}
+    },
+    groupBy () {
+      return _.get(this.metricInfo, 'model.group_by')
+    },
+    resultReducer () {
+      return _.get(this.metricInfo, 'result_reducer')
+    },
+    isSelectFunction () {
+      const select = _.get(this.metricInfo, 'model.select') || []
+      let ret = ''
+      select.map(item => {
+        if (R.is(Array, item)) {
+          item.map(l => {
+            if (l.type === 'mean' || l.type === 'sum') {
+              ret = l.type
+            }
+          })
+        } else if (R.is(Object, item)) {
+          if (item.type === 'mean' || item.type === 'sum') {
+            ret = item.type
+          }
+        }
+      })
+      return ret
+    },
+    showTable () {
+      if (!this.groupBy && !this.resultReducer && this.isSelectFunction) {
+        return false
+      }
+      return true
+    },
+    chartSetting () {
+      const ret = {}
+      ret.tooltip = {
+        trigger: 'axis',
+        position: (point, params, dom, rect, size) => {
+          const series = params.map((line, i) => {
+            const unit = _.get(this.description, 'unit')
+            const val = transformUnit(line.value[1], unit)
+            const value = _.get(val, 'text') || line.value[1]
+            // if (unit === 'currency') {
+            //   let unit = ''
+            //   if (currencys.length === 1) {
+            //     unit = currencyUnitMap[currencys[0]]?.sign || ''
+            //   }
+            //   value = unit ? `${unit} ${_.get(val, 'value' || line.value[0])}` : _.get(val, 'value' || line.value[0])
+            // }
+            // const color = i === this.highlight.index ? this.highlight.color : '#616161'
+            let name = line.seriesName
+            if (!this.showTable) {
+              name = this.isSelectFunction.toUpperCase()
+            } else {
+              if (name.startsWith('{') && name.endsWith('}')) {
+                try {
+                  const str = name.substring(1, name.length - 1)
+                  const list = str.split(',')
+                  const obj = {}
+                  list.forEach(item => {
+                    const [key, value] = item.split('=')
+                    obj[key] = value
+                  })
+                  let field = ''
+                  R.forEachObjIndexed((value, key) => {
+                    if (list.length && obj[key] && !field) {
+                      field = key
+                    }
+                  }, tableColumnMaps)
+                  name = field ? obj[field] : name
+                } catch (err) { }
+              }
+            }
+            return `<div class="d-flex align-items-center"><span>${line.marker}</span> <span class="text-truncate" style="max-width: 500px;">${name || ' '}</span>:&nbsp;<span>${value}</span></div>`
+          }).join('')
+          const wrapper = `<div>
+                        <div>${params[0].name}</div>
+                        <div class="lines-wrapper">${series}</div>
+                      </div>`
+          dom.style.border = 'none'
+          // dom.style.backgroundColor = 'transparent'
+          dom.innerHTML = wrapper
+        },
+      }
+      return ret
     },
   },
   watch: {
