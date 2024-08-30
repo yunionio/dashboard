@@ -180,7 +180,7 @@ export default {
       return this.$t('monitor_metric_78', [total])
     },
     columns () {
-      const columns = [
+      let columns = [
         {
           field: 'color',
           width: 50,
@@ -235,6 +235,9 @@ export default {
             return val.text
           },
         })
+      }
+      if (columns.some(item => item.field.startsWith('host')) && columns.some(item => item.field.startsWith('vm'))) {
+        columns = columns.filter(item => !item.field.startsWith('host'))
       }
       return columns.slice(0, MAX_COLUMNS)
     },

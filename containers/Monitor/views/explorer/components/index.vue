@@ -8,8 +8,10 @@
         class="mb-4"
         :timeOpts="timeOpts"
         :time.sync="time"
+        :timeGroupValue.sync="timeGroupValue"
         :showTimegroup="false"
         :showGroupFunc="false"
+        :showTimeGroupInput="true"
         @refresh="fetchAllData">
         <template v-slot:radio-button-append>
           <custom-date :time.sync="time" :customTime.sync="customTime" :showCustomTimeText="time==='custom'" />
@@ -55,7 +57,8 @@ export default {
   data () {
     return {
       time: '1h',
-      timeGroup: '2m',
+      // timeGroup: '2m',
+      timeGroupValue: 2,
       customTime: null,
       timeOpts,
       metricList: [],
@@ -84,8 +87,14 @@ export default {
       }
       return params
     },
+    timeGroup () {
+      return (this.timeGroupValue || 1) + 'm'
+    },
   },
   watch: {
+    timeGroup () {
+      this.fetchAllData()
+    },
     time () {
       this.smartFetchAllData()
     },
@@ -103,7 +112,7 @@ export default {
         diffHour = this.time.replace(noNumberReg, '')
       }
       const diff = diffHour * 60 // 变分钟
-      this.timeGroup = `${diff / MONITOR_MAX_POINTERS}m`
+      this.timeGroupValue = Math.max(diff / MONITOR_MAX_POINTERS, 1)
       this.$nextTick(this.fetchAllData)
     },
     remove (i) {
