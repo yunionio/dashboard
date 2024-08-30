@@ -5,10 +5,10 @@
     </a-col>
     <a-col class="line mb-5" :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 12, offset: 1 }">
       <monitor-header
-        class="mb-4"
-        :timeOpts="timeOpts"
+        class="mb-3"
         :time.sync="time"
-        :showTimegroup="false"
+        :timeGroup.sync="timeGroup"
+        :showTimegroup="true"
         :showGroupFunc="false"
         @refresh="fetchAllData">
         <template v-slot:radio-button-append>
@@ -36,7 +36,6 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import MonitorForms from '@Monitor/sections/ExplorerForm'
 import MonitorLine from '@Monitor/sections/MonitorLine'
-import { MONITOR_MAX_POINTERS } from '@Monitor/constants'
 import CustomDate from '@/sections/CustomDate'
 import MonitorHeader from '@/sections/Monitor/Header'
 import { getRequestT } from '@/utils/utils'
@@ -55,7 +54,7 @@ export default {
   data () {
     return {
       time: '1h',
-      timeGroup: '2m',
+      timeGroup: '1m',
       customTime: null,
       timeOpts,
       metricList: [],
@@ -86,6 +85,9 @@ export default {
     },
   },
   watch: {
+    timeGroup () {
+      this.fetchAllData()
+    },
     time () {
       this.smartFetchAllData()
     },
@@ -95,15 +97,6 @@ export default {
   },
   methods: {
     smartFetchAllData () { // 根据选择的时间范围智能的赋值时间间隔进行查询
-      let diffHour = 1
-      const noNumberReg = /\D+/g
-      if (this.time === 'custom') {
-        diffHour = this.customTime.from.replace(noNumberReg, '') - this.customTime.to.replace(noNumberReg, '')
-      } else {
-        diffHour = this.time.replace(noNumberReg, '')
-      }
-      const diff = diffHour * 60 // 变分钟
-      this.timeGroup = `${diff / MONITOR_MAX_POINTERS}m`
       this.$nextTick(this.fetchAllData)
     },
     remove (i) {

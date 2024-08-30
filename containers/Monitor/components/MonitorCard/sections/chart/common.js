@@ -27,6 +27,10 @@ function commonChartProps () {
       type: Object,
       default: () => ({}),
     },
+    chartExtend: {
+      type: Object,
+      default: () => ({}),
+    },
     /* 图表事件绑定 */
     chartEvents: {
       type: Object,

@@ -1,12 +1,32 @@
 <template>
   <div>
-    <refresh-button :loading="loading" @refresh="refresh" class="mr-2" />
+    <template v-if="showAutoRefresh">
+      <a-tooltip placement="top">
+        <template slot="title" v-show="refreshTooltips && lastSync !== ''">
+          <span>{{ $t('refresh.last_sync_at', [lastSync]) }}</span>
+        </template>
+        <a-button style="width: 45px;padding-left: 15px;padding-right: 15px;" :icon="loading ? 'loading':'sync'" @click="emitRefresh" />
+      </a-tooltip>
+      <a-select class="ml-2 mr-2" v-model="syncConfig.duration" @change="handleDurationChange" style="width: 90px">
+        <a-select-option :dropdownMatchSelectWidth="false" v-for="d of durations" :key="d.label" :value="d.value">
+          {{ d.label }}
+        </a-select-option>
+      </a-select>
+    </template>
+    <refresh-button v-else :loading="loading" @refresh="refresh" class="mr-2" />
     <a-radio-group class="mr-3" @change="timeChange" :value="time">
       <a-radio-button v-for="item in timeOpts" v-show="!item.hidden" :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
       <slot name="radio-button-append">
         <custom-date @update:time="(val) => timeChange({target: {value: val}})" :customTime="customTime" @update:customTime="customTimeChange" :showCustomTimeText="isCustom" />
       </slot>
     </a-radio-group>
+    <template v-if="showTimeGroupInput">
+      <div class="ant-form-item-label">
+          <label :title="$t('common_166')">{{$t('common_166')}}</label>
+      </div>
+      <a-input-number :min="1" :value="timeGroupValue" @change="timeGroupValueChange" />
+      {{ $t('common_time.minute') }}
+    </template>
     <template v-if="showTimegroup">
       <template v-if="time !== 'custom'">
         <div class="ant-form-item-label">
@@ -54,6 +74,9 @@ export default {
     },
     timeGroup: {
       type: String,
+    },
+    timeGroupValue: {
+      type: Number,
     },
     customTime: {
       type: Object,
@@ -124,8 +147,46 @@ export default {
       type: Boolean,
       default: true,
     },
+    showTimeGroupInput: {
+      type: Boolean,
+      default: false,
+    },
+    showAutoRefresh: {
+      type: Boolean,
+      default: false,
+    },
+    refreshDuration: {
+      type: Number,
+      default: 0,
+    },
+    refreshTooltips: {
+      type: Boolean,
+      default: true,
+    },
+    durations: {
+      type: Array,
+      default: () => {
+        return [
+          { label: i18n.t('refresh.auto.disable'), value: 0 },
+          { label: i18n.t('refresh.duration.seconds', [5]), value: 5 },
+          { label: i18n.t('refresh.duration.seconds', [10]), value: 10 },
+          { label: i18n.t('refresh.duration.seconds', [30]), value: 30 },
+          { label: i18n.t('refresh.duration.minutes', [1]), value: 60 },
+          { label: i18n.t('refresh.duration.minutes', [5]), value: 300 },
+          { label: i18n.t('refresh.duration.minutes', [15]), value: 900 },
+          { label: i18n.t('refresh.duration.minutes', [30]), value: 1800 },
+          { label: i18n.t('refresh.duration.hours', [1]), value: 3600 },
+          { label: i18n.t('refresh.duration.hours', [2]), value: 7200 },
+          { label: i18n.t('refresh.duration.days', [1]), value: 86400 },
+        ]
+      },
+    },
   },
   data () {
+    let timer
+    if (this.showAutoRefresh && this.refreshDuration > 0) {
+      timer = setInterval(this.emitRefresh, this.refreshDuration * 1000)
+    }
     return {
       customTimeNumber: '5',
       customTimeUnit: 'm',
@@ -145,6 +206,12 @@ export default {
         { key: 'p95', label: this.$t('common.p95') },
         { key: 'p50', label: this.$t('common.p50') },
       ],
+      lastSync: '',
+      timer: timer,
+      syncConfig: {
+        enable: false,
+        duration: this.refreshDuration,
+      },
     }
   },
   computed: {
@@ -162,6 +229,9 @@ export default {
         this.$emit('update:timeGroup', this.timeGroupOpts[0].key)
       }
     },
+  },
+  beforeDestroy () {
+    this.cancelAutoRefresh()
   },
   methods: {
     refresh () {
@@ -184,6 +254,33 @@ export default {
     },
     groupFuncChange (val) {
       this.$emit('update:groupFunc', val)
+    },
+    timeGroupValueChange (val) {
+      this.$emit('update:timeGroupValue', val)
+    },
+    emitRefresh () {
+      this.lastSync = new Date().toLocaleTimeString()
+      if (this.loading) {
+        return
+      }
+      this.$emit('refresh')
+    },
+    cancelAutoRefresh () {
+      if (this.timer) {
+        clearInterval(this.timer)
+      }
+    },
+    handleDurationChange (v) {
+      this.syncConfig.duration = v
+      this.syncConfig.enable = v > 0
+      this.syncConfig.enable ? this.resetAutoRefresh(v) : this.cancelAutoRefresh()
+      this.emitRefresh()
+    },
+    resetAutoRefresh (v) {
+      if (this.timer) {
+        clearInterval(this.timer)
+      }
+      this.timer = setInterval(this.emitRefresh, v * 1000)
     },
   },
 }

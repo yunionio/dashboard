@@ -1,13 +1,41 @@
 <template>
   <div :class="card_style">
-    <div v-if="!readOnly">
-      <filter-bar :create-chart="createChart" :loading="loading" @refresh="handleRefresh" />
+    <div v-if="!readOnly" class="d-flex align-items-center justify-content-between">
+      <monitor-header
+        :time.sync="time"
+        :timeGroup.sync="timeGroup"
+        :showTimegroup="true"
+        :showGroupFunc="false"
+        showAutoRefresh
+        @refresh="handleRefresh">
+        <template v-slot:radio-button-append>
+          <custom-date :time.sync="time" :customTime.sync="customTime" :showCustomTimeText="time==='custom'" />
+        </template>
+      </monitor-header>
+      <a-button style="margin-left: 8px;" @click="createChart">
+        {{ $t('monitor.dashboard.dialog.project.create')}}
+      </a-button>
     </div>
     <div :class="card_style" :style="readOnly && !selectable ? '' :'padding-top: 20px;'">
       <dashboard-card ref="dashboardCard" v-if="readOnly && !selectable" :card_style="card_style" :chartHeigth="chartHeigth" @chose_panel="chose_panel" :panel="panels.length > 0 ? panels[0] : {}" :focusPanelId="focusPanelId" :selectable="selectable" :readOnly="readOnly" :dashboard_id="id" :edit-chart="editChart" :updated_at="updatedAt" :extraParams="extraParams" @delete="handleDelete" />
       <a-list v-else :grid="readOnly?{ gutter: 24, column: 1 }:{ gutter: 16, column: 2 }" :data-source="panels">
         <a-list-item slot="renderItem" slot-scope="item">
-          <dashboard-card :card_style="card_style" :chartHeigth="chartHeigth" @chose_panel="chose_panel" :panel="item" :focusPanelId="focusPanelId" :selectable="selectable" :readOnly="readOnly" :dashboard_id="id" :edit-chart="editChart" :updated_at="updatedAt" :extraParams="extraParams" @delete="handleDelete" />
+          <dashboard-card
+           :card_style="card_style"
+           :chartHeigth="chartHeigth"
+           :panel="item"
+           :focusPanelId="focusPanelId"
+           :selectable="selectable"
+           :readOnly="readOnly"
+           :dashboard_id="id"
+           :edit-chart="editChart"
+           :updated_at="updatedAt"
+           :extraParams="extraParams"
+           :time="time"
+           :timeGroup="timeGroup"
+           :customTime="customTime"
+           @chose_panel="chose_panel"
+           @delete="handleDelete" />
         </a-list-item>
       </a-list>
     </div>
@@ -15,15 +43,17 @@
 </template>
 
 <script>
-import DashboardCard from '../DashboardCard'
-import filterBar from './filterbar'
 import { uuid } from '@/utils/utils'
+import MonitorHeader from '@/sections/Monitor/Header'
+import CustomDate from '@/sections/CustomDate'
+import DashboardCard from '../DashboardCard'
 
 export default {
   name: 'DashboardCards',
   components: {
-    filterBar,
     DashboardCard,
+    MonitorHeader,
+    CustomDate,
   },
   props: {
     id: {
@@ -80,6 +110,9 @@ export default {
       dashboardMan: new this.$Manager('alertdashboards', 'v1'),
       charts: [],
       updatedAt: '',
+      time: '1h',
+      timeGroup: '1m',
+      customTime: null,
     }
   },
   computed: {
