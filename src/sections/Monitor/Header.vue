@@ -7,6 +7,13 @@
         <custom-date @update:time="(val) => timeChange({target: {value: val}})" :customTime="customTime" @update:customTime="customTimeChange" :showCustomTimeText="isCustom" />
       </slot>
     </a-radio-group>
+    <template v-if="showTimeGroupInput">
+      <div class="ant-form-item-label">
+          <label :title="$t('common_166')">{{$t('common_166')}}</label>
+      </div>
+      <a-input-number :min="1" :value="timeGroupValue" @change="timeGroupValueChange" />
+      {{ $t('common_time.minute') }}
+    </template>
     <template v-if="showTimegroup">
       <template v-if="time !== 'custom'">
         <div class="ant-form-item-label">
@@ -54,6 +61,9 @@ export default {
     },
     timeGroup: {
       type: String,
+    },
+    timeGroupValue: {
+      type: Number,
     },
     customTime: {
       type: Object,
@@ -124,6 +134,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    showTimeGroupInput: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -184,6 +198,9 @@ export default {
     },
     groupFuncChange (val) {
       this.$emit('update:groupFunc', val)
+    },
+    timeGroupValueChange (val) {
+      this.$emit('update:timeGroupValue', val)
     },
   },
 }

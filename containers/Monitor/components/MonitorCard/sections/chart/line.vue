@@ -6,7 +6,7 @@
       :chartData="chartData"
       :chartConfig="chartConfig"
       :chartSettings="chartSettings"
-      :chartExtend="chartExtend"
+      :chartExtend="chartExtends"
       :loading="loading"
       :chartEvents="chartEvents"
       :extraToolbox="extraToolbox" />
@@ -104,11 +104,11 @@ export default {
     chartType () {
       return this.isHistogram ? 've-histogram' : 've-line'
     },
-    chartExtend () {
+    chartExtends () {
       /* 当属性为对象时，如果在options中对应的属性为对象(eg: tooltip)或包含对象的数组(eg: series)
        * 对应的配置会被合并，否则将直接覆盖对应的配置
        * **/
-      return {
+      const ret = {
         series (v) {
           /* smooth数据平滑， connectNulls 是否连接空数据 **/
           return v ? v.map(i => { i.smooth = true; i.connectNulls = true; return i }) : []
@@ -128,6 +128,7 @@ export default {
         //   type: 'inside', /* 数据缩放 **/
         // },
       }
+      return Object.assign(ret, this.chartExtend)
     },
     chartConfig () {
       /*  在这里配置属性，会导致原配置被覆盖，而不是被合并 */
