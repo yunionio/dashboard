@@ -463,7 +463,6 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         this.adding = true
-        await this.checkMac(values)
         if (this.isPreSingleAdd) {
           await this.doPreSingleAdd()
         }
@@ -480,6 +479,7 @@ export default {
           await this.doIsoFileAdd()
         }
         if (this.isPxeSingleAdd) {
+          await this.checkMac(values)
           await this.doPxeSingleAdd()
         }
         if (this.isPxeFileAdd) {
