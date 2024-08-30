@@ -24,8 +24,10 @@
               class="mb-4"
               :timeOpts="timeOpts"
               :time.sync="time"
+              :timeGroupValue.sync="timeGroupValue"
               :showTimegroup="false"
               :showGroupFunc="false"
+              :showTimeGroupInput="true"
               @refresh="fetchAllData">
             <template v-slot:radio-button-append>
               <custom-date :time.sync="time" :customTime.sync="customTime" :showCustomTimeText="time==='custom'" />
@@ -96,13 +98,12 @@ export default {
     if (this.$route.query.project_id) {
       extraParams.project_id = this.$route.query.project_id
     }
-
     return {
       initFinished: !this.$route.params.id,
       panelId: this.$route.params.id || '',
       panel: {},
       time: '1h',
-      timeGroup: '2m',
+      timeGroupValue: 2,
       customTime: null,
       timeOpts,
       metricList: [],
@@ -132,8 +133,14 @@ export default {
       }
       return params
     },
+    timeGroup () {
+      return (this.timeGroupValue || 1) + 'm'
+    },
   },
   watch: {
+    timeGroup () {
+      this.fetchAllData()
+    },
     time () {
       this.smartFetchAllData()
     },
@@ -162,6 +169,18 @@ export default {
         new this.$Manager('alertpanels', 'v1').get({ id: this.panelId, params }).then((res) => {
           this.loading = false
           this.panel = Object.assign({}, this.panel, res.data)
+          const interval = get(this.panel, 'settings.conditions[0].query.model.interval') || '2m'
+          const from = get(this.panel, 'settings.conditions[0].query.from')
+          const to = get(this.panel, 'settings.conditions[0].query.to')
+          const value = parseInt(interval)
+          const unit = interval.replace(value, '')
+          this.timeGroupValue = unit === 'h' ? value * 60 : value
+          if (from && to) {
+            this.customTime = { from, to }
+            this.time = 'custom'
+          } else if (from) {
+            this.time = from
+          }
           this.initFinished = true
         })
       } catch (error) {
