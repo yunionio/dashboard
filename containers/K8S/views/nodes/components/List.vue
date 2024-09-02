@@ -12,7 +12,7 @@
 
 <script>
 import ClusterNamespace from '@K8S/sections/ClusterNamespace'
-import { getNameFilter, getStatusFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getStatusFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import ColumnsMixin from '../mixins/columns'
@@ -48,7 +48,7 @@ export default {
         filterOptions: {
           name: getNameFilter(),
           status: getStatusFilter({ statusMoule: 'kubecluster' }),
-          domain: getDomainFilter(),
+          project_domain: getProjectDomainFilter(),
         },
         filter,
       }),
