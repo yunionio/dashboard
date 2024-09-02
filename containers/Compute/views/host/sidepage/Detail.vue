@@ -113,6 +113,20 @@ export default {
         },
       },
       {
+        field: 'nonsystem_guests',
+        title: '#' + this.$t('compute.host.host_type.container.title'),
+        width: 60,
+        slots: {
+          default: ({ row }, h) => {
+            if (row.nonsystem_guests <= 0) return row.nonsystem_guests
+            const ret = [
+              <a onClick={ () => this.$emit('tab-change', 'vminstance-list') }>{row.nonsystem_guests}</a>,
+            ]
+            return ret
+          },
+        },
+      },
+      {
         field: 'schedtags',
         title: this.$t('compute.text_541'),
         formatter: ({ cellValue, row }) => {
@@ -134,6 +148,53 @@ export default {
               </div>,
             ]
           },
+        },
+      },
+      {
+        field: 'kernel_version',
+        title: this.$t('compute.host.kernel_version.title'),
+        formatter: ({ cellValue, row }) => {
+          let text = '-'
+          if (row.metadata && row.metadata.kernel_version) {
+            text = row.metadata.kernel_version
+          }
+          return text
+        },
+      },
+      {
+        field: 'os_distribution',
+        title: this.$t('compute.host.os_distribution.title'),
+        formatter: ({ cellValue, row }) => {
+          let text = '-'
+          if (row.metadata && row.metadata.os_distribution) {
+            text = row.metadata.os_distribution
+            if (row.metadata.os_version) {
+              text += '(' + row.metadata.os_version + ')'
+            }
+          }
+          return text
+        },
+      },
+      {
+        field: 'ovs_version',
+        title: this.$t('compute.host.ovs_version.title'),
+        formatter: ({ cellValue, row }) => {
+          let text = '-'
+          if (row.metadata && row.metadata.ovs_version) {
+            text = row.metadata.ovs_version
+          }
+          return text
+        },
+      },
+      {
+        field: 'ovs_kmod_version',
+        title: this.$t('compute.host.kernel_ovs_version.title'),
+        formatter: ({ cellValue, row }) => {
+          let text = '-'
+          if (row.metadata && row.metadata.ovs_kmod_version) {
+            text = row.metadata.ovs_kmod_version
+          }
+          return text
         },
       },
       {
@@ -187,6 +248,37 @@ export default {
             ret = this.$t('compute.host.host_type.baremetal.title')
           } else if (row.host_type) {
             ret = row.host_type
+          }
+          return ret
+        },
+      },
+      {
+        field: 'enable_numa_allocate',
+        title: this.$t('compute.host.host_enable_numa_allocate.title'),
+        formatter: ({ cellData, row }) => {
+          let ret = this.$t('table.title.off')
+          if (row.enable_numa_allocate) {
+            ret = this.$t('table.title.on')
+          }
+          return ret
+        },
+      },
+      {
+        field: 'auto_migrate_on_host_down',
+        title: this.$t('compute.host.auto_migrate_on_host.title'),
+        formatter: ({ cellData, row }) => {
+          let ret = this.$t('table.title.off')
+          if (row && row.metadata) {
+            const autoList = []
+            if (row.metadata.auto_migrate_on_host_down) {
+              autoList.push(this.$t('compute.host.auto_migrate_on_host_down.title'))
+            }
+            if (row.metadata.auto_migrate_on_host_shutdown) {
+              autoList.push(this.$t('compute.host.auto_migrate_on_host_shutdown.title'))
+            }
+            if (autoList.length > 0) {
+              ret = autoList.join(',')
+            }
           }
           return ret
         },
@@ -413,6 +505,31 @@ export default {
                   }
                   return '-'
                 },
+              },
+            },
+            {
+              field: 'page_size_kb',
+              title: this.$t('compute.host.hugepage_config.title'),
+              formatter: ({ cellValue, row }) => {
+                let ret = this.$t('table.title.off')
+                if (row && row.metadata && row.metadata.hugepages_option) {
+                  ret = row.metadata.hugepages_option
+                }
+                if (row.page_size_kb > 4) {
+                  ret += '(' + sizestr(row.page_size_kb, 'K', 1024) + ')'
+                }
+                return ret
+              },
+            },
+            {
+              field: 'enable_ksm',
+              title: 'KSM',
+              formatter: ({ cellValue, row }) => {
+                let ret = this.$t('table.title.off')
+                if (row && row.metadata && row.metadata.enable_ksm) {
+                  ret = this.$t('table.title.on')
+                }
+                return ret
               },
             },
           ],
