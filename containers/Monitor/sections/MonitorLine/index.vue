@@ -49,7 +49,7 @@
 <script>
 import * as R from 'ramda'
 import _ from 'lodash'
-import { tableColumnMaps } from '@Monitor/constants'
+import { metric_zh, tableColumnMaps } from '@Monitor/constants'
 import { colors } from '@/sections/Charts/constants'
 import LineChart from '@/sections/Charts/Line'
 import { ColorHash } from '@/utils/colorHash'
@@ -129,7 +129,11 @@ export default {
   },
   computed: {
     groupBy () {
-      return _.get(this.metricInfo, 'model.group_by')
+      const groupBy = _.get(this.metricInfo, 'model.group_by')
+      if (groupBy && groupBy.length && groupBy[0].type !== 'time' && groupBy[0].type !== 'fill') {
+        return groupBy
+      }
+      return null
     },
     resultReducer () {
       return _.get(this.metricInfo, 'result_reducer')
@@ -195,7 +199,8 @@ export default {
         R.forEachObjIndexed((value, key) => {
           const isColumn = !R.isNil(this.tableData[0][key])
           if (isColumn) {
-            if (this.description && this.description.metric_res_type === 'guest') {
+            const measurement = _.get(this.metricInfo, 'model.measurement')
+            if ((this.description && this.description.metric_res_type === 'guest') || measurement.startsWith('vm_')) {
               if (value.field.startsWith('host')) {
                 return
               }
@@ -204,7 +209,9 @@ export default {
               ...value,
               formatter: ({ cellValue }) => {
                 if (cellValue === 'value') {
-                  return `${this.description.label}${this.isSelectFunction ? `(${this.isSelectFunction.toUpperCase()})` : ''}` || cellValue
+                  const display_name = this.description.display_name
+                  const label = metric_zh[display_name] || '-'
+                  return `${this.description.label || label}${this.isSelectFunction ? `(${this.isSelectFunction.toUpperCase()})` : ''}` || cellValue
                 }
                 return cellValue
               },
@@ -223,14 +230,14 @@ export default {
           })
         }
       }
-      if (this.reducedResult && this.reducedResult.result) {
+      if (this.reducedResult && this.reducedResult.reducer) {
         const { reducer = {} } = this.reducedResult
         const title = reducer.type === 'percentile' ? `P${reducer.params && reducer.params[0]}` : reducer.type.toUpperCase()
         columns.push({
           field: 'result',
           title,
           formatter: ({ cellValue }) => {
-            const unit = _.get(this.description, 'description.unit')
+            const unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
             const val = transformUnit(cellValue, unit)
             return val.text
           },
@@ -243,7 +250,7 @@ export default {
     },
     formatThreshold () {
       if (!this.threshold) return '0'
-      const unit = _.get(this.description, 'description.unit')
+      const unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
       let formatStr = '0'
       if (unit === '%') { // 比如用户输入 2.22%，这里传入为 '0.00'
         const sLen = this.threshold.length
@@ -458,7 +465,7 @@ export default {
         minInterval: 1,
         axisLabel: {
           formatter: (value, index) => {
-            let unit = _.get(this.description, 'description.unit')
+            let unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
             if (unit === 'ms') { // 时间类型的Y坐标，要取整 如 ： 1小时10分钟30秒 -> 1小时
               unit = 'intms'
             }
@@ -479,7 +486,7 @@ export default {
         trigger: 'axis',
         position: (point, params, dom, rect, size) => {
           const series = params.map((line, i) => {
-            const unit = _.get(this.description, 'description.unit')
+            const unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
             const val = transformUnit(line.value[0], unit)
             let value = _.get(val, 'text') || line.value
             if (unit === 'currency') {
@@ -491,12 +498,13 @@ export default {
             }
             const color = i === this.highlight.index ? this.highlight.color : '#616161'
             let name = line.seriesName
-            if (!this.showTable) {
+            if (!this.showTable || (this.isSelectFunction && this.resultReducer && !this.groupBy)) {
               name = this.isSelectFunction.toUpperCase()
             } else {
-              if (name.startsWith('{') && name.endsWith('}')) {
+              if (name.startsWith('{') && (name.endsWith('}') || name.includes(' (path:'))) {
                 try {
-                  const str = name.substring(1, name.length - 1)
+                  const path = name.match(/\s\((path:.*)\)/)[0]
+                  const str = name.replace(path, '').substring(1, name.length - 1)
                   const list = str.split(',')
                   const obj = {}
                   list.forEach(item => {
@@ -504,7 +512,7 @@ export default {
                     obj[key] = value
                   })
                   const field = (this.columns.length > 1 && this.columns[1].field)
-                  name = obj[field] || name
+                  name = obj[field] ? `${obj[field]}${path}}` : name
                 } catch (err) { }
               }
             }
