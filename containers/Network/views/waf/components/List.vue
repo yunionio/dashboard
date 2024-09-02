@@ -13,7 +13,7 @@
 
 <script>
 import expectStatus from '@/constants/expectStatus'
-import { getNameFilter, getDescriptionFilter, getBrandFilter, getAccountFilter, getDomainFilter, getRegionFilter, getCloudProviderFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getDescriptionFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter, getRegionFilter, getCloudProviderFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -53,7 +53,7 @@ export default {
           brand: getBrandFilter(),
           account: getAccountFilter(),
           manager: getCloudProviderFilter(),
-          domain: getDomainFilter(),
+          project_domain: getProjectDomainFilter(),
           region: getRegionFilter(),
         },
         hiddenColumns: [],
