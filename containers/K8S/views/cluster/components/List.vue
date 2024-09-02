@@ -11,7 +11,7 @@
 
 <script>
 import * as R from 'ramda'
-import { getNameFilter, getCreatedAtFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getCreatedAtFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -44,7 +44,7 @@ export default {
             label: this.$t('table.title.id'),
           },
           name: getNameFilter(),
-          domain: getDomainFilter(),
+          project_domain: getProjectDomainFilter(),
           created_at: getCreatedAtFilter(),
         },
         filter,
