@@ -1,5 +1,5 @@
 <template>
-  <a-select :disabled="disabled" :value="value" @change="clusterChange" :placeholder="$t('k8s.text_30')">
+  <a-select show-search :filter-option="filterOption" option-filter-prop="children" :disabled="disabled" :value="value" @change="clusterChange" :placeholder="$t('k8s.text_30')">
     <a-select-option
       v-for="item in clusterOps"
       :key="item.id"
@@ -12,6 +12,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import _ from 'lodash'
 
 export default {
   name: 'K8SClusterSelect',
@@ -79,6 +80,12 @@ export default {
           }
         }
       })
+    },
+    filterOption (input, option) {
+      const text = _.get(option.componentOptions, 'children[0].text') || ''
+      return (
+        text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
     },
   },
 }
