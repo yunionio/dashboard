@@ -22,10 +22,16 @@
         <a-radio :checked="focusPanelId == panel.panel_id" @click="(e)=>{chose_panel(panel.panel_id,panel.panel_name)}">{{panel.panel_name}}</a-radio>
       </div>
     </template>
-    <overview-line v-if="resizeStatus" :class="card_style" :chartHeigth="chartHeigth" style="padding-top: 10px;" :chartData="chart.chartData" :yAxisFormat="chart.metric && chart.metric.format ? chart.metric.format : '0.[00]'" :loading="loading" :exportName="panel.panel_name || (chart.metric && chart.metric.label)" :chartExtend="chartSetting" />
-    <template #footer>
-      <overview-table :table-data="table" :loading="tableLoading" />
-    </template>
+    <monitor-line
+     :loading="loading"
+     :description="description"
+     :metricInfo="metricInfo"
+     class="mb-3"
+     :series="series"
+     :reducedResult="reducedResult"
+     :pager="pager"
+     @pageChange="pageChange"
+     @chartInstance="setChartInstance" />
   </overview-card-layout>
 </template>
 
@@ -39,16 +45,14 @@ import { getSignature } from '@/utils/crypto'
 import { getRequestT, transformUnit } from '@/utils/utils'
 import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 // import { currencyUnitMap } from '@/constants/currency'
+import MonitorLine from '@Monitor/sections/MonitorLine'
 import OverviewCardLayout from '../layout'
-import OverviewLine from '../sections/chart/line'
-import OverviewTable from '../sections/table'
 
 export default {
   name: 'DashboardCard',
   components: {
     OverviewCardLayout,
-    OverviewLine,
-    OverviewTable,
+    MonitorLine,
   },
   mixins: [DialogMixin, WindowsMixin],
   props: {
@@ -98,12 +102,28 @@ export default {
       type: String,
       default: '320px',
     },
+    time: {
+      type: String,
+    },
+    timeGroup: {
+      type: String,
+    },
+    customTime: {
+      type: Object,
+    },
   },
   data () {
     return {
       chart: {},
       tableLoading: false,
       resizeStatus: false,
+      pager: {
+        page: 1,
+        limit: 10,
+        total: 0,
+      },
+      series: [],
+      reducedResult: {},
     }
   },
   computed: {
@@ -166,16 +186,32 @@ export default {
         return
       }
       const query = conditions[0].query
-      const metric_query = [{ model: query.model }]
+      const model = { ...query.model }
+      if (this.timeGroup) {
+        model.interval = this.timeGroup
+      }
+      const metric_query = [{ model }]
       if (query.result_reducer) {
         metric_query[0].result_reducer = query.result_reducer
       }
-      return {
+      const params = {
         from: query.from,
         to: query.to,
         metric_query,
+        slimit: this.pager.limit,
+        soffset: (this.pager.page - 1) * this.pager.limit,
         ...this.extraParams,
       }
+      if (this.time === 'custom') { // 自定义时间
+        if (this.customTime && this.customTime.from && this.customTime.to) {
+          params.from = this.customTime.from
+          params.to = this.customTime.to
+        }
+      } else {
+        params.from = this.time
+        delete params.to
+      }
+      return params
     },
     metricInfo () {
       const { metric_query = [] } = this.chartQueryData
@@ -272,11 +308,21 @@ export default {
         this.fetchChart()
       },
     },
+    time () {
+      this.fetchChart()
+    },
+    timeGroup () {
+      this.fetchChart()
+    },
   },
   created () {
     this.fetchChart()
   },
   methods: {
+    pageChange (pager) {
+      this.pager = { ...this.pager, ...pager }
+      this.fetchChart()
+    },
     resize () {
       this.resizeStatus = false
       this.$nextTick(() => {
@@ -337,12 +383,11 @@ export default {
     async fetchChart () {
       this.loading = true
       try {
-        const series = await this.fetchData()
+        const { series, series_total = 0, reduced_result = {} } = await this.fetchData()
         if (series) {
-          this.chart = {
-            metric: this.metric,
-            chartData: this.toLineChartData(series),
-          }
+          this.series = series
+          this.pager = { ...this.pager, total: series_total }
+          this.reducedResult = reduced_result
         }
       } catch (error) {
         throw error
@@ -359,8 +404,8 @@ export default {
         }
         this.resizeStatus = true
         data.signature = getSignature(this.chartQueryData)
-        const { data: { series = [] } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data, params: { $t: getRequestT() } })
-        return series
+        const { data: { series = [], series_total, reduced_result = {} } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data, params: { $t: getRequestT() } })
+        return { series, series_total, reduced_result }
       } catch (error) {
         throw error
       }
