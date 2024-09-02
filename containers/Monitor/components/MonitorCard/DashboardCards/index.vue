@@ -45,6 +45,7 @@
 <script>
 import { uuid } from '@/utils/utils'
 import MonitorHeader from '@/sections/Monitor/Header'
+import CustomDate from '@/sections/CustomDate'
 import DashboardCard from '../DashboardCard'
 
 export default {
@@ -52,6 +53,7 @@ export default {
   components: {
     DashboardCard,
     MonitorHeader,
+    CustomDate,
   },
   props: {
     id: {
