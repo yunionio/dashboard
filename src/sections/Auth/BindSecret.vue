@@ -4,41 +4,34 @@
       <div class="wrap-inner">
         <h5>{{$t('common_83')}}</h5>
         <div class="setup-wrap-top">
-          <div class="setup-tip">
+          <div class="setup-tip" style="width:70%">
             <div>
               <i class="tip-icon fa fa-hand-o-right" />
               <span class="tip-text">{{$t('common_84')}}</span>
             </div>
+            <div class="tip-text mt-4">{{ $t('common.mobile_end') }}:</div>
             <div class="qr-wrap d-flex">
               <div class="d-flex flex-column align-items-center">
-                <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${oneloginprotectAppQrIOS})` }" />
-                <div class="mt-1"><a-icon type="apple" theme="filled" style="font-size: 20px" /></div>
+                <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${ningtonQrIOS})` }" />
               </div>
               <div class="d-flex flex-column align-items-center">
-                <!-- <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${oneloginprotectAppQrAndroid})` }" /> -->
-                <div class="qr-code-bg-wrap qr-code-andriod">
-                  1、{{ $t('common.mfa.qr_code_andriod_1') }} <br />
-                  2、{{ $t('common.mfa.qr_code_andriod_2') }} <br />
-                  3、{{ $t('common.mfa.qr_code_andriod_3') }} <copy message="https://yunioniso.oss-cn-beijing.aliyuncs.com/OneLogin%20Protect_v4.7.0_apkpure.com.apk" />
-                </div>
-                <div class="mt-1"><a-icon type="android" theme="filled" style="font-size: 20px" /></div>
+                <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${ningtonQrAndroid})` }" />
               </div>
               <div class="d-flex flex-column align-items-center">
-                <!-- <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${oneloginprotectAppQrAndroid})` }" /> -->
                 <div class="qr-code-bg-wrap qr-code-chrome">
-                  {{ $t('common.mfa.qr_code_chrome_1') }}<help-link href="https://chrome.google.com/webstore/detail/authenticator/bhghoamapcdpbohphigoooaddinpkbai?hl=zh-CN">{{ $t('common.mfa.qr_code_chrome_2') }}</help-link>
+                  {{ $t('common.nington_get_tip') }}
                 </div>
-                <div class="mt-1"><icon type="chrome" style="font-size: 20px;" /></div>
               </div>
             </div>
-            <!-- <div class="qr-tip">{{$t('common_85')}}</div> -->
+            <div class="tip-text">{{ $t('common.chrome_browser') }}:</div>
+            <div class="tip-text-little">{{ $t('common.mfa.qr_code_chrome_1') }}<help-link href="https://chrome.google.com/webstore/detail/authenticator/bhghoamapcdpbohphigoooaddinpkbai?hl=zh-CN">{{ $t('common.mfa.qr_code_chrome_2') }}</help-link></div>
           </div>
           <div class="setup-tip">
             <div>
               <i class="tip-icon fa fa-hand-o-right" />
               <span class="tip-text">{{$t('common_86')}}</span>
             </div>
-            <div class="qr-wrap">
+            <div class="qr-wrap mt-2" style="height:140px">
               <template v-if="secret">
                 <div>
                   <img :src="secretImg" />
@@ -74,8 +67,8 @@ export default {
   name: 'BindSecret',
   data () {
     return {
-      oneloginprotectAppQrIOS: require('./assets/onelogin-protect-qrcode-ios.png'),
-      oneloginprotectAppQrAndroid: require('./assets/onelogin-protect-qrcode-android.png'),
+      ningtonQrIOS: require('./assets/nington-qrcode-ios.png'),
+      ningtonQrAndroid: require('./assets/nington-qrcode-android.png'),
       securityCode: '',
       error: false,
       loading: false,
@@ -176,15 +169,21 @@ export default {
   .tip-text {
     font-size: 14px;
   }
+  .tip-text-little {
+    font-size: 12px;
+  }
 }
 
 .qr-wrap {
-  margin: 15px 0;
+  margin: 0 0 15px 0;
   display: flex;
-  height: 150px;
+  height: 100px;
   > div {
     height: 100%;
     &:first-child {
+      margin-right: 10px;
+    }
+    &:nth-child(2) {
       margin-right: 10px;
     }
     > img {
@@ -192,7 +191,7 @@ export default {
     }
     .qr-code-bg-wrap {
       width: 100px;
-      height: 120px;
+      height: 100px;
       background-repeat: no-repeat;
       background-size: contain;
       // background-position: center;
@@ -210,7 +209,7 @@ export default {
     }
     .qr-code-andriod, .qr-code-chrome {
       color: #000;
-      font-size: 10px;
+      font-size: 12px;
       transform: scale(0.9) translateY(-6px);
     }
     .qr-code-andriod {
