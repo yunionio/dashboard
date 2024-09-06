@@ -61,9 +61,15 @@ export default {
     extraToolbox: {
       type: Object,
     },
+    noDataCheck: {
+      type: Function,
+    },
   },
   computed: {
     noData () {
+      if (this.noDataCheck) {
+        return this.noDataCheck()
+      }
       if (this.chartData.rows && this.chartData.rows.length) {
         return false
       }
