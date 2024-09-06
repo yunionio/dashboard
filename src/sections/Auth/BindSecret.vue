@@ -9,7 +9,7 @@
               <i class="tip-icon fa fa-hand-o-right" />
               <span class="tip-text">{{$t('common_84')}}</span>
             </div>
-            <div class="tip-text mt-4">{{ $t('common.mobile_end') }}:</div>
+            <div class="tip-text mt-4">{{ $t('common.mobile_end') }}<span style="font-size:12px">({{ $t('common.refer_nington') }})</span>:</div>
             <div class="qr-wrap d-flex">
               <div class="d-flex flex-column align-items-center">
                 <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${ningtonQrIOS})` }" />
