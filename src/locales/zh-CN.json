@@ -4326,7 +4326,7 @@
   "common_81": "请输入邮箱地址",
   "common_82": "密码输入不一致",
   "common_83": "管理员已开启登录保护，请按照以下步骤开启虚拟MFA",
-  "common_84": "第1步 获取 宁盾令牌",
+  "common_84": "第1步 获取MFA客户端",
   "common_85": "扫相应二维码获取应用，或打开应用商店搜索”宁盾令牌“下载应用",
   "common_86": "第2步 获取安全码",
   "common_87": "打开 宁盾令牌App，扫描二维码，获取安全码",
@@ -6015,5 +6015,6 @@
   "common.config_ipv6": "配置IPv6",
   "common.nington_get_tip": "国外用户可打开应用商店搜索”宁盾令牌“或”DKEY Token“，获取应用",
   "common.chrome_browser": "Chrome浏览器",
-  "common.mobile_end": "移动端"
+  "common.mobile_end": "移动端",
+  "common.refer_nington": "推荐宁盾令牌"
 }

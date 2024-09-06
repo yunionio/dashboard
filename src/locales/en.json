@@ -4305,7 +4305,7 @@
   "common_81": "Please enter your email address",
   "common_82": "Password input is inconsistent",
   "common_83": "The administrator has enabled login protection, please follow the steps below to enable virtual MFA",
-  "common_84": "Step 1 Obtain DKEY Token",
+  "common_84": "Step 1 Obtain MFA client",
   "common_85": "Scan the corresponding QR code to get the app, or open the app store and search for DKEY Token to download the app",
   "common_86": "Step 2 Obtain Security Code",
   "common_87": "Open DEKY Token App, scan the QR code to get the security code",
@@ -5994,5 +5994,6 @@
   "common.config_ipv6": "Config IPv6",
   "common.nington_get_tip": "Foreign users can open the app store and search for DKEY Token to obtain the application",
   "common.chrome_browser": "Chrome",
-  "common.mobile_end": "Mobile"
+  "common.mobile_end": "Mobile",
+  "common.refer_nington": "Recommended DKEY Token"
 }
