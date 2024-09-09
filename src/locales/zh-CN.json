@@ -2814,7 +2814,7 @@
     "predictions": "费用预测",
     "instance_tag": "资源标签",
     "external_id": "云上ID",
-    "custom_data": "自定义数据",
+    "custom_data": "外部数据",
     "ext_resource_type": "资源类型管理",
     "month_report": "月报",
     "daily_report": "日报",
