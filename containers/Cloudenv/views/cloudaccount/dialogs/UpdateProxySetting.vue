@@ -49,6 +49,7 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
+        values.proxy_setting = values.proxy_setting || ''
         const ids = this.params.data.map(item => item.id)
         if (ids.length > 1) {
           await this.params.onManager('batchUpdate', {
