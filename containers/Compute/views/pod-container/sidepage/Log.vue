@@ -82,6 +82,7 @@ export default {
       const { data } = await this.manager.list({
         params: {
           guest_id: this.data.guest_id,
+          scope: this.$store.getters.scope,
         },
       })
       this.containers = data.data
