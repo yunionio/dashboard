@@ -18,14 +18,19 @@ export default {
     form: {
       type: Object,
     },
+    cloneData: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
+    const { skip_duplicate_account_check = false } = this.cloneData
     return {
       decorators: {
         skip_duplicate_account_check: [
           'skip_duplicate_account_check',
           {
-            initialValue: false,
+            initialValue: skip_duplicate_account_check,
             valuePropName: 'checked',
           },
         ],

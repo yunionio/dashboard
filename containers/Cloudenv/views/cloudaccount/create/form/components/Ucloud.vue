@@ -39,9 +39,9 @@
           </i18n>
         </div>
       </a-form-item>
-      <auto-sync :fc="form.fc" />
-      <read-only />
-      <share-mode :fd="form.fd" />
+      <auto-sync :fc="form.fc" :cloneData="cloneData" />
+      <read-only :cloneData="cloneData" />
+      <share-mode :fd="form.fd" :cloneData="cloneData" />
     </a-form>
   </div>
 </template>
@@ -79,6 +79,23 @@ export default {
   methods: {
     getDecorators (initKeySecretFields) {
       const keySecretField = this.keySecretField || initKeySecretFields
+      let initDomain = {
+        key: this.$store.getters.userInfo.projectDomainId,
+        label: this.$store.getters.userInfo.projectDomain,
+      }
+      const {
+        domain_id,
+        project_domain,
+        auto_create_project: initAutoCreateProject = false,
+        saml_auth: initSamlAuth = false,
+        ucloud_project_id: initUcloudProjectId = '',
+      } = this.cloneData
+      if (domain_id && project_domain) {
+        initDomain = {
+          key: domain_id,
+          label: project_domain,
+        }
+      }
       const decorators = {
         name: [
           'name',
@@ -118,6 +135,7 @@ export default {
         ucloud_project_id: [
           'ucloud_project_id',
           {
+            initialValue: initUcloudProjectId,
             rules: [
               { required: false },
             ],
@@ -126,10 +144,7 @@ export default {
         domain: [
           'domain',
           {
-            initialValue: {
-              key: this.$store.getters.userInfo.projectDomainId,
-              label: this.$store.getters.userInfo.projectDomain,
-            },
+            initialValue: initDomain,
             rules: [
               { validator: isRequired(), message: this.$t('rules.domain'), trigger: 'change' },
             ],
@@ -138,14 +153,14 @@ export default {
         auto_create_project: [
           'auto_create_project',
           {
-            initialValue: false,
+            initialValue: initAutoCreateProject,
             valuePropName: 'checked',
           },
         ],
         saml_auth: [
           'saml_auth',
           {
-            initialValue: false,
+            initialValue: initSamlAuth,
             valuePropName: 'checked',
           },
         ],

@@ -74,12 +74,12 @@
           {{$t('cloudenv.cloudaccount.hcso.default_subnet_dns.tips')}}
         </div>
       </a-form-item>
-      <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
-      <blocked-resources :decorators="{ isOpenBlockedResources: decorators.isOpenBlockedResources, blockedResources: decorators.blockedResources }" />
-      <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
-      <auto-sync :fc="form.fc" />
-      <read-only />
-      <share-mode :fd="form.fd" />
+      <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" :cloneData="cloneData" />
+      <blocked-resources :decorators="{ isOpenBlockedResources: decorators.isOpenBlockedResources, blockedResources: decorators.blockedResources }" :cloneData="cloneData" />
+      <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" :cloneData="cloneData" />
+      <auto-sync :fc="form.fc" :cloneData="cloneData" />
+      <read-only :cloneData="cloneData" />
+      <share-mode :fd="form.fd" :cloneData="cloneData" />
     </a-form>
   </div>
 </template>
@@ -137,6 +137,38 @@ export default {
   methods: {
     getDecorators (initKeySecretFields) {
       const keySecretField = this.keySecretField || initKeySecretFields
+      let initDomain = {
+        key: this.$store.getters.userInfo.projectDomainId,
+        label: this.$store.getters.userInfo.projectDomain,
+      }
+      const {
+        domain_id,
+        project_domain,
+        auto_create_project: initAutoCreateProject = false,
+        endpoint_domain: initEndpointDomain = '',
+        region_id: initRegionId = '',
+        iam: initIam = '',
+        ecs: initEcs = '',
+        vpc: initVpc = '',
+        ims: initIms = '',
+        evs: initEvs = '',
+        dcs: initDcs = '',
+        elb: initElb = '',
+        obs: initObs = '',
+        rds: initRds = '',
+        nat: initNat = '',
+        cts: initCts = '',
+        ces: initCes = '',
+        eps: initEps = '',
+        sfs_turbo: initSfsTurbo = '',
+        default_subnet_dns: initDefaultSubnetDns = '',
+      } = this.cloneData
+      if (domain_id && project_domain) {
+        initDomain = {
+          key: domain_id,
+          label: project_domain,
+        }
+      }
       const decorators = {
         name: [
           'name',
@@ -168,10 +200,7 @@ export default {
         domain: [
           'domain',
           {
-            initialValue: {
-              key: this.$store.getters.userInfo.projectDomainId,
-              label: this.$store.getters.userInfo.projectDomain,
-            },
+            initialValue: initDomain,
             rules: [
               { validator: isRequired(), message: this.$t('rules.domain'), trigger: 'change' },
             ],
@@ -180,13 +209,14 @@ export default {
         auto_create_project: [
           'auto_create_project',
           {
-            initialValue: false,
+            initialValue: initAutoCreateProject,
             valuePropName: 'checked',
           },
         ],
         endpoint_domain: [
           'endpoint_domain',
           {
+            initialValue: initEndpointDomain,
             rules: [
               { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.cloudaccount.hcso.endpoint_domain')]) },
             ],
@@ -195,6 +225,7 @@ export default {
         default_region: [
           'default_region',
           {
+            initialValue: initRegionId,
             rules: [
               { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.cloudaccount.hcso.default_region')]) },
             ],
@@ -202,48 +233,93 @@ export default {
         ],
         iam: [
           'iam',
+          {
+            initialValue: initIam,
+          },
         ],
         ecs: [
           'ecs',
+          {
+            initialValue: initEcs,
+          },
         ],
         vpc: [
           'vpc',
+          {
+            initialValue: initVpc,
+          },
         ],
         ims: [
           'ims',
+          {
+            initialValue: initIms,
+          },
         ],
         evs: [
           'evs',
+          {
+            initialValue: initEvs,
+          },
         ],
         dcs: [
           'dcs',
+          {
+            initialValue: initDcs,
+          },
         ],
         elb: [
           'elb',
+          {
+            initialValue: initElb,
+          },
         ],
         obs: [
           'obs',
+          {
+            initialValue: initObs,
+          },
         ],
         rds: [
           'rds',
+          {
+            initialValue: initRds,
+          },
         ],
         nat: [
           'nat',
+          {
+            initialValue: initNat,
+          },
         ],
         cts: [
           'cts',
+          {
+            initialValue: initCts,
+          },
         ],
         ces: [
           'ces',
+          {
+            initialValue: initCes,
+          },
         ],
         eps: [
           'eps',
+          {
+            initialValue: initEps,
+          },
         ],
         sfs_turbo: [
           'sfs_turbo',
+          {
+            initialValue: initSfsTurbo,
+          },
         ],
         default_subnet_dns: [
           'default_subnet_dns',
+          {
+            initialValue: initDefaultSubnetDns,
+          },
         ],
       }
       return decorators
