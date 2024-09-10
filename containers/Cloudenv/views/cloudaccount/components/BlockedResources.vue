@@ -31,7 +31,7 @@ export default {
   data () {
     return {
       BLOCKED_RESOURCES,
-      isOpenBlockedResources: false,
+      isOpenBlockedResources: this.decorators.isOpenBlockedResources[1]?.initialValue || false,
     }
   },
   methods: {

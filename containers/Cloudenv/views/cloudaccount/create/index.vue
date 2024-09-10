@@ -9,7 +9,8 @@
       :current-item.sync="currentItem"
       :account="newAccountInfo"
       :provider="currentItem.provider"
-      :create-form-data="createCloudaccountFormData" /><!-- provider 是为了 VmNetwork 的 prop 不报错 -->
+      :create-form-data="createCloudaccountFormData"
+      :cloneData="cloneData" /><!-- provider 是为了 VmNetwork 的 prop 不报错 -->
     <page-footer isForm>
       <div slot="left">
         <div class="d-flex align-items-center">
@@ -60,6 +61,7 @@ export default {
   },
   mixins: [step],
   data () {
+    const { params: cloneData = {} } = this.$route
     return {
       testLoding: false,
       newAccountInfo: {},
@@ -85,6 +87,7 @@ export default {
           xxl: { span: 22, offset: 2 },
         },
       },
+      cloneData,
     }
   },
   computed: {
@@ -128,6 +131,27 @@ export default {
     this.cloudaccountsM = new Manager('cloudaccounts', 'v2')
     this.networksM = new Manager('networks', 'v2')
     this.changeSteps()
+    this.$nextTick(() => {
+      if (this.cloneData.provider) {
+        this.setStep(1)
+        const { params: cloneData = {} } = this.$route
+        let currentItem = {}
+        if (cloneData.provider) {
+          const types = Object.values(CLOUDACCOUNT_TYPES)
+          for (let i = 0; i < types.length; i++) {
+            const items = Object.values(types[i])
+            for (let j = 0; j < items.length; j++) {
+              if (items[j].provider === cloneData.provider) {
+                currentItem = items[j]
+              }
+            }
+          }
+        }
+        if (currentItem.provider) {
+          this.currentItem = currentItem
+        }
+      }
+    })
   },
   methods: {
     // async getFetchPrepareNets () {

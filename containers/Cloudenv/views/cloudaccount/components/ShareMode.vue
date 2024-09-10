@@ -20,14 +20,22 @@ export default {
     fd: {
       type: Object,
     },
+    cloneData: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
+    let initialShareMode = 'account_domain'
+    if (this.cloneData.public_scope === 'system') {
+      initialShareMode = 'global'
+    }
     return {
       decorators: {
         share_mode: [
           'share_mode',
           {
-            initialValue: 'account_domain',
+            initialValue: initialShareMode,
             rules: [{ required: true }],
           },
         ],

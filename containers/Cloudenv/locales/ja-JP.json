@@ -806,6 +806,7 @@
   "cloudenv.action_group.set_props": "プロパティ設定",
   "cloudenv.action_group.set_fee": "費用設定",
   "cloudenv.action.update_account": "アカウント更新",
+  "cloudenv.action.clone_account": "クローンアカウント",
   "cloudenv.action.update_credential": "使用料更新",
   "cloudenv.last_sync_cost": "前回同期時間",
   "cloudenv.share_month": "按分月",

@@ -101,8 +101,37 @@ export default {
       type: Boolean,
       default: true,
     },
+    cloneData: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
+    const initResourceMapType = []
+    const initProjectMapping = []
+    let initEffectiveScope = ''
+    const {
+      auto_create_project,
+      auto_create_project_for_provider,
+      project_mapping_id,
+      tenant,
+      enable_resource_sync,
+      enable_project_sync,
+    } = this.cloneData
+    if (auto_create_project_for_provider) initResourceMapType.push('cloudprovider')
+    if (project_mapping_id) {
+      initResourceMapType.push('project_mapping')
+      initProjectMapping.push(project_mapping_id)
+    }
+    if (auto_create_project) initResourceMapType.push('external_project')
+    if (tenant) {
+      initResourceMapType.push('project')
+    }
+    if (enable_resource_sync && !initEffectiveScope) {
+      initEffectiveScope = 'resource'
+    } else if (enable_project_sync && !initEffectiveScope) {
+      initEffectiveScope = 'project'
+    }
     return {
       domains: [],
       domainParams: {
@@ -118,26 +147,27 @@ export default {
         resource_map_type: [
           'resource_map_type',
           {
-            initialValue: ['project'],
+            initialValue: initResourceMapType,
             rules: [{ required: true, message: this.$t('cloudenv.select_resource_map_type') }],
           },
         ],
         project_mapping_id: [
           'project_mapping_id',
           {
+            initialValue: initProjectMapping,
             rules: [{ required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.text_580')]) }],
           },
         ],
         effective_scope: [
           'effective_scope',
           {
-            initialValue: 'resource',
+            initialValue: initEffectiveScope || 'resource',
           },
         ],
       },
-      resourceMapType: ['project'],
-      openProjectMapping: false,
-      effectiveScope: 'resource',
+      resourceMapType: initResourceMapType,
+      openProjectMapping: initResourceMapType.includes('project_mapping'),
+      effectiveScope: initEffectiveScope || 'resource',
     }
   },
   computed: {
