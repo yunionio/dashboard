@@ -223,6 +223,9 @@ export default {
         delete params.export_keys
         delete params.export_texts
         delete params.export_limit
+        if (params.filter && params.filter.length) {
+          params.filter = params.filter.flat(Infinity)
+        }
         params.filter = params.filter.filter(item => item)
         if (!params.filter.length) {
           delete params.filter
@@ -267,10 +270,25 @@ export default {
         const params = this.genParams(values, total, true)
         const keys = params.keys
         delete params.keys
+        let query = ''
+        const paramKeys = Object.keys(params)
+        const arrayParams = []
+        paramKeys.map(key => {
+          if (R.is(Array, params[key])) {
+            arrayParams.push([key, params[key]])
+            delete params[key]
+          }
+        })
+        query = new URLSearchParams(params).toString()
+        arrayParams.map(param => {
+          param[1].map(val => {
+            query += `&${new URLSearchParams({ [param[0]]: val }).toString()}`
+          })
+        })
         await new this.$Manager('offline_exports').create({
           data: {
-            query: new URLSearchParams(params).toString(),
-            keys: keys,
+            query,
+            keys,
             service: this.params.options.service || 'meter',
             resource: this.params.options.resource || this.params.resource,
             description: this.params.options.offlineExportDescription || '',
