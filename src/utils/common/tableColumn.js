@@ -363,8 +363,9 @@ export const getCopyWithContentTableColumn = ({
   vm = {},
   customEdit = false,
   customEditCallback = () => { },
+  formatter,
 } = {}) => {
-  return {
+  const ret = {
     field,
     title,
     sortable,
@@ -388,6 +389,8 @@ export const getCopyWithContentTableColumn = ({
       return R.is(Function, hidden) ? hidden() : hidden
     },
   }
+  if (formatter) ret.formatter = formatter
+  return ret
 }
 
 export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {}, sortable = false, onlyElastic = false, noElastic = false, hidden } = {}) => {
