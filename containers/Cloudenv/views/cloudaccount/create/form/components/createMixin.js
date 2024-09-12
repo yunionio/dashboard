@@ -12,8 +12,31 @@ export default {
       type: String,
       required: true,
     },
+    cloneData: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
+    let initialProject = {
+      key: this.$store.getters.userInfo.projectId,
+      label: this.$store.getters.userInfo.project,
+    }
+    let initIsOpenBlockedResources = false
+    let initBlockedResources = []
+    if (this.cloneData) {
+      const { tenant, tenant_id, skip_sync_resources = [] } = this.cloneData
+      if (tenant || tenant_id) {
+        initialProject = {
+          key: tenant_id,
+          label: tenant,
+        }
+      }
+      if (skip_sync_resources.length > 0) {
+        initIsOpenBlockedResources = true
+        initBlockedResources = skip_sync_resources
+      }
+    }
     return {
       form: {
         fc: this.$form.createForm(this, {
@@ -42,10 +65,7 @@ export default {
         project: [
           'project',
           {
-            initialValue: {
-              key: this.$store.getters.userInfo.projectId,
-              label: this.$store.getters.userInfo.project,
-            },
+            initialValue: initialProject,
             rules: [
               { required: true, message: this.$t('rules.project') },
             ],
@@ -54,13 +74,14 @@ export default {
         isOpenBlockedResources: [
           'isOpenBlockedResources',
           {
-            initialValue: false,
+            initialValue: initIsOpenBlockedResources,
             valuePropName: 'checked',
           },
         ],
         blockedResources: [
           'blockedResources',
           {
+            initialValue: initBlockedResources,
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.block_resources_type')]) },
             ],

@@ -7,8 +7,8 @@
       <a-form-item :label="$t('common.description')">
         <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
       </a-form-item>
-      <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
-      <blocked-resources :decorators="{ isOpenBlockedResources: decorators.isOpenBlockedResources, blockedResources: decorators.blockedResources }" />
+      <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" :cloneData="cloneData" />
+      <blocked-resources :decorators="{ isOpenBlockedResources: decorators.isOpenBlockedResources, blockedResources: decorators.blockedResources }" :cloneData="cloneData" />
       <upload-json-file :fc="form.fc">
         <a-form-item label="project_id">
           <a-input v-decorator="decorators.project_id" :placeholder="$t('cloudenv.text_247')" />
@@ -25,10 +25,10 @@
           <a-input v-decorator="decorators.client_email" :placeholder="$t('cloudenv.text_249')" />
         </a-form-item>
       </upload-json-file>
-      <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
-      <auto-sync :fc="form.fc" :form-layout="formLayout" />
-      <read-only />
-      <share-mode :fd="form.fd" />
+      <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" :cloneData="cloneData" />
+      <auto-sync :fc="form.fc" :form-layout="formLayout" :cloneData="cloneData" />
+      <read-only :cloneData="cloneData" />
+      <share-mode :fd="form.fd" :cloneData="cloneData" />
     </a-form>
   </div>
 </template>
@@ -57,6 +57,37 @@ export default {
   mixins: [createMixin],
   data () {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
+    let initDomain = {
+      key: this.$store.getters.userInfo.projectDomainId,
+      label: this.$store.getters.userInfo.projectDomain,
+    }
+    let initAutoCreateProject = false
+    let initProjectId = ''
+    let initPrivateKeyId = ''
+    let initPrivateKey = ''
+    let initClientEmail = ''
+    if (this.cloneData) {
+      const {
+        domain_id,
+        project_domain,
+        auto_create_project = false,
+        gcp_project_id = '',
+        gcp_private_key_id = '',
+        gcp_private_key = '',
+        gcp_client_email = '',
+      } = this.cloneData
+      if (domain_id && project_domain) {
+        initDomain = {
+          key: domain_id,
+          label: project_domain,
+        }
+      }
+      initProjectId = gcp_project_id
+      initPrivateKeyId = gcp_private_key_id
+      initPrivateKey = gcp_private_key
+      initClientEmail = gcp_client_email
+      initAutoCreateProject = auto_create_project
+    }
     return {
       docs: getCloudaccountDocs(this.$store.getters.scope),
       keySecretField,
@@ -75,6 +106,7 @@ export default {
         project_id: [
           'gcp_project_id',
           {
+            initialValue: initProjectId,
             rules: [
               { required: true, message: this.$t('cloudenv.text_247') },
             ],
@@ -83,6 +115,7 @@ export default {
         private_key_id: [
           'gcp_private_key_id',
           {
+            initialValue: initPrivateKeyId,
             rules: [
               { required: true, message: this.$t('cloudenv.text_162') },
             ],
@@ -91,6 +124,7 @@ export default {
         private_key: [
           'gcp_private_key',
           {
+            initialValue: initPrivateKey,
             rules: [
               { required: true, message: this.$t('cloudenv.text_161') },
             ],
@@ -99,6 +133,7 @@ export default {
         client_email: [
           'gcp_client_email',
           {
+            initialValue: initClientEmail,
             rules: [
               { required: true, message: this.$t('cloudenv.text_249') },
               { type: 'email', message: this.$t('cloudenv.text_250') },
@@ -108,10 +143,7 @@ export default {
         domain: [
           'domain',
           {
-            initialValue: {
-              key: this.$store.getters.userInfo.projectDomainId,
-              label: this.$store.getters.userInfo.projectDomain,
-            },
+            initialValue: initDomain,
             rules: [
               { validator: isRequired(), message: this.$t('rules.domain'), trigger: 'change' },
             ],
@@ -120,7 +152,7 @@ export default {
         auto_create_project: [
           'auto_create_project',
           {
-            initialValue: false,
+            initialValue: initAutoCreateProject,
             valuePropName: 'checked',
           },
         ],

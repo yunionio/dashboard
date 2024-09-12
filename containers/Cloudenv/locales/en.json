@@ -808,6 +808,7 @@
   "cloudenv.action_group.set_props": "property settings",
   "cloudenv.action_group.set_fee": "Fee Setting",
   "cloudenv.action.update_account": "Update account",
+  "cloudenv.action.clone_account": "Clone account",
   "cloudenv.action.update_credential": "Update Credential",
   "cloudenv.last_sync_cost": "Last Sync Cost",
   "cloudenv.share_month": "Month",

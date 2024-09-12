@@ -37,20 +37,27 @@ export default {
     fd: {
       type: Object,
     },
+    cloneData: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
+    const { proxy_setting_id } = this.cloneData
     return {
       proxyOpts: [],
       loading: false,
-      isOpenProxy: false,
+      isOpenProxy: proxy_setting_id && proxy_setting_id !== 'DIRECT',
     }
   },
   computed: {
     ...mapGetters(['isAdminMode', 'userInfo', 'l3PermissionEnable']),
     decorator () {
+      const { proxy_setting_id } = this.cloneData
       return [
         'proxy_setting',
         {
+          initialValue: (!proxy_setting_id || proxy_setting_id === 'DIRECT') ? '' : proxy_setting_id,
           rules: [{ required: true, message: this.$t('common.tips.select', [this.$t('cloudenv.text_14')]) }],
         },
       ]
