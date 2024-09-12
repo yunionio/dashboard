@@ -183,6 +183,9 @@ export default {
           formatter: ({ row }) => {
             return row.data?.tags?.ip || ''
           },
+          slotCallback: (row) => {
+            return row.data?.tags?.ip || '-'
+          },
         }),
         {
           field: 'alert_name',
