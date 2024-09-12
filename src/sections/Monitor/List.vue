@@ -4,8 +4,8 @@
       <a-divider>{{ item.title }}</a-divider>
       <!-- <actions class="actions position-absolute" :options="singleActions" :row="item" button-type="link" button-size="small" /> -->
       <!-- <monitor-list-line :chartData="item.chartData" :lineConfig="getConfig(item)" :loading="loading" /> -->
-      <!-- <chart-line :columns="item.chartData.columns" :rows="item.chartData.rows" :options="getConfig(item)" /> -->
-      <chart-lines :rows="item.chartData.rows" :options="getConfig(item)" />
+      <chart-line :columns="item.chartData.columns" :rows="item.chartData.rows" :options="getConfig(item)" />
+      <!-- <chart-lines :rows="item.chartData.rows" :options="getConfig(item)" /> -->
     </a-card>
   </div>
 </template>
@@ -13,15 +13,15 @@
 <script>
 // import MonitorListLine from './Line'
 // import Actions from '@/components/PageList/Actions'
-/* import ChartLine from '@/sections/Charts/Line' */
-import ChartLines from '@/sections/Charts/Lines'
+import ChartLine from '@/sections/Charts/Line'
+// import ChartLines from '@/sections/Charts/Lines'
 
 export default {
   name: 'MonitorList',
   components: {
     // MonitorListLine, // 统一用 echarts 图表
     // Actions,
-    ChartLines,
+    ChartLine,
   },
   props: {
     singleActions: {
@@ -35,6 +35,9 @@ export default {
     },
   },
   methods: {
+    noDataCheck (item) {
+      return item.noData || false
+    },
     getConfig (item) {
       const lineConfig = item.lineConfig || {}
       return {

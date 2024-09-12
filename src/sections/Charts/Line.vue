@@ -130,7 +130,7 @@ export default {
       return {
         name,
         type: 'line',
-        smooth: true,
+        // smooth: true,
         showSymbol: false,
         symbol: 'circle',
         symbolSize: 6,
