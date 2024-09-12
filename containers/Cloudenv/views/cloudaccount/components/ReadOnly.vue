@@ -21,6 +21,10 @@ export default {
     form: {
       type: Object,
     },
+    cloneData: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
@@ -28,7 +32,7 @@ export default {
         read_only: [
           'read_only',
           {
-            initialValue: false,
+            initialValue: this.cloneData.read_only || false,
             valuePropName: 'checked',
           },
         ],
