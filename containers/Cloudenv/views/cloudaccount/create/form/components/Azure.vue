@@ -34,9 +34,9 @@
       <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
-      <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
+      <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" :cloneData="cloneData" />
       <blocked-resources :decorators="{ isOpenBlockedResources: decorators.isOpenBlockedResources, blockedResources: decorators.blockedResources }" />
-      <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
+      <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" :cloneData="cloneData" />
       <a-form-item :label="$t('cloudaccount.create_form.saml_user_label')" v-if="isAzurePublicCloud">
         <a-switch :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" v-decorator="decorators.saml_auth" />
         <div slot="extra">
@@ -47,10 +47,10 @@
           </i18n>
         </div>
       </a-form-item>
-      <auto-sync :fc="form.fc" :form-layout="formLayout" />
-      <read-only />
-      <skip-duplicate-account-check />
-      <share-mode :fd="form.fd" />
+      <auto-sync :fc="form.fc" :form-layout="formLayout" :cloneData="cloneData" />
+      <read-only :cloneData="cloneData" />
+      <skip-duplicate-account-check :cloneData="cloneData" />
+      <share-mode :fd="form.fd" :cloneData="cloneData" />
       <!-- <a-form-item :label="$t('cloudenv.text_242')">
         <a-input v-decorator="decorators.balanceKey" type="textarea" rows="4" />
       </a-form-item> -->
@@ -83,6 +83,30 @@ export default {
   data () {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
     const environments = Object.entries(ACCESS_URL[this.provider.toLowerCase()]).map(keyValueArr => ({ key: keyValueArr[0], label: keyValueArr[1] }))
+    let initDomain = {
+      key: this.$store.getters.userInfo.projectDomainId,
+      label: this.$store.getters.userInfo.projectDomain,
+    }
+    let initEnvironment
+    let initSamlAuth = false
+    let initAutoCreateProject = false
+    let initDirectoryId = ''
+    if (this.cloneData) {
+      const { access_url, domain_id, project_domain, saml_auth = false, auto_create_project = false, directory_id = '' } = this.cloneData
+      const tEnv = environments.filter(item => item.key === access_url)
+      if (tEnv.length > 0) {
+        initEnvironment = tEnv[0].key
+      }
+      if (domain_id && project_domain) {
+        initDomain = {
+          key: domain_id,
+          label: project_domain,
+        }
+      }
+      initSamlAuth = saml_auth
+      initAutoCreateProject = auto_create_project
+      initDirectoryId = directory_id
+    }
     return {
       formLayout: {
         labelCol: { span: 4 },
@@ -106,6 +130,7 @@ export default {
         environment: [
           'environment',
           {
+            initialValue: initEnvironment,
             rules: [
               { required: true, message: this.$t('cloudenv.environment_check'), trigger: 'change' },
             ],
@@ -114,6 +139,7 @@ export default {
         directory_id: [
           'directory_id',
           {
+            initialValue: initDirectoryId,
             rules: [
               { required: true, message: this.$t('cloudenv.text_243'), trigger: 'blur' },
             ],
@@ -138,10 +164,7 @@ export default {
         domain: [
           'domain',
           {
-            initialValue: {
-              key: this.$store.getters.userInfo.projectDomainId,
-              label: this.$store.getters.userInfo.projectDomain,
-            },
+            initialValue: initDomain,
             rules: [
               { validator: isRequired(), message: this.$t('rules.domain'), trigger: 'change' },
             ],
@@ -150,14 +173,14 @@ export default {
         auto_create_project: [
           'auto_create_project',
           {
-            initialValue: true,
+            initialValue: initAutoCreateProject,
             valuePropName: 'checked',
           },
         ],
         saml_auth: [
           'saml_auth',
           {
-            initialValue: false,
+            initialValue: initSamlAuth,
             valuePropName: 'checked',
           },
         ],

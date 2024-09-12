@@ -71,6 +71,10 @@ export default {
       type: Object,
       required: true,
     },
+    cloneData: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   computed: {
     currentComponent () {
@@ -79,6 +83,7 @@ export default {
     props () {
       return {
         provider: this.currentItem.provider,
+        cloneData: this.cloneData,
       }
     },
   },

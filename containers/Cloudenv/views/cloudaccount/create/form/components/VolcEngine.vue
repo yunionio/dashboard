@@ -17,12 +17,12 @@
       <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
-      <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
-      <blocked-resources :decorators="{ isOpenBlockedResources: decorators.isOpenBlockedResources, blockedResources: decorators.blockedResources }" />
-      <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
-      <auto-sync :fc="form.fc" />
-      <read-only />
-      <share-mode :fd="form.fd" />
+      <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" :cloneData="cloneData" />
+      <blocked-resources :decorators="{ isOpenBlockedResources: decorators.isOpenBlockedResources, blockedResources: decorators.blockedResources }" :cloneData="cloneData" />
+      <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" :cloneData="cloneData" />
+      <auto-sync :fc="form.fc" :cloneData="cloneData" />
+      <read-only :cloneData="cloneData" />
+      <share-mode :fd="form.fd" :cloneData="cloneData" />
     </a-form>
   </div>
 </template>
@@ -58,6 +58,22 @@ export default {
   methods: {
     getDecorators (initKeySecretFields) {
       const keySecretField = this.keySecretField || initKeySecretFields
+      let initDomain = {
+        key: this.$store.getters.userInfo.projectDomainId,
+        label: this.$store.getters.userInfo.projectDomain,
+      }
+      const {
+        domain_id,
+        project_domain,
+        auto_create_project: initAutoCreateProject = false,
+        saml_auth: initSamlAuth = false,
+      } = this.cloneData
+      if (domain_id && project_domain) {
+        initDomain = {
+          key: domain_id,
+          label: project_domain,
+        }
+      }
       const decorators = {
         name: [
           'name',
@@ -89,10 +105,7 @@ export default {
         domain: [
           'domain',
           {
-            initialValue: {
-              key: this.$store.getters.userInfo.projectDomainId,
-              label: this.$store.getters.userInfo.projectDomain,
-            },
+            initialValue: initDomain,
             rules: [
               { validator: isRequired(), message: this.$t('rules.domain'), trigger: 'change' },
             ],
@@ -101,14 +114,14 @@ export default {
         auto_create_project: [
           'auto_create_project',
           {
-            initialValue: false,
+            initialValue: initAutoCreateProject,
             valuePropName: 'checked',
           },
         ],
         saml_auth: [
           'saml_auth',
           {
-            initialValue: false,
+            initialValue: initSamlAuth,
             valuePropName: 'checked',
           },
         ],

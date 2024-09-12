@@ -4,8 +4,10 @@ import expectStatus from '@/constants/expectStatus'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 import { findPlatform, getDisabledProvidersActionMeta, typeClouds } from '@/utils/common/hypervisor'
-import { hasMeterService } from '@/utils/auth'
+import { hasMeterService, hasSetupKey } from '@/utils/auth'
 import { BRAND_MAP, CLOUD_ENVS } from '@/constants'
+import { CLOUDACCOUNT_TYPES } from '@Cloudenv/views/cloudaccount/constants'
+import setting from '@/config/setting'
 
 const steadyStatus = {
   status: Object.values(expectStatus.cloudaccount).flat(),
@@ -21,6 +23,57 @@ export default {
   },
   computed: {
     ...mapGetters(['l3PermissionEnable', 'userInfo', 'isAdminMode']),
+    globalSettingSetupKeys () {
+      const { globalSetting } = this.$store.state
+      if (globalSetting && globalSetting.value) {
+        return globalSetting.value.setupKeys
+      }
+      return undefined
+    },
+    types () {
+      const typesMap = {}
+      for (const box in CLOUDACCOUNT_TYPES) {
+        for (const brand in CLOUDACCOUNT_TYPES[box]) {
+          if (hasSetupKey([brand])) {
+            if (!typesMap[box]) {
+              typesMap[box] = {
+                [brand]: CLOUDACCOUNT_TYPES[box][brand],
+              }
+            } else {
+              typesMap[box][brand] = CLOUDACCOUNT_TYPES[box][brand]
+            }
+            if (brand === 'cloudpods') {
+              const { companyInfo = {} } = this.$store.state.app
+              const { inner_copyright_en, inner_copyright, inner_logo, inner_logo_format } = companyInfo
+              CLOUDACCOUNT_TYPES[box][brand].name = setting.language === 'en' ? (inner_copyright_en || CLOUDACCOUNT_TYPES[box][brand].name) : (inner_copyright || CLOUDACCOUNT_TYPES[box][brand].name)
+              CLOUDACCOUNT_TYPES[box][brand].logo = inner_logo && inner_logo_format ? `data:${inner_logo_format};base64,${inner_logo}` : CLOUDACCOUNT_TYPES[box][brand].logo
+            }
+          }
+        }
+      }
+      if (hasSetupKey(['bill']) && !hasSetupKey(['onecloud', 'public', 'private', 'vmware', 'storate'])) {
+        const setUpKeys = this.globalSettingSetupKeys || []
+        const billTargetItems = ['aliyun', 'aws', 'azure', 'google', 'huawei', 'qcloud', 'jdcloud'].filter(key => setUpKeys.includes('bill_' + key))
+        if (!billTargetItems.length) {
+          // 旧版本 license只签发bill
+          if (!hasSetupKey('public')) {
+            if (!typesMap.public) {
+              typesMap.public = {}
+            }
+            ['aliyun', 'aws', 'azure', 'google', 'huawei', 'qcloud', 'jdcloud'].map(key => {
+              typesMap.public[key] = CLOUDACCOUNT_TYPES.public[key]
+            })
+          }
+        } else {
+          // 新版本 license签发billItem
+          typesMap.public = typesMap.public || {}
+          billTargetItems.map(key => {
+            typesMap.public[key] = CLOUDACCOUNT_TYPES.public[key]
+          })
+        }
+      }
+      return typesMap
+    },
   },
   created () {
     this.singleActions = [
@@ -182,6 +235,31 @@ export default {
                     }
                   },
                 },
+                // 克隆账号
+                {
+                  label: i18n.t('cloudenv.action.clone_account'),
+                  permission: 'cloudaccounts_create',
+                  action: obj => {
+                    this.$router.push({ name: 'CloudaccountCreate', params: obj })
+                  },
+                  // 查看当前云是否允许创建
+                  meta: obj => {
+                    let validate = false
+                    const values = Object.values(this.types)
+                    if (obj.provider) {
+                      values.map(item => {
+                        const brands = Object.values(item)
+                        if (brands.some(l => l.provider === obj.provider)) {
+                          validate = true
+                        }
+                      })
+                    }
+                    return {
+                      validate,
+                    }
+                  },
+                  hidden: () => this.hiddenActions.includes('create'),
+                },
                 // 只读模式
                 {
                   label: i18n.t('cloudenv.read_only'),
@@ -252,13 +330,18 @@ export default {
                   },
                   meta: () => {
                     let tooltip = ''
+                    let validate = this.l3PermissionEnable && this.isAdminMode
                     if (!this.l3PermissionEnable) {
                       tooltip = i18n.t('cloudenv.text_314')
                     } else if (!this.isAdminMode) {
                       tooltip = i18n.t('cloudenv.text_315')
                     }
+                    if (obj.sync_status !== 'idle' || obj.sync_status2 !== 'idle') {
+                      validate = false
+                      tooltip = i18n.t('cloudenv.syncing_account_disable_action')
+                    }
                     return {
-                      validate: this.l3PermissionEnable && this.isAdminMode,
+                      validate,
                       tooltip,
                     }
                   },

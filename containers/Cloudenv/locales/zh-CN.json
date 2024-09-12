@@ -808,6 +808,7 @@
   "cloudenv.action_group.set_props": "属性设置",
   "cloudenv.action_group.set_fee": "费用设置",
   "cloudenv.action.update_account": "更新账号",
+  "cloudenv.action.clone_account": "克隆账号",
   "cloudenv.action.update_credential": "更新账单",
   "cloudenv.last_sync_cost": "上次同步耗时",
   "cloudenv.share_month": "分摊月份",
