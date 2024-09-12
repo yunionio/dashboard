@@ -108,6 +108,7 @@ export default {
           field: 'res_name',
           label: this.$t('common_151'),
         },
+        ip: { label: 'IP' },
         created_at: getTimeRangeFilter({ label: this.$t('monitor.text_14'), field: 'trigger_time' }),
       }
       for (const key of Object.keys(options)) {
