@@ -77,6 +77,21 @@ export const strategyColumn = (field = 'common_alert_metric_details', title = i1
       ]
     },
   },
+  formatter: ({ row }) => {
+    const { filters, strategyConfig, strategyArr = [] } = getMetircAlertUtil(row, field)
+    const periodTxt = i18n.t('monitor.text_102', [strategyConfig.period])
+
+    if (!row[field]) return ''
+    let filterNode = null
+    if (filters.length > 0) {
+      filterNode = i18n.t('monitor.text_101') + ':'
+      filters.map(v => {
+        filterNode += v
+      })
+    }
+    const strategys = strategyArr.filter(item => item).join(',')
+    return i18n.t('monitor.commonalert.alert_condition.content') + periodTxt + ':' + strategys + (filterNode || '')
+  },
 })
 
 export const projectTableColumn = {
