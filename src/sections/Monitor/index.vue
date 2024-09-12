@@ -6,6 +6,7 @@
       :timeOpts="timeOpts"
       :groupFunc="groupFunc"
       :customTime="customTime"
+      :showGroupFunc="false"
       @update:time="updateTime"
       @update:timeGroup="updateTimeGroup"
       @update:customTime="updateCustomTime"
@@ -147,14 +148,57 @@ export default {
         })
 
         const unit = _.get(val.series, '[0].unit') || val.constants.unit || ''
+
+        // 数据 配置
+        const lineConfig = val.lineConfig || {}
+        const newLineConfig = {
+          xAxis: {
+            type: 'category',
+            data: [],
+          },
+          yAxis: {
+            type: 'value',
+          },
+          series: [],
+          legend: {
+            data: [],
+            formatter: (val) => {
+              return val
+            },
+          },
+        }
+        const format = val.constants.format || '0.00' // 默认是保留小数点后两位
+        series.map(item => {
+          const { points = [] } = item
+          if (points.length) {
+            let groupByKey = ''
+            if (val.constants.groupBy && val.constants.groupBy.length) {
+              groupByKey = getGroupByKey(item.tags, val.constants.groupBy)
+            }
+            let name = item.name
+            if (groupByKey) {
+              name = groupByKey
+            }
+            const seriesItem = { type: 'line', name, data: [] }
+            points.map(point => {
+              const momentObj = this.$moment(point[1])
+              const time = momentObj._isAMomentObject ? momentObj.format(this.timeFormatStr) : point[1]
+              newLineConfig.xAxis.data.push(time)
+              seriesItem.data.push(numerify(point[0], format))
+            })
+            newLineConfig.series.push(seriesItem)
+            newLineConfig.legend.data.push(name)
+          }
+        })
         return {
           title: val.title,
           constants: val.constants,
-          lineConfig: val.lineConfig,
+          lineConfig: Object.assign(newLineConfig, lineConfig),
           noData: columns.length === 0,
           unit,
           chartData: {
             rows,
+            columns,
           },
         }
       }).filter(val => {
