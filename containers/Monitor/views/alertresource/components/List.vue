@@ -13,7 +13,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import BrandIcon from '@/sections/BrandIcon'
 import { getNameFilter, getTimeRangeFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
-import { getTimeTableColumn, getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import { getTimeTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import { strategyColumn, levelColumn, getStrategyInfo } from '@Monitor/views/commonalert/utils'
 import ColumnsMixin from '../mixins/columns'
 import SingleAction from '../mixins/singleActions'
@@ -40,20 +40,6 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, this.listOptions('monitorresourcealerts')),
-      exportDataOptions: {
-        items: [
-          { key: 'alert_name', label: this.$t('monitor.text_99') },
-          { key: 'created_at', label: this.$t('monitor.text_14') },
-          { key: 'alert_state', label: this.$t('common.status') },
-          { key: 'res_type', label: this.$t('monitor.text_97') },
-          { key: 'alert_rule', label: this.$t('monitor.strategy_detail') },
-          { key: 'level', label: this.$t('monitor.level') },
-          { key: 'res_num', label: this.$t('cloudenv.text_417') },
-          { key: 'send_state', label: this.$t('common.sendState') },
-        ].filter(item => {
-          return !this.hiddenColumns.some(item2 => item2 === item.key)
-        }),
-      },
       resTypeItems: [],
     }
   },
@@ -66,6 +52,13 @@ export default {
         })
       }
       return columns
+    },
+    exportDataOptions () {
+      return {
+        downloadType: 'local',
+        title: this.$t('monitor.text_17'),
+        items: this.columns,
+      }
     },
   },
   watch: {
@@ -182,6 +175,15 @@ export default {
           },
         },
         levelColumn,
+        getCopyWithContentTableColumn({
+          field: 'ip',
+          title: 'IP',
+          hideField: true,
+          message: row => row.data?.tags?.ip || '-',
+          formatter: ({ row }) => {
+            return row.data?.tags?.ip || ''
+          },
+        }),
         {
           field: 'alert_name',
           title: this.$t('monitor.text_99'),
@@ -199,6 +201,12 @@ export default {
                 <BrandIcon name={brand} />,
               ]
             },
+          },
+          formatter: ({ row }) => {
+            let brand = R.path(['data', 'tags', 'brand'], row)
+            if (!brand) return ''
+            if (brand === 'kvm') brand = 'OneCloud'
+            return brand
           },
         },
         {
