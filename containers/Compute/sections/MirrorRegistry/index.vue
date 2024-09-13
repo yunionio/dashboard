@@ -20,6 +20,8 @@
       <a-select
         :loading="imageLoading"
         :value="image"
+        showSearch
+        :filterOption="imageFilterOption"
         @change="handleImageChange">
         <a-select-option value="">{{ $t('common.tips.select', [$t('compute.pod-image')]) }}</a-select-option>
         <a-select-option
@@ -82,6 +84,11 @@ export default {
     this.getRegistrys()
   },
   methods: {
+    imageFilterOption (input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
+    },
     handleRegistryChange (val) {
       if (val) {
         this.registry = val
