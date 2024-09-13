@@ -1,9 +1,10 @@
 import * as R from 'ramda'
 import _ from 'lodash'
-import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
+import { HYPERVISORS_MAP, EXTRA_HYPERVISORS, BRAND_MAP } from '@/constants'
 import { changeToArr } from '@/utils/utils'
 import store from '@/store'
 import i18n from '@/locales'
+import setting from '@/config/setting'
 import { hasSetupKey } from '@/utils/auth'
 
 export class TypeClouds {
@@ -179,4 +180,16 @@ export const getOriginDiskKey = (key, medium) => {
   if (!key) return ''
   const list = key.split('/')
   return medium ? list[1] : list[0]
+}
+
+export const getBrandName = (origin) => {
+  let brand = origin
+  if (brand === 'OneCloud') {
+    brand = setting.brand[store.getters.setting.language] || brand
+  } else if (brand === 'extdb') {
+    brand = i18n.t('dictionary.extdb')
+  } else {
+    brand = BRAND_MAP[brand] ? BRAND_MAP[brand].label : brand
+  }
+  return brand
 }
