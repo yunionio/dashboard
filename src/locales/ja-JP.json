@@ -1859,7 +1859,7 @@
     "Nutanix": "ヌタニックス",
     "BingoCloud": "ビンゴクラウド",
     "RemoteFile": "外部データ",
-    "extdb": "カスタムデータ",
+    "extdb": "カスタムリソース",
     "Proxmox": "プロキシモックス",
     "H3C": "H3C",
     "Ksyun": "キングソフトクラウド"
@@ -2786,7 +2786,8 @@
     "check": "環境パトロール",
     "private_envlogo": "プライベートクラウド logo",
     "private_env-1": "プライベートクラウド1",
-    "private_env-2": "プライベートクラウド2"
+    "private_env-2": "プライベートクラウド2",
+    "extdb": "カスタムリソース"
   },
   "originDictionary": {},
   "res": {
