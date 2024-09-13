@@ -1883,7 +1883,7 @@
     "Nutanix": "Nutanix",
     "BingoCloud": "BingoCloud",
     "RemoteFile": "RemoteFile",
-    "extdb": "Custom data",
+    "extdb": "Custom resources",
     "Proxmox": "Proxmox",
     "H3C": "H3C"
   },
@@ -2803,7 +2803,8 @@
     "check": "Environmental inspection",
     "private_envlogo": "Private Cloud Logo",
     "private_env-1": "Private Cloud 1",
-    "private_env-2": "Private Cloud 2"
+    "private_env-2": "Private Cloud 2",
+    "extdb": "Custom resources"
   },
   "originDictionary": {},
   "res": {
