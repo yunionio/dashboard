@@ -54,6 +54,9 @@ export default {
     if (small.includes(this.name)) {
       fontSize = '16px'
     }
+    if (name === 'extdb') {
+      option.label = this.$t('dictionary.extdb')
+    }
     const cloudPodsIcon = this.cloudPodsIcon
     return (
       <span title={option.label}>
