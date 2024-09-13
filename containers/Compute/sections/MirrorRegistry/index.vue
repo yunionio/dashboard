@@ -8,6 +8,8 @@
       <a-select
         :loading="registryLoading"
         :value="registry"
+        showSearch
+        :filterOption="filterOption"
         @change="handleRegistryChange">
         <a-select-option value="">{{ $t('common.tips.select', [$t('compute.eci.repo.image.registry')]) }}</a-select-option>
         <a-select-option
@@ -21,7 +23,7 @@
         :loading="imageLoading"
         :value="image"
         showSearch
-        :filterOption="imageFilterOption"
+        :filterOption="filterOption"
         @change="handleImageChange">
         <a-select-option value="">{{ $t('common.tips.select', [$t('compute.pod-image')]) }}</a-select-option>
         <a-select-option
@@ -34,6 +36,8 @@
       <a-select
         :loading="tagLoading"
         :value="tag"
+        showSearch
+        :filterOption="filterOption"
         @change="handleTagChange">
         <a-select-option value="">{{ $t('common.tips.select', [$t('compute.repo.image.tag')]) }}</a-select-option>
         <a-select-option
@@ -84,7 +88,7 @@ export default {
     this.getRegistrys()
   },
   methods: {
-    imageFilterOption (input, option) {
+    filterOption (input, option) {
       return (
         option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
       )
