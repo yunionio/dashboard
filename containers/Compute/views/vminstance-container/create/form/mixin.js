@@ -150,7 +150,7 @@ export default {
       return ret
     },
     pciDevTypeOptions () {
-      return this.form.fi.capability.pci_model_types
+      return (this.form.fi?.capability?.pci_model_types || []).filter(item => item.dev_type !== 'GPU-HPC')
     },
     pciOptions () {
       const specs = this.form.fi.capability.specs || {}
