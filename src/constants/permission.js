@@ -341,7 +341,7 @@ export const PERMISSION = {
   // 企业信息
   infos_list: ['yunionagent', 'infos', 'list'],
   // 邮件短信
-  configs_list: ['notify', 'configs', 'list'],
+  configs_list: ['notify', 'emailqueues', 'list'],
   // 公告
   notices_list: ['yunionagent', 'notices', 'list'],
   // 私有云套餐
