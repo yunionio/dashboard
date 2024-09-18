@@ -328,7 +328,7 @@ export const RESOURCES_MAP = {
   receivers: {
     i18n: 'dictionary.contact',
   },
-  configs: {
+  emailqueues: {
     i18n: 'system.text_395',
   },
   log: {
