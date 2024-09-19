@@ -8,6 +8,7 @@
         :style="getItemStyles(item.layout)">
         <component
           ref="children"
+          :chartId="key"
           :is="item.layout.component"
           :options="item.layout"
           :params="item.params" />
