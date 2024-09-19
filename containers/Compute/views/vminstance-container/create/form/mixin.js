@@ -150,7 +150,7 @@ export default {
       return ret
     },
     pciDevTypeOptions () {
-      return (this.form.fi?.capability?.pci_model_types || []).filter(item => item.dev_type !== 'GPU-HPC')
+      return (this.form.fi?.capability?.pci_model_types || []).filter(item => item.hypervisor === 'pod')
     },
     pciOptions () {
       const specs = this.form.fi.capability.specs || {}
@@ -159,7 +159,7 @@ export default {
       for (const key in data) {
         if (data.hasOwnProperty(key)) {
           const item = data[key]
-          if (!item.dev_type.startsWith('USB')) {
+          if (!item.dev_type.startsWith('USB') && item.hypervisor === 'pod') {
             ret.push({
               ...item,
               key: `vendor=${item.vendor}:${item.model}`,

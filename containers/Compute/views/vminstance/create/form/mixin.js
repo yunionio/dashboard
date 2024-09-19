@@ -187,7 +187,7 @@ export default {
       return ret
     },
     pciDevTypeOptions () {
-      return this.form.fi.capability.pci_model_types
+      return (this.form.fi?.capability?.pci_model_types || []).filter(item => item.hypervisor === 'kvm')
     },
     pciOptions () {
       const specs = this.form.fi.capability.specs || {}
@@ -196,7 +196,7 @@ export default {
       for (const key in data) {
         if (data.hasOwnProperty(key)) {
           const item = data[key]
-          if (!item.dev_type.startsWith('USB')) {
+          if (!item.dev_type.startsWith('USB') && item.hypervisor === 'kvm') {
             ret.push({
               ...item,
               key: `vendor=${item.vendor}:${item.model}`,
