@@ -34,7 +34,7 @@
                 :vertical-compact="false"
                 :prevent-collision="true"
                 :use-css-transforms="true">
-                <template v-for="item in layout">
+                <template v-for="(item, index) in layout">
                   <grid-item
                     v-if="!['Quota', 'ProjectQuota'].includes(item.component) || (['Quota', 'ProjectQuota'].includes(item.component) && globalConfig.enable_quota_check)"
                     class="edit-grid-item"
@@ -48,7 +48,7 @@
                     :is-draggable="!item.isTemplate"
                     :is-resizable="!item.isTemplate"
                     :style="{ outline: item.isTemplate ? '2px dashed darkmagenta' : '' }">
-                    <component :is="item.component" :options="item" :params="dashboardParams[item.i]" @update="handleUpdateDashboardParams" edit>
+                    <component :is="item.component" :chartId="`dashboard-item-${index}`" :options="item" :params="dashboardParams[item.i]" @update="handleUpdateDashboardParams" edit>
                       <template v-slot:actions="{ handleEdit }">
                         <a-button class="p-0 h-auto" type="link" :style="getActionStyle(item.component, dashboardParams[item.i])" @click="handleRemove(item)">
                           <icon type="delete" />
