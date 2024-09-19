@@ -1,6 +1,6 @@
 
 <template>
-  <div class="echarts" />
+  <div class="echarts" :id="domId" />
 </template>
 
 <style>
@@ -11,6 +11,7 @@
 </style>
 
 <script>
+import * as R from 'ramda'
 import echarts from 'echarts/lib/echarts'
 import debounce from 'lodash/debounce'
 import { addListener, removeListener } from 'resize-detector'
@@ -27,10 +28,16 @@ export default {
     autoresize: Boolean,
     watchShallow: Boolean,
     manualUpdate: Boolean,
+    domId: String,
+    ignoreAutoLabelStyle: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
       lastArea: 0,
+      chartRect: {},
     }
   },
   watch: {
@@ -59,11 +66,13 @@ export default {
   mounted () {
     // auto init if `options` is already provided
     if (this.options) {
+      this.getChartSize()
       this.init()
     }
   },
   activated () {
     if (this.autoresize) {
+      this.getChartSize()
       this.chart && this.chart.resize()
     }
   },
@@ -73,6 +82,21 @@ export default {
     }
   },
   methods: {
+    getChartSize () {
+      if (this.domId) {
+        const dom = document.getElementById(this.domId)
+        if (!dom) return
+        const bounc = dom.getBoundingClientRect()
+        this.chartRect = bounc
+      }
+    },
+    pxWidth (text, font) {
+      const canvas = document.createElement('canvas')
+      const context = canvas.getContext('2d')
+      font && (context.font = font)
+      const metrics = context.measureText(text)
+      return metrics.width
+    },
     // provide an explicit merge option method
     mergeOptions (options, notMerge, lazyUpdate) {
       if (this.manualUpdate) {
@@ -137,6 +161,34 @@ export default {
     getArea () {
       return this.$el.offsetWidth * this.$el.offsetHeight
     },
+    formatOptions (options) {
+      if (this.domId && !this.ignoreAutoLabelStyle) {
+        const { xAxis = {} } = options
+        if (R.is(Object, xAxis)) {
+          const { axisLabel = {}, data = [] } = xAxis
+          xAxis.axisLabel = axisLabel
+          const labelStr = data.join(',')
+          const len = data.length || 0
+          const width = this.pxWidth(labelStr, '12px')
+          if (this.chartRect.width && width + len * 16 > this.chartRect.width * 0.6) {
+            // 需要倾斜
+            xAxis.axisLabel.rotate = 45
+            xAxis.axisLabel.interval = 0
+          }
+          // if (this.chartRect.width && !xAxis.axisLabel.rotate && !xAxis.axisLabel.width) {
+          //   console.log('设置换行')
+          //   // 没有倾斜设置换行
+          //   const allWidth = this.chartRect.width * 0.8
+          //   const labelWidth = allWidth / len
+          //   console.log('宽度', labelWidth)
+          //   xAxis.axisLabel.width = labelWidth
+          //   xAxis.axisLabel.overflow = 'breakAll'
+          //   xAxis.axisLabel.interval = 0
+          // }
+        }
+      }
+      return options
+    },
     init (options) {
       if (this.chart) {
         return
@@ -145,7 +197,8 @@ export default {
       if (this.group) {
         chart.group = this.group
       }
-      chart.setOption(options || this.manualOptions || this.options || {}, true)
+      const formatOptions = this.formatOptions(options || this.manualOptions || this.options || {})
+      chart.setOption(formatOptions, true)
       Object.keys(this.$listeners).forEach(event => {
         const handler = this.$listeners[event]
         if (event.indexOf('zr:') === 0) {
@@ -224,7 +277,8 @@ export default {
               // will trigger `this.chart.setOption(val, true)
               // `this.options.title.text = 'Trends'`
               // will trigger `this.chart.setOption(val, false)`
-              this.chart.setOption(val, val !== oldVal)
+              const formatOptions = this.formatOptions(val || {})
+              this.chart.setOption(formatOptions, val !== oldVal)
             }
             this.$emit('chartInstance', this.chart)
           },
