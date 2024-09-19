@@ -64,6 +64,18 @@ export default {
     noDataCheck: {
       type: Function,
     },
+    domId: {
+      type: String,
+    },
+    ignoreAutuLabelStyle: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data () {
+    return {
+      chartRect: {},
+    }
   },
   computed: {
     noData () {
@@ -122,6 +134,35 @@ export default {
           }
         }
       }
+      if (this.domId && !this.ignoreAutuLabelStyle) {
+        const { xAxis = [] } = config
+        xAxis.map(item => {
+          item.axisLabel = item.axisLabel || {}
+          const { data = {} } = item
+          let labelStr = ''
+          let len = 0
+          if (R.is(Array, data)) {
+            labelStr = Object.values(data).join(',')
+            len = data.length
+          } else if (R.is(Object, data)) {
+            labelStr = Object.values(data).join(',')
+            len = Object.values(data).length
+          }
+          const width = this.pxWidth(labelStr, '12px')
+          if (this.chartRect.width && width + len * 16 > this.chartRect.width * 0.6) {
+            // 需要倾斜
+            item.axisLabel.rotate = 45
+            item.axisLabel.interval = 0
+          }
+          // if (this.chartRect.width && !xAxis.axisLabel.rotate && !xAxis.axisLabel.width) {
+          //   // 没有倾斜设置换行
+          //   const allWidth = this.chartRect.width * 0.8
+          //   const labelWidth = allWidth / len
+          //   xAxis.axisLabel.width = labelWidth
+          //   xAxis.axisLabel.overflow = 'breakAll'
+          // }
+        })
+      }
       return config
     },
   },
@@ -130,7 +171,25 @@ export default {
       deep: true,
       handler () {
         this.$refs.chart.echarts.resize()
+        this.getChartSize()
       },
+    },
+  },
+  methods: {
+    getChartSize () {
+      if (this.domId) {
+        const dom = document.getElementById(this.domId)
+        if (!dom) return
+        const bounc = dom.getBoundingClientRect()
+        this.chartRect = bounc
+      }
+    },
+    pxWidth (text, font) {
+      const canvas = document.createElement('canvas')
+      const context = canvas.getContext('2d')
+      font && (context.font = font)
+      const metrics = context.measureText(text)
+      return metrics.width
     },
   },
 }
