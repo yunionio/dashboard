@@ -14,7 +14,7 @@
           <a-input v-decorator="decorators.username" />
         </a-form-item>
         <a-form-item :label="$t('compute.qga.password')">
-          <server-password :decorator="decorators.loginConfig" :login-types="loginTypes" />
+          <server-password ref="serverPassword" :decorator="decorators.loginConfig" :login-types="loginTypes" :disabledLoginTypes="disabledLoginTypes" />
         </a-form-item>
         <a-form-item v-if="enableAutoStart" :label="$t('compute.text_494')" :extra="$t('compute.text_1229')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_start" :disabled="form.fi.disableAutoStart" />
@@ -71,9 +71,18 @@ export default {
       loading: false,
       loginTypes: [LOGIN_TYPES_MAP.random.key, LOGIN_TYPES_MAP.password.key],
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              this.form.fd[key] = values[key]
+            })
+          },
+        }),
         fi: {
           disableAutoStart,
+        },
+        fd: {
+          username: login_account || userName[firstData.os_type],
         },
       },
       decorators: {
@@ -109,6 +118,7 @@ export default {
       },
       qgaDoc: getDoc(DOC_MAP.QGA),
       checkQgaOK: true,
+      loginAccount: login_account,
     }
   },
   computed: {
@@ -138,6 +148,22 @@ export default {
     },
     isSupportQgaPing () {
       return this.isAllKvm && this.isAllRunning && this.isSingle
+    },
+    disabledLoginTypes () {
+      if (this.form.fd.username && this.form.fd.username !== this.loginAccount) {
+        return [LOGIN_TYPES_MAP.random.key]
+      }
+      return []
+    },
+  },
+  watch: {
+    disabledLoginTypes (val, oldVal) {
+      if (!oldVal.length && val.length) {
+        this.form.fc.setFieldsValue({
+          loginType: LOGIN_TYPES_MAP.password.key,
+        })
+        this.$refs.serverPassword.loginTypeChange({ target: { value: LOGIN_TYPES_MAP.password.key } })
+      }
     },
   },
   created () {
