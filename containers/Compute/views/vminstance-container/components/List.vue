@@ -154,11 +154,16 @@ export default {
             })
           },
           meta: () => {
-            return {
+            const ret = {
               buttonType: 'primary',
               validate: !this.cloudEnvEmpty,
               tooltip: this.cloudEnvEmpty ? this.$t('common.no_platform_available') : '',
             }
+            if (ret.validate && !this.hasContainerHost) {
+              ret.validate = false
+              ret.tooltip = this.$t('compute.no_enabled_container_host')
+            }
+            return ret
           },
           hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_create') || this.hiddenActions.includes('create'),
         },
@@ -312,6 +317,7 @@ export default {
         resource: 'servers',
         queryTreeId: 'project-tag-value-tree',
       },
+      hasContainerHost: false,
     }
   },
   computed: {
@@ -442,6 +448,7 @@ export default {
     },
   },
   created () {
+    this.fetchHost()
     this.initSidePageTab('detail')
     this.list.fetchData().then(() => {
       this.$nextTick(() => {
@@ -458,6 +465,20 @@ export default {
     }, this)
   },
   methods: {
+    fetchHost () {
+      try {
+        new this.$Manager('hosts').list({
+          params: {
+            limit: 1,
+            enabled: true,
+            host_type: 'container',
+          },
+        }).then(res => {
+          const list = res.data?.data || []
+          this.hasContainerHost = list.length > 0
+        })
+      } catch (err) { }
+    },
     getParam () {
       const ret = {
         details: true,
