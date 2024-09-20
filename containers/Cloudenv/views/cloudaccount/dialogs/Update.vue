@@ -76,6 +76,14 @@
             :placeholder="$t('common.tips.input', [$t('cloudenv.private_key')])"
             :auto-size="{ minRows: 6, maxRows: 8 }" />
         </upload-pem-file>
+        <template v-if="isCephFS">
+          <a-form-item label="Mon Host" :extra="$t('cloudenv.mon_host_extra')">
+            <a-input v-decorator="decorators.mon_host" />
+          </a-form-item>
+          <a-form-item label="Secret">
+            <a-input-password v-decorator="decorators.secret" />
+          </a-form-item>
+        </template>
       </a-form>
     </div>
     <div slot="footer">
@@ -91,9 +99,10 @@ import * as R from 'ramda'
 import UploadJsonFile from '@Cloudenv/views/cloudaccount/components/UploadJsonFile'
 import UploadPemFile from '@Cloudenv/views/cloudaccount/components/UploadPemFile'
 import TestButton from '@/sections/TestButton'
-import { HYPERVISORS_MAP } from '@/constants'
+import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import regexp from '@/utils/regexp'
 import { keySecretFields, getCloudaccountDocs } from '../constants'
 
 export default {
@@ -103,6 +112,9 @@ export default {
   data () {
     const provider = this.params.data[0].brand.toLowerCase()
     const isVMware = provider === HYPERVISORS_MAP.esxi.provider.toLowerCase()
+    const { options = {} } = this.params.data[0]
+    const initMonHost = options.mon_host || ''
+    const initSecret = options.secret || ''
     return {
       loading: false,
       form: {
@@ -194,6 +206,32 @@ export default {
           account: ['options.account'],
           password: ['options.password'],
         },
+        mon_host: [
+          'mon_host',
+          {
+            initialValue: initMonHost,
+            rules: [
+              {
+                validator: (rule, value, callback) => {
+                  if (!value) callback()
+                  const list = value.split(',')
+                  if (list.every(str => {
+                    return regexp.isIPv4AndPort(str)
+                  })) {
+                    callback()
+                  }
+                  callback(new Error(this.$t('cloudenv.check_mon_host')))
+                },
+              },
+            ],
+          },
+        ],
+        secret: [
+          'secret',
+          {
+            initialValue: initSecret,
+          },
+        ],
       },
       endpointTypeOpts: [
         { key: 'internal', label: 'internal' },
@@ -229,6 +267,9 @@ export default {
     },
     isHcs () {
       return this.provider === HYPERVISORS_MAP.hcs.key
+    },
+    isCephFS () {
+      return this.provider === EXTRA_HYPERVISORS.CephFS.key.toLowerCase()
     },
     isOraclecloud () {
       return this.provider === HYPERVISORS_MAP.oracle.provider.toLowerCase()
@@ -291,6 +332,13 @@ export default {
             if (params.oracle_private_pem) {
               params.oracle_private_key = params.oracle_private_pem
               delete params.oracle_private_pem
+            }
+            if (this.isCephFS) {
+              params.options = params.options || {}
+              params.options.mon_host = params.mon_host
+              params.options.password = params.secret
+              delete params.mon_host
+              delete params.secret
             }
             resolve(params)
           }

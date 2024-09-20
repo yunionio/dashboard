@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import { PROVIDER_MAP } from '@/constants'
+import { PROVIDER_MAP, EXTRA_HYPERVISORS } from '@/constants'
 import { keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import BlockedResources from '@Cloudenv/views/cloudaccount/components/BlockedResources'
 
@@ -130,6 +130,15 @@ export default {
         if (params.zone) {
           params.zone = params.zone?.key
           delete params.cloudregion
+        }
+      }
+      if (this.provider === EXTRA_HYPERVISORS.CephFS.key) {
+        if (params.mon_host || params.secret) {
+          params.options = params.options || {}
+          params.options.mon_host = params.mon_host
+          params.options.password = params.secret
+          delete params.mon_host
+          delete params.secret
         }
       }
       return params
