@@ -4,6 +4,10 @@ export default {
     const rx = /^(\d+\.){3}(\d+)?$/
     return rx.test(search)
   },
+  isIPv4AndPort: (search) => {
+    const rx = /^(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::\d{1,5})$/
+    return rx.test(search)
+  },
   isUUID: (search) => {
     const uuid = /(^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$)|(^[0-9a-fA-F]{32}$)|(^[0-9a-fA-F]{64}$)/
     return uuid.test(search)
