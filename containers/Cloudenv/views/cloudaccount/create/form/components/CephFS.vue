@@ -19,6 +19,12 @@
       <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
+      <a-form-item label="Mon Host" :extra="$t('cloudenv.mon_host_extra')">
+        <a-input v-decorator="decorators.mon_host" />
+      </a-form-item>
+      <a-form-item label="Secret">
+        <a-input-password v-decorator="decorators.secret" />
+      </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" :cloneData="cloneData" />
       <blocked-resources :decorators="{ isOpenBlockedResources: decorators.isOpenBlockedResources, blockedResources: decorators.blockedResources }" :cloneData="cloneData" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" :cloneData="cloneData" />
@@ -36,6 +42,7 @@ import DomainProject from '@Cloudenv/views/cloudaccount/components/DomainProject
 import { getCloudaccountDocs, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
 import { getDocsUrl } from '@/utils/utils'
+import regexp from '@/utils/regexp'
 import createMixin from './createMixin'
 
 export default {
@@ -51,13 +58,15 @@ export default {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
     let initHost = ''
     let initPort = ''
+    let initMonHost = ''
+    let initSecret = ''
     let initDomain = {
       key: this.$store.getters.userInfo.projectDomainId,
       label: this.$store.getters.userInfo.projectDomain,
     }
     let initAutoCreateProject = false
     if (this.cloneData) {
-      const { access_url, domain_id, project_domain, auto_create_project = false } = this.cloneData
+      const { access_url, domain_id, project_domain, auto_create_project = false, options = {} } = this.cloneData
       if (domain_id && project_domain) {
         initDomain = {
           key: domain_id,
@@ -71,6 +80,8 @@ export default {
         initHost = list[0]
         initPort = list[1] || 8006
       }
+      initMonHost = options.mon_host || ''
+      initSecret = options.password || ''
     }
     return {
       baseDocURL: getDocsUrl(this.$store.getters.scope),
@@ -121,6 +132,32 @@ export default {
             rules: [
               { required: true, message: keySecretField.placeholder.s },
             ],
+          },
+        ],
+        mon_host: [
+          'mon_host',
+          {
+            initialValue: initMonHost,
+            rules: [
+              {
+                validator: (rule, value, callback) => {
+                  if (!value) callback()
+                  const list = value.split(',')
+                  if (list.every(str => {
+                    return regexp.isIPv4AndPort(str)
+                  })) {
+                    callback()
+                  }
+                  callback(new Error(this.$t('cloudenv.check_mon_host')))
+                },
+              },
+            ],
+          },
+        ],
+        secret: [
+          'secret',
+          {
+            initialValue: initSecret,
           },
         ],
         domain: [
