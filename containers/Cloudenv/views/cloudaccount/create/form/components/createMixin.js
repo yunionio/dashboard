@@ -133,12 +133,14 @@ export default {
         }
       }
       if (this.provider === EXTRA_HYPERVISORS.CephFS.key) {
-        if (params.mon_host || params.secret) {
+        if (params.mon_host || params.secret || params.option_name) {
           params.options = params.options || {}
           params.options.mon_host = params.mon_host
           params.options.password = params.secret
+          params.options.name = params.option_name
           delete params.mon_host
           delete params.secret
+          delete params.option_name
         }
       }
       return params

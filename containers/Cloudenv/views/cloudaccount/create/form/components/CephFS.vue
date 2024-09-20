@@ -19,6 +19,9 @@
       <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
+      <a-form-item label="Name">
+        <a-input v-decorator="decorators.option_name" />
+      </a-form-item>
       <a-form-item label="Mon Host" :extra="$t('cloudenv.mon_host_extra')">
         <a-input v-decorator="decorators.mon_host" />
       </a-form-item>
@@ -59,6 +62,7 @@ export default {
     let initHost = ''
     let initPort = ''
     let initMonHost = ''
+    let initName = ''
     let initDomain = {
       key: this.$store.getters.userInfo.projectDomainId,
       label: this.$store.getters.userInfo.projectDomain,
@@ -80,6 +84,7 @@ export default {
         initPort = list[1] || 8006
       }
       initMonHost = options.mon_host || ''
+      initName = options.name || ''
     }
     return {
       baseDocURL: getDocsUrl(this.$store.getters.scope),
@@ -154,6 +159,12 @@ export default {
         ],
         secret: [
           'secret',
+        ],
+        option_name: [
+          'option_name',
+          {
+            initialValue: initName,
+          },
         ],
         domain: [
           'domain',
