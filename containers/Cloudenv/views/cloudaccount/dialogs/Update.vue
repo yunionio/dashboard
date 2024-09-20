@@ -77,6 +77,9 @@
             :auto-size="{ minRows: 6, maxRows: 8 }" />
         </upload-pem-file>
         <template v-if="isCephFS">
+          <a-form-item label="Name">
+            <a-input v-decorator="decorators.option_name" />
+          </a-form-item>
           <a-form-item label="Mon Host" :extra="$t('cloudenv.mon_host_extra')">
             <a-input v-decorator="decorators.mon_host" />
           </a-form-item>
@@ -114,6 +117,7 @@ export default {
     const isVMware = provider === HYPERVISORS_MAP.esxi.provider.toLowerCase()
     const { options = {} } = this.params.data[0]
     const initMonHost = options.mon_host || ''
+    const initName = options.name || ''
     const field = keySecretFields[provider] || {}
     return {
       loading: false,
@@ -206,6 +210,12 @@ export default {
           account: ['options.account'],
           password: ['options.password'],
         },
+        option_name: [
+          'option_name',
+          {
+            initialValue: initName,
+          },
+        ],
         mon_host: [
           'mon_host',
           {
@@ -334,8 +344,10 @@ export default {
               params.options = params.options || {}
               params.options.mon_host = params.mon_host
               params.options.password = params.secret
+              params.options.name = params.option_name
               delete params.mon_host
               delete params.secret
+              delete params.option_name
             }
             resolve(params)
           }
