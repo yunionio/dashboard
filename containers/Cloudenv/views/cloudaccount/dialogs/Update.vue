@@ -114,7 +114,6 @@ export default {
     const isVMware = provider === HYPERVISORS_MAP.esxi.provider.toLowerCase()
     const { options = {} } = this.params.data[0]
     const initMonHost = options.mon_host || ''
-    const initSecret = options.password || ''
     const field = keySecretFields[provider] || {}
     return {
       loading: false,
@@ -229,9 +228,6 @@ export default {
         ],
         secret: [
           'secret',
-          {
-            initialValue: initSecret,
-          },
         ],
       },
       endpointTypeOpts: [
