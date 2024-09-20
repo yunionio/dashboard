@@ -114,7 +114,8 @@ export default {
     const isVMware = provider === HYPERVISORS_MAP.esxi.provider.toLowerCase()
     const { options = {} } = this.params.data[0]
     const initMonHost = options.mon_host || ''
-    const initSecret = options.secret || ''
+    const initSecret = options.password || ''
+    const field = keySecretFields[provider] || {}
     return {
       loading: false,
       form: {
@@ -143,7 +144,7 @@ export default {
           {
             initialValue: isVMware ? this.params.data[0].account : undefined,
             rules: [
-              { required: true, message: this.$t('cloudenv.text_306') },
+              { required: true, message: field.placeholder?.k || this.$t('cloudenv.text_149') },
             ],
           },
         ],
@@ -151,7 +152,7 @@ export default {
           keySecretFields[provider].s,
           {
             rules: [
-              { required: true, message: this.$t('cloudenv.text_150') },
+              { required: true, message: field.placeholder?.s || this.$t('cloudenv.text_150') },
             ],
           },
         ],
@@ -354,6 +355,11 @@ export default {
           params.access_key_id = params.access_key_id + '::' + params.ucloud_project_id
           delete params.ucloud_project_id
         }
+        let options
+        if (params.options) {
+          options = params.options
+          delete params.options
+        }
         await this.params.onManager('performAction', {
           id: this.params.data[0].id,
           managerArgs: {
@@ -361,6 +367,16 @@ export default {
             data: params,
           },
         })
+        if (options) {
+          await this.params.onManager('update', {
+            id: this.params.data[0].id,
+            managerArgs: {
+              data: {
+                options,
+              },
+            },
+          })
+        }
         this.loading = false
         this.cancelDialog()
       } catch (error) {

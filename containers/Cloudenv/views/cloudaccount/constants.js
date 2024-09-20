@@ -776,11 +776,11 @@ export const keySecretFields = {
     s: 'password',
     text: 'CephFS',
     placeholder: {
-      k: i18n.t('cloudenv.text_144'),
-      s: i18n.t('cloudenv.text_145'),
+      k: i18n.t('cloudenv.text_151'),
+      s: i18n.t('cloudenv.text_150'),
     },
     label: {
-      k: i18n.t('cloudenv.text_146'),
+      k: i18n.t('cloudenv.text_94'),
       s: i18n.t('cloudenv.text_147'),
     },
   },
