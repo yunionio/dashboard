@@ -145,7 +145,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.nas')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'huawei', 'hcs'])
+              return !hasSetupKey(['aliyun', 'huawei', 'hcs', 'cephfs'])
             },
           },
           component: Layout,
@@ -171,7 +171,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.access_group')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'huawei', 'hcs'])
+              return !hasSetupKey(['aliyun', 'huawei', 'hcs', 'cephfs'])
             },
           },
           component: Layout,
