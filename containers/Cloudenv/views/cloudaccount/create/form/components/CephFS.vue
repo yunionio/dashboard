@@ -59,7 +59,6 @@ export default {
     let initHost = ''
     let initPort = ''
     let initMonHost = ''
-    let initSecret = ''
     let initDomain = {
       key: this.$store.getters.userInfo.projectDomainId,
       label: this.$store.getters.userInfo.projectDomain,
@@ -81,7 +80,6 @@ export default {
         initPort = list[1] || 8006
       }
       initMonHost = options.mon_host || ''
-      initSecret = options.password || ''
     }
     return {
       baseDocURL: getDocsUrl(this.$store.getters.scope),
@@ -156,9 +154,6 @@ export default {
         ],
         secret: [
           'secret',
-          {
-            initialValue: initSecret,
-          },
         ],
         domain: [
           'domain',
