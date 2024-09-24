@@ -63,6 +63,17 @@
             loading: accountLoading
             }" />
       </a-form-item>
+      <a-form-item class="mt-2" :label="$t('compute.bastionHost.domain')">
+        <base-select
+          v-decorator="decorator.bastion_domain_id"
+          :options="domains"
+          :filterable="true"
+          :select-props="{
+            placeholder: $t('common.tips.select', [$t('compute.bastionHost.domain')]),
+            allowClear: true,
+            loading: domainLoading
+            }" />
+      </a-form-item>
     </template>
   </div>
 </template>
@@ -91,10 +102,12 @@ export default {
       bastionHostLoading: false,
       nodeLoading: false,
       accountLoading: false,
+      domainLoading: false,
       bastionHosts: [],
       nodes: [],
       privilegedAccounts: [],
       accounts: [],
+      domains: [],
     }
   },
   computed: {
@@ -121,6 +134,7 @@ export default {
     bastionHostChangeHandle (v) {
       this.fetchNodes(v)
       this.fetchAllAccounts(v)
+      this.fetchDomains(v)
     },
     async fetchBastionHosts () {
       try {
@@ -175,6 +189,24 @@ export default {
         throw error
       } finally {
         this.accountLoading = false
+      }
+    },
+    async fetchDomains (bastionHostId) {
+      try {
+        this.domainLoading = true
+        this.domains = []
+        const { data: { domains = [] } } = await new this.$Manager('bastion_hosts')
+          .getSpecific({ id: bastionHostId, spec: 'bastion-domains' })
+        this.domains = domains.map(o => {
+          return {
+            key: o.id,
+            label: o.name,
+          }
+        })
+      } catch (error) {
+        throw error
+      } finally {
+        this.domainLoading = false
       }
     },
   },
