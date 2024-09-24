@@ -1819,5 +1819,6 @@
   "compute.kvm_rebuild_tip4": "4.ホストシステムのディスク容量は、ミラーリングの最小ディスク要件を満たす必要があります。そうしないと、対応するミラーリングを選択できません",
   "compute.kvm_rebuild_tip5": "5.再ロードシステムはローカルISOフォーマットミラーリングの選択をサポートしていない",
   "compute.kvm_rebuild_tip6": "6.ミラー状態は使用可能な状態である必要がある",
-  "compute.no_enabled_container_host": "有効なコンテナシンクホストがありません"
+  "compute.no_enabled_container_host": "有効なコンテナシンクホストがありません",
+  "compute.bastionHost.domain": "ネットワークドメイン"
 }
