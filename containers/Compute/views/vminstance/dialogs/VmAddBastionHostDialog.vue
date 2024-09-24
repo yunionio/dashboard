@@ -89,6 +89,9 @@ export default {
               ],
             },
           ],
+          bastion_domain_id: [
+            'bastion_domain_id',
+          ],
         },
       },
     }
@@ -108,6 +111,7 @@ export default {
           server_id: curItem.id,
           name: curItem.name,
           os_type: curItem.os_type,
+          bastion_domain_id: values.bastion_domain_id,
         }
         bsManager.create({ data, params: { $t: uuid() } })
         this.$message.success(this.$t('common.success'))
