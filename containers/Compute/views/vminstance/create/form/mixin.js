@@ -739,6 +739,7 @@ export default {
         port,
         privileged_accounts,
         accounts,
+        bastion_domain_id,
         reason,
       } = this.form.fd
       return {
@@ -747,6 +748,7 @@ export default {
         port,
         description: reason,
         accounts: [privileged_accounts].concat(accounts),
+        bastion_domain_id,
       }
     },
     addShopCart () {

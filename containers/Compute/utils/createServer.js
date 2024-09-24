@@ -849,6 +849,9 @@ export const createVmDecorators = type => {
           ],
         },
       ],
+      bastion_domain_id: [
+        'bastion_domain_id',
+      ],
     },
     is_daemon: [
       'is_daemon',
