@@ -1,6 +1,8 @@
 import { metricItems } from '@Compute/views/node-alert/constants'
 import i18n from '@/locales'
 
+const NETIO_GROUP_BY_TAG = ['interface', 'host_interface', 'ip', 'mac']
+
 // 容器主机监控数据
 export const POD_MONITOR = [
   {
@@ -32,21 +34,14 @@ export const POD_MONITOR = [
   },
   {
     name: 'pod_volume',
-    label: i18n.t('compute.container.monitor.pod_volume_total'),
-    seleteItem: 'total',
+    label: i18n.t('compute.container.monitor.pod_volume_used_total'),
+    seleteItem: 'used,total',
+    as: i18n.t('compute.container.monitor.used_total'),
     fromItem: 'pod_volume',
     unit: 'B',
     transfer: 1024,
-    metric: metricItems['pod_volume.total'].key,
-  },
-  {
-    name: 'pod_volume',
-    label: i18n.t('compute.container.monitor.pod_volume_used'),
-    seleteItem: 'used',
-    fromItem: 'pod_volume',
-    unit: 'B',
-    transfer: 1024,
-    metric: metricItems['pod_volume.used'].key,
+    // metric: metricItems['pod_volume.total'].key,
+    groupBy: ['mount_path', 'type'],
   },
   {
     name: 'pod_volume',
@@ -56,6 +51,7 @@ export const POD_MONITOR = [
     unit: '%',
     transfer: 1,
     metric: metricItems['pod_volume.used_percent'].key,
+    groupBy: ['mount_path', 'type'],
   },
   {
     name: 'pod_netio',
@@ -65,6 +61,7 @@ export const POD_MONITOR = [
     unit: 'bps',
     transfer: 1024,
     metric: metricItems['pod_netio.bps_recv'].key,
+    groupBy: NETIO_GROUP_BY_TAG,
   },
   {
     name: 'pod_netio',
@@ -74,6 +71,7 @@ export const POD_MONITOR = [
     unit: 'bps',
     transfer: 1024,
     metric: metricItems['pod_netio.bps_sent'].key,
+    groupBy: NETIO_GROUP_BY_TAG,
   },
   {
     name: 'pod_netio',
@@ -83,6 +81,7 @@ export const POD_MONITOR = [
     transfer: 1,
     unit: 'pps',
     metric: metricItems['pod_netio.pps_sent'].key,
+    groupBy: NETIO_GROUP_BY_TAG,
   },
   {
     name: 'pod_netio',
@@ -92,5 +91,6 @@ export const POD_MONITOR = [
     transfer: 1,
     unit: 'pps',
     metric: metricItems['pod_netio.pps_recv'].key,
+    groupBy: NETIO_GROUP_BY_TAG,
   },
 ]

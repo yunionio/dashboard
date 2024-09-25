@@ -2,13 +2,14 @@ import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
 
 function genServerQueryData (vmId, val, scope, from, interval, idKey, customTime, skip_check_series, extraTags = []) {
-  const model = {
-    measurement: val.fromItem,
-    select: [
-      [
+  let select = []
+  if (val.as) {
+    const asItems = val.as.split(',')
+    select = val.seleteItem.split(',').map((val, i) => {
+      return [
         {
           type: 'field',
-          params: [val.seleteItem],
+          params: [val],
         },
         { // 对应 mean(val.seleteItem)
           type: val.groupFunc || val.selectFunction || 'mean',
@@ -16,10 +17,31 @@ function genServerQueryData (vmId, val, scope, from, interval, idKey, customTime
         },
         { // 确保后端返回columns有 val.label 的别名
           type: 'alias',
+          params: [asItems[i]],
+        },
+      ]
+    })
+  } else {
+    select = val.seleteItem.split(',').map((v, i) => {
+      return [
+        {
+          type: 'field',
+          params: [v],
+        },
+        { // 对应 mean(val.seleteItem)
+          type: v.groupFunc || v.selectFunction || 'mean',
+          params: [],
+        },
+        { // 确保后端返回columns有 val.label 的别名
+          type: 'alias',
           params: [val.label],
         },
-      ],
-    ],
+      ]
+    })
+  }
+  const model = {
+    measurement: val.fromItem,
+    select,
     tags: [
       {
         key: idKey,
