@@ -29,6 +29,16 @@ export const timeOpts = {
       { key: '10m', label: i18n.t('monitor.text00009') },
     ],
   },
+  [`${12}h`]: {
+    key: `${12}h`,
+    label: i18n.t('monitor.text00004'),
+    timeFormat: 'YYYY-MM-DD HH:mm',
+    timeGroupOpts: [
+      { key: '5m', label: i18n.t('monitor.text00008') },
+      { key: '10m', label: i18n.t('monitor.text00009') },
+      { key: '30m', label: i18n.t('monitor.text00010') },
+    ],
+  },
   [`${24}h`]: {
     key: `${24}h`,
     label: i18n.t('monitor.text00004'),
@@ -49,6 +59,28 @@ export const timeOpts = {
       { key: '10m', label: i18n.t('monitor.text00009') },
       { key: '30m', label: i18n.t('monitor.text00010') },
       { key: '1h', label: i18n.t('monitor.text00011') },
+    ],
+  },
+  [`${7 * 24}h`]: {
+    key: `${7 * 24}h`,
+    label: i18n.t('monitor.text00005_1'),
+    timeFormat: 'YYYY-MM-DD HH:mm',
+    timeGroupOpts: [
+      { key: '30m', label: i18n.t('monitor.text00010') },
+      { key: '1h', label: i18n.t('monitor.text00011') },
+      { key: '6h', label: i18n.t('monitor.text00012') },
+      { key: '24h', label: i18n.t('monitor.text00013') },
+    ],
+  },
+  [`${30 * 24}h`]: {
+    key: `${30 * 24}h`,
+    label: i18n.t('monitor.text00005_2'),
+    timeFormat: 'YYYY-MM-DD HH:mm',
+    timeGroupOpts: [
+      { key: '30m', label: i18n.t('monitor.text00010') },
+      { key: '1h', label: i18n.t('monitor.text00011') },
+      { key: '6h', label: i18n.t('monitor.text00012') },
+      { key: '24h', label: i18n.t('monitor.text00013') },
     ],
   },
   custom: {
