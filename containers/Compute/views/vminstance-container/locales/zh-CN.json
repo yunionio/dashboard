@@ -45,5 +45,12 @@
   "compute.repo.helper.set_duration.alert": "到期后，将会删除对应平台的容器主机。实际释放时间与设置时间存在一定误差，具体释放时间以实际为准。",
   "compute.container.monitor.pod_mem_used": "已使用内存",
   "compute.container.port_mapping.tooltip": "目前只有创建1台容器主机才支持该操作",
-  "compute.repo.helper.view_log": "运行中或退出的{0}才可以进入终端"
+  "compute.repo.helper.view_log": "运行中或退出的{0}才可以进入终端",
+  "compute.container.monitor.pod_volume_total": "数据卷总量大小",
+  "compute.container.monitor.pod_volume_used": "数据卷已使用大小",
+  "compute.container.monitor.pod_volume_used_percent": "数据卷使用率",
+  "compute.container.monitor.pod_netio_bps_recv": "每秒接受字节数",
+  "compute.container.monitor.pod_netio_bps_sent": "每秒发送字节数",
+  "compute.container.monitor.pod_netio_pps_recv": "网络收包数/秒",
+  "compute.container.monitor.pod_netio_pps_sent": "网络发包数/秒"
 }

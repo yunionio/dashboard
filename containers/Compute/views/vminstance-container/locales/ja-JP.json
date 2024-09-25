@@ -45,5 +45,12 @@
   "compute.repo.helper.set_duration.alert": "有効期限が切れると、対応するプラットフォームのコンテナ ホストは削除されます。実際のリリース時間と設定された時間の間には一定の不一致があります。特定のリリース時間が優先されます。",
   "compute.container.monitor.pod_mem_used": "使用されたメモリ",
   "compute.container.port_mapping.tooltip": "現在、この操作はコンテナー ホストを作成する場合にのみサポートされています",
-  "compute.repo.helper.view_log": "実行中のコンテナー {0}ーミナルに入ることができます"
+  "compute.repo.helper.view_log": "実行中のコンテナー {0}ーミナルに入ることができます",
+  "compute.container.monitor.pod_volume_total": "データボリュームの合計サイズ",
+  "compute.container.monitor.pod_volume_used": "データボリュームの使用済みサイズ",
+  "compute.container.monitor.pod_volume_used_percent": "データボリューム使用率",
+  "compute.container.monitor.pod_netio_bps_recv": "1秒当たりの許容バイト数",
+  "compute.container.monitor.pod_netio_bps_sent": "送信バイト数/秒",
+  "compute.container.monitor.pod_netio_pps_recv": "ネットワークパケット受信数／秒",
+  "compute.container.monitor.pod_netio_pps_sent": "ネットワーク送信パケット数／秒"
 }
