@@ -65,6 +65,13 @@ export const metricItems = {
   'container_cpu.usage_rate': { key: 'container_cpu.usage_rate', label: i18n.t('compute.text_523'), unit: '%' },
   'container_mem.usage_rate': { key: 'container_mem.usage_rate', label: i18n.t('compute.text_518'), unit: '%' },
   'container_mem.working_set_bytes': { key: 'container_mem.working_set_bytes', label: i18n.t('compute.container.monitor.pod_mem_used'), unit: 'B' },
+  'pod_volume.total': { key: 'pod_volume.total', label: i18n.t('compute.container.monitor.pod_volume_total'), unit: 'B' },
+  'pod_volume.used': { key: 'pod_volume.used', label: i18n.t('compute.container.monitor.pod_volume_used'), unit: 'B' },
+  'pod_volume.used_percent': { key: 'pod_volume.used_percent', label: i18n.t('compute.container.monitor.pod_volume_used_percent'), unit: '%' },
+  'pod_netio.bps_recv': { key: 'pod_netio.bps_recv', label: i18n.t('compute.container.monitor.pod_netio_bps_recv'), unit: 'bps' },
+  'pod_netio.bps_sent': { key: 'pod_netio.bps_sent', label: i18n.t('compute.container.monitor.pod_netio_bps_sent'), unit: 'bps' },
+  'pod_netio.pps_recv': { key: 'pod_netio.pps_recv', label: i18n.t('compute.container.monitor.pod_netio_pps_recv'), unit: 'pps' },
+  'pod_netio.pps_sent': { key: 'pod_netio.pps_sent', label: i18n.t('compute.container.monitor.pod_netio_pps_sent'), unit: 'pps' },
 }
 
 export const TIME_CN = {

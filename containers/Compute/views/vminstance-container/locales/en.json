@@ -45,5 +45,12 @@
   "compute.repo.helper.set_duration.alert": "After expiration, the container host of the corresponding platform will be deleted. There is a certain discrepancy between the actual release time and the set time. The specific release time shall prevail.",
   "compute.container.monitor.pod_mem_used": "Memory used",
   "compute.container.port_mapping.tooltip": "Currently, this operation is only supported when creating a container host",
-  "compute.repo.helper.view_log": "Only the running or exited {0} can enter the terminal"
+  "compute.repo.helper.view_log": "Only the running or exited {0} can enter the terminal",
+  "compute.container.monitor.pod_volume_total": "Total volume size of data",
+  "compute.container.monitor.pod_volume_used": "The size of the data volume has been used",
+  "compute.container.monitor.pod_volume_used_percent": "Data volume utilization rate",
+  "compute.container.monitor.pod_netio_bps_recv": "Accepting bytes per second",
+  "compute.container.monitor.pod_netio_bps_sent": "Number of bytes sent per second",
+  "compute.container.monitor.pod_netio_pps_recv": "Number of network packets received per second",
+  "compute.container.monitor.pod_netio_pps_sent": "Number of network packets per second"
 }
