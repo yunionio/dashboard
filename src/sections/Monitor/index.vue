@@ -110,8 +110,37 @@ export default {
           return vals.join(' ')
         }
 
+        let newSeries = []
         const { series = [] } = val // series长度取决于metric_query长度
-        series.map(serie => {
+        if (val.constants.as) {
+          const asList = val.constants.as.split(',')
+          if (asList.length > 0) {
+            series.map(serie => {
+              const columns = serie.columns || []
+              const timeIdx = columns.findIndex(col => col === 'time')
+              if (columns.length > 2 && timeIdx >= 0) {
+                columns.map((col, idx) => {
+                  if (idx !== timeIdx) {
+                    const serieItem = {
+                      ...serie,
+                      columns: [col, columns[timeIdx]],
+                      name: col,
+                      points: [],
+                    }
+                    serie.points.map(p => {
+                      serieItem.points.push([p[idx], p[timeIdx]])
+                    })
+                    newSeries.push(serieItem)
+                  }
+                })
+              }
+            })
+          }
+        }
+        if (!newSeries.length) {
+          newSeries = series
+        }
+        newSeries.map(serie => {
           let groupByKey = ''
           if (val.constants.groupBy && val.constants.groupBy.length) {
             groupByKey = getGroupByKey(serie.tags, val.constants.groupBy)
@@ -168,7 +197,7 @@ export default {
           },
         }
         const format = val.constants.format || '0.00' // 默认是保留小数点后两位
-        series.map(item => {
+        newSeries.map(item => {
           const { points = [] } = item
           if (points.length) {
             let groupByKey = ''
@@ -178,6 +207,9 @@ export default {
             let name = item.name
             if (groupByKey) {
               name = groupByKey
+              if (val.constants.as) {
+                name = `${groupByKey}(${item.name})`
+              }
             }
             const seriesItem = { type: 'line', name, data: [] }
             points.map(point => {
