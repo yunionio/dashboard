@@ -211,12 +211,12 @@ export default {
                 name = `${groupByKey}(${item.name})`
               }
             }
-            const seriesItem = { type: 'line', name, data: [] }
+            const seriesItem = { type: 'line', name, data: [], showSymbol: false }
             points.map(point => {
               const momentObj = this.$moment(point[1])
               const time = momentObj._isAMomentObject ? momentObj.format(this.timeFormatStr) : point[1]
               newLineConfig.xAxis.data.push(time)
-              seriesItem.data.push(numerify(point[0], format))
+              seriesItem.data.push(parseFloat(numerify(point[0]), format))
             })
             newLineConfig.series.push(seriesItem)
             newLineConfig.legend.data.push(name)
