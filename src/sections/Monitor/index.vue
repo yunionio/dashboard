@@ -197,7 +197,7 @@ export default {
           },
         }
         const format = val.constants.format || '0.00' // 默认是保留小数点后两位
-        newSeries.map(item => {
+        newSeries.map((item, index) => {
           const { points = [] } = item
           if (points.length) {
             let groupByKey = ''
@@ -215,7 +215,9 @@ export default {
             points.map(point => {
               const momentObj = this.$moment(point[1])
               const time = momentObj._isAMomentObject ? momentObj.format(this.timeFormatStr) : point[1]
-              newLineConfig.xAxis.data.push(time)
+              if (index === 0) {
+                newLineConfig.xAxis.data.push(time)
+              }
               seriesItem.data.push(parseFloat(numerify(point[0]), format))
             })
             newLineConfig.series.push(seriesItem)
