@@ -25,9 +25,21 @@ export default {
       type: Array,
       default: () => ([]),
     },
+    options: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   computed: {
     chartData () {
+      const { series: s, xAxis = {}, legend = {} } = this.options
+      if (s && xAxis.data && legend.data) {
+        return {
+          series: s,
+          xAxisData: xAxis.data,
+          legendData: legend.data,
+        }
+      }
       const mapIndexed = R.addIndex(R.map)
       const series = []
       const [x, ...legendData] = this.columns
@@ -47,13 +59,14 @@ export default {
       const options = {
         grid: {
           left: 10,
-          top: 30,
+          top: 50,
           right: 10,
           bottom: 0,
           containLabel: true,
         },
         legend: {
           right: 5,
+          type: 'scroll',
           data: this.chartData.legendData,
         },
         tooltip: {
