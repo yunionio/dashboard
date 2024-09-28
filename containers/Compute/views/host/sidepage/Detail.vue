@@ -526,7 +526,7 @@ export default {
               title: 'KSM',
               formatter: ({ cellValue, row }) => {
                 let ret = this.$t('table.title.off')
-                if (row && row.metadata && row.metadata.enable_ksm) {
+                if (row && row.metadata && row.metadata.enable_ksm === 'true') {
                   ret = this.$t('table.title.on')
                 }
                 return ret
