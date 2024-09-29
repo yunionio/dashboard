@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('monitor.text_18')" />
+    <page-header :title="$t('common.monitor_overview')" />
     <page-body>
       <overview-index />
     </page-body>

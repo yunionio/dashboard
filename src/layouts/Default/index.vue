@@ -3,8 +3,8 @@
     <template v-if="$store.state.auth.canRenderDefaultLayout">
       <navbar />
       <div class="app-content position-relative h-100">
-        <sidebar-drawer v-if="isShowMenu" :active-menu="l2Menu" />
-        <l2-menu :l2-menu="l2Menu" v-if="l2MenuVisible && isShowMenu" />
+        <sidebar-drawer v-if="isShowMenu" :active-menu="l2Menu" :menus="showMenus" :staredMenus="staredMenus" @routerChange="onRouterChange" />
+        <l2-menu :l2-menu="l2Menu" v-if="l2MenuVisible && isShowMenu" :staredMenus="staredMenus" @routerChange="onRouterChange" />
         <div
           id="app-page"
           class="app-page"
@@ -23,9 +23,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import * as R from 'ramda'
+import { mapGetters, mapState } from 'vuex'
+import storage from '@/utils/storage'
 import Navbar from '@scope/layouts/Navbar'
 import TopAlert from '@/sections/TopAlert'
+import { hasPermission } from '@/utils/auth'
 import { menusConfig } from '@/router/routes'
 import L2Menu from '../Sidebar/Menu'
 import SidebarDrawer from '../Sidebar/Drawer'
@@ -47,6 +50,72 @@ export default {
   },
   computed: {
     ...mapGetters(['userInfo']),
+    ...mapState('common', {
+      staredList: state => state.sidebar.staredList,
+    }),
+    menus () {
+      const ret = this.menuitems.filter(m1item => {
+        let flag = false
+        if (this.showMenu(m1item)) {
+          if (m1item.menus) {
+            m1item.menus.forEach(m2item => {
+              if (this.showMenu(m2item)) {
+                if (m2item.submenus) {
+                  m2item.submenus.forEach(m3item => {
+                    if (this.showMenu(m3item)) {
+                      flag = true
+                    }
+                  })
+                } else {
+                  flag = true
+                }
+              }
+            })
+          } else {
+            flag = true
+          }
+        }
+        return flag
+      })
+      return ret
+    },
+    showMenus () {
+      return this.menus.map(item => {
+        if (item.menu?.path === '/dashboard') {
+          item.meta.label = '全部'
+          item.meta.icon = 'dashboard-search'
+        }
+        return item
+      })
+    },
+    staredMenus () {
+      const ls = this.showMenus.filter(item => {
+        return item.index !== 1
+      })
+      const list = []
+      ls.map(item => {
+        if (item.menus) {
+          item.menus.map(menu => {
+            if (menu.submenus) {
+              menu.submenus.map(submenu => {
+                if (this.staredList.includes(submenu.path)) {
+                  list.push({
+                    title: this.getLabel(submenu.meta),
+                    path: submenu.path,
+                  })
+                }
+              })
+            }
+          })
+        }
+      })
+      list.sort((a, b) => {
+        const aIdx = this.staredList.indexOf(a.path)
+        const bIdx = this.staredList.indexOf(b.path)
+        return aIdx - bIdx
+      })
+      return list
+    },
     isShowMenu () {
       const { globalSetting } = this.$store.state
       if (!globalSetting || (globalSetting && !globalSetting.value) || (globalSetting.value && !globalSetting.value.key)) {
@@ -83,6 +152,57 @@ export default {
         }
       },
       immediate: true,
+    },
+  },
+  methods: {
+    getLabel (meta) {
+      if (meta.t) {
+        return this.$t(meta.t)
+      }
+      return R.is(Function, meta.label) ? meta.label() : meta.label
+    },
+    getMenuHidden (menu) {
+      if (!R.isNil(menu.meta.hidden)) {
+        if (R.is(Function, menu.meta.hidden)) {
+          return menu.meta.hidden(this.userInfo)
+        }
+        return menu.meta.hidden
+      }
+      if (!R.isNil(menu.meta.invisible)) {
+        if (R.is(Function, menu.meta.invisible)) {
+          return menu.meta.invisible(this.userInfo)
+        }
+        return menu.meta.invisible
+      }
+      return false
+    },
+    showMenu (item) {
+      const hidden = this.getMenuHidden(item)
+      if (R.isNil(item.meta.permission) || R.isEmpty(item.meta.permission)) {
+        return !hidden && true
+      }
+      return !hidden && hasPermission({ key: item.meta.permission })
+    },
+    onRouterChange (menu, ignoreJump = false) {
+      if (!ignoreJump) {
+        this.$router.push(menu.path)
+      }
+      let menus = this.$store.getters.common.sidebar.recentList
+      const index = R.findIndex(R.propEq('path', menu.path))(menus)
+      if (index !== -1) {
+        menus = R.remove(index, 1, menus)
+      }
+      menus = R.prepend(menu.path, menus)
+      if (menus.length > 6) {
+        menus = R.slice(0, 6, menus)
+      }
+      storage.set('__oc_recent_visit__', menus)
+      this.$store.dispatch('common/updateObject', {
+        name: 'sidebar',
+        data: {
+          recentList: menus,
+        },
+      })
     },
   },
 }

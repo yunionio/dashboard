@@ -40,10 +40,11 @@ function getScopeRoutes () {
 }
 
 function getModulesRouteConfig () {
-  const isPrivate = process.env.VUE_APP_IS_PRIVATE
-  const moduleRoute = process.env.VUE_APP_MODULE_ROUTE
+  // const isPrivate = process.env.VUE_APP_IS_PRIVATE
+  // const moduleRoute = process.env.VUE_APP_MODULE_ROUTE
   let ret = []
-  const r = (isPrivate || moduleRoute) ? require.context('../../scope', true, /.\/router\/index.js/) : require.context('../../containers', true, /^((?![\\/]node_modules).)*.\/router\/index.js$/)
+  const r = require.context('../../scope', true, /.\/router\/index.js/)
+  // const r = (isPrivate || moduleRoute) ? require.context('../../scope', true, /.\/router\/index.js/) : require.context('../../containers', true, /^((?![\\/]node_modules).)*.\/router\/index.js$/)
   r.keys().forEach(dir => {
     ret = ret.concat(r(dir).default)
   })

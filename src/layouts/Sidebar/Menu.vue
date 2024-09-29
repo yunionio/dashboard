@@ -2,7 +2,7 @@
   <div class="level-2-wrap" :class="{ 'light-theme': light, 'w-0': !l2MenuVisibleForStore }">
     <scrollbar
       class="level-2-menu">
-      <div class="title text-truncate pr-2" :title="getLabel(l2Menu.meta)">{{ getLabel(l2Menu.meta) }}</div>
+      <!-- <div class="title text-truncate pr-2" :title="getLabel(l2Menu.meta)">{{ getLabel(l2Menu.meta) }}</div>
       <div
         class="level-3-item"
         v-for="(citem, cidx) of menus"
@@ -32,6 +32,26 @@
           active-class="active">
           {{ getLabel(citem.meta) }}
         </router-link>
+      </div> -->
+      <div class="level-3-item">
+        <router-link
+          class="menu-item text-truncate pr-2"
+          to="/dashboard"
+          :title="$t('dashboard.text_77')"
+          tag="a"
+          active-class="active">
+          {{ $t('dashboard.text_77') }}
+        </router-link>
+      </div>
+      <div class="level-3-item" v-for="(item, index) of staredMenus" :key="index" @click="routerChange(item)">
+        <router-link
+          class="menu-item text-truncate pr-2"
+          :to="item.path"
+          :title="item.title"
+          tag="a"
+          active-class="active">
+          {{ item.title }}
+        </router-link>
       </div>
     </scrollbar>
     <div class="level-2-menu-collapse" @click="$store.commit('setting/SET_L2_MENU_VISIBLE', !l2MenuVisibleForStore)">
@@ -56,6 +76,7 @@ export default {
       type: Object,
       required: true,
     },
+    staredMenus: Array,
   },
   computed: {
     ...mapGetters(['theme']),
@@ -87,6 +108,15 @@ export default {
         }
       })
       return res
+    },
+    allMenus () {
+      const ret = []
+      this.menus.map(item => {
+        if (item.submenus) {
+          ret.push(...item.submenus)
+        }
+      })
+      return ret
     },
     l2MenuVisibleForStore () {
       return this.$store.state.setting.l2MenuVisible
@@ -120,6 +150,10 @@ export default {
         return !hidden && true
       }
       return !hidden && hasPermission({ key: item.meta.permission })
+    },
+    routerChange (menu) {
+      console.log('xxxxx')
+      this.$emit('routerChange', menu, true)
     },
   },
 }
@@ -169,7 +203,7 @@ export default {
             position: absolute;
             top: 50%;
             transform: translate(4px, -50%);
-            background-color: @primary-color;
+            // background-color: @primary-color;
             overflow: hidden;
           }
         }
@@ -193,7 +227,7 @@ export default {
   font-size: 14px;
   color: #fff;
   transition: left .2s;
-  padding: 24px 0 0 23px;
+  padding: 12px 0 0 10px;
   .title {
     color: #fff;
     font-size: 20px;
@@ -224,37 +258,39 @@ export default {
     position: relative;
     cursor: pointer;
 
-    &:hover, &.active {
-      text-decoration: none;
-      &::after {
-        position: absolute;
-        content: '';
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translate(4px, -50%);
-        background-color: @primary-color;
-        overflow: hidden;
-      }
-    }
+    // &:hover, &.active {
+    //   text-decoration: none;
+    //   &::after {
+    //     position: absolute;
+    //     content: '';
+    //     width: 6px;
+    //     height: 6px;
+    //     border-radius: 50%;
+    //     position: absolute;
+    //     left: 0;
+    //     top: 50%;
+    //     transform: translate(4px, -50%);
+    //     background-color: @primary-color;
+    //     overflow: hidden;
+    //   }
+    // }
     &:hover {
-      color: @sidebar-dark-hover-text-color;
+      color: @sidebar-light-hover-text-color;
+      font-weight: 500;
     }
     &.active {
-      color: @sidebar-dark-active-text-color;
+      color: @primary-color;
+      font-weight: 500;
     }
   }
   > .menu-item {
-    margin-bottom: 25px;
+    margin: 10px 0;
   }
-  & + & {
-    > .menu-item {
-      margin-top: 25px;
-    }
-  }
+  // & + & {
+  //   > .menu-item {
+  //     margin-top: 25px;
+  //   }
+  // }
 }
 .level-2-menu-collapse {
   position: absolute;

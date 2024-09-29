@@ -19,7 +19,7 @@ export default {
     },
   },
   actions: {
-    async get ({ commit }) {
+    async get ({ commit, dispatch }) {
       try {
         const response = await http.get(`/v1/parameters/${PROFILE_ID}`)
         if (!R.isNil(response.data) && !R.isEmpty(response.data)) {
@@ -31,6 +31,16 @@ export default {
             name: 'id',
             data: response.data.id,
           })
+          dispatch(
+            'common/updateObject',
+            {
+              name: 'sidebar',
+              data: {
+                staredList: response.data.value?.staredList || [],
+              },
+            },
+            { root: true },
+          )
         }
         return response
       } catch (error) {

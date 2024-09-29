@@ -4,7 +4,6 @@ import getters from './getters'
 import modules from './modules'
 
 Vue.use(Vuex)
-
 const store = new Vuex.Store({
   getters,
   modules,
