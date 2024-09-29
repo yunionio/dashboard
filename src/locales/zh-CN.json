@@ -6089,5 +6089,17 @@
   "common.nington_get_tip": "国外用户可打开应用商店搜索”宁盾令牌“或”DKEY Token“，获取应用",
   "common.chrome_browser": "Chrome浏览器",
   "common.mobile_end": "移动端",
-  "common.refer_nington": "推荐宁盾令牌"
+  "common.refer_nington": "推荐宁盾令牌",
+  "common.product_service": "产品与服务",
+  "common.star_menu": "收藏菜单",
+  "common.function_search": "功能搜索",
+  "common.search_result_num": "共找到{0}个相关的功能",
+  "common.search_result_none": "未找到相关的功能",
+  "common.resource_manage": "资源管理",
+  "common.monitor_operation": "监控与运维",
+  "common.monitor_overview": "监控总览",
+  "common.host_monitor": "宿主机监控",
+  "common.server_monitor": "虚拟机监控",
+  "common.snapshot_backup": "快照与备份",
+  "common.recent_visit": "最近访问"
 }

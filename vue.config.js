@@ -86,6 +86,7 @@ module.exports = {
           '@@': resolve('.'),
           '~~': resolve('.'),
           '@scope': resolve('./scope'),
+          '@generalScope': resolve('./generalScope'),
           '@containers': resolve('./containers'),
           ...aliasSrcDirConfig,
         },
