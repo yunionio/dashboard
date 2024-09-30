@@ -126,7 +126,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../../styles/less/theme";
+@import "../../../src/styles/less/theme";
 
 .level-2-wrap {
   position: fixed;

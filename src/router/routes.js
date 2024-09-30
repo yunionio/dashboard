@@ -3,6 +3,7 @@ import NoPermission from '@/views/exception/403'
 import EmailVerify from '@/views/email-verify'
 import NoProject from '@/views/no-project'
 import Clouduser from '@/views/clouduser'
+import Icons from '@/components/Icon/Icons'
 
 export const menusConfig = getModulesRouteConfig()
 
@@ -28,6 +29,10 @@ const routes = [
   { name: '403', path: '/403', component: NoPermission, meta: { layout: 'full-screen', auth: false } },
   { name: 'NotFound', path: '*', component: NotFoundPage, meta: { layout: 'full-screen', auth: false } },
 ]
+
+if (process.env.VUE_APP_ENABLE_ICON) {
+  routes.push({ name: 'Icons', path: '/icons', component: Icons, meta: { layout: 'full-screen', auth: false } })
+}
 
 function getScopeRoutes () {
   const r = require.context('../../scope', true, /.\/router\/routes.js/)
