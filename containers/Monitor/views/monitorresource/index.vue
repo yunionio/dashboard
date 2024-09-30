@@ -20,7 +20,7 @@ export default {
   },
   computed: {
     title () {
-      return this.res_type === 'guest' ? this.$t('common.server') : this.$t('dictionary.host')
+      return this.res_type === 'guest' ? this.$t('common.server_monitor') : this.$t('common.host_monitor')
     },
   },
 }

@@ -1,3 +1,4 @@
+import * as R from 'ramda'
 import { Icon as AntIcon } from 'ant-design-vue'
 import { mergeProps } from 'ant-design-vue/lib/_util/props-util'
 
@@ -28,6 +29,10 @@ const requireAll = (commonContext, scopeContext) => {
 
 requireAll(commonContext, scopeContext)
 
+const iconTypeList = [...commonContext.keys(), ...scopeContext.keys()].map(key => {
+  return key.replace('./auth/', '').replace('./', '').replace('.svg', '')
+})
+
 // 暂时修改为非函数式组件
 // 主要因为在升级到antv 1.5后，icon外层使用tooltip的时候（最终会调用antv的trigger组件），将会触发warning
 // 函数式组件不支持clone  https://github.com/vueComponent/ant-design-vue/pull/1947
@@ -42,7 +47,15 @@ const Iconfont = {
     // component > children > type
     let content = null
     if (type) {
-      content = <use {...{ attrs: { 'xlink:href': `#oc-${type}` } }} />
+      if (R.is(Object, type)) {
+        if (iconTypeList.includes(type.icon)) {
+          content = <use {...{ attrs: { 'xlink:href': `#oc-${type.icon}` } }} />
+        } else {
+          content = <use {...{ attrs: { 'xlink:href': `#oc-${type.defaultIcon}` } }} />
+        }
+      } else {
+        content = <use {...{ attrs: { 'xlink:href': `#oc-${type}` } }} />
+      }
     }
     if (children) {
       content = children

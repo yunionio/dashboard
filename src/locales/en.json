@@ -6067,5 +6067,17 @@
   "common.file_size": "File size",
   "common.nington_get_tip": "Foreign users can open the app store and search for DKEY Token to obtain the application",
   "common.chrome_browser": "Chrome",
-  "common.mobile_end": "Mobile"
+  "common.mobile_end": "Mobile",
+  "common.product_service": "Products and Services",
+  "common.star_menu": "My Menu",
+  "common.function_search": "Function search",
+  "common.search_result_num": "Found {0} related features in total",
+  "common.search_result_none": "No relevant features found",
+  "common.resource_manage": "Resource management",
+  "common.monitor_operation": "Monitoring and Operations",
+  "common.monitor_overview": "Monitoring Overview",
+  "common.host_monitor": "Host monitoring",
+  "common.server_monitor": "Virtual Machine Monitoring",
+  "common.snapshot_backup": "Snapshot and Backup",
+  "common.recent_visit": "Recently visited"
 }

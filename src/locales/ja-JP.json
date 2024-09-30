@@ -6085,5 +6085,17 @@
   "common.file_size": "ファイルサイズ",
   "common.nington_get_tip": "海外ユーザーはアプリケーションストアを開いて「寧盾トークン」または「DKEY Token」を検索し、アプリケーションを取得することができる",
   "common.chrome_browser": "Chromeブラウザ",
-  "common.mobile_end": "いどうたんし"
+  "common.mobile_end": "いどうたんし",
+  "common.product_service": "製品とサービス",
+  "common.star_menu": "マイメニュー",
+  "common.function_search": "機能検索",
+  "common.search_result_num": "関連する機能を合計{0}つ見つけました",
+  "common.search_result_none": "関連する機能が見つかりませんでした",
+  "common.resource_manage": "リソース管理",
+  "common.monitor_operation": "監視と運用次元",
+  "common.monitor_overview": "監視の概要",
+  "common.host_monitor": "シンクホスト監視",
+  "common.server_monitor": "VM監視",
+  "common.snapshot_backup": "スナップショットとバックアップ",
+  "common.recent_visit": "最近のアクセス"
 }

@@ -21,7 +21,10 @@ export default {
     },
     lbRedirected: {},
     // 菜单栏
-    sidebar: {},
+    sidebar: {
+      staredList: [],
+      recentList: storage.get('__oc_recent_visit__') || [],
+    },
     jsonschema: {
       sku: {},
     },
