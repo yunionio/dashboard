@@ -80,7 +80,7 @@ export default {
         const params = {
           name,
           scope: this.$store.getters.scope,
-          filter: `name.contains('${name}')`,
+          filter: `name.equals('${name}')`,
           ...(R.is(Function, this.params) ? this.params() : this.params),
         }
         await manager.get({ id: name, params })
