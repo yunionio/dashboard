@@ -255,7 +255,7 @@ export default {
                     tooltip: i18n.t('network.text_627'),
                   }
                 }
-                if (obj.server_type !== 'guest') {
+                if (obj.server_type !== 'guest' && obj.server_type !== 'hostlocal') {
                   return {
                     validate: false,
                     tooltip: this.$t('common_565'),
