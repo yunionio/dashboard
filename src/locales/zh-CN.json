@@ -1237,7 +1237,11 @@
       "delete_container_failed": "删除失败",
       "on": "运行中",
       "off": "关机",
-      "start_fail": "启动失败"
+      "start_fail": "启动失败",
+      "probing": "探测中",
+      "probe_failed": "探测失败",
+      "no_container": "容器未创建",
+      "no_server": "主机未创建"
     },
     "phoneModel": {
       "ready": "可用"

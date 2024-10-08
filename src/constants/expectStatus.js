@@ -576,7 +576,7 @@ export default {
   container: {
     success: ['running', 'on'],
     info: ['exited', 'ready', 'unknown', 'off'],
-    danger: ['start_failed'],
+    danger: ['start_failed', 'probe_failed'],
   },
   phoneModel: {
     success: ['ready'],

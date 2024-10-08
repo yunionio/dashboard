@@ -1237,7 +1237,11 @@
       "delete_container_failed": "削除に失敗しました",
       "on": "実行中",
       "off": "シャットダウン",
-      "start_fail": "開始に失敗しました"
+      "start_fail": "開始に失敗しました",
+      "probing": "プローブ中",
+      "probe_failed": "検出に失敗しました",
+      "no_container": "コンテナが作成されていません",
+      "no_server": "ホストが作成されていません"
     },
     "phoneModel": {
       "ready": "利用可能"
