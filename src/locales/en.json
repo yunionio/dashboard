@@ -1222,7 +1222,11 @@
       "delete_container_failed": "delete_container_failed",
       "on": "on",
       "off": "off",
-      "start_fail": "start_fail"
+      "start_fail": "start_fail",
+      "probing": "probing",
+      "probe_failed": "probe failed",
+      "no_container": "no container",
+      "no_server": "no server"
     },
     "phoneModel": {
       "ready": "available"
