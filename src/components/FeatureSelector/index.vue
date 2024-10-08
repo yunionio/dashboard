@@ -32,8 +32,10 @@
 
 <script>
 import * as R from 'ramda'
+import { mapState } from 'vuex'
 import c from '@/constants/feature'
 import setting from '@/config/setting'
+import { fillBillSupportFeatures } from '@/utils/auth'
 
 export const LicenseFeatures = {
   model: {
@@ -61,7 +63,21 @@ export const LicenseFeatures = {
   data () {
     return {
       selectedItems: this._selectedItems(this.items),
-      options: c.items.map(item => {
+    }
+  },
+  computed: {
+    ...mapState({
+      licenseCompute: state => state.app.license.compute,
+    }),
+    supportedFeatures () {
+      const ret = this.licenseCompute?.features || []
+      let list = [...ret]
+      list = fillBillSupportFeatures(list, true)
+      // 无费用模块 不处理
+      return list
+    },
+    options () {
+      return c.items.map(item => {
         if (item.key === 'cloudpods') {
           const { companyInfo = {} } = this.$store.state.app
           const { inner_logo, inner_logo_format, inner_copyright, inner_copyright_en } = companyInfo
@@ -74,11 +90,10 @@ export const LicenseFeatures = {
             item.label = inner_copyright
           }
         }
+        item.disabled = !this.supportedFeatures.includes(item.key)
         return item
-      }),
-    }
-  },
-  computed: {
+      })
+    },
     moduleGroups () {
       const options = this.options.filter(option => {
         return this.selectedItems.indexOf(option.value) >= 0
