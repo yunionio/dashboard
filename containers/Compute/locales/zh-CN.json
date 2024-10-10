@@ -1820,5 +1820,10 @@
   "compute.kvm_rebuild_tip5": "5.重装系统不支持选择本地ISO格式镜像",
   "compute.kvm_rebuild_tip6": "6.镜像状态需为可用状态",
   "compute.no_enabled_container_host": "无启用的容器宿主机",
-  "compute.bastionHost.domain": "网域"
+  "compute.bastionHost.domain": "网域",
+  "compute.repo.edit_mode": "编辑模式",
+  "compute.repo.edit_mode.custom": "选项模式",
+  "compute.repo.edit_mode.yaml": "YAML模式",
+  "compute.yaml_config": "Yaml配置",
+  "compute.yaml_check_tip": "请输入正确的Yaml地址"
 }

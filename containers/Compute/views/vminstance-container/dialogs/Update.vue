@@ -5,32 +5,45 @@
       <dialog-selected-tips :name="$t('compute.container', [])" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
-        <a-form-item :label="$t('compute.repo.image.source')">
-          <a-radio-group default-value="custom" @change="handleSourceChange">
-            <a-radio-button value="custom">{{ $t('compute.repo.image.custom') }}</a-radio-button>
-            <a-radio-button value="registry">{{ $t('compute.repo.image.registry') }}</a-radio-button>
+        <a-form-item :label="$t('compute.repo.edit_mode')">
+          <a-radio-group v-model="editMode">
+            <a-radio-button value="custom">{{ $t('compute.repo.edit_mode.custom') }}</a-radio-button>
+            <a-radio-button value="yaml">{{ $t('compute.repo.edit_mode.yaml') }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item v-if="source === 'custom'" :label="$t('compute.repo.container_image')">
-          <a-input
-            v-decorator="decorators.image"
-            :placeholder="$t('common.tips.input', [$t('compute.repo.container_image')])" />
-        </a-form-item>
-        <a-form-item v-else :label="$t('compute.repo.container_image')">
-          <mirror-registry v-decorator="decorators.registryImage" />
-        </a-form-item>
-        <a-form-item :label="$t('compute.repo.command')">
-          <a-input v-decorator="decorators.command" :placeholder="$t('compute.repo.command.placeholder')" />
-        </a-form-item>
-        <a-form-item :label="$t('compute.repo.command.params')">
-          <a-input v-decorator="decorators.arg" :placeholder="$t('compute.repo.command.params.placeholder')" />
-        </a-form-item>
-        <a-form-item :label="$t('compute.repo.env_variables')">
-          <labels ref="envRef" :decorators="decorators.env(0)" :title="$t('compute.repo.variables')" :keyLabel="$t('compute.repo.variables')" />
-        </a-form-item>
-        <a-form-item label="">
-          <a-checkbox v-decorator="decorators.privileged">{{$t('compute.repo.privileged_mode')}}</a-checkbox>
-        </a-form-item>
+        <template v-if="editMode === 'custom'">
+          <a-form-item :label="$t('compute.repo.image.source')">
+            <a-radio-group default-value="custom" @change="handleSourceChange">
+              <a-radio-button value="custom">{{ $t('compute.repo.image.custom') }}</a-radio-button>
+              <a-radio-button value="registry">{{ $t('compute.repo.image.registry') }}</a-radio-button>
+            </a-radio-group>
+          </a-form-item>
+          <a-form-item v-if="source === 'custom'" :label="$t('compute.repo.container_image')">
+            <a-input
+              v-decorator="decorators.image"
+              :placeholder="$t('common.tips.input', [$t('compute.repo.container_image')])" />
+          </a-form-item>
+          <a-form-item v-else :label="$t('compute.repo.container_image')">
+            <mirror-registry v-decorator="decorators.registryImage" />
+          </a-form-item>
+          <a-form-item :label="$t('compute.repo.command')">
+            <a-input v-decorator="decorators.command" :placeholder="$t('compute.repo.command.placeholder')" />
+          </a-form-item>
+          <a-form-item :label="$t('compute.repo.command.params')">
+            <a-input v-decorator="decorators.arg" :placeholder="$t('compute.repo.command.params.placeholder')" />
+          </a-form-item>
+          <a-form-item :label="$t('compute.repo.env_variables')">
+            <labels ref="envRef" :decorators="decorators.env(0)" :title="$t('compute.repo.variables')" :keyLabel="$t('compute.repo.variables')" />
+          </a-form-item>
+          <a-form-item label="">
+            <a-checkbox v-decorator="decorators.privileged">{{$t('compute.repo.privileged_mode')}}</a-checkbox>
+          </a-form-item>
+        </template>
+        <template v-else>
+          <a-form-item :label="$t('compute.yaml_config')">
+            <code-mirror v-decorator="decorators.yaml" :options="cmOptions" />
+          </a-form-item>
+        </template>
       </a-form>
     </div>
     <div slot="footer">
@@ -41,10 +54,12 @@
 </template>
 
 <script>
+import jsYaml from 'js-yaml'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import MirrorRegistry from '@Compute/sections/MirrorRegistry'
 import Labels from '@Compute/sections/Labels'
+import { validateYaml } from '@/utils/validate'
 
 export default {
   name: 'ContainerUpdateDialog',
@@ -60,6 +75,7 @@ export default {
       loading: false,
       action: this.$t('common.edit'),
       source: 'custom', // custom or registry
+      editMode: 'custom',
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
@@ -69,6 +85,14 @@ export default {
           },
         }),
         fd: {},
+      },
+      cmOptions: {
+        tabSize: 2,
+        styleActiveLine: true,
+        lineNumbers: true,
+        line: true,
+        mode: 'text/x-yaml',
+        theme: 'material',
       },
       decorators: {
         registryImage: [
@@ -125,6 +149,27 @@ export default {
             initialValue: specData.privileged,
           },
         ],
+        yaml: [
+          'yaml',
+          {
+            validateFirst: true,
+            initialValue: jsYaml.safeDump(this.params.data[0]),
+            rules: [
+              { required: true, message: this.$t('common.tips.input', ['Yaml']) },
+              {
+                validator: (rule, value, _callback) => {
+                  validateYaml(value)
+                    .then(() => {
+                      return _callback()
+                    })
+                    .catch(() => {
+                      return _callback(this.$t('compute.yaml_check_tip'))
+                    })
+                },
+              },
+            ],
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -166,7 +211,6 @@ export default {
       this.source = e.target.value
     },
     async doSubmit (values) {
-      console.log(values)
       const { id, spec } = this.params.data[0]
       const getEnvs = (names, values) => {
         const envs = []
@@ -177,23 +221,29 @@ export default {
         }
         return envs
       }
-      const specData = {
+      let specData = {
         ...spec,
       }
-      const { image, registryImage, command, arg, envNames, envValues } = values
-      if (image || registryImage) {
-        specData.image = image || registryImage
-      }
-      if (command) {
-        specData.command = command.split(' ')
-      }
-      if (arg) {
-        specData.args = arg.split(' ')
-      }
-      if (envNames) {
-        specData.envs = getEnvs(envNames[0], envValues[0])
+      if (this.editMode === 'custom') {
+        const { image, registryImage, command, arg, envNames, envValues, privileged } = values
+        if (image || registryImage) {
+          specData.image = image || registryImage
+        }
+        if (command) {
+          specData.command = command.split(' ')
+        }
+        if (arg) {
+          specData.args = arg.split(' ')
+        }
+        if (envNames) {
+          specData.envs = getEnvs(envNames[0], envValues[0])
+        } else {
+          specData.envs = []
+        }
+        specData.privileged = privileged
       } else {
-        specData.envs = []
+        const data = jsYaml.safeLoad(values.yaml)
+        specData = data.spec || {}
       }
       return this.params.onManager('update', {
         id,

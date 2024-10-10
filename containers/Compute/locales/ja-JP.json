@@ -1820,5 +1820,10 @@
   "compute.kvm_rebuild_tip5": "5.再ロードシステムはローカルISOフォーマットミラーリングの選択をサポートしていない",
   "compute.kvm_rebuild_tip6": "6.ミラー状態は使用可能な状態である必要がある",
   "compute.no_enabled_container_host": "有効なコンテナシンクホストがありません",
-  "compute.bastionHost.domain": "ネットワークドメイン"
+  "compute.bastionHost.domain": "ネットワークドメイン",
+  "compute.repo.edit_mode": "編集モード",
+  "compute.repo.edit_mode.custom": "オプションモード",
+  "compute.repo.edit_mode.yaml": "YAMLモード",
+  "compute.yaml_config": "Yamal構成",
+  "compute.yaml_check_tip": "正しいYamlアドレスを入力してください"
 }
