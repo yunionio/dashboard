@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('common.text00093')}}</div>
+    <div slot="header">{{$t('common.scheduler_log')}}</div>
     <div class="clearfix pr-2" slot="body">
       <code-mirror v-model="showData" :options="cmOptions" ref="codeMirrorRef" view-height="300px" :is-scroll="true" />
       <div
@@ -11,10 +11,9 @@
         <a-icon class="primary-color" type="copy" />
         <a-button type="link" size="small">{{$t('common.text00094')}}</a-button>
       </div>
-      <a-button v-if="sessionId" class="float-right mr-3" type="link" size="small" @click="showLog">{{ $t('common.view_scheduler_log') }}</a-button>
     </div>
     <div slot="footer">
-      <a-button type="primary" @click="cancelDialog">{{ $t('dialog.ok') }}</a-button>
+      <a-button type="primary" :loading="loading" @click="cancelDialog">{{ $t('dialog.ok') }}</a-button>
     </div>
   </base-dialog>
 </template>
@@ -24,10 +23,11 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'EventLogDialog',
+  name: 'SchedulerLogDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
+      loading: false,
       cmOptions: {
         tabSize: 2,
         indentUnit: 2,
@@ -40,26 +40,29 @@ export default {
         gutters: ['CodeMirror-lint-markers'],
         lint: true,
       },
+      showData: '',
     }
   },
-  computed: {
-    showData () {
-      return this.params.data
-    },
-    sessionId () {
-      if (this.params.data && this.params.data.includes('=>sched_fail') && this.params.data.includes('session_id=')) {
-        const str = this.params.data.replaceAll('\\', '')
-        return str.match(/session_id="(.*?)"/)[1]
-      }
-      return ''
-    },
+  created () {
+    this.fetchSchedFailData()
   },
   methods: {
-    showLog () {
-      this.createDialog('SchedulerLogDialog', {
-        data: {
-          sessionId: this.sessionId,
+    fetchSchedFailData () {
+      this.loading = true
+      new this.$Manager('schedulers', 'v1').rpc({
+        methodname: 'PostHistoryShow',
+        params: {
+          session_id: this.params.data.sessionId,
+          log: true,
+          raw: true,
         },
+      }).then(res => {
+        this.showData = JSON.stringify(res.data)
+        this.loading = false
+      }).catch(err => {
+        this.showData = 'No log found'
+        this.loading = false
+        throw err
       })
     },
     copySuccess (evt) {
