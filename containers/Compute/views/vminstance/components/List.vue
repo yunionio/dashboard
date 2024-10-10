@@ -40,7 +40,6 @@ import {
   getCloudProviderFilter,
   getDescriptionFilter,
   getCreatedAtFilter,
-  getProjectFilter,
 } from '@/utils/common/tableFilter'
 import { getIpsTableColumn } from '@/utils/common/tableColumn'
 import { disableDeleteAction } from '@/utils/common/tableActions'
@@ -119,7 +118,6 @@ export default {
         },
       },
       projects: getTenantFilter(),
-      project: getProjectFilter(),
       project_domains: getDomainFilter(),
       billing_type: {
         label: this.$t('table.title.bill_type'),
