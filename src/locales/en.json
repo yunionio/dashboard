@@ -6083,5 +6083,7 @@
   "common.host_monitor": "Host monitoring",
   "common.server_monitor": "Virtual Machine Monitoring",
   "common.snapshot_backup": "Snapshot and Backup",
-  "common.recent_visit": "Recently visited"
+  "common.recent_visit": "Recently visited",
+  "common.scheduler_log": "Scheduling log",
+  "common.view_scheduler_log": "View scheduling logs"
 }

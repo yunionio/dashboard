@@ -6101,5 +6101,7 @@
   "common.host_monitor": "シンクホスト監視",
   "common.server_monitor": "VM監視",
   "common.snapshot_backup": "スナップショットとバックアップ",
-  "common.recent_visit": "最近のアクセス"
+  "common.recent_visit": "最近のアクセス",
+  "common.scheduler_log": "スケジュールログ",
+  "common.view_scheduler_log": "スケジュール・ログの表示"
 }

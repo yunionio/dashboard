@@ -6105,5 +6105,7 @@
   "common.host_monitor": "宿主机监控",
   "common.server_monitor": "虚拟机监控",
   "common.snapshot_backup": "快照与备份",
-  "common.recent_visit": "最近访问"
+  "common.recent_visit": "最近访问",
+  "common.scheduler_log": "调度日志",
+  "common.view_scheduler_log": "查看调度日志"
 }
