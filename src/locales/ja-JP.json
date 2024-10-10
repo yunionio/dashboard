@@ -6012,5 +6012,7 @@
   "common.config_ipv6": "IPv6の構成",
   "common.nington_get_tip": "海外ユーザーはアプリケーションストアを開いて「寧盾トークン」または「DKEY Token」を検索し、アプリケーションを取得することができる",
   "common.chrome_browser": "Chromeブラウザ",
-  "common.mobile_end": "いどうたんし"
+  "common.mobile_end": "いどうたんし",
+  "common.scheduler_log": "スケジュールログ",
+  "common.view_scheduler_log": "スケジュール・ログの表示"
 }

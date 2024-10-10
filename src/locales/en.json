@@ -5995,5 +5995,7 @@
   "common.config_ipv6": "Config IPv6",
   "common.nington_get_tip": "Foreign users can open the app store and search for DKEY Token to obtain the application",
   "common.chrome_browser": "Chrome",
-  "common.mobile_end": "Mobile"
+  "common.mobile_end": "Mobile",
+  "common.scheduler_log": "Scheduling log",
+  "common.view_scheduler_log": "View scheduling logs"
 }
