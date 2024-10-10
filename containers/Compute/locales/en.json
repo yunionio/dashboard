@@ -1818,5 +1818,10 @@
   "compute.kvm_rebuild_tip5": "5. Reinstalling the system does not support selecting local ISO format images",
   "compute.kvm_rebuild_tip6": "6. The mirror status must be in an available state",
   "compute.no_enabled_container_host": "No enabled container host",
-  "compute.bastionHost.domain": "Daomin"
+  "compute.bastionHost.domain": "Daomin",
+  "compute.repo.edit_mode": "Edit mode",
+  "compute.repo.edit_mode.custom": "Option mode",
+  "compute.repo.edit_mode.yaml": "YAML mode",
+  "compute.yaml_config": "Yaml config",
+  "compute.yaml_check_tip": "Please enter the correct Yaml address"
 }

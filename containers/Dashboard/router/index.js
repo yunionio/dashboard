@@ -11,8 +11,8 @@ export default {
     label: i18n.t('dashboard.text_77'),
     icon: 'menu-dashboard',
   },
-  menu: {
-    path: '/dashboard',
+  menus: [{
+    // path: '/dashboard',
     meta: {
       // hidden: () => {
       //   if (process.env.VUE_APP_PLATFORM === 'operation' && store.getters.isDomainMode) {
@@ -20,23 +20,31 @@ export default {
       //   }
       //   return false
       // },
+      label: 'x',
     },
-    component: Layout,
-    children: [
+    submenus: [
       {
-        name: 'Dashboard',
-        path: '',
-        meta: {},
-        component: Dashboard,
-      },
-      {
-        name: 'DashboardEdit',
-        path: 'edit',
-        meta: {
-          layout: 'full-screen',
-        },
-        component: DashboardEdit,
+        path: '/dashboard',
+        meta: { label: 'x' },
+        component: Layout,
+        children: [
+          {
+            name: 'Dashboard',
+            path: '',
+            meta: {},
+            component: Dashboard,
+          },
+          {
+            name: 'DashboardEdit',
+            path: 'edit',
+            meta: {
+              label: 'x',
+              // layout: 'full-screen',
+            },
+            component: DashboardEdit,
+          },
+        ],
       },
     ],
-  },
+  }],
 }
