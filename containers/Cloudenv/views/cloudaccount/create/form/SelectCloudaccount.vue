@@ -1,6 +1,6 @@
 <template>
   <div class="cloudaccount pt-2">
-    <a-alert type="info" show-icon class="mt-2" v-if="$store.getters.isAdminMode">
+    <a-alert type="info" show-icon class="mt-2" v-if="!isCE && $store.getters.isAdminMode">
       <template slot="message">{{$t('cloudenv.text_223')}}<icon type="navbar-more" style="font-size: 15px;" />{{$t('cloudenv.text_224')}}</template>
     </a-alert>
     <template v-for="(cloudaccounts, env) of types">
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { isCE } from '@/utils/utils'
 import { CLOUDACCOUNT_TYPES, ENV_TITLE } from '@Cloudenv/views/cloudaccount/constants'
 import { hasSetupKey } from '@/utils/auth'
 import setting from '@/config/setting'
@@ -38,6 +39,9 @@ export default {
     }
   },
   computed: {
+    isCE () {
+      return isCE()
+    },
     globalSettingSetupKeys () {
       const { globalSetting } = this.$store.state
       if (globalSetting && globalSetting.value) {
