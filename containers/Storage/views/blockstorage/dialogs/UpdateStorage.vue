@@ -5,7 +5,7 @@
       <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="$t('dictionary.blockstorage')" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <form-items :storage_type="storage_type" :edit="true" />
+        <form-items :storage_type="storage_type" :edit="true" :editData="editData" />
          <!-- <a-form-item :label="$t('storage.text_60')" v-if="params.data[0].brand.toLowerCase() !== 'zstack'">
           <a-input-number :step="0.1" v-decorator="decorators.commit_bound" :min="0" />
         </a-form-item> -->
@@ -62,6 +62,12 @@ export default {
     }
   },
   computed: {
+    editData () {
+      if (this.params.data && this.params.data.length > 0) {
+        return this.params.data[0]
+      }
+      return undefined
+    },
     storage_type () {
       if (this.params.data && this.params.data.length > 0) {
         return this.params.data[0].storage_type
@@ -105,8 +111,35 @@ export default {
           values.cmtbound = values.commit_bound
           Reflect.deleteProperty(values, 'commit_bound')
         }
+        const data = {}
+        Object.keys(values).map(key => {
+          if (this.storage_type === 'rbd') {
+            if (key.startsWith('rbd_')) {
+              data.storage_conf = { ...(data.storage_conf || {}) }
+              data.storage_conf[key.replace('rbd_', '')] = values[key]
+            } else {
+              data[key] = values[key]
+            }
+          } else if (this.storage_type === 'nfs') {
+            if (key.startsWith('nfs_')) {
+              data.storage_conf = { ...(data.storage_conf || {}) }
+              data.storage_conf[key] = values[key]
+            } else {
+              data[key] = values[key]
+            }
+          } else if (this.storage_type === 'slvm') {
+            if (key.startsWith('slvm_')) {
+              data.storage_conf = { ...(data.storage_conf || {}) }
+              data.storage_conf[key] = values[key]
+            } else {
+              data[key] = values[key]
+            }
+          } else {
+            data[key] = values[key]
+          }
+        })
         const manager = new this.$Manager('storages', 'v2')
-        await manager.update({ id: this.params.data[0].id, data: values })
+        await manager.update({ id: this.params.data[0].id, data })
         this.cancelDialog()
         this.params.refresh()
         this.loading = false

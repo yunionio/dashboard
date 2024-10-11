@@ -39,6 +39,9 @@ export default {
       type: Boolean,
       default: false,
     },
+    editData: {
+      type: Object,
+    },
   },
   inject: ['form'],
   computed: {
@@ -81,6 +84,7 @@ export default {
           'rbd_mon_host',
           {
             validateFirst: true,
+            initialValue: this.editData?.storage_conf?.mon_host || '',
             rules: [
               { required: true, message: this.$t('storage.text_26') },
               { validator: hostCheckValid },
@@ -90,6 +94,7 @@ export default {
         rbd_key: [
           'rbd_key',
           {
+            initialValue: this.editData?.storage_conf?.key || '',
             rules: [
             ],
           },
@@ -98,6 +103,7 @@ export default {
           'rbd_pool',
           {
             validateFirst: true,
+            initialValue: this.editData?.storage_conf?.pool || '',
             rules: [
               { required: true, message: this.$t('storage.text_28'), trigger: 'blur' },
               { validator: commonCheckValid('Ceph Pool') },
@@ -108,6 +114,7 @@ export default {
           'nfs_host',
           {
             validateFirst: true,
+            initialValue: this.editData?.storage_conf?.nfs_host || '',
             rules: [
               { required: true, message: this.$t('storage.nfs_host.validate.prompt'), trigger: 'blur' },
               { validator: hostCheckValid, trigger: 'blur' },
@@ -117,6 +124,7 @@ export default {
         nfs_shared_dir: [
           'nfs_shared_dir',
           {
+            initialValue: this.editData?.storage_conf?.nfs_shared_dir || '',
             rules: [
               { required: true, message: this.$t('storage.nfs_shared_dir.validate.prompt'), trigger: 'blur' },
             ],
@@ -125,6 +133,7 @@ export default {
         slvm_vg_name: [
           'slvm_vg_name',
           {
+            initialValue: this.editData?.storage_conf?.slvm_vg_name || '',
             rules: [
               { required: true, message: this.$t('common.tips.input', ['SlvmVgName']), trigger: 'blur' }
             ]
