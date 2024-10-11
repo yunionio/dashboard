@@ -44,7 +44,13 @@ export default {
     initSearchText () {
       if (window.location.pathname.includes(path)) {
         const querystr = window.location.search.replace('?', '')
-        this.value = qs.parse(querystr)
+        const value = qs.parse(querystr)
+        Object.keys(value).map(key => {
+          if (key.includes('__condition_')) {
+            delete value[key]
+          }
+        })
+        this.value = value
       }
     },
     search (val) {
@@ -52,12 +58,18 @@ export default {
         this.$bus.$emit('GlobalSearch')
         return
       } */
-      this.value = val
-      if (R.isEmpty(val)) {
+      const value = { ...val }
+      Object.keys(value).map(key => {
+        if (key.includes('__condition_')) {
+          delete value[key]
+        }
+      })
+      this.value = value
+      if (R.isEmpty(value)) {
         this.$router.push(path)
         return
       }
-      const searchPath = `${path}?${qs.stringify(val)}`
+      const searchPath = `${path}?${qs.stringify(value)}`
       this.$router.push(searchPath)
     },
     handleCloseSidebar () {
