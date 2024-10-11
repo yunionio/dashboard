@@ -38,7 +38,7 @@
             </div>
           </div>
           <a-dropdown-button
-            v-if="$appConfig.isPrivate"
+            v-if="!isServertemplate && $appConfig.isPrivate"
             :title="confirmText"
             class="text-truncate"
             type="primary"
