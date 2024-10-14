@@ -27,14 +27,14 @@
 
 <script>
 import * as R from 'ramda'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
+import storage from '@/utils/storage'
+import { addClass, removeClass, hasClass } from '@/utils/dom'
+import { generateFitLayout } from '@Dashboard/utils/fit'
 import publicDefaultConfig from './config/public-default'
 import defaultConfig from './config/default'
 import DashboardHeader from './components/Header'
 import DashboardContent from './components/Content'
-import storage from '@/utils/storage'
-import { addClass, removeClass, hasClass } from '@/utils/dom'
-import { generateFitLayout } from '@Dashboard/utils/fit'
 
 // option
 // [{ id: 'xxx', name: 'xxx', index: 2, hidden: true, type: 'default' }]
@@ -64,6 +64,9 @@ export default {
   },
   computed: {
     ...mapGetters(['scope', 'globalConfig']),
+    ...mapState('setting', {
+      l2MenuVisible: state => state.l2MenuVisible,
+    }),
     // 当前选择面板是否为默认面板
     isDefault () {
       return this.currentOption.id && this.currentOption.id === `dashboard-${this.scope}-default`
@@ -87,6 +90,11 @@ export default {
       return R.unionWith(R.eqBy(R.prop('id')), this.customOptions, this.defaultOptions)
     },
   },
+  watch: {
+    l2MenuVisible (val) {
+      this.addAppPageClass()
+    },
+  },
   beforeDestroy () {
     this.pm = null
     removeClass(this.$appPage, this.appPageAddedClass.join(' '))
@@ -108,11 +116,12 @@ export default {
     this.handleCurrentOptionSelect(selected)
   },
   mounted () {
-    this.$appPage = document.getElementById('app-page')
     this.addAppPageClass()
   },
   methods: {
     addAppPageClass () {
+      if (!this.$appPage) this.$appPage = document.getElementById('app-page')
+      if (!this.$appPage) return
       const toBeAddedClass = ['h-100', 'd-flex', 'flex-column', 'mb-0']
       this.appPageAddedClass = []
       for (let i = 0, len = toBeAddedClass.length; i < len; i++) {
