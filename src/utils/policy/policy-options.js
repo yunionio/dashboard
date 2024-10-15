@@ -1,9 +1,21 @@
 import { PERMISSION } from '@/constants/permission'
 import i18n from '@/locales'
 
-const getRealPermis = (permission) => {
-  const permis = permission.split(',')[0]
-  return PERMISSION[permis] ? PERMISSION[permis][PERMISSION[permis].length - 1] : permis
+const getRealPermis = (data) => {
+  const { permission = '', label, permissionLabels = [] } = data
+  const permis = permission.split(',')
+  if (permis.length === permissionLabels.length) {
+    return permis.map((p, idx) => {
+      return {
+        key: PERMISSION[p] ? PERMISSION[p][PERMISSION[p].length - 1] : p,
+        label: permissionLabels[idx],
+      }
+    })
+  }
+  return [{
+    key: PERMISSION[permis[0]] ? PERMISSION[permis[0]][PERMISSION[permis[0]].length - 1] : permis[0],
+    label,
+  }]
 }
 
 // 加载模块操作数据
@@ -26,21 +38,21 @@ export const getPolicyOptions = () => {
       policyOptionsMap[item.name] = [...commonOptions]
       item.getSingleActions().forEach((obj, i) => {
         if (obj.action && obj.permission) {
-          policyOptionsMap[item.name].push({ key: getRealPermis(obj.permission), label: obj.label })
+          policyOptionsMap[item.name].push(...getRealPermis(obj))
         }
         if (obj.actions && obj.permission) {
-          policyOptionsMap[item.name].push({ key: getRealPermis(obj.permission), label: obj.label })
+          policyOptionsMap[item.name].push(...getRealPermis(obj))
         }
         if (obj.actions && !obj.permission) {
           const actions = obj.actions({})
-          actions.forEach(({ action, submenus, permission, label }) => {
-            if (action && permission) {
-              policyOptionsMap[item.name].push({ key: getRealPermis(permission), label: label })
+          actions.forEach((actionObj) => {
+            if (actionObj.action && actionObj.permission) {
+              policyOptionsMap[item.name].push(...getRealPermis(actionObj))
             }
-            if (submenus) {
-              submenus.forEach(({ action, permission, label }) => {
-                if (action && permission) {
-                  policyOptionsMap[item.name].push({ key: getRealPermis(permission), label: label })
+            if (actionObj.submenus) {
+              actionObj.submenus.forEach((menuObj) => {
+                if (menuObj.action && menuObj.permission) {
+                  policyOptionsMap[item.name].push(...getRealPermis(menuObj))
                 }
               })
             }

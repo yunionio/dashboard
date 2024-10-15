@@ -390,6 +390,7 @@ export const PERMISSION = {
   server_perform_ejectiso: ['compute', 'servers', 'perform', 'ejectiso'],
   server_perform_add_secgroup: ['compute', 'servers', 'perform', 'add-secgroup'],
   server_perform_revoke_secgroup: ['compute', 'servers', 'perform', 'revoke-secgroup'],
+  server_perform_set_secgroup: ['compute', 'servers', 'perform', 'set-secgroup'],
   server_perform_cancel_delete: ['compute', 'servers', 'perform', 'cancel-delete'],
   server_perform_cancel_expire: ['compute', 'servers', 'perform', 'cancel-expire'],
   server_perform_dissociate_eip: ['compute', 'servers', 'perform', 'dissociate-eip'],
