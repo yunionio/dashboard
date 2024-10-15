@@ -1823,5 +1823,7 @@
   "compute.repo.edit_mode.custom": "Option mode",
   "compute.repo.edit_mode.yaml": "YAML mode",
   "compute.yaml_config": "Yaml config",
-  "compute.yaml_check_tip": "Please enter the correct Yaml address"
+  "compute.yaml_check_tip": "Please enter the correct Yaml address",
+  "compute.revoke_secgroup": "Unbind secgroup",
+  "compute.set_secgroup": "Set secgroup"
 }

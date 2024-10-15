@@ -1825,5 +1825,7 @@
   "compute.repo.edit_mode.custom": "选项模式",
   "compute.repo.edit_mode.yaml": "YAML模式",
   "compute.yaml_config": "Yaml配置",
-  "compute.yaml_check_tip": "请输入正确的Yaml地址"
+  "compute.yaml_check_tip": "请输入正确的Yaml地址",
+  "compute.revoke_secgroup": "解绑安全组",
+  "compute.set_secgroup": "设置安全组"
 }

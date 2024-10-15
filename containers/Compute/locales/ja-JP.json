@@ -1825,5 +1825,7 @@
   "compute.repo.edit_mode.custom": "オプションモード",
   "compute.repo.edit_mode.yaml": "YAMLモード",
   "compute.yaml_config": "Yamal構成",
-  "compute.yaml_check_tip": "正しいYamlアドレスを入力してください"
+  "compute.yaml_check_tip": "正しいYamlアドレスを入力してください",
+  "compute.revoke_secgroup": "アンバインドセキュリティグループ",
+  "compute.set_secgroup": "セキュリティグループの設定"
 }
