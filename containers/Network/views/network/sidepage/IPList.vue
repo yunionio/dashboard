@@ -1,12 +1,14 @@
 <template>
  <div>
-  <a-button style="margin-bottom:1rem" :disable="loading" @click="refresh">
-    <a-icon v-if="loading" type="sync" spin />
-    <a-icon v-else type="sync" />
-  </a-button>
   <vxe-toolbar>
     <template v-slot:buttons>
-       <a-input-search v-model="filterName" size="large" :placeholder="$t('network.text_659')" style="width: 500px" />
+      <div class="ip-list-search d-flex">
+        <a-button style="margin-bottom:1rem" :disable="loading" @click="refresh">
+          <a-icon v-if="loading" type="sync" spin />
+          <a-icon v-else type="sync" />
+        </a-button>
+        <a-input-search class="ml-2 w-100" v-model="filterName" :placeholder="$t('network.text_659')" />
+      </div>
     </template>
   </vxe-toolbar>
   <vxe-grid
@@ -190,3 +192,12 @@ export default {
   },
 }
 </script>
+<style lang="less" scoped>
+.ip-list-search {
+  ::v-deep {
+    .ant-input-affix-wrapper .ant-input-suffix {
+      top: 35%!important;
+    }
+  }
+}
+</style>
