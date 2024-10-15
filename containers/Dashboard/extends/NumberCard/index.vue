@@ -14,7 +14,7 @@
         <label>{{$t('dashboard.text_24')}}</label>
       </a-col>
       <a-col :span="formItemLayout.wrapperCol.span">
-        <a-radio-group v-model="type" @change="typeChange">
+        <a-radio-group v-model="type">
           <a-radio-button v-for="item in typeOpts" :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
         </a-radio-group>
       </a-col>
@@ -72,9 +72,6 @@ export default {
     },
   },
   methods: {
-    typeChange () {
-      this.visible = true
-    },
     update (...ret) {
       this.$emit('update', ...ret)
     },
