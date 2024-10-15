@@ -1816,5 +1816,7 @@
   "compute.kvm_rebuild_tip4": "4.主机系统盘容量需满足镜像最少磁盘要求，否则无法选择相应镜像",
   "compute.kvm_rebuild_tip5": "5.重装系统不支持选择本地ISO格式镜像",
   "compute.kvm_rebuild_tip6": "6.镜像状态需为可用状态",
-  "compute.bastionHost.domain": "网域"
+  "compute.bastionHost.domain": "网域",
+  "compute.revoke_secgroup": "解绑安全组",
+  "compute.set_secgroup": "设置安全组"
 }
