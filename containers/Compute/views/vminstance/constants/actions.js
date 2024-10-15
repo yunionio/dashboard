@@ -1530,7 +1530,8 @@ const getSingleActions = function () {
               // 关联安全组
               {
                 label: i18n.t('compute.text_1116'),
-                permission: 'server_perform_add_secgroup',
+                permissionLabels: [i18n.t('compute.text_1116'), i18n.t('compute.revoke_secgroup'), i18n.t('compute.set_secgroup')],
+                permission: 'server_perform_add_secgroup,server_perform_revoke_secgroup,server_perform_set_secgroup',
                 action: () => {
                   this.createDialog('VmSetSecgroupDialog', {
                     vm: this,
