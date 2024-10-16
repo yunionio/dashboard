@@ -345,7 +345,7 @@ export default {
         systemDisk = getOriginDiskKey(systemDisk)
       }
       if (this.fi.createType !== SERVER_TYPE.public) systemDisk = `${systemDiskMedium}::${systemDisk}`
-      pf.addDisk(systemDisk, systemDiskSize)
+      pf.addDisk(systemDisk, systemDiskSize, 'sys')
       if (this.dataDiskType) {
         const datadisks = this.dataDiskSizes || (this.dataDisk ? [this.dataDisk] : [])
         let dataDisk = this.dataDiskType
