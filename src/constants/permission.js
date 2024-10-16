@@ -1440,6 +1440,7 @@ export const PERMISSION = {
   ext_resource_types_perform_set_attributes: ['extdb', 'ext_resource_types', 'perform', 'set-attributes'],
   ext_resource_types_perform_enable: ['extdb', 'ext_resource_types', 'perform', 'enable'],
   ext_resource_types_perform_disable: ['extdb', 'ext_resource_types', 'perform', 'disable'],
+  ext_resource_types_perform_public: ['extdb', 'ext_resource_types', 'perform', 'public'],
 
   scirptapplys_list: ['devtool', 'scirptapplys', 'list'],
   scirptapplys_update: ['devtool', 'scirptapplys', 'update'],
