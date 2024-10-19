@@ -79,7 +79,10 @@ export default {
           title: this.$t('task.stages.title.complete_at'),
           width: 180,
           formatter: ({ cellValue, row }) => {
-            return cellValue.format()
+            if (cellValue) {
+              return cellValue.format()
+            }
+            return '-'
           },
         },
         {
@@ -113,6 +116,11 @@ export default {
           }
         }
       }
+      const endAt = this.$moment(this.data.end_at)
+      stages.push({
+        name: this.data.stage,
+        start_at: endAt,
+      })
       return stages
     },
     taskParams () {
@@ -135,7 +143,12 @@ export default {
       if (this.data.params && this.data.params.__failed_reason) {
         const failed = {}
         failed.stage = this.data.params.__failed_reason.stage
-        failed.reason = JSON.parse(this.data.params.__failed_reason.reason)
+        try {
+          failed.reason = JSON.parse(this.data.params.__failed_reason.reason)
+        } catch (e) {
+          console.log('failedReasons json parse error', e)
+          failed.reason = this.data.params.__failed_reason.reason
+        }
         return yaml.dump(failed)
       }
       return null
