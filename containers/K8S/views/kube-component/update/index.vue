@@ -63,6 +63,7 @@ export default {
             type: kubeComponent,
           },
         })
+        this.$store.commit('keepAlive/ADD_DELAY_EVENT', { name: 'ResourceListSingleRefresh', params: cluster })
         this.loading = false
         this.$message.success(this.$t('k8s.text_46'))
         this.$router.push('/k8s-kubecomponent')

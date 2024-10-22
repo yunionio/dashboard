@@ -10,6 +10,7 @@
     </page-header>
     <page-body>
       <network-list
+        ref="list"
         :id="listId"
         :cloud-env="cloudEnv"
         :cloudEnvOptions="cloudEnvOptions"
@@ -23,6 +24,7 @@
 <script>
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
+import KeepAliveMixin from '@/mixins/keepAlive'
 import NetworkList from './components/List'
 
 export default {
@@ -30,7 +32,7 @@ export default {
   components: {
     NetworkList,
   },
-  mixins: [ResStatisticsV2Mixin],
+  mixins: [ResStatisticsV2Mixin, KeepAliveMixin],
   data () {
     return {
       listId: 'NetworkList',

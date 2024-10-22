@@ -9,6 +9,7 @@
     </page-header>
     <page-body>
       <vm-instance-list
+        ref="list"
         :id="listId"
         :cloud-env="cloudEnv"
         :cloudEnvOptions="cloudEnvOptions"
@@ -23,14 +24,15 @@
 <script>
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
+import KeepAliveMixin from '@/mixins/keepAlive'
 import VmInstanceList from './components/List'
 
 export default {
-  name: 'VmInstanceIndex',
+  name: 'VMInstanceIndex',
   components: {
     VmInstanceList,
   },
-  mixins: [ResStatisticsV2Mixin],
+  mixins: [ResStatisticsV2Mixin, KeepAliveMixin],
   data () {
     return {
       listId: 'VMInstanceList',

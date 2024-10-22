@@ -173,6 +173,7 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         await this.doUpdate(values)
+        this.$store.commit('keepAlive/ADD_DELAY_EVENT', { name: 'ResourceListSingleRefresh', params: this.clusterId })
         this.handleCancel()
       } catch (error) {
         throw error

@@ -236,6 +236,7 @@ export default {
         this.$emit('update:loading', true)
         if (this.isUpdate) {
           await new this.$Manager('commonalerts', 'v1').update({ id: this.commonalertId, data })
+          this.$store.commit('keepAlive/ADD_DELAY_EVENT', { name: 'ResourceListSingleRefresh', params: this.commonalertId })
         } else {
           await new this.$Manager('commonalerts', 'v1').create({ data })
         }

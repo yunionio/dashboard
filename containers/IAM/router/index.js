@@ -57,10 +57,14 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'IdpList',
+              name: 'IdpIndex',
               path: '',
-              meta: {},
               component: IDP,
+              meta: {
+                key: '/idp',
+                keepAlive: true,
+                keepAliveViews: ['IdpUpdate'],
+              },
             },
             {
               name: 'IdpCreate',
@@ -219,9 +223,14 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'Policy',
+              name: 'PolicyIndex',
               path: '',
               component: Policy,
+              meta: {
+                key: '/policy',
+                keepAlive: true,
+                keepAliveViews: ['PolicyUpdate'],
+              },
             },
             {
               name: 'PolicyCreate',

@@ -652,6 +652,11 @@ export default {
               name: 'K8sKubeComponent',
               path: '',
               component: K8sKubeComponent,
+              meta: {
+                key: '/k8s-kubecomponent',
+                keepAlive: true,
+                keepAliveViews: ['K8sKubeComponentUpdate'],
+              },
             },
             {
               name: 'K8sKubeComponentCreate',

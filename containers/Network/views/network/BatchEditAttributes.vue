@@ -231,6 +231,7 @@ export default {
         const values = await this.form.fc.validateFields()
         const data = this.genData(values)
         await this.doUpdate(data)
+        this.$store.commit('keepAlive/ADD_DELAY_EVENT', { name: 'ResourceListSingleRefresh', params: this.networkIds })
         this.$router.push('/network')
       } catch (err) {
         throw err

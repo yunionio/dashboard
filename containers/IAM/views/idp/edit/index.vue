@@ -433,6 +433,7 @@ export default {
         const values = await this.getValues()
         if (this.isUpdate) {
           await this.doUpdate(values)
+          this.$store.commit('keepAlive/ADD_DELAY_EVENT', { name: 'ResourceListSingleRefresh', params: this.id })
         } else {
           await this.doCreate(values)
         }
