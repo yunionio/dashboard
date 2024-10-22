@@ -372,6 +372,7 @@ export default {
         const values = await this.form.fc.validateFields()
         if (this.lbAgentId) {
           await this.doUpdate(values)
+          this.$store.commit('keepAlive/ADD_DELAY_EVENT', { name: 'ResourceListSingleRefresh', params: this.lbAgentId })
         }
         this.handleCancel()
       } catch (error) {

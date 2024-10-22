@@ -1579,6 +1579,9 @@ export default {
     this.$bus.$on('VMInstanceListSingleRefresh', args => {
       this.list.singleRefresh(...args)
     }, this)
+    // this.$bus.$on('VMInstanceListRefresh', args => {
+    //   this.list.resetRefresh()
+    // }, this)
   },
   methods: {
     getParam () {

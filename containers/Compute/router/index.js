@@ -82,9 +82,13 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'VMInstance',
+              name: 'VMInstanceIndex',
               path: '',
               component: VMInstance,
+              meta: {
+                keepAlive: true,
+                keepAliveViews: ['VMInstanceAdjustConfig'],
+              },
             },
             {
               name: 'VMInstanceCreate',

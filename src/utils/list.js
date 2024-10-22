@@ -533,6 +533,12 @@ class CreateList {
     return this.fetchData(this.offset, this.getLimit())
   }
 
+  resetRefresh () {
+    this.filter = {}
+    this.reset()
+    return this.fetchData(0, this.getLimit())
+  }
+
   /**
    * @description 更新排序
    * @param {String} property 排序的key
@@ -1231,6 +1237,28 @@ class CreateList {
       .get({
         id,
         params,
+      })
+      .then(response => {
+        this.update(id, response.data)
+        if (steadyStatus) {
+          this.waitStatus(id, steadyStatus)
+        }
+        return response
+      })
+  }
+
+  /**
+   *
+   * 刷新单条数据
+   * @param {String} id
+   * @param {Array} steadyStatus 所期望的状态，以便定时更新
+   * @returns Promise
+   */
+  singleRefreshWithoutParams (id, steadyStatus) {
+    return this.manager
+      .get({
+        id,
+        params: {},
       })
       .then(response => {
         this.update(id, response.data)

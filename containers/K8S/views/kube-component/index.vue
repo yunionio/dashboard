@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import KeepAliveMixin from '@/mixins/keepAlive'
 import KubeComponentList from './components/List'
 
 export default {
@@ -15,6 +16,7 @@ export default {
   components: {
     KubeComponentList,
   },
+  mixins: [KeepAliveMixin],
   data () {
     return {
       listId: 'KubeComponentList',

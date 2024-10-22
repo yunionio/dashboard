@@ -123,6 +123,7 @@ export default {
         data.tag_update_policy = 'replace'
         data.tags_action = 'replace'
         await this.$http.patch(`/v1/auth/policies/${this.policy.id}`, data)
+        this.$store.commit('keepAlive/ADD_DELAY_EVENT', { name: 'ResourceListSingleRefresh', params: this.policy.id })
         this.$router.push('/policy')
       } catch (error) {
         throw error

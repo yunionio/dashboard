@@ -46,9 +46,14 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'Cloudaccount',
+              name: 'CloudaccountIndex',
               path: '',
               component: Cloudaccount,
+              meta: {
+                key: '/cloudaccount',
+                keepAlive: true,
+                keepAliveViews: ['CloudaccountUpdateBill'],
+              },
             },
             {
               name: 'CloudaccountCreate',

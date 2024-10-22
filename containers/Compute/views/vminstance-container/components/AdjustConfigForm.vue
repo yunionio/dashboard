@@ -393,6 +393,7 @@ export default {
         const isOk = res.data.data.every(item => item.status === 200)
         if (isOk) {
           this.$message.success(this.$t('compute.text_423'))
+          this.$store.commit('keepAlive/ADD_DELAY_EVENT', { name: 'ResourceListSingleRefresh', params: this.data.map(item => item.id) })
           this.cancel()
         }
       } catch (error) {

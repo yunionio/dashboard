@@ -549,6 +549,8 @@ export default {
           if (isSuccess(res)) {
             this.$message.success(i18n.t('compute.text_322'))
           }
+          console.log('上报')
+          this.$store.commit('keepAlive/ADD_DELAY_EVENT', { name: 'VMInstanceListRefresh' })
           this.$router.push('/vminstance')
         })
         .catch(error => {
@@ -783,7 +785,7 @@ export default {
     },
     handleCancel () {
       this.$router.push({
-        name: this.isServertemplate ? 'Servertemplate' : 'VMInstance',
+        name: this.isServertemplate ? 'Servertemplate' : 'VMInstanceIndex',
       })
     },
   },

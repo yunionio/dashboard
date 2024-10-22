@@ -432,6 +432,7 @@ export default {
           wire_id: this.wire_id,
         }
         await this.doUpdate(values)
+        this.$store.commit('keepAlive/ADD_DELAY_EVENT', { name: 'ResourceListSingleRefresh', params: [this.$route.query.network_id] })
         const networkPath = this.$router.resolve(this.$route.path)
         this.$router.push({ path: networkPath.resolved.matched[0].path })
       } catch (err) {

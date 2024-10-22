@@ -287,9 +287,14 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'NetworkList',
+              name: 'NetworkIndex',
               path: '',
               component: Network,
+              meta: {
+                key: '/network',
+                keepAlive: true,
+                keepAliveViews: ['NetworkUpdate', 'NetworkBatchUpdate'],
+              },
             },
             {
               name: 'NetworkCreate',
@@ -677,9 +682,14 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'LoadbalancerclusterList',
+              name: 'LoadbalancerclusterIndex',
               path: '',
               component: LoadbalancerclusterList,
+              meta: {
+                key: '/cluster',
+                keepAlive: true,
+                keepAliveViews: ['LBClusterUpdate'],
+              },
             },
             {
               name: 'LBClusterUpdate',
@@ -703,9 +713,14 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'AgentList',
+              name: 'AgentIndex',
               path: '',
               component: AgentList,
+              meta: {
+                key: '/lbagent',
+                keepAlive: true,
+                keepAliveViews: ['AgentForm'],
+              },
             },
             {
               name: 'AgentForm',

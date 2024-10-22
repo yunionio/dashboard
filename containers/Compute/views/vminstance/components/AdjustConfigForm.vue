@@ -143,7 +143,7 @@ import { STORAGE_TYPES } from '@/constants/compute'
 import DiscountPrice from '@/sections/DiscountPrice'
 
 export default {
-  name: 'AdjustConfig',
+  name: 'VMInstanceAdjustConfig',
   components: {
     CpuRadio,
     MemRadio,
@@ -899,6 +899,7 @@ export default {
           const isOk = res.data.data.every(item => item.status === 200)
           if (isOk) {
             this.$message.success(this.$t('compute.text_423'))
+            this.$store.commit('keepAlive/ADD_DELAY_EVENT', { name: 'ResourceListSingleRefresh', params: this.data.map(item => item.id) })
             this.cancel()
           }
         }
@@ -1048,7 +1049,7 @@ export default {
       return dataDisk
     },
     cancel () {
-      this.$router.push({ name: 'VMInstance' })
+      this.$router.push({ name: 'VMInstanceIndex' })
     },
     baywatch (props, watcher) {
       const iterator = function (prop) {

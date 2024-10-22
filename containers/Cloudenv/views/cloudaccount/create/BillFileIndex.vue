@@ -96,6 +96,7 @@ export default {
       this.loading = true
       try {
         await this.$refs.BILL_FORM.doSubmit()
+        this.$store.commit('keepAlive/ADD_DELAY_EVENT', { name: 'ResourceListSingleRefresh', params: this.params.data.map(item => item.id) })
         this.cancel()
       } catch (err) {
         throw err

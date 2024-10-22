@@ -192,6 +192,11 @@ export default {
               name: 'CommonalertsIndex',
               path: '',
               component: CommonalertsIndex,
+              meta: {
+                key: '/commonalerts',
+                keepAlive: true,
+                keepAliveViews: ['CommonalertUpdate'],
+              },
             },
             {
               name: 'CommonalertCreate',
