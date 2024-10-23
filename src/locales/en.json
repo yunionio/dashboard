@@ -6085,5 +6085,8 @@
   "common.snapshot_backup": "Snapshot and Backup",
   "common.recent_visit": "Recently visited",
   "common.scheduler_log": "Scheduling log",
-  "common.view_scheduler_log": "View scheduling logs"
+  "common.view_scheduler_log": "View scheduling logs",
+  "common.store_to_my_menus": "Add to my menu",
+  "common.remove_store": "Cancel collection",
+  "common.adjust_order": "Adjust order"
 }
