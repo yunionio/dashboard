@@ -102,6 +102,10 @@ export default {
       this.moveX = ((wrap.scrollLeft * 100) / wrap.clientWidth)
     },
 
+    changeMoveY (value) {
+      this.$refs.wrap.scrollTo(0, value)
+    },
+
     update () {
       const wrap = this.wrap
       if (!wrap) return

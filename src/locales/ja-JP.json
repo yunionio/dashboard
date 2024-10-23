@@ -6103,5 +6103,8 @@
   "common.snapshot_backup": "スナップショットとバックアップ",
   "common.recent_visit": "最近のアクセス",
   "common.scheduler_log": "スケジュールログ",
-  "common.view_scheduler_log": "スケジュール・ログの表示"
+  "common.view_scheduler_log": "スケジュール・ログの表示",
+  "common.store_to_my_menus": "マイメニューにコレクション",
+  "common.remove_store": "コレクションのキャンセル",
+  "common.adjust_order": "順序を調整する"
 }

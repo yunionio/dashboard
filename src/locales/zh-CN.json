@@ -6107,5 +6107,8 @@
   "common.snapshot_backup": "快照与备份",
   "common.recent_visit": "最近访问",
   "common.scheduler_log": "调度日志",
-  "common.view_scheduler_log": "查看调度日志"
+  "common.view_scheduler_log": "查看调度日志",
+  "common.store_to_my_menus": "收藏至我的菜单",
+  "common.remove_store": "取消收藏",
+  "common.adjust_order": "调整顺序"
 }
