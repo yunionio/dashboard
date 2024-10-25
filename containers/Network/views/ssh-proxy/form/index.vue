@@ -248,7 +248,7 @@ export default {
       return this.step.currentStep === 0
     },
     vmConfigurationLink () {
-      const docsUrl = getDocsUrl(this.$store.getters.scope)
+      const docsUrl = getDocsUrl(this.$store.getters.scope, this.$store.getters.isSysCE)
       const lang = this.$store.getters.setting.language
       if (lang === 'zh-CN') {
         return docsUrl + 'web_ui/network/ssh/sshproxy/#虚拟机配置要求'

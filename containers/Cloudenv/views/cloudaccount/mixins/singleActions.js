@@ -404,7 +404,7 @@ export default {
                         ownerDomain,
                     }
                   },
-                  hidden: !this.$appConfig.isPrivate,
+                  hidden: !this.$appConfig.isPrivate || this.$store.getters.isSysCE,
                 },
                 // 设置优惠率
                 {
@@ -464,13 +464,13 @@ export default {
                       name: this.$t('dictionary.cloudaccount'),
                       onManager: this.onManager,
                       content: () => {
-                        if (this.$appConfig.isPrivate) {
+                        if (this.$appConfig.isPrivate && !this.$store.getters.isSysCE) {
                           return <a-checkbox v-model={this.deleteBill}>{this.$t('cloudenv.text_497')}</a-checkbox>
                         }
                         return null
                       },
                       success: async () => {
-                        if (this.deleteBill && this.$appConfig.isPrivate) {
+                        if (this.deleteBill && this.$appConfig.isPrivate && !this.$store.getters.isSysCE) {
                           const manager = new this.$Manager('billtasks/submit', 'v1')
                           try {
                             const data = {

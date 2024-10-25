@@ -6018,5 +6018,6 @@
   "common.mobile_end": "移动端",
   "common.refer_nington": "推荐宁盾令牌",
   "common.scheduler_log": "调度日志",
-  "common.view_scheduler_log": "查看调度日志"
+  "common.view_scheduler_log": "查看调度日志",
+  "common.system_ce": "Cloudpods 企业支持版"
 }

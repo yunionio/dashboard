@@ -1,3 +1,4 @@
+import store from '@/store'
 import { getDocsUrl } from './utils'
 
 export const DOC_MAP = {
@@ -5,5 +6,5 @@ export const DOC_MAP = {
 }
 
 export const getDoc = (doc) => {
-  return `${getDocsUrl()}${doc}`
+  return `${getDocsUrl(store.getters.scope, store.getters.isSysCE)}${doc}`
 }

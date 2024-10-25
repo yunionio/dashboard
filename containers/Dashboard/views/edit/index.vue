@@ -77,13 +77,15 @@ import { mapGetters } from 'vuex'
 import interact from '@interactjs/interactjs'
 import VueGridLayout from 'vue-grid-layout'
 import debounce from 'lodash/debounce'
-import extendsComponents from '@scope/extends'
+import getExtendsComponents from '@scope/extends'
 import GridShadow from '@Dashboard/components/GridShadow'
 import ExtendGallery from '@Dashboard/sections/ExtendGallery'
 import { clear as clearCache } from '@Dashboard/utils/cache'
 import { generateFitLayout } from '@Dashboard/utils/fit'
 import { uuid } from '@/utils/utils'
 import storage from '@/utils/storage'
+
+const extendsComponents = R.is(Function, getExtendsComponents) ? getExtendsComponents() : getExtendsComponents
 
 export default {
   name: 'DashboardEdit',

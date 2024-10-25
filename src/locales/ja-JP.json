@@ -6014,5 +6014,6 @@
   "common.chrome_browser": "Chromeブラウザ",
   "common.mobile_end": "いどうたんし",
   "common.scheduler_log": "スケジュールログ",
-  "common.view_scheduler_log": "スケジュール・ログの表示"
+  "common.view_scheduler_log": "スケジュール・ログの表示",
+  "common.system_ce": "Cloudpods エンタープライズサポート版"
 }

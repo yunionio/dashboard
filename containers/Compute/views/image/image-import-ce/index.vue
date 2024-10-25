@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-alert type="warning" v-if="isCE">
+    <a-alert type="warning" v-if="isCE || $store.getters.isSysCE">
       <span slot="message">{{ $t('common.image_url_tip') }} <a href="https://www.cloudpods.org/docs/guides/onpremise/glance/common-image-url" target="_blank">{{ $t('common.normal_open_image') }}</a></span>
     </a-alert>
     <a-alert type="warning" v-else>

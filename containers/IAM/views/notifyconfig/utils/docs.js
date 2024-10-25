@@ -1,7 +1,8 @@
 import { getDocsUrl } from '@/utils/utils'
+import store from '@/store'
 
 export const getNotifyDocsUrl = (type) => {
-  let baseUrl = getDocsUrl() + 'web_ui/iam/notify/mailconfig'
+  let baseUrl = getDocsUrl('system', store.getters.isSysCE) + 'web_ui/iam/notify/mailconfig'
 
   switch (type) {
     case 'mobile':

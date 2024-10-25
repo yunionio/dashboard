@@ -53,7 +53,7 @@ export default {
     return {
       policyOpts: SCHEDTAG_POLICY_OPTIONS,
       schedtagItem: {},
-      docUrl: `${getDocsUrl()}web_ui/computing/schedule/schedtag`,
+      docUrl: `${getDocsUrl(this.$store.getters.scope, this.$store.getters.isSysCE)}web_ui/computing/schedule/schedtag`,
     }
   },
   methods: {

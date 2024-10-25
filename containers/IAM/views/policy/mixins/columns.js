@@ -55,7 +55,7 @@ export default {
         title: this.$t('iam.project_tag'),
         field: 'project_tags',
         columns: () => this.columns,
-        hidden: () => isCE(),
+        hidden: () => isCE() || this.$store.getters.isSysCE,
       }),
       getTagTableColumn({
         customTitle: this.$t('iam.object_tag'),
@@ -84,7 +84,7 @@ export default {
             return '-'
           },
         },
-        hidden: () => isCE(),
+        hidden: () => isCE() || this.$store.getters.isSysCE,
       },
       getPublicScopeTableColumn({ vm: this, resource: 'policies' }),
       getProjectDomainTableColumn(),

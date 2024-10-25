@@ -832,7 +832,7 @@ const getSingleActions = function () {
                   const rescueModeValid = validateRescueMode(obj)
                   return rescueModeValid
                 },
-                hidden: () => !this.$appConfig.isPrivate || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_add_to_bastion'),
+                hidden: () => !this.$appConfig.isPrivate || this.$store.getters.isSysCE || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_add_to_bastion'),
               },
               // 续费
               {

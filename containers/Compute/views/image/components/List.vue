@@ -392,7 +392,7 @@ export default {
       if (this.isAdminMode) {
         batchActions.unshift(ImageImportCe)
       }
-      if (this.isAdminMode && !isCE()) {
+      if (this.isAdminMode && !isCE() && !this.$store.getters.isSysCE) {
         batchActions.unshift(ImageImport)
       }
       batchActions.unshift(ImageUpload)

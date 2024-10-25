@@ -135,10 +135,10 @@ export default {
           {
             initialValue: this.editData?.storage_conf?.slvm_vg_name || '',
             rules: [
-              { required: true, message: this.$t('common.tips.input', ['SlvmVgName']), trigger: 'blur' }
-            ]
-          }
-        ]
+              { required: true, message: this.$t('common.tips.input', ['SlvmVgName']), trigger: 'blur' },
+            ],
+          },
+        ],
       }
     },
   },
