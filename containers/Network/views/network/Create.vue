@@ -738,6 +738,9 @@ export default {
       if (this.cloudEnv === 'private' && this.curVpc?.brand === 'Cloudpods' && this.curVpc?.external_id === 'default') {
         this.isShowWire = true
         this.isGroupGuestIpPrefix = true
+      } else {
+        this.isShowWire = false
+        this.isGroupGuestIpPrefix = false
       }
     },
     vpcLabelFormat (item) {
