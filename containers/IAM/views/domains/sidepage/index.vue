@@ -107,7 +107,7 @@ export default {
     },
   },
   created () {
-    if (!this.l3PermissionEnable || !this.globalConfig.enable_quota_check || isCE()) {
+    if (!this.l3PermissionEnable || !this.globalConfig.enable_quota_check || isCE() || this.$store.getters.isSysCE) {
       this.detailTabs.splice(1, 1)
     }
     if (this.params.tab) {

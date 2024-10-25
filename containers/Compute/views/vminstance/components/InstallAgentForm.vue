@@ -99,7 +99,7 @@ export default {
       return this.agent_install_status === 'install_failed' && this.install_failed_code === 'NoReachInfluxdb'
     },
     peHelpLink () {
-      const docsUrl = getDocsUrl(this.$store.getters.scope)
+      const docsUrl = getDocsUrl(this.$store.getters.scope, this.$store.getters.isSysCE)
       return docsUrl + 'web_ui/network/ssh/sshproxy'
     },
     install_failed_code () {

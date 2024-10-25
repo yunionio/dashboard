@@ -78,7 +78,7 @@ export default {
               return '-'
             },
           },
-          hidden: () => isCE(),
+          hidden: () => isCE() || this.$store.getters.isSysCE,
         },
         {
           field: 'object_tags',
@@ -112,7 +112,7 @@ export default {
               return '-'
             },
           },
-          hidden: () => isCE(),
+          hidden: () => isCE() || this.$store.getters.isSysCE,
         },
         getTagTableColumn({
           columns: () => this.columns,

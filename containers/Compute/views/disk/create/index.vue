@@ -286,7 +286,7 @@ export default {
   },
   computed: {
     enableEncryption () {
-      return this.$appConfig.isPrivate
+      return this.$appConfig.isPrivate && !this.$store.getters.isSysCE
     },
     tooltip () {
       return this.$t('compute.text_137', [this.minDiskData, this.maxDiskData])

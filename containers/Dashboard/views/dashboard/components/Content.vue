@@ -20,8 +20,10 @@
 <script>
 import { mapGetters } from 'vuex'
 import * as R from 'ramda'
-import extendsComponents from '@scope/extends'
+import getExtendsComponents from '@scope/extends'
 import { clear as clearCache } from '@Dashboard/utils/cache'
+
+const extendsComponents = R.is(Function, getExtendsComponents) ? getExtendsComponents() : getExtendsComponents
 
 export default {
   name: 'DashboardContent',

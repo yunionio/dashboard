@@ -5997,5 +5997,6 @@
   "common.chrome_browser": "Chrome",
   "common.mobile_end": "Mobile",
   "common.scheduler_log": "Scheduling log",
-  "common.view_scheduler_log": "View scheduling logs"
+  "common.view_scheduler_log": "View scheduling logs",
+  "common.system_ce": "Cloudpods Enterprise Support Edition"
 }

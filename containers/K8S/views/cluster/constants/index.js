@@ -1,6 +1,7 @@
 import i18n from '@/locales'
 import { getDocsUrl } from '@/utils/utils'
 import { HYPERVISORS_MAP } from '@/constants'
+import store from '@/store'
 
 export const KUBE_PROVIDER = 'onecloud'
 
@@ -28,7 +29,7 @@ export const K8S_HYPERVISORS_MAP = {
 }
 
 function getDocsClusterPath (scope) {
-  const docsUrl = getDocsUrl(scope)
+  const docsUrl = getDocsUrl(scope, store.getters.isSysCE)
   return `${docsUrl}function_principle/k8s/pre_env/`
 }
 

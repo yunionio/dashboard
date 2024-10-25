@@ -1,7 +1,8 @@
 import { getDocsUrl } from '@/utils/utils'
+import store from '@/store'
 
 export const getWebhookDocsUrl = (type) => {
-  let baseUrl = getDocsUrl() + 'web_ui/iam/notify/bot'
+  let baseUrl = getDocsUrl('system', store.getters.isSysCE) + 'web_ui/iam/notify/bot'
 
   switch (type) {
     case 'dingtalk':

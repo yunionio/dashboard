@@ -818,9 +818,9 @@ export function isSAAS () {
   return !!process.env.VUE_APP_IS_SAAS
 }
 
-export function getDocsUrl (scope) {
+export function getDocsUrl (scope, isSysCE) {
   let prefix = 'docs'
-  if (isCE()) {
+  if (isCE() || isSysCE) {
     return `https://www.cloudpods.org/${language}/${prefix}/`
   }
   if (scope === 'domain' || scope === 'project') {

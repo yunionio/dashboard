@@ -10,7 +10,7 @@
         <a-menu-item key="/guide" v-if="isAdminMode && !isCE()">{{$t('navbar.button.feature_select')}}</a-menu-item>
         <a-menu-item :key="docsUrl">{{$t('navbar.button.docs')}}</a-menu-item>
         <a-menu-item key="/licenses">
-          <span>{{isCE() ? $t('scope.text_145') : $t('navbar.button.about')}}</span>
+          <span>{{isCE() || $store.getters.isSysCE ? $t('scope.text_145') : $t('navbar.button.about')}}</span>
           <a-icon v-if="!isOEM && isAdminMode && updateAvailable" type="cloud-upload" class="success-color ml-1" />
         </a-menu-item>
       </a-menu>
@@ -36,14 +36,14 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode']),
     docsUrl () {
-      return getDocsUrl(this.$store.getters.scope)
+      return getDocsUrl(this.$store.getters.scope, this.$store.getters.isSysCE)
     },
   },
   destroyed () {
     this.manager = null
   },
   created () {
-    if (!this.isOEM && !this.isCE()) {
+    if (!this.isOEM && !this.isCE() && !this.$store.getters.isSysCE) {
       this.manager = new this.$Manager('updates', 'v1')
       this.getUpdateInfo()
     }

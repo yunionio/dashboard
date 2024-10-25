@@ -1,0 +1,87 @@
+import i18n from '@/locales'
+
+const options = [
+  {
+    label: i18n.t('dashboard.text_78'),
+    desc: i18n.t('dashboard.text_79'),
+    icon: 'dashboard-number',
+    h: 6,
+    w: 20,
+    component: 'NumberCard',
+  },
+  {
+    label: i18n.t('dashboard.text_80'),
+    desc: i18n.t('dashboard.text_81'),
+    icon: 'dashboard-usage',
+    h: 5,
+    w: 20,
+    component: 'Ring',
+  },
+  {
+    label: i18n.t('dashboard.text_19'),
+    desc: i18n.t('dashboard.text_84'),
+    icon: 'dashboard-notice',
+    h: 4,
+    w: 20,
+    component: 'Notify',
+  },
+  {
+    label: 'TOP5',
+    desc: i18n.t('dashboard.text_85'),
+    icon: 'dashboard-top5',
+    h: 8,
+    w: 20,
+    component: 'Top5',
+  },
+  {
+    label: i18n.t('monitor.overview_alert_sum'),
+    desc: '',
+    icon: 'dashboard-alert-sum',
+    h: 5,
+    w: 20,
+    component: 'UnrecoveredAlarm',
+  },
+  {
+    label: i18n.t('dashboard.vm_history_count'),
+    desc: '',
+    icon: 'dashboard-vmhistory-count-trend',
+    h: 6,
+    w: 40,
+    component: 'VmHistoryCount',
+  },
+  {
+    label: i18n.t('dashboard.alerts_trend'),
+    desc: '',
+    icon: 'dashboard-alerts-trend',
+    h: 6,
+    w: 40,
+    component: 'AlertsTrend',
+  },
+  {
+    label: i18n.t('dashboard.cloud_account_health'),
+    desc: '',
+    icon: 'dashboard-cloud-account-health',
+    h: 7,
+    w: 20,
+    scope: ['system', 'domain'],
+    component: 'AccountHealth',
+  },
+  {
+    label: i18n.t('dashboard.userinfo'),
+    desc: '',
+    icon: 'dashboard-user-info',
+    h: 7,
+    w: 20,
+    component: 'UserInfo',
+  },
+  {
+    label: i18n.t('dashborad.server_numbers'),
+    desc: '',
+    icon: 'dashboard-suggest-detail',
+    h: 5,
+    w: 20,
+    component: 'ServerNumberDetail',
+  },
+]
+
+export default options

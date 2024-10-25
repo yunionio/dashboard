@@ -1,6 +1,7 @@
 import { sizestrWithUnit, sizeToDesignatedUnit, getDocsUrl } from '@/utils/utils'
 import i18n from '@/locales'
 import { SCOPES_MAP, CLOUD_ENVS } from '@/constants'
+import store from '@/store'
 
 // 不定单位使用formatter，固定单位使用unit
 // 磁盘（disk）、内存（memory） 容量单位为：formatter: val => sizestrWithUnit(val, 'M', 1024)
@@ -1829,6 +1830,6 @@ export const PROJECT_QUOTA_CONFIG = {
 }
 
 export function getMetricDocs (scope) {
-  const docsUrl = `${getDocsUrl(scope)}web_ui/intro/dashboard/`
+  const docsUrl = `${getDocsUrl(scope, store.getters.isSysCE)}web_ui/intro/dashboard/`
   return docsUrl + i18n.t('dashboard.text_184')
 }
