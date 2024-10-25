@@ -74,7 +74,7 @@ export default {
         // { label: this.$t('system.text_173'), key: 'project-resources-statistics' },
         { label: this.$t('system.text_17'), key: 'event-drawer' },
       ]
-      if (!this.globalConfig.enable_quota_check || isCE()) {
+      if (!this.globalConfig.enable_quota_check || isCE() || this.$store.getters.isSysCE) {
         detailTabs.splice(2, 1)
       }
       return detailTabs

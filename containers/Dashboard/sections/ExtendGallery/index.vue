@@ -25,23 +25,27 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import store from '@/store'
 import options from '@scope/extends/config'
+import ceOptions from '@Dashboard/extends/config'
 
 export default {
   name: 'ExtendGallery',
   data () {
+    const opts = store.getters.isSysCE ? ceOptions : options
     const extendsOptions = {}
-    for (let i = 0, len = options.length; i < len; i++) {
-      extendsOptions[options[i].component] = { ...options[i] }
+    for (let i = 0, len = opts.length; i < len; i++) {
+      extendsOptions[opts[i].component] = { ...opts[i] }
     }
     return {
+      opts,
       extendsOptions,
     }
   },
   computed: {
     ...mapGetters(['scope', 'globalConfig']),
     options () {
-      const ret = options.filter(item => {
+      const ret = this.opts.filter(item => {
         let effective = true
         if (item.scope && !item.scope.includes(this.scope)) {
           effective = false

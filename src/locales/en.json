@@ -6090,5 +6090,6 @@
   "common.remove_store": "Cancel collection",
   "common.adjust_order": "Adjust order",
   "common.prev_one": "Previous article",
-  "common.next_one": "Next article"
+  "common.next_one": "Next article",
+  "common.system_ce": "Cloudpods Enterprise Support Edition"
 }

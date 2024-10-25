@@ -357,7 +357,7 @@ export default {
       return params
     },
     showOrg () {
-      return !isCE()
+      return !isCE() && !this.$store.getters.isSysCE
     },
   },
   watch: {

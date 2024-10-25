@@ -30,7 +30,7 @@ export default {
                 validate: true,
               }),
               hidden: () => {
-                return !this.globalConfig.enable_quota_check || isCE()
+                return !this.globalConfig.enable_quota_check || isCE() || this.$store.getters.isSysCE
               },
             },
             {

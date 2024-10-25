@@ -625,7 +625,7 @@ export default {
       return this.$t('compute.text_302')
     },
     enableEncryption () {
-      return this.$appConfig.isPrivate
+      return this.$appConfig.isPrivate && !this.$store.getters.isSysCE
     },
     isShowAgent () {
       if (this.isIso || !this.osType) return false

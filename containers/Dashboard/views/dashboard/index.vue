@@ -28,6 +28,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters, mapState } from 'vuex'
+import store from '@/store'
 import storage from '@/utils/storage'
 import { addClass, removeClass, hasClass } from '@/utils/dom'
 import { generateFitLayout } from '@Dashboard/utils/fit'
@@ -53,7 +54,7 @@ export default {
       // 面板配置是否加载完毕
       optionsLoaded: false,
       // 默认面板配置 -> [{ id: 'xxx', name: 'xxx' }]
-      defaultOptions: isPrivate ? defaultConfig[this.$store.getters.scope].options : publicDefaultConfig[this.$store.getters.scope].options,
+      defaultOptions: isPrivate && !store.getters.isSysCE ? defaultConfig[this.$store.getters.scope].options : publicDefaultConfig[this.$store.getters.scope].options,
       // 自定义面板配置
       customOptions: [],
       // 当前面板配置 -> { id: 'xxx', name: 'xxx' }
@@ -170,7 +171,7 @@ export default {
         if (error.isAxiosError && error.response && error.response.status === 404 && this.isDefault) {
           // not found system default dashboard, reinit one
           const shareConfig = await this.initWidgetParamter()
-          const config = this.isPrivate ? (shareConfig || defaultConfig[this.scope][id]) : publicDefaultConfig[this.scope][id]
+          const config = this.isPrivate && !this.$store.getters.isSysCE ? (shareConfig || defaultConfig[this.scope][id]) : publicDefaultConfig[this.scope][id]
           if (!this.globalConfig.enable_quota_check) {
             // remove quota widgets
             for (var i = 0; i < config.length; i++) {

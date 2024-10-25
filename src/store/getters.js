@@ -35,4 +35,5 @@ export default {
   globalConfig: state => state.common.globalConfig,
   projectTags: state => state.projectTags,
   globalSetting: state => state.globalSetting,
+  isSysCE: state => state.app.isSysCE,
 }

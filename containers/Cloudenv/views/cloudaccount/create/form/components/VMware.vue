@@ -95,7 +95,7 @@ export default {
       initPort = list[1] || 8006
     }
     return {
-      baseDocURL: getDocsUrl(this.$store.getters.scope),
+      baseDocURL: getDocsUrl(this.$store.getters.scope, this.$store.getters.isSysCE),
       docs: getCloudaccountDocs(this.$store.getters.scope),
       decorators: {
         name: [
