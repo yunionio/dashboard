@@ -818,6 +818,10 @@
       "label": "WaterMark Switch",
       "desc": "It is on by default. After closing, the WebConsole watermark display will be hidden."
     },
+    "webconsole$enable_command_recording": {
+      "label": "Enable web SSH log auditing",
+      "desc": "Default is off, after enabling, you can view the relevant logs in the [Command Record]"
+    },
     "compute$local_sys_disk_min_size_gb": {
       "label": "The minimum value of the local system disk",
       "desc": "Set the minimum value of the local system disk"
