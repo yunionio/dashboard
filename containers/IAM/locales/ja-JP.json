@@ -817,6 +817,10 @@
       "label": "透かしスイッチ",
       "desc": "これはデフォルトで有効になっており、WebConsoleの透かし表示はオフにすると非表示になります。"
     },
+    "webconsole$enable_command_recording": {
+      "label": "Web sshログ監査のオープン",
+      "desc": "デフォルトでオフ、オンにすると【コマンド記録】で関連するログを確認できます"
+    },
     "compute$local_sys_disk_min_size_gb": {
       "label": "ローカル・システム・ディスクの最小値",
       "desc": "ローカルシステムディスクの最小値を設定する"

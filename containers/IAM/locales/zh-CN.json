@@ -817,6 +817,10 @@
       "label": "水印开关",
       "desc": "默认开启，关闭后将隐藏WebConsole水印展示。"
     },
+    "webconsole$enable_command_recording": {
+      "label": "开启web ssh日志审计",
+      "desc": "默认关闭，开启后可在【命令记录】中查看相关日志"
+    },
     "compute$local_sys_disk_min_size_gb": {
       "label": "本地系统盘最小值",
       "desc": "设置本地系统盘最小值"
