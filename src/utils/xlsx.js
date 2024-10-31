@@ -54,6 +54,7 @@ const strMatchMap = {
   $Bill: ['$', ',', ' ', '.', '-', /\d/],
   '￥Bill': ['￥', ',', ' ', '.', '-', /\d/],
   R$Bill: ['R', '$', ',', ' ', '.', '-', /\d/],
+  '€Bill': ['€', ',', ' ', '.', '-', /\d/],
   percent: ['.', '%', ' ', /\d/],
   number: ['.', /\d/],
 }
@@ -112,6 +113,11 @@ const matchDataFormat = (data) => {
     ret.isBill = true
     ret.currency = 'R$'
     ret.value = d.replace('R$', '').replaceAll(',', '').replaceAll(' ', '')
+  }
+  if (d.startsWith('€') && isOnlyMatchChars(d, strMatchMap['€Bill'])) {
+    ret.isBill = true
+    ret.currency = '€'
+    ret.value = d.replace('€', '').replaceAll(',', '').replaceAll(' ', '')
   }
   // 百分比
   if (d.endsWith('%') && isOnlyMatchChars(d, strMatchMap.percent)) {

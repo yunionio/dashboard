@@ -72,14 +72,24 @@ n.register('timemsint', {
 export const numerify = (num, format = '0.00') => {
   if (num === '-') return '-'
   num = Number(num)
-  if (!num) return 0
+  if (!num) num = 0
+  let floatLen = 2
   // 适配科学计数法
   const str = num + ''
   if (str.includes('e-') || str.includes('e+')) {
-    const fixedLen = format.split('.')[1]?.length || 0
-    num = num.toFixed(fixedLen)
+    const [numStr, exp] = str.includes('e-') ? str.split('e-') : str.split('e+')
+    const floatStr = numStr.split('.')[1]
+    num = num.toFixed(Math.min(Number(exp) + floatStr.length, 11))
+    floatLen = Number(exp) + floatStr.length
+  } else {
+    const numList = str.split('.')
+    floatLen = numList[1] ? numList[1].length : floatLen
   }
-  return n(num, format)
+  let formatStr = format
+  if (formatStr === 'originBill') {
+    formatStr = `0,0.[${Array(Math.min(11, floatLen)).fill(0).join('')}]`
+  }
+  return n(num, formatStr)
 }
 
 const filters = {

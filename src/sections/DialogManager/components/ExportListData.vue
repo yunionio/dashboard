@@ -100,12 +100,13 @@ export default {
       allExportKeys = R.insertAll(0, exportProjectTags.map(item => {
         return `projectTag:${item}`
       }), allExportKeys)
-      exportOptionItems = R.insertAll(0, exportProjectTags.map(item => {
+      const exportProjectTagsItems = this.params.tagColumns2Generator ? this.params.tagColumns2Generator(exportProjectTags) : exportProjectTags.map(item => {
         return {
           label: getTagTitle(item),
           key: `projectTag:${item}`,
         }
-      }), exportOptionItems)
+      })
+      exportOptionItems = R.insertAll(0, exportProjectTagsItems, exportOptionItems)
     }
     return {
       loading: false,
