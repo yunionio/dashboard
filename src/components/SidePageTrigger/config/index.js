@@ -1,5 +1,15 @@
 import expectStatus from '@/constants/expectStatus'
 
+// 获取自定义配置
+const requireComponent = require.context('@scope/components/SidePageTrigger/config', true, /\.(js)$/)
+const keys = requireComponent.keys()
+let extraConfig = {}
+keys.forEach(fileName => {
+  const componentConfig = requireComponent(fileName)
+  const { default: CONFIG = {} } = componentConfig
+  extraConfig = { ...CONFIG }
+})
+
 export default {
   // 主机
   VmInstanceSidePage: {
@@ -23,6 +33,10 @@ export default {
       status: Object.values(expectStatus.disk).flat(),
       guest_status: [...Object.values(expectStatus.server).flat(), '', undefined],
     },
+  },
+  DiskBackupSidePage: {
+    resource: 'diskbackups',
+    steadyStatus: Object.values(expectStatus.disk).flat(),
   },
   // 自动快照策略
   SnapshotPolicySidePage: {
