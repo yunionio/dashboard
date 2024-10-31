@@ -248,6 +248,7 @@ export default {
     ignoreWithUserMetaParam: Boolean,
     ignoreWithUserMetaParam2: Boolean,
     ignoreWithUserMetaParam3: Boolean,
+    tagColumns2Generator: Function,
     tagBtnText: String,
   },
   computed: {
@@ -309,6 +310,7 @@ export default {
         showTagColumns2: this.showTagColumns2,
         showTagColumns3: this.showTagColumns3,
         callback: this.exportDataOptions.callback,
+        tagColumns2Generator: this.tagColumns2Generator,
       })
     },
     handleCustomList () {
