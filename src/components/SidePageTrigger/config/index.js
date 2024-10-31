@@ -1,8 +1,8 @@
 import expectStatus from '@/constants/expectStatus'
 
 // 获取自定义配置
-const requireComponent = require.context('@scope/components/SidePageTrigger/config', true, /\.(js)$/)
-const keys = requireComponent.keys()
+const requireComponent = require.context('@scope/', true, /\.(js)$/)
+const keys = requireComponent.keys().filter(name => name === './components/SidePageTrigger/config/index.js')
 let extraConfig = {}
 keys.forEach(fileName => {
   const componentConfig = requireComponent(fileName)
@@ -178,4 +178,5 @@ export default {
   VpcNetworkSidePage: {
     resource: 'inter_vpc_networks',
   },
+  ...extraConfig,
 }
