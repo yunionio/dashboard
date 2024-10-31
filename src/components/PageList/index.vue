@@ -56,6 +56,7 @@
       :tagFilterResource="tagFilterResource"
       :tagFilterResource2="tagFilterResource2"
       :tagFilterResource3="tagFilterResource3"
+      :tagColumns2Generator="tagColumns2Generator"
       :ignoreWithUserMetaParam="ignoreWithUserMetaParam"
       :ignoreWithUserMetaParam2="ignoreWithUserMetaParam2"
       :ignoreWithUserMetaParam3="ignoreWithUserMetaParam3"
