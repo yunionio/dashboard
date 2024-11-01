@@ -1,7 +1,7 @@
 <template>
   <div class="monitor-list d-flex flex-wrap">
     <a-card v-for="item in listData" :key="item.title+item.constants ? item.constants.fromItem : ''" style="width: 700px;" class="position-relative m-3">
-      <a-divider>{{ item.title }}</a-divider>
+      <a-divider>{{ getMetricItem(item) }}</a-divider>
       <!-- <actions class="actions position-absolute" :options="singleActions" :row="item" button-type="link" button-size="small" /> -->
       <!-- <monitor-list-line :chartData="item.chartData" :lineConfig="getConfig(item)" :loading="loading" /> -->
       <chart-line :columns="item.chartData.columns" :rows="item.chartData.rows" :options="getConfig(item)" />
@@ -38,11 +38,16 @@ export default {
     noDataCheck (item) {
       return item.noData || false
     },
+    getMetricItem (item) {
+      let str = item.title
+      const metric = item.constants?.seleteItem || item.constants?.metric || ''
+      str += metric ? ` (${metric})` : ''
+      return str
+    },
     getConfig (item) {
       const lineConfig = item.lineConfig || {}
-      return {
-        ...lineConfig,
-        tooltip: {
+      if (!lineConfig.tooltip) {
+        lineConfig.tooltip = {
           formatter: (params = [], ticket, callback) => {
             let ret = '<div>'
             params.map(param => {
@@ -53,7 +58,10 @@ export default {
             callback(ret)
             return ret
           },
-        },
+        }
+      }
+      return {
+        ...lineConfig,
         yAxis: {
           axisLabel: {
             formatter: `{value}${item.unit}`,
