@@ -1827,5 +1827,13 @@
   "compute.yaml_config": "Yaml配置",
   "compute.yaml_check_tip": "请输入正确的Yaml地址",
   "compute.revoke_secgroup": "解绑安全组",
-  "compute.set_secgroup": "设置安全组"
+  "compute.set_secgroup": "设置安全组",
+  "compute.metric.system_load1_pcore": "系统每分钟每核平均负载",
+  "compute.metric.mem_free_percent": "内存空闲率",
+  "compute.metric.disk_used_percent": "磁盘使用率",
+  "compute.metric.disk_inodes_used_percent": "磁盘inode使用率",
+  "compute.metric.disk_read_only": "磁盘只读",
+  "compute.metric.diskio_ioutil": "磁盘IO利用率",
+  "compute.metric.processes_zombies": "僵尸进程数",
+  "compute.metric.processes_total": "总进程数"
 }

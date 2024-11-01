@@ -143,14 +143,14 @@ export const KVM_MONITOR_OPTS = [
     // metric: metricItems['usage_active,usage_idle,usage_user,usage_system,usage_iowait'].key, // 报警指标
   },
   {
-    name: 'system',
-    label: i18n.t('compute.text_529'),
-    seleteItem: 'load1,load5,load15,load1_pcore,load5_pcore,load15_pcore',
-    as: i18n.t('compute.text_530'),
-    fromItem: 'system',
-    unit: '',
-    transfer: 1,
-    // metric: metricItems['load1,load5,load15,load1_pcore,load5_pcore,load15_pcore'].key, // 报警指标
+    name: 'memCondition',
+    label: i18n.t('compute.text_531'),
+    seleteItem: 'used,free,total',
+    as: i18n.t('compute.text_532'),
+    fromItem: 'mem',
+    unit: 'B',
+    transfer: 1024,
+    // metric: metricItems['used,free,total'].key, // 报警指标
   },
   {
     name: 'mem',
@@ -163,24 +163,14 @@ export const KVM_MONITOR_OPTS = [
     // metric: metricItems['used_percent'].key, // 报警指标
   },
   {
-    name: 'memCondition',
-    label: i18n.t('compute.text_531'),
-    seleteItem: 'used,free,total',
-    as: i18n.t('compute.text_532'),
+    name: 'free_percent',
+    label: i18n.t('compute.metric.mem_free_percent'),
+    seleteItem: 'free_percent',
+    as: i18n.t('compute.metric.mem_free_percent'),
     fromItem: 'mem',
-    unit: 'B',
-    transfer: 1024,
-    // metric: metricItems['used,free,total'].key, // 报警指标
-  },
-  {
-    name: 'disk',
-    label: i18n.t('compute.text_533'),
-    seleteItem: 'used_percent',
-    as: i18n.t('compute.text_533'),
-    fromItem: 'disk',
     unit: '%',
     transfer: 1,
-    // metric: metricItems['used_percent'].key, // 报警指标
+    // metric: metricItems['bps_sent'].key, // 报警指标
   },
   {
     name: 'diskCondition',
@@ -192,15 +182,79 @@ export const KVM_MONITOR_OPTS = [
     transfer: 1024,
     // metric: metricItems['used,free,total'].key, // 报警指标
   },
+  // {
+  //   name: 'disk',
+  //   label: i18n.t('compute.text_533'),
+  //   seleteItem: 'used_percent',
+  //   as: i18n.t('compute.text_533'),
+  //   fromItem: 'disk',
+  //   unit: '%',
+  //   transfer: 1,
+  //   // metric: metricItems['used_percent'].key, // 报警指标
+  // },
   {
-    name: 'disk',
-    label: i18n.t('compute.text_519'),
-    seleteItem: 'ioutil',
-    as: i18n.t('compute.text_519'),
-    fromItem: 'diskio',
+    name: 'disk_used_percent',
+    label: i18n.t('compute.metric.disk_used_percent'),
+    seleteItem: 'used_percent',
+    // as: i18n.t('compute.metric.disk_used_percent'),
+    fromItem: 'disk',
+    groupBy: ['path'],
     unit: '%',
     transfer: 1,
-    // metric: metricItems['ioutil'].key, // 报警指标
+    // metric: metricItems['bps_sent'].key, // 报警指标
+  },
+  {
+    name: 'disk_read_only',
+    label: i18n.t('compute.metric.disk_read_only'),
+    seleteItem: 'read_only',
+    // as: i18n.t('compute.metric.disk_inodes_used_percent'),
+    fromItem: 'disk',
+    groupBy: ['path'],
+    unit: '',
+    transfer: 1,
+  },
+  {
+    name: 'disk_inodes_used_percent',
+    label: i18n.t('compute.metric.disk_inodes_used_percent'),
+    seleteItem: 'inodes_used_percent',
+    // as: i18n.t('compute.metric.disk_inodes_used_percent'),
+    fromItem: 'disk',
+    groupBy: ['path'],
+    unit: '%',
+    transfer: 1,
+    // metric: metricItems['bps_sent'].key, // 报警指标
+  },
+  // {
+  //   name: 'disk',
+  //   label: i18n.t('compute.text_519'),
+  //   seleteItem: 'ioutil',
+  //   as: i18n.t('compute.text_519'),
+  //   fromItem: 'diskio',
+  //   unit: '%',
+  //   transfer: 1,
+  //   // metric: metricItems['ioutil'].key, // 报警指标
+  // },
+  {
+    name: 'read_bps',
+    label: i18n.t('compute.text_538'),
+    // as: i18n.t('compute.text_538'),
+    seleteItem: 'read_bps',
+    fromItem: 'diskio',
+    groupBy: ['name'],
+    unit: 'bps',
+    transfer: 1024,
+    // metric: metricItems['read_bps'].key, // 报警指标
+  },
+  {
+    name: 'write_bps',
+    label: i18n.t('compute.text_539'),
+    // as: i18n.t('compute.text_539'),
+    seleteItem: 'write_bps',
+    fromItem: 'diskio',
+    groupBy: ['name'],
+    unit: 'bps',
+    transfer: 1024,
+    // metric: metricItems['write_bps'].key, // 报警指标
   },
   {
     name: 'disk',
@@ -213,11 +267,22 @@ export const KVM_MONITOR_OPTS = [
     // metric: metricItems['read_iops,write_iops'].key, // 报警指标
   },
   {
+    name: 'diskio_ioutil',
+    label: i18n.t('compute.metric.diskio_ioutil'),
+    seleteItem: 'ioutil',
+    // as: i18n.t('compute.metric.disk_inodes_used_percent'),
+    fromItem: 'diskio',
+    groupBy: ['name'],
+    unit: '%',
+    transfer: 1,
+  },
+  {
     name: 'bps_recv',
     label: i18n.t('compute.text_524'),
     seleteItem: 'bps_recv',
-    as: i18n.t('compute.text_524'),
+    // as: i18n.t('compute.text_524'),
     fromItem: 'net',
+    groupBy: ['interface'],
     unit: 'bps',
     transfer: 1024,
     // metric: metricItems['bps_recv'].key, // 报警指标
@@ -226,11 +291,50 @@ export const KVM_MONITOR_OPTS = [
     name: 'bps_sent',
     label: i18n.t('compute.text_525'),
     seleteItem: 'bps_sent',
-    as: i18n.t('compute.text_525'),
+    // as: i18n.t('compute.text_525'),
     fromItem: 'net',
+    groupBy: ['interface'],
     unit: 'bps',
     transfer: 1024,
     // metric: metricItems['bps_sent'].key, // 报警指标
+  },
+  {
+    name: 'system',
+    label: i18n.t('compute.text_529'),
+    seleteItem: 'load1,load5,load15,load1_pcore,load5_pcore,load15_pcore',
+    as: i18n.t('compute.text_530'),
+    fromItem: 'system',
+    unit: '',
+    transfer: 1,
+    // metric: metricItems['load1,load5,load15,load1_pcore,load5_pcore,load15_pcore'].key, // 报警指标
+  },
+  {
+    name: 'load1_pcore',
+    label: i18n.t('compute.metric.system_load1_pcore'),
+    seleteItem: 'load1_pcore',
+    as: i18n.t('compute.metric.system_load1_pcore'),
+    fromItem: 'system',
+    unit: '',
+    transfer: 1,
+    // metric: metricItems['bps_sent'].key, // 报警指标
+  },
+  {
+    name: 'processes_zombies',
+    label: i18n.t('compute.metric.processes_zombies'),
+    seleteItem: 'zombies',
+    as: i18n.t('compute.metric.processes_zombies'),
+    fromItem: 'processes',
+    unit: '',
+    transfer: 1,
+  },
+  {
+    name: 'processes_total',
+    label: i18n.t('compute.metric.processes_total'),
+    seleteItem: 'total',
+    as: i18n.t('compute.metric.processes_total'),
+    fromItem: 'processes',
+    unit: '',
+    transfer: 1,
   },
 ]
 
