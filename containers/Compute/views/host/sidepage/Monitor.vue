@@ -80,7 +80,7 @@ export default {
       return this.data.host_type
     },
     monitorConstants () {
-      if (this.hostType === 'hypervisor') {
+      if (this.hostType === 'hypervisor' || this.hostType === 'container') {
         return KVM_MONITOR_OPTS
       }
       return VMWARE_MONITOR_OPTS
@@ -128,9 +128,6 @@ export default {
     },
     getMonitorList (resList) {
       const lineConfig = { // 宿主机指标比较多，样式fix
-        tooltip: {
-          confine: true,
-        },
         grid: {
           top: '20%',
         },
@@ -165,7 +162,7 @@ export default {
               params: [val],
             },
             { // 对应 mean(val.seleteItem)
-              type: opt.groupFunc || 'mean',
+              type: opt.groupFunc || opt.selectFunction || 'mean',
               params: [],
             },
             { // 确保后端返回columns有 val.label 的别名
@@ -182,7 +179,7 @@ export default {
               params: [val],
             },
             { // 对应 mean(val.seleteItem)
-              type: opt.groupFunc || 'mean',
+              type: opt.groupFunc || opt.selectFunction || 'mean',
               params: [],
             },
             { // 确保后端返回columns有 val.label 的别名
@@ -192,23 +189,32 @@ export default {
           ]
         })
       }
+      const model = {
+        measurement: val.fromItem,
+        select,
+        group_by: [
+          { type: 'tag', params: ['host_id'] },
+        ],
+        tags: [
+          {
+            key: 'host_id',
+            value: this.hostId,
+            operator: '=',
+          },
+        ],
+      }
+      if (val.groupBy && (val.groupBy.length !== 0)) {
+        val.groupBy.forEach(group => {
+          model.group_by.push({
+            type: 'tag',
+            params: [group],
+          })
+        })
+      }
       const data = {
         metric_query: [
           {
-            model: {
-              measurement: val.fromItem,
-              select,
-              group_by: [
-                { type: 'tag', params: ['host_id'] },
-              ],
-              tags: [
-                {
-                  key: 'host_id',
-                  value: this.hostId,
-                  operator: '=',
-                },
-              ],
-            },
+            model,
           },
         ],
         scope: this.$store.getters.scope,

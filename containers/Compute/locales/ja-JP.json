@@ -1827,5 +1827,13 @@
   "compute.yaml_config": "Yamal構成",
   "compute.yaml_check_tip": "正しいYamlアドレスを入力してください",
   "compute.revoke_secgroup": "アンバインドセキュリティグループ",
-  "compute.set_secgroup": "セキュリティグループの設定"
+  "compute.set_secgroup": "セキュリティグループの設定",
+  "compute.metric.system_load1_pcore": "システムは毎分ごとに各コアの平均負荷",
+  "compute.metric.mem_free_percent": "メモリの空き率",
+  "compute.metric.disk_used_percent": "ディスク使用率",
+  "compute.metric.disk_inodes_used_percent": "ディスクinode使用率",
+  "compute.metric.disk_read_only": "ディスクのみ読み取り可能",
+  "compute.metric.diskio_ioutil": "ディスクIO利用率",
+  "compute.metric.processes_zombies": "ゾンビプロセス数",
+  "compute.metric.processes_total": "総プロセス数"
 }
