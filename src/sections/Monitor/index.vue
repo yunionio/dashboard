@@ -195,6 +195,28 @@ export default {
               return val
             },
           },
+          tooltip: {
+            trigger: 'axis',
+            position: (point, params, dom, rect, size) => {
+              dom.style.border = 'none'
+              dom.style.backgroundColor = 'transparent'
+              dom.style.padding = '0'
+              console.log(unit)
+              const series = params.map(line => {
+                return `<div style="color: #616161;">
+                    ${line.marker} 
+                    <span>${line.seriesName}</span>:
+                    <span>${line.value}${unit}</span>
+                  </div>`
+              }).join('')
+              const title = params[0] ? params[0].axisValueLabel || params[0].axisValue : ''
+              const wrapper = `<div class="chart-tooltip-wrapper">
+                <div style="color: #5D6F80;">${title}</div>
+                <div class="lines-wrapper">${series}</div>
+              </div>`
+              dom.innerHTML = wrapper
+            },
+          },
         }
         const format = val.constants.format || '0.00' // 默认是保留小数点后两位
         newSeries.map((item, index) => {
