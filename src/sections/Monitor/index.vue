@@ -22,6 +22,7 @@
 
 <script>
 import _ from 'lodash'
+import * as R from 'ramda'
 import { numerify } from '@/filters'
 import MonitorHeader from './Header'
 import MonitorList from './List'
@@ -94,6 +95,34 @@ export default {
     }
   },
   computed: {
+    startEndTime () {
+      let start = ''
+      let end = ''
+      if (this.time === 'custom') {
+        if (this.customTime.to === 'now') {
+          end = this.$moment().format('YYYY-MM-DD HH:mm:ss')
+        }
+        if (/^now-\d{1,}h/.test(this.customTime.from)) {
+          const hs = Number(this.customTime.from.replace('now-', '').replace('h'))
+          start = this.$moment().subtract(hs, 'hours').format('YYYY-MM-DD HH:mm:ss')
+        }
+      } else {
+        if (/^\d{1,}h/.test(this.time)) {
+          const hs = Number(this.time.replace('h', ''))
+          start = this.$moment().subtract(hs, 'hours').format('YYYY-MM-DD HH:mm:ss')
+          end = this.$moment().format('YYYY-MM-DD HH:mm:ss')
+        }
+      }
+      return { start, end }
+    },
+    timeGroupTime () {
+      if (/^(\d{1,})m/.test(this.timeGroup)) {
+        return Number(this.timeGroup.replace('m', '')) * 60 * 1000
+      } else if (/^(\d{1,})h/.test(this.timeGroup)) {
+        return Number(this.timeGroup.replace('h', '')) * 60 * 60 * 1000
+      }
+      return 1000
+    },
     listData () {
       return this.monitorList.map(val => {
         const columns = (val.series && val.series.length) ? val.series[0].columns : []
@@ -177,13 +206,25 @@ export default {
         })
 
         const unit = _.get(val.series, '[0].unit') || val.constants.unit || ''
-
+        // 判断是否为时间线
+        const isTimeLine = columns[1] && columns[1] === 'time' && this.startEndTime.start && this.startEndTime.end && this.timeGroupTime
         // 数据 配置
         const lineConfig = val.lineConfig || {}
+
+        const xAxisConfig = isTimeLine ? {
+          min: this.startEndTime.start,
+          max: this.startEndTime.end,
+          axisLabel: {
+            showMinLabel: true,
+            showMaxLabel: true,
+          },
+        } : {}
+
         const newLineConfig = {
           xAxis: {
-            type: 'category',
+            type: isTimeLine ? 'time' : 'category',
             data: [],
+            ...xAxisConfig,
           },
           yAxis: {
             type: 'value',
@@ -201,15 +242,19 @@ export default {
               dom.style.border = 'none'
               dom.style.backgroundColor = 'transparent'
               dom.style.padding = '0'
-              console.log(unit)
+              let title = params[0] ? params[0].axisValueLabel || params[0].axisValue : ''
               const series = params.map(line => {
+                let value = line.value
+                if (R.is(Array, value)) {
+                  value = line.value[1] === undefined ? '-' : line.value[1]
+                  title = line.value[0]
+                }
                 return `<div style="color: #616161;">
-                    ${line.marker} 
+                    ${line.marker}
                     <span>${line.seriesName}</span>:
-                    <span>${line.value}${unit}</span>
+                    <span>${value}${unit}</span>
                   </div>`
               }).join('')
-              const title = params[0] ? params[0].axisValueLabel || params[0].axisValue : ''
               const wrapper = `<div class="chart-tooltip-wrapper">
                 <div style="color: #5D6F80;">${title}</div>
                 <div class="lines-wrapper">${series}</div>
@@ -221,7 +266,19 @@ export default {
         const format = val.constants.format || '0.00' // 默认是保留小数点后两位
         newSeries.map((item, index) => {
           const { points = [] } = item
-          if (points.length) {
+          let newPoints = []
+          if (isTimeLine) {
+            points.forEach((item, index) => {
+              newPoints.push(item)
+              // 补充缺失的时间点
+              if (points[index + 1] && points[index + 1][1] && points[index + 1][1] - item[1] > this.timeGroupTime) {
+                newPoints.push([null, item[1] + 1000])
+              }
+            })
+          } else {
+            newPoints = points
+          }
+          if (newPoints.length) {
             let groupByKey = ''
             if (val.constants.groupBy && val.constants.groupBy.length) {
               groupByKey = getGroupByKey(item.tags, val.constants.groupBy)
@@ -234,13 +291,21 @@ export default {
               }
             }
             const seriesItem = { type: 'line', name, data: [], showSymbol: false }
-            points.map(point => {
+            newPoints.map(point => {
               const momentObj = this.$moment(point[1])
               const time = momentObj._isAMomentObject ? momentObj.format(this.timeFormatStr) : point[1]
-              if (index === 0) {
-                newLineConfig.xAxis.data.push(time)
+              if (isTimeLine && momentObj._isAMomentObject) {
+                if (point[0] === null) {
+                  seriesItem.data.push([momentObj.format('YYYY-MM-DD HH:mm:ss')])
+                } else {
+                  seriesItem.data.push([momentObj.format('YYYY-MM-DD HH:mm:ss'), point[0] === null ? null : parseFloat(numerify(point[0]), format)])
+                }
+              } else {
+                if (index === 0) {
+                  newLineConfig.xAxis.data.push(time)
+                }
+                seriesItem.data.push(parseFloat(numerify(point[0]), format))
               }
-              seriesItem.data.push(parseFloat(numerify(point[0]), format))
             })
             newLineConfig.series.push(seriesItem)
             newLineConfig.legend.data.push(name)
