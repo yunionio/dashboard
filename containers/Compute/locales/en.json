@@ -1816,5 +1816,13 @@
   "compute.kvm_rebuild_tip6": "6. The mirror status must be in an available state",
   "compute.bastionHost.domain": "Daomin",
   "compute.revoke_secgroup": "Unbind secgroup",
-  "compute.set_secgroup": "Set secgroup"
+  "compute.set_secgroup": "Set secgroup",
+  "compute.metric.system_load1_pcore": "System average load per minute per core",
+  "compute.metric.mem_free_percent": "Memory free rate",
+  "compute.metric.disk_used_percent": "Disk usage rate",
+  "compute.metric.disk_inodes_used_percent": "Disk inode usage rate",
+  "compute.metric.disk_read_only": "Disk is read-only",
+  "compute.metric.diskio_ioutil": "Disk I/O utilization",
+  "compute.metric.processes_zombies": "Zombie process count",
+  "compute.metric.processes_total": "Total process count"
 }

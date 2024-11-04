@@ -5,7 +5,7 @@ const DISK_USED_PERCENT = {
   name: 'disk',
   label: i18n.t('compute.text_533'),
   seleteItem: 'used_percent',
-  as: i18n.t('compute.text_533'),
+  // as: i18n.t('compute.text_533'),
   groupBy: ['device', 'path', 'fstype'],
   fromItem: 'agent_disk',
   unit: '%',
