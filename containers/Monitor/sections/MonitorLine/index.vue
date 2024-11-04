@@ -466,6 +466,9 @@ export default {
         axisLabel: {
           formatter: (value, index) => {
             let unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
+            if (unit === 'NULL') {
+              unit = ''
+            }
             if (unit === 'ms') { // 时间类型的Y坐标，要取整 如 ： 1小时10分钟30秒 -> 1小时
               unit = 'intms'
             }
@@ -486,7 +489,10 @@ export default {
         trigger: 'axis',
         position: (point, params, dom, rect, size) => {
           const series = params.map((line, i) => {
-            const unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
+            let unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
+            if (unit === 'NULL') {
+              unit = ''
+            }
             const val = transformUnit(line.value[0], unit)
             let value = _.get(val, 'text') || line.value
             if (unit === 'currency') {
@@ -501,9 +507,9 @@ export default {
             if (!this.showTable || (this.isSelectFunction && this.resultReducer && !this.groupBy)) {
               name = this.isSelectFunction.toUpperCase()
             } else {
-              if (name.startsWith('{') && (name.endsWith('}') || name.includes(' (path:'))) {
+              if ((name.startsWith('{') && name.endsWith('}')) || name.includes(' (path:')) {
                 try {
-                  const path = name.match(/\s\((path:.*)\)/)[0]
+                  const path = (name.match(/\s\((path:.*)\)/) || [''])[0] || ''
                   const str = name.replace(path, '').substring(1, name.length - 1)
                   const list = str.split(',')
                   const obj = {}
@@ -512,8 +518,10 @@ export default {
                     obj[key] = value
                   })
                   const field = (this.columns.length > 1 && this.columns[1].field)
-                  name = obj[field] ? `${obj[field]}${path}}` : name
-                } catch (err) { }
+                  name = obj[field] ? `${obj[field]}${path}` : name
+                } catch (err) {
+                  throw err
+                }
               }
             }
             return `<div style="color: ${color};" class="d-flex align-items-center"><span>${line.marker}</span> <span class="text-truncate" style="max-width: 500px;">${name || ' '}</span>:&nbsp;<span>${value}</span></div>`
@@ -524,6 +532,7 @@ export default {
                       </div>`
           dom.style.border = 'none'
           dom.style.backgroundColor = 'transparent'
+          dom.style.padding = '0'
           dom.innerHTML = wrapper
         },
       }
