@@ -1,26 +1,25 @@
 <template>
   <div class="monitor-list d-flex flex-wrap">
+    <div v-if="loading && !listData.length" class="pt-2" style="width:100%;text-align:center">
+      <a-spin />
+    </div>
     <a-card v-for="item in listData" :key="item.title+item.constants ? item.constants.fromItem : ''" style="width: 700px;" class="position-relative m-3">
       <a-divider>{{ getMetricItem(item) }}</a-divider>
-      <!-- <actions class="actions position-absolute" :options="singleActions" :row="item" button-type="link" button-size="small" /> -->
-      <!-- <monitor-list-line :chartData="item.chartData" :lineConfig="getConfig(item)" :loading="loading" /> -->
       <chart-line :columns="item.chartData.columns" :rows="item.chartData.rows" :options="getConfig(item)" />
-      <!-- <chart-lines :rows="item.chartData.rows" :options="getConfig(item)" /> -->
+      <div v-if="loading" class="chart-spin">
+        <a-spin />
+      </div>
     </a-card>
   </div>
 </template>
 
 <script>
-// import MonitorListLine from './Line'
-// import Actions from '@/components/PageList/Actions'
 import ChartLine from '@/sections/Charts/Line'
-// import ChartLines from '@/sections/Charts/Lines'
 
 export default {
   name: 'MonitorList',
   components: {
-    // MonitorListLine, // 统一用 echarts 图表
-    // Actions,
+    // 统一用 echarts 图表
     ChartLine,
   },
   props: {
@@ -81,6 +80,22 @@ export default {
   .actions {
     right: 16px;
     top: 16px;
+  }
+}
+.chart-spin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  vertical-align: middle;
+  background: rgba(0, 0, 0, 0.1);
+  .ant-spin {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 </style>

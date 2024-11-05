@@ -44,7 +44,7 @@
         <a-divider />
       </a-row>
       <a-row v-if="dashboardId">
-        <dashboard-cards :id="dashboardId" :extraParams="extraParams" :create-chart="createChart"  :edit-chart="editChart" />
+        <dashboard-cards ref="dashboardCards" :id="dashboardId" :extraParams="extraParams" :create-chart="createChart" @adjustChartOrder="adjustChartOrder" :edit-chart="editChart" />
       </a-row>
     </div>
   </div>
@@ -104,6 +104,22 @@ export default {
     handleCreateDashboard () {
       this.createDialog('CreateMonitorDashboard', {
         refresh: this.switchDashboard,
+      })
+    },
+    adjustChartOrder (dashboard) {
+      this.createDialog('MonitorDashboardAdjustOrderDialog', {
+        dashboard: dashboard,
+        data: this.dashboards.filter((item) => { return item.id === dashboard.id }),
+        columns: [getNameDescriptionTableColumn(), getProjectDomainTableColumn(), getProjectTableColumn()],
+        ok: (panels) => {
+          const index = this.dashboards.findIndex((item) => { return item.id === dashboard.id })
+          if (index > -1) {
+            this.dashboards[index].alert_panel_details = panels
+            this.$refs.dashboardCards.changePanelsOrder(panels)
+          } else {
+            this.fetchDashboards()
+          }
+        },
       })
     },
     handleActionClick ({ key }) {
