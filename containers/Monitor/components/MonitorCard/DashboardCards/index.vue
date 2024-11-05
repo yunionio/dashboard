@@ -12,7 +12,21 @@
           <custom-date :time.sync="time" :customTime.sync="customTime" :showCustomTimeText="time==='custom'" />
         </template>
       </monitor-header>
-      <a-button style="margin-left: 8px;" @click="createChart">
+      <a-dropdown-button
+        v-if="!readOnly && panels.length > 1"
+        :title="$t('monitor.dashboard.dialog.project.create')"
+        class="text-truncate"
+        @click="createChart"
+        placement="topLeft">
+        {{ $t('monitor.dashboard.dialog.project.create') }}
+        <a-menu slot="overlay" @click="handleMenuClick">
+          <a-menu-item key="adjust_order">
+            {{ $t('monitor.adjust_chart_order') }}
+          </a-menu-item>
+        </a-menu>
+        <a-icon slot="icon" type="down" />
+      </a-dropdown-button>
+      <a-button v-else style="margin-left: 8px;" @click="createChart">
         {{ $t('monitor.dashboard.dialog.project.create')}}
       </a-button>
     </div>
@@ -46,6 +60,7 @@
 import { uuid } from '@/utils/utils'
 import MonitorHeader from '@/sections/Monitor/Header'
 import CustomDate from '@/sections/CustomDate'
+import MonitorTimeMixin from '@/mixins/monitorTime'
 import DashboardCard from '../DashboardCard'
 
 export default {
@@ -55,12 +70,17 @@ export default {
     MonitorHeader,
     CustomDate,
   },
+  mixins: [MonitorTimeMixin],
   props: {
     id: {
       type: String,
       default: '',
     },
     createChart: {
+      type: Function,
+      required: true,
+    },
+    adjustChartOrder: {
       type: Function,
       required: true,
     },
@@ -137,6 +157,15 @@ export default {
     this.fetchCharts()
   },
   methods: {
+    handleMenuClick () {
+      this.$emit('adjustChartOrder', this.dashboard)
+    },
+    changePanelsOrder (panels) {
+      this.dashboard.alert_panel_details = [...panels]
+    },
+    fetchDataSuccess () {
+      this.saveMonitorConfig()
+    },
     resize () {
       this.$refs.dashboardCard && this.$refs.dashboardCard.resize()
     },
@@ -182,6 +211,7 @@ export default {
       } catch (error) {
         throw error
       } finally {
+        this.saveMonitorConfig()
         this.loading = false
       }
     },

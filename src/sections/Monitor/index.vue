@@ -92,6 +92,7 @@ export default {
     const timeFormatStr = this.timeFormat || 'YYYY-MM-DD HH:mm'
     return {
       timeFormatStr,
+      listData: [],
     }
   },
   computed: {
@@ -123,8 +124,10 @@ export default {
       }
       return 1000
     },
-    listData () {
-      return this.monitorList.map(val => {
+  },
+  watch: {
+    monitorList (monitorList) {
+      this.listData = monitorList.map(val => {
         const columns = (val.series && val.series.length) ? val.series[0].columns : []
         const rows = []
 

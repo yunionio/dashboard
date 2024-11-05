@@ -111,20 +111,17 @@ export default {
   methods: {
     async fetchData () {
       this.loading = true
-      const resList = []
-      for (let idx = 0; idx < this.constants.length; idx++) {
-        const val = { ...this.constants[idx], groupFunc: this.groupFunc }
-        try {
-          const data = await this.helper.fetchFormatData(this.serverId, val, this.time, this.timeGroup, this.idKey, this.customTime, true)
-          resList.push(data)
-          if (idx === this.constants.length - 1) {
-            this.loading = false
-            this.setMonitorList(resList)
-          }
-        } catch (error) {
-          this.loading = false
-          throw error
-        }
+      try {
+        const reqList = this.constants.map(item => {
+          const val = { ...item, groupFunc: this.groupFunc }
+          return this.helper.fetchFormatData(this.serverId, val, this.time, this.timeGroup, this.idKey, this.customTime, true, this.extraTags)
+        })
+        const resList = await Promise.all(reqList)
+        this.setMonitorList(resList)
+        this.loading = false
+      } catch (error) {
+        this.loading = false
+        throw error
       }
       this.saveMonitorConfig()
     },

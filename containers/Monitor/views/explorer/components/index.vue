@@ -41,6 +41,7 @@ import MonitorHeader from '@/sections/Monitor/Header'
 import { getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
 import { timeOpts } from '@/constants/monitor'
+import MonitorTimeMixin from '@/mixins/monitorTime'
 
 export default {
   name: 'ExplorerIndex',
@@ -50,7 +51,7 @@ export default {
     MonitorHeader,
     CustomDate,
   },
-  mixins: [DialogMixin, WindowsMixin],
+  mixins: [DialogMixin, WindowsMixin, MonitorTimeMixin],
   data () {
     return {
       time: '1h',
@@ -141,6 +142,7 @@ export default {
         this.resultList = res.map(val => get(val, 'reduced_result') || [])
         this.seriesListPager = res.map((val, index) => ({ seriesIndex: index, total: get(val, 'series_total') || 0, page: 1, limit: 10 }))
         this.loadingList = this.loadingList.map(v => false)
+        this.saveMonitorConfig()
       } catch (error) {
         this.loadingList = this.loadingList.map(v => false)
         throw error
