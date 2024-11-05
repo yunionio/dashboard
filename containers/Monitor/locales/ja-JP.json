@@ -319,5 +319,6 @@
   "monitor.associate_alarm_strategy": "関連アラームポリシー",
   "monitor.view_monitor": "監視の表示",
   "monitor.monitor_result_function": "結果集約関数",
-  "monitor.monitor_percentile": "数値"
+  "monitor.monitor_percentile": "数値",
+  "monitor.adjust_chart_order": "グラフの順序の調整"
 }

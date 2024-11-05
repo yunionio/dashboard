@@ -78,6 +78,7 @@ import MonitorHeader from '@/sections/Monitor/Header'
 import { getRequestT, uuid } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
 import { timeOpts } from '@/constants/monitor'
+import MonitorTimeMixin from '@/mixins/monitorTime'
 
 export default {
   name: 'MonitorDashboardChartCreate',
@@ -87,6 +88,7 @@ export default {
     MonitorHeader,
     CustomDate,
   },
+  mixins: [MonitorTimeMixin],
   data () {
     const extraParams = {}
     if (this.$route.query.scope) {
@@ -243,6 +245,7 @@ export default {
         this.resultList = res.map(val => get(val, 'reduced_result') || [])
         this.seriesListPager = res.map((val, index) => ({ seriesIndex: index, total: get(val, 'series_total') || 0, page: 1, limit: 10 }))
         this.loadingList = this.loadingList.map(v => false)
+        this.saveMonitorConfig()
       } catch (error) {
         this.loadingList = this.loadingList.map(v => false)
         throw error

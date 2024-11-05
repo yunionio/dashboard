@@ -383,6 +383,7 @@ export default {
           this.pager = { ...this.pager, total: series_total }
           this.reducedResult = reduced_result
         }
+        this.$emit('fetchDataSuccess')
       } catch (error) {
         throw error
       } finally {
