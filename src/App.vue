@@ -29,10 +29,6 @@ import { updateThemeColor } from '@/utils/theme/utils'
 import setting from '@/config/setting'
 import WindowsMixin from '@/mixins/windows'
 import LogoutMixin from '@/mixins/logout'
-import {
-  getTokenFromCookie,
-  decodeToken,
-} from '@/utils/auth'
 
 const antdLocales = {
   'zh-CN': zhCN,
@@ -108,25 +104,9 @@ export default {
   },
   created () {
     this.initIO()
-    this.initVisibilityChangeListener()
     this.initMonitorAlertNotify()
   },
   methods: {
-    initVisibilityChangeListener () {
-      document.addEventListener('visibilitychange', this.handleVisibilityChange)
-      this.$once('hook:beforeDestroy', () => {
-        document.removeEventListener('visibilitychange', this.handleVisibilityChange)
-      })
-    },
-    handleVisibilityChange () {
-      if (document.visibilityState === 'visible') {
-        if (
-          this.session && this.session !== (decodeToken(getTokenFromCookie()) || {}).session
-        ) {
-          window.location.reload()
-        }
-      }
-    },
     initIO () {
       if (!this.$appConfig.isPrivate) return
       const options = {}
