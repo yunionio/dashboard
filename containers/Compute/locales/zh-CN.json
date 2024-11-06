@@ -1835,5 +1835,6 @@
   "compute.metric.disk_read_only": "磁盘只读",
   "compute.metric.diskio_ioutil": "磁盘IO利用率",
   "compute.metric.processes_zombies": "僵尸进程数",
-  "compute.metric.processes_total": "总进程数"
+  "compute.metric.processes_total": "总进程数",
+  "compute.server_recovery_delete_confirm": "存在【运行中】状态的虚拟机，可能正在使用中，是否继续删除？"
 }
