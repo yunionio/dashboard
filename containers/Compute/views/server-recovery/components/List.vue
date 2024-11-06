@@ -89,7 +89,7 @@ export default {
           label: this.$t('compute.text_477'),
           permission: 'server_delete',
           action: () => {
-            this.createDialog('DeleteResDialog', {
+            this.createDialog('ServerRecoveryDeleteDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
