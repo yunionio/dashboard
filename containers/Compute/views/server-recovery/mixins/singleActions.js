@@ -6,7 +6,7 @@ export default {
         label: i18n.t('compute.text_477'),
         permission: 'server_delete',
         action: (obj) => {
-          this.createDialog('DeleteResDialog', {
+          this.createDialog('ServerRecoveryDeleteDialog', {
             vm: this,
             data: [obj],
             columns: this.columns,
