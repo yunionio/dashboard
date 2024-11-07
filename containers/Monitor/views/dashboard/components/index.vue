@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import storage from '@/utils/storage'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import DashboardCards from '@Monitor/components/MonitorCard/DashboardCards'
@@ -97,10 +98,31 @@ export default {
       return params
     },
   },
+  watch: {
+    dashboardId: {
+      immediate: true,
+      handler: function (val) {
+        if (val) {
+          // 记录到本地
+          this.setMonitorLocal({ monitorDashboardId: val })
+        }
+      },
+    },
+  },
   created () {
-    this.dashboardId ? this.fetchDashboards() : this.switchDashboard()
+    this.dashboardId ? this.fetchDashboards() : this.switchDashboard(false)
   },
   methods: {
+    getMonitorConfig () {
+      return storage.get('__oc_monitor_query_config__', {})
+    },
+    setMonitorLocal (config) {
+      const monitorConfig = this.getMonitorConfig()
+      storage.set('__oc_monitor_query_config__', {
+        ...monitorConfig,
+        ...config,
+      })
+    },
     handleCreateDashboard () {
       this.createDialog('CreateMonitorDashboard', {
         refresh: this.switchDashboard,
@@ -158,8 +180,16 @@ export default {
         },
       })
     },
-    switchDashboard () {
-      this.fetchDashboards((data) => { this.dashboardId = data[0].id })
+    switchDashboard (ignoreLocal = true) {
+      this.fetchDashboards((data) => {
+        // 使用本地保存的
+        const monitorConfig = this.getMonitorConfig()
+        if (monitorConfig.monitorDashboardId && !ignoreLocal && data.some(item => item.id === monitorConfig.monitorDashboardId)) {
+          this.dashboardId = monitorConfig.monitorDashboardId
+        } else {
+          this.dashboardId = data.length ? data[0].id : ''
+        }
+      })
     },
     async fetchDashboards (callback) {
       this.loading = true
