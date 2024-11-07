@@ -22,7 +22,6 @@
                :xxl="{ span: 12, offset: 1 }">
           <monitor-header
               class="mb-4"
-              :timeOpts="timeOpts"
               :time.sync="time"
               :timeGroupValue.sync="timeGroupValue"
               :showTimegroup="false"
@@ -42,7 +41,6 @@
               :metricInfo="metricList[i][0]"
               :series="item"
               :reducedResult="resultList[i]"
-              :timeFormatStr="timeFormatStr"
               @pageChange="pageChange"
               @chartInstance="setChartInstance" />
           </div>
@@ -77,7 +75,6 @@ import CustomDate from '@/sections/CustomDate'
 import MonitorHeader from '@/sections/Monitor/Header'
 import { getRequestT, uuid } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
-import { timeOpts } from '@/constants/monitor'
 import MonitorTimeMixin from '@/mixins/monitorTime'
 
 export default {
@@ -107,7 +104,6 @@ export default {
       time: '1h',
       timeGroupValue: 2,
       customTime: null,
-      timeOpts,
       metricList: [],
       seriesList: [],
       resultList: [],
