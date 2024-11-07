@@ -36,6 +36,7 @@ import { mapState } from 'vuex'
 import c from '@/constants/feature'
 import setting from '@/config/setting'
 import { fillBillSupportFeatures } from '@/utils/auth'
+import { isSAAS } from '@/utils/utils'
 
 export const LicenseFeatures = {
   model: {
@@ -90,7 +91,9 @@ export const LicenseFeatures = {
             item.label = inner_copyright
           }
         }
-        item.disabled = !this.supportedFeatures.includes(item.key)
+        if (!isSAAS()) {
+          item.disabled = !this.supportedFeatures.includes(item.key)
+        }
         return item
       })
     },
