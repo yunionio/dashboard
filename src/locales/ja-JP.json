@@ -6106,5 +6106,7 @@
   "common.view_scheduler_log": "スケジュール・ログの表示",
   "common.store_to_my_menus": "マイメニューにコレクション",
   "common.remove_store": "コレクションのキャンセル",
-  "common.adjust_order": "順序を調整する"
+  "common.adjust_order": "順序を調整する",
+  "common.prev_one": "前へ",
+  "common.next_one": "次へ"
 }
