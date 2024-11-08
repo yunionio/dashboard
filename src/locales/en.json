@@ -5998,5 +5998,7 @@
   "common.mobile_end": "Mobile",
   "common.scheduler_log": "Scheduling log",
   "common.view_scheduler_log": "View scheduling logs",
-  "common.system_ce": "Cloudpods Enterprise Support Edition"
+  "common.system_ce": "Cloudpods Enterprise Support Edition",
+  "common.prev_one": "Previous article",
+  "common.next_one": "Next article"
 }
