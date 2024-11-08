@@ -696,6 +696,16 @@ export default {
         ...this.tagConfigParams,
       })
     },
+    setCurrentRow (data) {
+      const row = this.tableData.filter(item => item.id === data.id)
+      if (row.length) {
+        this.$refs.grid.setCurrentRow(row[0])
+        this.$refs.grid.scrollToRow(row[0])
+      }
+    },
+    clearCurrentRow () {
+      this.$refs.grid.clearCurrentRow()
+    },
   },
 }
 </script>

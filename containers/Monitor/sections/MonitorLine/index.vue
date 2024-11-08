@@ -35,7 +35,7 @@
               v-else
               size="mini"
               @page-change="pageChange"
-              :page-sizes="[10,15,20,30]"
+              :page-sizes="[10,20,50,100]"
               :current-page.sync="curPager.page"
               :page-size.sync="curPager.limit"
               :total="curPager.total" />
