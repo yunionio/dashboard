@@ -70,6 +70,16 @@ export default {
                 return ret
               },
             },
+            {
+              label: this.$t('compute.view_source_data'),
+              action: (obj) => {
+                this.createDialog('ContainerViewDataInfoDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+            },
           ]
         },
       },

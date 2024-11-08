@@ -1834,5 +1834,7 @@
   "compute.metric.diskio_ioutil": "Disk I/O utilization",
   "compute.metric.processes_zombies": "Zombie process count",
   "compute.metric.processes_total": "Total process count",
-  "compute.server_recovery_delete_confirm": "There is a virtual machine in the 'Running' state, which may be in use. Do you want to continue deleting it?"
+  "compute.server_recovery_delete_confirm": "There is a virtual machine in the 'Running' state, which may be in use. Do you want to continue deleting it?",
+  "compute.source_data": "Source data",
+  "compute.view_source_data": "View source data"
 }
