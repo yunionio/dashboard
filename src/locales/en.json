@@ -6088,5 +6088,7 @@
   "common.view_scheduler_log": "View scheduling logs",
   "common.store_to_my_menus": "Add to my menu",
   "common.remove_store": "Cancel collection",
-  "common.adjust_order": "Adjust order"
+  "common.adjust_order": "Adjust order",
+  "common.prev_one": "Previous article",
+  "common.next_one": "Next article"
 }

@@ -1,6 +1,7 @@
 <template>
   <div class="event-list">
     <page-list
+      ref="pageList"
       :list="list"
       :columns="columns"
       :export-data-options="exportDataOptions"
@@ -345,13 +346,7 @@ export default {
       singleActions: [{
         label: this.$t('common.view'),
         action: row => {
-          let text = ''
-          try {
-            text = JSON.stringify(JSON.parse(row.notes), null, 4)
-          } catch (e) {
-            text = row.notes
-          }
-          this.clickHandler(text)
+          this.clickHandler(row)
         },
       }],
     }
@@ -369,9 +364,24 @@ export default {
     this.list.fetchData()
   },
   methods: {
-    clickHandler (val) {
+    getLogInfo (row) {
+      let text = ''
+      try {
+        text = JSON.stringify(JSON.parse(row.notes || '{}'), null, 4)
+      } catch (e) {
+        text = row.notes
+      }
+      return text
+    },
+    clickHandler (row) {
       this.createDialog('EventLogDialog', {
-        data: val,
+        data: this.getLogInfo(row),
+        currentData: row,
+        listData: this.list.data,
+        handleSelect: (data) => {
+          this.$refs.pageList.$refs.table.setCurrentRow(data)
+        },
+        getShowData: this.getLogInfo,
       })
     },
     getParam () {

@@ -46,7 +46,9 @@ export default {
       }
     },
     saveMonitorConfig () {
+      const monitorConfig = storage.get(this.STORAGE_TIME_KEY, {})
       storage.set(this.STORAGE_TIME_KEY, {
+        ...monitorConfig,
         time: this.time,
         timeGroup: this.timeGroup,
         customTime: this.time === 'custom' ? this.customTime : {},
