@@ -187,9 +187,15 @@ export default {
       }
       const query = conditions[0].query
       const model = { ...query.model }
-      if (this.timeGroup) {
-        model.interval = this.timeGroup
+      if (model.group_by) {
+        model.group_by = model.group_by.filter(item => {
+          if ((item.type === 'time' && item.params && item.params[0] === '$interval') || (item.type === 'fill' && item.params && item.params[0] === 'none')) {
+            return false
+          }
+          return true
+        })
       }
+      delete model.interval
       const metric_query = [{ model }]
       if (query.result_reducer) {
         metric_query[0].result_reducer = query.result_reducer
@@ -201,6 +207,9 @@ export default {
         slimit: this.pager.limit,
         soffset: (this.pager.page - 1) * this.pager.limit,
         ...this.extraParams,
+      }
+      if (this.timeGroup) {
+        params.interval = this.timeGroup
       }
       if (this.time === 'custom') { // 自定义时间
         if (this.customTime && this.customTime.from && this.customTime.to) {
