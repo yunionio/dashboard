@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import jsYaml from 'js-yaml'
 import WindowsMixin from '@/mixins/windows'
 import {
   getImageTableColumn,
@@ -39,6 +40,15 @@ export default {
         getCommandTableColumn(),
         getArgsTableColumn(),
       ],
+      cmOptions: {
+        tabSize: 2,
+        styleActiveLine: true,
+        lineNumbers: true,
+        line: true,
+        mode: 'text/x-yaml',
+        theme: 'material',
+        readOnly: true,
+      },
     }
   },
   computed: {
@@ -47,8 +57,30 @@ export default {
         ...this.data,
       }
     },
+    extraInfo () {
+      return [
+        {
+          field: 'info',
+          title: this.$t('compute.source_data'),
+          slots: {
+            default: ({ row }) => {
+              const yamlInfo = jsYaml.safeDump(row)
+              return [<div class="pod-container-yaml"><code-mirror value={yamlInfo} options={this.cmOptions} /></div>]
+            },
+          },
+        },
+      ]
+    },
   },
   created () { },
   methods: {},
 }
 </script>
+<style lang="less">
+.pod-container-yaml {
+  .CodeMirror {
+    height: 500px;
+    overflow: scroll;
+  }
+}
+</style>
