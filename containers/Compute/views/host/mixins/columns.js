@@ -217,6 +217,7 @@ export default {
         slots: {
           default: ({ row }) => {
             if (row.sys_info && row.sys_info.oem_name) {
+              const oem_name = row.sys_info.oem_name.replaceAll(' ', '_')
               const icons = {
                 dell: { height: '25px' },
                 hp: { height: '25px' },
@@ -225,15 +226,17 @@ export default {
                 lenovo: { height: '10px' },
                 supermicro: { height: '30px' },
                 huawei: { height: '30px' },
+                red_hat: { height: '30px' },
+                ieit_systems: { height: '10px' },
               }
               const arr = Object.keys(icons)
-              if (!arr.includes(row.sys_info.oem_name)) {
+              if (!arr.includes(oem_name)) {
                 return row.sys_info.oem_name
               }
-              const imgSrc = require(`../../physicalmachine/assets/${row.sys_info.oem_name}.svg`)
+              const imgSrc = require(`../../physicalmachine/assets/${oem_name}.svg`)
               return [
                 <a-tooltip title={ row.sys_info.oem_name }>
-                  <img src={ imgSrc } style={ icons[row.sys_info.oem_name] } />
+                  <img src={ imgSrc } style={ icons[oem_name] } />
                 </a-tooltip>,
               ]
             }
