@@ -6,7 +6,7 @@
       :timeOpts="timeOpts"
       :groupFunc="groupFunc"
       :customTime="customTime"
-      :showGroupFunc="false"
+      :showGroupFunc="true"
       @update:time="updateTime"
       @update:timeGroup="updateTimeGroup"
       @update:customTime="updateCustomTime"
