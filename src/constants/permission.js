@@ -363,8 +363,6 @@ export const PERMISSION = {
   endpoints_perform_disable: ['identity', 'endpoints', 'perform', 'disable'],
   // 报警
   commonalerts_list: ['monitor', 'commonalerts', 'list'],
-  // 资源消费预警
-  costalerts_list: ['meter', 'costalerts', 'list'],
   // 巡检
   check_list: ['autoupdate', 'checks', 'list'],
   /**
@@ -924,33 +922,84 @@ export const PERMISSION = {
   /**
    * meter 相关操作
    */
-  bill_balances_get: ['meter', 'bill_balances', 'get'],
-  bill_balances_list: ['meter', 'bill_balances', 'list'],
+  // 费用总览
+  meter_dashboard_list: ['meter', 'meter_dashboard', 'list'],
+  // 云账号
+  meter_cloudaccounts_list: ['meter', 'meter_cloudaccounts', 'list'],
+  // 平台
+  meter_platforms_list: ['meter', 'meter_platforms', 'list'],
+  // 域
+  meter_domains_list: ['meter', 'meter_domains', 'list'],
+  // 项目
+  meter_projects_list: ['meter', 'meter_projects', 'list'],
+  // 标签
+  bill_tags_list: ['meter', 'bill_tags', 'list'],
+  // 时间
+  meter_times_list: ['meter', 'meter_times', 'list'],
+  // 资源类型
+  meter_resources_list: ['meter', 'meter_resources', 'list'],
+  // 云上资源类型
+  meter_cloud_resources_list: ['meter', 'meter_cloud_resources', 'list'],
+  // 云上项目
+  meter_cloud_projects_list: ['meter', 'meter_cloud_projects', 'list'],
+  // 多维度分析
   bill_analysises_list: ['meter', 'bill_analysises', 'list'],
-  bill_conditions_list: ['meter', 'bill_conditions', 'list'],
-  bill_resources_list: ['meter', 'bill_resources', 'list'],
-  bill_associates_list: ['meter', 'associate_bills', 'list'],
-  bill_details_list: ['meter', 'bill_details', 'list'],
-  rates_list: ['meter', 'rates', 'list'],
-  rates_update: ['meter', 'rates', 'post'],
-  bill_ratesets_list: ['meter', 'ratesets', 'list'],
-  bill_ratesets_create: ['meter', 'ratesets', 'create'],
-  bill_ratesets_delete: ['meter', 'ratesets', 'delete'],
-  bill_exchangerates_list: ['meter', 'exchange_rates', 'list'],
-  bill_exchangerates_update: ['meter', 'exchange_rates', 'post'],
+  // 报告
+  bill_analysis_reports_list: ['meter', 'bill_analysis_reports', 'list'],
+  bill_analysis_reports_delete: ['meter', 'bill_analysis_reports', 'delete'],
+  bill_analysis_reports_perform_public: ['meter', 'bill_analysis_reports', 'perform', 'public'],
+  // 预算
   bill_budgets_get: ['meter', 'budgets', 'get'],
   bill_budgets_list: ['meter', 'budgets', 'list'],
   bill_budgets_create: ['meter', 'budgets', 'create'],
   bill_budgets_delete: ['meter', 'budgets', 'delete'],
   bill_budgets_perform: ['meter', 'budgets', 'perform'],
+  // 预测
+  bill_predictions_query: ['meter', 'predictions', 'perform', 'query'],
+  // 账单汇总
+  meter_summary_bills: ['meter', 'meter_summary_bills', 'list'],
+  // 实例账单
+  bill_associates_list: ['meter', 'associate_bills', 'list'],
+  // 资源账单
+  meter_resource_bills: ['meter', 'meter_resource_bills', 'list'],
+  // 流水账单
+  meter_daily_bills: ['meter', 'meter_daily_bills', 'list'],
+  // 价格对比
+  meter_price_matchers: ['meter', 'meter_price_matchers', 'list'],
+  // 费率集
+  bill_ratesets_list: ['meter', 'ratesets', 'list'],
+  bill_ratesets_create: ['meter', 'ratesets', 'create'],
+  bill_ratesets_delete: ['meter', 'ratesets', 'delete'],
+  rates_list: ['meter', 'rates', 'list'],
+  rates_update: ['meter', 'rates', 'post'],
+  // 账单资源
+  bill_resources_list: ['meter', 'bill_resources', 'list'],
+  // 二次定价
+  cost_conversions_list: ['meter', 'cost_conversions', 'list'],
+  cost_conversions_delete: ['meter', 'cost_conversions', 'delete'],
+  cost_conversions_create: ['meter', 'cost_conversions', 'create'],
+  // 汇率
+  billing_exchange_rates_list: ['meter', 'billing_exchange_rates', 'list'],
+  billing_exchange_rates_create: ['meter', 'billing_exchange_rates', 'create'],
+  billing_exchange_rates_update: ['meter', 'billing_exchange_rates', 'update'],
+  billing_exchange_rates_delete: ['meter', 'billing_exchange_rates', 'delete'],
+  // 账单配置
+  shieldbills_list: ['meter', 'shield_bills', 'list'],
+  shieldbills_create: ['meter', 'shield_bills', 'create'],
+  shieldbills_delete: ['meter', 'shield_bills', 'delete'],
+
+  // 计费其他
+  // 资源消费预警
+  // costalerts_list: ['meter', 'costalerts', 'list'],
+  // costalerts_create: ['meter', 'costalerts', 'create'],
+  // costalerts_delete: ['meter', 'costalerts', 'delete'],
+  bill_details_list: ['meter', 'bill_details', 'list'],
   project_sharings_list: ['meter', 'project_sharings', 'list'],
   project_sharings_create: ['meter', 'project_sharings', 'create'],
   project_sharings_delete: ['meter', 'project_sharings', 'delete'],
   billtasks_list: ['meter', 'billtasks', 'list'],
   billtasks_create: ['meter', 'billtasks', 'create'],
-
-  // 标签
-  bill_tags_list: ['meter', 'bill_tags', 'list'],
+  bill_conditions_list: ['meter', 'bill_conditions', 'list'],
 
   // 资源标签
   meter_instances_list: ['meter', 'meter_instances', 'list'],
@@ -961,29 +1010,25 @@ export const PERMISSION = {
   meter_instances_perform_change_owner: ['meter', 'meter_instances', 'perform', 'change-owner'],
   meter_instances_perform_set_user_metadata: ['meter', 'meter_instances', 'perform', 'set-user-metadata'],
 
-  /**
-   * billsdimensions 维度管理
-   */
-  billsdimensions_list: ['meter', 'billsdimensions', 'list'],
-  billsdimensions_update: ['meter', 'billsdimensions', 'list'],
-  billsdimensions_delete: ['meter', 'billsdimensions', 'delete'],
-  billsdimensions_perform: ['meter', 'billsdimensions', 'perform'],
-
-  // 二次定价
-  cost_conversions_list: ['meter', 'cost_conversions', 'list'],
-  cost_conversions_delete: ['meter', 'cost_conversions', 'delete'],
-  cost_conversions_create: ['meter', 'cost_conversions', 'create'],
-
-  // 汇率
-  billing_exchange_rates_list: ['meter', 'billing_exchange_rates', 'list'],
-  billing_exchange_rates_create: ['meter', 'billing_exchange_rates', 'create'],
-  billing_exchange_rates_update: ['meter', 'billing_exchange_rates', 'update'],
-  billing_exchange_rates_delete: ['meter', 'billing_exchange_rates', 'delete'],
-
   // 封账
   block_accounts_list: ['meter', 'block_accounts', 'list'],
   block_accounts_create: ['meter', 'block_accounts', 'create'],
   block_accounts_update: ['meter', 'block_accounts', 'update'],
+  prices_perform_discount: ['meter', 'prices', 'perform', 'discount'],
+
+  // 异常消费
+  bill_alert_settings_list: ['meter', 'bill_alert_settings', 'list'],
+  bill_alert_settings_get: ['meter', 'bill_alert_settings', 'get'],
+  bill_alert_settings_update: ['meter', 'bill_alert_settings', 'update'],
+  bill_alert_settings_delete: ['meter', 'bill_alert_settings', 'delete'],
+  bill_alert_settings_perform_enabled: ['meter', 'bill_alert_settings', 'perform', 'enabled'],
+  bill_alert_settings_perform_disabled: ['meter', 'bill_alert_settings', 'perform', 'disabled'],
+  bill_alerts_list: ['meter', 'bill_alerts', 'list'],
+
+  // 离线下载
+  offline_exports_list: ['meter', 'offline_exports', 'list'],
+  offline_exports_create: ['meter', 'offline_exports', 'create'],
+  offline_exports_delete: ['meter', 'offline_exports', 'delete'],
 
   /**
    * cloudwatcher 相关操作
@@ -1224,9 +1269,6 @@ export const PERMISSION = {
   suggestsysalerts_list: ['suggestion', 'suggestsysalerts', 'list'],
   suggestsysalerts_delete: ['suggestion', 'suggestsysalerts', 'delete'],
   suggestsysalerts_perform_ignore: ['suggestion', 'suggestsysalerts', 'perform', 'ignore'],
-  // 资源消费预警
-  costalerts_create: ['meter', 'costalerts', 'create'],
-  costalerts_delete: ['meter', 'costalerts', 'delete'],
 
   // DNS解析相关
   dns_zones_list: ['compute', 'dns_zones', 'list'],
@@ -1331,9 +1373,6 @@ export const PERMISSION = {
   // 字典配置
   dictionary_get: ['yunionconf', 'parameters', 'get'],
 
-  //
-  prices_perform_discount: ['meter', 'prices', 'perform', 'discount'],
-
   tapservices_list: ['compute', 'tap_services', 'list'],
   tapservices_perform_enabled: ['compute', 'tap_services', 'perform', 'enabled'],
   tapservices_perform_disabled: ['compute', 'tap_services', 'perform', 'disabled'],
@@ -1347,10 +1386,6 @@ export const PERMISSION = {
   tapflows_create: ['compute', 'tap_flows', 'create'],
 
   tablestores_list: ['compute', 'tablestores', 'list'],
-
-  shieldbills_list: ['meter', 'shield_bills', 'list'],
-  shieldbills_create: ['meter', 'shield_bills', 'create'],
-  shieldbills_delete: ['meter', 'shield_bills', 'delete'],
 
   // 报表
   report_settings_list: ['report', 'report_settings', 'list'],
@@ -1408,17 +1443,6 @@ export const PERMISSION = {
   image_usages_get: ['image', 'usages', 'get'],
   identity_usages_list: ['identity', 'usages', 'list'],
   identity_usages_get: ['identity', 'usages', 'get'],
-
-  bill_predictions_query: ['meter', 'predictions', 'perform', 'query'],
-
-  // 异常消费
-  bill_alert_settings_list: ['meter', 'bill_alert_settings', 'list'],
-  bill_alert_settings_get: ['meter', 'bill_alert_settings', 'get'],
-  bill_alert_settings_update: ['meter', 'bill_alert_settings', 'update'],
-  bill_alert_settings_delete: ['meter', 'bill_alert_settings', 'delete'],
-  bill_alert_settings_perform_enabled: ['meter', 'bill_alert_settings', 'perform', 'enabled'],
-  bill_alert_settings_perform_disabled: ['meter', 'bill_alert_settings', 'perform', 'disabled'],
-  bill_alerts_list: ['meter', 'bill_alerts', 'list'],
 
   bastion_hosts_list: ['bastionhost', 'bastion_hosts', 'list'],
   bastion_hosts_get: ['bastionhost', 'bastion_hosts', 'get'],
