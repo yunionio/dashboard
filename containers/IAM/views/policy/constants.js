@@ -292,9 +292,9 @@ export const RESOURCES_MAP = {
   // bill_conditions: {
   //   label: '平台统计'
   // },
-  bill_analysises: {
-    i18n: 'system.text_392',
-  },
+  // bill_analysises: {
+  //   i18n: 'system.text_392',
+  // },
   bill_balances: {
     i18n: 'system.text_50',
   },
