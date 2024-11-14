@@ -1825,5 +1825,21 @@
   "compute.metric.diskio_ioutil": "Disk I/O utilization",
   "compute.metric.processes_zombies": "Zombie process count",
   "compute.metric.processes_total": "Total process count",
-  "compute.server_recovery_delete_confirm": "There is a virtual machine in the 'Running' state, which may be in use. Do you want to continue deleting it?"
+  "compute.server_recovery_delete_confirm": "There is a virtual machine in the 'Running' state, which may be in use. Do you want to continue deleting it?",
+  "compute.metric.radeontop_utilization_gpu": "AMD GPU Utilization rate",
+  "compute.metric.radeontop_utilization_memory": "AMD Memory utilization rate",
+  "compute.metric.radeontop_utilization_gtt": "AMD utilization_gtt",
+  "compute.metric.radeontop_utilization_clock_memory": "AMD utilization_clock_memory",
+  "compute.metric.radeontop_utilization_clock_shader": "AMD utilization_clock_shader",
+  "compute.metric.radeontop_temperature_gpu": "AMD GPU temperature",
+  "compute.metric.radeontop_utilization_encoder": "AMD Encoding Utilization Rate",
+  "compute.metric.radeontop_utilization_decoder": "AMD Decoding code utilization rate",
+  "compute.metric.vasmi_utilization_gpu": "VASTAITECH GPU utilization rate",
+  "compute.metric.vasmi_utilization_memory": "VASTAITECH Memory utilization rate",
+  "compute.metric.vasmi_utilization_gtt": "VASTAITECH utilization_gtt",
+  "compute.metric.vasmi_utilization_clock_memory": "VASTAITECH utilization_clock_memory",
+  "compute.metric.vasmi_utilization_clock_shader": "VASTAITECH utilization_clock_shader",
+  "compute.metric.vasmi_temperature_gpu": "VASTAITECH GPU temperature",
+  "compute.metric.vasmi_utilization_encoder": "VASTAITECH Encoding utilization rate",
+  "compute.metric.vasmi_utilization_decoder": "VASTAITECH Decoding code utilization rate"
 }
