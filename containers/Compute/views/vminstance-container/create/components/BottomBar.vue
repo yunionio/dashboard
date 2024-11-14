@@ -38,7 +38,7 @@
             </div>
           </div>
           <a-dropdown-button
-            v-if="$appConfig.isPrivate"
+            v-if="$appConfig.isPrivate && hasCartPermission"
             :title="confirmText"
             class="text-truncate"
             type="primary"
@@ -77,6 +77,7 @@ import * as R from 'ramda'
 import _ from 'lodash'
 import { SERVER_TYPE, BILL_TYPES_MAP, EIP_TYPES_MAP } from '@Compute/constants'
 import { sizestrWithUnit } from '@/utils/utils'
+import { hasPermission } from '@/utils/auth'
 import { PriceFetcher } from '@/utils/common/price'
 import SideErrors from '@/sections/SideErrors'
 import DiscountPrice from '@/sections/DiscountPrice'
@@ -261,6 +262,9 @@ export default {
         this.$emit('getOriginPrice', this.origin_price)
       }
       return this.origin_price
+    },
+    hasCartPermission () {
+      return hasPermission({ key: 'resource_order_sets_create' })
     },
   },
   watch: {
