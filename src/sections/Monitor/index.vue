@@ -192,7 +192,9 @@ export default {
                 row.hideLegend = true
               } else {
                 const format = val.constants.format || '0.00' // 默认是保留小数点后两位
-                if (groupByKey.length !== 0) {
+                if (serie.raw_name) {
+                  row.name = serie.raw_name
+                } else if (groupByKey.length !== 0) {
                   row.name = groupByKey
                 } else {
                   if (val.constants.groupBy && val.constants.groupBy.length !== 0) {
@@ -287,7 +289,9 @@ export default {
               groupByKey = getGroupByKey(item.tags, val.constants.groupBy)
             }
             let name = item.name
-            if (groupByKey) {
+            if (item.raw_name) {
+              name = item.raw_name
+            } else if (groupByKey) {
               name = groupByKey
               if (val.constants.as) {
                 name = `${groupByKey}(${item.name})`
