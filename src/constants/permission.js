@@ -1030,6 +1030,12 @@ export const PERMISSION = {
   offline_exports_create: ['meter', 'offline_exports', 'create'],
   offline_exports_delete: ['meter', 'offline_exports', 'delete'],
 
+  // 购物车
+  resource_order_sets_list: ['billing', 'resource_order_sets', 'list'],
+  resource_order_sets_get: ['billing', 'resource_order_sets', 'get'],
+  resource_order_sets_create: ['billing', 'resource_order_sets', 'create'],
+  resource_order_sets_delete: ['billing', 'resource_order_sets', 'delete'],
+
   /**
    * cloudwatcher 相关操作
    */
