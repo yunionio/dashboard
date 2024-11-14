@@ -184,7 +184,7 @@ export default {
       return this.$t('monitor_metric_78', [total])
     },
     columns () {
-      let columns = [
+      const columns = [
         {
           field: 'color',
           width: 50,
@@ -219,16 +219,18 @@ export default {
           }
         }, tableColumnMaps)
       }
-      const groupByField = _.get(this.groupBy, '[0].params[0]')
-      if (this.groupBy && groupByField) {
-        if (!columns.find(val => val.field === groupByField)) {
-          const title = this.$te(`dictionary.${groupByField}`) ? this.$t(`dictionary.${groupByField}`) : groupByField
-          columns.push({
-            field: groupByField,
-            title,
-            formatter: ({ row }) => row[groupByField] || '-',
-          })
-        }
+      const groupByFields = (this.groupBy || []).map(item => _.get(item, 'params[0]'))
+      if (this.groupBy && groupByFields.length) {
+        groupByFields.forEach(groupByField => {
+          if (!columns.find(val => val.field === groupByField)) {
+            const title = this.$te(`dictionary.${groupByField}`) ? this.$t(`dictionary.${groupByField}`) : groupByField
+            columns.push({
+              field: groupByField,
+              title,
+              formatter: ({ row }) => row[groupByField] || '-',
+            })
+          }
+        })
       }
       if (this.reducedResult && this.reducedResult.reducer) {
         const { reducer = {} } = this.reducedResult
@@ -243,9 +245,9 @@ export default {
           },
         })
       }
-      if (columns.some(item => item.field.startsWith('host')) && columns.some(item => item.field.startsWith('vm'))) {
-        columns = columns.filter(item => !item.field.startsWith('host'))
-      }
+      // if (columns.some(item => item.field.startsWith('host')) && columns.some(item => item.field.startsWith('vm'))) {
+      //   columns = columns.filter(item => !item.field.startsWith('host'))
+      // }
       return columns.slice(0, MAX_COLUMNS)
     },
     formatThreshold () {
@@ -429,11 +431,22 @@ export default {
       const currencys = []
       this.series.forEach((item, i) => {
         let name = item.raw_name
-        if (BRAND_MAP[name] && BRAND_MAP[name].label) {
-          name = BRAND_MAP[name].label
-        }
-        if (item.tags && item.tags.path) {
-          name += ` (path: ${item.tags.path})`
+
+        if (this.groupBy && (this.metricInfo?.model?.group_by || []).length > 1 && item.tags) {
+          name = this.metricInfo?.model?.group_by.map(l => {
+            let n = item.tags[l.params[0]]
+            if (BRAND_MAP[n] && BRAND_MAP[n].label) {
+              n = BRAND_MAP[n].label
+            }
+            return n
+          }).join(', ')
+        } else {
+          if (BRAND_MAP[name] && BRAND_MAP[name].label) {
+            name = BRAND_MAP[name].label
+          }
+          if (item.tags && item.tags.path) {
+            name += ` (path: ${item.tags.path})`
+          }
         }
         if (item.tags) {
           const { currency = 'CNY' } = (item.tags || {})
