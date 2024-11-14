@@ -405,7 +405,7 @@ export const VMWARE_MONITOR_OPTS = [
 export const NIC_RSRC_MON_OPTS = [
   {
     name: 'load',
-    label: 'load',
+    label: 'NETINT load',
     // as: i18n.t('compute.text_525'),
     seleteItem: 'load',
     fromItem: 'ni_rsrc_mon',
@@ -415,7 +415,7 @@ export const NIC_RSRC_MON_OPTS = [
   },
   {
     name: 'model_load',
-    label: 'model_load',
+    label: 'NETINT model_load',
     // as: i18n.t('compute.text_525'),
     seleteItem: 'model_load',
     fromItem: 'ni_rsrc_mon',
@@ -425,7 +425,7 @@ export const NIC_RSRC_MON_OPTS = [
   },
   {
     name: 'inst',
-    label: 'inst',
+    label: 'NETINT inst',
     // as: i18n.t('compute.text_525'),
     seleteItem: 'inst',
     fromItem: 'ni_rsrc_mon',
