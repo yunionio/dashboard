@@ -34,7 +34,7 @@
           :options="groupbyOpts"
           @change="groupbyChange"
           class="w-100"
-          :select-props="{ placeholder: $t('monitor.text_114'), allowClear: true }" />
+          :select-props="{ mode: 'multiple', placeholder: $t('monitor.text_114'), allowClear: true }" />
       </a-form-item>
       <a-form-item :label="$t('monitor.monitor_function')">
         <base-select
@@ -125,8 +125,12 @@ export default {
       initialValue.tags = {}
       if (q) {
         if (q.group_by) {
-          const _g = q.group_by.filter((g) => { return g.type === 'tag' })
-          if (_g) initialValue.group_by = _g[0] && _g[0].params && _g[0].params[0] ? _g[0].params[0] : ''
+          const _g = q.group_by.filter((g) => { return g.type === 'tag' && g.params && g.params[0] })
+          if (_g.length) {
+            initialValue.group_by = _g.map(item => {
+              return item.params[0]
+            })
+          }
         }
         if (q.tags) {
           q.tags.map((tag) => {
@@ -232,7 +236,7 @@ export default {
       group_by: [
         'group_by',
         {
-          initialValue: initialValue.group_by,
+          initialValue: initialValue.group_by || [],
         },
       ],
       function: [
@@ -435,9 +439,8 @@ export default {
         }
         const { group_by: groupBy, function: func } = this.form.fc.getFieldsValue([this.decorators.group_by[0], this.decorators.function[0]])
         const resetFields = {}
-        if (!~(this.metricInfo?.tag_key || []).indexOf(groupBy)) {
-          resetFields[this.decorators.group_by[0]] = undefined
-        }
+        const resetGroupBy = groupBy.filter(key => (this.metricInfo?.tag_key || []).includes(key))
+        resetFields[this.decorators.group_by[0]] = resetGroupBy
         if (!~(Aggregations || []).indexOf(func)) {
           resetFields[this.decorators.function[0]] = undefined
         }
@@ -486,9 +489,10 @@ export default {
       if (tags.length) {
         params.tags = tags
       }
-      if (fd.group_by) {
-        // eslint-disable-next-line no-template-curly-in-string
-        params.group_by = [{ type: 'tag', params: [fd.group_by] }]
+      if ((R.is(Array, fd.group_by) && fd.group_by.length)) {
+        params.group_by = fd.group_by.map(group_by => {
+          return { type: 'tag', params: [group_by] }
+        })
       }
       if (fd.result_function) {
         resParams.type = fd.result_function
