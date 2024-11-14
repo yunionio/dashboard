@@ -248,6 +248,22 @@ export default {
       // if (columns.some(item => item.field.startsWith('host')) && columns.some(item => item.field.startsWith('vm'))) {
       //   columns = columns.filter(item => !item.field.startsWith('host'))
       // }
+      if (this.tableData && this.tableData.length && this.tableData.some(item => {
+        return item.raw_name && item.raw_name.startsWith('{')
+      })) {
+        columns.push({
+          field: 'raw_name',
+          title: this.$t('cloudenv.text_237'),
+          slots: {
+            default: ({ row }) => {
+              if (row.raw_name) {
+                return [<span title={row.raw_name}>{row.raw_name.length > 50 ? row.raw_name.slice(0, 50) + '...' : row.raw_name}</span>]
+              }
+              return ''
+            },
+          },
+        })
+      }
       return columns.slice(0, MAX_COLUMNS)
     },
     formatThreshold () {
@@ -431,21 +447,22 @@ export default {
       const currencys = []
       this.series.forEach((item, i) => {
         let name = item.raw_name
-
-        if (this.groupBy && (this.metricInfo?.model?.group_by || []).length > 1 && item.tags) {
-          name = this.metricInfo?.model?.group_by.map(l => {
-            let n = item.tags[l.params[0]]
-            if (BRAND_MAP[n] && BRAND_MAP[n].label) {
-              n = BRAND_MAP[n].label
+        if (!name || name.startsWith('unknow')) {
+          if (this.groupBy && (this.metricInfo?.model?.group_by || []).length > 1 && item.tags) {
+            name = this.metricInfo?.model?.group_by.map(l => {
+              let n = item.tags[l.params[0]]
+              if (BRAND_MAP[n] && BRAND_MAP[n].label) {
+                n = BRAND_MAP[n].label
+              }
+              return n
+            }).join(', ')
+          } else {
+            if (BRAND_MAP[name] && BRAND_MAP[name].label) {
+              name = BRAND_MAP[name].label
             }
-            return n
-          }).join(', ')
-        } else {
-          if (BRAND_MAP[name] && BRAND_MAP[name].label) {
-            name = BRAND_MAP[name].label
-          }
-          if (item.tags && item.tags.path) {
-            name += ` (path: ${item.tags.path})`
+            if (item.tags && item.tags.path) {
+              name += ` (path: ${item.tags.path})`
+            }
           }
         }
         if (item.tags) {
@@ -517,26 +534,27 @@ export default {
             }
             const color = i === this.highlight.index ? this.highlight.color : '#616161'
             let name = line.seriesName
-            if (!this.showTable || (this.isSelectFunction && this.resultReducer && !this.groupBy)) {
+            if (!this.showTable || (this.isSelectFunction && this.resultReducer && !this.groupBy) || name.startsWith('unknow')) {
               name = this.isSelectFunction.toUpperCase()
-            } else {
-              if ((name.startsWith('{') && name.endsWith('}')) || name.includes(' (path:')) {
-                try {
-                  const path = (name.match(/\s\((path:.*)\)/) || [''])[0] || ''
-                  const str = name.replace(path, '').substring(1, name.length - 1)
-                  const list = str.split(',')
-                  const obj = {}
-                  list.forEach(item => {
-                    const [key, value] = item.split('=')
-                    obj[key] = value
-                  })
-                  const field = (this.columns.length > 1 && this.columns[1].field)
-                  name = obj[field] ? `${obj[field]}${path}` : name
-                } catch (err) {
-                  throw err
-                }
-              }
             }
+            // else {
+            //   if ((name.startsWith('{') && name.endsWith('}')) || name.includes(' (path:')) {
+            //     try {
+            //       const path = (name.match(/\s\((path:.*)\)/) || [''])[0] || ''
+            //       const str = name.replace(path, '').substring(1, name.length - 1)
+            //       const list = str.split(',')
+            //       const obj = {}
+            //       list.forEach(item => {
+            //         const [key, value] = item.split('=')
+            //         obj[key] = value
+            //       })
+            //       const field = (this.columns.length > 1 && this.columns[1].field)
+            //       name = obj[field] ? `${obj[field]}${path}` : name
+            //     } catch (err) {
+            //       throw err
+            //     }
+            //   }
+            // }
             return `<div style="color: ${color};" class="d-flex align-items-center"><span>${line.marker}</span> <span class="text-truncate" style="max-width: 500px;">${name || ' '}</span>:&nbsp;<span>${value}</span></div>`
           }).join('')
           const wrapper = `<div class="chart-tooltip-wrapper">

@@ -1,9 +1,9 @@
 <template>
   <a-row>
-    <a-col :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }"  :xxl="{ span: 11 }" class="mb-5">
+    <a-col :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }"  :xxl="{ span: 10 }" class="mb-5">
       <monitor-forms @refresh="refresh" @remove="remove" @resetChart="resetChart" :timeRangeParams="timeRangeParams" @mertricItemChange="mertricItemChange" />
     </a-col>
-    <a-col class="line mb-5" :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 12, offset: 1 }">
+    <a-col class="line mb-5" :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 13, offset: 1 }">
       <monitor-header
         class="mb-3"
         :time.sync="time"
