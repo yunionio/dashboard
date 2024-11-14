@@ -1838,5 +1838,21 @@
   "compute.metric.processes_total": "总进程数",
   "compute.server_recovery_delete_confirm": "存在【运行中】状态的虚拟机，可能正在使用中，是否继续删除？",
   "compute.source_data": "源数据",
-  "compute.view_source_data": "查看源数据"
+  "compute.view_source_data": "查看源数据",
+  "compute.metric.radeontop_utilization_gpu": "AMD GPU利用率",
+  "compute.metric.radeontop_utilization_memory": "AMD 显存利用率",
+  "compute.metric.radeontop_utilization_gtt": "AMD utilization_gtt",
+  "compute.metric.radeontop_utilization_clock_memory": "AMD utilization_clock_memory",
+  "compute.metric.radeontop_utilization_clock_shader": "AMD utilization_clock_shader",
+  "compute.metric.radeontop_temperature_gpu": "AMD GPU温度",
+  "compute.metric.radeontop_utilization_encoder": "AMD 编码利用率",
+  "compute.metric.radeontop_utilization_decoder": "AMD 解码利用率",
+  "compute.metric.vasmi_utilization_gpu": "瀚博 GPU利用率",
+  "compute.metric.vasmi_utilization_memory": "瀚博 显存利用率",
+  "compute.metric.vasmi_utilization_gtt": "瀚博 utilization_gtt",
+  "compute.metric.vasmi_utilization_clock_memory": "瀚博 utilization_clock_memory",
+  "compute.metric.vasmi_utilization_clock_shader": "瀚博 utilization_clock_shader",
+  "compute.metric.vasmi_temperature_gpu": "瀚博 GPU温度",
+  "compute.metric.vasmi_utilization_encoder": "瀚博 编码利用率",
+  "compute.metric.vasmi_utilization_decoder": "瀚博 解码利用率"
 }

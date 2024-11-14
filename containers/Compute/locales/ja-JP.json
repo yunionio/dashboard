@@ -1838,5 +1838,21 @@
   "compute.metric.processes_total": "総プロセス数",
   "compute.server_recovery_delete_confirm": "【実行中】状態のVMが存在します。使用中かもしれませんが、削除を続行しますか？",
   "compute.source_data": "ソースデータ",
-  "compute.view_source_data": "ソースデータの表示"
+  "compute.view_source_data": "ソースデータの表示",
+  "compute.metric.radeontop_utilization_gpu": "AMD GPU使用率",
+  "compute.metric.radeontop_utilization_memory": "AMD ビデオメモリ使用率",
+  "compute.metric.radeontop_utilization_gtt": "AMD utilization_gtt",
+  "compute.metric.radeontop_utilization_clock_memory": "AMD utilization_clock_memory",
+  "compute.metric.radeontop_utilization_clock_shader": "AMD utilization_clock_shader",
+  "compute.metric.radeontop_temperature_gpu": "AMD GPUおんど",
+  "compute.metric.radeontop_utilization_encoder": "AMD コーディング使用率",
+  "compute.metric.radeontop_utilization_decoder": "AMD 復号利用率",
+  "compute.metric.vasmi_utilization_gpu": "瀚博GPU利用率",
+  "compute.metric.vasmi_utilization_memory": "瀚博 グラフィックメモリ利用率",
+  "compute.metric.vasmi_utilization_gtt": "瀚博 utilization_gtt",
+  "compute.metric.vasmi_utilization_clock_memory": "瀚博 utilization_clock_memory",
+  "compute.metric.vasmi_utilization_clock_shader": "瀚博 utilization_clock_shader",
+  "compute.metric.vasmi_temperature_gpu": "瀚博 GPU温度",
+  "compute.metric.vasmi_utilization_encoder": "瀚博 コーディング使用率",
+  "compute.metric.vasmi_utilization_decoder": "瀚博 復号利用率"
 }
