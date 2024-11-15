@@ -2,7 +2,9 @@
   <div class="h-100 position-relative">
     <div class="dashboard-card-wrap">
       <div class="dashboard-card-header">
-        <div class="dashboard-card-header-left">{{ form.fd.name || $t('dashboard.text_6') }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-left">
+          {{ form.fd.name || $t('dashboard.text_6') }}<a-icon class="ml-2" type="loading" v-if="loading" />
+          <span v-if="isResDeny" class="ml-2"><a-icon class="warning-color mr-1" type="warning" />{{ $t('common.permission.403') }}</span></div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
         </div>
@@ -15,17 +17,17 @@
         <div class="flex-fill ml-4">
           <div class="d-flex bottomborder-box align-items-end">
             <div :class="`label-unit ${jumpParams.usedPath ? 'label-jump' : ''}`" @click="goJump('used')">{{ useLabel }}</div>
-            <div class="flex-number mr-2 ml-1 text-right">{{usage.usage}}</div>
+            <div class="flex-number mr-2 ml-1 text-right">{{isResDeny ? '-' : usage.usage}}</div>
             <div class="label-unit">{{ usage.unit }}</div>
           </div>
           <div class="d-flex bottomborder-box align-items-end">
             <div :class="`label-unit ${jumpParams.reservedPath ? 'label-jump' : ''}`" @click="goJump('reserved')">{{ unUseLabel }}</div>
-            <div class="flex-number mr-2 ml-1 text-right">{{displayUnUsage.usage}}</div>
+            <div class="flex-number mr-2 ml-1 text-right">{{isResDeny ? '-' : displayUnUsage.usage}}</div>
             <div class="label-unit">{{displayUnUsage.unit}}</div>
           </div>
           <div class="d-flex bottomborder-box align-items-end">
             <div :class="`label-unit ${jumpParams.allPath ? 'label-jump' : ''}`" @click="goJump('all')">{{ $t('dashboard.text_44') }}</div>
-            <div class="flex-number mr-2 ml-1 text-right">{{allUsage.usage}}</div>
+            <div class="flex-number mr-2 ml-1 text-right">{{isResDeny ? '-' : allUsage.usage}}</div>
             <div class="label-unit">{{allUsage.unit}}</div>
           </div>
         </div>
@@ -74,6 +76,7 @@ import { getRequestT } from '@/utils/utils'
 import K8sConfig from '@Dashboard/sections/K8sConfig'
 import { numerify } from '@/filters'
 import { chartColors } from '@/constants'
+import { hasPermission } from '@/utils/auth'
 import mixin from './mixin'
 
 export default {
@@ -303,6 +306,9 @@ export default {
       const params = this.parseUsageKey(this.form.fd.all_usage_key || '', this.form.fd.usage_key || '')
       return params
     },
+    isResDeny () {
+      return !hasPermission({ key: 'k8s_usages_get' })
+    },
   },
   watch: {
     'form.fd' (val) {
@@ -401,6 +407,7 @@ export default {
       const params = {
         scope: this.$store.getters.scope,
         $t: getRequestT(),
+        ignoreErrorStatusCode: [403],
       }
       return params
     },
