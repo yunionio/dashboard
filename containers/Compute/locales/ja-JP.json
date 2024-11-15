@@ -1843,5 +1843,6 @@
   "compute.metric.vasmi_utilization_clock_shader": "瀚博 utilization_clock_shader",
   "compute.metric.vasmi_temperature_gpu": "瀚博 GPU温度",
   "compute.metric.vasmi_utilization_encoder": "瀚博 コーディング使用率",
-  "compute.metric.vasmi_utilization_decoder": "瀚博 復号利用率"
+  "compute.metric.vasmi_utilization_decoder": "瀚博 復号利用率",
+  "compute.metadatas": "@:compute.text_271"
 }
