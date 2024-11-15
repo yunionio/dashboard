@@ -1481,6 +1481,8 @@ export const PERMISSION = {
   scriptapplyrecords_create: ['devtool', 'scriptapplyrecords', 'create'],
   scriptapplyrecords_delete: ['devtool', 'scriptapplyrecords', 'delete'],
 
+  metadatas_perform_tag_value_pairs: ['compute', 'metadatas', 'perform', 'tag-value-pairs'],
+
   ...extraPermissions,
 }
 
