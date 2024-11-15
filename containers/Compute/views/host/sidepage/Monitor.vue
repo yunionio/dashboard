@@ -17,7 +17,7 @@ import Monitor from '@/sections/Monitor'
 import WindowsMixin from '@/mixins/windows'
 import { getSignature } from '@/utils/crypto'
 import MonitorTimeMixin from '@/mixins/monitorTime'
-import { KVM_MONITOR_OPTS, VMWARE_MONITOR_OPTS } from '../constants'
+import { KVM_MONITOR_OPTS, VMWARE_MONITOR_OPTS, NIC_RSRC_MON_OPTS, RADEONTOP_OPTS, VASMI_OPTS } from '../constants'
 
 export default {
   name: 'VminstanceMonitorSidepage',
@@ -79,9 +79,22 @@ export default {
     hostType () {
       return this.data.host_type
     },
+    isolatedDeviceTypes () {
+      return Object.keys(this.data.isolated_device_type_count || {})
+    },
     monitorConstants () {
       if (this.hostType === 'hypervisor' || this.hostType === 'container') {
-        return KVM_MONITOR_OPTS
+        const list = KVM_MONITOR_OPTS
+        if (this.isolatedDeviceTypes.some(type => ['NETINT_CA_QUADRA', 'NETINT_CA_ASIC'].includes(type))) {
+          list.push(...NIC_RSRC_MON_OPTS)
+        }
+        if (this.isolatedDeviceTypes.some(type => ['CPH_AMD_GPU'].includes(type))) {
+          list.push(...RADEONTOP_OPTS)
+        }
+        if (this.isolatedDeviceTypes.some(type => ['VASTAITECH_GPU'].includes(type))) {
+          list.push(...VASMI_OPTS)
+        }
+        return list
       }
       return VMWARE_MONITOR_OPTS
     },
