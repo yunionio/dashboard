@@ -2,7 +2,10 @@
   <div class="h-100 position-relative">
     <div class="dashboard-card-wrap">
       <div class="dashboard-card-header">
-        <div class="dashboard-card-header-left">{{ form.fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-left">
+          {{ form.fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" />
+          <span v-if="isResDeny" class="ml-2"><a-icon class="warning-color mr-1" type="warning" />{{ $t('common.permission.403') }}</span>
+        </div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
           <!-- <router-link v-if="!edit" to="/notice" class="ml-2">{{$t('dashboard.more')}}</router-link> -->
@@ -47,6 +50,7 @@ import { mapGetters } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { uuid } from '@/utils/utils'
+import { hasPermission } from '@/utils/auth'
 
 export default {
   name: 'AccountHealth',
@@ -105,6 +109,9 @@ export default {
   },
   computed: {
     ...mapGetters(['scope', 'capability', 'isAdminMode', 'isDomainMode', 'isProjectMode', 'userInfo']),
+    isResDeny () {
+      return !hasPermission({ key: 'bill_analysises_list' })
+    },
   },
   watch: {
     'form.fd' (val) {
@@ -140,6 +147,7 @@ export default {
               limit: 1,
               currency: 'CNY',
               status: ['connected'],
+              ignoreErrorStatusCode: [403],
             },
           }),
           new this.$Manager('bill_balances', 'v1').list({
@@ -151,6 +159,7 @@ export default {
               limit: 1,
               currency: 'CNY',
               status: ['connected'],
+              ignoreErrorStatusCode: [403],
             },
           }),
         ])

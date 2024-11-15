@@ -99,6 +99,13 @@ export const getRequestKey = config => {
   }
   return ret
 }
+export const getIgnoreErrorStatusCode = config => {
+  const ignoreErrorStatusCode = config.params?.ignoreErrorStatusCode || []
+  if (config.params && config.params.ignoreErrorStatusCode) {
+    delete config.params.ignoreErrorStatusCode
+  }
+  return ignoreErrorStatusCode
+}
 export const cancelRquest = requestKey => {
   const request = requestMap[requestKey]
   if (request) {
@@ -211,6 +218,7 @@ http.interceptors.request.use(
       const requestKey = getRequestKey(config)
       cancelRquest(requestKey)
       config.$requestKey = requestKey
+      config.$ignoreErrorStatusCode = getIgnoreErrorStatusCode(config)
       config.cancelToken = new axios.CancelToken(cancel => {
         requestMap[requestKey] = {
           cancel,
@@ -284,9 +292,12 @@ http.interceptors.response.use(
       }
       // 忽略证书错误
       if (status === 402 && (error.response.data.details === 'no license found' || error.response.data.details === '无有效license')) {
-        console.log(error)
       } if (status === 403) {
-        message.error(i18n.t('common.permission.403'))
+        if (error.config.$ignoreErrorStatusCode && error.config.$ignoreErrorStatusCode.length && error.config.$ignoreErrorStatusCode.includes(403)) {
+          console.error(error)
+        } else {
+          message.error(i18n.t('common.permission.403'))
+        }
       } else if (error.response.data && !(error.response.data.details || String()).includes('No token in header')) {
         if (isBlob(error.response.data)) {
           blobToJson(error.response.data).then(res => {

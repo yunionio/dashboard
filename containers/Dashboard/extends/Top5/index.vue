@@ -331,7 +331,7 @@ export default {
       if (usage.endsWith('vm_cpu') || usage.endsWith('vm_mem') || usage.endsWith('vm_disk')) {
         return !hasPermission({ key: 'servers_list', permissionData: this.permission })
       }
-      return false
+      return !hasPermission({ key: 'compute_usages_get' })
     },
   },
   watch: {
@@ -384,6 +384,7 @@ export default {
             method: 'POST',
             params: {
               $t: getRequestT(),
+              ignoreErrorStatusCode: [403],
             },
             data: requestData,
           },
