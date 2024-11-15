@@ -70,7 +70,7 @@ export default {
   data () {
     return {
       loading: false,
-      baseDocURL: getDocsUrl(this.$store.getters.scope),
+      baseDocURL: getDocsUrl(this.$store.getters.scope, this.$store.getters.isSysCE),
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {

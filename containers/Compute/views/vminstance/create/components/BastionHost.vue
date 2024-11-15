@@ -123,7 +123,7 @@ export default {
     },
   },
   created () {
-    if (this.$appConfig.isPrivate) {
+    if (this.$appConfig.isPrivate && !this.$store.getters.isSysCE) {
       this.fetchBastionHosts()
     }
   },

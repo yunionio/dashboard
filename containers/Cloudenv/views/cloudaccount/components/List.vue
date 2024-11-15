@@ -214,7 +214,7 @@ export default {
                   })
                   return ret
                 },
-                hidden: () => isCE(),
+                hidden: () => isCE() || this.$store.getters.isSysCE,
               },
               ...getEnabledSwitchActions(this, undefined, ['cloudaccounts_perform_enable', 'cloudaccounts_perform_disable'], {
                 actions: [
@@ -270,13 +270,13 @@ export default {
                     name: this.$t('dictionary.cloudaccount'),
                     onManager: this.onManager,
                     content: () => {
-                      if (supportBill && this.$appConfig.isPrivate) {
+                      if (supportBill && this.$appConfig.isPrivate && !this.$store.getters.isSysCE) {
                         return <a-checkbox v-model={ this.batchDeleteBill }>{ this.$t('cloudenv.text_497') }</a-checkbox>
                       }
                       return null
                     },
                     success: async () => {
-                      if (supportBill && this.batchDeleteBill && this.$appConfig.isPrivate) {
+                      if (supportBill && this.batchDeleteBill && this.$appConfig.isPrivate && !this.$store.getters.isSysCE) {
                         const manager = new this.$Manager('billtasks/submit', 'v1')
                         try {
                           const p = this.list.selectedItems.filter(item => {

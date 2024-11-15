@@ -1,6 +1,6 @@
 <template>
   <div class="cloudaccount pt-2">
-    <a-alert type="info" show-icon class="mt-2" v-if="!isCE && $store.getters.isAdminMode">
+    <a-alert type="info" show-icon class="mt-2" v-if="!isCE && !$store.getters.isSysCE && $store.getters.isAdminMode">
       <template slot="message">{{$t('cloudenv.text_223')}}<icon type="navbar-more" style="font-size: 15px;" />{{$t('cloudenv.text_224')}}</template>
     </a-alert>
     <template v-for="(cloudaccounts, env) of types">

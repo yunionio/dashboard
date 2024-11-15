@@ -1,9 +1,10 @@
 import { getDocsUrl } from '@/utils/utils'
 import i18n from '@/locales'
+import store from '@/store'
 
 // 认证源认证类型帮助文档链接
 export function docs (scope) {
-  const docsUrl = getDocsUrl(scope)
+  const docsUrl = getDocsUrl(scope, store.getters.isSysCE)
   const idpUrl = `${docsUrl}web_ui/iam/keystone/ldp`
   return {
     // google_oidc: `${idpUrl}/#${i18n.t('system.google_oidc_doc')}`,

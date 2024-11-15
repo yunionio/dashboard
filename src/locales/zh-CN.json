@@ -6112,5 +6112,6 @@
   "common.remove_store": "取消收藏",
   "common.adjust_order": "调整顺序",
   "common.prev_one": "上一条",
-  "common.next_one": "下一条"
+  "common.next_one": "下一条",
+  "common.system_ce": "Cloudpods 企业支持版"
 }

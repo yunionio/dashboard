@@ -1,6 +1,7 @@
 import { typeClouds } from '@/utils/common/hypervisor'
 import { arrayToObj, getDocsUrl } from '@/utils/utils'
 import i18n from '@/locales'
+import store from '@/store'
 const providerMap = typeClouds.getProviderlowcase()
 const aliyunLogo = require('@/assets/images/providers/aliyun.svg')
 const awsLogo = require('@/assets/images/providers/aws.svg')
@@ -38,7 +39,7 @@ const oraclecloudLogo = require('@/assets/images/providers/oraclecloud.svg')
 const sangforLogo = require('@/assets/images/providers/sangfor.svg')
 
 function getDocsCloudaccountPath (scope) {
-  const docsUrl = getDocsUrl(scope)
+  const docsUrl = getDocsUrl(scope, store.getters.isSysCE)
   return `${docsUrl}web_ui/multiplecloud/cloudaccount/cloudaccount`
 }
 

@@ -121,9 +121,7 @@
     <!-- cloudshell -->
     <cloud-shell v-if="isAdminMode" class="navbar-item-icon primary-color-hover" />
     <!-- 更多 -->
-    <slot name="morePopover">
-      <more-popover class="navbar-item-icon primary-color-hover" />
-    </slot>
+    <more-popover class="navbar-item-icon primary-color-hover" />
     <div class="navbar-item">
       <a-dropdown :trigger="['click']">
         <!-- <div class="navbar-item-trigger d-flex align-items-center justify-content-center">

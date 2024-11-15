@@ -71,7 +71,7 @@ export default {
         ],
       },
       contactData: null,
-      href: getDocsUrl(this.$store.getters.domain) + `/web_ui/iam/notify/mailconfig/#${this.$t('system.steps_to_param_feishu')}`,
+      href: getDocsUrl(this.$store.getters.domain, this.$store.getters.isSysCE) + `/web_ui/iam/notify/mailconfig/#${this.$t('system.steps_to_param_feishu')}`,
     }
   },
   destroyed () {

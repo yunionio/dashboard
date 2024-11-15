@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-alert v-if="!isCE()" type="info" class="mb-2">
+    <a-alert v-if="!isCE() && !$store.getters.isSysCE" type="info" class="mb-2">
       <template #message>
         <div>{{ $t('system.text_565') }}</div>
         <div><span class="text-color-help mr-2">* EntityId:</span>{{ serverUrl }}<copy class="ml-1" :message="serverUrl" /></div>

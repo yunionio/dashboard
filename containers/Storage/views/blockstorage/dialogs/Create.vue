@@ -167,7 +167,7 @@ export default {
       return this.form.fd.storage_type === 'local'
     },
     localStorageUrl () {
-      return `${getDocsUrl()}function_principle/onpremise/storage/blockstorage/add-storage/ `
+      return `${getDocsUrl(this.$store.getters.scope, this.$store.getters.isSysCE)}function_principle/onpremise/storage/blockstorage/add-storage/ `
     },
   },
   methods: {
