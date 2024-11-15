@@ -421,7 +421,7 @@ export default {
       } else if (usage_key.endsWith('eip.floating_ip')) {
         return !hasPermission({ key: 'eips_list', permissionData: this.permission })
       }
-      return false
+      return !hasPermission({ key: 'compute_usages_get' })
     },
     isCanJump () {
       return {
@@ -473,6 +473,7 @@ export default {
       const params = {
         scope: this.$store.getters.scope,
         $t: getRequestT(),
+        ignoreErrorStatusCode: [403],
       }
       const fd = this.form.fd
       if (fd.cloud_env) params.cloud_env = fd.cloud_env

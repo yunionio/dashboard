@@ -22,6 +22,7 @@ export default {
               scope: rootGetters.scope,
               effective: true,
               category: categories,
+              ignoreErrorStatusCode: [403],
             },
           })
           const data = response.data.data
