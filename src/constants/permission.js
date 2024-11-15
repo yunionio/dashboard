@@ -1449,6 +1449,7 @@ export const PERMISSION = {
   image_usages_get: ['image', 'usages', 'get'],
   identity_usages_list: ['identity', 'usages', 'list'],
   identity_usages_get: ['identity', 'usages', 'get'],
+  k8s_usages_get: ['k8s', 'usages', 'get'],
 
   bastion_hosts_list: ['bastionhost', 'bastion_hosts', 'list'],
   bastion_hosts_get: ['bastionhost', 'bastion_hosts', 'get'],
@@ -1480,6 +1481,8 @@ export const PERMISSION = {
   scriptapplyrecords_update: ['devtool', 'scriptapplyrecords', 'update'],
   scriptapplyrecords_create: ['devtool', 'scriptapplyrecords', 'create'],
   scriptapplyrecords_delete: ['devtool', 'scriptapplyrecords', 'delete'],
+
+  metadatas_perform_tag_value_pairs: ['compute', 'metadatas', 'perform', 'tag-value-pairs'],
 
   metadatas_perform_tag_value_pairs: ['compute', 'metadatas', 'perform', 'tag-value-pairs'],
 
