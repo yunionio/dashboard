@@ -247,7 +247,7 @@ export default {
                 supermicro: { height: '30px' },
                 huawei: { height: '30px' },
                 red_hat: { height: '30px' },
-                ieit_systems: { height: '10px' },
+                ieit_systems: { height: '30px' },
               }
               const arr = Object.keys(icons)
               if (!arr.includes(oem_name)) {

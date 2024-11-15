@@ -1484,8 +1484,6 @@ export const PERMISSION = {
 
   metadatas_perform_tag_value_pairs: ['compute', 'metadatas', 'perform', 'tag-value-pairs'],
 
-  metadatas_perform_tag_value_pairs: ['compute', 'metadatas', 'perform', 'tag-value-pairs'],
-
   ...extraPermissions,
 }
 
