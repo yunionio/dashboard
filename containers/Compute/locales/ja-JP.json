@@ -1838,5 +1838,6 @@
   "compute.metric.processes_total": "総プロセス数",
   "compute.server_recovery_delete_confirm": "【実行中】状態のVMが存在します。使用中かもしれませんが、削除を続行しますか？",
   "compute.source_data": "ソースデータ",
-  "compute.view_source_data": "ソースデータの表示"
+  "compute.view_source_data": "ソースデータの表示",
+  "compute.metadatas": "@:compute.text_271"
 }

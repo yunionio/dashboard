@@ -1838,5 +1838,6 @@
   "compute.metric.processes_total": "总进程数",
   "compute.server_recovery_delete_confirm": "存在【运行中】状态的虚拟机，可能正在使用中，是否继续删除？",
   "compute.source_data": "源数据",
-  "compute.view_source_data": "查看源数据"
+  "compute.view_source_data": "查看源数据",
+  "compute.metadatas": "@:compute.text_271"
 }

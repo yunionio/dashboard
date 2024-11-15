@@ -1836,5 +1836,6 @@
   "compute.metric.processes_total": "Total process count",
   "compute.server_recovery_delete_confirm": "There is a virtual machine in the 'Running' state, which may be in use. Do you want to continue deleting it?",
   "compute.source_data": "Source data",
-  "compute.view_source_data": "View source data"
+  "compute.view_source_data": "View source data",
+  "compute.metadatas": "@:compute.text_271"
 }
