@@ -872,8 +872,8 @@ export default {
       }
       return {
         project_id: values.project?.key,
-        guest_ip_prefix: values.guest_ip_prefix[0],
-        guest_ip6_prefix: values.guest_ip6_prefix[0],
+        guest_ip_prefix: values.guest_ip_prefix && values.guest_ip_prefix[0],
+        guest_ip6_prefix: values.guest_ip6_prefix && values.guest_ip6_prefix[0],
         name: values.name,
         description: values.description,
         vpc: values.vpc,
