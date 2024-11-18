@@ -562,7 +562,7 @@ export default {
         this.storageOpts = this.storageOpts.filter((item) => {
           return !item.value.includes('nova')
         })
-      } else {
+      } else if (this.diskType === 'public') {
         // 公有云隐藏带local关键字的硬盘类型
         this.storageOpts = this.storageOpts.filter(({ value }) => {
           if (value.includes('local')) return false
