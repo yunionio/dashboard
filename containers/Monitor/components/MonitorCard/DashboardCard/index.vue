@@ -111,6 +111,9 @@ export default {
     customTime: {
       type: Object,
     },
+    groupFunc: {
+      type: String,
+    },
   },
   data () {
     return {
@@ -214,6 +217,22 @@ export default {
         params.from = this.time
         delete params.to
       }
+      if (this.groupFunc) {
+        const { select = [] } = model
+        if (select.length) {
+          select.forEach(s => {
+            const index = s.findIndex(item => ['mean', 'min', 'max', this.groupFunc].includes(item.type))
+            if (index !== -1) {
+              s[index].type = this.groupFunc
+            } else {
+              s.push({ type: this.groupFunc, params: [] })
+            }
+          })
+        } else {
+          select.push([{ type: this.groupFunc, params: [] }])
+          model.select = select
+        }
+      }
       return params
     },
     metricInfo () {
@@ -315,6 +334,9 @@ export default {
       this.fetchChart()
     },
     timeGroup () {
+      this.fetchChart()
+    },
+    groupFunc () {
       this.fetchChart()
     },
   },
