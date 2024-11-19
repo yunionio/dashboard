@@ -5,7 +5,8 @@
         :time.sync="time"
         :timeGroup.sync="timeGroup"
         :showTimegroup="true"
-        :showGroupFunc="false"
+        :showGroupFunc="true"
+        :groupFunc.sync="groupFunc"
         showAutoRefresh
         @refresh="handleRefresh">
         <template v-slot:radio-button-append>
@@ -48,6 +49,7 @@
            :time="time"
            :timeGroup="timeGroup"
            :customTime="customTime"
+           :groupFunc="groupFunc"
            @chose_panel="chose_panel"
            @delete="handleDelete" />
         </a-list-item>
@@ -133,6 +135,7 @@ export default {
       time: '1h',
       timeGroup: '1m',
       customTime: null,
+      groupFunc: 'mean',
     }
   },
   computed: {

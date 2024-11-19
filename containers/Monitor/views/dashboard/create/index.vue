@@ -23,9 +23,10 @@
           <monitor-header
               class="mb-4"
               :time.sync="time"
+              :groupFunc.sync="groupFunc"
               :timeGroupValue.sync="timeGroupValue"
               :showTimegroup="false"
-              :showGroupFunc="false"
+              :showGroupFunc="true"
               :showTimeGroupInput="true"
               @refresh="fetchAllData">
             <template v-slot:radio-button-append>
@@ -102,6 +103,7 @@ export default {
       panelId: this.$route.params.id || '',
       panel: {},
       time: '1h',
+      groupFunc: 'mean',
       timeGroupValue: 2,
       customTime: null,
       metricList: [],
@@ -144,6 +146,9 @@ export default {
     },
     customTime () {
       this.smartFetchAllData()
+    },
+    groupFunc (val) {
+      this.fetchAllData()
     },
   },
   // created () {
@@ -232,6 +237,23 @@ export default {
       this.loadingList = []
       for (let i = 0; i < this.metricList.length; i++) {
         const metric_query = this.metricList[i]
+        metric_query.forEach((query, index) => {
+          const { model = {} } = query
+          const { select = [] } = model
+          if (select.length) {
+            select.forEach(s => {
+              const index = s.findIndex(item => ['mean', 'min', 'max', this.groupFunc].includes(item.type))
+              if (index !== -1) {
+                s[index].type = this.groupFunc
+              } else {
+                s.push({ type: this.groupFunc, params: [] })
+              }
+            })
+          } else {
+            select.push([{ type: this.groupFunc, params: [] }])
+            metric_query[index].model.select = select
+          }
+        })
         this.loadingList.push(true)
         jobs.push(this.fetchData(metric_query, 10, 0))
       }
@@ -286,6 +308,23 @@ export default {
           ...this.extraParams,
         }
         if (!data.metric_query || !data.metric_query.length || !data.from) return
+        data.metric_query.forEach((query, index) => {
+          const { model = {} } = query
+          const { select = [] } = model
+          if (select.length) {
+            select.forEach(s => {
+              const index = s.findIndex(item => ['mean', 'min', 'max', this.groupFunc].includes(item.type))
+              if (index !== -1) {
+                s[index].type = this.groupFunc
+              } else {
+                s.push({ type: this.groupFunc, params: [] })
+              }
+            })
+          } else {
+            select.push([{ type: this.groupFunc, params: [] }])
+            data.metric_query[index].model.select = select
+          }
+        })
         data.signature = getSignature(data)
         const { data: resdata } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data, params: { $t: getRequestT() } })
         return resdata

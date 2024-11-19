@@ -8,8 +8,9 @@
         class="mb-3"
         :time.sync="time"
         :timeGroup.sync="timeGroup"
+        :groupFunc.sync="groupFunc"
         :showTimegroup="true"
-        :showGroupFunc="false"
+        :showGroupFunc="true"
         @refresh="fetchAllData">
         <template v-slot:radio-button-append>
           <custom-date :time.sync="time" :customTime.sync="customTime" :showCustomTimeText="time==='custom'" />
@@ -56,6 +57,7 @@ export default {
     return {
       time: '1h',
       timeGroup: '1m',
+      groupFunc: 'mean',
       customTime: null,
       timeOpts,
       metricList: [],
@@ -95,6 +97,9 @@ export default {
     customTime () {
       this.smartFetchAllData()
     },
+    groupFunc () {
+      this.fetchAllData()
+    },
   },
   methods: {
     smartFetchAllData () { // 根据选择的时间范围智能的赋值时间间隔进行查询
@@ -133,6 +138,23 @@ export default {
       this.loadingList = []
       for (let i = 0; i < this.metricList.length; i++) {
         const metric_query = this.metricList[i]
+        if (this.groupFunc) {
+          const { model = {} } = metric_query
+          const { select = [] } = model
+          if (select.length) {
+            select.forEach(s => {
+              const index = s.findIndex(item => ['mean', 'min', 'max', this.groupFunc].includes(item.type))
+              if (index !== -1) {
+                s[index].type = this.groupFunc
+              } else {
+                s.push({ type: this.groupFunc, params: [] })
+              }
+            })
+          } else {
+            select.push([{ type: this.groupFunc, params: [] }])
+            model.select = select
+          }
+        }
         this.loadingList.push(true)
         jobs.push(this.fetchData(metric_query, 10, 0))
       }
@@ -186,6 +208,25 @@ export default {
           ...this.timeRangeParams,
         }
         if (!data.metric_query || !data.metric_query.length || !data.from) return
+        if (this.groupFunc) {
+          metric_query.forEach(query => {
+            const { model = {} } = query
+            const { select = [] } = model
+            if (select.length) {
+              select.forEach(s => {
+                const index = s.findIndex(item => ['mean', 'min', 'max', this.groupFunc].includes(item.type))
+                if (index !== -1) {
+                  s[index].type = this.groupFunc
+                } else {
+                  s.push({ type: this.groupFunc, params: [] })
+                }
+              })
+            } else {
+              select.push([{ type: this.groupFunc, params: [] }])
+              model.select = select
+            }
+          })
+        }
         data.signature = getSignature(data)
         const { data: resdata } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data, params: { $t: getRequestT() } })
         return resdata
