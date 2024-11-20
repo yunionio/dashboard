@@ -1,5 +1,6 @@
 <template>
   <base-select
+    isDefaultSelect
     :value="value"
     ref="baseSelectRef"
     resource="serverskus"
@@ -95,7 +96,7 @@ export default {
     },
     mapper (list) {
       // 套餐去重
-      const resList = []
+      let resList = []
       const skuSet = new Set()
       for (let i = 0, len = list.length; i < len; i++) {
         const item = list[i]
@@ -113,6 +114,20 @@ export default {
         }
         return diff
       })
+      // Azure 套餐和 centos镜像有匹配规则
+      if (this.formFd?.fd?.hypervisor === 'azure' && this.isSlaveNode) {
+        if (this.fe?.image?.feData?.imageType === 'CentOS') {
+          if (this.fe.image.feData.name.includes('gen2')) {
+            resList = resList.filter(item => {
+              return this.centos_Generation2_ignore_sku_filters.every(reg => !item.id.match(reg))
+            })
+          } else {
+            resList = resList.filter(item => {
+              return this.centos_Generation1_ignore_sku_filters.every(reg => !item.id.match(reg))
+            })
+          }
+        }
+      }
       return resList
     },
     getI18NValue (key, originVal) {
