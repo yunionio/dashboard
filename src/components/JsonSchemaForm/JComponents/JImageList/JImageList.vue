@@ -20,7 +20,7 @@
       </a-col>
       <a-col :span="12">
         <a-select v-model="image" @change="change" :loading="loading" :filterOption="filterOption" :showSearch="true" option-filter-prop="children" :placeholder="$t('compute.text_214')" allowClear>
-          <a-select-option v-for="item in imagesInfo.imageOpts" :key="item.id" :value="item.id">
+          <a-select-option v-for="(item, index) in imageOpts" :key="index" :value="item.id">
             <div :key="`${item.name} ${item.id}`">
               <a-row>
                 <a-col :span="24">
@@ -71,6 +71,7 @@ export default {
         osOpts: [],
         imageOpts: [],
       },
+      imageOpts: [],
     }
   },
   computed: {
@@ -188,6 +189,12 @@ export default {
     'fe.sku' (val) {
       this.fetchData()
     },
+    'formFd.fe.image.id' () {
+      if (!this.isShowComponent) {
+        this.image = this.formFd?.fe?.image?.id
+        this.change(this.image, true)
+      }
+    },
   },
   created () {
     this.imagesM = new this.$Manager('images', 'v1')
@@ -197,8 +204,8 @@ export default {
   methods: {
     change (...ret) {
       this.$emit('change', ...ret)
-      if (!this.isSlaveNode) {
-        const targets = this.imagesInfo.imageOpts.filter(item => {
+      if (this.isShowComponent) {
+        const targets = this.imageOpts.filter(item => {
           if (this.image && item.id === this.image) {
             return true
           }
@@ -213,6 +220,10 @@ export default {
     fetchData () {
       if (!this.formFd.fd.hypervisor) return
       if (!this.imageType) return
+      if (!this.isShowComponent) {
+        this.change(this.formFd?.fe?.image?.id, true)
+        return
+      }
       if (this.isPublicImage || this.isPrivateImage || this.isVMware) {
         this.fetchCacheimages()
       } else {
@@ -358,7 +369,7 @@ export default {
         }
       }
       const osOpts = []
-      const imageOpts = []
+      let imageOpts = []
       // let isOther = false
       for (let i = 0, len = images.length; i < len; i++) {
         const item = images[i]
@@ -404,12 +415,28 @@ export default {
           imageOpts.push(newItem)
         }
       }
+      // Azure 套餐和 centos镜像有匹配规则
+      if (this.formFd?.fd?.hypervisor === 'azure' && this.fe?.sku?.id && this.os === 'CentOS') {
+        imageOpts = imageOpts.filter(item => {
+          if (this.centos_Generation1_ignore_sku_filters.some(reg => this.fe?.sku?.id.match(reg))) {
+            return item.name.includes('gen2')
+          }
+          if (this.centos_Generation2_ignore_sku_filters.some(reg => this.fe?.sku?.id.match(reg))) {
+            return !item.name.includes('gen2')
+          }
+          return true
+        })
+      }
       this.os = osOpts.length ? osOpts[0].key : undefined
       this.image = imageOpts.length ? imageOpts[0].id : undefined
+      if (!this.isShowComponent) {
+        this.image = this.formFd?.fe?.image?.id || (imageOpts.length ? imageOpts[0].id : undefined)
+      }
       this.imagesInfo = {
         osOpts,
         imageOpts,
       }
+      this.imageOpts = R.clone(imageOpts)
       this.change(this.image, true)
 
       // this.fillImageOpts()
