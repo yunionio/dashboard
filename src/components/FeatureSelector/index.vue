@@ -5,24 +5,26 @@
         <div v-for="mod in moduleGroups" :key="mod.key">
           <div class="module">
             <span class="title">{{ mod.label }}</span>
-            <div v-for="g in mod.groups" :key="g.key" class="group">
-              <div class="title">{{ g.label }}</div>
-              <div class=" d-flex flex-wrap">
-                <div v-if="g.items && g.items.length > 1"
-                     v-on="groupEvents(g)"
-                     :class="{ checked: g.checked }"
-                     class="item d-flex p-2 mr-3 align-items-center">
-                  <span class="flex-fill">{{ $t('scope.text_114') }}</span>
-                </div>
-                <a-tooltip v-for="item in g.items" :key="item.key" :title="item.reason">
-                  <div class="item d-flex p-2 mr-3 align-items-center" v-on="item.disabled ? undefined: itemEvents(item)"
-                       :class="{ checked: item.checked, disabled: item.disabled }">
-                    <img :src="item.icon" :style="item.logoStyle ? item.logoStyle : 'width: 24px'" />
-                    <span class="flex-fill" v-if="!item.hiddenName">{{ item.label }}</span>
+            <templage v-for="g in mod.groups" :key="g.key">
+              <div :key="g.key" v-if="!g.licenseDisabled" class="group">
+                <div class="title">{{ g.label }}</div>
+                <div class=" d-flex flex-wrap">
+                  <div v-if="g.items && g.items.length > 1"
+                      v-on="groupEvents(g)"
+                      :class="{ checked: g.checked }"
+                      class="item d-flex p-2 mr-3 align-items-center">
+                    <span class="flex-fill">{{ $t('scope.text_114') }}</span>
                   </div>
-                </a-tooltip>
+                  <a-tooltip v-for="item in g.items" :key="item.key" :title="item.reason">
+                    <div v-if="!item.licenseDisabled" class="item d-flex p-2 mr-3 align-items-center" v-on="item.disabled ? undefined: itemEvents(item)"
+                        :class="{ checked: item.checked, disabled: item.disabled }">
+                      <img :src="item.icon" :style="item.logoStyle ? item.logoStyle : 'width: 24px'" />
+                      <span class="flex-fill" v-if="!item.hiddenName">{{ item.label }}</span>
+                    </div>
+                  </a-tooltip>
+                </div>
               </div>
-            </div>
+            </templage>
           </div>
         </div>
       </div>
@@ -93,6 +95,7 @@ export const LicenseFeatures = {
         }
         if (!isSAAS()) {
           item.disabled = !this.supportedFeatures.includes(item.key)
+          item.licenseDisabled = !this.supportedFeatures.includes(item.key)
         }
         return item
       })
@@ -111,6 +114,7 @@ export const LicenseFeatures = {
             if (item.checked) g.selected.push(item.value)
             Object.assign(item, this._itemDisabled(options, item))
           })
+          g.licenseDisabled = this._groupLicenseDisabled(g.items)
         })
       })
       this.$emit('update', [...this.selectedItems])
@@ -118,6 +122,9 @@ export const LicenseFeatures = {
     },
   },
   methods: {
+    _groupLicenseDisabled (currentItems) {
+      return currentItems.every(item => item.licenseDisabled)
+    },
     _selectedItems (currentItems) {
       let items = c.items.filter(option => {
         return currentItems.indexOf(option.value) >= 0
