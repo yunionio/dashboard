@@ -119,11 +119,11 @@ export default {
         if (this.fe?.image?.feData?.imageType === 'CentOS') {
           if (this.fe.image.feData.name.includes('gen2')) {
             resList = resList.filter(item => {
-              return this.centos_Generation2_ignore_sku_filters.every(reg => !item.id.match(reg))
+              return this.centos_Generation2_ignore_sku_filters.every(reg => !item.name.match(reg))
             })
           } else {
             resList = resList.filter(item => {
-              return this.centos_Generation1_ignore_sku_filters.every(reg => !item.id.match(reg))
+              return this.centos_Generation1_ignore_sku_filters.every(reg => !item.name.match(reg))
             })
           }
         }
