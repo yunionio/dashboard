@@ -418,10 +418,10 @@ export default {
       // Azure 套餐和 centos镜像有匹配规则
       if (this.formFd?.fd?.hypervisor === 'azure' && this.fe?.sku?.id && this.os === 'CentOS') {
         imageOpts = imageOpts.filter(item => {
-          if (this.centos_Generation1_ignore_sku_filters.some(reg => this.fe?.sku?.id.match(reg))) {
+          if (this.centos_Generation1_ignore_sku_filters.some(reg => this.fe?.sku?.name.match(reg))) {
             return item.name.includes('gen2')
           }
-          if (this.centos_Generation2_ignore_sku_filters.some(reg => this.fe?.sku?.id.match(reg))) {
+          if (this.centos_Generation2_ignore_sku_filters.some(reg => this.fe?.sku?.name.match(reg))) {
             return !item.name.includes('gen2')
           }
           return true
