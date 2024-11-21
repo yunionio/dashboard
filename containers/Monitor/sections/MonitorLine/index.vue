@@ -1,6 +1,9 @@
 <template>
   <a-card :title="title" size="small" class="explorer-monitor-line">
     <div slot="extra">
+      <a-button v-if="showTableExport && curPager.total" type="link" :title="$t('monitor.full_export')" @click="exportTable">
+        {{ $t('table.action.export') }}
+      </a-button>
       <slot name="extra" />
     </div>
     <loader v-if="loading" :loading="true" />
@@ -49,6 +52,7 @@
 <script>
 import * as R from 'ramda'
 import _ from 'lodash'
+import XLSX from 'xlsx'
 import { metric_zh, tableColumnMaps } from '@Monitor/constants'
 import { colors } from '@/sections/Charts/constants'
 import LineChart from '@/sections/Charts/Line'
@@ -56,6 +60,7 @@ import { ColorHash } from '@/utils/colorHash'
 import { transformUnit } from '@/utils/utils'
 import { BRAND_MAP } from '@/constants'
 import { currencyUnitMap } from '@/constants/currency'
+import { getChartTooltipPosition } from '@/utils/echart'
 
 const MAX_COLUMNS = 6
 
@@ -107,6 +112,10 @@ export default {
       type: Object,
     },
     threshold: {
+    },
+    showTableExport: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
@@ -163,21 +172,7 @@ export default {
       return true
     },
     tableData () {
-      return this.series.map((val, i) => {
-        const ret = { ...val.tags, raw_name: val.raw_name }
-        const showMetric = !!this.groupBy
-        if (showMetric) {
-          ret.__metric = val.name
-        }
-        const { series, color = [] } = this.chartInstanceOption
-        const colors = series.map(val => val.itemStyle.color)
-        const c = colors[i] || color[0]
-        ret.__color = c
-        if (this.reducedResult && this.reducedResult.result) {
-          ret.result = this.reducedResult.result[i]
-        }
-        return ret
-      })
+      return this.getTableData(this.series, this.reducedResult)
     },
     total () {
       const total = this.tableData.length || 0
@@ -215,6 +210,7 @@ export default {
                 }
                 return cellValue
               },
+              sortable: true,
             })
           }
         }, tableColumnMaps)
@@ -228,6 +224,7 @@ export default {
               field: groupByField,
               title,
               formatter: ({ row }) => row[groupByField] || '-',
+              sortable: true,
             })
           }
         })
@@ -243,6 +240,7 @@ export default {
             const val = transformUnit(cellValue, unit)
             return val.text
           },
+          sortable: true,
         })
       }
       // if (columns.some(item => item.field.startsWith('host')) && columns.some(item => item.field.startsWith('vm'))) {
@@ -262,6 +260,10 @@ export default {
               return ''
             },
           },
+          formatter: ({ row }) => {
+            return row.raw_name || ''
+          },
+          sortable: true,
         })
       }
       return columns.slice(0, MAX_COLUMNS)
@@ -342,6 +344,23 @@ export default {
     this.colorHash = null
   },
   methods: {
+    getTableData (series, reducedResult) {
+      return series.map((val, i) => {
+        const ret = { ...val.tags, raw_name: val.raw_name }
+        const showMetric = !!this.groupBy
+        if (showMetric) {
+          ret.__metric = val.name
+        }
+        const { series, color = [] } = this.chartInstanceOption
+        const colors = series.map(val => val.itemStyle.color)
+        const c = colors[i] || color[0]
+        ret.__color = c
+        if (reducedResult && reducedResult.result) {
+          ret.result = reducedResult.result[i]
+        }
+        return ret
+      })
+    },
     pageChange ({ type, currentPage, pageSize, $event }) {
       this.$emit('pageChange', { seriesIndex: this.curPager.seriesIndex, total: this.curPager.total, limit: pageSize, page: currentPage })
     },
@@ -471,6 +490,7 @@ export default {
             currencys.push(currency)
           }
         }
+        if (name.length > 50) name = `${name.slice(0, 50)}...`
         const seriesItem = {
           ...(lineChartOptions.series[i] || {}),
           itemStyle: {
@@ -518,7 +538,8 @@ export default {
       lineChartOptions.tooltip = {
         trigger: 'axis',
         position: (point, params, dom, rect, size) => {
-          const series = params.map((line, i) => {
+          const list = [...params].sort((a, b) => b.value[0] - a.value[0])
+          const series = list.map((line, i) => {
             let unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
             if (unit === 'NULL') {
               unit = ''
@@ -557,14 +578,23 @@ export default {
             // }
             return `<div style="color: ${color};" class="d-flex align-items-center"><span>${line.marker}</span> <span class="text-truncate" style="max-width: 500px;">${name || ' '}</span>:&nbsp;<span>${value}</span></div>`
           }).join('')
+          let title = list[0].name
+          if (!title) {
+            const time = list[0].value && list[0].value[1]
+            if (time) {
+              title = this.$moment(time).format('YYYY-MM-DD HH:mm:ss')
+            }
+          }
           const wrapper = `<div class="chart-tooltip-wrapper">
-                        <div style="color: #5D6F80;">${params[0].name}</div>
+                        <div style="color: #5D6F80;">${title}</div>
                         <div class="lines-wrapper">${series}</div>
                       </div>`
           dom.style.border = 'none'
           dom.style.backgroundColor = 'transparent'
           dom.style.padding = '0'
           dom.innerHTML = wrapper
+          const s = { contentSize: [size.contentSize[0], (list.length + 1) * 18], viewSize: size.viewSize }
+          return getChartTooltipPosition(point, dom, s, false)
         },
       }
       lineChartOptions.dataset = dataset
@@ -586,6 +616,36 @@ export default {
       } else {
         this.alertHandlerShow = false
       }
+    },
+    exportTable () {
+      const { total, limit } = this.curPager
+      if (total > limit) {
+        // 导出全量
+        this.$emit('exportTable', total)
+      } else {
+        this.exportData(this.tableData)
+      }
+    },
+    exportFullData (series, reducedResult) {
+      const tableData = this.getTableData(series, reducedResult)
+      this.exportData(tableData)
+    },
+    exportData (data) {
+      const columns = this.columns.filter(item => item.field !== 'color')
+      const list = [[...columns.map(item => item.title)]]
+      data.forEach(item => {
+        const row = []
+        columns.forEach(col => {
+          row.push(col.formatter ? col.formatter({ row: item, cellValue: item[col.field] }) : item[col.field])
+        })
+        list.push(row)
+      })
+      const filename = `${this.title || 'monitor table'}.xlsx`
+      const ws_name = 'Sheet1'
+      const wb = XLSX.utils.book_new()
+      const ws = XLSX.utils.aoa_to_sheet(list)
+      XLSX.utils.book_append_sheet(wb, ws, ws_name)
+      XLSX.writeFile(wb, filename)
     },
   },
 }

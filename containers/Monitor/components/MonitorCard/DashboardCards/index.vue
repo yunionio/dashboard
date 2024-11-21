@@ -50,6 +50,8 @@
            :timeGroup="timeGroup"
            :customTime="customTime"
            :groupFunc="groupFunc"
+           :tablePageSize="tablePageSize"
+           @pageChange="(pager) => pageChange(item, pager)"
            @chose_panel="chose_panel"
            @delete="handleDelete" />
         </a-list-item>
@@ -136,6 +138,7 @@ export default {
       timeGroup: '1m',
       customTime: null,
       groupFunc: 'mean',
+      tablePageSize: 10,
     }
   },
   computed: {
@@ -160,6 +163,12 @@ export default {
     this.fetchCharts()
   },
   methods: {
+    pageChange (panel, pager) {
+      this.saveMonitorConfig({ tablePageSize: pager.limit })
+    },
+    initTablePageSize (size) {
+      this.tablePageSize = size
+    },
     handleMenuClick () {
       this.$emit('adjustChartOrder', this.dashboard)
     },
