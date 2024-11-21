@@ -39,9 +39,9 @@ import * as R from 'ramda'
 import BaseMonitor from '@Compute/sections/monitor/BaseMonitor'
 import AgentMonitor from '@Compute/sections/monitor/AgentMonitor.vue'
 import InstallAgentFormVisible from '@Compute/views/vminstance/components/InstallAgentFormVisible'
-import { ONECLOUD_MONITOR, VMWARE_MONITOR, OTHER_MONITOR, AGENT_MONITOR, HOST_AGENT_MONITOR } from '../constants'
 import { HYPERVISORS_MAP } from '@/constants'
 import WindowsMixin from '@/mixins/windows'
+import { ONECLOUD_MONITOR, VMWARE_MONITOR, OTHER_MONITOR, AGENT_MONITOR, HOST_AGENT_MONITOR } from '../constants'
 
 export default {
   name: 'VminstanceMonitorSidepage',

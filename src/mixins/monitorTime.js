@@ -31,7 +31,7 @@ export default {
   methods: {
     initMonitorConfig () {
       const monitorConfig = storage.get(this.STORAGE_TIME_KEY, {})
-      const { time, timeGroup, customTime, groupFunc } = monitorConfig
+      const { time, timeGroup, customTime, groupFunc, tablePageSize } = monitorConfig
       if (time) {
         this.time = time
         if (time === 'custom' && customTime) {
@@ -44,8 +44,11 @@ export default {
       if (groupFunc) {
         this.groupFunc = groupFunc
       }
+      if (tablePageSize && this.initTablePageSize) {
+        this.initTablePageSize(tablePageSize)
+      }
     },
-    saveMonitorConfig () {
+    saveMonitorConfig (config = {}) {
       const monitorConfig = storage.get(this.STORAGE_TIME_KEY, {})
       storage.set(this.STORAGE_TIME_KEY, {
         ...monitorConfig,
@@ -53,6 +56,7 @@ export default {
         timeGroup: this.timeGroup,
         customTime: this.time === 'custom' ? this.customTime : {},
         groupFunc: this.groupFunc,
+        ...config,
       })
     },
   },
