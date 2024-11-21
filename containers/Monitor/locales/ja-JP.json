@@ -320,5 +320,6 @@
   "monitor.view_monitor": "監視の表示",
   "monitor.monitor_result_function": "結果集約関数",
   "monitor.monitor_percentile": "数値",
-  "monitor.adjust_chart_order": "グラフの順序の調整"
+  "monitor.adjust_chart_order": "グラフの順序の調整",
+  "monitor.full_export": "フルエクスポート"
 }

@@ -35,7 +35,10 @@ import CommonalertList from '@Monitor/views/commonalert/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import VmInstanceMonitorSidepage from './Monitor'
+import AlertrecortList from '@Monitor/views/alertrecord/components/List'
+// import VmInstanceMonitorSidepage from './Monitor'
+import VmInstanceMonitorSidepage from '@Compute/views/vminstance/sidepage/Monitor'
+import HostMonitorSidepage from '@Compute/views/host/sidepage/Monitor'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 
@@ -44,7 +47,9 @@ export default {
   components: {
     CommonalertList,
     VmInstanceMonitorSidepage,
+    HostMonitorSidepage,
     Actions,
+    AlertrecortList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -64,13 +69,18 @@ export default {
           return 'CommonalertListSidePage'
         case 'vm-instance-monitor-sidepage':
           return 'VmInstanceMonitorSidepage'
+        case 'host-monitor-sidepage':
+          return 'HostMonitorSidepage'
+        case 'AlertrecortList':
+          return 'AlertrecortListSidePage'
         default:
           return ''
       }
     },
     detailTabs () {
       const tabs = [
-        { label: this.$t('monitor.text_122'), key: 'vm-instance-monitor-sidepage' },
+        { label: this.$t('monitor.text_10'), key: 'AlertrecortList' },
+        { label: this.$t('monitor.text_122'), key: this.resType === 'guest' ? 'vm-instance-monitor-sidepage' : 'host-monitor-sidepage' },
         { label: this.$t('dictionary.commonalert'), key: 'CommonalertList' },
         { label: this.$t('dictionary.actions'), key: 'event-drawer' },
       ]
@@ -84,7 +94,11 @@ export default {
       return this.params.res_type
     },
     componentData () {
-      return Object.assign({}, this.detailData, { agent_status: this.agent_status, agent_fail_reason: this.agent_fail_reason, agent_fail_code: this.agent_fail_code })
+      const data = Object.assign({}, this.detailData, { agent_status: this.agent_status, agent_fail_reason: this.agent_fail_reason, agent_fail_code: this.agent_fail_code })
+      if (this.params.windowData.currentTab === 'vm-instance-monitor-sidepage' || this.params.windowData.currentTab === 'host-monitor-sidepage') {
+        data.id = data.res_id || data.id
+      }
+      return data
     },
   },
   created () {
@@ -128,9 +142,16 @@ export default {
       } else {
         params = this.getParams || {}
       }
+      if (this.params.windowData.currentTab === 'AlertrecortList') {
+        return {
+          monitor_resource_id: this.detailData.res_id,
+        }
+      }
+      if (this.params.windowData.currentTab === 'CommonalertList') {
+        params.monitor_resource_id = this.detailData.res_id
+      }
       return {
         ...params,
-        monitor_resource_id: this.detailData.res_id,
       }
     },
     handleOpenSidepage (row, tab) {
