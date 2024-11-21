@@ -245,6 +245,11 @@ export default {
     beforeShowMenu: {
       type: Function,
     },
+    // beforeShowMenu 执行报错时，是否继续
+    beforeShowMenuError: {
+      type: Boolean,
+      default: false,
+    },
     extTagParams: {
       type: Object,
       default () {
@@ -429,8 +434,12 @@ export default {
   },
   async created () {
     if (this.beforeShowMenu) {
-      await this.beforeShowMenu()
-      this.beforeShowMenuLoaded = true
+      try {
+        await this.beforeShowMenu()
+        this.beforeShowMenuLoaded = true
+      } catch (err) {
+        this.beforeShowMenuLoaded = this.beforeShowMenuError
+      }
     }
   },
   methods: {
