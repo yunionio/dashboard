@@ -69,7 +69,7 @@ export default {
     },
     getStorageList () {
       const options = []
-      const hyper = this.formFd.fd.hypervisor.toLowerCase()
+      const hyper = (this.formFd?.fd?.hypervisor || '').toLowerCase()
       let storageTypeList = Array.from(new Set(this.storageMap[hyper] || []))
       const hypervisorDisks = { ...STORAGE_TYPES[hyper] } || {}
       if (storageTypeList.find(val => val.includes('local'))) {
