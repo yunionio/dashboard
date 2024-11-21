@@ -86,13 +86,13 @@ export default {
       if (this.hostType === 'hypervisor' || this.hostType === 'container') {
         const list = KVM_MONITOR_OPTS
         if (this.isolatedDeviceTypes.some(type => ['NETINT_CA_QUADRA', 'NETINT_CA_ASIC'].includes(type))) {
-          list.push(...NIC_RSRC_MON_OPTS)
+          return [...list, ...NIC_RSRC_MON_OPTS]
         }
         if (this.isolatedDeviceTypes.some(type => ['CPH_AMD_GPU'].includes(type))) {
-          list.push(...RADEONTOP_OPTS)
+          return [...list, ...RADEONTOP_OPTS]
         }
         if (this.isolatedDeviceTypes.some(type => ['VASTAITECH_GPU'].includes(type))) {
-          list.push(...VASMI_OPTS)
+          return [...list, ...VASMI_OPTS]
         }
         return list
       }
@@ -110,27 +110,21 @@ export default {
   methods: {
     async fetchData () {
       this.loading = true
-      const resList = []
-      for (let idx = 0; idx < this.monitorConstants.length; idx++) {
-        const val = { ...this.monitorConstants[idx], groupFunc: this.groupFunc }
-        try {
-          const { data } = await new this.$Manager('unifiedmonitors', 'v1')
-            .performAction({
-              id: 'query',
-              action: '',
-              data: this.genQueryData(val),
-              params: { $t: getRequestT() },
-            })
-          resList.push({ title: val.label, constants: val, series: data.series })
-          if (idx === this.monitorConstants.length - 1) {
-            this.loading = false
-            this.getMonitorList(resList)
-          }
-        } catch (error) {
-          this.loading = false
-          throw error
-        }
-      }
+      const valList = []
+      const reqList = this.monitorConstants.map(item => {
+        const val = { ...item, groupFunc: this.groupFunc }
+        valList.push(val)
+        return new this.$Manager('unifiedmonitors', 'v1')
+          .performAction({
+            id: 'query',
+            action: '',
+            data: this.genQueryData(val),
+            params: { $t: getRequestT() },
+          })
+      })
+      const resList = (await Promise.all(reqList)).map((item, index) => ({ ...item.data, title: valList[index].label, constants: valList[index] }))
+      this.loading = false
+      this.getMonitorList(resList)
       this.saveMonitorConfig()
     },
     baywatch (props, watcher) {
@@ -206,7 +200,7 @@ export default {
         measurement: val.fromItem,
         select,
         group_by: [
-          { type: 'tag', params: ['host_id'] },
+          // { type: 'tag', params: ['host_id'] },
         ],
         tags: [
           {

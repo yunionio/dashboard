@@ -320,5 +320,6 @@
   "monitor.view_monitor": "查看监控",
   "monitor.monitor_result_function": "结果聚合函数",
   "monitor.monitor_percentile": "值",
-  "monitor.adjust_chart_order": "调整图表顺序"
+  "monitor.adjust_chart_order": "调整图表顺序",
+  "monitor.full_export": "全量导出"
 }
