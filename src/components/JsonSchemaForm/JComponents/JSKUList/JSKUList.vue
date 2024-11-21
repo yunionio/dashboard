@@ -117,7 +117,7 @@ export default {
       // Azure 套餐和 centos镜像有匹配规则
       if (this.formFd?.fd?.hypervisor === 'azure' && this.isSlaveNode) {
         if (this.fe?.image?.feData?.imageType === 'CentOS') {
-          if (this.fe.image.feData.name.includes('gen2')) {
+          if ((this.fe.image?.info?.id || '').includes('gen2')) {
             resList = resList.filter(item => {
               return this.centos_Generation2_ignore_sku_filters.every(reg => !item.name.match(reg))
             })
