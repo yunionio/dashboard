@@ -23,10 +23,9 @@
           <monitor-header
               class="mb-4"
               :time.sync="time"
-              :groupFunc.sync="groupFunc"
               :timeGroupValue.sync="timeGroupValue"
               :showTimegroup="false"
-              :showGroupFunc="true"
+              :showGroupFunc="false"
               :showTimeGroupInput="true"
               @refresh="fetchAllData">
             <template v-slot:radio-button-append>
@@ -35,6 +34,7 @@
           </monitor-header>
           <div v-for="(item, i) in seriesList" :key="i">
             <monitor-line
+              :ref="`monitorLine${i}`"
               class="mb-3"
               :pager="seriesListPager[i]"
               :loading="loadingList[i]"
@@ -42,8 +42,10 @@
               :metricInfo="metricList[i][0]"
               :series="item"
               :reducedResult="resultList[i]"
+              showTableExport
               @pageChange="pageChange"
-              @chartInstance="setChartInstance" />
+              @chartInstance="setChartInstance"
+              @exportTable="(total) => exportTable(i, total)" />
           </div>
           <a-card v-if="!seriesList.length && loadingList[0]"
                   class="explorer-monitor-line d-flex align-items-center justify-content-center">
@@ -103,7 +105,7 @@ export default {
       panelId: this.$route.params.id || '',
       panel: {},
       time: '1h',
-      groupFunc: 'mean',
+      // groupFunc: 'mean',
       timeGroupValue: 2,
       customTime: null,
       metricList: [],
@@ -115,6 +117,7 @@ export default {
       seriesDescription: [],
       extraParams: extraParams,
       get,
+      tablePageSize: 10,
     }
   },
   computed: {
@@ -147,9 +150,9 @@ export default {
     customTime () {
       this.smartFetchAllData()
     },
-    groupFunc (val) {
-      this.fetchAllData()
-    },
+    // groupFunc (val) {
+    //   this.fetchAllData()
+    // },
   },
   // created () {
   //   if (this.panelId) {
@@ -162,6 +165,9 @@ export default {
     }
   },
   methods: {
+    initTablePageSize (size) {
+      this.tablePageSize = size
+    },
     fetchPanel () {
       this.loading = true
       try {
@@ -237,31 +243,31 @@ export default {
       this.loadingList = []
       for (let i = 0; i < this.metricList.length; i++) {
         const metric_query = this.metricList[i]
-        metric_query.forEach((query, index) => {
-          const { model = {} } = query
-          const { select = [] } = model
-          if (select.length) {
-            select.forEach(s => {
-              const index = s.findIndex(item => ['mean', 'min', 'max', this.groupFunc].includes(item.type))
-              if (index !== -1) {
-                s[index].type = this.groupFunc
-              } else {
-                s.push({ type: this.groupFunc, params: [] })
-              }
-            })
-          } else {
-            select.push([{ type: this.groupFunc, params: [] }])
-            metric_query[index].model.select = select
-          }
-        })
+        // metric_query.forEach((query, index) => {
+        //   const { model = {} } = query
+        //   const { select = [] } = model
+        //   if (select.length) {
+        //     select.forEach(s => {
+        //       const index = s.findIndex(item => ['mean', 'min', 'max', this.groupFunc].includes(item.type))
+        //       if (index !== -1) {
+        //         s[index].type = this.groupFunc
+        //       } else {
+        //         s.push({ type: this.groupFunc, params: [] })
+        //       }
+        //     })
+        //   } else {
+        //     select.push([{ type: this.groupFunc, params: [] }])
+        //     metric_query[index].model.select = select
+        //   }
+        // })
         this.loadingList.push(true)
-        jobs.push(this.fetchData(metric_query, 10, 0))
+        jobs.push(this.fetchData(metric_query, this.tablePageSize, 0))
       }
       try {
         const res = await Promise.all(jobs)
         this.seriesList = res.map(val => get(val, 'series') || [])
         this.resultList = res.map(val => get(val, 'reduced_result') || [])
-        this.seriesListPager = res.map((val, index) => ({ seriesIndex: index, total: get(val, 'series_total') || 0, page: 1, limit: 10 }))
+        this.seriesListPager = res.map((val, index) => ({ seriesIndex: index, total: get(val, 'series_total') || 0, page: 1, limit: this.tablePageSize }))
         this.loadingList = this.loadingList.map(v => false)
         this.saveMonitorConfig()
       } catch (error) {
@@ -291,10 +297,11 @@ export default {
       }
       const metric_query = [val]
       this.$set(this.metricList, i, metric_query)
-      await this._refresh(i, 10, 0)
+      await this._refresh(i, this.tablePageSize, 0)
     },
     async pageChange (pager) {
       await this._refresh(pager.seriesIndex, pager.limit, (pager.page - 1) * pager.limit)
+      this.saveMonitorConfig({ tablePageSize: pager.limit })
     },
     async fetchData (metric_query, limit, offset) {
       try {
@@ -308,23 +315,23 @@ export default {
           ...this.extraParams,
         }
         if (!data.metric_query || !data.metric_query.length || !data.from) return
-        data.metric_query.forEach((query, index) => {
-          const { model = {} } = query
-          const { select = [] } = model
-          if (select.length) {
-            select.forEach(s => {
-              const index = s.findIndex(item => ['mean', 'min', 'max', this.groupFunc].includes(item.type))
-              if (index !== -1) {
-                s[index].type = this.groupFunc
-              } else {
-                s.push({ type: this.groupFunc, params: [] })
-              }
-            })
-          } else {
-            select.push([{ type: this.groupFunc, params: [] }])
-            data.metric_query[index].model.select = select
-          }
-        })
+        // data.metric_query.forEach((query, index) => {
+        //   const { model = {} } = query
+        //   const { select = [] } = model
+        //   if (select.length) {
+        //     select.forEach(s => {
+        //       const index = s.findIndex(item => ['mean', 'min', 'max', this.groupFunc].includes(item.type))
+        //       if (index !== -1) {
+        //         s[index].type = this.groupFunc
+        //       } else {
+        //         s.push({ type: this.groupFunc, params: [] })
+        //       }
+        //     })
+        //   } else {
+        //     select.push([{ type: this.groupFunc, params: [] }])
+        //     data.metric_query[index].model.select = select
+        //   }
+        // })
         data.signature = getSignature(data)
         const { data: resdata } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data, params: { $t: getRequestT() } })
         return resdata
@@ -362,6 +369,16 @@ export default {
         throw error
       } finally {
         this.loading = false
+      }
+    },
+    async exportTable (index, total) {
+      try {
+        const { series = [], reduced_result = [], series_total = 0 } = await this.fetchData(this.metricList[index], total, 0)
+        if (this.$refs[`monitorLine${index}`] && this.$refs[`monitorLine${index}`][0] && this.$refs[`monitorLine${index}`][0].exportFullData) {
+          this.$refs[`monitorLine${index}`][0].exportFullData(series, reduced_result, series_total)
+        }
+      } catch (error) {
+        throw error
       }
     },
   },

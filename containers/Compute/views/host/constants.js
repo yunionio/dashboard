@@ -137,6 +137,7 @@ export const KVM_MONITOR_OPTS = [
     // seleteItem: 'usage_active,usage_idle,usage_user,usage_system,usage_iowait',
     seleteItem: 'usage_active',
     fromItem: 'cpu',
+    groupBy: ['host_id'],
     as: i18n.t('compute.text_528'),
     unit: '%',
     transfer: 1,
@@ -178,6 +179,7 @@ export const KVM_MONITOR_OPTS = [
     seleteItem: 'used,free,total',
     as: i18n.t('compute.text_535'),
     fromItem: 'disk',
+    groupBy: ['path'],
     unit: 'B',
     transfer: 1024,
     // metric: metricItems['used,free,total'].key, // 报警指标

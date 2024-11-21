@@ -320,5 +320,6 @@
   "monitor.view_monitor": "View monitoring",
   "monitor.monitor_result_function": "Result aggregation function",
   "monitor.monitor_percentile": "Percentile",
-  "monitor.adjust_chart_order": "Adjust chart order"
+  "monitor.adjust_chart_order": "Adjust chart order",
+  "monitor.full_export": "Full export"
 }

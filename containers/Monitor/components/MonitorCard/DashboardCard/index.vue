@@ -12,6 +12,7 @@
               <a-menu slot="overlay" @click="handleActionClick">
                 <a-menu-item key="handleEdit"><a-icon type="edit" />{{$t('dashboard.text_104')}}</a-menu-item>
                 <a-menu-item key="handleClone"><a-icon type="copy" />{{$t('dashboard.text_107')}}</a-menu-item>
+                <a-menu-item key="handleExport"><a-icon type="download" />{{$t('table.action.export')}}</a-menu-item>
                 <a-menu-item key="handleDelete"><a-icon type="delete" />{{$t('scope.text_18')}}</a-menu-item>
               </a-menu>
             </a-dropdown>
@@ -23,6 +24,7 @@
       </div>
     </template>
     <monitor-line
+      ref="monitorLine"
      :loading="loading"
      :description="description"
      :metricInfo="metricInfo"
@@ -31,7 +33,8 @@
      :reducedResult="reducedResult"
      :pager="pager"
      @pageChange="pageChange"
-     @chartInstance="setChartInstance" />
+     @chartInstance="setChartInstance"
+     @exportTable="exportTable" />
   </overview-card-layout>
 </template>
 
@@ -114,6 +117,10 @@ export default {
     groupFunc: {
       type: String,
     },
+    tablePageSize: {
+      type: Number,
+      default: 10,
+    },
   },
   data () {
     return {
@@ -122,7 +129,7 @@ export default {
       resizeStatus: false,
       pager: {
         page: 1,
-        limit: 10,
+        limit: this.tablePageSize,
         total: 0,
       },
       series: [],
@@ -352,6 +359,7 @@ export default {
   methods: {
     pageChange (pager) {
       this.pager = { ...this.pager, ...pager }
+      this.$emit('pageChange', this.pager)
       this.fetchChart()
     },
     resize () {
@@ -382,6 +390,9 @@ export default {
     },
     handleEdit () {
       this.editChart({ id: this.panel.panel_id })
+    },
+    handleExport () {
+      this.$refs.monitorLine.exportTable()
     },
     toLineChartData (series) {
       const data = { columns: ['time'], rows: [] }
@@ -438,6 +449,16 @@ export default {
         data.signature = getSignature(this.chartQueryData)
         const { data: { series = [], series_total, reduced_result = {} } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data, params: { $t: getRequestT() } })
         return { series, series_total, reduced_result }
+      } catch (error) {
+        throw error
+      }
+    },
+    async exportTable (total) {
+      try {
+        const data = { ..._.cloneDeep(this.chartQueryData), slimit: total, soffset: 0 }
+        data.signature = getSignature(this.chartQueryData)
+        const { data: { series = [], series_total, reduced_result = {} } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data, params: { $t: getRequestT() } })
+        this.$refs.monitorLine.exportFullData(series, reduced_result, series_total)
       } catch (error) {
         throw error
       }
