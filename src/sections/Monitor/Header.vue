@@ -17,7 +17,7 @@
     <a-radio-group class="mr-3" @change="timeChange" :value="time">
       <a-radio-button v-for="item in timeOpts" v-show="!item.hidden" :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
       <slot name="radio-button-append">
-        <custom-date @update:time="(val) => timeChange({target: {value: val}})" :customTime="customTime" @update:customTime="customTimeChange" :showCustomTimeText="isCustom" />
+        <custom-date @update:time="(val) => timeChange({target: {value: val}})" :customTimeUseTimeStamp="customTimeUseTimeStamp" :customTime="customTime" @update:customTime="customTimeChange" :showCustomTimeText="isCustom" />
       </slot>
     </a-radio-group>
     <template v-if="showTimeGroupInput">
@@ -57,9 +57,9 @@
 </template>
 
 <script>
-import CustomDate from '@/sections/CustomDate'
 import RefreshButton from '@/components/PageList/RefreshButton'
 import i18n from '@/locales'
+import CustomDate from './CustomDate'
 
 export default {
   name: 'MonitorHeader',
@@ -181,6 +181,11 @@ export default {
         ]
       },
     },
+    // 该参数临时添加，待使用该组件的环境都改为使用时间戳之后，应该删除
+    customTimeUseTimeStamp: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     let timer
@@ -199,9 +204,10 @@ export default {
         { key: '6h', label: this.$t('common_num_hours', [6]) },
         { key: '12h', label: this.$t('common_num_hours', [12]) },
       ],
+      // 时间间隔内，如何聚合数据，暂只支持 MEAN
       groupFuncOpts: [
-        { key: 'min', label: this.$t('common.min') },
-        { key: 'max', label: this.$t('common.max') },
+        // { key: 'min', label: this.$t('common.min') },
+        // { key: 'max', label: this.$t('common.max') },
         { key: 'mean', label: this.$t('common.mean') },
       ],
       lastSync: '',

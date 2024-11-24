@@ -9,12 +9,11 @@
         :time.sync="time"
         :timeGroup.sync="timeGroup"
         :showTimegroup="true"
-        :showGroupFunc="false"
-        @refresh="fetchAllData">
-        <template v-slot:radio-button-append>
-          <custom-date :time.sync="time" :customTime.sync="customTime" :showCustomTimeText="time==='custom'" />
-        </template>
-      </monitor-header>
+        :showGroupFunc="true"
+        :customTime.sync="customTime"
+        :showCustomTimeText="time==='custom'"
+        customTimeUseTimeStamp
+        @refresh="fetchAllData" />
       <div v-for="(item, i) in seriesList" :key="i">
         <monitor-line
           :ref="`monitorLine${i}`"
@@ -27,9 +26,11 @@
           :reducedResult="resultList[i]"
           :timeFormatStr="timeFormatStr"
           :pager="seriesListPager[i]"
+          :reducedResultOrder="resultOrderList[i]"
           showTableExport
           @pageChange="pageChange"
-          @exportTable="(total) => exportTable(i, total)">
+          @exportTable="(total) => exportTable(i, total)"
+          @reducedResultOrderChange="(order) => reducedResultOrderChange(i, order)">
           <template #extra>
             <a-button class="mr-3" type="link" @click="handleSave(metricList[i], seriesDescription[i])">{{ $t('common.save') }}</a-button>
           </template>
@@ -49,7 +50,6 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import MonitorForms from '@Monitor/sections/ExplorerForm'
 import MonitorLine from '@Monitor/sections/MonitorLine'
-import CustomDate from '@/sections/CustomDate'
 import MonitorHeader from '@/sections/Monitor/Header'
 import { getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
@@ -62,7 +62,6 @@ export default {
     MonitorForms,
     MonitorLine,
     MonitorHeader,
-    CustomDate,
   },
   mixins: [DialogMixin, WindowsMixin, MonitorTimeMixin],
   data () {
@@ -75,6 +74,7 @@ export default {
       metricList: [],
       seriesList: [],
       resultList: [],
+      resultOrderList: [],
       seriesListPager: [],
       chartInstanceList: [], // e-chart 实例
       loadingList: [],
@@ -126,6 +126,7 @@ export default {
       this.chartInstanceList.splice(i, 1)
       this.seriesList.splice(i, 1)
       this.resultList.splice(i, 1)
+      this.resultOrderList.splice(i, 1)
       this.loadingList.splice(i, 1)
     },
     setChartInstance (val, i) {
@@ -136,6 +137,7 @@ export default {
       if (this.seriesList && this.seriesList.length && this.seriesList[i]) {
         this.$set(this.seriesList, i, [])
         this.$set(this.resultList, i, [])
+        this.$set(this.resultOrderList, i, '')
         this.$set(this.metricList, i, [])
         this.$set(this.seriesDescription[i], 'title', '')
       }
@@ -161,6 +163,7 @@ export default {
         const res = await Promise.all(jobs)
         this.seriesList = res.map(val => get(val, 'series') || [])
         this.resultList = res.map(val => get(val, 'reduced_result') || [])
+        this.resultOrderList = res.map(() => '')
         this.seriesListPager = res.map((val, index) => ({ seriesIndex: index, total: get(val, 'series_total') || 0, page: 1, limit: this.tablePageSize }))
         this.loadingList = this.loadingList.map(v => false)
         this.saveMonitorConfig()
@@ -169,17 +172,23 @@ export default {
         throw error
       }
     },
-    async _refresh (i, limit, offset) {
+    async _refresh (i, limit, offset, ignoreOrder) {
       try {
         this.$set(this.loadingList, i, true)
         const { series = [], reduced_result = [], series_total = 0 } = await this.fetchData(this.metricList[i], limit, offset)
         this.$set(this.seriesList, i, series)
         this.$set(this.resultList, i, reduced_result)
+        if (!ignoreOrder) {
+          this.$set(this.resultOrderList, i, '')
+        }
         this.$set(this.seriesListPager, i, { seriesIndex: i, total: series_total, page: 1 + offset / limit, limit: limit })
         this.loadingList[i] = false
       } catch (error) {
         this.$set(this.seriesList, i, [])
         this.$set(this.resultList, i, [])
+        if (!ignoreOrder) {
+          this.$set(this.resultOrderList, i, '')
+        }
         this.$set(this.loadingList, i, false)
         throw error
       }
@@ -192,6 +201,11 @@ export default {
       const metric_query = [val]
       this.$set(this.metricList, i, metric_query)
       await this._refresh(i, this.tablePageSize, 0)
+    },
+    reducedResultOrderChange (i, order) {
+      this.resultOrderList[i] = order
+      this.metricList[i][0].result_reducer_order = order
+      this._refresh(i, this.seriesListPager[i].limit, 0, true)
     },
     async pageChange (pager) {
       await this._refresh(pager.seriesIndex, pager.limit, (pager.page - 1) * pager.limit)

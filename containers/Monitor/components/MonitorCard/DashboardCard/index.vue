@@ -31,10 +31,12 @@
      class="mb-3"
      :series="series"
      :reducedResult="reducedResult"
+     :reducedResultOrder="reducedResultOrder"
      :pager="pager"
      @pageChange="pageChange"
      @chartInstance="setChartInstance"
-     @exportTable="exportTable" />
+     @exportTable="exportTable"
+     @reducedResultOrderChange="reducedResultOrderChange" />
   </overview-card-layout>
 </template>
 
@@ -134,6 +136,7 @@ export default {
       },
       series: [],
       reducedResult: {},
+      reducedResultOrder: '',
     }
   },
   computed: {
@@ -210,6 +213,9 @@ export default {
       if (query.result_reducer) {
         metric_query[0].result_reducer = query.result_reducer
       }
+      if (this.reducedResultOrder) {
+        metric_query[0].result_reducer_order = this.reducedResultOrder
+      }
       const params = {
         from: query.from,
         to: query.to,
@@ -230,22 +236,23 @@ export default {
         params.from = this.time
         delete params.to
       }
-      if (this.groupFunc) {
-        const { select = [] } = model
-        if (select.length) {
-          select.forEach(s => {
-            const index = s.findIndex(item => ['mean', 'min', 'max', this.groupFunc].includes(item.type))
-            if (index !== -1) {
-              s[index].type = this.groupFunc
-            } else {
-              s.push({ type: this.groupFunc, params: [] })
-            }
-          })
-        } else {
-          select.push([{ type: this.groupFunc, params: [] }])
-          model.select = select
-        }
-      }
+      // groupFunc 为该时间间隔内如何聚合数据，与原图表group_by不一样
+      // if (this.groupFunc) {
+      //   const { select = [] } = model
+      //   if (select.length) {
+      //     select.forEach(s => {
+      //       const index = s.findIndex(item => ['mean', 'min', 'max', this.groupFunc].includes(item.type))
+      //       if (index !== -1) {
+      //         s[index].type = this.groupFunc
+      //       } else {
+      //         s.push({ type: this.groupFunc, params: [] })
+      //       }
+      //     })
+      //   } else {
+      //     select.push([{ type: this.groupFunc, params: [] }])
+      //     model.select = select
+      //   }
+      // }
       return params
     },
     metricInfo () {
@@ -352,6 +359,9 @@ export default {
     groupFunc () {
       this.fetchChart()
     },
+    reducedResultOrder () {
+      this.fetchChart()
+    },
   },
   created () {
     this.fetchChart()
@@ -361,6 +371,9 @@ export default {
       this.pager = { ...this.pager, ...pager }
       this.$emit('pageChange', this.pager)
       this.fetchChart()
+    },
+    reducedResultOrderChange (order) {
+      this.reducedResultOrder = order
     },
     resize () {
       this.resizeStatus = false

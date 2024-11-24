@@ -689,7 +689,8 @@ export const compactObj = (obj, fn = R.isEmpty) => {
  * @param {Number} base
  * @return {Object} e.g: { text: '123 MB', value: '123', unit: 'MB'  }
  */
-export const transformUnit = (value, unit = '', base = 1000, numerifyFormat = '0.00') => {
+export const transformUnit = (value, originUnit = '', base = 1000, numerifyFormat = '0.00') => {
+  const unit = originUnit === 'NULL' ? '' : originUnit
   const number = Number(value)
   const valueStr = parseFloat(numerify(number, numerifyFormat))
   if (!R.is(Number, number) || Number.isNaN(number)) {
