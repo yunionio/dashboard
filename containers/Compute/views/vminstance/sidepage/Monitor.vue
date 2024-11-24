@@ -2,16 +2,16 @@
   <div>
     <a-tabs @change="handleTabChange">
       <a-tab-pane key="basic" :tab="$t('compute.monitor.basic')">
-        <base-monitor :data="data" :constants="monitorConstants" monitorType="basic" :currentMonitorType="currentMonitorType" />
+        <base-monitor :data="server" :constants="monitorConstants" monitorType="basic" :currentMonitorType="currentMonitorType" />
       </a-tab-pane>
       <a-tab-pane key="agent" :tab="$t('compute.monitor.agent')">
         <div>
           <install-agent-form-visible
-            :data="data"
+            :data="server"
             :serverColumns="serverColumns"
             :isPageDestroyed="isPageDestroyed" />
           <agent-monitor
-            :data="data"
+            :data="server"
             :currentMonitorType="currentMonitorType"
             monitorType="agent"
             key="monitor-agent" />
@@ -47,6 +47,10 @@ export default {
       required: true,
     },
     isPageDestroyed: Boolean,
+    needFetchResource: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -55,11 +59,12 @@ export default {
       time: '1h',
       timeGroup: '1m',
       monitorList: [],
+      server: this.data,
     }
   },
   computed: {
     hypervisor () {
-      return this.data.hypervisor
+      return this.server.hypervisor
     },
     monitorConstants () {
       if (this.hypervisor === HYPERVISORS_MAP.esxi.key) {
@@ -69,11 +74,11 @@ export default {
       } else {
         // aliyun apsara 虚拟机磁盘使用率增加groupBy: device
         const otherMonitor = OTHER_MONITOR.map(item => {
-          if (['Aliyun', 'Apsara'].includes(this.data.brand) && item.fromItem === 'vm_disk') {
+          if (['Aliyun', 'Apsara'].includes(this.server.brand) && item.fromItem === 'vm_disk') {
             item.groupBy = ['device']
           }
           // azure windows 虚拟机磁盘使用率增加groupBy: device
-          if (['Azure'].includes(this.data.brand) && item.fromItem === 'vm_disk' && this.data.os_type === 'Windows') {
+          if (['Azure'].includes(this.server.brand) && item.fromItem === 'vm_disk' && this.server.os_type === 'Windows') {
             item.groupBy = ['device']
           }
           return item
@@ -82,10 +87,28 @@ export default {
       }
     },
     serverId () {
-      return this.data.id
+      return this.server.id
     },
   },
+  watch: {
+    'data.id' () {
+      this.fetchResource()
+    },
+  },
+  created () {
+    this.fetchResource()
+  },
   methods: {
+    async fetchResource () {
+      if (this.needFetchResource) {
+        try {
+          const { data } = await new this.$Manager('servers', 'v1').get({ id: this.data.id, params: { details: true } })
+          this.server = data
+        } catch (err) {
+          throw err
+        }
+      }
+    },
     handleTabChange (tab) {
       this.currentMonitorType = tab
     },
