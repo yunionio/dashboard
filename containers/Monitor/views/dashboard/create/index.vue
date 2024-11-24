@@ -25,13 +25,12 @@
               :time.sync="time"
               :timeGroupValue.sync="timeGroupValue"
               :showTimegroup="false"
-              :showGroupFunc="false"
+              :showGroupFunc="true"
               :showTimeGroupInput="true"
-              @refresh="fetchAllData">
-            <template v-slot:radio-button-append>
-              <custom-date :time.sync="time" :customTime.sync="customTime" :showCustomTimeText="time==='custom'" />
-            </template>
-          </monitor-header>
+              :customTime.sync="customTime"
+              :showCustomTimeText="time==='custom'"
+              customTimeUseTimeStamp
+              @refresh="fetchAllData" />
           <div v-for="(item, i) in seriesList" :key="i">
             <monitor-line
               :ref="`monitorLine${i}`"
@@ -42,9 +41,11 @@
               :metricInfo="metricList[i][0]"
               :series="item"
               :reducedResult="resultList[i]"
+              :reducedResultOrder="resultOrderList[i]"
               showTableExport
               @pageChange="pageChange"
               @chartInstance="setChartInstance"
+              @reducedResultOrderChange="(order) => reducedResultOrderChange(i, order)"
               @exportTable="(total) => exportTable(i, total)" />
           </div>
           <a-card v-if="!seriesList.length && loadingList[0]"
@@ -74,7 +75,6 @@ import echarts from 'echarts'
 import MonitorForms from '@Monitor/sections/ExplorerForm'
 import MonitorLine from '@Monitor/sections/MonitorLine'
 import { MONITOR_MAX_POINTERS } from '@Monitor/constants'
-import CustomDate from '@/sections/CustomDate'
 import MonitorHeader from '@/sections/Monitor/Header'
 import { getRequestT, uuid } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
@@ -86,7 +86,6 @@ export default {
     MonitorForms,
     MonitorLine,
     MonitorHeader,
-    CustomDate,
   },
   mixins: [MonitorTimeMixin],
   data () {
@@ -111,6 +110,7 @@ export default {
       metricList: [],
       seriesList: [],
       resultList: [],
+      resultOrderList: [],
       seriesListPager: [],
       chartInstanceList: [], // e-chart 实例
       loadingList: [],
@@ -202,7 +202,7 @@ export default {
       let diffHour = 1
       const noNumberReg = /\D+/g
       if (this.time === 'custom') {
-        diffHour = this.customTime.from.replace(noNumberReg, '') - this.customTime.to.replace(noNumberReg, '')
+        diffHour = this.$moment(this.customTime.from).diff(this.$moment(this.customTime.to), 'hours')
       } else {
         diffHour = this.time.replace(noNumberReg, '')
       }
@@ -215,6 +215,7 @@ export default {
       this.chartInstanceList.splice(i, 1)
       this.seriesList.splice(i, 1)
       this.resultList.splice(i, 1)
+      this.resultOrderList.splice(i, 1)
       this.loadingList.splice(i, 1)
     },
     setChartInstance (val, i) {
@@ -225,6 +226,7 @@ export default {
       if (this.seriesList && this.seriesList.length && this.seriesList[i]) {
         this.$set(this.seriesList, i, [])
         this.$set(this.resultList, i, [])
+        this.$set(this.resultOrderList, i, [])
         this.$set(this.metricList, i, [])
         this.$set(this.seriesDescription[i], 'title', '')
       }
@@ -243,6 +245,7 @@ export default {
       this.loadingList = []
       for (let i = 0; i < this.metricList.length; i++) {
         const metric_query = this.metricList[i]
+        // groupFunc 为该时间间隔内如何聚合数据，与原图表group_by不一样
         // metric_query.forEach((query, index) => {
         //   const { model = {} } = query
         //   const { select = [] } = model
@@ -267,6 +270,7 @@ export default {
         const res = await Promise.all(jobs)
         this.seriesList = res.map(val => get(val, 'series') || [])
         this.resultList = res.map(val => get(val, 'reduced_result') || [])
+        this.resultOrderList = res.map(val => '')
         this.seriesListPager = res.map((val, index) => ({ seriesIndex: index, total: get(val, 'series_total') || 0, page: 1, limit: this.tablePageSize }))
         this.loadingList = this.loadingList.map(v => false)
         this.saveMonitorConfig()
@@ -275,17 +279,28 @@ export default {
         throw error
       }
     },
-    async _refresh (i, limit, offset) {
+    reducedResultOrderChange (i, order) {
+      this.resultOrderList[i] = order
+      this.metricList[i][0].result_reducer_order = order
+      this._refresh(i, this.seriesListPager[i].limit, 0, true)
+    },
+    async _refresh (i, limit, offset, ignoreOrder) {
       try {
         this.$set(this.loadingList, i, true)
         const { series = [], reduced_result = [], series_total = 0 } = await this.fetchData(this.metricList[i], limit, offset)
         this.$set(this.seriesList, i, series)
         this.$set(this.resultList, i, reduced_result)
+        if (!ignoreOrder) {
+          this.$set(this.resultOrderList, i, '')
+        }
         this.$set(this.seriesListPager, i, { seriesIndex: i, total: series_total, page: 1 + offset / limit, limit: limit })
         this.loadingList[i] = false
       } catch (error) {
         this.$set(this.seriesList, i, [])
         this.$set(this.resultList, i, [])
+        if (!ignoreOrder) {
+          this.$set(this.resultOrderList, i, '')
+        }
         this.$set(this.loadingList, i, false)
         throw error
       }
@@ -315,6 +330,7 @@ export default {
           ...this.extraParams,
         }
         if (!data.metric_query || !data.metric_query.length || !data.from) return
+        // groupFunc 为该时间间隔内如何聚合数据，与原图表group_by不一样
         // data.metric_query.forEach((query, index) => {
         //   const { model = {} } = query
         //   const { select = [] } = model
