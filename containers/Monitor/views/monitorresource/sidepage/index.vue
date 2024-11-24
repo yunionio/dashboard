@@ -16,6 +16,7 @@
         button-size="small" />
     </template>
     <component
+      needFetchResource
       :is="params.windowData.currentTab"
       :listId="listId"
       :id="listId"
@@ -63,8 +64,6 @@ export default {
   computed: {
     listId () {
       switch (this.params.windowData.currentTab) {
-        case 'event-drawer':
-          return 'EventListForHostSidePage'
         case 'CommonalertList':
           return 'CommonalertListSidePage'
         case 'vm-instance-monitor-sidepage':
@@ -82,7 +81,6 @@ export default {
         { label: this.$t('monitor.text_10'), key: 'AlertrecortList' },
         { label: this.$t('monitor.text_122'), key: this.resType === 'guest' ? 'vm-instance-monitor-sidepage' : 'host-monitor-sidepage' },
         { label: this.$t('dictionary.commonalert'), key: 'CommonalertList' },
-        { label: this.$t('dictionary.actions'), key: 'event-drawer' },
       ]
       return tabs
     },
@@ -144,7 +142,7 @@ export default {
       }
       if (this.params.windowData.currentTab === 'AlertrecortList') {
         return {
-          monitor_resource_id: this.detailData.res_id,
+          res_id: this.detailData.res_id,
         }
       }
       if (this.params.windowData.currentTab === 'CommonalertList') {

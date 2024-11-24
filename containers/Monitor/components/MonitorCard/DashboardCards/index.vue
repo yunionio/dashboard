@@ -7,12 +7,11 @@
         :showTimegroup="true"
         :showGroupFunc="true"
         :groupFunc.sync="groupFunc"
+        :customTime.sync="customTime"
+        :showCustomTimeText="time==='custom'"
         showAutoRefresh
-        @refresh="handleRefresh">
-        <template v-slot:radio-button-append>
-          <custom-date :time.sync="time" :customTime.sync="customTime" :showCustomTimeText="time==='custom'" />
-        </template>
-      </monitor-header>
+        customTimeUseTimeStamp
+        @refresh="handleRefresh" />
       <a-dropdown-button
         v-if="!readOnly && panels.length > 1"
         :title="$t('monitor.dashboard.dialog.project.create')"
@@ -63,7 +62,6 @@
 <script>
 import { uuid } from '@/utils/utils'
 import MonitorHeader from '@/sections/Monitor/Header'
-import CustomDate from '@/sections/CustomDate'
 import MonitorTimeMixin from '@/mixins/monitorTime'
 import DashboardCard from '../DashboardCard'
 
@@ -72,7 +70,6 @@ export default {
   components: {
     DashboardCard,
     MonitorHeader,
-    CustomDate,
   },
   mixins: [MonitorTimeMixin],
   props: {
@@ -158,6 +155,15 @@ export default {
         this.fetchCharts()
       },
     },
+    time () {
+      this.saveMonitorConfig()
+    },
+    timeGroup () {
+      this.saveMonitorConfig()
+    },
+    groupFunc () {
+      this.saveMonitorConfig()
+    },
   },
   mounted () {
     this.fetchCharts()
@@ -200,6 +206,7 @@ export default {
     },
     async fetchCharts () {
       this.loading = true
+      this.saveMonitorConfig()
       try {
         const params = {
           scope: this.scope,
@@ -223,7 +230,6 @@ export default {
       } catch (error) {
         throw error
       } finally {
-        this.saveMonitorConfig()
         this.loading = false
       }
     },
