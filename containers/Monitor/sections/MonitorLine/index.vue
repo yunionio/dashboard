@@ -26,10 +26,13 @@
         ref="tableRef"
         highlight-hover-row
         highlight-current-row
-        @cell-click="cellClick"
         :columns="columns"
         :data="tableData"
-        :row-style="getRowStyle" />
+        :row-style="getRowStyle"
+        resizable
+        :sort-config="sortConfig"
+        @cell-click="cellClick"
+        @sort-change="sortChange" />
       <div class="vxe-grid--pager-wrapper">
         <div class="vxe-pager size--mini">
           <div class="vxe-pager--wrapper">
@@ -62,7 +65,7 @@ import { BRAND_MAP } from '@/constants'
 import { currencyUnitMap } from '@/constants/currency'
 import { getChartTooltipPosition } from '@/utils/echart'
 
-const MAX_COLUMNS = 6
+const MAX_COLUMNS = 10
 
 export default {
   name: 'ExplorerMonitorLine',
@@ -81,6 +84,10 @@ export default {
     reducedResult: {
       type: Object,
       default: () => ({}),
+    },
+    reducedResultOrder: {
+      type: String,
+      default: '',
     },
     pager: {
       type: Object,
@@ -210,7 +217,6 @@ export default {
                 }
                 return cellValue
               },
-              sortable: true,
             })
           }
         }, tableColumnMaps)
@@ -224,7 +230,6 @@ export default {
               field: groupByField,
               title,
               formatter: ({ row }) => row[groupByField] || '-',
-              sortable: true,
             })
           }
         })
@@ -263,7 +268,6 @@ export default {
           formatter: ({ row }) => {
             return row.raw_name || ''
           },
-          sortable: true,
         })
       }
       return columns.slice(0, MAX_COLUMNS)
@@ -299,6 +303,17 @@ export default {
         }
       }
       return title
+    },
+    sortConfig () {
+      if (this.reducedResultOrder && this.columns.some(item => item.field === 'result')) {
+        return {
+          defaultSort: {
+            field: 'result',
+            order: this.reducedResultOrder,
+          },
+        }
+      }
+      return {}
     },
   },
   watch: {
@@ -363,6 +378,9 @@ export default {
     },
     pageChange ({ type, currentPage, pageSize, $event }) {
       this.$emit('pageChange', { seriesIndex: this.curPager.seriesIndex, total: this.curPager.total, limit: pageSize, page: currentPage })
+    },
+    sortChange ({ order }) {
+      this.$emit('reducedResultOrderChange', order)
     },
     cellClick ({ row, rowIndex }) {
       this.tableSetHighlight({ row, rowIndex })
