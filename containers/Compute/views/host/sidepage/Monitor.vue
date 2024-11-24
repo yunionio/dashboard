@@ -30,6 +30,10 @@ export default {
       type: Object,
       required: true,
     },
+    needFetchResource: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -73,41 +77,56 @@ export default {
       customTime: null,
       groupFunc: 'mean',
       monitorList: [],
+      host: this.data,
     }
   },
   computed: {
     hostType () {
-      return this.data.host_type
+      return this.host.host_type
     },
     isolatedDeviceTypes () {
-      return Object.keys(this.data.isolated_device_type_count || {})
+      return Object.keys(this.host.isolated_device_type_count || {})
     },
     monitorConstants () {
       if (this.hostType === 'hypervisor' || this.hostType === 'container') {
-        const list = KVM_MONITOR_OPTS
+        let list = [...KVM_MONITOR_OPTS]
         if (this.isolatedDeviceTypes.some(type => ['NETINT_CA_QUADRA', 'NETINT_CA_ASIC'].includes(type))) {
-          return [...list, ...NIC_RSRC_MON_OPTS]
+          list = [...list, ...NIC_RSRC_MON_OPTS]
         }
         if (this.isolatedDeviceTypes.some(type => ['CPH_AMD_GPU'].includes(type))) {
-          return [...list, ...RADEONTOP_OPTS]
+          list = [...list, ...RADEONTOP_OPTS]
         }
         if (this.isolatedDeviceTypes.some(type => ['VASTAITECH_GPU'].includes(type))) {
-          return [...list, ...VASMI_OPTS]
+          list = [...list, ...VASMI_OPTS]
         }
         return list
       }
       return VMWARE_MONITOR_OPTS
     },
     hostId () {
-      return this.data.id
+      return this.host.id
     },
   },
-  created () {
-    this.fetchData()
+  async created () {
+    this.fetchResource()
     this.fetchDataDebounce = _.debounce(this.fetchData, 500)
-    this.baywatch(['time', 'timeGroup', 'data.id', 'customTime', 'groupFunc'], this.fetchDataDebounce)
+    this.baywatch(['time', 'timeGroup', 'customTime', 'groupFunc'], this.fetchDataDebounce)
+    this.baywatch(['data.id'], this.fetchResource)
   },
   methods: {
+    async fetchResource () {
+      if (this.needFetchResource) {
+        try {
+          const { data } = await new this.$Manager('hosts', 'v1').get({ id: this.data.id, params: { details: true } })
+          this.host = data
+          this.fetchData()
+        } catch (err) {
+          this.fetchData()
+        }
+      } else {
+        this.fetchData()
+      }
+    },
     async fetchData () {
       this.loading = true
       const valList = []

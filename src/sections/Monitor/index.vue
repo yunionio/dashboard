@@ -93,6 +93,7 @@ export default {
     return {
       timeFormatStr,
       listData: [],
+      currentTime: this.$moment().format('YYYY-MM-DD HH:mm:ss'),
     }
   },
   computed: {
@@ -101,17 +102,17 @@ export default {
       let end = ''
       if (this.time === 'custom') {
         if (this.customTime.to === 'now') {
-          end = this.$moment().format('YYYY-MM-DD HH:mm:ss')
+          end = this.$moment(this.currentTime).format('YYYY-MM-DD HH:mm:ss')
         }
         if (/^now-\d{1,}h/.test(this.customTime.from)) {
           const hs = Number(this.customTime.from.replace('now-', '').replace('h'))
-          start = this.$moment().subtract(hs, 'hours').format('YYYY-MM-DD HH:mm:ss')
+          start = this.$moment(this.currentTime).subtract(hs, 'hours').format('YYYY-MM-DD HH:mm:ss')
         }
       } else {
         if (/^\d{1,}h/.test(this.time)) {
           const hs = Number(this.time.replace('h', ''))
-          start = this.$moment().subtract(hs, 'hours').format('YYYY-MM-DD HH:mm:ss')
-          end = this.$moment().format('YYYY-MM-DD HH:mm:ss')
+          start = this.$moment(this.currentTime).subtract(hs, 'hours').format('YYYY-MM-DD HH:mm:ss')
+          end = this.$moment(this.currentTime).format('YYYY-MM-DD HH:mm:ss')
         }
       }
       return { start, end }
@@ -336,22 +337,29 @@ export default {
   },
   methods: {
     refresh () {
+      this.updateCurrentTime()
       this.$emit('refresh')
     },
     updateTime (time, timeFormat) {
+      this.updateCurrentTime()
       this.$emit('update:time', time)
       if (!this.timeFormat) {
         this.timeFormatStr = timeFormat
       }
     },
     updateTimeGroup (timeGroup) {
+      this.updateCurrentTime()
       this.$emit('update:timeGroup', timeGroup)
     },
     updateCustomTime (customTime) {
+      this.updateCurrentTime()
       this.$emit('update:customTime', customTime)
     },
     updateGroupFunc (groupBy) {
       this.$emit('update:groupFunc', groupBy)
+    },
+    updateCurrentTime () {
+      this.currentTime = this.$moment().format('YYYY-MM-DD HH:mm:ss')
     },
   },
 }
