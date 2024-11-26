@@ -54,9 +54,6 @@ export default {
     if (small.includes(this.name)) {
       fontSize = '16px'
     }
-    if (this.name === 'ZettaKit') {
-      fontSize = '50px'
-    }
     if (name === 'extdb') {
       option.label = this.$t('dictionary.extdb')
     }

@@ -301,7 +301,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: ['running'],
       sangfor: ['running'],
-      zettakit: false,
+      zettakit: ['running'],
     },
   },
   'EIP SSH': {
@@ -333,7 +333,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: ['running'],
       sangfor: ['running'],
-      zettakit: false,
+      zettakit: ['running'],
     },
   },
   'IP SSH': {
@@ -366,7 +366,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: ['running'],
       sangfor: ['running'],
-      zettakit: false,
+      zettakit: ['running'],
     },
   },
   createSnapshot: {
