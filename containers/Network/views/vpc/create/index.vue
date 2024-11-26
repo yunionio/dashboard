@@ -27,7 +27,7 @@
         <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
           <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
         </a-form-item>
-        <a-form-item :label="$t('network.vpc.cidr_block.ipv4.label')" v-bind="formItemLayout" :extra="$t('network.text_686')">
+        <a-form-item v-if="isShowIp" :label="$t('network.vpc.cidr_block.ipv4.label')" v-bind="formItemLayout" :extra="$t('network.text_686')">
           <a-input v-decorator="decorators.cidr_block" :placeholder="$t('network.text_687')" v-if="cloudEnv !== 'onpremise'" />
           <a-select v-decorator="decorators.cidr_block" v-else>
             <a-select-option value="192.168.0.0/16">192.168.0.0/16</a-select-option>
@@ -35,15 +35,15 @@
             <a-select-option value="10.0.0.0/8">10.0.0.0/8</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item :label="$t('network.vpc.cidr_block.ipv6.label')" v-bind="formItemLayout" :extra="$t('network.text_686')">
+        <a-form-item v-if="isShowIp" :label="$t('network.vpc.cidr_block.ipv6.label')" v-bind="formItemLayout" :extra="$t('network.text_686')">
           <a-input v-decorator="decorators.cidr_block6" :placeholder="$t('network.vpc.prefix6.prompt')" />
         </a-form-item>
         <a-form-item :label="$t('network.external_access_mode_label')" v-if="cloudEnv === 'public' || cloudEnv === 'onpremise'" v-bind="formItemLayout">
           <a-switch v-decorator="decorators.external_access_mode" :disabled="!isAws && cloudEnv !== 'onpremise'" />
           <template v-slot:extra>{{ $t('network.external_access_mode_extra') }}</template>
         </a-form-item>
-        <template v-if="cloudEnv === 'public' || isHCSO || isHCS">
-          <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-show="cloudEnv === 'public' || isHCSO || isHCS">
+        <template v-if="cloudEnv === 'public' || cloudEnv === 'private'">
+          <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-show="cloudEnv === 'public' || cloudEnv === 'private'">
             <base-select
               class="w-50"
               v-decorator="decorators.cloudprovider"
@@ -302,6 +302,12 @@ export default {
         return this.currentCloudregion.provider === HYPERVISORS_MAP.hcs.provider
       }
       return false
+    },
+    isShowIp () {
+      if (this.currentCloudregion && this.currentCloudregion.provider === HYPERVISORS_MAP.zettakit.provider) {
+        return false
+      }
+      return true
     },
   },
   watch: {
