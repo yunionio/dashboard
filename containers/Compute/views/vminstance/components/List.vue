@@ -562,7 +562,7 @@ export default {
                       })
                     },
                     meta: () => {
-                      const ret = {
+                      let ret = {
                         validate: true,
                         tooltip: null,
                       }
@@ -571,6 +571,12 @@ export default {
                       if (!this.isAdminMode && !this.isDomainMode) {
                         ret.validate = false
                         ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
+                        return ret
+                      }
+                      // 某些云不支持
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.zettakit.key])
+                      if (!unenableCloudCheck.validate) {
+                        ret = unenableCloudCheck
                         return ret
                       }
                       const domains = this.list.selectedItems.map(item => item.domain_id)
@@ -612,7 +618,7 @@ export default {
                         return ret
                       }
                       // 某些云不支持
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.bingocloud.key, typeClouds.hypervisorMap.sangfor.key])
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.bingocloud.key, typeClouds.hypervisorMap.sangfor.key, typeClouds.hypervisorMap.zettakit.key])
                       if (!unenableCloudCheck.validate) {
                         ret = unenableCloudCheck
                         return ret
@@ -910,7 +916,7 @@ export default {
                         return ret
                       }
                       // 某些云不支持
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.bingocloud.key, 'esxi'])
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.bingocloud.key, 'esxi', typeClouds.hypervisorMap.zettakit.key])
                       if (!isAllIdc) {
                         ret.validate = false
                         ret.tooltip = this.$t('compute.text_1115')
@@ -980,7 +986,7 @@ export default {
                       const rescueModeValid = validateRescueMode(this.list.selectedItems)
                       if (!rescueModeValid.validate) return rescueModeValid
                       // 某些云不支持
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.sangfor.key])
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.sangfor.key, typeClouds.hypervisorMap.zettakit.key])
                       if (!unenableCloudCheck.validate) {
                         ret = unenableCloudCheck
                         return ret
@@ -1036,7 +1042,7 @@ export default {
                       const rescueModeValid = validateRescueMode(this.list.selectedItems)
                       if (!rescueModeValid.validate) return rescueModeValid
                       // 某些云不支持
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.sangfor.key])
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.sangfor.key, typeClouds.hypervisorMap.zettakit.key])
                       if (!unenableCloudCheck.validate) {
                         ret = unenableCloudCheck
                         return ret

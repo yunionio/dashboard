@@ -311,6 +311,30 @@ export const diskResizeConfig = {
       }
     }
   },
+  zettakit (obj) {
+    const { validate, tooltip } = diskResizeConfig.base(obj)
+    if (!validate) {
+      return {
+        validate: false,
+        tooltip,
+      }
+    }
+    if (obj.disk_type === 'data') { // 数据盘
+      const validate = obj.guest_status === 'ready' || obj.guest_status === 'running' // 开关机可以扩容
+      const tooltip = validate ? '' : i18n.t('compute.zettakit.data_disk_resize_tip', [_tran(['ready', 'running'], serverStatus, 'server')])
+      return {
+        validate,
+        tooltip,
+      }
+    } else { // 系统盘
+      const validate = obj.guest_status === 'ready' // 关机可以扩容
+      const tooltip = validate ? '' : i18n.t('compute.zettakit.sys_disk_resize_tip', [_tran(['ready'], serverStatus, 'server')])
+      return {
+        validate,
+        tooltip,
+      }
+    }
+  },
 }
 
 // 磁盘新建快照的逻辑梳理

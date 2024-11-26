@@ -47,6 +47,7 @@ const actionEableMap = {
       volcengine: ['ready'],
       remotefile: false,
       sangfor: ['ready'],
+      zettakit: ['ready'],
     },
   },
   stop: {
@@ -79,6 +80,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: ['running'],
       sangfor: ['running'],
+      zettakit: ['running'],
     },
   },
   restart: {
@@ -111,6 +113,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: ['running', 'stop_fail'],
       sangfor: false,
+      zettakit: ['running', 'stop_fail'],
     },
   },
   rebuildRoot: {
@@ -141,6 +144,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: false,
       sangfor: false,
+      zettakit: ['running'],
     },
   },
   resetPassword: {
@@ -171,6 +175,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: ['ready'],
       sangfor: false,
+      zettakit: false,
     },
   },
   bindKeyPair: {
@@ -201,6 +206,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: ['ready'],
       sangfor: false,
+      zettakit: false,
     },
   },
   unBindKeyPair: {
@@ -231,6 +237,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: ['ready'],
       sangfor: false,
+      zettakit: false,
     },
   },
   adjustConfig: {
@@ -261,6 +268,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: ['ready'],
       sangfor: ['ready'],
+      zettakit: ['ready'],
     },
   },
   vnc: {
@@ -293,6 +301,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: ['running'],
       sangfor: ['running'],
+      zettakit: false,
     },
   },
   'EIP SSH': {
@@ -324,6 +333,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: ['running'],
       sangfor: ['running'],
+      zettakit: false,
     },
   },
   'IP SSH': {
@@ -356,6 +366,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: ['running'],
       sangfor: ['running'],
+      zettakit: false,
     },
   },
   createSnapshot: {
@@ -386,6 +397,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: false,
       sangfor: false,
+      zettakit: false,
     },
   },
   createBackup: {
@@ -416,6 +428,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: false,
       sangfor: false,
+      zettakit: false,
     },
   },
   transfer: {
@@ -446,6 +459,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: false,
       sangfor: false,
+      zettakit: false,
     },
   },
   v2vTransfer: {
@@ -476,6 +490,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: false,
       sangfor: false,
+      zettakit: false,
     },
   },
   assignSecgroup: {
@@ -506,6 +521,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: true,
       sangfor: false,
+      zettakit: false,
     },
   },
   insertiso: {
@@ -535,6 +551,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: false,
       sangfor: false,
+      zettakit: false,
     },
   },
   ejectiso: {
@@ -564,6 +581,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: false,
       sangfor: false,
+      zettakit: false,
     },
   },
   bindEip: {
@@ -594,6 +612,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: ['running', 'ready'],
       sangfor: false,
+      zettakit: false,
     },
   },
   unbindEip: {
@@ -624,6 +643,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: ['running', 'ready'],
       sangfor: false,
+      zettakit: false,
     },
   },
   acttachGpu: {
@@ -636,6 +656,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: false,
       sangfor: false,
+      zettakit: false,
     },
   },
   acttachUsb: {
@@ -648,6 +669,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: false,
       sangfor: false,
+      zettakit: false,
     },
   },
   publicIpToEip: {
@@ -662,6 +684,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: false,
       sangfor: false,
+      zettakit: false,
     },
   },
   changeBlockStorage: {
@@ -671,6 +694,7 @@ const actionEableMap = {
       remotefile: false,
       volcengine: false,
       sangfor: false,
+      zettakit: false,
     },
   },
   addBackup: {
@@ -679,6 +703,7 @@ const actionEableMap = {
       onecloud: ['ready'],
       volcengine: false,
       sangfor: false,
+      zettakit: false,
     },
   },
 }

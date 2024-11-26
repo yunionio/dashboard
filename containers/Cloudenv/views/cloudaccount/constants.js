@@ -37,6 +37,7 @@ const chinaUnionLogo = require('@/assets/images/providers/chinaunion.svg')
 const volcEngineLogo = require('@/assets/images/providers/volcengine.svg')
 const oraclecloudLogo = require('@/assets/images/providers/oraclecloud.svg')
 const sangforLogo = require('@/assets/images/providers/sangfor.svg')
+const zettakitLogo = require('@/assets/images/providers/zettakit.svg')
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope, store.getters.isSysCE)
@@ -254,6 +255,16 @@ export const CLOUDACCOUNT_TYPES = {
       component: 'SangforCreate',
       provider: providerMap.sangfor.key,
     },
+    zettakit: {
+      name: providerMap.zettakit.label,
+      logo: zettakitLogo,
+      component: 'ZettaKitCreate',
+      provider: providerMap.zettakit.key,
+      hiddenName: true,
+      logoStyle: {
+        width: '100px',
+      },
+    },
   },
   storage: {
     s3: {
@@ -320,6 +331,7 @@ export function getCloudaccountDocs (scope) {
     incloudsphere: i18n.t('cloudenv.create_incloudsphere', [docs_path]),
     proxmox: i18n.t('cloudenv.create_proxmox', [docs_path]),
     h3c: i18n.t('cloudenv.create_h3c', [docs_path]),
+    zettakit: i18n.t('cloudenv.create_zettakit', [docs_path]),
     ksyun: i18n.t('cloudenv.create_ksyun', [docs_path]),
     baidu: i18n.t('cloudenv.create_baidu', [docs_path]),
     qingcloud: i18n.t('cloudenv.create_qingcloud', [docs_path]),
@@ -707,6 +719,19 @@ export const keySecretFields = {
       s: i18n.t('cloudenv.text_147'),
     },
   },
+  zettakit: {
+    k: 'username',
+    s: 'password',
+    text: i18n.t('cloudenv.zettakit'),
+    placeholder: {
+      k: i18n.t('cloudenv.text_151'),
+      s: i18n.t('cloudenv.text_150'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_94'),
+      s: i18n.t('cloudenv.text_147'),
+    },
+  },
   ksyun: {
     k: 'access_key_id',
     s: 'access_key_secret',
@@ -854,6 +879,7 @@ export const notSupportSelectRegion = [
   providerMap.incloudsphere.key,
   providerMap.remotefile.key,
   providerMap.h3c.key,
+  providerMap.zettakit.key,
   providerMap.proxmox.key,
   providerMap.oraclecloud.key,
 ]

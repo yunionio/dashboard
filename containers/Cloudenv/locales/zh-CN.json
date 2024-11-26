@@ -849,6 +849,8 @@
   "cloudenv.create_volcengine": "{0}#新建火山引擎账号",
   "cloudenv.create_oraclecloud": "{0}#新建oracle云账号",
   "cloudenv.create_sangfor": "{0}#新建深信服超融合账号",
+  "cloudenv.create_zettakit": "{0}#新建泽塔云云账号",
+  "cloudenv.zettakit": "泽塔云",
   "cloudenv.view_record": "查看记录",
   "cloudenv.old_sth": "原{0}",
   "cloudenv.new_sth": "当前{0}",

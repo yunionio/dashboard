@@ -1853,5 +1853,7 @@
   "compute.metric.vasmi_temperature_gpu": "VASTAITECH GPU temperature",
   "compute.metric.vasmi_utilization_encoder": "VASTAITECH Encoding utilization rate",
   "compute.metric.vasmi_utilization_decoder": "VASTAITECH Decoding code utilization rate",
-  "compute.metadatas": "@:compute.text_271"
+  "compute.metadatas": "@:compute.text_271",
+  "compute.zettakit.sys_disk_resize_tip": "ZettaKit system disk only supports this operation in the [{0}] state",
+  "compute.zettakit.data_disk_resize_tip": "ZettaKit Data Disk only supports this operation in the [{0}] state"
 }
