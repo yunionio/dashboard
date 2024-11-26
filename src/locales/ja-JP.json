@@ -1909,7 +1909,8 @@
     "extdb": "カスタムリソース",
     "Proxmox": "プロキシモックス",
     "H3C": "H3C",
-    "Ksyun": "キングソフトクラウド"
+    "Ksyun": "キングソフトクラウド",
+    "ZettaKit": "ゼータ雲"
   },
   "shareScope": {
     "system": "システム",
@@ -2217,7 +2218,8 @@
     "nutanix": "ヌタニックス",
     "bingocloud": "ビンゴクラウド",
     "h3c": "H3C",
-    "ksyun": "キングソフトクラウド"
+    "ksyun": "キングソフトクラウド",
+    "zettakit": "ゼータ雲"
   },
   "bandwidths": {
     "100": "100メートル",
@@ -5377,6 +5379,7 @@
   "license.feature.baremetal": "@:scope.text_104",
   "license.feature.lb": "@:common_248",
   "license.feature.pod": "Pod",
+  "license.featur.pod": "ゼータ雲",
   "license.feature.k8s": "@:scope.text_78",
   "license.feature.monitor": "@:license.module.monitor",
   "license.feature.bill": "コストの最適化",

@@ -57,6 +57,15 @@
       <a-form-item :label="$t('compute.text_294')" v-show="!isServertemplate">
         <a-input-number v-decorator="decorators.count" @blur="countBlur" :min="1" :max="100" />
       </a-form-item>
+      <a-form-item v-if="form.fd.hypervisor === 'zettakit'">
+        <span slot="label">
+          {{ $t('compute.text_1152') }}&nbsp;
+          <a-tooltip :title="$t('compute.vgpu_check.tooltip')">
+            <a-icon type="question-circle-o" />
+          </a-tooltip>
+        </span>
+        <pci :decorators="decorators.pci" :pciDevTypeOptions="pciDevTypeOptions" :form="form" :pci-options="pciOptions" />
+      </a-form-item>
       <a-form-item :label="$t('compute.text_1058')" class="mb-0">
         <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :showUnlimited="true" @change="cpuChange" />
       </a-form-item>

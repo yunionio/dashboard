@@ -848,6 +848,8 @@
   "cloudenv.create_volcengine": "{0}#create-volcengine-account",
   "cloudenv.create_oraclecloud": "{0}#create-oraclecloud-account",
   "cloudenv.create_sangfor": "{0}#create-sangfor-account",
+  "cloudenv.create_zettakit": "{0}#create-zettakit-account",
+  "cloudenv.zettakit": "ZettaKit",
   "cloudenv.view_record": "View records",
   "cloudenv.old_sth": "Origin {0}",
   "cloudenv.new_sth": "Current {0}",

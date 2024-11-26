@@ -54,7 +54,7 @@
             </a-form-item>
           </a-col>
           <a-col :span="5">
-            <div v-if="isIDC" class="d-flex">
+            <div v-if="isShowStorageSelect" class="d-flex">
               <disk-storage-select
                 v-if="showStorage"
                 style="min-width: 480px; max-width: 500px;"
@@ -331,6 +331,12 @@ export default {
       }
       return false
     },
+    isZettaKit () {
+      if (this.currentCloudregion) {
+        return this.currentCloudregion.provider === HYPERVISORS_MAP.zettakit.provider
+      }
+      return false
+    },
     isKVM () {
       return true
     },
@@ -446,6 +452,9 @@ export default {
     },
     isIDC () {
       return this.cloudEnv === 'onpremise'
+    },
+    isShowStorageSelect () {
+      return this.isIDC || this.isZettaKit
     },
     isLocalDisk () {
       if (this.storageItem && this.storageItem.value && this.storageItem.value.toLowerCase().startsWith('local_')) {

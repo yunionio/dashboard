@@ -173,6 +173,15 @@ const LicenseItems = [
     meta: meta('resource_managent', 'private', true),
   },
   {
+    key: 'zettakit',
+    meta: meta('resource_managent', 'private', true),
+    hiddenName: true,
+    logoStyle: {
+      width: '100px',
+      height: '24px',
+    },
+  },
+  {
     key: 's3',
     meta: meta('resource_managent', 'storage', true),
   },

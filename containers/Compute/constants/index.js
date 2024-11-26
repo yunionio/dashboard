@@ -1211,6 +1211,28 @@ export const STORAGE_TYPES = {
   //     unCreateCloud: true, // 不支持创建云硬盘
   //   },
   // },
+  [HYPERVISORS_MAP.zettakit.key]: {
+    'normal/ssd': {
+      label: i18n.t('compute.zettakit.normal_ssd'),
+      value: 'normal/ssd',
+      min: 10,
+      max: 2000,
+      default: true,
+      sysMin: 20,
+      sysMax: 1000,
+      sort: 1,
+    },
+    'performance/ssd': {
+      label: i18n.t('compute.zettakit.performance_ssd'),
+      value: 'performance/ssd',
+      min: 10,
+      max: 2000,
+      default: true,
+      sysMin: 20,
+      sysMax: 1000,
+      sort: 2,
+    },
+  },
 }
 export const ALL_STORAGE = {}
 export const ALL_STORAGE_LABEL = {}

@@ -30,6 +30,7 @@ import VolcEngine from './components/VolcEngine'
 import CephFS from './components/CephFS'
 import OracleCloud from './components/OracleCloud'
 import Sangfor from './components/Sangfor'
+import ZettaKit from './components/ZettaKit'
 
 export default {
   name: 'CreateCloudaccount',
@@ -69,6 +70,7 @@ export default {
     CephFSCreate: CephFS,
     OracleCloudCreate: OracleCloud,
     SangforCreate: Sangfor,
+    ZettaKitCreate: ZettaKit,
   },
   props: {
     currentItem: {

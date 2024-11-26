@@ -187,7 +187,7 @@ export default {
       return ret
     },
     pciDevTypeOptions () {
-      return (this.form.fi?.capability?.pci_model_types || []).filter(item => item.hypervisor === 'kvm')
+      return (this.form.fi?.capability?.pci_model_types || []).filter(item => item.hypervisor === 'zettakit')
     },
     pciOptions () {
       const specs = this.form.fi.capability.specs || {}
@@ -196,7 +196,7 @@ export default {
       for (const key in data) {
         if (data.hasOwnProperty(key)) {
           const item = data[key]
-          if (!item.dev_type.startsWith('USB') && item.hypervisor === 'kvm') {
+          if (!item.dev_type.startsWith('USB') && item.hypervisor === 'zettakit') {
             ret.push({
               ...item,
               key: `vendor=${item.vendor}:${item.model}`,
@@ -549,7 +549,6 @@ export default {
           if (isSuccess(res)) {
             this.$message.success(i18n.t('compute.text_322'))
           }
-          console.log('上报')
           this.$store.commit('keepAlive/ADD_DELAY_EVENT', { name: 'VMInstanceListRefresh' })
           this.$router.push('/vminstance')
         })
