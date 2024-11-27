@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows'
 import NotificationBaseList from '@IAM/sections/NotificationBaseList'
 import { getTimeRangeFilter } from '@/utils/common/tableFilter'
 import { getTimeTableColumn } from '@/utils/common/tableColumn'
@@ -13,6 +14,7 @@ export default {
   components: {
     NotificationBaseList,
   },
+  mixins: [WindowsMixin],
   props: {
     id: String,
   },
@@ -37,6 +39,11 @@ export default {
         {
           title: this.$t('system.text_308'),
           field: 'content',
+          slots: {
+            default: ({ row }) => {
+              return [<a-button type="link" onClick={() => this.handleContentView(row)} style="padding-left:0">{this.$t('cloudenv.text_463')}</a-button>]
+            },
+          },
         },
       ],
       ExtraFilterOptions: {
@@ -64,6 +71,13 @@ export default {
         received_at: getTimeRangeFilter({ label: this.$t('system.text_316'), field: 'received_at' }),
       },
     }
+  },
+  methods: {
+    handleContentView (row) {
+      this.createDialog('NotificationViewInfoDialog', {
+        data: [row],
+      })
+    },
   },
 }
 </script>
