@@ -1082,5 +1082,6 @@
   "iam.some_user_can_enabled": "部分用户是禁用状态，是否同步启用",
   "iam.user_can_enabled": "用户是禁用状态，是否同步启用",
   "iam.mobile": "手机号",
-  "iam.sms_mobile": "请输入用户接收测试短信的手机号"
+  "iam.sms_mobile": "请输入用户接收测试短信的手机号",
+  "iam.message_content": "站内信内容"
 }
