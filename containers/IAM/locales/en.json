@@ -1080,5 +1080,6 @@
   "iam.some_user_can_enabled": "Some users are in a disabled state. Do you want to synchronize and enable them",
   "iam.user_can_enabled": "Is the user in a disabled state enabled synchronously",
   "iam.mobile": "Mobile phone number",
-  "iam.sms_mobile": "Please enter the user's mobile phone number for receiving test messages"
+  "iam.sms_mobile": "Please enter the user's mobile phone number for receiving test messages",
+  "iam.message_content": "Internal message content"
 }
