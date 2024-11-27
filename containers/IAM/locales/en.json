@@ -1052,5 +1052,6 @@
   "iam.notify_time_not_repeat": "Notification time is duplicated",
   "iam.no_resource_policy": "No resource permissions",
   "iam.mobile": "Mobile phone number",
-  "iam.sms_mobile": "Please enter the user's mobile phone number for receiving test messages"
+  "iam.sms_mobile": "Please enter the user's mobile phone number for receiving test messages",
+  "iam.message_content": "Internal message content"
 }
