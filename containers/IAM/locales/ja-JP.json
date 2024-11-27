@@ -1079,5 +1079,6 @@
   "iam.some_user_can_enabled": "一部のユーザーは無効状態であり、同期可能かどうか",
   "iam.user_can_enabled": "ユーザーは無効状態、同期は有効か",
   "iam.mobile": "携帯番号",
-  "iam.sms_mobile": "ユーザーがテストメッセージを受信する携帯電話番号を入力してください"
+  "iam.sms_mobile": "ユーザーがテストメッセージを受信する携帯電話番号を入力してください",
+  "iam.message_content": "構内レターの内容"
 }
