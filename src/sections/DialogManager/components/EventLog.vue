@@ -107,7 +107,7 @@ export default {
           field: 'owner_tenant',
           title: this.$t('table.title.owner_project'),
           formatter: ({ row }) => {
-            let txt = row.owner_tenant
+            let txt = row.owner_tenant || '-'
             if (row.owner_domain) {
               txt += `(${row.owner_domain})`
             }
