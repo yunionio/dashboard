@@ -2443,7 +2443,9 @@
     "CLOUDACCOUNT_AMOUNT_DAILY": "アカウントの消費が異常です",
     "CLOUDACCOUNT_AMOUNT_MONTH": "アリババアカウントの月間消費量が異常です",
     "TIMING_SERVER": "定期的な使用パターンを持つ仮想マシン",
-    "upgrade_prepaid": "年間プランへの転換を推奨"
+    "upgrade_prepaid": "年間プランへの転換を推奨",
+    "UPGRADE_PREPAID": "年玉月極コースに変更",
+    "DOWN_SIZE_BY_MEM": "メモリ使用率の低いVM"
   },
   "suggestsySuggestion": {
     "EIP_UNUSED": "未使用の EIP の解放",
@@ -2464,7 +2466,9 @@
     "CLOUDACCOUNT_AMOUNT_DAILY": "昨日のアカウントの消費量を確認する",
     "CLOUDACCOUNT_AMOUNT_MONTH": "今月の Alibaba Cloud アカウントの使用量を確認する",
     "TIMING_SERVER": "-",
-    "upgrade_prepaid": "年間プランに変換する"
+    "upgrade_prepaid": "年間プランに変換する",
+    "UPGRADE_PREPAID": "年玉月極コースに変更",
+    "DOWN_SIZE_BY_MEM": "メモリ使用率の低いVM"
   },
   "idpDrivers": {
     "LDAP": [

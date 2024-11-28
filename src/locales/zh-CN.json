@@ -2443,7 +2443,9 @@
     "CLOUDACCOUNT_AMOUNT_DAILY": "云账号天消费异常",
     "CLOUDACCOUNT_AMOUNT_MONTH": "云账号月消费异常",
     "TIMING_SERVER": "具有周期性使用规律的虚拟机",
-    "upgrade_prepaid": "建议转化为包年包月套餐"
+    "upgrade_prepaid": "建议转化为包年包月套餐",
+    "UPGRADE_PREPAID": "建议转化为包年包月套餐",
+    "DOWN_SIZE_BY_MEM": "低内存使用率的虚拟机"
   },
   "suggestsySuggestion": {
     "EIP_UNUSED": "释放未使用的弹性公网IP",
@@ -2464,7 +2466,9 @@
     "CLOUDACCOUNT_AMOUNT_DAILY": "检查云账号昨日消费",
     "CLOUDACCOUNT_AMOUNT_MONTH": "检查云账号本月消费",
     "TIMING_SERVER": "-",
-    "upgrade_prepaid": "转化为包年包月套餐"
+    "upgrade_prepaid": "转化为包年包月套餐",
+    "UPGRADE_PREPAID": "转化为包年包月套餐",
+    "DOWN_SIZE_BY_MEM": "低内存使用率的虚拟机"
   },
   "idpDrivers": {
     "LDAP": [
