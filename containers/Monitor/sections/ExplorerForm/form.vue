@@ -305,7 +305,7 @@ export default {
         },
         {
           key: 'avg',
-          label: 'AVG',
+          label: 'MEAN',
         },
         {
           key: 'sum',
@@ -361,8 +361,9 @@ export default {
       let label = this.metricKeyItem && this.metricKeyItem.metric_res_type ? this.$t(`dictionary.${this.metricKeyItem.metric_res_type}`) + padding : ''
       label += this.metricKeyItem && this.metricKeyItem.label ? this.metricKeyItem.label : '-'
       const metricLabel = _.get(this.mertricItem, 'description.display_name')
+      const metricName = _.get(this.mertricItem, 'description.name')
       if (metricLabel) {
-        label += `(${metric_zh[metricLabel] ? metric_zh[metricLabel] : metricLabel})`
+        label += `(${metric_zh[metricLabel] ? metric_zh[metricLabel] + ' ' + metricName : metricLabel + ' ' + metricName})`
       }
       return label
     },
@@ -390,6 +391,11 @@ export default {
           this.$set(this.form.fd, key, item)
         }
       }, newField)
+      const changedKeys = Object.keys(values)
+      if (changedKeys.length === 1 && changedKeys[0] === 'name') {
+        this.$emit('nameChange', this.form.fd.name)
+        return
+      }
       this.$nextTick(this.toParams)
       if ((values.hasOwnProperty('metric_key') && !values.metric_key) || (values.hasOwnProperty('metric_value') && !values.metric_value)) {
         this.resetChart()
@@ -456,7 +462,7 @@ export default {
     toggle () {
       this.panelShow = !this.panelShow
     },
-    toParams () {
+    toParams (ignoreEmit) {
       const fd = this.form.fc.getFieldsValue()
       const params = {
         database: this.metricKeyItem && this.metricKeyItem.database ? this.metricKeyItem.database : 'telegraf',

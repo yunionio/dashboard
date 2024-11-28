@@ -16,6 +16,7 @@
         :formItemLayout="formItemLayout"
         :timeRangeParams="timeRangeParams"
         :extraParams="extraParams"
+        @nameChange="val => nameChange(val, i)"
         @mertricItemChange="val => mertricItemChange(val, i)"
         @resetChart="() => resetChart(i)"
         @paramsChange="(val, resVal) => paramsChange(val, resVal, i)"
@@ -117,6 +118,9 @@ export default {
     },
     mertricItemChange (val, i) {
       this.$emit('mertricItemChange', val, i)
+    },
+    nameChange (name, i) {
+      this.$emit('nameChange', name, i)
     },
   },
 }
