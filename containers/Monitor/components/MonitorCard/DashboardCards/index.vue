@@ -32,7 +32,7 @@
     </div>
     <div :class="card_style" :style="readOnly && !selectable ? '' :'padding-top: 20px;'">
       <dashboard-card ref="dashboardCard" v-if="readOnly && !selectable" :card_style="card_style" :chartHeigth="chartHeigth" @chose_panel="chose_panel" :panel="panels.length > 0 ? panels[0] : {}" :focusPanelId="focusPanelId" :selectable="selectable" :readOnly="readOnly" :dashboard_id="id" :edit-chart="editChart" :updated_at="updatedAt" :extraParams="extraParams" @delete="handleDelete" />
-      <a-list v-else :grid="readOnly?{ gutter: 24, column: 1 }:{ gutter: 16, column: 2 }" :data-source="panels">
+      <a-list v-else :grid="{ column: 1 }" :data-source="panels">
         <a-list-item slot="renderItem" slot-scope="item">
           <dashboard-card
            :card_style="card_style"

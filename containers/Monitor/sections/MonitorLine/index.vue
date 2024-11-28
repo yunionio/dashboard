@@ -236,7 +236,7 @@ export default {
       }
       if (this.reducedResult && this.reducedResult.reducer) {
         const { reducer = {} } = this.reducedResult
-        const title = reducer.type === 'percentile' ? `P${reducer.params && reducer.params[0]}` : reducer.type.toUpperCase()
+        const title = reducer.type === 'percentile' ? `P${reducer.params && reducer.params[0]}` : reducer.type === 'avg' ? 'MEAN' : reducer.type.toUpperCase()
         columns.push({
           field: 'result',
           title,

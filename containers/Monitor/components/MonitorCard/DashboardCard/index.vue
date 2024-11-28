@@ -391,6 +391,7 @@ export default {
     handleClone () {
       this.createDialog('CloneMonitorDashboardChart', {
         data: [{ id: this.panel.panel_id, name: this.metric.label, dashboard_id: this.dashboard_id }],
+        panelName: this.panel.panel_name || (this.chart.metric && this.chart.metric.label),
         refresh: () => { this.$emit('delete') },
         columns: [getNameDescriptionTableColumn()],
       })
