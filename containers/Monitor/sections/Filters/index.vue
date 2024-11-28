@@ -130,10 +130,14 @@ export default {
     },
   },
   watch: {
-    metricInfo () {
-      if (this.tags && this.tags.length) {
-        this.fillFilters(this.tags)
-      }
+    metricInfo: {
+      deep: true,
+      handler: function (val) {
+        if (this.tags && this.tags.length) {
+          this.fillFilters(this.tags)
+        }
+        this.fillFilterValues()
+      },
     },
   },
   mounted () {
@@ -159,6 +163,22 @@ export default {
       this.$nextTick(() => {
         this.form.fc.setFieldsValue(tagFields)
         this.$forceUpdate()
+      })
+    },
+    fillFilterValues () {
+      const values = this.form.fc.getFieldsValue()
+      const filters = R.clone(this.filters)
+      this.filters = filters.map(item => {
+        const { key = '', tagValueOpts = [] } = item
+        if (key && !tagValueOpts.length) {
+          const { tagKeys = {} } = values
+          if (tagKeys[key]) {
+            const tagKey = tagKeys[key]
+            const opts = this.tagValueOpts(tagKey)
+            item.tagValueOpts = [...opts]
+          }
+        }
+        return item
       })
     },
     reset () {
