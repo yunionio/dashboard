@@ -9,9 +9,10 @@
         chosen-class="chosen"
         v-model="panels">
         <transition-group type="transition" name="flip-list">
-          <template v-for="item in panels">
-            <a-col :span="12" class="panel-item" :key="item.panel_id">
-              <a-icon type="drag" class="drag-icon pr-3" @click.prevent="() => {}" />{{ item.panel_name }}
+          <template v-for="(item, index) in panels">
+            <a-col class="panel-item d-flex" :key="item.panel_id">
+              <div class="label">{{ index + 1 }}. {{ item.panel_name }}</div>
+              <a-icon type="drag" class="drag-icon pr-3" @click.prevent="() => {}" />
             </a-col>
           </template>
         </transition-group>
@@ -73,8 +74,17 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .panel-item {
   padding: 10px 5px;
+  .label {
+    flex: 1 1 auto;
+  }
+  .drag-icon {
+    flex: 0 0 24px;
+  }
+  &:hover {
+    background: #e8eaec;
+  }
 }
 </style>
