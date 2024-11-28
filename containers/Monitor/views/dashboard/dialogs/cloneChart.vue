@@ -36,6 +36,7 @@ export default {
         clone_panel_name: [
           'clone_panel_name',
           {
+            initialValue: this.params.panelName || '',
             rules: [
               { required: true, message: `${this.$t('common.placeholder')}${this.$t('common.name')}` },
             ],

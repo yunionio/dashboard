@@ -10,6 +10,7 @@
             :multiQuery="false"
             :timeRangeParams="timeRangeParams"
             :extraParams="extraParams"
+            @nameChange="nameChange"
             @refresh="refresh"
             @remove="remove"
             @resetChart="resetChart"
@@ -23,10 +24,9 @@
           <monitor-header
               class="mb-4"
               :time.sync="time"
-              :timeGroupValue.sync="timeGroupValue"
-              :showTimegroup="false"
+              :timeGroup.sync="timeGroup"
+              :showTimegroup="true"
               :showGroupFunc="true"
-              :showTimeGroupInput="true"
               :customTime.sync="customTime"
               :showCustomTimeText="time==='custom'"
               customTimeUseTimeStamp
@@ -74,7 +74,7 @@ import get from 'lodash/get'
 import echarts from 'echarts'
 import MonitorForms from '@Monitor/sections/ExplorerForm'
 import MonitorLine from '@Monitor/sections/MonitorLine'
-import { MONITOR_MAX_POINTERS } from '@Monitor/constants'
+// import { MONITOR_MAX_POINTERS } from '@Monitor/constants'
 import MonitorHeader from '@/sections/Monitor/Header'
 import { getRequestT, uuid } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
@@ -105,7 +105,7 @@ export default {
       panel: {},
       time: '1h',
       // groupFunc: 'mean',
-      timeGroupValue: 2,
+      timeGroup: '1m',
       customTime: null,
       metricList: [],
       seriesList: [],
@@ -136,19 +136,16 @@ export default {
       }
       return params
     },
-    timeGroup () {
-      return (this.timeGroupValue || 1) + 'm'
-    },
   },
   watch: {
     timeGroup () {
       this.fetchAllData()
     },
     time () {
-      this.smartFetchAllData()
+      this.fetchAllData()
     },
     customTime () {
-      this.smartFetchAllData()
+      this.fetchAllData()
     },
     // groupFunc (val) {
     //   this.fetchAllData()
@@ -178,13 +175,9 @@ export default {
         new this.$Manager('alertpanels', 'v1').get({ id: this.panelId, params }).then((res) => {
           this.loading = false
           this.panel = Object.assign({}, this.panel, res.data)
-          const interval = get(this.panel, 'settings.conditions[0].query.model.interval') || '2m'
           const from = get(this.panel, 'settings.conditions[0].query.from')
           const to = get(this.panel, 'settings.conditions[0].query.to')
-          const value = parseInt(interval)
-          const unit = interval.replace(value, '')
-          this.timeGroupValue = unit === 'h' ? value * 60 : value
-          if (from && to) {
+          if (from && to && to !== 'now') {
             this.customTime = { from, to }
             this.time = 'custom'
           } else if (from) {
@@ -197,18 +190,6 @@ export default {
       } finally {
         this.loading = false
       }
-    },
-    smartFetchAllData () { // 根据选择的时间范围智能的赋值时间间隔进行查询
-      let diffHour = 1
-      const noNumberReg = /\D+/g
-      if (this.time === 'custom') {
-        diffHour = this.$moment(this.customTime.from).diff(this.$moment(this.customTime.to), 'hours')
-      } else {
-        diffHour = this.time.replace(noNumberReg, '')
-      }
-      const diff = diffHour * 60 // 变分钟
-      this.timeGroup = `${diff / MONITOR_MAX_POINTERS}m`
-      this.$nextTick(this.fetchAllData)
     },
     remove (i) {
       this.metricList.splice(i, 1)
@@ -385,6 +366,11 @@ export default {
         throw error
       } finally {
         this.loading = false
+      }
+    },
+    nameChange (name, index) {
+      if (this.metricList[index] && this.metricList[index][0] && this.metricList[index][0].model) {
+        this.$set(this.metricList[index][0].model, 'name', name)
       }
     },
     async exportTable (index, total) {

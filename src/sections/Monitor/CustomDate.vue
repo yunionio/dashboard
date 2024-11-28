@@ -103,7 +103,7 @@ export default {
       handler: function (val) {
         if (val && val.from) {
           if (this.customTimeUseTimeStamp) {
-            const time = this.$moment(val.from)
+            const time = this.$moment(parseInt(val.from + ''))
             this.formData.startValue = time
           } else {
             // 兼容 now-h 的格式
@@ -113,7 +113,7 @@ export default {
         }
         if (val && val.to) {
           if (this.customTimeUseTimeStamp) {
-            const time = this.$moment(val.to)
+            const time = this.$moment(parseInt(val.to + ''))
             this.formData.endValue = time
           } else {
             // 兼容 now-h 的格式
