@@ -187,7 +187,12 @@ export default {
       return ret
     },
     pciDevTypeOptions () {
-      return (this.form.fi?.capability?.pci_model_types || []).filter(item => item.hypervisor === 'zettakit')
+      const specs = this.form.fi.capability.specs || {}
+      const data = specs.isolated_devices || {}
+      const values = Object.values(data)
+      return (this.form.fi?.capability?.pci_model_types || []).filter(item => {
+        return (item.hypervisor === 'kvm' || item.hypervisor === 'zettakit') && values.some(l => item.dev_type === l.dev_type)
+      })
     },
     pciOptions () {
       const specs = this.form.fi.capability.specs || {}
@@ -196,7 +201,7 @@ export default {
       for (const key in data) {
         if (data.hasOwnProperty(key)) {
           const item = data[key]
-          if (!item.dev_type.startsWith('USB') && item.hypervisor === 'zettakit') {
+          if (!item.dev_type.startsWith('USB') && (item.hypervisor === 'kvm' || item.hypervisor === 'zettakit')) {
             ret.push({
               ...item,
               key: `vendor=${item.vendor}:${item.model}`,

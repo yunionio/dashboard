@@ -28,6 +28,7 @@
                 <a-radio-button
                   v-for="item in pciCountOptions"
                   :value="item.key"
+                  :disabled="item.disabled"
                   :key="item.key">{{ item.label }}</a-radio-button>
               </a-radio-group>
             </a-form-item>
@@ -72,13 +73,24 @@ export default {
   data () {
     return {
       pciEnable: false,
-      pciCountOptions: GPU_COUNT_OPTIONS,
       curPciDevType: '',
     }
   },
   computed: {
     isPciEmpty () {
       return this.pciOptions && this.pciOptions.length === 0
+    },
+    pciCountOptions () {
+      const target = this.realPciOptions.filter(item => item.dev_type === this.curPciDevType)
+      if (target.length) {
+        return GPU_COUNT_OPTIONS.map(item => {
+          return {
+            ...item,
+            disabled: item.key > target[0].count,
+          }
+        })
+      }
+      return GPU_COUNT_OPTIONS
     },
     realPciDevTypeOptions () {
       const pciDevTypeOptions = this.pciDevTypeOptions.map(item => {
@@ -146,6 +158,7 @@ export default {
       this.form.fc.setFieldsValue({
         [`pciDevType[${key}]`]: val,
         [`pciModel[${key}]`]: this.realPciOptions[0].key,
+        [`pciCount[${key}]`]: 1,
       })
       this.reset()
     },
