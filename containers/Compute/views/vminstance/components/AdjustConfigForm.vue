@@ -63,7 +63,7 @@
               :disabled="true"
               :ignoreStorageStatus="true" />
           </a-form-item>
-          <a-form-item :label="$t('compute.text_50')" v-show="selectedItems.length === 1">
+          <a-form-item :label="$t('compute.text_50')" v-show="selectedItems.length === 1 && selectedItems[0].hypervisor !== 'zettakit'">
             <data-disk
               v-if="isRenderDataDisk"
               ref="dataDiskRef"
