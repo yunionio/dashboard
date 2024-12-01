@@ -103,9 +103,8 @@
           :image="form.fi.imageMsg"
           :sizeDisabled="disabledSysDiskSize" />
       </a-form-item>
-      <a-form-item :label="$t('compute.text_50')">
+      <a-form-item :label="$t('compute.text_50')" v-if="form.fd.hypervisor && form.fd.hypervisor !== 'zettakit'">
         <data-disk
-          v-if="form.fd.hypervisor"
           :decorator="decorators.dataDisk"
           :type="type"
           :form="form"
