@@ -1910,7 +1910,8 @@
     "Proxmox": "Proxmox",
     "H3C": "H3C",
     "Ksyun": "金山云",
-    "ZettaKit": "泽塔云"
+    "ZettaKit": "泽塔云",
+    "UIS": "UIS"
   },
   "shareScope": {
     "system": "系统",
@@ -2219,7 +2220,8 @@
     "bingocloud": "BingoCloud",
     "h3c": "H3C",
     "ksyun": "金山云",
-    "zettakit": "泽塔云"
+    "zettakit": "泽塔云",
+    "uis": "UIS"
   },
   "bandwidths": {
     "100": "百 兆(100M)",
@@ -5384,6 +5386,7 @@
   "license.provider.oraclecloud": "OracleCloud",
   "license.provider.pod": "Pod",
   "license.provider.zettakit": "泽塔云",
+  "license.provider.uis": "UIS",
   "license.feature.baremetal": "@:scope.text_104",
   "license.feature.lb": "@:common_248",
   "license.feature.pod": "容器主机",

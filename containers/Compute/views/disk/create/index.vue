@@ -337,6 +337,12 @@ export default {
       }
       return false
     },
+    isUIS () {
+      if (this.currentCloudregion) {
+        return this.currentCloudregion.provider === HYPERVISORS_MAP.uis.provider
+      }
+      return false
+    },
     isKVM () {
       return true
     },
@@ -454,7 +460,7 @@ export default {
       return this.cloudEnv === 'onpremise'
     },
     isShowStorageSelect () {
-      return this.isIDC || this.isZettaKit
+      return this.isIDC || this.isZettaKit || this.isUIS
     },
     isLocalDisk () {
       if (this.storageItem && this.storageItem.value && this.storageItem.value.toLowerCase().startsWith('local_')) {

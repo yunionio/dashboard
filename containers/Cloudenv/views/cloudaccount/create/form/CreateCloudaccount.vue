@@ -31,6 +31,7 @@ import CephFS from './components/CephFS'
 import OracleCloud from './components/OracleCloud'
 import Sangfor from './components/Sangfor'
 import ZettaKit from './components/ZettaKit'
+import UIS from './components/UIS'
 
 export default {
   name: 'CreateCloudaccount',
@@ -71,6 +72,7 @@ export default {
     OracleCloudCreate: OracleCloud,
     SangforCreate: Sangfor,
     ZettaKitCreate: ZettaKit,
+    UISCreate: UIS,
   },
   props: {
     currentItem: {

@@ -574,7 +574,7 @@ export default {
                         return ret
                       }
                       // 某些云不支持
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.zettakit.key])
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.zettakit.key, typeClouds.hypervisorMap.uis.key])
                       if (!unenableCloudCheck.validate) {
                         ret = unenableCloudCheck
                         return ret
@@ -618,7 +618,7 @@ export default {
                         return ret
                       }
                       // 某些云不支持
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.bingocloud.key, typeClouds.hypervisorMap.sangfor.key, typeClouds.hypervisorMap.zettakit.key])
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.bingocloud.key, typeClouds.hypervisorMap.sangfor.key, typeClouds.hypervisorMap.zettakit.key, typeClouds.hypervisorMap.uis.key])
                       if (!unenableCloudCheck.validate) {
                         ret = unenableCloudCheck
                         return ret
@@ -916,7 +916,7 @@ export default {
                         return ret
                       }
                       // 某些云不支持
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.bingocloud.key, 'esxi', typeClouds.hypervisorMap.zettakit.key])
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.bingocloud.key, 'esxi', typeClouds.hypervisorMap.zettakit.key, typeClouds.hypervisorMap.uis.key])
                       if (!isAllIdc) {
                         ret.validate = false
                         ret.tooltip = this.$t('compute.text_1115')
@@ -986,7 +986,7 @@ export default {
                       const rescueModeValid = validateRescueMode(this.list.selectedItems)
                       if (!rescueModeValid.validate) return rescueModeValid
                       // 某些云不支持
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.sangfor.key, typeClouds.hypervisorMap.zettakit.key])
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.sangfor.key, typeClouds.hypervisorMap.zettakit.key, typeClouds.hypervisorMap.uis.key])
                       if (!unenableCloudCheck.validate) {
                         ret = unenableCloudCheck
                         return ret
@@ -1042,7 +1042,7 @@ export default {
                       const rescueModeValid = validateRescueMode(this.list.selectedItems)
                       if (!rescueModeValid.validate) return rescueModeValid
                       // 某些云不支持
-                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.sangfor.key, typeClouds.hypervisorMap.zettakit.key])
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.sangfor.key, typeClouds.hypervisorMap.zettakit.key, typeClouds.hypervisorMap.uis.key])
                       if (!unenableCloudCheck.validate) {
                         ret = unenableCloudCheck
                         return ret

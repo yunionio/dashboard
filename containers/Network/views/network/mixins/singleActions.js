@@ -41,7 +41,7 @@ export default {
         extraMeta: obj => {
           return getDisabledProvidersActionMeta({
             row: obj,
-            disabledProviders: ['BingoCloud', 'ZettaKit'],
+            disabledProviders: ['BingoCloud', 'ZettaKit', 'UIS'],
           })
         },
       },
@@ -130,7 +130,7 @@ export default {
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
                   row: obj,
-                  disabledProviders: ['BingoCloud', 'ZettaKit'],
+                  disabledProviders: ['BingoCloud', 'ZettaKit', 'UIS'],
                 })
               },
             },
@@ -143,7 +143,7 @@ export default {
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
                   row: obj,
-                  disabledProviders: ['BingoCloud', 'ZettaKit'],
+                  disabledProviders: ['BingoCloud', 'ZettaKit', 'UIS'],
                 })
               },
             }),
@@ -202,7 +202,7 @@ export default {
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
                   row: obj,
-                  disabledProviders: ['BingoCloud', 'ZettaKit'],
+                  disabledProviders: ['BingoCloud', 'ZettaKit', 'UIS'],
                 })
               },
             },
@@ -231,7 +231,7 @@ export default {
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
                   row: obj,
-                  disabledProviders: ['BingoCloud', 'ZettaKit'],
+                  disabledProviders: ['BingoCloud', 'ZettaKit', 'UIS'],
                 })
               },
             },
@@ -268,7 +268,7 @@ export default {
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
                   row: obj,
-                  disabledProviders: ['BingoCloud', 'ZettaKit'],
+                  disabledProviders: ['BingoCloud', 'ZettaKit', 'UIS'],
                 })
               },
             },
@@ -293,7 +293,7 @@ export default {
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
                   row: obj,
-                  disabledProviders: ['SangFor', 'ZettaKit'],
+                  disabledProviders: ['SangFor', 'ZettaKit', 'UIS'],
                 })
               },
             },

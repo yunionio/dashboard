@@ -48,6 +48,7 @@ const actionEableMap = {
       remotefile: false,
       sangfor: ['ready'],
       zettakit: ['ready'],
+      uis: ['ready'],
     },
   },
   stop: {
@@ -81,6 +82,7 @@ const actionEableMap = {
       volcengine: ['running'],
       sangfor: ['running'],
       zettakit: ['running'],
+      uis: ['running'],
     },
   },
   restart: {
@@ -114,6 +116,7 @@ const actionEableMap = {
       volcengine: ['running', 'stop_fail'],
       sangfor: false,
       zettakit: ['running', 'stop_fail'],
+      uis: ['running', 'stop_fail'],
     },
   },
   rebuildRoot: {
@@ -145,6 +148,7 @@ const actionEableMap = {
       volcengine: false,
       sangfor: false,
       zettakit: ['running'],
+      uis: ['running'],
     },
   },
   resetPassword: {
@@ -176,6 +180,7 @@ const actionEableMap = {
       volcengine: ['ready'],
       sangfor: false,
       zettakit: false,
+      uis: false,
     },
   },
   bindKeyPair: {
@@ -207,6 +212,7 @@ const actionEableMap = {
       volcengine: ['ready'],
       sangfor: false,
       zettakit: false,
+      uis: false,
     },
   },
   unBindKeyPair: {
@@ -238,6 +244,7 @@ const actionEableMap = {
       volcengine: ['ready'],
       sangfor: false,
       zettakit: false,
+      uis: false,
     },
   },
   adjustConfig: {
@@ -269,6 +276,7 @@ const actionEableMap = {
       volcengine: ['ready'],
       sangfor: ['ready'],
       zettakit: ['ready'],
+      uis: ['ready'],
     },
   },
   vnc: {
@@ -302,6 +310,7 @@ const actionEableMap = {
       volcengine: ['running'],
       sangfor: ['running'],
       zettakit: ['running'],
+      uis: ['running'],
     },
   },
   'EIP SSH': {
@@ -334,6 +343,7 @@ const actionEableMap = {
       volcengine: ['running'],
       sangfor: ['running'],
       zettakit: ['running'],
+      uis: ['running'],
     },
   },
   'IP SSH': {
@@ -367,6 +377,7 @@ const actionEableMap = {
       volcengine: ['running'],
       sangfor: ['running'],
       zettakit: ['running'],
+      uis: ['running'],
     },
   },
   createSnapshot: {
@@ -398,6 +409,7 @@ const actionEableMap = {
       volcengine: false,
       sangfor: false,
       zettakit: false,
+      uis: false,
     },
   },
   createBackup: {
@@ -429,6 +441,7 @@ const actionEableMap = {
       volcengine: false,
       sangfor: false,
       zettakit: false,
+      uis: false,
     },
   },
   transfer: {
@@ -460,6 +473,7 @@ const actionEableMap = {
       volcengine: false,
       sangfor: false,
       zettakit: false,
+      uis: false,
     },
   },
   v2vTransfer: {
@@ -491,6 +505,7 @@ const actionEableMap = {
       volcengine: false,
       sangfor: false,
       zettakit: false,
+      uis: false,
     },
   },
   assignSecgroup: {
@@ -522,6 +537,7 @@ const actionEableMap = {
       volcengine: true,
       sangfor: false,
       zettakit: false,
+      uis: false,
     },
   },
   insertiso: {
@@ -552,6 +568,7 @@ const actionEableMap = {
       volcengine: false,
       sangfor: false,
       zettakit: false,
+      uis: false,
     },
   },
   ejectiso: {
@@ -582,6 +599,7 @@ const actionEableMap = {
       volcengine: false,
       sangfor: false,
       zettakit: false,
+      uis: false,
     },
   },
   bindEip: {
@@ -613,6 +631,7 @@ const actionEableMap = {
       volcengine: ['running', 'ready'],
       sangfor: false,
       zettakit: false,
+      uis: false,
     },
   },
   unbindEip: {
@@ -644,6 +663,7 @@ const actionEableMap = {
       volcengine: ['running', 'ready'],
       sangfor: false,
       zettakit: false,
+      uis: false,
     },
   },
   acttachGpu: {
@@ -657,6 +677,7 @@ const actionEableMap = {
       volcengine: false,
       sangfor: false,
       zettakit: false,
+      uis: false,
     },
   },
   acttachUsb: {
@@ -670,6 +691,7 @@ const actionEableMap = {
       volcengine: false,
       sangfor: false,
       zettakit: false,
+      uis: false,
     },
   },
   publicIpToEip: {
@@ -685,6 +707,7 @@ const actionEableMap = {
       volcengine: false,
       sangfor: false,
       zettakit: false,
+      uis: false,
     },
   },
   changeBlockStorage: {
@@ -695,6 +718,7 @@ const actionEableMap = {
       volcengine: false,
       sangfor: false,
       zettakit: false,
+      uis: false,
     },
   },
   addBackup: {
@@ -704,6 +728,7 @@ const actionEableMap = {
       volcengine: false,
       sangfor: false,
       zettakit: false,
+      uis: false,
     },
   },
 }

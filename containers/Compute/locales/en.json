@@ -1855,5 +1855,9 @@
   "compute.metric.vasmi_utilization_decoder": "VASTAITECH Decoding code utilization rate",
   "compute.metadatas": "@:compute.text_271",
   "compute.zettakit.sys_disk_resize_tip": "ZettaKit system disk only supports this operation in the [{0}] state",
-  "compute.zettakit.data_disk_resize_tip": "ZettaKit Data Disk only supports this operation in the [{0}] state"
+  "compute.zettakit.data_disk_resize_tip": "ZettaKit Data Disk only supports this operation in the [{0}] state",
+  "compute.uis.sys_disk_resize_tip": "UIS system disk only supports this operation in the [{0}] state",
+  "compute.uis.data_disk_resize_tip": "UIS Data Disk only supports this operation in the [{0}] state",
+  "compute.uis.dir": "Local disk",
+  "compute.uis.fs": "Shared disk"
 }
