@@ -850,6 +850,8 @@
   "cloudenv.create_sangfor": "{0}#create-sangfor-account",
   "cloudenv.create_zettakit": "{0}#create-zettakit-account",
   "cloudenv.zettakit": "ZettaKit",
+  "cloudenv.create_uis": "{0}#create-uis-account",
+  "cloudenv.uis": "UIS",
   "cloudenv.view_record": "View records",
   "cloudenv.old_sth": "Origin {0}",
   "cloudenv.new_sth": "Current {0}",

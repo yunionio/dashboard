@@ -1910,7 +1910,8 @@
     "Proxmox": "プロキシモックス",
     "H3C": "H3C",
     "Ksyun": "キングソフトクラウド",
-    "ZettaKit": "ゼータ雲"
+    "ZettaKit": "ゼータ雲",
+    "UIS": "UIS"
   },
   "shareScope": {
     "system": "システム",
@@ -2219,7 +2220,8 @@
     "bingocloud": "ビンゴクラウド",
     "h3c": "H3C",
     "ksyun": "キングソフトクラウド",
-    "zettakit": "ゼータ雲"
+    "zettakit": "ゼータ雲",
+    "uis": "uis"
   },
   "bandwidths": {
     "100": "100メートル",
@@ -5380,10 +5382,11 @@
   "license.provider.xsky": "エクススカイ",
   "license.provider.oraclecloud": "OracleCloud",
   "license.provider.pod": "Pod",
+  "license.provider.zettakit": "ゼータ雲",
+  "license.provider.uis": "UIS",
   "license.feature.baremetal": "@:scope.text_104",
   "license.feature.lb": "@:common_248",
   "license.feature.pod": "Pod",
-  "license.featur.pod": "ゼータ雲",
   "license.feature.k8s": "@:scope.text_78",
   "license.feature.monitor": "@:license.module.monitor",
   "license.feature.bill": "コストの最適化",

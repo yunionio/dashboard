@@ -1896,7 +1896,8 @@
     "extdb": "Custom resources",
     "Proxmox": "Proxmox",
     "H3C": "H3C",
-    "ZettaKit": "ZettaKit"
+    "ZettaKit": "ZettaKit",
+    "UIS": "UIS"
   },
   "shareScope": {
     "system": "System",
@@ -2205,7 +2206,8 @@
     "bingocloud": "BingoCloud",
     "h3c": "H3C",
     "ksyun": "Ksyun",
-    "zettakit": "ZettaKit"
+    "zettakit": "ZettaKit",
+    "uis": "uis"
   },
   "bandwidths": {
     "100": "one hundred megabytes (100M)",
@@ -5366,6 +5368,7 @@
   "license.feature.lb": "@:common_248",
   "license.feature.pod": "Pod",
   "license.feature.zettakit": "ZettaKit",
+  "license.feature.uis": "UIS",
   "license.feature.k8s": "@:scope.text_78",
   "license.feature.monitor": "@:license.module.monitor",
   "license.feature.bill": "Cost",

@@ -1233,6 +1233,28 @@ export const STORAGE_TYPES = {
       sort: 2,
     },
   },
+  [HYPERVISORS_MAP.uis.key]: {
+    dir: {
+      label: i18n.t('compute.uis.dir'),
+      value: 'dir',
+      min: 40,
+      max: 1024,
+      default: true,
+      sysMin: 40,
+      sysMax: 1024,
+      sort: 1,
+    },
+    fs: {
+      label: i18n.t('compute.uis.fs'),
+      value: 'fs',
+      min: 40,
+      max: 1024,
+      default: true,
+      sysMin: 40,
+      sysMax: 1024,
+      sort: 2,
+    },
+  },
 }
 export const ALL_STORAGE = {}
 export const ALL_STORAGE_LABEL = {}

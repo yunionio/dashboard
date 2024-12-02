@@ -38,6 +38,7 @@ const volcEngineLogo = require('@/assets/images/providers/volcengine.svg')
 const oraclecloudLogo = require('@/assets/images/providers/oraclecloud.svg')
 const sangforLogo = require('@/assets/images/providers/sangfor.svg')
 const zettakitLogo = require('@/assets/images/providers/zettakit.svg')
+const uisLogo = require('@/assets/images/providers/uis.svg')
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope, store.getters.isSysCE)
@@ -265,6 +266,16 @@ export const CLOUDACCOUNT_TYPES = {
         width: '100px',
       },
     },
+    uis: {
+      name: providerMap.uis.label,
+      logo: uisLogo,
+      component: 'UISCreate',
+      provider: providerMap.uis.key,
+      hiddenName: true,
+      logoStyle: {
+        width: '100px',
+      },
+    },
   },
   storage: {
     s3: {
@@ -332,6 +343,7 @@ export function getCloudaccountDocs (scope) {
     proxmox: i18n.t('cloudenv.create_proxmox', [docs_path]),
     h3c: i18n.t('cloudenv.create_h3c', [docs_path]),
     zettakit: i18n.t('cloudenv.create_zettakit', [docs_path]),
+    uis: i18n.t('cloudenv.create_uis', [docs_path]),
     ksyun: i18n.t('cloudenv.create_ksyun', [docs_path]),
     baidu: i18n.t('cloudenv.create_baidu', [docs_path]),
     qingcloud: i18n.t('cloudenv.create_qingcloud', [docs_path]),
@@ -732,6 +744,19 @@ export const keySecretFields = {
       s: i18n.t('cloudenv.text_147'),
     },
   },
+  uis: {
+    k: 'username',
+    s: 'password',
+    text: i18n.t('cloudenv.uis'),
+    placeholder: {
+      k: i18n.t('cloudenv.text_151'),
+      s: i18n.t('cloudenv.text_150'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_94'),
+      s: i18n.t('cloudenv.text_147'),
+    },
+  },
   ksyun: {
     k: 'access_key_id',
     s: 'access_key_secret',
@@ -880,6 +905,7 @@ export const notSupportSelectRegion = [
   providerMap.remotefile.key,
   providerMap.h3c.key,
   providerMap.zettakit.key,
+  providerMap.uis.key,
   providerMap.proxmox.key,
   providerMap.oraclecloud.key,
 ]

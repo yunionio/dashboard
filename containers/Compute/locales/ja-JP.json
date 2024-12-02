@@ -1857,5 +1857,9 @@
   "compute.metric.vasmi_utilization_decoder": "瀚博 復号利用率",
   "compute.metadatas": "@:compute.text_271",
   "compute.zettakit.sys_disk_resize_tip": "ゼータ・クラウド・コンソールは、この操作をサポートしているのは【】の状態のみです",
-  "compute.zettakit.data_disk_resize_tip": "Zetta Cloudデータディスクは、以下の【{0}】状態でのみこの操作をサポートしています。"
+  "compute.zettakit.data_disk_resize_tip": "Zetta Cloudデータディスクは、以下の【{0}】状態でのみこの操作をサポートしています。",
+  "compute.uis.sys_disk_resize_tip": "UISシステムディスクは、[{0}]状態でのみこの操作をサポートしています。",
+  "compute.uis.data_disk_resize_tip": "UISデータディスクは、【{0}】状態でのみこの操作をサポートしています。",
+  "compute.uis.dir": "本地ディスク",
+  "compute.uis.fs": "共有ディスク"
 }
