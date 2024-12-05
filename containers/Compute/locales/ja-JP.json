@@ -570,6 +570,9 @@
   "compute.text_563": "物理 CPU",
   "compute.text_564": "物理メモリ",
   "compute.text_565": "物理ストレージ",
+  "compute.text_563_1": "仮想CPU",
+  "compute.text_564_1": "仮想メモリ",
+  "compute.text_565_1": "仮想ストレージ",
   "compute.text_566": "初期口座番号",
   "compute.text_567": "リモート端末",
   "compute.text_568": "SOL リモートターミナル",
@@ -1844,5 +1847,7 @@
   "compute.metric.vasmi_temperature_gpu": "瀚博 GPU温度",
   "compute.metric.vasmi_utilization_encoder": "瀚博 コーディング使用率",
   "compute.metric.vasmi_utilization_decoder": "瀚博 復号利用率",
-  "compute.metadatas": "@:compute.text_271"
+  "compute.metadatas": "@:compute.text_271",
+  "compute.virtual_total": "仮想総量",
+  "compute.actual_total": "物理総量"
 }

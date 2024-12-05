@@ -542,3 +542,34 @@ export const VASMI_OPTS = [
     transfer: 1,
   },
 ]
+
+export const MEM_USED_PERCENT = {
+  name: 'mem',
+  label: i18n.t('compute.text_518'),
+  seleteItem: 'used_percent',
+  as: i18n.t('compute.text_518'),
+  fromItem: 'mem',
+  unit: '%',
+  transfer: 1,
+}
+export const CPU_USED_PERCENT = {
+  name: 'cpu',
+  label: i18n.t('compute.text_523'),
+  as: i18n.t('compute.text_523'),
+  seleteItem: 'usage_active',
+  fromItem: 'cpu',
+  unit: '%',
+  transfer: 1,
+}
+export const DISK_USED_PERCENT = {
+  name: 'disk_used_percent',
+  label: i18n.t('compute.metric.disk_used_percent'),
+  seleteItem: 'used_percent',
+  // as: i18n.t('compute.metric.disk_used_percent'),
+  fromItem: 'disk',
+  // groupBy: ['path'],
+  unit: '%',
+  transfer: 1,
+}
+
+export const HOST_INFO_OPTS = [CPU_USED_PERCENT, MEM_USED_PERCENT, DISK_USED_PERCENT]
