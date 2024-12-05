@@ -97,8 +97,7 @@ router.beforeEach(async (to, from, next) => {
     !hasScopePolicy && await store.dispatch('scopedPolicy/get', {
       category: ['sub_hidden_menus', 'document_configured_callback_address', 'navbar_hidden_items'],
     })
-    !hasGlobalConfig && await store.dispatch('common/fetchGlobalConfig')
-    !hasGlobalServices && await store.dispatch('common/fetchGlobalServices')
+    !hasGlobalConfig && await store.dispatch('common/fetchGlobalServices')
     !hasMonitorResourceAlerts && await store.dispatch('monitor/loadMonitorResourceAlerts')
   } catch (error) {
     throw error

@@ -157,67 +157,75 @@ export default {
         throw error
       }
     },
-    async fetchGlobalConfig ({ commit }) {
-      let manager = new Manager('services', 'v1')
+    // async fetchGlobalConfig ({ commit }) {
+    //   let manager = new Manager('services', 'v1')
+    //   try {
+    //     const response = await manager.list({
+    //       params: {
+    //         type: ['common', 'yunionapi', 'meter', 'identity'],
+    //       },
+    //     })
+    //     const resData = response?.data?.data
+    //     const commonId = resData.find(v => v.type === 'common')?.id || ''
+    //     if (commonId) {
+    //       const configResponse = await manager.getSpecific({
+    //         id: commonId,
+    //         spec: 'config',
+    //       })
+    //       const config = (configResponse.data.config && configResponse.data.config.default) || {}
+    //       commit('SET_GLOBAL_CONFIG', config)
+    //     }
+    //     const yunionapiId = resData.find(v => v.type === 'yunionapi')?.id || ''
+    //     if (yunionapiId) {
+    //       const configResponse = await manager.getSpecific({
+    //         id: yunionapiId,
+    //         spec: 'config',
+    //       })
+    //       const config = (configResponse.data.config && configResponse.data.config.default) || {}
+    //       commit('projectTags/SET_DATA', { name: 'enableOrganization', data: config.enable_organization }, { root: true })
+    //     }
+    //     const mneterId = resData.find(v => v.type === 'meter')?.id || ''
+    //     if (mneterId) {
+    //       const configResponse = await manager.getSpecific({
+    //         id: mneterId,
+    //         spec: 'config',
+    //       })
+    //       const config = (configResponse.data.config && configResponse.data.config.default) || {}
+    //       commit('SET_GLOBAL_BILL_CONFIG', config)
+    //     }
+    //     const identityId = resData.find(v => v.type === 'identity')?.id || ''
+    //     if (identityId) {
+    //       const configResponse = await manager.getSpecific({
+    //         id: identityId,
+    //         spec: 'config',
+    //       })
+    //       const config = (configResponse.data.config && configResponse.data.config.default) || {}
+    //       commit('auth/SET_NO_ACTION_LOGOUT_SECONDS', config.no_action_logout_seconds, { root: true })
+    //     }
+    //   } catch (error) {
+    //     throw error
+    //   } finally {
+    //     manager = null
+    //   }
+    // },
+    async fetchGlobalServices ({ commit, rootGetters }, paramObj) {
       try {
-        const response = await manager.list({
-          params: {
-            type: ['common', 'yunionapi', 'meter', 'identity'],
-          },
-        })
-        const resData = response?.data?.data
-        const commonId = resData.find(v => v.type === 'common')?.id || ''
-        if (commonId) {
-          const configResponse = await manager.getSpecific({
-            id: commonId,
-            spec: 'config',
+        const response = await new Manager('service_settings', 'v1').list()
+        const { common = {}, yunionapi = {}, meter = {}, identity = {} } = (response.data || {})
+        commit('SET_GLOBAL_CONFIG', common)
+        commit('projectTags/SET_DATA', { name: 'enableOrganization', data: yunionapi.enable_organization }, { root: true })
+        commit('SET_GLOBAL_BILL_CONFIG', meter)
+        commit('auth/SET_NO_ACTION_LOGOUT_SECONDS', identity.no_action_logout_seconds, { root: true })
+        if (rootGetters['auth/isAdminMode']) {
+          const response = await new Manager('services', 'v1').list({
+            params: {
+              type: ['common'],
+              ...paramObj,
+            },
           })
-          const config = (configResponse.data.config && configResponse.data.config.default) || {}
-          commit('SET_GLOBAL_CONFIG', config)
+          const data = (response.data.data && response.data.data) || []
+          commit('SET_GLOBAL_SERVICE', data)
         }
-        const yunionapiId = resData.find(v => v.type === 'yunionapi')?.id || ''
-        if (yunionapiId) {
-          const configResponse = await manager.getSpecific({
-            id: yunionapiId,
-            spec: 'config',
-          })
-          const config = (configResponse.data.config && configResponse.data.config.default) || {}
-          commit('projectTags/SET_DATA', { name: 'enableOrganization', data: config.enable_organization }, { root: true })
-        }
-        const mneterId = resData.find(v => v.type === 'meter')?.id || ''
-        if (mneterId) {
-          const configResponse = await manager.getSpecific({
-            id: mneterId,
-            spec: 'config',
-          })
-          const config = (configResponse.data.config && configResponse.data.config.default) || {}
-          commit('SET_GLOBAL_BILL_CONFIG', config)
-        }
-        const identityId = resData.find(v => v.type === 'identity')?.id || ''
-        if (identityId) {
-          const configResponse = await manager.getSpecific({
-            id: identityId,
-            spec: 'config',
-          })
-          const config = (configResponse.data.config && configResponse.data.config.default) || {}
-          commit('auth/SET_NO_ACTION_LOGOUT_SECONDS', config.no_action_logout_seconds, { root: true })
-        }
-      } catch (error) {
-        throw error
-      } finally {
-        manager = null
-      }
-    },
-    async fetchGlobalServices ({ commit }, paramObj) {
-      try {
-        const response = await new Manager('services', 'v1').list({
-          params: {
-            type: ['common'],
-            ...paramObj,
-          },
-        })
-        const data = (response.data.data && response.data.data) || []
-        commit('SET_GLOBAL_SERVICE', data)
       } catch (error) {
         throw error
       }
