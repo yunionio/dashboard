@@ -39,7 +39,8 @@ import RingCard from '@/sections/RingCard'
 import { sizestrWithUnit, getRequestT } from '@/utils/utils'
 import Top5 from '@/sections/Top5'
 import { getSignature } from '@/utils/crypto'
-import { GAUGEMSG, HOST_TOP5 } from '../constants'
+import { GAUGEMSG, HOST_TOP5, HOST_INFO_OPTS } from '../constants'
+import { getHostSpecInfo } from '../utils/index'
 
 export default {
   name: 'HostDashboard',
@@ -60,11 +61,11 @@ export default {
   },
   data () {
     return {
-      progressList: [],
       gaugeList: [],
       loading: false,
       top5Loading: false,
       topList: [],
+      progressListPercent: [0, 0, 0],
     }
   },
   computed: {
@@ -72,13 +73,142 @@ export default {
       if (this.data.host_type === 'hypervisor') return 'isKvm'
       return 'noKvm'
     },
+    progressList () {
+      const data = this.data
+      const obj = getHostSpecInfo(data)
+      const tempList = new Array(3)
+      tempList[0] = (() => {
+        return {
+          title: this.$t('compute.text_563_1'),
+          percent: obj.cpu_commit / obj.cpu_count_virtual,
+          msg: {
+            current: obj.cpu_commit,
+            totalLabel: this.$t('compute.virtual_total'),
+            total: obj.cpu_count_virtual,
+          },
+        }
+      })()
+      tempList[1] = (() => {
+        return {
+          title: this.$t('compute.text_564_1'),
+          percent: obj.mem_commit / obj.mem_size_virtual,
+          msg: {
+            current: sizestrWithUnit(obj.mem_commit, 'M', 1024),
+            totalLabel: this.$t('compute.virtual_total'),
+            total: `${sizestrWithUnit(obj.mem_size_virtual, 'M', 1024)}`,
+          },
+        }
+      })()
+      tempList[2] = (() => {
+        return {
+          title: this.$t('compute.text_565_1'),
+          percent: obj.storage_commit / obj.storage_size_virtual,
+          msg: {
+            current: sizestrWithUnit(obj.storage_commit, 'M', 1024),
+            totalLabel: this.$t('compute.virtual_total'),
+            total: `${sizestrWithUnit(obj.storage_size_virtual, 'M', 1024)}`,
+          },
+        }
+      })()
+      tempList[3] = (() => {
+        const current = obj.running_guests || 0
+        const ready = obj.ready_guests || 0
+        const pend = obj.pending_deleted_guests || 0
+        const other = obj.other_guests || 0
+        const total = current + ready + pend + other
+        return {
+          pieData: [
+            {
+              name: `${this.$t('common.text00051')}: ${current}`,
+              value: current,
+            },
+            {
+              name: `${this.$t('status.server.ready')}: ${ready}`,
+              value: ready,
+            },
+            {
+              name: `${this.$t('common.text00052')}: ${pend}`,
+              value: pend,
+            },
+            {
+              name: `${this.$t('common.text00053')}: ${other}`,
+              value: other,
+            },
+          ],
+          title: this.$t('common.text00054'),
+          total: total,
+        }
+      })()
+      tempList[4] = (() => {
+        return {
+          title: this.$t('compute.text_563'),
+          percent: this.progressListPercent[0],
+          msg: {
+            current: parseInt(obj.cpu_count * this.progressListPercent[0]) < obj.cpu_count * this.progressListPercent[0] ? Math.floor(parseInt(obj.cpu_count * this.progressListPercent[0]) + 1, obj.cpu_count) : obj.cpu_count * this.progressListPercent[0], // 向上取整
+            totalLabel: this.$t('compute.actual_total'),
+            total: `${obj.cpu_count} (${this.$t('compute.text_563')}: ${obj.cpu_count - obj.cpu_reserved}, ${this.$t('compute.reserved')}: ${obj.cpu_reserved})`,
+          },
+        }
+      })()
+      tempList[5] = (() => {
+        return {
+          title: this.$t('compute.text_564'),
+          percent: this.progressListPercent[1],
+          msg: {
+            current: sizestrWithUnit(obj.mem_size * this.progressListPercent[1], 'M', 1024),
+            totalLabel: this.$t('compute.actual_total'),
+            total: `${sizestrWithUnit(obj.mem_size, 'M', 1024)} (${this.$t('compute.text_564')}: ${sizestrWithUnit(obj.mem_size - obj.mem_reserved, 'M', 1024)}, ${this.$t('compute.reserved')}: ${sizestrWithUnit(obj.mem_reserved, 'M', '1024')})`,
+          },
+        }
+      })()
+      tempList[6] = (() => {
+        return {
+          title: this.$t('compute.text_565'),
+          percent: this.progressListPercent[2],
+          msg: {
+            current: sizestrWithUnit(obj.storage_size * this.progressListPercent[2], 'M', 1024),
+            totalLabel: this.$t('compute.actual_total'),
+            total: `${sizestrWithUnit(obj.storage_size, 'M', 1024)} (${this.$t('compute.text_565')}: ${sizestrWithUnit(obj.storage_size, 'M', '1024')})`,
+          },
+        }
+      })()
+      return tempList
+    },
   },
   created () {
-    this.turnToList(this.data)
     // this.fetchGaugeData()
+    this.fetchUsedPercent()
     this.fetchTop5Data()
   },
   methods: {
+    async fetchUsedPercent () {
+      try {
+        const reqList = HOST_INFO_OPTS.map(opt => {
+          return new this.$Manager('unifiedmonitors', 'v1')
+            .performAction({
+              id: 'query',
+              action: '',
+              data: this.genQueryData(opt),
+              params: { $t: getRequestT() },
+            })
+        })
+        const res = await Promise.all(reqList)
+        const list = []
+        res.forEach((r, index) => {
+          const { series = [{}] } = (r.data || {})
+          const { points = [] } = (series[0] || {})
+          if (points.length) {
+            const percent = points.reduce((acc, cur) => acc + cur[0], 0) / points.length
+            list.push(percent / 100)
+          } else {
+            list.push(0)
+          }
+        })
+        this.progressListPercent = list
+      } catch (err) {
+        console.error(err)
+      }
+    },
     _getSeriesMax (arr) {
       if (!arr) return []
       const data = arr.map(item => {
@@ -167,82 +297,6 @@ export default {
       const per = (vm.percent || 0) / 100
       const oversell = per > 100 ? <a-tag color="red">{this.$t('common_714')}</a-tag> : null
       return (<div>{oversell}<div class="mt-2 text-color">{ numerify(per * 100, vm.numerifyFloat) }{ vm.unit }</div></div>)
-    },
-    turnToList (obj) {
-      const tempList = new Array(3)
-      tempList[0] = (() => {
-        const current = obj.cpu_commit || 0
-        let cpu_reserved = 0
-        const { metadata = {} } = obj
-        const { reserved_cpus_info = '' } = metadata
-        if (reserved_cpus_info) {
-          const l = JSON.parse(reserved_cpus_info)
-          cpu_reserved = l.cpus.split(',').length
-        }
-        const total = obj.cpu_count - (cpu_reserved || 0)
-        return {
-          title: 'CPU',
-          percent: total ? (current / total) : 0,
-          msg: {
-            current,
-            total: `${total * obj.cpu_commit_bound || 1} (${this.$t('compute.text_563')}: ${obj.cpu_count}, ${this.$t('compute.reserved')}: ${cpu_reserved})`,
-          },
-        }
-      })()
-      tempList[1] = (() => {
-        const current = obj.mem_commit || 0
-        const total = (obj.mem_size - (obj.mem_reserved || 0)) || 0
-        return {
-          title: this.$t('compute.text_369'),
-          percent: total ? (current / total) : 0,
-          msg: {
-            current: sizestrWithUnit(current, 'M', 1024),
-            total: `${sizestrWithUnit(total * obj.mem_commit_bound || 1, 'M', 1024)} (${this.$t('compute.text_564')}: ${sizestrWithUnit(obj.mem_size, 'M', 1024)}, ${this.$t('compute.reserved')}: ${sizestrWithUnit(obj.mem_reserved, 'M', '1024')})`,
-          },
-        }
-      })()
-      tempList[2] = (() => {
-        const current = obj.storage_used || 0
-        const total = obj.storage_size || 0
-        return {
-          title: this.$t('compute.text_99'),
-          percent: total ? (current / total) : 0,
-          msg: {
-            current: sizestrWithUnit(current, 'M', 1024),
-            total: `${sizestrWithUnit(total * obj.storage_commit_rate || 1, 'M', 1024)} (${this.$t('compute.text_565')}: ${sizestrWithUnit(obj.storage_size, 'M', '1024')})`,
-          },
-        }
-      })()
-      tempList[3] = (() => {
-        const current = obj.running_guests || 0
-        const ready = obj.ready_guests || 0
-        const pend = obj.pending_deleted_guests || 0
-        const other = obj.other_guests || 0
-        const total = current + ready + pend + other
-        return {
-          pieData: [
-            {
-              name: `${this.$t('common.text00051')}: ${current}`,
-              value: current,
-            },
-            {
-              name: `${this.$t('status.server.ready')}: ${ready}`,
-              value: ready,
-            },
-            {
-              name: `${this.$t('common.text00052')}: ${pend}`,
-              value: pend,
-            },
-            {
-              name: `${this.$t('common.text00053')}: ${other}`,
-              value: other,
-            },
-          ],
-          title: this.$t('common.text00054'),
-          total: total,
-        }
-      })()
-      this.progressList = tempList
     },
     genGaugeQueryData (val) {
       const select = [

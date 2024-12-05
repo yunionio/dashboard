@@ -570,6 +570,9 @@
   "compute.text_563": "物理CPU",
   "compute.text_564": "物理内存",
   "compute.text_565": "物理存储",
+  "compute.text_563_1": "虚拟CPU",
+  "compute.text_564_1": "虚拟内存",
+  "compute.text_565_1": "虚拟存储",
   "compute.text_566": "初始账号",
   "compute.text_567": "远程终端",
   "compute.text_568": "SOL远程终端",
@@ -1844,5 +1847,7 @@
   "compute.metric.vasmi_temperature_gpu": "瀚博 GPU温度",
   "compute.metric.vasmi_utilization_encoder": "瀚博 编码利用率",
   "compute.metric.vasmi_utilization_decoder": "瀚博 解码利用率",
-  "compute.metadatas": "@:compute.text_271"
+  "compute.metadatas": "@:compute.text_271",
+  "compute.virtual_total": "虚拟总量",
+  "compute.actual_total": "物理总量"
 }
