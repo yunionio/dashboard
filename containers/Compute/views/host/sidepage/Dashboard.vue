@@ -146,6 +146,7 @@ export default {
           msg: {
             current: parseInt(obj.cpu_count * this.progressListPercent[0]) < obj.cpu_count * this.progressListPercent[0] ? Math.floor(parseInt(obj.cpu_count * this.progressListPercent[0]) + 1, obj.cpu_count) : obj.cpu_count * this.progressListPercent[0], // 向上取整
             totalLabel: this.$t('compute.actual_total'),
+            currentLabel: this.$t('compute.text_1330'),
             total: `${obj.cpu_count} (${this.$t('compute.text_563')}: ${obj.cpu_count - obj.cpu_reserved}, ${this.$t('compute.reserved')}: ${obj.cpu_reserved})`,
           },
         }
@@ -157,6 +158,7 @@ export default {
           msg: {
             current: sizestrWithUnit(obj.mem_size * this.progressListPercent[1], 'M', 1024),
             totalLabel: this.$t('compute.actual_total'),
+            currentLabel: this.$t('compute.text_1330'),
             total: `${sizestrWithUnit(obj.mem_size, 'M', 1024)} (${this.$t('compute.text_564')}: ${sizestrWithUnit(obj.mem_size - obj.mem_reserved, 'M', 1024)}, ${this.$t('compute.reserved')}: ${sizestrWithUnit(obj.mem_reserved, 'M', '1024')})`,
           },
         }
@@ -168,6 +170,7 @@ export default {
           msg: {
             current: sizestrWithUnit(obj.storage_size * this.progressListPercent[2], 'M', 1024),
             totalLabel: this.$t('compute.actual_total'),
+            currentLabel: this.$t('compute.text_1330'),
             total: `${sizestrWithUnit(obj.storage_size, 'M', 1024)} (${this.$t('compute.text_565')}: ${sizestrWithUnit(obj.storage_size, 'M', '1024')})`,
           },
         }
