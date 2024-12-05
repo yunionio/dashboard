@@ -1864,5 +1864,7 @@
   "compute.uis.sys_disk_resize_tip": "UISシステムディスクは、[{0}]状態でのみこの操作をサポートしています。",
   "compute.uis.data_disk_resize_tip": "UISデータディスクは、【{0}】状態でのみこの操作をサポートしています。",
   "compute.uis.dir": "本地ディスク",
-  "compute.uis.fs": "共有ディスク"
+  "compute.uis.fs": "共有ディスク",
+  "compute.virtual_total": "仮想総量",
+  "compute.actual_total": "物理総量"
 }

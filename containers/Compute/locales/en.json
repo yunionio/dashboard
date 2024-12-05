@@ -1862,5 +1862,7 @@
   "compute.uis.sys_disk_resize_tip": "UIS system disk only supports this operation in the [{0}] state",
   "compute.uis.data_disk_resize_tip": "UIS Data Disk only supports this operation in the [{0}] state",
   "compute.uis.dir": "Local disk",
-  "compute.uis.fs": "Shared disk"
+  "compute.uis.fs": "Shared disk",
+  "compute.virtual_total": "Virtual Total",
+  "compute.actual_total": "Physical Total"
 }
