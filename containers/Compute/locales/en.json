@@ -570,6 +570,9 @@
   "compute.text_563": "Physical CPU",
   "compute.text_564": "Physical Memory",
   "compute.text_565": "Physical Storage",
+  "compute.text_563_1": "Virtual CPU",
+  "compute.text_564_1": "Virtual Memory",
+  "compute.text_565_1": "Virtual Storage",
   "compute.text_566": "Initial Account",
   "compute.text_567": "Remote Terminal",
   "compute.text_568": "SOL remote terminal",
@@ -1842,5 +1845,7 @@
   "compute.metric.vasmi_temperature_gpu": "VASTAITECH GPU temperature",
   "compute.metric.vasmi_utilization_encoder": "VASTAITECH Encoding utilization rate",
   "compute.metric.vasmi_utilization_decoder": "VASTAITECH Decoding code utilization rate",
-  "compute.metadatas": "@:compute.text_271"
+  "compute.metadatas": "@:compute.text_271",
+  "compute.virtual_total": "Virtual Total",
+  "compute.actual_total": "Physical Total"
 }
