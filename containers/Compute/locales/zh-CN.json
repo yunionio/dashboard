@@ -573,6 +573,9 @@
   "compute.text_563": "物理CPU",
   "compute.text_564": "物理内存",
   "compute.text_565": "物理存储",
+  "compute.text_563_1": "虚拟CPU",
+  "compute.text_564_1": "虚拟内存",
+  "compute.text_565_1": "虚拟存储",
   "compute.text_566": "初始账号",
   "compute.text_567": "远程终端",
   "compute.text_568": "SOL远程终端",
@@ -1861,5 +1864,7 @@
   "compute.uis.sys_disk_resize_tip": "UIS系统盘仅在【{0}】状态下支持此操作",
   "compute.uis.data_disk_resize_tip": "UIS数据盘仅在【{0}】状态下支持此操作",
   "compute.uis.dir": "本地盘",
-  "compute.uis.fs": "共享盘"
+  "compute.uis.fs": "共享盘",
+  "compute.virtual_total": "虚拟总量",
+  "compute.actual_total": "物理总量"
 }

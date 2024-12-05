@@ -14,8 +14,10 @@ import {
   getTimeTableColumn,
   getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
-import { sizestr, percentstr } from '@/utils/utils'
+import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
+import { numerify } from '@/filters'
+import { getHostSpecInfo } from '../utils/index'
 
 export default {
   created () {
@@ -184,50 +186,102 @@ export default {
       getOsArch({ field: 'cpu_architecture' }),
       {
         field: 'cpu_count',
-        title: i18n.t('compute.text_563'),
+        title: `${i18n.t('compute.text_563')}(${this.$t('compute.reserved')})`,
         minWidth: 100,
         showOverflow: 'title',
-        sortFields: ['cpu_count', ''],
-        sortByList: ['', 'order_by_cpu_commit_rate'],
-        slots: {
-          default: ({ row }) => {
-            if (this.isPreLoad && !row.cpu_commit_rate) return [<data-loading />]
-            return row.cpu_count ? `${row.cpu_count}/${percentstr(row.cpu_commit_rate)}` : 'N/A'
-          },
-        },
+        sortable: true,
+        // slots: {
+        //   default: ({ row }) => {
+        //     if (this.isPreLoad && !row.cpu_commit_rate) return [<data-loading />]
+        //     return row.cpu_count ? `${row.cpu_count}/${percentstr(row.cpu_commit_rate)}` : 'N/A'
+        //   },
+        // },
         formatter: ({ row }) => {
-          return row.cpu_count || '-'
+          const { cpu_count = '-', cpu_reserved } = getHostSpecInfo(row)
+          return `${cpu_count} ${cpu_reserved ? ` (${cpu_reserved})` : ''}`
         },
       },
       {
         field: 'mem_size',
-        title: i18n.t('compute.text_564'),
+        title: `${i18n.t('compute.text_564')}(${this.$t('compute.reserved')})`,
         minWidth: 100,
-        sortFields: ['mem_size', ''],
-        sortByList: ['', 'order_by_mem_commit_rate'],
-        slots: {
-          default: ({ row }) => {
-            if (this.isPreLoad && !row.mem_commit_rate) return [<data-loading />]
-            return row.mem_size ? `${sizestr(row.mem_size, 'M', 1024)}/${percentstr(row.mem_commit_rate)}` : 'N/A'
-          },
-        },
+        sortable: true,
+        // slots: {
+        //   default: ({ row }) => {
+        //     if (this.isPreLoad && !row.mem_commit_rate) return [<data-loading />]
+        //     return row.mem_size ? `${sizestr(row.mem_size, 'M', 1024)}/${percentstr(row.mem_commit_rate)}` : 'N/A'
+        //   },
+        // },
         formatter: ({ row }) => {
-          return row.mem_size ? sizestr(row.mem_size, 'M', 1024) : '-'
+          const { mem_size, mem_reserved } = getHostSpecInfo(row)
+          return `${mem_size ? sizestr(row.mem_size, 'M', 1024) : '-'} ${mem_reserved ? ` (${sizestr(mem_reserved, 'M', 1024)})` : ''}`
         },
       },
       {
         field: 'storage',
         title: i18n.t('compute.text_565'),
         minWidth: 80,
-        sortByList: ['order_by_storage', 'order_by_storage_commit_rate'],
-        slots: {
-          default: ({ row }) => {
-            if (this.isPreLoad && !row.storage) return [<data-loading />]
-            return row.storage ? `${sizestr(row.storage, 'M', 1024)}/${percentstr(row.storage_commit_rate)}` : 'N/A'
-          },
-        },
+        sortable: true,
+        // slots: {
+        //   default: ({ row }) => {
+        //     if (this.isPreLoad && !row.storage) return [<data-loading />]
+        //     return row.storage ? `${sizestr(row.storage, 'M', 1024)}/${percentstr(row.storage_commit_rate)}` : 'N/A'
+        //   },
+        // },
         formatter: ({ row }) => {
-          return row.mem_size ? sizestr(row.storage, 'M', 1024) : '-'
+          return row.storage ? sizestr(row.storage, 'M', 1024) : '-'
+        },
+      },
+      {
+        field: 'cpu_commit',
+        title: `${i18n.t('compute.text_563_1')}(${this.$t('common_233')})`,
+        minWidth: 100,
+        showOverflow: 'title',
+        sortFields: ['cpu_commit', ''],
+        sortByList: ['', 'order_by_cpu_commit_rate'],
+        // slots: {
+        //   default: ({ row }) => {
+        //     if (this.isPreLoad && !row.cpu_commit_rate) return [<data-loading />]
+        //     return row.cpu_count ? `${row.cpu_count}/${percentstr(row.cpu_commit_rate)}` : 'N/A'
+        //   },
+        // },
+        formatter: ({ row }) => {
+          const { cpu_commit, cpu_commit_rate, cpu_count_virtual } = getHostSpecInfo(row)
+          return `${cpu_count_virtual || '-'} (${cpu_commit},${numerify(cpu_commit_rate, '0%')})`
+        },
+      },
+      {
+        field: 'mem_commit',
+        title: `${i18n.t('compute.text_564_1')}(${this.$t('common_233')})`,
+        minWidth: 100,
+        sortFields: ['mem_commit', ''],
+        sortByList: ['', 'order_by_mem_commit_rate'],
+        // slots: {
+        //   default: ({ row }) => {
+        //     if (this.isPreLoad && !row.mem_commit_rate) return [<data-loading />]
+        //     return row.mem_size ? `${sizestr(row.mem_size, 'M', 1024)}/${percentstr(row.mem_commit_rate)}` : 'N/A'
+        //   },
+        // },
+        formatter: ({ row }) => {
+          const { mem_commit, mem_commit_rate, mem_size_virtual } = getHostSpecInfo(row)
+          return `${sizestr(mem_size_virtual, 'M', 1024)} (${sizestr(mem_commit, 'M', 1024)},${numerify(mem_commit_rate, '0%')})`
+        },
+      },
+      {
+        field: 'storage_used',
+        title: i18n.t('compute.text_565_1'),
+        minWidth: 80,
+        sortFields: ['storage_used', ''],
+        sortByList: ['', 'order_by_storage_commit_rate'],
+        // slots: {
+        //   default: ({ row }) => {
+        //     if (this.isPreLoad && !row.storage) return [<data-loading />]
+        //     return row.storage ? `${sizestr(row.storage, 'M', 1024)}/${percentstr(row.storage_commit_rate)}` : 'N/A'
+        //   },
+        // },
+        formatter: ({ row }) => {
+          const { storage_commit, storage_commit_rate, storage_size_virtual } = getHostSpecInfo(row)
+          return `${sizestr(storage_size_virtual, 'M', 1024)} (${sizestr(storage_commit, 'M', 1024)},${numerify(storage_commit_rate, '0%')})`
         },
       },
       {
