@@ -6119,5 +6119,6 @@
   "common.adjust_order": "順序を調整する",
   "common.prev_one": "前へ",
   "common.next_one": "次へ",
-  "common.system_ce": "Cloudpods エンタープライズサポート版"
+  "common.system_ce": "Cloudpods エンタープライズサポート版",
+  "common.shopcart_workflow_name": "{0}が{1}で開始した大量リソース作成依頼-{2}"
 }
