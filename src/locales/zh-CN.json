@@ -6021,5 +6021,6 @@
   "common.view_scheduler_log": "查看调度日志",
   "common.system_ce": "Cloudpods 企业支持版",
   "common.prev_one": "上一条",
-  "common.next_one": "下一条"
+  "common.next_one": "下一条",
+  "common.shopcart_workflow_name": "{0}于 {1} 发起的批量资源创建申请-{2}"
 }
