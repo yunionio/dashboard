@@ -1387,6 +1387,7 @@
     "maxLength": "长度不能超过{0}个字符",
     "nonNegativeInt": "请输入非负整数",
     "blockStorageName": "字母开头，数字和字母大小写组合，长度为2-128个字符，可含.-_",
+    "command": "不是合法的Linux命令",
     "externalProjectName": "长度为3~50个字母或数字，必须以英文字母开头"
   },
   "dialog": {

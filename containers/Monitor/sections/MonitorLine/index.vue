@@ -1,6 +1,6 @@
 <template>
   <a-card :title="title" size="small" class="explorer-monitor-line">
-    <div slot="extra">
+    <div slot="extra" v-if="showTableExport">
       <a-button v-if="showTableExport && curPager.total" type="link" :title="$t('monitor.full_export')" @click="exportTable">
         {{ $t('table.action.export') }}
       </a-button>
@@ -18,7 +18,7 @@
         </div>
       </div>
       <vxe-grid
-        v-if="tableData && tableData.length && showTable"
+        v-if="tableData && tableData.length && showTable && showTableLegend"
         max-height="200"
         size="mini"
         border
@@ -33,7 +33,7 @@
         :sort-config="sortConfig"
         @cell-click="cellClick"
         @sort-change="sortChange" />
-      <div class="vxe-grid--pager-wrapper">
+      <div class="vxe-grid--pager-wrapper" v-if="showTableLegend">
         <div class="vxe-pager size--mini">
           <div class="vxe-pager--wrapper">
             <span class="vxe-pager--total" v-if="!pager || (pager && pager.total < 11)">{{ total }}</span>
@@ -41,7 +41,7 @@
               v-else
               size="mini"
               @page-change="pageChange"
-              :page-sizes="[10,20,50,100]"
+              :page-sizes="getPageSizes"
               :current-page.sync="curPager.page"
               :page-size.sync="curPager.limit"
               :total="curPager.total" />
@@ -123,6 +123,10 @@ export default {
     showTableExport: {
       type: Boolean,
       default: false,
+    },
+    showTableLegend: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {
@@ -314,6 +318,13 @@ export default {
         }
       }
       return {}
+    },
+    getPageSizes () {
+      const ret = [10, 20, 50, 100]
+      if (this.curPager.Total > ret[ret.length - 1]) {
+        ret.push(this.curPager.Total)
+      }
+      return ret
     },
   },
   watch: {
