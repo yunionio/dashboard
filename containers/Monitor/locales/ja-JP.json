@@ -106,10 +106,10 @@
   "monitor.monitor_add": "クエリを追加する",
   "monitor.monitor_metric": "メトリックの監視",
   "monitor.monitor_filters": "リソースの範囲",
-  "monitor.monitor_group": "グルーピング",
-  "monitor.monitor_function": "機能",
+  "monitor.monitor_group": "集約ディメンション",
+  "monitor.monitor_function": "集計方法",
   "monitor.monitor_add_filters": "フィルターを追加する",
-  "monitor.monitor_fill_filters": "クエリを補完する",
+  "monitor.monitor_fill_filters": "クエリ条件",
   "monitor.metrics_cpu": "ホストの CPU 使用率",
   "monitor.metrics_cpu_usage_active": "CPU 使用率",
   "monitor.metrics_disk": "ホストのディスク使用量",
@@ -321,5 +321,6 @@
   "monitor.monitor_result_function": "結果集約関数",
   "monitor.monitor_percentile": "数値",
   "monitor.adjust_chart_order": "グラフの順序の調整",
+  "monitor.show_hide_legend_table": "監視凡例の詳細の表示/非表示",
   "monitor.full_export": "フルエクスポート"
 }

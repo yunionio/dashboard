@@ -201,7 +201,9 @@ export default {
     },
     tagValueOpts (tagKey) {
       if (R.is(Object, this.metricInfo.tag_value) && tagKey) {
-        return (this.metricInfo.tag_value[tagKey] || []).map(v => {
+        const vals = (this.metricInfo.tag_value[tagKey] || [])
+        vals.sort()
+        return vals.map(v => {
           let label = v
           if (v === 'OneCloud') {
             label = this.$t('brand')
