@@ -119,6 +119,16 @@ export default {
             { key: '30m', label: i18n.t('common_num_minutes', [30]) },
           ],
         },
+        [`${24}h`]: {
+          key: `${24}h`,
+          label: i18n.t('common_nearly_num_hours', [24]),
+          timeFormat: 'YYYY-MM-DD HH:mm',
+          timeGroupOpts: [
+            { key: '20m', label: i18n.t('common_num_minutes', [20]) },
+            { key: '30m', label: i18n.t('common_num_minutes', [30]) },
+            { key: '60m', label: i18n.t('common_num_minutes', [60]) },
+          ],
+        },
         [`${7 * 24}h`]: {
           key: `${7 * 24}h`,
           label: i18n.t('common_174'),

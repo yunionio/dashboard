@@ -1240,6 +1240,7 @@
       "start_fail": "開始に失敗しました",
       "probing": "プローブ中",
       "probe_failed": "検出に失敗しました",
+      "net_failed": "ネットワーク障害",
       "no_container": "コンテナが作成されていません",
       "no_server": "ホストが作成されていません"
     },
@@ -1434,6 +1435,7 @@
     "maxLength": "長さは {0} 文字を超えることはできません",
     "nonNegativeInt": "負でない整数を入力してください",
     "blockStorageName": "文字の先頭、数字と大文字と小文字の組み合わせ、長さが 2 から 128 文字、.-_ を含めることができます。",
+    "command": "合法的な Linux コマンドではありません",
     "externalProjectName": "長さは3~50文字または数字で、英語で始まる必要があります"
   },
   "dialog": {
