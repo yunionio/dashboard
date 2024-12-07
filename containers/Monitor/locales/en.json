@@ -106,10 +106,10 @@
   "monitor.monitor_add": "Add query",
   "monitor.monitor_metric": "Metric",
   "monitor.monitor_filters": "Range",
-  "monitor.monitor_group": "Group",
-  "monitor.monitor_function": "Aggregator",
+  "monitor.monitor_group": "Aggregate Dimension",
+  "monitor.monitor_function": "Aggregate Method",
   "monitor.monitor_add_filters": "Add a filter",
-  "monitor.monitor_fill_filters": "Build your query conditions",
+  "monitor.monitor_fill_filters": "Query conditions",
   "monitor.metrics_cpu": "Host cpu usage",
   "monitor.metrics_cpu_usage_active": "cpu usage percentage",
   "monitor.metrics_disk": "Host Disk Usage",
@@ -321,5 +321,6 @@
   "monitor.monitor_result_function": "Result aggregation function",
   "monitor.monitor_percentile": "Percentile",
   "monitor.adjust_chart_order": "Adjust chart order",
+  "monitor.show_hide_legend_table": "Show/hide monitoring legend details",
   "monitor.full_export": "Full export"
 }
