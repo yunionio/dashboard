@@ -3,7 +3,25 @@
     <template #header>
       <div v-if="!readOnly">
         <a-row type="flex">
-          <a-col :span="23">{{ panel.panel_name || (chart.metric && chart.metric.label) }}</a-col>
+          <a-col>
+            <a class="font-weight-bold h-100 d-block" style="margin-right: 6px;" @click="toggleShowMonitor">
+              <a-icon type="down" style="font-size: 12px;" v-if="showMonitor" />
+              <a-icon type="right" style="font-size: 12px;" v-if="!showMonitor" />
+            </a>
+          </a-col>
+          <a-col>
+            <a-tooltip>
+              <template slot="title">
+                {{ $t('monitor.show_hide_legend_table') }}
+              </template>
+              <a class="font-weight-bold h-100 d-block" style="margin-right: 6px;" @click="toggleShowTableLegend">
+                <a-icon type="line-chart" style="font-size: 14px;" v-if="showMonitor && showLegend" />
+                <a-icon type="credit-card" style="font-size: 14px;" v-if="showMonitor && !showLegend" />
+                <a-icon type="minus" style="font-size: 14px;" v-if="!showMonitor" />
+              </a>
+            </a-tooltip>
+          </a-col>
+          <a-col :span="21">{{ panel.panel_name || (chart.metric && chart.metric.label) }}</a-col>
           <a-col>
             <a-dropdown style="float: right" :trigger="['click']" placement="bottomRight">
               <a class="ant-dropdown-link font-weight-bold h-100 d-block action-btn" @click="e => e.preventDefault()">
@@ -24,19 +42,21 @@
       </div>
     </template>
     <monitor-line
+      v-if="showMonitor"
       ref="monitorLine"
-     :loading="loading"
-     :description="description"
-     :metricInfo="metricInfo"
-     class="mb-3"
-     :series="series"
-     :reducedResult="reducedResult"
-     :reducedResultOrder="reducedResultOrder"
-     :pager="pager"
-     @pageChange="pageChange"
-     @chartInstance="setChartInstance"
-     @exportTable="exportTable"
-     @reducedResultOrderChange="reducedResultOrderChange" />
+      :loading="loading"
+      :description="description"
+      :metricInfo="metricInfo"
+      class="mb-3"
+      :series="series"
+      :reducedResult="reducedResult"
+      :reducedResultOrder="reducedResultOrder"
+      :pager="pager"
+      :showTableLegend="showLegend"
+      @pageChange="pageChange"
+      @chartInstance="setChartInstance"
+      @exportTable="exportTable"
+      @reducedResultOrderChange="reducedResultOrderChange" />
   </overview-card-layout>
 </template>
 
@@ -137,6 +157,8 @@ export default {
       series: [],
       reducedResult: {},
       reducedResultOrder: '',
+      showLegend: false,
+      showMonitor: true,
     }
   },
   computed: {
@@ -470,6 +492,13 @@ export default {
       } catch (error) {
         throw error
       }
+    },
+    toggleShowTableLegend () {
+      this.showMonitor = true
+      this.showLegend = !this.showLegend
+    },
+    toggleShowMonitor () {
+      this.showMonitor = !this.showMonitor
     },
   },
 }

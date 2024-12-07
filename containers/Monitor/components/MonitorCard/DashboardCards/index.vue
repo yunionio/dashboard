@@ -18,6 +18,7 @@
         class="text-truncate"
         @click="createChart"
         placement="topLeft">
+        <a-icon type="plus-circle" />
         {{ $t('monitor.dashboard.dialog.project.create') }}
         <a-menu slot="overlay" @click="handleMenuClick">
           <a-menu-item key="adjust_order">
@@ -26,7 +27,7 @@
         </a-menu>
         <a-icon slot="icon" type="down" />
       </a-dropdown-button>
-      <a-button v-else style="margin-left: 8px;" @click="createChart">
+      <a-button v-else style="margin-left: 8px;" icon="plus-circle" @click="createChart">
         {{ $t('monitor.dashboard.dialog.project.create')}}
       </a-button>
     </div>
