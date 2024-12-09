@@ -178,7 +178,8 @@
       "stop_rescue": "退出紧急模式",
       "start_rescue_failed": "进入紧急模式失败",
       "stop_rescue_failed": "退出紧急模式失败",
-      "qga_set_network": "QGA配置网卡"
+      "qga_set_network": "QGA配置网卡",
+      "snapshot_delete": "删除快照"
     },
     "network": {
       "init": "初始化",
