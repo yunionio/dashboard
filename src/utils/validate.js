@@ -267,6 +267,10 @@ export const REGEXP = {
     regexp: /^[a-zA-Z][a-zA-Z0-9._-]{1,127}$/,
     message: i18n.t('validator.blockStorageName'),
   },
+  command: {
+    regexp: /^[\w-]+(\s+[\w./-]*)*$/,
+    message: i18n.t('validator.serverName'),
+  },
   externalProjectName: {
     func: value => {
       if (!value) return false

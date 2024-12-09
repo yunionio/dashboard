@@ -41,7 +41,7 @@
           v-decorator="decorators.function"
           :options="functionOpts"
           class="w-100"
-          :select-props="{ placeholder: $t('monitor.text_115'), allowClear: true }" />
+          :select-props="{ placeholder: $t('monitor.text_115'), allowClear: allowClearGroupFunction }" />
       </a-form-item>
       <a-form-item :label="$t('monitor.monitor_result_function')">
         <base-select
@@ -331,6 +331,7 @@ export default {
       metricInfoLoading: false,
       res_type_measurements: {},
       res_types: [],
+      allowClearGroupFunction: true,
     }
   },
   computed: {
@@ -375,11 +376,19 @@ export default {
       this.$emit('remove')
     },
     groupbyChange (a) {
-      if (this.functionOpts && this.functionOpts.length) {
-        const mean = this.functionOpts.find(val => val.key.toLowerCase() === 'mean')
+      if (!a || a.length === 0) {
         this.form.fc.setFieldsValue({
-          [this.decorators.function[0]]: mean.key,
+          [this.decorators.function[0]]: '',
         })
+        this.allowClearGroupFunction = true
+      } else {
+        this.allowClearGroupFunction = false
+        if (this.functionOpts && this.functionOpts.length) {
+          const mean = this.functionOpts.find(val => val.key.toLowerCase() === 'mean')
+          this.form.fc.setFieldsValue({
+            [this.decorators.function[0]]: mean.key,
+          })
+        }
       }
     },
     onValuesChange (props, values) {
@@ -521,7 +530,7 @@ export default {
         this.oldParams = params
         return params
       }
-      if (R.is(String, fd.function)) {
+      if (R.is(String, fd.function) && fd.function.length) {
         params.select[0].push({ type: fd.function.toLowerCase(), params: [] })
       }
       if (R.equals(this.oldParams, params) && R.equals(this.oldResParams, resParams)) return params
