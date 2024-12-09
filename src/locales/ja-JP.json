@@ -181,7 +181,8 @@
       "qga_set_network": "QGA 構成ネットワーク カード",
       "creating_container": "作成中",
       "create_container_failed": "作成に失敗しました",
-      "delete_container_failed": "削除に失敗しました"
+      "delete_container_failed": "削除に失敗しました",
+      "snapshot_delete": "スナップショットを削除してください。"
     },
     "network": {
       "init": "初期化する",
