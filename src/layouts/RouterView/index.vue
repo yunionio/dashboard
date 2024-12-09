@@ -15,10 +15,14 @@ export default {
     },
   },
   beforeRouteLeave (to, from, next) {
+    // 关闭页面开启的详情
+    this.$bus.$emit('destroyKeepAliveSidePage')
     this.updateCachedCoponents(to, from)
     setTimeout(() => next())
   },
   beforeRouteUpdate (to, from, next) {
+    // 关闭页面开启的详情
+    this.$bus.$emit('destroyKeepAliveSidePage')
     this.updateCachedCoponents(to, from)
     setTimeout(() => next())
   },

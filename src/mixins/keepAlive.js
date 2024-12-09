@@ -2,6 +2,11 @@ import * as R from 'ramda'
 
 export default {
   created () {
+    this.$bus.$on('destroyKeepAliveSidePage', () => {
+      if (this.$refs?.list?.destroySidePages) {
+        this.$refs.list.destroySidePages()
+      }
+    })
     this.$store.commit('keepAlive/clearDelayEvent')
   },
   activated () {
