@@ -181,7 +181,8 @@
       "qga_set_network": "QGA配置网卡",
       "creating_container": "创建中",
       "create_container_failed": "创建失败",
-      "delete_container_failed": "删除失败"
+      "delete_container_failed": "删除失败",
+      "snapshot_delete": "删除快照"
     },
     "network": {
       "init": "初始化",

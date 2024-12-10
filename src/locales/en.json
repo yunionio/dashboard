@@ -181,7 +181,8 @@
       "qga_set_network": "QGA configuration network card",
       "creating_container": "Creating",
       "create_container_failed": "Creation failed",
-      "delete_container_failed": "Delete container failed"
+      "delete_container_failed": "Delete container failed",
+      "snapshot_delete": "Delete snapshot"
     },
     "network": {
       "init": "Initialize",

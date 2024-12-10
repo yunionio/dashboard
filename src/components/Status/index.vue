@@ -7,8 +7,11 @@
       </div>
       <div class="status-text flex-fill text-truncate">
         {{ statusText }}
-        <span v-if="showProcess">({{curProcess}}%)</span>
+        <span v-if="showProcess && !changedStatus">({{curProcess}}%)</span>
       </div>
+    </div>
+    <div v-if="changedStatus" style="width:100px;margin-left:5px">
+      <a-progress class="custom-progress-bar" :percent="curProcess" :showInfo="false" size="small" status="active" :title="originStatusText + ': ' + curProcess + '%'" />
     </div>
     <slot />
   </div>
@@ -49,6 +52,12 @@ export default {
     },
   },
   computed: {
+    changedStatus () {
+      if (this.statusModule === 'server' && this.status === 'block_stream') {
+        return 'running'
+      }
+      return ''
+    },
     statusClass () {
       if (this.specifyStatus.class) return this.specifyStatus.class
       const currentStatusMap = expectStatusMap[this.statusModule]
@@ -70,6 +79,20 @@ export default {
       return ''
     },
     statusText () {
+      if (this.specifyStatus.text) return this.specifyStatus.text
+      const moduleStatusMap = statusMap[this.statusModule]
+      if (moduleStatusMap) {
+        if (moduleStatusMap[this.changedStatus || this.status]) {
+          return this.$t(`status.${this.statusModule}.${this.changedStatus || this.status}`)
+        }
+      }
+      if (statusMap.common[this.changedStatus || this.status]) {
+        return this.$t(`status.common.${this.changedStatus || this.status}`)
+      }
+      return this.changedStatus || this.status
+    },
+    originStatusText () {
+      if (!this.changedStatus) return ''
       if (this.specifyStatus.text) return this.specifyStatus.text
       const moduleStatusMap = statusMap[this.statusModule]
       if (moduleStatusMap) {
@@ -96,8 +119,8 @@ export default {
     isStatus (statusList) {
       if (R.is(Array, statusList)) {
         return statusList.some(status => {
-          if (R.is(RegExp, status)) return status.test(this.status)
-          if (R.is(String, status) || R.is(Boolean, status)) return status === this.status
+          if (R.is(RegExp, status)) return status.test(this.changedStatus || this.status)
+          if (R.is(String, status) || R.is(Boolean, status)) return status === (this.changedStatus || this.status)
           return false
         })
       }
@@ -148,4 +171,5 @@ export default {
     }
   }
 }
+
 </style>

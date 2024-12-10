@@ -47,9 +47,14 @@ class WaitStatusJob {
    */
   start () {
     this.clearTimer()
+    const status = this.data.data?.status
+    let interval = this.data.list.refreshInterval
+    if (this.data.list.refreshIntervalConfig && this.data.list.refreshIntervalConfig[this.data.list.resource] && this.data.list.refreshIntervalConfig[this.data.list.resource][status]) {
+      interval = this.data.list.refreshIntervalConfig[this.data.list.resource][status]
+    }
     this.timer = setTimeout(() => {
       this.checkStatus()
-    }, this.data.list.refreshInterval * 1000)
+    }, interval * 1000)
   }
 
   /**
@@ -188,6 +193,12 @@ class CreateList {
       steadyStatus = null,
       // 定时更新间隔时间，默认10s
       refreshInterval = 10,
+      refreshIntervalConfig = {
+        servers: {
+          block_stream: 3,
+          snapshot_delete: 3,
+        },
+      },
       // 定义的默认隐藏列
       hiddenColumns = [],
       // 标签的过滤项
@@ -258,6 +269,7 @@ class CreateList {
     this.filter = filter
     this.steadyStatus = this.genSteadyStatus(steadyStatus)
     this.refreshInterval = refreshInterval
+    this.refreshIntervalConfig = refreshIntervalConfig
     // 用于存放自定义列表的配置
     this.config = {
       hiddenColumns: hiddenColumns,
