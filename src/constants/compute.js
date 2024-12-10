@@ -752,6 +752,12 @@ export const HOST_CPU_ARCHS = {
     capabilityKey: 'aarch64',
     order: 2,
   },
+  loongarch64: {
+    key: 'loongarch64',
+    label: 'loongarch64',
+    capabilityKey: 'loongarch64',
+    order: 3,
+  },
 }
 
 export const DISK_LABEL_MAP = {
