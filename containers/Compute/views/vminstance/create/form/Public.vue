@@ -247,6 +247,9 @@ export default {
     isArm () {
       return this.form.fd.sku && this.form.fd.sku.cpu_arch === HOST_CPU_ARCHS.arm.capabilityKey
     },
+    isLoongarch64 () {
+      return this.form.fd.sku && this.form.fd.sku.cpu_arch === HOST_CPU_ARCHS.loongarch64.capabilityKey
+    },
     osArch () {
       if (this.form.fd.sku && this.form.fd.sku.cpu_arch) {
         return this.form.fd.sku.cpu_arch
@@ -304,6 +307,7 @@ export default {
       if (R.is(Object, this.form.fd.sku)) {
         params.os_arch = HOST_CPU_ARCHS.x86.key
         if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
+        if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
       }
       return params
     },

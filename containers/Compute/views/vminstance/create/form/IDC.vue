@@ -309,6 +309,9 @@ export default {
     isArm () {
       return this.form.fd.os_arch === HOST_CPU_ARCHS.arm.key
     },
+    isLoongarch64 () {
+      return this.form.fd.os_arch === HOST_CPU_ARCHS.loongarch64.key
+    },
     vdi () {
       return this.form.fd.vdi
     },
@@ -348,6 +351,7 @@ export default {
       if (this.form.fd.imageType === 'vmware') {
         params.image_type = 'system'
       }
+      if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
       return params
     },
     showSku () {
@@ -395,6 +399,7 @@ export default {
           params.cloudprovider = this.form.fd.prefer_manager
         }
         if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
+        if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
         return params
       }
       return {}
@@ -411,6 +416,7 @@ export default {
           ...this.scopeParams,
         }
         if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
+        if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
         return params
       }
       return {}
@@ -605,6 +611,7 @@ export default {
         os_arch: HOST_CPU_ARCHS.x86.key,
       }
       if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
+      if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
       return params
     },
     archOptions () {
@@ -613,6 +620,7 @@ export default {
         opts = this.form.fi.capability.host_cpu_archs.map(item => {
           if (item === HOST_CPU_ARCHS.arm.capabilityKey) return HOST_CPU_ARCHS.arm
           if (item === HOST_CPU_ARCHS.x86.capabilityKey) return HOST_CPU_ARCHS.x86
+          if (item === HOST_CPU_ARCHS.loongarch64.capabilityKey) return HOST_CPU_ARCHS.loongarch64
           return item
         })
       }
