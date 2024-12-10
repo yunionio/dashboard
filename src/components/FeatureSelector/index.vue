@@ -18,7 +18,7 @@
                   <a-tooltip v-for="item in g.items" :key="item.key" :title="item.reason">
                     <div v-if="!item.licenseDisabled" class="item d-flex p-2 mr-3 align-items-center" v-on="item.disabled ? undefined: itemEvents(item)"
                         :class="{ checked: item.checked, disabled: item.disabled }">
-                      <img :src="item.icon" :style="item.logoStyle ? item.logoStyle : 'width: 24px'" />
+                      <img v-if="item.icon" :src="item.icon" :style="item.logoStyle ? item.logoStyle : 'width: 24px'" />
                       <span class="flex-fill" v-if="!item.hiddenName">{{ item.label }}</span>
                     </div>
                   </a-tooltip>
@@ -35,12 +35,72 @@
 <script>
 import * as R from 'ramda'
 import { mapState } from 'vuex'
-import c from '@/constants/feature'
+import i18n from '@/locales'
+import originC from '@/constants/feature'
 import setting from '@/config/setting'
 import { fillBillSupportFeatures } from '@/utils/auth'
 import { isSAAS } from '@/utils/utils'
 
+const languageList = ['zh-CN', 'ja-JP', 'en']
+
+const languageItems = [
+  {
+    key: 'zh-CN',
+    label: '简体中文',
+    value: 'zh-CN',
+    checked: true,
+    disabled: false,
+    meta: {
+      group: 'language',
+      is_account: false,
+      is_feature: true,
+      module: 'resource_managent',
+    },
+  },
+  {
+    key: 'en',
+    label: 'English',
+    value: 'en',
+    checked: true,
+    disabled: false,
+    meta: {
+      group: 'language',
+      is_account: false,
+      is_feature: true,
+      module: 'resource_managent',
+    },
+  },
+  {
+    key: 'ja-JP',
+    label: '日本語',
+    value: 'ja-JP',
+    checked: true,
+    disabled: false,
+    meta: {
+      group: 'language',
+      is_account: false,
+      is_feature: true,
+      module: 'resource_managent',
+    },
+  },
+]
+
+const c = R.clone(originC)
+if (isSAAS()) {
+  c.groups.push('language')
+  c.items.push(...languageItems)
+  c.moduleGroups[0].groups.push({
+    label: i18n.t('common.language_management'),
+    value: 'language',
+    key: 'group-language',
+    checked: true,
+    selected: ['zh-CN', 'en', 'ja-JP'],
+    items: [...languageItems],
+  })
+}
+
 export const LicenseFeatures = {
+  name: 'LicenseFeatures',
   model: {
     prop: 'items',
     event: 'update',
@@ -133,6 +193,11 @@ export const LicenseFeatures = {
       // items select pre hook. 过滤掉不支持的选项
       if (R.is(Function, this.PreItemFilter)) {
         items = items.filter(this.PreItemFilter)
+      }
+
+      // 补充语言选择
+      if (!items.some(item => languageList.includes(item.key))) {
+        items.push(...languageItems)
       }
 
       // 过滤出可选的选项
