@@ -211,7 +211,10 @@ export default {
           if (!item.points) {
             return
           }
-          const columnName = item.raw_name ? this.$t(`dictionary.${item.raw_name}`) : this.$t('monitor.overview_alert.undefined')
+          let raw_name = item.raw_name
+          if (raw_name === '{res_type=host}') raw_name = 'host'
+          if (raw_name === '{res_type=agent}') raw_name = 'agent'
+          const columnName = item.raw_name ? (this.$te(`dictionary.${raw_name}`) ? this.$t(`dictionary.${raw_name}`) : raw_name) : this.$t('monitor.overview_alert.undefined')
           chartData.columns.push(columnName)
           let series = points.map((item) => {
             return { [name]: item[1], value: item[0] }
