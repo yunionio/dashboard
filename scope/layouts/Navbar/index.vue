@@ -132,15 +132,15 @@
           <span class="ml-2 text-truncate" style="max-width: 100px;">{{ username }}</span>
         </div>
         <a-menu slot="overlay" @click="userMenuClick">
-          <a-sub-menu key="language">
+          <a-sub-menu v-if="!supportLanguages.length || supportLanguages.length > 1" key="language">
             <span slot="title"><a-icon class="mr-2 ml-2" type="global" /><span>{{$t('common_630')}}</span></span>
-            <a-menu-item key="3" @click="settingLanguageCH">
+            <a-menu-item v-if="!supportLanguages.length || supportLanguages.includes('zh-CN')" key="3" @click="settingLanguageCH">
               <span class="mr-2" style="cursor: pointer">简体中文</span><a-icon v-show="language === 'zh-CN'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
             </a-menu-item>
-            <a-menu-item key="4" @click="settingLanguageEN">
+            <a-menu-item v-if="!supportLanguages.length || supportLanguages.includes('en')" key="4" @click="settingLanguageEN">
               <span class="mr-2" style="cursor: pointer">English</span><a-icon v-show="language === 'en'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
             </a-menu-item>
-            <a-menu-item key="5" @click="settingLanguageJP">
+            <a-menu-item v-if="!supportLanguages.length || supportLanguages.includes('ja-JP')" key="5" @click="settingLanguageJP">
               <span class="mr-2" style="cursor: pointer">日本語</span><a-icon v-show="language === 'ja-JP'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
             </a-menu-item>
           </a-sub-menu>
@@ -157,6 +157,7 @@
 import get from 'lodash/get'
 import * as R from 'ramda'
 import { mapGetters, mapState } from 'vuex'
+import storage from '@/utils/storage'
 import Alertresource from '@/sections/Navbar/components/Alertresource'
 import { setLanguage } from '@/utils/common/cookie'
 import CloudShell from '@/sections/Navbar/components/CloudShell'
@@ -268,6 +269,17 @@ export default {
     showClouduser () {
       return hasSetupKey(['public', 'hcso'])
     },
+    globalSettingSetupKeys () {
+      const { globalSetting } = this.$store.state
+      if (globalSetting && globalSetting.value) {
+        return globalSetting.value.setupKeys
+      }
+      return []
+    },
+    supportLanguages () {
+      const languages = this.globalSettingSetupKeys.filter(item => ['zh-CN', 'en', 'ja-JP'].includes(item))
+      return languages
+    },
   },
   watch: {
     userInfo: {
@@ -277,6 +289,17 @@ export default {
             this.$router.push('/no-project')
           }
           this.fetchOEM(val)
+        }
+      },
+      immediate: true,
+    },
+    supportLanguages: {
+      handler: function (val) {
+        this.setSupportLanguages(val)
+        if (val.length && !val.includes(this.language)) {
+          const navigatorL = navigator.language || navigator.userLanguage
+          setLanguage(val.includes(navigatorL) ? navigatorL : val[0])
+          window.location.reload()
         }
       },
       immediate: true,
@@ -442,6 +465,9 @@ export default {
       if (val) {
         this.$store.dispatch('app/fetchOEM')
       }
+    },
+    setSupportLanguages (val) {
+      storage.set('__oc_support_languages__', val)
     },
   },
 }
