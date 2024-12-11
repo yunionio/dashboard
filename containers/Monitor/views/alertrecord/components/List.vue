@@ -93,7 +93,6 @@ export default {
   created () {
     this.allAlertManager = new this.$Manager('alertrecords', 'v1')
     this.list.fetchData()
-    this.initResType()
   },
   methods: {
     refresh () {
@@ -151,7 +150,6 @@ export default {
         apiVersion: 'v1',
         getParams: this.getParam,
         genParamsCb: (params) => { return Object.assign({}, params, { details: true }) },
-        filter: this.resType ? { res_type: [this.resType] } : {},
         filterOptions: this.filters(),
       }
     },
@@ -277,28 +275,28 @@ export default {
         getParams: this.getParam,
       })
     },
-    initResType () {
-      this.allAlertManager.get({
-        id: 'distinct-field',
-        params: {
-          scope: this.$store.getters.scope,
-          extra_field: 'res_type',
-          details: true,
-        },
-      }).then(res => {
-        const { res_type = [] } = res.data || {}
-        this.resTypeItems = res_type.map(item => {
-          let label = item
-          if (this.$te(`dictionary.${item}`)) {
-            label = this.$t(`dictionary.${item}`)
-          }
-          return {
-            key: item,
-            label,
-          }
-        })
-      })
-    },
+    // initResType () {
+    //   this.allAlertManager.get({
+    //     id: 'distinct-field',
+    //     params: {
+    //       scope: this.$store.getters.scope,
+    //       extra_field: 'res_type',
+    //       details: true,
+    //     },
+    //   }).then(res => {
+    //     const { res_type = [] } = res.data || {}
+    //     this.resTypeItems = res_type.map(item => {
+    //       let label = item
+    //       if (this.$te(`dictionary.${item}`)) {
+    //         label = this.$t(`dictionary.${item}`)
+    //       }
+    //       return {
+    //         key: item,
+    //         label,
+    //       }
+    //     })
+    //   })
+    // },
   },
 }
 </script>
