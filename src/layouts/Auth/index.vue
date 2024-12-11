@@ -8,20 +8,20 @@
             <img class="auth-header-logo" :src="loginLogo" />
           </div>
           <!-- 多语言切换按钮 -->
-          <div class="auth-header-right flex-fill d-flex justify-content-end">
+          <div v-if="!languages.length || languages.length > 1" class="auth-header-right flex-fill d-flex justify-content-end">
             <a-dropdown :trigger="['click']">
               <div class="oc-pointer">
                 <a-icon type="global" />
                 <span class="ml-2">{{ languageText }}</span>
               </div>
               <a-menu slot="overlay" @click="handleChangeLanguage">
-                <a-menu-item key="zh-CN">
+                <a-menu-item v-if="!languages.length || languages.includes('zh-CN')" key="zh-CN">
                   <span class="mr-2">简体中文</span><a-icon v-show="language === 'zh-CN'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
                 </a-menu-item>
-                <a-menu-item key="en">
+                <a-menu-item v-if="!languages.length || languages.includes('en')" key="en">
                   <span class="mr-2">English</span><a-icon v-show="language === 'en'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
                 </a-menu-item>
-                <a-menu-item key="ja-JP">
+                <a-menu-item v-if="!languages.length || languages.includes('ja-JP')" key="ja-JP">
                   <span class="mr-2">日本語</span><a-icon v-show="language === 'ja-JP'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
                 </a-menu-item>
               </a-menu>
@@ -59,6 +59,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import storage from '@/utils/storage'
 import { isChrome } from '@/utils/utils'
 import { setLanguage } from '@/utils/common/cookie'
 import TopAlert from '@/sections/TopAlert'
@@ -71,6 +72,7 @@ export default {
     return {
       statusLoaded: false,
       ticketLogging: false,
+      languages: [],
     }
   },
   computed: {
@@ -107,6 +109,7 @@ export default {
         this.statusLoaded = true
       }
     }
+    this.initSupportLanguages()
   },
   methods: {
     // 检查是否已注册
@@ -139,6 +142,10 @@ export default {
     handleChangeLanguage (e) {
       setLanguage(e.key)
       window.location.reload()
+    },
+    initSupportLanguages () {
+      const supportLanguages = storage.get('__oc_support_languages__', [])
+      this.languages = supportLanguages
     },
   },
 }
