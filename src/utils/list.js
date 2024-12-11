@@ -298,6 +298,8 @@ class CreateList {
     this.fetchDataCb = fetchDataCb
     this.isPreLoad = isPreLoad
     this.noPreLoad = noPreLoad
+    this.pinFilter = {}
+    this.pinSavedFilters = {}
   }
 
   // 重写selectedItems getter和setter
@@ -646,6 +648,10 @@ class CreateList {
       const p = this.genParamsCb(params)
       if (R.is(Object, p)) params = p
     }
+    params = {
+      ...params,
+      ...this.pinFilter,
+    }
     return params
   }
 
@@ -890,6 +896,43 @@ class CreateList {
       this.reset()
       this.fetchData(0, 0)
     }
+  }
+
+  /**
+   *
+   */
+  savePinFilter () {
+    this.pinSavedFilters = {
+      filter: R.clone(this.filter),
+      tagFilter: R.clone(this.tagFilter),
+      tagFilter2: R.clone(this.tagFilter2),
+      tagFilter3: R.clone(this.tagFilter3),
+      projectTagFilter: R.clone(this.projectTagFilter),
+    }
+    this.filter = {}
+    this.tagFilter = {}
+    this.tagFilter2 = {}
+    this.tagFilter3 = {}
+    this.projectTagFilter = {}
+    this.pinFilter = {
+      filter: `${this.idKey}.in(${this.selected.map(id => `"${id}"`)})`,
+    }
+    this.reset()
+    this.fetchData(0, 0)
+  }
+
+  /**
+   *
+   */
+  restorePinFilter () {
+    this.filter = this.pinSavedFilters.filter || {}
+    this.tagFilter = this.pinSavedFilters.tagFilter || {}
+    this.tagFilter2 = this.pinSavedFilters.tagFilter2 || {}
+    this.tagFilter3 = this.pinSavedFilters.tagFilter3 || {}
+    this.projectTagFilter = this.pinSavedFilters.projectTagFilter || {}
+    this.pinFilter = {}
+    this.reset()
+    this.fetchData(0, 0)
   }
 
   /**

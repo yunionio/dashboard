@@ -80,9 +80,14 @@
       </div>
       <div class="ml-4 d-flex flex-shrink-0 justify-content-end">
         <slot name="right-tools-prepend" />
-        <template v-if="exportDataOptions || id">
+        <template v-if="exportDataOptions || id || !hiddenPin">
+          <a-tooltip :title="pinTip" v-if="!hiddenPin">
+            <a-button @click="handlePin" :disabled="!selected.length && !isPinActive" :type="isPinActive ? 'primary' : ''">
+              <icon type="pin" />
+            </a-button>
+          </a-tooltip>
           <a-tooltip :title="$t('common.text00010')" v-if="exportDataOptions">
-            <a-button @click="handleExportData">
+            <a-button class="ml-2" @click="handleExportData">
               <icon type="download" />
             </a-button>
           </a-tooltip>
@@ -253,6 +258,12 @@ export default {
     tagColumns2Generator: Function,
     tagBtnText: String,
     hiddenExportKeys: Array,
+    hiddenPin: Boolean,
+  },
+  data () {
+    return {
+      isPinActive: false,
+    }
   },
   computed: {
     _filterOptions () {
@@ -279,8 +290,29 @@ export default {
       })
       return ret
     },
+    pinTip () {
+      if (this.isPinActive) {
+        return this.$t('common.cancel_pin')
+      } else {
+        if (this.selected.length) {
+          return 'Pin'
+        } else {
+          return this.$t('common.select_pin_data')
+        }
+      }
+    },
   },
   methods: {
+    handlePin () {
+      this.isPinActive = !this.isPinActive
+      if (this.isPinActive) {
+        this.$emit('savePinFilter')
+        this.$emit('clear-selected')
+      } else {
+        this.$emit('restorePinFilter')
+        this.$emit('clear-selected')
+      }
+    },
     handleRefresh () {
       if (this.refreshMethod) {
         this.refreshMethod(() => {

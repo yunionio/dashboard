@@ -6128,5 +6128,7 @@
   "common.next_one": "下一条",
   "common.system_ce": "Cloudpods 企业支持版",
   "common.shopcart_workflow_name": "{0}于 {1} 发起的批量资源创建申请-{2}",
-  "common.language_management": "语言管理"
+  "common.language_management": "语言管理",
+  "common.cancel_pin": "取消Pin",
+  "common.select_pin_data": "选择列表数据后可进行Pin"
 }
