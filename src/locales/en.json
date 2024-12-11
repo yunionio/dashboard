@@ -6106,5 +6106,7 @@
   "common.next_one": "Next article",
   "common.system_ce": "Cloudpods Enterprise Support Edition",
   "common.shopcart_workflow_name": "Batch resource creation request initiated by {0} on {1} - {2}",
-  "common.language_management": "Language management"
+  "common.language_management": "Language management",
+  "common.cancel_pin": "Cancel Pin",
+  "common.select_pin_data": "After selecting the list data, you can pin it"
 }

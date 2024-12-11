@@ -62,11 +62,14 @@
       :ignoreWithUserMetaParam3="ignoreWithUserMetaParam3"
       :tagBtnText="tagBtnText"
       :hiddenExportKeys="hiddenExportKeys"
+      :hiddenPin="hiddenPin"
       @refresh="refresh"
       @clear-selected="clearSelected"
       @tag-filter-change="tagFilterChange"
       @tag-filter-change2="tagFilterChange2"
       @tag-filter-change3="tagFilterChange3"
+      @savePinFilter="savePinFilter"
+      @restorePinFilter="restorePinFilter"
       @filter-change="filterChange"
       @treeToggleClick="treeToggleClick">
       <slot name="group-actions-prepend" slot="group-actions-prepend" />
@@ -329,6 +332,10 @@ export default {
         return []
       },
     },
+    hiddenPin: {
+      type: Boolean,
+      default: false,
+    },
   },
   provide: {
     // 声明在List中
@@ -466,6 +473,12 @@ export default {
     },
     projectTagFilterChange (projectTagFilter) {
       this.list.changeProjectTagFilter(projectTagFilter)
+    },
+    savePinFilter () {
+      this.list.savePinFilter()
+    },
+    restorePinFilter () {
+      this.list.restorePinFilter()
     },
     editClosed () {
       this.$emit('edit-closed')
