@@ -114,7 +114,7 @@ const actionEableMap = {
       incloudsphere: ['running', 'stop_fail'],
       remotefile: false,
       volcengine: ['running', 'stop_fail'],
-      sangfor: false,
+      sangfor: ['running', 'stop_fail'],
       zettakit: ['running', 'stop_fail'],
       uis: ['running', 'stop_fail'],
     },
