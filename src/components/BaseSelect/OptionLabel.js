@@ -22,6 +22,9 @@ const resourceMode = {
         details.push(`${item.guest_ip6_start} - ${item.guest_ip6_end}/${item.guest_ip6_mask}`)
       }
       details.push(`vlan=${item.vlan_id}`)
+      if (item.server_type) {
+        details.push(i18n.te(`dictionary.${item.server_type}`) ? i18n.t(`dictionary.${item.server_type}`) : item.server_type)
+      }
       label += `(${details.join(',')})`
       return label
     },
