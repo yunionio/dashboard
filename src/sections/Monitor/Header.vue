@@ -28,22 +28,12 @@
       {{ $t('common_time.minute') }}
     </template>
     <template v-if="showTimegroup">
-      <template v-if="time !== 'custom'">
-        <div class="ant-form-item-label">
-          <label :title="$t('common_166')">{{$t('common_166')}}</label>
-        </div>
-        <a-select class="mr-2" :value="timeGroup" @change="timeGroupChange">
-          <a-select-option v-for="item in timeGroupOpts" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
-        </a-select>
-      </template>
-      <template v-else>
-        <div class="ant-form-item-label">
-          <label :title="$t('common_166')">{{$t('common_166')}}</label>
-        </div>
-        <a-select class="mr-2" :value="timeGroup" @change="timeGroupChange">
-          <a-select-option v-for="item in customTimeGroupOpts" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
-        </a-select>
-      </template>
+      <div class="ant-form-item-label">
+        <label :title="$t('common_166')">{{$t('common_166')}}</label>
+      </div>
+      <a-select class="mr-2" :value="timeGroup" @change="timeGroupChange">
+        <a-select-option v-for="item in timeGroupOpts" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
+      </a-select>
     </template>
     <template v-if="showGroupFunc">
       <div class="ant-form-item-label">
@@ -106,7 +96,9 @@ export default {
           label: i18n.t('common_nearly_num_hours', [6]),
           timeFormat: 'YYYY-MM-DD HH:mm',
           timeGroupOpts: [
-            { key: '5m', label: i18n.t('common_169') },
+            { key: '3m', label: i18n.t('common_num_minutes', [3]) },
+            { key: '5m', label: i18n.t('common_num_minutes', [5]) },
+            { key: '10m', label: i18n.t('common_num_minutes', [10]) },
             { key: '15m', label: i18n.t('common_num_minutes', [15]) },
           ],
         },
@@ -115,7 +107,9 @@ export default {
           label: i18n.t('common_nearly_num_hours', [12]),
           timeFormat: 'YYYY-MM-DD HH:mm',
           timeGroupOpts: [
+            { key: '5m', label: i18n.t('common_num_minutes', [5]) },
             { key: '10m', label: i18n.t('common_num_minutes', [10]) },
+            { key: '20m', label: i18n.t('common_num_minutes', [20]) },
             { key: '30m', label: i18n.t('common_num_minutes', [30]) },
           ],
         },
@@ -124,6 +118,7 @@ export default {
           label: i18n.t('common_nearly_num_hours', [24]),
           timeFormat: 'YYYY-MM-DD HH:mm',
           timeGroupOpts: [
+            { key: '10m', label: i18n.t('common_num_minutes', [10]) },
             { key: '20m', label: i18n.t('common_num_minutes', [20]) },
             { key: '30m', label: i18n.t('common_num_minutes', [30]) },
             { key: '60m', label: i18n.t('common_num_minutes', [60]) },
@@ -240,7 +235,7 @@ export default {
     timeGroupOpts () {
       const isExist = this.timeGroupOpts.find(val => val.key === this.timeGroup)
       if (!isExist) {
-        this.$emit('update:timeGroup', this.timeGroupOpts[0].key)
+        this.$emit('update:timeGroup', this.timeGroupOpts[this.timeGroupOpts.length - 1].key)
       }
     },
   },
@@ -264,6 +259,10 @@ export default {
       this.$emit('update:customTime', val)
     },
     timeGroupChange (val) {
+      const isExist = this.timeGroupOpts.find(v => v.key === val)
+      if (!isExist) {
+        val = this.timeGroupOpts[this.timeGroupOpts.length - 1].key
+      }
       this.$emit('update:timeGroup', val)
     },
     groupFuncChange (val) {

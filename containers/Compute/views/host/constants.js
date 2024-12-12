@@ -132,18 +132,35 @@ export const HOST_TOP5 = {
 // kvm 型宿主机监控数据
 export const KVM_MONITOR_OPTS = [
   {
+    name: 'load1_pcore',
+    label: i18n.t('compute.metric.system_load1_pcore'),
+    seleteItem: 'load1_pcore',
+    as: i18n.t('compute.metric.system_load1_pcore'),
+    fromItem: 'system',
+    unit: '',
+    transfer: 1,
+    // metric: metricItems['bps_sent'].key, // 报警指标
+  },
+  {
     name: 'cpu',
     label: i18n.t('compute.text_523'),
     // seleteItem: 'usage_active,usage_idle,usage_user,usage_system,usage_iowait',
     seleteItem: 'usage_active',
     fromItem: 'cpu',
-    groupBy: ['host_id'],
+    groupBy: ['cpu'],
     as: i18n.t('compute.text_528'),
     unit: '%',
     transfer: 1,
+    extraTags: [
+      {
+        key: 'cpu',
+        value: 'cpu-total',
+        operator: '=',
+      },
+    ],
     // metric: metricItems['usage_active,usage_idle,usage_user,usage_system,usage_iowait'].key, // 报警指标
   },
-  {
+  /* {
     name: 'memCondition',
     label: i18n.t('compute.text_531'),
     seleteItem: 'used,free,total',
@@ -152,18 +169,20 @@ export const KVM_MONITOR_OPTS = [
     unit: 'B',
     transfer: 1024,
     // metric: metricItems['used,free,total'].key, // 报警指标
-  },
+  }, */
   {
     name: 'mem',
     label: i18n.t('compute.text_518'),
-    seleteItem: 'used_percent',
-    as: i18n.t('compute.text_518'),
+    seleteItem: 'used_percent,free_percent',
+    // as: i18n.t('compute.text_518'),
     fromItem: 'mem',
+    // groupBy: ['host_ip'],
+    as: i18n.t('compute.text_518') + ',' + i18n.t('compute.metric.mem_free_percent'),
     unit: '%',
     transfer: 1,
     // metric: metricItems['used_percent'].key, // 报警指标
   },
-  {
+  /* {
     name: 'free_percent',
     label: i18n.t('compute.metric.mem_free_percent'),
     seleteItem: 'free_percent',
@@ -172,8 +191,8 @@ export const KVM_MONITOR_OPTS = [
     unit: '%',
     transfer: 1,
     // metric: metricItems['bps_sent'].key, // 报警指标
-  },
-  {
+  }, */
+  /* {
     name: 'diskCondition',
     label: i18n.t('compute.text_534'),
     seleteItem: 'used,free,total',
@@ -183,7 +202,7 @@ export const KVM_MONITOR_OPTS = [
     unit: 'B',
     transfer: 1024,
     // metric: metricItems['used,free,total'].key, // 报警指标
-  },
+  }, */
   // {
   //   name: 'disk',
   //   label: i18n.t('compute.text_533'),
@@ -258,7 +277,7 @@ export const KVM_MONITOR_OPTS = [
     transfer: 1024,
     // metric: metricItems['write_bps'].key, // 报警指标
   },
-  {
+  /* {
     name: 'disk',
     label: i18n.t('compute.text_536'),
     seleteItem: 'read_iops,write_iops',
@@ -267,7 +286,7 @@ export const KVM_MONITOR_OPTS = [
     unit: 'iops',
     transfer: 1,
     // metric: metricItems['read_iops,write_iops'].key, // 报警指标
-  },
+  }, */
   {
     name: 'diskio_ioutil',
     label: i18n.t('compute.metric.diskio_ioutil'),
@@ -300,7 +319,7 @@ export const KVM_MONITOR_OPTS = [
     transfer: 1024,
     // metric: metricItems['bps_sent'].key, // 报警指标
   },
-  {
+  /* {
     name: 'system',
     label: i18n.t('compute.text_529'),
     seleteItem: 'load1,load5,load15,load1_pcore,load5_pcore,load15_pcore',
@@ -309,17 +328,8 @@ export const KVM_MONITOR_OPTS = [
     unit: '',
     transfer: 1,
     // metric: metricItems['load1,load5,load15,load1_pcore,load5_pcore,load15_pcore'].key, // 报警指标
-  },
-  {
-    name: 'load1_pcore',
-    label: i18n.t('compute.metric.system_load1_pcore'),
-    seleteItem: 'load1_pcore',
-    as: i18n.t('compute.metric.system_load1_pcore'),
-    fromItem: 'system',
-    unit: '',
-    transfer: 1,
-    // metric: metricItems['bps_sent'].key, // 报警指标
-  },
+  }, */
+
   {
     name: 'processes_zombies',
     label: i18n.t('compute.metric.processes_zombies'),
@@ -458,7 +468,7 @@ export const RADEONTOP_OPTS = [
     unit: '%',
     transfer: 1,
   },
-  {
+  /* {
     name: 'utilization_gtt',
     label: i18n.t('compute.metric.radeontop_utilization_gtt'),
     as: i18n.t('compute.metric.radeontop_utilization_gtt'),
@@ -487,11 +497,11 @@ export const RADEONTOP_OPTS = [
     groupBy: ['device_path', 'bus'],
     unit: '%',
     transfer: 1,
-  },
+  }, */
 ]
 
 export const VASMI_OPTS = [
-  {
+  /* {
     name: 'temperature_gpu',
     label: i18n.t('compute.metric.vasmi_temperature_gpu'),
     as: i18n.t('compute.metric.vasmi_temperature_gpu'),
@@ -500,7 +510,7 @@ export const VASMI_OPTS = [
     groupBy: ['aic', 'dev_id'],
     unit: '',
     transfer: 1,
-  },
+  }, */
   {
     name: 'utilization_gpu',
     label: i18n.t('compute.metric.vasmi_utilization_gpu'),
