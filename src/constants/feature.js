@@ -187,7 +187,7 @@ const LicenseItems = [
     hiddenName: true,
     logoStyle: {
       width: '100px',
-      height: '24px',
+      height: '14px',
     },
   },
   {
