@@ -19,7 +19,7 @@
       </div>
       <vxe-grid
         v-if="tableData && tableData.length && showTable && showTableLegend"
-        max-height="200"
+        max-height="500"
         size="mini"
         border
         row-id="raw_name"
@@ -216,7 +216,13 @@ export default {
               formatter: ({ cellValue }) => {
                 if (cellValue === 'value') {
                   const display_name = this.description.display_name
-                  const label = metric_zh[display_name] || '-'
+                  const metric = this.metricInfo.model.measurement + '_' + this.description.name
+                  let label = metric_zh[display_name]
+                  if (label) {
+                    label += '/' + metric
+                  } else {
+                    label = metric
+                  }
                   return `${this.description.label || label}${this.isSelectFunction ? `(${this.isSelectFunction.toUpperCase()})` : ''}` || cellValue
                 }
                 return cellValue
@@ -320,7 +326,7 @@ export default {
       return {}
     },
     getPageSizes () {
-      const ret = [10, 20, 50, 100]
+      const ret = [10, 20, 50, 100, 200]
       if (this.curPager.Total > ret[ret.length - 1]) {
         ret.push(this.curPager.Total)
       }

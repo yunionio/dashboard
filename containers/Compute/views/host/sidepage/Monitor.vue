@@ -178,6 +178,9 @@ export default {
     },
     genQueryData (val) {
       const opt = val
+      if (!val.extraTags) {
+        val.extraTags = []
+      }
       let select = []
       if (val.as) {
         const asItems = val.as.split(',')
@@ -227,9 +230,10 @@ export default {
             value: this.hostId,
             operator: '=',
           },
+          ...val.extraTags,
         ],
       }
-      if (val.groupBy && (val.groupBy.length !== 0)) {
+      if (val.groupBy && val.groupBy.length > 0) {
         val.groupBy.forEach(group => {
           model.group_by.push({
             type: 'tag',

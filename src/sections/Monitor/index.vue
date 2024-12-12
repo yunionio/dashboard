@@ -194,7 +194,15 @@ export default {
               } else {
                 const format = val.constants.format || '0.00' // 默认是保留小数点后两位
                 if (serie.raw_name) {
-                  row.name = serie.raw_name
+                  if (serie.raw_name.indexOf('unknown') >= 0 && serie.tags && serie.tags.length > 0) {
+                    const tagNames = []
+                    for (const k in serie.tags) {
+                      tagNames.push(k + '=' + serie.tags[k])
+                    }
+                    row.name = tagNames.join(',')
+                  } else {
+                    row.name = serie.raw_name
+                  }
                 } else if (groupByKey.length !== 0) {
                   row.name = groupByKey
                 } else {
@@ -289,9 +297,24 @@ export default {
             if (val.constants.groupBy && val.constants.groupBy.length) {
               groupByKey = getGroupByKey(item.tags, val.constants.groupBy)
             }
+            // console.log('item', item)
             let name = item.name
             if (item.raw_name) {
-              name = item.raw_name
+              if (item.raw_name.indexOf('unknown-0-') >= 0) {
+                if (item.tags) {
+                  const tagName = []
+                  for (const k in item.tags) {
+                    tagName.push(k + '=' + item.tags[k])
+                  }
+                  name = tagName.join(',')
+                } else if (item.raw_name.indexOf(',') >= 0) {
+                  name = item.name
+                } else {
+                  name = item.raw_name.replace('unknown-0-', '')
+                }
+              } else {
+                name = item.raw_name
+              }
             } else if (groupByKey) {
               name = groupByKey
               if (val.constants.as) {
