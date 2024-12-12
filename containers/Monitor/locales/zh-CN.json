@@ -322,5 +322,6 @@
   "monitor.monitor_percentile": "值",
   "monitor.adjust_chart_order": "调整图表顺序",
   "monitor.show_hide_legend_table": "显示/隐藏监控图例详情",
-  "monitor.full_export": "全量导出"
+  "monitor.full_export": "全量导出",
+  "monitor.edit_name": "修改名称"
 }
