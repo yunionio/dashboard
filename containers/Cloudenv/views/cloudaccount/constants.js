@@ -274,6 +274,7 @@ export const CLOUDACCOUNT_TYPES = {
       hiddenName: true,
       logoStyle: {
         width: '100px',
+        height: '14px',
       },
     },
   },
