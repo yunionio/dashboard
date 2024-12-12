@@ -1,7 +1,7 @@
 <template>
   <a-row :class="card_style">
-    <a-col style="padding-left: 6px; padding-right: 6px;" :class="card_style" :span="24">
-      <div :class="['monitor-overview-card', 'mb-2', card_style]">
+    <a-col :class="card_style" :span="24">
+      <div :class="['monitor-overview-card', card_style]">
         <div>
           <slot name="header" />
         </div>
@@ -30,7 +30,7 @@ export default {
 <style lang="less" scoped>
 .monitor-overview-card {
   border: 1px solid #F1F1F1;
-  padding: 12px 24px;
+  // padding: 12px 24px;
   .header {
     font-weight: 500;
     .title-wrapper {

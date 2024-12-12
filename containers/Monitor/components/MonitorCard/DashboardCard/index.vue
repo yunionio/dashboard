@@ -1,15 +1,15 @@
 <template>
-  <overview-card-layout :card_style="card_style">
+  <overview-card-layout :card_style="`${card_stype} ${showMonitor ? 'mb-2' : ''}`">
     <template #header>
       <div v-if="!readOnly">
-        <a-row type="flex">
-          <a-col>
+        <a-row type="flex" style="padding: 12px;border-bottom: 1px solid #e8e8e8">
+          <a-col class="d-flex" style="flex: 1 1 auto">
+            <!-- 折叠 -->
             <a class="font-weight-bold h-100 d-block" style="margin-right: 6px;" @click="toggleShowMonitor">
               <a-icon type="down" style="font-size: 12px;" v-if="showMonitor" />
               <a-icon type="right" style="font-size: 12px;" v-if="!showMonitor" />
             </a>
-          </a-col>
-          <a-col>
+            <!-- 表格隐藏 -->
             <a-tooltip>
               <template slot="title">
                 {{ $t('monitor.show_hide_legend_table') }}
@@ -20,16 +20,10 @@
                 <a-icon type="minus" style="font-size: 14px;" v-if="!showMonitor" />
               </a>
             </a-tooltip>
+            <!-- 名称 -->
+            <span>{{ panel.panel_name || (chart.metric && chart.metric.label) }}</span>
           </a-col>
-          <a-col>
-            <a-tooltip>
-              <template slot="title">
-                {{ metric.measurement + '_' + metric.field }}
-              </template>
-              {{ panel.panel_name || (chart.metric && chart.metric.label) }}
-          </a-tooltip>
-          </a-col>
-          <a-col>
+          <a-col class="flex: 0 0 24px">
             <a-dropdown style="float: right" :trigger="['click']" placement="bottomRight">
               <a class="ant-dropdown-link font-weight-bold h-100 d-block action-btn" @click="e => e.preventDefault()">
                 <icon type="more" style="font-size: 18px; margin-left: 9px;" />
@@ -55,12 +49,12 @@
       :loading="loading"
       :description="description"
       :metricInfo="metricInfo"
-      class="mb-3"
       :series="series"
       :reducedResult="reducedResult"
       :reducedResultOrder="reducedResultOrder"
       :pager="pager"
       :showTableLegend="showLegend"
+      :monitorLineCardStyle="{border:'none'}"
       @pageChange="pageChange"
       @chartInstance="setChartInstance"
       @exportTable="exportTable"

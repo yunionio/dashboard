@@ -34,6 +34,7 @@
               <icon type="more" style="font-size: 18px;" />
             </a>
             <a-menu slot="overlay" @click="handleActionClick">
+              <a-menu-item key="handleEditName"><a-icon type="edit" />{{$t('monitor.edit_name')}}</a-menu-item>
               <a-menu-item key="handleClone"><a-icon type="copy" />{{$t('dashboard.text_107')}}</a-menu-item>
               <a-menu-item key="handleDelete"><a-icon type="delete" />{{$t('scope.text_18')}}</a-menu-item>
             </a-menu>
@@ -51,11 +52,31 @@
 </template>
 
 <script>
+import i18n from '@/locales'
 import storage from '@/utils/storage'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import DashboardCards from '@Monitor/components/MonitorCard/DashboardCards'
-import { getNameDescriptionTableColumn, getProjectTableColumn, getProjectDomainTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+
+const alertDashboardScopeColumn = {
+  field: 'scope',
+  title: i18n.t('IAM.text_1'),
+  formatter: ({ row }) => {
+    const data = row
+    let desc = '-'
+    if (data.scope === 'system') {
+      desc = i18n.t('monitor.dashboard.select.option', [i18n.t('shareScope.system')])
+    }
+    if (data.scope === 'domain') {
+      desc = i18n.t('monitor.dashboard.select.option', [data.project_domain, i18n.t('cloudenv.text_393')])
+    }
+    if (data.scope === 'project') {
+      desc = i18n.t('monitor.dashboard.select.option', [data.project, i18n.t('cloudenv.text_254')])
+    }
+    return desc
+  },
+}
 
 export default {
   name: 'DashboardIndex',
@@ -132,7 +153,7 @@ export default {
       this.createDialog('MonitorDashboardAdjustOrderDialog', {
         dashboard: dashboard,
         data: this.dashboards.filter((item) => { return item.id === dashboard.id }),
-        columns: [getNameDescriptionTableColumn(), getProjectDomainTableColumn(), getProjectTableColumn()],
+        columns: [getNameDescriptionTableColumn(), alertDashboardScopeColumn],
         ok: (panels) => {
           const index = this.dashboards.findIndex((item) => { return item.id === dashboard.id })
           if (index > -1) {
@@ -147,18 +168,31 @@ export default {
     handleActionClick ({ key }) {
       if (this[key]) this[key]()
     },
+    handleEditName () {
+      const index = this.dashboards.findIndex((item) => { return item.id === this.dashboardId })
+      this.createDialog('MonitorDashboardChangeName', {
+        data: [this.dashboards[index]],
+        columns: [getNameDescriptionTableColumn(), alertDashboardScopeColumn],
+        ok: (name) => {
+          this.dashboards = this.dashboards.map((item, idx) => {
+            if (idx === index) item.name = name
+            return item
+          })
+        },
+      })
+    },
     handleClone () {
       this.createDialog('CloneMonitorDashboard', {
         data: this.dashboards.filter((item) => { return item.id === this.dashboardId }),
         refresh: this.switchDashboard,
-        columns: [getNameDescriptionTableColumn(), getProjectDomainTableColumn(), getProjectTableColumn()],
+        columns: [getNameDescriptionTableColumn(), alertDashboardScopeColumn],
       })
     },
     handleDelete () {
       this.createDialog('DeleteMonitorDashboard', {
         data: this.dashboards.filter((item) => { return item.id === this.dashboardId }),
         refresh: this.switchDashboard,
-        columns: [getNameDescriptionTableColumn(), getProjectDomainTableColumn(), getProjectTableColumn()],
+        columns: [getNameDescriptionTableColumn(), alertDashboardScopeColumn],
       })
     },
     createChart () {
