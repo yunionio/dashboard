@@ -1,5 +1,5 @@
 <template>
-  <a-card :title="title" size="small" class="explorer-monitor-line">
+  <a-card :title="title" size="small" class="explorer-monitor-line" :style="monitorLineCardStyle">
     <div slot="extra" v-if="showTableExport">
       <a-button v-if="showTableExport && curPager.total" type="link" :title="$t('monitor.full_export')" @click="exportTable">
         {{ $t('table.action.export') }}
@@ -10,8 +10,8 @@
     <template v-else>
       <div class="d-flex">
         <line-chart class="flex-grow-1 mb-4" @chartInstance="setChartInstance" width="100%" height="250px" :options="lineChartOptionsC" />
-        <div class="alert-handler-wrapper position-relative">
-          <div v-if="alertHandlerShow && lineChartOptionsC.dataset.length" class="position-absolute clearfix d-flex align-items-center" :style="{ top: `${topStyleRange[1]}px` }">
+        <div v-if="alertHandlerShow && lineChartOptionsC.dataset.length" class="alert-handler-wrapper position-relative">
+          <div class="position-absolute clearfix d-flex align-items-center" :style="{ top: `${topStyleRange[1]}px` }">
             <div class="alert-handler-line" />
             <div class="alert-handler"> {{ formatThreshold }}</div>
           </div>
@@ -127,6 +127,10 @@ export default {
     showTableLegend: {
       type: Boolean,
       default: true,
+    },
+    monitorLineCardStyle: {
+      type: Object,
+      default: () => ({}),
     },
   },
   data () {
