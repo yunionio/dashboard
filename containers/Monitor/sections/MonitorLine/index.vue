@@ -25,7 +25,6 @@
         row-id="raw_name"
         ref="tableRef"
         highlight-hover-row
-        highlight-current-row
         :columns="columns"
         :data="tableData"
         :row-style="getRowStyle"
@@ -145,6 +144,7 @@ export default {
         index: null,
         color: '',
       },
+      highlights: [],
       yMax: 0,
       alertHandlerShow: false,
       topStyleRange: [220, 20],
@@ -168,12 +168,12 @@ export default {
       select.map(item => {
         if (R.is(Array, item)) {
           item.map(l => {
-            if (l.type === 'mean' || l.type === 'sum') {
+            if (['mean', 'sum', 'max', 'min'].includes(l.type)) {
               ret = l.type
             }
           })
         } else if (R.is(Object, item)) {
-          if (item.type === 'mean' || item.type === 'sum') {
+          if (['mean', 'sum', 'max', 'min'].includes(item.type)) {
             ret = item.type
           }
         }
@@ -200,7 +200,23 @@ export default {
           width: 50,
           slots: {
             default: ({ row, rowIndex }) => {
-              return [<div class="mx-auto" style={{ width: '10px', height: '10px', 'border-radius': '50%', background: row.__color }} />]
+              if (this.highlights.some(item => item.index === rowIndex)) {
+                return [<icon type="checkbox-fill" style={{ fontSize: '20px', color: row.__color, cursor: 'pointer', transform: 'translateY(3px)' }}></icon>]
+              }
+              return [<icon type="checkbox-empty" style="font-size:20px;cursor:pointer;transform:translateY(3px)"></icon>]
+            },
+            header: ({ column }, h) => {
+              return [
+                this.$createElement('a-checkbox', {
+                  props: {
+                    checked: this.isAllSelected,
+                    indeterminate: true,
+                  },
+                  on: {
+                    click: this.checkAllClick,
+                  },
+                }),
+              ]
             },
           },
         },
@@ -231,6 +247,25 @@ export default {
                 }
                 return cellValue
               },
+              slots: {
+                default: ({ row, rowIndex }) => {
+                  const cellValue = row[value.field]
+                  let val = cellValue
+                  if (cellValue === 'value') {
+                    const display_name = this.description.display_name
+                    const metric = this.metricInfo.model.measurement + '_' + this.description.name
+                    let label = metric_zh[display_name]
+                    if (label) {
+                      label += '/' + metric
+                    } else {
+                      label = metric
+                    }
+                    val = `${this.description.label || label}${this.isSelectFunction ? `(${this.isSelectFunction.toUpperCase()})` : ''}` || cellValue
+                  }
+                  const style = this.highlights.some(item => item.index === rowIndex) ? { color: row.__color } : {}
+                  return [<span style={style}>{val}</span>]
+                },
+              },
             })
           }
         }, tableColumnMaps)
@@ -244,6 +279,13 @@ export default {
               field: groupByField,
               title,
               formatter: ({ row }) => row[groupByField] || '-',
+              slots: {
+                default: ({ row, rowIndex }) => {
+                  const val = row[groupByField] || '-'
+                  const style = this.highlights.some(item => item.index === rowIndex) ? { color: row.__color } : {}
+                  return [<span style={style}>{val}</span>]
+                },
+              },
             })
           }
         })
@@ -259,6 +301,15 @@ export default {
             const val = transformUnit(cellValue, unit)
             return val.text
           },
+          slots: {
+            default: ({ row, rowIndex }) => {
+              const cellValue = row.result
+              const unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
+              const val = transformUnit(cellValue, unit)
+              const style = this.highlights.some(item => item.index === rowIndex) ? { color: row.__color } : {}
+              return [<span style={style}>{val.text}</span>]
+            },
+          },
           sortable: true,
         })
       }
@@ -272,11 +323,10 @@ export default {
           field: 'raw_name',
           title: this.$t('cloudenv.text_237'),
           slots: {
-            default: ({ row }) => {
-              if (row.raw_name) {
-                return [<span title={row.raw_name}>{row.raw_name.length > 50 ? row.raw_name.slice(0, 50) + '...' : row.raw_name}</span>]
-              }
-              return ''
+            default: ({ row, rowIndex }) => {
+              const val = row.raw_name || ''
+              const style = this.highlights.some(item => item.index === rowIndex) ? { color: row.__color } : {}
+              return [<span style={style}>{val}</span>]
             },
           },
           formatter: ({ row }) => {
@@ -336,6 +386,9 @@ export default {
       }
       return ret
     },
+    isAllSelected () {
+      return this.highlights.length === this.tableData.length
+    },
   },
   watch: {
     series (val, oldV) {
@@ -365,6 +418,9 @@ export default {
     pager (val) {
       this.curPager = Object.assign({}, val || { seriesIndex: 0, total: 0, limit: 10, page: 0 })
     },
+    tableData (val) {
+      this.highlights = val.map((item, index) => ({ index, color: item.color }))
+    },
   },
   created () {
     this.colorHash = new ColorHash({
@@ -380,6 +436,21 @@ export default {
     this.colorHash = null
   },
   methods: {
+    checkAllClick (val) {
+      if (this.isAllSelected) {
+        this.tableData.map((item, index) => {
+          if (this.highlights.some(l => l.index === index)) {
+            this.cellClick({ row: item, rowIndex: index })
+          }
+        })
+      } else {
+        this.tableData.map((item, index) => {
+          if (!this.highlights.some(l => l.index === index)) {
+            this.cellClick({ row: item, rowIndex: index })
+          }
+        })
+      }
+    },
     getTableData (series, reducedResult) {
       return series.map((val, i) => {
         const ret = { ...val.tags, raw_name: val.raw_name }
@@ -430,17 +501,21 @@ export default {
     },
     highlightSeries (seriesName, row, rowIndex) {
       if (this.chartInstance) {
-        this._cancelHighlight()
-        this.$refs.tableRef.clearCurrentRow()
-        this.highlight = { index: null, color: '' }
-        if (seriesName !== this.seriesOldClickName) {
-          this.$refs.tableRef.setCurrentRow(row)
-          this._setHighlight(seriesName)
-          this.seriesOldClickName = seriesName
-          this.highlight = { index: rowIndex, color: row.__color }
+        const target = this.highlights.filter(item => item.index === rowIndex)
+        if (target.length) {
+          const list = this.highlights.filter(item => item.index !== rowIndex)
+          if (list.length) {
+            this.highlights = list
+          }
         } else {
-          this.seriesOldClickName = null
+          this.highlights = [...this.highlights, { index: rowIndex, color: row.__color }]
         }
+        const seriesNames = this.highlights.map(item => {
+          let seriesName = _.get(this.chartInstanceOption, `series[${item.index}].name`)
+          seriesName = seriesName || `series${item.index}`
+          return seriesName
+        })
+        this._setHighlights(seriesNames)
       }
     },
     _cancelHighlight () {
@@ -454,24 +529,12 @@ export default {
       this.chartInstance.setOption({
         legend: option,
       })
-      // this.chartInstance.setOption({
-      //   series: {
-      //     name: this.seriesOldClickName,
-      //     lineStyle: {
-      //       type: 'solid',
-      //       width: 2,
-      //       shadowBlur: 0,
-      //       shadowOffsetX: 0,
-      //       shadowOffsetY: 0,
-      //     },
-      //   },
-      // })
     },
-    _setHighlight (seriesName) {
-      if (seriesName) {
+    _setHighlights (seriesNames) {
+      if (seriesNames.length) {
         const selected = {}
         const option = {
-          data: this.lineChartOptionsC.series.map(s => { selected[s.name] = s.name === seriesName; return s.name }),
+          data: this.lineChartOptionsC.series.map(s => { selected[s.name] = seriesNames.includes(s.name); return s.name }),
           selectedMode: 'multiple',
           selected: selected,
           show: false,
@@ -479,18 +542,6 @@ export default {
         this.chartInstance.setOption({
           legend: option,
         })
-        // this.chartInstance.setOption({
-        //   series: {
-        //     name: seriesName,
-        //     lineStyle: {
-        //       width: 4,
-        //       shadowBlur: 4,
-        //       opacity: 1,
-        //       shadowOffsetX: 4,
-        //       shadowOffsetY: 4,
-        //     },
-        //   },
-        // })
       }
     },
     getMonitorLine () {
