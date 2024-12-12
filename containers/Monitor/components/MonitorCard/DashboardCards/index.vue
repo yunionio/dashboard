@@ -33,8 +33,31 @@
     </div>
     <div :class="card_style" :style="readOnly && !selectable ? '' :'padding-top: 20px;'">
       <dashboard-card ref="dashboardCard" v-if="readOnly && !selectable" :card_style="card_style" :chartHeigth="chartHeigth" @chose_panel="chose_panel" :panel="panels.length > 0 ? panels[0] : {}" :focusPanelId="focusPanelId" :selectable="selectable" :readOnly="readOnly" :dashboard_id="id" :edit-chart="editChart" :updated_at="updatedAt" :extraParams="extraParams" @delete="handleDelete" />
-      <a-list v-else :grid="{ column: 1 }" :data-source="panels">
-        <a-list-item slot="renderItem" slot-scope="item">
+      <template v-else>
+        <div v-for="(item, index) in panels" :key="index">
+          <dashboard-card
+           :card_style="card_style"
+           :chartHeigth="chartHeigth"
+           :panel="item"
+           :focusPanelId="focusPanelId"
+           :selectable="selectable"
+           :readOnly="readOnly"
+           :dashboard_id="id"
+           :edit-chart="editChart"
+           :updated_at="updatedAt"
+           :extraParams="extraParams"
+           :time="time"
+           :timeGroup="timeGroup"
+           :customTime="customTime"
+           :groupFunc="groupFunc"
+           :tablePageSize="tablePageSize"
+           @pageChange="(pager) => pageChange(item, pager)"
+           @chose_panel="chose_panel"
+           @delete="handleDelete" />
+        </div>
+      </template>
+      <!-- <a-list v-else :grid="{ column: 1 }" :data-source="panels">
+        <a-list-item slot="renderItem" slot-scope="item" className="owner-item">
           <dashboard-card
            :card_style="card_style"
            :chartHeigth="chartHeigth"
@@ -55,7 +78,7 @@
            @chose_panel="chose_panel"
            @delete="handleDelete" />
         </a-list-item>
-      </a-list>
+      </a-list> -->
     </div>
   </div>
 </template>
@@ -239,5 +262,7 @@ export default {
 </script>
 
 <style scoped>
-
+.owner-item {
+  margin: 0;
+}
 </style>
