@@ -42,7 +42,7 @@ export default {
                   manager: this.webconsoleManager,
                   params,
                   errorMsg: connectParams.login_error_message,
-                  data: { name: obj.name, ip: params.action },
+                  data: { name: obj.name, ip: params.action, id: obj.id, resource: 'servers' },
                   success: (data) => {
                     this.openWebConsole(obj, data, 'ws')
                   },
