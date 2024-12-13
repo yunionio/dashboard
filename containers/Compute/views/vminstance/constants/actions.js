@@ -113,7 +113,7 @@ const getSingleActions = function () {
                     manager: this.webconsoleManager,
                     params,
                     errorMsg: connectParams.login_error_message,
-                    data: { name: obj.name, ip: ipAddr },
+                    data: { name: obj.name, ip: ipAddr, id: obj.id, resource: 'servers' },
                     success: (data) => {
                       this.openWebConsole(obj, data, 'ws')
                     },

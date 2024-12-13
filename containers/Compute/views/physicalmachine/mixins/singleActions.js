@@ -77,7 +77,7 @@ export default {
             }
           }
           Array.from(new Set(ips)).forEach(ip => {
-            const meta = () => ({ validate: obj.status === 'running' })
+            const meta = () => ({ validate: true })
             ret.push({
               label: `SSH ${ip}`,
               action: actionGenerator(ip),
