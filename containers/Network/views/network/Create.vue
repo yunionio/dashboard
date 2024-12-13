@@ -65,7 +65,7 @@
           </template>
           <ip-subnets :decorator="decorators.ipSubnets" @clear-error="clearIpSubnetsError" />
         </a-form-item>
-        <a-form-item :label="$t('network.text_575')" :extra="$t('network.text_578')" v-bind="formItemLayout" v-if="!show && !isGroupGuestIpPrefix">
+        <a-form-item :label="$t('network.text_575')" :extra="$t('network.text_578')" :vaidate-status="guestIpPrefixValidateStatus" :help="guestIpPrefixHelp" v-bind="formItemLayout" v-if="!show && !isGroupGuestIpPrefix">
           <a-input v-decorator="decorators.guest_ip_prefix(0)" :placeholder="$t('network.ipv4.prefix.prompt')" />
           <!-- <a-input v-decorator="decorators.guest_ip6_prefix(0)" :placeholder="$t('network.ipv6.prefix.prompt')" /> -->
         </a-form-item>
@@ -826,7 +826,7 @@ export default {
             }
             data.push(obj)
           }, values.guest_ip_prefix)
-        } else {
+        } else if (this.show) {
           R.forEachObjIndexed((value, key) => {
             const obj = {
               bgp_type: values.bgp_type,
@@ -854,6 +854,26 @@ export default {
             }
             data.push(obj)
           }, values.startip)
+        } else {
+          R.forEachObjIndexed((value, key) => {
+            const obj = {
+              alloc_policy: values.alloc_policy,
+              guest_dns: values.guest_dns,
+              guest_domain: values.guest_domain,
+              guest_ntp: values.guest_ntp,
+              guest_ip_prefix: value,
+              guest_ip6_prefix: values.guest_ip6_prefix && values.guest_ip6_prefix[key],
+              name: values.name,
+              description: values.description,
+              vpc: values.vpc,
+              zone: values.zone,
+              project_id: values.project?.key,
+              is_auto_alloc: values.is_auto_alloc,
+              guest_dhcp,
+              __meta__: values.__meta__,
+            }
+            data.push(obj)
+          }, values.guest_ip_prefix)
         }
         return data
       }
@@ -897,9 +917,14 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         this.submiting = true
-        if (this.cloudEnv === 'onpremise' && !this.isGroupGuestIpPrefix && (R.isNil(values.startip) || R.isEmpty(values.startip))) {
+        if (this.cloudEnv === 'onpremise' && this.show && !this.isGroupGuestIpPrefix && (R.isNil(values.startip) || R.isEmpty(values.startip))) {
           this.ipSubnetsValidateStatus = 'error'
           this.ipSubnetsHelp = this.$t('network.text_605')
+          return
+        }
+        if (!this.show && !this.isGroupGuestIpPrefix && (R.isNil(values.guest_ip_prefix) || R.isEmpty(values.guest_ip_prefix))) {
+          this.guestIpPrefixValidateStatus = 'error'
+          this.guestIpPrefixHelp = this.$t('network.ipv4.prefix.prompt')
           return
         }
         if (this.isGroupGuestIpPrefix && (R.isNil(values.guest_ip_prefix) || R.isEmpty(values.guest_ip_prefix))) {
