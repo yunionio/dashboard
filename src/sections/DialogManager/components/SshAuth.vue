@@ -62,9 +62,33 @@ export default {
         port: { required: true, message: this.$t('compute.text_350') },
       },
       errorMsg,
+      requestConfigs: {
+        servers: {
+          resource: 'servers',
+          methodname: 'GetLoginInfo',
+        },
+      },
     }
   },
+  created () {
+    this.fetchLoginInfo()
+  },
   methods: {
+    async fetchLoginInfo () {
+      const { resource, id } = this.params.data
+      if (!resource) return
+      const config = this.requestConfigs[resource]
+      if (!config) return
+      try {
+        const manager = new this.$Manager(resource, 'v2')
+        const { data: { password, username } } = await manager.objectRpc({
+          methodname: config.methodname,
+          objId: id,
+        })
+        this.formData.username = username
+        this.formData.password = password
+      } catch (err) { }
+    },
     async handleConfirm () {
       this.loading = true
       try {
