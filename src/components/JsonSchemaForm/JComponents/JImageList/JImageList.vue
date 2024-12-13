@@ -90,9 +90,6 @@ export default {
     isArm () {
       return this.fe.sku && this.fe.sku.cpu_arch === HOST_CPU_ARCHS.arm.capabilityKey
     },
-    isLoongarch64 () {
-      return this.fe.sku && this.fe.sku.cpu_arch === HOST_CPU_ARCHS.loongarch64.capabilityKey
-    },
     isIDC () {
       return HYPERVISORS_MAP[this.hypervisor]?.env === 'idc'
     },
@@ -131,7 +128,6 @@ export default {
       if (R.is(Object, this.formFd.fe.sku)) {
         params.os_arch = HOST_CPU_ARCHS.x86.key
         if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
-        if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
       }
       return params
     },
@@ -151,7 +147,6 @@ export default {
       if (R.is(Object, this.formFd.fe.sku)) {
         params.os_arch = HOST_CPU_ARCHS.x86.key
         if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
-        if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
       }
       return params
     },
