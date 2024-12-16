@@ -1237,6 +1237,7 @@
   "compute.text_1232": "Set up auto renewal",
   "compute.text_1233": "Auto renewal",
   "compute.text_1234": "Forced restart mode will cause the current unsaved data of the server to be lost",
+  "compute.text_1234_1": "Forced shutdown mode will cause the current unsaved data of the server to be lost",
   "compute.text_1235": "Force restart",
   "compute.text_1236": "Save image",
   "compute.text_1237": "Image category",
