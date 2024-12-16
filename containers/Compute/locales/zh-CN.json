@@ -1238,6 +1238,7 @@
   "compute.text_1232": "设置自动续费",
   "compute.text_1233": "自动续费",
   "compute.text_1234": "强制重启模式，会导致服务器实例当前未保存的数据丢失",
+  "compute.text_1234_1": "强制关机模式，会导致服务器实例当前未保存的数据丢失",
   "compute.text_1235": "强制重启",
   "compute.text_1236": "保存镜像",
   "compute.text_1237": "镜像类别",
