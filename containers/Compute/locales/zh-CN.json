@@ -1240,6 +1240,7 @@
   "compute.text_1232": "设置自动续费",
   "compute.text_1233": "自动续费",
   "compute.text_1234": "强制重启模式，会导致服务器实例当前未保存的数据丢失",
+  "compute.text_1234_1": "强制关机模式，会导致服务器实例当前未保存的数据丢失",
   "compute.text_1235": "强制重启",
   "compute.text_1236": "保存镜像",
   "compute.text_1237": "镜像类别",
@@ -1866,5 +1867,6 @@
   "compute.uis.dir": "本地盘",
   "compute.uis.fs": "共享盘",
   "compute.virtual_total": "虚拟总量",
-  "compute.actual_total": "物理总量"
+  "compute.actual_total": "物理总量",
+  "compute.force_shutdown": "强制关机"
 }

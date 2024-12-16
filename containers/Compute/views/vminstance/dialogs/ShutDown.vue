@@ -2,6 +2,11 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{action}}</div>
     <div slot="body">
+      <a-alert class="mb-2" type="warning">
+        <template v-slot:message>
+          <div>{{$t('compute.text_1234_1')}}</div>
+        </template>
+      </a-alert>
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
@@ -16,6 +21,9 @@
             {{$t('compute.shutdown_stop_paying')}}
           </a-checkbox>
           <help-tooltip name="shutdownStopCharging" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.force_shutdown')" v-bind="formItemLayout">
+          <a-switch :value="form.fd.is_force" @change="isForceChange" />
         </a-form-item>
       </a-form>
     </div>
@@ -44,6 +52,7 @@ export default {
         fc: this.$form.createForm(this),
         fd: {
           stopPaying: false,
+          is_force: false,
         },
       },
       decorators: {
@@ -58,6 +67,13 @@ export default {
           {
             valuePropName: 'checked',
             initialValue: false,
+          },
+        ],
+        is_force: [
+          'is_force',
+          {
+            initialValue: false,
+            valuePropName: 'checked',
           },
         ],
       },
@@ -90,7 +106,9 @@ export default {
   },
   methods: {
     async doShutDownSubmit () {
-      const data = {}
+      const data = {
+        is_force: this.form.fd.is_force,
+      }
       if (this.form.fd.stopPaying) {
         data.stop_charging = true
       }
@@ -130,6 +148,9 @@ export default {
         throw error
       }
     },
+    isForceChange (val) {
+      this.form.fd.is_force = val
+    },
     stopPayingChange (val) {
       const { checked } = val.target
       this.form.fd.stopPaying = checked
@@ -139,6 +160,7 @@ export default {
       const values = await this.form.fc.validateFields()
       const params = {
         stop_charging: values.stopPaying,
+        is_force: values.is_force,
       }
       const variables = {
         project: this.params.data[0].tenant_id,
