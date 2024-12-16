@@ -18,6 +18,7 @@
       :data="detailData"
       :getParams="getParams"
       :on-manager="onManager"
+      taskResource="compute-tasks"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
       @refresh="refresh"
@@ -27,12 +28,12 @@
 </template>
 
 <script>
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import DnsDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import DnsDetail from './Detail'
 
 export default {
   name: 'DNSSidePage',
@@ -45,6 +46,7 @@ export default {
     return {
       detailTabs: [
         { label: this.$t('network.text_67'), key: 'dns-detail' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }

@@ -23,6 +23,7 @@
       :data="detailData"
       :getParams="getParams"
       :on-manager="onManager"
+      taskResource="compute-tasks"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
       @refresh="refresh"
@@ -32,12 +33,12 @@
 </template>
 
 <script>
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import KafkaDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import KafkaDetail from './Detail'
 
 export default {
   name: 'KafkaSidePage',
@@ -50,6 +51,7 @@ export default {
     return {
       detailTabs: [
         { label: this.$t('middleware.properties'), key: 'kafka-detail' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('middleware.operations'), key: 'event-drawer' },
       ],
     }

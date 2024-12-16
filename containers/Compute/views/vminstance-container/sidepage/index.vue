@@ -27,6 +27,7 @@
       :on-manager="onManager"
       :show-create-action="false"
       :isPageDestroyed="isPageDestroyed"
+      taskResource="compute-tasks"
       @refresh="refresh"
       @single-refresh="singleRefresh"
       @tab-change="handleTabChange" />
@@ -72,6 +73,7 @@ export default {
       { label: this.$t('compute.text_376'), key: 'disk-list' },
       { label: this.$t('compute.text_113'), key: 'gpu-list' },
       { label: this.$t('compute.text_608'), key: 'monitor' },
+      { label: this.$t('table.title.task'), key: 'task-drawer' },
       // { label: this.$t('compute.repo.terminal'), key: 'terminal' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
     ]

@@ -19,6 +19,7 @@
       :data="detailData"
       :getParams="getParams"
       :on-manager="onManager"
+      taskResource="compute-tasks"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
       @refresh="refresh"
@@ -29,14 +30,14 @@
 
 <script>
 import * as R from 'ramda'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import DnsZoneDetail from './Detail'
-import DnsAssociateVpcList from './DnsAssociateVpcList'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 import DnsRecordsetListForDnsZoneSidepage from '@Network/views/dns-recordset/components/List'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import DnsZoneDetail from './Detail'
+import DnsAssociateVpcList from './DnsAssociateVpcList'
 
 export default {
   name: 'DnsZoneSidePage',
@@ -56,6 +57,7 @@ export default {
       const detailTabs = [
         { label: this.$t('network.text_67'), key: 'dns-zone-detail' },
         { label: this.$t('common_663'), key: 'dns-recordset-list-for-dns-zone-sidepage' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ]
       if (data.cloud_env === 'public' && data.zone_type === 'PrivateZone') {

@@ -17,17 +17,18 @@
       :res-id="data.id"
       :id="listId"
       :on-manager="onManager"
-      :columns="columns" />
+      :columns="columns"
+      taskResource="compute-tasks" />
   </base-side-page>
 </template>
 
 <script>
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import SnapshotDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import SnapshotDetail from './Detail'
 
 export default {
   name: 'SnapshotSidePage',
@@ -40,6 +41,7 @@ export default {
     return {
       detailTabs: [
         { label: this.$t('compute.text_238'), key: 'snapshot-detail' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }

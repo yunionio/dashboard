@@ -23,18 +23,19 @@
       :data="detailData"
       :getParams="getParams"
       :on-manager="onManager"
-      :columns="columns" />
+      :columns="columns"
+      taskResource="compute-tasks" />
   </base-side-page>
 </template>
 
 <script>
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import DiskDetail from './Detail'
 import SnapshotList from './snapshot'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
 
 export default {
   name: 'DiskSidePage',
@@ -49,6 +50,7 @@ export default {
       detailTabs: [
         { label: this.$t('compute.text_238'), key: 'disk-detail' },
         { label: this.$t('compute.text_462'), key: 'snapshot-list' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }

@@ -21,6 +21,7 @@
       :on-manager="onManager"
       :columns="columns"
       :hidden-columns="hiddenColumns"
+      taskResource="compute-tasks"
       @refresh="refresh"
       @single-refresh="singleRefresh"
       @tab-change="handleTabChange" />
@@ -55,6 +56,7 @@ export default {
       { label: this.$t('compute.text_993'), key: 'in-direction' },
       { label: this.$t('compute.text_994'), key: 'out-direction' },
       { label: this.$t('compute.associated_instances'), key: 'associated-instances' },
+      { label: this.$t('table.title.task'), key: 'task-drawer' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
     ]
     if (this.params.hiddenSidepageTabs && this.params.hiddenSidepageTabs.includes('associated-instances')) {

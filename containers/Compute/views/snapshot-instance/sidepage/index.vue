@@ -18,18 +18,19 @@
       :id="listId"
       :on-manager="onManager"
       :columns="columns"
+      taskResource="compute-tasks"
       @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
 <script>
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import SnapshotDetail from './Detail'
 import SubSnapshotDetail from './SubSnapshotDetail'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
 
 export default {
   name: 'SnapshotInstanceSidePage',
@@ -44,6 +45,7 @@ export default {
       detailTabs: [
         { label: this.$t('compute.text_238'), key: 'snapshot-detail' },
         { label: this.$t('table.title.sub_snapshot'), key: 'sub-snapshot-detail' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }

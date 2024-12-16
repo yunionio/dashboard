@@ -23,6 +23,7 @@
       :id="listId"
       :on-manager="onManager"
       :isPageDestroyed="isPageDestroyed"
+      taskResource="compute-tasks"
       @refresh="refresh"
       @single-refresh="singleRefresh"
       @tab-change="handleTabChange" />
@@ -53,6 +54,7 @@ export default {
       { label: this.$t('compute.text_238'), key: 'detail' },
       { label: this.$t('k8s.text_325'), key: 'log' },
       { label: this.$t('compute.text_608'), key: 'monitor' },
+      { label: this.$t('table.title.task'), key: 'task-drawer' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
     ]
     return {

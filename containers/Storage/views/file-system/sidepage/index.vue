@@ -23,6 +23,7 @@
       :data="detailData"
       :getParams="getParams"
       :on-manager="onManager"
+      taskResource="compute-tasks"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
       @refresh="refresh"
@@ -53,6 +54,7 @@ export default {
       detailTabs: [
         { label: this.$t('storage.text_81'), key: 'file-system-detail' },
         { label: this.$t('dictionary.mount_target'), key: 'mount-target-list' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('storage.text_85'), key: 'event-drawer' },
       ],
     }

@@ -16,19 +16,19 @@
         button-type="link"
         button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="data.id" :id="listId" :data="detailData" :on-manager="onManager" @tab-change="handleTabChange" />
+    <component :is="params.windowData.currentTab" :res-id="data.id" :id="listId" :data="detailData" :on-manager="onManager" taskResource="compute-tasks" @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
 <script>
+import Actions from '@/components/PageList/Actions'
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import detail from './Detail'
 import ResourceManage from './ResourceManage'
 import RuleManage from './RuleManage'
-import Actions from '@/components/PageList/Actions'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'WafSidePage',
@@ -45,6 +45,7 @@ export default {
         { label: this.$t('network.text_67'), key: 'detail' },
         { label: this.$t('network.waf.rule'), key: 'rule-manage' },
         { label: this.$t('network.waf.resource'), key: 'resource-manage' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
       ],
       domainList: this.params.domainList,

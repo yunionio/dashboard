@@ -6,7 +6,7 @@
     :extra-info="extraInfo"
     :showName="false"
     status-module="parentTaskStatus"
-    resource="cloud-phone-tasks" />
+    :resource="resource" />
 </template>
 
 <script>
@@ -30,6 +30,10 @@ export default {
     onManager: {
       type: Function,
       required: true,
+    },
+    resource: {
+      type: String,
+      default: 'cloud-phone-tasks',
     },
   },
   data () {

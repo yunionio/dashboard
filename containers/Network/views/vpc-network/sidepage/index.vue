@@ -20,6 +20,7 @@
       :on-manager="onManager"
       :columns="columns"
       :getParams="getParams"
+      taskResource="compute-tasks"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
       @refresh="refresh"
@@ -57,6 +58,7 @@ export default {
         { label: this.$t('network.text_67'), key: 'detail' },
         { label: 'VPC', key: 'vpc' },
         { label: this.$t('network.vpc_network.route'), key: 'route-set' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ]
       return tabs

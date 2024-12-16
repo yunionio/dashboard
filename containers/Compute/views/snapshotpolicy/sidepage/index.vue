@@ -17,6 +17,7 @@
       :on-manager="onManager"
       :res-id="data.id"
       :id="listId"
+      taskResource="compute-tasks"
       @tab-change="handleTabChange" />
   </base-side-page>
 </template>
@@ -43,6 +44,7 @@ export default {
       detailTabs: [
         { label: this.$t('compute.text_238'), key: 'snapshot-policy-detail' },
         { label: this.$t('compute.text_1084'), key: 'snapshot-policy-disk' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }

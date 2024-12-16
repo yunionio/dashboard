@@ -19,7 +19,8 @@
       :getParams="getParams"
       :res-id="data.id"
       :id="listId"
-      :columns="columns" />
+      :columns="columns"
+      taskResource="compute-tasks" />
   </base-side-page>
 </template>
 
@@ -48,6 +49,7 @@ export default {
       const ret = [
         { label: this.$t('db.text_187'), key: 'mongodb-detail' },
         { label: this.$t('db.text_332'), key: 'mongodb-backup-list' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('db.text_192'), key: 'event-drawer' },
       ]
       return ret

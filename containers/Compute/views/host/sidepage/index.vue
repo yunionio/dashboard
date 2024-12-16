@@ -22,6 +22,7 @@
       :refresh="refresh"
       :getParams="getParams"
       :probeHostDevices="probeHostDevices"
+      taskResource="compute-tasks"
       @tab-change="handleTabChange" />
   </base-side-page>
 </template>
@@ -74,6 +75,7 @@ export default {
         { label: this.$t('compute.text_113'), key: 'gpu-list' },
         { label: this.$t('compute.text_114'), key: 'server-recovery' },
         { label: this.$t('compute.text_608'), key: 'monitor' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ]
       if (!hasPermission({ key: 'baremetalnetworks_list' })) {

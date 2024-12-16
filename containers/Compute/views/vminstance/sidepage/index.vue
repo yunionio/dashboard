@@ -30,6 +30,7 @@
       :hiddenColumns="hiddenColumns"
       :hiddenSingleActions="hiddenSingleActions"
       :hiddenActionKeys="['SetReserveResource']"
+      taskResource="compute-tasks"
       @refresh="refresh"
       @single-refresh="singleRefresh"
       @tab-change="handleTabChange" />
@@ -93,6 +94,7 @@ export default {
       { label: this.$t('compute.text_113'), key: 'gpu-list' },
       { label: this.$t('compute.text_608'), key: 'vm-instance-monitor-sidepage' },
       { label: this.$t('compute.text_1301'), key: 'vm-instance-alert-sidepage' },
+      { label: this.$t('table.title.task'), key: 'task-drawer' },
       { label: this.$t('cloudenv.text_431'), key: 'scheduledtasks-list' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
     ]

@@ -23,19 +23,20 @@
       :resource="resource"
       :on-manager="onManager"
       :columns="columns"
+      taskResource="compute-tasks"
       @tab-change="handleTabChange"
       @refresh="refresh" />
   </base-side-page>
 </template>
 
 <script>
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 import ChildrenImageList from '../../host-image/sidepage/ChildrenImage'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import HostImageDetail from './Detail'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
 
 export default {
   name: 'HostImageSidePage',
@@ -50,6 +51,7 @@ export default {
       return [
         { label: this.$t('compute.text_238'), key: 'host-image-detail' },
         { label: this.$t('table.title.child_image'), key: 'children-image-list' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ]
     },
