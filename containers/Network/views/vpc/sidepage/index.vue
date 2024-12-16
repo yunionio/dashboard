@@ -21,6 +21,7 @@
       :on-manager="onManager"
       :columns="columns"
       :hiddenActions="hiddenActions"
+      taskResource="compute-tasks"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
       @refresh="refresh"
@@ -63,6 +64,7 @@ export default {
         { label: this.$t('network.text_67'), key: 'vpc-detail' },
         { label: this.$t('network.text_565'), key: 'network-list' },
         { label: this.$t('network.topology'), key: 'topology' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ]
       if (this.detailData.brand === 'Huawei' || this.detailData.brand === 'Aliyun' || this.detailData.brand === 'OpenStack') {

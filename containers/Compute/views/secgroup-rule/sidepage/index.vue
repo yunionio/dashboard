@@ -16,7 +16,8 @@
       :res-id="data.id"
       :data="detailData"
       :getParams="getParams"
-      res-type="secgrouprule" />
+      res-type="secgrouprule"
+      taskResource="compute-tasks" />
   </base-side-page>
 </template>
 
@@ -32,6 +33,7 @@ export default {
   mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin],
   data () {
     const detailTabs = [
+      { label: this.$t('table.title.task'), key: 'task-drawer' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
     ]
     return {

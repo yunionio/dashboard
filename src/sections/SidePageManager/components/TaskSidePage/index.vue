@@ -23,7 +23,7 @@
       :getParams="getParams"
       :on-manager="onManager"
       :columns="columns"
-      resource="cloud-phone-tasks"
+      :resource="params.options.resource || 'cloud-phone-tasks'"
       :isRoot="false" />
   </base-side-page>
 </template>
@@ -50,7 +50,7 @@ export default {
   computed: {
     detailTabs () {
       const detailTabs = [
-        { label: this.$t('scope.cloudphone.detail'), key: 'detail' },
+        { label: this.$t('sidepage.tab.label.detail'), key: 'detail' },
       ]
       console.log('TaskSidePage', this)
       if (this.data && this.data.data && this.data.data.sub_task_count > 0) {

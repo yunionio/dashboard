@@ -17,17 +17,18 @@
       :res-id="data.id"
       :id="listId"
       :on-manager="onManager"
-      :columns="columns" />
+      :columns="columns"
+      taskResource="compute-tasks" />
   </base-side-page>
 </template>
 
 <script>
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import InstanceBackupDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import InstanceBackupDetail from './Detail'
 import SubBackupDetail from './SubBackupDetail'
 
 export default {
@@ -43,6 +44,7 @@ export default {
       detailTabs: [
         { label: this.$t('compute.text_238'), key: 'instance-backup-detail' },
         { label: this.$t('table.title.sub_backup'), key: 'sub-backup-detail' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }

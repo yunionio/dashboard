@@ -11,17 +11,17 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager"  :params="getParams" :res-id="getParams.resId" :id="listId" />
+    <component :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager"  :params="getParams" :res-id="getParams.resId" :id="listId" taskResource="compute-tasks" />
   </base-side-page>
 </template>
 
 <script>
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import Detail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import Detail from './Detail'
 
 export default {
   name: 'RDSDatabaseSidePage',
@@ -34,6 +34,7 @@ export default {
     return {
       detailTabs: [
         { label: this.$t('db.text_187'), key: 'detail' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('db.text_192'), key: 'event-drawer' },
       ],
     }

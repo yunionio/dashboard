@@ -23,6 +23,7 @@
       :res-id="data.id"
       :getParams="getParams"
       :on-manager="onManager"
+      taskResource="k8s-tasks"
       @refresh="refresh"
       @single-refresh="singleRefresh"
       @tab-change="handleTabChange" />
@@ -54,6 +55,7 @@ export default {
         { label: this.$t('compute.text_238'), key: 'kube-cluster-detail' },
         { label: this.$t('k8s.text_21'), key: 'kube-machine-list' },
         { label: this.$t('k8s.text_414'), key: 'k8s-cluster-monitor' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('k8s.text_202'), key: 'event-drawer' },
       ],
     }

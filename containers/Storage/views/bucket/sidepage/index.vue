@@ -11,7 +11,7 @@
     <template v-slot:actions v-if="showActions">
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :columns="columns" :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager" :refresh="refresh" :getParams="getParams" :params="getParams" :res-id="getParams.storage" :id="listId" />
+    <component :columns="columns" :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager" :refresh="refresh" :getParams="getParams" :params="getParams" :res-id="getParams.storage" :id="listId" taskResource="compute-tasks" />
   </base-side-page>
 </template>
 
@@ -47,6 +47,7 @@ export default {
         { label: this.$t('storage.text_211'), key: 'rules' },
         { label: this.$t('storage.text_259'), key: 'Policies' },
         { label: this.$t('storage.text_170'), key: 'monitor' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('storage.text_85'), key: 'event-drawer' },
       ],
     }

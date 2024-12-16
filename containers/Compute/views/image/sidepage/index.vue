@@ -24,6 +24,7 @@
       :resource="resource"
       :on-manager="onManager"
       :columns="columns"
+      taskResource="compute-tasks"
       @refresh="refresh" />
   </base-side-page>
 </template>
@@ -59,11 +60,13 @@ export default {
         return [
           { label: this.$t('compute.text_238'), key: 'system-image-detail' },
           { label: this.$t('compute.text_692'), key: 'cache-list' },
+          { label: this.$t('table.title.task'), key: 'task-drawer' },
           { label: this.$t('compute.text_240'), key: 'event-drawer' },
         ]
       }
       return [
         { label: this.$t('compute.text_238'), key: 'system-image-detail' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ]
     },

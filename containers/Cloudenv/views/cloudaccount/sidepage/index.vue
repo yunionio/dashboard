@@ -23,7 +23,8 @@
       resource="cloudaccounts"
       :cloudaccount-list-refresh="params.options.refresh"
       :getParams="getParams"
-      :columns="columns" />
+      :columns="columns"
+      taskResource="compute-tasks" />
   </base-side-page>
 </template>
 
@@ -84,6 +85,7 @@ export default {
         detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.cloudgroup'), key: 'cloudgroup-list' })
       }
       detailTabs.push({ label: this.$t('cloudenv.text_431'), key: 'scheduledtasks-list' })
+      detailTabs.push({ label: this.$t('table.title.task'), key: 'task-drawer' })
       detailTabs.push({ label: this.$t('cloudenv.text_15'), key: 'event-drawer' })
       return detailTabs
     },

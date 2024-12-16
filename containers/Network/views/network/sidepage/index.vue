@@ -19,6 +19,7 @@
       :getParams="getParams"
       :on-manager="onManager"
       :columns="columns"
+      taskResource="compute-tasks"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
       @refresh="refresh"
@@ -68,6 +69,7 @@ export default {
         { label: this.$t('network.mac_ip.mac_mapping_table'), key: 'network-ip-macs' },
         // { label: '负载均衡IP', key: 'lb-ip' },
         // { label: '弹性网卡IP', key: 'flex-ip' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }

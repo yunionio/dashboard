@@ -20,6 +20,7 @@
       :on-manager="onManager"
       :columns="columns"
       :isPageDestroyed="isPageDestroyed"
+      taskResource="compute-tasks"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
       @refresh="refresh"
@@ -58,6 +59,7 @@ export default {
         { label: this.$t('compute.text_104'), key: 'network-list-for-baremetal-sidepage' },
         { label: this.$t('compute.text_376'), key: 'disk-list-for-baremetal-sidepage' },
         { label: this.$t('compute.text_608'), key: 'baremetal-monitor-sidepage' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         // { label: '报警', key: 'baremetal-alert-sidepage' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],

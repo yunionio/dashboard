@@ -1,8 +1,8 @@
 <template>
   <task-list
-    resource="cloud-phone-tasks"
+    :resource="taskResource"
     :obj-id="resId"
-    :list-id="id"
+    :list-id="id || 'TaskListForCustomResourceSidePage'"
     :getParams="getParams" />
 </template>
 
@@ -17,6 +17,10 @@ export default {
   },
   mixins: [WindowsMixin],
   props: {
+    taskResource: {
+      type: String,
+      default: 'cloud-phone-tasks',
+    },
     id: {
       type: String,
     },
