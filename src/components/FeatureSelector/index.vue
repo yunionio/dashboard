@@ -15,7 +15,7 @@
                       class="item d-flex p-2 mr-3 align-items-center">
                     <span class="flex-fill">{{ $t('scope.text_114') }}</span>
                   </div>
-                  <a-tooltip v-for="item in g.items" :key="item.key" :title="item.reason">
+                  <a-tooltip v-for="item in g.items" :key="item.key" :title="item.disabled || item.licenseDisabled ? item.reason : ''">
                     <div v-if="!item.licenseDisabled" class="item d-flex p-2 mr-3 align-items-center" v-on="item.disabled ? undefined: itemEvents(item)"
                         :class="{ checked: item.checked, disabled: item.disabled }">
                       <img :src="item.icon" :style="item.logoStyle ? item.logoStyle : 'width: 24px'" />
