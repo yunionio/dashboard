@@ -20,7 +20,8 @@
       :show-create-action="false"
       :res-id="getParams.dbinstance"
       :id="listId"
-      :columns="columns" />
+      :columns="columns"
+      taskResource="compute-tasks" />
   </base-side-page>
 </template>
 
@@ -57,6 +58,7 @@ export default {
         { label: this.$t('db.text_189'), key: 'database-list' },
         { label: this.$t('db.text_190'), key: 'backup-list' },
         { label: this.$t('db.text_191'), key: 'monitor' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('db.text_192'), key: 'event-drawer' },
       ],
     }
