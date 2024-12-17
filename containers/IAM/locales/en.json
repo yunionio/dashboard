@@ -845,6 +845,10 @@
     "compute$enable_auto_rename_project": {
       "label": "Local project synchronization update switch",
       "desc": "By default, it is turned off. After being turned on, the name will be changed on the cloud, and the name of the local project will also be changed. If the cloud project is deleted, the local project will be deleted along with it (resources will not be directly deleted). Prerequisite: The cloud account is enabled to automatically create projects, and the local project only corresponds to one cloud project."
+    },
+    "keystone$force_enable_mfa": {
+      "label": "Force users to enable MFA login verification",
+      "desc": "Default is off, after enabling, the login MFA verification will be enforced for users according to the selected strategy."
     }
   },
   "user": {
