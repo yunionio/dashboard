@@ -62,6 +62,9 @@ export default {
      */
     async putFetchGlobalSettingValue ({ state, commit, dispatch }, payload = {}) {
       try {
+        if (payload.checkExistSetting) {
+          await dispatch('getFetchGlobalSetting')
+        }
         if (state && state.id) {
           const stateValue = state.value ? { ...state.value } : {}
           const values = { ...payload }
