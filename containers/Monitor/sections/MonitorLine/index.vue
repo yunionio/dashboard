@@ -206,11 +206,22 @@ export default {
               return [<icon type="checkbox-empty" style="font-size:20px;cursor:pointer;transform:translateY(3px)"></icon>]
             },
             header: ({ column }, h) => {
+              let type = 'checkbox-empty'
+              if (this.isAllSelected) {
+                type = 'checkbox-fill'
+              } else if (this.highlights.length) {
+                type = 'checkbox-some'
+              }
               return [
-                this.$createElement('a-checkbox', {
+                this.$createElement('icon', {
                   props: {
-                    checked: this.isAllSelected,
-                    indeterminate: true,
+                    type,
+                  },
+                  style: {
+                    fontSize: '20px',
+                    cursor: 'pointer',
+                    transform: 'translateY(3px)',
+                    color: 'var(--antd-wave-shadow-color)',
                   },
                   on: {
                     click: this.checkAllClick,
@@ -262,8 +273,7 @@ export default {
                     }
                     val = `${this.description.label || label}${this.isSelectFunction ? `(${this.isSelectFunction.toUpperCase()})` : ''}` || cellValue
                   }
-                  const style = this.highlights.some(item => item.index === rowIndex) ? { color: row.__color } : {}
-                  return [<span style={style}>{val}</span>]
+                  return [<span>{val}</span>]
                 },
               },
             })
@@ -282,8 +292,7 @@ export default {
               slots: {
                 default: ({ row, rowIndex }) => {
                   const val = row[groupByField] || '-'
-                  const style = this.highlights.some(item => item.index === rowIndex) ? { color: row.__color } : {}
-                  return [<span style={style}>{val}</span>]
+                  return [<span>{val}</span>]
                 },
               },
             })
@@ -306,8 +315,7 @@ export default {
               const cellValue = row.result
               const unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
               const val = transformUnit(cellValue, unit)
-              const style = this.highlights.some(item => item.index === rowIndex) ? { color: row.__color } : {}
-              return [<span style={style}>{val.text}</span>]
+              return [<span>{val.text}</span>]
             },
           },
           sortable: true,
@@ -325,8 +333,7 @@ export default {
           slots: {
             default: ({ row, rowIndex }) => {
               const val = row.raw_name || ''
-              const style = this.highlights.some(item => item.index === rowIndex) ? { color: row.__color } : {}
-              return [<span style={style}>{val}</span>]
+              return [<span>{val}</span>]
             },
           },
           formatter: ({ row }) => {
@@ -504,9 +511,7 @@ export default {
         const target = this.highlights.filter(item => item.index === rowIndex)
         if (target.length) {
           const list = this.highlights.filter(item => item.index !== rowIndex)
-          if (list.length) {
-            this.highlights = list
-          }
+          this.highlights = list
         } else {
           this.highlights = [...this.highlights, { index: rowIndex, color: row.__color }]
         }
@@ -531,18 +536,16 @@ export default {
       })
     },
     _setHighlights (seriesNames) {
-      if (seriesNames.length) {
-        const selected = {}
-        const option = {
-          data: this.lineChartOptionsC.series.map(s => { selected[s.name] = seriesNames.includes(s.name); return s.name }),
-          selectedMode: 'multiple',
-          selected: selected,
-          show: false,
-        }
-        this.chartInstance.setOption({
-          legend: option,
-        })
+      const selected = {}
+      const option = {
+        data: this.lineChartOptionsC.series.map(s => { selected[s.name] = seriesNames.includes(s.name); return s.name }),
+        selectedMode: 'multiple',
+        selected: selected,
+        show: false,
       }
+      this.chartInstance.setOption({
+        legend: option,
+      })
     },
     getMonitorLine () {
       const lineChartOptions = _.cloneDeep(_.mergeWith(this.lineChartOptions, {
