@@ -20,7 +20,8 @@
       :show-create-action="false"
       :res-id="getParams.elasticcache_id"
       :id="listId"
-      :columns="columns" />
+      :columns="columns"
+      taskResource="compute-tasks" />
   </base-side-page>
 </template>
 
@@ -60,6 +61,7 @@ export default {
         { label: this.$t('db.text_331'), key: 'redis-account-list' },
         { label: this.$t('db.text_332'), key: 'redis-backup-list' },
         { label: this.$t('db.text_191'), key: 'monitor' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('db.text_192'), key: 'event-drawer' },
       ]
       return ret
