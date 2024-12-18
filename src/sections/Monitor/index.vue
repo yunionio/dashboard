@@ -7,6 +7,7 @@
       :groupFunc="groupFunc"
       :customTime="customTime"
       :showGroupFunc="true"
+      customTimeUseTimeStamp
       @update:time="updateTime"
       @update:timeGroup="updateTimeGroup"
       @update:customTime="updateCustomTime"
