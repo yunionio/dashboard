@@ -256,6 +256,11 @@ const LicenseItems = [
     meta: meta('resource_managent', 'bill', true),
   },
   {
+    key: 'bill_volcengine',
+    origin_key: 'volcengine',
+    meta: meta('resource_managent', 'bill', true),
+  },
+  {
     key: 'auth',
     meta: meta('auth', '', false),
   },
