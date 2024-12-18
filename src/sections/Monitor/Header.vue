@@ -186,7 +186,6 @@ export default {
         ]
       },
     },
-    // 该参数临时添加，待使用该组件的环境都改为使用时间戳之后，应该删除
     customTimeUseTimeStamp: {
       type: Boolean,
       default: false,
