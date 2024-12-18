@@ -176,7 +176,7 @@ export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t
     field,
     title,
     sortable,
-    showOverflow: 'ellipsis',
+    // showOverflow: 'ellipsis',
     minWidth,
     slots: {
       default: ({ row }, h) => {
