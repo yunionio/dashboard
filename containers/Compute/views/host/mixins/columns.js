@@ -168,6 +168,7 @@ export default {
         title: 'CPU',
         minWidth: 100,
         sortable: true,
+        sortBy: 'order_by_cpu_commit',
         slots: {
           default: ({ row }) => {
             const { cpu_count, cpu_count_virtual, cpu_commit } = getHostSpecInfo(row)
@@ -186,6 +187,7 @@ export default {
         title: this.$t('compute.text_369'),
         minWidth: 100,
         sortable: true,
+        sortBy: 'order_by_mem_commit',
         slots: {
           default: ({ row }) => {
             const { mem_size, mem_size_virtual, mem_commit } = getHostSpecInfo(row)
@@ -204,6 +206,7 @@ export default {
         title: this.$t('compute.text_99'),
         minWidth: 100,
         sortable: true,
+        sortBy: 'order_by_storage_used',
         slots: {
           default: ({ row }) => {
             const { storage_size, storage_size_virtual, storage_commit } = getHostSpecInfo(row)
