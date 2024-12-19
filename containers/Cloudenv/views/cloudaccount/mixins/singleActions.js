@@ -4,7 +4,7 @@ import expectStatus from '@/constants/expectStatus'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 import { findPlatform, getDisabledProvidersActionMeta, typeClouds } from '@/utils/common/hypervisor'
-import { hasMeterService, hasSetupKey } from '@/utils/auth'
+import { hasMeterService, hasSetupKey, billSupportBrands } from '@/utils/auth'
 import { BRAND_MAP, CLOUD_ENVS } from '@/constants'
 import { CLOUDACCOUNT_TYPES } from '@Cloudenv/views/cloudaccount/constants'
 import setting from '@/config/setting'
@@ -53,14 +53,14 @@ export default {
       }
       if (hasSetupKey(['bill']) && !hasSetupKey(['onecloud', 'public', 'private', 'vmware', 'storate'])) {
         const setUpKeys = this.globalSettingSetupKeys || []
-        const billTargetItems = ['aliyun', 'aws', 'azure', 'google', 'huawei', 'qcloud', 'jdcloud'].filter(key => setUpKeys.includes('bill_' + key))
+        const billTargetItems = billSupportBrands.filter(key => setUpKeys.includes('bill_' + key))
         if (!billTargetItems.length) {
           // 旧版本 license只签发bill
           if (!hasSetupKey('public')) {
             if (!typesMap.public) {
               typesMap.public = {}
             }
-            ['aliyun', 'aws', 'azure', 'google', 'huawei', 'qcloud', 'jdcloud'].map(key => {
+            billSupportBrands.map(key => {
               typesMap.public[key] = CLOUDACCOUNT_TYPES.public[key]
             })
           }
@@ -386,21 +386,13 @@ export default {
                   },
                   meta: obj => {
                     const supportBrands = [
-                      BRAND_MAP.VMware.key,
-                      BRAND_MAP.Aws.key,
-                      BRAND_MAP.Aliyun.key,
-                      BRAND_MAP.Google.key,
-                      BRAND_MAP.Huawei.key,
-                      BRAND_MAP.Azure.key,
-                      BRAND_MAP.Qcloud.key,
-                      BRAND_MAP.JDcloud.key,
-                      BRAND_MAP.VolcEngine.key,
+                      ...billSupportBrands,
                       BRAND_MAP.Ksyun.key,
                     ]
 
                     return {
                       validate: this.$appConfig.isPrivate &&
-                        (supportBrands.indexOf(obj.brand) > -1 || obj.cloud_env === CLOUD_ENVS.private) &&
+                        (supportBrands.some(key => key.toLowerCase() === (obj.brand || '').toLowerCase()) || obj.cloud_env === CLOUD_ENVS.private) &&
                         ownerDomain,
                     }
                   },
