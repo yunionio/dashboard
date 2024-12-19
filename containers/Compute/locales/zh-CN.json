@@ -88,7 +88,7 @@
   "compute.text_90": "主机",
   "compute.text_91": "虚拟机",
   "compute.text_92": "裸金属",
-  "compute.text_93": "主机组",
+  "compute.text_93": "@:dictionary.instancegroup",
   "compute.text_94": "主机模板",
   "compute.text_95": "弹性伸缩组",
   "compute.text_96": "镜像",

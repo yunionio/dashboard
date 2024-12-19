@@ -88,7 +88,7 @@
   "compute.text_90": "ホスト",
   "compute.text_91": "仮想マシン",
   "compute.text_92": "ベアメタル",
-  "compute.text_93": "ホストグループ",
+  "compute.text_93": "@:dictionary.instancegroup",
   "compute.text_94": "テンプレート",
   "compute.text_95": "自動スケーリンググループ",
   "compute.text_96": "鏡像",
