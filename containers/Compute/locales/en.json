@@ -88,7 +88,7 @@
   "compute.text_90": "Compute",
   "compute.text_91": "VM instance",
   "compute.text_92": "Baremetals",
-  "compute.text_93": "Server Groups",
+  "compute.text_93": "@:dictionary.instancegroup",
   "compute.text_94": "Templates",
   "compute.text_95": "Scaling Groups",
   "compute.text_96": "Images",
