@@ -22,7 +22,7 @@
 <script>
 import { isCE } from '@/utils/utils'
 import { CLOUDACCOUNT_TYPES, ENV_TITLE } from '@Cloudenv/views/cloudaccount/constants'
-import { hasSetupKey } from '@/utils/auth'
+import { hasSetupKey, billSupportBrands } from '@/utils/auth'
 import setting from '@/config/setting'
 
 export default {
@@ -72,14 +72,14 @@ export default {
       }
       if (hasSetupKey(['bill']) && !hasSetupKey(['onecloud', 'public', 'private', 'vmware', 'storate'])) {
         const setUpKeys = this.globalSettingSetupKeys || []
-        const billTargetItems = ['aliyun', 'aws', 'azure', 'google', 'huawei', 'qcloud', 'jdcloud'].filter(key => setUpKeys.includes('bill_' + key))
+        const billTargetItems = billSupportBrands.filter(key => setUpKeys.includes('bill_' + key))
         if (!billTargetItems.length) {
           // 旧版本 license只签发bill
           if (!hasSetupKey('public')) {
             if (!typesMap.public) {
               typesMap.public = {}
             }
-            ['aliyun', 'aws', 'azure', 'google', 'huawei', 'qcloud', 'jdcloud'].map(key => {
+            billSupportBrands.map(key => {
               typesMap.public[key] = CLOUDACCOUNT_TYPES.public[key]
             })
           }
@@ -134,7 +134,7 @@ export default {
     isShowBillItem (item) {
       if (this.globalSettingSetupKeys.indexOf('bill') === -1) return false
       // 开启费用
-      if (['aws', 'aliyun', 'google', 'huawei', 'azure', 'qcloud', 'jdcloud'].indexOf(item.provider.toLowerCase()) > -1) {
+      if (billSupportBrands.indexOf(item.provider.toLowerCase()) > -1) {
         // 没有平台但是有费用
         if (this.globalSettingSetupKeys.indexOf(`bill_${item.provider.toLowerCase()}`) > -1) {
           return true
