@@ -16,7 +16,6 @@ import {
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
-import { numerify } from '@/filters'
 import { getHostSpecInfo } from '../utils/index'
 
 export default {
@@ -185,103 +184,57 @@ export default {
       },
       getOsArch({ field: 'cpu_architecture' }),
       {
-        field: 'cpu_count',
-        title: `${i18n.t('compute.text_563')}(${this.$t('compute.reserved')})`,
-        minWidth: 100,
-        showOverflow: 'title',
-        sortable: true,
-        // slots: {
-        //   default: ({ row }) => {
-        //     if (this.isPreLoad && !row.cpu_commit_rate) return [<data-loading />]
-        //     return row.cpu_count ? `${row.cpu_count}/${percentstr(row.cpu_commit_rate)}` : 'N/A'
-        //   },
-        // },
-        formatter: ({ row }) => {
-          const { cpu_count = '-', cpu_reserved } = getHostSpecInfo(row)
-          return `${cpu_count} ${cpu_reserved ? ` (${cpu_reserved})` : ''}`
-        },
-      },
-      {
-        field: 'mem_size',
-        title: `${i18n.t('compute.text_564')}(${this.$t('compute.reserved')})`,
-        minWidth: 100,
-        sortable: true,
-        // slots: {
-        //   default: ({ row }) => {
-        //     if (this.isPreLoad && !row.mem_commit_rate) return [<data-loading />]
-        //     return row.mem_size ? `${sizestr(row.mem_size, 'M', 1024)}/${percentstr(row.mem_commit_rate)}` : 'N/A'
-        //   },
-        // },
-        formatter: ({ row }) => {
-          const { mem_size, mem_reserved } = getHostSpecInfo(row)
-          return `${mem_size ? sizestr(row.mem_size, 'M', 1024) : '-'} ${mem_reserved ? ` (${sizestr(mem_reserved, 'M', 1024)})` : ''}`
-        },
-      },
-      {
-        field: 'storage',
-        title: i18n.t('compute.text_565'),
-        minWidth: 80,
-        sortable: true,
-        // slots: {
-        //   default: ({ row }) => {
-        //     if (this.isPreLoad && !row.storage) return [<data-loading />]
-        //     return row.storage ? `${sizestr(row.storage, 'M', 1024)}/${percentstr(row.storage_commit_rate)}` : 'N/A'
-        //   },
-        // },
-        formatter: ({ row }) => {
-          return row.storage ? sizestr(row.storage, 'M', 1024) : '-'
-        },
-      },
-      {
         field: 'cpu_commit',
-        title: `${i18n.t('compute.text_563_1')}(${this.$t('common_233')})`,
+        title: 'CPU',
         minWidth: 100,
-        showOverflow: 'title',
-        sortFields: ['cpu_commit', ''],
-        sortByList: ['', 'order_by_cpu_commit_rate'],
-        // slots: {
-        //   default: ({ row }) => {
-        //     if (this.isPreLoad && !row.cpu_commit_rate) return [<data-loading />]
-        //     return row.cpu_count ? `${row.cpu_count}/${percentstr(row.cpu_commit_rate)}` : 'N/A'
-        //   },
-        // },
+        sortable: true,
+        slots: {
+          default: ({ row }) => {
+            const { cpu_count, cpu_count_virtual, cpu_commit } = getHostSpecInfo(row)
+            const title = `${this.$t('common_233')}: ${cpu_commit}\n${this.$t('compute.actual_total')}: ${cpu_count}\n${this.$t('compute.virtual_total')}: ${cpu_count_virtual}`
+            return [<MultipleProgress title={title} progress1Value={cpu_commit} progress2Value={cpu_count} progress3Value={cpu_count_virtual} text={`${cpu_commit}/${cpu_count}/${cpu_count_virtual}`} />]
+          },
+        },
         formatter: ({ row }) => {
-          const { cpu_commit, cpu_commit_rate, cpu_count_virtual } = getHostSpecInfo(row)
-          return `${cpu_count_virtual || '-'} (${cpu_commit},${numerify(cpu_commit_rate, '0%')})`
+          const { cpu_count, cpu_count_virtual, cpu_commit } = getHostSpecInfo(row)
+          const title = `${this.$t('common_233')}: ${cpu_commit}, ${this.$t('compute.actual_total')}: ${cpu_count}, ${this.$t('compute.virtual_total')}: ${cpu_count_virtual}`
+          return title
         },
       },
       {
         field: 'mem_commit',
-        title: `${i18n.t('compute.text_564_1')}(${this.$t('common_233')})`,
+        title: this.$t('compute.text_369'),
         minWidth: 100,
-        sortFields: ['mem_commit', ''],
-        sortByList: ['', 'order_by_mem_commit_rate'],
-        // slots: {
-        //   default: ({ row }) => {
-        //     if (this.isPreLoad && !row.mem_commit_rate) return [<data-loading />]
-        //     return row.mem_size ? `${sizestr(row.mem_size, 'M', 1024)}/${percentstr(row.mem_commit_rate)}` : 'N/A'
-        //   },
-        // },
+        sortable: true,
+        slots: {
+          default: ({ row }) => {
+            const { mem_size, mem_size_virtual, mem_commit } = getHostSpecInfo(row)
+            const title = `${this.$t('common_233')}: ${sizestr(mem_commit, 'M', 1024)}\n${this.$t('compute.actual_total')}: ${sizestr(mem_size, 'M', 1024)}\n${this.$t('compute.virtual_total')}: ${sizestr(mem_size_virtual, 'M', 1024)}`
+            return [<MultipleProgress title={title} progress1Value={mem_commit} progress2Value={mem_size} progress3Value={mem_size_virtual} text={`${sizestr(mem_commit, 'M', 1024)}/${sizestr(mem_size, 'M', 1024)}/${sizestr(mem_size_virtual, 'M', 1024)}`} />]
+          },
+        },
         formatter: ({ row }) => {
-          const { mem_commit, mem_commit_rate, mem_size_virtual } = getHostSpecInfo(row)
-          return `${sizestr(mem_size_virtual, 'M', 1024)} (${sizestr(mem_commit, 'M', 1024)},${numerify(mem_commit_rate, '0%')})`
+          const { mem_size, mem_size_virtual, mem_commit } = getHostSpecInfo(row)
+          const title = `${this.$t('common_233')}: ${sizestr(mem_commit, 'M', 1024)}, ${this.$t('compute.actual_total')}: ${sizestr(mem_size, 'M', 1024)}, ${this.$t('compute.virtual_total')}: ${sizestr(mem_size_virtual, 'M', 1024)}`
+          return title
         },
       },
       {
-        field: 'storage_used',
-        title: i18n.t('compute.text_565_1'),
-        minWidth: 80,
-        sortFields: ['storage_used', ''],
-        sortByList: ['', 'order_by_storage_commit_rate'],
-        // slots: {
-        //   default: ({ row }) => {
-        //     if (this.isPreLoad && !row.storage) return [<data-loading />]
-        //     return row.storage ? `${sizestr(row.storage, 'M', 1024)}/${percentstr(row.storage_commit_rate)}` : 'N/A'
-        //   },
-        // },
+        field: 'storage_commit',
+        title: this.$t('compute.text_99'),
+        minWidth: 100,
+        sortable: true,
+        slots: {
+          default: ({ row }) => {
+            const { storage_size, storage_size_virtual, storage_commit } = getHostSpecInfo(row)
+            const title = `${this.$t('common_233')}: ${sizestr(storage_commit, 'M', 1024)}\n${this.$t('compute.actual_total')}: ${sizestr(storage_size, 'M', 1024)}\n${this.$t('compute.virtual_total')}: ${sizestr(storage_size_virtual, 'M', 1024)}`
+            return [<MultipleProgress title={title} progress1Value={storage_commit} progress2Value={storage_size} progress3Value={storage_size_virtual} text={`${sizestr(storage_commit, 'M', 1024)}/${sizestr(storage_size, 'M', 1024)}/${sizestr(storage_size_virtual, 'M', 1024)}`} />]
+          },
+        },
         formatter: ({ row }) => {
-          const { storage_commit, storage_commit_rate, storage_size_virtual } = getHostSpecInfo(row)
-          return `${sizestr(storage_size_virtual, 'M', 1024)} (${sizestr(storage_commit, 'M', 1024)},${numerify(storage_commit_rate, '0%')})`
+          const { storage_size, storage_size_virtual, storage_commit } = getHostSpecInfo(row)
+          const title = `${this.$t('common_233')}: ${sizestr(storage_commit, 'M', 1024)}, ${this.$t('compute.actual_total')}: ${sizestr(storage_size, 'M', 1024)}, ${this.$t('compute.virtual_total')}: ${sizestr(storage_size_virtual, 'M', 1024)}`
+          return title
         },
       },
       {
