@@ -364,6 +364,56 @@ export const VMWARE_MONITOR = [
   },
 ]
 
+export const SANGFOR_MONITOR = [
+  {
+    name: 'cpu',
+    label: i18n.t('compute.text_523'),
+    seleteItem: 'usage_active',
+    transfer: 1,
+    fromItem: 'vm_cpu',
+    unit: '%',
+    metric: metricItems['vm_cpu.usage_active'].key,
+  },
+  BASIC_MEM_USED_PERCENT,
+  BASIC_DISK_USED_PERCENT,
+  {
+    name: 'netio',
+    label: i18n.t('compute.text_524'),
+    seleteItem: 'bps_recv',
+    fromItem: 'vm_netio',
+    unit: 'bps',
+    transfer: 1024,
+    metric: metricItems['vm_netio.bps_recv'].key,
+  },
+  {
+    name: 'netio',
+    label: i18n.t('compute.text_525'),
+    seleteItem: 'bps_sent',
+    fromItem: 'vm_netio',
+    unit: 'bps',
+    transfer: 1024,
+    metric: metricItems['vm_netio.bps_sent'].key,
+  },
+  {
+    name: 'diskio',
+    label: i18n.t('compute.text_526'),
+    seleteItem: 'read_iops',
+    fromItem: 'vm_diskio',
+    unit: 'bps',
+    transfer: 1024,
+    metric: metricItems['vm_diskio.read_iops'].key,
+  },
+  {
+    name: 'diskio',
+    label: i18n.t('compute.text_527'),
+    seleteItem: 'write_iops',
+    fromItem: 'vm_diskio',
+    unit: 'bps',
+    transfer: 1024,
+    metric: metricItems['vm_diskio.write_iops'].key,
+  },
+]
+
 // 除了 kvm、vmware 虚拟机监控数据
 export const OTHER_MONITOR = [
   {

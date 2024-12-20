@@ -30,6 +30,8 @@ export const metricItems = {
   'vm_netio.pps_sent': { key: 'vm_netio.pps_sent', label: i18n.t('compute.netio.pps_sent'), unit: 'pps' },
   'vm_diskio.read_bps': { key: 'vm_diskio.read_bps', label: i18n.t('compute.text_758'), unit: 'bps' },
   'vm_diskio.write_bps': { key: 'vm_diskio.write_bps', label: i18n.t('compute.text_759'), unit: 'bps' },
+  'vm_diskio.read_iops': { key: 'vm_diskio.read_iops', label: i18n.t('compute.text_758'), unit: 'iops' },
+  'vm_diskio.write_iops': { key: 'vm_diskio.write_iops', label: i18n.t('compute.text_759'), unit: 'iops' },
   // KVM宿主机
   'usage_active,usage_idle,usage_user,usage_system,usage_iowait': { key: 'usage_active,usage_idle,usage_user,usage_system,usage_iowait', label: i18n.t('compute.text_760'), unit: '%', rules: [{ max: 100, type: 'integer', message: i18n.t('compute.text_754') }] },
   'load1,load5,load15,load1_pcore,load5_pcore,load15_pcore': { key: 'load1,load5,load15,load1_pcore,load5_pcore,load15_pcore', label: i18n.t('compute.text_761'), unit: '%' },
