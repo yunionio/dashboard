@@ -24,7 +24,7 @@
 <script>
 import BaseMonitor from '@Compute/sections/monitor/BaseMonitor'
 import AgentMonitor from '@Compute/sections/monitor/AgentMonitor.vue'
-import { ONECLOUD_MONITOR, VMWARE_MONITOR, OTHER_MONITOR } from '@Compute/views/vminstance/constants'
+import { ONECLOUD_MONITOR, VMWARE_MONITOR, OTHER_MONITOR, SANGFOR_MONITOR } from '@Compute/views/vminstance/constants'
 import { HYPERVISORS_MAP } from '@/constants'
 import WindowsMixin from '@/mixins/windows'
 import InstallAgentFormVisible from '../../vminstance/components/InstallAgentFormVisible'
@@ -71,6 +71,8 @@ export default {
         return VMWARE_MONITOR
       } else if (this.hypervisor === HYPERVISORS_MAP.kvm.key) {
         return ONECLOUD_MONITOR
+      } else if (this.hypervisor === HYPERVISORS_MAP.sangfor.key) {
+        return SANGFOR_MONITOR
       } else {
         // aliyun apsara 虚拟机磁盘使用率增加groupBy: device
         const otherMonitor = OTHER_MONITOR.map(item => {
