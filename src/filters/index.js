@@ -76,9 +76,11 @@ export const numerify = (num, format = '0.00') => {
   let floatLen = 2
   // 适配科学计数法
   const str = num + ''
+  if (str === 'e-8') console.log(str)
   if (str.includes('e-') || str.includes('e+')) {
     const [numStr, exp] = str.includes('e-') ? str.split('e-') : str.split('e+')
-    const floatStr = numStr.split('.')[1]
+    const numList = numStr.split('.')
+    const floatStr = numList.length > 1 ? numList[1] : numList[0]
     num = num.toFixed(Math.min(Number(exp) + floatStr.length, 11))
     floatLen = Number(exp) + floatStr.length
   } else {
