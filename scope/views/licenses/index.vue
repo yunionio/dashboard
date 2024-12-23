@@ -12,7 +12,7 @@
       <div>
         <div class="d-flex mb-3 mt-2">
           <div class="license-label flex-grow-0 flex-shrink-0">{{$t('scope.text_146')}}</div>
-          <div class="flex-fill">Cloudpods</div>
+          <div class="flex-fill">{{ productName }}</div>
         </div>
         <div class="d-flex mb-3">
           <div class="license-label flex-grow-0 flex-shrink-0">{{$t('scope.text_147')}}</div>
@@ -52,6 +52,12 @@ export default {
         return `v${setting.oemVersion.replace(/^[v]/, '')}`
       }
       return '-'
+    },
+    productName () {
+      if (process.env.PRODUCT) {
+        return setting.product[setting.language] || 'Cloudpods'
+      }
+      return 'Cloudpods'
     },
   },
 }
