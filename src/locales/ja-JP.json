@@ -6127,5 +6127,6 @@
   "common.language_management": "言語管理",
   "common.cancel_pin": "Pinをキャンセル",
   "common.select_pin_data": "リストデータを選択するとPin",
-  "common.platform_overview": "プラットフォームの概要"
+  "common.platform_overview": "プラットフォームの概要",
+  "common.server_security": "ホストセキュリティ"
 }

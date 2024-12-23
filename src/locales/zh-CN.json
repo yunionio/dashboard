@@ -6131,5 +6131,6 @@
   "common.language_management": "语言管理",
   "common.cancel_pin": "取消Pin",
   "common.select_pin_data": "选择列表数据后可进行Pin",
-  "common.platform_overview": "平台总览"
+  "common.platform_overview": "平台总览",
+  "common.server_security": "主机安全"
 }
