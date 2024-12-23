@@ -17,6 +17,7 @@ import 'codemirror/mode/yaml/yaml.js'
 import { uuid } from '@/utils/utils'
 import '@/utils/polyfill'
 import '@/config/appBuryPoint'
+import setting from '@/config/setting'
 
 import store from './store'
 import router from './router'
@@ -63,7 +64,7 @@ async function start () {
 
 window.app = app
 window.buildInfo = process.env.VUE_APP_BUILDINFO
-document.title = process.env.VUE_APP_IS_PRIVATE ? '' : 'Cloudpods'
+document.title = process.env.VUE_APP_IS_PRIVATE ? '' : (process.env.PRODUCT ? setting.product[setting.language] || 'Cloudpods' : 'Cloudpods')
 window.env = process.env
 
 start()
