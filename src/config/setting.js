@@ -9,6 +9,7 @@ export default {
   themeColor: storage.get('__oc_theme_color__') || process.env.THEME_COLOR || '#1890FF',
   theme: storage.get('__oc_theme__') || process.env.THEME || 'dark',
   brand: process.env.BRAND || { 'zh-CN': '云联壹云', en: 'YunionCloud' },
+  product: process.env.PRODUCT || (process.env.VUE_APP_IS_PRIVATE ? { 'zh-CN': '云管平台', en: 'Cloud Management Platform' } : { 'zh-CN': 'Cloudpods', en: 'Cloudpods' }),
   l2MenuVisible: !R.isNil(_l2MenuVisible) && !R.isNil(_l2MenuVisible) ? _l2MenuVisible : true,
   monitorAlertNotifyTriggerTime: process.env.VUE_APP_MONITOR_ALERT_NOTIFY_TRIGGER_TIME || 1000 * 60 * 60, // 默认值1小时
   oemVersion: process.env.OEM_VERSION || process.env.VUE_APP_OEM_VERSION || '',
