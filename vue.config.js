@@ -112,6 +112,7 @@ module.exports = {
       definitions[0]['process.env'].THEME_COLOR = JSON.stringify(process.env.THEME_COLOR)
       definitions[0]['process.env'].THEME = JSON.stringify(process.env.THEME)
       definitions[0]['process.env'].BRAND = process.env.BRAND
+      definitions[0]['process.env'].PRODUCT = process.env.PRODUCT
       return definitions
     })
 
