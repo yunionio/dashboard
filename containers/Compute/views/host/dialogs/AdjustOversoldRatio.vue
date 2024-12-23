@@ -118,7 +118,17 @@ export default {
       return this.params.onManager('batchUpdate', {
         id: ids,
         managerArgs: {
-          data,
+          data: { mem_reserved: data.mem_reserved },
+        },
+      })
+    },
+    doPerformAction (data) {
+      const ids = this.params.data.map(item => item.id)
+      return this.params.onManager('batchPerformAction', {
+        id: ids,
+        managerArgs: {
+          action: 'set-commit-bound',
+          data: { cpu_cmtbound: data.cpu_cmtbound, mem_cmtbound: data.mem_cmtbound },
         },
       })
     },
@@ -132,6 +142,7 @@ export default {
         }
         values.mem_reserved = values.mem_reserved * 1024
         await this.doUpdate(values)
+        await this.doPerformAction(values)
         this.loading = false
         this.cancelDialog()
         this.params.refresh()
