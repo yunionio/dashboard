@@ -201,6 +201,7 @@ export const PERMISSION = {
   // 服务器详情
   hosts_get: ['compute', 'hosts', 'get'],
   hosts_perform_login_info: ['compute', 'hosts', 'perform', 'login-info'],
+  hosts_perform_set_commit_bound: ['compute', 'hosts', 'perform', 'set-commit-bound'],
 
   // 调度策略
   schedpolicies_list: ['compute', 'schedpolicies', 'list'],
@@ -826,6 +827,7 @@ export const PERMISSION = {
   storages_perform_public: ['compute', 'storages', 'perform', 'public'],
   storages_perform_set_user_metadata: ['compute', 'storages', 'perform', 'set-user-metadata'],
   storages_update_capacity: ['compute', 'storages', 'perform', 'update-capacity'],
+  storages_perform_set_commit_bound: ['compute', 'storages', 'perform', 'set-commit-bound'],
 
   // 存储桶镜像缓存
   cachedimages_uncache_image: ['compute', 'cachedimages', 'uncache_image'],

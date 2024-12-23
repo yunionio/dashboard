@@ -230,7 +230,7 @@ export default {
               },
               {
                 label: i18n.t('compute.text_513'),
-                permission: 'hosts_update',
+                permission: 'hosts_update,hosts_perform_set_commit_bound',
                 action: () => {
                   this.createDialog('HostAdjustOversoldRatioDialog', {
                     data: [obj],
