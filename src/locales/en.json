@@ -6109,5 +6109,6 @@
   "common.language_management": "Language management",
   "common.cancel_pin": "Cancel Pin",
   "common.select_pin_data": "After selecting the list data, you can pin it",
-  "common.platform_overview": "Platform Overview"
+  "common.platform_overview": "Platform Overview",
+  "common.server_security": "Server Security"
 }
