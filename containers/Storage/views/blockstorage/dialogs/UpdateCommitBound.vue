@@ -98,8 +98,9 @@ export default {
           Reflect.deleteProperty(values, 'commit_bound')
         }
         const manager = new this.$Manager('storages', 'v2')
-        await manager.batchUpdate({
+        await manager.batchPerformAction({
           ids: this.params.data.map(item => item.id),
+          action: 'set-commit-bound',
           data: values,
         })
         this.cancelDialog()
