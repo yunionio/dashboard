@@ -62,7 +62,7 @@ export default {
             },
             {
               label: i18n.t('storage.text_34'),
-              permission: 'storages_update',
+              permission: 'storages_perform_set_commit_bound',
               action: row => {
                 this.createDialog('BlockStorageUpdateCommitBoundDialog', {
                   data: [row],
