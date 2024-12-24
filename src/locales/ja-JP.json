@@ -2846,7 +2846,12 @@
     "private_envlogo": "プライベートクラウド logo",
     "private_env-1": "プライベートクラウド1",
     "private_env-2": "プライベートクラウド2",
-    "extdb": "カスタムリソース"
+    "extdb": "カスタムリソース",
+    "menu_resource_management": "リソース管理",
+    "menu_monitor_operation": "監視と運用次元",
+    "menu_billing_accuracy": "費用と最適化",
+    "menu_iam_security": "認証とセキュリティ",
+    "menu_system_config": "システム設定"
   },
   "originDictionary": {},
   "res": {
