@@ -1083,6 +1083,7 @@
   "network.topology.res_type.esxi": "ESXI ホスト",
   "network.topology.res_type.instancegroups": "インスタンスグループ",
   "network.topology.res_type.networkinterfaces": "エニ",
+  "network.topology.res_type.gpu": "透伝装置（GPU）",
   "network.topology.start": "上がる",
   "network.topology.end": "止める",
   "network.topology": "位相幾何学",

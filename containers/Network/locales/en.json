@@ -1084,6 +1084,7 @@
   "network.topology.res_type.esxi": "ESXI Host",
   "network.topology.res_type.instancegroups": "Instancegroups",
   "network.topology.res_type.networkinterfaces": "Networkinterfaces",
+  "network.topology.res_type.gpu": "GPU",
   "network.topology.start": "Start",
   "network.topology.end": "End",
   "network.topology": "Topology",

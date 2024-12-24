@@ -1,12 +1,13 @@
 <template>
-  <div class="res-container d-flex justify-content-center align-items-center" :class="{'is-exist': isExist, 'res-container-host': showSchedTag}">
+  <div class="res-container d-flex justify-content-center align-items-center" :class="{'is-exist': isExist, 'res-container-host': showSchedTag, 'res-last': isLast}">
     <span class="line" :class="{'full': multiple}" />
-    <div class="res d-flex" :class="{'res-host': showSchedTag}">
+    <div :class="{'common-left-line': showLeftLine}" />
+    <div class="res d-flex" :class="{'res-host': showSchedTag, 'res-running': type === 'vminstance' && ((resSource.status || resSource.status) === 'running')}">
       <a-tooltip placement="top" :get-popup-container="getPopupContainer">
         <template slot="title">
           <p class="title">{{ $t('network.topology.res_type.' + getType(resSource)) }}</p>
           <p>{{ $t('common.name') }}：{{ getName(resSource) }}</p>
-          <p>{{ $t('common.status') }}：{{ getStatus(resSource) }}</p>
+          <p v-if="type !== 'gpu'">{{ $t('common.status') }}：{{ getStatus(resSource) }}</p>
           <template v-if="type === 'vminstance'">
             <p>{{ $t('network.waf.rule_ip') }}：{{ resSource.ip_addr }}</p>
           </template>
@@ -32,11 +33,12 @@
               </template>
             </div>
           </template>
+          <p v-for="(obj, idx) in extraShowList" :key="idx">{{ obj.label }}：{{ obj.value }}</p>
         </template>
         <div class="d-flex">
           <icon v-if="!showSchedTag && !showStorage" :type="iconType" />
-          <div v-else class="res-box">
-            <icon :type="iconType" class="mt-2 mb-1" style="border:none;font-size:40px" />
+          <div v-else class="res-box;">
+            <icon :type="iconType" class="mt-2 mb-1" style="border:none;font-size:40px;" />
             <div class="tag-list tag-list-limit d-flex align-items-center flex-wrap justify-content-center">
               <template v-if="showStorageTag">
                 <div v-for="(item,index) in resStorages" class="tag storage-tag" :key="index" :style="{background: item.background}">{{item.name}}</div>
@@ -57,9 +59,9 @@
 
 <script>
 import ResMixin from '@Network/sections/Topology/ResMixin'
-import { STATUS_MAP, COLORS } from './constants'
 import { sizestr } from '@/utils/utils'
 import { STORAGE_TYPES } from '@Storage/constants/index.js'
+import { STATUS_MAP, COLORS } from './constants'
 export default {
   name: 'ResCommon',
   mixins: [ResMixin],
@@ -70,6 +72,18 @@ export default {
     isExist: Boolean,
     schedTagColorsMap: Object,
     showStorageTag: {
+      type: Boolean,
+      default: false,
+    },
+    isLast: {
+      type: Boolean,
+      default: false,
+    },
+    extraShowList: {
+      type: Array,
+      default: () => [],
+    },
+    showLeftLine: {
       type: Boolean,
       default: false,
     },

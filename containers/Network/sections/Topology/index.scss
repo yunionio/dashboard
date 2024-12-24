@@ -89,6 +89,25 @@
         height: 100%;
       }
     }
+    .common-left-line {
+      width: 2px;
+      height: 200px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background-color: #2D3A4D;
+    }
+  }
+  .res-last {
+    &::after {
+      content: "";
+      background: rgb(255, 255, 255);
+      width: calc(50% - 3px);
+      height: 2px;
+      position: absolute;
+      right: 0;
+      top: -2px;
+    }
   }
   .res {
     height: 40px;
@@ -121,6 +140,11 @@
       // i {
       //   border-radius: 50%;
       // }
+    }
+  }
+  .res-running {
+    i {
+      color: #52c41a !important;
     }
   }
   .res-host {
