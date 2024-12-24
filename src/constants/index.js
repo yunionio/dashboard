@@ -161,6 +161,11 @@ export const ENABLE_USER_CUSTOM_DICTIONARY = [
   'snapshot',
   'external_id',
   'extdb',
+  'menu_resource_management',
+  'menu_monitor_operation',
+  'menu_billing_accuracy',
+  'menu_iam_security',
+  'menu_system_config',
 ]
 
 export const chartColors = getColorByCache()

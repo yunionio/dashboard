@@ -2845,7 +2845,12 @@
     "private_envlogo": "私有云logo",
     "private_env-1": "私有云1",
     "private_env-2": "私有云2",
-    "extdb": "自定义资源"
+    "extdb": "自定义资源",
+    "menu_resource_management": "资源管理",
+    "menu_monitor_operation": "监控与运维",
+    "menu_billing_accuracy": "费用与优化",
+    "menu_iam_security": "认证与安全",
+    "menu_system_config": "系统配置"
   },
   "originDictionary": {},
   "res": {
