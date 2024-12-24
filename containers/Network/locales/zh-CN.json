@@ -1083,6 +1083,7 @@
   "network.topology.res_type.esxi": "ESXI宿主机",
   "network.topology.res_type.instancegroups": "实例组",
   "network.topology.res_type.networkinterfaces": "弹性网卡",
+  "network.topology.res_type.gpu": "透传设备（GPU）",
   "network.topology.start": "起",
   "network.topology.end": "止",
   "network.topology": "拓扑",

@@ -18,6 +18,7 @@ export const RES_ICON_MAP = {
   esxi: 'host',
   networkinterfaces: 'networkinterfaces',
   hosts: 'host',
+  gpu: 'gpu',
 }
 
 export const STATUS_MAP = {
