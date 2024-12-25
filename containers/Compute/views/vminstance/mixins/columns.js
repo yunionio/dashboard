@@ -117,7 +117,7 @@ export default {
 
           return [
             <div class='d-flex align-items-center text-truncate'>
-              <status status={row.status} statusModule='server' process={row.progress} />
+              <status status={row.status} statusModule='server' process={row.progress} showStatusProgress={true} />
               {row.metadata && getToolTip(row)}
               {row.status?.includes('fail') ? log : null}
               {row.status === 'live_migrating' ? cancel : null}
