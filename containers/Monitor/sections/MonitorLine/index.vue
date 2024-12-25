@@ -9,7 +9,7 @@
     <loader v-if="loading" :loading="true" />
     <template v-else>
       <div class="d-flex">
-        <line-chart class="flex-grow-1 mb-4" @chartInstance="setChartInstance" width="100%" height="250px" :options="lineChartOptionsC" />
+        <line-chart class="flex-grow-1" @chartInstance="setChartInstance" width="100%" height="250px" :options="lineChartOptionsC" />
         <div v-if="alertHandlerShow && lineChartOptionsC.dataset.length" class="alert-handler-wrapper position-relative">
           <div class="position-absolute clearfix d-flex align-items-center" :style="{ top: `${topStyleRange[1]}px` }">
             <div class="alert-handler-line" />
@@ -25,6 +25,7 @@
         row-id="raw_name"
         ref="tableRef"
         highlight-hover-row
+        class="mt-3"
         :columns="columns"
         :data="tableData"
         :row-style="getRowStyle"
@@ -582,6 +583,10 @@ export default {
           containLabel: true,
         },
       }))
+      lineChartOptions.grid = {
+        containLabel: true,
+        top: 10,
+      }
       const dataset = []
       const names = []
       const currencys = []
@@ -679,24 +684,6 @@ export default {
             if (!this.showTable || (this.isSelectFunction && this.resultReducer && !this.groupBy) || name.startsWith('unknow')) {
               name = this.isSelectFunction.toUpperCase()
             }
-            // else {
-            //   if ((name.startsWith('{') && name.endsWith('}')) || name.includes(' (path:')) {
-            //     try {
-            //       const path = (name.match(/\s\((path:.*)\)/) || [''])[0] || ''
-            //       const str = name.replace(path, '').substring(1, name.length - 1)
-            //       const list = str.split(',')
-            //       const obj = {}
-            //       list.forEach(item => {
-            //         const [key, value] = item.split('=')
-            //         obj[key] = value
-            //       })
-            //       const field = (this.columns.length > 1 && this.columns[1].field)
-            //       name = obj[field] ? `${obj[field]}${path}` : name
-            //     } catch (err) {
-            //       throw err
-            //     }
-            //   }
-            // }
             return `<div style="color: ${color};" class="d-flex align-items-center"><span>${line.marker}</span> <span class="text-truncate" style="max-width: 500px;">${name || ' '}</span>:&nbsp;<span>${value}</span></div>`
           }).join('')
           let title = list[0].name

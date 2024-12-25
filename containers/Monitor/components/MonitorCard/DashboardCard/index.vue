@@ -1,5 +1,5 @@
 <template>
-  <overview-card-layout :card_style="`${card_stype} ${showMonitor ? 'mb-2' : ''}`">
+  <overview-card-layout :card_style="`${card_stype} ${showMonitor ? '' : ''}`">
     <template #header>
       <div v-if="!readOnly">
         <a-row type="flex" style="padding: 12px;border-bottom: 1px solid #e8e8e8">
