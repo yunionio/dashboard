@@ -171,7 +171,7 @@ export const getBillBrandTableColumn = ({ field = 'brand', title = i18n.t('table
   }
 }
 
-export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t('common.status'), statusModule, sortable = true, minWidth = 120, slotCallback, hiddenLogView = false, formatter, helpTool = {}, hidden } = {}) => {
+export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t('common.status'), statusModule, sortable = true, minWidth = 120, slotCallback, hiddenLogView = false, formatter, helpTool = {}, hidden, showStatusProgress = false } = {}) => {
   return {
     field,
     title,
@@ -192,7 +192,7 @@ export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t
         const help = <a-tooltip class="ml-1" title={helpTool.title}><icon type="question" /></a-tooltip>
         return [
           <div class='d-flex align-items-center text-truncate'>
-            <status status={val} statusModule={statusModule} />
+            <status status={val} statusModule={statusModule} showStatusProgress={showStatusProgress} />
             {isError ? log : null}
             {helpTool.isOpen && helpTool.status?.includes(row.status) ? help : null}
           </div>,
