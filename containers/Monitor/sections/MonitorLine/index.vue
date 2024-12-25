@@ -444,19 +444,21 @@ export default {
   },
   methods: {
     checkAllClick (val) {
+      const list = []
       if (this.isAllSelected) {
         this.tableData.map((item, index) => {
           if (this.highlights.some(l => l.index === index)) {
-            this.cellClick({ row: item, rowIndex: index })
+            list.push({ row: item, rowIndex: index })
           }
         })
       } else {
         this.tableData.map((item, index) => {
           if (!this.highlights.some(l => l.index === index)) {
-            this.cellClick({ row: item, rowIndex: index })
+            list.push({ row: item, rowIndex: index })
           }
         })
       }
+      this.tableSetHighlights(list)
     },
     getTableData (series, reducedResult) {
       return series.map((val, i) => {
@@ -487,7 +489,16 @@ export default {
     tableSetHighlight ({ row, rowIndex, click }) {
       let seriesName = _.get(this.chartInstanceOption, `series[${rowIndex}].name`)
       seriesName = seriesName || `series${rowIndex}`
-      this.highlightSeries(seriesName, row, rowIndex)
+      this.highlightSeries([{ seriesName, row, rowIndex }])
+    },
+    tableSetHighlights (list) {
+      const highlights = list.map(item => {
+        const { row, rowIndex } = item
+        let seriesName = _.get(this.chartInstanceOption, `series[${rowIndex}].name`)
+        seriesName = seriesName || `series${rowIndex}`
+        return { seriesName, row, rowIndex }
+      })
+      this.highlightSeries(highlights)
     },
     setChartInstance (v) {
       this.chartInstanceOption = v.getOption()
@@ -495,7 +506,7 @@ export default {
       this.$emit('chartInstance', v)
       this.chartInstance.on('click', params => {
         this._cancelHighlight()
-        this.highlightSeries(params.seriesName, this.tableData[params.seriesIndex], params.seriesIndex)
+        this.highlightSeries([{ seriesName: params.seriesName, row: this.tableData[params.seriesIndex], rowIndex: params.seriesIndex }])
       })
       if (this.chartInstance && R.is(Function, this.chartInstance.getModel)) {
         const model = this.chartInstance.getModel()
@@ -506,21 +517,38 @@ export default {
         }
       }
     },
-    highlightSeries (seriesName, row, rowIndex) {
+    highlightSeries (list, seriesName, row, rowIndex) {
       if (this.chartInstance) {
-        const target = this.highlights.filter(item => item.index === rowIndex)
-        if (target.length) {
-          const list = this.highlights.filter(item => item.index !== rowIndex)
-          this.highlights = list
-        } else {
-          this.highlights = [...this.highlights, { index: rowIndex, color: row.__color }]
-        }
-        const seriesNames = this.highlights.map(item => {
+        let highlights = [...this.highlights]
+        list.forEach(item => {
+          const { row, rowIndex } = item
+          const target = this.highlights.filter(item => item.index === rowIndex)
+          if (target.length) {
+            highlights = highlights.filter(item => item.index !== rowIndex)
+          } else {
+            highlights = [...highlights, { index: rowIndex, color: row.__color }]
+          }
+        })
+        this.highlights = highlights
+        const seriesNames = highlights.map(item => {
           let seriesName = _.get(this.chartInstanceOption, `series[${item.index}].name`)
           seriesName = seriesName || `series${item.index}`
           return seriesName
         })
         this._setHighlights(seriesNames)
+        // const target = this.highlights.filter(item => item.index === rowIndex)
+        // if (target.length) {
+        //   const list = this.highlights.filter(item => item.index !== rowIndex)
+        //   this.highlights = list
+        // } else {
+        //   this.highlights = [...this.highlights, { index: rowIndex, color: row.__color }]
+        // }
+        // const seriesNames = this.highlights.map(item => {
+        //   let seriesName = _.get(this.chartInstanceOption, `series[${item.index}].name`)
+        //   seriesName = seriesName || `series${item.index}`
+        //   return seriesName
+        // })
+        // this._setHighlights(seriesNames)
       }
     },
     _cancelHighlight () {
