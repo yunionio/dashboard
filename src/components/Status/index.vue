@@ -10,7 +10,7 @@
         <span v-if="showProcess && !changedStatus">({{curProcess}}%)</span>
       </div>
     </div>
-    <div v-if="changedStatus" style="width:100px;margin-left:5px">
+    <div v-if="changedStatus && showProcess" style="width:100px;margin-left:5px">
       <div style="font-size:12px;line-height:12px;color:#9c9c9c;transform:translateY(7px)">{{ originStatusText }}</div>
       <a-progress class="custom-progress-bar" :percent="curProcess" :showInfo="false" size="small" status="active" :title="originStatusText + ': ' + curProcess + '%'" />
     </div>
@@ -50,6 +50,10 @@ export default {
     },
     process: {
       type: Number,
+    },
+    showStatusProgress: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
@@ -112,6 +116,7 @@ export default {
     showProcess () {
       if (!['server', 'image'].includes(this.statusModule)) return false
       if (!['block_stream', 'migrating', 'image_caching', 'saving', 'live_migrating', 'save_disk'].includes(this.status)) return false
+      if (this.statusModule === 'server' && !this.showStatusProgress) return false
       return this.curProcess > 0 && this.curProcess < 100
     },
   },
