@@ -12,6 +12,11 @@ export default {
   activated () {
     this.emitKeepAliveDelayEvents(['ResourceListSingleRefresh'])
   },
+  deactivated () {
+    if (this.$refs?.list?.list?.clearWaitJob) {
+      this.$refs.list.list.clearWaitJob()
+    }
+  },
   methods: {
     emitKeepAliveDelayEvents (eventList) {
       eventList.forEach(eventName => {
