@@ -118,6 +118,10 @@ export default {
         await this.$store.dispatch('auth/getRegistersStatus')
         if (!this.$store.state.auth.registersStatus) {
           this.$router.replace('/auth/adminregister')
+        } else {
+          if (this.$route.path === '/auth/adminregister') {
+            this.$router.replace('/auth')
+          }
         }
       } catch (error) {
         console.error(error)
