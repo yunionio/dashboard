@@ -396,7 +396,7 @@ export default {
                         ownerDomain,
                     }
                   },
-                  hidden: !this.$appConfig.isPrivate || this.$store.getters.isSysCE,
+                  hidden: !hasMeterService() || !this.$appConfig.isPrivate || this.$store.getters.isSysCE,
                 },
                 // 设置优惠率
                 {

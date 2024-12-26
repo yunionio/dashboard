@@ -63,6 +63,19 @@
       width: 54px;
       word-break: break-word;
       color: #696D76;
+      position: relative;
+      .text {
+        width: 100px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: -10px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        white-space: break-spaces;
+      }
     }
   }
   .wire-host {
