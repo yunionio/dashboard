@@ -1868,5 +1868,6 @@
   "compute.uis.fs": "共有ディスク",
   "compute.virtual_total": "仮想総量",
   "compute.actual_total": "物理総量",
+  "compute.actual_used": "実際の使用",
   "compute.force_shutdown": "強制シャットダウン"
 }

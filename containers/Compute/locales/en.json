@@ -1866,5 +1866,6 @@
   "compute.uis.fs": "Shared disk",
   "compute.virtual_total": "Virtual Total",
   "compute.actual_total": "Physical Total",
+  "compute.actual_used": "Acutual Used",
   "compute.force_shutdown": "Forced shutdown"
 }
