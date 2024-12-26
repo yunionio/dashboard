@@ -13,6 +13,7 @@ export const getHostSpecInfo = (obj) => {
     mem_commit_rate,
     storage_size,
     storage_used,
+    actual_storage_used,
     storage_commit_rate,
     storage_virtual,
   } = obj
@@ -36,6 +37,7 @@ export const getHostSpecInfo = (obj) => {
     storage_size_virtual: storage_virtual,
     storage_commit: storage_used,
     storage_commit_rate,
+    actual_storage_used,
   }
   return ret
 }

@@ -1,5 +1,18 @@
 <template>
-  <a-card :title="title" size="small" class="explorer-monitor-line" :style="monitorLineCardStyle">
+  <a-card size="small" class="explorer-monitor-line" :style="monitorLineCardStyle">
+    <div slot="title" v-if="title">
+      <a-row type="flex">
+        <a-col>
+          <a class="font-weight-bold h-100 d-block" style="margin-right: 6px;" @click="toggleShowTableLegend">
+            <a-icon type="line-chart" style="font-size: 14px;" v-if="showTableLegend" />
+            <a-icon type="credit-card" style="font-size: 14px;" v-if="!showTableLegend" />
+          </a>
+        </a-col>
+        <a-col :span="21">
+          {{ title }}
+        </a-col>
+      </a-row>
+    </div>
     <div slot="extra" v-if="showTableExport">
       <a-button v-if="showTableExport && curPager.total" type="link" :title="$t('monitor.full_export')" @click="exportTable">
         {{ $t('table.action.export') }}
@@ -754,6 +767,9 @@ export default {
       const ws = XLSX.utils.aoa_to_sheet(list)
       XLSX.utils.book_append_sheet(wb, ws, ws_name)
       XLSX.writeFile(wb, filename)
+    },
+    toggleShowTableLegend () {
+      this.showTableLegend = !this.showTableLegend
     },
   },
 }

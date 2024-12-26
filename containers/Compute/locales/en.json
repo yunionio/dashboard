@@ -1847,5 +1847,7 @@
   "compute.metric.vasmi_utilization_decoder": "VASTAITECH Decoding code utilization rate",
   "compute.metadatas": "@:compute.text_271",
   "compute.virtual_total": "Virtual Total",
-  "compute.actual_total": "Physical Total"
+  "compute.actual_total": "Physical Total",
+  "compute.actual_used": "Acutual Used",
+  "compute.force_shutdown": "Forced shutdown"
 }
