@@ -113,7 +113,7 @@ export default {
           {
             required: true, message: this.$t('network.text_646'),
           },
-          { validator: validateForm('IPv4'), message: this.$t('network.text_647') },
+          { validator: validateForm(['IPv4', 'IPv6'], true, 'some'), message: this.$t('network.text_647') },
           { validator: this.ipBlur, trigger: ['change'] },
         ],
       }]

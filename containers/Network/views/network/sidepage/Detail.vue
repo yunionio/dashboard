@@ -166,6 +166,12 @@ export default {
             },
           },
         ]).filter(item => {
+          if (['wire', 'server_type', 'bgp_type', 'guest_dhcp', 'vlan_id'].indexOf(item.field) >= 0) {
+            if (this.data.cloud_env === 'onpremise' && this.data.is_classic) {
+              return true
+            }
+            return false
+          }
           return !this.$isScopedPolicyMenuHidden(`network_hidden_columns.${item.field}`)
         }),
       },
