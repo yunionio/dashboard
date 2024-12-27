@@ -30,8 +30,8 @@
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import ListSelect from '@/sections/ListSelect'
-import StorageResourcePropsMixin from '../mixins/storageResourceProps'
 import { STORAGE_TYPES } from '@Storage/constants'
+import StorageResourcePropsMixin from '../mixins/storageResourceProps'
 export default {
   name: 'DiskChangeBlockStorageDialog',
   components: {
@@ -112,7 +112,7 @@ export default {
       const data = {
         target_storage_id: values.storage,
         disk_id: this.selectedItemsDiskIds[0],
-        keep_origin_disk: values.keep_origin_disk,
+        keep_origin_disk: !values.keep_origin_disk,
       }
       return new this.$Manager('servers').performAction({
         id: this.selectedItemsGuestIds[0],
