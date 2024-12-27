@@ -66,8 +66,8 @@
           <ip-subnets :decorator="decorators.ipSubnets" @clear-error="clearIpSubnetsError" />
         </a-form-item>
         <a-form-item :label="$t('network.text_575')" :extra="$t('network.text_578')" :vaidate-status="guestIpPrefixValidateStatus" :help="guestIpPrefixHelp" v-bind="formItemLayout" v-if="!show && !isGroupGuestIpPrefix">
-          <a-input v-decorator="decorators.guest_ip_prefix(0)" :placeholder="$t('network.ipv4.prefix.prompt')" />
-          <!-- <a-input v-decorator="decorators.guest_ip6_prefix(0)" :placeholder="$t('network.ipv6.prefix.prompt')" /> -->
+          <a-input v-decorator="decorators.guest_ip_prefix(0)" :placeholder="$t('network.ipv4.prefix.prompt')" v-if="curVpc.cidr_block" />
+          <a-input v-decorator="decorators.guest_ip6_prefix(0)" :placeholder="$t('network.ipv6.prefix.prompt')" v-if="curVpc.cidr_block6" />
         </a-form-item>
         <a-form-item :label="$t('network.text_575')" v-bind="formItemLayout" :validate-status="guestIpPrefixValidateStatus" :help="guestIpPrefixHelp" required v-if="isGroupGuestIpPrefix">
           <template slot="extra">
@@ -96,7 +96,7 @@
             <span class="count-tips">{{$t('network.text_169')}}<span class="remain-num">{{ remain }}</span>{{$t('network.text_170')}}</span>
           </div>
         </a-form-item>
-        <a-form-item label="dhcp_relay" :extra="$t('network.dhcp_tooltip')">
+        <a-form-item label="dhcp_relay" :extra="$t('network.dhcp_tooltip')" v-if="show">
           <a-input class="w-50" v-decorator="decorators.guest_dhcp" :placeholder="$t('common.tips.input', ['IPv4'])" />
         </a-form-item>
         <a-form-item :label="$t('common_498')" v-if="isShowIsAutoAlloc">
@@ -753,7 +753,10 @@ export default {
         }
       } else if (this.cloudEnv === 'onpremise') {
         if (item.cidr_block) {
-          return (<div>{ item.name }<span v-if="item.cidr_block">（{ item.cidr_block }）</span></div>)
+          if (item.cidr_block6) {
+            return (<div>{ item.name } ({ item.cidr_block }, { item.cidr_block6 })</div>)
+          }
+          return (<div>{ item.name } ({ item.cidr_block })</div>)
         }
         if (item.id === 'default') return (<div>{ item.name }<span v-if="item.cidr_block">（{this.$t('common.text00047')}）</span></div>)
       }
