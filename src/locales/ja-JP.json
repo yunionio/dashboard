@@ -6133,5 +6133,7 @@
   "common.cancel_pin": "Pinをキャンセル",
   "common.select_pin_data": "リストデータを選択するとPin",
   "common.platform_overview": "プラットフォームの概要",
+  "common.task.stage.label.in_progress": "進行中",
+  "common.task.stage.label.complete": "完了",
   "common.server_security": "ホストセキュリティ"
 }

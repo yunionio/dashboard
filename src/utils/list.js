@@ -225,6 +225,8 @@ class CreateList {
       isPreLoad = true,
       // 无需两次加载
       noPreLoad = false,
+      // 不加载详情
+      noListDetails = false,
     },
   ) {
     // 列表唯一标识
@@ -298,6 +300,7 @@ class CreateList {
     this.fetchDataCb = fetchDataCb
     this.isPreLoad = isPreLoad
     this.noPreLoad = noPreLoad
+    this.noListDetails = noListDetails
     this.pinFilter = {}
     this.pinSavedFilters = {}
   }
@@ -392,7 +395,7 @@ class CreateList {
   async fetchData (offset, limit, showDetails) {
     this.loading = true
     // if (this.noPreLoad) {
-    showDetails = true
+    showDetails = !this.noListDetails
     // }
     this.params = this.genParams(offset, limit, showDetails)
     // if (!showDetails) this.isPreLoad = true

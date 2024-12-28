@@ -6137,5 +6137,7 @@
   "common.cancel_pin": "取消Pin",
   "common.select_pin_data": "选择列表数据后可进行Pin",
   "common.platform_overview": "平台总览",
+  "common.task.stage.label.in_progress": "执行中",
+  "common.task.stage.label.complete": "已完成",
   "common.server_security": "主机安全"
 }
