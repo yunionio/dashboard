@@ -10,7 +10,10 @@
 <script>
 import * as R from 'ramda'
 import moment from 'moment'
-import { getTimeRangeFilter } from '@/utils/common/tableFilter'
+import {
+  getStatusFilter,
+  getTimeRangeFilter,
+} from '@/utils/common/tableFilter'
 import {
   getNameDescriptionTableColumn,
   getTimeTableColumn,
@@ -18,7 +21,7 @@ import {
   getStatusTableColumn,
   getObjnameTableColumn,
   getTaskNameTableColumn,
-  getSubtaskCountTableColumn,
+  // getSubtaskCountTableColumn,
 } from '@/utils/common/tableColumn'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -39,6 +42,9 @@ export default {
     root: {
       type: Boolean,
     },
+    taskStage: {
+      type: String,
+    },
     getParams: [Object, Function],
   },
   data () {
@@ -46,8 +52,24 @@ export default {
       id: {
         label: this.$t('table.title.id'),
       },
+      status: getStatusFilter('task'),
+      stage: {
+        label: this.$t('table.title.stage'),
+        dropdown: true,
+        multiple: true,
+        distinctField: {
+          type: 'field',
+          key: 'stage',
+        },
+      },
       task_name: {
         label: this.$t('table.title.task_name'),
+        dropdown: true,
+        multiple: true,
+        distinctField: {
+          type: 'field',
+          key: 'task_name',
+        },
       },
       created_at: getTimeRangeFilter({ label: this.$t('table.title.create_time'), field: 'created_at' }),
     }
@@ -96,7 +118,7 @@ export default {
         }),
         getObjnameTableColumn(),
         getTaskNameTableColumn(),
-        getSubtaskCountTableColumn(),
+        // getSubtaskCountTableColumn(),
         getProjectTableColumn({
           title: this.$t('table.title.owner_project'),
         }),
@@ -142,6 +164,11 @@ export default {
         this.list.fetchData()
       }
     },
+    taskStage (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
   },
   created () {
     this.list.fetchData()
@@ -151,10 +178,15 @@ export default {
       this.sidePageTriggerHandle(this, 'TaskSidePage', {
         id: row.id,
         resource: this.resource,
-        getParams: this.getParam,
+        getParams: this.getParamDetail,
       }, {
         list: this.list,
       })
+    },
+    getParamDetail () {
+      const params = this.getParam()
+      params.sub_task = true
+      return params
     },
     getParam () {
       const param = {
@@ -166,6 +198,11 @@ export default {
       }
       if (this.root) {
         param.is_root = true
+      }
+      if (this.taskStage === 'in_progress') {
+        param.not_stage = ['failed', 'complete']
+      } else {
+        param.stage = ['failed', 'complete']
       }
       param.filter = filter
       const params = R.is(Function, this.getParams) ? this.getParams() : this.getParams || {}
