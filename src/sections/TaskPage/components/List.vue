@@ -3,7 +3,7 @@
     :resource="resource"
     root="true"
     :taskStage="taskStage"
-    :listId="listId" />
+    :listId="id" />
 </template>
 
 <script>
@@ -18,7 +18,7 @@ export default {
     resource: {
       type: String,
     },
-    listId: {
+    id: {
       type: String,
     },
     taskStage: {
