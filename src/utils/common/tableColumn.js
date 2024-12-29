@@ -1314,21 +1314,28 @@ export const getObjnameTableColumn = () => {
   return {
     title: i18n.t('table.title.res_name'),
     field: 'object',
-    formatter: ({ row }) => {
-      let objName = ''
-      if (row.object) {
-        objName = row.object
-      } else if (row.obj_id) {
-        objName = row.obj_id
-      }
-      if (objName) {
-        if (objName === '[--MULTI_OBJECTS--]') {
-          return i18n.t('task.stages.title.multi_objects')
-        } else {
-          return objName
+    showOverflow: 'ellipsis',
+    slots: {
+      default: ({ row }, h) => {
+        let objName = ''
+        if (row.object) {
+          objName = row.object
+        } else if (row.obj_id) {
+          objName = row.obj_id
         }
-      }
-      return '-'
+        if (objName) {
+          if (objName === '[--MULTI_OBJECTS--]') {
+            return i18n.t('task.stages.title.multi_objects')
+          } else {
+            return [
+              <list-body-cell-wrap copy hideField={true} field='obj_id' row={row} message={objName}>
+                {objName}
+              </list-body-cell-wrap>,
+            ]
+          }
+        }
+        return '-'
+      },
     },
   }
 }
@@ -1337,8 +1344,15 @@ export const getTaskNameTableColumn = () => {
   return {
     title: i18n.t('table.title.task_name'),
     field: 'task_name',
-    formatter: ({ row }) => {
-      return row.task_name
+    showOverflow: 'ellipsis',
+    slots: {
+      default: ({ row }, h) => {
+        return [
+          <list-body-cell-wrap copy hideField={true} field='task_name' row={row} message={row.task_name}>
+            {row.task_name}
+          </list-body-cell-wrap>,
+        ]
+      },
     },
   }
 }
