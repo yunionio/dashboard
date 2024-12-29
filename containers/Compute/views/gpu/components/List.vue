@@ -48,16 +48,47 @@ export default {
           description: getDescriptionFilter(),
           dev_type: {
             label: this.$t('compute.text_481'),
-            filter: true,
-            formatter: val => {
-              return `dev_type.contains("${val}")`
+            dropdown: true,
+            multiple: true,
+            distinctField: {
+              type: 'field',
+              key: 'dev_type',
             },
           },
           model: {
             label: this.$t('compute.text_482'),
-            filter: true,
-            formatter: val => {
-              return `model.contains("${val}")`
+            dropdown: true,
+            multiple: true,
+            distinctField: {
+              type: 'field',
+              key: 'model',
+            },
+          },
+          vendor_device_id: {
+            label: 'PCI ID',
+            dropdown: true,
+            multiple: true,
+            distinctField: {
+              type: 'field',
+              key: 'vendor_device_id',
+            },
+          },
+          device_path: {
+            label: this.$t('compute.isolated_devices.device_path.title'),
+            dropdown: true,
+            multiple: true,
+            distinctField: {
+              type: 'field',
+              key: 'device_path',
+            },
+          },
+          numa_node: {
+            label: 'NUMA',
+            dropdown: true,
+            multiple: true,
+            distinctField: {
+              type: 'field',
+              key: 'numa_node',
             },
           },
           guest: {
