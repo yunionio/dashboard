@@ -201,7 +201,8 @@ export default {
     }
     this.$bus.$off('refresh-detail')
     this.$bus.$on('refresh-detail', () => {
-      this.id && this.singleRefresh(this.id)
+      const extraParams = (R.is(Function, this.getDetailExtraParams) ? this.getDetailExtraParams() : this.getDetailExtraParams) || {}
+      this.id && this.singleRefresh(this.id, '', extraParams)
     })
   },
   mounted () {

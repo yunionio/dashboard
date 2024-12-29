@@ -19,9 +19,6 @@ export default {
     resource: {
       type: String,
     },
-    listId: {
-      type: String,
-    },
     title: {
       type: String,
     },
@@ -34,6 +31,11 @@ export default {
       ],
       taskStage: 'in_progress',
     }
+  },
+  computed: {
+    listId () {
+      return this.taskStage === 'in_progress' ? 'TaskInProgressList' : 'TaskComplateList'
+    },
   },
   methods: {},
 }

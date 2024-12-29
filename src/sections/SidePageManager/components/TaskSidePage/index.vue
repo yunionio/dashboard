@@ -18,7 +18,7 @@
     <component
       :is="params.windowData.currentTab"
       :res-id="data.id"
-      :id="listId"
+      :listId="listId"
       :data="detailData"
       :getParams="getParams"
       :on-manager="onManager"
@@ -52,8 +52,7 @@ export default {
       const detailTabs = [
         { label: this.$t('sidepage.tab.label.detail'), key: 'detail' },
       ]
-      console.log('TaskSidePage', this)
-      if (this.data && this.data.data && this.data.data.sub_task_count > 0) {
+      if (this.data && this.data.data && this.data.data.sub_task_cnt > 0) {
         detailTabs.push({ label: this.$t('table.title.children_task'), key: 'children-task-list' })
       }
       return detailTabs
@@ -79,6 +78,9 @@ export default {
         default:
           return ''
       }
+    },
+    getDetailExtraParams () {
+      return this.params.options?.getParams
     },
   },
 }

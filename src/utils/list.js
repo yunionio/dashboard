@@ -1287,8 +1287,8 @@ class CreateList {
    * @param {Array} steadyStatus 所期望的状态，以便定时更新
    * @returns Promise
    */
-  singleRefresh (id, steadyStatus) {
-    const params = { ...this.params }
+  singleRefresh (id, steadyStatus, singleExtraParams = {}) {
+    const params = { ...this.params, ...singleExtraParams }
     delete params.offset
     delete params.limit
     return this.manager
