@@ -1847,6 +1847,7 @@
   "compute.metric.vasmi_temperature_gpu": "瀚博 GPU温度",
   "compute.metric.vasmi_utilization_encoder": "瀚博 コーディング使用率",
   "compute.metric.vasmi_utilization_decoder": "瀚博 復号利用率",
+  "compute.isolated_devices.device_path.title": "デバイスパス",
   "compute.metadatas": "@:compute.text_271",
   "compute.virtual_total": "仮想総量",
   "compute.actual_total": "物理総量",
