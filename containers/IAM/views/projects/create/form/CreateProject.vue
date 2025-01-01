@@ -18,26 +18,14 @@
         <div slot="extra">{{$t('system.text_439')}}<help-link :href="domainCreateLink">{{$t('system.text_440')}}</help-link>
       </div>
     </a-form-item>
-    <a-form-item :label="$t('system.text_169')" v-if="form.fd.domain&&isEnableQuotaCheck">
-      <quota-set
-        ref="quotaSetRef"
-        mdf="project"
-        :domain="form.fd.domain"
-        :tenant="tenant"
-        :is-clone="isClone" />
-    </a-form-item>
   </a-form>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import QuotaSet from '@IAM/sections/QuotaSet'
 
 export default {
   name: 'CreateProject',
-  components: {
-    QuotaSet,
-  },
   data () {
     return {
       form: {
@@ -106,9 +94,6 @@ export default {
     domainCreateLink () {
       return this.$router.resolve('/domain/create').href
     },
-    isEnableQuotaCheck () {
-      return this.$store.getters.userInfo.enable_quota_check
-    },
   },
   created () {
     // 如果 query 携带 tenant 和 domain，表示 clone
@@ -134,9 +119,6 @@ export default {
       if (values.hasOwnProperty('domain_id')) {
         this.form.fd.domain = values.domain_id
       }
-    },
-    doQuotaSet (tenant) {
-      this.$refs.quotaSetRef.doQuotaSet(tenant)
     },
   },
 }
