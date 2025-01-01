@@ -22,6 +22,7 @@ import {
   getNFSSharedDirColumn,
   getObjectBucketURLColumn,
   getObjectAccessKeyColumn,
+  getObjectSignVerColumn,
 } from '../utils/columns'
 
 export default {
@@ -44,13 +45,13 @@ export default {
       getPublicScopeTableColumn({ vm: this, resource: 'backupstorages' }),
       getStorageTypeColumn(),
     ]
-    console.log(this.data)
     if (this.data.storage_type === 'nfs') {
       baseInfo.push(getNFSHostColumn())
       baseInfo.push(getNFSSharedDirColumn())
     } else if (this.data.storage_type === 'object') {
       baseInfo.push(getObjectBucketURLColumn())
       baseInfo.push(getObjectAccessKeyColumn())
+      baseInfo.push(getObjectSignVerColumn())
     }
     return {
       baseInfo: baseInfo,

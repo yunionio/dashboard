@@ -33,6 +33,22 @@ export default {
               permission: 'backupstorages_perform_public',
             }),
             {
+              label: this.$t('compute.text_295'),
+              permission: 'backupstorages_update',
+              action: obj => {
+                this.createDialog('BackupStorageUpdateDialog', {
+                  vm: this,
+                  data: [obj],
+                  columns: this.columns,
+                  name: this.$t('compute.backup_storage'),
+                  title: this.$t('common_641', [this.$t('compute.backup_storage')]),
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                  action: this.$t('compute.text_295'),
+                })
+              },
+            },
+            {
               label: this.$t('compute.perform_delete'),
               permission: 'backupstorages_delete',
               action: obj => {
