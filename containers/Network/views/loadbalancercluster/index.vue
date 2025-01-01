@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('network.text_19')" />
+    <page-header :title="title || $t('network.text_19')" />
     <page-body>
       <list ref="list" :id="listId" :get-params="getParams" />
     </page-body>
@@ -17,6 +17,9 @@ export default {
     List,
   },
   mixins: [KeepAliveMixin],
+  props: {
+    title: String,
+  },
   data () {
     return {
       listId: 'LoadbalancerclusterList',
