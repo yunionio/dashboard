@@ -104,3 +104,19 @@ export const getObjectAccessKeyColumn = () => {
     },
   }
 }
+
+export const getObjectSignVerColumn = () => {
+  return {
+    field: 'object_sign_ver',
+    title: 'Signing Version',
+    slots: {
+      default: ({ row }) => {
+        if (row.object_sign_ver) {
+          return row.object_sign_ver
+        } else {
+          return i18n.t('common_712')
+        }
+      },
+    },
+  }
+}
