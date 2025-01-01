@@ -2,25 +2,11 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
+      <dialog-selected-tips :name="$t('compute.backup_storage')" :count="params.data.length" :action="action" />
+      <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item :label="$t('storage.text_55', [$t('dictionary.domain')])">
-          <domain-select v-if="isAdminMode && l3PermissionEnable" v-decorator="decorators.project_domain" />
-          <template v-else> {{userInfo.domain.name}} </template>
-        </a-form-item>
-        <a-form-item :label="$t('common.name')">
-          <a-input
-            v-decorator="decorators.name"
-            :placeholder="$t('common.tips.input', [$t('common.name')])" />
-        </a-form-item>
-        <a-form-item :label="$t('common.description')">
-          <a-input
-            v-decorator="decorators.description"
-            :placeholder="$t('common.tips.optional_input', [$t('common.description')])" />
-        </a-form-item>
         <a-form-item :label="$t('storage.text_38')">
-          <a-radio-group v-decorator="decorators.storage_type" @change="onStorageTypeChange">
-              <a-radio-button v-for="obj in STORAGE_TYPES" :key="obj.key" :value="obj.key">{{ obj.value }}</a-radio-button>
-          </a-radio-group>
+          {{ this.getStorageType }}
         </a-form-item>
         <a-form-item label="NFS Host" v-if="isNfs">
           <a-input :placeholder="$t('storage.host.input.place_holder')" v-decorator="decorators.nfs_host" />
@@ -60,27 +46,13 @@
 import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import DomainSelect from '@/sections/DomainSelect'
 
 export default {
-  name: 'BackupStorageCreateDialog',
-  components: {
-    DomainSelect,
-  },
+  name: 'BackupStorageUpdateDialog',
   mixins: [WindowsMixin, DialogMixin],
   data () {
     return {
       loading: false,
-      STORAGE_TYPES: [
-        {
-          key: 'nfs',
-          value: 'NFS',
-        },
-        {
-          key: 'object',
-          value: this.$t('storage.object_storage'),
-        },
-      ],
       form: {
         fc: this.$form.createForm(this),
       },
@@ -92,7 +64,6 @@ export default {
           span: 4,
         },
       },
-      storage_type: 'nfs',
     }
   },
   computed: {
@@ -121,34 +92,10 @@ export default {
       }
 
       return {
-        project_domain: [
-          'project_domain',
-          {
-            initialValue: this.userInfo.projectDomainId,
-          },
-        ],
-        name: [
-          'name',
-          {
-            validateFirst: true,
-            rules: [
-              { required: true, message: this.$t('storage.text_56') },
-              { validator: this.$validate('blockStorageName') },
-            ],
-          },
-        ],
-        description: [
-          'description',
-        ],
-        storage_type: [
-          'storage_type',
-          {
-            initialValue: 'nfs',
-          },
-        ],
         nfs_host: [
           'nfs_host',
           {
+            initialValue: this.params.data[0].nfs_host,
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('storage.nfs_host.validate.prompt'), trigger: 'blur' },
@@ -159,6 +106,7 @@ export default {
         nfs_shared_dir: [
           'nfs_shared_dir',
           {
+            initialValue: this.params.data[0].nfs_shared_dir,
             rules: [
               { required: true, message: this.$t('storage.nfs_shared_dir.validate.prompt'), trigger: 'blur' },
             ],
@@ -167,6 +115,7 @@ export default {
         object_bucket_url: [
           'object_bucket_url',
           {
+            initialValue: this.params.data[0].object_bucket_url,
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('storage.object_bucket_url.validate.prompt'), trigger: 'blur' },
@@ -176,6 +125,7 @@ export default {
         object_access_key: [
           'object_access_key',
           {
+            initialValue: this.params.data[0].object_access_key,
             rules: [
               { required: true, message: this.$t('storage.object_access_key.validate.prompt'), trigger: 'blur' },
             ],
@@ -184,6 +134,7 @@ export default {
         object_secret: [
           'object_secret',
           {
+            initialValue: this.params.data[0].object_secret,
             rules: [
               { required: true, message: this.$t('storage.object_secret.validate.prompt'), trigger: 'blur' },
             ],
@@ -192,22 +143,27 @@ export default {
         object_sign_ver: [
           'object_sign_ver',
           {
-            initialValue: '',
-          },
-        ],
-        capacity_mb: [
-          'capacity_mb',
-          {
-            initialValue: 0,
+            initialValue: this.params.data[0].object_sign_ver ? this.params.data[0].object_sign_ver : '',
           },
         ],
       }
     },
+    columns () {
+      const showFields = ['name', 'status', 'storage_type']
+      return this.params.columns.filter((item) => { return showFields.includes(item.field) })
+    },
     isNfs () {
-      return this.storage_type === 'nfs'
+      return this.params.data[0].storage_type === 'nfs'
     },
     isObjectStorage () {
-      return this.storage_type === 'object'
+      return this.params.data[0].storage_type === 'object'
+    },
+    getStorageType () {
+      if (this.isNfs) {
+        return 'NFS'
+      } else {
+        return this.$t('storage.object_storage')
+      }
     },
   },
   methods: {
@@ -215,16 +171,12 @@ export default {
       const manager = new this.$Manager('backupstorages')
       try {
         const values = await this.form.fc.validateFields(Object.keys(this.decorators))
-        await manager.create({ data: { ...values, capacity_mb: values.capacity_mb * 1024 } })
+        await manager.update({ id: this.params.data[0].id, data: { ...values } })
         this.cancelDialog()
         this.params.refresh && this.params.refresh()
       } catch (error) {
         throw error
       }
-    },
-    onStorageTypeChange (e) {
-      console.log(e, e.target.value)
-      this.storage_type = e.target.value
     },
   },
 }
