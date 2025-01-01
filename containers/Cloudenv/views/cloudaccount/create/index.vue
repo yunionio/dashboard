@@ -263,6 +263,15 @@ export default {
       }
     },
     async doCreateCloudaccount (formData) {
+      formData.options = {}
+      for (const key in formData) {
+        if (key.startsWith('options__')) {
+          if (formData[key].length > 0) {
+            formData.options[key.substring('options__'.length)] = formData[key]
+          }
+          delete formData[key]
+        }
+      }
       const data = {
         ...formData,
         enabled: true,

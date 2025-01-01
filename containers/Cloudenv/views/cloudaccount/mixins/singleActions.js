@@ -104,7 +104,6 @@ export default {
           }
           return this.syncPolicy(obj)
         },
-
       },
       {
         label: i18n.t('common.more'),

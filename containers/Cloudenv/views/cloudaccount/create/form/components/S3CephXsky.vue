@@ -20,6 +20,13 @@
       <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
+      <a-form-item :label="$t('cloudenv.s3.sign_alg_version')" v-if="isS3">
+        <a-radio-group v-decorator="decorators.options__sign_ver">
+          <a-radio-button value="">{{ $t('common_712') }}</a-radio-button>
+          <a-radio-button value="v2">V2</a-radio-button>
+          <a-radio-button value="v4">V4</a-radio-button>
+        </a-radio-group>
+      </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" :cloneData="cloneData" />
       <blocked-resources :decorators="{ isOpenBlockedResources: decorators.isOpenBlockedResources, blockedResources: decorators.blockedResources }" :cloneData="cloneData" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" :cloneData="cloneData" />
@@ -53,6 +60,11 @@ export default {
       docs: getCloudaccountDocs(this.$store.getters.scope),
       decorators: this.getDecorators(keySecretField),
     }
+  },
+  computed: {
+    isS3 () {
+      return this.provider.toLowerCase() === 's3'
+    },
   },
   deactivated () {
     this.form.fc.resetFields()
@@ -113,6 +125,12 @@ export default {
             rules: [
               { required: true, message: keySecretField.placeholder.s },
             ],
+          },
+        ],
+        options__sign_ver: [
+          'options__sign_ver',
+          {
+            initialValue: '',
           },
         ],
         domain: [
