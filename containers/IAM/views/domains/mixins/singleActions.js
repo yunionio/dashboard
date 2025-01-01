@@ -1,23 +1,9 @@
-import { isCE } from '@/utils/utils'
-import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
+import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 
 export default {
   created () {
     this.singleActions = [
-      // {
-      //   label: i18n.t('system.text_172'),
-      //   action: (obj) => {
-      //     this.sidePageTriggerHandle(this, 'DomainSidePage', {
-      //       id: obj.id,
-      //       resource: 'domains',
-      //       apiVersion: 'v1',
-      //     }, { tab: 'quota' })
-      //   },
-      //   meta: (obj) => ({
-      //     validate: true,
-      //   }),
-      // },
       {
         label: i18n.t('system.text_153'),
         actions: (row) => {
@@ -76,23 +62,5 @@ export default {
         },
       },
     ]
-    if (this.l3PermissionEnable) {
-      this.singleActions.unshift({
-        label: i18n.t('system.text_172'),
-        action: (obj) => {
-          this.sidePageTriggerHandle(this, 'DomainSidePage', {
-            id: obj.id,
-            resource: 'domains',
-            apiVersion: 'v1',
-          }, { tab: 'quota' })
-        },
-        meta: (obj) => ({
-          validate: true,
-        }),
-        hidden: () => {
-          return !this.globalConfig.enable_quota_check || isCE() || this.$store.getters.isSysCE
-        },
-      })
-    }
   },
 }

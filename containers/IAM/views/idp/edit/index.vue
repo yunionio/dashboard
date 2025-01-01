@@ -106,19 +106,9 @@ import jumper from '@/mixins/jumper'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { docs } from '../constants'
 import IDPDetailTable from '../components/DetailTable'
-import CAS from './CAS'
 import MSADMulti from './MSADMulti'
 import MSADOne from './MSADOne'
 import OpenLdapOne from './OpenLdapOne'
-import SAML from './SAML'
-import AzureADSAML from './AzureADSAML'
-import OIDC from './OIDC'
-import Google from './Google'
-import Github from './Github'
-import AzureOidc from './AzureOidc'
-import Feishu from './Feishu'
-import Dingtalk from './Dingtalk'
-import Wechat from './Wechat'
 import Advanced from './Advanced'
 import LdapAdvanced from './LdapAdvanced'
 
@@ -129,16 +119,6 @@ export default {
     msad_one_domain: MSADOne,
     msad_multi_domain: MSADMulti,
     openldap_one_domain: OpenLdapOne,
-    cas: CAS,
-    saml: SAML,
-    azure_ad_saml: AzureADSAML,
-    Oidc: OIDC,
-    google_oidc: Google,
-    github_oidc: Github,
-    azure_oidc: AzureOidc,
-    feishu_oauth2: Feishu,
-    dingtalk_oauth2: Dingtalk,
-    qywechat_oauth2: Wechat,
     'idp-detail-table': IDPDetailTable,
     LdapAdvanced,
   },
@@ -259,7 +239,7 @@ export default {
       return ['oidc', 'saml', 'cas'].indexOf(template) > -1
     },
     templateOptions () {
-      let templateOptions = {}
+      const templateOptions = {}
       const idpDrivers = this.$t('idpDrivers')
       Object.keys(idpDrivers).forEach(key => {
         templateOptions[key] = []
@@ -274,10 +254,6 @@ export default {
       if (this.isShowDomain) {
         const index = R.findIndex(R.propEq('key', 'msad_multi_domain'))(templateOptions.LDAP)
         templateOptions.LDAP = R.remove(index, 1, templateOptions.LDAP)
-      }
-      // 开源只保留LDAP
-      if (!this.$appConfig.isPrivate) {
-        templateOptions = { LDAP: templateOptions.LDAP }
       }
       return templateOptions
     },

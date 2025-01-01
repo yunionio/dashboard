@@ -24,7 +24,7 @@ export default {
   data () {
     return {
       submiting: false,
-      editType: 'checkbox',
+      editType: 'yaml',
     }
   },
   methods: {

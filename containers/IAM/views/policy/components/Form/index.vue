@@ -29,34 +29,6 @@
         </template>
         <template v-else>{{ $t(`policyScopeLabel.${model.scope}`) }}</template>
       </a-form-model-item>
-      <a-form-model-item v-if="showOrg && model.scope !== 'project'" :label="$t('dictionary.organization')" prop="org_node_id">
-        <organization-select v-model="model.org_node_id" :params="orgParams" @change="handleOrgChange" />
-      </a-form-model-item>
-      <a-form-model-item v-if="model.scope === 'system'" :label="$t('iam.domain_tag')" prop="domain_tags">
-        <tag
-         :value="domain_tags"
-         :canCreate="false"
-         extra=""
-         :multiple="true"
-         :params="{service: 'identity', user_meta: true, resources: 'domain'}"
-         @change="handleDomainTagsChange"
-         @tagsChange="handleDomainTagsUpdate"
-         :global="false" />
-      </a-form-model-item>
-      <a-form-model-item v-if="showOrg && model.scope !== 'project'" :label="$t('iam.project_tag')" prop="project_tags">
-        <pairs-tag :value="project_tags" @change="handleProjectTagsChange" />
-      </a-form-model-item>
-      <a-form-model-item :label="$t('iam.object_tag')" prop="object_tags">
-        <tag
-         :value="object_tags"
-         :canCreate="false"
-         extra=""
-         :multiple="true"
-         :params="{service: 'compute', user_meta: true}"
-         @change="handleObjectTagsChange"
-         @tagsChange="handleObjectTagsUpdate"
-         :global="true" />
-      </a-form-model-item>
       <a-form-model-item :label="$t('iam.policy.editor.title')">
         <a-radio-group :default-value="editType" :value="editType" @change="e => $emit('edit-type-change', e.target.value)">
           <template v-for="item of editTypeOptions">
@@ -87,11 +59,6 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { SCOPES_MAP } from '@/constants'
 import i18n from '@/locales'
-import PairsTag from '@/sections/PairsTag'
-import OrganizationSelect from '@/sections/OrganizationSelect'
-import Tag from '@/sections/Tag'
-import validateForm from '@/utils/validate'
-import { isCE } from '@/utils/utils'
 import { getPolicyResCheckedList } from '@/utils/policy/policy-res-list'
 import { POLICY_WHITE_LIST } from '@/constants/policy'
 import { genPolicyGroups } from '../../utils'
@@ -225,9 +192,6 @@ export default {
   components: {
     ScopeSelect,
     PolicyRuleCheckbox,
-    PairsTag,
-    Tag,
-    OrganizationSelect,
   },
   props: {
     policy: Object,
@@ -246,38 +210,6 @@ export default {
     const initialYamlPolicyValue = (this.editType === 'yaml' && this.policy && this.policy.policy) || 'policy:\n  "*": allow'
     const initialCheckboxPolicyValue = (this.policy && this.policy.policy) || {}
     const initialDescriptionValue = (this.policy && this.policy.description) || ''
-    const initProjectTagsValue = (this.policy && this.policy.project_tags) || []
-    const initOrgIds = (this.policy && this.policy.org_node_id) || []
-    const initObjectTagsValue = {}
-    const initDomainTagsValue = {}
-    if (this.policy && this.policy.object_tags) {
-      const { object_tags } = this.policy
-      object_tags.map(item => {
-        if (initObjectTagsValue.hasOwnProperty(item.key)) {
-          if (R.is(Array, initObjectTagsValue[item.key])) {
-            initObjectTagsValue[item.key].push(item.value || '')
-          } else {
-            initObjectTagsValue[item.key] = [initObjectTagsValue[item.key], item.value || '']
-          }
-        } else {
-          initObjectTagsValue[item.key] = item.value || ''
-        }
-      })
-    }
-    if (this.policy && this.policy.domain_tags) {
-      const { domain_tags } = this.policy
-      domain_tags.map(item => {
-        if (initDomainTagsValue.hasOwnProperty(item.key)) {
-          if (R.is(Array, initDomainTagsValue[item.key])) {
-            initDomainTagsValue[item.key].push(item.value || '')
-          } else {
-            initDomainTagsValue[item.key] = [initDomainTagsValue[item.key], item.value || '']
-          }
-        } else {
-          initDomainTagsValue[item.key] = item.value || ''
-        }
-      })
-    }
     return {
       checkAllDisabled: false,
       scopesMap: SCOPES_MAP,
@@ -287,26 +219,11 @@ export default {
         scope: initialScopeValue,
         domain: initialDomainValue,
         description: initialDescriptionValue,
-        org_node_id: initOrgIds,
       },
-      project_tags: initProjectTagsValue,
-      object_tags: initObjectTagsValue,
-      domain_tags: initDomainTagsValue,
-      objectTagsArray: [],
-      domainTagsArray: [],
       currentDomain: {},
       rules: {
         name: [
           { required: true, message: this.$t('common.text00042') },
-        ],
-        domain_tags: [
-          { validator: validateForm('tagName') },
-        ],
-        object_tags: [
-          { validator: validateForm('tagName') },
-        ],
-        project_tags: [
-          { validator: validateForm('tagName') },
         ],
       },
       formItemLayout: {
@@ -318,8 +235,8 @@ export default {
         },
       },
       editTypeOptions: [
-        { key: 'checkbox', label: this.$t('system.policy_edit_type_checkbox') },
         { key: 'yaml', label: this.$t('system.policy_edit_type_yaml') },
+        { key: 'checkbox', label: this.$t('system.policy_edit_type_checkbox') },
       ],
       yamlPolicy: initialYamlPolicyValue,
       checkboxPolicy: initialCheckboxPolicyValue,
@@ -355,9 +272,6 @@ export default {
         params.domain_id = this.model.domain
       }
       return params
-    },
-    showOrg () {
-      return !isCE() && !this.$store.getters.isSysCE
     },
   },
   watch: {
@@ -395,8 +309,8 @@ export default {
     async getData () {
       try {
         await this.$refs.form.validate()
-        const { name, scope, domain, description, org_node_id } = this.model
-        const { project_tags, objectTagsArray, domainTagsArray } = this
+        const { name, scope, domain, description } = this.model
+        // const { project_tags, objectTagsArray, domainTagsArray } = this
         let data = {}
         let policy
         if (this.editType === 'checkbox') {
@@ -435,20 +349,6 @@ export default {
         if (description) {
           data.description = description
         }
-        data.org_node_id = !org_node_id ? [] : org_node_id
-        data.project_tags = project_tags
-        data.object_tags = objectTagsArray.map(item => {
-          return {
-            key: item.key,
-            value: item.value,
-          }
-        })
-        data.domain_tags = domainTagsArray.map(item => {
-          return {
-            key: item.key,
-            value: item.value,
-          }
-        })
         return data
       } catch (error) {
         throw error
@@ -516,26 +416,8 @@ export default {
       }
       return ret
     },
-    handleOrgChange (orgs) {
-      this.model.org_node_id = orgs
-    },
     handleDomainChange (domain) {
       this.currentDomain = domain
-    },
-    handleProjectTagsChange (tags) {
-      this.project_tags = tags || []
-    },
-    handleObjectTagsChange (tags) {
-      this.object_tags = tags || {}
-    },
-    handleDomainTagsChange (tags) {
-      this.domain_tags = tags || {}
-    },
-    handleObjectTagsUpdate (tags) {
-      this.objectTagsArray = tags
-    },
-    handleDomainTagsUpdate (tags) {
-      this.domainTagsArray = tags
     },
     customPolicy (policy) {
       // 勾选迁移权限后就同时支持冷、热迁移
