@@ -30,7 +30,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { isCE } from '@/utils/utils'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -39,7 +38,6 @@ import ColumnsMixin from '../mixins/columns'
 import ProjectDetail from './Detail'
 import ProjectDirectlyUnderUserList from './DirectlyUnderUserList'
 // import ProjectResourcesStatistics from './ResourcesStatistics'
-import Quota from './Quota'
 
 export default {
   name: 'ProjectSidePage',
@@ -48,7 +46,6 @@ export default {
     Actions,
     ProjectDirectlyUnderUserList,
     // ProjectResourcesStatistics,
-    Quota,
   },
   mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
   data () {
@@ -70,13 +67,9 @@ export default {
       const detailTabs = [
         { label: this.$t('system.text_159'), key: 'project-detail' },
         { label: this.$t('common_492'), key: 'project-directly-under-user-list' },
-        { label: this.$t('system.text_174'), key: 'quota' },
         // { label: this.$t('system.text_173'), key: 'project-resources-statistics' },
         { label: this.$t('system.text_17'), key: 'event-drawer' },
       ]
-      if (!this.globalConfig.enable_quota_check || isCE() || this.$store.getters.isSysCE) {
-        detailTabs.splice(2, 1)
-      }
       return detailTabs
     },
   },

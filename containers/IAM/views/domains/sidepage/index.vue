@@ -33,7 +33,6 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import { isCE } from '@/utils/utils'
 import ProjectList from '@IAM/views/projects/components/List'
 import UserList from '@IAM/views/user/components/List'
 import SidePageMixin from '@/mixins/sidePage'
@@ -42,7 +41,6 @@ import Actions from '@/components/PageList/Actions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import Detail from './Detail'
-import Quota from './Quota'
 import RoleList from './Role'
 import CloudaccountList from './Cloudaccount'
 
@@ -55,14 +53,12 @@ export default {
     CloudaccountList,
     ProjectList,
     UserList,
-    Quota,
   },
   mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
   data () {
     return {
       detailTabs: [
         { label: this.$t('system.text_159'), key: 'detail' },
-        { label: this.$t('system.text_174'), key: 'quota' },
         { label: this.$t('system.text_6'), key: 'user-list' },
         { label: this.$t('system.text_9'), key: 'project-list' },
         { label: this.$t('system.text_10'), key: 'role-list' },
@@ -107,9 +103,6 @@ export default {
     },
   },
   created () {
-    if (!this.l3PermissionEnable || !this.globalConfig.enable_quota_check || isCE() || this.$store.getters.isSysCE) {
-      this.detailTabs.splice(1, 1)
-    }
     if (this.params.tab) {
       this.handleTabChange(this.params.tab)
     } else {

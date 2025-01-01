@@ -3,11 +3,9 @@ import {
   getProjectDomainTableColumn,
   getNameDescriptionTableColumn,
   getPublicScopeTableColumn,
-  getTagTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
-import { isCE } from '@/utils/utils'
 
 export default {
   created () {
@@ -43,48 +41,6 @@ export default {
         formatter: ({ row }) => {
           return this.$t(`policyScopeLabel.${row.scope}`)
         },
-      },
-      getTagTableColumn({
-        customTitle: this.$t('iam.domain_tag'),
-        title: this.$t('iam.domain_tag'),
-        field: 'domain_tags',
-        columns: () => this.columns,
-      }),
-      getTagTableColumn({
-        customTitle: this.$t('iam.project_tag'),
-        title: this.$t('iam.project_tag'),
-        field: 'project_tags',
-        columns: () => this.columns,
-        hidden: () => isCE() || this.$store.getters.isSysCE,
-      }),
-      getTagTableColumn({
-        customTitle: this.$t('iam.object_tag'),
-        title: this.$t('iam.object_tag'),
-        field: 'object_tags',
-        columns: () => this.columns,
-      }),
-      {
-        field: 'org_nodes',
-        title: this.$t('dictionary.organization'),
-        formatter: ({ row }) => {
-          const { org_nodes = [] } = row
-          if (org_nodes.length) {
-            const list = org_nodes.map(item => this.getTag(item))
-            return list.join(';')
-          }
-          return '-'
-        },
-        slots: {
-          default: ({ row }) => {
-            const { org_nodes = [] } = row
-            if (org_nodes.length) {
-              const list = org_nodes.map(item => <a-tag class="mr-1 mb-1">{this.getTag(item)}</a-tag>)
-              return [...list]
-            }
-            return '-'
-          },
-        },
-        hidden: () => isCE() || this.$store.getters.isSysCE,
       },
       getPublicScopeTableColumn({ vm: this, resource: 'policies' }),
       getProjectDomainTableColumn(),

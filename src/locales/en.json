@@ -2409,24 +2409,6 @@
       "msad_one_domain",
       "msad_multi_domain",
       "openldap_one_domain"
-    ],
-    "CAS": [
-      "cas"
-    ],
-    "SAML": [
-      "saml",
-      "azure_ad_saml"
-    ],
-    "OIDC": [
-      "oidc",
-      "google_oidc",
-      "github_oidc",
-      "azure_oidc"
-    ],
-    "OAuth2": [
-      "feishu_oauth2",
-      "dingtalk_oauth2",
-      "qywechat_oauth2"
     ]
   },
   "idpTmplTitles": {

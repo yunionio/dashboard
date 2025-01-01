@@ -25,8 +25,6 @@ import SingleActionsMixin from '../mixins/singleActions'
 import UserDetail from './Detail'
 import Projects from './Projects'
 import Group from './Groups'
-import ClouduserList from './ClouduserList'
-import SamluserList from './SamluserList'
 
 export default {
   name: 'UserSidePage',
@@ -35,8 +33,6 @@ export default {
     Projects,
     Group,
     Actions,
-    ClouduserList,
-    SamluserList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -45,25 +41,11 @@ export default {
         { label: this.$t('system.text_159'), key: 'user-detail' },
         { label: this.$t('common_494'), key: 'projects' },
         { label: this.$t('common_495'), key: 'Group' },
-        { label: this.$t('dictionary.clouduser'), key: 'clouduser-list' },
-        { label: this.$t('user.sidepage.tab.samluser'), key: 'samluser-list' },
         { label: this.$t('system.text_17'), key: 'event-drawer' },
       ],
     }
   },
   computed: {
-    getParams () {
-      if (this.params.windowData.currentTab === 'clouduser-list') {
-        return {
-          user_id: this.data.id,
-        }
-      } else if (this.params.windowData.currentTab === 'samluser-list') {
-        return {
-          user_id: this.data.id,
-        }
-      }
-      return null
-    },
     listId () {
       switch (this.params.windowData.currentTab) {
         case 'event-drawer':
@@ -72,10 +54,6 @@ export default {
           return 'ProjectsListForUserSidePage'
         case 'Group':
           return 'GroupListForUserSidePage'
-        case 'clouduser-list':
-          return 'ClouduserListForUserSidePage'
-        case 'samluser-list':
-          return 'SamluserListForUserSidepage'
         default:
           return ''
       }

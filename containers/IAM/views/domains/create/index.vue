@@ -9,13 +9,6 @@
         <a-form-item :label="$t('common.description')">
           <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
         </a-form-item>
-        <a-form-item :label="$t('system.text_169')" required v-if="l3PermissionEnable&&isEnableQuotaCheck">
-          <quota-set
-            ref="quotaSetRef"
-            mdf="domain"
-            :domain="domain"
-            :is-clone="isClone" />
-        </a-form-item>
       </a-form>
     </page-body>
     <page-footer>
@@ -28,16 +21,11 @@
 </template>
 
 <script>
-// import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import QuotaSet from '@IAM/sections/QuotaSet'
 import { escapeHTML } from '@/utils/utils'
 
 export default {
   name: 'DomainCreateIndex',
-  components: {
-    QuotaSet,
-  },
   data () {
     return {
       loading: false,
@@ -83,21 +71,13 @@ export default {
     isClone () {
       return !!this.domain
     },
-    isEnableQuotaCheck () {
-      return this.$store.getters.userInfo.enable_quota_check
-    },
   },
   methods: {
     async handleConfirm () {
       this.loading = true
       try {
         await this.form.fc.validateFields()
-        const { id } = await this.fetchCreate()
-        if (this.l3PermissionEnable) {
-          if (this.isEnableQuotaCheck) {
-            await this.$refs.quotaSetRef.doQuotaSet({ domain: id })
-          }
-        }
+        await this.fetchCreate()
         this.$router.push('/domain')
       } catch (err) {
         throw err
