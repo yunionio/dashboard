@@ -45,7 +45,7 @@ export default {
       permissions: {},
       submiting: false,
       POLICY_GROUPS: genPolicyGroups(),
-      editType: 'checkbox',
+      editType: 'yaml',
       policyLoading: false,
     }
   },

@@ -1,5 +1,4 @@
 import i18n from '@/locales'
-import { isCE } from '@/utils/utils'
 
 export default {
   created () {
@@ -17,22 +16,6 @@ export default {
         label: i18n.t('system.text_153'),
         actions: obj => {
           return [
-            {
-              label: i18n.t('system.text_172'),
-              action: (obj) => {
-                this.sidePageTriggerHandle(this, 'ProjectSidePage', {
-                  id: obj.id,
-                  resource: 'projects',
-                  apiVersion: 'v1',
-                }, { tab: 'quota' })
-              },
-              meta: (obj) => ({
-                validate: true,
-              }),
-              hidden: () => {
-                return !this.globalConfig.enable_quota_check || isCE() || this.$store.getters.isSysCE
-              },
-            },
             {
               label: i18n.t('iam.set_project_admin'),
               permission: 'projects_perform_set_admin',

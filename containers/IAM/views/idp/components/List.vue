@@ -1,14 +1,5 @@
 <template>
   <div>
-    <a-alert v-if="!isCE() && !$store.getters.isSysCE" type="info" class="mb-2">
-      <template #message>
-        <div>{{ $t('system.text_565') }}</div>
-        <div><span class="text-color-help mr-2">* EntityId:</span>{{ serverUrl }}<copy class="ml-1" :message="serverUrl" /></div>
-        <div><span class="text-color-help mr-2">* AssertionConsumerService:</span>{{ serverUrl }}/api/v1/auth/ssologin/&lt;idp_id&gt;<copy class="ml-1" :message="`${serverUrl}/api/v1/auth/ssologin/<idp_id>`" /></div>
-        <div>{{ $t('system.text_566') }}</div>
-        <div><span class="text-color-help mr-2">* redirect_uri:</span>{{ serverUrl }}/api/v1/auth/ssologin<copy class="ml-1" :message="`${serverUrl}/api/v1/auth/ssologin`" /></div>
-      </template>
-    </a-alert>
     <page-list
       :list="list"
       :columns="columns"
@@ -27,7 +18,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { getEnabledFilter, getStatusFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
-import { getRequestT, isCE } from '@/utils/utils'
+import { getRequestT } from '@/utils/utils'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -43,7 +34,6 @@ export default {
   },
   data () {
     return {
-      isCE,
       serverUrl: '',
       list: this.$list.createList(this, {
         id: this.id,
