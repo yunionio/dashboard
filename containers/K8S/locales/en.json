@@ -436,5 +436,6 @@
   "k8s.repo.image.tag_empty": "No image version yet",
   "k8s.repo.image.source": "Mirror source",
   "k8s.repo.image.custom": "Custom URL",
-  "k8s.repo.image.registry": "Mirror warehouse"
+  "k8s.repo.image.registry": "Mirror warehouse",
+  "k8s.federated_kubernetes_resource": "Multi cluster-{0}"
 }

@@ -436,5 +436,6 @@
   "k8s.repo.image.tag_empty": "イメージ バージョンはありません",
   "k8s.repo.image.source": "画像ソース",
   "k8s.repo.image.custom": "カスタム URL",
-  "k8s.repo.image.registry": "イメージリポジトリ"
+  "k8s.repo.image.registry": "イメージリポジトリ",
+  "k8s.federated_kubernetes_resource": "多クラスタ-{0}"
 }
