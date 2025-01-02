@@ -191,14 +191,14 @@ export default {
         sortBy: 'order_by_cpu_commit',
         slots: {
           default: ({ row }) => {
-            const { cpu_count, cpu_count_virtual, cpu_commit } = getHostSpecInfo(row)
-            const title = `${this.$t('common_233')}: ${cpu_commit}\n${this.$t('compute.actual_total')}: ${cpu_count}\n${this.$t('compute.virtual_total')}: ${cpu_count_virtual}`
+            const { cpu_count = 0, cpu_count_virtual = 0, cpu_commit = 0 } = getHostSpecInfo(row)
+            const title = `${this.$t('common_233')}: ${Math.round(cpu_commit)}\n${this.$t('compute.actual_total')}: ${Math.round(cpu_count)}\n${this.$t('compute.virtual_total')}: ${Math.round(cpu_count_virtual)}`
             return [<MultipleProgress title={title} progress1Value={Math.max(1, cpu_commit)} progress2Value={Math.max(1, cpu_count)} progress3Value={Math.max(1, cpu_count_virtual)} text={`${cpu_commit}/${cpu_count}/${cpu_count_virtual}`} />]
           },
         },
         formatter: ({ row }) => {
-          const { cpu_count, cpu_count_virtual, cpu_commit } = getHostSpecInfo(row)
-          const title = `${this.$t('common_233')}: ${cpu_commit}, ${this.$t('compute.actual_total')}: ${cpu_count}, ${this.$t('compute.virtual_total')}: ${cpu_count_virtual}`
+          const { cpu_count = 0, cpu_count_virtual = 0, cpu_commit = 0 } = getHostSpecInfo(row)
+          const title = `${this.$t('common_233')}: ${Math.round(cpu_commit)}, ${this.$t('compute.actual_total')}: ${Math.round(cpu_count)}, ${this.$t('compute.virtual_total')}: ${Math.round(cpu_count_virtual)}`
           return title
         },
       },
