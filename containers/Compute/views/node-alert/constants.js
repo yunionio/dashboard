@@ -70,10 +70,15 @@ export const metricItems = {
   'pod_volume.total': { key: 'pod_volume.total', label: i18n.t('compute.container.monitor.pod_volume_total'), unit: 'B' },
   'pod_volume.used': { key: 'pod_volume.used', label: i18n.t('compute.container.monitor.pod_volume_used'), unit: 'B' },
   'pod_volume.used_percent': { key: 'pod_volume.used_percent', label: i18n.t('compute.container.monitor.pod_volume_used_percent'), unit: '%' },
+  'pod_volume.inodes_used_percent': { key: 'pod_volume.inodes_used_percent', label: i18n.t('compute.container.monitor.pod_volume_inodes_used_percent'), unit: '%' },
   'pod_netio.bps_recv': { key: 'pod_netio.bps_recv', label: i18n.t('compute.container.monitor.pod_netio_bps_recv'), unit: 'bps' },
   'pod_netio.bps_sent': { key: 'pod_netio.bps_sent', label: i18n.t('compute.container.monitor.pod_netio_bps_sent'), unit: 'bps' },
   'pod_netio.pps_recv': { key: 'pod_netio.pps_recv', label: i18n.t('compute.container.monitor.pod_netio_pps_recv'), unit: 'pps' },
   'pod_netio.pps_sent': { key: 'pod_netio.pps_sent', label: i18n.t('compute.container.monitor.pod_netio_pps_sent'), unit: 'pps' },
+  'pod_diskio.read_Bps': { key: 'pod_diskio.read_Bps', label: i18n.t('compute.container.monitor.pod_diskio_read_Bps'), unit: 'Bps' },
+  'pod_diskio.write_Bps': { key: 'pod_diskio.write_Bps', label: i18n.t('compute.container.monitor.pod_diskio_write_Bps'), unit: 'Bps' },
+  'pod_process.process_count': { key: 'pod_process.process_count', label: i18n.t('compute.container.monitor.pod_process_process_count'), unit: 'count' },
+  'pod_process.fd_count': { key: 'pod_process.fd_count', label: i18n.t('compute.container.monitor.pod_process_fd_count'), unit: 'count' },
 }
 
 export const TIME_CN = {

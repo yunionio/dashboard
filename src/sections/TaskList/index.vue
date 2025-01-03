@@ -201,7 +201,7 @@ export default {
       }
       if (this.taskStage === 'in_progress') {
         param.not_stage = ['failed', 'complete']
-      } else {
+      } else if (this.taskStage === 'complete') {
         param.stage = ['failed', 'complete']
       }
       param.filter = filter

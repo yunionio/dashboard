@@ -23,7 +23,7 @@ export const POD_MONITOR = [
     transfer: 1,
     metric: metricItems['pod_mem.usage_rate'].key,
   },
-  {
+  /* {
     name: 'pod_mem',
     label: i18n.t('compute.container.monitor.pod_mem_used'),
     seleteItem: 'working_set_bytes',
@@ -31,8 +31,8 @@ export const POD_MONITOR = [
     unit: 'B',
     transfer: 1024,
     metric: metricItems['pod_mem.working_set_bytes'].key,
-  },
-  {
+  }, */
+  /* {
     name: 'pod_volume',
     label: i18n.t('compute.container.monitor.pod_volume_used_total'),
     seleteItem: 'used,total',
@@ -42,7 +42,7 @@ export const POD_MONITOR = [
     transfer: 1024,
     // metric: metricItems['pod_volume.total'].key,
     groupBy: ['mount_path', 'type'],
-  },
+  }, */
   {
     name: 'pod_volume',
     label: i18n.t('compute.container.monitor.pod_volume_used_percent'),
@@ -52,6 +52,36 @@ export const POD_MONITOR = [
     transfer: 1,
     metric: metricItems['pod_volume.used_percent'].key,
     groupBy: ['mount_path', 'type'],
+  },
+  {
+    name: 'pod_volume',
+    label: i18n.t('compute.container.monitor.pod_volume_inodes_used_percent'),
+    seleteItem: 'inodes_used_percent',
+    fromItem: 'pod_volume',
+    unit: '%',
+    transfer: 1,
+    metric: metricItems['pod_volume.inodes_used_percent'].key,
+    groupBy: ['mount_path', 'type'],
+  },
+  {
+    name: 'pod_diskio',
+    label: i18n.t('compute.container.monitor.pod_diskio_read_Bps'),
+    seleteItem: 'read_Bps',
+    fromItem: 'pod_diskio',
+    unit: 'bps',
+    transfer: 1024,
+    metric: metricItems['pod_diskio.read_Bps'].key,
+    groupBy: ['device'],
+  },
+  {
+    name: 'pod_diskio',
+    label: i18n.t('compute.container.monitor.pod_diskio_write_Bps'),
+    seleteItem: 'write_Bps',
+    fromItem: 'pod_diskio',
+    unit: 'bps',
+    transfer: 1024,
+    metric: metricItems['pod_diskio.write_Bps'].key,
+    groupBy: ['device'],
   },
   {
     name: 'pod_netio',
@@ -73,7 +103,7 @@ export const POD_MONITOR = [
     metric: metricItems['pod_netio.bps_sent'].key,
     groupBy: NETIO_GROUP_BY_TAG,
   },
-  {
+  /* {
     name: 'pod_netio',
     label: i18n.t('compute.container.monitor.pod_netio_pps_sent'),
     seleteItem: 'pps_sent',
@@ -92,5 +122,21 @@ export const POD_MONITOR = [
     unit: 'pps',
     metric: metricItems['pod_netio.pps_recv'].key,
     groupBy: NETIO_GROUP_BY_TAG,
+  }, */
+  {
+    name: 'pod_process',
+    label: i18n.t('compute.container.monitor.pod_process_process_count'),
+    seleteItem: 'process_count',
+    fromItem: 'pod_process',
+    unit: '',
+    metric: metricItems['pod_process.process_count'].key,
+  },
+  {
+    name: 'pod_process',
+    label: i18n.t('compute.container.monitor.pod_process_fd_count'),
+    seleteItem: 'fd_count',
+    fromItem: 'pod_process',
+    unit: '',
+    metric: metricItems['pod_process.fd_count'].key,
   },
 ]

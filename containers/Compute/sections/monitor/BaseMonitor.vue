@@ -56,7 +56,7 @@ export default {
             const { data: { data = [] } } = await alertManager.list({
               params: {
                 type: 'guest',
-                node_id: this.data.id,
+                node_id: this.serverId,
                 metric,
               },
             })
@@ -73,7 +73,7 @@ export default {
             } else { // 新建报警
               this.createDialog('CreateNodeAlert', {
                 alertType: 'guest',
-                nodeId: this.data.id,
+                nodeId: this.serverId,
                 metric,
                 alertManager,
               })
