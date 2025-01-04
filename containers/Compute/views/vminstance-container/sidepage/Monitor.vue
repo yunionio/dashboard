@@ -2,7 +2,7 @@
   <div>
     <base-monitor
       :data="data"
-      :resId="resId"
+      :resId="monitorResId"
       :constants="monitorConstants"
       monitorType="basic"
       :currentMonitorType="currentMonitorType" />
@@ -25,7 +25,7 @@ export default {
       type: Object,
       required: false,
     },
-    resId: {
+    monitorResId: {
       type: String,
       required: false,
     },
