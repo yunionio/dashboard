@@ -816,6 +816,14 @@ export const createVmDecorators = type => {
           ],
         },
       ],
+      bastion_org_id: [
+        'bastion_org_id',
+        {
+          rules: [
+            { required: true, message: i18n.t('compute.bastionHost.bastion_org.placeholder') },
+          ],
+        },
+      ],
       nodes: [
         'nodes',
         {

@@ -23,6 +23,17 @@
           }"
           @change="bastionHostChangeHandle" />
       </a-form-item>
+      <a-form-item class="mt-2" :label="$t('compute.bastion_host_org')">
+        <base-select
+          v-decorator="decorator.bastion_org_id"
+          :options="orgs"
+          :filterable="true"
+          :select-props="{
+            placeholder: $t('compute.bastionHost.bastion_host.placeholder'),
+            loading: orgLoading
+          }"
+          @change="bastionOrgChangeHandle" />
+      </a-form-item>
       <a-form-item class="mt-2" :label="$t('compute.bastionHost.node')">
         <base-select
           v-decorator="decorator.nodes"
@@ -103,11 +114,13 @@ export default {
       nodeLoading: false,
       accountLoading: false,
       domainLoading: false,
+      orgs: [],
       bastionHosts: [],
       nodes: [],
       privilegedAccounts: [],
       accounts: [],
       domains: [],
+      currentBastionHostId: '',
     }
   },
   computed: {
@@ -132,9 +145,40 @@ export default {
       this.bastionHostEnable = v
     },
     bastionHostChangeHandle (v) {
-      this.fetchNodes(v)
-      this.fetchAllAccounts(v)
-      this.fetchDomains(v)
+      this.currentBastionHostId = v
+      this.fetchOrgs(v)
+    },
+    bastionOrgChangeHandle (v) {
+      if (this.currentBastionHostId) {
+        this.fetchNodes(v)
+        this.fetchAllAccounts(v)
+        this.fetchDomains(v)
+      } else {
+        this.nodes = []
+        this.accounts = []
+        this.domains = []
+      }
+    },
+    async fetchOrgs (bastionHostId) {
+      try {
+        this.orgLoading = true
+        this.orgs = []
+        const { data: { orgs = [] } } = await new this.$Manager('bastion_hosts')
+          .getSpecific({ id: bastionHostId, spec: 'bastion-orgs' })
+        this.orgs = orgs.map(o => {
+          return {
+            key: o.id,
+            label: o.name,
+          }
+        })
+        this.form.fc.setFieldsValue({
+          bastion_org_id: undefined,
+        })
+      } catch (error) {
+        throw error
+      } finally {
+        this.orgLoading = false
+      }
     },
     async fetchBastionHosts () {
       try {
@@ -148,17 +192,20 @@ export default {
         this.bastionHostLoading = false
       }
     },
-    async fetchNodes (bastionHostId) {
+    async fetchNodes (bastionOrgId) {
       try {
         this.nodeLoading = true
         this.nodes = []
         const { data: { nodes = [] } } = await new this.$Manager('bastion_hosts')
-          .getSpecific({ id: bastionHostId, spec: 'nodes' })
+          .getSpecific({ id: this.currentBastionHostId, spec: 'nodes', params: { bastion_org_id: bastionOrgId } })
         this.nodes = nodes.map(o => {
           return {
             key: o.id,
             label: o.name,
           }
+        })
+        this.form.fc.setFieldsValue({
+          nodes: [],
         })
       } catch (error) {
         throw error
@@ -166,13 +213,13 @@ export default {
         this.nodeLoading = false
       }
     },
-    async fetchAllAccounts (bastionHostId) {
+    async fetchAllAccounts (bastionOrgId) {
       try {
         this.accountLoading = true
         this.accounts = []
         this.privilegedAccounts = []
         const { data: { account_templates = [] } } = await new this.$Manager('bastion_hosts')
-          .getSpecific({ id: bastionHostId, spec: 'account-templates' })
+          .getSpecific({ id: this.currentBastionHostId, spec: 'account-templates', params: { bastion_org_id: bastionOrgId } })
         this.accounts = account_templates.filter(o => !o.privileged).map(o => {
           return {
             key: o.id,
@@ -185,23 +232,30 @@ export default {
             label: o.name,
           }
         })
+        this.form.fc.setFieldsValue({
+          accounts: [],
+          privileged_accounts: undefined,
+        })
       } catch (error) {
         throw error
       } finally {
         this.accountLoading = false
       }
     },
-    async fetchDomains (bastionHostId) {
+    async fetchDomains (bastionOrgId) {
       try {
         this.domainLoading = true
         this.domains = []
         const { data: { domains = [] } } = await new this.$Manager('bastion_hosts')
-          .getSpecific({ id: bastionHostId, spec: 'bastion-domains' })
+          .getSpecific({ id: this.currentBastionHostId, spec: 'bastion-domains', params: { bastion_org_id: bastionOrgId } })
         this.domains = domains.map(o => {
           return {
             key: o.id,
             label: o.name,
           }
+        })
+        this.form.fc.setFieldsValue({
+          bastion_domain_id: undefined,
         })
       } catch (error) {
         throw error
