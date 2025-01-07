@@ -56,6 +56,14 @@ export default {
               ],
             },
           ],
+          bastion_org_id: [
+            'bastion_org_id',
+            {
+              rules: [
+                { required: true, message: this.$t('compute.bastionHost.bastion_org.placeholder') },
+              ],
+            },
+          ],
           nodes: [
             'nodes',
             {
@@ -105,6 +113,7 @@ export default {
         this.loading = true
         const data = {
           bastion_host_id: values.bastion_host_id,
+          bastion_org_id: values.bastion_org_id,
           nodes: values.nodes,
           port: values.port,
           accounts: [values.privileged_accounts].concat(values.accounts),

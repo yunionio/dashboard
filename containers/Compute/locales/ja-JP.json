@@ -1870,5 +1870,7 @@
   "compute.virtual_total": "仮想総量",
   "compute.actual_total": "物理総量",
   "compute.actual_used": "実際の使用",
-  "compute.force_shutdown": "強制シャットダウン"
+  "compute.force_shutdown": "強制シャットダウン",
+  "compute.bastion_host_org": "組織",
+  "compute.bastionHost.bastion_org.placeholder": "@:common.select組織"
 }

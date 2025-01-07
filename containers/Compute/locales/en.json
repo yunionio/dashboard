@@ -1868,5 +1868,7 @@
   "compute.virtual_total": "Virtual Total",
   "compute.actual_total": "Physical Total",
   "compute.actual_used": "Acutual Used",
-  "compute.force_shutdown": "Forced shutdown"
+  "compute.force_shutdown": "Forced shutdown",
+  "compute.bastion_host_org": "Organization",
+  "compute.bastionHost.bastion_org.placeholder": "@:common.select Organization"
 }
