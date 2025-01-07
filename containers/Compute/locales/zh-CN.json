@@ -1852,5 +1852,7 @@
   "compute.virtual_total": "虚拟总量",
   "compute.actual_total": "物理总量",
   "compute.actual_used": "实际使用",
-  "compute.force_shutdown": "强制关机"
+  "compute.force_shutdown": "强制关机",
+  "compute.bastion_host_org": "组织",
+  "compute.bastionHost.bastion_org.placeholder": "@:common.select组织"
 }

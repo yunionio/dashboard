@@ -735,6 +735,7 @@ export default {
     getBationServerData () {
       const {
         bastion_host_id,
+        bastion_org_id,
         nodes,
         port,
         privileged_accounts,
@@ -744,6 +745,7 @@ export default {
       } = this.form.fd
       return {
         bastion_host_id,
+        bastion_org_id,
         nodes,
         port,
         description: reason,
