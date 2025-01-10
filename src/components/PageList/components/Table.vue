@@ -177,6 +177,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    tagColumnsGenerator: Function,
     tagColumns2Generator: Function,
   },
   data () {
@@ -504,39 +505,44 @@ export default {
         }, defaultColumns)
       }
       if (this.config && this.config.showTagKeys && this.config.showTagKeys.length) {
-        const tagColumns = this.config.showTagKeys.map(item => {
-          const config = {
-            minWidth: 100,
-          }
-          if (this.storageConfig && this.storageConfig[item] && this.storageConfig[item].width) {
-            config.minWidth = this.storageConfig[item].width
-            config.width = this.storageConfig[item].width
-          }
-          return {
-            ...config,
-            field: item,
-            title: getTagTitle(item),
-            showOverflow: 'title',
-            sortable: true,
-            slots: {
-              tag_type: ({ row }) => 'resource',
-              default: ({ row }) => {
-                const message = row.metadata && row.metadata[item]
-                return [
-                  this.$createElement('list-body-cell-wrap', {
-                    props: {
-                      copy: true,
-                      field: item,
-                      row,
-                      message,
-                      hideField: true,
-                    },
-                  }, message),
-                ]
+        let tagColumns = []
+        if (this.tagColumnsGenerator) {
+          tagColumns = this.tagColumnsGenerator(this.config.showTagKeys)
+        } else {
+          tagColumns = this.config.showTagKeys.map(item => {
+            const config = {
+              minWidth: 100,
+            }
+            if (this.storageConfig && this.storageConfig[item] && this.storageConfig[item].width) {
+              config.minWidth = this.storageConfig[item].width
+              config.width = this.storageConfig[item].width
+            }
+            return {
+              ...config,
+              field: item,
+              title: getTagTitle(item),
+              showOverflow: 'title',
+              sortable: true,
+              slots: {
+                tag_type: ({ row }) => 'resource',
+                default: ({ row }) => {
+                  const message = row.metadata && row.metadata[item]
+                  return [
+                    this.$createElement('list-body-cell-wrap', {
+                      props: {
+                        copy: true,
+                        field: item,
+                        row,
+                        message,
+                        hideField: true,
+                      },
+                    }, message),
+                  ]
+                },
               },
-            },
-          }
-        })
+            }
+          })
+        }
         const insertIndex = this.checkboxEnabled ? 2 : 1
         defaultColumns = R.insertAll(insertIndex, tagColumns, defaultColumns)
       }
