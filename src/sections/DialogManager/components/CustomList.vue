@@ -165,7 +165,7 @@ export default {
   computed: {
     ...mapGetters(['scope']),
     tagParams () {
-      const ret = {
+      let ret = {
         with_user_meta: true,
         // with_cloud_meta: true,
         limit: 0,
@@ -175,6 +175,9 @@ export default {
         ret.resources = this.params.resource.substr(0, this.params.resource.length - 1)
       } else {
         ret.resources = this.params.resource.resource.substr(0, this.params.resource.resource.length - 1)
+      }
+      if (this.params.tagColumnParamsFormatter) {
+        ret = this.params.tagColumnParamsFormatter(ret)
       }
       return ret
     },
@@ -228,10 +231,10 @@ export default {
     async fetchTags () {
       let manager = new this.$Manager('metadatas')
       try {
-        const response = await manager.get({
+        const response = await (this.params.tagColumnManager ? this.params.tagColumnManager({ params: this.tagParams }) : manager.get({
           id: 'tag-value-pairs',
           params: this.tagParams,
-        })
+        }))
         const data = response.data.data || []
         // 将已显示的标签列进行合并
         let tags = data.map(item => item.key)

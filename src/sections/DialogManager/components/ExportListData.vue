@@ -78,7 +78,7 @@ export default {
       allExportKeys = R.insertAll(0, exportTags.map(item => {
         return `tag:${item}`
       }), allExportKeys)
-      exportOptionItems = R.insertAll(0, exportTags.map(item => {
+      exportOptionItems = R.insertAll(0, this.params.tagColumnsGenerator ? this.params.tagColumnsGenerator(exportTags) : exportTags.map(item => {
         return {
           label: getTagTitle(item),
           key: `tag:${item}`,

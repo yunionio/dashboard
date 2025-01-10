@@ -28,6 +28,8 @@
       :refresh-method="refreshMethod"
       :config="config"
       :show-tag-columns="showTagColumns"
+      :tag-column-manager="tagColumnManager"
+      :tag-column-params-formatter="tagColumnParamsFormatter"
       :show-tag-columns2="showTagColumns2"
       :show-tag-columns3="showTagColumns3"
       :tag-column2-resource="tagColumn2Resource"
@@ -56,6 +58,7 @@
       :tagFilterResource="tagFilterResource"
       :tagFilterResource2="tagFilterResource2"
       :tagFilterResource3="tagFilterResource3"
+      :tagColumnsGenerator="tagColumnsGenerator"
       :tagColumns2Generator="tagColumns2Generator"
       :ignoreWithUserMetaParam="ignoreWithUserMetaParam"
       :ignoreWithUserMetaParam2="ignoreWithUserMetaParam2"
@@ -118,6 +121,7 @@
         :edit-config="editConfig"
         :tableOverviewIndexs="tableOverviewIndexs"
         :enableVirtualScroll="enableVirtualScroll"
+        :tagColumnsGenerator="tagColumnsGenerator"
         :tagColumns2Generator="tagColumns2Generator"
         @change-current-page="changeCurrentPage"
         @change-page-size="changePageSize"
@@ -189,10 +193,13 @@ export default {
     showTagFilter3: Boolean,
     // 开启标签列
     showTagColumns: Boolean,
+    tagColumnManager: Function,
+    tagColumnParamsFormatter: Function,
     showTagColumns2: Boolean,
     showTagColumns3: Boolean,
     tagColumn2Resource: String,
     tagColumn2ParamsFormatter: Function,
+    tagColumnsGenerator: Function,
     tagColumns2Generator: Function,
     // 是否显示搜索框
     showSearchbox: {

@@ -178,6 +178,8 @@ export default {
     config: Object,
     // 开启标签列
     showTagColumns: Boolean,
+    tagColumnManager: Function,
+    tagColumnParamsFormatter: Function,
     showTagColumns2: Boolean,
     showTagColumns3: Boolean,
     tagColumn2Resource: String,
@@ -255,6 +257,7 @@ export default {
     ignoreWithUserMetaParam: Boolean,
     ignoreWithUserMetaParam2: Boolean,
     ignoreWithUserMetaParam3: Boolean,
+    tagColumnsGenerator: Function,
     tagColumns2Generator: Function,
     tagBtnText: String,
     hiddenExportKeys: Array,
@@ -346,6 +349,7 @@ export default {
         showTagColumns3: this.showTagColumns3,
         hiddenExportKeys: this.hiddenExportKeys,
         callback: this.exportDataOptions.callback,
+        tagColumnsGenerator: this.tagColumnsGenerator,
         tagColumns2Generator: this.tagColumns2Generator,
       })
     },
@@ -368,6 +372,8 @@ export default {
         showTagColumns3: this.showTagColumns3,
         customs: grid.getTableColumn().collectColumn,
         resource: this.resource,
+        tagColumnManager: this.tagColumnManager,
+        tagColumnParamsFormatter: this.tagColumnParamsFormatter,
         tagColumn2Resource: this.tagColumn2Resource,
         tagColumn2ParamsFormatter: this.tagColumn2ParamsFormatter,
         hidenColumns,
