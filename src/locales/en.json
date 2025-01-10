@@ -6091,7 +6091,7 @@
   "common.adjust_order": "Adjust order",
   "common.prev_one": "Previous article",
   "common.next_one": "Next article",
-  "common.system_ce": "Cloudpods Enterprise Support Edition",
+  "common.system_ce": "Basic Enterprise Edition",
   "common.shopcart_workflow_name": "Batch resource creation request initiated by {0} on {1} - {2}",
   "common.language_management": "Language management",
   "common.cancel_pin": "Cancel Pin",
