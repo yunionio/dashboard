@@ -45,6 +45,9 @@ export default {
       default: () => ({}),
     },
     cloudEnv: String,
+    diskFormats: {
+      type: Array,
+    },
   },
   data () {
     return {
@@ -65,13 +68,11 @@ export default {
           disk_formats: {
             label: this.$t('table.title.disk_format'),
             dropdown: true,
-            items: [
-              { label: 'VMDK', key: 'vmdk' },
-              { label: 'RAW', key: 'raw' },
-              { label: 'VHD', key: 'vhd' },
-              { label: 'QCOW2', key: 'qcow2' },
-              { label: 'ISO', key: 'iso' },
-            ],
+            multiple: true,
+            distinctField: {
+              type: 'field',
+              key: 'disk_format',
+            },
           },
           is_standard: {
             label: this.$t('table.title.image_type'),
@@ -418,6 +419,14 @@ export default {
         ...this.getParams,
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      if (this.diskFormats) {
+        if (!ret.disk_formats) {
+          ret.disk_formats = []
+        }
+        for (let i = 0; i < this.diskFormats.length; i++) {
+          ret.disk_formats.push(this.diskFormats[i])
+        }
+      }
       return ret
     },
     handleOpenSidepage (row) {

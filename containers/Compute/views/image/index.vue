@@ -12,6 +12,7 @@
       <image-list
         :id="listId"
         :filterParams="filterParams"
+        :diskFormats="diskFormats"
         statusResKey="image"
         @resStatisticsChange="resStatisticsChange" />
     </page-body>
@@ -28,6 +29,11 @@ export default {
     ImageList,
   },
   mixins: [ResStatisticsV2Mixin],
+  props: {
+    diskFormats: {
+      type: Array,
+    },
+  },
   data () {
     return {
       listId: 'ImageList',
