@@ -159,8 +159,8 @@ export default {
       const ids = this.params.data.map(item => item.id)
       const values = await this.form.fc.validateFields()
       const params = {
-        stop_charging: values.stopPaying,
-        is_force: values.is_force,
+        stop_charging: this.form.fd.stopPaying,
+        is_force: this.form.fd.is_force,
       }
       const variables = {
         project: this.params.data[0].tenant_id,
