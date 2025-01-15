@@ -596,17 +596,20 @@ export default {
       ]
       const tags = []
       list.map((item, index) => {
-        const l = { key: 'host_ip', operator: '=', value: '10.127.100.2' }
-        if (index) {
-          l.condition = 'OR'
+        if (item.access_ip) {
+          const l = { key: 'host_ip', operator: '=', value: item.access_ip }
+          if (index) {
+            l.condition = 'OR'
+          }
+          tags.push(l)
         }
-        tags.push(l)
       })
       const data = {
         metric_query: [
           {
             model: {
               measurement: val.fromItem,
+              database: 'telegraf',
               select: [select],
               group_by: [{ type: 'tag', params: ['host_ip'] }],
               tags,
@@ -616,7 +619,7 @@ export default {
         scope: this.$store.getters.scope,
         from: '1h',
         interval: '5m',
-        unit: true,
+        soffset: 0,
       }
       data.signature = getSignature(data)
       return data
