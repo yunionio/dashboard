@@ -24,6 +24,9 @@ import { typeClouds, getDisabledProvidersActionMeta } from '@/utils/common/hyper
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
 import regexp from '@/utils/regexp'
+import { getRequestT } from '@/utils/utils'
+import { getSignature } from '@/utils/crypto'
+import { HOST_INFO_OPTS } from '../constants'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
@@ -121,6 +124,7 @@ export default {
         fetchDataCb: (res) => {
           const { totals = {} } = res.data
           this.$emit('resStatisticsChange', totals)
+          this.fetchUsedPercent(res.data.data)
         },
       }),
     }
@@ -516,6 +520,40 @@ export default {
     refresh () {
       this.list.fetchData()
     },
+    async fetchUsedPercent (list = []) {
+      try {
+        const reqList = [HOST_INFO_OPTS[0], HOST_INFO_OPTS[1]].map(opt => {
+          return new this.$Manager('unifiedmonitors', 'v1')
+            .performAction({
+              id: 'query',
+              action: '',
+              data: this.genQueryData(opt, list),
+              params: { $t: getRequestT() },
+            })
+        })
+        const res = await Promise.all(reqList)
+        const data = {}
+        res.forEach((r, index) => {
+          const { series = [{}] } = (r.data || {})
+          series.forEach((serie, serIdx) => {
+            const { points = [], tags = {} } = serie
+            const { host_ip = '' } = tags
+            if (host_ip && points.length) {
+              const targets = list.filter(item => item.access_ip === host_ip)
+              if (targets.length) {
+                const id = targets[0].id
+                const percent = points.reduce((acc, cur) => acc + cur[0], 0) / points.length / 100
+                data[id] = data[id] || {}
+                data[id][index === 0 ? 'cpu_used_percent' : 'mem_used_percent'] = percent
+              }
+            }
+          })
+        })
+        this.list.updatesProperty(data)
+      } catch (err) {
+        console.error(err)
+      }
+    },
     extraExportParams ({ currentExportType }) {
       if (currentExportType === 'all') return { baremetal: false }
       return {}
@@ -543,6 +581,44 @@ export default {
       if (regexp.isMAC(search)) {
         return 'any_mac'
       }
+    },
+    genQueryData (val, list) {
+      const select = [
+        {
+          type: 'field',
+          params: [val.seleteItem],
+        },
+        { // 对应 mean(val.seleteItem)
+          type: 'max',
+          params: [],
+        },
+      ]
+      const tags = []
+      list.map((item, index) => {
+        const l = { key: 'host_ip', operator: '=', value: '10.127.100.2' }
+        if (index) {
+          l.condition = 'OR'
+        }
+        tags.push(l)
+      })
+      const data = {
+        metric_query: [
+          {
+            model: {
+              measurement: val.fromItem,
+              select: [select],
+              group_by: [{ type: 'tag', params: ['host_ip'] }],
+              tags,
+            },
+          },
+        ],
+        scope: this.$store.getters.scope,
+        from: '1h',
+        interval: '5m',
+        unit: true,
+      }
+      data.signature = getSignature(data)
+      return data
     },
   },
 }

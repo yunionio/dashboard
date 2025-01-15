@@ -21,6 +21,7 @@
       :on-manager="onManager"
       :refresh="refresh"
       :getParams="getParams"
+      :hostListMap="params.list.data"
       @tab-change="handleTabChange" />
   </base-side-page>
 </template>
