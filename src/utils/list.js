@@ -367,22 +367,24 @@ class CreateList {
    * @description 重置数据
    * @memberof CreateList
    */
-  reset () {
+  reset (clearData) {
     this.clearWaitJob()
     // 复位分页信息
     this.total = 0
     this.offset = 0
     this.nextMarker = ''
-    // 重置数据
-    this.data = {}
     this.clearSelected()
-    if (R.is(Function, this.fetchDataCb)) {
-      this.fetchDataCb({
-        data: {
-          totals: {},
-          data: [],
-        },
-      })
+    // 重置数据
+    if (clearData) {
+      this.data = {}
+      if (R.is(Function, this.fetchDataCb)) {
+        this.fetchDataCb({
+          data: {
+            totals: {},
+            data: [],
+          },
+        })
+      }
     }
   }
 
@@ -726,6 +728,21 @@ class CreateList {
   }
 
   /**
+   * @description 批量更新数据的属性
+   * @param {Object} data { id1: { prop1: 'xx', prop2: 'xx' } }
+   * @memberof CreateList
+   */
+  updatesProperty (data) {
+    const ids = Object.keys(data)
+    ids.forEach(id => {
+      const item = this.data[id]
+      if (item) {
+        item.data = { ...item.data, ...data[id] }
+      }
+    })
+  }
+
+  /**
    * @description 设置单条数据的Error
    * @param {String} id
    * @param {Error} error
@@ -833,7 +850,7 @@ class CreateList {
    */
   changeFilter (filter) {
     this.filter = filter
-    this.reset()
+    this.reset(false)
     this.fetchData(0, 0)
   }
 
@@ -844,7 +861,7 @@ class CreateList {
    */
   changeTagFilter (tagFilter) {
     this.tagFilter = tagFilter
-    this.reset()
+    this.reset(false)
     this.fetchData(0, 0)
   }
 
@@ -855,7 +872,7 @@ class CreateList {
    */
   changeTagFilter2 (tagFilter) {
     this.tagFilter2 = tagFilter
-    this.reset()
+    this.reset(false)
     this.fetchData(0, 0)
   }
 
@@ -866,7 +883,7 @@ class CreateList {
  */
   changeTagFilter3 (tagFilter) {
     this.tagFilter3 = tagFilter
-    this.reset()
+    this.reset(false)
     this.fetchData(0, 0)
   }
 
@@ -880,7 +897,7 @@ class CreateList {
       this.projectTagFilter = projectTagFilter
     } else if (!R.equals(this.projectTagFilter, projectTagFilter)) {
       this.projectTagFilter = projectTagFilter
-      this.reset()
+      this.reset(false)
       this.fetchData(0, 0)
     }
   }

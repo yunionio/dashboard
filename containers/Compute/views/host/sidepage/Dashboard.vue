@@ -39,7 +39,7 @@ import RingCard from '@/sections/RingCard'
 import { sizestrWithUnit, getRequestT } from '@/utils/utils'
 import Top5 from '@/sections/Top5'
 import { getSignature } from '@/utils/crypto'
-import { GAUGEMSG, HOST_TOP5, HOST_INFO_OPTS } from '../constants'
+import { GAUGEMSG, HOST_TOP5 } from '../constants'
 import { getHostSpecInfo } from '../utils/index'
 
 export default {
@@ -57,6 +57,10 @@ export default {
     data: {
       type: Object,
       required: true,
+    },
+    hostListMap: {
+      type: Array,
+      default: () => ({}),
     },
   },
   data () {
@@ -146,7 +150,7 @@ export default {
           msg: {
             current: parseInt(obj.cpu_count * this.progressListPercent[0]) < obj.cpu_count * this.progressListPercent[0] ? Math.floor(parseInt(obj.cpu_count * this.progressListPercent[0]) + 1, obj.cpu_count) : obj.cpu_count * this.progressListPercent[0], // 向上取整
             totalLabel: this.$t('compute.actual_total'),
-            currentLabel: this.$t('compute.text_1330'),
+            currentLabel: this.$t('compute.actual_used'),
             total: `${obj.cpu_count} (${this.$t('compute.text_563')}: ${obj.cpu_count - obj.cpu_reserved}, ${this.$t('compute.reserved')}: ${obj.cpu_reserved})`,
           },
         }
@@ -158,7 +162,7 @@ export default {
           msg: {
             current: sizestrWithUnit(obj.mem_size * this.progressListPercent[1], 'M', 1024),
             totalLabel: this.$t('compute.actual_total'),
-            currentLabel: this.$t('compute.text_1330'),
+            currentLabel: this.$t('compute.actual_used'),
             total: `${sizestrWithUnit(obj.mem_size, 'M', 1024)} (${this.$t('compute.text_564')}: ${sizestrWithUnit(obj.mem_size - obj.mem_reserved, 'M', 1024)}, ${this.$t('compute.reserved')}: ${sizestrWithUnit(obj.mem_reserved, 'M', '1024')})`,
           },
         }
@@ -170,7 +174,7 @@ export default {
           msg: {
             current: sizestrWithUnit(obj.storage_size * this.progressListPercent[2], 'M', 1024),
             totalLabel: this.$t('compute.actual_total'),
-            currentLabel: this.$t('compute.text_1330'),
+            currentLabel: this.$t('compute.actual_used'),
             total: `${sizestrWithUnit(obj.storage_size, 'M', 1024)} (${this.$t('compute.text_565')}: ${sizestrWithUnit(obj.storage_size, 'M', '1024')})`,
           },
         }
@@ -186,28 +190,12 @@ export default {
   methods: {
     async fetchUsedPercent () {
       try {
-        const reqList = HOST_INFO_OPTS.map(opt => {
-          return new this.$Manager('unifiedmonitors', 'v1')
-            .performAction({
-              id: 'query',
-              action: '',
-              data: this.genQueryData(opt),
-              params: { $t: getRequestT() },
-            })
-        })
-        const res = await Promise.all(reqList)
-        const list = []
-        res.forEach((r, index) => {
-          const { series = [{}] } = (r.data || {})
-          const { points = [] } = (series[0] || {})
-          if (points.length) {
-            const percent = points.reduce((acc, cur) => acc + cur[0], 0) / points.length
-            list.push(percent / 100)
-          } else {
-            list.push(0)
-          }
-        })
-        this.progressListPercent = list
+        if (this.data.id && this.hostListMap[this.data.id]) {
+          const data = this.hostListMap[this.data.id]?.data
+          const { cpu_used_percent = 0, mem_used_percent = 0 } = data
+          const { storage_size, actual_storage_used = 0 } = getHostSpecInfo(data)
+          this.progressListPercent = [cpu_used_percent, mem_used_percent, actual_storage_used / storage_size]
+        }
       } catch (err) {
         console.error(err)
       }
