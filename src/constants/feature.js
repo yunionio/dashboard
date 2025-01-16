@@ -218,7 +218,25 @@ const LicenseItems = [
   },
   {
     key: 'monitor',
-    meta: meta('monitor', '', false),
+    meta: meta('resource_managent', 'monitor', false),
+  },
+  {
+    key: 'appstore',
+    origin_key: 'app_store',
+    meta: meta('resource_managent', 'monitor', false),
+  },
+  {
+    key: 'report',
+    meta: meta('resource_managent', 'monitor', false),
+  },
+  {
+    key: 'extdb',
+    meta: meta('resource_managent', 'monitor', false),
+  },
+  {
+    key: 'bastionhost',
+    origin_key: 'bastion_host',
+    meta: meta('resource_managent', 'monitor', false),
   },
   {
     key: 'bill_aliyun',
@@ -261,8 +279,31 @@ const LicenseItems = [
     meta: meta('resource_managent', 'bill', true),
   },
   {
+    key: 'bill_ksyun',
+    origin_key: 'ksyun',
+    meta: meta('resource_managent', 'bill', true),
+  },
+  {
+    key: 'bill_kubernetes',
+    origin_key: 'k8s',
+    meta: meta('resource_managent', 'bill', false),
+  },
+  {
+    key: 'bill_extdb',
+    origin_key: 'extdb',
+    meta: meta('resource_managent', 'bill', false),
+  },
+  {
+    key: 'suggestion',
+    meta: meta('resource_managent', 'bill', false),
+  },
+  {
     key: 'auth',
-    meta: meta('auth', '', false),
+    meta: meta('resource_managent', 'auth', false),
+  },
+  {
+    key: 'business_feature',
+    meta: meta('resource_managent', 'auth', false),
   },
   {
     key: 'baidu',
@@ -292,10 +333,10 @@ const LicenseItems = [
     key: 'sangfor',
     meta: meta('resource_managent', 'private', true),
   },
-  {
-    key: 'report',
-    meta: meta('resource_managent', 'report', false),
-  },
+  // {
+  //   key: 'report',
+  //   meta: meta('resource_managent', 'report', false),
+  // },
 ]
 
 function fullfillLicenseItems () {
