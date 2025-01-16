@@ -384,12 +384,12 @@ export const hasMeterService = function () {
   return false
 }
 
-export const billSupportBrands = ['aliyun', 'aws', 'azure', 'google', 'huawei', 'jdcloud', 'qcloud', 'volcengine']
+export const billSupportBrands = ['aliyun', 'aws', 'azure', 'google', 'huawei', 'jdcloud', 'qcloud', 'volcengine', 'ksyun']
+
+export const billItems = billSupportBrands.map(key => `bill_${key}`)
 
 export const fillBillSupportFeatures = (data = [], fillOriginBrand = false) => {
   const list = [...data]
-  const billItems = billSupportBrands.map(key => `bill_${key}`)
-
   const billTargetItems = list.filter(key => billItems.includes(key))
   // 旧版本只签发bill，新版本签发bill与billItem
   // 旧版本 有费用模块
