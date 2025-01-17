@@ -217,7 +217,8 @@ const LicenseItems = [
     validators: [validators.hasCloudAccount],
   },
   {
-    key: 'monitor',
+    key: 'monitor_operation',
+    origin_key: 'monitor',
     meta: meta('resource_managent', 'monitor', false),
   },
   {
@@ -299,11 +300,7 @@ const LicenseItems = [
   },
   {
     key: 'auth',
-    meta: meta('resource_managent', 'auth', false),
-  },
-  {
-    key: 'business_feature',
-    meta: meta('resource_managent', 'auth', false),
+    meta: meta('auth', '', false),
   },
   {
     key: 'baidu',
