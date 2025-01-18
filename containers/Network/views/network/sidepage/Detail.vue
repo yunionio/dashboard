@@ -78,6 +78,9 @@ export default {
               if (cellValue === 'eip') {
                 return this.$t('network.text_221')
               }
+              if (cellValue === 'hostlocal') {
+                return 'HostLocal'
+              }
               return this.$t('network.text_507')
             },
           },
@@ -167,7 +170,7 @@ export default {
           },
         ]).filter(item => {
           if (['wire', 'server_type', 'bgp_type', 'guest_dhcp', 'vlan_id'].indexOf(item.field) >= 0) {
-            if (this.data.cloud_env === 'onpremise' && this.data.is_classic) {
+            if (this.data.cloud_env === 'onpremise' && (this.data.is_classic || this.data.is_default_vpc)) {
               return true
             }
             return false
