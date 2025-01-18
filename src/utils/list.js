@@ -608,6 +608,7 @@ class CreateList {
     } else {
       params.details = false
     }
+    params.summary_stats = true
     if (limit) {
       params.limit = limit
     } else {
