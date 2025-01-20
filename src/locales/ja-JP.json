@@ -1214,6 +1214,10 @@
     },
     "pod": {
       "stop": "電源を切る"
+    },
+    "reportRecord": {
+      "success": "成功",
+      "fail": "失敗"
     }
   },
   "skuCategoryOptions": {

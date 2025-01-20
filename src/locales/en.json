@@ -1199,6 +1199,10 @@
     },
     "pod": {
       "stop": "Stop"
+    },
+    "reportRecord": {
+      "success": "Success",
+      "fail": "Failed"
     }
   },
   "skuCategoryOptions": {
