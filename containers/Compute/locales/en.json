@@ -1852,5 +1852,9 @@
   "compute.actual_used": "Acutual Used",
   "compute.force_shutdown": "Forced shutdown",
   "compute.bastion_host_org": "Organization",
-  "compute.bastionHost.bastion_org.placeholder": "@:common.select Organization"
+  "compute.bastionHost.bastion_org.placeholder": "@:common.select Organization",
+  "compute.complete_ipv6_address": "Please complete the IPv6 address.",
+  "compute.ipv6_config": "Manually configure IPv6",
+  "compute.error_ipv6": "IPv6 address is incorrect",
+  "compute.ipv6_within_range": "The IPv6 address must remain within the selected address range."
 }
