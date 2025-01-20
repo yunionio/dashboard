@@ -603,4 +603,8 @@ export default {
     danger: ['expired'],
     success: ['available'],
   },
+  reportRecord: {
+    danger: ['fail'],
+    success: ['success'],
+  },
 }
