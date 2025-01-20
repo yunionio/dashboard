@@ -17,7 +17,7 @@ export default {
       try {
         const categories = R.is(String, category) ? [category] : category
         if (rootGetters.scope) {
-          const response = await http.get('/v1/scopedpolicybindings', {
+          const response = await http.get('/v1/auth/scopedpolicybindings', {
             params: {
               scope: rootGetters.scope,
               effective: true,
