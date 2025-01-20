@@ -1872,5 +1872,9 @@
   "compute.actual_used": "实际使用",
   "compute.force_shutdown": "强制关机",
   "compute.bastion_host_org": "组织",
-  "compute.bastionHost.bastion_org.placeholder": "@:common.select组织"
+  "compute.bastionHost.bastion_org.placeholder": "@:common.select组织",
+  "compute.complete_ipv6_address": "请补全IPv6地址",
+  "compute.ipv6_config": "手动配置IPv6",
+  "compute.error_ipv6": "Ipv6地址不正确",
+  "compute.ipv6_within_range": "IPv6地址需保持在所选地址段之内"
 }
