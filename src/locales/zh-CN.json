@@ -1214,6 +1214,10 @@
     },
     "pod": {
       "stop": "关机"
+    },
+    "reportRecord": {
+      "success": "成功",
+      "fail": "失败"
     }
   },
   "skuCategoryOptions": {

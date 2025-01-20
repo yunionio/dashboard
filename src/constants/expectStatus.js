@@ -580,4 +580,8 @@ export default {
   pod: {
     info: ['stop'],
   },
+  reportRecord: {
+    danger: ['fail'],
+    success: ['success'],
+  },
 }
