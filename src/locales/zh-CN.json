@@ -1262,6 +1262,10 @@
       "expired": "已过期",
       "available": "可用",
       "creating": "创建中"
+    },
+    "reportRecord": {
+      "success": "成功",
+      "fail": "失败"
     }
   },
   "skuCategoryOptions": {

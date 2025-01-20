@@ -1247,6 +1247,10 @@
       "expired": "Expired",
       "available": "Available",
       "creating": "Creating"
+    },
+    "reportRecord": {
+      "success": "Success",
+      "fail": "Failed"
     }
   },
   "skuCategoryOptions": {

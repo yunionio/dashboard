@@ -1262,6 +1262,10 @@
       "expired": "期限切れ",
       "available": "使用可能",
       "creating": "作成中"
+    },
+    "reportRecord": {
+      "success": "成功",
+      "fail": "失敗"
     }
   },
   "skuCategoryOptions": {
