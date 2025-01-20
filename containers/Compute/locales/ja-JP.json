@@ -1854,5 +1854,9 @@
   "compute.actual_used": "実際の使用",
   "compute.force_shutdown": "強制シャットダウン",
   "compute.bastion_host_org": "組織",
-  "compute.bastionHost.bastion_org.placeholder": "@:common.select組織"
+  "compute.bastionHost.bastion_org.placeholder": "@:common.select組織",
+  "compute.complete_ipv6_address": "IPv6アドレスを補完してください。",
+  "compute.ipv6_config": "IPv6を手動で設定",
+  "compute.error_ipv6": "IPv6アドレスが不正です",
+  "compute.ipv6_within_range": "IPv6アドレスは選択したアドレス範囲内に保持する必要があります。"
 }
