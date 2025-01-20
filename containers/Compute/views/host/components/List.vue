@@ -562,6 +562,7 @@ export default {
       const ret = {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
       }
+      ret.hide_cpu_topo_info = true
       return ret
     },
     handleOpenSidepage (row, tab) {

@@ -221,7 +221,14 @@ export const getStatusTableColumn = ({ vm = {}, field = 'status', title = i18n.t
   }
 }
 
-export const getEnabledTableColumn = ({ field = 'enabled', title = i18n.t('table.title.enable_status'), minWidth = 90, hidden } = {}) => {
+export const getEnabledTableColumn = ({
+  field = 'enabled',
+  title = i18n.t('table.title.enable_status'),
+  enableText = i18n.t('status.enabled.true'),
+  disableText = i18n.t('status.enabled.false'),
+  minWidth = 90,
+  hidden,
+} = {}) => {
   return getStatusTableColumn({
     field,
     title,
@@ -229,7 +236,7 @@ export const getEnabledTableColumn = ({ field = 'enabled', title = i18n.t('table
     minWidth,
     hidden,
     formatter: ({ row }) => {
-      return row[field] ? i18n.t('status.enabled.true') : i18n.t('status.enabled.false')
+      return row[field] ? enableText : disableText
     },
   })
 }
