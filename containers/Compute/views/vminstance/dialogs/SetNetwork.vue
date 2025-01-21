@@ -36,7 +36,7 @@
 import * as R from 'ramda'
 import { HYPERVISORS_MAP } from '@/constants'
 import NetworkConfig from '@Compute/sections/ServerNetwork/NetworkConfig'
-import { checkIpInSegment } from '@Compute/utils/createServer'
+import { checkIpInSegment, checkIpV6, getIpv6Start } from '@Compute/utils/createServer'
 import expectStatus from '@/constants/expectStatus'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -107,6 +107,22 @@ export default {
               },
               {
                 validator: checkIpInSegment(i, networkData),
+              },
+            ],
+          },
+        ],
+        ips6: (i, networkData) => [
+          `networkIpsAddress6[${i}]`,
+          {
+            validateFirst: true,
+            validateTrigger: ['blur', 'change'],
+            rules: [
+              {
+                required: true,
+                message: this.$t('compute.complete_ipv6_address'),
+              },
+              {
+                validator: checkIpV6(i, networkData),
               },
             ],
           },
@@ -228,7 +244,7 @@ export default {
       this.loading = true
       try {
         const nets = []
-        const { networks, networkIps, networkMacs, networkIPv6s, networkDevices } = await this.form.fc.validateFields()
+        const { networks, networkIps, networkMacs, networkIPv6s, networkDevices, networkIpsAddress6 } = await this.form.fc.validateFields()
         if (!networks || R.isEmpty(networks)) {
           this.cancelDialog()
           return false
@@ -245,6 +261,12 @@ export default {
           }
           if (networkIPv6s && networkIPv6s[key]) {
             o.require_ipv6 = true
+          }
+          if (networkIpsAddress6 && networkIpsAddress6[key]) {
+            const ipv6Last = networkIpsAddress6[key]
+            const target = this.form.fi.networkList.filter(item => item.key === key)
+            const ipv6First = getIpv6Start(target[0]?.network?.guest_ip6_start)
+            o.address6 = ipv6First + ipv6Last
           }
           if (networkDevices && networkDevices[key]) {
             o.sriov_device = {
