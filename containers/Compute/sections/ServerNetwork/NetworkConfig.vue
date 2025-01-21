@@ -50,7 +50,7 @@
       </div>
       <div :class="{ 'd-flex ml-1' : isBigScreen }">
         <template v-if="item.ipShow">
-          <a-form-item class="mb-0"  :wrapperCol="{ span: 24 }">
+          <a-form-item class="mb-0" style="display:inline-block" :wrapperCol="{ span: 24 }">
             <ip-select v-decorator="decorator.ips(item.key, item.network)" :value="item.ip" :network="item.network" @change="e => ipChange(e, i)" />
           </a-form-item>
           <a-button type="link" class="mt-1" @click="triggerShowIp(item)">{{$t('compute.text_135')}}</a-button>
@@ -60,7 +60,7 @@
         </a-tooltip>
         <template v-if="showMacConfig">
           <template v-if="item.macShow">
-            <a-form-item class="mb-0"  :wrapperCol="{ span: 24 }">
+            <a-form-item class="mb-0" style="display:inline-block" :wrapperCol="{ span: 24 }">
               <a-input
                 style="width: 164px"
                 :placeholder="$t('compute.text_806')"
@@ -75,7 +75,7 @@
         </template>
         <template v-if="showDeviceConfig">
           <template v-if="item.deviceShow">
-            <a-form-item class="mb-0"  :wrapperCol="{ span: 24 }">
+            <a-form-item class="mb-0" style="display:inline-block" :wrapperCol="{ span: 24 }">
               <oc-select
                 style="width: 164px"
                 v-decorator="decorator.devices(item.key)"
@@ -87,23 +87,25 @@
           <a-button v-else type="link" class="mr-1 mt-1" @click="triggerShowDevice(item)">{{ $t('compute.config_transparent_net') }}</a-button>
         </template>
         <template v-if="isSupportIPv6(item)">
-          <a-form-item class="mb-0" :wrapperCol="{ span: 24 }">
-            <a-checkbox style="width: max-content" v-decorator="decorator.ipv6s(item.key, item.network)">{{ $t('compute.server_create.require_ipv6') }}</a-checkbox>
+          <a-form-item class="mb-0" style="display:inline-block" :wrapperCol="{ span: 24 }">
+            <a-checkbox style="width: max-content" v-decorator="decorator.ipv6s(item.key, item.network)" @change="(e) => triggerRequireIpv6(item, e)">{{ $t('compute.server_create.require_ipv6') }}</a-checkbox>
           </a-form-item>
-          <template v-if="item.ipv6Show">
-            <a-form-item class="mb-0 ml-1" style="width: 350px" :wrapperCol="{ span: 24 }">
-              <span class="mr-1">{{ getIpv6Prefix(item.network?.guest_ip6_start) }}</span>
-              <a-form-item class="mb-0" style="display:inline-block">
-                <a-input
-                  style="width: 164px"
-                  :placeholder="$t('compute.complete_ipv6_address')"
-                  @change="e => ipv6Change(e, i)"
-                  v-decorator="decorator.ips6(item.key, item.network)" />
+          <template v-if="item.requireIpv6">
+            <template v-if="item.ipv6Show">
+              <a-form-item class="mb-0 ml-1" style="width: 350px;display:inline-block" :wrapperCol="{ span: 24 }">
+                <span class="mr-1">{{ getIpv6Prefix(item.network?.guest_ip6_start) }}</span>
+                <a-form-item class="mb-0" style="display:inline-block">
+                  <a-input
+                    style="width: 164px"
+                    :placeholder="$t('compute.complete_ipv6_address')"
+                    @change="e => ipv6Change(e, i)"
+                    v-decorator="decorator.ips6(item.key, item.network)" />
+                </a-form-item>
+                <a-button type="link" class="mt-1" @click="triggerShowIpv6(item)">{{$t('compute.text_135')}}</a-button>
               </a-form-item>
-              <a-button type="link" class="mt-1" @click="triggerShowIpv6(item)">{{$t('compute.text_135')}}</a-button>
-            </a-form-item>
+            </template>
+            <a-button v-else type="link" class="mt-1" @click="triggerShowIpv6(item)">{{$t('compute.ipv6_config')}}</a-button>
           </template>
-          <a-button v-else type="link" class="mt-1" @click="triggerShowIpv6(item)">{{$t('compute.ipv6_config')}}</a-button>
         </template>
         <a-button shape="circle" icon="minus" size="small" v-if="i !== 0" @click="decrease(item.key, i)" class="mt-2" />
       </div>
@@ -241,7 +243,7 @@ export default {
       return ret
     },
     isBigScreen () {
-      return this.screenWidth > 1440
+      return this.screenWidth > 1650
     },
   },
   watch: {
@@ -314,6 +316,7 @@ export default {
         vpc: {},
         ipShow: false,
         ipv6Show: false,
+        requireIpv6: false,
         macShow: false,
         deviceShow: false,
         key: uid,
@@ -335,7 +338,9 @@ export default {
     },
     triggerShowIpv6 (item, i) {
       item.ipv6Show = !item.ipv6Show
-      console.log(item)
+    },
+    triggerRequireIpv6 (item, e) {
+      item.requireIpv6 = e.target.checked
     },
     triggerShowMac (item, i) {
       item.macShow = !item.macShow
@@ -353,12 +358,12 @@ export default {
       }
       this.$set(this.networkList[0], 'ipShow', false)
       this.$set(this.networkList[0], 'ipv6Show', false)
+      this.$set(this.networkList[0], 'requireIpv6', false)
       this.$set(this.networkList[0], 'macShow', false)
       this.$set(this.networkList[0], 'deviceShow', false)
       this.ipsDisabled = ipsDisabled
     },
     networkChange (val, item) {
-      console.log('network change', item)
       this.$nextTick(() => {
         const fieldKey = `networkExits[${item.key}]`
         this.form.fc.getFieldDecorator(fieldKey, {
