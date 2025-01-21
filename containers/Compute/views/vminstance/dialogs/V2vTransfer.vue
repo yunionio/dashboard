@@ -96,6 +96,7 @@ import ListSelect from '@/sections/ListSelect'
 import DomainProject from '@/sections/DomainProject'
 import CloudregionZone from '@/sections/CloudregionZone'
 import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
+import { checkIpV6, getIpv6Start } from '@Compute/utils/createServer'
 import ResourceProps from '../mixins/resourceProps'
 
 export default {
@@ -238,6 +239,22 @@ export default {
                   },
                   {
                     validator: checkIpInSegment(i, networkData),
+                  },
+                ],
+              },
+            ],
+            ips6: (i, networkData) => [
+              `networkIpsAddress6[${i}]`,
+              {
+                validateFirst: true,
+                validateTrigger: ['blur', 'change'],
+                rules: [
+                  {
+                    required: true,
+                    message: this.$t('compute.complete_ipv6_address'),
+                  },
+                  {
+                    validator: checkIpV6(i, networkData),
                   },
                 ],
               },
@@ -583,11 +600,12 @@ export default {
    * @returns { Array }
    * @memberof GenCreateData
    */
-    genNetworks (values) {
+    async genNetworks (values) {
       let ret = [{ exit: false }]
       // 指定 IP 子网
       if (this.form.fd.networkType === NETWORK_OPTIONS_MAP.manual.key) {
         ret = []
+        const { networkIPv6s, networkIpsAddress6 } = await this.form.fc.validateFields()
         R.forEachObjIndexed((value, key) => {
           const obj = {
             network: value,
@@ -603,6 +621,15 @@ export default {
             if (mac) {
               obj.mac = mac
             }
+          }
+          if (networkIPv6s && networkIPv6s[key]) {
+            obj.require_ipv6 = true
+          }
+          if (networkIpsAddress6 && networkIpsAddress6[key]) {
+            const ipv6Last = networkIpsAddress6[key]
+            const target = this.form.fi.networkList.filter(item => item.key === key)
+            const ipv6First = getIpv6Start(target[0]?.network?.guest_ip6_start)
+            obj.address6 = ipv6First + ipv6Last
           }
           if (this.form.fd.networkExits) {
             const exit = this.form.fd.networkExits[key]
