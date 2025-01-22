@@ -22,6 +22,7 @@ export default {
           level: 'fatal',
           scope: getScopeFromCookie() || 'project',
           ...payload,
+          ignoreErrorStatusCode: [403],
         }
         const { data: { data = [] } } = await new Manager('monitorresourcealerts', 'v1').list({ params })
         commit('setMonitorResourceAlerts', data)
