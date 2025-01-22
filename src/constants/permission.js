@@ -315,6 +315,7 @@ export const PERMISSION = {
   policies_create: ['identity', 'policies', 'create'],
   policies_delete: ['identity', 'policies', 'delete'],
   policies_perform_public: ['identity', 'policies', 'perform', 'public'],
+  identity_services: ['identity', 'services', 'list'],
   // 操作日志
   log_list: ['log', 'actions', 'list'],
   log_manage_list_splitable: ['log', 'actions', 'list', 'splitable'],
@@ -958,12 +959,14 @@ export const PERMISSION = {
   bill_budgets_perform: ['meter', 'budgets', 'perform'],
   // 预测
   bill_predictions_query: ['meter', 'predictions', 'perform', 'query'],
+  // 账单
+  meter_payment_bills: ['meter', 'payment_bills', 'list'],
   // 账单汇总
   meter_summary_bills: ['meter', 'meter_summary_bills', 'list'],
   // 实例账单
-  bill_associates_list: ['meter', 'associate_bills', 'list'],
+  // bill_associates_list: ['meter', 'associate_bills', 'list'],
   // 资源账单
-  meter_resource_bills: ['meter', 'meter_resource_bills', 'list'],
+  meter_monthly_bills: ['meter', 'monthly_bills', 'list'],
   // 流水账单
   meter_daily_bills: ['meter', 'meter_daily_bills', 'list'],
   // 价格对比
@@ -995,7 +998,7 @@ export const PERMISSION = {
   // costalerts_list: ['meter', 'costalerts', 'list'],
   // costalerts_create: ['meter', 'costalerts', 'create'],
   // costalerts_delete: ['meter', 'costalerts', 'delete'],
-  bill_details_list: ['meter', 'bill_details', 'list'],
+  // bill_details_list: ['meter', 'bill_details', 'list'],
   project_sharings_list: ['meter', 'project_sharings', 'list'],
   project_sharings_create: ['meter', 'project_sharings', 'create'],
   project_sharings_delete: ['meter', 'project_sharings', 'delete'],
@@ -1485,6 +1488,8 @@ export const PERMISSION = {
   scriptapplyrecords_delete: ['devtool', 'scriptapplyrecords', 'delete'],
 
   metadatas_perform_tag_value_pairs: ['compute', 'metadatas', 'perform', 'tag-value-pairs'],
+
+  topology_list: ['compute', 'topology', 'list'],
 
   ...extraPermissions,
 }

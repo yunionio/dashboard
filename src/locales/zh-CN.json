@@ -2836,7 +2836,8 @@
     "menu_monitor_operation": "监控与运维",
     "menu_billing_accuracy": "费用与优化",
     "menu_iam_security": "认证与安全",
-    "menu_system_config": "系统配置"
+    "menu_system_config": "系统配置",
+    "global_topology": "全局拓扑"
   },
   "originDictionary": {},
   "res": {

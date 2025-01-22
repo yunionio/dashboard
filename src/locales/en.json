@@ -2817,7 +2817,8 @@
     "menu_monitor_operation": "Monitoring and Operations",
     "menu_billing_accuracy": "Cost and Optimization",
     "menu_iam_security": "Certification and Security",
-    "menu_system_config": "System Configuration"
+    "menu_system_config": "System Configuration",
+    "global_topology": "Global topology"
   },
   "originDictionary": {},
   "res": {
