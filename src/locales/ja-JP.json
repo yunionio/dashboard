@@ -2837,7 +2837,8 @@
     "menu_monitor_operation": "監視と運用次元",
     "menu_billing_accuracy": "費用と最適化",
     "menu_iam_security": "認証とセキュリティ",
-    "menu_system_config": "システム設定"
+    "menu_system_config": "システム設定",
+    "global_topology": "グローバルトポロジ"
   },
   "originDictionary": {},
   "res": {
