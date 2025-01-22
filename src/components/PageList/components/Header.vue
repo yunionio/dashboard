@@ -259,6 +259,9 @@ export default {
     ignoreWithUserMetaParam3: Boolean,
     tagColumnsGenerator: Function,
     tagColumns2Generator: Function,
+    tagColumnsExportKeyFormatter: Function,
+    tagColumns2ExportKeyFormatter: Function,
+    tagColumns3ExportKeyFormatter: Function,
     tagBtnText: String,
     hiddenExportKeys: Array,
     hiddenPin: Boolean,
@@ -351,6 +354,9 @@ export default {
         callback: this.exportDataOptions.callback,
         tagColumnsGenerator: this.tagColumnsGenerator,
         tagColumns2Generator: this.tagColumns2Generator,
+        tagColumnsExportKeyFormatter: this.tagColumnsExportKeyFormatter,
+        tagColumns2ExportKeyFormatter: this.tagColumns2ExportKeyFormatter,
+        tagColumns3ExportKeyFormatter: this.tagColumns3ExportKeyFormatter,
       })
     },
     handleCustomList () {

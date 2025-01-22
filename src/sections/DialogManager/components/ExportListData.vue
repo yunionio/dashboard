@@ -19,13 +19,25 @@
           <a-divider />
           <a-checkbox-group v-decorator="decorators.selected" @change="handleSelectedChange" class="w-100">
             <a-row>
-              <a-col
-                v-for="item of exportOptionItems"
-                :span="6"
-                :key="item.key"
-                class="mb-2 checkbox-item">
-                <a-checkbox :value="item.key"><span :title="item.label">{{ item.label }}</span></a-checkbox>
-              </a-col>
+              <draggable
+                handle=".drag-icon"
+                ghost-class="ghost"
+                v-model="exportOptionItems">
+                <transition-group type="transition" name="flip-list">
+                  <template v-for="item of exportOptionItems">
+                    <a-col
+                      v-if="item.label"
+                      :span="6"
+                      :key="item.key"
+                      class="mb-2 checkbox-item d-flex align-items-center">
+                      <a-checkbox :value="item.key" class="text-truncate checkbox-property">
+                        <span :title="item.label">{{ item.label }}</span>
+                      </a-checkbox>
+                      <a-icon type="drag" class="drag-icon pr-3" @click="iconClick" />
+                    </a-col>
+                  </template>
+                </transition-group>
+              </draggable>
             </a-row>
           </a-checkbox-group>
         </a-form-item>
@@ -42,6 +54,7 @@
 <script>
 import * as R from 'ramda'
 import XLSX from 'xlsx'
+import draggable from 'vuedraggable'
 import { download, getRequestT } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -51,6 +64,9 @@ import { hasPermission } from '@/utils/auth'
 
 export default {
   name: 'ExportListDataDialog',
+  components: {
+    draggable,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     let exportOptionItems = [...this.params.options.items].filter(item => {
@@ -110,6 +126,14 @@ export default {
       })
       exportOptionItems = R.insertAll(0, exportProjectTagsItems, exportOptionItems)
     }
+    const { sortColumnsMap = {} } = this.params.config
+    exportOptionItems.sort((a, b) => {
+      return (sortColumnsMap[a.key] || -1) - (sortColumnsMap[b.key] || -1)
+    })
+    const selectedExportKeys = allExportKeys.filter(key => {
+      const { hiddenColumns = [] } = this.params.config
+      return !hiddenColumns.includes(key)
+    })
     return {
       loading: false,
       exportOptionItems,
@@ -126,7 +150,7 @@ export default {
         selected: [
           'selected',
           {
-            initialValue: allExportKeys,
+            initialValue: selectedExportKeys,
             rules: [
               { required: true, message: this.$t('common_94') },
             ],
@@ -139,9 +163,9 @@ export default {
         custom: { label: this.$t('common_96'), key: 'custom' },
       },
       currentExportType: 'custom',
-      indeterminate: false,
-      checkAll: true,
-      selectedExportKeys: allExportKeys,
+      indeterminate: selectedExportKeys.length !== allExportKeys.length,
+      checkAll: selectedExportKeys.length && selectedExportKeys.length === allExportKeys.length,
+      selectedExportKeys: selectedExportKeys,
     }
   },
   computed: {
@@ -162,12 +186,24 @@ export default {
     genParams (formValues, total, offline) {
       const keys = []
       const texts = []
-      const textKeyMap = {}
-      for (let i = 0, len = formValues.selected.length; i < len; i++) {
-        const item = R.find(R.propEq('key', formValues.selected[i]))(this.exportOptionItems)
-        keys.push(item.key)
+      const selected = [...formValues.selected]
+      selected.sort((a, b) => {
+        const idx = R.findIndex(R.propEq('key', a))(this.exportOptionItems)
+        const idx2 = R.findIndex(R.propEq('key', b))(this.exportOptionItems)
+        return idx - idx2
+      })
+      for (let i = 0, len = selected.length; i < len; i++) {
+        const item = R.find(R.propEq('key', selected[i]))(this.exportOptionItems)
+        let key = item.key
+        if (key.startsWith('tag:') && this.params.tagColumnsExportKeyFormatter) {
+          key = this.params.tagColumnsExportKeyFormatter(key.replace('tag:', ''))
+        } else if (key.startsWith('projectTag:') && this.params.tagColumns2ExportKeyFormatter) {
+          key = this.params.tagColumns2ExportKeyFormatter(key.replace('projectTag:', ''))
+        } else if (key.startsWith('instanceTag:') && this.params.tagColumns3ExportKeyFormatter) {
+          key = this.params.tagColumns3ExportKeyFormatter(key.replace('projectTag:', ''))
+        }
+        keys.push(key)
         texts.push(item.label)
-        textKeyMap[item.label] = item.key
       }
       let params = {
         export: this.params.options.fileType || 'xls',
@@ -217,12 +253,11 @@ export default {
         }
       }
       if (offline) {
-        params.keys = textKeyMap
         params.force_no_paging = true
         params.limit = params.export_limit
+        params.export_keys = keys
+        params.export_texts = texts
         delete params.export
-        delete params.export_keys
-        delete params.export_texts
         delete params.export_limit
         if (params.filter && params.filter.length) {
           params.filter = params.filter.flat(Infinity)
@@ -269,8 +304,10 @@ export default {
         const resource = this.params.options.resource || this.params.resource
         const total = this.params.options.resource && await this.getResourceTotal(resource)
         const params = this.genParams(values, total, true)
-        const keys = params.keys
-        delete params.keys
+        const export_keys = params.export_keys
+        const export_texts = params.export_texts
+        delete params.export_keys
+        delete params.export_texts
         let query = ''
         const paramKeys = Object.keys(params)
         const arrayParams = []
@@ -289,7 +326,8 @@ export default {
         await new this.$Manager('offline_exports').create({
           data: {
             query,
-            keys,
+            export_keys,
+            export_texts,
             service: this.params.options.service || 'meter',
             resource: this.params.options.resource || this.params.resource,
             description: this.params.options.offlineExportDescription || '',
@@ -560,11 +598,19 @@ export default {
       }
       XLSX.writeFile(wb, filename)
     },
+    iconClick (e) {
+      e.preventDefault()
+    },
   },
 }
 </script>
 
 <style lang="less" scoped>
+@import '../../../styles/less/theme.less';
+.tag-fields-wrap {
+  max-height: 100px;
+  overflow: auto;
+}
 .checkbox-item {
   ::v-deep {
     .ant-checkbox-wrapper {
@@ -579,6 +625,36 @@ export default {
           white-space: nowrap;
         }
       }
+    }
+    .drag-icon {
+      visibility: hidden;
+    }
+    .checkbox-property {
+      padding-right: 15px;
+    }
+  }
+  &:hover {
+    ::v-deep {
+      .drag-icon {
+        visibility: visible !important;;
+      }
+    }
+  }
+}
+.flip-list-move {
+  transition: transform 0.5s;
+}
+.drag-icon {
+  position: absolute;
+  right: 0;
+  cursor: move;
+}
+.ghost {
+  opacity: 0.7;
+  background: @primary-color;
+  ::v-deep {
+    label span {
+      color: #fff;
     }
   }
 }

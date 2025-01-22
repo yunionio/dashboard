@@ -60,6 +60,9 @@
       :tagFilterResource3="tagFilterResource3"
       :tagColumnsGenerator="tagColumnsGenerator"
       :tagColumns2Generator="tagColumns2Generator"
+      :tagColumnsExportKeyFormatter="tagColumnsExportKeyFormatter"
+      :tagColumns2ExportKeyFormatter="tagColumns2ExportKeyFormatter"
+      :tagColumns3ExportKeyFormatter="tagColumns3ExportKeyFormatter"
       :ignoreWithUserMetaParam="ignoreWithUserMetaParam"
       :ignoreWithUserMetaParam2="ignoreWithUserMetaParam2"
       :ignoreWithUserMetaParam3="ignoreWithUserMetaParam3"
@@ -123,6 +126,9 @@
         :enableVirtualScroll="enableVirtualScroll"
         :tagColumnsGenerator="tagColumnsGenerator"
         :tagColumns2Generator="tagColumns2Generator"
+        :tagColumnsExportKeyFormatter="tagColumnsExportKeyFormatter"
+        :tagColumns2ExportKeyFormatter="tagColumns2ExportKeyFormatter"
+        :tagColumns3ExportKeyFormatter="tagColumns3ExportKeyFormatter"
         @change-current-page="changeCurrentPage"
         @change-page-size="changePageSize"
         @do-sort="doSort"
@@ -201,6 +207,9 @@ export default {
     tagColumn2ParamsFormatter: Function,
     tagColumnsGenerator: Function,
     tagColumns2Generator: Function,
+    tagColumnsExportKeyFormatter: Function,
+    tagColumns2ExportKeyFormatter: Function,
+    tagColumns3ExportKeyFormatter: Function,
     // 是否显示搜索框
     showSearchbox: {
       type: Boolean,
