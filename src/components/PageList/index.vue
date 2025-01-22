@@ -55,6 +55,9 @@
       :tagFilterResource2="tagFilterResource2"
       :tagFilterResource3="tagFilterResource3"
       :tagColumns2Generator="tagColumns2Generator"
+      :tagColumnsExportKeyFormatter="tagColumnsExportKeyFormatter"
+      :tagColumns2ExportKeyFormatter="tagColumns2ExportKeyFormatter"
+      :tagColumns3ExportKeyFormatter="tagColumns3ExportKeyFormatter"
       :ignoreWithUserMetaParam="ignoreWithUserMetaParam"
       :ignoreWithUserMetaParam2="ignoreWithUserMetaParam2"
       :ignoreWithUserMetaParam3="ignoreWithUserMetaParam3"
@@ -112,6 +115,11 @@
         :edit-config="editConfig"
         :tableOverviewIndexs="tableOverviewIndexs"
         :enableVirtualScroll="enableVirtualScroll"
+        :tagColumnsGenerator="tagColumnsGenerator"
+        :tagColumns2Generator="tagColumns2Generator"
+        :tagColumnsExportKeyFormatter="tagColumnsExportKeyFormatter"
+        :tagColumns2ExportKeyFormatter="tagColumns2ExportKeyFormatter"
+        :tagColumns3ExportKeyFormatter="tagColumns3ExportKeyFormatter"
         @change-current-page="changeCurrentPage"
         @change-page-size="changePageSize"
         @do-sort="doSort"
@@ -184,6 +192,13 @@ export default {
     showTagColumns: Boolean,
     showTagColumns2: Boolean,
     showTagColumns3: Boolean,
+    tagColumn2Resource: String,
+    tagColumn2ParamsFormatter: Function,
+    tagColumnsGenerator: Function,
+    tagColumns2Generator: Function,
+    tagColumnsExportKeyFormatter: Function,
+    tagColumns2ExportKeyFormatter: Function,
+    tagColumns3ExportKeyFormatter: Function,
     // 是否显示搜索框
     showSearchbox: {
       type: Boolean,
