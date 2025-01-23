@@ -29,7 +29,24 @@
             </a-col>
             <a-col :span="10" v-if="isSupportIPv6">
               <a-form-item>
-                <a-checkbox v-decorator="decorators.require_ipv6">{{ $t('compute.server_create.require_ipv6') }}</a-checkbox>
+                <div class="d-flex">
+                  <a-checkbox v-model="hasIpv6" style="display:inline-block;min-width:200px" @change="requireIpv6Change">{{ $t('compute.server_create.require_ipv6') }}</a-checkbox>
+                  <template v-if="isSupportIPv6 && ipv6ConfigShow">
+                    <template v-if="ipv6InputShow">
+                      <div class="mb-0 ml-1" style="display:flex">
+                        <span class="mr-1">{{ getIpv6Prefix(form.fi.network?.guest_ip6_start) }}</span>
+                        <a-form-item class="mb-0" style="display:inline-block">
+                          <a-input
+                            style="width: 164px"
+                            :placeholder="$t('compute.complete_ipv6_address')"
+                            v-decorator="decorators.address6" />
+                        </a-form-item>
+                        <a-button type="link" class="mt-1" @click="triggerShowIpv6">{{$t('compute.text_135')}}</a-button>
+                      </div>
+                    </template>
+                    <a-button v-else type="link" class="mt-1" @click="triggerShowIpv6">{{$t('compute.ipv6_config')}}</a-button>
+                  </template>
+                </div>
               </a-form-item>
             </a-col>
           </a-row>
@@ -50,12 +67,14 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import ipaddr from 'ipaddr.js'
 import IpSelect from '@Compute/sections/ServerNetwork/IpSelect'
 import { validate, isWithinRange } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
 import expectStatus from '@/constants/expectStatus'
+import { getIpv6Start, ipv6ToHex } from '@Compute/utils/createServer'
 
 export default {
   name: 'VmChangeIpDialog',
@@ -82,6 +101,36 @@ export default {
       }
       return callback()
     }
+    const validateIpv6 = (rule, value, cb) => {
+      const networkData = this.form.fi.network
+      const ipv6First = getIpv6Start(networkData.guest_ip6_start)
+      try {
+        const ipv6 = ipv6First + value
+        const ipAddr = ipaddr.IPv6.parse(ipv6)
+        const subnet1Addr = ipaddr.IPv6.parse(networkData.guest_ip6_start)
+        const subnet2Addr = ipaddr.IPv6.parse(networkData.guest_ip6_end)
+
+        if (ipAddr.kind() !== 'ipv6') {
+          cb(new Error(this.$t('compute.error_ipv6')))
+        }
+        const target = ipv6ToHex(ipAddr)
+        const start = ipv6ToHex(subnet1Addr)
+        const end = ipv6ToHex(subnet2Addr)
+        // 检查IP是否在两个子网之间
+        if (!((target >= start && target <= end))) {
+          cb(new Error(this.$t('compute.ipv6_within_range')))
+        }
+        cb()
+      } catch (err) {
+        cb(new Error(this.$t('compute.error_ipv6')))
+      }
+    }
+    let hasIpv6 = false
+    let initIpv6Value = ''
+    if (this.params.data[0].ip6_addr) {
+      hasIpv6 = true
+      initIpv6Value = this.getIpv6Value(this.params.data[0].ip6_addr)
+    }
     return {
       loading: false,
       form: {
@@ -91,6 +140,7 @@ export default {
           ip: this.params.data[0].ip_addr,
         },
       },
+      hasIpv6,
       decorators: {
         network: [
           'network',
@@ -110,8 +160,22 @@ export default {
             ],
           },
         ],
-        require_ipv6: [
-          'require_ipv6',
+        address6: [
+          'address6',
+          {
+            initialValue: initIpv6Value,
+            validateFirst: true,
+            validateTrigger: ['blur', 'change'],
+            rules: [
+              {
+                required: true,
+                message: this.$t('compute.complete_ipv6_address'),
+              },
+              {
+                validator: validateIpv6,
+              },
+            ],
+          },
         ],
         restartNetwork: [
           'restartNetwork',
@@ -129,6 +193,8 @@ export default {
           span: 3,
         },
       },
+      ipv6ConfigShow: hasIpv6,
+      ipv6InputShow: hasIpv6,
     }
   },
   computed: {
@@ -163,21 +229,51 @@ export default {
     ipChange (e) {
       this.form.fi.ip = e
     },
+    requireIpv6Change (e) {
+      this.ipv6ConfigShow = e.target.checked
+    },
+    triggerShowIpv6 () {
+      this.ipv6InputShow = !this.ipv6InputShow
+    },
+    getIpv6Prefix (ipv6 = '') {
+      if (ipv6) {
+        const list = ipaddr.parse(ipv6).toNormalizedString().split(':')
+        return list.slice(0, 4).join(':') + ':'
+      }
+      return ''
+    },
+    getIpv6Value (ipv6 = '') {
+      if (ipv6) {
+        const list = ipaddr.parse(ipv6).toNormalizedString().split(':')
+        return list.slice(4, 8).join(':')
+      }
+      return ''
+    },
     async handleConfirm () {
       this.loading = true
       let manager = new this.$Manager('servers')
       const values = await this.form.fc.validateFields()
-      let netDesc = `${values.network}`
-      if (values.ip) {
-        netDesc += ':' + values.ip
+      const net_desc = {}
+      if (values.network) {
+        net_desc.network = values.network
       }
-      if (values.require_ipv6) {
-        netDesc += ':[ipv6]'
+      if (values.ip) {
+        net_desc.address = values.ip
+      }
+      if (this.hasIpv6) {
+        net_desc.require_ipv6 = true
+      }
+      const address6 = values.address6
+      if (address6) {
+        const ipv6Last = address6
+        const target = this.form.fi.network
+        const ipv6First = getIpv6Start(target?.guest_ip6_start)
+        net_desc.address6 = ipv6First + ipv6Last
       }
       try {
         const data = {
           ip_addr: this.params.data[0].ip_addr,
-          net_desc: netDesc,
+          net_desc,
           restart_network: values.restartNetwork,
         }
         await manager.performAction({

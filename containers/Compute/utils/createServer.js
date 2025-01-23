@@ -45,7 +45,7 @@ export function getIpv6Start (ipv6) {
   }
 }
 
-function ipv6ToHex (ipv6) {
+export function ipv6ToHex (ipv6) {
   return ipv6.parts.map(part => part.toString(16).padStart(4, '0')).join('')
 }
 
