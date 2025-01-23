@@ -151,6 +151,7 @@ import { WORKFLOW_TYPES } from '@/constants/workflow'
 import workflowMixin from '@/mixins/workflow'
 import WindowsMixin from '@/mixins/windows'
 import i18n from '@/locales'
+import { checkIpV6, getIpv6Start } from '@Compute/utils/createServer'
 import BottomBar from './BottomBar'
 
 function checkIpInSegment (i, networkData) {
@@ -231,6 +232,7 @@ export default {
         fi: {
           capability: {},
           imageMsg: {},
+          networkList: [],
           createType: 'baremetal',
         },
       },
@@ -386,10 +388,33 @@ export default {
                 validateTrigger: ['blur', 'change'],
                 rules: [{
                   required: true,
-                  message: i18n.t('compute.text_218'),
+                  message: this.$t('compute.text_218'),
                 }, {
                   validator: checkIpInSegment(i, networkData),
                 }],
+              },
+            ],
+            ips6: (i, networkData) => [
+              `networkIpsAddress6[${i}]`,
+              {
+                validateFirst: true,
+                validateTrigger: ['blur', 'change'],
+                rules: [
+                  {
+                    required: true,
+                    message: this.$t('compute.complete_ipv6_address'),
+                  },
+                  {
+                    validator: checkIpV6(i, networkData),
+                  },
+                ],
+              },
+            ],
+            ipv6s: (i, networkData) => [
+              `networkIPv6s[${i}]`,
+              {
+                validateFirst: true,
+                validateTrigger: ['blur', 'change'],
               },
             ],
           },
@@ -1193,6 +1218,15 @@ export default {
           }
           if (!R.isNil(values.networkIps) && !R.isEmpty(values.networkIps)) {
             option.address = values.networkIps[key]
+          }
+          if (values.networkIPv6s && values.networkIPv6s[key]) {
+            option.require_ipv6 = true
+          }
+          if (values.networkIpsAddress6 && values.networkIpsAddress6[key]) {
+            const ipv6Last = values.networkIpsAddress6[key]
+            const target = this.form.fi.networkList.filter(item => item.key === key)
+            const ipv6First = getIpv6Start(target[0]?.network?.guest_ip6_start)
+            option.address6 = ipv6First + ipv6Last
           }
           // 是否启用bonding
           if (this.isBonding) {
