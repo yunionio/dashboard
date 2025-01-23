@@ -670,13 +670,13 @@ export default {
       }
       return ret
     },
-    doTransfer (ids, values) {
+    async doTransfer (ids, values) {
       const data = {
         prefer_host: values.host,
         target_hypervisor: this.firstData.hypervisor,
       }
       if (this.isNetworkModeNew) {
-        data.networks = this.genNetworks(values)
+        data.networks = await this.genNetworks(values)
       }
       return this.params.onManager('batchPerformAction', {
         id: ids,
