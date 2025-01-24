@@ -2,7 +2,7 @@
   <div class="login-index-wrap flex-fill d-flex h-100 align-items-center" v-loading.fullscreen="!regionsLoading">
     <div class="login-index-left d-flex flex-fill align-items-center pl-4 pr-4 pt-4" :style="{backgroundImage: loginBg}">
       <div>
-        <h2 :style="{ color: getI18nColorVal(companyInfo, 'login_page_slogan') }">{{ getI18nVal(companyInfo, 'login_page_slogan') || $t('login.desc1') }}</h2>
+        <h2 :style="{ color: getI18nColorVal(companyInfo, 'login_page_slogan'), lineHeight: getI18nVal(companyInfo, 'login_page_slogan').includes('<br') ? '1.5em' : '1em' }" v-html="getI18nVal(companyInfo, 'login_page_slogan') || $t('login.desc1')" />
         <h4 :style="{ color: getI18nColorVal(companyInfo, 'login_page_sub_slogan') }">{{ getI18nVal(companyInfo, 'login_page_sub_slogan') || $t('login.desc2') }}</h4>
       </div>
     </div>
