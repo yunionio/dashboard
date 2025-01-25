@@ -1,11 +1,9 @@
 <template>
   <div>
     <a-tabs @change="handleTabChange">
-      <a-tab-pane key="basic" :tab="$t('compute.monitor.basic')">
-        <base-monitor :data="server" :constants="monitorConstants" monitorType="basic" :currentMonitorType="currentMonitorType" />
-      </a-tab-pane>
-      <a-tab-pane key="agent" :tab="$t('compute.monitor.agent')">
-        <div>
+      <a-tab-pane v-for="type in types" :key="type" :tab="$t(`compute.monitor.${type}`)">
+        <base-monitor v-if="type === 'basic'" :data="server" :constants="monitorConstants" monitorType="basic" :currentMonitorType="currentMonitorType" />
+        <div v-else>
           <install-agent-form-visible
             :data="server"
             :serverColumns="serverColumns"
@@ -22,6 +20,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import BaseMonitor from '@Compute/sections/monitor/BaseMonitor'
 import AgentMonitor from '@Compute/sections/monitor/AgentMonitor.vue'
 import { ONECLOUD_MONITOR, VMWARE_MONITOR, OTHER_MONITOR, SANGFOR_MONITOR } from '@Compute/views/vminstance/constants'
@@ -51,15 +50,29 @@ export default {
       type: Boolean,
       default: false,
     },
+    agentStatus: String,
   },
   data () {
+    let hasAgent = false
+    if (this.agentStatus === 'succeed') hasAgent = true
+    const row = this.data
+    const status = _.get(row, ['metadata', 'sys:monitor_agent']) || _.get(row, ['metadata', '__monitor_agent'])
+    const deploy = _.get(row, ['metadata', 'telegraf_deployed'])
+    if (row.hasOwnProperty('agent_status') || deploy) {
+      if (row.agent_status === 'succeed' || deploy) {
+        hasAgent = true
+      }
+    } else if (status) {
+      hasAgent = true
+    }
     return {
-      currentMonitorType: 'basic',
+      currentMonitorType: hasAgent ? 'agent' : 'basic',
       alertType: 'warning',
       time: '1h',
       timeGroup: '1m',
       monitorList: [],
       server: this.data,
+      types: hasAgent ? ['agent', 'basic'] : ['basic', 'agent'],
     }
   },
   computed: {

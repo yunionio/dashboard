@@ -243,15 +243,15 @@ export const ONECLOUD_MONITOR = [
     transfer: 1,
     metric: metricItems['vm_cpu.usage_active'].key, // 报警指标
   },
-  {
-    name: 'mem',
-    label: i18n.t('compute.text_518'),
-    seleteItem: 'used_percent',
-    fromItem: 'vm_mem',
-    unit: '%',
-    transfer: 1,
-    metric: metricItems['vm_mem.used_percent'].key,
-  },
+  // {
+  //   name: 'mem',
+  //   label: i18n.t('compute.text_518'),
+  //   seleteItem: 'used_percent',
+  //   fromItem: 'vm_mem',
+  //   unit: '%',
+  //   transfer: 1,
+  //   metric: metricItems['vm_mem.used_percent'].key,
+  // },
   // BASIC_DISK_USED_PERCENT,
   {
     name: 'netio',

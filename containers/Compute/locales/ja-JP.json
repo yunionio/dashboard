@@ -549,6 +549,7 @@
   "compute.text_541": "@:dictionary.schedtag",
   "compute.cpu_commit_bound": "最大 CPU オーバーブッキング率",
   "compute.memory_commit_bound": "最大メモリの売られ過ぎ率",
+  "compute.storage_commit_bound": "ストレージオーバーサelling比の上限",
   "compute.memory_reserve_gb": "システム メモリの予約 (GB)",
   "compute.memory_reserve_gb.placeholder": "システム予約メモリの量を入力してください",
   "compute.text_544": "デフォルトは 1、0.8、または 0.9 が推奨されます (ホスト システム サービス用に予約されています)。",
