@@ -20,6 +20,15 @@ const TAG_FILGER_KEYS = [
   'instance_tags',
 ]
 
+const mergeFilter = (params1, params2) => {
+  const filter1 = params1.filter ? (R.is(Array, params1.filter) ? params1.filter : [params1.filter]) : []
+  const filter2 = params2.filter ? (R.is(Array, params2.filter) ? params2.filter : [params2.filter]) : []
+  return {
+    ...params1,
+    filter: [...filter1, filter2],
+  }
+}
+
 const FULL_TAG_FILTER_KEYS = []
 TAG_FILGER_KEYS.map(key => FULL_TAG_FILTER_KEYS.push(`with_${key}`, `without_${key}`))
 
@@ -654,10 +663,7 @@ class CreateList {
       const p = this.genParamsCb(params)
       if (R.is(Object, p)) params = p
     }
-    params = {
-      ...params,
-      ...this.pinFilter,
-    }
+    params = mergeFilter({ ...params }, { ...this.pinFilter })
     return params
   }
 
@@ -923,18 +929,6 @@ class CreateList {
    *
    */
   savePinFilter () {
-    this.pinSavedFilters = {
-      filter: R.clone(this.filter),
-      tagFilter: R.clone(this.tagFilter),
-      tagFilter2: R.clone(this.tagFilter2),
-      tagFilter3: R.clone(this.tagFilter3),
-      projectTagFilter: R.clone(this.projectTagFilter),
-    }
-    this.filter = {}
-    this.tagFilter = {}
-    this.tagFilter2 = {}
-    this.tagFilter3 = {}
-    this.projectTagFilter = {}
     this.pinFilter = {
       filter: `${this.idKey}.in(${this.selected.map(id => `"${id}"`)})`,
     }
@@ -946,11 +940,6 @@ class CreateList {
    *
    */
   restorePinFilter () {
-    this.filter = this.pinSavedFilters.filter || {}
-    this.tagFilter = this.pinSavedFilters.tagFilter || {}
-    this.tagFilter2 = this.pinSavedFilters.tagFilter2 || {}
-    this.tagFilter3 = this.pinSavedFilters.tagFilter3 || {}
-    this.projectTagFilter = this.pinSavedFilters.projectTagFilter || {}
     this.pinFilter = {}
     this.reset(false)
     this.fetchData(0, 0)
