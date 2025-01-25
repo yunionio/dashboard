@@ -24,9 +24,7 @@ import { typeClouds, getDisabledProvidersActionMeta } from '@/utils/common/hyper
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
 import regexp from '@/utils/regexp'
-import { getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
-import { HOST_INFO_OPTS } from '../constants'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
@@ -124,7 +122,6 @@ export default {
         fetchDataCb: (res) => {
           const { totals = {} } = res.data
           this.$emit('resStatisticsChange', totals)
-          this.fetchUsedPercent(res.data.data)
         },
       }),
     }
@@ -519,40 +516,6 @@ export default {
   methods: {
     refresh () {
       this.list.fetchData()
-    },
-    async fetchUsedPercent (list = []) {
-      try {
-        const reqList = [HOST_INFO_OPTS[0], HOST_INFO_OPTS[1]].map(opt => {
-          return new this.$Manager('unifiedmonitors', 'v1')
-            .performAction({
-              id: 'query',
-              action: '',
-              data: this.genQueryData(opt, list),
-              params: { $t: getRequestT() },
-            })
-        })
-        const res = await Promise.all(reqList)
-        const data = {}
-        res.forEach((r, index) => {
-          const { series = [{}] } = (r.data || {})
-          series.forEach((serie, serIdx) => {
-            const { points = [], tags = {} } = serie
-            const { host_ip = '' } = tags
-            if (host_ip && points.length) {
-              const targets = list.filter(item => item.access_ip === host_ip)
-              if (targets.length) {
-                const id = targets[0].id
-                const percent = points.reduce((acc, cur) => acc + cur[0], 0) / points.length / 100
-                data[id] = data[id] || {}
-                data[id][index === 0 ? 'cpu_used_percent' : 'mem_used_percent'] = percent
-              }
-            }
-          })
-        })
-        this.list.updatesProperty(data)
-      } catch (err) {
-        console.error(err)
-      }
     },
     extraExportParams ({ currentExportType }) {
       if (currentExportType === 'all') return { baremetal: false }

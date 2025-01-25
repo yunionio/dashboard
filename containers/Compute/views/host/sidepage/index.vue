@@ -22,7 +22,6 @@
       :refresh="refresh"
       :getParams="getParams"
       :probeHostDevices="probeHostDevices"
-      :hostListMap="params.list.data"
       taskResource="compute-tasks"
       @tab-change="handleTabChange" />
   </base-side-page>

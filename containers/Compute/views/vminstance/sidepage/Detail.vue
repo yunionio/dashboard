@@ -607,7 +607,7 @@ export default {
       handler: function (val, oldval) {
         if (oldval === 'applying') {
           if (val === 'succeed' || val === 'failed') {
-            this.baseInfo[3] = getServerMonitorAgentInstallStatus()
+            this.baseInfo[6] = getServerMonitorAgentInstallStatus()
           }
         }
       },

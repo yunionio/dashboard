@@ -549,6 +549,7 @@
   "compute.text_541": "@:dictionary.schedtag",
   "compute.cpu_commit_bound": "CPU超售比上限",
   "compute.memory_commit_bound": "内存超售比上限",
+  "compute.storage_commit_bound": "存储超售比上限",
   "compute.memory_reserve_gb": "系统内存预留（GB）",
   "compute.memory_reserve_gb.placeholder": "请填写系统预留内存大小",
   "compute.text_544": "默认为1，推荐0.8或0.9（预留少许给宿主机系统服务）",
