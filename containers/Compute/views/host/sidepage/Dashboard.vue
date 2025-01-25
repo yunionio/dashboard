@@ -39,7 +39,7 @@ import RingCard from '@/sections/RingCard'
 import { sizestrWithUnit, getRequestT } from '@/utils/utils'
 import Top5 from '@/sections/Top5'
 import { getSignature } from '@/utils/crypto'
-import { GAUGEMSG, HOST_TOP5 } from '../constants'
+import { GAUGEMSG, HOST_TOP5, HOST_INFO_OPTS } from '../constants'
 import { getHostSpecInfo } from '../utils/index'
 
 export default {
@@ -57,10 +57,6 @@ export default {
     data: {
       type: Object,
       required: true,
-    },
-    hostListMap: {
-      type: Array,
-      default: () => ({}),
     },
   },
   data () {
@@ -191,10 +187,28 @@ export default {
     async fetchUsedPercent () {
       try {
         if (this.data.id && this.hostListMap[this.data.id]) {
-          const data = this.hostListMap[this.data.id]?.data
-          const { cpu_used_percent = 0, mem_used_percent = 0 } = data
-          const { storage_size, actual_storage_used = 0 } = getHostSpecInfo(data)
-          this.progressListPercent = [cpu_used_percent, mem_used_percent, actual_storage_used / storage_size]
+          const reqList = HOST_INFO_OPTS.map(opt => {
+            return new this.$Manager('unifiedmonitors', 'v1')
+              .performAction({
+                id: 'query',
+                action: '',
+                data: this.genQueryData(opt),
+                params: { $t: getRequestT() },
+              })
+          })
+          const res = await Promise.all(reqList)
+          const list = []
+          res.forEach((r, index) => {
+            const { series = [{}] } = (r.data || {})
+            const { points = [] } = (series[0] || {})
+            if (points.length) {
+              const percent = points.reduce((acc, cur) => acc + cur[0], 0) / points.length
+              list.push(percent / 100)
+            } else {
+              list.push(0)
+            }
+          })
+          this.progressListPercent = list
         }
       } catch (err) {
         console.error(err)

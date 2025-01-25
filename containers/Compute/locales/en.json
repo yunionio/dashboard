@@ -546,6 +546,7 @@
   "compute.text_541": "Scheduler Tag",
   "compute.cpu_commit_bound": "CPU commit bound",
   "compute.memory_commit_bound": "Memory commit bound",
+  "compute.storage_commit_bound": "Storage commit bound",
   "compute.memory_reserve_gb": "Memory reserved for OS (GB)",
   "compute.memory_reserve_gb.placeholder": "Please fill in the size of memory reserved for OS",
   "compute.text_544": "The default is 1, 0.8 or 0.9 recommended (reserve a little for host OS)",
