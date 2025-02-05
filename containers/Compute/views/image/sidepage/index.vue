@@ -24,7 +24,7 @@
       :resource="resource"
       :on-manager="onManager"
       :columns="columns"
-      taskResource="compute-tasks"
+      taskResource="image-tasks"
       @refresh="refresh" />
   </base-side-page>
 </template>

@@ -19,7 +19,7 @@ import {
   getTimeTableColumn,
   getProjectTableColumn,
   getStatusTableColumn,
-  getObjnameTableColumn,
+  getTaskObjnameTableColumn,
   getTaskNameTableColumn,
   // getSubtaskCountTableColumn,
 } from '@/utils/common/tableColumn'
@@ -116,7 +116,7 @@ export default {
           field: 'stage',
           statusModule: 'parentTaskStage',
         }),
-        getObjnameTableColumn(),
+        getTaskObjnameTableColumn(),
         getTaskNameTableColumn(),
         // getSubtaskCountTableColumn(),
         getProjectTableColumn({

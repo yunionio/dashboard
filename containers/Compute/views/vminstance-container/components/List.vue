@@ -329,6 +329,33 @@ export default {
                   return ret
                 },
               },
+              // 推送配置
+              {
+                label: this.$t('compute.sync_config'),
+                permission: 'server_perform_sync_config',
+                action: () => {
+                  this.createDialog('VmSyncConfigDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: true,
+                    tooltip: null,
+                  }
+                  const isAllRunningReady = this.list.selectedItems.every(item => (item.status === 'running' || item.status === 'ready'))
+                  if (!isAllRunningReady) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('compute.text_1126')
+                    return ret
+                  }
+                  ret.validate = true
+                  return ret
+                },
+                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_sync_config'),
+              },
               // 设置删除保护
               disableDeleteAction(Object.assign(this, {}), {
                 name: this.$t('compute.vminstance-container'),

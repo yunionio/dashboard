@@ -92,6 +92,15 @@ export default {
           return `access_ip.contains("${val}")`
         },
       },
+      host_type: {
+        label: this.$t('compute.host.host_type.title'),
+        dropdown: true,
+        multiple: true,
+        distinctField: {
+          type: 'field',
+          key: 'host_type',
+        },
+      },
       region: {
         label: this.$t('compute.text_177'),
       },

@@ -1317,7 +1317,7 @@ export const getCloudEnvTableColumn = ({ field = 'cloud_env', title = i18n.t('co
   }
 }
 
-export const getObjnameTableColumn = () => {
+export const getTaskObjnameTableColumn = () => {
   return {
     title: i18n.t('table.title.res_name'),
     field: 'object',
@@ -1335,8 +1335,32 @@ export const getObjnameTableColumn = () => {
             return i18n.t('task.stages.title.multi_objects')
           } else {
             return [
-              <list-body-cell-wrap copy hideField={true} field='obj_id' row={row} message={objName}>
+              <list-body-cell-wrap copy hideField={true} field='object' row={row} message={objName}>
                 {objName}
+              </list-body-cell-wrap>,
+            ]
+          }
+        }
+        return '-'
+      },
+    },
+  }
+}
+
+export const getTaskObjIdTableColumn = () => {
+  return {
+    title: i18n.t('table.title.res_id'),
+    field: 'obj_id',
+    showOverflow: 'ellipsis',
+    slots: {
+      default: ({ row }, h) => {
+        if (row.obj_id) {
+          if (row.obj_id === '[--MULTI_OBJECTS--]') {
+            return i18n.t('task.stages.title.multi_objects')
+          } else {
+            return [
+              <list-body-cell-wrap copy hideField={true} field='obj_id' row={row} message={row.obj_id}>
+                {row.obj_id}
               </list-body-cell-wrap>,
             ]
           }

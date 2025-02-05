@@ -79,6 +79,7 @@ export const metricItems = {
   'pod_diskio.write_Bps': { key: 'pod_diskio.write_Bps', label: i18n.t('compute.container.monitor.pod_diskio_write_Bps'), unit: 'Bps' },
   'pod_process.process_count': { key: 'pod_process.process_count', label: i18n.t('compute.container.monitor.pod_process_process_count'), unit: 'count' },
   'pod_process.fd_count': { key: 'pod_process.fd_count', label: i18n.t('compute.container.monitor.pod_process_fd_count'), unit: 'count' },
+  'pod_gpu.mem_util': { key: 'pod_gpu.mem_util', label: i18n.t('compute.container.monitor.pod_gpu_mem_util'), unit: '%' },
 }
 
 export const TIME_CN = {

@@ -52,6 +52,7 @@
   "compute.container.monitor.pod_volume_inodes_used_percent": "データボリュームの i ノード使用量",
   "compute.container.monitor.pod_process_process_count": "プロセス数",
   "compute.container.monitor.pod_process_fd_count": "ファイルハンドルの数",
+  "compute.container.monitor.pod_gpu_mem_util": "GPUメモリ使用量",
   "compute.container.monitor.pod_diskio_read_Bps": "データ量の読み取りスループット率",
   "compute.container.monitor.pod_diskio_write_Bps": "データボリュームの書き込みスループットレート",
   "compute.container.monitor.pod_netio_bps_recv": "1秒当たりの許容バイト数",

@@ -2932,6 +2932,7 @@
       "sub_backup": "ハードディスクのバックアップ",
       "bind_disk_count": "関連付けられているハード ディスクの数",
       "res_name": "リソース名",
+      "res_id": "リソースID",
       "action_result": "結果",
       "owner_project": "@:dictionary.project に所属",
       "owner_domain": "所属域",

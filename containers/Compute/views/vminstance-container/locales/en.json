@@ -52,6 +52,7 @@
   "compute.container.monitor.pod_volume_inodes_used_percent": "Data volume inode utilization rate",
   "compute.container.monitor.pod_process_process_count": "Process count",
   "compute.container.monitor.pod_process_fd_count": "File handler count",
+  "compute.container.monitor.pod_gpu_mem_util": "GPU Memory Utilization",
   "compute.container.monitor.pod_diskio_read_Bps": "Data volume read throughput",
   "compute.container.monitor.pod_diskio_write_Bps": "Data volume write throughput",
   "compute.container.monitor.pod_netio_bps_recv": "Accepting bytes per second",
