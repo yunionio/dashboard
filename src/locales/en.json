@@ -2915,6 +2915,7 @@
       "sub_backup": "Disk Backup",
       "bind_disk_count": "Associated Disk Count",
       "res_name": "Resource Name",
+      "res_id": "Resource ID",
       "action_result": "Result",
       "owner_project": "Owner Project",
       "owner_domain": "Owner Domain",

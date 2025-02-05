@@ -2931,6 +2931,7 @@
       "sub_backup": "硬盘备份",
       "bind_disk_count": "关联硬盘数量",
       "res_name": "资源名称",
+      "res_id": "资源ID",
       "action_result": "结果",
       "owner_project": "所属@:dictionary.project",
       "owner_domain": "所属@:dictionary.domain",

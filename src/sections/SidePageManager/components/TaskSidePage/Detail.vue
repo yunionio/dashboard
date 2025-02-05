@@ -13,7 +13,8 @@
 import WindowsMixin from '@/mixins/windows'
 import {
   getStatusTableColumn,
-  getObjnameTableColumn,
+  getTaskObjnameTableColumn,
+  getTaskObjIdTableColumn,
   getTaskNameTableColumn,
   getSubtaskCountTableColumn,
 } from '@/utils/common/tableColumn'
@@ -52,7 +53,8 @@ export default {
           field: 'stage',
           statusModule: 'parentTaskStage',
         }),
-        getObjnameTableColumn(),
+        getTaskObjnameTableColumn(),
+        getTaskObjIdTableColumn(),
         getTaskNameTableColumn(),
         getSubtaskCountTableColumn(),
       ],

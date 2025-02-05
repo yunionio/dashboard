@@ -52,6 +52,7 @@
   "compute.container.monitor.pod_volume_inodes_used_percent": "数据卷inode使用率",
   "compute.container.monitor.pod_process_process_count": "进程数",
   "compute.container.monitor.pod_process_fd_count": "文件句柄数",
+  "compute.container.monitor.pod_gpu_mem_util": "GPU显存占用率",
   "compute.container.monitor.pod_diskio_read_Bps": "数据卷读吞吐率",
   "compute.container.monitor.pod_diskio_write_Bps": "数据卷写吞吐率",
   "compute.container.monitor.pod_netio_bps_recv": "每秒接受字节数",

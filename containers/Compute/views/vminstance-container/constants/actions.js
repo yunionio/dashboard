@@ -100,6 +100,32 @@ const getSingleActions = function () {
               }
             },
           },
+          // 推送配置
+          {
+            label: i18n.t('compute.sync_config'),
+            permission: 'server_perform_sync_config',
+            action: () => {
+              this.createDialog('VmSyncConfigDialog', {
+                data: [obj],
+                columns: this.columns,
+                onManager: this.onManager,
+              })
+            },
+            meta: () => {
+              const ret = {
+                validate: false,
+                tooltip: null,
+              }
+              if (obj.status !== 'running' && obj.status !== 'ready') {
+                ret.validate = false
+                ret.tooltip = i18n.t('compute.text_1126')
+                return ret
+              }
+              ret.validate = true
+              return ret
+            },
+            hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_sync_config'),
+          },
           // 更改项目
           {
             label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
