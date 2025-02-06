@@ -197,8 +197,7 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode', 'userInfo', 'scope', 'logo', 'permission', 'scopeResource', 'setting']),
     ...mapState('app', {
-      alertresource: state => state.alertresource,
-      alertrecords: state => state.alertrecords,
+      alertresource: state => state.alertrecords,
     }),
     username () {
       return this.userInfo.displayname || this.userInfo.name || 'OneCloud'
@@ -255,10 +254,6 @@ export default {
       return this.setting.language
     },
     showAlertresource () {
-      if (this.alertrecords && this.alertrecords.total > 0) {
-        return true
-      }
-
       if (this.isAdminMode) {
         if (this.alertresource) {
           return this.alertresource.total > 0
@@ -419,10 +414,10 @@ export default {
       }, 5 * 60 * 1000)
 
       if (this.isAdminMode && this.$store._actions['app/fetchAlertresource']) {
-        this.$store.dispatch('app/fetchAlertresource')
-        setInterval(() => {
-          this.$store.dispatch('app/fetchAlertresource')
-        }, 5 * 60 * 1000)
+        // this.$store.dispatch('app/fetchAlertresource')
+        // setInterval(() => {
+        //   this.$store.dispatch('app/fetchAlertresource')
+        // }, 5 * 60 * 1000)
       } else {
         this.$store.commit('app/SET_ALERTRESOURCE', {
           data: [],
