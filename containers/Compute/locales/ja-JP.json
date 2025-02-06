@@ -1877,5 +1877,9 @@
   "compute.complete_ipv6_address": "IPv6アドレスを補完してください。",
   "compute.ipv6_config": "IPv6を手動で設定",
   "compute.error_ipv6": "IPv6アドレスが不正です",
-  "compute.ipv6_within_range": "IPv6アドレスは選択したアドレス範囲内に保持する必要があります。"
+  "compute.ipv6_within_range": "IPv6アドレスは選択したアドレス範囲内に保持する必要があります。",
+  "compute.aliyun_disk_cloud_auto": "ESSD AutoPL disk",
+  "compute.cloud_regional_disk_auto": "Regional ESSD",
+  "compute.elastic_ephemeral_disk_standard": "standard elastic ephemeral disk",
+  "compute.elastic_ephemeral_disk_premium": "premium elastic ephemeral disk"
 }
