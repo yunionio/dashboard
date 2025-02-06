@@ -428,6 +428,15 @@ export const STORAGE_TYPES = {
       sysMin: 20, // 系统盘取值范围【G】
       sysMax: 500, // 系统盘取值范围【G】
     },
+    cloud_efficiency: {
+      label: i18n.t('compute.text_57'),
+      value: 'cloud_efficiency',
+      min: 20,
+      max: 32768,
+      default: true,
+      sysMin: 20,
+      sysMax: 500,
+    },
     cloud_ssd: {
       label: i18n.t('compute.text_53'),
       value: 'cloud_ssd',
@@ -443,6 +452,14 @@ export const STORAGE_TYPES = {
       max: 32768,
       sysMin: 20,
       sysMax: 500,
+    },
+    cloud_auto: {
+      label: i18n.t('compute.aliyun_disk_cloud_auto'),
+      value: 'cloud_auto',
+      min: 1,
+      max: 65536,
+      sysMin: 10,
+      sysMax: 2048,
     },
     cloud_essd_pl2: {
       label: i18n.t('compute.text_55'),
@@ -468,15 +485,6 @@ export const STORAGE_TYPES = {
       sysMin: 10,
       sysMax: 2048,
     },
-    cloud_efficiency: {
-      label: i18n.t('compute.text_57'),
-      value: 'cloud_efficiency',
-      min: 20,
-      max: 32768,
-      default: true,
-      sysMin: 20,
-      sysMax: 500,
-    },
     ephemeral_ssd: {
       label: i18n.t('compute.text_58'),
       value: 'ephemeral_ssd',
@@ -484,6 +492,30 @@ export const STORAGE_TYPES = {
       max: 800,
       sysMin: 20,
       sysMax: 500,
+    },
+    cloud_regional_disk_auto: {
+      label: i18n.t('compute.cloud_regional_disk_auto'),
+      value: 'cloud_regional_disk_auto',
+      min: 10,
+      max: 65536,
+      sysMin: 20,
+      sysMax: 2048,
+    },
+    elastic_ephemeral_disk_standard: {
+      label: i18n.t('compute.elastic_ephemeral_disk_standard'),
+      value: 'elastic_ephemeral_disk_standard',
+      min: 64,
+      max: 8192,
+      sysMin: 20,
+      sysMax: 2048,
+    },
+    elastic_ephemeral_disk_premium: {
+      label: i18n.t('compute.elastic_ephemeral_disk_premium'),
+      value: 'elastic_ephemeral_disk_premium',
+      min: 64,
+      max: 8192,
+      sysMin: 20,
+      sysMax: 2048,
     },
   },
   aws: {
