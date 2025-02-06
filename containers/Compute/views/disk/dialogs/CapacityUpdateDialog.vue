@@ -7,7 +7,7 @@
           <div>
             <p>{{$t('compute.text_403')}}</p>
             <p>{{$t('compute.text_404')}}</p>
-            <p v-show="params.data[0].provider === 'Aliyun'">{{$t('compute.text_405')}}</p>
+            <!-- <p v-show="params.data[0].provider === 'Aliyun'">{{$t('compute.text_405')}}</p> -->
             <p v-show="params.data[0].provider === 'Aws'">{{$t('compute.text_406')}}</p>
             <p v-show="!params.data[0].provider">{{$t('compute.text_407')}}</p>
           </div>

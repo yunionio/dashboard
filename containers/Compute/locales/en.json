@@ -1857,5 +1857,9 @@
   "compute.complete_ipv6_address": "Please complete the IPv6 address.",
   "compute.ipv6_config": "Manually configure IPv6",
   "compute.error_ipv6": "IPv6 address is incorrect",
-  "compute.ipv6_within_range": "The IPv6 address must remain within the selected address range."
+  "compute.ipv6_within_range": "The IPv6 address must remain within the selected address range.",
+  "compute.aliyun_disk_cloud_auto": "ESSD AutoPL disk",
+  "compute.cloud_regional_disk_auto": "Regional ESSD",
+  "compute.elastic_ephemeral_disk_standard": "standard elastic ephemeral disk",
+  "compute.elastic_ephemeral_disk_premium": "premium elastic ephemeral disk"
 }
