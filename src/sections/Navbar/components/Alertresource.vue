@@ -1,9 +1,12 @@
 <template>
   <div class="position-relative">
     <div class="trigger d-flex align-items-center justify-content-center" @click="toggle">
-      <a-badge :count="total" :overflowCount="99">
+      <a-badge v-if="total" :count="total" :overflowCount="99">
         <icon type="res-commonalert" class="alertresource-icon" />
       </a-badge>
+      <a-tooltip v-else :title="$t('common.resource_alert')" placement="right">
+        <icon type="res-commonalert" class="alertresource-icon" />
+      </a-tooltip>
     </div>
     <a-alert type="info" v-if="visible" class="alertresource-error">
       <div slot="message" v-if="total > 0">

@@ -6135,5 +6135,6 @@
   "common.platform_overview": "平台总览",
   "common.task.stage.label.in_progress": "执行中",
   "common.task.stage.label.complete": "已完成",
-  "common.server_security": "主机安全"
+  "common.server_security": "主机安全",
+  "common.resource_alert": "资源告警"
 }
