@@ -114,10 +114,10 @@ const LicenseItems = [
     key: 'openstack',
     meta: meta('resource_managent', 'private', true),
   },
-  {
-    key: 'dstack',
-    meta: meta('resource_managent', 'private', true),
-  },
+  // {
+  //   key: 'dstack',
+  //   meta: meta('resource_managent', 'private', true),
+  // },
   {
     key: 'zstack',
     meta: meta('resource_managent', 'private', true),
