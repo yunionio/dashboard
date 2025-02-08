@@ -547,6 +547,7 @@ export default {
           params: {
             server_type: 'ipmi',
             ip: val,
+            scope: this.$store.getters.scope,
           },
         })
     },
