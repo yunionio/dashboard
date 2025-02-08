@@ -6131,5 +6131,6 @@
   "common.platform_overview": "プラットフォームの概要",
   "common.task.stage.label.in_progress": "進行中",
   "common.task.stage.label.complete": "完了",
-  "common.server_security": "ホストセキュリティ"
+  "common.server_security": "ホストセキュリティ",
+  "common.resource_alert": "リソースアラート"
 }

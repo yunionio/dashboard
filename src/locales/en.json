@@ -6113,5 +6113,6 @@
   "common.platform_overview": "Platform Overview",
   "common.task.stage.label.in_progress": "In progress",
   "common.task.stage.label.complete": "Completed",
-  "common.server_security": "Server Security"
+  "common.server_security": "Server Security",
+  "common.resource_alert": "Resource Alert"
 }
