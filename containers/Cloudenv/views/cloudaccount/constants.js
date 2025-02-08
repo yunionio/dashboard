@@ -11,7 +11,7 @@ const qcloudLogo = require('@/assets/images/providers/qcloud.svg')
 const ucloudLogo = require('@/assets/images/providers/ucloud.svg')
 const vmwareLogo = require('@/assets/images/providers/vmware.svg')
 const openstackLogo = require('@/assets/images/providers/openstack.svg')
-const dstackLogo = require('@/assets/images/providers/dstack.svg')
+// const dstackLogo = require('@/assets/images/providers/dstack.svg')
 const zstackLogo = require('@/assets/images/providers/zstack.svg')
 const s3Logo = require('@/assets/images/providers/s3.svg')
 const cephLogo = require('@/assets/images/providers/ceph.svg')
@@ -163,12 +163,12 @@ export const CLOUDACCOUNT_TYPES = {
       component: 'OpenstackCreate',
       provider: providerMap.openstack.key,
     },
-    dstack: {
-      name: providerMap.dstack.label,
-      logo: dstackLogo,
-      component: 'DstackCreate',
-      provider: providerMap.dstack.key,
-    },
+    // dstack: {
+    //   name: providerMap.dstack.label,
+    //   logo: dstackLogo,
+    //   component: 'DstackCreate',
+    //   provider: providerMap.dstack.key,
+    // },
     zstack: {
       name: providerMap.zstack.label,
       logo: zstackLogo,
@@ -803,7 +803,7 @@ export const notSupportSelectRegion = [
   providerMap.xsky.key,
   providerMap.bingocloud.key,
   providerMap.openstack.key,
-  providerMap.dstack.key,
+  // providerMap.dstack.key,
   providerMap.zstack.key,
   providerMap.apsara.key,
   providerMap.cloudpods.key,
