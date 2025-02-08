@@ -4,7 +4,7 @@
       <div class="trigger d-flex align-items-center justify-content-center">
         <span v-if="notifyMenuTitleUsedText">{{$t('navbar.button.system_messages')}}</span>
         <a-tooltip :title="$t('navbar.button.system_messages')" placement="right" v-else>
-          <icon type="navbar-notify" style="font-size: 22px;" />
+          <a-icon type="mail" style="font-size: 18px;" />
         </a-tooltip>
       </div>
       <template v-slot:content>

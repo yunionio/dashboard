@@ -2,12 +2,13 @@
   <a-row v-loading="loading">
     <a-col :span="{ span: 24 }" class="mb-5">
       <alert-form
-        v-if="!isUpdate || (loaded && !loading)"
+        v-if="!commonalertId || (loaded && !loading)"
         ref="alertFormRef"
         :alertData="alertData"
         :threshold.sync="threshold"
         :timeRangeParams="timeRangeParams"
         :isUpdate="isUpdate"
+        :commonalertId="commonalertId"
         @scopeChange="scopeChange" />
     </a-col>
   </a-row>
@@ -125,7 +126,7 @@ export default {
     },
   },
   created () {
-    if (this.isUpdate) {
+    if (this.commonalertId) {
       this.fetchCommonalert().then((res) => {
         if (this.alertData && this.alertData.common_alert_metric_details && this.alertData.common_alert_metric_details.length > 0) {
           const desc = this.alertData.common_alert_metric_details[0].field_description

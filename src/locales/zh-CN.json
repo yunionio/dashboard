@@ -2993,6 +2993,7 @@
     "cancel": "取消",
     "skip": "跳过",
     "copy": "已复制",
+    "clone": "克隆",
     "copyError": "复制失败",
     "name": "名称",
     "region": "区域",
