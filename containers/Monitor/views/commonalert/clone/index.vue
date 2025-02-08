@@ -1,8 +1,8 @@
 <template>
   <div>
-    <page-header :title="$t('monitor.action.update', [$t('dictionary.commonalert')])" />
+    <page-header :title="$t('monitor.action.clone', [$t('dictionary.commonalert')])" />
     <page-body needMarginBottom>
-      <alert ref="alertRef" :isUpdate="true" :commonalertId="$route.params.id" :loading.sync="loading" />
+      <alert ref="alertRef" :commonalertId="$route.params.id" :loading.sync="loading" />
     </page-body>
     <page-footer>
       <div slot="right">
@@ -17,7 +17,7 @@
 import Alert from '../components/new-alert'
 
 export default {
-  name: 'CommonalertUpdate',
+  name: 'CommonalertClone',
   components: {
     Alert,
   },
@@ -30,11 +30,11 @@ export default {
     handleConfirm () {
       this.$refs.alertRef.submit()
     },
-    reset () {
-      this.$refs.alertRef.reset()
-    },
     cancel () {
       this.$refs.alertRef.cancel()
+    },
+    reset () {
+      this.$refs.alertRef.reset()
     },
   },
 }

@@ -2908,6 +2908,7 @@
     "cancel": "Cancel",
     "skip": "Skip",
     "copy": "Copied",
+    "clone": "Clone",
     "copyError": "Copy failed",
     "name": "Name",
     "region": "Region",
