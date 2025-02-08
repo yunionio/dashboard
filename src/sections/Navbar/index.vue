@@ -397,9 +397,7 @@ export default {
     },
     showAlertresource () {
       if (this.isAdminMode && this.$appConfig.isPrivate) {
-        if (this.alertresource) {
-          return this.alertresource.total > 0
-        }
+        return true
       }
       return false
     },
