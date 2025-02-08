@@ -6012,5 +6012,6 @@
   "common.prev_one": "上一条",
   "common.next_one": "下一条",
   "common.shopcart_workflow_name": "{0}于 {1} 发起的批量资源创建申请-{2}",
-  "common.platform_overview": "平台总览"
+  "common.platform_overview": "平台总览",
+  "common.resource_alert": "资源告警"
 }
