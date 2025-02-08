@@ -20,6 +20,7 @@ export default {
           alertinng: true,
           send_state: 'ok',
           level: 'fatal',
+          limit: 1,
           scope: getScopeFromCookie() || 'project',
           ...payload,
           ignoreErrorStatusCode: [403],

@@ -39,12 +39,12 @@
           <threshold-input v-decorator="decorators.threshold(item.key)" :unit="unitMap[item.key]" :disabled="disabled" />
         </a-form-item>
       </a-col>
-      <a-button shape="circle" icon="minus" size="small" @click="del(item)" class="mt-2 ml-2" />
+      <a-button shape="circle" icon="minus" size="small" @click="del(item)" class="mt-2 ml-2" :disabled="disabled" />
     </a-row>
     <a-row :span="2">
       <div class="d-flex align-items-center">
-        <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
-        <a-button type="link" @click="add">{{$t('monitor.commonalert.add_condition')}}</a-button>
+        <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" :disabled="disabled" />
+        <a-button type="link" @click="add" :disabled="disabled">{{$t('monitor.commonalert.add_condition')}}</a-button>
       </div>
     </a-row>
   </div>

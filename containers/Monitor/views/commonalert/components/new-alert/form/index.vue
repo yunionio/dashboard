@@ -13,6 +13,7 @@
         v-decorator="decorators.metric_res_type"
         :options="metricTypeOpts"
         filterable
+        :disabled="disabled"
         :select-props="{ placeholder: $t('monitor.text_111'), loading }"
         @change="metricTypeHandle" />
     </a-form-item>
@@ -103,7 +104,7 @@
         :select-props="{ mode: 'multiple', placeholder: $t('common.tips.select', [$t('monitor.recipient')]) }"
         :params="contactParams" />
     </a-form-item>
-    <a-form-item v-if="notifyTypes.includes('recipient')" :label="$t('monitor.channel')">
+    <a-form-item v-if="notifyTypes.includes('recipient') && contactArrOpts && contactArrOpts.length > 0" :label="$t('monitor.channel')">
       <a-checkbox-group
         v-decorator="decorators.channel">
         <a-checkbox
@@ -184,7 +185,13 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    isUpdate: Boolean,
+    commonalertId: {
+      type: String,
+    },
+    isUpdate: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     let tags = []
@@ -201,7 +208,7 @@ export default {
       channel: ['webconsole'],
       notifyTypes: [],
     }
-    if (R.is(Object, this.alertData)) {
+    if (this.commonalertId) {
       initialValue.name = this.alertData.name
       initialValue.period = this.alertData.period
       initialValue.level = this.alertData.level
@@ -524,7 +531,7 @@ export default {
   computed: {
     ...mapGetters(['isDomainMode', 'scope']),
     disabled () {
-      return this.$route.query.alertType === 'system'
+      return this.$route.query.alertType === 'system' && this.isUpdate
     },
     showResType () {
       if (this.alertData && this.alertData.alert_type === 'system') {
@@ -601,7 +608,7 @@ export default {
     this.initContactParams(this.contactParams)
   },
   mounted () {
-    if (this.isUpdate) {
+    if (this.commonalertId) {
       this.initResType()
     } else {
       this.$refs.conditionRef.add()
@@ -681,7 +688,7 @@ export default {
         if (R.is(Object, this.alertData)) {
           this.toParams()
         }
-        if (this.isUpdate) {
+        if (this.commonalertId) {
           this.initCondition()
           this.initFilter()
         }
