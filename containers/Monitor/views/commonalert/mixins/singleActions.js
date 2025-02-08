@@ -20,6 +20,18 @@ export default {
         actions: row => [
           ...getEnabledSwitchActions(this, row, ['commonalerts_perform_enable', 'commonalerts_perform_disable']),
           {
+            label: this.$t('common.clone'),
+            permission: 'commonalerts_create,commonalerts_create',
+            action: obj => {
+              this.$router.push({
+                path: `commonalerts/${obj.id}/clone`,
+                query: {
+                  alertType: obj.alert_type,
+                },
+              })
+            },
+          },
+          {
             label: this.$t('common.delete'),
             permission: 'commonalerts_delete',
             action: (obj) => {

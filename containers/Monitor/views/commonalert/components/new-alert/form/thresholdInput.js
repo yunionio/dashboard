@@ -127,8 +127,10 @@ export default {
             })
           }
         </a-select>
-      } else {
+      } else if (unit !== 'NULL') {
         return <span slot="addonAfter">{unit}</span>
+      } else {
+        return ''
       }
     },
   },
