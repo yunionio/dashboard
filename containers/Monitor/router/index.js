@@ -8,6 +8,7 @@ const Overview = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefet
 const CommonalertsIndex = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/commonalert')
 const commonalertsCreate = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/commonalert/create')
 const commonalertsUpdate = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/commonalert/update')
+const commonalertsClone = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/commonalert/clone')
 const MonitorresourcesIndex = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/monitorresource')
 const AlertresourceIndex = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/alertresource')
 const AlertrecordIndex = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/alertrecord')
@@ -207,6 +208,11 @@ export default {
               name: 'CommonalertUpdate',
               path: ':id/update',
               component: commonalertsUpdate,
+            },
+            {
+              name: 'CommonalertClone',
+              path: ':id/clone',
+              component: commonalertsClone,
             },
           ],
         },
