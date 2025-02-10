@@ -716,6 +716,7 @@ export const getTimeTableColumn = ({
   minWidth = 180,
   vm = {},
   hidden,
+  format,
 } = {}) => {
   return {
     field,
@@ -734,7 +735,7 @@ export const getTimeTableColumn = ({
           ]
         }
         return [
-          <a-tooltip class="ml-1" title={moment(row[field]).fromNow()}>{moment(row[field]).format()}</a-tooltip>,
+          <a-tooltip class="ml-1" title={moment(row[field]).fromNow()}>{moment(row[field]).format(format)}</a-tooltip>,
         ]
       },
     },
@@ -742,10 +743,11 @@ export const getTimeTableColumn = ({
       if (!row[field]) {
         return '-'
       }
+      const m = moment(row[field])
       if (fromNow) {
-        return moment(row[field]).fromNow()
+        return m.fromNow()
       }
-      return moment(row[field]).format()
+      return m.format(format)
     },
     hidden: () => {
       return R.is(Function, hidden) ? hidden() : hidden
