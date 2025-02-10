@@ -929,6 +929,18 @@ class CreateList {
    *
    */
   savePinFilter () {
+    this.pinSavedFilters = {
+      filter: R.clone(this.filter),
+      tagFilter: R.clone(this.tagFilter),
+      tagFilter2: R.clone(this.tagFilter2),
+      tagFilter3: R.clone(this.tagFilter3),
+      projectTagFilter: R.clone(this.projectTagFilter),
+    }
+    this.filter = {}
+    this.tagFilter = {}
+    this.tagFilter2 = {}
+    this.tagFilter3 = {}
+    this.projectTagFilter = {}
     this.pinFilter = {
       filter: `${this.idKey}.in(${this.selected.map(id => `"${id}"`)})`,
     }
@@ -940,6 +952,11 @@ class CreateList {
    *
    */
   restorePinFilter () {
+    this.filter = this.pinSavedFilters.filter || {}
+    this.tagFilter = this.pinSavedFilters.tagFilter || {}
+    this.tagFilter2 = this.pinSavedFilters.tagFilter2 || {}
+    this.tagFilter3 = this.pinSavedFilters.tagFilter3 || {}
+    this.projectTagFilter = this.pinSavedFilters.projectTagFilter || {}
     this.pinFilter = {}
     this.reset(false)
     this.fetchData(0, 0)
