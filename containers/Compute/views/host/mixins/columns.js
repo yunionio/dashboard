@@ -225,13 +225,13 @@ export default {
         slots: {
           default: ({ row }) => {
             const { mem_size, mem_used } = getHostSpecInfo(row)
-            const title = `${this.$t('common_407')}: ${sizestr(mem_used, 'M', 1024)}\n${this.$t('compute.actual_total')}: ${sizestr(mem_size, 'M', 1024)}`
+            const title = `${this.$t('common_407')}: ${sizestr(mem_used, 'M', 1024)}\n${this.$t('common_234')}: ${sizestr(mem_size, 'M', 1024)}`
             return [<UsedPercent title={title} used={mem_used} total={mem_size} usedFormatter={(val) => sizestr(val, 'M', 1024)} totalFormatter={(val) => sizestr(val, 'M', 1024)} />]
           },
         },
         formatter: ({ row }) => {
           const { mem_size, mem_used } = getHostSpecInfo(row)
-          const title = `${this.$t('common_407')}: ${sizestr(mem_used, 'M', 1024)}, ${this.$t('compute.actual_total')}: ${sizestr(mem_size, 'M', 1024)}`
+          const title = `${this.$t('common_407')}: ${sizestr(mem_used, 'M', 1024)}, ${this.$t('common_234')}: ${sizestr(mem_size, 'M', 1024)}`
           return title
         },
       },
@@ -245,7 +245,7 @@ export default {
           default: ({ row }) => {
             const { mem_size_virtual, mem_commit, mem_size, mem_commit_bound } = getHostSpecInfo(row)
             const title = `${this.$t('common_233')}: ${sizestr(mem_commit, 'M', 1024)}\n` +
-              `${this.$t('compute.actual_total')}: ${sizestr(mem_size_virtual, 'M', 1024)}\n` +
+              `${this.$t('common_234')}: ${sizestr(mem_size_virtual, 'M', 1024)}\n` +
               `${this.$t('compute.text_594')}: ${(mem_commit / mem_size).toFixed(2)}\n` +
               `${this.$t('compute.memory_commit_bound')}: ${mem_commit_bound}`
             return [<UsedPercent title={title} used={mem_commit} total={mem_size_virtual} usedLabel={this.$t('common_233')} usedFormatter={(val) => sizestr(val, 'M', 1024)} totalFormatter={(val) => sizestr(val, 'M', 1024)} />]
@@ -253,7 +253,7 @@ export default {
         },
         formatter: ({ row }) => {
           const { mem_size_virtual, mem_commit } = getHostSpecInfo(row)
-          const title = `${this.$t('common_233')}: ${sizestr(mem_commit, 'M', 1024)}, ${this.$t('compute.actual_total')}: ${sizestr(mem_size_virtual, 'M', 1024)}`
+          const title = `${this.$t('common_233')}: ${sizestr(mem_commit, 'M', 1024)}, ${this.$t('common_234')}: ${sizestr(mem_size_virtual, 'M', 1024)}`
           return title
         },
       },
@@ -266,13 +266,13 @@ export default {
         slots: {
           default: ({ row }) => {
             const { storage_size, actual_storage_used } = getHostSpecInfo(row)
-            const title = `${this.$t('common_407')}: ${sizestr(actual_storage_used, 'M', 1024)}\n${this.$t('compute.actual_total')}: ${sizestr(storage_size, 'M', 1024)}`
+            const title = `${this.$t('common_407')}: ${sizestr(actual_storage_used, 'M', 1024)}\n${this.$t('common_234')}: ${sizestr(storage_size, 'M', 1024)}`
             return [<UsedPercent title={title} used={actual_storage_used} total={storage_size} usedFormatter={(val) => sizestr(val, 'M', 1024)} totalFormatter={(val) => sizestr(val, 'M', 1024)} />]
           },
         },
         formatter: ({ row }) => {
           const { storage_size, actual_storage_used } = getHostSpecInfo(row)
-          const title = `${this.$t('common_407')}: ${sizestr(actual_storage_used, 'M', 1024)}, ${this.$t('compute.actual_total')}: ${sizestr(storage_size, 'M', 1024)}`
+          const title = `${this.$t('common_407')}: ${sizestr(actual_storage_used, 'M', 1024)}, ${this.$t('common_234')}: ${sizestr(storage_size, 'M', 1024)}`
           return title
         },
       },
@@ -286,7 +286,7 @@ export default {
           default: ({ row }) => {
             const { storage_size_virtual, storage_commit, storage_size } = getHostSpecInfo(row)
             const title = `${this.$t('common_233')}: ${sizestr(storage_commit, 'M', 1024)}\n` +
-              `${this.$t('compute.actual_total')}: ${sizestr(storage_size_virtual, 'M', 1024)}\n` +
+              `${this.$t('common_234')}: ${sizestr(storage_size_virtual, 'M', 1024)}\n` +
               `${this.$t('compute.text_594')}: ${(storage_commit / storage_size).toFixed(2)}\n` +
               `${this.$t('compute.storage_commit_bound')}: ${(storage_size_virtual / storage_size).toFixed(2)}`
             return [<UsedPercent title={title} used={storage_commit} total={storage_size_virtual} usedLabel={this.$t('common_233')} usedFormatter={(val) => sizestr(val, 'M', 1024)} totalFormatter={(val) => sizestr(val, 'M', 1024)} />]
@@ -294,7 +294,7 @@ export default {
         },
         formatter: ({ row }) => {
           const { storage_size_virtual, storage_commit } = getHostSpecInfo(row)
-          const title = `${this.$t('common_233')}: ${sizestr(storage_commit, 'M', 1024)}, ${this.$t('compute.actual_total')}: ${sizestr(storage_size_virtual, 'M', 1024)}`
+          const title = `${this.$t('common_233')}: ${sizestr(storage_commit, 'M', 1024)}, ${this.$t('common_234')}: ${sizestr(storage_size_virtual, 'M', 1024)}`
           return title
         },
       },
