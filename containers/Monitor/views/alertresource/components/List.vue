@@ -171,7 +171,7 @@ export default {
           field: 'alert_details',
           title: this.$t('monitor.condition'),
           formatter: ({ row }) => {
-            const { strategy } = getStrategyInfo(row.data.alert_details)
+            const { strategy } = getStrategyInfo(row.data.alert_details || (row.alert_rule && row.alert_rule.length && row.alert_rule[0]))
             return strategy
           },
         },
