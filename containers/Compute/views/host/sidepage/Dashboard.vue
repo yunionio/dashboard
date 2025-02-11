@@ -186,30 +186,29 @@ export default {
   methods: {
     async fetchUsedPercent () {
       try {
-        if (this.data.id && this.hostListMap[this.data.id]) {
-          const reqList = HOST_INFO_OPTS.map(opt => {
-            return new this.$Manager('unifiedmonitors', 'v1')
-              .performAction({
-                id: 'query',
-                action: '',
-                data: this.genQueryData(opt),
-                params: { $t: getRequestT() },
-              })
-          })
-          const res = await Promise.all(reqList)
-          const list = []
-          res.forEach((r, index) => {
-            const { series = [{}] } = (r.data || {})
-            const { points = [] } = (series[0] || {})
-            if (points.length) {
-              const percent = points.reduce((acc, cur) => acc + cur[0], 0) / points.length
-              list.push(percent / 100)
-            } else {
-              list.push(0)
-            }
-          })
-          this.progressListPercent = list
-        }
+        const reqList = HOST_INFO_OPTS.map(opt => {
+          return new this.$Manager('unifiedmonitors', 'v1')
+            .performAction({
+              id: 'query',
+              action: '',
+              data: this.genQueryData(opt),
+              params: { $t: getRequestT() },
+            })
+        })
+        const res = await Promise.all(reqList)
+        const list = []
+        res.forEach((r, index) => {
+          const { series = [{}] } = (r.data || {})
+          const { points = [] } = (series[0] || {})
+          if (points.length) {
+            console.log(points)
+            const percent = points.reduce((acc, cur) => acc + cur[0], 0) / points.length
+            list.push(percent / 100)
+          } else {
+            list.push(0)
+          }
+        })
+        this.progressListPercent = list
       } catch (err) {
         console.error(err)
       }
@@ -392,7 +391,7 @@ export default {
           },
         ],
         scope: this.$store.getters.scope,
-        from: '10m',
+        from: '30m',
         interval: '1m',
         unit: true,
       }
