@@ -1,6 +1,6 @@
 
 <template>
-  <div class="echarts" :id="domId" />
+  <div class="echarts" :id="domId" :style="chartStyle" />
 </template>
 
 <style>
@@ -33,6 +33,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    chartStyle: Object,
   },
   data () {
     return {

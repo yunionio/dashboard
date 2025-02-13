@@ -829,6 +829,7 @@
     "suggestsysalert": {
       "ready": "Pending",
       "start_delete": "Deleting",
+      "resolved": "Resolved",
       "deleting": "Deleting",
       "delete_fail": "Delete failed"
     },

@@ -838,6 +838,7 @@
     "suggestsysalert": {
       "ready": "ペンディング",
       "start_delete": "削除",
+      "resolved": "承認済",
       "deleting": "削除",
       "delete_fail": "削除に失敗しました"
     },
