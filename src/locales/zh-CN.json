@@ -837,6 +837,7 @@
     },
     "suggestsysalert": {
       "ready": "待处理",
+      "resolved": "已接受",
       "start_delete": "删除中",
       "deleting": "删除中",
       "delete_fail": "删除失败"

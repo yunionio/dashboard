@@ -340,6 +340,7 @@ export default {
   },
   suggestsysalert: {
     info: ['ready'],
+    success: ['resolved'],
     danger: ['delete_fail'],
   },
   reportProject: {

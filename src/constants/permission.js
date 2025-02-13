@@ -1277,9 +1277,13 @@ export const PERMISSION = {
   suggestsysrules_update: ['suggestion', 'suggestsysrules', 'update'],
   suggestsysrules_perform_enable: ['suggestion', 'suggestsysrules', 'perform', 'enable'],
   suggestsysrules_perform_disable: ['suggestion', 'suggestsysrules', 'perform', 'disable'],
+  suggestsysrules_perform_set_public: ['suggestion', 'suggestsysrules', 'perform', 'set-public'],
   suggestsysalerts_list: ['suggestion', 'suggestsysalerts', 'list'],
   suggestsysalerts_delete: ['suggestion', 'suggestsysalerts', 'delete'],
   suggestsysalerts_perform_ignore: ['suggestion', 'suggestsysalerts', 'perform', 'ignore'],
+  suggestsysalerts_perform_cancel_ignore: ['suggestion', 'suggestsysalerts', 'perform', 'cancel-ignore'],
+  suggestsysalerts_perform_confirm: ['suggestion', 'suggestsysalerts', 'perform', 'confirm'],
+  suggestsysalertsreport_list: ['suggestion', 'suggestsysalertsreport', 'list'],
 
   // DNS解析相关
   dns_zones_list: ['compute', 'dns_zones', 'list'],
