@@ -1863,5 +1863,6 @@
   "compute.aliyun_disk_cloud_auto": "ESSD AutoPL 云盘",
   "compute.cloud_regional_disk_auto": "ESSD 同城冗余云盘",
   "compute.elastic_ephemeral_disk_standard": "弹性临时盘-标准版",
-  "compute.elastic_ephemeral_disk_premium": "弹性临时盘-高级版"
+  "compute.elastic_ephemeral_disk_premium": "弹性临时盘-高级版",
+  "compute.manual_renewal": "手动续费"
 }
