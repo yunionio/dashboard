@@ -24,7 +24,6 @@ import {
   getCopyWithContentTableColumn,
   getBrandTableColumn,
   getSwitchTableColumn,
-  getBillingTypeTableColumn,
   getOsArch,
   getIpsTableColumn,
   getServerMonitorAgentInstallStatus,
@@ -102,7 +101,30 @@ export default {
           title: this.$t('compute.text_33'),
         },
         getBrandTableColumn(),
-        getBillingTypeTableColumn(),
+        {
+          field: 'billing_type',
+          title: this.$t('table.title.bill_type'),
+          showOverflow: 'ellipsis',
+          slots: {
+            default: ({ row }, h) => {
+              const ret = []
+              if (row.billing_type === 'postpaid') {
+                ret.push(<div style={{ color: '#0A1F44' }}>{this.$t('billingType.postpaid')}</div>)
+              } else if (row.billing_type === 'prepaid') {
+                ret.push(<div style={{ color: '#0A1F44' }}>{this.$t('billingType.prepaid')}（{row.auto_renew ? this.$t('compute.text_1233') : this.$t('compute.manual_renewal')}）</div>)
+              }
+              if (row.expired_at) {
+                const dateArr = this.$moment(row.expired_at).fromNow().split(' ')
+                const date = dateArr.join(' ')
+                const seconds = this.$moment(row.expired_at).diff(new Date()) / 1000
+                const textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
+                const text = seconds < 0 ? this.$t('common_296') : this.$t('common_297', [date])
+                ret.push(<div style={{ color: textColor }}>{text}</div>)
+              }
+              return ret
+            },
+          },
+        },
         {
           field: 'password',
           title: this.$t('table.title.init_keypair'),
