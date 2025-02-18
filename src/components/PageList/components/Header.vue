@@ -265,6 +265,8 @@ export default {
     tagBtnText: String,
     hiddenExportKeys: Array,
     hiddenPin: Boolean,
+    idKey: String,
+    exportUseIdKey: Boolean,
   },
   data () {
     return {
@@ -357,6 +359,8 @@ export default {
         tagColumnsExportKeyFormatter: this.tagColumnsExportKeyFormatter,
         tagColumns2ExportKeyFormatter: this.tagColumns2ExportKeyFormatter,
         tagColumns3ExportKeyFormatter: this.tagColumns3ExportKeyFormatter,
+        idKey: this.idKey,
+        exportUseIdKey: this.exportUseIdKey,
       })
     },
     handleCustomList () {
