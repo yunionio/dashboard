@@ -253,6 +253,8 @@ export default {
     tagColumns2ExportKeyFormatter: Function,
     tagColumns3ExportKeyFormatter: Function,
     tagBtnText: String,
+    idKey: String,
+    exportUseIdKey: Boolean,
   },
   computed: {
     _filterOptions () {
@@ -317,6 +319,8 @@ export default {
         tagColumnsExportKeyFormatter: this.tagColumnsExportKeyFormatter,
         tagColumns2ExportKeyFormatter: this.tagColumns2ExportKeyFormatter,
         tagColumns3ExportKeyFormatter: this.tagColumns3ExportKeyFormatter,
+        idKey: this.idKey,
+        exportUseIdKey: this.exportUseIdKey,
       })
     },
     handleCustomList () {
