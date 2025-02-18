@@ -62,6 +62,8 @@
       :ignoreWithUserMetaParam2="ignoreWithUserMetaParam2"
       :ignoreWithUserMetaParam3="ignoreWithUserMetaParam3"
       :tagBtnText="tagBtnText"
+      :idKey="idKey"
+      :exportUseIdKey="exportUseIdKey"
       @refresh="refresh"
       @clear-selected="clearSelected"
       @tag-filter-change="tagFilterChange"
@@ -388,6 +390,9 @@ export default {
     },
     idKey () {
       return this.list.idKey
+    },
+    exportUseIdKey () {
+      return this.list.exportUseIdKey
     },
     extraData () {
       return this.list.extraData
