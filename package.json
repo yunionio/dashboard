@@ -51,6 +51,7 @@
     "resize-observer-polyfill": "^1.5.1",
     "shelljs": "^0.8.4",
     "socket.io-client": "^2.3.0",
+    "uplot": "1.5.2",
     "v-charts": "^1.19.0",
     "vue": "^2.7.14",
     "vue-cropperjs": "^4.0.1",
