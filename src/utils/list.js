@@ -194,6 +194,7 @@ class CreateList {
       getParams,
       limit = 20,
       idKey = 'id',
+      exportUseIdKey = false,
       filterOptions = {},
       filter = {},
       filterCondition = {},
@@ -267,6 +268,7 @@ class CreateList {
     this.selected = []
     // 指定作为id的属性key值
     this.idKey = idKey
+    this.exportUseIdKey = exportUseIdKey
     // 自定义过滤配置
     this.filterOptions = this.genFilterOptions(filterOptions, autoHiddenFilterKey)
     // 如果有search，表示需要配置模糊匹配选项，则将模糊匹配添加上

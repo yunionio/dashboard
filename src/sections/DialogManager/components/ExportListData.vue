@@ -238,10 +238,11 @@ export default {
             ...listParams,
           }
           if (this.params.selected.length) {
+            const idField = (this.params.idKey && this.params.exportUseIdKey) ? this.params.idKey : 'id'
             if (params.filter && params.filter.length) {
-              params.filter = [...params.filter, `id.in(${this.params.selected.join(',')})`]
+              params.filter = [...params.filter, `${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
             } else {
-              params.filter = [`id.in(${this.params.selected.join(',')})`]
+              params.filter = [`${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
             }
           }
         } else if (this.exportType.all && formValues.type === this.exportType.all.key) { // 导出范围选择全部时
