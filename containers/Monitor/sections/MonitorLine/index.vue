@@ -22,7 +22,8 @@
     <loader v-if="loading" :loading="true" />
     <template v-else>
       <div class="d-flex">
-        <line-chart class="flex-grow-1" @chartInstance="setChartInstance" width="100%" height="250px" :options="lineChartOptionsC" />
+        <!-- <line-chart class="flex-grow-1" @chartInstance="setChartInstance" width="100%" height="250px" :options="lineChartOptionsC" /> -->
+        <uchart :data="uChartData" :options="uChartOptions" />
         <div v-if="alertHandlerShow && lineChartOptionsC.dataset.length" class="alert-handler-wrapper position-relative">
           <div class="position-absolute clearfix d-flex align-items-center" :style="{ top: `${topStyleRange[1]}px` }">
             <div class="alert-handler-line" />
@@ -70,20 +71,20 @@ import * as R from 'ramda'
 import _ from 'lodash'
 import XLSX from 'xlsx'
 import { metric_zh, tableColumnMaps } from '@Monitor/constants'
-import { colors } from '@/sections/Charts/constants'
-import LineChart from '@/sections/Charts/Line'
+// import { colors } from '@/sections/Charts/constants'
+// import LineChart from '@/sections/Charts/Line'
 import { ColorHash } from '@/utils/colorHash'
 import { transformUnit } from '@/utils/utils'
-import { BRAND_MAP } from '@/constants'
-import { currencyUnitMap } from '@/constants/currency'
-import { getChartTooltipPosition } from '@/utils/echart'
+// import { BRAND_MAP } from '@/constants'
+// import { currencyUnitMap } from '@/constants/currency'
+// import { getChartTooltipPosition } from '@/utils/echart'
 
 const MAX_COLUMNS = 10
 
 export default {
   name: 'ExplorerMonitorLine',
   components: {
-    LineChart,
+    // LineChart,
   },
   props: {
     unit: {
@@ -159,6 +160,7 @@ export default {
         color: '',
       },
       highlights: [],
+      colors: [],
       yMax: 0,
       alertHandlerShow: false,
       topStyleRange: [220, 20],
@@ -208,6 +210,7 @@ export default {
       return this.$t('monitor_metric_78', [total])
     },
     columns () {
+      const that = this
       const columns = [
         {
           field: 'color',
@@ -215,7 +218,8 @@ export default {
           slots: {
             default: ({ row, rowIndex }) => {
               if (this.highlights.some(item => item.index === rowIndex)) {
-                return [<icon type="checkbox-fill" style={{ fontSize: '20px', color: row.__color, cursor: 'pointer', transform: 'translateY(3px)' }}></icon>]
+                console.log(that.colors, rowIndex)
+                return [<icon type="checkbox-fill" style={{ fontSize: '20px', color: that.colors.length && that.colors[rowIndex], cursor: 'pointer', transform: 'translateY(3px)' }}></icon>]
               }
               return [<icon type="checkbox-empty" style="font-size:20px;cursor:pointer;transform:translateY(3px)"></icon>]
             },
@@ -410,10 +414,80 @@ export default {
     isAllSelected () {
       return this.highlights.length === this.tableData.length
     },
+    uChartData () {
+      const ret = []
+      if (this.series.length) {
+        const time = this.series[0].points.map(item => item[1])
+        ret.push(time.map(item => item / 1000))
+        this.series.forEach((item, i) => {
+          const row = []
+          time.forEach(t => {
+            const target = item.points.filter(p => p[1] === t)
+            if (target.length) {
+              row.push(target[0][0])
+            } else {
+              row.push(null)
+            }
+          })
+          if (this.highlights.some(item => item.index === i)) {
+            ret.push(row)
+          }
+        })
+      }
+      return ret
+    },
+    uChartOptions () {
+      const unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
+      const ret = {
+        width: '100%',
+        height: 300,
+        margin: {
+          left: 100,
+        },
+        scales: {
+          x: {
+            time: true, // x轴为时间轴
+          },
+          y: {
+            auto: true, // y轴自动调整
+          },
+        },
+        axes: [
+          {
+            values: (self, ticks, space) => {
+              return ticks.map(item => this.$moment(item * 1000).format('MM-DD') + '\n' + this.$moment(item * 1000).format('HH:mm'))
+            },
+          },
+          {
+            scale: 'y',
+            values: (self, ticks, space) => {
+              return ticks.map(item => item + (unit || ''))
+            },
+          },
+        ],
+        legend: {
+          show: false,
+        },
+        grid: {
+          show: false,
+        },
+        series: [
+          {},
+        ],
+      }
+      this.series.forEach((item, i) => {
+        const color = (this.colors && this.colors[i]) || this.colorHash.hex(`${i * 1000}`)
+        if (this.highlights.some(item => item.index === i)) {
+          ret.series.push({ label: item.raw_name, width: 1, stroke: color, unit, color })
+        }
+      })
+      return ret
+    },
   },
   watch: {
     series (val, oldV) {
       if (!R.equals(val, oldV)) {
+        this.genColors()
         this.getMonitorLine()
       }
     },
@@ -457,6 +531,11 @@ export default {
     this.colorHash = null
   },
   methods: {
+    genColors () {
+      this.colors = this.series.map((item, i) => {
+        return this.colors[i] || this.colorHash.hex(`${i * 1000}`)
+      })
+    },
     checkAllClick (val) {
       const list = []
       if (this.isAllSelected) {
@@ -532,38 +611,25 @@ export default {
       }
     },
     highlightSeries (list, seriesName, row, rowIndex) {
-      if (this.chartInstance) {
-        let highlights = [...this.highlights]
-        list.forEach(item => {
-          const { row, rowIndex } = item
-          const target = this.highlights.filter(item => item.index === rowIndex)
-          if (target.length) {
-            highlights = highlights.filter(item => item.index !== rowIndex)
-          } else {
-            highlights = [...highlights, { index: rowIndex, color: row.__color }]
-          }
-        })
-        this.highlights = highlights
-        const seriesNames = highlights.map(item => {
-          let seriesName = _.get(this.chartInstanceOption, `series[${item.index}].name`)
-          seriesName = seriesName || `series${item.index}`
-          return seriesName
-        })
-        this._setHighlights(seriesNames)
-        // const target = this.highlights.filter(item => item.index === rowIndex)
-        // if (target.length) {
-        //   const list = this.highlights.filter(item => item.index !== rowIndex)
-        //   this.highlights = list
-        // } else {
-        //   this.highlights = [...this.highlights, { index: rowIndex, color: row.__color }]
-        // }
-        // const seriesNames = this.highlights.map(item => {
-        //   let seriesName = _.get(this.chartInstanceOption, `series[${item.index}].name`)
-        //   seriesName = seriesName || `series${item.index}`
-        //   return seriesName
-        // })
-        // this._setHighlights(seriesNames)
-      }
+      // if (this.chartInstance) {
+      let highlights = [...this.highlights]
+      list.forEach(item => {
+        const { row, rowIndex } = item
+        const target = this.highlights.filter(item => item.index === rowIndex)
+        if (target.length) {
+          highlights = highlights.filter(item => item.index !== rowIndex)
+        } else {
+          highlights = [...highlights, { index: rowIndex, color: row.__color }]
+        }
+      })
+      this.highlights = highlights
+      // const seriesNames = highlights.map(item => {
+      //   let seriesName = _.get(this.chartInstanceOption, `series[${item.index}].name`)
+      //   seriesName = seriesName || `series${item.index}`
+      //   return seriesName
+      // })
+      // this._setHighlights(seriesNames)
+      // }
     },
     _cancelHighlight () {
       const selected = {}
@@ -590,138 +656,144 @@ export default {
       })
     },
     getMonitorLine () {
-      const lineChartOptions = _.cloneDeep(_.mergeWith(this.lineChartOptions, {
-        series: [],
-        grid: {
-          containLabel: true,
-        },
-      }))
-      lineChartOptions.grid = {
-        containLabel: true,
-        top: 10,
-      }
-      const dataset = []
-      const names = []
-      const currencys = []
-      this.series.forEach((item, i) => {
-        let name = item.raw_name
-        if (!name || name.startsWith('unknow')) {
-          if (this.groupBy && (this.metricInfo?.model?.group_by || []).length > 1 && item.tags) {
-            name = this.metricInfo?.model?.group_by.map(l => {
-              let n = item.tags[l.params[0]]
-              if (BRAND_MAP[n] && BRAND_MAP[n].label) {
-                n = BRAND_MAP[n].label
-              }
-              return n
-            }).join(', ')
-          } else {
-            if (BRAND_MAP[name] && BRAND_MAP[name].label) {
-              name = BRAND_MAP[name].label
-            }
-            if (item.tags && item.tags.path) {
-              name += ` (path: ${item.tags.path})`
-            }
-          }
+      this.highlights = this.series.map((item, index) => {
+        return {
+          index,
         }
-        if (item.tags) {
-          const { currency = 'CNY' } = (item.tags || {})
-          if (currency && !currencys.includes(currency)) {
-            currencys.push(currency)
-          }
-        }
-        if (name.length > 50) name = `${name.slice(0, 50)}...`
-        const seriesItem = {
-          ...(lineChartOptions.series[i] || {}),
-          itemStyle: {
-            normal: {
-              color: colors[i] || this.colorHash.hex(`${i * 1000}`),
-            },
-          },
-          symbolSize: 1,
-          type: 'line',
-          encode: { x: 1, y: 0, tooltip: [0, 1] },
-          datasetIndex: i,
-          name,
-        }
-        lineChartOptions.series[i] = seriesItem
-        dataset.push({
-          dimensions: [{ name: 'value', type: 'ordinal' }, { name: 'time', type: 'time' }],
-          source: item.points,
-        })
-        names.push(name)
       })
-      lineChartOptions.yAxis = {
-        minInterval: 1,
-        axisLabel: {
-          formatter: (value, index) => {
-            let unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
-            if (unit === 'NULL') {
-              unit = ''
-            }
-            if (unit === 'ms') { // 时间类型的Y坐标，要取整 如 ： 1小时10分钟30秒 -> 1小时
-              unit = 'intms'
-            }
-            const val = transformUnit(value, unit, 1000, '0')
-            if (unit === 'currency') {
-              let unit = ''
-              if (currencys.length === 1) {
-                unit = currencyUnitMap[currencys[0]]?.sign || ''
-              }
-              return unit ? `${unit} ${val.value || value}` : val.value || value
-            }
-            return val.text
-          },
-        },
-      }
-      lineChartOptions.xAxis = { type: 'time' }
-      lineChartOptions.tooltip = {
-        trigger: 'axis',
-        position: (point, params, dom, rect, size) => {
-          const list = [...params].sort((a, b) => b.value[0] - a.value[0])
-          const series = list.map((line, i) => {
-            let unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
-            if (unit === 'NULL') {
-              unit = ''
-            }
-            const val = transformUnit(line.value[0], unit)
-            let value = _.get(val, 'text') || line.value
-            if (unit === 'currency') {
-              let unit = ''
-              if (currencys.length === 1) {
-                unit = currencyUnitMap[currencys[0]]?.sign || ''
-              }
-              value = unit ? `${unit} ${_.get(val, 'value' || line.value[0])}` : _.get(val, 'value' || line.value[0])
-            }
-            const color = i === this.highlight.index ? this.highlight.color : '#616161'
-            let name = line.seriesName
-            if (!this.showTable || (this.isSelectFunction && this.resultReducer && !this.groupBy) || name.startsWith('unknow')) {
-              name = this.isSelectFunction.toUpperCase()
-            }
-            return `<div style="color: ${color};" class="d-flex align-items-center"><span>${line.marker}</span> <span class="text-truncate" style="max-width: 500px;">${name || ' '}</span>:&nbsp;<span>${value}</span></div>`
-          }).join('')
-          let title = list[0].name
-          if (!title) {
-            const time = list[0].value && list[0].value[1]
-            if (time) {
-              title = this.$moment(time).format('YYYY-MM-DD HH:mm:ss')
-            }
-          }
-          const wrapper = `<div class="chart-tooltip-wrapper">
-                        <div style="color: #5D6F80;">${title}</div>
-                        <div class="lines-wrapper">${series}</div>
-                      </div>`
-          dom.style.border = 'none'
-          dom.style.backgroundColor = 'transparent'
-          dom.style.padding = '0'
-          dom.innerHTML = wrapper
-          const s = { contentSize: [size.contentSize[0], (list.length + 1) * 18], viewSize: size.viewSize }
-          return getChartTooltipPosition(point, dom, s, false)
-        },
-      }
-      lineChartOptions.dataset = dataset
-      this.lineChartOptionsC = lineChartOptions
-      this.seriesOldClickName = null
-      this.highlight = { index: null, color: '' }
+      // const lineChartOptions = _.cloneDeep(_.mergeWith(this.lineChartOptions, {
+      //   series: [],
+      //   grid: {
+      //     containLabel: true,
+      //   },
+      // }))
+      // lineChartOptions.grid = {
+      //   containLabel: true,
+      //   top: 10,
+      // }
+      // const dataset = []
+      // const names = []
+      // const currencys = []
+      // this.series.forEach((item, i) => {
+      //   let name = item.raw_name
+      //   if (!name || name.startsWith('unknow')) {
+      //     if (this.groupBy && (this.metricInfo?.model?.group_by || []).length > 1 && item.tags) {
+      //       name = this.metricInfo?.model?.group_by.map(l => {
+      //         let n = item.tags[l.params[0]]
+      //         if (BRAND_MAP[n] && BRAND_MAP[n].label) {
+      //           n = BRAND_MAP[n].label
+      //         }
+      //         return n
+      //       }).join(', ')
+      //     } else {
+      //       if (BRAND_MAP[name] && BRAND_MAP[name].label) {
+      //         name = BRAND_MAP[name].label
+      //       }
+      //       if (item.tags && item.tags.path) {
+      //         name += ` (path: ${item.tags.path})`
+      //       }
+      //     }
+      //   }
+      //   if (item.tags) {
+      //     const { currency = 'CNY' } = (item.tags || {})
+      //     if (currency && !currencys.includes(currency)) {
+      //       currencys.push(currency)
+      //     }
+      //   }
+      //   if (name.length > 50) name = `${name.slice(0, 50)}...`
+      //   const seriesItem = {
+      //     ...(lineChartOptions.series[i] || {}),
+      //     itemStyle: {
+      //       normal: {
+      //         color: colors[i] || this.colorHash.hex(`${i * 1000}`),
+      //       },
+      //     },
+      //     symbolSize: 1,
+      //     type: 'line',
+      //     encode: { x: 1, y: 0, tooltip: [0, 1] },
+      //     datasetIndex: i,
+      //     name,
+      //   }
+      //   lineChartOptions.series[i] = seriesItem
+      //   dataset.push({
+      //     dimensions: [{ name: 'value', type: 'ordinal' }, { name: 'time', type: 'time' }],
+      //     source: item.points,
+      //   })
+      //   names.push(name)
+      // })
+      // lineChartOptions.yAxis = {
+      //   minInterval: 1,
+      //   axisLabel: {
+      //     formatter: (value, index) => {
+      //       let unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
+      //       if (unit === 'NULL') {
+      //         unit = ''
+      //       }
+      //       if (unit === 'ms') { // 时间类型的Y坐标，要取整 如 ： 1小时10分钟30秒 -> 1小时
+      //         unit = 'intms'
+      //       }
+      //       const val = transformUnit(value, unit, 1000, '0')
+      //       if (unit === 'currency') {
+      //         let unit = ''
+      //         if (currencys.length === 1) {
+      //           unit = currencyUnitMap[currencys[0]]?.sign || ''
+      //         }
+      //         return unit ? `${unit} ${val.value || value}` : val.value || value
+      //       }
+      //       return val.text
+      //     },
+      //   },
+      // }
+      // lineChartOptions.xAxis = { type: 'time' }
+      // lineChartOptions.tooltip = {
+      //   trigger: 'axis',
+      //   position: (point, params, dom, rect, size) => {
+      //     const list = [...params].sort((a, b) => b.value[0] - a.value[0])
+      //     const series = list.map((line, i) => {
+      //       let unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
+      //       if (unit === 'NULL') {
+      //         unit = ''
+      //       }
+      //       const val = transformUnit(line.value[0], unit)
+      //       let value = _.get(val, 'text') || line.value
+      //       if (unit === 'currency') {
+      //         let unit = ''
+      //         if (currencys.length === 1) {
+      //           unit = currencyUnitMap[currencys[0]]?.sign || ''
+      //         }
+      //         value = unit ? `${unit} ${_.get(val, 'value' || line.value[0])}` : _.get(val, 'value' || line.value[0])
+      //       }
+      //       const color = i === this.highlight.index ? this.highlight.color : '#616161'
+      //       let name = line.seriesName
+      //       if (!this.showTable || (this.isSelectFunction && this.resultReducer && !this.groupBy) || name.startsWith('unknow')) {
+      //         name = this.isSelectFunction.toUpperCase()
+      //       }
+      //       return `<div style="color: ${color};" class="d-flex align-items-center"><span>${line.marker}</span> <span class="text-truncate" style="max-width: 500px;">${name || ' '}</span>:&nbsp;<span>${value}</span></div>`
+      //     }).join('')
+      //     let title = list[0].name
+      //     if (!title) {
+      //       const time = list[0].value && list[0].value[1]
+      //       if (time) {
+      //         title = this.$moment(time).format('YYYY-MM-DD HH:mm:ss')
+      //       }
+      //     }
+      //     const wrapper = `<div class="chart-tooltip-wrapper">
+      //                   <div style="color: #5D6F80;">${title}</div>
+      //                   <div class="lines-wrapper">${series}</div>
+      //                 </div>`
+      //     dom.style.border = 'none'
+      //     dom.style.backgroundColor = 'transparent'
+      //     dom.style.padding = '0'
+      //     dom.innerHTML = wrapper
+      //     const s = { contentSize: [size.contentSize[0], (list.length + 1) * 18], viewSize: size.viewSize }
+      //     return getChartTooltipPosition(point, dom, s, false)
+      //   },
+      // }
+      // lineChartOptions.dataset = dataset
+      // this.lineChartOptionsC = lineChartOptions
+      // this.seriesOldClickName = null
+      // this.highlight = { index: null, color: '' }
+      // console.log(lineChartOptions, dataset)
     },
     getRowStyle ({ $rowIndex, column, columnIndex, $columnIndex }) {
       if ($rowIndex === this.highlight.index) {
