@@ -565,7 +565,7 @@ class CreateList {
 
   resetRefresh () {
     this.filter = {}
-    this.reset(false)
+    this.reset(this.pagerType === 'loadMore')
     return this.fetchData(0, this.getLimit())
   }
 
@@ -875,7 +875,7 @@ class CreateList {
    */
   changeFilter (filter) {
     this.filter = filter
-    this.reset(false)
+    this.reset(this.pagerType === 'loadMore')
     this.fetchData(0, 0)
   }
 
@@ -886,7 +886,7 @@ class CreateList {
    */
   changeTagFilter (tagFilter) {
     this.tagFilter = tagFilter
-    this.reset(false)
+    this.reset(this.pagerType === 'loadMore')
     this.fetchData(0, 0)
   }
 
@@ -897,7 +897,7 @@ class CreateList {
    */
   changeTagFilter2 (tagFilter) {
     this.tagFilter2 = tagFilter
-    this.reset(false)
+    this.reset(this.pagerType === 'loadMore')
     this.fetchData(0, 0)
   }
 
@@ -908,7 +908,7 @@ class CreateList {
  */
   changeTagFilter3 (tagFilter) {
     this.tagFilter3 = tagFilter
-    this.reset(false)
+    this.reset(this.pagerType === 'loadMore')
     this.fetchData(0, 0)
   }
 
@@ -922,7 +922,7 @@ class CreateList {
       this.projectTagFilter = projectTagFilter
     } else if (!R.equals(this.projectTagFilter, projectTagFilter)) {
       this.projectTagFilter = projectTagFilter
-      this.reset(false)
+      this.reset(this.pagerType === 'loadMore')
       this.fetchData(0, 0)
     }
   }
@@ -946,7 +946,7 @@ class CreateList {
     this.pinFilter = {
       filter: `${this.idKey}.in(${this.selected.map(id => `"${id}"`)})`,
     }
-    this.reset(false)
+    this.reset(this.pagerType === 'loadMore')
     this.fetchData(0, 0)
   }
 
@@ -960,7 +960,7 @@ class CreateList {
     this.tagFilter3 = this.pinSavedFilters.tagFilter3 || {}
     this.projectTagFilter = this.pinSavedFilters.projectTagFilter || {}
     this.pinFilter = {}
-    this.reset(false)
+    this.reset(this.pagerType === 'loadMore')
     this.fetchData(0, 0)
   }
 
