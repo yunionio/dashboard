@@ -194,6 +194,9 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.vpc')) {
                 return true
               }
+              if (store.getters?.globalSetting?.value?.productVersion === 'LightEdge') {
+                return true
+              }
               return isBaremetalProduct() || !hasSetupKey(['openstack', 'onestack', 'zstack', 'dstack', 'public', 'baremetal', 'apsara', 'hcso', 'hcs', 'bingocloud'])
             },
           },
