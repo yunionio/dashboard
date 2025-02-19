@@ -179,7 +179,8 @@
       "start_rescue_failed": "緊急モードへの移行に失敗しました",
       "stop_rescue_failed": "緊急モードの終了に失敗しました",
       "qga_set_network": "QGA 構成ネットワーク カード",
-      "snapshot_delete": "スナップショットを削除してください。"
+      "snapshot_delete": "スナップショットを削除してください。",
+      "change_billing_type": "課金モードの変更"
     },
     "network": {
       "init": "初期化する",
