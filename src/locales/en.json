@@ -179,7 +179,8 @@
       "start_rescue_failed": "Enter emergency mode failed",
       "stop_rescue_failed": "Exiting emergency mode failed",
       "qga_set_network": "QGA configuration network card",
-      "snapshot_delete": "Delete snapshot"
+      "snapshot_delete": "Delete snapshot",
+      "change_billing_type": "Change billing mode"
     },
     "network": {
       "init": "Initialize",

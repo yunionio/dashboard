@@ -179,7 +179,8 @@
       "start_rescue_failed": "进入紧急模式失败",
       "stop_rescue_failed": "退出紧急模式失败",
       "qga_set_network": "QGA配置网卡",
-      "snapshot_delete": "删除快照"
+      "snapshot_delete": "删除快照",
+      "change_billing_type": "修改计费模式"
     },
     "network": {
       "init": "初始化",

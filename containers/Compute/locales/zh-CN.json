@@ -1864,5 +1864,8 @@
   "compute.cloud_regional_disk_auto": "ESSD 同城冗余云盘",
   "compute.elastic_ephemeral_disk_standard": "弹性临时盘-标准版",
   "compute.elastic_ephemeral_disk_premium": "弹性临时盘-高级版",
-  "compute.manual_renewal": "手动续费"
+  "compute.manual_renewal": "手动续费",
+  "compute.change_billing_type": "更改计费模式",
+  "compute.billing_type": "计费模式",
+  "compute.change_to_prepaid": "转为包年包月"
 }
