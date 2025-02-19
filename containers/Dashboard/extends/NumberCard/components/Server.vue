@@ -335,6 +335,10 @@ export default {
           return '/disk'
         case 'domain.disks.count':
           return '/disk'
+        case 'all.servers.isolated_devices':
+          return '/gpu'
+        case 'domain.servers.isolated_devices':
+          return '/gpu'
         default:
           return ''
       }
