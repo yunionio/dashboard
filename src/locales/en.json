@@ -182,7 +182,8 @@
       "creating_container": "Creating",
       "create_container_failed": "Creation failed",
       "delete_container_failed": "Delete container failed",
-      "snapshot_delete": "Delete snapshot"
+      "snapshot_delete": "Delete snapshot",
+      "change_billing_type": "Change billing mode"
     },
     "network": {
       "init": "Initialize",

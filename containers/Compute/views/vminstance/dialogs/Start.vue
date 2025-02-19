@@ -2,11 +2,6 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{action}}</div>
     <div slot="body">
-      <a-alert class="mb-2" type="warning">
-        <template v-slot:message>
-          <div>{{$t('compute.text_1234_1')}}</div>
-        </template>
-      </a-alert>
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
@@ -14,16 +9,12 @@
         <a-form-item :label="$t('compute.text_1041')" v-bind="formItemLayout" v-if="isOpenWorkflow">
           <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1105')" />
         </a-form-item>
-        <a-form-item class="mb-0" v-show="canStopPaying">
+        <a-form-item class="mb-0" v-show="canAutoPrepaid">
           <a-checkbox
-          :checked="form.fd.stopPaying"
-          @change="stopPayingChange">
-            {{$t('compute.shutdown_stop_paying')}}
+          :checked="form.fd.auto_prepaid"
+          @change="autoPrepaidChange">
+            {{$t('compute.change_to_prepaid')}}
           </a-checkbox>
-          <help-tooltip name="shutdownStopCharging" />
-        </a-form-item>
-        <a-form-item :label="$t('compute.force_shutdown')" v-bind="formItemLayout">
-          <a-switch :value="form.fd.is_force" @change="isForceChange" />
         </a-form-item>
       </a-form>
     </div>
@@ -42,17 +33,16 @@ import WorkflowMixin from '@/mixins/workflow'
 import { BATCH_OPERATE_SERVERS_MAX } from '@/constants/workflow'
 
 export default {
-  name: 'VmShutDownDialog',
+  name: 'VmStartDialog',
   mixins: [DialogMixin, WindowsMixin, WorkflowMixin],
   data () {
     return {
       loading: false,
-      action: this.$t('compute.text_273'),
+      action: this.$t('compute.text_272'),
       form: {
         fc: this.$form.createForm(this),
         fd: {
-          stopPaying: false,
-          is_force: false,
+          auto_prepaid: false,
         },
       },
       decorators: {
@@ -62,18 +52,11 @@ export default {
             initialValue: '',
           },
         ],
-        stopPaying: [
+        auto_prepaid: [
           'stopPaying',
           {
             valuePropName: 'checked',
             initialValue: false,
-          },
-        ],
-        is_force: [
-          'is_force',
-          {
-            initialValue: false,
-            valuePropName: 'checked',
           },
         ],
       },
@@ -95,9 +78,11 @@ export default {
     },
     // 腾讯云、阿里云、火山云的按量付费机器，关机可停止付费
     // 腾讯云、阿里云包年包月机器，关机停止付费会转为按量付费机器
-    canStopPaying () {
+    canAutoPrepaid () {
       return this.params.data.every(item => {
-        return ['qcloud', 'aliyun'].includes(item.brand.toLocaleLowerCase()) || (['volcengine'].includes(item.brand.toLocaleLowerCase()) && item.billing_type === 'postpaid')
+        return ['qcloud', 'aliyun'].includes(item.brand.toLocaleLowerCase())
+      }) && this.params.data.some(item => {
+        return item.billing_type === 'postpaid'
       })
     },
     isOpenWorkflow () {
@@ -106,18 +91,16 @@ export default {
   },
   methods: {
     async doShutDownSubmit () {
-      const data = {
-        is_force: this.form.fd.is_force,
-      }
-      if (this.form.fd.stopPaying) {
-        data.stop_charging = true
+      const data = {}
+      if (this.form.fd.auto_prepaid) {
+        data.auto_prepaid = true
       }
       const ids = this.params.data.map(item => item.id)
       return this.params.onManager('batchPerformAction', {
         id: ids,
-        steadyStatus: 'ready',
+        steadyStatus: 'running',
         managerArgs: {
-          action: 'stop',
+          action: 'start',
           data,
         },
       })
@@ -148,20 +131,15 @@ export default {
         throw error
       }
     },
-    isForceChange (val) {
-      this.form.fd.is_force = val
-    },
-    stopPayingChange (val) {
+    autoPrepaidChange (val) {
       const { checked } = val.target
-      this.form.fd.stopPaying = checked
+      this.form.fd.auto_prepaid = checked
     },
     async handleShutDownByWorkflowSubmit () {
       const ids = this.params.data.map(item => item.id)
       const values = await this.form.fc.validateFields()
-      const params = {
-        stop_charging: this.form.fd.stopPaying,
-        is_force: this.form.fd.is_force,
-      }
+      const params = {}
+      if (this.form.fd.auto_prepaid) params.auto_prepaid = true
       const variables = {
         project: this.params.data[0].tenant_id,
         project_domain: this.params.data[0].domain_id,
