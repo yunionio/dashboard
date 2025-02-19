@@ -60,7 +60,8 @@ export default {
                           * After the shutdown, the common public IP will be released and cannot be retrieved. It is recommended that you first convert to a flexible public IP before performing the shutdown operation<br />
                           * After shutdown, the elastic public IP will be reserved and will not be released, and no fee will be charged during shutdown<br />
                           * During shutdown, many instances of operations (such as adjusting the configuration, reinstalling the system, etc.) may not be supported. If you need to operate, please perform it after booting.<br />
-                          * Some instances that do not support shutdown without charging will continue to be charged normally after shutdown`,
+                          * Some instances that do not support shutdown without charging will continue to be charged normally after shutdown<br />
+                          * Tencent Cloud and Alibaba Cloud's annual and monthly subscription machines that choose to shut down without charging will be converted to pay as you go machines`,
     billNegativeNumberReson: 'Negative numbers in the bill are due to refunds arising, such as early release refunds for annual and monthly machines, refunds following the use of coupons, and refunds for other benefits enjoyed by the account.',
     billCurrentYearFee: 'This year\'s consumption is displayed as the current year\'s expenses on the currently selected date and end date',
     restartNetworkToEffectIp: 'After replacing the IP, you need to restart the network card at the same time to take effect',
