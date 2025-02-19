@@ -52,7 +52,7 @@ import regexp from '@/utils/regexp'
 import { hasSetupKey } from '@/utils/auth'
 import { sizeToDesignatedUnit } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
-import { BRAND_MAP } from '@/constants'
+import { PROVIDER_MAP, BRAND_MAP } from '@/constants'
 import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -218,13 +218,10 @@ export default {
           label: this.$t('compute.text_272'),
           permission: 'server_perform_start',
           action: () => {
-            const ids = this.list.selectedItems.map(item => item.id)
-            this.list.onManager('batchPerformAction', {
-              steadyStatus: 'running',
-              id: ids,
-              managerArgs: {
-                action: 'start',
-              },
+            this.createDialog('VmStartDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -745,6 +742,38 @@ export default {
                       return ret
                     },
                     hidden: () => !(hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'ecloud', 'jdcloud', 'ctyun'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_auto_renewal'),
+                  },
+                  // 更改计费模式
+                  {
+                    label: this.$t('compute.change_billing_type'),
+                    permission: 'server_perform_change_billing_type',
+                    action: () => {
+                      this.createDialog('VmChangeBillingTypeDialog', {
+                        steadyStatus: ['running', 'ready'],
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        refresh: this.refresh,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      if (!rescueModeValid.validate) return rescueModeValid
+                      this.list.selectedItems.map(obj => {
+                        if (obj.brand !== BRAND_MAP.Aliyun.key && obj.brand !== BRAND_MAP.Qcloud.key) {
+                          ret.tooltip = this.$t('compute.text_473', [PROVIDER_MAP[obj.provider].label])
+                        }
+                      })
+                      if (!ret.tooltip) {
+                        ret.validate = true
+                      }
+                      return ret
+                    },
+                    hidden: () => !(hasSetupKey(['aliyun', 'qcloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_change_billing_type'),
                   },
                   // 编辑标签
                   {

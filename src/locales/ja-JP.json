@@ -182,7 +182,8 @@
       "creating_container": "作成中",
       "create_container_failed": "作成に失敗しました",
       "delete_container_failed": "削除に失敗しました",
-      "snapshot_delete": "スナップショットを削除してください。"
+      "snapshot_delete": "スナップショットを削除してください。",
+      "change_billing_type": "課金モードの変更"
     },
     "network": {
       "init": "初期化する",

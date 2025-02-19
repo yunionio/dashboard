@@ -1882,5 +1882,8 @@
   "compute.cloud_regional_disk_auto": "Regional ESSD",
   "compute.elastic_ephemeral_disk_standard": "standard elastic ephemeral disk",
   "compute.elastic_ephemeral_disk_premium": "premium elastic ephemeral disk",
-  "compute.manual_renewal": "手動チャージ"
+  "compute.manual_renewal": "手動チャージ",
+  "compute.change_billing_type": "課金モードの変更",
+  "compute.billing_type": "課金モード",
+  "compute.change_to_prepaid": "年次パッケージに変更"
 }
