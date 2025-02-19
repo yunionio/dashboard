@@ -384,13 +384,11 @@ const getSingleActions = function () {
               {
                 label: i18n.t('compute.text_272'),
                 permission: 'server_perform_start',
-                action: () => {
-                  this.onManager('performAction', {
-                    steadyStatus: 'running',
-                    id: obj.id,
-                    managerArgs: {
-                      action: 'start',
-                    },
+                action: (obj) => {
+                  this.createDialog('VmStartDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => {
@@ -898,6 +896,35 @@ const getSingleActions = function () {
                   return ret
                 },
                 hidden: () => !(hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'ecloud', 'jdcloud', 'ctyun'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_auto_renewal'),
+              },
+              // 更改计费模式
+              {
+                label: i18n.t('compute.change_billing_type'),
+                permission: 'server_perform_change_billing_type',
+                action: () => {
+                  this.createDialog('VmChangeBillingTypeDialog', {
+                    steadyStatus: ['running', 'ready'],
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
+                  if (obj.brand !== BRAND_MAP.Aliyun.key && obj.brand !== BRAND_MAP.Qcloud.key) {
+                    ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[obj.provider].label])
+                    return ret
+                  }
+                  ret.validate = true
+                  return ret
+                },
+                hidden: () => !(hasSetupKey(['aliyun', 'qcloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_change_billing_type'),
               },
             ],
           },
