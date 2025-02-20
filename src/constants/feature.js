@@ -217,7 +217,7 @@ const LicenseItems = [
     validators: [validators.hasCloudAccount],
   },
   {
-    key: 'monitor_operation',
+    key: 'monitor',
     origin_key: 'monitor',
     meta: meta('resource_managent', 'monitor', false),
   },

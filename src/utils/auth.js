@@ -438,3 +438,14 @@ export const getProductName = (defaultName) => {
   }
   return defaultName || 'Cloudpods'
 }
+
+export const isLicense2 = () => {
+  const createTime = store.getters && store.getters['app/license']?.compute?.create_time
+  if (createTime) {
+    if (createTime * 1000 > new Date('2025-02-21 00:00:00').getTime()) {
+    } else {
+    }
+    return createTime * 1000 > new Date('2025-02-21 00:00:00').getTime()
+  }
+  return false
+}
