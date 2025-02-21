@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import BaseMonitor from '@Compute/sections/monitor/BaseMonitor'
 import AgentMonitor from '@Compute/sections/monitor/AgentMonitor.vue'
 import { ONECLOUD_MONITOR, VMWARE_MONITOR, OTHER_MONITOR } from '@Compute/views/vminstance/constants'
@@ -53,26 +52,14 @@ export default {
     agentStatus: String,
   },
   data () {
-    let hasAgent = false
-    if (this.agentStatus === 'succeed') hasAgent = true
-    const row = this.data
-    const status = _.get(row, ['metadata', 'sys:monitor_agent']) || _.get(row, ['metadata', '__monitor_agent'])
-    const deploy = _.get(row, ['metadata', 'telegraf_deployed'])
-    if (row.hasOwnProperty('agent_status') || deploy) {
-      if (row.agent_status === 'succeed' || deploy) {
-        hasAgent = true
-      }
-    } else if (status) {
-      hasAgent = true
-    }
     return {
-      currentMonitorType: hasAgent ? 'agent' : 'basic',
+      currentMonitorType: 'agent',
       alertType: 'warning',
       time: '1h',
       timeGroup: '1m',
       monitorList: [],
       server: this.data,
-      types: hasAgent ? ['agent', 'basic'] : ['basic', 'agent'],
+      types: ['agent', 'basic'],
     }
   },
   computed: {
