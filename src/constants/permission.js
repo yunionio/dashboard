@@ -1493,7 +1493,7 @@ export const PERMISSION = {
 
   metadatas_perform_tag_value_pairs: ['compute', 'metadatas', 'perform', 'tag-value-pairs'],
 
-  topology_list: ['compute', 'topology', 'list'],
+  topology_list: ['compute', 'global-topology', 'list'],
 
   ...extraPermissions,
 }
