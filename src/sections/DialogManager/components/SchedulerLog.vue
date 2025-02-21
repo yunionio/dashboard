@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('common.scheduler_log')}}</div>
-    <div class="clearfix pr-2" slot="body">
-      <code-mirror v-model="showData" :options="cmOptions" ref="codeMirrorRef" view-height="300px" :is-scroll="true" />
+    <div class="clearfix codemirror-h-100" slot="body">
+      <code-mirror v-model="showData" :options="cmOptions" ref="codeMirrorRef" :is-scroll="true" />
       <div
         class="float-right"
         v-clipboard:copy="params.data"
@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import * as R from 'ramda'
+import yaml from 'js-yaml'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -57,7 +59,24 @@ export default {
           raw: true,
         },
       }).then(res => {
-        this.showData = JSON.stringify(res.data)
+        if (R.is(Object, res.data)) {
+          const data = {}
+          for (const key in res.data) {
+            let value = res.data[key]
+            if (key.startsWith('{\\') && key.endWith('}')) {
+              try {
+                const v = JSON.parse(value)
+                value = v
+              } catch (err) {}
+            }
+            data[key] = value
+          }
+          const yamlData = yaml.dump(data)
+          this.cmOptions.mode = 'text/x-yaml'
+          this.showData = yamlData
+        } else {
+          this.showData = JSON.stringify(res.data)
+        }
         this.loading = false
       }).catch(err => {
         this.showData = 'No log found'
@@ -74,3 +93,9 @@ export default {
   },
 }
 </script>
+
+<style lang="less" scoped>
+.CodeMirror {
+  height: 100% !important;
+}
+</style>
