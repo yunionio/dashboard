@@ -154,7 +154,7 @@ export function hasPermission ({
   const has = keys.every(item => {
     // 这里只判断无权限的情况
     // 获取当前的key对应的权限结果
-    const pData = permissionData || (store.getters.permission && store.getters.permission)
+    const pData = permissionData || (store.getters.permission && store.getters.permission) || {}
     const pArr = pData[item]
     if (pArr && pArr.length > 0) {
       // 如果当前的权限的资源不包含此资源直接不显示
