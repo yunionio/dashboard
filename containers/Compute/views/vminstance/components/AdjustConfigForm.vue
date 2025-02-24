@@ -22,7 +22,7 @@
               :decorator="decorators.vcpu"
               :options="form.fi.cpuMem.cpus || []"
               :disable-options="disableCpus"
-              :disabled="runningArm"
+              :disabled="runningArm || runningOther"
               :extra="cpuExtra"
               :max="form.fd.vcpu < 32 ? 32 : 128"
               :form="form"
@@ -33,7 +33,7 @@
               @change="cpuChange" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_369')" class="mb-0">
-            <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :disable-options="disableMems" :disabled="runningArm" :extra="cpuExtra" />
+            <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :disable-options="disableMems" :disabled="runningArm || runningOther" :extra="cpuExtra" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_109')">
             <sku
@@ -47,7 +47,8 @@
               :instance-type="instanceType"
               :hypervisor="hypervisor"
               :canSkuShow="diskLoaded"
-              :hasMeterService="hasMeterService" />
+              :hasMeterService="hasMeterService"
+              :skuDisabled="runningOther" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_49')" v-show="selectedItems.length === 1 && form.fd.defaultType">
             <system-disk
@@ -410,6 +411,14 @@ export default {
     },
     runningArm () {
       return this.isSomeArm && this.isSomeRunning
+    },
+    runningOther () {
+      return this.dataList.some(val => {
+        if (val.status === 'running' && [HYPERVISORS_MAP.aliyun.hypervisor, HYPERVISORS_MAP.aws.hypervisor, HYPERVISORS_MAP.google.hypervisor, HYPERVISORS_MAP.huawei.hypervisor, HYPERVISORS_MAP.ctyun.hypervisor, HYPERVISORS_MAP.volcengine.hypervisor].includes(val.hypervisor)) {
+          return true
+        }
+        return false
+      })
     },
     hotplug () { // 做热扩容校验，true 表示置灰 CPU 和 内存，不支持热扩容
       if (this.dataList.every(val => val.status === 'ready')) {
