@@ -22,7 +22,7 @@
           </a-checkbox>
           <help-tooltip name="shutdownStopCharging" />
         </a-form-item>
-        <a-form-item :label="$t('compute.force_shutdown')" v-bind="formItemLayout">
+        <a-form-item v-if="isSupportForce" :label="$t('compute.force_shutdown')" v-bind="formItemLayout">
           <a-switch :value="form.fd.is_force" @change="isForceChange" />
         </a-form-item>
       </a-form>
@@ -40,6 +40,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import WorkflowMixin from '@/mixins/workflow'
 import { BATCH_OPERATE_SERVERS_MAX } from '@/constants/workflow'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'VmShutDownDialog',
@@ -102,6 +103,25 @@ export default {
     },
     isOpenWorkflow () {
       return this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_SERVER_STOP)
+    },
+    isSupportForce () {
+      return this.params.data.every(item => {
+        return [
+          HYPERVISORS_MAP.kvm.hypervisor,
+          HYPERVISORS_MAP.esxi.hypervisor,
+          HYPERVISORS_MAP.huawei.hypervisor,
+          HYPERVISORS_MAP.aliyun.hypervisor,
+          HYPERVISORS_MAP.nutanix.hypervisor,
+          HYPERVISORS_MAP.volcengine.hypervisor,
+          HYPERVISORS_MAP.ctyun.hypervisor,
+          HYPERVISORS_MAP.hcso.hypervisor,
+          HYPERVISORS_MAP.aws.hypervisor,
+          HYPERVISORS_MAP.zstack.hypervisor,
+          HYPERVISORS_MAP.qcloud.hypervisor,
+          HYPERVISORS_MAP.sangfor?.hypervisor,
+          HYPERVISORS_MAP.uis?.hypervisor,
+        ].includes(item.hypervisor)
+      })
     },
   },
   methods: {
