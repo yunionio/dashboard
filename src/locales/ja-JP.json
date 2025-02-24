@@ -5954,6 +5954,7 @@
     }
   },
   "common.workflow.shut_down": "メインマシンの電源がオフになっています",
+  "common.workflow.start": "メインマシンの電源がオフになっています",
   "common.workflow.restart": "ホストの再起動",
   "common.workflow.order_set": "リソース注文アプリケーション",
   "common.ssh_login_err": "SSH リモート ログインに失敗しました",

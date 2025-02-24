@@ -86,7 +86,7 @@ export default {
       })
     },
     isOpenWorkflow () {
-      return this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_SERVER_STOP)
+      return this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_SERVER_START)
     },
   },
   methods: {
@@ -143,7 +143,7 @@ export default {
       const variables = {
         project: this.params.data[0].tenant_id,
         project_domain: this.params.data[0].domain_id,
-        process_definition_key: this.WORKFLOW_TYPES.APPLY_SERVER_STOP,
+        process_definition_key: this.WORKFLOW_TYPES.APPLY_SERVER_START,
         initiator: this.userInfo.id,
         ids: ids.join(','),
         description: values.reason,
