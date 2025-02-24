@@ -12,6 +12,7 @@ export const WORKFLOW_TYPES = {
   APPLY_INTERNAL_RESOURCE: 'apply-internal-resource',
   APPLY_SERVER_STOP: 'apply-server-stop',
   APPLY_SERVER_RESTART: 'apply-server-restart',
+  APPLY_SERVER_START: 'apply-server-start',
   EXECUTE_RESOURCE_ORDER_SET: 'execute-resource-order-set',
 }
 
@@ -48,6 +49,10 @@ export const PROCESS_TYPES_OPTS = [
   {
     name: i18n.t('common.workflow.shut_down'),
     value: WORKFLOW_TYPES.APPLY_SERVER_STOP,
+  },
+  {
+    name: i18n.t('common.workflow.start'),
+    value: WORKFLOW_TYPES.APPLY_SERVER_START,
   },
   {
     name: i18n.t('common.workflow.restart'),

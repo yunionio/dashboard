@@ -102,6 +102,10 @@ export default {
       type: Boolean,
       default: () => true,
     },
+    skuDisabled: {
+      type: Boolean,
+      default: () => false,
+    },
   },
   data () {
     return {
@@ -120,6 +124,13 @@ export default {
     }
   },
   computed: {
+    customConfig () {
+      return {
+        checkMethod: ({ row }) => {
+          return true
+        },
+      }
+    },
     isPublic () {
       return this.type === 'public'
     },
@@ -131,7 +142,6 @@ export default {
     },
     tableColumn () {
       const column = [
-        { type: 'radio', width: 40 },
         { field: 'instance_type_category_i18n', title: this.$t('compute.text_175') },
         { field: 'region', title: this.$t('compute.text_177') },
         { field: 'name', title: this.$t('compute.text_178') },
@@ -139,6 +149,11 @@ export default {
         { field: 'cpu_arch', title: this.$t('compute.cpu_arch'), slots: { default: ({ row }) => { return row.cpu_arch ? this.$t(`compute.cpu_arch.${row.cpu_arch}`) : '-' } } },
         { field: 'memory_size_mb_compute', title: this.$t('compute.text_180') },
       ]
+      if (this.skuDisabled) {
+        column.unshift({ field: 'radio', width: 40, slots: { default: ({ row }) => { return [row.id === this.selectedSkuData?.id ? <vxe-radio disabled></vxe-radio> : <vxe-radio disabled value={false}></vxe-radio>] } } })
+      } else {
+        column.unshift({ type: 'radio', width: 40 })
+      }
       const providerColumn = {
         field: 'provider',
         title: this.$t('compute.text_176'),
@@ -196,7 +211,7 @@ export default {
         categoryOptions[item] = {
           label: this.getI18NValue(`skuCategoryOptions.${type}.${item}`, item),
           key: item,
-          disabled: !this.skuTypes.includes(item),
+          disabled: !this.skuTypes.includes(item) || this.skuDisabled,
         }
       })
       const skuOptions = {
@@ -312,6 +327,7 @@ export default {
       return '0'
     },
     skuChange ({ row }) {
+      if (this.skuDisabled) return
       this.setSku(row, true)
     },
     skuTypeChange () {
