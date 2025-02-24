@@ -6051,6 +6051,7 @@
   "task.stages.title.complete_at": "完成时间",
   "task.stages.title.duration": "耗时(秒)",
   "common.workflow.shut_down": "主机关机",
+  "common.workflow.start": "主机开机",
   "common.workflow.restart": "主机重启",
   "common.workflow.order_set": "资源订单申请",
   "common.ssh_login_err": "SSH远程登录失败",

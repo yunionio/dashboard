@@ -6030,6 +6030,7 @@
   "task.stages.title.complete_at": "Complete",
   "task.stages.title.duration": "Duration(Secs)",
   "common.workflow.shut_down": "Host shuts down",
+  "common.workflow.start": "Host start",
   "common.workflow.restart": "Host restart",
   "common.workflow.order_set": "Resource Order Application",
   "common.ssh_login_err": "SSH remote login failed",
