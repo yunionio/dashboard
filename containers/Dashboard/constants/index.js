@@ -1453,6 +1453,12 @@ export const USAGE_CONFIG = {
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
+  'domain.isolated_devices': {
+    origin_key: 'isolated_devices',
+    unit: i18n.t('dashboard.text_4'),
+    scope: SCOPES_MAP.domain.key,
+    clouds: [CLOUD_ENVS.onpremise],
+  },
   'domain.servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     canUseUserUnit: true,

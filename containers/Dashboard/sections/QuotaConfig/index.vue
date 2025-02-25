@@ -564,10 +564,11 @@ export default {
         if (USAGE_CONFIG[key].clouds && USAGE_CONFIG[key].clouds.length > 0 && this.cloudEnv && !USAGE_CONFIG[key].clouds.includes(this.cloudEnv)) {
           continue
         }
+        const k = USAGE_CONFIG[key].origin_key || key
         ret.push({
-          key,
+          key: k,
           scope: USAGE_CONFIG[key].scope,
-          label: this.translateUsage[key] ? this.translateUsage[key] : key,
+          label: this.translateUsage[k] ? this.translateUsage[k] : k,
         })
       }
       return ret
