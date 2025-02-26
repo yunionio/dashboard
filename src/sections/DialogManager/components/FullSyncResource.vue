@@ -51,7 +51,7 @@ export default {
   data () {
     return {
       loading: false,
-      resources: ['all', 'network', 'compute', 'loadbalancer', 'objectstore', 'rds', 'cache', 'nat', 'nas', 'waf', 'mongodb', 'es', 'kafka', 'app', 'container', 'quota', 'intervpcnetwork', 'cdn', 'dnszone'],
+      resources: ['all', 'network', 'compute', 'loadbalancer', 'objectstore', 'rds', 'cache', 'nat', 'nas', 'waf', 'mongodb', 'es', 'kafka', 'app', 'container', 'quota', 'intervpcnetwork', 'cdn', 'dnszone', 'image'],
       form: {
         fc: this.$form.createForm(this),
       },
@@ -67,6 +67,7 @@ export default {
   },
   methods: {
     getResourceI18n (v) {
+      if (v === 'image') return this.$t('compute.text_96')
       if (this.$te(`dictionary.${v}`)) {
         return this.$t(`dictionary.${v}`)
       }
