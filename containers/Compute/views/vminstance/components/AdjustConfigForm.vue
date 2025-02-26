@@ -804,9 +804,9 @@ export default {
         if (this.data[i].disks_info) {
           this.data[i].disks_info.forEach((item) => {
             if (item.disk_type !== 'sys') { // 数据盘
-              datadisks.push({ value: item.size / 1024, type: item.storage_type })
+              datadisks.push({ value: item.size / 1024, type: item.storage_type, medium_type: item.medium_type })
             } else { // 系统盘
-              sysdisks.push({ value: item.size / 1024, type: item.storage_type })
+              sysdisks.push({ value: item.size / 1024, type: item.storage_type, medium_type: item.medium_type })
             }
           })
         }
@@ -833,18 +833,39 @@ export default {
         beforeDiskSize = beforeDataDisks.reduce((sum, size) => { return sum + size })
       }
       const serverConf = this.selectedItems.map((item) => {
+        const beforeSysDisks = (item.disks_info || []).filter(item => item.disk_type === 'sys').map(item => {
+          return {
+            medium_type: item.medium_type,
+            size: item.size,
+            type: item.storage_type,
+          }
+        })
+        const beforeDataDisks = (item.disks_info || []).filter(item => item.disk_type === 'data').map(item => {
+          return {
+            medium_type: item.medium_type,
+            size: item.size,
+            type: item.storage_type,
+          }
+        })
         return {
           name: item.name,
           project: item.tenant,
+          hypervisor: this.selectedItem.hypervisor,
           before: {
             cpu: item.vcpu_count,
             memory: item.vmem_size,
             disk: item.disk,
+            dataDisks: beforeDataDisks,
+            sysDisks: beforeSysDisks,
+            sku: item.instance_type,
           },
           after: {
             cpu: this.form.fd.vcpu,
             memory: this.form.fd.vmem,
             disk: +item.disk + (+diskSize - beforeDiskSize) * 1024,
+            dataDisks: params.disks,
+            sysDisks: beforeSysDisks,
+            sku: params.sku,
           },
         }
       })
