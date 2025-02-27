@@ -1883,5 +1883,7 @@
   "compute.manual_renewal": "Manual renewal",
   "compute.change_billing_type": "Change billing mode",
   "compute.billing_type": "Billing mode",
-  "compute.change_to_prepaid": "Change to prepaid"
+  "compute.change_to_prepaid": "Change to prepaid",
+  "compute.shutdown_auto_reset": "Shutdown and automatic reset",
+  "compute.disk_set_auto_reset": "Set automatic reset"
 }

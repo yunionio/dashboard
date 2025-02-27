@@ -19,6 +19,7 @@
       :isIopsShow="isIopsShow"
       :isThroughputShow="isThroughputShow"
       :iopsLimit="iopsLimit"
+      :isAutoResetShow="isAutoResetShow"
       @showStorageChange="showStorageChange"
       @diskTypeChange="setDiskMedium"
       @storageHostChange="(val) => $emit('storageHostChange', val)" />
@@ -114,6 +115,10 @@ export default {
       default: false,
     },
     isThroughputShow: {
+      type: Boolean,
+      default: false,
+    },
+    isAutoResetShow: {
       type: Boolean,
       default: false,
     },
