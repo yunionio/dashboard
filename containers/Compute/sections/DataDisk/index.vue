@@ -24,6 +24,7 @@
           :isIopsShow="isIopsShow"
           :isThroughputShow="isThroughputShow"
           :iopsLimit="iopsLimit[item.key]"
+          :isAutoResetShow="isAutoResetShow"
           @snapshotChange="val => snapshotChange(item, val, i)"
           @diskTypeChange="val => diskTypeChange(item, val)"
           @storageHostChange="(val) => $emit('storageHostChange', val)" />
@@ -134,6 +135,10 @@ export default {
       default: false,
     },
     isServertemplate: {
+      type: Boolean,
+      default: false,
+    },
+    isAutoResetShow: {
       type: Boolean,
       default: false,
     },
