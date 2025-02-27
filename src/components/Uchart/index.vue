@@ -87,7 +87,8 @@ export default {
               html += `<div>${that.$moment(time * 1000).format('YYYY-MM-DD HH:mm')}</div>`
             }
             data.forEach(d => {
-              html += `<div style="margin-bottom:5px">${d.label.length > 50 ? d.label.substring(0, 50) + '...' : d.label}: ${(d.value || 0).toFixed(2)}${d.unit || ''}</div>`
+              const valueUnit = that.options?.tooltip?.valueFormatter ? that.options.tooltip.valueFormatter(d.value, d.unit) : `${(d.value || 0).toFixed(2)}${d.unit || ''}`
+              html += `<div style="margin-bottom:5px">${d.label.length > 50 ? d.label.substring(0, 50) + '...' : d.label}: ${valueUnit}</div>`
             })
             html += '</div>'
             that.toolTipHtml = html

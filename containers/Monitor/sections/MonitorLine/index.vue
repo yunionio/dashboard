@@ -218,7 +218,6 @@ export default {
           slots: {
             default: ({ row, rowIndex }) => {
               if (this.highlights.some(item => item.index === rowIndex)) {
-                console.log(that.colors, rowIndex)
                 return [<icon type="checkbox-fill" style={{ fontSize: '20px', color: that.colors.length && that.colors[rowIndex], cursor: 'pointer', transform: 'translateY(3px)' }}></icon>]
               }
               return [<icon type="checkbox-empty" style="font-size:20px;cursor:pointer;transform:translateY(3px)"></icon>]
@@ -437,7 +436,7 @@ export default {
       return ret
     },
     uChartOptions () {
-      const unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
+      let unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
       const ret = {
         width: '100%',
         height: 300,
@@ -461,7 +460,17 @@ export default {
           {
             scale: 'y',
             values: (self, ticks, space) => {
-              return ticks.map(item => item + (unit || ''))
+              if (unit === 'NULL' || unit === 'count') {
+                unit = ''
+              }
+              if (unit === 'ms') { // 时间类型的Y坐标，要取整 如 ： 1小时10分钟30秒 -> 1小时
+                unit = 'intms'
+              }
+              const list = ticks.map(item => {
+                const val = transformUnit(item, unit, 1000, '0')
+                return val.text
+              })
+              return list
             },
           },
         ],
@@ -474,6 +483,18 @@ export default {
         series: [
           {},
         ],
+        tooltip: {
+          valueFormatter: (value, unit) => {
+            if (unit === 'NULL' || unit === 'count') {
+              unit = ''
+            }
+            if (unit === 'ms') { // 时间类型的Y坐标，要取整 如 ： 1小时10分钟30秒 -> 1小时
+              unit = 'intms'
+            }
+            const val = transformUnit(value, unit, 1000, '0')
+            return val.text
+          },
+        },
       }
       this.series.forEach((item, i) => {
         const color = (this.colors && this.colors[i]) || this.colorHash.hex(`${i * 1000}`)
