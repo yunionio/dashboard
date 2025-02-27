@@ -288,6 +288,13 @@ export const createVmDecorators = type => {
           }],
         },
       ],
+      auto_reset: [
+        'systemDiskAutoReset',
+        {
+          valuePropName: 'checked',
+          initialValue: false,
+        },
+      ],
     },
     dataDisk: {
       type: i => [
@@ -366,6 +373,13 @@ export const createVmDecorators = type => {
             required: true,
             message: i18n.t('compute.text_1351'),
           }],
+        },
+      ],
+      auto_reset: i => [
+        `dataDiskAutoReset[${i}]`,
+        {
+          valuePropName: 'checked',
+          initialValue: false,
         },
       ],
     },
@@ -774,6 +788,9 @@ export class GenCreateData {
     if (diskSupportTypeMedium(this.fd.hypervisor)) {
       ret.backend = getOriginDiskKey(ret.backend)
     }
+    if (item.auto_reset) {
+      ret.auto_reset = true
+    }
     return ret
   }
 
@@ -818,6 +835,9 @@ export class GenCreateData {
     if (this.fd.systemDiskStorage) {
       systemDisk.storage_id = this.fd.systemDiskStorage
     }
+    if (this.fd.systemDiskAutoReset) {
+      systemDisk.auto_reset = this.fd.systemDiskAutoReset
+    }
     // #7356 新建vmware主机，数据盘没有传磁盘类型字段
     if (this.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
       dataDiskType = dataDiskType || sysDiskType
@@ -851,6 +871,9 @@ export class GenCreateData {
       }
       if (this.fi.dataDiskMedium) {
         diskObj.medium = this.fi.dataDiskMedium
+      }
+      if (this.fd.dataDiskAutoReset && this.fd.dataDiskAutoReset[key]) {
+        diskObj.auto_reset = this.fd.dataDiskAutoReset[key]
       }
       dataDisk.push(diskObj)
     }, this.fd.dataDiskSizes)

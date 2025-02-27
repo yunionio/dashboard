@@ -16,6 +16,7 @@
       :size-disabled="sizeDisabled || disabled"
       :storage-status-map="storageStatusMap"
       :isStorageShow="isStorageShow"
+      :isAutoResetShow="isAutoResetShow"
       @showStorageChange="showStorageChange"
       @diskTypeChange="setDiskMedium"
       @storageHostChange="(val) => $emit('storageHostChange', val)" />
@@ -103,6 +104,10 @@ export default {
       default: false,
     },
     isStorageShow: {
+      type: Boolean,
+      default: false,
+    },
+    isAutoResetShow: {
       type: Boolean,
       default: false,
     },

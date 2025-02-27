@@ -105,6 +105,7 @@
           :storageHostParams="storageHostParams"
           :domain="project_domain"
           :isStorageShow="isStorageShow"
+          isAutoResetShow
           @storageHostChange="storageHostChange" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_50')">
@@ -127,6 +128,7 @@
           :enableMointpoint="true"
           :storageParams="dataDiskStorageParams"
           :storageHostParams="storageHostParams"
+          isAutoResetShow
           @storageHostChange="storageHostChange" />
         <div slot="extra" class="warning-color" v-if="isStorageShow">{{ $t('compute.select_storage_no_schetag') }}</div>
       </a-form-item>
