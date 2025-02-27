@@ -832,8 +832,10 @@ export default {
     },
     async doChangeSettingsByWorkflowSubmit (values) {
       const params = {
-        sku: values.sku.name,
         auto_start: values.autoStart,
+      }
+      if (this.selectedItem.instance_type !== values.sku.name) {
+        params.sku = values.sku.name
       }
       const ids = this.dataList.map(item => item.id)
       params.disks = this.genDiskData(values)
@@ -882,7 +884,7 @@ export default {
             disk: +item.disk + (+diskSize - beforeDiskSize) * 1024,
             dataDisks: params.disks,
             sysDisks: beforeSysDisks,
-            sku: params.sku,
+            sku: values.sku.name,
           },
         }
       })
