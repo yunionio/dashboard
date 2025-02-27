@@ -223,6 +223,13 @@ export default {
           return this.$isScopedPolicyMenuHidden('disk_hidden_columns.storage')
         },
       },
+      {
+        field: 'auto_reset',
+        title: this.$t('compute.shutdown_auto_reset'),
+        formatter: ({ row }) => {
+          return row.auto_reset ? this.$t('common.true') : this.$t('common.false')
+        },
+      },
     ]
   },
 }

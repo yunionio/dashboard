@@ -45,6 +45,10 @@
       <storage style="min-width: 480px; max-width: 500px;" :diskKey="diskKey" :decorators="decorator" :storageParams="storageParams" v-if="showStorage" :form="form" :storageHostParams="storageHostParams" @storageHostChange="(val) => $emit('storageHostChange', val)" />
       <a-button v-if="!disabled" class="mt-1" type="link" @click="storageShowClick">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
     </template>
+    <!-- 关机重置 -->
+    <a-form-item v-if="isAutoResetShow">
+      <a-checkbox v-decorator="decorator.auto_reset">{{ $t('compute.shutdown_auto_reset') }}</a-checkbox>
+    </a-form-item>
     <template v-if="isVMware">
       <a-form-item class="mx-1" :wrapperCol="{ span: 24 }">
         <base-select
@@ -193,6 +197,10 @@ export default {
     iopsLimit: {
       type: Object,
       default: () => ({ min: 0 }),
+    },
+    isAutoResetShow: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
