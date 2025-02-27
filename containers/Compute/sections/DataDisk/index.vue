@@ -21,6 +21,7 @@
           :storageParams="storageParams"
           :storageHostParams="storageHostParams"
           :isStorageShow="isStorageShow"
+          :isAutoResetShow="isAutoResetShow"
           @snapshotChange="val => snapshotChange(item, val, i)"
           @diskTypeChange="val => diskTypeChange(item, val)"
           @storageHostChange="(val) => $emit('storageHostChange', val)" />
@@ -122,6 +123,10 @@ export default {
       type: Object,
     },
     storageHostParams: Object,
+    isAutoResetShow: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
