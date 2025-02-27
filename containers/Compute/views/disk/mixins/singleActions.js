@@ -354,6 +354,25 @@ export default {
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_setup_snapshot_policy'),
             },
             {
+              label: i18n.t('compute.disk_set_auto_reset'),
+              permission: 'disks_update',
+              action: () => {
+                this.createDialog('DiskSetAutoResetDialog', {
+                  vm: this,
+                  data: [obj],
+                  onManager: this.onManager,
+                  columns: this.columns,
+                  refresh: this.refresh,
+                })
+              },
+              meta: () => {
+                return {
+                  validate: true,
+                }
+              },
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_auto_reset'),
+            },
+            {
               label: i18n.t('compute.driver.update'),
               permission: 'disks_update',
               action: () => {
