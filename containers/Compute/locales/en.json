@@ -1660,5 +1660,7 @@
   "compute.tooltip.check_fake_baremetal_server": "This operation is not supported on the machine",
   "compute.transfer.bandwidth.number.check": "Only positive integers can be entered",
   "compute.bios": "Boot Mode",
-  "compute.lvm_shared_storage.validate_tooltip": "LVM disk host does not support this operation"
+  "compute.lvm_shared_storage.validate_tooltip": "LVM disk host does not support this operation",
+  "compute.shutdown_auto_reset": "Shutdown and automatic reset",
+  "compute.disk_set_auto_reset": "Set automatic reset"
 }

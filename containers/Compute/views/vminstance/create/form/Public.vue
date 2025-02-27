@@ -106,7 +106,8 @@
           :hypervisor="hypervisor"
           :sku="form.fd.sku"
           :capability-data="form.fi.capability"
-          :image="form.fi.imageMsg" />
+          :image="form.fi.imageMsg"
+          isAutoResetShow />
       </a-form-item>
       <a-form-item :label="$t('compute.text_50')">
         <data-disk
@@ -118,15 +119,8 @@
           :sku="form.fd.sku"
           :defaultType="form.fd.systemDiskType"
           :capability-data="form.fi.capability"
-          ref="dataDiskRef" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_1372')" v-if="showServerAccount">
-        <server-account :form="form" :hypervisor="hypervisor" :instance_capabilities="form.fi.capability.instance_capabilities" :osType="osType" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_308')">
-        <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" :form="form" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_104')" class="mb-0">
+          ref="dataDiskRef"
+          isAutoResetShow />
         <server-network
           :form="form"
           :decorator="decorators.network"

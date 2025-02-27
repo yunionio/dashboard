@@ -127,6 +127,13 @@ export default {
         },
         hidden: this.hiddenColumns.includes('medium_type'),
       },
+      {
+        field: 'auto_reset',
+        title: this.$t('compute.shutdown_auto_reset'),
+        formatter: ({ row }) => {
+          return row.auto_reset ? this.$t('common.true') : this.$t('common.false')
+        },
+      },
     ]
   },
 }
