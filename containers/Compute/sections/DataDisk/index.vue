@@ -24,6 +24,7 @@
           :isIopsShow="isIopsShow"
           :isThroughputShow="isThroughputShow"
           :iopsLimit="iopsLimit[item.key]"
+          :isAutoResetShow="isAutoResetShow"
           @snapshotChange="val => snapshotChange(item, val, i)"
           @diskTypeChange="val => diskTypeChange(item, val, i)"
           @storageHostChange="(val) => $emit('storageHostChange', val)" />
@@ -138,6 +139,10 @@ export default {
       default: false,
     },
     isVminstanceContainer: {
+      type: Boolean,
+      default: false,
+    },
+    isAutoResetShow: {
       type: Boolean,
       default: false,
     },

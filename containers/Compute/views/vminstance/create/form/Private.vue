@@ -101,7 +101,8 @@
           :sku="form.fd.sku"
           :capability-data="form.fi.capability"
           :image="form.fi.imageMsg"
-          :sizeDisabled="disabledSysDiskSize" />
+          :sizeDisabled="disabledSysDiskSize"
+          isAutoResetShow />
       </a-form-item>
       <a-form-item :label="$t('compute.text_50')" v-if="form.fd.hypervisor && form.fd.hypervisor !== 'zettakit'">
         <data-disk
@@ -112,7 +113,8 @@
           :sku="form.fd.sku"
           :defaultType="form.fd.systemDiskType"
           :capability-data="form.fi.capability"
-          ref="dataDiskRef" />
+          ref="dataDiskRef"
+          isAutoResetShow />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1372')" v-if="showServerAccount">
         <server-account :form="form" :hypervisor="form.fd.hypervisor" :instance_capabilities="form.fi.capability.instance_capabilities" :osType="osType" />
