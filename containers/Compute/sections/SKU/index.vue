@@ -106,6 +106,10 @@ export default {
       type: Boolean,
       default: () => false,
     },
+    dataSku: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
@@ -342,6 +346,8 @@ export default {
         const extSku = this.skuList.find(item => item.name === this.instanceType)
         if (extSku) {
           chooseSku = extSku
+        } else {
+          chooseSku = this.dataSku
         }
       }
       this.$nextTick(() => {
