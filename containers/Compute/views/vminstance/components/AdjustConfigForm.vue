@@ -17,7 +17,7 @@
         <a-form
           v-bind="formItemLayout"
           :form="form.fc">
-          <a-form-item :label="$t('compute.text_1058')" class="mb-0">
+          <a-form-item v-if="isShowCpu" :label="$t('compute.text_1058')" class="mb-0">
             <cpu-radio
               :decorator="decorators.vcpu"
               :options="form.fi.cpuMem.cpus || []"
@@ -48,7 +48,8 @@
               :hypervisor="hypervisor"
               :canSkuShow="diskLoaded"
               :hasMeterService="hasMeterService"
-              :skuDisabled="runningOther" />
+              :skuDisabled="runningOther"
+              :dataSku="dataSku" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_49')" v-show="selectedItems.length === 1 && form.fd.defaultType">
             <system-disk
@@ -400,6 +401,13 @@ export default {
     selectedItem () {
       return this.dataList[0]
     },
+    dataSku () {
+      const target = (this.selectedItem.disksInfo || []).filter(item => item.disk_type === 'sys')
+      return {
+        name: this.selectedItem?.instance_type,
+        sys_disk_type: target.length ? target[0].storage_type : '',
+      }
+    },
     count () {
       return this.selectedItems.length || 1
     },
@@ -687,6 +695,12 @@ export default {
     isRenderDataDisk () {
       return this.hypervisor && this.form.fi.capability.storage_types3 && this.form.fd.sku
     },
+    isShowCpu () {
+      return (this.form.fi.cpuMem?.cpus || []).includes(this.form.fd.vcpu)
+    },
+    isShowMem () {
+      return (this.form.fi.cpuMem?.cpus || []).includes(this.form.fd.vcpu) && ((this.form.fi.cpuMem?.cpu_mems_mb && this.form.fi.cpuMem?.cpu_mems_mb[this.form.fd.vcpu]) || []).includes(this.form.fd.vmem)
+    },
   },
   watch: {
     priceTips: {
@@ -748,7 +762,7 @@ export default {
       }
       const conf = this.maxConfig()
       this.form.fd.vcpu_count = conf[0]
-      this.form.fd.vmem = Math.ceil(conf[1]) * 1024
+      this.form.fd.vmem = conf[1] * 1024
       this.form.fd.datadisks = conf[2]
       this.form.fd.sysdisks = conf[3]
       this.beforeDataDisks = [...this.form.fd.datadisks]
