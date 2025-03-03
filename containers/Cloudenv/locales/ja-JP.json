@@ -39,7 +39,7 @@
   "cloudenv.clouduser_list_a1": "@:dictionary.cloudgroupとの関連付け",
   "cloudenv.clouduser_list_a2": "ローカルユーザーの変更",
   "cloudenv.clouduser_text1": "パスワードは自動生成され、作成後にリストで確認できます",
-  "cloudenv.clouduser_text2": "クラウド上のユーザーグループに対応し、複数のグループを選択して複数のグループの権限を継承できます",
+  "cloudenv.clouduser_text2": "対応するクラウド上のユーザーグループは、権限の集合であり、複数のグループを選択すると複数のグループに1人ずつクラウドユーザーが作成されます",
   "cloudenv.clouduser_desc": "@:dictionary.clouduserに対応するクラウド上の「ユーザー」です。このページでは、@:dictionary.clouduserの追加、削除、変更、検索ができます。また、@:dictionary.clouduserとローカルプラットフォームのユーザーを関連付けることもできます。これにより、@:dictionary.clouduserを効率的に管理できます",
   "cloudenv.text_1": "できるだけ使用する",
   "cloudenv.text_2": "使用を避ける",

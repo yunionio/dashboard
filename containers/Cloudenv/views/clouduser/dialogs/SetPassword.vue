@@ -10,7 +10,7 @@
         :rules="rules"
         v-bind="formItemLayout">
         <a-form-model-item :label="$t('cloudenv.clouduser_list_t2')" prop="password">
-          <a-input-password v-model="fd.password" :placeholder="$t('cloudenv.clouduser_list_t2')" />
+          <a-input-password v-model="fd.password" :placeholder="$t('validator.password')" />
         </a-form-model-item>
       </a-form-model>
     </div>
@@ -24,6 +24,7 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { REGEXP } from '@/utils/validate'
 
 export default {
   name: 'ClouduserSetPasswordDialog',
@@ -36,7 +37,21 @@ export default {
       },
       rules: {
         password: [
-          { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.clouduser_list_t2')]) },
+          {
+            required: true,
+            validator: (rule, value, cb) => {
+              if (!this.fd.password) {
+                cb()
+              } else {
+                const { regexp, message } = REGEXP.password
+                if (regexp.test(this.fd.password)) {
+                  cb()
+                } else {
+                  cb(Error(message))
+                }
+              }
+            },
+          },
         ],
       },
       formItemLayout: {

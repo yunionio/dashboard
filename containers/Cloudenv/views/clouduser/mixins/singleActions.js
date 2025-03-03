@@ -41,6 +41,48 @@ export default {
               },
             },
             {
+              label: this.$t('iam.enable_console_login'),
+              permission: 'clouduser_perform_enable_console_login',
+              action: (obj) => {
+                this.createDialog('ClouduserSetConsoleLoginDialog', {
+                  vm: this,
+                  data: [obj],
+                  columns: this.columns,
+                  title: this.$t('iam.enable_console_login'),
+                  name: this.$t('dictionary.clouduser'),
+                  onManager: this.onManager,
+                  action: 'enable-console-login',
+                })
+              },
+              meta: (obj) => {
+                return {
+                  validate: !obj.is_console_login,
+                }
+              },
+              hidden: () => !this.$appConfig.isPrivate,
+            },
+            {
+              label: this.$t('iam.disable_console_login'),
+              permission: 'clouduser_perform_disable_console_login',
+              action: (obj) => {
+                this.createDialog('ClouduserSetConsoleLoginDialog', {
+                  vm: this,
+                  data: [obj],
+                  columns: this.columns,
+                  title: this.$t('iam.disable_console_login'),
+                  name: this.$t('dictionary.clouduser'),
+                  onManager: this.onManager,
+                  action: 'disable-console-login',
+                })
+              },
+              meta: (obj) => {
+                return {
+                  validate: obj.is_console_login,
+                }
+              },
+              hidden: () => !this.$appConfig.isPrivate,
+            },
+            {
               label: this.$t('cloudenv.clouduser_list_a2'),
               permission: 'clouduser_perform_change_owner',
               action: () => {

@@ -1257,6 +1257,8 @@ export const PERMISSION = {
   clouduser_perform_change_owner: ['cloudid', 'cloudusers', 'perform', 'change-owner'],
   clouduser_perform_set_groups: ['cloudid', 'cloudusers', 'perform', 'set-groups'],
   clouduser_perform_syncstatus: ['cloudid', 'cloudusers', 'perform', 'syncstatus'],
+  clouduser_perform_enable_console_login: ['cloudid', 'cloudusers', 'perform', 'enable-console-login'],
+  clouduser_perform_disable_console_login: ['cloudid', 'cloudusers', 'perform', 'disable-console-login'],
   // 监控报警
   unifiedmonitors_get: ['monitor', 'unifiedmonitors', 'get'],
   // 监控资源
