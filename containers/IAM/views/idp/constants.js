@@ -17,3 +17,7 @@ export function docs (scope) {
     qywechat_oauth2: `${idpUrl}/#${i18n.t('system.qywechat_oauth2_doc')}`,
   }
 }
+
+export const idpDrivers = {
+  LDAP: ['msad_one_domain', 'msad_multi_domain', 'openldap_one_domain'],
+}
