@@ -104,7 +104,7 @@
 import * as R from 'ramda'
 import jumper from '@/mixins/jumper'
 import { resolveValueChangeField } from '@/utils/common/ant'
-import { docs } from '../constants'
+import { docs, idpDrivers } from '../constants'
 import IDPDetailTable from '../components/DetailTable'
 import MSADMulti from './MSADMulti'
 import MSADOne from './MSADOne'
@@ -239,8 +239,7 @@ export default {
       return ['oidc', 'saml', 'cas'].indexOf(template) > -1
     },
     templateOptions () {
-      let templateOptions = {}
-      const idpDrivers = this.$t('idpDrivers')
+      const templateOptions = {}
       Object.keys(idpDrivers).forEach(key => {
         templateOptions[key] = []
         Object.values(idpDrivers[key]).forEach(tkey => {
@@ -254,9 +253,6 @@ export default {
       if (this.isShowDomain) {
         const index = R.findIndex(R.propEq('key', 'msad_multi_domain'))(templateOptions.LDAP)
         templateOptions.LDAP = R.remove(index, 1, templateOptions.LDAP)
-      }
-      if (!this.$appConfig.isPrivate) {
-        templateOptions = { LDAP: templateOptions.LDAP }
       }
       return templateOptions
     },
