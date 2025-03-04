@@ -40,7 +40,7 @@
             :options="item.tagValueOpts"
             filterable
             :disabled="disabled"
-            :select-props="{ placeholder: $t('monitor.text_110'), allowClear: true, loading }" />
+            :select-props="{ mode: (form.fd.tagOperators[item.key] && form.fd.tagOperators[item.key] === '=~') ? 'multiple' : 'single', placeholder: $t('monitor.text_110'), allowClear: true, loading }" />
         </a-form-item>
         <a-form-item style="width: 20px;" v-if="!disabled && i !== 0">
           <a-button shape="circle" icon="minus" size="small" @click="remove(i)" class="mt-2 ml-2" />
@@ -84,6 +84,7 @@ export default {
       default: () => [
         { key: '=', label: '=' },
         { key: '!=', label: '!=' },
+        { key: '=~', label: 'IN' },
       ],
     },
     conditionOpts: {
