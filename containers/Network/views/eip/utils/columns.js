@@ -53,10 +53,17 @@ export const getIPWithBgpTypeTableColumn = ({ hidden } = {}) => {
     slots: {
       default: ({ row }, h) => {
         const ret = []
+        const extraList = []
         const bgp = BGP_TYPES_MAP[row.bgp_type]?.label || row.bgp_type
+        if (row.mode === 'public_ip') {
+          extraList.push(i18n.t('network.static_public'))
+        }
         if (bgp && row.bgp_type === BGP_TYPES_MAP.BGP_PRO.value) {
+          extraList.push(bgp)
+        }
+        if (extraList.length) {
           ret.push(
-            <list-body-cell-wrap row={row} field="ip_addr" copy><span class="text-color-help">({ bgp })</span></list-body-cell-wrap>,
+            <list-body-cell-wrap row={row} field="ip_addr" copy><span class="text-color-help">({ extraList.join(',') })</span></list-body-cell-wrap>,
           )
         } else {
           ret.push(
@@ -70,12 +77,13 @@ export const getIPWithBgpTypeTableColumn = ({ hidden } = {}) => {
       return R.is(Function, hidden) ? hidden() : hidden
     },
     formatter: ({ row }) => {
-      const ret = []
+      const ret = [row.ip_addr]
       const bgp = BGP_TYPES_MAP[row.bgp_type]?.label || row.bgp_type
+      if (row.mode === 'public_ip') {
+        ret.push(i18n.t('network.static_public'))
+      }
       if (bgp && row.bgp_type === BGP_TYPES_MAP.BGP_PRO.value) {
-        ret.push(`${row.ip_addr}(${bgp})`)
-      } else {
-        ret.push(row.ip_addr)
+        ret.push(bgp)
       }
       const list = ret.filter(item => item)
       return list.length ? list.join(',') : ''
