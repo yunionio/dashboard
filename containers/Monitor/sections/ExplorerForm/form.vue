@@ -114,6 +114,7 @@ export default {
   data () {
     const initialValue = {}
     const initFilters = []
+    const initTagOperators = {}
     if (this.panel && this.panel.common_alert_metric_details && this.panel.common_alert_metric_details.length > 0) {
       const f = this.panel.common_alert_metric_details[0]
       const q = _.get(this.panel, 'settings.conditions[0].query.model')
@@ -137,6 +138,7 @@ export default {
             const key = uuid()
             initialValue.tags[key] = tag
             initFilters.push({ key: key, tagValueOpts: [] })
+            initTagOperators[key] = tag.operator
           })
         }
         initialValue.function = ''
@@ -161,6 +163,18 @@ export default {
     }
     const getkey = (index, key, defaultValue) => {
       if (initialValue.tags && initialValue.tags[index] && initialValue.tags[index][key]) {
+        if (key === 'value') {
+          const v = initialValue.tags[index][key]
+          if (v.startsWith('/^') && v.endsWith('$/')) {
+            const values = v.replace('/^', '').replace('$/', '').split('|').map(item => {
+              let k = item
+              if (k.startsWith('^')) k = k.replace('^', '')
+              if (k.endsWith('$')) k = k.replace('$', '')
+              return k
+            })
+            return values
+          }
+        }
         return initialValue.tags[index][key]
       } else {
         return defaultValue
@@ -280,6 +294,7 @@ export default {
         }),
         fd: {
           result_function: initialValue.result_function,
+          tagOperators: initTagOperators,
         },
       },
       decorators: decorators,
@@ -488,10 +503,16 @@ export default {
       if (fd.metric_value) params.select = [[{ type: 'field', params: [fd.metric_value] }]]
       if (R.is(Object, fd.tagValues)) {
         R.forEachObjIndexed((value, key) => {
-          if (value) {
+          let val = value
+          if (fd.tagOperators[key] === '=~' && val.length) {
+            val = `/${val.map(v => `^${v}$`).join('|')}/`
+          } else {
+            val = R.is(Array, val) ? (val.length ? val[0] : '') : val
+          }
+          if (val) {
             const tag = {
               key: fd.tagKeys[key],
-              value,
+              value: val,
               operator: fd.tagOperators[key],
             }
             if (fd.tagConditions && fd.tagConditions[key]) {
