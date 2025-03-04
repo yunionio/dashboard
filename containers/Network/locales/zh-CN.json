@@ -1150,5 +1150,6 @@
   "network.public_ip_donot_disassociate": "公网IP不允许解绑",
   "network.is_associated": "是否绑定",
   "network.associated": "已绑定",
-  "network.un_associated": "未绑定"
+  "network.un_associated": "未绑定",
+  "network.static_public": "静态公网"
 }
