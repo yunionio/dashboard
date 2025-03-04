@@ -1143,5 +1143,6 @@
   "network.public_ip_donot_disassociate": "パブリックネットワークIPではバインド解除は許可されていません",
   "network.is_associated": "バインドするかどうか",
   "network.associated": "バインド済み",
-  "network.un_associated": "バインドされていません"
+  "network.un_associated": "バインドされていません",
+  "network.static_public": "静的ネットワーク"
 }
