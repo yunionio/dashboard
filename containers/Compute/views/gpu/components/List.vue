@@ -31,6 +31,9 @@ export default {
   },
   data () {
     const filter = {}
+    if (this.$route.query.id) {
+      filter.id = [this.$route.query.id]
+    }
     if (this.$route.query.hasOwnProperty('is_associated')) {
       filter.is_associated = [this.$route.query.is_associated]
     }
@@ -259,6 +262,13 @@ export default {
   },
   created () {
     this.init()
+    this.list.fetchData().then(() => {
+      this.$nextTick(() => {
+        if (this.$route.query.id && this.list.data[this.$route.query.id]) {
+          this.handleOpenSidepage(this.list.data[this.$route.query.id].data)
+        }
+      })
+    })
   },
   methods: {
     getParam () {
