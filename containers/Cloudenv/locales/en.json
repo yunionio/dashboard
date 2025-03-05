@@ -40,7 +40,7 @@
   "cloudenv.clouduser_list_a1": "Associate @:dictionary.cloudgroup",
   "cloudenv.clouduser_list_a2": "Modify associated user",
   "cloudenv.clouduser_text1": "Password is automatically generated, and can be retrieved later",
-  "cloudenv.clouduser_text2": "Corresponding to cloud user groups, it is a collection of permissions. Selecting multiple groups will create a cloud user in each group",
+  "cloudenv.clouduser_text2": "Adding multiple cloud subscriptions allows for batch creation of cloud users; Cloud user groups correspond to cloud user groups, which are a collection of permissions. Selecting multiple groups will inherit the permissions corresponding to multiple cloud user groups",
   "cloudenv.clouduser_desc": "@:dictionary.clouduser corresponds to User on the cloud. You can add, delete, modify and inspect @:dictionary.clouduser on this page. You may associate local users with @:dictionary.clouduser",
   "cloudenv.text_1": "Prefer",
   "cloudenv.text_2": "Avoid",
