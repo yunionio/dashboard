@@ -90,6 +90,48 @@ export default {
                 },
                 meta: () => this.$getDeleteResult(this.list.selectedItems),
               },
+              {
+                label: this.$t('iam.enable_console_login'),
+                permission: 'clouduser_perform_enable_console_login',
+                action: (obj) => {
+                  this.createDialog('ClouduserSetConsoleLoginDialog', {
+                    vm: this,
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    title: this.$t('iam.enable_console_login'),
+                    name: this.$t('dictionary.clouduser'),
+                    onManager: this.onManager,
+                    action: 'enable-console-login',
+                  })
+                },
+                meta: (obj) => {
+                  return {
+                    validate: this.list.selectedItems.length && this.list.selectedItems.some(item => !item.is_console_login),
+                  }
+                },
+                hidden: () => !this.$appConfig.isPrivate,
+              },
+              {
+                label: this.$t('iam.disable_console_login'),
+                permission: 'clouduser_disable_console_login',
+                action: (obj) => {
+                  this.createDialog('ClouduserSetConsoleLoginDialog', {
+                    vm: this,
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    title: this.$t('iam.disable_console_login'),
+                    name: this.$t('dictionary.clouduser'),
+                    onManager: this.onManager,
+                    action: 'disable-console-login',
+                  })
+                },
+                meta: (obj) => {
+                  return {
+                    validate: this.list.selectedItems.length && this.list.selectedItems.some(item => item.is_console_login),
+                  }
+                },
+                hidden: () => !this.$appConfig.isPrivate,
+              },
             ]
           },
           meta: () => {
