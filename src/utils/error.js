@@ -212,7 +212,14 @@ export const getDescription = (errorMsg, h) => {
 
 const classDriver = (errorMsg, h) => {
   const className = errorMsg.class
-  const desc = R.is(Array, errorMsg) ? errorMsg[0].class : errorMsg.detail
+  let desc = R.is(Array, errorMsg) ? errorMsg[0].class : errorMsg.detail
+  const descSegs = desc.split(':')
+  if (descSegs && descSegs.length > 0) {
+    desc = descSegs[descSegs.length - 1].trim()
+    if (desc === errorMsg.class && descSegs.length > 1) {
+      desc = descSegs[descSegs.length - 2].trim()
+    }
+  }
   const Maps = {
     OutOfQuotaError: () => { // 配额报错
       const quotaErrorsMap = {}
