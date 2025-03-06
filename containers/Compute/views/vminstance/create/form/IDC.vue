@@ -75,6 +75,7 @@
         <os-select
           :type="type"
           :uefi="uefi"
+          :vgaPci="vgaPci"
           :form="form"
           :hypervisor="form.fd.hypervisor"
           :decorator="decorators.imageOS"
@@ -436,6 +437,15 @@ export default {
       const { gpuEnable, gpu, devType } = this.form.fd
       if (this.isKvm && gpuEnable && gpu) {
         if (this.isWindows || devType === GPU_DEV_TYPE_OPTIONS[0].value) {
+          return true
+        }
+      }
+      return false
+    },
+    vgaPci () {
+      const { gpuEnable, gpu, devType } = this.form.fd
+      if (this.isKvm && gpuEnable && gpu) {
+        if (devType === GPU_DEV_TYPE_OPTIONS[0].value) {
           return true
         }
       }

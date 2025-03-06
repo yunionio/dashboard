@@ -147,7 +147,7 @@
   "compute.text_147": "请选择GPU型号",
   "compute.text_148": "请选择{0}",
   "compute.text_149": "请选择云账号",
-  "compute.text_150": "提示：创建windows虚拟机且同时绑定GPU卡时，会过滤不支持UEFI引导的镜像",
+  "compute.text_150": "提示：绑定GPU-VGA类型的GPU卡时，会过滤掉不支持UEFI引导的Windows镜像",
   "compute.text_151": "其他",
   "compute.text_152": "已缓存",
   "compute.text_153": "请选择操作系统",
