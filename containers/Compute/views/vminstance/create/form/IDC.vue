@@ -81,6 +81,7 @@
         <os-select
           :type="type"
           :uefi="uefi"
+          :vgaPci="vgaPci"
           :form="form"
           :hypervisor="form.fd.hypervisor"
           :decorator="decorators.imageOS"
@@ -454,9 +455,50 @@ export default {
       return this.isKvm || !this.isServertemplate
     },
     uefi () {
-      const { pciEnable, pciDevType, pciModel } = this.form.fd
-      if (this.isKvm && pciEnable && pciModel) {
-        if (this.isWindows && Object.values(pciDevType).includes(GPU_DEV_TYPE_OPTIONS[0].value)) {
+      const { pciEnable } = this.form.fd
+      const pciModels = []
+      Object.keys(this.form.fd).filter(key => key.includes('pciModel')).forEach(key => {
+        if (R.is(Array, this.form.fd[key])) {
+          pciModels.push(...this.form.fd[key])
+        } else {
+          pciModels.push(this.form.fd[key])
+        }
+      })
+      if (this.isKvm && pciEnable && pciModels.length) {
+        const pciDevTypes = []
+        Object.keys(this.form.fd).filter(key => key.includes('pciDevType')).forEach(key => {
+          if (R.is(Array, this.form.fd[key])) {
+            pciDevTypes.push(...this.form.fd[key])
+          } else {
+            pciDevTypes.push(this.form.fd[key])
+          }
+        })
+        if (this.isWindows && pciDevTypes.includes(GPU_DEV_TYPE_OPTIONS[0].value)) {
+          return true
+        }
+      }
+      return false
+    },
+    vgaPci () {
+      const { pciEnable } = this.form.fd
+      const pciModels = []
+      Object.keys(this.form.fd).filter(key => key.includes('pciModel')).forEach(key => {
+        if (R.is(Array, this.form.fd[key])) {
+          pciModels.push(...this.form.fd[key])
+        } else {
+          pciModels.push(this.form.fd[key])
+        }
+      })
+      if (this.isKvm && pciEnable && pciModels.length) {
+        const pciDevTypes = []
+        Object.keys(this.form.fd).filter(key => key.includes('pciDevType')).forEach(key => {
+          if (R.is(Array, this.form.fd[key])) {
+            pciDevTypes.push(...this.form.fd[key])
+          } else {
+            pciDevTypes.push(this.form.fd[key])
+          }
+        })
+        if (pciDevTypes.includes(GPU_DEV_TYPE_OPTIONS[0].value)) {
           return true
         }
       }
