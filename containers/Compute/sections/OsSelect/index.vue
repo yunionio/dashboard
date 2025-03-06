@@ -10,6 +10,7 @@
     <image-select
       :cloud-type="type"
       :uefi="uefi"
+      :vgaPci="vgaPci"
       :image-type="imageType"
       :decorator="decorator"
       @input="imageInput"
@@ -74,6 +75,10 @@ export default {
       type: String,
     },
     uefi: {
+      type: Boolean,
+      required: false,
+    },
+    vgaPci: {
       type: Boolean,
       required: false,
     },
