@@ -436,7 +436,7 @@ export default {
     uefi () {
       const { gpuEnable, gpu, devType } = this.form.fd
       if (this.isKvm && gpuEnable && gpu) {
-        if (this.isWindows || devType === GPU_DEV_TYPE_OPTIONS[0].value) {
+        if (this.isWindows && devType === GPU_DEV_TYPE_OPTIONS[0].value) {
           return true
         }
       }
