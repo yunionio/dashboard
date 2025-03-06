@@ -147,7 +147,7 @@
   "compute.text_147": "Please select GPU model",
   "compute.text_148": "Please select {0}",
   "compute.text_149": "Please select a cloud account",
-  "compute.text_150": "Prompt: When creating a windows server and binding a GPU card at the same time, it will filter the images that do not support UEFI boot",
+  "compute.text_150": "Tip: When binding GPU cards of GPU-VGA type, Windows images that do not support UEFI booting will be filtered out",
   "compute.text_151": "Other",
   "compute.text_152": "Cached",
   "compute.text_153": "Please select an operating system",
