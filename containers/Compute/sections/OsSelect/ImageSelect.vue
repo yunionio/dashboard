@@ -89,6 +89,9 @@ export default {
     uefi: {
       type: Boolean,
     },
+    vgaPci: {
+      type: Boolean,
+    },
     cloudproviderParamsExtra: {
       type: Object,
       default: () => ({}),
@@ -227,7 +230,7 @@ export default {
       return this.imageType === IMAGES_TYPE_MAP.vmware.key
     },
     isShowErrorInfo () {
-      return this.uefi && this.form.fd.os === OS_TYPE_OPTION_MAP.Windows.value
+      return this.vgaPci
     },
     isCloudpods () {
       return this.hypervisor === HYPERVISORS_MAP.cloudpods.key
@@ -275,7 +278,7 @@ export default {
       if (R.equals(val, oldVal)) return
       this.getImagesInfo()
     },
-    uefi (val, oldVal) {
+    vgaPci (val, oldVal) {
       if (R.equals(val, oldVal)) return
       this.getImagesInfo()
     },
@@ -511,8 +514,14 @@ export default {
           })
         }
       } else {
-        if (this.uefi) {
-          images = images.filter(item => item.properties?.uefi_support && item.properties?.uefi_support !== 'false')
+        if (this.vgaPci) {
+          images = images.filter(item => {
+            const osType = (item.properties?.os_type || '').toLowerCase()
+            if (osType && osType.includes('windows')) {
+              return item.properties?.uefi_support && item.properties?.uefi_support !== 'false'
+            }
+            return true
+          })
         }
         if (this.imageType !== IMAGES_TYPE_MAP.snapshot.key) {
           images = images.filter(item => {
