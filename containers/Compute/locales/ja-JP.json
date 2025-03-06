@@ -145,7 +145,7 @@
   "compute.text_147": "GPUモデルを選択してください",
   "compute.text_148": "{0}を選択してください",
   "compute.text_149": "アカウントを選択してください",
-  "compute.text_150": "ヒント: Windows 仮想マシンの作成と GPU カードのバインドを同時に行うと、UEFI ブートをサポートしていないイメージがフィルタリングされます",
+  "compute.text_150": "ヒント：GPU-VGAタイプのGPUカードをバインドすると、UEFIブートに対応していないWindowsミラーがフィルタリングされます",
   "compute.text_151": "他",
   "compute.text_152": "キャッシュ",
   "compute.text_153": "オペレーティング システムを選択してください",
