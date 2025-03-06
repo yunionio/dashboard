@@ -456,7 +456,7 @@ export default {
     uefi () {
       const { pciEnable, pciDevType, pciModel } = this.form.fd
       if (this.isKvm && pciEnable && pciModel) {
-        if (this.isWindows || Object.values(pciDevType).includes(GPU_DEV_TYPE_OPTIONS[0].value)) {
+        if (this.isWindows && Object.values(pciDevType).includes(GPU_DEV_TYPE_OPTIONS[0].value)) {
           return true
         }
       }
