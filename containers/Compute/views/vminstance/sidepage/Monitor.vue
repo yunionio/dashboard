@@ -53,13 +53,13 @@ export default {
   },
   data () {
     return {
-      currentMonitorType: 'agent',
+      currentMonitorType: this.data.hypervisor === 'kvm' ? 'agent' : 'basic',
       alertType: 'warning',
       time: '1h',
       timeGroup: '1m',
       monitorList: [],
       server: this.data,
-      types: ['agent', 'basic'],
+      types: this.data.hypervisor === 'kvm' ? ['agent', 'basic'] : ['basic', 'agent'],
     }
   },
   computed: {
