@@ -392,11 +392,11 @@ export const billItems = billSupportBrands.map(key => `bill_${key}`)
 
 export const fillBillSupportFeatures = (data = [], fillOriginBrand = false) => {
   const list = [...data]
-  const billTargetItems = list.filter(key => billItems.includes(key))
-  // 旧版本只签发bill，新版本签发bill与billItem
+  const billTargetItems = list.filter(key => billItems.includes(key) || key === 'suggestion')
+  // 旧版本只签发bill，新版本签发bill与billItem + suggestion
   // 旧版本 有费用模块
   if (!billTargetItems.length && list.includes('bill')) {
-    return [...list, ...billItems]
+    return [...list, ...billItems, 'suggestion']
   }
   // 新版本 有费用模块
   if (billTargetItems.length) {
