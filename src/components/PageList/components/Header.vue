@@ -347,6 +347,7 @@ export default {
         extraParams: this.extraExportParams,
         listParams: this.params,
         selected: this.selected,
+        selectedItems: this.selectedItems,
         apiVersion: this.apiVersion,
         resource: this.resource,
         showTagColumns: this.showTagColumns,

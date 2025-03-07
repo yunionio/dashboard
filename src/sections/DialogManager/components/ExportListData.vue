@@ -238,11 +238,16 @@ export default {
             ...listParams,
           }
           if (this.params.selected.length) {
-            const idField = (this.params.idKey && this.params.exportUseIdKey) ? this.params.idKey : 'id'
-            if (params.filter && params.filter.length) {
-              params.filter = [...params.filter, `${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
+            // 自定义选中的过滤项
+            if (this.params.options.genSelectedIdParams) {
+              params = this.params.options.genSelectedIdParams(params, this.params.selectedItems)
             } else {
-              params.filter = [`${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
+              const idField = (this.params.idKey && this.params.exportUseIdKey) ? this.params.idKey : 'id'
+              if (params.filter && params.filter.length) {
+                params.filter = [...params.filter, `${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
+              } else {
+                params.filter = [`${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
+              }
             }
           }
         } else if (this.exportType.all && formValues.type === this.exportType.all.key) { // 导出范围选择全部时
@@ -447,7 +452,7 @@ export default {
     },
     localExport (cols, list) {
       list = list.filter(item => {
-        if (item.id && this.params.selected.length && !this.params.selected.includes(item.id)) {
+        if (item.id && this.params.selected.length && !this.params.selected.includes(item[this.params.idKey || 'id'])) {
           return false
         }
         return true
