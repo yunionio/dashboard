@@ -92,8 +92,7 @@
           :sku="form.fd.sku"
           :capability-data="form.fi.capability"
           :image="form.fi.imageMsg"
-          :sizeDisabled="disabledSysDiskSize"
-          isAutoResetShow />
+          :sizeDisabled="disabledSysDiskSize" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_50')">
         <data-disk
@@ -105,8 +104,7 @@
           :sku="form.fd.sku"
           :defaultType="form.fd.systemDiskType"
           :capability-data="form.fi.capability"
-          ref="dataDiskRef"
-          isAutoResetShow />
+          ref="dataDiskRef" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1372')" v-if="showServerAccount">
         <server-account :form="form" :hypervisor="form.fd.hypervisor" :instance_capabilities="form.fi.capability.instance_capabilities" :osType="osType" />

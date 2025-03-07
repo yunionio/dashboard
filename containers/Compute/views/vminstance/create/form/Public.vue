@@ -109,8 +109,7 @@
           :image="form.fi.imageMsg"
           :isServertemplate="isServertemplate"
           is-iops-show
-          is-throughput-show
-          isAutoResetShow />
+          is-throughput-show />
       </a-form-item>
       <a-form-item :label="$t('compute.text_50')">
         <data-disk
@@ -125,8 +124,7 @@
           :isServertemplate="isServertemplate"
           ref="dataDiskRef"
           is-iops-show
-          is-throughput-show
-          isAutoResetShow />
+          is-throughput-show />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1372')" v-if="showServerAccount">
         <server-account :form="form" :hypervisor="hypervisor" :instance_capabilities="form.fi.capability.instance_capabilities" :osType="osType" />
