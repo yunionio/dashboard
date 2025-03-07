@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('common.text00093')}}</div>
     <div class="clearfix pr-2" slot="body">
-      <div class="info-wrapper d-flex flex-wrap pb-3">
+      <div class="info-wrapper d-flex flex-wrap pb-3" v-if="params.currentData">
         <div class="info-item" v-for="(item, index) in columns" :key="index">
           <div class="label">{{ item.title }}</div>
           <div class="value">{{ item.formatter ? item.formatter({ row: currentData }) : currentData[item.field] }}</div>
@@ -19,10 +19,12 @@
       </div>
       <a-button v-if="sessionId" class="float-right mr-3" type="link" size="small" @click="showLog">{{ $t('common.view_scheduler_log') }}</a-button>
     </div>
-    <div slot="footer" class="d-flex justify-content-between">
+    <div slot="footer" class="d-flex justify-content-between" v-if="params.currentData">
       <a-button :disabled="prevDisabled" @click="changeCurrentData('prev')"> <a-icon type="left" />{{ $t('common.prev_one') }}</a-button>
-      <!-- <a-button type="primary" @click="cancelDialog">{{ $t('dialog.ok') }}</a-button> -->
       <a-button :disabled="nextDisabled" @click="changeCurrentData('next')">{{ $t('common.next_one') }} <a-icon type="right" /></a-button>
+    </div>
+    <div slot="footer" v-else>
+      <a-button type="primary" @click="cancelDialog">{{ $t('dialog.ok') }}</a-button>
     </div>
   </base-dialog>
 </template>
@@ -126,7 +128,7 @@ export default {
       return ''
     },
     dataList () {
-      const list = Object.keys(this.params.listData).map(key => {
+      const list = Object.keys(this.params.listData || {}).map(key => {
         return this.params.listData[key]
       })
       list.sort((a, b) => a.index - b.index)
@@ -143,7 +145,9 @@ export default {
     },
   },
   created () {
-    this.params.handleSelect(this.currentData)
+    if (this.params.handleSelect) {
+      this.params.handleSelect(this.currentData)
+    }
   },
   methods: {
     changeCurrentData (type) {
