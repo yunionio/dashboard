@@ -459,6 +459,7 @@ export default {
           },
           {
             scale: 'y',
+            size: 70,
             values: (self, ticks, space) => {
               if (unit === 'NULL' || unit === 'count') {
                 unit = ''
@@ -468,7 +469,7 @@ export default {
               }
               const list = ticks.map(item => {
                 const val = transformUnit(item, unit, 1000, '0')
-                return val.text
+                return val.text > 10000000 ? val.text / 10000 + 'w' : val.text
               })
               return list
             },
