@@ -107,6 +107,8 @@ export default {
           const table = this.findPageListTableByParent(this.$parent)
           if (table) {
             const columns = table.getColumns()
+            const minWidth = 800
+            const firstColumn = columns.length > 1 ? columns[1] : null
             const fieldColumn = R.find(R.propEq('property', this.$parent.field))(columns)
             const colId = fieldColumn.id
             const $column = table.$el.querySelector(`.vxe-table--main-wrapper .vxe-table--body-wrapper .vxe-body--column[data-colid=${colId}]`)
@@ -115,6 +117,13 @@ export default {
             // 如果列宽超过150，则抽屉展开的位置定位在距离列150的位置
             if (columnRect.width > 150) {
               rightTemp = columnRect.left + 150
+            }
+            // 避免sidepage宽度太窄
+            if (window.innerWidth - rightTemp < minWidth && firstColumn) {
+              const colId = firstColumn.id
+              const $firstColumn = table.$el.querySelector(`.vxe-table--main-wrapper .vxe-table--body-wrapper .vxe-body--column[data-colid=${colId}]`)
+              const firstRect = $firstColumn.getBoundingClientRect()
+              rightTemp = firstRect.left + 150
             }
             this.columnRightTemp = rightTemp
           }
