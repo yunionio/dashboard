@@ -8,7 +8,13 @@
       <dialog-content :content="params.content" />
     </div>
     <div slot="footer">
-      <a-button v-bind="okButtonProps" @click="handleConfirm">{{ $t("dialog.ok") }}</a-button>
+      <a-popconfirm v-if="params.showConfirm && params.confirmText" placement="topRight" :okText="$t('dialog.ok')" :cancelText="$t('dialog.cancel')" @confirm="handleConfirm">
+        <template slot="title">
+          <p>{{ params.confirmText }}</p>
+        </template>
+        <a-button type="danger">{{ $t("dialog.ok") }}</a-button>
+      </a-popconfirm>
+      <a-button v-else v-bind="okButtonProps" @click="handleConfirm">{{ $t("dialog.ok") }}</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
