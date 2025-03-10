@@ -7,12 +7,12 @@
         {{ miniTitle }}
       </div>
       <template v-if="tabs">
-        <div class="ml-4 position-relative h-100">
+        <div class="ml-4 position-relative h-100" style="flex: 1 1 auto">
           <a-tabs
             :defaultActiveKey="currentTab"
             class="page-header-tabs"
             :animated="false"
-            :tab-bar-style="{ padding: '0 30px', marginBottom: 0 }"
+            :tab-bar-style="{ padding: '0 30px', marginBottom: 0, width: '100%' }"
             size="large"
             @change="handleTabChange">
             <template v-for="item of tabs">
@@ -79,6 +79,7 @@ export default {
   position: absolute;
   bottom: 0;
   left: 0;
+  width: 100%;
   ::v-deep {
     .ant-tabs-bar {
       border-bottom: 0;
