@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -260,10 +261,16 @@ export default {
         delete values.sync_info
         delete values.start_day
         delete values.end_day
+        const p = { ...values }
+        for (const key in p) {
+          if (R.is(String, p[key])) {
+            p[key] = p[key].trim()
+          }
+        }
         const params = {
           id,
           data: {
-            options: values,
+            options: p,
           },
         }
         if (this.billingType === 1) {
@@ -285,9 +292,15 @@ export default {
       values.cloudaccount_id = this.id
       delete values.sync_info
       delete values.month
+      const p = { ...values }
+      for (const key in p) {
+        if (R.is(String, p[key])) {
+          p[key] = p[key].trim()
+        }
+      }
       const res = await new this.$Manager('bigquery_options', 'v1').performClassAction({
         action: 'verify',
-        data: values,
+        data: p,
       })
       if (!res || !res.data || !res.data.status) return false
       if (res.data.status === 'success') {

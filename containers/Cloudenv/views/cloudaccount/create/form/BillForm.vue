@@ -117,6 +117,7 @@
   </div>
 </template>
 <script>
+import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
@@ -505,6 +506,13 @@ export default {
             }
           }
         }
+        if (params.data?.options && R.is(Object, params.data.options)) {
+          for (const key in params.data.options) {
+            if (R.is(String, params.data.options[key])) {
+              params.data.options[key] = params.data.options[key].trim()
+            }
+          }
+        }
         await this.manager.update(params)
         // if (isGoCloudaccount) {
         //   this.$router.push('/cloudaccount')
@@ -518,12 +526,18 @@ export default {
       values.cloudaccount_id = this.id
       delete values.sync_info
       delete values.month
+      const params = { ...values }
+      for (const key in params) {
+        if (R.is(String, params[key])) {
+          params[key] = params[key].trim()
+        }
+      }
       const res = await new this.$Manager(
         'bucket_options',
         'v1',
       ).performClassAction({
         action: 'verify',
-        data: values,
+        data: params,
       })
       if (!res || !res.data || !res.data.status) return false
       if (res.data.status === 'success') {
