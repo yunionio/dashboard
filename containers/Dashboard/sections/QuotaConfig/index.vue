@@ -549,6 +549,7 @@ export default {
       return keys
     },
     updateUsages () {
+      console.log('update')
       this.totalUsageOptions = this.totalUsages()
       let key = ''
       if (this.fd && this.fd.all_usage_key) {
@@ -577,6 +578,7 @@ export default {
           label: this.translateUsage[k] ? this.translateUsage[k] : k,
         })
       }
+      console.log('usages', ret)
       return ret
     },
     totalUsages () {
