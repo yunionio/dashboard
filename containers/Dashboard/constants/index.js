@@ -1,6 +1,6 @@
 import { sizestrWithUnit, sizeToDesignatedUnit, getDocsUrl } from '@/utils/utils'
 import i18n from '@/locales'
-import { SCOPES_MAP, CLOUD_ENVS } from '@/constants'
+import { SCOPES_MAP, CLOUD_ENVS, HYPERVISORS_MAP } from '@/constants'
 import store from '@/store'
 
 // 不定单位使用formatter，固定单位使用unit
@@ -236,6 +236,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
   },
   'all.pending_delete_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -309,6 +310,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
   },
   'all.ready_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -362,6 +364,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
   },
   'all.running_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -415,6 +418,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
   },
   'all.servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -613,6 +617,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
   },
   networks: {
     unit: i18n.t('dashboard.text_1'),
@@ -744,6 +749,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
   },
   'pending_delete_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -817,6 +823,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
   },
   'ready_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -875,6 +882,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
   },
   'running_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -928,6 +936,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
   },
   'servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -1268,6 +1277,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
   },
   'domain.pending_delete_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -1346,6 +1356,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
   },
   'domain.ready_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -1399,6 +1410,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
   },
   'domain.running_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -1452,12 +1464,14 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
   },
   'domain.isolated_devices': {
     origin_key: 'isolated_devices',
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
   },
   'domain.servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),

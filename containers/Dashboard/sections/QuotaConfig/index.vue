@@ -474,6 +474,7 @@ export default {
           account: undefined,
         })
       }
+      this.updateUsages()
     },
     regionChange (region) {
       const regionId = R.is(Object, region) ? region.key : region
@@ -562,7 +563,12 @@ export default {
           continue
         }
         if (USAGE_CONFIG[key].clouds && USAGE_CONFIG[key].clouds.length > 0 && this.cloudEnv && !USAGE_CONFIG[key].clouds.includes(this.cloudEnv)) {
-          continue
+          if (!USAGE_CONFIG[key].brands) {
+            continue
+          }
+          if (USAGE_CONFIG[key].brands && this.brand && !USAGE_CONFIG[key].brands.includes(this.brand)) {
+            continue
+          }
         }
         const k = USAGE_CONFIG[key].origin_key || key
         ret.push({
