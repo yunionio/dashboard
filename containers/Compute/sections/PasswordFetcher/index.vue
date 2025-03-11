@@ -213,9 +213,11 @@ export default {
           }
           this.error = null
         } catch (error) {
-          this.error = error
+          this.error = {}
         } finally {
-          this.loading = false
+          setTimeout(() => {
+            this.loading = false
+          }, 100)
         }
       })
     },
@@ -244,13 +246,15 @@ export default {
     },
     handlePopoverVisibleChange (val) {
       if (!val) {
-        // 清空信息
-        this.error = null
-        this.loginInfos.ip.value = ''
-        this.loginInfos.username.value = ''
-        this.loginInfos.password.value = ''
-        this.loginInfos.password.keypair = ''
-        this.loginInfos.password.loginKey = ''
+        setTimeout(() => {
+          // 清空信息
+          this.error = null
+          this.loginInfos.ip.value = ''
+          this.loginInfos.username.value = ''
+          this.loginInfos.password.value = ''
+          this.loginInfos.password.keypair = ''
+          this.loginInfos.password.loginKey = ''
+        }, 500)
       }
     },
   },
