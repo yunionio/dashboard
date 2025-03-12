@@ -6157,5 +6157,6 @@
   "common.task.stage.label.in_progress": "执行中",
   "common.task.stage.label.complete": "已完成",
   "common.server_security": "主机安全",
-  "common.resource_alert": "资源告警"
+  "common.resource_alert": "资源告警",
+  "common.global_search": "全局搜索"
 }
