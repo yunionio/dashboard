@@ -5,6 +5,7 @@
  */
 import Vue from 'vue'
 import Router from 'vue-router'
+import { getProductName } from '@/utils/auth'
 import routes from './routes'
 
 const originalPush = Router.prototype.push
@@ -22,6 +23,15 @@ const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+})
+
+router.afterEach((to, from, next) => {
+  const name = getProductName()
+  if (to.meta?.label) {
+    document.title = `${name}-${to.meta.label}`
+  } else {
+    document.title = name
+  }
 })
 
 export default router
