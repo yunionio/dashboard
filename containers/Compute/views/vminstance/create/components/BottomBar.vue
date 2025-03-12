@@ -38,7 +38,7 @@
             </div>
           </div>
           <a-dropdown-button
-            v-if="!isServertemplate && $appConfig.isPrivate && !$store.getters.isSysCE"
+            v-if="!isServertemplate && $appConfig.isPrivate && !$store.getters.isSysCE && hasCartPermission"
             :title="confirmText"
             class="text-truncate"
             type="primary"
