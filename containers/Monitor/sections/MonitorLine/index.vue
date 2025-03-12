@@ -459,7 +459,7 @@ export default {
           },
           {
             scale: 'y',
-            size: 70,
+            size: 75,
             values: (self, ticks, space) => {
               if (unit === 'NULL' || unit === 'count') {
                 unit = ''
@@ -468,7 +468,7 @@ export default {
                 unit = 'intms'
               }
               const list = ticks.map(item => {
-                const val = transformUnit(item, unit, 1000, '0')
+                const val = transformUnit(item, unit, 1000, item < 1 ? '0.00' : '0.0')
                 return val.text > 10000000 ? val.text / 10000 + 'w' : val.text
               })
               return list
@@ -492,7 +492,7 @@ export default {
             if (unit === 'ms') { // 时间类型的Y坐标，要取整 如 ： 1小时10分钟30秒 -> 1小时
               unit = 'intms'
             }
-            const val = transformUnit(value, unit, 1000, '0')
+            const val = transformUnit(value, unit, 1000, value < 1 ? '0.00' : '0.0')
             return val.text
           },
         },
