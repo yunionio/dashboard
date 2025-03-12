@@ -6012,5 +6012,6 @@
   "common.next_one": "Next article",
   "common.shopcart_workflow_name": "Batch resource creation request initiated by {0} on {1} - {2}",
   "common.platform_overview": "Platform Overview",
-  "common.resource_alert": "Resource Alert"
+  "common.resource_alert": "Resource Alert",
+  "common.global_search": "Global search"
 }
