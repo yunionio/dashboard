@@ -98,4 +98,15 @@ function generateRoutesFromMenu (menugroups = [], routes = []) {
   return routes
 }
 
+console.log('routes', routes)
+routes.forEach((item, index) => {
+  if (item.children) {
+    item.children.forEach((menu) => {
+      if (!menu.label && item.meta?.label) {
+        menu.label = item.meta.label
+      }
+    })
+  }
+})
+
 export default routes

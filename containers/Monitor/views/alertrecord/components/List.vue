@@ -92,6 +92,7 @@ export default {
   },
   created () {
     this.allAlertManager = new this.$Manager('alertrecords', 'v1')
+    this.initResType()
     this.list.fetchData()
   },
   methods: {
@@ -275,28 +276,28 @@ export default {
         getParams: this.getParam,
       })
     },
-    // initResType () {
-    //   this.allAlertManager.get({
-    //     id: 'distinct-field',
-    //     params: {
-    //       scope: this.$store.getters.scope,
-    //       extra_field: 'res_type',
-    //       details: true,
-    //     },
-    //   }).then(res => {
-    //     const { res_type = [] } = res.data || {}
-    //     this.resTypeItems = res_type.map(item => {
-    //       let label = item
-    //       if (this.$te(`dictionary.${item}`)) {
-    //         label = this.$t(`dictionary.${item}`)
-    //       }
-    //       return {
-    //         key: item,
-    //         label,
-    //       }
-    //     })
-    //   })
-    // },
+    initResType () {
+      this.allAlertManager.get({
+        id: 'distinct-field',
+        params: {
+          scope: this.$store.getters.scope,
+          extra_field: 'res_type',
+          details: true,
+        },
+      }).then(res => {
+        const { res_type = [] } = res.data || {}
+        this.resTypeItems = res_type.map(item => {
+          let label = item
+          if (this.$te(`dictionary.${item}`)) {
+            label = this.$t(`dictionary.${item}`)
+          }
+          return {
+            key: item,
+            label,
+          }
+        })
+      })
+    },
   },
 }
 </script>

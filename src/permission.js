@@ -148,3 +148,9 @@ router.beforeEach((to, from, next) => {
   }
   next()
 })
+
+console.log('router xxxx', router)
+router.afterEach((to, from, next) => {
+  console.log('afterEach')
+  console.log(to, from)
+})
