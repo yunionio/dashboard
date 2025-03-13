@@ -130,10 +130,15 @@ export default {
     },
   },
   watch: {
-    metricInfo () {
-      if (this.tags && this.tags.length) {
-        this.fillFilters(this.tags)
-      }
+    metricInfo: {
+      deep: true,
+      handler: function (val1, val2) {
+        if (!R.equals(val1, val2)) {
+          if (this.tags && this.tags.length) {
+            this.fillFilters(this.tags)
+          }
+        }
+      },
     },
   },
   mounted () {
