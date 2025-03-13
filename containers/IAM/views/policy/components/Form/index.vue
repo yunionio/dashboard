@@ -36,18 +36,9 @@
           </template>
         </a-radio-group>
       </a-form-model-item>
-      <template v-if="editType === 'checkbox'">
-        <template v-if="showPolicyCheckbox">
-          <a-form-model-item :label="$t('system.text_327', [$t('dictionary.policy')])">
-            <policy-rule-checkbox :check-all-disabled="checkAllDisabled" :data="policyRuleOptions" :permissions="permissions" :scope="model.scope" :policy="checkboxPolicy" @checkMenuOptionsChange="checkMenuOptionsChange" />
-          </a-form-model-item>
-        </template>
-      </template>
-      <template v-if="editType === 'yaml'">
-        <a-form-model-item :label="$t('system.text_327', [$t('dictionary.policy')])">
-          <code-mirror v-model="yamlPolicy" :options="cmOptions" />
-        </a-form-model-item>
-      </template>
+      <a-form-model-item :label="$t('system.text_327', [$t('dictionary.policy')])">
+        <code-mirror v-model="yamlPolicy" :options="cmOptions" />
+      </a-form-model-item>
     </a-form-model>
   </div>
 </template>
@@ -64,7 +55,6 @@ import { POLICY_WHITE_LIST } from '@/constants/policy'
 import { genPolicyGroups } from '../../utils'
 import { DEFAULT_ACTIONS_KEY } from '../../constants'
 import ScopeSelect from './ScopeSelect'
-import PolicyRuleCheckbox from './PolicyRuleCheckbox'
 
 // 权限级别
 const policyLevel = {
@@ -191,7 +181,6 @@ export default {
   name: 'PolicyForm',
   components: {
     ScopeSelect,
-    PolicyRuleCheckbox,
   },
   props: {
     policy: Object,
@@ -236,7 +225,6 @@ export default {
       },
       editTypeOptions: [
         { key: 'yaml', label: this.$t('system.policy_edit_type_yaml') },
-        { key: 'checkbox', label: this.$t('system.policy_edit_type_checkbox') },
       ],
       yamlPolicy: initialYamlPolicyValue,
       checkboxPolicy: initialCheckboxPolicyValue,
