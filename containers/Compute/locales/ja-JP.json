@@ -10,6 +10,8 @@
   "compute.text_16": "物理マシンを指定する",
   "compute.text_17": "現時点では必須ではありません",
   "compute.perform_create": "新築",
+  "compute.image_cache.perform_precache": "プリキャッシュ",
+  "compute.image_cache.perform_batch_precache": "バッチプリキャッシュ",
   "compute.text_19": "バインドは既に存在します",
   "compute.text_20": "従量制課金",
   "compute.text_21": "帯域幅による課金",

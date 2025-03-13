@@ -10,6 +10,8 @@
   "compute.text_16": "Specify Baremetal Host",
   "compute.text_17": "Not Required",
   "compute.perform_create": "Create",
+  "compute.image_cache.perform_precache": "Precaching",
+  "compute.image_cache.perform_batch_precache": "Batch Precaching",
   "compute.text_19": "Binding already exists",
   "compute.text_20": "Billed by traffic",
   "compute.text_21": "Billed by bandwidth",

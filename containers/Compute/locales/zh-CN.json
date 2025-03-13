@@ -10,6 +10,8 @@
   "compute.text_16": "指定物理机",
   "compute.text_17": "暂不需要",
   "compute.perform_create": "新建",
+  "compute.image_cache.perform_precache": "预缓存",
+  "compute.image_cache.perform_batch_precache": "批量预缓存",
   "compute.text_19": "绑定已有",
   "compute.text_20": "按流量计费",
   "compute.text_21": "按带宽计费",

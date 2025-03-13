@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('compute.perform_create')}}</div>
+    <div slot="header">{{$t('compute.image_cache.perform_precache')}}</div>
     <div slot="body">
       <a-form
         :form="form.fc">

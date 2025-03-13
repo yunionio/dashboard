@@ -7,7 +7,7 @@
       </a-alert>
       <dialog-selected-tips :name="$t('common.text00107')" :count="params.data.length" :action="$t('compute.perform_delete')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <a-checkbox v-model="checked">{{$t('compute.force_delete.extra')}}</a-checkbox>
+      <a-checkbox v-model="force_checked">{{$t('compute.force_delete.extra')}}</a-checkbox>
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -26,20 +26,22 @@ export default {
   data () {
     return {
       loading: false,
-      checked: false,
+      force_checked: false,
     }
   },
   methods: {
     doDelete (data) {
-      const params = {
-        image: this.params.imageId,
+      const manager = new this.$Manager('storagecaches')
+      for (let i = 0; i < this.params.data.length; i++) {
+        manager.performAction({
+          id: this.params.data[i].storagecache_id,
+          action: 'uncache-image',
+          data: {
+            image: this.params.data[i].cachedimage_id,
+            is_force: this.force_checked,
+          },
+        })
       }
-      if (this.checked) params.is_force = true
-      return new this.$Manager('storagecaches').performAction({
-        id: this.params.data[0].storagecache_id,
-        action: 'uncache-image',
-        data: params,
-      })
     },
     async handleConfirm () {
       this.loading = true

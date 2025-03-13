@@ -6135,6 +6135,7 @@
   "common.task.stage.label.in_progress": "In progress",
   "common.task.stage.label.complete": "Completed",
   "common.server_security": "Server Security",
+  "common.page_list_header_item_count_stats": "This page {1}/Selected {0}/Total {2}",
   "common.resource_alert": "Resource Alert",
   "common.global_search": "Global search"
 }
