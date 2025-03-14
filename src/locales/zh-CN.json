@@ -6157,7 +6157,7 @@
   "common.task.stage.label.in_progress": "执行中",
   "common.task.stage.label.complete": "已完成",
   "common.server_security": "主机安全",
-  "common.page_list_header_item_count_stats": "本页{1}条/选中{0}条/共{2}条",
+  "common.page_list_header_item_count_stats": "本页{0}条/选中{1}条/共{2}条",
   "common.resource_alert": "资源告警",
   "common.global_search": "全局搜索"
 }
