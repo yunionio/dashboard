@@ -62,6 +62,7 @@ export default {
           { label: this.$t('compute.text_692'), key: 'cache-list' },
           { label: this.$t('table.title.task'), key: 'task-drawer' },
           { label: this.$t('compute.text_240'), key: 'event-drawer' },
+          { label: this.$t('dictionary.cachedimage') + this.$t('compute.text_240'), key: 'cached-image-event-drawer' },
         ]
       }
       return [
@@ -74,6 +75,8 @@ export default {
       switch (this.params.windowData.currentTab) {
         case 'event-drawer':
           return 'EventListForSystemImageSidePage'
+        case 'cached-image-event-drawer':
+          return 'EventListForCachedSystemImageSidePage'
         default:
           return ''
       }

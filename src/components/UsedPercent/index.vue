@@ -22,9 +22,36 @@ export default {
     totalLabel: String,
     usedFormatter: Function,
     totalFormatter: Function,
+    colorLow: {
+      type: String,
+      default: '#52C41A',
+    },
+    colorHigh: {
+      type: String,
+      default: '#FB4141',
+    },
+    colorExceed: {
+      type: String,
+      default: '#5A0404',
+    },
+    colorMedium: {
+      type: String,
+      default: '#FFC145',
+    },
+    levelLow: {
+      type: Number,
+      default: 60,
+    },
+    levelHigh: {
+      type: Number,
+      default: 80,
+    },
   },
   computed: {
     percent () {
+      if (this.total === 0) {
+        return 0
+      }
       const percent = (this.used / this.total) * 100
       if (percent > 0 && percent < 0.5) {
         return 1
@@ -32,9 +59,11 @@ export default {
       return Math.round(percent)
     },
     strokeColor () {
-      if (this.percent > 80) return '#FB4141'
-      if (this.percent > 60) return '#FFC145'
-      return '#52C41A'
+      if (this.total === 0) return '#DFDFDF'
+      if (this.percent > 100) return this.colorExceed
+      if (this.percent > this.levelHigh) return this.colorHigh
+      if (this.percent > this.levelLow) return this.colorMedium
+      return this.colorLow
     },
     usedKey () {
       return this.usedLabel || this.$t('common_407')

@@ -77,6 +77,9 @@
             :filter-without-user-meta="true"
             @tag-filter-change="(tagFilter) => $emit('tag-filter-change2', tagFilter)" />
         </template>
+        <template>
+          <span>{{ $t('common.page_list_header_item_count_stats', [pageLimit, selected.length, total]) }}</span>
+        </template>
       </div>
       <div class="ml-4 d-flex flex-shrink-0 justify-content-end">
         <slot name="right-tools-prepend" />
@@ -191,6 +194,10 @@ export default {
     total: {
       type: Number,
       required: true,
+    },
+    limit: {
+      type: Number,
+      required: false,
     },
     selected: {
       type: Array,
@@ -308,6 +315,12 @@ export default {
           return this.$t('common.select_pin_data')
         }
       }
+    },
+    pageLimit () {
+      if (this.limit > 0 && this.limit < this.total) {
+        return this.limit
+      }
+      return this.total
     },
   },
   methods: {

@@ -36,6 +36,7 @@
       :tag-column2-params-formatter="tagColumn2ParamsFormatter"
       :get-grid="getGrid"
       :total="total"
+      :limit="limit"
       :selected="selected"
       :selectedItems="selectedItems"
       :api-version="apiVersion"

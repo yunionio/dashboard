@@ -6153,6 +6153,7 @@
   "common.task.stage.label.in_progress": "進行中",
   "common.task.stage.label.complete": "完了",
   "common.server_security": "ホストセキュリティ",
+  "common.page_list_header_item_count_stats": "このページ{1}/選択済み{0}/合計{2}",
   "common.resource_alert": "リソースアラート",
   "common.global_search": "グローバル検索"
 }
