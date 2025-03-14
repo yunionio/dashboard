@@ -41,9 +41,12 @@
               :page-size="tablePage.pageSize"
               :total="tablePage.total"
               @page-change="handlePageChange">
-              <template v-if="!loading && showTableOverviewIndexs" v-slot:left>
+              <template v-slot:right>
                 <div class="table-overview">
-                  {{ $t('common.table.overview') }}：{{ tableOverview }}
+                  <span>{{ $t('common.page_list_count', [selected.length, tablePage.total]) }}</span>
+                  <span v-if="!loading && showTableOverviewIndexs" class="ml-3">
+                    {{ $t('common.table.overview') }}：{{ tableOverview }}
+                  </span>
                 </div>
               </template>
             </vxe-pager>
@@ -179,6 +182,7 @@ export default {
     },
     tagColumnsGenerator: Function,
     tagColumns2Generator: Function,
+    selected: Array,
   },
   data () {
     const storageKey = this.id && `__oc_${this.id}__`
@@ -750,12 +754,12 @@ export default {
   background-color: #dfecfb;
 }
 .table-overview {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  // position: absolute;
+  // left: 0;
+  // top: 50%;
+  // transform: translateY(-50%);
   z-index: 10;
-  font-size: 14px;
+  font-size: 12px;
 }
 .load-more-wrapper {
   height: 48px;

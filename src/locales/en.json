@@ -6137,5 +6137,7 @@
   "common.server_security": "Server Security",
   "common.page_list_header_item_count_stats": "This page {0}/Selected {1}/Total {2}",
   "common.resource_alert": "Resource Alert",
-  "common.global_search": "Global search"
+  "common.global_search": "Global search",
+  "common.page_list_count": "Selected {0}，Total {1}",
+  "common.page_list_header_item_count_stats1": "Total {0}/Selected {1}"
 }

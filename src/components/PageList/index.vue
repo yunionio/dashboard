@@ -72,6 +72,8 @@
       :exportUseIdKey="exportUseIdKey"
       :hiddenExportKeys="hiddenExportKeys"
       :hiddenPin="hiddenPin"
+      :data="finalData"
+      :pagerType="pagerType"
       @refresh="refresh"
       @clear-selected="clearSelected"
       @tag-filter-change="tagFilterChange"
@@ -132,6 +134,7 @@
         :tagColumnsExportKeyFormatter="tagColumnsExportKeyFormatter"
         :tagColumns2ExportKeyFormatter="tagColumns2ExportKeyFormatter"
         :tagColumns3ExportKeyFormatter="tagColumns3ExportKeyFormatter"
+        :selected="selected"
         @change-current-page="changeCurrentPage"
         @change-page-size="changePageSize"
         @do-sort="doSort"
@@ -241,7 +244,7 @@ export default {
     pagerLayout: {
       type: Array,
       default: () => {
-        return ['PrevJump', 'PrevPage', 'Jump', 'PageCount', 'NextPage', 'NextJump', 'Sizes', 'Total']
+        return ['PrevJump', 'PrevPage', 'Jump', 'PageCount', 'NextPage', 'NextJump', 'Sizes']
       },
     },
     // 展开行配置项

@@ -1,7 +1,7 @@
 <template>
   <page-toolbar>
     <div class="mb-2 d-flex" v-if="showGroupActions && beforeShowMenuLoaded">
-      <div class="d-flex flex-fill">
+      <div class="d-flex flex-fill align-items-center">
         <!-- 刷新 -->
         <a-button
           v-if="showSync"
@@ -39,7 +39,7 @@
             :with-tag-key="tagFilterKeys[0]"
             :without-tag-key="tagFilterKeys[1]"
             :button-text="tagBtnText || $t('common.text00012')"
-            :flexFill="!showTagFilter2"
+            :flexFill="false"
             @tag-filter-change="(tagFilter) => $emit('tag-filter-change', tagFilter)" />
         </template>
         <!-- 资源标签过滤器 -->
@@ -57,7 +57,7 @@
             :button-text="$t('dictionary.instance_tag')"
             :filter-with-user-meta="true"
             :filter-without-user-meta="true"
-            :flexFill="!showTagFilter2"
+            :flexFill="false"
             @tag-filter-change="(tagFilter) => $emit('tag-filter-change3', tagFilter)" />
         </template>
         <!-- 标签过滤器 -->
@@ -78,7 +78,8 @@
             @tag-filter-change="(tagFilter) => $emit('tag-filter-change2', tagFilter)" />
         </template>
         <template>
-          <span>{{ $t('common.page_list_header_item_count_stats', [pageLimit, selected.length, total]) }}</span>
+          <span class="ml-3" v-if="pagerType === 'pager'">{{ $t('common.page_list_header_item_count_stats', [dataList.length, selected.length, total]) }}</span>
+          <span class="ml-3" v-else>{{ $t('common.page_list_header_item_count_stats1', [dataList.length, selected.length]) }}</span>
         </template>
       </div>
       <div class="ml-4 d-flex flex-shrink-0 justify-content-end">
@@ -274,6 +275,8 @@ export default {
     hiddenPin: Boolean,
     idKey: String,
     exportUseIdKey: Boolean,
+    data: Array,
+    pagerType: String,
   },
   data () {
     return {
@@ -321,6 +324,9 @@ export default {
         return this.limit
       }
       return this.total
+    },
+    dataList () {
+      return Object.values(this.data)
     },
   },
   methods: {
