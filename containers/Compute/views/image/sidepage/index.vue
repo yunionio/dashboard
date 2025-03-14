@@ -24,6 +24,7 @@
       :resource="resource"
       :on-manager="onManager"
       :columns="columns"
+      :getParams="getParams"
       taskResource="image-tasks"
       @refresh="refresh" />
   </base-side-page>
@@ -38,6 +39,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import SystemImageDetail from './Detail'
 import CacheList from './Cache'
+import CachedImageEventDrawer from './CachedImageEventList'
 
 export default {
   name: 'SystemImageSidePage',
@@ -45,6 +47,7 @@ export default {
     SystemImageDetail,
     CacheList,
     ChildrenImageList,
+    CachedImageEventDrawer,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
@@ -80,6 +83,15 @@ export default {
         default:
           return ''
       }
+    },
+    getParams () {
+      if (this.params.windowData.currentTab === 'event-drawer') {
+        return { obj_type: 'image' }
+      }
+      if (this.params.windowData.currentTab === 'cached-image-event-drawer') {
+        return { obj_type: 'cachedimage' }
+      }
+      return {}
     },
   },
   methods: {

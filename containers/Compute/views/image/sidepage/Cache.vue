@@ -207,7 +207,84 @@ export default {
           width: 100,
         },
       ],
-      groupActions: groupActions,
+      groupActions: [
+        {
+          label: this.$t('compute.image_cache.perform_precache'),
+          permission: 'storagecachedimages_create',
+          actions: (obj) => {
+            return [
+              {
+                label: 'IDC',
+                action: () => {
+                  this.createCache('onpremise', obj)
+                },
+              },
+              {
+                label: this.$t('compute.text_400'),
+                action: () => {
+                  this.createCache('private', obj)
+                },
+              },
+              {
+                label: this.$t('compute.text_401'),
+                action: () => {
+                  this.createCache('public', obj)
+                },
+              },
+            ]
+          },
+          meta: () => ({
+            buttonType: 'primary',
+          }),
+          hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_create_cache_list'),
+        },
+        {
+          label: this.$t('compute.image_cache.perform_batch_precache'),
+          permission: 'storagecachedimages_create',
+          action: (obj) => {
+            this.createDialog('ImageBatchCreateCache', {
+              data: [obj],
+              columns: this.columns,
+              title: this.$t('compute.image_cache.perform_batch_precache'),
+              onManager: this.onManager,
+              imageId: this.resId,
+              refresh: this.refresh,
+            })
+          },
+          hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_create_cache_list'),
+        },
+        {
+          label: this.$t('compute.perform_delete'),
+          permission: 'storagecachedimages_delete',
+          action: (obj) => {
+            this.createDialog('DeleteCacheDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: this.$t('compute.perform_delete'),
+              onManager: this.onManager,
+              refresh: this.refresh,
+            })
+          },
+          meta: () => {
+            for (let i = 0; i < this.list.selectedItems.length; i++) {
+              const result = this.$getDeleteResult(this.list.selectedItems[i])
+              if (!result.validate) {
+                return result
+              }
+            }
+            if (this.list.selectedItems.length > 0) {
+              return {
+                validate: true,
+                tooltip: '',
+              }
+            }
+            return {
+              validate: false,
+              tooltip: '',
+            }
+          },
+        },
+      ],
       singleActions: [
         {
           label: this.$t('compute.perform_delete'),
@@ -219,7 +296,7 @@ export default {
               title: this.$t('compute.perform_delete'),
               onManager: this.onManager,
               imageId: this.resId,
-              refresh: this.list.refresh,
+              refresh: this.refresh,
             })
           },
           meta: (obj) => {
@@ -255,6 +332,9 @@ export default {
     clearInterval(this.timer)
   },
   methods: {
+    refresh () {
+      this.list.refresh()
+    },
     createCache (title, obj) {
       this.createDialog('ImageCreateCache', {
         data: [obj],

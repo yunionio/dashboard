@@ -30,10 +30,10 @@ export default {
     }
   },
   methods: {
-    doDelete (data) {
+    async doDelete (data) {
       const manager = new this.$Manager('storagecaches')
       for (let i = 0; i < this.params.data.length; i++) {
-        manager.performAction({
+        await manager.performAction({
           id: this.params.data[i].storagecache_id,
           action: 'uncache-image',
           data: {
