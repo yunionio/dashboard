@@ -9,7 +9,7 @@
         <div class="dashboard-card-header-right">
           <span v-if="showDebuggerInfo">{{ `${$t('dashboard.text_20')}: ${form.fd.usage_key}` }}</span>
           <slot name="actions" :handle-edit="handleEdit" />
-          <a class="ml-2" :style="{ color: isResDeny ? '#ccc' : '' }" v-if="!edit && canShowEdit" @click="goPage">
+          <a class="ml-2" :style="{ color: isResDeny ? '#ccc' : '' }" v-if="!edit && canShowEdit && !isPageDeny" @click="goPage">
             <icon type="arrow-right" style="font-size:18px" />
           </a>
         </div>
@@ -52,6 +52,7 @@ import { USAGE_CONFIG } from '@Dashboard/constants'
 import { load } from '@Dashboard/utils/cache'
 import { getRequestT } from '@/utils/utils'
 import { hasPermission } from '@/utils/auth'
+import routes from '@/router/routes'
 import mixin from './mixin'
 
 export default {
@@ -201,6 +202,15 @@ export default {
         return !hasPermission({ key: 'servers_list', permissionData: this.permission })
       } else if (usage_key.endsWith('hosts') || usage_key.endsWith('baremetals')) {
         return !hasPermission({ key: 'hosts_list', permissionData: this.permission })
+      }
+      return false
+    },
+    isPageDeny () {
+      const path = this.getPageUrl()
+      if (!path) return false
+      const target = routes.filter(item => item.path === path)
+      if (target.length && target[0].meta?.hidden) {
+        return target[0].meta.hidden()
       }
       return false
     },
