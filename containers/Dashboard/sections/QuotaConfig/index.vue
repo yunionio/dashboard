@@ -572,7 +572,6 @@ export default {
           label: this.translateUsage[k] ? this.translateUsage[k] : k,
         })
       }
-      console.log('usages', ret)
       return ret
     },
     totalUsages () {
