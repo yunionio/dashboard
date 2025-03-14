@@ -27,8 +27,103 @@ export default {
       type: Object,
       required: true,
     },
+    cloudEnv: {
+      type: String,
+      required: false,
+    },
   },
   data () {
+    const groupActions = []
+    if (this.cloudEnv) {
+      groupActions.push({
+        label: this.$t('compute.image_cache.perform_precache'),
+        permission: 'storagecachedimages_create',
+        action: (obj) => {
+          this.createCache(this.cloudEnv, obj)
+        },
+        meta: () => ({
+          buttonType: 'primary',
+        }),
+        hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_create_cache_list'),
+      })
+    } else {
+      groupActions.push({
+        label: this.$t('compute.image_cache.perform_precache'),
+        permission: 'storagecachedimages_create',
+        actions: (obj) => {
+          return [
+            {
+              label: 'IDC',
+              action: () => {
+                this.createCache('onpremise', obj)
+              },
+            },
+            {
+              label: this.$t('compute.text_400'),
+              action: () => {
+                this.createCache('private', obj)
+              },
+            },
+            {
+              label: this.$t('compute.text_401'),
+              action: () => {
+                this.createCache('public', obj)
+              },
+            },
+          ]
+        },
+        meta: () => ({
+          buttonType: 'primary',
+        }),
+        hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_create_cache_list'),
+      })
+    }
+    groupActions.push({
+      label: this.$t('compute.image_cache.perform_batch_precache'),
+      permission: 'storagecachedimages_create',
+      action: (obj) => {
+        this.createDialog('ImageBatchCreateCache', {
+          data: [obj],
+          columns: this.columns,
+          title: this.$t('compute.image_cache.perform_batch_precache'),
+          onManager: this.onManager,
+          imageId: this.resId,
+          refresh: this.refresh,
+        })
+      },
+      hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_create_cache_list'),
+    })
+    groupActions.push({
+      label: this.$t('compute.perform_delete'),
+      permission: 'storagecachedimages_delete',
+      action: (obj) => {
+        this.createDialog('DeleteCacheDialog', {
+          data: this.list.selectedItems,
+          columns: this.columns,
+          title: this.$t('compute.perform_delete'),
+          onManager: this.onManager,
+          refresh: this.refresh,
+        })
+      },
+      meta: () => {
+        for (let i = 0; i < this.list.selectedItems.length; i++) {
+          const result = this.$getDeleteResult(this.list.selectedItems[i])
+          if (!result.validate) {
+            return result
+          }
+        }
+        if (this.list.selectedItems.length > 0) {
+          return {
+            validate: true,
+            tooltip: '',
+          }
+        }
+        return {
+          validate: false,
+          tooltip: '',
+        }
+      },
+    })
     return {
       list: this.$list.createList(this, {
         id: 'CacheListForSystemImageSidePage',
@@ -112,84 +207,7 @@ export default {
           width: 100,
         },
       ],
-      groupActions: [
-        {
-          label: this.$t('compute.image_cache.perform_precache'),
-          permission: 'storagecachedimages_create',
-          actions: (obj) => {
-            return [
-              {
-                label: 'IDC',
-                action: () => {
-                  this.createCache('onpremise', obj)
-                },
-              },
-              {
-                label: this.$t('compute.text_400'),
-                action: () => {
-                  this.createCache('private', obj)
-                },
-              },
-              {
-                label: this.$t('compute.text_401'),
-                action: () => {
-                  this.createCache('public', obj)
-                },
-              },
-            ]
-          },
-          meta: () => ({
-            buttonType: 'primary',
-          }),
-          hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_create_cache_list'),
-        },
-        {
-          label: this.$t('compute.image_cache.perform_batch_precache'),
-          permission: 'storagecachedimages_create',
-          action: (obj) => {
-            this.createDialog('ImageBatchCreateCache', {
-              data: [obj],
-              columns: this.columns,
-              title: this.$t('compute.image_cache.perform_batch_precache'),
-              onManager: this.onManager,
-              imageId: this.resId,
-              refresh: this.refresh,
-            })
-          },
-          hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_create_cache_list'),
-        },
-        {
-          label: this.$t('compute.perform_delete'),
-          permission: 'storagecachedimages_delete',
-          action: (obj) => {
-            this.createDialog('DeleteCacheDialog', {
-              data: this.list.selectedItems,
-              columns: this.columns,
-              title: this.$t('compute.perform_delete'),
-              onManager: this.onManager,
-              refresh: this.refresh,
-            })
-          },
-          meta: () => {
-            for (let i = 0; i < this.list.selectedItems.length; i++) {
-              const result = this.$getDeleteResult(this.list.selectedItems[i])
-              if (!result.validate) {
-                return result
-              }
-            }
-            if (this.list.selectedItems.length > 0) {
-              return {
-                validate: true,
-                tooltip: '',
-              }
-            }
-            return {
-              validate: false,
-              tooltip: '',
-            }
-          },
-        },
-      ],
+      groupActions: groupActions,
       singleActions: [
         {
           label: this.$t('compute.perform_delete'),
