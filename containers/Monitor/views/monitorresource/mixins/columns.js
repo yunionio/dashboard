@@ -28,6 +28,7 @@ export default {
       {
         field: 'alert_state',
         title: this.$t('monitor.monitorresources.alert_state'),
+        sortable: true,
         slots: {
           default: ({ row }, h) => {
             return [
