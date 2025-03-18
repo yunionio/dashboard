@@ -533,7 +533,7 @@ export const STORAGE_TYPES = {
       value: 'io1',
       min: 4,
       max: 16384,
-      sysMin: 1,
+      sysMin: 4,
       sysMax: 16384,
     },
     io2: {
@@ -541,7 +541,7 @@ export const STORAGE_TYPES = {
       value: 'io1',
       min: 4,
       max: 16384,
-      sysMin: 1,
+      sysMin: 4,
       sysMax: 16384,
     },
     st1: {
@@ -564,7 +564,7 @@ export const STORAGE_TYPES = {
       min: 1,
       max: 1024,
       sysMin: 1,
-      sysMax: 16384,
+      sysMax: 1024,
     },
     gp3: {
       label: i18n.t('compute.storage_gp3'),
