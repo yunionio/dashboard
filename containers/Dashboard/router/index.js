@@ -20,6 +20,7 @@ export default {
       //   }
       //   return false
       // },
+      label: i18n.t('dashboard.text_77'),
     },
     component: Layout,
     children: [
