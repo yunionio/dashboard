@@ -165,7 +165,7 @@ export const STORAGE_TYPES = {
     },
     gp3: {
       label: i18n.t('compute.storage_gp3'),
-      value: 'gp3',
+      key: 'gp3',
       min: 1,
       max: 16384,
       sysMin: 1,
