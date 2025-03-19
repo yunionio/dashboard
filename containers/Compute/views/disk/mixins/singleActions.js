@@ -358,9 +358,15 @@ export default {
                   refresh: this.refresh,
                 })
               },
-              meta: () => {
+              meta: (obj) => {
+                if (obj.provider === HYPERVISORS_MAP.kvm.brand) {
+                  return {
+                    validate: true,
+                  }
+                }
                 return {
-                  validate: true,
+                  validate: false,
+                  tooltip: this.$t('cloudenv.brand_action_deny'),
                 }
               },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_auto_reset'),
