@@ -853,7 +853,7 @@ class CreateList {
    */
   changeFilter (filter) {
     this.filter = filter
-    this.reset(false)
+    this.reset(this.pagerType === 'loadMore')
     this.fetchData(0, 0)
   }
 
@@ -864,7 +864,7 @@ class CreateList {
    */
   changeTagFilter (tagFilter) {
     this.tagFilter = tagFilter
-    this.reset(false)
+    this.reset(this.pagerType === 'loadMore')
     this.fetchData(0, 0)
   }
 
@@ -875,7 +875,7 @@ class CreateList {
    */
   changeTagFilter2 (tagFilter) {
     this.tagFilter2 = tagFilter
-    this.reset(false)
+    this.reset(this.pagerType === 'loadMore')
     this.fetchData(0, 0)
   }
 
@@ -886,7 +886,7 @@ class CreateList {
  */
   changeTagFilter3 (tagFilter) {
     this.tagFilter3 = tagFilter
-    this.reset(false)
+    this.reset(this.pagerType === 'loadMore')
     this.fetchData(0, 0)
   }
 
@@ -900,7 +900,7 @@ class CreateList {
       this.projectTagFilter = projectTagFilter
     } else if (!R.equals(this.projectTagFilter, projectTagFilter)) {
       this.projectTagFilter = projectTagFilter
-      this.reset(false)
+      this.reset(this.pagerType === 'loadMore')
       this.fetchData(0, 0)
     }
   }
