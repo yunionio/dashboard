@@ -1,5 +1,6 @@
 import i18n from '@/locales'
 import { GPU_DEV_TYPE_OPTION_MAP } from '@Compute/constants'
+import { cloudEnabled, cloudUnabledTip } from '@Compute/views/vminstance/utils'
 
 export default {
   created () {
@@ -49,7 +50,10 @@ export default {
           }
           if (obj.guest_id) {
             ret.validate = false
+            return ret
           }
+          ret.validate = cloudEnabled('acttachGpu', obj)
+          ret.tooltip = cloudUnabledTip('acttachGpu', obj)
           return ret
         },
       },
@@ -84,6 +88,8 @@ export default {
             ret.tooltip = this.$t('compute.text_489', [this.$t('dictionary.server')])
             return ret
           }
+          ret.validate = cloudEnabled('acttachGpu', obj)
+          ret.tooltip = cloudUnabledTip('acttachGpu', obj)
           return ret
         },
       },
