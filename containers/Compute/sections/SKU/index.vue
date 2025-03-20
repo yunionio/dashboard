@@ -125,6 +125,7 @@ export default {
         totalResult: 0,
       },
       skuTypes: [],
+      skuParamsChanged: false,
     }
   },
   computed: {
@@ -293,6 +294,7 @@ export default {
         if (!R.isEmpty(val)) {
           if (!R.equals(val, oldV)) {
             this.resetPageInfo()
+            this.skuParamsChanged = true
             this.fetchData()
           }
         } else {
@@ -347,7 +349,9 @@ export default {
         if (extSku) {
           chooseSku = extSku
         } else {
-          chooseSku = this.dataSku
+          if (!this.skuParamsChanged) {
+            chooseSku = this.dataSku
+          }
         }
       }
       this.$nextTick(() => {
