@@ -615,6 +615,7 @@ const actionEableMap = {
       incloudsphere: false,
       remotefile: false,
       volcengine: false,
+      cloudpods: false,
     },
   },
   acttachUsb: {
@@ -626,6 +627,7 @@ const actionEableMap = {
       incloudsphere: false,
       remotefile: false,
       volcengine: false,
+      cloudpods: false,
     },
   },
   publicIpToEip: {
