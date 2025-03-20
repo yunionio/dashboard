@@ -57,7 +57,7 @@
       <a-form-item :label="$t('compute.text_294')" v-show="!isServertemplate">
         <a-input-number v-decorator="decorators.count" @blur="countBlur" :min="1" :max="100" />
       </a-form-item>
-      <a-form-item v-if="form.fd.hypervisor === 'zettakit'">
+      <a-form-item v-if="form.fd.hypervisor === 'zettakit' || form.fd.hypervisor === 'kvm'">
         <span slot="label">
           {{ $t('compute.text_1152') }}&nbsp;
           <a-tooltip :title="$t('compute.vgpu_check.tooltip')">
