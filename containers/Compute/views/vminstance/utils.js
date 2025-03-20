@@ -678,6 +678,7 @@ const actionEableMap = {
       sangfor: false,
       zettakit: false,
       uis: false,
+      cloudpods: false,
     },
   },
   acttachUsb: {
@@ -692,6 +693,7 @@ const actionEableMap = {
       sangfor: false,
       zettakit: false,
       uis: false,
+      cloudpods: false,
     },
   },
   publicIpToEip: {
