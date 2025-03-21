@@ -121,7 +121,6 @@ export default {
       const response = { data: {} }
       const data = this.account.sub_accounts.cloudregions
       response.data.data = data
-      this.list.responseData = { data }
       return response
     },
     validateForm () {
