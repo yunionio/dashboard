@@ -56,6 +56,27 @@ export default {
         getTaskObjnameTableColumn(),
         getTaskObjIdTableColumn(),
         getTaskNameTableColumn(),
+        {
+          field: 'user',
+          title: this.$t('table.title.sponsor'),
+          minWidth: 120,
+          slots: {
+            default: ({ row }, h) => {
+              const { user_cred = {} } = row
+              const { token_credential = {} } = user_cred
+              const { project_domain = '', tenant = '', context = {} } = token_credential
+              const ret = [
+                <list-body-cell-wrap style="margin: 3px 0 2px 0" copy field='user' row={token_credential} />,
+                <div>
+                  <span class='text-weak' title={ this.$t('shareScope.domain') }> { project_domain } </span>
+                  <span class='text-weak' title={ this.$t('shareScope.project') }> { tenant } </span>
+                </div>,
+                <list-body-cell-wrap style="margin: 3px 0 2px 0" copy field='ip' row={context} />,
+              ]
+              return ret
+            },
+          },
+        },
         getSubtaskCountTableColumn(),
       ],
       cmOptions: {
@@ -102,7 +123,6 @@ export default {
   computed: {
     taskStages () {
       const stages = []
-      console.log(this.data)
       if (this.data.params) {
         if (this.data.params.__stages) {
           // stages

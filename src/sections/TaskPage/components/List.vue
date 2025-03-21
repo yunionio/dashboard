@@ -1,6 +1,7 @@
 <template>
   <task-list
     :resource="resource"
+    :archivedResource="archivedResource"
     root="true"
     :taskStage="taskStage"
     :listId="id" />
@@ -16,6 +17,9 @@ export default {
   },
   props: {
     resource: {
+      type: String,
+    },
+    archivedResource: {
       type: String,
     },
     id: {

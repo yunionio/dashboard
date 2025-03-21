@@ -1268,6 +1268,16 @@
     "reportRecord": {
       "success": "成功",
       "fail": "失败"
+    },
+    "parentTaskStatus": {
+      "queue": "排队中",
+      "done": "已完成",
+      "failed": "失败"
+    },
+    "parentTaskStage": {
+      "on_init": "初始化",
+      "complete": "已完成",
+      "failed": "失败"
     }
   },
   "skuCategoryOptions": {
@@ -6156,6 +6166,7 @@
   "common.platform_overview": "平台总览",
   "common.task.stage.label.in_progress": "执行中",
   "common.task.stage.label.complete": "已完成",
+  "common.task.stage.label.archived": "已归档",
   "common.server_security": "主机安全",
   "common.page_list_header_item_count_stats": "本页{0}条 / 选中{1}条 / 共{2}条",
   "common.resource_alert": "资源告警",

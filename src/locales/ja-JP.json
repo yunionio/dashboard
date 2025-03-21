@@ -1268,6 +1268,16 @@
     "reportRecord": {
       "success": "成功",
       "fail": "失敗"
+    },
+    "parentTaskStatus": {
+      "queue": "キュー",
+      "done": "完了",
+      "failed": "失敗"
+    },
+    "parentTaskStage": {
+      "on_init": "初期化",
+      "complete": "完了",
+      "failed": "失敗"
     }
   },
   "skuCategoryOptions": {
