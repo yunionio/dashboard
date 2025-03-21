@@ -1253,6 +1253,16 @@
     "reportRecord": {
       "success": "Success",
       "fail": "Failed"
+    },
+    "parentTaskStatus": {
+      "queue": "Queue",
+      "done": "Done",
+      "failed": "Failed"
+    },
+    "parentTaskStage": {
+      "on_init": "On Init",
+      "complete": "Complete",
+      "failed": "Failed"
     }
   },
   "skuCategoryOptions": {

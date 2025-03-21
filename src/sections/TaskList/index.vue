@@ -3,7 +3,8 @@
     <page-list
       :list="list"
       :columns="columns"
-      :export-data-options="exportDataOptions" />
+      :export-data-options="exportDataOptions"
+      :group-actions="groupActions" />
   </div>
 </template>
 
@@ -33,6 +34,9 @@ export default {
     resource: {
       type: String,
     },
+    archivedResource: {
+      type: String,
+    },
     objId: {
       type: String,
     },
@@ -48,42 +52,8 @@ export default {
     getParams: [Object, Function],
   },
   data () {
-    const filterOptions = {
-      id: {
-        label: this.$t('table.title.id'),
-      },
-      status: getStatusFilter('task'),
-      stage: {
-        label: this.$t('table.title.stage'),
-        dropdown: true,
-        multiple: true,
-        distinctField: {
-          type: 'field',
-          key: 'stage',
-        },
-      },
-      task_name: {
-        label: this.$t('table.title.task_name'),
-        dropdown: true,
-        multiple: true,
-        distinctField: {
-          type: 'field',
-          key: 'task_name',
-        },
-      },
-      created_at: getTimeRangeFilter({ label: this.$t('table.title.create_time'), field: 'created_at' }),
-    }
     return {
-      list: this.$list.createList(this, {
-        id: this.listId,
-        resource: this.resource,
-        apiVersion: 'v1',
-        getParams: this.getParam,
-        filterOptions,
-        steadyStatus: {
-          status: Object.values(expectStatus.parentTaskStatus).flat(),
-        },
-      }),
+      list: this.initList(),
       columns: [
         getNameDescriptionTableColumn({
           title: '#ID',
@@ -156,6 +126,26 @@ export default {
         items,
       }
     },
+    groupActions () {
+      return this.taskStage === 'in_progress' ? [
+        {
+          label: this.$t('common.cancel'),
+          action: () => {
+            this.createDialog('TaskCancelDialog', {
+              title: this.$t('common.cancel'),
+              columns: this.columns,
+              data: this.list.selectedItems,
+              onManager: this.onManager,
+              resource: this.resource,
+              refresh: this.refresh,
+            })
+          },
+          meta: () => ({
+            validate: this.list.selectedItems.length > 0,
+          }),
+        },
+      ] : []
+    },
   },
   watch: {
     getParams (val) {
@@ -166,6 +156,7 @@ export default {
     },
     taskStage (val) {
       this.$nextTick(() => {
+        this.list = this.initList()
         this.list.fetchData(0)
       })
     },
@@ -174,6 +165,46 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    initList () {
+      const filterOptions = {
+        id: {
+          label: this.$t('table.title.id'),
+        },
+        status: getStatusFilter('task'),
+        stage: {
+          label: this.$t('table.title.stage'),
+          dropdown: true,
+          multiple: true,
+          distinctField: {
+            type: 'field',
+            key: 'stage',
+          },
+        },
+        task_name: {
+          label: this.$t('table.title.task_name'),
+          dropdown: true,
+          multiple: true,
+          distinctField: {
+            type: 'field',
+            key: 'task_name',
+          },
+        },
+        created_at: getTimeRangeFilter({ label: this.$t('table.title.create_time'), field: 'created_at' }),
+      }
+      return this.$list.createList(this, {
+        id: this.listId,
+        resource: this.taskStage === 'archived' ? this.archivedResource : this.resource,
+        apiVersion: 'v1',
+        getParams: this.getParam,
+        filterOptions,
+        steadyStatus: {
+          status: Object.values(expectStatus.parentTaskStatus).flat(),
+        },
+      })
+    },
+    refresh () {
+      this.list.refresh()
+    },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'TaskSidePage', {
         id: row.id,
