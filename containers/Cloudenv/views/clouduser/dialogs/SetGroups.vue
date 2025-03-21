@@ -66,7 +66,7 @@ export default {
           getParams: () => {
             return {
               scope: this.$store.getters.scope,
-              mamager_id: this.params.data[0].manager_id,
+              manager_id: this.params.data[0].manager_id,
               cloudaccount_id: this.params.data[0].cloudaccount_id,
             }
           },
