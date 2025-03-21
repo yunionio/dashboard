@@ -1396,14 +1396,14 @@ const getSingleActions = function () {
                   //   return ret
                   // }
                   const noSupportBrand = [
-                    typeClouds.hypervisorMap.openstack.brand,
-                    typeClouds.hypervisorMap.zstack.brand,
-                    typeClouds.hypervisorMap.dstack.brand,
-                    typeClouds.hypervisorMap.ucloud.brand,
-                    typeClouds.hypervisorMap.ctyun.brand,
-                    typeClouds.hypervisorMap.nutanix.brand,
-                    typeClouds.hypervisorMap.proxmox.brand,
-                    typeClouds.hypervisorMap.sangfor.brand,
+                    typeClouds.hypervisorMap.openstack?.brand,
+                    typeClouds.hypervisorMap.zstack?.brand,
+                    // typeClouds.hypervisorMap.dstack?.brand,
+                    typeClouds.hypervisorMap.ucloud?.brand,
+                    typeClouds.hypervisorMap.ctyun?.brand,
+                    typeClouds.hypervisorMap.nutanix?.brand,
+                    typeClouds.hypervisorMap.proxmox?.brand,
+                    typeClouds.hypervisorMap.sangfor?.brand,
                   ]
                   if (noSupportBrand.includes(obj.brand)) {
                     ret.tooltip = i18n.t('compute.text_1287', [obj.brand])
