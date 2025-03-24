@@ -1870,5 +1870,5 @@
   "compute.billing_type": "課金モード",
   "compute.change_to_prepaid": "年次パッケージに変更",
   "compute.shutdown_auto_reset": "シャットダウン自動リセット",
-  "compute.disk_set_auto_reset": "自動リセットの設定"
+  "compute.disk_set_auto_reset": "シャットダウン自動リセットの設定"
 }

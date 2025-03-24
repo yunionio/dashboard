@@ -13,6 +13,9 @@
     <template v-if="addBackup && row.backup_host_id">
       <icon type="gaokeyong" class="ml-1" :title="$t('common.text00009')" />
     </template>
+    <template v-if="addAutoReset">
+      <icon class="ml-1" type="auto-set" :title="$t('compute.shutdown_auto_reset')" />
+    </template>
     <slot name="append" />
     <slot name="appendActions" v-if="showAppendActions && !inBaseDialog && inList" />
     <edit
@@ -93,6 +96,7 @@ export default {
     addLock: Boolean,
     addEncrypt: Boolean,
     addBackup: Boolean,
+    addAutoReset: Boolean,
     // 自定义确定事件，如果传递了此事件，则不会执行默认的确定事件
     ok: Function,
     // 是否需要显示成功信息
