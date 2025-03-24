@@ -35,6 +35,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    hideAlertRecordResourceCount: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -189,74 +193,77 @@ export default {
         },
         strategyColumn('alert_rule'),
         levelColumn,
-        {
-          field: 'res_num',
-          title: this.$t('cloudenv.text_417'),
-          minWidth: 80,
-          type: 'expand',
-          slots: {
-            default: ({ row }) => {
-              return row.res_num
-            },
-            content: ({ row }) => {
-              const columns = [
-                {
-                  field: 'name',
-                  title: this.$t('dashboard.text_110'),
-                  formatter: ({ row }) => R.path(['tags', 'name'], row) || '-',
-                },
-                {
-                  field: 'ip',
-                  title: 'IP',
-                  formatter: ({ row }) => R.path(['tags', 'ip'], row) || '-',
-                },
-                {
-                  field: 'brand',
-                  title: this.$t('compute.text_176'),
-                  slots: {
-                    default: ({ row }, h) => {
-                      let brand = R.path(['tags', 'brand'], row)
-                      if (!brand) return [<data-loading />]
-                      if (brand === 'kvm') brand = 'OneCloud'
-                      return [
-                        <BrandIcon name={brand} />,
-                      ]
+        ...(this.hideAlertRecordResourceCount ? [] : [
+          {
+            field: 'res_num',
+            title: this.$t('cloudenv.text_417'),
+            minWidth: 80,
+            type: 'expand',
+            slots: {
+              default: ({ row }) => {
+                return row.res_num
+              },
+              content: ({ row }) => {
+                const columns = [
+                  {
+                    field: 'name',
+                    title: this.$t('dashboard.text_110'),
+                    formatter: ({ row }) => R.path(['tags', 'name'], row) || '-',
+                  },
+                  {
+                    field: 'ip',
+                    title: 'IP',
+                    formatter: ({ row }) => R.path(['tags', 'ip'], row) || '-',
+                  },
+                  {
+                    field: 'brand',
+                    title: this.$t('compute.text_176'),
+                    slots: {
+                      default: ({ row }, h) => {
+                        let brand = R.path(['tags', 'brand'], row)
+                        if (!brand) return [<data-loading />]
+                        if (brand === 'kvm') brand = 'OneCloud'
+                        return [
+                          <BrandIcon name={brand} />,
+                        ]
+                      },
                     },
                   },
-                },
-                {
-                  field: 'condition',
-                  title: this.$t('monitor.condition'),
-                  slots: {
-                    default: ({ row }, h) => {
-                      if (!row.alert_details) return '-'
-                      const { strategy } = getStrategyInfo(row.alert_details)
+                  {
+                    field: 'condition',
+                    title: this.$t('monitor.condition'),
+                    slots: {
+                      default: ({ row }, h) => {
+                        if (!row.alert_details) return '-'
+                        const { strategy } = getStrategyInfo(row.alert_details)
 
-                      return [
-                        <a-tooltip>
-                          <template slot="title">
-                            {row.metric}
-                          </template>
-                          {strategy}
-                        </a-tooltip>,
-                      ]
+                        return [
+                          <a-tooltip>
+                            <template slot="title">
+                              {row.metric}
+                            </template>
+                            {strategy}
+                          </a-tooltip>,
+                        ]
+                      },
                     },
                   },
-                },
-                {
-                  field: 'value_str',
-                  title: row.state === 'ok' ? this.$t('monitor.text_106') : this.$t('monitor.text_105'),
-                  align: 'right',
-                  formatter: ({ row }) => row.value_str,
-                },
-              ]
-              return <vxe-grid size="mini" border columns={columns} data={row.eval_data} />
+                  {
+                    field: 'value_str',
+                    title: row.state === 'ok' ? this.$t('monitor.text_106') : this.$t('monitor.text_105'),
+                    align: 'right',
+                    formatter: ({ row }) => row.value_str,
+                  },
+                ]
+                return <vxe-grid size="mini" border columns={columns} data={row.eval_data} />
+              },
             },
           },
-        },
+        ]),
         {
           field: 'send_state',
           title: this.$t('common.sendState'),
+          sortable: true,
           formatter: ({ row }) => this.$t(`status.alertSendState.${row.send_state}`),
         },
       ]

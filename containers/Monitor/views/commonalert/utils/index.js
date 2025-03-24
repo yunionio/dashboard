@@ -10,6 +10,7 @@ export const levelColumn = {
   field: 'level',
   title: i18n.t('monitor.level'),
   minWidth: 40,
+  sortable: true,
   slots: {
     default: ({ row }, h) => {
       const levelItem = levelMaps[row.level]
