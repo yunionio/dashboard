@@ -27,7 +27,8 @@
       :on-manager="onManager"
       :getParams="listParams"
       :isPageDestroyed="isPageDestroyed"
-      :serverColumns="columns" />
+      :serverColumns="columns"
+      hideAlertRecordResourceCount />
   </base-side-page>
 </template>
 
