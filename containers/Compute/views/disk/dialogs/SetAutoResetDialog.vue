@@ -7,7 +7,7 @@
       <a-form
         :form="form.fc">
         <a-form-item :label="$t('compute.shutdown_auto_reset')" v-bind="formItemLayout">
-          <a-checkbox v-decorator="decorators.auto_reset" />
+          <a-switch :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" v-decorator="decorators.auto_reset" />
         </a-form-item>
       </a-form>
     </div>
