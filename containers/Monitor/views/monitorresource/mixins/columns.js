@@ -42,6 +42,7 @@ export default {
       {
         field: 'status',
         title: this.$t('common.status'),
+        sortable: true,
         slots: {
           default: ({ row }, h) => {
             let m = 'server'
