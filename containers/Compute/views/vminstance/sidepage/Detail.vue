@@ -152,6 +152,9 @@ export default {
         image = sysDisks[0].image || '-'
         imageId = sysDisks[0].image_id
         sysDisk[sysKey] = this._dealSize(sysDisks)
+        if (sysDisks[0].auto_reset) {
+          sysDisk.auto_reset = true
+        }
       }
       if (dataDisks && dataDisks.length > 0) {
         for (const k in ALL_STORAGE) {
@@ -163,6 +166,9 @@ export default {
           if (sameType && sameType.length) {
             dataDisk[k] = this._dealSize(sameType)
           }
+        }
+        if (dataDisks.some(v => v.auto_reset)) {
+          dataDisk.auto_reset = true
         }
       }
       if (this.data.cdrom && dataDisks.length > 0) {
@@ -598,14 +604,14 @@ export default {
     _diskStringify (diskObj) {
       let str = ''
       const storageArr = Object.values(ALL_STORAGE)
-
       for (const k in diskObj) {
+        if (k === 'auto_reset') continue
         const num = diskObj[k]
         const disk = storageArr.find(v => v.value === k)
         if (disk) {
-          str += `、${sizestr(num, 'M', 1024)}（${disk.label}）`
+          str += `、${sizestr(num, 'M', 1024)}（${disk.label}${diskObj.auto_reset ? ' ' + this.$t('compute.shutdown_auto_reset') : ''}）`
         } else {
-          str += `、${sizestr(num, 'M', 1024)}（${k}）`
+          str += `、${sizestr(num, 'M', 1024)}（${k}（${disk.label}${diskObj.auto_reset ? ' ' + this.$t('compute.shutdown_auto_reset') : ''}）`
         }
       }
       return str.slice(1)

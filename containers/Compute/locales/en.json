@@ -1730,5 +1730,5 @@
   "compute.kvm_rebuild_tip5": "5. Reinstalling the system does not support selecting local ISO format images",
   "compute.kvm_rebuild_tip6": "6. The mirror status must be in an available state",
   "compute.shutdown_auto_reset": "Shutdown and automatic reset",
-  "compute.disk_set_auto_reset": "Set automatic reset"
+  "compute.disk_set_auto_reset": "Set shutdown and automatic reset"
 }
