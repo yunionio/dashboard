@@ -907,5 +907,6 @@
   "cloudenv.s3.sign_alg_version": "签名算法版本",
   "cloudenv.smal_provider_tips": "云账号开启免密登录后，会将云管的认证信息同步到云上，以便可通过免密SSO方式跳转登录。",
   "cloudenv.check_mon_host": "请输入正确的 Mon Host 格式",
-  "cloudenv.mon_host_extra": "格式为：IP:Port，如：192.168.1.1:80, 多个地址用英文逗号分隔"
+  "cloudenv.mon_host_extra": "格式为：IP:Port，如：192.168.1.1:80, 多个地址用英文逗号分隔",
+  "cloudenv.enable_mfa": "启用MFA"
 }
