@@ -899,5 +899,6 @@
   "cloudenv.entity_id": "エンティティID",
   "cloudenv.auth_url": "認証アドレス",
   "cloudenv.s3.sign_alg_version": "署名アルゴリズムのバージョン",
-  "cloudenv.smal_provider_tips": "クラウドアカウントが非機密ログインをオンにすると、クラウド管理の認証情報がクラウド上に同期され、非機密SSO方式でジャンプログインできるようになります。"
+  "cloudenv.smal_provider_tips": "クラウドアカウントが非機密ログインをオンにすると、クラウド管理の認証情報がクラウド上に同期され、非機密SSO方式でジャンプログインできるようになります。",
+  "cloudenv.enable_mfa": "MFAを有効にする"
 }

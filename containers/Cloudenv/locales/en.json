@@ -898,5 +898,6 @@
   "cloudenv.entity_id": "Entity ID",
   "cloudenv.auth_url": "Auth URL",
   "cloudenv.s3.sign_alg_version": "Signing Algorithm Version",
-  "cloudenv.smal_provider_tips": "After enabling password free login for the cloud account, the authentication information of the cloud management will be synchronized to the cloud, so that login can be redirected through password free SSO."
+  "cloudenv.smal_provider_tips": "After enabling password free login for the cloud account, the authentication information of the cloud management will be synchronized to the cloud, so that login can be redirected through password free SSO.",
+  "cloudenv.enable_mfa": "Enable MFA"
 }
