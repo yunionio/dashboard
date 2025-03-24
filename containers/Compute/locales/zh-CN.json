@@ -1663,5 +1663,5 @@
   "compute.bios": "引导模式",
   "compute.lvm_shared_storage.validate_tooltip": "LVM磁盘主机不支持该操作",
   "compute.shutdown_auto_reset": "关机自动重置",
-  "compute.disk_set_auto_reset": "设置自动重置"
+  "compute.disk_set_auto_reset": "设置关机自动重置"
 }

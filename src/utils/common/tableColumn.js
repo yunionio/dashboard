@@ -222,6 +222,10 @@ export const getNameDescriptionTableColumn = ({
     slots: {
       default: ({ row }, h) => {
         const text = (message && R.type(message) === 'Function') ? message(row) : (message || (row[field] && row[field].toString()) || '-')
+        let addAutoReset = false
+        if (row.disks_info && R.is(Array, row.disks_info)) {
+          addAutoReset = row.disks_info.some(disk => disk.auto_reset)
+        }
         const ret = [
           h('list-body-cell-wrap', {
             props: {
@@ -235,6 +239,7 @@ export const getNameDescriptionTableColumn = ({
               steadyStatus: steadyStatus || (expectStatus[statusModule] && Object.values(expectStatus[statusModule]).flat()),
               hideField,
               addLock,
+              addAutoReset,
               addEncrypt,
               addBackup,
               formRules,

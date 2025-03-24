@@ -359,15 +359,18 @@ export default {
                 })
               },
               meta: (obj) => {
-                if (obj.provider === HYPERVISORS_MAP.kvm.brand) {
-                  return {
-                    validate: true,
-                  }
-                }
-                return {
+                const ret = {
                   validate: false,
                   tooltip: this.$t('cloudenv.brand_action_deny'),
                 }
+                if (obj.guest_status !== 'ready') {
+                  ret.tooltip = i18n.t('compute.text_1308')
+                }
+                if (obj.provider === HYPERVISORS_MAP.kvm.brand && obj.guest_status === 'ready') {
+                  ret.validate = true
+                  ret.tooltip = ''
+                }
+                return ret
               },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_auto_reset'),
             },
