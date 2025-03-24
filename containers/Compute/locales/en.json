@@ -1662,5 +1662,5 @@
   "compute.bios": "Boot Mode",
   "compute.lvm_shared_storage.validate_tooltip": "LVM disk host does not support this operation",
   "compute.shutdown_auto_reset": "Shutdown and automatic reset",
-  "compute.disk_set_auto_reset": "Set automatic reset"
+  "compute.disk_set_auto_reset": "Set shutdown and automatic reset"
 }
