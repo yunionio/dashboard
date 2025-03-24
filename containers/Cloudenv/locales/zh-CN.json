@@ -901,5 +901,6 @@
   "cloudenv.entity_id": "实体ID",
   "cloudenv.auth_url": "认证地址",
   "cloudenv.s3.sign_alg_version": "签名算法版本",
-  "cloudenv.smal_provider_tips": "云账号开启免密登录后，会将云管的认证信息同步到云上，以便可通过免密SSO方式跳转登录。"
+  "cloudenv.smal_provider_tips": "云账号开启免密登录后，会将云管的认证信息同步到云上，以便可通过免密SSO方式跳转登录。",
+  "cloudenv.enable_mfa": "启用MFA"
 }
