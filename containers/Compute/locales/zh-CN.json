@@ -1870,5 +1870,5 @@
   "compute.billing_type": "计费模式",
   "compute.change_to_prepaid": "转为包年包月",
   "compute.shutdown_auto_reset": "关机自动重置",
-  "compute.disk_set_auto_reset": "设置自动重置"
+  "compute.disk_set_auto_reset": "设置关机自动重置"
 }
