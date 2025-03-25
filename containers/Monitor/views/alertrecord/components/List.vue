@@ -3,7 +3,19 @@
     :list="list"
     :columns="columns"
     :single-actions="singleActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions">
+    <template v-slot:group-actions-append>
+      <a-radio-group class="ml-3" v-model="time">
+        <a-radio-button value="1">{{ $t('common_167') }}</a-radio-button>
+        <a-radio-button value="6">{{ $t('common_nearly_num_hours', [6]) }}</a-radio-button>
+        <a-radio-button value="12">{{ $t('common_nearly_num_hours', [12]) }}</a-radio-button>
+        <a-radio-button value="24">{{ $t('common_nearly_num_hours', [24]) }}</a-radio-button>
+        <a-radio-button value="168">{{ $t('common_174') }}</a-radio-button>
+        <a-radio-button value="720">{{ $t('common_175') }}</a-radio-button>
+        <a-radio-button value="all">{{ $t('monitor.text_3') }}</a-radio-button>
+      </a-radio-group>
+    </template>
+  </page-list>
 </template>
 
 <script>
@@ -12,10 +24,13 @@ import { levelMaps } from '@Monitor/constants'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import BrandIcon from '@/sections/BrandIcon'
+import storage from '@/utils/storage'
 import { getNameFilter, getTimeRangeFilter, getStatusFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { getTimeTableColumn, getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import { strategyColumn, levelColumn, getStrategyInfo } from '@Monitor/views/commonalert/utils'
 import ColumnsMixin from '../mixins/columns'
+
+const STORAGE_TIME_KEY = '__oc_alertrecord_time__'
 
 export default {
   name: 'AlertrecordList',
@@ -41,6 +56,7 @@ export default {
     },
   },
   data () {
+    const timeConfig = storage.get(STORAGE_TIME_KEY, {})
     return {
       list: this.$list.createList(this, this.listOptions('alertrecords')),
       exportDataOptions: {
@@ -58,6 +74,7 @@ export default {
         }),
       },
       resTypeItems: [],
+      time: timeConfig.time || '168',
     }
   },
   computed: {
@@ -92,6 +109,10 @@ export default {
       this.$nextTick(() => {
         this.list.filterOptions = this.filters()
       })
+    },
+    time (val) {
+      storage.set(STORAGE_TIME_KEY, { time: val })
+      this.list.fetchData()
     },
   },
   created () {
@@ -272,6 +293,18 @@ export default {
       const ret = {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
         details: true,
+      }
+      if (this.time !== 'all') {
+        const f = `created_at.gt("${this.$moment().utc().subtract(this.time, 'hours').format('YYYY-MM-DD HH:mm:ss')}")`
+        if (ret.filter) {
+          if (R.is(Array, ret.filter)) {
+            ret.filter.push(f)
+          } else {
+            ret.filter = [f]
+          }
+        } else {
+          ret.filter = [f]
+        }
       }
       return ret
     },
