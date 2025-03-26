@@ -1719,6 +1719,69 @@ const getSingleActions = function () {
                 },
                 hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_source_check'),
               },
+              {
+                label: i18n.t('compute.add_to_bastion'),
+                permission: 'bastion_servers_create',
+                action: () => {
+                  this.createDialog('VmAddToBastionDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                  })
+                },
+                meta: (obj) => {
+                  const ret = { validate: true }
+                  if (obj.metadata?.bastion_server) {
+                    ret.validate = false
+                    ret.tooltip = i18n.t('compute.already_in_bastion')
+                    return ret
+                  }
+                  if (obj.status !== 'running') {
+                    ret.validate = false
+                    ret.tooltip = i18n.t('compute.text_1282')
+                    return ret
+                  }
+                  return ret
+                },
+                hidden: () => {
+                  if (this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host')) {
+                    return true
+                  }
+                  return false
+                },
+              },
+              {
+                label: i18n.t('compute.remove_from_bastion'),
+                permission: 'bastion_servers_delete',
+                action: () => {
+                  this.createDialog('VmRemoveFromBastionDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                  })
+                },
+                meta: (obj) => {
+                  const ret = { validate: true }
+                  if (!obj.metadata?.bastion_server) {
+                    ret.validate = false
+                    return ret
+                  }
+                  if (!['running', 'ready'].includes(obj.status)) {
+                    ret.validate = false
+                    ret.tooltip = i18n.t('compute.text_1126')
+                    return ret
+                  }
+                  return ret
+                },
+                hidden: () => {
+                  if (this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host')) {
+                    return true
+                  }
+                  return false
+                },
+              },
             ],
           },
           // * 高可用

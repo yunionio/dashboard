@@ -1870,5 +1870,10 @@
   "compute.billing_type": "課金モード",
   "compute.change_to_prepaid": "年次パッケージに変更",
   "compute.shutdown_auto_reset": "シャットダウン自動リセット",
-  "compute.disk_set_auto_reset": "シャットダウン自動リセットの設定"
+  "compute.disk_set_auto_reset": "シャットダウン自動リセットの設定",
+  "compute.add_to_bastion": "添加到堡垒机",
+  "compute.remove_from_bastion": "从堡垒机移除",
+  "compute.already_in_bastion": "该虚拟机已加入堡垒机，请先移除后重试",
+  "compute.only_running_vm_support": "仅开机状态的虚拟机支持此操作",
+  "compute.delete_bastion_host": "同时从堡垒机移除"
 }
