@@ -190,11 +190,13 @@ body {
   -webkit-line-clamp: 3;
 }
 
-.text-truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  min-width: 30%;
+.base-select {
+  .text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 30%;
+  }
 }
 
 // 兼容 safari 浏览器
