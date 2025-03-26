@@ -905,5 +905,6 @@
   "cloudenv.s3.sign_alg_version": "署名アルゴリズムのバージョン",
   "cloudenv.smal_provider_tips": "クラウドアカウントが非機密ログインをオンにすると、クラウド管理の認証情報がクラウド上に同期され、非機密SSO方式でジャンプログインできるようになります。",
   "cloudenv.check_mon_host": "正しいMon Hostフォーマットを入力してください",
-  "cloudenv.mon_host_extra": "フォーマット：IP：ポート、例：192.168.1.1：80、複数のアドレスは英語のカンマで区切られる"
+  "cloudenv.mon_host_extra": "フォーマット：IP：ポート、例：192.168.1.1：80、複数のアドレスは英語のカンマで区切られる",
+  "cloudenv.enable_mfa": "MFAを有効にする"
 }
