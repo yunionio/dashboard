@@ -1889,5 +1889,10 @@
   "compute.billing_type": "課金モード",
   "compute.change_to_prepaid": "年次パッケージに変更",
   "compute.shutdown_auto_reset": "シャットダウン自動リセット",
-  "compute.disk_set_auto_reset": "シャットダウン自動リセットの設定"
+  "compute.disk_set_auto_reset": "シャットダウン自動リセットの設定",
+  "compute.add_to_bastion": "バスティオンホストに追加",
+  "compute.remove_from_bastion": "バスティオンホストから削除",
+  "compute.already_in_bastion": "この仮想マシンはすでにバスティオンホストに追加されています。削除してから再試行してください",
+  "compute.only_running_vm_support": "電源がオンの状態の仮想マシンのみがこの操作をサポートしています",
+  "compute.delete_bastion_host": "バスティオンホストからも削除"
 }

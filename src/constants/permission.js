@@ -1469,6 +1469,7 @@ export const PERMISSION = {
   bastion_hosts_delete: ['bastionhost', 'bastion_hosts', 'delete'],
 
   bastion_servers_create: ['bastionhost', 'bastion_servers', 'create'],
+  bastion_servers_delete: ['bastionhost', 'bastion_servers', 'delete'],
 
   // 自定义数据
   ext_resources_list: ['extdb', 'ext_resources', 'list'],
