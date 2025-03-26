@@ -1769,7 +1769,7 @@ const getSingleActions = function () {
                   return ret
                 },
                 hidden: () => {
-                  if (this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host') || (isLicense2() && !hasSetupKey('bastionhost'))) {
+                  if (!this.$appConfig.isPrivate || this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host') || (isLicense2() && !hasSetupKey('bastionhost'))) {
                     return true
                   }
                   return false
@@ -1800,7 +1800,7 @@ const getSingleActions = function () {
                   return ret
                 },
                 hidden: () => {
-                  if (this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host') || (isLicense2() && !hasSetupKey('bastionhost'))) {
+                  if (!this.$appConfig.isPrivate || this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host') || (isLicense2() && !hasSetupKey('bastionhost'))) {
                     return true
                   }
                   return false
