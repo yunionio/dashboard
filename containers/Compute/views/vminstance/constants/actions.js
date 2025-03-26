@@ -1745,7 +1745,7 @@ const getSingleActions = function () {
                   return ret
                 },
                 hidden: () => {
-                  if (this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host')) {
+                  if (!this.$appConfig.isPrivate || this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host')) {
                     return true
                   }
                   return false
@@ -1776,7 +1776,7 @@ const getSingleActions = function () {
                   return ret
                 },
                 hidden: () => {
-                  if (this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host')) {
+                  if (!this.$appConfig.isPrivate || this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host')) {
                     return true
                   }
                   return false
