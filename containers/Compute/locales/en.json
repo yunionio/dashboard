@@ -1868,5 +1868,10 @@
   "compute.billing_type": "Billing mode",
   "compute.change_to_prepaid": "Change to prepaid",
   "compute.shutdown_auto_reset": "Shutdown and automatic reset",
-  "compute.disk_set_auto_reset": "Set shutdown and automatic reset"
+  "compute.disk_set_auto_reset": "Set shutdown and automatic reset",
+  "compute.add_to_bastion": "Add to bastion host",
+  "compute.remove_from_bastion": "Remove from bastion host",
+  "compute.already_in_bastion": "The virtual machine is already in the bastion host. Please remove it and try again.",
+  "compute.only_running_vm_support": "Only running virtual machines support this operation",
+  "compute.delete_bastion_host": "Delete from bastion host"
 }

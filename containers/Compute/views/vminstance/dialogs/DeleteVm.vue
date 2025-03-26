@@ -58,6 +58,10 @@
             </a-tooltip>
           </a-form-item>
         </template>
+        <!-- 堡垒机 -->
+        <a-form-model-item v-if="isShowDeleteBastionServer">
+          <a-checkbox v-model="form.fd.delete_bastion_server">{{ $t('compute.delete_bastion_host') }}</a-checkbox>
+        </a-form-model-item>
       </a-form>
       <dialog-table v-if="form.fd.autoDelete" :data="snapshot.list" :columns="snapshot.columns" />
     </div>
@@ -134,6 +138,7 @@ export default {
           deleteEip: false,
           deleteSnapshot: false,
           deleteDisk: false,
+          delete_bastion_server: false,
         },
       },
       decorators: {
@@ -178,6 +183,9 @@ export default {
         return canDeleteBrandList.indexOf(item.brand) !== -1
       })
       return isSomeCanDelete
+    },
+    isShowDeleteBastionServer () {
+      return this.params.data.some(item => item.metadata?.bastion_server)
     },
     deleteEipLimit () {
       const result = {
@@ -298,6 +306,9 @@ export default {
         }
         if (this.form.fd.deleteEip || (this.deleteEipLimit.support && this.deleteEipLimit.mustDelete)) {
           params.delete_eip = true
+        }
+        if (this.form.fd.delete_bastion_server) {
+          params.delete_bastion_server = true
         }
         const response = await this.params.onManager('batchDelete', {
           id: ids,
