@@ -282,10 +282,27 @@ export default {
         initiator: this.userInfo.id,
         ids: ids.join(','),
         description: values.reason,
+        paramter: JSON.stringify(this.getFormParams()),
       }
       await this.createWorkflow(variables)
       this.$message.success(this.$t('compute.text_1214'))
       this.$router.push('/workflow')
+    },
+    getFormParams () {
+      const params = {}
+      if (this.form.fd.deleteSnapshot || (this.deleteSnapshotLimit.support && this.deleteSnapshotLimit.mustDelete)) {
+        params.delete_snapshots = true
+      }
+      if (this.form.fd.deleteDisk || (this.deleteDiskLimit.support && this.deleteDiskLimit.mustDelete)) {
+        params.delete_disks = true
+      }
+      if (this.form.fd.deleteEip || (this.deleteEipLimit.support && this.deleteEipLimit.mustDelete)) {
+        params.delete_eip = true
+      }
+      if (this.form.fd.delete_bastion_server) {
+        params.delete_bastion_server = true
+      }
+      return params
     },
     async handleDelete () {
       if (this.params.ok) {
@@ -297,18 +314,7 @@ export default {
         params = {
           ...params,
           ...this.params.requestParams,
-        }
-        if (this.form.fd.deleteSnapshot || (this.deleteSnapshotLimit.support && this.deleteSnapshotLimit.mustDelete)) {
-          params.delete_snapshots = true
-        }
-        if (this.form.fd.deleteDisk || (this.deleteDiskLimit.support && this.deleteDiskLimit.mustDelete)) {
-          params.delete_disks = true
-        }
-        if (this.form.fd.deleteEip || (this.deleteEipLimit.support && this.deleteEipLimit.mustDelete)) {
-          params.delete_eip = true
-        }
-        if (this.form.fd.delete_bastion_server) {
-          params.delete_bastion_server = true
+          ...this.getFormParams(),
         }
         const response = await this.params.onManager('batchDelete', {
           id: ids,
