@@ -1,5 +1,5 @@
 <template>
-  <base-dialog @cancel="cancelDialog">
+  <base-dialog @cancel="cancelDialog" width="1000px">
     <div slot="header">{{$t('common.text00093')}}</div>
     <div class="clearfix pr-2" slot="body">
       <div class="info-wrapper d-flex flex-wrap pb-3" v-if="params.currentData">
@@ -8,7 +8,7 @@
           <div class="value">{{ item.formatter ? item.formatter({ row: currentData }) : currentData[item.field] }}</div>
         </div>
       </div>
-      <code-mirror v-model="showData" :options="cmOptions" ref="codeMirrorRef" view-height="300px" :is-scroll="true" />
+      <code-mirror v-model="showData" class="codemirror-h-100" :options="cmOptions" ref="codeMirrorRef" />
       <div
         class="float-right"
         v-clipboard:copy="params.data"
