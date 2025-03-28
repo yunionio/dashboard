@@ -3,7 +3,8 @@
     "one": "単回",
     "day": "毎日",
     "week": "毎週",
-    "month": "毎月"
+    "month": "毎月",
+    "year": "毎年"
   },
   "cloudenvScheduledtaskRuleAction": {
     "start": "起動",
