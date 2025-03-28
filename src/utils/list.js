@@ -491,6 +491,11 @@ class CreateList {
     this.data = {}
     const data = {}
     const keys = Object.keys(allData)
+    if (this.pagerType === 'loadMore' || keys.every(key => /^\d+$/.test(key))) {
+      keys.sort((a, b) => {
+        return Number(b) - Number(a)
+      })
+    }
     for (let i = 0; i < keys.length; i += 20) {
       if (i === 0) {
         keys.slice(i, i + 20).map(key => {
