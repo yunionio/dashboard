@@ -4,7 +4,8 @@
     "day": "每天",
     "week": "每周",
     "month": "每月",
-    "cycle": "周期"
+    "cycle": "周期",
+    "year": "每年"
   },
   "cloudenvScheduledtaskRuleAction": {
     "start": "开机",

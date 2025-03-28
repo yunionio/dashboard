@@ -4,7 +4,8 @@
     "day": "Everyday",
     "week": "Weekly",
     "month": "Monthly",
-    "cycle": "Cycle"
+    "cycle": "Cycle",
+    "year": "Yearly"
   },
   "cloudenvScheduledtaskRuleAction": {
     "start": "Start",
