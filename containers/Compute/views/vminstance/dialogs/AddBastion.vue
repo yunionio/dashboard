@@ -62,7 +62,7 @@ export default {
           data: {
             ...values,
             server_id: this.params.data[0].id,
-            name: this.params.data[0].name,
+            generate_name: this.params.data[0].name,
           },
         })
         this.params.refresh()
