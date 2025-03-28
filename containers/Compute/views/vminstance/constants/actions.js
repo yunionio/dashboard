@@ -950,7 +950,7 @@ const getSingleActions = function () {
                   }
                   const rescueModeValid = validateRescueMode(obj)
                   if (!rescueModeValid.validate) return rescueModeValid
-                  if (obj.shutdown_mode === 'stop_charging') {
+                  if (obj.shutdown_mode === 'stop_charging' && obj.status === 'ready') {
                     ret.validate = false
                     ret.tooltip = i18n.t('compute.server.shutdown_mode.tooltip')
                     return ret
@@ -991,7 +991,7 @@ const getSingleActions = function () {
                     ret.tooltip = i18n.t('compute.text_1371')
                     return ret
                   }
-                  if (obj.shutdown_mode === 'stop_charging') {
+                  if (obj.shutdown_mode === 'stop_charging' && obj.status === 'ready') {
                     ret.validate = false
                     ret.tooltip = i18n.t('compute.server.shutdown_mode.tooltip')
                     return ret

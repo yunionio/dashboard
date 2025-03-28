@@ -821,7 +821,7 @@ export default {
                       }
                       const rescueModeValid = validateRescueMode(this.list.selectedItems)
                       if (!rescueModeValid.validate) return rescueModeValid
-                      const isSameStopCharging = this.list.selectedItems.some((item) => { return item.shutdown_mode === 'stop_charging' })
+                      const isSameStopCharging = this.list.selectedItems.some((item) => { return item.shutdown_mode === 'stop_charging' && item.status === 'ready' })
                       if (isSameStopCharging) {
                         ret.validate = false
                         ret.tooltip = this.$t('compute.server.shutdown_mode.tooltip')
@@ -897,7 +897,7 @@ export default {
                           ret.tooltip = this.$t('compute.vminstance.actions.adjust_config.cpu_arch.tips')
                           return ret
                         }
-                        const isSameStopCharging = this.list.selectedItems.some((item) => { return item.shutdown_mode === 'stop_charging' })
+                        const isSameStopCharging = this.list.selectedItems.some((item) => { return item.shutdown_mode === 'stop_charging' && item.status === 'ready' })
                         if (isSameStopCharging) {
                           ret.validate = false
                           ret.tooltip = this.$t('compute.server.shutdown_mode.tooltip')
