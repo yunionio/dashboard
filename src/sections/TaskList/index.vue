@@ -57,7 +57,7 @@ export default {
       columns: [
         getNameDescriptionTableColumn({
           title: '#ID',
-          field: 'id',
+          field: this.taskStage === 'archived' ? 'task_id' : 'id',
           showDesc: false,
           edit: false,
           minWidth: 200,
@@ -65,7 +65,7 @@ export default {
           hideField: true,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{row.id}</side-page-trigger>
+              <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{this.taskStage === 'archived' ? row.task_id : row.id}</side-page-trigger>
             )
           },
         }),
@@ -167,9 +167,6 @@ export default {
   methods: {
     initList () {
       const filterOptions = {
-        id: {
-          label: this.$t('table.title.id'),
-        },
         status: getStatusFilter('task'),
         stage: {
           label: this.$t('table.title.stage'),
@@ -191,6 +188,15 @@ export default {
         },
         created_at: getTimeRangeFilter({ label: this.$t('table.title.create_time'), field: 'created_at' }),
       }
+      if (this.taskStage === 'archived') {
+        filterOptions.task_id = {
+          label: this.$t('table.title.id'),
+        }
+      } else {
+        filterOptions.id = {
+          label: this.$t('table.title.id'),
+        }
+      }
       return this.$list.createList(this, {
         id: this.listId,
         resource: this.taskStage === 'archived' ? this.archivedResource : this.resource,
@@ -208,7 +214,9 @@ export default {
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'TaskSidePage', {
         id: row.id,
-        resource: this.resource,
+        resource: this.taskStage === 'archived' ? () => {
+          return row
+        } : this.resource,
         getParams: this.getParamDetail,
       }, {
         list: this.list,
