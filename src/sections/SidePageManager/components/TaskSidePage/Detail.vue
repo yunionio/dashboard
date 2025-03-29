@@ -46,7 +46,7 @@ export default {
           title: this.$t('table.title.progress'),
           field: 'progress',
           formatter ({ row }) {
-            return row.progress || 0 + '%'
+            return (row.progress || 0) + '%'
           },
         },
         getStatusTableColumn({
