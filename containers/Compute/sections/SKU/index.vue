@@ -30,6 +30,7 @@
         @page-change="skuPageChangeHandle" />
       <div class="mt-1" v-if="selectedTip">{{$t('compute.text_171', [ selectedTip ])}}</div>
     </div>
+    <div class="mt-1" v-if="unfindTip" style="color: red;">{{$t('compute.sku_unfind_tip', [ unfindTip ])}}</div>
   </div>
 </template>
 
@@ -110,6 +111,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    isAdjustConfig: {
+      type: Boolean,
+      default: () => false,
+    },
   },
   data () {
     return {
@@ -125,7 +130,8 @@ export default {
         totalResult: 0,
       },
       skuTypes: [],
-      skuParamsChanged: false,
+      skuInited: false,
+      unfindTip: '',
     }
   },
   computed: {
@@ -294,7 +300,6 @@ export default {
         if (!R.isEmpty(val)) {
           if (!R.equals(val, oldV)) {
             this.resetPageInfo()
-            this.skuParamsChanged = true
             this.fetchData()
           }
         } else {
@@ -343,14 +348,19 @@ export default {
       }
     },
     setSku (skuData, isSkuChange) {
+      if (!skuData) return
       let chooseSku = skuData
       if (!isSkuChange && this.instanceType) {
         const extSku = this.skuList.find(item => item.name === this.instanceType)
         if (extSku) {
           chooseSku = extSku
         } else {
-          if (!this.skuParamsChanged) {
+          if (this.isAdjustConfig && !this.skuList.some(item => item.name === this.dataSku?.name) && !this.skuInited) {
             chooseSku = this.dataSku
+            this.unfindTip = this.dataSku?.name
+            if (!this.skuDisabled) {
+              this.skuInited = true
+            }
           }
         }
       }
