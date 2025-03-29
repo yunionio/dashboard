@@ -1873,5 +1873,6 @@
   "compute.remove_from_bastion": "Remove from bastion host",
   "compute.already_in_bastion": "The virtual machine is already in the bastion host. Please remove it and try again.",
   "compute.only_running_vm_support": "Only running virtual machines support this operation",
-  "compute.delete_bastion_host": "Delete from bastion host"
+  "compute.delete_bastion_host": "Delete from bastion host",
+  "compute.sku_unfind_tip": "Original package {0} not found, please be careful to select the package or keep the original one"
 }
