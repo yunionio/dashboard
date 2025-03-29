@@ -131,6 +131,7 @@ export default {
       },
       skuTypes: [],
       skuInited: false,
+      priceInited: false,
       unfindTip: '',
     }
   },
@@ -312,7 +313,7 @@ export default {
       handler (val, oldV) {
         if (!R.equals(val, oldV)) {
           if (val.length) {
-            this.setSku(val[0])
+            this.setSku(val[0], false, false, true)
           } else {
             this.setSku({})
           }
@@ -347,7 +348,7 @@ export default {
         this.setSku(this.skuResults[0], true)
       }
     },
-    setSku (skuData, isSkuChange) {
+    setSku (skuData, isSkuChange, skuInited, priceInited) {
       if (!skuData) return
       let chooseSku = skuData
       if (!isSkuChange && this.instanceType) {
@@ -355,11 +356,16 @@ export default {
         if (extSku) {
           chooseSku = extSku
         } else {
-          if (this.isAdjustConfig && !this.skuList.some(item => item.name === this.dataSku?.name) && !this.skuInited) {
+          if (this.isAdjustConfig && !this.skuList.some(item => item.name === this.dataSku?.name) && (!this.skuInited || !this.priceInited)) {
             chooseSku = this.dataSku
             this.unfindTip = this.dataSku?.name
             if (!this.skuDisabled) {
-              this.skuInited = true
+              if (skuInited) {
+                this.skuInited = true
+              }
+              if (priceInited) {
+                this.priceInited = true
+              }
             }
           }
         }
@@ -422,7 +428,7 @@ export default {
         if (this.skuParams && !R.isEmpty(this.skuParams)) { // 防止网络延迟导致 skuParams 已经为空了，但却赋值了
           this.skuList = data
           if (this.skuList && this.skuList.length) {
-            this.setSku(this.skuResults[0])
+            this.setSku(this.skuResults[0], false, true, false)
           }
         }
         this.skuLoading = false
