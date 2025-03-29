@@ -3,7 +3,7 @@
     @cancel="cancelSidePage"
     :title="$t('table.title.task')"
     icon="res-task"
-    :res-name="detailData.name"
+    :res-name="detailData.task_name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
     :loaded="loaded"
@@ -23,6 +23,8 @@
       :getParams="getParams"
       :on-manager="onManager"
       :columns="columns"
+      :taskStage="params.options.taskStage"
+      :archivedResource="params.options.archivedResource"
       :resource="params.options.resource || 'cloud-phone-tasks'"
       :isRoot="false" />
   </base-side-page>
@@ -61,7 +63,7 @@ export default {
       if (this.params.windowData.currentTab === 'children-task-list') {
         return {
           is_root: false,
-          parent_id: this.data.id,
+          parent_id: this.params.options.taskStage === 'archived' ? this.data.task_id : this.data.id,
         }
       } else {
         return {

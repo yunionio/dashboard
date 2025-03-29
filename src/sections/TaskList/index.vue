@@ -215,8 +215,10 @@ export default {
       this.sidePageTriggerHandle(this, 'TaskSidePage', {
         id: row.id,
         resource: this.taskStage === 'archived' ? () => {
-          return row
+          return { data: row }
         } : this.resource,
+        archivedResource: this.archivedResource,
+        taskStage: this.taskStage,
         getParams: this.getParamDetail,
       }, {
         list: this.list,

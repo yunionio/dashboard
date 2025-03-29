@@ -5,6 +5,7 @@
     :base-info="baseInfo"
     :extra-info="extraInfo"
     :showName="false"
+    :idKey="taskStage === 'archived' ? 'task_id' : 'id'"
     status-module="parentTaskStatus"
     :resource="resource" />
 </template>
@@ -36,6 +37,7 @@ export default {
       type: String,
       default: 'cloud-phone-tasks',
     },
+    taskStage: String,
   },
   data () {
     return {
