@@ -49,7 +49,8 @@
               :canSkuShow="diskLoaded"
               :hasMeterService="hasMeterService"
               :skuDisabled="runningOther"
-              :dataSku="dataSku" />
+              :dataSku="dataSku"
+              isAdjustConfig />
           </a-form-item>
           <a-form-item :label="$t('compute.text_49')" v-show="selectedItems.length === 1 && form.fd.defaultType">
             <system-disk

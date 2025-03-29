@@ -1894,5 +1894,6 @@
   "compute.remove_from_bastion": "バスティオンホストから削除",
   "compute.already_in_bastion": "この仮想マシンはすでにバスティオンホストに追加されています。削除してから再試行してください",
   "compute.only_running_vm_support": "電源がオンの状態の仮想マシンのみがこの操作をサポートしています",
-  "compute.delete_bastion_host": "バスティオンホストからも削除"
+  "compute.delete_bastion_host": "バスティオンホストからも削除",
+  "compute.sku_unfind_tip": "元のパッケージ {0} が見つかりません。パッケージを慎重に選択するか、元のパッケージを保持してください"
 }
