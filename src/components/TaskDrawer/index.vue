@@ -1,19 +1,21 @@
 <template>
-  <task-list
+  <task-page
     :resource="taskResource"
+    :archivedResource="archivedResource"
     :obj-id="resId"
     :list-id="id || 'TaskListForCustomResourceSidePage'"
-    :getParams="getParams" />
+    :getParams="getParams"
+    isSidepage />
 </template>
 
 <script>
-import TaskList from '@/sections/TaskList'
+import TaskPage from '@/sections/TaskPage'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'TaskDrawer',
   components: {
-    TaskList,
+    TaskPage,
   },
   mixins: [WindowsMixin],
   props: {
@@ -28,6 +30,14 @@ export default {
       type: String,
     },
     getParams: [Object, Function],
+  },
+  computed: {
+    archivedResource () {
+      if (this.taskResource && this.taskResource.includes('-tasks')) {
+        return this.taskResource.replace('-tasks', '-archivedtasks')
+      }
+      return ''
+    },
   },
 }
 </script>
