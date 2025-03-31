@@ -1,9 +1,19 @@
 <template>
   <div>
-    <page-header :title="title" :tabs="taskStageOptions" :current-tab.sync="taskStage" />
-    <page-body>
-      <list :id="listId" :resource="resource" :archivedResource="archivedResource" :taskStage="taskStage" />
-    </page-body>
+    <template v-if="!isSidepage">
+      <page-header :title="title" :tabs="taskStageOptions" :current-tab.sync="taskStage" />
+      <page-body>
+        <list :id="listId" :resource="resource" :archivedResource="archivedResource" :taskStage="taskStage" :objId="objId" :getParams="getParams" />
+      </page-body>
+    </template>
+    <template v-else>
+      <a-tabs :defaultActiveKey="taskStage" @change="callback" :animated="false">
+        <template v-for="obj of taskStageOptions">
+          <a-tab-pane :tab="obj.label" :key="obj.key" />
+        </template>
+      </a-tabs>
+      <list :id="listId" :resource="resource" :archivedResource="archivedResource" :taskStage="taskStage" :objId="objId" :getParams="getParams" :root="false" />
+    </template>
   </div>
 </template>
 
@@ -25,6 +35,14 @@ export default {
     title: {
       type: String,
     },
+    objId: {
+      type: String,
+    },
+    getParams: [Object, Function],
+    isSidepage: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -42,6 +60,10 @@ export default {
       return this.taskStage === 'in_progress' ? 'TaskInProgressList' : 'TaskComplateList'
     },
   },
-  methods: {},
+  methods: {
+    callback (key) {
+      this.taskStage = key
+    },
+  },
 }
 </script>

@@ -2,9 +2,11 @@
   <task-list
     :resource="resource"
     :archivedResource="archivedResource"
-    root="true"
+    :root="root"
     :taskStage="taskStage"
-    :listId="id" />
+    :listId="id"
+    :objId="objId"
+    :getParams="getParams" />
 </template>
 
 <script>
@@ -27,6 +29,14 @@ export default {
     },
     taskStage: {
       type: String,
+    },
+    objId: {
+      type: String,
+    },
+    getParams: [Object, Function],
+    root: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {
