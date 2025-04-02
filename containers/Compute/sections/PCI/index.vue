@@ -125,6 +125,9 @@ export default {
         })
       }
     },
+    realPciDevTypeOptions (val, oldVal) {
+      this.changeSelectedValue()
+    },
   },
   beforeCreate () {
     this.pciForm = {}
@@ -141,6 +144,39 @@ export default {
           [`pciDevType[${id}]`]: this.curPciDevType || this.getRealPciDevTypeOptions(this.realPciDevTypeOptions)[0].key,
           [`pciModel[${id}]`]: this.form.fd['pciModel[0]'] || this.getRealPciOptions(this.realPciOptions)[0].key,
           [`pciCount[${id}]`]: 1,
+        })
+      })
+    },
+    changeSelectedValue () {
+      const keys = this.pciForm.fc.getFieldValue('keys')
+      keys.forEach(key => {
+        if (this.form.fd[`pciDevType[${key}]`] && !this.getRealPciDevTypeOptions(this.realPciDevTypeOptions).some(item => item.key === this.form.fd[`pciDevType[${key}]`])) {
+          if (this.getRealPciDevTypeOptions(this.realPciDevTypeOptions).length) {
+            this.form.fc.setFieldsValue({
+              [`pciDevType[${key}]`]: this.getRealPciDevTypeOptions(this.realPciDevTypeOptions)[0].key,
+            })
+            this.curPciDevType = this.getRealPciDevTypeOptions(this.realPciDevTypeOptions)[0].key
+          } else {
+            this.form.fc.setFieldsValue({
+              [`pciDevType[${key}]`]: undefined,
+            })
+            this.curPciDevType = undefined
+          }
+        }
+        this.$nextTick(() => {
+          if (this.form.fd[`pciModel[${key}]`] && !this.getRealPciOptions(this.realPciOptions, key).some(item => item.key === this.form.fd[`pciModel[${key}]`])) {
+            if (this.getRealPciOptions(this.realPciOptions, key).length && this.form.fd[`pciDevType[${key}]`]) {
+              this.form.fc.setFieldsValue({
+                [`pciModel[${key}]`]: this.getRealPciOptions(this.realPciOptions, key)[0].key,
+              })
+              this.form.fd[`pciModel[${key}]`] = this.getRealPciOptions(this.realPciOptions, key)[0].key
+            } else {
+              this.form.fc.setFieldsValue({
+                [`pciModel[${key}]`]: undefined,
+              })
+              this.form.fd[`pciModel[${key}]`] = undefined
+            }
+          }
         })
       })
     },

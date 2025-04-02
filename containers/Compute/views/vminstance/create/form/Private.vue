@@ -397,6 +397,9 @@ export default {
         if (keys.includes('zone')) {
           this.fetchCapability()
         }
+        if (keys.includes('project')) {
+          this.fetchCapability()
+        }
       })
     },
     fetchCapability () {
@@ -405,6 +408,9 @@ export default {
         resource_type: 'shared',
         ...this.scopeParams,
         $t: uuid(),
+      }
+      if (this.project) {
+        params.tenant_id = this.project
       }
       let id = this.cloudregionZoneParams.cloudregion
       let resource = 'cloudregions'
