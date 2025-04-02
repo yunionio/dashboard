@@ -3,6 +3,7 @@ import {
   getNameDescriptionTableColumn,
   getCopyWithContentTableColumn,
   getRegionTableColumn,
+  getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
 import {
   getReserveResourceColumn,
@@ -136,6 +137,7 @@ export default {
         },
       }),
       getReserveResourceColumn(),
+      getPublicScopeTableColumn({ resource: 'isolated_devices', vm: this, title: this.$t('compute.text_113') }),
       getRegionTableColumn({ vm: this }),
     ]
   },

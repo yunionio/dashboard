@@ -116,7 +116,7 @@ export default {
           showCpuSockets: false,
           cpuSockets: 1,
         },
-        fd: { ...initFd, os: '' },
+        fd: { ...initFd, project: {}, os: '' },
       },
       decorators,
       capabilityParams: {}, // 防止 capability 反复调用，这里对当前的接口参数做记录
