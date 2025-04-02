@@ -25,7 +25,7 @@
       <a-col :span="3">
         <a-form-item class="mr-1">
           <base-select
-            minWidth="50px"
+            minWidth="80px"
             v-decorator="decorators.tagOperator(item.key)"
             :options="tagOperatorOpts"
             :disabled="disabled"
@@ -40,7 +40,7 @@
             :options="item.tagValueOpts"
             filterable
             :disabled="disabled"
-            :select-props="{ mode: (form.fd.tagOperators && form.fd.tagOperators[item.key] && form.fd.tagOperators[item.key] === '=~') ? 'multiple' : 'single', placeholder: $t('monitor.text_110'), allowClear: true, loading }" />
+            :select-props="{ mode: 'multiple', placeholder: $t('monitor.text_110'), allowClear: true, loading }" />
         </a-form-item>
         <a-form-item style="width: 20px;" v-if="!disabled && i !== 0">
           <a-button shape="circle" icon="minus" size="small" @click="remove(i)" class="mt-2 ml-2" />
@@ -82,9 +82,8 @@ export default {
     tagOperatorOpts: {
       type: Array,
       default: () => [
-        { key: '=', label: '=' },
-        { key: '!=', label: '!=' },
         { key: '=~', label: 'IN' },
+        { key: '!~', label: 'NOT IN' },
       ],
     },
     conditionOpts: {
