@@ -173,7 +173,14 @@ export default {
               return k
             })
             return values
+          } else {
+            return [v]
           }
+        }
+        if (key === 'operator') {
+          const v = initialValue.tags[index][key]
+          if (v === '=') return '=~'
+          if (v === '!=') return '!~'
         }
         return initialValue.tags[index][key]
       } else {
@@ -231,7 +238,7 @@ export default {
         tagOperator: i => [
           `tagOperators[${i}]`,
           {
-            initialValue: getkey(i, 'operator', '='),
+            initialValue: getkey(i, 'operator', '=~'),
             rules: [
               { required: true, message: this.$t('common.select') },
             ],
@@ -240,7 +247,7 @@ export default {
         tagValue: i => [
           `tagValues[${i}]`,
           {
-            initialValue: getkey(i, 'value', ''),
+            initialValue: getkey(i, 'value', []),
             rules: [
               // { required: true, message: this.$t('common.select') },
             ],
@@ -504,7 +511,7 @@ export default {
       if (R.is(Object, fd.tagValues)) {
         R.forEachObjIndexed((value, key) => {
           let val = value
-          if (fd.tagOperators[key] === '=~' && val.length) {
+          if ((fd.tagOperators[key] === '=~' || fd.tagOperators[key] === '!~') && val.length) {
             val = `/${val.map(v => `^${v}$`).join('|')}/`
           } else {
             val = R.is(Array, val) ? (val.length ? val[0] : '') : val
