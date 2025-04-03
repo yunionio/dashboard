@@ -33,7 +33,7 @@
                       <a-checkbox :value="item.key" class="text-truncate checkbox-property">
                         <span :title="item.label">{{ item.label }}</span>
                       </a-checkbox>
-                      <a-icon type="drag" class="drag-icon pr-3" @click="iconClick" />
+                      <a-icon type="drag" v-if="$appConfig.isPrivate" class="drag-icon pr-3" @click="iconClick" />
                     </a-col>
                   </template>
                 </transition-group>
@@ -174,7 +174,7 @@ export default {
       return this.params.resource.resource.substr(0, this.params.resource.resource.length - 1)
     },
     downloadType () {
-      return this.params.options.downloadType === 'local' ? 'local' : 'remote'
+      return this.params.options.downloadType === 'local' && this.$appConfig.isPrivate ? 'local' : 'remote'
     },
   },
   methods: {
