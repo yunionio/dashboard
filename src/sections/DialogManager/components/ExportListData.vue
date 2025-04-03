@@ -124,7 +124,7 @@ export default {
       return this.params.resource.resource.substr(0, this.params.resource.resource.length - 1)
     },
     downloadType () {
-      return this.params.options.downloadType === 'local' ? 'local' : 'remote'
+      return this.params.options.downloadType === 'local' && this.$appConfig.isPrivate ? 'local' : 'remote'
     },
   },
   methods: {
