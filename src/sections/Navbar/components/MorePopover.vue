@@ -30,7 +30,7 @@ export default {
     return {
       updateAvailable: false,
       isCE,
-      isOEM: setting.brand?.en !== 'YunionCloud',
+      isOEM: setting.brand?.en !== setting.defaultBrand.en,
     }
   },
   computed: {
