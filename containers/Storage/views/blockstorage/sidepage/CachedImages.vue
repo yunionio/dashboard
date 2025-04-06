@@ -46,7 +46,7 @@ export default {
             return sizestr(row.size, 'B', 1024)
           },
         },
-        getStatusTableColumn({ statusModule: 'hostImageCache' }),
+        getStatusTableColumn({ statusModule: 'imageCache' }),
         getCopyWithContentTableColumn({
           field: 'path',
           title: this.$t('storage.text_72'),
@@ -69,6 +69,7 @@ export default {
               title: this.$t('storage.text_74'),
               list: this.list,
               resItem: this.data,
+              refresh: this.refresh,
             })
           },
           meta: () => {
@@ -90,6 +91,7 @@ export default {
               title: this.$t('storage.text_74'),
               list: this.list,
               resItem: this.data,
+              refresh: this.refresh,
             })
           },
           meta: row => {
@@ -105,6 +107,11 @@ export default {
   },
   created () {
     this.list.fetchData()
+  },
+  methods: {
+    refresh () {
+      this.list.refresh()
+    },
   },
 }
 </script>
