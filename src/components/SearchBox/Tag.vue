@@ -8,7 +8,7 @@
       overlayClassName="search-box-tag-popover-wrap"
       :getPopupContainer="getPopupContainer"
       :align="{offset: [0, 0]}">
-      <div class="auto-completer-wrap" slot="content" :style="{ width: isDate ? '300px' : '200px' }">
+      <div class="auto-completer-wrap" slot="content" :style="{ width: isDate || isMonth ? '300px' : '200px' }">
         <ul class="auto-completer-items">
           <template v-if="isDropdown">
             <!-- 如果有配置项则渲染 -->
@@ -38,6 +38,14 @@
                 :getPopupContainer="getDateSelectPopupContainer"
                 @date-editing-change="editing => $emit('date-editing-change', editing)" />
             </template>
+            <!-- 如果需要渲染月份选择器 -->
+            <template v-else-if="isMonth">
+              <month-select
+                :value="newValue"
+                @change="handleMonthChange"
+                :getPopupContainer="getMonthSelectPopupContainer"
+                @date-editing-change="editing => $emit('date-editing-change', editing)" />
+            </template>
           </template>
           <template v-else>
             <a-input :value="newValue.join(valueSeparator)" ref="input" @keydown.13="handleConfirm" @change="handleInputChange" />
@@ -56,11 +64,13 @@
 <script>
 import * as R from 'ramda'
 import DateSelect from './DateSelect'
+import MonthSelect from './MonthSelect'
 
 export default {
   name: 'Tag',
   components: {
     DateSelect,
+    MonthSelect,
   },
   props: {
     value: {
@@ -104,7 +114,7 @@ export default {
     label () {
       const label = this.options[this.id].label
       let ret = `${label}${this.keySeparator}`
-      if (this.isDate) {
+      if (this.isDate || this.isMonth) {
         if (this.value[0] && this.value[1]) {
           ret += this.value.join('~')
         } else if (this.value[0]) {
@@ -133,6 +143,10 @@ export default {
     // 是否为时间选择模式
     isDate () {
       return this.config && this.config.date
+    },
+    // 是否为月份选择模式
+    isMonth () {
+      return this.config && this.config.month
     },
     confirmDisable () {
       if (this.isDropdown) {
@@ -236,6 +250,18 @@ export default {
       }
       this.newValue = labelArr
     },
+    handleMonthChange (val) {
+      const values = val[0]
+      let labelArr
+      if (values[0] && values[1]) {
+        labelArr = values.map(item => item.local().format('YYYY-MM'))
+      } else if (values[0]) {
+        labelArr = [values[0].local().format('YYYY-MM'), null]
+      } else if (values[1]) {
+        labelArr = [null, values[1].local().format('YYYY-MM')]
+      }
+      this.newValue = labelArr
+    },
     handleInputChange (e) {
       let val = e.target.value
       val = val.split(this.valueSeparator)
@@ -245,6 +271,9 @@ export default {
       return trigger.parentNode
     },
     getDateSelectPopupContainer (trigger) {
+      return this.$parent.$refs['search-box-wrap']
+    },
+    getMonthSelectPopupContainer (trigger) {
       return this.$parent.$refs['search-box-wrap']
     },
     getLabel (label) {

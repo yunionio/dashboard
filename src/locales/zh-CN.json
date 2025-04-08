@@ -6034,5 +6034,6 @@
   "common.shopcart_workflow_name": "{0}于 {1} 发起的批量资源创建申请-{2}",
   "common.platform_overview": "平台总览",
   "common.resource_alert": "资源告警",
-  "common.global_search": "全局搜索"
+  "common.global_search": "全局搜索",
+  "common.month": "月份"
 }
