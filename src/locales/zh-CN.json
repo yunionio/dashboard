@@ -6172,5 +6172,6 @@
   "common.resource_alert": "资源告警",
   "common.global_search": "全局搜索",
   "common.page_list_count": "选中{0}条，共{1}条",
-  "common.page_list_header_item_count_stats1": "已展示{0}条 / 选中{1}条"
+  "common.page_list_header_item_count_stats1": "已展示{0}条 / 选中{1}条",
+  "common.month": "月份"
 }

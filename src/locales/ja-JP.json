@@ -6167,5 +6167,6 @@
   "common.resource_alert": "リソースアラート",
   "common.global_search": "グローバル検索",
   "common.page_list_count": "選択済み{0}，合計{1}",
-  "common.page_list_header_item_count_stats1": "合計{0} / 選択済み{1}"
+  "common.page_list_header_item_count_stats1": "合計{0} / 選択済み{1}",
+  "common.month": "月"
 }

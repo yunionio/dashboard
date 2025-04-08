@@ -486,8 +486,16 @@ function utcTime (v) {
   return moment(v).utc().format('YYYY-MM-DD HH:mm:ss')
 }
 
+function utcMonth (v) {
+  return moment(v).utc().format('YYYYMM')
+}
+
 function time (v) {
   return moment(v).format('YYYY-MM-DD HH:mm:ss')
+}
+
+function timeMonth (v) {
+  return moment(v).format('YYYYMM')
 }
 
 export function getTimeRangeFilter ({ label = '', field = '', utc = true }) {
@@ -523,6 +531,25 @@ export function getCreatedAtFilter ({ field = 'created_at', utc = true } = {}) {
         return `${field}.ge("${utc ? utcTime(val) : time(val)}")`
       }
       return `${field}.between("${utc ? utcTime(val[0]) : time(val[0])}", "${utc ? utcTime(val[1]) : time[1]}")`
+    },
+  }
+}
+
+export function getMonthFilter ({ field = 'month', utc = false } = {}) {
+  return {
+    label: i18n.t('common.month'),
+    dropdown: true,
+    month: true,
+    filter: true,
+    is_time: true,
+    formatter: (val, type) => {
+      if (type === 'before') {
+        return `${field}.le("${utc ? utcMonth(val) : timeMonth(val)}")`
+      }
+      if (type === 'after') {
+        return `${field}.ge("${utc ? utcMonth(val) : timeMonth(val)}")`
+      }
+      return `${field}.between("${utc ? utcMonth(val[0]) : timeMonth(val[0])}", "${utc ? utcMonth(val[1]) : timeMonth(val[1])}")`
     },
   }
 }

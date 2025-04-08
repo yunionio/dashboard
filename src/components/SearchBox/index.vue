@@ -153,11 +153,18 @@ export default {
         }
         if (Array.isArray(value)) {
           const whiteList = ['created_at', 'received_at', 'recv_at', 'start_time']
+          const monthList = ['month']
           if (!whiteList.includes(key) && !this.options[key].is_time) {
             value = value.filter((item) => {
               if (R.is(Boolean, item)) return true
               return item?.trim().length > 0
             }).map(v => {
+              if (R.is(Boolean, v)) return v
+              return v?.trim()
+            })
+          }
+          if (monthList.includes(key)) {
+            value = value.map(v => {
               if (R.is(Boolean, v)) return v
               return v?.trim()
             })
@@ -168,7 +175,7 @@ export default {
         }
         if (this.options[key].dropdown) {
           const config = this.options[key]
-          if (config.date) {
+          if (config.date || config.month) {
             this.newValues[key] = value
           } else {
             this.newValues[key] = value.map(item => {
