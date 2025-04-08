@@ -177,22 +177,16 @@ export default {
       const params = {
         scope: this.scope,
         limit: 0,
-        is_on_premise: true,
-        usable_vpc: true,
         show_emulated: true,
       }
       if (this.cloudEnv === 'private') {
         params.is_private = true
-        delete params.is_public
-        delete params.is_on_premise
+        params.usable_vpc = true
       } else if (this.cloudEnv === 'public') {
         params.is_public = true
-        delete params.is_private
-        delete params.is_on_premise
+        params.usable_vpc = true
       } else {
         params.is_on_premise = true
-        delete params.is_private
-        delete params.is_public
       }
       if (this.isAdminMode) {
         params.project_domain = this.project_domain
