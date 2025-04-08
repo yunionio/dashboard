@@ -956,7 +956,7 @@ class CreateList {
       const option = this.filterOptions[key]
       let val = this.filter[key]
       if (option.formatter) {
-        if (option.date) {
+        if (option.date || option.month) {
           if (val[0] && val[1]) {
             val = option.formatter(val, 'range')
           } else if (val[0]) {

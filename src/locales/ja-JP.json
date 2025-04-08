@@ -6030,5 +6030,6 @@
   "common.shopcart_workflow_name": "{0}が{1}で開始した大量リソース作成依頼-{2}",
   "common.platform_overview": "プラットフォームの概要",
   "common.resource_alert": "リソースアラート",
-  "common.global_search": "グローバル検索"
+  "common.global_search": "グローバル検索",
+  "common.month": "月"
 }

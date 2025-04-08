@@ -16,7 +16,7 @@
         :placeholder="$t('common.search')"
         @change="onSearch" />
       <ul class="auto-completer-items">
-        <li v-show="!isDropdown && !isDate">
+        <li v-show="!isDropdown && !isDate && !isMonth">
           <span class="empty text-weak">{{ $t('common.text00014') }}</span>
         </li>
         <template v-if="isDropdown">
@@ -39,6 +39,12 @@
             <date-select
               @change="handleDateChange"
               :getPopupContainer="getDateSelectPopupContainer" />
+          </template>
+          <!-- 如果需要渲染月份选择器 -->
+          <template v-else-if="isMonth">
+            <month-select
+              @change="handleMonthChange"
+              :getPopupContainer="getMonthSelectPopupContainer" />
           </template>
           <template v-else>
             <!-- 如果需要获取 distinct field -->
@@ -68,11 +74,13 @@
 import * as R from 'ramda'
 import regexp from '@/utils/regexp'
 import DateSelect from './DateSelect'
+import MonthSelect from './MonthSelect'
 
 export default {
   name: 'AutoCompleter',
   components: {
     DateSelect,
+    MonthSelect,
   },
   props: {
     focus: {
@@ -129,6 +137,10 @@ export default {
     isDate () {
       return this.config && this.config.date
     },
+    // 是否为月份选择模式
+    isMonth () {
+      return this.config && this.config.month
+    },
   },
   watch: {
     search (val) {
@@ -153,6 +165,9 @@ export default {
       e.stopPropagation()
       if (item.date) {
         this.completerWrapStyle = { width: '360px', right: '-300px' }
+      }
+      if (item.month) {
+        this.completerWrapStyle = { width: '260px', right: '-200px' }
       }
       this.selectKey = key
       const prefix = `${item.label}${this.keySeparator}`
@@ -241,6 +256,22 @@ export default {
       this.search = `${this.config.label}${this.keySeparator}${labelStr}`
     },
     /**
+     * @description month类型的修改
+     */
+    handleMonthChange (val) {
+      this.selectValue = val
+      const values = val[0]
+      let labelStr
+      if (values[0] && values[1]) {
+        labelStr = values.map(item => item.local().format('YYYY-MM')).join('~')
+      } else if (values[0]) {
+        labelStr = `<${values[0].local().format('YYYY-MM')}`
+      } else if (values[1]) {
+        labelStr = `>${values[1].local().format('YYYY-MM')}`
+      }
+      this.search = `${this.config.label}${this.newKeySeparator}${labelStr}`
+    },
+    /**
      * @description 拼装参数，调用搜索
      */
     handleOk () {
@@ -286,7 +317,7 @@ export default {
         return
       }
       let value = this.search.split(this.keySeparator)[1]
-      if (this.isDate) {
+      if (this.isDate || this.isMonth) {
         if (value.startsWith('<')) {
           value = value.split('<')
           value = [value[1], null]
@@ -391,7 +422,7 @@ export default {
         }
       }
       /* ======================TASK4351 列表查询多个IP、多个UUID end=========================== */
-      if (this.isDropdown && !this.isDate) {
+      if (this.isDropdown && !this.isDate && !this.isMonth) {
         const searchValue = ((e.target.value && e.target.value.split(this.keySeparator)) || [])[1] || ''
         if (!value) {
           this.selectKey = null
@@ -408,6 +439,9 @@ export default {
       }
     },
     getDateSelectPopupContainer (trigger) {
+      return this.$parent.$refs['search-box-wrap']
+    },
+    getMonthSelectPopupContainer (trigger) {
       return this.$parent.$refs['search-box-wrap']
     },
     onSearch (e) {
