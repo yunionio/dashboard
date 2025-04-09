@@ -118,16 +118,67 @@ export const usageMap = {
     },
     unit: i18n.t('common_62'),
   },
-  gpu: {
+  isolatedDevice: {
     field: {
       used: {
+        system: 'isolated_devices.used',
+        domain: 'isolated_devices.used',
+        project: 'isolated_devices.used',
+      },
+      gpu: {
+        system: 'isolated_devices.gpu',
+        domain: 'isolated_devices.gpu',
+        project: 'isolated_devices.gpu',
+      },
+      total: {
+        system: 'isolated_devices',
+        domain: 'isolated_devices',
+        project: 'isolated_devices',
+      },
+      server: {
         system: 'all.servers.isolated_devices',
         domain: 'domain.servers.isolated_devices',
         project: 'servers.isolated_devices',
       },
+    },
+    unit: i18n.t('common_63'),
+  },
+  serverIsolatedDevice: {
+    field: {
+      running: {
+        system: 'all.running_servers.isolated_devices',
+        domain: 'domain.running_servers.isolated_devices',
+        project: 'running_servers.isolated_devices',
+      },
+      ready: {
+        system: 'all.ready_servers.isolated_devices',
+        domain: 'domain.ready_servers.isolated_devices',
+        project: 'ready_servers.isolated_devices',
+      },
+      delete: {
+        system: 'all.pending_delete_servers.isolated_devices',
+        domain: 'domain.pending_delete_servers.isolated_devices',
+        project: 'pending_delete_servers.isolated_devices',
+      },
       total: {
-        system: 'isolated_devices',
-        domain: 'domain.isolated_devices',
+        system: 'all.servers.isolated_devices',
+        domain: 'domain.servers.isolated_devices',
+        project: 'servers.isolated_devices',
+      },
+    },
+    unit: i18n.t('common_63'),
+  },
+  gpu: {
+    field: {
+      total: {
+        system: 'isolated_devices.gpu',
+        domain: 'domain.isolated_devices.gpu',
+        project: 'isolated_devices.gpu',
+      },
+      used: {
+        system: 'isolated_devices.gpu.used',
+        domain: 'domain.isolated_devices.gpu.used',
+        project: 'isolated_devices.gpu.used',
       },
     },
     unit: i18n.t('common_63'),
