@@ -614,6 +614,18 @@ export const USAGE_CONFIG = {
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
+  'isolated_devices.gpu': {
+    unit: i18n.t('dashboard.text_4'),
+    scope: SCOPES_MAP.system.key,
+    clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
+  },
+  'isolated_devices.used': {
+    unit: i18n.t('dashboard.text_4'),
+    scope: SCOPES_MAP.system.key,
+    clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
+  },
   networks: {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.project.key,
