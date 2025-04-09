@@ -172,12 +172,12 @@ export const usageMap = {
     field: {
       total: {
         system: 'isolated_devices.gpu',
-        domain: 'domain.isolated_devices.gpu',
+        domain: 'isolated_devices.gpu',
         project: 'isolated_devices.gpu',
       },
       used: {
         system: 'isolated_devices.gpu.used',
-        domain: 'domain.isolated_devices.gpu.used',
+        domain: 'isolated_devices.gpu.used',
         project: 'isolated_devices.gpu.used',
       },
     },
