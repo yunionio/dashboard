@@ -21,6 +21,7 @@
       :on-manager="onManager"
       :refresh="refresh"
       :getParams="getParams"
+      :probeHostDevices="probeHostDevices"
       @tab-change="handleTabChange" />
   </base-side-page>
 </template>
@@ -85,6 +86,9 @@ export default {
         tabs = R.insert(tabs.length - 1, { label: this.$t('compute.text_865'), key: 'bmc-log' }, tabs)
       }
       return tabs
+    },
+    probeHostDevices () {
+      return this.data && this.data.data && (this.data.data.host_type === 'hypervisor' || this.data.data.host_type === 'container')
     },
     getParams () {
       if (this.params.windowData.currentTab === 'vminstance-list') {

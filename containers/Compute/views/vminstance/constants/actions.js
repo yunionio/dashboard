@@ -249,6 +249,21 @@ const getSingleActions = function () {
                   },
                 }
                 this.webconsoleManager.performAction(params).then(({ data }) => {
+                  const connectParams = qs.parse(data.connect_params)
+                  // 验证账号密码
+                  if (connectParams.is_need_login === 'true') {
+                    this.createDialog('RdpAuthDialog', {
+                      manager: this.webconsoleManager,
+                      params,
+                      errorMsg: connectParams.login_error_message,
+                      data: { name: obj.name, ip: ipAddr },
+                      success: (data) => {
+                        this.openWebConsole(obj, data, 'rdp')
+                      },
+                    })
+                    return
+                  }
+                  // 无需验证账号密码
                   this.openWebConsole(obj, data, 'rdp')
                 }).catch((ex) => {
                   const { details } = ex.response.data
