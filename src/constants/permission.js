@@ -202,6 +202,7 @@ export const PERMISSION = {
   hosts_get: ['compute', 'hosts', 'get'],
   hosts_perform_login_info: ['compute', 'hosts', 'perform', 'login-info'],
   hosts_perform_set_commit_bound: ['compute', 'hosts', 'perform', 'set-commit-bound'],
+  hosts_perform_probe_isolated_devices: ['compute', 'hosts', 'perform', 'probe-isolated-devices'],
 
   // 调度策略
   schedpolicies_list: ['compute', 'schedpolicies', 'list'],
