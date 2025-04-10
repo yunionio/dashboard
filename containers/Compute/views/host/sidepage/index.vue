@@ -90,7 +90,7 @@ export default {
       return tabs
     },
     probeHostDevices () {
-      return this.data && this.data.data && this.data.data.host_type === 'hypervisor'
+      return this.data && this.data.data && (this.data.data.host_type === 'hypervisor' || this.data.data.host_type === 'container')
     },
     getParams () {
       if (this.params.windowData.currentTab === 'vminstance-list') {
