@@ -179,16 +179,18 @@ export default {
         this.usbOptionsLoading = true
         const acttachedRes = await new this.$Manager('isolated_devices', 'v2').list({
           params: {
+            $t: 2,
             guest_id: this.params.data[0].id,
           },
         })
         const { data: acttachedList = [] } = acttachedRes.data
-        const probleDevRes = await this.$D.performAction({
-          id: this.params.data[0].id,
-          action: 'probe-isolated-devices',
+        const probleDevRes = await new this.$Manager('isolated_devices', 'v2').list({
+          params: {
+            $t: 1,
+            host_id: this.params.data[0].host_id,
+          },
         })
-
-        const { data: probleDevList = [] } = probleDevRes
+        const { data: probleDevList = [] } = probleDevRes.data
         const device = acttachedList.filter(item => {
           return item.dev_type === 'USB'
         }).map(item => {
@@ -198,7 +200,13 @@ export default {
         this.form.fc.setFieldsValue({
           device,
         })
-        const usbOptions = acttachedList.concat(probleDevList).filter(item => {
+        const list = [...acttachedList]
+        probleDevList.forEach(item => {
+          if (!item.guest_id && !list.some(l => l.id === item.id)) {
+            list.push(item)
+          }
+        })
+        const usbOptions = list.filter(item => {
           return item.dev_type === 'USB'
         }).map(item => {
           return {

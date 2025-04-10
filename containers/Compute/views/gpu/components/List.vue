@@ -257,6 +257,14 @@ export default {
             return ret
           },
         },
+        {
+          label: this.$t('compute.host_probe_isolated_devices'),
+          permission: 'hosts_perform_probe_isolated_devices',
+          action: () => {
+            this.updateHostProbeIsolatedDevices()
+          },
+          hidden: () => !this.probeHostDevices,
+        },
       ],
     }
   },
@@ -293,31 +301,19 @@ export default {
     },
     async init () {
       this.list.fetchData()
-      if (this.resId) {
-        if (this.probeHostDevices) {
-          this.updateHostProbeIsolatedDevices()
-        }
-      }
-    },
-    async updateServerProbeIsolatedDevices () {
-      try {
-        await new this.$Manager('servers', 'v1').performAction({
-          id: this.resId,
-          action: 'probe-isolated-devices',
-        })
-      } catch (err) {
-        throw err
-      }
     },
     async updateHostProbeIsolatedDevices () {
+      const loading = this.$message.loading(this.$t('compute.host_probe_isolated_devices'), 0)
       try {
         new this.$Manager('hosts', 'v1').performAction({
           id: this.resId,
           action: 'probe-isolated-devices',
         }).then(res => {
           this.list.refresh()
+          loading()
         })
       } catch (err) {
+        loading()
         throw err
       }
     },
