@@ -1874,5 +1874,6 @@
   "compute.already_in_bastion": "The virtual machine is already in the bastion host. Please remove it and try again.",
   "compute.only_running_vm_support": "Only running virtual machines support this operation",
   "compute.delete_bastion_host": "Delete from bastion host",
-  "compute.sku_unfind_tip": "Original instance type {0} not found, please be careful to select the instance type or keep the original one"
+  "compute.sku_unfind_tip": "Original instance type {0} not found, please be careful to select the instance type or keep the original one",
+  "compute.host_probe_isolated_devices": "Probe transparent devices"
 }

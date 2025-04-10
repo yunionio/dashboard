@@ -1876,5 +1876,6 @@
   "compute.already_in_bastion": "该虚拟机已加入堡垒机，请先移除后重试",
   "compute.only_running_vm_support": "仅开机状态的虚拟机支持此操作",
   "compute.delete_bastion_host": "同时从堡垒机移除",
-  "compute.sku_unfind_tip": "未找到原始套餐 {0} 请谨慎选择套餐或保持原样"
+  "compute.sku_unfind_tip": "未找到原始套餐 {0} 请谨慎选择套餐或保持原样",
+  "compute.host_probe_isolated_devices": "探测透传设备"
 }
