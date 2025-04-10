@@ -8,12 +8,15 @@ import storage from '@/utils/storage'
 import * as Features from '@/constants/feature'
 import setting from '@/config/setting'
 import i18n from '@/locales'
+import { aesDecryptWithCustomKey } from '@/utils/crypto'
 
 const ONECLOUD_AUTH_KEY = 'yunionauth'
 const HISTORY_USERS_STORAGE_KEY = '__oc_history_users__'
 const LOGGED_USERS_STORAGE_KEY = '__oc_logged_users__'
 const ENABLE_SETUP_STORAGE_KEY = '__oc_enable_setup__'
 const LOGIN_MODE = '__oc_login_mode___'
+
+export const SESSION_LOGIN_USER_KEY = '__oc_checked_id__'
 
 export function getTokenFromCookie () {
   return Cookies.get(ONECLOUD_AUTH_KEY)
@@ -448,4 +451,19 @@ export const isLicense2 = () => {
     return createTime * 1000 > new Date('2025-02-21 00:00:00').getTime()
   }
   return false
+}
+
+export const checkSessionUser = () => {
+  const loginUser = storage.session.get(SESSION_LOGIN_USER_KEY)
+  if (loginUser) {
+    const user = aesDecryptWithCustomKey(loginUser, 'cloudpods')
+    const token = getTokenFromCookie()
+    if (token) {
+      const decodeT = decodeToken(token)
+      if (decodeT.user_id && decodeT.user_id !== user) {
+        return false
+      }
+    }
+  }
+  return true
 }
