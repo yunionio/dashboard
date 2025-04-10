@@ -75,3 +75,28 @@ export const aesEncrypt = (content) => {
   const secret = CryptoJS.enc.Hex.parse(retHex).toString(CryptoJS.enc.Base64)
   return secret
 }
+
+/**
+ * aes-CBC-256加密
+ * @param { String } content 需要加密的字符串
+ * @param { String } key 加密密钥
+ * @returns secret 返回 加密后的字符串
+ */
+export const aesEncryptWithCustomKey = (content, key) => {
+  const ciphertextObj = CryptoJS.AES.encrypt(content, key)
+  // 通常将密文转换为字符串存储或传输 (例如 Base64)
+  const ciphertext = ciphertextObj.toString()
+  return ciphertext
+}
+
+/**
+ * aes-CBC-256解密
+ * @param { String } content 需要解密的字符串
+ * @param { String } key 解密密钥
+ * @returns secret 返回 解密后的字符串
+ */
+export const aesDecryptWithCustomKey = (content, key) => {
+  const ciphertextObj = CryptoJS.AES.decrypt(content, key)
+  const decryptedData = ciphertextObj.toString(CryptoJS.enc.Utf8)
+  return decryptedData
+}
