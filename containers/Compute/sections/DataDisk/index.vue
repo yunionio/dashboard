@@ -28,9 +28,9 @@
           @snapshotChange="val => snapshotChange(item, val, i)"
           @diskTypeChange="val => diskTypeChange(item, val, i)"
           @storageHostChange="(val) => $emit('storageHostChange', val)" />
-        <a-button v-if="!getDisabled(item, 'minus') && (dataDisks.length > 1 ? (i !== 0) : true)" shape="circle" icon="minus" size="small" @click="decrease(item.key)" class="mt-2" />
+        <a-button v-if="!getDisabled(item, 'minus') && (dataDisks.length > 1 ? (i !== 0) : true) && isAddDiskShow" shape="circle" icon="minus" size="small" @click="decrease(item.key)" class="mt-2" />
       </div>
-      <div class="d-flex align-items-center" v-if="diskRemain > 0 && !disabled">
+      <div class="d-flex align-items-center" v-if="diskRemain > 0 && !disabled && isAddDiskShow">
         <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
         <a-button type="link" @click="add">{{$t('compute.text_129')}}</a-button>
         <span class="count-tips">{{$t('compute.text_130')}}<span class="remain-num">{{ diskRemain }}</span>{{$t('compute.text_131')}}</span>
@@ -146,6 +146,17 @@ export default {
       type: Boolean,
       default: false,
     },
+    forceElements: {
+      type: Array,
+    },
+    isAddDiskShow: {
+      type: Boolean,
+      default: true,
+    },
+    forceSizeDisabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -167,6 +178,7 @@ export default {
     },
     elements () {
       const ret = []
+      if (this.forceElements) return this.forceElements
       if (this.isSnapshotImageType) return ret
       if (this.isHostImageType) return ['snapshot', 'schedtag']
       if (this.isVminstanceContainer) return ['storage', 'schedtag']
@@ -558,20 +570,24 @@ export default {
       }
     },
     diskTypeChange (item, val) {
-      item.sizeDisabled = false
+      if (!this.forceSizeDisabled) {
+        item.sizeDisabled = false
+      }
       // 仅有第一块盘可以更改磁盘类型
       this.$nextTick(() => {
-        const dataDiskItem = {
-          ...item,
-          diskType: val,
+        if (!this.forceSizeDisabled) {
+          const dataDiskItem = {
+            ...item,
+            diskType: val,
+          }
+          if (item.min) {
+            dataDiskItem.min = Math.max(item.min, this.min)
+          }
+          this.$set(this.dataDisks, 0, dataDiskItem)
+          this.form.fc.setFieldsValue({
+            [`dataDiskSizes[${item.key}]`]: Math.max((dataDiskItem.min || 0), this.min),
+          })
         }
-        if (item.min) {
-          dataDiskItem.min = Math.max(item.min, this.min)
-        }
-        this.$set(this.dataDisks, 0, dataDiskItem)
-        this.form.fc.setFieldsValue({
-          [`dataDiskSizes[${item.key}]`]: Math.max((dataDiskItem.min || 0), this.min),
-        })
         // 数据盘更改类型
         if (val.key !== item.diskType?.key) {
           const { dataDiskSizes = {} } = this.form.fd

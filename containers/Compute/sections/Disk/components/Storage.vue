@@ -155,7 +155,7 @@ export default {
           }
         }
         // 当前磁盘大小
-        const currentDiskSize = this.diskKey === 'system' ? systemDiskSize : dataDiskSizes[this.diskKey]
+        const currentDiskSize = this.diskKey === 'system' ? systemDiskSize : (dataDiskSizes[this.diskKey] || this.form.fd[`dataDiskSizes[${this.diskKey}]`])
         // 当前系统盘块存储host
         const { storageHosts = [], disk } = this.storageHostParams
         // 保留 （容量 - 已经选用此块存储的磁盘大小 > 当前磁盘大小）&& 与系统盘相同host 的块存储

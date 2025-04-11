@@ -122,6 +122,9 @@ export default {
       type: Boolean,
       default: false,
     },
+    forceElements: {
+      type: Array,
+    },
   },
   computed: {
     isPublic () {
@@ -174,6 +177,9 @@ export default {
         if (this.currentTypeObj?.key === 'io1') {
           ret.push('iops')
         }
+      }
+      if (this.forceElements) {
+        return this.forceElements
       }
       return ret
     },
