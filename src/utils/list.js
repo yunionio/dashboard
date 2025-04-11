@@ -76,8 +76,12 @@ class WaitStatusJob {
     if (!R.isEmpty(this.data.list.itemGetParams)) {
       for (const key in this.data.list.itemGetParams) {
         const val = this.data.list.itemGetParams[key]
-        if (val) {
-          params[key] = val
+        if (this.data.list.itemGetParams.hasOwnProperty(key)) {
+          if (val) {
+            params[key] = val
+          } else {
+            delete params[key]
+          }
         } else {
           params[key] = this.data.data[key]
         }
