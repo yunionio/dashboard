@@ -4,7 +4,7 @@
  * date: 2018/08/07
  */
 import * as R from 'ramda'
-import { hasPermission } from '@/utils/auth'
+import { hasPermission, checkSessionUser } from '@/utils/auth'
 import { isCE, isSAAS } from '@/utils/utils'
 import router from './router'
 import store from './store'
@@ -147,4 +147,14 @@ router.beforeEach((to, from, next) => {
     if (isHidden) return next('/403')
   }
   next()
+})
+
+router.afterEach((to, from) => {
+  const isSessionUser = checkSessionUser()
+  if (!isSessionUser) {
+    store.dispatch('auth/logout')
+    router.push({
+      path: '/auth/login',
+    })
+  }
 })

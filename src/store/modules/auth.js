@@ -19,11 +19,15 @@ import {
   setLoggedUsersInStorage,
   getSsoIdpIdFromCookie,
   setLoginModeInStorage,
+  checkSessionUser,
+  SESSION_LOGIN_USER_KEY,
 } from '@/utils/auth'
 import { SCOPES_MAP } from '@/constants'
 import router from '@/router'
 import { removeKeyIgnoreCase, getKeyIgnoreCase } from '@/utils/utils'
 import { clear as clearDashboardCache } from '@Dashboard/utils/cache'
+import storage from '@/utils/storage'
+import { aesEncryptWithCustomKey } from '@/utils/crypto'
 
 const initialState = {
   scope: getScopeFromCookie() || 'project',
@@ -332,6 +336,8 @@ export default {
           await commit('CLEAR_LOGGED_USERS')
         }
         await commit('CLEAR_DASHBOARD_CACHE')
+        // 清除本地用户
+        storage.session.remove(SESSION_LOGIN_USER_KEY)
         return response.data
       } catch (error) {
         throw error
@@ -340,8 +346,17 @@ export default {
     /**
      * @description Get user info
      */
-    async getInfo ({ commit, state, getters }) {
+    async getInfo ({ commit, state, getters, dispatch }) {
       try {
+        // 检查本地用户
+        const isSessionUser = checkSessionUser()
+        if (!isSessionUser) {
+          await dispatch('logout')
+          router.push({
+            path: '/auth/login',
+          })
+          return {}
+        }
         const response = await http.get('/v1/auth/user')
         if (!response.data) {
           throw new Error('Verification failed, please Login again.')
@@ -361,6 +376,8 @@ export default {
             idpId: state.auth.is_sso ? getSsoIdpIdFromCookie() : null,
           },
         })
+        // 设置本地登录用户
+        storage.session.set(SESSION_LOGIN_USER_KEY, aesEncryptWithCustomKey(response.data.data.id, 'cloudpods'))
         return response.data.data
       } catch (error) {
         throw error
