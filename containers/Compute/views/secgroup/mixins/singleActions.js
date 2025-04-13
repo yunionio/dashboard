@@ -105,7 +105,7 @@ export default {
                 this.sidePageTriggerHandle(this, 'SecGroupSidePage', {
                   id: obj.id,
                   resource: 'secgroups',
-                }, { tab: 'vminstance-list' })
+                }, { tab: 'associated-instances' })
               },
               hidden: () => this.hiddenActions.includes('openSecgroupSidepageTab'),
             },
