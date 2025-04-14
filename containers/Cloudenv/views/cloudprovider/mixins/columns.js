@@ -49,7 +49,7 @@ export default {
       getEnabledTableColumn(),
       getStatusTableColumn({ statusModule: 'cloudaccount' }),
       {
-        field: 'last_auto_sync',
+        field: 'last_sync',
         title: i18n.t('cloudenv.text_103'),
         width: 80,
         slots: {

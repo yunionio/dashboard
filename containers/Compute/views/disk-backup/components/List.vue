@@ -133,6 +133,10 @@ export default {
           { label: 'ID', key: 'id' },
           ...this.columns,
         ],
+        fixedItems: [
+          { key: 'disk_size_mb', label: this.$t('compute.disk_size') + '(M)' },
+          { key: 'size_mb', label: this.$t('compute.backup_size') + '(M)' },
+        ],
       }
     },
   },

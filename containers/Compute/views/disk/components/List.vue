@@ -306,6 +306,9 @@ export default {
           { field: 'external_id', label: this.$t('table.title.external_id') },
           ...this.columns,
         ],
+        fixedItems: [
+          { key: 'disk_size', label: this.$t('table.title.disk_size') + '(M)' },
+        ],
       }
     },
   },
