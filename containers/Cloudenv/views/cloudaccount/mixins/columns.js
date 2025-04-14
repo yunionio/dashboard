@@ -45,7 +45,7 @@ export default {
       getLastSyncCostTableColumn(),
       // getEnabledTableColumn({ field: 'enable_auto_sync', title: i18n.t('cloudenv.text_83'), minWidth: 90 }),
       {
-        field: 'last_auto_sync',
+        field: 'last_sync',
         title: i18n.t('cloudenv.text_103'),
         minWidth: 70,
         showOverflow: 'ellipsis',
