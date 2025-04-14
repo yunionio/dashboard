@@ -552,7 +552,7 @@ export default {
         if (disk) {
           str += `、${sizestr(num, 'M', 1024)}（${disk.label}${diskObj.auto_reset ? ' ' + this.$t('compute.shutdown_auto_reset') : ''}）`
         } else {
-          str += `、${sizestr(num, 'M', 1024)}（${k}（${disk.label}${diskObj.auto_reset ? ' ' + this.$t('compute.shutdown_auto_reset') : ''}）`
+          str += `、${sizestr(num, 'M', 1024)}（${k}${diskObj.auto_reset ? ' ' + this.$t('compute.shutdown_auto_reset') : ''}）`
         }
       }
       return str.slice(1)
