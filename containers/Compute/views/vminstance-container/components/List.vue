@@ -420,6 +420,15 @@ export default {
           { label: 'ID', key: 'id' },
           { label: this.$t('table.title.external_id'), key: 'external_id' },
         ],
+        fixedItems: [
+          { key: 'metadata.os_distribution', label: this.$t('table.title.os') },
+          { key: 'disk', label: this.$t('table.title.disk') + '(M)' },
+          { key: 'vmem_size', label: this.$t('table.title.vmem_size') + '(M)' },
+          { key: 'eip', title: this.$t('common.eip') },
+          { key: 'ips', title: 'IP' },
+          { key: 'is_gpu', title: `${this.$t('table.title.type')}(${this.$t('compute.text_113')}${this.$t('dictionary.server')})` },
+        ],
+        hiddenFields: ['os_dist', 'elastic_ip', 'ip'],
         async beforeExport () {
           const checkOpenExportUsernamePassword = async () => {
             try {

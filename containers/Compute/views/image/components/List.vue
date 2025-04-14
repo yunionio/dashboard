@@ -404,6 +404,12 @@ export default {
         downloadType: 'local',
         title: this.$t('compute.text_97'),
         items: this.columns,
+        hiddenFields: ['os_type'],
+        fixedItems: [
+          { key: 'properties.os_distribution', label: this.$t('table.title.os') },
+          { key: 'size', label: this.$t('table.title.image_size') + '(B)' },
+          { key: 'is_standard', label: this.$t('compute.text_620') },
+        ],
       }
     },
   },

@@ -359,6 +359,14 @@ export default {
         downloadType: 'local',
         title: this.$t('compute.text_92'),
         getParams: () => ({ hypervisor: 'baremetal' }),
+        fixedItems: [
+          { key: 'vcpu_count', label: 'CPU' },
+          { key: 'disk', label: this.$t('table.title.disk') + '(M)' },
+          { key: 'vmem_size', label: this.$t('table.title.vmem_size') + '(M)' },
+          { key: 'eip', title: this.$t('common.eip') },
+          { key: 'ips', title: 'IP' },
+        ],
+        hiddenFields: ['ip'],
       }
     },
   },

@@ -371,6 +371,10 @@ export default {
         ],
         title: this.$t('dictionary.elasticcache'),
         downloadType: 'local',
+        fixedItems: [
+          { key: 'capacity_mb', label: this.$t('db.text_109') + '(M)' },
+        ],
+        hiddenFields: ['instance_type'],
       }
       ret.items.push({
         field: 'expired_at',

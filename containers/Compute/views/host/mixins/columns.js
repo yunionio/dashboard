@@ -375,7 +375,7 @@ export default {
         },
       },
       {
-        field: 'schedtag',
+        field: 'schedtags',
         title: i18n.t('compute.text_541'),
         width: 120,
         type: 'expand',
