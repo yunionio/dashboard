@@ -470,6 +470,17 @@ export default {
           { label: this.$t('compute.text_518'), key: 'mem_commit_rate' },
           { label: this.$t('compute.storage_commit_rate'), key: 'storage_commit_rate' },
         ],
+        hiddenFields: ['cpu_commit', 'mem_commit', 'cpu_commit_rate', 'mem_commit_rate', 'storage_commit_rate', 'model', 'custom_ip', 'manufacture'],
+        fixedItems: [
+          { key: 'mem_size', label: this.$t('compute.text_564') + '(M)' },
+          { key: 'storage_size', label: this.$t('compute.text_565') + '(M)' },
+          { key: 'storage_virtual', label: this.$t('compute.text_565_1') + '(M)' },
+          { key: 'sys_info.model', label: this.$t('compute.text_580') },
+          { key: 'sys_info.oem_name', label: this.$t('compute.text_847') },
+          { key: 'ipmi_ip', label: 'IPMI IP' },
+          { key: 'public_ip', label: this.$t('compute.text_1374') },
+          { key: 'access_ip', label: 'IP' },
+        ],
       }
     },
   },

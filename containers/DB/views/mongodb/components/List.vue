@@ -177,6 +177,12 @@ export default {
         ],
         title: this.$t('dictionary.mongodb'),
         downloadType: 'local',
+        fixedItems: [
+          { key: 'vcpu_count', label: 'CPU' },
+          { key: 'disk_size_mb', label: this.$t('table.title.disk') + '(M)' },
+          { key: 'vmem_size_mb', label: this.$t('table.title.vmem_size') + '(M)' },
+          { key: 'port', label: 'port' },
+        ],
       }
     },
   },

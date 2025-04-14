@@ -329,6 +329,7 @@ export default {
         title: this.$t('cloudenv.text_12'),
         downloadType: 'local',
         items: this.columns,
+        hiddenFields: ['resource_tenant'],
       }
     },
   },

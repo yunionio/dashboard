@@ -86,29 +86,6 @@ export default {
         },
         responseData: this.responseData,
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('compute.text_1035'), key: 'external_id' },
-          { label: this.$t('compute.text_228'), key: 'name' },
-          { label: this.$t('compute.text_263'), key: 'ips' },
-          { label: this.$t('compute.text_1036'), key: 'eip' },
-          { label: 'CPU', key: 'vcpu_count' },
-          { label: this.$t('compute.text_264'), key: 'vmem_size' },
-          { label: this.$t('compute.text_265'), key: 'disk' },
-          { label: this.$t('compute.text_266'), key: 'instance_type' },
-          { label: this.$t('compute.text_267'), key: 'os_distribution' },
-          { label: this.$t('compute.text_268'), key: 'status' },
-          { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: this.$t('compute.text_176'), key: 'hypervisor' },
-          { label: this.$t('compute.text_111'), key: 'host' },
-          { label: this.$t('compute.text_269'), key: 'manager' },
-          { label: this.$t('compute.text_177'), key: 'region' },
-          { label: this.$t('compute.text_270'), key: 'zone' },
-          { label: this.$t('compute.text_498'), key: 'billing_type' },
-          { label: this.$t('compute.text_271'), key: 'user_tags' },
-        ],
-      },
       singleActions: [
         {
           label: this.$t('compute.text_723'),
@@ -184,6 +161,22 @@ export default {
         return noRepeatArr.length === 1
       }
       return true
+    },
+    exportDataOptions () {
+      return {
+        title: this.$t('dictionary.server'),
+        downloadType: 'local',
+        items: this.columns,
+        fixedItems: [
+          { key: 'metadata.os_distribution', label: this.$t('table.title.os') },
+          { key: 'disk', label: this.$t('table.title.disk') + '(M)' },
+          { key: 'vmem_size', label: this.$t('table.title.vmem_size') + '(M)' },
+          { key: 'eip', title: this.$t('common.eip') },
+          { key: 'ips', title: 'IP' },
+          { key: 'is_gpu', title: `${this.$t('table.title.type')}(${this.$t('compute.text_113')}${this.$t('dictionary.server')})` },
+        ],
+        hiddenFields: ['os_dist', 'elastic_ip', 'ip'],
+      }
     },
   },
   watch: {

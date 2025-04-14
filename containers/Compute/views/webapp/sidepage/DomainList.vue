@@ -50,7 +50,7 @@ export default {
         }),
         getStatusTableColumn({ statusModule: 'webappDomains' }),
         {
-          field: 'type',
+          field: 'ssl_state',
           title: this.$t('network.binding_type'),
           formatter: ({ row }) => {
             return row.ssl_state === 'SniEnabled' ? 'SNI SSL' : '-'

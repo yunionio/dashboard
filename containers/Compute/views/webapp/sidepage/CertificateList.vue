@@ -116,6 +116,7 @@ export default {
           { field: 'id', label: 'ID' },
           ...this.columns,
         ],
+        hiddenFields: ['status'],
       }
     },
   },

@@ -58,6 +58,13 @@ export default {
         downloadType: 'local',
         title: this.$t('monitor.text_17'),
         items: this.columns,
+        hiddenFields: ['ip', 'value_str', 'brand', 'alert_details'],
+        fixedItems: [
+          { key: 'data.tags.ip', label: 'IP' },
+          { key: 'data.value_str', label: this.$t('monitor.text_16') },
+          { key: 'data.tags.brand', label: this.$t('compute.text_176') },
+          { key: 'data.alert_details', label: this.$t('monitor.condition') },
+        ],
       }
     },
   },
@@ -150,7 +157,7 @@ export default {
         getTimeTableColumn({ field: 'trigger_time', title: this.$t('monitor.text_14') }),
         getStatusTableColumn({ statusModule: 'alertrecord', field: 'alert_state' }),
         {
-          field: 'type',
+          field: 'res_type',
           title: this.$t('monitor.text_97'),
           minWidth: 80,
           formatter: ({ row }) => {

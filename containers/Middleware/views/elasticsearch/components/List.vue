@@ -143,6 +143,11 @@ export default {
         ],
         downloadType: 'local',
         title: this.$t('middleware.elasticsearch'),
+        fixedItems: [
+          { key: 'disk_size_gb', label: this.$t('table.title.disk') + '(G)' },
+          { key: 'vmem_size_gb', label: this.$t('table.title.vmem_size') + '(G)' },
+          { key: 'instance_type', label: this.$t('middleware.config') },
+        ],
       }
     },
   },

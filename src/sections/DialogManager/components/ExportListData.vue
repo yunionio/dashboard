@@ -67,7 +67,26 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    let exportOptionItems = [...this.params.options.items].filter(item => {
+    let exportOptionItems = [...this.params.options.items]
+    // 补充列
+    if (!process.env.VUE_APP_IS_BUSINESS_CE && !this.$appConfig.isPrivate && (this.params.options.fixedItems || this.params.options.hiddenFields)) {
+      const { fixedItems = [], hiddenFields = [] } = this.params.options
+      exportOptionItems = exportOptionItems.filter(item => {
+        if (hiddenFields.includes(item.key) || hiddenFields.includes(item.field)) {
+          return false
+        }
+        return true
+      })
+      fixedItems.forEach(item => {
+        const idx = exportOptionItems.findIndex(i => (i.key || i.field) === (item.key || item.field))
+        if (idx > -1) {
+          exportOptionItems[idx] = item
+        } else {
+          exportOptionItems.push(item)
+        }
+      })
+    }
+    exportOptionItems = exportOptionItems.filter(item => {
       const { hidden } = item
       if (hidden && R.type(hidden) === 'Function') {
         return !hidden()

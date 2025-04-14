@@ -234,6 +234,11 @@ export default {
         title: this.$t('cloudenv.text_318'),
         items: this.columns,
         getParams: this.getParams,
+        hiddenFields: ['resource_tenant'],
+        fixedItems: [
+          { key: 'tenant', label: this.$t('cloudenv.text_356', [this.$t('dictionary.project')]) },
+          { key: 'project_mapping', label: this.$t('cloudenv.text_580') },
+        ],
       }
     },
   },

@@ -154,7 +154,7 @@ export default {
         hidden: () => this.$isScopedPolicyMenuHidden('network_hidden_columns.vlan_id'),
       },
       {
-        field: 'schedtag',
+        field: 'schedtags',
         title: i18n.t('network.text_630'),
         width: 120,
         type: 'expand',

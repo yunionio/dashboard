@@ -553,6 +553,15 @@ export default {
         ],
         title: this.$t('network.text_565'),
         downloadType: 'local',
+        hiddenFields: ['ip', 'ip6'],
+        fixedItems: [
+          { key: 'guest_ip_start', label: this.$t('network.text_607') },
+          { key: 'guest_ip_end', label: this.$t('network.text_608') },
+          { key: 'guest_ip_mask', label: this.$t('network.text_609') },
+          { key: 'guest_ip6_start', label: this.$t('network.ipv6.ip_start.label') },
+          { key: 'guest_ip6_end', label: this.$t('network.ipv6.ip_end.label') },
+          { key: 'guest_ip6_mask', label: this.$t('network.ipv6.ip_mask.label') },
+        ],
       }
     },
   },

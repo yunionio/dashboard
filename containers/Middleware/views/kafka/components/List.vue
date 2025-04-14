@@ -143,6 +143,9 @@ export default {
         ],
         title: this.$t('middleware.kafka'),
         downloadType: 'local',
+        fixedItems: [
+          { key: 'disk_size_gb', label: this.$t('table.title.disk') + '(G)' },
+        ],
       }
     },
   },
