@@ -838,20 +838,6 @@ const getSingleActions = function () {
                 },
                 hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_clone'),
               },
-              // 添加到堡垒机
-              {
-                label: i18n.t('compute.bastionHost.add_bastion_host'),
-                action: () => {
-                  this.createDialog('VmAddBastionHostDialog', {
-                    data: [obj],
-                  })
-                },
-                meta: () => {
-                  const rescueModeValid = validateRescueMode(obj)
-                  return rescueModeValid
-                },
-                hidden: () => !this.$appConfig.isPrivate || this.$store.getters.isSysCE || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_add_to_bastion'),
-              },
               // 续费
               {
                 label: i18n.t('compute.text_1117'),
@@ -1781,10 +1767,10 @@ const getSingleActions = function () {
                     ret.tooltip = i18n.t('compute.text_1282')
                     return ret
                   }
-                  return ret
+                  return validateRescueMode(obj)
                 },
                 hidden: () => {
-                  if (!this.$appConfig.isPrivate || this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host') || (isLicense2() && !hasSetupKey('bastionhost'))) {
+                  if (!this.$appConfig.isPrivate || this.$store.getters.isSysCE || this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host') || (isLicense2() && !hasSetupKey('bastionhost'))) {
                     return true
                   }
                   return false
@@ -1815,7 +1801,7 @@ const getSingleActions = function () {
                   return ret
                 },
                 hidden: () => {
-                  if (!this.$appConfig.isPrivate || this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host') || (isLicense2() && !hasSetupKey('bastionhost'))) {
+                  if (!this.$appConfig.isPrivate || this.$store.getters.isSysCE || this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host') || (isLicense2() && !hasSetupKey('bastionhost'))) {
                     return true
                   }
                   return false
