@@ -77,7 +77,43 @@ export const aesEncrypt = (content) => {
 }
 
 /**
- * aes-CBC-256加密
+ * aes-CBC-256解密
+ * @param { String } secret 需要解密的字符串
+ * @returns text 返回 解密后的字符串
+ */
+export const aesDecrypt = (secret) => {
+  // key: 必须与加密时使用的key相同，32 bytes UTF8 string
+  const key = CryptoJS.enc.Utf8.parse(PaddingRight('cloudpods', 32))
+
+  // 1. 将Base64编码的secret转换为Hex
+  const secretHex = CryptoJS.enc.Base64.parse(secret).toString(CryptoJS.enc.Hex)
+
+  // 2. 提取IV（前16字节，32个Hex字符）
+  const ivHex = secretHex.substring(0, 32)
+  const iv = CryptoJS.enc.Hex.parse(ivHex)
+
+  // 3. 提取加密内容（剩余部分）
+  const encryptedHex = secretHex.substring(32)
+  const encryptedBase64 = CryptoJS.enc.Hex.parse(encryptedHex).toString(CryptoJS.enc.Base64)
+
+  // 4. 创建加密参数对象
+  const encryptedData = CryptoJS.lib.CipherParams.create({
+    ciphertext: CryptoJS.enc.Base64.parse(encryptedBase64),
+  })
+
+  // 5. 解密
+  const decrypted = CryptoJS.AES.decrypt(encryptedData, key, {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7,
+  })
+
+  // 6. 返回UTF8字符串
+  return decrypted.toString(CryptoJS.enc.Utf8)
+}
+
+/**
+ * aes 对称加密
  * @param { String } content 需要加密的字符串
  * @param { String } key 加密密钥
  * @returns secret 返回 加密后的字符串
@@ -90,7 +126,7 @@ export const aesEncryptWithCustomKey = (content, key) => {
 }
 
 /**
- * aes-CBC-256解密
+ * aes 对称解密
  * @param { String } content 需要解密的字符串
  * @param { String } key 解密密钥
  * @returns secret 返回 解密后的字符串
