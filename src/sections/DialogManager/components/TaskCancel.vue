@@ -26,8 +26,8 @@ export default {
   },
   methods: {
     doCancel () {
-      return new this.$Manager(this.params.resource).performAction({
-        id: this.params.data.map(item => item.id),
+      return new this.$Manager(this.params.resource).batchPerformAction({
+        ids: this.params.data.map(item => item.id),
         action: 'cancel',
       })
     },
