@@ -34,6 +34,10 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const initialValue = this.params.data[0].value
+    let required = true
+    if (this.params.data[0] && this.params.data[0].opt?.notRequired) {
+      required = false
+    }
     return {
       loading: false,
       form: {
@@ -53,7 +57,7 @@ export default {
             initialValue,
             rules: [
               {
-                required: true,
+                required,
                 message: this.$t('system.text_192'),
               },
             ],
