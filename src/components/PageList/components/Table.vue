@@ -41,6 +41,9 @@
               :page-size="tablePage.pageSize"
               :total="tablePage.total"
               @page-change="handlePageChange">
+              <template v-slot:left>
+                <slot name="pager-prepend" />
+              </template>
               <template v-slot:right>
                 <div class="table-overview">
                   <span>{{ $t('common.page_list_count', [selected.length, tablePage.total]) }}</span>

@@ -144,7 +144,9 @@
         @change-next-marker="changeNextMarker"
         @radio-change="radioChange"
         @project-tag-filter-change="projectTagFilterChange"
-        @edit-closed="editClosed" />
+        @edit-closed="editClosed">
+        <slot name="pager-prepend" slot="pager-prepend" />
+      </component>
     </template>
     <template v-if="!loading && !configLoaded">
       <loader :loading="loading" :noDataText="noDataText" />
