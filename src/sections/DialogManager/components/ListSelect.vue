@@ -45,10 +45,11 @@
           <page-list
             ref="page-list"
             v-bind="listProps"
-            @radio-change="handleRadioChange" />
-          <template v-if="params.multiple">
-            <a-button type="link" size="small" class="choose-all" @click="chooseAllHandle" v-if="isShowChooseAll">{{$t('common_98')}}</a-button>
-          </template>
+            @radio-change="handleRadioChange">
+            <template v-if="params.multiple" v-slot:pager-prepend>
+              <a-button type="link" size="small" class="choose-all" @click="chooseAllHandle" v-if="isShowChooseAll">{{$t('common_98')}}</a-button>
+            </template>
+          </page-list>
         </div>
       </div>
     </div>
@@ -173,9 +174,9 @@ export default {
 .page-list-wrapper{
   position: relative;
   .choose-all{
-    position: absolute;
-    left: 0;
-    bottom: 14px;
+    // position: absolute;
+    // left: 0;
+    // bottom: 14px;
     font-size: 12px;
   }
 }
