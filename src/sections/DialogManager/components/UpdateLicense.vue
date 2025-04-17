@@ -156,6 +156,7 @@ export default {
     goGuide () {
       const { path } = this.$route
       if (path === '/guide') {
+        this.$bus.$emit('LicenseSelectAllFeatures')
         return
       }
       this.$router.push('/guide')
