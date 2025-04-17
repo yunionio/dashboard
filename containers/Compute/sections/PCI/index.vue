@@ -78,7 +78,7 @@ export default {
   },
   computed: {
     isPciEmpty () {
-      return this.pciOptions && this.pciOptions.length === 0
+      return (this.pciOptions && this.pciOptions.length === 0) || !this.realPciDevTypeOptions.length
     },
     pciCountOptions () {
       const target = this.realPciOptions.filter(item => item.dev_type === this.curPciDevType)
@@ -128,6 +128,9 @@ export default {
     realPciDevTypeOptions (val, oldVal) {
       this.changeSelectedValue()
     },
+    isPciEmpty (val) {
+      if (val) this.pciEnable = false
+    },
   },
   beforeCreate () {
     this.pciForm = {}
@@ -141,8 +144,8 @@ export default {
     initialValue (id = 0) {
       this.$nextTick(() => {
         this.form.fc.setFieldsValue({
-          [`pciDevType[${id}]`]: this.curPciDevType || this.getRealPciDevTypeOptions(this.realPciDevTypeOptions)[0].key,
-          [`pciModel[${id}]`]: this.form.fd['pciModel[0]'] || this.getRealPciOptions(this.realPciOptions)[0].key,
+          [`pciDevType[${id}]`]: this.curPciDevType || (this.getRealPciDevTypeOptions(this.realPciDevTypeOptions).length ? this.getRealPciDevTypeOptions(this.realPciDevTypeOptions)[0].key : ''),
+          [`pciModel[${id}]`]: this.form.fd['pciModel[0]'] || (this.getRealPciOptions(this.realPciOptions).length ? this.getRealPciOptions(this.realPciOptions)[0].key : ''),
           [`pciCount[${id}]`]: 1,
         })
       })
