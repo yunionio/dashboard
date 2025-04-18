@@ -162,7 +162,10 @@ export default {
       return {
         downloadType: 'local',
         title: this.$t('dictionary.dns_zone'),
-        items: this.columns,
+        items: [
+          ...this.columns,
+          { field: 'manager', title: this.$t('dictionary.cloudprovider') },
+        ],
       }
     },
   },
