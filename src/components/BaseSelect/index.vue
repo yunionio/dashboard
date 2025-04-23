@@ -540,6 +540,7 @@ export default {
           this.defaultSelect([...this.extraOpts, ...this.resList])
           return list
         } catch (error) {
+          this.$emit('update:initError')
           throw error
         }
       }
