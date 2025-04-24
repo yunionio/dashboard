@@ -324,5 +324,10 @@
   "monitor.adjust_chart_order": "グラフの順序の調整",
   "monitor.show_hide_legend_table": "監視凡例の詳細の表示/非表示",
   "monitor.full_export": "フルエクスポート",
-  "monitor.edit_name": "名称を変更する"
+  "monitor.edit_name": "名称を変更する",
+  "monitor.func.MIN": "最小値",
+  "monitor.func.MAX": "最大値",
+  "monitor.func.MEAN": "平均値",
+  "monitor.func.SUM": "合計",
+  "monitor.k8s_node": "ノード"
 }

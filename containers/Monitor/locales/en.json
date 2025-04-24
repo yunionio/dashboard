@@ -324,5 +324,10 @@
   "monitor.adjust_chart_order": "Adjust chart order",
   "monitor.show_hide_legend_table": "Show/hide monitoring legend details",
   "monitor.full_export": "Full export",
-  "monitor.edit_name": "Change name"
+  "monitor.edit_name": "Change name",
+  "monitor.func.MIN": "Min",
+  "monitor.func.MAX": "Max",
+  "monitor.func.MEAN": "Average",
+  "monitor.func.SUM": "Sum",
+  "monitor.k8s_node": "node"
 }

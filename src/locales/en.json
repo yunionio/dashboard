@@ -2851,7 +2851,8 @@
     "menu_billing_accuracy": "Cost and Optimization",
     "menu_iam_security": "Certification and Security",
     "menu_system_config": "System Configuration",
-    "global_topology": "Global topology"
+    "global_topology": "Global topology",
+    "k8s": "K8S"
   },
   "originDictionary": {},
   "res": {
