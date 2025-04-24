@@ -324,5 +324,10 @@
   "monitor.adjust_chart_order": "调整图表顺序",
   "monitor.show_hide_legend_table": "显示/隐藏监控图例详情",
   "monitor.full_export": "全量导出",
-  "monitor.edit_name": "修改名称"
+  "monitor.edit_name": "修改名称",
+  "monitor.func.MIN": "最小值",
+  "monitor.func.MAX": "最大值",
+  "monitor.func.MEAN": "平均值",
+  "monitor.func.SUM": "求和",
+  "monitor.k8s_node": "节点"
 }

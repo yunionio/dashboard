@@ -2777,7 +2777,8 @@
     "private_envlogo": "Private Cloud Logo",
     "private_env-1": "Private Cloud 1",
     "private_env-2": "Private Cloud 2",
-    "extdb": "Custom resources"
+    "extdb": "Custom resources",
+    "k8s": "K8S"
   },
   "originDictionary": {},
   "res": {
