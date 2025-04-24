@@ -119,7 +119,7 @@ export default {
       if (R.is(Array, this.metricInfo.tag_key)) {
         return this.metricInfo.tag_key.map(v => {
           const zh = filterKeyMap[v]
-          const label = zh ? `${zh} (${v})` : (v.startsWith('user:') ? v.replace('user:', this.$t('monitor.tag_key')) : v)
+          const label = zh ? (R.is(Object, zh) ? `${this.$t(zh.t)} (${v})` : `${zh} (${v})`) : (v.startsWith('user:') ? v.replace('user:', this.$t('monitor.tag_key')) : v)
           return {
             key: v,
             label,

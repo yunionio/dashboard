@@ -2871,7 +2871,8 @@
     "menu_billing_accuracy": "費用と最適化",
     "menu_iam_security": "認証とセキュリティ",
     "menu_system_config": "システム設定",
-    "global_topology": "グローバルトポロジ"
+    "global_topology": "グローバルトポロジ",
+    "k8s": "K8S"
   },
   "originDictionary": {},
   "res": {
