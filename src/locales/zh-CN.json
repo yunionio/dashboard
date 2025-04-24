@@ -2796,7 +2796,8 @@
     "private_envlogo": "私有云logo",
     "private_env-1": "私有云1",
     "private_env-2": "私有云2",
-    "extdb": "自定义资源"
+    "extdb": "自定义资源",
+    "k8s": "K8S"
   },
   "originDictionary": {},
   "res": {

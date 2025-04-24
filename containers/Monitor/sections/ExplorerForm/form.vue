@@ -472,7 +472,7 @@ export default {
         }
         const Aggregations = _.get(this.metricInfo, 'func.field_opt_value.Aggregations')
         if (R.is(Array, Aggregations)) {
-          this.functionOpts = Aggregations.map(v => ({ key: v, label: v }))
+          this.functionOpts = Aggregations.map(v => ({ key: v, label: this.$te(`monitor.func.${v}`) ? this.$t(`monitor.func.${v}`) : v }))
         }
         const { group_by: groupBy, function: func } = this.form.fc.getFieldsValue([this.decorators.group_by[0], this.decorators.function[0]])
         const resetFields = {}

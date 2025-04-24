@@ -349,14 +349,15 @@ export const metric_zh = {
   'Used vm disk rate': i18n.t('monitor_metric_22'),
   'Send packets per second': i18n.t('monitor.pps_sent'),
   'Received packets per second': i18n.t('monitor.pps_recv'),
+  'k8s node': i18n.t('monitor.k8s_node'),
 }
 
 export const filterKeyMap = {
   brand: i18n.t('common.brand'),
   host: i18n.t('dictionary.host'),
   host_ip: i18n.t('dictionary.hostip'),
-  tenant: i18n.t('res.project'),
-  project_domain: i18n.t('monitor.text_107'),
+  tenant: { t: 'dictionary.project' },
+  project_domain: { t: 'table.title.owner_domain' },
   cloudregion: i18n.t('common.region'),
   zone: i18n.t('common.zone'),
   vm_name: i18n.t('dictionary.server'),
