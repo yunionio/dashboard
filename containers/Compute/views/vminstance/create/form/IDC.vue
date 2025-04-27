@@ -247,7 +247,7 @@
           <!-- <a-form-item v-if="!isOpenSourceVersion" :label="$t('compute.bastionHost.bastion_host')">
             <bastion-host :decorator="decorators.bastion_host" :form="form" />
           </a-form-item> -->
-          <bastion-host v-if="!isOpenSourceVersion" :decorator="decorators.bastion_host" :form="form" />
+          <bastion-host v-if="!isOpenSourceVersion && hasBastionService" :decorator="decorators.bastion_host" :form="form" />
         </a-collapse-panel>
       </a-collapse>
       <bottom-bar
