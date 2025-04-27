@@ -12,6 +12,12 @@ import { POLICY_RES_NAME_KEY_MAP } from '@/constants/policy'
 import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip, validateRescueMode } from '../utils'
 
 const getSingleActions = function () {
+  let hasBastionService = false
+  const { services } = this.$store.getters.userInfo
+  const bastionService = services.find(val => val.type === 'bastionhost')
+  if (bastionService && bastionService.status === true) {
+    hasBastionService = true
+  }
   return [
     {
       label: i18n.t('compute.text_341'),
@@ -1746,7 +1752,7 @@ const getSingleActions = function () {
                   return validateRescueMode(obj)
                 },
                 hidden: () => {
-                  if (!this.$appConfig.isPrivate || this.$store.getters.isSysCE || this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host')) {
+                  if (!this.$appConfig.isPrivate || this.$store.getters.isSysCE || this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host') || !hasBastionService) {
                     return true
                   }
                   return false
@@ -1777,7 +1783,7 @@ const getSingleActions = function () {
                   return ret
                 },
                 hidden: () => {
-                  if (!this.$appConfig.isPrivate || this.$store.getters.isSysCE || this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host')) {
+                  if (!this.$appConfig.isPrivate || this.$store.getters.isSysCE || this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host') || !hasBastionService) {
                     return true
                   }
                   return false
