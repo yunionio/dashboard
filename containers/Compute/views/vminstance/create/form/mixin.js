@@ -32,6 +32,7 @@ import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
 import { deleteInvalid } from '@/utils/utils'
+import { hasSetupKey, isLicense2 } from '@/utils/auth'
 import Tag from '../components/Tag'
 import SystemDisk from '../components/SystemDisk'
 import Servertemplate from '../components/Servertemplate'
@@ -273,6 +274,15 @@ export default {
       const { services } = this.$store.getters.userInfo
       const meterService = services.find(val => val.type === 'meter')
       if (meterService && meterService.status === true) {
+        return true
+      }
+      return false
+    },
+    hasBastionService () {
+      if (isLicense2() && !hasSetupKey(['bastionhost'])) return false
+      const { services } = this.$store.getters.userInfo
+      const bastionService = services.find(val => val.type === 'bastionhost')
+      if (bastionService && bastionService.status === true) {
         return true
       }
       return false
