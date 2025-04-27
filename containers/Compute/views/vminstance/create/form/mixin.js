@@ -272,6 +272,14 @@ export default {
       }
       return false
     },
+    hasBastionService () {
+      const { services } = this.$store.getters.userInfo
+      const bastionService = services.find(val => val.type === 'bastionhost')
+      if (bastionService && bastionService.status === true) {
+        return true
+      }
+      return false
+    },
     cloudregionZoneParams () {
       const params = {}
       if (this.type === 'public') { // 公有云
