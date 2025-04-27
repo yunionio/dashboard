@@ -52,7 +52,9 @@ export default {
   watch: {
     optionsC (val, oldV) {
       if (val.length) {
-        this.emit(val[0].key)
+        if (!_.isEqual(val, oldV)) {
+          this.emit(val[0].key)
+        }
       } else {
         this.emit(undefined)
       }
