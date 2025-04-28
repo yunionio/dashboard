@@ -173,7 +173,7 @@ export default {
         await this.$nextTick()
         this.$refs.domain.loadDefaultSelectedOpts()
       } else {
-        if (this.isDomainMode) { // 域视图
+        if (this.isDomainMode || this.isAdminMode) { // 域视图 和 没开三级权限的系统视图
           const data = [{
             key: this.userInfo.projectDomainId,
             label: this.userInfo.projectDomain,
