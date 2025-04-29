@@ -4,15 +4,16 @@
       v-if="type === 'select'"
       :value="valueType === 'Object' ? value.id : valueText"
       :placeholder="getUsePlaceholder('select')"
+      :disabled="disabled"
       v-bind="{...filterOptions}"
       @change="selectChange">
       <a-select-option v-for="(item,index) of options" :key="index" :value="item.id">
         {{item.name}}<span v-if="item.dropdownShowText" class="text-color-secondary oc-selected-display-none">{{ item.dropdownShowText }}</span>
       </a-select-option>
     </a-select>
-    <a-input-number class="w-100" v-else-if="inputType === 'number'" :value="valueType === 'Object' ? value.name : valueText" :placeholder="getUsePlaceholder('input')" @change="inputNumberChange" />
-    <a-input v-else :value="valueType === 'Object' ? value.name : valueText" :placeholder="getUsePlaceholder('input')" @change="inputChange" />
-    <a-button type="link" @click="handleSwitch" style="padding-right:0"><icon type="select-switch" size="24" /></a-button>
+    <a-input-number :disabled="disabled" class="w-100" v-else-if="inputType === 'number'" :value="valueType === 'Object' ? value.name : valueText" :placeholder="getUsePlaceholder('input')" @change="inputNumberChange" />
+    <a-input v-else :disabled="disabled" :value="valueType === 'Object' ? value.name : valueText" :placeholder="getUsePlaceholder('input')" @change="inputChange" />
+    <a-button type="link" @click="handleSwitch" style="padding-right:0" :disabled="disabled"><icon type="select-switch" size="24" /></a-button>
   </div>
 </template>
 
@@ -49,6 +50,10 @@ export default {
       type: Boolean,
     },
     name: String,
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     let initType = 'input'
