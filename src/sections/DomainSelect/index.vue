@@ -5,6 +5,7 @@
     resource="domains"
     :params="domainParams"
     :select-props="{ placeholder: $t('rules.domain') }"
+    :disabled="disabled"
     @change="handleChange" />
 </template>
 
@@ -19,6 +20,10 @@ export default {
     params: {
       type: Object,
       default: () => ({}),
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
