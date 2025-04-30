@@ -184,7 +184,14 @@ export default {
         if (this.config.distinctField) {
           try {
             const values = await this.fetchDistinctField(item)
-            this.$set(item, 'items', values)
+            const items = values.map(v => {
+              const label = (v.label.includes('@:dictionary') && v.t) ? this.$t(v.t) : v.label
+              return {
+                key: v.key,
+                label: label,
+              }
+            })
+            this.$set(item, 'items', items)
           } catch (error) {
             throw error
           }
