@@ -45,14 +45,19 @@ export function mapperStatusToItems (items, statusModule) {
   const status = i18n.t(`status.${statusModule}`) || {}
   return items.map(item => {
     let label = item.label
+    let t = ''
     if (status) {
       if (!R.is(String, status)) {
         label = status[item.key] || item.label
+        if (label.includes('@:dictionary')) {
+          t = `status.${statusModule}.${item.key}`
+        }
       }
     }
     return {
       key: item.key,
       label,
+      t,
     }
   })
 }
