@@ -594,6 +594,28 @@ export default {
         }
         return item
       })
+      defaultColumns.forEach(item => {
+        if (item.type === 'checkbox') return
+        if (!item.originSlots) {
+          item.originSlots = item.slots || {}
+        }
+        const slots = {
+          ...item.originSlots,
+          default: (params, h) => {
+            if (params.row.isDataShow) {
+              if (item.originSlots?.default) {
+                return item.originSlots.default(params, h)
+              }
+              if (item.formatter) {
+                return item.formatter(params)
+              }
+              return params.cellValue || params.row[item.field]
+            }
+            return ''
+          },
+        }
+        item.slots = slots
+      })
       return defaultColumns
     },
     handlePageChange ({ type, currentPage, pageSize }) {

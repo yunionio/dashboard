@@ -491,28 +491,30 @@ class CreateList {
     }
   }
 
-  pageRender (allData) {
-    this.data = {}
-    const data = {}
+  async pageRender (allData) {
+    this.data = allData
     const keys = Object.keys(allData)
     if (this.pagerType === 'loadMore' || keys.every(key => /^\d+$/.test(key))) {
       keys.sort((a, b) => {
         return Number(b) - Number(a)
       })
     }
+    const that = this.templateContext
     for (let i = 0; i < keys.length; i += 20) {
       if (i === 0) {
-        keys.slice(i, i + 20).map(key => {
-          data[key] = allData[key]
-          this.data = { ...data }
+        keys.slice(i, i + 20).forEach(key => {
+          if (this.data[key]?.data) {
+            that.$set(this.data[key].data, 'isDataShow', true)
+          }
         })
       } else {
         setTimeout(() => {
-          keys.slice(i, i + 20).map(key => {
-            data[key] = allData[key]
-            this.data = { ...data }
+          keys.slice(i, i + 20).forEach(key => {
+            if (this.data[key]?.data) {
+              that.$set(this.data[key].data, 'isDataShow', true)
+            }
           })
-        }, 0)
+        }, i / 20)
       }
     }
   }
