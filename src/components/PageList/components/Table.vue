@@ -607,7 +607,7 @@ export default {
                 return item.originSlots.default(params, h)
               }
               if (item.formatter) {
-                return item.formatter(params)
+                return item.formatter({ ...params, cellValue: params.row[item.field] })
               }
               return params.cellValue || params.row[item.field]
             }
