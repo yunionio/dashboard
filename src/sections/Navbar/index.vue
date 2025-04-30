@@ -143,8 +143,8 @@
     <cloud-shell v-if="isAdminMode && enableCloudShell && showMenuMap.cloudshell" class="navbar-item-icon primary-color-hover" />
     <slot name="behindNavbar" />
     <!-- 更多 -->
-    <slot name="morePopover" v-if="showMenuMap.more">
-      <more-popover class="navbar-item-icon primary-color-hover" />
+    <slot name="morePopover" v-if="showMenuMap.more && (showMenuMap.feature_select || showMenuMap.docs || showMenuMap.about)">
+      <more-popover :showMenuMap="showMenuMap" class="navbar-item-icon primary-color-hover" />
     </slot>
     <!-- 用户 -->
     <slot name="userPopover" />
@@ -419,7 +419,7 @@ export default {
     },
     showMenuMap () {
       const ret = {}
-      const list = ['alert', 'notification', 'workflow', 'monitor_dashboard', 'cloudshell', 'more']
+      const list = ['alert', 'notification', 'workflow', 'monitor_dashboard', 'cloudshell', 'more', 'feature_select', 'docs', 'about']
       list.map(item => {
         ret[item] = !this.$isScopedPolicyMenuHidden(`navbar_hidden_items.${item}`)
       })
