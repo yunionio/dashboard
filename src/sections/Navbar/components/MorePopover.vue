@@ -7,9 +7,9 @@
         </div>
       </a-tooltip>
       <a-menu slot="overlay" @click="handleDropdownClick">
-        <a-menu-item key="/guide" v-if="isAdminMode && !isCE()">{{$t('navbar.button.feature_select')}}</a-menu-item>
-        <a-menu-item :key="docsUrl">{{$t('navbar.button.docs')}}</a-menu-item>
-        <a-menu-item key="/licenses">
+        <a-menu-item key="/guide" v-if="isAdminMode && !isCE() && showMenuMap.feature_select && showMenuMap.more">{{$t('navbar.button.feature_select')}}</a-menu-item>
+        <a-menu-item :key="docsUrl" v-if="showMenuMap.docs && showMenuMap.more">{{$t('navbar.button.docs')}}</a-menu-item>
+        <a-menu-item key="/licenses" v-if="showMenuMap.about && showMenuMap.more">
           <span>{{isCE() || $store.getters.isSysCE ? $t('scope.text_145') : $t('navbar.button.about')}}</span>
           <a-icon v-if="!isOEM && isAdminMode && updateAvailable" type="cloud-upload" class="success-color ml-1" />
         </a-menu-item>
@@ -26,6 +26,12 @@ import { isCE, getDocsUrl } from '@/utils/utils'
 
 export default {
   name: 'HelpPopover',
+  props: {
+    showMenuMap: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data () {
     return {
       updateAvailable: false,
