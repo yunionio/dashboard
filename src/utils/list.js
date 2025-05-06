@@ -91,7 +91,7 @@ class WaitStatusJob {
         })
       }
       const data = response.data || {}
-      this.data.data = data
+      this.data.data = { ...data, isDataShow: true }
       const isSteadyStatus = this.data.isSteadyStatus(this.status)
       if (!isSteadyStatus) {
         this.start()
@@ -738,7 +738,7 @@ class CreateList {
    */
   update (id, data) {
     const item = this.data[id]
-    item.data = data
+    item.data = { ...data, isDataShow: true }
   }
 
   /**
