@@ -1,6 +1,6 @@
 <template>
   <div ref="chart" class="uplot-chart-wrapper">
-    <div class="uplot-chart-tooltip" v-if="tooltipShow" v-html="toolTipHtml" :style="tooltipStyle" />
+    <div id="uplot-chart-tooltip" class="uplot-chart-tooltip" v-if="tooltipShow" v-html="toolTipHtml" :style="tooltipStyle" />
   </div>
 </template>
 
@@ -86,9 +86,11 @@ export default {
             if (time) {
               html += `<div>${that.$moment(time * 1000).format('YYYY-MM-DD HH:mm')}</div>`
             }
+            const textList = []
             data.forEach(d => {
               const valueUnit = that.options?.tooltip?.valueFormatter ? that.options.tooltip.valueFormatter(d.value, d.unit) : `${(d.value || 0).toFixed(2)}${d.unit || ''}`
-              html += `<div style="margin-bottom:5px">${d.label.length > 50 ? d.label.substring(0, 50) + '...' : d.label}: ${valueUnit}</div>`
+              html += `<div style="margin-bottom:5px;font-size:14px;line-height:18px">${d.label.length > 50 ? d.label.substring(0, 50) + '...' : d.label}: ${valueUnit}</div>`
+              textList.push(`${d.label.length > 50 ? d.label.substring(0, 50) + '...' : d.label}: ${valueUnit}`)
             })
             html += '</div>'
             that.toolTipHtml = html
@@ -97,14 +99,47 @@ export default {
               that.tooltipShow = false
             } else {
               that.tooltipShow = true
+              that.updateChartTooltipStyle(self, x, y, textList)
             }
-            that.tooltipStyle.left = `${x + 80}px`
-            that.tooltipStyle.top = `${y + 40}px`
-            that.tooltipStyle.boxShadow = '1px 1px 10px rgba(0, 0, 0, 0.2)'
             return [x, y]
           },
         },
       }, data, this.$refs.chart)
+    },
+    updateChartTooltipStyle (cursor, x, y, textList) {
+      let width = 100
+      textList.forEach(text => {
+        width = Math.max(width, this.pxWidth(text, '12px') + 20)
+      })
+      this.tooltipStyle.boxShadow = '1px 1px 10px rgba(0, 0, 0, 0.2)'
+      if (x + 90 + width > cursor.width - 110) {
+        this.tooltipStyle.left = `${x - width - 50}px`
+      } else {
+        this.tooltipStyle.left = `${x + 90}px`
+      }
+      const dom = document.getElementById('uplot-chart-tooltip')
+      if (dom) {
+        const rect = dom.getBoundingClientRect()
+        const chartRect = this.$refs.chart.getBoundingClientRect()
+        if (y + chartRect.y + rect.height > document.body.clientHeight) {
+          if (document.body.clientHeight - rect.height < 0) {
+            this.tooltipStyle.top = `${0 - chartRect.y}px`
+          } else {
+            this.tooltipStyle.top = `${0 - (rect.height - (chartRect.height - y) - (document.body.clientHeight - chartRect.bottom)) + y}px`
+          }
+        } else {
+          this.tooltipStyle.top = `${y + 20}px`
+        }
+      } else {
+        this.tooltipStyle.top = `${y + 20}px`
+      }
+    },
+    pxWidth (text, font) {
+      const canvas = document.createElement('canvas')
+      const context = canvas.getContext('2d')
+      font && (context.font = font)
+      const metrics = context.measureText(text)
+      return metrics.width
     },
     updateChartData (data) {
       if (this.chart) {
