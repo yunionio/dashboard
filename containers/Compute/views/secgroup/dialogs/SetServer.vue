@@ -107,7 +107,7 @@ export default {
       try {
         const params = {
           scope: this.scope,
-          filter: 'hypervisor.notin(container, baremetal)',
+          filter: 'hypervisor.notin(container,baremetal)',
           limit: 0,
           secgroup: `${this.selectedResource.id}`,
         }
