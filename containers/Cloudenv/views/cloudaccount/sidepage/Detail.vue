@@ -12,6 +12,7 @@
 <script>
 import XLSX from 'xlsx'
 import { getBrandTableColumn, getEnabledTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
+import { getUserTagColumn, getExtTagColumn } from '@/utils/common/detailColumn'
 import { findPlatform } from '@/utils/common/hypervisor'
 import WindowsMixin from '@/mixins/windows'
 import { hasMeterService } from '@/utils/auth'
@@ -72,6 +73,8 @@ export default {
         },
       ],
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'cloudaccount', columns: () => this.columns, tipName: this.$t('cloudenv.text_12') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'cloudaccount', columns: () => this.columns, tipName: this.$t('cloudenv.text_12') }),
         getResourceMatchProjectTableColumn({ isEdit: true, editCallback: this.editCallback }),
         getBlockResourceTableColumn(),
         getPublicScopeTableColumn({ vm: this, resource: 'cloudaccounts' }),
