@@ -6,6 +6,7 @@ import {
   getNameDescriptionTableColumn,
   getProjectDomainTableColumn,
   getTimeTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 import {
@@ -37,6 +38,12 @@ export default {
       getStatusTableColumn({ vm: this, statusModule: 'cloudaccount' }),
       getEnabledTableColumn(),
       getStatusTableColumn({ statusModule: 'cloudaccountHealthStatus', title: i18n.t('cloudenv.text_93'), field: 'health_status', minWidth: 90 }),
+      getTagTableColumn({
+        onManager: this.onManager,
+        resource: 'cloudaccounts',
+        columns: () => this.columns,
+        tipName: this.$t('cloudenv.text_12'),
+      }),
       getBalanceTableColumn(),
       getBrandTableColumn(),
       getCopyWithContentTableColumn({ field: 'account', title: i18n.t('cloudenv.text_94') }),
