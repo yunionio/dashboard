@@ -882,9 +882,9 @@ export default {
           after: {
             cpu: this.form.fd.vcpu,
             memory: this.form.fd.vmem,
-            disk: +item.disk + (+diskSize - beforeDiskSize) * 1024,
-            dataDisks: params.disks,
-            sysDisks: beforeSysDisks,
+            disk: this.selectedItems.length === 1 ? (+item.disk + (+diskSize - beforeDiskSize) * 1024) : null,
+            dataDisks: this.selectedItems.length === 1 ? params.disks : null,
+            sysDisks: this.selectedItems.length === 1 ? beforeSysDisks : null,
             sku: values.sku.name,
           },
         }
