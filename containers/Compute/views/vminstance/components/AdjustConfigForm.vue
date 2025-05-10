@@ -839,7 +839,9 @@ export default {
         params.sku = values.sku.name
       }
       const ids = this.dataList.map(item => item.id)
-      params.disks = this.genDiskData(values)
+      if (ids.length === 1) {
+        params.disks = this.genDiskData(values)
+      }
       const datadisks = this.form.fc.getFieldValue('dataDiskSizes')
       let diskSize = 0
       if (datadisks) {
