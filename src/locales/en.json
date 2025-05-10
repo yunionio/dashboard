@@ -6018,5 +6018,6 @@
   "common.platform_overview": "Platform Overview",
   "common.resource_alert": "Resource Alert",
   "common.global_search": "Global search",
-  "common.month": "Month"
+  "common.month": "Month",
+  "common.c": "c"
 }
