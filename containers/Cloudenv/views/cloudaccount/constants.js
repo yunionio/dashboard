@@ -39,6 +39,7 @@ const oraclecloudLogo = require('@/assets/images/providers/oraclecloud.svg')
 const sangforLogo = require('@/assets/images/providers/sangfor.svg')
 const zettakitLogo = require('@/assets/images/providers/zettakit.svg')
 const uisLogo = require('@/assets/images/providers/uis.svg')
+const cloudflareLogo = require('@/assets/images/providers/cloudflare.svg')
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope, store.getters.isSysCE)
@@ -150,6 +151,16 @@ export const CLOUDACCOUNT_TYPES = {
         position: 'relative',
         right: '1px',
         width: '28px',
+      },
+    },
+    cloudflare: {
+      name: providerMap.cloudflare.label,
+      logo: cloudflareLogo,
+      component: 'CloudflareCreate',
+      provider: providerMap.cloudflare.key,
+      hiddenName: true,
+      logoStyle: {
+        width: '100px',
       },
     },
   },
@@ -352,6 +363,7 @@ export function getCloudaccountDocs (scope) {
     volcengine: i18n.t('cloudenv.create_volcengine', [docs_path]),
     oraclecloud: i18n.t('cloudenv.create_oraclecloud', [docs_path]),
     sangfor: i18n.t('cloudenv.create_sangfor', [docs_path]),
+    cloudflare: i18n.t('cloudenv.create_cloudflare', [docs_path]),
   }
   // if (isCE()) {
   //   Object.keys(docs).forEach(v => {
@@ -862,6 +874,19 @@ export const keySecretFields = {
       s: i18n.t('cloudenv.text_147'),
     },
   },
+  cloudflare: {
+    k: 'access_key_id',
+    s: 'access_key_secret',
+    text: i18n.t('license.provider.cloudflare'),
+    placeholder: {
+      k: i18n.t('cloudenv.text_151'),
+      s: i18n.t('common.tips.input', ['API Key']),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_94'),
+      s: 'API Key',
+    },
+  },
 }
 
 export function getBillBucketUrlDocs (scope) {
@@ -909,6 +934,7 @@ export const notSupportSelectRegion = [
   providerMap.uis.key,
   providerMap.proxmox.key,
   providerMap.oraclecloud.key,
+  providerMap.cloudflare.key,
 ]
 
 export const BILL_TYPES = [

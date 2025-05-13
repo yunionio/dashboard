@@ -107,6 +107,15 @@ const LicenseItems = [
     meta: meta('resource_managent', 'public', true),
   },
   {
+    key: 'cloudflare',
+    meta: meta('resource_managent', 'public', true),
+    hiddenName: true,
+    logoStyle: {
+      width: '100px',
+      height: '24px',
+    },
+  },
+  {
     key: 'vmware',
     meta: meta('resource_managent', 'private', true),
   },

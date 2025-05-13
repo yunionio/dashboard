@@ -5415,6 +5415,7 @@
   "license.provider.pod": "Pod",
   "license.provider.zettakit": "ゼータ雲",
   "license.provider.uis": "UIS",
+  "license.provider.cloudflare": "Cloudflare",
   "license.feature.baremetal": "@:scope.text_104",
   "license.feature.lb": "@:common_248",
   "license.feature.pod": "Pod",

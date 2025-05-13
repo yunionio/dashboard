@@ -18,6 +18,7 @@
       :data="detailData"
       :getParams="getParams"
       :on-manager="onManager"
+      :dns-zone-data="params.options.dnsZoneData"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
       @refresh="refresh"
@@ -27,12 +28,12 @@
 </template>
 
 <script>
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import DnsRecordsetDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import DnsRecordsetDetail from './Detail'
 
 export default {
   name: 'DnsRecordSetSidePage',
