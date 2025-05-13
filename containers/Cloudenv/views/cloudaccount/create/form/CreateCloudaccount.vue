@@ -32,6 +32,7 @@ import OracleCloud from './components/OracleCloud'
 import Sangfor from './components/Sangfor'
 import ZettaKit from './components/ZettaKit'
 import UIS from './components/UIS'
+import Cloudflare from './components/Cloudflare'
 
 export default {
   name: 'CreateCloudaccount',
@@ -73,6 +74,7 @@ export default {
     SangforCreate: Sangfor,
     ZettaKitCreate: ZettaKit,
     UISCreate: UIS,
+    CloudflareCreate: Cloudflare,
   },
   props: {
     currentItem: {

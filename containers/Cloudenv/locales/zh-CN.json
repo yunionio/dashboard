@@ -853,6 +853,7 @@
   "cloudenv.create_zettakit": "{0}#新建泽塔云云账号",
   "cloudenv.zettakit": "泽塔云",
   "cloudenv.create_uis": "{0}#新建UIS云账号",
+  "cloudenv.create_cloudflare": "{0}#新建Cloudflare云账号",
   "cloudenv.uis": "UIS",
   "cloudenv.view_record": "查看记录",
   "cloudenv.old_sth": "原{0}",

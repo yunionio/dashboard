@@ -1144,5 +1144,8 @@
   "network.is_associated": "バインドするかどうか",
   "network.associated": "バインド済み",
   "network.un_associated": "バインドされていません",
-  "network.static_public": "静的ネットワーク"
+  "network.static_public": "静的ネットワーク",
+  "network.proxy_status": "代理状態",
+  "network.proxy_exist": "代理済み",
+  "network.just_dns": "DNSのみ"
 }

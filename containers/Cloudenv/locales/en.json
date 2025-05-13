@@ -852,6 +852,7 @@
   "cloudenv.create_zettakit": "{0}#create-zettakit-account",
   "cloudenv.zettakit": "ZettaKit",
   "cloudenv.create_uis": "{0}#create-uis-account",
+  "cloudenv.create_cloudflare": "{0}#create-cloudflare-account",
   "cloudenv.uis": "UIS",
   "cloudenv.view_record": "View records",
   "cloudenv.old_sth": "Origin {0}",
