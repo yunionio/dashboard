@@ -33,6 +33,9 @@
           </span>
           <a-input v-decorator="decorators.dns_value" :placeholder="$t('network.text_175')" />
         </a-form-item>
+        <a-form-item v-if="showProxied" :label="$t('network.proxy_status')">
+          <a-switch v-decorator="decorators.proxied" :checkedChildren="$t('network.proxy_exist')" :unCheckedChildren="$t('network.just_dns')" />
+        </a-form-item>
         <a-form-item>
           <span slot="label">
             {{ $t('common_665') }}
@@ -69,7 +72,7 @@
           </span>
           <a-input-number v-decorator="decorators.mx_priority" :min="1" :max="50" />
         </a-form-item>
-        <a-form-item v-if="isPublic" :label="$t('common_696')" class="mb-0">
+        <a-form-item v-if="isPublic && !isCloudflare" :label="$t('common_696')" class="mb-0">
           <a-row
             :gutter="4"
             class="record-list mb-3">
@@ -137,6 +140,7 @@ export default {
     const dnsProviders = getDnsProviders(providers, this.params.detailData)
     const ttls = getTtls(this.params.detailData)
     const initPolicyType = this.params.data ? this.params.data[0]?.policy_type || 'Simple' : 'Simple'
+    const initProxied = this.params.data ? this.params.data[0]?.proxied || false : false
 
     const checkDnsValue = (rule, value, callback) => {
       if (this.form.fd.dns_type === 'A') {
@@ -279,6 +283,13 @@ export default {
             initialValue: 300,
           },
         ],
+        proxied: [
+          'proxied',
+          {
+            initialValue: initProxied,
+            valuePropName: 'checked',
+          },
+        ],
         provider: [
           'provider',
           {
@@ -384,6 +395,12 @@ export default {
     policyValueOpts () {
       return this.getPublicValues(this.params.detailData.provider, this.form.fd.policy_type)
     },
+    isCloudflare () {
+      return this.params.detailData.provider === 'Cloudflare'
+    },
+    showProxied () {
+      return this.isCloudflare && ['A', 'AAAA', 'CNAME'].includes(this.form.fd.dns_type)
+    },
   },
   created () {
     this.recordsetManager = new this.$Manager('dnsrecords')
@@ -437,7 +454,7 @@ export default {
       })
     },
     generateData (values) {
-      const { name, dns_type, dns_value, ttl, policy_type, policy_value, policy_txtvalue, mx_priority } = values
+      const { name, dns_type, dns_value, ttl, policy_type, policy_value, policy_txtvalue, mx_priority, proxied } = values
       const { id } = this.params.detailData
       const data = {
         name,
@@ -451,9 +468,12 @@ export default {
       if (this.isMX) {
         data.mx_priority = mx_priority
       }
-      if (this.isPublic) {
+      if (this.isPublic && !this.isCloudflare) {
         data.policy_type = policy_type
         data.policy_value = policy_type === 'Weighted' ? policy_txtvalue : policy_value
+      }
+      if (this.isCloudflare && this.showProxied) {
+        data.proxied = proxied
       }
       return data
     },
