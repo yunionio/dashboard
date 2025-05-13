@@ -1151,5 +1151,8 @@
   "network.is_associated": "是否绑定",
   "network.associated": "已绑定",
   "network.un_associated": "未绑定",
-  "network.static_public": "静态公网"
+  "network.static_public": "静态公网",
+  "network.proxy_status": "代理状态",
+  "network.proxy_exist": "已代理",
+  "network.just_dns": "仅DNS"
 }

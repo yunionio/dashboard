@@ -243,6 +243,9 @@ export default {
       if (this.cloudEnv === 'onpremise') {
         return zoneTypes.filter(item => item.value === 'PrivateZone')
       }
+      if (this.isCloudflare) {
+        return zoneTypes.filter(item => item.value === 'PublicZone')
+      }
       return zoneTypes
     },
     accountParams () {
@@ -259,6 +262,9 @@ export default {
         cloudaccount_id: this.form?.fd?.account,
       }
     },
+    isCloudflare () {
+      return this.form.fd.brand === 'Cloudflare'
+    },
   },
   watch: {
     cloudEnv: function (val) {
@@ -272,6 +278,15 @@ export default {
         this.initBrands()
       }
     },
+    zoneTypes (val, oldval) {
+      if (oldval.length === 2 && val.length === 1) {
+        this.form.fc.setFieldsValue({
+          zoneType: val[0].value,
+        })
+        this.form.fd.zoneType = val[0].value
+        this.currentZoneType = val[0].value
+      }
+    },
   },
   mounted () {
     if (this.cloudEnv === 'public') {
@@ -281,7 +296,7 @@ export default {
   methods: {
     initBrands () {
       const ret = []
-      const brands = this.capability.brands.filter(key => ['Aliyun', 'Aws', 'Qcloud'].includes(key))
+      const brands = this.capability.dns_brands.filter(key => ['Aliyun', 'Aws', 'Qcloud', 'Cloudflare'].includes(key))
       brands.map(key => {
         const target = HYPERVISORS_MAP[key.toLowerCase()]
         ret.push({ key: target.provider, label: target.label })

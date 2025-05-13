@@ -10,14 +10,14 @@
 
 <script>
 import {
+  getEnabledTableColumn,
+} from '@/utils/common/tableColumn'
+import {
   getDnsTypeTableColumns,
   getDnsValueTableColumns,
   getTtlTableColumns,
   getTrafficPoliciesTableColumns,
 } from '../utils/columns'
-import {
-  getEnabledTableColumn,
-} from '@/utils/common/tableColumn'
 export default {
   name: 'DnsRecordSetDetail',
   props: {
@@ -29,18 +29,40 @@ export default {
       type: Function,
       required: true,
     },
+    dnsZoneData: {
+      type: Object,
+      required: true,
+    },
   },
   data () {
     return {
-      baseInfo: [
+      extraInfo: [],
+    }
+  },
+  computed: {
+    isCloudflare () {
+      return this.dnsZoneData?.provider === 'Cloudflare'
+    },
+    baseInfo () {
+      const baseInfo = [
         getDnsTypeTableColumns(),
         getDnsValueTableColumns(),
         getTtlTableColumns(),
         getTrafficPoliciesTableColumns(),
         getEnabledTableColumn(),
-      ],
-      extraInfo: [],
-    }
+      ]
+      if (this.isCloudflare) {
+        baseInfo.push({
+          field: 'proxied',
+          title: this.$t('network.proxy_status'),
+          formatter: ({ row }) => {
+            return row.proxied ? this.$t('network.proxy_exist') : this.$t('network.just_dns')
+          },
+        })
+        return baseInfo.filter(item => item.field !== 'traffic_policies')
+      }
+      return baseInfo
+    },
   },
 }
 </script>

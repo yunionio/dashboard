@@ -1142,5 +1142,8 @@
   "network.is_associated": "Is associated",
   "network.associated": "Associated",
   "network.un_associated": "Unallocated",
-  "network.static_public": "Static public network"
+  "network.static_public": "Static public network",
+  "network.proxy_status": "Proxy status",
+  "network.proxy_exist": "Proxy exist",
+  "network.just_dns": "Just DNS"
 }

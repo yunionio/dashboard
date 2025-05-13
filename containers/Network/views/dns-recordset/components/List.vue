@@ -3,7 +3,7 @@
     :list="list"
     show-tag-columns
     show-tag-filter
-    :columns="columns"
+    :columns="changedColumns"
     :single-actions="singleActions"
     :group-actions="groupActions"
     :export-data-options="exportDataOptions" />
@@ -138,6 +138,17 @@ export default {
       ],
     }
   },
+  computed: {
+    changedColumns () {
+      return this.data.provider === 'Cloudflare' ? [...this.columns.filter(column => column.field !== 'traffic_policies'), {
+        field: 'proxied',
+        title: this.$t('network.proxy_status'),
+        formatter: ({ row }) => {
+          return row.proxied ? this.$t('network.proxy_exist') : this.$t('network.just_dns')
+        },
+      }] : this.columns
+    },
+  },
   created () {
     this.initSidePageTab('dns-recordset-detail')
     this.list.fetchData()
@@ -147,6 +158,7 @@ export default {
       this.sidePageTriggerHandle(this, 'DnsRecordSetSidePage', {
         id: row.id,
         resource: 'dnsrecords',
+        dnsZoneData: this.data,
       }, {
         list: this.list,
       })
