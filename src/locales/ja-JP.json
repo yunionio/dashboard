@@ -919,6 +919,8 @@
     },
     "dnszone": {
       "available": "利用できる",
+      "pending": "待確認",
+      "initializing": "初期化",
       "creating": "作成",
       "create_failed": "作成に失敗しました",
       "uncaching": "クラウド リソースを削除しています",

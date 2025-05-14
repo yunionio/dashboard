@@ -397,6 +397,7 @@ export default {
   },
   dnszone: {
     success: ['available'],
+    info: ['pending'],
   },
   alertrecord: {
     info: ['expired'],
