@@ -919,6 +919,8 @@
     },
     "dnszone": {
       "available": "可用",
+      "pending": "待验证",
+      "initializing": "初始化",
       "creating": "创建中",
       "create_failed": "创建失败",
       "uncaching": "云上资源删除中",
