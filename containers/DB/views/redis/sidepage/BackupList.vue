@@ -99,7 +99,7 @@ export default {
             default: ({ row }) => {
               if (row.start_time && row.end_time) {
                 return [
-                  <div>{this.$moment(row.start_timet).format()}</div>,
+                  <div>{this.$moment(row.start_time).format()}</div>,
                   <div>{this.$moment(row.end_time).format()}</div>,
                 ]
               }
