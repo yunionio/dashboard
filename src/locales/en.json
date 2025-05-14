@@ -910,6 +910,8 @@
     },
     "dnszone": {
       "available": "available",
+      "pending": "Pending",
+      "initializing": "Initializing",
       "creating": "Creating",
       "create_failed": "Create failed",
       "uncaching": "Resources on the cloud are being deleted",

@@ -279,13 +279,11 @@ export default {
       }
     },
     zoneTypes (val, oldval) {
-      if (oldval.length === 2 && val.length === 1) {
-        this.form.fc.setFieldsValue({
-          zoneType: val[0].value,
-        })
-        this.form.fd.zoneType = val[0].value
-        this.currentZoneType = val[0].value
-      }
+      this.form.fc.setFieldsValue({
+        zoneType: val[0].value,
+      })
+      this.form.fd.zoneType = val[0].value
+      this.currentZoneType = val[0].value
     },
   },
   mounted () {
