@@ -23,6 +23,8 @@
           :isStorageShow="isStorageShow"
           :isIopsShow="isIopsShow"
           :isThroughputShow="isThroughputShow"
+          :defaultIops="item.iops"
+          :defaultThroughput="item.throughput"
           :iopsLimit="iopsLimit[item.key]"
           :isAutoResetShow="isAutoResetShow"
           @snapshotChange="val => snapshotChange(item, val, i)"
