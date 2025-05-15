@@ -3,6 +3,7 @@ import { diskResizeConfig, diskCreateSnapshotConfig } from '@Compute/views/disk/
 import i18n from '@/locales'
 import { BRAND_MAP, PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
 import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
+import { hasSetupKey } from '@/utils/auth'
 const supportShpolcyBrand = ['OneCloud', 'Qcloud', 'Aliyun']
 
 export default {
@@ -479,6 +480,42 @@ export default {
                 return ret
               },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_syncstatus'),
+            },
+            {
+              label: i18n.t('compute.change_billing_type'),
+              permission: 'disk_perform_change_billing_type',
+              action: () => {
+                this.createDialog('DiskChangeBillingTypeDialog', {
+                  steadyStatus: ['running', 'ready'],
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              meta: () => {
+                const ret = {
+                  validate: false,
+                  tooltip: null,
+                }
+                if (obj.brand !== BRAND_MAP.Aliyun.key) {
+                  ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[obj.provider].label])
+                  return ret
+                }
+                if (obj.status !== 'ready') {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.text_1048')
+                  return ret
+                }
+                if (!obj.guest_count) {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.text_453')
+                  return ret
+                }
+                ret.validate = true
+                return ret
+              },
+              hidden: () => !(hasSetupKey(['aliyun'])) || this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_change_billing_type'),
             },
             {
               label: i18n.t('compute.perform_delete'),

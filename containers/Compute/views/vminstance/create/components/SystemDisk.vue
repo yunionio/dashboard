@@ -1,6 +1,7 @@
 <template>
   <div class="system-disk">
     <disk
+      ref="disk"
       diskKey="system"
       :max="max"
       :min="min"
@@ -20,6 +21,8 @@
       :isThroughputShow="isThroughputShow"
       :iopsLimit="iopsLimit"
       :isAutoResetShow="isAutoResetShow"
+      :defaultIops="defaultIops"
+      :defaultThroughput="defaultThroughput"
       @showStorageChange="showStorageChange"
       @diskTypeChange="setDiskMedium"
       @storageHostChange="(val) => $emit('storageHostChange', val)" />
@@ -89,6 +92,12 @@ export default {
       default: false,
     },
     defaultSize: {
+      type: Number,
+    },
+    defaultIops: {
+      type: Number,
+    },
+    defaultThroughput: {
       type: Number,
     },
     defaultType: {

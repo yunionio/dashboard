@@ -414,7 +414,8 @@
       "syncing": "同步中",
       "sync_status": "同步中",
       "sched_fail": "调度失败",
-      "ActiveSAS": "ActiveSAS"
+      "ActiveSAS": "ActiveSAS",
+      "change_billing_type": "修改计费模式"
     },
     "secgroupCache": {
       "ready": "正常",
