@@ -53,8 +53,8 @@
               </a-tooltip>
             </a-form-item>
           </a-col>
-          <a-col :span="5">
-            <div v-if="isShowStorageSelect" class="d-flex">
+          <a-col v-if="isShowStorageSelect" :span="5">
+            <div class="d-flex">
               <disk-storage-select
                 v-if="showStorage"
                 style="min-width: 480px; max-width: 500px;"
@@ -62,6 +62,31 @@
                 :form="form"
                 :storageParams="storageParams" />
               <a-button class="mt-1" type="link" @click="showStorage = !showStorage">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
+            </div>
+          </a-col>
+          <a-col v-if="isShowIops" :span="5">
+            <div class="d-flex">
+              <a-tooltip :title="iopsTooltip" placement="top">
+                <a-input-number
+                  v-if="showIops"
+                  v-decorator="decorators.iops"
+                  placeholder="IOPS"
+                  :min="iopsLimit.min"
+                  :max="iopsLimit.max"
+                  :precision="0" />
+              </a-tooltip>
+              <a-button class="mt-1" type="link" @click="() => showIops = !showIops">{{ showIops ? $t('compute.text_135') : $t('compute.set_iops') }}</a-button>
+            </div>
+          </a-col>
+          <a-col v-if="isShowThroughput" :span="5">
+            <div class="d-flex">
+              <a-input-number
+                v-if="showThroughput"
+                v-decorator="decorators.throughput"
+                :placeholder="$t('compute.throughput')"
+                :min="0"
+                :precision="0" />
+              <a-button class="mt-1" type="link" @click="() => showThroughput = !showThroughput">{{ showThroughput ? $t('compute.text_135') : $t('compute.set_throughput') }}</a-button>
             </div>
           </a-col>
         </a-row>
@@ -166,9 +191,14 @@ export default {
                 this.form.fc.resetFields(['backend'])
               }
             }
+            if (values.hasOwnProperty('size')) {
+              this.form.fd.size = values.size
+            }
           },
         }),
-        fd: {},
+        fd: {
+          size: 10,
+        },
         fi: {
           createType: 'idc',
         },
@@ -265,6 +295,24 @@ export default {
             }],
           },
         ],
+        iops: [
+          'iops',
+          {
+            rules: [{
+              required: true,
+              message: i18n.t('compute.iops_input_tip'),
+            }],
+          },
+        ],
+        throughput: [
+          'throughput',
+          {
+            rules: [{
+              required: true,
+              message: i18n.t('compute.throughput_input_tip'),
+            }],
+          },
+        ],
         hypervisor: [
           'hypervisor',
           {
@@ -297,6 +345,8 @@ export default {
       zoneList: {},
       instance_capabilities: [],
       showStorage: false,
+      showIops: false,
+      showThroughput: false,
       hypervisors: [],
       capbilityData: {},
       disabledHypervisorMap: {
@@ -342,6 +392,9 @@ export default {
         return this.currentCloudregion.provider === HYPERVISORS_MAP.uis.provider
       }
       return false
+    },
+    isAws () {
+      return this.currentCloudregion?.provider === HYPERVISORS_MAP.aws.provider
     },
     isKVM () {
       return true
@@ -462,6 +515,18 @@ export default {
     isShowStorageSelect () {
       return this.isIDC || this.isZettaKit || this.isUIS
     },
+    isShowIops () {
+      return this.isAws && (this.storageItem?.value?.startsWith('gp3') || this.storageItem?.value?.startsWith('io1'))
+    },
+    isShowThroughput () {
+      return this.isAws && this.storageItem?.value?.startsWith('gp3')
+    },
+    iopsTooltip () {
+      if (this.iopsLimit.min && this.iopsLimit.max) {
+        return `${this.iopsLimit.min} ~ ${this.iopsLimit.max}`
+      }
+      return ''
+    },
     isLocalDisk () {
       if (this.storageItem && this.storageItem.value && this.storageItem.value.toLowerCase().startsWith('local_')) {
         return true
@@ -489,10 +554,32 @@ export default {
       return params
     },
     dataStorageTypes () {
-      return this.capbilityData.data_storage_types
+      return this.capbilityData.data_storage_types2
     },
     dataStorageProviderTypes () {
-      return this.dataStorageTypes[this.currentCloudregion.provider]
+      return this.dataStorageTypes[(this.currentCloudregion?.provider || '').toLowerCase()]
+    },
+    iopsLimit () {
+      let ret = { min: 0 }
+      if (this.isAws) {
+        // gp3 iops 不能超过磁盘500倍
+        if ((this.storageItem?.value || '').startsWith('gp3')) {
+          ret = { min: 3000, max: 16000 }
+          const { size } = this.form.fd
+          if (size) {
+            ret.max = size * 500 < ret.max ? size * 500 : ret.max
+          }
+        }
+        // io1 iops 不能超过磁盘50倍
+        if ((this.storageItem?.value || '').startsWith('io1')) {
+          ret = { min: 100, max: 64000 }
+          const { size } = this.form.fd
+          if (size) {
+            ret.max = size * 50 < ret.max ? size * 50 : ret.max
+          }
+        }
+      }
+      return ret
     },
   },
   watch: {
@@ -533,7 +620,7 @@ export default {
             const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
             this.capbilityData = data
             this.instance_capabilities = data.instance_capabilities
-            const hypervisors = Object.keys(this.dataStorageProviderTypes || {})
+            const hypervisors = Object.keys(this.dataStorageTypes || {})
             let data_storage_types = []
             this.hypervisors = hypervisors
             if (hypervisors && hypervisors.length > 0) {
@@ -544,7 +631,7 @@ export default {
                   hypervisor: firstHypervisor,
                 })
               })
-              data_storage_types = Object.keys(this.dataStorageProviderTypes[firstHypervisor])
+              data_storage_types = this.dataStorageTypes[firstHypervisor]
             }
             this.getStorageOpts(data_storage_types, provider)
           } catch (error) {
@@ -690,7 +777,7 @@ export default {
       return 10
     },
     changeHandle (v) {
-      const data_storage_types = Object.keys(this.dataStorageProviderTypes[v])
+      const data_storage_types = this.dataStorageTypes[v]
       const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
       this.getStorageOpts(data_storage_types, provider)
     },

@@ -414,7 +414,8 @@
       "syncing": "同期",
       "sync_status": "同期",
       "sched_fail": "スケジュールに失敗しました",
-      "ActiveSAS": "アクティブSAS"
+      "ActiveSAS": "アクティブSAS",
+      "change_billing_type": "計費モードの変更"
     },
     "secgroupCache": {
       "ready": "正常",
