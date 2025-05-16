@@ -83,12 +83,15 @@
     <!-- throughput 创建时可设置，修改时禁用 -->
     <template v-if="has('throughput') && !disabled && isThroughputShow">
       <a-form-item>
-        <a-input-number
-          v-if="showThroughput"
-          v-decorator="decorator.throughput"
-          :placeholder="$t('compute.throughput')"
-          :min="0"
-          :precision="0" />
+        <a-tooltip title="125 ~ 1000MiB/s" placement="top">
+          <a-input-number
+            v-if="showThroughput"
+            v-decorator="decorator.throughput"
+            :placeholder="$t('compute.throughput')"
+            :min="125"
+            :max="1000"
+            :precision="0" />
+        </a-tooltip>
       </a-form-item>
       <a-button class="mt-1" type="link" @click="() => changeThroughputShow(!showThroughput)">{{ showThroughput ? $t('compute.text_135') : $t('compute.set_throughput') }}</a-button>
     </template>
