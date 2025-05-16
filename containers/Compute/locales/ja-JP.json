@@ -1897,5 +1897,6 @@
   "compute.delete_bastion_host": "バスティオンホストからも削除",
   "compute.sku_unfind_tip": "元のパッケージ {0} が見つかりません。パッケージを慎重に選択するか、元のパッケージを保持してください",
   "compute.host_probe_isolated_devices": "透過デバイスの検出",
-  "compute.throughput_input_tip": "スループットを入力してください"
+  "compute.throughput_input_tip": "スループットを入力してください",
+  "compute.sys_disk_disable_action": "システムディスクはこの操作をサポートしていません"
 }

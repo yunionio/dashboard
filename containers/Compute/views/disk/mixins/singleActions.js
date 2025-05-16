@@ -512,6 +512,11 @@ export default {
                   ret.tooltip = i18n.t('compute.text_453')
                   return ret
                 }
+                if (obj.disk_type === 'sys') {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.sys_disk_disable_action')
+                  return ret
+                }
                 ret.validate = true
                 return ret
               },
