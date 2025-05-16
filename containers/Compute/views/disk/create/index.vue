@@ -72,12 +72,15 @@
           </a-col>
           <a-col v-if="isShowThroughput" :span="5">
             <div class="d-flex">
-              <a-input-number
-                v-if="showThroughput"
-                v-decorator="decorators.throughput"
-                :placeholder="$t('compute.throughput')"
-                :min="0"
-                :precision="0" />
+              <a-tooltip title="125 ~ 1000MiB/s" placement="top">
+                <a-input-number
+                  v-if="showThroughput"
+                  v-decorator="decorators.throughput"
+                  :placeholder="$t('compute.throughput')"
+                  :min="125"
+                  :max="1000"
+                  :precision="0" />
+              </a-tooltip>
               <a-button class="mt-1" type="link" @click="() => showThroughput = !showThroughput">{{ showThroughput ? $t('compute.text_135') : $t('compute.set_throughput') }}</a-button>
             </div>
           </a-col>
