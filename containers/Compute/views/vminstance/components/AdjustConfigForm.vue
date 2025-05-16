@@ -62,9 +62,13 @@
               :form="form"
               :defaultSize="sysdisk.value"
               :defaultType="form.fd.defaultType"
+              :defaultIops="sysdisk.iops"
+              :defaultThroughput="sysdisk.throughput"
               :capability-data="form.fi.capability"
               :disabled="true"
-              :ignoreStorageStatus="true" />
+              :ignoreStorageStatus="true"
+              is-iops-show
+              is-throughput-show />
           </a-form-item>
           <a-form-item :label="$t('compute.text_50')" v-show="selectedItems.length === 1">
             <data-disk
@@ -79,7 +83,9 @@
               :sku="form.fd.sku"
               :image="form.fi.imageMsg"
               :domain="domain"
-              :storageParams="dataDiskStorageParams" />
+              :storageParams="dataDiskStorageParams"
+              is-iops-show
+              is-throughput-show />
           </a-form-item>
           <a-form-item :label="$t('compute.text_1041')" v-if="isOpenWorkflow">
             <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1105')" />
@@ -261,6 +267,24 @@ export default {
               }],
             },
           ],
+          iops: [
+            'systemDiskIops',
+            {
+              rules: [{
+                required: true,
+                message: this.$t('compute.iops_input_tip'),
+              }],
+            },
+          ],
+          throughput: [
+            'systemDiskThroughput',
+            {
+              rules: [{
+                required: true,
+                message: this.$t('compute.throuthput_input_tip'),
+              }],
+            },
+          ],
         },
         dataDisk: {
           type: i => [
@@ -342,6 +366,24 @@ export default {
           ],
           preallocation: i => [
             `dataDiskPreallocation[${i}]`,
+          ],
+          iops: i => [
+            `dataDiskIops[${i}]`,
+            {
+              rules: [{
+                required: true,
+                message: this.$t('compute.iops_input_tip'),
+              }],
+            },
+          ],
+          throughput: i => [
+            `dataDiskThroughputs[${i}]`,
+            {
+              rules: [{
+                required: true,
+                message: this.$t('compute.throughput_input_tip'),
+              }],
+            },
           ],
         },
         reason: [
@@ -819,9 +861,9 @@ export default {
         if (this.data[i].disks_info) {
           this.data[i].disks_info.forEach((item) => {
             if (item.disk_type !== 'sys') { // 数据盘
-              datadisks.push({ value: item.size / 1024, type: item.storage_type, medium_type: item.medium_type })
+              datadisks.push({ value: item.size / 1024, type: item.storage_type, medium_type: item.medium_type, iops: item.iops, throughput: item.throughput })
             } else { // 系统盘
-              sysdisks.push({ value: item.size / 1024, type: item.storage_type, medium_type: item.medium_type })
+              sysdisks.push({ value: item.size / 1024, type: item.storage_type, medium_type: item.medium_type, iops: item.iops, throughput: item.throughput })
             }
           })
         }
@@ -1074,6 +1116,12 @@ export default {
         }
         if (values.dataDiskPreallocation && values.dataDiskPreallocation[key]) {
           diskObj.preallocation = values.dataDiskPreallocation[key]
+        }
+        if (values.dataDiskIops && values.dataDiskIops[key]) {
+          diskObj.iops = values.dataDiskIops[key]
+        }
+        if (values.dataDiskThroughputs && values.dataDiskThroughputs[key]) {
+          diskObj.throughput = values.dataDiskThroughputs[key]
         }
         // 磁盘区分介质
         if (values.dataDiskTypes && values.dataDiskTypes[key]) {

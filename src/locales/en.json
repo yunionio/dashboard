@@ -407,7 +407,8 @@
       "syncing": "Syncing",
       "sync_status": "Syncing",
       "sched_fail": "Scheduling failed",
-      "ActiveSAS": "ActiveSAS"
+      "ActiveSAS": "ActiveSAS",
+      "change_billing_type": "Change billing mode"
     },
     "secgroupCache": {
       "ready": "Normal",
