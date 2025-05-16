@@ -72,7 +72,13 @@
             :precision="0" />
         </a-tooltip>
       </a-form-item>
-      <a-button class="mt-1" type="link" @click="() => showIops = !showIops">{{ showIops ? $t('compute.text_135') : $t('compute.set_iops') }}</a-button>
+      <a-button class="mt-1" type="link" @click="() => changeIopsShow(!showIops)">{{ showIops ? $t('compute.text_135') : $t('compute.set_iops') }}</a-button>
+    </template>
+    <template v-if="has('iops') && disabled && isIopsShow && defaultIops">
+      <span class="ml-2">{{ $t('compute.iops') }}: {{ defaultIops }}</span>
+    </template>
+    <template v-if="has('throughput') && disabled && isThroughputShow && defaultThroughput">
+      <span class="ml-2">{{ $t('compute.throughput') }}: {{ defaultThroughput }}</span>
     </template>
     <!-- throughput 创建时可设置，修改时禁用 -->
     <template v-if="has('throughput') && !disabled && isThroughputShow">
@@ -84,7 +90,7 @@
           :min="0"
           :precision="0" />
       </a-form-item>
-      <a-button class="mt-1" type="link" @click="() => showThroughput = !showThroughput">{{ showThroughput ? $t('compute.text_135') : $t('compute.set_throughput') }}</a-button>
+      <a-button class="mt-1" type="link" @click="() => changeThroughputShow(!showThroughput)">{{ showThroughput ? $t('compute.text_135') : $t('compute.set_throughput') }}</a-button>
     </template>
     <!-- 磁盘容量预警信息提示 -->
     <a-tooltip v-if="storageStatusMap.tooltip">
@@ -202,6 +208,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    defaultIops: {
+      type: Number,
+      default: 0,
+    },
+    defaultThroughput: {
+      type: Number,
+      default: 0,
+    },
   },
   data () {
     return {
@@ -309,6 +323,12 @@ export default {
           }
         })
       }
+    },
+    changeIopsShow (show) {
+      this.showIops = show
+    },
+    changeThroughputShow (show) {
+      this.showThroughput = show
     },
   },
 }
