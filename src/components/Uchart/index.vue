@@ -74,6 +74,7 @@ export default {
                   label: that.options.series[idx].label,
                   value: d[index],
                   unit: that.options.series[idx].unit,
+                  color: that.options.series[idx].color,
                 })
               } else {
                 time = d[index]
@@ -89,7 +90,7 @@ export default {
             const textList = []
             data.forEach(d => {
               const valueUnit = that.options?.tooltip?.valueFormatter ? that.options.tooltip.valueFormatter(d.value, d.unit) : `${(d.value || 0).toFixed(2)}${d.unit || ''}`
-              html += `<div style="margin-bottom:5px;font-size:14px;line-height:18px">${d.label.length > 50 ? d.label.substring(0, 50) + '...' : d.label}: ${valueUnit}</div>`
+              html += `<div style="margin-bottom:5px;font-size:14px;line-height:18px"><span style="width:8px;height:8px;background-color:${d.color};border-radius:50%;display:inline-block;margin-right:5px;"></span>${d.label.length > 50 ? d.label.substring(0, 50) + '...' : d.label}: ${valueUnit}</div>`
               textList.push(`${d.label.length > 50 ? d.label.substring(0, 50) + '...' : d.label}: ${valueUnit}`)
             })
             html += '</div>'
