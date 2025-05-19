@@ -1,5 +1,6 @@
 import { PERMISSION } from '@/constants/permission'
 import i18n from '@/locales'
+import store from '@/store'
 
 const getRealPermis = (data) => {
   const { permission = '', label, permissionLabels = [] } = data
@@ -36,7 +37,7 @@ export const getPolicyOptions = () => {
   requireAll(req).forEach(({ default: item }) => {
     if (item && item.name) {
       policyOptionsMap[item.name] = [...commonOptions]
-      item.getSingleActions().forEach((obj, i) => {
+      item.getSingleActions({ $store: store }).forEach((obj, i) => {
         if (obj.action && obj.permission) {
           policyOptionsMap[item.name].push(...getRealPermis(obj))
         }
