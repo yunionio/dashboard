@@ -11,9 +11,10 @@ import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import { POLICY_RES_NAME_KEY_MAP } from '@/constants/policy'
 import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip, validateRescueMode } from '../utils'
 
-const getSingleActions = function () {
+const getSingleActions = function (ctx) {
   let hasBastionService = false
-  const { services } = this.$store.getters.userInfo
+  const that = ctx || this
+  const { services } = that.$store.getters.userInfo
   const bastionService = services.find(val => val.type === 'bastionhost')
   if (bastionService && bastionService.status === true) {
     hasBastionService = true
