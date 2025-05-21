@@ -85,11 +85,13 @@ export default {
   },
   data () {
     const filter = {}
-    if (this.$route.query.id) {
-      filter.id = [this.$route.query.id]
-    }
-    if (this.$route.query.status) {
-      filter.status = this.$route.query.status
+    if (!this.inBaseSidePage) {
+      if (this.$route.query.id) {
+        filter.id = [this.$route.query.id]
+      }
+      if (this.$route.query.status) {
+        filter.status = this.$route.query.status
+      }
     }
 
     const pci_model_types = this.$store.getters.capability?.pci_model_types || []
