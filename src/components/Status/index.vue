@@ -5,9 +5,12 @@
         <a-icon v-if="!statusClass" type="sync" spin />
         <span v-else class="status-dot" :class="statusClass" />
       </div>
-      <div class="status-text flex-fill text-truncate">
+      <div class="status-text text-truncate">
         {{ statusText }}
         <span v-if="showProcess && !changedStatus">({{curProcess}}%)</span>
+      </div>
+      <div class="flex-fill">
+        <copy v-if="!isBooleanValue" class="status-copy" :message="status" style="margin-top:3px;margin-left:5px" />
       </div>
     </div>
     <div v-if="changedStatus && showProcess" style="width:100px;margin-left:5px">
@@ -57,6 +60,9 @@ export default {
     },
   },
   computed: {
+    isBooleanValue () {
+      return R.is(Boolean, this.status)
+    },
     changedStatus () {
       if (this.statusModule === 'server' && this.status === 'block_stream') {
         return 'running'
@@ -140,6 +146,7 @@ export default {
 @import '../../styles/less/theme';
 
 .status-wrapper {
+  width: 100%;
   .status-icon {
     width: 20px;
     .status-success.status-dot {
@@ -174,6 +181,14 @@ export default {
     .oc-status-process {
       width: 10px;
       height: 10px;
+    }
+  }
+  .status-copy {
+    display: none;
+  }
+  &:hover {
+    .status-copy {
+      display: inline-block;
     }
   }
 }
