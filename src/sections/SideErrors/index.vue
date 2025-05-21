@@ -15,7 +15,7 @@
           <div>{{ item }}</div>
         </li>
       </ul>
-      <div class="mb-2">{{ $t('compute.text_1323') }}</div>
+      <div class="mb-2">{{ $t('compute.reason_detail') }}</div>
       <ul class="list list-wrapper">
         <li class="mb-3" v-for="(item, idx) of errors.errors" :key="idx">
           <div class="mb-1">{{ item.message }}</div>
