@@ -1,4 +1,5 @@
 
+import * as R from 'ramda'
 import i18n from '@/locales'
 
 export const exportDataOptions = {
@@ -26,8 +27,16 @@ export const exportDataOptions = {
           params.secgroup_name = val
           return ''
         }
-        if (item.startsWith('id.in(')) {
+        if (R.is(String, item) && item.startsWith('id.in(')) {
           return item.replace('id', 'secgroup_id')
+        }
+        if (R.is(Array, item) && item.some(k => R.is(String, k) && k.startsWith('id.in('))) {
+          item = item.map(k => {
+            if (R.is(String, k) && k.startsWith('id.in(')) {
+              return k.replace('id', 'secgroup_id')
+            }
+            return k
+          })
         }
         return item
       }).filter((item) => {
