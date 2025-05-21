@@ -31,11 +31,13 @@ export default {
   },
   data () {
     const filter = {}
-    if (this.$route.query.id) {
-      filter.id = [this.$route.query.id]
-    }
-    if (this.$route.query.hasOwnProperty('is_associated')) {
-      filter.is_associated = [this.$route.query.is_associated]
+    if (!this.inBaseSidePage) {
+      if (this.$route.query.id) {
+        filter.id = [this.$route.query.id]
+      }
+      if (this.$route.query.hasOwnProperty('is_associated')) {
+        filter.is_associated = [this.$route.query.is_associated]
+      }
     }
     return {
       list: this.$list.createList(this, {
