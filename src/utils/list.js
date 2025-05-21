@@ -119,6 +119,115 @@ class WaitStatusJob {
   }
 }
 
+class BatchWaitStatusJob {
+  constructor (status, list) {
+    console.log('BatchWaitStatusJob', status, list)
+    this.status = status
+    this.list = list
+    this.timer = null
+    if (
+      R.isNil(this.list.steadyStatus) ||
+      R.isEmpty(this.list.steadyStatus) ||
+      R.isNil(this.list.data) || R.isEmpty(this.list.data)
+    ) { return }
+    const checkList = []
+    const checkList2 = []
+    for (const key in this.list.data) {
+      const item = this.list.data[key]
+      checkList2.push(item)
+      const isSteadyStatus = item.isSteadyStatus(this.list.steadyStatus)
+      if (!isSteadyStatus) {
+        // item.waitStatus(this.steadyStatus)
+        checkList.push(item)
+      }
+    }
+    console.log('需要检查的列表', checkList, checkList2)
+    this.checkList = checkList
+    this.checkList2 = checkList2
+  }
+
+  /**
+   * @description 清除定时器
+   * @memberof WaitStatusJob
+   */
+  clearTimer () {
+    if (this.timer) {
+      clearTimeout(this.timer)
+      this.timer = null
+    }
+  }
+
+  /**
+   * @description 设置定时器进行状态检测
+   * @memberof WaitStatusJob
+   */
+  start () {
+    this.clearTimer()
+    // const status = this.data.data?.status
+    // let interval = this.data.list.refreshInterval
+    // if (this.data.list.refreshIntervalConfig && this.data.list.refreshIntervalConfig[this.data.list.resource] && this.data.list.refreshIntervalConfig[this.data.list.resource][status]) {
+    //   interval = this.data.list.refreshIntervalConfig[this.data.list.resource][status]
+    // }
+    this.timer = setTimeout(() => {
+      this.checkStatus()
+    }, 10 * 1000)
+  }
+
+  /**
+   * @description 获取新数据，进行状态检测
+   * @memberof WaitStatusJob
+   */
+  async checkStatus () {
+    if (!this.list.manager) return
+    const params = this.list.params
+    // if (!R.isEmpty(this.list.itemGetParams)) {
+    //   for (const key in this.list.itemGetParams) {
+    //     const val = this.list.itemGetParams[key]
+    //     if (this.list.itemGetParams.hasOwnProperty(key)) {
+    //       if (val) {
+    //         params[key] = val
+    //       } else {
+    //         delete params[key]
+    //       }
+    //     } else {
+    //       params[key] = this.data.data[key]
+    //     }
+    //   }
+    // }
+    delete params.offset
+    delete params.limit
+    try {
+      let response
+      if (this.list.batchItemGet) {
+        response = await this.list.batchItemGet(this.data.data, params)
+      } else {
+        response = await this.list.manager.list({
+          params: {
+            id: this.checkList2.map(item => item.id),
+          },
+        })
+      }
+      const data = response.data || {}
+      console.log('data', data)
+      this.data.data = { ...data, isDataShow: true }
+      const isSteadyStatus = this.data.isSteadyStatus(this.status)
+      if (!isSteadyStatus) {
+        this.start()
+      } else {
+        this.clearTimer()
+      }
+    } catch (error) {
+      if (_.get(error, 'response.status') === 404) {
+        this.data.list.refresh()
+        this.clearTimer()
+      } else {
+        this.data.setError(error)
+        this.clearTimer()
+      }
+    }
+  }
+}
+
 class DataWrap {
   constructor (list, data, idKey, index) {
     this.list = list
@@ -332,6 +441,26 @@ class CreateList {
 
   set selectedItems (items) {
     this._selectedItems = items
+  }
+
+  /**
+   * @description 批量轮询检测状态
+   * @param {*} steadyStatus
+   * @memberof DataWrap
+   */
+  batchWaitStatus (steadyStatus) {
+    this.batchWait = new BatchWaitStatusJob(steadyStatus, this)
+    this.batchWait.start()
+  }
+
+  /**
+   * @description 清除定时器，供List调用
+   * @memberof DataWrap
+   */
+  clearBatchWaitJob () {
+    if (this.batchWait) {
+      this.batchWait.clearTimer()
+    }
   }
 
   /**
@@ -816,12 +945,21 @@ class CreateList {
       R.isEmpty(this.steadyStatus) ||
       R.isNil(this.data) || R.isEmpty(this.data)
     ) { return }
+    const checkList = []
+    const checkList2 = []
     for (const key in this.data) {
       const item = this.data[key]
+      checkList2.push(item)
       const isSteadyStatus = item.isSteadyStatus(this.steadyStatus)
       if (!isSteadyStatus) {
-        item.waitStatus(this.steadyStatus)
+        // item.waitStatus(this.steadyStatus)
+        checkList.push(item)
       }
+    }
+    if (checkList.length > 0) {
+      this.batchWaitStatus(checkList, this.steadyStatus)
+    } else {
+      this.batchWaitStatus(checkList, this.steadyStatus)
     }
   }
 
