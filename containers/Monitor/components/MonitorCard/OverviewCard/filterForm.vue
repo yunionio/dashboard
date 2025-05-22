@@ -317,7 +317,7 @@ export default {
           field: 'external_id',
           title: this.$t('table.title.external_id'),
           formatter: ({ row }) => {
-            return row.tags?.external_id || ''
+            return row.tags?.external_id || row.cloud_tags?.external_id || ''
           },
           onlyExport: true,
         })
@@ -326,7 +326,7 @@ export default {
           title: 'ID',
           formatter: ({ row }) => {
             if (this.res === 'server') {
-              return row.tags?.vm_id || ''
+              return row.tags?.vm_id || row.cloud_tags?.vm_id || ''
             }
             if (this.res === 'rds') {
               return row.tags?.rds_id || ''
@@ -388,13 +388,18 @@ export default {
             field: 'ip',
             title: 'IP',
             formatter: ({ row }) => {
-              const { tags = {} } = row
+              const { tags = {}, cloud_tags = {} } = row
               const ret = []
               if (tags.eip && tags.eip_mode !== 'elastic_ip') {
                 ret.push(`${tags.eip}(${this.$t('common_291')})`)
               }
               if (tags.vm_ip) {
                 const iparr = tags.vm_ip.split(',')
+                iparr.map(ip => {
+                  ret.push(`${ip}(${this.$t('common.intranet')})`)
+                })
+              } else if (cloud_tags.vm_ip) {
+                const iparr = cloud_tags.vm_ip.split(',')
                 iparr.map(ip => {
                   ret.push(`${ip}(${this.$t('common.intranet')})`)
                 })
@@ -430,13 +435,18 @@ export default {
             field: 'all_ip',
             title: 'IP',
             formatter: ({ row }) => {
-              const { tags = {} } = row
+              const { tags = {}, cloud_tags = {} } = row
               const ret = []
               if (tags.eip) {
                 ret.push(`${tags.eip}(${tags.eip_mode === 'elastic_ip' ? this.$t('common_290') : this.$t('common_291')})`)
               }
               if (tags.vm_ip) {
                 const iparr = tags.vm_ip.split(',')
+                iparr.map(ip => {
+                  ret.push(`${ip}(${this.$t('common.intranet')})`)
+                })
+              } else if (cloud_tags.vm_ip) {
+                const iparr = cloud_tags.vm_ip.split(',')
                 iparr.map(ip => {
                   ret.push(`${ip}(${this.$t('common.intranet')})`)
                 })
@@ -502,6 +512,7 @@ export default {
             tr[row.id] = {}
             tr[row.id][namecolumn.field] = row.name
             tr[row.id].tags = row.tags
+            tr[row.id].cloud_tags = row.cloud_tags
           }
           tr[row.id][column] = row.value
         })
@@ -556,6 +567,7 @@ export default {
             value: lastPoint[0],
             timestamp: lastPoint[1],
             tags: item.tags,
+            cloud_tags: item.cloud_tags,
           }
         }
       })
