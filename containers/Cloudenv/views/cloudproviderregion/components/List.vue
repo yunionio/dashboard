@@ -49,12 +49,13 @@ export default {
           },
         },
         params: { scope: this.$store.getters.scope },
-        itemGet: (data, params) => {
-          const getParams = Object.assign({ }, params)
-          delete getParams.joint_filter
-          return this.$http.get(`/v2/cloudproviders/${data.cloudprovider_id}/cloudregions/${data.cloudregion_id}`, {
-            params: getParams,
-          })
+        batchItemGetParamsFormatter: (params) => {
+          if (params.id) {
+            const p = { ...params, joint_filter: `cloudregions.id(cloudregion_id).id.in(${params.id.join(',')})` }
+            delete p.id
+            return p
+          }
+          return params
         },
       }),
       groupActions: [
