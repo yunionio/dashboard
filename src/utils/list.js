@@ -241,6 +241,8 @@ class CreateList {
       noPreLoad = false,
       // 不加载详情
       noListDetails = false,
+      // 批量获取item的params formatter
+      batchItemGetParamsFormatter = null,
     },
   ) {
     // 列表唯一标识
@@ -318,6 +320,10 @@ class CreateList {
     this.noListDetails = noListDetails
     this.pinFilter = {}
     this.pinSavedFilters = {}
+    // 批量轮询
+    this.batchCheckStatusTimer = null
+    this.batchCheckStatusList = []
+    this.batchItemGetParamsFormatter = batchItemGetParamsFormatter
   }
 
   // 重写selectedItems getter和setter
@@ -332,6 +338,122 @@ class CreateList {
 
   set selectedItems (items) {
     this._selectedItems = items
+  }
+
+  /**
+   * @description 清除定时器
+   * @memberof CreateList
+   */
+  clearBatchCheckStatusTimer () {
+    if (this.batchCheckStatusTimer) {
+      this.batchCheckStatusList = []
+      clearTimeout(this.batchCheckStatusTimer)
+      this.batchCheckStatusTimer = null
+    }
+  }
+
+  /**
+   * @description 设置定时器进行状态检测
+   * @memberof CreateList
+   */
+  startBatchCheckStatusTimer () {
+    this.clearBatchCheckStatusTimer()
+    // 使用列表配置的interval 原配置是针对不同状态的，不适用
+    // const status = this.data.data?.status
+    // let interval = this.data.list.refreshInterval
+    // if (this.data.list.refreshIntervalConfig && this.data.list.refreshIntervalConfig[this.data.list.resource] && this.data.list.refreshIntervalConfig[this.data.list.resource][status]) {
+    //   interval = this.data.list.refreshIntervalConfig[this.data.list.resource][status]
+    // }
+    this.batchCheckStatusTimer = setTimeout(() => {
+      this.batchCheckStatus()
+    }, 10 * 1000)
+  }
+
+  /**
+   * @description 获取列表中不符合steadyStatus的数据列表
+   * @memberof CreateList
+   */
+  getAbnormalStatusList () {
+    const batchCheckStatusList = []
+    for (const key in this.data) {
+      const item = this.data[key]
+      const isSteadyStatus = item.isSteadyStatus(this.steadyStatus)
+      if (!isSteadyStatus) {
+        batchCheckStatusList.push(item.id)
+      }
+    }
+    return batchCheckStatusList
+  }
+
+  /**
+   * @description 批量轮询检测状态
+   * @param {*} steadyStatus
+   * @memberof CreateList
+   */
+  async batchCheckStatus () {
+    if (!this.manager) return
+    const params = this.params
+    if (!R.isEmpty(this.itemGetParams)) {
+      for (const key in this.itemGetParams) {
+        const val = this.itemGetParams[key]
+        if (this.itemGetParams.hasOwnProperty(key)) {
+          if (val) {
+            params[key] = val
+          } else {
+            delete params[key]
+          }
+        }
+      }
+    }
+    delete params.offset
+    delete params.limit
+    try {
+      const p = this.batchItemGetParamsFormatter ? this.batchItemGetParamsFormatter({
+        ...params,
+        id: this.batchCheckStatusList,
+      }) : {
+        ...params,
+        id: this.batchCheckStatusList,
+      }
+      const response = await this.manager.list({
+        params: p,
+      })
+      const data = response.data?.data || []
+      data.forEach(item => {
+        if (this.data[item[this.idKey]]) {
+          this.data[item[this.idKey]] = new DataWrap(
+            this,
+            { ...item, isDataShow: true },
+            this.idKey,
+            this.data[item[this.idKey]].index,
+          )
+        }
+      })
+      // 有数据被删除了，刷新列表重新开始轮询
+      if (data.length < this.batchCheckStatusList.length) {
+        this.clearBatchCheckStatusTimer()
+        this.batchCheckStatusList = []
+        this.refresh()
+        return
+      }
+      const batchCheckStatusList = this.getAbnormalStatusList().filter(id => id)
+      this.batchCheckStatusList = batchCheckStatusList
+      if (!batchCheckStatusList.length) {
+        this.clearBatchCheckStatusTimer()
+      } else {
+        this.startBatchCheckStatusTimer()
+      }
+    } catch (error) {
+      if (_.get(error, 'response.status') === 404) {
+        this.refresh()
+        this.clearBatchCheckStatusTimer()
+      } else {
+        this.batchCheckStatusList.forEach(id => {
+          this.setError(id, error)
+        })
+        this.clearBatchCheckStatusTimer()
+      }
+    }
   }
 
   /**
@@ -390,6 +512,7 @@ class CreateList {
    */
   reset (clearData) {
     this.clearWaitJob()
+    this.clearBatchCheckStatusTimer()
     // 复位分页信息
     this.total = 0
     this.offset = 0
@@ -454,6 +577,7 @@ class CreateList {
         },
       } = response
       this.clearWaitJob()
+      this.clearBatchCheckStatusTimer()
       let allData = {}
       if (response.data.marker_order) {
         allData = Object.assign({}, this.wrapData(data), this.data)
@@ -810,18 +934,17 @@ class CreateList {
    * @description 检查期望状态，是否需要轮询更新
    * @memberof CreateList
    */
-  checkSteadyStatus () {
+  checkSteadyStatus (ids = []) {
     if (
       R.isNil(this.steadyStatus) ||
       R.isEmpty(this.steadyStatus) ||
       R.isNil(this.data) || R.isEmpty(this.data)
     ) { return }
-    for (const key in this.data) {
-      const item = this.data[key]
-      const isSteadyStatus = item.isSteadyStatus(this.steadyStatus)
-      if (!isSteadyStatus) {
-        item.waitStatus(this.steadyStatus)
-      }
+    // 现在状态异常的数据 + 即将会更新状态的数据
+    const batchCheckStatusList = [...this.getAbnormalStatusList(), ...ids].filter(id => id)
+    this.batchCheckStatusList = batchCheckStatusList
+    if (batchCheckStatusList.length > 0) {
+      this.startBatchCheckStatusTimer()
     }
   }
 
@@ -1302,10 +1425,7 @@ class CreateList {
 
   batchPerformAction (action, data, steadyStatus, selectedIds = this.selected) {
     if (steadyStatus) {
-      for (let i = 0, len = selectedIds.length; i < len; i++) {
-        const idstr = selectedIds[i]
-        this.waitStatus(idstr, steadyStatus)
-      }
+      this.checkSteadyStatus(selectedIds)
     }
     return this.onManager('batchPerformAction', {
       id: selectedIds,
@@ -1336,7 +1456,7 @@ class CreateList {
       .then(response => {
         this.update(id, response.data)
         if (steadyStatus) {
-          this.waitStatus(id, steadyStatus)
+          this.checkSteadyStatus([id])
         }
         return response
       })
@@ -1385,10 +1505,7 @@ class CreateList {
 
   batchUpdate (selectedIds = this.selected, data, steadyStatus) {
     if (steadyStatus) {
-      for (let i = 0, len = selectedIds.length; i < len; i++) {
-        const idstr = selectedIds[i]
-        this.waitStatus(idstr, steadyStatus)
-      }
+      this.checkSteadyStatus(selectedIds)
     }
     return this.onManager('batchUpdate', {
       id: selectedIds,
@@ -1475,10 +1592,7 @@ class CreateList {
           }
         }
         if (steadyStatus) {
-          for (let i = 0, len = ids.length; i < len; i++) {
-            const id = ids[i]
-            this.waitStatus(id, steadyStatus)
-          }
+          this.checkSteadyStatus(ids)
         }
         return res
       })
