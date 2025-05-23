@@ -820,6 +820,7 @@
   "cloudenv.task_type.delete_bill": "請求書を削除する",
   "cloudenv.task_type.sync_resource": "リソース情報の同期",
   "cloudenv.task_type.predict": "ひようよそく",
+  "cloudenv.task_type.sync_product": "製品カテゴリの同期",
   "cloudenv.month": "月",
   "cloudenv.billtask_cannot_cancel": "現在の請求タスクはキャンセルできません",
   "cloudenv.title.project_type": "アトリビューションモード",
@@ -908,5 +909,6 @@
   "cloudenv.smal_provider_tips": "クラウドアカウントが非機密ログインをオンにすると、クラウド管理の認証情報がクラウド上に同期され、非機密SSO方式でジャンプログインできるようになります。",
   "cloudenv.check_mon_host": "正しいMon Hostフォーマットを入力してください",
   "cloudenv.mon_host_extra": "フォーマット：IP：ポート、例：192.168.1.1：80、複数のアドレスは英語のカンマで区切られる",
-  "cloudenv.enable_mfa": "MFAを有効にする"
+  "cloudenv.enable_mfa": "MFAを有効にする",
+  "cloudenv.run_all_bills": "履歴を含むすべての請求書"
 }
