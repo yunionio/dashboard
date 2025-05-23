@@ -1,6 +1,7 @@
 <template>
   <div class="d-flex">
     <a-select
+      class="w-100"
       v-if="type === 'select'"
       :value="valueType === 'Object' ? value.id : valueText"
       :placeholder="getUsePlaceholder('select')"

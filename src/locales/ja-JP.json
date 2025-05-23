@@ -1281,6 +1281,11 @@
       "on_init": "初期化",
       "complete": "完了",
       "failed": "失敗"
+    },
+    "billProduct": {
+      "available": "正常",
+      "failed": "逃げ直しに失敗する",
+      "running": "請求書からかけ直す"
     }
   },
   "skuCategoryOptions": {
