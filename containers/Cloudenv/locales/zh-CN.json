@@ -821,6 +821,7 @@
   "cloudenv.task_type.delete_bill": "删除账单",
   "cloudenv.task_type.sync_resource": "资源信息同步",
   "cloudenv.task_type.predict": "费用预测",
+  "cloudenv.task_type.sync_product": "产品类别同步",
   "cloudenv.month": "月份",
   "cloudenv.billtask_cannot_cancel": "当前账单任务无法取消",
   "cloudenv.title.project_type": "归属模式",
@@ -910,5 +911,6 @@
   "cloudenv.smal_provider_tips": "云账号开启免密登录后，会将云管的认证信息同步到云上，以便可通过免密SSO方式跳转登录。",
   "cloudenv.check_mon_host": "请输入正确的 Mon Host 格式",
   "cloudenv.mon_host_extra": "格式为：IP:Port，如：192.168.1.1:80, 多个地址用英文逗号分隔",
-  "cloudenv.enable_mfa": "启用MFA"
+  "cloudenv.enable_mfa": "启用MFA",
+  "cloudenv.run_all_bills": "含历史所有账单"
 }

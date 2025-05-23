@@ -1281,6 +1281,11 @@
       "on_init": "初始化",
       "complete": "已完成",
       "failed": "失败"
+    },
+    "billProduct": {
+      "available": "正常",
+      "failed": "重跑失败",
+      "running": "重跑账单中"
     }
   },
   "skuCategoryOptions": {

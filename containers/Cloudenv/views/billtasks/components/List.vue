@@ -62,8 +62,8 @@ export default {
           action: () => {
             this.createDialog('BilltasksCreateDialog', {
               onManager: this.onManager,
-              account_id: this.getParams.account_id,
-              accountData: this.accountData,
+              type: 'create_billtask',
+              data: [this.accountData],
               success: () => {
                 this.list.refresh()
               },

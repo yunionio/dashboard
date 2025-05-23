@@ -822,6 +822,7 @@
   "cloudenv.task_type.delete_bill": "Delete bills",
   "cloudenv.task_type.sync_resource": "Sync resource",
   "cloudenv.task_type.predict": "Bill prediction",
+  "cloudenv.task_type.sync_product": "Sync product",
   "cloudenv.month": "Month",
   "cloudenv.billtask_cannot_cancel": "The current billing task cannot be canceled",
   "cloudenv.title.project_type": "Assignment",
@@ -908,5 +909,6 @@
   "cloudenv.smal_provider_tips": "After enabling password free login for the cloud account, the authentication information of the cloud management will be synchronized to the cloud, so that login can be redirected through password free SSO.",
   "cloudenv.check_mon_host": "Please enter the correct Mon Host format",
   "cloudenv.mon_host_extra": "The format is IP: Port, such as 192.168.1.1:80, with multiple addresses separated by commas in English",
-  "cloudenv.enable_mfa": "Enable MFA"
+  "cloudenv.enable_mfa": "Enable MFA",
+  "cloudenv.run_all_bills": "Include all historical bills"
 }

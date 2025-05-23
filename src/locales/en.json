@@ -1266,6 +1266,11 @@
       "on_init": "On Init",
       "complete": "Complete",
       "failed": "Failed"
+    },
+    "billProduct": {
+      "available": "Available",
+      "failed": "Failed",
+      "running": "Running"
     }
   },
   "skuCategoryOptions": {
