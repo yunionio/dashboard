@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{ $t('common.create') }}</div>
+    <div slot="header">{{ params.type === 'create_billtask' ? $t('common.create') : $t('bill.rerun_bill') }}</div>
     <div slot="body">
       <a-form-model
         ref="form"
@@ -18,12 +18,13 @@
         <a-form-model-item v-if="isMonthShow" :label="$t('cloudenv.text_212')" v-bind="formItemLayout" prop="start_day">
           <span slot="extra" style="color:red;">{{ blockTip }}</span>
           <a-form-model-item style="display:inline-block" prop="start_day">
-            <a-month-picker v-model="form.start_day" :disabled-date="dateDisabledStart" @change="startChange" />
+            <a-month-picker v-model="form.start_day" :disabled-date="dateDisabledStart" @change="startChange" :disabled="ignore_time" />
           </a-form-model-item>
           <span class="ml-2 mr-2">~</span>
           <a-form-model-item style="display:inline-block" prop="end_day">
-            <a-month-picker v-model="form.end_day" :disabled-date="dateDisabledEnd" />
+            <a-month-picker v-model="form.end_day" :disabled-date="dateDisabledEnd" :disabled="ignore_time" />
           </a-form-model-item>
+          <a-checkbox class="ml-2" v-model="ignore_time">{{$t('cloudenv.run_all_bills')}}</a-checkbox>
         </a-form-model-item>
       </a-form-model>
     </div>
@@ -44,15 +45,15 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const TaskTypeList = ['pull_bill', 'prepaid_amortizing', 'project_sharing', 'recalculate', 'predict', 'delete_bill'].filter(key => {
+    const TaskTypeList = ['pull_bill', 'prepaid_amortizing', 'project_sharing', 'recalculate', 'predict', 'delete_bill', 'sync_product'].filter(key => {
       const { cost_conversion_available, enable_prediction } = this.$store.state.common.bill?.globalConfig || {}
       if (key === 'recalculate' && !cost_conversion_available) return false
       if (key === 'predict' && !enable_prediction) return false
       return true
     })
-    const { accountData = {} } = this.params
+    const { data = [] } = this.params
     const initDisabledActions = []
-    if (accountData.status === 'deleted') {
+    if (data.some(item => item.status === 'deleted')) {
       initDisabledActions.push('pull_bill', 'prepaid_amortizing', 'project_sharing', 'recalculate', 'predict')
     }
     let initTaskType = 'pull_bill'
@@ -74,7 +75,7 @@ export default {
         },
       },
       form: {
-        account_id: this.params.account_id,
+        account_id: data.map(item => item.id),
         task_type: initTaskType,
         start_day: this.$moment(),
         end_day: this.$moment(),
@@ -96,11 +97,12 @@ export default {
       },
       disabledActions: initDisabledActions,
       blockMonths: [],
+      ignore_time: false,
     }
   },
   computed: {
     isMonthShow () {
-      return !(this.form.task_type === 'delete_bill' && this.params.accountData?.status === 'deleted')
+      return !(this.form.task_type === 'delete_bill' && this.params.data.some(item => item.status === 'deleted'))
     },
     start () {
       return this.$moment(this.form.start_day).format('YYYY-MM')
@@ -201,17 +203,17 @@ export default {
         const validate = await this.validateForm()
         if (!validate) return
         const data = {
-          account_id: this.form.account_id,
+          account_id: this.params.data.map(item => item.id),
           task_type: this.form.task_type,
         }
-        if (this.isMonthShow) {
+        if (this.isMonthShow && !this.ignore_time) {
           data.start_day = parseInt(this.$moment(this.form.start_day).startOf('month').format('YYYYMMDD'))
           data.end_day = parseInt(this.$moment(this.form.end_day).endOf('month').format('YYYYMMDD'))
         }
         await this.$bM.create({
           data,
         })
-        this.params.success()
+        this.params.success && this.params.success()
         this.loading = false
         this.cancelDialog()
       } catch (error) {

@@ -609,4 +609,8 @@ export default {
     danger: ['fail'],
     success: ['success'],
   },
+  billProduct: {
+    success: ['available'],
+    danger: ['failed'],
+  },
 }
