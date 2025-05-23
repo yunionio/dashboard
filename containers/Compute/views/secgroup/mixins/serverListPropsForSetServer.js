@@ -15,12 +15,13 @@ import {
 
 export default {
   data () {
-    const tenant_id = _.get(this.params, 'data[0].tenant_id')
+    // const tenant_id = _.get(this.params, 'data[0].tenant_id')
     const brand = _.get(this.params, 'data[0].brand')
     const vpc_id = _.get(this.params, 'data[0].vpc_id')
     const getParams = {
-      filter: 'hypervisor.notin(baremetal,container)',
-      project_id: tenant_id,
+      filter: 'hypervisor.notin(container,baremetal)',
+      // project_id: tenant_id,
+      scope: this.$store.getters.scope,
     }
     if (brand === 'Aws') {
       getParams.vpc_id = vpc_id
