@@ -369,6 +369,17 @@ class CreateList {
     }, 10 * 1000)
   }
 
+  stopBatchCheckStatusTimer () {
+    if (this.batchCheckStatusTimer) {
+      clearTimeout(this.batchCheckStatusTimer)
+      this.batchCheckStatusTimer = null
+    }
+  }
+
+  restartBatchCheckStatusTimer () {
+    this.startBatchCheckStatusTimer()
+  }
+
   /**
    * @description 获取列表中不符合steadyStatus的数据列表
    * @memberof CreateList
@@ -392,6 +403,7 @@ class CreateList {
    */
   async batchCheckStatus () {
     if (!this.manager) return
+    this.batchCheckStatusList = this.getAbnormalStatusList().filter(id => id)
     const params = this.params
     if (!R.isEmpty(this.itemGetParams)) {
       for (const key in this.itemGetParams) {

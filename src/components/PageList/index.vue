@@ -465,6 +465,13 @@ export default {
   },
   beforeDestroy () {
     this.list.clearWaitJob()
+    this.list.clearBatchCheckStatusTimer()
+  },
+  activated () {
+    this.list.restartBatchCheckStatusTimer()
+  },
+  deactivated () {
+    this.list.stopBatchCheckStatusTimer()
   },
   async created () {
     if (this.beforeShowMenu) {
