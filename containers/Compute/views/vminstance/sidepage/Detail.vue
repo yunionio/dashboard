@@ -6,6 +6,7 @@
     :base-info="baseInfo"
     :name-rules="[{ required: true, message: $t('compute.text_210') }]"
     :columns="serverColumns"
+    showStatusProgress
     auto-hidden-columns-key="server_hidden_columns"
     status-module="server"
     resource="servers" />
