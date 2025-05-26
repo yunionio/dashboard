@@ -214,7 +214,7 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
           if (statusModule && row[statusKey]) {
             return [
               <div class='d-flex align-items-center text-truncate'>
-                <status status={row[statusKey]} statusModule={statusModule} process={row.progress} />
+                <status status={row[statusKey]} statusModule={statusModule} process={row.progress} showStatusProgress={vm.showStatusProgress} />
                 { row.status === 'live_migrating' ? cancel : null }
                 { row.rescue_mode === true ? rescue_mode : null }
               </div>,
@@ -390,6 +390,10 @@ export default {
     },
     columns: {
       type: Array,
+    },
+    showStatusProgress: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
