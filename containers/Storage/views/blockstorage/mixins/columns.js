@@ -35,13 +35,13 @@ export default {
         width: 180,
         slots: {
           default: ({ row }, h) => {
-            const capacity = sizestr(row.capacity, 'M', 1024)
-            const actual_capacity_used = sizestr(row.actual_capacity_used, 'M', 1024) || '-'
-            return [<div>
-              <div>{this.$t('storage.text_178', [actual_capacity_used])}</div>
-              <div>{this.$t('storage.text_180', [capacity])}</div>
-            </div>]
+            const title = `${this.$t('common_407')}: ${sizestr(row.actual_capacity_used, 'M', 1024)}\n${this.$t('common_234')}: ${sizestr(row.capacity, 'M', 1024)}`
+            return [<UsedPercent title={title} used={row.actual_capacity_used} total={row.capacity} usedFormatter={(val) => sizestr(val, 'M', 1024)} totalFormatter={(val) => sizestr(val, 'M', 1024)} />]
           },
+        },
+        formatter: ({ row }) => {
+          const title = `${this.$t('common_407')}: ${sizestr(row.actual_capacity_used, 'M', 1024)}\n${this.$t('common_234')}: ${sizestr(row.capacity, 'M', 1024)}`
+          return title
         },
       },
       {
@@ -50,13 +50,13 @@ export default {
         width: 180,
         slots: {
           default: ({ row }, h) => {
-            const virtual_capacity = sizestr(row.virtual_capacity, 'M', 1024)
-            const used_capacity = sizestr(row.used_capacity, 'M', 1024)
-            return [<div>
-              <div>{this.$t('storage.text_181', [used_capacity])}</div>
-              <div>{this.$t('storage.text_180', [virtual_capacity])}</div>
-            </div>]
+            const title = `${this.$t('common_233')}: ${sizestr(row.used_capacity, 'M', 1024)}\n${this.$t('common_234')}: ${sizestr(row.virtual_capacity, 'M', 1024)}`
+            return [<UsedPercent title={title} used={row.used_capacity} total={row.virtual_capacity} usedFormatter={(val) => sizestr(val, 'M', 1024)} totalFormatter={(val) => sizestr(val, 'M', 1024)} />]
           },
+        },
+        formatter: ({ row }) => {
+          const title = `${this.$t('common_233')}: ${sizestr(row.used_capacity, 'M', 1024)}\n${this.$t('common_234')}: ${sizestr(row.virtual_capacity, 'M', 1024)}`
+          return title
         },
       },
       {
