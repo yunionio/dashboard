@@ -247,7 +247,7 @@ export default {
           },
           hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_start'),
         },
-        // 关机
+        // 批量关机
         {
           label: this.$t('compute.text_273'),
           permission: 'server_perform_stop',

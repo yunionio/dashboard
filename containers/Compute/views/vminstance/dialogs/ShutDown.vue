@@ -108,6 +108,7 @@ export default {
       return this.params.data.every(item => {
         return [
           HYPERVISORS_MAP.kvm.hypervisor,
+          HYPERVISORS_MAP.pod.hypervisor,
           HYPERVISORS_MAP.esxi.hypervisor,
           HYPERVISORS_MAP.huawei.hypervisor,
           HYPERVISORS_MAP.aliyun.hypervisor,

@@ -134,7 +134,8 @@ export default {
                     tooltip: i18n.t('compute.disk_mount_mulitple_guest'),
                   }
                 }
-                if (obj.guests && obj.guests.length === 1 && obj.guests[0].index === 0) {
+                // if (obj.guests && obj.guests.length === 1 && obj.guests[0].index === 0 && obj.guests[0].hyppervisor === '') {
+                if (obj.disk_type === 'sys') {
                   // system disk
                   return {
                     validate: false,

@@ -188,11 +188,11 @@ export default {
             return ret
           },
         },
-        // 关机
+        // 批量关机
         {
           label: this.$t('compute.text_273'),
           action: () => {
-            this.createDialog('VmContainerShutDownDialog', {
+            this.createDialog('VmShutDownDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
               onManager: this.onManager,
