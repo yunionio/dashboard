@@ -4,6 +4,7 @@
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="$t('dictionary.image')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <a-checkbox v-model="force_checked">{{$t('compute.force_delete.extra')}}</a-checkbox>
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
@@ -22,6 +23,7 @@ export default {
   data () {
     return {
       loading: false,
+      force_checked: false,
     }
   },
   methods: {
@@ -34,7 +36,7 @@ export default {
           ids: this.params.data.map(item => item.cachedimage_id),
           data: {
             storagecache_id: this.params.resItem.storagecache_id,
-            is_force: true,
+            is_force: this.force_checked,
           },
         })
         this.cancelDialog()
