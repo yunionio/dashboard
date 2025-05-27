@@ -219,6 +219,25 @@ export const STORAGE_TYPES = {
       sysMin: 1,
       sysMax: 16384,
     },
+    cloud_bssd: {
+      label: i18n.t('compute.qcloud.cloud_bssd'),
+      key: 'cloud_bssd',
+      min: 20,
+      max: 32000,
+      sysMin: 50,
+      sysMax: 500,
+      resizeStep: 10,
+    },
+    cloud_tssd: {
+      label: i18n.t('compute.qcloud.cloud_tssd'),
+      key: 'cloud_tssd',
+      min: 20,
+      max: 32000,
+      sysMin: 50,
+      sysMax: 500,
+      resizeStep: 10,
+      sysUnusable: true, // 系统盘不可用
+    },
   },
   [HYPERVISORS_MAP.azure.key]: {
     standard_lrs: {
