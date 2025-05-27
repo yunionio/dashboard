@@ -56,6 +56,8 @@
   "compute.text_63": "通常のローカルディスク",
   "compute.text_64": "通常の EVS ディスク",
   "compute.text_65": "高パフォーマンス EVS ディスク",
+  "compute.qcloud.cloud_bssd": "一般型 SSD 云硬盘",
+  "compute.qcloud.cloud_tssd": "极速型 SSD 云硬盘",
   "compute.text_66": "SSD EVS ディスク",
   "compute.text_67": "標準ハードディスク",
   "compute.text_68": "標準 SSD",
