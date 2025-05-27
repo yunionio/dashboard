@@ -58,6 +58,8 @@
   "compute.text_63": "Normal local disk",
   "compute.text_64": "Common cloud hard drive",
   "compute.text_65": "High-performance cloud hard drive",
+  "compute.qcloud.cloud_bssd": "General SSD Cloud Disk",
+  "compute.qcloud.cloud_tssd": "Ultra-high IO Cloud Disk",
   "compute.text_66": "SSD Cloud Drive",
   "compute.text_67": "Standard HDD",
   "compute.text_68": "Standard SSD",
