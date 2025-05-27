@@ -58,6 +58,8 @@
   "compute.text_63": "普通本地盘",
   "compute.text_64": "普通云硬盘",
   "compute.text_65": "高性能云硬盘",
+  "compute.qcloud.cloud_bssd": "通用性 SSD 云硬盘",
+  "compute.qcloud.cloud_tssd": "极速型 SSD 云硬盘",
   "compute.text_66": "SSD 云硬盘",
   "compute.text_67": "标准 HDD",
   "compute.text_68": "标准 SSD",
