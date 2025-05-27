@@ -209,7 +209,6 @@ export const STORAGE_TYPES = {
       sysMin: 50,
       sysMax: 500,
       resizeStep: 10,
-      sysUnusable: true, // 系统盘不可用
     },
     gp3: {
       label: i18n.t('common.storage.gp3'),
