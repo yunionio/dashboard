@@ -72,7 +72,7 @@ const getSingleActions = function () {
           {
             label: i18n.t('compute.text_273'),
             action: () => {
-              this.createDialog('VmContainerShutDownDialog', {
+              this.createDialog('VmShutDownDialog', {
                 data: [obj],
                 columns: this.columns,
                 onManager: this.onManager,
