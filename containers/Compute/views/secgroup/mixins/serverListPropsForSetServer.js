@@ -14,14 +14,22 @@ import {
 
 export default {
   data () {
+    // const tenant_id = _.get(this.params, 'data[0].tenant_id')
+    const brand = _.get(this.params, 'data[0].brand')
+    const vpc_id = _.get(this.params, 'data[0].vpc_id')
+    const getParams = {
+      filter: 'hypervisor.notin(container,baremetal)',
+      // project_id: tenant_id,
+      scope: this.$store.getters.scope,
+    }
+    if (brand === 'Aws') {
+      getParams.vpc_id = vpc_id
+    }
     return {
       serverListProps: {
         list: this.$list.createList(this, {
           resource: 'servers',
-          getParams: {
-            filter: 'hypervisor.notin(baremetal,container)',
-            project_id: this.params.data[0].tenant_id,
-          },
+          getParams: getParams,
           filterOptions: {
             name: getNameFilter(),
             ips: getIpFilter(),
