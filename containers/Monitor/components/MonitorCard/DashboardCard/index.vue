@@ -23,7 +23,7 @@
             <!-- 名称 -->
             <span>{{ panel.panel_name || (chart.metric && chart.metric.label) }}</span>
           </a-col>
-          <a-col class="flex: 0 0 24px">
+          <a-col v-if="!useLocalPanels" class="flex: 0 0 24px">
             <a-dropdown style="float: right" :trigger="['click']" placement="bottomRight">
               <a class="ant-dropdown-link font-weight-bold h-100 d-block action-btn" @click="e => e.preventDefault()">
                 <icon type="more" style="font-size: 18px; margin-left: 9px;" />
@@ -36,7 +36,6 @@
               </a-menu>
             </a-dropdown>
           </a-col>
-          <a-col :span="20" />
         </a-row>
       </div>
       <div v-if="selectable">
@@ -145,6 +144,10 @@ export default {
       type: Number,
       default: 10,
     },
+    useLocalPanels: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -165,12 +168,29 @@ export default {
   },
   computed: {
     description () {
+      if (this.useLocalPanels) {
+        const { selectItem, unit, metric, label } = this.panel.constants
+        return {
+          display_name: `${label}${metric ? `(${metric})` : ''}`,
+          name: selectItem,
+          unit: unit,
+        }
+      }
       const { common_alert_metric_details = [] } = this.panel
       return common_alert_metric_details.length ? common_alert_metric_details[0].field_description || {} : {}
     },
     metric () {
       const detail = _.get(this.panel, 'common_alert_metric_details[0]')
       if (!detail) {
+        if (this.useLocalPanels) {
+          const { fromItem, seleteItem, unit, metric, label } = this.panel.constants
+          return {
+            label: `${label}${metric ? `(${metric})` : ''}`,
+            measurement: fromItem,
+            field: seleteItem,
+            format: unit,
+          }
+        }
         return { label: '', measurement: '', field: '', format: '0.00' }
       }
       const measurement = detail.measurement
@@ -217,36 +237,42 @@ export default {
       return { label: label, measurement: measurement, field: field, format: format }
     },
     chartQueryData () {
-      const conditions = _.get(this.panel, 'setting.conditions')
-      if (!conditions || conditions.length <= 0 || !conditions[0].query || !conditions[0].query.model) {
-        console.log('invaild chart query condition', this.panel)
-        return
-      }
-      const query = conditions[0].query
-      const model = { ...query.model }
-      if (model.group_by) {
-        model.group_by = model.group_by.filter(item => {
-          if ((item.type === 'time' && item.params && item.params[0] === '$interval') || (item.type === 'fill' && item.params && item.params[0] === 'none')) {
-            return false
-          }
-          return true
-        })
-      }
-      delete model.interval
-      const metric_query = [{ model }]
-      if (query.result_reducer) {
-        metric_query[0].result_reducer = query.result_reducer
-      }
-      if (this.reducedResultOrder) {
-        metric_query[0].result_reducer_order = this.reducedResultOrder
-      }
-      const params = {
-        from: query.from,
-        to: query.to,
-        metric_query,
-        slimit: this.pager.limit,
-        soffset: (this.pager.page - 1) * this.pager.limit,
-        ...this.extraParams,
+      let params = {}
+      if (this.useLocalPanels) {
+        params = this.panel.queryData
+        delete params.signature
+      } else {
+        const conditions = _.get(this.panel, 'setting.conditions')
+        if (!conditions || conditions.length <= 0 || !conditions[0].query || !conditions[0].query.model) {
+          console.log('invaild chart query condition', this.panel)
+          return
+        }
+        const query = conditions[0].query
+        const model = { ...query.model }
+        if (model.group_by) {
+          model.group_by = model.group_by.filter(item => {
+            if ((item.type === 'time' && item.params && item.params[0] === '$interval') || (item.type === 'fill' && item.params && item.params[0] === 'none')) {
+              return false
+            }
+            return true
+          })
+        }
+        delete model.interval
+        const metric_query = [{ model }]
+        if (query.result_reducer) {
+          metric_query[0].result_reducer = query.result_reducer
+        }
+        if (this.reducedResultOrder) {
+          metric_query[0].result_reducer_order = this.reducedResultOrder
+        }
+        params = {
+          from: query.from,
+          to: query.to,
+          metric_query,
+          slimit: this.pager.limit,
+          soffset: (this.pager.page - 1) * this.pager.limit,
+          ...this.extraParams,
+        }
       }
       if (this.timeGroup) {
         params.interval = this.timeGroup
