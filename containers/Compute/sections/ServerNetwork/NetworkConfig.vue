@@ -49,64 +49,68 @@
         </a-form-item>
       </div>
       <div :class="{ 'd-flex ml-1' : isBigScreen }">
-        <template v-if="item.ipShow">
-          <a-form-item class="mb-0" style="display:inline-block" :wrapperCol="{ span: 24 }">
-            <ip-select v-decorator="decorator.ips(item.key, item.network)" :value="item.ip" :network="item.network" @change="e => ipChange(e, i)" />
-          </a-form-item>
-          <a-button type="link" class="mt-1" @click="triggerShowIp(item)">{{$t('compute.text_135')}}</a-button>
-        </template>
-        <a-tooltip v-else :title="ipBtnTooltip">
-          <a-button type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowIp(item)">{{$t('compute.text_198')}}</a-button>
-        </a-tooltip>
-        <template v-if="showMacConfig">
-          <template v-if="item.macShow">
+        <!-- 高级 -->
+        <template v-if="showAdvanced">
+          <template v-if="item.ipShow">
             <a-form-item class="mb-0" style="display:inline-block" :wrapperCol="{ span: 24 }">
-              <a-input
-                style="width: 164px"
-                :placeholder="$t('compute.text_806')"
-                @change="e => macChange(e, i)"
-                v-decorator="decorator.macs(item.key, item.network)" />
+              <ip-select v-decorator="decorator.ips(item.key, item.network)" :value="item.ip" :network="item.network" @change="e => ipChange(e, i)" />
             </a-form-item>
-            <a-button type="link" class="mt-1" @click="triggerShowMac(item)">{{$t('compute.text_135')}}</a-button>
+            <a-button type="link" class="mt-1" @click="triggerShowIp(item)">{{$t('compute.text_135')}}</a-button>
           </template>
           <a-tooltip v-else :title="ipBtnTooltip">
-            <a-button type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowMac(item)">{{$t('compute.mac_config')}}</a-button>
+            <a-button type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowIp(item)">{{$t('compute.text_198')}}</a-button>
           </a-tooltip>
-        </template>
-        <template v-if="showDeviceConfig">
-          <template v-if="item.deviceShow">
-            <a-form-item class="mb-0" style="display:inline-block" :wrapperCol="{ span: 24 }">
-              <oc-select
-                style="width: 164px"
-                v-decorator="decorator.devices(item.key)"
-                :data="gpuOptions"
-                :placeholder="$t('compute.sriov_device_tips')" />
-            </a-form-item>
-            <a-button type="link" class="mt-1" @click="triggerShowDevice(item)">{{$t('compute.text_135')}}</a-button>
-          </template>
-          <a-button v-else type="link" class="mr-1 mt-1" @click="triggerShowDevice(item)">{{ $t('compute.config_transparent_net') }}</a-button>
-        </template>
-        <template v-if="isSupportIPv6(item)">
-          <a-form-item class="mb-0" style="display:inline-block" :wrapperCol="{ span: 24 }">
-            <a-checkbox style="width: max-content" v-decorator="decorator.ipv6s(item.key, item.network)" @change="(e) => triggerRequireIpv6(item, e)">{{ $t('compute.server_create.require_ipv6') }}</a-checkbox>
-          </a-form-item>
-          <template v-if="item.requireIpv6">
-            <template v-if="item.ipv6Show">
-              <a-form-item class="mb-0 ml-1" style="width: 350px;display:inline-block" :wrapperCol="{ span: 24 }">
-                <span class="mr-1">{{ getIpv6Prefix(item.network?.guest_ip6_start) }}</span>
-                <a-form-item class="mb-0" style="display:inline-block">
-                  <a-input
-                    style="width: 164px"
-                    :placeholder="$t('compute.complete_ipv6_address')"
-                    @change="e => ipv6Change(e, i)"
-                    v-decorator="decorator.ips6(item.key, item.network)" />
-                </a-form-item>
-                <a-button type="link" class="mt-1" @click="triggerShowIpv6(item)">{{$t('compute.text_135')}}</a-button>
+          <template v-if="showMacConfig">
+            <template v-if="item.macShow">
+              <a-form-item class="mb-0" style="display:inline-block" :wrapperCol="{ span: 24 }">
+                <a-input
+                  style="width: 164px"
+                  :placeholder="$t('compute.text_806')"
+                  @change="e => macChange(e, i)"
+                  v-decorator="decorator.macs(item.key, item.network)" />
               </a-form-item>
+              <a-button type="link" class="mt-1" @click="triggerShowMac(item)">{{$t('compute.text_135')}}</a-button>
             </template>
-            <a-button v-else type="link" class="mt-1" @click="triggerShowIpv6(item)">{{$t('compute.ipv6_config')}}</a-button>
+            <a-tooltip v-else :title="ipBtnTooltip">
+              <a-button type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowMac(item)">{{$t('compute.mac_config')}}</a-button>
+            </a-tooltip>
+          </template>
+          <template v-if="showDeviceConfig">
+            <template v-if="item.deviceShow">
+              <a-form-item class="mb-0" style="display:inline-block" :wrapperCol="{ span: 24 }">
+                <oc-select
+                  style="width: 164px"
+                  v-decorator="decorator.devices(item.key)"
+                  :data="gpuOptions"
+                  :placeholder="$t('compute.sriov_device_tips')" />
+              </a-form-item>
+              <a-button type="link" class="mt-1" @click="triggerShowDevice(item)">{{$t('compute.text_135')}}</a-button>
+            </template>
+            <a-button v-else type="link" class="mr-1 mt-1" @click="triggerShowDevice(item)">{{ $t('compute.config_transparent_net') }}</a-button>
+          </template>
+          <template v-if="isSupportIPv6(item)">
+            <a-form-item class="mb-0" style="display:inline-block" :wrapperCol="{ span: 24 }">
+              <a-checkbox style="width: max-content" v-decorator="decorator.ipv6s(item.key, item.network)" @change="(e) => triggerRequireIpv6(item, e)">{{ $t('compute.server_create.require_ipv6') }}</a-checkbox>
+            </a-form-item>
+            <template v-if="item.requireIpv6">
+              <template v-if="item.ipv6Show">
+                <a-form-item class="mb-0 ml-1" style="width: 350px;display:inline-block" :wrapperCol="{ span: 24 }">
+                  <span class="mr-1">{{ getIpv6Prefix(item.network?.guest_ip6_start) }}</span>
+                  <a-form-item class="mb-0" style="display:inline-block">
+                    <a-input
+                      style="width: 164px"
+                      :placeholder="$t('compute.complete_ipv6_address')"
+                      @change="e => ipv6Change(e, i)"
+                      v-decorator="decorator.ips6(item.key, item.network)" />
+                  </a-form-item>
+                  <a-button type="link" class="mt-1" @click="triggerShowIpv6(item)">{{$t('compute.text_135')}}</a-button>
+                </a-form-item>
+              </template>
+              <a-button v-else type="link" class="mt-1" @click="triggerShowIpv6(item)">{{$t('compute.ipv6_config')}}</a-button>
+            </template>
           </template>
         </template>
+        <a-button class="mt-1" type="link" @click="() => showAdvanced = !showAdvanced">{{ showAdvanced ? $t('compute.hide_advanced') : $t('compute.advanced') }}</a-button>
         <a-button shape="circle" icon="minus" size="small" v-if="i !== 0" @click="decrease(item.key, i)" class="mt-2" />
       </div>
     </div>
@@ -206,6 +210,7 @@ export default {
       networkLoading: false,
       networkOpts: [],
       screenWidth: document.body.clientWidth,
+      showAdvanced: false,
     }
   },
   computed: {
