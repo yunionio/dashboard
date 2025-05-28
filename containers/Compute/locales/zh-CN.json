@@ -1901,5 +1901,7 @@
   "compute.host_probe_isolated_devices": "探测透传设备",
   "compute.throughput_input_tip": "请输入吞吐量",
   "compute.sys_disk_disable_action": "系统盘不支持该操作",
-  "compute.reason_detail": "详细原因"
+  "compute.reason_detail": "详细原因",
+  "compute.advanced": "高级",
+  "compute.hide_advanced": "隐藏高级"
 }

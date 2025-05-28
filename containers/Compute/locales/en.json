@@ -1899,5 +1899,7 @@
   "compute.host_probe_isolated_devices": "Probe transparent devices",
   "compute.throughput_input_tip": "Please input throughput",
   "compute.sys_disk_disable_action": "System disk does not support this operation",
-  "compute.reason_detail": "Reason detail"
+  "compute.reason_detail": "Reason detail",
+  "compute.advanced": "Advanced",
+  "compute.hide_advanced": "Hide advanced"
 }
