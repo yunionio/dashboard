@@ -1,14 +1,7 @@
 <template>
   <div>
     <div v-if="hadMonitor">
-      <monitor
-        :time.sync="time"
-        :timeGroup.sync="timeGroup"
-        :customTime.sync="customTime"
-        :groupFunc.sync="groupFunc"
-        :monitorList="monitorList"
-        :loading="loading"
-        @refresh="fetchData" />
+      <dashboard-cards ref="dashboardCards" useLocalPanels :extraParams="extraParams" :localPanels="localPanels" />
     </div>
     <template v-else>
       <a-alert
@@ -20,22 +13,18 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import * as R from 'ramda'
 import { LB_MONITOR_OPTS } from '@Network/constants/lb'
-import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
-import Monitor from '@/sections/Monitor'
+import DashboardCards from '@Monitor/components/MonitorCard/DashboardCards'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
-import { getSignature } from '@/utils/crypto'
-import MonitorTimeMixin from '@/mixins/monitorTime'
 
 export default {
   name: 'LbMnitorSidepage',
   components: {
-    Monitor,
+    DashboardCards,
   },
-  mixins: [WindowsMixin, MonitorTimeMixin],
+  mixins: [WindowsMixin],
   props: {
     data: { // listItemData
       type: Object,
@@ -44,12 +33,6 @@ export default {
   },
   data () {
     return {
-      loading: false,
-      time: '168h',
-      timeGroup: '30m',
-      customTime: null,
-      groupFunc: 'mean',
-      monitorList: [],
     }
   },
   computed: {
@@ -71,71 +54,19 @@ export default {
     dbId () {
       return this.data.id
     },
-  },
-  created () {
-    this.fetchData()
-    this.fetchDataDebounce = _.debounce(this.fetchData, 500)
-    this.baywatch(['time', 'timeGroup', 'data.id', 'customTime', 'groupFunc'], this.fetchDataDebounce)
-  },
-  methods: {
-    async fetchData () {
-      this.loading = true
-      const resList = []
-      for (let idx = 0; idx < this.monitorConstants.length; idx++) {
-        const val = { ...this.monitorConstants[idx], groupFunc: this.groupFunc }
-        try {
-          const { data } = await new this.$Manager('unifiedmonitors', 'v1')
-            .performAction({
-              id: 'query',
-              action: '',
-              data: this.genQueryData(val),
-              params: { $t: getRequestT() },
-            })
-          resList.push({ title: val.label, constants: val, series: data.series })
-          if (idx === this.monitorConstants.length - 1) {
-            this.loading = false
-            this.getMonitorList(resList)
-          }
-        } catch (error) {
-          this.loading = false
-          throw error
-        }
-      }
-      this.saveMonitorConfig()
-    },
-    baywatch (props, watcher) {
-      const iterator = function (prop) {
-        this.$watch(prop, watcher)
-      }
-      props.forEach(iterator, this)
-    },
-    getMonitorList (resList) {
-      const lineConfig = { // 宿主机指标比较多，样式fix
-        tooltip: {
-          confine: true,
-        },
-        grid: {
-          top: '20%',
-        },
-      }
-      this.monitorList = resList.map(result => {
-        const { unit, transfer, seleteItem } = result.constants
-        const isSizestrUnit = UNITS.includes(unit)
-        let series = result.series
-        if (!series) series = []
-        if (isSizestrUnit || unit === 'bps') {
-          series = series.map(serie => {
-            return autoComputeUnit(serie, unit, transfer, seleteItem)
-          })
-        }
+    localPanels () {
+      return this.monitorConstants.map(item => {
         return {
-          title: result.title,
-          series,
-          constants: result.constants,
-          lineConfig,
+          panel_name: `${item.label}${item.metric ? `(${item.metric})` : `(${item.fromItem}.${item.seleteItem})`}`,
+          constants: item,
+          queryData: this.genQueryData(item),
         }
       })
     },
+  },
+  created () {
+  },
+  methods: {
     genQueryData (val) {
       const opt = val
       let select = []
@@ -203,15 +134,8 @@ export default {
           },
         ],
         scope: this.$store.getters.scope,
-        from: this.time,
-        interval: this.timeGroup,
         unit: true,
       }
-      if (this.time === 'custom' && this.customTime && this.customTime.from && this.customTime.to) {
-        data.from = this.customTime.from
-        data.to = this.customTime.to
-      }
-      data.signature = getSignature(data)
       return data
     },
   },

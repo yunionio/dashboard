@@ -9,27 +9,29 @@
         :groupFunc.sync="groupFunc"
         :customTime.sync="customTime"
         :showCustomTimeText="time==='custom'"
-        showAutoRefresh
+        :showAutoRefresh="!useLocalPanels"
         customTimeUseTimeStamp
         @refresh="handleRefresh" />
-      <a-dropdown-button
-        v-if="!readOnly && panels.length > 1"
-        :title="$t('monitor.dashboard.dialog.project.create')"
-        class="text-truncate"
-        @click="createChart"
-        placement="topLeft">
-        <a-icon type="plus-circle" />
-        {{ $t('monitor.dashboard.dialog.project.create') }}
-        <a-menu slot="overlay" @click="handleMenuClick">
-          <a-menu-item key="adjust_order">
-            {{ $t('monitor.adjust_chart_order') }}
-          </a-menu-item>
-        </a-menu>
-        <a-icon slot="icon" type="down" />
-      </a-dropdown-button>
-      <a-button v-else style="margin-left: 8px;" icon="plus-circle" @click="createChart">
-        {{ $t('monitor.dashboard.dialog.project.create')}}
-      </a-button>
+      <template v-if="!useLocalPanels">
+        <a-dropdown-button
+          v-if="!readOnly && panels.length > 1"
+          :title="$t('monitor.dashboard.dialog.project.create')"
+          class="text-truncate"
+          @click="createChart"
+          placement="topLeft">
+          <a-icon type="plus-circle" />
+          {{ $t('monitor.dashboard.dialog.project.create') }}
+          <a-menu slot="overlay" @click="handleMenuClick">
+            <a-menu-item key="adjust_order">
+              {{ $t('monitor.adjust_chart_order') }}
+            </a-menu-item>
+          </a-menu>
+          <a-icon slot="icon" type="down" />
+        </a-dropdown-button>
+        <a-button v-else style="margin-left: 8px;" icon="plus-circle" @click="createChart">
+          {{ $t('monitor.dashboard.dialog.project.create')}}
+        </a-button>
+      </template>
     </div>
     <div :class="card_style" :style="readOnly && !selectable ? '' :'padding-top: 20px;'">
       <dashboard-card ref="dashboardCard" v-if="readOnly && !selectable" :card_style="card_style" :chartHeigth="chartHeigth" @chose_panel="chose_panel" :panel="panels.length > 0 ? panels[0] : {}" :focusPanelId="focusPanelId" :selectable="selectable" :readOnly="readOnly" :dashboard_id="id" :edit-chart="editChart" :updated_at="updatedAt" :extraParams="extraParams" @delete="handleDelete" />
@@ -51,6 +53,7 @@
            :customTime="customTime"
            :groupFunc="groupFunc"
            :tablePageSize="tablePageSize"
+           :useLocalPanels="useLocalPanels"
            @pageChange="(pager) => pageChange(item, pager)"
            @chose_panel="chose_panel"
            @delete="handleDelete" />
@@ -145,6 +148,14 @@ export default {
     panelId: {
       type: String,
     },
+    useLocalPanels: {
+      type: Boolean,
+      default: false,
+    },
+    localPanels: {
+      type: Array,
+      default: () => [],
+    },
   },
   data () {
     return {
@@ -164,6 +175,7 @@ export default {
   },
   computed: {
     panels () {
+      if (this.useLocalPanels) return this.localPanels
       if (this.panelId) {
         const obj = this.dashboard.alert_panel_details ? this.dashboard.alert_panel_details.find(x => { return x.panel_id === this.panelId }) : {}
         return [obj]
@@ -229,8 +241,9 @@ export default {
       }
     },
     async fetchCharts () {
-      this.loading = true
       this.saveMonitorConfig()
+      if (this.useLocalPanels) return
+      this.loading = true
       try {
         const params = {
           scope: this.scope,
