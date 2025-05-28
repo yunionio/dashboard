@@ -151,7 +151,7 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const data = filterUserTag({
-      metadata: this.params.data[0].metadata,
+      metadata: this.params.data[0].metadata || this.params.metadata,
       needExt: true,
     })
     const extTags = data.arr.filter(item => item.key.startsWith('ext:')).map(item => this.genTag(item))
@@ -305,7 +305,7 @@ export default {
           this.$message.warning(this.$t('common_119'))
           return
         }
-        const ids = this.params.data.map(item => item.id)
+        const ids = this.params.data.map(item => item[this.params.idKey])
         const action = this.isBatchAddMode ? 'user-metadata' : 'set-user-metadata'
         const { manager } = this.params
         if (manager) {
