@@ -22,7 +22,6 @@
     <loader v-if="loading" :loading="true" />
     <template v-else>
       <div class="d-flex">
-        <!-- <line-chart class="flex-grow-1" @chartInstance="setChartInstance" width="100%" height="250px" :options="lineChartOptionsC" /> -->
         <uchart :data="uChartData" :options="uChartOptions" />
         <div v-if="alertHandlerShow && lineChartOptionsC.dataset.length" class="alert-handler-wrapper position-relative">
           <div class="position-absolute clearfix d-flex align-items-center" :style="{ top: `${topStyleRange[1]}px` }">
@@ -71,21 +70,15 @@ import * as R from 'ramda'
 import _ from 'lodash'
 import XLSX from 'xlsx'
 import { metric_zh, tableColumnMaps } from '@Monitor/constants'
-// import { colors } from '@/sections/Charts/constants'
-// import LineChart from '@/sections/Charts/Line'
 import { ColorHash } from '@/utils/colorHash'
 import { transformUnit } from '@/utils/utils'
 import { getChartTooltipLabel } from '@Monitor/utils'
-// import { BRAND_MAP } from '@/constants'
-// import { currencyUnitMap } from '@/constants/currency'
-// import { getChartTooltipPosition } from '@/utils/echart'
 
 const MAX_COLUMNS = 10
 
 export default {
   name: 'ExplorerMonitorLine',
   components: {
-    // LineChart,
   },
   props: {
     unit: {
@@ -169,6 +162,29 @@ export default {
     }
   },
   computed: {
+    fixedSeries () {
+      if (this.series.length) {
+        const cols = this.series[0].columns.filter(col => col !== 'time')
+        if (cols.length > 1) {
+          const series = []
+          cols.forEach((col, idx) => {
+            this.series.forEach(item => {
+              const seriesItem = {
+                columns: [col, 'time'],
+                name: col,
+                raw_name: col,
+                points: item.points.map(point => [point[idx], point[point.length - 1]]),
+              }
+              series.push(seriesItem)
+            })
+          })
+          return series
+        } else {
+          return this.series
+        }
+      }
+      return this.series
+    },
     groupBy () {
       const groupBy = _.get(this.metricInfo, 'model.group_by')
       if (groupBy && groupBy.length && groupBy[0].type !== 'time' && groupBy[0].type !== 'fill') {
@@ -198,13 +214,13 @@ export default {
       return ret
     },
     showTable () {
-      if (!this.groupBy && !this.resultReducer && this.isSelectFunction) {
+      if (!this.groupBy && !this.resultReducer && this.isSelectFunction && this.columns.length < 2) {
         return false
       }
       return true
     },
     tableData () {
-      return this.getTableData(this.series, this.reducedResult)
+      return this.getTableData(this.fixedSeries, this.reducedResult)
     },
     total () {
       const total = this.tableData.length || 0
@@ -219,7 +235,7 @@ export default {
           slots: {
             default: ({ row, rowIndex }) => {
               if (this.highlights.some(item => item.index === rowIndex)) {
-                return [<icon type="checkbox-fill" style={{ fontSize: '20px', color: that.colors.length && that.colors[rowIndex], cursor: 'pointer', transform: 'translateY(3px)' }}></icon>]
+                return [<icon type="checkbox-fill" style={{ fontSize: '20px', color: (that.colors.length && that.colors[rowIndex]) || that.colorHash.hex(`${rowIndex * 1000}`), cursor: 'pointer', transform: 'translateY(3px)' }}></icon>]
               }
               return [<icon type="checkbox-empty" style="font-size:20px;cursor:pointer;transform:translateY(3px)"></icon>]
             },
@@ -339,9 +355,6 @@ export default {
           sortable: true,
         })
       }
-      // if (columns.some(item => item.field.startsWith('host')) && columns.some(item => item.field.startsWith('vm'))) {
-      //   columns = columns.filter(item => !item.field.startsWith('host'))
-      // }
       if (this.tableData && this.tableData.length && this.tableData.some(item => {
         return item.raw_name && item.raw_name.startsWith('{')
       })) {
@@ -356,6 +369,22 @@ export default {
           },
           formatter: ({ row }) => {
             return row.raw_name || ''
+          },
+        })
+      }
+      // 只有raw_name 一列可以展示
+      if (columns.length === 1) {
+        columns.push({
+          field: 'raw_name',
+          title: this.$t('monitor.monitor_metric'),
+          slots: {
+            default: ({ row, rowIndex }) => {
+              const val = (row.raw_name || '').replace('unknown-0-', '')
+              return [<span>{val}</span>]
+            },
+          },
+          formatter: ({ row }) => {
+            return (row.raw_name || '').replace('unknown-0-', '')
           },
         })
       }
@@ -380,7 +409,7 @@ export default {
     },
     title () {
       let title = ''
-      if (this.series.length && this.description) {
+      if (this.fixedSeries.length && this.description) {
         title = this.description.title || ''
         if (this.description.metric_res_type && this.description.metric_res_type === 'host') {
           if (this.$te(`dictionary.${this.description.metric_res_type}`)) {
@@ -416,10 +445,10 @@ export default {
     },
     uChartData () {
       const ret = []
-      if (this.series.length) {
-        const time = this.series[0].points.map(item => item[1])
+      if (this.fixedSeries.length) {
+        const time = this.fixedSeries[0].points.map(item => item[item.length - 1])
         ret.push(time.map(item => item / 1000))
-        this.series.forEach((item, i) => {
+        this.fixedSeries.forEach((item, i) => {
           const row = []
           time.forEach(t => {
             const target = item.points.filter(p => p[1] === t)
@@ -498,7 +527,7 @@ export default {
           },
         },
       }
-      this.series.forEach((item, i) => {
+      this.fixedSeries.forEach((item, i) => {
         const color = (this.colors && this.colors[i]) || this.colorHash.hex(`${i * 1000}`)
         if (this.highlights.some(item => item.index === i)) {
           const label = getChartTooltipLabel(item)
@@ -509,7 +538,7 @@ export default {
     },
   },
   watch: {
-    series (val, oldV) {
+    fixedSeries (val, oldV) {
       if (!R.equals(val, oldV)) {
         this.genColors()
         this.getMonitorLine()
@@ -556,7 +585,7 @@ export default {
   },
   methods: {
     genColors () {
-      this.colors = this.series.map((item, i) => {
+      this.colors = this.fixedSeries.map((item, i) => {
         return this.colors[i] || this.colorHash.hex(`${i * 1000}`)
       })
     },
@@ -635,7 +664,6 @@ export default {
       }
     },
     highlightSeries (list, seriesName, row, rowIndex) {
-      // if (this.chartInstance) {
       let highlights = [...this.highlights]
       list.forEach(item => {
         const { row, rowIndex } = item
@@ -647,13 +675,6 @@ export default {
         }
       })
       this.highlights = highlights
-      // const seriesNames = highlights.map(item => {
-      //   let seriesName = _.get(this.chartInstanceOption, `series[${item.index}].name`)
-      //   seriesName = seriesName || `series${item.index}`
-      //   return seriesName
-      // })
-      // this._setHighlights(seriesNames)
-      // }
     },
     _cancelHighlight () {
       const selected = {}
@@ -680,144 +701,11 @@ export default {
       })
     },
     getMonitorLine () {
-      this.highlights = this.series.map((item, index) => {
+      this.highlights = this.fixedSeries.map((item, index) => {
         return {
           index,
         }
       })
-      // const lineChartOptions = _.cloneDeep(_.mergeWith(this.lineChartOptions, {
-      //   series: [],
-      //   grid: {
-      //     containLabel: true,
-      //   },
-      // }))
-      // lineChartOptions.grid = {
-      //   containLabel: true,
-      //   top: 10,
-      // }
-      // const dataset = []
-      // const names = []
-      // const currencys = []
-      // this.series.forEach((item, i) => {
-      //   let name = item.raw_name
-      //   if (!name || name.startsWith('unknow')) {
-      //     if (this.groupBy && (this.metricInfo?.model?.group_by || []).length > 1 && item.tags) {
-      //       name = this.metricInfo?.model?.group_by.map(l => {
-      //         let n = item.tags[l.params[0]]
-      //         if (BRAND_MAP[n] && BRAND_MAP[n].label) {
-      //           n = BRAND_MAP[n].label
-      //         }
-      //         return n
-      //       }).join(', ')
-      //     } else {
-      //       if (BRAND_MAP[name] && BRAND_MAP[name].label) {
-      //         name = BRAND_MAP[name].label
-      //       }
-      //       if (item.tags && item.tags.path) {
-      //         name += ` (path: ${item.tags.path})`
-      //       }
-      //     }
-      //   }
-      //   if (item.tags) {
-      //     const { currency = 'CNY' } = (item.tags || {})
-      //     if (currency && !currencys.includes(currency)) {
-      //       currencys.push(currency)
-      //     }
-      //   }
-      //   if (name.length > 50) name = `${name.slice(0, 50)}...`
-      //   const seriesItem = {
-      //     ...(lineChartOptions.series[i] || {}),
-      //     itemStyle: {
-      //       normal: {
-      //         color: colors[i] || this.colorHash.hex(`${i * 1000}`),
-      //       },
-      //     },
-      //     symbolSize: 1,
-      //     type: 'line',
-      //     encode: { x: 1, y: 0, tooltip: [0, 1] },
-      //     datasetIndex: i,
-      //     name,
-      //   }
-      //   lineChartOptions.series[i] = seriesItem
-      //   dataset.push({
-      //     dimensions: [{ name: 'value', type: 'ordinal' }, { name: 'time', type: 'time' }],
-      //     source: item.points,
-      //   })
-      //   names.push(name)
-      // })
-      // lineChartOptions.yAxis = {
-      //   minInterval: 1,
-      //   axisLabel: {
-      //     formatter: (value, index) => {
-      //       let unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
-      //       if (unit === 'NULL') {
-      //         unit = ''
-      //       }
-      //       if (unit === 'ms') { // 时间类型的Y坐标，要取整 如 ： 1小时10分钟30秒 -> 1小时
-      //         unit = 'intms'
-      //       }
-      //       const val = transformUnit(value, unit, 1000, '0')
-      //       if (unit === 'currency') {
-      //         let unit = ''
-      //         if (currencys.length === 1) {
-      //           unit = currencyUnitMap[currencys[0]]?.sign || ''
-      //         }
-      //         return unit ? `${unit} ${val.value || value}` : val.value || value
-      //       }
-      //       return val.text
-      //     },
-      //   },
-      // }
-      // lineChartOptions.xAxis = { type: 'time' }
-      // lineChartOptions.tooltip = {
-      //   trigger: 'axis',
-      //   position: (point, params, dom, rect, size) => {
-      //     const list = [...params].sort((a, b) => b.value[0] - a.value[0])
-      //     const series = list.map((line, i) => {
-      //       let unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
-      //       if (unit === 'NULL') {
-      //         unit = ''
-      //       }
-      //       const val = transformUnit(line.value[0], unit)
-      //       let value = _.get(val, 'text') || line.value
-      //       if (unit === 'currency') {
-      //         let unit = ''
-      //         if (currencys.length === 1) {
-      //           unit = currencyUnitMap[currencys[0]]?.sign || ''
-      //         }
-      //         value = unit ? `${unit} ${_.get(val, 'value' || line.value[0])}` : _.get(val, 'value' || line.value[0])
-      //       }
-      //       const color = i === this.highlight.index ? this.highlight.color : '#616161'
-      //       let name = line.seriesName
-      //       if (!this.showTable || (this.isSelectFunction && this.resultReducer && !this.groupBy) || name.startsWith('unknow')) {
-      //         name = this.isSelectFunction.toUpperCase()
-      //       }
-      //       return `<div style="color: ${color};" class="d-flex align-items-center"><span>${line.marker}</span> <span class="text-truncate" style="max-width: 500px;">${name || ' '}</span>:&nbsp;<span>${value}</span></div>`
-      //     }).join('')
-      //     let title = list[0].name
-      //     if (!title) {
-      //       const time = list[0].value && list[0].value[1]
-      //       if (time) {
-      //         title = this.$moment(time).format('YYYY-MM-DD HH:mm:ss')
-      //       }
-      //     }
-      //     const wrapper = `<div class="chart-tooltip-wrapper">
-      //                   <div style="color: #5D6F80;">${title}</div>
-      //                   <div class="lines-wrapper">${series}</div>
-      //                 </div>`
-      //     dom.style.border = 'none'
-      //     dom.style.backgroundColor = 'transparent'
-      //     dom.style.padding = '0'
-      //     dom.innerHTML = wrapper
-      //     const s = { contentSize: [size.contentSize[0], (list.length + 1) * 18], viewSize: size.viewSize }
-      //     return getChartTooltipPosition(point, dom, s, false)
-      //   },
-      // }
-      // lineChartOptions.dataset = dataset
-      // this.lineChartOptionsC = lineChartOptions
-      // this.seriesOldClickName = null
-      // this.highlight = { index: null, color: '' }
-      // console.log(lineChartOptions, dataset)
     },
     getRowStyle ({ $rowIndex, column, columnIndex, $columnIndex }) {
       if ($rowIndex === this.highlight.index) {

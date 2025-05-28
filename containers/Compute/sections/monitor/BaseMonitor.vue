@@ -1,30 +1,21 @@
 <template>
   <div>
-    <monitor
-      :time.sync="time"
-      :timeGroup.sync="timeGroup"
-      :customTime.sync="customTime"
-      :groupFunc.sync="groupFunc"
-      :monitorList="monitorList"
-      :singleActions="singleActions"
-      :loading="loading"
-      @refresh="fetchData" />
+    <dashboard-cards ref="dashboardCards" useLocalPanels :extraParams="extraParams" :localPanels="localPanels" />
   </div>
 </template>
 
 <script>
 import _ from 'lodash'
 import { MonitorHelper } from '@/utils/monitor'
-import Monitor from '@/sections/Monitor'
 import WindowsMixin from '@/mixins/windows'
-import MonitorTimeMixin from '@/mixins/monitorTime'
+import DashboardCards from '@Monitor/components/MonitorCard/DashboardCards'
 
 export default {
   name: 'BaseMonitor',
   components: {
-    Monitor,
+    DashboardCards,
   },
-  mixins: [WindowsMixin, MonitorTimeMixin],
+  mixins: [WindowsMixin],
   props: {
     data: { // listItemData
       type: Object,
@@ -92,51 +83,29 @@ export default {
           },
         },
       ],
-      loading: false,
-      time: '168h',
-      timeGroup: '30m',
-      customTime: null,
-      groupFunc: 'mean',
-      monitorList: [],
+      helper: new MonitorHelper(this.$Manager, this.$store.getters.scope),
     }
   },
   computed: {
     serverId () {
       return this.resId || this.data.id
     },
+    localPanels () {
+      return this.constants.map(item => {
+        return {
+          panel_name: `${item.label}${item.metric ? `(${item.metric})` : ''}`,
+          constants: item,
+          queryData: this.helper.genServerQueryData(this.serverId, item, '', '', this.idKey, '', true, this.extraTags),
+        }
+      })
+    },
   },
   created () {
-    this.helper = new MonitorHelper(this.$Manager, this.$store.getters.scope)
-    this.fetchData()
-    this.fetchDataDebounce = _.debounce(this.fetchData, 500)
-    this.baywatch(['time', 'timeGroup', 'data.id', 'customTime', 'groupFunc'], this.fetchDataDebounce)
+    this.$bus.$on('VmMonitorTypeChange', (tab) => {
+      this.$refs.dashboardCards.initMonitorConfig()
+    })
   },
   methods: {
-    async fetchData () {
-      this.loading = true
-      try {
-        const reqList = this.constants.map(item => {
-          const val = { ...item, groupFunc: this.groupFunc }
-          return this.helper.fetchFormatData(this.serverId, val, this.time, this.timeGroup, this.idKey, this.customTime, true, this.extraTags)
-        })
-        const resList = await Promise.all(reqList)
-        this.setMonitorList(resList)
-        this.loading = false
-      } catch (error) {
-        this.loading = false
-        throw error
-      }
-      this.saveMonitorConfig()
-    },
-    baywatch (props, watcher) {
-      const iterator = function (prop) {
-        this.$watch(prop, watcher)
-      }
-      props.forEach(iterator, this)
-    },
-    setMonitorList (resList) {
-      this.monitorList = this.helper.convertToListData(resList)
-    },
   },
 }
 </script>

@@ -2,7 +2,7 @@
   <div>
     <a-tabs @change="handleTabChange">
       <a-tab-pane v-for="type in types" :key="type" :tab="$t(`compute.monitor.${type}`)">
-        <base-monitor v-if="type === 'basic'" :data="server" :constants="monitorConstants" monitorType="basic" :currentMonitorType="currentMonitorType" />
+        <base-monitor v-if="type === 'basic'" :data="server" :constants="monitorConstants" idKey="vm_id" monitorType="basic" :currentMonitorType="currentMonitorType" />
         <div v-else>
           <install-agent-form-visible
             :data="server"
@@ -11,6 +11,7 @@
           <agent-monitor
             :data="server"
             :currentMonitorType="currentMonitorType"
+            idKey="vm_id"
             monitorType="agent"
             key="monitor-agent" />
         </div>
@@ -113,6 +114,9 @@ export default {
     },
     handleTabChange (tab) {
       this.currentMonitorType = tab
+      this.$nextTick(() => {
+        this.$bus.$emit('VmMonitorTypeChange', tab)
+      })
     },
   },
 }
