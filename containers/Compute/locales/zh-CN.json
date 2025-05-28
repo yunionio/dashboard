@@ -1881,5 +1881,7 @@
   "compute.sku_unfind_tip": "未找到原始套餐 {0} 请谨慎选择套餐或保持原样",
   "compute.host_probe_isolated_devices": "探测透传设备",
   "compute.throughput_input_tip": "请输入吞吐量",
-  "compute.sys_disk_disable_action": "系统盘不支持该操作"
+  "compute.sys_disk_disable_action": "系统盘不支持该操作",
+  "compute.advanced": "高级",
+  "compute.hide_advanced": "隐藏高级"
 }
