@@ -8,7 +8,7 @@
             type="link"
             class="font-weight-normal p-0"
             @click="handleEdit"
-            v-if="!inBaseDialog && !!onManager">{{$t('common_105')}}</a-button>
+            v-if="!inBaseDialog && (!!onManager || !!manager)">{{$t('common_105')}}</a-button>
         </template>
         <template v-else>
           <a-tooltip :title="validate.tooltip">
@@ -85,6 +85,10 @@ export default {
     manager: {
       type: Object,
     },
+    idKey: {
+      type: String,
+      default: 'id',
+    },
   },
   inject: {
     // 是否处于BaseDialog中
@@ -144,12 +148,14 @@ export default {
         columns = R.is(Function, this.columns) ? this.columns() : this.columns
       }
       this.createDialog('SetTagDialog', {
+        metadata: this.metadata,
         data: [this.row],
         columns,
         manager: this.manager,
         onManager: this.onManager,
         params: this.params,
         tipName: this.tipName,
+        idKey: this.idKey,
         list: this.list,
         refresh: this.refresh,
       })
