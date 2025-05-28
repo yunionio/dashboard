@@ -1,6 +1,12 @@
 <template>
   <div ref="chart" class="uplot-chart-wrapper">
-    <div id="uplot-chart-tooltip" class="uplot-chart-tooltip" v-if="tooltipShow" v-html="toolTipHtml" :style="tooltipStyle" />
+    <div id="uplot-chart-tooltip" class="uplot-chart-tooltip" v-if="tooltipShow && !isEmptyData" v-html="toolTipHtml" :style="tooltipStyle" />
+    <div v-if="isEmptyData" class="empty-tip">
+      <div class="empty-info">
+        <icon class="empty-icon" type="data-empty" />
+        <div class="empty-text">{{ $t('common.notData') }}</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -29,6 +35,11 @@ export default {
       },
       tooltipShow: false,
     }
+  },
+  computed: {
+    isEmptyData () {
+      return this.data.length === 0
+    },
   },
   watch: {
     data () {
@@ -171,5 +182,22 @@ export default {
   position: absolute;
   background: white;
   z-index: 1000;
+}
+.empty-tip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1001;
+}
+.empty-info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.empty-icon {
+  font-size: 50px;
 }
 </style>
