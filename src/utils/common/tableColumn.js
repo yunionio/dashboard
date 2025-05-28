@@ -587,6 +587,7 @@ export const getTagTableColumn = ({
   editCheck = (row) => true,
   hidden,
   manager,
+  idKey = 'id',
   vm = {},
 } = {}) => {
   return {
@@ -633,6 +634,7 @@ export const getTagTableColumn = ({
               tagParams: params,
               manager: manager,
               refresh: vm.refresh,
+              idKey,
               canEdit: editCheck(row),
             },
           }),
