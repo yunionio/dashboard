@@ -1901,5 +1901,7 @@
   "compute.host_probe_isolated_devices": "透過デバイスの検出",
   "compute.throughput_input_tip": "スループットを入力してください",
   "compute.sys_disk_disable_action": "システムディスクはこの操作をサポートしていません",
-  "compute.reason_detail": "詳細な理由"
+  "compute.reason_detail": "詳細な理由",
+  "compute.advanced": "高級",
+  "compute.hide_advanced": "高級を非表示"
 }
