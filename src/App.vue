@@ -90,6 +90,7 @@ export default {
             })
           }
         }
+        i18n.deepReplaceDictionary()
       },
       immediate: true,
     },

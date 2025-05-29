@@ -82,4 +82,43 @@ i18n.getOriginDictionaryI18n = (key, defaultValue) => {
   return f[key] || defaultValue
 }
 
+/**
+ * 替换字符串中的 字典值或其他引用值 为多语言内容
+ * @param {string} str
+ * @returns {string}
+ */
+function replaceI18nPlaceholders (str) {
+  if (typeof str !== 'string') return str
+  return str.replace(/@:([a-zA-Z0-9_.]+)/g, (match, key) => {
+    return i18n.t(key)
+  })
+}
+
+function deepReplaceI18n (obj) {
+  if (typeof obj === 'string') {
+    return replaceI18nPlaceholders(obj)
+  } else if (Array.isArray(obj)) {
+    return obj.map(deepReplaceI18n)
+  } else if (typeof obj === 'object' && obj !== null) {
+    const res = {}
+    for (const key in obj) {
+      res[key] = deepReplaceI18n(obj[key])
+    }
+    return res
+  }
+  return obj
+}
+
+i18n.deepReplaceDictionary = () => {
+  const l = getLanguage()
+  if (l === 'en') {
+    deepReplaceI18n(messages.en)
+  } else if (l === 'zh-CN') {
+    deepReplaceI18n(messages['zh-CN'])
+  } else if (l === 'ja-JP') {
+    deepReplaceI18n(messages['ja-JP'])
+  }
+  i18n.setLocaleMessage(l, messages[l])
+}
+
 export default i18n
