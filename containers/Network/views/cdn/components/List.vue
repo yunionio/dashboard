@@ -31,13 +31,12 @@ import { disableDeleteAction } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import i18n from '@/locales'
 import GlobalSearchMixin from '@/mixins/globalSearch'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'DomainList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -80,10 +79,6 @@ export default {
         },
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
-        fetchDataCb: (res) => {
-          const { totals = {} } = res.data
-          this.$emit('resStatisticsChange', totals)
-        },
       }),
       groupActions: [
         {

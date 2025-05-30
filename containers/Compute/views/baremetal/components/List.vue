@@ -20,7 +20,6 @@ import { disableDeleteAction } from '@/utils/common/tableActions'
 import { getNameFilter, getTenantFilter, getStatusFilter, getOsTypeFilter, getDomainFilter, getRegionFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import expectStatus from '@/constants/expectStatus'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import regexp from '@/utils/regexp'
@@ -30,7 +29,7 @@ import { cloudEnabled, cloudUnabledTip } from '../../vminstance/utils'
 
 export default {
   name: 'BaremetalList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -90,10 +89,6 @@ export default {
         steadyStatus: Object.values(expectStatus.server).flat(),
         responseData: this.responseData,
         hiddenColumns: ['host_sn', 'created_at'],
-        fetchDataCb: (res) => {
-          const { totals = {} } = res.data
-          this.$emit('resStatisticsChange', totals)
-        },
       }),
       groupActions: [
         {
