@@ -6043,5 +6043,6 @@
   "common.page_list_count": "选中{0}条，共{1}条",
   "common.page_list_header_item_count_stats1": "已展示{0}条 / 选中{1}条",
   "common.month": "月份",
-  "common.c": "核"
+  "common.c": "核",
+  "common.system_service": "系统服务"
 }

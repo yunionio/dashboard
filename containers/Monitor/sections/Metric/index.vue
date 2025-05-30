@@ -94,7 +94,7 @@ export default {
       return this.res_types.map(val => {
         // let label = val
         // if (this.$te(`dictionary.${val}`)) label = this.$t(`dictionary.${val}`)
-        const label = this.$t(`dictionary.${val}`)
+        const label = val === 'system' ? this.$t('common.system_service') : this.$t(`dictionary.${val}`)
         return {
           key: val,
           label,
