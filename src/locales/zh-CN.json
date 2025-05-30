@@ -9,7 +9,14 @@
       "available": "可用",
       "unknown": "未知",
       "update_tags": "更新标签或名称",
-      "update_tags_fail": "更新标签或名称失败"
+      "update_tags_fail": "更新标签或名称失败",
+      "running": "运行中",
+      "ready": "关机",
+      "online": "在线",
+      "offline": "离线",
+      "enabled": "启用",
+      "disabled": "禁用",
+      "active": "可用"
     },
     "monitorresources": {
       "init": "未设置告警",

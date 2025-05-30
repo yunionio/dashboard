@@ -324,6 +324,7 @@ class CreateList {
     this.batchCheckStatusTimer = null
     this.batchCheckStatusList = []
     this.batchItemGetParamsFormatter = batchItemGetParamsFormatter
+    this.totals = {}
   }
 
   // 重写selectedItems getter和setter
@@ -533,6 +534,7 @@ class CreateList {
     // 重置数据
     if (clearData) {
       this.data = {}
+      this.totals = {}
       if (R.is(Function, this.fetchDataCb)) {
         this.fetchDataCb({
           data: {
@@ -625,6 +627,7 @@ class CreateList {
       if (R.is(Function, this.fetchDataCb)) {
         this.fetchDataCb(response)
       }
+      this.totals = response.data?.totals || {}
       // if (!showDetails && this.total > 0 && !response.data.marker_field) {
       // setTimeout(() => {
       // this.fetchData(offset, limit, true)

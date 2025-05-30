@@ -15,7 +15,6 @@
 
 <script>
 import * as R from 'ramda'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import { getNameFilter, getDescriptionFilter, getStatusFilter, getEnabledFilter, getBrandFilter, getProjectDomainFilter, getAccountFilter, getOsArchFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -30,7 +29,7 @@ import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'HostList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -128,10 +127,6 @@ export default {
         filter,
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'id', 'server_id', 'sn', 'manufacture', 'model', 'schedtag', 'nonsystem_guests', 'public_scope', 'project_domain', 'region', 'os_arch', 'created_at'],
-        fetchDataCb: (res) => {
-          const { totals = {} } = res.data
-          this.$emit('resStatisticsChange', totals)
-        },
       }),
     }
   },
