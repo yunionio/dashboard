@@ -24,7 +24,6 @@ import GlobalSearchMixin from '@/mixins/globalSearch'
 import expectStatus from '@/constants/expectStatus'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import regexp from '@/utils/regexp'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import { PROVIDER_MAP } from '@/constants'
 import ColumnsMixin from '../mixins/columns'
@@ -32,7 +31,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'NetworkList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -164,10 +163,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'vpc', 'wire', 'vlan_id', 'schedtag', 'account', 'public_scope', 'created_at'],
         autoHiddenFilterKey: 'network_hidden_columns',
-        fetchDataCb: (res) => {
-          const { totals = {} } = res.data
-          this.$emit('resStatisticsChange', totals)
-        },
       }),
       groupActions: [
         {

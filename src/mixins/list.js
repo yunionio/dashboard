@@ -1,5 +1,4 @@
 import * as R from 'ramda'
-// import { statisticsRes } from '@/constants/statisticsRes'
 
 export default {
   inject: ['inBaseSidePage'],
@@ -8,8 +7,12 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    tableOverviewIndexs: {
+      type: Array,
+    },
     statusResKey: {
       type: String,
+      default: '',
     },
   },
   computed: {
@@ -22,22 +25,20 @@ export default {
     isOperateInSidepage () {
       return this.inBaseSidePage
     },
-    // isStatisticsRes () {
-    //   return statisticsRes.includes(this.list.resource)
-    // },
   },
   watch: {
     filterParams: {
       handler: function (val) {
         if (!val.isFirstLoad) {
           const filterStatus = this.list.filter.status || []
-          val.statusCheckArr.forEach((item) => {
+          const statusCheckArr = Array.from(new Set(val.statusCheckArr || []))
+          statusCheckArr.forEach((item) => {
             if (!filterStatus.includes(item)) {
               filterStatus.push(item)
             }
           })
-          if (val.statusCheckArr && val.statusCheckArr.length > 0) {
-            this.list.changeFilter({ ...this.list.filter, status: val.statusCheckArr })
+          if (statusCheckArr.length > 0) {
+            this.list.changeFilter({ ...this.list.filter, status: statusCheckArr })
             this.list.filterOptions.status.items = []
             const statusArrTem = this.list.filterOptions.status.items || []
             val.statusArr.forEach((item) => {
@@ -45,7 +46,7 @@ export default {
               if (!isExist) {
                 statusArrTem.push({
                   key: item,
-                  label: this.$t(`status.${this.statusResKey}.${item}`),
+                  label: this.$te(`status.${this.getStatusResKey()}.${item}`) ? this.$t(`status.${this.getStatusResKey()}.${item}`) : item,
                 })
               }
             })
@@ -58,25 +59,28 @@ export default {
       },
       deep: true,
     },
-    // 'list.params': {
-    //   handler: function (val) {
-    //     if (val) {
-    //       this.isStatisticsRes &&
-    //         !this.isOperateInSidepage &&
-    //         this.$bus.$emit('ListParamsChange', val)
-    //     }
-    //   },
-    //   deep: true,
-    // },
+    'list.totals': {
+      handler: function (val) {
+        this.$emit('resStatisticsChange', val)
+      },
+      deep: true,
+    },
   },
   methods: {
+    getStatusResKey () {
+      if (this.list.statusResKey || this.statusResKey) {
+        return this.list.statusResKey || this.statusResKey
+      }
+      if (this.list.resource) {
+        return this.list.resource.substring(0, this.list.resource.length - 1)
+      }
+      console.error('There is no statusResKey or resource in list')
+      return 'common'
+    },
     onManager () {
       return this.list.onManager(...arguments)
     },
     refresh () {
-      // this.isStatisticsRes &&
-      //   !this.isOperateInSidepage &&
-      //   this.$bus.$emit('ListParamsChange', { ...arguments })
       return this.list.refresh(...arguments)
     },
     singleRefresh () {

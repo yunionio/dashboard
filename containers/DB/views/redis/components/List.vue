@@ -22,7 +22,6 @@ import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import globalSearchMixins from '@/mixins/globalSearch'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import { HYPERVISORS_MAP } from '@/constants'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -30,7 +29,7 @@ import { ENGINE_ARCH } from '../constants/index.js'
 
 export default {
   name: 'RedisList',
-  mixins: [WindowsMixin, globalSearchMixins, ListMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
+  mixins: [WindowsMixin, globalSearchMixins, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     cloudEnv: String,
@@ -108,10 +107,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'instance_type', 'created_at'],
         autoHiddenFilterKey: 'redis_hidden_columns',
-        fetchDataCb: (res) => {
-          const { totals = {} } = res.data
-          this.$emit('resStatisticsChange', totals)
-        },
       }),
       groupActions: [
         {

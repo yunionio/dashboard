@@ -25,14 +25,13 @@ import {
   getRegionFilter,
   getDescriptionFilter,
 } from '@/utils/common/tableFilter'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import { steadyStatus } from '../constants'
 
 export default {
   name: 'InstanceSnapshotList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -72,10 +71,6 @@ export default {
         },
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
-        fetchDataCb: (res) => {
-          const { totals = {} } = res.data
-          this.$emit('resStatisticsChange', totals)
-        },
       }),
       groupActions: [
         {

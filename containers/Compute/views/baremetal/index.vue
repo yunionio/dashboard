@@ -1,18 +1,18 @@
 <template>
   <div>
-    <page-header :title="$t('compute.text_92')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv">
-      <div slot="res-status-tab" style="position: absolute; right: 0; top: 14px;">
-        <res-status-tab
-          :loading="statisticsLoading"
-          :status-opts="statusOpts"
-          @click="statusClickHandle" />
-      </div>
-    </page-header>
+    <page-header
+     :title="$t('compute.text_92')"
+     :tabs="cloudEnvOptions"
+     :current-tab.sync="cloudEnv"
+     isShowResStatusTab
+     :status-opts="statusOpts"
+     :status-click-handle="statusClickHandle" />
     <page-body>
       <baremetal-list
         :id="listId"
         :cloud-env="cloudEnv"
         :filterParams="filterParams"
+        statusResKey="server"
         @refresh="refreshHandle"
         @resStatisticsChange="resStatisticsChange" />
     </page-body>
@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import BaremetalList from './components/List'
 import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
+import BaremetalList from './components/List'
 
 export default {
   name: 'BaremetalIndex',
@@ -36,7 +36,6 @@ export default {
         { key: '', label: this.$t('compute.text_4') },
       ],
       cloudEnv: '',
-      resStaticsResource: 'servers',
     }
   },
 }
