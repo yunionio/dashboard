@@ -1,13 +1,12 @@
 <template>
   <div>
-    <page-header :title="$t('compute.text_101')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv">
-      <div slot="res-status-tab" style="position: absolute; right: 0; top: 14px;">
-        <res-status-tab
-          :loading="statisticsLoading"
-          :status-opts="statusOpts"
-          @click="statusClickHandle" />
-      </div>
-    </page-header>
+    <page-header
+     :title="$t('compute.text_101')"
+     :tabs="cloudEnvOptions"
+     :current-tab.sync="cloudEnv"
+     isShowResStatusTab
+     :status-opts="statusOpts"
+     :status-click-handle="statusClickHandle" />
     <page-body>
       <snapshot-list
         :id="listId"
@@ -35,36 +34,8 @@ export default {
       listId: 'VmDiskSnapshotsList',
       cloudEnvOptions: getCloudEnvOptions('compute_engine_brands'),
       cloudEnv: '',
-      resStaticsResource: 'snapshots',
+      statusNormalList: ['ready'],
     }
-  },
-  methods: {
-    getStatusOpts (data) {
-      const { ready = {} } = data
-      // 统计
-      let total = 0
-      let error = 0
-      let other = 0
-      for (const k in data) {
-        total += data[k].total_count
-        if (new RegExp('fail').test(k)) {
-          this.errorFilterStatus.push(k)
-          error += data[k].total_count
-        } else {
-          if (!['ready'].includes(k)) {
-            this.otherFilterStatus.push(k)
-            other += data[k].total_count
-          }
-        }
-      }
-      const statusOpts = [
-        { title: this.$t('compute.text_576'), type: 'total', num: total },
-        { title: this.$t('status.snapshot.ready'), type: 'ready', num: ready?.total_count || 0 },
-        { title: this.$t('common_623', [this.$t('scope.text_61')]), type: 'error', num: error },
-        { title: this.$t('compute.text_674'), type: 'other', num: other },
-      ]
-      return statusOpts
-    },
   },
 }
 </script>

@@ -30,14 +30,13 @@ import {
   getStatusFilter,
 } from '@/utils/common/tableFilter'
 import { getSetPublicAction } from '@/utils/common/tableActions'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import { isCE } from '@/utils/utils'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'ImageList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -88,10 +87,6 @@ export default {
         },
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'created_at', 'os_arch'],
-        fetchDataCb: (res) => {
-          const { totals = {} } = res.data
-          this.$emit('resStatisticsChange', totals)
-        },
       }),
     }
   },

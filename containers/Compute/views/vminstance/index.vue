@@ -1,12 +1,12 @@
 <template>
   <div>
-    <page-header :title="$t('compute.text_91')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv">
-      <div slot="res-status-tab" style="position: absolute; right: 0; top: 14px;">
-        <res-status-tab
-          :status-opts="statusOpts"
-          @click="statusClickHandle" />
-      </div>
-    </page-header>
+    <page-header
+      :title="$t('compute.text_91')"
+      :tabs="cloudEnvOptions"
+      :current-tab.sync="cloudEnv"
+      isShowResStatusTab
+      :status-opts="statusOpts"
+      :status-click-handle="statusClickHandle" />
     <page-body>
       <vm-instance-list
         ref="list"
@@ -15,6 +15,7 @@
         :cloudEnvOptions="cloudEnvOptions"
         :filterParams="filterParams"
         :tableOverviewIndexs="tableOverviewIndexs"
+        statusResKey="server"
         @updateCloudEnvOptions="updateCloudEnvOptions"
         @resStatisticsChange="resStatisticsChange" />
     </page-body>
@@ -37,7 +38,6 @@ export default {
     return {
       listId: 'VMInstanceList',
       cloudEnv: '',
-      resStaticsResource: 'servers',
     }
   },
   computed: {

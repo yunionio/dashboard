@@ -32,14 +32,13 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import regexp from '@/utils/regexp'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import { ASSOCIATE_MAP } from '../constants'
 
 export default {
   name: 'EipList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     cloudEnv: String,
@@ -252,10 +251,6 @@ export default {
         steadyStatus: Object.values(expectStatus.eip).flat(),
         responseData: this.responseData,
         hiddenColumns: this.hiddenColumns, // ['metadata', 'account'],
-        fetchDataCb: (res) => {
-          const { totals = {} } = res.data
-          this.$emit('resStatisticsChange', totals)
-        },
       }),
       groupActions: groupActions,
     }
