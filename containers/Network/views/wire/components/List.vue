@@ -18,7 +18,6 @@ import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 import { getNameFilter, getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import GlobalSearchMixin from '@/mixins/globalSearch'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import { HYPERVISORS } from '@/constants/index'
 import { getWiresMergeAction } from '../utils/groupactions'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -27,7 +26,7 @@ import { BAND_WIDTH_OPTION } from '../../../constants'
 
 export default {
   name: 'WireList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -116,10 +115,6 @@ export default {
         },
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
-        fetchDataCb: (res) => {
-          const { totals = {} } = res.data
-          this.$emit('resStatisticsChange', totals)
-        },
       }),
       groupActions: [
         {

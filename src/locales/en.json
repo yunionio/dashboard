@@ -9,7 +9,14 @@
       "available": "Available",
       "unknown": "Unknown",
       "update_tags": "Update tag",
-      "update_tags_fail": "Failed to update tag"
+      "update_tags_fail": "Failed to update tag",
+      "running": "Running",
+      "ready": "Stopped",
+      "online": "Online",
+      "offline": "Offline",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "active": "Available"
     },
     "monitorresources": {
       "init": "No alarm is set",
