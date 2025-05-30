@@ -9,14 +9,7 @@
       "available": "Available",
       "unknown": "Unknown",
       "update_tags": "Update tag",
-      "update_tags_fail": "Failed to update tag",
-      "running": "Running",
-      "ready": "Stopped",
-      "online": "Online",
-      "offline": "Offline",
-      "enabled": "Enabled",
-      "disabled": "Disabled",
-      "active": "Available"
+      "update_tags_fail": "Failed to update tag"
     },
     "monitorresources": {
       "init": "No alarm is set",
@@ -6171,5 +6164,6 @@
   "common.page_list_count": "Selected {0}，Total {1}",
   "common.page_list_header_item_count_stats1": "Total {0}/Selected {1}",
   "common.month": "Month",
-  "common.c": "c"
+  "common.c": "c",
+  "common.system_service": "System Service"
 }
