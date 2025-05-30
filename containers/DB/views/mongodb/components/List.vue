@@ -20,13 +20,12 @@ import ListMixin from '@/mixins/list'
 import { getNameFilter, getStatusFilter, getTenantFilter, getBrandFilter, getCloudProviderFilter, getAccountFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'MongoDBList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
   },
@@ -63,10 +62,6 @@ export default {
         },
         responseData: this.responseData,
         autoHiddenFilterKey: 'mongodb_hidden_columns',
-        fetchDataCb: (res) => {
-          const { totals = {} } = res.data
-          this.$emit('resStatisticsChange', totals)
-        },
       }),
       groupActions: [
         {

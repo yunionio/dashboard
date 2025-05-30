@@ -9,7 +9,14 @@
       "available": "利用できる",
       "unknown": "不明",
       "update_tags": "ラベルまたは名前を更新する",
-      "update_tags_fail": "ラベルまたは名前の更新に失敗しました"
+      "update_tags_fail": "ラベルまたは名前の更新に失敗しました",
+      "running": "運行中",
+      "ready": "停止",
+      "online": "オンライン",
+      "offline": "オフライン",
+      "enabled": "有効",
+      "disabled": "無効",
+      "active": "利用可能"
     },
     "monitorresources": {
       "init": "アラームは設定されていません",

@@ -35,14 +35,13 @@ import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
 import { PROVIDER_MAP } from '@/constants'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import { MEDIUM_MAP } from '../../../constants'
 
 export default {
   name: 'DiskList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -290,10 +289,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: this.hiddenColumns, // ['metadata', 'disk_format', 'storage', 'medium_type', 'created_at'],
         autoHiddenFilterKey: 'disk_hidden_columns',
-        fetchDataCb: (res) => {
-          const { totals = {} } = res.data
-          this.$emit('resStatisticsChange', totals)
-        },
       }),
       groupActions,
     }

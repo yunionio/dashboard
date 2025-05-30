@@ -23,12 +23,22 @@
       </template>
     </template>
     <slot name="res-status-tab" />
+    <div v-if="isShowResStatusTab" style="position: absolute; right: 0; top: 10px;">
+      <res-status-tab
+        :status-opts="statusOpts"
+        @click="statusClickHandle" />
+    </div>
   </div>
 </template>
 
 <script>
+import ResStatusTab from '@/sections/ResStatusTab'
+
 export default {
   name: 'PageHeader',
+  components: {
+    ResStatusTab,
+  },
   props: {
     title: {
       type: String,
@@ -38,6 +48,12 @@ export default {
     },
     tabs: Array,
     currentTab: String,
+    isShowResStatusTab: {
+      type: Boolean,
+      default: false,
+    },
+    statusOpts: Array,
+    statusClickHandle: Function,
   },
   methods: {
     handleTabChange (val) {

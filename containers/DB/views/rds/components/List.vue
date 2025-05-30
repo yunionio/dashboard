@@ -23,7 +23,6 @@ import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import globalSearchMixins from '@/mixins/globalSearch'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import { HYPERVISORS_MAP } from '@/constants'
 import regexp from '@/utils/regexp'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -31,7 +30,7 @@ import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'RDSList',
-  mixins: [WindowsMixin, ListMixin, globalSearchMixins, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
+  mixins: [WindowsMixin, ListMixin, globalSearchMixins, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     cloudEnv: String,
@@ -100,10 +99,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'vcpu_count', 'account', 'created_at'],
         autoHiddenFilterKey: 'rds_hidden_columns',
-        fetchDataCb: (res) => {
-          const { totals = {} } = res.data
-          this.$emit('resStatisticsChange', totals)
-        },
       }),
       groupActions: [
         {

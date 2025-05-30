@@ -25,7 +25,6 @@ import { mapGetters } from 'vuex'
 import _ from 'lodash'
 import { SERVER_TYPE } from '@Compute/constants'
 import ListMixin from '@/mixins/list'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import {
   getNameFilter,
   getBrandFilter,
@@ -60,7 +59,7 @@ import { cloudEnabled, cloudUnabledTip, commonEnabled, validateRescueMode } from
 
 export default {
   name: 'VmInstanceList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -74,9 +73,6 @@ export default {
     hiddenFilterOptions: {
       type: Array,
       default: () => ([]),
-    },
-    tableOverviewIndexs: {
-      type: Array,
     },
     hiddenActions: {
       type: Array,
@@ -186,10 +182,6 @@ export default {
         responseData: this.responseData,
         hiddenColumns: ['is_gpu', 'metadata', 'instance_type', 'os_type', 'vpc', 'host', 'account', 'created_at', 'macs', 'os_arch', 'vcpu_count', 'vmem_size', 'disk', 'power_states'],
         autoHiddenFilterKey: 'server_hidden_columns',
-        fetchDataCb: (res) => {
-          const { totals = {} } = res.data
-          this.$emit('resStatisticsChange', totals)
-        },
       }),
       groupActions: [
         // 新建

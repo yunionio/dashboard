@@ -14,6 +14,9 @@ export default {
       errorFilterStatus: [],
       otherFilterStatus: [],
       tableOverviewIndexs: [],
+      statusModule: 'common',
+      statusNormalList: ['running', 'ready'],
+      statusHiddenList: [],
     }
   },
   created () {
@@ -26,8 +29,10 @@ export default {
       this.generateTableOverviewIndexs(res)
     },
     getStatusOpts (data) {
-      const { ready = {}, running = {} } = data
-
+      const obj = {}
+      this.statusNormalList.forEach(k => {
+        obj[k] = 0
+      })
       // 统计
       let total = 0
       let error = 0
@@ -39,20 +44,28 @@ export default {
           this.errorFilterStatus.push(k)
           error += data[k].total_count
         } else {
-          if (!['running', 'ready'].includes(k)) {
+          if (!this.statusNormalList.includes(k)) {
             this.otherFilterStatus.push(k)
             other += data[k].total_count
+          } else {
+            obj[k] = (obj[k] || 0) + data[k].total_count
           }
         }
       }
+      const normalStatusTabs = this.statusNormalList.map(k => {
+        return {
+          type: k,
+          num: obj[k] || 0,
+          title: this.$te(`status.${this.statusModule}.${k}`) ? this.$t(`status.${this.statusModule}.${k}`) : k,
+        }
+      })
 
       const statusOpts = [
         { title: this.$t('compute.text_576'), type: 'total', num: total },
-        { title: this.$t('compute.text_574'), type: 'running', num: running?.total_count || 0 },
-        { title: this.$t('compute.text_273'), type: 'ready', num: ready?.total_count || 0 },
+        ...normalStatusTabs,
         { title: this.$t('common_623', [this.$t('scope.text_61')]), type: 'error', num: error },
         { title: this.$t('compute.text_674'), type: 'other', num: other },
-      ]
+      ].filter(item => !this.statusHiddenList.includes(item.type))
       return statusOpts
     },
     statusClickHandle (obj) {
