@@ -6037,5 +6037,6 @@
   "common.resource_alert": "リソースアラート",
   "common.global_search": "グローバル検索",
   "common.month": "月",
-  "common.c": "核"
+  "common.c": "核",
+  "common.system_service": "システムサービス"
 }
