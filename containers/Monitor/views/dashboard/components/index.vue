@@ -204,11 +204,16 @@ export default {
         },
       })
     },
-    editChart ({ id }) {
+    editChart ({ id, time, timeGroup, customTime, groupFunc }) {
       if (!id) return
       this.$router.push({
-        path: `/monitor-dashboard/${id}/update`,
-        query: {
+        name: 'MonitorDashboardChartUpdate',
+        params: {
+          id,
+          time,
+          timeGroup,
+          customTime,
+          groupFunc,
           dashboard: this.dashboardId,
           ...this.extraParams,
         },
