@@ -7,8 +7,6 @@
         <a-form-model-item :label="$t('common.text00119')" prop="startValue">
           <a-date-picker
             v-model="formData.startValue"
-            :disabled-date="disabledStartDate"
-            :disabled-time="disabledDateTime"
             :show-time="{ format: 'HH:mm', defaultValue: $moment('00:00:00', 'HH:mm:ss') }"
             format="YYYY-MM-DD HH:mm"
             :open="startOpen"
@@ -18,8 +16,6 @@
         <a-form-model-item :label="$t('common.text00120')" prop="endValue">
           <a-date-picker
             v-model="formData.endValue"
-            :disabled-date="disabledEndDate"
-            :disabled-time="disabledDateTime"
             :show-time="{ format: 'HH:mm', defaultValue: $moment('00:00:00', 'HH:mm:ss') }"
             format="YYYY-MM-DD HH:mm"
             :placeholder="$t('common.text00120')"
@@ -146,6 +142,7 @@ export default {
       }
     },
     async submit () {
+      console.log(' submit')
       try {
         const valid = await this.$refs.ruleForm.validate()
         this.diffHours = this.formData.endValue.diff(this.formData.startValue, 'hours')
@@ -154,11 +151,13 @@ export default {
           return false
         }
         if (valid) {
+          console.log(' valid')
           this.$emit('update:time', 'custom')
           this.$emit('click', 'custom')
           this.$emit('update:customTime', this.getCustomTime())
           this.visible = false
         } else {
+          console.log(' un valid')
           this.visible = true
         }
       } catch (error) {

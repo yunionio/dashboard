@@ -406,6 +406,9 @@ export default {
     timeGroup () {
       this.fetchChart()
     },
+    customTime () {
+      this.fetchChart()
+    },
     groupFunc () {
       this.fetchChart()
     },
