@@ -40,7 +40,10 @@
             :options="item.tagValueOpts"
             filterable
             :disabled="disabled"
-            :select-props="{ mode: 'multiple', placeholder: $t('monitor.text_110'), allowClear: true, loading }" />
+            :select-props="{ mode: 'multiple', placeholder: $t('monitor.text_110'), allowClear: true, loading }"
+            @change="val => tagValuesChange(val, i, item)"
+            @dropdownChange="val => tagValuesDropdownChange(val, i, item)"
+            @blur="val => tagValuesChange(val, i, item)" />
         </a-form-item>
         <a-form-item style="width: 20px;" v-if="!disabled && i !== 0">
           <a-button shape="circle" icon="minus" size="small" @click="remove(i)" class="mt-2 ml-2" />
@@ -112,6 +115,7 @@ export default {
     }
     return {
       filters: filters,
+      dropdownVisible: {},
     }
   },
   computed: {
@@ -183,6 +187,17 @@ export default {
         return item
       })
     },
+    tagValuesDropdownChange (val, i, item) {
+      this.dropdownVisible[i] = val
+      if (!val) {
+        this.$emit('tagValuesChange', item)
+      }
+    },
+    tagValuesChange (val, i, item) {
+      if (!this.dropdownVisible[i]) {
+        this.$emit('tagValuesChange', item)
+      }
+    },
     reset () {
       this.filters = [{ key: uuid(), tagValueOpts: [] }]
     },
@@ -200,6 +215,7 @@ export default {
       if (val) {
         this.filters[i].tagValueOpts = this.tagValueOpts(val)
       }
+      this.$emit('tagValuesChange')
     },
     tagValueOpts (tagKey) {
       if (R.is(Object, this.metricInfo.tag_value) && tagKey) {

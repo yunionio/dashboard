@@ -378,6 +378,7 @@ export default {
       this.change(initValue)
     },
     onBlur () {
+      this.$emit('blur')
       this.loadMoreOffset = 0
       this.query = undefined
     },

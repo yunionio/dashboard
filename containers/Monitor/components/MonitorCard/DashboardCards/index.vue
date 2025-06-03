@@ -34,7 +34,7 @@
       </template>
     </div>
     <div :class="card_style" :style="readOnly && !selectable ? '' :'padding-top: 20px;'">
-      <dashboard-card ref="dashboardCard" v-if="readOnly && !selectable" :card_style="card_style" :chartHeigth="chartHeigth" @chose_panel="chose_panel" :panel="panels.length > 0 ? panels[0] : {}" :focusPanelId="focusPanelId" :selectable="selectable" :readOnly="readOnly" :dashboard_id="id" :edit-chart="editChart" :updated_at="updatedAt" :extraParams="extraParams" @delete="handleDelete" />
+      <dashboard-card ref="dashboardCard" v-if="readOnly && !selectable" :card_style="card_style" :chartHeigth="chartHeigth" @chose_panel="chose_panel" :panel="panels.length > 0 ? panels[0] : {}" :focusPanelId="focusPanelId" :selectable="selectable" :readOnly="readOnly" :dashboard_id="id" :edit-chart="handleEditChart" :updated_at="updatedAt" :extraParams="extraParams" @delete="handleDelete" />
       <template v-else>
         <div v-for="(item, index) in panels" :key="index">
           <dashboard-card
@@ -45,7 +45,7 @@
            :selectable="selectable"
            :readOnly="readOnly"
            :dashboard_id="id"
-           :edit-chart="editChart"
+           :edit-chart="handleEditChart"
            :updated_at="updatedAt"
            :extraParams="extraParams"
            :time="time"
@@ -191,7 +191,7 @@ export default {
         this.fetchCharts()
       },
     },
-    time () {
+    time (val) {
       this.saveMonitorConfig()
     },
     timeGroup () {
@@ -200,11 +200,18 @@ export default {
     groupFunc () {
       this.saveMonitorConfig()
     },
+    customTime () {
+      this.saveMonitorConfig()
+    },
   },
   mounted () {
     this.fetchCharts()
   },
   methods: {
+    handleEditChart ({ id }) {
+      this.$emit('editChart', { id, time: this.time, timeGroup: this.timeGroup, customTime: this.customTime, groupFunc: this.groupFunc })
+      this.editChart({ id, time: this.time, timeGroup: this.timeGroup, customTime: this.customTime, groupFunc: this.groupFunc })
+    },
     pageChange (panel, pager) {
       this.saveMonitorConfig({ tablePageSize: pager.limit })
     },

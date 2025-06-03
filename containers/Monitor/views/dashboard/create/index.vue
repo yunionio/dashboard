@@ -90,14 +90,14 @@ export default {
   mixins: [MonitorTimeMixin],
   data () {
     const extraParams = {}
-    if (this.$route.query.scope) {
-      extraParams.scope = this.$route.query.scope
+    if (this.$route.params.scope) {
+      extraParams.scope = this.$route.params.scope
     }
-    if (this.$route.query.domain_id) {
-      extraParams.domain_id = this.$route.query.domain_id
+    if (this.$route.params.domain_id) {
+      extraParams.domain_id = this.$route.params.domain_id
     }
-    if (this.$route.query.project_id) {
-      extraParams.project_id = this.$route.query.project_id
+    if (this.$route.params.project_id) {
+      extraParams.project_id = this.$route.params.project_id
     }
     return {
       initFinished: !this.$route.params.id,
@@ -175,14 +175,11 @@ export default {
         new this.$Manager('alertpanels', 'v1').get({ id: this.panelId, params }).then((res) => {
           this.loading = false
           this.panel = Object.assign({}, this.panel, res.data)
-          const from = get(this.panel, 'settings.conditions[0].query.from')
-          const to = get(this.panel, 'settings.conditions[0].query.to')
-          if (from && to && to !== 'now') {
-            this.customTime = { from, to }
-            this.time = 'custom'
-          } else if (from) {
-            this.time = from
-          }
+          const { time, timeGroup, customTime, groupFunc } = this.$route.params
+          this.time = time
+          this.timeGroup = timeGroup
+          this.customTime = customTime
+          this.groupFunc = groupFunc
           this.initFinished = true
         })
       } catch (error) {
@@ -337,7 +334,7 @@ export default {
       }
     },
     goback () {
-      this.$router.push({ path: '/monitor-dashboard', query: { dashboard_id: this.$route.query.dashboard } })
+      this.$router.push({ path: '/monitor-dashboard', query: { dashboard_id: this.$route.params.dashboard } })
     },
     async handleConfirm () {
       this.loading = true
@@ -347,7 +344,7 @@ export default {
       try {
         const data = {
           name: name || uuid(32),
-          dashboard_id: this.$route.query.dashboard,
+          dashboard_id: this.$route.params.dashboard,
           metric_query: mq,
           interval: this.timeGroup,
           scope: this.$store.getters.scope,
