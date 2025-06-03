@@ -26,7 +26,8 @@
           :init-filters="initFilters"
           @remove="$nextTick(toParams)"
           :loading="metricInfoLoading"
-          :metricInfo="metricInfo" />
+          :metricInfo="metricInfo"
+          @tagValuesChange="tagValuesChange" />
       </a-form-item>
       <a-form-item :label="$t('monitor.monitor_group')">
         <base-select
@@ -416,10 +417,12 @@ export default {
     onValuesChange (props, values) {
       const newField = resolveValueChangeField(values)
       R.forEachObjIndexed((item, key) => {
-        if (R.is(Object, this.form.fd[key]) && R.is(Object, item)) {
-          this.$set(this.form.fd, key, { ...this.form.fd[key], ...item })
-        } else {
-          this.$set(this.form.fd, key, item)
+        if (!['tagValues'].includes(key)) {
+          if (R.is(Object, this.form.fd[key]) && R.is(Object, item)) {
+            this.$set(this.form.fd, key, { ...this.form.fd[key], ...item })
+          } else {
+            this.$set(this.form.fd, key, item)
+          }
         }
       }, newField)
       const changedKeys = Object.keys(values)
@@ -427,7 +430,17 @@ export default {
         this.$emit('nameChange', this.form.fd.name)
         return
       }
+      if (changedKeys.length === 1 && changedKeys[0] === 'tagValues') {
+        return
+      }
       this.$nextTick(this.toParams)
+      if ((values.hasOwnProperty('metric_key') && !values.metric_key) || (values.hasOwnProperty('metric_value') && !values.metric_value)) {
+        this.resetChart()
+      }
+    },
+    tagValuesChange (item) {
+      this.$nextTick(this.toParams)
+      const values = this.form.fc.getFieldsValue()
       if ((values.hasOwnProperty('metric_key') && !values.metric_key) || (values.hasOwnProperty('metric_value') && !values.metric_value)) {
         this.resetChart()
       }
@@ -511,7 +524,7 @@ export default {
       if (R.is(Object, fd.tagValues)) {
         R.forEachObjIndexed((value, key) => {
           let val = value
-          if ((fd.tagOperators[key] === '=~' || fd.tagOperators[key] === '!~') && val.length) {
+          if ((fd.tagOperators[key] === '=~' || fd.tagOperators[key] === '!~') && val && val.length) {
             val = `/${val.map(v => `^${v}$`).join('|')}/`
           } else {
             val = R.is(Array, val) ? (val.length ? val[0] : '') : val
