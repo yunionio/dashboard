@@ -355,6 +355,31 @@ export default {
             option.children.push(optionL2)
           })
           if (option.children.length === 0) return
+          // 合并同类型
+          const keys = []
+          option.children.forEach(item => {
+            if (!keys.includes(item.value)) {
+              keys.push(item.value)
+            }
+          })
+          const children = []
+          keys.forEach(key => {
+            const target = option.children.filter(item => item.value === key)
+            if (target.length === 1) {
+              children.push(target[0])
+            } else if (target.length > 1) {
+              const count = target.reduce((acc, item) => acc + item.count, 0)
+              const item = {
+                ...target[0],
+                count,
+                start_index: target[0].start_index,
+                end_index: target.reduce((acc, item) => acc + item.end_index, 0) + target.length,
+                children: this._getRaidOptions(raidType, count),
+              }
+              children.push(item)
+            }
+          })
+          option.children = children
           this.disksOptions.push(option)
         })
       })
