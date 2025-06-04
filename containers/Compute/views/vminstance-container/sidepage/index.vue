@@ -22,6 +22,7 @@
       :data="componentData"
       :serverColumns="columns"
       :res-id="data.id"
+      :monitor-res-id="data.id"
       :id="listId"
       :getParams="componentParams"
       :on-manager="onManager"
