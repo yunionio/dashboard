@@ -1,12 +1,21 @@
 <template>
   <div class="d-flex flex-row-reverse mb-3 res-status-tab">
     <ul class="res-status-list d-flex">
-      <li v-for="(obj, idx) in statusOpts" :key="idx" @click="statusClickHandle(obj)" :style="{'padding-right': obj.type === 'error' ? '20px' : 0}">
-        <i :class="obj.class || obj.type" />
-        <span :title="obj.title" class="title">{{ obj.title }}</span>
-        <data-loading v-if="loading" />
-        <span v-if="!loading" class="num">{{ obj.num }}</span>
-      </li>
+      <a-tooltip v-for="(obj, idx) in statusOpts" :key="idx" placement="bottom">
+        <template slot="title" v-if="obj.list && obj.list.length > 0">
+          <div class="status-list">
+            <div v-for="(item, idxs) in obj.list" class="status-item" :key="idxs" @click="statusClickHandle(item)">
+              <span>{{ item.title }}</span>: <span>{{ item.num }}</span>
+            </div>
+          </div>
+        </template>
+        <li @click="statusClickHandle(obj)" :style="{'padding-right': obj.type === 'error' ? '20px' : 0}">
+          <i :class="obj.class || obj.type" />
+          <span :title="obj.title" class="title">{{ obj.title }}</span>
+          <data-loading v-if="loading" />
+          <span v-if="!loading" class="num">{{ obj.num }}</span>
+        </li>
+      </a-tooltip>
     </ul>
   </div>
 </template>
@@ -82,6 +91,14 @@ export default {
         color: #181A1D;
         font-weight: 500;
       }
+    }
+  }
+}
+.status-list {
+  .status-item {
+    cursor: pointer;
+    &:hover {
+      color: var(--antd-wave-shadow-color);
     }
   }
 }
