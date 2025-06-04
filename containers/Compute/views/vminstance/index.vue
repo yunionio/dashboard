@@ -38,6 +38,7 @@ export default {
     return {
       listId: 'VMInstanceList',
       cloudEnv: '',
+      statusModule: 'server',
     }
   },
   computed: {
