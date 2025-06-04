@@ -30,6 +30,8 @@ export default {
     },
     getStatusOpts (data) {
       const obj = {}
+      const errorObj = {}
+      const otherObj = {}
       this.statusNormalList.forEach(k => {
         obj[k] = 0
       })
@@ -43,10 +45,12 @@ export default {
         if (new RegExp('fail').test(k)) {
           this.errorFilterStatus.push(k)
           error += data[k].total_count
+          errorObj[k] = data[k].total_count
         } else {
           if (!this.statusNormalList.includes(k)) {
             this.otherFilterStatus.push(k)
             other += data[k].total_count
+            otherObj[k] = data[k].total_count
           } else {
             obj[k] = (obj[k] || 0) + data[k].total_count
           }
@@ -63,8 +67,8 @@ export default {
       const statusOpts = [
         { title: this.$t('compute.text_576'), type: 'total', num: total },
         ...normalStatusTabs,
-        { title: this.$t('common_623', [this.$t('scope.text_61')]), type: 'error', num: error },
-        { title: this.$t('compute.text_674'), type: 'other', num: other },
+        { title: this.$t('common_623', [this.$t('scope.text_61')]), type: 'error', num: error, list: Object.keys(errorObj).map(k => ({ type: k, title: this.$te(`status.${this.statusModule}.${k}`) ? this.$t(`status.${this.statusModule}.${k}`) : k, num: errorObj[k] })) },
+        { title: this.$t('compute.text_674'), type: 'other', num: other, list: Object.keys(otherObj).map(k => ({ type: k, title: this.$te(`status.${this.statusModule}.${k}`) ? this.$t(`status.${this.statusModule}.${k}`) : k, num: otherObj[k] })) },
       ].filter(item => !this.statusHiddenList.includes(item.type))
       return statusOpts
     },
