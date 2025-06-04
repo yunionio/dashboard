@@ -227,7 +227,7 @@ export default {
       return this.time === 'custom'
     },
     timeGroupOpts () {
-      return this.isCustom ? this.customTimeGroupOpts : this.timeOpts[this.time].timeGroupOpts
+      return this.isCustom ? this.customTimeGroupOpts : this.timeOpts[this.time || '1h'].timeGroupOpts
     },
   },
   watch: {
@@ -250,7 +250,7 @@ export default {
       if (time === 'custom') {
         this.$emit('update:time', time, 'YYYY-MM-DD HH:mm')
       } else {
-        const { timeFormat } = this.timeOpts[time]
+        const { timeFormat } = this.timeOpts[time || '1h']
         this.$emit('update:time', time, timeFormat)
       }
     },
