@@ -6195,5 +6195,9 @@
   "common.page_list_header_item_count_stats1": "已展示{0}条 / 选中{1}条",
   "common.month": "月份",
   "common.c": "核",
-  "common.system_service": "系统服务"
+  "common.system_service": "系统服务",
+  "common.all_data": "全部数据",
+  "common.all_filtered_data": "当前过滤条件全部数据",
+  "common.current_page_data": "当前页数据",
+  "common.total_count": "共计{0}条"
 }
