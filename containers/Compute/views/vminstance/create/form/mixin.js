@@ -782,6 +782,13 @@ export default {
             const bastionServer = this.getBationServerData()
             data.bastion_server = bastionServer
           }
+          if (data.custom_data_type) {
+            delete data.custom_data_type
+            const { customData } = this.$refs.customData
+            if (customData.length) {
+              data.user_data = customData
+            }
+          }
           const { __count__, ...parameter } = deleteInvalid(data)
           const shopCart = {
             action: 'create',
