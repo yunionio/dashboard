@@ -362,6 +362,7 @@ export default {
         title: this.exportDataOptions.title || this.$t('common.text00010'),
         config: this.config,
         total: this.total,
+        currentPageTotal: this.dataList.length,
         options: this.exportDataOptions,
         extraParams: this.extraExportParams,
         listParams: this.params,
@@ -381,6 +382,7 @@ export default {
         tagColumns3ExportKeyFormatter: this.tagColumns3ExportKeyFormatter,
         idKey: this.idKey,
         exportUseIdKey: this.exportUseIdKey,
+        limit: this.pageLimit,
       })
     },
     handleCustomList () {
