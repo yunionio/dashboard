@@ -197,8 +197,8 @@ export default {
     },
     createChart () {
       this.$router.push({
-        path: '/monitor-dashboard/create',
-        query: {
+        name: 'MonitorDashboardChartCreate',
+        params: {
           dashboard: this.dashboardId,
           ...this.extraParams,
         },
