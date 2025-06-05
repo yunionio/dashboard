@@ -6165,5 +6165,9 @@
   "common.page_list_header_item_count_stats1": "Total {0}/Selected {1}",
   "common.month": "Month",
   "common.c": "c",
-  "common.system_service": "System Service"
+  "common.system_service": "System Service",
+  "common.all_data": "All data",
+  "common.all_filtered_data": "All filtered data",
+  "common.current_page_data": "Current page data",
+  "common.total_count": "Total {0} items"
 }

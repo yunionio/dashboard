@@ -2,20 +2,23 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{ params.title }}</div>
     <div slot="body">
-      <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item :label="$t('common.text00097')">
+      <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
+        <a-form-item :label="$t('common.text00097')" class="mb-0">
           <a-radio-group v-decorator="decorators.type" @change="handleExportTypeChange">
             <a-radio-button
               v-for="item of exportType"
               :key="item.key"
               :value="item.key">{{ item.label }}</a-radio-button>
           </a-radio-group>
+          <span v-if="totalCount !== '-'" class="ml-3">{{ this.$t('common.total_count', [totalCount]) }}</span>
         </a-form-item>
-        <a-form-item :label="$t('common.text00098')">
+        <a-form-item :label="$t('common.text00098')" class="mb-0">
           <a-checkbox
             :indeterminate="indeterminate"
             @change="handleCheckAllChange"
             :checked="checkAll">{{$t('common.checkAll')}}</a-checkbox>
+        </a-form-item>
+        <a-form-item v-bind="{wrapperCol: { span: 24 } }">
           <a-divider />
           <a-checkbox-group v-decorator="decorators.selected" @change="handleSelectedChange" class="w-100">
             <a-row>
@@ -153,6 +156,8 @@ export default {
       const { hiddenColumns = [] } = this.params.config
       return !hiddenColumns.includes(key)
     })
+
+    const currentExportType = this.params.options.type || (hasPermission({ key: 'offline_exports_create' }) && this.params.options?.supportOfflineExport ? 'all' : 'custom')
     return {
       loading: false,
       isBusinessCE: process.env.VUE_APP_IS_BUSINESS_CE,
@@ -164,7 +169,7 @@ export default {
         type: [
           'type',
           {
-            initialValue: this.params.options.type || 'custom',
+            initialValue: currentExportType,
           },
         ],
         selected: [
@@ -178,14 +183,18 @@ export default {
         ],
       },
       allExportKeys,
-      exportType: this.params.options.exportType || {
-        all: { label: this.$t('common_95'), key: 'all' },
-        custom: { label: this.$t('common_96'), key: 'custom' },
-      },
-      currentExportType: 'custom',
+      currentExportType,
       indeterminate: selectedExportKeys.length !== allExportKeys.length,
       checkAll: selectedExportKeys.length && selectedExportKeys.length === allExportKeys.length,
       selectedExportKeys: selectedExportKeys,
+      formItemLayout: {
+        wrapperCol: {
+          span: 20,
+        },
+        labelCol: {
+          span: 4,
+        },
+      },
     }
   },
   computed: {
@@ -198,12 +207,72 @@ export default {
     showOfflineExport () {
       return hasPermission({ key: 'offline_exports_create' }) && this.params.options?.supportOfflineExport
     },
+    exportType () {
+      if (this.params.options.exportType) {
+        return this.params.options.exportType
+      }
+      if (this.showOfflineExport) {
+        return {
+          all: { label: this.$t('common.all_filtered_data'), key: 'all' },
+        }
+      }
+      return {
+        all: { label: this.$t('common.all_filtered_data'), key: 'all' },
+        custom: { label: this.$t('common.current_page_data'), key: 'custom' },
+      }
+    },
     downloadType () {
       return this.params.options.downloadType === 'local' && (this.$appConfig.isPrivate || this.isBusinessCE) ? 'local' : 'remote'
+    },
+    totalCount () {
+      if (this.currentExportType === 'all') {
+        if (this.params.selected && this.params.selected.length) {
+          return this.params.selected.length
+        }
+        return this.params.total
+      }
+      if (this.currentExportType === 'custom') {
+        return this.params.currentPageTotal
+      }
+      return '-'
     },
   },
   methods: {
     genParams (formValues, total, offline) {
+      // 通用参数
+      let normalParams = {}
+      if (this.params.options.limit) {
+        normalParams.limit = R.is(Function, this.params.options.limit) ? this.params.options.limit() : this.params.options.limit
+      }
+      if (this.params.options.getParams) {
+        if (R.is(Function, this.params.options.getParams)) {
+          normalParams = {
+            ...normalParams,
+            ...this.params.options.getParams({
+              selected: formValues.selected,
+              exportType: formValues.type,
+              options: this.params.options,
+            }),
+          }
+        } else {
+          normalParams = { ...normalParams, ...this.params.options.getParams }
+        }
+      }
+      if (this.params.extraParams) {
+        normalParams = {
+          ...normalParams,
+          ...(R.is(Function, this.params.extraParams) ? this.params.extraParams({ currentExportType: this.currentExportType }) : this.params.extraParams),
+        }
+      }
+      // 如果是自定义导出范围配置，则不进行默认的导出范围参数计算
+      if (this.params.options.notCombineListParams) {
+        const listParams = this.params.listParams
+        normalParams = {
+          ...normalParams,
+          ...listParams,
+        }
+      }
+      let params = { ...normalParams }
       const keys = []
       const texts = []
       const selected = [...formValues.selected]
@@ -225,66 +294,44 @@ export default {
         keys.push(key)
         texts.push(item.label)
       }
-      let params = {
-        export: this.params.options.fileType || 'xls',
-        export_keys: keys.join(','),
-        export_texts: texts.join(','),
-        export_limit: total || this.params.total,
-        ...(R.is(Function, this.params.extraParams) ? this.params.extraParams({ currentExportType: this.currentExportType }) : this.params.extraParams),
+      // 本地导出
+      if (this.downloadType === 'local') {
+        params.details = true
+      } else { // 远程导出
+        params.export = this.params.options.fileType || 'xls'
+        params.export_keys = keys.join(',')
+        params.export_texts = texts.join(',')
       }
-      if (this.params.options.limit) {
-        params.export_limit = R.is(Function, this.params.options.limit) ? this.params.options.limit() : this.params.options.limit
-      }
-      if (this.params.options.getParams) {
-        if (R.is(Function, this.params.options.getParams)) {
-          params = {
-            ...params,
-            ...this.params.options.getParams({
-              selected: formValues.selected,
-              exportType: formValues.type,
-              options: this.params.options,
-            }),
-          }
-        } else {
-          params = { ...params, ...this.params.options.getParams }
+      // 导出范围
+      if (this.currentExportType === 'custom') { // 导出当前页
+        params.limit = this.params.currentPageTotal
+      } else if (this.currentExportType === 'all') { // 导出当前筛选的全部
+        // 如果没有自定义limit，导出全部直接把limt重置为0
+        if (R.isNil(this.params.options.limit) || R.isEmpty(this.params.options.limit)) {
+          params.limit = 0
         }
-      }
-      // 如果是自定义导出范围配置，则不进行默认的导出范围参数计算
-      if (!this.params.options.notCombineListParams) {
-        const listParams = this.params.listParams
-        if (this.exportType.custom && formValues.type === this.exportType.custom.key) { // 导出范围选择根据筛选条件时
-          params = {
-            ...params,
-            ...listParams,
-          }
-          if (this.params.selected.length) {
-            // 自定义选中的过滤项
-            if (this.params.options.genSelectedIdParams) {
-              params = this.params.options.genSelectedIdParams(params, this.params.selectedItems)
+        if (this.params.selected.length) {
+          // 自定义选中的过滤项
+          if (this.params.options.genSelectedIdParams) {
+            normalParams = this.params.options.genSelectedIdParams(normalParams, this.params.selectedItems)
+          } else {
+            const idField = (this.params.idKey && this.params.exportUseIdKey) ? this.params.idKey : 'id'
+            if (normalParams.filter && normalParams.filter.length) {
+              normalParams.filter = [...normalParams.filter, `${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
             } else {
-              const idField = (this.params.idKey && this.params.exportUseIdKey) ? this.params.idKey : 'id'
-              if (params.filter && params.filter.length) {
-                params.filter = [...params.filter, `${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
-              } else {
-                params.filter = [`${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
-              }
+              normalParams.filter = [`${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
             }
           }
-        } else if (this.exportType.all && formValues.type === this.exportType.all.key) { // 导出范围选择全部时
-          if (listParams.scope) params.scope = listParams.scope
-          // 如果没有自定义limit，导出全部直接把limt重置为0
-          if (R.isNil(this.params.options.limit) || R.isEmpty(this.params.options.limit)) {
-            params.export_limit = 0
-          }
         }
-      }
-      if (offline) {
         params.force_no_paging = true
-        params.limit = params.export_limit
+        if (params.offset) delete params.offset
+        delete params.paging_marker
+      }
+      // 离线下载
+      if (offline) {
         params.export_keys = keys
         params.export_texts = texts
-        delete params.export
-        delete params.export_limit
+        params.force_no_paging = true
         if (params.filter && params.filter.length) {
           params.filter = params.filter.flat(Infinity)
         }
@@ -292,23 +339,17 @@ export default {
         if (!params.filter.length) {
           delete params.filter
         }
-        return params
       }
-      if (this.downloadType === 'local') {
-        params.limit = params.export_limit
-        params.details = true
-        delete params.export
-        delete params.export_keys
-        delete params.export_texts
-        delete params.export_limit
-      } else {
-        if (params.limit) delete params.limit
+      // 处理limit
+      if (this.downloadType === 'remote') {
+        params.export_limit = params.limit
       }
-      params.force_no_paging = true
-      if (params.offset) delete params.offset
-      delete params.paging_marker
       if (this.params.options.transformParams) {
         params = this.params.options.transformParams(params)
+      }
+      if (params.force_no_paging) {
+        delete params.limit
+        delete params.export_limit
       }
       return params
     },
@@ -374,6 +415,7 @@ export default {
         const resource = this.params.options.resource || this.params.resource
         const total = this.params.options.resource && await this.getResourceTotal(resource)
         const params = this.genParams(values, total)
+        console.log('params', params)
 
         if (this.downloadType === 'remote') {
           const response = await this.$http({
@@ -472,8 +514,10 @@ export default {
     },
     localExport (cols, list) {
       list = list.filter(item => {
-        if (item.id && this.params.selected.length && !this.params.selected.includes(item[this.params.idKey || 'id'])) {
-          return false
+        if (this.currentExportType === 'all') {
+          if (item[this.params.idKey || 'id'] && this.params.selected.length && !this.params.selected.includes(item[this.params.idKey || 'id'])) {
+            return false
+          }
         }
         return true
       })
