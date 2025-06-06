@@ -1,8 +1,12 @@
-import { getDocsUrl } from '@/utils/utils'
-import store from '@/store'
+import { genDocsUrl } from '@/utils/utils'
 
 export const getNotifyDocsUrl = (type) => {
-  let baseUrl = getDocsUrl('system', store.getters.isSysCE) + 'web_ui/iam/notify/mailconfig'
+  let baseUrl = genDocsUrl({
+    scope: this.$store.getters.domain,
+    isSysCE: this.$store.getters.isSysCE,
+    cePath: 'guides/misc/notify/mailconfig',
+    eePath: 'web_ui/iam/notify/mailconfig',
+  })
 
   switch (type) {
     case 'mobile':

@@ -56,7 +56,7 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { getDocsUrl } from '@/utils/utils'
+import { genDocsUrl } from '@/utils/utils'
 import { typeClouds } from '@/utils/common/hypervisor'
 import ListSelect from '@/sections/ListSelect'
 import ResourcePropsMixin from '../mixins/resourceProps'
@@ -70,7 +70,6 @@ export default {
   data () {
     return {
       loading: false,
-      baseDocURL: getDocsUrl(this.$store.getters.scope, this.$store.getters.isSysCE),
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
@@ -153,7 +152,12 @@ export default {
     vendorAndDeviceLink () {
       const lang = this.$store.getters.setting.language
       if (lang === 'zh-CN') {
-        return `${this.baseDocURL}web_ui/computing/resources/gpu/#自定义透传设备类型`
+        return genDocsUrl({
+          scope: this.$store.getters.scope,
+          isSysCE: this.$store.getters.isSysCE,
+          cePath: 'guides/onpremise/vminstance/passthrough/custom-pci-devices',
+          eePath: 'web_ui/computing/resources/gpu/#自定义透传设备类型',
+        })
       }
       return null
     },

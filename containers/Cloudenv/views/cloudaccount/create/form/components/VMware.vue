@@ -49,7 +49,7 @@ import ShareMode from '@Cloudenv/views/cloudaccount/components/ShareMode'
 import { getCloudaccountDocs, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import CloudregionZone from '@/sections/CloudregionZone'
 import { isRequired } from '@/utils/validate'
-import { getDocsUrl } from '@/utils/utils'
+import { genDocsUrl } from '@/utils/utils'
 import createMixin from './createMixin'
 import DomainProject from '../../../components/DomainProject'
 
@@ -95,7 +95,6 @@ export default {
       initPort = list[1] || 8006
     }
     return {
-      baseDocURL: getDocsUrl(this.$store.getters.scope, this.$store.getters.isSysCE),
       docs: getCloudaccountDocs(this.$store.getters.scope),
       decorators: {
         name: [
@@ -187,7 +186,12 @@ export default {
   },
   computed: {
     vmDocLink () {
-      return `${this.baseDocURL}function_principle/multicloud/cloudaccounts/vmware_net/`
+      return genDocsUrl({
+        scope: this.$store.getters.scope,
+        isSysCE: this.$store.getters.isSysCE,
+        cePath: 'guides/cmp/cloudaccounts/vmware_net',
+        eePath: 'function_principle/multicloud/cloudaccounts/vmware_net',
+      })
     },
     cloudregionParams () {
       return {
