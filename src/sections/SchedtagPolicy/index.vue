@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { getDocsUrl } from '@/utils/utils'
+import { genDocsUrl } from '@/utils/utils'
 import { SCHEDTAG_POLICY_OPTIONS } from '@/constants'
 
 export default {
@@ -53,7 +53,12 @@ export default {
     return {
       policyOpts: SCHEDTAG_POLICY_OPTIONS,
       schedtagItem: {},
-      docUrl: `${getDocsUrl(this.$store.getters.scope, this.$store.getters.isSysCE)}web_ui/computing/schedule/schedtag`,
+      docUrl: genDocsUrl({
+        scope: this.$store.getters.scope,
+        isSysCE: this.$store.getters.isSysCE,
+        cePath: 'guides/onpremise/scheduler/schedtags',
+        eePath: 'web_ui/computing/schedule/schedtag',
+      }),
     }
   },
   methods: {

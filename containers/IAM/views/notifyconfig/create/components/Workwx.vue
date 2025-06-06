@@ -35,7 +35,7 @@
 
 <script>
 import TestButton from '@/sections/TestButton'
-import { getDocsUrl } from '@/utils/utils'
+import { genDocsUrl } from '@/utils/utils'
 export default {
   name: 'EnterpriseWeChat',
   components: {
@@ -87,7 +87,12 @@ export default {
         ],
       },
       contactData: null,
-      href: getDocsUrl(this.$store.getters.domain, this.$store.getters.isSysCE) + `/web_ui/iam/notify/mailconfig/#${this.$t('system.steps_to_param_mailconfig')}`,
+      href: genDocsUrl({
+        scope: this.$store.getters.domain,
+        isSysCE: this.$store.getters.isSysCE,
+        cePath: `guides/misc/notify/mailconfig/#${this.$t('system.steps_to_param_mailconfig')}`,
+        eePath: `web_ui/iam/notify/mailconfig/#${this.$t('system.steps_to_param_mailconfig')}`,
+      }),
     }
   },
   destroyed () {

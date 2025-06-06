@@ -108,7 +108,7 @@ import {
 } from '@/utils/common/tableColumn'
 import { getNameFilter } from '@/utils/common/tableFilter'
 import ListMixin from '@/mixins/list'
-import { getDocsUrl } from '@/utils/utils'
+import { genDocsUrl } from '@/utils/utils'
 
 export default {
   name: 'SshProxyCreateForm',
@@ -248,12 +248,21 @@ export default {
       return this.step.currentStep === 0
     },
     vmConfigurationLink () {
-      const docsUrl = getDocsUrl(this.$store.getters.scope, this.$store.getters.isSysCE)
       const lang = this.$store.getters.setting.language
       if (lang === 'zh-CN') {
-        return docsUrl + 'web_ui/network/ssh/sshproxy/#虚拟机配置要求'
+        return genDocsUrl({
+          scope: this.$store.getters.domain,
+          isSysCE: this.$store.getters.isSysCE,
+          cePath: 'guides/onpremise/network/ssh/sshproxy/#虚拟机配置要求',
+          eePath: 'web_ui/network/ssh/sshproxy/#虚拟机配置要求',
+        })
       } else {
-        return docsUrl + 'web_ui/network/ssh/sshproxy/#server-configuration-requirements'
+        return genDocsUrl({
+          scope: this.$store.getters.domain,
+          isSysCE: this.$store.getters.isSysCE,
+          cePath: 'guides/onpremise/network/ssh/sshproxy/#server-configuration-requirements',
+          eePath: 'web_ui/network/ssh/sshproxy/#server-configuration-requirements',
+        })
       }
     },
   },

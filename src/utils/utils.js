@@ -821,13 +821,19 @@ export function isSAAS () {
 
 export function getDocsUrl (scope, isSysCE) {
   let prefix = 'docs'
-  if (isCE() || isSysCE) {
-    return `https://www.cloudpods.org/${language}/${prefix}/`
+  const useCe = isCE() || isSysCE || 1
+  if (useCe) {
+    return `https://www.cloudpods.org/${language === 'en' ? 'en/' : ''}${prefix}/`
   }
   if (scope === 'domain' || scope === 'project') {
     prefix = prefix + '/domain'
   }
   return `${window.location.origin}/${prefix}/${language}/docs/`
+}
+
+export function genDocsUrl ({ scope, isSysCE, cePath, eePath, anchor = '' }) {
+  const useCe = isCE() || isSysCE || 1
+  return getDocsUrl(scope, isSysCE) + (useCe ? cePath : eePath) + anchor
 }
 
 /**
