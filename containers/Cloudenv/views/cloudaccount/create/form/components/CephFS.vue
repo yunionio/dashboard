@@ -44,7 +44,6 @@ import ShareMode from '@Cloudenv/views/cloudaccount/components/ShareMode'
 import DomainProject from '@Cloudenv/views/cloudaccount/components/DomainProject'
 import { getCloudaccountDocs, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
-import { getDocsUrl } from '@/utils/utils'
 import regexp from '@/utils/regexp'
 import createMixin from './createMixin'
 
@@ -87,7 +86,6 @@ export default {
       initName = options.name || ''
     }
     return {
-      baseDocURL: getDocsUrl(this.$store.getters.scope),
       docs: getCloudaccountDocs(this.$store.getters.scope),
       decorators: {
         name: [

@@ -31,7 +31,7 @@
 
 <script>
 import TestButton from '@/sections/TestButton'
-import { getDocsUrl } from '@/utils/utils'
+import { genDocsUrl } from '@/utils/utils'
 export default {
   name: 'FlyBookConfig',
   components: {
@@ -73,7 +73,12 @@ export default {
         ],
       },
       contactData: null,
-      href: getDocsUrl(this.$store.getters.domain, this.$store.getters.isSysCE) + `/web_ui/iam/notify/mailconfig/#${this.$t('system.steps_to_param_feishu')}`,
+      href: genDocsUrl({
+        scope: this.$store.getters.domain,
+        isSysCE: this.$store.getters.isSysCE,
+        cePath: `guides/misc/notify/mailconfig/#${this.$t('system.steps_to_param_feishu')}`,
+        eePath: `web_ui/iam/notify/mailconfig/#${this.$t('system.steps_to_param_feishu')}`,
+      }),
     }
   },
   destroyed () {
