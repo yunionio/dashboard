@@ -1,5 +1,5 @@
 import { typeClouds } from '@/utils/common/hypervisor'
-import { arrayToObj, getDocsUrl } from '@/utils/utils'
+import { arrayToObj, genDocsUrl } from '@/utils/utils'
 import i18n from '@/locales'
 import store from '@/store'
 const providerMap = typeClouds.getProviderlowcase()
@@ -38,8 +38,12 @@ const volcEngineLogo = require('@/assets/images/providers/volcengine.svg')
 const oraclecloudLogo = require('@/assets/images/providers/oraclecloud.svg')
 
 function getDocsCloudaccountPath (scope) {
-  const docsUrl = getDocsUrl(scope, store.getters.isSysCE)
-  return `${docsUrl}web_ui/multiplecloud/cloudaccount/cloudaccount`
+  return genDocsUrl({
+    scope,
+    isSysCE: store.getters.isSysCE,
+    cePath: 'guides/cmp/cloudaccounts/cloudaccount',
+    eePath: 'web_ui/multiplecloud/cloudaccount/cloudaccount',
+  })
 }
 
 export const CLOUDACCOUNT_TYPES = {

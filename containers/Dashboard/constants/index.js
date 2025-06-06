@@ -1,4 +1,4 @@
-import { sizestrWithUnit, sizeToDesignatedUnit, getDocsUrl } from '@/utils/utils'
+import { sizestrWithUnit, sizeToDesignatedUnit, genDocsUrl } from '@/utils/utils'
 import i18n from '@/locales'
 import { SCOPES_MAP, CLOUD_ENVS } from '@/constants'
 import store from '@/store'
@@ -1846,6 +1846,11 @@ export const PROJECT_QUOTA_CONFIG = {
 }
 
 export function getMetricDocs (scope) {
-  const docsUrl = `${getDocsUrl(scope, store.getters.isSysCE)}web_ui/intro/dashboard/`
-  return docsUrl + i18n.t('dashboard.text_184')
+  return genDocsUrl({
+    scope,
+    isSysCE: store.getters.isSysCE,
+    eePath: 'web_ui/intro/dashboard/',
+    cePath: 'guides/monitor_ops/metric',
+    anchor: i18n.t('dashboard.text_184'),
+  })
 }
