@@ -54,6 +54,8 @@
            :groupFunc="groupFunc"
            :tablePageSize="tablePageSize"
            :useLocalPanels="useLocalPanels"
+           :cursorMove="point => cursorMove(index, point)"
+           :otherCursorMovePoint="cursorMoveIndex === index ? [-10, -10] : cursorMovePoint"
            @pageChange="(pager) => pageChange(item, pager)"
            @chose_panel="chose_panel"
            @delete="handleDelete" />
@@ -171,6 +173,8 @@ export default {
       customTime: null,
       groupFunc: 'mean',
       tablePageSize: 10,
+      cursorMoveIndex: -1,
+      cursorMovePoint: [-10, -10],
     }
   },
   computed: {
@@ -276,6 +280,10 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    cursorMove (index, point) {
+      this.cursorMoveIndex = index
+      this.cursorMovePoint = point
     },
   },
 }
