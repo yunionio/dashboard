@@ -54,10 +54,12 @@
       :pager="pager"
       :showTableLegend="showLegend"
       :monitorLineCardStyle="{border:'none'}"
+      :otherCursorMovePoint="otherCursorMovePoint"
       @pageChange="pageChange"
       @chartInstance="setChartInstance"
       @exportTable="exportTable"
-      @reducedResultOrderChange="reducedResultOrderChange" />
+      @reducedResultOrderChange="reducedResultOrderChange"
+      @cursorMove="cursorMove" />
   </overview-card-layout>
 </template>
 
@@ -72,6 +74,7 @@ import { getRequestT, transformUnit } from '@/utils/utils'
 import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 // import { currencyUnitMap } from '@/constants/currency'
 import MonitorLine from '@Monitor/sections/MonitorLine'
+import { addMissingSeries } from '@Monitor/utils'
 import OverviewCardLayout from '../layout'
 
 export default {
@@ -147,6 +150,15 @@ export default {
     useLocalPanels: {
       type: Boolean,
       default: false,
+    },
+    cursorMove: {
+      type: Function,
+    },
+    otherCursorMovePoint: {
+      type: Array,
+      default: () => {
+        return [-10, -10]
+      },
     },
   },
   data () {
@@ -491,10 +503,11 @@ export default {
     },
     async fetchChart () {
       this.loading = true
+      const moment = this.$moment()
       try {
-        const { series, series_total = 0, reduced_result = {} } = await this.fetchData()
+        const { series, series_total = 0, reduced_result = {}, chartQueryData } = await this.fetchData()
         if (series) {
-          this.series = series
+          this.series = addMissingSeries(series, chartQueryData, moment)
           this.pager = { ...this.pager, total: series_total }
           this.reducedResult = reduced_result
         }
@@ -515,7 +528,7 @@ export default {
         this.resizeStatus = true
         data.signature = getSignature(this.chartQueryData)
         const { data: { series = [], series_total, reduced_result = {} } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data, params: { $t: getRequestT() } })
-        return { series, series_total, reduced_result }
+        return { series, series_total, reduced_result, chartQueryData: this.chartQueryData }
       } catch (error) {
         throw error
       }

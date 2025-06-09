@@ -22,7 +22,7 @@
     <loader v-if="loading" :loading="true" />
     <template v-else>
       <div class="d-flex">
-        <uchart :data="uChartData" :options="uChartOptions" />
+        <uchart :data="uChartData" :options="uChartOptions" :otherCursorMovePoint="otherCursorMovePoint" />
         <div v-if="alertHandlerShow && lineChartOptionsC.dataset.length" class="alert-handler-wrapper position-relative">
           <div class="position-absolute clearfix d-flex align-items-center" :style="{ top: `${topStyleRange[1]}px` }">
             <div class="alert-handler-line" />
@@ -139,6 +139,12 @@ export default {
     monitorLineCardStyle: {
       type: Object,
       default: () => ({}),
+    },
+    otherCursorMovePoint: {
+      type: Array,
+      default: () => {
+        return [-10, -10]
+      },
     },
   },
   data () {
@@ -525,6 +531,9 @@ export default {
             const val = transformUnit(value, unit, 1000, value < 1 ? '0.00' : '0.0')
             return val.text
           },
+        },
+        cursorMove: (x, y) => {
+          this.$emit('cursorMove', [x, y])
         },
       }
       this.fixedSeries.forEach((item, i) => {

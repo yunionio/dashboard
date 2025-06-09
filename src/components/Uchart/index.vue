@@ -25,6 +25,12 @@ export default {
       type: Object,
       required: true,
     },
+    otherCursorMovePoint: {
+      type: Array,
+      default: () => {
+        return [-10, -10]
+      },
+    },
   },
   data () {
     return {
@@ -47,6 +53,15 @@ export default {
     },
     'options.series' () {
       this.updateChartSeries(this.options.series)
+    },
+    otherCursorMovePoint (val) {
+      // if (val[0] !== -10 && val[1] !== -10) {
+      //   console.log('otherCursorMovePoint', val)
+      //   this.chart.setCursor({
+      //     left: val[0],
+      //     top: val[1],
+      //   })
+      // }
     },
   },
   mounted () {
@@ -113,6 +128,9 @@ export default {
             } else {
               that.tooltipShow = true
               that.updateChartTooltipStyle(self, x, y, textList)
+            }
+            if (options.cursorMove) {
+              options.cursorMove(x, y)
             }
             return [x, y]
           },
