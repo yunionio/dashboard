@@ -3,12 +3,11 @@
     <a-col :span="5" style="text-align: center;">
       <icon :type="card.icon" style="font-size: 48px;" />
       <div>{{ card.title }}</div>
-      <div style="font-weight: bold; font-size: 24px;">{{ card.total }}</div>
+      <div style="font-weight: bold; font-size: 24px;">{{ card.total }}<span v-if="card.unit" style="font-size: 12px;margin-left: 5px">{{ card.unit }}</span></div>
     </a-col>
     <a-col :span="11">
-      <div v-for="(v, k) in card.items" :key="k" class="col" style="padding-top: 8px;" @click="handleResClick(card, k)">
+      <div v-for="(v, k) in card.items" :key="k" class="col d-flex align-items-center" style="padding-top: 8px;" @click="handleResClick(card, k)">
         <status :status="k" statusModule="monitorresources" style="display: inline-grid;" />
-        <span>: </span>
         <span :class="(['guest','host'].includes(card.resType)?'asA':'')">{{ (card.items[k] || 0) }}</span>
       </div>
     </a-col>

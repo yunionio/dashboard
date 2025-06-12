@@ -13,36 +13,44 @@
 </template>
 
 <script>
+import i18n from '@/locales'
 import OverviewSummaryCard from '../../../components/MonitorCard/sections/card'
 
 const cardsTypeMap = {
   guest: {
     icon: 'res-vminstance',
     index: 1,
+    unit: i18n.t('common_62'),
   },
   host: {
     icon: 'res-host',
     index: 2,
+    unit: i18n.t('common_62'),
   },
   cloudaccount: {
     icon: 'res-cloudaccount',
     index: 3,
+    unit: i18n.t('dashboard.each'),
   },
   oss: {
     icon: 'res-bucket',
     index: 4,
+    unit: i18n.t('dashboard.each'),
   },
   storage: {
     icon: 'res-blockstorage',
     index: 5,
+    unit: i18n.t('compute.text_131'),
   },
   rds: {
     icon: 'res-rds',
     index: 6,
+    unit: i18n.t('dashboard.each'),
   },
   redis: {
     icon: 'res-redis',
     index: 7,
+    unit: i18n.t('dashboard.each'),
   },
 }
 
@@ -91,6 +99,7 @@ export default {
           total: total,
           items: items,
           index: cardsTypeMap[k]?.index || 10,
+          unit: cardsTypeMap[k]?.unit,
           resType: k,
         })
       }
