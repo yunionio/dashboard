@@ -187,6 +187,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    needBlur: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     this.loadOptsDebounce = debounce(this.loadOpts, 500)
@@ -378,7 +382,9 @@ export default {
       this.change(initValue)
     },
     onBlur () {
-      this.$emit('blur')
+      if (this.needBlur) {
+        this.$emit('blur')
+      }
       this.loadMoreOffset = 0
       this.query = undefined
     },
