@@ -39,6 +39,7 @@
             v-decorator="decorators.tagValue(item.key)"
             :options="item.tagValueOpts"
             filterable
+            needBlur
             :disabled="disabled"
             :select-props="{ mode: 'multiple', placeholder: $t('monitor.text_110'), allowClear: true, loading }"
             @change="val => tagValuesChange(val, i, item)"
