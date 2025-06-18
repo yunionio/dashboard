@@ -40,6 +40,8 @@ export default {
         top: 0,
       },
       tooltipShow: false,
+      syncing: false,
+      chart: null,
     }
   },
   computed: {
@@ -55,13 +57,16 @@ export default {
       this.updateChartSeries(this.options.series)
     },
     otherCursorMovePoint (val) {
-      // if (val[0] !== -10 && val[1] !== -10) {
-      //   console.log('otherCursorMovePoint', val)
-      //   this.chart.setCursor({
-      //     left: val[0],
-      //     top: val[1],
-      //   })
-      // }
+      if (this.isEmptyData) return
+      if (val[0] !== -10 && val[1] !== -10) {
+        if (this.syncing) return
+        this.syncing = true
+        this.chart.setCursor({
+          left: val[0],
+          top: val[1],
+        })
+        this.syncing = false
+      }
     },
   },
   mounted () {
@@ -91,6 +96,10 @@ export default {
         width: this.$refs.chart.clientWidth,
         cursor: {
           move: function (self, x, y) {
+            if (options.cursorMove) {
+              if (that.syncing) return [x, y]
+              that.syncing = true
+            }
             const index = self.posToIdx(x)
             const data = []
             let time = ''
@@ -131,6 +140,7 @@ export default {
             }
             if (options.cursorMove) {
               options.cursorMove(x, y)
+              that.syncing = false
             }
             return [x, y]
           },
