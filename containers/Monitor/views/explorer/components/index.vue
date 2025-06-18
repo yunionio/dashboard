@@ -55,6 +55,7 @@ import { getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
 import { timeOpts } from '@/constants/monitor'
 import MonitorTimeMixin from '@/mixins/monitorTime'
+import { addMissingSeries } from '@Monitor/utils'
 
 export default {
   name: 'ExplorerIndex',
@@ -160,8 +161,9 @@ export default {
         jobs.push(this.fetchData(metric_query, this.tablePageSize, 0))
       }
       try {
+        const moment = this.$moment()
         const res = await Promise.all(jobs)
-        this.seriesList = res.map(val => get(val, 'series') || [])
+        this.seriesList = res.map(val => addMissingSeries(get(val, 'series') || [], { ...this.timeRangeParams, interval: this.timeGroup }, moment))
         this.resultList = res.map(val => get(val, 'reduced_result') || [])
         this.resultOrderList = res.map(() => '')
         this.seriesListPager = res.map((val, index) => ({ seriesIndex: index, total: get(val, 'series_total') || 0, page: 1, limit: this.tablePageSize }))
