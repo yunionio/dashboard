@@ -58,6 +58,7 @@ export default {
     },
     otherCursorMovePoint (val) {
       if (this.isEmptyData) return
+      if (this.tooltipShow) return
       if (val[0] !== -10 && val[1] !== -10) {
         if (this.syncing) return
         this.syncing = true
@@ -66,6 +67,14 @@ export default {
           top: val[1],
         })
         this.syncing = false
+      }
+      if (val[0] === -10 && val[1] === -10) {
+        if (this.chart && (this.chart.cursor.left !== -10 || this.chart.cursor.top !== -10)) {
+          this.chart.setCursor({
+            left: val[0],
+            top: val[1],
+          })
+        }
       }
     },
   },
