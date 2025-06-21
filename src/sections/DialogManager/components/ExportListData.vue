@@ -216,23 +216,27 @@ export default {
           all: { label: this.$t('common.all_filtered_data'), key: 'all' },
         }
       }
-      return {
+      const exportType = {
         all: { label: this.$t('common.all_filtered_data'), key: 'all' },
         custom: { label: this.$t('common.current_page_data'), key: 'custom' },
       }
+      if (this.params.selected.length) {
+        exportType.selected = { label: this.$t('common.selected_data'), key: 'selected' }
+      }
+      return exportType
     },
     downloadType () {
       return this.params.options.downloadType === 'local' && (this.$appConfig.isPrivate || this.isBusinessCE) ? 'local' : 'remote'
     },
     totalCount () {
       if (this.currentExportType === 'all') {
-        if (this.params.selected && this.params.selected.length) {
-          return this.params.selected.length
-        }
         return this.params.total
       }
       if (this.currentExportType === 'custom') {
         return this.params.currentPageTotal
+      }
+      if (this.currentExportType === 'selected') {
+        return this.params.selected.length
       }
       return '-'
     },
@@ -310,6 +314,10 @@ export default {
         if (R.isNil(this.params.options.limit) || R.isEmpty(this.params.options.limit)) {
           params.limit = 0
         }
+        params.force_no_paging = true
+        if (params.offset) delete params.offset
+        delete params.paging_marker
+      } else if (this.currentExportType === 'selected') { // 导出已选中的数据
         if (this.params.selected.length) {
           // 自定义选中的过滤项
           if (this.params.options.genSelectedIdParams) {
@@ -323,9 +331,6 @@ export default {
             }
           }
         }
-        params.force_no_paging = true
-        if (params.offset) delete params.offset
-        delete params.paging_marker
       }
       // 离线下载
       if (offline) {
@@ -510,7 +515,7 @@ export default {
     },
     localExport (cols, list) {
       list = list.filter(item => {
-        if (this.currentExportType === 'all') {
+        if (this.currentExportType === 'selected') {
           if (item[this.params.idKey || 'id'] && this.params.selected.length && !this.params.selected.includes(item[this.params.idKey || 'id'])) {
             return false
           }
