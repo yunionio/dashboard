@@ -238,7 +238,7 @@ export default {
     },
   },
   methods: {
-    genParams (formValues, total, offline) {
+    genParams (formValues, offline) {
       // 通用参数
       let normalParams = {}
       if (this.params.options.limit) {
@@ -265,7 +265,7 @@ export default {
         }
       }
       // 如果是自定义导出范围配置，则不进行默认的导出范围参数计算
-      if (this.params.options.notCombineListParams) {
+      if (!this.params.options.notCombineListParams) {
         const listParams = this.params.listParams
         normalParams = {
           ...normalParams,
@@ -313,13 +313,13 @@ export default {
         if (this.params.selected.length) {
           // 自定义选中的过滤项
           if (this.params.options.genSelectedIdParams) {
-            normalParams = this.params.options.genSelectedIdParams(normalParams, this.params.selectedItems)
+            params = this.params.options.genSelectedIdParams(params, this.params.selectedItems)
           } else {
             const idField = (this.params.idKey && this.params.exportUseIdKey) ? this.params.idKey : 'id'
-            if (normalParams.filter && normalParams.filter.length) {
-              normalParams.filter = [...normalParams.filter, `${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
+            if (params.filter && params.filter.length) {
+              params.filter = [...params.filter, `${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
             } else {
-              normalParams.filter = [`${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
+              params.filter = [`${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
             }
           }
         }
@@ -368,9 +368,7 @@ export default {
       try {
         const values = await this.validateForm()
         this.loading = true
-        const resource = this.params.options.resource || this.params.resource
-        const total = this.params.options.resource && await this.getResourceTotal(resource)
-        const params = this.genParams(values, total, true)
+        const params = this.genParams(values, true)
         const export_keys = params.export_keys
         const export_texts = params.export_texts
         delete params.export_keys
@@ -413,9 +411,7 @@ export default {
         const values = await this.validateForm()
         this.loading = true
         const resource = this.params.options.resource || this.params.resource
-        const total = this.params.options.resource && await this.getResourceTotal(resource)
-        const params = this.genParams(values, total)
-        console.log('params', params)
+        const params = this.genParams(values)
 
         if (this.downloadType === 'remote') {
           const response = await this.$http({
