@@ -6199,5 +6199,6 @@
   "common.all_data": "全部数据",
   "common.all_filtered_data": "当前过滤条件全部数据",
   "common.current_page_data": "当前页数据",
+  "common.selected_data": "已选中数据",
   "common.total_count": "共计{0}条"
 }
