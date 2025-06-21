@@ -6169,5 +6169,6 @@
   "common.all_data": "All data",
   "common.all_filtered_data": "All filtered data",
   "common.current_page_data": "Current page data",
+  "common.selected_data": "Selected data",
   "common.total_count": "Total {0} items"
 }

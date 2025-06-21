@@ -6187,5 +6187,6 @@
   "common.all_data": "全部データ",
   "common.all_filtered_data": "現在のフィルタリング条件のすべてのデータ",
   "common.current_page_data": "現在のページのデータ",
+  "common.selected_data": "選択済みデータ",
   "common.total_count": "合計{0}件"
 }
