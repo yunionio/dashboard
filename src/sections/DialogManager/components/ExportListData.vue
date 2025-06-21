@@ -216,29 +216,33 @@ export default {
           all: { label: this.$t('common.all_filtered_data'), key: 'all' },
         }
       }
-      return {
+      const exportType = {
         all: { label: this.$t('common.all_filtered_data'), key: 'all' },
         custom: { label: this.$t('common.current_page_data'), key: 'custom' },
       }
+      if (this.params.selected.length) {
+        exportType.selected = { label: this.$t('common.selected_data'), key: 'selected' }
+      }
+      return exportType
     },
     downloadType () {
       return this.params.options.downloadType === 'local' && (this.$appConfig.isPrivate || this.isBusinessCE) ? 'local' : 'remote'
     },
     totalCount () {
       if (this.currentExportType === 'all') {
-        if (this.params.selected && this.params.selected.length) {
-          return this.params.selected.length
-        }
         return this.params.total
       }
       if (this.currentExportType === 'custom') {
         return this.params.currentPageTotal
       }
+      if (this.currentExportType === 'selected') {
+        return this.params.selected.length
+      }
       return '-'
     },
   },
   methods: {
-    genParams (formValues, total, offline) {
+    genParams (formValues, offline) {
       // 通用参数
       let normalParams = {}
       if (this.params.options.limit) {
@@ -265,7 +269,7 @@ export default {
         }
       }
       // 如果是自定义导出范围配置，则不进行默认的导出范围参数计算
-      if (this.params.options.notCombineListParams) {
+      if (!this.params.options.notCombineListParams) {
         const listParams = this.params.listParams
         normalParams = {
           ...normalParams,
@@ -310,22 +314,23 @@ export default {
         if (R.isNil(this.params.options.limit) || R.isEmpty(this.params.options.limit)) {
           params.limit = 0
         }
-        if (this.params.selected.length) {
-          // 自定义选中的过滤项
-          if (this.params.options.genSelectedIdParams) {
-            normalParams = this.params.options.genSelectedIdParams(normalParams, this.params.selectedItems)
-          } else {
-            const idField = (this.params.idKey && this.params.exportUseIdKey) ? this.params.idKey : 'id'
-            if (normalParams.filter && normalParams.filter.length) {
-              normalParams.filter = [...normalParams.filter, `${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
-            } else {
-              normalParams.filter = [`${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
-            }
-          }
-        }
         params.force_no_paging = true
         if (params.offset) delete params.offset
         delete params.paging_marker
+      } else if (this.currentExportType === 'selected') { // 导出已选中的数据
+        if (this.params.selected.length) {
+          // 自定义选中的过滤项
+          if (this.params.options.genSelectedIdParams) {
+            params = this.params.options.genSelectedIdParams(params, this.params.selectedItems)
+          } else {
+            const idField = (this.params.idKey && this.params.exportUseIdKey) ? this.params.idKey : 'id'
+            if (params.filter && params.filter.length) {
+              params.filter = [...params.filter, `${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
+            } else {
+              params.filter = [`${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
+            }
+          }
+        }
       }
       // 离线下载
       if (offline) {
@@ -368,9 +373,7 @@ export default {
       try {
         const values = await this.validateForm()
         this.loading = true
-        const resource = this.params.options.resource || this.params.resource
-        const total = this.params.options.resource && await this.getResourceTotal(resource)
-        const params = this.genParams(values, total, true)
+        const params = this.genParams(values, true)
         const export_keys = params.export_keys
         const export_texts = params.export_texts
         delete params.export_keys
@@ -413,9 +416,7 @@ export default {
         const values = await this.validateForm()
         this.loading = true
         const resource = this.params.options.resource || this.params.resource
-        const total = this.params.options.resource && await this.getResourceTotal(resource)
-        const params = this.genParams(values, total)
-        console.log('params', params)
+        const params = this.genParams(values)
 
         if (this.downloadType === 'remote') {
           const response = await this.$http({
@@ -514,7 +515,7 @@ export default {
     },
     localExport (cols, list) {
       list = list.filter(item => {
-        if (this.currentExportType === 'all') {
+        if (this.currentExportType === 'selected') {
           if (item[this.params.idKey || 'id'] && this.params.selected.length && !this.params.selected.includes(item[this.params.idKey || 'id'])) {
             return false
           }
