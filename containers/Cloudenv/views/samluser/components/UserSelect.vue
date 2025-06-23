@@ -118,6 +118,12 @@ export default {
     cloudproviderId (val) {
       this.getConditionDomains()
     },
+    defaultProject: {
+      handler () {
+        this.fetchUsers()
+      },
+      deep: true,
+    },
   },
   destroyed () {
     this.cm = null
@@ -373,6 +379,7 @@ export default {
       if (query) {
         params['users.0'] = query
       }
+      if (!this.defaultProject.id) return
       try {
         const response = await new this.$Manager('role_assignments', 'v1').objectRpc({
           methodname: 'GetProjectRole',
