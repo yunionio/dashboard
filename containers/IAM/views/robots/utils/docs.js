@@ -1,9 +1,10 @@
 import { genDocsUrl } from '@/utils/utils'
+import store from '@/store'
 
 export const getWebhookDocsUrl = (type) => {
   let baseUrl = genDocsUrl({
-    scope: this.$store.getters.domain,
-    isSysCE: this.$store.getters.isSysCE,
+    scope: store.getters.domain,
+    isSysCE: store.getters.isSysCE,
     cePath: 'guides/misc/notify/bot',
     eePath: 'web_ui/iam/notify/bot',
   })
