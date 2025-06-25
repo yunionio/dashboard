@@ -68,7 +68,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '../../../styles/less/theme';
+@import "~ant-design-vue/lib/style/themes/default";
 
 @keyframes glint {
   50% {
