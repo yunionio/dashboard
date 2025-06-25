@@ -2,7 +2,7 @@
   <base-side-page
    @cancel="cancelSidePage"
     :title="$t('dictionary.tablestore')"
-    icon="res-tablestore"
+    icon="res-table-storage"
     :res-name="detailData.name"
     :tabs="detailTabs"
     :current-tab="params.windowData.currentTab"

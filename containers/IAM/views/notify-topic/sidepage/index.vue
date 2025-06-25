@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     :title="$t('dictionary.notify-topic')"
-    icon="res-topic"
+    icon="res-notify-topic"
     :res-name="resName"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
