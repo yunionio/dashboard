@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     :title="$t('dictionary.vpc_peer_connect')"
-    icon="res-vpc-peer-connect"
+    icon="res-vpc-peerconnect"
     :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
