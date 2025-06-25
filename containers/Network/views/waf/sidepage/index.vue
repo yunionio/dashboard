@@ -24,11 +24,11 @@
 import Actions from '@/components/PageList/Actions'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
+import RuleManage from '@Network/views/waf-rule/components/List'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import detail from './Detail'
 import ResourceManage from './ResourceManage'
-import RuleManage from './RuleManage'
 
 export default {
   name: 'WafSidePage',

@@ -62,11 +62,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
 import WafMixin from '../mixins/waf'
 import BoxShow from '../components/statementComponents/BoxShow'
 import WafRuleStatement from '../components/WafRuleStatement'
-import DialogMixin from '@/mixins/dialog'
-import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'WafRuleInfoDialog',
