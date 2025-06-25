@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     :title="$t('helm.text_77')"
-    icon="res-k8s-release"
+    icon="res-vm-release"
     :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
@@ -29,14 +29,14 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import Virtualmachine from './Virtualmachine'
-import Detail from './Detail'
 import K8s_ansibleplaybook from '@Helm/views/k8s-ansibleplaybook/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import Virtualmachine from './Virtualmachine'
+import Detail from './Detail'
 
 export default {
   name: 'VmReleaseSidePage',
