@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     :title="$t('dictionary.cloudgroup')"
-    icon="res-cloudaccount"
+    icon="res-cloudgroup"
     :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"

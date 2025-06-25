@@ -2,7 +2,7 @@
   <base-side-page
       @cancel="cancelSidePage"
       :title="$t('network.ssh-proxy.endpoints')"
-      icon="res-cluster"
+      icon="res-ssh-proxy"
       :res-name="detailData.name"
       :current-tab="params.windowData.currentTab"
       :tabs="detailTabs"
@@ -28,13 +28,13 @@
 </template>
 
 <script>
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import SshProxyDetail from './Detail'
 import SshProxyScopeSidePage from './Scope'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
 
 export default {
   name: 'SshProxySidePage',

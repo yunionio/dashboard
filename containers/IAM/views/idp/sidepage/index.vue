@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     :title="$t('dictionary.identity_provider')"
-    icon="res-identity-provider"
+    icon="res-idp"
     :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"

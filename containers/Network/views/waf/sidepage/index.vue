@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     :title="$t('dictionary.waf_instance')"
-    icon="waf"
+    icon="res-waf"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :loaded="loaded"
