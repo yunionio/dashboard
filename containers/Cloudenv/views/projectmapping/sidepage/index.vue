@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     :title="$t('cloudenv.text_580')"
-    icon="projectmapping"
+    icon="res-projectmapping"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :loaded="loaded"
@@ -21,13 +21,13 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import detail from './Detail'
 import RuleList from '@Cloudenv/views/projectmapping/components/RuleList/index.vue'
 import Actions from '@/components/PageList/Actions'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import detail from './Detail'
 
 export default {
   name: 'ProjectMappingSidePage',

@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     :title="$t('cloudenv.text_10')"
-    icon="res-region"
+    icon="res-cloudregion"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :loaded="loaded"
@@ -19,14 +19,14 @@
 </template>
 
 <script>
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
 import ColumnsMixin from '../mixins/columns'
 import CloudregionDetail from './Detail'
 import Dashboard from './Dashboard'
 import VPCList from './VPCList'
 import NetworkList from './NetworkList'
 import ZoneList from './ZoneList'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'CloudregionSidePage',

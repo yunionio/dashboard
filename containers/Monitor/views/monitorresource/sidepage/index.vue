@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     :title="title"
-    icon="res-commonalert"
+    icon="res-commonalerts"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
