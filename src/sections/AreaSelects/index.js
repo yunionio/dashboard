@@ -389,7 +389,7 @@ export default {
         </a-select>
       )
     },
-    async fetchCloudregion (queryParams) {
+    async fetchCloudregion (queryParams = {}) {
       const { getFieldsValue } = this.FC
       // const { city, provider } = getFieldsValue(this.names)
       const { provider } = getFieldsValue(this.names)
