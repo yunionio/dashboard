@@ -4,25 +4,31 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: i18n.t('storage.text_100'),
-        permission: 'access_groups_perform_syncstatus',
+        label: i18n.t('cloudenv.text_590'),
         action: obj => {
-          this.onManager('performAction', {
-            steadyStatus: ['available'],
-            id: obj.id,
-            managerArgs: {
-              action: 'syncstatus',
-            },
-          })
+          this.handleOpenSidepage(obj, 'access-group-rule')
         },
-        meta: () => ({
-          validate: true,
-        }),
       },
       {
         label: i18n.t('storage.text_65'),
         actions: (obj) => {
           return [
+            {
+              label: i18n.t('storage.text_100'),
+              permission: 'access_groups_perform_syncstatus',
+              action: obj => {
+                this.onManager('performAction', {
+                  steadyStatus: ['available'],
+                  id: obj.id,
+                  managerArgs: {
+                    action: 'syncstatus',
+                  },
+                })
+              },
+              meta: () => ({
+                validate: true,
+              }),
+            },
             {
               label: i18n.t('storage.text_36'),
               permission: 'access_groups_delete',
@@ -44,5 +50,21 @@ export default {
         },
       },
     ]
+  },
+  methods: {
+    handleOpenSidepage (row, tab) {
+      if (this.sidePageData) {
+        this.handleTabChange(tab)
+      } else {
+        this.sidePageTriggerHandle(this, 'AccessGroupSidePage', {
+          id: row.id,
+          resource: 'access_groups',
+          getParams: this.getParam,
+        }, {
+          list: this.list,
+          tab,
+        })
+      }
+    },
   },
 }
