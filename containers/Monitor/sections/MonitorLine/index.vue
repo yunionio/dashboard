@@ -540,7 +540,7 @@ export default {
         const color = (this.colors && this.colors[i]) || this.colorHash.hex(`${i * 1000}`)
         if (this.highlights.some(item => item.index === i)) {
           const label = getChartTooltipLabel(item)
-          ret.series.push({ label, width: 1, stroke: color, unit, color, points: { show: true, size: 3 } })
+          ret.series.push({ label, width: 1, stroke: color, spanGaps: true, unit, color, points: { show: true, size: 3 } })
         }
       })
       return ret
