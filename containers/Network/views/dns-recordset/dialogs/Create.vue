@@ -76,7 +76,7 @@
           <a-row
             :gutter="4"
             class="record-list mb-3">
-            <a-col :span="12">
+            <a-col :span="6">
               <a-form-item>
                 <a-select v-decorator="decorators.policy_type" @change="policyTypeChangeHandle">
                   <template
@@ -91,9 +91,16 @@
                 </a-select>
               </a-form-item>
             </a-col>
-            <a-col :span="12">
+            <a-col :span="18">
               <a-form-item>
                 <a-input v-if="form.fd.policy_type === 'Weighted'" v-decorator="decorators.policy_txtvalue" />
+                <a-cascader
+                  v-decorator="decorators.policy_value_list"
+                  v-else-if="isAliyunEE"
+                  :options="policyValueOptions"
+                  change-on-select
+                  expand-trigger="hover"
+                  @change="onChange" />
                 <a-select v-else :disabled="form.fd.policy_type === 'Simple' || form.fd.policy_type === 'MultiValueAnswer'" v-decorator="decorators.policy_value">
                   <a-select-option
                     :key="i"
@@ -124,8 +131,8 @@ import validateForm, { validate } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import Tag from '@/sections/Tag'
-import { getDnsTypes, getDnsProviders, getTtls } from '../utils'
-import { providers, policy_types, policy_values } from '../constants'
+import { getDnsTypes, getDnsProviders, getTtls, getPolicyValueOpts, getAliyunEEPolicyValuePath } from '../utils'
+import { providers, policy_types, policy_values, aliyun_ee_policy_types } from '../constants'
 
 export default {
   name: 'DnsRecordSetCreateDialog',
@@ -141,6 +148,7 @@ export default {
     const ttls = getTtls(this.params.detailData)
     const initPolicyType = this.params.data ? this.params.data[0]?.policy_type || 'Simple' : 'Simple'
     const initProxied = this.params.data ? this.params.data[0]?.proxied || false : false
+    let initPolicyValue = this.params.data ? this.params.data[0]?.policy_value || '' : ''
 
     const checkDnsValue = (rule, value, callback) => {
       if (this.form.fd.dns_type === 'A') {
@@ -218,6 +226,12 @@ export default {
         callback(new Error(this.$t('network.text_734')))
       }
       callback()
+    }
+
+    const isAliyunEE = this.params.detailData.provider === 'Aliyun' && this.params.detailData.product_type === 'Enterprise'
+
+    if (isAliyunEE) {
+      initPolicyValue = getAliyunEEPolicyValuePath(initPolicyType, initPolicyValue).path || []
     }
 
     return {
@@ -315,7 +329,17 @@ export default {
         policy_value: [
           'policy_value',
           {
-            initialValue: '',
+            initialValue: !isAliyunEE ? initPolicyValue : '',
+          },
+        ],
+        policy_value_list: [
+          'policy_value_list',
+          {
+            initialValue: isAliyunEE ? initPolicyValue : [],
+            rules: [{
+              required: true,
+              message: this.$t('common.tips.select', [this.$t('common_696')]),
+            }],
           },
         ],
         policy_txtvalue: [
@@ -344,6 +368,7 @@ export default {
           span: 4,
         },
       },
+      isAliyunEE,
     }
   },
   computed: {
@@ -390,6 +415,9 @@ export default {
       return this.trafficPolicies.map(v => v.provider)
     },
     policyTypeOpts () {
+      if (this.isAliyunEE) {
+        return aliyun_ee_policy_types
+      }
       return this.getPublicTypes(this.params.detailData.provider, this.zoneType)
     },
     policyValueOpts () {
@@ -400,6 +428,10 @@ export default {
     },
     showProxied () {
       return this.isCloudflare && ['A', 'AAAA', 'CNAME'].includes(this.form.fd.dns_type)
+    },
+    policyValueOptions () {
+      if (!this.isAliyunEE) return []
+      return getPolicyValueOpts(this.form.fd.policy_type)
     },
   },
   created () {
@@ -436,7 +468,14 @@ export default {
     },
     policyTypeChangeHandle (val) {
       this.$nextTick(() => {
-        if (this.policyValueOpts.length > 0) {
+        if (this.isAliyunEE) {
+          this.form.fc.setFieldsValue({
+            policy_value_list: [],
+          })
+          this.form.fc.setFieldsValue({
+            policy_txtvalue: '',
+          })
+        } else if (this.policyValueOpts.length > 0) {
           this.form.fc.setFieldsValue({
             policy_value: this.policyValueOpts[0].value,
           })
@@ -454,7 +493,7 @@ export default {
       })
     },
     generateData (values) {
-      const { name, dns_type, dns_value, ttl, policy_type, policy_value, policy_txtvalue, mx_priority, proxied } = values
+      const { name, dns_type, dns_value, ttl, policy_type, policy_value, policy_value_list = [], policy_txtvalue, mx_priority, proxied } = values
       const { id } = this.params.detailData
       const data = {
         name,
@@ -470,7 +509,11 @@ export default {
       }
       if (this.isPublic && !this.isCloudflare) {
         data.policy_type = policy_type
-        data.policy_value = policy_type === 'Weighted' ? policy_txtvalue : policy_value
+        if (this.isAliyunEE) {
+          data.policy_value = policy_value_list.length ? policy_value_list[policy_value_list.length - 1] : ''
+        } else {
+          data.policy_value = policy_type === 'Weighted' ? policy_txtvalue : policy_value
+        }
       }
       if (this.isCloudflare && this.showProxied) {
         data.proxied = proxied
