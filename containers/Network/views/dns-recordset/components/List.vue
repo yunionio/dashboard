@@ -148,6 +148,9 @@ export default {
         },
       }] : this.columns
     },
+    isAliyunEE () {
+      return this.data.provider === 'Aliyun' && this.data.product_type === 'Enterprise'
+    },
   },
   created () {
     this.initSidePageTab('dns-recordset-detail')

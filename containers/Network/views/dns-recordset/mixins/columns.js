@@ -36,7 +36,7 @@ export default {
       getTagTableColumn({ onManager: this.onManager, resource: 'dnsrecords', columns: () => this.columns }),
       getDnsTypeTableColumns(),
       getDnsValueTableColumns(),
-      getTrafficPoliciesTableColumns(),
+      getTrafficPoliciesTableColumns(this.isAliyunEE),
       getTtlTableColumns(),
       {
         title: i18n.t('network.owner_dns_zone'),
