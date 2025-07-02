@@ -1,5 +1,6 @@
-import { policyParamsMap } from '../constants'
 import i18n from '@/locales'
+import { policyParamsMap } from '../constants'
+import { getAliyunEEPolicyValuePath } from './index'
 
 export const getDnsTypeTableColumns = () => {
   return {
@@ -22,7 +23,7 @@ export const getTtlTableColumns = () => {
   }
 }
 
-export const getTrafficPoliciesTableColumns = () => {
+export const getTrafficPoliciesTableColumns = (isAliyunEE) => {
   return {
     field: 'traffic_policies',
     title: i18n.t('common_696'),
@@ -37,7 +38,12 @@ export const getTrafficPoliciesTableColumns = () => {
             con.push(policyParamsMap.policy_type[item.policy_type])
           }
           if (item.policy_value) {
-            con.push(policyParamsMap.policy_value[item.policy_value] || item.policy_value)
+            if (isAliyunEE) {
+              const val = getAliyunEEPolicyValuePath(item.policy_type, item.policy_value)
+              con.push(val.label || policyParamsMap.policy_value[item.policy_value] || item.policy_value)
+            } else {
+              con.push(policyParamsMap.policy_value[item.policy_value] || item.policy_value)
+            }
           }
           return con.join('/')
         }
