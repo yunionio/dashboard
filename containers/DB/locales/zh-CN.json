@@ -417,5 +417,6 @@
   "db.query_qps": "QPS",
   "db.trans_qps": "TPS",
   "db.innodb_read_io": "innodb读IO",
-  "db.innodb_write_io": "innodb写IO"
+  "db.innodb_write_io": "innodb写IO",
+  "db.network_address": "域名地址"
 }
