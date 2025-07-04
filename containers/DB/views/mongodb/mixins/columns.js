@@ -89,6 +89,30 @@ export default {
         },
       },
       {
+        field: 'network_address',
+        title: i18n.t('db.network_address'),
+        minWidth: 200,
+        slots: {
+          default: ({ row }) => {
+            if (!row.network_address) return '-'
+            const ret = row.network_address.split(',').map(ip => {
+              return <list-body-cell-wrap hide-field copy row={{ ip }} field="ip">{ip}</list-body-cell-wrap>
+            })
+            return ret
+          },
+        },
+        formatter: ({ row }) => {
+          if (!row.network_address) return '-'
+          const ret = row.network_address.split(',').map(ip => {
+            return ip
+          })
+          return ret.join(',')
+        },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('mongodb_hidden_columns.network_address')
+        },
+      },
+      {
         field: 'engine_version',
         title: i18n.t('db.text_377'),
         slots: {
