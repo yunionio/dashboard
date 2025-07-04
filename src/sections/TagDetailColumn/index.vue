@@ -63,6 +63,7 @@ export default {
       type: Object,
       default: () => { return {} },
     },
+    idKey: String,
   },
   inject: {
     // 是否处于BaseDialog中
@@ -130,6 +131,7 @@ export default {
         onManager: this.onManager,
         params: this.params,
         tipName: this.tipName,
+        idKey: this.idKey,
       })
     },
   },
