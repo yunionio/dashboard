@@ -180,11 +180,6 @@ export const provinces = [
     region: 'huadong',
   },
   {
-    key: 'shanghai',
-    label: i18n.t('network.province.shanghai'),
-    region: 'huadong',
-  },
-  {
     key: 'hainan',
     label: i18n.t('network.province.hainan'),
     region: 'huanan',
@@ -202,11 +197,6 @@ export const provinces = [
   {
     key: 'hubei',
     label: i18n.t('network.province.hubei'),
-    region: 'huazhong',
-  },
-  {
-    key: 'hunan',
-    label: i18n.t('network.province.hunan'),
     region: 'huazhong',
   },
   {
