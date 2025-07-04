@@ -305,7 +305,7 @@ export default {
           this.$message.warning(this.$t('common_119'))
           return
         }
-        const ids = this.params.data.map(item => item[this.params.idKey])
+        const ids = this.params.data.map(item => item[this.params.idKey || 'id'])
         const action = this.isBatchAddMode ? 'user-metadata' : 'set-user-metadata'
         const { manager } = this.params
         if (manager) {
