@@ -821,7 +821,7 @@ export function isSAAS () {
 
 export function getDocsUrl (scope, isSysCE) {
   let prefix = 'docs'
-  const useCe = isCE() || isSysCE || 1
+  const useCe = isCE() || isSysCE
   if (useCe) {
     return `https://www.cloudpods.org/${language === 'en' ? 'en/' : ''}${prefix}/`
   }
@@ -832,7 +832,7 @@ export function getDocsUrl (scope, isSysCE) {
 }
 
 export function genDocsUrl ({ scope, isSysCE, cePath, eePath, anchor = '' }) {
-  const useCe = isCE() || isSysCE || 1
+  const useCe = isCE() || isSysCE
   return getDocsUrl(scope, isSysCE) + (useCe ? cePath : eePath) + anchor
 }
 
