@@ -417,5 +417,6 @@
   "db.query_qps": "QPS",
   "db.trans_qps": "TPS",
   "db.innodb_read_io": "innodb read IO",
-  "db.innodb_write_io": "innodb write IO"
+  "db.innodb_write_io": "innodb write IO",
+  "db.network_address": "Network Address"
 }

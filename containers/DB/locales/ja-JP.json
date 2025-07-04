@@ -417,5 +417,6 @@
   "db.query_qps": "ティッカー",
   "db.trans_qps": "ティッカー",
   "db.innodb_read_io": "イノDB は IO を読み込みます",
-  "db.innodb_write_io": "イノDB は IO を書き込みます"
+  "db.innodb_write_io": "イノDB は IO を書き込みます",
+  "db.network_address": "ドメイン名アドレス"
 }
