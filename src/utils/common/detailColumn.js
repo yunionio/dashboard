@@ -21,6 +21,7 @@ const getTagColumn = ({
   hidden,
   params,
   editCheck = (row) => true,
+  idKey = 'id',
 }) => {
   return {
     title,
@@ -46,6 +47,7 @@ const getTagColumn = ({
               ignorePrefix,
               tagParams: params,
               canEdit: editCheck(row),
+              idKey,
             },
           }),
         ]
@@ -69,6 +71,7 @@ export const getUserTagColumn = ({
   showEdit = true,
   params = {},
   editCheck = (row) => true,
+  idKey = 'id',
 } = {}) => {
   return getTagColumn({
     showEdit,
@@ -86,6 +89,7 @@ export const getUserTagColumn = ({
     ignorePrefix,
     params,
     editCheck,
+    idKey,
   })
 }
 
@@ -103,6 +107,7 @@ export const getExtTagColumn = ({
   ignorePrefix,
   params = {},
   editCheck = (row) => true,
+  idKey = 'id',
 } = {}) => {
   return getTagColumn({
     type: 'ext',
@@ -127,5 +132,6 @@ export const getExtTagColumn = ({
       return !hasTag
     },
     editCheck,
+    idKey,
   })
 }
