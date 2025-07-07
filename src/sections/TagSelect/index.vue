@@ -10,7 +10,7 @@
       <slot name="trigger" :loading="loading" />
     </template>
     <template v-else>
-      <a-button :loading="loading">{{ buttonText }}</a-button>
+      <a-button :loading="loading" @click="handleClick">{{ buttonText }}</a-button>
     </template>
     <template slot="content">
       <div class="tag-wrap" ref="tag-wrap">
@@ -213,6 +213,7 @@ export default {
         total: 0,
         limit: this.params?.limit || 2048,
       },
+      valueWrapLeft: '-240px',
     }
   },
   computed: {
@@ -265,7 +266,9 @@ export default {
       return this.currentValue && this.currentValue.some(val => val !== null)
     },
     valueWrapStyle () {
-      const styles = {}
+      const styles = {
+        left: this.valueWrapLeft,
+      }
       if (this.valueWrapPlacement === 'top') {
         styles.top = `${this.valueWrapTop}px`
         return styles
@@ -289,6 +292,14 @@ export default {
     this.debounceHandleSearchTagInput = debounce(this.handleSearchTagInput, 500)
   },
   methods: {
+    handleClick (e) {
+      const x = e.clientX
+      if (x > screen.availWidth / 2) {
+        this.valueWrapLeft = '-240px'
+      } else {
+        this.valueWrapLeft = '100%'
+      }
+    },
     handleVisibleChange (visible) {
       if (visible) {
         this.tagData = []
@@ -538,8 +549,7 @@ export default {
   overflow-y: auto;
   background-color: #fff;
   position: absolute;
-  left: 159px;
-  left: -240px;
+  // left: -240px;
   top: 0;
   width: 240px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
