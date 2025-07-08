@@ -283,8 +283,51 @@ export const REGEXP = {
     },
     message: i18n.t('validator.externalProjectName'),
   },
+  pem_certificate: {
+    func: value => {
+      // 检查是否以正确的头部开始
+      if (!value.startsWith('-----BEGIN CERTIFICATE-----')) {
+        return false
+      }
+      // 检查是否以正确的尾部结束
+      if (!value.endsWith('-----END CERTIFICATE-----')) {
+        return false
+      }
+      // 提取Base64内容
+      const base64Match = value.match(/-----BEGIN CERTIFICATE-----\n([\s\S]*?)\n-----END CERTIFICATE-----/)
+      if (!base64Match) {
+        return false
+      }
+      const base64Content = base64Match[1].replace(/\s/g, '')
+      // 验证Base64格式
+      if (!/^[A-Za-z0-9+/]*={0,2}$/.test(base64Content)) {
+        return false
+      }
+      // 验证长度（证书通常至少几百字符）
+      if (base64Content.length < 100) {
+        return false
+      }
+      return true
+    },
+    message: i18n.t('validator.pem_certificate'),
+  },
+  pem_private_key: {
+    func: value => {
+      if (!value.startsWith('-----BEGIN PRIVATE KEY-----')) {
+        return false
+      }
+      if (!value.endsWith('-----END PRIVATE KEY-----')) {
+        return false
+      }
+      const base64Match = value.match(/-----BEGIN PRIVATE KEY-----\n([\s\S]*?)\n-----END PRIVATE KEY-----/)
+      if (!base64Match) {
+        return false
+      }
+      return true
+    },
+    message: i18n.t('validator.pem_private_key'),
+  },
 }
-
 /**
  * @description 是否为必填参数
  * @param {Boolean} isObj: 是否是验证对象，vue-ant-design 里面的 form 的对象格式为 { key: '', value: '' }
