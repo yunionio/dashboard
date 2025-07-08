@@ -66,8 +66,8 @@
           <ip-subnets :decorator="decorators.ipSubnets" @clear-error="clearIpSubnetsError" />
         </a-form-item>
         <a-form-item :label="$t('network.text_575')" :extra="$t('network.text_578')" :vaidate-status="guestIpPrefixValidateStatus" :help="guestIpPrefixHelp" v-bind="formItemLayout" v-if="!show && !isGroupGuestIpPrefix">
-          <a-input v-decorator="decorators.guest_ip_prefix(0)" :placeholder="$t('network.ipv4.prefix.prompt')" v-if="curVpc.cidr_block" />
-          <a-input v-decorator="decorators.guest_ip6_prefix(0)" :placeholder="$t('network.ipv6.prefix.prompt')" v-if="curVpc.cidr_block6" />
+          <a-input v-decorator="decorators.guest_ip_prefix(0)" :placeholder="$t('network.ipv4.prefix.prompt')" v-if="curVpc && curVpc.cidr_block" />
+          <a-input v-decorator="decorators.guest_ip6_prefix(0)" :placeholder="$t('network.ipv6.prefix.prompt')" v-if="curVpc && curVpc.cidr_block6" />
         </a-form-item>
         <a-form-item :label="$t('network.text_575')" v-bind="formItemLayout" :validate-status="guestIpPrefixValidateStatus" :help="guestIpPrefixHelp" required v-if="isGroupGuestIpPrefix">
           <template slot="extra">
