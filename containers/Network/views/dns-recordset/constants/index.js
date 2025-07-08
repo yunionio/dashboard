@@ -215,8 +215,8 @@ export const provinces = [
     region: 'xibei',
   },
   {
-    key: 'shanxi',
-    label: i18n.t('network.province.shanxi'),
+    key: 'shannxi',
+    label: i18n.t('network.province.shannxi'),
     region: 'xibei',
   },
   {
@@ -300,8 +300,6 @@ export const continents = [
       { key: 'ao', label_zh: '安哥拉', label_en: 'Angola', label_jp: 'アンゴラ' },
       { key: 'ci', label_zh: '科特迪瓦', label_en: 'Côte d\'Ivoire', label_jp: 'コートジボワール' },
       { key: 'cm', label_zh: '喀麦隆', label_en: 'Cameroon', label_jp: 'カメルーン' },
-      { key: 'dz', label_zh: '阿尔及利亚', label_en: 'Algeria', label_jp: 'アルジェリア' },
-      { key: 'eg', label_zh: '埃及', label_en: 'Egypt', label_jp: 'エジプト' },
       { key: 'dz', label_zh: '阿尔及利亚', label_en: 'Algeria', label_jp: 'アルジェリア' },
       { key: 'eg', label_zh: '埃及', label_en: 'Egypt', label_jp: 'エジプト' },
       { key: 'gh', label_zh: '加纳', label_en: 'Ghana', label_jp: 'ガーナ' },
@@ -474,7 +472,6 @@ export const continents = [
       { key: 'cz', label_zh: '捷克', label_en: 'Czech Republic', label_jp: 'チェコ' },
       { key: 'de', label_zh: '德国', label_en: 'Germany', label_jp: 'ドイツ' },
       { key: 'dk', label_zh: '丹麦', label_en: 'Denmark', label_jp: 'デンマーク' },
-      { key: 'ee', label_zh: '爱沙尼亚', label_en: 'Estonia', label_jp: 'エストニア' },
       { key: 'es', label_zh: '西班牙', label_en: 'Spain', label_jp: 'スペイン' },
       { key: 'fi', label_zh: '芬兰', label_en: 'Finland', label_jp: 'フィンランド' },
       { key: 'fr', label_zh: '法国', label_en: 'France', label_jp: 'フランス' },
@@ -757,6 +754,10 @@ export const continents = [
     label: i18n.t('network.continent.northern_europe'),
   },
   {
+    key: 'northern_america',
+    label: i18n.t('network.continent.northern_america'),
+  },
+  {
     key: 'sentral_america',
     label: i18n.t('network.continent.sentral_america'),
   },
@@ -767,10 +768,6 @@ export const continents = [
   {
     key: 'caribbean',
     label: i18n.t('network.continent.caribbean'),
-  },
-  {
-    key: 'sentral_america',
-    label: i18n.t('network.continent.sentral_america'),
   },
   {
     key: 'australia_newzaland',
