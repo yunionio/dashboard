@@ -1,5 +1,14 @@
+import countries from 'i18n-iso-countries'
+import enLocale from 'i18n-iso-countries/langs/en.json'
 import i18n from '@/locales'
 import { arrayToObj } from '@/utils/utils'
+
+countries.registerLocale(enLocale)
+const names = countries.getNames('en')
+
+export const COUNTRYS = Object.entries(names)
+  .map(([key, label]) => ({ key, label }))
+  .sort((a, b) => a.label.localeCompare(b.label))
 
 export const AREAS = [
   { key: 'mainland', label: i18n.t('network.cdn.area.mainland') },
