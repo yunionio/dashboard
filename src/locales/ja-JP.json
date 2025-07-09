@@ -1461,7 +1461,9 @@
     "nonNegativeInt": "負でない整数を入力してください",
     "blockStorageName": "文字の先頭、数字と大文字と小文字の組み合わせ、長さが 2 から 128 文字、.-_ を含めることができます。",
     "command": "合法的な Linux コマンドではありません",
-    "externalProjectName": "長さは3~50文字または数字で、英語で始まる必要があります"
+    "externalProjectName": "長さは3~50文字または数字で、英語で始まる必要があります",
+    "pem_certificate": "有効なPEM形式の証明書を入力してください",
+    "pem_private_key": "有効なPEM形式の秘密鍵を入力してください"
   },
   "dialog": {
     "ok": "確定",
