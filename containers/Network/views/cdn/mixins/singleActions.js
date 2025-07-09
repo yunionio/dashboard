@@ -54,6 +54,26 @@ export default {
               },
             },
             {
+              label: i18n.t('network.cdn.clear_cache'),
+              permission: 'cdn_domains_perform_clear_cache',
+              action: () => {
+                this.createDialog('CdnDomainClearCacheDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+              meta: () => {
+                if (obj.provider !== 'Cloudflare') {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('compute.text_1388'),
+                  }
+                }
+                return { validate: true }
+              },
+            },
+            {
               label: i18n.t('network.text_225', [i18n.t('dictionary.project')]),
               permission: 'cdn_domains_perform_change_owner',
               action: () => {
