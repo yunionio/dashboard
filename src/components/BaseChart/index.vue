@@ -152,7 +152,8 @@ export default {
           if (this.chartRect.width && width + len * 16 > this.chartRect.width * 0.6) {
             // 需要倾斜
             item.axisLabel.rotate = 45
-            item.axisLabel.interval = 0
+            const interval = Math.floor(len * 24 / this.chartRect.width)
+            item.axisLabel.interval = interval
           }
           // if (this.chartRect.width && !xAxis.axisLabel.rotate && !xAxis.axisLabel.width) {
           //   // 没有倾斜设置换行
