@@ -1446,7 +1446,9 @@
     "nonNegativeInt": "Please enter a non-negative integer",
     "blockStorageName": "At the beginning of a letter, a combination of numbers and letters, with a length of 2-128 characters, including '.,-_",
     "command": "Not a valid Linux command line",
-    "externalProjectName": "The length is 3~50 letters or numbers, which must start with an English letter."
+    "externalProjectName": "The length is 3~50 letters or numbers, which must start with an English letter.",
+    "pem_certificate": "Please enter a valid PEM format certificate",
+    "pem_private_key": "Please enter a valid PEM format private key"
   },
   "dialog": {
     "ok": "OK",
