@@ -1,5 +1,5 @@
 import qs from 'qs'
-import { SERVER_TYPE } from '@Compute/constants'
+import { SERVER_TYPE, SMART_SSH_FORM_DECORATORS } from '@Compute/constants'
 import VncInfoFetcher from '@Compute/sections/VncInfoFetcher'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
@@ -101,14 +101,14 @@ const getSingleActions = function (ctx) {
               return ret
             }
 
-            const openWebconsole = async (port, id) => {
+            const openWebconsole = async (prms, id) => {
               const params = {
                 id: 'ssh',
                 action: id,
                 data: {
                   id,
                   ip: ipAddr,
-                  port: port,
+                  ...prms,
                   type: 'server',
                 },
               }
@@ -151,7 +151,7 @@ const getSingleActions = function (ctx) {
                   }
                   const sshConnectHandle = () => {
                     const success = () => {
-                      openWebconsole(22, obj.id)
+                      openWebconsole({ port: 22 }, obj.id)
                     }
                     if (this.enableMFA) {
                       this.createDialog('SecretVertifyDialog', {
@@ -163,35 +163,12 @@ const getSingleActions = function (ctx) {
                   }
                   const sshSettingInfoHandle = () => {
                     this.createDialog('SmartFormDialog', {
-                      title: i18n.t('compute.text_346'),
+                      title: i18n.t('compute.custom_ssh_connect', ['SSH']),
                       data: [obj],
                       callback: async (data) => {
-                        openWebconsole(data.port, obj.id)
+                        openWebconsole({ port: data.port, username: data.username, password: data.password }, obj.id)
                       },
-                      decorators: {
-                        port: [
-                          'port',
-                          {
-                            validateFirst: true,
-                            rules: [
-                              { required: true, message: i18n.t('compute.text_347') },
-                              {
-                                validator: (rule, value, _callback) => {
-                                  const num = parseFloat(value)
-                                  if (!/^\d+$/.test(value) || !num || num > 65535) {
-                                    _callback(i18n.t('compute.text_348'))
-                                  }
-                                  _callback()
-                                },
-                              },
-                            ],
-                          },
-                          {
-                            label: i18n.t('compute.text_349'),
-                            placeholder: i18n.t('compute.text_350'),
-                          },
-                        ],
-                      },
+                      decorators: SMART_SSH_FORM_DECORATORS,
                     })
                   }
                   return <a-tooltip placement="left" title={obj.rescue_mode ? i18n.t('compute.start_rescue.validate_tooltip') : !isRunning ? i18n.t('compute.text_1309', [i18n.t('compute.text_574')]) : ''}>
@@ -199,7 +176,7 @@ const getSingleActions = function (ctx) {
                       <span onClick={isRunning ? sshConnectHandle : () => { }}>{`SSH ${ipAddr}`}</span>
                       {
                         isRunning ? <span>
-                          <a-tooltip title={i18n.t('compute.text_346')}>
+                          <a-tooltip title={i18n.t('compute.custom_ssh_connect', ['SSH'])}>
                             <a-icon class="ml-2" type="edit" onClick={isRunning ? sshSettingInfoHandle : () => { }} />
                           </a-tooltip>
                         </span> : null
@@ -211,38 +188,15 @@ const getSingleActions = function (ctx) {
             } else {
               const rdpSettingInfoHandle = () => {
                 this.createDialog('SmartFormDialog', {
-                  title: i18n.t('compute.text_346'),
+                  title: i18n.t('compute.custom_ssh_connect', ['RDP']),
                   data: [obj],
                   callback: async (data) => {
-                    handleRdpConnect(obj, data.port, 'rdp')
+                    handleRdpConnect(obj, data, 'rdp')
                   },
-                  decorators: {
-                    port: [
-                      'port',
-                      {
-                        validateFirst: true,
-                        rules: [
-                          { required: true, message: i18n.t('compute.text_347') },
-                          {
-                            validator: (rule, value, _callback) => {
-                              const num = parseFloat(value)
-                              if (!/^\d+$/.test(value) || !num || num > 65535) {
-                                _callback(i18n.t('compute.text_348'))
-                              }
-                              _callback()
-                            },
-                          },
-                        ],
-                      },
-                      {
-                        label: i18n.t('compute.text_349'),
-                        placeholder: i18n.t('compute.text_350'),
-                      },
-                    ],
-                  },
+                  decorators: SMART_SSH_FORM_DECORATORS,
                 })
               }
-              const handleRdpConnect = (obj, port) => {
+              const handleRdpConnect = (obj, prms = {}) => {
                 const width = window.innerWidth
                 const height = window.innerHeight - 37
                 const params = {
@@ -250,9 +204,9 @@ const getSingleActions = function (ctx) {
                   action: obj.id,
                   data: {
                     host: ipAddr,
-                    port: +port,
                     width,
                     height,
+                    ...prms,
                   },
                 }
                 this.webconsoleManager.performAction(params).then(({ data }) => {
@@ -319,7 +273,7 @@ const getSingleActions = function (ctx) {
                       <span onClick={isRunning ? rdpConnectHandle : () => { }}>{`RDP ${ipAddr}`}</span>
                       {
                         isRunning ? <span>
-                          <a-tooltip title={!isRunning ? '' : i18n.t('compute.text_346')}>
+                          <a-tooltip title={!isRunning ? '' : i18n.t('compute.custom_ssh_connect', ['RDP'])}>
                             <a-icon class="ml-2" type="edit" onClick={isRunning ? rdpSettingInfoHandle : () => { }} />
                           </a-tooltip>
                         </span> : null

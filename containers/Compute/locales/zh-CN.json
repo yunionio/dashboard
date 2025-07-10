@@ -1903,5 +1903,6 @@
   "compute.sys_disk_disable_action": "系统盘不支持该操作",
   "compute.reason_detail": "详细原因",
   "compute.advanced": "高级",
-  "compute.hide_advanced": "隐藏高级"
+  "compute.hide_advanced": "隐藏高级",
+  "compute.custom_ssh_connect": "自定义 {0} 连接"
 }

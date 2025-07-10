@@ -1414,3 +1414,52 @@ export const PREALLOCATION_OPTIONS = [
   { label: i18n.t('compute.preallocation.full'), value: 'full' },
 ]
 export const PREALLOCATION_OPTION_MAP = arrayToObj(PREALLOCATION_OPTIONS, 'value')
+
+export const SMART_SSH_FORM_DECORATORS = {
+  username: [
+    'username',
+    {
+      rules: [
+        { required: true, message: i18n.t('common.tips.input', [i18n.t('scope.text_406')]) },
+      ],
+    },
+    {
+      label: i18n.t('scope.text_406'),
+      placeholder: i18n.t('common.tips.input', [i18n.t('scope.text_406')]),
+    },
+  ],
+  password: [
+    'password',
+    {
+      rules: [
+        { required: true, message: i18n.t('common.tips.input', [i18n.t('common_328')]) },
+      ],
+    },
+    {
+      label: i18n.t('common_328'),
+      placeholder: i18n.t('common.tips.input', [i18n.t('common_328')]),
+    },
+  ],
+  port: [
+    'port',
+    {
+      validateFirst: true,
+      rules: [
+        { required: true, message: i18n.t('compute.text_347') },
+        {
+          validator: (rule, value, _callback) => {
+            const num = parseFloat(value)
+            if (!/^\d+$/.test(value) || !num || num > 65535) {
+              _callback(i18n.t('compute.text_348'))
+            }
+            _callback()
+          },
+        },
+      ],
+    },
+    {
+      label: i18n.t('compute.text_349'),
+      placeholder: i18n.t('compute.text_350'),
+    },
+  ],
+}

@@ -45,7 +45,7 @@ export default {
         if (render && R.type(render) === 'Function') {
           return render(this.form)
         }
-        return <a-input placeholder={placeholder} />
+        return name === 'password' ? <a-input-password placeholder={placeholder} /> : <a-input placeholder={placeholder} />
       }
       return (
         <a-form-item label={label}>

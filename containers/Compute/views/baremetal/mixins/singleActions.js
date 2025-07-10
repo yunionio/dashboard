@@ -4,6 +4,7 @@ import qs from 'qs'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import i18n from '@/locales'
+import { SMART_SSH_FORM_DECORATORS } from '@Compute/constants'
 import { commonUnabled, cloudEnabled, cloudUnabledTip } from '../../vminstance/utils'
 import { solWebConsole, jnlpConsole } from '../../../utils/webconsole'
 import { hostServerActions } from '../../../utils/hostActions'
@@ -89,58 +90,115 @@ export default {
                   }
                 },
                 meta,
-              })
-              options.push({
-                label: i18n.t('compute.text_345', [v]),
-                action: () => {
-                  this.createDialog('SmartFormDialog', {
-                    title: i18n.t('compute.text_346'),
-                    data: [obj],
-                    callback: async (data) => {
-                      const success = () => {
-                        const params = {
+                render: (obj, params, h) => {
+                  let styleObj = {
+                    padding: '0 10px',
+                    fontSize: '12px',
+                  }
+                  const isRunning = obj.power_states === 'on'
+                  if (!isRunning) {
+                    styleObj = {
+                      ...styleObj,
+                      cursor: 'not-allowed',
+                      color: 'rgba(0, 0, 0, 0.25)',
+                    }
+                  }
+                  const sshConnectHandle = () => {
+                    const success = () => {
+                      openWebConsole({
+                        action: v,
+                        data: { },
+                        id: 'ssh',
+                      })
+                    }
+                    if (this.enableMFA) {
+                      this.createDialog('SecretVertifyDialog', {
+                        success,
+                      })
+                    } else {
+                      success()
+                    }
+                  }
+                  const sshSettingInfoHandle = () => {
+                    this.createDialog('SmartFormDialog', {
+                      title: i18n.t('compute.custom_ssh_connect', ['SSH']),
+                      data: [obj],
+                      callback: async (data) => {
+                        const pms = {
                           action: v,
-                          data,
+                          data: { port: data.port, username: data.username, password: data.password },
                           id: 'ssh',
                         }
-                        openWebConsole(params)
+                        openWebConsole(pms)
+                      },
+                      decorators: SMART_SSH_FORM_DECORATORS,
+                    })
+                  }
+                  return <a-tooltip placement="left" title={!isRunning ? i18n.t('compute.text_1282') : ''}>
+                    <span style={styleObj} class='d-flex justify-content-between align-items-center'>
+                      <span onClick={isRunning ? sshConnectHandle : () => { }}>{`SSH ${v}`}</span>
+                      {
+                        isRunning ? <span>
+                          <a-tooltip title={i18n.t('compute.custom_ssh_connect', ['SSH'])}>
+                            <a-icon class="ml-2" type="edit" onClick={isRunning ? sshSettingInfoHandle : () => { }} />
+                          </a-tooltip>
+                        </span> : null
                       }
-                      if (this.enableMFA) {
-                        this.createDialog('SecretVertifyDialog', {
-                          success,
-                        })
-                      } else {
-                        success()
-                      }
-                    },
-                    decorators: {
-                      port: [
-                        'port',
-                        {
-                          validateFirst: true,
-                          rules: [
-                            { required: true, message: i18n.t('compute.text_347') },
-                            {
-                              validator: (rule, value, _callback) => {
-                                const num = parseFloat(value)
-                                if (!/^\d+$/.test(value) || !num || num > 65535) {
-                                  _callback(i18n.t('compute.text_348'))
-                                }
-                                _callback()
-                              },
-                            },
-                          ],
-                        },
-                        {
-                          label: i18n.t('compute.text_349'),
-                          placeholder: i18n.t('compute.text_350'),
-                        },
-                      ],
-                    },
-                  })
+                    </span>
+                  </a-tooltip>
                 },
-                meta,
               })
+              // options.push({
+              //   label: i18n.t('compute.text_345', [v]),
+              //   action: () => {
+              //     this.createDialog('SmartFormDialog', {
+              //       title: i18n.t('compute.text_346'),
+              //       data: [obj],
+              //       callback: async (data) => {
+              //         const success = () => {
+              //           const params = {
+              //             action: v,
+              //             data,
+              //             id: 'ssh',
+              //           }
+              //           openWebConsole(params)
+              //         }
+              //         if (this.enableMFA) {
+              //           this.createDialog('SecretVertifyDialog', {
+              //             success,
+              //           })
+              //         } else {
+              //           success()
+              //         }
+              //       },
+              //       decorators: {
+              //         port: [
+              //           'port',
+              //           {
+              //             validateFirst: true,
+              //             rules: [
+              //               { required: true, message: i18n.t('compute.text_347') },
+              //               {
+              //                 validator: (rule, value, _callback) => {
+              //                   const num = parseFloat(value)
+              //                   if (!/^\d+$/.test(value) || !num || num > 65535) {
+              //                     _callback(i18n.t('compute.text_348'))
+              //                   }
+              //                   _callback()
+              //                 },
+              //               },
+              //             ],
+              //           },
+              //           {
+              //             label: i18n.t('compute.text_349'),
+              //             placeholder: i18n.t('compute.text_350'),
+              //           },
+              //         ],
+              //       },
+              //     })
+              //   },
+              //   meta,
+              // })
             })
             return options
           }
