@@ -1901,5 +1901,6 @@
   "compute.sys_disk_disable_action": "System disk does not support this operation",
   "compute.reason_detail": "Reason detail",
   "compute.advanced": "Advanced",
-  "compute.hide_advanced": "Hide advanced"
+  "compute.hide_advanced": "Hide advanced",
+  "compute.custom_ssh_connect": "Custom {0} connection"
 }
