@@ -1074,22 +1074,34 @@ export const getBillingTableColumn = ({
         } else if (billingType === 'prepaid') {
           ret.push(<div style={{ color: '#0A1F44' }}>{i18n.t('billingType.prepaid')}</div>)
         }
-        if (row.expired_at) {
+        if (billingType === 'postpaid' && row.release_at) {
+          const time = vm.$moment(row.release_at).format()
+          let tooltipCon = <div slot="help"></div>
+          const isHiddenSetButton = R.is(Function, hiddenSetBtn) ? hiddenSetBtn() : hiddenSetBtn
+          if (hasPermission({ key: 'server_perform_cancel_expire' }) && !isHiddenSetButton) {
+            tooltipCon = <div slot="help">{i18n.t('common_301', [time])}<span class="link-color" style="cursor: pointer" onClick={openVmSetDurationDialog}>{i18n.t('common_453')}</span></div>
+          } else {
+            tooltipCon = <div slot="help">{i18n.t('common_301', [time])}</div>
+          }
+          const help = <a-tooltip>
+            <template slot="title">
+              {tooltipCon}
+            </template>
+            <icon type="help" />
+          </a-tooltip>
+          const dateArr = vm.$moment(row.release_at).fromNow().split(' ')
+          const date = dateArr.join(' ')
+          const seconds = vm.$moment(row.release_at).diff(new Date()) / 1000
+          const textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
+          const text = seconds < 0 ? i18n.t('common_296') : i18n.t('common_297', [date])
+          ret.push(<div class='text-truncate' title={text} style={{ color: textColor }}>{text} {help}</div>)
+        } else if (billingType === 'prepaid' && row.expired_at) {
           const time = vm.$moment(row.expired_at).format()
           let tooltipCon = <div slot="help"></div>
-          if (billingType === 'postpaid') {
-            const isHiddenSetButton = R.is(Function, hiddenSetBtn) ? hiddenSetBtn() : hiddenSetBtn
-            if (hasPermission({ key: 'server_perform_cancel_expire' }) && !isHiddenSetButton) {
-              tooltipCon = <div slot="help">{i18n.t('common_301', [time])}<span class="link-color" style="cursor: pointer" onClick={openVmSetDurationDialog}>{i18n.t('common_453')}</span></div>
-            } else {
-              tooltipCon = <div slot="help">{i18n.t('common_301', [time])}</div>
-            }
-          } else if (billingType === 'prepaid') {
-            if (row.auto_renew) {
-              tooltipCon = <div slot="help">{i18n.t('common_301', [time])}{i18n.t('common_451')}</div>
-            } else {
-              tooltipCon = <div slot="help">{i18n.t('common_301', [time])}{i18n.t('common_452')}</div>
-            }
+          if (row.auto_renew) {
+            tooltipCon = <div slot="help">{i18n.t('common_301', [time])}{i18n.t('common_451')}</div>
+          } else {
+            tooltipCon = <div slot="help">{i18n.t('common_301', [time])}{i18n.t('common_452')}</div>
           }
           const help = <a-tooltip>
             <template slot="title">
