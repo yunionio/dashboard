@@ -204,10 +204,10 @@ export default {
                   }
                   // 暂只支持同时操作已设置到期或未设置到期释放的机器
                   const isSomeExpired = this.list.selectedItems.some((item) => {
-                    return item.expired_at
+                    return item.release_at
                   })
                   const isSomeNotExpired = this.list.selectedItems.some((item) => {
-                    return !item.expired_at
+                    return !item.release_at
                   })
                   if (isSomeExpired && isSomeNotExpired) {
                     ret.tooltip = this.$t('db.text_73')
