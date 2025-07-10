@@ -59,10 +59,10 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const expiredAtSort = R.sortWith([
-      R.descend(R.prop('expired_at')),
+      R.descend(R.prop('release_at')),
     ])
     const datas = expiredAtSort(this.params.data)
-    const expireDate = datas[0].expired_at ? moment(datas[0].expired_at) : moment().add(1, 'h')
+    const expireDate = datas[0].release_at ? moment(datas[0].release_at) : moment().add(1, 'h')
     return {
       loading: false,
       action: this.$t('common.text00061'),
@@ -127,7 +127,7 @@ export default {
     },
   },
   created () {
-    if (this.params.data[0].expired_at !== undefined) {
+    if (this.params.data[0].release_at !== undefined) {
       this.$nextTick(() => {
         this.form.fc.setFieldsValue({ durationEnable: true })
       })
@@ -137,7 +137,7 @@ export default {
     async doUpdateSubmit (data) {
       const time = this.$moment.utc(data.durationDate).format()
       const params = {
-        expire_time: time,
+        release_at: time,
       }
       const ids = this.params.data.map(item => item.id)
       return this.params.onManager('batchPerformAction', {
