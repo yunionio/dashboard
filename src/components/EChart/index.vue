@@ -173,7 +173,8 @@ export default {
           if (this.chartRect.width && width + len * 16 > this.chartRect.width * 0.6) {
             // 需要倾斜
             xAxis.axisLabel.rotate = 45
-            xAxis.axisLabel.interval = 0
+            const interval = Math.floor(len * 24 / this.chartRect.width)
+            xAxis.axisLabel.interval = interval
           }
           // if (this.chartRect.width && !xAxis.axisLabel.rotate && !xAxis.axisLabel.width) {
           //   console.log('设置换行')
