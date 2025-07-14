@@ -5,6 +5,7 @@ import { typeClouds, getDisabledProvidersActionMeta } from '@/utils/common/hyper
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
+import { SMART_SSH_FORM_DECORATORS } from '@Compute/constants'
 import { solWebConsole, jnlpConsole } from '../../../utils/webconsole'
 
 export default {
@@ -86,72 +87,62 @@ export default {
                     disabledProviders: ['BingoCloud'],
                   })
                 },
-              })
-              ret.push({
-                label: i18n.t('compute.text_345', [ip]),
-                action: () => {
-                  const success = () => {
+                render: (obj, params, h) => {
+                  let styleObj = {
+                    padding: '0 10px',
+                    fontSize: '12px',
+                  }
+                  const isRunning = obj.status === 'running'
+                  if (!isRunning) {
+                    styleObj = {
+                      ...styleObj,
+                      cursor: 'not-allowed',
+                      color: 'rgba(0, 0, 0, 0.25)',
+                    }
+                  }
+                  const sshConnectHandle = () => {
+                    const success = () => {
+                      openWebConsole({
+                        action: ip,
+                        data: { type: 'host', id: obj.id, port: 22 },
+                        id: 'ssh',
+                      }, obj.id)
+                    }
+                    if (this.enableMFA) {
+                      this.createDialog('SecretVertifyDialog', {
+                        success,
+                      })
+                    } else {
+                      success()
+                    }
+                  }
+                  const sshSettingInfoHandle = () => {
                     this.createDialog('SmartFormDialog', {
-                      title: i18n.t('compute.text_346'),
+                      title: i18n.t('compute.custom_ssh_connect', ['SSH']),
                       data: [obj],
-                      list: this.list,
                       callback: async (data) => {
-                        const success = () => {
-                          const params = {
-                            action: ip,
-                            data: { type: 'host', id: obj.id, ...data },
-                            id: 'ssh',
-                          }
-                          openWebConsole(params)
+                        const pms = {
+                          action: ip,
+                          data: { type: 'host', id: obj.id, port: data.port, username: data.username, password: data.password },
+                          id: 'ssh',
                         }
-                        if (this.enableMFA) {
-                          this.createDialog('SecretVertifyDialog', {
-                            success,
-                          })
-                        } else {
-                          success()
-                        }
+                        openWebConsole(pms, obj.id)
                       },
-                      decorators: {
-                        port: [
-                          'port',
-                          {
-                            validateFirst: true,
-                            rules: [
-                              { required: true, message: i18n.t('compute.text_347') },
-                              {
-                                validator: (rule, value, _callback) => {
-                                  const num = parseFloat(value)
-                                  if (!/^\d+$/.test(value) || !num || num > 65535) {
-                                    _callback(i18n.t('compute.text_348'))
-                                  }
-                                  _callback()
-                                },
-                              },
-                            ],
-                          },
-                          {
-                            label: i18n.t('compute.text_349'),
-                            placeholder: i18n.t('compute.text_350'),
-                          },
-                        ],
-                      },
+                      decorators: SMART_SSH_FORM_DECORATORS,
                     })
                   }
-                  if (this.enableMFA) {
-                    this.createDialog('SecretVertifyDialog', {
-                      success,
-                    })
-                  } else {
-                    success()
-                  }
-                },
-                meta,
-                extraMeta: obj => {
-                  return getDisabledProvidersActionMeta({
-                    row: obj,
-                    disabledProviders: ['BingoCloud'],
-                  })
+                  return <a-tooltip placement="left" title={!isRunning ? i18n.t('compute.text_1282') : ''}>
+                    <span style={styleObj} class='d-flex justify-content-between align-items-center'>
+                      <span onClick={isRunning ? sshConnectHandle : () => { }}>{`SSH ${ip}`}</span>
+                      {
+                        isRunning ? <span>
+                          <a-tooltip title={i18n.t('compute.custom_ssh_connect', ['SSH'])}>
+                            <a-icon class="ml-2" type="edit" onClick={isRunning ? sshSettingInfoHandle : () => { }} />
+                          </a-tooltip>
+                        </span> : null
+                      }
+                    </span>
+                  </a-tooltip>
                 },
               })
             })
