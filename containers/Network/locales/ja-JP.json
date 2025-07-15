@@ -1524,5 +1524,13 @@
   "network.cdn.clear_cache_device_type.desktop": "デスクトップ",
   "network.cdn.clear_cache_device_type.tablet": "タブレット",
   "network.cdn.clear_cache_device_type.mobile": "モバイル",
-  "network.cdn.clear_url_invalid": "URLの形式が正しくありません"
+  "network.cdn.clear_url_invalid": "URLの形式が正しくありません",
+  "network.ssl_certificate": "SSL証明書",
+  "network.ssl_certificate.create": "SSL証明書を作成",
+  "network.ssl_certificate.name": "証明書名",
+  "network.ssl_certificate.issuer": "発行者",
+  "network.ssl_certificate.sans": "ホスト名",
+  "network.ssl_certificate.dns_zone": "DNSゾーン",
+  "network.ssl_certificate.sans.placeholder": "ホスト名を入力してください。1行に1つずつ、ホスト名と通配符をサポートします。例：example.com, *.example.com",
+  "network.ssl_certificate.sans.invalid": "有効なホスト名または通配符を入力してください"
 }

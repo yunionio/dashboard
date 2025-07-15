@@ -1293,6 +1293,13 @@
       "available": "正常",
       "failed": "重跑失败",
       "running": "重跑账单中"
+    },
+    "sslCertificate": {
+      "active": "正常",
+      "available": "可用",
+      "failed": "失败",
+      "expired": "已过期",
+      "create_failed": "创建失败"
     }
   },
   "skuCategoryOptions": {
