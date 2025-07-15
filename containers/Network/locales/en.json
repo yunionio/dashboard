@@ -1522,5 +1522,13 @@
   "network.cdn.clear_cache_device_type.desktop": "Desktop",
   "network.cdn.clear_cache_device_type.tablet": "Tablet",
   "network.cdn.clear_cache_device_type.mobile": "Mobile",
-  "network.cdn.clear_url_invalid": "URL format is incorrect"
+  "network.cdn.clear_url_invalid": "URL format is incorrect",
+  "network.ssl_certificate": "SSL Certificate",
+  "network.ssl_certificate.create": "Create SSL Certificate",
+  "network.ssl_certificate.name": "Certificate Name",
+  "network.ssl_certificate.issuer": "Issuer",
+  "network.ssl_certificate.sans": "Hostname",
+  "network.ssl_certificate.dns_zone": "DNS Zone",
+  "network.ssl_certificate.sans.placeholder": "Please enter the hostname to be added, one per line, supporting hostnames and wildcards, such as: example.com, *.example.com",
+  "network.ssl_certificate.sans.invalid": "Please enter a valid hostname or wildcard"
 }
