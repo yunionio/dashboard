@@ -176,7 +176,7 @@ export default {
       },
       getOsArch({ field: 'cpu_architecture' }),
       {
-        field: 'cpu_count',
+        field: 'cpu_usage',
         title: this.$t('compute.text_563'),
         minWidth: 100,
         sortable: true,
@@ -195,10 +195,10 @@ export default {
         },
       },
       {
-        field: 'cpu_commit',
+        field: 'virtual_cpu_usage',
         title: this.$t('compute.text_563_1'),
         minWidth: 100,
-        // sortable: true,
+        sortable: true,
         // sortBy: 'order_by_cpu_commit',
         slots: {
           default: ({ row }) => {
@@ -217,7 +217,7 @@ export default {
         },
       },
       {
-        field: 'mem_size',
+        field: 'mem_usage',
         title: this.$t('compute.text_564'),
         minWidth: 100,
         sortable: true,
@@ -236,10 +236,10 @@ export default {
         },
       },
       {
-        field: 'mem_commit',
+        field: 'virtual_mem_usage',
         title: this.$t('compute.text_564_1'),
         minWidth: 100,
-        // sortable: true,
+        sortable: true,
         // sortBy: 'order_by_mem_commit',
         slots: {
           default: ({ row }) => {
@@ -258,7 +258,7 @@ export default {
         },
       },
       {
-        field: 'storage_size',
+        field: 'storage_usage',
         title: this.$t('compute.text_565'),
         minWidth: 100,
         sortable: true,
@@ -277,10 +277,10 @@ export default {
         },
       },
       {
-        field: 'storage_virtual',
+        field: 'virtual_storage_usage',
         title: this.$t('compute.text_565_1'),
         minWidth: 100,
-        // sortable: true,
+        sortable: true,
         // sortBy: 'order_by_storage_virtual',
         slots: {
           default: ({ row }) => {
