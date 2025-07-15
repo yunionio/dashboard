@@ -15,6 +15,7 @@ const Cloudregion = () => import(/* webpackChunkName: "network" */ /* webpackPre
 const Zone = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Cloudenv/views/zone')
 const CdnList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/cdn')
 const CdnCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/cdn/create')
+const SslCertificateList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/ssl-certificate')
 const VpcPeerConnectCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/vpc-peer-connect/create')
 const Ipv6Gateway = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/ipv6-gateway')
 const DnsZone = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/dns-zone')
@@ -763,6 +764,28 @@ export default {
               name: 'CdnCreate',
               path: 'create',
               component: CdnCreate,
+            },
+          ],
+        },
+        {
+          path: '/ssl-certificate',
+          meta: {
+            label: i18n.t('network.ssl_certificate'),
+            permission: 'ssl_certificates_list',
+            t: 'network.ssl_certificate',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.ssl_certificate')) {
+                return true
+              }
+              return false
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'SslCertificateList',
+              path: '',
+              component: SslCertificateList,
             },
           ],
         },
