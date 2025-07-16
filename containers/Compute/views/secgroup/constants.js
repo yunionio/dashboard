@@ -28,7 +28,7 @@ export const priorityRuleMap = {
   },
   google: {
     min: 0,
-    max: 65536,
+    max: 65535,
   },
   huawei: {
     min: 1,
