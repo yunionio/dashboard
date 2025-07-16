@@ -60,9 +60,6 @@
         <a-form-item label="VLAN ID" v-bind="formItemLayout">
           <a-input v-decorator="decorators.vlan_id" :disabled="!isClassicNetwork" />
         </a-form-item>
-        <a-form-item label="dhcp_relay" v-bind="formItemLayout" :extra="$t('network.dhcp_tooltip')">
-          <a-input class="w-50" v-decorator="decorators.guest_dhcp" :placeholder="$t('common.tips.input', ['IPv4'])" />
-        </a-form-item>
         <a-collapse :bordered="false" :active-key="getDefaultActiveKey">
           <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
             <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="server_type === 'eip'">
@@ -79,7 +76,7 @@
               </a-radio-group>
             </a-form-item>
             <a-form-item :label="$t('network.dns_server')" v-bind="formItemLayout">
-              <a-input :placeholder="$t('validator.IPv4s')" v-decorator="decorators.guest_dns" />
+              <a-input :placeholder="$t('validator.IPs')" v-decorator="decorators.guest_dns" />
             </a-form-item>
             <a-form-item v-bind="formItemLayout">
               <span slot="label">{{$t('network.text_586')}}<help-tooltip class="ml-1" name="networkDomain" /></span>
@@ -87,6 +84,9 @@
             </a-form-item>
             <a-form-item :label="$t('network.ntp_server')" v-bind="formItemLayout">
               <a-input :placeholder="$t('validator.domains')" v-decorator="decorators.guest_ntp" />
+            </a-form-item>
+            <a-form-item label="dhcp_relay" v-bind="formItemLayout" :extra="$t('network.dhcp_tooltip')">
+              <a-input class="w-50" v-decorator="decorators.guest_dhcp" :placeholder="$t('common.tips.input', ['IPv4'])" />
             </a-form-item>
           </a-collapse-panel>
         </a-collapse>
@@ -254,7 +254,7 @@ export default {
             initialValue: '',
             validateTrigger: ['change', 'blur'],
             rules: [
-              { validator: this.$validate('IPv4s', false) },
+              { validator: this.$validate('IPs', false) },
             ],
           },
         ],
@@ -325,6 +325,14 @@ export default {
       ],
       net6MaskOptions: [
         { label: '64', value: '64' },
+        { label: '72', value: '72' },
+        { label: '80', value: '80' },
+        { label: '88', value: '88' },
+        { label: '96', value: '96' },
+        { label: '104', value: '104' },
+        { label: '112', value: '112' },
+        { label: '120', value: '120' },
+        { label: '124', value: '124' },
       ],
       wire_id: '',
       cloudEnv: '',
