@@ -1408,6 +1408,7 @@
     "IPv4": "Please enter a valid IPv4 address",
     "IPv4s": "Please enter multiple valid IPv4 addresses, separated by ,",
     "IPv6": "Please enter a valid IPv6 address",
+    "IPs": "Please enter a valid IPv4 or IPv6 address, separated by ,",
     "serverName": "Start with a letter, followed by a combination of digits and letters, excluding '.,_@, length 2-128",
     "resourceCreateName": "Start with a letter, followed by a combination of letters, digits or hyphens '-', but cannot end with a hyphen '-', length 2-62",
     "serverCreateName": "Start with a lowercase letter, followed by a combination of lowercase letters, digits or hyphens '-', but cannot end with a hyphen '-', length 2-62",
