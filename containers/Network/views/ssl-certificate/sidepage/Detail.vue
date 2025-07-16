@@ -45,7 +45,7 @@ export default {
           slots: {
             default: ({ row }) => {
               if (!row.sans) return '-'
-              const list = JSON.parse(row.sans).map(sans => {
+              const list = row.sans.split(',').map(sans => {
                 return (
                   <div>{sans}</div>
                 )

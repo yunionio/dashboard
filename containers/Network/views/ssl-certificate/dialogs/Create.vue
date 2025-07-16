@@ -89,7 +89,6 @@ export default {
         sans: [{
           required: true,
           validator: (rule, value, callback) => {
-            console.log('value', value)
             if (!value) {
               callback(new Error(this.$t('common.tips.input', [this.$t('network.ssl_certificate.sans')])))
             }
@@ -99,7 +98,6 @@ export default {
             }
             if (lines.some(line => {
               const validation = validateHostnameOrWildcard(line)
-              console.log('validation', validation)
               if (!validation) {
                 return true
               }
@@ -135,7 +133,7 @@ export default {
         name,
         dns_zone_id,
         issuer,
-        sans: sans.split('\n').map(line => line.trim()).filter(line => line),
+        sans: sans.split('\n').map(line => line.trim()).filter(line => line).join(','),
       }
       return ret
     },
