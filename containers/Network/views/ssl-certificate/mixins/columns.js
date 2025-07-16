@@ -2,6 +2,8 @@ import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
   getTimeTableColumn,
+  getAccountTableColumn,
+  getProjectTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -43,6 +45,8 @@ export default {
           },
         },
       },
+      getAccountTableColumn(),
+      getProjectTableColumn(),
       getTimeTableColumn(),
     ]
   },

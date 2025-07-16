@@ -24,6 +24,7 @@
 import Actions from '@/components/PageList/Actions'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
+import Detail from './Detail'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 
@@ -31,11 +32,13 @@ export default {
   name: 'SslCertificateSidePage',
   components: {
     Actions,
+    Detail,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
+        { label: this.$t('cloudenv.text_237'), key: 'detail' },
         { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
       ],
     }
