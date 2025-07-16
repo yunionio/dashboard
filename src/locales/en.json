@@ -1271,6 +1271,13 @@
       "available": "Available",
       "failed": "Failed",
       "running": "Running"
+    },
+    "sslCertificate": {
+      "active": "Active",
+      "available": "Available",
+      "failed": "Failed",
+      "expired": "Expired",
+      "create_failed": "Create Failed"
     }
   },
   "skuCategoryOptions": {
