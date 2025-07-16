@@ -2,6 +2,9 @@ import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
   getTimeTableColumn,
+  getAccountTableColumn,
+  getProjectTableColumn,
+  getBrandTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -30,7 +33,7 @@ export default {
         slots: {
           default: ({ row }) => {
             if (!row.sans) return '-'
-            const list = JSON.parse(row.sans).map(sans => {
+            const list = row.sans.split(',').map(sans => {
               return (
                 <div>{sans}</div>
               )
@@ -43,6 +46,9 @@ export default {
           },
         },
       },
+      getBrandTableColumn(),
+      getAccountTableColumn(),
+      getProjectTableColumn(),
       getTimeTableColumn(),
     ]
   },
