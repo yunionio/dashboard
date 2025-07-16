@@ -613,4 +613,8 @@ export default {
     success: ['available'],
     danger: ['failed'],
   },
+  sslCertificate: {
+    success: ['active'],
+    danger: ['failed', 'expired', 'create_failed'],
+  },
 }
