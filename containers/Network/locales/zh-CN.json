@@ -1539,5 +1539,7 @@
   "network.ssl_certificate.sans": "主机名",
   "network.ssl_certificate.dns_zone": "DNS解析",
   "network.ssl_certificate.sans.placeholder": "请输入需要添加的主机名，一个占一行，支持主机名和通配符，如：example.com, *.example.com",
-  "network.ssl_certificate.sans.invalid": "请输入符合格式的主机名或通配符"
+  "network.ssl_certificate.sans.invalid": "请输入符合格式的主机名或通配符",
+  "network.ssl_certificate.start_date": "颁发时间",
+  "network.ssl_certificate.end_date": "到期时间"
 }
