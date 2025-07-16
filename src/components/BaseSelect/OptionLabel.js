@@ -1,6 +1,7 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { sizestr } from '@/utils/utils'
+import { getBrandName } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
 
 const resourceMode = {
@@ -197,6 +198,16 @@ const resourceMode = {
         <div class='d-flex'>
           <span class='text-truncate flex-fill mr-2' title={ text }>{ text }</span>
           <div style="color: #8492a6; font-size: 13px">{ typeText }</div>
+        </div>
+      )
+    },
+  },
+  dns_zones: {
+    vnode: (vm, h) => {
+      return (
+        <div class='d-flex'>
+          <span class='text-truncate flex-fill mr-2' title={vm.data.name}>{vm.data.name}</span>
+          <span style="color: #8492a6; font-size: 13px" class="oc-selected-display-none">{getBrandName(vm.data.brand)}{vm.data.manager ? ` - ${i18n.t('dictionary.cloudprovider') + ':' + vm.data.manager}` : ''}</span>
         </div>
       )
     },

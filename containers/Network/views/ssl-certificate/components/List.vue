@@ -15,6 +15,10 @@ import {
   getStatusFilter,
   getDescriptionFilter,
   getCreatedAtFilter,
+  getAccountFilter,
+  getProjectFilter,
+  getCloudProviderFilter,
+  getBrandFilter,
 } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -69,6 +73,10 @@ export default {
           return `sans.contains("${val}")`
         },
       },
+      brand: getBrandFilter(),
+      account: getAccountFilter(),
+      project: getProjectFilter(),
+      manager: getCloudProviderFilter(),
       created_at: getCreatedAtFilter(),
     }
     return {
