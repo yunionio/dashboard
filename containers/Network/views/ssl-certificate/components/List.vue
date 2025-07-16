@@ -2,7 +2,6 @@
   <page-list
     :list="list"
     :columns="columns"
-    :single-actions="singleActions"
     :group-actions="groupActions"
     :export-data-options="exportDataOptions" />
 </template>
@@ -15,6 +14,9 @@ import {
   getStatusFilter,
   getDescriptionFilter,
   getCreatedAtFilter,
+  getAccountFilter,
+  getProjectFilter,
+  getCloudProviderFilter,
 } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -69,6 +71,9 @@ export default {
           return `sans.contains("${val}")`
         },
       },
+      account: getAccountFilter(),
+      project: getProjectFilter(),
+      manager: getCloudProviderFilter(),
       created_at: getCreatedAtFilter(),
     }
     return {
