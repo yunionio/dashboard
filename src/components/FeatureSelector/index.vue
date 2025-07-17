@@ -1,5 +1,5 @@
 <template>
-  <license-features v-model="items" :pre-item-check="PreItemCheck" :pre-item-filter="PreItemFilter">
+  <license-features ref="licenseFeatures" v-model="items" :pre-item-check="PreItemCheck" :pre-item-filter="PreItemFilter">
     <template #default="{moduleGroups, itemEvents, groupEvents}">
       <div>
         <div v-for="mod in moduleGroups" :key="mod.key">
@@ -122,6 +122,9 @@ export const LicenseFeatures = {
     },
   },
   methods: {
+    changeSelectedItems (items) {
+      this.selectedItems = this._selectedItems([...items])
+    },
     _groupLicenseDisabled (currentItems) {
       return currentItems.every(item => item.licenseDisabled)
     },
@@ -242,6 +245,12 @@ export default {
   watch: {
     items () {
       this.$emit('change', [...this.items])
+    },
+  },
+  methods: {
+    changeItems (val) {
+      this.items = val
+      this.$refs.licenseFeatures.changeSelectedItems(val)
     },
   },
 }
