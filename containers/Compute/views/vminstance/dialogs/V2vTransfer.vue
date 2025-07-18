@@ -463,6 +463,12 @@ export default {
                 validateTrigger: ['blur', 'change'],
               },
             ],
+            ipv6_mode: (i, networkData) => [
+              `networkIPv6Modes[${i}]`,
+              {
+                validateTrigger: ['change', 'blur'],
+              },
+            ],
             devices: i => [
               `networkDevices[${i}]`,
               {
@@ -936,7 +942,7 @@ export default {
       // 指定 IP 子网
       if (this.form.fd.networkType === NETWORK_OPTIONS_MAP.manual.key) {
         ret = []
-        const { networkIPv6s, networkIpsAddress6 } = await this.form.fc.validateFields()
+        const { networkIPv6s, networkIpsAddress6, networkIPv6Modes } = await this.form.fc.validateFields()
         R.forEachObjIndexed((value, key) => {
           const obj = {
             network: value,
@@ -956,11 +962,19 @@ export default {
           if (networkIPv6s && networkIPv6s[key]) {
             obj.require_ipv6 = true
           }
+          const target = this.form.fi.networkList.filter(item => item.key === key)
           if (networkIpsAddress6 && networkIpsAddress6[key]) {
             const ipv6Last = networkIpsAddress6[key]
-            const target = this.form.fi.networkList.filter(item => item.key === key)
             const ipv6First = getIpv6Start(target[0]?.network?.guest_ip6_start)
             obj.address6 = ipv6First + ipv6Last
+          }
+          if (obj.require_ipv6) {
+            if (networkIPv6Modes && networkIPv6Modes[key] === 'only') {
+              obj.strict_ipv6 = true
+            }
+          }
+          if (!target[0]?.network?.guest_ip_start && !target[0]?.network?.guest_ip_end && target[0]?.network?.guest_ip6_start) {
+            obj.strict_ipv6 = true
           }
           if (this.form.fd.networkExits) {
             const exit = this.form.fd.networkExits[key]
@@ -1073,7 +1087,7 @@ export default {
       const dataDisk = []
       const len = this.form.fd.sysdisks?.length || -1
       if (len) {
-        const sysDiskType = this.form.fd.systemDiskType.key
+        const sysDiskType = this.form.fd.systemDiskType?.key
         const systemDisk = {
           index: 0,
           disk_type: 'sys',

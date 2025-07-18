@@ -1699,6 +1699,8 @@
   "compute.group_action.mirror_backup": "Images & Backups",
   "compute.config_transparent_net": "Configure SR-IOV NIC",
   "compute.server_create.require_ipv6": "Allocate IPv6 Address",
+  "compute.server_create.require_ipv6_all": "Allocate IPv6 address",
+  "compute.server_create.require_ipv6_only": "Only allocate IPv6 address",
   "compute.available_host": "Available host",
   "compute.unavailable_host": "Unavailable host",
   "compute.auto_allocation": "Auto allocation",
