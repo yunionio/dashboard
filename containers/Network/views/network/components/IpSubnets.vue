@@ -2,6 +2,8 @@
   <div>
     <div class="d-flex align-items-center" v-for="(item, i) in ipSubnets" :key="item.key">
       <ip-subnet
+        showIpv6
+        isButtonHide
         :decorator="genDecorator(item.key)" />
       <a-button shape="circle" icon="minus" size="small" v-if="!hiddenDeleteAction && ipSubnets.length > 1" @click="decrease(i)" class="ml-2" />
     </div>

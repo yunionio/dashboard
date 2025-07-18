@@ -58,16 +58,29 @@
           </a-radio-group>
         </a-form-item>
         <!-- 网段 -->
-        <a-form-item :label="$t('network.text_575')" v-bind="formItemLayout" :validate-status="ipSubnetsValidateStatus" :help="ipSubnetsHelp" required v-if="show">
+        <a-form-item :label="$t('network.text_575')" v-bind="formItemLayout" required v-if="show">
           <template slot="extra">
             <div>{{$t('network.text_576')}}</div>
             <div>{{$t('network.text_577')}}</div>
           </template>
           <ip-subnets :decorator="decorators.ipSubnets" @clear-error="clearIpSubnetsError" />
+          <div v-if="ipSubnetsHelp" class="error-tips">{{ ipSubnetsHelp }}</div>
         </a-form-item>
-        <a-form-item :label="$t('network.text_575')" :extra="$t('network.text_578')" :vaidate-status="guestIpPrefixValidateStatus" :help="guestIpPrefixHelp" v-bind="formItemLayout" v-if="!show && !isGroupGuestIpPrefix">
-          <a-input v-decorator="decorators.guest_ip_prefix(0)" :placeholder="$t('network.ipv4.prefix.prompt')" v-if="curVpc && curVpc.cidr_block" />
-          <a-input v-decorator="decorators.guest_ip6_prefix(0)" :placeholder="$t('network.ipv6.prefix.prompt')" v-if="curVpc && curVpc.cidr_block6" />
+        <!-- 输入 网段 -->
+        <a-form-item :label="$t('network.text_575')" :extra="$t('network.text_578')" v-bind="formItemLayout" v-if="!show && !isGroupGuestIpPrefix">
+          <a-row :gutter="8">
+            <a-col :span="12" v-if="curVpc && curVpc.cidr_block">
+              <a-form-item class="mb-0">
+                <a-input v-decorator="decorators.guest_ip_prefix(0)" :placeholder="$t('network.ipv4.prefix.prompt')" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12" v-if="curVpc && curVpc.cidr_block6">
+              <a-form-item class="mb-0">
+                <a-input v-decorator="decorators.guest_ip6_prefix(0)" :placeholder="$t('network.ipv6.prefix.prompt')" />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <div v-if="guestIpPrefixHelp" class="error-tips">{{ guestIpPrefixHelp }}</div>
         </a-form-item>
         <a-form-item :label="$t('network.text_575')" v-bind="formItemLayout" :validate-status="guestIpPrefixValidateStatus" :help="guestIpPrefixHelp" required v-if="isGroupGuestIpPrefix">
           <template slot="extra">
@@ -96,8 +109,19 @@
             <span class="count-tips">{{$t('network.text_169')}}<span class="remain-num">{{ remain }}</span>{{$t('network.text_170')}}</span>
           </div>
         </a-form-item>
-        <a-form-item label="dhcp_relay" :extra="$t('network.dhcp_tooltip')" v-if="show">
-          <a-input class="w-50" v-decorator="decorators.guest_dhcp" :placeholder="$t('common.tips.input', ['IPv4'])" />
+        <a-form-item label="dhcp_relay" v-if="show">
+          <a-row :gutter="8">
+            <a-col :span="12">
+              <a-form-item class="mb-0" :extra="$t('network.dhcp_tooltip')">
+                <a-input v-decorator="decorators.guest_dhcp" :placeholder="$t('common.tips.input', ['IPv4'])" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item class="mb-0" :extra="$t('network.dhcp_tooltip1')">
+                <a-input v-decorator="decorators.guest_dhcp6" :placeholder="$t('common.tips.input', ['IPv6'])" />
+              </a-form-item>
+            </a-col>
+          </a-row>
         </a-form-item>
         <a-form-item :label="$t('common_498')" v-if="isShowIsAutoAlloc">
           <a-switch v-decorator="decorators.is_auto_alloc" />
@@ -124,7 +148,18 @@
               <span slot="extra" v-if="form.fc.getFieldValue('alloc_policy') === 'none'">{{$t('network.text_584')}}</span>
             </a-form-item>
             <a-form-item :label="$t('network.dns_server')" v-bind="formItemLayout">
-              <a-input :placeholder="$t('validator.IPv4s')" v-decorator="decorators.guest_dns" />
+              <a-row :gutter="8">
+                <a-col :span="12">
+                  <a-form-item class="mb-0">
+                    <a-input :placeholder="$t('validator.IPv4s')" v-decorator="decorators.guest_dns" />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                  <a-form-item class="mb-0">
+                    <a-input :placeholder="$t('validator.IPv6s')" v-decorator="decorators.guest_dns6" />
+                  </a-form-item>
+                </a-col>
+              </a-row>
             </a-form-item>
             <a-form-item v-bind="formItemLayout">
               <span slot="label">{{$t('network.text_586')}}</span>
@@ -137,7 +172,18 @@
               <a-input :placeholder="$t('validator.domain')" v-decorator="decorators.guest_domain" />
             </a-form-item>
             <a-form-item :label="$t('network.ntp_server')" v-bind="formItemLayout">
-              <a-input :placeholder="$t('validator.domains')" v-decorator="decorators.guest_ntp" />
+              <a-row :gutter="8">
+                <a-col :span="12">
+                  <a-form-item class="mb-0">
+                    <a-input :placeholder="$t('validator.domains')" v-decorator="decorators.guest_ntp" />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                  <a-form-item class="mb-0">
+                    <a-input :placeholder="$t('validator.domains6')" v-decorator="decorators.guest_ntp6" />
+                  </a-form-item>
+                </a-col>
+              </a-row>
             </a-form-item>
           </a-collapse-panel>
         </a-collapse>
@@ -233,7 +279,10 @@ export default {
       routerQuery,
       form: {
         fc: this.$form.createForm(this, { onValuesChange: this.handleValuesChange }),
-        fd: {},
+        fd: {
+          guest_ip_prefix: [],
+          guest_ip6_prefix: [],
+        },
       },
       ipSubnetsValidateStatus: '',
       guestIpPrefixValidateStatus: '',
@@ -328,6 +377,15 @@ export default {
             ],
           },
         ],
+        guest_dns6: [
+          'guest_dns6',
+          {
+            initialValue: '',
+            rules: [
+              { validator: this.$validate('IPv6s', false) },
+            ],
+          },
+        ],
         guest_domain: [
           'guest_domain',
           {
@@ -346,6 +404,15 @@ export default {
             ],
           },
         ],
+        guest_ntp6: [
+          'guest_ntp6',
+          {
+            initialValue: '',
+            rules: [
+              { validator: this.$validate('domains6', false) },
+            ],
+          },
+        ],
         ipSubnets: {
           startip: i => [
             `startip[${i}]`,
@@ -353,8 +420,8 @@ export default {
               initialValue: '',
               validateFirst: true,
               rules: [
-                { required: true, message: this.$t('network.text_593') },
-                { validator: this.$validate('IPv4') },
+                // { required: true, message: this.$t('network.text_593') },
+                { validator: this.validateIpv4 },
               ],
             },
           ],
@@ -364,8 +431,8 @@ export default {
               initialValue: '',
               validateFirst: true,
               rules: [
-                { required: true, message: this.$t('network.text_594') },
-                { validator: this.$validate('IPv4') },
+                // { required: true, message: this.$t('network.text_594') },
+                { validator: this.validateIpv4 },
               ],
             },
           ],
@@ -385,7 +452,7 @@ export default {
               validateTrigger: ['change', 'blur'],
               validateFirst: true,
               rules: [
-                { validator: this.$validate('IPv4') },
+                { validator: this.validateIpv4 },
                 { validator: validateGateway },
               ],
             },
@@ -444,7 +511,6 @@ export default {
             initialValue: '',
             validateFirst: true,
             rules: [
-              { required: true, message: this.$t('network.text_597') },
               { validator: this.validatePublicIpPrefix },
             ],
           },
@@ -466,6 +532,16 @@ export default {
             validateFirst: true,
             rules: [
               { validator: this.validateDhcpRelay },
+            ],
+          },
+        ],
+        guest_dhcp6: [
+          'guest_dhcp6',
+          {
+            initialValue: '',
+            validateFirst: true,
+            rules: [
+              { validator: this.validateDhcpRelay6 },
             ],
           },
         ],
@@ -635,11 +711,33 @@ export default {
         this.isGroupGuestIpPrefix = true
       }
     },
+    'form.fd.guest_ip_prefix': {
+      handler (newValue) {
+        if (newValue.filter(item => item).length > 0) {
+          this.guestIpPrefixHelp = ''
+        }
+      },
+    },
+    'form.fd.guest_ip6_prefix': {
+      handler (newValue) {
+        if (newValue.filter(item => item).length > 0) {
+          this.guestIpPrefixHelp = ''
+        }
+      },
+    },
   },
   created () {
     this.initState()
   },
   methods: {
+    validateIpv4 (rule, value, callback) {
+      if (!value) {
+        callback()
+      } else if (!REGEXP.IPv4.regexp.test(value)) {
+        callback(new Error(this.$t('common.tips.input', ['IPv4'])))
+      }
+      callback()
+    },
     validateIpv6 (rule, value, callback) {
       if (!value) {
         callback()
@@ -653,6 +751,14 @@ export default {
         callback()
       } else if (!REGEXP.IPv4s.regexp.test(value)) {
         callback(new Error(this.$t('common.tips.input', ['IPv4'])))
+      }
+      callback()
+    },
+    validateDhcpRelay6 (rule, value, callback) {
+      if (!value) {
+        callback()
+      } else if (!REGEXP.IPv6s.regexp.test(value)) {
+        callback(new Error(this.$t('common.tips.input', ['IPv6'])))
       }
       callback()
     },
@@ -764,18 +870,20 @@ export default {
       return (<div>{ item.name }</div>)
     },
     validatePublicIpPrefix (rule, value, callback) {
-      if (!networkSegment.regexp.test(value)) {
-        callback(new Error(networkSegment.message))
-      }
-      const maskNum = (value && value.split('/').length > 1) ? value.split('/')[1] : null
-      const publicWire = this.form.fc.getFieldValue('cloudregion')
-      if (maskNum && publicWire && publicWire.provider) {
-        const provider = publicWire.provider.toLowerCase()
-        if (masks[provider]) {
-          const min = masks[provider].min
-          const max = masks[provider].max
-          if (masks[provider] && (maskNum < min || maskNum > max)) {
-            callback(new Error(this.$t('network.text_604', [min, max])))
+      if (value) {
+        if (!networkSegment.regexp.test(value)) {
+          callback(new Error(networkSegment.message))
+        }
+        const maskNum = (value && value.split('/').length > 1) ? value.split('/')[1] : null
+        const publicWire = this.form.fc.getFieldValue('cloudregion')
+        if (maskNum && publicWire && publicWire.provider) {
+          const provider = publicWire.provider.toLowerCase()
+          if (masks[provider]) {
+            const min = masks[provider].min
+            const max = masks[provider].max
+            if (masks[provider] && (maskNum < min || maskNum > max)) {
+              callback(new Error(this.$t('network.text_604', [min, max])))
+            }
           }
         }
       }
@@ -807,6 +915,7 @@ export default {
     },
     genData (values) {
       const guest_dhcp = values.guest_dhcp
+      const guest_dhcp6 = values.guest_dhcp6
       if (this.cloudEnv === 'onpremise') {
         const data = []
         if (this.isGroupGuestIpPrefix) {
@@ -814,8 +923,10 @@ export default {
             const obj = {
               alloc_policy: values.alloc_policy,
               guest_dns: values.guest_dns,
+              guest_dns6: values.guest_dns6,
               guest_domain: values.guest_domain,
               guest_ntp: values.guest_ntp,
+              guest_ntp6: values.guest_ntp6,
               guest_ip_prefix: value,
               guest_ip6_prefix: values.guest_ip6_prefix && values.guest_ip6_prefix[key],
               name: values.name,
@@ -825,6 +936,7 @@ export default {
               project_id: values.project?.key,
               is_auto_alloc: values.is_auto_alloc,
               guest_dhcp,
+              guest_dhcp6,
               __meta__: values.__meta__,
             }
             data.push(obj)
@@ -835,8 +947,10 @@ export default {
               bgp_type: values.bgp_type,
               alloc_policy: values.alloc_policy,
               guest_dns: values.guest_dns,
+              guest_dns6: values.guest_dns6,
               guest_domain: values.guest_domain,
               guest_ntp: values.guest_ntp,
+              guest_ntp6: values.guest_ntp6,
               guest_ip_start: values.startip[key],
               guest_ip_end: values.endip[key],
               guest_ip_mask: values.netmask[key],
@@ -853,6 +967,7 @@ export default {
               wire_id: values.wire,
               is_auto_alloc: values.is_auto_alloc,
               guest_dhcp,
+              guest_dhcp6,
               __meta__: values.__meta__,
             }
             data.push(obj)
@@ -862,8 +977,10 @@ export default {
             const obj = {
               alloc_policy: values.alloc_policy,
               guest_dns: values.guest_dns,
+              guest_dns6: values.guest_dns6,
               guest_domain: values.guest_domain,
               guest_ntp: values.guest_ntp,
+              guest_ntp6: values.guest_ntp6,
               guest_ip_prefix: value,
               guest_ip6_prefix: values.guest_ip6_prefix && values.guest_ip6_prefix[key],
               name: values.name,
@@ -873,6 +990,7 @@ export default {
               project_id: values.project?.key,
               is_auto_alloc: values.is_auto_alloc,
               guest_dhcp,
+              guest_dhcp6,
               __meta__: values.__meta__,
             }
             data.push(obj)
@@ -891,6 +1009,7 @@ export default {
           wire_id: values.wire,
           is_auto_alloc: values.is_auto_alloc,
           guest_dhcp,
+          guest_dhcp6,
           __meta__: values.__meta__,
         }
       }
@@ -904,6 +1023,7 @@ export default {
         zone: values?.zone,
         is_auto_alloc: values.is_auto_alloc,
         guest_dhcp,
+        guest_dhcp6,
         __meta__: values.__meta__,
       }
     },
@@ -920,21 +1040,40 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         this.submiting = true
-        if (this.cloudEnv === 'onpremise' && this.show && !this.isGroupGuestIpPrefix && (R.isNil(values.startip) || R.isEmpty(values.startip))) {
-          this.ipSubnetsValidateStatus = 'error'
-          this.ipSubnetsHelp = this.$t('network.text_605')
-          return
+        if (this.cloudEnv === 'onpremise' && this.show && !this.isGroupGuestIpPrefix) {
+          const keys = Object.keys(values.startip)
+          let error = false
+          keys.forEach(key => {
+            if (!((values.startip[key] && values.endip[key] && values.gateway[key] && !values.startip6[key] && !values.endip6[key] && !values.gateway6[key]) || (values.startip6[key] && values.endip6[key] && values.gateway6[key] && !values.startip[key] && !values.endip[key] && !values.gateway[key]) || (values.startip[key] && values.endip[key] && values.gateway[key] && values.startip6[key] && values.endip6[key] && values.gateway6[key]))) {
+              error = true
+            }
+          })
+          if (error) {
+            this.ipSubnetsHelp = this.$t('network.required_ipv4_or_ipv6_1')
+            return
+          }
         }
-        if (!this.show && !this.isGroupGuestIpPrefix && (R.isNil(values.guest_ip_prefix) || R.isEmpty(values.guest_ip_prefix))) {
-          this.guestIpPrefixValidateStatus = 'error'
-          this.guestIpPrefixHelp = this.$t('network.ipv4.prefix.prompt')
-          return
+        // 验证ipv4 和 ipv6 网段 有一个必填
+        if (!this.show && !this.isGroupGuestIpPrefix) {
+          const guest_ip_prefix = R.is(Array, values.guest_ip_prefix) ? values.guest_ip_prefix[0] : values.guest_ip_prefix
+          const guest_ip_prefix6 = R.is(Array, values.guest_ip6_prefix) ? values.guest_ip6_prefix[0] : values.guest_ip6_prefix
+          if (!guest_ip_prefix && !guest_ip_prefix6) {
+            this.guestIpPrefixValidateStatus = 'error'
+            if (this.curVpc && this.curVpc.cidr_block && this.curVpc.cidr_block6) {
+              this.guestIpPrefixHelp = this.$t('network.required_ipv4_or_ipv6')
+            } else {
+              this.guestIpPrefixHelp = this.$t('network.text_597')
+            }
+            return
+          }
         }
         if (this.isGroupGuestIpPrefix && (R.isNil(values.guest_ip_prefix) || R.isEmpty(values.guest_ip_prefix))) {
           this.guestIpPrefixValidateStatus = 'error'
           this.guestIpPrefixHelp = this.$t('network.text_605')
           return
         }
+        this.guestIpPrefixHelp = ''
+        this.ipSubnetsHelp = ''
         const data = this.genData(values)
         const manager = new Manager('networks')
         if (this.cloudEnv === 'onpremise') {
@@ -970,3 +1109,11 @@ export default {
   },
 }
 </script>
+
+<style lang="less" scoped>
+.error-tips {
+  color: #f5222d;
+  margin-bottom: 3px;
+  line-height: 16px;
+}
+</style>

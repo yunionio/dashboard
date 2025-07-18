@@ -564,6 +564,12 @@ export const createVmDecorators = type => {
             ],
           },
         ],
+        ipv6_mode: (i, networkData) => [
+          `networkIPv6Modes[${i}]`,
+          {
+            initialValue: 'all',
+          },
+        ],
         macs: (i, networkData) => [
           `networkMacs[${i}]`,
           {
@@ -1210,11 +1216,19 @@ export class GenCreateData {
             obj.require_ipv6 = true
           }
         }
+        const target = this.fi.networkList.filter(item => item.key === key)
         if (this.fd.networkIpsAddress6) {
           const ipv6Last = this.fd.networkIpsAddress6[key]
-          const target = this.fi.networkList.filter(item => item.key === key)
           const ipv6First = getIpv6Start(target[0]?.network?.guest_ip6_start)
           obj.address6 = ipv6First + ipv6Last
+        }
+        if (obj.require_ipv6) {
+          if (this.fd.networkIPv6Modes && this.fd.networkIPv6Modes[key] === 'only') {
+            obj.strict_ipv6 = true
+          }
+        }
+        if (!target[0]?.network?.guest_ip_start && !target[0]?.network?.guest_ip_end && target[0]?.network?.guest_ip6_start) {
+          obj.strict_ipv6 = true
         }
         if (this.fd.networkDevices) {
           const device = this.fd.networkDevices[key]

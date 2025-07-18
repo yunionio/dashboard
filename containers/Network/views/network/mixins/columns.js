@@ -85,6 +85,9 @@ export default {
         width: 180,
         slots: {
           default: ({ row }) => {
+            if (!row.guest_ip_start || !row.guest_ip_end) {
+              return '-'
+            }
             return [
               <div>{ this.$t('network.ip.start', [row.guest_ip_start, row.guest_ip_mask])}</div>,
               <div>{ this.$t('network.ip.end', [row.guest_ip_end, row.guest_ip_mask])}</div>,
@@ -92,6 +95,9 @@ export default {
           },
         },
         formatter: ({ row }) => {
+          if (!row.guest_ip_start || !row.guest_ip_end) {
+            return '-'
+          }
           return `${this.$t('network.ip.start', [row.guest_ip_start, row.guest_ip_mask])},${this.$t('network.ip.end', [row.guest_ip_end, row.guest_ip_mask])}`
         },
         hidden: () => this.$isScopedPolicyMenuHidden('network_hidden_columns.ip'),
