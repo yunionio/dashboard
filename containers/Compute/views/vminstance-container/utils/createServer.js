@@ -1,5 +1,6 @@
 import * as R from 'ramda'
 import _ from 'lodash'
+import ipaddr from 'ipaddr.js'
 import {
   NETWORK_OPTIONS_MAP,
   SERVER_TYPE,
@@ -19,6 +20,46 @@ import store from '@/store'
 import i18n from '@/locales'
 import { removeHttp } from '@/utils/url'
 import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
+
+export function getIpv6Start (ipv6) {
+  try {
+    const IPv6 = ipaddr.IPv6.parse(ipv6)
+    return IPv6.toNormalizedString().split(':').slice(0, 4).join(':') + ':'
+  } catch (err) {
+    console.error('IPv6 address is error')
+    return ''
+  }
+}
+
+export function ipv6ToHex (ipv6) {
+  return ipv6.parts.map(part => part.toString(16).padStart(4, '0')).join('')
+}
+
+export function checkIpV6 (i, networkData) {
+  return (rule, value, cb) => {
+    const ipv6First = getIpv6Start(networkData.guest_ip6_start)
+    try {
+      const ipv6 = ipv6First + value
+      const ipAddr = ipaddr.IPv6.parse(ipv6)
+      const subnet1Addr = ipaddr.IPv6.parse(networkData.guest_ip6_start)
+      const subnet2Addr = ipaddr.IPv6.parse(networkData.guest_ip6_end)
+
+      if (ipAddr.kind() !== 'ipv6') {
+        cb(new Error(i18n.t('compute.error_ipv6')))
+      }
+      const target = ipv6ToHex(ipAddr)
+      const start = ipv6ToHex(subnet1Addr)
+      const end = ipv6ToHex(subnet2Addr)
+      // 检查IP是否在两个子网之间
+      if (!((target >= start && target <= end))) {
+        cb(new Error(i18n.t('compute.ipv6_within_range')))
+      }
+      cb()
+    } catch (err) {
+      cb(new Error(i18n.t('compute.error_ipv6')))
+    }
+  }
+}
 
 export function checkIpInSegment (i, networkData) {
   return (rule, value, cb) => {
@@ -379,6 +420,28 @@ export const createVmDecorators = () => {
                 validator: validateForm('mac'),
               },
             ],
+          },
+        ],
+        ips6: (i, networkData) => [
+          `networkIpsAddress6[${i}]`,
+          {
+            validateFirst: true,
+            validateTrigger: ['blur', 'change'],
+            rules: [
+              {
+                required: true,
+                message: i18n.t('compute.complete_ipv6_address'),
+              },
+              {
+                validator: checkIpV6(i, networkData),
+              },
+            ],
+          },
+        ],
+        ipv6_mode: (i, networkData) => [
+          `networkIPv6Modes[${i}]`,
+          {
+            validateTrigger: ['change', 'blur'],
           },
         ],
         ipv6s: (i, networkData) => [
@@ -899,6 +962,20 @@ export class GenCreateData {
           if (ipv6) {
             obj.require_ipv6 = true
           }
+        }
+        const target = this.fi.networkList.filter(item => item.key === key)
+        if (this.fd.networkIpsAddress6) {
+          const ipv6Last = this.fd.networkIpsAddress6[key]
+          const ipv6First = getIpv6Start(target[0]?.network?.guest_ip6_start)
+          obj.address6 = ipv6First + ipv6Last
+        }
+        if (obj.require_ipv6) {
+          if (this.fd.networkIPv6Modes && this.fd.networkIPv6Modes[key] === 'only') {
+            obj.strict_ipv6 = true
+          }
+        }
+        if (!target[0]?.network?.guest_ip_start && !target[0]?.network?.guest_ip_end && target[0]?.network?.guest_ip6_start) {
+          obj.strict_ipv6 = true
         }
         if (this.fd.networkDevices) {
           const device = this.fd.networkDevices[key]
