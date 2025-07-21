@@ -301,7 +301,7 @@ export default {
         } else {
           net_desc.require_ipv6 = false
         }
-        if (!values.ip && net_desc.require_ipv6) {
+        if (!this.isSupportIPv4 && net_desc.require_ipv6) {
           net_desc.strict_ipv6 = true
         }
         const address6 = values.address6
