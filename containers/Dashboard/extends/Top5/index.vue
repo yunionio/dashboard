@@ -706,15 +706,13 @@ export default {
     groupBy (field) {
       const ret = []
 
-      ret.push({ type: 'field', params: [this.dimension.name] })
-      ret.push({ type: 'field', params: [this.dimension.id] })
       if ((this.dimension.scope === 'system' || this.dimension.scope === 'domain') && this.dimension.name === 'tenant') {
         ret.push({ type: 'field', params: ['project_domain'] })
-        ret.push({ type: 'field', params: ['domain_id'] })
-      }
-      if (this.dimension.scope === 'project' && this.dimension.name !== 'tenant') {
+      } else if (this.dimension.scope === 'project' && this.dimension.name !== 'tenant') {
         ret.push({ type: 'field', params: ['tenant'] })
-        ret.push({ type: 'field', params: ['tenant_id'] })
+      } else {
+        ret.push({ type: 'field', params: [this.dimension.name] })
+        ret.push({ type: 'field', params: [this.dimension.id] })
       }
       return ret
     },
