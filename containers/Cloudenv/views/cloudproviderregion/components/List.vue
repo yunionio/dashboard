@@ -10,9 +10,9 @@
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
+import { getEnabledFilter } from '@/utils/common/tableFilter'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-
 export default {
   name: 'CloudproviderregionList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
@@ -47,6 +47,9 @@ export default {
               return `cloudregions.id(cloudregion_id).id.in(${val.join(',')})`
             },
           },
+          enabled: getEnabledFilter({
+            label: this.$t('cloudenv.text_366'),
+          }),
         },
         params: { scope: this.$store.getters.scope },
         batchItemGetParamsFormatter: (params) => {
