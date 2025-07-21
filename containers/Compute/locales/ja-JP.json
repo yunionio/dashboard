@@ -1906,5 +1906,8 @@
   "compute.reason_detail": "詳細な理由",
   "compute.advanced": "高級",
   "compute.hide_advanced": "高級を非表示",
-  "compute.custom_ssh_connect": "カスタム {0} 接続"
+  "compute.custom_ssh_connect": "カスタム {0} 接続",
+  "compute.image_source_cn": "中国国内鏡像源",
+  "compute.image_source_ov": "海外鏡像源",
+  "compute.image_source_global": "全部"
 }

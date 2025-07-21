@@ -1904,5 +1904,8 @@
   "compute.reason_detail": "Reason detail",
   "compute.advanced": "Advanced",
   "compute.hide_advanced": "Hide advanced",
-  "compute.custom_ssh_connect": "Custom {0} connection"
+  "compute.custom_ssh_connect": "Custom {0} connection",
+  "compute.image_source_cn": "China",
+  "compute.image_source_ov": "Overseas",
+  "compute.image_source_global": "All"
 }
