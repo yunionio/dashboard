@@ -1266,7 +1266,7 @@
   "compute.text_1249": "设置磁盘速度",
   "compute.text_1250": "请输入IOPS",
   "compute.text_1250_1": "请输入bps",
-  "compute.text_1251": "1. 状态异常的硬盘不支持创建@:dictionary.snapshot. 2. @:dictionary.private_env仅支持本地硬盘创建@:dictionary.snapshot（以镜像为系统盘的硬盘不支持创建@:dictionary.snapshot）",
+  "compute.text_1251": "1. 状态异常的硬盘不支持创建@:dictionary.snapshot 2. @:dictionary.private_env仅支持本地硬盘创建@:dictionary.snapshot（以镜像为系统盘的硬盘不支持创建@:dictionary.snapshot）",
   "compute.text_1252": "创建硬盘@:dictionary.snapshot",
   "compute.text_1253": "创建主机@:dictionary.snapshot",
   "compute.text_1254": "选择磁盘",
