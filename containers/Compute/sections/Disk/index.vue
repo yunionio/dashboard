@@ -105,7 +105,7 @@
       </template>
       <a-icon type="exclamation-circle" class="storage-icon" :class="storageClass" />
     </a-tooltip>
-    <a-button v-if="!disabled" class="mt-1" type="link" @click="() => showAdvanced = !showAdvanced">{{ showAdvanced ? $t('compute.hide_advanced') : $t('compute.advanced') }}</a-button>
+    <a-button v-if="!disabled && hasAdvanced" class="mt-1" type="link" @click="() => showAdvanced = !showAdvanced">{{ showAdvanced ? $t('compute.hide_advanced') : $t('compute.advanced') }}</a-button>
   </div>
 </template>
 
@@ -265,6 +265,9 @@ export default {
     },
     isVMware () {
       return this.hypervisor === HYPERVISORS_MAP.esxi.key
+    },
+    hasAdvanced () {
+      return this.has('snapshot') || this.has('mount-point') || this.has('schedtag') || this.has('storage') || this.has('iops') || this.has('throughput') || this.isAutoResetShow || this.isVMware
     },
   },
   watch: {
