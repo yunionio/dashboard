@@ -4,6 +4,7 @@
  * date: 2018/08/07
  */
 import Vue from 'vue'
+import * as R from 'ramda'
 import Router from 'vue-router'
 import { getProductName } from '@/utils/auth'
 import routes from './routes'
@@ -28,7 +29,7 @@ const router = new Router({
 router.afterEach((to, from, next) => {
   const name = getProductName()
   if (to.meta?.label) {
-    document.title = `${name}-${to.meta.label}`
+    document.title = `${name}-${R.is(Function, to.meta.label) ? to.meta.label() : to.meta.label}`
   } else {
     document.title = name
   }
