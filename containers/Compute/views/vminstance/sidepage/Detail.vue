@@ -191,6 +191,10 @@ export default {
           }
         }
         if (dataDisks.some(v => v.auto_reset)) {
+          dataDisk.auto_reset_some = true
+        }
+        if (dataDisks.every(v => v.auto_reset)) {
+          dataDisk.auto_reset_some = false
           dataDisk.auto_reset = true
         }
       }
@@ -652,13 +656,13 @@ export default {
       let str = ''
       const storageArr = Object.values(ALL_STORAGE)
       for (const k in diskObj) {
-        if (k === 'auto_reset') continue
+        if (k === 'auto_reset' || k === 'auto_reset_some') continue
         const num = diskObj[k]
         const disk = storageArr.find(v => v.value === k)
         if (disk) {
-          str += `、${sizestr(num, 'M', 1024)}（${disk.label}${diskObj.auto_reset ? ' ' + this.$t('compute.shutdown_auto_reset') : ''}）`
+          str += `、${sizestr(num, 'M', 1024)}（${disk.label}${diskObj.auto_reset_some ? ' ' + this.$t('compute.shutdown_auto_reset_some') : (diskObj.auto_reset ? ' ' + this.$t('compute.shutdown_auto_reset') : '')}）`
         } else {
-          str += `、${sizestr(num, 'M', 1024)}（${k}${diskObj.auto_reset ? ' ' + this.$t('compute.shutdown_auto_reset') : ''}）`
+          str += `、${sizestr(num, 'M', 1024)}（${k}${diskObj.auto_reset_some ? ' ' + this.$t('compute.shutdown_auto_reset_some') : (diskObj.auto_reset ? ' ' + this.$t('compute.shutdown_auto_reset') : '')}）`
         }
       }
       return str.slice(1)
