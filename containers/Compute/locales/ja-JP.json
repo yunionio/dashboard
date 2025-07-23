@@ -1883,5 +1883,6 @@
   "compute.throughput_input_tip": "スループットを入力してください",
   "compute.sys_disk_disable_action": "システムディスクはこの操作をサポートしていません",
   "compute.advanced": "高級",
-  "compute.hide_advanced": "高級を非表示"
+  "compute.hide_advanced": "高級を非表示",
+  "compute.postpaid_disk_change_billing_type_tip": "仮想マシンが按量課金の場合、按量課金のディスクは仮想マシンと同時に包年包月に変更されます"
 }
