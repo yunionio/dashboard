@@ -1904,5 +1904,6 @@
   "compute.reason_detail": "詳細な理由",
   "compute.advanced": "高級",
   "compute.hide_advanced": "高級を非表示",
-  "compute.custom_ssh_connect": "カスタム {0} 接続"
+  "compute.custom_ssh_connect": "カスタム {0} 接続",
+  "compute.postpaid_disk_change_billing_type_tip": "仮想マシンが按量課金の場合、按量課金のディスクは仮想マシンと同時に包年包月に変更されます"
 }

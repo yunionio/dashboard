@@ -518,6 +518,11 @@ export default {
                   ret.tooltip = i18n.t('compute.sys_disk_disable_action')
                   return ret
                 }
+                if (obj.billing_type === 'postpaid' && obj.guest_billing_type === 'postpaid') {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.postpaid_disk_change_billing_type_tip')
+                  return ret
+                }
                 ret.validate = true
                 return ret
               },

@@ -1902,5 +1902,6 @@
   "compute.reason_detail": "Reason detail",
   "compute.advanced": "Advanced",
   "compute.hide_advanced": "Hide advanced",
-  "compute.custom_ssh_connect": "Custom {0} connection"
+  "compute.custom_ssh_connect": "Custom {0} connection",
+  "compute.postpaid_disk_change_billing_type_tip": "When the virtual machine is postpaid, the postpaid disk can only be converted to prepaid together with the virtual machine"
 }
