@@ -172,8 +172,8 @@ const getSingleActions = function (ctx) {
                     })
                   }
                   return <a-tooltip placement="left" title={obj.rescue_mode ? i18n.t('compute.start_rescue.validate_tooltip') : !isRunning ? i18n.t('compute.text_1309', [i18n.t('compute.text_574')]) : ''}>
-                    <span style={styleObj} class='d-flex justify-content-between align-items-center'>
-                      <span onClick={isRunning ? sshConnectHandle : () => { }}>{`SSH ${ipAddr}`}</span>
+                    <span style={styleObj} class='d-flex justify-content-between align-items-center' title={ipAddr}>
+                      <span onClick={isRunning ? sshConnectHandle : () => { }}>{`SSH ${ipAddr.length > 17 ? `${ipAddr.slice(0, 17)}...` : ipAddr}`}</span>
                       {
                         isRunning ? <span>
                           <a-tooltip title={i18n.t('compute.custom_ssh_connect', ['SSH'])}>
@@ -304,6 +304,15 @@ const getSingleActions = function (ctx) {
                 actionType: 'IP SSH',
                 ipType: 'nicIP',
                 ipAddr: nic.ip_addr,
+                vpcId: nic.vpc_id,
+                provider: obj.provider,
+              })
+            }
+            if ((obj.provider === 'OneCloud' || obj.vpc_id === 'default' || obj.provider === 'InCloudSphere') && nic.ip6_addr) {
+              ipInfoList.push({
+                actionType: 'IP SSH',
+                ipType: 'nicIP',
+                ipAddr: nic.ip6_addr,
                 vpcId: nic.vpc_id,
                 provider: obj.provider,
               })

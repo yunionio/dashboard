@@ -1,7 +1,7 @@
 <template>
   <div class="network-config">
     <!-- 适配大、小屏幕 -->
-    <div class="mb-2" :class="{ 'd-flex align-items-start' : isBigScreen }" v-for="(item, i) in networkList" :key="item.key">
+    <div class="mb-2" :class="{ 'd-flex align-items-start' : isBigScreen && !isDialog }" v-for="(item, i) in networkList" :key="item.key">
       <div class="d-flex">
         <a-tag color="blue" class="mr-1" style="height: 20px; margin-top: 10px;">{{ isBonding ? 'bond' : $t('compute.text_193')}}{{i + count}}</a-tag>
         <a-form-item
@@ -41,25 +41,27 @@
             :mapper="networkResourceMapper"
             :remote-fn="q => ({ search: q })"
             :beforeDefaultSelectCallBack="beforeDefaultSelectCallBack"
-            @change="v => networkChange(v, item)"
+            @change="v => networkChange(v, item, i)"
             :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }"
             :min-width="isDialog ? '200px' : '500px'" />
             <div slot="extra" v-if="i === 0">{{$t('compute.text_196')}}<help-link href="/network2">{{$t('compute.perform_create')}}</help-link>
             </div>
         </a-form-item>
       </div>
-      <div :class="{ 'd-flex ml-1' : isBigScreen }">
+      <div :class="{ 'd-flex ml-1' : isBigScreen && !isDialog }">
         <!-- 高级 -->
         <template v-if="showAdvanced">
-          <template v-if="item.ipShow">
-            <a-form-item class="mb-0" style="display:inline-block" :wrapperCol="{ span: 24 }">
-              <ip-select v-decorator="decorator.ips(item.key, item.network)" :value="item.ip" :network="item.network" @change="e => ipChange(e, i)" />
-            </a-form-item>
-            <a-button type="link" class="mt-1" @click="triggerShowIp(item)">{{$t('compute.text_135')}}</a-button>
+          <template v-if="isSupportIPv4(item) && !(isSupportIPv6(item) && item.ipv6Mode === 'only' && item.requireIpv6)">
+            <template v-if="item.ipShow">
+              <a-form-item class="mb-0" style="display:inline-block" :wrapperCol="{ span: 24 }">
+                <ip-select v-decorator="decorator.ips(item.key, item.network)" :value="item.ip" :network="item.network" @change="e => ipChange(e, i)" />
+              </a-form-item>
+              <a-button type="link" class="mt-1" @click="triggerShowIp(item)">{{$t('compute.text_135')}}</a-button>
+            </template>
+            <a-tooltip v-else :title="ipBtnTooltip">
+              <a-button type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowIp(item)">{{$t('compute.text_198')}}</a-button>
+            </a-tooltip>
           </template>
-          <a-tooltip v-else :title="ipBtnTooltip">
-            <a-button type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowIp(item)">{{$t('compute.text_198')}}</a-button>
-          </a-tooltip>
           <template v-if="showMacConfig">
             <template v-if="item.macShow">
               <a-form-item class="mb-0" style="display:inline-block" :wrapperCol="{ span: 24 }">
@@ -88,11 +90,20 @@
             </template>
             <a-button v-else type="link" class="mr-1 mt-1" @click="triggerShowDevice(item)">{{ $t('compute.config_transparent_net') }}</a-button>
           </template>
-          <template v-if="isSupportIPv6(item)">
-            <a-form-item class="mb-0" style="display:inline-block" :wrapperCol="{ span: 24 }">
-              <a-checkbox style="width: max-content" v-decorator="decorator.ipv6s(item.key, item.network)" @change="(e) => triggerRequireIpv6(item, e)">{{ $t('compute.server_create.require_ipv6') }}</a-checkbox>
+          <template>
+            <a-form-item class="mb-0" style="display:inline-block" :wrapperCol="{ span: 24 }" v-if="isSupportIPv6(item) && isSupportIPv4(item)">
+              <div class="d-flex align-items-center">
+                <a-checkbox style="width: max-content" v-decorator="decorator.ipv6s(item.key, item.network)" @change="(e) => triggerRequireIpv6(item, e)" />
+                <a-dropdown>
+                  <a-menu slot="overlay" @click="(e) => triggerIpv6Mode(item, e, i)" v-decorator="decorator.ipv6_mode(item.key, item.network)">
+                    <a-menu-item key="all">{{ $t('compute.server_create.require_ipv6_all') }}</a-menu-item>
+                    <a-menu-item key="only">{{ $t('compute.server_create.require_ipv6_only') }}</a-menu-item>
+                  </a-menu>
+                  <a-button type="link" class="pl-1">{{ item.ipv6Mode === 'only' ? $t('compute.server_create.require_ipv6_only') : $t('compute.server_create.require_ipv6_all') }}<a-icon type="down" /> </a-button>
+                </a-dropdown>
+              </div>
             </a-form-item>
-            <template v-if="item.requireIpv6">
+            <template v-if="(isSupportIPv6(item) && item.requireIpv6) || (!isSupportIPv4(item) && isSupportIPv6(item))">
               <template v-if="item.ipv6Show">
                 <a-form-item class="mb-0 ml-1" style="width: 350px;display:inline-block" :wrapperCol="{ span: 24 }">
                   <span class="mr-1">{{ getIpv6Prefix(item.network?.guest_ip6_start) }}</span>
@@ -322,6 +333,7 @@ export default {
         ipShow: false,
         ipv6Show: false,
         requireIpv6: false,
+        ipv6Mode: 'all',
         macShow: false,
         deviceShow: false,
         key: uid,
@@ -344,6 +356,14 @@ export default {
     triggerShowIpv6 (item, i) {
       item.ipv6Show = !item.ipv6Show
     },
+    triggerIpv6Mode (item, e, i) {
+      item.ipv6Mode = e.key
+      this.$nextTick(() => {
+        this.form.fc.setFieldsValue({
+          [`networkIPv6Modes[${item.key}]`]: e.key,
+        })
+      })
+    },
     triggerRequireIpv6 (item, e) {
       item.requireIpv6 = e.target.checked
     },
@@ -364,11 +384,12 @@ export default {
       this.$set(this.networkList[0], 'ipShow', false)
       this.$set(this.networkList[0], 'ipv6Show', false)
       this.$set(this.networkList[0], 'requireIpv6', false)
+      this.$set(this.networkList[0], 'ipv6Mode', 'all')
       this.$set(this.networkList[0], 'macShow', false)
       this.$set(this.networkList[0], 'deviceShow', false)
       this.ipsDisabled = ipsDisabled
     },
-    networkChange (val, item) {
+    networkChange (val, item, i) {
       this.$nextTick(() => {
         const fieldKey = `networkExits[${item.key}]`
         this.form.fc.getFieldDecorator(fieldKey, {
@@ -377,6 +398,14 @@ export default {
         this.form.fc.setFieldsValue({
           [fieldKey]: item.network.exit,
         })
+        if (item.network.guest_ip_start && item.network.guest_ip_end) {
+          this.form.fc.setFieldsValue({
+            [`networkIPv6Modes[${item.key}]`]: 'all',
+            [`networkIPv6s[${item.key}]`]: false,
+          })
+          this.$set(this.networkList[i], 'ipv6Mode', 'all')
+          this.$set(this.networkList[i], 'requireIpv6', false)
+        }
       })
     },
     networkSelectChange (curObjArr, item) {
@@ -462,6 +491,9 @@ export default {
     },
     isSupportIPv6 (item) {
       return !!item.network.guest_ip6_start && !!item.network.guest_ip6_end
+    },
+    isSupportIPv4 (item) {
+      return !!item.network.guest_ip_start && !!item.network.guest_ip_end
     },
   },
 }

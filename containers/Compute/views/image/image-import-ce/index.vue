@@ -14,6 +14,11 @@
         </a-radio-group>
       </a-form-model-item>
       <a-form-model-item>
+        <a-radio-group v-model="form.source">
+          <a-radio-button v-for="(item, index) in sourceList" :key="index" :value="item.value">{{ item.label }}</a-radio-button>
+        </a-radio-group>
+      </a-form-model-item>
+      <a-form-model-item>
         <a-radio-group v-model="form.distribution" size="large">
           <a-radio-button v-for="(item, index) in distributionList" :key="index" :value="item.value" style="width:60px;height:60px;text-align:center;line-height:60px;vertical-align:middle;padding:0;"><img v-if="item.os" :src="item.os" style="height:40px;" /></a-radio-button>
         </a-radio-group>
@@ -104,6 +109,7 @@ export default {
       imagesLogos,
       form: {
         os_arch: 'x86_64',
+        source: 'all',
         distribution: 'Debian',
       },
     }
@@ -122,7 +128,7 @@ export default {
     distributionList () {
       const ret = []
       this.imageList.map(item => {
-        if (item.data.distribution && !ret.some(l => l.value === item.data.distribution)) {
+        if (item.data.os_arch === this.form.os_arch && item.data.source_type.includes(this.form.source) && item.data.distribution && !ret.some(l => l.value === item.data.distribution)) {
           ret.push({ value: item.data.distribution, label: item.data.distribution, os: item.data.os })
         }
       })
@@ -131,6 +137,13 @@ export default {
     isce () {
       return isCE()
     },
+    sourceList () {
+      return [
+        { value: 'all', label: this.$t('compute.image_source_global') },
+        { value: 'cn', label: this.$t('compute.image_source_cn') },
+        { value: 'ov', label: this.$t('compute.image_source_ov') },
+      ]
+    },
   },
   watch: {
     form: {
@@ -138,6 +151,13 @@ export default {
         this.initList()
       },
       deep: true,
+    },
+    distributionList (val) {
+      if (val.length) {
+        if (!val.some(item => item.value === this.form.distribution)) {
+          this.form.distribution = val[0].value
+        }
+      }
     },
   },
   created () {
@@ -214,6 +234,7 @@ export default {
           }
           const os_name = this.getOsName(item)
           ret.data.os = require(`@/assets/images/os-images/${this.imagesLogos.includes(os_name) ? os_name : 'unknow'}.svg`) || ''
+          ret.data.source_type = this.isChinaDomain(item.url) ? ['all', 'cn'] : ['all', 'ov']
           return ret
         })
         this.initList()
@@ -223,13 +244,31 @@ export default {
         throw err
       })
     },
+    isChinaDomain (url) {
+      try {
+        const { hostname } = new URL(url)
+        return (
+          hostname.endsWith('.cn') ||
+          hostname.endsWith('.com.cn') ||
+          hostname.endsWith('.net.cn') ||
+          hostname.endsWith('.gov.cn') ||
+          hostname.endsWith('.edu.cn') ||
+          hostname.endsWith('.org.cn')
+        )
+      } catch (e) {
+        return false
+      }
+    },
     initList () {
       this.list.data = this.imageList.filter(item => {
-        const { os_arch, distribution } = item.data
+        const { os_arch, distribution, source_type } = item.data
         if (this.form.os_arch && this.form.os_arch !== 'all' && os_arch !== this.form.os_arch) {
           return false
         }
         if (this.form.distribution && this.form.distribution !== 'all' && distribution !== this.form.distribution) {
+          return false
+        }
+        if (this.form.source && !source_type.includes(this.form.source)) {
           return false
         }
         return true

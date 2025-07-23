@@ -127,6 +127,12 @@ export default {
             ],
           },
         ],
+        ipv6_mode: (i, networkData) => [
+          `networkIPv6Modes[${i}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+          },
+        ],
         macs: (i, networkData) => [
           `networkMacs[${i}]`,
           {
@@ -244,7 +250,7 @@ export default {
       this.loading = true
       try {
         const nets = []
-        const { networks, networkIps, networkMacs, networkIPv6s, networkDevices, networkIpsAddress6 } = await this.form.fc.validateFields()
+        const { networks, networkIps, networkMacs, networkIPv6s, networkDevices, networkIpsAddress6, networkIPv6Modes } = await this.form.fc.validateFields()
         if (!networks || R.isEmpty(networks)) {
           this.cancelDialog()
           return false
@@ -262,11 +268,19 @@ export default {
           if (networkIPv6s && networkIPv6s[key]) {
             o.require_ipv6 = true
           }
+          const target = this.form.fi.networkList.filter(item => item.key === key)
           if (networkIpsAddress6 && networkIpsAddress6[key]) {
             const ipv6Last = networkIpsAddress6[key]
-            const target = this.form.fi.networkList.filter(item => item.key === key)
             const ipv6First = getIpv6Start(target[0]?.network?.guest_ip6_start)
             o.address6 = ipv6First + ipv6Last
+          }
+          if (o.require_ipv6) {
+            if (networkIPv6Modes && networkIPv6Modes[key] === 'only') {
+              o.strict_ipv6 = true
+            }
+          }
+          if (!target[0]?.network?.guest_ip_start && !target[0]?.network?.guest_ip_end && target[0]?.network?.guest_ip6_start) {
+            o.strict_ipv6 = true
           }
           if (networkDevices && networkDevices[key]) {
             o.sriov_device = {
