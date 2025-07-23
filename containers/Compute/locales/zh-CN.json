@@ -1904,5 +1904,6 @@
   "compute.reason_detail": "详细原因",
   "compute.advanced": "高级",
   "compute.hide_advanced": "隐藏高级",
-  "compute.custom_ssh_connect": "自定义 {0} 连接"
+  "compute.custom_ssh_connect": "自定义 {0} 连接",
+  "compute.postpaid_disk_change_billing_type_tip": "虚拟机为按量付费时，按量付费的磁盘只能随虚拟机一起转为包年包月"
 }
