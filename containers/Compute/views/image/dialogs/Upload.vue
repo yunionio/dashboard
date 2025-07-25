@@ -67,7 +67,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import * as R from 'ramda'
-import _ from 'lodash'
+// import _ from 'lodash'
 import { isRequired } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -249,6 +249,17 @@ export default {
         processData: false,
         data,
         timeout: 0,
+        onUploadProgress: (progressEvent) => {
+          // 计算上传进度百分比
+          const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+          this.imageUploadPercent = percent
+          if (this.imageUploadPercent >= 100) {
+            setTimeout(() => {
+              this.cancelDialog()
+              this.params.refresh()
+            }, 2000)
+          }
+        },
       })
     },
     doImportUrl (data) {
@@ -321,7 +332,7 @@ export default {
               this.loading = false
               this.clearTimer()
             })
-          this.getProcessBarInfo()
+          // this.getProcessBarInfo()
         } else {
           await this.doImportUrl(values)
           this.cancelDialog()
@@ -337,31 +348,31 @@ export default {
       const name = this.form.fc.getFieldValue('name')
       return imageManager.list({ params: { name, scope: this.$store.getters.scope } })
     },
-    getProcessBarInfo () {
-      this.clearTimer()
-      this.timer = setInterval(() => {
-        this.fetchImageInfoByName()
-          .then((res) => {
-            const imageInfo = res.data && res.data.data && res.data.data[0]
-            if (this.fileList && this.fileList.length > 0) {
-              if (imageInfo) {
-                const percent = (imageInfo.size / this.fileList[0].size) * 100
-                if (percent === 100) {
-                  this.percentTimer = setTimeout(() => {
-                    this.imageUploadPercent = _.floor(percent)
-                  }, 5000)
-                } else {
-                  this.imageUploadPercent = _.floor(percent)
-                }
-              }
-            }
-            if (this.imageUploadPercent >= 100) {
-              this.cancelDialog()
-              this.params.refresh()
-            }
-          })
-      }, 5000)
-    },
+    // getProcessBarInfo () {
+    //   this.clearTimer()
+    //   this.timer = setInterval(() => {
+    //     this.fetchImageInfoByName()
+    //       .then((res) => {
+    //         const imageInfo = res.data && res.data.data && res.data.data[0]
+    //         if (this.fileList && this.fileList.length > 0) {
+    //           if (imageInfo) {
+    //             const percent = (imageInfo.size / this.fileList[0].size) * 100
+    //             if (percent === 100) {
+    //               this.percentTimer = setTimeout(() => {
+    //                 this.imageUploadPercent = _.floor(percent)
+    //               }, 5000)
+    //             } else {
+    //               this.imageUploadPercent = _.floor(percent)
+    //             }
+    //           }
+    //         }
+    //         if (this.imageUploadPercent >= 100) {
+    //           this.cancelDialog()
+    //           this.params.refresh()
+    //         }
+    //       })
+    //   }, 5000)
+    // },
   },
 }
 </script>
