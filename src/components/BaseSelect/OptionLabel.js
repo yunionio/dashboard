@@ -18,7 +18,9 @@ const resourceMode = {
     labelFormat: item => {
       let label = item.name
       const details = []
-      details.push(`${item.guest_ip_start} - ${item.guest_ip_end}/${item.guest_ip_mask}`)
+      if (item.guest_ip_start && item.guest_ip_end) {
+        details.push(`${item.guest_ip_start} - ${item.guest_ip_end}/${item.guest_ip_mask}`)
+      }
       if (item.guest_ip6_start && item.guest_ip6_end) {
         details.push(`${item.guest_ip6_start} - ${item.guest_ip6_end}/${item.guest_ip6_mask}`)
       }

@@ -1699,6 +1699,8 @@
   "compute.group_action.mirror_backup": "Images & Backups",
   "compute.config_transparent_net": "Configure SR-IOV NIC",
   "compute.server_create.require_ipv6": "Allocate IPv6 Address",
+  "compute.server_create.require_ipv6_all": "Allocate IPv6 address",
+  "compute.server_create.require_ipv6_only": "Only allocate IPv6 address",
   "compute.available_host": "Available host",
   "compute.unavailable_host": "Unavailable host",
   "compute.auto_allocation": "Auto allocation",
@@ -1903,5 +1905,8 @@
   "compute.advanced": "Advanced",
   "compute.hide_advanced": "Hide advanced",
   "compute.custom_ssh_connect": "Custom {0} connection",
+  "compute.image_source_cn": "China",
+  "compute.image_source_ov": "Overseas",
+  "compute.image_source_global": "All",
   "compute.postpaid_disk_change_billing_type_tip": "When the virtual machine is postpaid, the postpaid disk can only be converted to prepaid together with the virtual machine"
 }

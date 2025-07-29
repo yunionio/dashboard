@@ -410,6 +410,12 @@ export default {
                 ],
               },
             ],
+            ipv6_mode: (i, networkData) => [
+              `networkIPv6Modes[${i}]`,
+              {
+                initialValue: 'all',
+              },
+            ],
             ipv6s: (i, networkData) => [
               `networkIPv6s[${i}]`,
               {
@@ -1227,6 +1233,9 @@ export default {
             const target = this.form.fi.networkList.filter(item => item.key === key)
             const ipv6First = getIpv6Start(target[0]?.network?.guest_ip6_start)
             option.address6 = ipv6First + ipv6Last
+          }
+          if (values.networkIPv6Modes && values.networkIPv6Modes[key] === 'only' && option.require_ipv6) {
+            option.strict_ipv6 = true
           }
           // 是否启用bonding
           if (this.isBonding) {

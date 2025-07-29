@@ -5,52 +5,62 @@
       <dialog-selected-tips :count="params.data.length" :action="$t('compute.text_390')" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
-        <a-form-item :label="$t('compute.text_106')" class="mb-0">
-          <a-row :gutter="20">
-            <a-col :span="14">
-              <a-form-item :help="help">
-                <base-select
-                  class="w-100"
-                  v-decorator="decorators.network"
-                  resource="networks"
-                  :params="networkParams"
-                  :item.sync="form.fi.network"
-                  remote
-                  :label-format="item => `${item.name}(${item.guest_ip_start} - ${item.guest_ip_end}, vlan=${item.vlan_id})`"
-                  :remote-fn="q => ({ filter: `name.contains(${q})` })"
-                  :select-props="{ placeholder: $t('compute.text_195') }"
-                  :mapper="mapper" />
+        <a-form-model-item :label="$t('compute.text_106')" class="mb-0">
+          <a-form-item :help="help">
+            <base-select
+              class="w-100"
+              v-decorator="decorators.network"
+              resource="networks"
+              :params="networkParams"
+              :item.sync="form.fi.network"
+              remote
+              :label-format="networkLabelFormat"
+              :remote-fn="q => ({ filter: `name.contains(${q})` })"
+              :select-props="{ placeholder: $t('compute.text_195') }"
+              :mapper="mapper" />
+          </a-form-item>
+          <a-form-model-item v-if="isSupportIPv4 && !(hasIpv6 && ipv6Mode === 'only')">
+            <div class="d-flex">
+              <a-form-item class="mb-0">
+                <a-checkbox v-model="ipv4ConfigShow" style="display:inline-block;min-width:200px"><a-button type="link" class="pl-1">{{ $t('compute.text_198') }}</a-button></a-checkbox>
               </a-form-item>
-            </a-col>
-            <a-col :span="10">
-              <a-form-item>
-                <ip-select v-decorator="decorators.ip" :value="form.fi.ip" :network="form.fi.network" @change="ipChange" />
+              <a-form-item class="mb-0">
+                <ip-select v-if="ipv4ConfigShow" v-decorator="decorators.ip" :value="form.fi.ip" :network="form.fi.network" @change="ipChange" />
               </a-form-item>
-            </a-col>
-            <a-col :span="10" v-if="isSupportIPv6">
-              <a-form-item>
-                <div class="d-flex">
-                  <a-checkbox v-model="hasIpv6" style="display:inline-block;min-width:200px" @change="requireIpv6Change">{{ $t('compute.server_create.require_ipv6') }}</a-checkbox>
-                  <template v-if="isSupportIPv6 && ipv6ConfigShow">
-                    <template v-if="ipv6InputShow">
-                      <div class="mb-0 ml-1" style="display:flex">
-                        <span class="mr-1">{{ getIpv6Prefix(form.fi.network?.guest_ip6_start) }}</span>
-                        <a-form-item class="mb-0" style="display:inline-block">
-                          <a-input
-                            style="width: 164px"
-                            :placeholder="$t('compute.complete_ipv6_address')"
-                            v-decorator="decorators.address6" />
-                        </a-form-item>
-                        <a-button type="link" class="mt-1" @click="triggerShowIpv6">{{$t('compute.text_135')}}</a-button>
-                      </div>
-                    </template>
-                    <a-button v-else type="link" class="mt-1" @click="triggerShowIpv6">{{$t('compute.ipv6_config')}}</a-button>
-                  </template>
+            </div>
+          </a-form-model-item>
+          <template v-if="isSupportIPv6">
+            <a-form-model-item class="mb-0">
+              <div class="d-flex">
+                <div>
+                  <a-checkbox v-model="hasIpv6" @change="requireIpv6Change" class="mr-1" />
+                  <a-dropdown>
+                    <a-menu slot="overlay" @click="triggerIpv6Mode">
+                      <a-menu-item key="all">{{ $t('compute.server_create.require_ipv6_all') }}</a-menu-item>
+                      <a-menu-item key="only">{{ $t('compute.server_create.require_ipv6_only') }}</a-menu-item>
+                    </a-menu>
+                    <a-button type="link" class="pl-1">{{ ipv6Mode === 'only' ? $t('compute.server_create.require_ipv6_only') : $t('compute.server_create.require_ipv6_all') }}<a-icon type="down" /> </a-button>
+                  </a-dropdown>
                 </div>
-              </a-form-item>
-            </a-col>
-          </a-row>
-        </a-form-item>
+                <template v-if="isSupportIPv6 && ipv6ConfigShow">
+                  <template v-if="ipv6InputShow">
+                    <div class="mb-0 ml-1" style="display:flex">
+                      <span class="mr-1">{{ getIpv6Prefix(form.fi.network?.guest_ip6_start) }}</span>
+                      <a-form-item class="mb-0" style="display:inline-block">
+                        <a-input
+                          style="width: 164px"
+                          :placeholder="$t('compute.complete_ipv6_address')"
+                          v-decorator="decorators.address6" />
+                      </a-form-item>
+                      <a-button type="link" class="mt-1" @click="triggerShowIpv6">{{$t('compute.text_135')}}</a-button>
+                    </div>
+                  </template>
+                  <a-button v-else type="link" class="mt-1" @click="triggerShowIpv6">{{$t('compute.ipv6_config')}}</a-button>
+                </template>
+              </div>
+            </a-form-model-item>
+          </template>
+        </a-form-model-item>
         <a-form-item>
           <a-checkbox v-decorator="decorators.restartNetwork">{{$t('compute.restart_network')}}</a-checkbox>
           <help-tooltip name="restartNetworkToEffectIp" />
@@ -127,9 +137,13 @@ export default {
     }
     let hasIpv6 = false
     let initIpv6Value = ''
+    let initIpv4Value = ''
     if (this.params.data[0].ip6_addr) {
       hasIpv6 = true
       initIpv6Value = this.getIpv6Value(this.params.data[0].ip6_addr)
+    }
+    if (this.params.data[0].ip_addr) {
+      initIpv4Value = this.params.data[0].ip_addr
     }
     return {
       loading: false,
@@ -156,7 +170,7 @@ export default {
           {
             initialValue: this.params.data[0].ip_addr,
             rules: [
-              { message: this.$t('common.tips.select', ['IP']), validator: validateIp },
+              { required: true, message: this.$t('common.tips.select', ['IP']), validator: validateIp },
             ],
           },
         ],
@@ -193,8 +207,10 @@ export default {
           span: 3,
         },
       },
+      ipv4ConfigShow: !!initIpv4Value,
       ipv6ConfigShow: hasIpv6,
       ipv6InputShow: hasIpv6,
+      ipv6Mode: 'all',
     }
   },
   computed: {
@@ -221,11 +237,30 @@ export default {
       }
       return ''
     },
+    isSupportIPv4 () {
+      return !!this.form.fi.network.guest_ip_start && !!this.form.fi.network.guest_ip_end
+    },
     isSupportIPv6 () {
       return !!this.form.fi.network.guest_ip6_start && !!this.form.fi.network.guest_ip6_end
     },
   },
   methods: {
+    triggerIpv6Mode (e) {
+      this.ipv6Mode = e.key
+    },
+    networkLabelFormat (item) {
+      let label = item.name
+      const details = []
+      if (item.guest_ip_start && item.guest_ip_end) {
+        details.push(`${item.guest_ip_start} - ${item.guest_ip_end}/${item.guest_ip_mask}`)
+      }
+      if (item.guest_ip6_start && item.guest_ip6_end) {
+        details.push(`${item.guest_ip6_start} - ${item.guest_ip6_end}/${item.guest_ip6_mask}`)
+      }
+      details.push(`vlan=${item.vlan_id}`)
+      label += `(${details.join(',')})`
+      return label
+    },
     ipChange (e) {
       this.form.fi.ip = e
     },
@@ -252,25 +287,36 @@ export default {
     async handleConfirm () {
       this.loading = true
       let manager = new this.$Manager('servers')
-      const values = await this.form.fc.validateFields()
-      const net_desc = {}
-      if (values.network) {
-        net_desc.network = values.network
-      }
-      if (values.ip) {
-        net_desc.address = values.ip
-      }
-      if (this.hasIpv6) {
-        net_desc.require_ipv6 = true
-      }
-      const address6 = values.address6
-      if (address6) {
-        const ipv6Last = address6
-        const target = this.form.fi.network
-        const ipv6First = getIpv6Start(target?.guest_ip6_start)
-        net_desc.address6 = ipv6First + ipv6Last
-      }
       try {
+        const values = await this.form.fc.validateFields()
+        const net_desc = {}
+        if (values.network) {
+          net_desc.network = values.network
+        }
+        if (values.ip) {
+          net_desc.address = values.ip
+        }
+        if (this.hasIpv6) {
+          net_desc.require_ipv6 = true
+        } else {
+          net_desc.require_ipv6 = false
+        }
+        if (!this.isSupportIPv4 && net_desc.require_ipv6) {
+          net_desc.strict_ipv6 = true
+        }
+        const address6 = values.address6
+        if (address6) {
+          const ipv6Last = address6
+          const target = this.form.fi.network
+          const ipv6First = getIpv6Start(target?.guest_ip6_start)
+          net_desc.address6 = ipv6First + ipv6Last
+        }
+        if (!net_desc.address6 && net_desc.require_ipv6) {
+          net_desc.address6 = ''
+        }
+        if (this.ipv6Mode === 'only' && net_desc.require_ipv6) {
+          net_desc.strict_ipv6 = true
+        }
         const data = {
           ip_addr: this.params.data[0].ip_addr,
           net_desc,

@@ -95,6 +95,9 @@ export default {
             field: 'guest_ip_start',
             title: this.$t('network.ipv4.range'),
             formatter: ({ cellValue, row }) => {
+              if (!row.guest_ip_start || !row.guest_ip_end) {
+                return '-'
+              }
               return `${cellValue} - ${row.guest_ip_end}/${row.guest_ip_mask}`
             },
           },
