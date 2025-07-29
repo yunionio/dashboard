@@ -1700,6 +1700,8 @@
   "compute.group_action.mirror_backup": "ミラーリングとバックアップ",
   "compute.config_transparent_net": "透過的なネットワーク カードを構成する",
   "compute.server_create.require_ipv6": "IPv6アドレスを割り当てる",
+  "compute.server_create.require_ipv6_all": "IPv6アドレスを割り当てる",
+  "compute.server_create.require_ipv6_only": "IPv6アドレスを割り当てる",
   "compute.available_host": "オプションのホスト",
   "compute.unavailable_host": "ホストが選択されていません",
   "compute.auto_allocation": "自動割り当て",
@@ -1905,5 +1907,8 @@
   "compute.advanced": "高級",
   "compute.hide_advanced": "高級を非表示",
   "compute.custom_ssh_connect": "カスタム {0} 接続",
+  "compute.image_source_cn": "中国国内鏡像源",
+  "compute.image_source_ov": "海外鏡像源",
+  "compute.image_source_global": "全部",
   "compute.postpaid_disk_change_billing_type_tip": "仮想マシンが按量課金の場合、按量課金のディスクは仮想マシンと同時に包年包月に変更されます"
 }

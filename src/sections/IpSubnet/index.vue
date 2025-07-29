@@ -47,7 +47,7 @@
       <a-form-item v-if="showV6" class="ml-2">
         <a-input :addon-before="$t('network.ipv6.gateway.label')" v-decorator="decorator.gateway6" :placeholder="$t('network.ipv6.gateway.label')" />
       </a-form-item>
-      <a-button type="link" class="mt-1" @click="() => (showV6 = !showV6)">{{ showV6 ? $t('common.hide_ipv6') : $t('common.config_ipv6') }}</a-button>
+      <a-button type="link" class="mt-1" @click="() => (showV6 = !showV6)" v-if="!isButtonHide">{{ showV6 ? $t('common.hide_ipv6') : $t('common.config_ipv6') }}</a-button>
     </a-row>
   </div>
 </template>
@@ -65,6 +65,10 @@ export default {
       },
     },
     showIpv6: {
+      type: Boolean,
+      default: false,
+    },
+    isButtonHide: {
       type: Boolean,
       default: false,
     },

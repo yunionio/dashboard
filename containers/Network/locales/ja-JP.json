@@ -1152,6 +1152,7 @@
   "network.associate_resource_name": "バインドリソース名",
   "network.associate_resource_id": "バインドリソースID",
   "network.dhcp_tooltip": "複数のIPv 4アドレスの入力を許可します。",
+  "network.dhcp_tooltip1": "複数のIPv 6アドレスの入力を許可します。",
   "network.public_ip": "パブリックネットワークIP",
   "network.public_ip_donot_disassociate": "パブリックネットワークIPではバインド解除は許可されていません",
   "network.is_associated": "バインドするかどうか",
@@ -1534,5 +1535,7 @@
   "network.ssl_certificate.sans.placeholder": "ホスト名を入力してください。1行に1つずつ、ホスト名と通配符をサポートします。例：example.com, *.example.com",
   "network.ssl_certificate.sans.invalid": "有効なホスト名または通配符を入力してください",
   "network.ssl_certificate.start_date": "発行時間",
-  "network.ssl_certificate.end_date": "有効期限"
+  "network.ssl_certificate.end_date": "有効期限",
+  "network.required_ipv4_or_ipv6": "IPv4 or IPv6 network segment at least one must be filled in",
+  "network.required_ipv4_or_ipv6_1": "Please fill in the IPv4 or IPv6 starting address, ending address, and default gateway. Support only configuring IPv4 or IPv6"
 }
