@@ -121,7 +121,7 @@
     <!-- cloudshell -->
     <cloud-shell v-if="isAdminMode" class="navbar-item-icon primary-color-hover" />
     <!-- 更多 -->
-    <more-popover class="navbar-item-icon primary-color-hover" />
+    <more-popover class="navbar-item-icon primary-color-hover" :showMenuMap="{more: true, docs: true, about: true}" />
     <div class="navbar-item">
       <a-dropdown :trigger="['click']">
         <!-- <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
