@@ -52,12 +52,25 @@ export default {
         field: 'ip_addr',
         title: this.$t('compute.text_386'),
         width: 160,
-        formatter: ({ row }) => {
-          if (row.ip_addr) {
-            return row.ip_addr + '/' + row.masklen
-          } else {
-            return '-'
-          }
+        slots: {
+          default: ({ row }, h) => {
+            const ret = []
+            if (row.ip_addr) {
+              ret.push(
+                <list-body-cell-wrap copy hideField={true} field='ip_addr' row={row} message={row.ip_addr}>
+                  {row.ip_addr}/{row.masklen}
+                </list-body-cell-wrap>,
+              )
+            }
+            if (row.ip6_addr) {
+              ret.push(
+                <list-body-cell-wrap copy hideField={true} field='ip6_addr' row={row} message={row.ip6_addr}>
+                  {row.ip6_addr}/{row.masklen6}
+                </list-body-cell-wrap>,
+              )
+            }
+            return ret
+          },
         },
       },
       getCopyWithContentTableColumn({
@@ -92,7 +105,7 @@ export default {
           default: ({ row }, h) => {
             const ret = []
             ret.push(
-              <a-button type="link" onClick = {() => this.setWire(row)} disabled={ !!row.ip_addr }>{ this.$t('compute.text_843') }</a-button>,
+              <a-button type="link" onClick = {() => this.setWire(row)} disabled={ !!row.ip_addr || !!row.ip6_addr }>{ this.$t('compute.text_843') }</a-button>,
             )
             return ret
           },
