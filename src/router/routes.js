@@ -1,3 +1,4 @@
+import i18n from '@/locales'
 import NotFoundPage from '@/views/exception/404'
 import NoPermission from '@/views/exception/403'
 import EmailVerify from '@/views/email-verify'
@@ -14,6 +15,9 @@ const routes = [
     name: 'Clouduser',
     path: '/clouduser',
     component: Clouduser,
+    meta: {
+      label: i18n.t('scope.cloudid'),
+    },
   },
   {
     path: '/email-verification/id/:id/token/:token',

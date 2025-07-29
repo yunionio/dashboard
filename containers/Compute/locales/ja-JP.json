@@ -1909,5 +1909,6 @@
   "compute.custom_ssh_connect": "カスタム {0} 接続",
   "compute.image_source_cn": "中国国内鏡像源",
   "compute.image_source_ov": "海外鏡像源",
-  "compute.image_source_global": "全部"
+  "compute.image_source_global": "全部",
+  "compute.postpaid_disk_change_billing_type_tip": "仮想マシンが按量課金の場合、按量課金のディスクは仮想マシンと同時に包年包月に変更されます"
 }

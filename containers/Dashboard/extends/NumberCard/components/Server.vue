@@ -202,6 +202,8 @@ export default {
         return !hasPermission({ key: 'servers_list', permissionData: this.permission })
       } else if (usage_key.endsWith('hosts') || usage_key.endsWith('baremetals')) {
         return !hasPermission({ key: 'hosts_list', permissionData: this.permission })
+      } else if (usage_key.endsWith('isolated_devices')) {
+        return !hasPermission({ key: 'isolated_devices_list', permissionData: this.permission })
       }
       return false
     },
@@ -297,7 +299,7 @@ export default {
       }
     },
     goPage () {
-      if (!this.params) return
+      if (!this.params || this.isResDeny) return
       const path = this.getPageUrl()
       if (path) this.$router.push(path)
     },

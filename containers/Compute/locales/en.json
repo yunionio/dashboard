@@ -1907,5 +1907,6 @@
   "compute.custom_ssh_connect": "Custom {0} connection",
   "compute.image_source_cn": "China",
   "compute.image_source_ov": "Overseas",
-  "compute.image_source_global": "All"
+  "compute.image_source_global": "All",
+  "compute.postpaid_disk_change_billing_type_tip": "When the virtual machine is postpaid, the postpaid disk can only be converted to prepaid together with the virtual machine"
 }
