@@ -195,6 +195,14 @@ export default {
             const title = `${this.$t('common_407')}: ${Math.round(cpu_used)}\n${this.$t('common_234')}: ${Math.round(cpu_count)}`
             return [<UsedPercent used={cpu_used} total={cpu_count} title={title} usedFormatter={(val) => val > 0 ? (Math.max(Math.round(val), 1)) : Math.round(val)} totalFormatter={(val) => val > 0 ? (Math.max(Math.round(val), 1)) : Math.round(val)} />]
           },
+          header: ({ column }) => {
+            return [
+              <span>
+                <span>{column.title}</span>
+                <a-tooltip class="ml-1" title={this.$t('compute.order_by_used_percent')}><a-icon type="question-circle" style="color: #aaa;" /></a-tooltip>
+              </span>,
+            ]
+          },
         },
         formatter: ({ row }) => {
           const { cpu_count = 0, cpu_used = 0 } = getHostSpecInfo(row)
@@ -217,6 +225,14 @@ export default {
               `${this.$t('compute.cpu_commit_bound')}: ${cpu_commit_bound}`
             return [<UsedPercent used={cpu_commit} total={cpu_count_virtual} usedLabel={this.$t('common_233')} title={title} text={`${Math.round(cpu_commit)}/${Math.round(cpu_count_virtual)}`} />]
           },
+          header: ({ column }) => {
+            return [
+              <span>
+                <span>{column.title}</span>
+                <a-tooltip class="ml-1" title={this.$t('compute.order_by_commit_percent')}><a-icon type="question-circle" style="color: #aaa;" /></a-tooltip>
+              </span>,
+            ]
+          },
         },
         formatter: ({ row }) => {
           const { cpu_commit = 0, cpu_count_virtual = 0 } = getHostSpecInfo(row)
@@ -235,6 +251,14 @@ export default {
             const { mem_size, mem_used } = getHostSpecInfo(row)
             const title = `${this.$t('common_407')}: ${sizestr(mem_used, 'M', 1024)}\n${this.$t('common_234')}: ${sizestr(mem_size, 'M', 1024)}`
             return [<UsedPercent title={title} used={mem_used} total={mem_size} usedFormatter={(val) => sizestr(val, 'M', 1024)} totalFormatter={(val) => sizestr(val, 'M', 1024)} />]
+          },
+          header: ({ column }) => {
+            return [
+              <span>
+                <span>{column.title}</span>
+                <a-tooltip class="ml-1" title={this.$t('compute.order_by_used_percent')}><a-icon type="question-circle" style="color: #aaa;" /></a-tooltip>
+              </span>,
+            ]
           },
         },
         formatter: ({ row }) => {
@@ -258,6 +282,14 @@ export default {
               `${this.$t('compute.memory_commit_bound')}: ${mem_commit_bound}`
             return [<UsedPercent title={title} used={mem_commit} total={mem_size_virtual} usedLabel={this.$t('common_233')} usedFormatter={(val) => sizestr(val, 'M', 1024)} totalFormatter={(val) => sizestr(val, 'M', 1024)} />]
           },
+          header: ({ column }) => {
+            return [
+              <span>
+                <span>{column.title}</span>
+                <a-tooltip class="ml-1" title={this.$t('compute.order_by_commit_percent')}><a-icon type="question-circle" style="color: #aaa;" /></a-tooltip>
+              </span>,
+            ]
+          },
         },
         formatter: ({ row }) => {
           const { mem_size_virtual, mem_commit } = getHostSpecInfo(row)
@@ -276,6 +308,14 @@ export default {
             const { storage_size, actual_storage_used } = getHostSpecInfo(row)
             const title = `${this.$t('common_407')}: ${sizestr(actual_storage_used, 'M', 1024)}\n${this.$t('common_234')}: ${sizestr(storage_size, 'M', 1024)}`
             return [<UsedPercent title={title} used={actual_storage_used} total={storage_size} usedFormatter={(val) => sizestr(val, 'M', 1024)} totalFormatter={(val) => sizestr(val, 'M', 1024)} />]
+          },
+          header: ({ column }) => {
+            return [
+              <span>
+                <span>{column.title}</span>
+                <a-tooltip class="ml-1" title={this.$t('compute.order_by_used_percent')}><a-icon type="question-circle" style="color: #aaa;" /></a-tooltip>
+              </span>,
+            ]
           },
         },
         formatter: ({ row }) => {
@@ -298,6 +338,14 @@ export default {
               `${this.$t('compute.text_594')}: ${(storage_commit / storage_size).toFixed(2)}\n` +
               `${this.$t('compute.storage_commit_bound')}: ${(storage_size_virtual / storage_size).toFixed(2)}`
             return [<UsedPercent title={title} used={storage_commit} total={storage_size_virtual} usedLabel={this.$t('common_233')} usedFormatter={(val) => sizestr(val, 'M', 1024)} totalFormatter={(val) => sizestr(val, 'M', 1024)} />]
+          },
+          header: ({ column }) => {
+            return [
+              <span>
+                <span>{column.title}</span>
+                <a-tooltip class="ml-1" title={this.$t('compute.order_by_commit_percent')}><a-icon type="question-circle" style="color: #aaa;" /></a-tooltip>
+              </span>,
+            ]
           },
         },
         formatter: ({ row }) => {
