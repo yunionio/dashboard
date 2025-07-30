@@ -1884,5 +1884,7 @@
   "compute.sys_disk_disable_action": "システムディスクはこの操作をサポートしていません",
   "compute.advanced": "高級",
   "compute.hide_advanced": "高級を非表示",
-  "compute.postpaid_disk_change_billing_type_tip": "仮想マシンが按量課金の場合、按量課金のディスクは仮想マシンと同時に包年包月に変更されます"
+  "compute.postpaid_disk_change_billing_type_tip": "仮想マシンが按量課金の場合、按量課金のディスクは仮想マシンと同時に包年包月に変更されます",
+  "compute.order_by_used_percent": "ソート基準：使用率 = 使用済み / 総量",
+  "compute.order_by_commit_percent": "ソート基準：割り当て率 = 割り当て済み / 総量"
 }

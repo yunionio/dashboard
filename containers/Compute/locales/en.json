@@ -1882,5 +1882,7 @@
   "compute.sys_disk_disable_action": "System disk does not support this operation",
   "compute.advanced": "Advanced",
   "compute.hide_advanced": "Hide advanced",
-  "compute.postpaid_disk_change_billing_type_tip": "When the virtual machine is postpaid, the postpaid disk can only be converted to prepaid together with the virtual machine"
+  "compute.postpaid_disk_change_billing_type_tip": "When the virtual machine is postpaid, the postpaid disk can only be converted to prepaid together with the virtual machine",
+  "compute.order_by_used_percent": "Sort by: used rate = used / total",
+  "compute.order_by_commit_percent": "Sort by: commit rate = committed / total"
 }
