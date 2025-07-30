@@ -1905,5 +1905,7 @@
   "compute.advanced": "高级",
   "compute.hide_advanced": "隐藏高级",
   "compute.custom_ssh_connect": "自定义 {0} 连接",
-  "compute.postpaid_disk_change_billing_type_tip": "虚拟机为按量付费时，按量付费的磁盘只能随虚拟机一起转为包年包月"
+  "compute.postpaid_disk_change_billing_type_tip": "虚拟机为按量付费时，按量付费的磁盘只能随虚拟机一起转为包年包月",
+  "compute.order_by_used_percent": "排序依据：使用率 = 已使用 / 总量",
+  "compute.order_by_commit_percent": "排序依据：分配率 = 已分配 / 总量"
 }
