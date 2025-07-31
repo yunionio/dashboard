@@ -10,6 +10,7 @@
 <script>
 import { getCopyWithContentTableColumn, getBrandTableColumn, getProjectDomainTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
+import { REGIONS, COUNTRYS } from '../constants'
 
 export default {
   name: 'LoadbalancerlistenerruleDetail',
@@ -29,7 +30,14 @@ export default {
       baseInfo: [
         getBrandTableColumn(),
       ],
-      extraInfo: [
+    }
+  },
+  computed: {
+    isRedirect () {
+      return this.data.redirect === 'raw'
+    },
+    extraInfo () {
+      const ret = [
         {
           title: this.$t('network.text_308'),
           items: [
@@ -81,18 +89,6 @@ export default {
                 return [ret, row.redirect_path].filter(item => !!item).join('')
               },
             },
-            getCopyWithContentTableColumn({
-              field: 'backend_group',
-              title: this.$t('network.text_139'),
-              hideField: true,
-              slotCallback: row => {
-                if (this.isRedirect) return '-'
-                if (!row.backend_group) return '-'
-                return [
-                  <side-page-trigger name='LoadbalancerbackendgroupSidePage' id={row.backend_group_id} vm={this}>{ row.backend_group }</side-page-trigger>,
-                ]
-              },
-            }),
             {
               field: 'http_request_rate',
               title: this.$t('network.text_437'),
@@ -109,6 +105,18 @@ export default {
                 return row.http_request_rate_per_src + this.$t('network.text_76')
               },
             },
+            getCopyWithContentTableColumn({
+              field: 'backend_group',
+              title: this.$t('network.default_backend_server_group'),
+              hideField: true,
+              slotCallback: row => {
+                if (this.isRedirect) return '-'
+                if (!row.backend_group) return '-'
+                return [
+                  <side-page-trigger name='LoadbalancerbackendgroupSidePage' id={row.backend_group_id} vm={this}>{ row.backend_group }</side-page-trigger>,
+                ]
+              },
+            }),
             // {
             //   field: 'vpc',
             //   title: 'VPC',
@@ -123,12 +131,74 @@ export default {
             // },
           ],
         },
-      ],
-    }
+      ]
+      if (this.data.provider === 'Cloudflare') {
+        ret[0].items = ret[0].items.filter(item => !['redirect', 'redirect_code', 'redirect_scheme', 'http_request_rate', 'http_request_rate_per_src'].includes(item.field))
+        ret[0].items.push({
+          field: 'backend_groups',
+          title: this.$t('network.text_139'),
+          formatter: ({ row }) => {
+            if (!row.backend_groups) return '-'
+            return row.backend_groups.map(item => {
+              return <side-page-trigger class="mr-2" name='LoadbalancerbackendgroupSidePage' id={item.id} vm={this}>{ item.name }</side-page-trigger>
+            })
+          },
+        })
+        ret[0].items.push({
+          field: 'redirect_pool',
+          title: this.$t('network.rule_redirect'),
+          slots: {
+            default: ({ row }, h) => {
+              if (!row.redirect_pool) return this.$t('network.rule_redirect_type_off')
+              const data = []
+              Object.keys(row.redirect_pool).forEach(type => {
+                Object.keys(row.redirect_pool[type]).forEach(key => {
+                  data.push({
+                    type: type === 'region_pools' ? this.$t('network.text_199') : this.$t('network.cdn.clear_cache_country'),
+                    value: this.getRegionName(key, type),
+                    backend_groups: row.redirect_pool[type][key],
+                  })
+                })
+              })
+              const columns = [
+                {
+                  field: 'type',
+                  title: this.$t('network.rule_redirect_type'),
+                },
+                {
+                  field: 'value',
+                  title: this.$t('network.text_199'),
+                },
+                {
+                  field: 'backend_groups',
+                  title: this.$t('network.text_139'),
+                  slots: {
+                    default: ({ row }) => {
+                      if (!row.backend_groups) return '-'
+                      const list = row.backend_groups.map(item => {
+                        return <side-page-trigger class="mr-2" name='LoadbalancerbackendgroupSidePage' id={item.id} vm={this}>{ item.name }</side-page-trigger>
+                      })
+                      return list
+                    },
+                  },
+                },
+              ]
+              return [
+                <vxe-grid class="mb-2" data={ data } columns={ columns } />,
+              ]
+            },
+          },
+        })
+      }
+      return ret
+    },
   },
-  computed: {
-    isRedirect () {
-      return this.data.redirect === 'raw'
+  methods: {
+    getRegionName (key, type) {
+      if (type === 'region_pools') {
+        return REGIONS.find(item => item.key === key)?.label || '-'
+      }
+      return COUNTRYS.find(item => item.key === key)?.label || '-'
     },
   },
 }
