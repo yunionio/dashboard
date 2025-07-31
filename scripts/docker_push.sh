@@ -9,6 +9,7 @@ fi
 pushd $(dirname $(dirname "$BASH_SOURCE")) > /dev/null
 CUR_DIR=$(pwd)
 SRC_DIR=$CUR_DIR
+REPO=${REPO:-web}
 popd > /dev/null
 
 DOCKER_DIR="$SRC_DIR"
@@ -34,7 +35,6 @@ TAG=${TAG:-latest}
 
 build_src() {
     yarn install
-    ./scripts/setup.sh
     yarn run build
 }
 
@@ -44,7 +44,7 @@ buildx_and_push() {
     local file=$2
     local path=$3
     local arch=$4
-    docker buildx build -t "$tag" --platform "linux/$arch" -f "$2" "$3" --push
+    docker buildx build -t "$tag" --platform "linux/$arch" -f "$file" "$path" --push
     docker pull --platform "linux/$arch" "$tag"
 }
 
@@ -62,9 +62,7 @@ if [[ "$DRY_RUN" == "true" ]]; then
     exit 0
 fi
 
-img_name="$REGISTRY/web:$TAG"
-
-set -x
+img_name="$REGISTRY/$REPO:$TAG"
 
 case $ARCH in
     amd64 | "arm64" )
@@ -77,4 +75,3 @@ case $ARCH in
         make_manifest_image $img_name
         ;;
 esac
-
