@@ -1537,5 +1537,20 @@
   "network.ssl_certificate.start_date": "発行時間",
   "network.ssl_certificate.end_date": "有効期限",
   "network.required_ipv4_or_ipv6": "IPv4 or IPv6 network segment at least one must be filled in",
-  "network.required_ipv4_or_ipv6_1": "Please fill in the IPv4 or IPv6 starting address, ending address, and default gateway. Support only configuring IPv4 or IPv6"
+  "network.required_ipv4_or_ipv6_1": "Please fill in the IPv4 or IPv6 starting address, ending address, and default gateway. Support only configuring IPv4 or IPv6",
+  "network.ip_or_domain": "IPまたはドメインアドレス",
+  "network.add_backend_server": "バックエンドサーバーを追加",
+  "network.domain_prefix": "ドメインプレフィックス",
+  "network.domain_prefix_extra": "例：test",
+  "network.domain_url_extra": "ドメインプレフィックス（testなど）を入力し、ドメイン（example.comなど）を選択すると、自動的にURL（test.example.com）が生成されます",
+  "network.domain_prefix_invalid": "ドメイン名の接頭辞を入力してください",
+  "network.default_backend_server_group": "デフォルトバックエンドサーバーグループ",
+  "network.default_backend_server_group_extra": "すべてのバックエンドサーバーグループに障害が発生した場合、デフォルトバックエンドサーバーグループが使用されます",
+  "network.rule_redirect": "トラフィックリダイレクト",
+  "network.rule_redirect_type_off": "オフ",
+  "network.rule_redirect_type_geography": "地理的リダイレクト",
+  "network.add_redirect_rule": "リダイレクトルールを追加",
+  "network.rule_redirect_region_country": "トラフィックリダイレクトルール：",
+  "network.rule_redirect_type": "地域タイプ",
+  "network.rule_redirect_extra": "指定された地域に基づいて、指定されたバックエンドサーバーグループにルーティングします"
 }

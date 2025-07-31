@@ -1544,5 +1544,20 @@
   "network.ssl_certificate.start_date": "颁发时间",
   "network.ssl_certificate.end_date": "到期时间",
   "network.required_ipv4_or_ipv6": "IPv4或IPv6网段至少有一个必填",
-  "network.required_ipv4_or_ipv6_1": "请填写IPv4或IPv6 起始地址、结束地址、默认网关。支持只配置IPv4或IPv6"
+  "network.required_ipv4_or_ipv6_1": "请填写IPv4或IPv6 起始地址、结束地址、默认网关。支持只配置IPv4或IPv6",
+  "network.ip_or_domain": "IP或域名地址",
+  "network.add_backend_server": "添加后端服务器",
+  "network.domain_prefix": "域名前缀",
+  "network.domain_prefix_extra": "如：test",
+  "network.domain_url_extra": "输入域名前缀，如test , 选择域名，如：example.com，自动拼成URL：test.example.com",
+  "network.domain_prefix_invalid": "请输入域名前缀",
+  "network.default_backend_server_group": "默认后端服务器组",
+  "network.default_backend_server_group_extra": "如果所有后端服务器组出现故障，将使用默认后端服务器组",
+  "network.rule_redirect": "流量定向",
+  "network.rule_redirect_type_off": "关闭",
+  "network.rule_redirect_type_geography": "地理定向",
+  "network.add_redirect_rule": "添加定向规则",
+  "network.rule_redirect_region_country": "流量定向规则：",
+  "network.rule_redirect_type": "区域类型",
+  "network.rule_redirect_extra": "根据提供的区域路由到指定的后端服务器组"
 }

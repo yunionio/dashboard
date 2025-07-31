@@ -24,4 +24,8 @@ export default {
     const p = /^([0-9a-fA-F]{2}[:.-]){5}[0-9a-fA-F]{2}$/
     return p.test(search)
   },
+  isIPOrDomain: (search) => {
+    const p = /^([0-9]{1,3}\.){3}[0-9]{1,3}$|^([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/
+    return p.test(search)
+  },
 }
