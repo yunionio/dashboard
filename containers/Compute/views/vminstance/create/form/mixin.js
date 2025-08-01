@@ -105,6 +105,7 @@ export default {
         fi: { // formInfo 存储着和表单相关的数据
           capability: {}, // 可用区下的可用资源
           imageMsg: {}, // 当前选中的 image
+          imageType: '',
           cpuMem: {}, // cpu 和 内存 的关联关系
           createType: SERVER_TYPE[this.type],
           dataDiskDisabled: false, // 数据盘是否禁用
