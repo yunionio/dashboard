@@ -11,6 +11,7 @@
       :types-map="typesMap"
       :elements="elements"
       :disabled="disabled"
+      :image-type="imageType"
       :storageParams="storageParams"
       :storageHostParams="storageHostParams"
       :schedtagParams="getSchedtagParams()"
@@ -70,6 +71,9 @@ export default {
     },
     image: {
       type: Object,
+    },
+    imageType: {
+      type: String,
     },
     decorator: {
       type: Object,
