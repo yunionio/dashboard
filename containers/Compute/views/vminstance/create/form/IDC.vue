@@ -106,8 +106,7 @@
           :image="form.fi.imageMsg"
           :defaultSize="systemdiskDefaultSize"
           :isHostImageType="isHostImageType"
-          :disabled="form.fi.sysDiskDisabled"
-          :sizeDisabled="systemdiskSizeDisabled"
+          :imageType="form.fi.imageType"
           :storageParams="storageParams"
           :storageHostParams="storageHostParams"
           :domain="project_domain"
@@ -127,7 +126,7 @@
           :capability-data="form.fi.capability"
           :isSnapshotImageType="isSnapshotImageType"
           :isHostImageType="isHostImageType"
-          :disabled="form.fi.dataDiskDisabled"
+          :imageType="form.fi.imageType"
           :defaultType="form.fd.systemDiskType"
           :domain="project_domain"
           :isWindows="isWindows"
@@ -137,7 +136,7 @@
           :storageHostParams="storageHostParams"
           :isAutoResetShow="isKvm"
           @storageHostChange="storageHostChange" />
-        <div slot="extra" class="warning-color" v-if="isStorageShow">{{ $t('compute.select_storage_no_schetag') }}</div>
+        <div slot="extra" class="warning-color" v-if="isStorageShow && form.fi.imageType !== 'backup' && form.fi.imageType !== 'snapshot'">{{ $t('compute.select_storage_no_schetag') }}</div>
       </a-form-item>
       <a-form-item :label="$t('compute.text_1372')" v-if="showServerAccount">
         <server-account :form="form" :hypervisor="form.fd.hypervisor" :instance_capabilities="form.fi.capability.instance_capabilities" :osType="osType" />
@@ -693,8 +692,9 @@ export default {
       handler (val, oldVal) {
         if (R.equals(val, oldVal)) return
         this.$nextTick(() => {
-          this.form.fi.dataDiskDisabled = false
-          this.form.fi.sysDiskDisabled = false
+          // this.form.fi.dataDiskDisabled = false
+          // this.form.fi.sysDiskDisabled = false
+          this.form.fi.imageType = ''
           if (this.form.fd.imageType === IMAGES_TYPE_MAP.host.key) {
             const { root_image: rootImage, data_images: dataImages } = this.form.fi.imageMsg
             const systemDiskSize = rootImage.min_disk_mb / 1024
@@ -726,10 +726,11 @@ export default {
               sysDisk = snapshots.shift()
             }
             const dataDisks = snapshots.filter(val => val.disk_type !== 'sys')
+            const { matchType, matchLabel } = this.matchStorage(sysDisk.backend, sysDisk.medium, 'storage_types2')
             const data = {
               systemDiskType: {
-                key: `${sysDisk.backend}/${sysDisk.medium}`,
-                label: STORAGE_TYPES[HYPERVISORS_MAP.kvm.key][sysDisk.backend].label,
+                key: matchType,
+                label: matchLabel || STORAGE_TYPES[HYPERVISORS_MAP.kvm.key][matchType].label,
               },
               systemDiskSize: sysDisk.size / 1024,
             }
@@ -745,10 +746,12 @@ export default {
             // 重置数据盘数据
             this._resetDataDisk()
             dataDisks.forEach(val => {
-              this.$refs.dataDiskRef.add({ diskType: val.backend, size: val.size / 1024, sizeDisabled: true, medium: val.medium })
+              const { matchType, matchMedium } = this.matchStorage(val.backend, val.medium, 'data_storage_types2')
+              this.$refs.dataDiskRef.add({ diskType: matchType, size: val.size / 1024, sizeDisabled: true, medium: matchMedium })
             })
-            this.form.fi.dataDiskDisabled = true
-            this.form.fi.sysDiskDisabled = true
+            this.form.fi.imageType = this.form.fd.imageType
+            // this.form.fi.dataDiskDisabled = true
+            // this.form.fi.sysDiskDisabled = true
           } else {
             if (oldVal && R.is(Object, oldVal.server_config)) { // 说明是从主机快照切换过去的
               const vcpuDecorator = this.decorators.vcpu
@@ -781,6 +784,25 @@ export default {
     this.timer = null
   },
   methods: {
+    matchStorage (backend, medium, key) {
+      const { hypervisor } = this.form.fd
+      const types = (this.form.fi.capability[key] || {})[hypervisor] || []
+      const typeMaths = types.filter(val => val.split('/')[0] === backend)
+      const mediumMaths = typeMaths.filter(val => val.split('/')[1] === medium)
+      if (mediumMaths.length) {
+        return {
+          matchType: mediumMaths[0],
+          matchLabel: STORAGE_TYPES[hypervisor]?.[mediumMaths[0].split('/')[1]]?.label || mediumMaths[0],
+        }
+      }
+      if (typeMaths.length) {
+        return {
+          matchType: typeMaths[0],
+          matchLabel: STORAGE_TYPES[hypervisor]?.[typeMaths[0].split('/')[1]]?.label || typeMaths[0],
+        }
+      }
+      return { matchType: `${backend}/${medium}`, matchLabel: '' }
+    },
     vpcResourceMapper (list) {
       if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
         return list.filter(val => val.id === 'default')
