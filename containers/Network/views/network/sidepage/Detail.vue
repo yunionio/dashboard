@@ -163,12 +163,42 @@ export default {
           {
             field: 'guest_dns',
             title: this.$t('network.dns_server'),
+            slots: {
+              default: ({ row }) => {
+                const ips = (row.guest_dns || '').split(',')
+                if (!ips.length) return '-'
+                const ret = ips.map(item => {
+                  const obj = { ip: item }
+                  return <list-body-cell-wrap copy field='ip' row={obj} hideField={true} message={item}>
+                    {item}
+                  </list-body-cell-wrap>
+                })
+                return ret
+              },
+            },
           },
           {
             field: 'guest_domain',
             title: this.$t('network.text_586'),
             formatter: ({ cellValue }) => {
               return cellValue || '-'
+            },
+          },
+          {
+            field: 'guest_npt',
+            title: this.$t('network.ntp_server'),
+            slots: {
+              default: ({ row }) => {
+                const ips = (row.guest_ntp || '').split(',')
+                if (!ips.length) return '-'
+                const ret = ips.map(item => {
+                  const obj = { ip: item }
+                  return <list-body-cell-wrap copy field='ip' row={obj} hideField={true} message={item}>
+                    {item}
+                  </list-body-cell-wrap>
+                })
+                return ret
+              },
             },
           },
         ]).filter(item => {
