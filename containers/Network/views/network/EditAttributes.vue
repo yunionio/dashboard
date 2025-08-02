@@ -83,10 +83,10 @@
               <a-input :placeholder="$t('validator.domain')" v-decorator="decorators.guest_domain" />
             </a-form-item>
             <a-form-item :label="$t('network.ntp_server')" v-bind="formItemLayout">
-              <a-input :placeholder="$t('validator.domains')" v-decorator="decorators.guest_ntp" />
+              <a-input :placeholder="$t('validator.IPs_or_domains')" v-decorator="decorators.guest_ntp" />
             </a-form-item>
-            <a-form-item label="dhcp_relay" v-bind="formItemLayout" :extra="$t('network.dhcp_tooltip')">
-              <a-input class="w-50" v-decorator="decorators.guest_dhcp" :placeholder="$t('common.tips.input', ['IPv4'])" />
+            <a-form-item label="dhcp_relay" v-bind="formItemLayout">
+              <a-input class="w-50" v-decorator="decorators.guest_dhcp" :placeholder="$t('validator.IPs')" />
             </a-form-item>
           </a-collapse-panel>
         </a-collapse>
@@ -159,8 +159,8 @@ export default {
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
             rules: [
-              { required: true, message: this.$t('network.text_593') },
-              { validator: this.$validate('IPv4') },
+              // { required: true, message: this.$t('network.text_593') },
+              { validator: this.$validate('IPv4', false) },
             ],
           },
         ],
@@ -170,8 +170,8 @@ export default {
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
             rules: [
-              { required: true, message: this.$t('network.text_594') },
-              { validator: this.$validate('IPv4') },
+              // { required: true, message: this.$t('network.text_594') },
+              { validator: this.$validate('IPv4', false) },
             ],
           },
         ],
@@ -244,7 +244,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { validator: this.validateDhcpRelay },
+              { validator: this.$validate('IPs', false) },
             ],
           },
         ],
@@ -274,7 +274,7 @@ export default {
             initialValue: '',
             validateTrigger: ['change', 'blur'],
             rules: [
-              { validator: this.$validate('domains', false) },
+              { validator: this.$validate('IPs_or_domains', false) },
             ],
           },
         ],
@@ -438,6 +438,11 @@ export default {
         values = {
           ...values,
           wire_id: this.wire_id,
+        }
+        if (!((values.guest_ip_start && values.guest_ip_end) || (values.guest_ip6_start && values.guest_ip6_end))) {
+          this.$message.warning(this.$t('network.required_ipv4_or_ipv6_1'))
+          this.submiting = false
+          return
         }
         await this.doUpdate(values)
         this.$store.commit('keepAlive/ADD_DELAY_EVENT', { name: 'ResourceListSingleRefresh', params: [this.$route.query.network_id] })
