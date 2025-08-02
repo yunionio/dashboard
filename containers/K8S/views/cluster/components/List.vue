@@ -11,7 +11,7 @@
 
 <script>
 import * as R from 'ramda'
-import { getNameFilter, getCreatedAtFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getCreatedAtFilter, getProjectDomainFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -44,6 +44,15 @@ export default {
             label: this.$t('table.title.id'),
           },
           name: getNameFilter(),
+          mode: {
+            label: this.$t('k8s.text_186'),
+            items: [
+              { label: this.$t('k8s.text_187'), key: 'customize' },
+              { label: this.$t('k8s.text_143'), key: 'import' },
+            ],
+            dropdown: true,
+          },
+          status: getStatusFilter({ statusModule: 'kubecluster' }),
           project_domain: getProjectDomainFilter(),
           created_at: getCreatedAtFilter(),
         },
