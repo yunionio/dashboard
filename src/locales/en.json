@@ -707,6 +707,7 @@
       "deploying": "Deploying",
       "running": "Running",
       "error": "Error",
+      "lost": "Lost",
       "deleting": "Deleting",
       "creating": "Creating",
       "create_fail": "Create failed",

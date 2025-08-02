@@ -714,6 +714,7 @@
       "deploying": "展開",
       "running": "稼働中",
       "error": "間違い",
+      "lost": "接続解除",
       "deleting": "削除",
       "creating": "作成",
       "create_fail": "作成に失敗しました",

@@ -28,6 +28,7 @@ export const getK8sClusterDistribution = () => {
     field: 'distribution',
     title: i18n.t('k8s.text_401'),
     minWidth: 100,
+    sortable: true,
     slots: {
       default: ({ row }, h) => {
         let title = ''
@@ -59,6 +60,7 @@ export const getK8sClusterModeColumn = () => {
   return {
     field: 'mode',
     title: i18n.t('k8s.text_186'),
+    sortable: true,
     formatter: ({ cellValue }) => {
       switch (cellValue) {
         case 'customize':
@@ -76,6 +78,7 @@ export const getK8sClusterResourceType = () => {
   return {
     field: 'resource_type',
     title: i18n.t('k8s.text_188'),
+    sortable: true,
     formatter: ({ cellValue }) => {
       switch (cellValue) {
         case 'guest':

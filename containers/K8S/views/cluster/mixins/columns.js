@@ -46,6 +46,7 @@ export default {
       {
         field: 'machines',
         title: i18n.t('k8s.text_191'),
+        sortable: true,
       },
       getStatusTableColumn({ vm: this, statusModule: 'kubecluster', minWidth: 40 }),
       {
