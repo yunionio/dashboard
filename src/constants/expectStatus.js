@@ -237,7 +237,7 @@ export default {
   },
   kubecluster: {
     success: ['running'],
-    danger: ['error', 'create_fail', 'delete_fail'],
+    danger: ['error', 'create_fail', 'delete_fail', 'lost'],
     info: ['init', 'unknown'],
   },
   kubecluster_sync_status: {
