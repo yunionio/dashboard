@@ -109,20 +109,6 @@
             <span class="count-tips">{{$t('network.text_169')}}<span class="remain-num">{{ remain }}</span>{{$t('network.text_170')}}</span>
           </div>
         </a-form-item>
-        <a-form-item label="dhcp_relay" v-if="show">
-          <a-row :gutter="8">
-            <a-col :span="12">
-              <a-form-item class="mb-0" :extra="$t('network.dhcp_tooltip')">
-                <a-input v-decorator="decorators.guest_dhcp" :placeholder="$t('common.tips.input', ['IPv4'])" />
-              </a-form-item>
-            </a-col>
-            <a-col :span="12">
-              <a-form-item class="mb-0" :extra="$t('network.dhcp_tooltip1')">
-                <a-input v-decorator="decorators.guest_dhcp6" :placeholder="$t('common.tips.input', ['IPv6'])" />
-              </a-form-item>
-            </a-col>
-          </a-row>
-        </a-form-item>
         <a-form-item :label="$t('common_498')" v-if="isShowIsAutoAlloc">
           <a-switch v-decorator="decorators.is_auto_alloc" />
           <template slot="extra">{{$t('common_500')}}</template>
@@ -148,18 +134,7 @@
               <span slot="extra" v-if="form.fc.getFieldValue('alloc_policy') === 'none'">{{$t('network.text_584')}}</span>
             </a-form-item>
             <a-form-item :label="$t('network.dns_server')" v-bind="formItemLayout">
-              <a-row :gutter="8">
-                <a-col :span="12">
-                  <a-form-item class="mb-0">
-                    <a-input :placeholder="$t('validator.IPv4s')" v-decorator="decorators.guest_dns" />
-                  </a-form-item>
-                </a-col>
-                <a-col :span="12">
-                  <a-form-item class="mb-0">
-                    <a-input :placeholder="$t('validator.IPv6s')" v-decorator="decorators.guest_dns6" />
-                  </a-form-item>
-                </a-col>
-              </a-row>
+              <a-input :placeholder="$t('validator.IPs')" v-decorator="decorators.guest_dns" />
             </a-form-item>
             <a-form-item v-bind="formItemLayout">
               <span slot="label">{{$t('network.text_586')}}</span>
@@ -172,18 +147,10 @@
               <a-input :placeholder="$t('validator.domain')" v-decorator="decorators.guest_domain" />
             </a-form-item>
             <a-form-item :label="$t('network.ntp_server')" v-bind="formItemLayout">
-              <a-row :gutter="8">
-                <a-col :span="12">
-                  <a-form-item class="mb-0">
-                    <a-input :placeholder="$t('validator.domains')" v-decorator="decorators.guest_ntp" />
-                  </a-form-item>
-                </a-col>
-                <a-col :span="12">
-                  <a-form-item class="mb-0">
-                    <a-input :placeholder="$t('validator.domains6')" v-decorator="decorators.guest_ntp6" />
-                  </a-form-item>
-                </a-col>
-              </a-row>
+              <a-input :placeholder="$t('validator.IPs_or_domains')" v-decorator="decorators.guest_ntp" />
+            </a-form-item>
+            <a-form-item label="dhcp_relay" v-if="show">
+              <a-input class="w-50" v-decorator="decorators.guest_dhcp" :placeholder="$t('validator.IPs')" />
             </a-form-item>
           </a-collapse-panel>
         </a-collapse>
@@ -372,17 +339,9 @@ export default {
           'guest_dns',
           {
             initialValue: '',
+            validateTrigger: ['change', 'blur'],
             rules: [
-              { validator: this.$validate('IPv4s', false) },
-            ],
-          },
-        ],
-        guest_dns6: [
-          'guest_dns6',
-          {
-            initialValue: '',
-            rules: [
-              { validator: this.$validate('IPv6s', false) },
+              { validator: this.$validate('IPs', false) },
             ],
           },
         ],
@@ -399,17 +358,9 @@ export default {
           'guest_ntp',
           {
             initialValue: '',
+            validateTrigger: ['change', 'blur'],
             rules: [
-              { validator: this.$validate('domains', false) },
-            ],
-          },
-        ],
-        guest_ntp6: [
-          'guest_ntp6',
-          {
-            initialValue: '',
-            rules: [
-              { validator: this.$validate('domains6', false) },
+              { validator: this.$validate('IPs_or_domains', false) },
             ],
           },
         ],
@@ -528,20 +479,9 @@ export default {
         guest_dhcp: [
           'guest_dhcp',
           {
-            initialValue: '',
             validateFirst: true,
             rules: [
-              { validator: this.validateDhcpRelay },
-            ],
-          },
-        ],
-        guest_dhcp6: [
-          'guest_dhcp6',
-          {
-            initialValue: '',
-            validateFirst: true,
-            rules: [
-              { validator: this.validateDhcpRelay6 },
+              { validator: this.$validate('IPs', false) },
             ],
           },
         ],
@@ -915,7 +855,6 @@ export default {
     },
     genData (values) {
       const guest_dhcp = values.guest_dhcp
-      const guest_dhcp6 = values.guest_dhcp6
       if (this.cloudEnv === 'onpremise') {
         const data = []
         if (this.isGroupGuestIpPrefix) {
@@ -923,10 +862,8 @@ export default {
             const obj = {
               alloc_policy: values.alloc_policy,
               guest_dns: values.guest_dns,
-              guest_dns6: values.guest_dns6,
               guest_domain: values.guest_domain,
               guest_ntp: values.guest_ntp,
-              guest_ntp6: values.guest_ntp6,
               guest_ip_prefix: value,
               guest_ip6_prefix: values.guest_ip6_prefix && values.guest_ip6_prefix[key],
               name: values.name,
@@ -936,7 +873,6 @@ export default {
               project_id: values.project?.key,
               is_auto_alloc: values.is_auto_alloc,
               guest_dhcp,
-              guest_dhcp6,
               __meta__: values.__meta__,
             }
             data.push(obj)
@@ -947,10 +883,8 @@ export default {
               bgp_type: values.bgp_type,
               alloc_policy: values.alloc_policy,
               guest_dns: values.guest_dns,
-              guest_dns6: values.guest_dns6,
               guest_domain: values.guest_domain,
               guest_ntp: values.guest_ntp,
-              guest_ntp6: values.guest_ntp6,
               guest_ip_start: values.startip[key],
               guest_ip_end: values.endip[key],
               guest_ip_mask: values.netmask[key],
@@ -967,7 +901,6 @@ export default {
               wire_id: values.wire,
               is_auto_alloc: values.is_auto_alloc,
               guest_dhcp,
-              guest_dhcp6,
               __meta__: values.__meta__,
             }
             data.push(obj)
@@ -977,10 +910,8 @@ export default {
             const obj = {
               alloc_policy: values.alloc_policy,
               guest_dns: values.guest_dns,
-              guest_dns6: values.guest_dns6,
               guest_domain: values.guest_domain,
               guest_ntp: values.guest_ntp,
-              guest_ntp6: values.guest_ntp6,
               guest_ip_prefix: value,
               guest_ip6_prefix: values.guest_ip6_prefix && values.guest_ip6_prefix[key],
               name: values.name,
@@ -990,7 +921,6 @@ export default {
               project_id: values.project?.key,
               is_auto_alloc: values.is_auto_alloc,
               guest_dhcp,
-              guest_dhcp6,
               __meta__: values.__meta__,
             }
             data.push(obj)
@@ -1009,7 +939,6 @@ export default {
           wire_id: values.wire,
           is_auto_alloc: values.is_auto_alloc,
           guest_dhcp,
-          guest_dhcp6,
           __meta__: values.__meta__,
         }
       }
@@ -1023,7 +952,6 @@ export default {
         zone: values?.zone,
         is_auto_alloc: values.is_auto_alloc,
         guest_dhcp,
-        guest_dhcp6,
         __meta__: values.__meta__,
       }
     },
