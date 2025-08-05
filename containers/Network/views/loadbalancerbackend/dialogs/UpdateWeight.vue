@@ -5,8 +5,14 @@
       <dialog-selected-tips :name="$t('dictionary.lb_backend')" :count="params.data.length" :action="$t('network.text_352')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item :label="$t('network.text_166')">
+        <a-form-item v-if="params.updateFields.weight" :label="$t('network.text_166')">
           <a-input-number :min="0" :max="maxWeight" v-decorator="decorators.weight" />
+        </a-form-item>
+        <a-form-item v-if="params.updateFields.port" :label="$t('network.text_165')">
+          <a-input-number :min="1" :max="65535" v-decorator="decorators.port" />
+        </a-form-item>
+        <a-form-item v-if="params.updateFields.status" :label="$t('network.text_189')">
+          <a-switch v-decorator="decorators.status" />
         </a-form-item>
       </a-form>
     </div>
@@ -23,7 +29,7 @@ import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
 
 export default {
-  name: 'BackendUpdateWeightDialog',
+  name: 'BackendUpdateDialog',
   components: {
   },
   mixins: [DialogMixin, WindowsMixin],
@@ -43,6 +49,23 @@ export default {
               { type: 'integer', required: true, message: this.$t('network.text_177'), trigger: 'blur' },
               { type: 'integer', min: 0, max: this.maxWeight, message: this.$t('network.text_353', [this.maxWeight]), trigger: 'blur' },
             ],
+          },
+        ],
+        port: [
+          'port',
+          {
+            initialValue: this.params.data[0].port,
+            validateFirst: true,
+            rules: [
+              { type: 'integer', required: true, message: this.$t('network.text_176'), trigger: 'blur' },
+            ],
+          },
+        ],
+        status: [
+          'status',
+          {
+            valuePropName: 'checked',
+            initialValue: this.params.data[0].status === 'enabled',
           },
         ],
       },
@@ -70,7 +93,17 @@ export default {
     },
   },
   methods: {
-    doUpdate (id, data) {
+    doUpdate (id, values) {
+      const data = {}
+      if (this.params.updateFields.weight) {
+        data.weight = values.weight
+      }
+      if (this.params.updateFields.port) {
+        data.port = values.port
+      }
+      if (this.params.updateFields.status) {
+        data.status = values.status ? 'enabled' : 'disabled'
+      }
       return this.params.onManager('update', {
         id,
         managerArgs: {

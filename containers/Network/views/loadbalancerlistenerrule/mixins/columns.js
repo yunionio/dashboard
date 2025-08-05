@@ -12,7 +12,7 @@ export default {
   },
   computed: {
     columns () {
-      const arr = [
+      let arr = [
         getNameDescriptionTableColumn({
           onManager: this.onManager,
           hideField: true,
@@ -26,7 +26,7 @@ export default {
           },
         }),
         getStatusTableColumn({ minWidth: 50, statusModule: 'lb' }),
-        getStatusTableColumn({ minWidth: 100, statusModule: 'lbRedirect', field: 'redirect', title: i18n.t('network.text_368') }),
+        // getStatusTableColumn({ minWidth: 100, statusModule: 'lbRedirect', field: 'redirect', title: i18n.t('network.text_368') }),
         getProjectDomainTableColumn(),
         {
           field: 'domain',
@@ -40,7 +40,7 @@ export default {
         },
         {
           field: 'backend_group',
-          title: i18n.t('network.text_139'),
+          title: i18n.t('network.default_backend_server_group'),
           minWidth: 150,
           slots: {
             default: ({ row }) => {
@@ -52,7 +52,10 @@ export default {
         },
         getStatusTableColumn({ minWidth: 100, statusModule: 'lbRedirect', field: 'redirect', title: i18n.t('network.text_368') }),
       ]
-      if (this.data.provider && this.data.provider.toUpperCase() !== 'onecloud') arr.splice(2, 1)
+      if (this.data.provider && this.data.provider.toLowerCase() !== 'onecloud') arr.splice(2, 1)
+      if (this.data.provider && this.data.provider.toLowerCase() === 'cloudflare') {
+        arr = arr.filter(item => item.field !== 'redirect')
+      }
       return arr
     },
   },

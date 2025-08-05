@@ -1549,5 +1549,20 @@
   "network.ssl_certificate.start_date": "Issued Time",
   "network.ssl_certificate.end_date": "Expired Time",
   "network.required_ipv4_or_ipv6": "IPv4 or IPv6 network segment at least one must be filled in",
-  "network.required_ipv4_or_ipv6_1": "Please fill in the IPv4 or IPv6 starting address, ending address, and default gateway. Support only configuring IPv4 or IPv6"
+  "network.required_ipv4_or_ipv6_1": "Please fill in the IPv4 or IPv6 starting address, ending address, and default gateway. Support only configuring IPv4 or IPv6",
+  "network.ip_or_domain": "IP or Domain Address",
+  "network.add_backend_server": "Add Backend Server",
+  "network.domain_prefix": "Domain Prefix",
+  "network.domain_prefix_extra": "E.g: test",
+  "network.domain_url_extra": "Enter the domain prefix, such as test, select the domain, such as: example.com, automatically form the URL: test.example.com",
+  "network.domain_prefix_invalid": "Please enter a domain prefix",
+  "network.default_backend_server_group": "Default Backend Server Group",
+  "network.default_backend_server_group_extra": "If all backend server groups are unavailable, the default backend server group will be used",
+  "network.rule_redirect": "Traffic Redirect",
+  "network.rule_redirect_type_off": "Off",
+  "network.rule_redirect_type_geography": "Geography",
+  "network.add_redirect_rule": "Add Redirect Rule",
+  "network.rule_redirect_region_country": "Traffic Redirect Rule:",
+  "network.rule_redirect_type": "Region Type",
+  "network.rule_redirect_extra": "Route to the specified backend server group based on the provided region"
 }

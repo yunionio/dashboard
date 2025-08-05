@@ -9,12 +9,12 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'LoadbalancerbackendgroupsList',
@@ -44,6 +44,7 @@ export default {
             this.createDialog('LoadbalancerbackendgroupsCreateDialog', {
               title: this.$t('network.text_26'),
               loadbalancer: this.resId,
+              lbData: this.data,
               onManager: this.onManager,
               refresh: this.refresh,
             })
