@@ -1566,5 +1566,17 @@
   "network.add_redirect_rule": "リダイレクトルールを追加",
   "network.rule_redirect_region_country": "トラフィックリダイレクトルール：",
   "network.rule_redirect_type": "地域タイプ",
-  "network.rule_redirect_extra": "指定された地域に基づいて、指定されたバックエンドサーバーグループにルーティングします"
+  "network.rule_redirect_extra": "指定された地域に基づいて、指定されたバックエンドサーバーグループにルーティングします",
+  "network.health_check": "健康检查",
+  "network.health_check.create": "健康检查を作成",
+  "network.health_check.method": "方法",
+  "network.health_check.interval": "間隔（秒）",
+  "network.health_check.timeout": "タイムアウト（秒）",
+  "network.health_check.healthy_threshold": "健康閾値",
+  "network.health_check.unhealthy_threshold": "不健康閾値",
+  "network.health_check.http_code": "健康状態コード",
+  "network.health_check.res": "UDPレスポンス",
+  "network.health_check.req": "UDPリクエスト",
+  "network.health_check.http_code_extra": "健康状態コードを入力してください。複数の状態コードは、英語のカンマで区切ってください。例：200,201,202",
+  "network.enable_health_check": "健康检查を有効にする"
 }
