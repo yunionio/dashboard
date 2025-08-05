@@ -55,6 +55,13 @@ export default {
               field: 'zone',
               title: this.$t('network.text_24'),
             },
+            {
+              field: 'loadbalancer_health_check',
+              title: this.$t('network.health_check'),
+              formatter: ({ row }) => {
+                return row.loadbalancer_health_check || '-'
+              },
+            },
           ],
         },
       ],

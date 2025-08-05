@@ -40,6 +40,7 @@ const VPCCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefe
 const LbList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/lb')
 const LBCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/lb/create/index')
 const LbListenerCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/loadbalancerlistener/create')
+const HealthCheck = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/health-check')
 const LbaclsList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/lbacls')
 const LbcertsList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/lbcerts')
 const LoadbalancerclusterList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/loadbalancercluster')
@@ -657,6 +658,28 @@ export default {
               name: 'LbcertList',
               path: '',
               component: LbcertsList,
+            },
+          ],
+        },
+        {
+          path: '/health-check',
+          meta: {
+            label: i18n.t('network.health_check'),
+            permission: 'loadbalancer_health_checks_list',
+            t: 'network.health_check',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.health_check')) {
+                return true
+              }
+              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara', 'hcso', 'hcs', 'azure', 'google'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'HealthCheckList',
+              path: '',
+              component: HealthCheck,
             },
           ],
         },
