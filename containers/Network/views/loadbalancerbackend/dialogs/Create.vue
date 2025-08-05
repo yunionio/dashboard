@@ -5,6 +5,9 @@
       <a-form
         v-bind="formItemLayout"
         :form="form.fc">
+        <a-form-item v-if="isCloudflare" :label="$t('common.name')">
+          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
+        </a-form-item>
         <a-form-item :label="$t('network.text_249')">
           <a-radio-group v-decorator="decorators.backend_type" @change="handleBackendTypeChange">
             <a-radio-button v-for="(v, k) in backendTypes" :value="k" :key="k">{{v}}</a-radio-button>
@@ -38,6 +41,9 @@
         <a-form-item key="ip" :label="$t('network.text_213')" v-if="backend_type === 'ip'" :extra="$t('network.text_337')">
           <a-input v-decorator="decorators.ip_backend" :placeholder="$t('network.text_338')" />
         </a-form-item>
+        <a-form-item key="ip_or_domain" :label="$t('network.text_213')" v-if="backend_type === 'ip_or_domain'">
+          <a-input v-decorator="decorators.ip_or_domain_backend" :placeholder="$t('network.ip_or_domain')" />
+        </a-form-item>
         <a-form-item :label="$t('network.text_165')" :extra="$t('network.text_339')">
           <a-input-number v-decorator="decorators.port" />
         </a-form-item>
@@ -60,6 +66,7 @@
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
+import regexp from '@/utils/regexp'
 
 export default {
   name: 'LoadbalancerbackendCreateDialog',
@@ -70,7 +77,7 @@ export default {
       form: {
         fc: this.$form.createForm(this),
       },
-      backend_type: 'guest',
+      backend_type: this.params.lbBackendgroupData.provider === 'Cloudflare' ? 'ip_or_domain' : 'guest',
       formItemLayout: {
         wrapperCol: {
           span: 20,
@@ -86,7 +93,15 @@ export default {
     isOneCloud () {
       return this.params.lbBackendgroupData.provider === 'OneCloud'
     },
+    isCloudflare () {
+      return this.params.lbBackendgroupData.provider === 'Cloudflare'
+    },
     backendTypes () {
+      if (this.isCloudflare) {
+        return {
+          ip_or_domain: this.$t('network.text_71'),
+        }
+      }
       if (!this.isOneCloud) {
         return {
           guest: this.$t('network.text_341'),
@@ -106,10 +121,19 @@ export default {
     decorators () {
       const isRequired = (k) => this.backend_type === k
       return {
+        name: [
+          'name',
+          {
+            rules: [
+              { required: true, message: `${this.$t('common.placeholder')}${this.$t('common.name')}` },
+              { validator: this.$validate('resourceName') },
+            ],
+          },
+        ],
         backend_type: [
           'backend_type',
           {
-            initialValue: 'guest',
+            initialValue: this.params.lbBackendgroupData.provider === 'Cloudflare' ? 'ip_or_domain' : 'guest',
             rules: [
               { required: true, message: this.$t('network.text_343') },
             ],
@@ -138,6 +162,25 @@ export default {
             rules: [
               { required: isRequired('ip'), message: this.$t('network.text_346') },
               { validator: this.$validate('IPv4', false) },
+            ],
+          },
+        ],
+        ip_or_domain_backend: [
+          'ip_or_domain_backend',
+          {
+            rules: [
+              {
+                required: true,
+                validator: (rule, value, callback) => {
+                  if (!value) {
+                    callback(new Error(this.$t('common.tips.input', [this.$t('network.ip_or_domain')])))
+                  }
+                  if (!regexp.isIPOrDomain(value)) {
+                    callback(new Error(this.$t('common.tips.input', [this.$t('network.ip_or_domain')])))
+                  }
+                  callback()
+                },
+              },
             ],
           },
         ],
@@ -239,11 +282,19 @@ export default {
     },
     async doCreate (values) {
       const { backend_type } = values
-      const data = {
-        ...values,
+      let data = {
         backend_group: this.params.lbBackendgroupData.id,
         ssl: values.ssl ? 'on' : 'off',
         backend: values[`${backend_type}_backend`],
+      }
+      if (this.isCloudflare) {
+        data.generate_name = values.name
+        data.address = values.ip_or_domain_backend
+        data.backend_type = 'address'
+        data.weight = values.weight
+        data.port = values.port
+      } else {
+        data = { ...values, ...data }
       }
       await new this.$Manager('loadbalancerbackends').create({
         data,

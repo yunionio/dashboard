@@ -8,12 +8,12 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'LoadbalancerbackendList',
@@ -70,7 +70,7 @@ export default {
           label: this.$t('network.text_26'),
           permission: 'lb_loadbalancerbackends_create',
           action: () => {
-            const w100Providers = ['aliyun', 'huawei', 'qcloud', 'aws']
+            const w100Providers = ['aliyun', 'huawei', 'qcloud', 'aws', 'cloudflare']
             let maxWeight = 256
             if (this.data && this.data.provider) {
               if (w100Providers.includes(this.data.provider.toLowerCase())) {
