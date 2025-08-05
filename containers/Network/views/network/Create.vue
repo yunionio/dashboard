@@ -837,7 +837,7 @@ export default {
         }
         const maskNum = (value && value.split('/').length > 1) ? value.split('/')[1] : null
         const min = 64
-        const max = 64
+        const max = 124
         if (maskNum < min || maskNum > max) {
           callback(new Error(this.$t('network.text_604', [min, max])))
           return
