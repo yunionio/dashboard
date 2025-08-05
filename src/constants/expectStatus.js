@@ -617,4 +617,8 @@ export default {
     success: ['active'],
     danger: ['failed', 'expired', 'create_failed'],
   },
+  healthCheck: {
+    success: ['available'],
+    danger: ['create_failed'],
+  },
 }

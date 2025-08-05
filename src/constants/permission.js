@@ -1499,6 +1499,11 @@ export const PERMISSION = {
 
   topology_list: ['compute', 'global-topology', 'list'],
 
+  loadbalancer_health_checks_list: ['compute', 'loadbalancer_health_checks', 'list'],
+  loadbalancer_health_checks_create: ['compute', 'loadbalancer_health_checks', 'create'],
+  loadbalancer_health_checks_delete: ['compute', 'loadbalancer_health_checks', 'delete'],
+  loadbalancer_health_checks_update: ['compute', 'loadbalancer_health_checks', 'update'],
+
   ...extraPermissions,
 }
 

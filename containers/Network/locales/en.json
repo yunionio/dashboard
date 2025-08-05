@@ -1564,5 +1564,17 @@
   "network.add_redirect_rule": "Add Redirect Rule",
   "network.rule_redirect_region_country": "Traffic Redirect Rule:",
   "network.rule_redirect_type": "Region Type",
-  "network.rule_redirect_extra": "Route to the specified backend server group based on the provided region"
+  "network.rule_redirect_extra": "Route to the specified backend server group based on the provided region",
+  "network.health_check": "Health Check",
+  "network.health_check.create": "Create Health Check",
+  "network.health_check.method": "Method",
+  "network.health_check.interval": "Interval (seconds)",
+  "network.health_check.timeout": "Timeout (seconds)",
+  "network.health_check.healthy_threshold": "Healthy Threshold",
+  "network.health_check.unhealthy_threshold": "Unhealthy Threshold",
+  "network.health_check.http_code": "HTTP Code",
+  "network.health_check.res": "UDP Response",
+  "network.health_check.req": "UDP Request",
+  "network.health_check.http_code_extra": "Please enter the health status code, multiple status codes are separated by commas, such as: 200,201,202",
+  "network.enable_health_check": "Enable Health Check"
 }

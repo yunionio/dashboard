@@ -1573,5 +1573,17 @@
   "network.add_redirect_rule": "添加定向规则",
   "network.rule_redirect_region_country": "流量定向规则：",
   "network.rule_redirect_type": "区域类型",
-  "network.rule_redirect_extra": "根据提供的区域路由到指定的后端服务器组"
+  "network.rule_redirect_extra": "根据提供的区域路由到指定的后端服务器组",
+  "network.health_check": "健康检查",
+  "network.health_check.create": "创建健康检查",
+  "network.health_check.method": "方法",
+  "network.health_check.interval": "间隔时间（秒）",
+  "network.health_check.timeout": "超时时间（秒）",
+  "network.health_check.healthy_threshold": "健康阈值",
+  "network.health_check.unhealthy_threshold": "不健康阈值",
+  "network.health_check.http_code": "健康状态码",
+  "network.health_check.res": "UDP响应串",
+  "network.health_check.req": "UDP请求串",
+  "network.health_check.http_code_extra": "请输入健康状态码，多个状态码使用英文逗号隔开，如：200,201,202",
+  "network.enable_health_check": "启用健康检查"
 }
