@@ -94,6 +94,14 @@ export default {
       ],
       net6MaskOptions: [
         { label: '64', key: '64' },
+        { label: '72', key: '72' },
+        { label: '80', key: '80' },
+        { label: '88', key: '88' },
+        { label: '96', key: '96' },
+        { label: '104', key: '104' },
+        { label: '112', key: '112' },
+        { label: '120', key: '120' },
+        { label: '124', key: '124' },
       ],
       showV6: this.showIpv6,
     }
