@@ -50,6 +50,7 @@
               :hasMeterService="hasMeterService"
               :skuDisabled="runningOther"
               :dataSku="dataSku"
+              :dataList="dataList"
               isAdjustConfig />
           </a-form-item>
           <a-form-item :label="$t('compute.text_49')" v-show="selectedItems.length === 1 && form.fd.defaultType">
