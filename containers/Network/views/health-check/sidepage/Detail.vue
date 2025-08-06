@@ -9,13 +9,16 @@
 </template>
 
 <script>
-import { getBrandTableColumn } from '@/utils/common/tableColumn'
+import {
+  getBrandTableColumn,
+  getAccountTableColumn,
+} from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import {
   healthCheckTypeColumn,
   healthCheckUriColumn,
   healthCheckPortColumn,
-  healthCheckDomainColumn,
+  // healthCheckDomainColumn,
   healthCheckMethodColumn,
   healthCheckHttpCodeColumn,
   healthCheckIntervalColumn,
@@ -42,10 +45,11 @@ export default {
     return {
       baseInfo: [
         getBrandTableColumn(),
+        getAccountTableColumn(),
         healthCheckTypeColumn(),
         healthCheckUriColumn(),
         healthCheckPortColumn(),
-        healthCheckDomainColumn(),
+        // healthCheckDomainColumn(),
         healthCheckMethodColumn(),
         healthCheckHttpCodeColumn(),
         healthCheckIntervalColumn(),
