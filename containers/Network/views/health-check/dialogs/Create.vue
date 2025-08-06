@@ -3,12 +3,36 @@
     <div slot="header">{{formType === 'update' ? $t('table.action.modify') : $t('network.health_check.create')}}</div>
     <div slot="body">
       <a-form-model :model="form" :rules="rules" ref="form" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
+        <a-form-item :label="$t('dictionary.cloudprovider')" class="mb-0" required>
+          <div class="d-flex">
+            <a-form-model-item style="width: 30%" prop="provider">
+              <base-select
+                v-model="form.provider"
+                :options="providerOptions"
+                isDefaultSelect
+                :disabled="formType === 'update'"
+                :select-props="{placeholder: $t('common.tips.select', [$t('network.text_198')])}" />
+            </a-form-model-item>
+            <a-form-model-item style="margin-left: 3%; width: 67%" prop="cloudprovider_id">
+              <base-select
+                v-model="form.cloudprovider_id"
+                resource="cloudproviders"
+                filterable
+                remote
+                isDefaultSelect
+                :disabled="formType === 'update'"
+                :params="cloudproviderParams"
+                :select-props="{placeholder: $t('common.tips.select', [$t('dictionary.cloudprovider')])}" />
+            </a-form-model-item>
+          </div>
+        </a-form-item>
         <a-form-model-item :label="$t('network.text_199')" prop="cloudregion_id">
           <base-select
             v-model="form.cloudregion_id"
             resource="cloudregions"
             filterable
             remote
+            isDefaultSelect
             :params="cloudregionParams"
             :select-props="{placeholder: $t('common.tips.select', [$t('network.text_199')])}"
             :disabled="formType === 'update'" />
@@ -28,9 +52,9 @@
         <a-form-model-item :label="$t('network.text_165')" prop="health_check_port">
           <a-input-number class="w-50" v-model="form.health_check_port" :placeholder="$t('common.tips.input', [$t('network.text_165')])" />
         </a-form-model-item>
-        <a-form-model-item :label="$t('network.text_156')" prop="health_check_domain">
+        <!-- <a-form-model-item :label="$t('network.text_156')" prop="health_check_domain">
           <a-input v-model="form.health_check_domain" :placeholder="$t('common.tips.input', [$t('network.text_156')])" />
-        </a-form-model-item>
+        </a-form-model-item> -->
         <a-form-model-item :label="$t('network.health_check.method')" prop="health_check_method">
           <a-select v-model="form.health_check_method" :placeholder="$t('common.tips.select', [$t('network.health_check.method')])">
             <a-select-option value="GET">GET</a-select-option>
@@ -81,17 +105,22 @@ export default {
     parmas: Object,
   },
   data () {
-    const { data, type } = this.params
+    const providerOptions = [{ id: 'Cloudflare', name: 'Cloudflare' }].filter(item => {
+      return (this.$store.getters.capability.loadbalancer_engine_brands || []).includes(item.id)
+    })
+    const { data = [], type } = this.params
     const initForm = data.length > 0 ? data[0] : {}
     return {
       loading: false,
       form: {
+        provider: initForm.provider || providerOptions[0]?.id,
+        cloudprovider_id: initForm.cloudprovider_id || undefined,
         cloudregion_id: initForm.cloudregion_id || undefined,
         name: initForm.name || undefined,
         health_check_type: initForm.health_check_type || 'HTTP',
         health_check_uri: initForm.health_check_uri || '/',
         health_check_port: initForm.health_check_port || 80,
-        health_check_domain: initForm.health_check_domain || undefined,
+        // health_check_domain: initForm.health_check_domain || undefined,
         health_check_method: initForm.health_check_method || 'GET',
         health_check_http_code: initForm.health_check_http_code || '200',
         health_check_interval: initForm.health_check_interval || 60,
@@ -101,17 +130,20 @@ export default {
         // health_check_req: undefined,
         // health_check_res: undefined,
       },
+      providerOptions,
       formType: type,
       rules: {
+        provider: [{ required: true, message: this.$t('common.tips.select', [this.$t('network.text_198')]) }],
+        cloudprovider_id: [{ required: true, message: this.$t('common.tips.select', [this.$t('dictionary.cloudprovider')]) }],
         cloudregion_id: [{ required: true, message: this.$t('common.tips.select', [this.$t('network.text_199')]) }],
         name: [{ required: true, validator: this.$validate('resourceName') }],
         health_check_type: [{ required: true, message: this.$t('common.tips.select', [this.$t('network.text_420')]) }],
         health_check_uri: [{ required: true, message: this.$t('common.tips.input', [this.$t('network.waf.rate_limit_rule_type.http.request.uri.path')]) }],
         health_check_port: [{ required: true, message: this.$t('common.tips.input', [this.$t('network.text_165')]) }],
-        health_check_domain: [{
-          required: true,
-          validator: this.$validate('domain'),
-        }],
+        // health_check_domain: [{
+        //   required: true,
+        //   validator: this.$validate('domain'),
+        // }],
         health_check_method: [{ required: true, message: this.$t('common.tips.select', [this.$t('network.health_check.method')]) }],
         health_check_http_code: [{ required: true, message: this.$t('common.tips.input', [this.$t('network.health_check.http_code')]) }],
         health_check_interval: [{ required: true, message: this.$t('common.tips.input', [this.$t('network.health_check.interval')]) }],
@@ -127,8 +159,15 @@ export default {
     cloudregionParams () {
       return {
         limit: 20,
-        provider: 'Cloudflare',
+        provider: this.form.provider,
         show_emulated: true,
+        scope: this.$store.getters.scope,
+      }
+    },
+    cloudproviderParams () {
+      return {
+        limit: 20,
+        provider: this.form.provider,
         scope: this.$store.getters.scope,
       }
     },

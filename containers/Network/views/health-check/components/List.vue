@@ -17,6 +17,8 @@ import {
   getCreatedAtFilter,
   getProjectFilter,
   getBrandFilter,
+  getAccountFilter,
+  getCloudProviderFilter,
 } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -46,6 +48,8 @@ export default {
       description: getDescriptionFilter(),
       status: getStatusFilter('healthCheck'),
       brand: getBrandFilter(),
+      account: getAccountFilter(),
+      manager: getCloudProviderFilter(),
       project: getProjectFilter(),
       created_at: getCreatedAtFilter(),
     }
