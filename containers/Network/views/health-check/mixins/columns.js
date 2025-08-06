@@ -4,12 +4,13 @@ import {
   getTimeTableColumn,
   getProjectTableColumn,
   getBrandTableColumn,
+  getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 import {
   healthCheckTypeColumn,
   healthCheckUriColumn,
   healthCheckPortColumn,
-  healthCheckDomainColumn,
+  // healthCheckDomainColumn,
   healthCheckMethodColumn,
   healthCheckHttpCodeColumn,
   healthCheckIntervalColumn,
@@ -37,7 +38,7 @@ export default {
       healthCheckTypeColumn(),
       healthCheckUriColumn(),
       healthCheckPortColumn(),
-      healthCheckDomainColumn(),
+      // healthCheckDomainColumn(),
       healthCheckMethodColumn(),
       healthCheckHttpCodeColumn(),
       healthCheckIntervalColumn(),
@@ -45,6 +46,7 @@ export default {
       healthCheckHealthyThresholdColumn(),
       healthCheckUnhealthyThresholdColumn(),
       getBrandTableColumn(),
+      getAccountTableColumn(),
       getProjectTableColumn(),
       getTimeTableColumn(),
     ]
