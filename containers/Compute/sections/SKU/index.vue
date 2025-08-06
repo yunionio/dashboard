@@ -115,6 +115,10 @@ export default {
       type: Boolean,
       default: () => false,
     },
+    dataList: {
+      type: Array,
+      default: () => [],
+    },
   },
   data () {
     return {
@@ -130,12 +134,14 @@ export default {
         totalResult: 0,
       },
       skuTypes: [],
-      skuInited: false,
-      priceInited: false,
+      hasOriginSku: false,
       unfindTip: '',
     }
   },
   computed: {
+    isSameSku () {
+      return this.dataList.length === 1 || this.dataList.map(item => item.instance_type).filter(item => item).length === 1
+    },
     customConfig () {
       return {
         checkMethod: ({ row }) => {
@@ -313,7 +319,7 @@ export default {
       handler (val, oldV) {
         if (!R.equals(val, oldV)) {
           if (val.length) {
-            this.setSku(val[0], false, false, true)
+            this.setSku(val[0], false)
           } else {
             this.setSku({})
           }
@@ -325,7 +331,9 @@ export default {
   created () {
     this.skusM = new Manager('serverskus')
     this.ratesM = new Manager('cloud_sku_rates', 'v1')
-    if (this.skuParams && !R.isEmpty(this.skuParams)) this.fetchData()
+    if (this.skuParams && !R.isEmpty(this.skuParams)) {
+      this.fetchData()
+    }
   },
   methods: {
     fetchData () {
@@ -348,7 +356,7 @@ export default {
         this.setSku(this.skuResults[0], true)
       }
     },
-    setSku (skuData, isSkuChange, skuInited, priceInited) {
+    setSku (skuData, isSkuChange) {
       if (!skuData) return
       let chooseSku = skuData
       if (!isSkuChange && this.instanceType) {
@@ -356,17 +364,9 @@ export default {
         if (extSku) {
           chooseSku = extSku
         } else {
-          if (this.isAdjustConfig && !this.skuList.some(item => item.name === this.dataSku?.name) && (!this.skuInited || !this.priceInited)) {
+          if (this.isAdjustConfig && this.isSameSku && !this.hasOriginSku) {
             chooseSku = this.dataSku
             this.unfindTip = this.dataSku?.name
-            if (!this.skuDisabled) {
-              if (skuInited) {
-                this.skuInited = true
-              }
-              if (priceInited) {
-                this.priceInited = true
-              }
-            }
           }
         }
       }
@@ -428,7 +428,12 @@ export default {
         if (this.skuParams && !R.isEmpty(this.skuParams)) { // 防止网络延迟导致 skuParams 已经为空了，但却赋值了
           this.skuList = data
           if (this.skuList && this.skuList.length) {
-            this.setSku(this.skuResults[0], false, true, false)
+            if (this.isAdjustConfig && this.isSameSku && !this.hasOriginSku) {
+              if (this.skuList.some(item => item.name && item.name === this.dataSku?.name)) {
+                this.hasOriginSku = true
+              }
+            }
+            this.setSku(this.skuResults[0], false)
           }
         }
         this.skuLoading = false
