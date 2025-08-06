@@ -52,8 +52,13 @@ export default {
       const manager = new this.$Manager('servers')
       const params = {
         disable_sync_config: !this.syncConfigImmediately,
-        ip_addr: this.params.data[0].ip_addr,
         force: this.forceRemove,
+      }
+      if (this.params.data[0].ip_addr) {
+        params.ip_addr = this.params.data[0].ip_addr
+      }
+      if (this.params.data[0].ip6_addr) {
+        params.ip6_addr = this.params.data[0].ip6_addr
       }
       return manager.performAction({
         id: this.params.data[0].guest_id,

@@ -33,13 +33,13 @@
             <a-form-model-item class="mb-0">
               <div class="d-flex">
                 <div>
-                  <a-checkbox v-model="hasIpv6" @change="requireIpv6Change" class="mr-1" />
+                  <a-checkbox v-if="isSupportIPv4" v-model="hasIpv6" @change="requireIpv6Change" class="mr-1" />
                   <a-dropdown>
-                    <a-menu slot="overlay" @click="triggerIpv6Mode">
+                    <a-menu slot="overlay" @click="triggerIpv6Mode" v-if="isSupportIPv4">
                       <a-menu-item key="all">{{ $t('compute.server_create.require_ipv6_all') }}</a-menu-item>
                       <a-menu-item key="only">{{ $t('compute.server_create.require_ipv6_only') }}</a-menu-item>
                     </a-menu>
-                    <a-button type="link" class="pl-1">{{ ipv6Mode === 'only' ? $t('compute.server_create.require_ipv6_only') : $t('compute.server_create.require_ipv6_all') }}<a-icon type="down" /> </a-button>
+                    <a-button type="link" class="pl-1" v-if="isSupportIPv4">{{ ipv6Mode === 'only' ? $t('compute.server_create.require_ipv6_only') : $t('compute.server_create.require_ipv6_all') }}<a-icon type="down" /> </a-button>
                   </a-dropdown>
                 </div>
                 <template v-if="isSupportIPv6 && ipv6ConfigShow">
