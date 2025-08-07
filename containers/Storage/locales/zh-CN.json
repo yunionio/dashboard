@@ -17,7 +17,7 @@
   "storage.text_16": "存储",
   "storage.object_storage": "对象存储",
   "storage.text_18": "存储桶",
-  "storage.host.input.place_holder": "例如： 192.168.1.1,192.168.1.2",
+  "storage.host.input.place_holder": "支持一个或多个ip/ipv6，例如： 192.168.1.1,2001:db8::1",
   "storage.text_20": "例如： AQCP4L1aORs8HRAAdcVS2y2R1oERNa+3xyacTA==",
   "storage.text_21": "请输入存储池名称",
   "storage.path.input.place_holder": "例如：/nfs_root/",
@@ -342,5 +342,6 @@
   "storage.volcengine.storage_class.archive": "归档存储",
   "storage.volcengine.storage_class.cold_archive": "冷归档存储",
   "storage.slvm": "共享LVM",
-  "storage.check_sys_permission": "仅系统或{0}管理员支持该操作"
+  "storage.check_sys_permission": "仅系统或{0}管理员支持该操作",
+  "storage.nfs_host.valid": "支持一个或多个ip/ipv6，例如： 192.168.1.1,2001:db8::1"
 }

@@ -17,7 +17,7 @@
   "storage.text_16": "貯蔵",
   "storage.object_storage": "オブジェクトストレージ",
   "storage.text_18": "バケツ",
-  "storage.host.input.place_holder": "例: 192.168.1.1, 192.168.1.2",
+  "storage.host.input.place_holder": "1つ以上のip/ipv 6、例えば： 192.168.1.1,2001:db8::1",
   "storage.text_20": "例: AQCP4L1aORs8HRAAdcVS2y2R1oERNa+3xyacTA==",
   "storage.text_21": "ストレージプール名を入力してください",
   "storage.path.input.place_holder": "たとえば、/nfs_root/",
