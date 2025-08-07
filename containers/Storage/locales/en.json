@@ -17,7 +17,7 @@
   "storage.text_16": "Storage",
   "storage.object_storage": "Object Storage",
   "storage.text_18": "Bucket",
-  "storage.host.input.place_holder": "E.g., 192.168.1.1,192.168.1.2",
+  "storage.host.input.place_holder": "Supports one or more IP/IPv6, E.g.: 192.168.1.1,2001:db8:::1",
   "storage.text_20": "E.g., AQCP4L1aORs8HRAAdcVS2y2R1oERNa+3xyacTA==",
   "storage.text_21": "Please enter the storage pool name",
   "storage.path.input.place_holder": "E.g., /nfs_root/",

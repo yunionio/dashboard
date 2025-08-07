@@ -61,6 +61,7 @@ import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import DomainSelect from '@/sections/DomainSelect'
+import { REGEXP } from '@/utils/validate'
 
 export default {
   name: 'BackupStorageCreateDialog',
@@ -99,25 +100,16 @@ export default {
     ...mapGetters(['isAdminMode', 'userInfo', 'l3PermissionEnable']),
     decorators () {
       const hostCheckValid = (rule, value, _callback) => {
-        const pattern = /^(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))$/
-        const ips = value.split(',')
-        if (!value || value === '') {
-          return _callback(new Error(this.$t('storage.nfs_host_check_reqiure')))
+        let isValid = true
+        if (!value || value === '') isValid = false
+        const parts = value.split(',')
+        if (parts.some(part => {
+          const trimmedPart = part.trim()
+          return !REGEXP.IPv4.regexp.test(trimmedPart) && !REGEXP.IPv6.regexp.test(trimmedPart)
+        })) {
+          isValid = false
         }
-        ips.forEach((item) => {
-          const [ip, dir] = item.split(':')
-          if (!pattern.test(ip)) {
-            return _callback(new Error(this.$t('storage.nfs_host_check_valid')))
-          } else {
-            if (dir) {
-              const reg = /^\/.+/
-              if (!reg.test(dir)) {
-                return _callback(new Error(this.$t('storage.nfs_host_check_valid')))
-              }
-            }
-          }
-        })
-        _callback()
+        return isValid ? _callback() : _callback(new Error(this.$t('storage.host.input.place_holder')))
       }
 
       return {
@@ -151,8 +143,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: this.$t('storage.nfs_host.validate.prompt'), trigger: 'blur' },
-              { validator: hostCheckValid, trigger: 'blur' },
+              { required: true, validator: hostCheckValid, trigger: 'blur' },
             ],
           },
         ],
