@@ -396,6 +396,7 @@
   "compute.text_385": "MAC アドレス",
   "compute.text_386": "IPアドレス",
   "compute.ipv6.address": "IPv6アドレス",
+  "compute.vpc.mapped_addr": "VPC マッピング アドレス",
   "compute.text_387": "帯域幅の調整",
   "compute.text_388": "0 は、帯域幅に制限がないことを意味します",
   "compute.text_389": "帯域幅を変更する",
