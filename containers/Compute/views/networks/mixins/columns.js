@@ -16,8 +16,70 @@ export default {
       },
       getCopyWithContentTableColumn({ field: 'ifname', title: i18n.t('compute.text_384'), sortable: true }),
       getCopyWithContentTableColumn({ field: 'mac_addr', title: i18n.t('compute.text_385'), sortable: true }),
-      getCopyWithContentTableColumn({ field: 'ip_addr', title: i18n.t('compute.text_386'), sortable: true }),
-      getCopyWithContentTableColumn({ field: 'ip6_addr', title: i18n.t('compute.ipv6.address'), sortable: true }),
+      {
+        field: 'ip_addr',
+        title: i18n.t('compute.text_386'),
+        sortable: true,
+        showOverflow: 'ellipsis',
+        minWidth: 100,
+        slots: {
+          default: ({ row }, h) => {
+            if (row.ip_addr) {
+              const addrs = [
+                <div>{i18n.t('compute.text_386')}: {row.ip_addr}/{row.guest_ip_mask}</div>,
+                <div>{i18n.t('network.ipv4.gateway')}: {row.guest_gateway}</div>,
+              ]
+              if (row.mapped_ip_addr) {
+                addrs.push(<div>{i18n.t('compute.vpc.mapped_addr')}: {row.mapped_ip_addr}</div>)
+              }
+              const ret = [
+                <a-popover>
+                  <template slot="content">
+                    {addrs}
+                  </template>
+                  <list-body-cell-wrap copy row={row} field="ip_addr" hideField={true}>
+                    {row.ip_addr}/{row.guest_ip_mask}
+                  </list-body-cell-wrap>
+                </a-popover>,
+              ]
+              return ret
+            }
+            return '-'
+          },
+        },
+      },
+      {
+        field: 'ip6_addr',
+        title: i18n.t('compute.ipv6.address'),
+        sortable: true,
+        showOverflow: 'ellipsis',
+        minWidth: 200,
+        slots: {
+          default: ({ row }, h) => {
+            if (row.ip6_addr) {
+              const addrs = [
+                <div>{i18n.t('compute.ipv6.address')}: {row.ip6_addr}/{row.guest_ip6_mask}</div>,
+                <div>{i18n.t('network.ipv6.gateway')}: {row.guest_gateway6}</div>,
+              ]
+              if (row.mapped_ip6_addr) {
+                addrs.push(<div>{i18n.t('compute.vpc.mapped_addr')}: {row.mapped_ip6_addr}</div>)
+              }
+              const ret = [
+                <a-popover>
+                  <template slot="content">
+                    {addrs}
+                  </template>
+                  <list-body-cell-wrap copy row={row} field="ip6_addr" hideField={true}>
+                    {row.ip6_addr}/{row.guest_ip6_mask}
+                  </list-body-cell-wrap>
+                </a-popover>,
+              ]
+              return ret
+            }
+            return '-'
+          },
+        },
+      },
       getCopyWithContentTableColumn({ field: 'eip_addr', title: 'EIP', sortable: true }),
       getCopyWithContentTableColumn({ field: 'driver', title: i18n.t('compute.text_860') }),
       {

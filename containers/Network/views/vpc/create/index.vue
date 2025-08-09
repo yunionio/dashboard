@@ -29,7 +29,7 @@
         </a-form-item>
         <a-form-item v-if="isShowIp" :label="$t('network.vpc.cidr_block.ipv4.label')" v-bind="formItemLayout" :extra="$t('network.text_686')">
           <a-input v-decorator="decorators.cidr_block" :placeholder="$t('network.text_687')" v-if="cloudEnv !== 'onpremise'" />
-          <a-select v-decorator="decorators.cidr_block" v-else>
+          <a-select v-decorator="decorators.cidr_block" allowClear v-else>
             <a-select-option value="192.168.0.0/16">192.168.0.0/16</a-select-option>
             <a-select-option value="172.16.0.0/12">172.16.0.0/12</a-select-option>
             <a-select-option value="10.0.0.0/8">10.0.0.0/8</a-select-option>
@@ -93,7 +93,7 @@ import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import Tag from '@/sections/Tag'
 import { HYPERVISORS_MAP } from '@/constants'
 
-const { networkSegment6 } = REGEXP
+const { networkSegment, networkSegment6 } = REGEXP
 
 export default {
   name: 'VPCCreate',
@@ -160,8 +160,7 @@ export default {
             validateFirst: true,
             validateTrigger: ['blur'],
             rules: [
-              { required: true, message: this.$t('network.text_690') },
-              { validator: this.$validate('CIDR') },
+              { validator: this.validatePublicIpPrefix4 },
             ],
           },
         ],
@@ -322,6 +321,25 @@ export default {
     }
   },
   methods: {
+    validatePublicIpPrefix4 (rule, value, callback) {
+      if (value) {
+        if (!networkSegment.regexp.test(value)) {
+          callback(new Error(networkSegment.message))
+          return
+        }
+        const maskNum = (value && value.split('/').length > 1) ? value.split('/')[1] : null
+        const min = 8
+        const max = 24
+        if (maskNum < min || maskNum > max) {
+          callback(new Error(this.$t('network.ipaddr.mask.error', [min, max])))
+          return
+        }
+      } else if (!this.form.fc.getFieldValue('cidr_block6')) {
+        callback(new Error(this.$t('network.cidr_block.empty.error')))
+        return
+      }
+      callback()
+    },
     validatePublicIpPrefix6 (rule, value, callback) {
       if (value) {
         if (!networkSegment6.regexp.test(value)) {
@@ -332,9 +350,16 @@ export default {
         const min = 48
         const max = 64
         if (maskNum < min || maskNum > max) {
-          callback(new Error(this.$t('network.text_604', [min, max])))
+          callback(new Error(this.$t('network.ipaddr.mask.error', [min, max])))
           return
         }
+        if (!value.toLowerCase().startsWith('fd')) {
+          callback(new Error(this.$t('network.ipv6.private_prefix.error')))
+          return
+        }
+      } else if (!this.form.fc.getFieldValue('cidr_block')) {
+        callback(new Error(this.$t('network.cidr_block.empty.error')))
+        return
       }
       callback()
     },
@@ -397,9 +422,11 @@ export default {
             description: values.description,
           }
         }
-        params.cidr_block = values.cidr_block
+        if (values.cidr_block) {
+          params.cidr_block = values.cidr_block
+        }
         if (values.cidr_block6) {
-          params.cidr_block6 = values.cidr_block6
+          params.cidr_block6 = values.cidr_block6.toLowerCase()
         }
         if (this.isGoogle) {
           params.globalvpc_id = values.globalvpc_id

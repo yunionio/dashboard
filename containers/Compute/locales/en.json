@@ -396,6 +396,7 @@
   "compute.text_385": "MAC Address",
   "compute.text_386": "IP Address",
   "compute.ipv6.address": "IPv6 Address",
+  "compute.vpc.mapped_addr": "VPC Mapped Address",
   "compute.text_387": "Bandwidth Limit",
   "compute.text_388": "0 means unlimited bandwidth",
   "compute.text_389": "Modify Bandwidth",
