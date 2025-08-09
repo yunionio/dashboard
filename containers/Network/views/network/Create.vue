@@ -67,7 +67,7 @@
           <div v-if="ipSubnetsHelp" class="error-tips">{{ ipSubnetsHelp }}</div>
         </a-form-item>
         <!-- 输入 网段 -->
-        <a-form-item :label="$t('network.text_575')" :extra="$t('network.text_578')" v-bind="formItemLayout" v-if="!show && !isGroupGuestIpPrefix">
+        <a-form-item :label="$t('network.text_575')" :extra="$t('network.prefix_in_cidr_range.prompt', [curVpcCidrText])" v-bind="formItemLayout" v-if="!show && !isGroupGuestIpPrefix">
           <a-row :gutter="8">
             <a-col :span="12" v-if="curVpc && curVpc.cidr_block">
               <a-form-item class="mb-0">
@@ -631,6 +631,16 @@ export default {
         filter: 'provider.notequals("Google")',
       }
     },
+    curVpcCidrText () {
+      const cidrs = []
+      if (this.curVpc?.cidr_block) {
+        cidrs.push(this.curVpc.cidr_block)
+      }
+      if (this.curVpc?.cidr_block6) {
+        cidrs.push(this.curVpc.cidr_block6)
+      }
+      return cidrs.join(', ')
+    },
   },
   provide () {
     return {
@@ -799,11 +809,15 @@ export default {
           return (<div>{ item.name }<span class="ml-2 text-color-secondary">{ this.$t('common.cloudprovider_1var', [item.manager]) }</span></div>)
         }
       } else if (this.cloudEnv === 'onpremise') {
-        if (item.cidr_block) {
-          if (item.cidr_block6) {
-            return (<div>{ item.name } ({ item.cidr_block }, { item.cidr_block6 })</div>)
+        if (item.cidr_block || item.cidr_block6) {
+          const cidrs = []
+          if (item.cidr_block) {
+            cidrs.push(item.cidr_block)
           }
-          return (<div>{ item.name } ({ item.cidr_block })</div>)
+          if (item.cidr_block6) {
+            cidrs.push(item.cidr_block6)
+          }
+          return (<div>{ item.name } ({ cidrs.join(', ') })</div>)
         }
         if (item.id === 'default') return (<div>{ item.name }<span v-if="item.cidr_block">（{this.$t('common.text00047')}）</span></div>)
       }
@@ -822,7 +836,7 @@ export default {
             const min = masks[provider].min
             const max = masks[provider].max
             if (masks[provider] && (maskNum < min || maskNum > max)) {
-              callback(new Error(this.$t('network.text_604', [min, max])))
+              callback(new Error(this.$t('network.ipaddr.mask.error', [min, max])))
             }
           }
         }
@@ -839,7 +853,7 @@ export default {
         const min = 64
         const max = 124
         if (maskNum < min || maskNum > max) {
-          callback(new Error(this.$t('network.text_604', [min, max])))
+          callback(new Error(this.$t('network.ipaddr.mask.error', [min, max])))
           return
         }
       }
@@ -906,25 +920,37 @@ export default {
             data.push(obj)
           }, values.startip)
         } else {
-          R.forEachObjIndexed((value, key) => {
-            const obj = {
-              alloc_policy: values.alloc_policy,
-              guest_dns: values.guest_dns,
-              guest_domain: values.guest_domain,
-              guest_ntp: values.guest_ntp,
-              guest_ip_prefix: value,
-              guest_ip6_prefix: values.guest_ip6_prefix && values.guest_ip6_prefix[key],
-              name: values.name,
-              description: values.description,
-              vpc: values.vpc,
-              zone: values.zone,
-              project_id: values.project?.key,
-              is_auto_alloc: values.is_auto_alloc,
-              guest_dhcp,
-              __meta__: values.__meta__,
+          var ipPrefix = null
+          var ip6Prefix = null
+          if (values.guest_ip_prefix) {
+            ipPrefix = values.guest_ip_prefix[0]
+            if (values.guest_ip6_prefix) {
+              ip6Prefix = values.guest_ip6_prefix[0]
             }
-            data.push(obj)
-          }, values.guest_ip_prefix)
+          } else if (values.guest_ip6_prefix) {
+            ip6Prefix = values.guest_ip6_prefix[0]
+          }
+          const obj = {
+            alloc_policy: values.alloc_policy,
+            guest_dns: values.guest_dns,
+            guest_domain: values.guest_domain,
+            guest_ntp: values.guest_ntp,
+            name: values.name,
+            description: values.description,
+            vpc: values.vpc,
+            zone: values.zone,
+            project_id: values.project?.key,
+            is_auto_alloc: values.is_auto_alloc,
+            guest_dhcp,
+            __meta__: values.__meta__,
+          }
+          if (ipPrefix) {
+            obj.guest_ip_prefix = ipPrefix
+          }
+          if (ip6Prefix) {
+            obj.guest_ip6_prefix = ip6Prefix
+          }
+          data.push(obj)
         }
         return data
       }
