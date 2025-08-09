@@ -396,6 +396,7 @@
   "compute.text_385": "MAC地址",
   "compute.text_386": "IP地址",
   "compute.ipv6.address": "IPv6地址",
+  "compute.vpc.mapped_addr": "VPC映射地址",
   "compute.text_387": "带宽限制",
   "compute.text_388": "0代表带宽没有限制",
   "compute.text_389": "修改带宽",
