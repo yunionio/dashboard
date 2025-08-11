@@ -303,7 +303,7 @@ export default {
         params.details = true
       } else { // 远程导出
         params.export = this.params.options.fileType || 'xls'
-        params.export_keys = keys.join(',')
+        params.export_keys = keys.map(k => k.endsWith('_ignore_suffix') ? k.replace('_ignore_suffix', '') : k).join(',')
         params.export_texts = texts.join(',')
       }
       // 导出范围
@@ -334,7 +334,7 @@ export default {
       }
       // 离线下载
       if (offline) {
-        params.export_keys = keys
+        params.export_keys = keys.map(k => k.endsWith('_ignore_suffix') ? k.replace('_ignore_suffix', '') : k)
         params.export_texts = texts
         params.force_no_paging = true
         if (params.filter && params.filter.length) {
