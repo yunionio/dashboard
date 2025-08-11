@@ -59,7 +59,7 @@ const getBuildInfo = () => {
   containers.forEach(dir => {
     info[dir] = getCommitMSg(path.join('./containers', dir))
   })
-  return info
+  return { ...info, buildMachine: 'docker' }
 }
 
 const devServerCoustomConfig = fsExistsSync(resolve('./dev.server.config.js')) ? require('./dev.server.config.js') : {}
