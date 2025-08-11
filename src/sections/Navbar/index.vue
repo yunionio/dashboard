@@ -158,7 +158,7 @@ import Cookies from 'js-cookie'
 import { mapGetters, mapState } from 'vuex'
 import UserProjectSelect from '@/sections/UserProjectSelect'
 import WindowsMixin from '@/mixins/windows'
-import { getSetupInStorage } from '@/utils/auth'
+import { getSetupInStorage, hasPermission } from '@/utils/auth'
 import { uuid } from '@/utils/utils'
 import NotifyPopover from './components/NotifyPopover'
 // import SettingPopover from './components/SettingPopover'
@@ -396,7 +396,7 @@ export default {
       return globalSetting.value.key.length > 0
     },
     showAlertresource () {
-      if (this.isAdminMode && this.$appConfig.isPrivate) {
+      if (this.isAdminMode && this.$appConfig.isPrivate && hasPermission({ key: 'alertresources_list' })) {
         return true
       }
       return false
