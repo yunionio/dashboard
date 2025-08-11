@@ -1,0 +1,5 @@
+FROM registry.cn-beijing.aliyuncs.com/yunionio/node:20-alpine
+
+RUN sed -i 's!https://dl-cdn.alpinelinux.org/!https://mirrors.ustc.edu.cn/!g' /etc/apk/repositories \
+    && apk add git \
+    && find /var/cache/ -type f | xargs rm -vf
