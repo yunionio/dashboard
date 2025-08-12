@@ -92,8 +92,9 @@ export default {
         {
           label: this.$t('compute.text_723'),
           action: () => {
-            this.createDialog('UnbindDisksDialog', {
+            this.createDialog('UnbindResourcesDialog', {
               data: this.list.selectedItems,
+              resourceType: 'disk',
               columns: this.columns,
               title: this.$t('compute.text_723'),
               resId: this.resId,
@@ -112,8 +113,9 @@ export default {
         {
           label: this.$t('compute.text_723'),
           action: obj => {
-            this.createDialog('UnbindDisksDialog', {
+            this.createDialog('UnbindResourcesDialog', {
               data: [obj],
+              resourceType: 'disk',
               columns: this.columns,
               title: this.$t('compute.text_723'),
               resId: this.resId,

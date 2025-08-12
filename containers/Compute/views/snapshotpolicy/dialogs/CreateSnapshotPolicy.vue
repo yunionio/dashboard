@@ -21,6 +21,12 @@
         <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
           <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
         </a-form-item>
+        <a-form-item :label="$t('common.resource_type')" v-bind="formItemLayout">
+          <a-select v-decorator="decorators.type">
+            <a-select-option value="server" v-if="types.includes('server')">{{$t('dictionary.server')}}</a-select-option>
+            <a-select-option value="disk" v-if="types.includes('disk')">{{$t('dictionary.disk')}}</a-select-option>
+          </a-select>
+        </a-form-item>
         <a-form-item :label="$t('compute.text_431')" v-bind="formItemLayout">
           <a-checkbox-group v-decorator="decorators.repeat_weekdays">
             <a-checkbox
@@ -30,7 +36,7 @@
             </a-checkbox-group>
         </a-form-item>
         <a-form-item :label="$t('compute.text_432')" v-bind="formItemLayout">
-          <a-button-group v-decorator="decorators.time_points">
+          <!-- <a-button-group v-decorator="decorators.time_points">
             <a-button
                 class="select-btn"
                 v-for="(time, idx) of timeOptions"
@@ -38,12 +44,15 @@
                 :key="idx"
                 :type="form.fd.time_points.includes(idx) ? 'primary' : ''"
                 @click="timeSelectHandle(idx)">{{ time }}</a-button>
-          </a-button-group>
+          </a-button-group> -->
+          <a-select v-decorator="decorators.time_points">
+            <a-select-option v-for="(time, idx) in timeOptions" :key="idx" :value="idx">{{time}}</a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item :label="$t('compute.text_433')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.alwaysReserved">
             <div class="mb-2">
-              <a-radio :value="false">
+              <a-radio value="day">
                 <span class="mr-2">{{$t('compute.text_1092')}}</span>
                 <a-input-number
                   size="small"
@@ -55,8 +64,20 @@
                 <span style="color: #606266;" class="ml-2">{{$t('compute.text_1093')}}</span>
               </a-radio>
             </div>
+            <div class="mb-2">
+              <a-radio value="count">
+                <span class="mr-2">{{$t('compute.retention_count_prefix')}}</span>
+                <a-input-number
+                  size="small"
+                  v-decorator="decorators.retention_count"
+                  :step="1"
+                  :min="1"
+                  step-strictly />
+                <span style="color: #606266;" class="ml-2">{{$t('compute.retention_count_suffix')}}</span>
+              </a-radio>
+            </div>
             <div>
-              <a-radio :value="true">{{$t('compute.text_1094')}}</a-radio>
+              <a-radio value="always">{{$t('compute.text_1094')}}</a-radio>
             </div>
           </a-radio-group>
         </a-form-item>
@@ -71,11 +92,11 @@
 
 <script>
 import debounce from 'lodash/debounce'
-import { weekOptions, timeOptions } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import DomainProject from '@/sections/DomainProject'
 import validateForm, { isRequired } from '@/utils/validate'
+import { weekOptions, timeOptions } from '../constants'
 
 export default {
   name: 'CreateSnapshotPolicyDialog',
@@ -86,6 +107,7 @@ export default {
   data () {
     const tenant = this.params.extParams && this.params.extParams.tenant
     const domain = this.params.extParams && this.params.extParams.domain
+    const types = (this.params.extParams && this.params.extParams.types) || ['server', 'disk']
     return {
       loading: false,
       action: this.$t('compute.text_1095'),
@@ -94,11 +116,13 @@ export default {
         fd: {
           generate_name: '',
           repeat_weekdays: [],
-          time_points: [],
+          time_points: '',
           retention_days: 7,
-          alwaysReserved: false,
+          retention_count: 7,
+          alwaysReserved: 'day',
         },
       },
+      types,
       decorators: {
         generate_name: [
           'generate_name',
@@ -111,6 +135,12 @@ export default {
           },
         ],
         description: ['description'],
+        type: [
+          'type',
+          {
+            initialValue: types[0],
+          },
+        ],
         repeat_weekdays: [
           'repeat_weekdays',
           {
@@ -136,7 +166,16 @@ export default {
         alwaysReserved: [
           'alwaysReserved',
           {
-            initialValue: false,
+            initialValue: 'day',
+          },
+        ],
+        retention_count: [
+          'retention_count',
+          {
+            initialValue: 7,
+            rules: [
+              { required: true, message: this.$t('common.tips.input', [this.$t('compute.retention_count')]) },
+            ],
           },
         ],
         domain: [
@@ -193,12 +232,17 @@ export default {
       })
     },
     async doCreateSnapshotPolicySubmit () {
-      const { alwaysReserved, domain, project, ...rest } = this.form.fd
+      const { alwaysReserved, retention_count, retention_days, domain, project, time_points, ...rest } = this.form.fd
       const params = {
         ...rest,
       }
-      if (alwaysReserved) {
+      if (alwaysReserved === 'count') {
+        params.retention_count = retention_count
         params.retention_days = -1
+      } else if (alwaysReserved === 'always') {
+        params.retention_days = -1
+      } else if (alwaysReserved === 'day') {
+        params.retention_days = retention_days
       }
       if (domain) {
         params.domain = domain.key
@@ -206,6 +250,7 @@ export default {
       if (project) {
         params.tenant = project.key
       }
+      params.time_points = [time_points]
       return this.manager.create({ data: params })
     },
     async handleConfirm () {
@@ -226,12 +271,12 @@ export default {
       this.form.fd.generate_name = val
       this.debounceFetchSnapshotpolicies()
     },
-    timeSelectHandle (val) {
-      this.form.fd.time_points = [val]
-      this.$nextTick(() => {
-        this.form.fc.setFieldsValue({ time_points: [val] })
-      })
-    },
+    // timeSelectHandle (val) {
+    //   this.form.fd.time_points = [val]
+    //   this.$nextTick(() => {
+    //     this.form.fc.setFieldsValue({ time_points: [val] })
+    //   })
+    // },
     onValuesChange (props, values) {
       Object.keys(values).forEach((key) => {
         this.form.fd[key] = values[key]
