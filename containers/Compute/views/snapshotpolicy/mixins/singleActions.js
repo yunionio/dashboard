@@ -3,13 +3,13 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: i18n.t('compute.text_1084'),
-        permission: 'disks_perform_bind_snapshotpolicy',
+        label: i18n.t('compute.bind_resource'),
+        permission: 'disks_perform_bind_snapshotpolicy,servers_perform_bind_snapshotpolicy,snapshotpolicy_perform_bind_resources,snapshotpolicy_perform_unbind_resources',
         action: obj => {
-          this.createDialog('AttachDiskDialog', {
+          this.createDialog('AttachResourceDialog', {
             data: [obj],
             columns: this.columns,
-            title: i18n.t('compute.text_1084'),
+            title: i18n.t('compute.bind_resource'),
             refresh: this.refresh,
           })
         },
