@@ -19,7 +19,7 @@ export default {
         hideField: true,
         slotCallback: row => {
           return (
-            <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
+            <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row, 'detail') }>{ row.name }</side-page-trigger>
           )
         },
       }),
@@ -28,12 +28,25 @@ export default {
       getBrandTableColumn(),
       getAccountTableColumn(),
       {
+        field: 'type',
+        title: i18n.t('common.resource_type'),
+        formatter: ({ row }) => {
+          return row.type === 'server' ? i18n.t('dictionary.server') : i18n.t('dictionary.disk')
+        },
+      },
+      {
         field: 'binding_disk_count',
-        title: i18n.t('table.title.bind_disk_count'),
+        title: i18n.t('compute.bind_resource_count'),
         minWidth: 120,
         slots: {
           default: ({ row }) => {
             if (row.binding_disk_count === undefined) return [<data-loading />]
+            if (row.type === 'server') {
+              if (row.binding_resource_count <= 0) return row.binding_resource_count
+              return [
+                <side-page-trigger name='SnapshotPolicySidePage' id={row.id} tab='snapshot-policy-server' vm={this}>{row.binding_resource_count}</side-page-trigger>,
+              ]
+            }
             if (row.binding_disk_count <= 0) return row.binding_disk_count
             return [
               <side-page-trigger name='SnapshotPolicySidePage' id={row.id} tab='snapshot-policy-disk' vm={this}>{row.binding_disk_count}</side-page-trigger>,

@@ -17,6 +17,7 @@ export default {
           getParams: () => {
             const params = {
               filter: 'status.in(\'ready\')',
+              binding_snapshotpolicy: false,
             }
             if (this.params.data[0]?.brand === 'OneCloud') {
               params.unused = false
