@@ -1,7 +1,7 @@
-import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
+import { typeClouds } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
 
-const noChangeBandwidth = ['azure']
+const supportChangeBandwidth = ['huawei', 'baidu', 'aliyun', 'ucloud', 'qcloud', 'ctyun']
 
 export default {
   created () {
@@ -23,21 +23,11 @@ export default {
               tooltip: i18n.t('network.text_222'),
             }
           }
-          let { brand } = obj
-          if (brand && brand !== 'OneCloud') {
-            brand = brand.toLowerCase()
-            if (noChangeBandwidth.includes(brand)) {
-              return {
-                validate: false,
-                tooltip: i18n.t('network.text_223', [typeClouds.getHosttype()[brand].label]),
-              }
-            }
-            const plaform = findPlatform(brand)
-            if (plaform && plaform !== 'public') {
-              return {
-                validate: false,
-                tooltip: i18n.t('network.text_224'),
-              }
+          const { brand } = obj
+          if (brand && !supportChangeBandwidth.includes(brand.toLowerCase())) {
+            return {
+              validate: false,
+              tooltip: i18n.t('network.text_223', [typeClouds.getHosttype()[brand.toLowerCase()].label]),
             }
           }
           return {
