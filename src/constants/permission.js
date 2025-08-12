@@ -40,6 +40,8 @@ export const PERMISSION = {
   snapshotpolicy_list: ['compute', 'snapshotpolicies', 'list'],
   snapshotpolicy_create: ['compute', 'snapshotpolicies', 'create'],
   snapshotpolicy_delete: ['compute', 'snapshotpolicies', 'delete'],
+  snapshotpolicy_perform_bind_resources: ['compute', 'snapshotpolicies', 'perform', 'bind-resources'],
+  snapshotpolicy_perform_unbind_resources: ['compute', 'snapshotpolicies', 'perform', 'unbind-resources'],
 
   // 主机快照
   instance_snapshots_list: ['compute', 'instance_snapshots', 'list'],
@@ -469,6 +471,7 @@ export const PERMISSION = {
   disks_perform_public: ['compute', 'disks', 'perform', 'public'],
   disks_perform_set_user_metadata: ['compute', 'disks', 'perform', 'set-user-metadata'],
   disks_perform_bind_snapshotpolicy: ['compute', 'disks', 'perform', 'bind-snapshotpolicy'],
+  disks_perform_unbind_snapshotpolicy: ['compute', 'disks', 'perform', 'unbind-snapshotpolicy'],
 
   /**
    * diskbackups
