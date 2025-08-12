@@ -1913,5 +1913,11 @@
   "compute.image_source_global": "全部",
   "compute.postpaid_disk_change_billing_type_tip": "仮想マシンが按量課金の場合、按量課金のディスクは仮想マシンと同時に包年包月に変更されます",
   "compute.order_by_used_percent": "ソート基準：使用率 = 使用済み / 総量",
-  "compute.order_by_commit_percent": "ソート基準：割り当て率 = 割り当て済み / 総量"
+  "compute.order_by_commit_percent": "ソート基準：割り当て率 = 割り当て済み / 総量",
+  "compute.retention_count": "保持数",
+  "compute.bind_resource_count": "関連リソース数",
+  "compute.bind_resource": "関連リソース",
+  "compute.bind_server": "関連仮想マシン",
+  "compute.retention_count_prefix": "保持",
+  "compute.retention_count_suffix": "件"
 }

@@ -272,6 +272,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   refresh: this.refresh,
+                  onManager: this.onManager,
                 })
               },
               meta: () => {
@@ -357,7 +358,7 @@ export default {
             },
             {
               label: i18n.t('compute.disk_set_auto_reset'),
-              permission: 'disks_update',
+              permission: 'disks_perform_bind_snapshotpolicy,disks_perform_unbind_snapshotpolicy',
               action: () => {
                 this.createDialog('DiskSetAutoResetDialog', {
                   vm: this,
