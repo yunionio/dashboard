@@ -11,10 +11,10 @@ export const getAssociateNameTableColumn = ({ vm = {}, hidden } = {}) => {
     slots: {
       default: ({ row }, h) => {
         if (vm.isPreLoad && !row.associate_name) return [<data-loading />]
-        const { associate_name, associate_id, associate_type } = row
+        const { associate_name, associate_id, associate_type, server_private_ip } = row
         if (vm && associate_type) {
           const associate = ASSOCIATE_MAP[associate_type] || {}
-          const text = `${associate_name || '-'}(${associate.name || '-'})`
+          const text = `${associate_name || '-'}(${associate.name || '-'}${server_private_ip ? `: ${server_private_ip}` : ''})`
           if (associate_name && associate_id) {
             return [
               <side-page-trigger permission={associate.permission} tab={associate.tab} name={associate.sidePage} id={associate_id} vm={vm}>{text}</side-page-trigger>,
