@@ -22,7 +22,7 @@
               <a-col :span="12">
                 <a-icon type="sync" class="mr-1" @click="refresh" />
                 <!-- <router-link target="_blank" :to="{ path: '/snapshotpolicy' }" style="color: #409EFF;">{{$t('compute.text_429')}}</router-link> -->
-                <dialog-trigger :vm="params.vm" :extParams="{ tenant, domain }" :name="$t('compute.text_430')" value="CreateSnapshotPolicyDialog" resource="snapshotpolicies" @success="successCallback" />
+                <dialog-trigger :vm="params.vm" :extParams="{ tenant, domain, types: ['disk'] }" :name="$t('compute.text_430')" value="CreateSnapshotPolicyDialog" resource="snapshotpolicies" @success="successCallback" />
               </a-col>
             </a-row>
           </a-form-item>
@@ -53,9 +53,9 @@
 
 <script>
 import * as R from 'ramda'
-import { weekOptions, timeOptions } from '../../../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { weekOptions, timeOptions } from '../../../constants'
 
 export default {
   name: 'DiskSetSnapshotDialog',
@@ -136,9 +136,15 @@ export default {
       this.fetchSnaphotpolicy()
     },
     detachPolicy (id) {
-      return this.manager.delete({
-        id,
-        ctx: [['disks', this.params.data[0].id]],
+      return this.params.onManager('batchPerformAction', {
+        id: this.params.data.map(item => item.id),
+        steadyStatus: 'ready',
+        managerArgs: {
+          action: 'unbind-snapshotpolicy',
+          data: {
+            snapshotpolicy_id: id,
+          },
+        },
       })
     },
     detachPolices () {
@@ -154,11 +160,15 @@ export default {
         this.loading = true
         if (this.enable) {
           await this.detachPolices()
-          await this.manager.performAction({
-            id: values.snapshotpolicy,
-            action: '',
-            data: null,
-            ctx: [['disks', this.params.data[0].id]],
+          await this.params.onManager('performAction', {
+            id: this.params.data[0].id,
+            steadyStatus: 'ready',
+            managerArgs: {
+              action: 'bind-snapshotpolicy',
+              data: {
+                snapshotpolicy_id: values.snapshotpolicy,
+              },
+            },
           })
         } else {
           if (this.attchedPolices.length) {
@@ -195,14 +205,14 @@ export default {
       const manager = new this.$Manager('snapshotpolicies')
       const params = {
         scope: this.scope,
-        tenant: this.params.data[0].tenant_id,
+        type: 'disk',
       }
       try {
         const res = await manager.list({ params })
         const data = res.data.data
         if (data && data.length) {
           this.snapshotpolicyOptions = data.filter((item) => {
-            return item.status === 'ready'
+            return item.status === 'available'
           })
         }
       } catch (error) {}
@@ -219,7 +229,9 @@ export default {
         selectItem.time_points.map(item => timeOptions[item]).join('、')
       ) || '-'
       let ret = '-'
-      if (selectItem.retention_days === -1) {
+      if (selectItem.retention_count) {
+        ret = `${this.$t('compute.retention_count_prefix')} ${selectItem.retention_count} ${this.$t('compute.retention_count_suffix')}`
+      } else if (selectItem.retention_days === -1) {
         ret = this.$t('compute.text_437')
       } else if (selectItem.retention_days) {
         ret = this.$t('compute.text_438', [selectItem.retention_days])

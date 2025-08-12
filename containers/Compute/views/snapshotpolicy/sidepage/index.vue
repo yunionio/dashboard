@@ -28,25 +28,20 @@ import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import SnapshotPolicyDetail from './Detail'
+import Detail from './Detail'
 import SnapshotPolicyDisk from './Disk'
-
+import SnapshotPolicyServer from './Server'
 export default {
   name: 'SnapshotPolicySidePage',
   components: {
-    SnapshotPolicyDetail,
+    Detail,
     SnapshotPolicyDisk,
+    SnapshotPolicyServer,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
-      detailTabs: [
-        { label: this.$t('compute.text_238'), key: 'snapshot-policy-detail' },
-        { label: this.$t('compute.text_1084'), key: 'snapshot-policy-disk' },
-        { label: this.$t('table.title.task'), key: 'task-drawer' },
-        { label: this.$t('compute.text_240'), key: 'event-drawer' },
-      ],
     }
   },
   computed: {
@@ -57,6 +52,22 @@ export default {
         default:
           return ''
       }
+    },
+    detailTabs () {
+      const list = [
+        { label: this.$t('compute.text_238'), key: 'detail' },
+        { label: this.$t('compute.text_1084'), key: 'snapshot-policy-disk' },
+        { label: this.$t('compute.bind_server'), key: 'snapshot-policy-server' },
+        { label: this.$t('table.title.task'), key: 'task-drawer' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
+      ]
+      if (this.detailData.type === 'server') {
+        return list.filter(item => item.key !== 'snapshot-policy-disk')
+      }
+      if (this.detailData.type === 'disk') {
+        return list.filter(item => item.key !== 'snapshot-policy-server')
+      }
+      return list
     },
   },
 }

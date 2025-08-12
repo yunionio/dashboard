@@ -27,6 +27,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    cloudEnv: String,
+    cloudEnvOptions: {
+      type: Array,
+    },
   },
   data () {
     return {
@@ -42,6 +46,14 @@ export default {
           name: getNameFilter(),
           description: getDescriptionFilter(),
           status: getStatusFilter('snapshotpolicy'),
+          type: {
+            label: this.$t('common.resource_type'),
+            dropdown: true,
+            items: [
+              { label: this.$t('dictionary.disk'), key: 'disk' },
+              { label: this.$t('dictionary.server'), key: 'server' },
+            ],
+          },
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
         },
@@ -52,7 +64,9 @@ export default {
         items: [
           { label: 'ID', key: 'id' },
           { label: this.$t('table.title.name'), key: 'name' },
+          { label: this.$t('common.resource_type'), key: 'type' },
           { label: this.$t('table.title.bind_disk_count'), key: 'binding_disk_count' },
+          { label: this.$t('compute.bind_resource_count'), key: 'binding_resource_count' },
           { label: this.$t('table.title.strategy'), key: 'repeat_weekdays' },
           { label: this.$t('common.status'), key: 'status' },
           { label: this.$t('res.project'), key: 'tenant' },
@@ -94,9 +108,19 @@ export default {
       ],
     }
   },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
+  },
   created () {
     this.initSidePageTab('snapshot-policy-detail')
     this.list.fetchData()
+    this.$bus.$on('refresh-snapshotpolicy-list', () => {
+      this.list.fetchData()
+    })
   },
   methods: {
     getParam () {

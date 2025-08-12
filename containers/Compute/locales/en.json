@@ -1911,5 +1911,11 @@
   "compute.image_source_global": "All",
   "compute.postpaid_disk_change_billing_type_tip": "When the virtual machine is postpaid, the postpaid disk can only be converted to prepaid together with the virtual machine",
   "compute.order_by_used_percent": "Sort by: used rate = used / total",
-  "compute.order_by_commit_percent": "Sort by: commit rate = committed / total"
+  "compute.order_by_commit_percent": "Sort by: commit rate = committed / total",
+  "compute.retention_count": "Retention count",
+  "compute.bind_resource_count": "Bind resource count",
+  "compute.bind_resource": "Bind resource",
+  "compute.bind_server": "Bind server",
+  "compute.retention_count_prefix": "Retain",
+  "compute.retention_count_suffix": "count"
 }

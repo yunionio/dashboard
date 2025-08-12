@@ -1913,5 +1913,11 @@
   "compute.image_source_global": "全部",
   "compute.postpaid_disk_change_billing_type_tip": "虚拟机为按量付费时，按量付费的磁盘只能随虚拟机一起转为包年包月",
   "compute.order_by_used_percent": "排序依据：使用率 = 已使用 / 总量",
-  "compute.order_by_commit_percent": "排序依据：分配率 = 已分配 / 总量"
+  "compute.order_by_commit_percent": "排序依据：分配率 = 已分配 / 总量",
+  "compute.retention_count": "保留份数",
+  "compute.bind_resource_count": "关联资源数量",
+  "compute.bind_resource": "关联资源",
+  "compute.bind_server": "关联虚拟机",
+  "compute.retention_count_prefix": "保留",
+  "compute.retention_count_suffix": "份"
 }
