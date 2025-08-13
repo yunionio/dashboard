@@ -186,7 +186,7 @@ export default {
           if (R.is(Object, initialProject) && initialProject.key) {
             defaultProject = { key: initialProject.key, label: initialProject.label }
           } else if (R.is(String, initialProject) && initialProject) {
-            defaultProject = { key: initialProject.key, label: initialProject.label }
+            defaultProject = { key: initialProject }
           }
           const projectChange = () => {
             this.projectChange(defaultProject || {})
