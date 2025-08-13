@@ -119,6 +119,7 @@ export default {
           time_points: '',
           retention_days: 7,
           retention_count: 7,
+          type: types[0],
           alwaysReserved: 'day',
         },
       },
