@@ -5433,6 +5433,7 @@
   "license.feature.bastion_host": "Fortress Machine",
   "license.feature.suggestion": "Optimization Suggestions",
   "license.feature.business_feature": "Business Feature",
+  "license.feature.bill_private": "Private cloud",
   "license.group.onecloud": "Built-in @:dictionary.private_env Platform",
   "license.group.public": "@:scope.text_75",
   "license.group.private": "@:scope.text_76",

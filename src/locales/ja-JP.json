@@ -5451,6 +5451,7 @@
   "license.feature.bastion_host": "バリアマシン統合",
   "license.feature.suggestion": "最適化案",
   "license.feature.business_feature": "企業特性",
+  "license.feature.bill_private": "プライベートクラウド課金",
   "license.group.onecloud": "組み込みの@:dictionary.private_envプラットフォーム",
   "license.group.public": "@:scope.text_75",
   "license.group.private": "@:scope.text_76",

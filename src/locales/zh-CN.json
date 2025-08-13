@@ -5461,6 +5461,7 @@
   "license.feature.bastion_host": "堡垒机集成",
   "license.feature.suggestion": "优化建议",
   "license.feature.business_feature": "企业特性",
+  "license.feature.bill_private": "私有云计费",
   "license.group.onecloud": "内置@:dictionary.private_env平台",
   "license.group.public": "@:scope.text_75",
   "license.group.private": "@:scope.text_76",
