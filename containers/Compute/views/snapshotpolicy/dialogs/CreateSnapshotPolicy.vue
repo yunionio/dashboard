@@ -50,9 +50,9 @@
           </a-select>
         </a-form-item>
         <a-form-item :label="$t('compute.text_433')" v-bind="formItemLayout">
-          <a-radio-group v-decorator="decorators.alwaysReserved" :disabled="params.type === 'update'">
+          <a-radio-group v-decorator="decorators.alwaysReserved">
             <div class="mb-2">
-              <a-radio value="day">
+              <a-radio value="day" :disabled="params.type === 'update' && form.fd.alwaysReserved !== 'day'">
                 <span class="mr-2">{{$t('compute.text_1092')}}</span>
                 <a-input-number
                   size="small"
@@ -60,24 +60,28 @@
                   :step="1"
                   :max="49"
                   :min="1"
+                  :disabled="params.type === 'update' && form.fd.alwaysReserved !== 'day'"
                   step-strictly />
                 <span style="color: #606266;" class="ml-2">{{$t('compute.text_1093')}}</span>
               </a-radio>
             </div>
             <div class="mb-2">
-              <a-radio value="count">
+              <a-radio value="count" :disabled="params.type === 'update' && form.fd.alwaysReserved !== 'count'">
                 <span class="mr-2">{{$t('compute.retention_count_prefix')}}</span>
                 <a-input-number
                   size="small"
                   v-decorator="decorators.retention_count"
                   :step="1"
                   :min="1"
+                  :disabled="params.type === 'update' && form.fd.alwaysReserved !== 'count'"
                   step-strictly />
                 <span style="color: #606266;" class="ml-2">{{$t('compute.retention_count_suffix')}}</span>
               </a-radio>
             </div>
             <div>
-              <a-radio value="always">{{$t('compute.text_1094')}}</a-radio>
+              <a-radio value="always" :disabled="params.type === 'update' && form.fd.alwaysReserved !== 'always'">
+                {{$t('compute.text_1094')}}
+              </a-radio>
             </div>
           </a-radio-group>
         </a-form-item>
@@ -276,7 +280,7 @@ export default {
       return this.params.onManager('update', {
         id: this.params.data[0].id,
         managerArgs: {
-          data: params,
+          data: { ...params, name: this.form.fd.generate_name },
         },
       })
     },
