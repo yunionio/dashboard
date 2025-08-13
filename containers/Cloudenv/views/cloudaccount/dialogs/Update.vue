@@ -18,13 +18,7 @@
         <div v-else>
           <h2 class="mt-3 mb-3" v-if="isHcs">{{ $t('cloudenv.operation_info_input') }}</h2>
           <a-form-item :label="field.label.k">
-            <a-input v-decorator="decorators.keyId" :disabled="isVMware" :placeholder="field.placeholder.k" />
-            <div slot="extra" class="d-flex">
-              <span v-if="isVMware">{{$t('cloudenv.text_302')}}</span>
-              <div class="flex-grow-1">
-                <help-link :href="doc">{{$t('cloudenv.text_303', [ field.text , field.label.k , field.label.s ])}}</help-link>
-              </div>
-            </div>
+            <a-input v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
           </a-form-item>
           <a-form-item :label="$t('cloudenv.text_300')" v-if="isAzure">
             <a-input v-decorator="decorators.directory_id" :placeholder="$t('cloudenv.text_243')" />
@@ -35,14 +29,14 @@
           <a-form-item :label="field.label.s">
             <a-input-password v-decorator="decorators.keySecret" :placeholder="field.placeholder.s" type="password" />
           </a-form-item>
-          <template v-if="isVMware">
+          <!-- <template v-if="isVMware">
             <a-form-item :label="$t('cloudenv.text_264')" :extra="this.$t('common_572')">
               <a-input v-decorator="decorators.host" />
             </a-form-item>
             <a-form-item :label="$t('cloudenv.text_266')">
               <a-input v-decorator="decorators.port" />
             </a-form-item>
-          </template>
+          </template> -->
          </div>
         <!-- <a-form-item :label="$t('cloudenv.text_242')" v-if="isAzure">
           <a-textarea v-decorator="decorators.balanceKey" rows="4" />
@@ -114,7 +108,7 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const provider = this.params.data[0].brand.toLowerCase()
-    const isVMware = provider === HYPERVISORS_MAP.esxi.provider.toLowerCase()
+    // const isVMware = provider === HYPERVISORS_MAP.esxi.provider.toLowerCase()
     const { options = {} } = this.params.data[0]
     const initMonHost = options.mon_host || ''
     const initName = options.name || ''
@@ -145,7 +139,7 @@ export default {
         keyId: [
           keySecretFields[provider].k,
           {
-            initialValue: isVMware ? this.params.data[0].account : undefined,
+            initialValue: undefined,
             rules: [
               { required: true, message: field.placeholder?.k || this.$t('cloudenv.text_149') },
             ],
