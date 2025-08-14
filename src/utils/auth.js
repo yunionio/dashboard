@@ -9,6 +9,7 @@ import * as Features from '@/constants/feature'
 import setting from '@/config/setting'
 import i18n from '@/locales'
 import { aesDecryptWithCustomKey } from '@/utils/crypto'
+import { HYPERVISORS } from '@/constants/index'
 
 const ONECLOUD_AUTH_KEY = 'yunionauth'
 const HISTORY_USERS_STORAGE_KEY = '__oc_history_users__'
@@ -390,16 +391,17 @@ export const hasMeterService = function () {
 }
 
 export const billSupportBrands = ['aliyun', 'aws', 'azure', 'google', 'huawei', 'jdcloud', 'qcloud', 'volcengine', 'ksyun']
+export const billPrivateSupportBrands = ['onestack', ...HYPERVISORS.filter(item => item.env === 'private').map(item => item.key)]
 
 export const billItems = billSupportBrands.map(key => `bill_${key}`)
 
 export const fillBillSupportFeatures = (data = [], fillOriginBrand = false) => {
   const list = [...data]
-  const billTargetItems = list.filter(key => billItems.includes(key) || key === 'suggestion')
-  // 旧版本只签发bill，新版本签发bill与billItem + suggestion
+  const billTargetItems = list.filter(key => billItems.includes(key) || key === 'suggestion' || key === 'bill_private')
+  // 旧版本只签发bill，新版本签发bill与billItem + suggestion + bill_private
   // 旧版本 有费用模块
   if (!billTargetItems.length && list.includes('bill')) {
-    return [...list, ...billItems, 'suggestion']
+    return [...list, ...billItems, 'suggestion', 'bill_private']
   }
   // 新版本 有费用模块
   if (billTargetItems.length) {
@@ -413,6 +415,11 @@ export const fillBillSupportFeatures = (data = [], fillOriginBrand = false) => {
         const brand = key.split('_')[1]
         if (list.includes(brand) && !list.includes(key)) {
           list.push(key)
+        }
+      })
+      billPrivateSupportBrands.map(key => {
+        if (list.includes(key) && !list.includes('bill_private')) {
+          list.push('bill_private')
         }
       })
     }
@@ -442,13 +449,20 @@ export const getProductName = (defaultName) => {
   return defaultName || 'Cloudpods'
 }
 
+// 支持 bastionhost suggestion
 export const isLicense2 = () => {
   const createTime = store.getters && store.getters['app/license']?.compute?.create_time
   if (createTime) {
-    if (createTime * 1000 > new Date('2025-02-21 00:00:00').getTime()) {
-    } else {
-    }
     return createTime * 1000 > new Date('2025-02-21 00:00:00').getTime()
+  }
+  return false
+}
+
+// 支持 bastionhost suggestion bill_private
+export const isLicense3 = () => {
+  const createTime = store.getters && store.getters['app/license']?.compute?.create_time
+  if (createTime) {
+    return createTime * 1000 > new Date('2025-08-15 00:00:00').getTime()
   }
   return false
 }
