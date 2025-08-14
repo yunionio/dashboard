@@ -249,6 +249,10 @@ const LicenseItems = [
     meta: meta('resource_managent', 'monitor', false),
   },
   {
+    key: 'bill_private',
+    meta: meta('resource_managent', 'bill', false),
+  },
+  {
     key: 'bill_aliyun',
     origin_key: 'aliyun',
     meta: meta('resource_managent', 'bill', true),
