@@ -51,10 +51,12 @@ const getBuildInfo = () => {
   const nowDate = new Date()
   const buildDate = `${nowDate.getFullYear() + '-' + (nowDate.getMonth() + 1) + '-' + nowDate.getDate() + ' ' + nowDate.getHours() + ':' + nowDate.getMinutes()}`
   const containers = fs.readdirSync('./containers').filter(item => !/^\..*/.test(item)) // 忽略隐藏文件
+  const gitBranch = child_process.execSync('git branch --show-current').toString()
   const info = {
     scope: getCommitMSg('./'),
     src: getCommitMSg('./src'),
     buildDate,
+    branch: gitBranch,
   }
   containers.forEach(dir => {
     info[dir] = getCommitMSg(path.join('./containers', dir))
