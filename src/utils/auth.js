@@ -410,13 +410,16 @@ export const fillBillSupportFeatures = (data = [], fillOriginBrand = false) => {
     }
     // 填充平台
     if (fillOriginBrand) {
-      // 选择了平台，漏选了该平台费用，有费用模块时，该平台费用也生效
-      billItems.map(key => {
-        const brand = key.split('_')[1]
-        if (list.includes(brand) && !list.includes(key)) {
-          list.push(key)
-        }
-      })
+      // 最新版license不需要补充平台
+      if (!isLicense3()) {
+        // 选择了平台，漏选了该平台费用，有费用模块时，该平台费用也生效
+        billItems.map(key => {
+          const brand = key.split('_')[1]
+          if (list.includes(brand) && !list.includes(key)) {
+            list.push(key)
+          }
+        })
+      }
       billPrivateSupportBrands.map(key => {
         if (list.includes(key) && !list.includes('bill_private')) {
           list.push('bill_private')
