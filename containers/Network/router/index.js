@@ -422,7 +422,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.dns_zone')) {
                 return true
               }
-              return store.getters.isProjectMode || !hasSetupKey(['aws', 'qcloud', 'aliyun'])
+              return store.getters.isProjectMode || !hasSetupKey(['aws', 'qcloud', 'aliyun', 'cloudflare'])
             },
           },
           component: Layout,
@@ -479,7 +479,7 @@ export default {
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.waf')) return true
               if (!(store.getters.isDomainMode || store.getters.isAdminMode)) return true
-              return !hasSetupKey(['aws', 'azure', 'aliyun', 'qcloud'])
+              return !hasSetupKey(['aws', 'azure', 'aliyun', 'qcloud', 'cloudflare'])
             },
           },
           component: Layout,
@@ -750,7 +750,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.cdn')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'qcloud'])
+              return !hasSetupKey(['aliyun', 'qcloud', 'cloudflare'])
             },
           },
           component: Layout,
@@ -777,7 +777,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.ssl_certificate')) {
                 return true
               }
-              return false
+              return !hasSetupKey(['cloudflare'])
             },
           },
           component: Layout,
