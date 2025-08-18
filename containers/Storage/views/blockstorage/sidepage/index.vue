@@ -47,6 +47,7 @@ import ColumnsMixin from '../mixins/columns'
 import Detail from './Detail'
 import DiskList from './Disk'
 import Monitor from './Monitor'
+import SnapshotList from './Snapshot'
 
 export default {
   name: 'BlockStorageSidePage',
@@ -58,6 +59,7 @@ export default {
     HostList,
     Monitor,
     CachedImages,
+    SnapshotList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -66,6 +68,7 @@ export default {
         { label: this.$t('storage.text_81'), key: 'detail' },
         { label: this.$t('storage.text_50'), key: 'host-list' },
         { label: this.$t('storage.text_82'), key: 'disk-list' },
+        { label: this.$t('compute.text_101'), key: 'snapshot-list' },
         { label: this.$t('storage.text_83'), key: 'disk-recovery-list' },
         { label: this.$t('storage.text_84'), key: 'cached-images' },
         { label: this.$t('compute.text_608'), key: 'monitor' },

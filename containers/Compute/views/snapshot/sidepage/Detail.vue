@@ -10,8 +10,6 @@
 </template>
 
 <script>
-import { CREATE_METHODS } from '../constants'
-import { getStorageTypeTableColumn } from '../utils/columns'
 import {
   getUserTagColumn,
   getExtTagColumn,
@@ -19,6 +17,10 @@ import {
 import { sizestr } from '@/utils/utils'
 import { getBrandTableColumn, getOsArch } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
+import { findPlatform } from '@/utils/common/hypervisor'
+import { SERVER_TYPE } from '../../../constants'
+import { CREATE_METHODS } from '../constants'
+import { getStorageTypeTableColumn } from '../utils/columns'
 
 export default {
   name: 'SnapshotDetail',
@@ -104,6 +106,25 @@ export default {
           },
         },
         getStorageTypeTableColumn(),
+        {
+          field: 'storage',
+          title: this.$t('compute.text_99'),
+          showOverflow: 'ellipsis',
+          slots: {
+            default: ({ row }, h) => {
+              if (findPlatform(row.provider, 'provider') === SERVER_TYPE.public) {
+                return '-'
+              }
+              const text = row.storage || '-'
+              return [
+                <list-body-cell-wrap copy hideField={true} field='storage' row={row} message={text}>
+                  <side-page-trigger permission='storages_get' name='BlockStorageSidePage' id={row.storage_id} vm={this}>{row.storage}</side-page-trigger>
+                </list-body-cell-wrap>,
+              ]
+            },
+          },
+          hidden: () => this.$store.getters.isProjectMode,
+        },
       ],
       extraInfo: [
         {
