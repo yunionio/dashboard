@@ -107,7 +107,6 @@ export default {
       this.type = type
     },
     filterOption (input, option) {
-      console.log('option', option)
       let text = _.get(option, 'componentOptions.propsData.value') || _.get(option, 'context.value')
       if (!text) {
         const propsData = _.get(option, 'componentOptions.children[0].componentOptions.propsData')
