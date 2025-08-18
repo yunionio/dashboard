@@ -1011,6 +1011,9 @@ class CreateList {
         ...(R.is(Function, item.distinctField.getParams)
           ? item.distinctField.getParams()
           : item.distinctField.getParams),
+        ...(R.is(Function, item.getParams)
+          ? item.getParams()
+          : item.getParams),
         ...this.getOptionParams(),
       }
       params = {
