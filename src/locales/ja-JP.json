@@ -6198,5 +6198,9 @@
   "common.all_filtered_data": "現在のフィルタリング条件のすべてのデータ",
   "common.current_page_data": "現在のページのデータ",
   "common.selected_data": "選択済みデータ",
-  "common.total_count": "合計{0}件"
+  "common.total_count": "合計{0}件",
+  "common.pem_certificate.placeholder": "証明書を以下のように貼り付けてください：\n-----BEGIN CERTIFICATE-----\nQmFzZTY0IGVuY29kZWQgY2VydGlmaWNhdGUgZGF0YSBleGlzdHMgaGVyZQ==\n-----END CERTIFICATE-----",
+  "common.pem_private_key.placeholder": "秘密鍵を以下のように貼り付けてください：\n-----BEGIN PRIVATE KEY-----\nQmFzZTY0IGVuY29kZWQgc2VjcmV0IGtleSBleGlzdHMgaGVyZQ==\n-----END PRIVATE KEY-----",
+  "common.switch_to_input": "入力に切り替え",
+  "common.switch_to_select": "選択に切り替え"
 }

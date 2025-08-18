@@ -6212,5 +6212,7 @@
   "common.selected_data": "已选中数据",
   "common.total_count": "共计{0}条",
   "common.pem_certificate.placeholder": "请粘贴证书，如下面几行所示：\n-----BEGIN CERTIFICATE-----\nQmFzZTY0IGVuY29kZWQgY2VydGlmaWNhdGUgZGF0YSBleGlzdHMgaGVyZQ==\n-----END CERTIFICATE-----",
-  "common.pem_private_key.placeholder": "请粘贴私钥，如下面几行所示：\n-----BEGIN PRIVATE KEY-----\nQmFzZTY0IGVuY29kZWQgc2VjcmV0IGtleSBleGlzdHMgaGVyZQ==\n-----END PRIVATE KEY-----"
+  "common.pem_private_key.placeholder": "请粘贴私钥，如下面几行所示：\n-----BEGIN PRIVATE KEY-----\nQmFzZTY0IGVuY29kZWQgc2VjcmV0IGtleSBleGlzdHMgaGVyZQ==\n-----END PRIVATE KEY-----",
+  "common.switch_to_input": "切换输入",
+  "common.switch_to_select": "切换选择"
 }
