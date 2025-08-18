@@ -27,6 +27,7 @@ import {
   getOsArchFilter,
   getRegionFilter,
   getDescriptionFilter,
+  getDistinctFieldsFilter,
 } from '@/utils/common/tableFilter'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -85,6 +86,23 @@ export default {
           },
           region: getRegionFilter(),
           os_arch: getOsArchFilter(),
+          storage: getDistinctFieldsFilter({
+            label: this.$t('compute.text_99'),
+            filter: true,
+            multiple: false,
+            type: 'extra_field',
+            field: ['id', 'name'],
+            mapper: (list, data) => {
+              const { extra_fields = [] } = data
+              const ret = extra_fields.map(item => ({ label: item.name, key: item.id })).filter(item => item.label && item.key)
+              return ret
+            },
+            formatter: (val) => {
+              const realVal = val.map(item => `'${item}'`)
+              return `storage_id.in(${realVal})`
+            },
+            getParams: { extra_resource: 'storage', module: 'snapshots' },
+          }),
         },
         responseData: this.responseData,
         hiddenColumns: ['storage_type', 'created_at', 'os_arch'],
