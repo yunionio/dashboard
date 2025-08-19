@@ -190,7 +190,7 @@ export default {
       return { Authorization: `Bearer ${this.$store.getters.userInfo.session}` }
     },
     enableEncryption () {
-      return this.$appConfig.isPrivate && this.$store.getters.isSysCE
+      return this.$appConfig.isPrivate && !this.$store.getters.isSysCE
     },
   },
   destroyed () {
