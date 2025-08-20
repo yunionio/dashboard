@@ -1578,5 +1578,8 @@
   "network.health_check.res": "UDP Response",
   "network.health_check.req": "UDP Request",
   "network.health_check.http_code_extra": "Please enter the health status code, multiple status codes are separated by commas, such as: 200,201,202",
-  "network.enable_health_check": "Enable Health Check"
+  "network.enable_health_check": "Enable Health Check",
+  "network.dnszone.registrar": "Registrar",
+  "network.dnszone.add_name_servers": "Add Name Servers",
+  "network.dnszone.del_name_servers": "Delete Name Servers"
 }

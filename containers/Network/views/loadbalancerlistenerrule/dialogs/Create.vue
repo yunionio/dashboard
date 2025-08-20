@@ -351,6 +351,7 @@ export default {
       return {
         scope: this.$store.getters.scope,
         loadbalancer: this.params.lbListenerData.loadbalancer_id,
+        filter: 'status.in(enabled,disabled)',
         $t: 1,
       }
     },
@@ -358,6 +359,7 @@ export default {
       return {
         scope: this.$store.getters.scope,
         loadbalancer: this.params.lbListenerData.loadbalancer_id,
+        filter: 'status.in(enabled,disabled)',
         $t: 2,
       }
     },
@@ -388,6 +390,7 @@ export default {
       return {
         scope: this.$store.getters.scope,
         loadbalancer: this.params.lbListenerData.loadbalancer_id,
+        filter: 'status.in(enabled,disabled)',
         $t: `n${index}`,
       }
     },
