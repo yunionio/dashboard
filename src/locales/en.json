@@ -1279,6 +1279,13 @@
       "failed": "Failed",
       "expired": "Expired",
       "create_failed": "Create Failed"
+    },
+    "aiGateway": {
+      "available": "Available",
+      "unknown": "Unknown",
+      "change_config": "Change Config",
+      "delete_failed": "Delete Failed",
+      "create_failed": "Create Failed"
     }
   },
   "skuCategoryOptions": {
@@ -1651,6 +1658,9 @@
     "all.loadbalancer": "Load balancer quantity",
     "all.cache": "Number of Redis instances",
     "all.rds": "Number of RDS instances",
+    "all.rds.cpu": "Total CPU of RDS",
+    "all.rds.memory": "Total memory of RDS",
+    "all.rds.disk_size_gb": "Total disk of RDS",
     "all.servers.system": "Number of servers used by the system",
     "all.disks.system": "System storage usage",
     "all.servers.system.cpu": "System server CPU usage",
@@ -1662,6 +1672,9 @@
     "disks.unready.count": "Number of abnormal disks in the current project",
     "loadbalancer": "The number of load balancers under the current project",
     "rds": "Number of RDS instances in the current project",
+    "rds.cpu": "Total CPU of RDS in the current project",
+    "rds.memory": "Total memory of RDS in the current project",
+    "rds.disk_size_gb": "Total disk of RDS in the current project",
     "domain.baremetals": "The number of baremetal servers in the current domain",
     "domain.baremetals.cpu": "Current domain baremetal server CPU quantity",
     "domain.baremetals.memory": "Current domain baremetal server memory capacity",
@@ -1709,6 +1722,9 @@
     "domain.ports_exit": "Current number of IPs in the current domain",
     "domain.ports_exit.eip": "Current number of EIPs in the current domain",
     "domain.rds": "The number of RDS instances in the current domain",
+    "domain.rds.cpu": "Total CPU of RDS in the current domain",
+    "domain.rds.memory": "Total memory of RDS in the current domain",
+    "domain.rds.disk_size_gb": "Total disk of RDS in the current domain",
     "domain.ready_servers": "The number of servers in the current domain shutdown state",
     "domain.ready_servers.cpu": "The number of CPUs of the server in the current domain shutdown state",
     "domain.ready_servers.disk": "The disk capacity of the server in the current domain shutdown state",
