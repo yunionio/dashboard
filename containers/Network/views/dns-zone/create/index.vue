@@ -98,7 +98,6 @@ import { mapGetters } from 'vuex'
 import { HYPERVISORS_MAP } from '@/constants'
 import DomainProject from '@/sections/DomainProject'
 import validateForm, { validate } from '@/utils/validate'
-import { isValidDomain } from '@/utils/utils'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import Tag from '@/sections/Tag'
 import { zoneTypes } from '../constants'
@@ -350,9 +349,6 @@ export default {
       if (this.form.fd.zoneType === 'PublicZone') {
         if (validate(value, 'domain') === false || validate(value, 'domain').result === false) {
           callback(new Error(this.$t('network.text_178')))
-        }
-        if (!isValidDomain(value)) {
-          callback(new Error(this.$t('network.subdomain_not_supported')))
         }
       }
       callback()

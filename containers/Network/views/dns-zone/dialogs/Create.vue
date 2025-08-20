@@ -32,12 +32,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { zoneTypes } from '../constants'
 import DomainSelect from '@/sections/DomainSelect'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { validate } from '@/utils/validate'
-import { isValidDomain } from '@/utils/utils'
+import { zoneTypes } from '../constants'
 
 export default {
   name: 'DnsZoneCreateDialog',
@@ -138,9 +137,6 @@ export default {
       if (this.form.fd.zoneType === 'PublicZone') {
         if (validate(value, 'domain') === false || validate(value, 'domain').result === false) {
           callback(new Error(this.$t('network.text_178')))
-        }
-        if (!isValidDomain(value)) {
-          callback(new Error(this.$t('network.subdomain_not_supported')))
         }
       }
       callback()
