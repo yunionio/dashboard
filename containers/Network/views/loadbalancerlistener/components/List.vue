@@ -8,12 +8,12 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'LoadbalancerlistenerList',
@@ -50,7 +50,7 @@ export default {
   computed: {
     groupActions () {
       const provider = R.path(['provider'], this.data)
-      if (provider && (provider.toLowerCase() === 'azure' || provider.toLowerCase() === 'google')) return []
+      if (provider && (provider.toLowerCase() === 'azure' || provider.toLowerCase() === 'google' || provider.toLowerCase() === 'cloudflare')) return []
       if (this.$route.name === 'LbaclList') { return [] }
       if (this.$route.name === 'LbcertList') {
         return [
