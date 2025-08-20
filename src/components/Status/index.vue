@@ -7,6 +7,7 @@
       </div>
       <div class="status-text flex-fill text-truncate">
         {{ statusText }}
+        <slot name="icon" />
         <span v-if="showProcess && !changedStatus">({{curProcess}}%)</span>
       </div>
     </div>
