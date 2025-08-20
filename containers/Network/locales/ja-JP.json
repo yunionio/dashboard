@@ -1534,5 +1534,8 @@
   "network.ssl_certificate.sans.placeholder": "ホスト名を入力してください。1行に1つずつ、ホスト名と通配符をサポートします。例：example.com, *.example.com",
   "network.ssl_certificate.sans.invalid": "有効なホスト名または通配符を入力してください",
   "network.ssl_certificate.start_date": "発行時間",
-  "network.ssl_certificate.end_date": "有効期限"
+  "network.ssl_certificate.end_date": "有効期限",
+  "network.dnszone.registrar": "登録機関",
+  "network.dnszone.add_name_servers": "ネームサーバーの追加",
+  "network.dnszone.del_name_servers": "ネームサーバーの削除"
 }
