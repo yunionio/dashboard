@@ -1294,6 +1294,13 @@
       "failed": "失敗",
       "expired": "期限切れ",
       "create_failed": "作成に失敗しました"
+    },
+    "aiGateway": {
+      "available": "利用可能",
+      "unknown": "不明",
+      "change_config": "調整中",
+      "delete_failed": "削除に失敗しました",
+      "create_failed": "作成に失敗しました"
     }
   },
   "skuCategoryOptions": {
@@ -1668,6 +1675,9 @@
     "all.loadbalancer": "ロードバランサーの数",
     "all.cache": "Redis インスタンスの数",
     "all.rds": "RDSの数",
+    "all.rds.cpu": "RDSのCPUの合計",
+    "all.rds.memory": "RDSのメモリの合計",
+    "all.rds.disk_size_gb": "RDSのディスクの合計",
     "all.servers.system": "システムで使用されている仮想マシンの数",
     "all.disks.system": "システムストレージ使用量",
     "all.servers.system.cpu": "システム仮想マシンの CPU 使用率",
@@ -1679,6 +1689,9 @@
     "disks.unready.count": "現在のプロジェクトで異常状態にあるディスクの数",
     "loadbalancer": "現在のプロジェクトのロード バランサーの数",
     "rds": "現在のプロジェクト内の RDSの数",
+    "rds.cpu": "現在のプロジェクト内の RDS の CPU の合計",
+    "rds.memory": "現在のプロジェクト内の RDS のメモリの合計",
+    "rds.disk_size_gb": "現在のプロジェクト内の RDS のディスクの合計",
     "domain.baremetals": "現行ドメイン内の BMS の数",
     "domain.baremetals.cpu": "現行ドメイン内の BMS の数",
     "domain.baremetals.memory": "現行ドメイン内の BMS のメモリー容量",
@@ -1726,6 +1739,9 @@
     "domain.ports_exit": "現在のエクストラネット領域内の IP アドレスの総数",
     "domain.ports_exit.eip": "現在のドメインの EIP タイプの EIP IP の総数",
     "domain.rds": "現在のドメイン内の RDSの数",
+    "domain.rds.cpu": "現在のドメイン内の RDS の CPU の合計",
+    "domain.rds.memory": "現在のドメイン内の RDS のメモリの合計",
+    "domain.rds.disk_size_gb": "現在のドメイン内の RDS のディスクの合計",
     "domain.ready_servers": "現在のドメインのシャットダウン状態にある仮想マシンの数",
     "domain.ready_servers.cpu": "現在のドメインのシャットダウン状態にある仮想マシンの CPU の数",
     "domain.ready_servers.disk": "現在のドメインのシャットダウン状態の仮想マシンのディスク容量",
