@@ -621,4 +621,9 @@ export default {
     success: ['available'],
     danger: ['create_failed'],
   },
+  aiGateway: {
+    success: ['available'],
+    info: ['unknown'],
+    danger: ['delete_failed', 'create_failed'],
+  },
 }

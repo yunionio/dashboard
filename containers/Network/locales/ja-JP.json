@@ -1580,5 +1580,8 @@
   "network.health_check.res": "UDPレスポンス",
   "network.health_check.req": "UDPリクエスト",
   "network.health_check.http_code_extra": "健康状態コードを入力してください。複数の状態コードは、英語のカンマで区切ってください。例：200,201,202",
-  "network.enable_health_check": "健康检查を有効にする"
+  "network.enable_health_check": "健康检查を有効にする",
+  "network.dnszone.registrar": "登録機関",
+  "network.dnszone.add_name_servers": "ネームサーバーの追加",
+  "network.dnszone.del_name_servers": "ネームサーバーの削除"
 }
