@@ -1587,5 +1587,8 @@
   "network.health_check.res": "UDP响应串",
   "network.health_check.req": "UDP请求串",
   "network.health_check.http_code_extra": "请输入健康状态码，多个状态码使用英文逗号隔开，如：200,201,202",
-  "network.enable_health_check": "启用健康检查"
+  "network.enable_health_check": "启用健康检查",
+  "network.dnszone.registrar": "注册机构",
+  "network.dnszone.add_name_servers": "添加名称服务器",
+  "network.dnszone.del_name_servers": "删除名称服务器"
 }

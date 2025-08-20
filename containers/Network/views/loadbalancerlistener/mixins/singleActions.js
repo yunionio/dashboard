@@ -31,7 +31,7 @@ export default {
                   tooltip: i18n.t('network.text_367'),
                 }
               }
-              if (row.provider.toLowerCase() === 'azure' || row.provider.toLowerCase() === 'google') {
+              if (row.provider.toLowerCase() === 'azure' || row.provider.toLowerCase() === 'google' || row.provider.toLowerCase() === 'cloudflare') {
                 return {
                   validate: false,
                   tooltip: i18n.t('network.text_309', [PROVIDER_MAP[row.provider].label]),
@@ -67,7 +67,7 @@ export default {
                 tooltip = i18n.t('network.text_473')
               }
             }
-            if (obj.provider && (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google')) {
+            if (obj.provider && (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google' || obj.provider.toLowerCase() === 'cloudflare')) {
               return {
                 validate: false,
                 tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
@@ -93,7 +93,7 @@ export default {
             })
           },
           meta: obj => {
-            if (obj.provider && (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google')) {
+            if (obj.provider && (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google' || obj.provider.toLowerCase() === 'cloudflare')) {
               return {
                 validate: false,
                 tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
@@ -108,9 +108,21 @@ export default {
             ...getEnabledSwitchActions(this, row, ['lb_loadbalancerlisteners_enable', 'lb_loadbalancerlisteners_disable'], {
               metas: [
                 ({ status }) => {
+                  if (row.provider.toLowerCase() === 'cloudflare') {
+                    return {
+                      validate: false,
+                      tooltip: i18n.t('network.text_309', [PROVIDER_MAP[row.provider].label]),
+                    }
+                  }
                   return this.getActionMeta(status !== 'enabled', row, 'enable')
                 },
                 ({ status }) => {
+                  if (row.provider.toLowerCase() === 'cloudflare') {
+                    return {
+                      validate: false,
+                      tooltip: i18n.t('network.text_309', [PROVIDER_MAP[row.provider].label]),
+                    }
+                  }
                   return this.getActionMeta(status !== 'disabled', row, 'disable')
                 },
               ],
@@ -153,7 +165,13 @@ export default {
                   lbDetail: _.get(this.params, 'lbDetail') || this.data,
                 })
               },
-              meta: () => {
+              meta: (obj) => {
+                if (obj.provider.toLowerCase() === 'cloudflare') {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
+                  }
+                }
                 return this.getActionMeta(true, row, 'aclUpdate')
               },
             },
@@ -174,6 +192,12 @@ export default {
                   return {
                     validate: false,
                     tooltip: i18n.t('network.text_475'),
+                  }
+                }
+                if (row.provider.toLowerCase() === 'cloudflare') {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('network.text_309', [PROVIDER_MAP[row.provider].label]),
                   }
                 }
                 return this.getActionMeta(row.health_check === 'off', row, 'enableHealthCheck')
@@ -198,12 +222,18 @@ export default {
                     tooltip: i18n.t('network.text_475'),
                   }
                 }
+                if (row.provider.toLowerCase() === 'cloudflare') {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('network.text_309', [PROVIDER_MAP[row.provider].label]),
+                  }
+                }
                 return this.getActionMeta(row.health_check === 'on', row, 'disableHealthCheck')
               },
             },
           ],
           meta: (obj) => {
-            if (obj.provider && (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google')) {
+            if (obj.provider && (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google' || obj.provider.toLowerCase() === 'cloudflare')) {
               return {
                 validate: false,
                 tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
