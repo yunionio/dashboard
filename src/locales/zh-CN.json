@@ -1301,6 +1301,13 @@
       "failed": "失败",
       "expired": "已过期",
       "create_failed": "创建失败"
+    },
+    "aiGateway": {
+      "available": "可用",
+      "unknown": "未知",
+      "change_config": "调整配置中",
+      "delete_failed": "删除失败",
+      "create_failed": "创建失败"
     }
   },
   "skuCategoryOptions": {
@@ -1671,6 +1678,9 @@
     "all.loadbalancer": "负载均衡数量",
     "all.cache": "Redis实例数量",
     "all.rds": "RDS实例数量",
+    "all.rds.cpu": "RDS的CPU总量",
+    "all.rds.memory": "RDS的内存总量",
+    "all.rds.disk_size_gb": "RDS的磁盘总量",
     "all.servers.system": "系统使用虚拟机数量",
     "all.disks.system": "系统存储使用量",
     "all.servers.system.cpu": "系统虚拟机CPU使用量",
@@ -1682,6 +1692,9 @@
     "disks.unready.count": "当前项目下异常状态磁盘数量",
     "loadbalancer": "当前项目下负载均衡数量",
     "rds": "当前项目下RDS实例数量",
+    "rds.cpu": "当前项目下RDS的CPU总量",
+    "rds.memory": "当前项目下RDS的内存总量",
+    "rds.disk_size_gb": "当前项目下RDS的磁盘总量",
     "domain.baremetals": "当前域裸金属服务器数量",
     "domain.baremetals.cpu": "当前域裸金属服务器CPU数量",
     "domain.baremetals.memory": "当前域裸金属服务器内存容量",
@@ -1729,6 +1742,9 @@
     "domain.ports_exit": "当前域外网IP总量",
     "domain.ports_exit.eip": "当前域EIP类型外网IP总量",
     "domain.rds": "当前域RDS实例数量",
+    "domain.rds.cpu": "当前域RDS的CPU总量",
+    "domain.rds.memory": "当前域RDS的内存总量",
+    "domain.rds.disk_size_gb": "当前域RDS的磁盘总量",
     "domain.ready_servers": "当前域关机状态虚拟机数量",
     "domain.ready_servers.cpu": "当前域关机状态虚拟机CPU数量",
     "domain.ready_servers.disk": "当前域关机状态虚拟机磁盘容量",
