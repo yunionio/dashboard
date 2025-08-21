@@ -12,7 +12,6 @@
 
 import { mapGetters } from 'vuex'
 import i18n from '@/locales'
-import { getAreaColumn, getServiceTypeColumn, getCnameTableColumn, getDomainTableColumn } from '../mixins/columns'
 import {
   getUserTagColumn,
 } from '@/utils/common/detailColumn'
@@ -22,6 +21,8 @@ import {
   getSwitchTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
+import { getAreaColumn, getServiceTypeColumn, getCnameTableColumn, getDomainTableColumn } from '../mixins/columns'
+import { BROWSER_CACHE_TTL } from '../constants'
 
 const emptyTableColumn = {
   field: '',
@@ -125,7 +126,7 @@ export default {
       return [originItem]
     },
     extraInfo () {
-      return [
+      const ret = [
         {
           title: this.$t('network.text_308'),
           items: [
@@ -155,6 +156,64 @@ export default {
           ],
         },
       ]
+      if (this.data.provider === 'Cloudflare') {
+        ret[0].items.push({
+          field: 'ssl_setting',
+          title: this.$t('network.cdn.ssl_setting'),
+          slots: {
+            default: ({ row }) => {
+              return row.ssl_setting ? this.$t(`network.cdn.ssl_setting.${row.ssl_setting}`) : '-'
+            },
+          },
+        },
+        {
+          field: 'https_enabled',
+          title: this.$t('network.cdn.https_enabled'),
+          slots: {
+            default: ({ row }) => {
+              return row.https?.enabled ? this.$t('network.text_189') : this.$t('network.text_190')
+            },
+          },
+        },
+        {
+          field: 'https_rewrites',
+          title: this.$t('network.cdn.https_rewrites'),
+          slots: {
+            default: ({ row }) => {
+              return row.https_rewrites ? this.$t('network.text_189') : this.$t('network.text_190')
+            },
+          },
+        },
+        {
+          field: 'cache_level',
+          title: this.$t('network.cdn.cache_level'),
+          slots: {
+            default: ({ row }) => {
+              return row.cache_level ? this.$t(`network.cdn.cache_level.${row.cache_level}`) : '-'
+            },
+          },
+        },
+        {
+          field: 'browser_cache_ttl',
+          title: this.$t('network.cdn.browser_cache_ttl'),
+          slots: {
+            default: ({ row }) => {
+              const target = BROWSER_CACHE_TTL.filter(item => item.key === row.browser_cache_ttl)
+              return target.length ? target[0].label : '-'
+            },
+          },
+        },
+        {
+          field: 'dnssec_enabled',
+          title: this.$t('network.cdn.dnssec_enabled'),
+          slots: {
+            default: ({ row }) => {
+              return row.dnssec_enabled ? this.$t('network.text_189') : this.$t('network.text_190')
+            },
+          },
+        })
+      }
+      return ret
     },
   },
   methods: {

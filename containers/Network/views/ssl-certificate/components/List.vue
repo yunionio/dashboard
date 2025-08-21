@@ -19,6 +19,7 @@ import {
   getProjectFilter,
   getCloudProviderFilter,
   getBrandFilter,
+  getDistinctFieldFilter,
 } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -47,25 +48,15 @@ export default {
       },
       description: getDescriptionFilter(),
       status: getStatusFilter('sslCertificate'),
-      issuer: {
+      issuer: getDistinctFieldFilter({
         label: this.$t('network.ssl_certificate.issuer'),
-        dropdown: true,
-        items: [
-          {
-            label: "Let's Encrypt",
-            key: "Let's Encrypt",
-          },
-          {
-            label: 'ZeroSSL',
-            key: 'ZeroSSL',
-          },
-        ],
+        field: 'issuer',
         filter: true,
         formatter: val => {
           const list = val.map(item => `"${item}"`).join(',')
           return `issuer.in(${list})`
         },
-      },
+      }),
       sans: {
         label: this.$t('network.ssl_certificate.sans'),
         filter: true,

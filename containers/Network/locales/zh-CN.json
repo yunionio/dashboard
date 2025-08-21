@@ -1590,5 +1590,7 @@
   "network.enable_health_check": "启用健康检查",
   "network.dnszone.registrar": "注册机构",
   "network.dnszone.add_name_servers": "添加名称服务器",
-  "network.dnszone.del_name_servers": "删除名称服务器"
+  "network.dnszone.del_name_servers": "删除名称服务器",
+  "network.cdn.certificate_verification_txt": "证书验证 TXT",
+  "network.cdn.hostname_verification_txt": "主机名预验证 TXT"
 }
