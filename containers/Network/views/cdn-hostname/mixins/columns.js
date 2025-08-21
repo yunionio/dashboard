@@ -10,8 +10,9 @@ export default {
         hideField: true,
         showDesc: false,
         edit: false,
+        field: 'hostname',
         slotCallback: row => {
-          return row.hostname
+          return <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{row.hostname}</side-page-trigger>
         },
       }),
       {

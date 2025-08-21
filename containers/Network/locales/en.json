@@ -1535,5 +1535,7 @@
   "network.ssl_certificate.end_date": "Expired Time",
   "network.dnszone.registrar": "Registrar",
   "network.dnszone.add_name_servers": "Add Name Servers",
-  "network.dnszone.del_name_servers": "Delete Name Servers"
+  "network.dnszone.del_name_servers": "Delete Name Servers",
+  "network.cdn.certificate_verification_txt": "Certificate Verification TXT",
+  "network.cdn.hostname_verification_txt": "Hostname Verification TXT"
 }

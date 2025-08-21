@@ -73,8 +73,8 @@
             <a-textarea v-model="form.custom_key" :placeholder="$t('common.pem_private_key.placeholder')" :rows="5" />
           </a-form-model-item>
         </template>
-        <a-form-model-item :label="$t('network.cdn.wildcard_enabled')" prop="wildcard">
-          <a-switch v-model="form.wildcard" />
+        <a-form-model-item :label="$t('network.cdn.wildcard_enabled')" required>
+          <a-switch v-model="form.wildcard" :disabled="form.method === 'http'" />
         </a-form-model-item>
         <a-form-model-item :label="$t('network.cdn.origin_server')" prop="origin_server">
           <a-select v-model="form.origin_server">
@@ -131,7 +131,7 @@ export default {
         bundle_method: data.ssl?.bundle_method || 'ubiquitous', // 捆绑方法
         origin_server: data.custom_origin_server ? 'custom' : 'default', // 源服务器
         custom_origin_server: data.custom_origin_server || '', // 自定义源服务器
-        wildcard: data.wildcard,
+        wildcard: data.ssl?.wildcard || false,
       },
       rules: {
         hostname: [
@@ -164,9 +164,6 @@ export default {
         custom_key: [
           { required: true, validator: this.$validate('pem_private_key') },
         ],
-        wildcard: [
-          { required: true },
-        ],
         origin_server: [
           { required: true },
         ],
@@ -177,6 +174,15 @@ export default {
     }
   },
   computed: {
+  },
+  watch: {
+    'form.method': {
+      handler (val) {
+        if (val === 'http') {
+          this.form.wildcard = false
+        }
+      },
+    },
   },
   methods: {
     validateHostname (rule, value, callback) {
@@ -224,8 +230,8 @@ export default {
         hostname: this.form.hostname,
         ssl: {
           settings: { min_tls_version: this.form.min_tls_version },
+          wildcard: this.form.wildcard,
         },
-        wildcard: this.form.wildcard,
       }
       if (this.form.certificate_type === 'cloudflare') {
         ret.ssl.certificate_authority = this.form.certificate_authority
