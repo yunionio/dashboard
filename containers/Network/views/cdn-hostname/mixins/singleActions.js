@@ -4,17 +4,17 @@ import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
-      {
-        label: i18n.t('cloudenv.text_463'),
-        action: (obj) => {
-          this.createDialog('CdnHostnameCreateDialog', {
-            onManager: this.onManager,
-            type: 'edit',
-            data: [obj],
-            title: i18n.t('cloudenv.text_463'),
-          })
-        },
-      },
+      // {
+      //   label: i18n.t('cloudenv.text_463'),
+      //   action: (obj) => {
+      //     this.createDialog('CdnHostnameCreateDialog', {
+      //       onManager: this.onManager,
+      //       type: 'edit',
+      //       data: [obj],
+      //       title: i18n.t('cloudenv.text_463'),
+      //     })
+      //   },
+      // },
       {
         label: i18n.t('network.text_131'),
         action: (obj) => {
