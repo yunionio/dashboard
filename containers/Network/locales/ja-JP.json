@@ -1583,5 +1583,7 @@
   "network.enable_health_check": "健康检查を有効にする",
   "network.dnszone.registrar": "登録機関",
   "network.dnszone.add_name_servers": "ネームサーバーの追加",
-  "network.dnszone.del_name_servers": "ネームサーバーの削除"
+  "network.dnszone.del_name_servers": "ネームサーバーの削除",
+  "network.cdn.certificate_verification_txt": "証明書検証 TXT",
+  "network.cdn.hostname_verification_txt": "ホスト名検証 TXT"
 }

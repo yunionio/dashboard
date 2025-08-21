@@ -99,14 +99,16 @@ export default {
       }
       return ret
     },
-    handleOpenSidepage (row, tab) {
-      this.sidePageTriggerHandle(this, 'CDNSidePage', {
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'CdnHostnameSidePage', {
         id: row.id,
-        resource: 'cdn_domains',
-        getParams: this.getParam,
+        resource: () => {
+          return {
+            data: row,
+          }
+        },
       }, {
         list: this.list,
-        tab,
       })
     },
   },
