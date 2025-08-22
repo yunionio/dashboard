@@ -64,7 +64,10 @@ make_manifest_image() {
         $img_name-arm64
 }
 
-build_src
+# 如果 ENV="local"，跳过 build_src
+if [[ "$ENV" != "local" ]]; then
+    build_src
+fi
 
 if [[ "$DRY_RUN" == "true" ]]; then
     echo "[$(readlink -f ${BASH_SOURCE}):${LINENO} ${FUNCNAME[0]}] return for DRY_RUN"
@@ -78,12 +81,23 @@ set -x
 case $ARCH in
     amd64 | "arm64" )
         buildx_and_push "$img_name" "$DOCKER_DIR/Dockerfile" "$SRC_DIR" "$ARCH"
+        echo "更新命令："
+        echo "kubectl patch oc -n onecloud default --type='json' -p='[{op: replace, path: /spec/web/imageName, value: web-ee},{"op": "replace", "path": "/spec/web/repository", "value": "${REGISTRY}"},{"op": "add", "path": "/spec/web/tag", "value": "${TAG}"}]'"
         ;;
     *)
         for arch in "arm64" "amd64"; do
             buildx_and_push "$img_name-$arch" "$DOCKER_DIR/Dockerfile" "$SRC_DIR" "$arch"
         done
         make_manifest_image $img_name
+        echo "更新命令："
+        echo "kubectl patch oc -n onecloud default --type='json' -p='[{op: replace, path: /spec/web/imageName, value: web-ee},{"op": "replace", "path": "/spec/web/repository", "value": "${REGISTRY}"},{"op": "add", "path": "/spec/web/tag", "value": "${TAG}"}]'"
         ;;
 esac
+
+# 输出当前web-console版本信息
+if [ "$ENV" == "local" ]; then
+    WEB_CONSOLE_VERSION=$(grep -o 'web-console-fe:v[^[:space:]]*' Dockerfile | head -1 | sed 's/web-console-fe://')
+    echo "当前web-console版本为: ${WEB_CONSOLE_VERSION}"
+    echo "请注意检查web-console环境兼容性！"
+fi
 
