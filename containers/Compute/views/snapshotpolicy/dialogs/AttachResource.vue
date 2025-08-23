@@ -207,7 +207,7 @@ export default {
           }
           if (resource.delServers.length > 0) {
             await manager.performAction({
-              ids: resource.delServers,
+              id: this.params.data[0].id,
               action: 'unbind-resources',
               data: {
                 resources: resource.delServers.map((item) => { return { id: item, type: 'server' } }),
