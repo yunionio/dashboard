@@ -1892,5 +1892,6 @@
   "compute.bind_resource": "関連リソース",
   "compute.bind_server": "関連仮想マシン",
   "compute.retention_count_prefix": "保持",
-  "compute.retention_count_suffix": "件"
+  "compute.retention_count_suffix": "件",
+  "compute.power_states_check_tip": "仮想マシンの電源状態が{0}の場合のみ、この操作をサポートします"
 }

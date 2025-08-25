@@ -1892,5 +1892,6 @@
   "compute.bind_resource": "关联资源",
   "compute.bind_server": "关联虚拟机",
   "compute.retention_count_prefix": "保留",
-  "compute.retention_count_suffix": "份"
+  "compute.retention_count_suffix": "份",
+  "compute.power_states_check_tip": "仅在虚拟机电源状态为{0}时支持该操作"
 }
