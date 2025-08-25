@@ -33,7 +33,7 @@
       </div>
     </template>
     <div>
-      <div class="info-btn d-flex justify-content-center" @click.stop="handleWrapClick">
+      <div class="info-btn d-flex justify-content-center pl-2 pr-2" @click.stop="handleWrapClick">
         <span @click.stop="handleButtonClick" style="font-size: 12px">{{buttonText}}</span>
         <span class="ml-2" @click.stop="handleKeyClick">
           <icon size="12" class="keypair-icon" type="keypairs" fill="#555" />
