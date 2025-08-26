@@ -4,12 +4,9 @@
     show-tag-columns2
     show-tag-filter
     :list="list"
-    :columns="columns"
-    :group-actions="groupActions"
-    :single-actions="singleActions"
+    :columns="changedColumns"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions"
     :before-show-menu="beforeShowMenu" />
 </template>
 
@@ -31,12 +28,11 @@ import {
 } from '@/utils/common/tableFilter'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import { isCE } from '@/utils/utils'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '@Compute/views/image/mixins/columns'
 
 export default {
-  name: 'ImageList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  name: 'CachedImageList',
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin],
   props: {
     id: String,
     getParams: {
@@ -52,7 +48,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'images',
+        resource: 'cachedimages',
         apiVersion: 'v1',
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.image).flat(),
@@ -403,13 +399,22 @@ export default {
         fixedItems: [
           { key: 'properties.os_distribution', label: this.$t('table.title.os') },
           { key: 'size', label: this.$t('table.title.image_size') + '(B)' },
-          { key: 'is_standard', label: this.$t('compute.text_620') },
         ],
       }
     },
+    changedColumns () {
+      return this.columns.filter(item => item.field !== 'is_standard')
+    },
+  },
+  watch: {
+    cloudEnv: {
+      handler (val) {
+        this.list.fetchData()
+      },
+    },
   },
   created () {
-    this.initSidePageTab('system-image-detail')
+    this.initSidePageTab('detail')
     this.list.fetchData()
   },
   methods: {
@@ -419,7 +424,7 @@ export default {
         is_guest_image: false,
         ...this.getParams,
       }
-      // if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       if (this.diskFormats) {
         if (!ret.disk_formats) {
           ret.disk_formats = []
@@ -431,9 +436,9 @@ export default {
       return ret
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'SystemImageSidePage', {
+      this.sidePageTriggerHandle(this, 'SystemCachedImageSidePage', {
         id: row.id,
-        resource: 'images',
+        resource: 'cachedimages',
         apiVersion: 'v1',
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.image).flat(),
