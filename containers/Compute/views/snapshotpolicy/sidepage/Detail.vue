@@ -46,7 +46,7 @@ export default {
           },
         },
         {
-          field: 'time_points_display',
+          field: 'time_points',
           title: this.$t('compute.text_432'),
           formatter: ({ cellValue }) => {
             let text = ''
@@ -57,7 +57,7 @@ export default {
           },
         },
         {
-          field: 'repeat_weekdays_display',
+          field: 'repeat_weekdays',
           title: this.$t('compute.text_431'),
           formatter: ({ cellValue }) => {
             let text = ''
