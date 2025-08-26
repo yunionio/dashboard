@@ -4,12 +4,9 @@
     show-tag-columns2
     show-tag-filter
     :list="list"
-    :columns="columns"
-    :group-actions="groupActions"
-    :single-actions="singleActions"
+    :columns="changedColumns"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions"
     :before-show-menu="beforeShowMenu" />
 </template>
 
@@ -30,14 +27,12 @@ import {
   getStatusFilter,
 } from '@/utils/common/tableFilter'
 import { getSetPublicAction } from '@/utils/common/tableActions'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import { isCE } from '@/utils/utils'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '@Compute/views/image/mixins/columns'
 
 export default {
-  name: 'ImageList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
+  name: 'CachedImageList',
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin],
   props: {
     id: String,
     getParams: {
@@ -45,12 +40,15 @@ export default {
       default: () => ({}),
     },
     cloudEnv: String,
+    diskFormats: {
+      type: Array,
+    },
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'images',
+        resource: 'cachedimages',
         apiVersion: 'v1',
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.image).flat(),
@@ -65,13 +63,11 @@ export default {
           disk_formats: {
             label: this.$t('table.title.disk_format'),
             dropdown: true,
-            items: [
-              { label: 'VMDK', key: 'vmdk' },
-              { label: 'RAW', key: 'raw' },
-              { label: 'VHD', key: 'vhd' },
-              { label: 'QCOW2', key: 'qcow2' },
-              { label: 'ISO', key: 'iso' },
-            ],
+            multiple: true,
+            distinctField: {
+              type: 'field',
+              key: 'disk_format',
+            },
           },
           is_standard: {
             label: this.$t('table.title.image_type'),
@@ -87,10 +83,6 @@ export default {
         },
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'created_at', 'os_arch'],
-        fetchDataCb: (res) => {
-          const { totals = {} } = res.data
-          this.$emit('resStatisticsChange', totals)
-        },
       }),
     }
   },
@@ -407,13 +399,22 @@ export default {
         fixedItems: [
           { key: 'properties.os_distribution', label: this.$t('table.title.os') },
           { key: 'size', label: this.$t('table.title.image_size') + '(B)' },
-          { key: 'is_standard', label: this.$t('compute.text_620') },
         ],
       }
     },
+    changedColumns () {
+      return this.columns.filter(item => item.field !== 'is_standard')
+    },
+  },
+  watch: {
+    cloudEnv: {
+      handler (val) {
+        this.list.fetchData()
+      },
+    },
   },
   created () {
-    this.initSidePageTab('system-image-detail')
+    this.initSidePageTab('detail')
     this.list.fetchData()
   },
   methods: {
@@ -423,13 +424,21 @@ export default {
         is_guest_image: false,
         ...this.getParams,
       }
-      // if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      if (this.diskFormats) {
+        if (!ret.disk_formats) {
+          ret.disk_formats = []
+        }
+        for (let i = 0; i < this.diskFormats.length; i++) {
+          ret.disk_formats.push(this.diskFormats[i])
+        }
+      }
       return ret
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'SystemImageSidePage', {
+      this.sidePageTriggerHandle(this, 'SystemCachedImageSidePage', {
         id: row.id,
-        resource: 'images',
+        resource: 'cachedimages',
         apiVersion: 'v1',
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.image).flat(),
