@@ -60,18 +60,6 @@ export default {
         hiddenColumns: ['created_at'],
         responseData: this.responseData,
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.name'), key: 'name' },
-          { label: this.$t('common.resource_type'), key: 'type' },
-          { label: this.$t('table.title.bind_disk_count'), key: 'binding_disk_count' },
-          { label: this.$t('compute.bind_resource_count'), key: 'binding_resource_count' },
-          { label: this.$t('table.title.strategy'), key: 'repeat_weekdays' },
-          { label: this.$t('common.status'), key: 'status' },
-          { label: this.$t('res.project'), key: 'tenant' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('compute.perform_create'),
@@ -107,6 +95,18 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    exportDataOptions () {
+      return {
+        downloadType: 'local',
+        title: this.$t('compute.text_103'),
+        items: [
+          { label: 'ID', key: 'id' },
+          ...this.columns,
+        ],
+      }
+    },
   },
   watch: {
     cloudEnv (val) {
