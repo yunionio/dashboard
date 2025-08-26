@@ -53,6 +53,12 @@ export default {
             ]
           },
         },
+        formatter: ({ row }) => {
+          if (row.type === 'server') {
+            return row.binding_resource_count
+          }
+          return row.binding_disk_count
+        },
       },
       {
         field: 'repeat_weekdays',
@@ -78,6 +84,20 @@ export default {
               </list-body-cell-wrap>,
             ]
           },
+        },
+        formatter: ({ row }) => {
+          if (row.repeat_weekdays === undefined) return [<data-loading />]
+          let text = ''
+          if (row.repeat_weekdays && row.repeat_weekdays.length) {
+            text += i18n.t('compute.text_1098') + row.repeat_weekdays.map(item => weekOptions[item - 1]).join('、')
+          }
+          if (row.time_points && row.time_points.length) {
+            text += '; ' + row.time_points.map(item => timeOptions[item]).join('、')
+          }
+          if (text) {
+            text += i18n.t('compute.text_1099')
+          }
+          return text || '-'
         },
       },
       getRegionTableColumn(),
