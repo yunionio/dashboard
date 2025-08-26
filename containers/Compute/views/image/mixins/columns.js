@@ -53,8 +53,8 @@ export default {
         field: 'disk_format',
         title: i18n.t('table.title.disk_format'),
         width: 100,
-        formatter: ({ cellValue }) => {
-          return cellValue && cellValue.toUpperCase()
+        formatter: ({ cellValue, row }) => {
+          return (cellValue && cellValue.toUpperCase()) || row.info?.disk_format || '-'
         },
       },
       getOsArch({ field: 'properties.os_arch' }),
@@ -64,9 +64,9 @@ export default {
         width: 60,
         slots: {
           default: ({ row }, h) => {
-            if (!row.properties) return
-            const dist = row.properties?.os_distribution || row.properties?.distro
-            const version = row.properties?.os_version || row.properties?.version
+            if (!row.properties && !row.os_type) return
+            const dist = row.properties?.os_distribution || row.properties?.distro || row.os_type
+            const version = row.properties?.os_version || row.properties?.version || row.os_version
 
             let name = ''
             let tooltip = ''
@@ -90,8 +90,8 @@ export default {
           },
         },
         formatter: ({ row }) => {
-          if (!row.properties) return
-          const dist = row.properties?.os_distribution || row.properties?.distro
+          if (!row.properties && !row.os_type) return
+          const dist = row.properties?.os_distribution || row.properties?.distro || row.os_type
 
           let name = ''
 
