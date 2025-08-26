@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('compute.text_97')">
+    <page-header :title="$t('compute.text_97')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv">
       <div slot="res-status-tab" style="position: absolute; right: 0; top: 14px;">
         <res-status-tab
           :loading="statisticsLoading"
@@ -10,7 +10,17 @@
     </page-header>
     <page-body>
       <image-list
+        v-if="cloudEnv === 'onpremise'"
         :id="listId"
+        :cloud-env="cloudEnv"
+        :filterParams="filterParams"
+        :diskFormats="diskFormats"
+        statusResKey="image"
+        @resStatisticsChange="resStatisticsChange" />
+      <cache-image-list
+        v-else
+        :id="listId"
+        :cloud-env="cloudEnv"
         :filterParams="filterParams"
         statusResKey="image"
         @resStatisticsChange="resStatisticsChange" />
@@ -20,12 +30,14 @@
 
 <script>
 import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
+import CacheImageList from '@Compute/views/cached-image/components/List'
 import ImageList from './components/List'
 
 export default {
   name: 'ImageIndex',
   components: {
     ImageList,
+    CacheImageList,
   },
   mixins: [ResStatisticsV2Mixin],
   data () {
@@ -33,6 +45,12 @@ export default {
       listId: 'ImageList',
       resStaticsResource: 'images',
       apiVersion: 'v1',
+      cloudEnv: 'image-list',
+      cloudEnvOptions: [
+        { label: this.$t('dictionary.onpremise_env'), key: 'onpremise' },
+        { label: this.$t('dictionary.private_env'), key: 'private' },
+        { label: this.$t('dictionary.public_env'), key: 'public' },
+      ],
     }
   },
   methods: {
