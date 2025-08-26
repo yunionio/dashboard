@@ -5,6 +5,7 @@ export default {
   created () {
     this.columns = [
       getCopyWithContentTableColumn({ field: 'ip_addr', title: i18n.t('compute.vip_address'), sortable: true }),
+      getCopyWithContentTableColumn({ field: 'ip6_addr', title: i18n.t('compute.vip_ipv6_address'), sortable: true }),
       getCopyWithContentTableColumn({ field: 'eip_addr', title: 'EIP', sortable: true }),
       {
         field: 'network_id',
