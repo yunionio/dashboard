@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     columns () {
-      const showFields = ['ifname', 'ip_addr', 'mac_addr']
+      const showFields = ['ifname', 'ip_addr', 'ip6_addr', 'mac_addr']
       return this.params.columns.filter((item) => { return showFields.includes(item.field) })
     },
   },
