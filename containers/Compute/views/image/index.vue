@@ -11,7 +11,7 @@
     <page-body>
       <image-list
         v-if="cloudEnv === 'onpremise'"
-        :id="listId"
+        id="ImageList"
         :cloud-env="cloudEnv"
         :filterParams="filterParams"
         :diskFormats="diskFormats"
@@ -19,7 +19,7 @@
         @resStatisticsChange="resStatisticsChange" />
       <cache-image-list
         v-else
-        :id="listId"
+        id="CacheImageList"
         :cloud-env="cloudEnv"
         :filterParams="filterParams"
         statusResKey="image"
@@ -45,7 +45,7 @@ export default {
       listId: 'ImageList',
       resStaticsResource: 'images',
       apiVersion: 'v1',
-      cloudEnv: 'image-list',
+      cloudEnv: 'onpremise',
       cloudEnvOptions: [
         { label: this.$t('dictionary.onpremise_env'), key: 'onpremise' },
         { label: this.$t('dictionary.private_env'), key: 'private' },
