@@ -21,14 +21,16 @@ import {
   getNameFilter,
   getTenantFilter,
   getDomainFilter,
-  getOsArchFilter,
-  getImageDistributionFilter,
   getDescriptionFilter,
   getStatusFilter,
 } from '@/utils/common/tableFilter'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import { isCE } from '@/utils/utils'
 import ColumnsMixin from '@Compute/views/image/mixins/columns'
+import { HOST_CPU_ARCHS } from '@/constants/compute'
+import { getOsArch } from '@/utils/common/tableColumn'
+
+const archItems = Object.values(HOST_CPU_ARCHS)
 
 export default {
   name: 'CachedImageList',
@@ -59,27 +61,39 @@ export default {
           name: getNameFilter(),
           status: getStatusFilter('image'),
           description: getDescriptionFilter(),
-          distributions: getImageDistributionFilter(),
-          disk_formats: {
-            label: this.$t('table.title.disk_format'),
-            dropdown: true,
-            multiple: true,
-            distinctField: {
-              type: 'field',
-              key: 'disk_format',
+          distributions: {
+            label: this.$t('table.title.os'),
+            filter: true,
+            formatter: (val) => {
+              return `info.contains(${val})`
             },
           },
-          is_standard: {
+          disk_formats: {
+            label: this.$t('table.title.disk_format'),
+            filter: true,
+            formatter: (val) => {
+              return `info.contains(${val})`
+            },
+          },
+          image_type: {
             label: this.$t('table.title.image_type'),
             dropdown: true,
             items: [
-              { label: this.$t('compute.text_620'), key: true },
-              { label: this.$t('compute.text_621'), key: false },
+              { label: this.$t('compute.text_620'), key: 'custom' },
+              { label: this.$t('compute.text_97'), key: 'system' },
             ],
           },
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
-          os_arch: getOsArchFilter(),
+          os_arch: {
+            label: this.$t('table.title.os_arch'),
+            dropdown: true,
+            items: archItems,
+            filter: true,
+            formatter: (val) => {
+              return `info.contains(${val})`
+            },
+          },
         },
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'created_at', 'os_arch'],
@@ -403,7 +417,16 @@ export default {
       }
     },
     changedColumns () {
-      return this.columns.filter(item => item.field !== 'is_standard')
+      return [...this.columns.filter(item => item.field !== 'is_standard' && item.field !== 'properties.os_arch'),
+        getOsArch({ field: 'info.properties.os_arch' }),
+        {
+          field: 'image_type',
+          label: this.$t('table.title.image_type'),
+          formatter: (val) => {
+            return val === 'custom' ? this.$t('compute.text_620') : this.$t('compute.text_97')
+          },
+        },
+      ]
     },
   },
   watch: {

@@ -80,6 +80,13 @@ export default {
               title: this.$t('compute.text_630'),
             },
             {
+              field: 'image_type',
+              title: this.$t('table.title.image_type'),
+              formatter: (val) => {
+                return val === 'custom' ? this.$t('compute.text_620') : this.$t('compute.text_97')
+              },
+            },
+            {
               field: 'os_lang',
               title: this.$t('compute.text_631'),
               formatter: ({ cellValue, row }) => {
