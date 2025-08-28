@@ -7,7 +7,7 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item class="mb-0">
-          <a-checkbox v-decorator="decorators.keep_disk">{{ $t('compute.disk.detach') }}</a-checkbox>
+          <a-checkbox v-decorator="decorators.keep_disk" :disabled="disabledKeepDisk">{{ $t('compute.disk.detach') }}</a-checkbox>
         </a-form-item>
       </a-form>
     </div>
@@ -26,6 +26,7 @@ export default {
   name: 'DiskUnMountUpdateDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const initKeepDisk = this.params.data[0] && (this.params.data[0].provider === 'VMware' || this.params.data[0].provider === 'Nutanix')
     return {
       loading: false,
       form: {
@@ -36,10 +37,11 @@ export default {
           'keep_disk',
           {
             valuePropName: 'checked',
-            initialValue: false,
+            initialValue: initKeepDisk,
           },
         ],
       },
+      disabledKeepDisk: initKeepDisk,
     }
   },
   created () {
