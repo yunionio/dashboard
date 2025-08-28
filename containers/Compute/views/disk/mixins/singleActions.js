@@ -107,15 +107,15 @@ export default {
                     tooltip: '',
                   }
                 }
-                if (obj.brand) {
-                  const brand = obj.brand.toLowerCase()
-                  if (brand === 'vmware' && obj.disk_type === 'data') {
-                    return {
-                      validate: false,
-                      tooltip: i18n.t('compute.text_1287', [BRAND_MAP[obj.brand].label]),
-                    }
-                  }
-                }
+                // if (obj.brand) {
+                // const brand = obj.brand.toLowerCase()
+                // if (brand === 'vmware' && obj.disk_type === 'data') {
+                //   return {
+                //     validate: false,
+                //     tooltip: i18n.t('compute.text_1287', [BRAND_MAP[obj.brand].label]),
+                //   }
+                // }
+                // }
                 if (!obj.guest) {
                   return {
                     validate: !!obj.guest,
