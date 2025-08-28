@@ -75,7 +75,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { validate, REGEXP } from '@/utils/validate'
+import { REGEXP } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { priorityRuleMap } from '../constants'
@@ -245,27 +245,36 @@ export default {
   },
   methods: {
     validatePorts (rule, value, callback) {
-      const ports = value.indexOf(',') !== -1 ? value.split(',') : value.split('-')
-      if (ports.length > 1) {
-        const pass = ports.every(function (item, index) {
-          return +item && item >= 0 && item <= 65535
-        })
-        if (!pass) {
-          callback(new Error(validate(value, 'ports').msg))
-        } else {
-          callback()
-        }
-      } else {
-        if (value === 'ALL') {
-          callback()
-        } else {
-          if (validate(value, 'ports') === false || validate(value, 'ports').result === false) {
-            callback(new Error(validate(value, 'ports').msg))
-          } else {
-            callback()
-          }
-        }
+      const portReg = /^\d+$/
+      if (value === 'ALL') {
+        callback()
+        return
       }
+      if (!value) {
+        callback(new Error(this.$t('validator.ports')))
+        return
+      }
+      if (!this.priorityItem.portSupportComma && value.indexOf(',') !== -1) {
+        callback(new Error(this.$t('validator.ports')))
+        return
+      }
+      if (value.indexOf(',') !== -1) {
+        const ports = value.split(',')
+        if (ports.some(item => !portReg.test(item) || +item < 0 || +item > 65535)) {
+          callback(new Error(this.$t('validator.ports')))
+          return
+        }
+      } else if (value.indexOf('-') !== -1) {
+        const ports = value.split('-')
+        if (ports.length !== 2 || ports.some(item => !portReg.test(item) || +item < 3306 || +item > 20000)) {
+          callback(new Error(this.$t('validator.ports')))
+          return
+        }
+      } else if (!portReg.test(value) || +value < 0 || +value > 65535) {
+        callback(new Error(this.$t('validator.ports')))
+        return
+      }
+      callback()
     },
     validateCIDR (rule, value, callback) {
       if (!this.cidrCheckedShow && !value) {
