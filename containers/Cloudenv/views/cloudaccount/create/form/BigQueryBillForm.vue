@@ -236,7 +236,7 @@ export default {
       return false
     },
     async postBillTasks (id, values) {
-      const manager = new this.$Manager('billtasks', 'v1')
+      const manager = new this.$Manager('billtasks/submit', 'v1')
       try {
         const { start_day, end_day } = values
         const data = {
