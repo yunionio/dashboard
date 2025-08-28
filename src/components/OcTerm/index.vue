@@ -75,12 +75,15 @@ export default {
 <style lang="scss" scoped>
 .cloudshell-wrapper {
   position: fixed;
-  top: calc(100vh - 300px);
-  height: 300px;
-  width: 100vw;
-  left: 0;
+  top: calc(100vh - 355px);
+  height: 350px;
+  width: calc(100vw - 10px);
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
   z-index: 999;
   background: #000;
+  border-radius: 3px;
 }
 .cloudshell-header {
   position: absolute;
@@ -90,6 +93,7 @@ export default {
   height: 20px;
   background-color: #eaeaea;
   color: #fff;
+  border-radius: 2.5px 2.5px 0 0;
   &:hover {
     color: #eaeaea;
   }
@@ -109,7 +113,7 @@ export default {
   }
   .cloudshell-close {
     position: absolute;
-    right: 0px;
+    right: 5px;
     top: 0px;
     width: 25px;
     height: 20px;
@@ -130,10 +134,10 @@ export default {
   position: absolute;
   top: 20px;
   bottom: 10px;
-  left: 0;
-  right: 0;
+  left: 10px;
+  right: 10px;
   background: #000;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   ::v-deep {
     #xterm {
       height: 100% !important;
@@ -142,6 +146,9 @@ export default {
     .xterm-viewport {
       height: 100%!important;
       overflow-y: auto;
+    }
+    .xterm-viewport::-webkit-scrollbar {
+      width: 15px;
     }
   }
 }
