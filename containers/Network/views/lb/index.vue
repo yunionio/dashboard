@@ -35,7 +35,7 @@ export default {
   data () {
     return {
       listId: 'LbList',
-      cloudEnvOptions: getCloudEnvOptions('loadbalancer_engine_brands'),
+      cloudEnvOptions: getCloudEnvOptions('loadbalancer_brands'),
       cloudEnv: '',
       getParams: {
         details: true,
