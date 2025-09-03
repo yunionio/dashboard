@@ -57,7 +57,7 @@ export default {
           name: getNameFilter(),
           description: getDescriptionFilter(),
           status: getStatusFilter('redis'),
-          brand: getBrandFilter('redis_engine_brands'),
+          brand: getBrandFilter('redis_brands'),
           account: getAccountFilter(),
           manager: getCloudProviderFilter(),
           projects: getTenantFilter(),
