@@ -20,14 +20,18 @@ import ListMixin from '@/mixins/list'
 import { getNameFilter, getStatusFilter, getTenantFilter, getBrandFilter, getCloudProviderFilter, getAccountFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
+import globalSearchMixins from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'MongoDBList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin, globalSearchMixins],
   props: {
     id: String,
+    getParams: {
+      type: Object,
+    },
   },
   data () {
     return {
@@ -36,12 +40,16 @@ export default {
         id: this.id,
         resource: 'mongodbs',
         apiVersion: 'v1',
-        getParams: {
-          details: true,
-        },
+        getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.mongodb).flat(),
         filterOptions: {
           name: getNameFilter(),
+          external_id: {
+            label: this.$t('table.title.external_id'),
+          },
+          id: {
+            label: this.$t('table.title.id'),
+          },
           description: getDescriptionFilter(),
           status: getStatusFilter('mongodb'),
           ip_addr: {
@@ -186,6 +194,13 @@ export default {
     this.initSidePageTab('mongodb-detail')
   },
   methods: {
+    getParam () {
+      const ret = {
+        ...this.getParams,
+        details: true,
+      }
+      return ret
+    },
     getSeachStatus () {
       const selectedStatus = ['running', 'unknown', 'sync_failed']
       const status = []
