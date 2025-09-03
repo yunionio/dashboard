@@ -60,7 +60,7 @@ export default {
               return `ip_addr.contains(${val})`
             },
           },
-          brand: getBrandFilter('mongodb_engine_brands'),
+          brand: getBrandFilter('mongodb_brands'),
           account: getAccountFilter(),
           manager: getCloudProviderFilter(),
           region: {

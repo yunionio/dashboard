@@ -59,7 +59,7 @@ export default {
           name: getNameFilter(),
           description: getDescriptionFilter(),
           status: getStatusFilter('rds'),
-          brand: getBrandFilter('rds_engine_brands'),
+          brand: getBrandFilter('rds_brands'),
           account: getAccountFilter(),
           manager: getCloudProviderFilter(),
           projects: getTenantFilter(),
