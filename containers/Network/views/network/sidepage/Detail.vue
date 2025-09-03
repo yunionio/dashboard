@@ -95,6 +95,9 @@ export default {
             field: 'guest_ip_start',
             title: this.$t('network.ipv4.range'),
             formatter: ({ cellValue, row }) => {
+              if (!row.guest_ip_start || !row.guest_ip_end) {
+                return '-'
+              }
               return `${cellValue} - ${row.guest_ip_end}/${row.guest_ip_mask}`
             },
           },
@@ -149,7 +152,7 @@ export default {
                   <i18n path='network.text_735' tag="div">
                     <template slot='ports'>{ row.ports }</template>
                     <template slot='ports_used'>
-                      { row.ports_used <= 0 ? 0 : <a onClick={ () => this.$emit('tab-change', 'i-p-list') }>{row.ports_used}</a> }
+                      { row.ports_used + row.ports6_used <= 0 ? 0 : <a onClick={ () => this.$emit('tab-change', 'i-p-list') }>{row.ports_used + row.ports6_used}</a> }
                     </template>
                     <template slot='reserve_vnics'>{ row.reserve_vnics }</template>
                   </i18n>,
