@@ -35,7 +35,7 @@ export default {
   data () {
     return {
       listId: 'RDSList',
-      cloudEnvOptions: getCloudEnvOptions('rds_engine_brands'),
+      cloudEnvOptions: getCloudEnvOptions('rds_brands'),
       cloudEnv: '',
       resStaticsResource: 'dbinstances',
     }
