@@ -33,7 +33,7 @@ export default {
   data () {
     return {
       listId: 'WireList',
-      cloudEnvOptions: getCloudEnvOptions('network_engine_brands').filter(item => item.key !== 'public'),
+      cloudEnvOptions: getCloudEnvOptions('network_brands').filter(item => item.key !== 'public'),
       cloudEnv: '',
       statusNormalList: ['available'],
     }
