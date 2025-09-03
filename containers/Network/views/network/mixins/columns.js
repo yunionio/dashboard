@@ -134,12 +134,12 @@ export default {
             if (this.isPreLoad && !row.ports) return [<data-loading />]
             return [
               <div class='text-truncate'>{ this.$t('network.text_727', [row.ports])}</div>,
-              <div class='text-truncate'>{ this.$t('network.text_728', [row.ports_used])}</div>,
+              <div class='text-truncate'>{ this.$t('network.text_728', [(row.ports_used <= 0 ? 0 : row.ports_used) + (row.ports6_used <= 0 ? 0 : row.ports6_used)])}</div>,
             ]
           },
         },
         formatter: ({ row }) => {
-          return `${this.$t('network.text_727', [row.ports])},${this.$t('network.text_728', [row.ports_used])}`
+          return `${this.$t('network.text_727', [row.ports])},${this.$t('network.text_728', [row.ports_used + row.ports6_used])}`
         },
         hidden: () => this.$isScopedPolicyMenuHidden('network_hidden_columns.ports'),
       },
