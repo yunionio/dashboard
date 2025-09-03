@@ -1042,7 +1042,7 @@ export const getSearchMaps = (searchRes = {}) => {
     },
     kafka: {
       menu_key: 'kafka',
-      res_name: 'mongodbs',
+      res_name: 'kafkas',
       label: i18n.t('dictionary.kafka'),
       id: 'kafka',
       component: 'KafkaList',
