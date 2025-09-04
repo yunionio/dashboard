@@ -1,3 +1,16 @@
+const requireComponent = require.context('@scope', true, /expectStatus\.(js)$/)
+const keys = requireComponent.keys().filter(item => {
+  const arr = item.split('/')
+  return arr[1] === 'constants' && /\.(js)$/.test(arr[2])
+})
+let extraStatus = {}
+keys.forEach(fileName => {
+  // 获取组件配置
+  const componentConfig = requireComponent(fileName)
+  console.log('status', componentConfig)
+  const { default: DEFAULT_STATUS = {} } = componentConfig
+  extraStatus = { ...extraStatus, ...DEFAULT_STATUS }
+})
 
 export default {
   // 通用状态
@@ -613,6 +626,7 @@ export default {
     success: ['available'],
     danger: ['failed'],
   },
+<<<<<<< Updated upstream
   sslCertificate: {
     success: ['active', 'available'],
     danger: ['failed', 'expired', 'create_failed'],
@@ -626,4 +640,7 @@ export default {
     info: ['unknown'],
     danger: ['delete_failed', 'create_failed'],
   },
+=======
+  ...extraStatus,
+>>>>>>> Stashed changes
 }

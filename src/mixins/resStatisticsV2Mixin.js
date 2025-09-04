@@ -22,6 +22,15 @@ export default {
   created () {
   },
   methods: {
+    getText (statusModule, key) {
+      if (this.$te(`scopeStatus.${statusModule}.${key}`)) {
+        return this.$t(`scopeStatus.${statusModule}.${key}`)
+      }
+      if (this.$te(`status.${statusModule}.${key}`)) {
+        return this.$t(`status.${statusModule}.${key}`)
+      }
+      return key
+    },
     resStatisticsChange (res) {
       const statusObj = arrayToObj(res.status_info || [], 'status')
       this.statusOpts = this.getStatusOpts(statusObj)
@@ -60,15 +69,15 @@ export default {
         return {
           type: k,
           num: obj[k] || 0,
-          title: this.$te(`status.${this.statusModule}.${k}`) ? this.$t(`status.${this.statusModule}.${k}`) : k,
+          title: this.getText(this.statusModule, k),
         }
       })
 
       const statusOpts = [
         { title: this.$t('compute.text_576'), type: 'total', num: total },
         ...normalStatusTabs,
-        { title: this.$t('common_623', [this.$t('scope.text_61')]), type: 'error', num: error, list: Object.keys(errorObj).map(k => ({ type: k, title: this.$te(`status.${this.statusModule}.${k}`) ? this.$t(`status.${this.statusModule}.${k}`) : k, num: errorObj[k] })) },
-        { title: this.$t('compute.text_674'), type: 'other', num: other, list: Object.keys(otherObj).map(k => ({ type: k, title: this.$te(`status.${this.statusModule}.${k}`) ? this.$t(`status.${this.statusModule}.${k}`) : k, num: otherObj[k] })) },
+        { title: this.$t('common_623', [this.$t('scope.text_61')]), type: 'error', num: error, list: Object.keys(errorObj).map(k => ({ type: k, title: this.getText(this.statusModule, k), num: errorObj[k] })) },
+        { title: this.$t('compute.text_674'), type: 'other', num: other, list: Object.keys(otherObj).map(k => ({ type: k, title: this.getText(this.statusModule, k), num: otherObj[k] })) },
       ].filter(item => !this.statusHiddenList.includes(item.type))
       return statusOpts
     },

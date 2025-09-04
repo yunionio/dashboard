@@ -42,11 +42,14 @@ export function getBrandItems (key = 'brands', outBrands = []) {
 }
 
 export function mapperStatusToItems (items, statusModule) {
+  const scopeStatus = i18n.t(`scopeStatus.${statusModule}`) || {}
   const status = i18n.t(`status.${statusModule}`) || {}
   return items.map(item => {
     let label = item.label
     let t = ''
-    if (status) {
+    if (scopeStatus && i18n.te(`scopeStatus.${statusModule}.${item.key}`)) {
+      label = i18n.t(`scopeStatus.${statusModule}.${item.key}`)
+    } else if (status) {
       if (!R.is(String, status)) {
         label = status[item.key] || item.label
         if (label.includes('@:dictionary')) {
