@@ -626,7 +626,6 @@ export default {
     success: ['available'],
     danger: ['failed'],
   },
-<<<<<<< Updated upstream
   sslCertificate: {
     success: ['active', 'available'],
     danger: ['failed', 'expired', 'create_failed'],
@@ -640,7 +639,5 @@ export default {
     info: ['unknown'],
     danger: ['delete_failed', 'create_failed'],
   },
-=======
   ...extraStatus,
->>>>>>> Stashed changes
 }
