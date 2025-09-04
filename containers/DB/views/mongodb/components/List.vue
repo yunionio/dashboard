@@ -61,7 +61,7 @@ export default {
               return `ip_addr.contains(${val})`
             },
           },
-          brand: getBrandFilter('mongodb_brands'),
+          brand: getBrandFilter('readonly_mongodb_brands'),
           account: getAccountFilter(),
           manager: getCloudProviderFilter(),
           region: {
