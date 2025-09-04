@@ -26,6 +26,7 @@
 import * as R from 'ramda'
 import expectStatusMap from '@/constants/expectStatus'
 import { status as statusMap } from '@/locales/zh-CN'
+import { scopeStatus as scopeStatusMap } from '@scope/locales/zh-CN'
 
 export default {
   name: 'Status',
@@ -92,10 +93,10 @@ export default {
     },
     statusText () {
       if (this.specifyStatus.text) return this.specifyStatus.text
-      const moduleStatusMap = statusMap[this.statusModule]
+      const moduleStatusMap = scopeStatusMap[this.statusModule] || statusMap[this.statusModule]
       if (moduleStatusMap) {
         if (moduleStatusMap[this.changedStatus || this.status]) {
-          return this.$t(`status.${this.statusModule}.${this.changedStatus || this.status}`)
+          return this.$te(`scopeStatus.${this.statusModule}.${this.changedStatus || this.status}`) ? this.$t(`scopeStatus.${this.statusModule}.${this.changedStatus || this.status}`) : this.$t(`status.${this.statusModule}.${this.changedStatus || this.status}`)
         }
       }
       if (statusMap.common[this.changedStatus || this.status]) {
@@ -109,7 +110,7 @@ export default {
       const moduleStatusMap = statusMap[this.statusModule]
       if (moduleStatusMap) {
         if (moduleStatusMap[this.status]) {
-          return this.$t(`status.${this.statusModule}.${this.status}`)
+          return this.$te(`scopeStatus.${this.statusModule}.${this.status}`) ? this.$t(`scopeStatus.${this.statusModule}.${this.status}`) : this.$t(`status.${this.statusModule}.${this.status}`)
         }
       }
       if (statusMap.common[this.status]) {
