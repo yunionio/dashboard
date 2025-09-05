@@ -1348,7 +1348,7 @@
     "url": "Please enter a valid URL",
     "resourceName": "2-128 characters, contains letters, digits, hyphens ‘-’, start with a letter and can't end with ‘-’.",
     "password": "At least 8 characters, must have at least one of uppercase and lowercase letters and digits",
-    "publicKey": "Invalid public key, only supports RSA type public key",
+    "publicKey": "Invalid public key, only supports RSA/ED25519/ECDSA type public key",
     "secretKeyName": "Start with a letter, followed by a combination of letters, digits, and ._@- characters",
     "snapshotName": "At the beginning of a letter, a combination of numbers and letters, with a length of 2-128 characters, including '.,-_",
     "cidr": "Please enter a valid IPv4 CIDR",

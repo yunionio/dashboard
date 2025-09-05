@@ -118,7 +118,7 @@ export const REGEXP = {
   },
   publicKey: {
     func: value => {
-      if (value.startsWith('ssh-rsa') || value.startsWith('ssh-dss')) {
+      if (value.startsWith('ssh-rsa') || value.startsWith('ecdsa-sha2-') || value.startsWith('ssh-ed25519')) {
         return true
       }
       return false
