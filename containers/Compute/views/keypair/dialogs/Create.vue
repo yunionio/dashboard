@@ -23,6 +23,13 @@
         <a-form-item :label="$t('compute.text_725')" v-bind="formItemLayout" v-if="createType === 'old'">
           <a-textarea v-decorator="decorators.public_key" :placeholder="$t('compute.text_729')" :rows="4" />
         </a-form-item>
+        <a-form-item :label="$t('common_56')" v-bind="formItemLayout" v-if="createType !== 'old'">
+          <a-radio-group v-decorator="decorators.scheme">
+            <a-radio-button value="RSA">RSA</a-radio-button>
+            <a-radio-button value="ECDSA">ECDSA</a-radio-button>
+            <a-radio-button value="ED25519">ED25519</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -91,6 +98,13 @@ export default {
               { required: true, message: this.$t('compute.text_729') },
               { validator: this.$validate('publicKey') },
             ],
+          },
+        ],
+        scheme: [
+          'scheme',
+          {
+            initialValue: 'RSA',
+            rules: [{ required: true }],
           },
         ],
       },
