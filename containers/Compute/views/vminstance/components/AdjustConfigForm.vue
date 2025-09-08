@@ -515,6 +515,7 @@ export default {
         enabled: true,
         cpu_core_count: this.form.fd.vcpu || this.decorators.vcpu[1].initialValue,
         memory_size_mb: this.form.fd.vmem || this.decorators.vmem[1].initialValue,
+        cpu_arch: this.selectedItem.os_arch,
       }
       if (this.type === SERVER_TYPE.idc) {
         params.provider = HYPERVISORS_MAP.kvm.provider
