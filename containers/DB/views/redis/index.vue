@@ -31,7 +31,7 @@ export default {
   data () {
     return {
       listId: 'RedisList',
-      cloudEnvOptions: getCloudEnvOptions('redis_brands'),
+      cloudEnvOptions: getCloudEnvOptions('redis_engine_brands'),
       cloudEnv: '',
       statusNormalList: ['running'],
     }
