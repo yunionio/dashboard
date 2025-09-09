@@ -1,7 +1,7 @@
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import SystemIcon from '@/sections/SystemIcon'
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getNameDescriptionTableColumn, getTagTableColumn, getRegionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getProjectTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getNameDescriptionTableColumn, getTagTableColumn, getRegionTableColumn, getTimeTableColumn, getBrandTableColumn, getAccountTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 export default {
@@ -76,6 +76,7 @@ export default {
         },
         hidden: () => this.$store.getters.isProjectMode,
       }),
+      getBrandTableColumn(),
       {
         field: 'host_sn',
         title: 'SN',
@@ -84,6 +85,7 @@ export default {
       },
       getProjectTableColumn(),
       getRegionTableColumn(),
+      getAccountTableColumn(),
       getTimeTableColumn(),
     ]
   },
