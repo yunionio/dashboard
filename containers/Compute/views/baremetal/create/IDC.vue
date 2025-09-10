@@ -6,7 +6,7 @@
       @submit="handleConfirm">
       <a-divider orientation="left">{{$t('compute.text_300')}}</a-divider>
       <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" v-bind="formItemLayout">
-        <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" :project.sync="projectId" />
+        <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" :project.sync="projectId" :domain.sync="domainId" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_177')" class="mb-0" v-bind="formItemLayout" v-if="!isInstallOperationSystem">
         <cloudregion-zone
@@ -567,6 +567,7 @@ export default {
       isSupportIso: false,
       project_domain: '',
       projectId: '',
+      domainId: '',
       osSelectImageType: 'standard',
       wires: [],
     }
@@ -1292,7 +1293,7 @@ export default {
             initiator: this.$store.getters.userInfo.id,
             'server-create-paramter': JSON.stringify(params),
             project: this.projectId.key,
-            project_domain: this.projectDomainId.key,
+            project_domain: this.domainId.key,
           }
           this.doCreateWorkflow(variables, params)
         } else { // 创建裸金属
