@@ -186,10 +186,7 @@ export default {
       if (this.dimension.scope === 'system') {
         if (this.isLineChart) { return [{ type: 'tag', params: [metric.field] }] }
       }
-
-      if ((this.dimension.scope === 'system' || this.dimension.scope === 'domain') && this.dimension.name === 'tenant') {
-        ret.push({ type: 'field', params: ['project_domain'] })
-      } else if (this.dimension.scope === 'project' && this.dimension.name !== 'tenant') {
+      if (this.dimension.name === 'tenant') {
         ret.push({ type: 'field', params: ['tenant'] })
       } else {
         ret.push({ type: 'field', params: [this.dimension.name] })
@@ -273,6 +270,13 @@ export default {
       if (['system', 'project_domain', 'tenant'].indexOf(this.dimension.name) >= 0) {
         namecolumn.slots = {
           default: ({ row }, h) => {
+            if (!row[this.dimension.id]) {
+              return [h('span', {
+                domProps: {
+                  innerHTML: row[this.dimension.name] || '-',
+                },
+              })]
+            }
             return [h('a', {
               domProps: {
                 innerHTML: row[this.dimension.name] || '-',
@@ -505,14 +509,17 @@ export default {
           if (ids.indexOf(row.id) < 0) {
             return
           }
-
-          if (!tr[row.id]) {
-            tr[row.id] = {}
-            tr[row.id][namecolumn.field] = row.name
-            tr[row.id].tags = row.tags
-            tr[row.id].cloud_tags = row.cloud_tags
+          const id = row.id || row.name
+          if (!tr[id]) {
+            tr[id] = {}
+            tr[id][namecolumn.field] = row.name
+            tr[id].tags = row.tags
+            tr[id].cloud_tags = row.cloud_tags
+            if (row.tags?.[this.dimension.id] || row.cloud_tags?.[this.dimension.id]) {
+              tr[id][this.dimension.id] = row.tags?.[this.dimension.id] || row.cloud_tags?.[this.dimension.id]
+            }
           }
-          tr[row.id][column] = row.value
+          tr[id][column] = row.value
         })
       }
       for (const r in tr) {

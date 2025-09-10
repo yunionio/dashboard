@@ -706,9 +706,7 @@ export default {
     groupBy (field) {
       const ret = []
 
-      if ((this.dimension.scope === 'system' || this.dimension.scope === 'domain') && this.dimension.name === 'tenant') {
-        ret.push({ type: 'field', params: ['project_domain'] })
-      } else if (this.dimension.scope === 'project' && this.dimension.name !== 'tenant') {
+      if (this.dimension.name === 'tenant') {
         ret.push({ type: 'field', params: ['tenant'] })
       } else {
         ret.push({ type: 'field', params: [this.dimension.name] })
