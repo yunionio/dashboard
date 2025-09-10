@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import * as R from 'ramda'
 // import HostList from '@Compute/views/host/components/List'
 import GpuList from '@Compute/views/gpu/components/List'
 import ScheduledtasksList from '@Cloudenv/views/scheduledtask/components/List'
@@ -98,25 +97,25 @@ export default {
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
     ]
     if (!hasPermission({ key: 'guestsecgroups_list' }) || isScopedPolicyMenuHidden('server_hidden_columns.secgroups')) {
-      detailTabs = R.remove(R.findIndex(R.propEq('key', 'secgroup-list'))(detailTabs), 1, detailTabs)
+      detailTabs = detailTabs.filter(item => item.key !== 'secgroup-list')
     }
     if (!hasPermission({ key: 'guestnetworks_list' }) || isScopedPolicyMenuHidden('server_hidden_columns.ips')) {
-      detailTabs = R.remove(R.findIndex(R.propEq('key', 'network-list-for-vm-instance-sidepage'))(detailTabs), 1, detailTabs)
+      detailTabs = detailTabs.filter(item => item.key !== 'network-list-for-vm-instance-sidepage')
     }
     if (!hasPermission({ key: 'guestdisks_list' }) || isScopedPolicyMenuHidden('server_hidden_columns.disk')) {
-      detailTabs = R.remove(R.findIndex(R.propEq('key', 'disk-list-for-vm-instance-sidepage'))(detailTabs), 1, detailTabs)
+      detailTabs = detailTabs.filter(item => item.key !== 'disk-list-for-vm-instance-sidepage')
     }
     if (!hasPermission({ key: 'eip_list' })) {
-      detailTabs = R.remove(R.findIndex(R.propEq('key', 'eip-list-for-vm-instance-sidepage'))(detailTabs), 1, detailTabs)
+      detailTabs = detailTabs.filter(item => item.key !== 'eip-list-for-vm-instance-sidepage')
     }
     if (this.$store.getters.isProjectMode) {
-      detailTabs = R.remove(R.findIndex(R.propEq('key', 'gpu-list'))(detailTabs), 1, detailTabs)
+      detailTabs = detailTabs.filter(item => item.key !== 'gpu-list')
     }
     if (isScopedPolicyMenuHidden('sub_hidden_menus.disk_snapshot') && isScopedPolicyMenuHidden('sub_hidden_menus.instance_snapshot')) {
-      detailTabs = R.remove(R.findIndex(R.propEq('key', 'vm-snapshot-sidepage'))(detailTabs), 1, detailTabs)
+      detailTabs = detailTabs.filter(item => item.key !== 'vm-snapshot-sidepage')
     }
     if (isScopedPolicyMenuHidden('sub_hidden_menus.scheduledtask')) {
-      detailTabs = R.remove(R.findIndex(R.propEq('key', 'scheduledtasks-list'))(detailTabs), 1, detailTabs)
+      detailTabs = detailTabs.filter(item => item.key !== 'scheduledtasks-list')
     }
     return {
       detailTabs,
@@ -272,10 +271,10 @@ export default {
   methods: {
     initHiddenTab () {
       if (this.listRowData.brand !== 'OneCloud') {
-        this.detailTabs = R.remove(R.findIndex(R.propEq('key', 'gpu-list'))(this.detailTabs), 1, this.detailTabs)
+        this.detailTabs = this.detailTabs.filter(item => item.key !== 'gpu-list')
       }
       if (this.listRowData.brand === 'VolcEngine') {
-        this.detailTabs = R.remove(R.findIndex(R.propEq('key', 'vm-snapshot-sidepage'))(this.detailTabs), 1, this.detailTabs)
+        this.detailTabs = this.detailTabs.filter(item => item.key !== 'vm-snapshot-sidepage')
       }
     },
     initChangeTab () {
