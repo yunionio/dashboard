@@ -504,7 +504,7 @@ export default {
                 unit = 'intms'
               }
               const list = ticks.map(item => {
-                const val = transformUnit(item, unit, 1000, item < 1 ? '0.00' : '0.0')
+                const val = transformUnit(item, unit, 1000, item < 100 ? '0.00' : '0.0')
                 return val.text > 10000000 ? val.text / 10000 + 'w' : val.text
               })
               return list
