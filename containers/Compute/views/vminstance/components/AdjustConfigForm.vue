@@ -149,7 +149,7 @@ import {
 import { findPlatform, diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
 import { isRequired } from '@/utils/validate'
 import { sizestr } from '@/utils/utils'
-import { STORAGE_TYPES } from '@/constants/compute'
+import { STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
 import DiscountPrice from '@/sections/DiscountPrice'
 
 export default {
@@ -515,7 +515,6 @@ export default {
         enabled: true,
         cpu_core_count: this.form.fd.vcpu || this.decorators.vcpu[1].initialValue,
         memory_size_mb: this.form.fd.vmem || this.decorators.vmem[1].initialValue,
-        cpu_arch: this.selectedItem.os_arch,
       }
       if (this.type === SERVER_TYPE.idc) {
         params.provider = HYPERVISORS_MAP.kvm.provider
@@ -544,6 +543,13 @@ export default {
           params.postpaid_status = 'available'
         } else if (this.selectedItem.billing_type === 'prepaid') {
           params.prepaid_status = 'available'
+        }
+      }
+      if (this.selectedItem.os_arch) {
+        if (this.selectedItem.os_arch.includes('x86')) {
+          params.cpu_arch = HOST_CPU_ARCHS.x86.key
+        } else if (this.selectedItem.os_arch.includes('arm') || this.selectedItem.os_arch.includes('aarch64')) {
+          params.cpu_arch = HOST_CPU_ARCHS.arm.key
         }
       }
       return params
@@ -784,18 +790,7 @@ export default {
   methods: {
     skuFilter (items) {
       if (!items) return []
-      let os_arch = R.path(['metadata', 'sys:os_arch'], this.selectedItem)
-      return items.filter(item => {
-        if (os_arch) {
-          os_arch = os_arch.toLowerCase()
-          if (os_arch === 'aarch64') {
-            return item.cpu_arch === 'aarch64'
-          } else if (os_arch.indexOf('x86') >= 0) {
-            return item.cpu_arch && item.cpu_arch.indexOf('x86') >= 0
-          }
-        }
-        return true
-      })
+      return items
     },
     async loadData (data) {
       this.data = data
