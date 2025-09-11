@@ -86,7 +86,7 @@
           </a-col>
         </a-row>
       </a-form-item>
-      <a-form-item v-if="enableEncryption" v-bind="formItemLayout" :label="$t('compute.disk.encryption')" :extra="$t('compute.disk.encryption.extra')">
+      <a-form-item v-if="enableEncryption && !isPublic" v-bind="formItemLayout" :label="$t('compute.disk.encryption')" :extra="$t('compute.disk.encryption.extra')">
         <encrypt-keys :decorators="decorators.encrypt_keys" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0" v-bind="formItemLayout">
