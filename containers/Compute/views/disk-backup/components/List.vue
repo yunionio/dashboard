@@ -106,7 +106,7 @@ export default {
               columns: this.columns,
               onManager: this.onManager,
               title: this.$t('compute.perform_delete'),
-              name: this.$t('compute.text_462'),
+              name: this.$t('compute.disk_backup'),
             })
           },
           meta: () => {
