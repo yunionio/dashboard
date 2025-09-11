@@ -50,6 +50,7 @@ export default {
       getAccountTableColumn(),
       getProjectTableColumn(),
       getTimeTableColumn(),
+      getTimeTableColumn({ field: 'end_date', title: this.$t('network.ssl_certificate.end_date') }),
     ]
   },
 }
