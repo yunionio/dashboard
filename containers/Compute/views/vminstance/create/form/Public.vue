@@ -275,6 +275,9 @@ export default {
         ...this.cloudregionZoneParams,
         ...this.scopeParams,
       }
+      if (this.isGoogle) {
+        params.show_emulated = true
+      }
       return params
     },
     providerParams () {
