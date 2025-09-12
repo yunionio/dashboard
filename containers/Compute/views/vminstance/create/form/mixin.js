@@ -314,7 +314,7 @@ export default {
         manager_id: this.form.fd.cloudprovider,
         ...this.scopeParams,
       }
-      if (this.isZStack || this.isInCloudSphere || this.isPve) {
+      if (this.isZStack || this.isInCloudSphere || this.isPve || this.isGoogle) {
         params.show_emulated = true
       }
       if (zone) {
@@ -379,6 +379,9 @@ export default {
     },
     isPve () {
       return this.form.fd.hypervisor === HYPERVISORS_MAP.proxmox.key
+    },
+    isGoogle () {
+      return this.form.fd.hypervisor === HYPERVISORS_MAP.google.key || this.hypervisor === HYPERVISORS_MAP.google.key
     },
     showServerAccount () {
       return this.form.fd.loginType !== LOGIN_TYPES_MAP.image.key
