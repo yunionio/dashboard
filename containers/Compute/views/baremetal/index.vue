@@ -21,6 +21,7 @@
 
 <script>
 import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
+import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import BaremetalList from './components/List'
 
 export default {
@@ -32,11 +33,13 @@ export default {
   data () {
     return {
       listId: 'BaremetalList',
-      cloudEnvOptions: [
-        { key: '', label: this.$t('compute.text_4') },
-      ],
       cloudEnv: '',
     }
+  },
+  computed: {
+    cloudEnvOptions: () => {
+      return getCloudEnvOptions('compute_engine_brands').filter(val => ['', 'onpremise', 'private'].includes(val.key))
+    },
   },
 }
 </script>

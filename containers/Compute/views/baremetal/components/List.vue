@@ -17,7 +17,7 @@
 <script>
 import * as R from 'ramda'
 import { disableDeleteAction } from '@/utils/common/tableActions'
-import { getNameFilter, getTenantFilter, getStatusFilter, getOsTypeFilter, getDomainFilter, getRegionFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getStatusFilter, getOsTypeFilter, getDomainFilter, getRegionFilter, getDescriptionFilter, getCreatedAtFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
@@ -40,6 +40,7 @@ export default {
       type: Array,
       default: () => ([]),
     },
+    hostInfo: Object,
   },
   data () {
     const filterOptions = {
@@ -67,6 +68,8 @@ export default {
         label: this.$t('res.machine'),
         hidden: () => this.$store.getters.isProjectMode,
       },
+      brand: getBrandFilter(),
+      account: getAccountFilter(),
       region: getRegionFilter(),
       zone: {
         label: this.$t('res.zone'),
@@ -99,6 +102,7 @@ export default {
               path: '/baremetal/create',
               query: {
                 type: 'baremetal',
+                cloud_env: this.hostInfo?.brand === 'Cloudpods' ? 'private' : 'onpremise',
               },
             })
           },
