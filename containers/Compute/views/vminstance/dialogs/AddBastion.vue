@@ -58,6 +58,8 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
+        values.accounts = [values.privileged_accounts].concat(values.accounts)
+        delete values.privileged_accounts
         await new this.$Manager('bastion_servers').create({
           data: {
             ...values,
