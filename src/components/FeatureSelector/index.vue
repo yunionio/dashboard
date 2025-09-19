@@ -169,7 +169,8 @@ export const LicenseFeatures = {
       return this.selectedItems.indexOf(item.value) >= 0
     },
     _groupChecked (groupItems) {
-      return R.all(this._itemChecked, groupItems)
+      const items = groupItems.filter(item => !item.licenseDisabled)
+      return R.all(this._itemChecked, items)
     },
     addItem (item) {
       this._updateSelectedItems([...this.selectedItems, item])
