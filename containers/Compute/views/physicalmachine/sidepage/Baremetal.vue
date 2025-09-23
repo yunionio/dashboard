@@ -3,7 +3,8 @@
   <baremetal-list
     :hiddenFilterOptions="['host']"
     :id="id"
-    :getParams="getParams" />
+    :getParams="getParams"
+    :hostInfo="hostInfo" />
 </template>
 
 <script>
@@ -17,6 +18,7 @@ export default {
   props: {
     id: String,
     getParams: [Function, Object],
+    hostInfo: Object,
   },
 }
 </script>
