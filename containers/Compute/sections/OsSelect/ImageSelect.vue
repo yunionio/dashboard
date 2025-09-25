@@ -194,6 +194,14 @@ export default {
       return params
     },
     storageImage () {
+      const initImageOs = this.decorator.os[1].initialValue
+      const initImage = this.decorator.image[1].initialValue
+      if (initImageOs && initImage) {
+        return {
+          os: initImageOs,
+          image: initImage,
+        }
+      }
       if (this.storageSelectImage) {
         const [os, image] = this.storageSelectImage.split(':')
         if (os && image) {
@@ -734,7 +742,11 @@ export default {
       return images || []
     },
     fillImageOpts () {
-      const lastSelectedImageInfo = storage.get('oc_selected_image') || {}
+      let lastSelectedImageInfo = storage.get('oc_selected_image') || {}
+      // 默认值
+      if (this.decorator.os[1].initialValue && this.decorator.image[1].initialValue) {
+        lastSelectedImageInfo = { ...lastSelectedImageInfo, imageOs: this.decorator.os[1].initialValue, imageId: this.decorator.image[1].initialValue.key }
+      }
       const { imageOs = lastSelectedImageInfo.imageOs, imageId = lastSelectedImageInfo.imageId } = this.$route.query
 
       if (imageOs) {

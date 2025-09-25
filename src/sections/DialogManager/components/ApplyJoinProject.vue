@@ -28,8 +28,9 @@ export default {
   name: 'ApplyJoinProjectDialog',
   mixins: [workflowMixin, DialogMixin, WindowsMixin],
   data () {
+    const { formData = {}, type } = this.params
     return {
-      title: `${this.$t('common.text00073')}${this.$t('dictionary.project')}`,
+      title: type === 'modifyWorkflow' ? this.$t('common.modify_workflow') + `(${this.$t('common.text00073')}${this.$t('dictionary.project')})` : `${this.$t('common.text00073')}${this.$t('dictionary.project')}`,
       loading: false,
       formItemLayout: {
         wrapperCol: {
@@ -43,7 +44,7 @@ export default {
         fc: this.$form.createForm(this),
       },
       decorators: {
-        desc: ['desc', { rules: [{ required: true, message: this.$t('common.text00074') }] }],
+        desc: ['desc', { initialValue: formData.description || '', rules: [{ required: true, message: this.$t('common.text00074') }] }],
       },
     }
   },
@@ -62,7 +63,12 @@ export default {
         paramter: JSON.stringify({ domain: this.userInfo.domain.id }),
         description: values.desc,
       }
-      await this.createWorkflow(variables)
+      if (this.type === 'modifyWorkflow') {
+        await this.updateWorkflow(variables, this.params.workflow)
+        this.params.success && this.params.success()
+      } else {
+        await this.createWorkflow(variables)
+      }
       this.$message.success(this.$t('common.text00075'))
       if (this.params.success) {
         this.params.success()

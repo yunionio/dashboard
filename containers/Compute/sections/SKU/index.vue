@@ -119,6 +119,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    initSkuData: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
@@ -368,6 +372,12 @@ export default {
             chooseSku = this.dataSku
             this.unfindTip = this.dataSku?.name
           }
+        }
+      }
+      if (!isSkuChange && this.initSkuData?.name && this.skuList.some(item => item.name && item.name === this.initSkuData?.name)) {
+        const sku = this.skuList.find(item => item.name && item.name === this.initSkuData?.name)
+        if (sku) {
+          chooseSku = sku
         }
       }
       this.$nextTick(() => {

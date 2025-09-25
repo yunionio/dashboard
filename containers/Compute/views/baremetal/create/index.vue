@@ -1,7 +1,7 @@
 <template>
   <div>
-    <page-header :title="isInstallOperationSystem ? $t('compute.text_298') : $t('compute.text_299')" :current-tab.sync="createCloudEnv" :tabs="cloudEnvOptions" />
-    <component :is="createCloudEnv" />
+    <page-header :title="title" :current-tab.sync="createCloudEnv" :tabs="cloudEnvOptions" />
+    <component :is="createCloudEnv" :cloudEnv="createCloudEnv" :initFormData="initFormData" :isInitForm="isInitForm" />
   </div>
 </template>
 <script>
@@ -25,13 +25,21 @@ export default {
     },
   },
   data () {
+    const paramsData = this.$route.params?.data || {}
     return {
-      createCloudEnv: this.$route.query.cloud_env || 'onpremise',
+      createCloudEnv: this.$route.query.cloud_env || this.$route.query.type || 'onpremise',
+      initFormData: paramsData,
     }
   },
   computed: {
     cloudEnvOptions: () => {
       return getCloudEnvOptions('compute_engine_brands').filter(val => ['onpremise', 'private'].includes(val.key))
+    },
+    isInitForm () {
+      return !!this.initFormData?.extraData?.formType && this.$route.query.workflow
+    },
+    title () {
+      return this.isInstallOperationSystem ? this.$t('compute.text_298') : (this.isInitForm ? this.$t('compute.text_299') + `(${this.$t('common.modify_workflow')})` : this.$t('compute.text_299'))
     },
   },
   watch: {

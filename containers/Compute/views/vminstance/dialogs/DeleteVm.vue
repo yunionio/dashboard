@@ -1,13 +1,13 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('compute.perform_delete')}}</div>
+    <div slot="header">{{formType === 'modifyWorkflow' ? this.$t('common.modify_workflow') + `(${$t('compute.perform_delete')})` : $t('compute.perform_delete')}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <div slot="message">{{$t('compute.text_1392')}}</div>
         <div v-if="isSomePrepaid" slot="message" class="mt-2">{{$t('compute.prepaid_delete_server.alert')}}</div>
       </a-alert>
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="this.params.title" />
-      <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-selected-tips :name="params.name || $t('dictionary.server')" :count="dataList.length" :action="this.params.title || (formType === 'modifyWorkflow' ? this.$t('common.modify_workflow') + `(${$t('compute.perform_delete')})` : $t('compute.perform_delete'))" />
+      <dialog-table v-if="columns.length" :data="dataList" :columns="columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
         <a-form-item :label="$t('compute.text_1041')" v-bind="formItemLayout" v-if="isOpenWorkflow">
@@ -81,6 +81,7 @@ import WindowsMixin from '@/mixins/windows'
 import WorkflowMixin from '@/mixins/workflow'
 import { BATCH_OPERATE_SERVERS_MAX } from '@/constants/workflow'
 import { findPlatform } from '@/utils/common/hypervisor'
+import { getNameDescriptionTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 
 const canDeleteBrandList = ['OneCloud', 'VMware', 'OpenStack', 'ZStack', 'DStack', 'Aliyun', 'Huawei', 'Qcloud', 'Aws', 'Azure', 'Google', 'HCSO', 'HCS']
 const deleteEipLimit = {
@@ -125,20 +126,20 @@ export default {
   name: 'DeleteVmDialog',
   mixins: [DialogMixin, WindowsMixin, WorkflowMixin],
   data () {
-    const isVmware = this.params.data[0].hypervisor === 'esxi'
+    const { type, formData = {} } = this.params
     return {
       loading: false,
-      disableDelete: isVmware,
+      formType: type,
       snapshotList: [],
       // diskList: [],
       form: {
         fc: this.$form.createForm(this),
         fd: {
-          autoDelete: false,
-          deleteEip: false,
-          deleteSnapshot: false,
-          deleteDisk: false,
-          delete_bastion_server: false,
+          autoDelete: formData.auto_delete || false,
+          deleteEip: formData.delete_eip || false,
+          deleteSnapshot: formData.delete_snapshots || false,
+          deleteDisk: formData.delete_disks || false,
+          delete_bastion_server: formData.delete_bastion_server || false,
         },
       },
       decorators: {
@@ -146,13 +147,13 @@ export default {
           'autoDelete',
           {
             valuePropName: 'checked',
-            initialValue: isVmware,
+            initialValue: false,
           },
         ],
         reason: [
           'reason',
           {
-            initialValue: '',
+            initialValue: formData.reason || '',
           },
         ],
       },
@@ -170,22 +171,26 @@ export default {
           offset: 5,
         },
       },
+      dataList: [],
     }
   },
   computed: {
     ...mapGetters(['isAdminMode', 'userInfo']),
+    isVmware () {
+      return this.dataList[0].hypervisor === 'esxi'
+    },
     type () {
-      const brand = this.params.data[0].brand
+      const brand = this.dataList[0].brand
       return findPlatform(brand)
     },
     isShowAutoDelete () {
-      const isSomeCanDelete = this.params.data.some((item) => {
+      const isSomeCanDelete = this.dataList.some((item) => {
         return canDeleteBrandList.indexOf(item.brand) !== -1
       })
       return isSomeCanDelete
     },
     isShowDeleteBastionServer () {
-      return this.params.data.some(item => item.metadata?.bastion_server)
+      return this.dataList.some(item => item.metadata?.bastion_server)
     },
     deleteEipLimit () {
       const result = {
@@ -193,7 +198,7 @@ export default {
         mustDelete: false,
         tip: '',
       }
-      this.params.data.map((item) => {
+      this.dataList.map((item) => {
         if (deleteEipLimit[item.brand] && deleteEipLimit[item.brand].support === false) {
           result.support = false
           result.tip = deleteEipLimit[item.brand].tip
@@ -207,7 +212,7 @@ export default {
         mustDelete: false,
         tip: '',
       }
-      this.params.data.map((item) => {
+      this.dataList.map((item) => {
         if ((deleteSnapshotLimit[item.brand] && deleteSnapshotLimit[item.brand].mustDeleteOnBrand) || (deleteSnapshotLimit[item.brand] && deleteSnapshotLimit[item.brand].mustDeleteOnCeph && this.checkDiskType(item, 'rbd'))) {
           result.mustDelete = true
           result.tip = deleteSnapshotLimit[item.brand].tip
@@ -221,7 +226,7 @@ export default {
         mustDelete: false,
         tip: '',
       }
-      this.params.data.map((item) => {
+      this.dataList.map((item) => {
         if ((deleteDiskLimit[item.brand] && deleteDiskLimit[item.brand].mustDeleteOnBrand) || (deleteDiskLimit[item.brand] && deleteDiskLimit[item.brand].mustDeleteOnLocalDisk && this.checkDiskType(item, 'local'))) {
           result.mustDelete = true
           result.tip = deleteDiskLimit[item.brand].tip
@@ -236,26 +241,45 @@ export default {
       return this.isOpenWorkflow ? this.$t('compute.text_288') : this.$t('dialog.ok')
     },
     disableToolTip () {
-      if (this.disableDelete) {
+      if (this.isVmware) {
         return this.$t('compute.disable_delete_snapshot_tooltip')
       }
       return ''
     },
     isSomePrepaid () {
-      return this.params.data.some(item => item.billing_type === 'prepaid')
+      return this.dataList.some(item => item.billing_type === 'prepaid')
+    },
+    columns () {
+      if (this.formType === 'modifyWorkflow') {
+        return [getNameDescriptionTableColumn(), getStatusTableColumn({ statusModule: 'server' })]
+      }
+      return this.params.columns || []
     },
   },
+  created () {
+    this.initData()
+  },
   methods: {
+    async initData () {
+      if (this.formType === 'modifyWorkflow' && this.params.ids) {
+        const list = await new this.$Manager('servers', 'v2').batchGet({
+          id: this.params.ids,
+        })
+        this.dataList = list.data?.data || []
+      } else {
+        this.dataList = this.params.data || []
+      }
+    },
     async handleConfirm () {
       this.loading = true
       try {
         if (this.isOpenWorkflow) {
-          if (this.params.data.length > BATCH_OPERATE_SERVERS_MAX) {
+          if (this.dataList.length > BATCH_OPERATE_SERVERS_MAX) {
             this.$message.error(this.$t('compute.workflow.operate_servers_check.message', [this.$t('compute.perform_delete'), BATCH_OPERATE_SERVERS_MAX]))
             this.loading = false
             return
           }
-          const projects = new Set(this.params.data.map(item => item.tenant_id))
+          const projects = new Set(this.dataList.map(item => item.tenant_id))
           if (projects.size > 1) {
             this.$message.error(this.$t('compute.text_1348'))
             this.loading = false
@@ -273,16 +297,22 @@ export default {
       }
     },
     async handleDeleteByWorkflowSubmit () {
-      const ids = this.params.data.map(item => item.id)
+      const ids = this.dataList.map(item => item.id)
       const values = await this.form.fc.validateFields()
       const variables = {
-        project: this.params.data[0].tenant_id,
-        project_domain: this.params.data[0].domain_id,
+        project: this.dataList[0].tenant_id,
+        project_domain: this.dataList[0].domain_id,
         process_definition_key: this.WORKFLOW_TYPES.APPLY_SERVER_DELETE,
         initiator: this.userInfo.id,
         ids: ids.join(','),
         description: values.reason,
         paramter: JSON.stringify(this.getFormParams()),
+      }
+      if (this.formType === 'modifyWorkflow') {
+        await this.updateWorkflow(variables, this.params.workflow)
+        this.params.success && this.params.success()
+      } else {
+        await this.createWorkflow(variables)
       }
       await this.createWorkflow(variables)
       this.$message.success(this.$t('compute.text_1214'))
@@ -308,7 +338,7 @@ export default {
       if (this.params.ok) {
         await this.params.ok()
       } else {
-        const ids = this.params.data.map(item => item.id)
+        const ids = this.dataList.map(item => item.id)
         await this.form.fc.validateFields()
         let params = {}
         params = {
