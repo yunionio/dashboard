@@ -2890,7 +2890,8 @@
     "menu_iam_security": "Certification and Security",
     "menu_system_config": "System Configuration",
     "global_topology": "Global topology",
-    "k8s": "K8S"
+    "k8s": "K8S",
+    "server_container": "Pod"
   },
   "originDictionary": {},
   "res": {
@@ -6209,5 +6210,13 @@
   "common.pem_certificate.placeholder": "Please paste the certificate, as shown in the following lines:\n-----BEGIN CERTIFICATE-----\nQmFzZTY0IGVuY29kZWQgY2VydGlmaWNhdGUgZGF0YSBleGlzdHMgaGVyZQ==\n-----END CERTIFICATE-----",
   "common.pem_private_key.placeholder": "Please paste the private key, as shown in the following lines:\n-----BEGIN PRIVATE KEY-----\nQmFzZTY0IGVuY29kZWQgc2VjcmV0IGtleSBleGlzdHMgaGVyZQ==\n-----END PRIVATE KEY-----",
   "common.switch_to_input": "Switch to input",
-  "common.switch_to_select": "Switch to select"
+  "common.switch_to_select": "Switch to select",
+  "common.modify_workflow": "Modify Workflow",
+  "common.current_quota": "Current Quota",
+  "common.new_quota": "Apply Quota",
+  "common.workflow_disabled_tip": "This type of workflow does not support this operation",
+  "common.workflow_disabled_tip2": "Workflows that have not been approved support this operation",
+  "common.workflow_disabled_tip3": "This type of workflow has not enabled the approval process, please go to the workflow configuration to enable it",
+  "common.add_resource_from_shopcart": "Add resource from shopping cart",
+  "common.delete_resource_from_shopcart_tip": "This operation will remove the resource from the workflow, confirm this operation?"
 }

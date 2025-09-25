@@ -37,7 +37,7 @@
               </div>
             </div>
           </div>
-          <a-dropdown-button
+          <!-- <a-dropdown-button
             v-if="$appConfig.isPrivate && !$store.getters.isSysCE && hasCartPermission"
             :title="confirmText"
             class="text-truncate"
@@ -54,9 +54,8 @@
               </a-menu-item>
             </a-menu>
             <a-icon slot="icon" type="down" />
-          </a-dropdown-button>
+          </a-dropdown-button> -->
           <a-button
-            v-else
             :title="confirmText"
             class="text-truncate"
             type="primary"

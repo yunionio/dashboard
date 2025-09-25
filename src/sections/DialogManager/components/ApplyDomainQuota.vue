@@ -7,7 +7,8 @@
           <quota-set-to-workflow
             ref="quotaSetRef"
             sence="domain"
-            :domain="userInfo.domain.id" />
+            :domain="userInfo.domain.id"
+            :defaultValue="params.formData || {}" />
         </a-form-item>
       </a-form>
     </div>

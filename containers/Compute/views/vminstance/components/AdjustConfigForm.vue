@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('compute.text_1100')" style="margin-bottom: 7px;" />
+    <page-header :title="title" style="margin-bottom: 7px;" />
     <a-alert class="mb-2" type="warning" v-if="tips">
       <div slot="message">
         {{ tips }}
@@ -431,6 +431,9 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
+    title () {
+      return this.isOpenWorkflow ? `${this.$t('compute.text_1100')} ${this.$route.query.workflow ? `(${this.$t('common.modify_workflow')})` : ''}` : this.$t('compute.text_1100')
+    },
     scopeParams () {
       if (this.$store.getters.isAdminMode) {
         return {
@@ -667,7 +670,7 @@ export default {
       return diskValueArr.reduce((prevDisk, diskValue) => prevDisk + diskValue, 0)
     },
     confirmText () {
-      return this.isOpenWorkflow ? this.$t('compute.text_288') : this.$t('compute.text_907')
+      return this.isOpenWorkflow ? (this.$route.query.workflow ? this.$t('common.modify_workflow') : this.$t('compute.text_288')) : this.$t('compute.text_907')
     },
     cpuExtra () {
       if (this.runningArm) {
@@ -942,7 +945,11 @@ export default {
         serverConf: JSON.stringify(serverConf),
         description: values.reason,
       }
-      await this.createWorkflow(variables)
+      if (this.$route.query.workflow) {
+        await this.updateWorkflow(variables, this.$route.query.workflow)
+      } else {
+        await this.createWorkflow(variables)
+      }
       this.$message.success(this.$t('compute.text_1109'))
       this.$router.push('/workflow')
     },
