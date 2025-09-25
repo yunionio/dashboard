@@ -6,6 +6,7 @@
       :filterable="true"
       resource="robots"
       version="v1"
+      :params="getParams"
       :select-props="{ placeholder: placeholder, allowClear: true, mode: 'multiple' }" />
   </a-form-item>
 </template>
