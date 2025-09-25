@@ -17,6 +17,7 @@
           :fc="form.fc"
           :fd="form.fd"
           :decorators="{ project: decorators.project, domain: decorators.domain }"
+          :ignoreStorage="isInitForm"
           @fetchDomainCallback="fetchDomainCallback"
           @fetchProjectCallback="fetchProjectCallback" />
       </a-form-item>
@@ -65,7 +66,7 @@
         <pci :decorators="decorators.pci" :pciDevTypeOptions="pciDevTypeOptions" :form="form" :pci-options="pciOptions" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1058')" class="mb-0">
-        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :showUnlimited="true" :form="form" :hypervisor="form.fd.hypervisor" @change="cpuChange" />
+        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :showUnlimited="true" :form="form" :hypervisor="form.fd.hypervisor" :showCpuSocketsInit="form.fd.hypervisor === 'esxi' && initFormData.hypervisor === 'esxi' && initFormData.cpu_sockets" :cpuSocketsInit="initFormData.cpu_sockets" @change="cpuChange" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_369')" class="mb-0">
         <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :showUnlimited="true" />
@@ -95,6 +96,7 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_49')" class="mb-0">
         <system-disk
+          ref="systemDiskRef"
           v-if="form.fd.hypervisor"
           :decorator="decorators.systemDisk"
           :isServertemplate="isServertemplate"
@@ -135,6 +137,7 @@
           :storageParams="dataDiskStorageParams"
           :storageHostParams="storageHostParams"
           :isAutoResetShow="isKvm"
+          :isInitForm="isInitForm"
           @storageHostChange="storageHostChange" />
         <div slot="extra" class="warning-color" v-if="isStorageShow && form.fi.imageType !== 'backup' && form.fi.imageType !== 'snapshot'">{{ $t('compute.select_storage_no_schetag') }}</div>
       </a-form-item>
@@ -146,6 +149,7 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_104')" class="mb-0">
         <server-network
+          ref="networkRef"
           :form="form"
           :isServertemplate="isServertemplate"
           :decorator="decorators.network"
@@ -162,12 +166,13 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
-          v-decorator="decorators.tag" />
+          v-decorator="decorators.tag" :default-checked="tagDefaultChecked" />
       </a-form-item>
       <!-- <a-divider orientation="left" v-if="showAdvanceConfig">{{$t('compute.text_309')}}</a-divider> -->
       <a-collapse :bordered="false" v-model="collapseActive">
         <a-collapse-panel :header="$t('compute.text_309')" key="1">
           <eip-config
+            ref="eipConfigRef"
             v-if="showEip"
             :decorators="decorators.eip"
             :eip-params="eipParams"
@@ -200,6 +205,7 @@
           </a-form-item>
           <a-form-item :label="$t('compute.text_311')" class="mb-0">
             <sched-policy
+              ref="schedPolicyRef"
               :form="form"
               :server-type="form.fi.createType"
               :disabled-host="policyHostDisabled"
@@ -246,7 +252,7 @@
           <!-- <a-form-item v-if="!isOpenSourceVersion" :label="$t('compute.bastionHost.bastion_host')">
             <bastion-host :decorator="decorators.bastion_host" :form="form" />
           </a-form-item> -->
-          <bastion-host v-if="!isOpenSourceVersion && hasBastionService" :decorator="decorators.bastion_host" :form="form" />
+          <bastion-host ref="bastionHostRef" v-if="!isOpenSourceVersion && hasBastionService" :decorator="decorators.bastion_host" :form="form" />
         </a-collapse-panel>
       </a-collapse>
       <bottom-bar
@@ -894,8 +900,13 @@ export default {
             hypervisors,
           }
           this.form.fc.setFieldsValue({
-            hypervisor: hypervisors[0], // 赋值默认第一个平台
+            hypervisor: this.decorators.hypervisor[1].initialValue || hypervisors[0], // 赋值默认第一个平台
           })
+          if (this.decorators.os_arch[1].initialValue) {
+            setTimeout(() => {
+              this.form.fc.setFieldsValue({ os_arch: this.decorators.os_arch[1].initialValue })
+            }, 1000)
+          }
           this.init()
         })
     },
