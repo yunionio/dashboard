@@ -4804,6 +4804,7 @@
   "common_567": "有状态异常的资源请处理",
   "common_568": "未找到本地关联用户，请填写如下信息完成注册。如果已注册，请登录后到“账户中心”再次关联",
   "common_569": "请输入认证的URL地址，例如：http|https://ip:port/v3",
+  "common_569_1": "请输入认证的URL地址，例如：https://<ip or domain>/api/s/identity/v3",
   "common_570": "请输入认证的URL地址，例如：http|https://192.168.1.1:8080(注意端口)",
   "common_571": "请输入认证的URL地址，例如：http|https://ip:port",
   "common_571_2": "请输入认证的URL地址，例如：http://192.168.1.1",
