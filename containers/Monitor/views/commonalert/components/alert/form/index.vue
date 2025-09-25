@@ -109,7 +109,8 @@
       v-if="notifyTypes.includes('robot')"
       :label="$t('monitor.text_11')"
       :placeholder="$t('common.tips.select', [$t('monitor.text_11')])"
-      :decorator="decorators.robot_ids" />
+      :decorator="decorators.robot_ids"
+      :getParams="robotParams" />
   </a-form>
 </template>
 
@@ -485,6 +486,14 @@ export default {
         scope: this.currentScope,
         limit: 0,
       }
+    },
+    robotParams () {
+      if (this.currentScope === 'project' && this.formScopeParams.project_id) {
+        return {
+          project_id: this.formScopeParams.project_id,
+        }
+      }
+      return {}
     },
   },
   watch: {
