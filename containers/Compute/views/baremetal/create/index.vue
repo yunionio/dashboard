@@ -1,13 +1,13 @@
 <template>
   <div>
-    <page-header :title="isInstallOperationSystem ? $t('compute.text_298') : $t('compute.text_299')" />
+    <page-header :title="title" />
     <a-form
       class="mt-3"
       :form="form.fc"
       @submit="handleConfirm">
       <a-divider orientation="left">{{$t('compute.text_300')}}</a-divider>
       <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" v-bind="formItemLayout">
-        <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" :project.sync="projectId" />
+        <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" :project.sync="projectId" :domain.sync="domainId" :ignoreStorage="isInitForm" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_177')" class="mb-0" v-bind="formItemLayout" v-if="!isInstallOperationSystem">
         <cloudregion-zone
@@ -88,11 +88,12 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0" v-bind="formItemLayout">
         <tag
-          v-decorator="decorators.__meta__" :allowNoValue="false" />
+          v-decorator="decorators.__meta__" :allowNoValue="false" :default-checked="tagDefaultChecked" />
       </a-form-item>
       <a-divider orientation="left">{{$t('compute.text_309')}}</a-divider>
       <a-form-item :label="$t('compute.text_104')" v-bind="formItemLayout" class="mb-0">
         <server-network
+          ref="networkRef"
           :form="form"
           :decorator="decorators.network"
           :isBonding="isBonding"
@@ -108,7 +109,9 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_311')" v-bind="formItemLayout" class="mb-0" v-if="!isInstallOperationSystem">
         <sched-policy
+          ref="schedPolicyRef"
           server-type="baremetal"
+          :form="form"
           :disabled-host="policyHostDisabled"
           :policy-host-params="params.policyHostParams"
           :decorators="decorators.schedPolicy"
@@ -122,6 +125,7 @@
       <bottom-bar
         :loading="submiting"
         :form="form"
+        :isInitForm="isInitForm"
         :selectedSpecItem="selectedSpecItem"
         type="baremetal"
         :isOpenWorkflow="isOpenWorkflow"
@@ -179,8 +183,58 @@ export default {
   },
   mixins: [WindowsMixin, workflowMixin],
   data () {
-    const imageTypeInitValue = IMAGES_TYPE_MAP.standard.key
+    const initData = this.$route.params?.data || {}
+    const imageTypeInitValue = initData.extraData?.image_type || IMAGES_TYPE_MAP.standard.key
+    let initImage = ''
+    if (initData.disks) {
+      initData.disks.forEach(item => {
+        if (item.image_id) {
+          initImage = item.image_id
+        }
+      })
+    }
+    if (initData.extraData?.image) {
+      initImage = initData.extraData.image
+    }
+    let initLoginType = 'random'
+    if (initData.keypair) {
+      initLoginType = 'keypair'
+    }
+    if (initData.hasOwnProperty('reset_password') && !initData.reset_password) {
+      initLoginType = 'image'
+    }
+    if (initData.hasOwnProperty('password') && initData.password) {
+      initLoginType = 'password'
+    }
+    let initNetworkType = NETWORK_OPTIONS_MAP.default.key
+    let initBonding = false
+    if (initData.nets) {
+      if (initData.nets[0] && initData.nets[0].hasOwnProperty('exit') && !initData.nets[0].exit) {
+        if (initData.nets[0].require_teaming) {
+          initBonding = true
+        }
+        initNetworkType = NETWORK_OPTIONS_MAP.default.key
+      } else if (initData.nets[0] && initData.nets[0].hasOwnProperty('network') && initData.extraData?.extraNets && initData.extraData?.extraNets[0] && initData.extraData?.extraNets[0].hasOwnProperty('network')) {
+        initNetworkType = NETWORK_OPTIONS_MAP.manual.key
+        if (initData.nets[0].require_teaming) {
+          initBonding = true
+        }
+      } else {
+        initNetworkType = NETWORK_OPTIONS_MAP.schedtag.key
+        if (initData.nets[0].schedtags && initData.nets[0].schedtags.length && initData.nets[0].schedtags[0].require_teaming) {
+          initBonding = true
+        }
+      }
+    }
+    let initSchedPolicyType = 'default'
+    if (initData.prefer_host) {
+      initSchedPolicyType = 'host'
+    }
+    if (initData.schedtags && initData.schedtags.length) {
+      initSchedPolicyType = 'schedtag'
+    }
     return {
+      initFormData: initData,
       submiting: false,
       errors: {},
       formItemLayout: {
@@ -240,7 +294,7 @@ export default {
         domain: [
           'domain',
           {
-            initialValue: this.$route.query.domain_id || '',
+            initialValue: initData.extraData?.domain_id || this.$route.query.domain_id || '',
             rules: [
               { validator: isRequired(), message: i18n.t('rules.domain'), trigger: 'change' },
             ],
@@ -249,6 +303,7 @@ export default {
         project: [
           'project',
           {
+            initialValue: initData.project_id || '',
             rules: [
               { validator: isRequired(), message: i18n.t('rules.project'), trigger: 'change' },
             ],
@@ -257,7 +312,7 @@ export default {
         name: [
           'name',
           {
-            initialValue: '',
+            initialValue: initData.generate_name || '',
             validateTrigger: 'blur',
             validateFirst: true,
             rules: [
@@ -270,7 +325,7 @@ export default {
           cloudregion: [
             'cloudregion',
             {
-              initialValue: { key: '', label: '' },
+              initialValue: { key: initData.prefer_region || '', label: '' },
               rules: [
                 { required: true, message: i18n.t('compute.text_212') },
               ],
@@ -279,7 +334,7 @@ export default {
           zone: [
             'zone',
             {
-              initialValue: { key: '', label: '' },
+              initialValue: { key: initData.prefer_zone || '', label: '' },
               rules: [
                 { required: true, message: i18n.t('compute.text_213') },
               ],
@@ -289,14 +344,14 @@ export default {
         count: [
           'count',
           {
-            initialValue: 1,
+            initialValue: initData.count || 1,
           },
         ],
         imageOS: {
           os: [
             'os',
             {
-              initialValue: '',
+              initialValue: initData.extraData?.os || '',
               rules: [
                 { required: true, message: i18n.t('compute.text_153') },
               ],
@@ -305,7 +360,7 @@ export default {
           image: [
             'image',
             {
-              initialValue: { key: '', label: '' },
+              initialValue: { key: initImage || '', label: '' },
               rules: [
                 { validator: isRequired(), message: i18n.t('compute.text_214') },
               ],
@@ -321,6 +376,7 @@ export default {
         specifications: [
           'specifications',
           {
+            initialValue: initData.extraData?.specifications || '',
             rules: [
               { required: true, message: i18n.t('compute.text_313') },
             ],
@@ -330,12 +386,13 @@ export default {
           loginType: [
             'loginType',
             {
-              initialValue: 'random',
+              initialValue: initLoginType,
             },
           ],
           keypair: [
             'loginKeypair',
             {
+              initialValue: initData.keypair || '',
               rules: [
                 { required: true, message: i18n.t('compute.text_203') },
               ],
@@ -344,7 +401,7 @@ export default {
           password: [
             'loginPassword',
             {
-              initialValue: '',
+              initialValue: initData.password || '',
               validateFirst: true,
               rules: [
                 { required: true, message: i18n.t('compute.text_204') },
@@ -357,7 +414,7 @@ export default {
           networkType: [
             'networkType',
             {
-              initialValue: NETWORK_OPTIONS_MAP.default.key,
+              initialValue: initNetworkType,
             },
           ],
           networkConfig: {
@@ -445,12 +502,13 @@ export default {
           schedPolicyType: [
             'schedPolicyType',
             {
-              initialValue: 'default',
+              initialValue: initSchedPolicyType,
             },
           ],
           schedPolicyHost: [
             'schedPolicyHost',
             {
+              initialValue: initData.prefer_host,
               rules: [
                 { required: true, message: i18n.t('compute.text_314') },
               ],
@@ -485,6 +543,7 @@ export default {
         __meta__: [
           '__meta__',
           {
+            initialValue: initData.__meta__ || {},
             rules: [
               { validator: validateForm('tagName') },
             ],
@@ -554,7 +613,7 @@ export default {
           return v + ' G'
         },
       },
-      isBonding: false,
+      isBonding: initBonding,
       isShowFalseIcon: false,
       count: 1,
       hostData: [],
@@ -562,8 +621,10 @@ export default {
       isSupportIso: false,
       project_domain: '',
       projectId: '',
+      domainId: '',
       osSelectImageType: 'standard',
       wires: [],
+      tagDefaultChecked: {},
     }
   },
   computed: {
@@ -572,6 +633,12 @@ export default {
       'scope',
       'isDomainMode',
     ]),
+    isInitForm () {
+      return !!this.initFormData?.extraData?.formType && this.$route.query.workflow
+    },
+    title () {
+      return this.isInstallOperationSystem ? this.$t('compute.text_298') : (this.isInitForm ? this.$t('compute.text_299') + `(${this.$t('common.modify_workflow')})` : this.$t('compute.text_299'))
+    },
     routerQuery () {
       return this.$route.query
     },
@@ -722,7 +789,120 @@ export default {
       this.loadHostOpt()
     }
   },
+  mounted () {
+    this.initForm()
+  },
   methods: {
+    async getCapability (v, data) { // 可用区查询
+      const params = {
+        show_emulated: true,
+        resource_type: this.resourceType,
+        host_type: 'baremetal',
+        ...this.scopeParams,
+        $t: 1,
+      }
+      if (this.$store.getters.isAdminMode) {
+        params.project_domain = data?.extraData?.domain_id
+      }
+      return this.zonesM2.get({ id: `${v}/capability`, params })
+    },
+    async initForm () {
+      const initData = this.initFormData
+      let cData = {}
+      if (this.isInitForm && initData.extraData && this.form?.fc) {
+        try {
+          const { data: capabilityData } = await this.getCapability(initData.prefer_zone, initData)
+          this.form.fi.capability = capabilityData
+          cData = capabilityData
+        } catch (error) {
+          throw error
+        }
+        this.$nextTick(() => {
+          // 初始化磁盘
+          if (initData.baremetal_disk_configs && initData.baremetal_disk_configs.length) {
+            let diskData = null
+            if (initData.extraData?.specifications && cData?.specs?.hosts) {
+              const keys = Object.keys(cData.specs.hosts)
+              for (const key of keys) {
+                if (key.replace(/model:.+\//, '') === initData.extraData?.specifications) {
+                  diskData = cData.specs.hosts[key].disk
+                }
+              }
+            }
+            if (diskData) {
+              initData.baremetal_disk_configs.forEach(item => {
+                const key = `${item.driver}.adapter${item.adapter}`
+                const info = _.get(diskData, key) || []
+                if (info.length) {
+                  const opt1 = `${info[0].type}:${sizestr(info[0].size, 'M', 1024)}`
+                  this.addDiskCallBack({
+                    computeCount: item.count, // TODO
+                    count: item.count,
+                    start_index: item.range[0],
+                    end_index: info[0].index,
+                    option: [`${item.driver}:adapter${item.adapter}`, opt1, item.conf],
+                  })
+                }
+              })
+            }
+          }
+          // 初始化网络
+          if (this.$refs.networkRef && initData.nets) {
+            let initNetworkType = NETWORK_OPTIONS_MAP.default.key
+            if (initData.nets[0] && initData.nets[0].hasOwnProperty('exit') && !initData.nets[0].exit) {
+              initNetworkType = NETWORK_OPTIONS_MAP.default.key
+            } else if (initData.nets[0] && initData.nets[0].hasOwnProperty('network') && initData.extraData?.extraNets && initData.extraData?.extraNets[0] && initData.extraData?.extraNets[0].hasOwnProperty('network')) {
+              initNetworkType = NETWORK_OPTIONS_MAP.manual.key
+            } else {
+              initNetworkType = NETWORK_OPTIONS_MAP.schedtag.key
+            }
+            this.form.fc.setFieldsValue({
+              networkType: initNetworkType,
+            })
+            this.$refs.networkRef.change({ target: { value: initNetworkType }, name: 'default' })
+            if (initNetworkType === NETWORK_OPTIONS_MAP.manual.key) {
+              this.$nextTick(() => {
+                if (this.$refs.networkRef.$refs.networkConfigRef) {
+                  this.$refs.networkRef.$refs.networkConfigRef.initData(initData.extraData.extraNets)
+                }
+              })
+            }
+            if (initNetworkType === NETWORK_OPTIONS_MAP.schedtag.key) {
+              this.$nextTick(() => {
+                if (this.$refs.networkRef.$refs.networkSchedtagRef) {
+                  this.$refs.networkRef.$refs.networkSchedtagRef.initData(initData.nets)
+                }
+              })
+            }
+          }
+          // 高级配置
+          this.$nextTick(() => {
+            // 调度策略
+            if (this.$refs.schedPolicyRef) {
+              if (initData.prefer_host) {
+                this.$refs.schedPolicyRef.change({ target: { value: 'host' }, name: 'default' })
+              }
+              if (initData.schedtags && initData.schedtags.length) {
+                this.$refs.schedPolicyRef.change({ target: { value: 'schedtag' }, name: 'default' })
+                setTimeout(() => {
+                  if (this.$refs.schedPolicyRef.$refs.policySchedtagRef) {
+                    this.$refs.schedPolicyRef.$refs.policySchedtagRef.initData(initData.schedtags)
+                  }
+                }, 1000)
+              }
+            }
+          })
+          // 初始化标签
+          if (initData.__meta__) {
+            const ret = {}
+            R.forEachObjIndexed((value, key) => {
+              ret[key] = R.is(Array, value) ? value : [value]
+            }, initData.__meta__)
+            this.tagDefaultChecked = ret
+          }
+        })
+      }
+    },
     vpcResourceMapper (list) {
       return list.filter(val => val.id === 'default')
     },
@@ -1155,6 +1335,16 @@ export default {
       const values = await this.validateForm()
       const disks = []
       const nets = []
+      const extraData = {
+        formType: 'onpremise',
+        __resource_type__: 'baremetal',
+        image_type: values.imageType,
+        os: values.os,
+        image: values.image.key,
+        domain_id: values.domain.key,
+        specifications: values.specifications,
+        extraNets: [],
+      }
       // 判断数据盘是否合法
       if (this.diskOptionsDate.length > 0) {
         if (this.isShowFalseIcon) {
@@ -1228,15 +1418,46 @@ export default {
             const ipv6First = getIpv6Start(target[0]?.network?.guest_ip6_start)
             option.address6 = ipv6First + ipv6Last
           }
+          if (values.networkIPv6Modes && values.networkIPv6Modes[key] === 'only' && option.require_ipv6) {
+            option.strict_ipv6 = true
+          }
           // 是否启用bonding
           if (this.isBonding) {
             option.require_teaming = true
             if (this.isInstallOperationSystem) option.private = false
             nets.push(option)
+            if (values.vpcs && values.vpcs[key]) {
+              const extraOption = { ...option, vpc: values.vpcs[key] }
+              extraData.extraNets.push(extraOption)
+            } else {
+              extraData.extraNets.push(option)
+            }
           } else {
             nets.push(option)
+            if (values.vpcs && values.vpcs[key]) {
+              const extraOption = { ...option, vpc: values.vpcs[key] }
+              extraData.extraNets.push(extraOption)
+            } else {
+              extraData.extraNets.push(option)
+            }
           }
         }
+      } else if (values.networkSchedtags) {
+        R.forEachObjIndexed((value, key) => {
+          const obj = {
+            id: value,
+          }
+          if (this.isBonding) {
+            obj.require_teaming = true
+          }
+          const strategy = values.networkPolicys[key]
+          if (strategy) {
+            obj.strategy = strategy
+          }
+          nets.push({
+            schedtags: [obj],
+          })
+        }, values.networkSchedtags)
       } else {
         // 是否启用bonding
         if (this.isBonding) {
@@ -1264,8 +1485,21 @@ export default {
         prefer_zone: values.zone ? values.zone.key : this.$route.query.zone_id,
         __meta__: values.__meta__,
       }
+      if (values.policySchedtagSchedtags) {
+        const schedtags = []
+        for (const key in values.policySchedtagSchedtags) {
+          if (values.policySchedtagSchedtags[key]) {
+            schedtags.push({
+              id: values.policySchedtagSchedtags[key],
+              strategy: values.policySchedtagPolicys[key],
+            })
+          }
+        }
+        params.schedtags = schedtags
+      }
       if (values.loginPassword) params.password = values.loginPassword
       if (values.loginKeypair) params.keypair = values.loginKeypair.key
+      if (values.loginType === 'image') params.reset_password = false
       if (this.selectedSpecItem.isolated_devices) params.isolated_devices = this.selectedSpecItem.isolated_devices
       // 判断是否是iso导入
       if (values.imageType === 'iso') {
@@ -1279,12 +1513,18 @@ export default {
         this.createBaremetal(params)
       } else {
         if (this.isOpenWorkflow) { // 提交工单
+          const workflowParams = {
+            ...params,
+            extraData,
+          }
           const variables = {
             process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
             initiator: this.$store.getters.userInfo.id,
-            'server-create-paramter': JSON.stringify(params),
+            'server-create-paramter': JSON.stringify(workflowParams),
+            project: this.projectId.key,
+            project_domain: this.domainId.key,
           }
-          this.doCreateWorkflow(variables, params)
+          this.doCreateWorkflow(variables, workflowParams)
         } else { // 创建裸金属
           this.doForecast(params)
         }
@@ -1293,16 +1533,26 @@ export default {
     // 创建工单
     doCreateWorkflow (variables, params) {
       this.submiting = true
-      new this.$Manager('process-instances', 'v1')
-        .create({ data: { variables } })
-        .then(() => {
-          this.submiting = false
-          this.$message.success(i18n.t('compute.text_320', [params.name]))
-          this.$router.push('/workflow')
-        })
-        .catch(() => {
-          this.submiting = false
-        })
+      if (this.$route.query.workflow) {
+        new this.$Manager('historic-process-instances', 'v1')
+          .update({ id: `${this.$route.query.workflow}/variables`, data: { variables } })
+          .then(() => {
+            this.submiting = false
+            this.$message.success(i18n.t('compute.text_320', [params.name]))
+            this.$router.push('/workflow')
+          })
+      } else {
+        new this.$Manager('process-instances', 'v1')
+          .create({ data: { variables } })
+          .then(() => {
+            this.submiting = false
+            this.$message.success(i18n.t('compute.text_320', [params.name]))
+            this.$router.push('/workflow')
+          })
+          .catch(() => {
+            this.submiting = false
+          })
+      }
     },
     doForecast (params) {
       this.submiting = true

@@ -332,7 +332,6 @@ export default {
             value[this.decorator.macs(item.key, item.network.id)[0]] = item.mac
           }
           value[this.decorator.ipv6s(item.key, item.network.id)[0]] = item.requireIpv6
-          value[this.decorator.ipv6_mode(item.key, item.network.id)[0]] = item.ipv6Mode
           if (item.address6) {
             value[this.decorator.ips6(item.key, item.network.id)[0]] = item.address6.replace(this.getIpv6Prefix(item.address6), '')
           }
