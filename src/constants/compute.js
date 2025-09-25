@@ -135,7 +135,7 @@ export const STORAGE_TYPES = {
     },
     io2: {
       label: i18n.t('common.storage.io', ['io2']),
-      key: 'io1',
+      key: 'io2',
       min: 4,
       max: 16384,
       sysMin: 4,

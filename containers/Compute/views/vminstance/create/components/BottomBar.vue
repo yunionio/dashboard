@@ -242,7 +242,7 @@ export default {
     },
     confirmText () {
       if (this.isServertemplate) return this.$t('compute.text_1139')
-      return this.isOpenWorkflow ? this.$t('compute.text_288') : this.$t('compute.text_289')
+      return this.isOpenWorkflow ? (this.$route.query.workflow ? this.$t('common.modify_workflow') : this.$t('compute.text_288')) : this.$t('compute.text_289')
     },
     dataDiskObj () {
       if (R.is(Object, this.fd.dataDiskTypes)) {

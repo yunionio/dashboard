@@ -1,7 +1,7 @@
 <template>
   <div class="policy-schedtag">
     <div class="d-flex align-items-start mb-2" v-for="(item, i) in schedtagPolicyList" :key="item.key">
-      <schedtag-policy :form="form" class="w-50" :decorators="genDecorator(item.key)" :schedtag-params="schedtagParams" :policyReactInSchedtag="false" />
+      <schedtag-policy :form="form" class="w-50" :decorators="genDecorator(item.key)" :schedtag-params="{ ...schedtagParams, $t: `schedtag-${i}` }" :policyReactInSchedtag="false" />
       <a-button shape="circle" icon="minus" size="small" @click="decrease(item.key, i)" class="mt-2" />
     </div>
     <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
@@ -45,6 +45,23 @@ export default {
     this.add()
   },
   methods: {
+    initData (data) {
+      this.schedtagPolicyList = data.map(item => ({
+        key: uuid(),
+        schedtag: item.id,
+        policy: item.strategy,
+      }))
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.schedtagPolicyList.forEach(item => {
+            this.form.fc.setFieldsValue({
+              [this.decorators.schedtags(item.key)[0]]: item.schedtag,
+              [this.decorators.policys(item.key)[0]]: item.policy,
+            })
+          })
+        }, 1000)
+      })
+    },
     add () {
       const uid = uuid()
       this.schedtagPolicyList.push({

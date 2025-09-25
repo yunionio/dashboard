@@ -42,7 +42,7 @@
             native-type="submit"
             html-type="submit"
             :loading="loading"
-            :disabled="!!errors.length">{{ isOpenWorkflow && !isInstallOperationSystem ? $t('compute.text_288') : $t('compute.text_289') }}</a-button>
+            :disabled="!!errors.length">{{ isOpenWorkflow && !isInstallOperationSystem ? (isInitForm ? $t('common.modify_workflow') : $t('compute.text_288')) : $t('compute.text_289') }}</a-button>
           <a-button class="ml-3" @click="handleCancel">{{$t('common.cancel')}}</a-button>
         </div>
         <side-errors :error-title="$t('compute.text_290')" :errors="errors" @update:errors="changeErrors" />
@@ -102,6 +102,10 @@ export default {
     hasMeterService: {
       type: Boolean,
       default: true,
+    },
+    isInitForm: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {

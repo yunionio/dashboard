@@ -110,7 +110,7 @@ export default {
           }
           this.$emit('update:closeregionOpts', this.regionOpts)
           if (this.regionOpts.length && this.form) {
-            const firstRegion = this.regionOpts[0]
+            const firstRegion = (this.decorator.cloudregion[1].initialValue && this.regionOpts.find(item => item.id === this.decorator.cloudregion[1].initialValue?.key)) ? this.regionOpts.find(item => item.id === this.decorator.cloudregion[1].initialValue?.key) : this.regionOpts[0]
             this.emit(firstRegion, 'cloudregion')
             this.fetchZones(firstRegion.id)
             this.form.fc.setFieldsValue({
@@ -136,7 +136,7 @@ export default {
         .then(({ data: { data = [] } }) => {
           this.zoneOpts = data
           if (this.zoneOpts.length && this.form) {
-            const firstZone = this.zoneOpts[0]
+            const firstZone = (this.decorator.zone[1].initialValue && this.zoneOpts.find(item => item.id === this.decorator.zone[1].initialValue?.key)) ? this.zoneOpts.find(item => item.id === this.decorator.zone[1].initialValue?.key) : this.zoneOpts[0]
             this.emit(firstZone, 'zone')
             this.form.fc.setFieldsValue({
               zone: { key: firstZone.id, label: firstZone.name },

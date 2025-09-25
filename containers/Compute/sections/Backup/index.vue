@@ -52,10 +52,17 @@ export default {
       return false
     },
   },
+  watch: {
+    backupEnable: {
+      handler (val) {
+        if (val) this.fetchBackupHosts()
+      },
+      immediate: true,
+    },
+  },
   methods: {
     change (val) {
       this.backupEnable = val
-      if (val) this.fetchBackupHosts()
     },
     async fetchBackupHosts () {
       if (!R.is(Object, this.hostParams) || this.isProjectMode) return

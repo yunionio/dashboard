@@ -115,6 +115,7 @@ import { PREALLOCATION_OPTIONS } from '@Compute/constants'
 import { HYPERVISORS_MAP } from '@/constants'
 import SchedtagPolicy from '@/sections/SchedtagPolicy'
 import DiskMountpoint from '@/sections/DiskMountpoint'
+import { diskSupportTypeMedium } from '@/utils/common/hypervisor'
 import Storage from './components/Storage'
 
 export default {
@@ -288,6 +289,70 @@ export default {
     },
   },
   methods: {
+    initData (data, hyper) {
+      setTimeout(() => {
+        this.form.fc.setFieldsValue({
+          [this.decorator.type[0]]: { key: diskSupportTypeMedium(hyper) ? `${data.backend}/${data.medium}` : data.backend, label: '' },
+          [this.decorator.size[0]]: data.size / 1024,
+        })
+        if (data.schedtags || data.storage_id || data.auto_reset || data.iops || data.throughput || data.preallocation) {
+          this.showAdvanced = true
+          if (data.schedtags && data.schedtags.length) {
+            this.showSchedtag = true
+            this.$nextTick(() => {
+              this.form.fc.setFieldsValue({
+                [this.decorator.schedtag[0]]: data.schedtags[0].id,
+                [this.decorator.policy[0]]: data.schedtags[0].strategy,
+              })
+            })
+          }
+          if (data.storage_id) {
+            this.showStorage = true
+            this.$nextTick(() => {
+              this.form.fc.setFieldsValue({
+                [this.decorator.storage[0]]: data.storage_id,
+              })
+            })
+          }
+          if (data.auto_reset) {
+            this.$nextTick(() => {
+              this.form.fc.setFieldsValue({
+                [this.decorator.auto_reset[0]]: data.auto_reset,
+              })
+            })
+          }
+          if (data.iops) {
+            this.showIops = true
+            this.$nextTick(() => {
+              this.form.fc.setFieldsValue({
+                [this.decorator.iops[0]]: data.iops,
+              })
+            })
+          }
+          if (data.throughput) {
+            this.showThroughput = true
+            this.$nextTick(() => {
+              this.form.fc.setFieldsValue({
+                [this.decorator.throughput[0]]: data.throughput,
+              })
+            })
+          }
+          if (data.preallocation) {
+            this.showPreallocation = true
+            this.$nextTick(() => {
+              this.form.fc.setFieldsValue({
+                [this.decorator.preallocation[0]]: data.preallocation,
+              })
+            })
+          }
+        }
+      }, 1000)
+    },
+    setValues (values) {
+      for (const key in values) {
+        this[key] = values[key]
+      }
+    },
     has (element) {
       return this.elements.includes(element)
     },

@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import _ from 'lodash'
-import { SCHED_POLICY_OPTIONS_MAP, SERVER_TYPE, SELECT_IMAGE_KEY_SUFFIX, LOGIN_TYPES_MAP } from '@Compute/constants'
+import { SCHED_POLICY_OPTIONS_MAP, SERVER_TYPE, SELECT_IMAGE_KEY_SUFFIX, LOGIN_TYPES_MAP, NETWORK_OPTIONS_MAP } from '@Compute/constants'
 import OsSelect from '@Compute/sections/OsSelect'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import CpuRadio from '@Compute/sections/CpuRadio'
@@ -90,11 +90,20 @@ export default {
       required: true,
       validator: val => ['idc', 'private', 'public'].includes(val),
     },
+    initFormData: {
+      type: Object,
+      default: () => ({}),
+    },
+    isInitForm: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
-    const decorators = new Decorator(SERVER_TYPE[this.type]).createDecorators()
+    const decorators = new Decorator(SERVER_TYPE[this.type]).createDecorators(this.initFormData)
     const initFd = getInitialValue(decorators)
     return {
+      initSkuData: { name: this.initFormData?.sku },
       submiting: false,
       errors: {},
       formItemLayout: {
@@ -118,7 +127,7 @@ export default {
           showCpuSockets: false,
           cpuSockets: 1,
         },
-        fd: { ...initFd, project: {}, os: '' },
+        fd: { hypervisor: '', ...initFd, project: {}, os: '' },
       },
       decorators,
       capabilityParams: {}, // 防止 capability 反复调用，这里对当前的接口参数做记录
@@ -129,6 +138,8 @@ export default {
         errorMsg: '',
       },
       custom_data: [],
+      dataDiskInterval: null,
+      tagDefaultChecked: {},
     }
   },
   provide () {
@@ -416,10 +427,14 @@ export default {
     this.servertemplateM = new Manager('servertemplates', 'v2')
     this.serverskusM = new Manager('serverskus')
     this.schedulerM = new Manager('schedulers', 'v1')
+    this.zonesM2 = new Manager('zones', 'v2')
     this.$bus.$on('VMGetPrice', (price) => {
       this.price = price
     })
     this.$store.dispatch('app/fetchWorkflowEnabledKeys')
+  },
+  mounted () {
+    this.initForm()
   },
   watch: {
     'form.fi.imageMsg': {
@@ -427,7 +442,9 @@ export default {
       handler (val, oldVal) {
         if (R.equals(val, oldVal)) return
         this.$nextTick(() => {
-          this._resetDataDisk() // 重置数据盘数据
+          if (!this.isInitForm) {
+            this._resetDataDisk() // 重置数据盘数据
+          }
         })
       },
     },
@@ -445,6 +462,150 @@ export default {
     },
   },
   methods: {
+    async capability (v, data) { // 可用区查询
+      const params = {
+        show_emulated: true,
+      }
+      if (this.$store.getters.isAdminMode) {
+        params.project_domain = data?.extraData?.domain_id
+      }
+      return this.zonesM2.get({ id: `${v}/capability`, params })
+    },
+    async initForm () {
+      const initData = this.initFormData
+      if (this.isInitForm && initData.extraData && this.form?.fc) {
+        if (!this.form.fd.hypervisor) {
+          this.form.fd.hypervisor = initData.hypervisor
+        }
+        try {
+          const { data: capabilityData } = await this.capability(initData.prefer_zone, initData)
+          this.form.fi.capability = capabilityData
+        } catch (error) { }
+        this.$nextTick(() => {
+          // 透传设备
+          if (initData.isolated_devices && initData.isolated_devices.length) {
+            this.$refs.pciRef.initData(initData.isolated_devices)
+          }
+          // 系统盘 高级功能回填
+          if (this.$refs.systemDiskRef && this.$refs.systemDiskRef.$refs.disk) {
+            const systemDisk = (initData.disks || []).filter(item => item.disk_type === 'sys')[0] || {}
+            this.$refs.systemDiskRef.$refs.disk.initData(systemDisk, initData.hypervisor)
+          }
+          this.$nextTick(() => {
+            // 数据盘
+            if (this.$refs.dataDiskRef) {
+              const dataDisks = initData.disks.filter(item => item.disk_type === 'data' || item.disk_type === 'swap')
+              const { medium: dataDiskMedium } = dataDisks[0] || {}
+              this.dataDiskInterval = setInterval(() => {
+                dataDisks.forEach((v, i) => {
+                  const { schedtags = [] } = v
+                  this.$refs.dataDiskRef.add({
+                    diskType: v.backend,
+                    disabled: false,
+                    sizeDisabled: false,
+                    medium: dataDiskMedium,
+                    filetype: v.fs,
+                    mountPath: v.mountpoint,
+                    schedtag: schedtags[0]?.id,
+                    policy: schedtags[0]?.strategy,
+                    snapshot: v.snapshot_id,
+                    preallocation: v.preallocation,
+                    autoReset: v.auto_reset,
+                    ...v,
+                    size: v.size / 1024,
+                  })
+                })
+                clearInterval(this.dataDiskInterval)
+                this.dataDiskInterval = null
+              }, 500)
+            }
+          })
+          // 初始化网络
+          if (this.$refs.networkRef && initData.nets) {
+            let initNetworkType = NETWORK_OPTIONS_MAP.default.key
+            if (initData.nets[0] && initData.nets[0].hasOwnProperty('exit') && !initData.nets[0].exit) {
+              initNetworkType = NETWORK_OPTIONS_MAP.default.key
+            } else if (initData.nets[0] && initData.nets[0].hasOwnProperty('network') && initData.extraData?.nets && initData.extraData?.nets[0] && initData.extraData?.nets[0].hasOwnProperty('network')) {
+              initNetworkType = NETWORK_OPTIONS_MAP.manual.key
+            } else {
+              initNetworkType = NETWORK_OPTIONS_MAP.schedtag.key
+            }
+            this.form.fc.setFieldsValue({
+              networkType: initNetworkType,
+            })
+            this.$refs.networkRef.change({ target: { value: initNetworkType }, name: 'default' })
+            if (initNetworkType === NETWORK_OPTIONS_MAP.manual.key) {
+              this.$nextTick(() => {
+                if (this.$refs.networkRef.$refs.networkConfigRef) {
+                  this.$refs.networkRef.$refs.networkConfigRef.initData(initData.extraData.nets)
+                }
+              })
+            }
+            if (initNetworkType === NETWORK_OPTIONS_MAP.schedtag.key) {
+              this.$nextTick(() => {
+                if (this.$refs.networkRef.$refs.networkSchedtagRef) {
+                  this.$refs.networkRef.$refs.networkSchedtagRef.initData(initData.nets)
+                }
+              })
+            }
+          }
+          // 高级配置
+          if (initData.hostname || initData.eip_charge_type || initData.public_ip_charge_type || initData.prefer_host || initData.schedtags || initData.secgroups || initData.bios || initData.vdi || initData.vga || initData.is_daemon || initData.groups || initData.encrypt_key_new || initData.keypair || initData.user_data || initData.bastion_server) {
+            this.collapseActive = ['1']
+            this.$nextTick(() => {
+              this.form.fc.setFieldsValue({
+                hostName: initData.hostname,
+              })
+              // eip
+              if (this.$refs.eipConfigRef) {
+                this.$refs.eipConfigRef.initData(initData)
+              }
+              // 安全组
+              if (initData.secgroups && initData.secgroups.length) {
+                setTimeout(() => {
+                  this.form.fc.setFieldsValue({
+                    secgroup_type: 'bind',
+                    secgroup: initData.secgroups,
+                  })
+                }, 2000)
+              }
+              // 调度策略
+              if (this.$refs.schedPolicyRef) {
+                if (initData.prefer_host) {
+                  this.$refs.schedPolicyRef.change({ target: { value: 'host' }, name: 'default' })
+                }
+                if (initData.schedtags && initData.schedtags.length) {
+                  this.$refs.schedPolicyRef.change({ target: { value: 'schedtag' }, name: 'default' })
+                  setTimeout(() => {
+                    if (this.$refs.schedPolicyRef.$refs.policySchedtagRef) {
+                      this.$refs.schedPolicyRef.$refs.policySchedtagRef.initData(initData.schedtags)
+                    }
+                  }, 1000)
+                }
+              }
+              // 自定义数据
+              if (initData.user_data) {
+                if (this.$refs.customData) {
+                  this.$refs.customData.handleMirrorDataChange(initData.user_data)
+                }
+              }
+              // 堡垒机
+              if (initData.bastion_server && this.$refs.bastionHostRef) {
+                this.$refs.bastionHostRef.initData(initData.bastion_server)
+              }
+            })
+          }
+          // 初始化标签
+          if (initData.__meta__) {
+            const ret = {}
+            R.forEachObjIndexed((value, key) => {
+              ret[key] = R.is(Array, value) ? value : [value]
+            }, initData.__meta__)
+            this.tagDefaultChecked = ret
+          }
+        })
+      }
+    },
     baywatch (props, watcher) {
       const iterator = function (prop) {
         this.$watch(prop, watcher)
@@ -476,6 +637,9 @@ export default {
             const bastionServer = this.getBationServerData()
             data.bastion_server = bastionServer
           }
+          data.extraData.reason = this.form.fd?.reason
+          data.extraData.formType = this.type
+          data.extraData.__resource_type__ = 'server'
           if (this.isServertemplate) { // 创建主机模板
             this.doCreateServertemplate(data)
           } else if (this.isOpenWorkflow) { // 提交工单
@@ -514,7 +678,20 @@ export default {
           throw error
         })
     },
-    doCreateWorkflow (data) {
+    async doCreateWorkflow (data) {
+      const { workflow = '', order_set_id = '', order_set_idx = '' } = this.$route.query
+      if (order_set_id && workflow) {
+        const res = await new this.$Manager('resource_order_sets').get({ id: order_set_id })
+        if (res.data && res.data.parameters && res.data.parameters[order_set_idx]) {
+          const parameters = [...res.data.parameters]
+          parameters[order_set_idx] = { ...res.data.parameters[order_set_idx], count: data.__count__, parameter: { ...data, price: this.price } }
+          await new this.$Manager('resource_order_sets').update({ id: order_set_id, data: { parameters } })
+          this.$message.success(this.$t('common.success'))
+          this.$router.push('/workflow')
+          return
+        }
+        return
+      }
       const variables = {
         process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
         initiator: this.$store.getters.userInfo.id,
@@ -523,15 +700,27 @@ export default {
         price: this.price,
       }
       this._getProjectDomainInfo(variables)
-      new this.$Manager('process-instances', 'v1')
-        .create({ data: { variables } })
-        .then(() => {
-          this.$message.success(i18n.t('compute.text_1045', [data.generate_name]))
-          this.$router.push('/workflow')
-        })
-        .catch((error) => {
-          throw error
-        })
+      if (workflow) {
+        new this.$Manager('historic-process-instances', 'v1')
+          .update({ id: `${workflow}/variables`, data: { variables } })
+          .then(() => {
+            this.$message.success(i18n.t('compute.text_1045', [data.generate_name]))
+            this.$router.push('/workflow')
+          })
+          .catch((error) => {
+            throw error
+          })
+      } else {
+        new this.$Manager('process-instances', 'v1')
+          .create({ data: { variables } })
+          .then(() => {
+            this.$message.success(i18n.t('compute.text_1045', [data.generate_name]))
+            this.$router.push('/workflow')
+          })
+          .catch((error) => {
+            throw error
+          })
+      }
     },
     async checkCreateData (data) {
       return new this.$Manager('servers').create({ data: { ...data, dry_run: true } })
@@ -793,6 +982,9 @@ export default {
               data.user_data = customData
             }
           }
+          data.extraData.reason = this.form.fd?.reason
+          data.extraData.formType = this.type
+          data.extraData.__resource_type__ = 'server'
           const { __count__, ...parameter } = deleteInvalid(data)
           const shopCart = {
             action: 'create',

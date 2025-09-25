@@ -2916,7 +2916,8 @@
     "menu_iam_security": "认证与安全",
     "menu_system_config": "系统配置",
     "global_topology": "全局拓扑",
-    "k8s": "K8S"
+    "k8s": "K8S",
+    "server_container": "容器主机"
   },
   "originDictionary": {},
   "res": {
@@ -6239,5 +6240,13 @@
   "common.pem_certificate.placeholder": "请粘贴证书，如下面几行所示：\n-----BEGIN CERTIFICATE-----\nQmFzZTY0IGVuY29kZWQgY2VydGlmaWNhdGUgZGF0YSBleGlzdHMgaGVyZQ==\n-----END CERTIFICATE-----",
   "common.pem_private_key.placeholder": "请粘贴私钥，如下面几行所示：\n-----BEGIN PRIVATE KEY-----\nQmFzZTY0IGVuY29kZWQgc2VjcmV0IGtleSBleGlzdHMgaGVyZQ==\n-----END PRIVATE KEY-----",
   "common.switch_to_input": "切换输入",
-  "common.switch_to_select": "切换选择"
+  "common.switch_to_select": "切换选择",
+  "common.modify_workflow": "修改工单",
+  "common.current_quota": "当前配额",
+  "common.new_quota": "申请配额",
+  "common.workflow_disabled_tip": "该类型工单不支持此操作",
+  "common.workflow_disabled_tip2": "未经审批的工单支持此操作",
+  "common.workflow_disabled_tip3": "该类型工单未开启审批流程，请前往工单配置中开启",
+  "common.add_resource_from_shopcart": "从购物车添加资源",
+  "common.delete_resource_from_shopcart_tip": "该操作将从工单中将该资源移除,确认此操作吗?"
 }

@@ -141,6 +141,14 @@ export default {
     }
   },
   methods: {
+    initData (data) {
+      this.bastionHostEnable = true
+      this.currentBastionHostId = data.bastion_host_id
+      this.fetchOrgs(data.bastion_host_id, data.bastion_org_id)
+      this.fetchNodes(data.bastion_org_id, data.nodes)
+      this.fetchAllAccounts(data.bastion_org_id, data.accounts)
+      this.fetchDomains(data.bastion_org_id, data.bastion_domain_id)
+    },
     changeHandle (v) {
       this.bastionHostEnable = v
     },
@@ -159,7 +167,7 @@ export default {
         this.domains = []
       }
     },
-    async fetchOrgs (bastionHostId) {
+    async fetchOrgs (bastionHostId, defaultOrgId) {
       try {
         this.orgLoading = true
         this.orgs = []
@@ -172,7 +180,7 @@ export default {
           }
         })
         this.form.fc.setFieldsValue({
-          bastion_org_id: undefined,
+          bastion_org_id: defaultOrgId,
         })
       } catch (error) {
         throw error
@@ -192,7 +200,7 @@ export default {
         this.bastionHostLoading = false
       }
     },
-    async fetchNodes (bastionOrgId) {
+    async fetchNodes (bastionOrgId, defaultNodes) {
       try {
         this.nodeLoading = true
         this.nodes = []
@@ -205,7 +213,7 @@ export default {
           }
         })
         this.form.fc.setFieldsValue({
-          nodes: [],
+          nodes: defaultNodes,
         })
       } catch (error) {
         throw error
@@ -213,7 +221,7 @@ export default {
         this.nodeLoading = false
       }
     },
-    async fetchAllAccounts (bastionOrgId) {
+    async fetchAllAccounts (bastionOrgId, defaultAccounts = []) {
       try {
         this.accountLoading = true
         this.accounts = []
@@ -232,9 +240,11 @@ export default {
             label: o.name,
           }
         })
+        const privilegedAccounts = defaultAccounts.length ? defaultAccounts[0] : []
+        const accounts = defaultAccounts.filter((_, index) => index !== 0)
         this.form.fc.setFieldsValue({
-          accounts: [],
-          privileged_accounts: undefined,
+          accounts,
+          privileged_accounts: privilegedAccounts,
         })
       } catch (error) {
         throw error
@@ -242,7 +252,7 @@ export default {
         this.accountLoading = false
       }
     },
-    async fetchDomains (bastionOrgId) {
+    async fetchDomains (bastionOrgId, defaultDomainId) {
       try {
         this.domainLoading = true
         this.domains = []
@@ -255,7 +265,7 @@ export default {
           }
         })
         this.form.fc.setFieldsValue({
-          bastion_domain_id: undefined,
+          bastion_domain_id: defaultDomainId,
         })
       } catch (error) {
         throw error
