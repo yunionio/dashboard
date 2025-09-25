@@ -10,7 +10,7 @@
       <a-form-item :label="$t('cloudenv.text_253')">
         <a-input v-decorator="decorators.auth_url" />
         <span slot="extra">
-          {{$t('common_569')}}
+          {{$t('common_569_1')}}
         </span>
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
