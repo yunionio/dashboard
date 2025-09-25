@@ -247,9 +247,9 @@ export default {
           'specifications',
           {
             initialValue: initData.extraData?.specifications || '',
-            // rules: [
-            //   { required: true, message: i18n.t('compute.text_313') },
-            // ],
+            rules: [
+              { required: true, message: i18n.t('compute.text_313') },
+            ],
           },
         ],
         loginConfig: {
