@@ -118,7 +118,10 @@ export default {
       const concatRules = (k, l, r) => k === 'rules' ? R.concat(l, r) : r
       const obj = R.mergeDeepWithKey(concatRules,
         (this.decorators.secgroup[1] || {}),
-        { rules: [{ validator: this.validateSecgroups }] },
+        {
+          rules: [{ validator: this.validateSecgroups }],
+          initialValue: this.decorators.secgroup[1].initialValue || [],
+        },
       )
       if (obj.rules.length > 1) {
         obj.validateFirst = true
