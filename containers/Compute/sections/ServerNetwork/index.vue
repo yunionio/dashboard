@@ -32,6 +32,7 @@
     </a-form-item>
     <a-form-item v-if="networkComponent === 'schedtag'">
       <network-schedtag
+        ref="networkSchedtagRef"
         :form="form"
         :decorator="decorator.networkSchedtag"
         :isBonding="isBonding"

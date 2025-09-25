@@ -50,6 +50,7 @@
     </a-form-item>
     <a-form-item v-if="schedPolicyComponent === 'schedtag'">
       <policy-schedtag
+        ref="policySchedtagRef"
         :form="form"
         :decorators="decorators.policySchedtag"
         :schedtag-params="policySchedtagParams" />
@@ -70,10 +71,10 @@
 <script>
 import * as R from 'ramda'
 import lodash from 'lodash'
-import PolicySchedtag from './PolicySchedtag'
 import { SERVER_TYPE, SCHED_POLICY_OPTIONS_MAP } from '@Compute/constants'
 import { arrayToObj, uuid } from '@/utils/utils'
 import { HYPERVISORS_MAP } from '@/constants'
+import PolicySchedtag from './PolicySchedtag'
 
 export default {
   name: 'SchedPolicy',
