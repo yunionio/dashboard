@@ -17,6 +17,7 @@
           :fc="form.fc"
           :fd="form.fd"
           :decorators="{ project: decorators.project, domain: decorators.domain }"
+          :ignoreStorage="isInitForm"
           @fetchDomainCallback="fetchDomainCallback"
           @fetchProjectCallback="fetchProjectCallback" />
       </a-form-item>
@@ -85,6 +86,7 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_49')" class="mb-0">
         <system-disk
+          ref="systemDiskRef"
           :decorator="decorators.systemDisk"
           :type="type"
           :form="form"
@@ -97,6 +99,7 @@
       <a-form-item :label="$t('compute.text_50')">
         <data-disk
           v-if="form.fd.hypervisor"
+          :isInitForm="isInitForm"
           :decorator="decorators.dataDisk"
           :type="type"
           :form="form"
@@ -114,6 +117,7 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_104')" class="mb-0">
         <server-network
+          ref="networkRef"
           :form="form"
           :decorator="decorators.network"
           :network-list-params="networkParam"
@@ -128,7 +132,7 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
-          v-decorator="decorators.tag" />
+          v-decorator="decorators.tag" :default-checked="tagDefaultChecked" />
       </a-form-item>
       <!-- <a-divider orientation="left">{{$t('compute.text_309')}}</a-divider> -->
       <a-collapse :bordered="false" v-model="collapseActive">
@@ -151,6 +155,7 @@
           </a-form-item>
           <a-form-item :label="$t('compute.text_311')" v-show="!isServertemplate" class="mb-0">
             <sched-policy
+              ref="schedPolicyRef"
               :provider="cloudprovider"
               :server-type="form.fi.createType"
               :disabled-host="policyHostDisabled"

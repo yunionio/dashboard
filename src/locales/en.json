@@ -2780,7 +2780,8 @@
     "private_env-1": "Private Cloud 1",
     "private_env-2": "Private Cloud 2",
     "extdb": "Custom resources",
-    "k8s": "K8S"
+    "k8s": "K8S",
+    "server_container": "Pod"
   },
   "originDictionary": {},
   "res": {
@@ -6026,5 +6027,13 @@
   "common.global_search": "Global search",
   "common.month": "Month",
   "common.c": "c",
-  "common.system_service": "System Service"
+  "common.system_service": "System Service",
+  "common.modify_workflow": "Modify Workflow",
+  "common.current_quota": "Current Quota",
+  "common.new_quota": "Apply Quota",
+  "common.workflow_disabled_tip": "This type of workflow does not support this operation",
+  "common.workflow_disabled_tip2": "Workflows that have not been approved support this operation",
+  "common.workflow_disabled_tip3": "This type of workflow has not enabled the approval process, please go to the workflow configuration to enable it",
+  "common.add_resource_from_shopcart": "Add resource from shopping cart",
+  "common.delete_resource_from_shopcart_tip": "This operation will remove the resource from the workflow, confirm this operation?"
 }

@@ -4,6 +4,7 @@
     <template v-else>
       <div class="d-flex" v-for="(item, i) in dataDisks" :key="item.key">
         <disk
+          :ref="'disks'"
           :diskKey="item.key"
           :max="max"
           :min="item.min || min"
@@ -158,6 +159,10 @@ export default {
     },
     imageType: {
       type: String,
+    },
+    isInitForm: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
@@ -337,7 +342,7 @@ export default {
     currentDiskCapability () {
       if (this.hypervisor !== HYPERVISORS_MAP.kvm.key) return {}
       const instance_capabilities = this.capabilityData.instance_capabilities || []
-      const storages = instance_capabilities.find(item => item.hypervisor === this.hypervisor)?.storages
+      const storages = instance_capabilities.find(item => item.hypervisor === this.hypervisor)?.storages || {}
       const data_disk = storages.data_disk || []
       const currentDisk = data_disk.find(item => this.currentTypeObj.key?.startsWith(item.storage_type))
       return currentDisk
@@ -396,6 +401,7 @@ export default {
             this.form.fc.setFieldsValue({
               [`dataDiskSizes[${disk.key}]`]: Math.max((disk.value || 0), this.min),
             })
+            if (this.isInitForm) return
             if (!disk.disabled) this.decrease(disk.key)
           })
         }
@@ -403,7 +409,7 @@ export default {
     },
     defaultType (v, oldV) {
       // vmware系统盘改变清空数据盘，忽略调整配置初始化的情况
-      if (this.getHypervisor() === HYPERVISORS_MAP.esxi.key && oldV) {
+      if (this.getHypervisor() === HYPERVISORS_MAP.esxi.key && oldV && oldV.label) {
         this.dataDisks = []
       }
     },
@@ -446,11 +452,11 @@ export default {
         }
       })
     },
-    add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath, min, disabled = false, sizeDisabled = false, medium, preallocation, ...ret } = {}) {
+    add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath, min, disabled = false, sizeDisabled = false, medium, preallocation, autoReset, ...ret } = {}) {
       const key = uuid()
       let newDiskType = diskType
       // 磁盘区分介质
-      if (diskSupportTypeMedium(this.hypervisor) && medium) {
+      if (this.hypervisor && diskSupportTypeMedium(this.hypervisor) && medium) {
         newDiskType = `${diskType}/${medium}`
       }
       const typeObj = this.typesMap[newDiskType]
@@ -486,33 +492,61 @@ export default {
       }
       this.dataDisks.push(dataDiskItem)
       this.$nextTick(() => {
+        const configs = {}
         const value = {
           [`dataDiskSizes[${key}]`]: R.is(Number, size) ? size : (min || this.min),
         }
         value[`dataDiskTypes[${key}]`] = dataDiskTypes
         if (schedtag) { // 磁盘调度标签
+          configs.showAdvanced = true
+          configs.showSchedtag = true
           value[`dataDiskSchedtags[${key}]`] = schedtag
         }
         if (policy) { // 磁盘调度策略
           value[`dataDiskPolicys[${key}]`] = policy
+          configs.showAdvanced = true
+          configs.showSchedtag = true
         }
         if (snapshot && (filetype || mountPath)) {
           console.error(this.$t('compute.text_132'))
         }
         if (snapshot) { // 磁盘快照
           value[`dataDiskSnapshots[${key}]`] = snapshot
+          configs.showAdvanced = true
+          configs.showSnapshot = true
         }
         if (filetype) { // 磁盘文件系统
           value[`dataDiskFiletypes[${key}]`] = filetype
+          configs.showAdvanced = true
+          configs.showMountpoint = true
         }
         if (mountPath) { // 磁盘挂载路径
           value[`dataDiskMountPaths[${key}]`] = mountPath
+          configs.showAdvanced = true
+          configs.showMountpoint = true
+        }
+        if (autoReset) {
+          value[`dataDiskAutoReset[${key}]`] = autoReset
+          configs.showAdvanced = true
+          configs.isAutoResetShow = true
         }
         if (this.getHypervisor() === HYPERVISORS_MAP.esxi.key) {
           value[`dataDiskPreallocation[${key}]`] = preallocation
+          configs.showAdvanced = true
+          configs.showPreallocation = true
         }
-        this.form.fc.setFieldsValue(value)
-        this.setDiskMedium(dataDiskTypes)
+        if (configs.showAdvanced) {
+          setTimeout(() => {
+            this.$refs.disks[this.dataDisks.findIndex(val => val.key === key)].setValues(configs)
+            setTimeout(() => {
+              this.form.fc.setFieldsValue(value)
+            }, 1000)
+            this.setDiskMedium(dataDiskTypes)
+          }, 1000)
+        } else {
+          this.form.fc.setFieldsValue(value)
+          this.setDiskMedium(dataDiskTypes)
+        }
       })
     },
     getExtraDiskOpt (type) {

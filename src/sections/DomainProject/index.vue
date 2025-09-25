@@ -140,6 +140,7 @@ export default {
     async initDefaultData () {
       if (this.isAdminMode && this.l3PermissionEnable) { // 系统视图
         let defaultDomain = { key: this.userInfo.projectDomainId, label: this.userInfo.projectDomain }
+        let defaultProject = { key: this.userInfo.projectId, label: this.userInfo.projectName }
         const initialValue = _.get(this.decorators, 'domain[1].initialValue')
         if (R.is(Object, initialValue) && initialValue.key) {
           defaultDomain = { key: initialValue.key, label: initialValue.label }
@@ -154,16 +155,26 @@ export default {
         }
         const projectInitialValue = _.get(this.decorators, 'project[1].initialValue')
         const domainChange = () => {
-          this._setInitDomain(defaultDomain)
           this.domainChange(defaultDomain || {})
+          this._setInitDomain(defaultDomain)
+        }
+        const projectChange = () => {
+          this.projectChange(defaultProject || {})
+          this._setInitProject(defaultProject || {})
         }
         if (R.is(Object, projectInitialValue) && projectInitialValue.key) {
+          defaultProject = { key: projectInitialValue.key, label: projectInitialValue.label }
           domainChange()
+          projectChange()
         } else if (R.is(String, projectInitialValue) && projectInitialValue) {
+          defaultProject = { key: projectInitialValue }
           domainChange()
+          projectChange()
         } else {
           if (this.isDefaultSelect) {
+            defaultProject = { key: this.userInfo.projectId, label: this.userInfo.projectName }
             domainChange()
+            projectChange()
           }
         }
         if (this.isDomainFirstLoadData) {
@@ -172,6 +183,7 @@ export default {
         }
         await this.$nextTick()
         this.$refs.domain.loadDefaultSelectedOpts()
+        this.$refs.project.loadDefaultSelectedOpts()
       } else {
         if (this.isDomainMode || this.isAdminMode) { // 域视图 和 没开三级权限的系统视图
           const data = [{

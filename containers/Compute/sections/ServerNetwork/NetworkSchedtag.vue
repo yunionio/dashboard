@@ -2,7 +2,7 @@
   <div class="network-schedtag">
     <div class="d-flex align-items-start mb-2" v-for="(item, i) in schedtagList" :key="item.key">
       <a-tag color="blue" class="mr-1 mt-2">{{ isBonding ? 'bond' : $t('compute.text_193')}}{{i}}</a-tag>
-      <schedtag-policy :form="form" :decorators="genDecorator(item.key)" :schedtag-params="schedtagParams" :policyReactInSchedtag="false" />
+      <schedtag-policy :form="form" :decorators="genDecorator(item.key)" :schedtag-params="{ ...schedtagParams, $t: `net-schedtag-${i}` }" :policyReactInSchedtag="false" />
       <template v-if="showDeviceConfig">
         <template v-if="item.deviceShow">
           <a-form-item class="mb-0 ml-1"  :wrapperCol="{ span: 24 }">
@@ -40,6 +40,7 @@ export default {
     schedtagParams: {
       type: Object,
       required: true,
+      default: () => ({}),
     },
     form: {
       type: Object,
@@ -76,7 +77,7 @@ export default {
     gpuOptions () {
       const specs = this.form.fi.capability.specs || {}
       const data = specs.isolated_devices || {}
-      const ret = []
+      const ret = [{ key: 'xx', label: 'xx' }]
       for (const key in data) {
         if (data.hasOwnProperty(key)) {
           const item = data[key]
@@ -96,6 +97,37 @@ export default {
     this.add()
   },
   methods: {
+    initData (data) {
+      this.schedtagList = data.map(schedtag => {
+        const item = schedtag.schedtags[0]
+        const obj = {
+          key: uuid(),
+          deviceShow: false,
+          schedtag: item.id,
+          policy: item.strategy,
+          device: item.sriov_device && item.sriov_device.model,
+        }
+        if (item.sriov_device && item.sriov_device.model) {
+          obj.deviceShow = true
+        }
+        return obj
+      })
+      this.$nextTick(() => {
+        for (const item of this.schedtagList) {
+          this.form.fc.setFieldsValue({
+            [this.decorator.schedtags(item.key)[0]]: item.schedtag,
+            [this.decorator.policys(item.key)[0]]: item.policy,
+          })
+          if (item.device) {
+            setTimeout(() => {
+              this.form.fc.setFieldsValue({
+                [this.decorator.devices(item.key)[0]]: item.device,
+              })
+            }, 2000)
+          }
+        }
+      })
+    },
     add () {
       const uid = uuid()
       this.schedtagList.push({

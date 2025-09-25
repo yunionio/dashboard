@@ -168,9 +168,10 @@ export default {
   },
   watch: {
     hypervisor () {
-      this.imageType = this.mirrorTypeOptions[0].key
+      const imageType = this.decorator.imageType[1].initialValue || this.mirrorTypeOptions[0].key
+      this.imageType = imageType
       this.form.fc.setFieldsValue({
-        [this.decorator.imageType[0]]: this.mirrorTypeOptions[0].key,
+        [this.decorator.imageType[0]]: imageType,
       })
     },
     'form.fd.image.key': {

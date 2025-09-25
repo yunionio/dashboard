@@ -17,6 +17,7 @@
           :fc="form.fc"
           :fd="form.fd"
           :decorators="{ project: decorators.project, domain: decorators.domain }"
+          :ignoreStorage="isInitForm"
           @fetchDomainCallback="fetchDomainCallback"
           @fetchProjectCallback="fetchProjectCallback" />
       </a-form-item>
@@ -53,7 +54,7 @@
         :providerParams="providerParams"
         :cloudregionParams="cloudregionParams"
         :zoneParams="zoneParams"
-        :defaultActiveFirstOption="['provider', 'cloudregion']"
+        :defaultActiveFirstOption="isInitForm ? false : ['provider', 'cloudregion']"
         filterBrandResource="compute_engine"
         @providerFetchSuccess="providerFetchSuccess" />
       <!-- <a-form-item class="mb-0" :label="$t('compute.text_1159')">
@@ -82,7 +83,8 @@
           :type="type"
           :sku-params="skuParam"
           :hypervisor="hypervisor"
-          :hasMeterService="hasMeterService" />
+          :hasMeterService="hasMeterService"
+          :init-sku-data="initSkuData" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_267')" :extra="$t('compute.text_302')">
         <os-select
@@ -99,6 +101,7 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_49')" class="mb-0">
         <system-disk
+          ref="systemDiskRef"
           v-if="form.fd.sku"
           :decorator="decorators.systemDisk"
           :type="type"
@@ -114,6 +117,7 @@
       <a-form-item :label="$t('compute.text_50')">
         <data-disk
           v-if="form.fd.sku"
+          :isInitForm="isInitForm"
           :decorator="decorators.dataDisk"
           :type="type"
           :form="form"
@@ -134,6 +138,7 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_104')" class="mb-0">
         <server-network
+          ref="networkRef"
           :form="form"
           :decorator="decorators.network"
           :network-list-params="networkParam"
@@ -146,13 +151,14 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
-          v-decorator="decorators.tag" />
+          v-decorator="decorators.tag" :default-checked="tagDefaultChecked" />
       </a-form-item>
       <!-- <a-divider orientation="left">{{$t('compute.text_309')}}</a-divider> -->
       <a-collapse :bordered="false" v-model="collapseActive">
         <a-collapse-panel :header="$t('compute.text_309')" key="1">
           <eip-config
             v-if="enableEip"
+            ref="eipConfigRef"
             :decorators="decorators.eip"
             :eip-params="eipParams"
             :hypervisor="hypervisor"
@@ -182,6 +188,7 @@
           </a-form-item>
           <a-form-item :label="$t('compute.text_311')" v-show="!isServertemplate" class="mb-0">
             <sched-policy
+              ref="schedPolicyRef"
               :form="form"
               :provider="hypervisor"
               :server-type="form.fi.createType"
@@ -545,6 +552,17 @@ export default {
       list = list.filter(item => {
         return ![HYPERVISORS_MAP.jdcloud.key, HYPERVISORS_MAP.ecloud.key].includes(item.name.toLowerCase())
       })
+      // 回填
+      if (this.isInitForm && this.initFormData.hypervisor && list.some(item => item.name.toLowerCase() === this.initFormData.hypervisor)) {
+        if (HYPERVISORS_MAP[this.initFormData.hypervisor]) {
+          this.form.fc.setFieldsValue({
+            provider: HYPERVISORS_MAP[this.initFormData.hypervisor].provider,
+            cloudregion: this.initFormData.prefer_region,
+            zone: this.initFormData.prefer_zone,
+            cloudprovider: this.initFormData.prefer_manager_id,
+          })
+        }
+      }
       this.$set(this.form.fi, 'providerList', list)
       return list
     },

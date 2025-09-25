@@ -88,7 +88,7 @@ export function diskValidator (rule, value, callback) {
   callback()
 }
 
-export const createVmDecorators = type => {
+export const createVmDecorators = (type, initData = {}) => {
   let imageTypeInitValue = IMAGES_TYPE_MAP.standard.key
   if (type === SERVER_TYPE.public) {
     imageTypeInitValue = IMAGES_TYPE_MAP.public.key // 公有云机器默认选择公有云镜像
@@ -96,10 +96,80 @@ export const createVmDecorators = type => {
   if (type === SERVER_TYPE.private) {
     imageTypeInitValue = IMAGES_TYPE_MAP.private.key // 私有云机器默认选择私有云镜像
   }
+  let initImage = ''
+  if (!R.isNil(initData.extraData?.image_type) && !R.isEmpty(initData.extraData?.image_type)) {
+    if (initData.disks && initData.disks.length) {
+      if (initData.disks[0].image_id) {
+        initImage = initData.disks[0].image_id
+      }
+    }
+    const initImageType = initData.extraData?.image_type
+    if (initImageType === IMAGES_TYPE_MAP.iso.key || initImageType === IMAGES_TYPE_MAP.private_iso.key) {
+      initImage = initData.cdrom || ''
+    }
+    if (initImageType === IMAGES_TYPE_MAP.host.key) {
+      initImage = initData.guest_image_id || ''
+    }
+    if (initImageType === IMAGES_TYPE_MAP.snapshot.key) {
+      initImage = initData.instance_snapshot_id || ''
+    } else if (initImageType === IMAGES_TYPE_MAP.backup.key) {
+      initImage = initData.instance_backup_id || ''
+    }
+  }
+  let initSystemDiskIops = ''
+  let initSystemDiskThroughput = ''
+  if (initData.disks && initData.disks.length && initData.disks[0].disk_type === 'sys') {
+    initSystemDiskIops = initData.disks[0].iops
+    initSystemDiskThroughput = initData.disks[0].throughput
+  }
+  let initNetworkType = NETWORK_OPTIONS_MAP.default.key
+  if (initData.nets) {
+    if (initData.nets[0] && initData.nets[0].hasOwnProperty('exit') && !initData.nets[0].exit) {
+      initNetworkType = NETWORK_OPTIONS_MAP.default.key
+    }
+    if (initData.nets[0] && initData.nets[0].hasOwnProperty('network') && initData.extraData?.nets && initData.extraData?.nets[0] && initData.extraData?.nets[0].hasOwnProperty('network_id')) {
+      initNetworkType = NETWORK_OPTIONS_MAP.manual.key
+    }
+  }
+  let initEipType = EIP_TYPES_MAP.none.key
+  if (initData.eip_charge_type) {
+    initEipType = EIP_TYPES_MAP.new.key
+  } else if (initData.public_ip_charge_type) {
+    initEipType = EIP_TYPES_MAP.public.key
+  }
+  let initSecgroupType = 'default'
+  if (initData.secgroups && initData.secgroups.length) {
+    initSecgroupType = 'bind'
+  }
+  let initSchedPolicyType = 'default'
+  if (initData.prefer_host) {
+    initSchedPolicyType = 'host'
+  }
+  if (initData.schedtags && initData.schedtags.length) {
+    initSchedPolicyType = 'schedtag'
+  }
+  let initEncryptEnable = ''
+  if (initData.encrypt_key_new) {
+    initEncryptEnable = 'new'
+  }
+  if (initData.encrypt_key_id) {
+    initEncryptEnable = 'existing'
+  }
+  let initLoginType = 'random'
+  if (initData.keypair) {
+    initLoginType = 'keypair'
+  }
+  if (initData.hasOwnProperty('reset_password') && !initData.reset_password) {
+    initLoginType = 'image'
+  }
+  if (initData.hasOwnProperty('password') && initData.password) {
+    initLoginType = 'password'
+  }
   return {
     domain: [
       'domain',
       {
+        initialValue: initData.extraData?.domain_id,
         rules: [
           { validator: isRequired(), message: i18n.t('rules.domain'), trigger: 'change' },
         ],
@@ -108,6 +178,7 @@ export const createVmDecorators = type => {
     project: [
       'project',
       {
+        initialValue: initData.project_id,
         rules: [
           { validator: isRequired(), message: i18n.t('rules.project'), trigger: 'change' },
         ],
@@ -116,7 +187,7 @@ export const createVmDecorators = type => {
     name: [
       'name',
       {
-        initialValue: '',
+        initialValue: initData.generate_name || '',
         validateTrigger: 'blur',
         validateFirst: true,
         rules: [
@@ -128,16 +199,19 @@ export const createVmDecorators = type => {
     description: [
       'description',
       {
-        initialValue: '',
+        initialValue: initData.description || '',
       },
     ],
     reason: [
       'reason',
+      {
+        initialValue: initData.extraData?.reason || '',
+      },
     ],
     count: [
       'count',
       {
-        initialValue: 1,
+        initialValue: initData.__count__ || 1,
         rules: [
           { required: true, message: i18n.t('compute.text_211') },
         ],
@@ -147,7 +221,7 @@ export const createVmDecorators = type => {
       cloudregion: [
         'cloudregion',
         {
-          initialValue: { key: '', label: '' },
+          initialValue: { key: initData.prefer_region || '', label: '' },
           rules: [
             { validator: isRequired(), message: i18n.t('compute.text_212') },
           ],
@@ -156,7 +230,7 @@ export const createVmDecorators = type => {
       zone: [
         'zone',
         {
-          initialValue: { key: '', label: '' },
+          initialValue: { key: initData.prefer_zone || '', label: '' },
           rules: [
             { validator: isRequired(), message: i18n.t('compute.text_213') },
           ],
@@ -167,6 +241,7 @@ export const createVmDecorators = type => {
       prefer_manager: [
         'prefer_manager',
         {
+          initialValue: initData.prefer_manager || '',
           rules: [
             { required: true, message: i18n.t('compute.text_149') },
           ],
@@ -175,7 +250,7 @@ export const createVmDecorators = type => {
       os: [
         'os',
         {
-          initialValue: '',
+          initialValue: initData.extraData?.os || '',
           rules: [
             { required: true, message: i18n.t('compute.text_153') },
           ],
@@ -184,7 +259,7 @@ export const createVmDecorators = type => {
       image: [
         'image',
         {
-          initialValue: { key: '', label: '' },
+          initialValue: { key: initImage, label: '' },
           rules: [
             { validator: isRequired(), message: i18n.t('compute.text_214') },
           ],
@@ -193,7 +268,7 @@ export const createVmDecorators = type => {
       imageType: [
         'imageType',
         {
-          initialValue: imageTypeInitValue,
+          initialValue: initData.extraData?.image_type || imageTypeInitValue,
         },
       ],
     },
@@ -201,13 +276,13 @@ export const createVmDecorators = type => {
       loginType: [
         'loginType',
         {
-          initialValue: 'random',
+          initialValue: initLoginType,
         },
       ],
       keypair: [
         'loginKeypair',
         {
-          initialValue: undefined, // { key: '', label: '' }
+          initialValue: initData.keypair || '', // { key: '', label: '' }
           rules: [
             { required: true, message: i18n.t('compute.text_203') },
           ],
@@ -216,7 +291,7 @@ export const createVmDecorators = type => {
       password: [
         'loginPassword',
         {
-          initialValue: '',
+          initialValue: initData.password || '',
           validateFirst: true,
           rules: [
             { required: true, message: i18n.t('compute.text_204') },
@@ -228,6 +303,7 @@ export const createVmDecorators = type => {
     hypervisor: [
       'hypervisor',
       {
+        initialValue: initData.hypervisor || '',
         rules: [
           { required: true, message: i18n.t('compute.text_215') },
         ],
@@ -300,18 +376,19 @@ export const createVmDecorators = type => {
     vcpu: [
       'vcpu',
       {
-        initialValue: 2,
+        initialValue: initData.vcpu_count || 2,
       },
     ],
     vmem: [
       'vmem',
       {
-        initialValue: 2048,
+        initialValue: initData.vmem_size || 2048,
       },
     ],
     sku: [
       'sku',
       {
+        initialValue: initData.sku || '',
         rules: [
           { validator: isRequired(true, 'id'), message: i18n.t('compute.text_216') },
         ],
@@ -367,6 +444,7 @@ export const createVmDecorators = type => {
       iops: [
         'systemDiskIops',
         {
+          initialValue: initSystemDiskIops,
           rules: [{
             required: true,
             message: i18n.t('compute.iops_input_tip'),
@@ -376,6 +454,7 @@ export const createVmDecorators = type => {
       throughput: [
         'systemDiskThroughput',
         {
+          initialValue: initSystemDiskThroughput,
           rules: [{
             required: true,
             message: i18n.t('compute.throuthput_input_tip'),
@@ -505,7 +584,7 @@ export const createVmDecorators = type => {
       networkType: [
         'networkType',
         {
-          initialValue: NETWORK_OPTIONS_MAP.default.key,
+          initialValue: initNetworkType,
         },
       ],
       networkConfig: {
@@ -513,6 +592,7 @@ export const createVmDecorators = type => {
           `vpcs[${i}]`,
           {
             validateTrigger: ['change', 'blur'],
+            initialValue: ['default', 'default'],
             rules: [{
               required: true,
               message: i18n.t('compute.text_194'),
@@ -584,6 +664,7 @@ export const createVmDecorators = type => {
           `networkIPv6s[${i}]`,
           {
             validateFirst: true,
+            valuePropName: 'checked',
             validateTrigger: ['blur', 'change'],
           },
         ],
@@ -635,12 +716,13 @@ export const createVmDecorators = type => {
       schedPolicyType: [
         'schedPolicyType',
         {
-          initialValue: 'default',
+          initialValue: initSchedPolicyType,
         },
       ],
       schedPolicyHost: [
         'schedPolicyHost',
         {
+          initialValue: initData.prefer_host,
           rules: [
             { required: true, message: i18n.t('compute.text_219') },
           ],
@@ -672,25 +754,25 @@ export const createVmDecorators = type => {
     bios: [
       'bios',
       {
-        initialValue: '',
+        initialValue: initData.bios || '',
       },
     ],
     vdi: [
       'vdi',
       {
-        initialValue: '',
+        initialValue: initData.vdi || '',
       },
     ],
     vga: [
       'vga',
       {
-        initialValue: '',
+        initialValue: initData.vga || '',
       },
     ],
     machine: [
       'machine',
       {
-        initialValue: '',
+        initialValue: initData.machine || '',
       },
     ],
     backup: {
@@ -698,24 +780,27 @@ export const createVmDecorators = type => {
         'backupEnable',
         {
           valuePropName: 'checked',
-          initialValue: false,
+          initialValue: !!initData.prefer_backup_host || false,
         },
       ],
       backup: [
         'backup',
+        {
+          initialValue: initData.prefer_backup_host || '',
+        },
       ],
     },
     duration: {
       durationStandard: [
         'durationStandard',
         {
-          initialValue: 'none',
+          initialValue: initData.duration ? 'custom' : 'none',
         },
       ],
       duration: [
         'duration',
         {
-          initialValue: '1h',
+          initialValue: initData.duration || '1h',
         },
       ],
     },
@@ -724,29 +809,33 @@ export const createVmDecorators = type => {
         'groupsEnable',
         {
           valuePropName: 'checked',
-          initialValue: false,
+          initialValue: !!(initData.groups && initData.groups.length),
         },
       ],
       groups: [
         'groups',
+        {
+          initialValue: initData.groups || [],
+        },
       ],
     },
     bill: {
       billType: [
         'billType',
         {
-          initialValue: 'quantity',
+          initialValue: initData.billing_type === 'postpaid' ? 'quantity' : 'package',
         },
       ],
       duration: [
         'duration',
         {
-          initialValue: '1M',
+          initialValue: initData.duration || '1M',
         },
       ],
       autoRenew: [
         'autoRenew',
         {
+          initialValue: initData.auto_renew || false,
           valuePropName: 'checked',
         },
       ],
@@ -762,22 +851,25 @@ export const createVmDecorators = type => {
       type: [
         'eip_type',
         {
-          initialValue: 'none',
+          initialValue: initEipType,
         },
       ],
       charge_type: [
         'eip_charge_type',
+        {
+          initialValue: initData.eip_charge_type || initData.public_ip_charge_type,
+        },
       ],
       bgp_type: [
         'eip_bgp_type',
         {
-          initialValue: '',
+          initialValue: initData.eip_bgp_type || initData.public_ip_bgp_type,
         },
       ],
       bandwidth: [
         'eip_bw',
         {
-          initialValue: 30,
+          initialValue: initData.eip_bw || initData.public_ip_bw || 30,
         },
       ],
       eip: [
@@ -793,13 +885,14 @@ export const createVmDecorators = type => {
       type: [
         'secgroup_type',
         {
-          initialValue: 'default',
+          initialValue: initSecgroupType,
         },
       ],
       secgroup: [
         'secgroup',
         {
           validateFirst: true,
+          initialValue: initData.secgroups || [],
           rules: [
             { required: true, message: i18n.t('compute.text_190') },
             // { validator: secgroupValidator }, // Azure和Ucloud的安全组最大关联一个，动态效验放在组件内部
@@ -810,6 +903,7 @@ export const createVmDecorators = type => {
     tag: [
       'tag',
       {
+        initialValue: initData.__meta__ || {},
         rules: [
           { validator: validateForm('tagName') },
         ],
@@ -833,6 +927,7 @@ export const createVmDecorators = type => {
     os_arch: [
       'os_arch',
       {
+        initialValue: initData.os_arch || '',
         rules: [
           { required: true, message: i18n.t('compute.text_1363') },
         ],
@@ -840,35 +935,41 @@ export const createVmDecorators = type => {
     ],
     hostName: [
       'hostName',
+      {
+        initialValue: initData.hostname || '',
+      },
     ],
     encrypt_keys: {
       encryptEnable: [
         'encryptEnable',
         {
-          initialValue: '',
+          initialValue: initEncryptEnable || '',
         },
       ],
       encrypt_key_alg: [
         'encrypt_key_alg',
         {
-          initialValue: '',
+          initialValue: initData.encrypt_key_alg || '',
         },
       ],
       encrypt_key_id: [
         'encrypt_key_id',
+        {
+          initialValue: initData.encrypt_key_id || '',
+        },
       ],
     },
     custom_data_type: [
       'custom_data_type',
       {
-        initialValue: '',
+        initialValue: initData.user_data ? 'input' : '',
       },
     ],
     deploy_telegraf: [
       'deploy_telegraf',
       {
         valuePropName: 'checked',
-        initialValue: true,
+        initialValue: !(initData && initData.extraData && !initData.deploy_telegraf),
       },
     ],
     bastion_host: {
@@ -876,12 +977,13 @@ export const createVmDecorators = type => {
         'bastion_host_enable',
         {
           valuePropName: 'checked',
-          initialValue: false,
+          initialValue: !!initData.bastion_server,
         },
       ],
       bastion_host_id: [
         'bastion_host_id',
         {
+          initialValue: initData.bastion_server?.bastion_host_id || '',
           rules: [
             { required: true, message: i18n.t('compute.bastionHost.bastion_host.placeholder') },
           ],
@@ -890,6 +992,7 @@ export const createVmDecorators = type => {
       bastion_org_id: [
         'bastion_org_id',
         {
+          initialValue: initData.bastion_server?.bastion_org_id || '',
           rules: [
             { required: true, message: i18n.t('compute.bastionHost.bastion_org.placeholder') },
           ],
@@ -898,6 +1001,7 @@ export const createVmDecorators = type => {
       nodes: [
         'nodes',
         {
+          initialValue: initData.bastion_server?.nodes || [],
           rules: [
             { required: true, message: i18n.t('compute.bastionHost.node.placeholder') },
           ],
@@ -906,7 +1010,7 @@ export const createVmDecorators = type => {
       port: [
         'port',
         {
-          initialValue: 22,
+          initialValue: initData.bastion_server?.port || 22,
           rules: [
             { type: 'number', min: 0, max: 65535, message: i18n.t('compute.bastionHost.port.placeholder'), trigger: 'blur', transform: (v) => parseInt(v) },
           ],
@@ -930,13 +1034,16 @@ export const createVmDecorators = type => {
       ],
       bastion_domain_id: [
         'bastion_domain_id',
+        {
+          initialValue: initData.bastion_server?.bastion_domain_id || '',
+        },
       ],
     },
     is_daemon: [
       'is_daemon',
       {
         valuePropName: 'checked',
-        initialValue: false,
+        initialValue: initData.is_daemon || false,
       },
     ],
   }
@@ -954,11 +1061,11 @@ export class Decorator {
     this.type = type
   }
 
-  createDecorators () {
+  createDecorators (initData) {
     const decoratorArr = decoratorGroup[this.type]
     if (decoratorArr) {
       decoratorArr.forEach(dec => {
-        const decorators = createVmDecorators(this.type)
+        const decorators = createVmDecorators(this.type, initData)
         if (decorators[dec]) {
           this.decorators[dec] = decorators[dec]
         } else {
@@ -1179,12 +1286,16 @@ export class GenCreateData {
    */
   genNetworks () {
     let ret = [{ exit: false }]
+    const extraRet = []
     // 指定 IP 子网
     if (this.fd.networkType === NETWORK_OPTIONS_MAP.manual.key) {
       ret = []
       R.forEachObjIndexed((value, key) => {
         const obj = {
           network: value,
+        }
+        const extraObj = {
+          vpc: this.fd[`vpcs[${key}]`] || this.fd.vpcs[key],
         }
         if (this.fd.networkIps) {
           const address = this.fd.networkIps[key]
@@ -1223,6 +1334,7 @@ export class GenCreateData {
           }
         }
         ret.push(obj)
+        extraRet.push({ ...obj, ...extraObj })
       }, this.fd.networks)
     }
     // 指定 调度标签
@@ -1232,6 +1344,7 @@ export class GenCreateData {
         const obj = {
           id: value,
         }
+        const extraObj = {}
         const strategy = this.fd.networkPolicys[key]
         if (strategy) {
           obj.strategy = strategy
@@ -1245,9 +1358,10 @@ export class GenCreateData {
         ret.push({
           schedtags: [obj],
         })
+        extraRet.push({ schedtags: [{ ...obj, ...extraObj }] })
       }, this.fd.networkSchedtags)
     }
-    return ret
+    return { networks: ret, extraNetworks: extraRet }
   }
 
   /**
@@ -1473,6 +1587,7 @@ export class GenCreateData {
    */
   all () {
     const { create_server_auto_start = true } = store.getters.globalSetting.value || {}
+    const { networks, extraNetworks } = this.genNetworks()
     const data = {
       auto_start: create_server_auto_start,
       generate_name: this.fd.name && this.fd.name.trim(),
@@ -1480,13 +1595,19 @@ export class GenCreateData {
       hypervisor: this.getHypervisor(),
       __count__: this.fd.count,
       disks: this.genDisks(),
-      nets: this.genNetworks(),
+      nets: networks,
       prefer_region: this.getPreferRegion(),
       vcpu_count: this.getCpuCount(),
       vmem_size: this.getMemSize(),
       project_id: (this.fd.project && this.fd.project.key) || store.getters.userInfo.projectId,
       os_arch: _.get(HOST_CPU_ARCHS, `[${this.fd.os_arch}].key`),
       hostname: this.fd.hostName,
+      extraData: {
+        domain_id: (this.fd.domain && this.fd.domain.key) || store.getters.userInfo.domainId,
+        image_type: this.fd.imageType,
+        os: this.fd.os,
+        nets: extraNetworks,
+      },
     }
     // 非预付费资源池不会添加sku
     if (!this.isPrepaid) {

@@ -46,5 +46,27 @@ export default {
         return error
       }
     },
+    async updateWorkflow (variables, workflow) {
+      if (!this.$appConfig.isPrivate) return Promise.reject(new Error('no workflow'))
+      try {
+        let params = variables
+        if (variables.paramter && variables.length > 4000) {
+          const paramterParams = getWorkflowParamterParams(variables.paramter)
+          params = { ...params, ...paramterParams }
+        }
+        const response = new this.$Manager('historic-process-instances', 'v1')
+          .update({ id: `${workflow}/variables`, data: { variables: params } })
+          .then(() => {
+            this.$router.push('/workflow')
+          })
+          .catch((error) => {
+            throw error
+          })
+        this.$store.dispatch('app/fetchWorkflowStatistics')
+        return response
+      } catch (error) {
+        return error
+      }
+    },
   },
 }
