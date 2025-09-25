@@ -2799,7 +2799,8 @@
     "private_env-1": "私有云1",
     "private_env-2": "私有云2",
     "extdb": "自定义资源",
-    "k8s": "K8S"
+    "k8s": "K8S",
+    "server_container": "容器主机"
   },
   "originDictionary": {},
   "res": {
@@ -6049,5 +6050,13 @@
   "common.page_list_header_item_count_stats1": "已展示{0}条 / 选中{1}条",
   "common.month": "月份",
   "common.c": "核",
-  "common.system_service": "系统服务"
+  "common.system_service": "系统服务",
+  "common.modify_workflow": "修改工单",
+  "common.current_quota": "当前配额",
+  "common.new_quota": "申请配额",
+  "common.workflow_disabled_tip": "该类型工单不支持此操作",
+  "common.workflow_disabled_tip2": "未经审批的工单支持此操作",
+  "common.workflow_disabled_tip3": "该类型工单未开启审批流程，请前往工单配置中开启",
+  "common.add_resource_from_shopcart": "从购物车添加资源",
+  "common.delete_resource_from_shopcart_tip": "该操作将从工单中将该资源移除,确认此操作吗?"
 }

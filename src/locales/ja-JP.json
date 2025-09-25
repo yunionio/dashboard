@@ -2800,7 +2800,8 @@
     "private_env-1": "プライベートクラウド1",
     "private_env-2": "プライベートクラウド2",
     "extdb": "カスタムリソース",
-    "k8s": "K8S"
+    "k8s": "K8S",
+    "server_container": "コンテナホスト"
   },
   "originDictionary": {},
   "res": {
@@ -6043,5 +6044,13 @@
   "common.global_search": "グローバル検索",
   "common.month": "月",
   "common.c": "核",
-  "common.system_service": "システムサービス"
+  "common.system_service": "システムサービス",
+  "common.modify_workflow": "製造オーダの変更",
+  "common.current_quota": "現在のクォータ",
+  "common.new_quota": "申請割当",
+  "common.workflow_disabled_tip": "このタイプの製造オーダはこのオペレーションをサポートしていません",
+  "common.workflow_disabled_tip2": "承認されていない製造オーダはこの操作をサポートしています",
+  "common.workflow_disabled_tip3": "このタイプの製造オーダは承認プロセスをオープンしていません。製造オーダ構成でオープンしてください",
+  "common.add_resource_from_shopcart": "カートからリソースを追加",
+  "common.delete_resource_from_shopcart_tip": "この操作は製造オーダからリソースを削除します。この操作を確認しますか?"
 }

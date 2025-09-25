@@ -102,6 +102,9 @@ export default {
     handleCodeInput (_value) {
       this.customData = _value
     },
+    handleMirrorDataChange (_value) {
+      this.codeMirrorData = _value
+    },
   },
 }
 </script>

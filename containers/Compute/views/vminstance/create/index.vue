@@ -1,7 +1,7 @@
 <template>
   <div class="server-create-index">
     <page-header :title="headerTitle" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
-    <component :is="component" :type="type" />
+    <component :is="component" :type="cloudEnv === 'onpremise' ? 'idc' : cloudEnv" :initFormData="initFormData" :isInitForm="isInitForm" />
   </div>
 </template>
 
@@ -21,6 +21,7 @@ export default {
   data () {
     const cloudEnvOptions = getCloudEnvOptions('compute_engine_brands', true)
     const queryType = this.$route.query.type
+    const paramsData = this.$route.params?.data || {}
     let cloudEnv = queryType === 'idc' ? 'onpremise' : this.$route.query.type
     let routerQuery = this.$route.query.type
     if (!cloudEnvOptions.find(val => val.key === cloudEnv)) {
@@ -31,10 +32,13 @@ export default {
       cloudEnvOptions,
       cloudEnv,
       routerQuery,
-
+      initFormData: paramsData,
     }
   },
   computed: {
+    isInitForm () {
+      return !!this.initFormData?.extraData?.formType && this.$route.query.workflow
+    },
     type () {
       const { type = 'idc' } = this.$route.query
       switch (type) {
@@ -64,11 +68,12 @@ export default {
       } else {
         res = this.$t('compute.text_91')
       }
-      return this.$t('compute.text_1161', [res])
+      return this.$route.query.workflow ? this.$t('compute.text_1161', [res]) + `(${this.$t('common.modify_workflow')})` : this.$t('compute.text_1161', [res])
     },
   },
   watch: {
     cloudEnv (val) {
+      this.clearInitFormData()
       this.$nextTick(() => {
         const query = this.getQuery(this.$router.history.current.query)
         const path = this.$router.history.current.path
@@ -95,6 +100,10 @@ export default {
     window.removeEventListener('popstate', this.popstate)
   },
   methods: {
+    clearInitFormData () {
+      this.isInitForm = false
+      this.initFormData = {}
+    },
     detectBack () {
       window.addEventListener('popstate', this.popstate, false)
     },

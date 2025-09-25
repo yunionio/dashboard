@@ -259,6 +259,8 @@ export default {
         } else {
           this.fetchBgpType()
         }
+      } else {
+        this.bgpTypeOptions = []
       }
     },
   },
@@ -266,6 +268,36 @@ export default {
     this.fetchBgpType()
   },
   methods: {
+    initData (data) {
+      this.$nextTick(() => {
+        setTimeout(() => {
+          if (data.eip_charge_type) {
+            this.form.fc.setFieldsValue({ [this.decorators.type[0]]: 'new' })
+            this.handleTypeChange({ target: { value: 'new' } })
+            this.form.fd.eip_type = 'new'
+          } else if (data.public_ip_charge_type) {
+            this.form.fc.setFieldsValue({ [this.decorators.type[0]]: 'public' })
+            this.handleTypeChange({ target: { value: 'public' } })
+            this.form.fd.eip_type = 'public'
+          }
+          setTimeout(() => {
+            if (data.eip_charge_type) {
+              this.form.fc.setFieldsValue({
+                [this.decorators.charge_type[0]]: data.eip_charge_type,
+                [this.decorators.bandwidth[0]]: data.eip_bw,
+                [this.decorators.bgp_type[0]]: data.eip_bgp_type,
+              })
+            } else if (data.public_ip_charge_type) {
+              this.form.fc.setFieldsValue({
+                [this.decorators.charge_type[0]]: data.public_ip_charge_type,
+                [this.decorators.bandwidth[0]]: data.public_ip_bw,
+                [this.decorators.bgp_type[0]]: data.public_ip_bgp_type,
+              })
+            }
+          }, 1000)
+        }, 1000)
+      })
+    },
     fetchBgpType () {
       if (this.isAliyun) return
       new this.$Manager('networks/distinct-field').list({
