@@ -6036,5 +6036,9 @@
   "common.workflow_disabled_tip2": "Workflows that have not been approved support this operation",
   "common.workflow_disabled_tip3": "This type of workflow has not enabled the approval process, please go to the workflow configuration to enable it",
   "common.add_resource_from_shopcart": "Add resource from shopping cart",
-  "common.delete_resource_from_shopcart_tip": "This operation will remove the resource from the workflow, confirm this operation?"
+  "common.delete_resource_from_shopcart_tip": "This operation will remove the resource from the workflow, confirm this operation?",
+  "common.view_screenshot": "View screenshot",
+  "common.download_screenshot": "Download",
+  "common.view_screenshot_blank": "View in new window",
+  "common.screenshot_error": "Failed to get screenshot"
 }

@@ -6053,5 +6053,9 @@
   "common.workflow_disabled_tip2": "承認されていない製造オーダはこの操作をサポートしています",
   "common.workflow_disabled_tip3": "このタイプの製造オーダは承認プロセスをオープンしていません。製造オーダ構成でオープンしてください",
   "common.add_resource_from_shopcart": "カートからリソースを追加",
-  "common.delete_resource_from_shopcart_tip": "この操作は製造オーダからリソースを削除します。この操作を確認しますか?"
+  "common.delete_resource_from_shopcart_tip": "この操作は製造オーダからリソースを削除します。この操作を確認しますか?",
+  "common.view_screenshot": "スクリーンショットを表示",
+  "common.download_screenshot": "ダウンロード",
+  "common.view_screenshot_blank": "新しいウィンドウで表示",
+  "common.screenshot_error": "スクリーンショットの取得に失敗しました"
 }
