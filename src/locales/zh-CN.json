@@ -6059,5 +6059,9 @@
   "common.workflow_disabled_tip2": "未经审批的工单支持此操作",
   "common.workflow_disabled_tip3": "该类型工单未开启审批流程，请前往工单配置中开启",
   "common.add_resource_from_shopcart": "从购物车添加资源",
-  "common.delete_resource_from_shopcart_tip": "该操作将从工单中将该资源移除,确认此操作吗?"
+  "common.delete_resource_from_shopcart_tip": "该操作将从工单中将该资源移除,确认此操作吗?",
+  "common.view_screenshot": "查看截图",
+  "common.download_screenshot": "下载",
+  "common.view_screenshot_blank": "新窗口查看",
+  "common.screenshot_error": "截图获取失败"
 }
