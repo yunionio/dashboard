@@ -6044,5 +6044,9 @@
   "common.global_search": "グローバル検索",
   "common.month": "月",
   "common.c": "核",
-  "common.system_service": "システムサービス"
+  "common.system_service": "システムサービス",
+  "common.view_screenshot": "スクリーンショットを表示",
+  "common.download_screenshot": "ダウンロード",
+  "common.view_screenshot_blank": "新しいウィンドウで表示",
+  "common.screenshot_error": "スクリーンショットの取得に失敗しました"
 }
