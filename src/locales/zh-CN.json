@@ -6050,5 +6050,9 @@
   "common.page_list_header_item_count_stats1": "已展示{0}条 / 选中{1}条",
   "common.month": "月份",
   "common.c": "核",
-  "common.system_service": "系统服务"
+  "common.system_service": "系统服务",
+  "common.view_screenshot": "查看截图",
+  "common.download_screenshot": "下载",
+  "common.view_screenshot_blank": "新窗口查看",
+  "common.screenshot_error": "截图获取失败"
 }
