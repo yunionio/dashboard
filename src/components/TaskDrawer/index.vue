@@ -5,7 +5,8 @@
     :obj-id="resId"
     :list-id="id || 'TaskListForCustomResourceSidePage'"
     :getParams="getParams"
-    isSidepage />
+    isSidepage
+    root />
 </template>
 
 <script>
