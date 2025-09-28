@@ -12,7 +12,7 @@
           <a-tab-pane :tab="obj.label" :key="obj.key" />
         </template>
       </a-tabs>
-      <list :id="listId" :resource="resource" :archivedResource="archivedResource" :taskStage="taskStage" :objId="objId" :getParams="getParams" :root="false" />
+      <list :id="listId" :resource="resource" :archivedResource="archivedResource" :taskStage="taskStage" :objId="objId" :getParams="getParams" :root="root" />
     </template>
   </div>
 </template>
@@ -42,6 +42,10 @@ export default {
     isSidepage: {
       type: Boolean,
       default: false,
+    },
+    root: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {
