@@ -71,9 +71,10 @@ export default {
           default:
             statusCheckArr = [obj.type]
         }
+        const statusArr = [...new Set([...this.statusArr, ...statusCheckArr])]
         this.filterParams = {
           statusCheckArr,
-          statusArr: this.statusArr,
+          statusArr,
         }
       }
     },
