@@ -806,7 +806,7 @@ export const createVmDecorators = (type, initData = {}) => {
       duration: [
         'duration',
         {
-          initialValue: initData.duration || '1h',
+          initialValue: initData.duration === '1w' ? '7d' : initData.duration || '1h',
         },
       ],
     },
@@ -829,13 +829,13 @@ export const createVmDecorators = (type, initData = {}) => {
       billType: [
         'billType',
         {
-          initialValue: initData.billing_type === 'postpaid' ? 'quantity' : 'package',
+          initialValue: initData.extraData?.billType || 'quantity',
         },
       ],
       duration: [
         'duration',
         {
-          initialValue: initData.duration || '1M',
+          initialValue: initData.duration === '1w' ? '7d' : initData.duration || '1m',
         },
       ],
       autoRenew: [
@@ -1651,6 +1651,7 @@ export class GenCreateData {
         data.duration = this.fd.duration
         // 自动续费
         data.auto_renew = this.fd.autoRenew
+        data.extraData.billType = 'package'
       }
       // 线路类型
       if (this.fd.eip_bgp_type) {
