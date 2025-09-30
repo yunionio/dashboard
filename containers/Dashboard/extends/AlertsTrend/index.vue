@@ -139,8 +139,8 @@ export default {
     },
     extraParams () {
       const ret = {}
-      if (this.scope === 'domain') ret.domain_id = this.curNav.id
-      if (this.scope === 'project') ret.project_id = this.curNav.id
+      if (this.scope === 'domain') ret.domain_id = this.userInfo?.projectDomainId
+      if (this.scope === 'project') ret.project_id = this.userInfo?.projectId
       return ret
     },
   },
