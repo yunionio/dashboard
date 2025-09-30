@@ -150,6 +150,18 @@ export default {
           'description',
           {
             initialValue: selectItem.description || '',
+            rules: [
+              {
+                validator: (rule, value, callback) => {
+                  if (value && (this.isKsyun || this.isAws)) {
+                    if (/[\u4e00-\u9fff]/.test(value)) {
+                      callback(new Error(this.$t('scope.text_339')))
+                    }
+                  }
+                  callback()
+                },
+              },
+            ],
           },
         ],
       },
@@ -217,6 +229,9 @@ export default {
     },
     isAws () {
       return this.params.brand === 'Aws'
+    },
+    isKsyun () {
+      return this.params.brand === 'Ksyun'
     },
     protocolOptions () {
       let ret = [
