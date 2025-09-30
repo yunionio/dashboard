@@ -1230,7 +1230,7 @@ const getSingleActions = function (ctx) {
                     return ret
                   }
                   const osType = obj.metadata && obj.metadata.os_name
-                  if (['aws', 'azure', 'google', 'aliyun'].includes(obj.hypervisor) && osType === 'Windows') {
+                  if (['aws', 'azure', 'google', 'aliyun', 'ksyun'].includes(obj.hypervisor) && osType === 'Windows') {
                     ret.tooltip = i18n.t('compute.text_1285')
                     return ret
                   }

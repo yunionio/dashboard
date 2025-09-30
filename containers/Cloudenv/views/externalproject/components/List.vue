@@ -282,7 +282,7 @@ export default {
       return ret
     },
     isAllowCreate () {
-      if (this.cloudaccount && [HYPERVISORS_MAP.azure.provider, HYPERVISORS_MAP.qcloud.provider, HYPERVISORS_MAP.aliyun.provider, HYPERVISORS_MAP.huawei.provider].includes(this.cloudaccount.provider)) {
+      if (this.cloudaccount && [HYPERVISORS_MAP.azure.provider, HYPERVISORS_MAP.qcloud.provider, HYPERVISORS_MAP.aliyun.provider, HYPERVISORS_MAP.huawei.provider, HYPERVISORS_MAP.ksyun.provider].includes(this.cloudaccount.provider)) {
         return true
       }
       return false

@@ -274,6 +274,7 @@ export default {
           HYPERVISORS_MAP.qcloud.key,
           HYPERVISORS_MAP.ucloud.key,
           HYPERVISORS_MAP.esxi.key,
+          HYPERVISORS_MAP.ksyun.key,
         ]
         if (disableKeypairHyper.includes(hypervisor)) {
           delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
