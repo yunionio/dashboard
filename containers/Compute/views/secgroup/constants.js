@@ -63,4 +63,8 @@ export const priorityRuleMap = {
     min: 1,
     max: 100,
   },
+  ksyun: {
+    min: 1,
+    max: 1000,
+  },
 }

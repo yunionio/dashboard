@@ -83,11 +83,11 @@ export default {
       const showFields = ['name', 'ip', 'instance_type']
       return this.params.columns.filter((item) => { return showFields.includes(item.field) })
     },
-    // 腾讯云、阿里云、火山云的按量付费机器，关机可停止付费
+    // 腾讯云、阿里云、火山云、金山云的按量付费机器，关机可停止付费
     // 腾讯云、阿里云包年包月机器，关机停止付费会转为按量付费机器
     canAutoPrepaid () {
       return this.dataList.every(item => {
-        return ['qcloud', 'aliyun'].includes(item.brand.toLocaleLowerCase())
+        return ['qcloud', 'aliyun', 'ksyun'].includes(item.brand.toLocaleLowerCase())
       }) && this.dataList.some(item => {
         return item.billing_type === 'postpaid'
       })
