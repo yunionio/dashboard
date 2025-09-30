@@ -83,7 +83,7 @@ import { BATCH_OPERATE_SERVERS_MAX } from '@/constants/workflow'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { getNameDescriptionTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 
-const canDeleteBrandList = ['OneCloud', 'VMware', 'OpenStack', 'ZStack', 'DStack', 'Aliyun', 'Huawei', 'Qcloud', 'Aws', 'Azure', 'Google', 'HCSO', 'HCS']
+const canDeleteBrandList = ['OneCloud', 'VMware', 'OpenStack', 'ZStack', 'DStack', 'Aliyun', 'Huawei', 'Qcloud', 'Aws', 'Azure', 'Google', 'HCSO', 'HCS', 'Ksyun']
 const deleteEipLimit = {
   VMware: {
     support: false,

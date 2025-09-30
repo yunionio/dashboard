@@ -469,7 +469,7 @@ export default {
     },
     runningOther () {
       return this.dataList.some(val => {
-        if (val.status === 'running' && [HYPERVISORS_MAP.aliyun.hypervisor, HYPERVISORS_MAP.aws.hypervisor, HYPERVISORS_MAP.google.hypervisor, HYPERVISORS_MAP.huawei.hypervisor, HYPERVISORS_MAP.ctyun.hypervisor, HYPERVISORS_MAP.volcengine.hypervisor].includes(val.hypervisor)) {
+        if (val.status === 'running' && [HYPERVISORS_MAP.aliyun.hypervisor, HYPERVISORS_MAP.aws.hypervisor, HYPERVISORS_MAP.google.hypervisor, HYPERVISORS_MAP.huawei.hypervisor, HYPERVISORS_MAP.ctyun.hypervisor, HYPERVISORS_MAP.volcengine.hypervisor, HYPERVISORS_MAP.ksyun.hypervisor].includes(val.hypervisor)) {
           return true
         }
         return false
