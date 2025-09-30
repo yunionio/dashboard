@@ -38,6 +38,8 @@ export default {
       this.generateTableOverviewIndexs(res)
     },
     getStatusOpts (data) {
+      this.errorFilterStatus = []
+      this.otherFilterStatus = []
       const obj = {}
       const errorObj = {}
       const otherObj = {}
@@ -97,9 +99,10 @@ export default {
           default:
             statusCheckArr = [obj.type]
         }
+        const statusArr = [...new Set([...this.statusArr, ...statusCheckArr])]
         this.filterParams = {
           statusCheckArr,
-          statusArr: this.statusArr,
+          statusArr,
         }
       }
     },
