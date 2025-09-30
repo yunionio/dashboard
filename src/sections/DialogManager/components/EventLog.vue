@@ -99,6 +99,13 @@ export default {
           title: this.$t('common_log_table_key.severity'),
         },
         {
+          field: 'service',
+          title: this.$t('table.title.service'),
+          formatter: ({ row }) => {
+            return row._i18n?.service || row.service
+          },
+        },
+        {
           field: 'kind',
           title: this.$t('common_log_table_key.kind'),
         },
