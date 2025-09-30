@@ -197,6 +197,7 @@ export default {
           { label: this.$t('table.title.operation'), key: 'action' },
           { label: this.$t('table.title.res_name'), key: 'obj_name' },
           { label: this.$t('common_log_table_key.severity'), key: 'severity' },
+          { label: this.$t('table.title.service'), key: 'service' },
           { label: this.$t('common_log_table_key.kind'), key: 'kind' },
           { label: this.$t('common.status'), key: 'success' },
           { label: this.$t('common_156'), key: 'start_time' },
@@ -282,6 +283,14 @@ export default {
                 </list-body-cell-wrap>,
               ]
             },
+          },
+        },
+        {
+          field: 'service',
+          title: this.$t('table.title.service'),
+          minWidth: 120,
+          formatter: ({ row }) => {
+            return row._i18n?.service || row.service
           },
         },
         getCopyWithContentTableColumn({
