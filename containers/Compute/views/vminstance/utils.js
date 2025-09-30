@@ -49,6 +49,7 @@ const actionEableMap = {
       sangfor: ['ready'],
       zettakit: ['ready'],
       uis: ['ready'],
+      ksyun: ['ready'],
     },
   },
   stop: {
@@ -83,6 +84,7 @@ const actionEableMap = {
       sangfor: ['running', 'stop_fail'],
       zettakit: ['running', 'stop_fail'],
       uis: ['running', 'stop_fail'],
+      ksyun: ['running', 'stop_fail'],
     },
   },
   restart: {
@@ -117,6 +119,7 @@ const actionEableMap = {
       sangfor: ['running', 'stop_fail'],
       zettakit: ['running', 'stop_fail'],
       uis: ['running', 'stop_fail'],
+      ksyun: ['running', 'stop_fail'],
     },
   },
   rebuildRoot: {
@@ -149,6 +152,7 @@ const actionEableMap = {
       sangfor: false,
       zettakit: ['running'],
       uis: ['running'],
+      ksyun: ['ready'],
     },
   },
   resetPassword: {
@@ -181,6 +185,7 @@ const actionEableMap = {
       sangfor: false,
       zettakit: false,
       uis: false,
+      ksyun: ['ready', 'running'],
     },
   },
   bindKeyPair: {
@@ -213,6 +218,7 @@ const actionEableMap = {
       sangfor: false,
       zettakit: false,
       uis: false,
+      ksyun: ['ready'],
     },
   },
   unBindKeyPair: {
@@ -245,6 +251,7 @@ const actionEableMap = {
       sangfor: false,
       zettakit: false,
       uis: false,
+      ksyun: ['ready', 'running'],
     },
   },
   adjustConfig: {
@@ -277,6 +284,7 @@ const actionEableMap = {
       sangfor: ['ready'],
       zettakit: ['ready'],
       uis: ['ready'],
+      ksyun: ['ready', 'running'],
     },
   },
   vnc: {
@@ -311,6 +319,7 @@ const actionEableMap = {
       sangfor: ['running'],
       zettakit: ['running'],
       uis: ['running'],
+      ksyun: ['running'],
     },
   },
   'EIP SSH': {
@@ -344,6 +353,7 @@ const actionEableMap = {
       sangfor: ['running'],
       zettakit: ['running'],
       uis: ['running'],
+      ksyun: ['running'],
     },
   },
   'IP SSH': {
@@ -378,6 +388,7 @@ const actionEableMap = {
       sangfor: ['running'],
       zettakit: ['running'],
       uis: ['running'],
+      ksyun: false,
     },
   },
   createSnapshot: {
@@ -410,6 +421,7 @@ const actionEableMap = {
       sangfor: false,
       zettakit: false,
       uis: false,
+      ksyun: false,
     },
   },
   createBackup: {
@@ -442,6 +454,7 @@ const actionEableMap = {
       sangfor: false,
       zettakit: false,
       uis: false,
+      ksyun: false,
     },
   },
   transfer: {
@@ -474,6 +487,7 @@ const actionEableMap = {
       sangfor: false,
       zettakit: false,
       uis: false,
+      ksyun: false,
     },
   },
   v2vTransfer: {
@@ -506,6 +520,7 @@ const actionEableMap = {
       sangfor: false,
       zettakit: false,
       uis: false,
+      ksyun: false,
     },
   },
   assignSecgroup: {
@@ -538,6 +553,7 @@ const actionEableMap = {
       sangfor: false,
       zettakit: false,
       uis: false,
+      ksyun: false,
     },
   },
   insertiso: {
@@ -569,6 +585,7 @@ const actionEableMap = {
       sangfor: false,
       zettakit: false,
       uis: false,
+      ksyun: false,
     },
   },
   ejectiso: {
@@ -600,6 +617,7 @@ const actionEableMap = {
       sangfor: false,
       zettakit: false,
       uis: false,
+      ksyun: false,
     },
   },
   bindEip: {
@@ -632,6 +650,7 @@ const actionEableMap = {
       sangfor: false,
       zettakit: false,
       uis: false,
+      ksyun: ['running', 'ready'],
     },
   },
   unbindEip: {
@@ -664,6 +683,7 @@ const actionEableMap = {
       sangfor: false,
       zettakit: false,
       uis: false,
+      ksyun: ['running', 'ready'],
     },
   },
   acttachGpu: {

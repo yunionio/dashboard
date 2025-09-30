@@ -81,7 +81,7 @@ export default {
               if (!hasSetupKey(['onecloud', 'public', 'private', 'storage', 'k8s'])) {
                 return true
               } else {
-                return !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'google', 'hcso', 'hcs'])
+                return !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'google', 'hcso', 'hcs', 'ksyun'])
               }
             },
           },

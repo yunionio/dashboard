@@ -593,6 +593,21 @@ export const diskCreateSnapshotConfig = {
       tooltip: '',
     }
   },
+  ksyun (obj) {
+    const provider = obj.provider
+    const guestStatus = ['ready', 'running']
+    if (obj.guest && !guestStatus.includes(obj.guest_status)) {
+      return {
+        validate: false,
+        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus, 'server')]),
+      }
+    }
+
+    return {
+      validate: true,
+      tooltip: '',
+    }
+  },
   bingocloud (obj) {
     return {
       validate: false,

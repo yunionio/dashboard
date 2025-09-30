@@ -26,6 +26,7 @@ export const RollbackDiskValidate = {
       typeClouds.hypervisorMap.huawei.brand,
       typeClouds.hypervisorMap.ucloud.brand,
       typeClouds.hypervisorMap.apsara.brand,
+      typeClouds.hypervisorMap.ksyun.brand,
     ]
     if (!supportBrands.includes(obj.brand)) {
       if (!obj.guest) {

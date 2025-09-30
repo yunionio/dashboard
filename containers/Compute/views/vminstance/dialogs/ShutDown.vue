@@ -101,11 +101,11 @@ export default {
       const showFields = ['name', 'ip', 'instance_type']
       return this.params.columns.filter((item) => { return showFields.includes(item.field) })
     },
-    // 腾讯云、阿里云、火山云的按量付费机器，关机可停止付费
+    // 腾讯云、阿里云、火山云、金山云的按量付费机器，关机可停止付费
     // 腾讯云、阿里云包年包月机器，关机停止付费会转为按量付费机器
     canStopPaying () {
       return this.dataList.length && this.dataList.every(item => {
-        return ['qcloud', 'aliyun'].includes(item.brand.toLocaleLowerCase()) || (['volcengine'].includes(item.brand.toLocaleLowerCase()) && item.billing_type === 'postpaid')
+        return ['qcloud', 'aliyun', 'ksyun'].includes(item.brand.toLocaleLowerCase()) || (['volcengine'].includes(item.brand.toLocaleLowerCase()) && item.billing_type === 'postpaid')
       })
     },
     isOpenWorkflow () {
@@ -128,6 +128,7 @@ export default {
           HYPERVISORS_MAP.qcloud.hypervisor,
           HYPERVISORS_MAP.sangfor?.hypervisor,
           HYPERVISORS_MAP.uis?.hypervisor,
+          HYPERVISORS_MAP.ksyun?.hypervisor,
         ].includes(item.hypervisor)
       })
     },
