@@ -150,7 +150,7 @@ export default {
         if (!this.ignoreStorage) {
           const domainData = await this.$store.dispatch('storage/getDomainById', this.domain)
           if (domainData) {
-            defaultDomain = this.domain
+            defaultDomain = { key: domainData.id, label: domainData.name }
           }
         }
         const projectInitialValue = _.get(this.decorators, 'project[1].initialValue')
@@ -158,7 +158,13 @@ export default {
           this.domainChange(defaultDomain || {})
           this._setInitDomain(defaultDomain)
         }
-        const projectChange = () => {
+        const projectChange = async () => {
+          if (!this.ignoreStorage) {
+            const projectData = await this.$store.dispatch('storage/getProjectById', { ...this.project, project_domain: defaultDomain.key })
+            if (projectData) {
+              defaultProject = { key: projectData.id, label: projectData.name }
+            }
+          }
           this.projectChange(defaultProject || {})
           this._setInitProject(defaultProject || {})
         }
@@ -200,7 +206,13 @@ export default {
           } else if (R.is(String, initialProject) && initialProject) {
             defaultProject = { key: initialProject }
           }
-          const projectChange = () => {
+          const projectChange = async () => {
+            if (!this.ignoreStorage) {
+              const projectData = await this.$store.dispatch('storage/getProjectById', { ...this.project, project_domain: this.domain?.key })
+              if (projectData) {
+                defaultProject = { key: projectData.id, label: projectData.name }
+              }
+            }
             this.projectChange(defaultProject || {})
             this._setInitProject(defaultProject || {})
           }
