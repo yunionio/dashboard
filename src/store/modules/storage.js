@@ -30,7 +30,7 @@ export default {
     },
     async getProjectById ({ commit, state }, payload = {}) {
       try {
-        const { data } = await http.get('/v1/projects/' + payload.key, { params: { project_domain: state.domain?.key } })
+        const { data } = await http.get('/v1/projects/' + payload.key, { params: { project_domain: payload.project_domain || state.domain?.key } })
         if (data) {
           commit('SET_PROJECT', payload)
         }
