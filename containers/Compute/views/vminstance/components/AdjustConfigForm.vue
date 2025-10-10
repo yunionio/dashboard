@@ -531,6 +531,8 @@ export default {
         // nutanix vmware incloudshpere proxmox sangfor
         if (this.selectedItem && (this.selectedItem.provider === HYPERVISORS_MAP.nutanix.provider || this.selectedItem.provider === HYPERVISORS_MAP.incloudsphere.provider || this.selectedItem.provider === HYPERVISORS_MAP.proxmox.provider || this.selectedItem.provider === HYPERVISORS_MAP.sangfor.provider || this.selectedItem.provider === HYPERVISORS_MAP.uis.provider)) {
           params['provider.0'] = HYPERVISORS_MAP.kvm.provider
+        } else if (this.selectedItem.provider === HYPERVISORS_MAP.cnware.provider) {
+          params.usable = false
         } else {
           params.cloudregion_id = this.selectedItem.cloudregion_id
         }
@@ -747,6 +749,9 @@ export default {
       return this.hypervisor && this.form.fi.capability.storage_types3 && this.form.fd.defaultType
     },
     isRenderDataDisk () {
+      if (this.hypervisor === HYPERVISORS_MAP.cnware.key) {
+        return false
+      }
       return this.hypervisor && this.form.fi.capability.storage_types3 && this.form.fd.sku
     },
     isShowCpu () {
@@ -960,7 +965,7 @@ export default {
       }
       const { showCpuSockets, cpuSockets } = this.form.fi
       const ids = this.dataList.map(item => item.id)
-      if (ids.length === 1) {
+      if (ids.length === 1 && this.selectedItem.provider !== HYPERVISORS_MAP.cnware.provider) {
         params.disks = this.genDiskData(values)
       }
       if (showCpuSockets) {
@@ -1025,6 +1030,11 @@ export default {
       if (this.type === SERVER_TYPE.private) {
         if (this.selectedItem && (this.selectedItem.provider === HYPERVISORS_MAP.hcso.provider || this.selectedItem.provider === HYPERVISORS_MAP.hcs.provider)) {
           params.cloudregion_id = this.selectedItem.cloudregion_id
+        } else if (this.selectedItem.provider === HYPERVISORS_MAP.cnware.provider) {
+          params.usable = false
+          delete params.provider
+          params['provider.0'] = HYPERVISORS_MAP.kvm.provider
+          params['provider.1'] = this.selectedItem.provider
         } else {
           params.provider = HYPERVISORS_MAP.kvm.provider
         }

@@ -155,6 +155,9 @@ export default {
       }
     },
     isDiskSnapshot () {
+      if (this.params.data[0].hypervisor === hypervisorMap.cnware.key) {
+        return false
+      }
       return this.form.fd.snapshotType === 'disk'
     },
     manager () {
