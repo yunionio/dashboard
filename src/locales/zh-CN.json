@@ -5470,6 +5470,7 @@
   "license.provider.zettakit": "泽塔云",
   "license.provider.uis": "UIS",
   "license.provider.cloudflare": "Cloudflare",
+  "license.provider.cnware": "云宏 Winstack",
   "license.feature.baremetal": "@:scope.text_104",
   "license.feature.lb": "@:common_248",
   "license.feature.pod": "容器主机",

@@ -185,6 +185,7 @@
   "cloudenv.create_hcso": "{0}#create-hcso-account",
   "cloudenv.create_cloudpods": "{0}#create-cloudpods-account",
   "cloudenv.create_ksyun": "{0}#create-ksyun-account",
+  "cloudenv.create_cnware": "{0}#",
   "cloudenv.text_139": "Global Zone",
   "cloudenv.text_140": "China Region",
   "cloudenv.text_141": "United States Administrative District",

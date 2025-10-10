@@ -5445,6 +5445,7 @@
   "license.feature.zettakit": "ZettaKit",
   "license.feature.uis": "UIS",
   "license.feature.cloudflare": "Cloudflare",
+  "license.feature.cnware": "CNware Winstack",
   "license.feature.k8s": "@:scope.text_78",
   "license.feature.monitor": "@:license.module.monitor",
   "license.feature.bill": "Cost",

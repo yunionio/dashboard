@@ -771,7 +771,7 @@ export default {
       const { provider } = data.cloudregion.value
       this.regionProvider = provider
       this.regionId = data.cloudregion.id
-      if (provider === typeClouds.providerMap.ZStack.key) {
+      if (provider === typeClouds.providerMap.ZStack.key || provider === typeClouds.providerMap.CNware.key) {
         this.isShowWire = true
       } else {
         this.isShowWire = false
@@ -963,6 +963,20 @@ export default {
           name: values.name,
           description: values.description,
           wire_id: values.wire,
+          is_auto_alloc: values.is_auto_alloc,
+          guest_dhcp,
+          __meta__: values.__meta__,
+        }
+      } else if (this.regionProvider === typeClouds.providerMap.CNware.key) {
+        return {
+          project_id: values.project?.key,
+          guest_ip_prefix: values.guest_ip_prefix && values.guest_ip_prefix[0],
+          guest_ip6_prefix: values.guest_ip6_prefix && values.guest_ip6_prefix[0],
+          name: values.name,
+          wire_id: values.wire,
+          description: values.description,
+          vpc: values.vpc,
+          zone: values?.zone,
           is_auto_alloc: values.is_auto_alloc,
           guest_dhcp,
           __meta__: values.__meta__,
