@@ -40,6 +40,7 @@ const sangforLogo = require('@/assets/images/providers/sangfor.svg')
 const zettakitLogo = require('@/assets/images/providers/zettakit.svg')
 const uisLogo = require('@/assets/images/providers/uis.svg')
 const cloudflareLogo = require('@/assets/images/providers/cloudflare.svg')
+const cnwareLogo = require('@/assets/images/providers/cnware.svg')
 
 function getDocsCloudaccountPath (scope) {
   return genDocsUrl({
@@ -292,6 +293,12 @@ export const CLOUDACCOUNT_TYPES = {
         height: '14px',
       },
     },
+    cnware: {
+      name: providerMap.cnware.label,
+      logo: cnwareLogo,
+      component: 'CNwareCreate',
+      provider: providerMap.cnware.key,
+    },
   },
   storage: {
     s3: {
@@ -368,6 +375,7 @@ export function getCloudaccountDocs (scope) {
     oraclecloud: i18n.t('cloudenv.create_oraclecloud', [docs_path]),
     sangfor: i18n.t('cloudenv.create_sangfor', [docs_path]),
     cloudflare: i18n.t('cloudenv.create_cloudflare', [docs_path]),
+    cnware: i18n.t('cloudenv.create_cnware', [docs_path]),
   }
   // if (isCE()) {
   //   Object.keys(docs).forEach(v => {
@@ -889,6 +897,19 @@ export const keySecretFields = {
     label: {
       k: i18n.t('cloudenv.text_94'),
       s: 'API Key',
+    },
+  },
+  cnware: {
+    k: 'username',
+    s: 'password',
+    text: i18n.t('scopeCloudPrvidersMap.CNware'),
+    placeholder: {
+      k: i18n.t('cloudenv.text_151'),
+      s: i18n.t('cloudenv.text_150'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_375'),
+      s: i18n.t('cloudenv.text_147'),
     },
   },
 }

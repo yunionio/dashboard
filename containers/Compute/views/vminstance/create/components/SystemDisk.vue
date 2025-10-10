@@ -155,6 +155,9 @@ export default {
     isAws () {
       return this.hypervisor === HYPERVISORS_MAP.aws.key
     },
+    isCNware () {
+      return this.hypervisor === HYPERVISORS_MAP.cnware.key
+    },
     imageMinDisk () {
       const image = this.image
       let minSize = 0
