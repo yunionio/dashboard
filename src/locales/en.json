@@ -1958,7 +1958,8 @@
     "Proxmox": "Proxmox",
     "H3C": "H3C",
     "ZettaKit": "ZettaKit",
-    "UIS": "UIS"
+    "UIS": "UIS",
+    "CNware": "CNware Winstack"
   },
   "shareScope": {
     "system": "System",
