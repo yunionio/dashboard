@@ -325,7 +325,7 @@ export default {
         manager_id: this.form.fd.cloudprovider,
         ...this.scopeParams,
       }
-      if (this.isZStack || this.isInCloudSphere || this.isPve || this.isGoogle) {
+      if (this.isZStack || this.isInCloudSphere || this.isPve || this.isGoogle || this.isCNware) {
         params.show_emulated = true
       }
       if (zone) {
@@ -393,6 +393,9 @@ export default {
     },
     isGoogle () {
       return this.form.fd.hypervisor === HYPERVISORS_MAP.google.key || this.hypervisor === HYPERVISORS_MAP.google.key
+    },
+    isCNware () {
+      return this.form.fd.hypervisor === HYPERVISORS_MAP.cnware.key
     },
     showServerAccount () {
       return this.form.fd.loginType !== LOGIN_TYPES_MAP.image.key

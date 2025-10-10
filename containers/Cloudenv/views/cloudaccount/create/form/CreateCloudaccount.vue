@@ -33,6 +33,7 @@ import Sangfor from './components/Sangfor'
 import ZettaKit from './components/ZettaKit'
 import UIS from './components/UIS'
 import Cloudflare from './components/Cloudflare'
+import CNware from './components/CNware'
 
 export default {
   name: 'CreateCloudaccount',
@@ -75,6 +76,7 @@ export default {
     ZettaKitCreate: ZettaKit,
     UISCreate: UIS,
     CloudflareCreate: Cloudflare,
+    CNwareCreate: CNware,
   },
   props: {
     currentItem: {
