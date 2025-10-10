@@ -286,7 +286,8 @@
       "suspended": "Freeze",
       "arrears": "Arrears",
       "unknown": "Unknown status",
-      "no permission": "No Permission"
+      "no permission": "No Permission",
+      "pending": "Pending"
     },
     "cloudaccountSyncStatus": {
       "idle": "Sync completed",

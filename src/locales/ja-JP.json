@@ -286,7 +286,8 @@
       "suspended": "凍る",
       "arrears": "溜まり",
       "unknown": "不明な状態",
-      "no permission": "権限なし"
+      "no permission": "権限なし",
+      "pending": "待機中"
     },
     "cloudaccountSyncStatus": {
       "idle": "同期が完了しました",
