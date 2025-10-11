@@ -126,11 +126,14 @@ export default {
               field: 'uefi_support',
               title: this.$t('compute.text_1155'),
               formatter: ({ cellValue, row }) => {
-                if (row.properties && row.properties.uefi_support === 'true') {
+                const { properties = {} } = row
+                const { uefi_support, bios_support } = properties
+                if (uefi_support === 'true' && bios_support === 'true') {
+                  return 'BIOS & UEFI'
+                } else if (uefi_support === 'true' && bios_support !== 'true') {
                   return 'UEFI'
-                } else {
-                  return 'BIOS'
                 }
+                return 'BIOS'
               },
             },
             {
