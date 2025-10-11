@@ -456,7 +456,15 @@ export default {
       const size = sizestr(img.size, 'B', 1024)
       const props = img.properties || (img.info ? img.info.properties : undefined)
       const arch = props && props.os_arch && props.os_arch === 'aarch64' ? this.$t('compute.cpu_arch.aarch64') : props?.os_arch || 'x86_64'
-      const bios = props && (!props.uefi_support || props.uefi_support === 'false') ? 'BIOS' : 'UEFI'
+      let bios = 'BIOS'
+      if (props) {
+        const { uefi_support, bios_support } = props
+        if (uefi_support === 'true' && bios_support === 'true') {
+          bios = 'BIOS & UEFI'
+        } else if (uefi_support === 'true' && bios_support !== 'true') {
+          bios = 'UEFI'
+        }
+      }
       const part = props && props.partition_type ? props.partition_type.toUpperCase() : 'MBR'
       return `${min_disk}|${size}|${arch}|${part}|${bios}`
     },

@@ -102,14 +102,21 @@ export default {
       const arch = img.os_arch || (props && props.os_arch && props.os_arch === 'aarch64' ? this.$t('compute.cpu_arch.aarch64') : props?.os_arch) || 'x86_64'
       let bios = 'BIOS'
       if (props) {
-        bios = (!props.uefi_support || props.uefi_support === 'false') ? 'BIOS' : 'UEFI'
+        const { uefi_support, bios_support } = props
+        if (uefi_support === 'true' && bios_support === 'true') {
+          bios = 'BIOS & UEFI'
+        } else if (uefi_support === 'true' && bios_support !== 'true') {
+          bios = 'UEFI'
+        } else if ((uefi_support !== 'true' && bios_support === 'true') || (uefi_support !== 'true' && bios_support !== 'true')) {
+          bios = 'BIOS'
+        }
       } else if (img.server_config && img.server_config.bios) {
         bios = img.server_config.bios
       }
       let part = 'MBR'
       if (props && props.partition_type) {
         part = props.partition_type.toUpperCase()
-      } else if (bios === 'UEFI') {
+      } else if (bios === 'UEFI' || bios === 'BIOS & UEFI') {
         part = 'GPT'
       }
       return `${min_disk}|${sizeStr}|${arch}|${part}|${bios}`
