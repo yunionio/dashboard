@@ -111,8 +111,14 @@ export default {
       os_arch = data.properties.os_arch.includes('x86') ? HOST_CPU_ARCHS.x86.key : HOST_CPU_ARCHS.arm.key
     }
     let bios = 'BIOS'
-    if (data.properties && data.properties.uefi_support === 'true') {
+    const { properties = {} } = data
+    const { uefi_support, bios_support } = properties
+    if (uefi_support === 'true' && bios_support === 'true') {
+      bios = 'BIOS & UEFI'
+    } else if (uefi_support === 'true' && bios_support !== 'true') {
       bios = 'UEFI'
+    } else if (uefi_support !== 'true') {
+      bios = 'BIOS'
     }
     const isArm = (os_arch === HOST_CPU_ARCHS.arm.key)
     return {
@@ -265,6 +271,7 @@ export default {
       biosOptions: [
         { text: 'BIOS', value: 'BIOS' },
         { text: 'UEFI', value: 'UEFI' },
+        { text: 'BIOS & UEFI', value: 'BIOS & UEFI' },
       ],
       vdiOptions: [
         { text: this.$t('compute.text_661'), value: '' },
@@ -288,7 +295,7 @@ export default {
       this.manager.get({ id: this.params.data[0].id })
         .then((res) => {
           const { name, min_disk: minDisk } = res.data
-          const { os_type: osType, os_distribution: osDistribution, disk_driver: diskDriver, net_driver: netDriver, uefi_support: uefiSupport, vdi_protocol: vdiProtocol } = res.data.properties
+          const { os_type: osType, os_distribution: osDistribution, disk_driver: diskDriver, net_driver: netDriver, uefi_support: uefiSupport, bios_support: biosSupport, vdi_protocol: vdiProtocol } = res.data.properties
           this.initName = name
           this.initMinDisk = minDisk
           this.$nextTick(() => {
@@ -300,18 +307,19 @@ export default {
               osDistribution,
               diskDriver: diskDriver || '',
               netDriver: netDriver || '',
-              bios: this.getBios(uefiSupport),
+              bios: this.getBios(uefiSupport, biosSupport),
               vdi: vdiProtocol || 'vnc',
             })
           })
         })
     },
-    getBios (uefiSupport) {
-      if (uefiSupport && uefiSupport === 'true') {
+    getBios (uefiSupport, biosSupport) {
+      if (uefiSupport === 'true' && biosSupport === 'true') {
+        return 'BIOS & UEFI'
+      } else if (uefiSupport === 'true' && biosSupport !== 'true') {
         return 'UEFI'
-      } else {
-        return 'BIOS'
       }
+      return 'BIOS'
     },
     checkTemplateName (rule, value, callback) {
       return new this.$Manager(this.isHostImage ? 'guestimages' : 'images', 'v1').list({
@@ -376,7 +384,6 @@ export default {
             disk_driver: diskDriver,
             net_driver: netDriver,
             os_arch,
-            uefi_support: bios === 'UEFI' ? 'true' : '',
             vdi_protocol: vdi,
           },
         }
@@ -385,6 +392,16 @@ export default {
           if (params['min-disk'] === 0) { // 说明上传了一个小于1G的镜像,被四舍五入成0了，要取源数据
             params['min-disk'] = this.initMinDisk
           }
+        }
+        if (bios === 'UEFI') {
+          params.properties.uefi_support = 'true'
+          params.properties.bios_support = 'false'
+        } else if (bios === 'BIOS') {
+          params.properties.uefi_support = 'false'
+          params.properties.bios_support = 'true'
+        } else if (bios === 'BIOS & UEFI') {
+          params.properties.uefi_support = 'true'
+          params.properties.bios_support = 'true'
         }
         await this.doEdit(params)
         this.loading = false
