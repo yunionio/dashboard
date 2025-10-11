@@ -331,7 +331,7 @@ export default {
                   ret.tooltip = this.$t('cloudenv.text_368', [this.$t('status.image')[obj.status]])
                   return ret
                 }
-                if (obj.is_standard) {
+                if (obj.is_standard === true || obj.is_standard === 'true') {
                   ret.tooltip = this.$t('compute.standard_not_export')
                   return ret
                 }
