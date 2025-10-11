@@ -357,10 +357,10 @@ function fullfillLicenseItems () {
   LicenseItems.map(item => {
     const key = item.origin_key || item.key
     if (item.meta.is_account) {
-      item.label = i18n.getI18n([`scopeCloudProvidersMap.${key}`, `scopeProviders.${key}`, `license.provider.${key}`], key)
+      item.label = i18n.getOemDictionaryI18n(key.toLowerCase(), i18n.getI18n([`scopeCloudProvidersMap.${key}`, `scopeProviders.${key}`, `license.provider.${key}`], key))
       item.icon = require(`@/assets/images/providers/${key}.svg`)
     } else {
-      item.label = i18n.getI18n(`license.feature.${key}`, key)
+      item.label = i18n.getOemDictionaryI18n(key.toLowerCase(), i18n.getI18n(`license.feature.${key}`, key))
       item.icon = require(`@/assets/images/features/${key}.svg`)
     }
     item.value = item.key
