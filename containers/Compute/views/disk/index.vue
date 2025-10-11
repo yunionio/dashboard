@@ -40,6 +40,7 @@ export default {
       },
       cloudEnvOptions: getCloudEnvOptions('compute_engine_brands'),
       cloudEnv: '',
+      statusModule: 'disk',
       statusNormalList: ['ready'],
     }
   },
