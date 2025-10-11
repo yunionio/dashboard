@@ -902,7 +902,7 @@ export const keySecretFields = {
   cnware: {
     k: 'username',
     s: 'password',
-    text: i18n.t('scopeCloudPrvidersMap.CNware'),
+    text: i18n.getOemDictionaryI18n('cnware', i18n.t('scopeCloudPrvidersMap.CNware')),
     placeholder: {
       k: i18n.t('cloudenv.text_151'),
       s: i18n.t('cloudenv.text_150'),

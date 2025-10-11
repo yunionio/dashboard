@@ -30,7 +30,7 @@ export const HYPERVISORS = [
   { key: 'h3c', label: i18n.t('cloudPrvidersMap.H3C'), provider: 'H3C', brand: 'H3C', host_type: 'h3c', hypervisor: 'h3c', env: 'private', cloud_env: 'private' },
   { key: 'zettakit', label: i18n.t('cloudPrvidersMap.ZettaKit'), provider: 'ZettaKit', brand: 'ZettaKit', host_type: 'ZettaKit', hypervisor: 'zettakit', env: 'private', cloud_env: 'private' },
   { key: 'uis', label: i18n.t('cloudPrvidersMap.UIS'), provider: 'UIS', brand: 'UIS', host_type: 'UIS', hypervisor: 'uis', env: 'private', cloud_env: 'private' },
-  { key: 'cnware', label: i18n.t('cloudPrvidersMap.CNware'), provider: 'CNware', brand: 'CNware', host_type: 'cnware', hypervisor: 'cnware', env: 'private', cloud_env: 'private' },
+  { key: 'cnware', label: i18n.getOemDictionaryI18n('cnware', i18n.t('cloudPrvidersMap.CNware')), provider: 'CNware', brand: 'CNware', host_type: 'cnware', hypervisor: 'cnware', env: 'private', cloud_env: 'private' },
   // Public
   { key: 'aliyun', label: getProviderName('aliyun'), provider: 'Aliyun', brand: 'Aliyun', host_type: 'aliyun', hypervisor: 'aliyun', env: 'public', cloud_env: 'public' },
   { key: 'azure', label: 'Azure', provider: 'Azure', brand: 'Azure', host_type: 'azure', hypervisor: 'azure', env: 'public', cloud_env: 'public' },
