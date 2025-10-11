@@ -11,6 +11,7 @@ export default {
   theme: storage.get('__oc_theme__') || process.env.THEME || 'dark',
   brand: process.env.BRAND || defaultBrand,
   defaultBrand,
+  oemDictionary: process.env.OEM_DICTIONARY || {},
   product: process.env.PRODUCT || (process.env.VUE_APP_IS_PRIVATE ? { 'zh-CN': '云管平台', en: 'Cloud Management Platform', 'ja-JP': 'クラウド管理プラットフォーム' } : { 'zh-CN': 'Cloudpods', en: 'Cloudpods', 'ja-JP': 'Cloudpods' }),
   l2MenuVisible: !R.isNil(_l2MenuVisible) && !R.isNil(_l2MenuVisible) ? _l2MenuVisible : true,
   monitorAlertNotifyTriggerTime: process.env.VUE_APP_MONITOR_ALERT_NOTIFY_TRIGGER_TIME || 1000 * 60 * 60, // 默认值1小时

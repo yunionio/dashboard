@@ -1980,7 +1980,7 @@
     "Ksyun": "金山云",
     "ZettaKit": "泽塔云",
     "UIS": "UIS",
-    "CNware": "云宏 Winstack"
+    "CNware": "云宏 WinStack"
   },
   "shareScope": {
     "system": "系统",
@@ -5472,7 +5472,7 @@
   "license.provider.zettakit": "泽塔云",
   "license.provider.uis": "UIS",
   "license.provider.cloudflare": "Cloudflare",
-  "license.provider.cnware": "云宏 Winstack",
+  "license.provider.cnware": "云宏 WinStack",
   "license.feature.baremetal": "@:scope.text_104",
   "license.feature.lb": "@:common_248",
   "license.feature.pod": "容器主机",

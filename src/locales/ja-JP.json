@@ -1973,7 +1973,7 @@
     "Ksyun": "キングソフトクラウド",
     "ZettaKit": "ゼータ雲",
     "UIS": "UIS",
-    "CNware": "CNware Winstack"
+    "CNware": "CNware WinStack"
   },
   "shareScope": {
     "system": "システム",
@@ -5462,7 +5462,7 @@
   "license.provider.zettakit": "ゼータ雲",
   "license.provider.uis": "UIS",
   "license.provider.cloudflare": "Cloudflare",
-  "license.provider.cnware": "CNware Winstack",
+  "license.provider.cnware": "CNware WinStack",
   "license.feature.baremetal": "@:scope.text_104",
   "license.feature.lb": "@:common_248",
   "license.feature.pod": "Pod",

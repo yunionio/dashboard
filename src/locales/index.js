@@ -121,4 +121,16 @@ i18n.deepReplaceDictionary = () => {
   i18n.setLocaleMessage(l, messages[l])
 }
 
+i18n.getOemDictionaryI18n = (key, defaultValue) => {
+  const l = getLanguage()
+  if (l === 'en') {
+    return (setting.oemDictionary && setting.oemDictionary.en && setting.oemDictionary.en[key]) || defaultValue
+  } else if (l === 'zh-CN') {
+    return (setting.oemDictionary && setting.oemDictionary['zh-CN'] && setting.oemDictionary['zh-CN'][key]) || defaultValue
+  } else if (l === 'ja-JP') {
+    return (setting.oemDictionary && setting.oemDictionary['ja-JP'] && setting.oemDictionary['ja-JP'][key]) || defaultValue
+  }
+  return defaultValue
+}
+
 export default i18n
