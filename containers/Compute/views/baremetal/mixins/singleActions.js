@@ -59,14 +59,25 @@ export default {
             ipArr.forEach(v => {
               const meta = () => {
                 const ret = {
-                  validate: false,
+                  validate: true,
                   tooltip: null,
                 }
                 if (obj.os_type === 'Windows') {
                   ret.tooltip = i18n.t('compute.text_344')
+                  ret.validate = false
+                  return ret
                 }
-                ret.validate = cloudEnabled(type, obj)
-                ret.tooltip = cloudUnabledTip(type, obj)
+                if (obj.provider === 'OneCloud') {
+                  ret.validate = obj.power_states === 'on'
+                  ret.tooltip = obj.power_states === 'on' ? '' : i18n.t('compute.power_states_check_tip', [i18n.t('compute.text_92'), `【${i18n.t('compute.text_574')}】`])
+                } else {
+                  ret.validate = obj.power_states === 'unknown' ? cloudEnabled(type, obj) : obj.power_states === 'on'
+                  ret.tooltip = obj.power_states === 'unknown' ? cloudUnabledTip(type, obj) : (obj.power_states === 'on' ? '' : i18n.t('compute.power_states_check_tip', [i18n.t('compute.text_92'), `【${i18n.t('compute.text_574')}】`]))
+                  if (cloudEnabled(type, obj) === false) {
+                    ret.validate = false
+                    ret.tooltip = cloudUnabledTip(type, obj)
+                  }
+                }
                 return ret
               }
               options.push({

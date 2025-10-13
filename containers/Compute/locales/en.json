@@ -1891,6 +1891,6 @@
   "compute.bind_server": "Bind server",
   "compute.retention_count_prefix": "Retain",
   "compute.retention_count_suffix": "count",
-  "compute.power_states_check_tip": "Only support this operation when the virtual machine power state is {0}",
+  "compute.power_states_check_tip": "Only support this operation when the {0} power state is {1}",
   "compute.vip_ipv6_address": "VIP IPv6 address"
 }
