@@ -68,10 +68,10 @@ const getSingleActions = function (ctx) {
             }
             if (obj.provider === 'OneCloud') {
               ret.validate = obj.power_states === 'on'
-              ret.tooltip = obj.power_states === 'on' ? '' : i18n.t('compute.power_states_check_tip', [`【${i18n.t('compute.text_574')}】`])
+              ret.tooltip = obj.power_states === 'on' ? '' : i18n.t('compute.power_states_check_tip', [i18n.t('common_239'), `【${i18n.t('compute.text_574')}】`])
             } else {
               ret.validate = obj.power_states === 'unknown' ? cloudEnabled('vnc', obj) : obj.power_states === 'on'
-              ret.tooltip = obj.power_states === 'unknown' ? cloudUnabledTip('vnc', obj) : (obj.power_states === 'on' ? '' : i18n.t('compute.power_states_check_tip', [`【${i18n.t('compute.text_574')}】`]))
+              ret.tooltip = obj.power_states === 'unknown' ? cloudUnabledTip('vnc', obj) : (obj.power_states === 'on' ? '' : i18n.t('compute.power_states_check_tip', [i18n.t('common_239'), `【${i18n.t('compute.text_574')}】`]))
               if (cloudEnabled('vnc', obj) === false) {
                 ret.validate = false
                 ret.tooltip = cloudUnabledTip('vnc', obj)
