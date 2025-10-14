@@ -10,6 +10,7 @@
             :src="getData(listItem.data, 'url')"
             @error="imgError(listItem, `img${listKey}`)"
             slot="cover" />
+          <div class="link_copy" @click="copyLink(listItem.data)">{{ $t('common.copy_link') }}</div>
         </div>
         <div class="text-wrap position-relative">
           <a-card-meta>
@@ -76,6 +77,12 @@ export default {
       // item: this.listItem,
     }
   },
+  methods: {
+    copyLink (data) {
+      this.$copyText(data.url)
+      this.$message.success(this.$t('common.copy'))
+    },
+  },
 }
 </script>
 <style lang="less" scoped>
@@ -116,5 +123,17 @@ export default {
     }
   }
 }
-
+.link_copy {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  cursor: pointer;
+  color: @primary-color;
+  font-size: 12px;
+  padding: 5px 10px;
+  display: none;
+}
+.card-wrap:hover .link_copy {
+  display: block;
+}
 </style>
