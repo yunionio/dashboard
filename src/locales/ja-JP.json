@@ -6244,5 +6244,6 @@
   "common.view_screenshot": "スクリーンショットを表示",
   "common.download_screenshot": "ダウンロード",
   "common.view_screenshot_blank": "新しいウィンドウで表示",
-  "common.screenshot_error": "スクリーンショットの取得に失敗しました"
+  "common.screenshot_error": "スクリーンショットの取得に失敗しました",
+  "common.copy_link": "リンクをコピー"
 }
