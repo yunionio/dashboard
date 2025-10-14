@@ -15,7 +15,7 @@ export function solWebConsole (manager, host, onData, createDialog) {
           methodname: 'DoBaremetalConnect',
           objId: hostId,
         }).then(({ data }) => {
-          onData(host, data)
+          onData(host, { ...data, extra_param_str: `&instance_name=SOL ${host.name}&ips=${host.ips}` })
         })
       }
       if (store.getters.userInfo.enable_mfa && store.state.auth.auth.system_totp_on && createDialog) {
