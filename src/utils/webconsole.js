@@ -5,5 +5,5 @@ export function openWebConsole (data) {
   } else {
     href = data.access_url
   }
-  window.open(`${href}&session_id=${data.session}`)
+  window.open(`${href}&session_id=${data.session}${data.extra_param_str || ''}`)
 }
