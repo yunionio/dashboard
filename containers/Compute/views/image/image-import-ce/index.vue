@@ -253,7 +253,8 @@ export default {
           hostname.endsWith('.net.cn') ||
           hostname.endsWith('.gov.cn') ||
           hostname.endsWith('.edu.cn') ||
-          hostname.endsWith('.org.cn')
+          hostname.endsWith('.org.cn') ||
+          hostname.includes('opencloudos')
         )
       } catch (e) {
         return false

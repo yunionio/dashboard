@@ -6226,5 +6226,6 @@
   "common.view_screenshot": "View screenshot",
   "common.download_screenshot": "Download",
   "common.view_screenshot_blank": "View in new window",
-  "common.screenshot_error": "Failed to get screenshot"
+  "common.screenshot_error": "Failed to get screenshot",
+  "common.copy_link": "Copy link"
 }
