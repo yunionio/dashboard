@@ -197,7 +197,7 @@ export default {
         })
       }
     }
-    if (this.data.cloud_env === 'onpremise' && this.$store.getters.capability && this.$store.getters.capability.brands &&this.$store.getters.capability.brands.includes('VMware')) {
+    if (this.data.cloud_env === 'onpremise' && this.$store.getters.capability && this.$store.getters.capability.brands && this.$store.getters.capability.brands.includes('VMware')) {
       extraInfo.push({
         title: this.$t('network.vmware_extra_info'),
         items: [
