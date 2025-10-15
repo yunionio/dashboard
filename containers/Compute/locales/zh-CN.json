@@ -1941,5 +1941,6 @@
   "compute.disk_change_storage_type.essd_3": "计费方式为按量付费时, {0}/{1}类型的数据盘不支持直接变配为{2},可以先变配为{3}/{4},再变配为{2}",
   "compute.disk_change_storage_type.sys_disk_tip": "未挂载的系统盘不支持此操作",
   "compute.disk_change_storage_type.data_disk_tip": "未挂载的数据盘非【可用】状态不支持此操作",
-  "compute.disk_migrating_tip": "迁移中的磁盘不支持此操作"
+  "compute.disk_migrating_tip": "迁移中的磁盘不支持此操作",
+  "compute.health_status.initializing": "操作系统启动中"
 }
