@@ -1928,5 +1928,18 @@
   "compute.retention_count_prefix": "保持",
   "compute.retention_count_suffix": "件",
   "compute.power_states_check_tip": "仮想{0}の電源状態が{1}の場合のみ、この操作をサポートします",
-  "compute.vip_ipv6_address": "VIP IPv6アドレス"
+  "compute.vip_ipv6_address": "VIP IPv6アドレス",
+  "compute.vminstance.change_storage_type": "ストレージタイプの変更",
+  "compute.disk_storage_type_disable_tip": "このストレージタイプのディスクはこの操作をサポートしていません",
+  "compute.dick_change_storage_type.cloud_efficiency_1": "{0}を{1}に変更する必要がある場合：システムディスクとしてはサポートされていません。データディスクとして使用する場合、直接的な配賦はサポートされていません。最初に{2}/{3}/{4}に、次に{1}に配賦することができます",
+  "compute.dick_change_storage_type.cloud_ssd_1": "{0}を{1}に変更する必要がある場合：システムディスクとしてはサポートされていません。データディスクとして使用する場合、直接的な配賦はサポートされていません。最初に{2}/{3}に、次に{1}に配賦することができます",
+  "compute.dick_change_storage_type.cloud_essd_entry_1": "{0}データディスクとしてのみ{1}へのプロビジョニングをサポート",
+  "compute.dick_change_storage_type.cloud_essd_pl0_1": "{0}データディスクとしてのみ{1}へのプロビジョニングをサポート",
+  "compute.disk_change_storage_type.essd": "ESSD クラウドディスクは、クラウドディスク容量に応じて性能レベルを選択できます。ESSD クラウドディスクをより高い性能レベルに変更できない場合は、まずクラウドディスクを拡張してから、ESSD クラウドディスクの性能レベルをアップグレードしてください",
+  "compute.disk_change_storage_type.essd_1": "変更の対象となるクラウドディスクがESSD PL3クラウドディスクの場合、変更後にクラウドディスクを再マウントするか、インスタンスを再起動する必要があります。クラウドディスクを再マウントするか、再起動しない場合、クラウドディスクはESSD PL3の最高性能を達成できませんが、データの信頼性に影響はありません",
+  "compute.disk_change_storage_type.essd_2": "按量課金の場合, {0}データディスクとしてのみ{1}へのプロビジョニングをサポート",
+  "compute.disk_change_storage_type.essd_3": "按量課金の場合, {0}/{1}タイプのデータディスクは{2}への直接的な変更をサポートしていません。まず{3}/{4}に変更してから、{2}に変更することができます",
+  "compute.disk_change_storage_type.sys_disk_tip": "未マウントのシステムディスクはこの操作をサポートしていません",
+  "compute.disk_change_storage_type.data_disk_tip": "未マウントのデータディスクは【可用】状態ではなく、この操作をサポートしていません",
+  "compute.disk_migrating_tip": "移行中のディスクはこの操作をサポートしていません"
 }
