@@ -1941,5 +1941,6 @@
   "compute.disk_change_storage_type.essd_3": "按量課金の場合, {0}/{1}タイプのデータディスクは{2}への直接的な変更をサポートしていません。まず{3}/{4}に変更してから、{2}に変更することができます",
   "compute.disk_change_storage_type.sys_disk_tip": "未マウントのシステムディスクはこの操作をサポートしていません",
   "compute.disk_change_storage_type.data_disk_tip": "未マウントのデータディスクは【可用】状態ではなく、この操作をサポートしていません",
-  "compute.disk_migrating_tip": "移行中のディスクはこの操作をサポートしていません"
+  "compute.disk_migrating_tip": "移行中のディスクはこの操作をサポートしていません",
+  "compute.health_status.initializing": "オペレーティングシステムの起動中"
 }

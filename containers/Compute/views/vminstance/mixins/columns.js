@@ -114,10 +114,13 @@ export default {
             })}>{this.$t('common.cancel')}</a>
           const shutdown = <span class="text-color-help">({this.$t('compute.server.shutdown_mode.stop_charging')})</span>
           const rescue_mode = <span class="text-color-help">({this.$t('compute.rescue')})</span>
+          const health = <span style="background:rgb(241, 229, 172);padding:2px 5px;font-size:12px;">{this.$t('compute.health_status.initializing')}</span>
 
           return [
             <div class='d-flex align-items-center text-truncate'>
-              <status status={row.status} statusModule='server' process={row.progress} showStatusProgress={true} />
+              <status status={row.status} statusModule='server' process={row.progress} showStatusProgress={true}>
+                {(row.status === 'running' || row.status === 'starting') && row.health_status === 'initializing' ? health : null}
+              </status>
               {row.metadata && getToolTip(row)}
               {row.status?.includes('fail') ? log : null}
               {row.status === 'live_migrating' ? cancel : null}
