@@ -1939,5 +1939,6 @@
   "compute.disk_change_storage_type.essd_3": "When the billing method is postpaid, {0}/{1} type data disks do not support changing directly to {2}. You can first change to {3}/{4}, then change to {2}",
   "compute.disk_change_storage_type.sys_disk_tip": "The system disk that is not mounted does not support this operation",
   "compute.disk_change_storage_type.data_disk_tip": "The data disk that is not mounted is not in the [available] state and does not support this operation",
-  "compute.disk_migrating_tip": "The disk being migrated does not support this operation"
+  "compute.disk_migrating_tip": "The disk being migrated does not support this operation",
+  "compute.health_status.initializing": "OS is starting"
 }
