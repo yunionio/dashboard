@@ -423,7 +423,8 @@
       "sync_status": "同步中",
       "sched_fail": "调度失败",
       "ActiveSAS": "ActiveSAS",
-      "change_billing_type": "修改计费模式"
+      "change_billing_type": "修改计费模式",
+      "migrate_failed": "迁移失败"
     },
     "secgroupCache": {
       "ready": "正常",

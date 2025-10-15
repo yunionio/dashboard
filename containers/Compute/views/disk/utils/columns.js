@@ -1,6 +1,5 @@
 import * as R from 'ramda'
-import { STORAGE_TYPES } from '@Storage/constants'
-import { PREALLOCATION_OPTION_MAP } from '@Compute/constants'
+import { PREALLOCATION_OPTION_MAP, STORAGE_TYPES } from '@Compute/constants'
 import i18n from '@/locales'
 
 export const getUnusedTableColumn = ({ hidden, vm = {} } = {}) => {
@@ -31,7 +30,10 @@ export const getStorageTypeTableColumn = ({ hidden } = {}) => {
     title: i18n.t('storage.text_38'),
     width: 100,
     formatter: ({ row }) => {
-      return STORAGE_TYPES[row.storage_type] || row.storage_type
+      if (row.provider && STORAGE_TYPES[row.provider.toLowerCase()] && STORAGE_TYPES[row.provider.toLowerCase()][row.storage_type]) {
+        return STORAGE_TYPES[row.provider.toLowerCase()][row.storage_type].label || row.storage_type
+      }
+      return row.storage_type
     },
     hidden: () => {
       return R.is(Function, hidden) ? hidden() : hidden
