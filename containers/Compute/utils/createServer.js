@@ -1224,6 +1224,11 @@ export class GenCreateData {
         size: value,
         type: dataDiskType,
       }
+      if (this.fd.provider === HYPERVISORS_MAP.aliyun.provider) {
+        if (this.fd.dataDiskTypes && this.fd.dataDiskTypes[key]) {
+          diskObj.type = this.fd.dataDiskTypes[key].key
+        }
+      }
       if (this.fd.dataDiskFiletypes && this.fd.dataDiskFiletypes[key]) {
         diskObj.filetype = this.fd.dataDiskFiletypes[key]
       }

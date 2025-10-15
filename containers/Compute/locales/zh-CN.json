@@ -1928,5 +1928,18 @@
   "compute.retention_count_prefix": "保留",
   "compute.retention_count_suffix": "份",
   "compute.power_states_check_tip": "仅在{0}电源状态为{1}时支持该操作",
-  "compute.vip_ipv6_address": "VIP IPv6地址"
+  "compute.vip_ipv6_address": "VIP IPv6地址",
+  "compute.vminstance.change_storage_type": "修改存储类型",
+  "compute.disk_storage_type_disable_tip": "该存储类型的磁盘不支持该操作",
+  "compute.dick_change_storage_type.cloud_efficiency_1": "{0}若需变配为{1}: 作为系统盘时,不支持; 作为数据盘时,不支持直接变配,可以先变配为{2}/{3}/{4},再变配为{1}",
+  "compute.dick_change_storage_type.cloud_ssd_1": "{0}若需变配为{1}: 作为系统盘时,不支持; 作为数据盘时,不支持直接变配,可以先变配为{2}/{3},再变配为{1}",
+  "compute.dick_change_storage_type.cloud_essd_entry_1": "{0}只有作为数据盘时支持变配为{1}",
+  "compute.dick_change_storage_type.cloud_essd_pl0_1": "{0}只有作为数据盘时支持变配为{1}",
+  "compute.disk_change_storage_type.essd": "ESSD 云盘可以选择的性能级别与云盘容量有关，如果ESSD云盘无法变配为更高性能级别，可以先扩容云盘，然后再升级ESSD云盘性能级别",
+  "compute.disk_change_storage_type.essd_1": "如果变配的目标云盘为ESSD PL3云盘，变配完成后需要重新挂载云盘或重启实例才能达到ESSD PL3的最佳性能。如果变配后没有重新挂载云盘或重启实例，则该云盘无法获得ESSD PL3的最佳性能，但不会影响数据的可靠性",
+  "compute.disk_change_storage_type.essd_2": "计费方式为按量付费时, {0}只有作为数据盘时支持变配为{1}",
+  "compute.disk_change_storage_type.essd_3": "计费方式为按量付费时, {0}/{1}类型的数据盘不支持直接变配为{2},可以先变配为{3}/{4},再变配为{2}",
+  "compute.disk_change_storage_type.sys_disk_tip": "未挂载的系统盘不支持此操作",
+  "compute.disk_change_storage_type.data_disk_tip": "未挂载的数据盘非【可用】状态不支持此操作",
+  "compute.disk_migrating_tip": "迁移中的磁盘不支持此操作"
 }
