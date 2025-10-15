@@ -4,6 +4,7 @@ import i18n from '@/locales'
 import { BRAND_MAP, PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
 import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import { hasSetupKey } from '@/utils/auth'
+import { STORAGE_TYPES } from '@Compute/constants'
 const supportShpolcyBrand = ['OneCloud', 'Qcloud', 'Aliyun']
 
 export default {
@@ -28,6 +29,12 @@ export default {
             return {
               validate: diskResizeConfig[provider](obj).validate,
               tooltip: diskResizeConfig[provider](obj).tooltip,
+            }
+          }
+          if (obj.status === 'migrating') {
+            return {
+              validate: false,
+              tooltip: i18n.t('compute.disk_migrating_tip'),
             }
           }
           return {
@@ -107,6 +114,12 @@ export default {
                     tooltip: '',
                   }
                 }
+                if (obj.status === 'migrating') {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('compute.disk_migrating_tip'),
+                  }
+                }
                 // if (obj.brand) {
                 // const brand = obj.brand.toLowerCase()
                 // if (brand === 'vmware' && obj.disk_type === 'data') {
@@ -179,6 +192,11 @@ export default {
                   ret.validate = validate
                   ret.tooltip = tooltip
                 }
+                if (obj.status === 'migrating') {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.disk_migrating_tip')
+                  return ret
+                }
                 return ret
               },
               extraMeta: obj => {
@@ -222,6 +240,46 @@ export default {
                 return ret
               },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_change_disk_storage'),
+            },
+            {
+              label: i18n.t('compute.vminstance.change_storage_type'),
+              action: () => {
+                this.createDialog('DiskChangeStorageTypeDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              meta: () => {
+                const ret = {
+                  validate: true,
+                }
+                if (obj.brand !== BRAND_MAP.Aliyun.key) {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.text_1287', [BRAND_MAP[obj.brand]?.label])
+                  return ret
+                }
+                if (!STORAGE_TYPES.aliyun[obj.storage_type] || !STORAGE_TYPES.aliyun[obj.storage_type].supportChangeStorageType) {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.disk_storage_type_disable_tip')
+                  return ret
+                }
+                if (obj.disk_type === 'sys' && !obj.guest_count) {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.disk_change_storage_type.sys_disk_tip')
+                  return ret
+                }
+                if (obj.disk_type === 'data') {
+                  if (!obj.guest_count && obj.status !== 'ready') {
+                    ret.validate = false
+                    ret.tooltip = i18n.t('compute.disk_change_storage_type.data_disk_tip')
+                    return ret
+                  }
+                }
+                return ret
+              },
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_change_storage_type'),
             },
             {
               label: i18n.t('compute.create_disk_backup'),

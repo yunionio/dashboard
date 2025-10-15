@@ -412,7 +412,8 @@
       "sync_status": "Syncing",
       "sched_fail": "Scheduling failed",
       "ActiveSAS": "ActiveSAS",
-      "change_billing_type": "Change billing mode"
+      "change_billing_type": "Change billing mode",
+      "migrate_failed": "Migration failed"
     },
     "secgroupCache": {
       "ready": "Normal",

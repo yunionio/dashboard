@@ -437,6 +437,7 @@ export const STORAGE_TYPES = {
       max: 2000, // 数据盘或者新建云硬盘的取值范围【G】
       sysMin: 20, // 系统盘取值范围【G】
       sysMax: 500, // 系统盘取值范围【G】
+      supportChangeStorageType: false,
     },
     cloud_efficiency: {
       label: i18n.t('compute.text_57'),
@@ -446,6 +447,13 @@ export const STORAGE_TYPES = {
       default: true,
       sysMin: 20,
       sysMax: 500,
+      supportChangeStorageType: true,
+      getChangeStorageTypeList: (data) => { // 检查是否可以变配到此类型
+        return ['cloud_ssd', 'cloud_essd_entry', 'cloud_essd_pl0', 'cloud_essd', 'cloud_essd_pl2', 'cloud_essd_pl3', 'cloud_auto']
+      },
+      getChangeStorageTypeTips: () => {
+        return [i18n.t('compute.dick_change_storage_type.cloud_efficiency_1', [i18n.t('compute.text_57'), i18n.t('compute.cloud_regional_disk_auto'), i18n.t('compute.text_54'), i18n.t('common.storage.cloudessdpl0'), i18n.t('compute.aliyun_disk_cloud_auto')])]
+      },
     },
     cloud_ssd: {
       label: i18n.t('compute.text_53'),
@@ -454,6 +462,13 @@ export const STORAGE_TYPES = {
       max: 32768,
       sysMin: 20,
       sysMax: 500,
+      supportChangeStorageType: true,
+      getChangeStorageTypeList: (data) => {
+        return ['cloud_essd', 'cloud_essd_pl2', 'cloud_essd_pl3', 'cloud_auto']
+      },
+      getChangeStorageTypeTips: () => {
+        return [i18n.t('compute.dick_change_storage_type.cloud_ssd_1', [i18n.t('compute.text_53'), i18n.t('compute.cloud_regional_disk_auto'), i18n.t('compute.text_54'), i18n.t('compute.aliyun_disk_cloud_auto')])]
+      },
     },
     cloud_essd: {
       label: i18n.t('compute.text_54'),
@@ -462,6 +477,27 @@ export const STORAGE_TYPES = {
       max: 32768,
       sysMin: 20,
       sysMax: 500,
+      supportChangeStorageType: true,
+      getChangeStorageTypeList: (data) => {
+        if (data.billing_type === 'postpaid') {
+          const ret = ['cloud_essd_pl2', 'cloud_essd_pl3', 'cloud_auto']
+          if (data.disk_type === 'data') {
+            ret.push('cloud_regional_disk_auto')
+          }
+          return ret
+        }
+        if (data.billing_type === 'postpaid') {
+          const ret = ['cloud_essd_pl2', 'cloud_essd_pl3', 'cloud_auto']
+          if (data.disk_type === 'data') {
+            ret.push('cloud_regional_disk_auto')
+          }
+          return ret
+        }
+        return []
+      },
+      getChangeStorageTypeTips: () => {
+        return [i18n.t('compute.disk_change_storage_type.essd'), i18n.t('compute.disk_change_storage_type.essd_1'), i18n.t('compute.disk_change_storage_type.essd_2')]
+      },
     },
     cloud_auto: {
       label: i18n.t('compute.aliyun_disk_cloud_auto'),
@@ -470,6 +506,35 @@ export const STORAGE_TYPES = {
       max: 65536,
       sysMin: 10,
       sysMax: 2048,
+      supportChangeStorageType: true,
+      getChangeStorageTypeList: (data) => {
+        if (data.disk_type === 'data') {
+          return ['cloud_regional_disk_auto']
+        }
+        return []
+      },
+      getChangeStorageTypeTips: () => {
+        return [i18n.t('compute.dick_change_storage_type.cloud_essd_entry_1', [i18n.t('compute.aliyun_disk_cloud_auto'), i18n.t('compute.cloud_regional_disk_auto')])]
+      },
+    },
+    cloud_essd_pl0: {
+      label: i18n.t('common.storage.cloudessdpl0'),
+      value: 'cloud_essd_pl0',
+      min: 40,
+      max: 32768,
+      sysMin: 40,
+      sysMax: 2 * 1024,
+      supportChangeStorageType: true,
+      getChangeStorageTypeList: (data) => {
+        const ret = ['cloud_essd', 'cloud_essd_pl2', 'cloud_essd_pl3', 'cloud_auto']
+        if (data.disk_type === 'data') {
+          ret.push('cloud_regional_disk_auto')
+        }
+        return ret
+      },
+      getChangeStorageTypeTips: () => {
+        return [i18n.t('compute.dick_change_storage_type.cloud_essd_pl0_1', [i18n.t('common.storage.cloudessdpl0'), i18n.t('compute.cloud_regional_disk_auto')]), i18n.t('compute.disk_change_storage_type.essd'), i18n.t('compute.disk_change_storage_type.essd_1')]
+      },
     },
     cloud_essd_pl2: {
       label: i18n.t('compute.text_55'),
@@ -478,6 +543,21 @@ export const STORAGE_TYPES = {
       max: 32768,
       sysMin: 20,
       sysMax: 500,
+      supportChangeStorageType: true,
+      getChangeStorageTypeList: (data) => {
+        if (data.billing_type === 'postpaid') {
+          const ret = ['cloud_essd', 'cloud_essd_pl3', 'cloud_auto']
+          return ret
+        }
+        if (data.billing_type === 'postpaid') {
+          const ret = ['cloud_essd_pl3']
+          return ret
+        }
+        return []
+      },
+      getChangeStorageTypeTips: () => {
+        return [i18n.t('compute.disk_change_storage_type.essd'), i18n.t('compute.disk_change_storage_type.essd_1'), i18n.t('compute.disk_change_storage_type.essd_3', [i18n.t('compute.text_55'), i18n.t('compute.text_56'), i18n.t('compute.cloud_regional_disk_auto'), i18n.t('compute.text_54'), i18n.t('compute.aliyun_disk_cloud_auto')])]
+      },
     },
     cloud_essd_pl3: {
       label: i18n.t('compute.text_56'),
@@ -486,6 +566,16 @@ export const STORAGE_TYPES = {
       max: 32768,
       sysMin: 20,
       sysMax: 500,
+      supportChangeStorageType: true,
+      getChangeStorageTypeList: (data) => {
+        if (data.billing_type === 'postpaid') {
+          return ['cloud_essd', 'cloud_essd_pl2', 'cloud_auto']
+        }
+        return []
+      },
+      getChangeStorageTypeTips: () => {
+        return [i18n.t('compute.disk_change_storage_type.essd'), i18n.t('compute.disk_change_storage_type.essd_1'), i18n.t('compute.disk_change_storage_type.essd_3', [i18n.t('compute.text_55'), i18n.t('compute.text_56'), i18n.t('compute.cloud_regional_disk_auto'), i18n.t('compute.text_54'), i18n.t('compute.aliyun_disk_cloud_auto')])]
+      },
     },
     cloud_essd_entry: {
       label: i18n.t('compute.cloud_essd_entry'),
@@ -494,6 +584,17 @@ export const STORAGE_TYPES = {
       max: 32768,
       sysMin: 10,
       sysMax: 2048,
+      supportChangeStorageType: true,
+      getChangeStorageTypeList: (data) => {
+        const ret = ['cloud_essd_pl0', 'cloud_essd', 'cloud_essd_pl2', 'cloud_essd_pl3', 'cloud_auto']
+        if (data.disk_type === 'data') {
+          ret.push('cloud_regional_disk_auto')
+        }
+        return ret
+      },
+      getChangeStorageTypeTips: () => {
+        return [i18n.t('compute.dick_change_storage_type.cloud_essd_entry_1', [i18n.t('compute.cloud_essd_entry'), i18n.t('compute.cloud_regional_disk_auto')])]
+      },
     },
     ephemeral_ssd: {
       label: i18n.t('compute.text_58'),
@@ -502,6 +603,7 @@ export const STORAGE_TYPES = {
       max: 800,
       sysMin: 20,
       sysMax: 500,
+      supportChangeStorageType: false,
     },
     cloud_regional_disk_auto: {
       label: i18n.t('compute.cloud_regional_disk_auto'),
@@ -510,6 +612,10 @@ export const STORAGE_TYPES = {
       max: 65536,
       sysMin: 20,
       sysMax: 2048,
+      supportChangeStorageType: true,
+      getChangeStorageTypeList: (data) => {
+        return ['cloud_essd', 'cloud_essd_pl2', 'cloud_essd_pl3', 'cloud_auto']
+      },
     },
     elastic_ephemeral_disk_standard: {
       label: i18n.t('compute.elastic_ephemeral_disk_standard'),
@@ -518,6 +624,7 @@ export const STORAGE_TYPES = {
       max: 8192,
       sysMin: 20,
       sysMax: 2048,
+      supportChangeStorageType: false,
     },
     elastic_ephemeral_disk_premium: {
       label: i18n.t('compute.elastic_ephemeral_disk_premium'),
@@ -526,6 +633,7 @@ export const STORAGE_TYPES = {
       max: 8192,
       sysMin: 20,
       sysMax: 2048,
+      supportChangeStorageType: false,
     },
   },
   aws: {

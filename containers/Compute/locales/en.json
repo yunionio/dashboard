@@ -1926,5 +1926,18 @@
   "compute.retention_count_prefix": "Retain",
   "compute.retention_count_suffix": "count",
   "compute.power_states_check_tip": "Only support this operation when the {0} power state is {1}",
-  "compute.vip_ipv6_address": "VIP IPv6 address"
+  "compute.vip_ipv6_address": "VIP IPv6 address",
+  "compute.vminstance.change_storage_type": "Change storage type",
+  "compute.disk_storage_type_disable_tip": "The disk of this storage type does not support this operation",
+  "compute.dick_change_storage_type.cloud_efficiency_1": "{0}If you need to change to {1}: As a system disk, it is not supported; As a data disk, it is not supported to change directly. You can first change to {2}/{3}/{4}, then change to {1}",
+  "compute.dick_change_storage_type.cloud_ssd_1": "{0}If you need to change to {1}: As a system disk, it is not supported; As a data disk, it is not supported to change directly. You can first change to {2}/{3}, then change to {1}",
+  "compute.dick_change_storage_type.cloud_essd_entry_1": "{0}Only as a data disk supports changing to {1}",
+  "compute.dick_change_storage_type.cloud_essd_pl0_1": "{0}Only as a data disk supports changing to {1}",
+  "compute.disk_change_storage_type.essd": "ESSD cloud disk can select performance levels related to cloud disk capacity. If the ESSD cloud disk cannot be changed to a higher performance level, you can first expand the cloud disk, then upgrade the ESSD cloud disk performance level",
+  "compute.disk_change_storage_type.essd_1": "If the target cloud disk is an ESSD PL3 cloud disk, after changing the performance level, you need to remount the cloud disk or restart the instance to achieve the best performance of ESSD PL3. If you do not remount the cloud disk or restart the instance after changing the performance level, the cloud disk will not achieve the best performance of ESSD PL3, but will not affect the reliability of the data",
+  "compute.disk_change_storage_type.essd_2": "When the billing method is postpaid, {0} only as a data disk supports changing to {1}",
+  "compute.disk_change_storage_type.essd_3": "When the billing method is postpaid, {0}/{1} type data disks do not support changing directly to {2}. You can first change to {3}/{4}, then change to {2}",
+  "compute.disk_change_storage_type.sys_disk_tip": "The system disk that is not mounted does not support this operation",
+  "compute.disk_change_storage_type.data_disk_tip": "The data disk that is not mounted is not in the [available] state and does not support this operation",
+  "compute.disk_migrating_tip": "The disk being migrated does not support this operation"
 }

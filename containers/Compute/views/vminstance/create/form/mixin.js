@@ -474,6 +474,15 @@ export default {
       }
       return this.zonesM2.get({ id: `${v}/capability`, params })
     },
+    async capability2 (v, data) { // 可用区查询
+      const params = {
+        show_emulated: true,
+      }
+      if (this.$store.getters.isAdminMode) {
+        params.project_domain = data?.extraData?.domain_id
+      }
+      return new this.$Manager('cloudregions').get({ id: `${v}/capability`, params })
+    },
     async initForm () {
       const initData = this.initFormData
       if (this.isInitForm && initData.extraData && this.form?.fc) {
@@ -481,8 +490,13 @@ export default {
           this.form.fd.hypervisor = initData.hypervisor
         }
         try {
-          const { data: capabilityData } = await this.capability(initData.prefer_zone, initData)
-          this.form.fi.capability = capabilityData
+          if (initData.prefer_zone) {
+            const { data: capabilityData } = await this.capability(initData.prefer_zone, initData)
+            this.form.fi.capability = capabilityData
+          } else if (initData.prefer_region) {
+            const { data: capabilityData } = await this.capability2(initData.prefer_region, initData)
+            this.form.fi.capability = capabilityData
+          }
         } catch (error) { }
         this.$nextTick(() => {
           // 透传设备

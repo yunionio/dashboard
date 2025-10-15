@@ -6,8 +6,8 @@
         <disk
           :ref="'disks'"
           :diskKey="item.key"
-          :max="max"
-          :min="item.min || min"
+          :max="max(i)"
+          :min="item.min || min(i)"
           :form="form"
           :schedtagParams="getSchedtagParams()"
           :snapshots-params="getSnapshotsParams"
@@ -217,10 +217,10 @@ export default {
         // }
       }
       if (this.isAws && !this.isServertemplate) {
-        if (this.currentTypeObj?.key === 'gp3') {
+        if (this.currentTypeObj()?.key === 'gp3') {
           ret.push('iops', 'throughput')
         }
-        if (this.currentTypeObj?.key === 'io1') {
+        if (this.currentTypeObj()?.key === 'io1') {
           ret.push('iops')
         }
       }
@@ -332,32 +332,6 @@ export default {
       }
       return ret
     },
-    currentTypeObj () {
-      // 数据盘仅第一块盘的磁盘类型可以修改
-      const diskTypeKey = _.get(this.dataDisks, '[0].diskType.key')
-      if (diskTypeKey) {
-        return this.typesMap[diskTypeKey]
-      }
-      if (!R.isNil(this.typesMap) && !R.isEmpty(this.typesMap)) {
-        const firstKey = Object.keys(this.typesMap)[0]
-        return this.typesMap[firstKey]
-      }
-      return {}
-    },
-    currentDiskCapability () {
-      if (this.hypervisor !== HYPERVISORS_MAP.kvm.key) return {}
-      const instance_capabilities = this.capabilityData.instance_capabilities || []
-      const storages = instance_capabilities.find(item => item.hypervisor === this.hypervisor)?.storages || {}
-      const data_disk = storages.data_disk || []
-      const currentDisk = data_disk.find(item => this.currentTypeObj.key?.startsWith(item.storage_type))
-      return currentDisk
-    },
-    max () {
-      return this.currentDiskCapability?.max_size_gb || this.currentTypeObj?.max || DISK_MIN_SIZE
-    },
-    min () {
-      return this.currentDiskCapability?.min_size_gb || this.currentTypeObj?.min || DISK_MIN_SIZE
-    },
     diskRemain () {
       const remain = this.capabilityData.max_data_disk_count - this.dataDisks.length
       return Math.max(remain, 0)
@@ -402,9 +376,9 @@ export default {
     typesMap (v, oldV) {
       if (!R.equals(v, oldV)) {
         if (this.dataDisks && this.dataDisks.length) {
-          this.dataDisks.forEach(disk => {
+          this.dataDisks.forEach((disk, index) => {
             this.form.fc.setFieldsValue({
-              [`dataDiskSizes[${disk.key}]`]: Math.max((disk.value || 0), this.min),
+              [`dataDiskSizes[${disk.key}]`]: Math.max((disk.value || 0), this.min(index)),
             })
             if (this.isInitForm) return
             if (!disk.disabled) this.decrease(disk.key)
@@ -420,6 +394,32 @@ export default {
     },
   },
   methods: {
+    currentTypeObj (index = 0) {
+      // 非阿里云 数据盘仅第一块盘的磁盘类型可以修改
+      const diskTypeKey = _.get(this.dataDisks, `[${index}].diskType.key`)
+      if (diskTypeKey) {
+        return this.typesMap[diskTypeKey]
+      }
+      if (!R.isNil(this.typesMap) && !R.isEmpty(this.typesMap)) {
+        const firstKey = Object.keys(this.typesMap)[0]
+        return this.typesMap[firstKey]
+      }
+      return {}
+    },
+    currentDiskCapability (index = 0) {
+      if (this.hypervisor !== HYPERVISORS_MAP.kvm.key) return {}
+      const instance_capabilities = this.capabilityData.instance_capabilities || []
+      const storages = instance_capabilities.find(item => item.hypervisor === this.hypervisor)?.storages || {}
+      const data_disk = storages.data_disk || []
+      const currentDisk = data_disk.find(item => this.currentTypeObj(index).key?.startsWith(item.storage_type))
+      return currentDisk
+    },
+    max (index = 0) {
+      return this.currentDiskCapability(index)?.max_size_gb || this.currentTypeObj(index)?.max || DISK_MIN_SIZE
+    },
+    min (index = 0) {
+      return this.currentDiskCapability(index)?.min_size_gb || this.currentTypeObj(index)?.min || DISK_MIN_SIZE
+    },
     getDisabled (item, itemName) {
       if (item.disabled) return true
       if (itemName && item[`${itemName}Disabled`]) {
@@ -500,13 +500,13 @@ export default {
         ...ret, // 目前仅用于 minus 按钮
       }
       if (min) {
-        dataDiskItem.min = Math.max(min, this.min, DISK_MIN_SIZE)
+        dataDiskItem.min = Math.max(min, this.min(idx), DISK_MIN_SIZE)
       }
       this.dataDisks.push(dataDiskItem)
       this.$nextTick(() => {
         const configs = {}
         const value = {
-          [`dataDiskSizes[${key}]`]: R.is(Number, size) ? size : (min || this.min),
+          [`dataDiskSizes[${key}]`]: R.is(Number, size) ? size : (min || this.min(idx)),
         }
         value[`dataDiskTypes[${key}]`] = dataDiskTypes
         if (schedtag) { // 磁盘调度标签
@@ -613,35 +613,67 @@ export default {
       if (!this.forceSizeDisabled) {
         item.sizeDisabled = false
       }
-      // 仅有第一块盘可以更改磁盘类型
-      this.$nextTick(() => {
-        if (!this.forceSizeDisabled) {
-          const dataDiskItem = {
-            ...item,
-            diskType: val,
+      // 非阿里云 仅第一块盘可以更改磁盘类型
+      if (this.getHypervisor() !== HYPERVISORS_MAP.aliyun.key) {
+        this.$nextTick(() => {
+          if (!this.forceSizeDisabled) {
+            const dataDiskItem = {
+              ...item,
+              diskType: val,
+            }
+            if (item.min) {
+              dataDiskItem.min = Math.max(item.min, this.min(0))
+            }
+            this.$set(this.dataDisks, 0, dataDiskItem)
+            this.form.fc.setFieldsValue({
+              [`dataDiskSizes[${item.key}]`]: Math.max((dataDiskItem.min || 0), this.min(0)),
+            })
           }
-          if (item.min) {
-            dataDiskItem.min = Math.max(item.min, this.min)
-          }
-          this.$set(this.dataDisks, 0, dataDiskItem)
-          this.form.fc.setFieldsValue({
-            [`dataDiskSizes[${item.key}]`]: Math.max((dataDiskItem.min || 0), this.min),
-          })
-        }
-        // 数据盘更改类型
-        if (val.key !== item.diskType?.key) {
-          const { dataDiskSizes = {} } = this.form.fd
-          for (const diskId in dataDiskSizes) {
-            const curDiskType = this.form.fd[`dataDiskTypes[${diskId}]`]
-            if (curDiskType) {
-              this.form.fc.setFieldsValue({
-                [`dataDiskTypes[${diskId}]`]: { ...val, index: curDiskType?.index },
-              })
+          // 数据盘更改类型
+          if (val.key !== item.diskType?.key) {
+            const { dataDiskSizes = {} } = this.form.fd
+            for (const diskId in dataDiskSizes) {
+              const curDiskType = this.form.fd[`dataDiskTypes[${diskId}]`]
+              if (curDiskType) {
+                this.form.fc.setFieldsValue({
+                  [`dataDiskTypes[${diskId}]`]: { ...val, index: curDiskType?.index },
+                })
+              }
             }
           }
-        }
-        this.setDiskMedium(val)
-      })
+          this.setDiskMedium(val)
+        })
+      } else {
+        this.$nextTick(() => {
+          if (!this.forceSizeDisabled) {
+            const dataDiskItem = {
+              ...item,
+              diskType: val,
+            }
+            const index = this.dataDisks.findIndex(val => val.key === item.key)
+            if (item.min) {
+              dataDiskItem.min = Math.max(item.min, this.min(index))
+            }
+            this.$set(this.dataDisks, index || 0, dataDiskItem)
+            this.form.fc.setFieldsValue({
+              [`dataDiskSizes[${item.key}]`]: Math.max((dataDiskItem.min || 0), this.min(index)),
+            })
+          }
+          // 数据盘更改类型
+          if (val.key !== item.diskType?.key) {
+            const { dataDiskSizes = {} } = this.form.fd
+            for (const diskId in dataDiskSizes) {
+              const curDiskType = this.form.fd[`dataDiskTypes[${diskId}]`]
+              if (curDiskType && diskId === val.key) {
+                this.form.fc.setFieldsValue({
+                  [`dataDiskTypes[${diskId}]`]: { ...val, index: curDiskType?.index },
+                })
+              }
+            }
+          }
+          this.setDiskMedium(val)
+        })
+      }
     },
     snapshotChange (item, val, i) {
       this.form.fc.setFieldsValue({
@@ -658,7 +690,7 @@ export default {
       if (this.getHypervisor() === HYPERVISORS_MAP.esxi.key) {
         return this.$te(`common.storage.${diskTypeLabel}`) ? this.$t(`common.storage.${diskTypeLabel}`) : diskTypeLabel
       }
-      if (i === 0) {
+      if (i === 0 || this.getHypervisor() === HYPERVISORS_MAP.aliyun.key) {
         return ''
       }
       if (this.$te(`common.storage.${diskTypeLabel}`)) {
