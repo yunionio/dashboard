@@ -32,7 +32,7 @@ export default {
   },
   data () {
     const extraInfo = []
-    if (this.data.metadata['sys:datacenter']) {
+    if (this.data && this.data.metadata && this.data.metadata['sys:datacenter']) {
       extraInfo.push({
         title: this.$t('network.vmware_extra_info'),
         items: [
