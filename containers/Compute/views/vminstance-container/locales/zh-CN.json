@@ -41,7 +41,7 @@
   "compute.repo.helper.change_config": "关机的容器主机才可以调整配置",
   "compute.repo.helper.modify": "退出的容器才可以修改",
   "compute.repo.terminal": "终端",
-  "compute.repo.helper.terminal": "运行中的{0}才可以进入终端",
+  "compute.repo.helper.terminal": "运行中或探测中的{0}才可以进入终端",
   "compute.repo.helper.set_duration.alert": "到期后，将会删除对应平台的容器主机。实际释放时间与设置时间存在一定误差，具体释放时间以实际为准。",
   "compute.container.monitor.pod_mem_used": "已使用内存",
   "compute.container.port_mapping.tooltip": "目前只有创建1台容器主机才支持该操作",
