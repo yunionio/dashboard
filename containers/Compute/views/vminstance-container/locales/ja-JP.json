@@ -41,7 +41,7 @@
   "compute.repo.helper.change_config": "シャットダウンしたコンテナー ホストのみが構成を調整できます",
   "compute.repo.helper.modify": "終了したコンテナのみを変更できます",
   "compute.repo.terminal": "ターミナル",
-  "compute.repo.helper.terminal": "実行中のコンテナー {0}ーミナルに入ることができます",
+  "compute.repo.helper.terminal": "端末にアクセスするには、実行中またはプローブ中の{0}",
   "compute.repo.helper.set_duration.alert": "有効期限が切れると、対応するプラットフォームのコンテナ ホストは削除されます。実際のリリース時間と設定された時間の間には一定の不一致があります。特定のリリース時間が優先されます。",
   "compute.container.monitor.pod_mem_used": "使用されたメモリ",
   "compute.container.port_mapping.tooltip": "現在、この操作はコンテナー ホストを作成する場合にのみサポートされています",
