@@ -1,6 +1,7 @@
 <template>
   <base-monitor
     :data="data"
+    :idKey="idKey"
     :constants="constants" />
 </template>
 
@@ -17,6 +18,9 @@ export default {
     data: { // listItemData
       type: Object,
       required: true,
+    },
+    idKey: {
+      type: String,
     },
   },
   data () {
