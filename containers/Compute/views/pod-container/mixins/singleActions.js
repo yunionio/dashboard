@@ -9,7 +9,7 @@ export default {
         },
         meta: (obj) => {
           const ret = { validate: true }
-          if (obj.status !== 'running') {
+          if (obj.status !== 'running' && obj.status !== 'probing') {
             ret.tooltip = this.$t('compute.repo.helper.terminal', [this.$t('dictionary.container')])
             ret.validate = false
           }

@@ -24,7 +24,7 @@ const getSingleActions = function () {
           ret.validate = false
           return ret
         }
-        if (obj.status !== 'running') {
+        if (obj.status !== 'running' && obj.status !== 'probing') {
           ret.tooltip = this.$t('compute.repo.helper.terminal', [this.$t('compute.vminstance-container')])
           ret.validate = false
         }
