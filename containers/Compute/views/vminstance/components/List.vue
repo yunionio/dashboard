@@ -16,7 +16,8 @@
     :defaultSearchKey="defaultSearchKey"
     :refresh-method="handleListRefresh"
     :tag-config-params="tagConfigParams"
-    :tableOverviewIndexs="tableOverviewIndexs" />
+    :tableOverviewIndexs="tableOverviewIndexs"
+    enableVirtualScroll />
 </template>
 
 <script>
