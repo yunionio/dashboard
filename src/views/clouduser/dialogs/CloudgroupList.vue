@@ -5,7 +5,8 @@
       <page-list
         :list="list"
         :columns="columns"
-        :expand-config="{ lazy: true, loadMethod: loadPolicy, visibleMethod: visbleLoadPolicy }" />
+        :expand-config="{ lazy: true, loadMethod: loadPolicy, visibleMethod: visbleLoadPolicy }"
+        :enableVirtualScroll="false" />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="cancelDialog">{{ $t('dialog.ok') }}</a-button>

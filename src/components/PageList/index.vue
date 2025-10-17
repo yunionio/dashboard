@@ -341,7 +341,7 @@ export default {
     },
     enableVirtualScroll: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     tagFilterResource: String,
     tagFilterResource2: String,

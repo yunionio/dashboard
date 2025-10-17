@@ -1,5 +1,5 @@
 <template>
-  <div v-if="beforeShowMenuLoaded">
+  <div v-if="beforeShowMenuLoaded" style="display:flex;flex-wrap:wrap;">
     <template v-for="(item,index) of options">
       <!-- 一组操作，下拉形式展示 -->
       <template v-if="item.actions">

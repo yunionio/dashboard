@@ -7,7 +7,8 @@
         show-tag-columns
         :list="list"
         :columns="columns"
-        :single-actions="singleActions" />
+        :single-actions="singleActions"
+        :enableVirtualScroll="false" />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="cancelDialog" :loading="loading">{{ $t('dialog.ok') }}</a-button>
