@@ -56,7 +56,7 @@
           </template>
         </vxe-grid>
         <template v-if="loadMoreShow">
-          <div class="text-center mt-3 load-more-wrapper">
+          <div class="text-center load-more-wrapper">
             <div v-if="enableVirtualScroll" class="vxe-pager d-flex align-items-center justify-content-end" style="float:right">
               <a-select v-model="loadMoreSize" style="min-width:100px;font-size:12px" size="small" @change="handleLoadMoreSizeChange">
                 <a-select-option v-for="size in loadMorePagings" :value="size" :key="size" style="text-align:center;font-size:12px">{{$t('common.some_items_peer_time', [size])}}</a-select-option>
@@ -282,7 +282,7 @@ export default {
         ret['keep-source'] = true
       }
       if (this.enableVirtualScroll) {
-        ret.height = this.vxeGridHeight
+        ret['max-height'] = this.vxeGridHeight
         ret['scroll-x'] = { gt: 1 }
         ret['scroll-y'] = { gt: 1 }
       }
@@ -394,10 +394,21 @@ export default {
         }
       })
     },
+    loadMoreShow (val, oldVal) {
+      if (this.enableVirtualScroll) {
+        this.$nextTick(() => {
+          this.initHeight()
+        })
+      }
+    },
   },
   mounted () {
     if (this.enableVirtualScroll) {
       this.initHeight()
+      window.addEventListener('resize', this.initHeight)
+      this.$once('hook:beforeDestroy', () => {
+        window.removeEventListener('resize', this.initHeight)
+      })
     } else {
       this.initFloatingScrollListener()
     }
@@ -407,8 +418,7 @@ export default {
     initHeight () {
       const gridEl = this.$refs.grid.$el
       const wH = document.body.offsetHeight
-      const remBase = parseInt(window.getComputedStyle(document.documentElement).fontSize) / 4
-      this.vxeGridHeight = wH - gridEl.getBoundingClientRect().y - (48 + remBase * 4 + 20 + 15)
+      this.vxeGridHeight = wH - gridEl.getBoundingClientRect().y - 15 - (this.pagerType === 'loadMore' || this.loadMoreShow ? 55 : 0)
     },
     // 初始化tbody监听器，发生变化更新虚拟滚动条，以保证宽度是正确的
     initFloatingScrollListener () {
@@ -465,7 +475,7 @@ export default {
           field: '_action',
           title: this.$t('table.title._action'),
           minWidth: 120,
-          resizable: false,
+          resizable: true,
           slots: {
             default: ({ row }, h) => {
               return [
@@ -608,9 +618,9 @@ export default {
             return [<span>{ item.title }</span>, <MultipleSort column={item} listParams={this.list.params || {}} onDoSort={this.handleSortChange} />]
           }
         }
-        if (item.showOverflow !== 'ellipsis') {
-          item.className = item.className ? item.className + ' table--td-auto-height' : 'table--td-auto-height'
-        }
+        // if (item.showOverflow !== 'ellipsis') {
+        item.className = item.className ? item.className + ' table--td-auto-height' : 'table--td-auto-height'
+        // }
         return item
       })
       defaultColumns.forEach(item => {

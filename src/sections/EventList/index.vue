@@ -36,10 +36,6 @@ export default {
     listId: {
       type: String,
     },
-    enableVirtualScroll: {
-      type: Boolean,
-      default: false,
-    },
     getParams: [Object, Function],
   },
   data () {
@@ -404,6 +400,6 @@ export default {
 <style lang="less" scoped>
 .event-list{
   position: relative;
-  padding-bottom: 20px;
+  // padding-bottom: 20px;
 }
 </style>

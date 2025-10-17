@@ -81,7 +81,8 @@
         :pagerLayout="['PrevPage', 'Jump', 'PageCount', 'NextPage', 'Total']"
         :columns="cacheColumns"
         :show-group-actions="false"
-        :group-actions="[{}]" />
+        :group-actions="[{}]"
+        :enableVirtualScroll="false" />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>

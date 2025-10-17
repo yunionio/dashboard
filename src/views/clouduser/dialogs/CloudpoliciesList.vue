@@ -4,7 +4,8 @@
     <div slot="body">
       <page-list
         :list="list"
-        :columns="columns" />
+        :columns="columns"
+        :enableVirtualScroll="false" />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="cancelDialog">{{ $t('dialog.ok') }}</a-button>
