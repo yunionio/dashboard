@@ -185,6 +185,7 @@
   "cloudenv.create_cloudpods": "{0}#新建cloudpods云账号",
   "cloudenv.create_ksyun": "{0}#新建金山云账号",
   "cloudenv.create_cnware": "{0}#",
+  "cloudenv.create_oceanbase": "{0}#create-oceanbase-account",
   "cloudenv.text_139": "グローバルゾーン",
   "cloudenv.text_140": "中国ゾーン",
   "cloudenv.text_141": "米国政府地区",
