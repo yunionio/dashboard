@@ -174,6 +174,11 @@ export const CLOUDACCOUNT_TYPES = {
       logo: oceanbaseLogo,
       component: 'OceanbaseCreate',
       provider: providerMap.oceanbase.key,
+      hiddenName: true,
+      logoStyle: {
+        width: '100px',
+        height: '25px',
+      },
     },
   },
   private: {
@@ -819,7 +824,7 @@ export const keySecretFields = {
   oceanbase: {
     k: 'access_key_id',
     s: 'access_key_secret',
-    text: 'OceanBase',
+    text: i18n.t('cloudenv.oceanbase'),
     placeholder: {
       k: i18n.t('cloudenv.text_144'),
       s: i18n.t('cloudenv.text_145'),
