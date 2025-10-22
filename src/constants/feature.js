@@ -350,6 +350,11 @@ const LicenseItems = [
   {
     key: 'oceanbase',
     meta: meta('resource_managent', 'public', true),
+    hiddenName: true,
+    logoStyle: {
+      width: '100px',
+      height: '25px',
+    },
   },
   // {
   //   key: 'report',
