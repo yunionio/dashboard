@@ -34,6 +34,7 @@ import ZettaKit from './components/ZettaKit'
 import UIS from './components/UIS'
 import Cloudflare from './components/Cloudflare'
 import CNware from './components/CNware'
+import Oceanbase from './components/OceanBase'
 
 export default {
   name: 'CreateCloudaccount',
@@ -77,6 +78,7 @@ export default {
     UISCreate: UIS,
     CloudflareCreate: Cloudflare,
     CNwareCreate: CNware,
+    OceanbaseCreate: Oceanbase,
   },
   props: {
     currentItem: {
