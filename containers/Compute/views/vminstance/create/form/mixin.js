@@ -417,6 +417,7 @@ export default {
         HYPERVISORS_MAP.huawei.key,
         HYPERVISORS_MAP.azure.key,
         HYPERVISORS_MAP.qcloud.key,
+        HYPERVISORS_MAP.ksyun.key,
       ]
       return showCustomDataHypervisors.includes(this.form.fd.hypervisor || this.hypervisor)
     },
