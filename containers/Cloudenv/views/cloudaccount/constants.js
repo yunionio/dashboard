@@ -824,7 +824,7 @@ export const keySecretFields = {
   oceanbase: {
     k: 'access_key_id',
     s: 'access_key_secret',
-    text: i18n.t('cloudenv.oceanbase'),
+    text: 'OceanBase',
     placeholder: {
       k: i18n.t('cloudenv.text_144'),
       s: i18n.t('cloudenv.text_145'),
