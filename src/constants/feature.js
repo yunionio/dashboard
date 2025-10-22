@@ -347,6 +347,10 @@ const LicenseItems = [
     key: 'cnware',
     meta: meta('resource_managent', 'private', true),
   },
+  {
+    key: 'oceanbase',
+    meta: meta('resource_managent', 'public', true),
+  },
   // {
   //   key: 'report',
   //   meta: meta('resource_managent', 'report', false),

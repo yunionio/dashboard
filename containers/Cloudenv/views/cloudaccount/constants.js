@@ -41,6 +41,7 @@ const zettakitLogo = require('@/assets/images/providers/zettakit.svg')
 const uisLogo = require('@/assets/images/providers/uis.svg')
 const cloudflareLogo = require('@/assets/images/providers/cloudflare.svg')
 const cnwareLogo = require('@/assets/images/providers/cnware.svg')
+const oceanbaseLogo = require('@/assets/images/providers/oceanbase.svg')
 
 function getDocsCloudaccountPath (scope) {
   return genDocsUrl({
@@ -167,6 +168,12 @@ export const CLOUDACCOUNT_TYPES = {
       logoStyle: {
         width: '100px',
       },
+    },
+    oceanbase: {
+      name: providerMap.oceanbase.label,
+      logo: oceanbaseLogo,
+      component: 'OceanbaseCreate',
+      provider: providerMap.oceanbase.key,
     },
   },
   private: {
@@ -376,6 +383,7 @@ export function getCloudaccountDocs (scope) {
     sangfor: i18n.t('cloudenv.create_sangfor', [docs_path]),
     cloudflare: i18n.t('cloudenv.create_cloudflare', [docs_path]),
     cnware: i18n.t('cloudenv.create_cnware', [docs_path]),
+    oceanbase: i18n.t('cloudenv.create_oceanbase', [docs_path]),
   }
   // if (isCE()) {
   //   Object.keys(docs).forEach(v => {
@@ -799,6 +807,19 @@ export const keySecretFields = {
     k: 'access_key_id',
     s: 'access_key_secret',
     text: i18n.t('cloudenv.baidu'),
+    placeholder: {
+      k: i18n.t('cloudenv.text_144'),
+      s: i18n.t('cloudenv.text_145'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_146'),
+      s: i18n.t('cloudenv.text_147'),
+    },
+  },
+  oceanbase: {
+    k: 'access_key_id',
+    s: 'access_key_secret',
+    text: 'OceanBase',
     placeholder: {
       k: i18n.t('cloudenv.text_144'),
       s: i18n.t('cloudenv.text_145'),
