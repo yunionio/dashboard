@@ -1,7 +1,7 @@
 <template>
   <div class="server-create-index">
     <page-header :title="headerTitle" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
-    <component :is="component" type="onpremise" />
+    <component :is="component" type="idc" />
   </div>
 </template>
 
