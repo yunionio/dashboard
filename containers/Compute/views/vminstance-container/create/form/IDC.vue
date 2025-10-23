@@ -89,6 +89,7 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_104')" class="mb-0">
         <server-network
+          hiddenAdd
           :form="form"
           :decorator="decorators.network"
           :network-list-params="networkParam"
