@@ -22,7 +22,7 @@ export default {
   props: {
     taskResource: {
       type: String,
-      default: 'cloud-phone-tasks',
+      default: 'compute-tasks',
     },
     id: {
       type: String,

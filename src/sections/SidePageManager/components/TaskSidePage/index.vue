@@ -25,7 +25,7 @@
       :columns="columns"
       :taskStage="params.options.taskStage"
       :archivedResource="params.options.archivedResource"
-      :resource="params.options.resource || 'cloud-phone-tasks'"
+      :resource="params.options.resource || 'compute-tasks'"
       :isRoot="false" />
   </base-side-page>
 </template>
