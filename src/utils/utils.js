@@ -1153,3 +1153,15 @@ export const deleteInvalid = obj => {
   })
   return obj
 }
+
+export const getDurationLabel = (item) => {
+  if (item === 'none' || item === 'custom') {
+    return i18n.t(`common.duration.${item}`)
+  }
+  if (item.endsWith('h')) return i18n.t('common.date.hours', [parseInt(item)])
+  if (item.endsWith('d')) return i18n.t('common.date.days', [parseInt(item)])
+  if (item.endsWith('w')) return i18n.t('common.date.weeks', [parseInt(item)])
+  if (item.endsWith('m')) return i18n.t('common.date.months', [parseInt(item)])
+  if (item.endsWith('y')) return i18n.t('common.date.years', [parseInt(item)])
+  return item
+}

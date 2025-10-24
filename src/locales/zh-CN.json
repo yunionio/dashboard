@@ -3201,6 +3201,7 @@
       "minutes": "{0}分",
       "hours": "{0}小时",
       "days": "{0}天",
+      "weeks": "{0}周",
       "months": "{0}月",
       "years": "{0}年",
       "ms": "{0}毫秒"
@@ -5119,6 +5120,7 @@
     "minute": "分钟",
     "hour": "小时",
     "day": "天",
+    "week": "周",
     "month": "月",
     "year": "年"
   },
@@ -6260,5 +6262,11 @@
   "common.download_screenshot": "下载",
   "common.view_screenshot_blank": "新窗口查看",
   "common.screenshot_error": "截图获取失败",
-  "common.copy_link": "复制链接"
+  "common.copy_link": "复制链接",
+  "system.category.server_duration": "主机到期释放时间可选项",
+  "common.add_custom_item": "添加自定义选项",
+  "common.custom_duration": "时长",
+  "common.existing_custom_duration": "已存在自定义选项",
+  "common.duration.none": "无限制",
+  "common.duration.custom": "自定义"
 }
