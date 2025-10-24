@@ -40,7 +40,7 @@
         <bill :decorators="decorators.bill" :form="form" :provider-list="form.fi.providerList" />
       </a-form-item>
       <a-form-item v-if="form.fd.billType === 'quantity' && !isServertemplate" :label="$t('compute.text_1132')">
-        <duration :decorators="decorators.duration" :form="form" />
+        <duration useServerDuration :decorators="decorators.duration" :form="form" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_294')" v-show="!isServertemplate">
         <a-input-number v-decorator="decorators.count" @blur="countBlur" :min="1" :max="100" />

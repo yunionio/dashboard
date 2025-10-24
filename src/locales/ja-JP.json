@@ -2310,6 +2310,7 @@
     "minutes": "分ける",
     "hours": "時",
     "days": "空",
+    "weeks": "週",
     "months": "月",
     "years": "年",
     "ms": "ミリセカント"
@@ -5107,6 +5108,7 @@
     "minute": "分",
     "hour": "時",
     "day": "空",
+    "week": "週",
     "month": "月",
     "year": "年"
   },
@@ -6246,5 +6248,11 @@
   "common.download_screenshot": "ダウンロード",
   "common.view_screenshot_blank": "新しいウィンドウで表示",
   "common.screenshot_error": "スクリーンショットの取得に失敗しました",
-  "common.copy_link": "リンクをコピー"
+  "common.copy_link": "リンクをコピー",
+  "system.category.server_duration": "ホストの有効期限のオプション",
+  "common.add_custom_item": "カスタムオプションを追加",
+  "common.custom_duration": "期間",
+  "common.existing_custom_duration": "既存のカスタムオプション",
+  "common.duration.none": "無制限",
+  "common.duration.custom": "カスタム"
 }
