@@ -93,6 +93,11 @@ export default {
     componentParams () {
       const tabs = ['secgroup-list', 'disk-list']
 
+      if (this.params.windowData.currentTab === 'task-drawer') {
+        return {
+          is_root: true,
+        }
+      }
       if (tabs.includes(this.params.windowData.currentTab)) {
         return {
           detail: true,
