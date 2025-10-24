@@ -35,7 +35,7 @@ export default {
     },
     resource: {
       type: String,
-      default: 'cloud-phone-tasks',
+      default: 'compute-tasks',
     },
     taskStage: String,
   },
