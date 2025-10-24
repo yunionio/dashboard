@@ -1942,5 +1942,6 @@
   "compute.disk_change_storage_type.sys_disk_tip": "未挂载的系统盘不支持此操作",
   "compute.disk_change_storage_type.data_disk_tip": "未挂载的数据盘非【可用】状态不支持此操作",
   "compute.disk_migrating_tip": "迁移中的磁盘不支持此操作",
-  "compute.health_status.initializing": "操作系统启动中"
+  "compute.health_status.initializing": "操作系统启动中",
+  "compute.week": "{0}周"
 }

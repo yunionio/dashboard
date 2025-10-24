@@ -2296,6 +2296,7 @@
     "minutes": "minutes",
     "hours": "hours",
     "days": "days",
+    "weeks": "weeks",
     "months": "months",
     "years": "years",
     "ms": "milliseconds"
@@ -5090,6 +5091,7 @@
     "minute": "minute",
     "hour": "hour",
     "day": "day",
+    "week": "week",
     "month": "month",
     "year": "year"
   },
@@ -6228,5 +6230,11 @@
   "common.download_screenshot": "Download",
   "common.view_screenshot_blank": "View in new window",
   "common.screenshot_error": "Failed to get screenshot",
-  "common.copy_link": "Copy link"
+  "common.copy_link": "Copy link",
+  "system.category.server_duration": "Server duration options",
+  "common.add_custom_item": "Add custom option",
+  "common.custom_duration": "Duration",
+  "common.existing_custom_duration": "Existing custom option",
+  "common.duration.none": "None",
+  "common.duration.custom": "Custom"
 }
