@@ -314,7 +314,6 @@ export default {
       } else {
         await this.createWorkflow(variables)
       }
-      await this.createWorkflow(variables)
       this.$message.success(this.$t('compute.text_1214'))
       this.$router.push('/workflow')
     },
