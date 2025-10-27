@@ -1,14 +1,16 @@
 import i18n from '@/locales'
+import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 
 export const getImageTableColumn = () => {
-  return {
-    field: 'image',
+  return getCopyWithContentTableColumn({
     title: i18n.t('compute.pod-image'),
-    width: 350,
-    formatter: ({ row }) => {
+    field: 'image',
+    hideField: true,
+    message: row => row.spec?.image,
+    slotCallback: (row) => {
       return row.spec?.image || '-'
     },
-  }
+  })
 }
 
 export const getEnvTableColumn = () => {
@@ -16,45 +18,78 @@ export const getEnvTableColumn = () => {
     field: 'env',
     title: i18n.t('compute.repo.env_variables'),
     minWidth: 200,
+    type: 'expand',
     slots: {
       default: ({ row }, h) => {
-        if (!row.spec.envs || !row.spec.envs.length) return '-'
-        return row.spec.envs.map(v => {
-          return (
-            <a-tooltip title={`${v.key}: ${v.value}`}>
-              <a-tag class="d-block text-truncate mb-1" style="max-width: 400px;">{v.key}: {v.value}</a-tag>
-            </a-tooltip>
-          )
-        })
+        if (!row.spec || !row.spec.envs || !row.spec.envs.length) return '-'
+        return [i18n.t('cloudenv.text_245', [(row.spec.envs && row.spec.envs.length) || 0])]
       },
+      content: ({ row }, h) => {
+        if (!row.spec || !row.spec.envs || !row.spec.envs.length) return '-'
+        return [
+          <vxe-grid
+            showOverflow='title'
+            data={row.spec.envs}
+            columns={[
+              {
+                field: 'key',
+                title: i18n.t('common.name'),
+                slots: {
+                  default: ({ row }, h) => {
+                    return row.key || '-'
+                  },
+                },
+              },
+              {
+                field: 'value',
+                title: i18n.t('compute.repo.value'),
+                slots: {
+                  default: ({ row }, h) => {
+                    return row.value || '-'
+                  },
+                },
+              },
+            ]} />,
+        ]
+      },
+    },
+    formatter: ({ row }) => {
+      if (!row.spec || !row.spec.envs || !row.spec.envs.length) return '-'
+      return row.spec.envs.map(v => {
+        return `${v.key}: ${v.value || ''}`
+      }).join(', ')
     },
   }
 }
 
 export const getCommandTableColumn = () => {
-  return {
-    field: 'command',
+  return getCopyWithContentTableColumn({
     title: i18n.t('compute.repo.command'),
-    minWidth: 200,
-    slots: {
-      default: ({ row }, h) => {
-        const command = row.spec?.command || []
-        return command.join(' ') || '-'
-      },
+    field: 'command',
+    hideField: true,
+    message: row => {
+      const command = row.spec?.command || []
+      return command.join(' ') || ''
     },
-  }
+    slotCallback: (row) => {
+      const command = row.spec?.command || []
+      return command.join(' ') || '-'
+    },
+  })
 }
 
 export const getArgsTableColumn = () => {
-  return {
-    field: 'args',
+  return getCopyWithContentTableColumn({
     title: i18n.t('compute.repo.command.params'),
-    minWidth: 200,
-    slots: {
-      default: ({ row }, h) => {
-        const args = row.spec?.args
-        return args?.length ? `[${args}]` : '-'
-      },
+    field: 'args',
+    hideField: true,
+    message: row => {
+      const args = row.spec?.args
+      return args?.length ? `[${args}]` : ''
     },
-  }
+    slotCallback: (row) => {
+      const args = row.spec?.args
+      return args?.length ? `[${args}]` : '-'
+    },
+  })
 }
