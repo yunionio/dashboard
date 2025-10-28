@@ -1258,7 +1258,9 @@
       "probe_failed": "探测失败",
       "net_failed": "网络失效",
       "no_container": "容器未创建",
-      "no_server": "主机未创建"
+      "no_server": "主机未创建",
+      "container_exited": "容器退出",
+      "sync_config": "同步配置"
     },
     "phoneModel": {
       "ready": "可用"

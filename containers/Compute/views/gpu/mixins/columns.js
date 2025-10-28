@@ -110,7 +110,7 @@ export default {
       },
       {
         field: 'guest',
-        title: this.$t('compute.text_483', [this.$t('dictionary.server')]),
+        title: this.$t('compute.associated_instances'),
         minWidth: 100,
         showOverflow: 'ellipsis',
         slots: {
@@ -119,7 +119,7 @@ export default {
             return [
               <div class='text-truncate'>
                 <list-body-cell-wrap copy={true} row={row} field="guest" onManager={this.onManager} hideField={ true }>
-                  <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row, 'servers-list') }>{ row.guest }</side-page-trigger>
+                  <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row, 'associated-instances') }>{ row.guest }</side-page-trigger>
                 </list-body-cell-wrap>
                 {row.guest_status ? <status status={ row.guest_status } statusModule='server'/> : ''}
               </div>,

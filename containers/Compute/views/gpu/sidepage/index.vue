@@ -1,5 +1,6 @@
 <template>
   <base-side-page
+    ref="sidePage"
     @cancel="cancelSidePage"
     :title="$t('compute.text_113')"
     icon="passthrough"
@@ -23,27 +24,27 @@
 </template>
 
 <script>
-import serversList from '../../vminstance/components/List'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import GpuDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import AssociatedInstances from './AssociatedInstances'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import GpuDetail from './Detail'
 
 export default {
   name: 'GpuSidePage',
   components: {
     GpuDetail,
-    serversList,
     Actions,
+    AssociatedInstances,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
         { label: this.$t('compute.text_238'), key: 'gpu-detail' },
-        { label: this.$t('compute.text_483', [this.$t('dictionary.server')]), key: 'servers-list' },
+        { label: this.$t('compute.associated_instances'), key: 'associated-instances' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
@@ -61,8 +62,8 @@ export default {
       switch (this.params.windowData.currentTab) {
         case 'event-drawer':
           return 'EventListForGpuSidePage'
-        case 'servers-list':
-          return 'ServersListForGpuSidePage'
+        case 'associated-instances':
+          return 'AssociatedGpusForGpuSidePage'
         default:
           return ''
       }
@@ -70,6 +71,9 @@ export default {
   },
   created () {
     if (this.params.tab) this.handleTabChange(this.params.tab)
+    this.$bus.$on('gpu-sidepage-refresh', () => {
+      this.fetchData()
+    })
   },
 }
 </script>

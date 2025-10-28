@@ -6,7 +6,7 @@
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
-        <a-form-item :label="$t('compute.text_492', [this.$t('dictionary.server')])" v-bind="formItemLayout" :extra="$t('compute.text_493')">
+        <a-form-item :label="$t('compute.text_492', [params.resourceType === 'server_container' ? this.$t('dictionary.server_container') : this.$t('dictionary.server')])" v-bind="formItemLayout" :extra="$t('compute.text_493')">
           <a-select v-decorator="decorators.guest">
             <a-select-option v-for="item in guestesOpts" :key="item.id">
               {{item.name}}
@@ -30,7 +30,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'AttachGpuDialog',
+  name: 'GpuAttachServerDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -106,14 +106,14 @@ export default {
   },
   created () {
     const params = {
-      host: this.params.data[0].host_id,
-      hypervisor: 'kvm',
+      host_id: this.params.data[0].host_id,
+      filter: this.params.resourceType === 'server_container' ? 'hypervisor.in(pod)' : 'hypervisor.in(kvm)',
       scope: this.scope,
       limit: 0,
     }
     new this.$Manager('servers').list({ params })
       .then((res) => {
-        this.guestesOpts = res.data.data.filter(val => val.status === 'ready' || val.status === 'running')
+        this.guestesOpts = res.data.data.filter(val => this.params.resourceType === 'server_container' ? val.status === 'ready' : val.status === 'ready' || val.status === 'running')
       })
   },
   methods: {

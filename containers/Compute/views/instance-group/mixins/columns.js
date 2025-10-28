@@ -39,12 +39,12 @@ export default {
       },
       {
         field: 'guest_count',
-        title: i18n.t('table.title.associated_server'),
+        title: i18n.t('compute.associated_instances'),
         minWidth: 120,
         slots: {
           default: ({ row }) => {
             if (this.isPreLoad && row.guest_count === undefined) return [<data-loading />]
-            return [<side-page-trigger vm={this} name='InstanceGroupSidePage' id={row.id} list={this.list} tab='v-m-instance-list-for-instance-group'>{ row.guest_count }</side-page-trigger>]
+            return [<side-page-trigger vm={this} name='InstanceGroupSidePage' id={row.id} list={this.list} tab='associated-instances'>{ row.guest_count }</side-page-trigger>]
           },
         },
       },

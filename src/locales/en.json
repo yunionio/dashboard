@@ -1236,7 +1236,9 @@
       "probe_failed": "probe failed",
       "net_failed": "network failure",
       "no_container": "no container",
-      "no_server": "no server"
+      "no_server": "no server",
+      "container_exited": "container exited",
+      "sync_config": "sync config"
     },
     "phoneModel": {
       "ready": "available"

@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('compute.text_716', [$t('dictionary.instancegroup')])}}</div>
+    <div slot="header">{{$t('compute.text_716', [params.resourceName || $t('dictionary.instancegroup')])}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.instancegroup')" :count="params.data.length" :action="$t('compute.text_715', [$t('dictionary.instancegroup')])" />
+      <dialog-selected-tips :name="params.resourceName || $t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_715', [$t('dictionary.instancegroup')])" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">

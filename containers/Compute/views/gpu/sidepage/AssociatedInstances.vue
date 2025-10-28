@@ -7,26 +7,20 @@
     </a-tabs>
     <div class="mt-2">
       <keep-alive>
-        <component :is="currentComponent" :getParams="getParams" :id="id" :data="data" />
+        <component :is="currentComponent" :getParams="getParams" :id="id" :data="data" :resId="resId" />
       </keep-alive>
     </div>
   </div>
 </template>
 
 <script>
-import Server from './Server'
-import LB from './LB'
-import RDS from './RDS'
-import Redis from './Redis'
+import Server from './Servers'
 import VmContainer from './VmContainer'
 
 export default {
-  name: 'AssociatedSecgroupsIndex',
+  name: 'AssociatedGpusIndex',
   components: {
     Server,
-    LB,
-    RDS,
-    Redis,
     VmContainer,
   },
   props: {
@@ -36,6 +30,10 @@ export default {
     },
     getParams: {
       type: [Function, Object],
+    },
+    resId: {
+      type: String,
+      required: true,
     },
   },
   data () {
@@ -48,12 +46,6 @@ export default {
       switch (this.currentComponent) {
         case 'Server':
           return 'ServerForSecGroupSidePage'
-        case 'LB':
-          return 'LBForSecGroupSidePage'
-        case 'RDS':
-          return 'RDSForSecGroupSidePage'
-        case 'Redis':
-          return 'RedisForSecGroupSidePage'
         case 'VmContainer':
           return 'VmContainerForSecGroupSidePage'
         default:
@@ -69,18 +61,6 @@ export default {
         {
           key: 'VmContainer',
           label: this.$t('dictionary.server_container'),
-        },
-        {
-          key: 'LB',
-          label: this.$t('dictionary.elb'),
-        },
-        {
-          key: 'RDS',
-          label: 'RDS',
-        },
-        {
-          key: 'Redis',
-          label: 'Redis',
         },
       ]
       return ret
