@@ -49,7 +49,7 @@ export default {
         },
         {
           field: 'guest',
-          title: this.$t('compute.text_483', [this.$t('dictionary.server')]),
+          title: this.$t('compute.associated_instances'),
           formatter: function ({ row }) {
             return row.guest || row.guest_id
           },

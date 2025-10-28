@@ -20,7 +20,7 @@ export default {
       list: this.$list.createList(this, {
         resource: 'servers',
         getParams: {
-          filter: 'hypervisor.notin(baremetal,container)',
+          filter: this.params.hypervisor === 'pod' ? 'hypervisor.in(pod)' : 'hypervisor.notin(baremetal,container)',
           secgroup: secgrp_id,
         },
         filterOptions: {

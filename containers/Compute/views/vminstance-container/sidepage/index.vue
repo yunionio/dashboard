@@ -48,6 +48,7 @@ import SecgroupList from './Secgroup'
 import NetworkList from './Network'
 import DiskList from './DiskList'
 import Monitor from './Monitor'
+// import Alert from './Alert'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
@@ -62,6 +63,7 @@ export default {
     SecgroupList,
     Monitor,
     GpuList,
+    // Alert,
     // Terminal,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -74,6 +76,7 @@ export default {
       { label: this.$t('compute.text_376'), key: 'disk-list' },
       { label: this.$t('compute.text_113'), key: 'gpu-list' },
       { label: this.$t('compute.text_608'), key: 'monitor' },
+      // { label: this.$t('compute.text_1301'), key: 'alert' },
       { label: this.$t('table.title.task'), key: 'task-drawer' },
       // { label: this.$t('compute.repo.terminal'), key: 'terminal' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },

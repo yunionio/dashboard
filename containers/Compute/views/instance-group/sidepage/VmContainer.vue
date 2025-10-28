@@ -9,13 +9,12 @@
 <script>
 import { sizestr } from '@/utils/utils'
 import { getStatusTableColumn, getCopyWithContentTableColumn, getNameDescriptionTableColumn, getIpsTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
-import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
 export default {
-  name: 'VMInstanceListForInstanceGroup',
+  name: 'VMContainerListForInstanceGroup',
   mixins: [WindowsMixin, ListMixin],
   props: {
     resId: {
@@ -29,7 +28,7 @@ export default {
         id: 'VminstanceListForInstanceGroupSidepage',
         resource: 'servers',
         getParams: this.getParams,
-        steadyStatus: Object.values(expectStatus.server).flat(),
+        steadyStatus: Object.values(expectStatus.container).flat(),
         filterOptions: {
           name: {
             label: this.$t('compute.text_719'),
@@ -71,25 +70,7 @@ export default {
       }),
       columns: [
         getNameDescriptionTableColumn({ addLock: true, vm: this }),
-        {
-          field: 'os_type',
-          title: this.$t('table.title.os'),
-          width: 50,
-          slots: {
-            default: ({ row }) => {
-              let name = ((row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type) || ''
-              if (name.includes('Windows') || name.includes('windows')) {
-                name = 'Windows'
-              }
-              const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
-              const tooltip = version.includes(name) ? version : `${name} ${version}` // 去重
-              return [
-                <SystemIcon tooltip={ tooltip } name={ name } />,
-              ]
-            },
-          },
-        },
-        getStatusTableColumn({ statusModule: 'server' }),
+        getStatusTableColumn({ statusModule: 'container' }),
         {
           field: 'instance_type',
           title: this.$t('compute.text_295'),
@@ -123,6 +104,7 @@ export default {
               data: this.list.selectedItems,
               onManager: this.onManager,
               refresh: this.refresh,
+              resourceName: this.$t('dictionary.server_container'),
             })
           },
           meta: () => {
@@ -142,6 +124,7 @@ export default {
               data: [obj],
               onManager: this.onManager,
               refresh: this.refresh,
+              resourceName: this.$t('dictionary.server_container'),
             })
           },
         },
@@ -159,7 +142,7 @@ export default {
       return {
         details: true,
         with_meta: true,
-        filter: 'hypervisor.notin(baremetal,container,pod)',
+        filter: 'hypervisor.in(pod)',
         group: this.resId,
       }
     },
