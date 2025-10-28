@@ -18,8 +18,9 @@ export default {
     // const tenant_id = _.get(this.params, 'data[0].tenant_id')
     const brand = _.get(this.params, 'data[0].brand')
     const vpc_id = _.get(this.params, 'data[0].vpc_id')
+    const hypervisor = _.get(this.params, 'hypervisor')
     const getParams = {
-      filter: 'hypervisor.notin(container,baremetal)',
+      filter: hypervisor === 'pod' ? 'hypervisor.in(pod)' : 'hypervisor.notin(container,baremetal,pod)',
       // project_id: tenant_id,
       scope: this.$store.getters.scope,
     }

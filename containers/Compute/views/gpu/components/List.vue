@@ -271,6 +271,9 @@ export default {
     }
   },
   created () {
+    this.$bus.$on('gpu-sidepage-refresh', () => {
+      this.list.refresh()
+    })
     this.init()
     this.list.fetchData().then(() => {
       this.$nextTick(() => {

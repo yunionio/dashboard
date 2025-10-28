@@ -6,13 +6,13 @@
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" v-bind="formItemLayout" hideRequiredMark>
         <a-form-item
-          :label="$t('dictionary.server')">
+          :label="params.resourceName">
           <list-select
             v-decorator="decorators.servers"
             :list-props="serverListProps"
             :formatter="v => v.name"
-            :placeholder="$t('compute.text_1022', [$t('dictionary.server')])"
-            :dialog-params="{ title: $t('dictionary.server'), width: 1060 }" />
+            :placeholder="$t('compute.text_1022', [params.resourceName])"
+            :dialog-params="{ title: params.resourceName, width: 1060 }" />
         </a-form-item>
       </a-form>
     </div>
@@ -107,7 +107,7 @@ export default {
       try {
         const params = {
           scope: this.scope,
-          filter: 'hypervisor.notin(container,baremetal)',
+          filter: this.params.hypervisor === 'pod' ? 'hypervisor.in(pod)' : 'hypervisor.notin(container,baremetal,pod)',
           limit: 0,
           secgroup: `${this.selectedResource.id}`,
         }

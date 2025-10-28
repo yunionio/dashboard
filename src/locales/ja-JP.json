@@ -1251,7 +1251,9 @@
       "probe_failed": "検出に失敗しました",
       "net_failed": "ネットワーク障害",
       "no_container": "コンテナが作成されていません",
-      "no_server": "ホストが作成されていません"
+      "no_server": "ホストが作成されていません",
+      "container_exited": "コンテナ終了",
+      "sync_config": "設定の同期"
     },
     "phoneModel": {
       "ready": "利用可能"

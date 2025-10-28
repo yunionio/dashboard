@@ -27,11 +27,11 @@ export default {
         getEnabledTableColumn(),
         {
           field: 'guest_count',
-          title: `${this.$t('common_460', [this.$t('dictionary.server')])}`,
+          title: this.$t('compute.associated_instances'),
           slots: {
             default: ({ row }) => {
               return [(
-                <a onClick={ () => this.$emit('tab-change', 'v-m-instance-list-for-instance-group') }>{ row.guest_count }</a>
+                <a onClick={ () => this.$emit('tab-change', 'associated-instances') }>{ row.guest_count }</a>
               )]
             },
           },
