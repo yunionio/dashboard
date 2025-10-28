@@ -13,7 +13,8 @@
           :id="id"
           :resId="resId"
           :serverColumns="serverColumns"
-          :data="data" />
+          :data="data"
+          :hiddenActions="['change_sub_ip', 'detach_network']" />
       </keep-alive>
     </div>
   </div>
