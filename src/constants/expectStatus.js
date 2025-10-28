@@ -590,7 +590,7 @@ export default {
   },
   container: {
     success: ['running', 'on'],
-    info: ['exited', 'ready', 'unknown', 'off'],
+    info: ['exited', 'ready', 'unknown', 'off', 'container_exited'],
     danger: ['start_failed', 'probe_failed'],
   },
   phoneModel: {

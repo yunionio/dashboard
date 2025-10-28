@@ -11,14 +11,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ColumnMixin from '@Compute/views/vminstance/mixins/columns'
+import ColumnMixin from '@Compute/views/vminstance-container/mixins/columns'
 import ListMixin from '@/mixins/list'
 import {
   getNameFilter,
   getBrandFilter,
   getStatusFilter,
   getTenantFilter,
-  getAccountFilter,
   getIpFilter,
   getHostFilter,
 } from '@/utils/common/tableFilter'
@@ -26,7 +25,7 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'ServerList',
+  name: 'VmContainerList',
   mixins: [WindowsMixin, ListMixin, ColumnMixin],
   props: {
     id: String,
@@ -44,26 +43,12 @@ export default {
         id: this.id,
         resource: 'servers',
         getParams: this.getParam,
-        steadyStatus: Object.values(expectStatus.server).flat(),
+        steadyStatus: Object.values(expectStatus.container).flat(),
         filterOptions: {
           name: getNameFilter(),
           brand: getBrandFilter('compute_engine_brands'),
           ips: getIpFilter(),
-          status: getStatusFilter('server'),
-          os_type: {
-            label: this.$t('compute.text_721'),
-            dropdown: true,
-            multiple: true,
-            items: [
-              { label: 'Windows', key: 'windows' },
-              { label: 'Linux', key: 'linux' },
-              { label: 'VMware', key: 'VMWare' },
-            ],
-            filter: true,
-            formatter: val => {
-              return `os_type.in(${val})`
-            },
-          },
+          status: getStatusFilter('container'),
           tenant: getTenantFilter(),
           billing_type: {
             label: this.$t('compute.text_498'),
@@ -73,16 +58,7 @@ export default {
               { label: this.$t('compute.text_23'), key: 'prepaid' },
             ],
           },
-          account: getAccountFilter(),
           host: getHostFilter(),
-          gpu: {
-            label: this.$t('compute.text_175'),
-            dropdown: true,
-            items: [
-              { label: this.$t('compute.text_1033'), key: false },
-              { label: this.$t('compute.text_1034'), key: true },
-            ],
-          },
         },
         responseData: this.responseData,
       }),
@@ -98,6 +74,7 @@ export default {
               title: this.$t('compute.text_723'),
               onManager: this.onManager,
               refresh: this.refresh,
+              resourceName: this.$t('dictionary.server_container'),
             })
           },
           meta: (obj) => {
@@ -113,16 +90,17 @@ export default {
       ],
       groupActions: [
         {
-          label: this.$t('compute.text_483', [this.$t('dictionary.server')]),
+          label: this.$t('compute.text_483', [this.$t('dictionary.server_container')]),
           permission: 'server_perform_assign_secgroup',
           action: () => {
             this.createDialog('SetServerDialog', {
               data: [this.data],
               columns: this.columns,
-              title: this.$t('compute.text_483', [this.$t('dictionary.server')]),
-              resourceName: this.$t('dictionary.server'),
+              title: this.$t('compute.text_483', [this.$t('dictionary.server_container')]),
+              resourceName: this.$t('dictionary.server_container'),
               onManager: this.onManager,
               refresh: this.refresh,
+              hypervisor: 'pod',
             })
           },
         },
@@ -137,6 +115,7 @@ export default {
               title: this.$t('compute.text_723'),
               onManager: this.onManager,
               refresh: this.refresh,
+              resourceName: this.$t('dictionary.server_container'),
             })
           },
           meta: () => {
@@ -206,17 +185,17 @@ export default {
       const ret = {
         details: true,
         with_meta: true,
-        filter: 'hypervisor.notin(baremetal,container,pod)',
+        filter: 'hypervisor.in(pod)',
         ...this.getParams,
       }
       return ret
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'VmInstanceSidePage', {
+      this.sidePageTriggerHandle(this, 'VmContainerInstanceSidePage', {
         id: row.id,
         resource: 'servers',
         getParams: this.getParam,
-        steadyStatus: Object.values(expectStatus.server).flat(),
+        steadyStatus: Object.values(expectStatus.container).flat(),
       }, {
         list: this.list,
       })

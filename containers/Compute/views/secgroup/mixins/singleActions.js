@@ -99,7 +99,7 @@ export default {
               },
             },
             {
-              label: i18n.t('compute.text_1028'),
+              label: i18n.t('compute.text_1028_1'),
               permission: 'servers_list',
               action: (obj) => {
                 this.sidePageTriggerHandle(this, 'SecGroupSidePage', {

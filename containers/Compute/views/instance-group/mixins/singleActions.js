@@ -5,15 +5,13 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: this.$t('compute.text_483', [this.$t('dictionary.server')]),
+        label: this.$t('compute.text_1028_1'),
         permission: 'instancegroups_perform_bind_guests',
         action: (obj) => {
-          this.createDialog('InstanceGroupBindServerDialog', {
-            columns: this.columns,
-            data: [obj],
-            onManager: this.onManager,
-            refresh: this.refresh,
-          })
+          this.sidePageTriggerHandle(this, 'InstanceGroupSidePage', {
+            id: obj.id,
+            resource: 'instancegroups',
+          }, { tab: 'associated-instances' })
         },
         meta: (obj) => ({
           validate: obj.enabled,

@@ -1,6 +1,5 @@
 import i18n from '@/locales'
 import { GPU_DEV_TYPE_OPTION_MAP } from '@Compute/constants'
-import { cloudEnabled, cloudUnabledTip } from '@Compute/views/vminstance/utils'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 export default {
   created () {
@@ -42,66 +41,13 @@ export default {
               permission: 'isolated_devices_perform_public',
             }),
             {
-              label: this.$t('compute.text_483', [this.$t('dictionary.server')]),
+              label: this.$t('compute.text_1028_1'),
               permission: 'server_perform_attach_isolated_device',
-              action: obj => {
-                this.createDialog('AttachGpuDialog', {
-                  data: [obj],
-                  title: this.$t('compute.text_483', [this.$t('dictionary.server')]),
-                  columns: this.columns,
-                  refresh: this.refresh,
-                })
-              },
-              meta: obj => {
-                const ret = { validate: true }
-                if (obj.dev_type === 'NIC') {
-                  ret.validate = false
-                  ret.tooltip = this.$t('compute.sriov_device_nic_notsupport')
-                  return ret
-                }
-                if (obj.guest_id) {
-                  ret.validate = false
-                  return ret
-                }
-                ret.validate = cloudEnabled('acttachGpu', obj)
-                ret.tooltip = cloudUnabledTip('acttachGpu', obj)
-                return ret
-              },
-            },
-            {
-              label: this.$t('compute.text_485', [this.$t('dictionary.server')]),
-              permission: 'server_perform_detach_isolated_device',
-              action: obj => {
-                this.createDialog('DetachGpuDialog', {
-                  data: [obj],
-                  title: this.$t('compute.text_485', [this.$t('dictionary.server')]),
-                  columns: this.columns,
-                  refresh: this.refresh,
-                })
-              },
-              meta: obj => {
-                const ret = { validate: true }
-
-                if (obj.dev_type === 'NIC') {
-                  ret.validate = false
-                  ret.tooltip = this.$t('compute.sriov_device_nic_notsupport')
-                  return ret
-                }
-
-                if (!obj.guest_id) {
-                  ret.validate = false
-                  ret.tooltip = this.$t('compute.text_487', [this.$t('dictionary.server')])
-                  return ret
-                }
-
-                if (obj.guest_status !== 'ready' && obj.guest_status !== 'running') {
-                  ret.validate = false
-                  ret.tooltip = this.$t('compute.text_489', [this.$t('dictionary.server')])
-                  return ret
-                }
-                ret.validate = cloudEnabled('acttachGpu', obj)
-                ret.tooltip = cloudUnabledTip('acttachGpu', obj)
-                return ret
+              action: (obj) => {
+                this.sidePageTriggerHandle(this, 'GpuSidePage', {
+                  id: obj.id,
+                  resource: 'isolated_devices',
+                }, { tab: 'associated-instances' })
               },
             },
             {

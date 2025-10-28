@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('compute.text_113')" :count="params.data.length" :action="params.title" />
+      <dialog-selected-tips :name="params.name || $t('dictionary.server')" :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
@@ -75,11 +75,11 @@ export default {
     },
     doUpdate (values) {
       return new this.$Manager('servers').performAction({
-        id: this.params.data[0].guest_id,
+        id: this.params.data[0].id,
         action: 'detach-isolated-device',
         data: {
           auto_start: this.isShowAutoStart ? values.autoStart : false,
-          device: this.params.data[0].id,
+          device: this.params.device.id,
         },
       })
     },

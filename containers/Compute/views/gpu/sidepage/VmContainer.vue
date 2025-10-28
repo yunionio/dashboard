@@ -2,12 +2,11 @@
   <page-list
     :list="list"
     :columns="columns"
-    :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :group-actions="groupActions" />
 </template>
 
 <script>
-import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { sizestr } from '@/utils/utils'
 import {
   getProjectTableColumn,
@@ -19,18 +18,17 @@ import {
   getTagTableColumn,
   getNameDescriptionTableColumn,
 } from '@/utils/common/tableColumn'
-import SystemIcon from '@/sections/SystemIcon'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { cloudEnabled, cloudUnabledTip } from '@Compute/views/vminstance/utils'
 import expectStatus from '@/constants/expectStatus'
+import { cloudEnabled, cloudUnabledTip } from '@Compute/views/vminstance-container/utils'
 
 const commonUnabled = (value, statusArr = ['sched_fail', 'net_fail', 'disk_fail']) => {
   return statusArr.includes(value.status)
 }
 
 export default {
-  name: 'ServersListForGpuSidePage',
+  name: 'VmContainerListForGpuSidePage',
   mixins: [WindowsMixin, ListMixin],
   props: {
     data: {
@@ -41,7 +39,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
-        id: 'ServersListForGpuSidePage',
+        id: 'VmContainerListForGpuSidePage',
         resource: 'servers',
         getParams: this.getParam,
         filterOptions: {
@@ -53,7 +51,7 @@ export default {
             },
           },
         },
-        steadyStatus: Object.values(expectStatus.server).flat(),
+        steadyStatus: Object.values(expectStatus.container).flat(),
       }),
       columns: [
         getNameDescriptionTableColumn({
@@ -63,7 +61,7 @@ export default {
           addBackup: true,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'VmInstanceSidePage') }>{ row.name }</side-page-trigger>
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'VmContainerInstanceSidePage') }>{ row.name }</side-page-trigger>
             )
           },
         }),
@@ -83,34 +81,6 @@ export default {
               }
               const config = row.vcpu_count + 'C' + sizestr(row.vmem_size, 'M', 1024) + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
               return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
-            },
-          },
-        },
-        {
-          field: 'os_type',
-          title: this.$t('table.title.os'),
-          width: 50,
-          slots: {
-            default: ({ row }) => {
-              let name = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type || ''
-              if (name.includes('Windows') || name.includes('windows')) {
-                name = 'Windows'
-              }
-              const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
-              const tooltip = (version.includes(name) ? version : `${name} ${version}`) || this.$t('compute.text_339') // 去重
-              return [
-                <SystemIcon tooltip={ tooltip } name={ name } />,
-              ]
-            },
-          },
-        },
-        {
-          field: 'password',
-          title: this.$t('compute.text_340'),
-          width: 50,
-          slots: {
-            default: ({ row }) => {
-              return [<PasswordFetcher serverId={ row.id } resourceType='servers' />]
             },
           },
         },
@@ -148,8 +118,7 @@ export default {
             },
           },
         },
-        getStatusTableColumn({ statusModule: 'server' }),
-        getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
+        getStatusTableColumn({ statusModule: 'container' }),
         getCopyWithContentTableColumn({ field: 'host', title: this.$t('compute.text_111'), sortable: true }),
         getProjectTableColumn(),
         getBrandTableColumn(),
@@ -157,14 +126,15 @@ export default {
       ],
       groupActions: [
         {
-          label: this.$t('compute.text_483', [this.$t('dictionary.server')]),
+          label: this.$t('compute.text_483', [this.$t('dictionary.server_container')]),
           permission: 'server_perform_attach_isolated_device',
           action: obj => {
             this.createDialog('GpuAttachServerDialog', {
               data: [this.data],
-              title: this.$t('compute.text_483', [this.$t('dictionary.server')]),
+              title: this.$t('compute.text_483', [this.$t('dictionary.server_container')]),
               columns: this.columns,
               refresh: this.refresh,
+              resourceType: 'server_container',
             })
           },
           meta: obj => {
@@ -178,6 +148,7 @@ export default {
               ret.validate = false
               return ret
             }
+            ret.validate = true
             return ret
           },
         },
@@ -209,6 +180,8 @@ export default {
               data: [obj],
               columns: this.columns,
               list: this.list,
+              name: this.$t('compute.vminstance-container'),
+              onManager: this.onManager,
             })
           },
           meta: (obj) => {
@@ -226,7 +199,7 @@ export default {
               title: this.$t('compute.text_485', [this.$t('compute.text_113')]),
               columns: this.columns,
               refresh: this.refresh,
-              name: this.$t('dictionary.server'),
+              name: this.$t('dictionary.server_container'),
               device: this.data,
             })
           },
@@ -239,9 +212,9 @@ export default {
               return ret
             }
 
-            if (obj.status !== 'ready' && obj.status !== 'running') {
+            if (obj.status !== 'ready') {
               ret.validate = false
-              ret.tooltip = this.$t('compute.text_489', [this.$t('compute.text_113')])
+              ret.tooltip = this.$t('compute.text_489_1', [this.$t('compute.text_113')])
               return ret
             }
             ret.validate = cloudEnabled('acttachGpu', obj)
@@ -270,7 +243,7 @@ export default {
     getParam () {
       return {
         'filter.0': `id.equals(${this.data.guest_id})`,
-        'filter.1': 'hypervisor.notin(baremetal,container,pod)',
+        'filter.1': 'hypervisor.in(pod)',
       }
     },
   },
