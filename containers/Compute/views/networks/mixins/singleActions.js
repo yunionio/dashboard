@@ -93,7 +93,7 @@ export default {
                   server: this.data,
                 })
               },
-              hidden: this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_change_sub_ip'),
+              hidden: this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_change_sub_ip') || (this.hiddenActions || []).includes('change_sub_ip'),
             },
             {
               label: i18n.t('compute.detach_network'),
@@ -122,7 +122,7 @@ export default {
                 ret.validate = true
                 return ret
               },
-              hidden: this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_detach_nic'),
+              hidden: this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_detach_nic') || (this.hiddenActions || []).includes('detach_network'),
             },
           ]
         },
