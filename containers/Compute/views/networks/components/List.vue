@@ -7,11 +7,11 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import { typeClouds } from '@/utils/common/hypervisor'
 import ListMixin from '@/mixins/list'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'NetworkList',
@@ -30,6 +30,10 @@ export default {
     getParams: {
       type: Object,
       default: () => ({}),
+    },
+    hiddenActions: {
+      type: Array,
+      default: () => ([]),
     },
   },
   data () {
