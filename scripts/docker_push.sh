@@ -35,6 +35,8 @@ TAG=${TAG:-latest}
 build_src() {
     docker run --rm \
         -v $SRC_DIR:/app \
+        -e OEM_VERSION=$OEM_VERSION \
+        -e VUE_APP_OEM_VERSION=$VUE_APP_OEM_VERSION \
         registry.cn-beijing.aliyuncs.com/swordqiu/node:20-alpine-git \
         /bin/sh -c "set -ex;
 	git config --global --add safe.directory /app;
