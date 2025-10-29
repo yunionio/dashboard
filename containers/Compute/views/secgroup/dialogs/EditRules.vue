@@ -246,7 +246,7 @@ export default {
       return ret
     },
     cidrDisabled () {
-      if (this.params.title === 'edit' && ['ctyun', 'aliyun'].includes(this.params.brand.toLowerCase())) {
+      if (this.params.title === 'edit' && ['ctyun'].includes(this.params.brand.toLowerCase())) {
         return true
       }
       return false
