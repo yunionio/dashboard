@@ -157,9 +157,8 @@ export default {
     fetchBlockAccount () {
       new this.$Manager('blocking_accounts', 'v1').list({
         params: {
-          account_id: this.params.account_id,
           enabled: true,
-          filter: `month.in(${this.selectedMonths.join(',')})`,
+          filter: [`month.in(${this.selectedMonths.join(',')})`, `account_id.in(${this.params.account_id})`],
         },
       }).then(res => {
         const { data = [] } = res.data
