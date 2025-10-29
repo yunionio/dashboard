@@ -64,6 +64,7 @@ export default {
               onManager: this.onManager,
               type: 'create_billtask',
               data: [this.accountData],
+              account_id: this.accountData.id,
               success: () => {
                 this.list.refresh()
               },
