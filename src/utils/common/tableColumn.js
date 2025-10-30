@@ -857,9 +857,9 @@ export const getAccountTableColumn = ({
       default: ({ row }, h) => {
         let val = _.get(row, field)
         if (vm.isPreLoad && !val) return [<data-loading />]
-        // OneStack => oem en
+        // OneStack => oem name
         if (val === 'OneStack' && row[brandField] && row[brandField] === 'OneCloud') {
-          val = setting.brand.en || val
+          val = setting.brand[setting.language] || setting.brand.en || val
         }
         const ret = []
         ret.push(
