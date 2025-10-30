@@ -184,7 +184,7 @@ export function getAccountFilter ({ label = i18n.t('res.cloudaccount'), distinct
     mapper: data => {
       return data.map(item => {
         if (item.label && item.label === 'OneStack') {
-          item.label = setting.brand.en || item.label
+          item.label = setting.brand[setting.language] || setting.brand.en || item.label
         }
         return item
       })
