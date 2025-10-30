@@ -101,5 +101,6 @@ if [ "$ENV" == "local" ]; then
     WEB_CONSOLE_VERSION=$(grep -o 'web-console-fe:v[^[:space:]]*' Dockerfile | head -1 | sed 's/web-console-fe://')
     echo "当前web-console版本为: ${WEB_CONSOLE_VERSION}"
     echo "请注意检查web-console环境兼容性！"
+    echo "请注意检查OEM_VERSION是否设置"
 fi
 
