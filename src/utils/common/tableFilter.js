@@ -570,7 +570,7 @@ export function getResourceTypeFilter ({ label = i18n.t('common.resource_type'),
       return data.map(item => {
         return {
           key: item.key,
-          label: translateLabel && i18n.te(`bill_resource_type.${item.key}`) ? i18n.t(`bill_resource_type.${item.key}`) : item.key,
+          label: translateLabel && i18n.te(`bill_resource_type.${item.key}`) ? `${i18n.t(`bill_resource_type.${item.key}`)} (${item.key})` : item.key || '-',
         }
       })
     },
