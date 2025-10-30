@@ -32,9 +32,24 @@ ARCH=${ARCH:-$CURRENT_ARCH}
 REGISTRY=${REGISTRY:-registry.cn-beijing.aliyuncs.com/yunionio}
 TAG=${TAG:-latest}
 
+# 处理 OEM_VERSION
+if [[ "$ENV" != "local" ]]; then
+    if [ -z "${OEM_VERSION}" ]; then
+        # 若未设置，则使用当前分支名
+        OEM_VERSION=$(git -C "$SRC_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null || true)
+        if [ -z "$OEM_VERSION" ]; then
+            echo "[WARN] 无法获取当前分支名，OEM_VERSION 仍为空。"
+        else
+            echo "[INFO] OEM_VERSION 未设置，自动使用当前分支名：$OEM_VERSION"
+        fi
+    fi
+fi
+echo "OEM_VERSION=${OEM_VERSION}"
+
 build_src() {
     docker run --rm \
         -v $SRC_DIR:/app \
+        -e OEM_VERSION \
         registry.cn-beijing.aliyuncs.com/swordqiu/node:20-alpine-git \
         /bin/sh -c "set -ex;
 	git config --global --add safe.directory /app;
@@ -42,7 +57,7 @@ build_src() {
     yarn cache clean
     rm -fr node_modules
     yarn install;
-    yarn run build;
+    OEM_VERSION=\"$OEM_VERSION\" yarn run build;
     chown -R $(id -u):$(id -g) dist node_modules;
     "
 }
@@ -69,6 +84,7 @@ if [[ "$ENV" != "local" ]]; then
     build_src
 fi
 
+
 if [[ "$DRY_RUN" == "true" ]]; then
     echo "[$(readlink -f ${BASH_SOURCE}):${LINENO} ${FUNCNAME[0]}] return for DRY_RUN"
     exit 0
@@ -82,7 +98,7 @@ case $ARCH in
     amd64 | "arm64" )
         buildx_and_push "$img_name" "$DOCKER_DIR/Dockerfile" "$SRC_DIR" "$ARCH"
         echo "更新命令："
-        echo "kubectl patch oc -n onecloud default --type='json' -p='[{op: replace, path: /spec/web/imageName, value: web-ee},{"op": "replace", "path": "/spec/web/repository", "value": "${REGISTRY}"},{"op": "add", "path": "/spec/web/tag", "value": "${TAG}"}]'"
+        echo "kubectl patch oc -n onecloud default --type='json' -p='[{op: replace, path: /spec/web/imageName, value: web},{"op": "replace", "path": "/spec/web/repository", "value": "${REGISTRY}"},{"op": "add", "path": "/spec/web/tag", "value": "${TAG}"}]'"
         ;;
     *)
         for arch in "arm64" "amd64"; do
@@ -90,7 +106,7 @@ case $ARCH in
         done
         make_manifest_image $img_name
         echo "更新命令："
-        echo "kubectl patch oc -n onecloud default --type='json' -p='[{op: replace, path: /spec/web/imageName, value: web-ee},{"op": "replace", "path": "/spec/web/repository", "value": "${REGISTRY}"},{"op": "add", "path": "/spec/web/tag", "value": "${TAG}"}]'"
+        echo "kubectl patch oc -n onecloud default --type='json' -p='[{op: replace, path: /spec/web/imageName, value: web},{"op": "replace", "path": "/spec/web/repository", "value": "${REGISTRY}"},{"op": "add", "path": "/spec/web/tag", "value": "${TAG}"}]'"
         ;;
 esac
 
@@ -99,5 +115,9 @@ if [ "$ENV" == "local" ]; then
     WEB_CONSOLE_VERSION=$(grep -o 'web-console-fe:v[^[:space:]]*' Dockerfile | head -1 | sed 's/web-console-fe://')
     echo "当前web-console版本为: ${WEB_CONSOLE_VERSION}"
     echo "请注意检查web-console环境兼容性！"
+fi
+
+if [[ "$ENV" == "local" ]]; then
+    echo "本地打包请注意检查OEM_VERSION是否设置"
 fi
 
