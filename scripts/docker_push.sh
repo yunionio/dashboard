@@ -84,7 +84,7 @@ case $ARCH in
     amd64 | "arm64" )
         buildx_and_push "$img_name" "$DOCKER_DIR/Dockerfile" "$SRC_DIR" "$ARCH"
         echo "更新命令："
-        echo "kubectl patch oc -n onecloud default --type='json' -p='[{op: replace, path: /spec/web/imageName, value: web-ee},{"op": "replace", "path": "/spec/web/repository", "value": "${REGISTRY}"},{"op": "add", "path": "/spec/web/tag", "value": "${TAG}"}]'"
+        echo "kubectl patch oc -n onecloud default --type='json' -p='[{op: replace, path: /spec/web/imageName, value: web},{"op": "replace", "path": "/spec/web/repository", "value": "${REGISTRY}"},{"op": "add", "path": "/spec/web/tag", "value": "${TAG}"}]'"
         ;;
     *)
         for arch in "arm64" "amd64"; do
@@ -92,7 +92,7 @@ case $ARCH in
         done
         make_manifest_image $img_name
         echo "更新命令："
-        echo "kubectl patch oc -n onecloud default --type='json' -p='[{op: replace, path: /spec/web/imageName, value: web-ee},{"op": "replace", "path": "/spec/web/repository", "value": "${REGISTRY}"},{"op": "add", "path": "/spec/web/tag", "value": "${TAG}"}]'"
+        echo "kubectl patch oc -n onecloud default --type='json' -p='[{op: replace, path: /spec/web/imageName, value: web},{"op": "replace", "path": "/spec/web/repository", "value": "${REGISTRY}"},{"op": "add", "path": "/spec/web/tag", "value": "${TAG}"}]'"
         ;;
 esac
 
