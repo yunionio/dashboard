@@ -407,8 +407,9 @@
   "compute.text_403": "Resizing instructions:",
   "compute.text_404": "1. When resizing, the capacity can only be increased but not decreased;",
   "compute.text_405": "2. Alibaba Cloud must restart the server after resizing to take effect;",
-  "compute.text_406": "3. For AWS, after resizing, please wait 6 hours before the next resizing, or it may fail;",
-  "compute.text_407": "4. The resizing of the private cloud takes effect immediately without restarting the server.",
+  "compute.text_406": "2. For AWS, after resizing, please wait 6 hours before the next resizing, or it may fail;",
+  "compute.text_407": "2. The resizing of the private cloud takes effect immediately without restarting the server.",
+  "compute.text_407_1": "After resizing, the capacity column can be modified",
   "compute.text_408": "Please enter the capacity",
   "compute.text_409": "Create Disk",
   "compute.text_410": "Cloud Subscription: {0}",
@@ -1892,5 +1893,7 @@
   "compute.retention_count_prefix": "Retain",
   "compute.retention_count_suffix": "count",
   "compute.power_states_check_tip": "Only support this operation when the {0} power state is {1}",
-  "compute.vip_ipv6_address": "VIP IPv6 address"
+  "compute.vip_ipv6_address": "VIP IPv6 address",
+  "compute.disk_resize_after_capacity": "After resizing, the capacity column can be modified",
+  "compute.resize_same_capacity": "Resize same capacity"
 }

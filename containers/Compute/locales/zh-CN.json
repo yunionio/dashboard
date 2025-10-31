@@ -409,6 +409,7 @@
   "compute.text_405": "2.阿里云扩容后须重启服务器生效；",
   "compute.text_406": "2.AWS扩容后，下次扩容需要6个小时之后操作，否则会扩容失败；",
   "compute.text_407": "2.@:dictionary.private_env扩容后立即生效，无需重启服务器。",
+  "compute.text_407_1": "在扩容后容量一列可修改容量大小",
   "compute.text_408": "请输入容量大小",
   "compute.text_409": "新建硬盘",
   "compute.text_410": "云订阅: {0}",
@@ -1894,5 +1895,7 @@
   "compute.retention_count_prefix": "保留",
   "compute.retention_count_suffix": "份",
   "compute.power_states_check_tip": "仅在{0}电源状态为{1}时支持该操作",
-  "compute.vip_ipv6_address": "VIP IPv6地址"
+  "compute.vip_ipv6_address": "VIP IPv6地址",
+  "compute.disk_resize_after_capacity": "扩容后容量",
+  "compute.resize_same_capacity": "统一扩容"
 }

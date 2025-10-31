@@ -409,6 +409,7 @@
   "compute.text_405": "2. Alibaba Cloud を展開した後、有効にするにはサーバーを再起動する必要があります。",
   "compute.text_406": "2. AWSが拡張された後、次の拡張の動作には6時間かかり、そうでなければ拡張は失敗します。",
   "compute.text_407": "2.@:dictionary.private_env は、サーバーを再起動せずに、拡張後すぐに有効になります。",
+  "compute.text_407_1": "拡張後、容量列を変更できます",
   "compute.text_408": "容量サイズを入力してください",
   "compute.text_409": "新しいハード ディスクを作成する",
   "compute.text_410": "クラウドサブスクリプション:{0}",
@@ -1894,5 +1895,7 @@
   "compute.retention_count_prefix": "保持",
   "compute.retention_count_suffix": "件",
   "compute.power_states_check_tip": "仮想{0}の電源状態が{1}の場合のみ、この操作をサポートします",
-  "compute.vip_ipv6_address": "VIP IPv6アドレス"
+  "compute.vip_ipv6_address": "VIP IPv6アドレス",
+  "compute.disk_resize_after_capacity": "拡張後の容量",
+  "compute.resize_same_capacity": "統一拡張"
 }
