@@ -415,6 +415,7 @@
   "compute.text_405": "2. Alibaba Cloud を展開した後、有効にするにはサーバーを再起動する必要があります。",
   "compute.text_406": "2. AWSが拡張された後、次の拡張の動作には6時間かかり、そうでなければ拡張は失敗します。",
   "compute.text_407": "2.@:dictionary.private_env は、サーバーを再起動せずに、拡張後すぐに有効になります。",
+  "compute.text_407_1": "拡張後、容量列を変更できます",
   "compute.text_408": "容量サイズを入力してください",
   "compute.text_409": "新しいハード ディスクを作成する",
   "compute.text_410": "クラウドサブスクリプション:{0}",
@@ -1947,5 +1948,7 @@
   "compute.disk_change_storage_type.data_disk_tip": "未マウントのデータディスクは【可用】状態ではなく、この操作をサポートしていません",
   "compute.disk_migrating_tip": "移行中のディスクはこの操作をサポートしていません",
   "compute.health_status.initializing": "オペレーティングシステムの起動中",
-  "compute.week": "{0}週"
+  "compute.week": "{0}週",
+  "compute.disk_resize_after_capacity": "拡張後の容量",
+  "compute.resize_same_capacity": "統一拡張"
 }
