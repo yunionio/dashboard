@@ -81,7 +81,6 @@ import getExtendsComponents from '@scope/extends'
 import GridShadow from '@Dashboard/components/GridShadow'
 import ExtendGallery from '@Dashboard/sections/ExtendGallery'
 import { clear as clearCache } from '@Dashboard/utils/cache'
-import { generateFitLayout } from '@Dashboard/utils/fit'
 import { uuid } from '@/utils/utils'
 import storage from '@/utils/storage'
 
@@ -459,8 +458,7 @@ export default {
       }, data)
       this.dashboardParams = dashboardParams
       this.layoutInit = R.clone(layout)
-      // console.log(layout)
-      this.layout = generateFitLayout(layout)
+      this.layout = layout
     },
     // 生成需要存储到配置中的data
     genData () {
