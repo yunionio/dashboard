@@ -1355,9 +1355,6 @@ export default {
         prefer_zone: values.zone ? values.zone.key : this.$route.query.zone_id,
         __meta__: values.__meta__,
       }
-      if (this.$route.query.id) {
-        delete params.vmem_size
-      }
       if (values.policySchedtagSchedtags) {
         const schedtags = []
         for (const key in values.policySchedtagSchedtags) {
