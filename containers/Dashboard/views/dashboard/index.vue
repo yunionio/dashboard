@@ -31,7 +31,6 @@ import { mapGetters } from 'vuex'
 import store from '@/store'
 import storage from '@/utils/storage'
 import { addClass, removeClass, hasClass } from '@/utils/dom'
-import { generateFitLayout } from '@Dashboard/utils/fit'
 import publicDefaultConfig from './config/public-default'
 import defaultConfig from './config/default'
 import DashboardHeader from './components/Header'
@@ -129,7 +128,7 @@ export default {
       // 按scope维度记录选择的面板信息
       storage.set(this.optionStorageKey, option)
       const dashboard = await this.getDashboard()
-      this.dashboard = generateFitLayout(dashboard)
+      this.dashboard = dashboard
     },
     // 获取自定义面板配置
     async getCustomOptions () {
