@@ -1660,7 +1660,8 @@
   "compute.monitor_url.prompt": "监控地址",
   "compute.unlimited": "不限",
   "compute.host.cpu.revert.resource": "设置CPU预留资源",
-  "compute.host.cpu.revert.resource.message": "宿主机预留功能支持将部分 CPU 预留给其他进程使用，不再分配给虚拟机使用",
+  "compute.host.cpu.revert.resource.message": "设置系统服务预留功能支持将部分 CPU 预留给其他进程使用，不再分配给虚拟机使用",
+  "compute.host.cpu.revert.resource.message_1": "设置完成后,需关闭当前宿主机下所有虚拟机,重启hostagent服务方可生效",
   "compute.show_vnc_info": "查看远程信息",
   "compute.host.cpu.revert.share": "共享宿主机不支持该操作",
   "compute.host.cpu.revert.running_guest_tooltip": "部分虚拟机处于运行中状态，请将虚拟机全部关机后重试！",
@@ -1950,5 +1951,15 @@
   "compute.health_status.initializing": "操作系统启动中",
   "compute.week": "{0}周",
   "compute.disk_resize_after_capacity": "扩容后容量",
-  "compute.resize_same_capacity": "统一扩容"
+  "compute.resize_same_capacity": "统一扩容",
+  "compute.set_numa": "设置绑核",
+  "compute.sched_numa": "调度器绑核",
+  "compute.host_agent_numa": "Host Agent 绑核",
+  "compute.sched_numa_extra_info_1": "当前环境已开启 Host Agent 绑核,关闭调度器绑核后,Host Agent 绑核会生效,可在宿主机 /etc/yunion/host.conf 文件修改 Host Agent 绑核",
+  "compute.sched_numa_extra_info_2": "当前环境未开启 Host Agent 绑核,关闭调度器绑核后,宿主机绑核为关闭状态,可在宿主机 /etc/yunion/host.conf 文件修改 Host Agent 绑核",
+  "compute.system_reserve_resource": "系统服务预留",
+  "compute.host.set_system_reserve_resource": "设置系统服务预留",
+  "compute.executable_file_name": "可执行文件名",
+  "compute.executable_file_name.extra": "可执行文件名(进程第0个参数)可输入多个,每行一个",
+  "compute.host.cpu_reserve_extra": "CPU核数为空时,将同时清空可执行文件名和 Numa Node 设置"
 }

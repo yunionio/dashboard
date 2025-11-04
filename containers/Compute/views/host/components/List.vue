@@ -326,40 +326,40 @@ export default {
                     })
                   },
                 },
-                {
-                  label: this.$t('compute.host.cpu.revert.resource'),
-                  action: obj => {
-                    this.createDialog('SetHostCpuReserveResourceDialog', {
-                      onManager: this.onManager,
-                      data: this.list.selectedItems,
-                      columns: this.columns,
-                      refresh: this.refresh,
-                    })
-                  },
-                  meta: () => {
-                    const ret = {
-                      validate: false,
-                      tooltip: null,
-                    }
-                    if (!ownerDomain) {
-                      ret.tooltip = this.$t('compute.host.cpu.revert.share')
-                      return ret
-                    }
-                    const isAllOneCloud = this.list.selectedItems.every((item) => { return item.provider === typeClouds.providerMap.OneCloud.key })
-                    if (!isAllOneCloud) {
-                      ret.tooltip = this.$t('compute.text_515')
-                      return ret
-                    }
-                    const isSomeRunning = this.list.selectedItems.some(item => item.running_guests > 0)
-                    if (isSomeRunning) {
-                      ret.tooltip = this.$t('compute.host.cpu.revert.running_guest_tooltip')
-                      return ret
-                    }
-                    return {
-                      validate: true,
-                    }
-                  },
-                },
+                // {
+                //   label: this.$t('compute.host.cpu.revert.resource'),
+                //   action: obj => {
+                //     this.createDialog('SetHostCpuReserveResourceDialog', {
+                //       onManager: this.onManager,
+                //       data: this.list.selectedItems,
+                //       columns: this.columns,
+                //       refresh: this.refresh,
+                //     })
+                //   },
+                //   meta: () => {
+                //     const ret = {
+                //       validate: false,
+                //       tooltip: null,
+                //     }
+                //     if (!ownerDomain) {
+                //       ret.tooltip = this.$t('compute.host.cpu.revert.share')
+                //       return ret
+                //     }
+                //     const isAllOneCloud = this.list.selectedItems.every((item) => { return item.provider === typeClouds.providerMap.OneCloud.key })
+                //     if (!isAllOneCloud) {
+                //       ret.tooltip = this.$t('compute.text_515')
+                //       return ret
+                //     }
+                //     const isSomeRunning = this.list.selectedItems.some(item => item.running_guests > 0)
+                //     if (isSomeRunning) {
+                //       ret.tooltip = this.$t('compute.host.cpu.revert.running_guest_tooltip')
+                //       return ret
+                //     }
+                //     return {
+                //       validate: true,
+                //     }
+                //   },
+                // },
                 {
                   label: this.$t('compute.setup_passthrough_reserve'),
                   permission: 'hosts_perform_set_reserved_resource_for_isolated_device',
@@ -547,7 +547,10 @@ export default {
       this.sidePageTriggerHandle(this, 'HostSidePage', {
         id: row.id,
         resource: 'hosts',
-        getParams: this.getParam,
+        getParams: {
+          ...this.getParam(),
+          hide_cpu_topo_info: false,
+        },
       }, {
         list: this.list,
         tab,

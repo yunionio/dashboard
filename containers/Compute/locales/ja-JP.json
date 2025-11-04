@@ -1661,6 +1661,7 @@
   "compute.unlimited": "無制限の",
   "compute.host.cpu.revert.resource": "CPU 予約済みリソースを設定する",
   "compute.host.cpu.revert.resource.message": "ホスト予約機能を使用すると、一部の CPU を他のプロセスで使用するために予約でき、仮想マシンに割り当てられなくなります",
+  "compute.host.cpu.revert.resource.message_1": "設定後、ホストの下にあるすべての仮想マシンをシャットダウンし、hostagentサービスを再起動する必要があります",
   "compute.show_vnc_info": "リモート情報の表示",
   "compute.host.cpu.revert.share": "この操作は、共有ホストではサポートされていません",
   "compute.host.cpu.revert.running_guest_tooltip": "一部の仮想マシンが実行されています。すべての仮想マシンをシャットダウンして、再試行してください。",
@@ -1950,5 +1951,15 @@
   "compute.health_status.initializing": "オペレーティングシステムの起動中",
   "compute.week": "{0}週",
   "compute.disk_resize_after_capacity": "拡張後の容量",
-  "compute.resize_same_capacity": "統一拡張"
+  "compute.resize_same_capacity": "統一拡張",
+  "compute.set_numa": "バインドコアの設定",
+  "compute.sched_numa": "スケジューラー バインディング",
+  "compute.host_agent_numa": "Host Agent バインディング",
+  "compute.sched_numa_extra_info_1": "現在の環境では Host Agent バインディングが有効になっています。スケジューラー バインディングをオフにすると、Host Agent バインディングが有効になります。ホストの /etc/yunion/host.conf ファイルで Host Agent バインディングを変更できます",
+  "compute.sched_numa_extra_info_2": "現在の環境では Host Agent バインディングが有効になっていません。スケジューラー バインディングをオフにすると、ホストのバインディングがオフになります。ホストの /etc/yunion/host.conf ファイルで Host Agent バインディングを変更できます",
+  "compute.system_reserve_resource": "システム サービス予約",
+  "compute.host.set_system_reserve_resource": "システム サービス予約の設定",
+  "compute.executable_file_name": "実行可能ファイル名",
+  "compute.executable_file_name.extra": "実行可能ファイル名 (プロセス 0 番目のパラメータ) は複数入力できます。1 行に 1 つずつ入力してください",
+  "compute.host.cpu_reserve_extra": "CPU コア数が空の場合、実行可能ファイル名と Numa Node 設定が同時にクリアされます"
 }
