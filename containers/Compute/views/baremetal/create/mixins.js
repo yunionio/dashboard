@@ -1340,7 +1340,7 @@ export default {
       let params = {
         project_id: this.projectId.key,
         count: values.count,
-        // vmem_size: Number(this.selectedSpecItem.mem.substr(0, this.selectedSpecItem.mem.length - 1)),
+        vmem_size: Number(this.selectedSpecItem.mem.substr(0, this.selectedSpecItem.mem.length - 1)),
         vcpu_count: Number(this.selectedSpecItem.cpu),
         generate_name: values.name,
         hypervisor: 'baremetal',
@@ -1354,6 +1354,9 @@ export default {
         prefer_region: values.cloudregion ? values.cloudregion.key : this.$route.query.region_id,
         prefer_zone: values.zone ? values.zone.key : this.$route.query.zone_id,
         __meta__: values.__meta__,
+      }
+      if (this.$route.query.id) {
+        delete params.vmem_size
       }
       if (values.policySchedtagSchedtags) {
         const schedtags = []
