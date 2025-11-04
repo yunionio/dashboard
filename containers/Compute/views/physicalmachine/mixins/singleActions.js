@@ -226,6 +226,7 @@ export default {
                     region_id: obj.cloudregion_id,
                     domain_id: obj.domain_id,
                     wire_id,
+                    cloud_env: obj.cloud_env || 'onpremise',
                   },
                 })
               },
