@@ -256,11 +256,12 @@ export default {
         field: 'enable_numa_allocate',
         title: this.$t('compute.host.host_enable_numa_allocate.title'),
         formatter: ({ cellData, row }) => {
-          let ret = this.$t('table.title.off')
           if (row.enable_numa_allocate) {
-            ret = this.$t('table.title.on')
+            return this.$t('compute.sched_numa')
+          } else if (row.sys_info?.host_agent_cpu_numa_allocate) {
+            return this.$t('compute.host_agent_numa')
           }
-          return ret
+          return this.$t('table.title.off')
         },
       },
       {
@@ -445,18 +446,28 @@ export default {
             },
             {
               field: 'reserved_cpus_info',
-              title: this.$t('compute.reserved_cpus_info'),
+              title: this.$t('compute.system_reserve_resource'),
               slots: {
                 default: ({ row }, h) => {
                   if (row.metadata?.reserved_cpus_info) {
+                    const ret = []
                     const reserved_cpus_info = row.metadata?.reserved_cpus_info || '{}'
                     const cpusInfo = JSON.parse(reserved_cpus_info).cpus || ''
-                    return cpusInfo.split(',').sort().join('、') || '-'
+                    const processes_prefix = JSON.parse(reserved_cpus_info).processes_prefix || []
+                    const mems = JSON.parse(reserved_cpus_info).mems || ''
+                    ret.push(<div>{this.$t('compute.text_1058')}:  {cpusInfo.split(',').sort().join('、')}</div>)
+                    ret.push(<div>Numa Node:  {mems.split(',').sort().join('、')}</div>)
+                    ret.push(<div>{this.$t('compute.executable_file_name')}:  {processes_prefix.join(', ')}</div>)
+                    return ret
                   }
                   return '-'
                 },
               },
             },
+            // {
+            //   field: 'resource_reserved_info',
+            //   title: this.$t('compute.resource_reserved_info'),
+            // },
           ],
         },
         {
