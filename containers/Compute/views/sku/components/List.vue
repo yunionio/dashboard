@@ -201,30 +201,6 @@ export default {
                   })
                 },
                 meta: () => {
-                  if (this.list.selectedItems.some(item => {
-                    const env = findPlatform(item.provider, 'provider')
-                    if (env === SERVER_TYPE.private) {
-                      return true
-                    }
-                    return false
-                  })) {
-                    return {
-                      validate: false,
-                      tooltip: this.$t('commpute.private_sku_disable_tooltip'),
-                    }
-                  }
-                  if (this.list.selectedItems.some(item => {
-                    const env = findPlatform(item.provider, 'provider')
-                    if (env === SERVER_TYPE.public) {
-                      return true
-                    }
-                    return false
-                  })) {
-                    return {
-                      validate: false,
-                      tooltip: this.$t('commpute.public_sku_disable_tooltip'),
-                    }
-                  }
                   return this.$getDeleteResult(this.list.selectedItems)
                 },
               },
