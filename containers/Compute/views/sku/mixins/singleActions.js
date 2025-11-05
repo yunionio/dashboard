@@ -108,13 +108,6 @@ export default {
                   })
                 },
                 meta: () => {
-                  const env = findPlatform(obj.provider, 'provider')
-                  if (env === SERVER_TYPE.public || env === SERVER_TYPE.private) {
-                    return {
-                      validate: false,
-                      tooltip: this.$t(`commpute.${env}_sku_disable_tooltip`),
-                    }
-                  }
                   return this.$getDeleteResult(obj)
                 },
               },
