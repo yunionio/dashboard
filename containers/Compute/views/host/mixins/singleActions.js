@@ -433,7 +433,19 @@ export default {
                 },
               },
               {
-                label: this.$t('compute.host.cpu.revert.resource'),
+                label: i18n.t('compute.set_numa'),
+                permission: 'hosts_update',
+                action: () => {
+                  this.createDialog('HostSetNumaDialog', {
+                    onManager: this.onManager,
+                    data: [obj],
+                    columns: this.columns,
+                    refresh: this.refresh,
+                  })
+                },
+              },
+              {
+                label: this.$t('compute.host.set_system_reserve_resource'),
                 action: obj => {
                   this.createDialog('SetHostCpuReserveResourceDialog', {
                     onManager: this.onManager,

@@ -1660,6 +1660,7 @@
   "compute.unlimited": "ALL",
   "compute.host.cpu.revert.resource": "Set cpu reserved resources",
   "compute.host.cpu.revert.resource.message": "The host reservation function supports reserving part of the CPU for other processes and no longer allocates it to virtual machines",
+  "compute.host.cpu.revert.resource.message_1": "After setting, all virtual machines under the host need to be shut down and the hostagent service needs to be restarted to take effect",
   "compute.show_vnc_info": "View remote information",
   "compute.host.cpu.revert.share": "The shared host does not support this operation",
   "compute.host.cpu.revert.running_guest_tooltip": "Some virtual machines are running. Please shut down all virtual machines and try again！",
@@ -1948,5 +1949,15 @@
   "compute.health_status.initializing": "OS is starting",
   "compute.week": "{0} week",
   "compute.disk_resize_after_capacity": "After resizing, the capacity column can be modified",
-  "compute.resize_same_capacity": "Resize same capacity"
+  "compute.resize_same_capacity": "Resize same capacity",
+  "compute.set_numa": "Set numa",
+  "compute.sched_numa": "Scheduler numa",
+  "compute.host_agent_numa": "Host Agent numa",
+  "compute.sched_numa_extra_info_1": "The current environment has enabled Host Agent numa, after closing the scheduler numa, the Host Agent numa will take effect, and the Host Agent numa can be modified in the /etc/yunion/host.conf file on the host",
+  "compute.sched_numa_extra_info_2": "The current environment has not enabled Host Agent numa, after closing the scheduler numa, the numa on the host is turned off, and the Host Agent numa can be modified in the /etc/yunion/host.conf file on the host",
+  "compute.system_reserve_resource": "System service reserve",
+  "compute.host.set_system_reserve_resource": "Set system service reserve",
+  "compute.executable_file_name": "Executable file name",
+  "compute.executable_file_name.extra": "Executable file name (process 0th parameter) can input multiple, one per line",
+  "compute.host.cpu_reserve_extra": "When the CPU core number is empty, the executable file name and Numa Node settings will be cleared at the same time"
 }

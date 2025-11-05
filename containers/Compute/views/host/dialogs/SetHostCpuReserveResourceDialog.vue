@@ -5,20 +5,37 @@
       <a-alert class="mb-2" type="warning">
         <template v-slot:message>{{ $t('compute.host.cpu.revert.resource.message') }}</template>
       </a-alert>
+      <a-alert class="mb-2" type="warning">
+        <template v-slot:message>{{ $t('compute.host.cpu.revert.resource.message_1') }}</template>
+      </a-alert>
       <dialog-selected-tips :name="$t('dictionary.host')" :count="params.data.length" :action="title" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
-        <a-form-item :label="$t('compute.text_1058')">
-            <a-checkbox-group
-              v-decorator="decorators.cpus"
-              style="width: 100%; margin-top: 10px;">
-              <a-row>
-                <a-col :span="4" v-for="v in hostCpus" :key="v">
-                  <a-checkbox :value="v - 1">{{ v - 1 }}</a-checkbox>
-                </a-col>
-              </a-row>
-            </a-checkbox-group>
-          </a-form-item>
+        <a-form-item :label="$t('compute.executable_file_name')" :extra="$t('compute.executable_file_name.extra')">
+          <a-textarea v-decorator="decorators.processes_prefix" :rows="5" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_1058')" :extra="cpuExtra">
+          <a-checkbox-group
+            v-decorator="decorators.cpus"
+            style="width: 100%; margin-top: 10px;">
+            <a-row>
+              <a-col :span="4" v-for="v in hostCpus" :key="v">
+                <a-checkbox :value="v - 1">{{ v - 1 }}</a-checkbox>
+              </a-col>
+            </a-row>
+          </a-checkbox-group>
+        </a-form-item>
+        <a-form-item label="Numa Node">
+          <a-checkbox-group
+            v-decorator="decorators.nodes"
+            style="width: 100%; margin-top: 10px;">
+            <a-row>
+              <a-col :span="4" v-for="v in hostNodes" :key="v">
+                <a-checkbox :value="v - 1">{{ v - 1 }}</a-checkbox>
+              </a-col>
+            </a-row>
+          </a-checkbox-group>
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -41,10 +58,21 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
-      title: this.$t('compute.host.cpu.revert.resource'),
+      title: this.$t('compute.host.set_system_reserve_resource'),
       loading: false,
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              this.form.fd[key] = values[key]
+            })
+          },
+        }),
+        fd: {
+          cpus: [],
+          processes_prefix: '',
+          nodes: [],
+        },
       },
       columns: [
         getNameDescriptionTableColumn({
@@ -97,8 +125,14 @@ export default {
         },
       ],
       decorators: {
+        processes_prefix: [
+          'processes_prefix',
+        ],
         cpus: [
           'cpus',
+        ],
+        nodes: [
+          'nodes',
         ],
       },
       formItemLayout: {
@@ -109,14 +143,15 @@ export default {
           span: 4,
         },
       },
+      selectedItems: [],
     }
   },
   computed: {
-    selectedItems () {
-      return this.params.data
+    cpuExtra () {
+      return this.form.fd.cpus.length === 0 ? this.$t('compute.host.cpu_reserve_extra') : null
     },
     selectedItem () {
-      return this.selectedItems[0]
+      return this.selectedItems && this.selectedItems[0]
     },
     isSingle () {
       return this.selectedItems?.length === 1
@@ -125,29 +160,60 @@ export default {
       const cpuCounts = this.selectedItems.map(item => item.cpu_count)
       return Math.max(...cpuCounts)
     },
+    hostNodes () {
+      const cpuCounts = this.selectedItems.map(item => (item.sys_info?.topology?.nodes || []).length)
+      return Math.max(...cpuCounts)
+    },
   },
   created () {
     this.init()
   },
   methods: {
-    init () {
-      const cpuArr = this.selectedItems.map(item => {
+    // split(/\r*\n/)
+    async init () {
+      try {
+        const res = await new this.$Manager('hosts').list({
+          params: {
+            filter: `id.in(${this.params.data.map(item => item.id).join(',')})`,
+          },
+        })
+        this.selectedItems = res.data.data || []
+      } catch (error) {
+        throw error
+      }
+      if (this.selectedItems.length === 0) {
+        this.selectedItems = this.params.data
+      }
+      const arr = this.selectedItems.map(item => {
         const reserved_cpus_info = JSON.parse(item.metadata.reserved_cpus_info || '{}')
-        const cpus = (reserved_cpus_info?.cpus || '').split(',').map(v => parseInt(v))
-        return cpus
+        const cpus = item.metadata.reserved_cpus_info ? (reserved_cpus_info?.cpus || '').split(',').map(v => parseInt(v)) : []
+        const processes_prefix = item.metadata.reserved_cpus_info ? reserved_cpus_info?.processes_prefix || [] : []
+        const mems = item.metadata.reserved_cpus_info ? (reserved_cpus_info?.mems || '').split(',').map(v => parseInt(v)) : []
+        return { cpus, mems, processes_prefix }
       })
       this.$nextTick(() => {
         this.form.fc.setFieldsValue({
-          cpus: _.intersection(...cpuArr),
+          cpus: _.intersection(...(arr.map(item => item.cpus))),
+          processes_prefix: _.intersection(...(arr.map(item => item.processes_prefix))).join('\n'),
+          nodes: _.intersection(...(arr.map(item => item.mems))),
         })
       })
     },
     doReserveResourceSubmit (values) {
-      const { cpus } = values
+      const { cpus, nodes, processes_prefix = [] } = values
       const ids = this.params.data.map(item => item.id)
-      const params = { cpus: cpus.join(',') }
+      const params = { cpus: cpus.join(','), mems: nodes.join(','), processes_prefix }
 
       if (this.isSingle) {
+        if (cpus.length === 0) {
+          return this.params.onManager('performAction', {
+            id: ids[0],
+            steadyStatus: ['ready'],
+            managerArgs: {
+              action: 'unreserve-cpus',
+            },
+          })
+        }
         return this.params.onManager('performAction', {
           id: ids[0],
           steadyStatus: ['ready'],
@@ -157,6 +223,15 @@ export default {
           },
         })
       } else {
+        if (cpus.length === 0) {
+          return this.params.onManager('batchPerformAction', {
+            id: ids,
+            steadyStatus: ['ready'],
+            managerArgs: {
+              action: 'unreserve-cpus',
+            },
+          })
+        }
         return this.params.onManager('batchPerformAction', {
           id: ids,
           steadyStatus: ['ready'],
@@ -171,6 +246,7 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
+        values.processes_prefix = (values.processes_prefix || '').split(/\r*\n/).filter(v => v.trim() !== '')
         await this.doReserveResourceSubmit(values)
         this.params.refresh && this.params.refresh()
         this.cancelDialog()
