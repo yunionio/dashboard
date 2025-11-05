@@ -155,6 +155,16 @@ export default {
           return this.$isScopedPolicyMenuHidden('disk_hidden_columns.guest')
         },
       },
+      {
+        field: 'device',
+        title: this.$t('compute.disk_device'),
+        formatter: ({ row }) => {
+          return row.device || '-'
+        },
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('disk_hidden_columns.device')
+        },
+      },
       getCopyWithContentTableColumn({
         field: 'storage',
         title: i18n.t('table.title.disk_storage'),

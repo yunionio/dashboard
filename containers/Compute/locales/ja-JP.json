@@ -1897,5 +1897,6 @@
   "compute.power_states_check_tip": "仮想{0}の電源状態が{1}の場合のみ、この操作をサポートします",
   "compute.vip_ipv6_address": "VIP IPv6アドレス",
   "compute.disk_resize_after_capacity": "拡張後の容量",
-  "compute.resize_same_capacity": "統一拡張"
+  "compute.resize_same_capacity": "統一拡張",
+  "compute.disk_device": "デバイス名"
 }

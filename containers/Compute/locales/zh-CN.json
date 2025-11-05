@@ -1897,5 +1897,6 @@
   "compute.power_states_check_tip": "仅在{0}电源状态为{1}时支持该操作",
   "compute.vip_ipv6_address": "VIP IPv6地址",
   "compute.disk_resize_after_capacity": "扩容后容量",
-  "compute.resize_same_capacity": "统一扩容"
+  "compute.resize_same_capacity": "统一扩容",
+  "compute.disk_device": "设备名"
 }
