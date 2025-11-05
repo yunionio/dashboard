@@ -1961,5 +1961,6 @@
   "compute.host.set_system_reserve_resource": "设置系统服务预留",
   "compute.executable_file_name": "可执行文件名",
   "compute.executable_file_name.extra": "可执行文件名(进程第0个参数)可输入多个,每行一个",
-  "compute.host.cpu_reserve_extra": "CPU核数为空时,将同时清空可执行文件名和 Numa Node 设置"
+  "compute.host.cpu_reserve_extra": "CPU核数为空时,将同时清空可执行文件名和 Numa Node 设置",
+  "compute.disk_device": "设备名"
 }
