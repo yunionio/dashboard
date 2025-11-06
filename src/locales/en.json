@@ -6030,6 +6030,8 @@
   "common.month": "Month",
   "common.c": "c",
   "common.system_service": "System Service",
+  "common.all_filtered_data": "All filtered data",
+  "common.current_page_data": "Current page data",
   "common.modify_workflow": "Modify Workflow",
   "common.current_quota": "Current Quota",
   "common.new_quota": "Apply Quota",

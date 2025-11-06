@@ -6047,6 +6047,8 @@
   "common.month": "月",
   "common.c": "核",
   "common.system_service": "システムサービス",
+  "common.all_filtered_data": "現在のフィルタ条件のすべてのデータ",
+  "common.current_page_data": "現在のページのデータ",
   "common.modify_workflow": "製造オーダの変更",
   "common.current_quota": "現在のクォータ",
   "common.new_quota": "申請割当",
