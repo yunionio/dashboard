@@ -6053,6 +6053,8 @@
   "common.month": "月份",
   "common.c": "核",
   "common.system_service": "系统服务",
+  "common.all_filtered_data": "当前过滤条件全部数据",
+  "common.current_page_data": "当前页数据",
   "common.modify_workflow": "修改工单",
   "common.current_quota": "当前配额",
   "common.new_quota": "申请配额",

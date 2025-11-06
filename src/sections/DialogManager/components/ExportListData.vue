@@ -177,8 +177,8 @@ export default {
       },
       allExportKeys,
       exportType: this.params.options.exportType || {
-        all: { label: this.$t('common_95'), key: 'all' },
-        custom: { label: this.$t('common_96'), key: 'custom' },
+        all: { label: this.$t('common.all_filtered_data'), key: 'all' },
+        custom: { label: this.$t('common.current_page_data'), key: 'custom' },
       },
       currentExportType: 'custom',
       indeterminate: selectedExportKeys.length !== allExportKeys.length,
@@ -224,7 +224,7 @@ export default {
         export: this.params.options.fileType || 'xls',
         export_keys: keys.join(','),
         export_texts: texts.join(','),
-        export_limit: total || this.params.total,
+        export_limit: this.params.listParams?.limit || 0,
         ...(R.is(Function, this.params.extraParams) ? this.params.extraParams({ currentExportType: this.currentExportType }) : this.params.extraParams),
       }
       if (this.params.options.limit) {
@@ -244,34 +244,28 @@ export default {
           params = { ...params, ...this.params.options.getParams }
         }
       }
-      // 如果是自定义导出范围配置，则不进行默认的导出范围参数计算
-      if (!this.params.options.notCombineListParams) {
-        const listParams = this.params.listParams
-        if (this.exportType.custom && formValues.type === this.exportType.custom.key) { // 导出范围选择根据筛选条件时
-          params = {
-            ...params,
-            ...listParams,
-          }
-          if (this.params.selected.length) {
-            // 自定义选中的过滤项
-            if (this.params.options.genSelectedIdParams) {
-              params = this.params.options.genSelectedIdParams(params, this.params.selectedItems)
+      const listParams = this.params.listParams
+      params = {
+        ...params,
+        ...listParams,
+      }
+      if (this.exportType.all && formValues.type === this.exportType.all.key) { // 导出当前条件的全部
+        if (this.params.selected.length) {
+          // 自定义选中的过滤项
+          if (this.params.options.genSelectedIdParams) {
+            params = this.params.options.genSelectedIdParams(params, this.params.selectedItems)
+          } else {
+            const idField = (this.params.idKey && this.params.exportUseIdKey) ? this.params.idKey : 'id'
+            if (params.filter && params.filter.length) {
+              params.filter = [...params.filter, `${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
             } else {
-              const idField = (this.params.idKey && this.params.exportUseIdKey) ? this.params.idKey : 'id'
-              if (params.filter && params.filter.length) {
-                params.filter = [...params.filter, `${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
-              } else {
-                params.filter = [`${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
-              }
+              params.filter = [`${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
             }
           }
-        } else if (this.exportType.all && formValues.type === this.exportType.all.key) { // 导出范围选择全部时
-          if (listParams.scope) params.scope = listParams.scope
-          // 如果没有自定义limit，导出全部直接把limt重置为0
-          if (R.isNil(this.params.options.limit) || R.isEmpty(this.params.options.limit)) {
-            params.export_limit = 0
-          }
         }
+        params.force_no_paging = true
+        if (params.offset) delete params.offset
+      } else if (this.exportType.custom && formValues.type === this.exportType.custom.key) { // 当前页
       }
       if (this.downloadType === 'local') {
         params.limit = params.export_limit
@@ -283,8 +277,6 @@ export default {
       } else {
         if (params.limit) delete params.limit
       }
-      params.force_no_paging = true
-      if (params.offset) delete params.offset
       delete params.paging_marker
       if (this.params.options.transformParams) {
         params = this.params.options.transformParams(params)

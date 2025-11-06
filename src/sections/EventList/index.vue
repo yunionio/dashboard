@@ -211,7 +211,6 @@ export default {
         notCombineListParams: true,
         exportType: {
           custom: { label: this.$t('common_158'), key: 'custom' },
-          allFilter: { label: this.$t('common_96'), key: 'allFilter' },
         },
         getParams: ({ exportType }) => {
           let params = {
