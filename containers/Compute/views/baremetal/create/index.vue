@@ -656,6 +656,7 @@ export default {
       let ret = {
         zone: this.zone,
         usable: true,
+        filter: ['server_type.notin(hostlocal, container)'],
       }
       if (this.isInstallOperationSystem) {
         if (this.$route.query.wire_id) ret.filter = `wire_id.in(${this.$route.query.wire_id})`
@@ -672,7 +673,7 @@ export default {
         }
       }
       if (!R.isEmpty(this.wires)) {
-        ret.filter = `wire_id.in(${this.wires.join(',')})`
+        ret.filter.push(`wire_id.in(${this.wires.join(',')})`)
       }
       return ret
     },
