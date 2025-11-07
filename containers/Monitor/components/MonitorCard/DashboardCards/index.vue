@@ -238,7 +238,7 @@ export default {
       this.$emit('chose_panels', { id: obj.id, name: obj.name })
     },
     handleRefresh () {
-      this.fetchCharts()
+      this.fetchCharts(true)
     },
     handleDelete () {
       this.fetchCharts()
@@ -251,9 +251,9 @@ export default {
         }
       }
     },
-    async fetchCharts () {
+    async fetchCharts (refresh = false) {
       this.saveMonitorConfig()
-      if (this.useLocalPanels) return
+      if (this.useLocalPanels && !refresh) return
       this.loading = true
       try {
         const params = {
