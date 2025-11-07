@@ -716,10 +716,26 @@ export const transformUnit = (value, originUnit = '', base = 1000, numerifyForma
       b = 'B'
     }
     obj = splitUnit(sizestr(value, sizestrUnit, base))
-    if (obj.text.endsWith('B')) {
-      obj.text = `${obj.value} ${b}ps`
+    // 使用 numerifyFormat 格式化数值
+    const numValue = parseFloat(obj.value)
+    const formattedValue = parseFloat(numerify(numValue, numerifyFormat))
+    obj.value = formattedValue
+    // 替换 text 中的数值部分为格式化后的值
+    const textMatch = obj.text.match(/^(\d+\.?\d*)\s*(.*)$/)
+    if (textMatch) {
+      const originalUnit = textMatch[2]
+      if (obj.text.endsWith('B')) {
+        obj.text = `${formattedValue} ${b}ps`
+      } else {
+        obj.text = `${formattedValue} ${originalUnit}${b}ps`
+      }
     } else {
-      obj.text += `${b}ps`
+      // 如果匹配失败，使用原来的逻辑
+      if (obj.text.endsWith('B')) {
+        obj.text = `${formattedValue} ${b}ps`
+      } else {
+        obj.text += `${b}ps`
+      }
     }
   } else if (unit === 'byte') {
     obj = splitUnit(sizestr(value, 'B', 1024))
