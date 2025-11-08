@@ -1,0 +1,39 @@
+// 全局滚动条样式
+// 基于 Scrollbar 组件的样式设计
+// 排除使用 Scrollbar 组件的元素（.scrollbar-bar 及其子元素）
+
+// 垂直滚动条（排除 .scrollbar-bar 组件及其子元素）
+*:not(.scrollbar-bar):not(.scrollbar-bar *)::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+// 滚动条轨道（排除 .scrollbar-bar 组件及其子元素）
+*:not(.scrollbar-bar):not(.scrollbar-bar *)::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
+}
+
+// 滚动条滑块（排除 .scrollbar-bar 组件及其子元素）
+*:not(.scrollbar-bar):not(.scrollbar-bar *)::-webkit-scrollbar-thumb {
+  background-color: rgba(144, 147, 153, 0.3);
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+// 滚动条滑块悬停状态（排除 .scrollbar-bar 组件及其子元素）
+*:not(.scrollbar-bar):not(.scrollbar-bar *)::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(144, 147, 153, 0.5);
+}
+
+// 滚动条滑块激活状态（排除 .scrollbar-bar 组件及其子元素）
+*:not(.scrollbar-bar):not(.scrollbar-bar *)::-webkit-scrollbar-thumb:active {
+  background-color: rgba(144, 147, 153, 0.7);
+}
+
+// Firefox 滚动条样式（排除 .scrollbar-bar 组件及其子元素）
+*:not(.scrollbar-bar):not(.scrollbar-bar *) {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(144, 147, 153, 0.3) transparent;
+}
+
