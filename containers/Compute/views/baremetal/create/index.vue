@@ -1342,7 +1342,7 @@ export default {
         image_type: values.imageType,
         os: values.os,
         image: values.image.key,
-        domain_id: values.domain.key,
+        domain_id: values.domain?.key || this.$store.getters.userInfo.projectDomainId,
         specifications: values.specifications,
         extraNets: [],
       }
@@ -1522,8 +1522,8 @@ export default {
             process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
             initiator: this.$store.getters.userInfo.id,
             'server-create-paramter': JSON.stringify(workflowParams),
-            project: this.projectId.key,
-            project_domain: this.domainId.key,
+            project: this.projectId?.key,
+            project_domain: this.domainId?.key || this.$store.getters.userInfo.projectDomainId,
           }
           this.doCreateWorkflow(variables, workflowParams)
         } else { // 创建裸金属
