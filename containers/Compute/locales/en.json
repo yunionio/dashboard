@@ -1896,5 +1896,6 @@
   "compute.vip_ipv6_address": "VIP IPv6 address",
   "compute.disk_resize_after_capacity": "After resizing, the capacity column can be modified",
   "compute.resize_same_capacity": "Resize same capacity",
-  "compute.disk_device": "Device name"
+  "compute.disk_device": "Device name",
+  "compute.baremetal_raid_tip": "Linux and PCIE only support configuring as software Raid"
 }
