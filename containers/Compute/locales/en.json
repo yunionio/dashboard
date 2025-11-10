@@ -1960,5 +1960,6 @@
   "compute.executable_file_name": "Executable file name",
   "compute.executable_file_name.extra": "Executable file name (process 0th parameter) can input multiple, one per line",
   "compute.host.cpu_reserve_extra": "When the CPU core number is empty, the executable file name and Numa Node settings will be cleared at the same time",
-  "compute.disk_device": "Device name"
+  "compute.disk_device": "Device name",
+  "compute.baremetal_raid_tip": "Linux and PCIE only support configuring as software Raid"
 }
