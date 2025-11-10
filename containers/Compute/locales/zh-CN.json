@@ -1898,5 +1898,6 @@
   "compute.vip_ipv6_address": "VIP IPv6地址",
   "compute.disk_resize_after_capacity": "扩容后容量",
   "compute.resize_same_capacity": "统一扩容",
-  "compute.disk_device": "设备名"
+  "compute.disk_device": "设备名",
+  "compute.baremetal_raid_tip": "Linux 和 PCIE 只支持配置为 软Raid"
 }
