@@ -1899,5 +1899,9 @@
   "compute.disk_resize_after_capacity": "拡張後の容量",
   "compute.resize_same_capacity": "統一拡張",
   "compute.disk_device": "デバイス名",
-  "compute.baremetal_raid_tip": "Linux と PCIE はソフトウェア Raid のみをサポートします"
+  "compute.baremetal_raid_tip": "Linux と PCIE はソフトウェア Raid のみをサポートします",
+  "compute.ops_time": "操作時間",
+  "compute.log_level": "ログレベル",
+  "compute.log_info": "ログ情報",
+  "compute.dmesg_log": "dmesg ログ"
 }
