@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container" :style="appContainerStyle">
     <template v-if="$store.state.auth.canRenderDefaultLayout">
       <navbar />
       <div class="app-content position-relative h-100">
@@ -9,8 +9,12 @@
           id="app-page"
           class="app-page"
           :class="{ 'l2-menu-show': l2MenuVisible && l2MenuVisibleForStore }">
-          <top-alert />
-          <slot />
+          <div :style="appPageWrapperStyle">
+            <top-alert />
+            <div class="app-page-content">
+              <slot />
+            </div>
+          </div>
         </div>
       </div>
     </template>
@@ -23,7 +27,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import Navbar from '@scope/layouts/Navbar'
 import TopAlert from '@/sections/TopAlert'
 import { menusConfig } from '@/router/routes'
@@ -47,6 +51,10 @@ export default {
   },
   computed: {
     ...mapGetters(['userInfo']),
+    ...mapState('common', {
+      openCloudShell: state => state.openCloudShell,
+      cloudShellHeight: state => state.cloudShellHeight,
+    }),
     isShowMenu () {
       const { globalSetting } = this.$store.state
       if (!globalSetting || (globalSetting && !globalSetting.value) || (globalSetting.value && !globalSetting.value.key)) {
@@ -56,6 +64,24 @@ export default {
     },
     l2MenuVisibleForStore () {
       return this.$store.state.setting.l2MenuVisible
+    },
+    appPageWrapperStyle () {
+      const style = {
+        flex: '1 1 100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+      }
+      return style
+    },
+    appContainerStyle () {
+      if (this.openCloudShell) {
+        return {
+          maxHeight: `calc(100% - ${this.cloudShellHeight}px)`,
+          flex: '1 1 auto',
+        }
+      }
+      return {}
     },
   },
   watch: {
@@ -91,12 +117,21 @@ export default {
 <style lang="less" scoped>
 .app-content {
   padding-top: 60px;
+  display: flex;
+  flex-direction: column;
 }
 .app-page {
-  margin-bottom: 74px;
-  padding: 15px;
+  // margin-bottom: 74px;
+  padding: 15px 15px 0 15px;
   &.l2-menu-show {
     margin-left: 160px !important;
   }
+  overflow: auto;
+}
+.app-page-content {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  // height: 100%;
 }
 </style>

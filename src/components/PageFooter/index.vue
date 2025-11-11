@@ -34,6 +34,9 @@ export default {
     ...mapState({
       setting: state => state.setting,
     }),
+    ...mapState('common', {
+      cloudShellHeight: state => state.openCloudShell ? state.cloudShellHeight : 0,
+    }),
     hasDefaultSlot () {
       return !!this.$slots.default
     },
@@ -49,9 +52,9 @@ export default {
     },
     pageFooterStyle () {
       if (!this.l2MenuVisibleForStore) {
-        return { left: 0, ...this.footerStyle }
+        return { left: 0, ...this.footerStyle, bottom: `${this.cloudShellHeight}px` }
       }
-      return { ...this.footerStyle }
+      return { ...this.footerStyle, bottom: `${this.cloudShellHeight}px` }
     },
   },
 }
@@ -67,7 +70,6 @@ export default {
 .page-footer {
   z-index: 10;
   position: fixed;
-  bottom: 0;
   left: 160px;
   right: 0;
   height: 74px;

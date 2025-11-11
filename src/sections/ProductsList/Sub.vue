@@ -6,6 +6,7 @@
     :align="popoverAlign"
     :visible="visible"
     :get-popup-container="getPopupContainer"
+    :overlay-style="popoverOverlayStyle"
     @visibleChange="handleVisibleChange"
     v-if="item.menus">
     <li class="l1-menu-item" :class="{ active: activeMenu.index === item.index }">
@@ -68,6 +69,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'ProductsListSub',
   props: {
@@ -86,12 +89,29 @@ export default {
     }
   },
   computed: {
+    ...mapState('common', {
+      openCloudShell: state => state.openCloudShell,
+      cloudShellHeight: state => state.cloudShellHeight,
+    }),
     overlayClassName () {
       let classname = 'l2-menus-popover'
       if (this.light) {
         classname += ' light-theme'
       }
+      if (this.openCloudShell) {
+        classname += ' cloudshell-open'
+      }
       return classname
+    },
+    popoverMaxHeight () {
+      const baseHeight = 60
+      const cloudShellOffset = this.openCloudShell ? this.cloudShellHeight : 0
+      return `calc(100vh - ${baseHeight + cloudShellOffset}px)`
+    },
+    popoverOverlayStyle () {
+      return {
+        '--popover-max-height': this.popoverMaxHeight,
+      }
     },
     menus () {
       const menus = this.item.menus
@@ -121,7 +141,37 @@ export default {
       return res
     },
   },
+  watch: {
+    openCloudShell: {
+      handler () {
+        if (this.visible) {
+          this.updatePopoverStyle()
+        }
+      },
+    },
+    cloudShellHeight: {
+      handler () {
+        if (this.visible) {
+          this.updatePopoverStyle()
+        }
+      },
+    },
+  },
   methods: {
+    updatePopoverStyle () {
+      if (!this.visible) return
+      // 延迟执行，确保 popover DOM 已完全渲染
+      setTimeout(() => {
+        // 在整个文档中查找所有 popover（可能有多个实例）
+        const allPopovers = document.querySelectorAll('.l2-menus-popover')
+        allPopovers.forEach(popover => {
+          const innerContent = popover.querySelector('.ant-popover-inner-content')
+          if (innerContent) {
+            innerContent.style.setProperty('max-height', this.popoverMaxHeight, 'important')
+          }
+        })
+      }, 100)
+    },
     searchPath (menus) {
       for (let i = 0, len = menus.length; i < len; i++) {
         const m2 = menus[i]
@@ -141,6 +191,12 @@ export default {
     },
     handleVisibleChange (visible) {
       this.visible = visible
+      if (visible) {
+        // 延迟执行，确保 popover DOM 已渲染
+        setTimeout(() => {
+          this.updatePopoverStyle()
+        }, 50)
+      }
     },
     handleL2LinkClick () {
       this.visible = false
@@ -182,6 +238,11 @@ export default {
     overflow: auto;
     min-width: 180px;
     max-width: 180px;
+  }
+  &.cloudshell-open {
+    ::v-deep .ant-popover-inner-content {
+      max-height: var(--popover-max-height, calc(100vh - 120px)) !important;
+    }
   }
   &.light-theme {
     .ant-popover-inner {
