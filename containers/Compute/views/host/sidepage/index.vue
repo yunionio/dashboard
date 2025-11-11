@@ -28,16 +28,8 @@
 
 <script>
 import * as R from 'ramda'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import HostDetail from './Detail'
-import Dashboard from './Dashboard'
 // import Alert from './Alert'
 import NetworkList from '@Compute/views/physicalmachine/sidepage/Network'
-import StorageList from './Storage'
-// import GpuList from './Gpu'
-import Monitor from './Monitor'
-import VminstanceList from './VminstanceList'
 import ServerRecovery from '@Compute/views/server-recovery/components/List'
 import GpuList from '@Compute/views/gpu/components/List'
 import BmcLog from '@Compute/views/physicalmachine/sidepage/BMCLog'
@@ -45,6 +37,15 @@ import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 import { hasPermission } from '@/utils/auth'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import HostDetail from './Detail'
+import Dashboard from './Dashboard'
+import StorageList from './Storage'
+// import GpuList from './Gpu'
+import Monitor from './Monitor'
+import VminstanceList from './VminstanceList'
+import Dmesg from './Dmesg'
 
 export default {
   name: 'HostSidePage',
@@ -60,6 +61,7 @@ export default {
     Actions,
     Monitor,
     BmcLog,
+    Dmesg,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   computed: {
@@ -75,6 +77,7 @@ export default {
         { label: this.$t('compute.text_608'), key: 'monitor' },
         // { label: '报警', key: 'alert' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
+        { label: this.$t('compute.dmesg_log'), key: 'dmesg' },
       ]
       if (!hasPermission({ key: 'baremetalnetworks_list' })) {
         tabs = R.remove(R.findIndex(R.propEq('key', 'network-list'))(tabs), 1, tabs)
