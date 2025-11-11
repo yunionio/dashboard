@@ -1963,5 +1963,9 @@
   "compute.executable_file_name.extra": "可执行文件名(进程第0个参数)可输入多个,每行一个",
   "compute.host.cpu_reserve_extra": "CPU核数为空时,将同时清空可执行文件名和 Numa Node 设置",
   "compute.disk_device": "设备名",
-  "compute.baremetal_raid_tip": "Linux 和 PCIE 只支持配置为 软Raid"
+  "compute.baremetal_raid_tip": "Linux 和 PCIE 只支持配置为 软Raid",
+  "compute.ops_time": "操作时间",
+  "compute.log_level": "日志级别",
+  "compute.log_info": "日志内容",
+  "compute.dmesg_log": "dmesg日志"
 }

@@ -44,6 +44,7 @@ import Dashboard from './Dashboard'
 import StorageList from './Storage'
 import Monitor from './Monitor'
 import VminstanceList from './VminstanceList'
+import Dmesg from './Dmesg'
 
 export default {
   name: 'HostSidePage',
@@ -58,6 +59,7 @@ export default {
     Actions,
     Monitor,
     BmcLog,
+    Dmesg,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   computed: {
@@ -77,6 +79,7 @@ export default {
         { label: this.$t('compute.text_608'), key: 'monitor' },
         { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
+        { label: this.$t('compute.dmesg_log'), key: 'dmesg' },
       ]
       if (!hasPermission({ key: 'baremetalnetworks_list' })) {
         tabs = R.remove(R.findIndex(R.propEq('key', 'network-list'))(tabs), 1, tabs)
