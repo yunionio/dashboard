@@ -46,7 +46,7 @@
         </a-tabs>
       </div>
     </div>
-    <div class="side-page-inner-content">
+    <div class="side-page-inner-content" :style="contentStyle">
       <div class="side-page-container" id="side-page-container">
         <template v-if="!loaded">
           <loading-block :layout="loadingLayout" />
@@ -124,6 +124,14 @@ export default {
     ...mapState('sidePage', {
       sidepageLeft: state => state.sidepageLeft,
     }),
+    ...mapState('common', {
+      cloudShellHeight: state => state.openCloudShell ? state.cloudShellHeight : 0,
+    }),
+    contentStyle () {
+      return {
+        bottom: `${this.cloudShellHeight || 0}px`,
+      }
+    },
     errorInfo () {
       return this.requestError.error && getHttpErrorMessage(this.requestError.error)
     },
@@ -276,7 +284,6 @@ export default {
   top: 124px;
   left: 0;
   right: 0;
-  bottom: 0;
   overflow: auto;
 }
 .side-page-header-tabs {

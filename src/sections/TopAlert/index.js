@@ -31,7 +31,10 @@ export default {
     },
     renderMessage (key, { alertProps, messageOptions, interval = 1000 * 60 * 60 * 24 } = {}) {
       return this.$createElement('a-alert', {
-        class: 'mb-2',
+        class: 'global-top-alert',
+        style: {
+          marginBottom: '8px',
+        },
         props: {
           type: 'warning',
           closable: true,
@@ -43,6 +46,7 @@ export default {
             const newStorageTopAlert = { ...storageTopAlert }
             newStorageTopAlert[key] = this.$moment().valueOf() + interval
             storage.set('topAlert', newStorageTopAlert)
+            this.$bus.$emit('GlobalTopAlertUpdate')
           },
         },
         scopedSlots: {
