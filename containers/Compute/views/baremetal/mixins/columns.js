@@ -19,6 +19,11 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'server', vm: this }),
+      getStatusTableColumn({
+        field: 'power_states',
+        title: this.$t('compute.power_states'),
+        statusModule: 'server',
+      }),
       getTagTableColumn({ onManager: this.onManager, resource: 'server', columns: () => this.columns }),
       getIpsTableColumn({ field: 'ip', title: 'IP' }),
       {

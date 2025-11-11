@@ -1963,6 +1963,7 @@
   "compute.executable_file_name.extra": "実行可能ファイル名 (プロセス 0 番目のパラメータ) は複数入力できます。1 行に 1 つずつ入力してください",
   "compute.host.cpu_reserve_extra": "CPU コア数が空の場合、実行可能ファイル名と Numa Node 設定が同時にクリアされます",
   "compute.disk_device": "デバイス名",
+  "compute.baremetal_raid_tip": "Linux と PCIE はソフトウェア Raid のみをサポートします",
   "compute.ops_time": "操作時間",
   "compute.log_level": "ログレベル",
   "compute.log_info": "ログ情報",

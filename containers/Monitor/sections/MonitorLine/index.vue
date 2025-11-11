@@ -473,6 +473,37 @@ export default {
     },
     uChartOptions () {
       let unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit')
+      // 检查数据是否为空（只有时间轴，没有数据系列）
+      const isEmptyData = !this.uChartData || this.uChartData.length <= 1
+      let yTicks
+      let finalYMin
+      let finalYMax
+      if (isEmptyData) {
+        // 如果数据为空，不显示刻度线，设置默认范围
+        yTicks = []
+        finalYMin = 0
+        finalYMax = 100
+      } else {
+        // 检查单位是否为100%且数据都在0-100之间
+        const isPercent100 = (unit === '%' || unit === '100%') && this.isDataInRange0To100(this.uChartData)
+        if (isPercent100) {
+          // 如果单位是100%且数据都在0-100之间，使用固定的刻度线
+          yTicks = [0, 20, 40, 60, 80, 100]
+          finalYMin = 0
+          finalYMax = 100
+        } else {
+          // 检查数据是否都是整数
+          const isInteger = this.isAllIntegers(this.uChartData)
+          // 计算 Y 轴范围
+          const minRange = isInteger ? 1 : 0.01
+          const [yMin, yMax] = this.calculateYAxisRange(this.uChartData, minRange)
+          // 生成 Y 轴刻度（会自动在数据范围外增加刻度线）
+          yTicks = this.generateYTicks(yMin, yMax, 1, 10, isInteger)
+          // 使用刻度线的最小值和最大值作为 Y 轴范围
+          finalYMin = yTicks.length > 0 ? yTicks[0] : yMin
+          finalYMax = yTicks.length > 0 ? yTicks[yTicks.length - 1] : yMax
+        }
+      }
       const ret = {
         width: '100%',
         height: 300,
@@ -484,7 +515,8 @@ export default {
             time: true, // x轴为时间轴
           },
           y: {
-            auto: true, // y轴自动调整
+            auto: false, // 禁用自动调整
+            range: [finalYMin, finalYMax],
           },
         },
         axes: [
@@ -496,6 +528,10 @@ export default {
           {
             scale: 'y',
             size: 75,
+            splits: (self, scaleMin, scaleMax) => {
+              // 使用自定义生成的刻度
+              return yTicks
+            },
             values: (self, ticks, space) => {
               if (unit === 'NULL' || unit === 'count') {
                 unit = ''
@@ -528,7 +564,7 @@ export default {
             if (unit === 'ms') { // 时间类型的Y坐标，要取整 如 ： 1小时10分钟30秒 -> 1小时
               unit = 'intms'
             }
-            const val = transformUnit(value, unit, 1000, value < 1 ? '0.00' : '0.0')
+            const val = transformUnit(value, unit, 1000, '0.0000')
             return val.text
           },
         },
@@ -593,6 +629,253 @@ export default {
     this.colorHash = null
   },
   methods: {
+    // 检查数据是否都是整数
+    isAllIntegers (uChartData) {
+      if (!uChartData || uChartData.length <= 1) {
+        return false
+      }
+
+      for (let i = 1; i < uChartData.length; i++) {
+        if (Array.isArray(uChartData[i])) {
+          for (let j = 0; j < uChartData[i].length; j++) {
+            const val = uChartData[i][j]
+            if (val !== null && val !== undefined && !isNaN(val)) {
+              // 检查是否为整数
+              if (!Number.isInteger(val)) {
+                return false
+              }
+            }
+          }
+        }
+      }
+      return true
+    },
+
+    // 检查数据是否都在0-100之间
+    isDataInRange0To100 (uChartData) {
+      if (!uChartData || uChartData.length <= 1) {
+        return false
+      }
+
+      // 收集所有有效数值（忽略 null）
+      const allValues = []
+      for (let i = 1; i < uChartData.length; i++) {
+        if (Array.isArray(uChartData[i])) {
+          uChartData[i].forEach(val => {
+            if (val !== null && val !== undefined && !isNaN(val)) {
+              allValues.push(val)
+            }
+          })
+        }
+      }
+
+      if (allValues.length === 0) {
+        return false
+      }
+
+      const min = Math.min(...allValues)
+      const max = Math.max(...allValues)
+
+      // 检查是否都在0-100之间
+      return min >= 0 && max <= 100
+    },
+
+    // 计算 Y 轴范围，确保最小范围
+    calculateYAxisRange (uChartData, minRange = 0.01) {
+      if (!uChartData || uChartData.length <= 1) {
+        return [0, 100]
+      }
+
+      // 收集所有有效数值（忽略 null）
+      const allValues = []
+      for (let i = 1; i < uChartData.length; i++) {
+        if (Array.isArray(uChartData[i])) {
+          uChartData[i].forEach(val => {
+            if (val !== null && val !== undefined && !isNaN(val)) {
+              allValues.push(val)
+            }
+          })
+        }
+      }
+
+      if (allValues.length === 0) {
+        return [0, 100]
+      }
+
+      let min = Math.min(...allValues)
+      let max = Math.max(...allValues)
+      const range = max - min
+
+      // 如果数据中没有小于0的值，则最小值从0开始
+      if (min >= 0) {
+        min = 0
+      }
+
+      // 如果范围小于最小范围，使用固定范围
+      if (range < minRange) {
+        const center = (min + max) / 2
+        // 如果最小值是0，确保不会小于0
+        if (min === 0) {
+          min = 0
+          max = Math.max(max, minRange)
+        } else {
+          min = center - minRange / 2
+          max = center + minRange / 2
+        }
+      } else {
+        // 添加 10% 边距
+        const padding = range * 0.1
+        // 如果最小值是0，确保不会小于0
+        if (min === 0) {
+          min = 0
+        } else {
+          min = min - padding
+        }
+        max = max + padding
+      }
+
+      return [min, max]
+    },
+
+    // 生成 Y 轴刻度，确保间隔至少为 minStep，并在数据范围外自动增加刻度线，最少5条刻度线
+    generateYTicks (min, max, minStep = 0.01, maxTicks = 10, isInteger = false) {
+      const range = max - min
+      const minTicks = 5 // 最少刻度线数量
+
+      if (range <= 0) {
+        // 如果最小值和最大值相同，生成至少5条刻度线
+        const step = isInteger ? 1 : minStep
+        const ticks = []
+        // 如果最小值是0，从0开始生成刻度线
+        if (min === 0) {
+          for (let i = 0; i < minTicks; i++) {
+            ticks.push(isInteger ? i * step : parseFloat((i * step).toFixed(10)))
+          }
+        } else {
+          const center = isInteger ? Math.round(min) : min
+          // 在中心上下各生成至少2条刻度线
+          for (let i = -2; i <= 2; i++) {
+            ticks.push(isInteger ? center + i * step : parseFloat((center + i * step).toFixed(10)))
+          }
+        }
+        return ticks
+      }
+
+      // 计算理想步长（基于数据范围，确保至少生成 minTicks 条刻度线）
+      let step = range / (minTicks - 1)
+
+      if (isInteger) {
+        // 如果数据都是整数，使用整数步长
+        // 选择合适的整数步长：1, 2, 5, 10, 20, 50, 100, ...
+        const niceSteps = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000]
+        step = Math.ceil(step)
+        // 找到最接近的合适步长
+        for (let i = 0; i < niceSteps.length; i++) {
+          if (niceSteps[i] >= step) {
+            step = niceSteps[i]
+            break
+          }
+        }
+        // 如果步长太大，使用计算出的步长向上取整
+        if (step > niceSteps[niceSteps.length - 1]) {
+          step = Math.ceil(step)
+        }
+      } else {
+        // 确保步长不小于 minStep
+        if (step < minStep) {
+          step = minStep
+        } else {
+          // 将步长调整为 minStep 的倍数（向上取整）
+          const multiplier = Math.ceil(step / minStep)
+          step = multiplier * minStep
+        }
+      }
+
+      // 计算起始刻度（向下取整到 step 的倍数，并在最小值之前至少一个步长）
+      let startTick = Math.floor(min / step) * step
+      // 如果最小值是0，确保起始刻度从0开始
+      if (min === 0) {
+        startTick = 0
+      } else {
+        // 确保起始刻度在最小值之前至少一个步长
+        while (startTick >= min) {
+          startTick -= step
+        }
+      }
+
+      // 计算结束刻度（向上取整到 step 的倍数，并在最大值之后至少一个步长）
+      let endTick = Math.ceil(max / step) * step
+      // 确保结束刻度在最大值之后至少一个步长
+      while (endTick <= max) {
+        endTick += step
+      }
+
+      // 生成等间距的刻度数组
+      const ticks = []
+      let currentTick = startTick
+
+      // 生成从起始到结束的所有刻度（包含边界）
+      while (currentTick <= endTick + step * 0.001) {
+        if (isInteger) {
+          ticks.push(Math.round(currentTick))
+        } else {
+          ticks.push(parseFloat(currentTick.toFixed(10)))
+        }
+        currentTick += step
+      }
+
+      // 确保至少生成 minTicks 条刻度线
+      if (ticks.length < minTicks) {
+        // 如果刻度线太少，重新计算步长
+        const totalRange = endTick - startTick
+        step = totalRange / (minTicks - 1)
+
+        if (isInteger) {
+          // 整数步长：选择合适的整数步长
+          const niceSteps = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000]
+          step = Math.ceil(step)
+          for (let i = 0; i < niceSteps.length; i++) {
+            if (niceSteps[i] >= step) {
+              step = niceSteps[i]
+              break
+            }
+          }
+          if (step > niceSteps[niceSteps.length - 1]) {
+            step = Math.ceil(step)
+          }
+        } else {
+          // 确保步长是 minStep 的倍数
+          const multiplier = Math.ceil(step / minStep)
+          step = multiplier * minStep
+        }
+
+        // 重新计算起始和结束刻度
+        if (min === 0) {
+          // 如果最小值是0，从0开始
+          startTick = 0
+          endTick = step * (minTicks - 1)
+        } else {
+          const center = (min + max) / 2
+          const halfRange = (step * (minTicks - 1)) / 2
+          startTick = Math.floor((center - halfRange) / step) * step
+          endTick = startTick + step * (minTicks - 1)
+        }
+
+        // 重新生成刻度
+        ticks.length = 0
+        currentTick = startTick
+        while (currentTick <= endTick + step * 0.001) {
+          if (isInteger) {
+            ticks.push(Math.round(currentTick))
+          } else {
+            ticks.push(parseFloat(currentTick.toFixed(10)))
+          }
+          currentTick += step
+        }
+      }
+
+      return ticks
+    },
     genColors () {
       this.colors = this.fixedSeries.map((item, i) => {
         return this.colors[i] || this.colorHash.hex(`${i * 1000}`)

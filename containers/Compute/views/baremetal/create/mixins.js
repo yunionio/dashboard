@@ -526,6 +526,7 @@ export default {
       let ret = {
         zone: this.zone,
         usable: true,
+        filter: ['server_type.notin(hostlocal, container)'],
       }
       if (this.isInstallOperationSystem) {
         if (this.$route.query.wire_id) ret.filter = `wire_id.in(${this.$route.query.wire_id})`
@@ -542,7 +543,7 @@ export default {
         }
       }
       if (!R.isEmpty(this.wires)) {
-        ret.filter = `wire_id.in(${this.wires.join(',')})`
+        ret.filter.push(`wire_id.in(${this.wires.join(',')})`)
       }
       return ret
     },
@@ -1211,7 +1212,7 @@ export default {
         image_type: values.imageType,
         os: values.os,
         image: values.image.key,
-        domain_id: values.domain.key,
+        domain_id: values.domain?.key || this.$store.getters.userInfo.projectDomainId,
         specifications: values.specifications,
         extraNets: [],
       }
@@ -1338,7 +1339,7 @@ export default {
       }
       // 判断是否是安装操作系统
       let params = {
-        project_id: this.projectId.key,
+        project_id: this.projectId?.key,
         count: values.count,
         vmem_size: Number(this.selectedSpecItem.mem.substr(0, this.selectedSpecItem.mem.length - 1)),
         vcpu_count: Number(this.selectedSpecItem.cpu),
@@ -1391,8 +1392,8 @@ export default {
             process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
             initiator: this.$store.getters.userInfo.id,
             'server-create-paramter': JSON.stringify(workflowParams),
-            project: this.projectId.key,
-            project_domain: this.domainId.key,
+            project: this.projectId?.key,
+            project_domain: this.domainId?.key || this.$store.getters.userInfo.projectDomainId,
           }
           this.doCreateWorkflow(variables, workflowParams)
         } else { // 创建裸金属

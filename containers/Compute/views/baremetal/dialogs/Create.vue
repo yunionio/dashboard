@@ -2,6 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('compute.text_323')}}</div>
     <div slot="body">
+      <a-alert class="mb-3" :message="$t('compute.baremetal_raid_tip')" type="warning" />
       <a-form
         :form="form.fc">
         <a-form-item :label="$t('compute.text_295')" v-bind="formItemLayout">
@@ -75,6 +76,30 @@ export default {
             min: 1,
             step: 1,
           },
+          {
+            value: 'raid0',
+            label: 'Raid0',
+            min: 1,
+            step: 1,
+          },
+          {
+            value: 'raid1',
+            label: 'Raid1',
+            min: 2,
+            step: 2,
+          },
+          {
+            value: 'raid5',
+            label: 'Raid5',
+            min: 3,
+            step: 1,
+          },
+          {
+            value: 'raid10',
+            label: 'Raid10',
+            min: 4,
+            step: 2,
+          },
         ],
         PCIE: [
           {
@@ -82,6 +107,30 @@ export default {
             label: this.$t('compute.text_325'),
             min: 1,
             step: 1,
+          },
+          {
+            value: 'raid0',
+            label: 'Raid0',
+            min: 1,
+            step: 1,
+          },
+          {
+            value: 'raid1',
+            label: 'Raid1',
+            min: 2,
+            step: 2,
+          },
+          {
+            value: 'raid5',
+            label: 'Raid5',
+            min: 3,
+            step: 1,
+          },
+          {
+            value: 'raid10',
+            label: 'Raid10',
+            min: 4,
+            step: 2,
           },
         ],
         MPT2SAS: [

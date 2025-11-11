@@ -1,8 +1,9 @@
-import { getMaintenanceTableColumn } from '../utils/columns'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { getRegionTableColumn, getStatusTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn, getTagTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
+import expectStatus from '@/constants/expectStatus'
+import { getMaintenanceTableColumn } from '../utils/columns'
 
 export default {
   created () {
@@ -176,9 +177,9 @@ export default {
         hideField: true,
         slotCallback: row => {
           if (!row.server) return '-'
-          return [
-            <span>{ row.server }</span>,
-          ]
+          return <side-page-trigger permission="server_get" onTrigger={() => this.handleOpenBaremetalDetail(row.server_id)}>
+            {row.server}
+          </side-page-trigger>
         },
       }),
       {
@@ -192,5 +193,17 @@ export default {
       getRegionTableColumn({ vm: this }),
       getTimeTableColumn(),
     ]
+  },
+  methods: {
+    handleOpenBaremetalDetail (id) {
+      this.sidePageTriggerHandle(this, 'BaremetalSidePage', {
+        id,
+        resource: 'servers',
+        steadyStatus: Object.values(expectStatus.server).flat(),
+      }, {
+        list: this.list,
+        tab: 'baremetal-detail',
+      })
+    },
   },
 }

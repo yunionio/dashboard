@@ -268,13 +268,10 @@ export default {
           ...(R.is(Function, this.params.extraParams) ? this.params.extraParams({ currentExportType: this.currentExportType }) : this.params.extraParams),
         }
       }
-      // 如果是自定义导出范围配置，则不进行默认的导出范围参数计算
-      if (!this.params.options.notCombineListParams) {
-        const listParams = this.params.listParams
-        normalParams = {
-          ...normalParams,
-          ...listParams,
-        }
+      // 列表参数
+      const listParams = this.params.listParams
+      for (const key in listParams) {
+        normalParams[key] = listParams[key]
       }
       let params = { ...normalParams }
       const keys = []
@@ -330,6 +327,7 @@ export default {
               params.filter = [`${idField}.in(${this.params.selected.map(item => `"${item}"`).join(',')})`]
             }
           }
+          delete params.offset
         }
       }
       // 离线下载
