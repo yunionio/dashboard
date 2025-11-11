@@ -1,5 +1,5 @@
 <template>
-  <div class="level-2-wrap" :class="{ 'light-theme': light, 'w-0': !l2MenuVisibleForStore }">
+  <div class="level-2-wrap" :class="{ 'light-theme': light, 'w-0': !l2MenuVisibleForStore }" :style="wrapStyle">
     <scrollbar
       class="level-2-menu">
       <div class="title text-truncate pr-2" :title="getLabel(l2Menu.meta)">{{ getLabel(l2Menu.meta) }}</div>
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import * as R from 'ramda'
 import { hasPermission } from '@/utils/auth'
 
@@ -59,6 +59,15 @@ export default {
   },
   computed: {
     ...mapGetters(['theme']),
+    ...mapState('common', {
+      openCloudShell: state => state.openCloudShell,
+      cloudShellHeight: state => state.cloudShellHeight,
+    }),
+    wrapStyle () {
+      return {
+        bottom: this.openCloudShell ? `${this.cloudShellHeight}px` : '0',
+      }
+    },
     light () {
       return this.theme === 'light'
     },
@@ -133,7 +142,6 @@ export default {
   left: 0;
   width: 160px;
   top: 60px;
-  bottom: 0;
   background-color: @sidebar-dark-bg-color;
   box-shadow: 1px 0 6px 0 rgba(165,192,207,.3);
   z-index: 5;

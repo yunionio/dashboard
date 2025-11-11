@@ -30,6 +30,7 @@ export default {
     },
     globalConfig: {},
     openCloudShell: false,
+    cloudShellHeight: 350,
     globalServices: [],
     computeV2GlobalConfig: {},
     imageGlobalConfig: {},
@@ -103,7 +104,13 @@ export default {
       state.bill.globalConfig = payload
     },
     SET_OPEN_CLOUDSHELL (state, payload) {
+      if (payload) {
+        state.cloudShellHeight = 350
+      }
       state.openCloudShell = payload
+    },
+    SET_CLOUDSHELL_HEIGHT (state, payload) {
+      state.cloudShellHeight = payload
     },
     SET_GLOBAL_SERVICE (state, payload) {
       state.globalServices = payload
