@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column flex-fill">
+  <div class="d-flex flex-column flex-fill h-100">
     <template v-if="optionsLoaded">
       <div style="padding-left: 5px;">
         <dashboard-header
@@ -15,7 +15,7 @@
       </div>
       <div class="flex-fill position-relative">
         <div class="position-absolute" style="top: 0; left: 0; right: 0; bottom: 0;">
-          <dashboard-content ref="content" :data="dashboard" class="mt-2" />
+          <dashboard-content ref="content" :data="dashboard" />
         </div>
       </div>
     </template>

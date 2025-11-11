@@ -76,7 +76,7 @@
 <script>
 import Sortable from 'sortablejs'
 import XEUtils from 'xe-utils'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import * as R from 'ramda'
 import _ from 'lodash'
 import { addResizeListener, removeResizeListener } from '@/utils/resizeEvent'
@@ -203,6 +203,9 @@ export default {
   },
   computed: {
     ...mapGetters(['permission']),
+    ...mapState('common', {
+      cloudShellHeight: state => state.openCloudShell ? state.cloudShellHeight : 0,
+    }),
     tableWrapper () {
       return this.enableVirtualScroll ? 'div' : 'floating-scroll'
     },
@@ -401,13 +404,31 @@ export default {
         })
       }
     },
+    cloudShellHeight (val, oldVal) {
+      this.initHeight()
+    },
   },
   mounted () {
+    this.$bus.$on('GlobalTopAlertUpdate', () => {
+      if (this.enableVirtualScroll) {
+        this.initHeight()
+        setTimeout(() => {
+          this.initHeight()
+        }, 500)
+      }
+    })
     if (this.enableVirtualScroll) {
-      this.initHeight()
+      this.$nextTick(() => {
+        this.initHeight()
+        // 延迟计算，确保 TopAlert 等组件完全渲染
+        setTimeout(() => {
+          this.initHeight()
+        }, 100)
+      })
       window.addEventListener('resize', this.initHeight)
       this.$once('hook:beforeDestroy', () => {
         window.removeEventListener('resize', this.initHeight)
+        this.$bus.$off('GlobalTopAlertUpdate')
       })
     } else {
       this.initFloatingScrollListener()
@@ -416,9 +437,10 @@ export default {
   },
   methods: {
     initHeight () {
-      const gridEl = this.$refs.grid.$el
+      const gridEl = this.$refs?.grid?.$el
+      if (!gridEl) return
       const wH = document.body.offsetHeight
-      this.vxeGridHeight = wH - gridEl.getBoundingClientRect().y - 15 - (this.pagerType === 'loadMore' || this.loadMoreShow ? 55 : 0)
+      this.vxeGridHeight = wH - gridEl.getBoundingClientRect().y - 15 - (this.pagerType === 'loadMore' || this.loadMoreShow ? 55 : 0) - this.cloudShellHeight
     },
     // 初始化tbody监听器，发生变化更新虚拟滚动条，以保证宽度是正确的
     initFloatingScrollListener () {
@@ -429,6 +451,7 @@ export default {
       this.$once('hook:beforeDestroy', () => {
         removeResizeListener(tableBodyEl, this.updateFloatingScroll)
         window.removeEventListener('resize', this.updateFloatingScroll)
+        this.$bus.$off('GlobalTopAlertUpdate')
       })
     },
     // 更新虚拟滚动条

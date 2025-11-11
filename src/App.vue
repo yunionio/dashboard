@@ -2,12 +2,12 @@
   <a-config-provider :locale="locale">
     <div id="app" @click="handleAppAction">
       <component :is="layout">
-        <router-view />
+        <router-view style="height: 100%;" />
       </component>
+      <oc-term />
       <dialog-manager />
       <side-page-manager />
       <window-resize-listener />
-      <oc-term />
     </div>
   </a-config-provider>
 </template>
@@ -136,5 +136,8 @@ export default {
 <style lang="scss" scoped>
 #app {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 </style>

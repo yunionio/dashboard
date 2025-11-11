@@ -1,5 +1,5 @@
 <template>
-  <div class="extend-gallery-wrap d-flex flex-column">
+  <div class="extend-gallery-wrap d-flex flex-column" :style="wrapStyle">
     <div class="extend-gallery-title flex-grow-0 flex-shrink-0">{{$t('dashboard.text_93')}}</div>
     <div class="extend-gallery-tips flex-grow-0 flex-shrink-0 d-flex">
       <div>{{$t('dashboard.text_94', [ options.length ])}}</div>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import store from '@/store'
 import options from '@scope/extends/config'
 import ceOptions from '@Dashboard/extends/config'
@@ -44,6 +44,12 @@ export default {
   },
   computed: {
     ...mapGetters(['scope', 'globalConfig']),
+    ...mapState('common', ['openCloudShell', 'cloudShellHeight']),
+    wrapStyle () {
+      return {
+        height: this.openCloudShell ? `calc(100% - ${this.cloudShellHeight}px)` : '100%',
+      }
+    },
     options () {
       const ret = this.opts.filter(item => {
         let effective = true
