@@ -6256,5 +6256,7 @@
   "common.custom_duration": "期間",
   "common.existing_custom_duration": "既存のカスタムオプション",
   "common.duration.none": "無制限",
-  "common.duration.custom": "カスタム"
+  "common.duration.custom": "カスタム",
+  "common.not_set": "未設定",
+  "common.not_expired": "未期限切れ"
 }
