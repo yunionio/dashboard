@@ -6238,5 +6238,7 @@
   "common.custom_duration": "Duration",
   "common.existing_custom_duration": "Existing custom option",
   "common.duration.none": "None",
-  "common.duration.custom": "Custom"
+  "common.duration.custom": "Custom",
+  "common.not_set": "Not set",
+  "common.not_expired": "Not expired"
 }

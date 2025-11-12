@@ -6268,5 +6268,7 @@
   "common.custom_duration": "时长",
   "common.existing_custom_duration": "已存在自定义选项",
   "common.duration.none": "无限制",
-  "common.duration.custom": "自定义"
+  "common.duration.custom": "自定义",
+  "common.not_set": "未设置",
+  "common.not_expired": "未过期"
 }
