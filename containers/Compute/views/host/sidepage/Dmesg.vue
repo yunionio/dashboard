@@ -3,18 +3,36 @@
     <div class="dmesg-filter">
       <div class="d-flex align-items-center flex-wrap">
         <fixed-label-filter :label="$t('compute.ops_time')" class="mr-2 mb-2">
-          <a-range-picker
-            v-model="filterForm.timeRange"
-            :show-time="{ format: 'HH:mm:ss', defaultValue: [$moment('00:00:00', 'HH:mm:ss'), $moment('23:59:59', 'HH:mm:ss')] }"
-            format="YYYY-MM-DD HH:mm:ss"
-            :placeholder="[$t('compute.text_230'), $t('compute.text_231')]"
-            @change="handleFilterChange" />
+          <div class="d-flex align-items-center">
+            <a-date-picker
+              v-model="filterForm.startValue"
+              :disabled-date="disabledStartDate"
+              show-time
+              format="YYYY-MM-DD HH:mm:ss"
+              :placeholder="$t('compute.text_230')"
+              :open="startOpen"
+              @openChange="handleStartOpenChange"
+              @change="handleTimeChange"
+              style="width: 200px; margin-right: 5px;" />
+            ~
+            <a-date-picker
+              v-model="filterForm.endValue"
+              :disabled-date="disabledEndDate"
+              show-time
+              format="YYYY-MM-DD HH:mm:ss"
+              :placeholder="$t('compute.text_231')"
+              :open="endOpen"
+              @openChange="handleEndOpenChange"
+              @change="handleTimeChange"
+              style="width: 200px;margin-left: 5px;" />
+          </div>
         </fixed-label-filter>
         <fixed-label-filter :label="$t('compute.log_level')" class="mr-2 mb-2">
           <a-select
-            v-model="filterForm.logLevel"
+            v-model="filterForm.logLevels"
+            mode="multiple"
             allow-clear
-            style="width: 150px"
+            style="min-width: 200px"
             @change="handleFilterChange">
             <a-select-option v-for="level in logLevelOptions" :key="level.value" :value="level.value">
               {{ level.label }}
@@ -90,15 +108,21 @@ export default {
       pageSize: 50,
       scrollContainer: null,
       filterForm: {
-        timeRange: null,
-        logLevel: undefined,
+        startValue: null,
+        endValue: null,
+        logLevels: [],
         notes: '',
       },
-      logLevelOptions: ['emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'debug'].map(level => ({
+      startOpen: false,
+      endOpen: false,
+      logLevelOptions: ['emerg', 'alert', 'crit', 'err', 'warning'].map(level => ({
         label: level,
         value: level,
       })),
       debounceTimer: null,
+      currentFilterParams: {},
+      previousStartValue: null,
+      previousEndValue: null,
     }
   },
   created () {
@@ -136,22 +160,28 @@ export default {
           params.paging_marker = this.nextMarker
         }
 
-        // 添加过滤条件
-        if (this.filterForm.timeRange && this.filterForm.timeRange.length === 2) {
-          const startTime = this.$moment(this.filterForm.timeRange[0]).utc().format('YYYY-MM-DD HH:mm:ss')
-          const endTime = this.$moment(this.filterForm.timeRange[1]).utc().format('YYYY-MM-DD HH:mm:ss')
-          params.filter.push(`ops_time.between("${startTime}", "${endTime}")`)
+        // 添加过滤条件 - 只有 since 或只有 until 都可以进行过滤
+        const hasStartValue = this.filterForm.startValue && this.$moment(this.filterForm.startValue).isValid()
+        const hasEndValue = this.filterForm.endValue && this.$moment(this.filterForm.endValue).isValid()
+        if (hasStartValue) {
+          const startTime = this.$moment(this.filterForm.startValue).utc().format('YYYY-MM-DD HH:mm:ss')
+          params.since = startTime
+        }
+        if (hasEndValue) {
+          const endTime = this.$moment(this.filterForm.endValue).utc().format('YYYY-MM-DD HH:mm:ss')
+          params.until = endTime
         }
 
-        if (this.filterForm.logLevel) {
-          const logLevelFilter = `log_level.equals("${this.filterForm.logLevel}")`
-          params.filter.push(logLevelFilter)
+        if (this.filterForm.logLevels && this.filterForm.logLevels.length > 0) {
+          params.log_levels = this.filterForm.logLevels
         }
 
         if (this.filterForm.notes && this.filterForm.notes.trim()) {
           const notesFilter = `notes.contains("${this.filterForm.notes.trim()}")`
           params.filter.push(notesFilter)
         }
+
+        this.currentFilterParams = params
 
         const response = await manager.list({
           params: {
@@ -174,14 +204,14 @@ export default {
         this.nextMarker = nextMarker
         this.noMoreData = !nextMarker
 
-        // 加载完成后滚动到底部（首次加载）
-        if (!isLoadMore && this.dataList.length > 0) {
+        // 加载完成后滚动到顶部（非 loadMore 方式）
+        if (!isLoadMore) {
           this.$nextTick(() => {
-            this.scrollToBottom()
+            this.scrollToTop()
           })
         }
       } catch (error) {
-        this.$message.error(error.message || this.$t('common.fetch_error'))
+        this.$message.error(error.message || this.$t('compute.text_155'))
       } finally {
         this.loading = false
         this.loadingMore = false
@@ -198,6 +228,11 @@ export default {
         if (this.nextMarker && !this.loadingMore && !this.noMoreData) {
           this.fetchData(true)
         }
+      }
+    },
+    scrollToTop () {
+      if (this.scrollContainer) {
+        this.scrollContainer.scrollTop = 0
       }
     },
     scrollToBottom () {
@@ -231,6 +266,9 @@ export default {
       this.nextMarker = null
       this.dataList = []
       this.noMoreData = false
+      // 更新保存的时间值
+      this.previousStartValue = this.filterForm.startValue ? this.$moment(this.filterForm.startValue).valueOf() : null
+      this.previousEndValue = this.filterForm.endValue ? this.$moment(this.filterForm.endValue).valueOf() : null
       // 重新加载数据
       this.fetchData(false)
     },
@@ -242,16 +280,76 @@ export default {
       }
       // 重置过滤条件
       this.filterForm = {
-        timeRange: null,
-        logLevel: undefined,
+        startValue: null,
+        endValue: null,
+        logLevels: [],
         notes: '',
       }
+      this.startOpen = false
+      this.endOpen = false
+      // 重置保存的时间值
+      this.previousStartValue = null
+      this.previousEndValue = null
       // 重置分页和标记
       this.nextMarker = null
       this.dataList = []
       this.noMoreData = false
       // 重新加载数据
       this.fetchData(false)
+    },
+    disabledStartDate (startValue) {
+      const endValue = this.filterForm.endValue
+      if (!startValue || !endValue) {
+        return false
+      }
+      return startValue.valueOf() > endValue.valueOf()
+    },
+    disabledEndDate (endValue) {
+      const startValue = this.filterForm.startValue
+      if (!endValue || !startValue) {
+        return false
+      }
+      return endValue.valueOf() < startValue.valueOf()
+    },
+    handleStartOpenChange (open) {
+      this.startOpen = open
+      if (open) {
+        this.endOpen = false
+        // 弹框打开时，保存当前值
+        this.previousStartValue = this.filterForm.startValue ? this.$moment(this.filterForm.startValue).valueOf() : null
+      } else {
+        // 弹框关闭时，检查时间是否发生改动
+        this.checkTimeChangeAndFilter('start')
+      }
+    },
+    handleEndOpenChange (open) {
+      this.endOpen = open
+      if (open) {
+        this.startOpen = false
+        // 弹框打开时，保存当前值
+        this.previousEndValue = this.filterForm.endValue ? this.$moment(this.filterForm.endValue).valueOf() : null
+      } else {
+        // 弹框关闭时，检查时间是否发生改动
+        this.checkTimeChangeAndFilter('end')
+      }
+    },
+    checkTimeChangeAndFilter (type) {
+      let currentValue = null
+      let previousValue = null
+      if (type === 'start') {
+        currentValue = this.filterForm.startValue ? this.$moment(this.filterForm.startValue).valueOf() : null
+        previousValue = this.previousStartValue
+      } else if (type === 'end') {
+        currentValue = this.filterForm.endValue ? this.$moment(this.filterForm.endValue).valueOf() : null
+        previousValue = this.previousEndValue
+      }
+      // 如果时间值发生了变化，执行过滤
+      if (currentValue !== previousValue) {
+        this.doFilter()
+      }
+    },
+    handleTimeChange (e) {
+      if (!e) this.doFilter()
     },
   },
 }
@@ -262,10 +360,14 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .dmesg-filter {
   background-color: #fff;
+  flex-shrink: 0;
+  z-index: 1;
+  position: relative;
 }
 
 .dmesg-scroll-container {
@@ -273,6 +375,8 @@ export default {
   overflow-y: auto;
   padding: 16px;
   background-color: #f5f5f5;
+  min-height: 0;
+  position: relative;
 }
 
 .loading-wrapper,
@@ -280,8 +384,13 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   min-height: 300px;
+  background-color: transparent;
 }
 
 .dmesg-list {
