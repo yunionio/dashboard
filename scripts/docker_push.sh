@@ -22,6 +22,9 @@ get_current_arch() {
         aarch64)
             current_arch=arm64
             ;;
+        riscv64)
+            current_arch=riscv64
+            ;;
     esac
     echo $current_arch
 }
@@ -63,7 +66,8 @@ make_manifest_image() {
     local img_name=$1
     docker buildx imagetools create -t $img_name \
         $img_name-amd64 \
-        $img_name-arm64
+        $img_name-arm64 \
+        $img_name-riscv64
 }
 
 # 如果 ENV="local"，跳过 build_src
@@ -81,13 +85,13 @@ img_name="$REGISTRY/web:$TAG"
 set -x
 
 case $ARCH in
-    amd64 | "arm64" )
+    amd64|arm64|riscv64)
         buildx_and_push "$img_name" "$DOCKER_DIR/Dockerfile" "$SRC_DIR" "$ARCH"
         echo "更新命令："
         echo "kubectl patch oc -n onecloud default --type='json' -p='[{op: replace, path: /spec/web/imageName, value: web},{"op": "replace", "path": "/spec/web/repository", "value": "${REGISTRY}"},{"op": "add", "path": "/spec/web/tag", "value": "${TAG}"}]'"
         ;;
     *)
-        for arch in "arm64" "amd64"; do
+        for arch in "arm64" "amd64" "riscv64"; do
             buildx_and_push "$img_name-$arch" "$DOCKER_DIR/Dockerfile" "$SRC_DIR" "$arch"
         done
         make_manifest_image $img_name
