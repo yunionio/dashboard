@@ -14,10 +14,20 @@
     </template>
     <template slot="content">
       <div class="tag-wrap" ref="tag-wrap">
+        <ul class="tag-list tag-filter-fixed">
+          <!-- 过滤标签键 -->
+          <li class="tag-tip d-flex align-items-center">
+            <div style="font-size: 12px;margin-right: 10px;">{{$t('common_112')}}:</div>
+            <div class="val-search" style="flex: 1 1 auto;">
+              <input class="w-100" :placeholder="$t('common_264')" :style="{fontSize: '12px'}" :value="tagSearch" @input="handleSearchTag" @compositionstart="composingTag = true" @compositionend="composingTag = false" />
+            </div>
+          </li>
+        </ul>
         <ul class="tag-list" v-if="filterWithoutUserMeta">
           <li
             class="tag-item"
             :class="{ checked: checkedKeys.includes(withoutUserMetaKey) && value[withoutUserMetaKey][0] === true, no_drop: !allowNoValue }"
+            @mouseenter="handleKeyMouseenter(null)"
             @click="handleKeyClick(withoutUserMetaKey, true)">
             <div class="title d-flex align-items-center">
               <div class="flex-fill mr-4 text-truncate">{{$t('common_260')}}</div>
@@ -29,6 +39,7 @@
           <li
             class="tag-item"
             :class="{ checked: checkedKeys.includes(withUserMetaKey) && value[withUserMetaKey][0] === true, no_drop: !allowNoValue }"
+            @mouseenter="handleKeyMouseenter(null)"
             @click="handleKeyClick(withUserMetaKey, true)">
             <div class="title d-flex align-items-center">
               <div class="flex-fill mr-4 text-truncate">{{$t('common.with_user_meta')}}</div>
@@ -36,23 +47,25 @@
             </div>
           </li>
         </ul>
-        <ul class="tag-list" v-if="showUserTags">
-          <li class="tag-tip d-flex align-items-center">
+        <ul class="tag-list">
+          <!-- <li class="tag-tip d-flex align-items-center">
             <div style="font-size: 12px; width: 70px;">{{$t('common_261')}}</div>
             <div class="val-search" style="width: 130px;"><input class="w-100" :placeholder="$t('common_264')" @input="handleSearchTag" @compositionstart="composingTag = true" @compositionend="composingTag = false" /></div>
-          </li>
-          <li
-            class="tag-item"
-            v-for="item of filtedUserTags"
-            :key="item.key"
-            :class="{checked: checkedKeys.includes(item.key), disabled: getTagDisabled(item.key), no_drop: !allowNoValue}"
-            @mouseenter="handleKeyMouseenter('userTags', item.key, $event)"
-            @click="handleKeyClick(item.key)">
-            <div class="title d-flex align-items-center">
-              <div class="flex-fill mr-4 text-truncate">{{ getTagTitle(item.key) }}</div>
-              <a-icon class="check-icon" type="check" />
-            </div>
-          </li>
+          </li> -->
+          <template v-if="showUserTags">
+            <li
+              class="tag-item"
+              v-for="item of filtedUserTags"
+              :key="item.key"
+              :class="{checked: checkedKeys.includes(item.key), disabled: getTagDisabled(item.key), no_drop: !allowNoValue}"
+              @mouseenter="handleKeyMouseenter('userTags', item.key, $event)"
+              @click="handleKeyClick(item.key)">
+              <div class="title d-flex align-items-center">
+                <div class="flex-fill mr-4 text-truncate">{{ getTagTitle(item.key) }}</div>
+                <a-icon class="check-icon" type="check" />
+              </div>
+            </li>
+          </template>
         </ul>
         <ul class="tag-list" v-if="showExtTags && extTags.length > 0">
           <li class="tag-tip">{{$t('common_262')}}</li>
@@ -70,9 +83,12 @@
           </li>
         </ul>
         <ul :style="valueWrapStyle" v-if="search || showValue" class="tag-list values-wrap" ref="value-wrap">
-          <li class="d-flex align-items-center tag-tip">
-            <div class="flex-fill" style="font-size: 12px;">{{$t('common_263')}}</div>
-            <div class="val-search"><input style="width: 145px;" :value="search" :placeholder="$t('common_264')" @input="handleSearch" @compositionstart="composing = true" @compositionend="composing = false" /></div>
+          <!-- 过滤标签值 -->
+          <li class="d-flex align-items-center tag-tip tag-value-filter-fixed">
+            <div style="font-size: 12px;margin-right: 10px;">{{$t('common_263')}}</div>
+            <div class="val-search" style="flex: 1 1 auto;">
+              <input class="w-100" style="font-size: 12px;" :value="search" :placeholder="$t('common_264')" @input="handleSearch" @compositionstart="composing = true" @compositionend="composing = false" />
+            </div>
           </li>
           <template v-if="currentValue.length <= 0">
             <li>{{$t('common_265')}}</li>
@@ -197,6 +213,8 @@ export default {
       filtedUserTags: [],
       filtedExtTags: [],
       extTags: [],
+      originalUserTags: [],
+      originalExtTags: [],
       valueWrapTop: 0,
       valueWrapBottom: 0,
       valueWrapPlacement: 'top',
@@ -207,11 +225,14 @@ export default {
       withUserMetaKey: this.withTagKey,
       composing: false, // 中文输入法时的正在输入
       composingTag: false,
+      tagSearch: '', // 标签键搜索值
       // 所有tag源数据
       tagData: [],
+      originalTagData: [],
+      originalPagerTotal: 0,
       pager: {
         total: 0,
-        limit: this.params?.limit || 2048,
+        limit: this.params?.limit || 100,
       },
       valueWrapLeft: '-240px',
     }
@@ -255,10 +276,10 @@ export default {
       const obj = R.find(R.propEq('key', this.mouseenterKey))(this.currentTag)
       if (this.defaultChecked && this.defaultChecked[this.mouseenterKey]) return ret
       if (!this.search) {
-        ret = obj.value
+        ret = obj?.value || []
       } else {
         // ret = obj.value.filter(val => val.includes(this.search))
-        ret = obj.value.filter(val => filterHandler(val, this.search))
+        ret = (obj?.value || []).filter(val => filterHandler(val, this.search))
       }
       return ret
     },
@@ -290,6 +311,7 @@ export default {
     this.manager = this.managerInstance || new this.$Manager('metadatas')
     this.debounceHandleSearchInput = debounce(this.handleSearchInput, 500)
     this.debounceHandleSearchTagInput = debounce(this.handleSearchTagInput, 500)
+    this.searchTagRequestId = 0
   },
   methods: {
     handleClick (e) {
@@ -302,23 +324,38 @@ export default {
     },
     handleVisibleChange (visible) {
       if (visible) {
+        // 打开时重新加载数据
         this.tagData = []
+        this.tagSearch = ''
         this.fetchTags()
+      } else {
+        // 关闭时清空过滤
+        this.tagSearch = ''
       }
     },
     async fetchTags (isAppend = false) {
       this.loading = true
       try {
+        const params = { ...this.getParams }
+        // 如果有搜索值，在请求参数中包含 key_like
+        if (this.tagSearch) {
+          params.key_like = this.tagSearch
+        }
         let promise
         if (this.managerInstance) {
-          promise = this.manager.list({ params: this.getParams })
+          promise = this.manager.list({ params })
         } else {
-          promise = this.manager.get({ id: 'tag-value-pairs', params: this.getParams })
+          promise = this.manager.get({ id: 'tag-value-pairs', params })
         }
         const response = await promise
         const { data = [], total } = response.data
         this.pager.total = total
         this.tagData = isAppend ? [...this.tagData, ...data] : [...data]
+        // 保存原始数据用于搜索恢复
+        if (!isAppend && !this.tagSearch) {
+          this.originalTagData = [...this.tagData]
+          this.originalPagerTotal = total
+        }
         this.genTags(data, isAppend)
       } finally {
         this.loading = false
@@ -380,9 +417,20 @@ export default {
       }
       const sortByKeyCaseInsensitive = R.sortBy(R.compose(R.toLower, R.prop('key')))
       this.userTags = sortByKeyCaseInsensitive(userRet)
-      this.filtedUserTags = this.userTags
       this.extTags = sortByKeyCaseInsensitive(extRet)
-      this.filtedExtTags = this.extTags
+      // 如果有搜索值，应用过滤
+      if (this.tagSearch) {
+        this.filtedUserTags = this.userTags.filter((tag) => { return filterHandler(tag.key, this.tagSearch) })
+        this.filtedExtTags = this.extTags.filter((tag) => { return filterHandler(tag.key, this.tagSearch) })
+      } else {
+        this.filtedUserTags = this.userTags
+        this.filtedExtTags = this.extTags
+      }
+      // 保存原始数据用于搜索恢复（只在没有搜索时保存）
+      if (!isAppend && !this.tagSearch) {
+        this.originalUserTags = [...this.userTags]
+        this.originalExtTags = [...this.extTags]
+      }
     },
     getTagTitle,
     getTagValue,
@@ -396,15 +444,60 @@ export default {
         this.debounceHandleSearchInput(val)
       })
     },
-    handleSearchTagInput (val) {
-      if (this.composing) return
+    async handleSearchTagInput (val) {
+      if (this.composingTag) return
+      // 生成新的请求ID，用于防止竞态条件
+      const currentRequestId = ++this.searchTagRequestId
+      this.tagSearch = val
       if (val) {
-        // this.filtedUserTags = this.userTags.filter((tag) => { return tag.key.indexOf(val) >= 0 })
-        this.filtedUserTags = this.userTags.filter((tag) => { return filterHandler(tag.key, val) })
-        this.filtedExtTags = this.extTags.filter((tag) => { return filterHandler(tag.key, val) })
+        // 远程搜索
+        this.loading = true
+        try {
+          let promise
+          if (this.managerInstance) {
+            promise = this.manager.list({ params: { ...this.getParams, offset: 0, key_like: val } })
+          } else {
+            promise = this.manager.get({ id: 'tag-value-pairs', params: { ...this.getParams, offset: 0, key_like: val } })
+          }
+          const response = await promise
+          // 检查请求是否仍然有效（防止竞态条件）
+          if (currentRequestId !== this.searchTagRequestId) {
+            return // 如果请求ID不匹配，说明有更新的请求，忽略这个结果
+          }
+          // 再次检查搜索值是否匹配
+          if (this.tagSearch !== val) {
+            return // 如果搜索值已改变，忽略这个结果
+          }
+          const { data = [], total } = response.data
+          // 更新 pager
+          this.pager.total = total
+          // 重新生成 tags（不追加，替换）
+          this.tagData = data
+          this.genTags(data, false)
+        } finally {
+          // 只有当前请求是最新的时才取消loading
+          if (currentRequestId === this.searchTagRequestId) {
+            this.loading = false
+          }
+        }
       } else {
-        this.filtedUserTags = this.userTags
-        this.filtedExtTags = this.extTags
+        // 恢复原始数据
+        if (this.originalUserTags.length > 0 || this.originalExtTags.length > 0) {
+          // 恢复原始 tagData 和 pager
+          if (this.originalTagData.length > 0) {
+            this.tagData = [...this.originalTagData]
+            this.pager.total = this.originalPagerTotal
+          }
+          // 恢复原始 tags
+          this.userTags = [...this.originalUserTags]
+          this.filtedUserTags = [...this.originalUserTags]
+          this.extTags = [...this.originalExtTags]
+          this.filtedExtTags = [...this.originalExtTags]
+        } else {
+          // 如果没有原始数据，重新获取所有数据
+          this.tagData = []
+          this.fetchTags()
+        }
       }
     },
     handleSearchTag (e) {
@@ -417,6 +510,9 @@ export default {
       this.search = ''
       this.mouseenterKey = key
       this.mouseenterType = type
+      if (type === null) {
+        return
+      }
       this.$nextTick(() => {
         const { top: tagWrapTop, bottom: tagWrapBottom } = this.$refs['tag-wrap'].getBoundingClientRect()
         const valueWrapHeight = (this.$refs['value-wrap'] && this.$refs['value-wrap'].getBoundingClientRect().height) || 0
@@ -514,6 +610,15 @@ export default {
     }
   }
 }
+.tag-filter-fixed {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #fff;
+  .tag-tip {
+    background-color: #F5F6FA;
+  }
+}
 .tag-tip {
   background-color: #F5F6FA;
 }
@@ -553,6 +658,12 @@ export default {
   top: 0;
   width: 240px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  .tag-value-filter-fixed {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #F5F6FA;
+  }
 }
 .val-search {
   input {
