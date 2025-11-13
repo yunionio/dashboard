@@ -168,9 +168,9 @@ export default {
       if (this.isProjectScope) {
         data.project = values.project
       } else if (this.isDomainScope) {
-        data.domain = values.domain
+        data.project_domain_id = values.domain
       } else {
-        data.domain = ''
+        data.project_domain_id = ''
         data.project = ''
       }
       return this.params.onManager('performAction', {
