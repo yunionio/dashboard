@@ -2,7 +2,6 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('compute.bind_resource')}} - {{ resourceType === 'server' ? $t('dictionary.server') : $t('dictionary.disk') }}</div>
     <div slot="body">
-      <a-alert class="mb-2" type="warning" :message="message" />
       <dialog-selected-tips :count="params.data.length" :action="$t('compute.bind_resource')" :name="$t('dictionary.snapshotpolicy')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <loader loading v-if="!bindedDisksLoaded && !bindedServersLoaded" />
