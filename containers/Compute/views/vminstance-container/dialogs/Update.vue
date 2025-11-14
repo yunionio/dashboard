@@ -41,7 +41,9 @@
         </template>
         <template v-else>
           <a-form-item :label="$t('compute.yaml_config')">
-            <code-mirror v-decorator="decorators.yaml" :options="cmOptions" />
+            <div class="yaml-config-wrapper">
+              <code-mirror v-decorator="decorators.yaml" :options="cmOptions" />
+            </div>
           </a-form-item>
         </template>
       </a-form>
@@ -271,3 +273,13 @@ export default {
   },
 }
 </script>
+
+<style lang="less">
+.yaml-config-wrapper {
+  .CodeMirror {
+    height: calc(100vh - 530px);
+    min-height: 500px;
+    max-height: 80vh;
+  }
+}
+</style>
