@@ -1,7 +1,7 @@
 import { sizestr } from '@/utils/utils'
 import { getProjectTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getBillingTableColumn, getTagTableColumn, getAccountTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
-import { DBINSTANCE_CATEGORY } from '../constants/index.js'
+import { DBINSTANCE_CATEGORY, DBINSTANCE_STORAGE_TYPE } from '../constants/index.js'
 
 export default {
   created () {
@@ -140,6 +140,15 @@ export default {
         },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('rds_hidden_columns.port')
+        },
+      },
+      {
+        field: 'storage_type',
+        title: this.$t('db.text_120'),
+        slots: {
+          default: ({ row }) => {
+            return DBINSTANCE_STORAGE_TYPE[row.storage_type] || row.storage_type || '-'
+          },
         },
       },
       {
