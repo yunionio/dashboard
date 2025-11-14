@@ -1967,5 +1967,7 @@
   "compute.ops_time": "操作时间",
   "compute.log_level": "日志级别",
   "compute.log_info": "日志内容",
-  "compute.dmesg_log": "dmesg日志"
+  "compute.dmesg_log": "dmesg日志",
+  "compute.get_screenshot_error": "获取截图失败",
+  "compute.vnc_panic_screenshot": "VNC 截图"
 }
