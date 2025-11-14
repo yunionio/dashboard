@@ -1151,3 +1151,58 @@ export const deleteInvalid = obj => {
   })
   return obj
 }
+
+export const ppmToPNGDataURL = (base64Data) => {
+  // 解码 Base64
+  const binaryStr = atob(base64Data)
+  // 解析 PPM 头信息
+  const lines = binaryStr.split('\n')
+  let width = 720
+  let height = 400
+  if (lines.length > 3) {
+    const size = lines[1].split(' ')
+    if (size.length === 2) {
+      width = parseInt(size[0])
+      height = parseInt(size[1])
+    }
+  }
+  // 创建 Canvas
+  const canvas = document.createElement('canvas')
+  canvas.width = width
+  canvas.height = height
+  const ctx = canvas.getContext('2d')
+  const imageData = ctx.createImageData(width, height)
+  // 找到像素数据开始位置（跳过3行头部）
+  let dataStart = 0
+  let lineCount = 0
+  for (let i = 0; i < binaryStr.length; i++) {
+    if (binaryStr[i] === '\n') {
+      lineCount++
+      if (lineCount === 3) {
+        dataStart = i + 1
+        break
+      }
+    }
+  }
+  // 解析 RGB 像素数据
+  const pixelData = new Uint8Array(binaryStr.length - dataStart)
+  for (let i = 0; i < pixelData.length; i++) {
+    pixelData[i] = binaryStr.charCodeAt(dataStart + i)
+  }
+  // 填充到 ImageData
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4
+      const pixelIdx = (y * width + x) * 3
+      if (pixelIdx + 2 < pixelData.length) {
+        imageData.data[idx] = pixelData[pixelIdx] // R
+        imageData.data[idx + 1] = pixelData[pixelIdx + 1] // G
+        imageData.data[idx + 2] = pixelData[pixelIdx + 2] // B
+        imageData.data[idx + 3] = 255 // Alpha
+      }
+    }
+  }
+  ctx.putImageData(imageData, 0, 0)
+  // 转换为 PNG Data URL
+  return { canvas, url: canvas.toDataURL('image/png') }
+}
