@@ -79,8 +79,9 @@ export default {
 <style lang="less">
 .pod-container-yaml {
   .CodeMirror {
-    height: 500px;
-    overflow: scroll;
+    height: calc(100vh - 310px);
+    min-height: calc(100vh - 310px);
+    max-height: 80vh;
   }
 }
 </style>
