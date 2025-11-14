@@ -1965,5 +1965,7 @@
   "compute.ops_time": "Operation time",
   "compute.log_level": "Log level",
   "compute.log_info": "Log info",
-  "compute.dmesg_log": "dmesg log"
+  "compute.dmesg_log": "dmesg log",
+  "compute.get_screenshot_error": "Get screenshot failed",
+  "compute.vnc_panic_screenshot": "VNC screenshot"
 }
