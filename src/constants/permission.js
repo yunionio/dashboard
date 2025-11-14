@@ -436,6 +436,7 @@ export const PERMISSION = {
   server_perform_make_sshable: ['compute', 'servers', 'perform', 'make-sshable'],
   server_perform_start_rescue: ['compute', 'servers', 'perform', 'start-rescue'],
   server_perform_stop_rescue: ['compute', 'servers', 'perform', 'stop-rescue'],
+  server_perform_screen_dump: ['compute', 'servers', 'perform', 'screen-dump'],
   /**
    * images 相关操作
    */

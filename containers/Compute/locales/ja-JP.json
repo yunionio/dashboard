@@ -1903,5 +1903,7 @@
   "compute.ops_time": "操作時間",
   "compute.log_level": "ログレベル",
   "compute.log_info": "ログ情報",
-  "compute.dmesg_log": "dmesg ログ"
+  "compute.dmesg_log": "dmesg ログ",
+  "compute.get_screenshot_error": "スクリーンショットの取得に失敗しました",
+  "compute.vnc_panic_screenshot": "VNC スクリーンショット"
 }
