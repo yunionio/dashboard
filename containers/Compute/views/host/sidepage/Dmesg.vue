@@ -149,7 +149,7 @@ export default {
       }
 
       try {
-        const manager = new this.$Manager('events', 'v2')
+        const manager = new this.$Manager('hostdmesgs', 'v1')
         const params = {
           limit: this.pageSize,
           scope: this.$store.getters.scope,
