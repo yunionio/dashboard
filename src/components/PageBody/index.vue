@@ -1,5 +1,5 @@
 <template>
-  <div class="page-body" :style="`margin-bottom:${needMarginBottom ? '74px' : ''}`">
+  <div class="page-body" :style="`padding-bottom:${needMarginBottom ? '74px' : ''}`">
     <slot />
   </div>
 </template>
