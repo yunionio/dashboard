@@ -552,10 +552,17 @@ export default {
     robotParams () {
       if (this.currentScope === 'project' && this.formScopeParams.project_id) {
         return {
+          scope: this.currentScope,
           project_id: this.formScopeParams.project_id,
         }
       }
-      return {}
+      if (this.currentScope === 'domain' && this.formScopeParams.domain_id) {
+        return {
+          scope: this.currentScope,
+          project_domain_id: this.formScopeParams.domain_id,
+        }
+      }
+      return { scope: this.currentScope }
     },
     metricTypeOpts () {
       return this.res_types.map(val => {
