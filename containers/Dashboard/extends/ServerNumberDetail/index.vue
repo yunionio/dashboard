@@ -62,6 +62,9 @@ export default {
     },
     params: Object,
     edit: Boolean,
+    dataRangeParams: {
+      type: Object,
+    },
   },
   data () {
     const initNameValue = (this.params && this.params.name) || this.$t('dashborad.server_domain_numbers')
@@ -205,6 +208,24 @@ export default {
       },
       immediate: true,
     },
+    'dataRangeParams.scope': {
+      handler (val) {
+        this.fetchData()
+      },
+      immediate: true,
+    },
+    'dataRangeParams.domain': {
+      handler (val) {
+        this.fetchData()
+      },
+      immediate: true,
+    },
+    'dataRangeParams.project': {
+      handler (val) {
+        this.fetchData()
+      },
+      immediate: true,
+    },
   },
   created () {
     this.fetchData()
@@ -219,15 +240,29 @@ export default {
     async fetchData () {
       this.loading = true
       try {
+        const params = {
+          $t: getRequestT(),
+          scope: this.scope,
+        }
+        if (this.isAdminMode) {
+          if (this.dataRangeParams?.scope === 'domain' && this.dataRangeParams?.domain) {
+            params.domain_id = this.dataRangeParams?.domain
+          }
+          if (this.dataRangeParams?.scope === 'project' && this.dataRangeParams?.project) {
+            params.project_id = this.dataRangeParams?.project
+          }
+        }
+        if (this.isDomainMode) {
+          if (this.dataRangeParams?.scope === 'project' && this.dataRangeParams?.project) {
+            params.project_id = this.dataRangeParams?.project
+          }
+        }
         const data = await load({
           res: 'servers',
           actionArgs: {
             url: `/v2/servers/${this.fd.type}-statistics`,
             method: 'GET',
-            params: {
-              $t: getRequestT(),
-              scope: this.scope,
-            },
+            params,
           },
           useManager: false,
           resPath: 'data',

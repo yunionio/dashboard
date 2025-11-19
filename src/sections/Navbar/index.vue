@@ -98,7 +98,7 @@
             <icon type="navbar-view-switch" style="font-size: 18px;" />
           </a-tooltip>
           <span class="ml-1 current-view-label text-truncate" :title="viewLabel">{{ viewLabel }}</span>
-          <icon type="caret-down" style="font-size: 18px;" />
+          <icon type="caret-down" class="ml-1" />
         </div>
       </a-popover>
     </div>
@@ -110,7 +110,7 @@
             <icon type="navbar-setting" style="font-size: 18px;"  />
           </a-tooltip>
           <span class="ml-1 text-truncate products-label" style="line-height: normal;">{{$t('dictionary.endpoint')}}</span>
-          <icon type="caret-down" style="font-size: 18px; line-height: normal;" />
+          <icon type="caret-down" style="line-height: normal;" />
         </div>
         <a-menu slot="overlay" @click="productChange">
           <a-menu-item v-for="(item, idx) of products" :key="`${item.key}$$${idx}`">{{ item.label }}</a-menu-item>

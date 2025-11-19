@@ -5,6 +5,11 @@
         <div class="dashboard-card-header-left">
           {{ form.fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" />
           <span v-if="isResDeny" class="ml-2"><a-icon class="warning-color mr-1" type="warning" />{{ $t('common.permission.403') }}</span>
+          <span v-if="isUsageKeyDeny" class="ml-2">
+            <a-tooltip class="mr-2"><template slot="title">{{ $t('dashboard.usage_key_deny_tips') }}</template><icon type="help" /></a-tooltip>
+            <a-icon class="warning-color mr-1" type="warning" />
+            {{ $t('dashboard.usage_key_deny_tips_2') }}
+          </span>
         </div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
@@ -17,11 +22,11 @@
             <div class="dashboard-fco-wrap">
               <div class="account-health-row p-2">
                 <div class="account-health-title mt-2">{{$t('dashboard.effective_account_health')}}</div>
-                <div class="account-health-value green-color mt-2">{{avaliableNum}}{{$t('dashboard.each')}}</div>
+                <div class="account-health-value green-color mt-2">{{isUsageKeyDeny ? 0 : avaliableNum}}{{$t('dashboard.each')}}</div>
               </div>
               <div class="account-health-row p-2">
                 <div class="account-health-title">{{$t('dashboard.uneffective_account_health')}}</div>
-                <div class="account-health-value red-color mt-2">{{unavaliableNum}}{{$t('dashboard.each')}}</div>
+                <div class="account-health-value red-color mt-2">{{isUsageKeyDeny ? 0 : unavaliableNum}}{{$t('dashboard.each')}}</div>
               </div>
             </div>
           </div>
@@ -64,6 +69,9 @@ export default {
     },
     params: Object,
     edit: Boolean,
+    dataRangeParams: {
+      type: Object,
+    },
   },
   data () {
     const initialNameValue = (this.params && this.params.name) || this.$t('dashboard.cloud_account_health')
@@ -112,6 +120,15 @@ export default {
     isResDeny () {
       return !hasPermission({ key: 'bill_analysises_list' })
     },
+    isUsageKeyDeny () {
+      if (this.isAdminMode && this.dataRangeParams?.scope === 'project') {
+        return true
+      }
+      if (this.isDomainMode && this.dataRangeParams?.scope === 'project') {
+        return true
+      }
+      return false
+    },
   },
   watch: {
     'form.fd' (val) {
@@ -124,6 +141,24 @@ export default {
         }
         this.decorators[key][1] = config
       }
+    },
+    'dataRangeParams.scope': {
+      handler (val) {
+        this.fetchData()
+      },
+      immediate: true,
+    },
+    'dataRangeParams.domain': {
+      handler (val) {
+        this.fetchData()
+      },
+      immediate: true,
+    },
+    'dataRangeParams.project': {
+      handler (val) {
+        this.fetchData()
+      },
+      immediate: true,
     },
   },
   created () {
@@ -138,6 +173,22 @@ export default {
     async fetchData () {
       this.loading = true
       try {
+        const extraParams = {}
+        if (this.isAdminMode) {
+          if (this.dataRangeParams?.scope === 'domain' && this.dataRangeParams?.domain) {
+            extraParams.domain_id = this.dataRangeParams?.domain
+            extraParams.scope = 'domain'
+          }
+          if (this.dataRangeParams?.scope === 'project' && this.dataRangeParams?.project) {
+            extraParams.project_id = this.dataRangeParams?.project
+            extraParams.scope = 'project'
+          }
+        }
+        if (this.isDomainMode) {
+          if (this.dataRangeParams?.scope === 'project' && this.dataRangeParams?.project) {
+            extraParams.project_id = this.dataRangeParams?.project
+          }
+        }
         const [avaliableData, inviladData] = await Promise.all([
           new this.$Manager('bill_balances', 'v1').list({
             params: {
@@ -148,6 +199,7 @@ export default {
               currency: 'CNY',
               status: ['connected'],
               ignoreErrorStatusCode: [403],
+              ...extraParams,
             },
           }),
           new this.$Manager('bill_balances', 'v1').list({
@@ -160,6 +212,7 @@ export default {
               currency: 'CNY',
               status: ['connected'],
               ignoreErrorStatusCode: [403],
+              ...extraParams,
             },
           }),
         ])

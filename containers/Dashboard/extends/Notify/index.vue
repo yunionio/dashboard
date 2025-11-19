@@ -57,6 +57,9 @@ export default {
     },
     params: Object,
     edit: Boolean,
+    dataRangeParams: {
+      type: Object,
+    },
   },
   data () {
     const initialNameValue = (this.params && this.params.name) || this.$t('dashboard.text_19')
@@ -124,6 +127,24 @@ export default {
         this.fetchReadmarks()
       }
     },
+    'dataRangeParams.scope': {
+      handler (val) {
+        this.fetchNotices()
+      },
+      immediate: true,
+    },
+    'dataRangeParams.domain': {
+      handler (val) {
+        this.fetchNotices()
+      },
+      immediate: true,
+    },
+    'dataRangeParams.project': {
+      handler (val) {
+        this.fetchNotices()
+      },
+      immediate: true,
+    },
   },
   destroyed () {
     this.rm = null
@@ -156,11 +177,31 @@ export default {
         //   },
         //   resPath: 'data.data',
         // })
+        const params = {
+          scope: this.$store.getters.scope,
+          $t: getRequestT(),
+        }
+        if (this.isAdminMode) {
+          if (this.dataRangeParams?.scope === 'system') {
+            params.visible_scope = 'system'
+          }
+          if (this.dataRangeParams?.scope === 'domain' && this.dataRangeParams?.domain) {
+            params.scope = 'domain'
+            params.domain_id = this.dataRangeParams?.domain
+          }
+          if (this.dataRangeParams?.scope === 'project' && this.dataRangeParams?.project) {
+            params.scope = 'project'
+            params.project_id = this.dataRangeParams?.project
+          }
+        }
+        if (this.isDomainMode) {
+          if (this.dataRangeParams?.scope === 'project' && this.dataRangeParams?.project) {
+            params.scope = 'project'
+            params.project_id = this.dataRangeParams?.project
+          }
+        }
         const response = await this.noticesManager.list({
-          params: {
-            scope: this.$store.getters.scope,
-            $t: getRequestT(),
-          },
+          params,
         })
         this.data = response.data.data || []
       } finally {

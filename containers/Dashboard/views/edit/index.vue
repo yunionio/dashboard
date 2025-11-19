@@ -16,7 +16,10 @@
       <!-- edit main -->
       <main class="edit-content flex-fill position-relative">
         <div class="edit-content-inner w-100 h-100 position-absolute d-flex flex-column flex-nowrap">
-          <div class="edit-header mb-2"><a-input ref="input" v-model="dashboardName" :placeholder="$t('dashboard.text_119')" /></div>
+          <div class="edit-header mb-2 d-flex">
+            <a-input ref="input" v-model="dashboardName" :placeholder="$t('dashboard.text_119')" />
+            <data-range v-if="isAdminMode || isDomainMode" :dataRangeParams="dataRangeParams" @updateDataRange="updateDataRange" edit />
+          </div>
           <grid-shadow
             class="flex-fill"
             ref="grid-shadow">
@@ -48,7 +51,7 @@
                     :is-draggable="!item.isTemplate"
                     :is-resizable="!item.isTemplate"
                     :style="{ outline: item.isTemplate ? '2px dashed darkmagenta' : '' }">
-                    <component :is="item.component" :chartId="`dashboard-item-${index}`" :options="item" :params="dashboardParams[item.i]" @update="handleUpdateDashboardParams" edit>
+                    <component :is="item.component" :chartId="`dashboard-item-${index}`" :options="item" :params="dashboardParams[item.i]" :dataRangeParams="dataRangeParams" @update="handleUpdateDashboardParams" edit>
                       <template v-slot:actions="{ handleEdit }">
                         <a-button class="p-0 h-auto" type="link" :style="getActionStyle(item.component, dashboardParams[item.i])" @click="handleRemove(item)">
                           <icon type="delete" />
@@ -83,6 +86,7 @@ import ExtendGallery from '@Dashboard/sections/ExtendGallery'
 import { clear as clearCache } from '@Dashboard/utils/cache'
 import { uuid } from '@/utils/utils'
 import storage from '@/utils/storage'
+import DataRange from '../dashboard/components/DataRange'
 
 const extendsComponents = R.is(Function, getExtendsComponents) ? getExtendsComponents() : getExtendsComponents
 
@@ -93,6 +97,7 @@ export default {
     GridItem: VueGridLayout.GridItem,
     GridShadow,
     ExtendGallery,
+    DataRange,
     ...extendsComponents,
   },
   data () {
@@ -111,10 +116,11 @@ export default {
       currentOption: null,
       dashboardOptions: [],
       isCheckSave: true,
+      dataRangeParams: storage.get('__oc_dashboard_data_range__') || { scope: this.$store.getters.scope, domain: '', project: '' },
     }
   },
   computed: {
-    ...mapGetters(['scope', 'globalConfig']),
+    ...mapGetters(['scope', 'globalConfig', 'isAdminMode', 'isDomainMode']),
     id () {
       return this.$route.query.id
     },
@@ -186,6 +192,9 @@ export default {
     this.debounceUpdateGridItem = debounce(this.updateGridItem, 500)
   },
   methods: {
+    updateDataRange (params) {
+      this.dataRangeParams = params
+    },
     getActionStyle (component, params = {}) {
       if (component === 'Title' && params.color && params.color !== '#FFFFFF') {
         return { color: '#fff' }

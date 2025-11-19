@@ -121,6 +121,9 @@ export default {
     },
     params: Object,
     edit: Boolean,
+    dataRangeParams: {
+      type: Object,
+    },
   },
   data () {
     const initialBrandValue = (this.params && this.params.brand && R.split(',', this.params.brand)) || []
@@ -359,6 +362,24 @@ export default {
         this.changeName(this.form.fd.resType, val)
       },
     },
+    'dataRangeParams.scope': {
+      handler (val) {
+        this.fetchData()
+      },
+      immediate: true,
+    },
+    'dataRangeParams.domain': {
+      handler (val) {
+        this.fetchData()
+      },
+      immediate: true,
+    },
+    'dataRangeParams.project': {
+      handler (val) {
+        this.fetchData()
+      },
+      immediate: true,
+    },
   },
   created () {
     const values = { ...this.form.fd }
@@ -470,6 +491,28 @@ export default {
           condition: 'and',
         }
       })
+      const rangeTags = []
+      if (this.isAdminMode && this.dataRangeParams?.scope === 'domain' && this.dataRangeParams?.domain) {
+        rangeTags.push({
+          key: 'domain_id',
+          value: this.dataRangeParams?.domain,
+          operator: '=',
+        })
+      }
+      if (this.isAdminMode && this.dataRangeParams?.scope === 'project' && this.dataRangeParams?.project) {
+        rangeTags.push({
+          key: 'tenant_id',
+          value: this.dataRangeParams?.project,
+          operator: '=',
+        })
+      }
+      if (this.isDomainMode && this.dataRangeParams?.scope === 'project' && this.dataRangeParams?.project) {
+        rangeTags.push({
+          key: 'tenant_id',
+          value: this.dataRangeParams?.project,
+          operator: '=',
+        })
+      }
       if (this.brandEnvs.length && this.brandEnvs.every(env => env === 'public')) {
         if (fd.resType === 'server') {
           // ret = `SELECT ${fd.order}("${usageKeys[0]}", "vm_name", "vm_ip", "hypervisor", ${fd.limit}) FROM "${usageKeys[1]}" WHERE time > now() - ${min}m AND "${brandKey}"='${brand}'`
@@ -496,6 +539,7 @@ export default {
                       value: '',
                     },
                     ...brandTags,
+                    ...rangeTags,
                   ],
                   group_by: this.groupBy(usageKeys[0]),
                 },
@@ -538,6 +582,7 @@ export default {
                       value: '',
                     },
                     ...brandTags,
+                    ...rangeTags,
                   ],
                   group_by: this.groupBy(usageKeys[0]),
                 },
@@ -574,6 +619,7 @@ export default {
                       value: '',
                     },
                     ...brandTags,
+                    ...rangeTags,
                   ],
                   group_by: this.groupBy(usageKeys[0]),
                 },
@@ -613,7 +659,9 @@ export default {
                       key: this.groupInput(),
                       operator: '!=',
                       value: '',
-                    }],
+                    },
+                    ...rangeTags,
+                  ],
                   group_by: this.groupBy(usageKeys[0]),
                 },
               },
@@ -646,7 +694,9 @@ export default {
                       key: this.groupInput(),
                       operator: '!=',
                       value: '',
-                    }],
+                    },
+                    ...rangeTags,
+                  ],
                   group_by: this.groupBy(usageKeys[0]),
                 },
               },
