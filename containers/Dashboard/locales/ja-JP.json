@@ -334,5 +334,11 @@
   "dashboard.statisic_value_type": "請求書による集計",
   "dashboard.value_fee": "費用の金額",
   "dashboard.value_count": "生産資源数量",
-  "dashboard.data_type": "データ型"
+  "dashboard.data_type": "データ型",
+  "dashboard.current_system": "現在のシステム",
+  "dashboard.current_domain": "現在の@:dictionary.domain",
+  "dashboard.specified_domain": "指定された@:dictionary.domain",
+  "dashboard.specified_project": "指定された@:dictionary.project",
+  "dashboard.usage_key_deny_tips": "データ範囲を切り替えた後、元のデータ指標は新しいデータビューで表示できない可能性があり、つまり指標が無効になります",
+  "dashboard.usage_key_deny_tips_2": "指標が無効です"
 }

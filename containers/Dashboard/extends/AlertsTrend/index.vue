@@ -60,6 +60,9 @@ export default {
     },
     params: Object,
     edit: Boolean,
+    dataRangeParams: {
+      type: Object,
+    },
   },
   data () {
     const initialNameValue = (this.params && this.params.name) || this.$t('dashboard.alerts_trend')
@@ -159,6 +162,24 @@ export default {
         this.decorators[key][1] = config
       }
     },
+    'dataRangeParams.scope': {
+      handler (val) {
+        this.fetchData()
+      },
+      immediate: true,
+    },
+    'dataRangeParams.domain': {
+      handler (val) {
+        this.fetchData()
+      },
+      immediate: true,
+    },
+    'dataRangeParams.project': {
+      handler (val) {
+        this.fetchData()
+      },
+      immediate: true,
+    },
   },
   created () {
     const values = { ...this.form.fd }
@@ -189,7 +210,7 @@ export default {
     },
     chartQueryData () {
       const extendParams = this.commonParams()
-      return {
+      const ret = {
         from: '720h',
         interval: '24h',
         metric_query: [
@@ -210,6 +231,36 @@ export default {
         unit: true,
         ...extendParams,
       }
+      const tags = []
+      if (this.isAdminMode) {
+        if (this.dataRangeParams?.scope === 'domain' && this.dataRangeParams?.domain) {
+          tags.push({
+            key: 'domain_id',
+            operator: '=',
+            value: this.dataRangeParams?.domain,
+          })
+        }
+        if (this.dataRangeParams?.scope === 'project' && this.dataRangeParams?.project) {
+          tags.push({
+            key: 'project_id',
+            operator: '=',
+            value: this.dataRangeParams?.project,
+          })
+        }
+      }
+      if (this.isDomainMode) {
+        if (this.dataRangeParams?.scope === 'project' && this.dataRangeParams?.project) {
+          tags.push({
+            key: 'project_id',
+            operator: '=',
+            value: this.dataRangeParams?.project,
+          })
+        }
+      }
+      if (tags.length) {
+        ret.metric_query[0].model.tags = tags
+      }
+      return ret
     },
     tabChartData (rawDatas) {
       const chartData = {

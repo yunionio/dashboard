@@ -334,5 +334,11 @@
   "dashboard.statisic_value_type": "通过账单统计",
   "dashboard.value_fee": "费用金额",
   "dashboard.value_count": "资源数量",
-  "dashboard.data_type": "数据类型"
+  "dashboard.data_type": "数据类型",
+  "dashboard.current_system": "当前系统",
+  "dashboard.current_domain": "当前@:dictionary.domain",
+  "dashboard.specified_domain": "指定@:dictionary.domain",
+  "dashboard.specified_project": "指定@:dictionary.project",
+  "dashboard.usage_key_deny_tips": "切换数据范围后,原数据指标可能在新的数据视图无权限查看,即指标无效",
+  "dashboard.usage_key_deny_tips_2": "指标无效"
 }
