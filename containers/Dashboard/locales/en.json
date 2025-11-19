@@ -334,5 +334,11 @@
   "dashboard.statisic_value_type": "Statistics through billing",
   "dashboard.value_fee": "Cost amount",
   "dashboard.value_count": "Resource quantity",
-  "dashboard.data_type": "Data type"
+  "dashboard.data_type": "Data type",
+  "dashboard.current_system": "Current system",
+  "dashboard.current_domain": "Current @:dictionary.domain",
+  "dashboard.specified_domain": "Specified @:dictionary.domain",
+  "dashboard.specified_project": "Specified @:dictionary.project",
+  "dashboard.usage_key_deny_tips": "After switching the data range, the original data indicators may not have permission to view in the new data view, that is, the indicators are invalid",
+  "dashboard.usage_key_deny_tips_2": "Indicators are invalid"
 }

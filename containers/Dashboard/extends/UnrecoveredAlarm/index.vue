@@ -2,7 +2,15 @@
   <div class="h-100 position-relative">
     <div class="dashboard-card-wrap">
       <div class="dashboard-card-header">
-        <div class="dashboard-card-header-left">{{ form.fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-left">
+          {{ form.fd.name }}
+          <a-icon class="ml-2" type="loading" v-if="loading" />
+          <span v-if="isUsageKeyDeny" class="ml-2">
+            <a-tooltip class="mr-2"><template slot="title">{{ $t('dashboard.usage_key_deny_tips') }}</template><icon type="help" /></a-tooltip>
+            <a-icon class="warning-color mr-1" type="warning" />
+            {{ $t('dashboard.usage_key_deny_tips_2') }}
+          </span>
+        </div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
           <router-link v-if="!edit" to="/monitoroverview" class="ml-2">
@@ -55,6 +63,9 @@ export default {
     },
     params: Object,
     edit: Boolean,
+    dataRangeParams: {
+      type: Object,
+    },
   },
   data () {
     const initialNameValue = (this.params && this.params.name) || this.$t('monitor.overview_alert_sum')
@@ -145,6 +156,15 @@ export default {
   },
   computed: {
     ...mapGetters(['scope', 'capability', 'isAdminMode', 'isDomainMode', 'isProjectMode', 'userInfo']),
+    isUsageKeyDeny () {
+      if (this.isAdminMode && (this.dataRangeParams?.scope === 'domain' || this.dataRangeParams?.scope === 'project')) {
+        return true
+      }
+      if (this.isDomainMode && this.dataRangeParams?.scope === 'project') {
+        return true
+      }
+      return false
+    },
   },
   watch: {
     'form.fd' (val) {
@@ -156,6 +176,24 @@ export default {
       this.$nextTick(() => {
         this.fetchData()
       })
+    },
+    'dataRangeParams.scope': {
+      handler (val) {
+        this.fetchData()
+      },
+      immediate: true,
+    },
+    'dataRangeParams.domain': {
+      handler (val) {
+        this.fetchData()
+      },
+      immediate: true,
+    },
+    'dataRangeParams.project': {
+      handler (val) {
+        this.fetchData()
+      },
+      immediate: true,
     },
   },
   created () {
@@ -180,6 +218,22 @@ export default {
       try {
         const params = {
           scope: this.$store.getters.scope,
+        }
+        if (this.isAdminMode) {
+          if (this.dataRangeParams?.scope === 'domain' && this.dataRangeParams?.domain) {
+            params.scope = 'domain'
+            params.domain_id = this.dataRangeParams?.domain
+          }
+          if (this.dataRangeParams?.scope === 'project' && this.dataRangeParams?.project) {
+            params.scope = 'project'
+            params.project_id = this.dataRangeParams?.project
+          }
+        }
+        if (this.isDomainMode) {
+          if (this.dataRangeParams?.scope === 'project' && this.dataRangeParams?.project) {
+            params.scope = 'project'
+            params.project_id = this.dataRangeParams?.project
+          }
         }
         const { data: series = { } } = await new this.$Manager('alertrecords', 'v1').get({ id: 'total-alert', params: params })
         let total = 0

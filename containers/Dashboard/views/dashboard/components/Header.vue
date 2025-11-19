@@ -11,6 +11,7 @@
         <span>{{ item.name }}</span>
       </li>
     </draggable>
+    <data-range v-if="isAdminMode || isDomainMode" :dataRangeParams="dataRangeParams" @updateDataRange="updateDataRange" />
     <a-button @click="handleRefresh" type="link" class="action-btn">
       <icon type="refresh" />
     </a-button>
@@ -38,11 +39,13 @@ import { Base64 } from 'js-base64'
 import draggable from 'vuedraggable'
 import { download, uuid } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
+import DataRange from './DataRange.vue'
 
 export default {
   name: 'DashboardHeader',
   components: {
     draggable,
+    DataRange,
   },
   mixins: [WindowsMixin],
   props: {
@@ -71,6 +74,9 @@ export default {
     },
     // 是否为默认面板
     isDefaultOption: Boolean,
+    dataRangeParams: {
+      type: Object,
+    },
   },
   data () {
     return {
@@ -78,7 +84,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scope', 'userInfo']),
+    ...mapGetters(['scope', 'userInfo', 'isAdminMode', 'isDomainMode']),
     options: {
       get () {
         return this.tabs
@@ -116,6 +122,9 @@ export default {
     this.pm = new this.$Manager('parameters', 'v1')
   },
   methods: {
+    updateDataRange (params) {
+      this.$emit('updateDataRange', params)
+    },
     handleActionClick ({ key }) {
       if (this[key]) this[key]()
     },

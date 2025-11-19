@@ -77,7 +77,7 @@ export default {
     allUsages () {
       const ret = []
       for (const key in K8S_USAGE_CONFIG) {
-        if (K8S_USAGE_CONFIG[key].isOnlyAllPartKey) {
+        if (K8S_USAGE_CONFIG[key].isOnlyAllPartKey && K8S_USAGE_CONFIG[key].scope === this.scope) {
           ret.push({
             key,
             scope: K8S_USAGE_CONFIG[key].scope,
@@ -92,7 +92,7 @@ export default {
       const allUsageKey = this.fd?.all_usage_key || ''
       for (const key in K8S_USAGE_CONFIG) {
         const { isOnlyAllPartKey, belongAllPartKeys } = K8S_USAGE_CONFIG[key]
-        if (!isOnlyAllPartKey && belongAllPartKeys && belongAllPartKeys.includes(allUsageKey)) {
+        if (!isOnlyAllPartKey && belongAllPartKeys && belongAllPartKeys.includes(allUsageKey) && K8S_USAGE_CONFIG[key].scope === this.scope) {
           ret.push({
             key,
             scope: K8S_USAGE_CONFIG[key].scope,
@@ -100,6 +100,9 @@ export default {
             belongAllPartKeys: K8S_USAGE_CONFIG[key].belongAllPartKeys,
           })
         }
+      }
+      if (!ret.length && this.decorators.usage_key && !this.decorators.all_usage_key) {
+        return this.allUsages
       }
       return ret
     },
