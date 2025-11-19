@@ -47,6 +47,9 @@ export default {
     },
     params: Object,
     edit: Boolean,
+    dataRangeParams: {
+      type: Object,
+    },
   },
   data () {
     const initialNameValue = (this.params && this.params.name) || this.$t('dashboard.instance_count')
@@ -164,11 +167,29 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isDomainMode', 'isProjectMode']),
+    ...mapGetters(['isDomainMode', 'isAdminMode', 'isProjectMode']),
   },
   watch: {
     'form.fd' (val) {
       this.fetchUsage()
+    },
+    'dataRangeParams.scope': {
+      handler (val) {
+        this.fetchUsage()
+      },
+      immediate: true,
+    },
+    'dataRangeParams.domain': {
+      handler (val) {
+        this.fetchUsage()
+      },
+      immediate: true,
+    },
+    'dataRangeParams.project': {
+      handler (val) {
+        this.fetchUsage()
+      },
+      immediate: true,
     },
   },
   destroyed () {
@@ -202,6 +223,22 @@ export default {
         scope: this.$store.getters.scope,
         $t: getRequestT(),
       }
+      if (this.isAdminMode) {
+        if (this.dataRangeParams?.scope === 'domain' && this.dataRangeParams?.domain) {
+          params.scope = 'domain'
+          params.domain_id = this.dataRangeParams?.domain
+        }
+        if (this.dataRangeParams?.scope === 'project' && this.dataRangeParams?.project) {
+          params.scope = 'project'
+          params.project_id = this.dataRangeParams?.project
+        }
+      }
+      if (this.isDomainMode) {
+        if (this.dataRangeParams?.scope === 'project' && this.dataRangeParams?.project) {
+          params.scope = 'project'
+          params.project_id = this.dataRangeParams?.project
+        }
+      }
       return params
     },
     async fetchUsage () {
@@ -222,10 +259,10 @@ export default {
         const yData = []
         this.usageList.map(item => {
           let key = item.key[0]
-          if (this.isDomainMode) {
+          if (this.isDomainMode || (this.isAdminMode && this.dataRangeParams?.scope === 'domain')) {
             key = item.key[1]
           }
-          if (this.isProjectMode) {
+          if (this.isProjectMode || (this.isAdminMode && this.dataRangeParams?.scope === 'project') || (this.isDomainMode && this.dataRangeParams?.scope === 'project')) {
             key = item.key[2]
           }
           if (item.required || (data.hasOwnProperty(key) && data[key])) {

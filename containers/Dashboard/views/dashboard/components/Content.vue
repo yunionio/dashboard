@@ -11,7 +11,8 @@
           :chartId="key"
           :is="item.layout.component"
           :options="item.layout"
-          :params="item.params" />
+          :params="item.params"
+          :dataRangeParams="dataRangeParams" />
       </div>
     </template>
   </div>
@@ -35,6 +36,9 @@ export default {
     data: {
       type: [Array, Object],
       required: true,
+    },
+    dataRangeParams: {
+      type: Object,
     },
   },
   computed: {

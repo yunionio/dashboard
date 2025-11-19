@@ -9,13 +9,15 @@
           :check-options-created="checkCustomOptionsCreated"
           :init-options="initCustomOptions"
           :is-default-option="isDefault"
+          :dataRangeParams="dataRangeParams"
           @select="handleCurrentOptionSelect"
           @update-options="updateOptions"
+          @updateDataRange="updateDataRange"
           @refresh="refresh" />
       </div>
       <div class="flex-fill position-relative">
         <div class="position-absolute" style="top: 0; left: 0; right: 0; bottom: 0;">
-          <dashboard-content ref="content" :data="dashboard" />
+          <dashboard-content ref="content" :data="dashboard" :dataRangeParams="dataRangeParams" />
         </div>
       </div>
     </template>
@@ -60,6 +62,11 @@ export default {
       currentOption: {},
       // 面板卡片的配置 Object, Array;
       dashboard: {},
+      dataRangeParams: storage.get('__oc_dashboard_data_range__') || {
+        scope: this.$store.getters.scope,
+        domain: '',
+        project: '',
+      },
     }
   },
   computed: {
@@ -119,6 +126,9 @@ export default {
     this.addAppPageClass()
   },
   methods: {
+    updateDataRange (params) {
+      this.dataRangeParams = params
+    },
     addAppPageClass () {
       if (!this.$appPage) this.$appPage = document.getElementById('app-page')
       if (!this.$appPage) return

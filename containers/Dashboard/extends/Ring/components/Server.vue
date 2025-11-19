@@ -5,6 +5,11 @@
         <div class="dashboard-card-header-left">
           {{ form.fd.name || $t('dashboard.text_6') }}<a-icon class="ml-2" type="loading" v-if="loading" />
           <span v-if="isResDeny" class="ml-2"><a-icon class="warning-color mr-1" type="warning" />{{ $t('common.permission.403') }}</span>
+          <span v-if="isUsageKeyDeny" class="ml-2">
+            <a-tooltip class="mr-2"><template slot="title">{{ $t('dashboard.usage_key_deny_tips') }}</template><icon type="help" /></a-tooltip>
+            <a-icon class="warning-color mr-1" type="warning" />
+            {{ $t('dashboard.usage_key_deny_tips_2') }}
+          </span>
         </div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
@@ -87,7 +92,7 @@
 import { mapGetters } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import QuotaConfig from '@Dashboard/sections/QuotaConfig'
-import { USAGE_CONFIG } from '@Dashboard/constants'
+import { USAGE_CONFIG, getTargetRangeUsageKey } from '@Dashboard/constants'
 import { load } from '@Dashboard/utils/cache'
 import { getRequestT, sizestrWithUnit } from '@/utils/utils'
 import { hasPermission } from '@/utils/auth'
@@ -102,6 +107,11 @@ export default {
     QuotaConfig,
   },
   mixins: [mixin],
+  props: {
+    dataRangeParams: {
+      type: Object,
+    },
+  },
   data () {
     const all_usage_key = this.$store.getters.isAdminMode ? 'all.servers' : this.$store.getters.isDomainMode ? 'domain.servers' : 'servers'
     const usage_key = this.$store.getters.isAdminMode ? 'all.running_servers' : this.$store.getters.isDomainMode ? 'domain.running_servers' : 'running_servers'
@@ -226,7 +236,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['permission']),
+    ...mapGetters(['permission', 'scope', 'isAdminMode', 'isDomainMode']),
+    isUsageKeyDeny () {
+      const usageConfig = getTargetRangeUsageKey(this.form.fd.usage_key, this.scope, this.dataRangeParams?.scope)
+      const allUsageConfig = getTargetRangeUsageKey(this.form.fd.all_usage_key, this.scope, this.dataRangeParams?.scope)
+      if (usageConfig.error || usageConfig.usageKey === 'null' || !usageConfig.usageKey || allUsageConfig.error || allUsageConfig.usageKey === 'null' || !allUsageConfig.usageKey) {
+        return true
+      }
+      return false
+    },
     isRing () {
       return this.form.fd.chart_type === 'ring'
     },
@@ -241,10 +259,18 @@ export default {
       return ret
     },
     allUsageNumber () {
-      return (this.data && this.data[this.form.fd.all_usage_key]) || 0
+      const usageKey = getTargetRangeUsageKey(this.form.fd.all_usage_key, this.scope, this.dataRangeParams?.scope).usageKey
+      if (!usageKey || usageKey === 'null') {
+        return 0
+      }
+      return (this.data && this.data[usageKey]) || 0
     },
     usageNumber () {
-      return (this.data && this.data[this.form.fd.usage_key]) || 0
+      const usageKey = getTargetRangeUsageKey(this.form.fd.usage_key, this.scope, this.dataRangeParams?.scope).usageKey
+      if (!usageKey || usageKey === 'null') {
+        return 0
+      }
+      return (this.data && this.data[usageKey]) || 0
     },
     allUsageConfig () {
       return USAGE_CONFIG[this.form.fd.all_usage_key]
@@ -447,6 +473,24 @@ export default {
         this.decorators[key][1] = config
       }
     },
+    'dataRangeParams.scope': {
+      handler (val) {
+        this.fetchUsage()
+      },
+      immediate: true,
+    },
+    'dataRangeParams.domain': {
+      handler (val) {
+        this.fetchUsage()
+      },
+      immediate: true,
+    },
+    'dataRangeParams.project': {
+      handler (val) {
+        this.fetchUsage()
+      },
+      immediate: true,
+    },
   },
   created () {
     if (this.params && this.params.type !== 'k8s') {
@@ -493,6 +537,22 @@ export default {
       this.loading = true
       try {
         const params = this.genUsageParams()
+        if (this.isAdminMode) {
+          if (this.dataRangeParams?.scope === 'domain' && this.dataRangeParams?.domain) {
+            params.scope = 'domain'
+            params.domain_id = this.dataRangeParams?.domain
+          }
+          if (this.dataRangeParams?.scope === 'project' && this.dataRangeParams?.project) {
+            params.scope = 'project'
+            params.project_id = this.dataRangeParams?.project
+          }
+        }
+        if (this.isDomainMode) {
+          if (this.dataRangeParams?.scope === 'project' && this.dataRangeParams?.project) {
+            params.scope = 'project'
+            params.project_id = this.dataRangeParams?.project
+          }
+        }
         const data = await load({
           res: 'usages',
           actionArgs: {

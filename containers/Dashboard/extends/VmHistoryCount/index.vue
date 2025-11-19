@@ -70,6 +70,9 @@ export default {
     },
     params: Object,
     edit: Boolean,
+    dataRangeParams: {
+      type: Object,
+    },
   },
   data () {
     const initialNameValue = (this.params && this.params.name) || this.$t('dashboard.vm_history_count')
@@ -161,12 +164,15 @@ export default {
   computed: {
     ...mapGetters(['scope', 'isAdminMode', 'isDomainMode', 'isProjectMode']),
     queryMode () {
-      if (this.isAdminMode) {
+      if (this.isAdminMode && (this.dataRangeParams?.scope !== 'domain' && this.dataRangeParams?.scope !== 'project')) {
         return 'all.servers'
-      } else if (this.isDomainMode) {
+      } else if (this.isDomainMode || (this.isAdminMode && this.dataRangeParams?.scope === 'domain')) {
         return 'domain.servers'
+      } else if (this.isProjectMode || (this.isAdminMode && this.dataRangeParams?.scope === 'project') || (this.isDomainMode && this.dataRangeParams?.scope === 'project')) {
+        return 'project.servers'
+      } else {
+        return 'all.servers'
       }
-      return 'project.servers'
     },
     isResDeny () {
       return !hasPermission({ key: 'bill_analysises_list' })
@@ -184,6 +190,24 @@ export default {
         this.decorators[key][1] = config
       }
     },
+    'dataRangeParams.scope': {
+      handler (val) {
+        this.fetchData()
+      },
+      immediate: true,
+    },
+    'dataRangeParams.domain': {
+      handler (val) {
+        this.fetchData()
+      },
+      immediate: true,
+    },
+    'dataRangeParams.project': {
+      handler (val) {
+        this.fetchData()
+      },
+      immediate: true,
+    },
   },
   created () {
     const values = { ...this.form.fd }
@@ -199,15 +223,16 @@ export default {
       try {
         const requestData = this.genQueryData()
         requestData.signature = getSignature(requestData)
+        const params = {
+          $t: getRequestT(),
+          ignoreErrorStatusCode: [403],
+        }
         const data = await load({
           res: 'unifiedmonitors',
           actionArgs: {
             url: '/v1/unifiedmonitors/query',
             method: 'POST',
-            params: {
-              $t: getRequestT(),
-              ignoreErrorStatusCode: [403],
-            },
+            params,
             data: requestData,
           },
           useManager: false,
@@ -252,6 +277,35 @@ export default {
         from: `${this.form.fd.from * 24}h`,
         interval: '24h',
         unit: true,
+      }
+      const tags = []
+      if (this.isAdminMode) {
+        if (this.dataRangeParams?.scope === 'domain' && this.dataRangeParams?.domain) {
+          tags.push({
+            key: 'domain_id',
+            operator: '=',
+            value: this.dataRangeParams?.domain,
+          })
+        }
+        if (this.dataRangeParams?.scope === 'project' && this.dataRangeParams?.project) {
+          tags.push({
+            key: 'tenant_id',
+            operator: '=',
+            value: this.dataRangeParams?.project,
+          })
+        }
+      }
+      if (this.isDomainMode) {
+        if (this.dataRangeParams?.scope === 'project' && this.dataRangeParams?.project) {
+          tags.push({
+            key: 'tenant_id',
+            operator: '=',
+            value: this.dataRangeParams?.project,
+          })
+        }
+      }
+      if (tags.length) {
+        ret.metric_query[0].model.tags = tags
       }
       return ret
     },
