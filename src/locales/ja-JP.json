@@ -1932,7 +1932,8 @@
   "currencys": {
     "CNY": "元",
     "HKD": "香港ドル",
-    "USD": "ドル"
+    "USD": "ドル",
+    "THB": "タイバーツ"
   },
   "cloudAccountAccessType": {
     "China": "中国ゾーン",
@@ -5009,6 +5010,7 @@
   "common.currency_cny": "人民元",
   "common.currency_usd": "ドル",
   "common.currency_brl": "ブラジルレアル",
+  "common.currency_thb": "タイバーツ",
   "auth.clean.scope.domain": "プラットフォームログイン",
   "auth.current.domain": "現在ログオンしているドメイン",
   "auth.set.current.domain": "ログオン ドメインを指定します",
