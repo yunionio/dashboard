@@ -71,6 +71,9 @@ export default {
       const param = {
         alert_id: this.params.options.alert_id,
       }
+      if (this.params.windowData.currentTab === 'AlertrecortList') {
+        param.res_id = this.data.id
+      }
       return param
     },
   },
