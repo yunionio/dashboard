@@ -1918,7 +1918,8 @@
   "currencys": {
     "CNY": "CNY",
     "HKD": "HKD",
-    "USD": "USD"
+    "USD": "USD",
+    "THB": "THB"
   },
   "cloudAccountAccessType": {
     "China": "China Area",
@@ -4992,6 +4993,7 @@
   "common.currency_cny": "CNY",
   "common.currency_usd": "USD",
   "common.currency_brl": "BRL",
+  "common.currency_thb": "THB",
   "auth.clean.scope.domain": "Platform Login",
   "auth.current.domain": "Login Domain",
   "auth.set.current.domain": "Set Login Domain",

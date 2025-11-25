@@ -248,6 +248,7 @@ export class Price {
     const currencys = {
       USD: '$',
       CNY: '¥',
+      THB: '฿',
     }
 
     const key = _.get(this.priceObj, ['currency'])
