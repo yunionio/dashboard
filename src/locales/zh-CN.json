@@ -6147,6 +6147,8 @@
   "common.workflow.start": "主机开机",
   "common.workflow.restart": "主机重启",
   "common.workflow.order_set": "资源订单申请",
+  "common.workflow.alert_event": "告警事件",
+  "common.workflow.alert_ticket": "告警工单",
   "common.ssh_login_err": "SSH远程登录失败",
   "common.ssh_login_err_msg": "请输入SSH登录信息再次重试登录",
   "common.intranet": "内网",
@@ -6270,5 +6272,6 @@
   "common.duration.none": "无限制",
   "common.duration.custom": "自定义",
   "common.not_set": "未设置",
-  "common.not_expired": "未过期"
+  "common.not_expired": "未过期",
+  "common.alert_info": "告警信息"
 }

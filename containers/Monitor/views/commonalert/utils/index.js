@@ -49,16 +49,16 @@ export const robotsColumn = (robotList) => ({
   },
 })
 
-export const strategyColumn = (field = 'common_alert_metric_details', title = i18n.t('monitor.strategy_detail')) => ({
+export const strategyColumn = (field = 'common_alert_metric_details', title = i18n.t('monitor.strategy_detail'), data) => ({
   field,
   title,
   minWidth: 120,
   slots: {
     default: ({ row }, h) => {
-      const { filters, strategyConfig, strategyArr = [] } = getMetircAlertUtil(row, field)
+      const { filters, strategyConfig, strategyArr = [] } = getMetircAlertUtil(data || row, field)
       const periodTxt = i18n.t('monitor.text_102', [strategyConfig.period])
 
-      if (!row[field]) return '-'
+      if (!(data || row)[field]) return '-'
       let filterNode = null
       if (filters.length > 0) {
         filterNode = (
@@ -79,10 +79,10 @@ export const strategyColumn = (field = 'common_alert_metric_details', title = i1
     },
   },
   formatter: ({ row }) => {
-    const { filters, strategyConfig, strategyArr = [] } = getMetircAlertUtil(row, field)
+    const { filters, strategyConfig, strategyArr = [] } = getMetircAlertUtil(data || row, field)
     const periodTxt = i18n.t('monitor.text_102', [strategyConfig.period])
 
-    if (!row[field]) return ''
+    if (!(data || row)[field]) return ''
     let filterNode = null
     if (filters.length > 0) {
       filterNode = i18n.t('monitor.text_101') + ':'
@@ -305,22 +305,28 @@ export const getVerifiedContactTypesTableColumn = ({ field = 'channel', title = 
         channel.forEach((ctype) => {
           switch (ctype) {
             case 'webconsole':
-              renderComponents.push(<icon type='webconsole' style={{ color: color }} title={i18n.t('dictionary.webconsole')} />)
+              renderComponents.push(<icon class="mr-2" type='webconsole' style={{ color: color }} title={i18n.t('dictionary.webconsole')} />)
               break
             case 'email':
-              renderComponents.push(<icon class='ml-2' type='email' style={{ color: color }} title={i18n.t('common.email')} />)
+              renderComponents.push(<icon class='mr-2' type='email' style={{ color: color }} title={i18n.t('common.email')} />)
               break
             case 'mobile':
-              renderComponents.push(<icon class='ml-2' type='mobile' style={{ color: color }} title={i18n.t('common.mobile')} />)
+              renderComponents.push(<icon class='mr-2' type='mobile' style={{ color: color }} title={i18n.t('common.mobile')} />)
               break
             case 'dingtalk':
-              renderComponents.push(<icon class='ml-2' type='dingtalk' style={{ color: color }} title={i18n.t('common.dingtalk')} />)
+              renderComponents.push(<icon class='mr-2' type='dingtalk' style={{ color: color }} title={i18n.t('common.dingtalk')} />)
               break
             case 'feishu':
-              renderComponents.push(<icon class='ml-2' type='feishu' style={{ color: color }} title={i18n.t('common.feishu')} />)
+              renderComponents.push(<icon class='mr-2' type='feishu' style={{ color: color }} title={i18n.t('common.feishu')} />)
               break
             case 'workwx':
-              renderComponents.push(<icon class='ml-2' type='workwx' style={{ color: color }} title={i18n.t('common.workwx')} />)
+              renderComponents.push(<icon class='mr-2' type='workwx' style={{ color: color }} title={i18n.t('common.workwx')} />)
+              break
+            case 'alert_event':
+              renderComponents.push(<icon class="mr-2" type="alert-event" style={{ color: color }} title={i18n.t('common.workflow.alert_event')} />)
+              break
+            case 'alert_ticket':
+              renderComponents.push(<icon class="mr-2" type="navbar-process" style={{ color: color }} title={i18n.t('common.workflow.alert_ticket')} />)
               break
             default:
               break
