@@ -104,11 +104,11 @@
         :select-props="{ mode: 'multiple', placeholder: $t('common.tips.select', [$t('monitor.recipient')]) }"
         :params="contactParams" />
     </a-form-item>
-    <a-form-item v-if="notifyTypes.includes('recipient') && contactArrOpts && contactArrOpts.length > 0" :label="$t('monitor.channel')">
+    <a-form-item v-if="notifyTypes.includes('recipient') && contactArrAllOpts && contactArrAllOpts.length > 0" :label="$t('monitor.channel')">
       <a-checkbox-group
         v-decorator="decorators.channel">
         <a-checkbox
-          v-for="v in contactArrOpts"
+          v-for="v in contactArrAllOpts"
           :key="v.label"
           :value="v.value"
           :disabled="v.disabled">
@@ -154,6 +154,8 @@ import ScopeRadio from '@/sections/ScopeRadio'
 import { levelMaps, preiodMaps } from '@Monitor/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import NotifyTypes from '@/sections/NotifyTypes'
+import workflowMixin from '@/mixins/workflow'
+import { WORKFLOW_TYPES } from '@/constants/workflow'
 import Condition from './Condition'
 
 export default {
@@ -169,6 +171,7 @@ export default {
       form: this.form,
     }
   },
+  mixins: [workflowMixin],
   props: {
     formItemLayout: {
       type: Object,
@@ -441,7 +444,7 @@ export default {
         notify_type: [
           'notify_type',
           {
-            initialValue: initialValue.notifyTypes,
+            initialValue: initialValue.notifyTypes || [],
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('monitor.notification_type')]) },
             ],
@@ -450,7 +453,7 @@ export default {
         roles: [
           'roles',
           {
-            initialValue: initialValue.roles,
+            initialValue: initialValue.roles || [],
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('monitor.role')]) },
             ],
@@ -459,7 +462,7 @@ export default {
         recipients: [
           'recipients',
           {
-            initialValue: initialValue.recipients,
+            initialValue: initialValue.recipients || [],
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('monitor.recipient')]) },
             ],
@@ -468,7 +471,7 @@ export default {
         robot_ids: [
           'robot_ids',
           {
-            initialValue: initialValue.robot_ids,
+            initialValue: initialValue.robot_ids || [],
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('monitor.text_11')]) },
             ],
@@ -477,7 +480,7 @@ export default {
         channel: [
           'channel',
           {
-            initialValue: initialValue.channel,
+            initialValue: initialValue.channel || [],
           },
         ],
       },
@@ -573,6 +576,24 @@ export default {
         }
       })
     },
+    contactArrAllOpts () {
+      const ret = []
+      if (this.checkWorkflowEnabled(WORKFLOW_TYPES.ALERT_EVENT)) {
+        ret.push({
+          value: 'alert_event',
+          label: this.$t('common.workflow.alert_event'),
+          disabled: false,
+        })
+      }
+      if (this.checkWorkflowEnabled(WORKFLOW_TYPES.ALERT_TICKET)) {
+        ret.push({
+          value: 'alert_ticket',
+          label: this.$t('common.workflow.alert_ticket'),
+          disabled: false,
+        })
+      }
+      return [...this.contactArrOpts, ...ret]
+    },
   },
   watch: {
     timeRangeParams () {
@@ -603,7 +624,7 @@ export default {
     contactArrOpts () {
       const ect = this.form.fc.getFieldValue('channel')
       if (ect) {
-        let newContactTypes = this.contactArrOpts.filter((c) => { return ect.indexOf(c.value) >= 0 }).map((c) => c.value)
+        let newContactTypes = this.contactArrAllOpts.filter((c) => { return ect.indexOf(c.value) >= 0 }).map((c) => c.value)
         if (newContactTypes.length === 0) {
           newContactTypes = ['webconsole']
         }

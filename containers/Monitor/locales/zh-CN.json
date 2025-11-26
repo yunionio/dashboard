@@ -329,5 +329,7 @@
   "monitor.func.MAX": "最大值",
   "monitor.func.MEAN": "平均值",
   "monitor.func.SUM": "求和",
-  "monitor.k8s_node": "节点"
+  "monitor.k8s_node": "节点",
+  "monitor.alert_policy_id": "告警策略ID",
+  "monitor.alert_count": "告警次数"
 }
