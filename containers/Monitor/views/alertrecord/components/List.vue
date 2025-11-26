@@ -313,6 +313,7 @@ export default {
         id: row.alert_id,
         resource: 'commonalerts',
         apiVersion: 'v1',
+        getParams: this.getParam,
       })
     },
     initResType () {
