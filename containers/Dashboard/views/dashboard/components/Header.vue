@@ -11,7 +11,7 @@
         <span>{{ item.name }}</span>
       </li>
     </draggable>
-    <data-range v-if="isAdminMode || isDomainMode" :dataRangeParams="dataRangeParams" @updateDataRange="updateDataRange" />
+    <data-range v-if="(isAdminMode || isDomainMode) && $appConfig.isPrivate && $store.getters.isSysCE" :dataRangeParams="dataRangeParams" @updateDataRange="updateDataRange" />
     <a-button @click="handleRefresh" type="link" class="action-btn">
       <icon type="refresh" />
     </a-button>

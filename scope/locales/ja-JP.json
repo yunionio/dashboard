@@ -44,5 +44,6 @@
     "qingcloud": "チンユン",
     "chinaunion": "ユニコムクラウド",
     "volcengine": "火山エンジン"
-  }
+  },
+  "scope.kpi.data_range": "データ範囲"
 }
