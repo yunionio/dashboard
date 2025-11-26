@@ -45,5 +45,6 @@
     "qingcloud": "Qing Cloud",
     "chinayunion": "China Union",
     "volcengine": "Volc Engine"
-  }
+  },
+  "scope.kpi.data_range": "Data Range"
 }
