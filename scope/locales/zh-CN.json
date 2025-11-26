@@ -44,5 +44,6 @@
     "qingcloud": "青云",
     "chinaunion": "联通云",
     "volcengine": "火山引擎"
-  }
+  },
+  "scope.kpi.data_range": "数据范围"
 }
