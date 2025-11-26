@@ -14,6 +14,8 @@ export const WORKFLOW_TYPES = {
   APPLY_SERVER_RESTART: 'apply-server-restart',
   APPLY_SERVER_START: 'apply-server-start',
   EXECUTE_RESOURCE_ORDER_SET: 'execute-resource-order-set',
+  ALERT_EVENT: 'alert-event',
+  ALERT_TICKET: 'alert-ticket',
 }
 
 export const PROCESS_TYPES_OPTS = [
@@ -62,6 +64,14 @@ export const PROCESS_TYPES_OPTS = [
     name: i18n.t('common.workflow.order_set'),
     value: WORKFLOW_TYPES.EXECUTE_RESOURCE_ORDER_SET,
   },
+  {
+    name: i18n.t('common.workflow.alert_event'),
+    value: WORKFLOW_TYPES.ALERT_EVENT,
+  },
+  {
+    name: i18n.t('common.workflow.alert_ticket'),
+    value: WORKFLOW_TYPES.ALERT_TICKET,
+  },
 ]
 
 i18nSetProperty({
@@ -98,6 +108,7 @@ export const MULTIPLE_APPROVAL_PROCESS = [
   WORKFLOW_TYPES.APPLY_SERVER_DELETE,
   WORKFLOW_TYPES.APPLY_INTERNAL_RESOURCE,
   WORKFLOW_TYPES.EXECUTE_RESOURCE_ORDER_SET,
+  WORKFLOW_TYPES.ALERT_TICKET,
 ]
 
 export const PRIORITY_OPTS = [

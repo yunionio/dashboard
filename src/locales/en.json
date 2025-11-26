@@ -6119,6 +6119,8 @@
   "common.workflow.start": "Host start",
   "common.workflow.restart": "Host restart",
   "common.workflow.order_set": "Resource Order Application",
+  "common.workflow.alert_event": "Alert Event",
+  "common.workflow.alert_ticket": "Alert Ticket",
   "common.ssh_login_err": "SSH remote login failed",
   "common.ssh_login_err_msg": "please enter SSH login information and try logging in again",
   "common.intranet": "Intranet",
@@ -6240,5 +6242,6 @@
   "common.duration.none": "None",
   "common.duration.custom": "Custom",
   "common.not_set": "Not set",
-  "common.not_expired": "Not expired"
+  "common.not_expired": "Not expired",
+  "common.alert_info": "Alert information"
 }
