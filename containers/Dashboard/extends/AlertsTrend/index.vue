@@ -138,7 +138,7 @@ export default {
       })
     },
     currencySign () {
-      return currencyUnitMap[this.form.fd.currency]?.sign || '¥'
+      return currencyUnitMap[this.form.fd.currency]?.sign || currencyUnitMap.CNY.sign
     },
     extraParams () {
       const ret = {}

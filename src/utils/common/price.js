@@ -3,6 +3,7 @@ import i18n from '@/locales'
 import { numerify } from '@/filters'
 import { PROVIDER_MAP } from '@/constants'
 import { Manager } from '@/utils/manager'
+import { currencyUnitMap } from '@/constants/currency'
 
 export class PriceFetcher {
   // eslint-disable-next-line
@@ -245,15 +246,11 @@ export class Price {
   }
 
   get currency () {
-    const currencys = {
-      USD: '$',
-      CNY: '¥',
-      BRL: 'R$',
-      EUR: '€',
-    }
-
     const key = _.get(this.priceObj, ['currency'])
-    return _.get(currencys, [key]) || currencys.CNY
+    if (currencyUnitMap[key]) {
+      return currencyUnitMap[key].sign
+    }
+    return currencyUnitMap.CNY.sign
   }
 
   get priceTips () {

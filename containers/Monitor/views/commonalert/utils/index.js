@@ -343,7 +343,7 @@ export const getValueWithUnit = (value = 0, unit = '') => {
   // 金额类型的单位
   for (let i = 0; i < currencyUnitList.length; i++) {
     if (unit.indexOf(currencyUnitList[i]) !== -1) {
-      return `${currencyUnitMap[currencyUnitList[i]].sign}${value}`
+      return `${currencyUnitMap[currencyUnitList[i]].sign} ${value}`
     }
   }
   return value

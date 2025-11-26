@@ -22,6 +22,7 @@ import _ from 'lodash'
 import { PriceFetcherByPriceKey } from '@/utils/common/price'
 import { hasMeterService } from '@/utils/auth'
 import DiscountPrice from '@/sections/DiscountPrice'
+import { currencyUnitMap } from '@/constants/currency'
 
 export default {
   name: 'PriceFetcher',
@@ -47,7 +48,7 @@ export default {
     this.calcPrices = _.debounce(this.calcPrices, 200)
     return {
       priceObj: null,
-      currency: '¥',
+      currency: currencyUnitMap.CNY.sign,
       discount: 0,
       price: null,
       priceFormat: null,
