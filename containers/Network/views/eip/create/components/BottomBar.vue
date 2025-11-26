@@ -39,6 +39,7 @@ import { findPlatform } from '@/utils/common/hypervisor'
 import DiscountPrice from '@/sections/DiscountPrice'
 import { hasMeterService } from '@/utils/auth'
 import { PriceFetcherByPriceKey } from '@/utils/common/price'
+import { currencyUnitMap } from '@/constants/currency'
 
 export default {
   name: 'BottomBar',
@@ -71,7 +72,7 @@ export default {
     return {
       loading: false,
       priceObj: null,
-      currency: '¥',
+      currency: currencyUnitMap.CNY.sign,
       discount: 0,
       price: null,
       priceFormat: null,
@@ -109,7 +110,7 @@ export default {
   methods: {
     resetPrice () {
       this.priceObj = null
-      this.currency = '¥'
+      this.currency = currencyUnitMap.CNY.sign
       this.discount = 0
       this.price = null
       this.priceFormat = null
