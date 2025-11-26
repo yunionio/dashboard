@@ -693,12 +693,12 @@
       "desc": "How long the pending-deleted images are kept in recyclebin"
     },
     "baremetal$auto_register_baremetal": {
-      "label": "Baremetal Automatic Registration",
-      "desc": "If enabled, Baremetal Agent will register it to the @:brand platform and reset the BMC information after receiving a PXE request from any physical machine. Please be careful to enable automatic registration"
+      "label": "Physical Machine Automatic Registration",
+      "desc": "If enabled, Physical Machine Agent will register it to the @:brand platform and reset the BMC information after receiving a PXE request from any physical machine. Please be careful to enable automatic registration"
     },
     "baremetal$default_ipmi_password": {
-      "label": "Default IPMI Password for Baremetal",
-      "desc": "The default password when resetting the BMC information of the barenetal machine when registering the baremetal by the pre-registration or automatic registration"
+      "label": "Default IPMI Password for Physical Machine",
+      "desc": "The default password when resetting the BMC information of the physical machine when registering the physical machine by the pre-registration or automatic registration"
     },
     "common$enable_quota_check": {
       "label": "Quota Check",
