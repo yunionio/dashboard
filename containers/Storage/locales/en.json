@@ -1,6 +1,6 @@
 {
   "storage.text_1": "Local Storage",
-  "storage.text_2": "Baremetal Storage",
+  "storage.text_2": "Physical Machine Storage",
   "storage.text_3": "Container Storage",
   "storage.text_4": "Local Cloud Disk",
   "storage.text_5": "Shared Cloud Disk",
