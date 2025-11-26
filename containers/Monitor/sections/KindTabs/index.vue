@@ -14,6 +14,7 @@
 </template>
 <script>
 import i18n from '@/locales'
+import { currencyUnitMap } from '@/constants/currency'
 
 const allTabs = {
   'cpu-usage': {
@@ -57,7 +58,7 @@ export default {
     envParams: Object,
     currencySign: {
       type: String,
-      default: '￥',
+      default: currencyUnitMap.CNY.sign,
     },
     currencyParams: {
       type: Object,

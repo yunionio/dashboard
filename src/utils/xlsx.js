@@ -1,5 +1,6 @@
 import XLSX from 'xlsx'
 import * as R from 'ramda'
+import { CURRENCY_LIST } from '@/constants/currency'
 
 /**
  * 获取当前机器时间时区是否存在时间误差
@@ -55,6 +56,7 @@ const strMatchMap = {
   '￥Bill': ['￥', ',', ' ', '.', '-', /\d/],
   R$Bill: ['R', '$', ',', ' ', '.', '-', /\d/],
   '€Bill': ['€', ',', ' ', '.', '-', /\d/],
+  billNumber: [',', ' ', '.', '-', /\d/],
   percent: ['-', '.', '%', ' ', /\d/],
   number: ['-', '.', /\d/],
 }
@@ -119,6 +121,13 @@ const matchDataFormat = (data) => {
     ret.currency = '€'
     ret.value = d.replace('€', '').replaceAll(',', '').replaceAll(' ', '')
   }
+  CURRENCY_LIST.forEach(item => {
+    if (d.startsWith(item.key) && isOnlyMatchChars(d, [...strMatchMap.billNumber, ...(item.key.split(''))])) {
+      ret.isBill = true
+      ret.currency = item.key
+      ret.value = d.replace(item.key, '').replaceAll(',', '').replaceAll(' ', '')
+    }
+  })
   // 百分比
   if (d.endsWith('%') && isOnlyMatchChars(d, strMatchMap.percent)) {
     ret.isPercent = true
@@ -179,7 +188,7 @@ export const addDataToSheetAfterFormat = ({ data: originData = [], titleRowLen =
           if (fData.isBill) {
             formatObj[cellSign] = formatObj[cellSign] || {}
             formatObj[cellSign].t = 'n' // 数字格式
-            formatObj[cellSign].z = `${fData.currency} #,##0.00` // 货币format
+            formatObj[cellSign].z = `"${fData.currency} "#,##0.00` // 货币format
             data[index][index2] = fData.value
           }
           if (fData.isPercent) {

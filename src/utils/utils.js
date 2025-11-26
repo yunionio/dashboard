@@ -4,7 +4,7 @@ import _ from 'lodash'
 import i18n from '@/locales'
 import { numerify } from '@/filters'
 import setting from '@/config/setting'
-
+import { currencyUnitMap } from '@/constants/currency'
 import { getLanguage } from '@/utils/common/cookie'
 // import { encodeURI } from 'js-base64'
 
@@ -1235,4 +1235,18 @@ export const ppmToPNGDataURL = (base64Data) => {
   ctx.putImageData(imageData, 0, 0)
   // 转换为 PNG Data URL
   return { canvas, url: canvas.toDataURL('image/png') }
+}
+
+export const getBillFormatter = (num, currency, formatter = '0,0.00', { showSign = true, showCn = false } = {}) => {
+  if (!currency || !currencyUnitMap[currency]) {
+    return `${numerify(num, formatter)}`
+  }
+  const { sign, cn } = currencyUnitMap[currency]
+  if (showSign) {
+    return `${sign} ${numerify(num, formatter)}`
+  }
+  if (showCn) {
+    return `${numerify(num, formatter)} ${cn}`
+  }
+  return `${numerify(num, formatter)}`
 }

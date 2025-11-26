@@ -273,8 +273,6 @@
   "db.text_263": "Expense Estimate",
   "db.text_264": "Failed to create a new host",
   "db.text_265": "Quantity",
-  "db.text_266": "(Combined ¥{0}/day ¥{1}/hour)",
-  "db.text_267": "(Combined ¥{0}/day ¥{1}/month)",
   "db.text_268": "Cloud Subscription: {0}",
   "db.text_269": "Please select the subnet netwrok",
   "db.text_270": "Available: {0}",

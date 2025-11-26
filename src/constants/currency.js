@@ -1,84 +1,40 @@
 import i18n from '@/locales'
 
-export const currencyUnitMap = {
-  CNY: {
-    sign: '￥',
-    cn: i18n.t('currencys.CNY'),
-    label: i18n.t('common.currency_cny'),
-  },
-  USD: {
-    sign: '$',
-    cn: i18n.t('common.currency_usd'),
-    label: i18n.t('common.currency_usd'),
-  },
-  BRL: {
-    sign: 'R$',
-    cn: i18n.t('common.currency_brl'),
-    label: i18n.t('common.currency_brl'),
-  },
-  EUR: {
-    sign: '€',
-    cn: i18n.t('common.currency_eur'),
-    label: i18n.t('common.currency_eur'),
-  },
-  _CNY: {
-    sign: '￥',
-    cn: i18n.t('currencys.CNY'),
-    label: i18n.t('common.currency_cny'),
-  },
-  _USD: {
-    sign: '$',
-    cn: i18n.t('common.currency_usd'),
-    label: i18n.t('common.currency_usd'),
-  },
-  _BRL: {
-    sign: 'R$',
-    cn: i18n.t('common.currency_brl'),
-    label: i18n.t('common.currency_brl'),
-  },
-  _EUR: {
-    sign: '€',
-    cn: i18n.t('common.currency_eur'),
-    label: i18n.t('common.currency_eur'),
-  },
-  '*CNY': {
-    sign: '￥',
-    cn: i18n.t('currencys.CNY'),
-    label: i18n.t('common.currency_cny'),
-  },
-  '*USD': {
-    sign: '$',
-    cn: i18n.t('common.currency_usd'),
-    label: i18n.t('common.currency_usd'),
-  },
-  '*BRL': {
-    sign: 'R$',
-    cn: i18n.t('common.currency_brl'),
-    label: i18n.t('common.currency_brl'),
-  },
-  '*EUR': {
-    sign: '€',
-    cn: i18n.t('common.currency_eur'),
-    label: i18n.t('common.currency.eur'),
-  },
-  '*_CNY': {
-    sign: '￥',
-    cn: i18n.t('currencys.CNY'),
-    label: i18n.t('common.currency_cny'),
-  },
-  '*_USD': {
-    sign: '$',
-    cn: i18n.t('common.currency_usd'),
-    label: i18n.t('common.currency_usd'),
-  },
-  '*_BRL': {
-    sign: 'R$',
-    cn: i18n.t('common.currency_brl'),
-    label: i18n.t('common.currency_brl'),
-  },
-  '*_EUR': {
-    sign: '€',
-    cn: i18n.t('common.currency_eur'),
-    label: i18n.t('common.currency_eur'),
-  },
-}
+const CURRENCY_LIST = [
+  { key: 'CNY', sign: '￥' },
+  { key: 'USD', sign: '$' },
+  { key: 'EUR', sign: '€' },
+  { key: 'BRL', sign: 'R$' },
+  { key: 'GBP', sign: '£' },
+  { key: 'JPY', sign: 'JPYҰ' },
+  { key: 'CAD', sign: 'C$' },
+  { key: 'AUD', sign: 'A$' },
+  { key: 'CHF', sign: '₣' },
+  { key: 'RUB', sign: '₽' },
+  { key: 'INR', sign: '₹' },
+  { key: 'MXN', sign: 'MXN' },
+  { key: 'SGD', sign: 'S$' },
+  { key: 'THB', sign: '฿' },
+  { key: 'TRY', sign: '₺' },
+  { key: 'ZAR', sign: 'R' },
+  { key: 'HKD', sign: 'HK$' },
+  { key: 'MOP', sign: 'MOP$' },
+].map(item => {
+  return {
+    ...item,
+    sign: item.key,
+    cn: i18n.te(`currencys.${item.key}`) ? i18n.t(`currencys.${item.key}`) : i18n.t(`common_currency.${item.key}`),
+    label: i18n.t(`common_currency.${item.key}`),
+  }
+})
+
+const currencyUnitMap = {}
+
+CURRENCY_LIST.forEach(item => {
+  currencyUnitMap[item.key] = { ...item }
+  currencyUnitMap[`*${item.key}`] = { ...item, key: `*${item.key}` }
+  currencyUnitMap[`_${item.key}`] = { ...item, key: `_${item.key}` }
+  currencyUnitMap[`*_${item.key}`] = { ...item, key: `*_${item.key}` }
+})
+
+export { CURRENCY_LIST, currencyUnitMap }

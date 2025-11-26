@@ -133,6 +133,7 @@ export default {
   },
   methods: {
     handleConfirm () {
+      console.log('handleConfirm', this.form)
       if (this.form.scope === 'domain' && !this.form.domain) {
         this.$message.error(this.$t('common.tips.select', [this.$t('dictionary.domain')]))
         return
@@ -161,6 +162,7 @@ export default {
     async checkSelectedRange () {
       if (this.dataRangeParams?.scope === 'domain' && this.dataRangeParams?.domain && !this.currentDomain) {
         try {
+          console.log('domain', this.dataRangeParams?.domain)
           const res = await new this.$Manager('domains', 'v1').list({ params: { scope: this.$store.getters.scope, limit: 1, filter: `id.in(${this.dataRangeParams?.domain})` } })
           const data = res.data?.data || []
           if (data.length > 0) {
