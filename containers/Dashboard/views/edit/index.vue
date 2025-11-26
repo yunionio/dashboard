@@ -18,7 +18,7 @@
         <div class="edit-content-inner w-100 h-100 position-absolute d-flex flex-column flex-nowrap">
           <div class="edit-header mb-2 d-flex">
             <a-input ref="input" v-model="dashboardName" :placeholder="$t('dashboard.text_119')" />
-            <data-range v-if="(isAdminMode || isDomainMode) && $appConfig.isPrivate && $store.getters.isSysCE" :dataRangeParams="dataRangeParams" @updateDataRange="updateDataRange" edit />
+            <data-range v-if="(isAdminMode || isDomainMode) && $appConfig.isPrivate && !$store.getters.isSysCE" :dataRangeParams="dataRangeParams" @updateDataRange="updateDataRange" edit />
           </div>
           <grid-shadow
             class="flex-fill"
