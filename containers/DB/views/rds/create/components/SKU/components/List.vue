@@ -32,6 +32,7 @@ import { sizestr } from '@/utils/utils'
 import PageListEmpty from '@/components/PageList/Loader'
 import { numerify } from '@/filters'
 import { hasMeterService } from '@/utils/auth'
+import { currencyUnitMap } from '@/constants/currency'
 
 export default {
   name: 'rdsSkuList',
@@ -133,14 +134,8 @@ export default {
                   price = rate.month_price
                   unit = this.$t('db.text_130')
                 }
-                const currencys = {
-                  USD: '$',
-                  CNY: '¥',
-                  BRL: 'R$',
-                  EUR: '€',
-                }
                 return [
-                  <span style="color: rgb(230, 139, 80);">{currencys[rate.currency]} { numerify(price, '0,0.00') }</span>,
+                  <span style="color: rgb(230, 139, 80);">{currencyUnitMap[rate.currency]?.sign || currencyUnitMap.CNY.sign} { numerify(price, '0,0.00') }</span>,
                   <span>  / {unit}</span>,
                 ]
               }

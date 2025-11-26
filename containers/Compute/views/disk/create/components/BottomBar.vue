@@ -38,6 +38,7 @@ import { PROVIDER_MAP } from '@/constants'
 import DiscountPrice from '@/sections/DiscountPrice'
 import { hasMeterService } from '@/utils/auth'
 import { PriceFetcherByPriceKey } from '@/utils/common/price'
+import { currencyUnitMap } from '@/constants/currency'
 
 export default {
   name: 'BottomBar',
@@ -70,7 +71,7 @@ export default {
     return {
       loading: false,
       priceObj: null,
-      currency: '¥',
+      currency: currencyUnitMap.CNY.sign,
       discount: 0,
       price: null,
       priceFormat: null,
