@@ -52,8 +52,8 @@ export default {
             ret.validate = false
             return ret
           }
-          ret.validate = cloudEnabled('acttachGpu', obj)
-          ret.tooltip = cloudUnabledTip('acttachGpu', obj)
+          ret.validate = cloudEnabled('acttachGpu', { ...obj, status: obj.guest_status })
+          ret.tooltip = cloudUnabledTip('acttachGpu', { ...obj, status: obj.guest_status })
           return ret
         },
       },
@@ -88,8 +88,8 @@ export default {
             ret.tooltip = this.$t('compute.text_489', [this.$t('dictionary.server')])
             return ret
           }
-          ret.validate = cloudEnabled('acttachGpu', obj)
-          ret.tooltip = cloudUnabledTip('acttachGpu', obj)
+          ret.validate = cloudEnabled('acttachGpu', { ...obj, status: obj.guest_status })
+          ret.tooltip = cloudUnabledTip('acttachGpu', { ...obj, status: obj.guest_status })
           return ret
         },
       },
