@@ -34,11 +34,30 @@
           <base-select v-decorator="decorators.comparator(item.key)"  :options="comparatorOpts" minWidth="70px" :disabled="disabled" @change="(v) => onComparatorChange(v, item)" />
         </a-form-item>
       </a-col>
-      <a-col :span="5" v-show="showThresholdMap[item.key]">
-        <a-form-item>
-          <threshold-input v-decorator="decorators.threshold(item.key)" :unit="unitMap[item.key]" :disabled="disabled" />
-        </a-form-item>
-      </a-col>
+      <template v-if="showThresholdMap[item.key]">
+        <template v-if="isRangeType(item.key)">
+          <a-col :span="8">
+            <div class="d-flex" style="gap: 8px; align-items: flex-start;">
+              <div style="flex: 1;">
+                <a-form-item style="margin-bottom: 0;">
+                  <threshold-input v-decorator="decorators.threshold_start(item.key)" :unit="unitMap[item.key]" :disabled="disabled" @change="() => handleRangeValueChange(item.key, 'end')" />
+                </a-form-item>
+              </div>
+              <span style="flex-shrink: 0; padding: 0 4px; display: flex; align-items: center; height: 32px; line-height: 32px; margin-top: 4px;">~</span>
+              <div style="flex: 1;">
+                <a-form-item style="margin-bottom: 0;">
+                  <threshold-input v-decorator="decorators.threshold_end(item.key)" :unit="unitMap[item.key]" :disabled="disabled" @change="() => handleRangeValueChange(item.key, 'start')" />
+                </a-form-item>
+              </div>
+            </div>
+          </a-col>
+        </template>
+        <a-col v-else :span="8">
+          <a-form-item>
+            <threshold-input v-decorator="decorators.threshold(item.key)" :unit="unitMap[item.key]" :disabled="disabled" />
+          </a-form-item>
+        </a-col>
+      </template>
       <a-button shape="circle" icon="minus" size="small" @click="del(item)" class="mt-2 ml-2" :disabled="disabled" />
     </a-row>
     <a-row :span="2">
@@ -90,6 +109,8 @@ export default {
         { key: '>=', label: '>=' },
         { key: '<=', label: '<=' },
         { key: '==', label: '==' },
+        { key: 'within_range', label: this.$t('monitor.within_range') },
+        { key: 'outside_range', label: this.$t('monitor.outside_range') },
         { key: 'nodata', label: 'No Data' },
       ],
       unitMap: {},
@@ -98,6 +119,7 @@ export default {
       metricOptsMap: {},
       showThresholdMap: {},
       metricMap: {},
+      rangeValidateTimers: {},
     }
   },
   computed: {
@@ -130,7 +152,7 @@ export default {
     },
     reset (execAdd = true) {
       this.conditionList.forEach(item => {
-        const fields = ['metric_key', 'metric_value', 'reduce', 'comparator', 'threshold']
+        const fields = ['metric_key', 'metric_value', 'reduce', 'comparator', 'threshold', 'threshold_start', 'threshold_end']
         fields.forEach(f => {
           this.$delete(this.form.fd, f)
           this.$delete(this.form.fd, `${f}[${item.key}]`)
@@ -151,7 +173,39 @@ export default {
         this.showThresholdMap[item.key] = false
       } else {
         this.showThresholdMap[item.key] = true
+        // 处理 threshold 格式转换
+        const thresholdKey = `threshold[${item.key}]`
+        const currentThreshold = this.form.fc.getFieldValue(thresholdKey)
+        const isRange = v === 'within_range' || v === 'outside_range'
+        if (isRange) {
+          // 切换到范围类型：将单个值转换为数组
+          let thresholdArray = []
+          if (currentThreshold !== undefined && currentThreshold !== null && !Array.isArray(currentThreshold)) {
+            thresholdArray = [currentThreshold, currentThreshold]
+          } else if (Array.isArray(currentThreshold) && currentThreshold.length >= 2) {
+            thresholdArray = currentThreshold
+          } else {
+            // 如果没有值，设置默认数组
+            thresholdArray = [1, 2]
+          }
+          this.form.fc.setFieldsValue({
+            [thresholdKey]: thresholdArray,
+            [`threshold_start[${item.key}]`]: thresholdArray[0],
+            [`threshold_end[${item.key}]`]: thresholdArray[1],
+          })
+        } else {
+          // 切换到非范围类型：将数组转换为单个值（取第一个值）
+          if (Array.isArray(currentThreshold) && currentThreshold.length > 0) {
+            this.form.fc.setFieldsValue({
+              [thresholdKey]: currentThreshold[0],
+            })
+          }
+        }
       }
+    },
+    isRangeType (key) {
+      const comparator = this.form.fc.getFieldValue(`comparator[${key}]`)
+      return comparator === 'within_range' || comparator === 'outside_range'
     },
     metricValueLabelFormat (item) {
       return (<div>
@@ -200,6 +254,27 @@ export default {
       } else {
         return []
       }
+    },
+    handleRangeValueChange (key, targetField) {
+      // 使用防抖避免频繁触发
+      const timerKey = `${key}_${targetField}`
+      if (this.rangeValidateTimers[timerKey]) {
+        clearTimeout(this.rangeValidateTimers[timerKey])
+      }
+      this.rangeValidateTimers[timerKey] = setTimeout(() => {
+        const fieldName = targetField === 'start' ? `threshold_start[${key}]` : `threshold_end[${key}]`
+        // 同步更新 threshold 数组
+        const startValue = this.form.fc.getFieldValue(`threshold_start[${key}]`)
+        const endValue = this.form.fc.getFieldValue(`threshold_end[${key}]`)
+        if (startValue !== undefined && startValue !== null && endValue !== undefined && endValue !== null) {
+          this.form.fc.setFieldsValue({
+            [`threshold[${key}]`]: [startValue, endValue],
+          })
+        }
+        // 触发校验
+        this.form.fc.validateFields([fieldName], { force: true }, () => {})
+        delete this.rangeValidateTimers[timerKey]
+      }, 300)
     },
   },
 }

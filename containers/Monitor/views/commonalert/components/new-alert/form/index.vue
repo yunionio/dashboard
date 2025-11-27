@@ -373,6 +373,62 @@ export default {
               ],
             },
           ],
+          threshold_start: i => [
+            `threshold_start[${i}]`,
+            {
+              initialValue: initialValue.threshold_start || 1,
+              validateFirst: true,
+              rules: [
+                { required: true, message: this.$t('monitor.commonalert.threshold.message') },
+                {
+                  validator: (rule, value, callback) => {
+                    if (!(/^\d+(\.\d+)?$/.test(value))) {
+                      callback(this.$t('monitor.validate_number'))
+                      return
+                    }
+                    const endValue = this.form.fc.getFieldValue(`threshold_end[${i}]`)
+                    if (endValue !== undefined && endValue !== null && endValue !== '') {
+                      const start = parseFloat(value)
+                      const end = parseFloat(endValue)
+                      if (!isNaN(start) && !isNaN(end) && start >= end) {
+                        callback(this.$t('monitor.commonalert.threshold_start_lt_end'))
+                        return
+                      }
+                    }
+                    callback()
+                  },
+                },
+              ],
+            },
+          ],
+          threshold_end: i => [
+            `threshold_end[${i}]`,
+            {
+              initialValue: initialValue.threshold_end || 2,
+              validateFirst: true,
+              rules: [
+                { required: true, message: this.$t('monitor.commonalert.threshold.message') },
+                {
+                  validator: (rule, value, callback) => {
+                    if (!(/^\d+(\.\d+)?$/.test(value))) {
+                      callback(this.$t('monitor.validate_number'))
+                      return
+                    }
+                    const startValue = this.form.fc.getFieldValue(`threshold_start[${i}]`)
+                    if (startValue !== undefined && startValue !== null && startValue !== '') {
+                      const start = parseFloat(startValue)
+                      const end = parseFloat(value)
+                      if (!isNaN(start) && !isNaN(end) && end <= start) {
+                        callback(this.$t('monitor.commonalert.threshold_end_gt_start'))
+                        return
+                      }
+                    }
+                    callback()
+                  },
+                },
+              ],
+            },
+          ],
         },
         filters: {
           tagCondition: i => [
@@ -674,9 +730,32 @@ export default {
           })
           conditionRef.metricValueChange(item.field, { key: conditionList[idx].key })
           setTimeout(() => {
-            this.form.fc.setFieldsValue({
-              [`threshold[${conditionList[idx].key}]`]: item.threshold,
-            })
+            const comparator = item.comparator
+            if (comparator === 'within_range' || comparator === 'outside_range') {
+              // 范围类型：从 threshold_range 读取数据
+              let thresholdArray = []
+              if (Array.isArray(item.threshold_range) && item.threshold_range.length >= 2) {
+                thresholdArray = item.threshold_range
+              } else if (item.threshold_start !== undefined && item.threshold_end !== undefined) {
+                thresholdArray = [item.threshold_start, item.threshold_end]
+              } else if (Array.isArray(item.threshold) && item.threshold.length >= 2) {
+                thresholdArray = item.threshold
+              } else if (item.threshold !== undefined) {
+                // 兼容处理：如果只有 threshold，则拆分成数组
+                thresholdArray = [item.threshold, item.threshold]
+              } else {
+                thresholdArray = [1, 2]
+              }
+              this.form.fc.setFieldsValue({
+                [`threshold[${conditionList[idx].key}]`]: thresholdArray,
+                [`threshold_start[${conditionList[idx].key}]`]: thresholdArray[0],
+                [`threshold_end[${conditionList[idx].key}]`]: thresholdArray[1],
+              })
+            } else {
+              this.form.fc.setFieldsValue({
+                [`threshold[${conditionList[idx].key}]`]: item.threshold,
+              })
+            }
           }, 100)
         })
       })
@@ -824,11 +903,21 @@ export default {
         const tags = []
         if (fd.metric_key[key]) model.measurement = fd.metric_key[key]
         if (fd.reduce[key]) params.reduce = fd.reduce[key]
-        if (fd.threshold[key]) params.threshold = fd.threshold[key]
         if (fd.comparator[key]) {
           params.comparator = fd.comparator[key]
           if (params.comparator === 'nodata') {
             params.condition_type = 'nodata_query'
+          } else if (params.comparator === 'within_range' || params.comparator === 'outside_range') {
+            params.threshold_range = [fd.threshold_start[key] || fd.threshold[key], fd.threshold_end[key] || fd.threshold[key]]
+          } else {
+            // 非范围类型：threshold 是单个值
+            if (fd.threshold && fd.threshold[key]) {
+              params.threshold = fd.threshold[key]
+            }
+          }
+        } else {
+          if (fd.threshold && fd.threshold[key]) {
+            params.threshold = fd.threshold[key]
           }
         }
         if (fd.metric_value[key]) model.select = [[{ type: 'field', params: [fd.metric_value[key]] }]]
