@@ -24,7 +24,8 @@
         </a-form-item>
         <a-form-item :label="$t('network.text_213')" v-bind="formItemLayout" required>
           <ip-address
-            :decorators="decorators" />
+            :decorators="decorators"
+            :form="form.fc" />
         </a-form-item>
         <a-form-item :label="$t('network.text_641')" v-bind="formItemLayout">
           <a-textarea
