@@ -200,6 +200,16 @@ export function getMetircAlertUtil (row, field, condition) {
       txt = `[${detail.within_range[0]}${threshold.unit}, ${detail.within_range[1]}${threshold.unit}]`
       strategyConfig.within_range = detail.within_range
     }
+    if (detail.comparator === 'within_range' && detail.threshold_range) {
+      comparator = ''
+      txt = i18n.t('monitor.threshold_range_in', [`${detail.threshold_range[0]}${unit || detail.unit || ''}`, `${detail.threshold_range[1]}${unit || detail.unit || ''}`])
+      strategyConfig.within_range = detail.threshold_range
+    }
+    if (detail.comparator === 'outside_range' && detail.threshold_range) {
+      comparator = ''
+      txt = i18n.t('monitor.threshold_range_out', [`${detail.threshold_range[0]}${unit || detail.unit || ''}`, `${detail.threshold_range[1]}${unit || detail.unit || ''}`])
+      strategyConfig.outside_range = detail.threshold_range
+    }
     strategyConfig.comparator = detail.comparator
     strategyConfig.threshold = detail.threshold
     strategyConfig.unit = unit
