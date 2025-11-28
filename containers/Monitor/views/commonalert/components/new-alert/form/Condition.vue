@@ -104,6 +104,7 @@ export default {
         { key: 'avg', label: this.$t('monitor.avg') },
         { key: 'min', label: this.$t('monitor.min') },
         { key: 'max', label: this.$t('monitor.max') },
+        { key: 'last', label: this.$t('monitor.last') },
       ],
       comparatorOpts: [
         { key: '>=', label: '>=' },

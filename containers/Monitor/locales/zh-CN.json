@@ -139,6 +139,7 @@
   "monitor.avg": "平均值",
   "monitor.max": "最大值",
   "monitor.min": "最小值",
+  "monitor.last": "最新值",
   "monitor.path": "路径",
   "monitor.within_range": "在范围内",
   "monitor.outside_range": "在范围外",
