@@ -40,6 +40,7 @@ export default {
 <style lang="scss" scoped>
 .sharing-rules-popover {
   max-width: 80vw;
+  min-width: 400px;
   display: block;
   :deep(.vxe-body--column) {
     white-space: normal !important;
