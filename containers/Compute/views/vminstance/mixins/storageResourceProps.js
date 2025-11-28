@@ -104,16 +104,20 @@ export default {
             field: 'schedtag',
             title: this.$t('storage.text_45'),
             width: 120,
-            type: 'expand',
             slots: {
-              content: ({ row }) => {
+              default: ({ row }) => {
                 const tags = _.sortBy(row.schedtags, ['default', 'name'])
-                if (tags.length > 0) {
-                  return tags.map(tag => <a-tag class='mb-2' color='blue'>{tag.name}</a-tag>)
+                if (!tags.length) {
+                  return [
+                    <div class='text-color-help'>{ this.$t('storage.text_171') }</div>,
+                  ]
                 }
-                return [
-                  <div class='text-color-help'>{ this.$t('storage.text_171') }</div>,
-                ]
+                const list = tags.map(tag => <a-tag class='mb-2 mr-1' color='blue'>{tag.name}</a-tag>)
+                return [<list-body-cell-popover text={this.$t('compute.text_619', [tags.length])} max-width="400px">
+                  <div style="display: inline-flex; flex-wrap: wrap; max-width: 40vw;">
+                    {...list}
+                  </div>
+                </list-body-cell-popover>]
               },
             },
           },

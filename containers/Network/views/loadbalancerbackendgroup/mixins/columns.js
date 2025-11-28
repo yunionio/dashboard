@@ -26,19 +26,18 @@ export default {
       {
         field: 'listeners',
         title: i18n.t('network.text_355'),
-        type: 'expand',
         width: 100,
         slots: {
           default: ({ row }) => {
-            return i18n.t('compute.text_619', [row.lb_listener_count || 0])
-          },
-          content: ({ row }, h) => {
             if (row.listeners && row.listeners.length > 0) {
-              return row.listeners.map(item => {
-                if (item.redirect !== 'off') return null
-                return <a-tag class='mb-2'>{item.name}({item.listener_type}: {item.listener_port})</a-tag>
-              })
+              const list = row.listeners.filter(item => item.redirect === 'off').map(item => <a-tag class='mb-2 mr-1'>{item.name}({item.listener_type}: {item.listener_port})</a-tag>)
+              return [<list-body-cell-popover text={i18n.t('compute.text_619', [row.lb_listener_count || 0])} max-width="400px">
+                <div style="display: inline-flex; flex-wrap: wrap; max-width: 40vw;">
+                  {...list}
+                </div>
+              </list-body-cell-popover>]
             }
+            return i18n.t('compute.text_619', [row.lb_listener_count || 0])
           },
         },
       },

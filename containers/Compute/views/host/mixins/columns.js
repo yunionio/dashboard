@@ -426,15 +426,22 @@ export default {
         field: 'schedtags',
         title: i18n.t('compute.text_541'),
         width: 120,
-        type: 'expand',
+        // type: 'expand',
         slots: {
-          content: ({ row }) => {
+          default: ({ row }) => {
             const tags = _.sortBy(row.schedtags, ['default', 'name'])
-            if (tags.length > 0) {
-              return tags.map(tag => <a-tag class='mb-2' color='blue'>{tag.name}</a-tag>)
+            if (!tags.length) {
+              return [
+                <div class='text-color-help'>{this.$t('compute.text_1322')}</div>,
+              ]
             }
+            const list = tags.map(tag => <a-tag class='mb-2 mr-1' color='blue'>{tag.name}</a-tag>)
             return [
-              <div class='text-color-help'>{ this.$t('compute.text_1322') }</div>,
+              <list-body-cell-popover text={this.$t('compute.text_619', [tags.length])} max-width="400px" >
+                <div style="display: inline-flex; flex-wrap: wrap">
+                  {...list}
+                </div>
+              </list-body-cell-popover>,
             ]
           },
         },
