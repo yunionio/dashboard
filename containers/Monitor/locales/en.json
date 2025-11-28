@@ -139,6 +139,7 @@
   "monitor.avg": "Average",
   "monitor.max": "Maximum",
   "monitor.min": "Minimum",
+  "monitor.last": "Latest Value",
   "monitor.path": "Path",
   "monitor.within_range": "Within Range",
   "monitor.outside_range": "Outside Range",
