@@ -451,7 +451,7 @@ export default {
           tagOperator: i => [
             `tagOperators[${i}]`,
             {
-              initialValue: '=',
+              initialValue: '=~',
               rules: [
                 { required: true, message: this.$t('common.select') },
               ],
@@ -924,9 +924,13 @@ export default {
         if (R.is(Object, fd.tagValues)) {
           R.forEachObjIndexed((value, key) => {
             if (value) {
+              let val = value
+              if ((fd.tagOperators[key] === '=~' || fd.tagOperators[key] === '!~') && val && val.length) {
+                val = `/${val.map(v => `^${v}$`).join('|')}/`
+              }
               const tag = {
                 key: fd.tagKeys[key],
-                value,
+                value: val,
                 operator: fd.tagOperators[key],
               }
               if (fd.tagConditions && fd.tagConditions[key]) {
