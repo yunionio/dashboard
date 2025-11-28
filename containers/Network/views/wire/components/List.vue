@@ -4,7 +4,6 @@
     show-tag-filter
     :list="list"
     :columns="columns"
-    :expandConfig="expandConfig"
     :group-actions="groupActions"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
@@ -264,8 +263,8 @@ export default {
         }
 
         this.getDetails(row.id).then(data => {
-          row.wireNetworks = data.wireNetworks
-          row.wireHosts = data.wireHosts
+          this.$set(row, 'wireNetworks', data.wireNetworks || [])
+          this.$set(row, 'wireHosts', data.wireHosts || [])
           resolve()
         })
       })

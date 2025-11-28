@@ -5,7 +5,6 @@
       <page-list
         :list="list"
         :columns="columns"
-        :expand-config="{ lazy: true, loadMethod: loadPolicy, visibleMethod: visbleLoadPolicy }"
         :enableVirtualScroll="false" />
     </div>
     <div slot="footer">
@@ -40,29 +39,41 @@ export default {
         {
           field: 'cloudpolicies',
           title: this.$t('common_309'),
-          type: 'expand',
           slots: {
             default: ({ row }) => {
-              return [this.$t('common_323', [(row.cloudpolicies && row.cloudpolicies.length) || 0])]
-            },
-            content: ({ row }) => {
-              if (R.isNil(row.feCloudpolicies) || R.isEmpty(row.feCloudpolicies)) return this.$t('common_324')
-              return [
-                <vxe-grid
-                  showOverflow='title'
-                  data={ row.feCloudpolicies }
-                  columns={[
-                    {
-                      field: 'name',
-                      title: this.$t('common.name'),
-                    },
-                    {
-                      field: 'description',
-                      title: this.$t('table.title.desc'),
-                      formatter: ({ cellValue }) => cellValue || '-',
-                    },
-                  ]} />,
+              const handleVisibleChange = async (visible) => {
+                if (visible && !row.feCloudpolicies && row.cloudpolicies && row.cloudpolicies.length > 0) {
+                  await this.loadPolicy({ row })
+                }
+              }
+              if (R.isNil(row.cloudpolicies) || R.isEmpty(row.cloudpolicies)) return this.$t('common_324')
+              const columns = [
+                {
+                  field: 'name',
+                  title: this.$t('common.name'),
+                },
+                {
+                  field: 'description',
+                  title: this.$t('table.title.desc'),
+                  formatter: ({ cellValue }) => cellValue || '-',
+                },
               ]
+              const hasData = row.feCloudpolicies && row.feCloudpolicies.length > 0
+              return [<a-popover trigger="hover" onVisibleChange={handleVisibleChange} key={`popover-${row.id}-${row.feCloudpolicies ? row.feCloudpolicies.length : 0}`}>
+                <div slot="content" style={hasData ? { minWidth: '600px' } : {}}>
+                  {hasData ? (
+                    <vxe-grid
+                      showOverflow={false}
+                      row-config={{ isHover: true }}
+                      column-config={{ resizable: false }}
+                      data={ row.feCloudpolicies }
+                      columns={ columns } />
+                  ) : (
+                    <data-loading />
+                  )}
+                </div>
+                <span style="color: var(--antd-wave-shadow-color)">{this.$t('common_323', [row.cloudpolicies.length])}</span>
+              </a-popover>]
             },
           },
         },
@@ -89,9 +100,6 @@ export default {
       } finally {
         manager = null
       }
-    },
-    visbleLoadPolicy ({ row }) {
-      return row.cloudpolicies && row.cloudpolicies.length > 0
     },
   },
 }

@@ -25,26 +25,31 @@ export default {
       {
         field: 'match_policies',
         title: this.$t('dictionary.policy'),
-        type: 'expand',
         width: 100,
         slots: {
           default: ({ row }) => {
-            return (row.match_policies && row.match_policies.length) || 0
-          },
-          content: ({ row }) => {
-            const tableData = row._policies
-            if (!tableData) {
-              return [<span>{ this.$t('common.notData') }</span>]
+            const handleVisibleChange = async (visible) => {
+              if (!visible) return
+              if (row._policies || !row.match_policies || row.match_policies.length === 0) return
+              await this.fetchPolicies({ row })
             }
+            if (!row.match_policies || row.match_policies.length === 0) return this.$t('common.notData')
             const columns = [
               { field: 'name', title: this.$t('table.title.name') },
               { field: 'description', title: this.$t('table.title.desc') },
             ]
-            return [
-              <vxe-grid
-                data={ tableData }
-                columns={ columns } />,
-            ]
+            const policies = row._policies
+            const hasData = Array.isArray(policies) && policies.length > 0
+            return [<a-popover trigger="hover" destroyTooltipOnHide onVisibleChange={handleVisibleChange} key={`role-policies-${row.id}-${hasData ? policies.length : 0}`}>
+              <div slot="content" style={hasData ? { minWidth: '480px' } : {}}>
+                {Array.isArray(policies)
+                  ? (hasData
+                    ? <vxe-grid data={ policies } columns={ columns } showOverflow={false} row-config={{ isHover: true }} column-config={{ resizable: false }} />
+                    : <div>{ this.$t('common.notData') }</div>)
+                  : <data-loading />}
+              </div>
+              <span style="color: var(--antd-wave-shadow-color)">{ (row.match_policies && row.match_policies.length) || 0 }</span>
+            </a-popover>]
           },
         },
       },
