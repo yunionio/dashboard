@@ -28,25 +28,26 @@ export default {
         field: 'child_image',
         title: i18n.t('table.title.child_image'),
         width: 150,
-        type: 'expand',
         slots: {
           default: ({ row }) => {
             if (this.isPreLoad && !row.data_images) return [<data-loading />]
             const arr = [...(row.data_images || [])]
             arr.push(row.root_image.name)
-            return i18n.t('compute.text_619', [arr.length])
-          },
-          content: ({ row }) => {
+            const len = arr.length
             let list = []
             if (row.data_images && row.data_images.length > 0) {
               list = row.data_images.map(val => (
-                <a-tag class='mb-2'>{ val.name }</a-tag>
+                <a-tag class='mb-2 mr-1'>{ val.name }</a-tag>
               ))
             }
             list.push(
-              <a-tag class='mb-2'>{ row.root_image?.name }</a-tag>,
+              <a-tag class='mb-2 mr-1'>{ row.root_image?.name }</a-tag>,
             )
-            return list
+            return [<list-body-cell-popover text={i18n.t('compute.text_619', [len])} max-width="400px">
+              <div style="display: inline-flex; flex-wrap: wrap; max-width: 40vw;">
+                {...list}
+              </div>
+            </list-body-cell-popover>]
           },
         },
         formatter: ({ row }) => {

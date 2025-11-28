@@ -18,17 +18,14 @@ export const getEnvTableColumn = () => {
     field: 'env',
     title: i18n.t('compute.repo.env_variables'),
     minWidth: 200,
-    type: 'expand',
     slots: {
       default: ({ row }, h) => {
         if (!row.spec || !row.spec.envs || !row.spec.envs.length) return '-'
-        return [i18n.t('cloudenv.text_245', [(row.spec.envs && row.spec.envs.length) || 0])]
-      },
-      content: ({ row }, h) => {
-        if (!row.spec || !row.spec.envs || !row.spec.envs.length) return '-'
-        return [
+        return [<list-body-cell-popover text={i18n.t('cloudenv.text_245', [(row.spec.envs && row.spec.envs.length) || 0])} min-width="500px">
           <vxe-grid
-            showOverflow='title'
+            showOverflow={false}
+            row-config={{ isHover: true }}
+            column-config={{ resizable: false }}
             data={row.spec.envs}
             columns={[
               {
@@ -49,8 +46,8 @@ export const getEnvTableColumn = () => {
                   },
                 },
               },
-            ]} />,
-        ]
+            ]} />
+        </list-body-cell-popover>]
       },
     },
     formatter: ({ row }) => {
