@@ -25,7 +25,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import BrandIcon from '@/sections/BrandIcon'
 import storage from '@/utils/storage'
-import { getNameFilter, getTimeRangeFilter, getStatusFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import { getTimeRangeFilter, getStatusFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { getTimeTableColumn, getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import { strategyColumn, levelColumn, getStrategyInfo } from '@Monitor/views/commonalert/utils'
 import ColumnsMixin from '../mixins/columns'
@@ -129,7 +129,7 @@ export default {
     },
     filters () {
       const options = {
-        name: getNameFilter({ field: 'name', label: this.$t('monitor.text_99') }),
+        alert_name: { field: 'name', label: this.$t('monitor.text_99') },
         description: getDescriptionFilter(),
         level: {
           label: this.$t('monitor.level'),
