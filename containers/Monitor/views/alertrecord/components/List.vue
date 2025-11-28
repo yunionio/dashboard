@@ -25,7 +25,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import BrandIcon from '@/sections/BrandIcon'
 import storage from '@/utils/storage'
-import { getNameFilter, getTimeRangeFilter, getStatusFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import { getTimeRangeFilter, getStatusFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { getTimeTableColumn, getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import { strategyColumn, levelColumn, getStrategyInfo } from '@Monitor/views/commonalert/utils'
 import ColumnsMixin from '../mixins/columns'
@@ -129,7 +129,7 @@ export default {
     },
     filters () {
       const options = {
-        name: getNameFilter({ field: 'name', label: this.$t('monitor.text_99') }),
+        alert_name: { field: 'alert_name', label: this.$t('monitor.text_99') },
         description: getDescriptionFilter(),
         level: {
           label: this.$t('monitor.level'),
@@ -272,8 +272,28 @@ export default {
                     formatter: ({ row }) => row.value_str,
                   },
                 ]
-                return [<list-body-cell-popover text={this.$t('common_701', [row.res_num || 0])} min-width="700px">
-                  <vxe-grid size="mini" border showOverflow={false} row-config={{ isHover: true }} column-config={{ resizable: false }} columns={columns} data={row.eval_data} />
+                // 检查数据是否还在加载中
+                if (row.eval_data === undefined) {
+                  return [<list-body-cell-popover text={this.$t('common_701', [row.res_num || 0])}>
+                    <data-loading />
+                  </list-body-cell-popover>]
+                }
+                const evalData = Array.isArray(row.eval_data) ? row.eval_data : []
+                const dataKey = `${row.id || row.alert_id || ''}-${evalData.length}`
+                if (!evalData.length) {
+                  return [<list-body-cell-popover key={dataKey} text={this.$t('common_701', [row.res_num || 0])}>
+                    <div class="text-muted text-center" style="padding: 12px 0;">{ this.$t('common.notData') }</div>
+                  </list-body-cell-popover>]
+                }
+                return [<list-body-cell-popover key={dataKey} text={this.$t('common_701', [row.res_num || 0])} min-width="700px">
+                  <vxe-grid
+                    size="mini"
+                    border
+                    showOverflow={false}
+                    row-config={{ isHover: true }}
+                    column-config={{ resizable: false }}
+                    columns={columns}
+                    data={evalData} />
                 </list-body-cell-popover>]
               },
             },
