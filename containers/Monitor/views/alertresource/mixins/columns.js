@@ -35,12 +35,8 @@ export default {
       {
         field: 'alert_table',
         title: i18n.t('monitor.text_98'),
-        type: 'expand',
         slots: {
           default: ({ row }) => {
-            return row.count || '0'
-          },
-          content: ({ row }) => {
             const columns = [
               getNameDescriptionTableColumn({
                 onManager: this.onManager,
@@ -91,7 +87,9 @@ export default {
               })
             }
             const data = row.childData || []
-            return <vxe-grid size="mini" resizable border columns={columns} data={data} />
+            return [<list-body-cell-popover text={this.$t('common_701', [row.count || 0])} min-width="700px">
+              <vxe-grid size="mini" resizable border showOverflow={false} row-config={{ isHover: true }} column-config={{ resizable: false }} columns={columns} data={data} />
+            </list-body-cell-popover>]
           },
         },
       },

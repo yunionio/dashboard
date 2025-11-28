@@ -219,12 +219,8 @@ export default {
             field: 'res_num',
             title: this.$t('cloudenv.text_417'),
             minWidth: 80,
-            type: 'expand',
             slots: {
               default: ({ row }) => {
-                return row.res_num
-              },
-              content: ({ row }) => {
                 const columns = [
                   {
                     field: 'name',
@@ -276,7 +272,9 @@ export default {
                     formatter: ({ row }) => row.value_str,
                   },
                 ]
-                return <vxe-grid size="mini" border columns={columns} data={row.eval_data} />
+                return [<list-body-cell-popover text={this.$t('common_701', [row.res_num || 0])} min-width="700px">
+                  <vxe-grid size="mini" border showOverflow={false} row-config={{ isHover: true }} column-config={{ resizable: false }} columns={columns} data={row.eval_data} />
+                </list-body-cell-popover>]
               },
             },
           },

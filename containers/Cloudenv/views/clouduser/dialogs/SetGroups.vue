@@ -89,16 +89,14 @@ export default {
           {
             field: 'cloudpolicies',
             title: this.$t('cloudenv.text_329'),
-            type: 'expand',
             slots: {
               default: ({ row }) => {
-                return [this.$t('cloudenv.text_245', [(row.cloudpolicies && row.cloudpolicies.length) || 0])]
-              },
-              content: ({ row }) => {
                 if (R.isNil(row.cloudpolicies) || R.isEmpty(row.cloudpolicies)) return this.$t('cloudenv.text_330')
-                return [
+                return [<list-body-cell-popover text={this.$t('cloudenv.text_245', [(row.cloudpolicies && row.cloudpolicies.length) || 0])} min-width="600px">
                   <vxe-grid
-                    showOverflow='title'
+                    showOverflow={false}
+                    row-config={{ isHover: true }}
+                    column-config={{ resizable: false }}
                     data={ row.cloudpolicies }
                     columns={[
                       {
@@ -110,8 +108,8 @@ export default {
                         title: this.$t('table.title.desc'),
                         formatter: ({ cellValue }) => cellValue || '-',
                       },
-                    ]} />,
-                ]
+                    ]} />
+                </list-body-cell-popover>]
               },
             },
           },
