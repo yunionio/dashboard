@@ -6,8 +6,7 @@
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions"
-    :expand-config="{ lazy: true, loadMethod: fetchPolicies }" />
+    :showGroupActions="showGroupActions" />
 </template>
 
 <script>

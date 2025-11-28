@@ -29,29 +29,42 @@ export default {
       {
         field: 'cloudpolicies',
         title: i18n.t('cloudenv.text_329'),
-        type: 'expand',
         slots: {
           default: ({ row }) => {
-            return [i18n.t('cloudenv.text_245', [(row.cloudpolicies && row.cloudpolicies.length) || 0])]
-          },
-          content: ({ row }) => {
-            if (R.isNil(row.feCloudpolicies) || R.isEmpty(row.feCloudpolicies)) return i18n.t('cloudenv.text_330')
-            return [
-              <vxe-grid
-                showOverflow='title'
-                data={ row.feCloudpolicies }
-                columns={[
-                  {
-                    field: 'name',
-                    title: this.$t('common.name'),
-                  },
-                  {
-                    field: 'description',
-                    title: this.$t('table.title.desc'),
-                    formatter: ({ cellValue }) => cellValue || '-',
-                  },
-                ]} />,
+            const handleVisibleChange = async (visible) => {
+              if (visible && !row.feCloudpolicies && row.cloudpolicies && row.cloudpolicies.length > 0) {
+                await this.loadPolicy({ row })
+              }
+            }
+            if (R.isNil(row.cloudpolicies) || R.isEmpty(row.cloudpolicies)) {
+              return i18n.t('cloudenv.text_330')
+            }
+            const columns = [
+              {
+                field: 'name',
+                title: this.$t('common.name'),
+              },
+              {
+                field: 'description',
+                title: this.$t('table.title.desc'),
+                formatter: ({ cellValue }) => cellValue || '-',
+              },
             ]
+            return [<a-popover trigger="hover" onVisibleChange={handleVisibleChange} key={`popover-${row.id}-${row.feCloudpolicies ? row.feCloudpolicies.length : 0}`}>
+              <div slot="content" style={row.feCloudpolicies && row.feCloudpolicies.length > 0 ? { minWidth: '600px' } : {}}>
+                {row.feCloudpolicies && row.feCloudpolicies.length > 0 ? (
+                  <vxe-grid
+                    showOverflow={false}
+                    row-config={{ isHover: true }}
+                    column-config={{ resizable: false }}
+                    data={ row.feCloudpolicies }
+                    columns={ columns } />
+                ) : (
+                  <data-loading />
+                )}
+              </div>
+              <span style="color: var(--antd-wave-shadow-color)">{i18n.t('cloudenv.text_245', [row.cloudpolicies.length])}</span>
+            </a-popover>]
           },
         },
         formatter: ({ row }) => {
@@ -75,7 +88,7 @@ export default {
             scope: this.$store.getters.scope,
           },
         })
-        row.feCloudpolicies = response.data.data || []
+        this.$set(row, 'feCloudpolicies', response.data.data || [])
         return response
       } catch (error) {
         throw error
