@@ -32,22 +32,27 @@ export default {
         field: 'networks',
         title: i18n.t('network.text_695'),
         width: 100,
-        type: 'expand',
         sortable: true,
         slots: {
           default: ({ row }) => {
-            return i18n.t('compute.text_619', [row.networks])
-          },
-          content: ({ row }, h) => {
+            const handleVisibleChange = async (visible) => {
+              if (!visible) return
+              const hasLoaded = Array.isArray(row.wireNetworks) || Array.isArray(row.wireHosts)
+              if (hasLoaded || row._loadingWireDetails || !row.id) return
+              this.$set(row, '_loadingWireDetails', true)
+              try {
+                await this.loadDetails({ row })
+              } finally {
+                this.$set(row, '_loadingWireDetails', false)
+              }
+            }
             const columns = [
               {
                 field: 'name',
                 title: i18n.t('network.text_21'),
                 width: '25%',
                 slots: {
-                  default: ({ row }) => {
-                    return row.name
-                  },
+                  default: ({ row }) => row.name,
                 },
               },
               {
@@ -63,11 +68,7 @@ export default {
                 title: i18n.t('network.text_607'),
                 width: '25%',
                 slots: {
-                  default: ({ row }) => {
-                    return [
-                      <div>{ row.guest_ip_start }</div>,
-                    ]
-                  },
+                  default: ({ row }) => <div>{ row.guest_ip_start }</div>,
                 },
               },
               {
@@ -75,17 +76,33 @@ export default {
                 title: i18n.t('network.text_608'),
                 width: '25%',
                 slots: {
-                  default: ({ row }) => {
-                    return [
-                      <div>{ row.guest_ip_end }</div>,
-                    ]
-                  },
+                  default: ({ row }) => <div>{ row.guest_ip_end }</div>,
                 },
               },
             ]
-            const data = row.wireNetworks || []
-            const networkTitle = i18n.t('network.wire.networks') + ': '
-            return [<HostColumn hosts={ row.wireHosts || [] } />, <span style="font-size: larger;font-weight: bold;">{networkTitle}</span>, <vxe-grid size="mini" border columns={columns} data={data} />]
+            const networks = Array.isArray(row.wireNetworks) ? row.wireNetworks : null
+            const hosts = Array.isArray(row.wireHosts) ? row.wireHosts : null
+            const hasLoadedContent = (networks && networks.length > 0) || (hosts && hosts.length > 0)
+            const contentStyle = hasLoadedContent ? { minWidth: '640px', maxWidth: '80vw' } : {}
+            const keySuffix = `${networks ? networks.length : 'n'}-${hosts ? hosts.length : 'h'}`
+            return [<a-popover trigger="hover" destroyTooltipOnHide onVisibleChange={handleVisibleChange} key={`wire-network-${row.id}-${keySuffix}`}>
+              <div slot="content" style={contentStyle}>
+                {networks || hosts ? (
+                  <div>
+                    <HostColumn hosts={ hosts || [] } />
+                    <div style="font-size: larger;font-weight: bold;" class="mt-2 mb-2">{i18n.t('network.wire.networks')}:</div>
+                    {networks && networks.length > 0 ? (
+                      <vxe-grid size="mini" border showOverflow={false} columns={columns} data={ networks } />
+                    ) : (
+                      <div>{i18n.t('common.notData')}</div>
+                    )}
+                  </div>
+                ) : (
+                  <data-loading />
+                )}
+              </div>
+              <span style="color: var(--antd-wave-shadow-color)" onMouseenter={() => handleVisibleChange(true)}>{i18n.t('compute.text_619', [row.networks])}</span>
+            </a-popover>]
           },
         },
       },
