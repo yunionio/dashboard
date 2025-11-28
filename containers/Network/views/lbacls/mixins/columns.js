@@ -27,13 +27,8 @@ export default {
         field: 'acl_entries',
         title: i18n.t('network.text_312'),
         width: 150,
-        type: 'expand',
         slots: {
-          default: ({ row }) => {
-            const arr = row.acl_entries || []
-            return i18n.t('common_323', [arr.length])
-          },
-          content: ({ row }, h) => {
+          default: ({ row }, h) => {
             const arr = []
             if (row.acl_entries && row.acl_entries.length > 0) {
               row.acl_entries.forEach(obj => {
@@ -46,20 +41,17 @@ export default {
                 })
               })
             }
-            const ret = []
-            if (arr.length > 0) {
-              ret.push(
-                <div class='mb-2'>
-                  { arr.map(item => <a-tag>{ item.value }</a-tag>) }
-                </div>,
-              )
+            if (arr.length <= 0) {
+              return [
+                <div class='text-color-help'>{ this.$t('network.text_729') }</div>,
+              ]
             }
-            if (ret.length <= 0) {
-              ret.push(
-                <div>{this.$t('newwork.acl_entries')}</div>,
-              )
-            }
-            return ret
+            const list = arr.map(item => <a-tag class='mb-2 mr-1'>{ item.value }</a-tag>)
+            return [<list-body-cell-popover text={i18n.t('common_323', [arr.length])} max-width="400px">
+              <div style="display: inline-flex; flex-wrap: wrap; max-width: 40vw;">
+                {...list}
+              </div>
+            </list-body-cell-popover>]
           },
         },
       },

@@ -29,18 +29,19 @@ export default {
         field: 'rules',
         title: i18n.t('table.title.sub_snapshot'),
         minWidth: 220,
-        type: 'expand',
         slots: {
           default: ({ row }) => {
             if (this.isPreLoad && !row.snapshots) return [<data-loading />]
             const len = (row.snapshots && row.snapshots.length) || 0
-            return i18n.t('compute.text_619', [len])
-          },
-          content: ({ row }) => {
+            if (len === 0) return i18n.t('compute.text_619', [len])
             const list = row.snapshots.map(val => (
-              <a-tag class='mb-2'>{ val.name }</a-tag>
+              <a-tag class='mb-2 mr-1'>{ val.name }</a-tag>
             ))
-            return list
+            return [<list-body-cell-popover text={i18n.t('compute.text_619', [len])} max-width="400px">
+              <div style="display: inline-flex; flex-wrap: wrap; max-width: 40vw;">
+                {...list}
+              </div>
+            </list-body-cell-popover>]
           },
         },
         formatter: ({ row }) => {

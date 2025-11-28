@@ -44,12 +44,8 @@ export default {
       {
         field: 'rules',
         title: i18n.t('cloudenv.text_582'),
-        type: 'expand',
         slots: {
           default: ({ row }) => {
-            return row.rules ? row.rules.length : '-'
-          },
-          content: ({ row }) => {
             const columns = [
               {
                 field: 'tags',
@@ -93,7 +89,9 @@ export default {
                 },
               },
             ]
-            return <vxe-grid size="mini" border columns={columns} data={row.rules ? row.rules : []} />
+            return [<list-body-cell-popover text={this.$t('common_701', [row.rules ? row.rules.length : 0])} min-width="600px">
+              <vxe-grid size="mini" border showOverflow={false} row-config={{ isHover: true }} column-config={{ resizable: false }} columns={columns} data={row.rules ? row.rules : []} />
+            </list-body-cell-popover>]
           },
         },
       },
