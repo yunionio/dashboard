@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-tabs hideAdd v-model="active" type="editable-card" @edit="onEdit">
+    <a-tabs hideAdd v-model="active" type="editable-card" @edit="onEdit" @change="handleTabChange" class="spec-container-tabs">
       <a-tab-pane v-for="(pane, i) in panes" :key="pane.key" :closable="panes.length > 1">
         <template v-slot:tab>
           <a-badge :dot="showBadge(pane)" :offset="[(panes.length > 1 ? 24 : 10), -5]">
@@ -9,9 +9,11 @@
         </template>
         <spec-container-form :decorators="getDecorators(pane.key)" :cluster="cluster" :namespace="namespace" :form="form" :paneKey="pane.key" />
       </a-tab-pane>
-      <template v-slot:tabBarExtraContent>
-        <a-button type="link" @click="add">{{$t('compute.add_container')}}</a-button>
-      </template>
+      <a-tab-pane key="add-tab" class="add-container-tab" :closable="false">
+        <template v-slot:tab>
+          <a-button type="link" size="small" @click.stop="add">{{$t('compute.add_container')}}</a-button>
+        </template>
+      </a-tab-pane>
     </a-tabs>
   </div>
 </template>
@@ -79,6 +81,11 @@ export default {
         this.syncPanes()
       }
     },
+    handleTabChange (key) {
+      if (key === 'add-tab') {
+        this.add()
+      }
+    },
     getDecorators (k) {
       const ret = {}
       R.forEachObjIndexed((item, key) => {
@@ -91,3 +98,19 @@ export default {
   },
 }
 </script>
+
+<style lang="less" scoped>
+.spec-container-tabs :deep(.ant-tabs-tab:last-child) {
+  background: transparent !important;
+  border: none !important;
+}
+
+.spec-container-tabs :deep(.ant-tabs-tab:last-child:hover) {
+  background: transparent !important;
+}
+
+.spec-container-tabs :deep(.ant-tabs-tab:last-child.ant-tabs-tab-active) {
+  background: transparent !important;
+  border: none !important;
+}
+</style>
