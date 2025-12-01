@@ -14,7 +14,7 @@
     </template>
     <component
       :is="params.windowData.currentTab"
-      :res-id="data.resId"
+      :res-id="detailData.id"
       :id="listId"
       :data="detailData"
       :on-manager="onManager"
