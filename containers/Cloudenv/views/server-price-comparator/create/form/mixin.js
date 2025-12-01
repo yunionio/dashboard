@@ -252,11 +252,16 @@ export default {
       }
     },
     policySchedtagParams () { // 高级配置里面调度策略选择 指定调度标签
-      return {
+      const ret = {
         limit: 0,
         'filter.0': 'resource_type.equals(hosts)',
         ...this.scopeParams,
       }
+      const zone = _.get(this.form.fd, 'zone.key')
+      if (zone) {
+        ret.zone_id = zone
+      }
+      return ret
     },
     isWindows () {
       let isWindows = false

@@ -114,7 +114,7 @@
           :disabled-host="policyHostDisabled"
           :policy-host-params="params.policyHostParams"
           :decorators="decorators.schedPolicy"
-          :policy-schedtag-params="params.policySchedtag"
+          :policy-schedtag-params="policySchedtagParams"
           @change="hostChange"
           :hostData="filterHostData" />
       </a-form-item>
