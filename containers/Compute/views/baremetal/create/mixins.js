@@ -512,6 +512,18 @@ export default {
     routerQuery () {
       return this.$route.query
     },
+    policySchedtagParams () {
+      const ret = {
+        limit: 1024,
+        'filter.0': 'resource_type.equals(hosts)',
+        scope: this.$store.getters.scope,
+      }
+      const zone = this.zone
+      if (zone) {
+        ret.zone_id = zone
+      }
+      return ret
+    },
     imageParams () {
       return {
         status: 'active',
