@@ -286,7 +286,7 @@ export default {
       return this.$store.state.setting.l2MenuVisible
     },
     loadMoreShow () {
-      return this.tableData.length > 0 && (typeof this.nextMarker) !== 'undefined' && this.pagerType === 'loadMore'
+      return this.tableData.length > 0 && ((typeof this.nextMarker) !== 'undefined' || this.pagerType === 'loadMore')
     },
     showTableOverviewIndexs () {
       return this.tableOverviewIndexs?.length > 0
