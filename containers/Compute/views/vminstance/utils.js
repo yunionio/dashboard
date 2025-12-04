@@ -51,7 +51,6 @@ const actionEableMap = {
       uis: ['ready'],
       ksyun: ['ready'],
       cnware: ['ready'],
-      baidu: ['ready'],
     },
   },
   stop: {
@@ -88,7 +87,6 @@ const actionEableMap = {
       uis: ['running', 'stop_fail'],
       ksyun: ['running', 'stop_fail'],
       cnware: ['running', 'stop_fail'],
-      baidu: ['running', 'stop_fail'],
     },
   },
   restart: {
@@ -125,7 +123,6 @@ const actionEableMap = {
       uis: ['running', 'stop_fail'],
       ksyun: ['running', 'stop_fail'],
       cnware: ['running', 'stop_fail'],
-      baidu: ['running', 'stop_fail'],
     },
   },
   rebuildRoot: {
@@ -160,7 +157,6 @@ const actionEableMap = {
       uis: ['running'],
       ksyun: ['ready'],
       cnware: false,
-      baidu: ['ready'],
     },
   },
   resetPassword: {
@@ -195,7 +191,6 @@ const actionEableMap = {
       uis: false,
       ksyun: ['ready', 'running'],
       cnware: false,
-      baidu: ['ready'],
     },
   },
   bindKeyPair: {
@@ -230,7 +225,6 @@ const actionEableMap = {
       uis: false,
       ksyun: ['ready'],
       cnware: false,
-      baidu: false,
     },
   },
   unBindKeyPair: {
@@ -265,7 +259,6 @@ const actionEableMap = {
       uis: false,
       ksyun: ['ready', 'running'],
       cnware: false,
-      baidu: false,
     },
   },
   adjustConfig: {
@@ -300,7 +293,6 @@ const actionEableMap = {
       uis: ['ready'],
       ksyun: ['ready', 'running'],
       cnware: false,
-      baidu: ['ready'],
     },
   },
   vnc: {
@@ -337,7 +329,6 @@ const actionEableMap = {
       uis: ['running'],
       ksyun: ['running'],
       cnware: ['running'],
-      baidu: ['running'],
     },
   },
   'EIP SSH': {
@@ -373,7 +364,6 @@ const actionEableMap = {
       uis: ['running'],
       ksyun: ['running'],
       cnware: false,
-      baidu: ['running'],
     },
   },
   'IP SSH': {
@@ -410,7 +400,6 @@ const actionEableMap = {
       uis: ['running'],
       ksyun: false,
       cnware: false,
-      baidu: ['running'],
     },
   },
   createSnapshot: {
@@ -445,7 +434,6 @@ const actionEableMap = {
       uis: false,
       ksyun: false,
       cnware: ['running', 'ready'],
-      baidu: ['running', 'ready'],
     },
   },
   createBackup: {
@@ -480,7 +468,6 @@ const actionEableMap = {
       uis: false,
       ksyun: false,
       cnware: false,
-      baidu: false,
     },
   },
   transfer: {
@@ -515,7 +502,6 @@ const actionEableMap = {
       uis: false,
       ksyun: false,
       cnware: false,
-      baidu: false,
     },
   },
   v2vTransfer: {
@@ -550,7 +536,6 @@ const actionEableMap = {
       uis: false,
       ksyun: false,
       cnware: false,
-      baidu: false,
     },
   },
   assignSecgroup: {
@@ -585,7 +570,6 @@ const actionEableMap = {
       uis: false,
       ksyun: false,
       cnware: false,
-      baidu: false,
     },
   },
   insertiso: {
@@ -619,7 +603,6 @@ const actionEableMap = {
       uis: false,
       ksyun: false,
       cnware: false,
-      baidu: false,
     },
   },
   ejectiso: {
@@ -653,7 +636,6 @@ const actionEableMap = {
       uis: false,
       ksyun: false,
       cnware: false,
-      baidu: false,
     },
   },
   bindEip: {
@@ -688,7 +670,6 @@ const actionEableMap = {
       uis: false,
       ksyun: ['running', 'ready'],
       cnware: false,
-      baidu: ['running', 'ready'],
     },
   },
   unbindEip: {
@@ -723,7 +704,6 @@ const actionEableMap = {
       uis: false,
       ksyun: ['running', 'ready'],
       cnware: false,
-      baidu: ['running', 'ready'],
     },
   },
   acttachGpu: {
@@ -739,7 +719,6 @@ const actionEableMap = {
       zettakit: false,
       uis: false,
       cloudpods: false,
-      baidu: false,
     },
   },
   acttachUsb: {
@@ -755,7 +734,6 @@ const actionEableMap = {
       zettakit: false,
       uis: false,
       cloudpods: false,
-      baidu: false,
     },
   },
   publicIpToEip: {
@@ -772,7 +750,6 @@ const actionEableMap = {
       sangfor: false,
       zettakit: false,
       uis: false,
-      baidu: false,
     },
   },
   changeBlockStorage: {
@@ -784,7 +761,6 @@ const actionEableMap = {
       sangfor: false,
       zettakit: false,
       uis: false,
-      baidu: false,
     },
   },
   addBackup: {
@@ -795,7 +771,6 @@ const actionEableMap = {
       sangfor: false,
       zettakit: false,
       uis: false,
-      baidu: false,
     },
   },
 }

@@ -780,50 +780,6 @@ export const STORAGE_TYPES = {
       unCreateCloud: true, // 不支持创建云硬盘
     },
   },
-  [HYPERVISORS_MAP.baidu.key]: {
-    ssd: {
-      label: i18n.t('compute.baidu.ssd'),
-      value: 'ssd',
-      min: 50,
-      max: 32765,
-      default: true,
-    },
-    premium_ssd: {
-      label: i18n.t('compute.baidu.premium_ssd'),
-      value: 'premium_ssd',
-      min: 5,
-      max: 32765,
-      default: true,
-    },
-    hdd: {
-      label: i18n.t('compute.baidu.hdd'),
-      value: 'hdd',
-      min: 5,
-      max: 32765,
-      default: true,
-    },
-    enhanced_ssd_pl1: {
-      label: i18n.t('compute.baidu.enhanced_ssd_pl1'),
-      value: 'enhanced_ssd_pl1',
-      min: 20,
-      max: 32765,
-      default: true,
-    },
-    enhanced_ssd_pl2: {
-      label: i18n.t('compute.baidu.enhanced_ssd_pl2'),
-      value: 'enhanced_ssd_pl2',
-      min: 20,
-      max: 32765,
-      default: true,
-    },
-    enhanced_ssd_pl3: {
-      label: i18n.t('compute.baidu.enhanced_ssd_pl3'),
-      value: 'enhanced_ssd_pl3',
-      min: 20,
-      max: 32765,
-      default: true,
-    },
-  },
   // [HYPERVISORS_MAP.bingocloud.key]: {
   //   local: {
   //     label: i18n.t('common.storage.local'),
