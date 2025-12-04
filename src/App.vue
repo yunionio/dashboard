@@ -49,6 +49,7 @@ export default {
   data () {
     return {
       locale: antdLocales[this.$store.getters.setting.language],
+      monitorAlertTimer: null,
     }
   },
   computed: {
@@ -107,6 +108,13 @@ export default {
     this.initIO()
     this.initMonitorAlertNotify()
   },
+  beforeDestroy () {
+    // 组件销毁时清除定时器
+    if (this.monitorAlertTimer) {
+      clearInterval(this.monitorAlertTimer)
+      this.monitorAlertTimer = null
+    }
+  },
   methods: {
     initIO () {
       if (!this.$appConfig.isPrivate) return
@@ -124,7 +132,13 @@ export default {
       this.socket.connect()
     },
     initMonitorAlertNotify () {
-      setInterval(() => {
+      // 防止重复创建定时器
+      if (this.monitorAlertTimer) {
+        clearInterval(this.monitorAlertTimer)
+      }
+      this.monitorAlertTimer = setInterval(() => {
+        // 检测是否已登录，未登录则不执行 dispatch
+        if (!this.session) return
         this.$store.dispatch('monitor/loadMonitorResourceAlerts')
       }, setting.monitorAlertNotifyTriggerTime)
       this.createDialog('MonitorAlertNotifyDialog', {})
