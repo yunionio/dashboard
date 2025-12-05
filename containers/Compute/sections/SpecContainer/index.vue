@@ -12,7 +12,7 @@
       <a-tab-pane key="add-tab" class="add-container-tab" :closable="false">
         <template v-slot:tab>
           <a-button type="link" size="small" @click.stop="add">{{$t('compute.add_container')}}</a-button>
-        </template>
+      </template>
       </a-tab-pane>
     </a-tabs>
   </div>
