@@ -107,9 +107,24 @@ export default {
                   })
                 }
               }
+            } else {
+              this.opts = opts.map(item => {
+                return {
+                  key: item,
+                  label: this.getLabel(item),
+                }
+              })
             }
+          } else {
+            this.opts = opts.map(item => {
+              return {
+                key: item,
+                label: this.getLabel(item),
+              }
+            })
           }
         } catch (error) {
+          console.log('error', error)
           this.loading = false
           this.opts = opts.map(item => {
             return {
