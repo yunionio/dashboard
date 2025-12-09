@@ -23,10 +23,9 @@
             class="mt-2 ml-2" />
         </a-form-item>
         <a-form-item v-bind="formItemLayoutWithOutLabel" style="position:relative; top: -14px">
-          <div class="d-flex align-items-center" v-if="remain">
+          <div class="d-flex align-items-center">
             <a-button type="primary" shape="circle" icon="plus" size="small" @click="addIP" />
             <a-button type="link" @click="addIP">{{$t('network.text_640')}}</a-button>
-            <span class="count-tips">{{$t('network.text_169')}}<span class="remain-num">{{remain}}</span>{{$t('network.text_170')}}</span>
           </div>
         </a-form-item>
         <a-form-item :label="$t('network.text_641')" v-bind="formItemLayout">
@@ -51,7 +50,7 @@
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { uuid } from '@/utils/utils'
-import validateForm from '@/utils/validate'
+import validateForm, { validate } from '@/utils/validate'
 
 export default {
   name: 'NetworkReversedIPDialog',
@@ -78,12 +77,6 @@ export default {
         },
       },
     }
-  },
-  computed: {
-    remain () {
-      const remain = 5 - this.ipList.length
-      return Math.max(remain, 0)
-    },
   },
   methods: {
     async ipBlur (rule, value, _callback) {
@@ -118,10 +111,57 @@ export default {
         ],
       }]
     },
+    ipToInt (ip) {
+      const REG = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
+      const result = REG.exec(ip)
+      if (!result) return -1
+      const ret = (parseInt(result[1]) << 24 |
+        parseInt(result[2]) << 16 |
+        parseInt(result[3]) << 8 |
+        parseInt(result[4])) >>> 0
+      return ret
+    },
+    intToIp (ipInt) {
+      return [
+        (ipInt >>> 24) & 0xFF,
+        (ipInt >>> 16) & 0xFF,
+        (ipInt >>> 8) & 0xFF,
+        ipInt & 0xFF,
+      ].join('.')
+    },
+    getNextIp (ip) {
+      if (!ip) return ''
+      const ipResult = validate(ip, 'IPv4')
+      if (ipResult === false || ipResult.result === false) {
+        return ''
+      }
+      const ipInt = this.ipToInt(ip)
+      if (ipInt === -1) return ''
+      const nextInt = ipInt + 1
+      if (nextInt > 0xFFFFFFFF) return ''
+      return this.intToIp(nextInt)
+    },
     addIP () {
       const key = uuid()
+      let nextIp = ''
+      if (this.ipList.length > 0) {
+        const lastIndex = this.ipList.length - 1
+        const lastItem = this.ipList[lastIndex]
+        const lastFieldName = `ipData.${lastItem.key}`
+        const lastFieldValue = this.form.fc.getFieldValue(lastFieldName)
+        if (lastFieldValue) {
+          nextIp = this.getNextIp(lastFieldValue)
+        }
+      }
       this.ipList.push({
         key,
+      })
+      this.$nextTick(() => {
+        if (nextIp) {
+          this.form.fc.setFieldsValue({
+            [`ipData.${key}`]: nextIp,
+          })
+        }
       })
     },
     decrease (index) {
