@@ -120,6 +120,9 @@ export default {
           case 'disk_mb':
             tableOverviewIndexs.push({ key: this.$t('compute.text_99'), value: sizestr(resData[v], 'M', 1024), order: 3 })
             break
+          case 'size_mb':
+            tableOverviewIndexs.push({ key: this.$t('common_234'), value: sizestr(resData[v], 'M', 1024), order: 4 })
+            break
         }
       })
 
