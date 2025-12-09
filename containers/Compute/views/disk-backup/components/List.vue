@@ -8,7 +8,8 @@
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions" />
+    :showGroupActions="showGroupActions"
+    :tableOverviewIndexs="tableOverviewIndexs" />
 </template>
 
 <script>
