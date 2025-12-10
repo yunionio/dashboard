@@ -80,11 +80,25 @@ export const getNFSSharedDirColumn = () => {
 export const getObjectBucketURLColumn = () => {
   return {
     field: 'object_bucket_url',
-    title: 'Object Bucket URL',
+    title: 'Bucket URL',
     slots: {
       default: ({ row }, h) => {
         return [
           <list-body-cell-wrap copy field="object_bucket_url" row={row} />,
+        ]
+      },
+    },
+  }
+}
+
+export const getObjectBucketURLExtColumn = () => {
+  return {
+    field: 'object_bucket_url_ext',
+    title: 'Public Bucket URL',
+    slots: {
+      default: ({ row }, h) => {
+        return [
+          <list-body-cell-wrap copy field="object_bucket_url_ext" row={row} />,
         ]
       },
     },

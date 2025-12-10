@@ -35,6 +35,7 @@
   "storage.object_bucket_url.validate.prompt": "オブジェクトストレージバケットのURLを指定する必要があります",
   "storage.object_access_key.validate.prompt": "オブジェクトストレージバケットのアクセスキーKEY(Access Key)を指定する必要があります",
   "storage.object_secret.validate.prompt": "オブジェクトストレージバケットのアクセスシークレットを指定する必要があります",
+  "storage.object_bucket_url_ext.validate.prompt": "オブジェクトストレージバケットの公開URLを入力してください(オプション)",
   "storage.text_31": "新築",
   "storage.text_32": "新しいブロックストアを作成する",
   "storage.text_33": "一括操作",
