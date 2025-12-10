@@ -1974,5 +1974,7 @@
   "compute.log_info": "日志内容",
   "compute.dmesg_log": "dmesg日志",
   "compute.get_screenshot_error": "获取截图失败",
-  "compute.vnc_panic_screenshot": "VNC 截图"
+  "compute.vnc_panic_screenshot": "VNC 截图",
+  "compute.host_tag": "@:dictionary.host标签",
+  "compute.storage_tag": "存储标签"
 }

@@ -10,12 +10,20 @@
             </a-select-option>
           </a-select>
         </a-form-item>
+        <a-form-item :label="$t('compute.host_tag')" class="mb-0" v-bind="formItemLayout">
+          <tag
+            v-decorator="decorators.host_tags" :params="{ resources: 'host', with_cloud_meta: false }" extra="" multiple />
+        </a-form-item>
         <a-form-item :label="$t('compute.text_99')" v-bind="formItemLayout">
           <a-select v-decorator="decorators.storage" :placeholder="$t('compute.text_219')" :allow-clear="true">
             <a-select-option v-for="item in storageOptions" :key="item.key" :value="item.value">
               {{ item.value }}
             </a-select-option>
           </a-select>
+        </a-form-item>
+        <a-form-item :label="$t('compute.storage_tag')" class="mb-0" v-bind="formItemLayout">
+          <tag
+            v-decorator="decorators.storage_tags" :params="{ resources: 'storage', with_cloud_meta: false }" multiple extra="" />
         </a-form-item>
       </a-form>
     </div>
@@ -27,11 +35,17 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import validateForm from '@/utils/validate'
+import Tag from '@/sections/Tag'
 
 export default {
   name: 'ImageBatchCreateCache',
+  components: {
+    Tag,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -52,6 +66,22 @@ export default {
         ],
         storage: [
           'storage',
+        ],
+        host_tags: [
+          'host_tags',
+          {
+            rules: [
+              { validator: validateForm('tagName') },
+            ],
+          },
+        ],
+        storage_tags: [
+          'storage_tags',
+          {
+            rules: [
+              { validator: validateForm('tagName') },
+            ],
+          },
         ],
       },
       formItemLayout: {
@@ -114,6 +144,21 @@ export default {
         this.form.fc.setFieldsValue({ storage: null })
       })
     },
+    formatTags (tags) {
+      const filters = [{}]
+      Object.keys(tags).forEach(key => {
+        let value = tags[key]
+        if (R.is(String, value) && value) {
+          value = [value]
+        } else if (R.is(String, value) && !value) {
+          value = []
+        } else {
+          value = value.map(item => item)
+        }
+        filters[0][key] = value
+      })
+      return { filters }
+    },
     async handleConfirm () {
       this.loading = true
       try {
@@ -121,7 +166,7 @@ export default {
           image_id: this.params.imageId,
           auto_cache: true,
         }
-        const { hypervisor, storage } = await this.form.fc.validateFields()
+        const { hypervisor, storage, host_tags, storage_tags } = await this.form.fc.validateFields()
         if (hypervisor) {
           const hostType = []
           if (hypervisor === 'kvm') {
@@ -138,6 +183,12 @@ export default {
             storageType.push(parts[0])
           }
           data.storage_type = storageType
+        }
+        if (host_tags && Object.keys(host_tags).length > 0) {
+          data.host_tags = this.formatTags(host_tags)
+        }
+        if (storage_tags && Object.keys(storage_tags).length > 0) {
+          data.storage_tags = this.formatTags(storage_tags)
         }
         const manager = new this.$Manager('cachedimages')
         manager.performClassAction({
