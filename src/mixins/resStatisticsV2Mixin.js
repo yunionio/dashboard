@@ -111,6 +111,12 @@ export default {
           case 'size_mb':
             tableOverviewIndexs.push({ key: this.$t('common_234'), value: sizestr(resData[v], 'M', 1024), order: 4 })
             break
+          case 'backup_size_mb':
+            tableOverviewIndexs.push({ key: this.$t('common.backup') + this.$t('common_234'), value: sizestr(resData[v], 'M', 1024), order: 5 })
+            break
+          case 'volume_size_mb':
+            tableOverviewIndexs.push({ key: this.$t('common_237') + this.$t('common_234'), value: sizestr(resData[v], 'M', 1024), order: 6 })
+            break
         }
       })
 
