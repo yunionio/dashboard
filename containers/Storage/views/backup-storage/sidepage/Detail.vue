@@ -21,6 +21,7 @@ import {
   getNFSHostColumn,
   getNFSSharedDirColumn,
   getObjectBucketURLColumn,
+  getObjectBucketURLExtColumn,
   getObjectAccessKeyColumn,
   getObjectSignVerColumn,
 } from '../utils/columns'
@@ -52,6 +53,7 @@ export default {
       baseInfo.push(getObjectBucketURLColumn())
       baseInfo.push(getObjectAccessKeyColumn())
       baseInfo.push(getObjectSignVerColumn())
+      baseInfo.push(getObjectBucketURLExtColumn())
     }
     return {
       baseInfo: baseInfo,

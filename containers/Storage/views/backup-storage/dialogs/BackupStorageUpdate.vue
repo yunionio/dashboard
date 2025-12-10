@@ -33,6 +33,9 @@
         <a-form-item :label="$t('storage.capacity')" v-show="false">
           <a-input-number :min="0" v-decorator="decorators.capacity_mb" /> GB
         </a-form-item>
+        <a-form-item label="Public Bucket URL" v-if="isObjectStorage">
+          <a-input :placeholder="$t('storage.url.input.place_holder')" v-decorator="decorators.object_bucket_url_ext" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -118,7 +121,7 @@ export default {
             initialValue: this.params.data[0].object_bucket_url,
             validateFirst: true,
             rules: [
-              { required: true, message: this.$t('storage.object_bucket_url.validate.prompt'), trigger: 'blur' },
+              { required: false, message: this.$t('storage.object_bucket_url.validate.prompt'), trigger: 'blur' },
             ],
           },
         ],
@@ -127,7 +130,7 @@ export default {
           {
             initialValue: this.params.data[0].object_access_key,
             rules: [
-              { required: true, message: this.$t('storage.object_access_key.validate.prompt'), trigger: 'blur' },
+              { required: false, message: this.$t('storage.object_access_key.validate.prompt'), trigger: 'blur' },
             ],
           },
         ],
@@ -136,7 +139,7 @@ export default {
           {
             initialValue: this.params.data[0].object_secret,
             rules: [
-              { required: true, message: this.$t('storage.object_secret.validate.prompt'), trigger: 'blur' },
+              { required: false, message: this.$t('storage.object_secret.validate.prompt'), trigger: 'blur' },
             ],
           },
         ],
@@ -144,6 +147,16 @@ export default {
           'object_sign_ver',
           {
             initialValue: this.params.data[0].object_sign_ver ? this.params.data[0].object_sign_ver : '',
+          },
+        ],
+        object_bucket_url_ext: [
+          'object_bucket_url_ext',
+          {
+            initialValue: this.params.data[0].object_bucket_url_ext,
+            validateFirst: true,
+            rules: [
+              { required: false, message: this.$t('storage.object_bucket_url_ext.validate.prompt'), trigger: 'blur' },
+            ],
           },
         ],
       }
