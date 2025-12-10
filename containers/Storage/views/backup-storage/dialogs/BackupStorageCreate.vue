@@ -47,6 +47,9 @@
         <a-form-item :label="$t('storage.capacity')" v-show="false">
           <a-input-number :min="0" v-decorator="decorators.capacity_mb" /> GB
         </a-form-item>
+        <a-form-item label="Public Bucket URL" v-if="isObjectStorage">
+          <a-input :placeholder="$t('storage.url.input.place_holder')" v-decorator="decorators.object_bucket_url_ext" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -199,6 +202,15 @@ export default {
           'capacity_mb',
           {
             initialValue: 0,
+          },
+        ],
+        object_bucket_url_ext: [
+          'object_bucket_url_ext',
+          {
+            validateFirst: true,
+            rules: [
+              { required: false, message: this.$t('storage.object_bucket_url_ext.validate.prompt'), trigger: 'blur' },
+            ],
           },
         ],
       }
