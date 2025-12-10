@@ -1905,5 +1905,7 @@
   "compute.custom_ssh_connect": "Custom {0} connection",
   "compute.postpaid_disk_change_billing_type_tip": "When the virtual machine is postpaid, the postpaid disk can only be converted to prepaid together with the virtual machine",
   "compute.order_by_used_percent": "Sort by: used rate = used / total",
-  "compute.order_by_commit_percent": "Sort by: commit rate = committed / total"
+  "compute.order_by_commit_percent": "Sort by: commit rate = committed / total",
+  "compute.host_tag": "@:dictionary.host tags",
+  "compute.storage_tag": "Storage tags"
 }
