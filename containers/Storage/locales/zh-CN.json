@@ -35,6 +35,7 @@
   "storage.object_bucket_url.validate.prompt": "必须指定对象存储桶的URL",
   "storage.object_access_key.validate.prompt": "必须指定对象存储桶的访问秘钥KEY(Access Key)",
   "storage.object_secret.validate.prompt": "必须指定对象存储桶的访问秘钥(Secret)",
+  "storage.object_bucket_url_ext.validate.prompt": "请输入对象存储桶的公网URL(可选)",
   "storage.text_31": "新建",
   "storage.text_32": "新建块存储",
   "storage.text_33": "批量操作",
