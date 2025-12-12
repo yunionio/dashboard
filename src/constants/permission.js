@@ -1421,6 +1421,11 @@ export const PERMISSION = {
   report_elements_create: ['report', 'report_elements', 'create'],
   report_elements_delete: ['report', 'report_elements', 'delete'],
 
+  report_templates_list: ['report', 'report_templates', 'list'],
+  report_templates_create: ['report', 'report_templates', 'create'],
+  report_templates_update: ['report', 'report_templates', 'update'],
+  report_templates_delete: ['report', 'report_templates', 'delete'],
+
   // 透传设备类型
   isolated_device_models_list: ['compute', 'isolated_device_models', 'list'],
   isolated_device_models_get: ['compute', 'isolated_device_models', 'get'],
