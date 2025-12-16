@@ -709,7 +709,19 @@ class CreateList {
    * @description 刷新数据，不改变当前页数和条数
    * @memberof CreateList
    */
-  refresh () {
+  async refresh () {
+    // 如果是 loadmore 类型的表格，refresh 时应该去除 paging_marker，并将 limit 设置为当前已加载的条数
+    if (this.pagerType === 'loadMore') {
+      const currentDataLength = Object.keys(this.data).length
+      const savedNextMarker = this.nextMarker
+      this.nextMarker = null // 临时清除 nextMarker，使 genParams 不添加 paging_marker
+      try {
+        return await this.fetchData(0, currentDataLength || this.getLimit())
+      } finally {
+        // 恢复 nextMarker
+        this.nextMarker = savedNextMarker
+      }
+    }
     return this.fetchData(this.offset, this.getLimit())
   }
 
