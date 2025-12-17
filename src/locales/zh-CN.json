@@ -6293,5 +6293,6 @@
   "common.duration.custom": "自定义",
   "common.not_set": "未设置",
   "common.not_expired": "未过期",
-  "common.alert_info": "告警信息"
+  "common.alert_info": "告警信息",
+  "common.worflow_tip": "{0}请求流程已提交"
 }

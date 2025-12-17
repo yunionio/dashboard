@@ -6263,5 +6263,6 @@
   "common.duration.custom": "Custom",
   "common.not_set": "Not set",
   "common.not_expired": "Not expired",
-  "common.alert_info": "Alert information"
+  "common.alert_info": "Alert information",
+  "common.worflow_tip": "{0} workflow has been submitted"
 }

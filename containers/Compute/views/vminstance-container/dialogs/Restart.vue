@@ -132,7 +132,7 @@ export default {
         paramter: JSON.stringify(params),
       }
       await this.createWorkflow(variables)
-      this.$message.success(this.$t('compute.text_1214'))
+      this.$message.success(this.$t('common.worflow_tip', [this.$t('compute.text_274')]))
       this.$router.push('/workflow')
     },
   },
