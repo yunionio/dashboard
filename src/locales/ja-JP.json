@@ -6281,5 +6281,6 @@
   "common.duration.custom": "カスタム",
   "common.not_set": "未設定",
   "common.not_expired": "未期限切れ",
-  "common.alert_info": "アラーム情報"
+  "common.alert_info": "アラーム情報",
+  "common.worflow_tip": "{0}ワークフローが提出されました"
 }
