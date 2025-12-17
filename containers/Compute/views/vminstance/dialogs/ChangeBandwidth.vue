@@ -127,7 +127,7 @@ export default {
         description: values.reason,
       }
       await this.createWorkflow(variables)
-      this.$message.success(this.$t('compute.text_1109'))
+      this.$message.success(this.$t('common.worflow_tip', [this.$t('compute.text_1185')]))
       this.$router.push('/workflow')
     },
     async handleConfirm () {
