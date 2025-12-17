@@ -69,7 +69,7 @@ export default {
       } else {
         await this.createWorkflow(variables)
       }
-      this.$message.success(this.$t('common.text00075'))
+      this.$message.success(this.$t('common.worflow_tip', [this.$t('system.text_498', [this.$t('dictionary.project')])]))
       if (this.params.success) {
         this.params.success()
       } else {
