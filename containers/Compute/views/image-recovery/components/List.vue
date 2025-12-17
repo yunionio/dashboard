@@ -100,6 +100,7 @@ export default {
   },
   watch: {
     cloudEnv (val) {
+      this.list.manager = new this.$Manager(val, 'v1')
       this.list.resource = this[`${val}Fetcher`]
       this.list.fetchData(0)
     },
