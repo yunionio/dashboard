@@ -6045,5 +6045,6 @@
   "common.view_screenshot": "View screenshot",
   "common.download_screenshot": "Download",
   "common.view_screenshot_blank": "View in new window",
-  "common.screenshot_error": "Failed to get screenshot"
+  "common.screenshot_error": "Failed to get screenshot",
+  "common.worflow_tip": "{0} workflow has been submitted"
 }

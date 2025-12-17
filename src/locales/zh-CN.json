@@ -6068,5 +6068,6 @@
   "common.view_screenshot": "查看截图",
   "common.download_screenshot": "下载",
   "common.view_screenshot_blank": "新窗口查看",
-  "common.screenshot_error": "截图获取失败"
+  "common.screenshot_error": "截图获取失败",
+  "common.worflow_tip": "{0}请求流程已提交"
 }
