@@ -16,6 +16,14 @@ export const WORKFLOW_TYPES = {
   EXECUTE_RESOURCE_ORDER_SET: 'execute-resource-order-set',
   ALERT_EVENT: 'alert-event',
   ALERT_TICKET: 'alert-ticket',
+  EXECUTE_USER_JOIN: 'execute-user-join',
+  EXECUTE_USER_UPDATE: 'execute-user-update',
+  EXECUTE_USER_DELETE: 'execute-user-delete',
+  EXECUTE_ROLE_SET_POLICIES: 'execute-role-set-policies',
+  EXECUTE_ROLEPOLICY_BATCH_DELETE: 'execute-rolepolicy-batch-delete',
+  EXECUTE_POLICY_UPDATE: 'execute-policy-update',
+  EXECUTE_POLICY_ENABLE: 'execute-policy-enable',
+  EXECUTE_POLICY_DISABLE: 'execute-policy-disable',
 }
 
 export const PROCESS_TYPES_OPTS = [
@@ -71,6 +79,38 @@ export const PROCESS_TYPES_OPTS = [
   {
     name: i18n.t('common.workflow.alert_ticket'),
     value: WORKFLOW_TYPES.ALERT_TICKET,
+  },
+  {
+    name: i18n.t('common.workflow.execute_user_join'),
+    value: WORKFLOW_TYPES.EXECUTE_USER_JOIN,
+  },
+  {
+    name: i18n.t('common.workflow.execute_user_update'),
+    value: WORKFLOW_TYPES.EXECUTE_USER_UPDATE,
+  },
+  {
+    name: i18n.t('common.workflow.execute_user_delete'),
+    value: WORKFLOW_TYPES.EXECUTE_USER_DELETE,
+  },
+  {
+    name: i18n.t('common.workflow.execute_role_set_policies'),
+    value: WORKFLOW_TYPES.EXECUTE_ROLE_SET_POLICIES,
+  },
+  {
+    name: i18n.t('common.workflow.execute_rolepolicy_batch_delete'),
+    value: WORKFLOW_TYPES.EXECUTE_ROLEPOLICY_BATCH_DELETE,
+  },
+  {
+    name: i18n.t('common.workflow.execute_policy_update'),
+    value: WORKFLOW_TYPES.EXECUTE_POLICY_UPDATE,
+  },
+  {
+    name: i18n.t('common.workflow.execute_policy_enable'),
+    value: WORKFLOW_TYPES.EXECUTE_POLICY_ENABLE,
+  },
+  {
+    name: i18n.t('common.workflow.execute_policy_disable'),
+    value: WORKFLOW_TYPES.EXECUTE_POLICY_DISABLE,
   },
 ]
 
