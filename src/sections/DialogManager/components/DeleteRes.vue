@@ -8,13 +8,13 @@
       <dialog-content :content="params.content" />
     </div>
     <div slot="footer">
-      <a-popconfirm v-if="params.showConfirm && params.confirmText" placement="topRight" :okText="$t('dialog.ok')" :cancelText="$t('dialog.cancel')" @confirm="handleConfirm">
+      <a-popconfirm v-if="params.showConfirm && params.confirmText" placement="topRight" :okText="submitButtonText" :cancelText="$t('dialog.cancel')" @confirm="handleConfirm">
         <template slot="title">
           <p>{{ params.confirmText }}</p>
         </template>
-        <a-button type="danger">{{ $t("dialog.ok") }}</a-button>
+        <a-button type="danger">{{ submitButtonText }}</a-button>
       </a-popconfirm>
-      <a-button v-else v-bind="okButtonProps" @click="handleConfirm">{{ $t("dialog.ok") }}</a-button>
+      <a-button v-else v-bind="okButtonProps" @click="handleConfirm">{{ submitButtonText }}</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
@@ -24,6 +24,7 @@
 import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import workflowMixin from '@/mixins/workflow'
 
 export default {
   name: 'DeleteResDialog',
@@ -42,7 +43,7 @@ export default {
       },
     },
   },
-  mixins: [DialogMixin, WindowsMixin],
+  mixins: [DialogMixin, WindowsMixin, workflowMixin],
   data () {
     return {
       loading: false,
@@ -72,15 +73,27 @@ export default {
     idKey () {
       return this.params.idKey || 'id'
     },
+    submitButtonText () {
+      if (this.params.workflow && this.params.workflow.enabled) {
+        return this.params.workflow.submitText || this.$t('system.text_532')
+      }
+      return this.$t('dialog.ok')
+    },
   },
   methods: {
     async handleConfirm () {
       this.loading = true
       try {
         const ids = this.params.data.map(item => item[this.idKey])
-        if (this.params.ok) {
+        // 如果启用了工单，则创建工单
+        if (this.params.workflow && this.params.workflow.enabled) {
+          await this.handleWorkflow(ids)
+        } else if (this.params.ok) {
+          // 使用自定义回调函数
           await this.params.ok(ids, this.params.data)
+          this.cancelDialog()
         } else {
+          // 使用默认的 onManager 删除
           let params = {}
           params = {
             ...params,
@@ -96,11 +109,37 @@ export default {
           if (this.params.success && R.is(Function, this.params.success)) {
             this.params.success(response)
           }
-          // this.$message.success(this.$t('common.success'))
+          this.cancelDialog()
         }
-        this.cancelDialog()
       } finally {
         this.loading = false
+      }
+    },
+    async handleWorkflow (ids) {
+      const { workflow } = this.params
+      const { orderSetBuilder, orderSetData, variablesBuilder, variables, onSuccess } = workflow
+      const orderSetManager = new this.$Manager('resource_order_sets')
+
+      // 构建工单参数
+      const buildOrderSetData = orderSetBuilder ? await orderSetBuilder(ids, this.params.data) : orderSetData
+      const orderSetRes = await orderSetManager.create({ data: buildOrderSetData })
+
+      // 构建流程变量，默认补充 ids
+      const buildVariables = variablesBuilder
+        ? await variablesBuilder(orderSetRes, ids, this.params.data)
+        : { ...(variables || {}), ids: orderSetRes.data.id }
+
+      await this.createWorkflow(buildVariables)
+      if (onSuccess && R.is(Function, onSuccess)) {
+        await onSuccess(orderSetRes, ids, this.params.data)
+      }
+      this.$message.success(this.$t('common.text00075'))
+      this.cancelDialog()
+      if (this.params.vm && this.params.vm.destroySidePages) {
+        this.params.vm.destroySidePage(this.params.vm.windowId)
+      }
+      if (this.params.success && R.is(Function, this.params.success)) {
+        this.params.success(orderSetRes)
       }
     },
   },
