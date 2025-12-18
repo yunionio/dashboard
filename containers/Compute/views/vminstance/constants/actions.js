@@ -14,7 +14,7 @@ import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip,
 const getSingleActions = function (ctx) {
   let hasBastionService = false
   const that = ctx || this
-  const { services } = that.$store.getters.userInfo
+  const { services = [] } = that.$store?.getters?.userInfo || {}
   const bastionService = services.find(val => val.type === 'bastionhost')
   if (bastionService && bastionService.status === true) {
     hasBastionService = true
