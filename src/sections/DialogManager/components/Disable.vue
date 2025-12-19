@@ -76,7 +76,7 @@ export default {
       if (onSuccess && R.is(Function, onSuccess)) {
         await onSuccess(orderSetRes)
       }
-      this.$message.success(this.$t('common.text00075'))
+      this.$message.success(this.$t('common.worflow_tip', [this.params.title]))
     },
   },
 }
