@@ -91,16 +91,15 @@ export default {
               },
             },
             {
-              field: 'mounted_apps',
+              field: 'mounted_models',
               title: this.$t('aice.mounted_apps'),
               slots: {
                 default: ({ row }) => {
-                  const mounted_apps = row.mounted_apps
+                  const mounted_apps = row.mounted_models
                   if (mounted_apps?.length) {
                     return mounted_apps.map((item, idx) => {
-                      const parts = item.split('/')
-                      return <list-body-cell-wrap copy hideField={true} field='mounted_apps' row={row} message={parts[0]}>
-                        {parts[0]} (ver: {parts[1]})
+                      return <list-body-cell-wrap copy hideField={true} field='mounted_models' row={row} message={item.fullname}>
+                        {item.fullname}
                       </list-body-cell-wrap>
                     })
                   }
