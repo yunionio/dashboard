@@ -182,5 +182,17 @@ export default {
     resource: 'servers',
     steadyStatus: Object.values(expectStatus.server).flat(),
   },
+  LlmImageSidePage: {
+    resource: 'llm_images',
+  },
+  LlmInstantModelSidePage: {
+    resource: 'llm_instant_models',
+  },
+  LlmSkuSidePage: {
+    resource: 'llm_skus',
+  },
+  LlmSidePage: {
+    resource: 'llms',
+  },
   ...extraConfig,
 }
