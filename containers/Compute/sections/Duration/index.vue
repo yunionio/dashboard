@@ -76,14 +76,17 @@ export default {
       if (this.useServerDuration) {
         try {
           this.loading = true
-          const res = await new this.$Manager('scopedpolicies', 'v1').list({
+          const res = await new this.$Manager('scopedpolicybindings', 'v1').list({
             params: {
               category: 'server_duration',
+              scope: this.$store.getters.scope,
+              effective: true,
+              ignoreErrorStatusCode: [403],
             },
           })
           if (res.data && res.data.data && res.data.data.length > 0) {
-            const { policies = {} } = res.data.data[0]
-            const { server_duration = [] } = policies
+            const { policy = {} } = res.data.data[0]
+            const { server_duration = [] } = policy
             if (server_duration.length > 0) {
               this.opts = this.sortOptions(server_duration).map(item => {
                 return {
