@@ -16,13 +16,15 @@ export const getHostSpecInfo = (obj) => {
     actual_storage_used,
     storage_commit_rate,
     storage_virtual,
+    cpu_usage_percent = 0,
+    memory_used_mb = 0,
   } = obj
-  const { reserved_cpus_info = '', cpu_usage_percent = '0', memory_used_mb = '0' } = metadata
+  const { reserved_cpus_info = '' } = metadata
   if (reserved_cpus_info) {
     const l = JSON.parse(reserved_cpus_info)
     cpu_reserved = l.cpus.split(',').length
   }
-  const cpuUsedPercent = Number(cpu_usage_percent) / 100
+  const cpuUsedPercent = cpu_usage_percent / 100
   const cpuUsed = cpu_count * cpuUsedPercent
   const ret = {
     cpu_count,
@@ -33,7 +35,7 @@ export const getHostSpecInfo = (obj) => {
     cpu_commit_rate,
     cpu_commit_bound,
     mem_size,
-    mem_used: Number(memory_used_mb),
+    mem_used: memory_used_mb,
     mem_reserved,
     mem_size_virtual: (mem_size - mem_reserved) * mem_commit_bound,
     mem_commit,
