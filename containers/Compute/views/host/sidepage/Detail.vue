@@ -554,7 +554,7 @@ export default {
               formatter: ({ cellValue, row }) => {
                 if (row.brand.toLowerCase() !== 'onecloud') return '-'
                 const total = sizestr(row.metadata.root_partition_total_capacity_mb, 'M', 1024)
-                const used = sizestr(row.metadata.root_partition_used_capacity_mb, 'M', 1024)
+                const used = sizestr(row.root_partition_used_capacity_mb, 'M', 1024)
                 return this.$t('compute.text_1330') + used + this.$t('compute.text_1331') + total
               },
             },
