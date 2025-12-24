@@ -2,7 +2,7 @@
   <div class="progress-wrapper" :title="title">
     <div class="title">{{ usedKey }}: {{ usedValue }}</div>
     <div class="title">{{ totalKey }}: {{ totalValue }}</div>
-    <div class="custom-progress-bar d-flex align-items-center mt-1" style="height:6px;">
+    <div class="custom-progress-bar d-flex align-items-center mt-1 mb-1" style="height:6px;">
       <div class="ant-progress-outer" style="background: #d9d9d9;border-radius: 3px;overflow:hidden">
         <div class="ant-progress-bg" :style="{width: `${percent}%`, height: '6px', background: strokeColor, borderRadius: '100px'}" />
       </div>
