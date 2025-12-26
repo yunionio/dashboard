@@ -6171,5 +6171,7 @@
   "common.download_screenshot": "ダウンロード",
   "common.view_screenshot_blank": "新しいウィンドウで表示",
   "common.screenshot_error": "スクリーンショットの取得に失敗しました",
-  "common.worflow_tip": "{0}ワークフローが提出されました"
+  "common.worflow_tip": "{0}ワークフローが提出されました",
+  "common.cpu_used_total": "CPU 使用/合計",
+  "common.memory_used_total": "メモリ 使用/合計"
 }
