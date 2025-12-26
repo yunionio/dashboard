@@ -10,6 +10,7 @@
     :extra-export-params="extraExportParams"
     :showSearchbox="showSearchbox"
     :defaultSearchKey="defaultSearchKey"
+    :tableOverviewIndexs="tableOverviewIndexs"
     :showGroupActions="showGroupActions" />
 </template>
 

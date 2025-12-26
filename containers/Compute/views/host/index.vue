@@ -13,6 +13,7 @@
         :id="listId"
         :filterParams="filterParams"
         statusResKey="host"
+        :tableOverviewIndexs="tableOverviewIndexs"
         @refresh="refreshHandle"
         @resStatisticsChange="resStatisticsChange" />
     </page-body>
