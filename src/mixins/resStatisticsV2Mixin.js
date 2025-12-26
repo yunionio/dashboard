@@ -129,6 +129,17 @@ export default {
           case 'volume_size_mb':
             tableOverviewIndexs.push({ key: this.$t('common_237') + this.$t('common_234'), value: sizestr(resData[v], 'M', 1024), order: 6 })
             break
+          // host
+          case 'cpu_used':
+            if (resData.hasOwnProperty('cpu_total')) {
+              tableOverviewIndexs.push({ key: this.$t('common.cpu_used_total'), value: `${resData[v]}/${resData.cpu_total}`, order: 7 })
+            }
+            break
+          case 'memory_used':
+            if (resData.hasOwnProperty('memory_total')) {
+              tableOverviewIndexs.push({ key: this.$t('common.memory_used_total'), value: `${sizestr(resData[v], 'M', 1024)}/${sizestr(resData.memory_total, 'M', 1024)}`, order: 8 })
+            }
+            break
         }
       })
 

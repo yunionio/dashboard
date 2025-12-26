@@ -6372,5 +6372,7 @@
   "common.not_set": "Not set",
   "common.not_expired": "Not expired",
   "common.alert_info": "Alert information",
-  "common.worflow_tip": "{0} workflow has been submitted"
+  "common.worflow_tip": "{0} workflow has been submitted",
+  "common.cpu_used_total": "CPU used/total",
+  "common.memory_used_total": "Memory used/total"
 }

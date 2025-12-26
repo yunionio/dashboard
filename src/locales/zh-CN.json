@@ -6402,5 +6402,7 @@
   "common.not_set": "未设置",
   "common.not_expired": "未过期",
   "common.alert_info": "告警信息",
-  "common.worflow_tip": "{0}请求流程已提交"
+  "common.worflow_tip": "{0}请求流程已提交",
+  "common.cpu_used_total": "CPU 已使用/总量",
+  "common.memory_used_total": "内存 已使用/总量"
 }
