@@ -249,13 +249,13 @@ export function getOsTypeFilter () {
 }
 
 export function getEnabledFilter (params = {}) {
-  const { label = i18n.t('table.title.enable_status') } = params
+  const { label = i18n.t('table.title.enable_status'), enableLabel = i18n.t('status.enabled.true'), disableLabel = i18n.t('status.enabled.false') } = params
   return {
     label,
     dropdown: true,
     items: [
-      { label: i18n.t('status.enabled.true'), key: 'true' },
-      { label: i18n.t('status.enabled.false'), key: 'false' },
+      { label: enableLabel, key: 'true' },
+      { label: disableLabel, key: 'false' },
     ],
   }
 }
