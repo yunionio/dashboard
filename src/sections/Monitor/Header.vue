@@ -16,7 +16,7 @@
     <refresh-button v-else :loading="loading" @refresh="refresh" class="mr-2" />
     <a-radio-group class="mr-3" @change="timeChange" :value="time">
       <a-radio-button v-for="item in timeOpts" v-show="!item.hidden" :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
-      <slot name="radio-button-append">
+      <slot name="radio-button-append" v-if="showCustomTime">
         <custom-date @update:time="(val) => timeChange({target: {value: val}})" :customTimeUseTimeStamp="customTimeUseTimeStamp" :customTime="customTime" @update:customTime="customTimeChange" :showCustomTimeText="isCustom" />
       </slot>
     </a-radio-group>
@@ -31,7 +31,7 @@
       <div class="ant-form-item-label">
         <label :title="$t('common_166')">{{$t('common_166')}}</label>
       </div>
-      <a-select class="mr-2" :value="timeGroup" @change="timeGroupChange">
+      <a-select class="mr-2" style="width: 80px" :value="timeGroup" @change="timeGroupChange">
         <a-select-option v-for="item in timeGroupOpts" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
       </a-select>
     </template>
@@ -189,6 +189,10 @@ export default {
     customTimeUseTimeStamp: {
       type: Boolean,
       default: false,
+    },
+    showCustomTime: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {

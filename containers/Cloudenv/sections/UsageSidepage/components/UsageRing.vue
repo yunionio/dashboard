@@ -1,5 +1,5 @@
 <template>
-  <div class="usage-ring">
+  <div class="usage-ring" :class="{ 'is-template': isTemplate }">
     <div class="dashboard-card-wrap">
       <div class="dashboard-card-header">
         <div class="dashboard-card-header-left">{{title}}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
@@ -46,6 +46,10 @@ export default {
     options: {
       type: Object,
       default: () => {},
+    },
+    isTemplate: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
@@ -106,5 +110,9 @@ export default {
   margin-bottom: 16px;
   box-sizing: border-box;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+  &.is-template {
+    box-shadow: none;
+    border: 1px solid #e5e6eb;
+  }
 }
 </style>

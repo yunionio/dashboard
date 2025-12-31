@@ -5,7 +5,7 @@
         <a-row type="flex" style="padding: 12px;border-bottom: 1px solid #e8e8e8">
           <a-col class="d-flex" style="flex: 1 1 auto">
             <!-- 折叠 -->
-            <a class="font-weight-bold h-100 d-block" style="margin-right: 6px;" @click="toggleShowMonitor">
+            <a v-if="!isTemplate" class="font-weight-bold h-100 d-block" style="margin-right: 6px;" @click="toggleShowMonitor">
               <a-icon type="down" style="font-size: 12px;" v-if="showMonitor" />
               <a-icon type="right" style="font-size: 12px;" v-if="!showMonitor" />
             </a>
@@ -23,7 +23,7 @@
             <!-- 名称 -->
             <span>{{ panel.panel_name || (chart.metric && chart.metric.label) }}</span>
           </a-col>
-          <a-col v-if="!useLocalPanels" class="flex: 0 0 24px">
+          <a-col v-if="!useLocalPanels && !isTemplate" class="flex: 0 0 24px">
             <a-dropdown style="float: right" :trigger="['click']" placement="bottomRight">
               <a class="ant-dropdown-link font-weight-bold h-100 d-block action-btn" @click="e => e.preventDefault()">
                 <icon type="more" style="font-size: 18px; margin-left: 9px;" />
@@ -44,6 +44,7 @@
     </template>
     <monitor-line
       v-if="showMonitor"
+      :isTemplate="isTemplate"
       ref="monitorLine"
       :loading="loading"
       :description="description"
@@ -85,6 +86,11 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   props: {
+    // 是否作为模板组件使用
+    isTemplate: {
+      type: Boolean,
+      default: false,
+    },
     updated_at: {
       type: String,
     },
@@ -174,7 +180,7 @@ export default {
       series: [],
       reducedResult: {},
       reducedResultOrder: '',
-      showLegend: false,
+      showLegend: this.isTemplate,
       showMonitor: true,
     }
   },

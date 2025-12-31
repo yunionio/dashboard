@@ -4,6 +4,7 @@
       <a-col :span="span" v-if="showResType">
         <a-form-item class="mr-1">
           <base-select
+            class="metric-select"
             minWidth="192px"
             v-decorator="decorators.metric_res_type"
             :options="metricTypeOpts"
@@ -16,6 +17,7 @@
       <a-col :span="span">
         <a-form-item class="mr-1">
           <base-select
+            class="metric-select"
             minWidth="192px"
             v-decorator="decorators.metric_key"
             :options="metricKeyOpts"
@@ -29,6 +31,7 @@
       <a-col :span="span">
         <a-form-item>
           <base-select
+            class="metric-select"
             minWidth="192px"
             filterable
             v-decorator="decorators.metric_value"
@@ -223,3 +226,15 @@ export default {
   },
 }
 </script>
+
+<style lang="less" scoped>
+.metric-select {
+  min-width: 192px !important;
+  flex: 1 1 auto;
+  width: 100%;
+  ::v-deep .ant-select {
+    width: 100%;
+    min-width: 192px;
+  }
+}
+</style>
