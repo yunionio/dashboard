@@ -18,6 +18,7 @@ export default {
   },
   data () {
     const options = [
+      { label: 'Top 5', value: 5 },
       { label: 'Top 10', value: 10 },
       { label: 'Top 20', value: 20 },
       { label: i18n.t('monitor.text_3'), value: null },

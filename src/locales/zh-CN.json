@@ -5763,6 +5763,7 @@
   "common.min": "最小值",
   "common.max": "最大值",
   "common.mean": "平均值",
+  "common.sum": "总值",
   "common.p95": "P95",
   "common.p50": "P50",
   "common.eip": "弹性IP",

@@ -13,7 +13,7 @@
         <a-form-item class="mr-1" :style="{ width: `calc(100% - ${i === 0 ? 0 : 70}px)` }">
           <base-select
             class="w-100"
-            :minWidth="`calc(100% - ${i === 0 ? 0 : 70}px)`"
+            :minWidth="`max(170px, calc(100% - ${i === 0 ? 0 : 70}px))`"
             v-decorator="decorators.tagKey(item.key)"
             :options="tagKeyOpts"
             filterable

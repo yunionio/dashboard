@@ -385,6 +385,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    fullWidth: {
+      type: Boolean,
+      default: false,
+    },
     specifyStatus: {
       type: Object,
     },
@@ -548,14 +552,14 @@ export default {
         return
       }
       return h('div', {
-        class: 'detail-left',
+        class: this.fullWidth ? 'detail-full' : 'detail-left',
       }, [
         this.renderContent(h, 'info', i18n.t('common.info'), this.commonBaseInfo, null, 'base-info'),
       ])
     },
     renderExtra (h) {
       return h('div', {
-        class: this.hiddenBaseInfo ? 'detail-all' : 'detail-right',
+        class: this.fullWidth ? 'detail-full' : (this.hiddenBaseInfo ? 'detail-all' : 'detail-right'),
       }, this.extraInfo.map(item => {
         return this.renderContent(h, 'info2', item.title, item.items, item)
       }))
@@ -605,7 +609,7 @@ export default {
   },
   render (h, ctx) {
     return (
-      <div class='detail-wrap'>
+      <div class={this.fullWidth ? 'detail-wrap detail-wrap-full' : 'detail-wrap'}>
         { this.renderBase(h) }
         { this.extraInfo && this.renderExtra(h) }
       </div>

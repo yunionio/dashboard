@@ -5753,6 +5753,7 @@
   "common.min": "最低限",
   "common.max": "最大",
   "common.mean": "平均値",
+  "common.sum": "合計",
   "common.p95": "P95",
   "common.p50": "P50",
   "common.eip": "エラスティック IP",
