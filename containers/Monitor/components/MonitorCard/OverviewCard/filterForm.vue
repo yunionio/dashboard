@@ -1,6 +1,6 @@
 <template>
   <a-form :form="form" layout="inline">
-      <a-form-item style="margin-right: 8px;">
+      <a-form-item v-if="!isTemplate" style="margin-right: 8px;">
         <refresh  @refresh="handleRefresh" :loading="loading" />
       </a-form-item>
       <a-form-item style="margin-right: 8px;">
@@ -15,8 +15,11 @@
       <a-form-item v-if="!isLineChart" style="margin-right: 8px;">
         <top-n-select v-decorator="decorators.limit" @change="handleLimitChange" />
       </a-form-item>
-      <a-form-item style="margin-right: 8px;" class="ml-2" :label="$t('monitor.overview.aggregate')">
+      <a-form-item v-if="!isTemplate" style="margin-right: 8px;" class="ml-2" :label="$t('monitor.overview.aggregate')">
         <basic-select v-model="dimentionId" :options="dimentions"  style="min-width: 90px" />
+      </a-form-item>
+      <a-form-item v-if="isTemplate" style="margin-right: 8px;">
+        <base-select v-model="fucType" :options="fucTypeOptions" :select-props="{ mode: 'multiple' }" />
       </a-form-item>
   </a-form>
 </template>
@@ -65,23 +68,77 @@ export default {
       required: false,
       default: () => ({}),
     },
+    isTemplate: {
+      type: Boolean,
+      default: false,
+    },
+    isTemplateEdit: {
+      type: Boolean,
+      default: false,
+    },
+    templateParams: {
+      type: Object,
+      required: false,
+      default: () => ({}),
+    },
+    scopeParams: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
+    // 如果 templateParams 中有 measurement 和 field，查找对应的 res, dimentionId 和 metric
+    let initialRes = 'server'
+    let initialDimentionId = 'vm_id'
+    let initialMetric = MetricOptions.server[0] || {}
+
+    if (this.templateParams?.measurement && this.templateParams?.field) {
+      // 遍历所有 res 类型
+      for (const resType of ['server', 'host', 'rds']) {
+        const metrics = MetricOptions[resType] || []
+        const foundMetric = metrics.find(m => m.measurement === this.templateParams.measurement && m.field === this.templateParams.field)
+        if (foundMetric) {
+          initialRes = resType
+          initialDimentionId = resType === 'server' ? 'vm_id' : (resType === 'host' ? 'host_id' : 'rds_id')
+          initialMetric = foundMetric
+          break
+        }
+      }
+    }
+
     return {
       curScope: this.scope,
-      dimentionId: 'vm_id',
-      res: 'server',
+      dimentionId: initialDimentionId,
+      res: initialRes,
+      from: this.templateParams?.from || 7 * 24 * 60,
+      metric: initialMetric,
       loading: false,
       loadingCtx: { lastLoadAt: new Date(), lastIndex: 0, canceledDelay: true },
       form: this.$form.createForm(this),
       decorators: {
-        metric: ['metric', { initialValue: MetricOptions.server[0] || {} }],
-        from: ['from', { initialValue: 7 * 24 * 60 }],
-        limit: ['limit', { initialValue: 10 }],
+        metric: ['metric', { initialValue: initialMetric }],
+        from: ['from', { initialValue: this.templateParams?.from || 7 * 24 * 60 }],
+        limit: ['limit', { initialValue: this.templateParams?.limit || 10 }],
       },
+      fucType: this.templateParams?.fucType || [],
+      fucTypeInitialized: false,
     }
   },
   computed: {
+    fucTypeOptions () {
+      if (!this.metric) {
+        return []
+      }
+      // 从 MetricOptions 中获取完整的指标对象
+      const curMetric = MetricOptions[this.res]?.find(m => m.field === this.metric.field)
+      if (!curMetric || !curMetric.supportFucTypes) {
+        return []
+      }
+      return curMetric.supportFucTypes.map(type => ({
+        label: this.$t(`common.${type}`),
+        id: type,
+      }))
+    },
     resOptions () {
       if (this.curScope === 'project') {
         return [{ label: this.$t('dictionary.server'), id: 'server' }, { label: 'RDS', id: 'rds' }]
@@ -173,6 +230,32 @@ export default {
         this.dimentionId = val === 'server' ? 'vm_id' : (val === 'host' ? 'host_id' : 'rds_id')
       }
     },
+    fucTypeOptions: {
+      handler (val) {
+        if (!this.isTemplate) return
+        if (!val.length) {
+          this.fucType = []
+          this.fucTypeInitialized = true
+          return
+        }
+        // 第一次初始化时，如果 templateParams?.fucType 存在，则保留它
+        if (!this.fucTypeInitialized && this.templateParams?.fucType && this.templateParams.fucType.length) {
+          this.fucTypeInitialized = true
+          return
+        }
+        this.fucType = val.map(item => item.id)
+        this.fucTypeInitialized = true
+      },
+      immediate: true,
+    },
+    fucType: {
+      handler () {
+        if (this.isTemplate) {
+          this.emitTable()
+          this.handleRefreshAll()
+        }
+      },
+    },
   },
   created () {
     this.$uM = new this.$Manager('unifiedmonitors', 'v1')
@@ -219,6 +302,12 @@ export default {
       }
       query.from = `${formValues.from}m` || '168h'
       query.interval = this.intervalInput(formValues.from)
+      // 报表模式需计算平均值,需设置interval来获取多个点,sum则不需要
+      if (this.isTemplate) {
+        if (this.fucType.length && !this.fucType.includes('sum')) {
+          query.interval = formValues.from ? `${Math.ceil(formValues.from / 60)}m` : '168m'
+        }
+      }
       if (['tenant_id', 'domain_id'].includes(this.dimentionId)) {
         query.skip_check_series = true
       }
@@ -243,6 +332,9 @@ export default {
           },
         },
       ]
+      if (this.isTemplate && this.fucType && this.fucType.includes('sum')) {
+        query.metric_query[0].result_reducer = { type: 'sum' }
+      }
       Object.assign(query, this.extraParams)
       query.signature = getSignature(query)
       return query
@@ -297,11 +389,14 @@ export default {
     },
     toTableData () {
       const curMetric = this.form.getFieldValue('metric')
+      // isTemplate 时只使用当前指标的数据
+      const targetMetric = this.isTemplate ? curMetric : null
       // 取当前活动监控指标为数据集
       let cRows = this.charts[curMetric?.value]?.chartData?.rows || []
       // 没有值时，依次取新的指标为数据集
       if (!cRows.length) {
-        for (const k in this.charts) {
+        const chartsToCheck = targetMetric ? { [targetMetric.value]: this.charts[targetMetric.value] } : this.charts
+        for (const k in chartsToCheck) {
           const rows = this.charts[k]?.chartData?.rows || []
           if (rows.length) {
             cRows = rows
@@ -483,8 +578,12 @@ export default {
         }
       }
       const tr = {}
-      for (const k in this.charts) {
-        const chart = this.charts[k]
+      // isTemplate 时只展示当前指标的列
+      const chartsToShow = this.isTemplate && curMetric?.value ? { [curMetric.value]: this.charts[curMetric.value] } : this.charts
+      const isTemplateMode = this.isTemplate && this.fucType && this.fucType.length > 0
+      for (const k in chartsToShow) {
+        const chart = chartsToShow[k]
+        if (!chart) continue
         const column = chart.metric.label
         const col = { field: column, title: column, sortable: true, sortType: 'number', sortBy: (row) => { const v = row && row[column] ? row[column] : '-'; return v } }
         if (chart.metric.format) {
@@ -519,7 +618,25 @@ export default {
               tr[id][this.dimension.id] = row.tags?.[this.dimension.id] || row.cloud_tags?.[this.dimension.id]
             }
           }
-          tr[id][column] = row.value
+          if (isTemplateMode && this.fucType && this.fucType.length) {
+            // 根据 fucType 设置对应的值
+            this.fucType.forEach(fucType => {
+              const fieldName = `${column}_${fucType}`
+              if (fucType === 'min') {
+                tr[id][fieldName] = row.val_min != null ? row.val_min : (row.value != null ? row.value : '-')
+              } else if (fucType === 'max') {
+                tr[id][fieldName] = row.val_max != null ? row.val_max : (row.value != null ? row.value : '-')
+              } else if (fucType === 'mean') {
+                tr[id][fieldName] = row.value != null ? row.value : '-'
+              } else if (fucType === 'sum') {
+                tr[id][fieldName] = row.val_sum != null ? row.val_sum : (row.value != null ? row.value : '-')
+              } else {
+                tr[id][fieldName] = row.value != null ? row.value : '-'
+              }
+            })
+          } else {
+            tr[id][column] = row.value != null ? row.value : '-'
+          }
         })
       }
       for (const r in tr) {
@@ -562,20 +679,66 @@ export default {
       return data
     },
     toHistogramChartData (series) {
+      const isTemplateMode = this.isTemplate && this.fucType && this.fucType.length > 0
       const data = { columns: ['name', 'value'], rows: [] }
-      const rows = series.map((item) => {
-        const lastPoint = item.points ? item.points[item.points.length - 1] : undefined
-        if (lastPoint) {
-          return {
-            name: this.filterNameByOem(item.tags[this.dimension.name]),
-            id: item.tags[this.dimension.id],
-            value: lastPoint[0],
-            timestamp: lastPoint[1],
-            tags: item.tags,
-            cloud_tags: item.cloud_tags,
-          }
+      if (isTemplateMode) {
+        const hasSum = this.fucType.includes('sum')
+        const hasMinMaxMean = this.fucType.some(t => ['min', 'max', 'mean'].includes(t))
+        data.columns = ['name', 'value']
+        if (hasMinMaxMean) {
+          data.columns.push('val_min', 'val_max')
         }
-      })
+        if (hasSum) {
+          data.columns.push('val_sum')
+        }
+      }
+      const rows = series.map((item) => {
+        const points = item.points || []
+        if (points.length === 0) {
+          return undefined
+        }
+        const lastPoint = points[points.length - 1]
+        const row = {
+          name: this.filterNameByOem(item.tags[this.dimension.name]),
+          id: item.tags[this.dimension.id],
+          timestamp: lastPoint[1],
+          tags: item.tags,
+          cloud_tags: item.cloud_tags,
+        }
+        if (isTemplateMode) {
+          // 计算所有点的值
+          const values = points.map(p => p[0]).filter(v => v != null && !isNaN(v))
+          if (values.length > 0) {
+            const sum = values.reduce((a, b) => a + b, 0)
+            const hasSum = this.fucType.includes('sum')
+            const hasMinMaxMean = this.fucType.some(t => ['min', 'max', 'mean'].includes(t))
+
+            if (hasMinMaxMean) {
+              row.value = sum / values.length // 平均值
+              row.val_min = Math.min(...values) // 最小值
+              row.val_max = Math.max(...values) // 最大值
+            } else {
+              row.value = lastPoint[0]
+            }
+
+            if (hasSum) {
+              row.val_sum = sum // 总值
+            }
+          } else {
+            row.value = lastPoint[0]
+            if (this.fucType.some(t => ['min', 'max', 'mean'].includes(t))) {
+              row.val_min = lastPoint[0]
+              row.val_max = lastPoint[0]
+            }
+            if (this.fucType.includes('sum')) {
+              row.val_sum = lastPoint[0]
+            }
+          }
+        } else {
+          row.value = lastPoint[0]
+        }
+        return row
+      }).filter(row => row !== undefined)
       data.rows = rows.sort((a, b) => { return a.value - b.value })
       return data
     },
@@ -589,6 +752,29 @@ export default {
             rows: [],
           }
           const data = this.queryParams(chart.metric, formValues)
+          if (this.isTemplate) {
+            if (this.scopeParams.scope) {
+              data.scope = this.scopeParams.scope
+            }
+            const tags = data.metric_query[0].model.tags || []
+            // if (this.scopeParams.project_id) {
+            //   tags.push({
+            //     key: 'project_id',
+            //     value: this.scopeParams.project_id,
+            //     operator: '=',
+            //   })
+            // }
+            if (this.scopeParams.domain_id) {
+              tags.push({
+                key: 'domain_id',
+                value: this.scopeParams.domain_id,
+                operator: '=',
+              })
+            }
+            if (tags.length) {
+              data.metric_query[0].model.tags = tags
+            }
+          }
           this.$uM.performAction({ id: 'query', action: '', data }).then(res => {
             const { data: { series = [] } } = res
             chart.chartType = this.isLineChart ? 'OverviewLine' : 'OverviewHistogram'
@@ -618,8 +804,10 @@ export default {
     emitTable () {
       if (this.isLineChart || !this.charts) {
         this.$emit('updateTable', undefined)
+        this.$emit('updateFucType', [])
       } else {
         this.$emit('updateTable', this.toTableData())
+        this.$emit('updateFucType', this.fucType || [])
       }
     },
     setLoading (v) {
@@ -642,11 +830,13 @@ export default {
       }
     },
     async handleMetricChange (metric) {
+      this.metric = metric
       this.form.setFieldsValue({ metric: metric })
       await this.handleRefresh()
       this.emitTable()
     },
     handleFromChange (from) {
+      this.from = from
       this.form.setFieldsValue({ from: from })
       this.handleRefreshAll()
     },
@@ -674,7 +864,8 @@ export default {
       const loading = this.startLoading()
       try {
         const values = await this.validateForm()
-        const vs = Object.keys(this.charts)
+        // isTemplate 时只请求当前指标
+        const vs = this.isTemplate ? [values.metric.value] : Object.keys(this.charts)
         for (const v of vs) {
           await this.fetchChartData(v, values)
         }

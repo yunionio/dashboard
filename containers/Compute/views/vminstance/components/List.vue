@@ -6,8 +6,8 @@
     show-tag-columns2
     show-tag-config
     :list="list"
-    :columns="columns"
-    :show-single-actions="showActions"
+    :columns="templateListColumns || columns"
+    :show-single-actions="isTemplate ? false : showActions"
     :show-group-actions="showGroupActions && showActions"
     :group-actions="groupActions"
     :single-actions="singleActions"
@@ -48,6 +48,7 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import regexp from '@/utils/regexp'
 import { hasSetupKey } from '@/utils/auth'
 import { sizeToDesignatedUnit } from '@/utils/utils'
@@ -60,7 +61,7 @@ import { cloudEnabled, cloudUnabledTip, commonEnabled, validateRescueMode } from
 
 export default {
   name: 'VmInstanceList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     getParams: {

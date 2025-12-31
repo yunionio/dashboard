@@ -116,13 +116,13 @@ export default {
     const initialValue = {}
     const initFilters = []
     const initTagOperators = {}
-    if (this.panel && this.panel.common_alert_metric_details && this.panel.common_alert_metric_details.length > 0) {
-      const f = this.panel.common_alert_metric_details[0]
-      const q = _.get(this.panel, 'settings.conditions[0].query.model')
-      const r = _.get(this.panel, 'settings.conditions[0].query.result_reducer')
+    if (this.panel && ((this.panel.common_alert_metric_details && this.panel.common_alert_metric_details.length > 0) || (this.panel?.setting && this.panel.setting.conditions))) {
+      const f = this.panel?.common_alert_metric_details?.[0] || this.panel?.setting?.conditions?.[0]?.query?.model
+      const q = _.get(this.panel, 'settings.conditions[0].query.model') || this.panel?.setting?.conditions?.[0]?.query?.model
+      const r = _.get(this.panel, 'settings.conditions[0].query.result_reducer') || this.panel?.setting?.conditions?.[0]?.query?.result_reducer
       initialValue.name = this.panel.name || this.panel.panel_name || ''
-      initialValue.res_type = f.res_type
-      initialValue.metric_key = f.measurement
+      initialValue.res_type = f.res_type || this.panel?.common_alert_metric_details?.[0]?.res_type
+      initialValue.metric_key = f.measurement || this.panel?.common_alert_metric_details?.[0]?.measurement
       initialValue.metric_value = f.field
       initialValue.tags = {}
       if (q) {
@@ -595,6 +595,32 @@ export default {
     &:hover {
       color: @error-color;
     }
+  }
+  // 让 label 和 wrapper 基于父元素宽度，而不是固定的 span
+  ::v-deep .ant-form-item {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+  }
+  ::v-deep .ant-form-item-label,
+  ::v-deep .ant-form-item-label > label {
+    width: 150px !important;
+    flex: 0 0 150px !important;
+    padding-right: 8px;
+  }
+  // // 覆盖 Ant Design 的栅格类
+  ::v-deep .ant-col {
+    width: auto !important;
+    max-width: none !important;
+  }
+  ::v-deep .ant-form-item-control-wrapper {
+    flex: 1 1 auto;
+    width: auto !important;
+    min-width: 0;
+    max-width: 100%;
+  }
+  ::v-deep .ant-form-item-control {
+    width: 100%;
   }
 }
 

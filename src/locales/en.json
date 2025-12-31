@@ -5735,6 +5735,7 @@
   "common.min": "Min",
   "common.max": "Max",
   "common.mean": "Average",
+  "common.sum": "Sum",
   "common.p95": "P95",
   "common.p50": "P50",
   "common.eip": "Eip",

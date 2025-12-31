@@ -1,9 +1,9 @@
 <template>
   <div>
-    <a-button @click="handleRefresh" class="action-btn">
+    <a-button v-if="!isTemplate" @click="handleRefresh" class="action-btn">
       <icon type="refresh" />
     </a-button>
-    <loading-block v-if="loading" />
+    <loading-block v-if="loading && !isTemplate" />
     <!-- <detail
       v-else
       :data="data"
@@ -13,13 +13,13 @@
       :hiddenKeys="['id', 'name', 'status', 'project_domain', 'tenant', 'created_at', 'updated_at']" /> -->
     <template v-else>
       <a-row :gutter="16">
-        <a-col :md="12" :xl="8" :xxl="6" v-for="obj in baseInfo" :key="obj.field">
-          <usage-quota :title="obj.title" :value="obj.value()" />
+        <a-col :span="isTemplate ? 8 : undefined" :md="isTemplate ? undefined : 12" :xl="isTemplate ? undefined : 8" :xxl="isTemplate ? undefined : 6" v-for="obj in baseInfo" :key="obj.field">
+          <usage-quota :title="obj.title" :value="obj.value()" :is-template="isTemplate" />
         </a-col>
       </a-row>
       <a-row :gutter="16">
-        <a-col :md="12" :xl="8" :xxl="6" v-for="obj in ringInfo" :key="obj.field">
-          <usage-ring :title="obj.title" :field="obj.field" :options="obj.options" />
+        <a-col :span="isTemplate ? 12 : undefined" :md="isTemplate ? undefined : 12" :xl="isTemplate ? undefined : 8" :xxl="isTemplate ? undefined : 6" v-for="obj in ringInfo" :key="obj.field">
+          <usage-ring :title="obj.title" :field="obj.field" :options="obj.options" :is-template="isTemplate" />
         </a-col>
       </a-row>
     </template>
@@ -39,6 +39,15 @@ export default {
     UsageRing,
   },
   props: {
+    // 作为模板中的组件使用
+    isTemplate: {
+      type: Boolean,
+      default: false,
+    },
+    scopeParams: {
+      type: Object,
+      default: () => ({}),
+    },
     onManager: {
       type: Function,
       required: true,
@@ -65,8 +74,8 @@ export default {
   },
   methods: {
     initBaseInfo () {
-      const isAdminMode = this.$store.getters.isAdminMode
-      const isDomainMode = this.$store.getters.isDomainMode
+      const isAdminMode = this.isTemplate ? this.scopeParams.scope === 'system' && !this.scopeParams.project_id && !this.scopeParams.domain_id : this.$store.getters.isAdminMode
+      const isDomainMode = this.isTemplate ? this.scopeParams.scope === 'domain' && !this.scopeParams.project_id : this.$store.getters.isDomainMode
       const baseInfo = []
       Object.keys(USAGE_CONFIG_MAP).forEach((key) => {
         const item = USAGE_CONFIG_MAP[key] || {}
@@ -85,8 +94,8 @@ export default {
       return baseInfo
     },
     initRingInfo () {
-      const isAdminMode = this.$store.getters.isAdminMode
-      const isDomainMode = this.$store.getters.isDomainMode
+      const isAdminMode = this.isTemplate ? this.scopeParams.scope === 'system' && !this.scopeParams.project_id && !this.scopeParams.domain_id : this.$store.getters.isAdminMode
+      const isDomainMode = this.isTemplate ? this.scopeParams.scope === 'domain' && !this.scopeParams.project_id : this.$store.getters.isDomainMode
       const ringInfo = []
       const getUnuse = (sum = 0, use = 0) => {
         return sum - use
@@ -123,12 +132,21 @@ export default {
       try {
         this.loading = true
         const params = { scope: this.$store.getters.scope }
-        const { data } = await new this.$Manager('usages', 'v2').getSpecific({
-          id: this.resource,
-          spec: this.resId,
-          params,
-        })
-        this.data = data
+        if (this.isTemplate) {
+          const { data } = await new this.$Manager('rpc', 'v2').get({
+            resource: 'rpc',
+            id: 'usages/general-usage',
+            params: this.scopeParams,
+          })
+          this.data = data
+        } else {
+          const { data } = await new this.$Manager('usages', 'v2').getSpecific({
+            id: this.resource,
+            spec: this.resId,
+            params,
+          })
+          this.data = data
+        }
         this.baseInfo = this.initBaseInfo()
         this.ringInfo = this.initRingInfo()
         this.loading = false

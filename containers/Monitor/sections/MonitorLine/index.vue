@@ -13,7 +13,7 @@
         </a-col>
       </a-row>
     </div>
-    <div slot="extra" v-if="showTableExport">
+    <div slot="extra" v-if="showTableExport && !isTemplate">
       <a-button v-if="showTableExport && curPager.total" type="link" :title="$t('monitor.full_export')" @click="exportTable">
         {{ $t('table.action.export') }}
       </a-button>
@@ -81,6 +81,10 @@ export default {
   components: {
   },
   props: {
+    isTemplate: {
+      type: Boolean,
+      default: false,
+    },
     unit: {
       type: Object,
       default: () => ({}),
@@ -220,6 +224,9 @@ export default {
       return ret
     },
     showTable () {
+      if (this.isTemplate) {
+        return false
+      }
       if (!this.groupBy && !this.resultReducer && this.isSelectFunction && this.columns.length < 2) {
         return false
       }
@@ -1045,6 +1052,9 @@ export default {
       XLSX.writeFile(wb, filename)
     },
     toggleShowTableLegend () {
+      if (this.isTemplate) {
+        return
+      }
       this.showTableLegend = !this.showTableLegend
     },
   },
