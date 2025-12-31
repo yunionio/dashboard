@@ -1,9 +1,17 @@
 <template>
   <a-row>
-    <a-col :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }"  :xxl="{ span: 10 }" class="mb-5">
-      <monitor-forms @refresh="refresh" @remove="remove" @resetChart="resetChart" :timeRangeParams="timeRangeParams" @mertricItemChange="mertricItemChange" />
+    <a-col :span="isTemplate ? 24 : undefined" :md="isTemplate ? 24 : 24" :lg="isTemplate ? 24 : 22" :xl="isTemplate ? 24 : 16" :xxl="isTemplate ? 24 : 10" class="mb-5">
+      <monitor-forms
+       @refresh="refresh"
+        @remove="remove"
+        @resetChart="resetChart"
+        :timeRangeParams="timeRangeParams"
+        @mertricItemChange="mertricItemChange"
+        :extraParams="extraParams"
+        :multiQuery="!isTemplate"
+        :panel="templateParams?.panel" />
     </a-col>
-    <a-col class="line mb-5" :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 13, offset: 1 }">
+    <a-col :span="isTemplate ? 24 : undefined" class="line mb-5" :md="isTemplate ? 24 : 24" :lg="isTemplate ? 24 : 22" :xl="isTemplate ? 24 : 16" :xxl="isTemplate ? { span: 24 } : { span: 13, offset: 1 }">
       <monitor-header
         class="mb-3"
         :time.sync="time"
@@ -12,6 +20,7 @@
         :showGroupFunc="true"
         :customTime.sync="customTime"
         :showCustomTimeText="time==='custom'"
+        :showCustomTime="!isTemplate"
         customTimeUseTimeStamp
         @refresh="fetchAllData" />
       <div v-for="(item, i) in seriesList" :key="i">
@@ -21,6 +30,7 @@
           :description="seriesDescription[i]"
           :metricInfo="metricList[i][0]"
           class="mb-3"
+          :isTemplate="isTemplate"
           @chartInstance="setChartInstance"
           :series="item"
           :reducedResult="resultList[i]"
@@ -65,10 +75,24 @@ export default {
     MonitorHeader,
   },
   mixins: [DialogMixin, WindowsMixin, MonitorTimeMixin],
+  props: {
+    isTemplate: {
+      type: Boolean,
+      default: false,
+    },
+    isTemplateEdit: {
+      type: Boolean,
+      default: false,
+    },
+    templateParams: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data () {
     return {
-      time: '1h',
-      timeGroup: '1m',
+      time: this.templateParams?.queryParams?.time || '1h',
+      timeGroup: this.templateParams?.queryParams?.timeGroup || '1m',
       // groupFunc: 'mean',
       customTime: null,
       timeOpts,
@@ -150,7 +174,11 @@ export default {
         this.time = '72h'
         this.$message.warning(this.$t('common_562', [item.label]))
       }
-      this.$set(this.seriesDescription, i, item)
+      if (this.isTemplate && (!item.title || item.title === '-') && i === 0 && this.templateParams?.panel?.panel_name) {
+        this.$set(this.seriesDescription, i, { ...item, title: this.templateParams?.panel?.panel_name })
+      } else {
+        this.$set(this.seriesDescription, i, item)
+      }
     },
     async fetchAllData () {
       const jobs = []
@@ -247,6 +275,22 @@ export default {
         }
       } catch (error) {
         throw error
+      }
+    },
+    getTemplateParams () {
+      return {
+        panel_name: this.seriesDescription[0].title || this.seriesDescription[0].label,
+        time: this.time,
+        timeGroup: this.timeGroup,
+        model: this.metricList[0][0].model,
+        result_reducer: this.metricList[0][0].result_reducer,
+        common_alert_metric_details: [
+          {
+            res_type: this.seriesDescription[0].metric_res_type,
+            measurement: this.seriesDescription[0].metricKeyItem?.measurement,
+            field: this.seriesDescription[0].key,
+          },
+        ],
       }
     },
   },

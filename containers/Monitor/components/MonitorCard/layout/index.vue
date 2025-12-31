@@ -41,4 +41,7 @@ export default {
     }
   }
 }
+.no-border {
+  border: none;
+}
 </style>

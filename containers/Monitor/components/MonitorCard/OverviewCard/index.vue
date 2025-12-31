@@ -1,21 +1,27 @@
 <template>
-  <overview-card-layout>
+  <overview-card-layout :card_style="isTemplate ? 'no-border' : ''">
     <template #header>
-      <div>
+      <div :class="{ 'position-hidden': isTemplate && !isTemplateEdit}">
         <filter-form
-            @updateTable="handleUpdateTable"
-            @updateChart="handleUpdateChart"
-            @changeNav="handleChangeNav"
-            @dataLoading="handleOnDataLoading"
-            @showTable="handleShowTable"
-            @changeLimit="handleChangeLimit"
-            :scope="scope"
-            :extraParams="extraParams" />
+          ref="filterForm"
+          :is-template="isTemplate"
+          :is-template-edit="isTemplateEdit"
+          :template-params="templateParams"
+          :scopeParams="scopeParams"
+          @updateTable="handleUpdateTable"
+          @updateChart="handleUpdateChart"
+          @changeNav="handleChangeNav"
+          @dataLoading="handleOnDataLoading"
+          @showTable="handleShowTable"
+          @changeLimit="handleChangeLimit"
+          @updateFucType="handleUpdateFucType"
+          :scope="scope"
+          :extraParams="extraParams" />
       </div>
     </template>
-     <component v-if="chart.chartType && limit" :is="chart.chartType" :chartData="chart.chartData" :yAxisFormat="chart.metric.format" :loading="chart.loading || tableLoading" id="monitor-overview-resource" :exportName="exportName" />
+     <component v-if="chart.chartType && limit && !isTemplate" :is="chart.chartType" :chartData="chart.chartData" :yAxisFormat="chart.metric.format" :loading="chart.loading || tableLoading" id="monitor-overview-resource" :exportName="exportName" />
     <template #footer>
-      <overview-table :table-data="table" :loading="tableLoading" v-if="showTable" />
+      <overview-table :table-data="table" :loading="tableLoading" v-if="showTable" :is-template="isTemplate" :fuc-type="fucType" />
     </template>
   </overview-card-layout>
 </template>
@@ -48,6 +54,22 @@ export default {
       required: false,
       default: () => ({}),
     },
+    isTemplate: {
+      type: Boolean,
+      default: false,
+    },
+    isTemplateEdit: {
+      type: Boolean,
+      default: false,
+    },
+    templateParams: {
+      type: Object,
+      default: () => ({}),
+    },
+    scopeParams: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
@@ -55,7 +77,8 @@ export default {
       table: {},
       showTable: false,
       tableLoading: false,
-      limit: 10,
+      limit: this.templateParams?.limit || 10,
+      fucType: this.templateParams?.fucType || [],
     }
   },
   computed: {
@@ -82,6 +105,30 @@ export default {
     handleChangeLimit (v) {
       this.limit = v || 0
     },
+    handleUpdateFucType (v) {
+      this.fucType = v || []
+    },
+    // 导出作为报表模板时参数
+    getTemplateParams () {
+      return {
+        fucType: this.fucType,
+        measurement: this.metric?.measurement || this.chart?.metric?.measurement,
+        field: this.metric?.field || this.chart?.metric?.field,
+        limit: this.limit,
+        from: this.$refs.filterForm.from,
+      }
+    },
   },
 }
 </script>
+
+<style lang="less" scoped>
+.position-hidden {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+</style>

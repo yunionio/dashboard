@@ -1,9 +1,9 @@
 <template>
   <div class="overview-index">
-    <a-row v-if="scope !=='project'">
+    <a-row v-if="scope !=='project' && !isTemplate">
       <overview-nav :items="navs" @change="changeNav" />
     </a-row>
-    <a-row>
+    <a-row v-if="!isTemplate">
       <div class="monitor-overview-chart mb-2">
         <div class="title-wrapper">
           <div class="title">
@@ -47,7 +47,7 @@
         </div>
       </a-col>
     </a-row>
-    <a-row>
+    <a-row v-if="!isTemplate">
       <overview-card :scope="curNav.scope" :extraParams="extraParams" @changeNav="updateNavs" />
     </a-row>
   </div>
@@ -69,6 +69,24 @@ export default {
     OverviewLine,
     OverviewCard,
     OverviewNav,
+  },
+  props: {
+    isTemplate: {
+      type: Boolean,
+      default: false,
+    },
+    isTemplateEdit: {
+      type: Boolean,
+      default: false,
+    },
+    templateParams: {
+      type: Object,
+      default: () => ({}),
+    },
+    scopeParams: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     const scope = this.$store.getters.scope
@@ -190,6 +208,7 @@ export default {
                 type: 'tag',
                 params: ['res_type'],
               }],
+              tags: [],
             },
           },
         ],
@@ -262,6 +281,25 @@ export default {
         }
         var data = this.chartQueryData()
         data.signature = getSignature(data)
+        if (this.isTemplate) {
+          if (this.scopeParams.scope) {
+            data.scope = this.scopeParams.scope
+          }
+          // if (this.scopeParams.project_id) {
+          //   data.metric_query[0].model.tags.push({
+          //     key: 'project_id',
+          //     value: this.scopeParams.project_id,
+          //     operator: '=',
+          //   })
+          // }
+          if (this.scopeParams.domain_id) {
+            data.metric_query[0].model.tags.push({
+              key: 'domain_id',
+              value: this.scopeParams.domain_id,
+              operator: '=',
+            })
+          }
+        }
         const { data: { series = [] } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data, params: { $t: new Date().getSeconds() } })
 
         const self = this
@@ -271,7 +309,6 @@ export default {
           this.lineChart.chartSetting.stack = { alerts: this.lineChart.chartData.columns.slice(1) }
           this.lineChart.loading = false
         })
-        console.log(this.lineChart)
       } catch (error) {
         this.lineChart.loading = false
         throw error
@@ -288,6 +325,19 @@ export default {
         }
 
         const params = this.commonParams()
+        if (this.isTemplate) {
+          if (this.scopeParams.scope) {
+            params.scope = this.scopeParams.scope
+          }
+          if (this.scopeParams.project_id) {
+            params.scope = 'domain'
+            params.project_id = this.scopeParams.project_id
+          }
+          if (this.scopeParams.domain_id) {
+            params.scope = 'domain'
+            params.domain_id = this.scopeParams.domain_id
+          }
+        }
         const { data: series = { } } = await new this.$Manager('alertrecords', 'v1').get({ id: 'total-alert', params: params })
 
         this.$nextTick(_ => {

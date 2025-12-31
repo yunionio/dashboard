@@ -1,5 +1,5 @@
 <template>
-  <div class="usage-quota">
+  <div class="usage-quota" :class="{ 'is-template': isTemplate }">
     <h3>{{ title }}</h3>
     <p>{{ value }}</p>
   </div>
@@ -14,6 +14,10 @@ export default {
     },
     value: {
       type: [Number, String],
+    },
+    isTemplate: {
+      type: Boolean,
+      default: false,
     },
   },
 }
@@ -33,6 +37,10 @@ export default {
   }
   p{
     color: #3591FF;
+  }
+  &.is-template {
+    box-shadow: none;
+    border: 1px solid #e5e6eb;
   }
 }
 </style>
