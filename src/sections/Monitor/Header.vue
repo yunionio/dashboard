@@ -142,6 +142,15 @@ export default {
             { key: '24h', label: i18n.t('common_178') },
           ],
         },
+        last_month: {
+          key: 'last_month',
+          label: i18n.t('common.last_month'),
+          timeFormat: 'YYYY-MM-DD HH:mm',
+          timeGroupOpts: [
+            { key: '6h', label: i18n.t('common_177') },
+            { key: '24h', label: i18n.t('common_178') },
+          ],
+        },
       }),
     },
     showTimegroup: {
@@ -251,6 +260,7 @@ export default {
     },
     timeChange (val) {
       const time = val.target.value
+      console.log('time', time)
       if (time === 'custom') {
         this.$emit('update:time', time, 'YYYY-MM-DD HH:mm')
       } else {

@@ -28,6 +28,7 @@ const options = [
   { label: i18n.t('timeselect.days', [7]), value: 7 * 24 * 60 },
   { label: i18n.t('timeselect.days', [14]), value: 14 * 24 * 60 },
   { label: i18n.t('timeselect.months', [1]), value: 30 * 24 * 60 },
+  { label: i18n.t('common.last_month'), value: 'last_month' },
 ]
 
 export default {
@@ -66,6 +67,14 @@ export default {
       }
     },
     parseTimeRange (v) {
+      if (v === 'last_month') {
+        const now = this.$moment()
+        const lastMonthStart = this.$moment().subtract(1, 'month').startOf('month') // 上个月1号0点
+        const lastMonthEnd = this.$moment().subtract(1, 'month').endOf('month') // 上个月最后一天最后一刻
+        const fromHours = now.diff(lastMonthStart, 'hours')
+        const toHours = now.diff(lastMonthEnd, 'hours')
+        return { from: fromHours, to: toHours, value: v }
+      }
       const to = new Date()
       const from = new Date(to - v * 60 * 1000)
       return { from: from, to: to, value: v }
