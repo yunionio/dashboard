@@ -6375,5 +6375,6 @@
   "common.alert_info": "Alert information",
   "common.worflow_tip": "{0} workflow has been submitted",
   "common.cpu_used_total": "CPU used/total",
-  "common.memory_used_total": "Memory used/total"
+  "common.memory_used_total": "Memory used/total",
+  "common.last_month": "Last month"
 }

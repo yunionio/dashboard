@@ -302,7 +302,9 @@ export default {
         }
       } else {
         params.from = this.time
-        delete params.to
+        if (!this.isTemplate) {
+          delete params.to
+        }
       }
       // groupFunc 为该时间间隔内如何聚合数据，与原图表group_by不一样
       // if (this.groupFunc) {
