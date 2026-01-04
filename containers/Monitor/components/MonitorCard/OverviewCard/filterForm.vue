@@ -300,10 +300,21 @@ export default {
       const query = {
         scope: this.scope,
       }
-      query.from = `${formValues.from}m` || '168h'
-      query.interval = this.intervalInput(formValues.from)
+      if (formValues.from === 'last_month') {
+        const now = this.$moment()
+        const lastMonthStart = this.$moment().subtract(1, 'month').startOf('month') // 上个月1号0点
+        const lastMonthEnd = this.$moment().subtract(1, 'month').endOf('month') // 上个月最后一天最后一刻
+        const fromHours = now.diff(lastMonthStart, 'hours')
+        const toHours = now.diff(lastMonthEnd, 'hours')
+        query.from = `${fromHours}h`
+        query.to = `${toHours}h`
+        query.interval = '12h'
+      } else {
+        query.from = `${formValues.from}m` || '168h'
+        query.interval = this.intervalInput(formValues.from)
+      }
       // 报表模式需计算平均值,需设置interval来获取多个点,sum则不需要
-      if (this.isTemplate) {
+      if (this.isTemplate && formValues.from !== 'last_month') {
         if (this.fucType.length && !this.fucType.includes('sum')) {
           query.interval = formValues.from ? `${Math.ceil(formValues.from / 60)}m` : '168m'
         }

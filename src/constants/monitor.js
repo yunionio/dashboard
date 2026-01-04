@@ -83,6 +83,17 @@ export const timeOpts = {
       { key: '24h', label: i18n.t('monitor.text00013') },
     ],
   },
+  last_month: {
+    key: 'last_month',
+    label: i18n.t('common.last_month'),
+    timeFormat: 'YYYY-MM-DD HH:mm',
+    timeGroupOpts: [
+      { key: '30m', label: i18n.t('monitor.text00010') },
+      { key: '1h', label: i18n.t('monitor.text00011') },
+      { key: '6h', label: i18n.t('monitor.text00012') },
+      { key: '24h', label: i18n.t('monitor.text00013') },
+    ],
+  },
   custom: {
     key: 'custom',
     hidden: true,

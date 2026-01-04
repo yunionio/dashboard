@@ -6393,5 +6393,6 @@
   "common.alert_info": "アラーム情報",
   "common.worflow_tip": "{0}ワークフローが提出されました",
   "common.cpu_used_total": "CPU 使用/合計",
-  "common.memory_used_total": "メモリ 使用/合計"
+  "common.memory_used_total": "メモリ 使用/合計",
+  "common.last_month": "先月"
 }

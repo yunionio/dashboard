@@ -119,6 +119,19 @@ export default {
           params.from = this.customTime.from
           params.to = this.customTime.to
         }
+      } else if (this.time === 'last_month') {
+        // 计算当前时间到上个月第一天0点的小时数
+        const now = this.$moment()
+        const lastMonthStart = this.$moment().subtract(1, 'month').startOf('month') // 上个月第一天0点
+        const lastMonthEnd = this.$moment().subtract(1, 'month').endOf('month') // 上个月最后一天23:59:59
+
+        // from: 当前时间距离上个月1号0点多少个小时（取整）
+        const fromHours = Math.floor(now.diff(lastMonthStart, 'hours', true))
+        // to: 当前时间距离上个月最后一天23:59:59多少个小时（取整）
+        const toHours = Math.floor(now.diff(lastMonthEnd, 'hours', true))
+
+        params.from = `${fromHours}h`
+        params.to = `${toHours}h`
       } else {
         params.from = this.time
       }
