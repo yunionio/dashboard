@@ -4,14 +4,15 @@
     show-tag-columns2
     show-tag-filter
     :list="list"
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :group-actions="groupActions"
     :singleActions="singleActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
     :defaultSearchKey="defaultSearchKey"
-    :showSingleActions="showActions"
-    :showGroupActions="showActions && showGroupActions" />
+    :showSingleActions="isTemplate ? false : showActions"
+    :showGroupActions="showActions && showGroupActions"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
@@ -20,6 +21,7 @@ import { mapGetters } from 'vuex'
 import WindowsMixin from '@/mixins/windows.js'
 import { getNameFilter, getDescriptionFilter, getVpcFilter, getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter, getRegionFilter, getStatusFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import expectStatus from '@/constants/expectStatus'
 import { getSetPublicAction } from '@/utils/common/tableActions'
@@ -31,7 +33,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'NetworkList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     getParams: {
@@ -158,6 +160,8 @@ export default {
         id: this.id,
         resource: 'networks',
         getParams: this.getParam,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         steadyStatus: Object.values(expectStatus.network).flat(),
         filterOptions,
         responseData: this.responseData,

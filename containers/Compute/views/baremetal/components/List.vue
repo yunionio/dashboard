@@ -5,13 +5,15 @@
     show-tag-filter
     :id="id"
     :list="list"
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
+    :show-single-actions="!isTemplate"
     :export-data-options="exportDataOptions"
     :defaultSearchKey="defaultSearchKey"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions" />
+    :showGroupActions="showGroupActions"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
@@ -20,6 +22,7 @@ import { disableDeleteAction } from '@/utils/common/tableActions'
 import { getNameFilter, getTenantFilter, getStatusFilter, getOsTypeFilter, getDomainFilter, getRegionFilter, getDescriptionFilter, getCreatedAtFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import expectStatus from '@/constants/expectStatus'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import regexp from '@/utils/regexp'
@@ -29,7 +32,7 @@ import { cloudEnabled, cloudUnabledTip } from '../../vminstance/utils'
 
 export default {
   name: 'BaremetalList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     getParams: {
@@ -88,6 +91,8 @@ export default {
         id: this.id,
         resource: 'servers',
         getParams: this.getParam,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         filterOptions,
         steadyStatus: Object.values(expectStatus.server).flat(),
         responseData: this.responseData,

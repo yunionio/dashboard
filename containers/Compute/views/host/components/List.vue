@@ -3,7 +3,7 @@
     show-tag-columns
     show-tag-filter
     :list="list"
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
@@ -11,7 +11,9 @@
     :showSearchbox="showSearchbox"
     :defaultSearchKey="defaultSearchKey"
     :tableOverviewIndexs="tableOverviewIndexs"
-    :showGroupActions="showGroupActions" />
+    :showGroupActions="showGroupActions"
+    :show-single-actions="!isTemplate"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
@@ -20,6 +22,7 @@ import { getNameFilter, getDescriptionFilter, getStatusFilter, getEnabledFilter,
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import { typeClouds, getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
@@ -30,7 +33,7 @@ import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'HostList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     getParams: {
@@ -124,6 +127,8 @@ export default {
         id: this.id,
         resource: 'hosts',
         getParams: this.getParam,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         filterOptions,
         filter,
         responseData: this.responseData,

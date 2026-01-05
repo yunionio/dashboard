@@ -4,19 +4,21 @@
     show-tag-columns2
     show-tag-filter
     show-tag-config
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :group-actions="groupActions"
     :list="list"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
-    :showSingleActions="showActions"
+    :showSingleActions="isTemplate ? false : showActions"
     :showGroupActions="showActions && showGroupActions"
     :export-data-options="exportDataOptions"
-    :tag-config-params="tagConfigParams" />
+    :tag-config-params="tagConfigParams"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import { getNameFilter, getStatusFilter, getTenantFilter, getFilter, getDomainFilter, getBrandFilter, getCloudProviderFilter, getAccountFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
@@ -29,7 +31,7 @@ import { ENGINE_ARCH } from '../constants/index.js'
 
 export default {
   name: 'RedisList',
-  mixins: [WindowsMixin, globalSearchMixins, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, globalSearchMixins, ListMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     cloudEnv: String,
@@ -47,6 +49,8 @@ export default {
         id: this.id,
         resource: 'elasticcaches',
         getParams: this.getParam,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         steadyStatus: Object.values(expectStatus.redis).flat(),
         filterOptions: {
           external_id: {

@@ -4,13 +4,15 @@
     show-tag-columns2
     show-tag-filter
     :list="list"
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
-    :before-show-menu="beforeShowMenu" />
+    :show-single-actions="!isTemplate"
+    :before-show-menu="beforeShowMenu"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
@@ -19,6 +21,7 @@ import * as R from 'ramda'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import {
   getNameFilter,
@@ -36,7 +39,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'ImageList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     getParams: {
@@ -55,6 +58,8 @@ export default {
         resource: 'images',
         apiVersion: 'v1',
         getParams: this.getParam,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         steadyStatus: Object.values(expectStatus.image).flat(),
         filterOptions: {
           id: {

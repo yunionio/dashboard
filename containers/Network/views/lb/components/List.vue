@@ -5,14 +5,15 @@
     show-tag-filter
     show-tag-config
     :list="list"
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :single-actions="singleActions"
     :group-actions="groupActions"
     :showSearchbox="showSearchbox"
-    :showSingleActions="showActions"
+    :showSingleActions="isTemplate ? false : showActions"
     :showGroupActions="showActions && showGroupActions"
     :export-data-options="exportDataOptions"
-    :tag-config-params="tagConfigParams" />
+    :tag-config-params="tagConfigParams"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
@@ -20,6 +21,7 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { surpportLb } from '@Network/views/lb/constants'
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter, getBrandFilter, getTenantFilter, getDomainFilter, getAccountFilter, getStatusFilter, getCloudProviderFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions, disableDeleteAction } from '@/utils/common/tableActions'
@@ -33,7 +35,7 @@ import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'LbList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     getParams: {
@@ -89,6 +91,8 @@ export default {
         id: this.id,
         resource: 'loadbalancers',
         getParams: this.getParam,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         filterOptions,
         steadyStatus: {
           status: Object.values(expectStatus.lb).flat(),

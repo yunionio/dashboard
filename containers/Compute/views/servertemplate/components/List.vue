@@ -1,13 +1,14 @@
 <template>
   <page-list
     :list="list"
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
     :show-group-actions="showGroupActions"
-    :show-single-actions="showSingleActions"
-    :export-data-options="exportDataOptions" />
+    :show-single-actions="isTemplate ? false : showSingleActions"
+    :export-data-options="exportDataOptions"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
@@ -15,13 +16,14 @@ import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getTenantFilter, getStatusFilter, getBrandFilter, getDomainFilter, getOsArchFilter, getRegionFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'ServertemplateList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     getParams: {
@@ -47,6 +49,8 @@ export default {
         id: this.id,
         resource: 'servertemplates',
         getParams: this.getParam,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         steadyStatus: Object.values(expectStatus.servertemplate).flat(),
         filterOptions: {
           id: {

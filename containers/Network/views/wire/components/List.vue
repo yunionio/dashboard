@@ -3,12 +3,14 @@
     show-tag-columns
     show-tag-filter
     :list="list"
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
+    :show-single-actions="!isTemplate"
     :showGroupActions="showGroupActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
@@ -18,6 +20,7 @@ import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/t
 import { getNameFilter, getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import { HYPERVISORS } from '@/constants/index'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import { getWiresMergeAction } from '../utils/groupactions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -25,7 +28,7 @@ import { BAND_WIDTH_OPTION } from '../../../constants'
 
 export default {
   name: 'WireList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     getParams: {
@@ -112,6 +115,8 @@ export default {
           project_domains: getProjectDomainFilter(),
           created_at: getCreatedAtFilter(),
         },
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
       }),
