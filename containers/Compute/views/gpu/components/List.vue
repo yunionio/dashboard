@@ -133,15 +133,6 @@ export default {
           guest_status: [...Object.values(expectStatus.server).flat(), '', undefined],
         },
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('compute.text_228'), key: 'name' },
-          { label: this.$t('compute.text_482'), key: 'model' },
-          { label: this.$t('compute.text_483', [this.$t('dictionary.server')]), key: 'guest' },
-          { label: this.$t('compute.text_484'), key: 'host' },
-        ],
-      },
       groupActions: [
         {
           label: this.$t('compute.text_485', [this.$t('dictionary.server')]),
@@ -269,6 +260,15 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    exportDataOptions () {
+      return {
+        downloadType: 'local',
+        items: this.columns,
+        title: this.$t('compute.text_113'),
+      }
+    },
   },
   created () {
     this.init()
