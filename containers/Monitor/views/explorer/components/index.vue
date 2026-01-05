@@ -183,12 +183,22 @@ export default {
     mertricItemChange (item, i) {
       const t = +this.time.replace(/\D+/, '')
       const existBalance = this.seriesDescription.find(val => val.id === 'balance')
-      if (!existBalance && item.id === 'balance' && ~this.time.indexOf('h') && t < 3) { // 时间都是转换成h了，这里仅需要对比h即可
+      if (!this.isTemplate && !existBalance && item.id === 'balance' && ~this.time.indexOf('h') && t < 3) { // 时间都是转换成h了，这里仅需要对比h即可
         this.time = '72h'
         this.$message.warning(this.$t('common_562', [item.label]))
       }
       if (this.isTemplate && (!item.title || item.title === '-') && i === 0 && this.templateParams?.panel?.panel_name) {
-        this.$set(this.seriesDescription, i, { ...item, title: this.templateParams?.panel?.panel_name })
+        // 从 templateParams 中获取 common_alert_metric_details 信息，确保保存时能正确获取参数
+        const metricDetails = this.templateParams?.panel?.common_alert_metric_details?.[0] || {}
+        const updatedItem = {
+          ...item,
+          title: this.templateParams?.panel?.panel_name,
+          // 如果 item 中缺少这些信息，从 templateParams 中补充
+          metric_res_type: item.metric_res_type || metricDetails.res_type,
+          metricKeyItem: item.metricKeyItem || (metricDetails.measurement ? { measurement: metricDetails.measurement } : item.metricKeyItem),
+          key: item.key || metricDetails.field,
+        }
+        this.$set(this.seriesDescription, i, updatedItem)
       } else {
         this.$set(this.seriesDescription, i, item)
       }
@@ -291,17 +301,19 @@ export default {
       }
     },
     getTemplateParams () {
+      const description = this.seriesDescription[0] || {}
+      const metric = this.metricList[0]?.[0] || {}
       return {
-        panel_name: this.seriesDescription[0].title || this.seriesDescription[0].label,
+        panel_name: description.title || description.label || '',
         time: this.time,
         timeGroup: this.timeGroup,
-        model: this.metricList[0][0].model,
-        result_reducer: this.metricList[0][0].result_reducer,
+        model: metric.model || {},
+        result_reducer: metric.result_reducer || '',
         common_alert_metric_details: [
           {
-            res_type: this.seriesDescription[0].metric_res_type,
-            measurement: this.seriesDescription[0].metricKeyItem?.measurement,
-            field: this.seriesDescription[0].key,
+            res_type: description.metric_res_type || '',
+            measurement: description.metricKeyItem?.measurement || '',
+            field: description.key || '',
           },
         ],
       }
