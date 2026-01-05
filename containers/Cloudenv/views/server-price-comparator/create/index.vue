@@ -1,15 +1,15 @@
 <template>
   <div class="server-create-index">
     <page-header :title="headerTitle" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
-    <component :is="component" type="onpremise" />
+    <component :is="component" :type="type" />
   </div>
 </template>
 
 <script>
+import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import IDC from './form/IDC'
 import Public from './form/Public'
 import Private from './form/Private'
-import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 
 export default {
   name: 'ServerCreate',
