@@ -50,6 +50,13 @@ export default {
             ]
           },
         },
+        formatter: ({ row }) => {
+          const device = row.vendor_device_id.split(':')[0]
+          if (!device) {
+            return row.model
+          }
+          return row.model
+        },
       },
       {
         field: 'vendor_device_id',
@@ -75,6 +82,9 @@ export default {
             }
           },
         },
+        formatter: ({ row }) => {
+          return row.vendor_device_id
+        },
       },
       {
         field: 'device_path',
@@ -95,6 +105,9 @@ export default {
             }
             return ret
           },
+        },
+        formatter: ({ row }) => {
+          return row.device_path
         },
       },
       {
@@ -125,6 +138,9 @@ export default {
               </div>,
             ]
           },
+        },
+        formatter: ({ row }) => {
+          return row.guest || '-'
         },
       },
       getCopyWithContentTableColumn({
