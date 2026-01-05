@@ -5,14 +5,15 @@
     show-tag-filter
     show-tag-config
     :list="list"
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
-    :showSingleActions="showActions"
+    :showSingleActions="isTemplate ? false : showActions"
     :showGroupActions="showActions && showGroupActions"
     :export-data-options="exportDataOptions"
-    :tag-config-params="tagConfigParams" />
+    :tag-config-params="tagConfigParams"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
@@ -21,6 +22,7 @@ import { mapGetters } from 'vuex'
 import { ACL_TYPE } from '@Storage/constants/index.js'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import { getNameFilter, getTenantFilter, getBrandFilter, getStatusFilter, getAccountFilter, getDomainFilter, getCloudProviderFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
@@ -30,7 +32,7 @@ import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'BucketStorageList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     cloudEnv: String,
@@ -48,6 +50,8 @@ export default {
         ctx: this,
         id: this.id,
         resource: 'buckets',
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.bucket).flat(),
         filterOptions: {

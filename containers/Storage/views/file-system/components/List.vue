@@ -1,19 +1,22 @@
 <template>
   <page-list
     :list="list"
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :show-tag-columns="true"
     :show-tag-filter="true"
     :export-data-options="exportDataOptions"
     :group-actions="groupActions"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :show-single-actions="!isTemplate"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
 import * as R from 'ramda'
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import expectStatus from '@/constants/expectStatus'
 import {
   getFilter,
@@ -33,7 +36,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'FileSystemList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     cloudEnv: String,
@@ -54,6 +57,8 @@ export default {
         id: this.id,
         resource: 'file_systems',
         getParams: this.getParam,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         steadyStatus: Object.values(expectStatus.nas).flat(),
         filterOptions: {
           id: {

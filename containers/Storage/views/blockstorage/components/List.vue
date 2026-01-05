@@ -3,12 +3,14 @@
     show-tag-columns
     show-tag-filter
     :list="list"
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :group-actions="hidenGroupActions ? [] : groupActions"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
-    :export-data-options="exportDataOptions" />
+    :show-single-actions="!isTemplate"
+    :export-data-options="exportDataOptions"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
@@ -17,6 +19,7 @@ import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
 import { getDistinctFieldFilter, getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { hasServices } from '@/utils/auth'
 import expectStatus from '@/constants/expectStatus'
@@ -28,7 +31,7 @@ import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'BlockStorageList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     getParams: {
@@ -235,6 +238,8 @@ export default {
         id: this.id,
         resource: 'storages',
         getParams: this.getParam,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         steadyStatus: Object.values(expectStatus.blockstorage).flat(),
         filterOptions: {
           id: {

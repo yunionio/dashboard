@@ -4,19 +4,21 @@
     show-tag-columns2
     show-tag-filter
     :list="list"
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
-    :showSingleActions="showActions"
-    :showGroupActions="showActions && showGroupActions" />
+    :showSingleActions="isTemplate ? false : showActions"
+    :showGroupActions="showActions && showGroupActions"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import {
   getNameFilter,
   getTenantFilter,
@@ -35,7 +37,7 @@ import { steadyStatus } from '../constants'
 
 export default {
   name: 'SnapshotList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     getParams: {
@@ -50,6 +52,8 @@ export default {
         id: this.id,
         resource: 'snapshots',
         getParams: this.getParam,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         steadyStatus,
         filterOptions: {
           id: {

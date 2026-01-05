@@ -3,22 +3,28 @@
     :list="list"
     show-tag-columns
     show-tag-filter
-    :columns="changedColumns"
+    :columns="templateListColumns || changedColumns"
     :single-actions="singleActions"
     :group-actions="groupActions"
-    :export-data-options="exportDataOptions" />
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions"
+    :export-data-options="exportDataOptions"
+    :show-single-actions="!isTemplate"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import WindowsMixin from '@/mixins/windows'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'DnsRecordSetList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     data: {
@@ -38,6 +44,8 @@ export default {
           ...this.getParams,
           details: true,
         },
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         filterOptions: {
           name: {
             label: this.$t('common_664'),
@@ -140,7 +148,7 @@ export default {
   },
   computed: {
     changedColumns () {
-      return this.data.provider === 'Cloudflare' ? [...this.columns.filter(column => column.field !== 'traffic_policies'), {
+      return this.data?.provider === 'Cloudflare' ? [...this.columns.filter(column => column.field !== 'traffic_policies'), {
         field: 'proxied',
         title: this.$t('network.proxy_status'),
         formatter: ({ row }) => {
@@ -149,7 +157,7 @@ export default {
       }] : this.columns
     },
     isAliyunEE () {
-      return this.data.provider === 'Aliyun' && this.data.product_type === 'Enterprise'
+      return this.data?.provider === 'Aliyun' && this.data.product_type === 'Enterprise'
     },
   },
   created () {
