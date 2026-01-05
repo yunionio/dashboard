@@ -51,10 +51,12 @@ export const addMissingSeries = (series = [], chartQueryData, moment) => {
       if (from && to && /^\d+$/.test(from + '') && /^\d+$/.test(to + '')) {
       } else if (from && (!to || to === 'now') && /^\d+[h]$/.test(from + '')) {
         to = moment.valueOf()
-        from = moment.subtract(parseInt(from.replace('h', '')), 'hours').valueOf()
+        from = moment.clone().subtract(parseInt(from.replace('h', '')), 'hours').valueOf()
       } else if (from && to && /^\d+[h]$/.test(from + '') && /^\d+[h]$/.test(to + '')) {
-        to = moment.subtract(parseInt(to.replace('h', '')), 'hours').valueOf()
-        from = moment.subtract(parseInt(from.replace('h', '')), 'hours').valueOf()
+        // 使用 clone() 创建副本，避免修改原始 moment 对象
+        // 先计算 from，再计算 to（因为 to 应该比 from 更晚）
+        from = moment.clone().subtract(parseInt(from.replace('h', '')), 'hours').valueOf()
+        to = moment.clone().subtract(parseInt(to.replace('h', '')), 'hours').valueOf()
       } else {
         // 未正确解析，不处理
         return item
