@@ -1,6 +1,6 @@
 import { sizestrWithUnit, sizeToDesignatedUnit, genDocsUrl } from '@/utils/utils'
 import i18n from '@/locales'
-import { SCOPES_MAP, CLOUD_ENVS } from '@/constants'
+import { SCOPES_MAP, CLOUD_ENVS, HYPERVISORS_MAP } from '@/constants'
 import store from '@/store'
 
 // 不定单位使用formatter，固定单位使用unit
@@ -289,7 +289,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
-    brands: [HYPERVISORS_MAP.zettakit.brand],
+    brands: HYPERVISORS_MAP.zettakit ? [HYPERVISORS_MAP.zettakit.brand] : [],
   },
   'all.pending_delete_servers.x86_64.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -343,7 +343,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
-    brands: [HYPERVISORS_MAP.zettakit.brand],
+    brands: HYPERVISORS_MAP.zettakit ? [HYPERVISORS_MAP.zettakit.brand] : [],
   },
   'all.pending_delete_servers.aarch64.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -417,7 +417,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
-    brands: [HYPERVISORS_MAP.zettakit.brand],
+    brands: HYPERVISORS_MAP.zettakit ? [HYPERVISORS_MAP.zettakit.brand] : [],
   },
   'all.ready_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -471,7 +471,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
-    brands: [HYPERVISORS_MAP.zettakit.brand],
+    brands: HYPERVISORS_MAP.zettakit ? [HYPERVISORS_MAP.zettakit.brand] : [],
   },
   'all.ready_servers.x86_64.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -525,7 +525,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
-    brands: [HYPERVISORS_MAP.zettakit.brand],
+    brands: HYPERVISORS_MAP.zettakit ? [HYPERVISORS_MAP.zettakit.brand] : [],
   },
   'all.ready_servers.aarch64.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -579,7 +579,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
-    brands: [HYPERVISORS_MAP.zettakit.brand],
+    brands: HYPERVISORS_MAP.zettakit ? [HYPERVISORS_MAP.zettakit.brand] : [],
   },
   'all.running_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -633,7 +633,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
-    brands: [HYPERVISORS_MAP.zettakit.brand],
+    brands: HYPERVISORS_MAP.zettakit ? [HYPERVISORS_MAP.zettakit.brand] : [],
   },
   'all.running_servers.x86_64.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -687,7 +687,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
-    brands: [HYPERVISORS_MAP.zettakit.brand],
+    brands: HYPERVISORS_MAP.zettakit ? [HYPERVISORS_MAP.zettakit.brand] : [],
   },
   'all.running_servers.aarch64.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -2049,7 +2049,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
-    brands: [HYPERVISORS_MAP.zettakit.brand],
+    brands: HYPERVISORS_MAP.zettakit ? [HYPERVISORS_MAP.zettakit.brand] : [],
   },
   'all.servers.last_week.x86_64.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -2103,7 +2103,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
-    brands: [HYPERVISORS_MAP.zettakit.brand],
+    brands: HYPERVISORS_MAP.zettakit ? [HYPERVISORS_MAP.zettakit.brand] : [],
   },
   'all.servers.last_week.aarch64.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -2172,7 +2172,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
-    brands: [HYPERVISORS_MAP.zettakit.brand],
+    brands: HYPERVISORS_MAP.zettakit ? [HYPERVISORS_MAP.zettakit.brand] : [],
   },
   'all.pending_delete_servers.last_week.x86_64.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -2226,7 +2226,7 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_4'),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
-    brands: [HYPERVISORS_MAP.zettakit.brand],
+    brands: HYPERVISORS_MAP.zettakit ? [HYPERVISORS_MAP.zettakit.brand] : [],
   },
   'all.pending_delete_servers.last_week.aarch64.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
