@@ -211,11 +211,13 @@ export default {
     },
     // 是否开启checkbox
     checkboxEnabled () {
+      if (this.list && this.list.isTemplate) return false
       if (this.hideRowselect) return false
       return this.selectionType === 'checkbox'
     },
     // 是否开启radio
     radioEnabled () {
+      if (this.list && this.list.isTemplate) return false
       return !this.hideRowselect && this.selectionType === 'radio'
     },
     gridStyle () {

@@ -3,19 +3,21 @@
     show-tag-columns
     show-tag-filter
     :list="list"
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :single-actions="singleActions"
     :group-actions="groupActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
     :defaultSearchKey="defaultSearchKey"
-    :showSingleActions="showActions"
-    :showGroupActions="showActions && showGroupActions" />
+    :showSingleActions="isTemplate ? false : showActions"
+    :showGroupActions="showActions && showGroupActions"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
 import * as R from 'ramda'
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import expectStatus from '@/constants/expectStatus'
 import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import {
@@ -36,7 +38,7 @@ import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'VPCList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     getParams: {
@@ -95,6 +97,8 @@ export default {
         id: this.id,
         resource: 'vpcs',
         getParams: this.getParam,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         steadyStatus: Object.values(expectStatus.vpc).flat(),
         filterOptions,
         responseData: this.responseData,

@@ -1,22 +1,24 @@
 <template>
   <page-list
     show-tag-config
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :group-actions="groupActions"
     :list="list"
     :single-actions="singleActions"
-    :showSingleActions="showActions"
+    :showSingleActions="isTemplate ? false : showActions"
     :showGroupActions="showActions && showGroupActions"
     :export-data-options="exportDataOptions"
     :show-tag-columns="true"
     :show-tag-columns2="true"
     :show-tag-filter="true"
-    :tag-config-params="tagConfigParams" />
+    :tag-config-params="tagConfigParams"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
 import * as R from 'ramda'
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import { getNameFilter, getStatusFilter, getTenantFilter, getBrandFilter, getCloudProviderFilter, getAccountFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -26,7 +28,7 @@ import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'MongoDBList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin, globalSearchMixins],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin, globalSearchMixins],
   props: {
     id: String,
     getParams: {
@@ -41,6 +43,8 @@ export default {
         resource: 'mongodbs',
         apiVersion: 'v1',
         getParams: this.getParam,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         steadyStatus: Object.values(expectStatus.mongodb).flat(),
         filterOptions: {
           name: getNameFilter(),

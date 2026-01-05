@@ -4,13 +4,15 @@
     show-tag-filter
     ref="pageList"
     :list="list"
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :group-actions="groupActions"
     :single-actions="customSingleActions || singleActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
     :defaultSearchKey="defaultSearchKey"
-    :showGroupActions="showGroupActions" />
+    :showGroupActions="showGroupActions"
+    :show-single-actions="!isTemplate"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
@@ -18,6 +20,7 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import { getNameFilter, getTenantFilter, getDomainFilter, getRegionFilter, getBrandFilter, getAccountFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import globalSearchMixins from '@/mixins/globalSearch'
 import { getSetPublicAction } from '@/utils/common/tableActions'
@@ -29,7 +32,7 @@ import { exportDataOptions } from '../utils'
 
 export default {
   name: 'SecgroupList',
-  mixins: [WindowsMixin, ListMixin, globalSearchMixins, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, globalSearchMixins, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     getParams: {
@@ -77,6 +80,8 @@ export default {
         id: this.id,
         resource: 'secgroups',
         getParams: this.getParam,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         steadyStatus: Object.values(expectStatus.secgroup).flat(),
         filterOptions: {
           name: getNameFilter(),
