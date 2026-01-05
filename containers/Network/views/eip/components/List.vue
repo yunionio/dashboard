@@ -4,19 +4,21 @@
     show-tag-columns2
     show-tag-filter
     :list="list"
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
     :defaultSearchKey="defaultSearchKey"
-    :showSingleActions="showActions"
-    :showGroupActions="showActions && showGroupActions" />
+    :showSingleActions="isTemplate ? false : showActions"
+    :showGroupActions="showActions && showGroupActions"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import {
   getNameFilter,
   getStatusFilter,
@@ -38,7 +40,7 @@ import { ASSOCIATE_MAP } from '../constants'
 
 export default {
   name: 'EipList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     cloudEnv: String,
@@ -176,6 +178,8 @@ export default {
         id: this.id,
         resource: 'eips',
         getParams: this.getParam,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         filter,
         filterOptions: {
           external_id: {

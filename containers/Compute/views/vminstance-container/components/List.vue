@@ -6,19 +6,24 @@
     show-tag-columns2
     show-tag-config
     :list="list"
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions"
     :export-data-options="exportDataOptions"
     :defaultSearchKey="defaultSearchKey"
     :refresh-method="handleListRefresh"
     :tag-config-params="tagConfigParams"
-    :tableOverviewIndexs="tableOverviewIndexs" />
+    :tableOverviewIndexs="tableOverviewIndexs"
+    :show-single-actions="!isTemplate"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import {
   getNameFilter,
   getBrandFilter,
@@ -46,7 +51,7 @@ import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'VmContainerInstanceList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     getParams: {
@@ -120,6 +125,8 @@ export default {
         id: this.id,
         resource: 'servers',
         getParams: this.getParam,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         steadyStatus: {
           status: Object.values(expectStatus.container).flat(),
         },

@@ -17,7 +17,7 @@
     :refresh-method="handleListRefresh"
     :tag-config-params="tagConfigParams"
     :tableOverviewIndexs="tableOverviewIndexs"
-    enableVirtualScroll />
+    :show-page="!isTemplate" />
 </template>
 
 <script>
@@ -182,6 +182,8 @@ export default {
         filter,
         filterOptions,
         responseData: this.responseData,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         hiddenColumns: ['is_gpu', 'metadata', 'instance_type', 'os_type', 'vpc', 'host', 'account', 'created_at', 'macs', 'os_arch', 'vcpu_count', 'vmem_size', 'disk', 'power_states'],
         autoHiddenFilterKey: 'server_hidden_columns',
       }),

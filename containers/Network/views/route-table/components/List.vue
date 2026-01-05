@@ -1,17 +1,19 @@
 <template>
   <page-list
     :list="list"
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :export-data-options="exportDataOptions"
     :group-actions="groupActions"
     :single-actions="singleActions"
     :showGroupActions="showGroupActions"
-    :showSingleActions="showSingleActions" />
+    :showSingleActions="isTemplate ? false : showSingleActions"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
 import * as R from 'ramda'
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import {
   getDomainFilter,
   getStatusFilter,
@@ -29,7 +31,7 @@ import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'RouteTableList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     getParams: [Object, Function],
@@ -56,6 +58,8 @@ export default {
         id: this.id,
         resource: 'route_tables',
         getParams: this.getParam,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         steadyStatus: Object.values(expectStatus.routeTable).flat(),
         filterOptions: {
           name: {

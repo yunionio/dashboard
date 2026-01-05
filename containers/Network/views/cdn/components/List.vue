@@ -1,7 +1,7 @@
 <template>
   <page-list
     :list="list"
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :show-tag-columns="true"
     :show-tag-columns2="true"
     :show-tag-filter="true"
@@ -9,13 +9,16 @@
     :group-actions="groupActions"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :show-single-actions="!isTemplate"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import expectStatus from '@/constants/expectStatus'
 import {
   getStatusFilter,
@@ -36,7 +39,7 @@ import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'DomainList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     getParams: {
@@ -53,6 +56,8 @@ export default {
         id: this.id,
         resource: 'cdn_domains',
         getParams: this.getParam,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         steadyStatus: Object.values(expectStatus.cdnDomain).flat(),
         filterOptions: {
           external_id: {

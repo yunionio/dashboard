@@ -197,6 +197,7 @@ class CreateList {
       ctx,
       getParams,
       limit = 20,
+      templateLimit = 10,
       idKey = 'id',
       exportUseIdKey = false,
       filterOptions = {},
@@ -243,6 +244,8 @@ class CreateList {
       noListDetails = false,
       // 批量获取item的params formatter
       batchItemGetParamsFormatter = null,
+      // 列表是否为报表模板列表
+      isTemplate = false,
     },
   ) {
     // 列表唯一标识
@@ -291,7 +294,8 @@ class CreateList {
     this.refreshIntervalConfig = refreshIntervalConfig
     // 用于存放自定义列表的配置
     this.config = {
-      hiddenColumns: hiddenColumns,
+      hiddenColumns: isTemplate ? [] : hiddenColumns,
+      isTemplate: isTemplate,
       showTagKeys: [],
       showProjectTagKeys: [],
     }
@@ -325,6 +329,8 @@ class CreateList {
     this.batchCheckStatusList = []
     this.batchItemGetParamsFormatter = batchItemGetParamsFormatter
     this.totals = {}
+    this.isTemplate = isTemplate
+    this.templateLimit = templateLimit
   }
 
   // 重写selectedItems getter和setter
@@ -551,7 +557,7 @@ class CreateList {
     // if (this.noPreLoad) {
     showDetails = !this.noListDetails
     // }
-    this.params = this.genParams(offset, limit, showDetails)
+    this.params = this.genParams(offset, this.isTemplate ? this.templateLimit : limit, showDetails)
     // if (!showDetails) this.isPreLoad = true
     this.isPreLoad = false
     try {
@@ -872,6 +878,9 @@ class CreateList {
    * @memberof CreateList
    */
   getLimit () {
+    if (this.isTemplate) {
+      return this.templateLimit || this.limit
+    }
     if (!this.disableStorageLimit) {
       const limit = storage.get(STORAGE_LIST_LIMIT_KEY)
       return limit || this.limit

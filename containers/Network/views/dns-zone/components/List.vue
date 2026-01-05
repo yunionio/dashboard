@@ -3,17 +3,20 @@
     :list="list"
     show-tag-columns
     show-tag-filter
-    :columns="columns"
+    :columns="templateListColumns || columns"
     :single-actions="singleActions"
     :group-actions="groupActions"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :show-single-actions="!isTemplate"
+    :show-page="!isTemplate" />
 </template>
 
 <script>
 import * as R from 'ramda'
 import ListMixin from '@/mixins/list'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
 import {
@@ -32,7 +35,7 @@ import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'DnsZoneList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
     getParams: {
@@ -46,6 +49,8 @@ export default {
         id: this.id,
         resource: 'dns_zones',
         getParams: this.getParam,
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         steadyStatus: {
           status: Object.values(expectStatus.dnszone).flat(),
         },

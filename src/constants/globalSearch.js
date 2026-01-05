@@ -314,28 +314,28 @@ export const getSearchMaps = (searchRes = {}) => {
       },
       resData: {},
     },
-    networkinterfaces: {
-      res_name: 'networkinterfaces',
-      label: i18n.t('dictionary.networkinterface'),
-      id: 'networkinterfaces',
-      component: 'FlexNetworkList',
-      hasPermission: hasPermission({ key: 'networkcard_list' }),
-      params: {
-        common: {
-          ...commonSearchQuery,
-        },
-        name: {
-          filter: `name.contains(${getFilter('name')})`,
-        },
-        id: {
-          id: searchRes.id,
-        },
-        external_id: {
-          filter: `external_id.equals(${searchRes.external_id})`,
-        },
-      },
-      resData: {},
-    },
+    // networkinterfaces: {
+    //   res_name: 'networkinterfaces',
+    //   label: i18n.t('dictionary.networkinterface'),
+    //   id: 'networkinterfaces',
+    //   component: 'FlexNetworkList',
+    //   hasPermission: hasPermission({ key: 'networkcard_list' }),
+    //   params: {
+    //     common: {
+    //       ...commonSearchQuery,
+    //     },
+    //     name: {
+    //       filter: `name.contains(${getFilter('name')})`,
+    //     },
+    //     id: {
+    //       id: searchRes.id,
+    //     },
+    //     external_id: {
+    //       filter: `external_id.equals(${searchRes.external_id})`,
+    //     },
+    //   },
+    //   resData: {},
+    // },
     networks: {
       menu_key: 'network2',
       res_name: 'networks',

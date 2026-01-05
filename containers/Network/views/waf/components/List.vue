@@ -2,12 +2,16 @@
   <div>
     <page-list
       :list="list"
-      :columns="columns"
+      :columns="templateListColumns || columns"
       :show-tag-filter="true"
       :show-tag-columns="true"
       :group-actions="groupActions"
       :single-actions="singleActions"
-      :export-data-options="exportDataOptions" />
+      :showSearchbox="showSearchbox"
+      :showGroupActions="showGroupActions"
+      :export-data-options="exportDataOptions"
+      :show-single-actions="!isTemplate"
+      :show-page="!isTemplate" />
   </div>
 </template>
 
@@ -16,12 +20,14 @@ import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getDescriptionFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter, getRegionFilter, getCloudProviderFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import GlobalSearchMixin from '@/mixins/globalSearch'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'WafList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
   },
@@ -32,6 +38,8 @@ export default {
         apiVersion: 'v2',
         resource: 'waf_instances',
         getParams: { details: true },
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
         filterOptions: {
           id: {
             label: this.$t('network.waf.id'),
