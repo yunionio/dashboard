@@ -74,6 +74,7 @@ import WafList from '@Network/views/waf/components/List'
 import FileSystemList from '@Storage/views/file-system/components/List'
 import VmContainerInstanceList from '@Compute/views/vminstance-container/components/List'
 import { getSearchMaps } from '@/constants/globalSearch'
+import DeadlyResourceList from '@Compute/views/deadly-resource/components/List'
 
 export default {
   name: 'GlobalSearchResult',
@@ -125,6 +126,7 @@ export default {
     FileSystemList,
     GpuList,
     VmContainerInstanceList,
+    DeadlyResourceList,
   },
   data () {
     const maps = getSearchMaps()

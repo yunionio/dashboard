@@ -1976,5 +1976,7 @@
   "compute.get_screenshot_error": "スクリーンショットの取得に失敗しました",
   "compute.vnc_panic_screenshot": "VNC スクリーンショット",
   "compute.host_tag": "@:dictionary.host タグ",
-  "compute.storage_tag": "ストレージ タグ"
+  "compute.storage_tag": "ストレージ タグ",
+  "compute.deadly_resource": "期限切れリソース",
+  "compute.check_deadly_resource": "期限切れリソースをチェック"
 }
