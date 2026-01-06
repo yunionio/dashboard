@@ -100,6 +100,26 @@ export default {
           return text || '-'
         },
       },
+      {
+        field: 'retention_days',
+        title: this.$t('compute.text_433'),
+        formatter: ({ row }) => {
+          if (row.retention_count) {
+            return `${this.$t('compute.retention_count_prefix')} ${row.retention_count} ${this.$t('compute.retention_count_suffix')}`
+          }
+          if (row.retention_days !== -1) {
+            return this.$t('compute.text_438', [row.retention_days])
+          }
+          return this.$t('compute.text_1094')
+        },
+      },
+      {
+        field: 'snapshot_count',
+        title: this.$t('compute.snapshot_count'),
+        formatter: ({ row }) => {
+          return row.snapshot_count || '-'
+        },
+      },
       getRegionTableColumn(),
       getTimeTableColumn(),
       getProjectTableColumn(),
