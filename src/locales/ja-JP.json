@@ -4476,6 +4476,18 @@
   "common.text00105": "適用範囲",
   "common.text00106": "適用範囲を選択してください",
   "common.application_scope": "適用範囲",
+  "common.rule_scope_resource": "本{1}と以下の{0}个{1}に適用されています",
+  "common_application_scope_desc": {
+    "none": "現在@:dictionary.project",
+    "project": "本@:dictionary.domain内多@:dictionary.project",
+    "projectAll": "本@:dictionary.domain",
+    "domain": "多@:dictionary.domain",
+    "domainAll": "グローバル"
+  },
+  "common.apply_to_current_project": "本プロジェクトへの適用",
+  "common.apply_to_other_project": "他のプロジェクトに適用",
+  "common.apply_to_current_domain": "本ドメインへの適用",
+  "common.apply_to_other_domain": "他のドメインに適用",
   "common.text00107": "キャッシュ",
   "common.text00108": "@:dictionary.cloudaccountに所属",
   "common.text00110": "より良いサービス体験を得るには、最新バージョンのChromeブラウザを使用してください",
