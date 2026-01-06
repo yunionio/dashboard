@@ -4486,6 +4486,18 @@
   "common.text00105": "应用范围",
   "common.text00106": "请选择应用范围",
   "common.application_scope": "应用范围",
+  "common.rule_scope_resource": "已应用至本{1}和以下{0}个{1}",
+  "common_application_scope_desc": {
+    "none": "当前@:dictionary.project",
+    "project": "本@:dictionary.domain内多@:dictionary.project",
+    "projectAll": "本@:dictionary.domain",
+    "domain": "多@:dictionary.domain",
+    "domainAll": "全局"
+  },
+  "common.apply_to_current_project": "应用至本项目",
+  "common.apply_to_other_project": "应用至其他项目",
+  "common.apply_to_current_domain": "应用至本域",
+  "common.apply_to_other_domain": "应用至其他域",
   "common.text00107": "缓存",
   "common.text00108": "所属@:dictionary.cloudaccount",
   "common.text00110": "为了获取更好的产品体验，请使用 Chrome 最新版本的浏览器",
