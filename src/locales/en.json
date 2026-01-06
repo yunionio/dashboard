@@ -4459,6 +4459,18 @@
   "common.text00105": "Scope of belonging",
   "common.text00106": "Please select the scope of belonging",
   "common.application_scope": "Application Scope",
+  "common.rule_scope_resource": "Applied to this {1} and the following {0} {1}",
+  "common_application_scope_desc": {
+    "none": "Current @:dictionary.project",
+    "project": "Current @:dictionary.domain multiple @:dictionary.project",
+    "projectAll": "Current @:dictionary.domain",
+    "domain": "Multiple @:dictionary.domain",
+    "domainAll": "System"
+  },
+  "common.apply_to_current_project": "Apply to this project",
+  "common.apply_to_other_project": "Apply to other projects",
+  "common.apply_to_current_domain": "Apply to this domain",
+  "common.apply_to_other_domain": "Apply to other domains",
   "common.text00107": "Cache",
   "common.text00108": "@:dictionary.cloudaccount",
   "common.text00110": "In order to get a better product experience, please use the latest version of Chrome browser",
