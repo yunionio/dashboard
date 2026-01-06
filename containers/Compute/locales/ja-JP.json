@@ -1978,5 +1978,6 @@
   "compute.host_tag": "@:dictionary.host タグ",
   "compute.storage_tag": "ストレージ タグ",
   "compute.deadly_resource": "期限切れリソース",
-  "compute.check_deadly_resource": "期限切れリソースをチェック"
+  "compute.check_deadly_resource": "期限切れリソースをチェック",
+  "compute.snapshot_count": "快照数量"
 }

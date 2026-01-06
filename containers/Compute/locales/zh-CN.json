@@ -1978,5 +1978,6 @@
   "compute.host_tag": "@:dictionary.host标签",
   "compute.storage_tag": "存储标签",
   "compute.deadly_resource": "临期资源",
-  "compute.check_deadly_resource": "扫描临期资源"
+  "compute.check_deadly_resource": "扫描临期资源",
+  "compute.snapshot_count": "快照数量"
 }

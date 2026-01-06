@@ -80,6 +80,13 @@ export default {
             return this.$t('compute.text_1094')
           },
         },
+        {
+          field: 'snapshot_count',
+          title: this.$t('compute.snapshot_count'),
+          formatter: ({ row }) => {
+            return row.snapshot_count || '-'
+          },
+        },
       ],
       extraInfo: [],
     }
