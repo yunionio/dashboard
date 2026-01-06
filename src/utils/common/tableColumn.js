@@ -1176,6 +1176,7 @@ export const getBillingTableColumn = ({
   showOverflow = 'ellipsis',
   hiddenSetBtn,
   hidden,
+  showSetButton = true,
 } = {}) => {
   return {
     title,
@@ -1205,7 +1206,7 @@ export const getBillingTableColumn = ({
           let tooltipCon = <div slot="help"></div>
           const isHiddenSetButton = R.is(Function, hiddenSetBtn) ? hiddenSetBtn() : hiddenSetBtn
           if (hasPermission({ key: 'server_perform_cancel_expire' }) && !isHiddenSetButton) {
-            tooltipCon = <div slot="help">{i18n.t('common_301', [time])}<span class="link-color" style="cursor: pointer" onClick={openVmSetDurationDialog}>{i18n.t('common_453')}</span></div>
+            tooltipCon = <div slot="help">{i18n.t('common_301', [time])}{showSetButton ? <span class="link-color" style="cursor: pointer" onClick={openVmSetDurationDialog}>{i18n.t('common_453')}</span> : ''}</div>
           } else {
             tooltipCon = <div slot="help">{i18n.t('common_301', [time])}</div>
           }

@@ -3071,7 +3071,9 @@
     "scopedpolicy": "@:dictionary.scopedpolicies",
     "scopedpolicies": "@:dictionary.scopedpolicies",
     "samluser": "@:dictionary.samluser",
-    "samlusers": "@:dictionary.samluser"
+    "samlusers": "@:dictionary.samluser",
+    "dbinstance": "@:dictionary.rds",
+    "elasticcache": "@:dictionary.redis"
   },
   "table": {
     "title": {
