@@ -26,7 +26,7 @@
 
 <script>
 import { getSignature } from '@/utils/crypto'
-import { sizestr, mathRoundFix } from '@/utils/utils'
+import { sizestr, mathRoundFix, uuid } from '@/utils/utils'
 import setting from '@/config/setting'
 import numerify from '../sections/chart/formatters'
 import BasicSelect from '../sections/select/basic'
@@ -786,7 +786,8 @@ export default {
               data.metric_query[0].model.tags = tags
             }
           }
-          this.$uM.performAction({ id: 'query', action: '', data }).then(res => {
+          const params = this.isTemplate ? { $t: uuid() } : {}
+          this.$uM.performAction({ id: 'query', action: '', data, params }).then(res => {
             const { data: { series = [] } } = res
             chart.chartType = this.isLineChart ? 'OverviewLine' : 'OverviewHistogram'
             chart.chartData = this.toChartData(series)
