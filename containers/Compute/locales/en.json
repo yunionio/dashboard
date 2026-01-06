@@ -1974,5 +1974,7 @@
   "compute.get_screenshot_error": "Get screenshot failed",
   "compute.vnc_panic_screenshot": "VNC screenshot",
   "compute.host_tag": "@:dictionary.host tags",
-  "compute.storage_tag": "Storage tags"
+  "compute.storage_tag": "Storage tags",
+  "compute.deadly_resource": "Expiring resources",
+  "compute.check_deadly_resource": "Check expiring resources"
 }

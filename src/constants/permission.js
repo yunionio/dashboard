@@ -1553,6 +1553,8 @@ export const PERMISSION = {
   llm_instant_models_perform_change_owner: ['llm', 'llm_instant_models', 'perform', 'change-owner'],
   llm_instant_models_perform_public: ['llm', 'llm_instant_models', 'perform', 'public'],
 
+  billing_resource_checks_list: ['compute', 'billing_resource_checks', 'list'],
+
   ...extraPermissions,
 }
 
