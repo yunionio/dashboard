@@ -1049,6 +1049,7 @@ export const getApplicationScopeTableColumn = ({
   resource,
   width = 110,
   hidden,
+  scope = 'project',
 } = {}) => {
   return {
     title,
@@ -1064,8 +1065,10 @@ export const getApplicationScopeTableColumn = ({
     },
     slots: {
       default: ({ row }, h) => {
-        const i18nPrefix = store.getters.l3PermissionEnable ? 'suggestRuleShareDesc' : 'suggestRuleShareDescPrimary'
-        if (row.is_public === false || row.is_public === 'false') return i18n.t(`${i18nPrefix}.none`)
+        const i18nPrefix = 'common_application_scope_desc'
+        if (row.is_public === false || row.is_public === 'false') {
+          return scope === 'domain' ? i18n.t('common.apply_to_current_domain') : i18n.t('common.apply_to_current_project')
+        }
         const { public_scope: publicScope, shared_projects: sharedProjects, shared_domains: sharedDomains } = row
         if (publicScope === 'project' && sharedProjects && sharedProjects.length > 0) {
           return [
@@ -1075,7 +1078,7 @@ export const getApplicationScopeTableColumn = ({
                 header: i18n.t('common.application_scope'),
                 body: () => {
                   return [
-                    <a-alert class='mb-2' message={i18n.t('meter.rule_scope_resource', [sharedProjects.length, i18n.t('dictionary.project')])} />,
+                    <a-alert class='mb-2' message={i18n.t('common.rule_scope_resource', [sharedProjects.length, i18n.t('dictionary.project')])} />,
                     <dialog-table
                       vxeGridProps={{ showOverflow: 'title' }}
                       data={sharedProjects}
@@ -1111,7 +1114,7 @@ export const getApplicationScopeTableColumn = ({
                   header: i18n.t('common.application_scope'),
                   body: () => {
                     return [
-                      <a-alert class='mb-2' message={i18n.t('meter.rule_scope_resource', [sharedDomains.length, i18n.t('dictionary.domain')])} />,
+                      <a-alert class='mb-2' message={i18n.t('common.rule_scope_resource', [sharedDomains.length, i18n.t('dictionary.domain')])} />,
                       <dialog-table
                         vxeGridProps={{ showOverflow: 'title' }}
                         data={sharedDomains}
@@ -1143,8 +1146,10 @@ export const getApplicationScopeTableColumn = ({
       },
     },
     formatter: ({ row }) => {
-      const i18nPrefix = store.getters.l3PermissionEnable ? 'suggestRuleShareDesc' : 'suggestRuleShareDescPrimary'
-      if (row.is_public === false || row.is_public === 'false') return i18n.t(`${i18nPrefix}.none`)
+      const i18nPrefix = 'common_application_scope_desc'
+      if (row.is_public === false || row.is_public === 'false') {
+        return scope === 'domain' ? i18n.t('common.apply_to_current_domain') : i18n.t('common.apply_to_current_project')
+      }
       const { public_scope: publicScope, shared_projects: sharedProjects, shared_domains: sharedDomains } = row
       if (publicScope === 'project' && sharedProjects && sharedProjects.length > 0) {
         return i18n.t(`${i18nPrefix}.project`)

@@ -183,16 +183,17 @@ export default {
     },
     typeOptions () {
       // 根据 scope 参数判断显示选项
-      // none: 应用至本项目（或域）
-      // project: 应用至其他项目
-      // domain: 应用至域
+      // 当 resScope === 'domain' 时：应用至本域 / 应用至其他域
+      // 当 resScope === 'project' 时：应用至本项目 / 应用至其他项目 / 应用至其他域
       const none = { key: 'none', label: this.getNoneLabel() }
-      const project = { key: 'project', label: this.$t('meter.other_project') }
-      const domain = { key: 'domain', label: this.$t('meter.scope_domain') }
+      const project = { key: 'project', label: this.$t('common.apply_to_other_project') }
+      const domain = { key: 'domain', label: this.$t('common.apply_to_other_domain') }
       if (this.resScope === 'domain') {
+        // 应用至本域 / 应用至其他域
         return [none, domain]
       }
       if (this.resScope === 'project') {
+        // 应用至本项目 / 应用至其他项目 / 应用至其他域
         if (this.l3PermissionEnable && this.isAdminMode) {
           return [none, project, domain]
         }
@@ -245,16 +246,12 @@ export default {
   methods: {
     getNoneLabel () {
       // 根据 scope 参数判断"应用至本项目"或"应用至本域"
-      // 如果 scope 是 domain，显示"应用至本域"（使用 meter.scope_domain 的翻译，但实际应该是"应用至本域"）
+      // 如果 scope 是 domain，显示"应用至本域"
       // 如果 scope 是 project 或不存在，显示"应用至本项目"
       if (this.resScope === 'domain') {
-        // 当 scope 是 domain 时，none 选项表示"应用至本域"
-        // 由于翻译键 meter.scope_domain 是"应用至域"，这里使用 meter.current_project 的格式
-        // 但实际应该根据上下文判断，如果是 domain scope，应该显示"应用至本域"
-        return this.$t('meter.current_project') // 这里应该使用"应用至本域"的翻译，但当前翻译键可能不存在
+        return this.$t('common.apply_to_current_domain')
       }
-      // 当 scope 是 project 或不存在时，显示"应用至本项目"
-      return this.$t('meter.current_project')
+      return this.$t('common.apply_to_current_project')
     },
     async fetchDomains (query) {
       const params = {
