@@ -1197,6 +1197,26 @@ export const getSearchMaps = (searchRes = {}) => {
       },
       resData: {},
     },
+    deadlyResource: {
+      menu_key: 'deadly-resource',
+      res_name: 'billing_resource_checks',
+      label: i18n.t('compute.deadly_resource'),
+      id: 'deadlyResource',
+      component: 'DeadlyResourceList',
+      hasPermission: hasPermission({ key: 'billing_resource_checks_list' }),
+      params: {
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        id: {
+          id: searchRes.id,
+        },
+      },
+      resData: {},
+    },
   }
 
   const validMaps = R.filter((val, key) => {

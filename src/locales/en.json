@@ -3047,6 +3047,8 @@
     "scopedpolicies": "Scoped policies",
     "samluser": "SAML user",
     "samlusers": "SAML users",
+    "dbinstance": "@:dictionary.rds",
+    "elasticcache": "@:dictionary.redis",
     "shield_bills": "Billing Config",
     "report_settings": "Report Template",
     "report_elements": "Report Fields"
