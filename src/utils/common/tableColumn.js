@@ -1042,6 +1042,127 @@ export const getProjectDomainTableColumn = ({
   })
 }
 
+export const getApplicationScopeTableColumn = ({
+  field = 'public_scope',
+  title = i18n.t('bill.budget_scope_label'),
+  vm,
+  resource,
+  width = 110,
+  hidden,
+} = {}) => {
+  return {
+    title,
+    field,
+    showOverflow: 'title',
+    width,
+    hidden: () => {
+      if (!store.getters.l3PermissionEnable && (store.getters.scopeResource && store.getters.scopeResource.domain.includes(resource))) {
+        return true
+      }
+      if (R.is(Function, hidden)) return hidden()
+      return hidden
+    },
+    slots: {
+      default: ({ row }, h) => {
+        const i18nPrefix = store.getters.l3PermissionEnable ? 'suggestRuleShareDesc' : 'suggestRuleShareDescPrimary'
+        if (row.is_public === false || row.is_public === 'false') return i18n.t(`${i18nPrefix}.none`)
+        const { public_scope: publicScope, shared_projects: sharedProjects, shared_domains: sharedDomains } = row
+        if (publicScope === 'project' && sharedProjects && sharedProjects.length > 0) {
+          return [
+            <a onClick={() => {
+              vm.createDialog('CommonDialog', {
+                hiddenCancel: true,
+                header: i18n.t('bill.budget_scope_label'),
+                body: () => {
+                  return [
+                    <a-alert class='mb-2' message={i18n.t('meter.rule_scope_resource', [sharedProjects.length, i18n.t('dictionary.project')])} />,
+                    <dialog-table
+                      vxeGridProps={{ showOverflow: 'title' }}
+                      data={sharedProjects}
+                      columns={
+                        [
+                          getCopyWithContentTableColumn({
+                            field: 'id',
+                            title: 'ID',
+                            minWidth: 140,
+                          }),
+                          getCopyWithContentTableColumn({
+                            field: 'name',
+                            title: i18n.t('common_186'),
+                          }),
+                          getCopyWithContentTableColumn({
+                            field: 'domain',
+                            title: i18n.t('table.title.owner_domain'),
+                          }),
+                        ]
+                      } />,
+                  ]
+                },
+              })
+            }}>{i18n.t(`${i18nPrefix}.project`)}</a>,
+          ]
+        }
+        if (publicScope === 'domain') {
+          if (sharedDomains && sharedDomains.length > 0) {
+            return [
+              <a onClick={() => {
+                vm.createDialog('CommonDialog', {
+                  hiddenCancel: true,
+                  header: i18n.t('bill.budget_scope_label'),
+                  body: () => {
+                    return [
+                      <a-alert class='mb-2' message={i18n.t('meter.rule_scope_resource', [sharedDomains.length, i18n.t('dictionary.domain')])} />,
+                      <dialog-table
+                        vxeGridProps={{ showOverflow: 'title' }}
+                        data={sharedDomains}
+                        columns={
+                          [
+                            getCopyWithContentTableColumn({
+                              field: 'id',
+                              title: 'ID',
+                              minWidth: 140,
+                            }),
+                            getCopyWithContentTableColumn({
+                              field: 'name',
+                              title: i18n.t('common_186'),
+                            }),
+                          ]
+                        } />,
+                    ]
+                  },
+                })
+              }}>{i18n.t(`${i18nPrefix}.domain`)}</a>,
+            ]
+          }
+          return i18n.t(`${i18nPrefix}.projectAll`)
+        }
+        if (publicScope === 'system') {
+          return i18n.t(`${i18nPrefix}.domainAll`)
+        }
+        return '-'
+      },
+    },
+    formatter: ({ row }) => {
+      const i18nPrefix = store.getters.l3PermissionEnable ? 'suggestRuleShareDesc' : 'suggestRuleShareDescPrimary'
+      if (row.is_public === false || row.is_public === 'false') return i18n.t(`${i18nPrefix}.none`)
+      const { public_scope: publicScope, shared_projects: sharedProjects, shared_domains: sharedDomains } = row
+      if (publicScope === 'project' && sharedProjects && sharedProjects.length > 0) {
+        return i18n.t(`${i18nPrefix}.project`)
+      }
+      if (publicScope === 'domain') {
+        if (sharedDomains && sharedDomains.length > 0) {
+          return i18n.t(`${i18nPrefix}.domain`)
+        }
+        return i18n.t(`${i18nPrefix}.projectAll`)
+      }
+      if (publicScope === 'system') {
+        return i18n.t(`${i18nPrefix}.domainAll`)
+      }
+      return '-'
+    },
+  }
+}
+
 export const getBillingTableColumn = ({
   vm,
   field = 'billing_type',
