@@ -1976,5 +1976,6 @@
   "compute.host_tag": "@:dictionary.host tags",
   "compute.storage_tag": "Storage tags",
   "compute.deadly_resource": "Expiring resources",
-  "compute.check_deadly_resource": "Check expiring resources"
+  "compute.check_deadly_resource": "Check expiring resources",
+  "compute.snapshot_count": "Snapshot count"
 }
