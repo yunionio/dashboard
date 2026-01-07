@@ -279,6 +279,9 @@ export default {
           ret.end_time = this.$moment().utc().subtract(1, 'month').endOf('month').format('YYYY-MM-DD HH:mm:ss')
         }
       }
+      // if (this.isTemplate && this.templateParams?.topN) {
+      //   ret.top = this.templateParams?.topN
+      // }
       return ret
     },
     handleOpenSidepage (row) {

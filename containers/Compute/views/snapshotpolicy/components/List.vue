@@ -134,6 +134,9 @@ export default {
         ...this.getParams,
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      if (this.isTemplate) {
+        ret.order_by_snapshot_count = 'desc'
+      }
       return ret
     },
     handleOpenSidepage (row, tab) {
