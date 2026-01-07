@@ -750,7 +750,12 @@ export default {
         }
         return row
       }).filter(row => row !== undefined)
-      data.rows = rows.sort((a, b) => { return a.value - b.value })
+      // isTemplateMode 时按降序排序（TopN），否则按升序排序
+      if (isTemplateMode) {
+        data.rows = rows.sort((a, b) => { return b.value - a.value })
+      } else {
+        data.rows = rows.sort((a, b) => { return a.value - b.value })
+      }
       return data
     },
     async fetchChartData (field, formValues) {
@@ -794,7 +799,13 @@ export default {
             chart.$chartData = Object.assign({}, chart.chartData)
             if (formValues.limit && typeof formValues.limit === 'number' && formValues.limit > 0) {
               if (chart.chartData.rows.length > formValues.limit) {
-                chart.chartData.rows = chart.chartData.rows.slice(chart.chartData.rows.length - formValues.limit)
+                // isTemplateMode 时取前 limit 条（TopN），否则取最后 limit 条
+                const isTemplateMode = this.isTemplate && this.fucType && this.fucType.length > 0
+                if (isTemplateMode) {
+                  chart.chartData.rows = chart.chartData.rows.slice(0, formValues.limit)
+                } else {
+                  chart.chartData.rows = chart.chartData.rows.slice(-formValues.limit)
+                }
               }
             }
             chart.loading = false

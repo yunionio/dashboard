@@ -106,6 +106,10 @@ export default {
   methods: {
     getParam () {
       const ret = { ...(typeof this.getParams === 'function' ? this.getParams() : this.getParams) }
+      if (this.isTemplate) {
+        ret.order_by = 'release_at'
+        ret.order = 'asc'
+      }
       return ret
     },
     handleOpenSidepage (row, tab) {
