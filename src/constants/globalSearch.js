@@ -1217,6 +1217,23 @@ export const getSearchMaps = (searchRes = {}) => {
       },
       resData: {},
     },
+    alertResource: {
+      menu_key: 'alertresource',
+      res_name: 'alert_resources',
+      label: i18n.t('dictionary.alertresource'),
+      id: 'alertResource',
+      component: 'AlertResourceList',
+      hasPermission: hasPermission({ key: 'monitorresourcealerts_list' }),
+      params: {
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+      },
+      resData: {},
+    },
   }
 
   const validMaps = R.filter((val, key) => {
