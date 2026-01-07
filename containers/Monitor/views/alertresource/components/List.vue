@@ -1,9 +1,23 @@
 <template>
-  <page-list
-    :list="list"
-    :columns="columns"
-    :single-actions="singleActions"
-    :export-data-options="exportDataOptions" />
+  <div>
+    <monitor-header
+      v-if="isTemplate && isTemplateEdit"
+      :time.sync="time"
+      :showCustomTime="false"
+      :showGroupFunc="false"
+      :showTimegroup="false"
+      @refresh="refresh" />
+    <page-list
+      :list="list"
+      :columns="templateListColumns || columns"
+      :single-actions="singleActions"
+      :group-actions="groupActions"
+      :export-data-options="exportDataOptions"
+      :showGroupActions="showGroupActions"
+      :showSearchbox="showSearchbox"
+      :show-single-actions="!isTemplate"
+      :show-page="!isTemplate" />
+  </div>
 </template>
 
 <script>
@@ -15,13 +29,20 @@ import BrandIcon from '@/sections/BrandIcon'
 import { getNameFilter, getTimeRangeFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { getTimeTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import { strategyColumn, levelColumn, getStrategyInfo } from '@Monitor/views/commonalert/utils'
+import GlobalSearchMixin from '@/mixins/globalSearch'
+import ResTemplateListMixin from '@/mixins/resTemplateList'
+import MonitorHeader from '@/sections/Monitor/Header'
 import ColumnsMixin from '../mixins/columns'
 import SingleAction from '../mixins/singleActions'
 
 export default {
   name: 'AlertResourceList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleAction],
+  components: {
+    MonitorHeader,
+  },
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleAction, ResTemplateListMixin],
   props: {
+    id: String,
     getParams: {
       type: Object,
       default: () => ({}),
@@ -36,11 +57,16 @@ export default {
       type: Array,
       default: () => [],
     },
+    templateParams: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
       list: this.$list.createList(this, this.listOptions('monitorresourcealerts')),
       resTypeItems: [],
+      time: this.templateParams.time || '168h',
     }
   },
   computed: {
@@ -69,6 +95,9 @@ export default {
     },
   },
   watch: {
+    time (val) {
+      this.list.fetchData()
+    },
     resTypeItems (val) {
       this.$nextTick(() => {
         this.list.filterOptions = this.filters()
@@ -127,7 +156,7 @@ export default {
     },
     listOptions (resource) {
       return {
-        id: this.listId,
+        id: this.id || this.listId,
         idKey: 'row_id',
         resource: resource,
         apiVersion: 'v1',
@@ -136,6 +165,8 @@ export default {
         filter: this.resType ? { res_type: [this.resType] } : {},
         filterOptions: this.filters(),
         hiddenColumns: ['alert_rule'],
+        isTemplate: this.isTemplate,
+        templateLimit: this.templateLimit,
       }
     },
     listColumns () {
@@ -238,6 +269,15 @@ export default {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
         details: true,
         alerting: true,
+      }
+      if (this.isTemplate && this.time) {
+        if (this.time.includes('h')) {
+          ret.start_time = this.$moment().utc().subtract(this.time.replace('h', ''), 'hours').format('YYYY-MM-DD HH:mm:ss')
+          ret.end_time = this.$moment().utc().format('YYYY-MM-DD HH:mm:ss')
+        } else if (this.time === 'last_month') {
+          ret.start_time = this.$moment().utc().subtract(1, 'month').startOf('month').format('YYYY-MM-DD HH:mm:ss')
+          ret.end_time = this.$moment().utc().subtract(1, 'month').endOf('month').format('YYYY-MM-DD HH:mm:ss')
+        }
       }
       return ret
     },
