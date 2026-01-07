@@ -116,6 +116,8 @@ export default {
       {
         field: 'snapshot_count',
         title: this.$t('compute.snapshot_count'),
+        sortable: true,
+        sortBy: 'order_by_snapshot_count',
         formatter: ({ row }) => {
           return row.snapshot_count || '-'
         },
