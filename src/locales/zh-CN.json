@@ -6416,7 +6416,7 @@
   "common.duration.none": "无限制",
   "common.duration.custom": "自定义",
   "common.not_set": "未设置",
-  "common.not_expired": "未过期",
+  "common.not_expired": "有效",
   "common.alert_info": "告警信息",
   "common.workflow.execute_user_join": "用户加入项目",
   "common.workflow.execute_user_update": "用户更新",
