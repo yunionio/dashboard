@@ -6386,7 +6386,7 @@
   "common.duration.none": "None",
   "common.duration.custom": "Custom",
   "common.not_set": "Not set",
-  "common.not_expired": "Not expired",
+  "common.not_expired": "Effective",
   "common.alert_info": "Alert information",
   "common.workflow.execute_user_join": "User join project",
   "common.workflow.execute_user_update": "User update",
