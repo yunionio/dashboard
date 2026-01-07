@@ -6404,7 +6404,7 @@
   "common.duration.none": "無制限",
   "common.duration.custom": "カスタム",
   "common.not_set": "未設定",
-  "common.not_expired": "未期限切れ",
+  "common.not_expired": "有効",
   "common.alert_info": "アラーム情報",
   "common.workflow.execute_user_join": "ユーザーがプロジェクトに参加",
   "common.workflow.execute_user_update": "ユーザー更新",
