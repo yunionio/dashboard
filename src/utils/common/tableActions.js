@@ -161,6 +161,73 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
   return options
 }
 
+// 设置应用范围
+export function getSetApplicationScopeAction (vm, dialogParams = {}, params = {}) {
+  if (!vm) {
+    throw Error('not found vm instance')
+  }
+  const { name = i18n.t('common_92'), scope, resource, apiVersion, ignorel3PermissionEnable = false } = dialogParams
+  const options = {
+    label: i18n.t('cloudenv.text_423'),
+    action: row => {
+      vm.createDialog('SetApplicationScopeDialog', {
+        name,
+        data: getSelectedData(row, vm),
+        columns: vm.columns,
+        onManager: vm.onManager,
+        refresh: vm.refresh,
+        scope,
+        resource,
+        apiVersion,
+      })
+    },
+    meta: row => {
+      if (!ignorel3PermissionEnable && !store.getters.l3PermissionEnable && (scope === 'domain' || (store.getters.scopeResource && store.getters.scopeResource.domain.includes(resource)))) {
+        return {
+          validate: false,
+          tooltip: i18n.t('common_281'),
+        }
+      }
+      if (params.meta) {
+        const ret = params.meta(row)
+        if (ret && !ret.validate) {
+          return ret
+        }
+      }
+      const data = getSelectedData(row, vm)
+      const ret = {
+        validate: data && data.length > 0,
+        tooltip: null,
+      }
+      // 如果是域资源则只有管理员可以设置
+      if (scope === 'domain') {
+        if (!store.getters.isAdminMode) {
+          ret.validate = false
+          return ret
+        }
+      }
+      if (store.getters.isAdminMode) {
+        ret.validate = true
+        return ret
+      }
+      if (store.getters.isDomainMode) {
+        const selfDomain = store.getters.userInfo.projectDomain
+        const isSelfDomain = data.every(item => item.project_domain === selfDomain)
+        if (isSelfDomain) {
+          ret.validate = true
+          return ret
+        }
+      }
+      ret.validate = false
+      return ret
+    },
+  }
+  if (params.permission) options.permission = params.permission
+  if (params.extraMeta) options.extraMeta = params.extraMeta
+  if (params.hidden) options.hidden = params.hidden
+  return options
+}
+
 export function getEnabledSwitchActions (vm, row, permissions = [], params = {}) {
   if (!vm) {
     throw Error('not found vm instance')

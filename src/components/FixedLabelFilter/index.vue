@@ -22,6 +22,7 @@ export default {
 
 <style lang="less" scoped>
 .profix-wrapper {
+  align-items: center;
   .profix-label {
     border-left: 1px solid #d9d9d9;
     border-top: 1px solid #d9d9d9;

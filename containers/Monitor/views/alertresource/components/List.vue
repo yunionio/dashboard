@@ -37,7 +37,7 @@ import { levelMaps } from '@Monitor/constants'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import BrandIcon from '@/sections/BrandIcon'
-import { getNameFilter, getTimeRangeFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { getTimeTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import { strategyColumn, levelColumn, getStrategyInfo } from '@Monitor/views/commonalert/utils'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -160,7 +160,7 @@ export default {
           label: this.$t('common_151'),
         },
         ip: { label: 'IP' },
-        created_at: getTimeRangeFilter({ label: this.$t('monitor.text_14'), field: 'trigger_time' }),
+        // created_at: getTimeRangeFilter({ label: this.$t('monitor.text_14'), field: 'trigger_time' }),
       }
       for (const key of Object.keys(options)) {
         if (this.hiddenColumns.some(item => item === key)) {
@@ -247,6 +247,16 @@ export default {
           formatter: ({ row }) => row.alert_name || '-',
         },
         {
+          field: 'alert_count',
+          title: this.$t('monitor.alert_count'),
+          minWidth: 100,
+          slots: {
+            default: ({ row }) => {
+              return row.alert_count || 0
+            },
+          },
+        },
+        {
           field: 'brand',
           title: this.$t('compute.text_176'),
           slots: {
@@ -286,6 +296,7 @@ export default {
         alerting: true,
       }
       if (this.time) {
+        let timeFilter = ''
         if (this.time.includes('h')) {
           ret.start_time = this.$moment().utc().subtract(this.time.replace('h', ''), 'hours').format('YYYY-MM-DD HH:mm:ss')
           ret.end_time = this.$moment().utc().format('YYYY-MM-DD HH:mm:ss')
@@ -293,8 +304,20 @@ export default {
           ret.start_time = this.$moment().utc().subtract(1, 'month').startOf('month').format('YYYY-MM-DD HH:mm:ss')
           ret.end_time = this.$moment().utc().subtract(1, 'month').endOf('month').format('YYYY-MM-DD HH:mm:ss')
         } else if (this.time === 'custom') {
-          ret.start_time = this.$moment(this.customTime.from).format('YYYY-MM-DD HH:mm:ss')
-          ret.end_time = this.$moment(this.customTime.to).format('YYYY-MM-DD HH:mm:ss')
+          ret.start_time = this.$moment(this.customTime.from).utc().format('YYYY-MM-DD HH:mm:ss')
+          ret.end_time = this.$moment(this.customTime.to).utc().format('YYYY-MM-DD HH:mm:ss')
+        }
+        timeFilter = `trigger_time.between("${ret.start_time}", "${ret.end_time}")`
+        if (ret.start_time && ret.end_time) {
+          if (ret.filter) {
+            if (R.is(Array, ret.filter)) {
+              ret.filter.push(timeFilter)
+            } else {
+              ret.filter = [ret.filter, timeFilter]
+            }
+          } else {
+            ret.filter = [timeFilter]
+          }
         }
       }
       if (this.isTemplate && this.templateParams?.topN) {
