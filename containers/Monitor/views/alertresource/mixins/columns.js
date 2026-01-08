@@ -107,6 +107,16 @@ export default {
           return '-'
         },
       },
+      {
+        field: 'alert_count',
+        title: this.$t('monitor.alert_count'),
+        minWidth: 100,
+        slots: {
+          default: ({ row }) => {
+            return row.alert_count || 0
+          },
+        },
+      },
     ]
     this.extandData = {}
   },
