@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="className">
     <template v-if="showAutoRefresh">
       <a-tooltip placement="top">
         <template slot="title" v-show="refreshTooltips && lastSync !== ''">
@@ -13,7 +13,7 @@
         </a-select-option>
       </a-select>
     </template>
-    <refresh-button v-else :loading="loading" @refresh="refresh" class="mr-2" />
+    <refresh-button v-else-if="showSync" :loading="loading" @refresh="refresh" class="mr-2" />
     <a-radio-group class="mr-3" @change="timeChange" :value="time">
       <a-radio-button v-for="item in timeOpts" v-show="!item.hidden" :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
       <slot name="radio-button-append" v-if="showCustomTime">
@@ -58,6 +58,10 @@ export default {
     RefreshButton,
   },
   props: {
+    className: {
+      type: String,
+      default: '',
+    },
     time: {
       type: String,
       required: true,
@@ -200,6 +204,10 @@ export default {
       default: false,
     },
     showCustomTime: {
+      type: Boolean,
+      default: true,
+    },
+    showSync: {
       type: Boolean,
       default: true,
     },

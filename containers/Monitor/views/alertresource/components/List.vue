@@ -16,7 +16,18 @@
       :showGroupActions="showGroupActions"
       :showSearchbox="showSearchbox"
       :show-single-actions="!isTemplate"
-      :show-page="!isTemplate" />
+      :show-page="!isTemplate">
+      <template v-slot:group-actions-append>
+        <monitor-header
+          class-name="ml-2"
+          :time.sync="time"
+          :customTime.sync="customTime"
+          :showGroupFunc="false"
+          :showTimegroup="false"
+          :show-sync="false"
+          customTimeUseTimeStamp />
+      </template>
+    </page-list>
   </div>
 </template>
 
@@ -67,6 +78,7 @@ export default {
       list: this.$list.createList(this, this.listOptions('monitorresourcealerts')),
       resTypeItems: [],
       time: this.templateParams.time || '168h',
+      customTime: null,
     }
   },
   computed: {
@@ -96,6 +108,9 @@ export default {
   },
   watch: {
     time (val) {
+      this.list.fetchData()
+    },
+    customTime (val) {
       this.list.fetchData()
     },
     resTypeItems (val) {
@@ -270,18 +285,21 @@ export default {
         details: true,
         alerting: true,
       }
-      if (this.isTemplate && this.time) {
+      if (this.time) {
         if (this.time.includes('h')) {
           ret.start_time = this.$moment().utc().subtract(this.time.replace('h', ''), 'hours').format('YYYY-MM-DD HH:mm:ss')
           ret.end_time = this.$moment().utc().format('YYYY-MM-DD HH:mm:ss')
         } else if (this.time === 'last_month') {
           ret.start_time = this.$moment().utc().subtract(1, 'month').startOf('month').format('YYYY-MM-DD HH:mm:ss')
           ret.end_time = this.$moment().utc().subtract(1, 'month').endOf('month').format('YYYY-MM-DD HH:mm:ss')
+        } else if (this.time === 'custom') {
+          ret.start_time = this.$moment(this.customTime.from).format('YYYY-MM-DD HH:mm:ss')
+          ret.end_time = this.$moment(this.customTime.to).format('YYYY-MM-DD HH:mm:ss')
         }
       }
-      // if (this.isTemplate && this.templateParams?.topN) {
-      //   ret.top = this.templateParams?.topN
-      // }
+      if (this.isTemplate && this.templateParams?.topN) {
+        ret.top = this.templateParams?.topN
+      }
       return ret
     },
     handleOpenSidepage (row) {
