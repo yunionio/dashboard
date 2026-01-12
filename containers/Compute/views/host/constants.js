@@ -277,7 +277,7 @@ export const KVM_MONITOR_OPTS = [
     transfer: 1024,
     // metric: metricItems['write_bps'].key, // 报警指标
   },
-  /* {
+  {
     name: 'disk',
     label: i18n.t('compute.text_536'),
     seleteItem: 'read_iops,write_iops',
@@ -286,7 +286,7 @@ export const KVM_MONITOR_OPTS = [
     unit: 'iops',
     transfer: 1,
     // metric: metricItems['read_iops,write_iops'].key, // 报警指标
-  }, */
+  },
   {
     name: 'diskio_ioutil',
     label: i18n.t('compute.metric.diskio_ioutil'),
