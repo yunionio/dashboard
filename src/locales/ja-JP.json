@@ -1305,6 +1305,9 @@
       "change_config": "調整中",
       "delete_failed": "削除に失敗しました",
       "create_failed": "作成に失敗しました"
+    },
+    "mcp": {
+      "ready": "準備ができました"
     }
   },
   "skuCategoryOptions": {
