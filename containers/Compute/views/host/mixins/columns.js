@@ -404,6 +404,14 @@ export default {
         width: 120,
         type: 'expand',
         slots: {
+          default: ({ row }) => {
+            if (row.schedtags && row.schedtags.length > 0) {
+              return this.$t('common_323', [row.schedtags.length])
+            }
+            return [
+              <div class='text-color-help'>{this.$t('compute.text_1322')}</div>,
+            ]
+          },
           content: ({ row }) => {
             const tags = _.sortBy(row.schedtags, ['default', 'name'])
             if (tags.length > 0) {
