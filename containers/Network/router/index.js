@@ -416,7 +416,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.dns_zone')) {
                 return true
               }
-              return store.getters.isProjectMode || !hasSetupKey(['aws', 'qcloud', 'aliyun'])
+              return !hasSetupKey(['onecloud', 'aws', 'qcloud', 'aliyun'])
             },
           },
           component: Layout,
