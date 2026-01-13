@@ -1555,6 +1555,12 @@ export const PERMISSION = {
 
   billing_resource_checks_list: ['compute', 'billing_resource_checks', 'list'],
 
+  mcp_agents_list: ['llm', 'mcp_agents', 'list'],
+  mcp_agents_get: ['llm', 'mcp_agents', 'get'],
+  mcp_agents_create: ['llm', 'mcp_agents', 'create'],
+  mcp_agents_update: ['llm', 'mcp_agents', 'update'],
+  mcp_agents_delete: ['llm', 'mcp_agents', 'delete'],
+
   ...extraPermissions,
 }
 
