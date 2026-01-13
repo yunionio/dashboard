@@ -242,7 +242,7 @@ export default {
       if (this.cloudEnv === 'onpremise') {
         return zoneTypes.filter(item => item.value === 'PrivateZone')
       }
-      if (this.isCloudflare) {
+      if (this.isCloudflare || !this.cloudEnv) {
         return zoneTypes.filter(item => item.value === 'PublicZone')
       }
       return zoneTypes
