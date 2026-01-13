@@ -1312,6 +1312,9 @@
       "change_config": "调整配置中",
       "delete_failed": "删除失败",
       "create_failed": "创建失败"
+    },
+    "mcp": {
+      "ready": "已关机"
     }
   },
   "skuCategoryOptions": {
