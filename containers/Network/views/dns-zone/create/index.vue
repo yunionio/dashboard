@@ -242,6 +242,9 @@ export default {
       if (this.cloudEnv === 'onpremise') {
         return zoneTypes.filter(item => item.value === 'PrivateZone')
       }
+      if (!this.cloudEnv) {
+        return zoneTypes.filter(item => item.value === 'PublicZone')
+      }
       return zoneTypes
     },
     accountParams () {
