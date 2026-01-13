@@ -639,5 +639,8 @@ export default {
     info: ['unknown'],
     danger: ['delete_failed', 'create_failed'],
   },
+  mcp: {
+    info: ['ready'],
+  },
   ...extraStatus,
 }

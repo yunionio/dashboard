@@ -1290,6 +1290,9 @@
       "change_config": "Change Config",
       "delete_failed": "Delete Failed",
       "create_failed": "Create Failed"
+    },
+    "mcp": {
+      "ready": "Ready"
     }
   },
   "skuCategoryOptions": {
