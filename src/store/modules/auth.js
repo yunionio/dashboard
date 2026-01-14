@@ -4,6 +4,7 @@ import http from '@/utils/http'
 import { PERMISSION, ALL_RESOURCES } from '@/constants/permission'
 import {
   getTokenFromCookie,
+  setTokenInCookie,
   decodeToken,
   getRegionFromCookie,
   setRegionInCookie,
@@ -196,6 +197,7 @@ export default {
       state.capability = {}
       state.stats = {}
       state.canRenderDefaultLayout = false
+      setTokenInCookie(null)
     },
     SET_NO_ACTION_LOGOUT_SECONDS (state, payload) {
       state.noActionLogoutSeconds = payload
