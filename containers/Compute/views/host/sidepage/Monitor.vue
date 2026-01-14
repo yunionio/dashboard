@@ -39,8 +39,9 @@ export default {
       return Object.keys(this.host.isolated_device_type_count || {})
     },
     monitorConstants () {
-      if (this.hostType === 'hypervisor' || this.hostType === 'container') {
-        let list = [...KVM_MONITOR_OPTS]
+      let list = VMWARE_MONITOR_OPTS
+      if ((this.hostType === 'hypervisor' || this.hostType === 'container') && !this.host.manager_id) {
+        list = [...KVM_MONITOR_OPTS]
         if (this.isolatedDeviceTypes.some(type => ['NETINT_CA_QUADRA', 'NETINT_CA_ASIC'].includes(type))) {
           list = [...list, ...NIC_RSRC_MON_OPTS]
         }
@@ -50,9 +51,8 @@ export default {
         if (this.isolatedDeviceTypes.some(type => ['VASTAITECH_GPU'].includes(type))) {
           list = [...list, ...VASMI_OPTS]
         }
-        return list
       }
-      return VMWARE_MONITOR_OPTS
+      return list
     },
     hostId () {
       return this.host.id
