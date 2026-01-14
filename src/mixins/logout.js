@@ -60,6 +60,7 @@ export default {
         } catch (err) { }
       }
       const tokenObj = decodeToken(token)
+      if (!tokenObj) return
       const { exp } = tokenObj
       if (exp) {
         const time = new Date(exp).getTime() - new Date().getTime()
