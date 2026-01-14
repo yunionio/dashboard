@@ -48,7 +48,15 @@ export default {
           self.emitValue(e.target.value)
         },
         blur: function (e) {
-          self.emitValue(e.target.value)
+          const inputValue = e.target.value
+          const currentValue = self.threshold.value
+          // 转换为数字进行比较，避免字符串比较问题
+          const newNum = inputValue === '' ? '' : Number(inputValue)
+          const currentNum = currentValue === '' ? '' : Number(currentValue)
+          // 只有当值真正改变时才 emit
+          if (newNum !== currentNum && !(isNaN(newNum) && isNaN(currentNum))) {
+            self.emitValue(inputValue)
+          }
         },
       },
     }, childs)
@@ -56,39 +64,91 @@ export default {
   data () {
     let threshold = { value: this.value, option: undefined }
     const options = THRESHOLD_OPTIONS[this.unit]
-    if (options) {
+    if (options && this.value != null && this.value !== '') {
       let option = options[0]
-      const ops = options.filter((o) => { return this.value / o.base > 1 })
+      // 找到最大的合适单位（value / base >= 1）
+      const ops = options.filter((o) => {
+        return this.value != null && this.value / o.base >= 1
+      })
       if (ops && ops.length > 0) {
         option = ops[ops.length - 1]
       }
       threshold = { value: this.value / option.base, option: option }
+    } else if (options) {
+      // 如果没有值，使用第一个单位
+      threshold = { value: this.value || '', option: options[0] }
     }
     return {
       options,
       threshold,
     }
   },
+  mounted () {
+    // 确保初始化时单位选择正确
+    if (this.options && this.options.length > 0) {
+      if (this.value != null && this.value !== '') {
+        // 重新计算最合适的单位
+        const ops = this.options.filter((o) => {
+          return this.value / o.base >= 1
+        })
+        let selectedOption
+        if (ops && ops.length > 0) {
+          selectedOption = ops[ops.length - 1]
+        } else {
+          selectedOption = this.options[0]
+        }
+        // 更新单位和显示值
+        this.threshold.option = selectedOption
+        this.threshold.value = this.value / selectedOption.base
+      } else if (!this.threshold.option) {
+        // 如果没有值，使用第一个单位
+        this.threshold.option = this.options[0]
+      }
+    }
+  },
   watch: {
     unit (val) {
-      let targetUnit = val
       this.options = THRESHOLD_OPTIONS[val]
-      if (!this.threshold.option && this.options) {
-        let op = this.options[0]
-        if (this.value) {
-          const ops = this.options.filter((o) => { return this.value / o.base > 1 })
-          op = ops.length > 0 ? ops[ops.length - 1] : op
-          this.threshold.value = this.value / op.base
+      if (this.options && this.options.length > 0) {
+        // 总是重新选择最合适的单位
+        let targetUnit = this.options[0].value
+        // 如果有值，找到合适的单位
+        if (this.value != null && this.value !== '') {
+          const ops = this.options.filter((o) => {
+            return this.value / o.base >= 1
+          })
+          if (ops && ops.length > 0) {
+            targetUnit = ops[ops.length - 1].value
+          }
         }
-        targetUnit = op.value
+        const selectedOption = this.options.find(o => o.value === targetUnit) || this.options[0]
+        if (this.value != null && this.value !== '') {
+          this.threshold.value = this.value / selectedOption.base
+        } else {
+          this.threshold.value = this.value || ''
+        }
+        this.threshold.option = selectedOption
       }
-
-      this.handleUnitChange(targetUnit)
     },
     value (v) {
-      this.threshold = {
-        ...this.threshold,
-        value: v,
+      // 如果外部传入的是原始值（已乘以base），需要转换为显示值
+      if (v != null && v !== '') {
+        if (this.options && this.options.length > 0) {
+          // 总是重新选择最合适的单位
+          let option = this.options[0]
+          const ops = this.options.filter((o) => {
+            return v / o.base >= 1
+          })
+          if (ops && ops.length > 0) {
+            option = ops[ops.length - 1]
+          }
+          this.threshold.option = option
+          this.threshold.value = v / option.base
+        } else {
+          this.threshold.value = v
+        }
+      } else {
+        this.threshold.value = v
       }
     },
   },
@@ -110,7 +170,12 @@ export default {
       this.$emit('change', v)
     },
     emitValue (v) {
-      this.threshold.value = v
+      // 将字符串转换为数字
+      const numValue = v === '' ? '' : Number(v)
+      if (isNaN(numValue) && numValue !== '') {
+        return // 无效输入，不处理
+      }
+      this.threshold.value = numValue
       this._emitValue()
     },
     renderUnit (h) {
@@ -120,7 +185,8 @@ export default {
         return ''
       }
       if (this.options) {
-        return <a-select slot="addonAfter" default-value={option.value || unit || ''} style="width: 80px" onChange={this.handleUnitChange} disabled={this.disabled}>
+        const selectValue = option ? option.value : (unit || '')
+        return <a-select slot="addonAfter" value={selectValue} style="width: 80px" onChange={this.handleUnitChange} disabled={this.disabled}>
           {
             this.options.map((item) => {
               return <a-select-option value={item.value} key={item.key}> {item.label} </a-select-option>
