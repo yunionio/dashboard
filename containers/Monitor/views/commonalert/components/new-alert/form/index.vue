@@ -104,7 +104,7 @@
         :select-props="{ mode: 'multiple', placeholder: $t('common.tips.select', [$t('monitor.recipient')]) }"
         :params="contactParams" />
     </a-form-item>
-    <a-form-item v-if="notifyTypes.includes('recipient') && contactArrOpts && contactArrOpts.length > 0" :label="$t('monitor.channel')">
+    <a-form-item v-if="contactArrOpts && contactArrOpts.length > 0" :label="$t('monitor.channel')">
       <a-checkbox-group
         v-decorator="decorators.channel">
         <a-checkbox
