@@ -640,7 +640,9 @@ export default {
     danger: ['delete_failed', 'create_failed'],
   },
   mcp: {
-    info: ['ready'],
+    info: ['ready', 'unknown', 'no_server', 'no_container', 'start_save_model', 'saving_model', 'start_syncstatus', 'syncstatus', 'start_delete', 'deleting', 'deleted'],
+    success: ['running'],
+    danger: ['create_fail', 'start_fail', 'stop_fail', 'save_model_failed', 'delete_fail'],
   },
   ...extraStatus,
 }

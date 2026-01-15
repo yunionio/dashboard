@@ -1314,7 +1314,23 @@
       "create_failed": "创建失败"
     },
     "mcp": {
-      "ready": "已关机"
+      "unknown": "未知",
+      "create_fail": "创建失败",
+      "start_fail": "开机失败",
+      "stop_fail": "关机失败",
+      "start_save_model": "开始保存应用",
+      "saving_model": "正在保存应用",
+      "save_model_failed": "保存应用失败",
+      "start_syncstatus": "开始同步状态",
+      "syncstatus": "正在同步状态",
+      "ready": "已关机",
+      "running": "运行中",
+      "deleted": "已删除",
+      "no_server": "未知主机",
+      "no_container": "未知容器",
+      "start_delete": "开始删除",
+      "deleting": "删除中",
+      "delete_fail": "删除失败"
     }
   },
   "skuCategoryOptions": {
