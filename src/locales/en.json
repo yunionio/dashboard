@@ -1292,7 +1292,23 @@
       "create_failed": "Create Failed"
     },
     "mcp": {
-      "ready": "Ready"
+      "unknown": "Unknown",
+      "create_fail": "Create Failed",
+      "start_fail": "Start Failed",
+      "stop_fail": "Stop Failed",
+      "start_save_model": "Start Save Model",
+      "saving_model": "Saving Model",
+      "save_model_failed": "Save Model Failed",
+      "start_syncstatus": "Start Sync Status",
+      "syncstatus": "Sync Status",
+      "ready": "Ready",
+      "running": "Running",
+      "deleted": "Deleted",
+      "no_server": "Unknown Server",
+      "no_container": "Unknown Container",
+      "start_delete": "Start Delete",
+      "deleting": "Deleting",
+      "delete_fail": "Delete Failed"
     }
   },
   "skuCategoryOptions": {

@@ -1307,7 +1307,23 @@
       "create_failed": "作成に失敗しました"
     },
     "mcp": {
-      "ready": "準備ができました"
+      "unknown": "不明",
+      "create_fail": "作成に失敗しました",
+      "start_fail": "開始に失敗しました",
+      "stop_fail": "停止に失敗しました",
+      "start_save_model": "保存アプリを開始",
+      "saving_model": "保存アプリ中",
+      "save_model_failed": "保存アプリに失敗しました",
+      "start_syncstatus": "同期ステータスを開始",
+      "syncstatus": "同期ステータス中",
+      "ready": "準備ができました",
+      "running": "稼働中",
+      "deleted": "削除",
+      "no_server": "不明なホスト",
+      "no_container": "不明なコンテナ",
+      "start_delete": "削除を開始",
+      "deleting": "削除中",
+      "delete_fail": "削除に失敗しました"
     }
   },
   "skuCategoryOptions": {
