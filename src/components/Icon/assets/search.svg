@@ -1,16 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>切片</title>
-    <g id="云管备份" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="VPC" transform="translate(-423.000000, -25.000000)" fill="#000000">
-            <g id="top备份" transform="translate(0.000000, -2.000000)">
-                <g id="搜索" transform="translate(413.000000, 20.000000)">
-                    <g id="search" transform="translate(10.000000, 7.000000)">
-                        <rect id="矩形" fill-rule="nonzero" opacity="0" x="0" y="0" width="16" height="16"></rect>
-                        <path d="M3,7.5 C3,5.290861 4.790861,3.5 7,3.5 C9.209139,3.5 11,5.290861 11,7.5 C11,9.709139 9.209139,11.5 7,11.5 C4.790861,11.5 3,9.709139 3,7.5 M12.8715,13.164 L10.634,10.927 C11.5116197,10.0018916 12.0005928,8.77516333 12,7.5 C12,4.7385 9.7615,2.5 7,2.5 C4.2385,2.5 2,4.7385 2,7.5 C2,10.2615 4.2385,12.5 7,12.5 C8.03091231,12.5007177 9.0365254,12.1807738 9.8775,11.5845 L12.164,13.8715 C12.3595,14.0665 12.676,14.0665 12.8715,13.8715 C13.0665,13.676 13.0665,13.3595 12.8715,13.164" id="形状" fill-opacity="0.45"></path>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title>切片</title><g id="云管备份" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="VPC" transform="translate(-423.000000, -25.000000)" fill="#000000"><g id="top备份" transform="translate(0.000000, -2.000000)"><g id="搜索" transform="translate(413.000000, 20.000000)"><g id="search" transform="translate(10.000000, 7.000000)"><rect id="矩形" fill-rule="nonzero" opacity="0" x="0" y="0" width="16" height="16"></rect><path d="M3,7.5 C3,5.290861 4.790861,3.5 7,3.5 C9.209139,3.5 11,5.290861 11,7.5 C11,9.709139 9.209139,11.5 7,11.5 C4.790861,11.5 3,9.709139 3,7.5 M12.8715,13.164 L10.634,10.927 C11.5116197,10.0018916 12.0005928,8.77516333 12,7.5 C12,4.7385 9.7615,2.5 7,2.5 C4.2385,2.5 2,4.7385 2,7.5 C2,10.2615 4.2385,12.5 7,12.5 C8.03091231,12.5007177 9.0365254,12.1807738 9.8775,11.5845 L12.164,13.8715 C12.3595,14.0665 12.676,14.0665 12.8715,13.8715 C13.0665,13.676 13.0665,13.3595 12.8715,13.164" id="形状" fill-opacity="0.45"></path></g></g></g></g></g></svg>
