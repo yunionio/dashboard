@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>icon_off</title>
-    <g id="2-表格" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="03表格" transform="translate(-418.000000, -187.000000)" fill="#000000" fill-rule="nonzero">
-            <g id="开机" transform="translate(409.000000, 178.000000)">
-                <g id="icon_off" transform="translate(9.750000, 9.750000)">
-                    <rect id="矩形" opacity="0" x="0.25" y="0.25" width="12" height="12"></rect>
-                    <path d="M7,0 C3.1375,0 0,3.1375 0,7 C0,10.8625 3.1375,14 7,14 C10.8625,14 14,10.8625 14,7 C14,3.1375 10.8625,0 7,0 Z M6.5,2 L7.5,2 L7.5,8 L6.5,8 L6.5,2 Z M7,12 C4.2375,12 2,9.7625 2,7 C2,4.95 3.2375,3.1875 5,2.4125 L5,3.5375 C3.8,4.225 3,5.525 3,7 C3,9.2 4.8,11 7,11 C9.2,11 11,9.2 11,7 C11,5.525 10.2,4.225 9,3.5375 L9,2.4125 C10.7625,3.1875 12,4.95 12,7 C12,9.7625 9.7625,12 7,12 Z" id="形状"></path>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title>icon_off</title><g id="2-表格" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="03表格" transform="translate(-418.000000, -187.000000)" fill="#000000" fill-rule="nonzero"><g id="开机" transform="translate(409.000000, 178.000000)"><g id="icon_off" transform="translate(9.750000, 9.750000)"><rect id="矩形" opacity="0" x="0.25" y="0.25" width="12" height="12"></rect><path d="M7,0 C3.1375,0 0,3.1375 0,7 C0,10.8625 3.1375,14 7,14 C10.8625,14 14,10.8625 14,7 C14,3.1375 10.8625,0 7,0 Z M6.5,2 L7.5,2 L7.5,8 L6.5,8 L6.5,2 Z M7,12 C4.2375,12 2,9.7625 2,7 C2,4.95 3.2375,3.1875 5,2.4125 L5,3.5375 C3.8,4.225 3,5.525 3,7 C3,9.2 4.8,11 7,11 C9.2,11 11,9.2 11,7 C11,5.525 10.2,4.225 9,3.5375 L9,2.4125 C10.7625,3.1875 12,4.95 12,7 C12,9.7625 9.7625,12 7,12 Z" id="形状"></path></g></g></g></g></svg>
