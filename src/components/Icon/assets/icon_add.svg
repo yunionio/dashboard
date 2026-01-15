@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>icon_add</title>
-    <g id="2-表格" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="03表格" transform="translate(-265.000000, -186.000000)">
-            <g id="icon_add" transform="translate(265.000000, 186.000000)">
-                <rect id="矩形" fill-opacity="0" fill="#D8D8D8" x="0" y="0" width="14" height="14"></rect>
-                <path d="M7.50387597,7.57180157 L7.50387597,12.4360313 C7.50387597,12.7477807 7.25426357,13 6.94573643,13 C6.6372093,13 6.3875969,12.7477807 6.3875969,12.4360313 L6.3875969,7.57180157 L1.55813953,7.57180157 C1.2496124,7.57180157 1,7.31958225 1,7.0078329 C1,6.69608355 1.2496124,6.44386423 1.55813953,6.44386423 L6.3875969,6.44386423 L6.3875969,1.56396867 C6.3875969,1.25221932 6.6372093,1 6.94573643,1 C7.25426357,1 7.50387597,1.25221932 7.50387597,1.56396867 L7.50387597,6.44386423 L12.4418605,6.44386423 C12.7503876,6.44386423 13,6.69608355 13,7.0078329 C13,7.31958225 12.7503876,7.57180157 12.4418605,7.57180157 L7.50387597,7.57180157 Z" id="Shape" fill="#FFFFFF" transform="translate(7.000000, 7.000000) scale(1, -1) translate(-7.000000, -7.000000) "></path>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
