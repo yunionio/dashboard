@@ -2717,7 +2717,7 @@
   "auth.verify.validate": "携帯電話の確認コードを入力してください",
   "auth.verify.placeholder": "携帯電話の確認コードを入力してください",
   "auth.captcha.placeholder": "キャプチャ",
-  "auth.captcha.validate": "認証コードを入力してください",
+  "auth.captcha.validate": "有効な認証コードを入力してください",
   "auth.domain.placeholder": "@:(dictionary.domainを選択してください)",
   "auth.domain.validate": "@:(dictionary.domainを選択してください)",
   "auth.region.placeholder": "地域を選択してください",

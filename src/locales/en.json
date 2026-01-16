@@ -2703,7 +2703,7 @@
   "auth.verify.validate": "Please enter your verification code",
   "auth.verify.placeholder": "Please enter your verification code",
   "auth.captcha.placeholder": "Captcha Code",
-  "auth.captcha.validate": "Please enter the verification code",
+  "auth.captcha.validate": "Please enter valid verification code",
   "auth.domain.placeholder": "Please select @:(dictionary.domain)",
   "auth.domain.validate": "Please select @:(dictionary.domain)",
   "auth.region.placeholder": "Please select a region",
