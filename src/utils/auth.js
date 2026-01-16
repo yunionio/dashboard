@@ -5,6 +5,8 @@ import { Base64 } from 'js-base64'
 import store from '@/store'
 import { typeClouds } from '@/utils/common/hypervisor'
 import storage from '@/utils/storage'
+import setting from '@/config/setting'
+import i18n from '@/locales'
 
 const ONECLOUD_AUTH_KEY = 'yunionauth'
 const HISTORY_USERS_STORAGE_KEY = '__oc_history_users__'
@@ -359,4 +361,21 @@ export const hasMeterService = function () {
     return true
   }
   return false
+}
+
+export const getProductName = (defaultName) => {
+  if (process.env.PRODUCT && setting.product[setting.language]) {
+    return setting.product[setting.language]
+  }
+  if (process.env.VUE_APP_IS_PRIVATE) {
+    const { companyInfo = {} } = store.state.app
+    if (setting.language === 'zh-CN' && companyInfo.name) {
+      return companyInfo.name
+    }
+    if (setting.language === 'en' && companyInfo.name_en) {
+      return companyInfo.name_en
+    }
+    return defaultName || i18n.t('scope.text_171')
+  }
+  return defaultName || 'Cloudpods'
 }
