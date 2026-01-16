@@ -18,7 +18,7 @@
         <a-form-item :label="$t('compute.text_267')" v-bind="formItemLayout">
           <a-radio-group @change="osTypeChangeHandle" v-decorator="decorators.osType">
             <a-radio-button value="Linux">Linux</a-radio-button>
-            <a-radio-button value="Windows">Windows Server</a-radio-button>
+            <a-radio-button value="Windows">Windows</a-radio-button>
             <a-radio-button value="Other">{{$t('compute.text_151')}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
@@ -202,12 +202,16 @@ export default {
       },
       osDistributionOptions: {
         Windows: [
-          { text: 'Windows Server 2008', value: 'Windows Server 2008' },
-          { text: 'Windows Server 2008 R2', value: 'Windows Server 2008 R2' },
-          { text: 'Windows Server 2012', value: 'Windows Server 2012' },
-          { text: 'Windows Server 2012 R2', value: 'Windows Server 2012 R2' },
-          { text: 'Windows Server 2016', value: 'Windows Server 2016' },
+          { text: 'Windows Server 2025', value: 'Windows Server 2025' },
+          { text: 'Windows Server 2022', value: 'Windows Server 2022' },
           { text: 'Windows Server 2019', value: 'Windows Server 2019' },
+          { text: 'Windows Server 2016', value: 'Windows Server 2016' },
+          { text: 'Windows Server 2012 R2', value: 'Windows Server 2012 R2' },
+          { text: 'Windows Server 2012', value: 'Windows Server 2012' },
+          { text: 'Windows Server 2008 R2', value: 'Windows Server 2008 R2' },
+          { text: 'Windows Server 2008', value: 'Windows Server 2008' },
+          { text: 'Windows 11', value: 'Windows 11' },
+          { text: 'Windows 10', value: 'Windows 10' },
           { text: this.$t('compute.text_151'), value: 'Other' },
         ],
         Linux: [
@@ -354,6 +358,7 @@ export default {
       } else {
         this.form.fc.setFieldsValue({ osDistribution: this.osNewDisOptions[0].value })
         this.isDisOther = false
+        this.osDistributionChange(this.osNewDisOptions[0].value)
       }
     },
     osDistributionChange (e) {
@@ -361,6 +366,15 @@ export default {
         this.isDisOther = true
       } else {
         this.isDisOther = false
+        if (e.startsWith('Windows')) {
+          let minDisk = 40
+          if (e === 'Windows 11') {
+            minDisk = 60
+          }
+          if (this.form.fc.getFieldValue('minDisk') < minDisk) {
+            this.form.fc.setFieldsValue({ minDisk: minDisk })
+          }
+        }
       }
     },
     doEdit (data) {

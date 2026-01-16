@@ -37,7 +37,7 @@
       <!-- 验证码 -->
       <template>
         <a-form-model-item prop="captcha" class="captcha-form-item">
-          <a-input v-model="fd.captcha" :placeholder="placeholderOpts.captcha">
+          <a-input v-model="fd.captcha" :placeholder="placeholderOpts.captcha" :disabled="captchaValid">
             <a-icon slot="prefix" type="safety-certificate" style="color: rgba(0, 0, 0, .25)" />
             <template #suffix>
               <div class="captcha-suffix d-flex align-items-center justify-content-end">
@@ -119,8 +119,10 @@ export default {
           { required: true, message: this.$t('auth.verify.validate') },
         ],
         captcha: [
-          { required: true, min: 4, max: 4, message: this.$t('auth.captcha.validate'), trigger: 'blur' },
-          { validator: this.validateCaptcha, trigger: 'blur' },
+          { required: true, min: 4, max: 4, message: this.$t('auth.captcha.validate'), trigger: ['blur', 'change'] },
+          {
+            validator: this.validateCaptcha, trigger: ['blur', 'change'],
+          },
         ],
         domain: [
           { required: true, message: this.$t('auth.domain.validate') },
@@ -184,7 +186,6 @@ export default {
           if (this.sendSmsCount > 0) {
             this.sendSmsCount--
           } else {
-            this.enableSendSmsCode = false
             this.startCountDown = false
             this.sendSmsCount = this.sendSmsCountDownSeconds
             this.clearTimer()
@@ -235,6 +236,16 @@ export default {
     },
     // 校验验证码
     async validateCaptcha (rule, value, callback) {
+      setTimeout(() => {
+        const fd = this.formDataMapper ? this.formDataMapper({ ...this.fd }) : { ...this.fd }
+        if (fd.captcha.length !== 4) {
+          this.captchaValid = false
+        }
+      }, 200)
+      if (typeof value === 'string' && value.length !== 4) {
+        this.captchaValid = false
+        return callback(this.$t('auth.captcha.validate.fial'))
+      }
       if (this.captchaValid) {
         console.log('no need to verify captcha')
         return true
@@ -275,9 +286,7 @@ export default {
         const fd = this.formDataMapper ? this.formDataMapper({ ...this.fd }) : { ...this.fd }
         data.mobile = fd.mobile
         data.captcha = fd.captcha
-        console.log('data is ', data)
         const response = await this.$http.post('/v1/auth/trigger-verify', data)
-        console.log(response)
         this.uid = response.data.uid
         this.startCountDown = true
         this.sendSmsCount = this.sendSmsCountDownSeconds
@@ -287,7 +296,6 @@ export default {
     },
     // 点击登录事件
     async handleLogin () {
-      this.submiting = true
       try {
         await this.$refs.form.validate()
         // ------------ 拼接请求所需数据 start ------------
@@ -308,6 +316,7 @@ export default {
           data.domain = this.loginDomain
         }
         // ------------ 拼接请求所需数据 end ------------
+        this.submiting = true
         await this.$store.commit('auth/SET_LOGIN_FORM_DATA', data)
         await this.$store.dispatch('auth/login', data)
         await this.$emit('after-login')
