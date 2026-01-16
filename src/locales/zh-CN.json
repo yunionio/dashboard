@@ -2723,7 +2723,7 @@
   "auth.verify.validate": "请输入手机验证码",
   "auth.verify.placeholder": "请输入手机验证码",
   "auth.captcha.placeholder": "验证码",
-  "auth.captcha.validate": "请输入验证码",
+  "auth.captcha.validate": "请输入有效验证码",
   "auth.domain.placeholder": "请选择@:(dictionary.domain)",
   "auth.domain.validate": "请选择@:(dictionary.domain)",
   "auth.region.placeholder": "请选择区域",
