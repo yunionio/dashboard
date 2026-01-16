@@ -11,12 +11,17 @@
       <div class="flex-fill position-relative">
         <div class="login-content-wrap h-100 w-100" style="overflow-x:hidden">
           <div class="login-mode-group d-flex">
-             <a class="login-mode login-mode-account"
+            <a v-if="isMobleCodeAuthEnabled && isDefaultLoginModeMobile"
+              class="login-mode"
+              :class="{ 'active': loginMode === 'mobile' }"
+              href="javascript:;"
+              @click="onSwitchLoginMode('mobile')">{{ $t('auth.mobile') }}</a>
+             <a class="login-mode"
               :class="{ 'active': loginMode === 'account' }"
               href="javascript:;"
               @click="onSwitchLoginMode('account')">{{ title }}</a>
-             <a v-if="isMobleCodeAuthEnabled"
-              class="login-mode login-mode-mobile"
+             <a v-if="isMobleCodeAuthEnabled && !isDefaultLoginModeMobile"
+              class="login-mode"
               :class="{ 'active': loginMode === 'mobile' }"
               href="javascript:;"
               @click="onSwitchLoginMode('mobile')">{{ $t('auth.mobile') }}</a>
@@ -39,13 +44,25 @@ import { getLoginModeInStorage } from '@/utils/auth'
 
 export default {
   name: 'AccountIndex',
+  props: {
+    defaultLoginMode: {
+      type: String,
+      default: 'account',
+    },
+  },
   data () {
-    const { mode } = getLoginModeInStorage() || {}
-
+    let { mode } = getLoginModeInStorage() || {}
+    if (!mode) {
+      if (this.isDefaultLoginModeMobile && this.isMobleCodeAuthEnabled) {
+        mode = 'mobile'
+      } else {
+        mode = 'account'
+      }
+    }
     return {
       prevHeight: 0,
       regionsLoading: false,
-      loginMode: mode || 'account',
+      loginMode: mode,
     }
   },
   computed: {
@@ -60,6 +77,9 @@ export default {
     },
     isMobleCodeAuthEnabled () {
       return this.regions.enable_mobile_code_auth
+    },
+    isDefaultLoginModeMobile () {
+      return this.defaultLoginMode === 'mobile'
     },
     title () {
       if (this.$route.name === 'Auth') {
@@ -86,6 +106,19 @@ export default {
       const bg_img = this.companyInfo.login_page_backgroup_image
       if (!bg_img) return `url(${require('./assets/bg.png')})`
       return `url(data:image/png;base64,${bg_img})`
+    },
+  },
+  watch: {
+    regions: {
+      handler: function (val) {
+        if (this.isMobleCodeAuthEnabled && this.isDefaultLoginModeMobile) {
+          this.loginMode = 'mobile'
+        } else {
+          this.loginMode = 'account'
+        }
+        this.switchLoginMode()
+      },
+      immediate: true,
     },
   },
   async created () {
@@ -272,13 +305,12 @@ export default {
     color: rgb(24, 24, 24);
     vertical-align: middle;
     cursor: pointer;
+    margin-left: 10px;
+    margin-right: 10px;
     &.active {
       border-bottom: 2px solid #1890ff;
       color: #1890ff;
     }
-  }
-  .login-mode-mobile {
-    margin-left: 34px;
   }
 }
 </style>
