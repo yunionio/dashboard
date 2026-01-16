@@ -12,7 +12,6 @@
       </div>
     </div>
     <div v-if="changedStatus && showProcess" style="width:100px;margin-left:5px">
-      <div style="font-size:12px;line-height:12px;color:#9c9c9c;transform:translateY(7px)">{{ originStatusText }}</div>
       <a-progress class="custom-progress-bar" :percent="curProcess" :showInfo="false" size="small" status="active" :title="originStatusText + ': ' + curProcess + '%'" />
     </div>
     <slot />
@@ -60,7 +59,7 @@ export default {
   computed: {
     changedStatus () {
       if (this.statusModule === 'server' && this.status === 'block_stream') {
-        return 'running'
+        return this.status
       }
       return ''
     },
