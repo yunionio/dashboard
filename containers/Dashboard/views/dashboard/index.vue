@@ -101,6 +101,19 @@ export default {
     l2MenuVisible (val) {
       this.addAppPageClass()
     },
+    dataRangeParams: {
+      handler (val) {
+        if (val.scope) {
+          if ((this.$store.getters.isProjectMode && (val.scope === 'domain' || val.scope === 'system')) || (this.$store.getters.isDomainMode && val.scope === 'system')) {
+            this.dataRangeParams.scope = this.$store.getters.scope
+            this.dataRangeParams.domain = ''
+            this.dataRangeParams.project = ''
+          }
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   beforeDestroy () {
     this.pm = null
