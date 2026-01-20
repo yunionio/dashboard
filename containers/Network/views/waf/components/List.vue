@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getDescriptionFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter, getRegionFilter, getCloudProviderFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
@@ -30,6 +31,10 @@ export default {
   mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
   props: {
     id: String,
+    getParams: {
+      type: [Function, Object],
+      default: () => ({}),
+    },
   },
   data () {
     return {
@@ -37,7 +42,7 @@ export default {
         id: this.id,
         apiVersion: 'v2',
         resource: 'waf_instances',
-        getParams: { details: true },
+        getParams: this.getParam,
         isTemplate: this.isTemplate,
         templateLimit: this.templateLimit,
         filterOptions: {
@@ -129,6 +134,13 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    getParam () {
+      const ret = {
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+        details: true,
+      }
+      return ret
+    },
     refresh () {
       this.list.fetchData()
     },

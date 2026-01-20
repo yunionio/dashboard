@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getStatusFilter, getOsTypeFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
@@ -27,13 +28,17 @@ export default {
   props: {
     id: String,
     cloudEnv: String,
+    getParams: {
+      type: [Function, Object],
+      default: () => ({}),
+    },
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'images',
-        getParams: this.getParams,
+        getParams: this.getParam,
         isTemplate: this.isTemplate,
         templateLimit: this.templateLimit,
         steadyStatus: Object.values(expectStatus.image).flat(),
@@ -117,18 +122,18 @@ export default {
     this.list.fetchData()
   },
   methods: {
-    getParams () {
-      if (this.cloudEnv === 'images') {
-        return {
-          details: true,
-          pending_delete: true,
-          is_guest_image: false,
-        }
-      }
-      return {
+    getParam () {
+      const ret = {
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
         details: true,
         pending_delete: true,
       }
+      if (this.cloudEnv === 'images') {
+        ret.details = true
+        ret.pending_delete = true
+        ret.is_guest_image = false
+      }
+      return ret
     },
     imagesFetcher (params) {
       return this.sm.list({ params })
