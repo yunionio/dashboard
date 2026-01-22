@@ -117,7 +117,7 @@ export const getDiskTableColumn = () => {
 export const getLlmTypeTableColumn = () => {
   return {
     field: 'llm_type',
-    title: 'LLM Type',
+    title: i18n.t('aice.llm_type'),
     formatter: ({ row }) => {
       return row.llm_type || '-'
     },
