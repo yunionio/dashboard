@@ -50,6 +50,7 @@ export default {
     return {
       batchDeleteBill: true,
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'cloudaccounts',
         getParams: this.getParam,

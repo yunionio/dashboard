@@ -54,6 +54,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'images',
         apiVersion: 'v1',
@@ -432,6 +433,10 @@ export default {
         for (let i = 0; i < this.diskFormats.length; i++) {
           ret.disk_formats.push(this.diskFormats[i])
         }
+      }
+      if (ret.project_id) {
+        ret.project_ids = [ret.project_id]
+        delete ret.project_id
       }
       return ret
     },

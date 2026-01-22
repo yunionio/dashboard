@@ -16,13 +16,13 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import ResTemplateListMixin from '@/mixins/resTemplateList'
 import WindowsMixin from '@/mixins/windows'
 import { getTenantFilter, getDomainFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'LbcertList',
@@ -36,6 +36,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'loadbalancercertificates',
         getParams: this.getParam,

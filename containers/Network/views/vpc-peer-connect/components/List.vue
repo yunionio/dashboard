@@ -43,6 +43,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'vpc_peering_connections',
         getParams: this.getParam,
