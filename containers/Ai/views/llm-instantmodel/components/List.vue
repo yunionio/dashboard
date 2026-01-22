@@ -11,6 +11,7 @@
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
+import expectStatus from '@/constants/expectStatus'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import { filterOptions } from '../utils/filters'
@@ -33,24 +34,32 @@ export default {
         getParams: this.getParam,
         filterOptions,
         hiddenColumns: [],
+        steadyStatus: {
+          status: expectStatus.mcp ? Object.values(expectStatus.image).flat() : [],
+        },
       }),
       groupActions: [
-        // {
-        //   label: this.$t('common.create'),
-        //   action: () => {
-        //     this.createDialog('InstantAppCreateDialog', {
-        //       callback: () => {
-        //         this.list.refresh()
-        //       },
-        //     })
-        //   },
-        //   meta: () => {
-        //     return {
-        //       buttonType: 'primary',
-        //       validate: true,
-        //     }
-        //   },
-        // },
+        {
+          label: this.$t('common.create'),
+          action: () => {
+            this.createDialog('LlmInstantmodelCreateDialog', {
+              onManager: this.onManager,
+              refresh: () => this.list.fetchData(),
+            })
+          },
+          meta: () => {
+            return {
+              buttonType: 'primary',
+              validate: true,
+            }
+          },
+        },
+        {
+          label: this.$t('aice.llm_image.import_community'),
+          action: () => {
+            this.$router.push({ name: 'LlmInstantmodelImportCommunity' })
+          },
+        },
         {
           label: this.$t('common.batchAction'),
           actions: () => {
