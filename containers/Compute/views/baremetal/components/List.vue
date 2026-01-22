@@ -90,6 +90,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'servers',
+        ctx: this,
         getParams: this.getParam,
         isTemplate: this.isTemplate,
         templateLimit: this.templateLimit,

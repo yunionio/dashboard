@@ -48,6 +48,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'servertemplates',
+        ctx: this,
         getParams: this.getParam,
         isTemplate: this.isTemplate,
         templateLimit: this.templateLimit,

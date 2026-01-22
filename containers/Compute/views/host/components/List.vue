@@ -124,6 +124,7 @@ export default {
     })
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'hosts',
         getParams: this.getParam,
