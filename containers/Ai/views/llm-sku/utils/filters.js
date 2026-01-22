@@ -15,5 +15,7 @@ export const filterOptions = {
   status: getStatusFilter('sku'),
   projects: getTenantFilter(),
   project_domains: getDomainFilter(),
+  image: getNameFilter({ label: i18n.t('aice.image') }),
+  llm_model_name: getNameFilter({ label: i18n.t('aice.model_name') }),
   created_at: getCreatedAtFilter(),
 }

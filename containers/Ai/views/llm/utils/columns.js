@@ -240,3 +240,23 @@ export const getPortsColumn = (ports) => {
     },
   }
 }
+
+export const getNetworkTableColumn = () => {
+  return {
+    field: 'network',
+    title: i18n.t('cloudenv.text_7'),
+    formatter: ({ row }) => {
+      return row.network || '-'
+    },
+  }
+}
+
+export const getNetworkTypeTableColumn = () => {
+  return {
+    field: 'network_type',
+    title: i18n.t('common.network.type'),
+    formatter: ({ row }) => {
+      return i18n.t('networkServerType')[row.network_type] || '-'
+    },
+  }
+}

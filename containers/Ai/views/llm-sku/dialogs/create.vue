@@ -35,6 +35,14 @@
         <a-form-item :label="$t('aice.model_name')">
           <a-input v-decorator="decorators.llm_model_name" :placeholder="$t('common.tips.input', [$t('aice.model_name')])" />
         </a-form-item>
+        <a-form-item :label="$t('aice.bandwidth')">
+          <a-input-number
+            v-decorator="decorators.bandwidth"
+            :min="1"
+            :max="10000"
+            :step="1"
+            :precision="0" /> MB
+        </a-form-item>
         <a-form-item label="CPU">
           <a-input-number
             v-decorator="decorators.cpu"
@@ -182,6 +190,15 @@ export default {
             ],
           },
         ],
+        bandwidth: [
+          'bandwidth',
+          {
+            initialValue: 30,
+            rules: [
+              { required: true, message: this.$t('common.tips.input', [this.$t('aice.bandwidth')]) },
+            ],
+          },
+        ],
         cpu: [
           'cpu',
           {
@@ -314,6 +331,7 @@ export default {
           llm_image_id,
           llm_type,
           llm_model_name,
+          bandwidth,
           // audio_image_id,
           // stream_image_id,
           device,
@@ -345,6 +363,7 @@ export default {
           llm_image_id,
           llm_type,
           llm_model_name,
+          bandwidth,
           // audio_image_id,
           // stream_image_id,
           image_id: phone_image,
