@@ -77,6 +77,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'secgroups',
         getParams: this.getParam,
@@ -266,6 +267,10 @@ export default {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      if (ret.project_id) {
+        ret.project_ids = [ret.project_id]
+        delete ret.project_id
+      }
       return ret
     },
     handleOpenSidepage (row, tab) {

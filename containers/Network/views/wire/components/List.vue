@@ -76,6 +76,7 @@ export default {
         lazy: true,
       },
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'wires',
         getParams: this.getParam,

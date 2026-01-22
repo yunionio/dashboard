@@ -38,6 +38,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'dnsrecords',
         getParams: {

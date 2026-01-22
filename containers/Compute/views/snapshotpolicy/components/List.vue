@@ -38,6 +38,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'snapshotpolicies',
         steadyStatus: Object.values(expectStatus.snapshotpolicy).flat(),
