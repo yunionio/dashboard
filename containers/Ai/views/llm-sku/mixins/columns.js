@@ -14,7 +14,6 @@ import {
   getDiskTableColumn,
   getLlmTypeTableColumn,
   getLlmModelNameTableColumn,
-  getNetworkTableColumn,
 } from '../utils/columns'
 
 export default {
@@ -39,7 +38,6 @@ export default {
       getBandwidthTableColumn(),
       getLlmTypeTableColumn(),
       getLlmModelNameTableColumn(),
-      getNetworkTableColumn(),
       getProjectTableColumn(),
       getPublicScopeTableColumn({
         vm: this,

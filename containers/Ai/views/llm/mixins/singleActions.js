@@ -51,6 +51,13 @@ export default {
                   actionText: this.$t('aice.install_instant_model'),
                 })
               },
+              meta: (obj) => {
+                const ret = {
+                  validate: (obj.status === 'running'),
+                  tooltip: null,
+                }
+                return ret
+              },
             },
             // 重启
             // {

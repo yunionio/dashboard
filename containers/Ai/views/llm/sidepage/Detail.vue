@@ -22,6 +22,9 @@ import {
   getLlmImageColumn,
   getCpuTableColumn,
   getMemoryTableColumn,
+  getBandwidthTableColumn,
+  getNetworkTypeTableColumn,
+  getNetworkTableColumn,
 } from '../utils/columns'
 
 export default {
@@ -56,6 +59,9 @@ export default {
             getLlmImageColumn({ vm: this }),
             getCpuTableColumn(),
             getMemoryTableColumn(),
+            getBandwidthTableColumn(),
+            getNetworkTypeTableColumn(),
+            getNetworkTableColumn(),
             {
               field: 'volume',
               title: this.$t('aice.disk'),
