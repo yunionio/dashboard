@@ -47,6 +47,7 @@ export default {
     }
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'isolated_devices',
         getParams: this.getParam,

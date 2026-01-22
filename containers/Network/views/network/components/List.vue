@@ -653,6 +653,10 @@ export default {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      if (ret.project_id) {
+        ret.project_ids = [ret.project_id]
+        delete ret.project_id
+      }
       return ret
     },
     handleOpenSidepage (row, tab) {

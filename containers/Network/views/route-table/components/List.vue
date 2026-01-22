@@ -55,6 +55,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'route_tables',
         getParams: this.getParam,
