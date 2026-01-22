@@ -12,6 +12,9 @@ import {
   getCpuTableColumn,
   getMemoryTableColumn,
   getDiskTableColumn,
+  getBandwidthTableColumn,
+  getNetworkTypeTableColumn,
+  getNetworkTableColumn,
 } from '../utils/columns'
 
 export default {
@@ -39,6 +42,9 @@ export default {
       getCpuTableColumn(),
       getMemoryTableColumn(),
       getDiskTableColumn(),
+      getBandwidthTableColumn(),
+      getNetworkTypeTableColumn(),
+      getNetworkTableColumn(),
       getProjectTableColumn(),
       getTimeTableColumn(),
     ]

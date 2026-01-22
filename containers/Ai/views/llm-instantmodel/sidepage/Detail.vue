@@ -81,6 +81,9 @@ export default {
   },
   computed: {
     mountPaths () {
+      if (!this.data.mounts || !Array.isArray(this.data.mounts)) {
+        return ''
+      }
       return this.data.mounts.join('\n')
     },
   },
