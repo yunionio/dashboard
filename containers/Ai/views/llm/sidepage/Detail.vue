@@ -115,26 +115,35 @@ export default {
     }
   },
   created () {
-    this.getStreamEndpointInfo()
+    this.getAccessInfo()
   },
   methods: {
-    async getStreamEndpointInfo () {
+    async getAccessInfo () {
       try {
-        // const res = await new this.$Manager('desktops', 'v2').get({
-        //   id: `${this.data.id}/stream-endpoint`,
-        // })
-        // const { endpoint = '', ports = [] } = res.data
-        // this.streamEndpoint = endpoint
-        // this.ports = ports.length ? ports : (this.data.access_info || [])
+        const res = await new this.$Manager('llms', 'v2').get({
+          id: `${this.data.id}/url`,
+        })
+        const { access_url = '' } = res.data
         this.extraInfo = [
           {
             title: this.extraInfo[0].title,
             items: [
               ...this.extraInfo[0].items,
-              // getStreamEndpointColumn(this.streamEndpoint),
+              {
+                field: 'access_url',
+                title: this.$t('aice.access_url'),
+                slots: {
+                  default: ({ row }) => {
+                    return [
+                      <list-body-cell-wrap copy hideField={true} field='access_url' row={{ access_url }} message={access_url}>
+                        {access_url}
+                      </list-body-cell-wrap>,
+                    ]
+                  },
+                },
+              },
             ],
           },
-          // getPortsColumn(this.data.access_info && this.data.access_info.length ? this.data.access_info : this.ports),
         ]
       } catch (error) {
         console.error(error)
