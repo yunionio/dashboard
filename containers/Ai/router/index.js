@@ -5,6 +5,7 @@ const Llm = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true 
 const LlmSku = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku')
 const LlmInstantmodel = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-instantmodel')
 const LlmImage = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-image')
+const LlmInstantmodelImportCommunity = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-instantmodel/import-community')
 export default {
   index: 61,
   meta: {
@@ -56,6 +57,11 @@ export default {
               name: 'LlmInstantmodelList',
               path: '',
               component: LlmInstantmodel,
+            },
+            {
+              name: 'LlmInstantmodelImportCommunity',
+              path: 'import-community',
+              component: LlmInstantmodelImportCommunity,
             },
           ],
         },
