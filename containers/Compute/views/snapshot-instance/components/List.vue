@@ -45,6 +45,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'instance_snapshots',
         getParams: this.getParam,
