@@ -171,6 +171,7 @@ export default {
     },
     listOptions (resource) {
       return {
+        ctx: this,
         id: this.id || this.listId,
         idKey: 'row_id',
         resource: resource,

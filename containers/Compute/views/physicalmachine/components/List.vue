@@ -16,9 +16,6 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import { canIpmiProbe } from '../utils/status'
 import { getNameFilter, getStatusFilter, getEnabledFilter, getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -28,6 +25,9 @@ import ResTemplateListMixin from '@/mixins/resTemplateList'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { hasServices } from '@/utils/auth'
 import regexp from '@/utils/regexp'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import { canIpmiProbe } from '../utils/status'
 import { hostCommonActions } from '../../../utils/hostActions'
 
 export default {
@@ -42,6 +42,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'hosts',
         getParams: this.getParam,

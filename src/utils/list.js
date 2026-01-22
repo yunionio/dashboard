@@ -634,6 +634,9 @@ class CreateList {
         this.fetchDataCb(response)
       }
       this.totals = response.data?.totals || {}
+      if (this.isTemplate) {
+        this.ctx.$emit('resTemplateTotal', this.total)
+      }
       // if (!showDetails && this.total > 0 && !response.data.marker_field) {
       // setTimeout(() => {
       // this.fetchData(offset, limit, true)

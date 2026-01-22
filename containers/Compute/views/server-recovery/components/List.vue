@@ -34,6 +34,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'servers',
         getParams: this.getParam,

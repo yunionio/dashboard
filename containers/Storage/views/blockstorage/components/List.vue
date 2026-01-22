@@ -235,6 +235,7 @@ export default {
     ]
     return {
       list: this.$list.createList(this, {
+        ctx: this,
         id: this.id,
         resource: 'storages',
         getParams: this.getParam,
