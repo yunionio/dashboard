@@ -4,7 +4,7 @@
  * date: 2018/08/07
  */
 import * as R from 'ramda'
-import { hasPermission, checkSessionUser } from '@/utils/auth'
+import { hasPermission, checkSessionUser, decodeToken } from '@/utils/auth'
 import { isCE, isSAAS } from '@/utils/utils'
 import router from './router'
 import store from './store'
@@ -35,8 +35,21 @@ router.beforeEach(async (to, from, next) => {
   const { auth = true } = to.meta
   // 无token情况
   // 是否为需要认证的页面，是则跳转至登录进行认证，否则next
-  const hasToken = !!store.getters.auth.token
-  if (!hasToken) {
+  const token = store.getters.auth?.token
+  const hasToken = !!store.getters.auth?.token
+  let exp = false
+  try {
+    if (token) {
+      const tk = decodeToken(token)
+      if (tk && tk.exp && new Date(tk.exp).getTime() < new Date().getTime()) {
+        exp = true
+        console.log('token expired')
+      }
+    }
+  } catch (error) {
+    throw error
+  }
+  if (!hasToken || exp) {
     if (auth) {
       return toLogin(to, from, next)
     }
