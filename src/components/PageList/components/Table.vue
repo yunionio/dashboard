@@ -1,7 +1,7 @@
 <template>
   <component :is="tableWrapper" ref="floating-scroll" :hiddenScrollbar="hiddenScrollbar">
     <div class="table-container d-flex">
-      <template v-if="showTagConfig">
+      <template v-if="showTagConfig && !isTemplate">
         <tree-project
           ref="projectTag"
           v-show="treeToggleOpen"
@@ -14,6 +14,7 @@
         <vxe-grid
           :class="enableVirtualScroll ? 'page-list-grid-virtual-scroll' : 'page-list-grid'"
           show-header-overflow
+          show-overflow
           highlight-hover-row
           highlight-current-row
           ref="grid"
@@ -206,6 +207,9 @@ export default {
     ...mapState('common', {
       cloudShellHeight: state => state.openCloudShell ? state.cloudShellHeight : 0,
     }),
+    isTemplate () {
+      return this.list && this.list.isTemplate
+    },
     tableWrapper () {
       return this.enableVirtualScroll ? 'div' : 'floating-scroll'
     },
@@ -287,9 +291,14 @@ export default {
         ret['keep-source'] = true
       }
       if (this.enableVirtualScroll) {
-        ret['max-height'] = this.vxeGridHeight
+        // 确保 max-height 至少有一个合理的最小值，避免为 0 导致表格高度很低
+        const minHeight = 400 // 最小高度 400px
+        ret['max-height'] = this.vxeGridHeight > minHeight ? this.vxeGridHeight : minHeight
         ret['scroll-x'] = { gt: 1 }
         ret['scroll-y'] = { gt: 1 }
+      } else {
+        // 非虚拟滚动模式也需要设置 height，避免 vxe-table 警告
+        ret.height = 'auto'
       }
       return ret
     },
@@ -426,6 +435,10 @@ export default {
         setTimeout(() => {
           this.initHeight()
         }, 100)
+        // 再次延迟，确保表格完全渲染后再计算
+        setTimeout(() => {
+          this.initHeight()
+        }, 500)
       })
       window.addEventListener('resize', this.initHeight)
       this.$once('hook:beforeDestroy', () => {
@@ -442,7 +455,10 @@ export default {
       const gridEl = this.$refs?.grid?.$el
       if (!gridEl) return
       const wH = document.body.offsetHeight
-      this.vxeGridHeight = wH - gridEl.getBoundingClientRect().y - 15 - (this.pagerType === 'loadMore' || this.loadMoreShow ? 55 : 0) - this.cloudShellHeight
+      const gridTop = gridEl.getBoundingClientRect().y
+      const calculatedHeight = wH - gridTop - 15 - (this.pagerType === 'loadMore' || this.loadMoreShow ? 55 : 0) - this.cloudShellHeight
+      // 确保高度至少为 400px，避免表格高度太低
+      this.vxeGridHeight = calculatedHeight > 400 ? calculatedHeight : 400
     },
     // 初始化tbody监听器，发生变化更新虚拟滚动条，以保证宽度是正确的
     initFloatingScrollListener () {

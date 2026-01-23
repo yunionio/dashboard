@@ -382,7 +382,7 @@ export default {
       return this.list.id
     },
     tableName () {
-      return this.fixed ? 'PageListTable' : 'PageListTable'
+      return 'PageListTable'
     },
     loading () {
       return this.list.loading
