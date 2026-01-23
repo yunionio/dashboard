@@ -563,7 +563,7 @@ class CreateList {
     try {
       const fetchList = []
       // 如果有id并且没有获取过列表配置则获取列表配置
-      if (this.id) {
+      if (this.id && !this.isTemplate) {
         if (!this.configLoaded) {
           fetchList.push(this.fetchConfig())
         }
@@ -609,7 +609,9 @@ class CreateList {
       this.nextMarker = response.data.next_marker
       this.pagerType = response.data.marker_field ? 'loadMore' : 'pager'
       this.syncSelected()
-      this.checkSteadyStatus()
+      if (!this.isTemplate) {
+        this.checkSteadyStatus()
+      }
       this.total = total
       if (responseLimit > 0) {
         this.offset = responseOffset

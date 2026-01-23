@@ -76,7 +76,7 @@ import Actions from '../Actions'
 import MultipleSort from './MultipleSort'
 
 export default {
-  name: 'PageListTable',
+  name: 'PageListFixedTable',
   components: {
     TreeProject,
   },
