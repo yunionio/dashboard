@@ -111,7 +111,7 @@ export default {
         brandWidth: [
           'brandWidth',
           {
-            initialValue: '100',
+            initialValue: '-1',
           },
         ],
         customBrandWidth: [
