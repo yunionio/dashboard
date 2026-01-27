@@ -99,8 +99,8 @@ export default {
         ...item,
       }
     })
-    // 导出备注信息（位置在 name 之后）
-    const nameIndex = exportOptionItems.findIndex(item => item.field === 'name' || item.key === 'name')
+    // 导出备注信息（位置在 name 之后）, res_name 是优化建议用的
+    const nameIndex = exportOptionItems.findIndex(item => item.field === 'name' || item.key === 'name' || item.key === 'res_name')
     if (nameIndex > -1) {
       exportOptionItems = R.insert(nameIndex + 1, { label: this.$t('table.title.desc'), key: 'description' }, exportOptionItems)
     }
