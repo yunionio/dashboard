@@ -10,6 +10,7 @@
   "aice.llm_image.progress": "Image Progress",
   "aice.llm_image.import_community": "导入社区模型",
   "aice.llm_image.community_registry": "社区模型仓库",
+  "aice.llm_image.community_registry_platform": "由平台接口提供",
   "aice.llm_image.community_registry_fetch_failed": "获取社区模型列表失败",
   "aice.llm_image.community_import_success": "已导入{0}个，失败{1}个",
   "aice.instant_app": "模型库",
