@@ -339,5 +339,10 @@
   "monitor.k8s_node": "node",
   "monitor.alert_policy_id": "Alert policy ID",
   "monitor.alert_count": "Alert count",
+  "monitor.greater_than": "Greater than",
+  "monitor.less_than": "Less than",
+  "monitor.equals": "Equal to",
+  "monitor.no_data": "No data",
+  "monitor.delta": "Delta",
   "monitor.alert_reason": "Alert reason"
 }
