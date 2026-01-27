@@ -338,5 +338,10 @@
   "monitor.func.SUM": "合計",
   "monitor.k8s_node": "ノード",
   "monitor.alert_policy_id": "アラームポリシーID",
-  "monitor.alert_count": "アラーム数"
+  "monitor.alert_count": "アラーム数",
+  "monitor.greater_than": "より大きい",
+  "monitor.less_than": "より小さい",
+  "monitor.equals": "等しい",
+  "monitor.no_data": "データなし",
+  "monitor.delta": "差分"
 }
