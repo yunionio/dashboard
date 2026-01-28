@@ -10,6 +10,7 @@
   "aice.llm_image.import_community": "Import Community Models",
   "aice.llm_image.community_registry": "Community Registry",
   "aice.llm_image.community_registry_fetch_failed": "Failed to fetch community model list",
+  "aice.llm_image.community_registry_platform": "Provided by platform interface",
   "aice.llm_image.community_import_success": "Imported {0}, failed {1}",
   "aice.instant_app": "模型库",
   "aice.instant_app.install": "安装模型数据",
