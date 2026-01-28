@@ -116,6 +116,6 @@
   "aice.model": "モデル",
   "aice.save_as_instant_model": "モデルライブラリに保存",
   "aice.install_instant_model": "モデルデータをインストール",
-  "aice.devices": "周辺機器モデル",
+  "aice.devices": "GPUモデル",
   "aice.model_name": "モデル名"
 }

@@ -19,6 +19,12 @@
           </template>
           <a-label v-if="isEditMode">{{ modelName }}</a-label>
         </a-form-item>
+        <a-form-item :label="$t('aice.llm_type')">
+          <base-select
+            v-decorator="decorators.llm_type"
+            :options="llmTypeOptions"
+            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.llm_type')]) }" />
+        </a-form-item>
         <a-form-item :label="$t('aice.llm_image')">
           <base-select
             v-decorator="decorators.llm_image_id"
@@ -26,22 +32,8 @@
             :params="appImageParams"
             :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.llm_image')]) }" />
         </a-form-item>
-        <a-form-item :label="$t('aice.llm_type')">
-          <base-select
-            v-decorator="decorators.llm_type"
-            :options="llmTypeOptions"
-            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.llm_type')]) }" />
-        </a-form-item>
         <a-form-item :label="$t('aice.model_name')">
           <a-input v-decorator="decorators.llm_model_name" :placeholder="$t('common.tips.input', [$t('aice.model_name')])" />
-        </a-form-item>
-        <a-form-item :label="$t('aice.bandwidth')">
-          <a-input-number
-            v-decorator="decorators.bandwidth"
-            :min="1"
-            :max="10000"
-            :step="1"
-            :precision="0" /> MB
         </a-form-item>
         <a-form-item label="CPU">
           <a-input-number
@@ -49,6 +41,12 @@
             :min="2"
             :step="2"
             :precision="0" /> {{ $t('aice.cpu.unit') }}
+        </a-form-item>
+        <a-form-item :label="$t('aice.devices')">
+          <base-select
+            v-decorator="decorators.device"
+            :options="specList"
+            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.devices')]) }" />
         </a-form-item>
         <a-form-item :label="$t('aice.memory')">
           <a-input-number
@@ -68,11 +66,13 @@
             </a-col>
           </a-row>
         </a-form-item>
-        <a-form-item :label="$t('aice.devices')">
-          <base-select
-            v-decorator="decorators.device"
-            :options="specList"
-            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.devices')]) }" />
+        <a-form-item :label="$t('aice.bandwidth')">
+          <a-input-number
+            v-decorator="decorators.bandwidth"
+            :min="1"
+            :max="10000"
+            :step="1"
+            :precision="0" /> MB
         </a-form-item>
       </a-form>
     </div>
@@ -193,7 +193,7 @@ export default {
         bandwidth: [
           'bandwidth',
           {
-            initialValue: 30,
+            initialValue: 100,
             rules: [
               { required: true, message: this.$t('common.tips.input', [this.$t('aice.bandwidth')]) },
             ],
@@ -292,7 +292,7 @@ export default {
       return this.params.type === 'edit'
     },
     specList () {
-      const list = Object.values(this.$store.getters.capability?.specs?.isolated_devices || {}).filter(item => item.hypervisor === 'pod')
+      const list = Object.values(this.$store.getters.capability?.pci_model_types || {}).filter(item => item.hypervisor === 'pod')
       return list.map(item => ({
         key: item.model,
         label: item.model,
