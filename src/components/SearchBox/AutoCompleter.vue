@@ -29,7 +29,7 @@
           <!-- 如果有配置项则渲染 -->
           <template v-if="config.items">
             <li
-              v-for="item of getItems()"
+              v-for="item of filteredItems"
               :key="item.key">
               <span>
                 <a-checkbox
@@ -62,10 +62,12 @@
             </template>
           </template>
         </template>
-        <template v-else v-for="(item, key) of options">
-          <li v-show="!value.hasOwnProperty(key) && isKeyClickable(item)" :key="key">
-            <span @click="handleKeyClick($event, key, item)" class="text-truncate">{{ item.label }}</span>
-          </li>
+        <template v-else>
+          <template v-for="(item, key) of options">
+            <li v-if="!value.hasOwnProperty(key) && clickableKeys.has(key)" :key="key">
+              <span @click="handleKeyClick($event, key, item)" class="text-truncate">{{ item.label }}</span>
+            </li>
+          </template>
         </template>
       </ul>
       <div class="actions" v-if="isDropdown">
@@ -154,6 +156,60 @@ export default {
     isMonth () {
       return this.config && this.config.month
     },
+    // 过滤后的下拉选项（优化：使用计算属性替代方法调用）
+    filteredItems () {
+      const items = (this.config && this.config.items) || []
+      if (!items.length) return []
+      if (!this.dropdownSearch) return items
+      const searchLower = this.dropdownSearch.toLowerCase()
+      return items.filter(v => {
+        if (!v.label) return true
+        const label = v.label.toLowerCase()
+        return label.includes(searchLower)
+      })
+    },
+    // 可点击的选项 keys（优化：缓存计算结果，避免 O(n²) 复杂度）
+    clickableKeys () {
+      const keys = new Set()
+      const search = this.search
+
+      // 如果搜索为空，所有未选中的项都可点击
+      if (!search) {
+        for (const key in this.options) {
+          if (!this.value.hasOwnProperty(key)) {
+            keys.add(key)
+          }
+        }
+        return keys
+      }
+
+      // 查找当前搜索匹配的选项
+      let matchedKey = null
+      for (const key in this.options) {
+        const item = this.options[key]
+        const prefix = `${item.label}${this.newKeySeparator}`
+        if (search.startsWith(prefix)) {
+          matchedKey = key
+          break
+        }
+      }
+
+      // 如果找到了匹配的选项，只显示该选项
+      if (matchedKey) {
+        if (!this.value.hasOwnProperty(matchedKey)) {
+          keys.add(matchedKey)
+        }
+      } else {
+        // 如果没有匹配，显示所有未选中的选项
+        for (const key in this.options) {
+          if (!this.value.hasOwnProperty(key)) {
+            keys.add(key)
+          }
+        }
+      }
+
+      return keys
+    },
   },
   watch: {
     search (val) {
@@ -218,16 +274,14 @@ export default {
     },
     /**
      * @description 判断item所否可以点击，只有完成了输入之后才能点击
+     * @deprecated 已优化为使用计算属性 clickableKeys，保留此方法以保持兼容性
      */
     isKeyClickable (curItem) {
-      for (var key in this.options) {
+      // 使用计算属性 clickableKeys 的结果
+      for (const key in this.options) {
         const item = this.options[key]
-        if (this.search.startsWith(`${item.label}${this.newKeySeparator}`)) {
-          if (item.label === curItem.label) {
-            return true
-          } else {
-            return false
-          }
+        if (item.label === curItem.label) {
+          return this.clickableKeys.has(key)
         }
       }
       return true
@@ -471,15 +525,6 @@ export default {
     },
     onSearch (e) {
       this.dropdownSearch = e.target.value
-    },
-    getItems () {
-      const items = (this.config && this.config.items) || []
-      if (!items.length) return []
-      return items.filter(v => {
-        if (!v.label) return true
-        const label = v.label.toLowerCase()
-        return label.includes(this.dropdownSearch.toLowerCase())
-      })
     },
   },
 }
