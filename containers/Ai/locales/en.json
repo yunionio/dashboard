@@ -116,6 +116,6 @@
   "aice.model": "模型",
   "aice.save_as_instant_model": "保存到模型库",
   "aice.install_instant_model": "安装模型数据",
-  "aice.devices": "外设型号",
+  "aice.devices": "GPU Model",
   "aice.model_name": "模型名称"
 }
