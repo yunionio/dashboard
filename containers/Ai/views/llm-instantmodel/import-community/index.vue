@@ -4,7 +4,7 @@
     <page-body>
       <a-alert type="info" class="mb-3">
         <span slot="message">
-          {{ $t('aice.llm_image.community_registry') }}: {{ registryUrl }}
+          {{ $t('aice.llm_image.community_registry') }}（{{ $t('aice.llm_image.community_registry_platform') }}）
         </span>
       </a-alert>
 
@@ -19,10 +19,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-import yaml from 'js-yaml'
-
-const REGISTRY_URL = 'https://10.168.26.9:31512/ollama-registry.yaml'
 const DEFAULT_ICON = (require('@/assets/images/invalidImg.svg') || {}).default || require('@/assets/images/invalidImg.svg')
 const QIANWEN_SVG = '<svg t="1768898043404" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6328" width="32" height="32"><path d="M952.6 606.7L841.3 411.8l47.8-91.2c6.7-8.5 8.5-21.5 5.8-31.7l-61.2-110.4c-4.9-7.2-13-11.6-21.5-12.1H584.7L533.3 77c-3.6-7.2-10.3-11.6-18.3-12.5H394.8c-8.9 0-15.2 6.7-19.7 14.3l-1.8 3.1-113.5 194.9H150.7c-8.9 0-17.4 4.5-22.3 12.1L65.8 399.7c-4 8-4 17.5 0 25.5l113.1 196.2-51 88.9c-4 8-4 17.5 0 25.5l58.1 102c4.9 7.6 13 12.5 22.3 12.5h227.5l55 95.2c4 7.2 11.6 12.1 19.7 13h128.7c8.9 0 17-4.9 21.5-12.5l112.2-196.2H873c8.9-0.9 17-5.8 21.5-13.4L952.6 634c5.3-9 5.3-19.3 0-27.3z m-140.8 12.5l-58.1-107.3L515 932.1l-65.3-107.3H211.5l57.2-103.7h121.6L151.6 302.3h124.7L394.8 90.9 454.2 195 393 302.3h477.4l-59.9 106.4 120.2 210.5H811.8z m0 0" fill="#605BEC" p-id="6329"></path><path d="M509.6 659.4l148.8-238.2H359.9l149.7 238.2z m0 0" fill="#605BEC" p-id="6330"></path></svg>'
 const QIANWEN_ICON_URL = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(QIANWEN_SVG)}`
@@ -31,7 +27,6 @@ export default {
   name: 'LlmImageImportCommunity',
   data () {
     return {
-      registryUrl: REGISTRY_URL,
       loadingList: false,
       keyword: '',
       rawList: [],
@@ -120,9 +115,8 @@ export default {
       }
       return DEFAULT_ICON
     },
-    parseRegistry (text) {
-      const doc = yaml.safeLoad(text) || {}
-      const models = Array.isArray(doc.ollama) ? doc.ollama : []
+    buildRawListFromDoc (doc) {
+      const models = Array.isArray(doc?.ollama) ? doc.ollama : []
       const ret = []
       models.forEach(model => {
         const modelName = model?.name
@@ -148,9 +142,10 @@ export default {
     async fetchRegistry () {
       this.loadingList = true
       try {
-        const res = await axios.get(this.registryUrl, { responseType: 'text' })
-        const text = res?.data || ''
-        this.rawList = this.parseRegistry(text)
+        const manager = new this.$Manager('llm_instant_models')
+        const res = await manager.get({ id: 'community-registry' })
+        const doc = res?.data || {}
+        this.rawList = this.buildRawListFromDoc(doc)
       } catch (e) {
         this.$message.error(this.$t('aice.llm_image.community_registry_fetch_failed'))
         throw e
