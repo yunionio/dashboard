@@ -10,6 +10,7 @@
   "aice.llm_image.import_community": "コミュニティモデルをインポート",
   "aice.llm_image.community_registry": "コミュニティレジストリ",
   "aice.llm_image.community_registry_fetch_failed": "コミュニティモデル一覧の取得に失敗しました",
+  "aice.llm_image.community_registry_platform": "プラットフォームインターフェースによって提供されます",
   "aice.llm_image.community_import_success": "{0}件をインポート、失敗{1}件",
   "aice.instant_app": "モデルライブラリ",
   "aice.instant_app.install": "モデルデータをインストール",
