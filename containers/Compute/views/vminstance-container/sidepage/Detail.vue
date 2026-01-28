@@ -123,7 +123,7 @@ export default {
                   const color = colors[idx % 7]
                   return <p>
                     <a-tag color={color}>
-                      {this.$t('compute.repo.container_port')}: {item.port} = {this.$t('compute.repo.host_port')}: {item.host_port}
+                      {this.$t('compute.repo.container_port')}: {item.port} = {this.$t('compute.repo.host_port')}: {item.host_port} {item.protocol.toUpperCase()}
                     </a-tag>
                   </p>
                 })
