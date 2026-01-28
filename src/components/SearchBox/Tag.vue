@@ -25,7 +25,7 @@
                 :placeholder="$t('common.search')"
                 @change="onSearch" />
               <li
-                v-for="item of getItems()"
+                v-for="item of filteredItems"
                 :key="item.key">
                 <span>
                   <a-checkbox
@@ -121,6 +121,18 @@ export default {
     newValueSeparator () {
       return this.condition === 'equals' ? this.valueSeparator : '&'
     },
+    // 为当前选项创建 Map 索引（key -> label），优化查找性能
+    itemKeyMap () {
+      const config = this.options[this.id]
+      if (config && config.items && Array.isArray(config.items)) {
+        const map = new Map()
+        config.items.forEach(item => {
+          map.set(item.key, item.label)
+        })
+        return map
+      }
+      return null
+    },
     label () {
       const label = this.options[this.id].label
       let ret = `${label}${this.condition === 'equals' ? this.keySeparator : ' != '}`
@@ -133,8 +145,13 @@ export default {
           ret += `>${this.value[1]}`
         }
       } else {
+        // 优化：使用 Map 索引替代 find，从 O(n) 优化到 O(1)
         ret += this.value.map(value => {
-          if (this.options[this.id].items && this.options[this.id].items.length) {
+          if (this.itemKeyMap) {
+            const label = this.itemKeyMap.get(value)
+            if (label) return label
+          } else if (this.options[this.id].items && this.options[this.id].items.length) {
+            // 降级方案：如果 Map 不存在，使用原来的方法
             const target = this.options[this.id].items.find(item => item.key === value)
             if (target) return target.label
           }
@@ -164,6 +181,18 @@ export default {
       }
       return R.isEmpty(R.trim(this.newValue[0]))
     },
+    // 过滤后的下拉选项（优化：使用计算属性替代方法调用）
+    filteredItems () {
+      const items = (this.config && this.config.items) || []
+      if (!items.length) return []
+      if (!this.dropdownSearch) return items
+      const searchLower = this.dropdownSearch.toLowerCase()
+      return items.filter(v => {
+        if (!v.label) return true
+        const label = v.label.toLowerCase()
+        return label.includes(searchLower)
+      })
+    },
   },
   watch: {
     visible (val) {
@@ -189,15 +218,6 @@ export default {
   methods: {
     onSearch (e) {
       this.dropdownSearch = e.target.value
-    },
-    getItems () {
-      const items = (this.config && this.config.items) || []
-      if (!items.length) return []
-      return items.filter(v => {
-        if (!v.label) return true
-        const label = v.label.toLowerCase()
-        return label.includes(this.dropdownSearch.toLowerCase())
-      })
     },
     handleClose (e) {
       e.stopPropagation()
