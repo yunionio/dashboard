@@ -101,6 +101,37 @@ export default {
       })
       return filteredValue
     },
+    // 缓存 options 的 keys，避免重复计算
+    optionsKeys () {
+      return Object.keys(this.options)
+    },
+    // 缓存 IP key，避免重复查找
+    ipKey () {
+      return this.optionsKeys.find(v => v === 'ip') ||
+             this.optionsKeys.find(v => v.startsWith('ip') || v.endsWith('ip'))
+    },
+    // 缓存 ID key，避免重复查找
+    idKey () {
+      return this.optionsKeys.find(v => v === 'id') ||
+             this.optionsKeys.find(v => v.endsWith('id'))
+    },
+    // 为每个 dropdown 配置创建 Map 索引（label -> key），优化查找性能
+    dropdownItemMaps () {
+      const maps = {}
+      for (const key in this.options) {
+        const config = this.options[key]
+        if (config.dropdown && config.items && Array.isArray(config.items)) {
+          const map = new Map()
+          config.items.forEach(item => {
+            if (item.label) {
+              map.set(item.label, item.key)
+            }
+          })
+          maps[key] = map
+        }
+      }
+      return maps
+    },
   },
   watch: {
     value (val) {
@@ -178,19 +209,26 @@ export default {
           if (config.date || config.month) {
             this.newValues[key] = value
           } else {
-            this.newValues[key] = value.map(item => {
-              const op = R.find(R.propEq('label', item))(config.items || [])
-              if (op) return op.key
-              return item
-            })
+            // 优化：使用 Map 索引替代 R.find，从 O(n) 优化到 O(1)
+            const itemMap = this.dropdownItemMaps[key]
+            if (itemMap) {
+              this.newValues[key] = value.map(item => {
+                return itemMap.get(item) || item
+              })
+            } else {
+              // 降级方案：如果 Map 不存在，使用原来的方法
+              this.newValues[key] = value.map(item => {
+                const op = R.find(R.propEq('label', item))(config.items || [])
+                if (op) return op.key
+                return item
+              })
+            }
           }
         } else {
           let newKey = key
           let newValues = value
           if (this.autocompleterSearch && !this.autocompleterSearch.includes(this.keySeparator)) {
-            const keys = Object.keys(this.options) || []
-            const ipKey = keys.find(v => v === 'ip') || keys.find(v => v.startsWith('ip') || v.endsWith('ip'))
-            const idKey = keys.find(v => v === 'id') || keys.find(v => v.endsWith('id'))
+            // 优化：使用缓存的 keys
             newValues = (value.map(item => { return item.split('|') })).flat()
             const isIpv4 = newValues.some(item => {
               return /(^[0-9]{1,3}\.)|(^\.[0-9]{1,3})/.test(item) &&
@@ -202,10 +240,10 @@ export default {
             const isIpv6 = newValues.some(item => ipv6Regexp.test(item) || /^([0-9a-fA-F]{1,4}:)/.test(item))
             const isIp = isIpv4 || isIpv6
 
-            if (isIp && ipKey) {
-              newKey = ipKey
-            } else if (isUUID && idKey) {
-              newKey = idKey
+            if (isIp && this.ipKey) {
+              newKey = this.ipKey
+            } else if (isUUID && this.idKey) {
+              newKey = this.idKey
             } else {
               if (this.options[this.defaultSearchKey]) {
                 newKey = this.defaultSearchKey
@@ -215,7 +253,10 @@ export default {
           this.newValues[newKey] = newValues
         }
       }, values)
-      this.$emit('input', this.newValues)
+      // 优化：使用 $nextTick 延迟非关键更新，让 UI 先响应
+      this.$nextTick(() => {
+        this.$emit('input', this.newValues)
+      })
     },
     /**
      * @description 删除标签事件
