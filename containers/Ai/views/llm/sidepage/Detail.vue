@@ -73,7 +73,22 @@ export default {
                   const volumeText = `${id} (${sizestr(size_mb, 'M', 1024)} ${storageType})`
                   return [
                     <list-body-cell-wrap copy hideField={true} field='volume' row={row} message={id}>
-                      <side-page-trigger permission='volumes_get' name='DesktopDiskSidePage' id={id} vm={this}>{volumeText}</side-page-trigger>
+                      <side-page-trigger permission='disks_get' name='DiskSidePage' id={id} vm={this}>{volumeText}</side-page-trigger>
+                    </list-body-cell-wrap>,
+                  ]
+                },
+              },
+            },
+            {
+              field: 'cmp_id',
+              title: this.$t('dictionary.server_container'),
+              slots: {
+                default: ({ row }) => {
+                  if (!row.cmp_id) return '-'
+                  const serverText = `${row.server} (${row.cmp_id})`
+                  return [
+                    <list-body-cell-wrap copy hideField={true} field='server' row={row} message={row.cmp_id}>
+                      <side-page-trigger permission='servers_get' name='VmContainerInstanceSidePage' id={row.cmp_id} vm={this}>{serverText}</side-page-trigger>
                     </list-body-cell-wrap>,
                   ]
                 },
@@ -105,7 +120,7 @@ export default {
                   if (mounted_apps?.length) {
                     return mounted_apps.map((item, idx) => {
                       return <list-body-cell-wrap copy hideField={true} field='mounted_models' row={row} message={item.fullname}>
-                        {item.fullname}
+                        <side-page-trigger permission='llm_instant_models_get' name='InstantAppSidePage' id={item.id} vm={this}>{item.fullname}</side-page-trigger>
                       </list-body-cell-wrap>
                     })
                   }
