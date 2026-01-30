@@ -38,11 +38,11 @@ export default {
                   refresh: this.refresh,
                 })
               },
-              meta: () => {
+              meta: (obj) => {
                 const ret = { validate: true }
                 const isOneCloud = this.data.brand === 'OneCloud'
 
-                if (obj.driver === 'vfio-pci') {
+                if (obj && obj.driver === 'vfio-pci') {
                   ret.validate = false
                   return ret
                 }

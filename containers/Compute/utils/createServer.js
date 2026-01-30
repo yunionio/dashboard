@@ -684,6 +684,16 @@ export const createVmDecorators = (type, initData = {}) => {
             }],
           },
         ],
+        secgroups: i => [
+          `networkSecgroups[${i}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+            rules: [{
+              required: true,
+              message: i18n.t('compute.secgroup_tips'),
+            }],
+          },
+        ],
       },
       networkSchedtag: {
         schedtags: i => [
@@ -1326,6 +1336,12 @@ export class GenCreateData {
             obj.exit = true
           }
         }
+        if (this.fd.networkSecgroups) {
+          const secgroup = this.fd.networkSecgroups[key]
+          if (secgroup) {
+            obj.secgroups = secgroup
+          }
+        }
         if (this.fd.networkIPv6s) {
           const ipv6 = this.fd.networkIPv6s[key]
           if (ipv6) {
@@ -1350,6 +1366,12 @@ export class GenCreateData {
           const device = this.fd.networkDevices[key]
           if (device) {
             obj.sriov_device = { model: device }
+          }
+        }
+        if (this.fd.networkSecgroups) {
+          const secgroup = this.fd.networkSecgroups[key]
+          if (secgroup) {
+            obj.secgroups = secgroup
           }
         }
         ret.push(obj)

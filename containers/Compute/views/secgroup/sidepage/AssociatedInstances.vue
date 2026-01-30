@@ -19,6 +19,7 @@ import LB from './LB'
 import RDS from './RDS'
 import Redis from './Redis'
 import VmContainer from './VmContainer'
+import Network from './Network'
 
 export default {
   name: 'AssociatedSecgroupsIndex',
@@ -28,6 +29,7 @@ export default {
     RDS,
     Redis,
     VmContainer,
+    Network,
   },
   props: {
     data: {
@@ -56,6 +58,8 @@ export default {
           return 'RedisForSecGroupSidePage'
         case 'VmContainer':
           return 'VmContainerForSecGroupSidePage'
+        case 'Network':
+          return 'NetworkForSecGroupSidePage'
         default:
           return 'DefaultSecGroupSidePage'
       }
@@ -81,6 +85,10 @@ export default {
         {
           key: 'Redis',
           label: 'Redis',
+        },
+        {
+          key: 'Network',
+          label: this.$t('compute.nic'),
         },
       ]
       return ret
