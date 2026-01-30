@@ -93,6 +93,19 @@
             </template>
             <a-button v-else type="link" class="mr-1 mt-1" @click="triggerShowDevice(item)">{{ $t('compute.config_transparent_net') }}</a-button>
           </template>
+          <!-- 安全组 -->
+        <template v-if="showSecgroupConfig">
+          <template v-if="item.secgroupShow">
+            <a-form-item class="mb-0" style="display:inline-block" :wrapperCol="{ span: 24 }">
+              <base-select
+                v-decorator="decorator.secgroups(item.key)"
+                resource="secgroups"
+                :params="secgroupParams"
+                :select-props="{ allowClear: true, placeholder: $t('compute.secgroup_tips'), mode: 'multiple' }" />
+            </a-form-item>
+          </template>
+          <a-button v-else type="link" class="mr-1 mt-1" @click="triggerShowSecgroup(item)">{{ $t('compute.config_secgroup') }}</a-button>
+        </template>
           <!-- ipv6 -->
           <template>
             <a-form-item class="mb-0" style="display:inline-block" :wrapperCol="{ span: 24 }" v-if="isSupportIPv6(item) && isSupportIPv4(item)">
@@ -168,7 +181,7 @@ export default {
     decorator: {
       type: Object,
       required: true,
-      validator: val => R.is(Function, val.vpcs) && R.is(Function, val.networks) && R.is(Function, val.ips) && R.is(Function, val.macs) && R.is(Function, val.ips6),
+      validator: val => R.is(Function, val.vpcs) && R.is(Function, val.networks) && R.is(Function, val.ips) && R.is(Function, val.macs) && R.is(Function, val.ips6) && R.is(Function, val.secgroups),
     },
     isBonding: {
       type: Boolean,
@@ -212,6 +225,14 @@ export default {
     showDeviceConfig: {
       type: Boolean,
       default: false,
+    },
+    showSecgroupConfig: {
+      type: Boolean,
+      default: false,
+    },
+    secgroupParams: {
+      type: Object,
+      default: () => ({}),
     },
     hiddenAdd: {
       type: Boolean,
@@ -304,6 +325,7 @@ export default {
           ipv6Mode: 'all',
           macShow: false,
           deviceShow: false,
+          secgroupShow: false,
           ip: item.address,
         }
         if (item.address) {
@@ -330,6 +352,10 @@ export default {
           obj.deviceShow = true
           this.showAdvanced = true
         }
+        if (item.secgroups && item.secgroups.length > 0) {
+          obj.secgroupShow = true
+          this.showAdvanced = true
+        }
         return obj
       })
       this.$nextTick(() => {
@@ -352,6 +378,9 @@ export default {
           }
           if (item.sriov_device && item.sriov_device.model) {
             value[this.decorator.devices(item.key)[0]] = item.sriov_device.model
+          }
+          if (item.secgroups && item.secgroups.length > 0) {
+            value[this.decorator.secgroups(item.key)[0]] = item.secgroups
           }
           setTimeout(() => {
             this.form.fc.setFieldsValue(value)
@@ -415,6 +444,7 @@ export default {
         deviceShow: false,
         key: uid,
         ip: '',
+        secgroupShow: false,
       }
       if (this.vpcObj) {
         data.vpc = this.vpcObj
@@ -451,6 +481,9 @@ export default {
     triggerShowDevice (item, i) {
       item.deviceShow = !item.deviceShow
     },
+    triggerShowSecgroup (item, i) {
+      item.secgroupShow = !item.secgroupShow
+    },
     decrease (uid, index) {
       this.networkList.splice(index, 1)
     },
@@ -465,6 +498,7 @@ export default {
       this.$set(this.networkList[0], 'ipv6Mode', 'all')
       this.$set(this.networkList[0], 'macShow', false)
       this.$set(this.networkList[0], 'deviceShow', false)
+      this.$set(this.networkList[0], 'secgroupShow', false)
       this.ipsDisabled = ipsDisabled
     },
     networkChange (val, item, i) {

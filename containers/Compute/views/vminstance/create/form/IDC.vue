@@ -162,7 +162,9 @@
           :vpcResourceMapper="vpcResourceMapper"
           :networkResourceMapper="networkResourceMapper"
           :showMacConfig="form.fd.hypervisor === 'kvm'"
-          :showDeviceConfig="form.fd.hypervisor === 'kvm'" />
+          :showDeviceConfig="form.fd.hypervisor === 'kvm'"
+          :showSecgroupConfig="form.fd.hypervisor === 'kvm'"
+          :secgroupParams="networkSecgroupParams" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
@@ -326,6 +328,16 @@ export default {
     hypervisors () {
       const { hypervisors = [] } = this.form.fi.capability
       return hypervisors.filter(v => v !== 'pod')
+    },
+    networkSecgroupParams () {
+      const ret = {
+        limit: 20,
+        scope: this.$store.getters.scope,
+      }
+      if (this.form.fi.networkVpcObj && this.form.fi.networkVpcObj.id) {
+        ret.vpc_id = this.form.fi.networkVpcObj.id
+      }
+      return ret
     },
     cloudregionParams () {
       return {

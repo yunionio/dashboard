@@ -373,6 +373,28 @@ export default {
               },
               hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.secgroups'),
             },
+            {
+              field: 'network_secgroups',
+              title: this.$t('compute.nic_secgroups'),
+              slots: {
+                default: ({ row }) => {
+                  if (!row.network_secgroups) return '-'
+                  const secgroups = []
+                  row.network_secgroups.forEach((item) => {
+                    item.secgroups.forEach((secgroup) => {
+                      secgroups.push({ ...secgroup, network_index: item.network_index })
+                    })
+                  })
+                  return secgroups.map((item) => {
+                    return <list-body-cell-wrap copy hideField={true} field='name' row={item} message={item.name}>
+                      {this.$t('compute.text_375')} {item.network_index}:
+                      <side-page-trigger permission='secgroups_get' name='SecGroupSidePage' id={item.id} vm={this}>{item.name}</side-page-trigger>
+                    </list-body-cell-wrap>
+                  })
+                },
+              },
+              hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.secgroups') || !this.isKvm,
+            },
             getCopyWithContentTableColumn({
               field: 'vpc',
               title: 'VPC',

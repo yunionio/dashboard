@@ -1979,5 +1979,11 @@
   "compute.storage_tag": "ストレージ タグ",
   "compute.deadly_resource": "期限切れリソース",
   "compute.check_deadly_resource": "期限切れリソースをチェック",
-  "compute.snapshot_count": "快照数量"
+  "compute.snapshot_count": "スナップショット数",
+  "compute.config_secgroup": "セキュリティグループの設定",
+  "compute.secgroup_tips": "セキュリティグループを選択してください",
+  "compute.network_index": "ネットワークインデックス",
+  "compute.nic_secgroups": "ネットワークセキュリティグループ",
+  "compute.secgroup.remove_secgroup.group_actions.same_network_index_tooltip": "同一ネットワークインデックスのセキュリティグループを選択してください",
+  "compute.nic_secgroups_tips": "未バインドのセキュリティグループのネットワークカードは、仮想マシンのセキュリティグループを使用します"
 }
