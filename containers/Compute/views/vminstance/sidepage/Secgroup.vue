@@ -1,114 +1,92 @@
 <template>
-  <secgroup-list
-    ref="secgroupList"
-    :hiddenActions="['openSecgroupSidepageTab']"
-    :hiddenColumns="['guest_cnt']"
-    :hiddenSidepageTabs="['associated-instances']"
-    :id="id"
-    :getParams="getParams"
-    :show-create-action="false"
-    :customSingleActions="customSingleActions"
-    frontGroupMethods="coverage"
-    :frontGroupActions="frontGroupActions" />
+  <div>
+    <a-tabs :defaultActiveKey="currentComponent" @change="callback" :animated="false">
+      <template v-for="obj of tabs">
+        <a-tab-pane :tab="obj.label" :key="obj.key" />
+      </template>
+    </a-tabs>
+    <div class="mt-2">
+      <keep-alive>
+        <component
+          :is="currentComponent"
+          :getParams="params"
+          :id="id"
+          :resId="resId"
+          :serverColumns="serverColumns"
+          :data="data" />
+      </keep-alive>
+    </div>
+  </div>
 </template>
 
 <script>
-import SecgroupList from '@Compute/views/secgroup/components/List'
-import WindowsMixin from '@/mixins/windows'
-import { SECGROUP_LIST_FOR_VMINSTANCE_SIDEPAGE_REFRESH } from '@/constants/event-bus'
+import { HYPERVISORS_MAP } from '@/constants'
+import VmSecgroupList from './VmSecgroup'
+import NetworkSecgroupList from './NetSecgroup'
 
 export default {
-  name: 'SecgroupListForVminstanceSidepage',
+  name: 'SecgroupIndex',
   components: {
-    SecgroupList,
+    VmSecgroupList,
+    NetworkSecgroupList,
   },
-  mixins: [WindowsMixin],
   props: {
-    id: String,
-    data: Object,
-    getParams: [Function, Object],
+    resId: String,
+    getParams: {
+      type: [Function, Object],
+    },
+    data: {
+      type: Object,
+      required: true,
+    },
     serverColumns: {
       type: Array,
-      default () {
-        return []
-      },
+      default: () => ([]),
     },
   },
   data () {
-    const that = this
     return {
-      frontGroupActions: function () {
-        return [
-          {
-            label: this.$t('compute.text_1116'),
-            action: () => {
-              this.createDialog('VmSetSecgroupDialog', {
-                vm: this,
-                data: [that.data],
-                columns: that.serverColumns,
-                manager: new that.$Manager('servers'),
-              })
-            },
-          },
-          {
-            label: this.$t('common.remove'),
-            action: () => {
-              this.createDialog('VmSidepageRevokeSecgroupDialog', {
-                detailData: that.data,
-                data: this.list.selectedItems,
-                onManager: this.onManager,
-                refresh: () => {
-                  this.$bus.$emit(SECGROUP_LIST_FOR_VMINSTANCE_SIDEPAGE_REFRESH)
-                },
-              })
-            },
-            meta: () => {
-              const ret = { validate: true }
-              if (!this.list.selectedItems?.length) {
-                ret.validate = false
-                return ret
-              }
-              if (this.list.selectedItems.length === this.list.total) {
-                ret.validate = false
-                ret.tooltip = this.$t('compute.secgroup.remove_secgroup.group_actions.tooltip')
-                return ret
-              }
-              return ret
-            },
-          },
-        ]
-      },
-      customSingleActions: [
-        {
-          label: this.$t('common.remove'),
-          action: (obj) => {
-            this.createDialog('VmSidepageRevokeSecgroupDialog', {
-              detailData: this.data,
-              data: [obj],
-              onManager: this.onManager,
-              refresh: () => {
-                this.$bus.$emit(SECGROUP_LIST_FOR_VMINSTANCE_SIDEPAGE_REFRESH)
-              },
-            })
-          },
-          meta: () => {
-            const ret = { validate: true }
-            if (this.$refs.secgroupList?.list?.total === 1) {
-              ret.validate = false
-              ret.tooltip = this.$t('compute.secgroup.remove_secgroup.single_actions.tooltip')
-              return ret
-            }
-            return ret
-          },
-        },
-      ],
+      currentComponent: 'VmSecgroupList',
     }
   },
-  created () {
-    this.$bus.$on(SECGROUP_LIST_FOR_VMINSTANCE_SIDEPAGE_REFRESH, () => {
-      const secgroupListVm = this.$refs.secgroupList
-      secgroupListVm && secgroupListVm.refresh()
-    })
+  computed: {
+    isKvm () {
+      return this.data.hypervisor === HYPERVISORS_MAP.kvm.key
+    },
+    tabs () {
+      const ret = [
+        {
+          key: 'VmSecgroupList',
+          label: this.$t('dictionary.server'),
+        },
+      ]
+      if (this.isKvm) {
+        ret.push({
+          key: 'NetworkSecgroupList',
+          label: this.$t('compute.nic'),
+        })
+      }
+      return ret
+    },
+    id () {
+      switch (this.currentComponent) {
+        case 'VmSecgroupList':
+          return 'VmSecgroupListForVminstanceSidepage'
+        default:
+          return 'NetworkSecgroupListForVminstanceSidepage'
+      }
+    },
+    params () {
+      const params = {
+        ...this.getParams,
+      }
+      return params
+    },
+  },
+  methods: {
+    callback (key) {
+      this.currentComponent = key
+    },
   },
 }
 </script>

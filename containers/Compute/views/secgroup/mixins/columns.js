@@ -14,6 +14,14 @@ import {
 import i18n from '@/locales'
 
 export default {
+  props: {
+    secgroupType: {
+      type: String,
+      validator (value) {
+        return ['network', 'server'].includes(value)
+      },
+    },
+  },
   created () {
     this.columns = [
       getNameDescriptionTableColumn({
@@ -22,13 +30,15 @@ export default {
         formRules: [
           { required: true, message: i18n.t('compute.text_210') },
         ],
+        edit: this.secgroupType !== 'network',
+        editDesc: this.secgroupType !== 'network',
         slotCallback: row => {
           return (
-            <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
+            <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name || row.secgroup }</side-page-trigger>
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'secgroup', vm: this }),
+      getStatusTableColumn({ statusModule: 'secgroup', vm: this, field: this.secgroupType === 'network' ? 'secgroup_status' : 'status' }),
       getTagTableColumn({ onManager: this.onManager, resource: 'secgroups', columns: () => this.columns }),
       // {
       //   field: 'rules',
@@ -112,7 +122,7 @@ export default {
         width: 80,
         slots: {
           default: ({ row }, h) => {
-            if (row.guest_cnt === undefined) return [<data-loading />]
+            if (row.guest_cnt === undefined && row.guest_nic_cnt === undefined) return [<data-loading />]
             return row.total_cnt || 0
           },
         },
