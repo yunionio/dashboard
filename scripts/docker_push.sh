@@ -36,7 +36,7 @@ REGISTRY=${REGISTRY:-registry.cn-beijing.aliyuncs.com/yunionio}
 TAG=${TAG:-latest}
 
 build_src() {
-    docker run --rm \
+    docker run --network host --rm \
         -v $SRC_DIR:/app \
         -e OEM_VERSION=$OEM_VERSION \
         -e VUE_APP_OEM_VERSION=$VUE_APP_OEM_VERSION \
