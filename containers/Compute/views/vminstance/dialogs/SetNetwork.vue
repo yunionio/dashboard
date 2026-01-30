@@ -18,7 +18,8 @@
           :vpcObj="vpcObj"
           :is-dialog="true"
           :showMacConfig="isKvm"
-          :showDeviceConfig="isKvm" />
+          :showDeviceConfig="isKvm"
+          :showSecgroupConfig="isKvm" />
       </a-form>
       <a-form-item>
         <a-checkbox v-model="syncConfigImmediately">
@@ -166,6 +167,16 @@ export default {
             }],
           },
         ],
+        secgroups: (i, networkData) => [
+          `networkSecgroups[${i}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+            rules: [{
+              required: true,
+              message: this.$t('compute.text_193'),
+            }],
+          },
+        ],
       },
       vpcObj: {
         id: this.params.data[0].vpc_id,
@@ -250,7 +261,7 @@ export default {
       this.loading = true
       try {
         const nets = []
-        const { networks, networkIps, networkMacs, networkIPv6s, networkDevices, networkIpsAddress6, networkIPv6Modes } = await this.form.fc.validateFields()
+        const { networks, networkIps, networkMacs, networkIPv6s, networkDevices, networkIpsAddress6, networkIPv6Modes, networkSecgroups } = await this.form.fc.validateFields()
         if (!networks || R.isEmpty(networks)) {
           this.cancelDialog()
           return false
@@ -286,6 +297,9 @@ export default {
             o.sriov_device = {
               model: networkDevices[key],
             }
+          }
+          if (networkSecgroups && networkSecgroups[key]) {
+            o.secgroups = networkSecgroups[key]
           }
           nets.push(o)
         }

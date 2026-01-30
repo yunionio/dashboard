@@ -4,7 +4,7 @@
     show-tag-filter
     ref="pageList"
     :list="list"
-    :columns="templateListColumns || columns"
+    :columns="[...(templateListColumns || columns), ...extraColumns]"
     :group-actions="groupActions"
     :single-actions="customSingleActions || singleActions"
     :export-data-options="exportDataOptions"
@@ -41,6 +41,10 @@ export default {
         details: true,
       }),
     },
+    secgroupType: {
+      type: String,
+      default: 'default',
+    },
     frontGroupActions: {
       type: Function,
     },
@@ -73,38 +77,37 @@ export default {
       },
     },
     cloudEnv: String,
+    extraColumns: {
+      type: Array,
+      default: () => ([]),
+    },
   },
   data () {
     return {
       list: this.$list.createList(this, {
         ctx: this,
         id: this.id,
-        resource: 'secgroups',
+        idKey: this.secgroupType === 'network' ? 'guest_network' : 'id',
+        resource: this.secgroupType === 'network' ? 'guestnetworksecgroups' : 'secgroups',
         getParams: this.getParam,
         isTemplate: this.isTemplate,
         templateLimit: this.templateLimit,
-        steadyStatus: Object.values(expectStatus.secgroup).flat(),
+        steadyStatus: this.secgroupType === 'network' ? null : Object.values(expectStatus.secgroup).flat(),
         filterOptions: {
           name: getNameFilter(),
           id: {
             label: 'ID',
           },
           description: getDescriptionFilter(),
-          ip: {
-            label: this.$t('compute.text_985'),
-          },
-          ports: {
-            label: this.$t('compute.text_349'),
-          },
           region: getRegionFilter(),
           cloudaccount: getAccountFilter(),
-          brand: getBrandFilter('brands', ['VMware', 'OneCloud']),
+          brand: getBrandFilter('brands'),
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
           created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
-        hiddenColumns: ['created_at'],
+        hiddenColumns: this.hiddenColumns && this.hiddenColumns.length ? this.hiddenColumns : ['created_at'],
       }),
       exportDataOptions,
     }
@@ -274,10 +277,12 @@ export default {
       return ret
     },
     handleOpenSidepage (row, tab) {
+      const params = this.getParam()
+      delete params.server
       this.sidePageTriggerHandle(this, 'SecGroupSidePage', {
-        id: row.id,
+        id: row.id || row.secgroup_id,
         resource: 'secgroups',
-        getParams: this.getParam,
+        getParams: params,
       }, {
         list: this.list,
         hiddenSidepageTabs: this.hiddenSidepageTabs,
