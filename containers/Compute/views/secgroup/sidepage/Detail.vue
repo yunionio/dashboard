@@ -54,9 +54,19 @@ export default {
             if (row.system_guest_cnt && this.$store.getters.isAdminMode) {
               guestList.push(<span> + {row.system_guest_cnt} <help-tooltip name="secgroupSystemGuestCnt" /></span>)
             }
-            return <span><a onClick={ () => this.$emit('tab-change', 'vminstance-list') }>{row.guest_cnt}</a>{...guestList}</span>
+            return <span><a onClick={ () => this.$emit('tab-change', 'associated-instances') }>{row.guest_cnt}</a>{...guestList}</span>
           },
           hidden: () => this.hiddenColumns.includes('guest_cnt'),
+        },
+        {
+          field: 'total_cnt',
+          title: this.$t('compute.associated_instances'),
+          slots: {
+            default: ({ row }) => {
+              return <span><a onClick={ () => this.$emit('tab-change', 'associated-instances') }>{row.total_cnt}</a></span>
+            },
+          },
+          hidden: () => this.hiddenColumns.includes('total_cnt'),
         },
         getRegionTableColumn(),
         getCopyWithContentTableColumn({
