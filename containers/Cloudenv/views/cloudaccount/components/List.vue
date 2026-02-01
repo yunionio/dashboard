@@ -194,7 +194,7 @@ export default {
               },
               {
                 label: this.$t('cloudenv.action.update_credential'),
-                permission: 'cloudaccounts_perform_update_credential',
+                permission: 'cloudaccounts_update',
                 action: () => {
                   this.createDialog('CloudaccountRerunBillDialog', {
                     data: this.list.selectedItems,
