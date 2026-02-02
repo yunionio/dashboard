@@ -1905,5 +1905,6 @@
   "compute.log_info": "日志内容",
   "compute.dmesg_log": "dmesg日志",
   "compute.get_screenshot_error": "获取截图失败",
-  "compute.vnc_panic_screenshot": "VNC 截图"
+  "compute.vnc_panic_screenshot": "VNC 截图",
+  "compute.system_disk_max": "系统盘最大值"
 }
