@@ -11,9 +11,9 @@
 </template>
 
 <script>
-import { chargeTypeColumn } from '../utils'
 import { sizestr } from '@/utils/utils'
 import { getEnabledTableColumn, getRegionTableColumn } from '@/utils/common/tableColumn'
+import { chargeTypeColumn } from '../utils'
 
 export default {
   name: 'SkuDetail',
@@ -43,6 +43,14 @@ export default {
           title: this.$t('compute.text_1059'),
           formatter: ({ cellValue }) => {
             return sizestr(cellValue, 'M', 1024) + 'B'
+          },
+        },
+        {
+          field: 'sys_disk_max_size_gb',
+          title: this.$t('compute.system_disk_max'),
+          formatter: ({ cellValue }) => {
+            if (!cellValue) return this.$t('common_216')
+            return cellValue + 'GB'
           },
         },
         {
