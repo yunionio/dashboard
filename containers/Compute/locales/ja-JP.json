@@ -1905,5 +1905,6 @@
   "compute.log_info": "ログ情報",
   "compute.dmesg_log": "dmesg ログ",
   "compute.get_screenshot_error": "スクリーンショットの取得に失敗しました",
-  "compute.vnc_panic_screenshot": "VNC スクリーンショット"
+  "compute.vnc_panic_screenshot": "VNC スクリーンショット",
+  "compute.system_disk_max": "システムディスク最大値"
 }

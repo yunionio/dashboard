@@ -1903,5 +1903,6 @@
   "compute.log_info": "Log info",
   "compute.dmesg_log": "dmesg log",
   "compute.get_screenshot_error": "Get screenshot failed",
-  "compute.vnc_panic_screenshot": "VNC screenshot"
+  "compute.vnc_panic_screenshot": "VNC screenshot",
+  "compute.system_disk_max": "System disk max size"
 }

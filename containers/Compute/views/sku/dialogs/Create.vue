@@ -10,6 +10,9 @@
         <a-form-item :label="$t('compute.text_1052')" :extra="$t('compute.text_1056')">
           <a-input-number :min="0.5" v-decorator="decorators.memory_size_mb" /> GB
         </a-form-item>
+        <a-form-item :label="$t('compute.system_disk_max')">
+          <a-input-number :min="0" v-decorator="decorators.sys_disk_max_size_gb" /> GB
+        </a-form-item>
         <a-form-item :label="$t('common.description')">
           <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
         </a-form-item>
@@ -46,6 +49,12 @@ export default {
           'memory_size_mb',
           {
             initialValue: 16,
+          },
+        ],
+        sys_disk_max_size_gb: [
+          'sys_disk_max_size_gb',
+          {
+            initialValue: 2048,
           },
         ],
         description: ['description'],
