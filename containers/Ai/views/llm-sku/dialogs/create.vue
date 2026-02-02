@@ -32,8 +32,13 @@
             :params="appImageParams"
             :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.llm_image')]) }" />
         </a-form-item>
-        <a-form-item :label="$t('aice.model_name')">
-          <a-input v-decorator="decorators.llm_model_name" :placeholder="$t('common.tips.input', [$t('aice.model_name')])" />
+        <a-form-item :label="$t('aice.model')">
+          <base-select
+            v-decorator="decorators.mounted_models"
+            resource="llm_instant_models"
+            remote
+            :params="mountedModelParams"
+            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.model')]), mode: 'multiple' }" />
         </a-form-item>
         <a-form-item label="CPU">
           <a-input-number
@@ -114,11 +119,11 @@ export default {
       image_id,
       envs = [],
       llm_image_id,
-      llm_model_name,
       // audio_image_id,
       // stream_image_id,
       devices,
-      mounted_apps,
+      mounted_models = [],
+      mounted_apps = [],
     } = data
     const envVars = envs.map(item => ({ env_key: item.key, env_value: item.value, key: uuid() }))
     return {
@@ -181,12 +186,12 @@ export default {
             ],
           },
         ],
-        llm_model_name: [
-          'llm_model_name',
+        mounted_models: [
+          'mounted_models',
           {
-            initialValue: llm_model_name,
+            initialValue: mounted_models.map(v => v.id),
             rules: [
-              { required: true, message: this.$t('common.tips.input', [this.$t('aice.model_name')]) },
+              { required: true, message: this.$t('common.tips.select', [this.$t('aice.model')]) },
             ],
           },
         ],
@@ -298,6 +303,13 @@ export default {
         label: item.model,
       }))
     },
+    mountedModelParams () {
+      return {
+        limit: 20,
+        scope: this.$store.getters.scope,
+        llm_type: 'ollama',
+      }
+    },
   },
   methods: {
     mounted_apps_mapper (list) {
@@ -330,12 +342,11 @@ export default {
           volume_size,
           llm_image_id,
           llm_type,
-          llm_model_name,
+          mounted_models,
           bandwidth,
           // audio_image_id,
           // stream_image_id,
           device,
-          mounted_apps,
         } = values
 
         const volumes = [{
@@ -362,7 +373,7 @@ export default {
           name,
           llm_image_id,
           llm_type,
-          llm_model_name,
+          mounted_models,
           bandwidth,
           // audio_image_id,
           // stream_image_id,
@@ -375,7 +386,6 @@ export default {
           devices: [
             { model: device },
           ],
-          mounted_apps,
         }
         if (this.params.type === 'edit') {
           if (request_sync_image) {
