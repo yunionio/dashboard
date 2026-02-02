@@ -13,7 +13,6 @@ import {
   getMemoryTableColumn,
   getDiskTableColumn,
   getLlmTypeTableColumn,
-  getLlmModelNameTableColumn,
 } from '../utils/columns'
 
 export default {
@@ -34,10 +33,9 @@ export default {
       getCpuTableColumn(),
       getMemoryTableColumn(),
       getDiskTableColumn(),
-      getImageTableColumn(),
+      getImageTableColumn({ vm: this }),
       getBandwidthTableColumn(),
       getLlmTypeTableColumn(),
-      getLlmModelNameTableColumn(),
       getProjectTableColumn(),
       getPublicScopeTableColumn({
         vm: this,
