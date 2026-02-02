@@ -119,8 +119,8 @@ export default {
                   const mounted_apps = row.mounted_models
                   if (mounted_apps?.length) {
                     return mounted_apps.map((item, idx) => {
-                      return <list-body-cell-wrap copy hideField={true} field='mounted_models' row={row} message={item.fullname}>
-                        <side-page-trigger permission='llm_instant_models_get' name='InstantAppSidePage' id={item.id} vm={this}>{item.fullname}</side-page-trigger>
+                      return <list-body-cell-wrap copy hideField={true} field='mounted_models' row={item} message={item.fullname}>
+                        <side-page-trigger permission='llm_instant_models_get' name='LlmInstantModelSidePage' id={item.id} vm={this}>{item.fullname}</side-page-trigger>
                       </list-body-cell-wrap>
                     })
                   }

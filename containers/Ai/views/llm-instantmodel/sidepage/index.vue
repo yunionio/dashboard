@@ -39,7 +39,7 @@ import ColumnsMixin from '../mixins/columns'
 import Detail from './Detail'
 
 export default {
-  name: 'InstantAppSidePage',
+  name: 'LlmInstantModelSidePage',
   components: {
     Detail,
     CacheList,
