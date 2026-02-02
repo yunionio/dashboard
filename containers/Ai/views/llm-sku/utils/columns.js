@@ -51,13 +51,22 @@ export const getEnvsTableColumn = () => {
   }
 }
 
-export const getImageTableColumn = () => {
+export const getImageTableColumn = ({ vm = {} } = {}) => {
   return {
     field: 'image',
     title: i18n.t('aice.image'),
     width: 180,
     formatter: ({ row }) => {
       return row.image || '-'
+    },
+    slots: {
+      default: ({ row }, h) => {
+        return [
+          <list-body-cell-wrap copy hideField={true} field='image' row={row} message={row.image}>
+            <side-page-trigger permission='llm_images_get' name='LlmImageSidePage' id={row.llm_image_id} vm={vm}>{row.image}</side-page-trigger>
+          </list-body-cell-wrap>,
+        ]
+      },
     },
   }
 }
@@ -124,12 +133,31 @@ export const getLlmTypeTableColumn = () => {
   }
 }
 
-export const getLlmModelNameTableColumn = () => {
+export const getLlmModelNameTableColumn = ({ vm = {} } = {}) => {
   return {
-    field: 'llm_model_name',
-    title: i18n.t('aice.model_name'),
+    field: 'mounted_models',
+    title: i18n.t('aice.model'),
     formatter: ({ row }) => {
-      return row.llm_model_name || '-'
+      if (row.mounted_model_details && row.mounted_model_details.length) {
+        return row.mounted_model_details.map(v => v.fullname).join(',')
+      }
+      return '-'
+    },
+    slots: {
+      default: ({ row }, h) => {
+        if (row.mounted_model_details && row.mounted_model_details.length) {
+          const ret = []
+          row.mounted_model_details.forEach(v => {
+            ret.push(
+              <list-body-cell-wrap copy hideField={true} field='id' row={v} message={v.fullname}>
+                <side-page-trigger permission='llm_instant_models_get' name='LlmInstantModelSidePage' id={v.id} vm={vm}>{v.fullname}</side-page-trigger>
+              </list-body-cell-wrap>,
+            )
+          })
+          return ret
+        }
+        return '-'
+      },
     },
   }
 }

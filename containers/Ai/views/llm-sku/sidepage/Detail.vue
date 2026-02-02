@@ -38,10 +38,10 @@ export default {
     return {
       baseInfo: [
         getDeviceModelTableColumn(),
-        getImageTableColumn(),
+        getImageTableColumn({ vm: this }),
         getBandwidthTableColumn(),
         getLlmTypeTableColumn(),
-        getLlmModelNameTableColumn(),
+        getLlmModelNameTableColumn({ vm: this }),
         getCpuTableColumn(),
         getMemoryTableColumn(),
         getDiskTableColumn(),
