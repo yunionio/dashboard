@@ -179,7 +179,7 @@ export default {
       return ret
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'InstantAppSidePage', {
+      this.sidePageTriggerHandle(this, 'LlmInstantModelSidePage', {
         id: row.id,
         resource: 'llm_instant_models',
         getParams: this.getParam,
