@@ -1983,5 +1983,6 @@
   "compute.network_index": "Network index",
   "compute.nic_secgroups": "Nic secgroups",
   "compute.secgroup.remove_secgroup.group_actions.same_network_index_tooltip": "Please select the same network index secgroup",
-  "compute.nic_secgroups_tips": "The network card without bound security groups will use the security group of the virtual machine"
+  "compute.nic_secgroups_tips": "The network card without bound security groups will use the security group of the virtual machine",
+  "compute.system_disk_max": "System disk max size"
 }
