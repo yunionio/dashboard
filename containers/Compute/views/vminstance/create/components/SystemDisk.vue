@@ -173,6 +173,11 @@ export default {
       }
       return Math.ceil(minSize)
     },
+    kvmSkuSysMaxDisk () {
+      if (this.form.fd.hypervisor !== HYPERVISORS_MAP.kvm.key) return 0
+      if (!this.sku) return 0
+      return this.sku.sys_disk_max_size_gb || 0
+    },
     elements () {
       const ret = ['disk-select']
       if (this.isIDC) {
@@ -318,6 +323,9 @@ export default {
       return currentDisk
     },
     max () {
+      if (this.kvmSkuSysMaxDisk && this.kvmSkuSysMaxDisk > this.min) {
+        return this.kvmSkuSysMaxDisk
+      }
       if (!this.currentDiskCapability?.max_size_gb) {
         return this.currentTypeObj.sysMax || this.defaultSize
       }

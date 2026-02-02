@@ -1985,5 +1985,6 @@
   "compute.network_index": "网卡顺序",
   "compute.nic_secgroups": "网卡安全组",
   "compute.secgroup.remove_secgroup.group_actions.same_network_index_tooltip": "请选择同一网卡顺序的安全组",
-  "compute.nic_secgroups_tips": "未绑定安全组的网卡将沿用虚拟机的安全组"
+  "compute.nic_secgroups_tips": "未绑定安全组的网卡将沿用虚拟机的安全组",
+  "compute.system_disk_max": "系统盘最大值"
 }
