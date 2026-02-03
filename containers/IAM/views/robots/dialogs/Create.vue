@@ -42,6 +42,9 @@
           <a-form-item label="msg_key">
             <a-input v-decorator="decorators.msg_key" />
           </a-form-item>
+          <a-form-item label="secret_key">
+            <a-input v-decorator="decorators.secret_key" />
+          </a-form-item>
         </template>
       </a-form>
     </div>
@@ -69,7 +72,7 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const { name, domain_id, tenant_id, address, type, header, body, msg_key } = this.params.data || {}
+    const { name, domain_id, tenant_id, address, type, header, body, msg_key, secret_key } = this.params.data || {}
     const { projectDomainId, projectId } = this.$store.getters.userInfo
     const initType = type || 'dingtalk'
 
@@ -158,6 +161,12 @@ export default {
           'msg_key',
           {
             initialValue: msg_key || '',
+          },
+        ],
+        secret_key: [
+          'secret_key',
+          {
+            initialValue: secret_key || '',
           },
         ],
       },
