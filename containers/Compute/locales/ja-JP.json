@@ -1906,5 +1906,10 @@
   "compute.dmesg_log": "dmesg ログ",
   "compute.get_screenshot_error": "スクリーンショットの取得に失敗しました",
   "compute.vnc_panic_screenshot": "VNC スクリーンショット",
-  "compute.system_disk_max": "システムディスク最大値"
+  "compute.system_disk_max": "システムディスク最大値",
+  "compute.set_nic_num_queue": "NICキュー数の設定",
+  "compute.set_nic_num_queue.validate_error": "NIC {0} のキュー数は1以上の整数である必要があります",
+  "compute.set_nic_num_queue.no_changes": "更新が必要なNICはありません",
+  "compute.set_nic_num_queue.update_partial_failed": "一部のNICの更新に失敗しました ({0}/{1})",
+  "compute.set_nic_num_queue.update_failed": "NICキュー数の更新に失敗しました"
 }

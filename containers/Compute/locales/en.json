@@ -1904,5 +1904,10 @@
   "compute.dmesg_log": "dmesg log",
   "compute.get_screenshot_error": "Get screenshot failed",
   "compute.vnc_panic_screenshot": "VNC screenshot",
-  "compute.system_disk_max": "System disk max size"
+  "compute.system_disk_max": "System disk max size",
+  "compute.set_nic_num_queue": "Set NIC Queue Number",
+  "compute.set_nic_num_queue.validate_error": "NIC {0} queue number must be an integer greater than or equal to 1",
+  "compute.set_nic_num_queue.no_changes": "No NICs need to be updated",
+  "compute.set_nic_num_queue.update_partial_failed": "Failed to update some NICs ({0}/{1})",
+  "compute.set_nic_num_queue.update_failed": "Failed to update NIC queue numbers"
 }
