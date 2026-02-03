@@ -1985,5 +1985,10 @@
   "compute.network_index": "网卡顺序",
   "compute.nic_secgroups": "网卡安全组",
   "compute.secgroup.remove_secgroup.group_actions.same_network_index_tooltip": "请选择同一网卡顺序的安全组",
-  "compute.nic_secgroups_tips": "未绑定安全组的网卡将沿用虚拟机的安全组"
+  "compute.nic_secgroups_tips": "未绑定安全组的网卡将沿用虚拟机的安全组",
+  "compute.set_nic_num_queue": "设置网卡队列数",
+  "compute.set_nic_num_queue.validate_error": "网卡 {0} 的队列数必须是不小于1的整数",
+  "compute.set_nic_num_queue.no_changes": "没有需要更新的网卡",
+  "compute.set_nic_num_queue.update_partial_failed": "部分网卡更新失败 ({0}/{1})",
+  "compute.set_nic_num_queue.update_failed": "更新网卡队列数失败"
 }
