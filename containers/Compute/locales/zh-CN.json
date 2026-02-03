@@ -1906,5 +1906,10 @@
   "compute.dmesg_log": "dmesg日志",
   "compute.get_screenshot_error": "获取截图失败",
   "compute.vnc_panic_screenshot": "VNC 截图",
-  "compute.system_disk_max": "系统盘最大值"
+  "compute.system_disk_max": "系统盘最大值",
+  "compute.set_nic_num_queue": "设置网卡队列数",
+  "compute.set_nic_num_queue.validate_error": "网卡 {0} 的队列数必须是不小于1的整数",
+  "compute.set_nic_num_queue.no_changes": "没有需要更新的网卡",
+  "compute.set_nic_num_queue.update_partial_failed": "部分网卡更新失败 ({0}/{1})",
+  "compute.set_nic_num_queue.update_failed": "更新网卡队列数失败"
 }
