@@ -1983,5 +1983,10 @@
   "compute.network_index": "Network index",
   "compute.nic_secgroups": "Nic secgroups",
   "compute.secgroup.remove_secgroup.group_actions.same_network_index_tooltip": "Please select the same network index secgroup",
-  "compute.nic_secgroups_tips": "The network card without bound security groups will use the security group of the virtual machine"
+  "compute.nic_secgroups_tips": "The network card without bound security groups will use the security group of the virtual machine",
+  "compute.set_nic_num_queue": "Set NIC Queue Number",
+  "compute.set_nic_num_queue.validate_error": "NIC {0} queue number must be an integer greater than or equal to 1",
+  "compute.set_nic_num_queue.no_changes": "No NICs need to be updated",
+  "compute.set_nic_num_queue.update_partial_failed": "Failed to update some NICs ({0}/{1})",
+  "compute.set_nic_num_queue.update_failed": "Failed to update NIC queue numbers"
 }
