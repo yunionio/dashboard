@@ -1471,6 +1471,7 @@
   "compute.sku.setup.sell.status": "販売状態の設定",
   "compute.sku.prepaid_status": "年間および月間サブスクリプション",
   "compute.sku.postpaid_status": "従量課金制",
+  "compute.sku.name_repeated_in_zone": "現在のゾーンで同名のSKUが存在します",
   "compute.transfer_host": "条件を満たすホストがありません(ホストが同じレイヤ2ネットワークに属している必要があり、ステータスが正常です)、ホストを確認するか、上記の条件を変更して再試行してください!",
   "compute.host_access_ip": "ホストが IP にアクセスする",
   "compute.shutdown_stop_paying": "シャットダウンは無料です",
