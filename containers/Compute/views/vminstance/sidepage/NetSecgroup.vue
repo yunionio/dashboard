@@ -45,17 +45,6 @@ export default {
       frontGroupActions: function () {
         return [
           {
-            label: this.$t('compute.text_1116'),
-            action: () => {
-              this.createDialog('VmSetNetworkSecgroupDialog', {
-                vm: this,
-                data: [that.data],
-                columns: that.serverColumns,
-                manager: new that.$Manager('servers'),
-              })
-            },
-          },
-          {
             label: this.$t('common.remove'),
             action: () => {
               const nics = that.data.nics || []

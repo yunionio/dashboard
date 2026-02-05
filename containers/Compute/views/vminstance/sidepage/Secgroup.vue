@@ -1,21 +1,9 @@
 <template>
   <div>
-    <a-tabs :defaultActiveKey="currentComponent" @change="callback" :animated="false">
-      <template v-for="obj of tabs">
-        <a-tab-pane :tab="obj.label" :key="obj.key" />
-      </template>
-    </a-tabs>
-    <div class="mt-2">
-      <keep-alive>
-        <component
-          :is="currentComponent"
-          :getParams="params"
-          :id="id"
-          :resId="resId"
-          :serverColumns="serverColumns"
-          :data="data" />
-      </keep-alive>
-    </div>
+    <h5 v-if="isKvm">{{ $t('dictionary.guestsecgroup') }}</h5>
+    <vm-secgroup-list :getParams="params" :id="id" :resId="resId" :serverColumns="serverColumns" :data="data" />
+    <h5 class="mt-2" v-if="isKvm">{{ $t('compute.nic_secgroups') }}</h5>
+    <network-secgroup-list v-if="isKvm" :getParams="params" :id="id" :resId="resId" :data="data" />
   </div>
 </template>
 

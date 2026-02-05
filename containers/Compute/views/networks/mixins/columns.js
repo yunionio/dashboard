@@ -2,6 +2,12 @@ import { getCopyWithContentTableColumn, getTimeTableColumn, getStatusTableColumn
 import i18n from '@/locales'
 
 export default {
+  props: {
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   created () {
     this.columns = [
       {
@@ -164,6 +170,25 @@ export default {
         },
       },
       getTimeTableColumn(),
+      {
+        field: 'secgroups',
+        title: i18n.t('compute.text_105'),
+        slots: {
+          default: ({ row }) => {
+            const target = (this.data.network_secgroups || []).filter(item => item.mac === row.mac_addr)
+            console.log(target)
+            return target.length ? target[0].secgroups.map(item => {
+              return <list-body-cell-wrap copy hideField={true} field='name' row={item} message={item.name}>
+                <side-page-trigger permission='secgroups_get' name='SecGroupSidePage' id={item.id} vm={this} tab='secgroup-detail'>{ item.name }</side-page-trigger>
+              </list-body-cell-wrap>
+            }) : '-'
+          },
+        },
+        formatter: ({ row }) => {
+          const target = (this.data.network_secgroups || []).filter(item => item.mac === row.mac_addr)
+          return target.length ? target[0].secgroups.map(item => item.name).join(',') : '-'
+        },
+      },
     ]
   },
   methods: {
