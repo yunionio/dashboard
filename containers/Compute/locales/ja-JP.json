@@ -1987,6 +1987,7 @@
   "compute.nic_secgroups": "ネットワークセキュリティグループ",
   "compute.secgroup.remove_secgroup.group_actions.same_network_index_tooltip": "同一ネットワークインデックスのセキュリティグループを選択してください",
   "compute.nic_secgroups_tips": "未バインドのセキュリティグループのネットワークカードは、仮想マシンのセキュリティグループを使用します",
+  "compute.nic_empty_secgroups_tip": "ネットワークカードが選択されていない場合、セキュリティグループは仮想マシンにバインドされます",
   "compute.system_disk_max": "システムディスク最大値",
   "compute.set_nic_num_queue": "NICキュー数の設定",
   "compute.set_nic_num_queue.validate_error": "NIC {0} のキュー数は1以上の整数である必要があります",
