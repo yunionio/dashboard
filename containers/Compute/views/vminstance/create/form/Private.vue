@@ -443,7 +443,7 @@ export default {
           }
           this.form.fi.capability = {
             ...data,
-            hypervisors: data.hypervisors.filter(val => val !== 'baremetal'),
+            hypervisors: data.hypervisors.filter(val => val !== 'baremetal' && val !== 'pod'),
           }
           this.form.fc.getFieldDecorator('hypervisor', { preserve: true })
           this.form.fc.setFieldsValue({
