@@ -1985,6 +1985,7 @@
   "compute.nic_secgroups": "Nic secgroups",
   "compute.secgroup.remove_secgroup.group_actions.same_network_index_tooltip": "Please select the same network index secgroup",
   "compute.nic_secgroups_tips": "The network card without bound security groups will use the security group of the virtual machine",
+  "compute.nic_empty_secgroups_tip": "When the network card is not selected, the security group will be bound to the virtual machine",
   "compute.system_disk_max": "System disk max size",
   "compute.set_nic_num_queue": "Set NIC Queue Number",
   "compute.set_nic_num_queue.validate_error": "NIC {0} queue number must be an integer greater than or equal to 1",

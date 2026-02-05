@@ -42,21 +42,54 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        const secgroup_ids = this.params.data.map(item => this.params.secgroupType === 'network' ? item.secgroup_id : item.id)
-        const data = this.params.secgroupType === 'network' ? {
-          network_index: this.params.data[0].network_index,
-          guest: this.params.data[0].guest_id,
-          secgroup_ids: [this.params.data[0].secgroup_id],
-        } : {
-          mac: this.params.mac,
-          secgroup_ids,
-        }
         const manager = new this.$Manager('servers')
-        await manager.performAction({
-          id: this.params.secgroupType === 'network' ? this.params.data[0].guest_id : this.params.detailData.id,
-          action: 'revoke-network-secgroup',
-          data,
-        })
+        if (this.params.secgroupType === 'network') {
+          // network 类型：params.data 可能来自多台 VM / 多张网卡，这里按 guest_id + network_index 分组批量 revoke
+          const grouped = {}
+          ;(this.params.data || []).forEach((row) => {
+            const guestId = row.guest_id
+            const networkIndex = row.network_index
+            const secgroupId = row.secgroup_id
+            if (!guestId || (networkIndex === undefined || networkIndex === null) || !secgroupId) return
+            const key = `${guestId}::${networkIndex}`
+            if (!grouped[key]) {
+              grouped[key] = {
+                guestId,
+                networkIndex,
+                secgroup_ids: [],
+              }
+            }
+            grouped[key].secgroup_ids.push(secgroupId)
+          })
+          const reqs = Object.values(grouped).map((g) => {
+            return manager.performAction({
+              id: g.guestId,
+              action: 'revoke-network-secgroup',
+              data: {
+                network_index: g.networkIndex,
+                guest: g.guestId,
+                secgroup_ids: g.secgroup_ids,
+              },
+            })
+          })
+          const results = await Promise.allSettled(reqs)
+          const failed = results.filter(r => r.status === 'rejected')
+          if (failed.length) {
+            const msg = failed[0]?.reason?.message || this.$t('common.text_110') || 'error'
+            throw new Error(msg)
+          }
+        } else {
+          // 非 network 类型：一次请求即可
+          const secgroup_ids = (this.params.data || []).map(item => item.id)
+          await manager.performAction({
+            id: this.params.detailData.id,
+            action: 'revoke-network-secgroup',
+            data: {
+              mac: this.params.mac,
+              secgroup_ids,
+            },
+          })
+        }
         this.params.refresh && this.params.refresh()
         this.cancelDialog()
         this.$message.success(this.$t('compute.text_1021'))
