@@ -890,11 +890,38 @@ export const getBillingTypeTableColumn = ({ field = 'billing_type', title = i18n
     slots: {
       default: ({ row }, h) => {
         const ret = []
-        if (row[field] === 'postpaid') {
-          ret.push(<div style={{ color: '#0A1F44' }}>{i18n.t('billingType.postpaid')}</div>)
-        } else if (row[field] === 'prepaid') {
-          ret.push(<div style={{ color: '#0A1F44' }}>{i18n.t('billingType.prepaid')}</div>)
+        const billingText = (row) => {
+          if (row.charge_type) {
+            if (row[field] === 'postpaid' && row.charge_type === 'traffic') {
+              return i18n.t('billingType.postpaid_traffic')
+            } else if (row[field] === 'postpaid' && row.charge_type === 'bandwidth') {
+              return i18n.t('billingType.postpaid_bandwidth')
+            } else if (row[field] === 'prepaid' && row.charge_type === 'traffic') {
+              return i18n.t('billingType.prepaid_traffic')
+            } else if (row[field] === 'prepaid' && row.charge_type === 'bandwidth') {
+              return i18n.t('billingType.prepaid_bandwidth')
+            } else {
+              if (row[field] && row.charge_type) {
+                return `${row[field]}/${row.charge_type}`
+              } else if (row[field]) {
+                return row[field]
+              } else if (row.charge_type) {
+                return row.charge_type
+              } else {
+                return ''
+              }
+            }
+          } else {
+            if (row[field] === 'postpaid') {
+              return i18n.t('billingType.postpaid')
+            } else if (row[field] === 'prepaid') {
+              return i18n.t('billingType.prepaid')
+            } else {
+              return row[field]
+            }
+          }
         }
+        ret.push(<div style={{ color: '#0A1F44' }}>{billingText(row)}</div>)
         if (row.expired_at) {
           const dateArr = moment(row.expired_at).fromNow().split(' ')
           const date = dateArr.join(' ')
