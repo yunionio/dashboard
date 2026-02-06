@@ -2222,6 +2222,10 @@
     "amortized": "パケットサイクルの割り当て",
     "postpaid": "従量課金制",
     "prepaid": "年間および月間サブスクリプション",
+    "prepaid_traffic": "事前に購入した流量パック",
+    "postpaid_traffic": "使用流量計費",
+    "prepaid_bandwidth": "事前に購入した帯域幅パック",
+    "postpaid_bandwidth": "使用帯域幅計費",
     "syncpolicy": "費用負担なし",
     "default": "プロジェクト前のコスト",
     "sharing": "プロジェクト配賦原価"
