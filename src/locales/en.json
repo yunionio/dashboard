@@ -2208,6 +2208,10 @@
     "amortized": "Prepaid amortized",
     "postpaid": "Postpaid",
     "prepaid": "Prepaid",
+    "prepaid_traffic": "Prepaid traffic package",
+    "postpaid_traffic": "On-demand traffic",
+    "prepaid_bandwidth": "Prepaid bandwidth",
+    "postpaid_bandwidth": "On-demand bandwidth",
     "syncpolicy": "No cost sharing",
     "default": "Cost before project allocation",
     "sharing": "Cost after project allocation"
