@@ -2229,6 +2229,10 @@
     "amortized": "包周期分摊",
     "postpaid": "按量付费",
     "prepaid": "包年包月",
+    "prepaid_traffic": "按预留流量包计费",
+    "postpaid_traffic": "按使用流量计费",
+    "prepaid_bandwidth": "按预留带宽计费",
+    "postpaid_bandwidth": "按使用带宽计费",
     "syncpolicy": "不分摊费用",
     "default": "项目分摊前费用",
     "sharing": "项目分摊后费用"
