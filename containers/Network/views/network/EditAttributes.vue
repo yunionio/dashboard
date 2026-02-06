@@ -62,7 +62,7 @@
         </a-form-item>
         <a-collapse :bordered="false" :active-key="getDefaultActiveKey">
           <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
-            <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="server_type === 'eip'">
+            <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="hasBgpType">
               <a-input v-decorator="decorators.bgp_type" />
               <span slot="extra">{{$t('network.text_744')}}</span>
             </a-form-item>
@@ -295,10 +295,11 @@ export default {
       serverTypeOpts: [
         { label: this.$t('network.text_226'), key: 'guest' },
         { label: this.$t('network.text_598'), key: 'baremetal' },
-        { label: this.$t('network.text_599'), key: 'container' },
+        // { label: this.$t('network.text_599'), key: 'container' },
         { label: 'PXE', key: 'pxe' },
         { label: 'IPMI', key: 'ipmi' },
         { label: this.$t('network.text_221'), key: 'eip' },
+        { label: this.$t('network.server_type.hostlocal.text'), key: 'hostlocal' },
       ],
       allocPolicyoptions: [
         { label: this.$t('network.text_600'), key: 'none' },
@@ -350,6 +351,9 @@ export default {
       } else {
         return '1' // show
       }
+    },
+    hasBgpType () {
+      return this.server_type === 'eip' || this.server_type === 'guest' || this.server_type === 'baremetal' || this.server_type === 'hostlocal'
     },
   },
   provide () {
