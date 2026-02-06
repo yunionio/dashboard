@@ -119,7 +119,7 @@
         </a-form-item>
         <a-collapse :bordered="false" v-if="isShowAdvanceOptions">
           <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
-            <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="form.fd.server_type === 'eip'">
+            <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="hasBgpType">
               <a-input v-decorator="decorators.bgp_type" />
               <span slot="extra">{{$t('network.text_744')}}</span>
             </a-form-item>
@@ -640,6 +640,9 @@ export default {
         cidrs.push(this.curVpc.cidr_block6)
       }
       return cidrs.join(', ')
+    },
+    hasBgpType () {
+      return this.form.fd.server_type === 'eip' || this.form.fd.server_type === 'guest' || this.form.fd.server_type === 'baremetal' || this.form.fd.server_type === 'hostlocal'
     },
   },
   provide () {

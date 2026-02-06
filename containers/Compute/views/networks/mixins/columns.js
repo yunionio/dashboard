@@ -1,5 +1,5 @@
-import { getCopyWithContentTableColumn, getTimeTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import { getCopyWithContentTableColumn, getTimeTableColumn, getStatusTableColumn, getBillingTypeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -120,6 +120,7 @@ export default {
         //   },
         // },
       },
+      getBillingTypeTableColumn(),
       {
         field: 'num_queues',
         title: i18n.t('compute.num_queues'),
