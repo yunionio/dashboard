@@ -15,6 +15,19 @@ export const getBandwidthTableColumn = () => {
   }
 }
 
+export const getMTUTableColumn = () => {
+  return {
+    field: 'mtu',
+    title: 'MTU',
+    minWidth: 50,
+    sortable: true,
+    showOverflow: 'ellipsis',
+    formatter: ({ row }) => {
+      return row.mtu || '-'
+    },
+  }
+}
+
 export const getHostsTableColumn = () => {
   return {
     field: 'hosts',
