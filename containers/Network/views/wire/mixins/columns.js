@@ -10,7 +10,7 @@ import {
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
-import { getBandwidthTableColumn } from '../utils/columns'
+import { getBandwidthTableColumn, getMTUTableColumn } from '../utils/columns'
 
 export default {
   created () {
@@ -27,6 +27,7 @@ export default {
       getStatusTableColumn({ statusModule: 'wire', vm: this }),
       getTagTableColumn({ onManager: this.onManager, resource: 'wires', columns: () => this.columns }),
       getBandwidthTableColumn(),
+      getMTUTableColumn(),
       getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC', sortable: true }),
       {
         field: 'networks',

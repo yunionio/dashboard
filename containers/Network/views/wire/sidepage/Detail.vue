@@ -14,7 +14,7 @@ import {
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
 import WindowsMixin from '@/mixins/windows'
-import { getBandwidthTableColumn } from '../utils/columns'
+import { getBandwidthTableColumn, getMTUTableColumn } from '../utils/columns'
 
 export default {
   name: 'WireDetail',
@@ -79,6 +79,7 @@ export default {
         getPublicScopeTableColumn({ vm: this, resource: 'wires' }),
         getBrandTableColumn(),
         getBandwidthTableColumn(),
+        getMTUTableColumn(),
         getCopyWithContentTableColumn({
           field: 'vpc',
           title: 'VPC',
