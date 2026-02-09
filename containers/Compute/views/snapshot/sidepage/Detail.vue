@@ -50,6 +50,13 @@ export default {
           },
         },
         {
+          field: 'virtual_size',
+          title: this.$t('compute.disk_size'),
+          formatter: ({ cellValue, row }) => {
+            return sizestr(cellValue, 'M', 1024)
+          },
+        },
+        {
           field: 'created_by',
           title: this.$t('compute.text_1070'),
           formatter: ({ cellValue }) => {
