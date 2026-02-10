@@ -248,7 +248,14 @@ export default {
       return this.time === 'custom'
     },
     timeGroupOpts () {
-      return this.isCustom ? this.customTimeGroupOpts : this.timeOpts[this.time || '1h'].timeGroupOpts
+      if (this.isCustom) {
+        return this.customTimeGroupOpts
+      }
+      if (this.timeOpts[this.time]) {
+        return this.timeOpts[this.time].timeGroupOpts
+      } else {
+        return this.timeOpts[`${1}h`].timeGroupOpts
+      }
     },
   },
   watch: {
