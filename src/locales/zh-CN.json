@@ -3054,7 +3054,7 @@
     "global_topology": "全局拓扑",
     "k8s": "K8S",
     "server_container": "容器主机",
-    "pre_defined_tag": "预制标签"
+    "pre_defined_tag": "预置标签"
   },
   "originDictionary": {},
   "res": {
