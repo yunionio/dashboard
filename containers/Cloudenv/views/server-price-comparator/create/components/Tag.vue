@@ -17,7 +17,19 @@
     <a-form-item :extra="$t('compute.text_1146')" class="mt-2">
       <div class="d-flex">
         <div style="line-height: 40px;">
-          <tag-select global v-model="checked" :params="params" :button-text="$t('compute.text_1147')" :defaultChecked="defaultChecked" />
+          <tag-select
+            global
+            v-model="checked"
+            :params="params"
+            :button-text="$t('compute.text_1147')"
+            :defaultChecked="defaultChecked" />
+          <pre-defined-tag-select
+            v-if="showPreDefinedTagSelect"
+            global
+            v-model="checked"
+            :params="params"
+            :defaultChecked="defaultChecked"
+            :allowNoValue="false" />
           <a-button class="ml-2" v-if="!showForm" @click="() => showForm = true">{{$t('compute.text_1382')}}</a-button>
         </div>
         <a-form
@@ -45,11 +57,15 @@
 import * as R from 'ramda'
 import { getTagColor, getTagTitle } from '@/utils/common/tag'
 import TagSelect from '@/sections/TagSelect'
+import PreDefinedTagSelect from '@/sections/TagSelectPreDefined'
+import { isCE } from '@/utils/utils'
+import { hasPermission } from '@/utils/auth'
 
 export default {
   name: 'Tag',
   components: {
     TagSelect,
+    PreDefinedTagSelect,
   },
   props: {
     defaultChecked: {
@@ -84,6 +100,9 @@ export default {
     }
   },
   computed: {
+    showPreDefinedTagSelect () {
+      return !isCE() && !this.$store.getters.isSysCE && hasPermission('tags_list')
+    },
     params () {
       return {
         resources: 'server',
