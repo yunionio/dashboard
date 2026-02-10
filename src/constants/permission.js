@@ -1561,6 +1561,12 @@ export const PERMISSION = {
   mcp_agents_update: ['llm', 'mcp_agents', 'update'],
   mcp_agents_delete: ['llm', 'mcp_agents', 'delete'],
 
+  tags_list: ['yunionconf', 'tags', 'list'],
+  tags_create: ['yunionconf', 'tags', 'create'],
+  tags_update: ['yunionconf', 'tags', 'update'],
+  tags_delete: ['yunionconf', 'tags', 'delete'],
+  tags_perform_set_public: ['yunionconf', 'tags', 'perform', 'set-public'],
+
   ...extraPermissions,
 }
 
