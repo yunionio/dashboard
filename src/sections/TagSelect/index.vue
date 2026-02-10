@@ -21,12 +21,17 @@
             <div class="val-search" style="flex: 1 1 auto;">
               <input class="w-100" :placeholder="$t('common_264')" :style="{fontSize: '12px'}" :value="tagSearch" @input="handleSearchTag" @compositionstart="composingTag = true" @compositionend="composingTag = false" />
             </div>
+            <a-button
+              v-if="showSelectAll"
+              style="padding-right: 0"
+              type="link"
+              @click="handleToggleSelectAll">{{ selectAllButtonText }}</a-button>
           </li>
         </ul>
-        <ul class="tag-list" v-if="filterWithoutUserMeta">
+        <ul class="tag-list" v-if="filterWithoutUserMeta && !isUpdate">
           <li
             class="tag-item"
-            :class="{ checked: checkedKeys.includes(withoutUserMetaKey) && value[withoutUserMetaKey][0] === true, no_drop: !allowNoValue }"
+            :class="{ checked: checkedKeys.includes(withoutUserMetaKey) && value[withoutUserMetaKey][0] === true, no_drop: !allowNoValue && !allowSelectAllValue }"
             @mouseenter="handleKeyMouseenter(null)"
             @click="handleKeyClick(withoutUserMetaKey, true)">
             <div class="title d-flex align-items-center">
@@ -35,7 +40,7 @@
             </div>
           </li>
         </ul>
-        <ul class="tag-list" v-if="filterWithUserMeta">
+        <ul class="tag-list" v-if="filterWithUserMeta && !isUpdate">
           <li
             class="tag-item"
             :class="{ checked: checkedKeys.includes(withUserMetaKey) && value[withUserMetaKey][0] === true, no_drop: !allowNoValue }"
@@ -57,7 +62,7 @@
               class="tag-item"
               v-for="item of filtedUserTags"
               :key="item.key"
-              :class="{checked: checkedKeys.includes(item.key), disabled: getTagDisabled(item.key), no_drop: !allowNoValue}"
+              :class="{checked: checkedKeys.includes(item.key), disabled: getTagDisabled(item.key), no_drop: !allowNoValue && !allowSelectAllValue}"
               @mouseenter="handleKeyMouseenter('userTags', item.key, $event)"
               @click="handleKeyClick(item.key)">
               <div class="title d-flex align-items-center">
@@ -67,13 +72,13 @@
             </li>
           </template>
         </ul>
-        <ul class="tag-list" v-if="showExtTags && extTags.length > 0">
+        <ul class="tag-list" v-if="showExtTags && extTags.length > 0 && !isUpdate">
           <li class="tag-tip">{{$t('common_262')}}</li>
           <li
             class="tag-item"
             v-for="item of filtedExtTags"
             :key="item.key"
-            :class="{checked: checkedKeys.includes(item.key), disabled: getTagDisabled(item.key), no_drop: !allowNoValue}"
+            :class="{checked: checkedKeys.includes(item.key), disabled: getTagDisabled(item.key), no_drop: !allowNoValue && !allowSelectAllValue}"
             @mouseenter="handleKeyMouseenter('extTags', item.key, $event)"
             @click="handleKeyClick(item.key)">
             <div class="title d-flex align-items-center">
@@ -192,6 +197,12 @@ export default {
       type: Boolean,
       default: true,
     },
+    // 是否展示全选按钮
+    showSelectAll: Boolean,
+    // 是否允许选择key时,选择所有value
+    allowSelectAllValue: Boolean,
+    // 更新模式,只允许固定key,和value
+    isUpdate: Boolean,
     withoutTagKey: {
       type: String,
       default: 'without_user_meta',
@@ -241,6 +252,13 @@ export default {
     ...mapGetters(['scope']),
     checkedKeys () {
       return Object.keys(this.value)
+    },
+    selectAllButtonText () {
+      // 无选中：全选；有选中：取消全选
+      if (this.checkedKeys.length > 0) {
+        return this.$t('report.deselect_all') || '取消全选'
+      }
+      return this.$t('system.text_320')
     },
     getParams () {
       let ret = {
@@ -314,6 +332,52 @@ export default {
     this.searchTagRequestId = 0
   },
   methods: {
+    getSelectableKeys () {
+      const keys = []
+      if (this.filterWithoutUserMeta) keys.push(this.withoutUserMetaKey)
+      if (this.filterWithUserMeta) keys.push(this.withUserMetaKey)
+      if (this.showUserTags && this.filtedUserTags && this.filtedUserTags.length) {
+        keys.push(...this.filtedUserTags.map(i => i.key))
+      }
+      if (this.showExtTags && this.extTags && this.extTags.length && this.filtedExtTags && this.filtedExtTags.length) {
+        keys.push(...this.filtedExtTags.map(i => i.key))
+      }
+      return R.uniq(keys)
+    },
+    handleToggleSelectAll () {
+      // 有选中：取消全选（保留 defaultChecked 对应的不可取消项）
+      if (this.checkedKeys.length > 0) {
+        const keep = {}
+        this.checkedKeys.forEach(k => {
+          if (this.getTagDisabled(k)) keep[k] = this.value[k]
+        })
+        this.$emit('input', keep)
+        this.$emit('change', keep)
+        return
+      }
+      // 无选中：全选（按当前筛选/展示的标签键进行全选）
+      const selectableKeys = this.getSelectableKeys()
+      const next = { ...this.value }
+      selectableKeys.forEach(key => {
+        // 特殊键：无标签/有标签资源
+        if (key === this.withoutUserMetaKey || key === this.withUserMetaKey) {
+          next[key] = [true]
+          return
+        }
+        if (this.allowSelectAllValue) {
+          const allValues = this.getValuesForKey(key)
+          if (allValues && allValues.length) {
+            next[key] = [...allValues]
+          } else if (this.allowNoValue) {
+            next[key] = []
+          }
+          return
+        }
+        if (this.allowNoValue) next[key] = []
+      })
+      this.$emit('input', next)
+      this.$emit('change', next)
+    },
     handleClick (e) {
       const x = e.clientX
       if (x > screen.availWidth / 2) {
@@ -531,6 +595,22 @@ export default {
     handleKeyClick (key, val) {
       if (this.defaultChecked && this.defaultChecked[key]) return
       const newValue = { ...this.value }
+      // allowSelectAllValue 时点击标签键：选中或取消该键下所有 value
+      if (this.allowSelectAllValue && val === undefined) {
+        const allValues = this.getValuesForKey(key)
+        if (!allValues.length) return
+        const current = newValue[key]
+        const currentArr = R.is(Array, current) ? current : (current ? [current] : [])
+        const allSelected = allValues.length === currentArr.length && allValues.every(v => currentArr.includes(v))
+        if (allSelected) {
+          delete newValue[key]
+        } else {
+          newValue[key] = [...allValues]
+        }
+        this.$emit('input', newValue)
+        this.$emit('change', newValue)
+        return
+      }
       if (this.multiple) {
         if (val) {
           if (newValue[key]) {
@@ -576,6 +656,13 @@ export default {
       }
       this.$emit('input', newValue)
       this.$emit('change', newValue)
+    },
+    getValuesForKey (key) {
+      const userObj = R.find(R.propEq('key', key))(this.userTags)
+      if (userObj && userObj.value && userObj.value.length) return userObj.value
+      const extObj = R.find(R.propEq('key', key))(this.extTags)
+      if (extObj && extObj.value && extObj.value.length) return extObj.value
+      return []
     },
     getTagDisabled (key) {
       if (this.defaultChecked && this.defaultChecked[key]) return true
