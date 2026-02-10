@@ -4,7 +4,7 @@
     :archivedResource="archivedResource"
     :obj-id="resId"
     :list-id="id || 'TaskListForCustomResourceSidePage'"
-    :getParams="rootedParams"
+    :getParams="getParams"
     isSidepage
     root />
 </template>
@@ -33,26 +33,6 @@ export default {
     getParams: [Object, Function],
   },
   computed: {
-    rootedParams () {
-      if (!this.getParams) {
-        return {
-          is_root: true,
-        }
-      }
-      var params = {}
-      if (typeof this.getParams === 'function') {
-        params = this.getParams()
-      } else {
-        params = this.getParams
-      }
-      if (!params.is_root) {
-        return {
-          ...params,
-          is_root: true,
-        }
-      }
-      return params
-    },
     archivedResource () {
       if (this.taskResource && this.taskResource.includes('-tasks')) {
         return this.taskResource.replace('-tasks', '-archivedtasks')
