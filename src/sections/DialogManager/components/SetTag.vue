@@ -110,6 +110,14 @@
             :params="params.params"
             :managerInstance="params.managerInstance"
             :allowNoValue="false" />
+          <pre-defined-tag-select
+            v-if="showPreDefinedTagSelect"
+            global
+            v-model="checked"
+            @input="handleSelectInput"
+            :params="params.params"
+            :managerInstance="params.managerInstance"
+            :allowNoValue="false" />
           <a-button
             class="ml-2"
             v-if="!showForm"
@@ -142,11 +150,15 @@ import { filterUserTag, getTagColor, getTagTitle, isSysTag } from '@/utils/commo
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import TagSelect from '@/sections/TagSelect'
+import PreDefinedTagSelect from '@/sections/TagSelectPreDefined'
+import { isCE } from '@/utils/utils'
+import { hasPermission } from '@/utils/auth'
 
 export default {
   name: 'SetTagDialog',
   components: {
     TagSelect,
+    PreDefinedTagSelect,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -231,6 +243,9 @@ export default {
       }, this.checked)
       ret = R.sort((a, b) => a.index - b.index, ret)
       return ret
+    },
+    showPreDefinedTagSelect () {
+      return !isCE() && !this.$store.getters.isSysCE && hasPermission('tags_list')
     },
   },
   methods: {
