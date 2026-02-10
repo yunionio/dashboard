@@ -17,7 +17,22 @@
     <a-form-item :extra="extra" class="mt-2">
       <div class="d-flex">
         <div style="line-height: 40px;">
-          <tag-select :global="global" v-model="checked" :params="params" :managerInstance="managerInstance" :multiple="multiple" :button-text="$t('common_110')" :allowNoValue="allowNoValue" />
+          <tag-select
+            :global="global"
+            v-model="checked"
+            :params="params"
+            :managerInstance="managerInstance"
+            :multiple="multiple"
+            :button-text="$t('common_110')"
+            :allowNoValue="allowNoValue" />
+          <pre-defined-tag-select
+            v-if="showPreDefinedTagSelect"
+            :global="global"
+            v-model="checked"
+            :params="params"
+            :managerInstance="managerInstance"
+            :multiple="multiple"
+            :allowNoValue="allowNoValue" />
           <a-button class="ml-2" v-if="!showForm && canCreate" @click="() => showForm = true">{{$t('common_258')}}</a-button>
         </div>
         <a-form
@@ -45,12 +60,16 @@
 import * as R from 'ramda'
 import { getTagColor, getTagTitle } from '@/utils/common/tag'
 import TagSelect from '@/sections/TagSelect'
+import PreDefinedTagSelect from '@/sections/TagSelectPreDefined'
+import { isCE } from '@/utils/utils'
+import { hasPermission } from '@/utils/auth'
 import i18n from '@/locales'
 
 export default {
   name: 'Tag',
   components: {
     TagSelect,
+    PreDefinedTagSelect,
   },
   props: {
     extra: {
@@ -114,6 +133,9 @@ export default {
     }
   },
   computed: {
+    showPreDefinedTagSelect () {
+      return !isCE() && !this.$store.getters.isSysCE && hasPermission('tags_list')
+    },
     tags () {
       const ret = []
       R.forEachObjIndexed((value, key) => {
