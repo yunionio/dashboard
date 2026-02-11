@@ -343,5 +343,6 @@
   "monitor.less_than": "Less than",
   "monitor.equals": "Equal to",
   "monitor.no_data": "No data",
-  "monitor.delta": "Delta"
+  "monitor.delta": "Delta",
+  "monitor.alert_reason": "Alert reason"
 }
