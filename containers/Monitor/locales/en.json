@@ -338,5 +338,6 @@
   "monitor.func.SUM": "Sum",
   "monitor.k8s_node": "node",
   "monitor.alert_policy_id": "Alert policy ID",
-  "monitor.alert_count": "Alert count"
+  "monitor.alert_count": "Alert count",
+  "monitor.alert_reason": "Alert reason"
 }

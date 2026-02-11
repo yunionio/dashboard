@@ -21,6 +21,7 @@ import {
   getVerifiedContactTypesTableColumn,
   robotsColumn,
   rolesColumn,
+  reasonColumn,
 } from '../utils'
 
 export default {
@@ -40,9 +41,9 @@ export default {
     return {
       baseInfo: [
         getResTypeColumn(),
-        projectTableColumn,
+        projectTableColumn(),
         getEnabledTableColumn(),
-        levelColumn,
+        levelColumn(),
         getProjectTableColumn(),
         getVerifiedContactTypesTableColumn({ vm: this }),
       ],
@@ -51,6 +52,7 @@ export default {
           title: this.$t('monitor.commonalert.alarm_strategy'),
           items: [
             strategyColumn(),
+            reasonColumn(),
           ],
         },
       ],

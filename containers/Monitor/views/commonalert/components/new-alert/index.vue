@@ -189,6 +189,7 @@ export default {
           alert_duration: fd.alert_duration,
           generate_name: fd.name,
           description: fd.description,
+          reason: fd.reason,
           period: fd.period,
           channel: fd.channel,
           recipients: fd.recipients,
