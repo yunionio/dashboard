@@ -213,7 +213,7 @@ export default {
           },
         },
         strategyColumn('alert_rule'),
-        levelColumn,
+        levelColumn(),
         ...(this.hideAlertRecordResourceCount ? [] : [
           {
             field: 'res_num',

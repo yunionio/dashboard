@@ -229,7 +229,7 @@ export default {
             return strategy
           },
         },
-        levelColumn,
+        levelColumn(),
         getCopyWithContentTableColumn({
           field: 'ip',
           title: 'IP',

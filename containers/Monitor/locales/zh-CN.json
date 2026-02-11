@@ -343,5 +343,6 @@
   "monitor.less_than": "小于",
   "monitor.equals": "等于",
   "monitor.no_data": "无数据",
-  "monitor.delta": "差值"
+  "monitor.delta": "差值",
+  "monitor.alert_reason": "告警原因"
 }
