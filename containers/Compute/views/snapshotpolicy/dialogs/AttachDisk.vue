@@ -129,7 +129,7 @@ export default {
         if (disk.addDisks.length > 0) {
           await manager.batchPerformAction({
             ids: disk.addDisks,
-            action: 'bind-snapshotpolicy',
+            action: 'set-snapshotpolicy',
             data,
           })
         }

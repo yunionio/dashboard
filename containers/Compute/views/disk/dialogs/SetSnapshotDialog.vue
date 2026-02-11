@@ -164,7 +164,7 @@ export default {
             id: this.params.data[0].id,
             steadyStatus: 'ready',
             managerArgs: {
-              action: 'bind-snapshotpolicy',
+              action: 'set-snapshotpolicy',
               data: {
                 snapshotpolicy_id: values.snapshotpolicy,
               },
@@ -206,6 +206,12 @@ export default {
       const params = {
         scope: this.scope,
         type: 'disk',
+      }
+      if (this.params.data[0].manager_id) {
+        params.manager_id = this.params.data[0].manager_id
+      }
+      if (this.params.data[0].cloud_env) {
+        params.cloud_env = this.params.data[0].cloud_env
       }
       try {
         const res = await manager.list({ params })
