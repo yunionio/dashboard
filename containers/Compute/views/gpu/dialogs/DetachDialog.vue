@@ -73,13 +73,13 @@ export default {
         })
       })
     },
-    doUpdate (values) {
+    doUpdate (values, device) {
       return new this.$Manager('servers').performAction({
-        id: this.params.data[0].id,
+        id: device ? device.guest_id : this.params.data[0].id,
         action: 'detach-isolated-device',
         data: {
           auto_start: this.isShowAutoStart ? values.autoStart : false,
-          device: this.params.device.id,
+          device: device ? device.id : this.params.device.id,
         },
       })
     },
@@ -87,10 +87,16 @@ export default {
       try {
         this.loading = true
         const values = await this.validateForm()
-        if (this.params.data.length === 1) {
-          await this.doUpdate(values)
+        if (this.params.devices) {
+          for (let i = 0; i < this.params.devices.length; i++) {
+            await this.doUpdate(values, this.params.devices[i])
+          }
         } else {
-          await this.doDetachSubmit(values)
+          if (this.params.data.length === 1) {
+            await this.doUpdate(values)
+          } else {
+            await this.doDetachSubmit(values)
+          }
         }
         this.loading = false
         this.params.refresh()
