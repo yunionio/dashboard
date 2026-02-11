@@ -151,7 +151,9 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: this.$t('compute.text_485', [this.$t('dictionary.server')]),
+              name: this.$t('compute.text_113'),
               refresh: this.refresh,
+              devices: this.list.selectedItems,
             })
           },
           meta: () => {
