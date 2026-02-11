@@ -471,7 +471,7 @@ export const PERMISSION = {
   disks_perform_syncstatus: ['compute', 'disks', 'perform', 'syncstatus'],
   disks_perform_public: ['compute', 'disks', 'perform', 'public'],
   disks_perform_set_user_metadata: ['compute', 'disks', 'perform', 'set-user-metadata'],
-  disks_perform_bind_snapshotpolicy: ['compute', 'disks', 'perform', 'bind-snapshotpolicy'],
+  disks_perform_bind_snapshotpolicy: ['compute', 'disks', 'perform', 'set-snapshotpolicy'],
   disks_perform_unbind_snapshotpolicy: ['compute', 'disks', 'perform', 'unbind-snapshotpolicy'],
 
   /**
