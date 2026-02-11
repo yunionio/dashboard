@@ -170,7 +170,7 @@ export default {
       }
     },
     async handleConfirm () {
-      const manager = new this.$Manager(this.resourceType === 'disk' ? 'disks' : 'snapshotpolicies')
+      const manager = new this.$Manager(this.resourceType === 'disk' ? 'disks' : 'servers')
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
@@ -183,7 +183,7 @@ export default {
           if (resource.addDisks.length > 0) {
             await manager.batchPerformAction({
               ids: resource.addDisks,
-              action: 'bind-snapshotpolicy',
+              action: 'set-snapshotpolicy',
               data,
             })
           }
@@ -196,15 +196,14 @@ export default {
           }
         } else {
           if (resource.addServers.length > 0) {
-            await manager.performAction({
-              id: this.params.data[0].id,
-              action: 'bind-resources',
-              data: {
-                resources: resource.addServers.map((item) => { return { id: item, type: 'server' } }),
-              },
+            await manager.batchPerformAction({
+              ids: resource.addServers,
+              action: 'set-snapshotpolicy',
+              data,
             })
           }
           if (resource.delServers.length > 0) {
+            const manager = new this.$Manager('snapshotpolicies')
             await manager.performAction({
               id: this.params.data[0].id,
               action: 'unbind-resources',
