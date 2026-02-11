@@ -1,5 +1,5 @@
-import { levelColumn, strategyColumn, projectTableColumn, getResTypeColumn } from '../utils'
 import { getNameDescriptionTableColumn, getStatusTableColumn, getEnabledTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { levelColumn, strategyColumn, projectTableColumn, getResTypeColumn, reasonColumn } from '../utils'
 
 export default {
   created () {
@@ -19,8 +19,9 @@ export default {
       getEnabledTableColumn({ minWidth: 50 }),
       getResTypeColumn(),
       strategyColumn(),
-      levelColumn,
-      projectTableColumn,
+      reasonColumn(),
+      levelColumn(),
+      projectTableColumn(),
       getTimeTableColumn(),
     ]
   },

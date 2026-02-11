@@ -6,7 +6,7 @@ import i18n from '@/locales'
 import { transformUnit, arrayToObj } from '@/utils/utils'
 import { currencyUnitMap } from '@/constants/currency'
 
-export const levelColumn = {
+export const levelColumn = () => ({
   field: 'level',
   title: i18n.t('monitor.level'),
   minWidth: 40,
@@ -22,7 +22,7 @@ export const levelColumn = {
       }, text)]
     },
   },
-}
+})
 
 export const conditionColumn = {
   field: 'channel',
@@ -95,7 +95,16 @@ export const strategyColumn = (field = 'common_alert_metric_details', title = i1
   },
 })
 
-export const projectTableColumn = {
+export const reasonColumn = () => ({
+  field: 'reason',
+  title: i18n.t('monitor.alert_reason'),
+  minWidth: 100,
+  formatter: ({ row }) => {
+    return row.reason || '-'
+  },
+})
+
+export const projectTableColumn = () => ({
   field: 'project',
   title: i18n.t('monitor.text00015'),
   slots: {
@@ -117,7 +126,7 @@ export const projectTableColumn = {
       }
     },
   },
-}
+})
 
 export const recipientsColumn = recipientList => ({
   field: 'recipients',
