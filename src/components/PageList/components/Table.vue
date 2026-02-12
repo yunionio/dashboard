@@ -277,6 +277,7 @@ export default {
         ret['scroll-x'] = { gt: 1 }
         ret['scroll-y'] = { gt: 1 }
       }
+      // 非虚拟滚动模式不设置 height，让表格自然高度展示
       return ret
     },
     hiddenScrollbar () {
