@@ -19,6 +19,9 @@ export default {
               cloud_env: 'onpremise',
               binding_snapshotpolicy: false,
             }
+            if (this.params.data[0]?.cloudregion_id) {
+              params.cloudregion_id = this.params.data[0].cloudregion_id
+            }
             return params
           },
           filterOptions: {
@@ -41,6 +44,13 @@ export default {
           }),
           getStatusTableColumn({ statusModule: 'server' }),
           getBrandTableColumn(),
+          {
+            field: 'disks_snapshotpolicy_count',
+            title: this.$t('compute.disks_snapshotpolicy_count'),
+            formatter: ({ row }) => {
+              return row.disks_snapshotpolicy_count || 0
+            },
+          },
         ],
       },
     }
