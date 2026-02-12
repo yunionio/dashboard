@@ -2,8 +2,9 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('compute.disk_perform_setup_snapshot_policy')}}</div>
     <div slot="body">
+      <a-alert class="mb-2" type="warning" :message="$t('compute.snapshotpolicy_bind_disk_tip')" />
       <dialog-selected-tips :count="params.data.length" :name="$t('dictionary.disk')" :action="$t('compute.disk_perform_setup_snapshot_policy')" />
-      <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="[...params.columns.slice(0, 3), { field: 'guest_snapshotpolicy_count', title: $t('compute.guest_snapshotpolicy_count'), formatter: ({ row }) => { return row.guest_snapshotpolicy_count || 0 } }]" />
       <a-form
         :form="form.fc">
         <a-form-item :label="$t('compute.text_427')" v-bind="formItemLayout">

@@ -1991,5 +1991,9 @@
   "compute.set_nic_num_queue.validate_error": "NIC {0} queue number must be an integer greater than or equal to 1",
   "compute.set_nic_num_queue.no_changes": "No NICs need to be updated",
   "compute.set_nic_num_queue.update_partial_failed": "Failed to update some NICs ({0}/{1})",
-  "compute.set_nic_num_queue.update_failed": "Failed to update NIC queue numbers"
+  "compute.set_nic_num_queue.update_failed": "Failed to update NIC queue numbers",
+  "compute.guest_snapshotpolicy_count": "Virtual machine snapshot policy count",
+  "compute.disks_snapshotpolicy_count": "Disk snapshot policy count",
+  "compute.snapshotpolicy_bind_disk_tip": "If the disk mounted on the virtual machine is bound to an automatic snapshot policy, the automatic snapshot policy of the disk will be automatically unbound when binding the automatic snapshot policy of the virtual machine",
+  "compute.snapshotpolicy_bind_server_tip": "If the disk bound to the virtual machine is bound to an automatic snapshot policy, the automatic snapshot policy of the virtual machine will be automatically unbound when binding the automatic snapshot policy of the disk"
 }
