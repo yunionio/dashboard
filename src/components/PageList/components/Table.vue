@@ -296,10 +296,8 @@ export default {
         ret['max-height'] = this.vxeGridHeight > minHeight ? this.vxeGridHeight : minHeight
         ret['scroll-x'] = { gt: 1 }
         ret['scroll-y'] = { gt: 1 }
-      } else {
-        // 非虚拟滚动模式也需要设置 height，避免 vxe-table 警告
-        ret.height = 'auto'
       }
+      // 非虚拟滚动模式不设置 height，让表格自然高度展示
       return ret
     },
     hiddenScrollbar () {
