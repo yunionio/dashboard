@@ -8,6 +8,9 @@
     <a-form-item :label="$t('common.description')">
       <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
     </a-form-item>
+    <a-form-item :label="$t('monitor.alert_reason')">
+      <a-input v-decorator="decorators.reason" :placeholder="$t('common.placeholder')" />
+    </a-form-item>
     <a-form-item :label="$t('monitor.text_97')">
       <base-select
         v-decorator="decorators.metric_res_type"
@@ -220,6 +223,8 @@ export default {
       initialValue.project = this.alertData.tenant_id
       initialValue.silent_period = this.alertData.silent_period
       initialValue.res_type = _.get(this.alertData, 'common_alert_metric_details[0].res_type')
+      initialValue.reason = this.alertData.reason
+      initialValue.description = this.alertData.description
       tags = _.get(this.alertData, 'common_alert_metric_details[0].filters') || []
 
       if (this.alertData.robot_ids && this.alertData.robot_ids.length) {
@@ -302,7 +307,18 @@ export default {
             ],
           },
         ],
-        description: ['description'],
+        description: [
+          'description',
+          {
+            initialValue: initialValue.description,
+          },
+        ],
+        reason: [
+          'reason',
+          {
+            initialValue: initialValue.reason,
+          },
+        ],
         metric_res_type: [
           'metric_res_type',
           {

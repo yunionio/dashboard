@@ -52,7 +52,7 @@ export default {
               }),
               getTimeTableColumn({ field: 'trigger_time', title: this.$t('monitor.text_14') }),
               strategyColumn(),
-              levelColumn,
+              levelColumn(),
               {
                 field: 'value_str',
                 title: this.$t('monitor.text_105'),
