@@ -1470,6 +1470,7 @@
   "compute.sku.setup.sell.status": "Setup Sell Status",
   "compute.sku.prepaid_status": "Subscription",
   "compute.sku.postpaid_status": "Postpaid",
+  "compute.sku.name_repeated_in_zone": "SKU name duplicated in current zone",
   "compute.transfer_host": "There is no host that meets the conditions (the host must belong to the same Layer 2 network and be in normal state), please check the host or modify the above conditions and try again!",
   "compute.host_access_ip": "Host Access IP",
   "compute.shutdown_stop_paying": "No charge for shutdown",
