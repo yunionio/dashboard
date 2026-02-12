@@ -118,7 +118,7 @@ export default {
           {
             initialValue: initSysDiskType,
             rules: [
-              { required: true, message: this.$t('common.tips.select', [this.$t('compute.sys_disk_type')]) },
+              { required: false, message: this.$t('common.tips.select', [this.$t('compute.sys_disk_type')]) },
             ],
           },
         ],
@@ -127,7 +127,7 @@ export default {
           {
             initialValue: initDataDiskTypes,
             rules: [
-              { required: true, message: this.$t('common.tips.select', [this.$t('compute.data_disk_type')]) },
+              { required: false, message: this.$t('common.tips.select', [this.$t('compute.data_disk_type')]) },
             ],
           },
         ],
