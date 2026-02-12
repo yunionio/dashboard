@@ -29,7 +29,8 @@
                 <page-list
                   ref="page-list"
                   v-bind="listProps"
-                  @radio-change="handleRadioChange" />
+                  @radio-change="handleRadioChange"
+                  :enableVirtualScroll="false" />
                 <template v-if="params.multiple">
                   <a-button type="link" size="small" class="choose-all" @click="chooseAllHandle" v-if="isShowChooseAll">{{$t('common_98')}}</a-button>
                 </template>
