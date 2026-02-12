@@ -24,6 +24,9 @@ export default {
             } else {
               params.manager_id = this.params.data[0]?.manager_id
             }
+            if (this.params.data[0]?.cloudregion_id) {
+              params.cloudregion_id = this.params.data[0].cloudregion_id
+            }
             return params
           },
           filterOptions: {
@@ -84,6 +87,13 @@ export default {
             },
           },
           getBrandTableColumn(),
+          {
+            field: 'guest_snapshotpolicy_count',
+            title: this.$t('compute.guest_snapshotpolicy_count'),
+            formatter: ({ row }) => {
+              return row.guest_snapshotpolicy_count || 0
+            },
+          },
         ],
       },
     }
