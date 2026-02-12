@@ -3048,7 +3048,8 @@
     "menu_system_config": "システム設定",
     "global_topology": "グローバルトポロジ",
     "k8s": "K8S",
-    "server_container": "コンテナホスト"
+    "server_container": "コンテナホスト",
+    "pre_defined_tag": "事前定義されたタグ"
   },
   "originDictionary": {},
   "res": {
