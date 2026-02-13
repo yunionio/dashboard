@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { CREATE_METHODS } from '../constants'
 import {
   getUserTagColumn,
   getExtTagColumn,
@@ -17,6 +16,7 @@ import {
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 import { getOsArch } from '@/utils/common/tableColumn'
+import { CREATE_METHODS } from '../constants'
 
 export default {
   name: 'SnapshotDetail',
@@ -38,12 +38,17 @@ export default {
         getUserTagColumn({ onManager: this.onManager, resource: 'instance_snapshot', columns: () => this.columns, tipName: this.$t('compute.text_462') }),
         getExtTagColumn({ onManager: this.onManager, resource: 'instance_snapshot', columns: () => this.columns, tipName: this.$t('compute.text_462') }),
         {
-          field: 'size',
+          field: 'size_mb',
           title: this.$t('compute.text_422'),
           formatter: ({ cellValue, row }) => {
-            if (!row.snapshots) return '-'
-            const size = row.snapshots.reduce((a, b) => a + b.size, 0)
-            return sizestr(size, 'M', 1024)
+            return sizestr(cellValue, 'M', 1024)
+          },
+        },
+        {
+          field: 'virtual_size_mb',
+          title: this.$t('compute.disk_size'),
+          formatter: ({ cellValue, row }) => {
+            return sizestr(cellValue, 'M', 1024)
           },
         },
         {
