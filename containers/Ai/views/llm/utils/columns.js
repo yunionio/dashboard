@@ -47,7 +47,7 @@ export const getLlmSkuColumn = ({ vm = {} } = {}) => {
 export const getLlmImageColumn = ({ vm = {} } = {}) => {
   return {
     field: 'llm_image',
-    title: i18n.t('aice.image'),
+    title: i18n.t('aice.llm_image'),
     width: 120,
     slots: {
       default: ({ row }, h) => {
