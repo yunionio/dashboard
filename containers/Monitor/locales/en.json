@@ -344,5 +344,12 @@
   "monitor.equals": "Equal to",
   "monitor.no_data": "No data",
   "monitor.delta": "Delta",
-  "monitor.alert_reason": "Alert reason"
+  "monitor.alert_reason": "Alert reason",
+  "monitor.convert_to_ticket": "Convert to ticket",
+  "monitor.alert_ticket_type": "Ticket type",
+  "monitor.alert_ticket_type.alert_event": "Alert event",
+  "monitor.alert_ticket_type.alert_ticket": "Alert ticket",
+  "monitor.convert_to_ticket.alert_event_disabled_tip": "Alert event has been converted to ticket",
+  "monitor.convert_to_ticket.alert_ticket_disabled_tip": "Alert ticket has been converted to ticket",
+  "monitor.converted_ticket": "Converted to ticket"
 }
