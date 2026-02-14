@@ -43,6 +43,7 @@ import { strategyColumn, levelColumn, getStrategyInfo } from '@Monitor/views/com
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ResTemplateListMixin from '@/mixins/resTemplateList'
 import MonitorHeader from '@/sections/Monitor/Header'
+import { isCE } from '@/utils/utils'
 import ColumnsMixin from '../mixins/columns'
 import SingleAction from '../mixins/singleActions'
 
@@ -74,8 +75,12 @@ export default {
     },
   },
   data () {
+    let resource = 'monitorresourcealertees'
+    if (isCE() || this.$store.getters.isSysCE || (!(this.$store.getters.workflow?.enabledKeys || []).includes('alert-event') && !(this.$store.getters.workflow?.enabledKeys || []).includes('alert-ticket'))) {
+      resource = 'monitorresourcealerts'
+    }
     return {
-      list: this.$list.createList(this, this.listOptions('monitorresourcealerts')),
+      list: this.$list.createList(this, this.listOptions(resource)),
       resTypeItems: [],
       time: this.templateParams.time || '168h',
       customTime: null,
