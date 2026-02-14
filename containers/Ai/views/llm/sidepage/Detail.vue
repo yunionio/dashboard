@@ -113,7 +113,7 @@ export default {
             },
             {
               field: 'mounted_models',
-              title: this.$t('aice.mounted_apps'),
+              title: this.$t('aice.llm_instantapp'),
               slots: {
                 default: ({ row }) => {
                   const mounted_apps = row.mounted_models
