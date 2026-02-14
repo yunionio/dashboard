@@ -1997,5 +1997,8 @@
   "compute.guest_snapshotpolicy_count": "仮想マシン快照策略数量",
   "compute.disks_snapshotpolicy_count": "HDD自動快照策略数量",
   "compute.snapshotpolicy_bind_disk_tip": "仮想マシンにマウントされているHDDが自動快照ポリシーにバインドされている場合、HDDの自動快照ポリシーをバインドすると仮想マシンの自動快照ポリシーが自動的にバインド解除されます",
-  "compute.snapshotpolicy_bind_server_tip": "仮想マシンにバインドされているHDDが自動快照ポリシーにバインドされている場合、仮想マシンの自動快照ポリシーをバインドするとHDDの自動快照ポリシーが自動的にバインド解除されます"
+  "compute.snapshotpolicy_bind_server_tip": "仮想マシンにバインドされているHDDが自動快照ポリシーにバインドされている場合、仮想マシンの自動快照ポリシーをバインドするとHDDの自動快照ポリシーが自動的にバインド解除されます",
+  "compute.kickstart": "Kickstart",
+  "compute.kickstart.tooltip": "CentOS、RHEL、OpenEuler、Ubuntu発行版のISOイメージのみサポート",
+  "compute.kickstart_placeholder": "各システム発行版の公式ドキュメントを参照してください。"
 }
