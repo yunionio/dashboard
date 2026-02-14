@@ -272,6 +272,20 @@ export const createVmDecorators = (type, initData = {}) => {
         },
       ],
     },
+    kickstart: {
+      kickstart_enabled: [
+        'kickstart_enabled',
+        {
+          initialValue: false,
+        },
+      ],
+      kickstart_config: [
+        'kickstart_config',
+        {
+          initialValue: '',
+        },
+      ],
+    },
     loginConfig: {
       loginType: [
         'loginType',
@@ -1066,7 +1080,7 @@ export const createVmDecorators = (type, initData = {}) => {
 }
 
 const decoratorGroup = {
-  idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch', 'hostName', 'encrypt_keys', 'custom_data_type', 'deploy_telegraf', 'pci', 'bastion_host', 'is_daemon'],
+  idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'kickstart', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch', 'hostName', 'encrypt_keys', 'custom_data_type', 'deploy_telegraf', 'pci', 'bastion_host', 'is_daemon'],
   public: ['domain', 'project', 'name', 'description', 'count', 'imageOS', 'reason', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType', 'tag', 'servertemplate', 'duration', 'cloudprovider', 'hostName', 'custom_data_type', 'bastion_host'],
   private: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'duration', 'tag', 'servertemplate', 'cloudprovider', 'hostName', 'custom_data_type', 'bastion_host', 'pci'],
 }
@@ -1792,6 +1806,16 @@ export class GenCreateData {
     // 自定义数据
     if (this.fd.custom_data_type) {
       data.custom_data_type = this.fd.custom_data_type
+    }
+    // kickstart
+    const { os_distribution = '' } = this.fi?.imageMsg?.properties || this.fi?.imageMsg?.info?.properties || {}
+    const isTargetOsType = ['centos', 'rhel', 'openeuler', 'ubuntu'].some(item => os_distribution.toLowerCase().includes(item))
+    if (isTargetOsType && this.fd.hypervisor === HYPERVISORS_MAP.kvm.key && this.fd.imageType === IMAGES_TYPE_MAP.iso.key) {
+      data.kickstart_config = {
+        config: this.fd.kickstart_config,
+        enabled: this.fd.kickstart_enabled,
+        os_type: os_distribution.toLowerCase(),
+      }
     }
     // 安装监控 agent
     if (this.isIDC) {
