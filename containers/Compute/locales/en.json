@@ -1995,5 +1995,8 @@
   "compute.guest_snapshotpolicy_count": "Virtual machine snapshot policy count",
   "compute.disks_snapshotpolicy_count": "Disk snapshot policy count",
   "compute.snapshotpolicy_bind_disk_tip": "If the disk mounted on the virtual machine is bound to an automatic snapshot policy, the automatic snapshot policy of the disk will be automatically unbound when binding the automatic snapshot policy of the virtual machine",
-  "compute.snapshotpolicy_bind_server_tip": "If the disk bound to the virtual machine is bound to an automatic snapshot policy, the automatic snapshot policy of the virtual machine will be automatically unbound when binding the automatic snapshot policy of the disk"
+  "compute.snapshotpolicy_bind_server_tip": "If the disk bound to the virtual machine is bound to an automatic snapshot policy, the automatic snapshot policy of the virtual machine will be automatically unbound when binding the automatic snapshot policy of the disk",
+  "compute.kickstart": "Kickstart",
+  "compute.kickstart.tooltip": "Only supported for ISO images of CentOS, RHEL, OpenEuler, and Ubuntu distributions",
+  "compute.kickstart_placeholder": "Please enter the kickstart script, which can be referenced in the official documentation of each system distribution."
 }

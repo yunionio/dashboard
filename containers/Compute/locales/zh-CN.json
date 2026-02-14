@@ -1999,5 +1999,8 @@
   "compute.guest_snapshotpolicy_count": "虚拟机快照策略数量",
   "compute.disks_snapshotpolicy_count": "硬盘快照策略数量",
   "compute.snapshotpolicy_bind_disk_tip": "若硬盘挂载的虚拟机绑定了自动快照策略,则绑定硬盘自动快照策略时会自动解绑虚拟机自动快照策略",
-  "compute.snapshotpolicy_bind_server_tip": "若虚拟机的硬盘绑定了自动快照策略,则绑定虚拟机自动快照策略时会自动解绑硬盘自动快照策略"
+  "compute.snapshotpolicy_bind_server_tip": "若虚拟机的硬盘绑定了自动快照策略,则绑定虚拟机自动快照策略时会自动解绑硬盘自动快照策略",
+  "compute.kickstart": "无人值守安装",
+  "compute.kickstart.tooltip": "仅支持CentOS、RHEL、OpenEuler、Ubuntu发行版的ISO镜像",
+  "compute.kickstart_placeholder": "请输入kickstart脚本,可参考各系统发行版官方文档."
 }
