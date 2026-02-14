@@ -344,5 +344,12 @@
   "monitor.equals": "等しい",
   "monitor.no_data": "データなし",
   "monitor.delta": "差分",
-  "monitor.alert_reason": "アラームの理由"
+  "monitor.alert_reason": "アラームの理由",
+  "monitor.convert_to_ticket": "工單に変換",
+  "monitor.alert_ticket_type": "工單タイプ",
+  "monitor.alert_ticket_type.alert_event": "アラームイベント",
+  "monitor.alert_ticket_type.alert_ticket": "アラーム工單",
+  "monitor.convert_to_ticket.alert_event_disabled_tip": "アラームイベントはすでに工單に変換されています",
+  "monitor.convert_to_ticket.alert_ticket_disabled_tip": "アラーム工單はすでに工單に変換されています",
+  "monitor.converted_ticket": "工單に変換されました"
 }
