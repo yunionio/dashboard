@@ -91,6 +91,15 @@
           :cloudproviderParamsExtra="cloudproviderParamsExtra"
           @updateImageMsg="updateFi" />
       </a-form-item>
+      <a-form-item v-if="isKvm && form.fd.imageType === 'iso'" class="mb-0">
+        <span slot="label">
+          {{ $t('compute.kickstart') }}&nbsp;
+          <a-tooltip :title="$t('compute.kickstart.tooltip')">
+            <a-icon type="question-circle-o" />
+          </a-tooltip>
+        </span>
+        <kickstart :decorator="decorators.kickstart" :form="form" />
+      </a-form-item>
       <a-form-item v-if="isShowAgent" :label="$t('compute.agent.label')" :extra="$t('compute.agent.extra')">
         <a-checkbox v-decorator="decorators.deploy_telegraf">{{ $t('compute.agent.install.plugin') }}</a-checkbox>
       </a-form-item>
@@ -274,6 +283,11 @@
 <script>
 import _ from 'lodash'
 import * as R from 'ramda'
+import OsArch from '@/sections/OsArch'
+import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
+import { resolveValueChangeField } from '@/utils/common/ant'
+import { HYPERVISORS_MAP } from '@/constants'
+import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import EipConfig from '@Compute/sections/EipConfig'
 import EncryptKeys from '@Compute/sections/encryptkeys'
@@ -281,11 +295,7 @@ import Vdi from '@Compute/sections/VDI'
 import Vga from '@Compute/sections/VGA'
 import Machine from '@Compute/sections/Machine'
 import { NETWORK_OPTIONS_MAP, GPU_DEV_TYPE_OPTIONS } from '@Compute/constants'
-import OsArch from '@/sections/OsArch'
-import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
-import { resolveValueChangeField } from '@/utils/common/ant'
-import { HYPERVISORS_MAP } from '@/constants'
-import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
+import Kickstart from '@Compute/sections/Kickstart'
 import mixin from './mixin'
 
 export default {
@@ -298,6 +308,7 @@ export default {
     Vga,
     Machine,
     EncryptKeys,
+    Kickstart,
   },
   mixins: [mixin],
   data () {
@@ -791,6 +802,16 @@ export default {
     },
     isShowAgent (val) {
       this.form.fc.setFieldsValue({ deploy_telegraf: val })
+    },
+    'form.fd.imageType': {
+      handler (val) {
+        if (val === IMAGES_TYPE_MAP.iso.key) {
+          this.form.fc.setFieldsValue({
+            kickstart_enabled: false,
+          })
+          this.form.fd.kickstart_enabled = false
+        }
+      },
     },
   },
   mounted () {
