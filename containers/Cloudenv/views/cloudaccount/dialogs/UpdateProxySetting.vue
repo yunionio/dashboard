@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import ProxySetting from '../components/ProxySetting'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import ProxySetting from '../components/ProxySetting'
 
 export default {
   name: 'UpdateProxySettingDialog',
@@ -49,7 +49,7 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        values.proxy_setting = values.proxy_setting || ''
+        values.proxy_setting = values.proxy_setting || 'DIRECT'
         const ids = this.params.data.map(item => item.id)
         if (ids.length > 1) {
           await this.params.onManager('batchUpdate', {
