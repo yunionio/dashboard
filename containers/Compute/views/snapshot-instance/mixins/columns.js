@@ -64,17 +64,17 @@ export default {
       },
       getOsArch(),
       {
-        field: 'size',
+        field: 'size_mb',
         title: i18n.t('table.title.snapshot_size'),
         width: 70,
         slots: {
           default: ({ row }) => {
-            if (this.isPreLoad && !row.size) return [<data-loading />]
-            return sizestr(row.size, 'M', 1024)
+            if (this.isPreLoad && !row.size_mb) return [<data-loading />]
+            return sizestr(row.size_mb, 'M', 1024)
           },
         },
         formatter: ({ row }) => {
-          return sizestr(row.size, 'M', 1024)
+          return sizestr(row.size_mb, 'M', 1024)
         },
       },
       {
