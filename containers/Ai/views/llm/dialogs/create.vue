@@ -32,6 +32,7 @@
             resource="hosts"
             :select-props="{
               placeholder: $t('common.tips.select', [$t('dictionary.host')]),
+              allowClear: true,
             }"
             :params="hostParams" />
         </a-form-item>
@@ -235,7 +236,6 @@ export default {
         usable: true,
         server_type: ['guest', 'hostlocal'],
         vpc: this.form.fd.vpc,
-        host_type: 'hypervisor',
       }
       return ret
     },
