@@ -134,7 +134,7 @@ export default {
         params.scope = this.scope
       }
       if (this.params.data[0] && this.params.data[0].vpc_id) {
-        params.vpc_id = this.params.data[0].vpc_id
+        params.vpc_id = this.params.data[0].vpc_id.split(',')[0]
       }
       return params
     },
