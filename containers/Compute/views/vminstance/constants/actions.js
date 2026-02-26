@@ -137,7 +137,8 @@ const getSingleActions = function (ctx) {
                 this.openWebConsole(obj, data, 'ws')
               })
             }
-            if (obj.os_type !== 'Windows') {
+            const isWindows = obj.os_type === 'Windows' || (obj.metadata?.os_distribution === 'Windows')
+            if (!isWindows) {
               options.push({
                 label: `SSH ${ipAddr}`,
                 permission: 'server_perform_list_forward,server_perform_open_forward',
