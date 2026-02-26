@@ -305,7 +305,7 @@ const getSingleActions = function (ctx) {
         }
         if (obj.nics) {
           obj.nics.map(nic => {
-            if ((((obj.provider === 'OneCloud' || obj.vpc_id === 'default') && nic.is_default) || obj.provider === 'InCloudSphere') && nic.ip_addr) {
+            if ((((obj.provider === 'OneCloud' || obj.vpc_id === 'default')) || obj.provider === 'InCloudSphere') && nic.ip_addr) {
               ipInfoList.push({
                 actionType: 'IP SSH',
                 ipType: 'nicIP',
@@ -314,7 +314,7 @@ const getSingleActions = function (ctx) {
                 provider: obj.provider,
               })
             }
-            if ((((obj.provider === 'OneCloud' || obj.vpc_id === 'default') && nic.is_default) || obj.provider === 'InCloudSphere') && nic.ip6_addr) {
+            if ((((obj.provider === 'OneCloud' || obj.vpc_id === 'default')) || obj.provider === 'InCloudSphere') && nic.ip6_addr) {
               ipInfoList.push({
                 actionType: 'IP SSH',
                 ipType: 'nicIP',
