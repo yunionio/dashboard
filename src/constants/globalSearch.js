@@ -4,7 +4,7 @@ import store from '@/store'
 import { hasPermission } from '@/utils/auth'
 import { changeToArr } from '@/utils/utils'
 
-export const getSearchMaps = (searchRes = {}) => {
+export const getSearchMaps = (searchRes = {}, extraResMaps = {}) => {
   const commonSearchQuery = {
     scope: store.getters.scope,
     limit: 20,
@@ -1234,6 +1234,7 @@ export const getSearchMaps = (searchRes = {}) => {
       },
       resData: {},
     },
+    ...extraResMaps,
   }
 
   const validMaps = R.filter((val, key) => {

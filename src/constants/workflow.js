@@ -30,23 +30,29 @@ export const PROCESS_TYPES_OPTS = [
   {
     name: i18n.t('common.text00033'),
     value: WORKFLOW_TYPES.APPLY_MACHINE,
+    res_type: 'server',
   },
   {
     value: WORKFLOW_TYPES.APPLY_PROJECT_QUOTA,
+    res_type: 'project',
   },
   {
     value: WORKFLOW_TYPES.APPLY_DOMAIN_QUOTA,
+    res_type: 'domain',
   },
   {
     value: WORKFLOW_TYPES.APPLY_JOIN_PROJECT,
+    res_type: 'user',
   },
   {
     name: i18n.t('common.text00034'),
     value: WORKFLOW_TYPES.APPLY_SERVER_CHANGECONFIG,
+    res_type: 'server',
   },
   {
     name: i18n.t('common.text00035'),
     value: WORKFLOW_TYPES.APPLY_SERVER_DELETE,
+    res_type: 'server',
   },
   {
     name: i18n.t('common.text00036'),
@@ -59,14 +65,17 @@ export const PROCESS_TYPES_OPTS = [
   {
     name: i18n.t('common.workflow.shut_down'),
     value: WORKFLOW_TYPES.APPLY_SERVER_STOP,
+    res_type: 'server',
   },
   {
     name: i18n.t('common.workflow.start'),
     value: WORKFLOW_TYPES.APPLY_SERVER_START,
+    res_type: 'server',
   },
   {
     name: i18n.t('common.workflow.restart'),
     value: WORKFLOW_TYPES.APPLY_SERVER_RESTART,
+    res_type: 'server',
   },
   {
     name: i18n.t('common.workflow.order_set'),
@@ -83,34 +92,42 @@ export const PROCESS_TYPES_OPTS = [
   {
     name: i18n.t('common.workflow.execute_user_join'),
     value: WORKFLOW_TYPES.EXECUTE_USER_JOIN,
+    res_type: 'user',
   },
   {
     name: i18n.t('common.workflow.execute_user_update'),
     value: WORKFLOW_TYPES.EXECUTE_USER_UPDATE,
+    res_type: 'user',
   },
   {
     name: i18n.t('common.workflow.execute_user_delete'),
     value: WORKFLOW_TYPES.EXECUTE_USER_DELETE,
+    res_type: 'user',
   },
   {
     name: i18n.t('common.workflow.execute_role_set_policies'),
     value: WORKFLOW_TYPES.EXECUTE_ROLE_SET_POLICIES,
+    res_type: 'role',
   },
   {
     name: i18n.t('common.workflow.execute_rolepolicy_batch_delete'),
     value: WORKFLOW_TYPES.EXECUTE_ROLEPOLICY_BATCH_DELETE,
+    res_type: 'role',
   },
   {
     name: i18n.t('common.workflow.execute_policy_update'),
     value: WORKFLOW_TYPES.EXECUTE_POLICY_UPDATE,
+    res_type: 'policy',
   },
   {
     name: i18n.t('common.workflow.execute_policy_enable'),
     value: WORKFLOW_TYPES.EXECUTE_POLICY_ENABLE,
+    res_type: 'policy',
   },
   {
     name: i18n.t('common.workflow.execute_policy_disable'),
     value: WORKFLOW_TYPES.EXECUTE_POLICY_DISABLE,
+    res_type: 'policy',
   },
 ]
 
