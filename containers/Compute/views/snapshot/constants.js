@@ -12,7 +12,7 @@ export const DISK_TYPES = {
 
 export const steadyStatus = {
   status: ['ready', 'create_failed'],
-  guest_status: [undefined, 'ready', 'running', 'deallocated', 'disk_reset_failed'],
+  guest_status: [undefined, 'running', 'on', 'rescue', 'ready', 'deallocated', 'unknown', 'suspend', 'converted', 'stopped', 'off', 'disk_reset_failed'],
   disk_status: [undefined, 'ready', 'running'],
 }
 
