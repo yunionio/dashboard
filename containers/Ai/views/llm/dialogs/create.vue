@@ -214,7 +214,7 @@ export default {
           'auto_start',
           {
             valuePropName: 'checked',
-            initialValue: false,
+            initialValue: true,
           },
         ],
       },
