@@ -3400,7 +3400,8 @@
       "work_order_support": "申请技术支持",
       "work_order_apply_project_quota": "申请@:dictionary.project配额",
       "work_order_apply_domain_quota": "申请@:dictionary.domain配额",
-      "work_order_apply_internal_resource": "申请内部工单"
+      "work_order_apply_internal_resource": "申请内部工单",
+      "ai": "AI Agent"
     },
     "tips": {
       "service_message": "服务消息",
@@ -6453,5 +6454,6 @@
   "common.worflow_tip": "{0}请求流程已提交",
   "common.cpu_used_total": "CPU 已使用/总量",
   "common.memory_used_total": "内存 已使用/总量",
-  "common.last_month": "上个月"
+  "common.last_month": "上个月",
+  "common.config_agent": "配置AI Agent"
 }
