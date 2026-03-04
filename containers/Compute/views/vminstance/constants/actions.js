@@ -1607,6 +1607,7 @@ const getSingleActions = function (ctx) {
                     columns: this.columns,
                     onManager: this.onManager,
                     refresh: this.refresh,
+                    type: 'vminstance',
                   })
                 },
                 meta: () => {
