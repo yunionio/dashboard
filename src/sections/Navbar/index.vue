@@ -141,6 +141,14 @@
     </div>
     <!-- cloudsheel -->
     <cloud-shell v-if="isAdminMode && enableCloudShell && showMenuMap.cloudshell" class="navbar-item-icon primary-color-hover" />
+    <!-- ai -->
+    <div class="navbar-item-icon primary-color ai-icon-wrap" v-if="enableAi && showMenuMap.ai">
+      <a-tooltip :title="mcpAgent?.id ? $t('navbar.button.ai') : $t('common.config_agent')" placement="right">
+        <div class="d-flex align-items-center justify-content-center h-100" style="cursor: pointer;" @click="handleOpenAI">
+          <icon type="ai" style="font-size: 22px;" class="ai-icon" />
+        </div>
+      </a-tooltip>
+    </div>
     <slot name="behindNavbar" />
     <!-- 更多 -->
     <slot name="morePopover" v-if="showMenuMap.more && (showMenuMap.feature_select || showMenuMap.docs || showMenuMap.about)">
@@ -159,7 +167,7 @@ import { mapGetters, mapState } from 'vuex'
 import UserProjectSelect from '@/sections/UserProjectSelect'
 import WindowsMixin from '@/mixins/windows'
 import { getSetupInStorage, hasPermission } from '@/utils/auth'
-import { uuid } from '@/utils/utils'
+import { uuid, isCE } from '@/utils/utils'
 import NotifyPopover from './components/NotifyPopover'
 // import SettingPopover from './components/SettingPopover'
 import WorkOrderPopover from './components/WorkOrderPopover'
@@ -233,6 +241,7 @@ export default {
       selectPid: '',
       isOperation: process.env.VUE_APP_PLATFORM === 'operation',
       isCMPPrivate: process.env.VUE_APP_PLATFORM === 'cmp_private',
+      mcpAgent: null,
     }
   },
   computed: {
@@ -259,6 +268,9 @@ export default {
       const { globalConfig = {} } = this.common
       const { enable_cloud_shell = true } = globalConfig
       return enable_cloud_shell
+    },
+    enableAi () {
+      return hasPermission({ key: 'mcp_agents_list' }) && !isCE() && !this.$store.getters.isSysCE
     },
     products () {
       if (this.userInfo.menus && this.userInfo.menus.length > 0) {
@@ -419,7 +431,7 @@ export default {
     },
     showMenuMap () {
       const ret = {}
-      const list = ['alert', 'notification', 'workflow', 'monitor_dashboard', 'cloudshell', 'more', 'feature_select', 'docs', 'about']
+      const list = ['alert', 'notification', 'workflow', 'monitor_dashboard', 'cloudshell', 'more', 'feature_select', 'docs', 'about', 'ai']
       list.map(item => {
         ret[item] = !this.$isScopedPolicyMenuHidden(`navbar_hidden_items.${item}`)
       })
@@ -485,9 +497,41 @@ export default {
       if (this.isAdminMode || this.isDomainMode) {
         this.$store.dispatch('bill/fetchProjectSharingAccounts')
       }
+      if (this.enableAi && this.showMenuMap.ai) {
+        this.fetchMcpAgents()
+      }
     }
+    this.$bus.$on('default-mcp-agent-updated', () => {
+      this.fetchMcpAgents()
+    })
   },
   methods: {
+    async fetchMcpAgents () {
+      try {
+        const response = await new this.$Manager('mcp_agents', 'v2').list({
+          params: {
+            scope: this.$store.getters.scope,
+            default_agent: true,
+          },
+        })
+        if (response.data && response.data.data && response.data.data.length > 0) {
+          this.mcpAgent = response.data.data[0]
+        }
+      } catch (error) {
+        console.error('Failed to fetch MCP agents:', error)
+      }
+    },
+    handleOpenAI () {
+      if (!this.mcpAgent?.id) {
+        this.$router.push('/mcp')
+        return
+      }
+      this.initSidePageTab('chat')
+      this.sidePageTriggerHandle(this, 'McpSidePage', {
+        id: this.mcpAgent.id,
+        resource: 'mcp_agents',
+      })
+    },
     checkWorkflow (val) {
       if (!this.itsmServiceEnable) return
       if (val) {
@@ -773,6 +817,19 @@ export default {
   height: 40px;
   margin-left: 5px;
   margin-right: 5px;
+}
+.ai-icon-wrap {
+  .ai-icon {
+    transform-origin: center center;
+    animation: ai-icon-pulse 1.5s ease-in-out infinite;
+  }
+  &:hover .ai-icon {
+    animation: ai-icon-pulse 0.8s ease-in-out infinite;
+  }
+}
+@keyframes ai-icon-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.1); }
 }
 .navbar-item-trigger {
   height: 100%;

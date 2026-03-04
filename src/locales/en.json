@@ -3377,7 +3377,8 @@
       "work_order_support": "Request technical support",
       "work_order_apply_project_quota": "Apply for project quota",
       "work_order_apply_domain_quota": "Apply for domain quota",
-      "work_order_apply_internal_resource": "Apply for internal resource"
+      "work_order_apply_internal_resource": "Apply for internal resource",
+      "ai": "AI Agent"
     },
     "tips": {
       "service_message": "Service message",
