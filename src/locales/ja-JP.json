@@ -3394,7 +3394,8 @@
       "work_order_support": "テクニカル サポートを依頼する",
       "work_order_apply_project_quota": "@:dictionary.project quota を申請する",
       "work_order_apply_domain_quota": "@:dictionary.domain クォータを申請する",
-      "work_order_apply_internal_resource": "内部チケットをリクエストする"
+      "work_order_apply_internal_resource": "内部チケットをリクエストする",
+      "ai": "AI Agent"
     },
     "tips": {
       "service_message": "サービスメッセージ",
