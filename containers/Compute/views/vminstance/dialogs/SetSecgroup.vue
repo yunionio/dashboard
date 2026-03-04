@@ -7,7 +7,7 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <loader loading v-if="!(bindedSecgroupsLoaded && secgroupsInitLoaded)" />
       <a-form :form="form.fc" hideRequiredMark v-show="bindedSecgroupsLoaded && secgroupsInitLoaded" v-bind="formItemLayout">
-        <a-form-item :label="$t('compute.nic')" :extra="$t('compute.nic_empty_secgroups_tip')">
+        <a-form-item v-if="params.type === 'vminstance'" :label="$t('compute.nic')" :extra="$t('compute.nic_empty_secgroups_tip')">
           <base-select
             class="w-100"
             v-decorator="decorators.nic"
@@ -59,6 +59,9 @@ export default {
       const max = this.isBindOne ? 1 : 5
       if (value.length > max) {
         return callback(maxError)
+      }
+      if (this.params.type === 'vminstance' && this.form.fd.nic) {
+        return callback()
       }
       if (value.length < 1) {
         return callback(minError)
