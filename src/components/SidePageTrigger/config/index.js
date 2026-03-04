@@ -194,5 +194,8 @@ export default {
   LlmSidePage: {
     resource: 'llms',
   },
+  McpSidePage: {
+    resource: 'mcp_agents',
+  },
   ...extraConfig,
 }
