@@ -42,9 +42,10 @@ import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
 import ShareMode from '@Cloudenv/views/cloudaccount/components/ShareMode'
 import DomainProject from '@Cloudenv/views/cloudaccount/components/DomainProject'
-import { getCloudaccountDocs, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
+import { keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
 import regexp from '@/utils/regexp'
+import { DOCS_MAP } from '@/constants/docs'
 import createMixin from './createMixin'
 
 export default {
@@ -86,7 +87,7 @@ export default {
       initName = options.name || ''
     }
     return {
-      docs: getCloudaccountDocs(this.$store.getters.scope),
+      docs: DOCS_MAP.cloudaccount(),
       decorators: {
         name: [
           'name',

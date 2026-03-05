@@ -37,8 +37,7 @@ import { LOGIN_TYPES_MAP } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { typeClouds } from '@/utils/common/hypervisor'
-import { getDoc, DOC_MAP } from '@/utils/docs'
-
+import { DOCS_MAP } from '@/constants/docs'
 const hypervisorMap = typeClouds.hypervisorMap
 export default {
   name: 'VmResetPasswordDialog',
@@ -116,7 +115,7 @@ export default {
           span: 4,
         },
       },
-      qgaDoc: getDoc(DOC_MAP.QGA),
+      qgaDoc: DOCS_MAP.qga(),
       checkQgaOK: true,
       loginAccount: login_account,
     }
