@@ -100,7 +100,8 @@ import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import regexp from '@/utils/regexp'
-import { keySecretFields, getCloudaccountDocs } from '../constants'
+import { DOCS_MAP } from '@/constants/docs'
+import { keySecretFields } from '../constants'
 
 export default {
   name: 'CloudaccountUpdateDialog',
@@ -246,7 +247,7 @@ export default {
       return keySecretFields[this.provider]
     },
     doc () {
-      return getCloudaccountDocs(this.$store.getters.scope)[this.provider]
+      return DOCS_MAP.cloudaccount()[this.provider]
     },
     isQcloud () {
       return this.provider === HYPERVISORS_MAP.qcloud.key

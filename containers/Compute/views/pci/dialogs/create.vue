@@ -56,8 +56,8 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { genDocsUrl } from '@/utils/utils'
 import { typeClouds } from '@/utils/common/hypervisor'
+import { DOCS_MAP } from '@/constants/docs'
 import ListSelect from '@/sections/ListSelect'
 import ResourcePropsMixin from '../mixins/resourceProps'
 
@@ -150,16 +150,7 @@ export default {
   },
   computed: {
     vendorAndDeviceLink () {
-      const lang = this.$store.getters.setting.language
-      if (lang === 'zh-CN') {
-        return genDocsUrl({
-          scope: this.$store.getters.scope,
-          isSysCE: this.$store.getters.isSysCE,
-          cePath: 'guides/onpremise/vminstance/passthrough/custom-pci-devices',
-          eePath: 'web_ui/computing/resources/gpu/#自定义透传设备类型',
-        })
-      }
-      return null
+      return DOCS_MAP.pciVendorAndDevice()
     },
   },
   methods: {
