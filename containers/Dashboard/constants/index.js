@@ -1,7 +1,7 @@
-import { sizestrWithUnit, sizeToDesignatedUnit, genDocsUrl } from '@/utils/utils'
+import { sizestrWithUnit, sizeToDesignatedUnit } from '@/utils/utils'
 import i18n from '@/locales'
 import { SCOPES_MAP, CLOUD_ENVS, HYPERVISORS_MAP } from '@/constants'
-import store from '@/store'
+import { DOCS_MAP } from '@/constants/docs'
 
 // 不定单位使用formatter，固定单位使用unit
 // 磁盘（disk）、内存（memory） 容量单位为：formatter: val => sizestrWithUnit(val, 'M', 1024)
@@ -2556,13 +2556,7 @@ export const PROJECT_QUOTA_CONFIG = {
 }
 
 export function getMetricDocs (scope) {
-  return genDocsUrl({
-    scope,
-    isSysCE: store.getters.isSysCE,
-    eePath: 'web_ui/intro/dashboard/',
-    cePath: 'guides/monitor_ops/metric',
-    anchor: i18n.t('dashboard.text_184'),
-  })
+  return DOCS_MAP.metricDocs()
 }
 
 export function getTargetRangeUsageKey (usageKey, scope, dataRangeScope, config = USAGE_CONFIG) {

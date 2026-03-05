@@ -32,8 +32,9 @@
 import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
 import ShareMode from '@Cloudenv/views/cloudaccount/components/ShareMode'
-import { getCloudaccountDocs, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
+import { keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
+import { DOCS_MAP } from '@/constants/docs'
 import createMixin from './createMixin'
 import DomainProject from '../../../components/DomainProject'
 
@@ -73,7 +74,7 @@ export default {
       initPort = list[1] || 8006
     }
     return {
-      docs: getCloudaccountDocs(this.$store.getters.scope),
+      docs: DOCS_MAP.cloudaccount(),
       decorators: {
         name: [
           'name',
