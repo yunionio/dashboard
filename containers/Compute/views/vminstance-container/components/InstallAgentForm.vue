@@ -27,7 +27,7 @@
 <script>
 import _ from 'lodash'
 import WindowsMixin from '@/mixins/windows'
-import { genDocsUrl } from '@/utils/utils'
+import { DOCS_MAP } from '@/constants/docs'
 
 export default {
   name: 'InstallAgentForm',
@@ -99,12 +99,7 @@ export default {
       return this.agent_install_status === 'install_failed' && this.install_failed_code === 'NoReachInfluxdb'
     },
     peHelpLink () {
-      return genDocsUrl({
-        scope: this.$store.getters.scope,
-        isSysCE: this.$store.getters.isSysCE,
-        cePath: 'guides/onpremise/network/ssh/sshproxy',
-        eePath: 'web_ui/network/ssh/sshproxy',
-      })
+      return DOCS_MAP.sshProxy()
     },
     install_failed_code () {
       return this.agent_install_status === 'install_failed' && this.data.agent_fail_code

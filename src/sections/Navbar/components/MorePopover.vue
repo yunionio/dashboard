@@ -22,7 +22,8 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import setting from '@/config/setting'
-import { isCE, genDocsUrl } from '@/utils/utils'
+import { isCE } from '@/utils/utils'
+import { DOCS_MAP } from '@/constants/docs'
 
 export default {
   name: 'HelpPopover',
@@ -42,7 +43,7 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode']),
     docsUrl () {
-      return genDocsUrl({ scope: this.$store.getters.scope, isSysCE: this.$store.getters.isSysCE, cePath: 'introduction', eePath: '', anchor: '' })
+      return DOCS_MAP.introduction()
     },
   },
   destroyed () {

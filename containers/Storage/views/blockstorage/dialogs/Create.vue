@@ -58,7 +58,7 @@ import CloudregionZone from '@/sections/CloudregionZone'
 import DomainSelect from '@/sections/DomainSelect'
 import Tag from '@/sections/Tag'
 import validateForm from '@/utils/validate'
-import { genDocsUrl } from '@/utils/utils'
+import { DOCS_MAP } from '@/constants/docs'
 
 export default {
   name: 'BlockStorageCreateDialog',
@@ -167,12 +167,7 @@ export default {
       return this.form.fd.storage_type === 'local'
     },
     localStorageUrl () {
-      return genDocsUrl({
-        scope: this.$store.getters.scope,
-        isSysCE: this.$store.getters.isSysCE,
-        cePath: 'guides/onpremise/storage/blockstorage/add-storage',
-        eePath: 'web_ui/storage/blockstorage/add-storage/',
-      })
+      return DOCS_MAP.blockStorage()
     },
   },
   methods: {
