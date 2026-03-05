@@ -844,7 +844,7 @@ export function getDocsUrl (scope, isSysCE) {
   if (scope === 'domain' || scope === 'project') {
     prefix = prefix + '/domain'
   }
-  return `${window.location.origin}/${prefix}/${language}/docs/`
+  return `${window.location.origin}/${prefix}/zh/docs/`
 }
 
 export function genDocsUrl ({ scope, isSysCE, cePath, eePath, anchor = '' }) {
