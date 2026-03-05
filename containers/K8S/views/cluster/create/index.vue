@@ -108,12 +108,13 @@
 import { mapGetters } from 'vuex'
 import { HYPERVISORS_MAP } from '@/constants'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
-import { KUBE_PROVIDER, K8S_HYPERVISORS_MAP, getClusterDocs } from '../constants'
+import { DOCS_MAP } from '@/constants/docs'
 import ServerConfig from '@K8S/sections/serverConfig'
 import CloudregionVpc from '@/sections/CloudregionVpc'
 import { isWithinRange, isRequired } from '@/utils/validate'
 import { findPlatform } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
+import { KUBE_PROVIDER, K8S_HYPERVISORS_MAP } from '../constants'
 
 function checkIpInSegment (i, networkData) {
   return (rule, value, _callback) => {
@@ -142,7 +143,7 @@ export default {
       preCheckResp: {
         pass: true,
       },
-      docs: getClusterDocs(this.$store.getters.scope),
+      docs: DOCS_MAP.cluster(),
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {

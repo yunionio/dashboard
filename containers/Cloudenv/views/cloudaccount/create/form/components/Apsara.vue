@@ -42,7 +42,8 @@ import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
 import ShareMode from '@Cloudenv/views/cloudaccount/components/ShareMode'
 import ReadOnly from '@Cloudenv/views/cloudaccount/components/ReadOnly'
-import { getCloudaccountDocs, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
+import { keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
+import { DOCS_MAP } from '@/constants/docs'
 import { isRequired } from '@/utils/validate'
 import createMixin from './createMixin'
 import DomainProject from '../../../components/DomainProject'
@@ -60,7 +61,7 @@ export default {
   data () {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
     return {
-      docs: getCloudaccountDocs(this.$store.getters.scope),
+      docs: DOCS_MAP.cloudaccount(),
       decorators: this.getDecorators(keySecretField),
     }
   },

@@ -1,7 +1,6 @@
 import { typeClouds } from '@/utils/common/hypervisor'
-import { arrayToObj, genDocsUrl } from '@/utils/utils'
+import { arrayToObj } from '@/utils/utils'
 import i18n from '@/locales'
-import store from '@/store'
 const providerMap = typeClouds.getProviderlowcase()
 const aliyunLogo = require('@/assets/images/providers/aliyun.svg')
 const awsLogo = require('@/assets/images/providers/aws.svg')
@@ -36,15 +35,6 @@ const qingcloudLogo = require('@/assets/images/providers/qingcloud.svg')
 const chinaUnionLogo = require('@/assets/images/providers/chinaunion.svg')
 const volcEngineLogo = require('@/assets/images/providers/volcengine.svg')
 const oraclecloudLogo = require('@/assets/images/providers/oraclecloud.svg')
-
-function getDocsCloudaccountPath (scope) {
-  return genDocsUrl({
-    scope,
-    isSysCE: store.getters.isSysCE,
-    cePath: 'guides/cmp/cloudaccounts/cloudaccount',
-    eePath: 'web_ui/multiplecloud/cloudaccount/cloudaccount',
-  })
-}
 
 export const CLOUDACCOUNT_TYPES = {
   public: {
@@ -774,29 +764,6 @@ export const keySecretFields = {
       k: 'user',
     },
   },
-}
-
-export function getBillBucketUrlDocs (scope) {
-  const docsUrl = getDocsCloudaccountPath(scope)
-  return {
-    aliyun: i18n.t('cloudenv.text_164', [docsUrl]),
-    volcengine: i18n.t('cloudenv.bill_bucket_url', [docsUrl, 'url-4']),
-    aws: i18n.t('cloudenv.text_165', [docsUrl]),
-    huawei: i18n.t('cloudenv.text_166', [docsUrl]),
-    google: i18n.t('cloudenv.text_167', [docsUrl]),
-    qcloud: i18n.t('cloudenv.bill_bucket_url', [docsUrl, 'url-3']),
-    ksyun: i18n.t('cloudenv.ksyun_bucket_url', [docsUrl]),
-  }
-}
-
-export function getSamlUserDocs (scope) {
-  const docsUrl = getDocsCloudaccountPath(scope)
-  return i18n.t('cloudenv.dentity_provider', [docsUrl])
-}
-
-export function getEnrollmentNumberDocs (scope) {
-  const docsUrl = getDocsCloudaccountPath(scope)
-  return docsUrl + i18n.t('cloudenv.text_219')
 }
 
 export const notSupportSelectRegion = [

@@ -64,8 +64,9 @@ import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
 import ShareMode from '@Cloudenv/views/cloudaccount/components/ShareMode'
 import ReadOnly from '@Cloudenv/views/cloudaccount/components/ReadOnly'
 import SkipDuplicateAccountCheck from '@Cloudenv/views/cloudaccount/components/SkipDuplicateAccountCheck'
-import { getCloudaccountDocs, keySecretFields, ACCESS_URL, getSamlUserDocs } from '@Cloudenv/views/cloudaccount/constants'
+import { keySecretFields, ACCESS_URL } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
+import { DOCS_MAP } from '@/constants/docs'
 import createMixin from './createMixin'
 import DomainProject from '../../../components/DomainProject'
 
@@ -112,8 +113,8 @@ export default {
         labelCol: { span: 4 },
         wrapperCol: { span: 10 },
       },
-      docs: getCloudaccountDocs(this.$store.getters.scope),
-      smaluserDoc: getSamlUserDocs(this.$store.getters.scope),
+      docs: DOCS_MAP.cloudaccount(),
+      smaluserDoc: DOCS_MAP.samlUser(),
       environments,
       decorators: {
         name: [
