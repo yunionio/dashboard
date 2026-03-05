@@ -121,10 +121,9 @@ import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
+import { DOCS_MAP } from '@/constants/docs'
 import {
   keySecretFields,
-  getBillBucketUrlDocs,
-  getEnrollmentNumberDocs,
   BILL_TYPES,
   BILL_TYPE_MAP,
 } from '../../constants'
@@ -234,11 +233,11 @@ export default {
     bucketUrl () {
       const { brand } = this.cloudAccount
       return brand
-        ? getBillBucketUrlDocs(this.$store.getters.scope)[brand.toLowerCase()]
+        ? DOCS_MAP.billBucket()[brand.toLowerCase()]
         : ''
     },
     enrollmentNumberUrl () {
-      return getEnrollmentNumberDocs(this.$store.getters.scope)
+      return DOCS_MAP.enrollmentNumber()
     },
     decorators () {
       const options = this.cloudAccount.options || {}

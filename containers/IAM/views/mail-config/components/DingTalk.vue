@@ -38,7 +38,7 @@
 
 <script>
 import TestButton from '@/sections/TestButton'
-import { genDocsUrl } from '@/utils/utils'
+import { DOCS_MAP } from '@/constants/docs'
 export default {
   name: 'DingTalkConfig',
   components: {
@@ -88,12 +88,7 @@ export default {
         ],
       },
       contactData: null,
-      href: genDocsUrl({
-        scope: this.$store.getters.domain,
-        isSysCE: this.$store.getters.isSysCE,
-        cePath: `guides/misc/notify/mailconfig/#${this.$t('system.steps_to_param_dingtalk')}`,
-        eePath: `web_ui/iam/notify/mailconfig/#${this.$t('system.steps_to_param_dingtalk')}`,
-      }),
+      href: DOCS_MAP.mailConfig('dingtalk'),
     }
   },
   destroyed () {
