@@ -351,5 +351,6 @@
   "monitor.alert_ticket_type.alert_ticket": "Alert ticket",
   "monitor.convert_to_ticket.alert_event_disabled_tip": "Alert event has been converted to ticket",
   "monitor.convert_to_ticket.alert_ticket_disabled_tip": "Alert ticket has been converted to ticket",
-  "monitor.converted_ticket": "Converted to ticket"
+  "monitor.converted_ticket": "Converted to ticket",
+  "monitor.commonalerts.disable_notify_recovery": "Disable notify recovery"
 }
