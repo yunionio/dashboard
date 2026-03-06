@@ -11,7 +11,7 @@
       </template>
     </a-alert>
     <a-alert :showIcon="true" type="error" v-if="!preCheckResp.pass">
-      <template slot="message">
+      <template slot="message" v-if="showDocsLink()">
         <div>
           {{$t('k8s.provider_image_not_prepared')}}
           <help-link :href="docs[provider.hypervisor]">{{$t('k8s.ref_prepare_doc')}}</help-link>
@@ -108,7 +108,7 @@
 import { mapGetters } from 'vuex'
 import { HYPERVISORS_MAP } from '@/constants'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
-import { DOCS_MAP } from '@/constants/docs'
+import { DOCS_MAP, showDocsLink } from '@/constants/docs'
 import ServerConfig from '@K8S/sections/serverConfig'
 import CloudregionVpc from '@/sections/CloudregionVpc'
 import { isWithinRange, isRequired } from '@/utils/validate'
@@ -135,6 +135,7 @@ export default {
   },
   data () {
     return {
+      showDocsLink,
       loading: false,
       providers: [],
       provider: {},

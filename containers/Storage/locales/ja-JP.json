@@ -335,6 +335,7 @@
   "storage.usage_active": "ストレージ使用量",
   "storage.local_storage.help_link": "リファレンス ドキュメント",
   "storage.local_storage.help_alert_message": "ローカルストレージタイプを追加するには、ストレージを追加するホストにログインし、/etc/yunion/host.conf を変更して、ディレクトリをlocal_image_pathsに追加します",
+  "storage.local_storage.help_alert_message_1": "ローカルストレージタイプを追加するには、ストレージを追加するホストにログインし、/etc/yunion/host.conf を変更して、ディレクトリをlocal_image_pathsに追加します",
   "storage.bucket_object_search_placeholder": "ファイル名のプレフィックス一致を入力してください",
   "storage.volcengine.storage_class.standard": "STANDARD",
   "storage.volcengine.storage_class.ia": "IA",

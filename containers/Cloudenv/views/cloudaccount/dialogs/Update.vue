@@ -34,7 +34,7 @@
           </a-form-item>
           <a-form-item :label="$t('cloudenv.text_300')" v-if="isAzure">
             <a-input v-decorator="decorators.directory_id" :placeholder="$t('cloudenv.text_243')" />
-            <div slot="extra">
+            <div slot="extra" v-if="showDocsLink()">
               <help-link :href="doc">{{$t('cloudenv.text_301')}}</help-link>
             </div>
           </a-form-item>
@@ -100,7 +100,7 @@ import TestButton from '@/sections/TestButton'
 import { HYPERVISORS_MAP } from '@/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { DOCS_MAP } from '@/constants/docs'
+import { DOCS_MAP, showDocsLink } from '@/constants/docs'
 import { keySecretFields } from '../constants'
 
 export default {
@@ -111,6 +111,7 @@ export default {
     const provider = this.params.data[0].brand.toLowerCase()
     const isVMware = provider === HYPERVISORS_MAP.esxi.provider.toLowerCase()
     return {
+      showDocsLink,
       loading: false,
       form: {
         fc: this.$form.createForm(this),
