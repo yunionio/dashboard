@@ -3,7 +3,7 @@
     <a-form-item
       :wrapperCol="{ span: 24 }"
       class="mb-0 mr-1 w-50">
-      <div slot="extra">{{ $t('common.schedtag.extra') }}，<help-link  :href="docUrl">{{ $t('common.view.doc') }}</help-link></div>
+      <div slot="extra" v-if="showDocsLink()">{{ $t('common.schedtag.extra') }}，<help-link  :href="docUrl">{{ $t('common.view.doc') }}</help-link></div>
       <base-select
         class="w-100"
         v-decorator="decorators.schedtag"
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { DOCS_MAP } from '@/constants/docs'
+import { DOCS_MAP, showDocsLink } from '@/constants/docs'
 import { SCHEDTAG_POLICY_OPTIONS } from '@/constants'
 
 export default {
@@ -51,6 +51,7 @@ export default {
   },
   data () {
     return {
+      showDocsLink,
       policyOpts: SCHEDTAG_POLICY_OPTIONS,
       schedtagItem: {},
       docUrl: DOCS_MAP.schedtag(),

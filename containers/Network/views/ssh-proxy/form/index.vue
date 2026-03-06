@@ -74,7 +74,7 @@
               <search-box :options="options" v-model="searchValue" @input="search" />
               <detect-ssh-table :params="params" :key="table1Key" :showRadioSelect="true" @radio-change="handleRadioChange" :maxColumns="3" :remote="false" style="padding-top: 15px;" />
               <a-input v-decorator="decorators.server_id" v-show="false" />
-              <div>{{$t('compute.text_196')}}<help-link href="/vminstance">{{$t('compute.perform_create')}}</help-link>,{{$t('network.ssh-proxy.endpoints.create.vminstance.tips')}}<help-link :href="vmConfigurationLink">{{$t('network.ssh-proxy.endpoints.create.vminstance.tips.link')}}</help-link></div>
+              <div v-if="showDocsLink()">{{$t('compute.text_196')}}<help-link href="/vminstance">{{$t('compute.perform_create')}}</help-link>,{{$t('network.ssh-proxy.endpoints.create.vminstance.tips')}}<help-link :href="vmConfigurationLink">{{$t('network.ssh-proxy.endpoints.create.vminstance.tips.link')}}</help-link></div>
             </div>
           </a-form-item>
         </a-form>
@@ -108,7 +108,7 @@ import {
 } from '@/utils/common/tableColumn'
 import { getNameFilter } from '@/utils/common/tableFilter'
 import ListMixin from '@/mixins/list'
-import { DOCS_MAP } from '@/constants/docs'
+import { DOCS_MAP, showDocsLink } from '@/constants/docs'
 
 export default {
   name: 'SshProxyCreateForm',
@@ -157,6 +157,7 @@ export default {
     ]
     this.handleNameChange = _.debounce(this.handleNameChange, 500)
     return {
+      showDocsLink,
       loading: false,
       detecting: false,
       title: this.$t('network.ssh-proxy.endpoints.create'),
