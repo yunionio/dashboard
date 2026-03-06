@@ -351,5 +351,6 @@
   "monitor.alert_ticket_type.alert_ticket": "告警工单",
   "monitor.convert_to_ticket.alert_event_disabled_tip": "已升级过告警事件",
   "monitor.convert_to_ticket.alert_ticket_disabled_tip": "已升级过告警工单",
-  "monitor.converted_ticket": "已升级为工单"
+  "monitor.converted_ticket": "已升级为工单",
+  "monitor.commonalerts.disable_notify_recovery": "禁用通知恢复"
 }

@@ -77,6 +77,9 @@
         </a-tooltip>
       </a-form-item>
     </a-form-item>
+    <a-form-item :label="$t('monitor.commonalerts.disable_notify_recovery')">
+      <a-switch v-decorator="decorators.disable_notify_recovery" :checked-children="$t('common.true')" :un-checked-children="$t('common.false')" />
+    </a-form-item>
     <a-form-item :label="$t('monitor.level')">
       <a-radio-group v-decorator="decorators.level">
         <a-radio-button v-for="item in levelOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
@@ -214,6 +217,7 @@ export default {
       robot_ids: [],
       channel: ['webconsole'],
       notifyTypes: [],
+      disable_notify_recovery: false,
     }
     if (this.commonalertId) {
       initialValue.name = this.alertData.name
@@ -255,6 +259,9 @@ export default {
       }
       if (initialValue.project) {
         initialValue.scope = 'project'
+      }
+      if (this.alertData.disable_notify_recovery) {
+        initialValue.disable_notify_recovery = true
       }
     }
 
@@ -511,6 +518,13 @@ export default {
           'level',
           {
             initialValue: initialValue.level,
+          },
+        ],
+        disable_notify_recovery: [
+          'disable_notify_recovery',
+          {
+            valuePropName: 'checked',
+            initialValue: initialValue.disable_notify_recovery,
           },
         ],
         notify_type: [

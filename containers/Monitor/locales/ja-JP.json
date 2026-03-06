@@ -351,5 +351,6 @@
   "monitor.alert_ticket_type.alert_ticket": "アラーム工單",
   "monitor.convert_to_ticket.alert_event_disabled_tip": "アラームイベントはすでに工單に変換されています",
   "monitor.convert_to_ticket.alert_ticket_disabled_tip": "アラーム工單はすでに工單に変換されています",
-  "monitor.converted_ticket": "工單に変換されました"
+  "monitor.converted_ticket": "工單に変換されました",
+  "monitor.commonalerts.disable_notify_recovery": "通知復旧を無効にする"
 }
