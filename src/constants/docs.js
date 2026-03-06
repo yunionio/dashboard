@@ -1,12 +1,13 @@
-import { genDocsUrl } from '@/utils/utils'
+import { genDocsUrl, isCE } from '@/utils/utils'
 import i18n from '@/locales'
 import store from '@/store'
 import setting from '@/config/setting'
 
 function getI18n (key, params) {
+  const ce = isCE() || store.getters.isSysCE
   // 中文界面：使用当前 locale（zh-CN），保持原有占位参数
-  if (setting.language === 'zh-CN') {
-    return params !== undefined ? i18n.t(key, params) : i18n.t(key)
+  if (setting.language === 'zh-CN' || !ce) {
+    return params !== undefined ? i18n.t(key, 'zh-CN', params) : i18n.t(key, 'zh-CN')
   }
   // 其他语言：统一走英文文档
   return params !== undefined ? i18n.t(key, 'en', params) : i18n.t(key, 'en')
@@ -218,7 +219,7 @@ export const DOCS_MAP = {
         scope: store.getters.domain,
         isSysCE: store.getters.isSysCE,
         cePath: 'onpremise/guides/network/ssh/sshproxy/#server-configuration-requirements',
-        eePath: 'web_ui/network/ssh/sshproxy/#server-configuration-requirements',
+        eePath: 'web_ui/network/ssh/sshproxy/#虚拟机配置要求',
       })
     }
   },
