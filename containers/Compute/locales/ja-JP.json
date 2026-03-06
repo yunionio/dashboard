@@ -1453,6 +1453,7 @@
   "compute.vminstance.monitor.install_agent.tips": "エージェントがインストールされていない場合、一部のグラフを表示できません",
   "compute.vminstance.monitor.install_agent.tips_failed.others": "インストールに失敗しました。再インストールしてください",
   "compute.vminstance.monitor.install_agent.tips_failed.no_reach_influxdb": "インストールに失敗しました、利用可能なPEがありません、何ですか",
+  "compute.vminstance.monitor.install_agent.tips_failed.no_reach_influxdb_1": "インストールに失敗しました、利用可能なPEがありません",
   "compute.vminstance.monitor.install_agent.tips_failed.server_not_sshable": "インストールが失敗し、ホストがパスワードなしでログインできない",
   "compute.vminstance.monitor.install_agent": "エージェントのインストール",
   "compute.vminstance.monitor.reinstall_agent": "エージェントの再インストール",

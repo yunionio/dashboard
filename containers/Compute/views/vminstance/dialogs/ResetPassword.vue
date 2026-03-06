@@ -4,7 +4,7 @@
     <div slot="body">
       <a-alert v-if="enableQgaAlert" class="mb-2" type="warning">
         <div slot="message">
-          {{ $t('compute.qga.alert01') }}（<help-link :href="qgaDoc">{{ $t('compute.qga.alert02') }}</help-link>），{{ $t('compute.qga.alert03') }}
+          {{ $t('compute.qga.alert01') }}<template v-if="showDocsLink()">（<help-link :href="qgaDoc">{{ $t('compute.qga.alert02') }}</help-link>）</template>，{{ $t('compute.qga.alert03') }}
         </div>
       </a-alert>
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_276')" />
@@ -37,7 +37,7 @@ import { LOGIN_TYPES_MAP } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { typeClouds } from '@/utils/common/hypervisor'
-import { DOCS_MAP } from '@/constants/docs'
+import { DOCS_MAP, showDocsLink } from '@/constants/docs'
 const hypervisorMap = typeClouds.hypervisorMap
 export default {
   name: 'VmResetPasswordDialog',
@@ -67,6 +67,7 @@ export default {
       Windows: 'Administrator',
     }
     return {
+      showDocsLink,
       loading: false,
       loginTypes: [LOGIN_TYPES_MAP.random.key, LOGIN_TYPES_MAP.password.key],
       form: {
