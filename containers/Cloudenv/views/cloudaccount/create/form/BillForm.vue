@@ -13,7 +13,7 @@
       <template v-if="isAzure && isEA">
         <a-form-item :label="$t('cloudenv.text_195')">
           <a-input v-decorator="decorators.enrollment_number" />
-          <span slot="extra">
+          <span slot="extra" v-if="showDocsLink()">
             {{ $t('cloudenv.text_572') }}
             <help-link :href="enrollmentNumberUrl">{{ $t('cloudenv.text_197') }}</help-link>
           </span>
@@ -56,7 +56,7 @@
         </a-form-item>
         <a-form-item :label="$t('cloudenv.text_204')">
           <a-input v-decorator="decorators.billing_report_bucket" />
-          <span slot="extra" v-if="bucketUrl">
+          <span slot="extra" v-if="bucketUrl && showDocsLink()">
             <!-- 请正确输入账单文件所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com <br /> -->
             {{ $t('cloudenv.text_196') }}
             <help-link :href="bucketUrl">{{ $t('cloudenv.text_205') }}</help-link>
@@ -121,7 +121,7 @@ import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
-import { DOCS_MAP } from '@/constants/docs'
+import { DOCS_MAP, showDocsLink } from '@/constants/docs'
 import {
   keySecretFields,
   BILL_TYPES,
@@ -138,6 +138,7 @@ export default {
   },
   data () {
     return {
+      showDocsLink,
       loading: false,
       cloudAccounts: [],
       cloudAccountLoading: false,
