@@ -46,6 +46,13 @@ export default {
         levelColumn(),
         getProjectTableColumn(),
         getVerifiedContactTypesTableColumn({ vm: this }),
+        {
+          field: 'disable_notify_recovery',
+          title: this.$t('monitor.commonalerts.disable_notify_recovery'),
+          formatter: ({ row }) => {
+            return row.disable_notify_recovery ? this.$t('common.true') : this.$t('common.false')
+          },
+        },
       ],
       extraInfo: [
         {
