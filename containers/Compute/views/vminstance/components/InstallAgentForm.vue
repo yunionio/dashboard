@@ -6,7 +6,7 @@
           {{ install_failed_reason }}
         </template>
         {{ installTips }}
-        <help-link :href="peHelpLink" v-if="showPEHelpLink">PE</help-link>
+        <help-link :href="peHelpLink" v-if="showPEHelpLink && showDocsLink()">PE</help-link>
       </a-tooltip>
       <a-tooltip>
         <template slot="title" v-if="disableTips">
@@ -27,7 +27,7 @@
 <script>
 import _ from 'lodash'
 import WindowsMixin from '@/mixins/windows'
-import { DOCS_MAP } from '@/constants/docs'
+import { DOCS_MAP, showDocsLink } from '@/constants/docs'
 
 export default {
   name: 'InstallAgentForm',
@@ -63,6 +63,7 @@ export default {
       agent_install_status = 'install'
     }
     return {
+      showDocsLink,
       /* install, installed, installing, install_failed */
       agent_install_status,
     }
@@ -83,7 +84,7 @@ export default {
             case 'Others':
               return this.$t('compute.vminstance.monitor.install_agent.tips_failed.others')
             case 'NoReachInfluxdb':
-              return this.$t('compute.vminstance.monitor.install_agent.tips_failed.no_reach_influxdb')
+              return showDocsLink() ? this.$t('compute.vminstance.monitor.install_agent.tips_failed.no_reach_influxdb') : this.$t('compute.vminstance.monitor.install_agent.tips_failed.no_reach_influxdb_1')
             case 'ServerNotSshable':
               return this.$t('compute.vminstance.monitor.install_agent.tips_failed.server_not_sshable')
             default:

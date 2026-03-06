@@ -45,7 +45,7 @@ import DomainProject from '@Cloudenv/views/cloudaccount/components/DomainProject
 import { keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
 import regexp from '@/utils/regexp'
-import { DOCS_MAP } from '@/constants/docs'
+import { DOCS_MAP, showDocsLink } from '@/constants/docs'
 import createMixin from './createMixin'
 
 export default {
@@ -88,6 +88,7 @@ export default {
     }
     return {
       docs: DOCS_MAP.cloudaccount(),
+      showDocsLink,
       decorators: {
         name: [
           'name',
