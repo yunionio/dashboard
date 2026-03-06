@@ -196,6 +196,7 @@ export default {
           alert_type: 'normal', // normal(自定义) system(系统内置)
           level: fd.level,
           metric_query,
+          disable_notify_recovery: fd.disable_notify_recovery,
         }
 
         if (fd.silent_period) {
