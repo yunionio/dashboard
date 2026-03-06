@@ -12,13 +12,13 @@
           <a-input v-decorator="decorators.model" :placeholder="$t('compute.pci.model.placeholder')" />
         </a-form-item>
         <a-form-item :label="$t('compute.pci.vendor_id')">
-          <template #extra>
+          <template #extra v-if="showDocsLink()">
             {{ $t('compute.pci.vendor_id.extra') }}<help-link v-if="vendorAndDeviceLink" :href="vendorAndDeviceLink">{{ $t('compute.pci.document') }}</help-link>
           </template>
           <a-input v-decorator="decorators.vendor_id" :placeholder="$t('compute.pci.vendor_id.placeholder')" />
         </a-form-item>
         <a-form-item :label="$t('compute.pci.device_id')">
-          <template #extra>
+          <template #extra v-if="showDocsLink()">
             {{ $t('compute.pci.device_id.extra') }}<help-link v-if="vendorAndDeviceLink" :href="vendorAndDeviceLink">{{ $t('compute.pci.document') }}</help-link>
           </template>
           <a-input v-decorator="decorators.device_id" :placeholder="$t('compute.pci.device_id.placeholder')" />
@@ -57,7 +57,7 @@
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { typeClouds } from '@/utils/common/hypervisor'
-import { DOCS_MAP } from '@/constants/docs'
+import { DOCS_MAP, showDocsLink } from '@/constants/docs'
 import ListSelect from '@/sections/ListSelect'
 import ResourcePropsMixin from '../mixins/resourceProps'
 
@@ -69,6 +69,7 @@ export default {
   mixins: [DialogMixin, WindowsMixin, ResourcePropsMixin],
   data () {
     return {
+      showDocsLink,
       loading: false,
       form: {
         fc: this.$form.createForm(this, {

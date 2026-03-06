@@ -1452,6 +1452,7 @@
   "compute.vminstance.monitor.install_agent.tips": "Agent is not installed, some charts cannot be viewed",
   "compute.vminstance.monitor.install_agent.tips_failed.others": "Agent installation is failed, try reinstall",
   "compute.vminstance.monitor.install_agent.tips_failed.no_reach_influxdb": "Agent installation is failed,No PE available, what is ",
+  "compute.vminstance.monitor.install_agent.tips_failed.no_reach_influxdb_1": "Agent installation is failed,No PE available",
   "compute.vminstance.monitor.install_agent.tips_failed.server_not_sshable": "Agent installation is failed,The server is not sshable",
   "compute.vminstance.monitor.install_agent": "Install Agent",
   "compute.vminstance.monitor.reinstall_agent": "Reinstall Agent",

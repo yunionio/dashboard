@@ -15,7 +15,7 @@
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
-        <div slot="extra">
+        <div slot="extra" v-if="showDocsLink()">
           {{$t('cloudenv.text_236', [keySecretField.text, keySecretField.label.k])}}
           <help-link :href="docs[provider.toLowerCase()]">{{$t('cloudenv.text_237')}}</help-link>
         </div>
@@ -29,11 +29,12 @@
       <a-form-item :label="$t('cloudaccount.create_form.saml_user_label')" v-show="!isNotSupportSaml">
         <a-switch :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" v-decorator="decorators.saml_auth" />
         <div slot="extra">
-          <i18n path="cloudaccount.create_form.saml_user_extra">
+          <i18n path="cloudaccount.create_form.saml_user_extra" v-if="showDocsLink()">
             <template #link>
               <help-link :href="smaluserDoc">{{$t('cloudaccount.create_form.saml_user_link')}}</help-link>
             </template>
           </i18n>
+          <i18n v-else path="cloudaccount.create_form.saml_user_extra_1" />
         </div>
       </a-form-item>
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
@@ -51,7 +52,7 @@ import ReadOnly from '@Cloudenv/views/cloudaccount/components/ReadOnly'
 import { keySecretFields, ACCESS_URL } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
 import { PROVIDER_MAP } from '@/constants'
-import { DOCS_MAP } from '@/constants/docs'
+import { DOCS_MAP, showDocsLink } from '@/constants/docs'
 import createMixin from './createMixin'
 import DomainProject from '../../../components/DomainProject'
 
@@ -69,6 +70,7 @@ export default {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
     const environments = Object.entries(ACCESS_URL[this.provider.toLowerCase()]).map(keyValueArr => ({ key: keyValueArr[0], label: keyValueArr[1] }))
     return {
+      showDocsLink,
       docs: DOCS_MAP.cloudaccount(),
       smaluserDoc: DOCS_MAP.samlUser(),
       decorators: this.getDecorators(keySecretField, environments),
