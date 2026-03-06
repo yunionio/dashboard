@@ -34,20 +34,20 @@ export default {
       required: true,
     },
     service: {
-      type: String
+      type: String,
     },
     resource: {
-      type: String
+      type: String,
     },
     excludeResources: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   data () {
     return {
       loaded: false,
       permission: {},
-      isServiceDataEmpty: false
+      isServiceDataEmpty: false,
     }
   },
   computed: {
@@ -108,7 +108,7 @@ export default {
         }
       }, this.permission)
       return options
-    }
+    },
   },
   watch: {
     options: {
@@ -117,8 +117,8 @@ export default {
           this.isServiceDataEmpty = true
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   created () {
     this.POLICY_GROUPS = genPolicyGroups()
@@ -166,15 +166,15 @@ export default {
       const computeChildren = options[this.service]?.children
       const getService = (computeChildren = {}) => {
         return {
-          [this.resource]: computeChildren[this.resource]
+          [this.resource]: computeChildren[this.resource],
         }
       }
       return {
         key: this.service,
         label: this.$t('dictionary.compute'),
-        children: getService(computeChildren)
+        children: getService(computeChildren),
       }
-    }
+    },
   },
 }
 </script>

@@ -1,5 +1,6 @@
 import {
   getNameDescriptionTableColumn,
+  getTagTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 
@@ -20,6 +21,12 @@ export default {
         title: this.$t('table.title.type'),
         width: 140,
       },
+      getTagTableColumn({
+        onManager: this.onManager,
+        resource: 'credentials',
+        columns: () => this.columns,
+        tipName: this.$t('aice.container_secret'),
+      }),
       getTimeTableColumn({
         field: 'created_at',
         title: this.$t('table.title.create_time'),
