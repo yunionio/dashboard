@@ -1,9 +1,14 @@
 <template>
   <page-list
+    show-tag-filter
+    show-tag-columns
+    show-tag-columns2
+    show-tag-config
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :tag-config-params="tagConfigParams" />
 </template>
 
 <script>
@@ -31,6 +36,9 @@ export default {
         filterOptions: {},
         hiddenColumns: [],
       }),
+      tagConfigParams: {
+        resource: 'credentials',
+      },
       groupActions: [
         {
           label: this.$t('common.create'),
