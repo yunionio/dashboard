@@ -61,7 +61,7 @@
               <a-select-option :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
             </template>
           </a-select>
-          <div slot="extra">
+          <div slot="extra" v-if="showDocsLink()">
             <i18n path="metricConfig.create_form.metric_extra">
               <template #link>
                 <help-link :href="metricDoc">{{$t('metricConfig.create_form.usage_link')}}</help-link>
@@ -107,6 +107,7 @@ import { hasPermission } from '@/utils/auth'
 import { getSignature } from '@/utils/crypto'
 import { getMetricDocs } from '@Dashboard/constants'
 import setting from '@/config/setting'
+import { showDocsLink } from '@/constants/docs'
 import { usageConfig, serverUsageOptions, hostUsageOptions } from './constants'
 
 export default {
@@ -143,6 +144,7 @@ export default {
     const initialLimit = (this.params && this.params.limit) || 5
     const initialTime = (this.params && this.params.time) || 24 * 60
     return {
+      showDocsLink,
       data: [],
       visible: false,
       loading: false,
