@@ -24,6 +24,7 @@ export default {
   },
   data () {
     return {
+      visibleBlobKeys: {},
       baseInfo: [
         {
           field: 'name',
@@ -31,11 +32,11 @@ export default {
         },
         {
           field: 'type',
-          title: this.$t('common.type'),
+          title: this.$t('table.title.type'),
         },
         getTimeTableColumn({
           field: 'created_at',
-          title: this.$t('common.created_at'),
+          title: this.$t('table.title.create_time'),
         }),
       ],
       extraInfo: [
@@ -57,18 +58,55 @@ export default {
               if (typeof obj !== 'object' || obj === null) return '-'
               const entries = Object.entries(obj)
               if (entries.length === 0) return '-'
-              return h('div', { class: 'container-secret-blob' }, entries.map(([k, v]) =>
-                h('div', { key: k, class: 'blob-row' }, [
+              return h('div', { class: 'container-secret-blob' }, entries.map(([k, v]) => {
+                const visible = this.visibleBlobKeys[k]
+                const displayValue = visible ? String(v) : '••••••'
+                return h('div', { key: k, class: 'blob-row' }, [
                   h('span', { class: 'blob-key' }, k),
                   h('span', { class: 'blob-sep' }, ': '),
-                  h('span', { class: 'blob-value' }, String(v)),
-                ]),
-              ))
+                  h('span', { class: 'blob-value' }, displayValue),
+                  h('a-icon', {
+                    class: 'blob-eye ml-1',
+                    props: {
+                      type: visible ? 'eye-invisible' : 'eye',
+                      theme: 'twoTone',
+                      twoToneColor: '#1890ff',
+                    },
+                    on: {
+                      click: () => this.toggleBlobKey(k),
+                    },
+                  }),
+                  h('a-icon', {
+                    class: 'blob-copy ml-1',
+                    props: {
+                      type: 'copy',
+                      theme: 'twoTone',
+                      twoToneColor: '#1890ff',
+                    },
+                    on: {
+                      click: () => this.copyBlobValue(v),
+                    },
+                  }),
+                ])
+              }))
             },
           },
         },
       ],
     }
+  },
+  methods: {
+    toggleBlobKey (key) {
+      this.$set(this.visibleBlobKeys, key, !this.visibleBlobKeys[key])
+    },
+    async copyBlobValue (value) {
+      try {
+        await this.$copyText(String(value))
+        this.$message.success(this.$t('common.copy'))
+      } catch (e) {
+        this.$message.error(this.$t('common.copyError'))
+      }
+    },
   },
 }
 </script>
@@ -89,5 +127,13 @@ export default {
 }
 .blob-value {
   color: #333;
+}
+.blob-eye {
+  cursor: pointer;
+  vertical-align: middle;
+}
+.blob-copy {
+  cursor: pointer;
+  vertical-align: middle;
 }
 </style>

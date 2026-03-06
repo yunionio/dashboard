@@ -36,11 +36,7 @@ export default {
         {
           label: this.$t('common.create'),
           action: () => {
-            this.createDialog('LlmSkuCreateDialog', {
-              callback: () => {
-                this.list.refresh()
-              },
-            })
+            this.$router.push('/llm-sku/create')
           },
           meta: () => {
             return {

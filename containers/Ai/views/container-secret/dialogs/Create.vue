@@ -8,7 +8,7 @@
             v-decorator="decorators.name"
             :placeholder="$t('common.tips.input', [$t('common.name')])" />
         </a-form-item>
-        <a-form-item :label="$t('aice.container_secret')" :extra="$t('aice.container_secret.add_pair')">
+          <a-form-item :label="$t('aice.container_secret')" :extra="$t('aice.container_secret.env_hint') + ' ' + $t('aice.container_secret.add_pair')">
           <div v-for="(item, index) in items" :key="item.id" class="d-flex align-items-start mb-2">
             <a-input
               v-model="item.key"
