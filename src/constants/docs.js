@@ -2,6 +2,7 @@ import { genDocsUrl, isCE } from '@/utils/utils'
 import i18n from '@/locales'
 import store from '@/store'
 import setting from '@/config/setting'
+import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 
 function getI18n (key, params) {
   const ce = isCE() || store.getters.isSysCE
@@ -11,6 +12,13 @@ function getI18n (key, params) {
   }
   // 其他语言：统一走英文文档
   return params !== undefined ? i18n.t(key, 'en', params) : i18n.t(key, 'en')
+}
+
+export const showDocsLink = () => {
+  console.log(store.getters.scopedPolicy)
+  const ce = isCE() || store.getters.isSysCE
+  if (ce) return true
+  return !isScopedPolicyMenuHidden('navbar_hidden_items.docs')
 }
 
 export const DOCS_MAP = {

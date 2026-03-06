@@ -6,7 +6,7 @@
         v-decorator="decorators.all_usage_key"
         :usages="allUsages"
         @change="allUsageChange" />
-      <div slot="extra">
+      <div slot="extra" v-if="showDocsLink()">
         <i18n path="metricConfig.create_form.all_usage_extra">
           <template #link>
             <help-link :href="metricDoc">{{$t('metricConfig.create_form.all_usage_link')}}</help-link>
@@ -45,6 +45,7 @@
 import { mapGetters } from 'vuex'
 import { K8S_USAGE_CONFIG, getMetricDocs } from '@Dashboard/constants'
 import UsageSelect from '@Dashboard/sections/QuotaConfig/UsageSelect'
+import { showDocsLink } from '@/constants/docs'
 
 export default {
   name: 'K8sConfig',
@@ -68,6 +69,7 @@ export default {
   },
   data () {
     return {
+      showDocsLink,
       translateUsage: this.$t('k8s_usage'),
       metricDoc: getMetricDocs(this.$store.getters.scope),
     }

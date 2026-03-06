@@ -9,7 +9,7 @@
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.oracle_user_ocid" :placeholder="keySecretField.placeholder.k" />
-        <div slot="extra">
+        <div slot="extra" v-if="showDocsLink()">
           {{$t('cloudenv.text_236', [keySecretField.text, keySecretField.label.k])}}
           <help-link :href="docs[provider.toLowerCase()]">{{$t('cloudenv.text_237')}}</help-link>
         </div>
@@ -41,7 +41,7 @@ import ReadOnly from '@Cloudenv/views/cloudaccount/components/ReadOnly'
 import UploadPemFile from '@Cloudenv/views/cloudaccount/components/UploadPemFile'
 import { keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
-import { DOCS_MAP } from '@/constants/docs'
+import { DOCS_MAP, showDocsLink } from '@/constants/docs'
 import createMixin from './createMixin'
 import DomainProject from '../../../components/DomainProject'
 
@@ -77,6 +77,7 @@ export default {
     }
     return {
       docs: DOCS_MAP.cloudaccount(),
+      showDocsLink,
       keySecretField,
       decorators: {
         name: [
