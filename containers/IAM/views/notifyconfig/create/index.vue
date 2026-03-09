@@ -35,7 +35,7 @@
         ref="typeRef"
         :is="form.fd.type"
         :form-item-layout="formItemLayout"
-        :docUrl="getNotifyDocsUrl(form.fd.type)" />
+        :docUrl="DOCS_MAP.mailConfig(form.fd.type)" />
     </page-body>
     <page-footer>
       <div slot="right">
@@ -51,12 +51,12 @@
 import WindowsMixin from '@/mixins/windows'
 import NameRepeated from '@/sections/NameRepeated/index'
 import ScopeRadio from '@/sections/ScopeRadio'
+import { DOCS_MAP, showDocsLink } from '@/constants/docs'
 import Email from './components/Email'
 import Mobile from './components/Mobile'
 import Dingtalk from './components/Dingtalk'
 import Feishu from './components/Feishu'
 import Workwx from './components/Workwx'
-import { getNotifyDocsUrl } from '../utils/docs'
 
 export default {
   name: 'NotifyconfigCreate',
@@ -73,6 +73,8 @@ export default {
   data () {
     const scope = this.$store.getters.scope
     return {
+      DOCS_MAP,
+      showDocsLink,
       testLoading: false,
       loading: false,
       existTypes: [],
@@ -375,7 +377,6 @@ export default {
         }
       })
     },
-    getNotifyDocsUrl,
   },
 }
 </script>
