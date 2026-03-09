@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { getBrandTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { getBrandTableColumn, getCopyWithContentTableColumn, getAccountTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'SamluserDetail',
@@ -30,6 +30,7 @@ export default {
           field: 'owner_name',
           title: this.$t('cloudenv.clouduser_list_t4'),
         }),
+        getAccountTableColumn({ field: 'cloudaccount', title: this.$t('common.text00108') }),
       ],
     }
   },
