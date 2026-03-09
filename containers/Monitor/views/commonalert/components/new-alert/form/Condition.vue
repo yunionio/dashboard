@@ -125,6 +125,9 @@ export default {
     }
   },
   computed: {
+    hasDeltaCondition () {
+      return this.conditionList.some(item => this.form.fd.reduce && this.form.fd.reduce[item.key] === 'delta')
+    },
     metricKeyOpts () {
       return (this.res_type_measurements[this.metric_res_type] || []).map(val => {
         let label = val.measurement
@@ -139,6 +142,14 @@ export default {
           label,
         }
       })
+    },
+  },
+  watch: {
+    hasDeltaCondition: {
+      handler (v) {
+        this.$emit('delta-change', v)
+      },
+      immediate: true,
     },
   },
   methods: {
