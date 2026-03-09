@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import { getNotifyDocsUrl } from '../../utils/docs'
+import { DOCS_MAP, showDocsLink } from '@/constants/docs'
 export default {
   name: 'smsaliyun',
   props: {
@@ -107,6 +107,7 @@ export default {
   },
   data () {
     return {
+      showDocsLink,
       submiting: false,
       testLoding: false,
       activeKey: ['1'],
@@ -159,7 +160,7 @@ export default {
           'errorCodeEn',
         ],
       },
-      docUrl: getNotifyDocsUrl('mobile_aliyun'),
+      docUrl: DOCS_MAP.mailConfig('mobile_aliyun'),
     }
   },
 }
