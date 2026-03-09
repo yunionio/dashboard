@@ -224,12 +224,16 @@ export default {
         }
         if (fd.domain || fd.domain_id) data.domain_id = (fd.domain || fd.domain_id)
         if (fd.project) data.project_id = fd.project
-        const periodNum = parseInt(fd.period)
-        const unit = fd.period.split('').pop()
-        if (unit === 'm' && periodNum * fd.alert_duration < 10) {
-          data.from = '10m'
+        if (fd.from) {
+          data.from = fd.from
         } else {
-          data.from = (periodNum * fd.alert_duration) + unit
+          const periodNum = parseInt(fd.period)
+          const unit = fd.period.split('').pop()
+          if (unit === 'm' && periodNum * fd.alert_duration < 10) {
+            data.from = '10m'
+          } else {
+            data.from = (periodNum * fd.alert_duration) + unit
+          }
         }
         if (data.metric_query && data.metric_query.length > 1) {
           data.metric_query.map(item => {
