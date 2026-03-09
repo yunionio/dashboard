@@ -22,20 +22,6 @@
     </a-form-item>
     <container-title :title="$t('monitor.commonalert.alarm_strategy')" />
     <a-form-item :label="$t('monitor.commonalert.alert_condition')">{{$t('monitor.commonalert.alert_condition.content')}}</a-form-item>
-    <a-form-item :label="$t('monitor.commonalert.query_condition')" class="mb-0">
-      <a-row :gutter="2">
-        <a-col :span="6">
-          <a-form-item>
-            <base-select v-decorator="decorators.period" :options="preiodOpts" />
-          </a-form-item>
-        </a-col>
-        <a-col :span="6">
-          <a-form-item>
-            <base-select v-decorator="decorators.alert_duration" :options="durationOpts" />
-          </a-form-item>
-        </a-col>
-      </a-row>
-    </a-form-item>
     <a-form-item :label="$t('monitor.condition')">
       <condition
         ref="conditionRef"
@@ -43,7 +29,33 @@
         :res_type_measurements="res_type_measurements"
         :metric_res_type="form.fd.metric_res_type"
         :disabled="disabled"
-        @metricChange="metricChangeHandle" />
+        @metricChange="metricChangeHandle"
+        @delta-change="hasDeltaCondition = $event" />
+    </a-form-item>
+    <a-form-item
+      :label="$t('monitor.commonalert.query_condition')"
+      :extra="hasDeltaCondition ? $t('monitor.commonalert.delta_condition_no_duration') : undefined">
+      <a-row :gutter="2">
+        <a-col :span="6">
+          <a-form-item class="mb-0">
+            <base-select v-decorator="decorators.period" :options="preiodOpts" />
+          </a-form-item>
+        </a-col>
+        <a-col v-if="!hasDeltaCondition" :span="6">
+          <a-form-item class="mb-0">
+            <base-select v-decorator="decorators.alert_duration" :options="durationOpts" />
+          </a-form-item>
+        </a-col>
+        <a-col v-else :span="12" class="d-flex align-items-center ml-4">
+          <span class="mr-1">{{ $t('monitor.commonalert.from_period_label') }}</span>
+          <a-form-item class="mb-0">
+            <base-select
+              v-decorator="decorators.from"
+              :options="fromOpts"
+              :select-props="{ placeholder: $t('monitor.commonalert.from_period_placeholder') }" />
+          </a-form-item>
+        </a-col>
+      </a-row>
     </a-form-item>
     <a-form-item :label="$t('monitor.monitor_filters')">
       <a-row>
@@ -209,6 +221,7 @@ export default {
       period: '5m',
       comparator: '>=',
       alert_duration: 2,
+      from: '10m',
       silent_period: '360m',
       reduce: 'avg',
       level: 'normal',
@@ -507,6 +520,15 @@ export default {
             ],
           },
         ],
+        from: [
+          'from',
+          {
+            initialValue: initialValue.from,
+            rules: [
+              { required: true, message: this.$t('common.select') },
+            ],
+          },
+        ],
         silent_period: [
           'silent_period',
           {
@@ -594,6 +616,16 @@ export default {
         { key: '1440m', label: this.$t('monitor.duration.silent.hour', [24]) },
       ],
       preiodOpts: Object.values(preiodMaps),
+      fromPeriodOpts: [
+        { key: '10m', label: this.$t('monitor.duration.silent.minute', [10]) },
+        { key: '30m', label: this.$t('monitor.duration.silent.minute', [30]) },
+        { key: '60m', label: this.$t('monitor.duration.silent.hour', [1]) },
+        { key: '180m', label: this.$t('monitor.duration.silent.hour', [3]) },
+        { key: '360m', label: this.$t('monitor.duration.silent.hour', [6]) },
+        { key: '720m', label: this.$t('monitor.duration.silent.hour', [12]) },
+        { key: '1440m', label: this.$t('monitor.duration.silent.hour', [24]) },
+        { key: '2880m', label: this.$t('monitor.duration.silent.hour', [48]) },
+      ],
       durationOpts: [
         { key: 1, label: this.$t('monitor.duration.label', [1]) },
         { key: 2, label: this.$t('monitor.duration.label', [2]) },
@@ -616,6 +648,7 @@ export default {
       label: this.$t('monitor.text00015'),
       isFirstMetricChange: this.isUpdate,
       conditionMap: new Map(),
+      hasDeltaCondition: false,
     }
   },
   computed: {
@@ -637,6 +670,11 @@ export default {
         scope: this.currentScope,
         limit: 0,
       }
+    },
+    fromOpts () {
+      const period = this.form.fd.period
+      const pMin = this.periodMinutes(period)
+      return this.fromPeriodOpts.filter(opt => this.periodMinutes(opt.key) > pMin)
     },
     robotParams () {
       if (this.currentScope === 'project' && this.formScopeParams.project_id) {
@@ -736,8 +774,21 @@ export default {
     } else {
       this.$refs.conditionRef.add()
     }
+    this.$nextTick(() => {
+      const from = this.form.fd.from
+      const opts = this.fromOpts
+      if (opts.length && !opts.some(opt => opt.key === from)) {
+        this.form.fc.setFieldsValue({ from: opts[0].key })
+      }
+    })
   },
   methods: {
+    periodMinutes (periodKey) {
+      if (!periodKey || typeof periodKey !== 'string') return 0
+      const num = parseInt(periodKey, 10)
+      const unit = periodKey.slice(-1)
+      return unit === 'h' ? num * 60 : num
+    },
     initResType () {
       this.form.fd.metric_res_type = this.alertData.common_alert_metric_details[0].res_type
     },
@@ -862,6 +913,14 @@ export default {
           this.$set(this.form.fd, key, item)
         }
       }, newField)
+      if (newField.hasOwnProperty('period')) {
+        const opts = this.fromOpts
+        const curFrom = this.form.fd.from
+        const valid = opts.some(opt => opt.key === curFrom)
+        if (!valid && opts.length) {
+          this.form.fc.setFieldsValue({ from: opts[0].key })
+        }
+      }
       this.$nextTick(this.toParams)
       if (newField.hasOwnProperty('notify_type')) {
         this.notifyTypes = newField.notify_type
@@ -921,11 +980,24 @@ export default {
     },
     toParams () {
       const fd = this.form.fc.getFieldsValue()
+      let fromValue
+      if (fd.from) {
+        fromValue = fd.from
+      } else if (fd.period && fd.alert_duration != null) {
+        const periodNum = parseInt(fd.period, 10)
+        const unit = String(fd.period).slice(-1)
+        if (unit === 'm' && periodNum * fd.alert_duration < 10) {
+          fromValue = '10m'
+        } else {
+          fromValue = (periodNum * fd.alert_duration) + unit
+        }
+      }
+      if (!fromValue) fromValue = '24h'
       const metric_query = []
       const conditionList = this.$refs.conditionRef.conditionList
       conditionList.forEach(({ key }) => {
         const params = {
-          from: '24h',
+          from: fromValue,
         }
         const model = {
           database: this.metricKeyItem.database || _.get(this.alertData, 'common_alert_metric_details[0].db', 'telegraf'),

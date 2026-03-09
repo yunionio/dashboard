@@ -319,6 +319,8 @@
   "monitor.commonalert.alert_condition": "アラーム条件",
   "monitor.commonalert.alert_condition.content": "いずれかのトリガー条件が満たされた場合にアラームをトリガーできます",
   "monitor.commonalert.query_condition": "クエリ条件",
+  "monitor.commonalert.delta_condition_no_duration": "差分比較条件が存在するため、連続周期を計算できません",
+  "monitor.commonalert.from_period_placeholder": "選択（周期より大きいこと）",
   "monitor.commonalert.threshold.message": "インジケーターの値を入力してください",
   "monitor.commonalert.threshold_start_lt_end": "開始値は終了値より小さくする必要があります",
   "monitor.commonalert.threshold_end_gt_start": "終了値は開始値より大きくする必要があります",
@@ -351,6 +353,5 @@
   "monitor.alert_ticket_type.alert_ticket": "アラーム工單",
   "monitor.convert_to_ticket.alert_event_disabled_tip": "アラームイベントはすでに工單に変換されています",
   "monitor.convert_to_ticket.alert_ticket_disabled_tip": "アラーム工單はすでに工單に変換されています",
-  "monitor.converted_ticket": "工單に変換されました",
-  "monitor.commonalerts.disable_notify_recovery": "通知復旧を無効にする"
+  "monitor.converted_ticket": "工單に変換されました"
 }
