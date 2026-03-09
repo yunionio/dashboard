@@ -2,7 +2,8 @@ import { disableDeleteAction } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 import { BRAND_MAP, PROVIDER_MAP } from '@/constants'
 import { typeClouds } from '@/utils/common/hypervisor'
-import { validateRescueMode, cloudEnabled, cloudUnabledTip } from '../utils'
+import { hasSetupKey } from '@/utils/auth'
+import { validateRescueMode, cloudEnabled, cloudUnabledTip, commonUnabled } from '../utils'
 // import { POLICY_RES_NAME_KEY_MAP } from '@/constants/policy'
 const getSingleActions = function () {
   return [
@@ -387,6 +388,82 @@ const getSingleActions = function () {
                   }
                   return ret
                 },
+              },
+              // 绑定eip
+              {
+                label: i18n.t('compute.text_1179'),
+                permission: 'server_perform_create_eip',
+                action: () => {
+                  this.createDialog('VmBindEipDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    refresh: this.refresh,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
+                  if (commonUnabled(obj)) return ret
+                  if (obj.eip_mode === 'public_ip' && obj.hypervisor !== 'aws') {
+                    ret.tooltip = i18n.t('compute.public_ip_tooltip')
+                    return ret
+                  }
+                  if (obj.eip_mode !== 'public_ip' && obj.eip) {
+                    ret.tooltip = i18n.t('compute.text_1291')
+                    return ret
+                  }
+                  if (obj.brand === 'OneCloud' && obj.vpc_id === 'default') {
+                    ret.tooltip = i18n.t('compute.text_1292')
+                    return ret
+                  }
+                  if (obj.vpc_external_access_mode === 'none') {
+                    ret.tooltip = i18n.t('compute.disable_bind_eip')
+                    return ret
+                  }
+                  ret.validate = cloudEnabled('bindEip', obj)
+                  ret.tooltip = cloudUnabledTip('bindEip', obj)
+                  return ret
+                },
+                hidden: () => !(hasSetupKey(['onecloud', 'cloudpods'])),
+              },
+              // 解绑eip
+              {
+                label: i18n.t('compute.text_1264'),
+                permission: 'server_perform_dissociate_eip',
+                action: () => {
+                  this.createDialog('VmUnbindEipDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
+                  if (commonUnabled(obj)) return ret
+                  if (obj.eip_mode !== 'elastic_ip') {
+                    ret.tooltip = i18n.t('compute.text_1293')
+                    return ret
+                  }
+                  if (obj.eip_mode === 'public_ip') {
+                    ret.tooltip = i18n.t('compute.text_1294')
+                    return ret
+                  }
+                  ret.validate = cloudEnabled('unbindEip', obj)
+                  ret.tooltip = cloudUnabledTip('unbindEip', obj)
+                  return ret
+                },
+                hidden: () => !(hasSetupKey(['onecloud', 'cloudpods'])),
               },
             ],
           },
