@@ -151,7 +151,7 @@
 </template>
 
 <script>
-import { getNotifyDocsUrl } from '../../utils/docs'
+import { DOCS_MAP, showDocsLink } from '@/constants/docs'
 export default {
   name: 'smshuawei',
   props: {
@@ -168,6 +168,8 @@ export default {
   },
   data () {
     return {
+      DOCS_MAP,
+      showDocsLink,
       submiting: false,
       testLoding: false,
       activeKey: ['1'],
@@ -251,7 +253,7 @@ export default {
           'errorCodeEnChannel',
         ],
       },
-      docUrl: getNotifyDocsUrl('mobile_huawei'),
+      docUrl: DOCS_MAP.mailConfig('mobile_huawei'),
     }
   },
 }
