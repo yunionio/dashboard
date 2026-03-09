@@ -179,6 +179,16 @@ export function getMetircAlertUtil (row, field, condition) {
     unit: '', // 单位
     time_from: row.time_from,
   }
+  let hasDeltaCondition = false
+  if (row[field] && ((R.type(row[field]) === 'Array') || R.type(row[field]) === 'Object') && !R.isEmpty(row[field])) {
+    if (R.type(row[field]) === 'Array') {
+      row[field].forEach(item => {
+        if (item.reduce === 'delta') {
+          hasDeltaCondition = true
+        }
+      })
+    }
+  }
   const strategyArr = []
   const strategyConfigArr = []
   const filters = []
@@ -192,7 +202,11 @@ export function getMetircAlertUtil (row, field, condition) {
     }
     strategyConfig.metric = metric
     const reduce = (alertStrategyMaps[detail.reduce || detail.reducer || 'avg']) || ''
-    const alert_duration = row.alert_duration ? i18n.t('monitor.list.duration.label', [row.alert_duration]) : row[field].alert_duration ? i18n.t('monitor.list.duration.label', [row[field].alert_duration]) : ''
+    let alert_duration = row.alert_duration ? i18n.t('monitor.list.duration.label', [row.alert_duration]) : row[field].alert_duration ? i18n.t('monitor.list.duration.label', [row[field].alert_duration]) : ''
+    // delta 条件不计算持续时间
+    if (hasDeltaCondition) {
+      alert_duration = ''
+    }
     let preiod = ((preiodMaps[row.period] || {}).label) || ((preiodMaps[detail.period] || {}).label) || row.period || detail.period
     let unit = detail.field_description ? _.get(detail, 'field_description.unit') : (R.type(row.eval_data) === 'Array' ? (_.get(row, 'eval_data[0].unit') || '') : '')
     let threshold = R.is(String, detail.threshold) ? { text: detail.threshold } : transformUnit(detail.threshold, unit)
