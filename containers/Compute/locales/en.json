@@ -32,7 +32,7 @@
   "compute.text_38": "GPU does not meet scheduling requirements",
   "compute.text_39": "The free memory of the does not meet the requested amount",
   "compute.text_40": "Host network conditions are not met",
-  "compute.text_41": "Insufficient disk",
+  "compute.text_41": "Insufficient disk, please try other disk media types or reduce the disk capacity",
   "compute.text_42": "Status is abnormal",
   "compute.text_43": "Filtered by tags",
   "compute.text_44": "Disk is filtered by tag",
