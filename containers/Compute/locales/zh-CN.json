@@ -30,7 +30,7 @@
   "compute.text_38": "GPU 不满足调度条件",
   "compute.text_39": "空闲内存不满足请求数量",
   "compute.text_40": "网络条件不满足",
-  "compute.text_41": "磁盘不足",
+  "compute.text_41": "磁盘不足, 请尝试其它类型磁盘介质或减少申请磁盘容量",
   "compute.text_42": "状态异常",
   "compute.text_43": "被标签过滤",
   "compute.text_44": "磁盘被标签过滤",
