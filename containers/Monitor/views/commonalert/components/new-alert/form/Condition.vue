@@ -140,10 +140,10 @@ export default {
     },
   },
   methods: {
-    add () {
+    add (params = {}) {
       const key = uuid()
       this.conditionList.push({ key })
-      this.showThresholdMap[key] = true
+      this.showThresholdMap[key] = params.comparator !== 'nodata'
     },
     del (item) {
       const index = this.conditionList.findIndex(val => val.key === item.key)
