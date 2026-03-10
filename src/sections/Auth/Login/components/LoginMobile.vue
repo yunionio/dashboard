@@ -369,6 +369,7 @@ export default {
         await this.$store.dispatch('auth/login', data)
         await this.$emit('after-login')
         await this.$store.dispatch('auth/onAfterLogin')
+        this.$bus.$emit('after-login', { mobile: fd.mobile })
       } catch (error) {
         // 登录失败，如果domain已存在则清除domain，主要是应对历史账号存储的domain被更改的情况。（异常情况）
         if (this.fd.domain) {
