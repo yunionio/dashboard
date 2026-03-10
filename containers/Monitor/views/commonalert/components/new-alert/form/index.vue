@@ -695,7 +695,7 @@ export default {
       const conditionRef = this.$refs.conditionRef
       conditionRef.reset(false)
       metric_details.forEach((item, idx) => {
-        conditionRef.add()
+        conditionRef.add({ comparator: item.comparator })
         this.$nextTick(() => {
           const conditionList = conditionRef.conditionList
           this.form.fc.setFieldsValue({
