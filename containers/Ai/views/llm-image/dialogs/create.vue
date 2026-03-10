@@ -46,7 +46,7 @@ export default {
         progress: data.progress || undefined,
       },
       rules: {
-        name: [{ required: true, validator: this.$validate('resourceName') }],
+        name: [{ required: true, validator: this.$validate('imageName') }],
         image_name: [{ required: true, message: this.$t('common.tips.input', [this.$t('aice.llm_image.name')]) }],
         image_label: [{ required: true, message: this.$t('common.tips.input', [this.$t('aice.llm_image.label')]) }],
         progress: [{ required: true, message: this.$t('common.tips.input', [this.$t('aice.llm_image.progress')]) }],

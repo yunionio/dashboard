@@ -3,9 +3,11 @@ import i18n from '@/locales'
 
 const Llm = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm')
 const LlmSku = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku')
+const LlmSkuCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku/create/index')
 const LlmInstantmodel = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-instantmodel')
 const LlmImage = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-image')
 const LlmInstantmodelImportCommunity = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-instantmodel/import-community')
+const ContainerSecret = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/container-secret')
 export default {
   index: 61,
   meta: {
@@ -44,6 +46,11 @@ export default {
               path: '',
               component: LlmSku,
             },
+            {
+              name: 'LlmSkuCreate',
+              path: 'create',
+              component: LlmSkuCreate,
+            },
           ],
         },
         {
@@ -76,6 +83,20 @@ export default {
               name: 'LlmImageList',
               path: '',
               component: LlmImage,
+            },
+          ],
+        },
+        {
+          path: '/container-secret',
+          meta: {
+            label: i18n.t('aice.container_secret'),
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'ContainerSecretList',
+              path: '',
+              component: ContainerSecret,
             },
           ],
         },
