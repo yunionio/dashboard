@@ -1,10 +1,14 @@
 <template>
   <page-list
+    show-tag-filter
+    show-tag-columns
+    show-tag-columns2
+    show-tag-config
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
-    :export-data-options="exportDataOptions" />
+    :tag-config-params="tagConfigParams" />
 </template>
 
 <script>
@@ -12,10 +16,9 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import { filterOptions } from '../utils/filters'
 
 export default {
-  name: 'PhoneSpecList',
+  name: 'ContainerSecretList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
@@ -27,23 +30,29 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'llm_skus',
+        resource: 'credentials',
+        apiVersion: 'v1',
         getParams: this.getParam,
-        filterOptions,
+        filterOptions: {},
         hiddenColumns: [],
       }),
+      tagConfigParams: {
+        resource: 'credentials',
+      },
       groupActions: [
         {
           label: this.$t('common.create'),
           action: () => {
-            this.$router.push('/llm-sku/create')
+            this.createDialog('ContainerSecretCreateDialog', {
+              callback: () => {
+                this.list.refresh()
+              },
+            })
           },
-          meta: () => {
-            return {
-              buttonType: 'primary',
-              validate: true,
-            }
-          },
+          meta: () => ({
+            buttonType: 'primary',
+            validate: true,
+          }),
         },
         {
           label: this.$t('table.action.delete'),
@@ -53,33 +62,16 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: this.$t('table.action.delete'),
-              name: this.$t('aice.spec'),
+              name: this.$t('aice.container_secret'),
               onManager: this.onManager,
             })
           },
-          meta: () => {
-            const ret = { validate: this.list.selected.length }
-            if (this.list.selectedItems.some(item => !item.can_delete)) {
-              ret.validate = false
-              return ret
-            }
-            return ret
-          },
+          meta: () => ({
+            validate: this.list.selected.length,
+          }),
         },
       ],
     }
-  },
-  computed: {
-    exportDataOptions () {
-      return {
-        downloadType: 'local',
-        title: this.$t('aice.spec'),
-        items: [
-          { label: 'ID', key: 'id' },
-          ...this.columns,
-        ],
-      }
-    },
   },
   created () {
     this.initSidePageTab('detail')
@@ -89,15 +81,16 @@ export default {
     getParam () {
       const ret = {
         ...this.getParams,
-        details: true,
+        'filter.0': 'type.equals(container_secret)',
       }
       return ret
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'LlmSkuSidePage', {
+      this.sidePageTriggerHandle(this, 'ContainerSecretSidePage', {
         id: row.id,
-        resource: 'llm_skus',
-        getParams: this.getParam,
+        resource: 'credentials',
+        apiVersion: 'v1',
+        getParams: () => ({}),
       }, {
         list: this.list,
       })
@@ -105,6 +98,3 @@ export default {
   },
 }
 </script>
-
-<style>
-</style>
