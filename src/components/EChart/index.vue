@@ -1,12 +1,47 @@
 
 <template>
-  <div class="echarts" :id="domId" :style="chartStyle" />
+  <div>
+    <div class="echarts" :id="domId" :style="chartStyle" />
+    <div class="custom-legend" v-if="showCustomLegend">
+      <div
+        v-for="item in customLegendItems"
+        :key="item.rawName"
+        class="custom-legend-item">
+        <span
+          class="custom-legend-marker"
+          :style="{ backgroundColor: item.color }" />
+        <span class="custom-legend-label">{{ item.label }}</span>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style>
 .echarts {
   width: 600px;
   height: 400px;
+}
+.custom-legend {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+  margin-top: 8px;
+}
+.custom-legend-item {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 16px;
+  margin-bottom: 4px;
+  font-size: 12px;
+  color: #606266;
+}
+.custom-legend-marker {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  border: 1px solid #dcdfe6;
+  margin-right: 4px;
 }
 </style>
 
@@ -34,12 +69,46 @@ export default {
       default: false,
     },
     chartStyle: Object,
+    showCustomLegend: Boolean,
   },
   data () {
     return {
       lastArea: 0,
       chartRect: {},
     }
+  },
+  computed: {
+    customLegendItems () {
+      const opt = this.options || {}
+      const legendConf = Array.isArray(opt.legend) ? (opt.legend[0] || {}) : (opt.legend || {})
+      const formatter = legendConf.formatter
+      // 优先使用真正渲染后的 option（包含默认调色板等）
+      const renderedOpt = this.chart && this.chart.getOption ? this.chart.getOption() : null
+      const colors = Array.isArray((renderedOpt && renderedOpt.color) || opt.color) ? ((renderedOpt && renderedOpt.color) || opt.color) : []
+      const series = Array.isArray((renderedOpt && renderedOpt.series) || opt.series) ? ((renderedOpt && renderedOpt.series) || opt.series) : []
+      return series.map((s, idx) => {
+        const rawName = s.name
+        if (!rawName) return null
+        let label = rawName
+        if (typeof formatter === 'function') {
+          try {
+            label = formatter(rawName)
+          } catch (e) {
+            // ignore formatter error
+          }
+        }
+        let color = (s.itemStyle && s.itemStyle.color) || (colors.length ? colors[idx % colors.length] : undefined)
+        if (!color) {
+          // 兜底颜色，防止标识不可见
+          color = '#409EFF'
+        }
+        return {
+          rawName,
+          label,
+          color,
+        }
+      }).filter(Boolean)
+    },
   },
   watch: {
     group (group) {
@@ -195,7 +264,9 @@ export default {
       if (this.chart) {
         return
       }
-      const chart = echarts.init(this.$el, this.theme, this.initOptions)
+      const container = this.domId ? document.getElementById(this.domId) : this.$el
+      if (!container) return
+      const chart = echarts.init(container, this.theme, this.initOptions)
       if (this.group) {
         chart.group = this.group
       }
