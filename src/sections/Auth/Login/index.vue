@@ -122,6 +122,9 @@ export default {
     },
   },
   async created () {
+    this.$bus.$on('after-login', (data) => {
+      this.switchLoginUrl(data)
+    })
     // 获取domains、regions、idps、captcha信息
     try {
       // 如果有设置为default的idp，则用default的idp方式登录
@@ -194,6 +197,22 @@ export default {
     this.switchLoginMode()
   },
   methods: {
+    async switchLoginUrl (data) {
+      try {
+        const response = await new this.$Manager('customers').list({
+          params: {
+            scope: this.$store.getters.scope,
+            filter: `mobile.contains(${data.mobile})`,
+          },
+        })
+        if (response.data.data.length > 0) {
+          window.location.href = '/account'
+        }
+      } catch (error) {
+        console.error(error)
+      }
+      this.$store.dispatch('auth/onAfterLogin')
+    },
     gethost (str) {
       if (str.startsWith('http://')) {
         return str.substr(7)
