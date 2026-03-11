@@ -334,6 +334,7 @@ export const metric_zh = {
   'The amount of inactive memory': i18n.t('monitor_metric_89'),
   'Total memory': i18n.t('monitor_metric_90'),
   'The total number of packets received by the network interface': i18n.t('monitor_metric_91'),
+  'Outbound bandwidth utilization': i18n.t('monitor.out_bandwidth_usage'),
   'The total number of transmission packets dropped by the network interface': i18n.t('monitor_metric_92'),
   'CPU utilization rate per core': i18n.t('monitor_metric_93'),
   'The number of threads used by the process': i18n.t('monitor_metric_94'),
