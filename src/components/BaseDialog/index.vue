@@ -24,7 +24,7 @@
     </div>
     <template v-slot:footer>
       <div class="base-dialog-footer">
-        <slot name="footer">Dialog default footer</slot>
+        <slot name="footer" />
       </div>
     </template>
   </a-modal>
@@ -52,7 +52,7 @@
     </div>
     <template v-slot:footer>
       <div class="base-dialog-footer">
-        <slot name="footer">Dialog default footer</slot>
+        <slot name="footer" />
       </div>
     </template>
   </a-modal>

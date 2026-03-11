@@ -20,6 +20,7 @@ import {
   getLlmTypeTableColumn,
   getLlmModelNameTableColumn,
 } from '../utils/columns'
+import { getLlmSpecSections, fetchLlmSpecCredentialNames } from '../utils/llmSpecDetail'
 
 export default {
   name: 'LlmSkuDetail',
@@ -36,6 +37,7 @@ export default {
   },
   data () {
     return {
+      credentialNamesMap: {},
       baseInfo: [
         getDeviceModelTableColumn(),
         getImageTableColumn({ vm: this }),
@@ -46,27 +48,23 @@ export default {
         getMemoryTableColumn(),
         getDiskTableColumn(),
       ],
-      extraInfo: [
-        // {
-        //   field: 'mounted_apps',
-        //   title: this.$t('aice.mounted_apps'),
-        //   slots: {
-        //     default: ({ row }) => {
-        //       const mounted_apps = row.mounted_apps
-        //       if (mounted_apps?.length) {
-        //         return mounted_apps.map((item, idx) => {
-        //           const parts = item.split('/')
-        //           return <list-body-cell-wrap copy hideField={true} field='mounted_apps' row={row} message={parts[0]}>
-        //             {parts[0]} (ver: {parts[1]})
-        //           </list-body-cell-wrap>
-        //         })
-        //       }
-        //       return '-'
-        //     },
-        //   },
-        // },
-      ],
     }
+  },
+  computed: {
+    extraInfo () {
+      return getLlmSpecSections(this)
+    },
+  },
+  watch: {
+    'data.llm_spec': {
+      handler () {
+        fetchLlmSpecCredentialNames(this)
+      },
+      deep: true,
+    },
+  },
+  created () {
+    fetchLlmSpecCredentialNames(this)
   },
 }
 </script>
