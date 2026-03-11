@@ -86,7 +86,12 @@ export default {
           }
           return item
         })
-        return otherMonitor
+        return otherMonitor.filter(item => {
+          if (!['Aliyun', 'Tencent'].includes(this.server.brand) && item.seleteItem === 'out_bandwidth_usage') {
+            return false
+          }
+          return true
+        })
       }
     },
     serverId () {
