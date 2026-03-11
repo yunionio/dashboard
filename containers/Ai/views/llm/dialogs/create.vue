@@ -59,6 +59,107 @@
             :isDialog="true" />
         </a-form-item>
         <template v-if="form.fd.llm_type === 'openclaw'">
+          <a-divider orientation="left" class="openclaw-section-divider">{{ $t('aice.openclaw.section.ai_providers') }}</a-divider>
+          <a-form-item :label="$t('aice.openclaw.provider_filter')" :extra="$t('aice.openclaw.provider_select_tip')">
+            <a-select
+              v-model="openclawSelectedProviders"
+              mode="multiple"
+              :placeholder="$t('aice.openclaw.provider_filter_placeholder')"
+              allow-clear
+              show-search
+              :filter-option="filterProviderOption"
+              style="width: 100%; max-width: 400px;">
+              <a-select-option v-for="opt in providerOptionsForSelect" :key="opt.value" :value="opt.value">
+                {{ opt.label }}
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-tabs
+            v-if="providerTabList.length > 0"
+            :activeKey="openclawProviderActiveKey"
+            type="card"
+            class="openclaw-provider-tabs"
+            :animated="false"
+            @change="openclawProviderActiveTab = $event">
+            <a-tab-pane
+              v-for="item in providerTabList"
+              :key="item.key"
+              :forceRender="true">
+              <span slot="tab" class="openclaw-tab-with-close">
+                {{ $t(item.labelKey) }}{{ item.required ? ' *' : '' }}
+                <a-icon type="close" class="openclaw-tab-close" @click.prevent.stop="closeProviderTab(item.key)" />
+              </span>
+
+              <a-form-item :label="$t('aice.openclaw.credential_mode.label')">
+                <a-radio-group
+                  :value="openclawProviderCredentialMode[item.key] || 'new'"
+                  @change="e => $set(openclawProviderCredentialMode, item.key, e.target.value)">
+                  <a-radio value="new">{{ $t('aice.openclaw.credential_mode.new') }}</a-radio>
+                  <a-radio value="existing">{{ $t('aice.openclaw.credential_mode.existing') }}</a-radio>
+                </a-radio-group>
+              </a-form-item>
+
+              <template v-if="(openclawProviderCredentialMode[item.key] || 'new') === 'existing'">
+                <a-form-item :label="$t('aice.container_secret')">
+                  <base-select
+                    v-model="openclawProviderCredentialId[item.key]"
+                    resource="credentials"
+                    :params="credentialParamsForProvider(item.key)"
+                    :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.container_secret')]) }"
+                    @change="val => onProviderCredentialChange(item.key, val)" />
+                </a-form-item>
+                <a-form-item :label="$t('aice.container_secret.export_keys')" :extra="$t('aice.container_secret.export_keys_tip')">
+                  <a-checkbox-group
+                    :value="openclawProviderExportKeys[item.key] || []"
+                    @change="val => $set(openclawProviderExportKeys, item.key, val)">
+                    <a-checkbox v-for="k in (openclawProviderBlobKeys[item.key] || [])" :key="k" :value="k">{{ k }}</a-checkbox>
+                  </a-checkbox-group>
+                </a-form-item>
+              </template>
+
+              <template v-else>
+                <div class="openclaw-auto-credential-name text-color-secondary mb-2">
+                  {{ $t('aice.openclaw.new_credential_name') }}：{{ genCredentialName({ llmName: form.fd.name, usage: 'provider', key: providerShortName(item.key) }) }}
+                </div>
+                <div class="openclaw-new-blob-section">
+                  <div v-for="v in item.vars" :key="v.envKey" class="openclaw-new-blob-row mb-2">
+                    <a-form-item
+                      :label="v.envKey"
+                      :required="item.required"
+                      :extra="(item.required ? $t('aice.openclaw.required_hint') + ' ' : '') + ($te(v.descriptionKey) ? $t(v.descriptionKey) : '')">
+                      <a-input-password
+                        v-if="isSecretEnvKey(v.envKey)"
+                        :value="(openclawProviderBlob[item.key] || {})[v.envKey]"
+                        :placeholder="v.envKey"
+                        allow-clear
+                        @change="e => $set(openclawProviderBlob[item.key], v.envKey, e.target.value)" />
+                      <a-input
+                        v-else
+                        :value="(openclawProviderBlob[item.key] || {})[v.envKey]"
+                        :placeholder="v.envKey"
+                        allow-clear
+                        @change="e => $set(openclawProviderBlob[item.key], v.envKey, e.target.value)" />
+                    </a-form-item>
+                    <a-form-item
+                      v-if="v.overrideUrlKey"
+                      :label="v.overrideUrlKey"
+                      :extra="($te('aice.openclaw.env.' + v.overrideUrlKey) ? $t('aice.openclaw.env.' + v.overrideUrlKey) : '') + ' ' + $t('aice.openclaw.override_url_optional')"
+                      class="openclaw-override-url mt-1">
+                      <a-input
+                        :value="(openclawProviderBlob[item.key] || {})[v.overrideUrlKey]"
+                        :placeholder="overrideUrlPlaceholder(v.overrideUrlKey)"
+                        allow-clear
+                        @change="e => $set(openclawProviderBlob[item.key], v.overrideUrlKey, e.target.value)" />
+                    </a-form-item>
+                  </div>
+                </div>
+              </template>
+            </a-tab-pane>
+          </a-tabs>
+          <div v-else class="openclaw-filter-empty text-color-secondary">
+            {{ openclawSelectedProviders.length === 0 ? $t('aice.openclaw.provider_select_first') : $t('aice.openclaw.provider_filter_empty') }}
+          </div>
+
           <a-divider orientation="left" class="openclaw-section-divider">{{ $t('aice.openclaw.section.chat_channels') }}</a-divider>
           <a-form-item :label="$t('aice.openclaw.channels')" :extra="$t('aice.openclaw.channels_extra')">
             <a-select
@@ -117,12 +218,9 @@
                   </a-form-item>
                 </template>
                 <template v-else>
-                  <a-form-item :label="$t('aice.openclaw.new_credential_name')" :extra="$t('aice.openclaw.new_credential_name_tip')" :required="true">
-                    <a-input
-                      :value="openclawChannelNewCredentialName[section.sectionKey]"
-                      :placeholder="$t('common.tips.input', [$t('aice.openclaw.new_credential_name')])"
-                      @change="e => $set(openclawChannelNewCredentialName, section.sectionKey, e.target.value)" />
-                  </a-form-item>
+                  <div class="openclaw-auto-credential-name text-color-secondary mb-2">
+                    {{ $t('aice.openclaw.new_credential_name') }}：{{ genCredentialName({ llmName: form.fd.name, usage: 'channel', key: section.sectionKey }) }}
+                  </div>
                   <div class="openclaw-new-blob-section">
                     <div v-for="v in section.vars" :key="v.envKey" class="openclaw-new-blob-row mb-2">
                       <a-form-item
@@ -170,6 +268,7 @@ import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import { LLM_TYPE_OPTIONS, getParamsForType } from '../../llm-sku/llmTypeConfig'
 import { OPENCLAW_CHANNEL_SECTIONS, OPENCLAW_CHANNEL_OPTIONS } from '../../llm-sku/openclawChannelConfig'
+import { OPENCLAW_PROVIDER_SECTIONS, OPENCLAW_PROVIDER_OPTIONS } from '../../llm-sku/openclawProviderConfig'
 
 export default {
   name: 'LlmCreateDialog',
@@ -348,9 +447,17 @@ export default {
       openclawChannelCredentialId: {},
       openclawChannelBlobKeys: {},
       openclawChannelExportKeys: {},
-      openclawChannelNewCredentialName: {},
       openclawChannelBlob: {},
       openclawChannelActiveTab: '',
+
+      OPENCLAW_PROVIDER_SECTIONS,
+      openclawSelectedProviders: [],
+      openclawProviderCredentialMode: {},
+      openclawProviderCredentialId: {},
+      openclawProviderBlobKeys: {},
+      openclawProviderExportKeys: {},
+      openclawProviderBlob: {},
+      openclawProviderActiveTab: '',
     }
   },
   computed: {
@@ -403,17 +510,95 @@ export default {
       const set = new Set(channels)
       return OPENCLAW_CHANNEL_SECTIONS.filter(s => set.has(s.sectionKey))
     },
+    providerOptionsForSelect () {
+      return OPENCLAW_PROVIDER_OPTIONS.map(key => ({
+        value: key,
+        label: this.$te(key) ? this.$t(key) : key,
+      }))
+    },
+    providerTabList () {
+      const selected = this.openclawSelectedProviders || []
+      if (selected.length === 0) return []
+      const list = []
+      selected.forEach(providerLabelKey => {
+        const vars = []
+        let required = false
+        this.OPENCLAW_PROVIDER_SECTIONS.forEach(section => {
+          section.vars.forEach(v => {
+            if (v.providerLabelKey === providerLabelKey) {
+              vars.push(v)
+              if (section.required) required = true
+            }
+          })
+        })
+        if (vars.length) list.push({ key: providerLabelKey, labelKey: providerLabelKey, vars, required })
+      })
+      return list
+    },
+    openclawProviderActiveKey () {
+      const list = this.providerTabList
+      if (!list.length) return ''
+      const keys = list.map(t => t.key)
+      return keys.includes(this.openclawProviderActiveTab) ? this.openclawProviderActiveTab : (keys[0] || '')
+    },
   },
   watch: {
     'form.fd.llm_type' (val, oldVal) {
       if (val === oldVal) return
       this.form.fc.setFieldsValue({ llm_sku_id: undefined })
+      if (oldVal === 'openclaw' && val !== 'openclaw') {
+        this.form.fc.setFieldsValue({ openclaw_channels: [] })
+        this.$set(this.form.fd, 'openclaw_channels', [])
+        this.openclawSelectedProviders = []
+        this.openclawProviderActiveTab = ''
+        this.openclawProviderCredentialMode = {}
+        this.openclawProviderCredentialId = {}
+        this.openclawProviderBlobKeys = {}
+        this.openclawProviderExportKeys = {}
+      }
     },
     filteredChannelSections (sections) {
       ;(sections || []).forEach(s => this.ensureChannelState(s.sectionKey))
     },
+    providerTabList (list) {
+      const keys = (list || []).map(t => t.key)
+      if (keys.length && !keys.includes(this.openclawProviderActiveTab)) {
+        this.openclawProviderActiveTab = keys[0] || ''
+      }
+    },
+    openclawSelectedProviders: {
+      handler (list) {
+        ;(list || []).forEach((providerKey) => {
+          this.ensureProviderState(providerKey)
+        })
+      },
+      deep: true,
+    },
+  },
+  created () {
+    // 初始化 providers 的 blob 输入结构（按 key 分组）
+    this.OPENCLAW_PROVIDER_SECTIONS.forEach(section => {
+      section.vars.forEach(({ providerLabelKey, envKey, overrideUrlKey }) => {
+        if (!this.openclawProviderBlob[providerLabelKey]) this.$set(this.openclawProviderBlob, providerLabelKey, {})
+        if (this.openclawProviderBlob[providerLabelKey][envKey] === undefined) this.$set(this.openclawProviderBlob[providerLabelKey], envKey, '')
+        if (overrideUrlKey) {
+          if (this.openclawProviderBlob[providerLabelKey][overrideUrlKey] === undefined) this.$set(this.openclawProviderBlob[providerLabelKey], overrideUrlKey, '')
+        }
+      })
+    })
   },
   methods: {
+    genCredentialName ({ llmName, usage, key }) {
+      const base = String(llmName || '').trim() || 'llm'
+      const u = String(usage || '').trim() || 'unknown'
+      const k = String(key || '').trim() || 'default'
+      // 简单清洗：空白转为 -，并去掉多余的 -
+      const normalize = (s) => String(s || '').trim()
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '')
+      return normalize(`${base}-${u}-${k}`) || 'llm-credential'
+    },
     credentialParamsForChannel (channelKey) {
       const base = {
         scope: this.$store.getters.scope,
@@ -431,7 +616,6 @@ export default {
       if (!this.openclawChannelCredentialId[channelKey]) this.$set(this.openclawChannelCredentialId, channelKey, undefined)
       if (!this.openclawChannelBlobKeys[channelKey]) this.$set(this.openclawChannelBlobKeys, channelKey, [])
       if (!this.openclawChannelExportKeys[channelKey]) this.$set(this.openclawChannelExportKeys, channelKey, [])
-      if (this.openclawChannelNewCredentialName[channelKey] === undefined) this.$set(this.openclawChannelNewCredentialName, channelKey, '')
       if (!this.openclawChannelBlob[channelKey]) this.$set(this.openclawChannelBlob, channelKey, {})
     },
     async fetchCredentialBlobKeys (credentialId) {
@@ -459,6 +643,61 @@ export default {
         this.$set(this.openclawChannelBlobKeys, channelKey, [])
       }
     },
+    credentialParamsForProvider (providerKey) {
+      const base = {
+        scope: this.$store.getters.scope,
+        filter: 'type.equals(container_secret)',
+      }
+      const shortName = this.providerShortName(providerKey)
+      return {
+        ...base,
+        'filter.0': 'type.equals(container_secret)',
+        'filter.1': '__meta__.user:openclaw_usage.equals(provider)',
+        'filter.2': `__meta__.user:openclaw_name.equals(${shortName})`,
+      }
+    },
+    providerShortName (providerKey) {
+      const s = String(providerKey || '')
+      const parts = s.split('.')
+      return parts[parts.length - 1] || s
+    },
+    ensureProviderState (providerKey) {
+      if (!this.openclawProviderCredentialMode[providerKey]) this.$set(this.openclawProviderCredentialMode, providerKey, 'new')
+      if (!this.openclawProviderCredentialId[providerKey]) this.$set(this.openclawProviderCredentialId, providerKey, undefined)
+      if (!this.openclawProviderBlobKeys[providerKey]) this.$set(this.openclawProviderBlobKeys, providerKey, [])
+      if (!this.openclawProviderExportKeys[providerKey]) this.$set(this.openclawProviderExportKeys, providerKey, [])
+      if (!this.openclawProviderBlob[providerKey]) this.$set(this.openclawProviderBlob, providerKey, {})
+    },
+    async onProviderCredentialChange (providerKey, credentialId) {
+      this.ensureProviderState(providerKey)
+      this.$set(this.openclawProviderCredentialId, providerKey, credentialId)
+      this.$set(this.openclawProviderExportKeys, providerKey, [])
+      try {
+        const keys = await this.fetchCredentialBlobKeys(credentialId)
+        this.$set(this.openclawProviderBlobKeys, providerKey, keys)
+      } catch (e) {
+        this.$set(this.openclawProviderBlobKeys, providerKey, [])
+      }
+    },
+    closeProviderTab (providerKey) {
+      const next = this.openclawSelectedProviders.filter(k => k !== providerKey)
+      this.openclawSelectedProviders = next
+      if (this.openclawProviderActiveTab === providerKey && next.length > 0) {
+        this.openclawProviderActiveTab = next[0]
+      } else if (next.length === 0) {
+        this.openclawProviderActiveTab = ''
+      }
+      this.$delete(this.openclawProviderCredentialMode, providerKey)
+      this.$delete(this.openclawProviderCredentialId, providerKey)
+      this.$delete(this.openclawProviderBlobKeys, providerKey)
+      this.$delete(this.openclawProviderExportKeys, providerKey)
+    },
+    filterProviderOption (input, option) {
+      const value = option.componentOptions && option.componentOptions.propsData && option.componentOptions.propsData.value
+      if (value == null) return true
+      const label = this.$te(value) ? this.$t(value) : String(value)
+      return label.toLowerCase().indexOf((input || '').toLowerCase()) >= 0
+    },
     closeChannelTab (sectionKey) {
       const channels = (this.form.fd.openclaw_channels || []).filter(k => k !== sectionKey)
       this.form.fc.setFieldsValue({ openclaw_channels: channels })
@@ -472,7 +711,6 @@ export default {
       this.$delete(this.openclawChannelCredentialId, sectionKey)
       this.$delete(this.openclawChannelBlobKeys, sectionKey)
       this.$delete(this.openclawChannelExportKeys, sectionKey)
-      this.$delete(this.openclawChannelNewCredentialName, sectionKey)
     },
     filterChannelOption (input, option) {
       const value = option.componentOptions && option.componentOptions.propsData && option.componentOptions.propsData.value
@@ -484,6 +722,13 @@ export default {
     isSecretEnvKey (envKey) {
       const lower = (envKey || '').toLowerCase()
       return lower.includes('key') || lower.includes('secret') || lower.includes('token') || lower.includes('password')
+    },
+    overrideUrlPlaceholder (overrideUrlKey) {
+      const defaults = {
+        MOONSHOT_BASE_URL: 'https://api.moonshot.cn/v1',
+        KIMI_BASE_URL: 'https://api.moonshot.ai/anthropic',
+      }
+      return defaults[overrideUrlKey] || 'https://...'
     },
     networkResourceMapper (list) {
       return (list || []).map(val => {
@@ -551,6 +796,7 @@ export default {
           nets: networks,
         }
         if (this.form.fd.llm_type === 'openclaw') {
+          const openclaw = {}
           const channelsSelected = values.openclaw_channels || []
           const channels = []
           const credManager = new this.$Manager('credentials', 'v1')
@@ -569,12 +815,7 @@ export default {
               }
               exportKeys = this.openclawChannelExportKeys[channelKey] || []
             } else {
-              const nameTrim = (this.openclawChannelNewCredentialName[channelKey] || '').trim()
-              if (!nameTrim) {
-                this.$message.warning(this.$t('common.tips.input', [this.$t('aice.openclaw.new_credential_name')]))
-                this.loading = false
-                return
-              }
+              const credName = this.genCredentialName({ llmName: values.name, usage: 'channel', key: channelKey })
               const raw = this.openclawChannelBlob[channelKey] || {}
               const blob = {}
               Object.keys(raw).forEach(k => {
@@ -589,7 +830,7 @@ export default {
               const { data: credData } = await credManager.create({
                 data: {
                   type: 'container_secret',
-                  name: nameTrim,
+                  name: credName,
                   blob,
                   __meta__: {
                     'user:openclaw_usage': 'channel',
@@ -605,9 +846,64 @@ export default {
               credential: { id: credentialId, export_keys: exportKeys },
             })
           }
-          if (channels.length) {
-            data.llm_spec = { openclaw: { channels } }
+          if (channels.length) openclaw.channels = channels
+
+          const providersSelected = this.openclawSelectedProviders || []
+          if (!providersSelected.length) {
+            this.$message.warning(this.$t('aice.openclaw.provider_select_first'))
+            this.loading = false
+            return
           }
+          const providers = []
+          for (let i = 0; i < providersSelected.length; i++) {
+            const providerKey = providersSelected[i]
+            this.ensureProviderState(providerKey)
+            const mode = this.openclawProviderCredentialMode[providerKey] || 'new'
+            let credentialId
+            let exportKeys
+            if (mode === 'existing') {
+              credentialId = this.openclawProviderCredentialId[providerKey]
+              if (!credentialId) {
+                this.$message.warning(this.$t('common.tips.select', [this.$t('aice.container_secret')]))
+                this.loading = false
+                return
+              }
+              exportKeys = this.openclawProviderExportKeys[providerKey] || []
+            } else {
+              const credName = this.genCredentialName({ llmName: values.name, usage: 'provider', key: this.providerShortName(providerKey) })
+              const raw = this.openclawProviderBlob[providerKey] || {}
+              const blob = {}
+              Object.keys(raw).forEach(k => {
+                const v = (raw[k] || '').trim()
+                if (v) blob[k] = v
+              })
+              if (Object.keys(blob).length === 0) {
+                this.$message.warning(this.$t('aice.openclaw.ai_providers.at_least_one'))
+                this.loading = false
+                return
+              }
+              const { data: credData } = await credManager.create({
+                data: {
+                  type: 'container_secret',
+                  name: credName,
+                  blob,
+                  __meta__: {
+                    'user:openclaw_usage': 'provider',
+                    'user:openclaw_name': this.providerShortName(providerKey),
+                  },
+                },
+              })
+              credentialId = credData.id
+              exportKeys = Object.keys(blob)
+            }
+            providers.push({
+              name: this.providerShortName(providerKey),
+              credential: { id: credentialId, export_keys: exportKeys },
+            })
+          }
+          if (providers.length) openclaw.providers = providers
+
+          if (Object.keys(openclaw).length) data.llm_spec = { openclaw }
         }
         await this.params.onManager('create', {
           managerArgs: { data },
@@ -640,10 +936,12 @@ export default {
   border-radius: 4px;
 }
 .openclaw-channel-tabs { margin-top: 8px; }
+.openclaw-provider-tabs { margin-top: 8px; }
 .openclaw-section-divider { margin-top: 20px; }
 .openclaw-tab-with-close { display: inline-flex; align-items: center; gap: 6px; }
 .openclaw-tab-close { font-size: 12px; cursor: pointer; opacity: 0.6; }
 .openclaw-tab-close:hover { opacity: 1; }
 .openclaw-new-blob-section { margin-top: 8px; }
 .openclaw-new-blob-row ::v-deep .ant-form-item-label { padding-bottom: 4px; }
+.openclaw-filter-empty { padding: 12px 0; font-size: 13px; }
 </style>
