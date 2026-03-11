@@ -137,6 +137,16 @@ const NET_SENT_PPS = {
   transfer: 1,
 }
 
+const OUT_BANDWIDTH_USAGE = {
+  name: 'netio',
+  label: i18n.t('compute.out_bandwidth_usage'),
+  seleteItem: 'out_bandwidth_usage',
+  fromItem: 'vm_netio',
+  unit: '%',
+  transfer: 1,
+  metric: metricItems['vm_netio.out_bandwidth_usage'].key,
+}
+
 const COND_AND = 'AND'
 // const COND_OR = 'OR'
 // const COND_NULL = ''
@@ -445,6 +455,7 @@ export const OTHER_MONITOR = [
     transfer: 1024,
     metric: metricItems['vm_netio.bps_sent'].key,
   },
+  OUT_BANDWIDTH_USAGE,
   {
     name: 'diskio',
     label: i18n.t('compute.text_526'),
