@@ -2,6 +2,17 @@ import i18n from '@/locales'
 import { sizestr } from '@/utils/utils'
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 
+export const getLlmTypeTableColumn = () => {
+  return {
+    field: 'llm_type',
+    title: i18n.t('aice.llm_type'),
+    width: 120,
+    formatter: ({ row }) => {
+      return row.llm_type || '-'
+    },
+  }
+}
+
 export const getLlmIpColumn = () => {
   return {
     field: 'llm_ip',

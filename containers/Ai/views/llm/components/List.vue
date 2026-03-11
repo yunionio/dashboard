@@ -1,6 +1,7 @@
 <template>
   <page-list
     show-tag-filter
+    :show-searchbox="true"
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
@@ -21,6 +22,7 @@ import {
   getCustomDistinctFieldFilter,
   getDistinctFieldFilter,
 } from '@/utils/common/tableFilter'
+import { LLM_TYPE_OPTIONS } from '../../llm-sku/llmTypeConfig'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
@@ -52,6 +54,11 @@ export default {
             label: this.$t('table.title.id'),
           },
           name: getNameFilter(),
+          llm_type: {
+            label: this.$t('aice.llm_type'),
+            dropdown: true,
+            items: LLM_TYPE_OPTIONS.map(opt => ({ key: opt.id, label: this.$t(opt.name) })),
+          },
           status: getStatusFilter('server'),
           llm_ip: {
             label: 'IP',

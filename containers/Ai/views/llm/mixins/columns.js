@@ -9,6 +9,7 @@ import {
   getLlmIpColumn,
   getLlmSkuColumn,
   getLlmImageColumn,
+  getLlmTypeTableColumn,
   getCpuTableColumn,
   getMemoryTableColumn,
   getDiskTableColumn,
@@ -33,6 +34,7 @@ export default {
       getLlmIpColumn(),
       getLlmSkuColumn({ vm: this }),
       getLlmImageColumn({ vm: this }),
+      getLlmTypeTableColumn(),
       getTagTableColumn({
         onManager: this.onManager,
         resource: 'llms',
