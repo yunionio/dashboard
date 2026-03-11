@@ -26,6 +26,7 @@ import {
   getNetworkTypeTableColumn,
   getNetworkTableColumn,
 } from '../utils/columns'
+import { getLlmSpecSections, fetchLlmSpecCredentialNames } from '../../llm-sku/utils/llmSpecDetail'
 
 export default {
   name: 'PhoneDetail',
@@ -42,6 +43,8 @@ export default {
   },
   data () {
     return {
+      credentialNamesMap: {},
+      skuLlmSpecOpenclaw: null,
       baseInfo: [
         getUserTagColumn({
           onManager: this.onManager,
@@ -135,37 +138,73 @@ export default {
       ports: [],
     }
   },
+  watch: {
+    'data.llm_spec': {
+      handler () {
+        this.fetchSkuOpenclawIfNeeded()
+        fetchLlmSpecCredentialNames(this)
+      },
+      deep: true,
+    },
+    'data.llm_sku_id': {
+      handler () {
+        this.fetchSkuOpenclawIfNeeded()
+      },
+    },
+  },
   created () {
     this.getAccessInfo()
+    this.fetchSkuOpenclawIfNeeded()
+    fetchLlmSpecCredentialNames(this)
   },
   methods: {
+    async fetchSkuOpenclawIfNeeded () {
+      if (!this.data || !this.data.llm_sku_id) {
+        this.skuLlmSpecOpenclaw = null
+        return
+      }
+      const hasInstanceProviders = this.data.llm_spec?.openclaw?.providers?.length > 0
+      if (hasInstanceProviders) {
+        this.skuLlmSpecOpenclaw = null
+        return
+      }
+      try {
+        const res = await new this.$Manager('llm_skus').get({ id: this.data.llm_sku_id })
+        const openclaw = res.data && res.data.llm_spec && res.data.llm_spec.openclaw != null ? res.data.llm_spec.openclaw : null
+        this.skuLlmSpecOpenclaw = openclaw && (openclaw.providers?.length > 0) ? openclaw : null
+        if (this.skuLlmSpecOpenclaw) {
+          fetchLlmSpecCredentialNames(this)
+        }
+      } catch (e) {
+        this.skuLlmSpecOpenclaw = null
+      }
+    },
     async getAccessInfo () {
       try {
         const res = await new this.$Manager('llms', 'v2').get({
           id: `${this.data.id}/url`,
         })
         const { access_url = '' } = res.data
-        this.extraInfo = [
-          {
-            title: this.extraInfo[0].title,
-            items: [
-              ...this.extraInfo[0].items,
-              {
-                field: 'access_url',
-                title: this.$t('aice.access_url'),
-                slots: {
-                  default: ({ row }) => {
-                    return [
-                      <list-body-cell-wrap copy hideField={true} field='access_url' row={{ access_url }} message={access_url}>
-                        {access_url}
-                      </list-body-cell-wrap>,
-                    ]
-                  },
+        const firstBlock = {
+          title: this.extraInfo[0].title,
+          items: [
+            ...this.extraInfo[0].items,
+            {
+              field: 'access_url',
+              title: this.$t('aice.access_url'),
+              slots: {
+                default: ({ row }) => {
+                  return [
+                    <list-body-cell-wrap copy hideField={true} field='access_url' row={{ access_url }} message={access_url}>
+                      {access_url}
+                    </list-body-cell-wrap>,
+                  ]
                 },
               },
-            ],
-          },
-        ]
+            },
+          ],
+        }
+        this.extraInfo = [firstBlock, ...getLlmSpecSections(this)]
       } catch (error) {
         console.error(error)
       }

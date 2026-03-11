@@ -8,12 +8,14 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
-    :tag-config-params="tagConfigParams" />
+    :tag-config-params="tagConfigParams"
+    tag-filter-resource="credentials" />
 </template>
 
 <script>
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import { getNameFilter } from '@/utils/common/tableFilter'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
@@ -33,7 +35,14 @@ export default {
         resource: 'credentials',
         apiVersion: 'v1',
         getParams: this.getParam,
-        filterOptions: {},
+        filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+            filter: true,
+            formatter: val => `id.equals('${val}')`,
+          },
+          name: getNameFilter(),
+        },
         hiddenColumns: [],
       }),
       tagConfigParams: {
