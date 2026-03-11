@@ -301,6 +301,7 @@
   "monitor.text_133": "ネットワークインターフェイスによって送信されたパケットの総数",
   "monitor.text_134": "ネットワーク インターフェイスが受信したパケットの合計数",
   "monitor.text_135": "ネットワーク インターフェイスの合計パケット損失",
+  "monitor.out_bandwidth_usage": "外網帯域使用率",
   "monitor.notification_type": "通知の種類",
   "monitor.role": "役割",
   "monitor.instance_engine": "インスタンスエンジン",
