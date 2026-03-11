@@ -14,6 +14,7 @@
 
 <script>
 import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
 import LlmSkuCreateForm from '../create/Form.vue'
 
 export default {
@@ -21,7 +22,7 @@ export default {
   components: {
     LlmSkuCreateForm,
   },
-  mixins: [DialogMixin],
+  mixins: [DialogMixin, WindowsMixin],
   methods: {
     onFormSuccess () {
       if (this.params.callback) this.params.callback()
