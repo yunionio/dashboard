@@ -136,6 +136,8 @@ export default {
       ],
       streamEndpoint: null,
       ports: [],
+      loginInfo: null,
+      loginPasswordVisible: false,
     }
   },
   watch: {
@@ -180,35 +182,154 @@ export default {
       }
     },
     async getAccessInfo () {
+      const configItems = [...this.extraInfo[0].items]
+      const loginSectionItems = []
+      this.loginPasswordVisible = false
       try {
-        const res = await new this.$Manager('llms', 'v2').get({
-          id: `${this.data.id}/url`,
+        // GET /llms/<llm_id>/login-info
+        const loginRes = await new this.$Manager('llms', 'v2').get({
+          id: `${this.data.id}/login-info`,
         })
-        const { access_url = '' } = res.data
-        const firstBlock = {
-          title: this.extraInfo[0].title,
-          items: [
-            ...this.extraInfo[0].items,
-            {
-              field: 'access_url',
-              title: this.$t('aice.access_url'),
-              slots: {
-                default: ({ row }) => {
-                  return [
-                    <list-body-cell-wrap copy hideField={true} field='access_url' row={{ access_url }} message={access_url}>
-                      {access_url}
-                    </list-body-cell-wrap>,
-                  ]
-                },
-              },
+        const info = loginRes.data || {}
+        this.loginInfo = info
+        const loginUrl = info.login_url != null ? info.login_url : ''
+        const username = info.username != null ? info.username : ''
+        const password = info.password != null ? info.password : ''
+        const extra = info.extra && typeof info.extra === 'object' ? info.extra : {}
+
+        loginSectionItems.push({
+          field: 'login_url',
+          title: this.$t('aice.login_url'),
+          slots: {
+            default: () => [
+              <list-body-cell-wrap copy hideField={true} field='login_url' row={{ login_url: loginUrl }} message={loginUrl}>
+                {loginUrl || '-'}
+              </list-body-cell-wrap>,
+            ],
+          },
+        })
+        loginSectionItems.push({
+          field: 'login_username',
+          title: this.$t('aice.login_username'),
+          slots: {
+            default: () => [
+              <list-body-cell-wrap copy hideField={true} field='username' row={{ username }} message={username}>
+                {username || '-'}
+              </list-body-cell-wrap>,
+            ],
+          },
+        })
+        loginSectionItems.push({
+          field: 'login_password',
+          title: this.$t('aice.login_password'),
+          slots: {
+            default: () => {
+              const displayValue = this.loginPasswordVisible ? (password || '-') : '••••••'
+              return [
+                <div class="login-password-row">
+                  <span class="login-password-value">{displayValue}</span>
+                  <a-icon
+                    class="login-password-eye ml-1"
+                    type={this.loginPasswordVisible ? 'eye-invisible' : 'eye'}
+                    theme="twoTone"
+                    twoToneColor="#1890ff"
+                    on-click={() => { this.loginPasswordVisible = !this.loginPasswordVisible }}
+                  />
+                  <a-icon
+                    class="login-password-copy ml-1"
+                    type="copy"
+                    theme="twoTone"
+                    twoToneColor="#1890ff"
+                    on-click={() => this.copyLoginPassword(password)}
+                  />
+                </div>,
+              ]
             },
-          ],
+          },
+        })
+        const extraKeys = Object.keys(extra)
+        if (extraKeys.length > 0) {
+          const extraLines = extraKeys.map(k => {
+            const v = extra[k]
+            return `${k}: ${v != null ? String(v) : ''}`
+          }).join('\n')
+          const extraFullText = extraLines
+          loginSectionItems.push({
+            field: 'login_extra',
+            title: this.$t('aice.login_extra'),
+            slots: {
+              default: () => [
+                <list-body-cell-wrap copy hideField={true} field='extra' row={{ extra: extraFullText }} message={extraFullText}>
+                  <div style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                    {extraLines}
+                  </div>
+                </list-body-cell-wrap>,
+              ],
+            },
+          })
         }
-        this.extraInfo = [firstBlock, ...getLlmSpecSections(this)]
-      } catch (error) {
-        console.error(error)
+      } catch (loginErr) {
+        try {
+          const urlRes = await new this.$Manager('llms', 'v2').get({
+            id: `${this.data.id}/url`,
+          })
+          const access_url = (urlRes.data && urlRes.data.access_url) != null ? urlRes.data.access_url : ''
+          loginSectionItems.push({
+            field: 'access_url',
+            title: this.$t('aice.access_url'),
+            slots: {
+              default: () => [
+                <list-body-cell-wrap copy hideField={true} field='access_url' row={{ access_url }} message={access_url}>
+                  {access_url || '-'}
+                </list-body-cell-wrap>,
+              ],
+            },
+          })
+        } catch (urlErr) {
+          console.error(urlErr)
+        }
+      }
+      const configSection = {
+        title: this.extraInfo[0].title,
+        items: configItems,
+      }
+      const sections = [configSection]
+      if (loginSectionItems.length > 0) {
+        sections.push({
+          title: this.$t('aice.login_info'),
+          items: loginSectionItems,
+        })
+      }
+      this.extraInfo = [...sections, ...getLlmSpecSections(this)]
+    },
+    async copyLoginPassword (value) {
+      if (value == null || value === '') return
+      try {
+        await this.$copyText(String(value))
+        this.$message.success(this.$t('common.copy'))
+      } catch (e) {
+        this.$message.error(this.$t('common.copyError'))
       }
     },
   },
 }
 </script>
+
+<style scoped>
+.login-password-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.login-password-value {
+  color: #333;
+}
+.login-password-eye {
+  cursor: pointer;
+  vertical-align: middle;
+}
+.login-password-copy {
+  cursor: pointer;
+  vertical-align: middle;
+}
+</style>

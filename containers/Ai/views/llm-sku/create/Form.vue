@@ -19,6 +19,7 @@
       </a-form-item>
       <a-form-item :label="$t('aice.llm_type')">
         <a-radio-group
+          v-if="!isEditMode"
           class="llm-type-picker"
           button-style="solid"
           v-decorator="decorators.llm_type">
@@ -26,6 +27,7 @@
             {{ opt.name }}
           </a-radio-button>
         </a-radio-group>
+        <a-label v-else>{{ llmTypeName }}</a-label>
       </a-form-item>
       <a-form-item :label="$t('aice.llm_image')">
         <base-select
@@ -360,6 +362,11 @@ export default {
     llmTypeOptions () {
       return LLM_TYPE_OPTIONS.map(opt => ({ id: opt.id, name: this.$t(opt.name) }))
     },
+    llmTypeName () {
+      const cur = this.form?.fd?.llm_type
+      const opt = this.llmTypeOptions.find(o => o.id === cur)
+      return (opt && opt.name) || cur || '-'
+    },
     currentTypeFields () {
       const type = this.form.fd.llm_type || 'ollama'
       return LLM_TYPE_FORM_CONFIG[type] || []
@@ -446,6 +453,7 @@ export default {
           volume_size,
           bandwidth,
         } = values
+        const effectiveLlmType = this.isEditMode ? this.form.fd.llm_type : llm_type
         const typeFields = this.currentTypeFields
         const typeFieldKeys = typeFields.map(f => f.fieldKey)
         const pickTypeValues = {}
@@ -469,7 +477,6 @@ export default {
         }]
         const data = {
           name,
-          llm_type,
           llm_image_id,
           image_id: phone_image,
           cpu,
@@ -479,6 +486,7 @@ export default {
           disk_size: volumes[0].size_mb,
           app_type: 'steam',
         }
+        if (!this.isEditMode) data.llm_type = effectiveLlmType
         typeFieldKeys.forEach(key => {
           const v = pickTypeValues[key]
           if (v === undefined) return
@@ -488,7 +496,7 @@ export default {
             data[key] = v
           }
         })
-        if (llm_type === 'openclaw') {
+        if (effectiveLlmType === 'openclaw') {
           const workspace_templates = {}
           const agents = (values.openclaw_agents_md || '').trim()
           const soul = (values.openclaw_soul_md || '').trim()
