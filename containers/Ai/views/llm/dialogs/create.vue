@@ -437,10 +437,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 20,
+          span: 19,
         },
         labelCol: {
-          span: 4,
+          span: 5,
         },
       },
       openclawChannelCredentialMode: {},
@@ -474,7 +474,7 @@ export default {
     resourcesParams () {
       const schedtag = {
         limit: 1024,
-        'filter.0': 'resource_type.equals(networks)',
+        filter: ['resource_type.equals(networks)'],
       }
       return {
         schedtag,
@@ -602,13 +602,14 @@ export default {
     credentialParamsForChannel (channelKey) {
       const base = {
         scope: this.$store.getters.scope,
-        filter: 'type.equals(container_secret)',
+        filter: ['type.equals(container_secret)'],
       }
       return {
         ...base,
-        'filter.0': 'type.equals(container_secret)',
-        'filter.1': '__meta__.user:openclaw_usage.equals(channel)',
-        'filter.2': `__meta__.user:openclaw_name.equals(${channelKey})`,
+        'tags.0.key': 'user:openclaw_usage',
+        'tags.0.value': 'channel',
+        'tags.1.key': 'user:openclaw_name',
+        'tags.1.value': channelKey,
       }
     },
     ensureChannelState (channelKey) {
@@ -651,9 +652,10 @@ export default {
       const shortName = this.providerShortName(providerKey)
       return {
         ...base,
-        'filter.0': 'type.equals(container_secret)',
-        'filter.1': '__meta__.user:openclaw_usage.equals(provider)',
-        'filter.2': `__meta__.user:openclaw_name.equals(${shortName})`,
+        'tags.0.key': 'user:openclaw_usage',
+        'tags.0.value': 'provider',
+        'tags.1.key': 'user:openclaw_name',
+        'tags.1.value': shortName,
       }
     },
     providerShortName (providerKey) {
