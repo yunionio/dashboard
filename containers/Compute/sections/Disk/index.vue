@@ -8,13 +8,12 @@
     </a-form-item>
     <a-form-item class="mx-1" :wrapperCol="{ span: 24 }">
       <a-tooltip :title="tooltip" placement="top">
-        <a-input-number
+        <disk-size-input
           v-decorator="decorator.size"
           :step="10"
           :min="minSize"
           :max="max"
-          :formatter="formatter"
-          :parser="parser"
+          :normalizeGb="normalizeDiskSizeGb"
           :disabled="sizeDisabled || (imageType === 'backup' || imageType === 'snapshot')" />
       </a-tooltip>
     </a-form-item>
@@ -115,6 +114,7 @@ import { PREALLOCATION_OPTIONS } from '@Compute/constants'
 import { HYPERVISORS_MAP } from '@/constants'
 import SchedtagPolicy from '@/sections/SchedtagPolicy'
 import DiskMountpoint from '@/sections/DiskMountpoint'
+import DiskSizeInput from '@/sections/DiskSizeInput'
 import { diskSupportTypeMedium } from '@/utils/common/hypervisor'
 import Storage from './components/Storage'
 
@@ -124,6 +124,7 @@ export default {
     SchedtagPolicy,
     DiskMountpoint,
     Storage,
+    DiskSizeInput,
   },
   props: {
     diskKey: String,
@@ -289,6 +290,13 @@ export default {
     },
   },
   methods: {
+    normalizeDiskSizeGb (gb) {
+      let num = gb
+      if (this.hypervisor === HYPERVISORS_MAP.qcloud.key) {
+        num = Math.floor(num / 10) * 10
+      }
+      return num
+    },
     initData (data, hyper) {
       setTimeout(() => {
         this.form.fc.setFieldsValue({
