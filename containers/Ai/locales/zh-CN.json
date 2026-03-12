@@ -317,5 +317,11 @@
   "aice.llm_network_type.hostlocal_default": "自动调度-宿主机本地网络",
   "aice.llm_network_type.guest": "指定经典网络",
   "aice.llm_network_type.hostlocal": "指定宿主机本地网络",
-  "aice.access_url": "连接信息"
+  "aice.access_url": "连接信息",
+  "aice.login_url": "登录地址",
+  "aice.login_username": "用户名",
+  "aice.login_password": "密码",
+  "aice.login_extra": "额外信息",
+  "aice.login_info": "登录信息",
+  "aice.click_to_show": "点击显示"
 }
