@@ -147,34 +147,33 @@ export default {
           // hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_start'),
         },
         // 重启
-        // {
-        //   label: this.$t('compute.text_274'),
-        //   permission: 'server_perform_restart',
-        //   action: () => {
-        //     this.createDialog('LlmBatchConfirmDialog', {
-        //       data: this.list.selectedItems,
-        //       columns: this.columns,
-        //       onManager: this.onManager,
-        //       action: 'restart',
-        //       actionText: this.$t('compute.text_274'),
-        //       steadyStatus: 'running',
-        //     })
-        //   },
-        //   meta: () => {
-        //     let ret = {
-        //       validate: true,
-        //       tooltip: null,
-        //     }
-        //     ret.validate = this.list.selectedItems.length > 0
-        //     if (!ret.validate) return ret
-        //     ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
-        //       ret.validate = this.list.selectedItems.every(item => ['running', 'stop_fail', 'ready'].includes(item.status))
-        //       return ret
-        //     })
-        //     return ret
-        //   },
-        //   // hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_restart'),
-        // },
+        {
+          label: this.$t('compute.text_274'),
+          permission: 'llms_perform_restart',
+          action: () => {
+            this.createDialog('LlmBatchConfirmDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              onManager: this.onManager,
+              action: 'restart',
+              actionText: this.$t('compute.text_274'),
+              steadyStatus: 'running',
+            })
+          },
+          meta: () => {
+            let ret = {
+              validate: true,
+              tooltip: null,
+            }
+            ret.validate = this.list.selectedItems.length > 0
+            if (!ret.validate) return ret
+            ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
+              ret.validate = this.list.selectedItems.every(item => ['running', 'stop_fail', 'ready'].includes(item.status))
+              return ret
+            })
+            return ret
+          },
+        },
         // 同步状态
         {
           label: this.$t('common.text00043'),
