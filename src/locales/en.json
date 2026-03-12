@@ -52,6 +52,7 @@
       "deploy_fail": "Fail to deploy",
       "ready": "Stopped",
       "start_start": "Start to start",
+      "start_restart": "Start to restart",
       "starting": "Starting",
       "start_fail": "Fail to start",
       "start_suspend": "Start suspend",

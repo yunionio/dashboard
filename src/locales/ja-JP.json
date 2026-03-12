@@ -52,6 +52,7 @@
       "deploy_fail": "デプロイに失敗しました",
       "ready": "シャットダウン",
       "start_start": "起動を開始する",
+      "start_restart": "再起動を開始する",
       "starting": "始動",
       "start_fail": "起動に失敗しました",
       "start_suspend": "休止状態を開始する",

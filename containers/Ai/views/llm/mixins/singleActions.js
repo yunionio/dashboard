@@ -60,28 +60,27 @@ export default {
               },
             },
             // 重启
-            // {
-            //   label: this.$t('aice.action.restart'),
-            //   permission: 'server_perform_restart',
-            //   action: (obj) => {
-            //     this.createDialog('LlmBatchConfirmDialog', {
-            //       data: [obj],
-            //       columns: this.columns,
-            //       onManager: this.onManager,
-            //       action: 'restart',
-            //       actionText: this.$t('aice.action.restart'),
-            //       steadyStatus: 'running',
-            //     })
-            //   },
-            //   meta: (obj) => {
-            //     const ret = {
-            //       validate: ['running', 'stop_fail', 'ready'].includes(obj.status),
-            //       tooltip: null,
-            //     }
-            //     return ret
-            //   },
-            //   hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_restart'),
-            // },
+            {
+              label: this.$t('aice.action.restart'),
+              permission: 'server_perform_restart',
+              action: (obj) => {
+                this.createDialog('LlmBatchConfirmDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  action: 'restart',
+                  actionText: this.$t('aice.action.restart'),
+                  steadyStatus: 'running',
+                })
+              },
+              meta: (obj) => {
+                const ret = {
+                  validate: ['running', 'stop_fail', 'ready'].includes(obj.status),
+                  tooltip: null,
+                }
+                return ret
+              },
+            },
             // 更改项目
             {
               label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
