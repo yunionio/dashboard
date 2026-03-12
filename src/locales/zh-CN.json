@@ -59,6 +59,7 @@
       "deploy_fail": "部署失败",
       "ready": "关机",
       "start_start": "开始启动",
+      "start_restart": "开始重启",
       "starting": "启动中",
       "start_fail": "启动失败",
       "start_suspend": "开始休眠",
