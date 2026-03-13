@@ -232,6 +232,7 @@
   "aice.config_info": "配置信息",
   "aice.llm_spec": "LLM 规格",
   "aice.llm_spec_config": "LLM规格配置",
+  "aice.llm_spec_update": "更新规格",
   "aice.port": "端口",
   "aice.access_port": "访问端口",
   "aice.listen_port": "监听端口",
