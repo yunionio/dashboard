@@ -19,6 +19,23 @@ export default {
         label: this.$t('compute.text_352'),
         actions: obj => {
           return [
+            {
+              label: this.$t('aice.llm_spec_update'),
+              action: (row) => {
+                this.createDialog('LlmUpdateSpecDialog', {
+                  data: [row],
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              meta: (row) => {
+                const ret = {
+                  validate: (row.llm_type || '').toLowerCase() === 'openclaw',
+                  tooltip: null,
+                }
+                return ret
+              },
+            },
             // 开机
             {
               label: this.$t('compute.text_272'),

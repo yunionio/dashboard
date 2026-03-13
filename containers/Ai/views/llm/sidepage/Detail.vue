@@ -160,6 +160,16 @@ export default {
     fetchLlmSpecCredentialNames(this)
   },
   methods: {
+    handleUpdateSpec () {
+      if ((this.data.llm_type || '').toLowerCase() !== 'openclaw') return
+      this.createDialog('LlmUpdateSpecDialog', {
+        data: [this.data],
+        onManager: this.onManager,
+        refresh: () => {
+          if (this.$emit) this.$emit('refresh')
+        },
+      })
+    },
     async fetchSkuOpenclawIfNeeded () {
       if (!this.data || !this.data.llm_sku_id) {
         this.skuLlmSpecOpenclaw = null
