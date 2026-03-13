@@ -640,6 +640,7 @@ export default {
       try {
         const keys = await this.fetchCredentialBlobKeys(credentialId)
         this.$set(this.openclawChannelBlobKeys, channelKey, keys)
+        this.$set(this.openclawChannelExportKeys, channelKey, [...keys])
       } catch (e) {
         this.$set(this.openclawChannelBlobKeys, channelKey, [])
       }
@@ -677,6 +678,7 @@ export default {
       try {
         const keys = await this.fetchCredentialBlobKeys(credentialId)
         this.$set(this.openclawProviderBlobKeys, providerKey, keys)
+        this.$set(this.openclawProviderExportKeys, providerKey, [...keys])
       } catch (e) {
         this.$set(this.openclawProviderBlobKeys, providerKey, [])
       }
