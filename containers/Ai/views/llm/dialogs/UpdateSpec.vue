@@ -242,7 +242,7 @@ export default {
       decorators: {
         openclaw_channels: [
           'openclaw_channels',
-          { initialValue: [], rules: [] },
+          { initialValue: (row?.llm_spec?.openclaw?.channels || []).map(item => item.name), rules: [] },
         ],
       },
       formItemLayout: {
@@ -364,28 +364,6 @@ export default {
       if (!name) return []
       return [{ id, name }]
     },
-    async fetchCredentialName (credentialId) {
-      if (!credentialId) return
-      const id = String(credentialId)
-      if (this.credentialNameMap && this.credentialNameMap[id]) return
-      try {
-        const manager = new this.$Manager('credentials', 'v1')
-        const { data } = await manager.get({ id })
-        const name = data && data.name ? String(data.name) : ''
-        if (!name) return
-        this.$set(this.credentialNameMap, id, name)
-        this.$nextTick(() => {
-          const selects = this.$refs.credentialSelects || []
-          ;(Array.isArray(selects) ? selects : [selects]).forEach(s => {
-            if (s && typeof s.refresh === 'function') {
-              s.refresh()
-            }
-          })
-        })
-      } catch (e) {
-        // ignore
-      }
-    },
     initFromSpec () {
       const spec = this.row.llm_spec && this.row.llm_spec.openclaw != null ? this.row.llm_spec.openclaw : (this.row.llm_spec || {})
       if (!spec || typeof spec !== 'object') return
@@ -405,7 +383,6 @@ export default {
           if (cred.id) {
             this.$set(this.openclawProviderCredentialMode, labelKey, 'existing')
             this.$set(this.openclawProviderCredentialId, labelKey, cred.id)
-            this.fetchCredentialName(cred.id)
             const exportKeys = cred.export_keys || []
             this.$set(this.openclawProviderExportKeys, labelKey, exportKeys)
             // 拉取 blob keys 以填充可选项
@@ -434,7 +411,6 @@ export default {
           if (cred.id) {
             this.$set(this.openclawChannelCredentialMode, key, 'existing')
             this.$set(this.openclawChannelCredentialId, key, cred.id)
-            this.fetchCredentialName(cred.id)
             const exportKeys = cred.export_keys || []
             this.$set(this.openclawChannelExportKeys, key, exportKeys)
             this.fetchCredentialBlobKeys(cred.id).then(keys => {
@@ -464,7 +440,6 @@ export default {
           if (id) {
             this.$set(this.openclawChannelCredentialMode, key, 'existing')
             this.$set(this.openclawChannelCredentialId, key, id)
-            this.fetchCredentialName(id)
             const exportKeys = cred.export_keys || []
             this.$set(this.openclawChannelExportKeys, key, exportKeys)
             this.fetchCredentialBlobKeys(id).then(keys => {
@@ -495,6 +470,7 @@ export default {
     },
     credentialParamsForChannel (channelKey) {
       return {
+        $t: 2,
         scope: this.$store.getters.scope,
         filter: ['type.equals(container_secret)'],
         'tags.0.key': 'user:openclaw_usage',
@@ -527,7 +503,6 @@ export default {
     async onChannelCredentialChange (channelKey, credentialId) {
       this.ensureChannelState(channelKey)
       this.$set(this.openclawChannelCredentialId, channelKey, credentialId)
-      this.fetchCredentialName(credentialId)
       this.$set(this.openclawChannelExportKeys, channelKey, [])
       try {
         const keys = await this.fetchCredentialBlobKeys(credentialId)
@@ -540,6 +515,7 @@ export default {
     credentialParamsForProvider (providerKey) {
       const shortName = this.providerShortName(providerKey)
       return {
+        $t: 1,
         scope: this.$store.getters.scope,
         filter: 'type.equals(container_secret)',
         'tags.0.key': 'user:openclaw_usage',
@@ -563,7 +539,6 @@ export default {
     async onProviderCredentialChange (providerKey, credentialId) {
       this.ensureProviderState(providerKey)
       this.$set(this.openclawProviderCredentialId, providerKey, credentialId)
-      this.fetchCredentialName(credentialId)
       this.$set(this.openclawProviderExportKeys, providerKey, [])
       try {
         const keys = await this.fetchCredentialBlobKeys(credentialId)
