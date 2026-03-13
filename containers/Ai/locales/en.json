@@ -224,6 +224,7 @@
   "aice.config_info": "Configuration Info",
   "aice.llm_spec": "LLM Spec",
   "aice.llm_spec_config": "LLM Spec Config",
+  "aice.llm_spec_update": "Update Spec",
   "aice.port": "Port",
   "aice.access_port": "Access Port",
   "aice.access_url": "Connection Info",
