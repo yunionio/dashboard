@@ -224,6 +224,7 @@
   "aice.config_info": "設定情報",
   "aice.llm_spec": "LLM 仕様",
   "aice.llm_spec_config": "LLM仕様設定",
+  "aice.llm_spec_update": "仕様を更新",
   "aice.port": "ポート",
   "aice.access_port": "アクセスポート",
   "aice.access_url": "接続情報",
