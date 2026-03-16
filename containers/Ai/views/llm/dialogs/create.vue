@@ -283,8 +283,12 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const defaultLlmType = (LLM_TYPE_OPTIONS[0] && LLM_TYPE_OPTIONS[0].id) || 'ollama'
+    const isApplyType = this.$route.path.includes('app-llm')
+    const llmTypeOptions = isApplyType ? LLM_TYPE_OPTIONS.filter(opt => opt.id === 'vllm' || opt.id === 'ollama') : LLM_TYPE_OPTIONS.filter(opt => opt.id !== 'vllm' && opt.id !== 'ollama')
+    const defaultLlmType = (llmTypeOptions[0] && llmTypeOptions[0].id) || (isApplyType ? 'ollama' : 'openclaw')
     return {
+      isApplyType,
+      llmTypeOptions: llmTypeOptions.map(opt => ({ id: opt.id, name: this.$t(opt.name) })),
       loading: false,
       form: {
         fc: this.$form.createForm(this, {
@@ -479,9 +483,6 @@ export default {
       return {
         schedtag,
       }
-    },
-    llmTypeOptions () {
-      return LLM_TYPE_OPTIONS.map(opt => ({ id: opt.id, name: this.$t(opt.name) }))
     },
     llmSkuParams () {
       return {

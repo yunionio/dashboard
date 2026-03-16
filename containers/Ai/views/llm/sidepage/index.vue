@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="$t('aice.llm')"
+    :title="isApplyType ? $t('aice.app_llm') : $t('aice.llm')"
     icon="res-vminstance"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -62,6 +62,9 @@ export default {
     }
   },
   computed: {
+    isApplyType () {
+      return this.$route.path.includes('app-llm')
+    },
     getParams () {
       if (this.params.windowData.currentTab === 'task-drawer') {
         return {

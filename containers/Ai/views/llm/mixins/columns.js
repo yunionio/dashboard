@@ -19,6 +19,11 @@ import {
 } from '../utils/columns'
 
 export default {
+  computed: {
+    isApplyType () {
+      return this.$route.path.includes('app-llm')
+    },
+  },
   created () {
     this.columns = [
       getNameDescriptionTableColumn({
@@ -32,7 +37,7 @@ export default {
       }),
       getStatusTableColumn({ statusModule: 'server' }),
       getLlmIpColumn(),
-      getLlmSkuColumn({ vm: this }),
+      getLlmSkuColumn({ vm: this, isApplyType: this.isApplyType }),
       getLlmImageColumn({ vm: this }),
       getLlmTypeTableColumn(),
       getTagTableColumn({

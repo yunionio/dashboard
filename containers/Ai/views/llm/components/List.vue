@@ -304,6 +304,9 @@ export default {
     }
   },
   computed: {
+    isApplyType () {
+      return this.$route.path.includes('app-llm')
+    },
     exportDataOptions () {
       return {
         downloadType: 'local',
@@ -324,6 +327,7 @@ export default {
     getParam () {
       const ret = {
         ...this.getParams,
+        llm_types: this.isApplyType ? ['vllm', 'ollama'] : ['dify', 'openclaw', 'comfyui'],
         details: true,
       }
       return ret
