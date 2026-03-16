@@ -6425,5 +6425,10 @@
   "common.worflow_tip": "{0} workflow has been submitted",
   "common.cpu_used_total": "CPU used/total",
   "common.memory_used_total": "Memory used/total",
-  "common.last_month": "Last month"
+  "common.last_month": "Last month",
+  "common.platform": "Platform",
+  "common.gateway": "Gateway",
+  "common.application": "Application",
+  "common.inference": "Inference",
+  "common.image": "Image"
 }

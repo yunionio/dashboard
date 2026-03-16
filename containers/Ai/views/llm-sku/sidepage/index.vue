@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="$t('aice.llm_sku')"
+    :title="isApplyType ? $t('aice.app_llm_sku') : $t('aice.llm_sku')"
     icon="res-sku"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -50,6 +50,9 @@ export default {
     }
   },
   computed: {
+    isApplyType () {
+      return this.$route.path.includes('app-llm')
+    },
     getParams () {
       return null
     },
