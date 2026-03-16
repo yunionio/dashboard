@@ -6456,5 +6456,10 @@
   "common.cpu_used_total": "CPU 已使用/总量",
   "common.memory_used_total": "内存 已使用/总量",
   "common.last_month": "上个月",
-  "common.config_agent": "配置AI Agent"
+  "common.config_agent": "配置AI Agent",
+  "common.platform": "平台",
+  "common.gateway": "网关",
+  "common.application": "应用",
+  "common.inference": "推理",
+  "common.image": "镜像"
 }

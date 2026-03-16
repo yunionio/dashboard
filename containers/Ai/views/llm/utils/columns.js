@@ -34,10 +34,10 @@ export const getLlmIpColumn = () => {
   }
 }
 
-export const getLlmSkuColumn = ({ vm = {} } = {}) => {
+export const getLlmSkuColumn = ({ vm = {}, isApplyType = false } = {}) => {
   return {
     field: 'llm_sku',
-    title: i18n.t('aice.llm_sku'),
+    title: isApplyType ? i18n.t('aice.app_llm_sku') : i18n.t('aice.llm_sku'),
     width: 120,
     slots: {
       default: ({ row }, h) => {
