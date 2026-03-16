@@ -43,6 +43,7 @@ export default {
   },
   data () {
     return {
+      isApplyType: this.$route.path.includes('app-llm'),
       credentialNamesMap: {},
       skuLlmSpecOpenclaw: null,
       baseInfo: [
@@ -53,12 +54,20 @@ export default {
           tipName: this.$t('aice.instance'),
         }),
       ],
-      extraInfo: [
+      streamEndpoint: null,
+      ports: [],
+      loginInfo: null,
+      loginPasswordVisible: false,
+    }
+  },
+  computed: {
+    extraInfo () {
+      return [
         {
           title: this.$t('aice.config_info'),
           items: [
             getLlmIpColumn(),
-            getLlmSkuColumn({ vm: this }),
+            getLlmSkuColumn({ vm: this, isApplyType: this.isApplyType }),
             getLlmImageColumn({ vm: this }),
             getCpuTableColumn(),
             getMemoryTableColumn(),
@@ -116,7 +125,7 @@ export default {
             },
             {
               field: 'mounted_models',
-              title: this.$t('aice.llm_instantapp'),
+              title: this.isApplyType ? this.$t('aice.app_llm_instantapp') : this.$t('aice.llm_instantapp'),
               slots: {
                 default: ({ row }) => {
                   const mounted_apps = row.mounted_models
@@ -133,12 +142,8 @@ export default {
             },
           ],
         },
-      ],
-      streamEndpoint: null,
-      ports: [],
-      loginInfo: null,
-      loginPasswordVisible: false,
-    }
+      ]
+    },
   },
   watch: {
     'data.llm_spec': {
