@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{action}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('aice.llm')" :count="params.data.length" :action="action" />
+      <dialog-selected-tips :name="isApplyType ? $t('aice.app_llm') : $t('aice.llm')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
       <!-- <a-form :form="form.fc" v-show="isRestart">
         <a-form-item class="mb-0">
@@ -29,6 +29,7 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
+      isApplyType: this.$route.path.includes('app-llm'),
       loading: false,
       action: this.params.actionText,
       form: {
