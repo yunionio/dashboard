@@ -600,10 +600,12 @@ export default {
       return normalize(`${base}-${u}-${k}`) || 'llm-credential'
     },
     credentialParamsForChannel (channelKey) {
-      const base = {
-        scope: this.$store.getters.scope,
-        filter: ['type.equals(container_secret)'],
+      const filter = ['type.equals(container_secret)']
+      if (this.$store.getters.scope === 'project') {
+        const uid = this.$store.getters.userInfo?.id
+        if (uid) filter.push(`user_id.equals(${uid})`)
       }
+      const base = { scope: this.$store.getters.scope, filter }
       return {
         ...base,
         'tags.0.key': 'user:openclaw_usage',
@@ -646,10 +648,12 @@ export default {
       }
     },
     credentialParamsForProvider (providerKey) {
-      const base = {
-        scope: this.$store.getters.scope,
-        filter: 'type.equals(container_secret)',
+      const filter = ['type.equals(container_secret)']
+      if (this.$store.getters.scope === 'project') {
+        const uid = this.$store.getters.userInfo?.id
+        if (uid) filter.push(`user_id.equals(${uid})`)
       }
+      const base = { scope: this.$store.getters.scope, filter }
       const shortName = this.providerShortName(providerKey)
       return {
         ...base,

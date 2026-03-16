@@ -116,13 +116,16 @@ export default {
       this.loading = true
       try {
         const manager = new this.$Manager('credentials', 'v1')
-        await manager.create({
-          data: {
-            type: 'container_secret',
-            name: values.name || '',
-            blob,
-          },
-        })
+        const createData = {
+          type: 'container_secret',
+          name: values.name || '',
+          blob,
+        }
+        if (this.$store.getters.scope === 'project') {
+          const uid = this.$store.getters.userInfo?.id
+          if (uid) createData.user_id = uid
+        }
+        await manager.create({ data: createData })
         this.$message.success(this.$t('common.success'))
         this.params.callback && this.params.callback()
         this.cancelDialog()
