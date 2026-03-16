@@ -6,14 +6,23 @@
         <a-form-model-item :label="$t('common.name')" prop="name">
           <a-input v-model="form.name" :placeholder="$t('common.tips.input', [$t('common.name')])" :disabled="type === 'edit'" />
         </a-form-model-item>
+        <a-form-model-item :label="$t('aice.llm_type')" prop="llm_type">
+          <a-radio-group
+            v-if="type !== 'edit'"
+            v-model="form.llm_type"
+            class="llm-type-picker"
+            button-style="solid">
+            <a-radio-button v-for="opt in llmTypeOptions" :key="opt.id" :value="opt.id">
+              {{ opt.name }}
+            </a-radio-button>
+          </a-radio-group>
+          <span v-else>{{ llmTypeName }}</span>
+        </a-form-model-item>
         <a-form-model-item :label="$t('aice.llm_image.name')" prop="image_name">
           <a-input v-model="form.image_name" :placeholder="$t('common.tips.input', [$t('aice.llm_image.name')])" />
         </a-form-model-item>
         <a-form-model-item :label="$t('aice.llm_image.label')" prop="image_label">
           <a-input v-model="form.image_label" :placeholder="$t('common.tips.input', [$t('aice.llm_image.label')])" />
-        </a-form-model-item>
-        <a-form-model-item :label="$t('aice.llm_image.progress')" prop="progress">
-          <a-input-number v-model="form.progress" :min="0" :max="100" :placeholder="$t('common.tips.input', [$t('aice.llm_image.progress')])" />
         </a-form-model-item>
       </a-form-model>
     </div>
@@ -28,6 +37,7 @@
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { validateModelForm } from '@/utils/validate'
+import { LLM_TYPE_OPTIONS } from '../../llm-sku/llmTypeConfig'
 
 export default {
   name: 'DesktopImageCreateDialog',
@@ -36,20 +46,21 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const data = this.params.type === 'edit' ? this.params.data[0] : {}
+    const defaultLlmType = (LLM_TYPE_OPTIONS[0] && LLM_TYPE_OPTIONS[0].id) || 'openclaw'
     return {
       loading: false,
       type: this.params.type,
       form: {
         name: data.name || undefined,
+        llm_type: data.llm_type || defaultLlmType,
         image_name: data.image_name || undefined,
         image_label: data.image_label || undefined,
-        progress: data.progress || undefined,
       },
       rules: {
         name: [{ required: true, validator: this.$validate('imageName') }],
+        llm_type: [{ required: true, message: this.$t('common.tips.select', [this.$t('aice.llm_type')]) }],
         image_name: [{ required: true, message: this.$t('common.tips.input', [this.$t('aice.llm_image.name')]) }],
         image_label: [{ required: true, message: this.$t('common.tips.input', [this.$t('aice.llm_image.label')]) }],
-        progress: [{ required: true, message: this.$t('common.tips.input', [this.$t('aice.llm_image.progress')]) }],
       },
       formItemLayout: {
         wrapperCol: {
@@ -62,6 +73,13 @@ export default {
     }
   },
   computed: {
+    llmTypeOptions () {
+      return LLM_TYPE_OPTIONS.map(opt => ({ id: opt.id, name: this.$t(opt.name) }))
+    },
+    llmTypeName () {
+      const opt = LLM_TYPE_OPTIONS.find(o => o.id === this.form.llm_type)
+      return opt ? this.$t(opt.name) : this.form.llm_type || '-'
+    },
     desktopModelParams () {
       return {
         limit: 20,
