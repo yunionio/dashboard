@@ -24,6 +24,15 @@ export default {
       getImageNameTableColumn(),
       getImageLabelTableColumn(),
       {
+        field: 'llm_type',
+        title: this.$t('aice.llm_type'),
+        width: 100,
+        formatter: ({ row }) => {
+          const key = row.llm_type ? `aice.llm_type.${row.llm_type}` : ''
+          return key ? this.$t(key) : (row.llm_type || '-')
+        },
+      },
+      {
         field: 'credential_id',
         title: this.$t('aice.llm_image.credential'),
         slots: {
