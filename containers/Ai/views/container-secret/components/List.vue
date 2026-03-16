@@ -92,6 +92,10 @@ export default {
         ...this.getParams,
         'filter.0': 'type.equals(container_secret)',
       }
+      if (this.$store.getters.scope === 'project') {
+        const uid = this.$store.getters.userInfo?.id
+        if (uid) ret['filter.1'] = `user_id.equals(${uid})`
+      }
       return ret
     },
     handleOpenSidepage (row) {

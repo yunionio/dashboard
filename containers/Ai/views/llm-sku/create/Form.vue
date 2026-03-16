@@ -390,9 +390,14 @@ export default {
       }
     },
     credentialParams () {
+      const filter = ['type.equals(container_secret)']
+      if (this.$store.getters.scope === 'project') {
+        const uid = this.$store.getters.userInfo?.id
+        if (uid) filter.push(`user_id.equals(${uid})`)
+      }
       return {
         scope: this.$store.getters.scope,
-        filter: 'type.equals(container_secret)',
+        filter,
       }
     },
     specList () {
@@ -489,7 +494,11 @@ export default {
           disk_size: volumes[0].size_mb,
           app_type: 'steam',
         }
-        if (!this.isEditMode) data.llm_type = effectiveLlmType
+        if (!this.isEditMode) {
+          data.llm_type = effectiveLlmType
+          // 默认填入 llm_sku，空对象即可，如 openclaw => llm_sku: { openclaw: {} }
+          data.llm_sku = { [effectiveLlmType]: {} }
+        }
         typeFieldKeys.forEach(key => {
           const v = pickTypeValues[key]
           if (v === undefined) return
