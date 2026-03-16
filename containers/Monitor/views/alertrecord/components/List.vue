@@ -291,7 +291,7 @@ export default {
                     border
                     showOverflow={false}
                     row-config={{ isHover: true }}
-                    column-config={{ resizable: false }}
+                    column-config={{ resizable: false, minWidth: 120 }}
                     columns={columns}
                     data={evalData} />
                 </list-body-cell-popover>]
