@@ -82,15 +82,16 @@
           <template v-else-if="field.suffix">{{ field.suffix }}</template>
         </a-form-item>
       </template>
+      <!-- 暂时隐藏 Agent 个性化配置，恢复时将 showAgentPersonalization 改为 true -->
       <a-divider
-        v-if="form.fd.llm_type === 'openclaw'"
+        v-if="form.fd.llm_type === 'openclaw' && showAgentPersonalization"
         key="section-agent-personalization"
         orientation="left"
         class="openclaw-section-divider">
         {{ $t('aice.openclaw.section.agent_personalization') }}
       </a-divider>
       <a-form-item
-        v-if="form.fd.llm_type === 'openclaw'"
+        v-if="form.fd.llm_type === 'openclaw' && showAgentPersonalization"
         :label="$t('aice.openclaw.workspace_templates')"
         :extra="$t('aice.openclaw.workspace_templates_tip')">
         <div class="openclaw-template-item">
@@ -190,6 +191,8 @@ export default {
     const envVars = (envs || []).map(item => ({ env_key: item.key, env_value: item.value, key: uuid() }))
     return {
       loading: false,
+      // 暂时隐藏 openclaw 创建/编辑时的「Agent 个性化配置」区块，恢复时改为 true
+      showAgentPersonalization: false,
       dict,
       form: {
         fc: this.$form.createForm(this, {
