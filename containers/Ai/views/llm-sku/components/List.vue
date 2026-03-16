@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -70,6 +71,9 @@ export default {
     }
   },
   computed: {
+    isApplyType () {
+      return this.$route.path.includes('app-llm')
+    },
     exportDataOptions () {
       return {
         downloadType: 'local',
@@ -91,6 +95,8 @@ export default {
         ...this.getParams,
         details: true,
       }
+      ret.filter = R.is(Array, ret.filters) ? ret.filters : (R.is(String, ret.filters) ? [ret.filters] : [])
+      ret.filter.push(`llm_type.${this.isApplyType ? 'in' : 'notin'}(vllm,ollama)`)
       return ret
     },
     handleOpenSidepage (row) {
