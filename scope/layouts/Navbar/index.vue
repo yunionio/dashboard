@@ -145,6 +145,7 @@
             </a-menu-item>
           </a-sub-menu>
           <a-menu-item key="toClouduser" v-if="showClouduser"><a-icon class="mr-2 ml-2" type="cloud-upload" />{{ $t('scope.cloudid') }}</a-menu-item>
+          <a-menu-item key="toCredentials"><icon class="mr-2 ml-2" type="access-credentials" />{{ $t('common_631') }}</a-menu-item>
           <a-menu-item key="handleUpdatePassword"><a-icon class="mr-2 ml-2" type="usergroup-delete" />{{ $t('scope.text_5') }}</a-menu-item>
           <a-menu-item key="logout"><a-icon class="mr-2 ml-2" type="logout" />{{ $t('scope.text_6') }}</a-menu-item>
         </a-menu>
@@ -317,6 +318,8 @@ export default {
         this.createDialog('UpdateUserPasswordDialog')
       } else if (item.key === 'toClouduser') {
         this.$router.push('/clouduser')
+      } else if (item.key === 'toCredentials') {
+        this.$router.push('/credentials')
       }
     },
     projectChange (id, scope) {

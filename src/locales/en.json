@@ -6430,5 +6430,6 @@
   "common.gateway": "Gateway",
   "common.application": "Application",
   "common.inference": "Inference",
-  "common.image": "Image"
+  "common.image": "Image",
+  "common.container_secret": "Container Secret"
 }
