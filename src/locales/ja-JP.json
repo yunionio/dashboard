@@ -6448,5 +6448,6 @@
   "common.gateway": "ゲートウェイ",
   "common.application": "アプリケーション",
   "common.inference": "推論",
-  "common.image": "イメージ"
+  "common.image": "イメージ",
+  "common.container_secret": "コンテナシークレット"
 }
