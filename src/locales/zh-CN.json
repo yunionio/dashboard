@@ -6461,5 +6461,6 @@
   "common.gateway": "网关",
   "common.application": "应用",
   "common.inference": "推理",
-  "common.image": "镜像"
+  "common.image": "镜像",
+  "common.container_secret": "容器密钥"
 }
