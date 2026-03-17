@@ -284,8 +284,8 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const isApplyType = this.$route.path.includes('app-llm')
-    const llmTypeOptions = isApplyType ? LLM_TYPE_OPTIONS.filter(opt => opt.id === 'vllm' || opt.id === 'ollama') : LLM_TYPE_OPTIONS.filter(opt => opt.id !== 'vllm' && opt.id !== 'ollama')
-    const defaultLlmType = (llmTypeOptions[0] && llmTypeOptions[0].id) || (isApplyType ? 'ollama' : 'openclaw')
+    const llmTypeOptions = isApplyType ? LLM_TYPE_OPTIONS.filter(opt => opt.id !== 'vllm' && opt.id !== 'ollama') : LLM_TYPE_OPTIONS.filter(opt => opt.id === 'vllm' || opt.id === 'ollama')
+    const defaultLlmType = (llmTypeOptions[0] && llmTypeOptions[0].id) || (isApplyType ? 'openclaw' : 'ollama')
     return {
       isApplyType,
       llmTypeOptions: llmTypeOptions.map(opt => ({ id: opt.id, name: this.$t(opt.name) })),
