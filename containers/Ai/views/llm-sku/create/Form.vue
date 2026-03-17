@@ -158,6 +158,8 @@ export default {
   },
   data () {
     const data = this.mode === 'edit' && this.editData ? this.editData : {}
+    const isApplyType = this.$route.path.includes('app-llm')
+    const llmTypeOptions = isApplyType ? LLM_TYPE_OPTIONS.filter(opt => opt.id !== 'vllm' && opt.id !== 'ollama') : LLM_TYPE_OPTIONS.filter(opt => opt.id === 'vllm' || opt.id === 'ollama')
     const {
       domain_id,
       project_domain,
@@ -189,10 +191,13 @@ export default {
     }
     if (!openclawWorkspaceTemplates || typeof openclawWorkspaceTemplates !== 'object') openclawWorkspaceTemplates = {}
     const envVars = (envs || []).map(item => ({ env_key: item.key, env_value: item.value, key: uuid() }))
+    const defaultLlmType = (llmTypeOptions[0] && llmTypeOptions[0].id) || (isApplyType ? 'openclaw' : 'ollama')
     return {
       loading: false,
       // 暂时隐藏 openclaw 创建/编辑时的「Agent 个性化配置」区块，恢复时改为 true
       showAgentPersonalization: false,
+      isApplyType,
+      llmTypeOptions: llmTypeOptions.map(opt => ({ id: opt.id, name: this.$t(opt.name) })),
       dict,
       form: {
         fc: this.$form.createForm(this, {
@@ -246,7 +251,7 @@ export default {
         llm_type: [
           'llm_type',
           {
-            initialValue: rowLlmType || (LLM_TYPE_OPTIONS[0] && LLM_TYPE_OPTIONS[0].id) || 'openclaw',
+            initialValue: rowLlmType || defaultLlmType,
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('aice.llm_type')]) },
             ],
@@ -361,9 +366,6 @@ export default {
     ...mapGetters(['userInfo']),
     isEditMode () {
       return this.mode === 'edit'
-    },
-    llmTypeOptions () {
-      return LLM_TYPE_OPTIONS.map(opt => ({ id: opt.id, name: this.$t(opt.name) }))
     },
     llmTypeName () {
       const cur = this.form?.fd?.llm_type
@@ -548,6 +550,9 @@ export default {
   margin-top: 24px;
   padding-top: 16px;
   border-top: 1px solid #e8e8e8;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
 }
 .openclaw-channel-tabs { margin-top: 8px; }
 .llm-type-picker ::v-deep .ant-radio-button-wrapper {

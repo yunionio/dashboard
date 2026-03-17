@@ -19,17 +19,20 @@ export default {
     LlmSkuCreateForm,
   },
   computed: {
+    isApplyType () {
+      return this.$route.path.includes('app-llm')
+    },
     headerTitle () {
-      return this.$t('common.create') + ' - ' + this.$t('aice.llm_sku')
+      return this.$t('common.create') + ' - ' + (this.isApplyType ? this.$t('aice.app_llm_sku') : this.$t('aice.llm_sku'))
     },
   },
   methods: {
     onFormSuccess () {
       this.$message.success(this.$t('common.success'))
-      this.$router.push('/llm-sku')
+      this.$router.push(this.isApplyType ? '/app-llm-sku' : '/llm-sku')
     },
     onFormCancel () {
-      this.$router.push('/llm-sku')
+      this.$router.push(this.isApplyType ? '/app-llm-sku' : '/llm-sku')
     },
   },
 }

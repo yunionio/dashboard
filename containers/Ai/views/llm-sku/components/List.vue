@@ -37,7 +37,11 @@ export default {
         {
           label: this.$t('common.create'),
           action: () => {
-            this.$router.push('/llm-sku/create')
+            if (this.isApplyType) {
+              this.$router.push('/app-llm-sku/create')
+            } else {
+              this.$router.push('/llm-sku/create')
+            }
           },
           meta: () => {
             return {
@@ -96,7 +100,7 @@ export default {
         details: true,
       }
       ret.filter = R.is(Array, ret.filters) ? ret.filters : (R.is(String, ret.filters) ? [ret.filters] : [])
-      ret.filter.push(`llm_type.${this.isApplyType ? 'in' : 'notin'}(vllm,ollama)`)
+      ret.filter.push(`llm_type.${this.isApplyType ? 'notin' : 'in'}(vllm,ollama)`)
       return ret
     },
     handleOpenSidepage (row) {
