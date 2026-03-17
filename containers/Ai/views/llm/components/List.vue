@@ -327,7 +327,7 @@ export default {
     getParam () {
       const ret = {
         ...this.getParams,
-        llm_types: this.isApplyType ? ['vllm', 'ollama'] : ['dify', 'openclaw', 'comfyui'],
+        llm_types: this.isApplyType ? ['dify', 'openclaw', 'comfyui'] : ['vllm', 'ollama'],
         details: true,
       }
       return ret
