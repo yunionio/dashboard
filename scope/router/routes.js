@@ -8,6 +8,7 @@ import SetSecretQuestion from '@/sections/Auth/SetSecretQuestion'
 import ResetSecretQuestion from '@/sections/Auth/ResetSecretQuestion'
 import Licenses from '@scope/views/licenses'
 import Layout from '@/layouts/RouterView'
+import Credential from '@Ai/views/credentials'
 
 const routes = [
   { name: 'Home', path: '/', redirect: '/dashboard' },
@@ -77,6 +78,18 @@ const routes = [
         name: 'Licenses',
         path: '',
         component: Licenses,
+      },
+    ],
+  },
+  {
+    path: '/credentials',
+    meta: {},
+    component: Layout,
+    children: [
+      {
+        name: 'Credential',
+        path: '',
+        component: Credential,
       },
     ],
   },
