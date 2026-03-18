@@ -1,7 +1,7 @@
 <template>
-  <base-dialog :width="900" @cancel="cancelDialog">
-    <div slot="header">{{ params.type === 'edit' ? $t('table.action.modify') : $t('common.create') }}</div>
-    <div slot="body">
+  <div>
+    <page-header :title="isApplyType ? $t('aice.app_llm_create') : $t('aice.llm_create')" />
+    <page-body>
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
         <a-form-item :label="$t('common.name')">
           <a-input v-decorator="decorators.name" :placeholder="$t('common.tips.input', [$t('common.name')])" />
@@ -19,12 +19,12 @@
             </a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item :label="$t('aice.llm_sku')">
+        <a-form-item :label="isApplyType ? $t('aice.app_llm_sku') : $t('aice.llm_sku')">
           <base-select
             v-decorator="decorators.llm_sku_id"
             resource="llm_skus"
             :select-props="{
-              placeholder: $t('common.tips.select', [$t('aice.llm_sku')]),
+              placeholder: $t('common.tips.select', [isApplyType ? $t('aice.app_llm_sku') : $t('aice.llm_sku')]),
             }"
             :params="llmSkuParams" />
         </a-form-item>
@@ -250,28 +250,28 @@
           <a-switch v-decorator="decorators.auto_start" :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" />
         </a-form-item>
       </a-form>
-    </div>
-    <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
-      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
-    </div>
-  </base-dialog>
+    </page-body>
+    <page-footer>
+      <template v-slot:right>
+        <a-button type="primary" @click="handleConfirm">{{ $t('common.create') }}</a-button>
+        <a-button @click="handleCancel">{{ $t('common.cancel') }}</a-button>
+      </template>
+    </page-footer>
+  </div>
 </template>
 
 <script>
 import * as R from 'ramda'
-import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import validateForm from '@/utils/validate'
 import NameRepeated from '@/sections/NameRepeated'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
-import { LLM_TYPE_OPTIONS, getParamsForType } from '../../llm-sku/llmTypeConfig'
-import { OPENCLAW_CHANNEL_SECTIONS, OPENCLAW_CHANNEL_OPTIONS } from '../../llm-sku/openclawChannelConfig'
-import { OPENCLAW_PROVIDER_SECTIONS, OPENCLAW_PROVIDER_OPTIONS } from '../../llm-sku/openclawProviderConfig'
-
+import { LLM_TYPE_OPTIONS, getParamsForType } from '../llm-sku/llmTypeConfig'
+import { OPENCLAW_CHANNEL_SECTIONS, OPENCLAW_CHANNEL_OPTIONS } from '../llm-sku/openclawChannelConfig'
+import { OPENCLAW_PROVIDER_SECTIONS, OPENCLAW_PROVIDER_OPTIONS } from '../llm-sku/openclawProviderConfig'
 export default {
-  name: 'LlmCreateDialog',
+  name: 'LLMCreate',
   provide () {
     return {
       form: this.form,
@@ -281,7 +281,7 @@ export default {
     NameRepeated,
     ServerNetwork,
   },
-  mixins: [DialogMixin, WindowsMixin],
+  mixins: [WindowsMixin],
   data () {
     const isApplyType = this.$route.path.includes('app-llm')
     const llmTypeOptions = isApplyType ? LLM_TYPE_OPTIONS.filter(opt => opt.id !== 'vllm' && opt.id !== 'ollama') : LLM_TYPE_OPTIONS.filter(opt => opt.id === 'vllm' || opt.id === 'ollama')
@@ -441,10 +441,14 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 19,
+          md: { span: 18 },
+          xl: { span: 20 },
+          xxl: { span: 21 },
         },
         labelCol: {
-          span: 5,
+          md: { span: 6 },
+          xl: { span: 4 },
+          xxl: { span: 3 },
         },
       },
       openclawChannelCredentialMode: {},
@@ -914,17 +918,19 @@ export default {
 
           if (Object.keys(openclaw).length) data.llm_spec = { openclaw }
         }
-        await this.params.onManager('create', {
-          managerArgs: { data },
+        await new this.$Manager('llms', 'v1').create({
+          data,
         })
         this.$message.success(this.$t('common.success'))
-        this.cancelDialog()
-        this.params.refresh && this.params.refresh()
+        this.$router.push(this.isApplyType ? '/app-llm' : '/llm')
       } catch (error) {
         throw error
       } finally {
         this.loading = false
       }
+    },
+    handleCancel () {
+      this.$router.push(this.isApplyType ? '/app-llm' : '/llm')
     },
   },
 }
