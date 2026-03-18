@@ -1,4 +1,5 @@
 import i18n from '@/locales'
+import store from '@/store'
 import NotFoundPage from '@/views/exception/404'
 import NoPermission from '@/views/exception/403'
 import EmailVerify from '@/views/email-verify'
@@ -6,7 +7,41 @@ import NoProject from '@/views/no-project'
 import Clouduser from '@/views/clouduser'
 import Icons from '@/components/Icon/Icons'
 
-export const menusConfig = getModulesRouteConfig()
+// menusConfig 需要在 globalSetting 拉取完成后才能准确排序（productVersion 依赖 globalSetting）。
+// 这里保持同一个数组引用，通过 splice 原地更新，保证引用 menusConfig 的组件能自动感知变更。
+export const menusConfig = []
+
+function refreshMenusConfig () {
+  const cfg = getModulesRouteConfig()
+  menusConfig.splice(0, menusConfig.length, ...cfg)
+}
+
+refreshMenusConfig()
+
+// globalSetting 更新后刷新排序（只影响菜单顺序，不影响已注册的 vue-router routes）
+// 注意：此文件会在应用启动早期被加载，可能遇到循环依赖导致 store 尚未就绪，因此需要延迟注册订阅。
+let __menusConfigSubscribed = false
+function ensureMenusConfigSubscribe () {
+  if (__menusConfigSubscribed) return
+  let s = store
+  try {
+    // eslint-disable-next-line global-require
+    s = s || (require('@/store').default)
+  } catch (e) {
+    // ignore
+  }
+  if (s && typeof s.subscribe === 'function') {
+    __menusConfigSubscribed = true
+    s.subscribe((mutation) => {
+      if (mutation && mutation.type === 'globalSetting/UPDATE') {
+        refreshMenusConfig()
+      }
+    })
+  } else {
+    setTimeout(ensureMenusConfigSubscribe, 0)
+  }
+}
+ensureMenusConfigSubscribe()
 
 const routes = [
   ...getScopeRoutes(),
@@ -56,7 +91,15 @@ function getModulesRouteConfig () {
   r.keys().forEach(dir => {
     ret = ret.concat(r(dir).default)
   })
-  ret.sort((a, b) => a.index - b.index)
+  const isAI = store?.getters?.globalSetting?.value?.productVersion === 'AI'
+  // 用“排序权重”调整展示顺序：仅 AI 产品时，把 AI 模块放到 Compute 前面
+  ret = ret
+    .map((item, order) => {
+      const sortIndex = (isAI && item?.meta?.icon === 'menu-ai') ? 19.5 : item.index
+      return { ...item, __sortIndex: sortIndex, __order: order }
+    })
+    .sort((a, b) => (a.__sortIndex - b.__sortIndex) || (a.__order - b.__order))
+    .map(({ __sortIndex, __order, ...item }) => item)
   ret = ret.filter(val => !val.meta.undetected)
   for (let i = 0, len = ret.length; i < len; i++) {
     const item = ret[i]
