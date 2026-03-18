@@ -45,6 +45,7 @@ const InstanceSnapshot = () => import(/* webpackChunkName: "compute" */ /* webpa
 const SnapshotPolicy = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/snapshotpolicy')
 const ImageImport = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/image/image-import/index')
 const ImageImportCe = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/image/image-import-ce/index')
+const ImageRepos = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@K8S/views/repos')
 const InstanceBackup = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/instance-backup')
 const DiskCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/disk/create/index')
 const VMInstance = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/vminstance')
@@ -318,6 +319,28 @@ export default {
             },
           ],
         },
+        {
+          path: '/image-repos',
+          meta: {
+            label: i18n.t('k8s.text_158'),
+            permission: 'k8s_container_registries_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_service')) {
+                return true
+              }
+              if (!store.getters.isAdminMode) return true
+              return !hasSetupKey(['pod', 'k8s'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'ImageRepos',
+              path: '',
+              component: ImageRepos,
+            },
+          ],
+        },
       ],
     },
     {
@@ -440,6 +463,9 @@ export default {
             permission: 'diskbackups_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.disk_backup')) {
+                return true
+              }
+              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
                 return true
               }
               return !hasSetupKey(['onestack'])
