@@ -57,6 +57,7 @@ export default {
       streamEndpoint: null,
       ports: [],
       loginInfo: null,
+      loginInfoSection: [],
       loginPasswordVisible: false,
     }
   },
@@ -142,6 +143,8 @@ export default {
             },
           ],
         },
+        ...this.loginInfoSection,
+        ...getLlmSpecSections(this),
       ]
     },
   },
@@ -197,7 +200,6 @@ export default {
       }
     },
     async getAccessInfo () {
-      const configItems = [...this.extraInfo[0].items]
       const loginSectionItems = []
       this.loginPasswordVisible = false
       try {
@@ -304,18 +306,12 @@ export default {
           console.error(urlErr)
         }
       }
-      const configSection = {
-        title: this.extraInfo[0].title,
-        items: configItems,
-      }
-      const sections = [configSection]
       if (loginSectionItems.length > 0) {
-        sections.push({
+        this.loginInfoSection = [{
           title: this.$t('aice.login_info'),
           items: loginSectionItems,
-        })
+        }]
       }
-      this.extraInfo = [...sections, ...getLlmSpecSections(this)]
     },
     async copyLoginPassword (value) {
       if (value == null || value === '') return

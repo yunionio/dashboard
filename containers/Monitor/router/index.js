@@ -9,7 +9,7 @@ const CommonalertsIndex = () => import(/* webpackChunkName: "monitor" */ /* webp
 const commonalertsCreate = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/commonalert/create')
 const commonalertsUpdate = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/commonalert/update')
 const commonalertsClone = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/commonalert/clone')
-const MonitorresourcesIndex = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/monitorresource')
+// const MonitorresourcesIndex = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/monitorresource')
 const AlertresourceIndex = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/alertresource')
 const AlertrecordIndex = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/alertrecord')
 const Explorer = () => import(/* webpackChunkName: "monitor" */ /* webpackPrefetch: true */ '@Monitor/views/explorer')
@@ -38,70 +38,70 @@ export default {
       },
       component: Overview,
     },
-    {
-      meta: {
-        label: i18n.t('monitor.monitorresources'),
-        t: 'dictionary.monitorresources',
-      },
-      submenus: [
-        {
-          path: '/monitorresources-guest',
-          meta: {
-            label: i18n.t('common.server'),
-            permission: 'monitorresources_list',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.monitorresources_guest')) {
-                return true
-              }
+    // {
+    //   meta: {
+    //     label: i18n.t('monitor.monitorresources'),
+    //     t: 'dictionary.monitorresources',
+    //   },
+    //   submenus: [
+    //     {
+    //       path: '/monitorresources-guest',
+    //       meta: {
+    //         label: i18n.t('common.server'),
+    //         permission: 'monitorresources_list',
+    //         hidden: () => {
+    //           if (isScopedPolicyMenuHidden('sub_hidden_menus.monitorresources_guest')) {
+    //             return true
+    //           }
 
-              return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
-                '3.0': ['monitor'],
-                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso', 'hcs'],
-              }) : false
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'MonitorresourcesGuest',
-              path: '',
-              props: { res_type: 'guest' },
-              component: MonitorresourcesIndex,
-            },
-          ],
-        },
-        {
-          path: '/monitorresources-host',
-          meta: {
-            label: i18n.t('dictionary.host'),
-            permission: 'monitorresources_list',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.monitorresources_host')) {
-                return true
-              }
+    //           return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
+    //             '3.0': ['monitor'],
+    //             default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso', 'hcs'],
+    //           }) : false
+    //         },
+    //       },
+    //       component: Layout,
+    //       children: [
+    //         {
+    //           name: 'MonitorresourcesGuest',
+    //           path: '',
+    //           props: { res_type: 'guest' },
+    //           component: MonitorresourcesIndex,
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       path: '/monitorresources-host',
+    //       meta: {
+    //         label: i18n.t('dictionary.host'),
+    //         permission: 'monitorresources_list',
+    //         hidden: () => {
+    //           if (isScopedPolicyMenuHidden('sub_hidden_menus.monitorresources_host')) {
+    //             return true
+    //           }
 
-              if (!(store.getters.isAdminMode || store.getters.isDomainMode)) {
-                return true
-              }
+    //           if (!(store.getters.isAdminMode || store.getters.isDomainMode)) {
+    //             return true
+    //           }
 
-              return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
-                '3.0': ['monitor'],
-                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso', 'hcs'],
-              }) : false
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'MonitorresourcesHost',
-              path: '',
-              props: { res_type: 'host' },
-              component: MonitorresourcesIndex,
-            },
-          ],
-        },
-      ],
-    },
+    //           return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
+    //             '3.0': ['monitor'],
+    //             default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso', 'hcs'],
+    //           }) : false
+    //         },
+    //       },
+    //       component: Layout,
+    //       children: [
+    //         {
+    //           name: 'MonitorresourcesHost',
+    //           path: '',
+    //           props: { res_type: 'host' },
+    //           component: MonitorresourcesIndex,
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
     {
       meta: {
         label: i18n.t('monitor.monitor_metric'),
