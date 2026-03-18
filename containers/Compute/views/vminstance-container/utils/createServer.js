@@ -930,6 +930,25 @@ export class GenCreateData {
    * @returns { Array }
    * @memberof GenCreateData
    */
+  getPortMappings () {
+    const port_mappings = []
+    if (this.fd.containerPorts) {
+      for (const k in this.fd.containerPorts) {
+        const pm = {}
+        if (this.fd.containerPorts[k]) {
+          pm.port = this.fd.containerPorts[k]
+        }
+        if (this.fd.hostPorts[k]) {
+          pm.host_port = this.fd.hostPorts[k]
+        }
+        if (pm) {
+          port_mappings.push(pm)
+        }
+      }
+    }
+    return port_mappings
+  }
+
   genNetworks () {
     let ret = [{ exit: false }]
     // 指定 IP 子网
@@ -982,6 +1001,10 @@ export class GenCreateData {
           if (device) {
             obj.sriov_device = { model: device }
           }
+        }
+        const portMappings = this.getPortMappings()
+        if (portMappings.length > 0) {
+          obj.port_mappings = portMappings
         }
         ret.push(obj)
       }, this.fd.networks)
@@ -1217,22 +1240,10 @@ export class GenCreateData {
         volume_mounts: getVolumeMounts(this.fd.containerVolumeMountNames?.[k], this.fd.containerVolumeMountPaths?.[k]),
       }
     })
-    const getPortMappings = () => {
-      const port_mappings = []
-      if (this.fd.containerPorts) {
-        for (const k in this.fd.containerPorts) {
-          port_mappings.push({
-            container_port: this.fd.containerPorts[k],
-            host_port: this.fd.hostPorts[k],
-          })
-        }
-      }
-      return port_mappings
-    }
 
     return {
       containers,
-      port_mappings: getPortMappings(),
+      // port_mappings: getPortMappings(),
     }
   }
 

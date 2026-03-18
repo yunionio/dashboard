@@ -87,6 +87,18 @@ export default {
         },
       },
       {
+        field: 'addr',
+        title: 'PCI ADDR',
+        width: 100,
+        showOverflow: 'ellipsis',
+        formatter: function ({ row }) {
+          if (row.addr >= 0) {
+            return row.addr
+          }
+          return '-'
+        },
+      },
+      {
         field: 'device_path',
         title: i18n.t('compute.isolated_devices.device_path.title'),
         width: 120,
