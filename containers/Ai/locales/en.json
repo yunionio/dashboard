@@ -1,6 +1,8 @@
 {
   "aice.ai": "AI",
   "aice.llm": "Inference Instance",
+  "aice.llm_create": "Create Inference Instance",
+  "aice.app_llm_create": "Create Application Instance",
   "aice.app_llm": "Application Instance",
   "aice.llm_image": "Image",
   "aice.llm_image.name": "Image Name",

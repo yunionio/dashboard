@@ -1,7 +1,9 @@
 {
   "aice.ai": "人工智能",
   "aice.llm": "推理实例",
+  "aice.llm_create": "创建推理实例",
   "aice.app_llm": "应用实例",
+  "aice.app_llm_create": "创建应用实例",
   "aice.llm_image": "镜像",
   "aice.llm_type": "LLM类型",
   "aice.llm_type.ollama": "Ollama",
