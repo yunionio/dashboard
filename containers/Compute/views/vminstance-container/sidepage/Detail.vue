@@ -104,34 +104,6 @@ export default {
             },
           },
         },
-        {
-          field: 'port_mapping',
-          title: this.$t('compute.repo.port_mapping'),
-          slots: {
-            default: ({ row }) => {
-              const colors = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple']
-              let port_mappings = []
-              if (row.nics) {
-                row.nics.forEach(item => {
-                  if (item.port_mappings) {
-                    port_mappings = port_mappings.concat(item.port_mappings)
-                  }
-                })
-              }
-              if (port_mappings.length > 0) {
-                return port_mappings.map((item, idx) => {
-                  const color = colors[idx % 7]
-                  return <p>
-                    <a-tag color={color}>
-                      {this.$t('compute.repo.container_port')}: {item.port} = {this.$t('compute.repo.host_port')}: {item.host_port} {item.protocol.toUpperCase()}
-                    </a-tag>
-                  </p>
-                })
-              }
-              return '-'
-            },
-          },
-        },
         getBrandTableColumn(),
         getBillingTypeTableColumn(),
         {
@@ -304,6 +276,36 @@ export default {
               title: this.$t('compute.monitor_url.prompt'),
               formatter: ({ row }) => {
                 return row.monitor_url
+              },
+            },
+            {
+              field: 'port_mapping',
+              title: this.$t('compute.repo.port_mapping'),
+              slots: {
+                default: ({ row }) => {
+                  const colors = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple']
+                  let index = 0
+                  const ret = []
+                  if (row.nics) {
+                    row.nics.forEach(item => {
+                      if (item.port_mappings) {
+                        for (let i = 0; i < item.port_mappings.length; i++) {
+                          index++
+                          const color = colors[index % 7]
+                          const port_mapping = item.port_mappings[i]
+                          ret.push(
+                            <p>
+                              <a-tag color={color}>
+                                {this.$t('compute.repo.container_port')}: {item.ip_addr}:{port_mapping.port} = {this.$t('compute.repo.host_port')}: {row.host_access_ip}:{port_mapping.host_port} ({port_mapping.protocol.toUpperCase()})
+                              </a-tag>
+                            </p>,
+                          )
+                        }
+                      }
+                    })
+                  }
+                  return ret.length ? ret : '-'
+                },
               },
             },
           ],

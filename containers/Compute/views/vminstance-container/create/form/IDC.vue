@@ -332,6 +332,7 @@ export default {
         usable: true,
         ...this.cloudregionZoneParams,
         ...this.scopeParams,
+        host_type: 'container',
       }
       if ([HYPERVISORS_MAP.kvm.key].includes(this.form.fd.hypervisor)) {
         if (this.storageHostParams.disk &&
@@ -501,8 +502,8 @@ export default {
     },
     portMappingDisableConf () {
       return {
-        tooltip: this.isMultiServer ? this.$t('compute.container.port_mapping.tooltip') : '',
-        disabled: this.isMultiServer,
+        tooltip: '', // this.isMultiServer ? this.$t('compute.container.port_mapping.tooltip') : '',
+        disabled: false, // this.isMultiServer,
       }
     },
   },
