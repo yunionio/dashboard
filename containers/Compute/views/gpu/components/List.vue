@@ -87,6 +87,15 @@ export default {
               key: 'vendor_device_id',
             },
           },
+          addr: {
+            label: 'PCI ADDR',
+            dropdown: true,
+            multiple: true,
+            distinctField: {
+              type: 'field',
+              key: 'addr',
+            },
+          },
           device_path: {
             label: this.$t('compute.isolated_devices.device_path.title'),
             dropdown: true,
