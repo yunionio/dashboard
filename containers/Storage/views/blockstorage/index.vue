@@ -32,15 +32,24 @@ export default {
   data () {
     return {
       listId: 'BlockStorageList',
-      cloudEnvOptions: [
-        { key: 'host', label: this.$t('compute.text_111') },
-        { key: 'baremetal', label: this.$t('compute.text_112') },
-      ],
       cloudEnv: 'host',
       statusModule: 'blockstorage',
       statusNormalList: ['online', 'offline', 'unmount'],
       statusHiddenList: ['error'],
     }
+  },
+  computed: {
+    cloudEnvOptions () {
+      if (this.$store.getters?.globalSetting?.value?.productVersion === 'AI') {
+        return [
+          { key: 'host', label: this.$t('compute.text_111') },
+        ]
+      }
+      return [
+        { key: 'host', label: this.$t('compute.text_111') },
+        { key: 'baremetal', label: this.$t('compute.text_112') },
+      ]
+    },
   },
 }
 </script>

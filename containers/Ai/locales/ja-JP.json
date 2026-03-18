@@ -1,6 +1,8 @@
 {
   "aice.ai": "人工知能",
   "aice.llm": "推論インスタンス",
+  "aice.llm_create": "推論インスタンスを作成",
+  "aice.app_llm_create": "アプリケーションインスタンスを作成",
   "aice.app_llm": "アプリケーションインスタンス",
   "aice.llm_image": "イメージ",
   "aice.llm_image.name": "イメージ名",

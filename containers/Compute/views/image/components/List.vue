@@ -119,7 +119,7 @@ export default {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.$router.push({ name: 'ImageImportCe' })
         },
-        hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_store'),
+        hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_store') || this.$store.getters?.globalSetting?.value?.productVersion === 'AI',
       }
       const ImageUpload = {
         label: this.$t('compute.text_643'),
@@ -134,7 +134,7 @@ export default {
         meta: () => ({
           buttonType: 'primary',
         }),
-        hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_upload'),
+        hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_upload') || this.$store.getters?.globalSetting?.value?.productVersion === 'AI',
       }
       const batchActions = [
         {

@@ -59,7 +59,7 @@ const VMContainerInstanceAdjustConfig = () => import(/* webpackChunkName: "compu
 export default {
   index: 20,
   meta: {
-    label: i18n.t('compute.text_90'),
+    label: i18n.t('scope.text_811'),
     icon: 'menu-compute',
   },
   menus: [

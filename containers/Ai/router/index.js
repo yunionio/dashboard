@@ -9,6 +9,7 @@ const LlmSkuCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefet
 const LlmInstantmodel = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-instantmodel')
 const LlmImage = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-image')
 const LlmInstantmodelImportCommunity = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-instantmodel/import-community')
+const LlmCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm/create')
 export default {
   index: 61,
   meta: {
@@ -33,6 +34,11 @@ export default {
               name: 'AppLlmList',
               path: '',
               component: AppLlm,
+            },
+            {
+              name: 'LlmCreate',
+              path: 'create',
+              component: LlmCreate,
             },
           ],
         },
@@ -74,6 +80,11 @@ export default {
               name: 'LlmList',
               path: '',
               component: Llm,
+            },
+            {
+              name: 'LlmCreate',
+              path: 'create',
+              component: LlmCreate,
             },
           ],
         },

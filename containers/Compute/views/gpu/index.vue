@@ -21,11 +21,20 @@ export default {
     return {
       listId: 'GpuList',
       curTab: 'gpu-list',
-      tabOptions: [
+    }
+  },
+  computed: {
+    tabOptions () {
+      if (this.$store.getters?.globalSetting?.value?.productVersion === 'AI') {
+        return [
+          { label: this.$t('compute.pci.passthrough_device'), key: 'gpu-list' },
+        ]
+      }
+      return [
         { label: this.$t('compute.pci.passthrough_device'), key: 'gpu-list' },
         { label: this.$t('compute.pci.passthrough_device_type'), key: 'pci-list' },
-      ],
-    }
+      ]
+    },
   },
 }
 </script>
