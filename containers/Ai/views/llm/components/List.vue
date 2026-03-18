@@ -107,9 +107,7 @@ export default {
         {
           label: this.$t('common.create'),
           action: () => {
-            this.createDialog('LlmCreateDialog', {
-              onManager: this.onManager,
-            })
+            this.$router.push(this.isApplyType ? '/app-llm/create' : '/llm/create')
           },
           meta: () => {
             return {

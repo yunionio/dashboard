@@ -51,12 +51,21 @@ export default {
       apiVersion: 'v1',
       statusNormalList: ['active'],
       cloudEnv: 'onpremise',
-      cloudEnvOptions: [
+    }
+  },
+  computed: {
+    cloudEnvOptions () {
+      if (this.$store.getters?.globalSetting?.value?.productVersion === 'AI') {
+        return [
+          { label: this.$t('dictionary.onpremise_env'), key: 'onpremise' },
+        ]
+      }
+      return [
         { label: this.$t('dictionary.onpremise_env'), key: 'onpremise' },
         { label: this.$t('dictionary.private_env'), key: 'private' },
         { label: this.$t('dictionary.public_env'), key: 'public' },
-      ],
-    }
+      ]
+    },
   },
 }
 </script>
