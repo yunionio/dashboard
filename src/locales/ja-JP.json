@@ -3050,7 +3050,8 @@
     "global_topology": "グローバルトポロジ",
     "k8s": "K8S",
     "server_container": "コンテナホスト",
-    "pre_defined_tag": "事前定義されたタグ"
+    "pre_defined_tag": "事前定義されたタグ",
+    "app_package": "アプリケーションパッケージ"
   },
   "originDictionary": {},
   "res": {

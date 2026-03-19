@@ -51,47 +51,47 @@ export default {
           }
           return ret
         },
-        hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_create_server'),
+        hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_create_server') || this.$route.path.includes('app-package'),
+      },
+      {
+        label: i18n.t('compute.text_247'),
+        permission: 'images_update',
+        action: obj => {
+          this.createDialog('ImageEditAttributesDialog', {
+            data: [obj],
+            columns: this.columns,
+            refresh: this.refresh,
+            onManager: this.onManager,
+          })
+        },
+        meta: obj => {
+          if (!validateAction(obj)) {
+            return {
+              validate: false,
+              tooltip: validateActionTooltip(obj),
+            }
+          }
+          if (this.isAdminMode) {
+            return {
+              validate: true,
+            }
+          } else if (this.isDomainMode) {
+            return {
+              validate: ownerDomain(obj),
+              tooltip: i18n.t('compute.text_682'),
+            }
+          }
+          return {
+            validate: isOwnerProject(obj.tenant_id),
+            tooltip: !isOwnerProject(obj.tenant_id) ? i18n.t('compute.text_623', [i18n.t('dictionary.domain')]) : '',
+          }
+        },
+        hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_edit_attribute'),
       },
       {
         label: i18n.t('compute.text_352'),
         actions: obj => {
           return [
-            {
-              label: i18n.t('compute.text_247'),
-              permission: 'images_update',
-              action: obj => {
-                this.createDialog('ImageEditAttributesDialog', {
-                  data: [obj],
-                  columns: this.columns,
-                  refresh: this.refresh,
-                  onManager: this.onManager,
-                })
-              },
-              meta: obj => {
-                if (!validateAction(obj)) {
-                  return {
-                    validate: false,
-                    tooltip: validateActionTooltip(obj),
-                  }
-                }
-                if (this.isAdminMode) {
-                  return {
-                    validate: true,
-                  }
-                } else if (this.isDomainMode) {
-                  return {
-                    validate: ownerDomain(obj),
-                    tooltip: i18n.t('compute.text_682'),
-                  }
-                }
-                return {
-                  validate: isOwnerProject(obj.tenant_id),
-                  tooltip: !isOwnerProject(obj.tenant_id) ? i18n.t('compute.text_623', [i18n.t('dictionary.domain')]) : '',
-                }
-              },
-              hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_edit_attribute'),
-            },
             {
               label: i18n.t('compute.text_683'),
               permission: 'images_update',
@@ -161,7 +161,7 @@ export default {
               hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_set_customize_image'),
             },
             getSetPublicAction(this, {
-              name: this.$t('dictionary.image'),
+              name: this.$route.path.includes('app-package') ? this.$t('dictionary.app_package') : this.$t('dictionary.image'),
               scope: 'project',
               resource: 'images',
               apiVersion: 'v1',
@@ -287,7 +287,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
-                  name: this.$t('dictionary.image'),
+                  name: this.$route.path.includes('app-package') ? this.$t('dictionary.app_package') : this.$t('dictionary.image'),
                   resource: 'images',
                   apiVersion: 'v1',
                 })
@@ -343,7 +343,7 @@ export default {
               permission: 'images_delete',
               action: (row) => {
                 this.createDialog('ChangeDisableDelete', {
-                  name: i18n.t('compute.text_97'),
+                  name: this.$route.path.includes('app-package') ? this.$t('dictionary.app_package') : i18n.t('compute.text_97'),
                   columns: this.columns,
                   onManager: this.onManager,
                   data: [row],
@@ -402,7 +402,7 @@ export default {
                   alert: this.$t('compute.text_1393'),
                   columns: this.columns,
                   title: i18n.t('compute.perform_delete'),
-                  name: this.$t('dictionary.image'),
+                  name: this.$route.path.includes('app-package') ? this.$t('dictionary.app_package') : this.$t('dictionary.image'),
                   onManager: this.onManager,
                 })
               },

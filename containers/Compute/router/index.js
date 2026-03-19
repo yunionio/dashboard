@@ -46,6 +46,7 @@ const SnapshotPolicy = () => import(/* webpackChunkName: "compute" */ /* webpack
 const ImageImport = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/image/image-import/index')
 const ImageImportCe = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/image/image-import-ce/index')
 const ImageRepos = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@K8S/views/repos')
+const AppPackage = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/app-package')
 const InstanceBackup = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/instance-backup')
 const DiskCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/disk/create/index')
 const VMInstance = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/vminstance')
@@ -316,6 +317,30 @@ export default {
               name: 'HostImage',
               path: '',
               component: HostImage,
+            },
+          ],
+        },
+        {
+          path: '/app-package',
+          meta: {
+            label: i18n.t('dictionary.app_package'),
+            permission: 'images_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.image')) {
+                return true
+              }
+              if (store.getters?.globalSetting?.value?.productVersion !== 'AI') {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'private', 'public', 'baremetal', 'vmware'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'AppPackage',
+              path: '',
+              component: AppPackage,
             },
           ],
         },
