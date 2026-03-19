@@ -9,7 +9,7 @@
             <name-repeated res="llms" :name="form.fd.name" />
           </template>
         </a-form-item>
-        <a-form-item :label="$t('aice.llm_type')">
+        <a-form-item :label="isApplyType ? $t('aice.llm_type.app') : $t('aice.llm_type.llm')">
           <a-radio-group
             class="llm-type-picker"
             button-style="solid"
@@ -322,7 +322,7 @@ export default {
           {
             initialValue: defaultLlmType,
             rules: [
-              { required: true, message: this.$t('common.tips.select', [this.$t('aice.llm_type')]) },
+              { required: true, message: this.$t('common.tips.select', [isApplyType ? this.$t('aice.llm_type.app') : this.$t('aice.llm_type.llm')]) },
             ],
           },
         ],
@@ -474,7 +474,7 @@ export default {
         scope: this.$store.getters.scope,
         limit: 20,
         usable: true,
-        server_type: ['guest', 'host'],
+        host_type: 'container',
         vpc: this.form.fd.vpc,
       }
       return ret

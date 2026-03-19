@@ -55,7 +55,7 @@ export default {
           },
           name: getNameFilter(),
           llm_type: {
-            label: this.$t('aice.llm_type'),
+            label: this.isApplyType ? this.$t('aice.llm_type.app') : this.$t('aice.llm_type.llm'),
             dropdown: true,
             items: LLM_TYPE_OPTIONS.map(opt => ({ key: opt.id, label: this.$t(opt.name) })),
           },
