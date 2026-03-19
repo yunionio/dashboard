@@ -15,14 +15,14 @@
         <a-form-item :label="$t('compute.text_1365')">
           <os-arch v-on:change="osArchChangeHandle" v-decorator="decorators.os_arch" :form="form" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_267')" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_267')" v-bind="formItemLayout" v-if="!$route.path.includes('app-package')">
           <a-radio-group @change="osTypeChangeHandle" v-decorator="decorators.osType">
             <a-radio-button value="Linux">Linux</a-radio-button>
             <a-radio-button value="Windows">Windows</a-radio-button>
             <a-radio-button value="Other">{{$t('compute.text_151')}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item :label="$t('compute.text_657')" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_657')" v-bind="formItemLayout" v-if="!$route.path.includes('app-package')">
           <a-select
             :placeholder="$t('compute.text_658')"
             v-decorator="decorators.osDistribution"
