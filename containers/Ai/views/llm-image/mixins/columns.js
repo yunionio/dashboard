@@ -25,26 +25,11 @@ export default {
       getImageLabelTableColumn(),
       {
         field: 'llm_type',
-        title: this.$t('aice.llm_type'),
+        title: this.$t('aice.llm_type.app'),
         width: 100,
         formatter: ({ row }) => {
           const key = row.llm_type ? `aice.llm_type.${row.llm_type}` : ''
           return key ? this.$t(key) : (row.llm_type || '-')
-        },
-      },
-      {
-        field: 'credential_id',
-        title: this.$t('aice.llm_image.credential'),
-        slots: {
-          default: ({ row }, h) => {
-            if (row.credential_id) {
-              return [
-                <a-icon type="check-circle" style={{ color: '#1890ff' }} />,
-              ]
-            } else {
-              return '-'
-            }
-          },
         },
       },
       getProjectTableColumn(),
