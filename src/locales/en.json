@@ -3030,7 +3030,8 @@
     "global_topology": "Global topology",
     "k8s": "K8S",
     "server_container": "Pod",
-    "pre_defined_tag": "Pre-defined tag"
+    "pre_defined_tag": "Pre-defined tag",
+    "app_package": "App Package"
   },
   "originDictionary": {},
   "res": {

@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog" v-show="show">
     <div slot="header">{{$t('dashboard.text_105')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.image')" :count="params.data.length" :action="$t('dashboard.text_105')" />
+      <dialog-selected-tips :name="$route.path.includes('app-package') ? $t('dictionary.app_package') : $t('dictionary.image')" :count="params.data.length" :action="$t('dashboard.text_105')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-spin :spinning="loading">
         <a-form :form="form" v-bind="formItemLayout">
