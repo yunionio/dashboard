@@ -146,7 +146,7 @@ export const getModelNameTableColumn = () => {
 export const getLlmTypeTableColumn = () => {
   return {
     field: 'llm_type',
-    title: 'LLM Type',
+    title: i18n.t('aice.llm_type.llm'),
     formatter: ({ row }) => {
       return row.llm_type || '-'
     },
