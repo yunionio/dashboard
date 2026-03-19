@@ -218,11 +218,24 @@ export default {
           field: 'login_url',
           title: this.$t('aice.login_url'),
           slots: {
-            default: () => [
-              <list-body-cell-wrap copy hideField={true} field='login_url' row={{ login_url: loginUrl }} message={loginUrl}>
-                {loginUrl || '-'}
-              </list-body-cell-wrap>,
-            ],
+            default: () => {
+              const urlCtrl = (loginUrl) => {
+                return <list-body-cell-wrap copy hideField={true} field='login_url' row={{ login_url: loginUrl }} message={loginUrl}>
+                  {loginUrl || '-'}
+                  <a-icon type="link" class="ml-1" onClick={() => this.openLoginUrl(loginUrl)} />
+                </list-body-cell-wrap>
+              }
+              const urls = [
+                urlCtrl(loginUrl),
+              ]
+              if (this.loginInfo.internal_url && this.loginInfo.internal_url !== loginUrl) {
+                urls.push(urlCtrl(this.loginInfo.internal_url))
+              }
+              if (this.loginInfo.public_url && this.loginInfo.public_url !== loginUrl) {
+                urls.push(urlCtrl(this.loginInfo.public_url))
+              }
+              return urls
+            },
           },
         })
         loginSectionItems.push({
@@ -321,6 +334,10 @@ export default {
       } catch (e) {
         this.$message.error(this.$t('common.copyError'))
       }
+    },
+    openLoginUrl (url) {
+      if (url == null || url === '') return
+      window.open(url, '_blank')
     },
   },
 }

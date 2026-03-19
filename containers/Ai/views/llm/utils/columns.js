@@ -2,10 +2,10 @@ import i18n from '@/locales'
 import { sizestr } from '@/utils/utils'
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 
-export const getLlmTypeTableColumn = () => {
+export const getLlmTypeTableColumn = (isApplyType = false) => {
   return {
     field: 'llm_type',
-    title: i18n.t('aice.llm_type'),
+    title: isApplyType ? i18n.t('aice.llm_type.app') : i18n.t('aice.llm_type.llm'),
     width: 120,
     formatter: ({ row }) => {
       return row.llm_type || '-'
