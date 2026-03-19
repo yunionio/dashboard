@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="$t('compute.text_97')"
+    :title="$route.path.includes('app-package') ? $t('dictionary.app_package') : $t('compute.text_97')"
     icon="res-image"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
