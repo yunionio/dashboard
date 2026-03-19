@@ -27,15 +27,13 @@ export default {
           )
         },
       }),
-      // getStatusTableColumn({ statusModule: 'phoneModel' }),
-      // getDeviceModelTableColumn(),
       getStatusTableColumn({ statusModule: 'sku' }),
       getCpuTableColumn(),
       getMemoryTableColumn(),
       getDiskTableColumn(),
       getImageTableColumn({ vm: this }),
       getBandwidthTableColumn(),
-      getLlmTypeTableColumn(),
+      getLlmTypeTableColumn(this.isApplyType),
       getProjectTableColumn(),
       getPublicScopeTableColumn({
         vm: this,
