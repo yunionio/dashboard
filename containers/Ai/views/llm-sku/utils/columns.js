@@ -123,10 +123,10 @@ export const getDiskTableColumn = () => {
   }
 }
 
-export const getLlmTypeTableColumn = () => {
+export const getLlmTypeTableColumn = (isApplyType = false) => {
   return {
     field: 'llm_type',
-    title: i18n.t('aice.llm_type'),
+    title: isApplyType ? i18n.t('aice.llm_type.app') : i18n.t('aice.llm_type.llm'),
     formatter: ({ row }) => {
       return row.llm_type || '-'
     },

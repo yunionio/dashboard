@@ -39,7 +39,7 @@ export default {
       getLlmIpColumn(),
       getLlmSkuColumn({ vm: this, isApplyType: this.isApplyType }),
       getLlmImageColumn({ vm: this }),
-      getLlmTypeTableColumn(),
+      getLlmTypeTableColumn(this.isApplyType),
       getTagTableColumn({
         onManager: this.onManager,
         resource: 'llms',
