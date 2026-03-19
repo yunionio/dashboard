@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header
-      :title="$t('compute.text_97')"
+      :title="$t('dictionary.app_package')"
       isShowResStatusTab
       :status-opts="statusOpts"
       :status-click-handle="statusClickHandle"
@@ -11,7 +11,7 @@
       <image-list
         v-if="cloudEnv === 'onpremise'"
         id="ImageList"
-        :imageType="imageType"
+        imageType="appPackage"
         :cloud-env="cloudEnv"
         :filterParams="filterParams"
         :diskFormats="diskFormats"
@@ -32,10 +32,10 @@
 <script>
 import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 import CacheImageList from '@Compute/views/cached-image/components/List'
-import ImageList from './components/List'
+import ImageList from '@Compute/views/image/components/List'
 
 export default {
-  name: 'ImageIndex',
+  name: 'AppPackageIndex',
   components: {
     ImageList,
     CacheImageList,
@@ -48,7 +48,7 @@ export default {
   },
   data () {
     return {
-      listId: 'ImageList',
+      listId: 'AppPackageList',
       apiVersion: 'v1',
       statusNormalList: ['active'],
       cloudEnv: 'onpremise',
