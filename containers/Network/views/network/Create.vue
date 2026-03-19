@@ -41,6 +41,7 @@
             v-decorator="decorators.wire"
             :selectProps="{ 'placeholder': $t('network.text_572') }"
             :isDefaultSelect="true"
+            :item.sync="curWire"
             :labelFormat="wireLabelFormat"
             :params="wireParams" />
         </a-form-item>
@@ -53,6 +54,7 @@
           <a-radio-group v-decorator="decorators.server_type">
             <a-radio-button
               v-for="item of serverTypeOpts"
+              :disabled="item.disabled"
               :key="item.key"
               :value="item.key">{{ item.label }}</a-radio-button>
           </a-radio-group>
@@ -323,7 +325,7 @@ export default {
         server_type: [
           'server_type',
           {
-            initialValue: 'guest',
+            initialValue: '',
             rules: [
               { required: true, message: this.$t('network.text_592') },
             ],
@@ -500,15 +502,6 @@ export default {
           },
         ],
       },
-      serverTypeOpts: [
-        { label: this.$t('network.text_226'), key: 'guest' },
-        { label: this.$t('network.text_598'), key: 'baremetal' },
-        // { label: this.$t('network.text_599'), key: 'container' },
-        { label: 'PXE', key: 'pxe' },
-        { label: 'IPMI', key: 'ipmi' },
-        { label: this.$t('network.text_221'), key: 'eip' },
-        { label: this.$t('network.server_type.hostlocal.text'), key: 'hostlocal' },
-      ],
       allocPolicyoptions: [
         { label: this.$t('network.text_600'), key: 'none' },
         { label: this.$t('network.text_601'), key: 'stepdown' },
@@ -526,6 +519,7 @@ export default {
       project_domain: '',
       vpcId: '',
       curVpc: null,
+      curWire: null,
     }
   },
   computed: {
@@ -644,6 +638,34 @@ export default {
     hasBgpType () {
       return this.form.fd.server_type === 'eip' || this.form.fd.server_type === 'guest' || this.form.fd.server_type === 'baremetal' || this.form.fd.server_type === 'hostlocal'
     },
+    serverTypeOpts () {
+      const opts = [
+        { label: this.$t('network.text_226'), key: 'guest', disabled: false },
+        { label: this.$t('network.text_598'), key: 'baremetal', disabled: false },
+        // { label: this.$t('network.text_599'), key: 'container' },
+        { label: 'PXE', key: 'pxe', disabled: false },
+        { label: 'IPMI', key: 'ipmi', disabled: false },
+        { label: this.$t('network.text_221'), key: 'eip', disabled: false },
+        { label: this.$t('network.server_type.hostlocal.text'), key: 'hostlocal', disabled: false },
+      ]
+      const isHostLocalWire = this.curWire?.id === '__host_local__'
+      for (let i = 0; i < opts.length; i++) {
+        if (opts[i].key === 'hostlocal') {
+          if (isHostLocalWire) {
+            opts[i].disabled = false
+          } else {
+            opts[i].disabled = true
+          }
+        } else {
+          if (isHostLocalWire) {
+            opts[i].disabled = true
+          } else {
+            opts[i].disabled = false
+          }
+        }
+      }
+      return opts
+    },
   },
   provide () {
     return {
@@ -675,6 +697,41 @@ export default {
       handler (newValue) {
         if (newValue.filter(item => item).length > 0) {
           this.guestIpPrefixHelp = ''
+        }
+      },
+    },
+    'form.fd.vpc': {
+      handler (newValue) {
+        if (newValue === 'default') {
+          this.$nextTick(() => {
+            if (this.curWire?.id === '__host_local__') { // 如果当前选择的网线是主机本地网线，则设置服务器类型为主机本地
+              this.form.fc.setFieldsValue({
+                server_type: 'hostlocal',
+              })
+            } else { // 如果当前选择的网线不是主机本地网线，则设置服务器类型为虚拟机
+              this.form.fc.setFieldsValue({
+                server_type: 'guest',
+              })
+            }
+          })
+        }
+      },
+    },
+    'form.fd.wire': {
+      handler (newValue) {
+        console.log('newValue', newValue)
+        if (newValue === '__host_local__') {
+          this.$nextTick(() => {
+            this.form.fc.setFieldsValue({
+              server_type: 'hostlocal',
+            })
+          })
+        } else {
+          this.$nextTick(() => {
+            this.form.fc.setFieldsValue({
+              server_type: 'guest',
+            })
+          })
         }
       },
     },
