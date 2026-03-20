@@ -47,6 +47,27 @@ export default {
         getCpuTableColumn(),
         getMemoryTableColumn(),
         getDiskTableColumn(),
+        {
+          field: 'port_mappings',
+          title: this.$t('aice.port'),
+          slots: {
+            default: ({ row }) => {
+              const access_infos = row.port_mappings
+              if (access_infos?.length) {
+                const colors = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple']
+                return access_infos.map((item, idx) => {
+                  const color = colors[idx % 7]
+                  return <p>
+                    <a-tag color={color} style={{ width: '250px' }}>
+                      {item.protocol.toUpperCase()}: {item.container_port}
+                    </a-tag>
+                  </p>
+                })
+              }
+              return '-'
+            },
+          },
+        },
       ],
     }
   },
