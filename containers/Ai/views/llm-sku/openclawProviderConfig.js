@@ -11,7 +11,7 @@ export const OPENCLAW_PROVIDER_SECTIONS = [
     sectionLabelKey: 'aice.openclaw.section.ai_providers_env',
     required: true,
     vars: [
-      // { envKey: 'ANTHROPIC_API_KEY', providerLabelKey: 'aice.openclaw.provider.anthropic', descriptionKey: 'aice.openclaw.env.ANTHROPIC_API_KEY', overrideUrlKey: 'ANTHROPIC_BASE_URL' },
+      { envKey: 'ANTHROPIC_API_KEY', providerLabelKey: 'aice.openclaw.provider.anthropic', descriptionKey: 'aice.openclaw.env.ANTHROPIC_API_KEY', overrideUrlKey: 'ANTHROPIC_BASE_URL' },
       // { envKey: 'OPENAI_API_KEY', providerLabelKey: 'aice.openclaw.provider.openai', descriptionKey: 'aice.openclaw.env.OPENAI_API_KEY' },
       // { envKey: 'OPENROUTER_API_KEY', providerLabelKey: 'aice.openclaw.provider.openrouter', descriptionKey: 'aice.openclaw.env.OPENROUTER_API_KEY' },
       // { envKey: 'GEMINI_API_KEY', providerLabelKey: 'aice.openclaw.provider.gemini', descriptionKey: 'aice.openclaw.env.GEMINI_API_KEY' },
