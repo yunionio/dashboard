@@ -166,7 +166,17 @@
                     <a-checkbox-group
                       :value="openclawChannelExportKeys[section.sectionKey] || []"
                       @change="val => $set(openclawChannelExportKeys, section.sectionKey, val)">
-                      <a-checkbox v-for="k in (openclawChannelBlobKeys[section.sectionKey] || [])" :key="k" :value="k">{{ k }}</a-checkbox>
+                      <template v-if="section.sectionKey === 'feishu'">
+                        <a-checkbox v-for="k in feishuBasicEnvKeys(section, openclawChannelBlobKeys[section.sectionKey])" :key="k" :value="k">{{ k }}</a-checkbox>
+                        <a-collapse :bordered="false" v-if="feishuAdvancedEnvKeys(section, openclawChannelBlobKeys[section.sectionKey]).length">
+                          <a-collapse-panel :header="$t('common.adv_config')" key="advanced">
+                            <a-checkbox v-for="k in feishuAdvancedEnvKeys(section, openclawChannelBlobKeys[section.sectionKey])" :key="k" :value="k">{{ k }}</a-checkbox>
+                          </a-collapse-panel>
+                        </a-collapse>
+                      </template>
+                      <template v-else>
+                        <a-checkbox v-for="k in (openclawChannelBlobKeys[section.sectionKey] || [])" :key="k" :value="k">{{ k }}</a-checkbox>
+                      </template>
                     </a-checkbox-group>
                   </a-form-item>
                 </template>
@@ -175,24 +185,126 @@
                     {{ $t('aice.openclaw.new_credential_name') }}：{{ genCredentialName({ llmName: instanceName, usage: 'channel', key: section.sectionKey }) }}
                   </div>
                   <div class="openclaw-new-blob-section">
-                    <div v-for="v in section.vars" :key="v.envKey" class="openclaw-new-blob-row mb-2">
+                    <div v-for="v in channelBasicVars(section.vars)" :key="v.envKey" class="openclaw-new-blob-row mb-2">
                       <a-form-item
                         :label="v.envKey"
-                        :extra="($te(v.descriptionKey) ? $t(v.descriptionKey) : '') + ' ' + $t('aice.openclaw.channel_var_optional')">
-                        <a-input-password
-                          v-if="isSecretEnvKey(v.envKey)"
-                          :value="(openclawChannelBlob[section.sectionKey] || {})[v.envKey]"
-                          :placeholder="v.defaultValue || v.envKey"
-                          allow-clear
-                          @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.value)" />
-                        <a-input
-                          v-else
-                          :value="(openclawChannelBlob[section.sectionKey] || {})[v.envKey]"
-                          :placeholder="v.defaultValue || v.envKey"
-                          allow-clear
-                          @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.value)" />
+                        :required="v.required"
+                        :extra="($te(v.descriptionKey) ? $t(v.descriptionKey) : '') + ' ' + (v.required ? $t('aice.openclaw.required_hint') : $t('aice.openclaw.channel_var_optional'))">
+                        <template v-if="v.envKey === 'FEISHU_DOMAIN'">
+                          <a-radio-group
+                            :value="((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || v.defaultValue"
+                            @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.value)">
+                            <a-radio value="feishu">feishu</a-radio>
+                            <a-radio value="lark">lark</a-radio>
+                          </a-radio-group>
+                        </template>
+                        <template v-else-if="v.envKey === 'FEISHU_DM_POLICY'">
+                          <a-radio-group
+                            :value="((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || v.defaultValue"
+                            @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.value)">
+                            <a-radio value="open">open</a-radio>
+                            <a-radio value="pairing">pairing</a-radio>
+                            <a-radio value="allowlist">allowlist</a-radio>
+                            <a-radio value="disabled">disabled</a-radio>
+                          </a-radio-group>
+                        </template>
+                        <template v-else-if="v.envKey === 'FEISHU_GROUP_POLICY'">
+                          <a-radio-group
+                            :value="(openclawChannelBlob[section.sectionKey] || {})[v.envKey]"
+                            @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.value)">
+                            <a-radio value="open">open</a-radio>
+                            <a-radio value="allowlist">allowlist</a-radio>
+                            <a-radio value="disabled">disabled</a-radio>
+                          </a-radio-group>
+                        </template>
+                        <template v-else-if="v.envKey === 'FEISHU_TYPING_INDICATOR'">
+                          <a-checkbox
+                            :checked="String(((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || v.defaultValue) === 'true'"
+                            @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.checked ? 'true' : 'false')" />
+                        </template>
+                        <template v-else-if="v.envKey === 'FEISHU_RESOLVE_SENDER_NAMES'">
+                          <a-checkbox
+                            :checked="String(((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || v.defaultValue) === 'true'"
+                            @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.checked ? 'true' : 'false')" />
+                        </template>
+                        <template v-else>
+                          <a-input-password
+                            v-if="isSecretEnvKey(v.envKey)"
+                            :value="(openclawChannelBlob[section.sectionKey] || {})[v.envKey]"
+                            :placeholder="v.defaultValue || v.envKey"
+                            allow-clear
+                            @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.value)" />
+                          <a-input
+                            v-else
+                            :value="(openclawChannelBlob[section.sectionKey] || {})[v.envKey]"
+                            :placeholder="v.defaultValue || v.envKey"
+                            allow-clear
+                            @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.value)" />
+                        </template>
                       </a-form-item>
                     </div>
+                    <a-collapse :bordered="false" v-if="channelAdvancedVars(section.vars).length">
+                      <a-collapse-panel :header="$t('common.adv_config')" key="advanced">
+                        <div v-for="v in channelAdvancedVars(section.vars)" :key="v.envKey" class="openclaw-new-blob-row mb-2">
+                          <a-form-item
+                            :label="v.envKey"
+                            :required="v.required"
+                            :extra="($te(v.descriptionKey) ? $t(v.descriptionKey) : '') + ' ' + (v.required ? $t('aice.openclaw.required_hint') : $t('aice.openclaw.channel_var_optional'))">
+                            <template v-if="v.envKey === 'FEISHU_DOMAIN'">
+                              <a-radio-group
+                                :value="((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || v.defaultValue"
+                                @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.value)">
+                                <a-radio value="feishu">feishu</a-radio>
+                                <a-radio value="lark">lark</a-radio>
+                              </a-radio-group>
+                            </template>
+                            <template v-else-if="v.envKey === 'FEISHU_DM_POLICY'">
+                              <a-radio-group
+                                :value="((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || v.defaultValue"
+                                @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.value)">
+                                <a-radio value="open">open</a-radio>
+                                <a-radio value="pairing">pairing</a-radio>
+                                <a-radio value="allowlist">allowlist</a-radio>
+                                <a-radio value="disabled">disabled</a-radio>
+                              </a-radio-group>
+                            </template>
+                            <template v-else-if="v.envKey === 'FEISHU_GROUP_POLICY'">
+                              <a-radio-group
+                                :value="(openclawChannelBlob[section.sectionKey] || {})[v.envKey]"
+                                @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.value)">
+                                <a-radio value="open">open</a-radio>
+                                <a-radio value="allowlist">allowlist</a-radio>
+                                <a-radio value="disabled">disabled</a-radio>
+                              </a-radio-group>
+                            </template>
+                            <template v-else-if="v.envKey === 'FEISHU_TYPING_INDICATOR'">
+                              <a-checkbox
+                                :checked="String(((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || v.defaultValue) === 'true'"
+                                @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.checked ? 'true' : 'false')" />
+                            </template>
+                            <template v-else-if="v.envKey === 'FEISHU_RESOLVE_SENDER_NAMES'">
+                              <a-checkbox
+                                :checked="String(((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || v.defaultValue) === 'true'"
+                                @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.checked ? 'true' : 'false')" />
+                            </template>
+                            <template v-else>
+                              <a-input-password
+                                v-if="isSecretEnvKey(v.envKey)"
+                                :value="(openclawChannelBlob[section.sectionKey] || {})[v.envKey]"
+                                :placeholder="v.defaultValue || v.envKey"
+                                allow-clear
+                                @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.value)" />
+                              <a-input
+                                v-else
+                                :value="(openclawChannelBlob[section.sectionKey] || {})[v.envKey]"
+                                :placeholder="v.defaultValue || v.envKey"
+                                allow-clear
+                                @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.value)" />
+                            </template>
+                          </a-form-item>
+                        </div>
+                      </a-collapse-panel>
+                    </a-collapse>
                   </div>
                 </template>
               </a-tab-pane>
@@ -598,6 +710,22 @@ export default {
       const label = opt ? opt.label : (this.$te(value) ? this.$t(value) : String(value))
       return String(label).toLowerCase().indexOf((input || '').toLowerCase()) >= 0
     },
+    channelBasicVars (vars) {
+      return (vars || []).filter(v => !v.advanced)
+    },
+    channelAdvancedVars (vars) {
+      return (vars || []).filter(v => !!v.advanced)
+    },
+    feishuBasicEnvKeys (section, envKeys) {
+      if (!section || section.sectionKey !== 'feishu') return envKeys || []
+      const basicKeys = new Set(this.channelBasicVars(section.vars).map(v => v.envKey))
+      return (envKeys || []).filter(k => basicKeys.has(k))
+    },
+    feishuAdvancedEnvKeys (section, envKeys) {
+      if (!section || section.sectionKey !== 'feishu') return []
+      const basicKeys = new Set(this.channelBasicVars(section.vars).map(v => v.envKey))
+      return (envKeys || []).filter(k => !basicKeys.has(k))
+    },
     isSecretEnvKey (envKey) {
       const lower = (envKey || '').toLowerCase()
       return lower.includes('key') || lower.includes('secret') || lower.includes('token') || lower.includes('password')
@@ -636,6 +764,26 @@ export default {
               return
             }
             exportKeys = this.openclawChannelExportKeys[channelKey] || []
+            if (channelKey === 'qqbot') {
+              const requiredKeys = ['QQBOT_APP_ID', 'QQBOT_CLIENT_SECRET']
+              const missing = requiredKeys.filter(k => !(exportKeys || []).includes(k))
+              if (missing.length) {
+                const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
+                this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
+                this.loading = false
+                return
+              }
+            }
+            if (channelKey === 'feishu') {
+              const requiredKeys = ['FEISHU_APP_ID', 'FEISHU_APP_SECRET']
+              const missing = requiredKeys.filter(k => !(exportKeys || []).includes(k))
+              if (missing.length) {
+                const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
+                this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
+                this.loading = false
+                return
+              }
+            }
           } else {
             const credName = this.genCredentialName({ llmName: this.instanceName, usage: 'channel', key: channelKey })
             const raw = this.openclawChannelBlob[channelKey] || {}
@@ -644,6 +792,30 @@ export default {
               const v = (raw[k] || '').trim()
               if (v) blob[k] = v
             })
+            if (channelKey === 'qqbot') {
+              const missing = ['QQBOT_APP_ID', 'QQBOT_CLIENT_SECRET'].filter(k => !blob[k])
+              if (missing.length) {
+                const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
+                this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
+                this.loading = false
+                return
+              }
+            }
+            if (channelKey === 'feishu') {
+              const missing = ['FEISHU_APP_ID', 'FEISHU_APP_SECRET'].filter(k => !blob[k])
+              if (missing.length) {
+                const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
+                this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
+                this.loading = false
+                return
+              }
+              // 单选/勾选控件可能只显示 defaultValue，但不一定触发 @change 写入 blob
+              // 这里兜底补齐默认值，确保这些字段会写入 credential blob 与 export_keys
+              if (!blob.FEISHU_DOMAIN) blob.FEISHU_DOMAIN = 'feishu'
+              if (!blob.FEISHU_DM_POLICY) blob.FEISHU_DM_POLICY = 'open'
+              if (!blob.FEISHU_TYPING_INDICATOR) blob.FEISHU_TYPING_INDICATOR = 'true'
+              if (!blob.FEISHU_RESOLVE_SENDER_NAMES) blob.FEISHU_RESOLVE_SENDER_NAMES = 'true'
+            }
             if (Object.keys(blob).length === 0) {
               this.$message.warning(this.$t('aice.openclaw.provider_filter_empty'))
               this.loading = false
@@ -760,7 +932,14 @@ export default {
 .openclaw-tab-close { font-size: 12px; cursor: pointer; opacity: 0.6; }
 .openclaw-tab-close:hover { opacity: 1; }
 .openclaw-new-blob-section { margin-top: 8px; }
-.openclaw-new-blob-row ::v-deep .ant-form-item-label { padding-bottom: 4px; }
+.openclaw-new-blob-row ::v-deep .ant-form-item-label {
+  padding-bottom: 4px;
+  overflow: visible;
+}
+.openclaw-new-blob-row ::v-deep .ant-form-item-label label {
+  overflow: visible;
+  white-space: nowrap;
+}
 .openclaw-filter-empty { padding: 12px 0; font-size: 13px; }
 .openclaw-channel-config-hint { font-size: 13px; }
 </style>
