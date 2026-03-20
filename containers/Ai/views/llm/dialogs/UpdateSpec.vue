@@ -166,17 +166,18 @@
                     <a-checkbox-group
                       :value="openclawChannelExportKeys[section.sectionKey] || []"
                       @change="val => $set(openclawChannelExportKeys, section.sectionKey, val)">
-                      <template v-if="section.sectionKey === 'feishu'">
-                        <a-checkbox v-for="k in feishuBasicEnvKeys(section, openclawChannelBlobKeys[section.sectionKey])" :key="k" :value="k">{{ k }}</a-checkbox>
-                        <a-collapse :bordered="false" v-if="feishuAdvancedEnvKeys(section, openclawChannelBlobKeys[section.sectionKey]).length">
-                          <a-collapse-panel :header="$t('common.adv_config')" key="advanced">
-                            <a-checkbox v-for="k in feishuAdvancedEnvKeys(section, openclawChannelBlobKeys[section.sectionKey])" :key="k" :value="k">{{ k }}</a-checkbox>
-                          </a-collapse-panel>
-                        </a-collapse>
-                      </template>
-                      <template v-else>
-                        <a-checkbox v-for="k in (openclawChannelBlobKeys[section.sectionKey] || [])" :key="k" :value="k">{{ k }}</a-checkbox>
-                      </template>
+                      <a-checkbox
+                        v-for="k in sectionBasicEnvKeys(section, openclawChannelBlobKeys[section.sectionKey] || [])"
+                        :key="k"
+                        :value="k">{{ k }}</a-checkbox>
+                      <a-collapse :bordered="false" v-if="sectionAdvancedEnvKeys(section, openclawChannelBlobKeys[section.sectionKey] || []).length">
+                        <a-collapse-panel :header="$t('common.adv_config')" key="advanced">
+                          <a-checkbox
+                            v-for="k in sectionAdvancedEnvKeys(section, openclawChannelBlobKeys[section.sectionKey] || [])"
+                            :key="k"
+                            :value="k">{{ k }}</a-checkbox>
+                        </a-collapse-panel>
+                      </a-collapse>
                     </a-checkbox-group>
                   </a-form-item>
                 </template>
@@ -198,24 +199,44 @@
                             <a-radio value="lark">lark</a-radio>
                           </a-radio-group>
                         </template>
-                        <template v-else-if="v.envKey === 'FEISHU_DM_POLICY'">
-                          <a-radio-group
-                            :value="((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || v.defaultValue"
-                            @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.value)">
-                            <a-radio value="open">open</a-radio>
-                            <a-radio value="pairing">pairing</a-radio>
-                            <a-radio value="allowlist">allowlist</a-radio>
-                            <a-radio value="disabled">disabled</a-radio>
-                          </a-radio-group>
+                        <template v-else-if="['FEISHU_DM_POLICY', 'DISCORD_DM_POLICY', 'TELEGRAM_DM_POLICY'].includes(v.envKey)">
+                          <a-checkbox
+                            :checked="(((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || v.defaultValue) === 'open'"
+                            @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.checked ? 'open' : v.defaultValue)">
+                            open
+                          </a-checkbox>
+                          <a-checkbox
+                            :checked="(((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || v.defaultValue) === 'pairing'"
+                            @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.checked ? 'pairing' : v.defaultValue)">
+                            pairing
+                          </a-checkbox>
+                          <a-checkbox
+                            :checked="(((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || v.defaultValue) === 'allowlist'"
+                            @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.checked ? 'allowlist' : v.defaultValue)">
+                            allowlist
+                          </a-checkbox>
+                          <a-checkbox
+                            :checked="(((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || v.defaultValue) === 'disabled'"
+                            @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.checked ? 'disabled' : v.defaultValue)">
+                            disabled
+                          </a-checkbox>
                         </template>
-                        <template v-else-if="v.envKey === 'FEISHU_GROUP_POLICY'">
-                          <a-radio-group
-                            :value="(openclawChannelBlob[section.sectionKey] || {})[v.envKey]"
-                            @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.value)">
-                            <a-radio value="open">open</a-radio>
-                            <a-radio value="allowlist">allowlist</a-radio>
-                            <a-radio value="disabled">disabled</a-radio>
-                          </a-radio-group>
+                        <template v-else-if="['FEISHU_GROUP_POLICY', 'DISCORD_GROUP_POLICY', 'TELEGRAM_GROUP_POLICY'].includes(v.envKey)">
+                          <a-checkbox
+                            :checked="String(((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || '') === 'open'"
+                            @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.checked ? 'open' : '')">
+                            open
+                          </a-checkbox>
+                          <a-checkbox
+                            :checked="String(((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || '') === 'allowlist'"
+                            @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.checked ? 'allowlist' : '')">
+                            allowlist
+                          </a-checkbox>
+                          <a-checkbox
+                            :checked="String(((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || '') === 'disabled'"
+                            @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.checked ? 'disabled' : '')">
+                            disabled
+                          </a-checkbox>
                         </template>
                         <template v-else-if="v.envKey === 'FEISHU_TYPING_INDICATOR'">
                           <a-checkbox
@@ -258,24 +279,44 @@
                                 <a-radio value="lark">lark</a-radio>
                               </a-radio-group>
                             </template>
-                            <template v-else-if="v.envKey === 'FEISHU_DM_POLICY'">
-                              <a-radio-group
-                                :value="((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || v.defaultValue"
-                                @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.value)">
-                                <a-radio value="open">open</a-radio>
-                                <a-radio value="pairing">pairing</a-radio>
-                                <a-radio value="allowlist">allowlist</a-radio>
-                                <a-radio value="disabled">disabled</a-radio>
-                              </a-radio-group>
+                            <template v-else-if="['FEISHU_DM_POLICY', 'DISCORD_DM_POLICY', 'TELEGRAM_DM_POLICY'].includes(v.envKey)">
+                              <a-checkbox
+                                :checked="(((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || v.defaultValue) === 'open'"
+                                @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.checked ? 'open' : v.defaultValue)">
+                                open
+                              </a-checkbox>
+                              <a-checkbox
+                                :checked="(((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || v.defaultValue) === 'pairing'"
+                                @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.checked ? 'pairing' : v.defaultValue)">
+                                pairing
+                              </a-checkbox>
+                              <a-checkbox
+                                :checked="(((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || v.defaultValue) === 'allowlist'"
+                                @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.checked ? 'allowlist' : v.defaultValue)">
+                                allowlist
+                              </a-checkbox>
+                              <a-checkbox
+                                :checked="(((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || v.defaultValue) === 'disabled'"
+                                @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.checked ? 'disabled' : v.defaultValue)">
+                                disabled
+                              </a-checkbox>
                             </template>
-                            <template v-else-if="v.envKey === 'FEISHU_GROUP_POLICY'">
-                              <a-radio-group
-                                :value="(openclawChannelBlob[section.sectionKey] || {})[v.envKey]"
-                                @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.value)">
-                                <a-radio value="open">open</a-radio>
-                                <a-radio value="allowlist">allowlist</a-radio>
-                                <a-radio value="disabled">disabled</a-radio>
-                              </a-radio-group>
+                            <template v-else-if="['FEISHU_GROUP_POLICY', 'DISCORD_GROUP_POLICY', 'TELEGRAM_GROUP_POLICY'].includes(v.envKey)">
+                              <a-checkbox
+                                :checked="String(((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || '') === 'open'"
+                                @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.checked ? 'open' : '')">
+                                open
+                              </a-checkbox>
+                              <a-checkbox
+                                :checked="String(((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || '') === 'allowlist'"
+                                @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.checked ? 'allowlist' : '')">
+                                allowlist
+                              </a-checkbox>
+                              <a-checkbox
+                                :checked="String(((openclawChannelBlob[section.sectionKey] || {})[v.envKey]) || '') === 'disabled'"
+                                @change="e => $set(openclawChannelBlob[section.sectionKey], v.envKey, e.target.checked ? 'disabled' : '')">
+                                disabled
+                              </a-checkbox>
                             </template>
                             <template v-else-if="v.envKey === 'FEISHU_TYPING_INDICATOR'">
                               <a-checkbox
@@ -487,7 +528,15 @@ export default {
           const name = p && p.name
           if (!name) return
           // name 为 providerShortName，例如 moonshot，需要映射回 providerLabelKey
-          const labelKey = OPENCLAW_PROVIDER_OPTIONS.find(k => this.providerShortName(k) === name) || null
+          // 这里尽量做兼容：
+          // 1) 如果历史数据直接存了 providerLabelKey，则直接匹配；
+          // 2) 否则用 providerShortName 做大小写不敏感匹配；
+          // 这样可以避免更新规格初始化时找不到对应 provider（导致 tab/输入项不出现）。
+          const normalizedName = String(name)
+          const labelKey =
+            OPENCLAW_PROVIDER_OPTIONS.find(k => k === normalizedName) ||
+            OPENCLAW_PROVIDER_OPTIONS.find(k => String(this.providerShortName(k) || '').toLowerCase() === normalizedName.toLowerCase()) ||
+            null
           if (!labelKey) return
           providerKeys.push(labelKey)
           this.ensureProviderState(labelKey)
@@ -716,13 +765,13 @@ export default {
     channelAdvancedVars (vars) {
       return (vars || []).filter(v => !!v.advanced)
     },
-    feishuBasicEnvKeys (section, envKeys) {
-      if (!section || section.sectionKey !== 'feishu') return envKeys || []
+    sectionBasicEnvKeys (section, envKeys) {
+      if (!section) return envKeys || []
       const basicKeys = new Set(this.channelBasicVars(section.vars).map(v => v.envKey))
       return (envKeys || []).filter(k => basicKeys.has(k))
     },
-    feishuAdvancedEnvKeys (section, envKeys) {
-      if (!section || section.sectionKey !== 'feishu') return []
+    sectionAdvancedEnvKeys (section, envKeys) {
+      if (!section) return []
       const basicKeys = new Set(this.channelBasicVars(section.vars).map(v => v.envKey))
       return (envKeys || []).filter(k => !basicKeys.has(k))
     },
@@ -784,6 +833,26 @@ export default {
                 return
               }
             }
+            if (channelKey === 'discord') {
+              const requiredKeys = ['DISCORD_BOT_TOKEN']
+              const missing = requiredKeys.filter(k => !(exportKeys || []).includes(k))
+              if (missing.length) {
+                const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
+                this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
+                this.loading = false
+                return
+              }
+            }
+            if (channelKey === 'telegram') {
+              const requiredKeys = ['TELEGRAM_BOT_TOKEN']
+              const missing = requiredKeys.filter(k => !(exportKeys || []).includes(k))
+              if (missing.length) {
+                const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
+                this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
+                this.loading = false
+                return
+              }
+            }
           } else {
             const credName = this.genCredentialName({ llmName: this.instanceName, usage: 'channel', key: channelKey })
             const raw = this.openclawChannelBlob[channelKey] || {}
@@ -815,6 +884,26 @@ export default {
               if (!blob.FEISHU_DM_POLICY) blob.FEISHU_DM_POLICY = 'open'
               if (!blob.FEISHU_TYPING_INDICATOR) blob.FEISHU_TYPING_INDICATOR = 'true'
               if (!blob.FEISHU_RESOLVE_SENDER_NAMES) blob.FEISHU_RESOLVE_SENDER_NAMES = 'true'
+            }
+            if (channelKey === 'discord') {
+              const missing = ['DISCORD_BOT_TOKEN'].filter(k => !blob[k])
+              if (missing.length) {
+                const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
+                this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
+                this.loading = false
+                return
+              }
+              if (!blob.DISCORD_DM_POLICY) blob.DISCORD_DM_POLICY = 'open'
+            }
+            if (channelKey === 'telegram') {
+              const missing = ['TELEGRAM_BOT_TOKEN'].filter(k => !blob[k])
+              if (missing.length) {
+                const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
+                this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
+                this.loading = false
+                return
+              }
+              if (!blob.TELEGRAM_DM_POLICY) blob.TELEGRAM_DM_POLICY = 'open'
             }
             if (Object.keys(blob).length === 0) {
               this.$message.warning(this.$t('aice.openclaw.provider_filter_empty'))
