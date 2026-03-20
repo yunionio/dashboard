@@ -1,5 +1,5 @@
 <template>
-  <base-dialog @cancel="cancelDialog">
+  <base-dialog @cancel="cancelDialog" width="1000px">
     <div slot="header">{{$t('common.scheduler_log')}}</div>
     <div class="clearfix codemirror-h-100" slot="body">
       <code-mirror v-model="showData" :options="cmOptions" ref="codeMirrorRef" :is-scroll="true" />
@@ -36,6 +36,7 @@ export default {
         smartIndent: true,
         lineNumbers: true,
         readOnly: true,
+        fixedGutter: false,
         theme: '3024-day',
         lineWrapping: true,
         mode: 'application/json',
