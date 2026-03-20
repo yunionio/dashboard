@@ -116,6 +116,35 @@
             :placeholder="'USER.md'" />
         </div>
       </a-form-item>
+      <a-form-item :label="$t('aice.port')">
+        <a-row v-for="item in portMappings" :key="item.key" :gutter="4">
+          <a-col :span="11">
+            <a-form-item>
+              <base-select
+                v-decorator="decorators.port_mapppings.protocol(item.key)"
+                :options="dict.protocolArr" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="11">
+            <a-form-item>
+              <a-input
+                v-decorator="decorators.port_mapppings.container_port(item.key)"
+                :placeholder="$t('common.tips.input', [$t('aice.port')])" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="2">
+            <a-button shape="circle" icon="minus" size="small" @click="del(item)" class="mt-2 ml-2" />
+          </a-col>
+        </a-row>
+        <a-row>
+          <a-col>
+            <div class="d-flex align-items-center">
+              <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
+              <a-button type="link" @click="add">{{$t('aice.add', [$t('aice.port')])}}</a-button>
+            </div>
+          </a-col>
+        </a-row>
+      </a-form-item>
     </a-form>
     <div class="form-footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -133,6 +162,11 @@ import { isRequired } from '@/utils/validate'
 import { uuid } from '@/utils/utils'
 import { dict } from '../constant'
 import { LLM_TYPE_OPTIONS, LLM_TYPE_FORM_CONFIG, getParamsForType } from '../llmTypeConfig'
+
+const getInitVal = (list, key, property) => {
+  const target = list.filter(item => item.key === key)
+  return target.length ? target[0][property] : ''
+}
 
 export default {
   name: 'LlmSkuCreateForm',
@@ -178,6 +212,7 @@ export default {
       mounted_apps = [],
       llm_spec: llmSpec,
       openclaw: openclawConf = {},
+      port_mappings = [],
     } = data
     // openclaw 优先来自 llm_spec.openclaw，其次兼容旧的顶层 openclaw 字段
     let openclawConfObj = llmSpec?.openclaw ?? openclawConf
@@ -192,6 +227,7 @@ export default {
     if (!openclawWorkspaceTemplates || typeof openclawWorkspaceTemplates !== 'object') openclawWorkspaceTemplates = {}
     const envVars = (envs || []).map(item => ({ env_key: item.key, env_value: item.value, key: uuid() }))
     const defaultLlmType = (llmTypeOptions[0] && llmTypeOptions[0].id) || (isApplyType ? 'openclaw' : 'ollama')
+    const portMappings = port_mappings.map(item => ({ ...item, key: uuid() }))
     return {
       loading: false,
       // 暂时隐藏 openclaw 创建/编辑时的「Agent 个性化配置」区块，恢复时改为 true
@@ -199,6 +235,7 @@ export default {
       isApplyType,
       llmTypeOptions: llmTypeOptions.map(opt => ({ id: opt.id, name: this.$t(opt.name) })),
       dict,
+      portMappings,
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
@@ -350,6 +387,23 @@ export default {
             initialValue: mounted_apps || [],
           },
         ],
+        port_mapppings: {
+          protocol: i => [
+            `protocol[${i}]`,
+            {
+              initialValue: getInitVal(portMappings, i, 'protocol'),
+            },
+          ],
+          container_port: i => [
+            `container_port[${i}]`,
+            {
+              initialValue: getInitVal(portMappings, i, 'container_port'),
+              rules: [
+                { type: 'number', min: 0, max: 65535, message: this.$t('aice.container_port.message'), trigger: 'blur', transform: (v) => parseInt(v) },
+              ],
+            },
+          ],
+        },
       },
       formItemLayout: {
         wrapperCol: { span: 18 },
@@ -420,6 +474,13 @@ export default {
     },
   },
   methods: {
+    add () {
+      this.portMappings.push({ key: uuid() })
+    },
+    del (item) {
+      const idx = this.portMappings.findIndex(v => v.key === item.key)
+      this.portMappings.splice(idx, 1)
+    },
     handleCancel () {
       this.$emit('cancel')
     },
@@ -462,6 +523,8 @@ export default {
           memory,
           volume_size,
           bandwidth,
+          protocol,
+          container_port,
         } = values
         const effectiveLlmType = this.isEditMode ? this.form.fd.llm_type : llm_type
         const typeFields = this.currentTypeFields
@@ -485,6 +548,12 @@ export default {
           },
           size_mb: (volume_size ?? 10) * 1024,
         }]
+        const port_mappings = this.portMappings.map(item => {
+          return {
+            protocol: protocol[item.key],
+            container_port: container_port[item.key],
+          }
+        })
         const data = {
           name,
           llm_image_id,
@@ -495,6 +564,9 @@ export default {
           volumes,
           disk_size: volumes[0].size_mb,
           app_type: 'steam',
+        }
+        if (port_mappings.length > 0) {
+          data.port_mappings = port_mappings
         }
         if (!this.isEditMode) {
           data.llm_type = effectiveLlmType
