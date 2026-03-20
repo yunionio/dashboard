@@ -271,54 +271,6 @@ export const ENV_TITLE = {
   private: i18n.t('cloudenv.text_124'),
 }
 
-export function getCloudaccountDocs (scope) {
-  const docs_path = getDocsCloudaccountPath(scope)
-  const docs = {
-    aliyun: i18n.t('cloudenv.text_125', [docs_path]),
-    azure: i18n.t('cloudenv.text_126', [docs_path]),
-    aws: i18n.t('cloudenv.text_127', [docs_path]),
-    qcloud: i18n.t('cloudenv.text_128', [docs_path]),
-    huawei: i18n.t('cloudenv.text_129', [docs_path]),
-    ucloud: i18n.t('cloudenv.text_130', [docs_path]),
-    zstack: i18n.t('cloudenv.text_131', [docs_path]),
-    dstack: i18n.t('cloudenv.text_131', [docs_path]),
-    openstack: i18n.t('cloudenv.text_132', [docs_path]),
-    vmware: i18n.t('cloudenv.text_133', [docs_path]),
-    s3: i18n.t('cloudenv.text_134', [docs_path]),
-    ceph: i18n.t('cloudenv.text_135', [docs_path]),
-    xsky: i18n.t('cloudenv.text_136', [docs_path]),
-    google: i18n.t('cloudenv.text_137', [docs_path]),
-    ctyun: i18n.t('cloudenv.text_138', [docs_path]),
-    apsara: i18n.t('cloudenv.create_apsara_cloud_account', [docs_path]),
-    ecloud: i18n.t('cloudenv.create_ecloud', [docs_path]),
-    jdcloud: i18n.t('cloudenv.create_jdcloud', [docs_path]),
-    cloudpods: i18n.t('cloudenv.create_cloudpods', [docs_path]),
-    hcso: i18n.t('cloudenv.create_hcso', [docs_path]),
-    hcs: i18n.t('cloudenv.create_hcs', [docs_path]),
-    nutanix: i18n.t('cloudenv.create_nutanix', [docs_path]),
-    bingocloud: i18n.t('cloudenv.create_bingocloud', [docs_path]),
-    incloudsphere: i18n.t('cloudenv.create_incloudsphere', [docs_path]),
-    proxmox: i18n.t('cloudenv.create_proxmox', [docs_path]),
-    h3c: i18n.t('cloudenv.create_h3c', [docs_path]),
-    ksyun: i18n.t('cloudenv.create_ksyun', [docs_path]),
-    baidu: i18n.t('cloudenv.create_baidu', [docs_path]),
-    qingcloud: i18n.t('cloudenv.create_qingcloud', [docs_path]),
-    chinaunion: i18n.t('cloudenv.create_chinaunion', [docs_path]),
-    volcengine: i18n.t('cloudenv.create_volcengine', [docs_path]),
-    oraclecloud: i18n.t('cloudenv.create_oraclecloud', [docs_path]),
-  }
-  // if (isCE()) {
-  //   Object.keys(docs).forEach(v => {
-  //     docs[v] = `${docs_path}/tutorial/create`
-  //   })
-  // } else {
-  //   Object.keys(docs).forEach(v => {
-  //     docs[v] = `${docs_path}/tutorial/create`
-  //   })
-  // }
-  return docs
-}
-
 export const ACCESS_URL = {
   huawei: {
     // InternationalCloud: i18n.t('cloudenv.text_139'),
