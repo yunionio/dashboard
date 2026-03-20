@@ -1,8 +1,7 @@
 import Layout from '@/layouts/RouterView'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
-import { hasServices, setupKeys } from '@/utils/auth'
-import store from '@/store'
+import { setupKeys } from '@/utils/auth'
 
 const IDP = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/idp')
 const IDPEdit = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/idp/edit')
@@ -18,12 +17,6 @@ const Role = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true
 const Policy = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/policy')
 const PolicyCreate = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/policy/Create')
 const PolicyUpdate = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/policy/Update')
-const Notification = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/notification')
-const NotifyTopic = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/notify-topic')
-const Robots = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/robots')
-const NotifyConfigs = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/notifyconfig')
-const NotifyConfigCreate = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/notifyconfig/create')
-const Contact = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/contact')
 
 function menuPath (path) {
   return '/iam' + path
@@ -269,131 +262,6 @@ export default {
               name: 'SecurityAlerts',
               path: '',
               component: SecurityAlerts,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      meta: {
-        label: i18n.t('system.text_564'),
-      },
-      submenus: [
-        {
-          path: '/notification',
-          meta: {
-            label: i18n.t('system.text_16'),
-            permission: 'notifications_list',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.notification')) {
-                return true
-              }
-              return !hasServices('notify')
-            },
-            t: 'dictionary.webconsole',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Notification',
-              path: '',
-              component: Notification,
-            },
-          ],
-        },
-        {
-          path: '/notify-topic',
-          meta: {
-            label: i18n.t('dictionary.notify-topic'),
-            permission: 'topics_list',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.notify_topic')) {
-                return true
-              }
-              if (!(store.getters.isAdminMode || store.getters.isDomainMode)) {
-                return true
-              }
-              return !hasServices('notify')
-            },
-            t: 'dictionary.notify-topic',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'NotifyTopic',
-              path: '',
-              component: NotifyTopic,
-            },
-          ],
-        },
-        {
-          path: '/notifyconfig',
-          meta: {
-            label: i18n.t('system.text_19'),
-            permission: 'notifyconfigs_list',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.notifyconfig')) {
-                return true
-              }
-              if (!(store.getters.isAdminMode || store.getters.isDomainMode)) {
-                return true
-              }
-              return !hasServices('notify')
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'NotifyConfig',
-              path: '',
-              component: NotifyConfigs,
-            },
-            {
-              name: 'NotifyConfigCreate',
-              path: 'create',
-              component: NotifyConfigCreate,
-            },
-          ],
-        },
-        {
-          path: '/contact',
-          meta: {
-            label: i18n.t('common_27'),
-            permission: 'contacts_list',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.contact')) {
-                return true
-              }
-              return !store.getters.isAdminMode && !store.getters.isDomainMode
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Contact',
-              path: '',
-              component: Contact,
-            },
-          ],
-        },
-        {
-          path: '/robot',
-          meta: {
-            label: i18n.t('system.robot_manage'),
-            permission: 'robots_list',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.robot')) {
-                return true
-              }
-              return false
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Robots',
-              path: '',
-              component: Robots,
             },
           ],
         },
