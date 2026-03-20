@@ -1,35 +1,37 @@
 /**
  * OpenClaw 聊天沟通渠道（Channels）环境变量配置
- * 选择渠道后展示对应配置项供用户填写，均为可选。
+ * 选择渠道后展示对应配置项供用户填写。
+ * 其中 QQ 机器人（qqbot）相关字段 `QQBOT_APP_ID` / `QQBOT_CLIENT_SECRET`、飞书（feishu）
+ * 相关字段 `FEISHU_APP_ID` / `FEISHU_APP_SECRET` 为必填。
  */
 
-/** @typedef {{ sectionKey: string, sectionLabelKey: string, vars: Array<{ envKey: string, descriptionKey: string, defaultValue?: string }> }} OpenclawChannelSection */
+/** @typedef {{ sectionKey: string, sectionLabelKey: string, vars: Array<{ envKey: string, descriptionKey: string, defaultValue?: string, required?: boolean, advanced?: boolean }> }} OpenclawChannelSection */
 
 export const OPENCLAW_CHANNEL_SECTIONS = [
   {
     sectionKey: 'qqbot',
     sectionLabelKey: 'aice.openclaw.channel.qqbot',
     vars: [
-      { envKey: 'QQBOT_APP_ID', descriptionKey: 'aice.openclaw.channel.env.QQBOT_APP_ID', defaultValue: '' },
-      { envKey: 'QQBOT_CLIENT_SECRET', descriptionKey: 'aice.openclaw.channel.env.QQBOT_CLIENT_SECRET', defaultValue: '' },
+      { envKey: 'QQBOT_APP_ID', descriptionKey: 'aice.openclaw.channel.env.QQBOT_APP_ID', defaultValue: '', required: true },
+      { envKey: 'QQBOT_CLIENT_SECRET', descriptionKey: 'aice.openclaw.channel.env.QQBOT_CLIENT_SECRET', defaultValue: '', required: true },
     ],
   },
   {
     sectionKey: 'feishu',
     sectionLabelKey: 'aice.openclaw.channel.feishu',
     vars: [
-      { envKey: 'FEISHU_APP_ID', descriptionKey: 'aice.openclaw.channel.env.FEISHU_APP_ID', defaultValue: '' },
-      { envKey: 'FEISHU_APP_SECRET', descriptionKey: 'aice.openclaw.channel.env.FEISHU_APP_SECRET', defaultValue: '' },
-      { envKey: 'FEISHU_BOT_NAME', descriptionKey: 'aice.openclaw.channel.env.FEISHU_BOT_NAME', defaultValue: '' },
+      { envKey: 'FEISHU_APP_ID', descriptionKey: 'aice.openclaw.channel.env.FEISHU_APP_ID', defaultValue: '', required: true },
+      { envKey: 'FEISHU_APP_SECRET', descriptionKey: 'aice.openclaw.channel.env.FEISHU_APP_SECRET', defaultValue: '', required: true },
+      { envKey: 'FEISHU_BOT_NAME', descriptionKey: 'aice.openclaw.channel.env.FEISHU_BOT_NAME', defaultValue: '', advanced: true },
       { envKey: 'FEISHU_DOMAIN', descriptionKey: 'aice.openclaw.channel.env.FEISHU_DOMAIN', defaultValue: 'feishu' },
-      { envKey: 'FEISHU_DM_POLICY', descriptionKey: 'aice.openclaw.channel.env.FEISHU_DM_POLICY', defaultValue: 'pairing' },
-      { envKey: 'FEISHU_GROUP_POLICY', descriptionKey: 'aice.openclaw.channel.env.FEISHU_GROUP_POLICY', defaultValue: 'open' },
-      { envKey: 'FEISHU_ALLOW_FROM', descriptionKey: 'aice.openclaw.channel.env.FEISHU_ALLOW_FROM', defaultValue: '' },
-      { envKey: 'FEISHU_GROUP_ALLOW_FROM', descriptionKey: 'aice.openclaw.channel.env.FEISHU_GROUP_ALLOW_FROM', defaultValue: '' },
-      { envKey: 'FEISHU_TEXT_CHUNK_LIMIT', descriptionKey: 'aice.openclaw.channel.env.FEISHU_TEXT_CHUNK_LIMIT', defaultValue: '2000' },
-      { envKey: 'FEISHU_MEDIA_MAX_MB', descriptionKey: 'aice.openclaw.channel.env.FEISHU_MEDIA_MAX_MB', defaultValue: '30' },
-      { envKey: 'FEISHU_TYPING_INDICATOR', descriptionKey: 'aice.openclaw.channel.env.FEISHU_TYPING_INDICATOR', defaultValue: 'true' },
-      { envKey: 'FEISHU_RESOLVE_SENDER_NAMES', descriptionKey: 'aice.openclaw.channel.env.FEISHU_RESOLVE_SENDER_NAMES', defaultValue: 'true' },
+      { envKey: 'FEISHU_DM_POLICY', descriptionKey: 'aice.openclaw.channel.env.FEISHU_DM_POLICY', defaultValue: 'open' },
+      { envKey: 'FEISHU_GROUP_POLICY', descriptionKey: 'aice.openclaw.channel.env.FEISHU_GROUP_POLICY', defaultValue: '', advanced: true },
+      { envKey: 'FEISHU_ALLOW_FROM', descriptionKey: 'aice.openclaw.channel.env.FEISHU_ALLOW_FROM', defaultValue: '', advanced: true },
+      { envKey: 'FEISHU_GROUP_ALLOW_FROM', descriptionKey: 'aice.openclaw.channel.env.FEISHU_GROUP_ALLOW_FROM', defaultValue: '', advanced: true },
+      { envKey: 'FEISHU_TEXT_CHUNK_LIMIT', descriptionKey: 'aice.openclaw.channel.env.FEISHU_TEXT_CHUNK_LIMIT', defaultValue: '2000', advanced: true },
+      { envKey: 'FEISHU_MEDIA_MAX_MB', descriptionKey: 'aice.openclaw.channel.env.FEISHU_MEDIA_MAX_MB', defaultValue: '30', advanced: true },
+      { envKey: 'FEISHU_TYPING_INDICATOR', descriptionKey: 'aice.openclaw.channel.env.FEISHU_TYPING_INDICATOR', defaultValue: 'true', advanced: true },
+      { envKey: 'FEISHU_RESOLVE_SENDER_NAMES', descriptionKey: 'aice.openclaw.channel.env.FEISHU_RESOLVE_SENDER_NAMES', defaultValue: 'true', advanced: true },
     ],
   },
   {
