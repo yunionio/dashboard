@@ -54,7 +54,7 @@
                     :params="credentialParamsForProvider(item.key)"
                     :label-format="credentialLabelFormat"
                     :extra-opts="credentialExtraOpts(openclawProviderCredentialId[item.key])"
-                    :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.container_secret')]) }"
+                    :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.container_secret')]), optionLabelProp: 'label' }"
                     @change="val => onProviderCredentialChange(item.key, val)" />
                 </a-form-item>
                 <a-form-item :label="$t('aice.container_secret.export_keys')" :extra="$t('aice.container_secret.export_keys_tip')">
@@ -159,7 +159,7 @@
                       :params="credentialParamsForChannel(section.sectionKey)"
                       :label-format="credentialLabelFormat"
                       :extra-opts="credentialExtraOpts(openclawChannelCredentialId[section.sectionKey])"
-                      :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.container_secret')]) }"
+                      :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.container_secret')]), optionLabelProp: 'label' }"
                       @change="val => onChannelCredentialChange(section.sectionKey, val)" />
                   </a-form-item>
                   <a-form-item :label="$t('aice.container_secret.export_keys')" :extra="$t('aice.container_secret.export_keys_tip')">
@@ -542,6 +542,9 @@ export default {
           this.ensureProviderState(labelKey)
           const cred = p.credential || {}
           if (cred.id) {
+            if (cred.name) {
+              this.$set(this.credentialNameMap, String(cred.id), cred.name)
+            }
             this.$set(this.openclawProviderCredentialMode, labelKey, 'existing')
             this.$set(this.openclawProviderCredentialId, labelKey, cred.id)
             const exportKeys = cred.export_keys || []
@@ -570,6 +573,9 @@ export default {
           this.ensureChannelState(key)
           const cred = item.credential || {}
           if (cred.id) {
+            if (cred.name) {
+              this.$set(this.credentialNameMap, String(cred.id), cred.name)
+            }
             this.$set(this.openclawChannelCredentialMode, key, 'existing')
             this.$set(this.openclawChannelCredentialId, key, cred.id)
             const exportKeys = cred.export_keys || []
@@ -599,6 +605,9 @@ export default {
           const cred = item.credential || item || {}
           const id = cred.id
           if (id) {
+            if (cred.name) {
+              this.$set(this.credentialNameMap, String(id), cred.name)
+            }
             this.$set(this.openclawChannelCredentialMode, key, 'existing')
             this.$set(this.openclawChannelCredentialId, key, id)
             const exportKeys = cred.export_keys || []
@@ -656,6 +665,11 @@ export default {
       if (!credentialId) return []
       const manager = new this.$Manager('credentials', 'v1')
       const { data } = await manager.get({ id: credentialId })
+      const idStr = String(credentialId)
+      const credName = data && data.name
+      if (credName) {
+        this.$set(this.credentialNameMap, idStr, credName)
+      }
       const blob = data?.blob
       let obj = blob
       if (typeof blob === 'string') {
