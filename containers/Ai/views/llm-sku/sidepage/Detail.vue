@@ -49,7 +49,7 @@ export default {
         getDiskTableColumn(),
         {
           field: 'port_mappings',
-          title: this.$t('aice.port'),
+          title: this.$t('aice.container_port_mapping'),
           slots: {
             default: ({ row }) => {
               const access_infos = row.port_mappings
@@ -59,7 +59,7 @@ export default {
                   const color = colors[idx % 7]
                   return <p>
                     <a-tag color={color} style={{ width: '250px' }}>
-                      {item.protocol.toUpperCase()}: {item.container_port}
+                      {item.protocol.toUpperCase()}: {this.$t('aice.container_port')} {item.container_port}
                     </a-tag>
                   </p>
                 })
