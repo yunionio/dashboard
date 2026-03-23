@@ -116,7 +116,7 @@
             :placeholder="'USER.md'" />
         </div>
       </a-form-item>
-      <a-form-item :label="$t('aice.port')">
+      <a-form-item :label="$t('aice.container_port_mapping')" :extra="$t('aice.container_port_mapping_tip')">
         <a-row v-for="item in portMappings" :key="item.key" :gutter="4">
           <a-col :span="11">
             <a-form-item>
@@ -129,7 +129,7 @@
             <a-form-item>
               <a-input
                 v-decorator="decorators.port_mapppings.container_port(item.key)"
-                :placeholder="$t('common.tips.input', [$t('aice.port')])" />
+                :placeholder="$t('common.tips.input', [$t('aice.container_port')])" />
             </a-form-item>
           </a-col>
           <a-col :span="2">
@@ -140,7 +140,7 @@
           <a-col>
             <div class="d-flex align-items-center">
               <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
-              <a-button type="link" @click="add">{{$t('aice.add', [$t('aice.port')])}}</a-button>
+              <a-button type="link" @click="add">{{$t('aice.add_port_mapping')}}</a-button>
             </div>
           </a-col>
         </a-row>
