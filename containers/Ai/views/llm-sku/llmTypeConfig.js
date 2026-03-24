@@ -8,7 +8,7 @@ export const LLM_TYPE_OPTIONS = [
   { id: 'openclaw', name: 'aice.llm_type.openclaw' },
   { id: 'dify', name: 'aice.llm_type.dify' },
   { id: 'ollama', name: 'aice.llm_type.ollama' },
-  { id: 'vllm', name: 'aice.llm_type.vllm' },
+  // { id: 'vllm', name: 'aice.llm_type.vllm' },
   { id: 'comfyui', name: 'aice.llm_type.comfyui' },
 ]
 
@@ -26,7 +26,7 @@ export function getParamsForType (llmType) {
  * @typedef {Object} FormFieldConfig
  * @property {string} fieldKey - 表单字段名，对应提交给后端的 key
  * @property {string} label - 表单项 label 的 i18n key
- * @property {'base-select'|'input-number'} component - 控件类型
+ * @property {'base-select'|'input-number'|'input'} component - 控件类型
  * @property {Object} [props] - 传给控件的属性（min/max/step/resource/paramsKey/optionsKey/selectProps 等）
  * @property {Array} [rules] - 校验规则
  */
@@ -69,6 +69,25 @@ export const LLM_TYPE_FORM_CONFIG = {
   ],
   dify: [],
   vllm: [
+    {
+      fieldKey: 'mounted_models',
+      label: 'aice.model',
+      component: 'base-select',
+      props: {
+        resource: 'llm_instant_models',
+        remote: true,
+        paramsKey: 'mountedModelParams',
+        placeholderKey: 'aice.model',
+        selectProps: { mode: 'multiple' },
+      },
+      rules: [{ required: true, messageKey: 'common.tips.select', messageArgKey: 'aice.model' }],
+    },
+    {
+      fieldKey: 'preferred_model',
+      label: 'aice.preferred_model',
+      component: 'input',
+      props: { placeholderKey: 'aice.preferred_model' },
+    },
     {
       fieldKey: 'device',
       label: 'aice.devices',
