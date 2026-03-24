@@ -146,6 +146,46 @@
           <template v-if="field.suffixKey">{{ $t(field.suffixKey) }}</template>
           <template v-else-if="field.suffix">{{ field.suffix }}</template>
         </a-form-item>
+        <a-form-item
+          v-else-if="field.component === 'input'"
+          :key="field.fieldKey"
+          :label="$t(field.label)">
+          <a-input
+            v-decorator="decorators[field.fieldKey]"
+            :placeholder="field.props && field.props.placeholderKey ? $t('common.tips.input', [$t(field.props.placeholderKey)]) : ''" />
+        </a-form-item>
+        <a-form-item
+          v-else-if="field.component === 'customized-args'"
+          :key="field.fieldKey"
+          :label="$t('aice.customized_args')">
+          <a-row v-for="item in customizedArgsRows" :key="item.key" :gutter="4">
+            <a-col :span="11">
+              <a-form-item>
+                <a-input
+                  v-decorator="decorators.customized_args.argKey(item.key)"
+                  :placeholder="$t('common.tips.input', [$t('aice.customized_arg_key')])" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="11">
+              <a-form-item>
+                <a-input
+                  v-decorator="decorators.customized_args.argValue(item.key)"
+                  :placeholder="$t('common.tips.input', [$t('aice.customized_arg_value')])" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="2">
+              <a-button shape="circle" icon="minus" size="small" @click="delCustomizedArg(item)" class="mt-2 ml-2" />
+            </a-col>
+          </a-row>
+          <a-row>
+            <a-col>
+              <div class="d-flex align-items-center">
+                <a-button type="primary" shape="circle" icon="plus" size="small" @click="addCustomizedArg" />
+                <a-button type="link" @click="addCustomizedArg">{{ $t('aice.add_customized_arg') }}</a-button>
+              </div>
+            </a-col>
+          </a-row>
+        </a-form-item>
       </template>
       <!-- 暂时隐藏 Agent 个性化配置，恢复时将 showAgentPersonalization 改为 true -->
       <a-divider
@@ -274,7 +314,11 @@ export default {
       llm_spec: llmSpec,
       openclaw: openclawConf = {},
       port_mappings = [],
+      preferred_model: rowPreferredModel,
     } = data
+    const preferredModelInit = rowPreferredModel != null && rowPreferredModel !== ''
+      ? String(rowPreferredModel)
+      : (llmSpec?.vllm?.preferred_model != null ? String(llmSpec.vllm.preferred_model) : '')
     const {
       dify_api_image_id,
       dify_plugin_image_id,
@@ -300,6 +344,13 @@ export default {
     const envVars = (envs || []).map(item => ({ env_key: item.key, env_value: item.value, key: uuid() }))
     const defaultLlmType = (llmTypeOptions[0] && llmTypeOptions[0].id) || (isApplyType ? 'openclaw' : 'ollama')
     const portMappings = port_mappings.map(item => ({ ...item, key: uuid() }))
+    let customizedArgsSource = data.customized_args ?? llmSpec?.vllm?.customized_args ?? []
+    if (!Array.isArray(customizedArgsSource)) customizedArgsSource = []
+    const customizedArgsRows = customizedArgsSource.map((row) => ({
+      key: uuid(),
+      argKey: row != null && row.key != null ? String(row.key) : '',
+      argValue: row != null && row.value != null ? String(row.value) : '',
+    }))
     return {
       loading: false,
       // 暂时隐藏 openclaw 创建/编辑时的「Agent 个性化配置」区块，恢复时改为 true
@@ -308,6 +359,7 @@ export default {
       llmTypeOptions: llmTypeOptions.map(opt => ({ id: opt.id, name: this.$t(opt.name) })),
       dict,
       portMappings,
+      customizedArgsRows,
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
@@ -475,6 +527,12 @@ export default {
             ],
           },
         ],
+        preferred_model: [
+          'preferred_model',
+          {
+            initialValue: preferredModelInit,
+          },
+        ],
         bandwidth: [
           'bandwidth',
           {
@@ -558,6 +616,16 @@ export default {
             },
           ],
         },
+        customized_args: {
+          argKey: rowKey => [
+            `customized_arg_key[${rowKey}]`,
+            { initialValue: getInitVal(customizedArgsRows, rowKey, 'argKey') },
+          ],
+          argValue: rowKey => [
+            `customized_arg_value[${rowKey}]`,
+            { initialValue: getInitVal(customizedArgsRows, rowKey, 'argValue') },
+          ],
+        },
       },
       formItemLayout: {
         wrapperCol: { span: 20 },
@@ -582,7 +650,16 @@ export default {
     },
     currentTypeFields () {
       const type = this.form.fd.llm_type || 'ollama'
-      return LLM_TYPE_FORM_CONFIG[type] || []
+      const base = LLM_TYPE_FORM_CONFIG[type] || []
+      if (type !== 'vllm') return base
+      const out = []
+      base.forEach((f) => {
+        out.push(f)
+        if (f.fieldKey === 'preferred_model') {
+          out.push({ fieldKey: '__customized_args__', component: 'customized-args' })
+        }
+      })
+      return out
     },
     appImageParams () {
       return {
@@ -634,6 +711,13 @@ export default {
     del (item) {
       const idx = this.portMappings.findIndex(v => v.key === item.key)
       this.portMappings.splice(idx, 1)
+    },
+    addCustomizedArg () {
+      this.customizedArgsRows.push({ key: uuid(), argKey: '', argValue: '' })
+    },
+    delCustomizedArg (item) {
+      const idx = this.customizedArgsRows.findIndex(v => v.key === item.key)
+      if (idx >= 0) this.customizedArgsRows.splice(idx, 1)
     },
     handleCancel () {
       this.$emit('cancel')
@@ -688,10 +772,12 @@ export default {
           bandwidth,
           protocol,
           container_port,
+          customized_arg_key,
+          customized_arg_value,
         } = values
         const effectiveLlmType = this.isEditMode ? this.form.fd.llm_type : llm_type
         const typeFields = this.currentTypeFields
-        const typeFieldKeys = typeFields.map(f => f.fieldKey)
+        const typeFieldKeys = typeFields.filter(f => f.fieldKey !== '__customized_args__').map(f => f.fieldKey)
         const pickTypeValues = {}
         typeFieldKeys.forEach(key => {
           if (values[key] !== undefined) pickTypeValues[key] = values[key]
@@ -739,12 +825,33 @@ export default {
         typeFieldKeys.forEach(key => {
           const v = pickTypeValues[key]
           if (v === undefined) return
+          if (effectiveLlmType === 'vllm' && key === 'preferred_model') return
           if (key === 'device') {
             data.devices = v.map(k => ({ model: k }))
           } else {
             data[key] = v
           }
         })
+        if (effectiveLlmType === 'vllm') {
+          const vllm = {}
+          const pm = pickTypeValues.preferred_model
+          const preferredStr = pm != null ? String(pm).trim() : ''
+          if (preferredStr !== '') {
+            vllm.preferred_model = preferredStr
+          }
+          const customized_args = this.customizedArgsRows
+            .map((item) => ({
+              key: customized_arg_key?.[item.key] != null ? String(customized_arg_key[item.key]).trim() : '',
+              value: customized_arg_value?.[item.key] != null ? String(customized_arg_value[item.key]).trim() : '',
+            }))
+            .filter((row) => row.key !== '' || row.value !== '')
+          if (customized_args.length > 0) {
+            vllm.customized_args = customized_args
+          }
+          if (Object.keys(vllm).length > 0) {
+            data.llm_spec = { vllm }
+          }
+        }
         if (effectiveLlmType === 'openclaw') {
           const workspace_templates = {}
           const agents = (values.openclaw_agents_md || '').trim()
