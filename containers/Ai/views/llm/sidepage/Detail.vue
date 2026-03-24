@@ -14,6 +14,7 @@ import {
 } from '@/utils/common/detailColumn'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
+import { getStatusTableColumn } from '@/utils/common/tableColumn'
 import {
   getLlmIpColumn,
   // getStreamEndpointColumn,
@@ -26,7 +27,7 @@ import {
   getNetworkTypeTableColumn,
   getNetworkTableColumn,
 } from '../utils/columns'
-import { getLlmSpecSections, fetchLlmSpecCredentialNames } from '../../llm-sku/utils/llmSpecDetail'
+import { getLlmSpecSections, fetchLlmSpecCredentialNames, fetchLlmSpecDifyImages } from '../../llm-sku/utils/llmSpecDetail'
 
 export default {
   name: 'PhoneDetail',
@@ -45,6 +46,7 @@ export default {
     return {
       isApplyType: this.$route.path.includes('app-llm'),
       credentialNamesMap: {},
+      difyImageNamesMap: {},
       skuLlmSpecOpenclaw: null,
       baseInfo: [
         getUserTagColumn({
@@ -53,6 +55,7 @@ export default {
           columns: () => this.columns,
           tipName: this.$t('aice.instance'),
         }),
+        getStatusTableColumn({ field: 'llm_status', statusModule: 'container', title: this.$t('aice.container_status') }),
       ],
       streamEndpoint: null,
       ports: [],
@@ -153,6 +156,7 @@ export default {
       handler () {
         this.fetchSkuOpenclawIfNeeded()
         fetchLlmSpecCredentialNames(this)
+        fetchLlmSpecDifyImages(this)
       },
       deep: true,
     },
@@ -166,6 +170,7 @@ export default {
     this.getAccessInfo()
     this.fetchSkuOpenclawIfNeeded()
     fetchLlmSpecCredentialNames(this)
+    fetchLlmSpecDifyImages(this)
   },
   methods: {
     handleUpdateSpec () {
