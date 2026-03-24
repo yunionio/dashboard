@@ -29,7 +29,72 @@
         </a-radio-group>
         <a-label v-else>{{ llmTypeName }}</a-label>
       </a-form-item>
-      <a-form-item :label="$t('aice.llm_image')">
+      <template v-if="form.fd.llm_type === 'dify'">
+        <a-form-item :label="$t('aice.dify_api_image')">
+          <base-select
+            v-decorator="decorators.dify_api_image_id"
+            resource="llm_images"
+            :params="{ ...appImageParams, $t: 'dify_api_image' }"
+            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.dify_api_image')]) }" />
+        </a-form-item>
+        <a-form-item :label="$t('aice.dify_plugin_image')">
+          <base-select
+            v-decorator="decorators.dify_plugin_image_id"
+            resource="llm_images"
+            :params="{ ...appImageParams, $t: 'dify_plugin_image' }"
+            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.dify_plugin_image')]) }" />
+        </a-form-item>
+        <a-form-item :label="$t('aice.dify_sandbox_image')">
+          <base-select
+            v-decorator="decorators.dify_sandbox_image_id"
+            resource="llm_images"
+            :params="{ ...appImageParams, $t: 'dify_sandbox_image' }"
+            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.dify_sandbox_image')]) }" />
+        </a-form-item>
+        <a-form-item :label="$t('aice.dify_ssrf_image')">
+          <base-select
+            v-decorator="decorators.dify_ssrf_image_id"
+            resource="llm_images"
+            :params="{ ...appImageParams, $t: 'dify_ssr_image' }"
+            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.dify_ssr_image')]) }" />
+        </a-form-item>
+        <a-form-item :label="$t('aice.dify_weaviate_image')">
+          <base-select
+            v-decorator="decorators.dify_weaviate_image_id"
+            resource="llm_images"
+            :params="{ ...appImageParams, $t: 'dify_weaviate_image' }"
+            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.dify_weaviate_image')]) }" />
+        </a-form-item>
+        <a-form-item :label="$t('aice.dify_web_image')">
+          <base-select
+            v-decorator="decorators.dify_web_image_id"
+            resource="llm_images"
+            :params="{ ...appImageParams, $t: 'dify_web_image' }"
+            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.dify_web_image')]) }" />
+        </a-form-item>
+        <a-form-item :label="$t('aice.nginx_image')">
+          <base-select
+            v-decorator="decorators.nginx_image_id"
+            resource="llm_images"
+            :params="{ ...appImageParams, $t: 'nginx_image' }"
+            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.nginx_image')]) }" />
+        </a-form-item>
+        <a-form-item :label="$t('aice.postgres_image')">
+          <base-select
+            v-decorator="decorators.postgres_image_id"
+            resource="llm_images"
+            :params="{ ...appImageParams, $t: 'postgres_image' }"
+            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.postgres_image')]) }" />
+        </a-form-item>
+        <a-form-item :label="$t('aice.redis_image')">
+          <base-select
+            v-decorator="decorators.redis_image_id"
+            resource="llm_images"
+            :params="{ ...appImageParams, $t: 'redis_image' }"
+            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.redis_image')]) }" />
+        </a-form-item>
+      </template>
+      <a-form-item v-else :label="$t('aice.llm_image')">
         <base-select
           v-decorator="decorators.llm_image_id"
           resource="llm_images"
@@ -146,10 +211,6 @@
         </a-row>
       </a-form-item>
     </a-form>
-    <div class="form-footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
-      <a-button @click="handleCancel">{{ $t('dialog.cancel') }}</a-button>
-    </div>
   </div>
 </template>
 
@@ -214,6 +275,17 @@ export default {
       openclaw: openclawConf = {},
       port_mappings = [],
     } = data
+    const {
+      dify_api_image_id,
+      dify_plugin_image_id,
+      dify_sandbox_image_id,
+      dify_ssrf_image_id,
+      dify_weaviate_image_id,
+      dify_web_image_id,
+      nginx_image_id,
+      postgres_image_id,
+      redis_image_id,
+    } = llmSpec?.dify || {}
     // openclaw 优先来自 llm_spec.openclaw，其次兼容旧的顶层 openclaw 字段
     let openclawConfObj = llmSpec?.openclaw ?? openclawConf
     if (typeof openclawConfObj === 'string') {
@@ -245,7 +317,8 @@ export default {
           },
         }),
         fd: {
-          llm_type: rowLlmType || (LLM_TYPE_OPTIONS[0] && LLM_TYPE_OPTIONS[0].id) || 'openclaw',
+          // 须与 decorators.llm_type.initialValue 一致，否则 currentTypeFields / v-if 与真实选中类型不同步，初始化不展示类型字段
+          llm_type: rowLlmType || defaultLlmType,
         },
       },
       decorators: {
@@ -285,12 +358,93 @@ export default {
             ],
           },
         ],
+        dify_api_image_id: [
+          'dify_api_image_id',
+          {
+            initialValue: dify_api_image_id,
+            rules: [
+              { required: true, message: this.$t('common.tips.select', [this.$t('aice.dify_api_image')]) },
+            ],
+          },
+        ],
+        dify_plugin_image_id: [
+          'dify_plugin_image_id',
+          {
+            initialValue: dify_plugin_image_id,
+            rules: [
+              { required: true, message: this.$t('common.tips.select', [this.$t('aice.dify_plugin_image')]) },
+            ],
+          },
+        ],
+        dify_sandbox_image_id: [
+          'dify_sandbox_image_id',
+          {
+            initialValue: dify_sandbox_image_id,
+            rules: [
+              { required: true, message: this.$t('common.tips.select', [this.$t('aice.dify_sandbox_image')]) },
+            ],
+          },
+        ],
+        dify_ssrf_image_id: [
+          'dify_ssrf_image_id',
+          {
+            initialValue: dify_ssrf_image_id,
+            rules: [
+              { required: true, message: this.$t('common.tips.select', [this.$t('aice.dify_ssr_image')]) },
+            ],
+          },
+        ],
         llm_type: [
           'llm_type',
           {
             initialValue: rowLlmType || defaultLlmType,
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('aice.llm_type')]) },
+            ],
+          },
+        ],
+        dify_weaviate_image_id: [
+          'dify_weaviate_image_id',
+          {
+            initialValue: dify_weaviate_image_id,
+            rules: [
+              { required: true, message: this.$t('common.tips.select', [this.$t('aice.dify_weaviate_image')]) },
+            ],
+          },
+        ],
+        dify_web_image_id: [
+          'dify_web_image_id',
+          {
+            initialValue: dify_web_image_id,
+            rules: [
+              { required: true, message: this.$t('common.tips.select', [this.$t('aice.dify_web_image')]) },
+            ],
+          },
+        ],
+        nginx_image_id: [
+          'nginx_image_id',
+          {
+            initialValue: nginx_image_id,
+            rules: [
+              { required: true, message: this.$t('common.tips.select', [this.$t('aice.nginx_image')]) },
+            ],
+          },
+        ],
+        postgres_image_id: [
+          'postgres_image_id',
+          {
+            initialValue: postgres_image_id,
+            rules: [
+              { required: true, message: this.$t('common.tips.select', [this.$t('aice.postgres_image')]) },
+            ],
+          },
+        ],
+        redis_image_id: [
+          'redis_image_id',
+          {
+            initialValue: redis_image_id,
+            rules: [
+              { required: true, message: this.$t('common.tips.select', [this.$t('aice.redis_image')]) },
             ],
           },
         ],
@@ -375,7 +529,7 @@ export default {
         device: [
           'device',
           {
-            initialValue: devices && devices[0]?.model,
+            initialValue: devices && devices.length > 0 ? devices.map(v => v.model) : [],
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('aice.devices')]) },
             ],
@@ -406,8 +560,8 @@ export default {
         },
       },
       formItemLayout: {
-        wrapperCol: { span: 18 },
-        labelCol: { span: 5 },
+        wrapperCol: { span: 20 },
+        labelCol: { span: 4 },
       },
       envVars,
       projectName: (project_domain != null && tenant != null) ? `${project_domain}/${tenant}` : '',
@@ -519,6 +673,15 @@ export default {
           phone_image,
           request_sync_image,
           llm_image_id,
+          dify_api_image_id,
+          dify_plugin_image_id,
+          dify_sandbox_image_id,
+          dify_ssrf_image_id,
+          dify_weaviate_image_id,
+          dify_web_image_id,
+          nginx_image_id,
+          postgres_image_id,
+          redis_image_id,
           cpu,
           memory,
           volume_size,
@@ -577,7 +740,7 @@ export default {
           const v = pickTypeValues[key]
           if (v === undefined) return
           if (key === 'device') {
-            data.devices = [{ model: v }]
+            data.devices = v.map(k => ({ model: k }))
           } else {
             data[key] = v
           }
@@ -593,6 +756,22 @@ export default {
           if (Object.keys(workspace_templates).length > 0) {
             data.llm_spec = { openclaw: { workspace_templates } }
           }
+        }
+        if (effectiveLlmType === 'dify') {
+          data.llm_spec = {
+            dify: {
+              dify_api_image_id: dify_api_image_id,
+              dify_plugin_image_id: dify_plugin_image_id,
+              dify_sandbox_image_id: dify_sandbox_image_id,
+              dify_ssrf_image_id: dify_ssrf_image_id,
+              dify_weaviate_image_id: dify_weaviate_image_id,
+              dify_web_image_id: dify_web_image_id,
+              nginx_image_id: nginx_image_id,
+              postgres_image_id: postgres_image_id,
+              redis_image_id: redis_image_id,
+            },
+          }
+          delete data.llm_image_id
         }
         if (this.mode === 'edit' && this.onManager && this.editData) {
           if (request_sync_image) data.request_sync_image = true

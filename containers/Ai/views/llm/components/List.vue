@@ -43,7 +43,7 @@ export default {
         getParams: this.getParam,
         steadyStatus: {
           status: (data) => {
-            if (Object.values(expectStatus.server).flat().includes(data.status)) {
+            if (Object.values(expectStatus.server).flat().includes(data.status) || Object.values(expectStatus.container).flat().includes(data.llm_status)) {
               return false
             }
             return true
@@ -102,6 +102,9 @@ export default {
           created_at: getCreatedAtFilter(),
         },
         hiddenColumns: [],
+        fetchDataCb: (response) => {
+          this.enrichLlmRowsWithCmpInfo(response)
+        },
       }),
       groupActions: [
         {
@@ -318,10 +321,36 @@ export default {
   },
   created () {
     this.$hM = new this.$Manager('hosts')
+    this.serverManager = new this.$Manager('servers')
     this.initSidePageTab('detail')
     this.list.fetchData()
   },
   methods: {
+    async enrichLlmRowsWithCmpInfo (response) {
+      const rows = response?.data?.data
+      if (!Array.isArray(rows) || !rows.length) return
+      const params = {
+        scope: this.$store.getters.scope,
+      }
+      const patch = {}
+      await Promise.all(
+        rows.map(async (row) => {
+          if (!row.cmp_id) return
+          try {
+            const { data } = await this.serverManager.get({ id: row.cmp_id, params })
+            if (data) {
+              patch[row.id] = { cmp_info: data }
+            }
+          } catch (e) {
+            // 单行失败不影响列表
+          }
+        }),
+      )
+      if (this._isDestroyed) return
+      if (Object.keys(patch).length) {
+        this.list.updatesProperty(patch)
+      }
+    },
     getParam () {
       const ret = {
         ...this.getParams,

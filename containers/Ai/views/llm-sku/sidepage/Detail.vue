@@ -20,7 +20,7 @@ import {
   getLlmTypeTableColumn,
   getLlmModelNameTableColumn,
 } from '../utils/columns'
-import { getLlmSpecSections, fetchLlmSpecCredentialNames } from '../utils/llmSpecDetail'
+import { getLlmSpecSections, fetchLlmSpecCredentialNames, fetchLlmSpecDifyImages } from '../utils/llmSpecDetail'
 
 export default {
   name: 'LlmSkuDetail',
@@ -38,6 +38,7 @@ export default {
   data () {
     return {
       credentialNamesMap: {},
+      difyImageNamesMap: {},
       baseInfo: [
         getDeviceModelTableColumn(),
         getImageTableColumn({ vm: this }),
@@ -80,12 +81,14 @@ export default {
     'data.llm_spec': {
       handler () {
         fetchLlmSpecCredentialNames(this)
+        fetchLlmSpecDifyImages(this)
       },
       deep: true,
     },
   },
   created () {
     fetchLlmSpecCredentialNames(this)
+    fetchLlmSpecDifyImages(this)
   },
 }
 </script>

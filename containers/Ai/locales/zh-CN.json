@@ -336,5 +336,15 @@
   "aice.login_password": "密码",
   "aice.login_extra": "额外信息",
   "aice.login_info": "登录信息",
-  "aice.click_to_show": "点击显示"
+  "aice.click_to_show": "点击显示",
+  "aice.dify_api_image": "Dify API 镜像",
+  "aice.dify_plugin_image": "Dify Plugin 镜像",
+  "aice.dify_sandbox_image": "Dify Sandbox 镜像",
+  "aice.dify_ssr_image": "Dify SSR 镜像",
+  "aice.dify_weaviate_image": "Dify Weaviate 镜像",
+  "aice.dify_web_image": "Dify Web 镜像",
+  "aice.nginx_image": "Nginx 镜像",
+  "aice.postgres_image": "Postgre 镜像",
+  "aice.redis_image": "Redis 镜像",
+  "aice.container_status": "容器状态"
 }
