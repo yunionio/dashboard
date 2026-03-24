@@ -36,6 +36,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'server' }),
+      getStatusTableColumn({ field: 'llm_status', statusModule: 'container', title: this.$t('aice.container_status') }),
       getLlmIpColumn(),
       getLlmSkuColumn({ vm: this, isApplyType: this.isApplyType }),
       getLlmImageColumn({ vm: this }),
