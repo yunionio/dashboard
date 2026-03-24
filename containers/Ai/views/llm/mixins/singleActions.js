@@ -16,6 +16,35 @@ export default {
         },
       },
       {
+        label: this.$t('compute.repo.terminal'),
+        actions: (obj) => {
+          const data = obj.cmp_info || {}
+          const containers = data.containers || []
+          return containers.map(item => {
+            return {
+              label: item.name,
+              action: async () => {
+                const connectRes = await this.fetchConnectUrl(item.id)
+                this.openWebConsole(connectRes)
+              },
+            }
+          })
+        },
+        meta: (obj) => {
+          const data = obj.cmp_info || {}
+          const ret = { validate: true }
+          if (!data.containers?.length) {
+            ret.validate = false
+            return ret
+          }
+          if (data.status !== 'running' && data.status !== 'probing') {
+            ret.tooltip = this.$t('compute.repo.helper.terminal', [this.$t('compute.vminstance-container')])
+            ret.validate = false
+          }
+          return ret
+        },
+      },
+      {
         label: this.$t('compute.text_352'),
         actions: obj => {
           return [
@@ -75,6 +104,7 @@ export default {
                 }
                 return ret
               },
+              hidden: () => this.isApplyType,
             },
             // 重启
             {
@@ -155,17 +185,20 @@ export default {
       },
     ]
   },
+  computed: {
+    isApplyType () {
+      return this.$route.path.includes('app-llm')
+    },
+  },
   methods: {
     openWebConsole (data) {
       this.$openWebConsole(data)
     },
-    async fetchConnectUrl (obj, conn) {
+    async fetchConnectUrl (containerId) {
       const { data } = await new this.$Manager('webconsole', 'v1').objectRpc({
-        methodname: 'DoAdbShell',
-        objId: obj.cmp_id,
+        methodname: 'DoContainerExec',
         params: {
-          server_id: obj.cmp_id,
-          conn: conn,
+          container_id: containerId,
         },
       })
       return Promise.resolve(data)

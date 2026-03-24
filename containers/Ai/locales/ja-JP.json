@@ -334,5 +334,15 @@
   "aice.llm_network_type.hostlocal_default": "自動スケジューリング-ホストローカルネットワーク",
   "aice.llm_network_type.guest": "クラシックネットワークを指定",
   "aice.llm_network_type.hostlocal": "ホストローカルネットワークを指定",
-  "aice.cpu": "CPU"
+  "aice.cpu": "CPU",
+  "aice.dify_api_image": "Dify API Image",
+  "aice.dify_plugin_image": "Dify Plugin Image",
+  "aice.dify_sandbox_image": "Dify Sandbox Image",
+  "aice.dify_ssr_image": "Dify SSR Image",
+  "aice.dify_weaviate_image": "Dify Weaviate Image",
+  "aice.dify_web_image": "Dify Web Image",
+  "aice.nginx_image": "Nginx Image",
+  "aice.postgres_image": "Postgre Image",
+  "aice.redis_image": "Redis Image",
+  "aice.container_status": "コンテナ状態"
 }

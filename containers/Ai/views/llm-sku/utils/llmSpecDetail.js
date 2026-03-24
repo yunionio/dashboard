@@ -162,6 +162,107 @@ function renderOpenclawSpec (spec, vm, h) {
   return h('div', { class: 'llm-spec-openclaw' }, nodes)
 }
 
+/** Dify 镜像字段：与创建表单 / 接口返回的 dify_* 一致 */
+const DIFY_SPEC_IMAGE_FIELDS = [
+  { keys: ['dify_api_image_id'], labelKey: 'aice.dify_api_image' },
+  { keys: ['dify_plugin_image_id'], labelKey: 'aice.dify_plugin_image' },
+  { keys: ['dify_sandbox_image_id'], labelKey: 'aice.dify_sandbox_image' },
+  { keys: ['dify_ssrf_image_id'], labelKey: 'aice.dify_ssr_image' },
+  { keys: ['dify_weaviate_image_id'], labelKey: 'aice.dify_weaviate_image' },
+  { keys: ['dify_web_image_id'], labelKey: 'aice.dify_web_image' },
+  { keys: ['nginx_image_id'], labelKey: 'aice.nginx_image' },
+  { keys: ['postgres_image_id'], labelKey: 'aice.postgres_image' },
+  { keys: ['redis_image_id'], labelKey: 'aice.redis_image' },
+]
+
+function pickDifyField (dify, keys) {
+  if (!dify || typeof dify !== 'object') return null
+  for (let i = 0; i < keys.length; i++) {
+    const v = dify[keys[i]]
+    if (v != null && v !== '') return String(v)
+  }
+  return null
+}
+
+function collectDifyImageIds (dify) {
+  if (!dify || typeof dify !== 'object') return []
+  const ids = new Set()
+  DIFY_SPEC_IMAGE_FIELDS.forEach(({ keys }) => {
+    const id = pickDifyField(dify, keys)
+    if (id) ids.add(id)
+  })
+  return Array.from(ids)
+}
+
+/**
+ * 根据 llm_spec.dify 中的镜像 id 请求 llm_images，反填名称到 vm.difyImageNamesMap（需在 vm 上初始化 difyImageNamesMap: {}）
+ */
+export async function fetchLlmSpecDifyImages (vm) {
+  if (!vm || !vm.data) return
+  const type = (vm.data.llm_type || '').toLowerCase()
+  if (type !== 'dify') {
+    if (vm.difyImageNamesMap && Object.keys(vm.difyImageNamesMap).length > 0) {
+      vm.$set(vm, 'difyImageNamesMap', {})
+    }
+    return
+  }
+  const spec = vm.data.llm_spec
+  const dify = spec && (spec.dify != null ? spec.dify : spec)
+  const ids = collectDifyImageIds(dify)
+  if (ids.length === 0) {
+    vm.$set(vm, 'difyImageNamesMap', {})
+    return
+  }
+  const map = { ...(vm.difyImageNamesMap || {}) }
+  const manager = new vm.$Manager('llm_images')
+  await Promise.all(ids.map(async (id) => {
+    if (map[id]) return
+    try {
+      const { data } = await manager.get({ id })
+      if (data) {
+        map[id] = data.name || data.displayname || id
+      }
+    } catch (e) {
+      // 单条失败仍用 id 展示
+    }
+  }))
+  vm.$set(vm, 'difyImageNamesMap', map)
+}
+
+function renderDifyImageRow (label, imageId, vm, h) {
+  const display = imageId && vm.difyImageNamesMap && vm.difyImageNamesMap[imageId]
+    ? vm.difyImageNamesMap[imageId]
+    : imageId
+  return h('div', {
+    class: 'd-flex align-items-center flex-wrap mb-2',
+    style: { lineHeight: '1.65' },
+  }, [
+    h('span', { class: 'text-secondary mr-2', style: { flex: '0 0 200px' } }, label),
+    imageId
+      ? h('side-page-trigger', {
+        props: {
+          permission: 'llm_images_get',
+          name: 'LlmImageSidePage',
+          id: String(imageId),
+          vm,
+        },
+      }, [display || imageId])
+      : h('span', { class: 'detail-item-value' }, '-'),
+  ])
+}
+
+function renderDifySpec (dify, vm, h) {
+  if (!dify || typeof dify !== 'object') {
+    return h('div', { class: 'detail-item-value text-secondary' }, '-')
+  }
+  const rows = DIFY_SPEC_IMAGE_FIELDS.map(({ keys, labelKey }) => {
+    const label = vm.$te(labelKey) ? vm.$t(labelKey) : keys[0]
+    const id = pickDifyField(dify, keys)
+    return renderDifyImageRow(label, id, vm, h)
+  })
+  return h('div', { class: 'llm-spec-dify' }, rows)
+}
+
 /**
  * 仅渲染套餐的 AI 供应商列表（用于实例详情下「对应套餐的 LLM 规格配置」独立 section）
  * @param {Object} vm - 详情页 Vue 实例，需有 vm.skuLlmSpecOpenclaw.providers、vm.credentialNamesMap
@@ -208,7 +309,11 @@ function renderLlmSpecContent (row, vm, h) {
     const openclawData = spec.openclaw != null ? spec.openclaw : spec
     return renderOpenclawSpec(openclawData, vm, h)
   }
-  // ollama / dify / vllm / comfyui 等：通用 JSON 展示
+  if (type === 'dify') {
+    const difyData = spec.dify != null ? spec.dify : spec
+    return renderDifySpec(difyData, vm, h)
+  }
+  // ollama / vllm / comfyui 等：通用 JSON 展示
   try {
     const text = typeof spec === 'string' ? spec : JSON.stringify(spec, null, 2)
     return h('pre', { class: 'detail-item-value mb-0 p-2 bg-secondary rounded', style: { maxHeight: '320px', overflow: 'auto' } }, text)
