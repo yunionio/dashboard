@@ -6,7 +6,28 @@ export const getTypeTableColumn = () => {
     title: i18n.t('k8s.text_34'),
     slots: {
       default: ({ row }, h) => {
-        return row.type
+        const typeMap = {
+          common: i18n.t('k8s.repo.type.common'),
+          custom: i18n.t('k8s.repo.type.custom'),
+          harbor: 'Harbor',
+        }
+        return typeMap[row.type] || row.type
+      },
+    },
+  }
+}
+
+export const getCredentialTableColumn = () => {
+  return {
+    field: 'credential_id',
+    title: i18n.t('k8s.repo.credential'),
+    minWidth: 100,
+    slots: {
+      default: ({ row }, h) => {
+        if (row.credential_id) {
+          return [<a-tag color="green">{row.credential_id}</a-tag>]
+        }
+        return [<a-tag>{i18n.t('k8s.repo.credential.none')}</a-tag>]
       },
     },
   }
