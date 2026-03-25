@@ -12,6 +12,7 @@
 <script>
 import {
   getUrlTableColumn,
+  getCredentialTableColumn,
 } from '../utils/columns'
 
 export default {
@@ -30,6 +31,7 @@ export default {
     return {
       baseInfo: [
         getUrlTableColumn(),
+        getCredentialTableColumn(),
       ],
     }
   },

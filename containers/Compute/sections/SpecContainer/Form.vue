@@ -17,7 +17,8 @@
         :placeholder="$t('common.tips.input', [$t('compute.repo.container_image')])" />
     </a-form-item>
     <a-form-item v-else :label="$t('compute.repo.container_image')">
-      <mirror-registry v-decorator="decorators.registryImage" />
+      <mirror-registry v-decorator="decorators.registryImage" @credential-change="handleCredentialChange" />
+      <a-input v-show="false" v-decorator="decorators.imageCredentialId" />
     </a-form-item>
     <a-form-item label="CPU" v-show="false">
       <a-input
@@ -139,6 +140,13 @@ export default {
     },
     handleSourceChange (e) {
       this.source = e.target.value
+    },
+    handleCredentialChange (credentialId) {
+      if (this.form && this.form.fc && this.decorators.imageCredentialId) {
+        this.form.fc.setFieldsValue({
+          [this.decorators.imageCredentialId[0]]: credentialId,
+        })
+      }
     },
     labelChangeHandle (val) {
       this.labelList = val
