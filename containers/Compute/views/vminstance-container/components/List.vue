@@ -79,6 +79,9 @@ export default {
     if (this.$route.query.id) {
       filter.id = [this.$route.query.id]
     }
+    if (this.$route.query.status) {
+      filter.status = this.$route.query.status
+    }
 
     const filterOptions = {
       external_id: {
