@@ -9,12 +9,12 @@
             :placeholder="$t('validator.resourceName')" />
         </a-form-item>
         <a-form-item :label="$t('k8s.text_34')">
-          <base-select
-            v-decorator="decorators.type"
-            :options="TYPE_OPTIONS"
-            :selectProps="{ placeholder: $t('common.tips.select', [$t('k8s.text_34')])}" />
+          <a-radio-group v-decorator="decorators.type" buttonStyle="solid">
+            <a-radio-button value="common">{{ $t('k8s.repo.type.common') }}</a-radio-button>
+            <a-radio-button value="custom">{{ $t('k8s.repo.type.custom') }}</a-radio-button>
+          </a-radio-group>
         </a-form-item>
-        <a-form-item :label="$t('k8s.repo.url')" :extra="$t('k8s.repo.url.extra')">
+        <a-form-item :label="$t('k8s.repo.url')" :extra="isCustomType ? $t('k8s.repo.url.extra.custom') : $t('k8s.repo.url.extra')">
           <a-input
             v-decorator="decorators.url"
             :placeholder="$t('common.tips.input', [$t('k8s.repo.url')])" />
@@ -41,7 +41,6 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { TYPE_OPTIONS } from '../constants'
 
 export default {
   name: 'ReposCreateDialog',
@@ -49,7 +48,6 @@ export default {
   data () {
     return {
       loading: false,
-      TYPE_OPTIONS,
       decorators: {
         name: [
           'name',
@@ -64,7 +62,7 @@ export default {
         type: [
           'type',
           {
-            initialValue: TYPE_OPTIONS[0].value,
+            initialValue: 'common',
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('k8s.text_34')]) },
             ],
@@ -115,20 +113,29 @@ export default {
       },
     }
   },
+  computed: {
+    isCustomType () {
+      return this.form.fd.type === 'custom'
+    },
+  },
   methods: {
     async handleConfirm () {
       this.loading = true
       try {
-        const { username, password, ...rest } = await this.form.fc.validateFields()
+        const { username, password, type, ...rest } = await this.form.fc.validateFields()
         const manager = new this.$Manager('container_registries', 'v1')
         const data = {
           ...rest,
-          config: {
-            common: {
+          type,
+        }
+        if (username && password) {
+          const configKey = type || 'common'
+          data.config = {
+            [configKey]: {
               username,
               password,
             },
-          },
+          }
         }
         await manager.create({ data })
         this.params.refresh && this.params.refresh()

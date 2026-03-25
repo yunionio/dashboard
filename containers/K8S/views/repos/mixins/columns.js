@@ -6,6 +6,7 @@ import {
 import {
   getTypeTableColumn,
   getUrlTableColumn,
+  getCredentialTableColumn,
 } from '../utils/columns'
 
 export default {
@@ -23,6 +24,7 @@ export default {
       getTypeTableColumn(),
       getStatusTableColumn({ statusModule: 'k8s_repo' }),
       getUrlTableColumn(),
+      getCredentialTableColumn(),
       getTimeTableColumn(),
     ]
   },
