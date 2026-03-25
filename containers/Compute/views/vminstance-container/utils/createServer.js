@@ -690,6 +690,9 @@ export const createVmDecorators = () => {
           ],
         },
       ],
+      imageCredentialId: i => [
+        `imageCredentialIds[${i}]`,
+      ],
       image: i => [
         `containerimages[${i}]`,
         {
@@ -1221,8 +1224,9 @@ export class GenCreateData {
     const containers = tabKeys.map(k => {
       const pciDevices = (this.fd.pciEnable && this.genPciDevices()) || []
       const image = this.fd.registryImages?.[k] || ''
+      const credentialId = this.fd.imageCredentialIds?.[k] || ''
 
-      return {
+      const spec = {
         name: this.fd.containerNames?.[k],
         image: removeHttp(image) || this.fd.containerimages?.[k],
         command: this.fd.containerCommands?.[k]?.split(' '),
@@ -1239,6 +1243,10 @@ export class GenCreateData {
         envs: getEnvs(this.fd.containerEnvNames?.[k], this.fd.containerEnvValues?.[k]),
         volume_mounts: getVolumeMounts(this.fd.containerVolumeMountNames?.[k], this.fd.containerVolumeMountPaths?.[k]),
       }
+      if (credentialId) {
+        spec.image_credential_id = credentialId
+      }
+      return spec
     })
 
     return {
