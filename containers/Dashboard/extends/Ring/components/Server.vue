@@ -436,8 +436,11 @@ export default {
       return this.$t('dashboard.text_34')
     },
     isResDeny () {
-      const usage_key = this.params?.all_usage_key || ''
+      const usage_key = this.params?.all_usage_key || this.form.fd?.all_usage_key || ''
 
+      if (usage_key.split('.').includes('containers') || usage_key.split('.').includes('pending_delete_containers') || usage_key.split('.').includes('ready_containers')) {
+        return !hasPermission({ key: 'servers_list', permissionData: this.permission })
+      }
       if (usage_key.endsWith('servers')) {
         return !hasPermission({ key: 'servers_list', permissionData: this.permission })
       } else if (usage_key.endsWith('disks.count')) {
@@ -607,6 +610,19 @@ export default {
             usedPath = '/serverrecovery'
             reservedPath = '/vminstance'
             // reservedParams.status = ['running', 'ready']
+          }
+          break
+        case 'containers':
+          allPath = '/vminstance-container'
+          usedPath = '/vminstance-container'
+          reservedPath = '/vminstance-container'
+          if (usageResource === 'running_containers') {
+            usedParams.status = ['running']
+          } else if (usageResource === 'ready_containers') {
+            usedParams.status = ['ready']
+          } else if (usageResource === 'pending_delete_containers') {
+            usedPath = '/serverrecovery'
+            reservedPath = '/vminstance-container'
           }
           break
         case 'disks':

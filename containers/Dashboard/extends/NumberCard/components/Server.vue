@@ -198,6 +198,9 @@ export default {
     },
     isResDeny () {
       const usage_key = this.params?.usage_key || ''
+      if (this.isContainerHostUsageKey(usage_key)) {
+        return !hasPermission({ key: 'servers_list', permissionData: this.permission })
+      }
       if (usage_key.endsWith('servers')) {
         return !hasPermission({ key: 'servers_list', permissionData: this.permission })
       } else if (usage_key.endsWith('hosts') || usage_key.endsWith('baremetals')) {
@@ -243,6 +246,15 @@ export default {
     }, this)
   },
   methods: {
+    isPendingDeleteContainerUsageKey (uk) {
+      if (!uk) return false
+      return uk.split('.').includes('pending_delete_containers')
+    },
+    isContainerHostUsageKey (uk) {
+      if (!uk) return false
+      const segs = uk.split('.')
+      return segs.includes('containers') || segs.includes('running_containers') || segs.includes('ready_containers') || segs.includes('pending_delete_containers')
+    },
     refresh () {
       return this.fetchUsage()
     },
@@ -304,6 +316,13 @@ export default {
       if (path) this.$router.push(path)
     },
     getPageUrl () {
+      const uk = this.params.usage_key
+      if (uk && this.isPendingDeleteContainerUsageKey(uk)) {
+        return '/serverrecovery'
+      }
+      if (uk && this.isContainerHostUsageKey(uk)) {
+        return '/vminstance-container'
+      }
       switch (this.params.usage_key) {
         case 'all.servers':
           return '/vminstance'
