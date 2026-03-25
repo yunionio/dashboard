@@ -129,6 +129,16 @@ export default {
           required: true,
         },
         {
+          label: this.$t('compute.vminstance-container'),
+          key: ['all.containers', 'domain.containers', 'containers'],
+          required: false,
+        },
+        {
+          label: this.$t('usage')['all.running_containers'],
+          key: ['all.running_containers', 'domain.running_containers', 'running_containers'],
+          required: false,
+        },
+        {
           label: 'RDS',
           key: ['all.rds', 'domain.rds', 'rds'],
           required: true,

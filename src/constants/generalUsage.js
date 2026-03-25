@@ -104,6 +104,31 @@ export const usageMap = {
     },
     unit: i18n.t('common_62'),
   },
+  containerInstance: {
+    field: {
+      total: {
+        system: 'all.containers',
+        domain: 'domain.containers',
+        project: 'containers',
+      },
+      running: {
+        system: 'all.running_containers',
+        domain: 'domain.running_containers',
+        project: 'running_containers',
+      },
+      ready: {
+        system: 'all.ready_containers',
+        domain: 'domain.ready_containers',
+        project: 'ready_containers',
+      },
+      delete: {
+        system: 'all.pending_delete_containers',
+        domain: 'domain.pending_delete_containers',
+        project: 'pending_delete_containers',
+      },
+    },
+    unit: i18n.t('common_62'),
+  },
   baremetal: {
     field: {
       used: {
