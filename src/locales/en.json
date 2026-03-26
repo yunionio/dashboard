@@ -6472,5 +6472,6 @@
   "common.application": "Application",
   "common.inference": "Inference",
   "common.image": "Image",
-  "common.container_secret": "Container Secret"
+  "common.container_secret": "Container Secret",
+  "common.container_image_secret": "Container Image Secret"
 }

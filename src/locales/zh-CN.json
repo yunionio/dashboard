@@ -6503,5 +6503,6 @@
   "common.application": "应用",
   "common.inference": "推理",
   "common.image": "镜像",
-  "common.container_secret": "容器密钥"
+  "common.container_secret": "容器密钥",
+  "common.container_image_secret": "容器镜像仓库密钥"
 }
