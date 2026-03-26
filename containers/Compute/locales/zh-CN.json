@@ -2004,5 +2004,9 @@
   "compute.snapshotpolicy_bind_server_tip": "若虚拟机的硬盘绑定了自动快照策略,则绑定虚拟机自动快照策略时会自动解绑硬盘自动快照策略",
   "compute.kickstart": "无人值守安装",
   "compute.kickstart.tooltip": "仅支持CentOS、RHEL、OpenEuler、Ubuntu发行版的ISO镜像",
-  "compute.kickstart_placeholder": "请输入kickstart脚本,可参考各系统发行版官方文档."
+  "compute.kickstart_placeholder": "请输入kickstart脚本,可参考各系统发行版官方文档.",
+  "compute.kickstart_complete": "无人值守安装完成",
+  "compute.kickstart_complete_action": "手动触发无人值守安装完成",
+  "compute.kickstart_complete_tip": "仅【无人值守安装中】状态支持该操作",
+  "compute.kickstart_complete_tip_2": "手动触发无人值守安装完成，触发后会重启，尝试引导虚拟机"
 }

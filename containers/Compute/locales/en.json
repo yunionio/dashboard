@@ -2000,5 +2000,9 @@
   "compute.snapshotpolicy_bind_server_tip": "If the disk bound to the virtual machine is bound to an automatic snapshot policy, the automatic snapshot policy of the virtual machine will be automatically unbound when binding the automatic snapshot policy of the disk",
   "compute.kickstart": "Kickstart",
   "compute.kickstart.tooltip": "Only supported for ISO images of CentOS, RHEL, OpenEuler, and Ubuntu distributions",
-  "compute.kickstart_placeholder": "Please enter the kickstart script, which can be referenced in the official documentation of each system distribution."
+  "compute.kickstart_placeholder": "Please enter the kickstart script, which can be referenced in the official documentation of each system distribution.",
+  "compute.kickstart_complete": "Kickstart complete",
+  "compute.kickstart_complete_action": "Manually trigger kickstart complete",
+  "compute.kickstart_complete_tip": "Only the [Kickstart installing] state supports this operation",
+  "compute.kickstart_complete_tip_2": "Manually trigger kickstart complete, and the virtual machine will be restarted to try to boot"
 }
