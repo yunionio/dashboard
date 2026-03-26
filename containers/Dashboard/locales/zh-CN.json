@@ -228,6 +228,7 @@
   "dashboard.mounted": "已挂载",
   "dashboard.not_mounted": "未挂载",
   "dashboard.net.send.top5": "网络发送流量TOP5",
+  "dashboard.net.recv.top5": "网络入流量TOP5",
   "dashboard.currency": "币种",
   "dashboard.leave_page_tips": "当前页面数据未保存，确定要离开？",
   "dashboard.color.scheme": "配色方案",
@@ -340,5 +341,12 @@
   "dashboard.specified_domain": "指定@:dictionary.domain",
   "dashboard.specified_project": "指定@:dictionary.project",
   "dashboard.usage_key_deny_tips": "切换数据范围后,原数据指标可能在新的数据视图无权限查看,即指标无效",
-  "dashboard.usage_key_deny_tips_2": "指标无效"
+  "dashboard.usage_key_deny_tips_2": "指标无效",
+  "dashboard.container_server_count": "容器主机数量",
+  "dashboard.container_server_cpu_num": "容器主机CPU数量",
+  "dashboard.containers_memory": "容器内存容量",
+  "dashboard.running_containers_cpu_num": "运行中容器CPU数量",
+  "dashboard.running_containers_memory_num": "运行中容器内存容量",
+  "dashboard.running_containers_count": "运行中容器主机数量",
+  "dashboard.container_server_running_rate": "容器主机使用率"
 }

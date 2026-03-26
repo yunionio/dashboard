@@ -198,7 +198,9 @@ export default {
             await this.pm.delete({
               id: this.current.id,
             })
-            this.$emit('select', this.options[0])
+            // 使用删除后的列表首项，避免 update-options 尚未反映到 tabs 时仍用旧的 options[0]
+            const next = newOptions.length ? newOptions[0] : this.options[0]
+            this.$emit('select', next)
           } catch (error) {
             throw error
           }
