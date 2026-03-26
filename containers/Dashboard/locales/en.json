@@ -228,6 +228,7 @@
   "dashboard.mounted": "Mounted",
   "dashboard.not_mounted": "Unmounted",
   "dashboard.net.send.top5": "Network Outbound TOP5",
+  "dashboard.net.recv.top5": "Network Inbound TOP5",
   "dashboard.currency": "Currency",
   "dashboard.leave_page_tips": "The current page data is not saved. Are you sure you want to leave?",
   "dashboard.color.scheme": "Color Schemes",
@@ -340,5 +341,12 @@
   "dashboard.specified_domain": "Specified @:dictionary.domain",
   "dashboard.specified_project": "Specified @:dictionary.project",
   "dashboard.usage_key_deny_tips": "After switching the data range, the original data indicators may not have permission to view in the new data view, that is, the indicators are invalid",
-  "dashboard.usage_key_deny_tips_2": "Indicators are invalid"
+  "dashboard.usage_key_deny_tips_2": "Indicators are invalid",
+  "dashboard.container_server_count": "Container server number",
+  "dashboard.container_server_cpu_num": "Container server CPU number",
+  "dashboard.containers_memory": "Container memory capacity",
+  "dashboard.running_containers_cpu_num": "Running container CPU number",
+  "dashboard.running_containers_memory_num": "Running container memory capacity",
+  "dashboard.running_containers_count": "Running container server number",
+  "dashboard.container_server_running_rate": "Server running rate"
 }
