@@ -6492,5 +6492,6 @@
   "common.application": "アプリケーション",
   "common.inference": "推論",
   "common.image": "イメージ",
-  "common.container_secret": "コンテナシークレット"
+  "common.container_secret": "コンテナシークレット",
+  "common.container_image_secret": "コンテナイメージレポジトリシークレット"
 }

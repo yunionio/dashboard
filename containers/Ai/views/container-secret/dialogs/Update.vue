@@ -1,6 +1,6 @@
 <template>
   <base-dialog :width="700" @cancel="cancelDialog">
-    <div slot="header">{{ $t('table.action.modify') }} - {{ $t('aice.container_secret') }}</div>
+    <div slot="header">{{ $t('table.action.modify') }} - {{ $t('dictionary.keypair') }}</div>
     <div slot="body">
       <a-spin :spinning="loadingDetail">
         <a-form v-if="!loadingDetail" :form="form.fc" hideRequiredMark v-bind="formItemLayout">
@@ -9,7 +9,7 @@
               v-decorator="decorators.name"
               :placeholder="$t('common.tips.input', [$t('common.name')])" />
           </a-form-item>
-          <a-form-item :label="$t('aice.container_secret')" :extra="$t('aice.container_secret.env_hint') + ' ' + $t('aice.container_secret.add_pair')">
+          <a-form-item :label="$t('dictionary.keypair')" :extra="$t('aice.container_secret.env_hint') + ' ' + $t('aice.container_secret.add_pair')">
             <div v-for="(item, index) in items" :key="item.id" class="d-flex align-items-start mb-2">
               <a-input
                 v-model="item.key"
