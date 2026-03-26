@@ -259,24 +259,27 @@ export default {
           title: this.$t('aice.login_password'),
           slots: {
             default: () => {
-              const displayValue = this.loginPasswordVisible ? (password || '-') : '••••••'
+              const displayValue = this.loginPasswordVisible ? (password || '-') : password ? '••••••' : '-'
               return [
                 <div class="login-password-row">
                   <span class="login-password-value">{displayValue}</span>
-                  <a-icon
-                    class="login-password-eye ml-1"
-                    type={this.loginPasswordVisible ? 'eye-invisible' : 'eye'}
-                    theme="twoTone"
-                    twoToneColor="#1890ff"
-                    on-click={() => { this.loginPasswordVisible = !this.loginPasswordVisible }}
-                  />
-                  <a-icon
-                    class="login-password-copy ml-1"
-                    type="copy"
-                    theme="twoTone"
-                    twoToneColor="#1890ff"
-                    on-click={() => this.copyLoginPassword(password)}
-                  />
+                  {password &&
+                    [
+                      <a-icon
+                        class="login-password-eye ml-1"
+                        type={this.loginPasswordVisible ? 'eye-invisible' : 'eye'}
+                        theme="twoTone"
+                        twoToneColor="#1890ff"
+                        on-click={() => { this.loginPasswordVisible = !this.loginPasswordVisible }}
+                      />,
+                      <a-icon
+                        class="login-password-copy ml-1"
+                        type="copy"
+                        theme="twoTone"
+                        twoToneColor="#1890ff"
+                        on-click={() => this.copyLoginPassword(password)}
+                      />,
+                    ]}
                 </div>,
               ]
             },
