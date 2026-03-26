@@ -228,6 +228,7 @@
   "dashboard.mounted": "マウント",
   "dashboard.not_mounted": "マウントされていません",
   "dashboard.net.send.top5": "上位 5 つのネットワーク送信トラフィック",
+  "dashboard.net.recv.top5": "ネットワーク受信トラフィック TOP5",
   "dashboard.currency": "通貨",
   "dashboard.leave_page_tips": "現在のページデータは保存されていませんが、退会してもよろしいですか?",
   "dashboard.color.scheme": "配色",
@@ -340,5 +341,12 @@
   "dashboard.specified_domain": "指定された@:dictionary.domain",
   "dashboard.specified_project": "指定された@:dictionary.project",
   "dashboard.usage_key_deny_tips": "データ範囲を切り替えた後、元のデータ指標は新しいデータビューで表示できない可能性があり、つまり指標が無効になります",
-  "dashboard.usage_key_deny_tips_2": "指標が無効です"
+  "dashboard.usage_key_deny_tips_2": "指標が無効です",
+  "dashboard.container_server_count": "コンテナホスト数",
+  "dashboard.container_server_cpu_num": "コンテナホストCPU数",
+  "dashboard.containers_memory": "コンテナメモリ容量",
+  "dashboard.running_containers_cpu_num": "実行中コンテナホストCPU数",
+  "dashboard.running_containers_memory_num": "実行中コンテナホストメモリ容量",
+  "dashboard.running_containers_count": "実行中コンテナホスト数",
+  "dashboard.container_server_running_rate": "コンテナホスト使用率" 
 }
