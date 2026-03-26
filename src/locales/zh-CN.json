@@ -191,7 +191,8 @@
       "create_container_failed": "创建失败",
       "delete_container_failed": "删除失败",
       "snapshot_delete": "删除快照",
-      "change_billing_type": "修改计费模式"
+      "change_billing_type": "修改计费模式",
+      "kickstart_installing": "无人值守安装中"
     },
     "network": {
       "init": "初始化",

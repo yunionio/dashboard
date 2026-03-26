@@ -439,6 +439,7 @@ export const PERMISSION = {
   server_perform_stop_rescue: ['compute', 'servers', 'perform', 'stop-rescue'],
   server_perform_screen_dump: ['compute', 'servers', 'perform', 'screen-dump'],
   server_perform_change_billing_type: ['compute', 'servers', 'perform', 'change-billing-type'],
+  server_perform_kickstart_complete: ['compute', 'servers', 'perform', 'kickstart-complete'],
   /**
    * images 相关操作
    */
