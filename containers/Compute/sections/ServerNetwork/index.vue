@@ -185,33 +185,21 @@ export default {
       }
       return this.networkMaps
     },
+    /** form.fi.capability 与 store 可能不同步，合并后再驱动网络类型 */
+    effectiveAutoAllocNetworkCountTt () {
+      const cap = this.form.fi?.capability
+      if (cap && Object.prototype.hasOwnProperty.call(cap, 'auto_alloc_network_count')) {
+        return cap.auto_alloc_network_count
+      }
+      return this.$store.getters.capability?.auto_alloc_network_count
+    },
   },
   watch: {
-    'form.fi.capability.auto_alloc_network_count' (val) {
-      if (val === 0) {
-        const { hypervisor } = this.form.fd || {}
-        if (hypervisor !== HYPERVISORS_MAP.proxmox.key) {
-          this.$delete(this.networkMaps, NETWORK_OPTIONS_MAP.default.key)
-        }
-        this.form.fc.setFieldsValue({
-          networkType: NETWORK_OPTIONS_MAP.manual.key,
-        })
-        this.networkComponent = 'config'
-      } else {
-        const maps = { ...NETWORK_OPTIONS_MAP }
-        if (!this.defaultNetwork) delete maps[NETWORK_OPTIONS_MAP.default.key]
-        if (this.allowNetworkTypes && this.allowNetworkTypes.length) {
-          this.allowNetworkTypes.forEach(key => {
-            delete maps[key]
-          })
-        }
-        this.networkMaps = maps
-        const value = {
-          networkType: NETWORK_OPTIONS_MAP[Object.keys(maps)[0]].key,
-        }
-        this.form.fc.setFieldsValue(value)
-        this.networkComponent = value.networkType === NETWORK_OPTIONS_MAP.default.key ? '' : 'config'
-      }
+    effectiveAutoAllocNetworkCountTt: {
+      handler () {
+        this.applyNetworkTypeByAutoAllocCountTt()
+      },
+      immediate: true,
     },
     async hypervisor (val, oldVal) {
       if (val === HYPERVISORS_MAP.esxi.key || oldVal === HYPERVISORS_MAP.esxi.key) {
@@ -249,6 +237,44 @@ export default {
     },
   },
   methods: {
+    /** 无自动分配（0 / 未下发 / 空）时网络类型应为「指定 IP 子网」(compute.text_2，界面常称「其他」) */
+    applyNetworkTypeByAutoAllocCountTt () {
+      const val = this.effectiveAutoAllocNetworkCountTt
+      const noAutoAlloc = val == null || val === '' || Number(val) <= 0
+      if (noAutoAlloc) {
+        const { hypervisor } = this.form.fd || {}
+        if (hypervisor !== HYPERVISORS_MAP.proxmox.key) {
+          this.$delete(this.networkMaps, NETWORK_OPTIONS_MAP.default.key)
+        }
+        const manual = NETWORK_OPTIONS_MAP.manual.key
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({ networkType: manual })
+          if (this.form.fd) {
+            this.form.fd.networkType = manual
+          }
+          this.networkComponent = 'config'
+        })
+      } else {
+        const maps = { ...NETWORK_OPTIONS_MAP }
+        if (!this.defaultNetwork) delete maps[NETWORK_OPTIONS_MAP.default.key]
+        if (this.allowNetworkTypes && this.allowNetworkTypes.length) {
+          this.allowNetworkTypes.forEach(key => {
+            delete maps[key]
+          })
+        }
+        this.networkMaps = maps
+        const value = {
+          networkType: NETWORK_OPTIONS_MAP[Object.keys(maps)[0]].key,
+        }
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue(value)
+          if (this.form.fd) {
+            this.form.fd.networkType = value.networkType
+          }
+          this.networkComponent = value.networkType === NETWORK_OPTIONS_MAP.default.key ? '' : 'config'
+        })
+      }
+    },
     change (e) {
       if (this.form.fd) {
         this.form.fd.networkType = e.target.value
