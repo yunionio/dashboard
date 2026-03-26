@@ -17,7 +17,11 @@
       </div>
       <div class="flex-fill position-relative">
         <div class="position-absolute" style="top: 0; left: 0; right: 0; bottom: 0;">
-          <dashboard-content ref="content" :data="dashboard" :dataRangeParams="dataRangeParams" />
+          <dashboard-content
+            ref="content"
+            :key="dashboardContentKey"
+            :data="dashboard"
+            :dataRangeParams="dataRangeParams" />
         </div>
       </div>
     </template>
@@ -34,6 +38,7 @@ import store from '@/store'
 import storage from '@/utils/storage'
 import { addClass, removeClass, hasClass } from '@/utils/dom'
 import publicDefaultConfig from './config/public-default'
+import aiDefaultConfig from './config/ai-default'
 import defaultConfig from './config/default'
 import DashboardHeader from './components/Header'
 import DashboardContent from './components/Content'
@@ -49,19 +54,23 @@ export default {
   },
   data () {
     const isPrivate = process.env.VUE_APP_IS_PRIVATE
+    const isAi = store.getters?.globalSetting?.value?.productVersion === 'AI'
     return {
       isPrivate,
+      isAi,
       loading: false,
       // 面板配置是否加载完毕
       optionsLoaded: false,
       // 默认面板配置 -> [{ id: 'xxx', name: 'xxx' }]
-      defaultOptions: isPrivate && !store.getters.isSysCE ? defaultConfig[this.$store.getters.scope].options : publicDefaultConfig[this.$store.getters.scope].options,
+      defaultOptions: isPrivate && !store.getters.isSysCE ? defaultConfig[this.$store.getters.scope].options : (isAi ? aiDefaultConfig[this.$store.getters.scope].options : publicDefaultConfig[this.$store.getters.scope].options),
       // 自定义面板配置
       customOptions: [],
       // 当前面板配置 -> { id: 'xxx', name: 'xxx' }
       currentOption: {},
       // 面板卡片的配置 Object, Array;
       dashboard: {},
+      // 切换/重置面板数据后递增，强制重建 Content，避免 v-for 复用子组件导致卡片仍显示旧 params
+      dashboardContentKey: 0,
       dataRangeParams: storage.get('__oc_dashboard_data_range__') || {
         scope: this.$store.getters.scope,
         domain: '',
@@ -161,6 +170,7 @@ export default {
       storage.set(this.optionStorageKey, option)
       const dashboard = await this.getDashboard()
       this.dashboard = dashboard
+      this.dashboardContentKey += 1
     },
     // 获取自定义面板配置
     async getCustomOptions () {
@@ -193,7 +203,7 @@ export default {
         if (error.isAxiosError && error.response && error.response.status === 404 && this.isDefault) {
           // not found system default dashboard, reinit one
           const shareConfig = await this.initWidgetParamter()
-          const config = this.isPrivate && !this.$store.getters.isSysCE ? (shareConfig || defaultConfig[this.scope][id]) : publicDefaultConfig[this.scope][id]
+          const config = this.isPrivate && !this.$store.getters.isSysCE ? (shareConfig || defaultConfig[this.scope][id]) : (this.isAi ? aiDefaultConfig[this.scope][id] : publicDefaultConfig[this.scope][id])
           if (!this.globalConfig.enable_quota_check) {
             // remove quota widgets
             for (var i = 0; i < config.length; i++) {
