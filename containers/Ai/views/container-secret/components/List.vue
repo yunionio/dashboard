@@ -19,6 +19,8 @@ import { getNameFilter } from '@/utils/common/tableFilter'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
+const credentialIdFilterFormatter = (val) => `id.equals('${val}')`
+
 export default {
   name: 'ContainerSecretList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
@@ -26,6 +28,10 @@ export default {
     id: String,
     getParams: {
       type: Object,
+    },
+    type: {
+      type: String,
+      default: 'container_secret',
     },
   },
   data () {
@@ -39,7 +45,7 @@ export default {
           id: {
             label: this.$t('table.title.id'),
             filter: true,
-            formatter: val => `id.equals('${val}')`,
+            formatter: credentialIdFilterFormatter,
           },
           name: getNameFilter(),
         },
@@ -62,6 +68,7 @@ export default {
             buttonType: 'primary',
             validate: true,
           }),
+          hidden: this.type === 'container_image',
         },
         {
           label: this.$t('table.action.delete'),
@@ -84,13 +91,26 @@ export default {
   },
   created () {
     this.initSidePageTab('detail')
-    this.list.fetchData()
+    const q = this.$route.query || {}
+    if (this.type === 'container_image' && q.type === 'container_image' && q.id) {
+      const idStr = String(Array.isArray(q.id) ? q.id[0] : q.id).trim()
+      if (idStr) {
+        this.list.changeFilter({
+          id: [idStr],
+          __condition_id: 'equals',
+        })
+      } else {
+        this.list.fetchData()
+      }
+    } else {
+      this.list.fetchData()
+    }
   },
   methods: {
     getParam () {
       const ret = {
         ...this.getParams,
-        'filter.0': 'type.equals(container_secret)',
+        'filter.0': `type.equals(${this.type})`,
       }
       if (this.$store.getters.scope === 'project') {
         const uid = this.$store.getters.userInfo?.id
