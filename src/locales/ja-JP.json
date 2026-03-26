@@ -184,7 +184,8 @@
       "create_container_failed": "作成に失敗しました",
       "delete_container_failed": "削除に失敗しました",
       "snapshot_delete": "スナップショットを削除してください。",
-      "change_billing_type": "課金モードの変更"
+      "change_billing_type": "課金モードの変更",
+      "kickstart_installing": "無人インストール中"
     },
     "network": {
       "init": "初期化する",
