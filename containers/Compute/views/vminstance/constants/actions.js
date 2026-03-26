@@ -645,6 +645,26 @@ const getSingleActions = function (ctx) {
                 },
                 hidden: (row) => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_screen_dump'),
               },
+              // 手动触发无人值守安装完成
+              {
+                label: i18n.t('compute.kickstart_complete'),
+                permission: 'server_perform_kickstart_complete',
+                action: () => {
+                  this.createDialog('VmKickstartComplateDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: obj.status === 'kickstart_installing',
+                    tooltip: obj.status !== 'kickstart_installing' ? '' : i18n.t('compute.kickstart_complete_tip'),
+                  }
+                  return ret
+                },
+                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_kickstart_complete'),
+              },
             ],
           },
           // * 属性设置
