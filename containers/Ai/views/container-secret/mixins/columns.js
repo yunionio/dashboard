@@ -20,6 +20,15 @@ export default {
         field: 'type',
         title: this.$t('table.title.type'),
         width: 140,
+        formatter: ({ row }) => {
+          if (row.type === 'container_image') {
+            return this.$t('common.container_image_secret')
+          } else if (row.type === 'container_secret') {
+            return this.$t('common.container_secret')
+          } else {
+            return row.type || '-'
+          }
+        },
       },
       getTagTableColumn({
         onManager: this.onManager,
