@@ -1,4 +1,5 @@
 import i18n from '@/locales'
+import router from '@/router'
 
 export const getTypeTableColumn = () => {
   return {
@@ -25,7 +26,7 @@ export const getCredentialTableColumn = () => {
     slots: {
       default: ({ row }, h) => {
         if (row.credential_id) {
-          return [<a-tag color="green">{row.credential_id}</a-tag>]
+          return [<a-tag color="green" style="cursor: pointer;" onClick={() => router.push(`/credentials/?type=container_image&id=${row.credential_id}`)}>{row.credential_id}</a-tag>]
         }
         return [<a-tag>{i18n.t('k8s.repo.credential.none')}</a-tag>]
       },
