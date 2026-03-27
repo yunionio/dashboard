@@ -28,24 +28,14 @@
             }"
             :params="llmSkuParams" />
         </a-form-item>
-        <a-form-item :label="$t('aice.bandwidth_mb')">
+        <!-- <a-form-item :label="$t('aice.bandwidth_mb')">
           <a-input-number
             v-decorator="decorators.bandwidth_mb"
             :min="1"
             :max="10000"
             :step="1"
             :precision="0" />
-        </a-form-item>
-        <a-form-item :label="$t('dictionary.host')">
-          <base-select
-            v-decorator="decorators.prefer_host"
-            resource="hosts"
-            :select-props="{
-              placeholder: $t('common.tips.select', [$t('dictionary.host')]),
-              allowClear: true,
-            }"
-            :params="hostParams" />
-        </a-form-item>
+        </a-form-item> -->
         <a-form-item :label="$t('compute.text_104')" class="mb-0">
           <server-network
             :form="form"
@@ -58,6 +48,20 @@
             :hiddenAdd="true"
             :isDialog="true" />
         </a-form-item>
+        <a-collapse :bordered="false" v-model="collapseActive">
+          <a-collapse-panel :header="$t('compute.text_309')" key="1">
+            <a-form-item :label="$t('dictionary.host')">
+              <base-select
+                v-decorator="decorators.prefer_host"
+                resource="hosts"
+                :select-props="{
+                  placeholder: $t('common.tips.select', [$t('dictionary.host')]),
+                  allowClear: true,
+                }"
+                :params="hostParams" />
+            </a-form-item>
+          </a-collapse-panel>
+        </a-collapse>
         <template v-if="form.fd.llm_type === 'openclaw'">
           <a-divider orientation="left" class="openclaw-section-divider">{{ $t('aice.openclaw.section.ai_providers') }}</a-divider>
           <a-form-item :label="$t('aice.openclaw.provider_filter')" :extra="$t('aice.openclaw.provider_select_tip')">
@@ -442,6 +446,7 @@ export default {
     return {
       isApplyType,
       llmTypeOptions: llmTypeOptions.map(opt => ({ id: opt.id, name: this.$t(opt.name) })),
+      collapseActive: [],
       loading: false,
       form: {
         fc: this.$form.createForm(this, {
@@ -487,23 +492,15 @@ export default {
             ],
           },
         ],
-        bandwidth_mb: [
-          'bandwidth_mb',
-          {
-            initialValue: 30,
-            rules: [
-              { required: true, message: this.$t('common.tips.input', [this.$t('aice.bandwidth_mb')]) },
-            ],
-          },
-        ],
-        prefer_host: [
-          'prefer_host',
-          {
-            rules: [
-              { required: false, message: this.$t('common.tips.select', [this.$t('dictionary.host')]) },
-            ],
-          },
-        ],
+        // bandwidth_mb: [
+        //   'bandwidth_mb',
+        //   {
+        //     initialValue: 30,
+        //     rules: [
+        //       { required: true, message: this.$t('common.tips.input', [this.$t('aice.bandwidth_mb')]) },
+        //     ],
+        //   },
+        // ],
         network: {
           networkType: [
             'networkType',
@@ -580,6 +577,14 @@ export default {
             ],
           },
         },
+        prefer_host: [
+          'prefer_host',
+          {
+            rules: [
+              { required: false, message: this.$t('common.tips.select', [this.$t('dictionary.host')]) },
+            ],
+          },
+        ],
         auto_start: [
           'auto_start',
           {
@@ -972,10 +977,12 @@ export default {
         const data = {
           generate_name: values.name,
           llm_sku_id: values.llm_sku_id,
-          bandwidth_mb: values.bandwidth_mb,
-          prefer_host: values.prefer_host,
+          // bandwidth_mb: values.bandwidth_mb,
           auto_start: values.auto_start,
           nets: networks,
+        }
+        if (this.collapseActive.includes('1') && values.prefer_host) {
+          data.prefer_host = values.prefer_host
         }
         if (this.form.fd.llm_type === 'openclaw') {
           const openclaw = {}
