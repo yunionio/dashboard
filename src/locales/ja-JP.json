@@ -3467,7 +3467,10 @@
     "cloudevent": "クラウド上のログ",
     "suggestion": "最適化の推奨事項",
     "report": "レポート",
-    "devtool": "開発ツール"
+    "devtool": "開発ツール",
+    "scheduledtask": "スケジュールされたタスク",
+    "autoupdate": "自動更新",
+    "llm": "LLM"
   },
   "scope.text_1": "インスタンスのリスト",
   "scope.text_2": "ユーザー情報",

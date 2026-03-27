@@ -3448,7 +3448,10 @@
     "cloudevent": "Cloud Log",
     "suggestion": "Recommendation",
     "report": "Report",
-    "devtool": "Devtool"
+    "devtool": "Devtool",
+    "scheduledtask": "Scheduled Task",
+    "autoupdate": "Autoupdate",
+    "llm": "LLM"
   },
   "scope.text_1": "Instance List",
   "scope.text_2": "User Profile",
