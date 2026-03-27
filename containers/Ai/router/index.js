@@ -27,6 +27,12 @@ export default {
           path: '/app-llm',
           meta: {
             label: i18n.t('aice.app_llm'),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.app_llm')) {
+                return true
+              }
+              return !hasSetupKey(['pod'])
+            },
           },
           component: Layout,
           children: [
@@ -46,6 +52,12 @@ export default {
           path: '/app-llm-sku',
           meta: {
             label: i18n.t('aice.app_llm_sku'),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.app_llm_sku')) {
+                return true
+              }
+              return !hasSetupKey(['pod'])
+            },
           },
           component: Layout,
           children: [
@@ -73,6 +85,12 @@ export default {
           path: '/llm',
           meta: {
             label: i18n.t('aice.llm'),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.llm')) {
+                return true
+              }
+              return !hasSetupKey(['pod'])
+            },
           },
           component: Layout,
           children: [
@@ -92,6 +110,12 @@ export default {
           path: '/llm-sku',
           meta: {
             label: i18n.t('aice.llm_sku'),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.llm_sku')) {
+                return true
+              }
+              return !hasSetupKey(['pod'])
+            },
           },
           component: Layout,
           children: [
@@ -111,6 +135,12 @@ export default {
           path: '/llm-instantmodel',
           meta: {
             label: i18n.t('aice.llm_instantapp'),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.llm_instantmodel')) {
+                return true
+              }
+              return !hasSetupKey(['pod'])
+            },
           },
           component: Layout,
           children: [
@@ -138,6 +168,12 @@ export default {
           path: '/llm-image',
           meta: {
             label: i18n.t('aice.llm_image'),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.llm_image')) {
+                return true
+              }
+              return !hasSetupKey(['pod'])
+            },
           },
           component: Layout,
           children: [
