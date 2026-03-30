@@ -913,5 +913,6 @@
   "cloudenv.check_mon_host": "正しいMon Hostフォーマットを入力してください",
   "cloudenv.mon_host_extra": "フォーマット：IP：ポート、例：192.168.1.1：80、複数のアドレスは英語のカンマで区切られる",
   "cloudenv.enable_mfa": "MFAを有効にする",
-  "cloudenv.run_all_bills": "履歴を含むすべての請求書"
+  "cloudenv.run_all_bills": "履歴を含むすべての請求書",
+  "cloudenv.api_bill": "API請求書"
 }
