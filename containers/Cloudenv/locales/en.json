@@ -913,5 +913,6 @@
   "cloudenv.check_mon_host": "Please enter the correct Mon Host format",
   "cloudenv.mon_host_extra": "The format is IP: Port, such as 192.168.1.1:80, with multiple addresses separated by commas in English",
   "cloudenv.enable_mfa": "Enable MFA",
-  "cloudenv.run_all_bills": "Include all historical bills"
+  "cloudenv.run_all_bills": "Include all historical bills",
+  "cloudenv.api_bill": "API Bill"
 }
