@@ -1,5 +1,7 @@
 import Layout from '@/layouts/RouterView'
 import i18n from '@/locales'
+import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
+import { hasSetupKey } from '@/utils/auth'
 
 const Llm = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm')
 const AppLlm = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/app-llm')
