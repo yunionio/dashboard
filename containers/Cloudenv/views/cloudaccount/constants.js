@@ -903,5 +903,6 @@ export const notSupportSelectRegion = [
 export const BILL_TYPES = [
   { label: i18n.t('cloudenv.text_344'), value: 'EA' },
   { label: i18n.t('cloudenv.bill_bucket'), value: 'Bucket' },
+  { label: i18n.t('cloudenv.api_bill'), value: 'Api' },
 ]
 export const BILL_TYPE_MAP = arrayToObj(BILL_TYPES, 'value')
