@@ -483,7 +483,7 @@ export default {
             data.options.billing_scope || this.getDefaultBillingScope()
         }
         this.cloudAccount = data
-        if (data && data.options && (data.options.billing_bucket_account || data.options.billing_account) && !this.isAzure) {
+        if (data && data.options && (data.options.billing_bucket_account || data.options.billing_account)) {
           this.cloudAccountType = 2
         }
         return data
