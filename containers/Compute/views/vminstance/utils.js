@@ -1,5 +1,10 @@
+import Vue from 'vue'
 import { typeClouds } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
+import { sizestr } from '@/utils/utils'
+
+const __cpuNumaPinHVm = new Vue()
+const _cpuNumaPinH = (...args) => __cpuNumaPinHVm.$createElement(...args)
 
 const hypervisorMap = typeClouds.hypervisorMap
 
@@ -923,4 +928,76 @@ export const validateRescueMode = (val) => {
     }
   }
   return ret
+}
+
+/** cpu_numa_pin：每项一行；内存 sizestr；绑定 CPU 取全部 pcpu 排序后合并连续区间 */
+export const formatSortedPcpuRanges = (sortedPcpus) => {
+  if (!sortedPcpus.length) return '-'
+  const parts = []
+  let start = sortedPcpus[0]
+  let end = sortedPcpus[0]
+  for (let i = 1; i < sortedPcpus.length; i++) {
+    const cur = sortedPcpus[i]
+    if (cur === end + 1) {
+      end = cur
+    } else {
+      parts.push(start === end ? String(start) : `${start}-${end}`)
+      start = cur
+      end = cur
+    }
+  }
+  parts.push(start === end ? String(start) : `${start}-${end}`)
+  return parts.join(',')
+}
+
+const getCpuNumaPinLineData = (item) => {
+  const nodeId = item.node_id
+  const sizeMb = item.size_mb
+  const pin = item.vcpu_pin || []
+  const pcpus = [...new Set(
+    pin
+      .filter(p => p && typeof p.pcpu === 'number')
+      .map(p => p.pcpu),
+  )].sort((a, b) => a - b)
+  const cpuStr = formatSortedPcpuRanges(pcpus)
+  const memStr = sizestr(sizeMb, 'M', 1024)
+  return { nodeId, memStr, cpuStr }
+}
+
+export const formatCpuNumaPinLine = (item) => {
+  const { nodeId, memStr, cpuStr } = getCpuNumaPinLineData(item)
+  return `node:${nodeId} mem: ${memStr} cpu: ${cpuStr}`
+}
+
+const CPU_NUMA_PIN_LINE_GAP = '12px'
+
+export const formatCpuNumaPin = (row) => {
+  const raw = row.cpu_numa_pin
+  if (raw === undefined || raw === null || raw === '') return '-'
+  let arr = raw
+  if (typeof raw === 'string') {
+    try {
+      arr = JSON.parse(raw)
+    } catch (e) {
+      return '-'
+    }
+  }
+  if (!Array.isArray(arr) || arr.length === 0) return '-'
+  return _cpuNumaPinH('div', arr.map((item, idx) => {
+    const { nodeId, memStr, cpuStr } = getCpuNumaPinLineData(item)
+    return _cpuNumaPinH('div', {
+      key: idx,
+      style: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        columnGap: CPU_NUMA_PIN_LINE_GAP,
+        rowGap: '4px',
+      },
+    }, [
+      _cpuNumaPinH('span', `node: ${nodeId}`),
+      _cpuNumaPinH('span', `mem: ${memStr}`),
+      _cpuNumaPinH('span', `cpu: ${cpuStr}`),
+    ])
+  }))
 }

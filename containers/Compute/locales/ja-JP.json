@@ -626,6 +626,7 @@
   "compute.text_606": "リソース統計",
   "compute.text_607": "透明伝送装置",
   "compute.text_608": "モニター",
+  "compute.text_609": "NUMAバインド",
   "compute.passthrough_device_count": "透過伝送装置数",
   "compute.host.host_type.title": "仮想化",
   "compute.host.host_enable_numa_allocate.title": "NUMAコアバインディング",

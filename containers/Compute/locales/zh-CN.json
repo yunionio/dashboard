@@ -626,6 +626,7 @@
   "compute.text_606": "资源统计",
   "compute.text_607": "透传设备",
   "compute.text_608": "监控",
+  "compute.text_609": "NUMA绑核",
   "compute.passthrough_device_count": "透传设备数量",
   "compute.host.host_type.title": "虚拟化技术",
   "compute.host.host_enable_numa_allocate.title": "NUMA绑核",

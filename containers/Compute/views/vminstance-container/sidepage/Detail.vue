@@ -36,6 +36,7 @@ import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { HYPERVISORS_MAP } from '@/constants'
 import { sizestr } from '@/utils/utils'
+import { formatCpuNumaPin } from '@Compute/views/vminstance/utils'
 
 export default {
   name: 'VmContainerInstanceDetail',
@@ -228,6 +229,13 @@ export default {
                 return (row.vmem_size / 1024) + 'GB'
               },
               hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.vmem_size'),
+            },
+            {
+              field: 'cpu_numa_pin',
+              title: this.$t('compute.text_609'),
+              formatter: ({ row }) => {
+                return formatCpuNumaPin(row)
+              },
             },
             {
               field: 'dataDisk',

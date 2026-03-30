@@ -626,6 +626,7 @@
   "compute.text_606": "Resource Statistics",
   "compute.text_607": "Transparent Device",
   "compute.text_608": "Metrics",
+  "compute.text_609": "NUMA binding",
   "compute.passthrough_device_count": "#Passthrough Device",
   "compute.host.host_type.title": "Virtualization",
   "compute.host.host_enable_numa_allocate.title": "NUMA Core Binding",
