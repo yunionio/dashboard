@@ -1028,7 +1028,8 @@ export default {
             if (value) {
               let val = value
               if ((fd.tagOperators[key] === '=~' || fd.tagOperators[key] === '!~') && val && val.length) {
-                val = `/${val.map(v => `^${v}$`).join('|')}/`
+                const arr = Array.isArray(val) ? val : [val]
+                val = `/${arr.map(v => `^${v}$`).join('|')}/`
               }
               const tag = {
                 key: fd.tagKeys[key],
