@@ -29,6 +29,8 @@ get_current_arch() {
     echo $current_arch
 }
 
+ALLARCH=("amd64" "arm64" "riscv64")
+
 CURRENT_ARCH=$(get_current_arch)
 ARCH=${ARCH:-$CURRENT_ARCH}
 
@@ -64,10 +66,15 @@ buildx_and_push() {
 
 make_manifest_image() {
     local img_name=$1
-    docker buildx imagetools create -t $img_name \
-        $img_name-amd64 \
-        $img_name-arm64 \
-        $img_name-riscv64
+    local arch=$2
+    CMD="docker buildx imagetools create -t ${img_name} "
+    for ac in "${ALLARCH[@]}"; do
+        if [[ "${arch}" == "all" || "${arch}" == *"$ac"* ]]; then
+            CMD="${CMD} ${img_name}-${ac}"
+        fi
+    done
+    echo "$CMD"
+    $CMD
 }
 
 # 如果 ENV="local"，跳过 build_src
@@ -84,21 +91,22 @@ img_name="$REGISTRY/web:$TAG"
 
 set -x
 
-case $ARCH in
-    amd64|arm64|riscv64)
+multiarch=""
+for ac in "${ALLARCH[@]}"; do
+    if [[ "$ARCH" == "$ac" ]]; then
+        # single arch
         buildx_and_push "$img_name" "$DOCKER_DIR/Dockerfile" "$SRC_DIR" "$ARCH"
-        echo "更新命令："
-        echo "kubectl patch oc -n onecloud default --type='json' -p='[{op: replace, path: /spec/web/imageName, value: web},{"op": "replace", "path": "/spec/web/repository", "value": "${REGISTRY}"},{"op": "add", "path": "/spec/web/tag", "value": "${TAG}"}]'"
-        ;;
-    *)
-        for arch in "arm64" "amd64" "riscv64"; do
-            buildx_and_push "$img_name-$arch" "$DOCKER_DIR/Dockerfile" "$SRC_DIR" "$arch"
-        done
-        make_manifest_image $img_name
-        echo "更新命令："
-        echo "kubectl patch oc -n onecloud default --type='json' -p='[{op: replace, path: /spec/web/imageName, value: web},{"op": "replace", "path": "/spec/web/repository", "value": "${REGISTRY}"},{"op": "add", "path": "/spec/web/tag", "value": "${TAG}"}]'"
-        ;;
-esac
+    elif [[ "$ARCH" == "all" || "$ARCH" == *"$ac"* ]]; then
+        multiarch="true"
+        buildx_and_push "$img_name-$ac" "$DOCKER_DIR/Dockerfile" "$SRC_DIR" "$ac"
+    fi
+done
+if [[ "$multiarch" == "true" ]]; then
+    make_manifest_image $img_name $ARCH
+fi
+
+echo "更新命令："
+echo "kubectl patch oc -n onecloud default --type='json' -p='[{op: replace, path: /spec/web/imageName, value: web},{"op": "replace", "path": "/spec/web/repository", "value": "${REGISTRY}"},{"op": "add", "path": "/spec/web/tag", "value": "${TAG}"}]'"
 
 # 输出当前web-console版本信息
 if [ "$ENV" == "local" ]; then
@@ -107,4 +115,3 @@ if [ "$ENV" == "local" ]; then
     echo "请注意检查web-console环境兼容性！"
     echo "请注意检查OEM_VERSION是否设置"
 fi
-
