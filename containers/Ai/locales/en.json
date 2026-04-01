@@ -111,7 +111,7 @@
   "aice.openclaw.env.AWS_SESSION_TOKEN": "Optional session token for temporary credentials.",
   "aice.openclaw.env.BEDROCK_PROVIDER_FILTER": "Bedrock model discovery filter, JSON array or comma-separated.",
   "aice.openclaw.env.OLLAMA_BASE_URL": "Ollama server URL, e.g. http://host.docker.internal:11434.",
-  "aice.openclaw.env.OPENCLAW_PRIMARY_MODEL": "Override primary model, format provider/model-id",
+  "aice.openclaw.env.OPENCLAW_PRIMARY_MODEL": "Override primary model",
   "aice.openclaw.primary_model_section": "Primary model (optional)",
   "aice.openclaw.provider_overrides_section": "Provider overrides (optional)",
   "aice.openclaw.env.AI_GATEWAY_BASE_URL": "Custom base URL for AI gateway (e.g. Cloudflare AI Gateway). Applied to the matching provider based on URL suffix.",
