@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="isApplyType ? $t('aice.app_llm_create') : $t('aice.llm_create')" />
-    <page-body>
+    <page-body needMarginBottom>
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
         <a-form-item :label="$t('common.name')">
           <a-input v-decorator="decorators.name" :placeholder="$t('common.tips.input', [$t('common.name')])" />
@@ -129,14 +129,42 @@
                   <div v-for="v in item.vars" :key="v.envKey" class="openclaw-new-blob-row mb-2">
                     <a-form-item
                       :label="v.envKey"
-                      :required="item.required"
-                      :extra="(item.required ? $t('aice.openclaw.required_hint') + ' ' : '') + ($te(v.descriptionKey) ? $t(v.descriptionKey) : '')">
+                      :required="item.required || v.required"
+                      :extra="((item.required || v.required) ? $t('aice.openclaw.required_hint') + ' ' : '') + ($te(v.descriptionKey) ? $t(v.descriptionKey) : '')">
                       <a-input-password
                         v-if="isSecretEnvKey(v.envKey)"
                         :value="(openclawProviderBlob[item.key] || {})[v.envKey]"
                         :placeholder="v.envKey"
                         allow-clear
                         @change="e => $set(openclawProviderBlob[item.key], v.envKey, e.target.value)" />
+                      <div
+                        v-else-if="v.component === 'a-select'"
+                        class="d-flex align-items-center openclaw-primary-model-select-row">
+                        <a-select
+                          class="flex-grow-1"
+                          style="min-width: 0"
+                          :value="(openclawProviderBlob[item.key] || {})[v.envKey] || undefined"
+                          :placeholder="openclawProviderAselectPlaceholder(v)"
+                          allow-clear
+                          show-search
+                          :filter-option="false"
+                          :loading="openclawPrimaryModelLoading"
+                          @dropdownVisibleChange="open => onOpenclawPrimaryModelDropdown(open, v, item.key)"
+                          @search="q => onOpenclawPrimaryModelSearch(q, v, item.key)"
+                          @change="val => $set(openclawProviderBlob[item.key], v.envKey, val)">
+                          <a-select-option
+                            v-for="opt in openclawPrimaryModelOptions"
+                            :key="String(opt.value)"
+                            :value="opt.value">
+                            {{ opt.label }}
+                          </a-select-option>
+                        </a-select>
+                        <a-icon
+                          type="sync"
+                          class="ml-2 primary-color flex-shrink-0"
+                          :spin="openclawPrimaryModelLoading"
+                          @click="refreshOpenclawPrimaryModel(v, item.key)" />
+                      </div>
                       <a-input
                         v-else
                         :value="(openclawProviderBlob[item.key] || {})[v.envKey]"
@@ -599,14 +627,14 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          md: { span: 18 },
-          xl: { span: 20 },
-          xxl: { span: 21 },
+          md: { span: 17 },
+          xl: { span: 18 },
+          xxl: { span: 20 },
         },
         labelCol: {
-          md: { span: 6 },
-          xl: { span: 4 },
-          xxl: { span: 3 },
+          md: { span: 7 },
+          xl: { span: 6 },
+          xxl: { span: 4 },
         },
       },
       openclawChannelCredentialMode: {},
@@ -624,6 +652,8 @@ export default {
       openclawProviderExportKeys: {},
       openclawProviderBlob: {},
       openclawProviderActiveTab: '',
+      openclawPrimaryModelOptions: [],
+      openclawPrimaryModelLoading: false,
     }
   },
   computed: {
@@ -704,8 +734,34 @@ export default {
       const keys = list.map(t => t.key)
       return keys.includes(this.openclawProviderActiveTab) ? this.openclawProviderActiveTab : (keys[0] || '')
     },
+    /** 供 watch：OLLAMA_BASE_URL 变更时重新拉取主模型列表 */
+    openclawOllamaBaseUrlForPrimaryModel () {
+      const v = this.findOpenclawPrimaryModelVar()
+      if (!v) return ''
+      const pk = v.providerLabelKey
+      return String((this.openclawProviderBlob[pk] || {}).OLLAMA_BASE_URL ?? '')
+    },
   },
   watch: {
+    openclawOllamaBaseUrlForPrimaryModel (newVal, oldVal) {
+      if (oldVal === undefined) return
+      if (newVal === oldVal) return
+      const v = this.findOpenclawPrimaryModelVar()
+      if (!v) return
+      const pk = v.providerLabelKey
+      const blob = this.openclawProviderBlob[pk] || {}
+      const cur = blob.OPENCLAW_PRIMARY_MODEL
+      const hasModel = cur !== undefined && cur !== null && String(cur).trim() !== ''
+      if (!hasModel) {
+        this.openclawPrimaryModelOptions = []
+        return
+      }
+      if (newVal) {
+        this.loadOpenclawPrimaryModelOptions(v, pk, '')
+      } else {
+        this.openclawPrimaryModelOptions = []
+      }
+    },
     'form.fd.llm_type' (val, oldVal) {
       if (val === oldVal) return
       this.form.fc.setFieldsValue({ llm_sku_id: undefined })
@@ -910,6 +966,120 @@ export default {
       const lower = (envKey || '').toLowerCase()
       return lower.includes('key') || lower.includes('secret') || lower.includes('token') || lower.includes('password')
     },
+    findOpenclawPrimaryModelVar () {
+      const sections = this.OPENCLAW_PROVIDER_SECTIONS || []
+      for (let i = 0; i < sections.length; i++) {
+        const vars = sections[i].vars || []
+        for (let j = 0; j < vars.length; j++) {
+          const x = vars[j]
+          if (x.envKey === 'OPENCLAW_PRIMARY_MODEL' && x.component === 'a-select') return x
+        }
+      }
+      return null
+    },
+    /** a-select 等可能为数字，不能用 (raw[k] || '').trim()，否则主模型等字段不会写入 credential blob */
+    pickTrimmedOpenclawBlob (raw) {
+      const blob = {}
+      Object.keys(raw || {}).forEach(k => {
+        const val = raw[k]
+        if (val === undefined || val === null) return
+        const s = typeof val === 'string' ? val.trim() : String(val).trim()
+        if (s !== '') blob[k] = k === 'OPENCLAW_PRIMARY_MODEL' ? `ollama/${s}` : s
+      })
+      return blob
+    },
+    validateOpenclawProviderRequiredEnv (providerKey) {
+      const raw = this.openclawProviderBlob[providerKey] || {}
+      const sections = this.OPENCLAW_PROVIDER_SECTIONS || []
+      for (let i = 0; i < sections.length; i++) {
+        const vars = sections[i].vars || []
+        for (let j = 0; j < vars.length; j++) {
+          const v = vars[j]
+          if (v.providerLabelKey !== providerKey || !v.required) continue
+          const val = raw[v.envKey]
+          const empty = val === undefined || val === null || val === '' ||
+            (typeof val === 'string' && !String(val).trim())
+          if (empty) {
+            const label = v.placeholderKey && this.$te(v.placeholderKey)
+              ? this.$t(v.placeholderKey)
+              : (this.$te(v.descriptionKey) ? this.$t(v.descriptionKey) : v.envKey)
+            const tip = v.component === 'a-select'
+              ? this.$t('common.tips.select', [label])
+              : this.$t('common.tips.input', [label])
+            this.$message.warning(tip)
+            return false
+          }
+        }
+      }
+      return true
+    },
+    /** 全量拉取 models 后：已选值若不在列表中则清空（搜索分页结果不调用） */
+    syncOpenclawPrimaryModelIfNotInOptions (providerKey) {
+      const blob = (this.openclawProviderBlob || {})[providerKey]
+      if (!blob) return
+      const cur = blob.OPENCLAW_PRIMARY_MODEL
+      const hasModel = cur !== undefined && cur !== null && String(cur).trim() !== ''
+      if (!hasModel) return
+      const opts = this.openclawPrimaryModelOptions || []
+      const inList = opts.some(opt => String(opt.value) === String(cur))
+      if (!inList) {
+        this.$set(this.openclawProviderBlob[providerKey], 'OPENCLAW_PRIMARY_MODEL', '')
+      }
+    },
+    openclawProviderAselectPlaceholder (v) {
+      const labelKey = v.placeholderKey || 'aice.model'
+      const label = this.$te(labelKey) ? this.$t(labelKey) : labelKey
+      return this.$t('common.tips.select', [label])
+    },
+    /** 与 BaseSelect 的 refresh 一致：重新走 $Manager(resource).create 拉列表 */
+    refreshOpenclawPrimaryModel (v, providerKey) {
+      this.loadOpenclawPrimaryModelOptions(v, providerKey, '')
+    },
+    async onOpenclawPrimaryModelDropdown (open, v, providerKey) {
+      if (!open) return
+      await this.loadOpenclawPrimaryModelOptions(v, providerKey, '')
+    },
+    onOpenclawPrimaryModelSearch (q, v, providerKey) {
+      if (this._openclawPrimaryModelSearchTimer) clearTimeout(this._openclawPrimaryModelSearchTimer)
+      this._openclawPrimaryModelSearchTimer = setTimeout(() => {
+        this.loadOpenclawPrimaryModelOptions(v, providerKey, q || '')
+      }, 300)
+    },
+    async loadOpenclawPrimaryModelOptions (v, providerKey, search) {
+      const resource = (v && v.resource) || 'llms/provider-models'
+      const blob = (this.openclawProviderBlob || {})[providerKey] || {}
+      this.openclawPrimaryModelLoading = true
+      try {
+        const manager = new this.$Manager(resource, 'v2')
+        const body = {
+          scope: this.$store.getters.scope,
+          limit: 20,
+          url: blob.OLLAMA_BASE_URL,
+          provider_type: 'ollama',
+        }
+        if (search) body.filter = [`name.contains(${search})`]
+        const { data } = await manager.create({
+          data: body,
+          params: { ignoreErrorStatusCode: [400, 502] },
+        })
+        const rows = this.unwrapOpenclawPrimaryModelResponse(data)
+        this.openclawPrimaryModelOptions = rows.map(item => ({
+          value: item,
+          label: item,
+        })).filter(opt => opt.value !== undefined && opt.value !== null && opt.value !== '')
+        if (!search) {
+          this.syncOpenclawPrimaryModelIfNotInOptions(providerKey)
+        }
+      } catch (e) {
+        this.openclawPrimaryModelOptions = []
+      } finally {
+        this.openclawPrimaryModelLoading = false
+      }
+    },
+    unwrapOpenclawPrimaryModelResponse (data) {
+      console.log('unwrapOpenclawPrimaryModelResponse', data)
+      return data?.models || []
+    },
     overrideUrlPlaceholder (overrideUrlKey) {
       const defaults = {
         MOONSHOT_BASE_URL: 'https://api.moonshot.cn/v1',
@@ -1046,11 +1216,7 @@ export default {
             } else {
               const credName = this.genCredentialName({ llmName: values.name, usage: 'channel', key: channelKey })
               const raw = this.openclawChannelBlob[channelKey] || {}
-              const blob = {}
-              Object.keys(raw).forEach(k => {
-                const v = (raw[k] || '').trim()
-                if (v) blob[k] = v
-              })
+              const blob = this.pickTrimmedOpenclawBlob(raw)
               if (channelKey === 'qqbot') {
                 const missing = ['QQBOT_APP_ID', 'QQBOT_CLIENT_SECRET'].filter(k => !blob[k])
                 if (missing.length) {
@@ -1131,6 +1297,10 @@ export default {
           for (let i = 0; i < providersSelected.length; i++) {
             const providerKey = providersSelected[i]
             this.ensureProviderState(providerKey)
+            if (!this.validateOpenclawProviderRequiredEnv(providerKey)) {
+              this.loading = false
+              return
+            }
             const mode = this.openclawProviderCredentialMode[providerKey] || 'new'
             let credentialId
             let exportKeys
@@ -1145,11 +1315,7 @@ export default {
             } else {
               const credName = this.genCredentialName({ llmName: values.name, usage: 'provider', key: this.providerShortName(providerKey) })
               const raw = this.openclawProviderBlob[providerKey] || {}
-              const blob = {}
-              Object.keys(raw).forEach(k => {
-                const v = (raw[k] || '').trim()
-                if (v) blob[k] = v
-              })
+              const blob = this.pickTrimmedOpenclawBlob(raw)
               if (Object.keys(blob).length === 0) {
                 this.$message.warning(this.$t('aice.openclaw.ai_providers.at_least_one'))
                 this.loading = false
