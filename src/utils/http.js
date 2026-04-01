@@ -280,6 +280,10 @@ http.interceptors.response.use(
     pendingCount === 0 && hiddenLoading()
     if (error.response) {
       const status = error.response.status
+      // ignoreErrorStatusCode 须放在请求 params 中（见 getIgnoreErrorStatusCode）；此前仅 403 分支生效，其它状态仍会弹全局错误
+      if (error.config && error.config.$ignoreErrorStatusCode && error.config.$ignoreErrorStatusCode.includes(status)) {
+        return Promise.reject(error)
+      }
       if (status === 401 && needLogout(error)) {
         store.dispatch('auth/logout').then(() => {
           if (!router.currentRoute.meta.authPage) {
