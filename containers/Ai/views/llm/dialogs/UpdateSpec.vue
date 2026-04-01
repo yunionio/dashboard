@@ -74,14 +74,42 @@
                   <div v-for="v in item.vars" :key="v.envKey" class="openclaw-new-blob-row mb-2">
                     <a-form-item
                       :label="v.envKey"
-                      :required="item.required"
-                      :extra="(item.required ? $t('aice.openclaw.required_hint') + ' ' : '') + ($te(v.descriptionKey) ? $t(v.descriptionKey) : '')">
+                      :required="item.required || v.required"
+                      :extra="((item.required || v.required) ? $t('aice.openclaw.required_hint') + ' ' : '') + ($te(v.descriptionKey) ? $t(v.descriptionKey) : '')">
                       <a-input-password
                         v-if="isSecretEnvKey(v.envKey)"
                         :value="(openclawProviderBlob[item.key] || {})[v.envKey]"
                         :placeholder="v.envKey"
                         allow-clear
                         @change="e => $set(openclawProviderBlob[item.key], v.envKey, e.target.value)" />
+                      <div
+                        v-else-if="v.component === 'a-select'"
+                        class="d-flex align-items-center openclaw-primary-model-select-row">
+                        <a-select
+                          class="flex-grow-1"
+                          style="min-width: 0"
+                          :value="(openclawProviderBlob[item.key] || {})[v.envKey] || undefined"
+                          :placeholder="openclawProviderAselectPlaceholder(v)"
+                          allow-clear
+                          show-search
+                          :filter-option="false"
+                          :loading="openclawPrimaryModelLoading"
+                          @dropdownVisibleChange="open => onOpenclawPrimaryModelDropdown(open, v, item.key)"
+                          @search="q => onOpenclawPrimaryModelSearch(q, v, item.key)"
+                          @change="val => $set(openclawProviderBlob[item.key], v.envKey, val)">
+                          <a-select-option
+                            v-for="opt in openclawPrimaryModelOptions"
+                            :key="String(opt.value)"
+                            :value="opt.value">
+                            {{ opt.label }}
+                          </a-select-option>
+                        </a-select>
+                        <a-icon
+                          type="sync"
+                          class="ml-2 primary-color flex-shrink-0"
+                          :spin="openclawPrimaryModelLoading"
+                          @click="refreshOpenclawPrimaryModel(v, item.key)" />
+                      </div>
                       <a-input
                         v-else
                         :value="(openclawProviderBlob[item.key] || {})[v.envKey]"
@@ -369,6 +397,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { OPENCLAW_CHANNEL_SECTIONS, OPENCLAW_CHANNEL_OPTIONS } from '../../llm-sku/openclawChannelConfig'
 import { OPENCLAW_PROVIDER_SECTIONS, OPENCLAW_PROVIDER_OPTIONS } from '../../llm-sku/openclawProviderConfig'
+import { getParamsForType } from '../../llm-sku/llmTypeConfig'
 
 export default {
   name: 'LlmUpdateSpecDialog',
@@ -420,6 +449,8 @@ export default {
       openclawChannelExportKeys: {},
       openclawChannelBlob: {},
       openclawChannelActiveTab: '',
+      openclawPrimaryModelOptions: [],
+      openclawPrimaryModelLoading: false,
     }
   },
   computed: {
@@ -469,8 +500,33 @@ export default {
       const keys = list.map(t => t.key)
       return keys.includes(this.openclawProviderActiveTab) ? this.openclawProviderActiveTab : (keys[0] || '')
     },
+    openclawOllamaBaseUrlForPrimaryModel () {
+      const v = this.findOpenclawPrimaryModelVar()
+      if (!v) return ''
+      const pk = v.providerLabelKey
+      return String((this.openclawProviderBlob[pk] || {}).OLLAMA_BASE_URL ?? '')
+    },
   },
   watch: {
+    openclawOllamaBaseUrlForPrimaryModel (newVal, oldVal) {
+      if (oldVal === undefined) return
+      if (newVal === oldVal) return
+      const v = this.findOpenclawPrimaryModelVar()
+      if (!v) return
+      const pk = v.providerLabelKey
+      const blob = this.openclawProviderBlob[pk] || {}
+      const cur = blob.OPENCLAW_PRIMARY_MODEL
+      const hasModel = cur !== undefined && cur !== null && String(cur).trim() !== ''
+      if (!hasModel) {
+        this.openclawPrimaryModelOptions = []
+        return
+      }
+      if (newVal) {
+        this.loadOpenclawPrimaryModelOptions(v, pk, '')
+      } else {
+        this.openclawPrimaryModelOptions = []
+      }
+    },
     filteredChannelSections (sections) {
       ;(sections || []).forEach(s => this.ensureChannelState(s.sectionKey))
     },
@@ -793,6 +849,118 @@ export default {
       const lower = (envKey || '').toLowerCase()
       return lower.includes('key') || lower.includes('secret') || lower.includes('token') || lower.includes('password')
     },
+    findOpenclawPrimaryModelVar () {
+      const sections = this.OPENCLAW_PROVIDER_SECTIONS || []
+      for (let i = 0; i < sections.length; i++) {
+        const vars = sections[i].vars || []
+        for (let j = 0; j < vars.length; j++) {
+          const x = vars[j]
+          if (x.envKey === 'OPENCLAW_PRIMARY_MODEL' && x.component === 'a-select') return x
+        }
+      }
+      return null
+    },
+    pickTrimmedOpenclawBlob (raw) {
+      const blob = {}
+      Object.keys(raw || {}).forEach(k => {
+        const val = raw[k]
+        if (val === undefined || val === null) return
+        const s = typeof val === 'string' ? val.trim() : String(val).trim()
+        if (s !== '') blob[k] = s
+      })
+      return blob
+    },
+    validateOpenclawProviderRequiredEnv (providerKey) {
+      const raw = this.openclawProviderBlob[providerKey] || {}
+      const sections = this.OPENCLAW_PROVIDER_SECTIONS || []
+      for (let i = 0; i < sections.length; i++) {
+        const vars = sections[i].vars || []
+        for (let j = 0; j < vars.length; j++) {
+          const v = vars[j]
+          if (v.providerLabelKey !== providerKey || !v.required) continue
+          const val = raw[v.envKey]
+          const empty = val === undefined || val === null || val === '' ||
+            (typeof val === 'string' && !String(val).trim())
+          if (empty) {
+            const label = v.placeholderKey && this.$te(v.placeholderKey)
+              ? this.$t(v.placeholderKey)
+              : (this.$te(v.descriptionKey) ? this.$t(v.descriptionKey) : v.envKey)
+            const tip = v.component === 'a-select'
+              ? this.$t('common.tips.select', [label])
+              : this.$t('common.tips.input', [label])
+            this.$message.warning(tip)
+            return false
+          }
+        }
+      }
+      return true
+    },
+    syncOpenclawPrimaryModelIfNotInOptions (providerKey) {
+      const blob = (this.openclawProviderBlob || {})[providerKey]
+      if (!blob) return
+      const cur = blob.OPENCLAW_PRIMARY_MODEL
+      const hasModel = cur !== undefined && cur !== null && String(cur).trim() !== ''
+      if (!hasModel) return
+      const opts = this.openclawPrimaryModelOptions || []
+      const inList = opts.some(opt => String(opt.value) === String(cur))
+      if (!inList) {
+        this.$set(this.openclawProviderBlob[providerKey], 'OPENCLAW_PRIMARY_MODEL', '')
+      }
+    },
+    openclawProviderAselectPlaceholder (v) {
+      const labelKey = v.placeholderKey || 'aice.model'
+      const label = this.$te(labelKey) ? this.$t(labelKey) : labelKey
+      return this.$t('common.tips.select', [label])
+    },
+    refreshOpenclawPrimaryModel (v, providerKey) {
+      this.loadOpenclawPrimaryModelOptions(v, providerKey, '')
+    },
+    async onOpenclawPrimaryModelDropdown (open, v, providerKey) {
+      if (!open) return
+      await this.loadOpenclawPrimaryModelOptions(v, providerKey, '')
+    },
+    onOpenclawPrimaryModelSearch (q, v, providerKey) {
+      if (this._openclawPrimaryModelSearchTimer) clearTimeout(this._openclawPrimaryModelSearchTimer)
+      this._openclawPrimaryModelSearchTimer = setTimeout(() => {
+        this.loadOpenclawPrimaryModelOptions(v, providerKey, q || '')
+      }, 300)
+    },
+    async loadOpenclawPrimaryModelOptions (v, providerKey, search) {
+      const resource = (v && v.resource) || 'llms/provider-models'
+      const blob = (this.openclawProviderBlob || {})[providerKey] || {}
+      this.openclawPrimaryModelLoading = true
+      try {
+        const manager = new this.$Manager(resource, 'v2')
+        const body = {
+          scope: this.$store.getters.scope,
+          limit: 20,
+          ...getParamsForType('openclaw'),
+          url: blob.OLLAMA_BASE_URL,
+          provider_type: 'ollama',
+        }
+        if (search) body.filter = [`name.contains(${search})`]
+        const { data } = await manager.create({ data: body })
+        const rows = this.unwrapOpenclawPrimaryModelResponse(data)
+        this.openclawPrimaryModelOptions = rows.map(item => ({
+          value: item.id || item.model_id,
+          label: item.fullname || item.name || item.model_id || String(item.id || ''),
+        })).filter(opt => opt.value !== undefined && opt.value !== null && opt.value !== '')
+        if (!search) {
+          this.syncOpenclawPrimaryModelIfNotInOptions(providerKey)
+        }
+      } catch (e) {
+        this.openclawPrimaryModelOptions = []
+      } finally {
+        this.openclawPrimaryModelLoading = false
+      }
+    },
+    unwrapOpenclawPrimaryModelResponse (data) {
+      if (!data) return []
+      if (Array.isArray(data)) return data
+      if (Array.isArray(data.data)) return data.data
+      if (data.data && Array.isArray(data.data.data)) return data.data.data
+      return []
+    },
     overrideUrlPlaceholder (overrideUrlKey) {
       const defaults = {
         MOONSHOT_BASE_URL: 'https://api.moonshot.cn/v1',
@@ -870,11 +1038,7 @@ export default {
           } else {
             const credName = this.genCredentialName({ llmName: this.instanceName, usage: 'channel', key: channelKey })
             const raw = this.openclawChannelBlob[channelKey] || {}
-            const blob = {}
-            Object.keys(raw).forEach(k => {
-              const v = (raw[k] || '').trim()
-              if (v) blob[k] = v
-            })
+            const blob = this.pickTrimmedOpenclawBlob(raw)
             if (channelKey === 'qqbot') {
               const missing = ['QQBOT_APP_ID', 'QQBOT_CLIENT_SECRET'].filter(k => !blob[k])
               if (missing.length) {
@@ -955,6 +1119,10 @@ export default {
         for (let i = 0; i < providersSelected.length; i++) {
           const providerKey = providersSelected[i]
           this.ensureProviderState(providerKey)
+          if (!this.validateOpenclawProviderRequiredEnv(providerKey)) {
+            this.loading = false
+            return
+          }
           const mode = this.openclawProviderCredentialMode[providerKey] || 'new'
           let credentialId
           let exportKeys
@@ -969,11 +1137,7 @@ export default {
           } else {
             const credName = this.genCredentialName({ llmName: this.instanceName, usage: 'provider', key: this.providerShortName(providerKey) })
             const raw = this.openclawProviderBlob[providerKey] || {}
-            const blob = {}
-            Object.keys(raw).forEach(k => {
-              const v = (raw[k] || '').trim()
-              if (v) blob[k] = v
-            })
+            const blob = this.pickTrimmedOpenclawBlob(raw)
             if (Object.keys(blob).length === 0) {
               this.$message.warning(this.$t('aice.openclaw.ai_providers.at_least_one'))
               this.loading = false

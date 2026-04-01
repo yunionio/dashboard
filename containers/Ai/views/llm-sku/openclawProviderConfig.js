@@ -3,7 +3,7 @@
  * 用于：1）生成「填写并创建新密钥」表单 2）选择已有密钥时展示「将配置的 AI 供应商」
  */
 
-/** @typedef {{ sectionKey: string, sectionLabelKey: string, required: boolean, vars: Array<{ envKey: string, providerLabelKey: string, descriptionKey: string }> }} OpenclawSection */
+/** @typedef {{ sectionKey: string, sectionLabelKey: string, required: boolean, vars: Array<{ envKey: string, providerLabelKey: string, descriptionKey: string, overrideUrlKey?: string, component?: 'a-select', resource?: string, placeholderKey?: string, required?: boolean }> }} OpenclawSection */
 
 export const OPENCLAW_PROVIDER_SECTIONS = [
   {
@@ -57,6 +57,15 @@ export const OPENCLAW_PROVIDER_SECTIONS = [
     required: false,
     vars: [
       { envKey: 'OLLAMA_BASE_URL', providerLabelKey: 'aice.openclaw.provider.ollama', descriptionKey: 'aice.openclaw.env.OLLAMA_BASE_URL' },
+      {
+        envKey: 'OPENCLAW_PRIMARY_MODEL',
+        providerLabelKey: 'aice.openclaw.provider.ollama',
+        descriptionKey: 'aice.openclaw.env.OPENCLAW_PRIMARY_MODEL',
+        component: 'a-select',
+        resource: 'llms/provider-models',
+        placeholderKey: 'aice.model',
+        required: true,
+      },
     ],
   },
 ]
