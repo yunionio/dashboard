@@ -1218,8 +1218,9 @@ export const getSearchMaps = (searchRes = {}, extraResMaps = {}) => {
       resData: {},
     },
     alertResource: {
+      globalSearchHidden: true,
       menu_key: 'alertresource',
-      res_name: 'alert_resources',
+      res_name: 'monitorresourcealerts',
       label: i18n.t('dictionary.alertresource'),
       id: 'alertResource',
       component: 'AlertResourceList',
@@ -1228,9 +1229,7 @@ export const getSearchMaps = (searchRes = {}, extraResMaps = {}) => {
         common: {
           ...commonSearchQuery,
         },
-        name: {
-          filter: `name.contains(${getFilter('name')})`,
-        },
+        res_name: searchRes.name,
       },
       resData: {},
     },
