@@ -213,7 +213,7 @@ export default {
         // 组装成数组
         const paramsList = Object.values(maps).filter(val => {
           // 绕过无权限和隐藏的页面
-          return val.hasPermission && !this.$isScopedPolicyMenuHidden(`sub_hidden_menus.${val.menu_key}`)
+          return !val.globalSearchHidden && val.hasPermission && !this.$isScopedPolicyMenuHidden(`sub_hidden_menus.${val.menu_key}`)
         }).map(val => ({
           ...val,
           params: val.params,
