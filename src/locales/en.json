@@ -6471,6 +6471,7 @@
   "common.cpu_used_total": "CPU used/total",
   "common.memory_used_total": "Memory used/total",
   "common.last_month": "Last month",
+  "common.config_agent": "Config AI Agent",
   "common.platform": "Platform",
   "common.gateway": "Gateway",
   "common.application": "Application",
