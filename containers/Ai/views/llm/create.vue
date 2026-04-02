@@ -439,7 +439,7 @@
     <page-footer>
       <template v-slot:right>
         <a-button type="primary" @click="handleConfirm">{{ $t('common.create') }}</a-button>
-        <a-button @click="handleCancel">{{ $t('common.cancel') }}</a-button>
+        <a-button class="ml-2" @click="handleCancel">{{ $t('common.cancel') }}</a-button>
       </template>
     </page-footer>
   </div>
