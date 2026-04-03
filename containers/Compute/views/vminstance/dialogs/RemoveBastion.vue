@@ -40,9 +40,11 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        await new this.$Manager('bastion_servers').delete({
-          id: this.params.data[0].metadata.bastion_server,
-        })
+        for (const item of this.params.data) {
+          await new this.$Manager('bastion_servers').delete({
+            id: item.metadata.bastion_server,
+          })
+        }
         this.params.refresh()
         this.cancelDialog()
       } finally {

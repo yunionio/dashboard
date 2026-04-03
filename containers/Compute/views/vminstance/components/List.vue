@@ -50,7 +50,7 @@ import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ResTemplateListMixin from '@/mixins/resTemplateList'
 import regexp from '@/utils/regexp'
-import { hasSetupKey } from '@/utils/auth'
+import { hasSetupKey, isLicense2 } from '@/utils/auth'
 import { sizeToDesignatedUnit } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
 import { PROVIDER_MAP, BRAND_MAP } from '@/constants'
@@ -167,6 +167,12 @@ export default {
     this.hiddenFilterOptions.forEach(key => {
       delete filterOptions[key]
     })
+    let hasBastionService = false
+    const { services = [] } = this.$store?.getters?.userInfo || {}
+    const bastionService = services.find(val => val.type === 'bastionhost')
+    if (bastionService && bastionService.status === true) {
+      hasBastionService = true
+    }
     return {
       list: this.$list.createList(this, {
         ctx: this,
@@ -1179,6 +1185,76 @@ export default {
                       return ret
                     },
                     hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_source_check'),
+                  },
+                  // 添加到堡垒机
+                  {
+                    label: this.$t('compute.add_to_bastion'),
+                    permission: 'bastion_servers_create',
+                    action: () => {
+                      this.createDialog('VmAddToBastionDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        refresh: this.refresh,
+                      })
+                    },
+                    meta: () => {
+                      const ret = { validate: true }
+                      const isSomeBastionServer = this.list.selectedItems.some((item) => { return item.metadata?.bastion_server })
+                      if (isSomeBastionServer) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.already_in_bastion')
+                        return ret
+                      }
+                      const isEveryRunning = this.list.selectedItems.every((item) => { return item.status === 'running' })
+                      if (!isEveryRunning) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1282')
+                        return ret
+                      }
+                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
+                      return rescueModeValid
+                    },
+                    hidden: () => {
+                      if (!this.$appConfig.isPrivate || this.$store.getters.isSysCE || this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host') || (isLicense2() && !hasSetupKey('bastionhost')) || !hasBastionService) {
+                        return true
+                      }
+                      return false
+                    },
+                  },
+                  // 从堡垒机移除
+                  {
+                    label: this.$t('compute.remove_from_bastion'),
+                    permission: 'bastion_servers_delete',
+                    action: () => {
+                      this.createDialog('VmRemoveFromBastionDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        refresh: this.refresh,
+                      })
+                    },
+                    meta: () => {
+                      const ret = { validate: true }
+                      const isEveryBastionServer = this.list.selectedItems.every((item) => { return item.metadata?.bastion_server })
+                      if (!isEveryBastionServer) {
+                        ret.validate = false
+                        return ret
+                      }
+                      const isEveryRunning = this.list.selectedItems.every((item) => { return item.status === 'running' || item.status === 'ready' })
+                      if (!isEveryRunning) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1126')
+                        return ret
+                      }
+                      return ret
+                    },
+                    hidden: () => {
+                      if (!this.$appConfig.isPrivate || this.$store.getters.isSysCE || this.$isScopedPolicyMenuHidden('sub_hidden_menus.bastion_host') || (isLicense2() && !hasSetupKey('bastionhost')) || !hasBastionService) {
+                        return true
+                      }
+                      return false
+                    },
                   },
                 ],
               },
