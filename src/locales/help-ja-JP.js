@@ -70,6 +70,7 @@ export default {
     secgroupSystemGuestCnt: 'セキュリティグループがシステムリソースとしてバインドしているVMの数',
     v2vTransferType: '移行が成功すると、同じ構成のKVM VMが自動的に1台新規に作成され、IPが新しいインスタンスに移行され、元のインスタンスが保持されます',
     billCostConversionRateTip: '資源価格係数は当該製品に対する公式サイト価格である',
+    alertDataTimeRange: '近1時間の告警状態データをクエリ',
   },
   notify: {
     TooManyRequests: '認証コードを送信する頻度が高すぎるので、後で再試行してください',

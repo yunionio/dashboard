@@ -99,6 +99,23 @@ export default {
       },
       getStatusTableColumn({ field: 'host_status', statusModule: 'host_status', title: this.$t('compute.text_502') }),
       {
+        field: 'alert_data',
+        title: (h) => [
+          <span style="margin-right:5px">{this.$t('compute.alert_status')}</span>,
+          <help-tooltip name="alertDataTimeRange" />,
+        ],
+        slots: {
+          default: () => {
+            const state = this.alertData?.alert_state
+            if (state) {
+              return [<status status={state} statusModule="monitorresources" />]
+            }
+            return '-'
+          },
+        },
+        hidden: () => this.$isScopedPolicyMenuHidden('host_hidden_columns.alert_data'),
+      },
+      {
         field: 'nonsystem_guests',
         title: '#VM',
         width: 60,
@@ -286,6 +303,7 @@ export default {
       },
     ]
     return {
+      alertData: null,
       // itemData: {
       //   status: 'ready',
       //   host_status: 'ready',
@@ -637,10 +655,37 @@ export default {
       ],
     }
   },
+  watch: {
+    'data.id': {
+      handler () {
+        this.fetchAlertData()
+      },
+      immediate: true,
+    },
+  },
   // created () {
   //   this.updateDetailData()
   // },
   methods: {
+    async fetchAlertData () {
+      this.alertData = null
+      const id = this.data?.id
+      if (!id) return
+      if (this.$isScopedPolicyMenuHidden('host_hidden_columns.alert_data')) return
+      try {
+        const monitorManager = new this.$Manager('unifiedmonitors/resource-metrics', 'v1')
+        const res = await monitorManager.create({
+          data: {
+            res_ids: [id],
+            res_type: 'host',
+          },
+        })
+        const metrics = res.data?.resource_metrics?.[id]
+        this.alertData = metrics || null
+      } catch (e) {
+        this.alertData = null
+      }
+    },
     // updateDetailData () {
     //   const hostManager = new this.$Manager('hosts')
     //   hostManager.get({ id: this.data.id })

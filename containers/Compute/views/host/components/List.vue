@@ -122,7 +122,9 @@ export default {
     this.hiddenFilterOptions.forEach(key => {
       delete filterOptions[key]
     })
+    const monitorManager = new this.$Manager('unifiedmonitors/resource-metrics', 'v1')
     return {
+      monitorManager,
       list: this.$list.createList(this, {
         ctx: this,
         id: this.id,
@@ -134,6 +136,28 @@ export default {
         filter,
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'id', 'server_id', 'sn', 'manufacture', 'model', 'schedtag', 'nonsystem_guests', 'public_scope', 'project_domain', 'region', 'os_arch', 'created_at'],
+        fetchDataCb: async (response) => {
+          if (response.data?.data?.length) {
+            const list = response.data?.data || []
+            const ids = list.map(item => item.id).filter(Boolean)
+            if (ids.length) {
+              const res = await monitorManager.create({
+                data: {
+                  res_ids: ids,
+                  res_type: 'host',
+                },
+              })
+              const { resource_metrics = {} } = res.data || {}
+              for (const key in resource_metrics) {
+                const metrics = resource_metrics[key]
+                const row = list.find(item => item.id === key)
+                if (row) row.alert_data = metrics
+              }
+            }
+            response.data.data = list
+          }
+          return response
+        },
       }),
     }
   },

@@ -173,7 +173,9 @@ export default {
     if (bastionService && bastionService.status === true) {
       hasBastionService = true
     }
+    const monitorManager = new this.$Manager('unifiedmonitors/resource-metrics', 'v1')
     return {
+      monitorManager,
       list: this.$list.createList(this, {
         ctx: this,
         id: this.id,
@@ -192,6 +194,27 @@ export default {
         templateLimit: this.templateLimit,
         hiddenColumns: ['is_gpu', 'metadata', 'instance_type', 'os_type', 'vpc', 'host', 'account', 'created_at', 'macs', 'os_arch', 'vcpu_count', 'vmem_size', 'disk', 'power_states'],
         autoHiddenFilterKey: 'server_hidden_columns',
+        fetchDataCb: async (response) => {
+          if (response.data?.data?.length) {
+            const list = response.data?.data || []
+            const ids = list.map(item => item.id).filter(Boolean)
+            if (ids.length) {
+              const res = await monitorManager.create({
+                data: {
+                  res_ids: ids,
+                  res_type: 'guest',
+                },
+              })
+              const { resource_metrics = {} } = res.data || {}
+              for (const key in resource_metrics) {
+                const metrics = resource_metrics[key]
+                list.find(item => item.id === key).alert_data = metrics
+              }
+            }
+            response.data.data = list
+          }
+          return response
+        },
       }),
       groupActions: [
         // 新建
