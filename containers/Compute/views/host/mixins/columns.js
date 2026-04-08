@@ -458,6 +458,24 @@ export default {
       getPublicScopeTableColumn({ vm: this, resource: 'hosts' }),
       getProjectDomainTableColumn({ vm: this }),
       getRegionTableColumn({ vm: this }),
+      {
+        field: 'alert_data',
+        title: this.$t('compute.alert_status'),
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('host_hidden_columns.alert_data')
+        },
+        slots: {
+          header: () => {
+            return [<span style="margin-right:5px">{this.$t('compute.alert_status')}</span>, <help-tooltip name="alertDataTimeRange" />]
+          },
+          default: ({ row }) => {
+            if (row.alert_data?.alert_state) {
+              return [<status status={row.alert_data?.alert_state} statusModule='monitorresources' />]
+            }
+            return '-'
+          },
+        },
+      },
       getTimeTableColumn(),
     ]
   },
