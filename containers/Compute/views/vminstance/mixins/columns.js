@@ -517,6 +517,24 @@ export default {
           return this.$isScopedPolicyMenuHidden('server_hidden_columns.region')
         },
       }),
+      {
+        field: 'alert_data',
+        title: this.$t('compute.alert_status'),
+        hidden: () => {
+          return this.$isScopedPolicyMenuHidden('server_hidden_columns.alert_data')
+        },
+        slots: {
+          header: () => {
+            return [<span style="margin-right:5px">{this.$t('compute.alert_status')}</span>, <help-tooltip name="alertDataTimeRange" />]
+          },
+          default: ({ row }) => {
+            if (row.alert_data?.alert_state) {
+              return [<status status={row.alert_data?.alert_state} statusModule='monitorresources' />]
+            }
+            return '-'
+          },
+        },
+      },
       getTimeTableColumn({
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('server_hidden_columns.created_at')
