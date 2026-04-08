@@ -32,7 +32,7 @@
           :value="item.key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label="$t('compute.text_1186')" v-if="isNew" v-bind="formItemLayout">
+    <a-form-item :label="$t('compute.bandwidth.title')" v-if="isNew" v-bind="formItemLayout">
       <div class="d-flex">
         <a-tooltip placement="top" :title="$t('compute.text_1324', [maxBindWidth])">
           <a-input-number

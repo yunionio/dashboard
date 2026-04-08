@@ -110,21 +110,28 @@ export default {
         title: i18n.t('compute.text_387'),
         width: 100,
         formatter: ({ row }) => {
+          if (row.rx_bw_limit && row.tx_bw_limit) {
+            return `${row.tx_bw_limit}Mbps/${row.rx_bw_limit}Mbps`
+          }
           if (+row.bw_limit) {
             return `${row.bw_limit}Mbps`
           }
           return `0(${this.$t('common.not_limited')})`
         },
-        // slots: {
-        //   header: ({ column }) => {
-        //     return [
-        //       <a-tooltip title={i18n.t('compute.text_388')}>
-        //         <span class='mr-1'>{ column.title }</span>
-        //         <icon type="question" />
-        //       </a-tooltip>,
-        //     ]
-        //   },
-        // },
+        slots: {
+          default: ({ row }, h) => {
+            const ret = []
+            if (row.rx_bw_limit && row.tx_bw_limit) {
+              ret.push(<div> <a-icon type="arrow-up" /> {row.tx_bw_limit} Mbps</div>)
+              ret.push(<div> <a-icon type="arrow-down" /> {row.rx_bw_limit} Mbps</div>)
+            } else if (+row.bw_limit) {
+              ret.push(<div> <a-icon type="swap" /> {row.bw_limit}Mbps </div>)
+            } else {
+              ret.push(<div>0({this.$t('common.not_limited')})</div>)
+            }
+            return ret
+          },
+        },
       },
       getBillingTypeTableColumn(),
       {
