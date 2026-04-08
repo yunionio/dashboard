@@ -19,7 +19,6 @@
     </div>
     <div slot="footer">
       <a-button type="primary" @click="cancelDialog">{{ $t('dialog.ok') }}</a-button>
-      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
 </template>
