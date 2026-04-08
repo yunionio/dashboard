@@ -5,13 +5,24 @@
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1185')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
-        <a-form-item :label="$t('compute.text_1186')">
+        <a-form-item :label="$t('compute.bandwidth.symmetric.title')">
+          <a-checkbox v-model="symmetricBandwidth" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.bandwidth.title')" v-if="symmetricBandwidth">
           <a-tooltip placement="top" :title="$t('compute.text_1338', [[bandwidthMax]])">
-            <a-input-number
-              v-decorator="decorators.bandwidth"
-              :parser="getParser"
-              :min="0"
-              :max="bandwidthMax" />
+            <a-input-number v-decorator="decorators.bandwidth" :parser="getParser" :min="0" :max="bandwidthMax" />
+            Mbps
+          </a-tooltip>
+        </a-form-item>
+        <a-form-item :label="$t('compute.bandwidth.tx.title')" v-if="!symmetricBandwidth">
+          <a-tooltip placement="top" :title="$t('compute.text_1338', [[bandwidthMax]])">
+            <a-input-number v-decorator="decorators.tx_bw_limit" :parser="getParser" :min="0" :max="bandwidthMax" />
+            Mbps
+          </a-tooltip>
+        </a-form-item>
+        <a-form-item :label="$t('compute.bandwidth.rx.title')" v-if="!symmetricBandwidth">
+          <a-tooltip placement="top" :title="$t('compute.text_1338', [[bandwidthMax]])">
+            <a-input-number v-decorator="decorators.rx_bw_limit" :parser="getParser" :min="0" :max="bandwidthMax" />
             Mbps
           </a-tooltip>
         </a-form-item>
@@ -52,6 +63,18 @@ export default {
             ],
           },
         ],
+        tx_bw_limit: [
+          'tx_bw_limit',
+          {
+            initialValue: this.params.data[0].tx_bw_limit || 0,
+          },
+        ],
+        rx_bw_limit: [
+          'rx_bw_limit',
+          {
+            initialValue: this.params.data[0].rx_bw_limit || 0,
+          },
+        ],
         reason: [
           'reason',
           {
@@ -68,6 +91,7 @@ export default {
         },
       },
       bandwidthMax: 100000,
+      symmetricBandwidth: !this.params.data[0].tx_bw_limit || !this.params.data[0].rx_bw_limit,
     }
   },
   computed: {
@@ -85,6 +109,8 @@ export default {
       const ids = this.params.data.map(item => item.guest_id)
       const data = {
         bandwidth: values.bandwidth,
+        tx_bw_limit: values.tx_bw_limit,
+        rx_bw_limit: values.rx_bw_limit,
         mac: this.params.data[0].mac_addr,
       }
       return manager.batchPerformAction({
@@ -107,9 +133,13 @@ export default {
           ip_addr: curData.ip_addr,
           before: {
             bw_limit: curData.bw_limit,
+            tx_bw_limit: curData.tx_bw_limit,
+            rx_bw_limit: curData.rx_bw_limit,
           },
           after: {
             bw_limit: values.bandwidth,
+            tx_bw_limit: values.tx_bw_limit,
+            rx_bw_limit: values.rx_bw_limit,
           },
         }
       })
