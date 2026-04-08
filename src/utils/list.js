@@ -598,11 +598,16 @@ class CreateList {
       } = response
       this.clearWaitJob()
       this.clearBatchCheckStatusTimer()
+      // 须在 wrapData / pageRender 之前执行，以便回填行字段（如 alert_data）；异步回调需 await，否则首屏不刷新
+      if (R.is(Function, this.fetchDataCb)) {
+        await Promise.resolve(this.fetchDataCb(response))
+      }
+      const rowData = Array.isArray(response.data?.data) ? response.data.data : data
       let allData = {}
       if (response.data.marker_order) {
-        allData = Object.assign({}, this.wrapData(data), this.data)
+        allData = Object.assign({}, this.wrapData(rowData), this.data)
       } else {
-        allData = this.wrapData(data)
+        allData = this.wrapData(rowData)
       }
       // 分页渲染
       this.pageRender(allData)
@@ -631,9 +636,6 @@ class CreateList {
               console.error(`get ${key} data error: ${error}`)
             })
         }
-      }
-      if (R.is(Function, this.fetchDataCb)) {
-        this.fetchDataCb(response)
       }
       this.totals = response.data?.totals || {}
       if (this.isTemplate) {

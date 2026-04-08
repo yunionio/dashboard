@@ -54,6 +54,7 @@ export default {
   },
   data () {
     return {
+      alertData: null,
       baseInfo: [
         getStatusTableColumn({
           field: 'power_states',
@@ -97,6 +98,23 @@ export default {
         }),
         // getExtTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.serverColumns, tipName: this.$t('dictionary.server') }),
         getServerMonitorAgentInstallStatus(),
+        {
+          field: 'alert_data',
+          title: (h) => [
+            <span style="margin-right:5px">{this.$t('compute.alert_status')}</span>,
+            <help-tooltip name="alertDataTimeRange" />,
+          ],
+          slots: {
+            default: () => {
+              const state = this.alertData?.alert_state
+              if (state) {
+                return [<status status={state} statusModule="monitorresources" />]
+              }
+              return '-'
+            },
+          },
+          hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.alert_data'),
+        },
         {
           field: 'keypair',
           hiddenField: 'password',
@@ -677,11 +695,36 @@ export default {
       immediate: true,
       deep: true,
     },
+    'data.id': {
+      handler () {
+        this.fetchAlertData()
+      },
+      immediate: true,
+    },
   },
   created () {
     this.initQemuInfo()
   },
   methods: {
+    async fetchAlertData () {
+      this.alertData = null
+      const id = this.data?.id
+      if (!id) return
+      if (this.$isScopedPolicyMenuHidden('server_hidden_columns.alert_data')) return
+      try {
+        const monitorManager = new this.$Manager('unifiedmonitors/resource-metrics', 'v1')
+        const res = await monitorManager.create({
+          data: {
+            res_ids: [id],
+            res_type: 'guest',
+          },
+        })
+        const metrics = res.data?.resource_metrics?.[id]
+        this.alertData = metrics || null
+      } catch (e) {
+        this.alertData = null
+      }
+    },
     _diskStringify (diskObj) {
       let str = ''
       const storageArr = Object.values(ALL_STORAGE)
