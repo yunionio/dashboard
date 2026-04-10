@@ -45,14 +45,24 @@ export default {
       try {
         const { data } = await http.get('/v1/rpc/parameters/global-settings')
         const licenseFeatures = rootState?.app?.license?.compute?.features || []
-        commit('UPDATE', data)
-        if (licenseFeatures.length && data.value && data.value.setupKeys) {
+        const dataFixed = R.clone(data)
+
+        commit('UPDATE', dataFixed)
+        if (licenseFeatures.length && dataFixed.value && dataFixed.value.setupKeys) {
+          const setupKeys = [...(dataFixed.value.setupKeys || [])]
+          const fixedSetupKeys = [...(dataFixed.value.setupKeys || [])]
+          c.items.forEach(item => {
+            if (setupKeys.includes(item.key) && !setupKeys.includes(item.meta.group)) {
+              fixedSetupKeys.push(item.meta.group)
+            }
+          })
+          dataFixed.value.setupKeys = fixedSetupKeys
           const licenseKeys = fillBillSupportFeatures([...licenseFeatures, ...getGroups(licenseFeatures)], true)
-          data.value.setupKeys = data.value.setupKeys.filter(key => {
+          dataFixed.value.setupKeys = dataFixed.value.setupKeys.filter(key => {
             return licenseKeys.includes(key)
           })
         }
-        return Promise.resolve(data)
+        return Promise.resolve(dataFixed)
       } catch (err) {
         console.log(err)
       }
