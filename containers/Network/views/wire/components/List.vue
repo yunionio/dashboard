@@ -92,7 +92,7 @@ export default {
             ],
             filter: true,
             formatter: val => {
-              return `status.in(${val})`
+              return `status.in(${val.map(item => `'${item}'`).join(',')})`
             },
           },
           name: getNameFilter(),

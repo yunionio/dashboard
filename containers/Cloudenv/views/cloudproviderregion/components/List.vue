@@ -44,7 +44,7 @@ export default {
             filter: true,
             jointFilter: true,
             formatter: val => {
-              return `cloudregions.id(cloudregion_id).id.in(${val.join(',')})`
+              return `cloudregions.id(cloudregion_id).id.in(${val.map(item => `'${item}'`).join(',')})`
             },
           },
           enabled: getEnabledFilter({
@@ -54,7 +54,7 @@ export default {
         params: { scope: this.$store.getters.scope },
         batchItemGetParamsFormatter: (params) => {
           if (params.id) {
-            const p = { ...params, joint_filter: `cloudregions.id(cloudregion_id).id.in(${params.id.join(',')})` }
+            const p = { ...params, joint_filter: `cloudregions.id(cloudregion_id).id.in(${params.id.map(item => `'${item}'`).join(',')})` }
             delete p.id
             return p
           }
