@@ -466,11 +466,11 @@ export default {
     },
     genDefaultParams (fetchKeys) {
       const { manager, params } = this.genParams(this.query)
-      const idFilter = `${this.idKey}.in(${fetchKeys.join(',')})`
+      const idFilter = `${this.idKey}.in(${fetchKeys.map(item => `'${item}'`).join(',')})`
       if (params.filter) {
         params.filter = R.is(String, params.filter) ? [params.filter, idFilter] : [...params.filter, idFilter]
       } else {
-        params.filter = `${this.idKey}.in(${fetchKeys.join(',')})`
+        params.filter = `${this.idKey}.in(${fetchKeys.map(item => `'${item}'`).join(',')})`
       }
       params.$t = 1
       return { manager, params }

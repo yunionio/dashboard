@@ -157,7 +157,7 @@ export function getStatusFilter (params) {
     },
     filter: true,
     formatter: val => {
-      return `${field}.in(${val.join(',')})`
+      return `${field}.in(${val.map(item => `'${item}'`).join(',')})`
     },
   }
 }
@@ -763,7 +763,7 @@ export const getBillProjectDomainFilter = () => {
         try {
           const params = {
             scope: store.getters.scope,
-            filter: `id.in(${items.join(',')})`,
+            filter: `id.in(${items.map(item => `'${item}'`).join(',')})`,
           }
           const manager = new Manager('domains', 'v1')
           const { data: { data = [] } } = await manager.list({
@@ -779,7 +779,7 @@ export const getBillProjectDomainFilter = () => {
     },
     filter: true,
     formatter: val => {
-      return `domain_id.in(${val.join(',')})`
+      return `domain_id.in(${val.map(item => `'${item}'`).join(',')})`
     },
   }
 }

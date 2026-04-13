@@ -379,7 +379,7 @@ export default {
         scope: this.scope,
       }
       if (this.skuOptions.zone_ids && this.skuOptions.zone_ids.length > 0) {
-        params.filter = `id.in(${this.skuOptions.zone_ids.join(',')})`
+        params.filter = `id.in(${this.skuOptions.zone_ids.map(item => `'${item}'`).join(',')})`
       }
       const { data = [] } = await manager.list({ params })
       this.zones = data.data || []
