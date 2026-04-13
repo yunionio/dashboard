@@ -6478,5 +6478,11 @@
   "common.inference": "Inference",
   "common.image": "Image",
   "common.container_secret": "Container Secret",
-  "common.container_image_secret": "Container Image Secret"
+  "common.container_image_secret": "Container Image Secret",
+  "common.disk_rate": "Disk Rate",
+  "common.disk_read_rate_value": "Read Rate: {0}",
+  "common.disk_write_rate_value": "Write Rate: {0}",
+  "common.net_iops": "Network Rate",
+  "common.net_in_rate_value": "In Rate: {0}",
+  "common.net_out_rate_value": "Out Rate: {0}"
 }

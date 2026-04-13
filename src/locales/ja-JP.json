@@ -6498,5 +6498,11 @@
   "common.inference": "推論",
   "common.image": "イメージ",
   "common.container_secret": "コンテナシークレット",
-  "common.container_image_secret": "コンテナイメージレポジトリシークレット"
+  "common.container_image_secret": "コンテナイメージレポジトリシークレット",
+  "common.disk_rate": "ディスク速率",
+  "common.disk_read_rate_value": "読み取り速率：{0}",
+  "common.disk_write_rate_value": "書き込み速率：{0}",
+  "common.net_iops": "ネットワーク流量速率",
+  "common.net_in_rate_value": "受信流量：{0}",
+  "common.net_out_rate_value": "送信流量：{0}"
 }
