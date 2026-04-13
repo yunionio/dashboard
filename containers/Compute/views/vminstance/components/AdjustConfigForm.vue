@@ -51,6 +51,8 @@
               :skuDisabled="runningOther"
               :dataSku="dataSku"
               :dataList="dataList"
+              :supportSkuTypes="supportSkuTypes"
+              :disableSkuType="disableSkuTypeValue"
               isAdjustConfig />
           </a-form-item>
           <a-form-item :label="$t('compute.text_49')" v-show="selectedItems.length === 1 && form.fd.defaultType">
@@ -207,6 +209,7 @@ export default {
           imageMsg: {}, // 当前选中的 image
           showCpuSockets: false,
           cpuSockets: 1,
+          modificationTypes: [], // 多选实例时，各主机 modification_types.name 的交集
         },
       },
       beforeDataDisks: [],
@@ -427,6 +430,8 @@ export default {
       discount: 0,
       dataDiskType: '',
       dataDiskInterval: null,
+      supportSkuTypes: [],
+      disableSkuTypeValue: false,
     }
   },
   computed: {
@@ -474,6 +479,9 @@ export default {
         }
         return false
       })
+    },
+    disableSkuType () {
+      return [HYPERVISORS_MAP.aliyun.hypervisor, HYPERVISORS_MAP.huawei.hypervisor, HYPERVISORS_MAP.qcloud.hypervisor].includes(this.dataList[0].hypervisor)
     },
     hotplug () { // 做热扩容校验，true 表示置灰 CPU 和 内存，不支持热扩容
       if (this.dataList.every(val => val.status === 'ready')) {
@@ -782,6 +790,7 @@ export default {
     this.serverskusM = new Manager('serverskus')
     this.loadData(this.dataList)
     this.fetchInstanceSpecs()
+    this.fetchModificationTypes()
     this.getPriceList = _.debounce(this._getPriceList2, 500)
     this.baywatch([
       'form.fd.sku.id',
@@ -796,6 +805,20 @@ export default {
     clearInterval(this.dataDiskInterval)
   },
   methods: {
+    fetchModificationTypes () {
+      if (this.disableSkuType) {
+        Promise.all(this.dataList.map(item => this.serversManager.getSpecific({ id: item.id, spec: 'modification-types' }))).then((data) => {
+          const list = data.map((res) => {
+            return (res.data.modification_types || []).map((mt) => mt.name)
+          })
+          this.supportSkuTypes = (list.length
+            ? list.reduce((acc, names) => acc.filter((n) => names.includes(n)), [...list[0]])
+            : [])
+        }).finally(() => {
+          this.disableSkuTypeValue = true
+        })
+      }
+    },
     skuFilter (items) {
       if (!items) return []
       return items
