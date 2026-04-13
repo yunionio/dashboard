@@ -44,7 +44,7 @@ export default {
             filter: true,
             jointFilter: true,
             formatter: val => {
-              return `cloudregions.id(cloudregion_id).id.in(${val.join(',')})`
+              return `cloudregions.id(cloudregion_id).id.in(${val.map(item => `'${item}'`).join(',')})`
             },
           },
         },
