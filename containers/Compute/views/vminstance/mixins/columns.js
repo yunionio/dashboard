@@ -15,7 +15,7 @@ import {
   getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
-import { sizestr } from '@/utils/utils'
+import { sizestr, bytesPerSecondStr } from '@/utils/utils'
 import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 import i18nLocale from '@/locales'
 import { HYPERVISORS_MAP } from '@/constants'
@@ -369,31 +369,83 @@ export default {
       {
         field: 'cpu_usage',
         title: i18nLocale.t('table.title.cpu_usage'),
-        sortable: true,
-        minWidth: 150,
-        hidden: () => true,
+        minWidth: 100,
         slots: {
           default: ({ row }) => {
-            if (row.cpu_usage) {
-              return [<a-progress percent={row.cpu_usage.toFixed(4) * 100} size="small" />]
+            if (row.alert_data && row.alert_data.hasOwnProperty('cpu_usage')) {
+              return [<UsedPercent used={row.alert_data.cpu_usage} total={100} hiddenTotal={true} hiddenUsed={true} />]
             }
-            return [<a-progress percent={0} size="small" />]
+            return '-'
           },
+        },
+        formatter: ({ row }) => {
+          if (row.alert_data && row.alert_data.hasOwnProperty('cpu_usage')) {
+            return `${row.alert_data.cpu_usage.toFixed(2)}%`
+          }
+          return '-'
         },
       },
       {
         field: 'mem_usage',
         title: i18nLocale.t('table.title.mem_usage'),
-        sortable: true,
-        minWidth: 150,
-        hidden: () => true,
+        minWidth: 100,
         slots: {
           default: ({ row }) => {
-            if (row.mem_usage) {
-              return [<a-progress percent={row.mem_usage.toFixed(4) * 100} size="small" />]
+            if (row.alert_data && row.alert_data.hasOwnProperty('mem_usage')) {
+              return [<UsedPercent used={row.alert_data.mem_usage} total={100} hiddenTotal={true} hiddenUsed={true} />]
             }
-            return [<a-progress percent={0} size="small" />]
+            return '-'
           },
+        },
+        formatter: ({ row }) => {
+          if (row.alert_data && row.alert_data.hasOwnProperty('mem_usage')) {
+            return `${row.alert_data.mem_usage.toFixed(2)}%`
+          }
+          return '-'
+        },
+      },
+      {
+        field: 'disk_rate',
+        title: i18nLocale.t('common.disk_rate'),
+        minWidth: 100,
+        slots: {
+          default: ({ row }) => {
+            if (row.alert_data && row.alert_data.hasOwnProperty('disk_read_rate') && row.alert_data.hasOwnProperty('disk_write_rate')) {
+              return [
+                <div>{i18nLocale.t('common.disk_read_rate_value', [bytesPerSecondStr(row.alert_data.disk_read_rate)])}</div>,
+                <div>{i18nLocale.t('common.disk_write_rate_value', [bytesPerSecondStr(row.alert_data.disk_write_rate)])}</div>,
+              ]
+            }
+            return '-'
+          },
+        },
+        formatter: ({ row }) => {
+          if (row.alert_data && row.alert_data.hasOwnProperty('disk_read_rate') && row.alert_data.hasOwnProperty('disk_write_rate')) {
+            return `${i18nLocale.t('common.disk_read_rate_value', [bytesPerSecondStr(row.alert_data.disk_read_rate)])} / ${i18nLocale.t('common.disk_write_rate_value', [bytesPerSecondStr(row.alert_data.disk_write_rate)])}`
+          }
+          return '-'
+        },
+      },
+      {
+        field: 'net_iops',
+        title: i18nLocale.t('common.net_iops'),
+        minWidth: 100,
+        slots: {
+          default: ({ row }) => {
+            if (row.alert_data && row.alert_data.hasOwnProperty('net_in_rate') && row.alert_data.hasOwnProperty('net_out_rate')) {
+              return [
+                <div>{i18nLocale.t('common.net_in_rate_value', [bytesPerSecondStr(row.alert_data.net_in_rate)])}</div>,
+                <div>{i18nLocale.t('common.net_out_rate_value', [bytesPerSecondStr(row.alert_data.net_out_rate)])}</div>,
+              ]
+            }
+            return '-'
+          },
+        },
+        formatter: ({ row }) => {
+          if (row.alert_data && row.alert_data.hasOwnProperty('net_in_rate') && row.alert_data.hasOwnProperty('net_out_rate')) {
+            return `${i18nLocale.t('common.net_in_rate_value', [bytesPerSecondStr(row.alert_data.net_in_rate)])} / ${i18nLocale.t('common.net_out_rate_value', [bytesPerSecondStr(row.alert_data.net_out_rate)])}`
+          }
+          return '-'
         },
       },
       {

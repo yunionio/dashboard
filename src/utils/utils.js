@@ -174,6 +174,35 @@ class Sizestr {
   percentStr (val) {
     return '' + this.round(val * 100, 0) + '%'
   }
+
+  /**
+   * 字节/秒 → 带单位的速率字符串（1024 进制，与 transformUnit(value, 'Bps', 1024).text 一致）
+   * @param {Number} bytesPerSec 字节/s
+   * @param {String} numerifyFormat 数值格式，同 numerify
+   * @returns {String} 如 "1.2 KBps"、"3.45 MBps"
+   */
+  bytesPerSecondStr (bytesPerSec, numerifyFormat = '0.00') {
+    const number = Number(bytesPerSec)
+    if (!R.is(Number, number) || Number.isNaN(number)) {
+      return '0 Bps'
+    }
+    const obj = splitUnit(this.sizestr(number, 'B', 1024))
+    const numValue = parseFloat(obj.value)
+    const formattedValue = parseFloat(numerify(numValue, numerifyFormat))
+    const b = 'B'
+    const textMatch = obj.text.match(/^(\d+\.?\d*)\s*(.*)$/)
+    if (textMatch) {
+      const originalUnit = textMatch[2]
+      if (obj.text.endsWith('B')) {
+        return `${formattedValue} ${b}ps`
+      }
+      return `${formattedValue} ${originalUnit}${b}ps`
+    }
+    if (obj.text.endsWith('B')) {
+      return `${formattedValue} ${b}ps`
+    }
+    return `${formattedValue} Bps`
+  }
 }
 const sizestrInstance = new Sizestr()
 
@@ -181,6 +210,7 @@ export const sizestr = sizestrInstance.sizestr.bind(sizestrInstance) // -> 12G  
 export const sizestrWithUnit = sizestrInstance.sizestrWithUnit.bind(sizestrInstance) // -> 12 GB   4.5 TB
 export const sizeToDesignatedUnit = sizestrInstance.sizeToDesignatedUnit.bind(sizestrInstance) // -> 12 GB   4.5 TB
 export const percentstr = sizestrInstance.percentStr.bind(sizestrInstance)
+export const bytesPerSecondStr = sizestrInstance.bytesPerSecondStr.bind(sizestrInstance)
 
 /**
  * 对象数组转对象

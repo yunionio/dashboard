@@ -6510,5 +6510,11 @@
   "common.llm_instance": "应用/推理实例",
   "common.llm_sku": "应用/推理模板",
   "common.llm_instantapp": "推理模型库",
-  "common.llm_image": "LLM镜像"
+  "common.llm_image": "LLM镜像",
+  "common.disk_rate": "磁盘速率",
+  "common.disk_read_rate_value": "读速率：{0}",
+  "common.disk_write_rate_value": "写速率：{0}",
+  "common.net_iops": "网络流量速率",
+  "common.net_in_rate_value": "入流量：{0}",
+  "common.net_out_rate_value": "出流量：{0}"
 }

@@ -14,7 +14,7 @@ import {
   getTimeTableColumn,
   getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
-import { sizestr } from '@/utils/utils'
+import { sizestr, bytesPerSecondStr } from '@/utils/utils'
 import i18n from '@/locales'
 import { getHostSpecInfo } from '../utils/index'
 
@@ -352,6 +352,50 @@ export default {
           const { storage_size_virtual, storage_commit } = getHostSpecInfo(row)
           const title = `${this.$t('common_233')}: ${sizestr(storage_commit, 'M', 1024)}, ${this.$t('common_234')}: ${sizestr(storage_size_virtual, 'M', 1024)}`
           return title
+        },
+      },
+      {
+        field: 'disk_rate',
+        title: i18n.t('common.disk_rate'),
+        minWidth: 100,
+        slots: {
+          default: ({ row }) => {
+            if (row.alert_data && row.alert_data.hasOwnProperty('disk_read_rate') && row.alert_data.hasOwnProperty('disk_write_rate')) {
+              return [
+                <div>{i18n.t('common.disk_read_rate_value', [bytesPerSecondStr(row.alert_data.disk_read_rate)])}</div>,
+                <div>{i18n.t('common.disk_write_rate_value', [bytesPerSecondStr(row.alert_data.disk_write_rate)])}</div>,
+              ]
+            }
+            return '-'
+          },
+        },
+        formatter: ({ row }) => {
+          if (row.alert_data && row.alert_data.hasOwnProperty('disk_read_rate') && row.alert_data.hasOwnProperty('disk_write_rate')) {
+            return `${i18n.t('common.disk_read_rate_value', [bytesPerSecondStr(row.alert_data.disk_read_rate)])} / ${i18n.t('common.disk_write_rate_value', [bytesPerSecondStr(row.alert_data.disk_write_rate)])}`
+          }
+          return '-'
+        },
+      },
+      {
+        field: 'net_iops',
+        title: i18n.t('common.net_iops'),
+        minWidth: 100,
+        slots: {
+          default: ({ row }) => {
+            if (row.alert_data && row.alert_data.hasOwnProperty('net_in_rate') && row.alert_data.hasOwnProperty('net_out_rate')) {
+              return [
+                <div>{i18n.t('common.net_in_rate_value', [bytesPerSecondStr(row.alert_data.net_in_rate)])}</div>,
+                <div>{i18n.t('common.net_out_rate_value', [bytesPerSecondStr(row.alert_data.net_out_rate)])}</div>,
+              ]
+            }
+            return '-'
+          },
+        },
+        formatter: ({ row }) => {
+          if (row.alert_data && row.alert_data.hasOwnProperty('net_in_rate') && row.alert_data.hasOwnProperty('net_out_rate')) {
+            return `${i18n.t('common.net_in_rate_value', [bytesPerSecondStr(row.alert_data.net_in_rate)])} / ${i18n.t('common.net_out_rate_value', [bytesPerSecondStr(row.alert_data.net_out_rate)])}`
+          }
+          return '-'
         },
       },
       {
