@@ -2011,5 +2011,6 @@
   "compute.kickstart_complete_action": "Manually trigger kickstart complete",
   "compute.kickstart_complete_tip": "Only the [Kickstart installing] state supports this operation",
   "compute.kickstart_complete_tip_2": "Manually trigger kickstart complete, and the virtual machine will be restarted to try to boot",
-  "compute.alert_status": "告警状態"
+  "compute.alert_status": "告警状態",
+  "compute.disable_sku_type_tip": "サポートされていない変更タイプが見つかりません。変更が失敗する可能性があります。"
 }

@@ -31,6 +31,7 @@
       <div class="mt-1" v-if="selectedTip">{{$t('compute.text_171', [ selectedTip ])}}</div>
     </div>
     <div class="mt-1" v-if="unfindTip" style="color: red;">{{$t('compute.sku_unfind_tip', [ unfindTip ])}}</div>
+    <div class="mt-1" v-if="disableSkuType && !supportSkuTypes.length" style="color: red;">{{$t('compute.disable_sku_type_tip')}}</div>
   </div>
 </template>
 
@@ -123,6 +124,14 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    supportSkuTypes: {
+      type: Array,
+      default: () => [],
+    },
+    disableSkuType: {
+      type: Boolean,
+      default: () => false,
+    },
   },
   data () {
     return {
@@ -172,9 +181,34 @@ export default {
         { field: 'memory_size_mb_compute', title: this.$t('compute.text_180') },
       ]
       if (this.skuDisabled) {
-        column.unshift({ field: 'radio', width: 40, slots: { default: ({ row }) => { return [row.id === this.selectedSkuData?.id ? <vxe-radio disabled></vxe-radio> : <vxe-radio disabled value={false}></vxe-radio>] } } })
+        column.unshift({
+          field: 'radio',
+          width: 40,
+          slots: {
+            default: ({ row }) => {
+              if (row.id === this.selectedSkuData?.id) {
+                return [<vxe-radio disabled></vxe-radio>]
+              }
+              return [<vxe-radio disabled value={false}></vxe-radio>]
+            },
+          },
+        })
       } else {
-        column.unshift({ type: 'radio', width: 40 })
+        column.unshift({
+          field: 'radio',
+          width: 40,
+          slots: {
+            default: ({ row }) => {
+              if (row.id === this.selectedSkuData?.id) {
+                return [<vxe-radio></vxe-radio>]
+              }
+              if (this.disableSkuType && this.supportSkuTypes.length && !this.supportSkuTypes.includes(row.name)) {
+                return [<vxe-radio disabled value={false}></vxe-radio>]
+              }
+              return [<vxe-radio value={false}></vxe-radio>]
+            },
+          },
+        })
       }
       const providerColumn = {
         field: 'provider',
@@ -350,8 +384,18 @@ export default {
       }
       return '0'
     },
-    skuChange ({ row }) {
+    skuChange ({ row } = {}) {
       if (this.skuDisabled) return
+      if (!row) return
+      // 与 tableColumn 中单选列一致：非当前选中且不在 supportSkuTypes 内时为 disabled，不触发切换
+      if (
+        this.disableSkuType &&
+        this.supportSkuTypes.length &&
+        !this.supportSkuTypes.includes(row.name) &&
+        row.id !== this.selectedSkuData?.id
+      ) {
+        return
+      }
       this.setSku(row, true)
     },
     skuTypeChange () {

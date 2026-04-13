@@ -2013,5 +2013,6 @@
   "compute.kickstart_complete_action": "手动触发无人值守安装完成",
   "compute.kickstart_complete_tip": "仅【无人值守安装中】状态支持该操作",
   "compute.kickstart_complete_tip_2": "手动触发无人值守安装完成，触发后会重启，尝试引导虚拟机",
-  "compute.alert_status": "告警状态"
+  "compute.alert_status": "告警状态",
+  "compute.disable_sku_type_tip": "未查询到支持修改的套餐类型，修改可能会失败。"
 }
