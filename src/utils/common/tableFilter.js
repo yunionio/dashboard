@@ -724,7 +724,8 @@ export const getCustomDistinctFieldFilter = ({ label, multiple = true, fetchMeth
     },
     formatter: val => {
       if (multiple) {
-        return `${field}.in(${val.join(',')})`
+        const list = val.map(item => `'${item}'`)
+        return `${field}.in(${list.join(',')})`
       }
       return `${field}.equals('${val}')`
     },
