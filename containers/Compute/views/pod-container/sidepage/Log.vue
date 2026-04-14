@@ -44,7 +44,7 @@ export default {
       containers: [],
       form: {
         activeContainer: '',
-        time: 'all',
+        time: 3600,
         customTime: 3600,
       },
       connectParams: '',
