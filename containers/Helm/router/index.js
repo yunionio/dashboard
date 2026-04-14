@@ -4,7 +4,6 @@ import Layout from '@/layouts/RouterView'
 import { setupKeys, isBaremetalProduct } from '@/utils/auth'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
-import store from '@/store'
 
 const VmRelase = () => import(/* webpackChunkName: "helm" */ /* webpackPrefetch: true */ '@Helm/views/vm-release')
 const VmReleaseUpdate = () => import(/* webpackChunkName: "helm" */ /* webpackPrefetch: true */ '@Helm/views/vm-release/update')
@@ -41,9 +40,6 @@ export default {
           meta: {
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.scheduledtask')) {
-                return true
-              }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
                 return true
               }
               return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
@@ -105,9 +101,6 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.vm_release')) {
                 return true
               }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
-                return true
-              }
               return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
                 default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso', 'hcs'],
@@ -136,9 +129,6 @@ export default {
             permission: 'k8s_releases_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_release')) {
-                return true
-              }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
                 return true
               }
               return !setupKeys.hasAllVersionedSetupKey({
@@ -170,9 +160,6 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_chart')) {
                 return true
               }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
-                return true
-              }
               return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
                 default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso', 'hcs'],
@@ -201,9 +188,6 @@ export default {
             permission: 'k8s_repos_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_repo')) {
-                return true
-              }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
                 return true
               }
               return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({

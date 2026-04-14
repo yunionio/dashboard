@@ -78,9 +78,6 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.vminstance')) {
                 return true
               }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
-                return true
-              }
               return !hasSetupKey(['onestack', 'private', 'public', 'vmware'])
             },
           },
@@ -147,9 +144,6 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.baremetal')) {
                 return true
               }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
-                return true
-              }
               return !hasSetupKey(['baremetal'])
             },
           },
@@ -199,9 +193,6 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.servertemplate')) {
                 return true
               }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
-                return true
-              }
               return !hasSetupKey(['onestack', 'azure'])
             },
           },
@@ -234,9 +225,6 @@ export default {
             permission: 'scalinggroups_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.scalinggroup')) {
-                return true
-              }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
                 return true
               }
               return !hasSetupKey(['onestack', 'azure'])
@@ -305,9 +293,6 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.host_image')) {
                 return true
               }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
-                return true
-              }
               return !hasSetupKey(['onestack'])
             },
           },
@@ -327,9 +312,6 @@ export default {
             permission: 'images_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.image')) {
-                return true
-              }
-              if (store.getters?.globalSetting?.value?.productVersion !== 'AI') {
                 return true
               }
               return !hasSetupKey(['onestack', 'private', 'public', 'baremetal', 'vmware'])
@@ -409,9 +391,6 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.disk_snapshot')) {
                 return true
               }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
-                return true
-              }
               return !hasSetupKey(['onestack', 'private', 'public'])
             },
           },
@@ -434,9 +413,6 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.instance_snapshot')) {
                 return true
               }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
-                return true
-              }
               return !hasSetupKey(['onestack', 'vmware'])
             },
           },
@@ -457,9 +433,6 @@ export default {
             permission: 'snapshotpolicy_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.snapshotpolicy')) {
-                return true
-              }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
                 return true
               }
               return !hasSetupKey(['onestack', 'aliyun', 'qcloud'])
@@ -490,9 +463,6 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.disk_backup')) {
                 return true
               }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
-                return true
-              }
               return !hasSetupKey(['onestack'])
             },
           },
@@ -512,9 +482,6 @@ export default {
             permission: 'instancebackups_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.instance_backup')) {
-                return true
-              }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
                 return true
               }
               return !hasSetupKey(['onestack'])
@@ -629,9 +596,6 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.tap_service')) {
                 return true
               }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
-                return true
-              }
               return !(hasSetupKey(['onestack']) && store.getters.isAdminMode)
             },
           },
@@ -665,9 +629,6 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.keypair')) {
                 return true
               }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
-                return true
-              }
               return !hasSetupKey(['onestack', 'public', 'private', 'baremetal', 'vmware'])
             },
           },
@@ -695,9 +656,6 @@ export default {
             permission: 'serverskus_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.sku')) {
-                return true
-              }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
                 return true
               }
               return !hasSetupKey(['onestack', 'private', 'vmware', 'public'])
