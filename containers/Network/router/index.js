@@ -4,7 +4,7 @@
 // import LoadbalancerclusterList from '@Network/views/ssh-service'
 
 import Layout from '@/layouts/RouterView'
-import { hasSetupKey, isBaremetalProduct } from '@/utils/auth'
+import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
 import store from '@/store'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
@@ -196,10 +196,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.vpc')) {
                 return true
               }
-              if (store.getters?.globalSetting?.value?.productVersion === 'LightEdge') {
-                return true
-              }
-              return isBaremetalProduct() || !hasSetupKey(['openstack', 'onestack', 'zstack', 'dstack', 'public', 'baremetal', 'apsara', 'hcso', 'hcs', 'bingocloud'])
+              return !hasSetupKey(['openstack', 'onestack', 'zstack', 'dstack', 'public', 'baremetal', 'apsara', 'hcso', 'hcs', 'bingocloud'])
             },
           },
           component: Layout,
