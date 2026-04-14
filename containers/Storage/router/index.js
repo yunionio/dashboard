@@ -202,9 +202,6 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.backup_storage')) {
                 return true
               }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
-                return true
-              }
               if (store.getters.isProjectMode) return true
               return !hasSetupKey(['onestack'])
             },

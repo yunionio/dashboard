@@ -533,9 +533,6 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.ssh_proxy')) {
                 return true
               }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
-                return true
-              }
               return !hasSetupKey(['private', 'vmware', 'public'])
             },
           },
@@ -560,9 +557,6 @@ export default {
             permission: 'sshproxy_service_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.ssh_agent')) {
-                return true
-              }
-              if (store.getters?.globalSetting?.value?.productVersion === 'AI') {
                 return true
               }
               return store.getters.isDomainMode || !hasSetupKey(['private', 'vmware', 'public'])
