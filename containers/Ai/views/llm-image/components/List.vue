@@ -49,6 +49,12 @@ export default {
           },
         },
         {
+          label: this.$t('aice.llm_image.import_community_image'),
+          action: () => {
+            this.$router.push({ name: 'LlmImageImportCommunity' })
+          },
+        },
+        {
           label: this.$t('table.action.delete'),
           action: () => {
             this.createDialog('DeleteResDialog', {
