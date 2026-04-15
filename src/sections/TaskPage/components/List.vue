@@ -6,7 +6,8 @@
     :taskStage="taskStage"
     :listId="id"
     :objId="objId"
-    :getParams="getParams" />
+    :getParams="getParams"
+    :ignoreResId="ignoreResId" />
 </template>
 
 <script>
@@ -37,6 +38,10 @@ export default {
     root: {
       type: Boolean,
       default: true,
+    },
+    ignoreResId: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {

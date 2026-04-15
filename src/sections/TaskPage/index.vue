@@ -3,7 +3,7 @@
     <template v-if="!isSidepage">
       <page-header :title="title" :tabs="taskStageOptions" :current-tab.sync="taskStage" />
       <page-body>
-        <list :id="listId" :resource="resource" :archivedResource="archivedResource" :taskStage="taskStage" :objId="objId" :getParams="getParams" />
+        <list :id="listId" :resource="resource" :archivedResource="archivedResource" :taskStage="taskStage" :objId="objId" :getParams="getParams" :ignoreResId="ignoreResId" />
       </page-body>
     </template>
     <template v-else>
@@ -12,7 +12,7 @@
           <a-tab-pane :tab="obj.label" :key="obj.key" />
         </template>
       </a-tabs>
-      <list :id="listId" :resource="resource" :archivedResource="archivedResource" :taskStage="taskStage" :objId="objId" :getParams="getParams" :root="root" />
+      <list :id="listId" :resource="resource" :archivedResource="archivedResource" :taskStage="taskStage" :objId="objId" :getParams="getParams" :root="root" :ignoreResId="ignoreResId" />
     </template>
   </div>
 </template>
@@ -46,6 +46,10 @@ export default {
     root: {
       type: Boolean,
       default: true,
+    },
+    ignoreResId: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
