@@ -27,7 +27,7 @@ import marked from 'marked'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
-const LLM_IMAGES_URL = 'http://localhost:3000/llmimages.yaml'
+const LLM_IMAGES_URL = 'https://www.cloudpods.org/llmimages.yaml'
 
 const LLM_TYPE_ICONS = {
   openclaw: require('@/assets/images/llm-images/openclaw.svg'),
