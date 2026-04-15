@@ -60,6 +60,33 @@
       <labels :decorators="decorators.env" :title="$t('compute.repo.variables')" :keyLabel="$t('compute.repo.variables')" />
     </a-form-item>
     <a-form-item label="">
+      <a-checkbox v-decorator="decorators.enableLxcfs">{{$t('compute.repo.enable_lxcfs')}}</a-checkbox>
+    </a-form-item>
+    <a-form-item label="">
+      <a-checkbox v-decorator="decorators.enableSysDiskOverlay" @change="handleOverlayChange">{{$t('compute.repo.enable_sys_disk_overlay')}}</a-checkbox>
+    </a-form-item>
+    <a-form-item v-if="overlayEnabled" :label="$t('compute.repo.overlay_disk')">
+      <data-disk
+        ref="overlayDiskRef"
+        :form="form"
+        type="idc"
+        :hypervisor="form.fd.hypervisor"
+        :capabilityData="form.fi.capability || {}"
+        :decorator="decorators.overlayDisk"
+        :defaultType="form.fd.systemDiskType"
+        :isVminstanceContainer="true"
+        :isAddDiskShow="false"
+        fieldPrefix="overlayDisk" />
+    </a-form-item>
+    <a-form-item v-if="overlayEnabled" label="">
+      <a-checkbox v-decorator="decorators.rootfsPersistent">
+        {{$t('compute.repo.rootfs_persistent')}}
+        <a-tooltip :title="$t('compute.repo.rootfs_persistent.tips')">
+          <a-icon type="question-circle-o" />
+        </a-tooltip>
+      </a-checkbox>
+    </a-form-item>
+    <a-form-item label="">
       <a-checkbox v-decorator="decorators.privileged">{{$t('compute.repo.privileged_mode')}}</a-checkbox>
     </a-form-item>
   </div>
@@ -69,12 +96,14 @@
 import * as R from 'ramda'
 import Labels from '@Compute/sections/Labels'
 import MirrorRegistry from '@Compute/sections/MirrorRegistry'
+import DataDisk from '@Compute/sections/DataDisk'
 
 export default {
   name: 'SpecContainerForm',
   components: {
     Labels,
     MirrorRegistry,
+    DataDisk,
   },
   props: {
     decorators: {
@@ -93,6 +122,7 @@ export default {
     return {
       source: 'custom', // custom or registry
       labelList: [],
+      overlayEnabled: false,
     }
   },
   computed: {
@@ -140,6 +170,16 @@ export default {
     },
     handleSourceChange (e) {
       this.source = e.target.value
+    },
+    handleOverlayChange (e) {
+      this.overlayEnabled = e.target.checked
+      if (this.overlayEnabled) {
+        this.$nextTick(() => {
+          if (this.$refs.overlayDiskRef) {
+            this.$refs.overlayDiskRef.add()
+          }
+        })
+      }
     },
     handleCredentialChange (credentialId) {
       if (this.form && this.form.fc && this.decorators.imageCredentialId) {
