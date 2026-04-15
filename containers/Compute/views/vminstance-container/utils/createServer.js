@@ -757,6 +757,93 @@ export const createVmDecorators = () => {
           initialValue: false,
         },
       ],
+      enableLxcfs: i => [
+        `containerEnableLxcfs[${i}]`,
+        {
+          valuePropName: 'checked',
+          initialValue: true,
+        },
+      ],
+      enableSysDiskOverlay: i => [
+        `containerEnableSysDiskOverlay[${i}]`,
+        {
+          valuePropName: 'checked',
+          initialValue: false,
+        },
+      ],
+      rootfsPersistent: i => [
+        `containerRootfsPersistent[${i}]`,
+        {
+          valuePropName: 'checked',
+          initialValue: false,
+        },
+      ],
+      overlayDisk: i => ({
+        type: j => [
+          `overlayDiskTypes[${i}][${j}]`,
+          {
+            rules: [
+              { validator: isRequired(), message: i18n.t('compute.text_121') },
+            ],
+          },
+        ],
+        size: j => [
+          `overlayDiskSizes[${i}][${j}]`,
+          {
+            rules: [
+              { required: true, message: i18n.t('compute.text_122') },
+            ],
+          },
+        ],
+        schedtag: j => [
+          `overlayDiskSchedtags[${i}][${j}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+            rules: [{
+              required: true,
+              message: i18n.t('compute.text_123'),
+            }],
+          },
+        ],
+        policy: j => [
+          `overlayDiskPolicys[${i}][${j}]`,
+          {
+            initialValue: '',
+            validateTrigger: ['blur', 'change'],
+            rules: [{
+              required: true,
+              message: i18n.t('compute.text_123'),
+            }],
+          },
+        ],
+        snapshot: j => [
+          `overlayDiskSnapshots[${i}][${j}]`,
+        ],
+        filetype: j => [
+          `overlayDiskFiletypes[${i}][${j}]`,
+        ],
+        mountPath: j => [
+          `overlayDiskMountPaths[${i}][${j}]`,
+        ],
+        storage: j => [
+          `overlayDiskStorages[${i}][${j}]`,
+          {
+            rules: [{
+              required: true,
+              message: i18n.t('compute.text_1351'),
+            }],
+          },
+        ],
+        iops: j => [
+          `overlayDiskIops[${i}][${j}]`,
+        ],
+        throughput: j => [
+          `overlayDiskThroughputs[${i}][${j}]`,
+        ],
+        preallocation: j => [
+          `overlayDiskPreallocation[${i}][${j}]`,
+        ],
+      }),
     },
   }
 }
@@ -1195,7 +1282,7 @@ export class GenCreateData {
     return prefer_manager_id
   }
 
-  generatePod () {
+  generatePod (data) {
     const tabKeys = this.fi.containerPanes.map(v => v.key)
     const getEnvs = (names, values) => {
       const envs = []
@@ -1232,6 +1319,7 @@ export class GenCreateData {
         command: this.fd.containerCommands?.[k]?.split(' '),
         args: this.fd.containerArgs?.[k]?.split(' '),
         privileged: this.fd.containerPrivilegeds?.[k],
+        enable_lxcfs: this.fd.containerEnableLxcfs?.[k] || false,
         devices: pciDevices.map((item, idx) => {
           return {
             type: 'isolated_device',
@@ -1242,6 +1330,44 @@ export class GenCreateData {
         }),
         envs: getEnvs(this.fd.containerEnvNames?.[k], this.fd.containerEnvValues?.[k]),
         volume_mounts: getVolumeMounts(this.fd.containerVolumeMountNames?.[k], this.fd.containerVolumeMountPaths?.[k]),
+      }
+      if (this.fd.containerEnableSysDiskOverlay?.[k]) {
+        const overlayDiskSizes = this.fd.overlayDiskSizes?.[k]
+        const overlayDiskTypes = this.fd.overlayDiskTypes?.[k]
+        if (overlayDiskSizes) {
+          const firstKey = Object.keys(overlayDiskSizes)[0]
+          if (firstKey) {
+            const size = overlayDiskSizes[firstKey]
+            const diskTypeObj = overlayDiskTypes?.[firstKey]
+            let backend = diskTypeObj?.key || ''
+            let medium = ''
+            if (diskSupportTypeMedium(this.fd.hypervisor)) {
+              medium = getOriginDiskKey(backend, true)
+              backend = getOriginDiskKey(backend)
+            }
+            const rootfsIndex = data.disks.length
+            const overlayDisk = {
+              disk_type: 'data',
+              index: rootfsIndex + 1,
+              backend,
+              size: size * 1024,
+              format: 'raw',
+              fs: 'ext4',
+            }
+            if (medium) {
+              overlayDisk.medium = medium
+            }
+            data.disks.push(overlayDisk)
+            spec.rootfs = {
+              type: 'disk',
+              disk: {
+                index: rootfsIndex,
+                sub_directory: 'rootfs',
+              },
+              persistent: this.fd.containerRootfsPersistent?.[k] || false,
+            }
+          }
+        }
       }
       if (credentialId) {
         spec.image_credential_id = credentialId
