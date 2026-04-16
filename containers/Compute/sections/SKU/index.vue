@@ -31,7 +31,7 @@
       <div class="mt-1" v-if="selectedTip">{{$t('compute.text_171', [ selectedTip ])}}</div>
     </div>
     <div class="mt-1" v-if="unfindTip" style="color: red;">{{$t('compute.sku_unfind_tip', [ unfindTip ])}}</div>
-    <div class="mt-1" v-if="disableSkuType && !supportSkuTypes.length" style="color: red;">{{$t('compute.disable_sku_type_tip')}}</div>
+    <div class="mt-1" v-if="disableSkuType && !supportSkuTypes.length" style="color: red;">{{dataList.length > 1 ? $t('compute.disable_sku_type_tip_2') : $t('compute.disable_sku_type_tip')}}</div>
   </div>
 </template>
 
@@ -374,6 +374,11 @@ export default {
     }
   },
   methods: {
+    getFirstSupportedSku (list = []) {
+      if (!this.disableSkuType || !this.supportSkuTypes.length) return null
+      if (!Array.isArray(list) || !list.length) return null
+      return list.find(item => item?.name && this.supportSkuTypes.includes(item.name)) || null
+    },
     fetchData () {
       this.fetchSkuTypes()
       this.fetchSkuList().then(this.fetchCloudSkuRatesList)
@@ -424,10 +429,36 @@ export default {
           chooseSku = sku
         }
       }
+      // 自动选中时：若开启 disableSkuType 且存在 supportSkuTypes，则选中一个“可用”的 sku（name 在支持列表内）
+      if (
+        !isSkuChange &&
+        this.disableSkuType &&
+        this.supportSkuTypes.length &&
+        chooseSku?.name &&
+        !this.supportSkuTypes.includes(chooseSku.name)
+      ) {
+        const supportedSku = this.getFirstSupportedSku(this.skuResults) || this.getFirstSupportedSku(this.skuList)
+        if (supportedSku) {
+          chooseSku = supportedSku
+        } else {
+          // 没有任何受支持的 sku 时，不自动选中不可用项
+          chooseSku = {}
+        }
+      }
       this.$nextTick(() => {
-        this.selectedSkuData = chooseSku
-        this.$refs.tableRef && this.$refs.tableRef.setRadioRow(chooseSku)
-        this.$emit('change', chooseSku)
+        const hasSelected = !!chooseSku?.id
+        this.selectedSkuData = hasSelected ? chooseSku : {}
+        if (this.$refs.tableRef) {
+          if (hasSelected) {
+            this.$refs.tableRef.setRadioRow(chooseSku)
+          } else if (typeof this.$refs.tableRef.clearRadioRow === 'function') {
+            this.$refs.tableRef.clearRadioRow()
+          } else {
+            // 兼容旧版本：传 null/undefined 以清空选中
+            this.$refs.tableRef.setRadioRow(null)
+          }
+        }
+        this.$emit('change', hasSelected ? chooseSku : {})
       })
     },
     getHypervisor (data) {

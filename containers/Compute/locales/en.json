@@ -2010,5 +2010,6 @@
   "compute.kickstart_complete_tip": "Only the [Kickstart installing] state supports this operation",
   "compute.kickstart_complete_tip_2": "Manually trigger kickstart complete, and the virtual machine will be restarted to try to boot",
   "compute.alert_status": "Alert status",
-  "compute.disable_sku_type_tip": "No supported modification types found, modification may fail."
+  "compute.disable_sku_type_tip": "No supported modification types found, modification may fail.",
+  "compute.disable_sku_type_tip_2": "No supported simultaneous modification types found, modification may fail."
 }
