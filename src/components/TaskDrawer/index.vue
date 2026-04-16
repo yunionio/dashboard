@@ -6,6 +6,7 @@
     :list-id="id || 'TaskListForCustomResourceSidePage'"
     :getParams="getParams"
     isSidepage
+    :ignoreResId="ignoreResId"
     root />
 </template>
 
@@ -31,6 +32,10 @@ export default {
       type: String,
     },
     getParams: [Object, Function],
+    ignoreResId: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     archivedResource () {

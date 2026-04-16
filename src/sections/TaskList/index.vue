@@ -50,6 +50,10 @@ export default {
       type: String,
     },
     getParams: [Object, Function],
+    ignoreResId: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -247,7 +251,11 @@ export default {
       }
       param.filter = filter
       const params = R.is(Function, this.getParams) ? this.getParams() : this.getParams || {}
-      return { ...param, ...params }
+      const ret = { ...param, ...params }
+      if (this.ignoreResId) {
+        delete ret.obj_id
+      }
+      return ret
     },
   },
 }
