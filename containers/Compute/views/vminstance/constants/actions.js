@@ -1794,11 +1794,11 @@ const getSingleActions = function (ctx) {
                 },
                 meta: (obj) => {
                   const ret = { validate: true }
-                  if (obj.metadata?.bastion_server) {
-                    ret.validate = false
-                    ret.tooltip = i18n.t('compute.already_in_bastion')
-                    return ret
-                  }
+                  // if (obj.metadata?.bastion_server) {
+                  //   ret.validate = false
+                  //   ret.tooltip = i18n.t('compute.already_in_bastion')
+                  //   return ret
+                  // }
                   if (obj.status !== 'running') {
                     ret.validate = false
                     ret.tooltip = i18n.t('compute.text_1282')

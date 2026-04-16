@@ -1223,12 +1223,12 @@ export default {
                     },
                     meta: () => {
                       const ret = { validate: true }
-                      const isSomeBastionServer = this.list.selectedItems.some((item) => { return item.metadata?.bastion_server })
-                      if (isSomeBastionServer) {
-                        ret.validate = false
-                        ret.tooltip = this.$t('compute.already_in_bastion')
-                        return ret
-                      }
+                      // const isSomeBastionServer = this.list.selectedItems.some((item) => { return item.metadata?.bastion_server })
+                      // if (isSomeBastionServer) {
+                      //   ret.validate = false
+                      //   ret.tooltip = this.$t('compute.already_in_bastion')
+                      //   return ret
+                      // }
                       const isEveryRunning = this.list.selectedItems.every((item) => { return item.status === 'running' })
                       if (!isEveryRunning) {
                         ret.validate = false
