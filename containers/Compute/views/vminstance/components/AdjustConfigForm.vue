@@ -68,6 +68,7 @@
               :defaultIops="sysdisk.iops"
               :defaultThroughput="sysdisk.throughput"
               :capability-data="form.fi.capability"
+              allow-capability-types-without-sku
               :disabled="true"
               :ignoreStorageStatus="true"
               is-iops-show
@@ -84,6 +85,7 @@
               :capability-data="form.fi.capability"
               :defaultType="form.fd.systemDiskType"
               :sku="form.fd.sku"
+              allow-capability-types-without-sku
               :image="form.fi.imageMsg"
               :domain="domain"
               :storageParams="dataDiskStorageParams"
@@ -814,6 +816,8 @@ export default {
           this.supportSkuTypes = (list.length
             ? list.reduce((acc, names) => acc.filter((n) => names.includes(n)), [...list[0]])
             : [])
+        }).catch(() => {
+          this.supportSkuTypes = []
         }).finally(() => {
           this.disableSkuTypeValue = true
         })
@@ -1027,7 +1031,7 @@ export default {
           }
         }
       } catch (error) {
-        throw error
+        // 避免点击事件触发的 async 函数产生 Uncaught(in promise)；表单校验失败等场景无需额外提示
       } finally {
         this.loading = false
       }
@@ -1080,6 +1084,7 @@ export default {
           const vcpuInit = vcpuDecorator[1].initialValue
           this.cpuChange(vcpuInit)
         })
+        .catch(() => {})
     },
     onValuesChange (props, values) {
       Object.keys(values).forEach((key) => {
@@ -1192,68 +1197,70 @@ export default {
       props.forEach(iterator, this)
     },
     async _getPriceList2 () {
-      const f = this.form.fd
-      if (!this.hasMeterService) return // 如果没有 meter 服务则取消调用
-      if (R.isEmpty(f.sku) || R.isNil(f.sku)) return
-      const isPublic = this.dataList[0].cloud_env === SERVER_TYPE.public
-      if (isPublic && (R.isNil(f.sku.region_ext_id) || R.isEmpty(f.sku.region_ext_id))) return
-      if (R.isNil(f.systemDiskSize)) return
+      try {
+        const f = this.form.fd
+        if (!this.hasMeterService) return // 如果没有 meter 服务则取消调用
+        if (R.isEmpty(f.sku) || R.isNil(f.sku)) return
+        const isPublic = this.dataList[0].cloud_env === SERVER_TYPE.public
+        if (isPublic && (R.isNil(f.sku.region_ext_id) || R.isEmpty(f.sku.region_ext_id))) return
+        if (R.isNil(f.systemDiskSize)) return
 
-      const pf = new PriceFetcher()
-      pf.initialForm(this.$store.getters.scope, f.sku, f.duration || '1M', this.selectedItem?.billing_type, this.isPublic, this.cloudaccountId)
-      // add price items
-      if (!isPublic) {
-        // server instance
-        pf.addCpu(f.vcpu)
-        pf.addMem(f.vmem / 1024)
+        const pf = new PriceFetcher()
+        pf.initialForm(this.$store.getters.scope, f.sku, f.duration || '1M', this.selectedItem?.billing_type, this.isPublic, this.cloudaccountId)
+        // add price items
+        if (!isPublic) {
+          // server instance
+          pf.addCpu(f.vcpu)
+          pf.addMem(f.vmem / 1024)
 
-        // gpu
-        if (f.gpuEnable && f.gpu && f.gpu.indexOf('=') >= 0) {
-          const tmps = f.gpu.split('=')[1].split(':')
-          if (tmps.length >= 2) {
-            pf.addGpu(`${tmps[0]}.${tmps[1]}`, f.gpuCount || 0)
+          // gpu
+          if (f.gpuEnable && f.gpu && f.gpu.indexOf('=') >= 0) {
+            const tmps = f.gpu.split('=')[1].split(':')
+            if (tmps.length >= 2) {
+              pf.addGpu(`${tmps[0]}.${tmps[1]}`, f.gpuCount || 0)
+            }
           }
+        } else {
+          // server instance
+          pf.addServer(f.sku.name, 1)
+          // others
         }
-      } else {
-        // server instance
-        pf.addServer(f.sku.name, 1)
-        // others
-      }
 
-      // disks
-      const { systemDiskSize, systemDiskType } = f
-      const { systemDiskMedium, dataDiskMedium } = this.form.fi
-      let systemDisk = systemDiskType.key
-      // 磁盘区分介质
-      if (diskSupportTypeMedium(this.selectedItem.hypervisor)) {
-        systemDisk = getOriginDiskKey(systemDisk)
-      }
-      if (!isPublic) systemDisk = `${systemDiskMedium}::${systemDisk}`
-      pf.addDisk(systemDisk, systemDiskSize)
-      if (this.dataDiskType) {
-        const datadisks = Object.values(this.form.fd.dataDiskSizes || {})
-        let dataDisk = this.dataDiskType
+        // disks
+        const { systemDiskSize, systemDiskType } = f
+        const { systemDiskMedium, dataDiskMedium } = this.form.fi
+        let systemDisk = systemDiskType.key
         // 磁盘区分介质
         if (diskSupportTypeMedium(this.selectedItem.hypervisor)) {
-          dataDisk = getOriginDiskKey(dataDisk)
+          systemDisk = getOriginDiskKey(systemDisk)
         }
-        if (!isPublic) dataDisk = `${dataDiskMedium}::${dataDisk}`
-        pf.addDisks(dataDisk, datadisks)
-      }
+        if (!isPublic) systemDisk = `${systemDiskMedium}::${systemDisk}`
+        pf.addDisk(systemDisk, systemDiskSize)
+        if (this.dataDiskType) {
+          const datadisks = Object.values(this.form.fd.dataDiskSizes || {})
+          let dataDisk = this.dataDiskType
+          // 磁盘区分介质
+          if (diskSupportTypeMedium(this.selectedItem.hypervisor)) {
+            dataDisk = getOriginDiskKey(dataDisk)
+          }
+          if (!isPublic) dataDisk = `${dataDiskMedium}::${dataDisk}`
+          pf.addDisks(dataDisk, datadisks)
+        }
 
-      // eip
-      if (f.eip_bw && f.eip_type === EIP_TYPES_MAP.new.key) {
-        pf.addEipBandwidth(f.eip_bgp_type || '', f.eip_bw)
-      }
+        // eip
+        if (f.eip_bw && f.eip_type === EIP_TYPES_MAP.new.key) {
+          pf.addEipBandwidth(f.eip_bgp_type || '', f.eip_bw)
+        }
 
-      const price = await pf.getPriceObj()
-      price.setOptions({ count: this.count || 0 })
-      this.currency = price.currency
-      this.price = price.price
-      this.priceFormat = price.priceFormat
-      this.origin_price = price.originPrice
-      this.priceTips = price.priceTips
-      this.discount = price.discount
+        const price = await pf.getPriceObj()
+        price.setOptions({ count: this.count || 0 })
+        this.currency = price.currency
+        this.price = price.price
+        this.priceFormat = price.priceFormat
+        this.origin_price = price.originPrice
+        this.priceTips = price.priceTips
+        this.discount = price.discount
+      } catch (e) {}
     },
     isSomeLocal () {
       const { capability = {} } = this.form.fi
