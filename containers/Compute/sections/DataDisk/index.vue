@@ -122,6 +122,11 @@ export default {
     defaultType: {
       type: Object,
     },
+    // 调整配置等场景：SKU 可能晚于磁盘组件就绪，仍需用 zone capability 构建 typesMap
+    allowCapabilityTypesWithoutSku: {
+      type: Boolean,
+      default: false,
+    },
     isStorageShow: {
       type: Boolean,
       default: false,
@@ -279,7 +284,7 @@ export default {
           }
         }
       } else {
-        if (this.isPublic) {
+        if (this.isPublic && !this.allowCapabilityTypesWithoutSku) {
           currentTypes = []
         }
       }
