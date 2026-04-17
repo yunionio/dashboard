@@ -500,20 +500,23 @@ export default {
       const keys = list.map(t => t.key)
       return keys.includes(this.openclawProviderActiveTab) ? this.openclawProviderActiveTab : (keys[0] || '')
     },
-    openclawOllamaBaseUrlForPrimaryModel () {
-      const v = this.findOpenclawPrimaryModelVar()
+    openclawPrimaryModelBaseUrlForRefresh () {
+      const pk = this.openclawProviderActiveKey
+      const v = this.findOpenclawPrimaryModelVar(pk)
       if (!v) return ''
-      const pk = v.providerLabelKey
-      return String((this.openclawProviderBlob[pk] || {}).OLLAMA_BASE_URL ?? '')
+      const blob = (this.openclawProviderBlob || {})[pk] || {}
+      const t = v.modelProviderType || 'ollama'
+      if (t === 'vllm') return String(blob.VLLM_BASE_URL ?? '')
+      return String(blob.OLLAMA_BASE_URL ?? '')
     },
   },
   watch: {
-    openclawOllamaBaseUrlForPrimaryModel (newVal, oldVal) {
+    openclawPrimaryModelBaseUrlForRefresh (newVal, oldVal) {
       if (oldVal === undefined) return
       if (newVal === oldVal) return
-      const v = this.findOpenclawPrimaryModelVar()
+      const pk = this.openclawProviderActiveKey
+      const v = this.findOpenclawPrimaryModelVar(pk)
       if (!v) return
-      const pk = v.providerLabelKey
       const blob = this.openclawProviderBlob[pk] || {}
       const cur = blob.OPENCLAW_PRIMARY_MODEL
       const hasModel = cur !== undefined && cur !== null && String(cur).trim() !== ''
@@ -849,24 +852,35 @@ export default {
       const lower = (envKey || '').toLowerCase()
       return lower.includes('key') || lower.includes('secret') || lower.includes('token') || lower.includes('password')
     },
-    findOpenclawPrimaryModelVar () {
+    findOpenclawPrimaryModelVar (providerKey) {
+      if (providerKey == null || providerKey === '') return null
       const sections = this.OPENCLAW_PROVIDER_SECTIONS || []
       for (let i = 0; i < sections.length; i++) {
         const vars = sections[i].vars || []
         for (let j = 0; j < vars.length; j++) {
           const x = vars[j]
-          if (x.envKey === 'OPENCLAW_PRIMARY_MODEL' && x.component === 'a-select') return x
+          if (x.envKey === 'OPENCLAW_PRIMARY_MODEL' && x.component === 'a-select') {
+            if (x.providerLabelKey === providerKey) return x
+          }
         }
       }
       return null
     },
-    pickTrimmedOpenclawBlob (raw) {
+    pickTrimmedOpenclawBlob (raw, providerKey) {
       const blob = {}
+      const v = providerKey == null || providerKey === '' ? null : this.findOpenclawPrimaryModelVar(providerKey)
+      const prefix = v && v.modelProviderType
       Object.keys(raw || {}).forEach(k => {
         const val = raw[k]
         if (val === undefined || val === null) return
         const s = typeof val === 'string' ? val.trim() : String(val).trim()
-        if (s !== '') blob[k] = s
+        if (s !== '') {
+          if (k === 'OPENCLAW_PRIMARY_MODEL' && prefix) {
+            blob[k] = s.startsWith(`${prefix}/`) ? s : `${prefix}/${s}`
+          } else {
+            blob[k] = s
+          }
+        }
       })
       return blob
     },
@@ -931,12 +945,17 @@ export default {
       this.openclawPrimaryModelLoading = true
       try {
         const manager = new this.$Manager(resource, 'v2')
+        const providerType = (v && v.modelProviderType) || 'ollama'
+        const baseUrl = providerType === 'vllm' ? blob.VLLM_BASE_URL : blob.OLLAMA_BASE_URL
         const body = {
           scope: this.$store.getters.scope,
           limit: 20,
           ...getParamsForType('openclaw'),
-          url: blob.OLLAMA_BASE_URL,
-          provider_type: 'ollama',
+          url: baseUrl,
+          provider_type: providerType,
+        }
+        if (providerType === 'vllm' && blob.VLLM_API_KEY) {
+          body.api_key = blob.VLLM_API_KEY
         }
         if (search) body.filter = [`name.contains(${search})`]
         const { data } = await manager.create({ data: body })
@@ -1038,7 +1057,7 @@ export default {
           } else {
             const credName = this.genCredentialName({ llmName: this.instanceName, usage: 'channel', key: channelKey })
             const raw = this.openclawChannelBlob[channelKey] || {}
-            const blob = this.pickTrimmedOpenclawBlob(raw)
+            const blob = this.pickTrimmedOpenclawBlob(raw, '')
             if (channelKey === 'qqbot') {
               const missing = ['QQBOT_APP_ID', 'QQBOT_CLIENT_SECRET'].filter(k => !blob[k])
               if (missing.length) {
@@ -1137,7 +1156,7 @@ export default {
           } else {
             const credName = this.genCredentialName({ llmName: this.instanceName, usage: 'provider', key: this.providerShortName(providerKey) })
             const raw = this.openclawProviderBlob[providerKey] || {}
-            const blob = this.pickTrimmedOpenclawBlob(raw)
+            const blob = this.pickTrimmedOpenclawBlob(raw, providerKey)
             if (Object.keys(blob).length === 0) {
               this.$message.warning(this.$t('aice.openclaw.ai_providers.at_least_one'))
               this.loading = false
