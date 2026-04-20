@@ -98,7 +98,7 @@ export default {
           width: 120,
           slots: {
             default: ({ row }, h) => {
-              return [h('span', this.$t(`aice.llm_type.${row.llm_type}`) || row.llm_type)]
+              return [h('span', this.$t(`aice.llm_type.${(row.llm_type || '').replace(/-/g, '_')}`) || row.llm_type)]
             },
           },
         },

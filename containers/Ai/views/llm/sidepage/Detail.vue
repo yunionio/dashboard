@@ -217,7 +217,10 @@ export default {
         const loginUrl = info.login_url != null ? info.login_url : ''
         const username = info.username != null ? info.username : ''
         const password = info.password != null ? info.password : ''
-        const extra = info.extra && typeof info.extra === 'object' ? info.extra : {}
+        const extra = info.extra && typeof info.extra === 'object' ? { ...info.extra } : {}
+        if ((this.data.llm_type || '').toLowerCase() === 'hermes-agent') {
+          delete extra.OPENCLAW_GATEWAY_TOKEN
+        }
 
         loginSectionItems.push({
           field: 'login_url',

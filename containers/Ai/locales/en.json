@@ -345,6 +345,7 @@
   "aice.llm_type.dify": "Dify",
   "aice.llm_type.vllm": "vLLM",
   "aice.llm_type.openclaw": "OpenClaw",
+  "aice.llm_type.hermes_agent": "HermesAgent",
   "aice.llm_type.no_params_hint": "No additional parameters for this type",
   "aice.llm_network_type.guest_default": "Auto schedule - classic network",
   "aice.llm_network_type.hostlocal_default": "Auto schedule - host-local network",

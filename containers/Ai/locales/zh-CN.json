@@ -13,6 +13,7 @@
   "aice.llm_type.dify": "Dify",
   "aice.llm_type.vllm": "vLLM",
   "aice.llm_type.openclaw": "OpenClaw",
+  "aice.llm_type.hermes_agent": "HermesAgent",
   "aice.llm_type.no_params_hint": "该类型暂无额外参数配置",
   "aice.cpu": "CPU",
   "aice.llm_image.name": "镜像名称",
