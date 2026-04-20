@@ -73,18 +73,21 @@ export default {
           const i18n = originData._i18n.action
           const keys = originData.action
 
-          const obj = {}
+          const items = []
+          const labelCount = {}
 
           for (let i = 0, len = i18n.length; i < len; i++) {
-            const label = i18n[i]
             const key = keys[i]
-            if (obj[label]) {
-              obj[label].push(key)
-            } else {
-              obj[label] = [key]
-            }
+            const label = i18n[i] || key
+            if (!key || !label) continue
+            items.push({ label, key })
+            labelCount[label] = (labelCount[label] || 0) + 1
           }
-          return Object.keys(obj).filter(item => !!item).map((item) => ({ label: item, key: obj[item].join(',') }))
+
+          return items.map(it => {
+            if (labelCount[it.label] > 1 && it.key !== it.label) return { ...it, label: `${it.label} (${it.key})` }
+            return it
+          })
         },
       },
       severity: {
