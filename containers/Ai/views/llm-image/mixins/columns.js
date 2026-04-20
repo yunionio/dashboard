@@ -28,7 +28,7 @@ export default {
         title: this.$t('aice.llm_type.app'),
         width: 100,
         formatter: ({ row }) => {
-          const key = row.llm_type ? `aice.llm_type.${row.llm_type}` : ''
+          const key = row.llm_type ? `aice.llm_type.${row.llm_type.replace(/-/g, '_')}` : ''
           return key ? this.$t(key) : (row.llm_type || '-')
         },
       },

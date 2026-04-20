@@ -10,6 +10,7 @@ export const LLM_TYPE_OPTIONS = [
   { id: 'ollama', name: 'aice.llm_type.ollama' },
   // { id: 'vllm', name: 'aice.llm_type.vllm' },
   { id: 'comfyui', name: 'aice.llm_type.comfyui' },
+  { id: 'hermes-agent', name: 'aice.llm_type.hermes_agent' },
 ]
 
 /**
@@ -99,4 +100,5 @@ export const LLM_TYPE_FORM_CONFIG = {
   openclaw: [
     // OpenClaw 的 credential 已改为 providers/channels 级别分别配置（见 create/Form.vue）
   ],
+  'hermes-agent': [],
 }
