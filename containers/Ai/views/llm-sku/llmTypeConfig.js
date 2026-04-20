@@ -6,11 +6,11 @@
 // 供下拉使用的类型列表（name 为 i18n key）
 export const LLM_TYPE_OPTIONS = [
   { id: 'openclaw', name: 'aice.llm_type.openclaw' },
+  { id: 'hermes-agent', name: 'aice.llm_type.hermes_agent' },
   { id: 'dify', name: 'aice.llm_type.dify' },
   { id: 'ollama', name: 'aice.llm_type.ollama' },
   // { id: 'vllm', name: 'aice.llm_type.vllm' },
   { id: 'comfyui', name: 'aice.llm_type.comfyui' },
-  { id: 'hermes-agent', name: 'aice.llm_type.hermes_agent' },
 ]
 
 /**

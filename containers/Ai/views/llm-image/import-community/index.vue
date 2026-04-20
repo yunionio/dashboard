@@ -31,6 +31,7 @@ const LLM_IMAGES_URL = 'https://www.cloudpods.org/llmimages.yaml'
 
 const LLM_TYPE_ICONS = {
   openclaw: require('@/assets/images/llm-images/openclaw.svg'),
+  'hermes-agent': require('@/assets/images/llm-images/hermes-agent.svg'),
   ollama: require('@/assets/images/llm-images/ollama.svg'),
   vllm: require('@/assets/images/llm-images/vllm.svg'),
   dify: require('@/assets/images/llm-images/dify.svg'),
