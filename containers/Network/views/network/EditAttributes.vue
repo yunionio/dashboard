@@ -325,6 +325,13 @@ export default {
       ],
       net6MaskOptions: [
         { label: '64', value: '64' },
+        { label: '72', value: '72' },
+        { label: '80', value: '80' },
+        { label: '88', value: '88' },
+        { label: '96', value: '96' },
+        { label: '104', value: '104' },
+        { label: '112', value: '112' },
+        { label: '120', value: '120' },
       ],
       wire_id: '',
       cloudEnv: '',
