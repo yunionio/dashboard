@@ -53,6 +53,7 @@ import ColumnsMixin from '../mixins/columns'
 import VmInstanceDetail from './Detail'
 import VmInstanceMonitorSidepage from './Monitor'
 import VmInstanceAlertSidepage from './Alert'
+import VmInstanceAlertHistory from './AlertHistory'
 import VmSnapshotSidepage from './Snapshot'
 import SecgroupList from './Secgroup'
 import DiskListForVmInstanceSidepage from './DiskList'
@@ -73,6 +74,7 @@ export default {
     // HostList,
     VmInstanceMonitorSidepage,
     VmInstanceAlertSidepage,
+    VmInstanceAlertHistory,
     VmSnapshotSidepage,
     GpuList,
     ScheduledtasksList,
@@ -93,6 +95,7 @@ export default {
       { label: this.$t('compute.text_113'), key: 'gpu-list' },
       { label: this.$t('compute.text_608'), key: 'vm-instance-monitor-sidepage' },
       { label: this.$t('compute.text_1301'), key: 'vm-instance-alert-sidepage' },
+      { label: this.$t('dictionary.alertrecord'), key: 'vm-instance-alert-history' },
       { label: this.$t('table.title.task'), key: 'task-drawer' },
       { label: this.$t('cloudenv.text_431'), key: 'scheduledtasks-list' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
