@@ -9,7 +9,7 @@ export const LLM_TYPE_OPTIONS = [
   { id: 'hermes-agent', name: 'aice.llm_type.hermes_agent' },
   { id: 'dify', name: 'aice.llm_type.dify' },
   { id: 'ollama', name: 'aice.llm_type.ollama' },
-  // { id: 'vllm', name: 'aice.llm_type.vllm' },
+  { id: 'vllm', name: 'aice.llm_type.vllm' },
   { id: 'comfyui', name: 'aice.llm_type.comfyui' },
 ]
 
