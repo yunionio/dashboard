@@ -19,6 +19,21 @@ OPENCLAW_PROVIDER_OPTIONS.forEach(labelKey => {
   if (short) PROVIDER_SHORT_TO_LABEL[short] = labelKey
 })
 
+/** 与 Detail/style.scss 中 .detail-item-value 间距一致，但不使用该 class：slot 外层已由 Detail 包一层 .detail-item-value，内层再套会重复 margin-left */
+const INNER_DETAIL_VALUE_STYLE = { marginLeft: '140px', wordBreak: 'break-all', color: '#1a2736' }
+const INNER_DETAIL_BLOCK_STYLE = { position: 'relative', minHeight: '24px' }
+
+/** 通用 llm_spec JSON 展示（与宿主机已生效配置 code-mirror 用法一致） */
+const LLM_SPEC_JSON_CM_OPTIONS = {
+  tabSize: 2,
+  styleActiveLine: true,
+  lineNumbers: true,
+  line: true,
+  mode: 'application/json',
+  theme: 'material',
+  readOnly: true,
+}
+
 /**
  * 取供应商展示名（与沟通渠道一致：先显示 provider 名称，再在同一行显示密钥名称）
  * 提交时 providers[].name 为 providerShortName(providerKey)，如 moonshot → 映射到 aice.openclaw.provider.moonshot 再 $t
@@ -127,9 +142,9 @@ function renderOpenclawSpec (spec, vm, h) {
         renderCredentialLink(credId, credDisplay, vm, h),
       ])
     })
-    nodes.push(h('div', { class: 'mb-2' }, [
+    nodes.push(h('div', { class: 'mb-2', style: INNER_DETAIL_BLOCK_STYLE }, [
       h('div', { class: 'detail-item-title text-secondary mb-1' }, sectionLabel),
-      h('div', { class: 'detail-item-value' }, rows),
+      h('div', { style: INNER_DETAIL_VALUE_STYLE }, rows),
     ]))
   }
   if (spec.channels && Array.isArray(spec.channels) && spec.channels.length > 0) {
@@ -143,21 +158,21 @@ function renderOpenclawSpec (spec, vm, h) {
         renderCredentialLink(credId, credDisplay, vm, h),
       ])
     })
-    nodes.push(h('div', { class: 'mb-2' }, [
+    nodes.push(h('div', { class: 'mb-2', style: INNER_DETAIL_BLOCK_STYLE }, [
       h('div', { class: 'detail-item-title text-secondary mb-1' }, sectionLabel),
-      h('div', { class: 'detail-item-value' }, rows),
+      h('div', { style: INNER_DETAIL_VALUE_STYLE }, rows),
     ]))
   }
   if (spec.workspace_templates && typeof spec.workspace_templates === 'object' && Object.keys(spec.workspace_templates).length > 0) {
     const label = vm.$t('aice.openclaw.workspace_templates')
     const keys = Object.keys(spec.workspace_templates)
-    nodes.push(h('div', { class: 'mb-2' }, [
+    nodes.push(h('div', { class: 'mb-2', style: INNER_DETAIL_BLOCK_STYLE }, [
       h('div', { class: 'detail-item-title text-secondary mb-1' }, label),
-      h('div', { class: 'detail-item-value' }, keys.join('、')),
+      h('div', { style: INNER_DETAIL_VALUE_STYLE }, keys.join('、')),
     ]))
   }
   if (nodes.length === 0) {
-    return h('div', { class: 'detail-item-value text-secondary' }, '-')
+    return h('div', { class: 'text-secondary' }, '-')
   }
   return h('div', { class: 'llm-spec-openclaw' }, nodes)
 }
@@ -247,13 +262,13 @@ function renderDifyImageRow (label, imageId, vm, h) {
           vm,
         },
       }, [display || imageId])
-      : h('span', { class: 'detail-item-value' }, '-'),
+      : h('span', { class: 'text-secondary' }, '-'),
   ])
 }
 
 function renderDifySpec (dify, vm, h) {
   if (!dify || typeof dify !== 'object') {
-    return h('div', { class: 'detail-item-value text-secondary' }, '-')
+    return h('div', { class: 'text-secondary' }, '-')
   }
   const rows = DIFY_SPEC_IMAGE_FIELDS.map(({ keys, labelKey }) => {
     const label = vm.$te(labelKey) ? vm.$t(labelKey) : keys[0]
@@ -271,7 +286,7 @@ function renderDifySpec (dify, vm, h) {
 function renderSkuProvidersBlock (vm, h) {
   const providers = vm.skuLlmSpecOpenclaw && vm.skuLlmSpecOpenclaw.providers
   if (!providers || !Array.isArray(providers) || providers.length === 0) {
-    return h('div', { class: 'detail-item-value text-secondary' }, '-')
+    return h('div', { class: 'text-secondary' }, '-')
   }
   const sectionLabel = vm.$te('aice.openclaw.section.ai_providers_detail')
     ? vm.$t('aice.openclaw.section.ai_providers_detail')
@@ -286,9 +301,9 @@ function renderSkuProvidersBlock (vm, h) {
     ])
   })
   return h('div', { class: 'llm-spec-openclaw' }, [
-    h('div', { class: 'mb-2' }, [
+    h('div', { class: 'mb-2', style: INNER_DETAIL_BLOCK_STYLE }, [
       h('div', { class: 'detail-item-title text-secondary mb-1' }, sectionLabel),
-      h('div', { class: 'detail-item-value' }, rows),
+      h('div', { style: INNER_DETAIL_VALUE_STYLE }, rows),
     ]),
   ])
 }
@@ -302,7 +317,7 @@ function renderSkuProvidersBlock (vm, h) {
 function renderLlmSpecContent (row, vm, h) {
   const spec = row.llm_spec
   if (!spec || (typeof spec === 'object' && Object.keys(spec).length === 0)) {
-    return h('div', { class: 'detail-item-value text-secondary' }, '-')
+    return h('div', { class: 'text-secondary' }, '-')
   }
   const type = (row.llm_type || '').toLowerCase()
   if (type === 'openclaw') {
@@ -316,9 +331,27 @@ function renderLlmSpecContent (row, vm, h) {
   // ollama / vllm / comfyui 等：通用 JSON 展示
   try {
     const text = typeof spec === 'string' ? spec : JSON.stringify(spec, null, 2)
-    return h('pre', { class: 'detail-item-value mb-0 p-2 bg-secondary rounded', style: { maxHeight: '320px', overflow: 'auto' } }, text)
+    return h('div', {
+      class: 'mb-0 w-100',
+      style: {
+        maxHeight: '320px',
+        overflow: 'auto',
+        width: '100%',
+        boxSizing: 'border-box',
+        border: '1px solid #d9d9d9',
+        borderRadius: '4px',
+        backgroundColor: 'transparent',
+      },
+    }, [
+      h('code-mirror', {
+        props: {
+          value: text,
+          options: LLM_SPEC_JSON_CM_OPTIONS,
+        },
+      }),
+    ])
   } catch (e) {
-    return h('div', { class: 'detail-item-value text-secondary' }, '-')
+    return h('div', { class: 'text-secondary' }, '-')
   }
 }
 
