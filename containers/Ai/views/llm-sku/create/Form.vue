@@ -308,27 +308,27 @@
             <div style="margin: 8px 0; font-weight: 500;">{{ $t('aice.host_paths.containers') }}</div>
             <div v-for="c in hp.containerRows" :key="c.key">
               <a-row :gutter="8">
-                <a-col :span="8">
+                <a-col :span="8" v-if="isApplyType">
                   <a-form-item>
                     <fixed-label-filter :label="$t('aice.host_paths.container_index')">
                       <a-input v-decorator="decorators.host_paths.container_index(hp.key, c.key)" :placeholder="$t('aice.host_paths.container_index.placeholder')" />
                     </fixed-label-filter>
                   </a-form-item>
                 </a-col>
-                <a-col :span="8">
+                <a-col :span="isApplyType ? 8 : 12">
                   <a-form-item>
                     <fixed-label-filter :label="$t('aice.host_paths.mount_path')">
                       <a-input v-decorator="decorators.host_paths.mount_path(hp.key, c.key)" :placeholder="$t('aice.host_paths.mount_path.placeholder')" />
                     </fixed-label-filter>
                   </a-form-item>
                 </a-col>
-                <a-col :span="8">
+                <a-col :span="isApplyType ? 8 : 12">
                   <a-form-item>
                     <fixed-label-filter :label="$t('aice.host_paths.propagation')">
-                      <a-select v-decorator="decorators.host_paths.propagation(hp.key, c.key)" :placeholder="$t('common.tips.select', [$t('aice.host_paths.propagation')])">
-                        <a-select-option value="private">private</a-select-option>
-                        <a-select-option value="rslave">rslave</a-select-option>
-                        <a-select-option value="rshared">rshared</a-select-option>
+                      <a-select v-decorator="decorators.host_paths.propagation(hp.key, c.key)" :placeholder="$t('common.tips.select', [$t('aice.host_paths.propagation')])" optionLabelProp="label" :dropdownMatchSelectWidth="false">
+                        <a-select-option value="private" label="private">private - {{ $t('aice.host_paths.propagation.private') }}</a-select-option>
+                        <a-select-option value="rslave" label="rslave">rslave - {{ $t('aice.host_paths.propagation.rslave') }}</a-select-option>
+                        <a-select-option value="rshared" label="rshared">rshared - {{ $t('aice.host_paths.propagation.rshared') }}</a-select-option>
                       </a-select>
                     </fixed-label-filter>
                   </a-form-item>
@@ -760,8 +760,7 @@ export default {
           type: rowKey => [
             `host_path_type_${rowKey}`,
             {
-              initialValue: getHostPathRow(rowKey)?.type,
-              rules: [{ required: true, message: this.$t('aice.host_paths.type.required') }],
+              initialValue: getHostPathRow(rowKey)?.type || 'directory',
             },
           ],
           path: rowKey => [
@@ -790,7 +789,7 @@ export default {
           container_index: (hpKey, cKey) => [
             `host_path_container_index_${hpKey}__${cKey}`,
             {
-              initialValue: getHostPathContainerRow(hpKey, cKey)?.containerIndex,
+              initialValue: getHostPathContainerRow(hpKey, cKey)?.containerIndex ?? (isApplyType ? undefined : 0),
               rules: [{ required: true, message: this.$t('aice.host_paths.container_index.required') }],
             },
           ],
@@ -807,7 +806,7 @@ export default {
           ],
           propagation: (hpKey, cKey) => [
             `host_path_propagation_${hpKey}__${cKey}`,
-            { initialValue: getHostPathContainerRow(hpKey, cKey)?.propagation },
+            { initialValue: getHostPathContainerRow(hpKey, cKey)?.propagation || 'rslave' },
           ],
           fs_user: (hpKey, cKey) => [
             `host_path_fs_user_${hpKey}__${cKey}`,
