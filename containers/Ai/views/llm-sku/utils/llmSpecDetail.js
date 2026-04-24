@@ -129,6 +129,15 @@ export async function fetchLlmSpecCredentialNames (vm) {
  */
 function renderOpenclawSpec (spec, vm, h) {
   const nodes = []
+  if (spec.manual_config) {
+    nodes.push(h('div', { class: 'mb-2', style: INNER_DETAIL_BLOCK_STYLE }, [
+      h('div', { class: 'detail-item-title text-secondary mb-1' }, vm.$t('aice.openclaw.manual_config')),
+      h('div', { style: INNER_DETAIL_VALUE_STYLE }, [
+        h('a-tag', { props: { color: 'blue' } }, vm.$t('compute.text_115')),
+        h('span', { class: 'text-secondary ml-1', style: { fontSize: '12px' } }, vm.$t('aice.openclaw.manual_config_tip')),
+      ]),
+    ]))
+  }
   if (spec.providers && Array.isArray(spec.providers) && spec.providers.length > 0) {
     const sectionLabel = vm.$te('aice.openclaw.section.ai_providers_detail')
       ? vm.$t('aice.openclaw.section.ai_providers_detail')

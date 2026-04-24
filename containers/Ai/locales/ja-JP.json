@@ -53,6 +53,8 @@
   "aice.openclaw.credential_mode.label": "設定方法",
   "aice.openclaw.new_credential_name": "シークレット名",
   "aice.openclaw.new_credential_name_tip": "新規作成したコンテナシークレットに以下で入力した KEY を保存し、本プランで参照します。",
+  "aice.openclaw.manual_config": "手動設定モード",
+  "aice.openclaw.manual_config_tip": "有効にすると、プロバイダーとチャネルの環境変数は注入されません。ユーザーがデスクトップに入ってから自分で設定します。",
   "aice.openclaw.provider_filter": "プロバイダーを選択",
   "aice.openclaw.provider_select_tip": "先に設定するプロバイダーを選択すると、対応する KEY が下に表示されます。複数選択可。1つ以上必須。",
   "aice.openclaw.provider_select_first": "上で設定するプロバイダーを選択すると、入力する KEY がここに表示されます。",
