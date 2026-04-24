@@ -64,6 +64,8 @@
   "aice.openclaw.credential_mode.label": "配置方式",
   "aice.openclaw.new_credential_name": "密钥名称",
   "aice.openclaw.new_credential_name_tip": "新建的容器密钥将用于存储下方填写的 KEY，并自动引用到本套餐。",
+  "aice.openclaw.manual_config": "手动配置模式",
+  "aice.openclaw.manual_config_tip": "启用后，系统不注入供应商和渠道环境变量，由用户进入桌面后自行配置",
   "aice.openclaw.provider_filter": "选择供应商",
   "aice.openclaw.provider_select_tip": "先选择要配置的供应商，下方将展示对应的 KEY 供填写。可多选，至少选择一项。",
   "aice.openclaw.provider_select_first": "请先在上方选择要配置的供应商，此处将展示需要填写的 KEY。",

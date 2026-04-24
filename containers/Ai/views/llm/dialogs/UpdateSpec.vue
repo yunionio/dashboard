@@ -4,6 +4,11 @@
     <div slot="body">
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
         <template v-if="isOpenclaw">
+          <a-form-item :label="$t('aice.openclaw.manual_config')">
+            <a-switch v-decorator="decorators.openclaw_manual_config" :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" />
+            <div class="text-color-secondary mt-1" style="font-size: 13px;">{{ $t('aice.openclaw.manual_config_tip') }}</div>
+          </a-form-item>
+          <template v-if="!form.fd.openclaw_manual_config">
           <a-divider orientation="left" class="openclaw-section-divider">{{ $t('aice.openclaw.section.ai_providers') }}</a-divider>
           <a-form-item :label="$t('aice.openclaw.provider_filter')" :extra="$t('aice.openclaw.provider_select_tip')">
             <a-select
@@ -379,6 +384,7 @@
               </a-tab-pane>
             </a-tabs>
           </template>
+          </template>
         </template>
         <template v-else>
           <a-alert type="warning" :message="$t('aice.llm_spec_update')" :description="$t('aice.llm_spec')" show-icon />
@@ -419,9 +425,17 @@ export default {
         }),
         fd: {
           openclaw_channels: [],
+          openclaw_manual_config: !!(row?.llm_spec?.openclaw?.manual_config),
         },
       },
       decorators: {
+        openclaw_manual_config: [
+          'openclaw_manual_config',
+          {
+            valuePropName: 'checked',
+            initialValue: !!(row?.llm_spec?.openclaw?.manual_config),
+          },
+        ],
         openclaw_channels: [
           'openclaw_channels',
           { initialValue: (row?.llm_spec?.openclaw?.channels || []).map(item => item.name), rules: [] },
@@ -995,6 +1009,20 @@ export default {
       this.loading = true
       try {
         const row = this.row
+        if (this.form.fd.openclaw_manual_config) {
+          await this.params.onManager('update', {
+            id: row.id,
+            managerArgs: {
+              data: {
+                llm_spec: { openclaw: { manual_config: true } },
+              },
+            },
+          })
+          this.$message.success(this.$t('common.success'))
+          this.cancelDialog()
+          this.params.refresh && this.params.refresh()
+          return
+        }
         const channelsSelected = this.form.fd.openclaw_channels || []
         const openclaw = {}
         const credManager = new this.$Manager('credentials', 'v1')

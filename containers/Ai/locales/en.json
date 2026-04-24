@@ -53,6 +53,8 @@
   "aice.openclaw.credential_mode.label": "Configuration",
   "aice.openclaw.new_credential_name": "Secret name",
   "aice.openclaw.new_credential_name_tip": "The new container secret will store the KEYs you enter below and be referenced by this plan.",
+  "aice.openclaw.manual_config": "Manual Config Mode",
+  "aice.openclaw.manual_config_tip": "When enabled, provider and channel env vars are not injected. Users configure them after entering the desktop.",
   "aice.openclaw.provider_filter": "Select providers",
   "aice.openclaw.provider_select_tip": "Select providers first; the corresponding KEYs will be shown below for you to fill. Multiple selection supported; at least one required.",
   "aice.openclaw.provider_select_first": "Select one or more providers above; the KEYs to fill will appear here.",

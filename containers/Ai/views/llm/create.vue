@@ -63,6 +63,11 @@
           </a-collapse-panel>
         </a-collapse>
         <template v-if="form.fd.llm_type === 'openclaw'">
+          <a-form-item :label="$t('aice.openclaw.manual_config')">
+            <a-switch v-decorator="decorators.openclaw_manual_config" :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" />
+            <div class="text-color-secondary mt-1" style="font-size: 13px;">{{ $t('aice.openclaw.manual_config_tip') }}</div>
+          </a-form-item>
+          <template v-if="!form.fd.openclaw_manual_config">
           <a-divider orientation="left" class="openclaw-section-divider">{{ $t('aice.openclaw.section.ai_providers') }}</a-divider>
           <a-form-item :label="$t('aice.openclaw.provider_filter')" :extra="$t('aice.openclaw.provider_select_tip')">
             <a-select
@@ -430,6 +435,7 @@
               </a-tab-pane>
             </a-tabs>
           </template>
+          </template>
         </template>
         <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_495')">
           <a-switch v-decorator="decorators.auto_start" :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" />
@@ -618,6 +624,13 @@ export default {
           {
             valuePropName: 'checked',
             initialValue: true,
+          },
+        ],
+        openclaw_manual_config: [
+          'openclaw_manual_config',
+          {
+            valuePropName: 'checked',
+            initialValue: false,
           },
         ],
         openclaw_channels: [
@@ -1178,194 +1191,198 @@ export default {
           data.prefer_host = values.prefer_host
         }
         if (this.form.fd.llm_type === 'openclaw') {
-          const openclaw = {}
-          const channelsSelected = values.openclaw_channels || []
-          const channels = []
-          const credManager = new this.$Manager('credentials', 'v1')
-          for (let i = 0; i < channelsSelected.length; i++) {
-            const channelKey = channelsSelected[i]
-            this.ensureChannelState(channelKey)
-            const mode = this.openclawChannelCredentialMode[channelKey] || 'new'
-            let credentialId
-            let exportKeys
-            if (mode === 'existing') {
-              credentialId = this.openclawChannelCredentialId[channelKey]
-              if (!credentialId) {
-                this.$message.warning(this.$t('common.tips.select', [this.$t('aice.container_secret')]))
-                this.loading = false
-                return
-              }
-              exportKeys = this.openclawChannelExportKeys[channelKey] || []
-              if (channelKey === 'qqbot') {
-                const requiredKeys = ['QQBOT_APP_ID', 'QQBOT_CLIENT_SECRET']
-                const missing = requiredKeys.filter(k => !(exportKeys || []).includes(k))
-                if (missing.length) {
-                  const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
-                  this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
+          if (this.form.fd.openclaw_manual_config) {
+            data.llm_spec = { openclaw: { manual_config: true } }
+          } else {
+            const openclaw = {}
+            const channelsSelected = values.openclaw_channels || []
+            const channels = []
+            const credManager = new this.$Manager('credentials', 'v1')
+            for (let i = 0; i < channelsSelected.length; i++) {
+              const channelKey = channelsSelected[i]
+              this.ensureChannelState(channelKey)
+              const mode = this.openclawChannelCredentialMode[channelKey] || 'new'
+              let credentialId
+              let exportKeys
+              if (mode === 'existing') {
+                credentialId = this.openclawChannelCredentialId[channelKey]
+                if (!credentialId) {
+                  this.$message.warning(this.$t('common.tips.select', [this.$t('aice.container_secret')]))
                   this.loading = false
                   return
                 }
-              }
-              if (channelKey === 'feishu') {
-                const requiredKeys = ['FEISHU_APP_ID', 'FEISHU_APP_SECRET']
-                const missing = requiredKeys.filter(k => !(exportKeys || []).includes(k))
-                if (missing.length) {
-                  const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
-                  this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
+                exportKeys = this.openclawChannelExportKeys[channelKey] || []
+                if (channelKey === 'qqbot') {
+                  const requiredKeys = ['QQBOT_APP_ID', 'QQBOT_CLIENT_SECRET']
+                  const missing = requiredKeys.filter(k => !(exportKeys || []).includes(k))
+                  if (missing.length) {
+                    const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
+                    this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
+                    this.loading = false
+                    return
+                  }
+                }
+                if (channelKey === 'feishu') {
+                  const requiredKeys = ['FEISHU_APP_ID', 'FEISHU_APP_SECRET']
+                  const missing = requiredKeys.filter(k => !(exportKeys || []).includes(k))
+                  if (missing.length) {
+                    const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
+                    this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
+                    this.loading = false
+                    return
+                  }
+                }
+                if (channelKey === 'discord') {
+                  const requiredKeys = ['DISCORD_BOT_TOKEN']
+                  const missing = requiredKeys.filter(k => !(exportKeys || []).includes(k))
+                  if (missing.length) {
+                    const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
+                    this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
+                    this.loading = false
+                    return
+                  }
+                }
+                if (channelKey === 'telegram') {
+                  const requiredKeys = ['TELEGRAM_BOT_TOKEN']
+                  const missing = requiredKeys.filter(k => !(exportKeys || []).includes(k))
+                  if (missing.length) {
+                    const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
+                    this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
+                    this.loading = false
+                    return
+                  }
+                }
+              } else {
+                const credName = this.genCredentialName({ llmName: values.name, usage: 'channel', key: channelKey })
+                const raw = this.openclawChannelBlob[channelKey] || {}
+                const blob = this.pickTrimmedOpenclawBlob(raw, '')
+                if (channelKey === 'qqbot') {
+                  const missing = ['QQBOT_APP_ID', 'QQBOT_CLIENT_SECRET'].filter(k => !blob[k])
+                  if (missing.length) {
+                    const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
+                    this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
+                    this.loading = false
+                    return
+                  }
+                }
+                if (channelKey === 'feishu') {
+                  const missing = ['FEISHU_APP_ID', 'FEISHU_APP_SECRET'].filter(k => !blob[k])
+                  if (missing.length) {
+                    const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
+                    this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
+                    this.loading = false
+                    return
+                  }
+                  // 单选/勾选控件可能只显示 defaultValue，但不一定触发 @change 写入 blob
+                  // 这里兜底补齐默认值，确保这些字段会写入 credential blob 与 export_keys
+                  if (!blob.FEISHU_DOMAIN) blob.FEISHU_DOMAIN = 'feishu'
+                  if (!blob.FEISHU_DM_POLICY) blob.FEISHU_DM_POLICY = 'open'
+                  if (!blob.FEISHU_TYPING_INDICATOR) blob.FEISHU_TYPING_INDICATOR = 'true'
+                  if (!blob.FEISHU_RESOLVE_SENDER_NAMES) blob.FEISHU_RESOLVE_SENDER_NAMES = 'true'
+                }
+                if (channelKey === 'discord') {
+                  const missing = ['DISCORD_BOT_TOKEN'].filter(k => !blob[k])
+                  if (missing.length) {
+                    const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
+                    this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
+                    this.loading = false
+                    return
+                  }
+                  if (!blob.DISCORD_DM_POLICY) blob.DISCORD_DM_POLICY = 'open'
+                }
+                if (channelKey === 'telegram') {
+                  const missing = ['TELEGRAM_BOT_TOKEN'].filter(k => !blob[k])
+                  if (missing.length) {
+                    const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
+                    this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
+                    this.loading = false
+                    return
+                  }
+                  if (!blob.TELEGRAM_DM_POLICY) blob.TELEGRAM_DM_POLICY = 'open'
+                }
+                if (Object.keys(blob).length === 0) {
+                  this.$message.warning(this.$t('aice.openclaw.provider_filter_empty'))
                   this.loading = false
                   return
                 }
-              }
-              if (channelKey === 'discord') {
-                const requiredKeys = ['DISCORD_BOT_TOKEN']
-                const missing = requiredKeys.filter(k => !(exportKeys || []).includes(k))
-                if (missing.length) {
-                  const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
-                  this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
-                  this.loading = false
-                  return
-                }
-              }
-              if (channelKey === 'telegram') {
-                const requiredKeys = ['TELEGRAM_BOT_TOKEN']
-                const missing = requiredKeys.filter(k => !(exportKeys || []).includes(k))
-                if (missing.length) {
-                  const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
-                  this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
-                  this.loading = false
-                  return
-                }
-              }
-            } else {
-              const credName = this.genCredentialName({ llmName: values.name, usage: 'channel', key: channelKey })
-              const raw = this.openclawChannelBlob[channelKey] || {}
-              const blob = this.pickTrimmedOpenclawBlob(raw, '')
-              if (channelKey === 'qqbot') {
-                const missing = ['QQBOT_APP_ID', 'QQBOT_CLIENT_SECRET'].filter(k => !blob[k])
-                if (missing.length) {
-                  const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
-                  this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
-                  this.loading = false
-                  return
-                }
-              }
-              if (channelKey === 'feishu') {
-                const missing = ['FEISHU_APP_ID', 'FEISHU_APP_SECRET'].filter(k => !blob[k])
-                if (missing.length) {
-                  const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
-                  this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
-                  this.loading = false
-                  return
-                }
-                // 单选/勾选控件可能只显示 defaultValue，但不一定触发 @change 写入 blob
-                // 这里兜底补齐默认值，确保这些字段会写入 credential blob 与 export_keys
-                if (!blob.FEISHU_DOMAIN) blob.FEISHU_DOMAIN = 'feishu'
-                if (!blob.FEISHU_DM_POLICY) blob.FEISHU_DM_POLICY = 'open'
-                if (!blob.FEISHU_TYPING_INDICATOR) blob.FEISHU_TYPING_INDICATOR = 'true'
-                if (!blob.FEISHU_RESOLVE_SENDER_NAMES) blob.FEISHU_RESOLVE_SENDER_NAMES = 'true'
-              }
-              if (channelKey === 'discord') {
-                const missing = ['DISCORD_BOT_TOKEN'].filter(k => !blob[k])
-                if (missing.length) {
-                  const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
-                  this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
-                  this.loading = false
-                  return
-                }
-                if (!blob.DISCORD_DM_POLICY) blob.DISCORD_DM_POLICY = 'open'
-              }
-              if (channelKey === 'telegram') {
-                const missing = ['TELEGRAM_BOT_TOKEN'].filter(k => !blob[k])
-                if (missing.length) {
-                  const missingLabels = missing.map(k => this.$t(`aice.openclaw.channel.env.${k}`)).join(', ')
-                  this.$message.warning(this.$t('aice.openclaw.required_hint') + missingLabels)
-                  this.loading = false
-                  return
-                }
-                if (!blob.TELEGRAM_DM_POLICY) blob.TELEGRAM_DM_POLICY = 'open'
-              }
-              if (Object.keys(blob).length === 0) {
-                this.$message.warning(this.$t('aice.openclaw.provider_filter_empty'))
-                this.loading = false
-                return
-              }
-              const { data: credData } = await credManager.create({
-                data: {
-                  type: 'container_secret',
-                  name: credName,
-                  blob,
-                  __meta__: {
-                    'user:openclaw_usage': 'channel',
-                    'user:openclaw_name': channelKey,
+                const { data: credData } = await credManager.create({
+                  data: {
+                    type: 'container_secret',
+                    name: credName,
+                    blob,
+                    __meta__: {
+                      'user:openclaw_usage': 'channel',
+                      'user:openclaw_name': channelKey,
+                    },
                   },
-                },
+                })
+                credentialId = credData.id
+                exportKeys = Object.keys(blob)
+              }
+              channels.push({
+                name: channelKey,
+                credential: { id: credentialId, export_keys: exportKeys },
               })
-              credentialId = credData.id
-              exportKeys = Object.keys(blob)
             }
-            channels.push({
-              name: channelKey,
-              credential: { id: credentialId, export_keys: exportKeys },
-            })
-          }
-          if (channels.length) openclaw.channels = channels
+            if (channels.length) openclaw.channels = channels
 
-          const providersSelected = this.openclawSelectedProviders || []
-          if (!providersSelected.length) {
-            this.$message.warning(this.$t('aice.openclaw.provider_select_first'))
-            this.loading = false
-            return
-          }
-          const providers = []
-          for (let i = 0; i < providersSelected.length; i++) {
-            const providerKey = providersSelected[i]
-            this.ensureProviderState(providerKey)
-            if (!this.validateOpenclawProviderRequiredEnv(providerKey)) {
+            const providersSelected = this.openclawSelectedProviders || []
+            if (!providersSelected.length) {
+              this.$message.warning(this.$t('aice.openclaw.provider_select_first'))
               this.loading = false
               return
             }
-            const mode = this.openclawProviderCredentialMode[providerKey] || 'new'
-            let credentialId
-            let exportKeys
-            if (mode === 'existing') {
-              credentialId = this.openclawProviderCredentialId[providerKey]
-              if (!credentialId) {
-                this.$message.warning(this.$t('common.tips.select', [this.$t('aice.container_secret')]))
+            const providers = []
+            for (let i = 0; i < providersSelected.length; i++) {
+              const providerKey = providersSelected[i]
+              this.ensureProviderState(providerKey)
+              if (!this.validateOpenclawProviderRequiredEnv(providerKey)) {
                 this.loading = false
                 return
               }
-              exportKeys = this.openclawProviderExportKeys[providerKey] || []
-            } else {
-              const credName = this.genCredentialName({ llmName: values.name, usage: 'provider', key: this.providerShortName(providerKey) })
-              const raw = this.openclawProviderBlob[providerKey] || {}
-              const blob = this.pickTrimmedOpenclawBlob(raw, providerKey)
-              if (Object.keys(blob).length === 0) {
-                this.$message.warning(this.$t('aice.openclaw.ai_providers.at_least_one'))
-                this.loading = false
-                return
-              }
-              const { data: credData } = await credManager.create({
-                data: {
-                  type: 'container_secret',
-                  name: credName,
-                  blob,
-                  __meta__: {
-                    'user:openclaw_usage': 'provider',
-                    'user:openclaw_name': this.providerShortName(providerKey),
+              const mode = this.openclawProviderCredentialMode[providerKey] || 'new'
+              let credentialId
+              let exportKeys
+              if (mode === 'existing') {
+                credentialId = this.openclawProviderCredentialId[providerKey]
+                if (!credentialId) {
+                  this.$message.warning(this.$t('common.tips.select', [this.$t('aice.container_secret')]))
+                  this.loading = false
+                  return
+                }
+                exportKeys = this.openclawProviderExportKeys[providerKey] || []
+              } else {
+                const credName = this.genCredentialName({ llmName: values.name, usage: 'provider', key: this.providerShortName(providerKey) })
+                const raw = this.openclawProviderBlob[providerKey] || {}
+                const blob = this.pickTrimmedOpenclawBlob(raw, providerKey)
+                if (Object.keys(blob).length === 0) {
+                  this.$message.warning(this.$t('aice.openclaw.ai_providers.at_least_one'))
+                  this.loading = false
+                  return
+                }
+                const { data: credData } = await credManager.create({
+                  data: {
+                    type: 'container_secret',
+                    name: credName,
+                    blob,
+                    __meta__: {
+                      'user:openclaw_usage': 'provider',
+                      'user:openclaw_name': this.providerShortName(providerKey),
+                    },
                   },
-                },
+                })
+                credentialId = credData.id
+                exportKeys = Object.keys(blob)
+              }
+              providers.push({
+                name: this.providerShortName(providerKey),
+                credential: { id: credentialId, export_keys: exportKeys },
               })
-              credentialId = credData.id
-              exportKeys = Object.keys(blob)
             }
-            providers.push({
-              name: this.providerShortName(providerKey),
-              credential: { id: credentialId, export_keys: exportKeys },
-            })
-          }
-          if (providers.length) openclaw.providers = providers
+            if (providers.length) openclaw.providers = providers
 
-          if (Object.keys(openclaw).length) data.llm_spec = { openclaw }
+            if (Object.keys(openclaw).length) data.llm_spec = { openclaw }
+          }
         }
         await new this.$Manager('llms', 'v1').create({
           data,
