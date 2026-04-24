@@ -137,7 +137,7 @@ export default {
         ret.push(IMAGES_TYPE_MAP.iso)
         ret.push({ ...IMAGES_TYPE_MAP.snapshot, label: this.$t(IMAGES_TYPE_MAP.snapshot.t) })
       } else if (this.hypervisor === HYPERVISORS_MAP.proxmox.key) {
-        ret = [IMAGES_TYPE_MAP.private, IMAGES_TYPE_MAP.iso, IMAGES_TYPE_MAP.private_iso]
+        ret.push(IMAGES_TYPE_MAP.private, IMAGES_TYPE_MAP.iso, IMAGES_TYPE_MAP.private_iso)
       } else if (this.hypervisor === HYPERVISORS_MAP.uis.key) {
         ret = [IMAGES_TYPE_MAP.private_iso]
       } else if (this.hypervisor === HYPERVISORS_MAP.sangfor.key) {
