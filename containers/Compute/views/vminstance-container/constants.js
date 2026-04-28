@@ -1,6 +1,30 @@
 import { metricItems } from '@Compute/views/node-alert/constants'
 import i18n from '@/locales'
 
+// Linux capabilities（不带 CAP_ 前缀）
+export const CAPABILITY_OPTIONS = [
+  { value: 'AUDIT_WRITE', label: 'AUDIT_WRITE', description: i18n.t('compute.repo.cap.AUDIT_WRITE') },
+  { value: 'BLOCK_SUSPEND', label: 'BLOCK_SUSPEND', description: i18n.t('compute.repo.cap.BLOCK_SUSPEND') },
+  { value: 'CHOWN', label: 'CHOWN', description: i18n.t('compute.repo.cap.CHOWN') },
+  { value: 'DAC_OVERRIDE', label: 'DAC_OVERRIDE', description: i18n.t('compute.repo.cap.DAC_OVERRIDE') },
+  { value: 'FOWNER', label: 'FOWNER', description: i18n.t('compute.repo.cap.FOWNER') },
+  { value: 'KILL', label: 'KILL', description: i18n.t('compute.repo.cap.KILL') },
+  { value: 'MKNOD', label: 'MKNOD', description: i18n.t('compute.repo.cap.MKNOD') },
+  { value: 'NET_ADMIN', label: 'NET_ADMIN', description: i18n.t('compute.repo.cap.NET_ADMIN') },
+  { value: 'NET_BIND_SERVICE', label: 'NET_BIND_SERVICE', description: i18n.t('compute.repo.cap.NET_BIND_SERVICE') },
+  { value: 'NET_RAW', label: 'NET_RAW', description: i18n.t('compute.repo.cap.NET_RAW') },
+  { value: 'SETGID', label: 'SETGID', description: i18n.t('compute.repo.cap.SETGID') },
+  { value: 'SETPCAP', label: 'SETPCAP', description: i18n.t('compute.repo.cap.SETPCAP') },
+  { value: 'SETUID', label: 'SETUID', description: i18n.t('compute.repo.cap.SETUID') },
+  { value: 'SYS_ADMIN', label: 'SYS_ADMIN', description: i18n.t('compute.repo.cap.SYS_ADMIN') },
+  { value: 'SYS_CHROOT', label: 'SYS_CHROOT', description: i18n.t('compute.repo.cap.SYS_CHROOT') },
+  { value: 'SYS_NICE', label: 'SYS_NICE', description: i18n.t('compute.repo.cap.SYS_NICE') },
+  { value: 'SYS_PTRACE', label: 'SYS_PTRACE', description: i18n.t('compute.repo.cap.SYS_PTRACE') },
+  { value: 'SYS_RESOURCE', label: 'SYS_RESOURCE', description: i18n.t('compute.repo.cap.SYS_RESOURCE') },
+  { value: 'SYSLOG', label: 'SYSLOG', description: i18n.t('compute.repo.cap.SYSLOG') },
+  { value: 'WAKE_ALARM', label: 'WAKE_ALARM', description: i18n.t('compute.repo.cap.WAKE_ALARM') },
+]
+
 const NETIO_GROUP_BY_TAG = ['interface', 'host_interface', 'ip', 'mac']
 
 // 容器主机监控数据

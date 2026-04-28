@@ -7,6 +7,9 @@ import {
   getEnvTableColumn,
   getCommandTableColumn,
   getArgsTableColumn,
+  getCapabilitiesTableColumn,
+  getLxcfsTableColumn,
+  getOverlayTableColumn,
 } from '../utils/columns'
 
 export default {
@@ -32,6 +35,9 @@ export default {
       getEnvTableColumn(),
       getCommandTableColumn(),
       getArgsTableColumn(),
+      getCapabilitiesTableColumn(),
+      getLxcfsTableColumn(),
+      getOverlayTableColumn(),
     ]
   },
 }

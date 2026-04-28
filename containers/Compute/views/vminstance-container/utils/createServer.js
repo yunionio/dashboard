@@ -757,6 +757,18 @@ export const createVmDecorators = () => {
           initialValue: false,
         },
       ],
+      capAdd: i => [
+        `containerCapAdd[${i}]`,
+        {
+          initialValue: [],
+        },
+      ],
+      capDrop: i => [
+        `containerCapDrop[${i}]`,
+        {
+          initialValue: [],
+        },
+      ],
       enableLxcfs: i => [
         `containerEnableLxcfs[${i}]`,
         {
@@ -1319,6 +1331,10 @@ export class GenCreateData {
         command: this.fd.containerCommands?.[k]?.split(' '),
         args: this.fd.containerArgs?.[k]?.split(' '),
         privileged: this.fd.containerPrivilegeds?.[k],
+        capabilities: (this.fd.containerCapAdd?.[k]?.length || this.fd.containerCapDrop?.[k]?.length) ? {
+          add: this.fd.containerCapAdd?.[k] || [],
+          drop: this.fd.containerCapDrop?.[k] || [],
+        } : undefined,
         enable_lxcfs: this.fd.containerEnableLxcfs?.[k] || false,
         devices: pciDevices.map((item, idx) => {
           return {

@@ -86,6 +86,32 @@
         </a-tooltip>
       </a-checkbox>
     </a-form-item>
+    <a-form-item :label="$t('compute.repo.capabilities.add')">
+      <a-select
+        v-decorator="decorators.capAdd"
+        mode="multiple"
+        :placeholder="$t('compute.repo.capabilities.add.placeholder')"
+        optionLabelProp="label"
+        allowClear>
+        <a-select-option v-for="cap in capabilityOptions" :key="cap.value" :value="cap.value" :label="cap.label">
+          <span>{{ cap.label }}</span>
+          <span style="color: rgba(0,0,0,.45); margin-left: 8px; font-size: 12px;">{{ cap.description }}</span>
+        </a-select-option>
+      </a-select>
+    </a-form-item>
+    <a-form-item :label="$t('compute.repo.capabilities.drop')">
+      <a-select
+        v-decorator="decorators.capDrop"
+        mode="multiple"
+        :placeholder="$t('compute.repo.capabilities.drop.placeholder')"
+        optionLabelProp="label"
+        allowClear>
+        <a-select-option v-for="cap in capabilityOptions" :key="cap.value" :value="cap.value" :label="cap.label">
+          <span>{{ cap.label }}</span>
+          <span style="color: rgba(0,0,0,.45); margin-left: 8px; font-size: 12px;">{{ cap.description }}</span>
+        </a-select-option>
+      </a-select>
+    </a-form-item>
     <a-form-item label="">
       <a-checkbox v-decorator="decorators.privileged">{{$t('compute.repo.privileged_mode')}}</a-checkbox>
     </a-form-item>
@@ -97,6 +123,7 @@ import * as R from 'ramda'
 import Labels from '@Compute/sections/Labels'
 import MirrorRegistry from '@Compute/sections/MirrorRegistry'
 import DataDisk from '@Compute/sections/DataDisk'
+import { CAPABILITY_OPTIONS } from '@Compute/views/vminstance-container/constants'
 
 export default {
   name: 'SpecContainerForm',
@@ -123,6 +150,7 @@ export default {
       source: 'custom', // custom or registry
       labelList: [],
       overlayEnabled: false,
+      capabilityOptions: CAPABILITY_OPTIONS,
     }
   },
   computed: {
