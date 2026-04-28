@@ -18,6 +18,11 @@ import {
   getNameFilter,
   getStatusFilter,
 } from '@/utils/common/tableFilter'
+import {
+  getCapabilitiesTableColumn,
+  getLxcfsTableColumn,
+  getOverlayTableColumn,
+} from '@Compute/views/pod-container/utils/columns'
 
 export default {
   name: 'ContainerListForVmContainerInstanceSidepage',
@@ -102,6 +107,9 @@ export default {
             },
           },
         },
+        getCapabilitiesTableColumn(),
+        getLxcfsTableColumn(),
+        getOverlayTableColumn(),
       ],
       groupActions: [
         // 启动

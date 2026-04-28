@@ -35,6 +35,32 @@
           <a-form-item :label="$t('compute.repo.env_variables')">
             <labels ref="envRef" :decorators="decorators.env(0)" :title="$t('compute.repo.variables')" :keyLabel="$t('compute.repo.variables')" />
           </a-form-item>
+          <a-form-item :label="$t('compute.repo.capabilities.add')">
+            <a-select
+              v-decorator="decorators.capAdd"
+              mode="multiple"
+              :placeholder="$t('compute.repo.capabilities.add.placeholder')"
+              optionLabelProp="label"
+              allowClear>
+              <a-select-option v-for="cap in capabilityOptions" :key="cap.value" :value="cap.value" :label="cap.label">
+                <span>{{ cap.label }}</span>
+                <span style="color: rgba(0,0,0,.45); margin-left: 8px; font-size: 12px;">{{ cap.description }}</span>
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item :label="$t('compute.repo.capabilities.drop')">
+            <a-select
+              v-decorator="decorators.capDrop"
+              mode="multiple"
+              :placeholder="$t('compute.repo.capabilities.drop.placeholder')"
+              optionLabelProp="label"
+              allowClear>
+              <a-select-option v-for="cap in capabilityOptions" :key="cap.value" :value="cap.value" :label="cap.label">
+                <span>{{ cap.label }}</span>
+                <span style="color: rgba(0,0,0,.45); margin-left: 8px; font-size: 12px;">{{ cap.description }}</span>
+              </a-select-option>
+            </a-select>
+          </a-form-item>
           <a-form-item label="">
             <a-checkbox v-decorator="decorators.privileged">{{$t('compute.repo.privileged_mode')}}</a-checkbox>
           </a-form-item>
@@ -61,6 +87,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import MirrorRegistry from '@Compute/sections/MirrorRegistry'
 import Labels from '@Compute/sections/Labels'
+import { CAPABILITY_OPTIONS } from '@Compute/views/vminstance-container/constants'
 import { validateYaml } from '@/utils/validate'
 
 export default {
@@ -144,6 +171,18 @@ export default {
             },
           ],
         }),
+        capAdd: [
+          'capAdd',
+          {
+            initialValue: specData.capabilities?.add || [],
+          },
+        ],
+        capDrop: [
+          'capDrop',
+          {
+            initialValue: specData.capabilities?.drop || [],
+          },
+        ],
         privileged: [
           'privileged',
           {
@@ -173,6 +212,7 @@ export default {
           },
         ],
       },
+      capabilityOptions: CAPABILITY_OPTIONS,
       formItemLayout: {
         wrapperCol: {
           span: 21,
@@ -227,7 +267,7 @@ export default {
         ...spec,
       }
       if (this.editMode === 'custom') {
-        const { image, registryImage, command, arg, envNames, envValues, privileged } = values
+        const { image, registryImage, command, arg, envNames, envValues, privileged, capAdd, capDrop } = values
         if (image || registryImage) {
           specData.image = image || registryImage
         }
@@ -243,6 +283,14 @@ export default {
           specData.envs = []
         }
         specData.privileged = privileged
+        if (capAdd?.length || capDrop?.length) {
+          specData.capabilities = {
+            add: capAdd || [],
+            drop: capDrop || [],
+          }
+        } else {
+          specData.capabilities = undefined
+        }
       } else {
         const data = jsYaml.safeLoad(values.yaml)
         specData = data.spec || {}
