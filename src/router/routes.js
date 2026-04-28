@@ -100,16 +100,20 @@ function getModulesRouteConfig () {
     })
     .sort((a, b) => (a.__sortIndex - b.__sortIndex) || (a.__order - b.__order))
     .map(({ __sortIndex, __order, ...item }) => item)
-  ret = ret.filter(val => !val.meta.undetected)
+  // 容错：部分模块路由可能未提供 meta，避免读取 undefined.meta 导致页面初始化报错
+  ret = ret.filter(val => !(val && val.meta && val.meta.undetected))
   for (let i = 0, len = ret.length; i < len; i++) {
     const item = ret[i]
+    if (!item.meta) item.meta = {}
     item.meta.group = i
     if (item.menus) {
       for (let j = 0; j < item.menus.length; j++) {
         const menu = item.menus[j]
+        if (!menu.meta) menu.meta = {}
         if (menu.submenus) {
           for (let m = 0; m < menu.submenus.length; m++) {
             const subitem = menu.submenus[m]
+            if (!subitem.meta) subitem.meta = {}
             subitem.meta.group = i
           }
         } else {
@@ -117,6 +121,8 @@ function getModulesRouteConfig () {
         }
       }
     } else {
+      if (!item.menu) item.menu = {}
+      if (!item.menu.meta) item.menu.meta = {}
       item.menu.meta.group = i
     }
   }
