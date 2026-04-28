@@ -90,3 +90,52 @@ export const getArgsTableColumn = () => {
     },
   })
 }
+
+export const getCapabilitiesTableColumn = () => {
+  return {
+    field: 'capabilities',
+    title: 'Capabilities',
+    minWidth: 200,
+    slots: {
+      default: ({ row }, h) => {
+        const caps = row.spec?.capabilities
+        if (!caps) return '-'
+        const tags = []
+        if (caps.add?.length) {
+          caps.add.forEach(cap => {
+            tags.push(<a-tag color="blue" class="mb-1">+{cap}</a-tag>)
+          })
+        }
+        if (caps.drop?.length) {
+          caps.drop.forEach(cap => {
+            tags.push(<a-tag color="red" class="mb-1">-{cap}</a-tag>)
+          })
+        }
+        return tags.length ? tags : '-'
+      },
+    },
+  }
+}
+
+export const getLxcfsTableColumn = () => {
+  return {
+    field: 'enable_lxcfs',
+    title: i18n.t('compute.repo.enable_lxcfs'),
+    width: 120,
+    formatter: ({ row }) => {
+      return row.spec?.enable_lxcfs ? i18n.t('status.enabled.true') : i18n.t('status.enabled.false')
+    },
+  }
+}
+
+export const getOverlayTableColumn = () => {
+  return {
+    field: 'overlay',
+    title: i18n.t('compute.repo.enable_sys_disk_overlay'),
+    width: 160,
+    formatter: ({ row }) => {
+      const hasOverlay = row.spec?.rootfs?.type === 'disk'
+      return hasOverlay ? i18n.t('status.enabled.true') : i18n.t('status.enabled.false')
+    },
+  }
+}
