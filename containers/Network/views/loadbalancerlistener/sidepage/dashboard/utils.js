@@ -52,7 +52,7 @@ export const lbQuery = ({ fieldType, lsType, lsId, time, aggregate, isRule, scop
       },
       {
         type: 'non_negative_derivative',
-        parmas: ['1s'],
+        params: ['1s'],
       },
       {
         type: 'alias',
@@ -74,7 +74,7 @@ export const lbQuery = ({ fieldType, lsType, lsId, time, aggregate, isRule, scop
           },
           {
             type: 'non_negative_derivative',
-            parmas: ['1s'],
+            params: ['1s'],
           },
           {
             type: 'math',
@@ -96,7 +96,7 @@ export const lbQuery = ({ fieldType, lsType, lsId, time, aggregate, isRule, scop
           },
           {
             type: 'non_negative_derivative',
-            parmas: ['1s'],
+            params: ['1s'],
           },
           {
             type: 'math',
@@ -211,7 +211,7 @@ export const lbQuery = ({ fieldType, lsType, lsId, time, aggregate, isRule, scop
             },
             {
               type: 'non_negative_derivative',
-              parmas: ['1s'],
+              params: ['1s'],
             },
             {
               type: 'alias',
@@ -229,7 +229,7 @@ export const lbQuery = ({ fieldType, lsType, lsId, time, aggregate, isRule, scop
             },
             {
               type: 'non_negative_derivative',
-              parmas: ['1s'],
+              params: ['1s'],
             },
             {
               type: 'alias',
@@ -249,7 +249,7 @@ export const lbQuery = ({ fieldType, lsType, lsId, time, aggregate, isRule, scop
             },
             {
               type: 'non_negative_derivative',
-              parmas: ['1s'],
+              params: ['1s'],
             },
           ],
           [
@@ -263,7 +263,7 @@ export const lbQuery = ({ fieldType, lsType, lsId, time, aggregate, isRule, scop
             },
             {
               type: 'non_negative_derivative',
-              parmas: ['1s'],
+              params: ['1s'],
             },
           ],
         ].concat(commonAccident),
@@ -279,7 +279,7 @@ export const lbQuery = ({ fieldType, lsType, lsId, time, aggregate, isRule, scop
             },
             {
               type: 'non_negative_derivative',
-              parmas: ['1s'],
+              params: ['1s'],
             },
             {
               type: 'alias',
@@ -308,7 +308,7 @@ export const lbQuery = ({ fieldType, lsType, lsId, time, aggregate, isRule, scop
           },
           {
             type: 'non_negative_derivative',
-            parmas: ['1s'],
+            params: ['1s'],
           },
           {
             type: 'math',
@@ -330,7 +330,7 @@ export const lbQuery = ({ fieldType, lsType, lsId, time, aggregate, isRule, scop
           },
           {
             type: 'non_negative_derivative',
-            parmas: ['1s'],
+            params: ['1s'],
           },
           {
             type: 'math',
@@ -429,7 +429,7 @@ export const lbQuery = ({ fieldType, lsType, lsId, time, aggregate, isRule, scop
             },
             {
               type: 'non_negative_derivative',
-              parmas: ['1s'],
+              params: ['1s'],
             },
             {
               type: 'alias',
@@ -447,7 +447,7 @@ export const lbQuery = ({ fieldType, lsType, lsId, time, aggregate, isRule, scop
             },
             {
               type: 'non_negative_derivative',
-              parmas: ['1s'],
+              params: ['1s'],
             },
             {
               type: 'alias',
@@ -467,7 +467,7 @@ export const lbQuery = ({ fieldType, lsType, lsId, time, aggregate, isRule, scop
             },
             {
               type: 'non_negative_derivative',
-              parmas: ['1s'],
+              params: ['1s'],
             },
           ],
           [
@@ -481,7 +481,7 @@ export const lbQuery = ({ fieldType, lsType, lsId, time, aggregate, isRule, scop
             },
             {
               type: 'non_negative_derivative',
-              parmas: ['1s'],
+              params: ['1s'],
             },
           ],
         ].concat(commonAccident),
