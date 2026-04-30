@@ -106,11 +106,8 @@ export default {
           ],
           slots: {
             default: () => {
-              const state = this.alertData?.alert_state
-              if (state) {
-                return [<status status={state} statusModule="monitorresources" />]
-              }
-              return '-'
+              const state = this.alertData?.alert_state || 'init'
+              return [<status status={state} statusModule="monitorresources" />]
             },
           },
           hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.alert_data'),

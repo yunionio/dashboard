@@ -513,10 +513,8 @@ export default {
             return [<span style="margin-right:5px">{this.$t('compute.alert_status')}</span>, <help-tooltip name="alertDataTimeRange" />]
           },
           default: ({ row }) => {
-            if (row.alert_data?.alert_state) {
-              return [<status status={row.alert_data?.alert_state} statusModule='monitorresources' />]
-            }
-            return '-'
+            const state = row.alert_data?.alert_state || 'init'
+            return [<status status={state} statusModule='monitorresources' />]
           },
         },
       },

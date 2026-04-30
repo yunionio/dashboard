@@ -32,16 +32,14 @@ export default {
     mergedGetParams () {
       return () => {
         const base = typeof this.getParams === 'function' ? this.getParams() : this.getParams
-        const filter = [
-          'res_type.equals("host")',
-        ]
-        if (this.hostName) {
-          filter.push(`res_name.equals("${this.hostName}")`)
-        }
-        return {
+        const params = {
           ...(base || {}),
-          filter,
+          res_type: 'host',
         }
+        if (this.hostName) {
+          params.res_name = this.hostName
+        }
+        return params
       }
     },
     hiddenColumns () {

@@ -250,7 +250,14 @@ export default {
         {
           field: 'alert_name',
           title: this.$t('monitor.text_99'),
-          formatter: ({ row }) => row.alert_name || '-',
+          slots: {
+            default: ({ row }) => {
+              if (!row.alert_name) return '-'
+              return [
+                <side-page-trigger onTrigger={() => this.handleOpenAlertSidepage(row)}>{ row.alert_name }</side-page-trigger>,
+              ]
+            },
+          },
         },
         {
           field: 'alert_count',
@@ -330,6 +337,13 @@ export default {
         ret.top = this.templateParams?.topN
       }
       return ret
+    },
+    handleOpenAlertSidepage (row) {
+      this.sidePageTriggerHandle(this, 'CommonalertsSidePage', {
+        id: row.alert_id,
+        resource: 'commonalerts',
+        apiVersion: 'v1',
+      })
     },
     handleOpenSidepage (row) {
       const { tags = {} } = row.data || {}
