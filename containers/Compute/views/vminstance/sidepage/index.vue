@@ -52,7 +52,6 @@ import ColumnsMixin from '../mixins/columns'
 // import { cloudEnabled, cloudUnabledTip } from '../utils'
 import VmInstanceDetail from './Detail'
 import VmInstanceMonitorSidepage from './Monitor'
-import VmInstanceAlertSidepage from './Alert'
 import VmInstanceAlertHistory from './AlertHistory'
 import VmSnapshotSidepage from './Snapshot'
 import SecgroupList from './Secgroup'
@@ -73,7 +72,6 @@ export default {
     SecgroupList,
     // HostList,
     VmInstanceMonitorSidepage,
-    VmInstanceAlertSidepage,
     VmInstanceAlertHistory,
     VmSnapshotSidepage,
     GpuList,
@@ -94,7 +92,6 @@ export default {
       // { label: this.$t('compute.text_102'), key: 'instance-snapshot-list-for-vm-instance-sidepage' },
       { label: this.$t('compute.text_113'), key: 'gpu-list' },
       { label: this.$t('compute.text_608'), key: 'vm-instance-monitor-sidepage' },
-      { label: this.$t('compute.text_1301'), key: 'vm-instance-alert-sidepage' },
       { label: this.$t('dictionary.alertrecord'), key: 'vm-instance-alert-history' },
       { label: this.$t('table.title.task'), key: 'task-drawer' },
       { label: this.$t('cloudenv.text_431'), key: 'scheduledtasks-list' },
@@ -216,8 +213,6 @@ export default {
           return 'DiskLiskForVminstanceSidepage'
         case 'secgroup-list':
           return 'SecgroupLiskForVminstanceSidepage'
-        case 'vm-instance-alert-sidepage':
-          return 'AlertLiskForVminstanceSidepage'
         case 'event-drawer':
           return 'EventListForVminstanceSidepage'
         case 'gpu-list':
