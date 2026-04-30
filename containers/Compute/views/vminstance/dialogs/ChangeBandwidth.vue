@@ -123,6 +123,8 @@ export default {
       const curData = this.params.data[0]
       const params = {
         bandwidth: values.bandwidth,
+        tx_bw_limit: values.tx_bw_limit,
+        rx_bw_limit: values.rx_bw_limit,
         mac: curData.mac_addr,
       }
       const resData = this.params.resData
