@@ -12,8 +12,8 @@
       "update_tags_fail": "ラベルまたは名前の更新に失敗しました"
     },
     "monitorresources": {
-      "init": "アラームは設定されていません",
-      "alerting": "アラームが発生しました",
+      "init": "アラームなし",
+      "alerting": "アラームあり",
       "attach": "正常",
       "unknown": "不明"
     },

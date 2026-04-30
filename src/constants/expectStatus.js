@@ -392,9 +392,8 @@ export default {
     danger: ['delete_fail', 'deleted'],
   },
   monitorresources: {
-    success: ['attach'],
+    success: ['attach', 'init'],
     danger: ['alerting', 'unknown'],
-    info: ['init'],
   },
   idpAutoCreateUser: {
     success: [true],

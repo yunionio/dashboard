@@ -12,7 +12,7 @@
       "update_tags_fail": "Failed to update tag"
     },
     "monitorresources": {
-      "init": "No alarm is set",
+      "init": "No Alert",
       "alerting": "Alerting",
       "attach": "Normal",
       "unknown": "Unknown"
