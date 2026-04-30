@@ -19,8 +19,8 @@
       "active": "可用"
     },
     "monitorresources": {
-      "init": "未发生告警",
-      "alerting": "发生告警",
+      "init": "无告警",
+      "alerting": "有告警",
       "attach": "正常",
       "unknown": "未知"
     },
