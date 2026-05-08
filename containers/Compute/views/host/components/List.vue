@@ -122,7 +122,7 @@ export default {
     this.hiddenFilterOptions.forEach(key => {
       delete filterOptions[key]
     })
-    const monitorManager = new this.$Manager('unifiedmonitors/resource-metrics', 'v1')
+    const monitorManager = new this.$Manager('unifiedmonitors', 'v1')
     return {
       monitorManager,
       list: this.$list.createList(this, {
@@ -141,8 +141,9 @@ export default {
             const list = response.data?.data || []
             const ids = list.map(item => item.id).filter(Boolean)
             if (ids.length) {
-              const res = await monitorManager.create({
-                data: {
+              const res = await monitorManager.get({
+                id: 'resource-metrics',
+                params: {
                   res_ids: ids,
                   res_type: 'host',
                 },
