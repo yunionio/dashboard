@@ -670,9 +670,10 @@ export default {
       if (!id) return
       if (this.$isScopedPolicyMenuHidden('host_hidden_columns.alert_data')) return
       try {
-        const monitorManager = new this.$Manager('unifiedmonitors/resource-metrics', 'v1')
-        const res = await monitorManager.create({
-          data: {
+        const monitorManager = new this.$Manager('unifiedmonitors', 'v1')
+        const res = await monitorManager.get({
+          id: 'resource-metrics',
+          params: {
             res_ids: [id],
             res_type: 'host',
           },
