@@ -21,6 +21,7 @@
   "aice.llm_image.community_image_fetch_failed": "コミュニティイメージの取得に失敗しました",
   "aice.llm_image.filter_by_type": "タイプでフィルタ",
   "aice.llm_image.imported": "インポート済み",
+  "aice.llm_image.sku_auto_create_failed": "イメージはインポートされましたが、対応する SKU の自動作成に失敗しました：{0}",
   "aice.hf.registry_hint": "Hugging Face モデル検索はプラットフォーム API huggingface-search により提供されます",
   "aice.hf.search_q": "検索",
   "aice.hf.search_q_placeholder": "リポジトリ名・ユーザー名の部分一致（例: clip）",
