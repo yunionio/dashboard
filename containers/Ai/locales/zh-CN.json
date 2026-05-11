@@ -32,6 +32,7 @@
   "aice.llm_image.community_image_fetch_failed": "获取社区镜像列表失败",
   "aice.llm_image.filter_by_type": "按类型筛选",
   "aice.llm_image.imported": "已导入",
+  "aice.llm_image.sku_auto_create_failed": "镜像已导入，但自动创建对应推理模板失败：{0}",
   "aice.hf.registry_hint": "Hugging Face 模型搜索由平台接口 huggingface-search 提供",
   "aice.hf.search_q": "搜索",
   "aice.hf.search_q_placeholder": "按子串搜索仓库和用户名，如 clip",
