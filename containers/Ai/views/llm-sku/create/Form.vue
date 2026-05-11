@@ -375,7 +375,7 @@ import NameRepeated from '@/sections/NameRepeated'
 import { isRequired } from '@/utils/validate'
 import { uuid } from '@/utils/utils'
 import { dict } from '../constant'
-import { LLM_TYPE_OPTIONS, LLM_TYPE_FORM_CONFIG, getParamsForType } from '../llmTypeConfig'
+import { LLM_TYPE_OPTIONS, LLM_TYPE_FORM_CONFIG, getParamsForType, getDefaultPortMappingsForType } from '../llmTypeConfig'
 
 const getInitVal = (list, key, property) => {
   const target = list.filter(item => item.key === key)
@@ -457,7 +457,12 @@ export default {
     if (!openclawWorkspaceTemplates || typeof openclawWorkspaceTemplates !== 'object') openclawWorkspaceTemplates = {}
     const envVars = (envs || []).map(item => ({ env_key: item.key, env_value: item.value, key: uuid() }))
     const defaultLlmType = (llmTypeOptions[0] && llmTypeOptions[0].id) || (isApplyType ? 'openclaw' : 'ollama')
-    const portMappings = port_mappings.map(item => ({ ...item, key: uuid() }))
+    // edit 模式沿用已有 port_mappings；create 模式按所选 llm_type 预填默认端口（用户可删除/新增）
+    const initialLlmType = rowLlmType || defaultLlmType
+    const portMappingsSource = (this.mode === 'edit')
+      ? port_mappings
+      : (port_mappings.length > 0 ? port_mappings : getDefaultPortMappingsForType(initialLlmType))
+    const portMappings = portMappingsSource.map(item => ({ ...item, key: uuid() }))
     const hostPathRows = (Array.isArray(hostPaths) ? hostPaths : []).map(hp => {
       const containerRows = hp && hp.containers && typeof hp.containers === 'object'
         ? Object.keys(hp.containers).map(k => ({ key: uuid(), containerIndex: String(k), ...(hp.containers[k] || {}) }))
@@ -652,9 +657,6 @@ export default {
           'mounted_models',
           {
             initialValue: mounted_models.map(v => v.id),
-            rules: [
-              { required: true, message: this.$t('common.tips.select', [this.$t('aice.model')]) },
-            ],
           },
         ],
         preferred_model: [
@@ -718,9 +720,6 @@ export default {
           'device',
           {
             initialValue: devices && devices.length > 0 ? devices.map(v => v.model) : [],
-            rules: [
-              { required: true, message: this.$t('common.tips.select', [this.$t('aice.devices')]) },
-            ],
           },
         ],
         mounted_apps: [
@@ -891,6 +890,21 @@ export default {
           openclaw_agents_md: undefined,
           openclaw_soul_md: undefined,
           openclaw_user_md: undefined,
+        })
+      }
+      // 切换 llm_type 时重置端口映射为新类型的默认值（仅 create 模式）。
+      // 用 splice 原地修改以保留 decorator 闭包对 portMappings 的引用；
+      // 再调一次 setFieldsValue 确保新行的 protocol/container_port 初值被写入 form。
+      if (!this.isEditMode) {
+        const next = getDefaultPortMappingsForType(val).map(item => ({ ...item, key: uuid() }))
+        this.portMappings.splice(0, this.portMappings.length, ...next)
+        this.$nextTick(() => {
+          const fields = {}
+          next.forEach(item => {
+            fields[`protocol[${item.key}]`] = item.protocol
+            fields[`container_port[${item.key}]`] = item.container_port
+          })
+          this.form.fc.setFieldsValue(fields)
         })
       }
     },
