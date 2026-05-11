@@ -44,6 +44,28 @@ export function getDefaultPortMappingsForType (llmType) {
 }
 
 /**
+ * 社区镜像导入时自动创建 SKU 用的默认资源规格。
+ * 字段单位与后端 LLMSkuCreateInput 一致：memory MB，volume size_mb，bandwidth Mbps。
+ * dify 不在表里：单镜像导入无法构造完整 dify spec（需要 7 个 image id），跳过自动建 SKU。
+ * 取自 onecloud-operator pkg/apis/onecloud/v1alpha1/defaults.go 的 DefaultLLMSku。
+ */
+export const LLM_TYPE_DEFAULT_SKU_SPEC = {
+  ollama: { cpu: 4, memory: 4096, volume_size_mb: 40960, bandwidth: 1000 },
+  vllm: { cpu: 8, memory: 16384, volume_size_mb: 40960, bandwidth: 1000 },
+  openclaw: { cpu: 4, memory: 4096, volume_size_mb: 40960, bandwidth: 1000 },
+  'hermes-agent': { cpu: 4, memory: 4096, volume_size_mb: 40960, bandwidth: 1000 },
+  comfyui: { cpu: 8, memory: 16384, volume_size_mb: 40960, bandwidth: 1000 },
+}
+
+/**
+ * 返回某 llm_type 的默认 SKU 资源规格；返回 null 表示该类型不支持自动建 SKU（如 dify）。
+ */
+export function getDefaultSkuSpecForType (llmType) {
+  const spec = LLM_TYPE_DEFAULT_SKU_SPEC[llmType]
+  return spec ? { ...spec } : null
+}
+
+/**
  * 单字段配置项
  * @typedef {Object} FormFieldConfig
  * @property {string} fieldKey - 表单字段名，对应提交给后端的 key
