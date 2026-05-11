@@ -28,6 +28,116 @@
             }"
             :params="llmSkuParams" />
         </a-form-item>
+        <a-form-item v-if="supportMountedModels" :label="$t('aice.model')" :extra="$t('aice.llm_override_sku_extra')">
+          <base-select
+            v-decorator="decorators.mounted_models"
+            resource="llm_instant_models"
+            remote
+            :params="mountedModelParams"
+            :selectProps="{ mode: 'multiple', placeholder: $t('common.tips.select', [$t('aice.model')]), allowClear: true }" />
+        </a-form-item>
+        <a-form-item v-if="supportDevicesAndHostPaths" :label="$t('aice.devices')" :extra="$t('aice.llm_override_sku_extra')">
+          <base-select
+            v-decorator="decorators.device"
+            :options="specList"
+            :selectProps="{ mode: 'multiple', placeholder: $t('common.tips.select', [$t('aice.devices')]), allowClear: true }" />
+        </a-form-item>
+        <a-form-item v-if="supportDevicesAndHostPaths" :label="$t('aice.host_paths')" :extra="$t('aice.llm_override_sku_extra')">
+          <div v-for="hp in hostPathRows" :key="hp.key" style="display: flex; align-items: stretch; gap: 10px; margin-bottom: 12px;">
+            <div style="flex: 1; border: 1px solid #e8e8e8; border-radius: 4px; padding: 12px;">
+              <a-row :gutter="8">
+                <a-col :span="8">
+                  <a-form-item>
+                    <fixed-label-filter :label="$t('aice.host_paths.type')">
+                      <a-select v-decorator="decorators.host_paths.type(hp.key)" :placeholder="$t('common.tips.select', [$t('aice.host_paths.type')])">
+                        <a-select-option value="directory">directory</a-select-option>
+                        <a-select-option value="file">file</a-select-option>
+                      </a-select>
+                    </fixed-label-filter>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="16">
+                  <a-form-item>
+                    <fixed-label-filter :label="$t('aice.host_paths.path')">
+                      <a-input v-decorator="decorators.host_paths.path(hp.key)" :placeholder="$t('aice.host_paths.path.placeholder')" />
+                    </fixed-label-filter>
+                  </a-form-item>
+                </a-col>
+              </a-row>
+
+              <a-row :gutter="8">
+                <a-col :span="24">
+                  <a-form-item>
+                    <a-checkbox v-decorator="decorators.host_paths.auto_create(hp.key)">{{ $t('aice.host_paths.auto_create') }}</a-checkbox>
+                  </a-form-item>
+                </a-col>
+              </a-row>
+              <a-row :gutter="8" v-if="form.fc.getFieldValue(`host_path_auto_create_${hp.key}`)">
+                <a-col :span="8">
+                  <a-form-item>
+                    <fixed-label-filter :label="$t('aice.host_paths.auto_create_config.uid')">
+                      <a-input v-decorator="decorators.host_paths.auto_uid(hp.key)" :placeholder="$t('aice.host_paths.auto_create_config.uid.placeholder')" />
+                    </fixed-label-filter>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="8">
+                  <a-form-item>
+                    <fixed-label-filter :label="$t('aice.host_paths.auto_create_config.gid')">
+                      <a-input v-decorator="decorators.host_paths.auto_gid(hp.key)" :placeholder="$t('aice.host_paths.auto_create_config.gid.placeholder')" />
+                    </fixed-label-filter>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="8">
+                  <a-form-item>
+                    <fixed-label-filter :label="$t('aice.host_paths.permissions')">
+                      <a-input v-decorator="decorators.host_paths.auto_perm(hp.key)" :placeholder="$t('aice.host_paths.permissions.placeholder')" />
+                    </fixed-label-filter>
+                  </a-form-item>
+                </a-col>
+              </a-row>
+
+              <div style="margin: 8px 0; font-weight: 500;">{{ $t('aice.host_paths.containers') }}</div>
+              <div v-for="c in hp.containerRows" :key="c.key">
+                <a-row :gutter="8">
+                  <a-col :span="12">
+                    <a-form-item>
+                      <fixed-label-filter :label="$t('aice.host_paths.mount_path')">
+                        <a-input v-decorator="decorators.host_paths.mount_path(hp.key, c.key)" :placeholder="$t('aice.host_paths.mount_path.placeholder')" />
+                      </fixed-label-filter>
+                    </a-form-item>
+                  </a-col>
+                  <a-col :span="12">
+                    <a-form-item>
+                      <fixed-label-filter :label="$t('aice.host_paths.propagation')">
+                        <a-select v-decorator="decorators.host_paths.propagation(hp.key, c.key)" :placeholder="$t('common.tips.select', [$t('aice.host_paths.propagation')])" optionLabelProp="label" :dropdownMatchSelectWidth="false">
+                          <a-select-option value="private" label="private">private - {{ $t('aice.host_paths.propagation.private') }}</a-select-option>
+                          <a-select-option value="rslave" label="rslave">rslave - {{ $t('aice.host_paths.propagation.rslave') }}</a-select-option>
+                          <a-select-option value="rshared" label="rshared">rshared - {{ $t('aice.host_paths.propagation.rshared') }}</a-select-option>
+                        </a-select>
+                      </fixed-label-filter>
+                    </a-form-item>
+                  </a-col>
+                </a-row>
+                <a-row :gutter="8">
+                  <a-col :span="4">
+                    <a-form-item>
+                      <a-checkbox v-decorator="decorators.host_paths.read_only(hp.key, c.key)">{{ $t('aice.host_paths.read_only') }}</a-checkbox>
+                    </a-form-item>
+                  </a-col>
+                </a-row>
+              </div>
+            </div>
+
+            <div style="width: 34px; display: flex; align-items: center; justify-content: center;">
+              <a-button shape="circle" icon="minus" size="small" @click="delHostPath(hp)" />
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center">
+            <a-button type="primary" shape="circle" icon="plus" size="small" @click="addHostPath" />
+            <a-button type="link" @click="addHostPath">{{ $t('aice.host_paths.add') }}</a-button>
+          </div>
+        </a-form-item>
         <!-- <a-form-item :label="$t('aice.bandwidth_mb')">
           <a-input-number
             v-decorator="decorators.bandwidth_mb"
@@ -455,6 +565,7 @@
 import * as R from 'ramda'
 import WindowsMixin from '@/mixins/windows'
 import validateForm from '@/utils/validate'
+import { uuid } from '@/utils/utils'
 import NameRepeated from '@/sections/NameRepeated'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
@@ -482,6 +593,7 @@ export default {
       llmTypeOptions: llmTypeOptions.map(opt => ({ id: opt.id, name: this.$t(opt.name) })),
       collapseActive: [],
       loading: false,
+      hostPathRows: [],
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
@@ -637,6 +749,55 @@ export default {
           'openclaw_channels',
           { initialValue: [], rules: [] },
         ],
+        device: [
+          'device',
+          {
+            initialValue: [],
+          },
+        ],
+        mounted_models: [
+          'mounted_models',
+          {
+            initialValue: [],
+          },
+        ],
+        host_paths: {
+          type: rowKey => [
+            `host_path_type_${rowKey}`,
+            { initialValue: 'directory' },
+          ],
+          path: rowKey => [
+            `host_path_path_${rowKey}`,
+            {
+              rules: [{ required: true, message: this.$t('aice.host_paths.path.required') }],
+            },
+          ],
+          auto_create: rowKey => [
+            `host_path_auto_create_${rowKey}`,
+            { valuePropName: 'checked', initialValue: false },
+          ],
+          auto_uid: rowKey => [`host_path_auto_uid_${rowKey}`, {}],
+          auto_gid: rowKey => [`host_path_auto_gid_${rowKey}`, {}],
+          auto_perm: rowKey => [`host_path_auto_perm_${rowKey}`, {}],
+          container_index: (hpKey, cKey) => [
+            `host_path_container_index_${hpKey}__${cKey}`,
+            { initialValue: 0 },
+          ],
+          mount_path: (hpKey, cKey) => [
+            `host_path_mount_path_${hpKey}__${cKey}`,
+            {
+              rules: [{ required: true, message: this.$t('aice.host_paths.mount_path.required') }],
+            },
+          ],
+          read_only: (hpKey, cKey) => [
+            `host_path_read_only_${hpKey}__${cKey}`,
+            { valuePropName: 'checked', initialValue: false },
+          ],
+          propagation: (hpKey, cKey) => [
+            `host_path_propagation_${hpKey}__${cKey}`,
+            { initialValue: 'rslave' },
+          ],
+        },
       },
       formItemLayout: {
         wrapperCol: {
@@ -747,6 +908,23 @@ export default {
       const keys = list.map(t => t.key)
       return keys.includes(this.openclawProviderActiveTab) ? this.openclawProviderActiveTab : (keys[0] || '')
     },
+    specList () {
+      const list = Object.values(this.$store.getters.capability?.pci_model_types || {}).filter(item => item.hypervisor === 'pod')
+      return list.map(item => ({ key: item.model, label: item.model }))
+    },
+    supportDevicesAndHostPaths () {
+      return ['ollama', 'vllm', 'comfyui'].includes((this.form.fd.llm_type || '').toLowerCase())
+    },
+    supportMountedModels () {
+      return ['ollama', 'vllm'].includes((this.form.fd.llm_type || '').toLowerCase())
+    },
+    mountedModelParams () {
+      return {
+        limit: 20,
+        scope: this.$store.getters.scope,
+        ...getParamsForType(this.form.fd.llm_type),
+      }
+    },
     /** 供 watch：主模型依赖的 Base URL（Ollama / vLLM）变更时重新拉取模型列表 */
     openclawPrimaryModelBaseUrlForRefresh () {
       const pk = this.openclawProviderActiveKey
@@ -781,6 +959,13 @@ export default {
     'form.fd.llm_type' (val, oldVal) {
       if (val === oldVal) return
       this.form.fc.setFieldsValue({ llm_sku_id: undefined })
+      // 切到不支持 devices/host_paths 的类型时清空相关表单值，避免提交脏数据
+      if (!['ollama', 'vllm', 'comfyui'].includes((val || '').toLowerCase())) {
+        this.form.fc.setFieldsValue({ device: [] })
+        this.hostPathRows = []
+      }
+      // mounted_models 仅 ollama/vllm 支持；ollama <-> vllm 切换时模型过滤参数不同，统一清空
+      this.form.fc.setFieldsValue({ mounted_models: [] })
       if (oldVal === 'openclaw' && val !== 'openclaw') {
         this.form.fc.setFieldsValue({ openclaw_channels: [] })
         this.$set(this.form.fd, 'openclaw_channels', [])
@@ -823,6 +1008,13 @@ export default {
     })
   },
   methods: {
+    addHostPath () {
+      this.hostPathRows.push({ key: uuid(), containerRows: [{ key: uuid() }] })
+    },
+    delHostPath (hp) {
+      const idx = this.hostPathRows.findIndex(v => v.key === hp.key)
+      if (idx >= 0) this.hostPathRows.splice(idx, 1)
+    },
     genCredentialName ({ llmName, usage, key }) {
       const base = String(llmName || '').trim() || 'llm'
       const u = String(usage || '').trim() || 'unknown'
@@ -1189,6 +1381,52 @@ export default {
         }
         if (this.collapseActive.includes('1') && values.prefer_host) {
           data.prefer_host = values.prefer_host
+        }
+        if (this.supportDevicesAndHostPaths) {
+          if (Array.isArray(values.device) && values.device.length > 0) {
+            data.devices = values.device.map(k => ({ model: k }))
+          }
+        }
+        if (this.supportMountedModels) {
+          if (Array.isArray(values.mounted_models) && values.mounted_models.length > 0) {
+            data.mounted_models = values.mounted_models
+          }
+        }
+        const host_paths = this.supportDevicesAndHostPaths ? this.hostPathRows.map(hp => {
+          const hpKey = hp.key
+          const type = values[`host_path_type_${hpKey}`]
+          const path = values[`host_path_path_${hpKey}`]
+          const autoCreate = !!values[`host_path_auto_create_${hpKey}`]
+          const out = { type, path }
+          if (autoCreate) {
+            out.auto_create = true
+            const uid = values[`host_path_auto_uid_${hpKey}`]
+            const gid = values[`host_path_auto_gid_${hpKey}`]
+            const perm = values[`host_path_auto_perm_${hpKey}`]
+            const cfg = {}
+            if (uid !== undefined && uid !== null && uid !== '') cfg.uid = uid
+            if (gid !== undefined && gid !== null && gid !== '') cfg.gid = gid
+            if (perm != null && String(perm).trim() !== '') cfg.permissions = String(perm).trim()
+            if (Object.keys(cfg).length > 0) out.auto_create_config = cfg
+          }
+          const containers = {}
+          ;(hp.containerRows || []).forEach(c => {
+            const composite = `${hpKey}__${c.key}`
+            const idx = values[`host_path_container_index_${composite}`]
+            const mountPath = values[`host_path_mount_path_${composite}`]
+            if (idx == null || mountPath == null || String(mountPath).trim() === '') return
+            const k = String(idx).trim()
+            if (!k) return
+            const m = { mount_path: String(mountPath).trim(), read_only: !!values[`host_path_read_only_${composite}`] }
+            const prop = values[`host_path_propagation_${composite}`]
+            if (prop != null && String(prop).trim() !== '') m.propagation = String(prop).trim()
+            containers[k] = m
+          })
+          if (Object.keys(containers).length > 0) out.containers = containers
+          return out
+        }).filter(v => v && v.type && v.path) : []
+        if (host_paths.length > 0) {
+          data.host_paths = host_paths
         }
         if (this.form.fd.llm_type === 'openclaw') {
           if (this.form.fd.openclaw_manual_config) {
