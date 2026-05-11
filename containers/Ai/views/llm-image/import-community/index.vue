@@ -26,6 +26,7 @@ import yaml from 'js-yaml'
 import marked from 'marked'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import { getDefaultPortMappingsForType, getDefaultSkuSpecForType } from '../../llm-sku/llmTypeConfig'
 
 const LLM_IMAGES_URL = 'https://www.cloudpods.org/llmimages.yaml'
 
@@ -219,6 +220,11 @@ export default {
       return marked(text)
     },
     async handleImport (record) {
+      // 先创建 llm_image，再用其 id 创建对应的默认 SKU。
+      // SKU 默认规格取自 onecloud-operator 的 DefaultLLMSku（见 llmTypeConfig.js）。
+      // dify 单镜像无法构造完整 spec，只创建 image 不建 SKU。
+      // SKU 创建失败时仅警告，不回滚 image。
+      let imageId = ''
       try {
         const createData = {
           generate_name: `${record.llm_type}-${record.image_label}`,
@@ -226,12 +232,39 @@ export default {
           image_name: record.image_name,
           image_label: record.image_label,
         }
-        await new this.$Manager('llm_images').create({ data: createData })
+        const imgRes = await new this.$Manager('llm_images').create({ data: createData })
+        imageId = imgRes?.data?.id
         this.$set(this.existingImages, `${record.llm_type}:${record.image_name}:${record.image_label}`, true)
-        this.$message.success(this.$t('common.success'))
       } catch (err) {
         throw err
       }
+      try {
+        await this.maybeCreateDefaultSku(record, imageId)
+        this.$message.success(this.$t('common.success'))
+      } catch (err) {
+        this.$message.warning(this.$t('aice.llm_image.sku_auto_create_failed', [err?.message || err]))
+      }
+    },
+    async maybeCreateDefaultSku (record, imageId) {
+      if (!imageId) return
+      const spec = getDefaultSkuSpecForType(record.llm_type)
+      if (!spec) return // dify 等无默认 SKU 模板的类型直接跳过
+      const portMappings = getDefaultPortMappingsForType(record.llm_type)
+      const data = {
+        generate_name: `${record.llm_type}-${record.image_label}`,
+        llm_type: record.llm_type,
+        llm_image_id: imageId,
+        cpu: spec.cpu,
+        memory: spec.memory,
+        bandwidth: spec.bandwidth,
+        volumes: [{ size_mb: spec.volume_size_mb }],
+        disk_size: spec.volume_size_mb,
+        llm_sku: { [record.llm_type]: {} },
+      }
+      if (portMappings.length > 0) {
+        data.port_mappings = portMappings
+      }
+      await new this.$Manager('llm_skus').create({ data })
     },
   },
 }
