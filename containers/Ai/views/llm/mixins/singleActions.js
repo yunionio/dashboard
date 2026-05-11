@@ -65,6 +65,22 @@ export default {
                 return ret
               },
             },
+            {
+              label: this.$t('aice.llm_update_config'),
+              action: (row) => {
+                this.createDialog('LlmUpdateConfigDialog', {
+                  data: [row],
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              meta: (row) => {
+                return {
+                  validate: ['ollama', 'vllm', 'comfyui'].includes((row.llm_type || '').toLowerCase()),
+                  tooltip: null,
+                }
+              },
+            },
             // 开机
             {
               label: this.$t('compute.text_272'),

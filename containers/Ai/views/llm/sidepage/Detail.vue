@@ -128,14 +128,14 @@ export default {
               },
             },
             {
-              field: 'mounted_models',
+              field: 'mounted_model_infos',
               title: this.isApplyType ? this.$t('aice.app_llm_instantapp') : this.$t('aice.llm_instantapp'),
               slots: {
                 default: ({ row }) => {
-                  const mounted_apps = row.mounted_models
+                  const mounted_apps = row.mounted_model_infos
                   if (mounted_apps?.length) {
                     return mounted_apps.map((item, idx) => {
-                      return <list-body-cell-wrap copy hideField={true} field='mounted_models' row={item} message={item.fullname}>
+                      return <list-body-cell-wrap copy hideField={true} field='mounted_model_infos' row={item} message={item.fullname}>
                         <side-page-trigger permission='llm_instant_models_get' name='LlmInstantModelSidePage' id={item.id} vm={this}>{item.fullname}</side-page-trigger>
                       </list-body-cell-wrap>
                     })
