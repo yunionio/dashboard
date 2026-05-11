@@ -23,6 +23,27 @@ export function getParamsForType (llmType) {
 }
 
 /**
+ * 各 llm_type 在 SKU 模板创建时的默认端口映射，用户可在表单中删除或新增。
+ */
+export const LLM_TYPE_DEFAULT_PORT_MAPPINGS = {
+  ollama: [{ protocol: 'tcp', container_port: 11434 }],
+  vllm: [{ protocol: 'tcp', container_port: 8000 }],
+  comfyui: [{ protocol: 'tcp', container_port: 8188 }],
+  dify: [{ protocol: 'tcp', container_port: 80 }],
+  openclaw: [{ protocol: 'tcp', container_port: 3001 }],
+  'hermes-agent': [{ protocol: 'tcp', container_port: 3001 }],
+}
+
+/**
+ * 返回某 llm_type 的默认端口映射的浅拷贝（避免共享引用被表单内部修改）。
+ */
+export function getDefaultPortMappingsForType (llmType) {
+  const list = LLM_TYPE_DEFAULT_PORT_MAPPINGS[llmType]
+  if (!Array.isArray(list)) return []
+  return list.map(item => ({ ...item }))
+}
+
+/**
  * 单字段配置项
  * @typedef {Object} FormFieldConfig
  * @property {string} fieldKey - 表单字段名，对应提交给后端的 key
