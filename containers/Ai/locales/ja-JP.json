@@ -393,6 +393,7 @@
   "aice.bandwidth_mb": "帯域幅(M)",
   "aice.model": "モデル",
   "aice.save_as_instant_model": "モデルライブラリに保存",
+  "aice.save_as_instant_model_disabled_tip": "1 件以上のモデルを選択すると、モデルライブラリに保存できます。",
   "aice.install_instant_model": "モデルデータをインストール",
   "aice.devices": "GPUモデル",
   "aice.model_name": "モデル名",
