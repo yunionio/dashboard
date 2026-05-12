@@ -666,14 +666,14 @@ export const STORAGE_TYPES = {
       label: i18n.t('compute.text_61'),
       value: 'st1',
       sysUnusable: true, // 系统盘不可用
-      min: 4,
+      min: 125,
       max: 16384,
     },
     sc1: {
       label: 'Cold HDD',
       value: 'sc1',
       sysUnusable: true, // 系统盘不可用
-      min: 4,
+      min: 125,
       max: 16384,
     },
     standard: {
