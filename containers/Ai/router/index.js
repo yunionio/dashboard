@@ -134,10 +134,18 @@ export default {
             },
           ],
         },
+      ],
+    },
+    // 人工智能-模型库
+    {
+      meta: {
+        label: i18n.t('aice.app_llm_instantapp'),
+      },
+      submenus: [
         {
           path: '/llm-instantmodel',
           meta: {
-            label: i18n.t('aice.llm_instantapp'),
+            label: i18n.t('aice.app_llm_instantapp'),
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.llm_instantmodel')) {
                 return true
