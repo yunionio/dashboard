@@ -222,7 +222,7 @@ export default {
       comparator: '>=',
       alert_duration: 2,
       from: '10m',
-      silent_period: '360m',
+      silent_period: '5m',
       reduce: 'avg',
       level: 'normal',
       scope: this.$store.getters.scope,
