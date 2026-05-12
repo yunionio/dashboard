@@ -548,14 +548,14 @@ export const STORAGE_TYPES = {
       label: i18n.t('compute.text_61'),
       value: 'st1',
       sysUnusable: true, // 系统盘不可用
-      min: 500,
+      min: 4,
       max: 16384,
     },
     sc1: {
       label: 'Cold HDD',
       value: 'sc1',
       sysUnusable: true, // 系统盘不可用
-      min: 500,
+      min: 4,
       max: 16384,
     },
     standard: {
@@ -570,9 +570,9 @@ export const STORAGE_TYPES = {
       label: i18n.t('compute.storage_gp3'),
       value: 'gp3',
       min: 1,
-      max: 16384,
+      max: 65536,
       sysMin: 1,
-      sysMax: 16384,
+      sysMax: 65536,
     },
   },
   qcloud: {
