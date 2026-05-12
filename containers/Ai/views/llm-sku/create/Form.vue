@@ -656,7 +656,7 @@ export default {
         mounted_models: [
           'mounted_models',
           {
-            initialValue: mounted_models.map(v => v.id),
+            initialValue: mounted_models || [],
           },
         ],
         preferred_model: [

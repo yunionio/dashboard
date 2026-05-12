@@ -76,7 +76,7 @@ export default {
         // { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('aice.event'), key: 'event-drawer' },
       ]
-      if (this.isApplyType) {
+      if (this.isApplyType && this.childPageData?.llm_type !== 'comfyui') {
         return ret.filter(item => item.key !== 'model')
       }
       return ret
