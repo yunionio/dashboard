@@ -1,5 +1,27 @@
 <template>
-  <vxe-grid resizable :data="list" :columns="columns" />
+  <div>
+    <div v-if="isComfyui" class="mb-2">
+      <a-tooltip :title="batchSaveBtnTooltip">
+        <span class="d-inline-block">
+          <a-button
+            type="primary"
+            :disabled="!selectedRecords.length"
+            @click="handleBatchSaveAsInstantModel">
+            {{ $t('aice.save_as_instant_model') }}
+          </a-button>
+        </span>
+      </a-tooltip>
+    </div>
+    <vxe-grid
+      ref="grid"
+      resizable
+      row-id="id"
+      :data="list"
+      :columns="columns"
+      :checkbox-config="{ highlight: true }"
+      @checkbox-change="handleCheckboxChange"
+      @checkbox-all="handleCheckboxChange" />
+  </div>
 </template>
 
 <script>
@@ -17,11 +39,29 @@ export default {
       default: () => { },
     },
     resId: String,
+    data: Object,
   },
   data () {
+    const isComfyui = this.data?.llm_type === 'comfyui'
     return {
+      isComfyui,
       list: [],
-      columns: [
+      selectedRecords: [],
+    }
+  },
+  computed: {
+    batchSaveBtnTooltip () {
+      return this.selectedRecords.length ? '' : this.$t('aice.save_as_instant_model_disabled_tip')
+    },
+    columns () {
+      const ret = [
+        {
+          type: 'checkbox',
+          width: 44,
+          align: 'center',
+          showHeaderOverflow: false,
+          resizable: false,
+        },
         {
           field: 'name',
           title: this.$t('aice.model'),
@@ -61,17 +101,20 @@ export default {
             },
           },
         },
-      ],
-    }
-  },
-  computed: {
+      ]
+      if (this.isComfyui) {
+        return ret.filter(item => item.field !== '_action')
+      }
+      return ret
+    },
     exportDataOptions () {
+      const cols = this.columns.filter(c => c.type !== 'checkbox' && c.field)
       return {
         downloadType: 'local',
         title: this.$t('aice.image'),
         items: [
           { label: 'ID', key: 'id' },
-          ...this.columns,
+          ...cols,
         ],
       }
     },
@@ -93,6 +136,26 @@ export default {
           id: data[key].model_id,
           ...data[key],
         }
+      })
+      this.selectedRecords = []
+      this.$nextTick(() => {
+        this.$refs.grid && this.$refs.grid.clearCheckboxRow && this.$refs.grid.clearCheckboxRow()
+      })
+    },
+    handleCheckboxChange ({ records }) {
+      this.selectedRecords = records
+      this.$emit('selection-change', records)
+    },
+    handleBatchSaveAsInstantModel () {
+      if (!this.selectedRecords.length) return
+      this.createDialog('LlmModelSaveInstantModelDialog', {
+        data: [...this.selectedRecords],
+        resId: this.resId,
+        actionText: this.$t('aice.save_as_instant_model'),
+        isComfyui: this.isComfyui,
+        success: () => {
+          this.fetchData()
+        },
       })
     },
   },
