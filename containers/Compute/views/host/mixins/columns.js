@@ -127,6 +127,9 @@ export default {
           if (row.ipmi_ip) {
             list.push(`${row.ipmi_ip}${this.$t('compute.text_1320')}`)
           }
+          if (row.public_ip) {
+            list.push(`${row.public_ip} (EIP)`)
+          }
           return list.length ? list.join(',') : '-'
         },
       },
