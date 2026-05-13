@@ -5687,6 +5687,7 @@
   "license.feature.baremetal": "@:scope.text_104",
   "license.feature.lb": "@:common_248",
   "license.feature.pod": "Pod",
+  "license.feature.ai": "AI",
   "license.feature.k8s": "@:scope.text_78",
   "license.feature.monitor": "@:license.module.monitor",
   "license.feature.bill": "コストの最適化",

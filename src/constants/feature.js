@@ -1,22 +1,25 @@
 import * as R from 'ramda'
 import i18n from '@/locales'
 
-/** 若存在 generalScope/constants/featureMenus.js 则加载其 FEATURE_MENUS，否则为 null（用下方 FEATURE_MENUS） */
-function loadFeatureMenusFromGeneralScope () {
+/** 约定：可选覆盖放在 scope/constants/featureMenus.js，导出 FEATURE_MENUS；不存在则走下方默认 FEATURE_MENUS */
+const SCOPE_FEATURE_MENUS_KEY = './constants/featureMenus.js'
+
+function loadFeatureMenusFromScope () {
   try {
-    const ctx = require.context(
-      '../../generalScope/constants',
-      false,
-      /^\.\/featureMenus\.js$/,
-    )
+    const ctx = require.context('../../scope', true, /featureMenus\.js$/)
     const keys = ctx.keys()
-    if (!keys.length) return null
-    return ctx(keys[0]).FEATURE_MENUS
+    const key = keys.includes(SCOPE_FEATURE_MENUS_KEY)
+      ? SCOPE_FEATURE_MENUS_KEY
+      : keys.find(k => k === SCOPE_FEATURE_MENUS_KEY || k.endsWith('/constants/featureMenus.js'))
+    if (!key) return null
+    const mod = ctx(key)
+    return mod && mod.FEATURE_MENUS != null ? mod.FEATURE_MENUS : null
   } catch (e) {
     return null
   }
 }
-const FEATURE_MENUS_SCOPE = loadFeatureMenusFromGeneralScope()
+
+const FEATURE_MENUS_SCOPE = loadFeatureMenusFromScope()
 
 const vIsAccount = R.pipe(R.path(['meta', 'is_account']), R.equals(true))
 const vIsOnestack = R.whereEq({ key: 'onestack' })
