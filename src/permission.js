@@ -151,13 +151,16 @@ scopeBeforeEach && router.beforeEach(scopeBeforeEach)
 
 // 检测权限，无权限导向403
 router.beforeEach((to, from, next) => {
-  const { meta = {} } = to.matched[0] || {}
+  const matched = to.matched[0]
+  const { meta = {} } = matched || {}
   if (meta.permission) {
     const isPermission = hasPermission({ key: meta.permission })
     if (!isPermission) return next('/403')
   }
-  if (meta.hidden) {
-    const isHidden = meta.hidden()
+  if (!R.isNil(meta.hidden)) {
+    const isHidden = R.is(Function, meta.hidden)
+      ? meta.hidden(store.getters.userInfo, matched)
+      : meta.hidden
     if (isHidden) return next('/403')
   }
   next()
