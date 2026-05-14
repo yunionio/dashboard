@@ -1,5 +1,5 @@
 import Layout from '@/layouts/RouterView'
-import { hasSetupKey } from '@/utils/auth'
+import { featureMenuHiddenCheck } from '@/utils/auth'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 
@@ -28,11 +28,12 @@ export default {
             label: i18n.t('middleware.kafka'),
             permission: 'kafkas_list',
             t: 'middleware.kafka',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.kafka')) {
                 return true
               }
-              return !hasSetupKey(['qcloud'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['qcloud'])
             },
           },
           component: Layout,
@@ -58,11 +59,12 @@ export default {
             label: i18n.t('middleware.elasticsearch'),
             permission: 'elastic_searchs_list',
             t: 'middleware.elasticsearch',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.elasticsearch')) {
                 return true
               }
-              return !hasSetupKey(['qcloud'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['qcloud'])
             },
           },
           component: Layout,
