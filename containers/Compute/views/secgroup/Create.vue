@@ -12,29 +12,31 @@
         <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
           <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
         </a-form-item>
-        <area-selects
-          class="mb-0"
-          ref="areaSelects"
-          :wrapperCol="formItemLayout.wrapperCol"
-          :labelCol="formItemLayout.labelCol"
-          :names="areaselectsName"
-          :providerParams="providerParams"
-          :cloudregionParams="cloudregionParams"
-          :isRequired="true"
-          filterBrandResource="security_group"
-          @change="handleRegionChange" />
-        <a-form-item label="VPC" v-bind="formItemLayout" v-if="regionId !== 'default'">
-          <base-select
-            v-decorator="decorators.vpc"
-            resource="vpcs"
-            :params="vpcParams"
-            :isDefaultSelect="true"
-            :needParams="true"
-            @change="vpcChange"
-            :item.sync="curVpc"
-            :labelFormat="vpcLabelFormat"
-            :select-props="{ placeholder: $t('common_226') }" />
-        </a-form-item>
+        <template v-if="cloudEnv !== 'idc' && cloudEnv !== 'onpremise'">
+          <area-selects
+            class="mb-0"
+            ref="areaSelects"
+            :wrapperCol="formItemLayout.wrapperCol"
+            :labelCol="formItemLayout.labelCol"
+            :names="areaselectsName"
+            :providerParams="providerParams"
+            :cloudregionParams="cloudregionParams"
+            :isRequired="true"
+            filterBrandResource="security_group"
+            @change="handleRegionChange" />
+          <a-form-item label="VPC" v-bind="formItemLayout" v-if="regionId !== 'default'">
+            <base-select
+              v-decorator="decorators.vpc"
+              resource="vpcs"
+              :params="vpcParams"
+              :isDefaultSelect="true"
+              :needParams="true"
+              @change="vpcChange"
+              :item.sync="curVpc"
+              :labelFormat="vpcLabelFormat"
+              :select-props="{ placeholder: $t('common_226') }" />
+          </a-form-item>
+        </template>
         <a-form-item :label="$t('common.text00012')" class="mb-0">
           <tag
             v-decorator="decorators.__meta__" />
