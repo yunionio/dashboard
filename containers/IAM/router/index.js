@@ -1,7 +1,7 @@
 import Layout from '@/layouts/RouterView'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
-import { setupKeys } from '@/utils/auth'
+import { featureMenuHiddenCheck } from '@/utils/auth'
 
 const IDP = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/idp')
 const IDPEdit = () => import(/* webpackChunkName: "iam" */ /* webpackPrefetch: true */ '@IAM/views/idp/edit')
@@ -40,11 +40,12 @@ export default {
             label: i18n.t('system.text_4'),
             permission: 'idps_list',
             t: 'dictionary.identity_provider',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.idp')) {
                 return true
               }
-              return !setupKeys.hasVersionedSetupKey({ '3.0': ['auth'] }, true)
+              return featureMenuHiddenCheck(menu)
+              // return !setupKeys.hasVersionedSetupKey({ '3.0': ['auth'] }, true)
             },
           },
           component: Layout,
@@ -79,11 +80,12 @@ export default {
             label: i18n.t('system.text_5'),
             permission: 'domains_list',
             t: 'dictionary.domain',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.domain')) {
                 return true
               }
-              return !setupKeys.hasVersionedSetupKey({ '3.0': ['auth'] }, true)
+              return featureMenuHiddenCheck(menu)
+              // return !setupKeys.hasVersionedSetupKey({ '3.0': ['auth'] }, true)
             },
           },
           component: Layout,
@@ -106,11 +108,12 @@ export default {
             label: i18n.t('system.text_9'),
             permission: 'projects_list',
             t: 'dictionary.project',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.project')) {
                 return true
               }
-              return !setupKeys.hasVersionedSetupKey({ '3.0': ['auth'] }, true)
+              return featureMenuHiddenCheck(menu)
+              // return !setupKeys.hasVersionedSetupKey({ '3.0': ['auth'] }, true)
             },
           },
           component: Layout,
@@ -133,11 +136,12 @@ export default {
             label: i18n.t('system.text_7'),
             permission: 'groups_list',
             t: 'dictionary.group',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.group')) {
                 return true
               }
-              return !setupKeys.hasVersionedSetupKey({ '3.0': ['auth'] }, true)
+              return featureMenuHiddenCheck(menu)
+              // return !setupKeys.hasVersionedSetupKey({ '3.0': ['auth'] }, true)
             },
           },
           component: Layout,
@@ -155,11 +159,12 @@ export default {
             label: i18n.t('system.text_6'),
             permission: 'users_list',
             t: 'dictionary.user',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.systemuser')) {
                 return true
               }
-              return !setupKeys.hasVersionedSetupKey({ '3.0': ['auth'] }, true)
+              return featureMenuHiddenCheck(menu)
+              // return !setupKeys.hasVersionedSetupKey({ '3.0': ['auth'] }, true)
             },
           },
           component: Layout,
@@ -184,11 +189,12 @@ export default {
             label: i18n.t('system.text_10'),
             permission: 'roles_list',
             t: 'dictionary.role',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.role')) {
                 return true
               }
-              return !setupKeys.hasVersionedSetupKey({ '3.0': ['auth'] }, true)
+              return featureMenuHiddenCheck(menu)
+              // return !setupKeys.hasVersionedSetupKey({ '3.0': ['auth'] }, true)
             },
           },
           component: Layout,
@@ -206,11 +212,12 @@ export default {
             label: i18n.t('system.text_11'),
             permission: 'policies_list',
             t: 'dictionary.policy',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.policy')) {
                 return true
               }
-              return !setupKeys.hasVersionedSetupKey({ '3.0': ['auth'] }, true)
+              return featureMenuHiddenCheck(menu)
+              // return !setupKeys.hasVersionedSetupKey({ '3.0': ['auth'] }, true)
             },
           },
           component: Layout,
@@ -249,11 +256,12 @@ export default {
           meta: {
             label: i18n.t('scope.text_961'),
             permission: 'notifications_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.iam_securityalerts')) {
                 return true
               }
-              return !setupKeys.hasVersionedSetupKey({ '3.0': ['auth'] }, true)
+              return featureMenuHiddenCheck(menu)
+              // return !setupKeys.hasVersionedSetupKey({ '3.0': ['auth'] }, true)
             },
           },
           component: Layout,

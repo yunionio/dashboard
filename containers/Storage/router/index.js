@@ -1,5 +1,5 @@
 import Layout from '@/layouts/RouterView'
-import { hasSetupKey } from '@/utils/auth'
+import { featureMenuHiddenCheck } from '@/utils/auth'
 import i18n from '@/locales'
 import store from '@/store'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
@@ -36,11 +36,12 @@ export default {
             label: i18n.t('dictionary.blockstorage'),
             permission: 'storages_list',
             t: 'dictionary.blockstorage',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.blockstorage')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'nutanix', 'bingocloud', 'proxmox'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'nutanix', 'bingocloud', 'proxmox'])
             },
           },
           component: Layout,
@@ -67,11 +68,12 @@ export default {
           meta: {
             label: i18n.t('storage.text_18'),
             permission: 'buckets_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.bucket')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'aws', 'azure', 'huawei', 'qcloud', 'google', 'storage', 'hcso', 'hcs', 'apsara'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['aliyun', 'aws', 'azure', 'huawei', 'qcloud', 'google', 'storage', 'hcso', 'hcs', 'apsara'])
             },
           },
           component: Layout,
@@ -109,12 +111,13 @@ export default {
           meta: {
             label: i18n.t('dictionary.tablestore'),
             permission: 'tablestores_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.table_storage')) {
                 return true
               }
               if (store.getters.isProjectMode) return true
-              return !hasSetupKey(['apsara', 'aliyun'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['apsara', 'aliyun'])
             },
           },
           component: Layout,
@@ -141,11 +144,12 @@ export default {
           meta: {
             label: i18n.t('dictionary.filesystem'),
             permission: 'file_systems_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.nas')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'huawei', 'hcs', 'cephfs'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['aliyun', 'huawei', 'hcs', 'cephfs'])
             },
           },
           component: Layout,
@@ -167,11 +171,12 @@ export default {
           meta: {
             label: i18n.t('dictionary.access_group'),
             permission: 'access_groups_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.access_group')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'huawei', 'hcs', 'cephfs'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['aliyun', 'huawei', 'hcs', 'cephfs'])
             },
           },
           component: Layout,
@@ -198,12 +203,13 @@ export default {
           meta: {
             label: i18n.t('dictionary.backup_storage'),
             permission: 'backupstorages_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.backup_storage')) {
                 return true
               }
               if (store.getters.isProjectMode) return true
-              return !hasSetupKey(['onestack'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['onestack'])
             },
           },
           component: Layout,
