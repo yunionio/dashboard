@@ -1,25 +1,20 @@
 import * as R from 'ramda'
 import i18n from '@/locales'
 
-/** 约定：可选覆盖放在 scope/constants/featureMenus.js，导出 FEATURE_MENUS；不存在则走下方默认 FEATURE_MENUS */
-const SCOPE_FEATURE_MENUS_KEY = './constants/featureMenus.js'
-
-function loadFeatureMenusFromScope () {
+/** 可选：仅当存在 generalScope/constants/featureMenus.js 且导出 FEATURE_MENUS 时覆盖；无该文件、无 constants 或整个 generalScope 不存在时不报错，用本文件内联的 FEATURE_MENUS。context 必须用 ee 包根目录，勿用 ../../generalScope 作根（目录不存在时 webpack 会解析失败）。 */
+function loadFeatureMenusFromGeneralScope () {
   try {
-    const ctx = require.context('../../scope', true, /featureMenus\.js$/)
+    const ctx = require.context('../../', true, /^\.\/generalScope\/constants\/featureMenus\.js$/)
     const keys = ctx.keys()
-    const key = keys.includes(SCOPE_FEATURE_MENUS_KEY)
-      ? SCOPE_FEATURE_MENUS_KEY
-      : keys.find(k => k === SCOPE_FEATURE_MENUS_KEY || k.endsWith('/constants/featureMenus.js'))
-    if (!key) return null
-    const mod = ctx(key)
+    if (!keys.length) return null
+    const mod = ctx(keys[0])
     return mod && mod.FEATURE_MENUS != null ? mod.FEATURE_MENUS : null
   } catch (e) {
     return null
   }
 }
 
-const FEATURE_MENUS_SCOPE = loadFeatureMenusFromScope()
+const FEATURE_MENUS_SCOPE = loadFeatureMenusFromGeneralScope()
 
 const vIsAccount = R.pipe(R.path(['meta', 'is_account']), R.equals(true))
 const vIsOnestack = R.whereEq({ key: 'onestack' })
@@ -250,7 +245,7 @@ const LicenseItems = [
     validators: [validators.hasCloudAccount],
   },
   {
-    key: 'monitor',
+    key: 'monitor_operation',
     origin_key: 'monitor',
     meta: meta('resource_managent', 'monitor', false),
   },
@@ -458,7 +453,7 @@ const FEATURE_MENUS = {
     ceMenus: ['vminstance', 'instancegroup', 'servertemplate', 'scalinggroup', 'image', 'host_image', 'disk', 'disk-snapshot', 'instance-snapshot', 'snapshotpolicy', 'disk-backup', 'instance-backup', 'keypair', 'sku', 'host', 'gpu', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'imagerecovery', 'zone', 'vpc', 'wire', 'network', 'secgroup', 'eip', 'dns-zone', 'tap-service', 'blockstorage', 'backup-storage'],
   },
   pod: {
-    ceMenus: ['vminstance-container', 'app-package', 'image-repos', 'disk', 'disk-backup', 'instance-backup', 'host', 'gpu', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'zone', 'vpc', 'wire', 'network', 'secgroup', 'eip', 'dns-zone', 'blockstorage', 'backup-storage'],
+    ceMenus: ['vminstance-container', 'app-package', 'image-repos', 'disk', 'disk-backup', 'instance-backup', 'host', 'gpu', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'zone', 'vpc', 'wire', 'network', 'secgroup', 'eip', 'dns-zone', 'blockstorage', 'backup-storage', 'credentials-container-image', 'credentials-container-secret'],
   },
   ai: {
     ceMenus: ['app-llm', 'app-llm-sku', 'llm', 'llm-sku', 'llm-instantmodel', 'llm-image'],
@@ -470,10 +465,10 @@ const FEATURE_MENUS = {
     ceMenus: ['zone', 'vpc', 'routetable', 'wire', 'network', 'secgroup', 'eip', 'lb', 'lbacl', 'lbcert', 'health-check', 'cluster', 'lbagent'],
   },
   aliyun: {
-    ceMenus: ['cloudaccount', 'cloudgroup', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'snapshotpolicy', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc-network', 'vpc', 'routetable', 'network', 'secgroup', 'eip', 'nat', 'dns-zone', 'waf', 'lb', 'lbacl', 'lbcert', 'cdn', 'ssl-certificate', 'bucket', 'table-storage', 'nas', 'access-group', 'rds', 'redis', 'mongodb', 'kafka', 'elasticsearch'],
+    ceMenus: ['cloudaccount', 'cloudgroup', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'snapshotpolicy', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc-network', 'vpc', 'routetable', 'network', 'secgroup', 'eip', 'nat', 'dns-zone', 'waf', 'lb', 'lbacl', 'lbcert', 'cdn', 'ssl-certificate', 'bucket', 'table-storage', 'nas', 'access-group', 'rds', 'redis', 'mongodb', 'kafka', 'elasticsearch', 'navbar-clouduser', 'navbar-nopswlogin'],
   },
   aws: {
-    ceMenus: ['cloudaccount', 'cloudgroup', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'network', 'secgroup', 'eip', 'nat', 'dns-zone', 'waf', 'lb', 'lbcert', 'cdn', 'bucket', 'rds', 'redis'],
+    ceMenus: ['cloudaccount', 'cloudgroup', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'network', 'secgroup', 'eip', 'nat', 'dns-zone', 'waf', 'lb', 'lbcert', 'cdn', 'bucket', 'rds', 'redis', 'navbar-clouduser', 'navbar-nopswlogin'],
   },
   azure: {
     ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'network', 'secgroup', 'eip', 'waf', 'lb', 'bucket', 'rds', 'redis'],
@@ -592,8 +587,8 @@ const FEATURE_MENUS = {
   k8s: {
     ceMenus: ['k8s-deployment', 'k8s-statefulset', 'k8s-daemonset', 'k8s-job', 'k8s-cronjob', 'k8s-pod', 'k8s-persistentvolumeclaim', 'k8s-service', 'k8s-ingress', 'k8s-configmap', 'k8s-secret', 'k8s-cluster', 'k8s-node', 'k8s-storageclass', 'k8s-namespace', 'k8s-rbacrole', 'k8s-rbacclusterrole', 'k8s-rbacrolebinding', 'k8s-rbacclusterrolebinding', 'k8s-serviceaccount', 'k8s-kubecomponent'],
   },
-  monitor: {
-    ceMenus: ['monitoroverview', 'monitor-dashboard', 'explorer', 'commonalerts', 'alertresource', 'alertrecord', 'monitorresourcealerts', 'notification', 'notify-topic', 'notifyconfig', 'contact', 'robot', 'scheduledtask'],
+  monitor_operation: {
+    ceMenus: ['monitoroverview', 'monitor-dashboard', 'explorer', 'commonalerts', 'alertresource', 'alertrecord', 'monitorresourcealerts', 'notification', 'notify-topic', 'notifyconfig', 'contact', 'robot', 'scheduledtask', 'navbar-alert', 'navbar-notification'],
   },
   appstore: {
     ceMenus: ['vm-release', 'k8s-release', 'k8s-chart', 'k8s-repo'],
@@ -647,7 +642,7 @@ const FEATURE_MENUS = {
     ceMenus: [],
   },
   auth: {
-    ceMenus: ['idp', 'domain', 'project', 'group', 'systemuser', 'role', 'policy', 'suggestsysalert', 'suggestsysruleconfig', 'suggestsysrule'],
+    ceMenus: ['idp', 'domain', 'project', 'group', 'systemuser', 'role', 'policy', 'suggestsysalert', 'suggestsysruleconfig', 'suggestsysrule', 'navbar-cloudshell', 'navbar-language', 'navbar-change-password', 'credentials-aksk'],
   },
 }
 
