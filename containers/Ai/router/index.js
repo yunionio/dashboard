@@ -9,10 +9,13 @@ const AppLlmSku = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch:
 const LlmSku = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku')
 const LlmSkuCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku/create/index')
 const LlmInstantmodel = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-instantmodel')
+const LlmModelSets = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-model-sets')
 const LlmImage = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-image')
 const LlmInstantmodelImportCommunity = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-instantmodel/import-community')
 const LlmImageImportCommunity = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-image/import-community')
 const LlmCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm/create')
+const LlmDeployment = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-deployment')
+const LlmDeploymentCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-deployment/create')
 export default {
   index: 61,
   meta: {
@@ -85,6 +88,31 @@ export default {
       },
       submenus: [
         {
+          path: '/llm-deployment',
+          meta: {
+            label: i18n.t('aice.llm_deployment'),
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.llm_deployment')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'LlmDeploymentList',
+              path: '',
+              component: LlmDeployment,
+            },
+            {
+              name: 'LlmDeploymentCreate',
+              path: 'create',
+              component: LlmDeploymentCreate,
+            },
+          ],
+        },
+        {
           path: '/llm',
           meta: {
             label: i18n.t('aice.llm'),
@@ -143,9 +171,29 @@ export default {
       },
       submenus: [
         {
+          path: '/llm-model-sets',
+          meta: {
+            label: i18n.t('aice.llm_catalog'),
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.llm_catalog')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'LlmModelSetList',
+              path: '',
+              component: LlmModelSets,
+            },
+          ],
+        },
+        {
           path: '/llm-instantmodel',
           meta: {
-            label: i18n.t('aice.app_llm_instantapp'),
+            label: i18n.t('aice.llm_instantmodel.menu'),
             hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.llm_instantmodel')) {
                 return true
