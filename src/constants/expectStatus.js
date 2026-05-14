@@ -643,5 +643,15 @@ export default {
     success: ['running'],
     danger: ['create_fail', 'start_fail', 'stop_fail', 'save_model_failed', 'delete_fail'],
   },
+  llm: {
+    info: ['ready', 'unknown', 'no_server', 'no_container', 'start_save_model', 'saving_model', 'start_syncstatus', 'syncstatus', 'start_delete', 'deleting', 'deleted', 'start_unbind', 'unbinding', 'start_bind', 'binding', 'start_restart', 'restarting'],
+    success: ['running'],
+    danger: ['create_fail', 'start_fail', 'stop_fail', 'save_model_failed', 'unbind_fail', 'bind_fail', 'restart_fail', 'delete_fail'],
+  },
+  llmDeployment: {
+    info: ['unknown', 'importing_model', 'creating_sku', 'deploying', 'partial', 'start_delete', 'deleting', 'deleted'],
+    success: ['ready', 'running'],
+    danger: ['create_fail', 'create_failed', 'import_model_failed', 'create_sku_failed', 'delete_fail', 'delete_failed'],
+  },
   ...extraStatus,
 }
