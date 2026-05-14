@@ -381,6 +381,40 @@ export function hasSetupKey (envs) {
   return f
 }
 
+/** 侧栏 hidden：参数无效或未在全量 featureMenus 登记则 true；已登记时若不在「按 setupKeys 过滤后」任一项中则 true，否则 false */
+export function featureMenuHiddenCheck (menu) {
+  if (!menu || !menu.path) return true
+  const raw = menu.path
+  if (!raw) return true
+  const trimmed = raw.replace(/^\/+|\/+$/g, '')
+  if (!trimmed) return true
+  const segs = trimmed.split('/')
+  const menuId = segs[segs.length - 1] || null
+  if (!menuId) return true
+  const featureMenus = Features.default.featureMenus
+  if (!featureMenus) return true
+
+  const inMenus = (menusObj) => {
+    return Object.keys(menusObj).some((fk) => {
+      const entry = menusObj[fk]
+      if (!entry) return false
+      const ce = entry.ceMenus || []
+      const ee = entry.eeMenus || []
+      return ce.indexOf(menuId) > -1 || ee.indexOf(menuId) > -1
+    })
+  }
+  if (!inMenus(featureMenus)) {
+    return true
+  }
+  const filtered = {}
+  Object.keys(featureMenus).forEach((k) => {
+    if (setupKeys.hasVersionedSetupKey({ '3.0': [k] }, true)) {
+      filtered[k] = featureMenus[k]
+    }
+  })
+  return !inMenus(filtered)
+}
+
 export const hasMeterService = function () {
   const { services = [] } = store.getters.userInfo
   const meterService = services.find(val => val.type === 'meter')
