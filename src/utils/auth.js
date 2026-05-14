@@ -408,7 +408,7 @@ export function featureMenuHiddenCheck (menu) {
   }
   const filtered = {}
   Object.keys(featureMenus).forEach((k) => {
-    if (setupKeys.hasVersionedSetupKey({ '3.0': [k] }, true)) {
+    if (hasSetupKey([k])) {
       filtered[k] = featureMenus[k]
     }
   })
