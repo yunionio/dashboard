@@ -1,7 +1,7 @@
 import Layout from '@/layouts/RouterView'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
-import { hasSetupKey } from '@/utils/auth'
+import { featureMenuHiddenCheck } from '@/utils/auth'
 
 const Llm = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm')
 const AppLlm = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/app-llm')
@@ -30,11 +30,12 @@ export default {
           path: '/app-llm',
           meta: {
             label: i18n.t('aice.app_llm'),
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.app_llm')) {
                 return true
               }
-              return !hasSetupKey(['pod'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['pod'])
             },
           },
           component: Layout,
@@ -55,11 +56,12 @@ export default {
           path: '/app-llm-sku',
           meta: {
             label: i18n.t('aice.app_llm_sku'),
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.app_llm_sku')) {
                 return true
               }
-              return !hasSetupKey(['pod'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['pod'])
             },
           },
           component: Layout,
@@ -88,11 +90,12 @@ export default {
           path: '/llm',
           meta: {
             label: i18n.t('aice.llm'),
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.llm')) {
                 return true
               }
-              return !hasSetupKey(['pod'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['pod'])
             },
           },
           component: Layout,
@@ -113,11 +116,12 @@ export default {
           path: '/llm-sku',
           meta: {
             label: i18n.t('aice.llm_sku'),
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.llm_sku')) {
                 return true
               }
-              return !hasSetupKey(['pod'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['pod'])
             },
           },
           component: Layout,
@@ -146,11 +150,12 @@ export default {
           path: '/llm-instantmodel',
           meta: {
             label: i18n.t('aice.app_llm_instantapp'),
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.llm_instantmodel')) {
                 return true
               }
-              return !hasSetupKey(['pod'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['pod'])
             },
           },
           component: Layout,
@@ -179,11 +184,12 @@ export default {
           path: '/llm-image',
           meta: {
             label: i18n.t('aice.llm_image'),
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.llm_image')) {
                 return true
               }
-              return !hasSetupKey(['pod'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['pod'])
             },
           },
           component: Layout,

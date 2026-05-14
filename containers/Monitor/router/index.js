@@ -1,5 +1,5 @@
 import Layout from '@/layouts/RouterView'
-import { setupKeys, hasServices } from '@/utils/auth'
+import { featureMenuHiddenCheck } from '@/utils/auth'
 import i18n from '@/locales'
 import store from '@/store'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
@@ -36,11 +36,12 @@ export default {
       meta: {
         label: i18n.t('monitor.text_18'),
         permission: 'commonalerts_list',
-        hidden: () => {
+        hidden: (userInfo, menu) => {
           if (isScopedPolicyMenuHidden('sub_hidden_menus.monitoroverview')) {
             return true
           }
-          return !setupKeys.hasVersionedSetupKey({ '3.0': ['monitor'] }, true)
+          return featureMenuHiddenCheck(menu)
+          // return !setupKeys.hasVersionedSetupKey({ '3.0': ['monitor'] }, true)
         },
       },
       component: Overview,
@@ -56,7 +57,7 @@ export default {
     //       meta: {
     //         label: i18n.t('common.server'),
     //         permission: 'monitorresources_list',
-    //         hidden: () => {
+    //         hidden: (userInfo, menu) => {
     //           if (isScopedPolicyMenuHidden('sub_hidden_menus.monitorresources_guest')) {
     //             return true
     //           }
@@ -82,7 +83,7 @@ export default {
     //       meta: {
     //         label: i18n.t('dictionary.host'),
     //         permission: 'monitorresources_list',
-    //         hidden: () => {
+    //         hidden: (userInfo, menu) => {
     //           if (isScopedPolicyMenuHidden('sub_hidden_menus.monitorresources_host')) {
     //             return true
     //           }
@@ -120,15 +121,17 @@ export default {
           meta: {
             label: i18n.t('monitor.dashboard.title'),
             permission: 'unifiedmonitors_get',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.monitor_dashboard')) {
                 return true
               }
 
-              return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
-                '3.0': ['monitor'],
-                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso', 'hcs'],
-              }) : false
+              // const noFeature = process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
+              //   '3.0': ['monitor'],
+              //   default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso', 'hcs'],
+              // }) : false
+              // return noFeature
+              return featureMenuHiddenCheck(menu)
             },
           },
           path: '/monitor-dashboard',
@@ -156,14 +159,16 @@ export default {
           meta: {
             label: i18n.t('monitor.text_119'),
             permission: 'unifiedmonitors_get',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.explorer')) {
                 return true
               }
-              return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
-                '3.0': ['monitor'],
-                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso', 'hcs'],
-              }) : false
+              // const noFeature = process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
+              //   '3.0': ['monitor'],
+              //   default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso', 'hcs'],
+              // }) : false
+              // return noFeature
+              return featureMenuHiddenCheck(menu)
             },
           },
           path: '/explorer',
@@ -183,15 +188,17 @@ export default {
             label: i18n.t('monitor.text_2'),
             t: 'dictionary.commonalert',
             permission: 'commonalerts_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.commonalerts')) {
                 return true
               }
 
-              return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
-                '3.0': ['monitor'],
-                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso', 'hcs'],
-              }) : false
+              // const noFeature = process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
+              //   '3.0': ['monitor'],
+              //   default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso', 'hcs'],
+              // }) : false
+              // return noFeature
+              return featureMenuHiddenCheck(menu)
             },
           },
           component: Layout,
@@ -229,12 +236,13 @@ export default {
             label: i18n.t('monitor.text_17'),
             // t: 'dictionary.alertresource',
             permission: 'alertresources_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.alertresource')) {
                 return true
               }
               if (!store.getters.isAdminMode) return true
-              return !setupKeys.hasVersionedSetupKey({ '3.0': ['monitor'] }, !(!store.getters.isAdminMode && process.env.VUE_APP_IS_PRIVATE))
+              return featureMenuHiddenCheck(menu)
+              // return !setupKeys.hasVersionedSetupKey({ '3.0': ['monitor'] }, !(!store.getters.isAdminMode && process.env.VUE_APP_IS_PRIVATE))
             },
           },
           component: Layout,
@@ -251,14 +259,15 @@ export default {
           meta: {
             label: i18n.t('dictionary.alertrecord'),
             permission: 'alertrecords_list,monitorresourcealerts_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.alertrecord')) {
                 return true
               }
 
-              return !setupKeys.hasVersionedSetupKey({
-                '3.0': ['monitor'],
-              })
+              return featureMenuHiddenCheck(menu)
+              // return !setupKeys.hasVersionedSetupKey({
+              //   '3.0': ['monitor'],
+              // })
             },
           },
           component: Layout,
@@ -276,15 +285,17 @@ export default {
             label: i18n.t('monitor.text_2'),
             t: 'dictionary.monitorresourcealerts',
             permission: 'alertrecordshields_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.commonalerts')) {
                 return true
               }
 
-              return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
-                '3.0': ['monitor'],
-                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'huaweicloudstack'],
-              }) : false
+              // const noFeature = process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
+              //   '3.0': ['monitor'],
+              //   default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'huaweicloudstack'],
+              // }) : false
+              // return noFeature
+              return featureMenuHiddenCheck(menu)
             },
           },
           component: Layout,
@@ -308,11 +319,12 @@ export default {
           meta: {
             label: i18n.t('system.text_16'),
             permission: 'notifications_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.notification')) {
                 return true
               }
-              return !hasServices('notify')
+              return featureMenuHiddenCheck(menu)
+              // return !hasServices('notify')
             },
             t: 'dictionary.webconsole',
           },
@@ -330,14 +342,15 @@ export default {
           meta: {
             label: i18n.t('dictionary.notify-topic'),
             permission: 'topics_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.notify_topic')) {
                 return true
               }
               if (!(store.getters.isAdminMode || store.getters.isDomainMode)) {
                 return true
               }
-              return !hasServices('notify')
+              return featureMenuHiddenCheck(menu)
+              // return !hasServices('notify')
             },
             t: 'dictionary.notify-topic',
           },
@@ -355,14 +368,15 @@ export default {
           meta: {
             label: i18n.t('system.text_19'),
             permission: 'notifyconfigs_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.notifyconfig')) {
                 return true
               }
               if (!(store.getters.isAdminMode || store.getters.isDomainMode)) {
                 return true
               }
-              return !hasServices('notify')
+              return featureMenuHiddenCheck(menu)
+              // return !hasServices('notify')
             },
           },
           component: Layout,
@@ -384,11 +398,15 @@ export default {
           meta: {
             label: i18n.t('common_27'),
             permission: 'contacts_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.contact')) {
                 return true
               }
-              return !store.getters.isAdminMode && !store.getters.isDomainMode
+              if (!store.getters.isAdminMode && !store.getters.isDomainMode) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+              // return !store.getters.isAdminMode && !store.getters.isDomainMode
             },
           },
           component: Layout,
@@ -405,11 +423,11 @@ export default {
           meta: {
             label: i18n.t('system.robot_manage'),
             permission: 'robots_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.robot')) {
                 return true
               }
-              return false
+              return featureMenuHiddenCheck(menu)
             },
           },
           component: Layout,

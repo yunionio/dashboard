@@ -4,7 +4,7 @@
 // import LoadbalancerclusterList from '@Network/views/ssh-service'
 
 import Layout from '@/layouts/RouterView'
-import { hasSetupKey } from '@/utils/auth'
+import { featureMenuHiddenCheck } from '@/utils/auth'
 import i18n from '@/locales'
 import store from '@/store'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
@@ -45,9 +45,9 @@ const LbaclsList = () => import(/* webpackChunkName: "network" */ /* webpackPref
 const LbcertsList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/lbcerts')
 const LoadbalancerclusterList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/loadbalancercluster')
 const LBClusterUpdate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/loadbalancercluster/update')
-const SshProxyList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/ssh-proxy')
-const SshProxyCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/ssh-proxy/form')
-const SshAgentList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/ssh-agent')
+// const SshProxyList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/ssh-proxy')
+// const SshProxyCreate = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/ssh-proxy/form')
+// const SshAgentList = () => import(/* webpackChunkName: "network" */ /* webpackPrefetch: true */ '@Network/views/ssh-agent')
 const WebApp = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/webapp')
 
 export default {
@@ -67,11 +67,12 @@ export default {
           meta: {
             label: i18n.t('cloudenv.text_10'),
             permission: 'areas_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.cloudregion')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'private', 'vmware', 'baremetal'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['onestack', 'private', 'vmware', 'baremetal'])
             },
           },
           component: Layout,
@@ -88,11 +89,12 @@ export default {
           meta: {
             label: i18n.t('cloudenv.text_11'),
             permission: 'zones_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.zone')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'private', 'vmware', 'baremetal'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['onestack', 'private', 'vmware', 'baremetal'])
             },
           },
           component: Layout,
@@ -120,9 +122,10 @@ export default {
             permission: 'inter_vpc_networks_list',
             label: i18n.t('dictionary.vpc_network'),
             t: 'dictionary.vpc_network',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (store.getters.isProjectMode || isScopedPolicyMenuHidden('sub_hidden_menus.vpc_network')) return true
-              return !hasSetupKey(['aliyun', 'qcloud'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['aliyun', 'qcloud'])
             },
           },
           component: Layout,
@@ -140,9 +143,10 @@ export default {
             label: i18n.t('dictionary.vpc_peer_connect'),
             permission: 'vpc_peering_connections_list',
             t: 'dictionary.vpc_peer_connect',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (store.getters.isProjectMode || isScopedPolicyMenuHidden('sub_hidden_menus.vpc_peerconnect')) return true
-              return !hasSetupKey(['qcloud', 'huawei', 'aws', 'hcs'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['qcloud', 'huawei', 'aws', 'hcs'])
             },
           },
           component: Layout,
@@ -165,11 +169,12 @@ export default {
             label: i18n.t('dictionary.globalvpc'),
             permission: 'network_globalvpcs_list',
             t: 'dictionary.globalvpc',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.globalvpc')) {
                 return true
               }
-              return !hasSetupKey('google')
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey('google')
             },
           },
           component: Layout,
@@ -192,11 +197,12 @@ export default {
             label: i18n.t('dictionary.vpc'),
             permission: 'vpcs_list',
             t: 'dictionary.vpc',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.vpc')) {
                 return true
               }
-              return !hasSetupKey(['openstack', 'onestack', 'zstack', 'dstack', 'public', 'baremetal', 'apsara', 'hcso', 'hcs', 'bingocloud'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['openstack', 'onestack', 'zstack', 'dstack', 'public', 'baremetal', 'apsara', 'hcso', 'hcs', 'bingocloud'])
             },
           },
           component: Layout,
@@ -218,12 +224,13 @@ export default {
           meta: {
             label: i18n.t('dictionary.route_table'),
             permission: 'route_tables_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.routetable')) {
                 return true
               }
               if (store.getters.isProjectMode) return true
-              return !hasSetupKey(['aliyun', 'qcloud', 'huawei', 'aws', 'hcs'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['aliyun', 'qcloud', 'huawei', 'aws', 'hcs'])
             },
           },
           component: Layout,
@@ -241,11 +248,12 @@ export default {
             label: i18n.t('dictionary.wire'),
             permission: 'wires_list',
             t: 'dictionary.wire',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.wire')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'vmware', 'zstack', 'dstack', 'nutanix', 'baremetal'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['onestack', 'vmware', 'zstack', 'dstack', 'nutanix', 'baremetal'])
             },
             // hidden: () => !hasServices(['esxiagent', 'hostagent', 'bmagent']) && !hasBrands('ZStack'),
           },
@@ -279,11 +287,12 @@ export default {
             label: i18n.t('dictionary.network'),
             permission: 'networks_list',
             t: 'dictionary.network',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.network')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'private', 'public', 'baremetal', 'vmware'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['onestack', 'private', 'public', 'baremetal', 'vmware'])
             },
           },
           component: Layout,
@@ -346,11 +355,12 @@ export default {
             label: i18n.t('dictionary.eip'),
             permission: 'eips_list',
             t: 'dictionary.eip',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.eip')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'private', 'public'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['onestack', 'private', 'public'])
             },
           },
           component: Layout,
@@ -373,11 +383,12 @@ export default {
             label: i18n.t('dictionary.nat'),
             permission: 'natgateways_list',
             t: 'dictionary.nat',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.nat')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'huawei', 'hcso', 'hcs'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['aliyun', 'huawei', 'hcso', 'hcs'])
             },
           },
           component: Layout,
@@ -416,11 +427,12 @@ export default {
           meta: {
             label: i18n.t('dictionary.dns_zone'),
             permission: 'dns_zones_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.dns_zone')) {
                 return true
               }
-              return !hasSetupKey(['onecloud', 'aws', 'qcloud', 'aliyun', 'cloudflare'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['onecloud', 'aws', 'qcloud', 'aliyun', 'cloudflare'])
             },
           },
           component: Layout,
@@ -442,11 +454,12 @@ export default {
           meta: {
             label: i18n.t('dictionary.ipv6_gateway'),
             permission: 'ipv6_gateways_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.ipv6_gateway')) {
                 return true
               }
-              return !hasSetupKey(['apsara', 'aliyun'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['apsara', 'aliyun'])
             },
           },
           component: Layout,
@@ -474,10 +487,11 @@ export default {
             label: i18n.t('dictionary.waf_instance'),
             permission: 'waf_instances_list',
             t: 'dictionary.waf_instance',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.waf')) return true
               if (!(store.getters.isDomainMode || store.getters.isAdminMode)) return true
-              return !hasSetupKey(['aws', 'azure', 'aliyun', 'qcloud', 'cloudflare'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['aws', 'azure', 'aliyun', 'qcloud', 'cloudflare'])
             },
           },
           component: Layout,
@@ -494,11 +508,12 @@ export default {
           meta: {
             label: i18n.t('compute.webapp'),
             permission: 'webapps_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.webapp')) {
                 return true
               }
-              return !hasSetupKey(['azure'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['azure'])
             },
           },
           component: Layout,
@@ -515,61 +530,72 @@ export default {
     /**
      * SSH代理
      */
-    {
-      meta: {
-        label: i18n.t('network.ssh-proxy.title'),
-        hidden: () => (store.getters.isProjectMode || !hasSetupKey(['private', 'vmware', 'public'])),
-      },
-      submenus: [
-        {
-          path: '/ssh-proxy',
-          meta: {
-            label: i18n.t('network.ssh-proxy.endpoints'),
-            permission: 'sshproxy_node_list',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.ssh_proxy')) {
-                return true
-              }
-              return !hasSetupKey(['private', 'vmware', 'public'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'SshProxyList',
-              path: '',
-              component: SshProxyList,
-            },
-            {
-              name: 'SshProxyCreate',
-              path: 'create',
-              component: SshProxyCreate,
-            },
-          ],
-        },
-        {
-          path: '/ssh-agent',
-          meta: {
-            label: i18n.t('network.ssh-proxy.proxyservice'),
-            permission: 'sshproxy_service_list',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.ssh_agent')) {
-                return true
-              }
-              return store.getters.isDomainMode || !hasSetupKey(['private', 'vmware', 'public'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'SshAgentList',
-              path: '',
-              component: SshAgentList,
-            },
-          ],
-        },
-      ],
-    },
+    // {
+    //   meta: {
+    //     label: i18n.t('network.ssh-proxy.title'),
+    //     hidden: (userInfo, menu) => {
+    //       if (store.getters.isProjectMode) {
+    //         return true
+    //       }
+    //       return featureMenuHiddenCheck(menu)
+    //       // return !hasSetupKey(['private', 'vmware', 'public'])
+    //     },
+    //   },
+    //   submenus: [
+    //     {
+    //       path: '/ssh-proxy',
+    //       meta: {
+    //         label: i18n.t('network.ssh-proxy.endpoints'),
+    //         permission: 'sshproxy_node_list',
+    //         hidden: (userInfo, menu) => {
+    //           if (isScopedPolicyMenuHidden('sub_hidden_menus.ssh_proxy')) {
+    //             return true
+    //           }
+    //           return featureMenuHiddenCheck(menu)
+    //           // return !hasSetupKey(['private', 'vmware', 'public'])
+    //         },
+    //       },
+    //       component: Layout,
+    //       children: [
+    //         {
+    //           name: 'SshProxyList',
+    //           path: '',
+    //           component: SshProxyList,
+    //         },
+    //         {
+    //           name: 'SshProxyCreate',
+    //           path: 'create',
+    //           component: SshProxyCreate,
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       path: '/ssh-agent',
+    //       meta: {
+    //         label: i18n.t('network.ssh-proxy.proxyservice'),
+    //         permission: 'sshproxy_service_list',
+    //         hidden: (userInfo, menu) => {
+    //           if (isScopedPolicyMenuHidden('sub_hidden_menus.ssh_agent')) {
+    //             return true
+    //           }
+    //           if (store.getters.isDomainMode) {
+    //             return true
+    //           }
+    //           return featureMenuHiddenCheck(menu)
+    //           // return !hasSetupKey(['private', 'vmware', 'public'])
+    //         },
+    //       },
+    //       component: Layout,
+    //       children: [
+    //         {
+    //           name: 'SshAgentList',
+    //           path: '',
+    //           component: SshAgentList,
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
     /**
      * 负载均衡
      */
@@ -585,11 +611,12 @@ export default {
           meta: {
             label: i18n.t('network.text_714'),
             permission: 'lb_loadbalancers_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.lb')) {
                 return true
               }
-              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara', 'hcso', 'hcs', 'azure', 'google'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara', 'hcso', 'hcs', 'azure', 'google'])
             },
           },
           component: Layout,
@@ -621,11 +648,12 @@ export default {
           meta: {
             label: i18n.t('network.text_715'),
             permission: 'lb_loadbalanceracls_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.lbacl')) {
                 return true
               }
-              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'hcso', 'hcs', 'azure', 'google'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'hcso', 'hcs', 'azure', 'google'])
             },
           },
           component: Layout,
@@ -642,11 +670,12 @@ export default {
           meta: {
             label: i18n.t('network.text_716'),
             permission: 'lb_loadbalancercertificates_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.lbcert')) {
                 return true
               }
-              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara', 'hcso', 'hcs', 'azure', 'google'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara', 'hcso', 'hcs', 'azure', 'google'])
             },
           },
           component: Layout,
@@ -664,11 +693,12 @@ export default {
             label: i18n.t('network.health_check'),
             permission: 'loadbalancer_health_checks_list',
             t: 'network.health_check',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.health_check')) {
                 return true
               }
-              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara', 'hcso', 'hcs', 'azure', 'google'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara', 'hcso', 'hcs', 'azure', 'google'])
             },
           },
           component: Layout,
@@ -696,11 +726,12 @@ export default {
           meta: {
             label: i18n.t('network.text_19'),
             permission: 'lb_loadbalancerclusters_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.cluster')) {
                 return true
               }
-              return !hasSetupKey(['lb', 'k8s'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['lb', 'k8s'])
             },
           },
           component: Layout,
@@ -727,11 +758,12 @@ export default {
           meta: {
             label: i18n.t('network.text_20'),
             permission: 'lb_loadbalanceragents_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.lbagent')) {
                 return true
               }
-              return !hasSetupKey(['lb', 'k8s'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['lb', 'k8s'])
             },
           },
           component: Layout,
@@ -766,11 +798,12 @@ export default {
             label: i18n.t('dictionary.cdn_domain'),
             permission: 'cdn_domains_list',
             t: 'dictionary.cdn_domain',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.cdn')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'qcloud', 'cloudflare'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['aliyun', 'qcloud', 'cloudflare'])
             },
           },
           component: Layout,
@@ -793,11 +826,12 @@ export default {
             label: i18n.t('network.ssl_certificate'),
             permission: 'ssl_certificates_list',
             t: 'network.ssl_certificate',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.ssl_certificate')) {
                 return true
               }
-              return !hasSetupKey(['cloudflare'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['cloudflare'])
             },
           },
           component: Layout,
