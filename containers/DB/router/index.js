@@ -1,6 +1,6 @@
 // import RDSBackup from '@DB/views/rds-backup'
 import Layout from '@/layouts/RouterView'
-import { hasSetupKey } from '@/utils/auth'
+import { featureMenuHiddenCheck } from '@/utils/auth'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 
@@ -32,11 +32,12 @@ export default {
             label: i18n.t('dictionary.dbinstance'),
             permission: 'rds_dbinstances_list',
             t: 'dictionary.dbinstance',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.rds')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'huawei', 'google', 'aws', 'qcloud', 'apsara', 'azure', 'hcso', 'hcs', 'ksyun'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['aliyun', 'huawei', 'google', 'aws', 'qcloud', 'apsara', 'azure', 'hcso', 'hcs', 'ksyun'])
             },
           },
           children: [
@@ -87,11 +88,12 @@ export default {
           meta: {
             label: i18n.t('dictionary.elasticcache'),
             permission: 'redis_elasticcaches_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.redis')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'apsara', 'hcs'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'apsara', 'hcs'])
             },
           },
           component: Layout,
@@ -123,11 +125,12 @@ export default {
           meta: {
             label: i18n.t('dictionary.mongodb'),
             permission: 'mongodbs_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.mongodb')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'qcloud'])
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['aliyun', 'qcloud'])
             },
           },
           component: Layout,
