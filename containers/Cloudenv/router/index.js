@@ -3,13 +3,12 @@
 // import Policydefinition from '@Cloudenv/views/policydefinition'
 
 import Layout from '@/layouts/RouterView'
-import { hasSetupKey } from '@/utils/auth'
-import store from '@/store'
+import { featureMenuHiddenCheck } from '@/utils/auth'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 
 const ProjectMapping = () => import(/* webpackChunkName: "cloudenv" */ /* webpackPrefetch: true */ '@Cloudenv/views/projectmapping')
-const Cloudgroup = () => import(/* webpackChunkName: "cloudenv" */ /* webpackPrefetch: true */ '@Cloudenv/views/cloudgroup')
+// const Cloudgroup = () => import(/* webpackChunkName: "cloudenv" */ /* webpackPrefetch: true */ '@Cloudenv/views/cloudgroup')
 const Cloudaccount = () => import(/* webpackChunkName: "cloudenv" */ /* webpackPrefetch: true */ '@Cloudenv/views/cloudaccount')
 const CloudaccountCreate = () => import(/* webpackChunkName: "cloudenv" */ /* webpackPrefetch: true */ '@Cloudenv/views/cloudaccount/create')
 const CloudaccountUpdateBill = () => import(/* webpackChunkName: "cloudenv" */ /* webpackPrefetch: true */ '@Cloudenv/views/cloudaccount/create/BillFileIndex')
@@ -32,15 +31,15 @@ export default {
           meta: {
             label: i18n.t('cloudenv.text_12'),
             permission: 'cloudaccounts_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.cloudaccount')) {
                 return true
               }
-              if (!hasSetupKey(['onecloud', 'public', 'private', 'storage', 'k8s'])) {
-                return !hasSetupKey(['bill'])
-              } else {
-                return !hasSetupKey(['public', 'private', 'vmware', 'storage'])
-              }
+              // const noFeature = !hasSetupKey(['onecloud', 'public', 'private', 'storage', 'k8s'])
+              //   ? !hasSetupKey(['bill'])
+              //   : !hasSetupKey(['public', 'private', 'vmware', 'storage'])
+              // return noFeature
+              return featureMenuHiddenCheck(menu)
             },
           },
           component: Layout,
@@ -67,47 +66,47 @@ export default {
             },
           ],
         },
-        {
-          path: '/cloudgroup',
-          meta: {
-            label: i18n.t('cloudenv.text_491'),
-            permission: 'cloudgroup_list',
-            t: 'cloudenv.text_491',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.cloudgroup')) {
-                return true
-              }
-              if (store.getters.isProjectMode) return true
-              if (!hasSetupKey(['onecloud', 'public', 'private', 'storage', 'k8s'])) {
-                return true
-              } else {
-                return !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'google', 'hcso', 'hcs', 'ksyun'])
-              }
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Cloudgroup',
-              path: '',
-              component: Cloudgroup,
-            },
-          ],
-        },
+        // {
+        //   path: '/cloudgroup',
+        //   meta: {
+        //     label: i18n.t('cloudenv.text_491'),
+        //     permission: 'cloudgroup_list',
+        //     t: 'cloudenv.text_491',
+        //     hidden: (userInfo, menu) => {
+        //       if (isScopedPolicyMenuHidden('sub_hidden_menus.cloudgroup')) {
+        //         return true
+        //       }
+        //       if (store.getters.isProjectMode) return true
+        //       // const noFeature = !hasSetupKey(['onecloud', 'public', 'private', 'storage', 'k8s'])
+        //       //   ? true
+        //       //   : !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'google', 'hcso', 'hcs', 'ksyun'])
+        //       // return noFeature
+        //       return featureMenuHiddenCheck(menu)
+        //     },
+        //   },
+        //   component: Layout,
+        //   children: [
+        //     {
+        //       name: 'Cloudgroup',
+        //       path: '',
+        //       component: Cloudgroup,
+        //     },
+        //   ],
+        // },
         {
           path: '/proxysetting',
           meta: {
             label: i18n.t('cloudenv.text_14'),
             permission: 'proxysettings_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.proxysetting')) {
                 return true
               }
-              if (!hasSetupKey(['onecloud', 'public', 'private', 'storage', 'k8s'])) {
-                return !hasSetupKey(['bill'])
-              } else {
-                return !hasSetupKey(['public', 'private', 'vmware', 'storage'])
-              }
+              // const noFeature = !hasSetupKey(['onecloud', 'public', 'private', 'storage', 'k8s'])
+              //   ? !hasSetupKey(['bill'])
+              //   : !hasSetupKey(['public', 'private', 'vmware', 'storage'])
+              // return noFeature
+              return featureMenuHiddenCheck(menu)
             },
           },
           component: Layout,
@@ -124,15 +123,15 @@ export default {
           meta: {
             label: i18n.t('cloudenv.text_580'),
             permission: 'proxysettings_list',
-            hidden: () => {
+            hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.projectmapping')) {
                 return true
               }
-              if (!hasSetupKey(['onecloud', 'public', 'private', 'storage', 'k8s'])) {
-                return !hasSetupKey(['bill'])
-              } else {
-                return !hasSetupKey(['public', 'jdcloud', 'ecloud'])
-              }
+              // const noFeature = !hasSetupKey(['onecloud', 'public', 'private', 'storage', 'k8s'])
+              //   ? !hasSetupKey(['bill'])
+              //   : !hasSetupKey(['public', 'jdcloud', 'ecloud'])
+              // return noFeature
+              return featureMenuHiddenCheck(menu)
             },
           },
           component: Layout,
