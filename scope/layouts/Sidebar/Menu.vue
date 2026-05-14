@@ -111,13 +111,13 @@ export default {
     getMenuHidden (menu) {
       if (!R.isNil(menu.meta.hidden)) {
         if (R.is(Function, menu.meta.hidden)) {
-          return menu.meta.hidden(this.userInfo)
+          return menu.meta.hidden(this.userInfo, menu)
         }
         return menu.meta.hidden
       }
       if (!R.isNil(menu.meta.invisible)) {
         if (R.is(Function, menu.meta.invisible)) {
-          return menu.meta.invisible(this.userInfo)
+          return menu.meta.invisible(this.userInfo, menu)
         }
         return menu.meta.invisible
       }
