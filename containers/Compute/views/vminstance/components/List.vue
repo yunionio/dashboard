@@ -1764,10 +1764,13 @@ export default {
     },
     hasSomeCloud (selectItems, clouds = [typeClouds.hypervisorMap.bingocloud.key]) {
       const ret = { validate: true, tooltip: '' }
-      const hasList = selectItems.filter(item => clouds.includes(item.hypervisor))
+      const items = Array.isArray(selectItems) ? selectItems : []
+      const hasList = items.filter(item => clouds.includes(item.hypervisor))
       if (hasList && hasList[0]) {
+        const hv = hasList[0].hypervisor
+        const label = (typeClouds.hypervisorMap[hv] && typeClouds.hypervisorMap[hv].label) || hv
         ret.validate = false
-        ret.tooltip = this.$t('compute.text_473', [typeClouds.hypervisorMap[hasList[0].hypervisor].label])
+        ret.tooltip = this.$t('compute.text_473', [label])
       }
       return ret
     },

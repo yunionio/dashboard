@@ -2011,5 +2011,8 @@
   "compute.kickstart_complete_tip_2": "Manually trigger kickstart complete, and the virtual machine will be restarted to try to boot",
   "compute.alert_status": "Alert status",
   "compute.disable_sku_type_tip": "No supported modification types found, modification may fail.",
-  "compute.disable_sku_type_tip_2": "No supported simultaneous modification types found, modification may fail."
+  "compute.disable_sku_type_tip_2": "No supported simultaneous modification types found, modification may fail.",
+  "compute.adjust_config_running_confirm_title": "Confirm configuration change",
+  "compute.adjust_config_running_confirm_content": "On this platform, changing configuration while the VM is running will shut it down first, then apply the changes and power it on again. Do you want to continue?",
+  "compute.adjust_config_running_confirm_submit": "Confirm and submit"
 }

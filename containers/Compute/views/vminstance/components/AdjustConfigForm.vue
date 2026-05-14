@@ -22,7 +22,7 @@
               :decorator="decorators.vcpu"
               :options="form.fi.cpuMem.cpus || []"
               :disable-options="disableCpus"
-              :disabled="runningArm || runningOther"
+              :disabled="runningArm"
               :extra="cpuExtra"
               :max="form.fd.vcpu < 32 ? 32 : 128"
               :form="form"
@@ -33,7 +33,7 @@
               @change="cpuChange" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_369')" class="mb-0">
-            <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :disable-options="disableMems" :disabled="runningArm || runningOther" :extra="cpuExtra" />
+            <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :disable-options="disableMems" :disabled="runningArm" :extra="cpuExtra" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_109')">
             <sku
@@ -48,7 +48,6 @@
               :hypervisor="hypervisor"
               :canSkuShow="diskLoaded"
               :hasMeterService="hasMeterService"
-              :skuDisabled="runningOther"
               :dataSku="dataSku"
               :dataList="dataList"
               :supportSkuTypes="supportSkuTypes"
@@ -103,7 +102,7 @@
     </page-body>
     <page-footer>
       <div slot="right">
-        <div class="d-flex align-items-center">
+        <div ref="adjustFooterActions" class="d-flex align-items-center flex-wrap justify-content-end">
           <div v-if="hasMeterService" class="mr-4 d-flex align-items-center">
             <div class="text-truncate">{{$t('compute.text_286')}}</div>
             <div class="ml-2 prices">
@@ -119,7 +118,31 @@
               </div>
             </div>
           </div>
-          <a-button class="mr-3" type="primary" @click="handleConfirm" :loading="loading">{{confirmText}}</a-button>
+          <a-popconfirm
+            v-if="isSomeRunningOther"
+            placement="topRight"
+            overlay-class-name="running-adjust-popconfirm-overlay"
+            :visible="runningAdjustPopVisible"
+            :get-popup-container="getRunningAdjustPopContainer"
+            :ok-text="$t('compute.adjust_config_running_confirm_submit')"
+            :cancel-text="$t('dialog.cancel')"
+            @confirm="onRunningAdjustPopConfirm"
+            @cancel="onRunningAdjustPopCancel"
+            @visibleChange="onRunningAdjustPopVisibleChange">
+            <template slot="title">
+              <div>{{ $t('compute.adjust_config_running_confirm_title') }}</div>
+              <div class="running-adjust-popconfirm-desc">{{ $t('compute.adjust_config_running_confirm_content') }}</div>
+            </template>
+            <span class="adjust-config-popconfirm-trigger d-inline-block" @click.stop="handleRunningAdjustTriggerClick">
+              <a-button type="primary" class="mr-3" :loading="loading">{{ confirmText }}</a-button>
+            </span>
+          </a-popconfirm>
+          <a-button
+            v-else
+            type="primary"
+            class="mr-3"
+            :loading="loading"
+            @click="handleConfirmClick">{{ confirmText }}</a-button>
           <a-button @click="cancel">{{$t('compute.text_908')}}</a-button>
         </div>
       </div>
@@ -191,6 +214,8 @@ export default {
     const autoStart = dataList.some(val => val.status === 'running')
     return {
       loading: false,
+      runningAdjustPopVisible: false,
+      pendingAdjustValues: null,
       action: this.$t('compute.text_1100'),
       dataList,
       form: {
@@ -469,18 +494,24 @@ export default {
       return this.dataList.some(val => val.status === 'running')
     },
     isSomeArm () {
-      return this.selectedItem.os_arch === 'arm'
+      return this.selectedItem.os_arch === 'arm' && [HYPERVISORS_MAP.kvm.hypervisor].includes(this.hypervisor)
     },
     runningArm () {
       return this.isSomeArm && this.isSomeRunning
     },
-    runningOther () {
-      return this.dataList.some(val => {
-        if (val.status === 'running' && ![HYPERVISORS_MAP.kvm.hypervisor, HYPERVISORS_MAP.aliyun.hypervisor, HYPERVISORS_MAP.aws.hypervisor, HYPERVISORS_MAP.google.hypervisor, HYPERVISORS_MAP.huawei.hypervisor, HYPERVISORS_MAP.ctyun.hypervisor, HYPERVISORS_MAP.volcengine.hypervisor, HYPERVISORS_MAP.ksyun.hypervisor, HYPERVISORS_MAP.azure.hypervisor].includes(val.hypervisor)) {
-          return true
-        }
-        return false
-      })
+    isSomeRunningOther () {
+      const runningAdjustHypervisors = [
+        HYPERVISORS_MAP.kvm.hypervisor,
+        HYPERVISORS_MAP.esxi.hypervisor,
+        HYPERVISORS_MAP.cloudpods.hypervisor,
+        HYPERVISORS_MAP.openstack.hypervisor,
+        HYPERVISORS_MAP.zstack.hypervisor,
+        HYPERVISORS_MAP.proxmox.hypervisor,
+        HYPERVISORS_MAP.ksyun.hypervisor,
+        HYPERVISORS_MAP.incloudsphere.hypervisor,
+        HYPERVISORS_MAP.azure.hypervisor,
+      ]
+      return this.dataList.some(val => val.status === 'running' && runningAdjustHypervisors.includes(val.hypervisor))
     },
     disableSkuType () {
       return [HYPERVISORS_MAP.aliyun.hypervisor, HYPERVISORS_MAP.huawei.hypervisor, HYPERVISORS_MAP.qcloud.hypervisor].includes(this.dataList[0].hypervisor)
@@ -912,6 +943,9 @@ export default {
       if (this.selectedItem.instance_type !== values.sku.name) {
         params.sku = values.sku.name
       }
+      if (values.force_stop) {
+        params.force_stop = true
+      }
       const ids = this.dataList.map(item => item.id)
       if (ids.length === 1) {
         params.disks = this.genDiskData(values)
@@ -990,6 +1024,9 @@ export default {
         sku: values.sku.name,
         auto_start: values.autoStart,
       }
+      if (values.force_stop) {
+        params.force_stop = true
+      }
       const { showCpuSockets, cpuSockets } = this.form.fi
       const ids = this.dataList.map(item => item.id)
       if (ids.length === 1 && this.selectedItem.provider !== HYPERVISORS_MAP.cnware.provider) {
@@ -1005,31 +1042,75 @@ export default {
         data: params,
       })
     },
-    async handleConfirm () {
-      this.loading = true
+    async performAdjustSubmit (values) {
+      if (this.isOpenWorkflow) {
+        const projects = new Set(this.dataList.map(item => item.tenant_id))
+        if (projects.size > 1) {
+          this.$message.error(this.$t('compute.text_1348'))
+          return
+        }
+        await this.doChangeSettingsByWorkflowSubmit(values)
+      } else {
+        const res = await this.doChangeSettingsSubmit(values)
+        const isOk = res.data.data.every(item => item.status === 200)
+        if (isOk) {
+          this.$message.success(this.$t('compute.text_423'))
+          this.$store.commit('keepAlive/ADD_DELAY_EVENT', { name: 'ResourceListSingleRefresh', params: this.data.map(item => item.id) })
+          this.cancel()
+        }
+      }
+    },
+    getRunningAdjustPopContainer (trigger) {
+      return this.$refs.adjustFooterActions || (trigger && trigger.parentElement) || document.body
+    },
+    handleRunningAdjustTriggerClick () {
+      this.openRunningAdjustPopconfirmAfterValidate().catch(() => {})
+    },
+    async openRunningAdjustPopconfirmAfterValidate () {
+      if (this.runningAdjustPopVisible) return
       try {
         if (!this.form.fd.sku?.name) {
-          // 修复套餐为空时，sku值为空对象导致非空校验失效问题
           this.form.fc.setFieldsValue({ sku: null })
         }
         const values = await this.form.fc.validateFields()
-        if (this.isOpenWorkflow) {
-          const projects = new Set(this.dataList.map(item => item.tenant_id))
-          if (projects.size > 1) {
-            this.$message.error(this.$t('compute.text_1348'))
-            this.loading = false
-            return
-          }
-          await this.doChangeSettingsByWorkflowSubmit(values)
-        } else {
-          const res = await this.doChangeSettingsSubmit(values)
-          const isOk = res.data.data.every(item => item.status === 200)
-          if (isOk) {
-            this.$message.success(this.$t('compute.text_423'))
-            this.$store.commit('keepAlive/ADD_DELAY_EVENT', { name: 'ResourceListSingleRefresh', params: this.data.map(item => item.id) })
-            this.cancel()
-          }
+        this.pendingAdjustValues = values
+        await this.$nextTick()
+        setTimeout(() => {
+          this.runningAdjustPopVisible = true
+        }, 10)
+      } catch (error) {
+        // 表单校验失败
+      }
+    },
+    onRunningAdjustPopVisibleChange (visible) {
+      this.runningAdjustPopVisible = visible
+    },
+    onRunningAdjustPopCancel () {
+      this.runningAdjustPopVisible = false
+      this.pendingAdjustValues = null
+    },
+    async onRunningAdjustPopConfirm () {
+      const snapshot = this.pendingAdjustValues
+      this.pendingAdjustValues = null
+      this.runningAdjustPopVisible = false
+      if (!snapshot) return
+      this.loading = true
+      try {
+        await this.performAdjustSubmit({ ...snapshot, force_stop: true })
+      } catch (error) {
+        // 与 handleConfirmClick 一致
+      } finally {
+        this.loading = false
+      }
+    },
+    async handleConfirmClick () {
+      this.loading = true
+      try {
+        if (!this.form.fd.sku?.name) {
+          this.form.fc.setFieldsValue({ sku: null })
         }
+        const values = await this.form.fc.validateFields()
+        await this.performAdjustSubmit(values)
       } catch (error) {
         // 避免点击事件触发的 async 函数产生 Uncaught(in promise)；表单校验失败等场景无需额外提示
       } finally {
@@ -1188,6 +1269,8 @@ export default {
       return dataDisk
     },
     cancel () {
+      this.runningAdjustPopVisible = false
+      this.pendingAdjustValues = null
       this.$router.push({ name: 'VMInstanceIndex' })
     },
     baywatch (props, watcher) {
@@ -1277,6 +1360,13 @@ export default {
 .form-wrapper {
   padding-left: 22px;
 }
+.running-adjust-popconfirm-desc {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.65);
+  max-width: 360px;
+}
 .prices {
   .hour {
     font-size: 24px;
@@ -1285,5 +1375,11 @@ export default {
     color: #999;
     font-size: 12px;
   }
+}
+</style>
+
+<style lang="less">
+.running-adjust-popconfirm-overlay .ant-popover-inner-content {
+  max-width: 400px;
 }
 </style>
