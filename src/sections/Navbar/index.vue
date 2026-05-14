@@ -166,7 +166,7 @@ import Cookies from 'js-cookie'
 import { mapGetters, mapState } from 'vuex'
 import UserProjectSelect from '@/sections/UserProjectSelect'
 import WindowsMixin from '@/mixins/windows'
-import { getSetupInStorage, hasPermission } from '@/utils/auth'
+import { getSetupInStorage, hasPermission, featureMenuHiddenCheck } from '@/utils/auth'
 import { uuid, isCE } from '@/utils/utils'
 import NotifyPopover from './components/NotifyPopover'
 // import SettingPopover from './components/SettingPopover'
@@ -434,6 +434,11 @@ export default {
       const list = ['alert', 'notification', 'workflow', 'monitor_dashboard', 'cloudshell', 'more', 'feature_select', 'docs', 'about', 'ai']
       list.map(item => {
         ret[item] = !this.$isScopedPolicyMenuHidden(`navbar_hidden_items.${item}`)
+      });
+      (['alert', 'notification', 'workflow', 'monitor_dashboard', 'cloudshell', 'ai']).forEach(key => {
+        if (featureMenuHiddenCheck({ path: `navbar-${key.replace('_', '-')}` })) {
+          ret[key] = false
+        }
       })
       return ret
     },
