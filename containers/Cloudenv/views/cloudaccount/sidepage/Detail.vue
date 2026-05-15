@@ -13,9 +13,10 @@
 import XLSX from 'xlsx'
 import { getBrandTableColumn, getEnabledTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 import { getUserTagColumn, getExtTagColumn } from '@/utils/common/detailColumn'
-import { findPlatform } from '@/utils/common/hypervisor'
+import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 import WindowsMixin from '@/mixins/windows'
 import { hasMeterService } from '@/utils/auth'
+import featureConfig from '@/constants/feature'
 import {
   getAccessUrlTableColumn,
   getBalanceTableColumn,
@@ -25,6 +26,39 @@ import {
   getResourceMatchProjectTableColumn,
   getBlockResourceTableColumn,
 } from '../utils/columns'
+
+/** 归一化平台标识与 featureMenus 顶层 key 不一致时（如 ESXi 纳管走 vmware 菜单） */
+const FEATURE_MENU_KEY_BY_PLATFORM = {
+  esxi: 'vmware',
+}
+
+/** 公有云隐藏；私有云在 featureMenus 无该平台或未含 host 菜单时隐藏；其余不隐藏 */
+function cloudaccountShouldHideHostCount (account) {
+  if (!account) return false
+  const probe = String(account.brand || account.provider || '').toLowerCase()
+  if (!probe) return false
+  const env = findPlatform(probe, 'brand') || findPlatform(probe, 'provider')
+  if (env === 'public') return true
+  if (env !== 'private') return false
+  const menus = featureConfig.featureMenus
+  if (!menus) return true
+  let platformKey = ''
+  for (const raw of [account.provider, account.brand].filter(Boolean)) {
+    const lower = String(raw).toLowerCase()
+    const fromMap =
+      typeClouds.providerlowcaseMap[lower] ||
+      typeClouds.brandlowcaseMap[lower]
+    if (fromMap) {
+      platformKey = fromMap.hypervisor ? String(fromMap.hypervisor).toLowerCase() : lower
+      break
+    }
+  }
+  if (!platformKey) return true
+  const featureKey = FEATURE_MENU_KEY_BY_PLATFORM[platformKey] || platformKey
+  const cfg = menus[featureKey]
+  if (!cfg) return true
+  return !Array.isArray(cfg.ceMenus) || !cfg.ceMenus.includes('host')
+}
 
 export default {
   name: 'CloudaccountDetail',
@@ -161,7 +195,10 @@ export default {
             },
             getBalanceTableColumn(),
             getGuestCountTableColumn(),
-            getHostCountTableColumn(),
+            {
+              ...getHostCountTableColumn(),
+              hidden: () => cloudaccountShouldHideHostCount(this.data),
+            },
           ],
         },
         {
