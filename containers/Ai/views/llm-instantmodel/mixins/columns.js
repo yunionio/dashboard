@@ -15,6 +15,7 @@ import {
   getAppCacheStatusColumn,
   getModelIdTableColumn,
   getModelNameTableColumn,
+  getModelTagTableColumn,
   getLlmTypeTableColumn,
   // getIconTableColumn,
 } from '../utils/columns'
@@ -41,6 +42,7 @@ export default {
       getAppCacheStatusColumn(),
       getModelIdTableColumn(),
       getModelNameTableColumn(),
+      getModelTagTableColumn(),
       getLlmTypeTableColumn(),
       // getPackageNameTableColumn(),
       // getAppIdTableColumn(),
