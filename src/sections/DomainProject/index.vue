@@ -79,7 +79,7 @@ export default {
     },
     fd: {
       type: Object,
-      required: true,
+      default: () => ({}),
     },
     allowClear: Boolean,
     isDefaultSelect: {
@@ -94,16 +94,16 @@ export default {
       type: Boolean,
       default: false,
     },
+    /** 若传入，则域列表仅拉取该域（如主机模板所属域） */
+    restrictDomainId: {
+      type: String,
+      default: '',
+    },
   },
   data () {
     return {
       domains: [],
       domainId: '',
-      domainParams: {
-        scope: this.scope,
-        limit: 20,
-        filter: 'enabled.equals(1)', // 仅显示启用状态下的域
-      },
       projectData: {},
       projects: [],
       isDomainFirstLoadData: true,
@@ -129,6 +129,18 @@ export default {
         delete ret.scope
         delete ret.domain_id
         ret.project_domain = domainId || this.userInfo.projectDomainId
+      }
+      return ret
+    },
+    domainParams () {
+      const ret = {
+        scope: this.scope,
+        limit: 20,
+        filter: 'enabled.equals(1)', // 仅显示启用状态下的域
+      }
+      if (this.restrictDomainId) {
+        const id = String(this.restrictDomainId).replace(/'/g, "\\'")
+        ret.id = id
       }
       return ret
     },
