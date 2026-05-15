@@ -456,10 +456,10 @@ const FEATURE_MENUS = {
     ceMenus: ['vminstance-container', 'app-package', 'image-repos', 'disk', 'disk-backup', 'instance-backup', 'host', 'gpu', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'zone', 'vpc', 'wire', 'network', 'secgroup', 'eip', 'dns-zone', 'blockstorage', 'backup-storage', 'credentials-container-image', 'credentials-container-secret'],
   },
   ai: {
-    ceMenus: ['app-llm', 'app-llm-sku', 'llm', 'llm-sku', 'llm-instantmodel', 'llm-image'],
+    ceMenus: ['app-llm', 'app-llm-sku', 'llm', 'llm-sku', 'llm-instantmodel', 'llm-image', 'cloudregion'],
   },
   baremetal: {
-    ceMenus: ['baremetal', 'image', 'keypair', 'physicalmachine', 'gpu', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'imagerecovery', 'zone'],
+    ceMenus: ['baremetal', 'image', 'keypair', 'physicalmachine', 'gpu', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'imagerecovery', 'zone', 'disk', 'cloudregion', 'wire', 'network'],
   },
   lb: {
     ceMenus: ['zone', 'vpc', 'routetable', 'wire', 'network', 'secgroup', 'eip', 'lb', 'lbacl', 'lbcert', 'health-check', 'cluster', 'lbagent'],
@@ -468,13 +468,13 @@ const FEATURE_MENUS = {
     ceMenus: ['cloudaccount', 'cloudgroup', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'snapshotpolicy', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc-network', 'vpc', 'routetable', 'network', 'secgroup', 'eip', 'nat', 'dns-zone', 'waf', 'lb', 'lbacl', 'lbcert', 'cdn', 'ssl-certificate', 'bucket', 'table-storage', 'nas', 'access-group', 'rds', 'redis', 'mongodb', 'kafka', 'elasticsearch', 'navbar-clouduser', 'navbar-nopswlogin'],
   },
   aws: {
-    ceMenus: ['cloudaccount', 'cloudgroup', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'network', 'secgroup', 'eip', 'nat', 'dns-zone', 'waf', 'lb', 'lbcert', 'cdn', 'bucket', 'rds', 'redis', 'navbar-clouduser', 'navbar-nopswlogin'],
+    ceMenus: ['cloudaccount', 'cloudgroup', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'network', 'secgroup', 'eip', 'nat', 'dns-zone', 'waf', 'lb', 'lbcert', 'cdn', 'bucket', 'rds', 'redis', 'navbar-clouduser', 'navbar-nopswlogin', 'vpc-peerconnect', 'routetable'],
   },
   azure: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'network', 'secgroup', 'eip', 'waf', 'lb', 'bucket', 'rds', 'redis'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'network', 'secgroup', 'eip', 'waf', 'lb', 'bucket', 'rds', 'redis', 'cloudgroup', 'disk-snapshot'],
   },
   ctyun: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'network'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'network', 'vpc', 'secgroup', 'eip'],
   },
   gcp: {
     ceMenus: ['cloudaccount', 'cloudgroup', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'snapshotpolicy', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'globalvpc', 'vpc', 'routetable', 'network', 'secgroup', 'eip', 'lb', 'lbcert', 'cdn', 'ssl-certificate', 'bucket', 'rds', 'redis'],
@@ -486,13 +486,13 @@ const FEATURE_MENUS = {
     ceMenus: ['cloudaccount', 'cloudgroup', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'snapshotpolicy', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc-network', 'vpc', 'routetable', 'network', 'secgroup', 'eip', 'nat', 'dns-zone', 'waf', 'lb', 'lbcert', 'cdn', 'ssl-certificate', 'bucket', 'rds', 'redis', 'mongodb', 'kafka', 'elasticsearch'],
   },
   ucloud: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'disk-snapshot', 'vpc', 'network', 'secgroup', 'eip'],
   },
   ecloud: {
     ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'network', 'secgroup', 'eip'],
   },
   jdcloud: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'network', 'eip'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'network', 'eip', 'vminstance', 'secgroup', 'rds'],
   },
   cloudflare: {
     ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'lb', 'lbcert', 'health-check'],
@@ -501,7 +501,7 @@ const FEATURE_MENUS = {
     ceMenus: ['cloudaccount', 'cloudgroup', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'network', 'secgroup', 'eip', 'bucket', 'rds'],
   },
   ksyun: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'cloudgroup', 'disk-snapshot', 'vpc', 'network', 'secgroup', 'eip', 'bucket', 'rds'],
   },
   qingcloud: {
     ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping'],
@@ -513,64 +513,64 @@ const FEATURE_MENUS = {
     ceMenus: ['cloudaccount', 'cloudgroup', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'routetable', 'network', 'secgroup', 'eip', 'bucket'],
   },
   oraclecloud: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'network', 'secgroup', 'eip'],
   },
   oceanbase: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'instance-snapshot', 'host', 'network', 'secgroup', 'blockstorage'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'instance-snapshot', 'host', 'network', 'secgroup', 'blockstorage', 'rds'],
   },
   vmware: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'routetable', 'wire', 'network', 'secgroup', 'eip', 'lb', 'lbacl', 'blockstorage'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'routetable', 'wire', 'network', 'secgroup', 'eip', 'lb', 'lbacl', 'blockstorage', 'instance-snapshot', 'host'],
   },
   openstack: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'wire', 'network', 'secgroup', 'eip', 'blockstorage'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'wire', 'network', 'secgroup', 'eip', 'blockstorage', 'host', 'routetable', 'lb', 'lbacl'],
   },
   zstack: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'snapshotpolicy', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'wire', 'network', 'secgroup', 'eip', 'lb', 'blockstorage', 'bucket'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'snapshotpolicy', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'wire', 'network', 'secgroup', 'eip', 'lb', 'blockstorage', 'bucket', 'host', 'vpc'],
   },
   apsara: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'wire', 'network', 'secgroup', 'eip', 'blockstorage'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'wire', 'network', 'secgroup', 'eip', 'blockstorage', 'snapshotpolicy', 'ipv6-gateway', 'lb', 'lbcert', 'bucket', 'table-storage', 'rds', 'redis'],
   },
   cloudpods: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'wire', 'network', 'secgroup', 'eip', 'blockstorage'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'wire', 'network', 'secgroup', 'eip', 'blockstorage', 'host', 'vminstance-container', 'baremetal', 'gpu'],
   },
   hcso: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'disk-snapshot', 'vpc', 'network', 'secgroup', 'eip', 'lb', 'lbcert', 'bucket', 'rds', 'redis'],
   },
   hcsop: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'wire', 'blockstorage'],
   },
   hcs: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'disk-snapshot', 'vpc', 'network', 'secgroup', 'eip', 'bucket', 'rds', 'redis'],
   },
   nutanix: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'host', 'wire', 'network', 'secgroup', 'blockstorage'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'host', 'wire', 'network', 'secgroup', 'blockstorage', 'vpc'],
   },
   bingocloud: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'wire', 'network', 'secgroup', 'blockstorage'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'wire', 'network', 'secgroup', 'blockstorage', 'host', 'vpc', 'eip'],
   },
   incloudsphere: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'wire', 'network', 'secgroup', 'blockstorage'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'wire', 'network', 'secgroup', 'blockstorage', 'host'],
   },
   remotefile: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'network', 'secgroup', 'blockstorage'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'network', 'secgroup', 'blockstorage', 'host', 'vpc', 'wire'],
   },
   proxmox: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'network', 'secgroup', 'blockstorage'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'network', 'secgroup', 'blockstorage', 'host', 'wire'],
   },
   h3c: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'host', 'vpc', 'network', 'blockstorage'],
   },
   zettakit: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'disk-snapshot', 'host', 'gpu', 'vpc', 'network', 'secgroup', 'eip', 'blockstorage'],
   },
   uis: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'host', 'network', 'blockstorage'],
   },
   sangfor: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'host', 'vpc', 'network', 'blockstorage'],
   },
   cnware: {
-    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery'],
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'host', 'vpc', 'wire', 'network', 'secgroup', 'blockstorage'],
   },
   s3: {
     ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'bucket'],
