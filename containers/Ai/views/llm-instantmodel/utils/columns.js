@@ -143,6 +143,16 @@ export const getModelNameTableColumn = () => {
   }
 }
 
+export const getModelTagTableColumn = () => {
+  return {
+    field: 'model_tag',
+    title: i18n.t('aice.model_tag'),
+    formatter: ({ row }) => {
+      return row.model_tag || '-'
+    },
+  }
+}
+
 export const getLlmTypeTableColumn = () => {
   return {
     field: 'llm_type',
