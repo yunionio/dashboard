@@ -16,27 +16,27 @@ function loadFeatureMenusFromGeneralScope () {
 
 const FEATURE_MENUS_SCOPE = loadFeatureMenusFromGeneralScope()
 
-const vIsAccount = R.pipe(R.path(['meta', 'is_account']), R.equals(true))
-const vIsOnestack = R.whereEq({ key: 'onestack' })
-const vIsCloudPlatform = R.pipe(R.path(['meta', 'group']), (group) => { return group && ['onecloud', 'private', 'public'].indexOf(group) >= 0 })
-const vIsCloudAccount = R.and(vIsAccount, vIsCloudPlatform)
+// const vIsAccount = R.pipe(R.path(['meta', 'is_account']), R.equals(true))
+// const vIsOnestack = R.whereEq({ key: 'onestack' })
+// const vIsCloudPlatform = R.pipe(R.path(['meta', 'group']), (group) => { return group && ['onecloud', 'private', 'public'].indexOf(group) >= 0 })
+// const vIsCloudAccount = R.and(vIsAccount, vIsCloudPlatform)
 
-class validators {
-  static onestackSelected (items) {
-    if (R.any(vIsOnestack, items)) return { disabled: false, reason: '' }
-    return { disabled: true, reason: i18n.t('scope.text_115') }
-  }
+// class validators {
+//   static onestackSelected (items) {
+//     if (R.any(vIsOnestack, items)) return { disabled: false, reason: '' }
+//     return { disabled: true, reason: i18n.t('scope.text_115') }
+//   }
 
-  static hasAccount (items) {
-    if (R.any(vIsAccount, items)) return { disabled: false, reason: '' }
-    return { disabled: true, reason: i18n.t('license.validator.is_account') }
-  }
+//   static hasAccount (items) {
+//     if (R.any(vIsAccount, items)) return { disabled: false, reason: '' }
+//     return { disabled: true, reason: i18n.t('license.validator.is_account') }
+//   }
 
-  static hasCloudAccount (items) {
-    if (R.any(vIsCloudAccount, items)) return { disabled: false, reason: '' }
-    return { disabled: true, reason: i18n.t('scope.text_116') }
-  }
-}
+//   static hasCloudAccount (items) {
+//     if (R.any(vIsCloudAccount, items)) return { disabled: false, reason: '' }
+//     return { disabled: true, reason: i18n.t('scope.text_116') }
+//   }
+// }
 
 const meta = (module = 'default', group = 'default', is_account = false) => {
   module = module || 'default'
@@ -70,7 +70,6 @@ const LicenseItems = [
   {
     key: 'pod',
     meta: meta('resource_managent', 'onecloud', false),
-    validators: [validators.onestackSelected],
   },
   {
     key: 'ai',
@@ -83,7 +82,6 @@ const LicenseItems = [
   {
     key: 'lb',
     meta: meta('resource_managent', 'onecloud', false),
-    validators: [validators.onestackSelected],
   },
   {
     key: 'aliyun',
@@ -242,7 +240,6 @@ const LicenseItems = [
   {
     key: 'k8s',
     meta: meta('resource_managent', 'container', false),
-    validators: [validators.hasCloudAccount],
   },
   {
     key: 'monitor_operation',
