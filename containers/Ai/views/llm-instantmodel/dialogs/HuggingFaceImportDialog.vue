@@ -34,7 +34,6 @@
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { validateModelForm } from '@/utils/validate'
-import { LLM_TYPE_FORM_CONFIG } from '../../llm-sku/llmTypeConfig'
 
 function toSafeName (fullName) {
   return String(fullName || '').toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '')
@@ -46,7 +45,7 @@ export default {
   data () {
     const repoId = this.params?.repo_id
     const revision = this.params?.revision || 'main'
-    const llmTypeOptions = Object.keys(LLM_TYPE_FORM_CONFIG || {}).map(id => ({ id, name: id }))
+    const llmTypeOptions = (['vllm', 'comfyui', 'sglang']).map(id => ({ id, name: id }))
     return {
       loading: false,
       fixed: {
