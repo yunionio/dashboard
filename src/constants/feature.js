@@ -591,7 +591,7 @@ const FEATURE_MENUS = {
     ceMenus: ['vm-release', 'k8s-release', 'k8s-chart', 'k8s-repo'],
   },
   auth: {
-    ceMenus: ['idp', 'domain', 'project', 'group', 'systemuser', 'role', 'policy', 'suggestsysalert', 'suggestsysruleconfig', 'suggestsysrule', 'navbar-cloudshell', 'navbar-language', 'navbar-change-password', 'credentials-aksk'],
+    ceMenus: ['idp', 'domain', 'project', 'group', 'systemuser', 'role', 'policy', 'iam/securityalerts', 'navbar-cloudshell', 'navbar-language', 'navbar-change-password', 'credentials-aksk'],
   },
 }
 

@@ -386,10 +386,7 @@ export function featureMenuHiddenCheck (menu) {
   if (!menu || !menu.path) return true
   const raw = menu.path
   if (!raw) return true
-  const trimmed = raw.replace(/^\/+|\/+$/g, '')
-  if (!trimmed) return true
-  const segs = trimmed.split('/')
-  const menuId = segs[segs.length - 1] || null
+  const menuId = raw.replace(/^\/+|\/+$/g, '')
   if (!menuId) return true
   const featureMenus = Features.default.featureMenus
   if (!featureMenus) return true
