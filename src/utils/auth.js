@@ -428,36 +428,36 @@ export const billItems = billSupportBrands.map(key => `bill_${key}`)
 
 export const fillBillSupportFeatures = (data = [], fillOriginBrand = false) => {
   const list = [...data]
-  const billTargetItems = list.filter(key => billItems.includes(key) || key === 'suggestion' || key === 'bill_private')
-  // 旧版本只签发bill，新版本签发bill与billItem + suggestion + bill_private
-  // 旧版本 有费用模块
-  if (!billTargetItems.length && list.includes('bill')) {
-    return [...list, ...billItems, 'suggestion', 'bill_private']
-  }
-  // 新版本 有费用模块
-  if (billTargetItems.length) {
-    if (!list.includes('bill')) {
-      list.push('bill')
-    }
-    // 填充平台
-    if (fillOriginBrand) {
-      // 最新版license不需要补充平台
-      if (!isLicense3()) {
-        // 选择了平台，漏选了该平台费用，有费用模块时，该平台费用也生效
-        billItems.map(key => {
-          const brand = key.split('_')[1]
-          if (list.includes(brand) && !list.includes(key)) {
-            list.push(key)
-          }
-        })
-      }
-      billPrivateSupportBrands.map(key => {
-        if (list.includes(key) && !list.includes('bill_private')) {
-          list.push('bill_private')
-        }
-      })
-    }
-  }
+  // const billTargetItems = list.filter(key => billItems.includes(key) || key === 'suggestion' || key === 'bill_private')
+  // // 旧版本只签发bill，新版本签发bill与billItem + suggestion + bill_private
+  // // 旧版本 有费用模块
+  // if (!billTargetItems.length && list.includes('bill')) {
+  //   return [...list, ...billItems, 'suggestion', 'bill_private']
+  // }
+  // // 新版本 有费用模块
+  // if (billTargetItems.length) {
+  //   if (!list.includes('bill')) {
+  //     list.push('bill')
+  //   }
+  //   // 填充平台
+  //   if (fillOriginBrand) {
+  //     // 最新版license不需要补充平台
+  //     if (!isLicense3()) {
+  //       // 选择了平台，漏选了该平台费用，有费用模块时，该平台费用也生效
+  //       billItems.map(key => {
+  //         const brand = key.split('_')[1]
+  //         if (list.includes(brand) && !list.includes(key)) {
+  //           list.push(key)
+  //         }
+  //       })
+  //     }
+  //     billPrivateSupportBrands.map(key => {
+  //       if (list.includes(key) && !list.includes('bill_private')) {
+  //         list.push('bill_private')
+  //       }
+  //     })
+  //   }
+  // }
   return list
 }
 
