@@ -195,6 +195,10 @@ export default {
     },
   },
   data () {
+    const toMultipleArray = (val) => {
+      if (val == null || val === '') return []
+      return Array.isArray(val) ? val : [val]
+    }
     let tags = []
     const initialValue = {
       period: '5m',
@@ -219,23 +223,27 @@ export default {
       initialValue.res_type = _.get(this.alertData, 'common_alert_metric_details[0].res_type')
       tags = _.get(this.alertData, 'common_alert_metric_details[0].filters') || []
 
-      if (this.alertData.robot_ids && this.alertData.robot_ids.length) {
-        initialValue.robot_ids = this.alertData.robot_ids
+      const robotIds = toMultipleArray(this.alertData.robot_ids)
+      if (robotIds.length) {
+        initialValue.robot_ids = robotIds
         initialValue.notifyTypes.push('robot')
       }
-      if (this.alertData.recipients && this.alertData.recipients.length) {
-        initialValue.recipients = this.alertData.recipients
+      const recipients = toMultipleArray(this.alertData.recipients)
+      if (recipients.length) {
+        initialValue.recipients = recipients
         initialValue.notifyTypes.push('recipient')
       }
-      if (this.alertData.role_ids && this.alertData.role_ids.length) {
-        initialValue.roles = this.alertData.role_ids
+      const roles = toMultipleArray(this.alertData.role_ids)
+      if (roles.length) {
+        initialValue.roles = roles
         initialValue.notifyTypes.push('role')
       }
-      if (this.alertData.channel && this.alertData.channel.length) {
-        if (this.alertData.channel.indexOf('webconsole') < 0) {
-          initialValue.channel.push(...this.alertData.channel.filter((c) => !c.endsWith('robot')))
+      const channels = toMultipleArray(this.alertData.channel)
+      if (channels.length) {
+        if (channels.indexOf('webconsole') < 0) {
+          initialValue.channel.push(...channels.filter((c) => !c.endsWith('robot')))
         } else {
-          initialValue.channel = this.alertData.channel.filter((c) => !c.endsWith('robot'))
+          initialValue.channel = channels.filter((c) => !c.endsWith('robot'))
         }
       }
       if (!initialValue.project && !initialValue.domain) {
@@ -312,7 +320,7 @@ export default {
         res_scope: [
           'res_scope',
           {
-            initialValue: 'all',
+            initialValue: tags.length > 0 ? 'custom' : 'all',
           },
         ],
         condition: {
@@ -653,7 +661,10 @@ export default {
         }
       }
       if (this.alertData) {
-        this.contactArrOptsChange(this.alertData.recipients)
+        const recipients = Array.isArray(this.alertData.recipients)
+          ? this.alertData.recipients
+          : (this.alertData.recipients ? [this.alertData.recipients] : [])
+        this.contactArrOptsChange(recipients)
       }
     },
     contactArrOpts () {
@@ -741,9 +752,14 @@ export default {
     },
     initFilter () {
       const { filters = [] } = this.alertData.common_alert_metric_details[0]
-      this.form.fc.setFieldsValue({
-        res_scope: filters.length > 0 ? 'custom' : 'all',
-      })
+      const resScope = filters.length > 0 ? 'custom' : 'all'
+      this.form.fd.res_scope = resScope
+      this.form.fc.setFieldsValue({ res_scope: resScope })
+      if (filters.length) {
+        this.$nextTick(() => {
+          this.$refs.filtersRef && this.$refs.filtersRef.fillFilters(filters)
+        })
+      }
     },
     contactArrOptsChange (rs) {
       const getLabel = (val) => {
@@ -754,8 +770,9 @@ export default {
         return val
       }
       if (rs) {
+        const recipientIds = Array.isArray(rs) ? rs : [rs]
         const ect = this.recipientOpts.filter((opt) => {
-          return rs.indexOf(opt.id) >= 0
+          return recipientIds.indexOf(opt.id) >= 0
         }).map((opt) => {
           return opt.enabled_contact_types
         })
