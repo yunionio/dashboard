@@ -11,6 +11,7 @@ export const LLM_TYPE_OPTIONS = [
   { id: 'ollama', name: 'aice.llm_type.ollama' },
   { id: 'vllm', name: 'aice.llm_type.vllm' },
   { id: 'comfyui', name: 'aice.llm_type.comfyui' },
+  { id: 'sglang', name: 'aice.llm_type.sglang' },
 ]
 
 /**
@@ -28,6 +29,7 @@ export function getParamsForType (llmType) {
 export const LLM_TYPE_DEFAULT_PORT_MAPPINGS = {
   ollama: [{ protocol: 'tcp', container_port: 11434 }],
   vllm: [{ protocol: 'tcp', container_port: 8000 }],
+  sglang: [{ protocol: 'tcp', container_port: 8000 }],
   comfyui: [{ protocol: 'tcp', container_port: 8188 }],
   dify: [{ protocol: 'tcp', container_port: 80 }],
   openclaw: [{ protocol: 'tcp', container_port: 3001 }],
@@ -52,6 +54,7 @@ export function getDefaultPortMappingsForType (llmType) {
 export const LLM_TYPE_DEFAULT_SKU_SPEC = {
   ollama: { cpu: 4, memory: 4096, volume_size_mb: 40960, bandwidth: 1000 },
   vllm: { cpu: 8, memory: 16384, volume_size_mb: 40960, bandwidth: 1000 },
+  sglang: { cpu: 8, memory: 16384, volume_size_mb: 40960, bandwidth: 1000 },
   openclaw: { cpu: 4, memory: 4096, volume_size_mb: 40960, bandwidth: 1000 },
   'hermes-agent': { cpu: 4, memory: 4096, volume_size_mb: 40960, bandwidth: 1000 },
   comfyui: { cpu: 8, memory: 16384, volume_size_mb: 40960, bandwidth: 1000 },
@@ -113,6 +116,34 @@ export const LLM_TYPE_FORM_CONFIG = {
   ],
   dify: [],
   vllm: [
+    {
+      fieldKey: 'mounted_models',
+      label: 'aice.model',
+      component: 'base-select',
+      props: {
+        resource: 'llm_instant_models',
+        remote: true,
+        paramsKey: 'mountedModelParams',
+        placeholderKey: 'aice.model',
+        selectProps: { mode: 'multiple' },
+      },
+      rules: [{ required: true, messageKey: 'common.tips.select', messageArgKey: 'aice.model' }],
+    },
+    {
+      fieldKey: 'preferred_model',
+      label: 'aice.preferred_model',
+      component: 'input',
+      props: { placeholderKey: 'aice.preferred_model' },
+    },
+    {
+      fieldKey: 'device',
+      label: 'aice.devices',
+      component: 'base-select',
+      props: { optionsKey: 'specList', placeholderKey: 'aice.devices', selectProps: { mode: 'multiple' } },
+      rules: [{ required: true, messageKey: 'common.tips.select', messageArgKey: 'aice.devices' }],
+    },
+  ],
+  sglang: [
     {
       fieldKey: 'mounted_models',
       label: 'aice.model',

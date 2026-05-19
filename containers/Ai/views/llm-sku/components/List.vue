@@ -100,7 +100,7 @@ export default {
         details: true,
       }
       ret.filter = R.is(Array, ret.filters) ? ret.filters : (R.is(String, ret.filters) ? [ret.filters] : [])
-      ret.filter.push(`llm_type.${this.isApplyType ? 'notin' : 'in'}(vllm,ollama)`)
+      ret.filter.push(`llm_type.${this.isApplyType ? 'notin' : 'in'}(vllm,ollama,sglang)`)
       return ret
     },
     handleOpenSidepage (row) {
