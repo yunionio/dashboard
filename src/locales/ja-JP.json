@@ -5708,6 +5708,7 @@
   "license.group.report": "レポート＃レポート＃",
   "license.group.auth": "認証管理",
   "license.group.monitor": "監視運維",
+  "license.group.monitors": "監視運維",
   "license.group.default": "",
   "scope.auth.login": "ユーザーがログオンします",
   "scope.auth.username.placeholder": "ユーザー名を入力してください",
