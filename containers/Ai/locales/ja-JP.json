@@ -404,6 +404,7 @@
   "aice.llm_type.comfyui": "ComfyUI",
   "aice.llm_type.dify": "Dify",
   "aice.llm_type.vllm": "vLLM",
+  "aice.llm_type.sglang": "SGLang",
   "aice.llm_type.openclaw": "OpenClaw",
   "aice.llm_type.hermes_agent": "HermesAgent",
   "aice.llm_type.no_params_hint": "このタイプには追加パラメータがありません",
