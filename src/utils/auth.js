@@ -286,7 +286,7 @@ const GlobalSetupKeys = class {
     let f = false
     for (let i = 0; i < _envs.length; i++) {
       const env = _envs[i]
-      // 若为组，且开启了组验证，则同时判断该组下的成员信息
+      // 开启组验证的组只校验成员，不单独校验组 key；其他情况直接校验 env
       if (Features.default.groups.includes(env) && GROUP_VALIDATION_GROUPS.includes(env)) {
         const childs = Features.default.items.filter(item => item.meta?.group === env)
         for (let j = 0; j < childs.length; j++) {
@@ -296,8 +296,7 @@ const GlobalSetupKeys = class {
           }
         }
         if (f) break
-      }
-      if (this.setupKeys.indexOf(env) > -1) {
+      } else if (this.setupKeys.indexOf(env) > -1) {
         f = true
         break
       }
@@ -363,7 +362,7 @@ export function hasSetupKey (envs) {
   let f = false
   for (let i = 0; i < _envs.length; i++) {
     const env = _envs[i]
-    // 若为组，且组开启了组验证，则同时判断该组下的成员信息
+    // 开启组验证的组只校验成员，不单独校验组 key；其他情况直接校验 env
     if (Features.default.groups.includes(env) && GROUP_VALIDATION_GROUPS.includes(env)) {
       const childs = Features.default.items.filter(item => item.meta?.group === env)
       for (let j = 0; j < childs.length; j++) {
@@ -373,8 +372,7 @@ export function hasSetupKey (envs) {
         }
       }
       if (f) break
-    }
-    if (setupKeys.indexOf(env) > -1) {
+    } else if (setupKeys.indexOf(env) > -1) {
       f = true
       break
     }
