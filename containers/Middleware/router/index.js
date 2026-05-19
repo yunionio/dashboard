@@ -33,7 +33,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['qcloud'])
             },
           },
           component: Layout,
@@ -64,7 +63,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['qcloud'])
             },
           },
           component: Layout,

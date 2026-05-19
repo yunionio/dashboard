@@ -41,7 +41,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'nutanix', 'bingocloud', 'proxmox'])
             },
           },
           component: Layout,
@@ -73,7 +72,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['aliyun', 'aws', 'azure', 'huawei', 'qcloud', 'google', 'storage', 'hcso', 'hcs', 'apsara'])
             },
           },
           component: Layout,
@@ -117,7 +115,6 @@ export default {
               }
               if (store.getters.isProjectMode) return true
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['apsara', 'aliyun'])
             },
           },
           component: Layout,
@@ -149,7 +146,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['aliyun', 'huawei', 'hcs', 'cephfs'])
             },
           },
           component: Layout,
@@ -176,7 +172,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['aliyun', 'huawei', 'hcs', 'cephfs'])
             },
           },
           component: Layout,
@@ -209,7 +204,6 @@ export default {
               }
               if (store.getters.isProjectMode) return true
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['onestack'])
             },
           },
           component: Layout,

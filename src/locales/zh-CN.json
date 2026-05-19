@@ -5714,6 +5714,7 @@
   "license.group.report": "报表",
   "license.group.auth": "认证管理",
   "license.group.monitor": "监控运维",
+  "license.group.monitors": "监控运维",
   "license.group.default": "",
   "scope.auth.login": "用户登录",
   "scope.auth.username.placeholder": "请输入用户名",
