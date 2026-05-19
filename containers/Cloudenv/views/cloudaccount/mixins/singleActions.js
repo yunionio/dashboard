@@ -51,7 +51,7 @@ export default {
           }
         }
       }
-      if (hasSetupKey(['bill']) && !hasSetupKey(['onecloud', 'public', 'private', 'vmware', 'storate'])) {
+      if (hasSetupKey(['bill']) && !hasSetupKey(['onecloud', 'public', 'private', 'vmware', 'storage'])) {
         const setUpKeys = this.globalSettingSetupKeys || []
         const billTargetItems = billSupportBrands.filter(key => setUpKeys.includes('bill_' + key))
         if (!billTargetItems.length) {

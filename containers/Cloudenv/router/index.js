@@ -1,14 +1,9 @@
-// import ServerPriceComparatorCreate from '@Cloudenv/views/server-price-comparator/create'
-// import PriceComparatorList from '@Cloudenv/views/server-price-comparator'
-// import Policydefinition from '@Cloudenv/views/policydefinition'
-
 import Layout from '@/layouts/RouterView'
 import { featureMenuHiddenCheck } from '@/utils/auth'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 
 const ProjectMapping = () => import(/* webpackChunkName: "cloudenv" */ /* webpackPrefetch: true */ '@Cloudenv/views/projectmapping')
-// const Cloudgroup = () => import(/* webpackChunkName: "cloudenv" */ /* webpackPrefetch: true */ '@Cloudenv/views/cloudgroup')
 const Cloudaccount = () => import(/* webpackChunkName: "cloudenv" */ /* webpackPrefetch: true */ '@Cloudenv/views/cloudaccount')
 const CloudaccountCreate = () => import(/* webpackChunkName: "cloudenv" */ /* webpackPrefetch: true */ '@Cloudenv/views/cloudaccount/create')
 const CloudaccountUpdateBill = () => import(/* webpackChunkName: "cloudenv" */ /* webpackPrefetch: true */ '@Cloudenv/views/cloudaccount/create/BillFileIndex')
@@ -35,10 +30,6 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.cloudaccount')) {
                 return true
               }
-              // const noFeature = !hasSetupKey(['onecloud', 'public', 'private', 'storage', 'k8s'])
-              //   ? !hasSetupKey(['bill'])
-              //   : !hasSetupKey(['public', 'private', 'vmware', 'storage'])
-              // return noFeature
               return featureMenuHiddenCheck(menu)
             },
           },
@@ -66,33 +57,6 @@ export default {
             },
           ],
         },
-        // {
-        //   path: '/cloudgroup',
-        //   meta: {
-        //     label: i18n.t('cloudenv.text_491'),
-        //     permission: 'cloudgroup_list',
-        //     t: 'cloudenv.text_491',
-        //     hidden: (userInfo, menu) => {
-        //       if (isScopedPolicyMenuHidden('sub_hidden_menus.cloudgroup')) {
-        //         return true
-        //       }
-        //       if (store.getters.isProjectMode) return true
-        //       // const noFeature = !hasSetupKey(['onecloud', 'public', 'private', 'storage', 'k8s'])
-        //       //   ? true
-        //       //   : !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'google', 'hcso', 'hcs', 'ksyun'])
-        //       // return noFeature
-        //       return featureMenuHiddenCheck(menu)
-        //     },
-        //   },
-        //   component: Layout,
-        //   children: [
-        //     {
-        //       name: 'Cloudgroup',
-        //       path: '',
-        //       component: Cloudgroup,
-        //     },
-        //   ],
-        // },
         {
           path: '/proxysetting',
           meta: {
@@ -102,10 +66,6 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.proxysetting')) {
                 return true
               }
-              // const noFeature = !hasSetupKey(['onecloud', 'public', 'private', 'storage', 'k8s'])
-              //   ? !hasSetupKey(['bill'])
-              //   : !hasSetupKey(['public', 'private', 'vmware', 'storage'])
-              // return noFeature
               return featureMenuHiddenCheck(menu)
             },
           },
@@ -127,10 +87,6 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.projectmapping')) {
                 return true
               }
-              // const noFeature = !hasSetupKey(['onecloud', 'public', 'private', 'storage', 'k8s'])
-              //   ? !hasSetupKey(['bill'])
-              //   : !hasSetupKey(['public', 'jdcloud', 'ecloud'])
-              // return noFeature
               return featureMenuHiddenCheck(menu)
             },
           },
@@ -145,110 +101,5 @@ export default {
         },
       ],
     },
-    // {
-    //   meta: {
-    //     label: i18n.t('cloudenv.price_comparison'),
-    //     hidden: () => {
-    //       return !hasSetupKey(['onestack', 'private', 'public', 'vmware'])
-    //     },
-    //   },
-    //   submenus: [
-    //     {
-    //       path: '/servercomparator',
-    //       meta: {
-    //         label: i18n.t('compute.text_91'),
-    //       },
-    //       component: Layout,
-    //       children: [
-    //         {
-    //           name: 'ServerPriceComparatorCreate',
-    //           path: '',
-    //           component: ServerPriceComparatorCreate,
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       path: '/pricecomparator',
-    //       meta: {
-    //         label: i18n.t('cloudenv.price_list'),
-    //       },
-    //       component: Layout,
-    //       children: [
-    //         {
-    //           name: 'PriceComparatorList',
-    //           path: '',
-    //           component: PriceComparatorList,
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
-    /* {
-      meta: {
-        label: i18n.t('cloudenv.text_499'),
-        hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
-      },
-      submenus: [
-        {
-          path: '/strategyallocation',
-          meta: {
-            label: i18n.t('cloudenv.text_500'),
-            permission: 'scopedpolicies_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Strategyallocation',
-              path: '',
-              component: Strategyallocation,
-            },
-          ],
-        },
-        {
-          path: '/strategydefinition',
-          meta: {
-            label: i18n.t('cloudenv.text_501'),
-            permission: 'scopedpolicies_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Strategydefinition',
-              path: '',
-              component: Strategydefinition,
-            },
-            {
-              name: 'StrategydefinitionCreate',
-              path: 'create',
-              component: StrategydefinitionCreate,
-            },
-          ],
-        },
-      ],
-    }, */
-    /* {
-      meta: {
-        label: i18n.t('cloudenv.text_21'),
-        hidden: true,
-      },
-      submenus: [
-        {
-          path: '/policydefinition',
-          meta: {
-            label: i18n.t('cloudenv.text_21'),
-            permission: 'policydefinitions_list',
-            hidden: () => !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware']),
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Policydefinition',
-              path: '',
-              component: Policydefinition,
-            },
-          ],
-        },
-      ],
-    }, */
   ],
 }

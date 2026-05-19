@@ -37,7 +37,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['aliyun', 'huawei', 'google', 'aws', 'qcloud', 'apsara', 'azure', 'hcso', 'hcs', 'ksyun'])
             },
           },
           children: [
@@ -56,23 +55,6 @@ export default {
             },
           ],
         },
-        /* {
-          path: '/rdsbackup',
-          component: Layout,
-          meta: {
-            label: i18n.t('dictionary.dbinstancebackups'),
-            permission: 'rds_dbinstancebackups_list',
-            hidden: () => false,
-          },
-          children: [
-            {
-              name: 'RDSBackupIndex',
-              path: '',
-              meta: {},
-              component: RDSBackup,
-            },
-          ],
-        }, */
       ],
     },
     /**
@@ -93,7 +75,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'apsara', 'hcs'])
             },
           },
           component: Layout,
@@ -130,7 +111,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['aliyun', 'qcloud'])
             },
           },
           component: Layout,
