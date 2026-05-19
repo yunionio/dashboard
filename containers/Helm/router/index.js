@@ -1,5 +1,3 @@
-// import AnsibleTemplate from '@Compute/views/ansible-template'
-// import AnsibleTemplateCreate from '@Compute/views/ansible-template/create'
 import Layout from '@/layouts/RouterView'
 import { featureMenuHiddenCheck } from '@/utils/auth'
 import i18n from '@/locales'
@@ -15,13 +13,6 @@ const Repo = () => import(/* webpackChunkName: "helm" */ /* webpackPrefetch: tru
 const Scheduledtask = () => import(/* webpackChunkName: "helm" */ /* webpackPrefetch: true */ '@Cloudenv/views/scheduledtask')
 const ScheduledtaskCreate = () => import(/* webpackChunkName: "helm" */ /* webpackPrefetch: true */ '@Cloudenv/views/scheduledtask/create')
 
-// let Monitor = { meta: { hidden: true } }
-// const modules = require.context('../../../containers', true, /^((?![\\/]node_modules).)*.\/router\/index.js$/)
-// const moduleList = modules.keys()
-// if ([].includes.call(moduleList, './Monitor/router/index.js')) {
-//  Monitor = modules('./Monitor/router/index.js').default
-// }
-
 export default {
   index: 70,
   meta: {
@@ -29,7 +20,6 @@ export default {
     icon: 'menu-helm',
   },
   menus: [
-    // Monitor,
     {
       meta: {
         label: i18n.t('helm.text_7'),
@@ -42,11 +32,6 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.scheduledtask')) {
                 return true
               }
-              // const noFeature = process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
-              //   '3.0': ['monitor'],
-              //   default: ['onestack', 'private', 'public', 'vmware'],
-              // }) : (!setupKeys.hasVersionedSetupKey({ '3.0': ['onecloud'] }))
-              // return noFeature
               return featureMenuHiddenCheck(menu)
             },
             label: i18n.t('helm.text_8'),
@@ -66,26 +51,6 @@ export default {
             },
           ],
         },
-        // {
-        //   path: '/ansibletemplate',
-        //   meta: {
-        //     label: i18n.t('dictionary.ansibletemplate'),
-        //     permission: 'ansible_devtool_templates_list',
-        //   },
-        //   component: Layout,
-        //   children: [
-        //     {
-        //       name: 'AnsibleTemplate',
-        //       path: '',
-        //       component: AnsibleTemplate,
-        //     },
-        //     {
-        //       name: 'AnsibleTemplateCreate',
-        //       path: 'create',
-        //       component: AnsibleTemplateCreate,
-        //     },
-        //   ],
-        // },
       ],
     },
     {
@@ -103,14 +68,8 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.vm_release')) {
                 return true
               }
-              // const noFeature = process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
-              //   '3.0': ['monitor'],
-              //   default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso', 'hcs'],
-              // }) : !setupKeys.hasVersionedSetupKey({ '3.0': ['k8s'] })
-              // return noFeature
               return featureMenuHiddenCheck(menu)
             },
-            // invisible: () => true,
           },
           children: [
             {
@@ -136,12 +95,7 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !setupKeys.hasAllVersionedSetupKey({
-              //   '3.0': ['monitor', 'k8s'],
-              //   default: ['k8s'],
-              // })
             },
-            // invisible: () => true,
           },
           children: [
             {
@@ -165,14 +119,8 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_chart')) {
                 return true
               }
-              // const noFeature = process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
-              //   '3.0': ['monitor'],
-              //   default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso', 'hcs'],
-              // }) : !setupKeys.hasVersionedSetupKey({ '3.0': ['k8s'] })
-              // return noFeature
               return featureMenuHiddenCheck(menu)
             },
-            // invisible: () => true,
           },
           component: Layout,
           children: [
@@ -197,14 +145,8 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_repo')) {
                 return true
               }
-              // const noFeature = process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
-              //   '3.0': ['monitor'],
-              //   default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso', 'hcs'],
-              // }) : !setupKeys.hasVersionedSetupKey({ '3.0': ['k8s'] })
-              // return noFeature
               return featureMenuHiddenCheck(menu)
             },
-            // invisible: () => true,
           },
           component: Layout,
           children: [

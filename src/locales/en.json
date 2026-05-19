@@ -5688,6 +5688,7 @@
   "license.group.report": "Report",
   "license.group.auth": "Certification Management",
   "license.group.monitor": "Monitoring Operation",
+  "license.group.monitors": "Monitoring Operation",
   "license.group.default": "",
   "scope.auth.login": "Sign in",
   "scope.auth.username.placeholder": "User",
