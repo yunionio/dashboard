@@ -165,10 +165,22 @@ export default {
         } else if (operator === '!=') {
           operator = '!~'
         }
-        if (value.startsWith('/^') && value.endsWith('$/')) {
-          value = value.replace('/^', '').replace('$/', '').split('|').map(v => v.replace('^', '').replace('$', ''))
-        } else if (value.startsWith('["') && value.endsWith('"]')) {
-          value = value.replace('[', '').replace(']', '').split(',').map(v => v.replaceAll('"', ''))
+        if (R.is(Array, value)) {
+          // keep
+        } else if (R.is(String, value)) {
+          if (value.startsWith('/^') && value.endsWith('$/')) {
+            value = value.replace('/^', '').replace('$/', '').split('|').map(v => v.replace('^', '').replace('$', ''))
+          } else if (value.startsWith('["') && value.endsWith('"]')) {
+            value = value.replace('[', '').replace(']', '').split(',').map(v => v.replaceAll('"', ''))
+          } else if (value !== '') {
+            value = [value]
+          } else {
+            value = []
+          }
+        } else if (value != null && value !== '') {
+          value = [value]
+        } else {
+          value = []
         }
         tagFields[tagKey(key)[0]] = item.key
         tagFields[tagValue(key)[0]] = value
