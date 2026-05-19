@@ -39,21 +39,21 @@ export default {
         },
       }),
       groupActions: [
-        {
-          label: this.$t('common.create'),
-          action: () => {
-            this.createDialog('LlmInstantmodelCreateDialog', {
-              onManager: this.onManager,
-              refresh: () => this.list.fetchData(),
-            })
-          },
-          meta: () => {
-            return {
-              buttonType: 'primary',
-              validate: true,
-            }
-          },
-        },
+        // {
+        //   label: this.$t('common.create'),
+        //   action: () => {
+        //     this.createDialog('LlmInstantmodelCreateDialog', {
+        //       onManager: this.onManager,
+        //       refresh: () => this.list.fetchData(),
+        //     })
+        //   },
+        //   meta: () => {
+        //     return {
+        //       buttonType: 'primary',
+        //       validate: true,
+        //     }
+        //   },
+        // },
         {
           label: this.$t('aice.llm_image.import_community'),
           action: () => {

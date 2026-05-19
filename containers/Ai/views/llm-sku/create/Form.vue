@@ -407,7 +407,7 @@ export default {
   data () {
     const data = this.mode === 'edit' && this.editData ? this.editData : {}
     const isApplyType = this.$route.path.includes('app-llm')
-    const llmTypeOptions = isApplyType ? LLM_TYPE_OPTIONS.filter(opt => opt.id !== 'vllm' && opt.id !== 'ollama') : LLM_TYPE_OPTIONS.filter(opt => opt.id === 'vllm' || opt.id === 'ollama')
+    const llmTypeOptions = isApplyType ? LLM_TYPE_OPTIONS.filter(opt => opt.id !== 'vllm' && opt.id !== 'ollama' && opt.id !== 'sglang') : LLM_TYPE_OPTIONS.filter(opt => opt.id === 'vllm' || opt.id === 'ollama' || opt.id === 'sglang')
     const {
       domain_id,
       project_domain,
@@ -430,9 +430,14 @@ export default {
       preferred_model: rowPreferredModel,
       host_paths: hostPaths = [],
     } = data
+    const defaultLlmTypeForInit = (llmTypeOptions[0] && llmTypeOptions[0].id) || (isApplyType ? 'openclaw' : 'ollama')
+    const initialLlmTypeForSpec = rowLlmType || defaultLlmTypeForInit
+    const typeLlmSpec = (llmSpec && (initialLlmTypeForSpec === 'vllm' || initialLlmTypeForSpec === 'sglang') && llmSpec[initialLlmTypeForSpec])
+      ? llmSpec[initialLlmTypeForSpec]
+      : {}
     const preferredModelInit = rowPreferredModel != null && rowPreferredModel !== ''
       ? String(rowPreferredModel)
-      : (llmSpec?.vllm?.preferred_model != null ? String(llmSpec.vllm.preferred_model) : '')
+      : (typeLlmSpec.preferred_model != null ? String(typeLlmSpec.preferred_model) : '')
     const {
       dify_api_image_id,
       dify_plugin_image_id,
@@ -456,9 +461,9 @@ export default {
     }
     if (!openclawWorkspaceTemplates || typeof openclawWorkspaceTemplates !== 'object') openclawWorkspaceTemplates = {}
     const envVars = (envs || []).map(item => ({ env_key: item.key, env_value: item.value, key: uuid() }))
-    const defaultLlmType = (llmTypeOptions[0] && llmTypeOptions[0].id) || (isApplyType ? 'openclaw' : 'ollama')
+    const defaultLlmType = defaultLlmTypeForInit
     // edit 模式沿用已有 port_mappings；create 模式按所选 llm_type 预填默认端口（用户可删除/新增）
-    const initialLlmType = rowLlmType || defaultLlmType
+    const initialLlmType = initialLlmTypeForSpec
     const portMappingsSource = (this.mode === 'edit')
       ? port_mappings
       : (port_mappings.length > 0 ? port_mappings : getDefaultPortMappingsForType(initialLlmType))
@@ -478,7 +483,7 @@ export default {
       const hp = getHostPathRow(hpKey)
       return hp && Array.isArray(hp.containerRows) ? hp.containerRows.find(c => c.key === cKey) : undefined
     }
-    let customizedArgsSource = data.customized_args ?? llmSpec?.vllm?.customized_args ?? []
+    let customizedArgsSource = data.customized_args ?? typeLlmSpec.customized_args ?? []
     if (!Array.isArray(customizedArgsSource)) customizedArgsSource = []
     const customizedArgsRows = customizedArgsSource.map((row) => ({
       key: uuid(),
@@ -841,7 +846,7 @@ export default {
     currentTypeFields () {
       const type = this.form.fd.llm_type || 'ollama'
       const base = LLM_TYPE_FORM_CONFIG[type] || []
-      if (type !== 'vllm') return base
+      if (type !== 'vllm' && type !== 'sglang') return base
       const out = []
       base.forEach((f) => {
         out.push(f)
@@ -1086,19 +1091,19 @@ export default {
         typeFieldKeys.forEach(key => {
           const v = pickTypeValues[key]
           if (v === undefined) return
-          if (effectiveLlmType === 'vllm' && key === 'preferred_model') return
+          if ((effectiveLlmType === 'vllm' || effectiveLlmType === 'sglang') && key === 'preferred_model') return
           if (key === 'device') {
             data.devices = v.map(k => ({ model: k }))
           } else {
             data[key] = v
           }
         })
-        if (effectiveLlmType === 'vllm') {
-          const vllm = {}
+        if (effectiveLlmType === 'vllm' || effectiveLlmType === 'sglang') {
+          const typeSpec = {}
           const pm = pickTypeValues.preferred_model
           const preferredStr = pm != null ? String(pm).trim() : ''
           if (preferredStr !== '') {
-            vllm.preferred_model = preferredStr
+            typeSpec.preferred_model = preferredStr
           }
           const customized_args = this.customizedArgsRows
             .map((item) => ({
@@ -1107,10 +1112,10 @@ export default {
             }))
             .filter((row) => row.key !== '' || row.value !== '')
           if (customized_args.length > 0) {
-            vllm.customized_args = customized_args
+            typeSpec.customized_args = customized_args
           }
-          if (Object.keys(vllm).length > 0) {
-            data.llm_spec = { vllm }
+          if (Object.keys(typeSpec).length > 0) {
+            data.llm_spec = { [effectiveLlmType]: typeSpec }
           }
         }
         if (effectiveLlmType === 'openclaw') {

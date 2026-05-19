@@ -586,7 +586,9 @@ export default {
   mixins: [WindowsMixin],
   data () {
     const isApplyType = this.$route.path.includes('app-llm')
-    const llmTypeOptions = isApplyType ? LLM_TYPE_OPTIONS.filter(opt => opt.id !== 'vllm' && opt.id !== 'ollama') : LLM_TYPE_OPTIONS.filter(opt => opt.id === 'vllm' || opt.id === 'ollama')
+    const llmTypeOptions = isApplyType
+      ? LLM_TYPE_OPTIONS.filter(opt => opt.id !== 'vllm' && opt.id !== 'ollama' && opt.id !== 'sglang')
+      : LLM_TYPE_OPTIONS.filter(opt => opt.id === 'vllm' || opt.id === 'ollama' || opt.id === 'sglang')
     const defaultLlmType = (llmTypeOptions[0] && llmTypeOptions[0].id) || (isApplyType ? 'openclaw' : 'ollama')
     return {
       isApplyType,
@@ -913,10 +915,10 @@ export default {
       return list.map(item => ({ key: item.model, label: item.model }))
     },
     supportDevicesAndHostPaths () {
-      return ['ollama', 'vllm', 'comfyui'].includes((this.form.fd.llm_type || '').toLowerCase())
+      return ['ollama', 'vllm', 'sglang', 'comfyui'].includes((this.form.fd.llm_type || '').toLowerCase())
     },
     supportMountedModels () {
-      return ['ollama', 'vllm'].includes((this.form.fd.llm_type || '').toLowerCase())
+      return ['ollama', 'vllm', 'sglang'].includes((this.form.fd.llm_type || '').toLowerCase())
     },
     mountedModelParams () {
       return {
@@ -960,11 +962,11 @@ export default {
       if (val === oldVal) return
       this.form.fc.setFieldsValue({ llm_sku_id: undefined })
       // 切到不支持 devices/host_paths 的类型时清空相关表单值，避免提交脏数据
-      if (!['ollama', 'vllm', 'comfyui'].includes((val || '').toLowerCase())) {
+      if (!['ollama', 'vllm', 'sglang', 'comfyui'].includes((val || '').toLowerCase())) {
         this.form.fc.setFieldsValue({ device: [] })
         this.hostPathRows = []
       }
-      // mounted_models 仅 ollama/vllm 支持；ollama <-> vllm 切换时模型过滤参数不同，统一清空
+      // mounted_models 仅 ollama/vllm/sglang 支持；类型切换时模型过滤参数不同，统一清空
       this.form.fc.setFieldsValue({ mounted_models: [] })
       if (oldVal === 'openclaw' && val !== 'openclaw') {
         this.form.fc.setFieldsValue({ openclaw_channels: [] })
