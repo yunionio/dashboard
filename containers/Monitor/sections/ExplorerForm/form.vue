@@ -525,7 +525,8 @@ export default {
         R.forEachObjIndexed((value, key) => {
           let val = value
           if ((fd.tagOperators[key] === '=~' || fd.tagOperators[key] === '!~') && val && val.length) {
-            val = `/${val.map(v => `^${v}$`).join('|')}/`
+            const arr = Array.isArray(val) ? val : [val]
+            val = `/${arr.map(v => `^${v}$`).join('|')}/`
           } else {
             val = R.is(Array, val) ? (val.length ? val[0] : '') : val
           }
