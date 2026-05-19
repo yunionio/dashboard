@@ -80,7 +80,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -107,7 +106,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -134,7 +132,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -161,7 +158,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -188,7 +184,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -215,7 +210,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -237,7 +231,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -256,35 +249,6 @@ export default {
         },
       ],
     },
-    // {
-    //   meta: {
-    //     label: i18n.t('k8s.repo'),
-    //   },
-    //   submenus: [
-    //     {
-    //       path: '/k8s-repos',
-    //       meta: {
-    //         label: i18n.t('k8s.text_158'),
-    //         permission: 'k8s_container_registries_list',
-    //         hidden: (userInfo, menu) => {
-    //           if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_service')) {
-    //             return true
-    //           }
-    //           if (!store.getters.isAdminMode) return true
-    //           return !hasSetupKey('k8s')
-    //         },
-    //       },
-    //       component: Layout,
-    //       children: [
-    //         {
-    //           name: 'K8sRepos',
-    //           path: '',
-    //           component: K8sRepos,
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
     {
       meta: {
         label: i18n.t('k8s.text_11'),
@@ -301,7 +265,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -328,7 +291,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -363,7 +325,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -390,7 +351,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -428,7 +388,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -460,7 +419,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -482,7 +440,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -509,7 +466,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -536,7 +492,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -563,7 +518,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -590,7 +544,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -617,7 +570,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -644,7 +596,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -666,7 +617,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -713,7 +663,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -740,7 +689,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -767,7 +715,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -794,7 +741,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,
@@ -821,7 +767,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey('k8s')
             },
           },
           component: Layout,

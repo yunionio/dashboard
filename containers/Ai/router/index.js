@@ -35,7 +35,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['pod'])
             },
           },
           component: Layout,
@@ -61,7 +60,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['pod'])
             },
           },
           component: Layout,
@@ -95,7 +93,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['pod'])
             },
           },
           component: Layout,
@@ -121,7 +118,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['pod'])
             },
           },
           component: Layout,
@@ -155,7 +151,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['pod'])
             },
           },
           component: Layout,
@@ -189,7 +184,6 @@ export default {
                 return true
               }
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['pod'])
             },
           },
           component: Layout,

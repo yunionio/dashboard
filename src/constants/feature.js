@@ -38,6 +38,9 @@ const FEATURE_MENUS_SCOPE = loadFeatureMenusFromGeneralScope()
 //   }
 // }
 
+// 哪些组开启组验证（即 通过组验证组中任意一个key开启）
+export const GROUP_VALIDATION_GROUPS = ['onecloud', 'public', 'private']
+
 const meta = (module = 'default', group = 'default', is_account = false) => {
   module = module || 'default'
   group = group || 'default'
@@ -46,6 +49,7 @@ const meta = (module = 'default', group = 'default', is_account = false) => {
     group: group,
     is_account: is_account,
     is_feature: !is_account,
+    group_validation: GROUP_VALIDATION_GROUPS.includes(group),
   }
 }
 
@@ -242,27 +246,27 @@ const LicenseItems = [
     meta: meta('resource_managent', 'container', false),
   },
   {
-    key: 'monitor_operation',
+    key: 'monitor',
     origin_key: 'monitor',
-    meta: meta('resource_managent', 'monitor', false),
+    meta: meta('resource_managent', 'monitors', false),
   },
   {
     key: 'appstore',
     origin_key: 'app_store',
-    meta: meta('resource_managent', 'monitor', false),
+    meta: meta('resource_managent', 'monitors', false),
   },
   {
     key: 'report',
-    meta: meta('resource_managent', 'monitor', false),
+    meta: meta('resource_managent', 'monitors', false),
   },
   {
     key: 'extdb',
-    meta: meta('resource_managent', 'monitor', false),
+    meta: meta('resource_managent', 'monitors', false),
   },
   {
     key: 'bastionhost',
     origin_key: 'bastion_host',
-    meta: meta('resource_managent', 'monitor', false),
+    meta: meta('resource_managent', 'monitors', false),
   },
   {
     key: 'bill_private',
@@ -584,7 +588,7 @@ const FEATURE_MENUS = {
   k8s: {
     ceMenus: ['k8s-deployment', 'k8s-statefulset', 'k8s-daemonset', 'k8s-job', 'k8s-cronjob', 'k8s-pod', 'k8s-persistentvolumeclaim', 'k8s-service', 'k8s-ingress', 'k8s-configmap', 'k8s-secret', 'k8s-cluster', 'k8s-node', 'k8s-storageclass', 'k8s-namespace', 'k8s-rbacrole', 'k8s-rbacclusterrole', 'k8s-rbacrolebinding', 'k8s-rbacclusterrolebinding', 'k8s-serviceaccount', 'k8s-kubecomponent'],
   },
-  monitor_operation: {
+  monitor: {
     ceMenus: ['monitoroverview', 'monitor-dashboard', 'explorer', 'commonalerts', 'alertresource', 'alertrecord', 'monitorresourcealerts', 'notification', 'notify-topic', 'notifyconfig', 'contact', 'robot', 'scheduledtask', 'navbar-alert', 'navbar-notification'],
   },
   appstore: {
