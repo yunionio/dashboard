@@ -511,7 +511,7 @@ export default {
         HYPERVISORS_MAP.incloudsphere.hypervisor,
         HYPERVISORS_MAP.azure.hypervisor,
       ]
-      return this.dataList.some(val => val.status === 'running' && runningAdjustHypervisors.includes(val.hypervisor))
+      return this.dataList.some(val => val.status === 'running' && !runningAdjustHypervisors.includes(val.hypervisor))
     },
     disableSkuType () {
       return [HYPERVISORS_MAP.aliyun.hypervisor, HYPERVISORS_MAP.huawei.hypervisor, HYPERVISORS_MAP.qcloud.hypervisor].includes(this.dataList[0].hypervisor)
