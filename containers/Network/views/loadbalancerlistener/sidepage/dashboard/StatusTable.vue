@@ -99,7 +99,7 @@ export default {
           manager = new this.$Manager('loadbalancerlistenerrules')
         }
         const { data } = await manager.getSpecific({ id: this.data.id, spec: 'backend-status' })
-        this.listData = data
+        this.listData = Array.isArray(data) ? data : (Array.isArray(data?.data) ? data.data : [])
       } catch (error) {
         throw error
       }
