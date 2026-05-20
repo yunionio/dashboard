@@ -194,6 +194,13 @@ export default {
   LlmSidePage: {
     resource: 'llms',
   },
+  LlmDeploymentSidePage: {
+    resource: 'llm_deployments',
+    steadyStatus: [
+      ...(expectStatus.llmDeployment?.success || []),
+      ...(expectStatus.llmDeployment?.danger || []),
+    ],
+  },
   McpSidePage: {
     resource: 'mcp_agents',
   },
