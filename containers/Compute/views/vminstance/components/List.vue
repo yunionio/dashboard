@@ -192,7 +192,7 @@ export default {
         responseData: this.responseData,
         isTemplate: this.isTemplate,
         templateLimit: this.templateLimit,
-        hiddenColumns: ['is_gpu', 'metadata', 'instance_type', 'os_type', 'vpc', 'host', 'account', 'created_at', 'macs', 'os_arch', 'vcpu_count', 'vmem_size', 'disk', 'power_states'],
+        hiddenColumns: ['is_gpu', 'metadata', 'instance_type', 'os_type', 'vpc', 'host', 'account', 'created_at', 'macs', 'os_arch', 'vcpu_count', 'vmem_size', 'disk', 'power_states', 'cpu_usage', 'mem_usage', 'disk_rate', 'net_iops'],
         autoHiddenFilterKey: 'server_hidden_columns',
         fetchDataCb: async (response) => {
           if (response.data?.data?.length) {
