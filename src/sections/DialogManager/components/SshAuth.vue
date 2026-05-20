@@ -5,7 +5,12 @@
       <a-alert type="warning" class="mb-2">
         <div slot="message">{{$t('common.ssh_login_err')}}<help-tooltip :text="errorMsg" class="ml-1" />，{{$t('common.ssh_login_err_msg')}}</div>
       </a-alert>
-      <a-form-model ref="form" :model="formData" :rules="rules" v-bind="layout">
+      <a-form-model
+        ref="form"
+        :model="formData"
+        :rules="rules"
+        v-bind="layout"
+        @submit.native.prevent="handleConfirm">
         <a-form-model-item :label="$t('common.operation_object')">
           <list-body-cell-wrap copy :row="{...params.data, text: `${params.data.name} (${params.data.ip || '-'})`}" field="text" hideField>
             <span v-if="params.data.name">{{params.data.name}}</span><span v-if="params.data.ip">{{` （${params.data.ip}）`}}</span>
@@ -23,10 +28,11 @@
         <!-- <a-form-model-item :label="$t('common.text00089')">
           <div class="error-color">{{errorMsg}}</div>
         </a-form-model-item> -->
+        <button type="submit" tabindex="-1" aria-hidden="true" class="ssh-auth-form-submit" />
       </a-form-model>
     </div>
     <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+      <a-button type="primary" :loading="loading" @click="handleConfirm">{{ $t('dialog.ok') }}</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
@@ -73,6 +79,23 @@ export default {
   created () {
     this.fetchLoginInfo()
   },
+  mounted () {
+    this.$nextTick(() => {
+      const formEl = this.$refs.form?.$el
+      if (!formEl) return
+      this._formEnterHandler = (e) => {
+        if (e.key !== 'Enter' && e.keyCode !== 13) return
+        this.handleFormEnter(e)
+      }
+      formEl.addEventListener('keydown', this._formEnterHandler)
+    })
+  },
+  beforeDestroy () {
+    const formEl = this.$refs.form?.$el
+    if (formEl && this._formEnterHandler) {
+      formEl.removeEventListener('keydown', this._formEnterHandler)
+    }
+  },
   methods: {
     async fetchLoginInfo () {
       const { resource, id } = this.params.data
@@ -89,7 +112,15 @@ export default {
         this.formData.password = password
       } catch (err) { }
     },
+    handleFormEnter (e) {
+      const tag = (e.target?.tagName || '').toLowerCase()
+      if (tag === 'textarea' || tag === 'button') return
+      e.preventDefault()
+      e.stopPropagation()
+      this.handleConfirm()
+    },
     async handleConfirm () {
+      if (this.loading) return
       this.loading = true
       try {
         await validateModelForm(this.$refs.form)
@@ -117,3 +148,18 @@ export default {
 
 }
 </script>
+
+<style scoped>
+.ssh-auth-form-submit {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  opacity: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  pointer-events: none;
+}
+</style>
