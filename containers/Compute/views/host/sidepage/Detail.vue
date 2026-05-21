@@ -271,10 +271,19 @@ export default {
         field: 'enable_numa_allocate',
         title: this.$t('compute.host.host_enable_numa_allocate.title'),
         formatter: ({ cellData, row }) => {
+          if (row.host_type === 'kvm' || row.host_type === 'hypervisor') {
+            let hugepageOption = ''
+            if (row && row.metadata && row.metadata.hugepages_option) {
+              hugepageOption = row.metadata.hugepages_option
+            }
+            if (hugepageOption !== 'native') {
+              return this.$t('table.title.off') + '(' + this.$t('compute.numa_allocate.off.hugepage_disable') + ')'
+            }
+          }
           if (row.enable_numa_allocate) {
-            return this.$t('compute.sched_numa')
+            return this.$t('compute.numa_allocate.on.core')
           } else if (row.sys_info?.host_agent_cpu_numa_allocate) {
-            return this.$t('compute.host_agent_numa')
+            return this.$t('compute.numa_allocate.on.node')
           }
           return this.$t('table.title.off')
         },
