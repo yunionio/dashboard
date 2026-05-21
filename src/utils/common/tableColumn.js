@@ -12,6 +12,7 @@ import { HOST_CPU_ARCHS } from '@/constants/compute'
 import expectStatus from '@/constants/expectStatus'
 import { status as statusMap } from '@/locales/zh-CN'
 import setting from '@/config/setting'
+import SystemIcon from '@/sections/SystemIcon'
 const brandMap = typeClouds.getBrand()
 
 export const getProjectTableColumn = ({ vm = {}, field = 'tenant', title = i18n.t('res.project'), projectsItem = 'tenant', sortable = true, hidden = false, minWidth = 100 } = {}) => {
@@ -1344,6 +1345,77 @@ export const getOsArch = ({
         return _.get(HOST_CPU_ARCHS, `${arch}.label`) || arch
       }
       return HOST_CPU_ARCHS.x86.label
+    },
+    hidden: () => {
+      return R.is(Function, hidden) ? hidden() : hidden
+    },
+  }
+}
+
+export const getOsDist = ({
+  field = 'os_dist',
+  title = i18n.t('table.title.os'),
+  show_label,
+  hidden,
+} = {}) => {
+  return {
+    field,
+    title,
+    width: 100,
+    sortable: true,
+    slots: {
+      default: ({ row }, h) => {
+        if (!row.metadata) return
+        const dist = row.metadata.os_distribution || row.metadata.distro
+        const version = row.metadata.os_version || row.metadata.version
+
+        let name = ''
+        let tooltip = ''
+        if (dist) {
+          tooltip = version ? (version.includes(dist) ? version : `${decodeURI(dist)} ${version}`) : dist
+        } else if (row.metadata.os_type) {
+          tooltip = row.metadata.os_type
+        } else if (row.os_type) {
+          tooltip = row.os_type
+        } else {
+          tooltip = i18n.t('compute.text_339')
+        }
+
+        name = dist || row.metadata.os_type || row.os_type || ''
+        if (name.includes('Windows') || name.includes('windows')) {
+          name = 'Windows'
+        } else if (name.startsWith('Linux') || name.startsWith('linux')) {
+          name = 'Linux'
+        } else if (name === 'Others Linux') {
+          name = 'Linux'
+          tooltip = row.metadata.os_full_name || tooltip
+        }
+        const ret = [
+          <SystemIcon tooltip={tooltip} name={name} />,
+        ]
+        if (show_label) {
+          ret.push(<span class='text-truncate'> {tooltip}</span>)
+        }
+        return ret
+      },
+    },
+    formatter: ({ row }) => {
+      if (!row.metadata) return
+      const dist = row.metadata.os_distribution || row.metadata.distro
+      const version = row.metadata.os_version || row.metadata.version
+      let tooltip = ''
+
+      if (dist) {
+        tooltip = version ? (version.includes(dist) ? version : `${decodeURI(dist)} ${version}`) : dist
+      } else if (row.metadata.os_type) {
+        tooltip = row.metadata.os_type
+      } else if (row.os_type) {
+        tooltip = row.os_type
+      } else {
+        tooltip = i18n.t('compute.text_339')
+      }
+
+      return tooltip
     },
     hidden: () => {
       return R.is(Function, hidden) ? hidden() : hidden
