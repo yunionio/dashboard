@@ -2014,5 +2014,8 @@
   "compute.disable_sku_type_tip_2": "No supported simultaneous modification types found, modification may fail.",
   "compute.adjust_config_running_confirm_title": "Confirm configuration change",
   "compute.adjust_config_running_confirm_content": "On this platform, changing configuration while the VM is running will shut it down first, then apply the changes and power it on again. Do you want to continue?",
-  "compute.adjust_config_running_confirm_submit": "Confirm and submit"
+  "compute.adjust_config_running_confirm_submit": "Confirm and submit",
+  "compute.upload_app_package": "Upload app package",
+  "compute.upload_app_package_format_tip": "App package only supports tar.gz format",
+  "compute.upload_app_package_file_help": "Do not refresh or close the page during upload. App package only supports tar.gz format."
 }
