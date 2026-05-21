@@ -995,9 +995,9 @@ export const formatCpuNumaPin = (row) => {
         rowGap: '4px',
       },
     }, [
-      _cpuNumaPinH('span', `node: ${nodeId}`),
-      _cpuNumaPinH('span', `mem: ${memStr}`),
-      _cpuNumaPinH('span', `cpu: ${cpuStr}`),
+      _cpuNumaPinH('span', `NUMA: ${nodeId}`),
+      _cpuNumaPinH('span', i18n.t('compute.text_369') + `: ${memStr}`),
+      _cpuNumaPinH('span', `CPU: ${cpuStr}`),
     ])
   }))
 }

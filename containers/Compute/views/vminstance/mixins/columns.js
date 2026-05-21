@@ -12,9 +12,9 @@ import {
   getBillingTableColumn,
   getTimeTableColumn,
   getOsArch,
+  getOsDist,
   getAccountTableColumn,
 } from '@/utils/common/tableColumn'
-import SystemIcon from '@/sections/SystemIcon'
 import { sizestr, bytesPerSecondStr } from '@/utils/utils'
 import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 import i18nLocale from '@/locales'
@@ -244,65 +244,11 @@ export default {
           return this.$isScopedPolicyMenuHidden('server_hidden_columns.instance_type')
         },
       },
-      {
-        field: 'os_dist',
-        title: i18nLocale.t('table.title.os'),
-        width: 100,
-        sortable: true,
-        slots: {
-          default: ({ row }) => {
-            if (!row.metadata) return
-            const dist = row.metadata.os_distribution || row.metadata.distro
-            const version = row.metadata.os_version || row.metadata.version
-
-            let name = ''
-            let tooltip = ''
-            if (dist) {
-              tooltip = version ? (version.includes(dist) ? version : `${decodeURI(dist)} ${version}`) : dist
-            } else if (row.metadata.os_type) {
-              tooltip = row.metadata.os_type
-            } else if (row.os_type) {
-              tooltip = row.os_type
-            } else {
-              tooltip = i18nLocale.t('compute.text_339')
-            }
-
-            name = dist || row.metadata.os_type || row.os_type || ''
-            if (name.includes('Windows') || name.includes('windows')) {
-              name = 'Windows'
-            } else if (name.startsWith('Linux') || name.startsWith('linux')) {
-              name = 'Linux'
-            } else if (name === 'Others Linux') {
-              name = 'Linux'
-              tooltip = row.metadata.os_full_name || tooltip
-            }
-            return [
-              <SystemIcon tooltip={tooltip} name={name} />,
-            ]
-          },
-        },
-        formatter: ({ row }) => {
-          if (!row.metadata) return
-          const dist = row.metadata.os_distribution || row.metadata.distro
-          const version = row.metadata.os_version || row.metadata.version
-          let tooltip = ''
-
-          if (dist) {
-            tooltip = version ? (version.includes(dist) ? version : `${decodeURI(dist)} ${version}`) : dist
-          } else if (row.metadata.os_type) {
-            tooltip = row.metadata.os_type
-          } else if (row.os_type) {
-            tooltip = row.os_type
-          } else {
-            tooltip = i18nLocale.t('compute.text_339')
-          }
-
-          return tooltip
-        },
+      getOsDist({
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('server_hidden_columns.os_type')
         },
-      },
+      }),
       {
         field: 'vcpu_count',
         title: 'CPU',
