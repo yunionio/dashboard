@@ -197,7 +197,10 @@ const masks = {
   dstack: undefined,
 }
 
+const stripIpWhitespace = value => (typeof value === 'string' ? value.replace(/\s/g, '') : value)
+
 function validateGateway (rule, value, callback) {
+  value = stripIpWhitespace(value)
   if (!value) {
     return callback()
   }
@@ -211,6 +214,7 @@ function validateGateway (rule, value, callback) {
 }
 
 function validateGateway6 (rule, value, callback) {
+  value = stripIpWhitespace(value)
   if (!value) {
     return callback()
   }
@@ -342,6 +346,7 @@ export default {
           {
             initialValue: '',
             validateTrigger: ['change', 'blur'],
+            normalize: stripIpWhitespace,
             rules: [
               { validator: this.$validate('IPs', false) },
             ],
@@ -372,6 +377,7 @@ export default {
             {
               initialValue: '',
               validateFirst: true,
+              normalize: stripIpWhitespace,
               rules: [
                 // { required: true, message: this.$t('network.text_593') },
                 { validator: this.validateIpv4 },
@@ -383,6 +389,7 @@ export default {
             {
               initialValue: '',
               validateFirst: true,
+              normalize: stripIpWhitespace,
               rules: [
                 // { required: true, message: this.$t('network.text_594') },
                 { validator: this.validateIpv4 },
@@ -404,6 +411,7 @@ export default {
               initialValue: '',
               validateTrigger: ['change', 'blur'],
               validateFirst: true,
+              normalize: stripIpWhitespace,
               rules: [
                 { validator: this.validateIpv4 },
                 { validator: validateGateway },
@@ -415,6 +423,7 @@ export default {
             {
               initialValue: '',
               validateFirst: true,
+              normalize: stripIpWhitespace,
               rules: [
                 { validator: this.validateIpv6 },
               ],
@@ -425,6 +434,7 @@ export default {
             {
               initialValue: '',
               validateFirst: true,
+              normalize: stripIpWhitespace,
               rules: [
                 { validator: this.validateIpv6 },
               ],
@@ -445,6 +455,7 @@ export default {
               initialValue: '',
               validateTrigger: ['change', 'blur'],
               validateFirst: true,
+              normalize: stripIpWhitespace,
               rules: [
                 { validator: this.validateIpv6 },
                 { validator: validateGateway6 },
@@ -463,6 +474,7 @@ export default {
           {
             initialValue: '',
             validateFirst: true,
+            normalize: stripIpWhitespace,
             rules: [
               { validator: this.validatePublicIpPrefix },
             ],
@@ -473,6 +485,7 @@ export default {
           {
             initialValue: '',
             validateFirst: true,
+            normalize: stripIpWhitespace,
             rules: [
               { validator: this.validatePublicIpPrefix6 },
             ],
@@ -482,6 +495,7 @@ export default {
           'guest_dhcp',
           {
             validateFirst: true,
+            normalize: stripIpWhitespace,
             rules: [
               { validator: this.$validate('IPs', false) },
             ],
@@ -741,18 +755,22 @@ export default {
   },
   methods: {
     validateIpv4 (rule, value, callback) {
+      value = stripIpWhitespace(value)
       if (!value) {
-        callback()
-      } else if (!REGEXP.IPv4.regexp.test(value)) {
-        callback(new Error(this.$t('common.tips.input', ['IPv4'])))
+        return callback()
+      }
+      if (!REGEXP.IPv4.regexp.test(value)) {
+        return callback(new Error(this.$t('common.tips.input', ['IPv4'])))
       }
       callback()
     },
     validateIpv6 (rule, value, callback) {
+      value = stripIpWhitespace(value)
       if (!value) {
-        callback()
-      } else if (!REGEXP.IPv6.regexp.test(value)) {
-        callback(new Error(this.$t('common.tips.input', ['IPv6'])))
+        return callback()
+      }
+      if (!REGEXP.IPv6.regexp.test(value)) {
+        return callback(new Error(this.$t('common.tips.input', ['IPv6'])))
       }
       callback()
     },
@@ -884,6 +902,7 @@ export default {
       return (<div>{ item.name }</div>)
     },
     validatePublicIpPrefix (rule, value, callback) {
+      value = stripIpWhitespace(value)
       if (value) {
         if (!networkSegment.regexp.test(value)) {
           callback(new Error(networkSegment.message))
@@ -904,6 +923,7 @@ export default {
       callback()
     },
     validatePublicIpPrefix6 (rule, value, callback) {
+      value = stripIpWhitespace(value)
       if (value) {
         if (!networkSegment6.regexp.test(value)) {
           callback(new Error(networkSegment6.message))
