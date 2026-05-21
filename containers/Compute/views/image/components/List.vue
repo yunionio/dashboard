@@ -110,7 +110,7 @@ export default {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.$router.push({ name: 'ImageImport' })
         },
-        hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_store'),
+        hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_store') || this.imageType === 'appPackage',
       }
 
       const ImageImportCe = {
@@ -120,7 +120,7 @@ export default {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.$router.push({ name: 'ImageImportCe' })
         },
-        hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_store'),
+        hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_store') || this.imageType === 'appPackage',
       }
       const ImageUpload = {
         label: this.$t('compute.text_643'),
@@ -130,6 +130,7 @@ export default {
             title: this.$t('compute.text_643'),
             onManager: this.onManager,
             refresh: this.refresh,
+            imageType: this.imageType,
           })
         },
         meta: () => ({

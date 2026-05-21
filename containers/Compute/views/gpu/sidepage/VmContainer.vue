@@ -61,7 +61,7 @@ export default {
           addBackup: true,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'VmContainerInstanceSidePage') }>{ row.name }</side-page-trigger>
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(this, 'VmContainerInstanceSidePage', { id: row.id, resource: 'servers' }) }>{ row.name }</side-page-trigger>
             )
           },
         }),

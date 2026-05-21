@@ -29,7 +29,7 @@ export default {
                 this.createDialog('ChangeOwenrDialog', {
                   data: [obj],
                   columns: this.columns,
-                  name: this.$t('network.text_142'),
+                  name: this.$t('network.text_715'),
                   onManager: this.onManager,
                   resource: 'loadbalanceracls',
                 })
@@ -54,7 +54,7 @@ export default {
               },
             },
             getSetPublicAction(this, {
-              name: this.$t('network.text_142'),
+              name: this.$t('network.text_715'),
               scope: 'project',
               resource: 'loadbalanceracls',
             }, {
@@ -67,7 +67,7 @@ export default {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   title: i18n.t('network.text_131'),
-                  name: this.$t('network.text_142'),
+                  name: this.$t('network.text_715'),
                   alert: this.$t('network.text_767'),
                   data: [obj],
                   columns: this.columns,
