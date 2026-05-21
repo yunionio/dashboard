@@ -63,7 +63,7 @@ export default {
           addBackup: true,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'VmInstanceSidePage') }>{ row.name }</side-page-trigger>
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(this, 'VmInstanceSidePage', { id: row.id, resource: 'servers' }) }>{ row.name }</side-page-trigger>
             )
           },
         }),
@@ -260,7 +260,7 @@ export default {
     },
   },
   created () {
-    this.initSidePageTab('detail')
+    this.initSidePageTab('vm-instance-detail')
     this.list.fetchData()
   },
   methods: {

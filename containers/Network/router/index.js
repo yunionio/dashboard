@@ -476,7 +476,7 @@ export default {
         {
           path: '/lb',
           meta: {
-            label: i18n.t('network.text_714'),
+            label: i18n.t('network.text_137'),
             permission: 'lb_loadbalancers_list',
             hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.lb')) {

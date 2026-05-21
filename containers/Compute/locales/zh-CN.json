@@ -2018,5 +2018,8 @@
   "compute.disable_sku_type_tip_2": "未查询到支持同时修改的套餐类型，修改可能会失败。",
   "compute.adjust_config_running_confirm_title": "调整配置确认",
   "compute.adjust_config_running_confirm_content": "当前平台开机调整配置会先将机器关机，调整完配置后再进行开机，是否确认此操作？",
-  "compute.adjust_config_running_confirm_submit": "确认提交"
+  "compute.adjust_config_running_confirm_submit": "确认提交",
+  "compute.upload_app_package": "上传应用包",
+  "compute.upload_app_package_format_tip": "应用包仅支持 tar.gz 格式",
+  "compute.upload_app_package_file_help": "上传过程中请勿刷新或者关闭页面，否则上传任务会中断。应用包仅支持 tar.gz 格式。"
 }

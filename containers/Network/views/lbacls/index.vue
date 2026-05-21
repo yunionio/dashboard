@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('network.text_142')" />
+    <page-header :title="$t('network.text_715')" />
     <page-body>
       <list :id="listId" :get-params="getParams" />
     </page-body>
