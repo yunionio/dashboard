@@ -26,6 +26,7 @@ import {
   getBrandTableColumn,
   getSwitchTableColumn,
   getOsArch,
+  getOsDist,
   getIpsTableColumn,
   getServerMonitorAgentInstallStatus,
   getStatusTableColumn,
@@ -295,16 +296,11 @@ export default {
         {
           title: this.$t('compute.text_368'),
           items: [
-            {
-              field: 'os_type',
+            getOsDist({
               title: this.$t('compute.text_267'),
-              formatter: ({ row }) => {
-                const distribution = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type
-                const { os_version: version = '' } = row.metadata || {}
-                return distribution + ' ' + (version === '-' ? '' : version)
-              },
+              show_label: true,
               hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.os_type'),
-            },
+            }),
             getIpsTableColumn({ field: 'ip', title: 'IP', vm: this, hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.ips') }),
             {
               field: 'sub_ips',

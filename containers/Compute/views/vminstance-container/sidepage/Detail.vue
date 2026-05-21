@@ -280,13 +280,6 @@ export default {
               },
             },
             {
-              field: 'monitor_url',
-              title: this.$t('compute.monitor_url.prompt'),
-              formatter: ({ row }) => {
-                return row.monitor_url
-              },
-            },
-            {
               field: 'port_mapping',
               title: this.$t('compute.repo.port_mapping'),
               slots: {
