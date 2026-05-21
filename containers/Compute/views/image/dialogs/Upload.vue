@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('compute.text_664')}}</div>
+    <div slot="header">{{params.imageType === 'appPackage' ? $t('compute.upload_app_package') : $t('compute.text_664')}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <div slot="message">{{$t('compute.text_665')}}</div>
@@ -25,9 +25,10 @@
             <a-radio-button value="url">{{$t('compute.text_669')}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item :label="$t('compute.text_670')" v-bind="formItemLayout" v-if="byUpload" :help="$t('compute.text_671')">
+        <a-form-item :label="$t('compute.text_670')" v-bind="formItemLayout" v-if="byUpload" :help="uploadFileHelp">
           <a-upload
             @change="handleUploadChange"
+            @reject="handleUploadReject"
             :fileList="fileList"
             :beforeUpload="beforeUpload">
             <a-button> <a-icon type="upload" />{{$t('compute.text_245')}}</a-button>
@@ -192,6 +193,14 @@ export default {
     enableEncryption () {
       return this.$appConfig.isPrivate && !this.$store.getters.isSysCE
     },
+    isAppPackage () {
+      return this.params.imageType === 'appPackage'
+    },
+    uploadFileHelp () {
+      return this.isAppPackage
+        ? this.$t('compute.upload_app_package_file_help')
+        : this.$t('compute.text_671')
+    },
   },
   destroyed () {
     this.clearTimer()
@@ -203,9 +212,23 @@ export default {
       this.timer = null
       this.percentTimer = null
     },
+    isTarGzFile (name) {
+      const n = (name || '').toLowerCase()
+      return n.endsWith('.tar.gz') || n.endsWith('.tgz')
+    },
     beforeUpload (file) {
+      if (this.isAppPackage && !this.isTarGzFile(file.name)) {
+        this.$message.error(this.$t('compute.upload_app_package_format_tip'))
+        // 勿 return false：antd Upload 会把文件仍加入列表
+        return Promise.reject(new Error(this.$t('compute.upload_app_package_format_tip')))
+      }
       this.fileList = [file]
       return false
+    },
+    handleUploadReject () {
+      if (this.isAppPackage) {
+        this.$message.error(this.$t('compute.upload_app_package_format_tip'))
+      }
     },
     handleUploadTypeChange (e) {
       if (e.target.value === 'url') {
@@ -214,8 +237,16 @@ export default {
         this.byUpload = true
       }
     },
-    handleUploadChange ({ file, fileList }) {
-      this.fileList = fileList
+    handleUploadChange ({ fileList }) {
+      if (!this.isAppPackage) {
+        this.fileList = fileList
+        return
+      }
+      const valid = (fileList || []).filter(f => this.isTarGzFile(f.name))
+      if (valid.length < (fileList || []).length) {
+        this.$message.error(this.$t('compute.upload_app_package_format_tip'))
+      }
+      this.fileList = valid.length ? valid.slice(-1) : []
     },
     checkTemplateName (rule, value, callback) {
       if (!value) {
@@ -236,11 +267,21 @@ export default {
       })
     },
     validateUrl (rule, value, callback) {
-      if (value.startsWith('http://') || value.startsWith('https://')) {
-        callback()
-      } else {
+      if (!value.startsWith('http://') && !value.startsWith('https://')) {
         callback(new Error(this.$t('compute.text_675')))
+        return
       }
+      if (this.isAppPackage) {
+        let path = value
+        try {
+          path = new URL(value).pathname
+        } catch (e) { /* use raw value */ }
+        if (!this.isTarGzFile(path) && !this.isTarGzFile(value)) {
+          callback(new Error(this.$t('compute.upload_app_package_format_tip')))
+          return
+        }
+      }
+      callback()
     },
     handleUpload (data) {
       return this.$http({
@@ -317,7 +358,14 @@ export default {
             formData.append('encrypt_key_user_id', this.userInfo.id)
           }
           if (fileList.length > 0) {
-            formData.append('image_size', fileList[0].size)
+            const uploadFile = fileList[0]
+            const fileName = uploadFile.name || uploadFile.originFileObj?.name
+            if (this.isAppPackage && !this.isTarGzFile(fileName)) {
+              this.$message.error(this.$t('compute.upload_app_package_format_tip'))
+              this.loading = false
+              return false
+            }
+            formData.append('image_size', uploadFile.size)
             fileList.forEach(file => {
               formData.append('image', file.originFileObj)
             })

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('network.text_714')"
+    <page-header :title="$t('network.text_137')"
      :tabs="cloudEnvOptions"
      :current-tab.sync="cloudEnv"
      isShowResStatusTab

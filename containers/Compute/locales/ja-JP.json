@@ -2016,5 +2016,8 @@
   "compute.disable_sku_type_tip_2": "同時に修正がサポートされているパッケージタイプが照会されていないため、修正に失敗する可能性があります。",
   "compute.adjust_config_running_confirm_title": "設定変更の確認",
   "compute.adjust_config_running_confirm_content": "このプラットフォームでは、仮想マシンが起動中に設定を変更する場合、一度シャットダウンしてから設定を適用し、その後再度起動します。この操作を続行しますか？",
-  "compute.adjust_config_running_confirm_submit": "確認して送信"
+  "compute.adjust_config_running_confirm_submit": "確認して送信",
+  "compute.upload_app_package": "アプリパッケージをアップロード",
+  "compute.upload_app_package_format_tip": "アプリパッケージは tar.gz 形式のみ対応しています",
+  "compute.upload_app_package_file_help": "アップロード中はページを更新または閉じないでください。アプリパッケージは tar.gz 形式のみ対応しています。"
 }
