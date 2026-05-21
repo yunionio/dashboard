@@ -103,6 +103,9 @@
 
 <script>
 import { REGEXP } from '@/utils/validate'
+
+const stripIpWhitespace = value => (typeof value === 'string' ? value.replace(/\s/g, '') : value)
+
 export default {
   name: 'EditAttributes',
   data () {
@@ -158,6 +161,7 @@ export default {
           {
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
+            normalize: stripIpWhitespace,
             rules: [
               { required: true, message: this.$t('network.text_593') },
               { validator: this.$validate('IPv4') },
@@ -169,6 +173,7 @@ export default {
           {
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
+            normalize: stripIpWhitespace,
             rules: [
               { required: true, message: this.$t('network.text_594') },
               { validator: this.$validate('IPv4') },
@@ -186,6 +191,7 @@ export default {
           {
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
+            normalize: stripIpWhitespace,
             rules: [
               // { required: true, message: this.$t('network.text_611') },
               { validator: this.$validate('IPv4', false) },
@@ -198,6 +204,7 @@ export default {
           {
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
+            normalize: stripIpWhitespace,
             rules: [
               { validator: this.$validate('IPv6', false) },
             ],
@@ -208,6 +215,7 @@ export default {
           {
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
+            normalize: stripIpWhitespace,
             rules: [
               { validator: this.$validate('IPv6', false) },
             ],
@@ -224,6 +232,7 @@ export default {
           {
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
+            normalize: stripIpWhitespace,
             rules: [
               { validator: this.$validate('IPv6', false) },
               { validator: this.validateGateway6 },
@@ -243,6 +252,7 @@ export default {
           'guest_dhcp',
           {
             validateFirst: true,
+            normalize: stripIpWhitespace,
             rules: [
               { validator: this.validateDhcpRelay },
             ],
@@ -253,6 +263,7 @@ export default {
           {
             initialValue: '',
             validateTrigger: ['change', 'blur'],
+            normalize: stripIpWhitespace,
             rules: [
               { validator: this.$validate('IPv4s', false) },
             ],
@@ -364,20 +375,20 @@ export default {
       this.form.fc.setFieldsValue({
         name: data.name,
         server_type: data.server_type,
-        guest_ip_start: data.guest_ip_start,
-        guest_ip_end: data.guest_ip_end,
+        guest_ip_start: stripIpWhitespace(data.guest_ip_start),
+        guest_ip_end: stripIpWhitespace(data.guest_ip_end),
         guest_ip_mask: data.guest_ip_mask,
-        guest_gateway: data.guest_gateway,
-        guest_ip6_start: data.guest_ip6_start,
-        guest_ip6_end: data.guest_ip6_end,
+        guest_gateway: stripIpWhitespace(data.guest_gateway),
+        guest_ip6_start: stripIpWhitespace(data.guest_ip6_start),
+        guest_ip6_end: stripIpWhitespace(data.guest_ip6_end),
         guest_ip6_mask: data.guest_ip6_mask,
-        guest_gateway6: data.guest_gateway6,
+        guest_gateway6: stripIpWhitespace(data.guest_gateway6),
         vlan_id: data.vlan_id || '',
         alloc_policy: data.alloc_policy,
-        guest_dns: data.guest_dns || '',
+        guest_dns: stripIpWhitespace(data.guest_dns) || '',
         guest_domain: data.guest_domain || '',
         guest_ntp: data.guest_ntp || '',
-        guest_dhcp: data.guest_dhcp || '',
+        guest_dhcp: stripIpWhitespace(data.guest_dhcp) || '',
       })
       this.form.fc.getFieldDecorator('bgp_type', { initialValue: data.bgp_type })
       this.wire_id = data.wire_id
@@ -386,6 +397,7 @@ export default {
       this.server_type = data.server_type
     },
     validateGateway (rule, value, callback) {
+      value = stripIpWhitespace(value)
       if (!value) {
         return callback()
       }
@@ -398,6 +410,7 @@ export default {
       }
     },
     validateGateway6 (rule, value, callback) {
+      value = stripIpWhitespace(value)
       if (!value) {
         return callback()
       }
