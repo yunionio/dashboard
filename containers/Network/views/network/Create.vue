@@ -664,10 +664,12 @@ export default {
       callback()
     },
     validateDhcpRelay (rule, value, callback) {
+      value = stripIpWhitespace(value)
       if (!value) {
-        callback()
-      } else if (!REGEXP.IPv4s.regexp.test(value)) {
-        callback(new Error(this.$t('common.tips.input', ['IPv4'])))
+        return callback()
+      }
+      if (!REGEXP.IPv4s.regexp.test(value)) {
+        return callback(new Error(this.$t('common.tips.input', ['IPv4'])))
       }
       callback()
     },
@@ -780,18 +782,21 @@ export default {
     },
     validatePublicIpPrefix (rule, value, callback) {
       value = stripIpWhitespace(value)
-      if (!networkSegment.regexp.test(value)) {
-        callback(new Error(networkSegment.message))
+      if (!value) {
+        return callback()
       }
-      const maskNum = (value && value.split('/').length > 1) ? value.split('/')[1] : null
+      if (!networkSegment.regexp.test(value)) {
+        return callback(new Error(networkSegment.message))
+      }
+      const maskNum = value.split('/').length > 1 ? value.split('/')[1] : null
       const publicWire = this.form.fc.getFieldValue('cloudregion')
       if (maskNum && publicWire && publicWire.provider) {
         const provider = publicWire.provider.toLowerCase()
         if (masks[provider]) {
           const min = masks[provider].min
           const max = masks[provider].max
-          if (masks[provider] && (maskNum < min || maskNum > max)) {
-            callback(new Error(this.$t('network.text_604', [min, max])))
+          if (maskNum < min || maskNum > max) {
+            return callback(new Error(this.$t('network.text_604', [min, max])))
           }
         }
       }
