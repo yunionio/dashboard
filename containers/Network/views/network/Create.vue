@@ -182,7 +182,10 @@ const masks = {
   dstack: undefined,
 }
 
+const stripIpWhitespace = value => (typeof value === 'string' ? value.replace(/\s/g, '') : value)
+
 function validateGateway (rule, value, callback) {
+  value = stripIpWhitespace(value)
   if (!value) {
     return callback()
   }
@@ -196,6 +199,7 @@ function validateGateway (rule, value, callback) {
 }
 
 function validateGateway6 (rule, value, callback) {
+  value = stripIpWhitespace(value)
   if (!value) {
     return callback()
   }
@@ -323,6 +327,7 @@ export default {
           'guest_dns',
           {
             initialValue: '',
+            normalize: stripIpWhitespace,
             rules: [
               { validator: this.$validate('IPv4s', false) },
             ],
@@ -352,6 +357,7 @@ export default {
             {
               initialValue: '',
               validateFirst: true,
+              normalize: stripIpWhitespace,
               rules: [
                 { required: true, message: this.$t('network.text_593') },
                 { validator: this.$validate('IPv4') },
@@ -363,6 +369,7 @@ export default {
             {
               initialValue: '',
               validateFirst: true,
+              normalize: stripIpWhitespace,
               rules: [
                 { required: true, message: this.$t('network.text_594') },
                 { validator: this.$validate('IPv4') },
@@ -384,6 +391,7 @@ export default {
               initialValue: '',
               validateTrigger: ['change', 'blur'],
               validateFirst: true,
+              normalize: stripIpWhitespace,
               rules: [
                 { validator: this.$validate('IPv4') },
                 { validator: validateGateway },
@@ -395,6 +403,7 @@ export default {
             {
               initialValue: '',
               validateFirst: true,
+              normalize: stripIpWhitespace,
               rules: [
                 { validator: this.validateIpv6 },
               ],
@@ -405,6 +414,7 @@ export default {
             {
               initialValue: '',
               validateFirst: true,
+              normalize: stripIpWhitespace,
               rules: [
                 { validator: this.validateIpv6 },
               ],
@@ -425,6 +435,7 @@ export default {
               initialValue: '',
               validateTrigger: ['change', 'blur'],
               validateFirst: true,
+              normalize: stripIpWhitespace,
               rules: [
                 { validator: this.validateIpv6 },
                 { validator: validateGateway6 },
@@ -443,6 +454,7 @@ export default {
           {
             initialValue: '',
             validateFirst: true,
+            normalize: stripIpWhitespace,
             rules: [
               { required: true, message: this.$t('network.text_597') },
               { validator: this.validatePublicIpPrefix },
@@ -454,6 +466,7 @@ export default {
           {
             initialValue: '',
             validateFirst: true,
+            normalize: stripIpWhitespace,
             rules: [
               { validator: this.validatePublicIpPrefix6 },
             ],
@@ -464,6 +477,7 @@ export default {
           {
             initialValue: '',
             validateFirst: true,
+            normalize: stripIpWhitespace,
             rules: [
               { validator: this.validateDhcpRelay },
             ],
@@ -640,10 +654,12 @@ export default {
   },
   methods: {
     validateIpv6 (rule, value, callback) {
+      value = stripIpWhitespace(value)
       if (!value) {
-        callback()
-      } else if (!REGEXP.IPv6.regexp.test(value)) {
-        callback(new Error(this.$t('common.tips.input', ['IPv6'])))
+        return callback()
+      }
+      if (!REGEXP.IPv6.regexp.test(value)) {
+        return callback(new Error(this.$t('common.tips.input', ['IPv6'])))
       }
       callback()
     },
@@ -763,6 +779,7 @@ export default {
       return (<div>{ item.name }</div>)
     },
     validatePublicIpPrefix (rule, value, callback) {
+      value = stripIpWhitespace(value)
       if (!networkSegment.regexp.test(value)) {
         callback(new Error(networkSegment.message))
       }
@@ -781,6 +798,7 @@ export default {
       callback()
     },
     validatePublicIpPrefix6 (rule, value, callback) {
+      value = stripIpWhitespace(value)
       if (value) {
         if (!networkSegment6.regexp.test(value)) {
           callback(new Error(networkSegment6.message))
