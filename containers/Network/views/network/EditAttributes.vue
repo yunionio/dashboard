@@ -423,10 +423,12 @@ export default {
       }
     },
     validateDhcpRelay (rule, value, callback) {
+      value = stripIpWhitespace(value)
       if (!value) {
-        callback()
-      } else if (!REGEXP.IPv4s.regexp.test(value)) {
-        callback(new Error(this.$t('common.tips.input', ['IPv4'])))
+        return callback()
+      }
+      if (!REGEXP.IPv4s.regexp.test(value)) {
+        return callback(new Error(this.$t('common.tips.input', ['IPv4'])))
       }
       callback()
     },
