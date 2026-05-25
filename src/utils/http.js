@@ -10,7 +10,15 @@ import axios from 'axios'
 import qs from 'qs'
 import store from '@/store'
 import router from '@/router'
-import { getHttpErrorMessage, getHttpReqMessage, getErrorBody, getDescription } from '@/utils/error'
+import {
+  getHttpErrorMessage,
+  getHttpReqMessage,
+  getErrorBody,
+  getDescription,
+  isNonBackendHttpError,
+  resolveHttpErrorDisplay,
+  getProxyWafInterceptHint,
+} from '@/utils/error'
 import { uuid, genReferRouteQuery, isBlob, blobToJson } from '@/utils/utils'
 import { SHOW_SYSTEM_RESOURCE } from '@/constants'
 import i18n from '@/locales'
@@ -115,7 +123,7 @@ export const cancelRquest = requestKey => {
 }
 
 const resolveError = error => {
-  const errorMsg = getHttpErrorMessage(error)
+  const errorMsg = resolveHttpErrorDisplay(error)
   if (!errorMsg) throw error
   const reqMsg = getHttpReqMessage(error)
   showErrorNotify({ errorMsg, reqMsg })
@@ -147,7 +155,15 @@ const showErrorNotify = ({ errorMsg, reqMsg }) => {
               parentWindowId: 'ErrorDialogWrapper',
               id,
               params: {
-                error: errorMsg,
+                error: R.is(Array, errorMsg)
+                  ? errorMsg.map(item => ({
+                    ...item,
+                    detail: item.detailWithProxyHint || item.detail,
+                  }))
+                  : {
+                    ...errorMsg,
+                    detail: errorMsg.detailWithProxyHint || errorMsg.detail,
+                  },
                 request: reqMsg,
               },
             })
@@ -300,9 +316,16 @@ http.interceptors.response.use(
         if (error.config.$ignoreErrorStatusCode && error.config.$ignoreErrorStatusCode.length && error.config.$ignoreErrorStatusCode.includes(403)) {
           console.error(error)
         } else {
-          message.error(i18n.t('common.permission.403'))
+          let msg = i18n.t('common.permission.403')
+          if (isNonBackendHttpError(error)) {
+            msg = `${msg}\n${getProxyWafInterceptHint()}`
+          }
+          message.error(msg)
         }
-      } else if (error.response.data && !(error.response.data.details || String()).includes('No token in header')) {
+      } else if (
+        isNonBackendHttpError(error) ||
+        (error.response.data && !(error.response.data.details || String()).includes('No token in header'))
+      ) {
         if (isBlob(error.response.data)) {
           blobToJson(error.response.data).then(res => {
             if (res.class === 'NotSupportedError') {
