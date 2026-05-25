@@ -11,6 +11,107 @@ const WindowVue = Vue.extend({
   mixins: [windowsMixin],
 })
 
+// 后端正常响应会携带的链路追踪头，缺失则多为代理/WAF 等非后端错误页
+const BACKEND_TRACE_HEADERS = ['x-request-id', 'x-request-host-id']
+
+export const hasBackendTraceHeaders = (headers = {}) => {
+  if (!headers || typeof headers !== 'object') return false
+  const normalized = {}
+  Object.keys(headers).forEach(key => {
+    normalized[key.toLowerCase()] = headers[key]
+  })
+  return BACKEND_TRACE_HEADERS.every(name => {
+    const val = normalized[name]
+    return val !== undefined && val !== null && String(val).trim() !== ''
+  })
+}
+
+export const isNonBackendHttpError = (error) => {
+  const status = error?.response?.status
+  if (!status || status < 400 || status >= 600) return false
+  return !hasBackendTraceHeaders(error.response.headers)
+}
+
+export const getProxyWafInterceptHint = () => i18n.t('common.message.error.proxy_waf_intercept')
+
+/** 错误详情弹窗「错误源信息」展示格式化，避免字符串被展开为 {0:'P',1:'r',...} */
+export const formatErrorResourceForDisplay = (resource) => {
+  if (resource == null || resource === '') return ''
+  if (R.is(String, resource)) return resource
+  if (typeof resource === 'object') {
+    try {
+      return JSON.stringify(resource, null, 2)
+    } catch (e) {
+      return String(resource)
+    }
+  }
+  return String(resource)
+}
+
+const normalizeErrorResponseResource = (response) => {
+  if (!response) return null
+  const { status, statusText, headers, data } = response
+  if (R.is(String, data)) {
+    return {
+      status,
+      statusText,
+      body: data,
+      headers,
+    }
+  }
+  if (data != null && typeof data === 'object') {
+    return data
+  }
+  return {
+    status,
+    statusText,
+    body: data != null ? `${data}` : '',
+    headers,
+  }
+}
+
+/** 在已有业务错误信息基础上，追加代理/WAF 补充提示 */
+const attachProxyWafHintSupplement = (errorMsg, err) => {
+  if (!errorMsg || !isNonBackendHttpError(err)) return errorMsg
+  const hint = getProxyWafInterceptHint()
+  const detail = errorMsg.detail || ''
+  return {
+    ...errorMsg,
+    proxyWafHint: hint,
+    detail,
+    detailWithProxyHint: detail ? `${detail}\n\n${hint}` : hint,
+  }
+}
+
+/** 无其它可展示错误时，仅以代理/WAF 提示兜底 */
+export const buildFallbackHttpErrorMessage = (err) => {
+  const hint = getProxyWafInterceptHint()
+  const status = err?.response?.status
+  return {
+    class: status ? `HTTP ${status}` : i18n.t('common.message.error.request_failed'),
+    detail: '',
+    proxyWafHint: hint,
+    detailWithProxyHint: hint,
+    resource: normalizeErrorResponseResource(err?.response),
+  }
+}
+
+/**
+ * 统一解析 HTTP 错误展示内容：先解析常规后端错误，再处理代理/WAF
+ * - 有常规错误 + 非后端响应 → 常规错误 + 补充提示
+ * - 无常规错误 + 非后端响应 → 仅代理/WAF 兜底提示
+ */
+export const resolveHttpErrorDisplay = (err) => {
+  const errorMsg = getHttpErrorMessage(err)
+  if (errorMsg) {
+    return isNonBackendHttpError(err) ? attachProxyWafHintSupplement(errorMsg, err) : errorMsg
+  }
+  if (isNonBackendHttpError(err)) {
+    return buildFallbackHttpErrorMessage(err)
+  }
+  return null
+}
+
 const getDetailInfo = (data) => {
   const details = data.split(':') || []
   if (data.includes('TooManyFailedAttempts')) {
@@ -47,9 +148,12 @@ export const getErrorBody = data => {
 //   })
 // }
 
-// 获取http请求报错信息
+// 获取http请求报错信息（仅解析后端/业务错误，不含代理/WAF 兜底逻辑）
 export const getHttpErrorMessage = (err, isErrorBody = false) => {
-  if (!isErrorBody && (!err.response || !err.response.data)) return
+  if (!isErrorBody && !err.response) return
+  if (!isErrorBody && !err.response.data) {
+    return
+  }
   const errorData = isErrorBody ? err : err.response.data
   let errorBody = getErrorBody(errorData)
   if (R.is(Object, errorBody.error)) errorBody = errorBody.error
@@ -87,7 +191,7 @@ export const getHttpErrorMessage = (err, isErrorBody = false) => {
     // class: errorInfo ? errorInfo['zh-CN'] : errorBody.class,
     class: errorClass || errorBody.class,
     detail: ret,
-    resource: !isErrorBody ? err.response.data : err,
+    resource: !isErrorBody ? normalizeErrorResponseResource(err.response) : err,
   }
 }
 
@@ -204,10 +308,27 @@ export const getBatchErrorMessage = (response, idKey = 'id') => {
 
 export const getDescription = (errorMsg, h) => {
   if (R.is(Array, errorMsg)) { // 批量报错的话直接返回第一个class
-    return <div>{ errorMsg[0].class }</div>
+    const first = errorMsg[0]
+    if (first?.proxyWafHint) {
+      return (
+        <div>
+          <div>{ first.class }</div>
+          <div class="mt-2" style="color: #fa8c16;">{ first.proxyWafHint }</div>
+        </div>
+      )
+    }
+    return <div>{ first.class }</div>
   }
-  const vnode = classDriver(errorMsg, h)
-  return vnode
+  if (errorMsg.proxyWafHint) {
+    const vnode = classDriver(errorMsg, h)
+    return (
+      <div>
+        <div>{ vnode }</div>
+        <div class="mt-2" style="color: #fa8c16;">{ errorMsg.proxyWafHint }</div>
+      </div>
+    )
+  }
+  return classDriver(errorMsg, h)
 }
 
 const classDriver = (errorMsg, h) => {
