@@ -5915,6 +5915,8 @@
   "common.bgp_type_options.bgp": "BGP",
   "common.bgp_type_options.bgp_pro": "BGP_PRO",
   "common.message.error.not_supported_error": "Backend does not support this operation",
+  "common.message.error.proxy_waf_intercept": "The system detected that your browser is accessing the backend through a proxy or WAF. Your request may have been blocked incorrectly. Please check your proxy or WAF configuration.",
+  "common.message.error.request_failed": "Request failed",
   "common.with_user_meta": "With Tag Resources",
   "common.null_tag_key": "Empty label key",
   "common.some_items_peer_time": "{0} items/time",

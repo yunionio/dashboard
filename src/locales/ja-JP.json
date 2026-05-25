@@ -5935,6 +5935,8 @@
   "common.bgp_type_options.bgp": "BGP(マルチライン)",
   "common.bgp_type_options.bgp_pro": "BGP(マルチライン)_ブティック",
   "common.message.error.not_supported_error": "この操作はバックエンドでサポートされていません",
+  "common.message.error.proxy_waf_intercept": "ブラウザがプロキシまたは WAF 経由でバックエンドにアクセスしている可能性があります。リクエストが誤って遮断された可能性があるため、プロキシまたは WAF の設定を確認してください。",
+  "common.message.error.request_failed": "リクエストに失敗しました",
   "common.with_user_meta": "タグリソースがあります",
   "common.null_tag_key": "空のタグキー",
   "common.some_items_peer_time": "{0}回",
