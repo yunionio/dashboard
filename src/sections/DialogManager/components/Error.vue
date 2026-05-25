@@ -39,6 +39,7 @@
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { changeToArr } from '@/utils/utils'
+import { formatErrorResourceForDisplay } from '@/utils/error'
 
 export default {
   name: 'ErrorDialog',
@@ -46,7 +47,7 @@ export default {
   data () {
     const details = changeToArr(this.params.error).map(val => ({
       ...val,
-      resource: JSON.stringify({ ...val.resource }, null, 2),
+      resource: formatErrorResourceForDisplay(val.resource),
     }))
     const request = JSON.stringify(this.params.request, null, 2)
     return {
