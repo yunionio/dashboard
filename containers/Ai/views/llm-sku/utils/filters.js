@@ -6,7 +6,7 @@ import {
   getDomainFilter,
   getCreatedAtFilter,
 } from '@/utils/common/tableFilter'
-import { LLM_TYPE_OPTIONS } from '../llmTypeConfig'
+import { LLM_TYPE_OPTIONS } from '../constants/llmTypeConfig'
 
 export const filterOptions = {
   id: {

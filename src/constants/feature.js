@@ -457,7 +457,7 @@ const FEATURE_MENUS = {
     ceMenus: ['vminstance-container', 'app-package', 'image-repos', 'disk', 'disk-backup', 'instance-backup', 'host', 'gpu', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'zone', 'vpc', 'wire', 'network', 'secgroup', 'eip', 'dns-zone', 'blockstorage', 'backup-storage', 'credentials-container-image', 'credentials-container-secret'],
   },
   ai: {
-    ceMenus: ['cloudregion', 'app-llm', 'app-llm-sku', 'llm', 'llm-sku', 'llm-instantmodel', 'llm-image', 'llm-deployment', 'llm-model-sets'],
+    ceMenus: ['cloudregion', 'app-llm', 'app-llm-sku', 'llm', 'llm-sku', 'llm-instantmodel', 'llm-image', 'llm-deployment'],
   },
   baremetal: {
     ceMenus: ['baremetal', 'image', 'disk', 'keypair', 'physicalmachine', 'gpu', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'imagerecovery', 'cloudregion', 'zone', 'wire', 'network'],

@@ -1,0 +1,12 @@
+/**
+ * 模型卡片列表页：避免 spin 容器固定高度导致嵌套/错位滚动条
+ */
+.catalog-model-page {
+  min-height: 0;
+
+  .ant-spin-nested-loading,
+  .ant-spin-container {
+    height: auto !important;
+    overflow: visible !important;
+  }
+}

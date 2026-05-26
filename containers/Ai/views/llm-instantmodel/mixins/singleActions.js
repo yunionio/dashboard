@@ -31,7 +31,7 @@ export default {
         actions: obj => {
           return [
             getSetPublicAction(this, {
-              name: this.$t('aice.mounted_apps'),
+              name: this.$t('aice.llm_instantmodel.menu'),
               scope: 'project',
               resource: 'llm_instant_models',
             }, {
@@ -71,7 +71,7 @@ export default {
                   return ret
                 },
               ],
-              resourceName: this.$t('aice.mounted_apps'),
+              resourceName: this.$t('aice.llm_instantmodel.menu'),
             }),
             // 同步状态
             {
@@ -108,7 +108,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: this.$t('table.action.delete'),
-                  name: this.$t('aice.mounted_apps'),
+                  name: this.$t('aice.llm_instantmodel.menu'),
                   onManager: this.onManager,
                 })
               },
