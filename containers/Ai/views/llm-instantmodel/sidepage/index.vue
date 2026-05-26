@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="$t('aice.mounted_apps')"
+    :title="$t('aice.llm_instantmodel.menu')"
     icon="res-image"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"

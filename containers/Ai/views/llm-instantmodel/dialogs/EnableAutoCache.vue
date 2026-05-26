@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{action}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('aice.mounted_apps')" :count="params.data.length" :action="action" />
+      <dialog-selected-tips :name="$t('aice.llm_instantmodel.menu')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item :label="$t('aice.mounted_apps.auto_cache.enable')">

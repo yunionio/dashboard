@@ -8,14 +8,18 @@ const AppLlm = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: tr
 const AppLlmSku = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/app-llm-sku')
 const LlmSku = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku')
 const LlmSkuCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku/create/index')
+const LlmSkuImportFromModelSets = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku/import-from-model-sets')
+const LlmSkuImportFromHuggingFace = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku/import-from-huggingface')
 const LlmInstantmodel = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-instantmodel')
-const LlmModelSets = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-model-sets')
 const LlmImage = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-image')
-const LlmInstantmodelImportCommunity = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-instantmodel/import-community')
+const LlmInstantmodelImportFromCommunity = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-instantmodel/import-from-community')
+const LlmInstantmodelImportFromHuggingFace = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-instantmodel/import-from-huggingface')
 const LlmImageImportCommunity = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-image/import-community')
 const LlmCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm/create')
 const LlmDeployment = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-deployment')
 const LlmDeploymentCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-deployment/create')
+const LlmDeploymentDeployFromModelSets = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-deployment/deploy-from-model-sets')
+const LlmDeploymentDeployFromHuggingFace = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-deployment/deploy-from-huggingface')
 export default {
   index: 61,
   meta: {
@@ -110,6 +114,16 @@ export default {
               path: 'create',
               component: LlmDeploymentCreate,
             },
+            {
+              name: 'LlmDeploymentDeployFromModelSets',
+              path: 'deploy-from-model-sets',
+              component: LlmDeploymentDeployFromModelSets,
+            },
+            {
+              name: 'LlmDeploymentDeployFromHuggingFace',
+              path: 'deploy-from-huggingface',
+              component: LlmDeploymentDeployFromHuggingFace,
+            },
           ],
         },
         {
@@ -156,6 +170,16 @@ export default {
               component: LlmSku,
             },
             {
+              name: 'LlmSkuImportFromModelSets',
+              path: 'import-from-model-sets',
+              component: LlmSkuImportFromModelSets,
+            },
+            {
+              name: 'LlmSkuImportFromHuggingFace',
+              path: 'import-from-huggingface',
+              component: LlmSkuImportFromHuggingFace,
+            },
+            {
               name: 'LlmSkuCreate',
               path: 'create',
               component: LlmSkuCreate,
@@ -170,26 +194,6 @@ export default {
         label: i18n.t('aice.app_llm_instantapp'),
       },
       submenus: [
-        {
-          path: '/llm-model-sets',
-          meta: {
-            label: i18n.t('aice.llm_catalog'),
-            hidden: (userInfo, menu) => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.llm_catalog')) {
-                return true
-              }
-              return featureMenuHiddenCheck(menu)
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'LlmModelSetList',
-              path: '',
-              component: LlmModelSets,
-            },
-          ],
-        },
         {
           path: '/llm-instantmodel',
           meta: {
@@ -209,9 +213,14 @@ export default {
               component: LlmInstantmodel,
             },
             {
-              name: 'LlmInstantmodelImportCommunity',
-              path: 'import-community',
-              component: LlmInstantmodelImportCommunity,
+              name: 'LlmInstantmodelImportFromCommunity',
+              path: 'import-from-community',
+              component: LlmInstantmodelImportFromCommunity,
+            },
+            {
+              name: 'LlmInstantmodelImportFromHuggingFace',
+              path: 'import-from-huggingface',
+              component: LlmInstantmodelImportFromHuggingFace,
             },
           ],
         },

@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header
-      :title="$t('aice.mounted_apps')"
+      :title="$t('aice.llm_instantmodel.menu')"
       isShowResStatusTab
       :status-opts="statusOpts"
       :status-click-handle="statusClickHandle" />

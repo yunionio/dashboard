@@ -55,10 +55,25 @@ export default {
         //   },
         // },
         {
-          label: this.$t('aice.llm_image.import_community'),
-          action: () => {
-            this.$router.push({ name: 'LlmInstantmodelImportCommunity' })
-          },
+          label: this.$t('aice.import_model'),
+          actions: () => [
+            {
+              label: this.$t('aice.llm_image.import_community'),
+              action: () => {
+                this.$router.push({ name: 'LlmInstantmodelImportFromCommunity' })
+              },
+            },
+            {
+              label: this.$t('aice.llm_deployment.deploy.from_huggingface'),
+              action: () => {
+                this.$router.push({ name: 'LlmInstantmodelImportFromHuggingFace' })
+              },
+            },
+          ],
+          meta: () => ({
+            buttonType: 'primary',
+            validate: true,
+          }),
         },
         {
           label: this.$t('common.batchAction'),
@@ -104,7 +119,7 @@ export default {
                 },
               },
               getSetPublicAction(this, {
-                name: this.$t('aice.mounted_apps'),
+                name: this.$t('aice.llm_instantmodel.menu'),
                 scope: 'project',
                 resource: 'llm_instant_models',
               }, {
@@ -125,7 +140,7 @@ export default {
                     }
                   },
                 ],
-                resourceName: this.$t('aice.mounted_apps'),
+                resourceName: this.$t('aice.llm_instantmodel.menu'),
               }),
               {
                 label: this.$t('table.action.delete'),
@@ -135,7 +150,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     title: this.$t('table.action.delete'),
-                    name: this.$t('aice.mounted_apps'),
+                    name: this.$t('aice.llm_instantmodel.menu'),
                     onManager: this.onManager,
                   })
                 },
@@ -149,6 +164,14 @@ export default {
                 },
               },
             ]
+          },
+          meta: () => {
+            if (!this.list.selectedItems || this.list.selectedItems.length <= 0) {
+              return {
+                validate: false,
+              }
+            }
+            return { validate: true }
           },
         },
       ],

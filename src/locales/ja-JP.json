@@ -1372,6 +1372,14 @@
       "deleted": "削除済み",
       "delete_fail": "削除に失敗しました",
       "delete_failed": "削除に失敗しました"
+    },
+    "llmSku": {
+      "unknown": "不明",
+      "ready": "準備完了",
+      "available": "利用可能",
+      "create_failed": "作成に失敗しました",
+      "delete_failed": "削除に失敗しました",
+      "importing_model": "モデルインポート中"
     }
   },
   "skuCategoryOptions": {

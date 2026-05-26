@@ -53,16 +53,13 @@ export default {
             {
               label: this.$t('aice.llm_deployment.deploy.from_catalog'),
               action: () => {
-                this.$router.push({ name: 'LlmModelSetList' })
+                this.$router.push({ name: 'LlmDeploymentDeployFromModelSets' })
               },
             },
             {
               label: this.$t('aice.llm_deployment.deploy.from_huggingface'),
               action: () => {
-                this.createDialog('DeployFromHuggingFaceDialog', {
-                  vm: this,
-                  onManager: this.onManager,
-                })
+                this.$router.push({ name: 'LlmDeploymentDeployFromHuggingFace' })
               },
             },
             {
