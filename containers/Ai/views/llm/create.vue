@@ -569,9 +569,9 @@ import { uuid } from '@/utils/utils'
 import NameRepeated from '@/sections/NameRepeated'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
-import { LLM_TYPE_OPTIONS, getParamsForType } from '../llm-sku/llmTypeConfig'
-import { OPENCLAW_CHANNEL_SECTIONS, OPENCLAW_CHANNEL_OPTIONS } from '../llm-sku/openclawChannelConfig'
-import { OPENCLAW_PROVIDER_SECTIONS, OPENCLAW_PROVIDER_OPTIONS } from '../llm-sku/openclawProviderConfig'
+import { LLM_TYPE_OPTIONS, getParamsForType } from '../llm-sku/constants/llmTypeConfig'
+import { OPENCLAW_CHANNEL_SECTIONS, OPENCLAW_CHANNEL_OPTIONS } from '../llm-sku/constants/openclawChannelConfig'
+import { OPENCLAW_PROVIDER_SECTIONS, OPENCLAW_PROVIDER_OPTIONS } from '../llm-sku/constants/openclawProviderConfig'
 export default {
   name: 'LLMCreate',
   provide () {

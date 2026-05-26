@@ -19,7 +19,7 @@
       </a-form-item>
       <a-form-item :label="$t('aice.llm_type')">
         <a-radio-group
-          v-if="!isEditMode"
+          v-if="!isEditMode && !isCatalogMode"
           class="llm-type-picker"
           button-style="solid"
           v-decorator="decorators.llm_type">
@@ -27,7 +27,7 @@
             {{ opt.name }}
           </a-radio-button>
         </a-radio-group>
-        <a-label v-else>{{ llmTypeName }}</a-label>
+        <a-label v-else-if="isEditMode || isCatalogMode">{{ llmTypeName }}</a-label>
       </a-form-item>
       <template v-if="form.fd.llm_type === 'dify'">
         <a-form-item :label="$t('aice.dify_api_image')">
@@ -374,8 +374,19 @@ import DomainProject from '@/sections/DomainProject'
 import NameRepeated from '@/sections/NameRepeated'
 import { isRequired } from '@/utils/validate'
 import { uuid } from '@/utils/utils'
-import { dict } from '../constant'
-import { LLM_TYPE_OPTIONS, LLM_TYPE_FORM_CONFIG, getParamsForType, getDefaultPortMappingsForType } from '../llmTypeConfig'
+import { dict } from '../constants/constant'
+import { LLM_TYPE_OPTIONS, LLM_TYPE_FORM_CONFIG, getParamsForType, getDefaultPortMappingsForType } from '../constants/llmTypeConfig'
+import {
+  backendToLlmType,
+  buildCatalogSkuModelParams,
+  buildHuggingfaceSkuImportParams,
+  buildInstantModelCreateData,
+  catalogTypeUsesMountedModels,
+  defaultNameFromSpec,
+  getCatalogMountedModelIds,
+  getCatalogSpecId,
+  getPreferredModelFromSpec,
+} from '@Ai/utils/catalogSpec'
 
 const getInitVal = (list, key, property) => {
   const target = list.filter(item => item.key === key)
@@ -403,10 +414,23 @@ export default {
       type: Function,
       default: null,
     },
+    catalogSet: {
+      type: Object,
+      default: null,
+    },
+    catalogSpec: {
+      type: Object,
+      default: null,
+    },
+    catalogSubmitType: {
+      type: String,
+      default: 'import',
+    },
   },
   data () {
     const data = this.mode === 'edit' && this.editData ? this.editData : {}
     const isApplyType = this.$route.path.includes('app-llm')
+    const catalogLlmTypeInit = this.catalogSpec ? backendToLlmType(this.catalogSpec.backend) : null
     const llmTypeOptions = isApplyType ? LLM_TYPE_OPTIONS.filter(opt => opt.id !== 'vllm' && opt.id !== 'ollama' && opt.id !== 'sglang') : LLM_TYPE_OPTIONS.filter(opt => opt.id === 'vllm' || opt.id === 'ollama' || opt.id === 'sglang')
     const {
       domain_id,
@@ -430,14 +454,18 @@ export default {
       preferred_model: rowPreferredModel,
       host_paths: hostPaths = [],
     } = data
-    const defaultLlmTypeForInit = (llmTypeOptions[0] && llmTypeOptions[0].id) || (isApplyType ? 'openclaw' : 'ollama')
-    const initialLlmTypeForSpec = rowLlmType || defaultLlmTypeForInit
+    const defaultLlmTypeForInit = catalogLlmTypeInit || (llmTypeOptions[0] && llmTypeOptions[0].id) || (isApplyType ? 'openclaw' : 'ollama')
+    const initialLlmTypeForSpec = catalogLlmTypeInit || rowLlmType || defaultLlmTypeForInit
+    const catalogNameInit = this.catalogSpec ? defaultNameFromSpec(this.catalogSpec, this.catalogSet) : null
     const typeLlmSpec = (llmSpec && (initialLlmTypeForSpec === 'vllm' || initialLlmTypeForSpec === 'sglang') && llmSpec[initialLlmTypeForSpec])
       ? llmSpec[initialLlmTypeForSpec]
       : {}
-    const preferredModelInit = rowPreferredModel != null && rowPreferredModel !== ''
-      ? String(rowPreferredModel)
-      : (typeLlmSpec.preferred_model != null ? String(typeLlmSpec.preferred_model) : '')
+    const catalogPreferredInit = this.catalogSpec ? getPreferredModelFromSpec(this.catalogSpec) : ''
+    const preferredModelInit = catalogPreferredInit
+      ? String(catalogPreferredInit)
+      : (rowPreferredModel != null && rowPreferredModel !== ''
+        ? String(rowPreferredModel)
+        : (typeLlmSpec.preferred_model != null ? String(typeLlmSpec.preferred_model) : ''))
     const {
       dify_api_image_id,
       dify_plugin_image_id,
@@ -535,7 +563,7 @@ export default {
         name: [
           'name',
           {
-            initialValue: name,
+            initialValue: catalogNameInit || name,
             rules: [
               { required: true, message: this.$t('common.tips.input', [this.$t('common.name')]) },
             ],
@@ -589,7 +617,7 @@ export default {
         llm_type: [
           'llm_type',
           {
-            initialValue: rowLlmType || defaultLlmType,
+            initialValue: catalogLlmTypeInit || rowLlmType || defaultLlmType,
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('aice.llm_type')]) },
             ],
@@ -838,37 +866,53 @@ export default {
     isEditMode () {
       return this.mode === 'edit'
     },
+    isCatalogMode () {
+      return !!getCatalogSpecId(this.catalogSpec)
+    },
+    catalogLlmType () {
+      return this.catalogSpec ? backendToLlmType(this.catalogSpec.backend) : ''
+    },
     llmTypeName () {
-      const cur = this.form?.fd?.llm_type
+      const cur = this.isCatalogMode ? this.catalogLlmType : this.form?.fd?.llm_type
       const opt = this.llmTypeOptions.find(o => o.id === cur)
-      return (opt && opt.name) || cur || '-'
+      return (opt && this.$t(opt.name)) || cur || '-'
     },
     currentTypeFields () {
-      const type = this.form.fd.llm_type || 'ollama'
-      const base = LLM_TYPE_FORM_CONFIG[type] || []
+      const type = this.isCatalogMode ? this.catalogLlmType : (this.form.fd.llm_type || 'ollama')
+      let base = LLM_TYPE_FORM_CONFIG[type] || []
+      if (this.isCatalogMode) {
+        base = base.filter(f => f.fieldKey !== 'mounted_models' && f.fieldKey !== 'preferred_model')
+      }
       if (type !== 'vllm' && type !== 'sglang') return base
       const out = []
+      let customizedAdded = false
       base.forEach((f) => {
         out.push(f)
         if (f.fieldKey === 'preferred_model') {
           out.push({ fieldKey: '__customized_args__', component: 'customized-args' })
+          customizedAdded = true
         }
       })
+      if (!customizedAdded) {
+        out.push({ fieldKey: '__customized_args__', component: 'customized-args' })
+      }
       return out
     },
     appImageParams () {
+      const llmType = this.isCatalogMode ? this.catalogLlmType : this.form.fd.llm_type
       return {
         limit: 20,
         scope: this.$store.getters.scope,
         $t: 1,
-        ...getParamsForType(this.form.fd.llm_type),
+        ...getParamsForType(llmType),
       }
     },
     mountedModelParams () {
+      const llmType = this.isCatalogMode ? this.catalogLlmType : this.form.fd.llm_type
       return {
         limit: 20,
         scope: this.$store.getters.scope,
-        ...getParamsForType(this.form.fd.llm_type),
+        ...getParamsForType(llmType),
       }
     },
     credentialParams () {
@@ -914,7 +958,258 @@ export default {
       }
     },
   },
+  mounted () {
+    if (this.isCatalogMode) {
+      this.$nextTick(() => this.applyCatalogSpec())
+    }
+  },
   methods: {
+    applyCatalogSpec () {
+      if (!this.catalogSpec || !this.form?.fc) return
+      const llmType = this.catalogLlmType
+      this.form.fc.setFieldsValue({
+        llm_type: llmType,
+        name: defaultNameFromSpec(this.catalogSpec, this.catalogSet),
+      })
+      if (!this.isEditMode) {
+        const next = getDefaultPortMappingsForType(llmType).map(item => ({ ...item, key: uuid() }))
+        this.portMappings.splice(0, this.portMappings.length, ...next)
+        this.$nextTick(() => {
+          const pmFields = {}
+          next.forEach(item => {
+            pmFields[`protocol[${item.key}]`] = item.protocol
+            pmFields[`container_port[${item.key}]`] = item.container_port
+          })
+          this.form.fc.setFieldsValue(pmFields)
+        })
+      }
+    },
+    _assembleSkuData (values) {
+      const {
+        project,
+        name,
+        llm_type,
+        phone_image,
+        llm_image_id,
+        cpu,
+        memory,
+        volume_size,
+        bandwidth,
+        protocol,
+        container_port,
+        customized_arg_key,
+        customized_arg_value,
+      } = values
+      const effectiveLlmType = this.isCatalogMode
+        ? this.catalogLlmType
+        : (this.isEditMode ? this.form.fd.llm_type : llm_type)
+      const typeFields = this.currentTypeFields
+      const typeFieldKeys = typeFields.filter(f => f.fieldKey !== '__customized_args__').map(f => f.fieldKey)
+      const pickTypeValues = {}
+      typeFieldKeys.forEach(key => {
+        if (values[key] !== undefined) pickTypeValues[key] = values[key]
+      })
+      const volumes = [{
+        containers: this.mode === 'edit' && this.editData && this.editData.volumes && this.editData.volumes[0] ? this.editData.volumes[0].containers : {
+          1: { mount_path: '/etc/wolf', sub_directory: 'wolf' },
+          2: {
+            mount_path: '/home/retro',
+            sub_directory: 'home',
+            overlay: {
+              lower_dir: ['/opt/steam-data/steam', '/opt/steam-data/games'],
+              use_disk_image: false,
+            },
+          },
+        },
+        size_mb: (volume_size ?? 10) * 1024,
+      }]
+      const port_mappings = this.portMappings.map(item => ({
+        protocol: protocol[item.key],
+        container_port: container_port[item.key],
+      }))
+      const host_paths = this.hostPathRows.map(hp => {
+        const hpKey = hp.key
+        const type = values[`host_path_type_${hpKey}`]
+        const path = values[`host_path_path_${hpKey}`]
+        const autoCreate = !!values[`host_path_auto_create_${hpKey}`]
+        const out = { type, path }
+        if (autoCreate) {
+          out.auto_create = true
+          const uid = values[`host_path_auto_uid_${hpKey}`]
+          const gid = values[`host_path_auto_gid_${hpKey}`]
+          const perm = values[`host_path_auto_perm_${hpKey}`]
+          const cfg = {}
+          if (uid !== undefined && uid !== null && uid !== '') cfg.uid = uid
+          if (gid !== undefined && gid !== null && gid !== '') cfg.gid = gid
+          if (perm != null && String(perm).trim() !== '') cfg.permissions = String(perm).trim()
+          if (Object.keys(cfg).length > 0) out.auto_create_config = cfg
+        }
+        const containers = {}
+        ;(hp.containerRows || []).forEach(c => {
+          const composite = `${hpKey}__${c.key}`
+          const idx = values[`host_path_container_index_${composite}`]
+          const mountPath = values[`host_path_mount_path_${composite}`]
+          if (idx == null || mountPath == null || String(mountPath).trim() === '') return
+          const k = String(idx).trim()
+          if (!k) return
+          const m = { mount_path: String(mountPath).trim(), read_only: !!values[`host_path_read_only_${composite}`] }
+          const prop = values[`host_path_propagation_${composite}`]
+          if (prop != null && String(prop).trim() !== '') m.propagation = String(prop).trim()
+          containers[k] = m
+        })
+        if (Object.keys(containers).length > 0) out.containers = containers
+        return out
+      }).filter(v => v && v.type && v.path)
+      const data = {
+        name,
+        llm_image_id,
+        image_id: phone_image,
+        cpu,
+        memory: (memory ?? 2) * 1024,
+        bandwidth: bandwidth ?? 100,
+        volumes,
+        disk_size: volumes[0].size_mb,
+        app_type: 'steam',
+      }
+      if (port_mappings.length > 0) data.port_mappings = port_mappings
+      if (host_paths.length > 0) data.host_paths = host_paths
+      if (!this.isEditMode) {
+        data.llm_type = effectiveLlmType
+        data.llm_sku = { [effectiveLlmType]: {} }
+      }
+      typeFieldKeys.forEach(key => {
+        const v = pickTypeValues[key]
+        if (v === undefined) return
+        if ((effectiveLlmType === 'vllm' || effectiveLlmType === 'sglang') && key === 'preferred_model') return
+        if (key === 'device') {
+          data.devices = v.map(k => ({ model: k }))
+        } else {
+          data[key] = v
+        }
+      })
+      if (effectiveLlmType === 'vllm' || effectiveLlmType === 'sglang' || effectiveLlmType === 'ollama') {
+        const isCatalogImport = this.isCatalogMode && this.catalogSubmitType === 'import'
+        const typeSpec = {}
+        if (!isCatalogImport) {
+          const pm = pickTypeValues.preferred_model
+          const preferredStr = pm != null ? String(pm).trim() : ''
+          if (preferredStr !== '') typeSpec.preferred_model = preferredStr
+        }
+        const customized_args = this.customizedArgsRows
+          .map((item) => ({
+            key: customized_arg_key?.[item.key] != null ? String(customized_arg_key[item.key]).trim() : '',
+            value: customized_arg_value?.[item.key] != null ? String(customized_arg_value[item.key]).trim() : '',
+          }))
+          .filter((row) => row.key !== '' || row.value !== '')
+        if (customized_args.length > 0) typeSpec.customized_args = customized_args
+        if (Object.keys(typeSpec).length > 0) {
+          data.llm_spec = { [effectiveLlmType]: typeSpec }
+        }
+      }
+      if (!this.isEditMode) {
+        data.generate_name = name
+        data.project_id = project?.key || this.userInfo.projectId
+      }
+      return data
+    },
+    async resolveCatalogMountedModelIds () {
+      const llmType = this.catalogLlmType
+      if (!catalogTypeUsesMountedModels(llmType)) return []
+
+      const preset = getCatalogMountedModelIds(this.catalogSpec)
+      if (preset && preset.length > 0) return preset
+
+      const createData = buildInstantModelCreateData(
+        this.catalogSpec,
+        llmType,
+        defaultNameFromSpec(this.catalogSpec, this.catalogSet),
+      )
+      if (!createData) return []
+
+      const manager = new this.$Manager('llm_instant_models')
+      const scope = this.$store.getters.scope
+      try {
+        const listRes = await manager.list({
+          params: {
+            scope,
+            llm_type: llmType,
+            model_name: createData.model_name,
+            limit: 20,
+          },
+        })
+        const items = listRes.data?.data || []
+        const wantTag = createData.model_tag || 'main'
+        const found = items.find((item) => {
+          const nameOk = !createData.model_name || item.model_name === createData.model_name
+          const tagOk = !createData.model_tag || (item.model_tag || 'main') === wantTag
+          const repoOk = !createData.repo_id || item.repo_id === createData.repo_id
+          return nameOk && tagOk && repoOk
+        })
+        if (found?.id) return [found.id]
+      } catch (e) {
+        // 列表失败时继续尝试创建
+      }
+
+      const res = await manager.create({ data: createData })
+      const id = res.data?.id
+      return id ? [id] : []
+    },
+    async buildCatalogSkuPayload () {
+      const values = await this.form.fc.validateFields()
+      const data = this._assembleSkuData(values)
+      const llmType = this.catalogLlmType
+
+      data.llm_model_spec_id = getCatalogSpecId(this.catalogSpec)
+      data.llm_type = llmType
+
+      // HF / model-sets 导入：目录模型字段 + 表单 customized_args 合并进 llm_spec
+      if (this.catalogSubmitType === 'import') {
+        const hfImport = buildHuggingfaceSkuImportParams(this.catalogSpec, llmType, {
+          catalogSet: this.catalogSet,
+        })
+        const formTypeSpec = data.llm_spec?.[llmType]
+        const catTypeSpec = hfImport.llm_spec?.[llmType]
+        const payload = { ...data, ...hfImport }
+        if (catTypeSpec || formTypeSpec) {
+          payload.llm_spec = {
+            [llmType]: {
+              ...catTypeSpec,
+              ...formTypeSpec,
+            },
+          }
+        }
+        return payload
+      }
+
+      const mountedModelIds = await this.resolveCatalogMountedModelIds()
+      const catalogModel = buildCatalogSkuModelParams(this.catalogSpec, llmType, mountedModelIds)
+      if (catalogModel.model_spec) data.model_spec = catalogModel.model_spec
+      if (catalogModel.mounted_models && catalogModel.mounted_models.length > 0) {
+        data.mounted_models = catalogModel.mounted_models
+      }
+
+      const catTypeSpec = catalogModel.llm_spec?.[llmType]
+      const formTypeSpec = data.llm_spec?.[llmType]
+      if (catTypeSpec || formTypeSpec) {
+        data.llm_spec = { [llmType]: { ...catTypeSpec, ...formTypeSpec } }
+      }
+
+      return data
+    },
+    async handleCatalogImport () {
+      this.loading = true
+      try {
+        const manager = new this.$Manager('llm_skus')
+        const data = await this.buildCatalogSkuPayload()
+        await manager.create({ data })
+        this.$message.success(this.$t('common.success'))
+        this.$emit('success')
+      } catch (error) {
+        throw error
+      } finally {
+        this.loading = false
+      }
+    },
     add () {
       this.portMappings.push({ key: uuid() })
     },
@@ -977,12 +1272,7 @@ export default {
         const manager = new this.$Manager('llm_skus')
         const values = await this.form.fc.validateFields()
         const {
-          project,
-          name,
-          llm_type,
-          phone_image,
           request_sync_image,
-          llm_image_id,
           dify_api_image_id,
           dify_plugin_image_id,
           dify_sandbox_image_id,
@@ -992,132 +1282,9 @@ export default {
           nginx_image_id,
           postgres_image_id,
           redis_image_id,
-          cpu,
-          memory,
-          volume_size,
-          bandwidth,
-          protocol,
-          container_port,
-          customized_arg_key,
-          customized_arg_value,
         } = values
-        const effectiveLlmType = this.isEditMode ? this.form.fd.llm_type : llm_type
-        const typeFields = this.currentTypeFields
-        const typeFieldKeys = typeFields.filter(f => f.fieldKey !== '__customized_args__').map(f => f.fieldKey)
-        const pickTypeValues = {}
-        typeFieldKeys.forEach(key => {
-          if (values[key] !== undefined) pickTypeValues[key] = values[key]
-        })
-
-        const volumes = [{
-          containers: this.mode === 'edit' && this.editData && this.editData.volumes && this.editData.volumes[0] ? this.editData.volumes[0].containers : {
-            1: { mount_path: '/etc/wolf', sub_directory: 'wolf' },
-            2: {
-              mount_path: '/home/retro',
-              sub_directory: 'home',
-              overlay: {
-                lower_dir: ['/opt/steam-data/steam', '/opt/steam-data/games'],
-                use_disk_image: false,
-              },
-            },
-          },
-          size_mb: (volume_size ?? 10) * 1024,
-        }]
-        const port_mappings = this.portMappings.map(item => {
-          return {
-            protocol: protocol[item.key],
-            container_port: container_port[item.key],
-          }
-        })
-        const host_paths = this.hostPathRows.map(hp => {
-          const hpKey = hp.key
-          const type = values[`host_path_type_${hpKey}`]
-          const path = values[`host_path_path_${hpKey}`]
-          const autoCreate = !!values[`host_path_auto_create_${hpKey}`]
-          const out = { type, path }
-          if (autoCreate) {
-            out.auto_create = true
-            const uid = values[`host_path_auto_uid_${hpKey}`]
-            const gid = values[`host_path_auto_gid_${hpKey}`]
-            const perm = values[`host_path_auto_perm_${hpKey}`]
-            const cfg = {}
-            if (uid !== undefined && uid !== null && uid !== '') cfg.uid = uid
-            if (gid !== undefined && gid !== null && gid !== '') cfg.gid = gid
-            if (perm != null && String(perm).trim() !== '') cfg.permissions = String(perm).trim()
-            if (Object.keys(cfg).length > 0) out.auto_create_config = cfg
-          }
-          const containers = {}
-          ;(hp.containerRows || []).forEach(c => {
-            const composite = `${hpKey}__${c.key}`
-            const idx = values[`host_path_container_index_${composite}`]
-            const mountPath = values[`host_path_mount_path_${composite}`]
-            if (idx == null || mountPath == null || String(mountPath).trim() === '') return
-            const k = String(idx).trim()
-            if (!k) return
-            const m = { mount_path: String(mountPath).trim(), read_only: !!values[`host_path_read_only_${composite}`] }
-            const prop = values[`host_path_propagation_${composite}`]
-            if (prop != null && String(prop).trim() !== '') m.propagation = String(prop).trim()
-            const fu = values[`host_path_fs_user_${composite}`]
-            const fg = values[`host_path_fs_group_${composite}`]
-            if (fu !== undefined && fu !== null && fu !== '') m.fs_user = fu
-            if (fg !== undefined && fg !== null && fg !== '') m.fs_group = fg
-            containers[k] = m
-          })
-          if (Object.keys(containers).length > 0) out.containers = containers
-          return out
-        }).filter(v => v && v.type && v.path)
-        const data = {
-          name,
-          llm_image_id,
-          image_id: phone_image,
-          cpu,
-          memory: (memory ?? 2) * 1024,
-          bandwidth: bandwidth ?? 100,
-          volumes,
-          disk_size: volumes[0].size_mb,
-          app_type: 'steam',
-        }
-        if (port_mappings.length > 0) {
-          data.port_mappings = port_mappings
-        }
-        if (host_paths.length > 0) {
-          data.host_paths = host_paths
-        }
-        if (!this.isEditMode) {
-          data.llm_type = effectiveLlmType
-          // 默认填入 llm_sku，空对象即可，如 openclaw => llm_sku: { openclaw: {} }
-          data.llm_sku = { [effectiveLlmType]: {} }
-        }
-        typeFieldKeys.forEach(key => {
-          const v = pickTypeValues[key]
-          if (v === undefined) return
-          if ((effectiveLlmType === 'vllm' || effectiveLlmType === 'sglang') && key === 'preferred_model') return
-          if (key === 'device') {
-            data.devices = v.map(k => ({ model: k }))
-          } else {
-            data[key] = v
-          }
-        })
-        if (effectiveLlmType === 'vllm' || effectiveLlmType === 'sglang') {
-          const typeSpec = {}
-          const pm = pickTypeValues.preferred_model
-          const preferredStr = pm != null ? String(pm).trim() : ''
-          if (preferredStr !== '') {
-            typeSpec.preferred_model = preferredStr
-          }
-          const customized_args = this.customizedArgsRows
-            .map((item) => ({
-              key: customized_arg_key?.[item.key] != null ? String(customized_arg_key[item.key]).trim() : '',
-              value: customized_arg_value?.[item.key] != null ? String(customized_arg_value[item.key]).trim() : '',
-            }))
-            .filter((row) => row.key !== '' || row.value !== '')
-          if (customized_args.length > 0) {
-            typeSpec.customized_args = customized_args
-          }
-          if (Object.keys(typeSpec).length > 0) {
-            data.llm_spec = { [effectiveLlmType]: typeSpec }
-          }
-        }
+        const data = this._assembleSkuData(values)
+        const effectiveLlmType = data.llm_type
         if (effectiveLlmType === 'openclaw') {
           const workspace_templates = {}
           const agents = (values.openclaw_agents_md || '').trim()
@@ -1153,8 +1320,6 @@ export default {
             managerArgs: { data },
           })
         } else {
-          data.generate_name = name
-          data.project_id = project?.key || this.userInfo.projectId
           await manager.create({ data })
         }
         this.$message.success(this.$t('common.success'))

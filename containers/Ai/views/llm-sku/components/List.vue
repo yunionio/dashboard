@@ -49,6 +49,33 @@ export default {
               validate: true,
             }
           },
+          hidden: () => {
+            return !this.isApplyType
+          },
+        },
+        {
+          label: this.$t('aice.import_model'),
+          actions: () => [
+            {
+              label: this.$t('aice.llm_deployment.deploy.from_catalog'),
+              action: () => {
+                this.$router.push({ path: '/llm-sku/import-from-model-sets' })
+              },
+            },
+            {
+              label: this.$t('aice.llm_deployment.deploy.from_huggingface'),
+              action: () => {
+                this.$router.push({ path: '/llm-sku/import-from-huggingface' })
+              },
+            },
+          ],
+          meta: () => ({
+            buttonType: 'primary',
+            validate: true,
+          }),
+          hidden: () => {
+            return this.isApplyType
+          },
         },
         {
           label: this.$t('table.action.delete'),

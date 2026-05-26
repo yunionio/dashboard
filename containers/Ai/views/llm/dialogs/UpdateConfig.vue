@@ -127,7 +127,7 @@
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { uuid } from '@/utils/utils'
-import { getParamsForType } from '../../llm-sku/llmTypeConfig'
+import { getParamsForType } from '../../llm-sku/constants/llmTypeConfig'
 
 export default {
   name: 'LlmUpdateConfigDialog',

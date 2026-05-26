@@ -26,7 +26,7 @@ import yaml from 'js-yaml'
 import marked from 'marked'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getDefaultPortMappingsForType, getDefaultSkuSpecForType } from '../../llm-sku/llmTypeConfig'
+import { getDefaultPortMappingsForType, getDefaultSkuSpecForType } from '../../llm-sku/constants/llmTypeConfig'
 
 const LLM_IMAGES_URL = 'https://www.cloudpods.org/llmimages.yaml'
 

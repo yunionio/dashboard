@@ -37,7 +37,7 @@
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { validateModelForm } from '@/utils/validate'
-import { LLM_TYPE_OPTIONS } from '../../llm-sku/llmTypeConfig'
+import { LLM_TYPE_OPTIONS } from '../../llm-sku/constants/llmTypeConfig'
 
 export default {
   name: 'DesktopImageCreateDialog',
