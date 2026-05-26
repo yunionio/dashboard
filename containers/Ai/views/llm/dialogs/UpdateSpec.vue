@@ -401,9 +401,9 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { OPENCLAW_CHANNEL_SECTIONS, OPENCLAW_CHANNEL_OPTIONS } from '../../llm-sku/openclawChannelConfig'
-import { OPENCLAW_PROVIDER_SECTIONS, OPENCLAW_PROVIDER_OPTIONS } from '../../llm-sku/openclawProviderConfig'
-import { getParamsForType } from '../../llm-sku/llmTypeConfig'
+import { OPENCLAW_CHANNEL_SECTIONS, OPENCLAW_CHANNEL_OPTIONS } from '../../llm-sku/constants/openclawChannelConfig'
+import { OPENCLAW_PROVIDER_SECTIONS, OPENCLAW_PROVIDER_OPTIONS } from '../../llm-sku/constants/openclawProviderConfig'
+import { getParamsForType } from '../../llm-sku/constants/llmTypeConfig'
 
 export default {
   name: 'LlmUpdateSpecDialog',

@@ -91,7 +91,8 @@ export default {
     const v = []
     let action
     if (this.popoverTrigger) {
-      action = <a-button style={ this.buttonStyle } block={ this.buttonBlock } size={ this.buttonSize } type={ this.meta.buttonType || this.buttonType } disabled={ this.disabled } onClick={ this.handlePopoverClick }>{ this.label }<icon class='ml-1' type='pull-down' /></a-button>
+      const btnType = this.meta.buttonType || this.buttonType
+      action = <a-button class={ btnType === 'primary' ? 'page-list-action-dropdown-btn' : '' } style={ this.buttonStyle } block={ this.buttonBlock } size={ this.buttonSize } type={ btnType } disabled={ this.disabled } onClick={ this.handlePopoverClick }>{ this.label }<icon class='ml-1 page-list-action-dropdown-icon' type='pull-down' /></a-button>
     } else {
       action = <a-button style={ this.buttonStyle } block={ this.buttonBlock } size={ this.buttonSize } type={ this.meta.buttonType || this.buttonType } disabled={ this.disabled } onClick={ this.handleClick }>{ this.label }</a-button>
     }
@@ -106,3 +107,11 @@ export default {
   },
 }
 </script>
+
+<style lang="less" scoped>
+.page-list-action-dropdown-btn {
+  .page-list-action-dropdown-icon {
+    color: inherit;
+  }
+}
+</style>

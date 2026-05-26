@@ -3,8 +3,8 @@
  * 供 LLM 实例详情、LLM 套餐详情复用，避免重复代码
  */
 
-import { OPENCLAW_CHANNEL_SECTIONS } from '../openclawChannelConfig'
-import { OPENCLAW_PROVIDER_OPTIONS } from '../openclawProviderConfig'
+import { OPENCLAW_CHANNEL_SECTIONS } from '../constants/openclawChannelConfig'
+import { OPENCLAW_PROVIDER_OPTIONS } from '../constants/openclawProviderConfig'
 
 const CHANNEL_KEY_TO_LABEL = {}
 OPENCLAW_CHANNEL_SECTIONS.forEach(s => {

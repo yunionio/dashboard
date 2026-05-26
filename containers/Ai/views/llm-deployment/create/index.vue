@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('aice.llm_deployment_create')" />
-    <page-body>
+    <page-body needMarginBottom>
       <a-alert
         v-if="catalogContext"
         type="info"
@@ -174,13 +174,14 @@
             :hiddenAdd="true"
             :isDialog="true" />
         </a-form-item>
-
-        <a-form-item :wrapper-col="{ span: 16, offset: 4 }">
-          <a-button type="primary" :loading="loading" @click="handleSubmit">{{ $t('common.create') }}</a-button>
-          <a-button class="ml-2" @click="$router.back()">{{ $t('dialog.cancel') }}</a-button>
-        </a-form-item>
       </a-form>
     </page-body>
+    <page-footer>
+      <template v-slot:right>
+        <a-button type="primary" :loading="loading" @click="handleSubmit">{{ $t('common.create') }}</a-button>
+        <a-button class="ml-2" @click="handleCancel">{{ $t('common.cancel') }}</a-button>
+      </template>
+    </page-footer>
   </div>
 </template>
 
@@ -191,7 +192,7 @@ import { uuid } from '@/utils/utils'
 import validateForm from '@/utils/validate'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
-import { getDefaultPortMappingsForType } from '@Ai/views/llm-sku/llmTypeConfig'
+import { getDefaultPortMappingsForType } from '@Ai/views/llm-sku/constants/llmTypeConfig'
 
 const getInitVal = (list, key, property) => {
   const target = list.find(item => item.key === key)
@@ -536,6 +537,9 @@ export default {
       }
       payload.sku_spec = skuSpec
       return payload
+    },
+    handleCancel () {
+      this.$router.back()
     },
     async handleSubmit () {
       try {

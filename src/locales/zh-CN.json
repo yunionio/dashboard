@@ -1379,6 +1379,14 @@
       "deleted": "已删除",
       "delete_fail": "删除失败",
       "delete_failed": "删除失败"
+    },
+    "llmSku": {
+      "unknown": "未知",
+      "ready": "就绪",
+      "available": "可用",
+      "create_failed": "创建失败",
+      "delete_failed": "删除失败",
+      "importing_model": "导入模型中"
     }
   },
   "skuCategoryOptions": {

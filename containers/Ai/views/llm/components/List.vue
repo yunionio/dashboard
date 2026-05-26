@@ -22,7 +22,7 @@ import {
   getCustomDistinctFieldFilter,
   getDistinctFieldFilter,
 } from '@/utils/common/tableFilter'
-import { LLM_TYPE_OPTIONS } from '../../llm-sku/llmTypeConfig'
+import { LLM_TYPE_OPTIONS } from '../../llm-sku/constants/llmTypeConfig'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 

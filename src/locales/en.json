@@ -1357,6 +1357,14 @@
       "deleted": "Deleted",
       "delete_fail": "Delete Failed",
       "delete_failed": "Delete Failed"
+    },
+    "llmSku": {
+      "unknown": "Unknown",
+      "ready": "Ready",
+      "available": "Available",
+      "create_failed": "Create Failed",
+      "delete_failed": "Delete Failed",
+      "importing_model": "Importing Model"
     }
   },
   "skuCategoryOptions": {

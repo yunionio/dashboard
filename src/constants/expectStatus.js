@@ -648,8 +648,13 @@ export default {
     success: ['running'],
     danger: ['create_fail', 'start_fail', 'stop_fail', 'save_model_failed', 'unbind_fail', 'bind_fail', 'restart_fail', 'delete_fail'],
   },
+  llmSku: {
+    success: ['ready', 'available'],
+    danger: ['create_failed', 'delete_failed'],
+    info: ['unknown'],
+  },
   llmDeployment: {
-    info: ['unknown', 'importing_model', 'creating_sku', 'deploying', 'partial', 'start_delete', 'deleting', 'deleted'],
+    info: ['unknown', 'partial', 'start_delete', 'deleted'],
     success: ['ready', 'running'],
     danger: ['create_fail', 'create_failed', 'import_model_failed', 'create_sku_failed', 'delete_fail', 'delete_failed'],
   },

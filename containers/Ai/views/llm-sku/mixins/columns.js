@@ -27,7 +27,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'sku' }),
+      getStatusTableColumn({ statusModule: 'llmSku' }),
       getCpuTableColumn(),
       getMemoryTableColumn(),
       getDiskTableColumn(),

@@ -13,6 +13,7 @@
   "aice.llm_image.import_community": "コミュニティモデルをインポート",
   "aice.llm_image.community_registry": "コミュニティレジストリ",
   "aice.llm_image.community_registry_fetch_failed": "コミュニティモデル一覧の取得に失敗しました",
+  "aice.llm_image.community_filter_model.placeholder": "モデルで絞り込み",
   "aice.llm_image.community_registry_platform": "プラットフォームインターフェースによって提供されます",
   "aice.llm_image.community_import_success": "{0}件をインポート、失敗{1}件",
   "aice.llm_image.import_community_image": "コミュニティイメージをインポート",
@@ -489,6 +490,7 @@
   "aice.llm_catalog": "モデルカタログ",
   "aice.llm_catalog.deploy": "今すぐデプロイ",
   "aice.llm_catalog.deploy_form": "デプロイ設定",
+  "aice.llm_catalog.import_config": "インポート設定",
   "aice.llm_catalog.specs": "仕様",
   "aice.llm_catalog.from": "カタログから：{0}",
   "aice.llm_catalog.from_spec_help": "選択した仕様からフィールドを自動入力しました。送信前に調整できます。",
@@ -521,5 +523,7 @@
   "aice.llm_catalog.release_date": "リリース日",
   "aice.llm_catalog.capabilities": "機能",
   "aice.llm_catalog.fetch_failed": "カタログ取得失敗",
-  "aice.llm_catalog.refresh_failed": "カタログ更新失敗"
+  "aice.llm_catalog.refresh_failed": "カタログ更新失敗",
+  "aice.llm_catalog.unsupported_backend": "この仕様のバックエンドはテンプレートインポートに対応していません（Ollama / vLLM / SGLang のみ）",
+  "aice.llm_catalog.import_template": "テンプレートをインポート"
 }

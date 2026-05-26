@@ -13,6 +13,7 @@
   "aice.llm_image.import_community": "Import Community Models",
   "aice.llm_image.community_registry": "Community Registry",
   "aice.llm_image.community_registry_fetch_failed": "Failed to fetch community model list",
+  "aice.llm_image.community_filter_model.placeholder": "Filter by model",
   "aice.llm_image.community_registry_platform": "Provided by platform interface",
   "aice.llm_image.community_import_success": "Imported {0}, failed {1}",
   "aice.llm_image.import_community_image": "Import Community Image",
@@ -489,6 +490,7 @@
   "aice.llm_catalog": "Model Catalog",
   "aice.llm_catalog.deploy": "Deploy Now",
   "aice.llm_catalog.deploy_form": "Deployment Settings",
+  "aice.llm_catalog.import_config": "Import Settings",
   "aice.llm_catalog.specs": "Specs",
   "aice.llm_catalog.from": "From catalog: {0}",
   "aice.llm_catalog.from_spec_help": "Fields pre-filled from the selected spec. You can adjust before submitting.",
@@ -521,5 +523,7 @@
   "aice.llm_catalog.release_date": "Release date",
   "aice.llm_catalog.capabilities": "Capabilities",
   "aice.llm_catalog.fetch_failed": "Failed to fetch catalog",
-  "aice.llm_catalog.refresh_failed": "Failed to refresh catalog"
+  "aice.llm_catalog.refresh_failed": "Failed to refresh catalog",
+  "aice.llm_catalog.unsupported_backend": "This spec backend is not supported for template import (Ollama / vLLM / SGLang only)",
+  "aice.llm_catalog.import_template": "Import template"
 }
