@@ -3,88 +3,97 @@
   点击卡片向父组件 emit('select', set)，由目录导入/部署页打开 drawer 填写规格与表单。
 -->
 <template>
-  <div>
-    <a-row :gutter="8" class="mb-3">
-      <a-col :span="10">
-        <a-input-search
-          v-model="filter.search"
-          :placeholder="$t('aice.llm_catalog.search.placeholder')"
-          allow-clear
-          @search="fetchList"
-          @change="onFilterChange" />
-      </a-col>
-      <a-col :span="10">
-        <a-select
-          v-model="filter.category"
-          :placeholder="$t('aice.llm_catalog.category.placeholder')"
-          allow-clear
-          style="width: 100%"
-          :dropdown-match-select-width="false"
-          @change="fetchList">
-          <a-select-option v-for="opt in categoryOptions" :key="opt.value" :value="opt.value">
-            {{ opt.label }}
-          </a-select-option>
-        </a-select>
-      </a-col>
-      <a-col :span="4" style="text-align: right;">
-        <a-button
-          shape="circle"
-          icon="reload"
-          :loading="refreshing"
-          :title="$t('common.refresh')"
-          @click="refresh" />
-      </a-col>
-    </a-row>
-
-    <a-spin :spinning="loading">
-      <a-empty v-if="!loading && sets.length === 0" />
-      <a-row v-else :gutter="[12, 12]">
-        <a-col v-for="set in sets" :key="set.name" :xs="24" :sm="12" :md="8" :lg="6">
-          <a-card hoverable class="catalog-card" @click="$emit('select', set)">
-            <div class="catalog-card-header">
-              <img v-if="getModelIcon(set.name)" :src="getModelIcon(set.name)" class="catalog-icon" alt="" />
-              <div v-else class="catalog-icon catalog-icon-name" :title="set.name">
-                {{ getModelIconLabel(set.name) }}
-              </div>
-              <div class="catalog-card-title">
-                <div class="catalog-name">{{ set.name }}</div>
-                <div class="catalog-subtitle">
-                  <span v-if="set.size">{{ formatSize(set) }}</span>
-                  <span v-if="(set.specs || []).length > 0">
-                    · {{ (set.specs || []).length }} {{ $t('aice.llm_catalog.specs') }}
-                  </span>
-                </div>
-                <div v-if="set.downloads || set.likes" class="catalog-popularity">
-                  <span v-if="set.downloads">⬇ {{ formatCount(set.downloads) }}</span>
-                  <span v-if="set.likes">♥ {{ formatCount(set.likes) }}</span>
-                </div>
-              </div>
-            </div>
-            <div class="catalog-desc">{{ shortDesc(set.description) }}</div>
-            <div class="catalog-tags">
-              <a-tag v-for="cat in set.categories" :key="`c-${cat}`" color="blue">{{ cat }}</a-tag>
-              <a-tag v-for="cap in (set.capabilities || []).slice(0, 3)" :key="`cap-${cap}`">{{ cap }}</a-tag>
-            </div>
-            <div v-if="(set.specs || []).length > 0" class="catalog-backends">
-              <a-tag v-for="b in uniqueBackends(set)" :key="`b-${b}`" color="purple">{{ b }}</a-tag>
-            </div>
-          </a-card>
+  <div ref="root" class="catalog-set-grid" :style="containerStyle">
+    <div class="catalog-set-grid__toolbar">
+      <a-row :gutter="8">
+        <a-col :span="10">
+          <a-input-search
+            v-model="filter.search"
+            :placeholder="$t('aice.llm_catalog.search.placeholder')"
+            allow-clear
+            @search="fetchList"
+            @change="onFilterChange" />
+        </a-col>
+        <a-col :span="10">
+          <a-select
+            v-model="filter.category"
+            :placeholder="$t('aice.llm_catalog.category.placeholder')"
+            allow-clear
+            style="width: 100%"
+            :dropdown-match-select-width="false"
+            @change="fetchList">
+            <a-select-option v-for="opt in categoryOptions" :key="opt.value" :value="opt.value">
+              {{ opt.label }}
+            </a-select-option>
+          </a-select>
+        </a-col>
+        <a-col :span="4" style="text-align: right;">
+          <a-button
+            shape="circle"
+            icon="reload"
+            :loading="refreshing"
+            :title="$t('common.refresh')"
+            @click="refresh" />
         </a-col>
       </a-row>
+    </div>
+
+    <a-spin :spinning="loading" class="catalog-set-grid__body">
+      <a-empty v-if="!loading && sets.length === 0" />
+      <div v-else ref="scroll" class="catalog-set-grid__scroll" :style="scrollStyle">
+        <a-row :gutter="[12, 12]">
+          <a-col v-for="set in sets" :key="set.name" :xs="24" :sm="12" :md="8" :lg="6">
+            <a-card hoverable class="catalog-card" @click="$emit('select', set)">
+              <div class="catalog-card-header">
+                <img v-if="getModelIcon(set.name)" :src="getModelIcon(set.name)" class="catalog-icon" alt="" />
+                <div v-else class="catalog-icon catalog-icon-name" :title="set.name">
+                  {{ getModelIconLabel(set.name) }}
+                </div>
+                <div class="catalog-card-title">
+                  <div class="catalog-name">{{ set.name }}</div>
+                  <div class="catalog-subtitle">
+                    <span v-if="set.size">{{ formatSize(set) }}</span>
+                    <span v-if="(set.specs || []).length > 0">
+                      · {{ (set.specs || []).length }} {{ $t('aice.llm_catalog.specs') }}
+                    </span>
+                  </div>
+                  <div v-if="set.downloads || set.likes" class="catalog-popularity">
+                    <span v-if="set.downloads">⬇ {{ formatCount(set.downloads) }}</span>
+                    <span v-if="set.likes">♥ {{ formatCount(set.likes) }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="catalog-desc">{{ shortDesc(set.description) }}</div>
+              <div class="catalog-tags">
+                <a-tag v-for="cat in set.categories" :key="`c-${cat}`" color="blue">{{ cat }}</a-tag>
+                <a-tag v-for="cap in (set.capabilities || []).slice(0, 3)" :key="`cap-${cap}`">{{ cap }}</a-tag>
+              </div>
+              <div v-if="(set.specs || []).length > 0" class="catalog-backends">
+                <a-tag v-for="b in uniqueBackends(set)" :key="`b-${b}`" color="purple">{{ b }}</a-tag>
+              </div>
+            </a-card>
+          </a-col>
+        </a-row>
+      </div>
     </a-spin>
 
-    <a-pagination
-      v-if="total > pageSize"
-      class="mt-3"
-      :total="total"
-      :current.sync="page"
-      :page-size="pageSize"
-      @change="onPageChange" />
+    <div ref="pager" class="catalog-set-grid__pager">
+      <a-pagination
+        v-if="total > pageSize"
+        :total="total"
+        :current.sync="page"
+        :page-size="pageSize"
+        @change="onPageChange" />
+    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapState } from 'vuex'
 import { getModelIcon, getModelIconLabel } from '@Ai/utils/index'
+
+const MIN_SCROLL_HEIGHT = 400
+const BOTTOM_MARGIN = 15
 
 /** 拉取 llm_model_sets 并以卡片网格展示，供导入/部署页选模型 */
 export default {
@@ -103,9 +112,15 @@ export default {
       },
       setsManager: new this.$Manager('llm_model_sets', 'v1'),
       filterDebounce: null,
+      containerHeight: MIN_SCROLL_HEIGHT,
+      heightTimers: [],
     }
   },
   computed: {
+    ...mapGetters(['isSidepageOpen']),
+    ...mapState('common', {
+      cloudShellHeight: state => (state.openCloudShell ? state.cloudShellHeight : 0),
+    }),
     categoryOptions () {
       return [
         { value: 'llm', label: this.$t('aice.llm_catalog.category.llm') },
@@ -116,13 +131,74 @@ export default {
         { value: 'text_to_speech', label: this.$t('aice.llm_catalog.category.tts') },
       ]
     },
+    containerStyle () {
+      if (this.isSidepageOpen) return { overflow: 'hidden' }
+      return {
+        height: `${this.containerHeight}px`,
+        overflow: 'hidden',
+      }
+    },
+    scrollStyle () {
+      return {
+        height: '100%',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+      }
+    },
+  },
+  watch: {
+    loading () {
+      this.scheduleInitHeight()
+    },
+    sets () {
+      this.scheduleInitHeight()
+    },
+    total () {
+      this.scheduleInitHeight()
+    },
+    cloudShellHeight () {
+      this.initHeight()
+    },
   },
   created () {
     this.fetchList()
   },
+  mounted () {
+    this.$bus.$on('GlobalTopAlertUpdate', this.onGlobalTopAlertUpdate)
+    this.scheduleInitHeight()
+    window.addEventListener('resize', this.initHeight)
+  },
+  beforeDestroy () {
+    this.$bus.$off('GlobalTopAlertUpdate', this.onGlobalTopAlertUpdate)
+    window.removeEventListener('resize', this.initHeight)
+    this.heightTimers.forEach(clearTimeout)
+    if (this.filterDebounce) clearTimeout(this.filterDebounce)
+  },
   methods: {
     getModelIcon,
     getModelIconLabel,
+    onGlobalTopAlertUpdate () {
+      this.scheduleInitHeight()
+    },
+    scheduleInitHeight () {
+      this.$nextTick(() => {
+        this.initHeight()
+        this.heightTimers.forEach(clearTimeout)
+        this.heightTimers = [100, 500].map(delay => setTimeout(() => this.initHeight(), delay))
+      })
+    },
+    initHeight () {
+      const root = this.$refs.root
+      if (!root) return
+      if (this.isSidepageOpen) {
+        this.containerHeight = MIN_SCROLL_HEIGHT
+        return
+      }
+      const rootTop = root.getBoundingClientRect().y
+      const wH = document.body.offsetHeight
+      const calculatedHeight = wH - rootTop - BOTTOM_MARGIN - this.cloudShellHeight
+      this.containerHeight = calculatedHeight > MIN_SCROLL_HEIGHT ? calculatedHeight : MIN_SCROLL_HEIGHT
+    },
     onFilterChange () {
       if (this.filterDebounce) clearTimeout(this.filterDebounce)
       this.filterDebounce = setTimeout(() => this.fetchList(), 300)
@@ -188,6 +264,40 @@ export default {
 </script>
 
 <style scoped>
+.catalog-set-grid {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.catalog-set-grid__toolbar {
+  flex-shrink: 0;
+  margin-bottom: 12px;
+}
+.catalog-set-grid__body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.catalog-set-grid__body ::v-deep .ant-spin-container {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.catalog-set-grid__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+}
+.catalog-set-grid__pager {
+  flex-shrink: 0;
+  padding-top: 12px;
+  text-align: left;
+}
 .catalog-popularity {
   display: flex;
   gap: 10px;
