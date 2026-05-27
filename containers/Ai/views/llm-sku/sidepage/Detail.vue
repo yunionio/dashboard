@@ -4,7 +4,7 @@
     :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo"
-    status-module="sku"
+    status-module="llmSku"
     resource="llm_skus" />
 </template>
 

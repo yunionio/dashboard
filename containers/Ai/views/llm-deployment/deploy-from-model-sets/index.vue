@@ -5,7 +5,7 @@
 <template>
   <div>
     <page-header :title="headerTitle" />
-    <page-body needMarginBottom>
+    <page-body class="catalog-grid-page-body">
       <catalog-set-grid @select="onSetSelect" />
     </page-body>
 
@@ -197,6 +197,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.catalog-grid-page-body {
+  overflow: hidden;
+}
 .spec-list { display: block; }
 .spec-row {
   display: flex;

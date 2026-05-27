@@ -13,7 +13,7 @@ export const filterOptions = {
     label: i18n.t('table.title.id'),
   },
   name: getNameFilter(),
-  status: getStatusFilter('sku'),
+  status: getStatusFilter('llmSku'),
   llm_type: {
     label: i18n.t('aice.llm_type'),
     dropdown: true,
