@@ -9,17 +9,18 @@
       :show-single-actions="false"
       :hide-rowselect="true"
       :hidden-list-config="true">
-      <llm-sku-grid
-        slot="table-prepend"
-        :items="listItems"
-        :loading="list.loading"
-        :is-apply-type="isApplyType"
-        :selected="list.selected"
-        :single-actions="singleActions"
-        :on-manager="onManager"
-        :vm="listVm"
-        @open-sidepage="handleOpenSidepage"
-        @toggle-select="toggleSelect" />
+      <template slot="table-prepend">
+        <llm-sku-grid
+          :items="listItems"
+          :loading="list.loading"
+          :is-apply-type="isApplyType"
+          :selected="list.selected"
+          :single-actions="singleActions"
+          :on-manager="onManager"
+          :vm="listVm"
+          @open-sidepage="handleOpenSidepage"
+          @toggle-select="toggleSelect" />
+      </template>
     </page-list>
   </div>
 </template>
@@ -246,28 +247,22 @@ export default {
 .llm-sku-card-list {
   display: flex;
   flex-direction: column;
+  min-height: 400px;
   overflow-x: hidden;
 }
 
+/* page-list 根节点同时带有 llm-sku-list--card */
 .llm-sku-list--card {
   height: 100%;
+  min-height: 400px;
   display: flex;
   flex-direction: column;
-  min-height: 0;
-  overflow-x: hidden;
-}
-
-.llm-sku-list--card > ::v-deep > div {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
   overflow-x: hidden;
 }
 
 .llm-sku-list--card ::v-deep .llm-sku-grid {
-  flex: 1;
-  min-height: 0;
+  flex: 1 1 auto;
+  min-height: 200px;
   overflow: hidden;
 }
 

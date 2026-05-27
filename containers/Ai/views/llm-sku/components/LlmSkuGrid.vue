@@ -110,10 +110,13 @@ import expectStatus from '@/constants/expectStatus'
 import { LLM_TYPE_OPTIONS } from '../constants/llmTypeConfig'
 import Actions from '@/components/PageList/Actions'
 
+import Status from '@/components/Status'
+
 export default {
   name: 'LlmSkuGrid',
   components: {
     Actions,
+    Status,
   },
   props: {
     items: {
