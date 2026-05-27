@@ -26,9 +26,14 @@ const MODEL_ICON_RULES = [
   { test: /\bbge\b|bge-/i, icon: resolveAssetUrl(require('@/assets/images/llm-images/bge.svg')) },
   { test: /jina/i, icon: resolveAssetUrl(require('@/assets/images/llm-images/jina.svg')) },
   { test: /kimi|moonshot/i, icon: resolveAssetUrl(require('@/assets/images/llm-images/kimi.svg')) },
+  { test: /tencent\/hy|tencent\/hunyuan|hunyuan|混元/i, icon: resolveAssetUrl(require('@/assets/images/llm-images/hy.svg')) },
   { test: /minimax/i, icon: resolveAssetUrl(require('@/assets/images/llm-images/minimax.svg')) },
   { test: /\bstep/i, icon: resolveAssetUrl(require('@/assets/images/llm-images/step.svg')) },
   { test: /paddle|ocr-vl/i, icon: resolveAssetUrl(require('@/assets/images/llm-images/paddle.svg')) },
+  { test: /openclaw|open-claw/i, icon: resolveAssetUrl(require('@/assets/images/llm-images/openclaw.svg')) },
+  { test: /dify/i, icon: resolveAssetUrl(require('@/assets/images/llm-images/dify.svg')) },
+  { test: /comfyui|comfy-ui/i, icon: resolveAssetUrl(require('@/assets/images/llm-images/comfyui.svg')) },
+  { test: /hermes/i, icon: resolveAssetUrl(require('@/assets/images/llm-images/hermes-agent.svg')) },
 ]
 
 /**
