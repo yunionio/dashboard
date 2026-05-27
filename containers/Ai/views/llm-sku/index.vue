@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('aice.llm_sku')" />
-    <page-body>
+    <page-body class="llm-sku-list-page-body">
       <list :id="listId" />
     </page-body>
   </div>
@@ -22,3 +22,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.llm-sku-list-page-body {
+  overflow-x: hidden;
+}
+</style>

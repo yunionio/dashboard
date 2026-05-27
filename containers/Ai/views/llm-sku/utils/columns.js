@@ -109,7 +109,7 @@ export const getMemoryTableColumn = () => {
 
 export const getDiskTableColumn = () => {
   return {
-    field: 'disk',
+    field: 'volumes',
     title: i18n.t('aice.disk'),
     width: 120,
     formatter: ({ row }) => {
