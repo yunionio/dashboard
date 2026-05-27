@@ -72,6 +72,7 @@
       :exportUseIdKey="exportUseIdKey"
       :hiddenExportKeys="hiddenExportKeys"
       :hiddenPin="hiddenPin"
+      :hidden-list-config="hiddenListConfig"
       :data="finalData"
       :pagerType="pagerType"
       @refresh="refresh"
@@ -357,6 +358,10 @@ export default {
       },
     },
     hiddenPin: {
+      type: Boolean,
+      default: false,
+    },
+    hiddenListConfig: {
       type: Boolean,
       default: false,
     },
