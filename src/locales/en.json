@@ -6542,5 +6542,13 @@
   "common.disk_write_rate_value": "Write Rate: {0}",
   "common.net_iops": "Network Rate",
   "common.net_in_rate_value": "In Rate: {0}",
-  "common.net_out_rate_value": "Out Rate: {0}"
+  "common.net_out_rate_value": "Out Rate: {0}",
+  "regionMap.selection_region_count": "The current selection contains {0} item(s)",
+  "regionMap.no_data_tip": "No data. Please select an area on the map",
+  "regionMap.enable_world_map": "Map region selection",
+  "regionMap.set_selection_diameter": "Set selection diameter",
+  "regionMap.diameter": "Diameter",
+  "regionMap.unit_km": "km",
+  "regionMap.selection_diameter": "Selection diameter {0} km",
+  "regionMap.locate_current": "Locate current position"
 }

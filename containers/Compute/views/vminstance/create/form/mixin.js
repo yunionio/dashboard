@@ -140,6 +140,8 @@ export default {
       custom_data: [],
       dataDiskInterval: null,
       tagDefaultChecked: {},
+      showWorldMap: false,
+      nearbyRegionIds: [],
     }
   },
   provide () {
@@ -304,9 +306,14 @@ export default {
       if (this.type === 'public') { // 公有云
         if (R.is(Object, this.form.fd.sku)) {
           const cloudregion = this.form.fd.sku.cloudregion_id // 取 sku
-          const zone = this.form.fd.zone // 取 areaSelect 组件
           if (cloudregion) params.cloudregion = cloudregion
-          if (zone) params.zone = zone
+          if (this.showWorldMap) {
+            const zone = this.form.fd.sku?.zone_id // 取 sku
+            if (zone) params.zone = zone
+          } else {
+            const zone = this.form.fd.zone // 取 areaSelect 组件
+            if (zone) params.zone = zone
+          }
         }
       } else { // 私有云和IDC取 CloudregionZone 组件
         const cloudregion = _.get(this.form.fd, 'cloudregion.key')
@@ -642,12 +649,44 @@ export default {
         }, fiItems)
       }
     },
+    onWorldMapModeChange (checked) {
+      if (this.type !== 'public') return
+      this.nearbyRegionIds = []
+      this.form.fc.setFieldsValue({
+        sku: undefined,
+        cloudprovider: undefined,
+      })
+      if (!checked && this.fetchInstanceSpecs) {
+        this.$nextTick(() => {
+          this.fetchInstanceSpecs()
+          if (this.$refs.areaSelectRef) {
+            this.$refs.areaSelectRef.fetchs(['provider', 'cloudregion', 'zone'])
+          }
+        })
+      }
+    },
+    onRegionSelect (payload) {
+      if (this.type !== 'public') return
+      this.nearbyRegionIds = (payload?.nearbyRegions || []).map(item => item.id).filter(Boolean)
+      this.form.fc.setFieldsValue({
+        sku: undefined,
+        cloudprovider: undefined,
+      })
+    },
+    onWorldMapSkuChange (sku) {
+      if (this.type !== 'public') return
+      if (sku?.id && this.form.fd.sku?.id === sku.id) return
+      this.form.fc.setFieldsValue({
+        cloudprovider: undefined,
+      })
+    },
     submit (e) {
       e.preventDefault()
       this.validateForm()
         .then(async formData => {
           this.submiting = true
-          const genCreteData = new GenCreateData(formData, this.form.fi)
+          const formFi = this.type === 'public' ? { ...this.form.fi, showWorldMap: this.showWorldMap } : this.form.fi
+          const genCreteData = new GenCreateData(formData, formFi)
           const data = genCreteData.all()
           if (data.custom_data_type) {
             delete data.custom_data_type
@@ -992,7 +1031,8 @@ export default {
       this.validateForm()
         .then(async formData => {
           this.submiting = true
-          const genCreateData = new GenCreateData(formData, this.form.fi)
+          const formFi = this.type === 'public' ? { ...this.form.fi, showWorldMap: this.showWorldMap } : this.form.fi
+          const genCreateData = new GenCreateData(formData, formFi)
           const data = genCreateData.all()
           if (this.form.fd.bastion_host_enable) {
             const bastionServer = this.getBationServerData()

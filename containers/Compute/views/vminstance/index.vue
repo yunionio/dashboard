@@ -46,5 +46,11 @@ export default {
       return getCloudEnvOptions('compute_engine_brands')
     },
   },
+  activated () {
+    const regionMap = this.$refs.regionMap
+    if (regionMap) {
+      regionMap.fetchRegions()
+    }
+  },
 }
 </script>

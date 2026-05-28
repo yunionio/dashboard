@@ -6574,5 +6574,13 @@
   "common.disk_write_rate_value": "写速率：{0}",
   "common.net_iops": "网络流量速率",
   "common.net_in_rate_value": "入流量：{0}",
-  "common.net_out_rate_value": "出流量：{0}"
+  "common.net_out_rate_value": "出流量：{0}",
+  "regionMap.selection_region_count": "当前选区内共包含 {0} 条数据",
+  "regionMap.no_data_tip": "暂无数据，请在地图中选择区域",
+  "regionMap.enable_world_map": "地图选区模式",
+  "regionMap.set_selection_diameter": "设置选区直径",
+  "regionMap.diameter": "直径",
+  "regionMap.unit_km": "km",
+  "regionMap.selection_diameter": "选区直径 {0} km",
+  "regionMap.locate_current": "定位到当前位置"
 }
