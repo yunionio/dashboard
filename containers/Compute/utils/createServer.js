@@ -1541,8 +1541,15 @@ export class GenCreateData {
   getHypervisor () {
     let ret = this.fd.hypervisor
     if (this.isPublic && !this.isPrepaid) {
-      const provider = this.fd.sku.provider
-      if (provider) ret = provider.toLowerCase()
+      if (this.fi.showWorldMap) {
+        const provider = this.fd.sku?.provider
+        if (provider) ret = provider.toLowerCase()
+      } else if (this.fd.provider) {
+        ret = this.fd.provider.toLowerCase()
+      } else {
+        const provider = this.fd.sku?.provider
+        if (provider) ret = provider.toLowerCase()
+      }
     }
     return ret
   }
@@ -1565,6 +1572,9 @@ export class GenCreateData {
    * @memberof GenCreateData
    */
   getPreferRegion () {
+    if (this.isPublic && this.fi.showWorldMap) {
+      return this.fd.sku?.cloudregion_id
+    }
     if (this.isPublic && !this.isPrepaid) {
       return this.fd.sku.cloudregion_id
     }
@@ -1579,6 +1589,9 @@ export class GenCreateData {
    */
   getPreferZone () {
     let ret = ''
+    if (this.isPublic && this.fi.showWorldMap) {
+      return this.fd.sku?.zone_id
+    }
     if (R.is(Object, this.fd.zone)) {
       ret = this.fd.zone.key
     }
@@ -1596,6 +1609,9 @@ export class GenCreateData {
    */
   getCpuCount () {
     let ret = this.fd.vcpu
+    if (this.isPublic && this.fi.showWorldMap) {
+      return this.fd.sku?.cpu_core_count
+    }
     if (this.isPublic && this.isPrepaid) {
       ret = this.fd.spec.vcpu_count
     }
@@ -1618,6 +1634,9 @@ export class GenCreateData {
    */
   getMemSize () {
     let ret = this.fd.vmem
+    if (this.isPublic && this.fi.showWorldMap) {
+      return this.fd.sku?.memory_size_mb
+    }
     if (this.isPublic && this.isPrepaid) {
       ret = this.fd.spec.vmem_size * 1024
     }
@@ -1665,7 +1684,7 @@ export class GenCreateData {
       },
     }
     // 非预付费资源池不会添加sku
-    if (!this.isPrepaid) {
+    if (!this.isPrepaid && this.fd.sku?.name) {
       data.sku = this.fd.sku.name
     }
     // 弹性IP

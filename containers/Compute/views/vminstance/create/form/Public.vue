@@ -45,47 +45,78 @@
       <a-form-item :label="$t('compute.text_294')" v-show="!isServertemplate">
         <a-input-number v-decorator="decorators.count" @blur="countBlur" :min="1" :max="100" />
       </a-form-item>
-      <area-selects
-        class="mb-0"
-        v-if="showAreaSelect"
-        :wrapperCol="formItemLayout.wrapperCol"
-        :labelCol="formItemLayout.labelCol"
-        ref="areaSelectRef"
-        :providerParams="providerParams"
-        :cloudregionParams="cloudregionParams"
-        :zoneParams="zoneParams"
-        :defaultActiveFirstOption="isInitForm ? false : ['provider', 'cloudregion']"
-        filterBrandResource="compute_engine"
-        @providerFetchSuccess="providerFetchSuccess" />
-      <!-- <a-form-item class="mb-0" :label="$t('compute.text_1159')">
-        <resource :decorator="decorators.resourceType" />
-      </a-form-item> -->
-      <a-form-item :label="$t('compute.text_15')">
-        <base-select
-          resource="cloudproviders"
-          v-decorator="decorators.cloudprovider"
-          :params="policycloudproviderParams"
-          :isDefaultSelect="true"
-          :showSync="true"
-          :select-props="{ placeholder: $t('compute.text_149') }"
-          @update:item="cloudproviderSelected" />
+      <a-form-item :label="$t('regionMap.enable_world_map')">
+        <a-switch v-model="showWorldMap" @change="onWorldMapModeChange" />
       </a-form-item>
-      <a-form-item :label="$t('compute.text_1058')" class="mb-0">
-        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :showUnlimited="true" @change="cpuChange" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_369')" class="mb-0">
-        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :showUnlimited="true" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_109')">
-        <sku
-          v-decorator="decorators.sku"
-          :priceUnit="skuPriceUnit"
-          :type="type"
-          :sku-params="skuParam"
-          :hypervisor="hypervisor"
-          :hasMeterService="hasMeterService"
-          :init-sku-data="initSkuData" />
-      </a-form-item>
+      <!-- 地图模式 -->
+      <template v-if="showWorldMap">
+        <a-form-item :label="$t('compute.text_177')">
+          <region-map :regionFilterParams="cloudregionParams" split-key="provider" @select="onRegionSelect" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_109')">
+          <div v-if="!nearbyRegionIds.length" class="world-map-sku-empty">{{ $t('regionMap.no_data_tip') }}</div>
+          <sku
+            v-else
+            v-decorator="decorators.sku"
+            :priceUnit="skuPriceUnit"
+            :type="type"
+            :sku-params="worldMapSkuParam"
+            :hypervisor="hypervisor"
+            :hasMeterService="hasMeterService"
+            :init-sku-data="initSkuData"
+            @change="onWorldMapSkuChange" />
+        </a-form-item>
+        <a-form-item v-if="form.fd.sku && form.fd.sku.id" :label="$t('compute.text_15')">
+          <base-select
+            resource="cloudproviders"
+            v-decorator="decorators.cloudprovider"
+            :params="policycloudproviderParams"
+            :isDefaultSelect="true"
+            :showSync="true"
+            :select-props="{ placeholder: $t('compute.text_1387') }"
+            @update:item="cloudproviderSelected" />
+        </a-form-item>
+      </template>
+      <template v-else>
+        <area-selects
+          class="mb-0"
+          v-if="showAreaSelect"
+          :wrapperCol="formItemLayout.wrapperCol"
+          :labelCol="formItemLayout.labelCol"
+          ref="areaSelectRef"
+          :providerParams="providerParams"
+          :cloudregionParams="cloudregionParams"
+          :zoneParams="zoneParams"
+          :defaultActiveFirstOption="isInitForm ? false : ['provider', 'cloudregion']"
+          filterBrandResource="compute_engine"
+          @providerFetchSuccess="providerFetchSuccess" />
+        <a-form-item :label="$t('compute.text_15')">
+          <base-select
+            resource="cloudproviders"
+            v-decorator="decorators.cloudprovider"
+            :params="policycloudproviderParams"
+            :isDefaultSelect="true"
+            :showSync="true"
+            :select-props="{ placeholder: $t('compute.text_149') }"
+            @update:item="cloudproviderSelected" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_1058')" class="mb-0">
+          <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :showUnlimited="true" @change="cpuChange" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_369')" class="mb-0">
+          <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :showUnlimited="true" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_109')">
+          <sku
+            v-decorator="decorators.sku"
+            :priceUnit="skuPriceUnit"
+            :type="type"
+            :sku-params="skuParam"
+            :hypervisor="hypervisor"
+            :hasMeterService="hasMeterService"
+            :init-sku-data="initSkuData" />
+        </a-form-item>
+      </template>
       <a-form-item :label="$t('compute.text_267')" :extra="$t('compute.text_302')">
         <os-select
           :type="type"
@@ -226,11 +257,19 @@ import Bill from '@Compute/sections/Bill'
 import { LOGIN_TYPES_MAP, BILL_TYPES_MAP } from '@Compute/constants'
 import EipConfig from '@Compute/sections/EipConfig'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
+import RegionMap from '@Compute/sections/RegionMap'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
 import AreaSelects from '@/sections/AreaSelects'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
+
+const DEFAULT_WORLD_MAP_SKU_FILTER_PARAMS = {
+  public_cloud: true,
+  limit: 0,
+  usable: true,
+  enabled: true,
+}
 
 export default {
   name: 'VMPublicCreate',
@@ -239,15 +278,16 @@ export default {
     AreaSelects,
     EipConfig,
     SecgroupConfig,
+    RegionMap,
   },
   mixins: [mixin],
   data () {
     return {
       cloudaccountId: '',
+      worldMapSkuFilterParams: { ...DEFAULT_WORLD_MAP_SKU_FILTER_PARAMS },
     }
   },
   computed: {
-    // 是否为包年包月
     isPackage () {
       return this.form.fd.billType === BILL_TYPES_MAP.package.key
     },
@@ -354,6 +394,22 @@ export default {
         unit: this.$t('compute.text_172'),
       }
     },
+    worldMapSkuParam () {
+      const ret = {
+        scope: this.$store.getters.scope,
+        show_fail_reason: true,
+        details: true,
+        with_meta: true,
+        'filter.0': 'disk_type.notin(volume)',
+        cloud_env: 'public',
+        summary_stats: true,
+        ...this.worldMapSkuFilterParams,
+      }
+      if (this.nearbyRegionIds.length) {
+        ret.region = this.nearbyRegionIds
+      }
+      return ret
+    },
     skuParam () {
       const params = {
         public_cloud: true,
@@ -362,7 +418,6 @@ export default {
         memory_size_mb: this.form.fd.vmem,
         usable: true,
         enabled: true,
-        // manager: this.form.fd.cloudprovider,
         ...this.scopeParams,
       }
       if (this.form.fd.cloudregion) params.cloudregion = this.form.fd.cloudregion
@@ -375,8 +430,8 @@ export default {
         if (providerList && providerList.length) {
           const providers = providerList.map(item => item.name)
           params.filter = `provider.in(${providers.join(',')})`
-        } else { // 公有云条件下没有 provider 不用请求接口
-          return {} // sku 组件没有参数不会请求数据
+        } else {
+          return {}
         }
       }
       if (this.form.fd.billType === 'quantity') {
@@ -481,10 +536,13 @@ export default {
       const params = {
         ...this.scopeParams,
       }
-      const { cloudregion } = this.form.fd
-      if (this.form.fd.sku && this.form.fd.sku.provider) {
-        params.provider = this.form.fd.sku.provider
+      const sku = this.form.fd.sku
+      if (sku?.provider) {
+        params.provider = sku.provider
       }
+      const cloudregion = this.showWorldMap
+        ? (sku?.region_id || sku?.cloudregion_id)
+        : this.form.fd.cloudregion
       if (cloudregion) params.cloudregion = cloudregion
       return params
     },
@@ -492,42 +550,50 @@ export default {
       return !!this.form.fd.prefer_manager
     },
     policycloudproviderParams () {
+      const sku = R.is(Object, this.form.fd.sku) ? this.form.fd.sku : null
+      const cloudregion = this.showWorldMap
+        ? (sku?.region_id || sku?.cloudregion_id)
+        : (this.form.fd.cloudregion || sku?.region_id || sku?.cloudregion_id)
+      if (!cloudregion) return {}
       const params = {
         limit: 0,
-        brand: this.form.fd.provider,
-        cloudregion: this.form.fd.cloudregion,
+        brand: this.showWorldMap ? sku?.provider : (this.form.fd.provider || sku?.provider),
+        cloudregion,
         enabled: true,
         read_only: false,
         filter: 'status.equals(\'connected\')',
         ...this.scopeParams,
       }
-      if (this.form.fd.zone) {
-        params.zone = this.form.fd.zone
+      const zone = this.showWorldMap ? sku?.zone_id : (this.form.fd.zone || sku?.zone_id)
+      if (zone) {
+        params.zone = zone
       }
       return params
     },
   },
   watch: {
     'form.fd.billType' (val) {
-      // 计费方式为包年包月平台不含 azure、aws，这里统一做清空处理
       if (val === BILL_TYPES_MAP.package.key) {
         this.form.fc.setFieldsValue({
-          provider: undefined,
-          cloudregion: undefined,
-          zone: undefined,
+          sku: undefined,
+          cloudprovider: undefined,
         })
       }
-      this.$refs.areaSelectRef.fetchs(['provider'])
+      this.updateWorldMapSkuFilterParams()
+      if (this.$refs.areaSelectRef) {
+        this.$refs.areaSelectRef.fetchs(['provider'])
+      }
     },
     'form.fd.duration' (val, oldVal) {
       if (this.form.fd.billType === BILL_TYPES_MAP.package.key) {
         if (val === '1W' || oldVal === '1W') {
           this.form.fc.setFieldsValue({
-            provider: undefined,
-            cloudregion: undefined,
-            zone: undefined,
+            sku: undefined,
+            cloudprovider: undefined,
           })
-          this.$refs.areaSelectRef.fetchs(['provider', 'cloudregion', 'zone'])
+          if (this.$refs.areaSelectRef) {
+            this.$refs.areaSelectRef.fetchs(['provider', 'cloudregion', 'zone'])
+          }
         }
       }
     },
@@ -535,26 +601,46 @@ export default {
   created () {
     this.baywatch(['form.fd.provider', 'form.fd.cloudregion', 'form.fd.zone'], this.fetchInstanceSpecs)
     this.baywatch(['form.fd.sku', 'form.fd.zone'], this.withFetchCapbilites)
+    this.updateWorldMapSkuFilterParams()
   },
   methods: {
-    providerFetchSuccess (list) {
-      // 计费方式为包年包月平台不含 azure、aws、google
+    updateWorldMapSkuFilterParams () {
+      const params = {
+        ...DEFAULT_WORLD_MAP_SKU_FILTER_PARAMS,
+        ...this.scopeParams,
+      }
+      if (this.form.fd.billType === 'quantity') {
+        params.postpaid_status = 'available'
+      } else if (this.form.fd.billType === 'package') {
+        params.prepaid_status = 'available'
+      }
+      this.worldMapSkuFilterParams = params
+    },
+    filterProviderList (list = []) {
+      let ret = [...list]
       if (this.form.fd.billType === BILL_TYPES_MAP.package.key) {
         if (this.form.fd.duration === '1W') {
-          list = list.filter(item => HYPERVISORS_MAP.aliyun.key === item.name.toLowerCase())
-          this.form.fc.setFieldsValue({
-            provider: HYPERVISORS_MAP.aliyun.provider,
-          })
+          ret = ret.filter(item => HYPERVISORS_MAP.aliyun.key === item.name.toLowerCase())
         } else {
-          list = list.filter(item => {
+          ret = ret.filter(item => {
             return ![HYPERVISORS_MAP.azure.key, HYPERVISORS_MAP.aws.key, HYPERVISORS_MAP.google.key].includes(item.name.toLowerCase())
           })
         }
       }
-      // 过滤京东云和移动云等只读的云
-      list = list.filter(item => {
+      return ret.filter(item => {
         return ![HYPERVISORS_MAP.jdcloud.key, HYPERVISORS_MAP.ecloud.key].includes(item.name.toLowerCase())
       })
+    },
+    providerFetchSuccess (list) {
+      list = this.filterProviderList(list)
+      // 计费方式为包年包月平台不含 azure、aws，这里统一做清空处理
+      if (this.form.fd.billType === BILL_TYPES_MAP.package.key) {
+        if (this.form.fd.duration === '1W') {
+          this.form.fc.setFieldsValue({
+            provider: HYPERVISORS_MAP.aliyun.provider,
+          })
+        }
+      }
       // 回填
       if (this.isInitForm && this.initFormData.hypervisor && list.some(item => item.name.toLowerCase() === this.initFormData.hypervisor)) {
         if (HYPERVISORS_MAP[this.initFormData.hypervisor]) {
@@ -600,6 +686,7 @@ export default {
       }
     },
     async fetchInstanceSpecs () {
+      if (this.showWorldMap) return
       try {
         const { data } = await this.serverskusM.get({ id: 'instance-specs', params: this.instanceSpecParams })
         this.form.fi.cpuMem = data
@@ -646,3 +733,11 @@ export default {
   },
 }
 </script>
+
+<style lang="less" scoped>
+.world-map-sku-empty {
+  padding: 24px 0;
+  color: rgba(0, 0, 0, 0.45);
+  text-align: center;
+}
+</style>

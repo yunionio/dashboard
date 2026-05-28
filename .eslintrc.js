@@ -1,5 +1,9 @@
 module.exports = {
   root: true,
+  ignorePatterns: [
+    'src/vendor/tiny-world-all-10000.js',
+    'src/vendor/tiny-world-map.js',
+  ],
   env: {
     node: true,
   },
