@@ -671,6 +671,8 @@ export default {
 <style lang="less" scoped>
 .mapbox-world-map {
   position: relative;
+  z-index: 0;
+  isolation: isolate;
   width: 100%;
   overflow: hidden;
   border-radius: 4px;
@@ -684,7 +686,7 @@ export default {
 
   &__diameter-panel {
     position: absolute;
-    z-index: 1002;
+    z-index: 10;
     min-width: 200px;
     padding: 10px 12px;
     background: #fff;
@@ -730,6 +732,10 @@ export default {
 
 <style lang="less">
 .mapbox-world-map {
+  .leaflet-container {
+    z-index: 0;
+  }
+
   .leaflet-control-attribution,
   .leaflet-bottom.leaflet-right .leaflet-control-attribution {
     display: none !important;
