@@ -11,6 +11,17 @@
           class="catalog-card"
           :class="{ 'catalog-card--selected': isSelected(item) }">
           <div class="catalog-card-header">
+            <img
+              v-if="getCardIcon(item)"
+              :src="getCardIcon(item)"
+              class="catalog-icon"
+              alt="" />
+            <div
+              v-else
+              class="catalog-icon catalog-icon-name"
+              :title="getCardIconKey(item)">
+              {{ getCardIconLabel(item) }}
+            </div>
             <div class="catalog-card-title">
               <div class="catalog-card-name" @click.stop>
                 <list-body-cell-wrap
@@ -107,13 +118,18 @@
 import * as R from 'ramda'
 import { sizestr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
+import { getModelIcon, getModelIconLabel } from '@Ai/utils/index'
 import { LLM_TYPE_OPTIONS } from '../constants/llmTypeConfig'
 import Actions from '@/components/PageList/Actions'
+import Status from '@/components/Status'
+
+const INFERENCE_LLM_TYPES = ['vllm', 'ollama', 'sglang']
 
 export default {
   name: 'LlmSkuGrid',
   components: {
     Actions,
+    Status,
   },
   props: {
     items: {
@@ -157,6 +173,44 @@ export default {
     },
   },
   methods: {
+    getModelIcon,
+    getModelIconLabel,
+    getMountedModelIconKey (item) {
+      const mounted = item.mounted_model_details || []
+      if (!mounted.length) return ''
+      const first = mounted.find(v => v && v.fullname)
+      return first ? String(first.fullname) : ''
+    },
+    getCardIconKey (item) {
+      if (!item) return ''
+      if (this.isApplyType) {
+        return this.getMountedModelIconKey(item) || item.llm_type || item.name || ''
+      }
+      const llmType = item.llm_type
+      const spec = item.llm_spec
+      if (spec && typeof spec === 'object' && !Array.isArray(spec)) {
+        if (llmType && spec[llmType] && spec[llmType].preferred_model) {
+          return String(spec[llmType].preferred_model)
+        }
+        for (let i = 0; i < INFERENCE_LLM_TYPES.length; i++) {
+          const key = INFERENCE_LLM_TYPES[i]
+          const block = spec[key]
+          if (block && block.preferred_model) {
+            return String(block.preferred_model)
+          }
+        }
+      }
+      const fromMounted = this.getMountedModelIconKey(item)
+      if (fromMounted) return fromMounted
+      if (item.preferred_model) return String(item.preferred_model)
+      return item.llm_model_name || item.image || item.name || ''
+    },
+    getCardIcon (item) {
+      return getModelIcon(this.getCardIconKey(item))
+    },
+    getCardIconLabel (item) {
+      return getModelIconLabel(this.getCardIconKey(item))
+    },
     isSelected (item) {
       return this.selected.includes(item.id)
     },
@@ -249,6 +303,24 @@ export default {
   display: flex;
   align-items: flex-start;
   margin-bottom: 8px;
+}
+.catalog-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  margin-right: 12px;
+  object-fit: contain;
+  background: #fafafa;
+  flex-shrink: 0;
+}
+.catalog-icon-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f1f5;
+  color: #666;
+  font-weight: 600;
+  font-size: 12px;
 }
 .catalog-card-title {
   flex: 1;
