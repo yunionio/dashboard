@@ -44,44 +44,44 @@ export default {
         hiddenColumns: [],
       }),
       groupActions: [
-        {
-          label: this.$t('aice.llm_deployment.deploy_model'),
-          // Multi-source deploy menu matching GPUStack: Catalog / HuggingFace /
-          // ModelScope / Local Path. Phase 1 only HF is wired up; the other
-          // sources route to placeholders.
-          actions: () => [
-            {
-              label: this.$t('aice.llm_deployment.deploy.from_catalog'),
-              action: () => {
-                this.$router.push({ name: 'LlmDeploymentDeployFromModelSets' })
-              },
-            },
-            {
-              label: this.$t('aice.llm_deployment.deploy.from_huggingface'),
-              action: () => {
-                this.$router.push({ name: 'LlmDeploymentDeployFromHuggingFace' })
-              },
-            },
-            {
-              label: this.$t('aice.llm_deployment.deploy.from_modelscope'),
-              action: () => {
-                this.$message.info(this.$t('aice.llm_deployment.deploy.coming_soon'))
-              },
-              meta: () => ({ validate: false }),
-            },
-            {
-              label: this.$t('aice.llm_deployment.deploy.from_local'),
-              action: () => {
-                this.$message.info(this.$t('aice.llm_deployment.deploy.coming_soon'))
-              },
-              meta: () => ({ validate: false }),
-            },
-          ],
-          meta: () => ({
-            buttonType: 'primary',
-            validate: true,
-          }),
-        },
+        // {
+        //   label: this.$t('aice.llm_deployment.deploy_model'),
+        //   // Multi-source deploy menu matching GPUStack: Catalog / HuggingFace /
+        //   // ModelScope / Local Path. Phase 1 only HF is wired up; the other
+        //   // sources route to placeholders.
+        //   actions: () => [
+        //     {
+        //       label: this.$t('aice.llm_deployment.deploy.from_catalog'),
+        //       action: () => {
+        //         this.$router.push({ name: 'LlmDeploymentDeployFromModelSets' })
+        //       },
+        //     },
+        //     {
+        //       label: this.$t('aice.llm_deployment.deploy.from_huggingface'),
+        //       action: () => {
+        //         this.$router.push({ name: 'LlmDeploymentDeployFromHuggingFace' })
+        //       },
+        //     },
+        //     {
+        //       label: this.$t('aice.llm_deployment.deploy.from_modelscope'),
+        //       action: () => {
+        //         this.$message.info(this.$t('aice.llm_deployment.deploy.coming_soon'))
+        //       },
+        //       meta: () => ({ validate: false }),
+        //     },
+        //     {
+        //       label: this.$t('aice.llm_deployment.deploy.from_local'),
+        //       action: () => {
+        //         this.$message.info(this.$t('aice.llm_deployment.deploy.coming_soon'))
+        //       },
+        //       meta: () => ({ validate: false }),
+        //     },
+        //   ],
+        //   meta: () => ({
+        //     buttonType: 'primary',
+        //     validate: true,
+        //   }),
+        // },
         {
           label: this.$t('common.create'),
           action: () => {
@@ -89,6 +89,7 @@ export default {
           },
           meta: () => ({
             validate: true,
+            buttonType: 'primary',
           }),
         },
         {
