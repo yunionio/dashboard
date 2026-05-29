@@ -14,40 +14,57 @@ export default {
           })
         },
       },
-      // 更改项目
       {
-        label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
-        permission: 'llm_skus_perform_public',
-        action: (obj) => {
-          this.createDialog('ChangeOwenrDialog', {
-            data: [obj],
-            columns: this.columns,
-            onManager: this.onManager,
-            refresh: this.refresh,
-            resource: 'llm_skus',
-          })
-        },
-      },
-      getSetPublicAction(this, {
-        name: this.$t('aice.spec'),
-        scope: 'project',
-        resource: 'llm_skus',
-      }, {
-        permission: 'llm_skus_perform_public',
-      }),
-      {
-        label: this.$t('table.action.delete'),
+        label: this.$t('common_378'),
         action: obj => {
-          this.createDialog('DeleteResDialog', {
-            vm: this,
-            data: [obj],
-            columns: this.columns,
-            title: this.$t('table.action.delete'),
-            name: this.$t('aice.spec'),
-            onManager: this.onManager,
+          this.$router.push({
+            path: '/llm-deployment/create',
+            query: { from_sku: obj.id },
           })
         },
-        meta: obj => this.$getDeleteResult(obj),
+        hidden: () => this.isApplyType,
+      },
+      {
+        label: this.$t('common.more'),
+        actions: (obj) => {
+          return [
+            // 更改项目
+            {
+              label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
+              permission: 'llm_skus_perform_public',
+              action: () => {
+                this.createDialog('ChangeOwenrDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                  resource: 'llm_skus',
+                })
+              },
+            },
+            getSetPublicAction(this, {
+              name: this.$t('aice.spec'),
+              scope: 'project',
+              resource: 'llm_skus',
+            }, {
+              permission: 'llm_skus_perform_public',
+            }),
+            {
+              label: this.$t('table.action.delete'),
+              action: () => {
+                this.createDialog('DeleteResDialog', {
+                  vm: this,
+                  data: [obj],
+                  columns: this.columns,
+                  title: this.$t('table.action.delete'),
+                  name: this.$t('aice.spec'),
+                  onManager: this.onManager,
+                })
+              },
+              meta: () => this.$getDeleteResult(obj),
+            },
+          ]
+        },
       },
     ]
   },

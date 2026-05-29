@@ -30,10 +30,35 @@
         <template v-if="form.fd.mode === 'reuse'">
           <a-form-item :label="$t('aice.llm_sku')">
             <base-select
+              class="llm-sku-select"
               v-decorator="decorators.llm_sku_id"
               resource="llm_skus"
               :params="skuParams"
-              :select-props="{ placeholder: $t('common.tips.select', [$t('aice.llm_sku')]) }" />
+              dropdown-item-word-wrap
+              :select-props="{
+                placeholder: $t('common.tips.select', [$t('aice.llm_sku')]),
+                dropdownStyle: { minWidth: '520px' },
+              }">
+              <template #optionLabelTemplate="{ item }">
+                <div class="llm-sku-option">
+                  <div class="oc-selected-display-none">
+                    <div class="text-truncate" :title="item.name">{{ item.name }}</div>
+                    <div
+                      class="text-color-secondary mt-1 text-truncate"
+                      style="font-size: 12px"
+                      :title="formatLlmSkuConfig(item)">
+                      {{ formatLlmSkuConfig(item) }}
+                    </div>
+                  </div>
+                  <div
+                    class="oc-dropdown-display-none llm-sku-option__selected text-truncate"
+                    :title="`${item.name} (${formatLlmSkuConfig(item)})`">
+                    <span>{{ item.name }}</span>
+                    <span class="text-color-secondary"> ({{ formatLlmSkuConfig(item) }})</span>
+                  </div>
+                </div>
+              </template>
+            </base-select>
           </a-form-item>
         </template>
 
@@ -188,7 +213,7 @@
 <script>
 import * as R from 'ramda'
 import { Manager } from '@/utils/manager'
-import { uuid } from '@/utils/utils'
+import { uuid, sizestr } from '@/utils/utils'
 import validateForm from '@/utils/validate'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
@@ -322,7 +347,7 @@ export default {
   },
   computed: {
     skuParams () {
-      return { scope: this.$store.getters.scope, details: true }
+      return { scope: this.$store.getters.scope, details: true, limit: 20, filter: ['llm_type.in(vllm,ollama,sglang)'] }
     },
     imageParams () {
       return { scope: this.$store.getters.scope, llm_type: this.form.fd.llm_type }
@@ -357,9 +382,52 @@ export default {
     const specId = this.$route.query.from_spec
     if (specId) {
       this.loadModelSpec(specId)
+      return
+    }
+    const skuId = this.$route.query.from_sku
+    if (skuId) {
+      this.applyFromSku(skuId)
     }
   },
   methods: {
+    applyFromSku (skuId) {
+      this.$nextTick(() => {
+        this.form.fc.setFieldsValue({
+          mode: 'reuse',
+          llm_sku_id: skuId,
+        })
+      })
+    },
+    formatLlmSkuMemory (memory) {
+      if (memory == null) return '-'
+      return sizestr(memory, 'M', 1024)
+    },
+    formatLlmSkuDisk (item) {
+      const volumes = item.volumes || []
+      if (!volumes.length) return '-'
+      let size = 0
+      volumes.forEach(v => { size += v.size_mb || 0 })
+      return sizestr(size, 'M', 1024)
+    },
+    formatLlmSkuBandwidth (bandwidth) {
+      if (bandwidth == null) return '-'
+      if (bandwidth === 0) return `0(${this.$t('common.not_limited')})`
+      return `${bandwidth}M`
+    },
+    formatLlmSkuConfig (item) {
+      const parts = [
+        `CPU ${item.cpu || '-'}`,
+        `${this.$t('aice.memory')} ${this.formatLlmSkuMemory(item.memory)}`,
+        `${this.$t('aice.disk')} ${this.formatLlmSkuDisk(item)}`,
+      ]
+      if (item.bandwidth != null) {
+        parts.push(`${this.$t('aice.bandwidth')} ${this.formatLlmSkuBandwidth(item.bandwidth)}`)
+      }
+      if (item.image) {
+        parts.push(`${this.$t('aice.image')}：${item.image}`)
+      }
+      return parts.join(' · ')
+    },
     async loadModelSpec (id) {
       try {
         const mgr = new this.$Manager('llm_model_specs', 'v1')
@@ -559,3 +627,18 @@ export default {
   },
 }
 </script>
+
+<style lang="less" scoped>
+.llm-sku-select {
+  ::v-deep .ant-select-selection__rendered {
+    overflow: hidden;
+  }
+  ::v-deep .ant-select-selection-selected-value {
+    float: none;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+</style>
