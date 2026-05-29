@@ -54,27 +54,27 @@ export default {
         //     }
         //   },
         // },
-        {
-          label: this.$t('aice.import_model'),
-          actions: () => [
-            {
-              label: this.$t('aice.llm_image.import_community'),
-              action: () => {
-                this.$router.push({ name: 'LlmInstantmodelImportFromCommunity' })
-              },
-            },
-            {
-              label: this.$t('aice.llm_deployment.deploy.from_huggingface'),
-              action: () => {
-                this.$router.push({ name: 'LlmInstantmodelImportFromHuggingFace' })
-              },
-            },
-          ],
-          meta: () => ({
-            buttonType: 'primary',
-            validate: true,
-          }),
-        },
+        // {
+        //   label: this.$t('aice.import_model'),
+        //   actions: () => [
+        //     {
+        //       label: this.$t('aice.llm_image.import_community'),
+        //       action: () => {
+        //         this.$router.push({ name: 'LlmInstantmodelImportFromCommunity' })
+        //       },
+        //     },
+        //     {
+        //       label: this.$t('aice.llm_deployment.deploy.from_huggingface'),
+        //       action: () => {
+        //         this.$router.push({ name: 'LlmInstantmodelImportFromHuggingFace' })
+        //       },
+        //     },
+        //   ],
+        //   meta: () => ({
+        //     buttonType: 'primary',
+        //     validate: true,
+        //   }),
+        // },
         {
           label: this.$t('common.batchAction'),
           actions: () => {
