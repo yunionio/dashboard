@@ -270,6 +270,23 @@ body {
   .option-show {
     display: inline-block !important;
   }
+  .area-select-cloudregion-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &__name {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding-right: 8px;
+    }
+    &__icon {
+      flex-shrink: 0;
+      line-height: 1;
+    }
+  }
 }
 
 .ant-select-selection-selected-value {

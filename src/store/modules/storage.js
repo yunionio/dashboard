@@ -21,6 +21,7 @@ export default {
   },
   actions: {
     async getDomainById ({ commit }, payload = {}) {
+      if (!payload?.key) return Promise.resolve()
       try {
         const { data } = await http.get('/v1/domains/' + payload.key)
         return Promise.resolve(data)
@@ -29,6 +30,7 @@ export default {
       }
     },
     async getProjectById ({ commit, state }, payload = {}) {
+      if (!payload?.key) return Promise.resolve()
       try {
         const { data } = await http.get('/v1/projects/' + payload.key, { params: { project_domain: payload.project_domain || state.domain?.key } })
         if (data) {

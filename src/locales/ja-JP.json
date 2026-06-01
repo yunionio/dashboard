@@ -6562,5 +6562,14 @@
   "common.disk_write_rate_value": "書き込み速率：{0}",
   "common.net_iops": "ネットワーク流量速率",
   "common.net_in_rate_value": "受信流量：{0}",
-  "common.net_out_rate_value": "送信流量：{0}"
+  "common.net_out_rate_value": "送信流量：{0}",
+  "regionMap.selection_region_count": "現在の選択範囲には {0} 件のデータがあります",
+  "regionMap.no_data_tip": "データがありません。地図上で範囲を選択してください",
+  "regionMap.enable_world_map": "地図範囲選択モード",
+  "regionMap.set_selection_diameter": "選択範囲の直径を設定",
+  "regionMap.diameter": "直径",
+  "regionMap.unit_km": "km",
+  "regionMap.selection_diameter": "選択範囲直径 {0} km",
+  "regionMap.locate_current": "現在地に移動",
+  "regionMap.select_sku_first_tip": "プラットフォーム/リージョン/ゾーンが複数選択されています。ネットワークやイメージなどを設定する前に SKU を選択してください"
 }
