@@ -140,6 +140,7 @@ export default {
       custom_data: [],
       dataDiskInterval: null,
       tagDefaultChecked: {},
+      nearbyRegions: [],
     }
   },
   provide () {
@@ -641,6 +642,59 @@ export default {
           this.$set(this.form.fi, key, item)
         }, fiItems)
       }
+    },
+    onWorldMapModeChange (checked) {
+      if (this.type !== 'public') return
+      this.clearPublicLocationFields(checked)
+      this.$nextTick(() => {
+        this.refreshAreaSelects()
+        if (!checked && this.fetchInstanceSpecs) {
+          this.fetchInstanceSpecs()
+        }
+      })
+    },
+    refreshAreaSelects () {
+      if (this.type !== 'public' || !this.$refs.areaSelectRef) return
+      this.$refs.areaSelectRef.fetchs(['provider', 'cloudregion', 'zone'])
+    },
+    clearPublicLocationFields (isMapMode = !!this.form.fd.enableWorldMap) {
+      const emptyAreaValue = isMapMode ? [] : undefined
+      this.form.fc.setFieldsValue({
+        provider: emptyAreaValue,
+        cloudregion: emptyAreaValue,
+        zone: emptyAreaValue,
+        cloudprovider: undefined,
+        sku: undefined,
+      })
+      this.nearbyRegions = []
+      if (Object.prototype.hasOwnProperty.call(this.$data, 'cloudaccountId')) {
+        this.cloudaccountId = ''
+      }
+    },
+    onRegionSelect (payload) {
+      if (this.type !== 'public') return
+      const regions = payload?.nearbyRegions || []
+      const emptyAreaValue = this.form.fd.enableWorldMap ? [] : undefined
+      this.form.fc.setFieldsValue({
+        provider: emptyAreaValue,
+        cloudregion: emptyAreaValue,
+        zone: emptyAreaValue,
+        cloudprovider: undefined,
+        sku: undefined,
+      })
+      if (Object.prototype.hasOwnProperty.call(this.$data, 'cloudaccountId')) {
+        this.cloudaccountId = ''
+      }
+      this.$nextTick(() => {
+        this.nearbyRegions = regions
+        this.$nextTick(() => {
+          this.refreshAreaSelects()
+        })
+      })
+    },
+    onRegionMapParamsChange () {
+      if (this.type !== 'public' || !this.form.fd.enableWorldMap) return
+      this.onRegionSelect({ nearbyRegions: [] })
     },
     submit (e) {
       e.preventDefault()
