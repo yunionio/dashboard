@@ -1,3 +1,4 @@
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 
 export default {
   created () {
@@ -202,8 +203,14 @@ export default {
     ]
   },
   computed: {
+    llmRouteCtx () {
+      return parseLlmRoute(this.$route.path)
+    },
     isApplyType () {
-      return this.$route.path.includes('app-llm')
+      return this.llmRouteCtx.isApplyType
+    },
+    isDesktopType () {
+      return this.llmRouteCtx.isDesktopType
     },
   },
   methods: {

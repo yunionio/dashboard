@@ -12,6 +12,7 @@
 import WindowsMixin from '@/mixins/windows'
 import {
   getDeviceModelTableColumn,
+  getAppNameTableColumn,
   getImageTableColumn,
   getBandwidthTableColumn,
   getCpuTableColumn,
@@ -20,6 +21,7 @@ import {
   getLlmTypeTableColumn,
   getLlmModelNameTableColumn,
 } from '../utils/columns'
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import { getLlmSpecSections, fetchLlmSpecCredentialNames, fetchLlmSpecDifyImages } from '../utils/llmSpecDetail'
 
 export default {
@@ -36,12 +38,14 @@ export default {
     },
   },
   data () {
+    const { isDesktopType } = parseLlmRoute(this.$route.path)
     return {
       credentialNamesMap: {},
       difyImageNamesMap: {},
       baseInfo: [
         getDeviceModelTableColumn(),
         getImageTableColumn({ vm: this }),
+        ...(isDesktopType ? [getAppNameTableColumn()] : []),
         getBandwidthTableColumn(),
         getLlmTypeTableColumn(),
         getLlmModelNameTableColumn({ vm: this }),

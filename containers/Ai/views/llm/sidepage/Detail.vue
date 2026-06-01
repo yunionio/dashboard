@@ -21,6 +21,7 @@ import {
   // getPortsColumn,
   getLlmSkuColumn,
   getLlmImageColumn,
+  getAppNameTableColumn,
   getCpuTableColumn,
   getMemoryTableColumn,
   getBandwidthTableColumn,
@@ -28,6 +29,7 @@ import {
   getNetworkTableColumn,
 } from '../utils/columns'
 import { getLlmSpecSections, fetchLlmSpecCredentialNames, fetchLlmSpecDifyImages } from '../../llm-sku/utils/llmSpecDetail'
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 
 export default {
   name: 'PhoneDetail',
@@ -44,7 +46,10 @@ export default {
   },
   data () {
     return {
-      isApplyType: this.$route.path.includes('app-llm'),
+      ...(() => {
+        const ctx = parseLlmRoute(this.$route.path)
+        return { isApplyType: ctx.isApplyType, isDesktopType: ctx.isDesktopType }
+      })(),
       credentialNamesMap: {},
       difyImageNamesMap: {},
       skuLlmSpecOpenclaw: null,
@@ -71,8 +76,9 @@ export default {
           title: this.$t('aice.config_info'),
           items: [
             getLlmIpColumn(),
-            getLlmSkuColumn({ vm: this, isApplyType: this.isApplyType }),
+            getLlmSkuColumn({ vm: this, isApplyType: this.isApplyType, isDesktopType: this.isDesktopType }),
             getLlmImageColumn({ vm: this }),
+            ...(this.isDesktopType ? [getAppNameTableColumn()] : []),
             getCpuTableColumn(),
             getMemoryTableColumn(),
             getBandwidthTableColumn(),
@@ -218,7 +224,8 @@ export default {
         const username = info.username != null ? info.username : ''
         const password = info.password != null ? info.password : ''
         const extra = info.extra && typeof info.extra === 'object' ? { ...info.extra } : {}
-        if ((this.data.llm_type || '').toLowerCase() === 'hermes-agent') {
+        const llmType = (this.data.llm_type || '').toLowerCase()
+        if (llmType !== 'openclaw') {
           delete extra.OPENCLAW_GATEWAY_TOKEN
         }
 

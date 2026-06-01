@@ -14,6 +14,7 @@
           :items="listItems"
           :loading="list.loading"
           :is-apply-type="isApplyType"
+          :is-desktop-type="isDesktopType"
           :selected="list.selected"
           :single-actions="singleActions"
           :on-manager="onManager"
@@ -34,6 +35,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import { filterOptions } from '../utils/filters'
 import LlmSkuGrid from './LlmSkuGrid'
+import { parseLlmRoute, getLlmSkuTypeFilter } from '@Ai/utils/llmRouteContext'
 
 const MIN_LIST_HEIGHT = 400
 const BOTTOM_MARGIN = 15
@@ -65,11 +67,7 @@ export default {
         {
           label: this.$t('common.create'),
           action: () => {
-            if (this.isApplyType) {
-              this.$router.push('/app-llm-sku/create')
-            } else {
-              this.$router.push('/llm-sku/create')
-            }
+            this.$router.push(this.llmRouteCtx.skuCreatePath)
           },
           meta: () => {
             return {
@@ -78,7 +76,7 @@ export default {
             }
           },
           hidden: () => {
-            return !this.isApplyType
+            return !this.isApplyType && !this.isDesktopType
           },
         },
         {
@@ -102,7 +100,7 @@ export default {
             validate: true,
           }),
           hidden: () => {
-            return this.isApplyType
+            return this.isApplyType || this.isDesktopType
           },
         },
         {
@@ -140,8 +138,14 @@ export default {
         overflowX: 'hidden',
       }
     },
+    llmRouteCtx () {
+      return parseLlmRoute(this.$route.path)
+    },
     isApplyType () {
-      return this.$route.path.includes('app-llm')
+      return this.llmRouteCtx.isApplyType
+    },
+    isDesktopType () {
+      return this.llmRouteCtx.isDesktopType
     },
     listItems () {
       if (!this.list || !this.list.data) return []
@@ -217,7 +221,7 @@ export default {
         details: true,
       }
       ret.filter = R.is(Array, ret.filters) ? ret.filters : (R.is(String, ret.filters) ? [ret.filters] : [])
-      ret.filter.push(`llm_type.${this.isApplyType ? 'notin' : 'in'}(vllm,ollama,sglang)`)
+      ret.filter.push(getLlmSkuTypeFilter(this.llmRouteCtx))
       return ret
     },
     toggleSelect (row) {

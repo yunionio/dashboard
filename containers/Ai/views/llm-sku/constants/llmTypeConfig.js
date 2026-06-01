@@ -5,6 +5,7 @@
 
 // 供下拉使用的类型列表（name 为 i18n key）
 export const LLM_TYPE_OPTIONS = [
+  { id: 'desktop', name: 'aice.llm_type.desktop' },
   { id: 'openclaw', name: 'aice.llm_type.openclaw' },
   { id: 'hermes-agent', name: 'aice.llm_type.hermes_agent' },
   { id: 'dify', name: 'aice.llm_type.dify' },
@@ -34,6 +35,7 @@ export const LLM_TYPE_DEFAULT_PORT_MAPPINGS = {
   dify: [{ protocol: 'tcp', container_port: 80 }],
   openclaw: [{ protocol: 'tcp', container_port: 3001 }],
   'hermes-agent': [{ protocol: 'tcp', container_port: 3001 }],
+  desktop: [{ protocol: 'tcp', container_port: 3001 }],
 }
 
 /**
@@ -57,6 +59,7 @@ export const LLM_TYPE_DEFAULT_SKU_SPEC = {
   sglang: { cpu: 8, memory: 16384, volume_size_mb: 40960, bandwidth: 1000 },
   openclaw: { cpu: 4, memory: 4096, volume_size_mb: 40960, bandwidth: 1000 },
   'hermes-agent': { cpu: 4, memory: 4096, volume_size_mb: 40960, bandwidth: 1000 },
+  desktop: { cpu: 4, memory: 4096, volume_size_mb: 40960, bandwidth: 1000 },
   comfyui: { cpu: 8, memory: 16384, volume_size_mb: 40960, bandwidth: 1000 },
 }
 
@@ -173,6 +176,14 @@ export const LLM_TYPE_FORM_CONFIG = {
   ],
   openclaw: [
     // OpenClaw 的 credential 已改为 providers/channels 级别分别配置（见 create/Form.vue）
+  ],
+  desktop: [
+    {
+      fieldKey: 'device',
+      label: 'aice.devices',
+      component: 'base-select',
+      props: { optionsKey: 'specList', placeholderKey: 'aice.devices', selectProps: { mode: 'multiple' } },
+    },
   ],
   'hermes-agent': [],
 }
