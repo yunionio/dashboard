@@ -45,6 +45,16 @@
       <a-form-item :label="$t('compute.text_294')" v-show="!isServertemplate">
         <a-input-number v-decorator="decorators.count" @blur="countBlur" :min="1" :max="100" />
       </a-form-item>
+      <a-form-item :label="$t('regionMap.enable_world_map')">
+        <a-switch v-decorator="decorators.enableWorldMap" @change="onWorldMapModeChange" />
+      </a-form-item>
+      <a-form-item v-if="form.fd.enableWorldMap" :label="$t('compute.text_177')">
+        <region-map
+          :region-filter-params="regionMapParams"
+          split-key="provider"
+          @select="onRegionSelect"
+          @params-change="onRegionMapParamsChange" />
+      </a-form-item>
       <area-selects
         class="mb-0"
         v-if="showAreaSelect"
@@ -52,14 +62,38 @@
         :labelCol="formItemLayout.labelCol"
         ref="areaSelectRef"
         :providerParams="providerParams"
-        :cloudregionParams="cloudregionParams"
+        :cloudregionParams="areaCloudregionParams"
         :zoneParams="zoneParams"
-        :defaultActiveFirstOption="isInitForm ? false : ['provider', 'cloudregion']"
+        :provider-mapper="mapProviderMapper"
+        :provider-multiple="isWorldMapMode"
+        :cloudregion-multiple="isWorldMapMode"
+        :zone-multiple="isWorldMapMode"
+        :cloudregion-mapper="mapCloudregionMapper"
+        :cloudregion-params-mapper="mapCloudregionParamsMapper"
+        :zone-mapper="mapZoneMapper"
+        :defaultActiveFirstOption="areaDefaultActiveFirstOption"
         filterBrandResource="compute_engine"
         @providerFetchSuccess="providerFetchSuccess" />
       <!-- <a-form-item class="mb-0" :label="$t('compute.text_1159')">
         <resource :decorator="decorators.resourceType" />
       </a-form-item> -->
+      <a-form-item :label="$t('compute.text_1058')" class="mb-0">
+        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :showUnlimited="true" @change="cpuChange" />
+      </a-form-item>
+      <a-form-item :label="$t('compute.text_369')" class="mb-0">
+        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :showUnlimited="true" />
+      </a-form-item>
+      <a-form-item :label="$t('compute.text_109')">
+        <sku
+          ref="skuRef"
+          v-decorator="decorators.sku"
+          :priceUnit="skuPriceUnit"
+          :type="type"
+          :sku-params="skuParam"
+          :hypervisor="hypervisor"
+          :hasMeterService="hasMeterService"
+          :init-sku-data="initSkuData" />
+      </a-form-item>
       <a-form-item :label="$t('compute.text_15')">
         <base-select
           resource="cloudproviders"
@@ -69,22 +103,6 @@
           :showSync="true"
           :select-props="{ placeholder: $t('compute.text_149') }"
           @update:item="cloudproviderSelected" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_1058')" class="mb-0">
-        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :showUnlimited="true" @change="cpuChange" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_369')" class="mb-0">
-        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :showUnlimited="true" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_109')">
-        <sku
-          v-decorator="decorators.sku"
-          :priceUnit="skuPriceUnit"
-          :type="type"
-          :sku-params="skuParam"
-          :hypervisor="hypervisor"
-          :hasMeterService="hasMeterService"
-          :init-sku-data="initSkuData" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_267')" :extra="$t('compute.text_302')">
         <os-select
@@ -136,6 +154,12 @@
       <a-form-item :label="$t('compute.text_308')">
         <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" :form="form" />
       </a-form-item>
+      <a-alert
+        v-if="needsSkuForAreaDownstream"
+        type="info"
+        show-icon
+        :message="$t('regionMap.select_sku_first_tip')"
+        class="mb-2" />
       <a-form-item :label="$t('compute.text_104')" class="mb-0">
         <server-network
           ref="networkRef"
@@ -226,6 +250,7 @@ import Bill from '@Compute/sections/Bill'
 import { LOGIN_TYPES_MAP, BILL_TYPES_MAP } from '@Compute/constants'
 import EipConfig from '@Compute/sections/EipConfig'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
+import RegionMap from '@Compute/sections/RegionMap'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
@@ -239,6 +264,7 @@ export default {
     AreaSelects,
     EipConfig,
     SecgroupConfig,
+    RegionMap,
   },
   mixins: [mixin],
   data () {
@@ -274,6 +300,83 @@ export default {
       }
       return true
     },
+    hasMapRegionFilter () {
+      return this.form.fd.enableWorldMap && this.nearbyRegions.length > 0
+    },
+    isWorldMapMode () {
+      return !!this.form.fd.enableWorldMap
+    },
+    areaDefaultActiveFirstOption () {
+      if (this.isInitForm) return false
+      if (this.isWorldMapMode) return []
+      return ['provider', 'cloudregion']
+    },
+    mapFilterRegionIds () {
+      return this.nearbyRegions.map(item => item.id).filter(Boolean)
+    },
+    mapFilterProviderKeys () {
+      const keys = new Set()
+      this.nearbyRegions.forEach((item) => {
+        const raw = item.provider
+        if (!raw) return
+        keys.add(raw)
+      })
+      return [...keys]
+    },
+    selectedCloudregionIds () {
+      const { cloudregion } = this.form.fd
+      if (Array.isArray(cloudregion)) return cloudregion.filter(Boolean)
+      return cloudregion ? [cloudregion] : []
+    },
+    // 任一区域字段存在多个选中值
+    hasMultipleAreaSelection () {
+      const { provider, cloudregion, zone } = this.form.fd
+      const isMultiValue = val => Array.isArray(val) && val.length > 1
+      return isMultiValue(provider) || isMultiValue(cloudregion) || isMultiValue(zone)
+    },
+    // 地图多选且未选 SKU 时，网络等下游暂不可用
+    needsSkuForAreaDownstream () {
+      return this.isWorldMapMode && this.hasMultipleAreaSelection && !R.is(Object, this.form.fd.sku)
+    },
+    resolvedAreaFilterParams () {
+      const { provider, cloudregion, zone, sku } = this.form.fd
+      const fromForm = {
+        provider: this.pickSingleAreaValue(provider),
+        cloudregion: this.pickSingleAreaValue(cloudregion),
+        zone: this.pickSingleAreaValue(zone),
+      }
+      if (R.is(Object, sku)) {
+        return {
+          provider: sku.provider || fromForm.provider,
+          cloudregion: sku.cloudregion_id || fromForm.cloudregion,
+          zone: sku.zone_id || fromForm.zone,
+        }
+      }
+      if (this.isWorldMapMode && !this.hasMultipleAreaSelection) {
+        return fromForm
+      }
+      if (this.hasMultipleAreaSelection) {
+        return {}
+      }
+      return fromForm
+    },
+    cloudregionZoneParams () {
+      if (this.isWorldMapMode || this.hasMultipleAreaSelection) {
+        const { cloudregion, zone } = this.resolvedAreaFilterParams
+        const params = {}
+        if (cloudregion) params.cloudregion = cloudregion
+        if (zone) params.zone = zone
+        return params
+      }
+      const params = {}
+      if (R.is(Object, this.form.fd.sku)) {
+        const cloudregion = this.form.fd.sku.cloudregion_id
+        const zone = this.pickSingleAreaValue(this.form.fd.zone)
+        if (cloudregion) params.cloudregion = cloudregion
+        if (zone) params.zone = zone
+      }
+      return params
+    },
     networkParam () {
       if (!this.cloudregionZoneParams.cloudregion) return {}
       const params = {
@@ -287,6 +390,26 @@ export default {
       }
       return params
     },
+    // 地图范围 + 平台选择范围 交集，统一返回数组
+    providers () {
+      const selected = this.normalizeAreaValues(this.form.fd.provider)
+      const mapScope = this.hasMapRegionFilter
+        ? this.mapFilterProviderKeys.map(key => String(key).toLowerCase())
+        : []
+      const intersected = this.intersectAreaValues(selected, mapScope, { caseInsensitive: true })
+      if (intersected.length) return intersected
+      if (!this.hasMapRegionFilter && !selected.length) {
+        const providerList = this.form.fi.providerList || []
+        return providerList.map(item => item.name).filter(Boolean)
+      }
+      return []
+    },
+    // 地图范围 + 区域选择范围 交集，统一返回数组
+    cloudregions () {
+      const selected = this.selectedCloudregionIds
+      const mapScope = this.hasMapRegionFilter ? this.mapFilterRegionIds : []
+      return this.intersectAreaValues(selected, mapScope)
+    },
     providerParams () {
       return {
         usable: true,
@@ -294,7 +417,7 @@ export default {
         ...this.scopeParams,
       }
     },
-    cloudregionParams () {
+    regionMapParams () {
       return {
         cloud_env: 'public',
         usable: true,
@@ -302,8 +425,20 @@ export default {
         ...this.scopeParams,
       }
     },
+    areaCloudregionParams () {
+      const params = {
+        cloud_env: 'public',
+        usable: true,
+        show_emulated: true,
+        ...this.scopeParams,
+      }
+      if (this.hasMapRegionFilter && this.mapFilterRegionIds.length) {
+        params.filter = `id.in(${this.mapFilterRegionIds.join(',')})`
+      }
+      return params
+    },
     zoneParams () {
-      return {
+      const params = {
         cloud_env: 'public',
         usable: true,
         show_emulated: true,
@@ -311,6 +446,11 @@ export default {
         order: 'asc',
         ...this.scopeParams,
       }
+      const regionIds = this.cloudregions
+      if (regionIds.length) {
+        params.filter = `cloudregion_id.in(${regionIds.join(',')})`
+      }
+      return params
     },
     imageParams () {
       const params = {}
@@ -322,15 +462,14 @@ export default {
       return params
     },
     cacheImageParams () {
-      const {imageType, cloudprovider} = this.form.fd
+      const { imageType } = this.form.fd
       const params = {}
       if (imageType !== IMAGES_TYPE_MAP.public.key) {
         params.manager_id = this.form.fd.cloudprovider
       }
-      if (R.is(Object, this.form.fd.sku)) {
-        if (this.cloudregionZoneParams.cloudregion) {
-          params.cloudregion_id = this.cloudregionZoneParams.cloudregion
-        }
+      const { cloudregion } = this.cloudregionZoneParams
+      if (cloudregion) {
+        params.cloudregion_id = cloudregion
       }
       if (!params.cloudregion_id) return {}
       return params
@@ -365,19 +504,22 @@ export default {
         // manager: this.form.fd.cloudprovider,
         ...this.scopeParams,
       }
-      if (this.form.fd.cloudregion) params.cloudregion = this.form.fd.cloudregion
-      if (this.form.fd.zone) params.zone_id = this.form.fd.zone
-      const { provider } = this.form.fd
-      if (provider) {
-        params.provider = PROVIDER_MAP[provider] ? PROVIDER_MAP[provider].hypervisor : provider
+      const regionIds = this.cloudregions
+      this.applySkuRegionFilter(params, regionIds)
+      const zoneValues = this.normalizeAreaValues(this.form.fd.zone)
+      if (zoneValues.length === 1) {
+        params.zone_id = zoneValues[0]
+      } else if (zoneValues.length > 1) {
+        this.appendSkuFilter(params, `zone_id.in(${zoneValues.join(',')})`)
+      }
+      const providerValues = this.providers
+      if (providerValues.length === 1) {
+        params.provider = PROVIDER_MAP[providerValues[0]] ? PROVIDER_MAP[providerValues[0]].hypervisor : providerValues[0]
+      } else if (providerValues.length > 1) {
+        const providers = providerValues.map(p => (PROVIDER_MAP[p] ? PROVIDER_MAP[p].provider : p))
+        this.appendSkuFilter(params, `provider.in(${providers.join(',')})`)
       } else {
-        const providerList = this.form.fi.providerList
-        if (providerList && providerList.length) {
-          const providers = providerList.map(item => item.name)
-          params.filter = `provider.in(${providers.join(',')})`
-        } else { // 公有云条件下没有 provider 不用请求接口
-          return {} // sku 组件没有参数不会请求数据
-        }
+        return {} // 公有云条件下没有 provider 不用请求接口
       }
       if (this.form.fd.billType === 'quantity') {
         params.postpaid_status = 'available'
@@ -471,17 +613,16 @@ export default {
         usable: true,
         enabled: true,
       }
-      const { provider, cloudregion, zone } = this.form.fd
-      if (provider) params.provider = provider
-      if (cloudregion) params.cloudregion = cloudregion
-      if (zone) params.zone = zone
+      this.applyInstanceSpecRegionFilter(params, this.cloudregions)
+      this.applyInstanceSpecZoneFilter(params, this.normalizeAreaValues(this.form.fd.zone))
+      this.applyInstanceSpecProviderFilter(params, this.providers)
       return params
     },
     cloudproviderParamsExtra () {
       const params = {
         ...this.scopeParams,
       }
-      const { cloudregion } = this.form.fd
+      const { cloudregion } = this.resolvedAreaFilterParams
       if (this.form.fd.sku && this.form.fd.sku.provider) {
         params.provider = this.form.fd.sku.provider
       }
@@ -494,27 +635,42 @@ export default {
     policycloudproviderParams () {
       const params = {
         limit: 0,
-        brand: this.form.fd.provider,
-        cloudregion: this.form.fd.cloudregion,
         enabled: true,
         read_only: false,
         filter: 'status.equals(\'connected\')',
         ...this.scopeParams,
       }
-      if (this.form.fd.zone) {
-        params.zone = this.form.fd.zone
-      }
+      const { provider, cloudregion, zone } = this.resolvedAreaFilterParams
+      if (provider) params.brand = provider
+      if (cloudregion) params.cloudregion = cloudregion
+      if (zone) params.zone = zone
       return params
     },
   },
   watch: {
+    hasMapRegionFilter () {
+      this.$nextTick(() => {
+        if (this.$refs.areaSelectRef) {
+          this.$refs.areaSelectRef.fetchs(['provider'])
+        }
+        this.refreshSkuByMapRegion()
+      })
+    },
+    mapFilterRegionIds (val, oldVal) {
+      if (R.equals(val, oldVal)) return
+      this.$nextTick(() => {
+        this.refreshSkuByMapRegion()
+        this.fetchInstanceSpecs()
+      })
+    },
     'form.fd.billType' (val) {
       // 计费方式为包年包月平台不含 azure、aws，这里统一做清空处理
       if (val === BILL_TYPES_MAP.package.key) {
+        const emptyAreaValue = this.isWorldMapMode ? [] : undefined
         this.form.fc.setFieldsValue({
-          provider: undefined,
-          cloudregion: undefined,
-          zone: undefined,
+          provider: emptyAreaValue,
+          cloudregion: emptyAreaValue,
+          zone: emptyAreaValue,
         })
       }
       this.$refs.areaSelectRef.fetchs(['provider'])
@@ -522,10 +678,11 @@ export default {
     'form.fd.duration' (val, oldVal) {
       if (this.form.fd.billType === BILL_TYPES_MAP.package.key) {
         if (val === '1W' || oldVal === '1W') {
+          const emptyAreaValue = this.isWorldMapMode ? [] : undefined
           this.form.fc.setFieldsValue({
-            provider: undefined,
-            cloudregion: undefined,
-            zone: undefined,
+            provider: emptyAreaValue,
+            cloudregion: emptyAreaValue,
+            zone: emptyAreaValue,
           })
           this.$refs.areaSelectRef.fetchs(['provider', 'cloudregion', 'zone'])
         }
@@ -535,33 +692,179 @@ export default {
   created () {
     this.baywatch(['form.fd.provider', 'form.fd.cloudregion', 'form.fd.zone'], this.fetchInstanceSpecs)
     this.baywatch(['form.fd.sku', 'form.fd.zone'], this.withFetchCapbilites)
+    this.baywatch(['form.fd.sku'], this.onResolvedSkuChange)
   },
   methods: {
+    onResolvedSkuChange (val) {
+      if (this.hasMultipleAreaSelection && R.is(Object, val)) {
+        this.fetchInstanceSpecs()
+      }
+    },
+    pickSingleAreaValue (value) {
+      if (Array.isArray(value)) return value[0] || undefined
+      return value || undefined
+    },
+    normalizeAreaValues (value) {
+      if (Array.isArray(value)) return value.filter(Boolean)
+      return value ? [value] : []
+    },
+    intersectAreaValues (selected = [], scope = [], { caseInsensitive = false } = {}) {
+      const normalizedSelected = selected.filter(Boolean)
+      const normalizedScope = scope.filter(Boolean)
+      if (normalizedSelected.length && normalizedScope.length) {
+        const scopeSet = new Set(
+          caseInsensitive
+            ? normalizedScope.map(v => String(v).toLowerCase())
+            : normalizedScope.map(v => String(v)),
+        )
+        return normalizedSelected.filter(v => {
+          const key = caseInsensitive ? String(v).toLowerCase() : String(v)
+          return scopeSet.has(key)
+        })
+      }
+      if (normalizedSelected.length) return normalizedSelected
+      return normalizedScope
+    },
+    applySkuRegionFilter (params, regionIds = []) {
+      if (!regionIds.length) return
+      if (regionIds.length === 1) {
+        params.cloudregion = regionIds[0]
+        return
+      }
+      this.appendSkuFilter(params, `cloudregion_id.in(${regionIds.join(',')})`)
+    },
+    applyInstanceSpecProviderFilter (params, providerValues = []) {
+      if (!providerValues.length) return
+      if (providerValues.length === 1) {
+        params.provider = PROVIDER_MAP[providerValues[0]] ? PROVIDER_MAP[providerValues[0]].hypervisor : providerValues[0]
+        return
+      }
+      const providers = providerValues.map(p => (PROVIDER_MAP[p] ? PROVIDER_MAP[p].provider : p))
+      this.appendSkuFilter(params, `provider.in(${providers.join(',')})`)
+    },
+    applyInstanceSpecRegionFilter (params, regionIds = []) {
+      if (!regionIds.length) return
+      if (regionIds.length === 1) {
+        params.cloudregion = regionIds[0]
+        return
+      }
+      this.appendSkuFilter(params, `cloudregion.in(${regionIds.join(',')})`)
+    },
+    applyInstanceSpecZoneFilter (params, zoneValues = []) {
+      if (!zoneValues.length) return
+      if (zoneValues.length === 1) {
+        params.zone = zoneValues[0]
+        return
+      }
+      this.appendSkuFilter(params, `zone.in(${zoneValues.join(',')})`)
+    },
+    refreshSkuByMapRegion () {
+      if (!this.isWorldMapMode) return
+      this.form.fc.setFieldsValue({ sku: undefined })
+      this.$nextTick(() => {
+        if (this.$refs.skuRef && typeof this.$refs.skuRef.fetchData === 'function') {
+          this.$refs.skuRef.fetchData()
+        }
+        this.fetchInstanceSpecs()
+      })
+    },
+    appendSkuFilter (params, filter) {
+      if (!params.filter) {
+        params.filter = [filter]
+        return
+      }
+      if (!Array.isArray(params.filter)) {
+        params.filter = [params.filter]
+      }
+      params.filter.push(filter)
+    },
+    filterProviderListByMap (list = []) {
+      if (!this.hasMapRegionFilter || !this.mapFilterProviderKeys.length) return list
+      const providers = new Set(this.mapFilterProviderKeys.map(key => String(key)))
+      return list.filter(item => providers.has(String(item.name)))
+    },
+    mapProviderMapper (list) {
+      return this.filterProviderListByMap(list)
+    },
+    getSelectedProviderNames () {
+      const { provider } = this.form.fc.getFieldsValue(['provider'])
+      if (!provider) return []
+      const list = Array.isArray(provider) ? provider : [provider]
+      return list.filter(Boolean).map(p => String(p))
+    },
+    filterCloudregionListByProvider (list = []) {
+      const providers = this.getSelectedProviderNames()
+      if (!this.isWorldMapMode || !providers.length) return list
+      const providerSet = new Set(providers.map(p => String(p)))
+      return list.filter(item => {
+        const raw = item.provider || item.brand || ''
+        return providerSet.has(String(raw))
+      })
+    },
+    mapCloudregionParamsMapper (params) {
+      if (!this.hasMapRegionFilter) return params
+      if (this.getSelectedProviderNames().length) return params
+      const next = { ...params }
+      delete next.provider
+      return next
+    },
+    mapCloudregionMapper (list) {
+      let result = list
+      if (this.hasMapRegionFilter) {
+        const idSet = new Set(this.mapFilterRegionIds)
+        result = result.filter(item => idSet.has(item.id))
+        const existingIds = new Set(result.map(item => item.id))
+        this.nearbyRegions.forEach((item) => {
+          if (item.id && idSet.has(item.id) && !existingIds.has(item.id)) {
+            result.push(item)
+          }
+        })
+      }
+      return this.filterCloudregionListByProvider(result)
+    },
+    mapZoneMapper (list) {
+      if (!this.hasMapRegionFilter) return list
+      const regionIds = this.cloudregions
+      if (!regionIds.length) return []
+      const regionFilter = new Set(regionIds)
+      return list.filter(item => {
+        const regionId = item.cloudregion_id || item.region_id || item.cloudregion
+        return regionFilter.has(regionId)
+      })
+    },
     providerFetchSuccess (list) {
+      const toAreaValue = (value) => {
+        if (!this.isWorldMapMode) return value
+        if (value === undefined || value === null) return []
+        return Array.isArray(value) ? value : [value]
+      }
       // 计费方式为包年包月平台不含 azure、aws、google
       if (this.form.fd.billType === BILL_TYPES_MAP.package.key) {
         if (this.form.fd.duration === '1W') {
-          list = list.filter(item => HYPERVISORS_MAP.aliyun.key === item.name.toLowerCase())
+          list = list.filter(item => HYPERVISORS_MAP.aliyun.key === item.name)
           this.form.fc.setFieldsValue({
-            provider: HYPERVISORS_MAP.aliyun.provider,
+            provider: toAreaValue(HYPERVISORS_MAP.aliyun.provider),
           })
         } else {
           list = list.filter(item => {
-            return ![HYPERVISORS_MAP.azure.key, HYPERVISORS_MAP.aws.key, HYPERVISORS_MAP.google.key].includes(item.name.toLowerCase())
+            return ![HYPERVISORS_MAP.azure.key, HYPERVISORS_MAP.aws.key, HYPERVISORS_MAP.google.key].includes(item.name)
           })
         }
       }
       // 过滤京东云和移动云等只读的云
       list = list.filter(item => {
-        return ![HYPERVISORS_MAP.jdcloud.key, HYPERVISORS_MAP.ecloud.key].includes(item.name.toLowerCase())
+        return ![HYPERVISORS_MAP.jdcloud.key, HYPERVISORS_MAP.ecloud.key].includes(item.name)
       })
+      if (this.hasMapRegionFilter) {
+        list = this.filterProviderListByMap(list)
+      }
       // 回填
-      if (this.isInitForm && this.initFormData.hypervisor && list.some(item => item.name.toLowerCase() === this.initFormData.hypervisor)) {
+      if (this.isInitForm && this.initFormData.hypervisor && list.some(item => item.name === this.initFormData.hypervisor)) {
         if (HYPERVISORS_MAP[this.initFormData.hypervisor]) {
           this.form.fc.setFieldsValue({
-            provider: HYPERVISORS_MAP[this.initFormData.hypervisor].provider,
-            cloudregion: this.initFormData.prefer_region,
-            zone: this.initFormData.prefer_zone,
+            provider: toAreaValue(HYPERVISORS_MAP[this.initFormData.hypervisor].provider),
+            cloudregion: toAreaValue(this.initFormData.prefer_region),
+            zone: toAreaValue(this.initFormData.prefer_zone),
             cloudprovider: this.initFormData.prefer_manager_id,
           })
         }

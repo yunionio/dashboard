@@ -200,8 +200,12 @@ export default {
           this.isDomainFirstLoadData = false
         }
         await this.$nextTick()
-        this.$refs.domain.loadDefaultSelectedOpts()
-        this.$refs.project.loadDefaultSelectedOpts()
+        if (this.$refs.domain && this.$refs.domain.loadDefaultSelectedOpts) {
+          this.$refs.domain.loadDefaultSelectedOpts()
+        }
+        if (this.$refs.project && this.$refs.project.loadDefaultSelectedOpts) {
+          this.$refs.project.loadDefaultSelectedOpts()
+        }
       } else {
         if (this.isDomainMode || this.isAdminMode) { // 域视图 和 没开三级权限的系统视图
           const data = [{
@@ -242,7 +246,9 @@ export default {
             this.isProjectFirstLoadData = false
           }
           await this.$nextTick()
-          this.$refs.project.loadDefaultSelectedOpts()
+          if (this.$refs.project && this.$refs.project.loadDefaultSelectedOpts) {
+            this.$refs.project.loadDefaultSelectedOpts()
+          }
         } else { // 普通视图
           const data = [{
             key: this.userInfo.projectId,
