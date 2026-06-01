@@ -217,6 +217,13 @@ export const createVmDecorators = (type, initData = {}) => {
         ],
       },
     ],
+    enableWorldMap: [
+      'enableWorldMap',
+      {
+        valuePropName: 'checked',
+        initialValue: false,
+      },
+    ],
     cloudregionZone: {
       cloudregion: [
         'cloudregion',
@@ -1081,7 +1088,7 @@ export const createVmDecorators = (type, initData = {}) => {
 
 const decoratorGroup = {
   idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'kickstart', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch', 'hostName', 'encrypt_keys', 'custom_data_type', 'deploy_telegraf', 'pci', 'bastion_host', 'is_daemon'],
-  public: ['domain', 'project', 'name', 'description', 'count', 'imageOS', 'reason', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType', 'tag', 'servertemplate', 'duration', 'cloudprovider', 'hostName', 'custom_data_type', 'bastion_host'],
+  public: ['domain', 'project', 'name', 'description', 'count', 'enableWorldMap', 'imageOS', 'reason', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType', 'tag', 'servertemplate', 'duration', 'cloudprovider', 'hostName', 'custom_data_type', 'bastion_host'],
   private: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'duration', 'tag', 'servertemplate', 'cloudprovider', 'hostName', 'custom_data_type', 'bastion_host', 'pci'],
 }
 
@@ -1581,9 +1588,13 @@ export class GenCreateData {
     let ret = ''
     if (R.is(Object, this.fd.zone)) {
       ret = this.fd.zone.key
-    }
-    if (R.is(String, this.fd.zone)) { // 字符串形式是公有云 AreaSelect 的 zone
+    } else if (R.is(String, this.fd.zone)) { // 字符串形式是公有云 AreaSelect 的 zone
       ret = this.fd.zone
+    } else if (Array.isArray(this.fd.zone) && this.fd.zone.length) {
+      ret = this.fd.zone[0]
+    }
+    if (!ret && this.isPublic && !this.isPrepaid && R.is(Object, this.fd.sku)) {
+      ret = this.fd.sku.zone_id || ''
     }
     return ret
   }

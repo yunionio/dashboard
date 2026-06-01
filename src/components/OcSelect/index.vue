@@ -226,6 +226,7 @@ export default {
   },
   methods: {
     fetchResourceData (res, queryParams) {
+      if (!this.resource) return
       const resManager = new Manager(this.resource, this.apiVersion)
       this.c_loading = true
       this.metadata.resOpts = []
