@@ -7,6 +7,7 @@ import {
 } from '@/utils/common/tableColumn'
 import {
   // getDeviceModelTableColumn,
+  getAppNameTableColumn,
   getImageTableColumn,
   getBandwidthTableColumn,
   getCpuTableColumn,
@@ -14,9 +15,11 @@ import {
   getDiskTableColumn,
   getLlmTypeTableColumn,
 } from '../utils/columns'
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 
 export default {
   created () {
+    const { isApplyType, isDesktopType } = parseLlmRoute(this.$route.path)
     this.columns = [
       getNameDescriptionTableColumn({
         onManager: this.onManager,
@@ -32,8 +35,9 @@ export default {
       getMemoryTableColumn(),
       getDiskTableColumn(),
       getImageTableColumn({ vm: this }),
+      ...(isDesktopType ? [getAppNameTableColumn()] : []),
       getBandwidthTableColumn(),
-      getLlmTypeTableColumn(this.isApplyType),
+      getLlmTypeTableColumn({ isApplyType, isDesktopType }),
       getProjectTableColumn(),
       getPublicScopeTableColumn({
         vm: this,

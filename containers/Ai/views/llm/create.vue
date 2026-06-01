@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="isApplyType ? $t('aice.app_llm_create') : $t('aice.llm_create')" />
+    <page-header :title="createPageTitle" />
     <page-body needMarginBottom>
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
         <a-form-item :label="$t('common.name')">
@@ -9,7 +9,7 @@
             <name-repeated res="llms" :name="form.fd.name" />
           </template>
         </a-form-item>
-        <a-form-item :label="isApplyType ? $t('aice.llm_type.app') : $t('aice.llm_type.llm')">
+        <a-form-item :label="llmTypeLabel">
           <a-radio-group
             class="llm-type-picker"
             button-style="solid"
@@ -19,12 +19,12 @@
             </a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item :label="isApplyType ? $t('aice.app_llm_sku') : $t('aice.llm_sku')">
+        <a-form-item :label="llmSkuLabel">
           <base-select
             v-decorator="decorators.llm_sku_id"
             resource="llm_skus"
             :select-props="{
-              placeholder: $t('common.tips.select', [isApplyType ? $t('aice.app_llm_sku') : $t('aice.llm_sku')]),
+              placeholder: $t('common.tips.select', [llmSkuLabel]),
             }"
             :params="llmSkuParams" />
         </a-form-item>
@@ -570,6 +570,7 @@ import NameRepeated from '@/sections/NameRepeated'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import { LLM_TYPE_OPTIONS, getParamsForType } from '../llm-sku/constants/llmTypeConfig'
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import { OPENCLAW_CHANNEL_SECTIONS, OPENCLAW_CHANNEL_OPTIONS } from '../llm-sku/constants/openclawChannelConfig'
 import { OPENCLAW_PROVIDER_SECTIONS, OPENCLAW_PROVIDER_OPTIONS } from '../llm-sku/constants/openclawProviderConfig'
 export default {
@@ -585,13 +586,25 @@ export default {
   },
   mixins: [WindowsMixin],
   data () {
-    const isApplyType = this.$route.path.includes('app-llm')
-    const llmTypeOptions = isApplyType
-      ? LLM_TYPE_OPTIONS.filter(opt => opt.id !== 'vllm' && opt.id !== 'ollama' && opt.id !== 'sglang')
-      : LLM_TYPE_OPTIONS.filter(opt => opt.id === 'vllm' || opt.id === 'ollama' || opt.id === 'sglang')
-    const defaultLlmType = (llmTypeOptions[0] && llmTypeOptions[0].id) || (isApplyType ? 'openclaw' : 'ollama')
+    const llmRouteCtx = parseLlmRoute(this.$route.path)
+    const isApplyType = llmRouteCtx.isApplyType
+    const isDesktopType = llmRouteCtx.isDesktopType
+    let llmTypeOptions
+    if (isDesktopType) {
+      llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => opt.id === 'desktop')
+    } else if (isApplyType) {
+      llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => !['vllm', 'ollama', 'sglang', 'desktop'].includes(opt.id))
+    } else {
+      llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => ['vllm', 'ollama', 'sglang'].includes(opt.id))
+    }
+    const defaultLlmType = (llmTypeOptions[0] && llmTypeOptions[0].id) || (isDesktopType ? 'desktop' : (isApplyType ? 'openclaw' : 'ollama'))
+    const llmTypeSelectLabel = isDesktopType
+      ? this.$t('aice.llm_type')
+      : (isApplyType ? this.$t('aice.llm_type.app') : this.$t('aice.llm_type.llm'))
     return {
+      llmRouteCtx,
       isApplyType,
+      isDesktopType,
       llmTypeOptions: llmTypeOptions.map(opt => ({ id: opt.id, name: this.$t(opt.name) })),
       collapseActive: [],
       loading: false,
@@ -628,7 +641,7 @@ export default {
           {
             initialValue: defaultLlmType,
             rules: [
-              { required: true, message: this.$t('common.tips.select', [isApplyType ? this.$t('aice.llm_type.app') : this.$t('aice.llm_type.llm')]) },
+              { required: true, message: this.$t('common.tips.select', [llmTypeSelectLabel]) },
             ],
           },
         ],
@@ -833,6 +846,21 @@ export default {
     }
   },
   computed: {
+    createPageTitle () {
+      if (this.isDesktopType) return this.$t('aice.desktop_llm_create')
+      if (this.isApplyType) return this.$t('aice.app_llm_create')
+      return this.$t('aice.llm_create')
+    },
+    llmTypeLabel () {
+      if (this.isDesktopType) return this.$t('aice.llm_type')
+      if (this.isApplyType) return this.$t('aice.llm_type.app')
+      return this.$t('aice.llm_type.llm')
+    },
+    llmSkuLabel () {
+      if (this.isDesktopType) return this.$t('aice.desktop_llm_sku')
+      if (this.isApplyType) return this.$t('aice.app_llm_sku')
+      return this.$t('aice.llm_sku')
+    },
     networkParams () {
       const ret = {
         scope: this.$store.getters.scope,
@@ -915,7 +943,7 @@ export default {
       return list.map(item => ({ key: item.model, label: item.model }))
     },
     supportDevicesAndHostPaths () {
-      return ['ollama', 'vllm', 'sglang', 'comfyui'].includes((this.form.fd.llm_type || '').toLowerCase())
+      return ['ollama', 'vllm', 'sglang', 'comfyui', 'desktop'].includes((this.form.fd.llm_type || '').toLowerCase())
     },
     supportMountedModels () {
       return ['ollama', 'vllm', 'sglang'].includes((this.form.fd.llm_type || '').toLowerCase())
@@ -1628,7 +1656,7 @@ export default {
           data,
         })
         this.$message.success(this.$t('common.success'))
-        this.$router.push(this.isApplyType ? '/app-llm' : '/llm')
+        this.$router.push(this.llmRouteCtx.instanceListPath)
       } catch (error) {
         throw error
       } finally {
@@ -1636,7 +1664,7 @@ export default {
       }
     },
     handleCancel () {
-      this.$router.push(this.isApplyType ? '/app-llm' : '/llm')
+      this.$router.push(this.llmRouteCtx.instanceListPath)
     },
   },
 }

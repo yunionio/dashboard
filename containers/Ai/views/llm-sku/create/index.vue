@@ -20,6 +20,7 @@
 
 <script>
 import LlmSkuCreateForm from './Form.vue'
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 
 export default {
   name: 'LlmSkuCreate',
@@ -32,11 +33,20 @@ export default {
     }
   },
   computed: {
+    llmRouteCtx () {
+      return parseLlmRoute(this.$route.path)
+    },
     isApplyType () {
-      return this.$route.path.includes('app-llm')
+      return this.llmRouteCtx.isApplyType
+    },
+    isDesktopType () {
+      return this.llmRouteCtx.isDesktopType
     },
     headerTitle () {
-      return this.$t('common.create') + ' - ' + (this.isApplyType ? this.$t('aice.app_llm_sku') : this.$t('aice.llm_sku'))
+      let skuLabel = this.$t('aice.llm_sku')
+      if (this.isDesktopType) skuLabel = this.$t('aice.desktop_llm_sku')
+      else if (this.isApplyType) skuLabel = this.$t('aice.app_llm_sku')
+      return `${this.$t('common.create')} - ${skuLabel}`
     },
   },
   methods: {
@@ -56,10 +66,10 @@ export default {
       this.$refs.createForm && this.$refs.createForm.handleCancel()
     },
     onFormSuccess () {
-      this.$router.push(this.isApplyType ? '/app-llm-sku' : '/llm-sku')
+      this.$router.push(this.llmRouteCtx.skuListPath)
     },
     onFormCancel () {
-      this.$router.push(this.isApplyType ? '/app-llm-sku' : '/llm-sku')
+      this.$router.push(this.llmRouteCtx.skuListPath)
     },
   },
 }

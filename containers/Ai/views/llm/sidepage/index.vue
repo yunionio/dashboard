@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="isApplyType ? $t('aice.app_llm') : $t('aice.llm')"
+    :title="sidePageTitle"
     icon="res-vminstance"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -35,6 +35,7 @@ import Actions from '@/components/PageList/Actions'
 // import InstantAppIndex from '@K8S/views/llm-instantmodel/components/List.vue'
 import Monitor from '@Compute/views/vminstance-container/sidepage/Monitor'
 import Log from '@Compute/views/pod-container/sidepage/Log'
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import Detail from './Detail'
@@ -63,8 +64,19 @@ export default {
     childPageData () {
       return { guest_id: this.detailData.cmp_id, ...this.rowWithCmpInfo }
     },
+    llmRouteCtx () {
+      return parseLlmRoute(this.$route.path)
+    },
     isApplyType () {
-      return this.$route.path.includes('app-llm')
+      return this.llmRouteCtx.isApplyType
+    },
+    isDesktopType () {
+      return this.llmRouteCtx.isDesktopType
+    },
+    sidePageTitle () {
+      if (this.isDesktopType) return this.$t('aice.desktop_llm')
+      if (this.isApplyType) return this.$t('aice.app_llm')
+      return this.$t('aice.llm')
     },
     detailTabs () {
       const ret = [
@@ -76,7 +88,7 @@ export default {
         // { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('aice.event'), key: 'event-drawer' },
       ]
-      if (this.isApplyType && this.childPageData?.llm_type !== 'comfyui') {
+      if ((this.isApplyType || this.isDesktopType) && this.childPageData?.llm_type !== 'comfyui') {
         return ret.filter(item => item.key !== 'model')
       }
       return ret
