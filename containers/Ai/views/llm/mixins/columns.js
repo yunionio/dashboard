@@ -9,6 +9,7 @@ import {
   getLlmIpColumn,
   getLlmSkuColumn,
   getLlmImageColumn,
+  getAppNameTableColumn,
   getLlmTypeTableColumn,
   getCpuTableColumn,
   getMemoryTableColumn,
@@ -17,14 +18,22 @@ import {
   getNetworkTypeTableColumn,
   getNetworkTableColumn,
 } from '../utils/columns'
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 
 export default {
   computed: {
+    llmRouteCtx () {
+      return parseLlmRoute(this.$route.path)
+    },
     isApplyType () {
-      return this.$route.path.includes('app-llm')
+      return this.llmRouteCtx.isApplyType
+    },
+    isDesktopType () {
+      return this.llmRouteCtx.isDesktopType
     },
   },
   created () {
+    const { isApplyType, isDesktopType } = parseLlmRoute(this.$route.path)
     this.columns = [
       getNameDescriptionTableColumn({
         onManager: this.onManager,
@@ -38,9 +47,10 @@ export default {
       getStatusTableColumn({ statusModule: 'server' }),
       getStatusTableColumn({ field: 'llm_status', statusModule: 'container', title: this.$t('aice.container_status') }),
       getLlmIpColumn(),
-      getLlmSkuColumn({ vm: this, isApplyType: this.isApplyType }),
+      getLlmSkuColumn({ vm: this, isApplyType, isDesktopType }),
       getLlmImageColumn({ vm: this }),
-      getLlmTypeTableColumn(this.isApplyType),
+      ...(isDesktopType ? [getAppNameTableColumn()] : []),
+      getLlmTypeTableColumn({ isApplyType, isDesktopType }),
       getTagTableColumn({
         onManager: this.onManager,
         resource: 'llms',

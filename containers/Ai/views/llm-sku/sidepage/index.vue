@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="isApplyType ? $t('aice.app_llm_sku') : $t('aice.llm_sku')"
+    :title="sidePageTitle"
     icon="res-sku"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -30,6 +30,7 @@
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import Detail from './Detail'
@@ -50,8 +51,19 @@ export default {
     }
   },
   computed: {
+    llmRouteCtx () {
+      return parseLlmRoute(this.$route.path)
+    },
     isApplyType () {
-      return this.$route.path.includes('app-llm')
+      return this.llmRouteCtx.isApplyType
+    },
+    isDesktopType () {
+      return this.llmRouteCtx.isDesktopType
+    },
+    sidePageTitle () {
+      if (this.isDesktopType) return this.$t('aice.desktop_llm_sku')
+      if (this.isApplyType) return this.$t('aice.app_llm_sku')
+      return this.$t('aice.llm_sku')
     },
     getParams () {
       return null

@@ -2,7 +2,7 @@
   <base-dialog :width="900" @cancel="cancelDialog">
     <div slot="header">{{ $t('aice.llm_update_config') }}</div>
     <div slot="body">
-      <dialog-selected-tips :name="isApplyType ? $t('aice.app_llm') : $t('aice.llm')" :count="1" :action="$t('aice.llm_update_config')" />
+      <dialog-selected-tips :name="instanceLabel" :count="1" :action="$t('aice.llm_update_config')" />
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
         <a-form-item v-if="supportMountedModels" :label="$t('aice.model')" :extra="$t('aice.llm_override_sku_extra')">
           <base-select
@@ -128,13 +128,14 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { uuid } from '@/utils/utils'
 import { getParamsForType } from '../../llm-sku/constants/llmTypeConfig'
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 
 export default {
   name: 'LlmUpdateConfigDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const row = (this.params.data && this.params.data[0]) || {}
-    const isApplyType = this.$route.path.includes('app-llm')
+    const { isApplyType, isDesktopType } = parseLlmRoute(this.$route.path)
     const devices = Array.isArray(row.devices) ? row.devices : []
     // 详情响应的字段名是 mounted_model_infos（来自 LLMListDetails.MountedModelInfos）；
     // 编辑时回填这些已挂载模型的 id 作为 select 的 initialValue。
@@ -161,6 +162,7 @@ export default {
     return {
       row,
       isApplyType,
+      isDesktopType,
       loading: false,
       hostPathRows,
       form: {
@@ -242,6 +244,11 @@ export default {
     }
   },
   computed: {
+    instanceLabel () {
+      if (this.isDesktopType) return this.$t('aice.desktop_llm')
+      if (this.isApplyType) return this.$t('aice.app_llm')
+      return this.$t('aice.llm')
+    },
     specList () {
       const list = Object.values(this.$store.getters.capability?.pci_model_types || {}).filter(item => item.hypervisor === 'pod')
       return list.map(item => ({ key: item.model, label: item.model }))

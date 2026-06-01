@@ -23,6 +23,7 @@ import {
   getDistinctFieldFilter,
 } from '@/utils/common/tableFilter'
 import { LLM_TYPE_OPTIONS } from '../../llm-sku/constants/llmTypeConfig'
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
@@ -51,9 +52,9 @@ export default {
           },
           name: getNameFilter(),
           llm_type: {
-            label: this.isApplyType ? this.$t('aice.llm_type.app') : this.$t('aice.llm_type.llm'),
+            label: this.llmTypeFilterLabel,
             dropdown: true,
-            items: LLM_TYPE_OPTIONS.map(opt => ({ key: opt.id, label: this.$t(opt.name) })),
+            items: this.llmTypeFilterOptions,
           },
           status: getStatusFilter('server'),
           llm_ip: {
@@ -106,7 +107,7 @@ export default {
         {
           label: this.$t('common.create'),
           action: () => {
-            this.$router.push(this.isApplyType ? '/app-llm/create' : '/llm/create')
+            this.$router.push(this.llmRouteCtx.instanceCreatePath)
           },
           meta: () => {
             return {
@@ -301,8 +302,30 @@ export default {
     }
   },
   computed: {
+    llmRouteCtx () {
+      return parseLlmRoute(this.$route.path)
+    },
     isApplyType () {
-      return this.$route.path.includes('app-llm')
+      return this.llmRouteCtx.isApplyType
+    },
+    isDesktopType () {
+      return this.llmRouteCtx.isDesktopType
+    },
+    llmTypeFilterLabel () {
+      if (this.isDesktopType) return this.$t('aice.llm_type.desktop')
+      if (this.isApplyType) return this.$t('aice.llm_type.app')
+      return this.$t('aice.llm_type.llm')
+    },
+    llmTypeFilterOptions () {
+      let opts = LLM_TYPE_OPTIONS
+      if (this.isDesktopType) {
+        opts = opts.filter(opt => opt.id === 'desktop')
+      } else if (this.isApplyType) {
+        opts = opts.filter(opt => !['vllm', 'ollama', 'sglang', 'desktop'].includes(opt.id))
+      } else {
+        opts = opts.filter(opt => ['vllm', 'ollama', 'sglang'].includes(opt.id))
+      }
+      return opts.map(opt => ({ key: opt.id, label: this.$t(opt.name) }))
     },
     exportDataOptions () {
       return {
@@ -350,7 +373,7 @@ export default {
     getParam () {
       const ret = {
         ...this.getParams,
-        llm_types: this.isApplyType ? ['dify', 'openclaw', 'comfyui', 'hermes-agent'] : ['vllm', 'ollama', 'sglang'],
+        llm_types: this.llmRouteCtx.llmTypes,
         details: true,
       }
       return ret
