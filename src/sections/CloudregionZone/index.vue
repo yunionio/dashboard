@@ -90,6 +90,9 @@ export default {
         delete params.scope
         delete params.domain_id
       }
+      if (this.filterBrandResource && !params.hasOwnProperty('read_only')) {
+        params.read_only = false
+      }
       if (this.form) {
         this.form.fc.setFieldsValue({
           cloudregion: { key: '', label: '' },
@@ -132,6 +135,9 @@ export default {
         zone: { key: '', label: '' },
       })
       if (!params.cloudregion_id) return
+      if (this.filterBrandResource && !params.hasOwnProperty('read_only')) {
+        params.read_only = false
+      }
       this.zonesM.list({ params })
         .then(({ data: { data = [] } }) => {
           this.zoneOpts = data
