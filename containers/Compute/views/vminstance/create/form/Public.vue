@@ -765,8 +765,7 @@ export default {
       if (!this.hasMapRegionFilter || !this.mapFilterProviderKeys.length) return list
       const allowed = new Set(
         this.mapFilterProviderKeys.map(raw => {
-          const key = String(raw).toLowerCase()
-          return HYPERVISORS_MAP[key] ? HYPERVISORS_MAP[key].key : key
+          return PROVIDER_MAP[raw] ? PROVIDER_MAP[raw].key : raw
         }),
       )
       return list.filter(item => allowed.has(String(item.name)))
