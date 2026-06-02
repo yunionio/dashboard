@@ -658,11 +658,10 @@ export default {
       this.$refs.areaSelectRef.fetchs(['provider', 'cloudregion', 'zone'])
     },
     clearPublicLocationFields (isMapMode = !!this.form.fd.enableWorldMap) {
-      const emptyAreaValue = isMapMode ? [] : undefined
       this.form.fc.setFieldsValue({
-        provider: emptyAreaValue,
-        cloudregion: emptyAreaValue,
-        zone: emptyAreaValue,
+        provider: [],
+        cloudregion: [],
+        zone: [],
         cloudprovider: undefined,
         sku: undefined,
       })
@@ -674,11 +673,10 @@ export default {
     onRegionSelect (payload) {
       if (this.type !== 'public') return
       const regions = payload?.nearbyRegions || []
-      const emptyAreaValue = this.form.fd.enableWorldMap ? [] : undefined
       this.form.fc.setFieldsValue({
-        provider: emptyAreaValue,
-        cloudregion: emptyAreaValue,
-        zone: emptyAreaValue,
+        provider: [],
+        cloudregion: [],
+        zone: [],
         cloudprovider: undefined,
         sku: undefined,
       })
