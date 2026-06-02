@@ -628,6 +628,9 @@ export default {
         ...DEFAULT_PARAMS,
         ...queryParams,
       }
+      if (this.filterBrandResource && !params.hasOwnProperty('read_only')) {
+        params.read_only = false
+      }
       this.providerLoading = true
       try {
         const manager = new this.$Manager('cloudregions', 'v2')
@@ -662,6 +665,9 @@ export default {
       }
       if (this.cloudregionParamsMapper) {
         params = this.cloudregionParamsMapper(params)
+      }
+      if (this.filterBrandResource && !params.hasOwnProperty('read_only')) {
+        params.read_only = false
       }
       this.cloudregionLoading = true
       try {
@@ -699,6 +705,9 @@ export default {
       }
       params = this.applyProviderParam(params, provider)
       params = this.applyCloudregionParam(params, cloudregion)
+      if (this.filterBrandResource && !params.hasOwnProperty('read_only')) {
+        params.read_only = false
+      }
       this.zoneLoading = true
       try {
         const manager = new this.$Manager('zones', 'v2')
