@@ -42,12 +42,8 @@ export default {
         resource: 'llms',
         getParams: this.getParam,
         steadyStatus: {
-          status: (data) => {
-            if (Object.values(expectStatus.server).flat().includes(data.status) || Object.values(expectStatus.container).flat().includes(data.llm_status)) {
-              return false
-            }
-            return true
-          },
+          status: Object.values(expectStatus.server).flat(),
+          llm_status: Object.values(expectStatus.container).flat(),
         },
         filterOptions: {
           id: {
