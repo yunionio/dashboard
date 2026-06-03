@@ -2,10 +2,24 @@ import i18n from '@/locales'
 import { sizestr } from '@/utils/utils'
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 
-export const getLlmTypeTableColumn = (isApplyType = false) => {
+function llmTypeColumnTitle ({ isApplyType = false, isDesktopType = false } = {}) {
+  if (isDesktopType) return i18n.t('aice.llm_type.desktop')
+  if (isApplyType) return i18n.t('aice.llm_type.app')
+  return i18n.t('aice.llm_type.llm')
+}
+
+function llmSkuColumnTitle ({ isApplyType = false, isDesktopType = false } = {}) {
+  if (isDesktopType) return i18n.t('aice.desktop_llm_sku')
+  if (isApplyType) return i18n.t('aice.app_llm_sku')
+  return i18n.t('aice.llm_sku')
+}
+
+export const getLlmTypeTableColumn = (opts = {}) => {
+  const isApplyType = typeof opts === 'boolean' ? opts : opts.isApplyType
+  const isDesktopType = typeof opts === 'object' ? opts.isDesktopType : false
   return {
     field: 'llm_type',
-    title: isApplyType ? i18n.t('aice.llm_type.app') : i18n.t('aice.llm_type.llm'),
+    title: llmTypeColumnTitle({ isApplyType, isDesktopType }),
     width: 120,
     formatter: ({ row }) => {
       return row.llm_type || '-'
@@ -34,10 +48,10 @@ export const getLlmIpColumn = () => {
   }
 }
 
-export const getLlmSkuColumn = ({ vm = {}, isApplyType = false } = {}) => {
+export const getLlmSkuColumn = ({ vm = {}, isApplyType = false, isDesktopType = false } = {}) => {
   return {
     field: 'llm_sku',
-    title: isApplyType ? i18n.t('aice.app_llm_sku') : i18n.t('aice.llm_sku'),
+    title: llmSkuColumnTitle({ isApplyType, isDesktopType }),
     width: 120,
     slots: {
       default: ({ row }, h) => {
@@ -51,6 +65,17 @@ export const getLlmSkuColumn = ({ vm = {}, isApplyType = false } = {}) => {
     },
     formatter: ({ row }) => {
       return row.llm_sku || '-'
+    },
+  }
+}
+
+export const getAppNameTableColumn = () => {
+  return {
+    field: 'app_name',
+    title: i18n.t('aice.llm_image.app_name'),
+    width: 160,
+    formatter: ({ row }) => {
+      return row.app_name || '-'
     },
   }
 }

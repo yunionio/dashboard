@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{action}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="isApplyType ? $t('aice.app_llm') : $t('aice.llm')" :count="params.data.length" :action="action" />
+      <dialog-selected-tips :name="instanceLabel" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
       <!-- <a-form :form="form.fc" v-show="isRestart">
         <a-form-item class="mb-0">
@@ -23,13 +23,17 @@
 import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 
 export default {
   name: 'LlmBatchConfirmDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
-      isApplyType: this.$route.path.includes('app-llm'),
+      ...(() => {
+        const ctx = parseLlmRoute(this.$route.path)
+        return { isApplyType: ctx.isApplyType, isDesktopType: ctx.isDesktopType }
+      })(),
       loading: false,
       action: this.params.actionText,
       form: {
@@ -59,6 +63,11 @@ export default {
   },
   computed: {
     ...mapGetters(['userInfo']),
+    instanceLabel () {
+      if (this.isDesktopType) return this.$t('aice.desktop_llm')
+      if (this.isApplyType) return this.$t('aice.app_llm')
+      return this.$t('aice.llm')
+    },
     columns () {
       const showFields = ['name', 'llm_ip', 'status', 'llm_sku']
       return this.params.columns.filter((item) => { return showFields.includes(item.field) })

@@ -13,6 +13,7 @@ import ListMixin from '@/mixins/list'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import { filterOptions } from '../utils/filters'
+import { parseLlmImageRoute, getLlmImageTypeFilter } from '@Ai/utils/llmRouteContext'
 
 export default {
   name: 'PhoneImageList',
@@ -51,7 +52,8 @@ export default {
         {
           label: this.$t('aice.llm_image.import_community_image'),
           action: () => {
-            this.$router.push({ name: 'LlmImageImportCommunity' })
+            const imageCtx = parseLlmImageRoute(this.$route.path)
+            this.$router.push({ path: imageCtx.imageImportCommunityPath })
           },
         },
         {
@@ -100,6 +102,21 @@ export default {
         ...this.getParams,
         details: true,
       }
+      const imageFilter = getLlmImageTypeFilter(this.$route.path)
+      let filters = ret.filter
+      if (filters == null && ret.filters != null) {
+        filters = ret.filters
+      }
+      if (typeof filters === 'string') {
+        filters = [filters]
+      }
+      if (!Array.isArray(filters)) {
+        filters = []
+      }
+      if (!filters.includes(imageFilter)) {
+        filters.push(imageFilter)
+      }
+      ret.filter = filters
       return ret
     },
     handleOpenSidepage (row) {

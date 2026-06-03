@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header
-      :title="$t('aice.app_llm')"
+      :title="$t('aice.desktop_llm')"
       isShowResStatusTab
       :status-opts="statusOpts"
       :status-click-handle="statusClickHandle" />
@@ -17,17 +17,17 @@
 
 <script>
 import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
-import List from '../llm/components/List'
+import List from '@Ai/views/llm/components/List'
 
 export default {
-  name: 'AppLlmIndex',
+  name: 'AppDesktopIndex',
   components: {
     List,
   },
   mixins: [ResStatisticsV2Mixin],
   data () {
     return {
-      listId: 'AppLlmList',
+      listId: 'AppDesktopList',
       statusNormalList: ['running', 'ready'],
     }
   },

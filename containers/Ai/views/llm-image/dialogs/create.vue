@@ -24,6 +24,16 @@
         <a-form-model-item :label="$t('aice.llm_image.label')" prop="image_label">
           <a-input v-model="form.image_label" :placeholder="$t('common.tips.input', [$t('aice.llm_image.label')])" />
         </a-form-model-item>
+        <a-form-model-item v-if="form.llm_type === 'desktop'" :label="$t('aice.llm_image.app_name')" prop="app_name">
+          <a-select
+            v-model="form.app_name"
+            allow-clear
+            :placeholder="$t('common.tips.select', [$t('aice.llm_image.app_name')])">
+            <a-select-option v-for="opt in desktopAppNameOptions" :key="opt" :value="opt">
+              {{ opt }}
+            </a-select-option>
+          </a-select>
+        </a-form-model-item>
       </a-form-model>
     </div>
     <div slot="footer">
@@ -38,6 +48,14 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { validateModelForm } from '@/utils/validate'
 import { LLM_TYPE_OPTIONS } from '../../llm-sku/constants/llmTypeConfig'
+import { getAllowedImageLlmTypes, parseLlmImageRoute } from '@Ai/utils/llmRouteContext'
+
+const DESKTOP_APP_NAME_OPTIONS = [
+  'webtop-ubuntu-xfce',
+  'webtop-debian-xfce',
+  'firefox',
+  'chromium',
+]
 
 export default {
   name: 'DesktopImageCreateDialog',
@@ -46,7 +64,13 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const data = this.params.type === 'edit' ? this.params.data[0] : {}
-    const defaultLlmType = (LLM_TYPE_OPTIONS[0] && LLM_TYPE_OPTIONS[0].id) || 'openclaw'
+    const imageRouteCtx = parseLlmImageRoute(this.$route.path)
+    const allowedTypes = getAllowedImageLlmTypes(this.$route.path)
+    const filteredOptions = LLM_TYPE_OPTIONS.filter(opt => allowedTypes.includes(opt.id))
+    const fallbackLlmType = imageRouteCtx.isDesktopImageRoute
+      ? 'desktop'
+      : (imageRouteCtx.isAgentImageRoute ? 'openclaw' : 'ollama')
+    const defaultLlmType = (filteredOptions[0] && filteredOptions[0].id) || allowedTypes[0] || fallbackLlmType
     return {
       loading: false,
       type: this.params.type,
@@ -55,6 +79,7 @@ export default {
         llm_type: data.llm_type || defaultLlmType,
         image_name: data.image_name || undefined,
         image_label: data.image_label || undefined,
+        app_name: data.app_name || undefined,
       },
       rules: {
         name: [{ required: true, validator: this.$validate('imageName') }],
@@ -74,10 +99,13 @@ export default {
   },
   computed: {
     llmTypeOptions () {
-      return LLM_TYPE_OPTIONS.map(opt => ({ id: opt.id, name: this.$t(opt.name) }))
+      const allowedTypes = getAllowedImageLlmTypes(this.$route.path)
+      return LLM_TYPE_OPTIONS
+        .filter(opt => allowedTypes.includes(opt.id))
+        .map(opt => ({ id: opt.id, name: this.$t(opt.name) }))
     },
     llmTypeName () {
-      const opt = LLM_TYPE_OPTIONS.find(o => o.id === this.form.llm_type)
+      const opt = this.llmTypeOptions.find(o => o.id === this.form.llm_type)
       return opt ? this.$t(opt.name) : this.form.llm_type || '-'
     },
     desktopModelParams () {
@@ -85,6 +113,9 @@ export default {
         limit: 20,
         scope: this.$store.getters.scope,
       }
+    },
+    desktopAppNameOptions () {
+      return DESKTOP_APP_NAME_OPTIONS
     },
   },
   methods: {

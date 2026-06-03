@@ -51,6 +51,17 @@ export const getEnvsTableColumn = () => {
   }
 }
 
+export const getAppNameTableColumn = () => {
+  return {
+    field: 'app_name',
+    title: i18n.t('aice.llm_image.app_name'),
+    width: 160,
+    formatter: ({ row }) => {
+      return row.app_name || '-'
+    },
+  }
+}
+
 export const getImageTableColumn = ({ vm = {} } = {}) => {
   return {
     field: 'image',
@@ -123,10 +134,15 @@ export const getDiskTableColumn = () => {
   }
 }
 
-export const getLlmTypeTableColumn = (isApplyType = false) => {
+export const getLlmTypeTableColumn = (opts = {}) => {
+  const isApplyType = typeof opts === 'boolean' ? opts : opts.isApplyType
+  const isDesktopType = typeof opts === 'object' ? opts.isDesktopType : false
+  let title = i18n.t('aice.llm_type.llm')
+  if (isDesktopType) title = i18n.t('aice.llm_type.desktop')
+  else if (isApplyType) title = i18n.t('aice.llm_type.app')
   return {
     field: 'llm_type',
-    title: isApplyType ? i18n.t('aice.llm_type.app') : i18n.t('aice.llm_type.llm'),
+    title,
     formatter: ({ row }) => {
       return row.llm_type || '-'
     },
