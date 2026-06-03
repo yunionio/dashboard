@@ -15,6 +15,7 @@
     </template>
     <refresh-button v-else-if="showSync" :loading="loading" @refresh="refresh" class="mr-2" />
     <a-radio-group class="mr-3" @change="timeChange" :value="time">
+      <a-radio-button v-if="allowEmptyTime" key="all" value="all">{{ $t('common_737') }}</a-radio-button>
       <a-radio-button v-for="item in timeOpts" v-show="!item.hidden" :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
       <slot name="radio-button-append" v-if="showCustomTime">
         <custom-date @update:time="(val) => timeChange({target: {value: val}})" :customTimeUseTimeStamp="customTimeUseTimeStamp" :customTime="customTime" @update:customTime="customTimeChange" :showCustomTimeText="isCustom" />
@@ -211,6 +212,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    allowEmptyTime: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     let timer
@@ -276,6 +281,10 @@ export default {
     timeChange (val) {
       const time = val.target.value
       console.log('time', time)
+      if (time === 'all') {
+        this.$emit('update:time', 'all')
+        return
+      }
       if (time === 'custom') {
         this.$emit('update:time', time, 'YYYY-MM-DD HH:mm')
       } else {
