@@ -3,7 +3,8 @@
     :id="id"
     :list-id="id"
     :get-params="mergedGetParams"
-    :hidden-columns="hiddenColumns" />
+    :hidden-columns="hiddenColumns"
+    default-time="" />
 </template>
 
 <script>
@@ -26,18 +27,19 @@ export default {
     },
   },
   computed: {
-    vmName () {
-      return this.data?.name || ''
+    vmId () {
+      return this.data?.id || ''
     },
     mergedGetParams () {
       return () => {
         const base = typeof this.getParams === 'function' ? this.getParams() : this.getParams
         const params = {
           ...(base || {}),
-          res_type: 'guest',
+          all_state: true,
+          alerting: true,
         }
-        if (this.vmName) {
-          params.res_name = this.vmName
+        if (this.vmId) {
+          params.monitor_resource_id = this.vmId
         }
         return params
       }
