@@ -3,14 +3,15 @@
     :id="id"
     :list-id="id"
     :get-params="mergedGetParams"
-    :hidden-columns="hiddenColumns" />
+    :hidden-columns="hiddenColumns"
+    default-time="" />
 </template>
 
 <script>
 import AlertResourceList from '@Monitor/views/alertresource/components/List'
 
 export default {
-  name: 'HostAlertList',
+  name: 'HostAlertHistory',
   components: {
     AlertResourceList,
   },
@@ -26,18 +27,19 @@ export default {
     },
   },
   computed: {
-    hostName () {
-      return this.data?.name || ''
+    hostId () {
+      return this.data?.id || ''
     },
     mergedGetParams () {
       return () => {
         const base = typeof this.getParams === 'function' ? this.getParams() : this.getParams
         const params = {
           ...(base || {}),
-          res_type: 'host',
+          all_state: true,
+          alerting: true,
         }
-        if (this.hostName) {
-          params.res_name = this.hostName
+        if (this.hostId) {
+          params.monitor_resource_id = this.hostId
         }
         return params
       }
