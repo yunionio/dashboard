@@ -4,8 +4,6 @@ import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 import { featureMenuHiddenCheck } from '@/utils/auth'
 
 const Llm = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm')
-const AppLlm = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/app-llm')
-const AppLlmSku = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/app-llm-sku')
 const LlmSku = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku')
 const LlmSkuCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku/create/index')
 const LlmSkuImportFromModelSets = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku/import-from-model-sets')
@@ -20,6 +18,9 @@ const LlmDeployment = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefe
 const LlmDeploymentCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-deployment/create')
 const LlmDeploymentDeployFromModelSets = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-deployment/deploy-from-model-sets')
 const LlmDeploymentDeployFromHuggingFace = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-deployment/deploy-from-huggingface')
+const AppLlm = () => import(/* webpackChunkName: "k8s" */ '@Application/views/app-llm')
+const AppLlmSku = () => import(/* webpackChunkName: "k8s" */ '@Application/views/app-llm-sku')
+const AgentLlmImage = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/agent-llm-image')
 export default {
   index: 61,
   meta: {
@@ -27,10 +28,10 @@ export default {
     icon: 'menu-ai',
   },
   menus: [
-    // 人工智能-应用
+    // 人工智能-Agent（Agent实例、Agent模板）
     {
       meta: {
-        label: i18n.t('common.application'),
+        label: i18n.t('aice.agent'),
       },
       submenus: [
         {
@@ -52,7 +53,7 @@ export default {
               component: AppLlm,
             },
             {
-              name: 'LlmCreate',
+              name: 'AppLlmCreate',
               path: 'create',
               component: LlmCreate,
             },
@@ -77,9 +78,35 @@ export default {
               component: AppLlmSku,
             },
             {
-              name: 'LlmSkuCreate',
+              name: 'AppLlmSkuCreate',
               path: 'create',
               component: LlmSkuCreate,
+            },
+          ],
+        },
+        {
+          path: '/agent-llm-image',
+          meta: {
+            label: i18n.t('aice.agent_llm_image'),
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.agent_llm_image') ||
+                isScopedPolicyMenuHidden('sub_hidden_menus.app_llm_image')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'AgentLlmImageList',
+              path: '',
+              component: AgentLlmImage,
+            },
+            {
+              name: 'AgentLlmImageImportCommunity',
+              path: 'import-community',
+              component: LlmImageImportCommunity,
             },
           ],
         },
@@ -186,14 +213,6 @@ export default {
             },
           ],
         },
-      ],
-    },
-    // 人工智能-模型库
-    {
-      meta: {
-        label: i18n.t('aice.app_llm_instantapp'),
-      },
-      submenus: [
         {
           path: '/llm-instantmodel',
           meta: {
@@ -224,18 +243,10 @@ export default {
             },
           ],
         },
-      ],
-    },
-    // 人工智能-镜像
-    {
-      meta: {
-        label: i18n.t('common.image'),
-      },
-      submenus: [
         {
           path: '/llm-image',
           meta: {
-            label: i18n.t('aice.llm_image'),
+            label: i18n.t('aice.inference_llm_image'),
             hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.llm_image')) {
                 return true

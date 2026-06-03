@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import List from '../llm-sku/components/List'
+import List from '@Ai/views/llm-sku/components/List'
 
 export default {
   name: 'AppLlmSkuIndex',

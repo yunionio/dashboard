@@ -27,6 +27,7 @@ import marked from 'marked'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getDefaultPortMappingsForType, getDefaultSkuSpecForType } from '../../llm-sku/constants/llmTypeConfig'
+import { parseLlmImageRoute, getAllowedImageLlmTypes } from '@Ai/utils/llmRouteContext'
 
 const LLM_IMAGES_URL = 'https://www.cloudpods.org/llmimages.yaml'
 
@@ -37,6 +38,7 @@ const LLM_TYPE_ICONS = {
   vllm: require('@/assets/images/llm-images/vllm.svg'),
   dify: require('@/assets/images/llm-images/dify.svg'),
   comfyui: require('@/assets/images/llm-images/comfyui.svg'),
+  desktop: require('@/assets/images/llm-images/linuxserver.png'),
 }
 const DEFAULT_ICON = require('@/assets/images/llm-images/default.svg')
 
@@ -74,17 +76,33 @@ export default {
     }
   },
   computed: {
+    imageRouteCtx () {
+      return parseLlmImageRoute(this.$route.path)
+    },
+    allowedImageLlmTypes () {
+      return getAllowedImageLlmTypes(this.$route.path)
+    },
     typeList () {
+      const allowed = new Set(this.allowedImageLlmTypes)
       const seen = {}
       const ret = []
       this.allItems.forEach(item => {
         const t = item.llm_type
-        if (t && !seen[t]) {
+        if (t && allowed.has(t) && !seen[t]) {
           seen[t] = true
           ret.push({ value: t, label: t, icon: getTypeIcon(t) })
         }
       })
       return ret
+    },
+    llmTypeColumnTitle () {
+      if (this.imageRouteCtx.isDesktopImageRoute) {
+        return this.$t('aice.llm_type')
+      }
+      if (this.imageRouteCtx.isAgentImageRoute) {
+        return this.$t('aice.llm_type.app')
+      }
+      return this.$t('aice.llm_type.llm')
     },
     columns () {
       return [
@@ -96,7 +114,7 @@ export default {
         },
         {
           field: 'llm_type',
-          title: this.$t('aice.llm_type.app'),
+          title: this.llmTypeColumnTitle,
           width: 120,
           slots: {
             default: ({ row }, h) => {
@@ -104,6 +122,12 @@ export default {
             },
           },
         },
+        ...(this.imageRouteCtx.isDesktopImageRoute ? [{
+          field: 'app_name',
+          title: this.$t('aice.llm_image.app_name'),
+          width: 160,
+          showOverflow: 'tooltip',
+        }] : []),
         {
           field: 'description',
           title: this.$t('common.description'),
@@ -194,7 +218,8 @@ export default {
         const res = await axios.get(LLM_IMAGES_URL)
         const items = yaml.safeLoad(res.data)
         if (!Array.isArray(items)) { this.list.loading = false; return }
-        this.allItems = items.filter(i => i?.image).map((item, index) => {
+        const allowed = new Set(this.allowedImageLlmTypes)
+        this.allItems = items.filter(i => i?.image && i.llm_type && allowed.has(i.llm_type)).map((item, index) => {
           const { image_name, image_label } = parseImageField(item.image)
           return {
             id: String(index + 1),
@@ -202,10 +227,15 @@ export default {
             image_name,
             image_label,
             llm_type: item.llm_type || '',
+            app_name: item.app_name || '',
             description: item.description || '-',
+            desktop: item.desktop || null,
             icon: getTypeIcon(item.llm_type || ''),
           }
         })
+        if (this.typeList.length > 0) {
+          this.form.llm_type = this.typeList[0].value
+        }
         // 查询当前选中类型的已导入镜像
         await this.fetchExistingByType(this.form.llm_type)
         this.refreshList()
@@ -231,6 +261,12 @@ export default {
           llm_type: record.llm_type,
           image_name: record.image_name,
           image_label: record.image_label,
+        }
+        if (record.desktop && typeof record.desktop === 'object') {
+          createData.desktop_config = record.desktop
+        }
+        if (record.app_name) {
+          createData.app_name = record.app_name
         }
         const imgRes = await new this.$Manager('llm_images').create({ data: createData })
         imageId = imgRes?.data?.id

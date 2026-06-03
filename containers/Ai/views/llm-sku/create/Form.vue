@@ -376,6 +376,7 @@ import { isRequired } from '@/utils/validate'
 import { uuid } from '@/utils/utils'
 import { dict } from '../constants/constant'
 import { LLM_TYPE_OPTIONS, LLM_TYPE_FORM_CONFIG, getParamsForType, getDefaultPortMappingsForType } from '../constants/llmTypeConfig'
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import {
   backendToLlmType,
   buildCatalogSkuModelParams,
@@ -429,9 +430,18 @@ export default {
   },
   data () {
     const data = this.mode === 'edit' && this.editData ? this.editData : {}
-    const isApplyType = this.$route.path.includes('app-llm')
+    const llmRouteCtx = parseLlmRoute(this.$route.path)
+    const isApplyType = llmRouteCtx.isApplyType
+    const isDesktopType = llmRouteCtx.isDesktopType
     const catalogLlmTypeInit = this.catalogSpec ? backendToLlmType(this.catalogSpec.backend) : null
-    const llmTypeOptions = isApplyType ? LLM_TYPE_OPTIONS.filter(opt => opt.id !== 'vllm' && opt.id !== 'ollama' && opt.id !== 'sglang') : LLM_TYPE_OPTIONS.filter(opt => opt.id === 'vllm' || opt.id === 'ollama' || opt.id === 'sglang')
+    let llmTypeOptions
+    if (isDesktopType) {
+      llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => opt.id === 'desktop')
+    } else if (isApplyType) {
+      llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => !['vllm', 'ollama', 'sglang', 'desktop'].includes(opt.id))
+    } else {
+      llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => ['vllm', 'ollama', 'sglang'].includes(opt.id))
+    }
     const {
       domain_id,
       project_domain,
@@ -454,7 +464,7 @@ export default {
       preferred_model: rowPreferredModel,
       host_paths: hostPaths = [],
     } = data
-    const defaultLlmTypeForInit = catalogLlmTypeInit || (llmTypeOptions[0] && llmTypeOptions[0].id) || (isApplyType ? 'openclaw' : 'ollama')
+    const defaultLlmTypeForInit = catalogLlmTypeInit || (llmTypeOptions[0] && llmTypeOptions[0].id) || (isDesktopType ? 'desktop' : (isApplyType ? 'openclaw' : 'ollama'))
     const initialLlmTypeForSpec = catalogLlmTypeInit || rowLlmType || defaultLlmTypeForInit
     const catalogNameInit = this.catalogSpec ? defaultNameFromSpec(this.catalogSpec, this.catalogSet) : null
     const typeLlmSpec = (llmSpec && (initialLlmTypeForSpec === 'vllm' || initialLlmTypeForSpec === 'sglang') && llmSpec[initialLlmTypeForSpec])
@@ -522,7 +532,9 @@ export default {
       loading: false,
       // 暂时隐藏 openclaw 创建/编辑时的「Agent 个性化配置」区块，恢复时改为 true
       showAgentPersonalization: false,
+      llmRouteCtx,
       isApplyType,
+      isDesktopType,
       llmTypeOptions: llmTypeOptions.map(opt => ({ id: opt.id, name: this.$t(opt.name) })),
       dict,
       portMappings,

@@ -21,3 +21,14 @@ export const getImageLabelTableColumn = () => {
     },
   }
 }
+
+export const getAppNameTableColumn = () => {
+  return {
+    field: 'app_name',
+    title: i18n.t('aice.llm_image.app_name'),
+    width: 160,
+    formatter: ({ row }) => {
+      return row.app_name || '-'
+    },
+  }
+}

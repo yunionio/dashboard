@@ -56,6 +56,12 @@
                 {{ $t('aice.bandwidth') }} {{ formatBandwidth(item.bandwidth) }}
               </span>
             </div>
+            <div
+              v-if="isDesktopType && item.app_name"
+              class="meta-row meta-ellipsis"
+              :title="item.app_name">
+              {{ $t('aice.llm_image.app_name') }}：{{ item.app_name }}
+            </div>
             <div v-if="item.image" class="meta-row meta-row--copy" @click.stop>
               <span class="meta-label">{{ $t('aice.image') }}：</span>
               <list-body-cell-wrap
@@ -141,6 +147,10 @@ export default {
       default: false,
     },
     isApplyType: {
+      type: Boolean,
+      default: false,
+    },
+    isDesktopType: {
       type: Boolean,
       default: false,
     },

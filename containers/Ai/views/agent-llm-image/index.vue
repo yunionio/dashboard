@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('aice.inference_llm_image')" />
+    <page-header :title="$t('aice.agent_llm_image')" />
     <page-body>
       <list :id="listId" />
     </page-body>
@@ -8,16 +8,16 @@
 </template>
 
 <script>
-import List from './components/List'
+import List from '@Ai/views/llm-image/components/List'
 
 export default {
-  name: 'LlmImageIndex',
+  name: 'AgentLlmImageIndex',
   components: {
     List,
   },
   data () {
     return {
-      listId: 'LlmImageList',
+      listId: 'AgentLlmImageList',
     }
   },
 }
