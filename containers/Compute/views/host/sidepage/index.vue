@@ -45,7 +45,7 @@ import StorageList from './Storage'
 import Monitor from './Monitor'
 import VminstanceList from './VminstanceList'
 import Dmesg from './Dmesg'
-import AlertList from './AlertList'
+import HostAlertHistory from './AlertList'
 
 export default {
   name: 'HostSidePage',
@@ -61,7 +61,8 @@ export default {
     Monitor,
     BmcLog,
     Dmesg,
-    AlertList,
+    HostAlertHistory,
+    'host-alert-history': HostAlertHistory,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   computed: {
@@ -79,7 +80,7 @@ export default {
         { label: this.$t('compute.text_113'), key: 'gpu-list' },
         { label: this.$t('compute.text_114'), key: 'server-recovery' },
         { label: this.$t('compute.text_608'), key: 'monitor' },
-        { label: this.$t('dictionary.alertrecord'), key: 'alert-list' },
+        { label: this.$t('dictionary.alertrecord'), key: 'host-alert-history' },
         { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
         { label: this.$t('compute.dmesg_log'), key: 'dmesg' },
@@ -123,10 +124,6 @@ export default {
         return {
           host_id: this.data.id,
         }
-      } else if (this.params.windowData.currentTab === 'alert-list') {
-        return {
-          res_name: this.detailData?.name,
-        }
       }
       return null
     },
@@ -134,7 +131,7 @@ export default {
       switch (this.params.windowData.currentTab) {
         case 'event-drawer':
           return 'EventListForHostSidePage'
-        case 'alert-list':
+        case 'host-alert-history':
           return 'AlertResourceListForHostSidePage'
         case 'vminstance-list':
           return 'VminstanceListForHostSidePage'

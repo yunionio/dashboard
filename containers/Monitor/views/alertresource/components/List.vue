@@ -3,6 +3,7 @@
     <monitor-header
       v-if="isTemplate && isTemplateEdit"
       :time.sync="time"
+      :allow-empty-time="allowEmptyTime"
       :showCustomTime="false"
       :showGroupFunc="false"
       :showTimegroup="false"
@@ -22,6 +23,7 @@
           class-name="ml-2"
           :time.sync="time"
           :customTime.sync="customTime"
+          :allow-empty-time="allowEmptyTime"
           :showGroupFunc="false"
           :showTimegroup="false"
           :show-sync="false"
@@ -73,6 +75,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    defaultTime: {
+      type: String,
+      default: '168h',
+    },
   },
   data () {
     let resource = 'monitorresourcealertees'
@@ -82,11 +88,14 @@ export default {
     return {
       list: this.$list.createList(this, this.listOptions(resource)),
       resTypeItems: [],
-      time: this.templateParams.time || '168h',
+      time: this.templateParams.time ?? (this.defaultTime === '' ? 'all' : this.defaultTime),
       customTime: null,
     }
   },
   computed: {
+    allowEmptyTime () {
+      return this.defaultTime === ''
+    },
     columns () {
       let columns = this.listColumns()
       if (this.hiddenColumns.length) {
@@ -113,6 +122,9 @@ export default {
   },
   watch: {
     time (val) {
+      if (val === 'all') {
+        this.customTime = null
+      }
       this.list.fetchData()
     },
     customTime (val) {
@@ -303,12 +315,13 @@ export default {
       ]
     },
     getParam () {
+      const base = R.is(Function, this.getParams) ? this.getParams() : (this.getParams || {})
       const ret = {
-        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
         details: true,
         alerting: true,
+        ...base,
       }
-      if (this.time) {
+      if (this.time && this.time !== 'all') {
         let timeFilter = ''
         if (this.time.includes('h')) {
           ret.start_time = this.$moment().utc().subtract(this.time.replace('h', ''), 'hours').format('YYYY-MM-DD HH:mm:ss')
