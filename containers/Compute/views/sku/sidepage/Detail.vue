@@ -13,6 +13,7 @@
 <script>
 import { sizestr } from '@/utils/utils'
 import { getEnabledTableColumn, getRegionTableColumn } from '@/utils/common/tableColumn'
+import { HYPERVISORS_MAP } from '@/constants'
 import { chargeTypeColumn } from '../utils'
 
 export default {
@@ -88,6 +89,31 @@ export default {
       ]
       if (this.cloudEnv === 'public') {
         extraInfo[0].items.push(getRegionTableColumn(), chargeTypeColumn())
+      }
+      if ([HYPERVISORS_MAP.aws.provider, HYPERVISORS_MAP.qcloud.provider, HYPERVISORS_MAP.aliyun.provider].includes(this.data.provider)) {
+        extraInfo[0].items.push({
+          field: 'cpu_model',
+          title: this.$t('compute.cpu_model'),
+          formatter: ({ row }) => {
+            return row.cpu_model || '-'
+          },
+        })
+        extraInfo[0].items.push({
+          field: 'nic_bandwidth',
+          title: this.$t('compute.nic_bandwidth'),
+          formatter: ({ row }) => {
+            return row.nic_bandwidth || '-'
+          },
+        })
+      }
+      if (this.data.provider === HYPERVISORS_MAP.aws.provider) {
+        extraInfo[0].items.push({
+          field: 'disk_performance',
+          title: this.$t('compute.disk_performance'),
+          formatter: ({ row }) => {
+            return row.disk_performance || '-'
+          },
+        })
       }
       return extraInfo
     },
