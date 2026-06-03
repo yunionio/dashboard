@@ -25,14 +25,9 @@
           <a-input v-model="form.image_label" :placeholder="$t('common.tips.input', [$t('aice.llm_image.label')])" />
         </a-form-model-item>
         <a-form-model-item v-if="form.llm_type === 'desktop'" :label="$t('aice.llm_image.app_name')" prop="app_name">
-          <a-select
+          <a-input
             v-model="form.app_name"
-            allow-clear
-            :placeholder="$t('common.tips.select', [$t('aice.llm_image.app_name')])">
-            <a-select-option v-for="opt in desktopAppNameOptions" :key="opt" :value="opt">
-              {{ opt }}
-            </a-select-option>
-          </a-select>
+            :placeholder="$t('common.tips.input', [$t('aice.llm_image.app_name')])" />
         </a-form-model-item>
       </a-form-model>
     </div>
@@ -49,13 +44,6 @@ import WindowsMixin from '@/mixins/windows'
 import { validateModelForm } from '@/utils/validate'
 import { LLM_TYPE_OPTIONS } from '../../llm-sku/constants/llmTypeConfig'
 import { getAllowedImageLlmTypes, parseLlmImageRoute } from '@Ai/utils/llmRouteContext'
-
-const DESKTOP_APP_NAME_OPTIONS = [
-  'webtop-ubuntu-xfce',
-  'webtop-debian-xfce',
-  'firefox',
-  'chromium',
-]
 
 export default {
   name: 'DesktopImageCreateDialog',
@@ -107,15 +95,6 @@ export default {
     llmTypeName () {
       const opt = this.llmTypeOptions.find(o => o.id === this.form.llm_type)
       return opt ? this.$t(opt.name) : this.form.llm_type || '-'
-    },
-    desktopModelParams () {
-      return {
-        limit: 20,
-        scope: this.$store.getters.scope,
-      }
-    },
-    desktopAppNameOptions () {
-      return DESKTOP_APP_NAME_OPTIONS
     },
   },
   methods: {
