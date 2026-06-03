@@ -2024,5 +2024,8 @@
   "compute.adjust_config_running_confirm_submit": "确认提交",
   "compute.upload_app_package": "上传应用包",
   "compute.upload_app_package_format_tip": "应用包仅支持 tar.gz 格式",
-  "compute.upload_app_package_file_help": "上传过程中请勿刷新或者关闭页面，否则上传任务会中断。应用包仅支持 tar.gz 格式。"
+  "compute.upload_app_package_file_help": "上传过程中请勿刷新或者关闭页面，否则上传任务会中断。应用包仅支持 tar.gz 格式。",
+  "compute.cpu_model": "CPU型号",
+  "compute.nic_bandwidth": "内网带宽",
+  "compute.disk_performance": "磁盘吞吐量"
 }
