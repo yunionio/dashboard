@@ -2022,5 +2022,8 @@
   "compute.adjust_config_running_confirm_submit": "確認して送信",
   "compute.upload_app_package": "アプリパッケージをアップロード",
   "compute.upload_app_package_format_tip": "アプリパッケージは tar.gz 形式のみ対応しています",
-  "compute.upload_app_package_file_help": "アップロード中はページを更新または閉じないでください。アプリパッケージは tar.gz 形式のみ対応しています。"
+  "compute.upload_app_package_file_help": "アップロード中はページを更新または閉じないでください。アプリパッケージは tar.gz 形式のみ対応しています。",
+  "compute.cpu_model": "CPUモデル",
+  "compute.nic_bandwidth": "内網帯域幅",
+  "compute.disk_performance": "ディスクスループット"
 }

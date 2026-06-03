@@ -1,18 +1,41 @@
 <template>
   <div>
-    <a-radio-group v-model="skuType" @change="skuTypeChange">
-      <a-radio-button
-        v-for="item of skuInfo.categoryOptions"
-        :value="item.key"
-        :key="item.key"
-        :disabled="item.disabled">{{ item.label }}</a-radio-button>
-    </a-radio-group>
+    <div style="display: flex;justify-content: space-between;" class="mb-1 mt-1">
+      <a-radio-group v-model="skuType" @change="skuTypeChange">
+        <a-radio-button
+          v-for="item of skuInfo.categoryOptions"
+          :value="item.key"
+          :key="item.key"
+          :disabled="item.disabled">{{ item.label }}</a-radio-button>
+      </a-radio-group>
+      <a-popover
+        v-model="columnSettingVisible"
+        placement="bottomRight"
+        trigger="click"
+        overlay-class-name="sku-column-setting-popover">
+        <template slot="content">
+          <a-checkbox-group v-model="visibleColumnFields" class="sku-column-setting">
+            <div
+              v-for="col in configurableColumns"
+              :key="col.field"
+              class="sku-column-setting-item">
+              <a-checkbox :value="col.field">{{ col.title }}</a-checkbox>
+            </div>
+          </a-checkbox-group>
+        </template>
+        <a-tooltip :title="$t('common.text00011')">
+          <a-button class="ml-2">
+            <icon type="setting" />
+          </a-button>
+        </a-tooltip>
+      </a-popover>
+    </div>
     <vxe-grid
       row-id="id"
       ref="tableRef"
       min-height="260"
       resizable
-      :columns="tableColumn"
+      :columns="tableShowColumns"
       :data="skuResults"
       :radio-config="{ reserve: true }"
       @cell-click="skuChange"
@@ -42,6 +65,10 @@ import { Manager } from '@/utils/manager'
 import { PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
+import storage from '@/utils/storage'
+
+const SKU_HIDDEN_COLUMNS_KEY = '__oc_sku_hidden_columns'
+const DEFAULT_HIDDEN_COLUMNS = ['cpu_model', 'nic_bandwidth', 'disk_performance']
 
 const keys = ['hour_price', 'month_price', 'year_price']
 const units = [i18n.t('compute.text_172'), i18n.t('compute.text_173'), i18n.t('compute.text_174')]
@@ -134,6 +161,7 @@ export default {
     },
   },
   data () {
+    const stored = storage.get(SKU_HIDDEN_COLUMNS_KEY)
     return {
       skuList: [], // 套餐列表
       ratesList: [], // 套餐价格列表
@@ -149,6 +177,8 @@ export default {
       skuTypes: [],
       hasOriginSku: false,
       unfindTip: '',
+      hiddenColumns: Array.isArray(stored) ? stored : DEFAULT_HIDDEN_COLUMNS,
+      columnSettingVisible: false,
     }
   },
   computed: {
@@ -173,11 +203,11 @@ export default {
     },
     tableColumn () {
       const column = [
-        { field: 'instance_type_category_i18n', title: this.$t('compute.text_175') },
         { field: 'region', title: this.$t('compute.text_177') },
+        { field: 'instance_type_category_i18n', title: this.$t('compute.text_175') },
+        { field: 'cpu_arch', title: this.$t('compute.cpu_arch'), slots: { default: ({ row }) => { return row.cpu_arch ? this.$t(`compute.cpu_arch.${row.cpu_arch}`) : '-' } } },
         { field: 'name', title: this.$t('compute.text_178') },
         { field: 'cpu_core_count', title: this.$t('compute.text_179') },
-        { field: 'cpu_arch', title: this.$t('compute.cpu_arch'), slots: { default: ({ row }) => { return row.cpu_arch ? this.$t(`compute.cpu_arch.${row.cpu_arch}`) : '-' } } },
         { field: 'memory_size_mb_compute', title: this.$t('compute.text_180') },
       ]
       if (this.skuDisabled) {
@@ -223,6 +253,33 @@ export default {
       }
       if (this.isPublic) {
         column.splice(1, 0, providerColumn)
+        column.push({
+          field: 'cpu_model',
+          title: this.$t('compute.cpu_model'),
+          slots: {
+            default: ({ row }) => {
+              return row.cpu_model || '-'
+            },
+          },
+        })
+        column.push({
+          field: 'nic_bandwidth',
+          title: this.$t('compute.nic_bandwidth'),
+          slots: {
+            default: ({ row }) => {
+              return row.nic_bandwidth || '-'
+            },
+          },
+        })
+        column.push({
+          field: 'disk_performance',
+          title: this.$t('compute.disk_performance'),
+          slots: {
+            default: ({ row }) => {
+              return row.disk_performance || '-'
+            },
+          },
+        })
         if (this.hasMeterService) {
           column.push({
             field: 'hour_price',
@@ -247,6 +304,26 @@ export default {
         }
       }
       return column
+    },
+    tableShowColumns () {
+      return this.tableColumn.filter(item => !this.hiddenColumns.includes(item.field))
+    },
+    configurableColumns () {
+      return this.tableColumn.filter(col => col.field && col.field !== 'radio')
+    },
+    visibleColumnFields: {
+      get () {
+        return this.configurableColumns
+          .filter(col => !this.hiddenColumns.includes(col.field))
+          .map(col => col.field)
+      },
+      set (val) {
+        const allFields = this.configurableColumns.map(col => col.field)
+        this.hiddenColumns = allFields.filter(field => !val.includes(field))
+        const allHiddenColumns = (storage.get(SKU_HIDDEN_COLUMNS_KEY) || []).filter(field => !allFields.includes(field))
+
+        storage.set(SKU_HIDDEN_COLUMNS_KEY, Array.from(new Set([...this.hiddenColumns, ...allHiddenColumns])))
+      },
     },
     skuInfo () {
       let currentCategory = SKU_CATEGORY_MAP[this.hypervisor] || []
@@ -615,6 +692,9 @@ export default {
         totalResult: 0,
       }
     },
+    handleCustomList () {
+      this.columnSettingVisible = true
+    },
   },
 }
 </script>
@@ -624,5 +704,13 @@ export default {
   flex-direction: row-reverse;
   justify-content: space-between;
   align-items: center;
+}
+.sku-column-setting {
+  max-height: 320px;
+  overflow-y: auto;
+  &-item {
+    margin-bottom: 4px;
+    white-space: nowrap;
+  }
 }
 </style>
