@@ -31,75 +31,65 @@
       </a-form-item>
       <template v-if="form.fd.llm_type === 'dify'">
         <a-form-item :label="$t('aice.dify_api_image')">
-          <base-select
+          <llm-image-select
             v-decorator="decorators.dify_api_image_id"
-            resource="llm_images"
             :params="{ ...appImageParams, $t: 'dify_api_image' }"
-            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.dify_api_image')]) }" />
+            :select-props="{ placeholder: $t('common.tips.select', [$t('aice.dify_api_image')]) }" />
         </a-form-item>
         <a-form-item :label="$t('aice.dify_plugin_image')">
-          <base-select
+          <llm-image-select
             v-decorator="decorators.dify_plugin_image_id"
-            resource="llm_images"
             :params="{ ...appImageParams, $t: 'dify_plugin_image' }"
-            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.dify_plugin_image')]) }" />
+            :select-props="{ placeholder: $t('common.tips.select', [$t('aice.dify_plugin_image')]) }" />
         </a-form-item>
         <a-form-item :label="$t('aice.dify_sandbox_image')">
-          <base-select
+          <llm-image-select
             v-decorator="decorators.dify_sandbox_image_id"
-            resource="llm_images"
             :params="{ ...appImageParams, $t: 'dify_sandbox_image' }"
-            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.dify_sandbox_image')]) }" />
+            :select-props="{ placeholder: $t('common.tips.select', [$t('aice.dify_sandbox_image')]) }" />
         </a-form-item>
         <a-form-item :label="$t('aice.dify_ssrf_image')">
-          <base-select
+          <llm-image-select
             v-decorator="decorators.dify_ssrf_image_id"
-            resource="llm_images"
             :params="{ ...appImageParams, $t: 'dify_ssr_image' }"
-            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.dify_ssr_image')]) }" />
+            :select-props="{ placeholder: $t('common.tips.select', [$t('aice.dify_ssr_image')]) }" />
         </a-form-item>
         <a-form-item :label="$t('aice.dify_weaviate_image')">
-          <base-select
+          <llm-image-select
             v-decorator="decorators.dify_weaviate_image_id"
-            resource="llm_images"
             :params="{ ...appImageParams, $t: 'dify_weaviate_image' }"
-            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.dify_weaviate_image')]) }" />
+            :select-props="{ placeholder: $t('common.tips.select', [$t('aice.dify_weaviate_image')]) }" />
         </a-form-item>
         <a-form-item :label="$t('aice.dify_web_image')">
-          <base-select
+          <llm-image-select
             v-decorator="decorators.dify_web_image_id"
-            resource="llm_images"
             :params="{ ...appImageParams, $t: 'dify_web_image' }"
-            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.dify_web_image')]) }" />
+            :select-props="{ placeholder: $t('common.tips.select', [$t('aice.dify_web_image')]) }" />
         </a-form-item>
         <a-form-item :label="$t('aice.nginx_image')">
-          <base-select
+          <llm-image-select
             v-decorator="decorators.nginx_image_id"
-            resource="llm_images"
             :params="{ ...appImageParams, $t: 'nginx_image' }"
-            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.nginx_image')]) }" />
+            :select-props="{ placeholder: $t('common.tips.select', [$t('aice.nginx_image')]) }" />
         </a-form-item>
         <a-form-item :label="$t('aice.postgres_image')">
-          <base-select
+          <llm-image-select
             v-decorator="decorators.postgres_image_id"
-            resource="llm_images"
             :params="{ ...appImageParams, $t: 'postgres_image' }"
-            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.postgres_image')]) }" />
+            :select-props="{ placeholder: $t('common.tips.select', [$t('aice.postgres_image')]) }" />
         </a-form-item>
         <a-form-item :label="$t('aice.redis_image')">
-          <base-select
+          <llm-image-select
             v-decorator="decorators.redis_image_id"
-            resource="llm_images"
             :params="{ ...appImageParams, $t: 'redis_image' }"
-            :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.redis_image')]) }" />
+            :select-props="{ placeholder: $t('common.tips.select', [$t('aice.redis_image')]) }" />
         </a-form-item>
       </template>
       <a-form-item v-else :label="$t('aice.llm_image')">
-        <base-select
+        <llm-image-select
           v-decorator="decorators.llm_image_id"
-          resource="llm_images"
           :params="appImageParams"
-          :selectProps="{ placeholder: $t('common.tips.select', [$t('aice.llm_image')]) }" />
+          :select-props="{ placeholder: $t('common.tips.select', [$t('aice.llm_image')]) }" />
       </a-form-item>
       <a-form-item :label="$t('aice.cpu')">
         <a-input-number
@@ -376,6 +366,7 @@ import { isRequired } from '@/utils/validate'
 import { uuid } from '@/utils/utils'
 import { dict } from '../constants/constant'
 import { LLM_TYPE_OPTIONS, LLM_TYPE_FORM_CONFIG, getParamsForType, getDefaultPortMappingsForType } from '../constants/llmTypeConfig'
+import LlmImageSelect from '@Ai/sections/LlmImageSelect'
 import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import {
   backendToLlmType,
@@ -398,6 +389,7 @@ export default {
   name: 'LlmSkuCreateForm',
   components: {
     DomainProject,
+    LlmImageSelect,
     NameRepeated,
   },
   mixins: [WindowsMixin],
@@ -585,6 +577,7 @@ export default {
           'llm_image_id',
           {
             initialValue: llm_image_id,
+            trigger: 'input',
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('aice.llm_image')]) },
             ],
@@ -594,6 +587,7 @@ export default {
           'dify_api_image_id',
           {
             initialValue: dify_api_image_id,
+            trigger: 'input',
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('aice.dify_api_image')]) },
             ],
@@ -603,6 +597,7 @@ export default {
           'dify_plugin_image_id',
           {
             initialValue: dify_plugin_image_id,
+            trigger: 'input',
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('aice.dify_plugin_image')]) },
             ],
@@ -612,6 +607,7 @@ export default {
           'dify_sandbox_image_id',
           {
             initialValue: dify_sandbox_image_id,
+            trigger: 'input',
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('aice.dify_sandbox_image')]) },
             ],
@@ -621,6 +617,7 @@ export default {
           'dify_ssrf_image_id',
           {
             initialValue: dify_ssrf_image_id,
+            trigger: 'input',
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('aice.dify_ssr_image')]) },
             ],
@@ -639,6 +636,7 @@ export default {
           'dify_weaviate_image_id',
           {
             initialValue: dify_weaviate_image_id,
+            trigger: 'input',
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('aice.dify_weaviate_image')]) },
             ],
@@ -648,6 +646,7 @@ export default {
           'dify_web_image_id',
           {
             initialValue: dify_web_image_id,
+            trigger: 'input',
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('aice.dify_web_image')]) },
             ],
@@ -657,6 +656,7 @@ export default {
           'nginx_image_id',
           {
             initialValue: nginx_image_id,
+            trigger: 'input',
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('aice.nginx_image')]) },
             ],
@@ -666,6 +666,7 @@ export default {
           'postgres_image_id',
           {
             initialValue: postgres_image_id,
+            trigger: 'input',
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('aice.postgres_image')]) },
             ],
@@ -675,6 +676,7 @@ export default {
           'redis_image_id',
           {
             initialValue: redis_image_id,
+            trigger: 'input',
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('aice.redis_image')]) },
             ],
@@ -915,6 +917,7 @@ export default {
       return {
         limit: 20,
         scope: this.$store.getters.scope,
+        details: true,
         $t: 1,
         ...getParamsForType(llmType),
       }

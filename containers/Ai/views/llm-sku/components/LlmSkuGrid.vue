@@ -9,7 +9,8 @@
           :key="item.id"
           hoverable
           class="catalog-card"
-          :class="{ 'catalog-card--selected': isSelected(item) }">
+          :class="{ 'catalog-card--selected': isSelected(item) }"
+          @click="handleCardClick(item, $event)">
           <div class="catalog-card-header">
             <img
               v-if="getCardIcon(item)"
@@ -23,7 +24,7 @@
               {{ getCardIconLabel(item) }}
             </div>
             <div class="catalog-card-title">
-              <div class="catalog-card-name" @click.stop>
+              <div class="catalog-card-name">
                 <list-body-cell-wrap
                   copy
                   hide-field
@@ -33,9 +34,7 @@
                   :on-manager="onManager"
                   :edit="true"
                   :steady-status="steadyStatus">
-                  <side-page-trigger @trigger="$emit('open-sidepage', item)">
-                    {{ item.name }}
-                  </side-page-trigger>
+                  <span class="catalog-card-name-text">{{ item.name }}</span>
                 </list-body-cell-wrap>
               </div>
               <div class="catalog-subtitle">
@@ -47,7 +46,7 @@
               </div>
             </div>
           </div>
-          <div class="catalog-meta" @click="$emit('open-sidepage', item)">
+          <div class="catalog-meta">
             <div class="meta-row meta-row--specs">
               <span>CPU {{ item.cpu || '-' }}</span>
               <span>{{ $t('aice.memory') }} {{ formatMemory(item.memory) }}</span>
@@ -256,6 +255,16 @@ export default {
       const trimmed = String(s).trim()
       return trimmed.length > 80 ? trimmed.slice(0, 77) + '…' : trimmed
     },
+    handleCardClick (item, e) {
+      const target = e && e.target
+      if (target && target.closest) {
+        const ignore = target.closest(
+          '.catalog-card-footer, .meta-row--copy, .meta-scope, .edit-icon, .copy-icon',
+        )
+        if (ignore) return
+      }
+      this.$emit('open-sidepage', item)
+    },
   },
 }
 </script>
@@ -305,6 +314,7 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 .catalog-card--selected {
   border-color: @primary-color;
@@ -341,6 +351,9 @@ export default {
   font-weight: 600;
   min-width: 0;
 }
+.catalog-card-name-text {
+  cursor: pointer;
+}
 .catalog-card-name ::v-deep .list-body-cell-wrap {
   min-width: 0;
 }
@@ -375,7 +388,6 @@ export default {
 }
 .catalog-meta {
   flex: 1;
-  cursor: pointer;
 }
 .meta-row {
   font-size: 12px;
