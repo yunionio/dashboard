@@ -54,6 +54,15 @@ function parseImageField (imageStr) {
   return { image_name: imageStr, image_label: 'latest' }
 }
 
+/** 导入时 generate_name：桌面镜像以 app_name 开头，其它类型仍为 llm_type-image_label */
+function buildImportGenerateName (record) {
+  const label = record.image_label || 'latest'
+  if (record.llm_type === 'desktop' && record.app_name) {
+    return `${record.app_name}-${label}`
+  }
+  return `${record.llm_type}-${label}`
+}
+
 export default {
   name: 'LlmImageImportCommunityPage',
   mixins: [WindowsMixin, ListMixin],
@@ -257,7 +266,7 @@ export default {
       let imageId = ''
       try {
         const createData = {
-          generate_name: `${record.llm_type}-${record.image_label}`,
+          generate_name: buildImportGenerateName(record),
           llm_type: record.llm_type,
           image_name: record.image_name,
           image_label: record.image_label,
@@ -287,7 +296,7 @@ export default {
       if (!spec) return // dify 等无默认 SKU 模板的类型直接跳过
       const portMappings = getDefaultPortMappingsForType(record.llm_type)
       const data = {
-        generate_name: `${record.llm_type}-${record.image_label}`,
+        generate_name: buildImportGenerateName(record),
         llm_type: record.llm_type,
         llm_image_id: imageId,
         cpu: spec.cpu,
