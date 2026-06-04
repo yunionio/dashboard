@@ -33,6 +33,7 @@
 
 <script>
 import * as R from 'ramda'
+import { Manager } from '@/utils/manager'
 import WindowsMixin from '@/mixins/windows'
 import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import ListMixin from '@/mixins/list'
@@ -48,7 +49,10 @@ export default {
         idKey: 'name',
       }),
       cardFields: {
-        url: 'chart.icon',
+        url: row => {
+          if (row.icon.startsWith('http://') || row.icon.startsWith('https://')) return row.icon
+          return this.repoUrl + '/' + row.icon
+        },
         title: 'name',
         desc: 'chart.description',
         description: row => {
@@ -59,6 +63,7 @@ export default {
       },
       searchValue: {},
       repo: undefined,
+      repoUrl: undefined,
       type: this.$route.query.type || 'internal',
       typeOpts: [
         { key: 'internal', label: this.$t('helm.text_14') },
@@ -128,6 +133,11 @@ export default {
   },
   methods: {
     repoChange (val) {
+      new Manager('repos', 'v1').get({
+        id: val,
+      }).then(res => {
+        this.repoUrl = res.data.url
+      })
       if (val) {
         this.list.getParams = { ...this.list.getParams, repo: val }
       } else {
