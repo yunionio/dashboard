@@ -29,36 +29,12 @@
         <!-- Mode A: reuse existing SKU -->
         <template v-if="form.fd.mode === 'reuse'">
           <a-form-item :label="$t('aice.llm_sku')">
-            <base-select
-              class="llm-sku-select"
+            <llm-sku-select
               v-decorator="decorators.llm_sku_id"
-              resource="llm_skus"
               :params="skuParams"
-              dropdown-item-word-wrap
               :select-props="{
                 placeholder: $t('common.tips.select', [$t('aice.llm_sku')]),
-                dropdownStyle: { minWidth: '520px' },
-              }">
-              <template #optionLabelTemplate="{ item }">
-                <div class="llm-sku-option">
-                  <div class="oc-selected-display-none">
-                    <div class="text-truncate" :title="item.name">{{ item.name }}</div>
-                    <div
-                      class="text-color-secondary mt-1 text-truncate"
-                      style="font-size: 12px"
-                      :title="formatLlmSkuConfig(item)">
-                      {{ formatLlmSkuConfig(item) }}
-                    </div>
-                  </div>
-                  <div
-                    class="oc-dropdown-display-none llm-sku-option__selected text-truncate"
-                    :title="`${item.name} (${formatLlmSkuConfig(item)})`">
-                    <span>{{ item.name }}</span>
-                    <span class="text-color-secondary"> ({{ formatLlmSkuConfig(item) }})</span>
-                  </div>
-                </div>
-              </template>
-            </base-select>
+              }" />
           </a-form-item>
         </template>
 
@@ -73,9 +49,8 @@
           </a-form-item>
 
           <a-form-item :label="$t('aice.llm_image')">
-            <base-select
+            <llm-image-select
               v-decorator="decorators.llm_image_id"
-              resource="llm_images"
               :params="imageParams"
               :select-props="{ placeholder: $t('common.tips.select', [$t('aice.llm_image')]) }" />
           </a-form-item>
@@ -83,7 +58,7 @@
           <a-divider orientation="left">{{ $t('aice.llm_deployment.create.resources') }}</a-divider>
 
           <a-form-item label="CPU">
-            <a-input-number v-decorator="decorators.cpu" :min="1" :max="128" /> {{ $t('compute.text_357') }}
+            <a-input-number v-decorator="decorators.cpu" :min="1" :max="128" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_300')">
             <a-input-number v-decorator="decorators.memory" :min="512" :step="512" /> MB
@@ -213,10 +188,12 @@
 <script>
 import * as R from 'ramda'
 import { Manager } from '@/utils/manager'
-import { uuid, sizestr } from '@/utils/utils'
+import { uuid } from '@/utils/utils'
 import validateForm from '@/utils/validate'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
+import LlmImageSelect from '@Ai/sections/LlmImageSelect'
+import LlmSkuSelect from '@Ai/sections/LlmSkuSelect'
 import { getDefaultPortMappingsForType } from '@Ai/views/llm-sku/constants/llmTypeConfig'
 
 const getInitVal = (list, key, property) => {
@@ -226,7 +203,7 @@ const getInitVal = (list, key, property) => {
 
 export default {
   name: 'LlmDeploymentCreate',
-  components: { ServerNetwork },
+  components: { LlmImageSelect, LlmSkuSelect, ServerNetwork },
   data () {
     const defaultLlmType = 'ollama'
     const portMappings = getDefaultPortMappingsForType(defaultLlmType).map(item => ({ ...item, key: uuid() }))
@@ -264,6 +241,7 @@ export default {
         }],
         llm_type: ['llm_type', { initialValue: defaultLlmType }],
         llm_image_id: ['llm_image_id', {
+          trigger: 'input',
           rules: [{ required: true, message: this.$t('common.tips.select', [this.$t('aice.llm_image')]) }],
         }],
         cpu: ['cpu', {
@@ -350,7 +328,12 @@ export default {
       return { scope: this.$store.getters.scope, details: true, limit: 20, filter: ['llm_type.in(vllm,ollama,sglang)'] }
     },
     imageParams () {
-      return { scope: this.$store.getters.scope, llm_type: this.form.fd.llm_type }
+      return {
+        limit: 20,
+        scope: this.$store.getters.scope,
+        details: true,
+        llm_type: this.form.fd.llm_type,
+      }
     },
     instantModelParams () {
       return { scope: this.$store.getters.scope, llm_type: this.form.fd.llm_type }
@@ -397,36 +380,6 @@ export default {
           llm_sku_id: skuId,
         })
       })
-    },
-    formatLlmSkuMemory (memory) {
-      if (memory == null) return '-'
-      return sizestr(memory, 'M', 1024)
-    },
-    formatLlmSkuDisk (item) {
-      const volumes = item.volumes || []
-      if (!volumes.length) return '-'
-      let size = 0
-      volumes.forEach(v => { size += v.size_mb || 0 })
-      return sizestr(size, 'M', 1024)
-    },
-    formatLlmSkuBandwidth (bandwidth) {
-      if (bandwidth == null) return '-'
-      if (bandwidth === 0) return `0(${this.$t('common.not_limited')})`
-      return `${bandwidth}M`
-    },
-    formatLlmSkuConfig (item) {
-      const parts = [
-        `CPU ${item.cpu || '-'}`,
-        `${this.$t('aice.memory')} ${this.formatLlmSkuMemory(item.memory)}`,
-        `${this.$t('aice.disk')} ${this.formatLlmSkuDisk(item)}`,
-      ]
-      if (item.bandwidth != null) {
-        parts.push(`${this.$t('aice.bandwidth')} ${this.formatLlmSkuBandwidth(item.bandwidth)}`)
-      }
-      if (item.image) {
-        parts.push(`${this.$t('aice.image')}：${item.image}`)
-      }
-      return parts.join(' · ')
     },
     async loadModelSpec (id) {
       try {
@@ -627,18 +580,3 @@ export default {
   },
 }
 </script>
-
-<style lang="less" scoped>
-.llm-sku-select {
-  ::v-deep .ant-select-selection__rendered {
-    overflow: hidden;
-  }
-  ::v-deep .ant-select-selection-selected-value {
-    float: none;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-}
-</style>

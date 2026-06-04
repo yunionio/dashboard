@@ -22,7 +22,7 @@ export default {
             query: { from_sku: obj.id },
           })
         },
-        hidden: () => this.isApplyType,
+        hidden: () => this.isApplyType || this.isDesktopType,
       },
       {
         label: this.$t('common.more'),
