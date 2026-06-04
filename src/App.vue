@@ -29,6 +29,7 @@ import { updateThemeColor } from '@/utils/theme/utils'
 import setting from '@/config/setting'
 import WindowsMixin from '@/mixins/windows'
 import LogoutMixin from '@/mixins/logout'
+import AuthTabSyncMixin from '@/mixins/authTabSync'
 
 const antdLocales = {
   'zh-CN': zhCN,
@@ -45,7 +46,7 @@ export default {
     SidePageManager,
     WindowResizeListener,
   },
-  mixins: [WindowsMixin, LogoutMixin],
+  mixins: [WindowsMixin, LogoutMixin, AuthTabSyncMixin],
   data () {
     return {
       locale: antdLocales[this.$store.getters.setting.language],
