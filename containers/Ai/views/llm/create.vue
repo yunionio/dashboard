@@ -20,13 +20,12 @@
           </a-radio-group>
         </a-form-item>
         <a-form-item :label="llmSkuLabel">
-          <base-select
+          <llm-sku-select
             v-decorator="decorators.llm_sku_id"
-            resource="llm_skus"
+            :params="llmSkuParams"
             :select-props="{
               placeholder: $t('common.tips.select', [llmSkuLabel]),
-            }"
-            :params="llmSkuParams" />
+            }" />
         </a-form-item>
         <a-form-item v-if="supportMountedModels" :label="$t('aice.model')" :extra="$t('aice.llm_override_sku_extra')">
           <base-select
@@ -569,6 +568,7 @@ import { uuid } from '@/utils/utils'
 import NameRepeated from '@/sections/NameRepeated'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
+import LlmSkuSelect from '@Ai/sections/LlmSkuSelect'
 import { LLM_TYPE_OPTIONS, getParamsForType } from '../llm-sku/constants/llmTypeConfig'
 import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import { OPENCLAW_CHANNEL_SECTIONS, OPENCLAW_CHANNEL_OPTIONS } from '../llm-sku/constants/openclawChannelConfig'
@@ -581,6 +581,7 @@ export default {
     }
   },
   components: {
+    LlmSkuSelect,
     NameRepeated,
     ServerNetwork,
   },
@@ -884,6 +885,7 @@ export default {
       return {
         limit: 20,
         scope: this.$store.getters.scope,
+        details: true,
         ...getParamsForType(this.form.fd.llm_type),
       }
     },
