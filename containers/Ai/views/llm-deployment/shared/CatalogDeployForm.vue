@@ -14,9 +14,8 @@
         :placeholder="$t('common.tips.input', [$t('common.name')])" />
     </a-form-model-item>
     <a-form-model-item :label="$t('aice.llm_image')" prop="llm_image_id">
-      <base-select
+      <llm-image-select
         v-model="deployForm.llm_image_id"
-        resource="llm_images"
         :params="imageParams"
         :select-props="{ placeholder: $t('common.tips.select', [$t('aice.llm_image')]) }" />
     </a-form-model-item>
@@ -53,10 +52,14 @@
 </template>
 
 <script>
+import LlmImageSelect from '@Ai/sections/LlmImageSelect'
 import { getParamsForType } from '@Ai/views/llm-sku/constants/llmTypeConfig'
 
 export default {
   name: 'CatalogDeployForm',
+  components: {
+    LlmImageSelect,
+  },
   props: {
     deployForm: {
       type: Object,
@@ -90,6 +93,7 @@ export default {
       return {
         limit: 20,
         scope: this.$store.getters.scope,
+        details: true,
         $t: 1,
         ...getParamsForType(this.llmType),
       }
