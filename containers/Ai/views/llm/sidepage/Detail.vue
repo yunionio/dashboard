@@ -15,6 +15,7 @@ import {
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 import { getStatusTableColumn } from '@/utils/common/tableColumn'
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import {
   getLlmIpColumn,
   // getStreamEndpointColumn,
@@ -29,7 +30,6 @@ import {
   getNetworkTableColumn,
 } from '../utils/columns'
 import { getLlmSpecSections, fetchLlmSpecCredentialNames, fetchLlmSpecDifyImages } from '../../llm-sku/utils/llmSpecDetail'
-import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 
 export default {
   name: 'PhoneDetail',
@@ -237,7 +237,7 @@ export default {
               const urlCtrl = (loginUrl) => {
                 return <list-body-cell-wrap copy hideField={true} field='login_url' row={{ login_url: loginUrl }} message={loginUrl}>
                   {loginUrl || '-'}
-                  <a-icon type="link" class="ml-1" onClick={() => this.openLoginUrl(loginUrl)} />
+                  <a-icon type="link" class="ml-1" onClick={() => this.openLoginUrl(loginUrl, username, password)} />
                 </list-body-cell-wrap>
               }
               const urls = [
@@ -353,8 +353,14 @@ export default {
         this.$message.error(this.$t('common.copyError'))
       }
     },
-    openLoginUrl (url) {
+    openLoginUrl (url, username, password) {
       if (url == null || url === '') return
+      if (username && password) {
+        const urlparts = new URL(url)
+        urlparts.username = username
+        urlparts.password = password
+        url = urlparts.toString()
+      }
       window.open(url, '_blank')
     },
   },
