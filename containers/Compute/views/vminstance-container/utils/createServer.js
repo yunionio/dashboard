@@ -1385,7 +1385,7 @@ export class GenCreateData {
           }
         }
       }
-      if (credentialId) {
+      if (image && credentialId) {
         spec.image_credential_id = credentialId
       }
       return spec
