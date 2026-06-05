@@ -200,7 +200,7 @@ export default {
         if (this.currentTypeObj?.key === 'gp3') {
           ret.push('iops', 'throughput')
         }
-        if (this.currentTypeObj?.key === 'io1') {
+        if (['io1', 'io2'].includes(this.currentTypeObj?.key)) {
           ret.push('iops')
         }
       }
@@ -212,20 +212,26 @@ export default {
     iopsLimit () {
       let ret = { min: 0 }
       if (this.isAws) {
-        // gp3 iops 不能超过磁盘500倍
+        const { systemDiskSize } = this.form.fd
+        // gp3 iops 不能超过磁盘500倍，最大80000
         if (this.currentTypeObj?.key === 'gp3') {
-          ret = { min: 3000, max: 16000 }
-          const { systemDiskSize } = this.form.fd
+          ret = { min: 3000, max: 80000 }
           if (systemDiskSize) {
-            ret.max = systemDiskSize * 500 < ret.max ? systemDiskSize * 500 : ret.max
+            ret.max = Math.min(systemDiskSize * 500, ret.max)
           }
         }
-        // io1 iops 不能超过磁盘50倍
+        // io1 iops 不能超过磁盘50倍，最大64000
         if (this.currentTypeObj?.key === 'io1') {
           ret = { min: 100, max: 64000 }
-          const { systemDiskSize } = this.form.fd
           if (systemDiskSize) {
-            ret.max = systemDiskSize * 50 < ret.max ? systemDiskSize * 50 : ret.max
+            ret.max = Math.min(systemDiskSize * 50, ret.max)
+          }
+        }
+        // io2 iops 不能超过磁盘1000倍，最大256000
+        if (this.currentTypeObj?.key === 'io2') {
+          ret = { min: 100, max: 256000 }
+          if (systemDiskSize) {
+            ret.max = Math.min(systemDiskSize * 1000, ret.max)
           }
         }
       }
