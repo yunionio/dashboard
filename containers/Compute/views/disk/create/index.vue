@@ -681,7 +681,7 @@ export default {
           return true
         })
       }
-      if (provider === 'qcloud' || provider === 'ucloud') {
+      if (provider === 'qcloud' || provider === 'ucloud' || provider === 'rockbase') {
         this.storageOpts = this.storageOpts.filter((item) => {
           return !(item.value && item.value.toLowerCase().startsWith('local_'))
         })

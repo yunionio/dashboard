@@ -1,7 +1,7 @@
 import { typeClouds } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
 
-const supportChangeBandwidth = ['huawei', 'baidu', 'aliyun', 'ucloud', 'qcloud', 'ctyun']
+const supportChangeBandwidth = ['huawei', 'baidu', 'aliyun', 'ucloud', 'rockbase', 'qcloud', 'ctyun']
 
 export default {
   created () {

@@ -29,7 +29,7 @@ import { mapGetters } from 'vuex'
 import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { HYPERVISORS_MAP } from '@/constants'
+import { HYPERVISORS_MAP, isUcloudLikeProvider } from '@/constants'
 import ListSelect from '@/sections/ListSelect'
 import DiskPropsMixin from '../mixins/diskProps'
 
@@ -72,7 +72,7 @@ export default {
       return this.params.data[0].provider === HYPERVISORS_MAP.azure.provider
     },
     isUCloud () {
-      return this.params.data[0].provider === HYPERVISORS_MAP.ucloud.provider
+      return isUcloudLikeProvider(this.params.data[0].provider)
     },
     message () {
       return this.$t('compute.text_1086')

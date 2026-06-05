@@ -38,7 +38,7 @@ import { mapGetters } from 'vuex'
 import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { HYPERVISORS_MAP } from '@/constants'
+import { HYPERVISORS_MAP, isUcloudLikeProvider } from '@/constants'
 import { SECGROUP_LIST_FOR_VMINSTANCE_SIDEPAGE_REFRESH } from '@/constants/event-bus'
 
 export default {
@@ -95,7 +95,7 @@ export default {
       return this.params.data[0].provider === HYPERVISORS_MAP.azure.provider
     },
     isUCloud () {
-      return this.params.data[0].provider === HYPERVISORS_MAP.ucloud.provider
+      return isUcloudLikeProvider(this.params.data[0].provider)
     },
     isZStack () {
       return this.params.data[0].provider === HYPERVISORS_MAP.zstack.provider

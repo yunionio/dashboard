@@ -28,7 +28,7 @@ import * as R from 'ramda'
 import Disk from '@Compute/sections/Disk'
 // import { STORAGE_AUTO } from '@Compute/constants'
 import { IMAGES_TYPE_MAP, STORAGE_TYPES } from '@/constants/compute'
-import { HYPERVISORS_MAP } from '@/constants'
+import { HYPERVISORS_MAP, isUcloudLikeHypervisor } from '@/constants'
 import { findAndUnshift, findAndPush } from '@/utils/utils'
 import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
 import { MEDIUM_MAP } from '@Compute/constants'
@@ -190,7 +190,7 @@ export default {
         if (opt && !opt.sysUnusable) {
           // 新建ucloud虚拟机时，系统盘类型选择普通本地盘或SSD本地盘，其大小只能是系统镜像min_disk大小
           let max = opt.sysMax
-          if (hyper === HYPERVISORS_MAP.ucloud.key && ['LOCAL_NORMAL', 'LOCAL_SSD'].includes(getOriginDiskKey(opt.key))) {
+          if (isUcloudLikeHypervisor(hyper) && ['LOCAL_NORMAL', 'LOCAL_SSD'].includes(getOriginDiskKey(opt.key))) {
             max = this.imageMinDisk
           }
           // 谷歌云共享核心磁盘最多为3072GB

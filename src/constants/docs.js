@@ -36,6 +36,7 @@ export const DOCS_MAP = {
       qcloud: getI18n('cloudenv.text_128', [docsUrl]),
       huawei: getI18n('cloudenv.text_129', [docsUrl]),
       ucloud: getI18n('cloudenv.text_130', [docsUrl]),
+      rockbase: getI18n('cloudenv.create_rockbase', [docsUrl]),
       zstack: getI18n('cloudenv.text_131', [docsUrl]),
       dstack: getI18n('cloudenv.text_131', [docsUrl]),
       openstack: getI18n('cloudenv.text_132', [docsUrl]),
