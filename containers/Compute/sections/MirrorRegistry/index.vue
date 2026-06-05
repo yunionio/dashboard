@@ -169,7 +169,9 @@ export default {
           }
         })
         if (this.isDefaultSelect && this.registrys?.length > 0) {
-          this.registry = this.registrys?.[0].value
+          const defaultRegistry = this.registrys[0]
+          this.registry = defaultRegistry.value
+          this.$emit('credential-change', defaultRegistry.credential_id || '')
           this.getImagesByRegistryId(this.registry)
         } else {
           this.image = ''
