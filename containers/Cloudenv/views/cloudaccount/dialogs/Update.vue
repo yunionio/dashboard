@@ -96,7 +96,7 @@ import * as R from 'ramda'
 import UploadJsonFile from '@Cloudenv/views/cloudaccount/components/UploadJsonFile'
 import UploadPemFile from '@Cloudenv/views/cloudaccount/components/UploadPemFile'
 import TestButton from '@/sections/TestButton'
-import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
+import { HYPERVISORS_MAP, EXTRA_HYPERVISORS, isUcloudLikeHypervisor } from '@/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import regexp from '@/utils/regexp'
@@ -260,7 +260,7 @@ export default {
       return this.provider === HYPERVISORS_MAP.openstack.key
     },
     isUcloud () {
-      return this.provider === HYPERVISORS_MAP.ucloud.key
+      return isUcloudLikeHypervisor(this.provider)
     },
     isGoogle () {
       return this.provider === HYPERVISORS_MAP.google.key

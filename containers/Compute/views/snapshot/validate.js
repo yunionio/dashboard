@@ -25,6 +25,7 @@ export const RollbackDiskValidate = {
       typeClouds.hypervisorMap.aws.brand,
       typeClouds.hypervisorMap.huawei.brand,
       typeClouds.hypervisorMap.ucloud.brand,
+      typeClouds.hypervisorMap.rockbase.brand,
       typeClouds.hypervisorMap.apsara.brand,
       typeClouds.hypervisorMap.ksyun.brand,
     ]
@@ -122,6 +123,9 @@ export const RollbackDiskValidate = {
       return ret
     }
     return ret
+  },
+  rockbase (obj) {
+    return RollbackDiskValidate.ucloud(obj)
   },
   google (obj) {
     const ret = { validate: false }

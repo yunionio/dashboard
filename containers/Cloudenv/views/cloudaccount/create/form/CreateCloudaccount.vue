@@ -41,6 +41,7 @@ export default {
   components: {
     AliyunCreate: Aliyun,
     UcloudCreate: Ucloud,
+    RockBaseCreate: Ucloud,
     AwsCreate: AwsHuawei,
     HuaweiCreate: AwsHuawei,
     AzureCreate: Azure,

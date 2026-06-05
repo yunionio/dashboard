@@ -47,6 +47,10 @@ export const priorityRuleMap = {
     min: 1,
     max: 3,
   },
+  rockbase: {
+    min: 1,
+    max: 3,
+  },
   cloudpods: {
     min: 1,
     max: 100,

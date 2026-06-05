@@ -172,6 +172,7 @@
   "cloudenv.text_128": "{0}#create-tencent-cloud-account",
   "cloudenv.text_129": "{0}#create-huawei-cloud-account",
   "cloudenv.text_130": "{0}#create-ucloud-account",
+  "cloudenv.create_rockbase": "{0}#create-rockbase-account",
   "cloudenv.text_131": "{0}#create-zstackdstack-account",
   "cloudenv.text_132": "{0}#create-openstack-account",
   "cloudenv.text_133": "{0}#create-vmware-account",

@@ -736,7 +736,7 @@ export default {
                       }
                       return ret
                     },
-                    hidden: () => !hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'ecloud', 'jdcloud', 'ctyun']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_Renew'),
+                    hidden: () => !hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'rockbase', 'ecloud', 'jdcloud', 'ctyun']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_Renew'),
                   },
                   // 自动续费设置
                   {
@@ -769,7 +769,7 @@ export default {
                       }
                       return ret
                     },
-                    hidden: () => !(hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'ecloud', 'jdcloud', 'ctyun'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_auto_renewal'),
+                    hidden: () => !(hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'rockbase', 'ecloud', 'jdcloud', 'ctyun'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_auto_renewal'),
                   },
                   // 更改计费模式
                   {

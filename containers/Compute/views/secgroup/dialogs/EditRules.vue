@@ -75,6 +75,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { isUcloudLikeProvider } from '@/constants'
 import { REGEXP } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -240,7 +241,7 @@ export default {
         { label: 'ICMP', value: 'icmp' },
         { label: this.$t('compute.any_protocol.text'), value: 'any' },
       ]
-      if (this.params.brand && this.params.brand.toLowerCase() === 'ucloud') {
+      if (this.params.brand && isUcloudLikeProvider(this.params.brand)) {
         ret = ret.filter(item => item.value !== 'any')
       }
       return ret
