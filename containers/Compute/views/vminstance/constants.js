@@ -10,7 +10,7 @@ const DISK_USED_PERCENT = {
   fromItem: 'agent_disk',
   unit: '%',
   transfer: 1,
-  metric: metricItems.used_percent.key,
+  metric: metricItems['agent_disk.used_percent'].key,
 }
 
 const BASIC_MEM_USED_PERCENT = {
@@ -40,7 +40,7 @@ const MEM_USED_PERCENT = {
   fromItem: 'agent_mem',
   unit: '%',
   transfer: 1,
-  metric: metricItems['vm_mem.used_percent'].key,
+  metric: metricItems['agent_mem.used_percent'].key,
 }
 
 const CPU_USED_PERCENT = {
@@ -50,7 +50,7 @@ const CPU_USED_PERCENT = {
   fromItem: 'agent_cpu',
   unit: '%',
   transfer: 1,
-  metric: metricItems['vm_cpu.usage_active'].key,
+  metric: metricItems['agent_cpu.usage_active'].key,
 }
 
 const DISK_IO_READ_RATES = {
@@ -61,7 +61,7 @@ const DISK_IO_READ_RATES = {
   groupBy: ['name'],
   unit: 'bps',
   transfer: 1024,
-  metric: metricItems['vm_diskio.read_bps'].key,
+  metric: metricItems['agent_diskio.read_bps'].key,
 }
 
 const DISK_IO_WRITE_RATES = {
@@ -72,7 +72,7 @@ const DISK_IO_WRITE_RATES = {
   groupBy: ['name'],
   unit: 'bps',
   transfer: 1024,
-  metric: metricItems['vm_diskio.write_bps'].key,
+  metric: metricItems['agent_diskio.write_bps'].key,
 }
 
 // const NET_SEND_BYTES = {
@@ -105,6 +105,7 @@ const NET_RECV_BPS = {
   groupBy: ['interface'],
   unit: 'bps',
   transfer: 1024,
+  metric: metricItems['agent_net.bps_recv'].key,
 }
 
 const NET_SENT_BPS = {
@@ -115,6 +116,7 @@ const NET_SENT_BPS = {
   groupBy: ['interface'],
   unit: 'bps',
   transfer: 1024,
+  metric: metricItems['agent_net.bps_sent'].key,
 }
 
 const NET_RECV_PPS = {
@@ -125,6 +127,7 @@ const NET_RECV_PPS = {
   groupBy: ['interface'],
   unit: 'pps',
   transfer: 1,
+  metric: metricItems['agent_net.pps_recv'].key,
 }
 
 const NET_SENT_PPS = {
@@ -135,6 +138,7 @@ const NET_SENT_PPS = {
   groupBy: ['interface'],
   unit: 'pps',
   transfer: 1,
+  metric: metricItems['agent_net.pps_sent'].key,
 }
 
 const COND_AND = 'AND'
@@ -174,7 +178,7 @@ const TEMPERATURE_CPU_INPUT = {
   ],
   unit: '℃',
   transfer: 1,
-  metric: 'temp',
+  metric: metricItems['agent_sensors.temp_input'].key,
 }
 
 const TEMPERATURE_DISK_INPUT = {
@@ -188,7 +192,7 @@ const TEMPERATURE_DISK_INPUT = {
   ],
   unit: '℃',
   transfer: 1,
-  metric: 'temp',
+  metric: metricItems['agent_smart_device.temp_c'].key,
 }
 
 const TEMPERATURE_PCI_INPUT = {
@@ -203,7 +207,7 @@ const TEMPERATURE_PCI_INPUT = {
   ],
   unit: '℃',
   transfer: 1,
-  metric: 'temp',
+  metric: metricItems['agent_sensors.temp_input'].key,
   noDataHide: true,
 }
 
@@ -219,7 +223,7 @@ const TEMPERATURE_VIRTUAL_INPUT = {
   ],
   unit: '℃',
   transfer: 1,
-  metric: 'temp',
+  metric: metricItems['agent_sensors.temp_input'].key,
   noDataHide: true,
 }
 

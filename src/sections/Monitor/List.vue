@@ -39,8 +39,9 @@ export default {
     },
     getMetricItem (item) {
       let str = item.title
-      const metric = item.constants?.seleteItem || item.constants?.metric || ''
-      str += metric ? ` (${metric})` : ''
+      const { metric, fromItem, seleteItem } = item.constants || {}
+      const metricLabel = metric || (fromItem && seleteItem ? `${fromItem}.${seleteItem}` : '')
+      str += metricLabel ? ` (${metricLabel})` : ''
       return str
     },
     getConfig (item) {

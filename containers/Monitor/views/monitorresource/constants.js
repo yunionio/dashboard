@@ -11,7 +11,7 @@ const DISK_USED_PERCENT = {
   fromItem: 'agent_disk',
   unit: '%',
   transfer: 1,
-  metric: metricItems.used_percent.key,
+  metric: metricItems['agent_disk.used_percent'].key,
 }
 
 // 内存使用率 基础监控
@@ -33,7 +33,7 @@ const MEM_USED_PERCENT = {
   fromItem: 'agent_mem',
   unit: '%',
   transfer: 1,
-  metric: metricItems['vm_mem.used_percent'].key,
+  metric: metricItems['agent_mem.used_percent'].key,
 }
 
 // 已使用内存
@@ -44,7 +44,7 @@ const MEM_USED = {
   fromItem: 'agent_mem',
   unit: 'G',
   transfer: 1024,
-  metric: metricItems['vm_mem.used'].key,
+  metric: metricItems['agent_mem.used'].key,
 }
 
 // CPU使用率
@@ -55,7 +55,7 @@ const CPU_USED_PERCENT = {
   fromItem: 'agent_cpu',
   unit: '%',
   transfer: 1,
-  metric: 'agent_cpu.usage_active',
+  metric: metricItems['agent_cpu.usage_active'].key,
 }
 
 // CPU IO 使用率
@@ -66,7 +66,7 @@ const CPU_IO_USED_PERCENT = {
   fromItem: 'agent_cpu',
   unit: '%',
   transfer: 1,
-  metric: metricItems['vm_cpu.usage_iowait'].key,
+  metric: metricItems['agent_cpu.usage_iowait'].key,
 }
 
 // 磁盘读取次数
@@ -77,7 +77,7 @@ const DISK_READ_NUM = {
   fromItem: 'agent_diskio',
   unit: ' count',
   transfer: 1,
-  metric: metricItems['vm_cpu.reads'].key,
+  metric: metricItems['agent_diskio.reads'].key,
 }
 
 // 磁盘写入次数
@@ -88,7 +88,7 @@ const DISK_WRITE_NUM = {
   fromItem: 'agent_diskio',
   unit: ' count',
   transfer: 1,
-  metric: metricItems['vm_cpu.writes'].key,
+  metric: metricItems['agent_diskio.writes'].key,
 }
 
 // CPU每核使用率
@@ -122,7 +122,7 @@ const DISK_IO_READ_RATES = {
   groupBy: ['name'],
   unit: 'bps',
   transfer: 1024,
-  metric: 'agent_diskio.read_bps',
+  metric: metricItems['agent_diskio.read_bps'].key,
 }
 
 // 磁盘写速度
@@ -134,7 +134,7 @@ const DISK_IO_WRITE_RATES = {
   groupBy: ['name'],
   unit: 'bps',
   transfer: 1024,
-  metric: 'agent_diskio.read_bps',
+  metric: metricItems['agent_diskio.write_bps'].key,
 }
 
 // 网络每秒发送字节数
@@ -146,7 +146,7 @@ const NET_SEND_BYTE_PER_SECEND = {
   // groupBy: ['name'],
   unit: 'bps',
   transfer: 1024,
-  metric: 'vm_net.bps_sent',
+  metric: metricItems['agent_net.bps_sent'].key,
 }
 
 // 网络每秒接受字节数
@@ -158,7 +158,7 @@ const NET_RECV_BYTE_PER_SECEND = {
   // groupBy: ['name'],
   unit: 'bps',
   transfer: 1024,
-  metric: 'vm_net.bps_recv',
+  metric: metricItems['agent_net.bps_recv'].key,
 }
 
 // 网络接口发送数据包总数
@@ -169,7 +169,7 @@ const NET_SEND_PACKETS_NUM = {
   fromItem: 'agent_net',
   unit: 'count',
   transfer: 1,
-  metric: 'vm_net.packets_sent',
+  metric: metricItems['agent_net.packets_sent'].key,
 }
 
 // 网络接口接收数据包总数
@@ -180,7 +180,7 @@ const NET_RECV_PACKETS_NUM = {
   fromItem: 'agent_net',
   unit: 'count',
   transfer: 1,
-  metric: 'vm_net.packets_recv',
+  metric: metricItems['agent_net.packets_recv'].key,
 }
 
 // 网络接口丢失数据包总数
@@ -191,7 +191,7 @@ const NET_LOST_PACKETS_NUM = {
   fromItem: 'agent_net',
   unit: 'count',
   transfer: 1,
-  metric: 'vm_net.drop_out',
+  metric: metricItems['agent_net.drop_out'].key,
 }
 
 // 磁盘读流量
@@ -283,7 +283,7 @@ const TEMPERATURE_CPU_INPUT = {
   ],
   unit: '℃',
   transfer: 1,
-  metric: 'temp',
+  metric: metricItems['agent_sensors.temp_input'].key,
 }
 
 // 磁盘温度
@@ -298,7 +298,7 @@ const TEMPERATURE_DISK_INPUT = {
   ],
   unit: '℃',
   transfer: 1,
-  metric: 'temp',
+  metric: metricItems['agent_smart_device.temp_c'].key,
 }
 
 // PCI接口温度
@@ -314,7 +314,7 @@ const TEMPERATURE_PCI_INPUT = {
   ],
   unit: '℃',
   transfer: 1,
-  metric: 'temp',
+  metric: metricItems['agent_sensors.temp_input'].key,
   noDataHide: true,
 }
 
@@ -331,7 +331,7 @@ const TEMPERATURE_VIRTUAL_INPUT = {
   ],
   unit: '℃',
   transfer: 1,
-  metric: 'temp',
+  metric: metricItems['agent_sensors.temp_input'].key,
   noDataHide: true,
 }
 
@@ -505,7 +505,7 @@ const HOST_CPU_USED_PERCENT = {
   fromItem: 'cpu',
   unit: '%',
   transfer: 1,
-  metric: 'cpu.usage_active',
+  metric: metricItems['cpu.usage_active'].key,
 }
 
 // 宿主机内存使用率
@@ -516,7 +516,7 @@ const HOST_MEM_USED_PERCENT = {
   fromItem: 'mem',
   unit: '%',
   transfer: 1,
-  metric: 'mem.used_percent',
+  metric: metricItems['mem.used_percent'].key,
 }
 
 // 宿主机已使用内存
@@ -527,7 +527,7 @@ const HOST_MEM_USED = {
   fromItem: 'mem',
   unit: 'G',
   transfer: 1024,
-  metric: 'mem.used',
+  metric: metricItems['mem.used'].key,
 }
 
 // 宿主机磁盘使用率
@@ -540,7 +540,7 @@ const HOST_DISK_USED_PERCENT = {
   fromItem: 'disk',
   unit: '%',
   transfer: 1,
-  metric: metricItems.used_percent.key,
+  metric: metricItems['disk.used_percent'].key,
 }
 
 // 宿主机 CPU IO 使用率
@@ -551,7 +551,7 @@ const HOST_CPU_IO_USED_PERCENT = {
   fromItem: 'cpu',
   unit: '%',
   transfer: 1,
-  metric: 'cpu.usage_iowait',
+  metric: metricItems['cpu.usage_iowait'].key,
 }
 
 // 宿主机 磁盘读速度
@@ -563,7 +563,7 @@ const HOST_DISK_IO_READ_RATES = {
   groupBy: ['name'],
   unit: 'bps',
   transfer: 1024,
-  metric: metricItems.read_bps.key,
+  metric: metricItems['diskio.read_bps'].key,
 }
 
 // 宿主机 磁盘写速度
@@ -575,7 +575,7 @@ const HOST_DISK_IO_WRITE_RATES = {
   groupBy: ['name'],
   unit: 'bps',
   transfer: 1024,
-  metric: metricItems.write_bps.key,
+  metric: metricItems['diskio.write_bps'].key,
 }
 
 // 宿主机 磁盘读取次数
@@ -586,7 +586,7 @@ const HOST_DISK_READ_NUM = {
   fromItem: 'diskio',
   unit: ' count',
   transfer: 1,
-  metric: 'cpu.reads',
+  metric: metricItems['diskio.reads'].key,
 }
 
 // 宿主机 磁盘写入次数
@@ -597,7 +597,7 @@ const HOST_DISK_WRITE_NUM = {
   fromItem: 'diskio',
   unit: ' count',
   transfer: 1,
-  metric: 'cpu.writes',
+  metric: metricItems['diskio.writes'].key,
 }
 
 // 宿主机 网络每秒发送字节数
@@ -608,7 +608,7 @@ const HOST_NET_SEND_BYTE_PER_SECEND = {
   fromItem: 'net',
   unit: 'bps',
   transfer: 1024,
-  metric: metricItems.bps_sent.key,
+  metric: metricItems['net.bps_sent'].key,
 }
 
 // 宿主机 网络每秒接受字节数
@@ -619,7 +619,7 @@ const HOST_NET_RECV_BYTE_PER_SECEND = {
   fromItem: 'net',
   unit: 'bps',
   transfer: 1024,
-  metric: metricItems.bps_recv.key,
+  metric: metricItems['net.bps_recv'].key,
 }
 
 // 宿主机 网络接口发送数据包总数
@@ -630,7 +630,7 @@ const HOST_NET_SEND_PACKETS_NUM = {
   fromItem: 'net',
   unit: 'count',
   transfer: 1,
-  metric: 'net.packets_sent',
+  metric: metricItems['net.packets_sent'].key,
 }
 
 // 宿主机 网络接口接收数据包总数
@@ -641,7 +641,7 @@ const HOST_NET_RECV_PACKETS_NUM = {
   fromItem: 'net',
   unit: 'count',
   transfer: 1,
-  metric: 'net.packets_recv',
+  metric: metricItems['net.packets_recv'].key,
 }
 
 // 宿主机 网络接口丢失数据包总数
@@ -652,7 +652,7 @@ const HOST_NET_LOST_PACKETS_NUM = {
   fromItem: 'net',
   unit: 'count',
   transfer: 1,
-  metric: 'net.drop_out',
+  metric: metricItems['net.drop_out'].key,
 }
 
 // agent 宿主机 monitor
