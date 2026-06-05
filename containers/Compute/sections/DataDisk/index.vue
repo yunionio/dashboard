@@ -220,7 +220,7 @@ export default {
         if (this.currentTypeObj?.key === 'gp3') {
           ret.push('iops', 'throughput')
         }
-        if (this.currentTypeObj?.key === 'io1') {
+        if (['io1', 'io2'].includes(this.currentTypeObj?.key)) {
           ret.push('iops')
         }
       }
@@ -232,18 +232,26 @@ export default {
       this.dataDisks.map(item => {
         const type = item.diskType?.key
         let ret = { min: 0 }
-        // gp3 iops 不能超过磁盘500倍
+        const size = this.form.fd.dataDiskSizes?.[item.key]
+        // gp3 iops 不能超过磁盘500倍，最大80000
         if (type === 'gp3') {
-          ret = { min: 3000, max: 16000 }
-          if (this.form.fd.dataDiskSizes?.[item.key]) {
-            ret.max = this.form.fd.dataDiskSizes?.[item.key] * 500 < ret.max ? this.form.fd.dataDiskSizes?.[item.key] * 500 : ret.max
+          ret = { min: 3000, max: 80000 }
+          if (size) {
+            ret.max = Math.min(size * 500, ret.max)
           }
         }
-        // io1 iops 不能超过磁盘50倍
+        // io1 iops 不能超过磁盘50倍，最大64000
         if (type === 'io1') {
           ret = { min: 100, max: 64000 }
-          if (this.form.fd.dataDiskSizes?.[item.key]) {
-            ret.max = this.form.fd.dataDiskSizes?.[item.key] * 50 < ret.max ? this.form.fd.dataDiskSizes?.[item.key] * 50 : ret.max
+          if (size) {
+            ret.max = Math.min(size * 50, ret.max)
+          }
+        }
+        // io2 iops 不能超过磁盘1000倍，最大256000
+        if (type === 'io2') {
+          ret = { min: 100, max: 256000 }
+          if (size) {
+            ret.max = Math.min(size * 1000, ret.max)
           }
         }
         value[item.key] = ret
