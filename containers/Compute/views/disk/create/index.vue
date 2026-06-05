@@ -479,7 +479,7 @@ export default {
       return this.cloudEnv === 'onpremise'
     },
     isShowIops () {
-      return this.isAws && (this.storageItem?.value?.startsWith('gp3') || this.storageItem?.value?.startsWith('io1'))
+      return this.isAws && (this.storageItem?.value?.startsWith('gp3') || this.storageItem?.value?.startsWith('io1') || this.storageItem?.value?.startsWith('io2'))
     },
     isShowThroughput () {
       return this.isAws && this.storageItem?.value?.startsWith('gp3')
@@ -525,20 +525,27 @@ export default {
     iopsLimit () {
       let ret = { min: 0 }
       if (this.isAws) {
-        // gp3 iops 不能超过磁盘500倍
-        if ((this.storageItem?.value || '').startsWith('gp3')) {
-          ret = { min: 3000, max: 16000 }
-          const { size } = this.form.fd
+        const { size } = this.form.fd
+        const storageVal = this.storageItem?.value || ''
+        // gp3 iops 不能超过磁盘500倍，最大80000
+        if (storageVal.startsWith('gp3')) {
+          ret = { min: 3000, max: 80000 }
           if (size) {
-            ret.max = size * 500 < ret.max ? size * 500 : ret.max
+            ret.max = Math.min(size * 500, ret.max)
           }
         }
-        // io1 iops 不能超过磁盘50倍
-        if ((this.storageItem?.value || '').startsWith('io1')) {
+        // io1 iops 不能超过磁盘50倍，最大64000
+        if (storageVal.startsWith('io1')) {
           ret = { min: 100, max: 64000 }
-          const { size } = this.form.fd
           if (size) {
-            ret.max = size * 50 < ret.max ? size * 50 : ret.max
+            ret.max = Math.min(size * 50, ret.max)
+          }
+        }
+        // io2 iops 不能超过磁盘1000倍，最大256000
+        if (storageVal.startsWith('io2')) {
+          ret = { min: 100, max: 256000 }
+          if (size) {
+            ret.max = Math.min(size * 1000, ret.max)
           }
         }
       }
