@@ -1059,10 +1059,10 @@ export default {
           if (perm != null && String(perm).trim() !== '') cfg.permissions = String(perm).trim()
           if (Object.keys(cfg).length > 0) out.auto_create_config = cfg
         }
-        const containers = {}
-        ;(hp.containerRows || []).forEach(c => {
+        const containers = {};
+        (hp.containerRows || []).forEach(c => {
           const composite = `${hpKey}__${c.key}`
-          const idx = values[`host_path_container_index_${composite}`]
+          const idx = values[`host_path_container_index_${composite}`] ?? (this.isApplyType ? undefined : 0)
           const mountPath = values[`host_path_mount_path_${composite}`]
           if (idx == null || mountPath == null || String(mountPath).trim() === '') return
           const k = String(idx).trim()
