@@ -526,6 +526,51 @@ export const STORAGE_TYPES = {
       skuFamily: ['D1'],
     },
   },
+  [HYPERVISORS_MAP.rockbase.key]: {
+    LOCAL_NORMAL: {
+      label: i18n.t('common.storage.LOCAL_NORMAL'),
+      key: 'LOCAL_NORMAL',
+      min: 20,
+      max: 2000,
+      sysMin: 10,
+      sysMax: 500,
+      skuFamily: ['N1', 'N2', 'N3', 'D1'],
+    },
+    LOCAL_SSD: {
+      label: i18n.t('common.storage.LOCAL_SSD'),
+      key: 'LOCAL_SSD',
+      min: 20,
+      max: 2000,
+      sysMin: 10,
+      sysMax: 500,
+      skuFamily: ['C1', 'I2', 'G2', 'G3', 'I1', 'G1'],
+    },
+    CLOUD_NORMAL: {
+      label: i18n.t('common.storage.cloud'),
+      key: 'CLOUD_NORMAL',
+      min: 20,
+      max: 8000,
+      sysUnusable: true, // 系统盘不可用
+      skuFamily: ['N2', 'N3'],
+    },
+    CLOUD_SSD: {
+      label: i18n.t('common.storage.cloudssd'),
+      key: 'CLOUD_SSD',
+      min: 20,
+      max: 4000,
+      sysMin: 20,
+      sysMax: 500,
+      skuFamily: ['N3', 'C1', 'N2', 'I2', 'G2', 'G3'],
+    },
+    EXCLUSIVE_LOCAL_DISK: {
+      label: i18n.t('common.storage.EXCLUSIVE_LOCAL_DISK'),
+      key: 'EXCLUSIVE_LOCAL_DISK',
+      min: 4096,
+      max: 4096,
+      sysUnusable: true, // 系统盘不可用
+      skuFamily: ['D1'],
+    },
+  },
   [HYPERVISORS_MAP.ctyun.key]: {
     SSD: {
       label: i18n.t('common.storage.ctyun.ssd'),

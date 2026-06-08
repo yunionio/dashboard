@@ -67,7 +67,7 @@ import ServerPassword from '@Compute/sections/ServerPassword'
 import { SERVER_TYPE, LOGIN_TYPES_MAP } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { HYPERVISORS_MAP } from '@/constants'
+import { HYPERVISORS_MAP, isUcloudLikeHypervisor } from '@/constants'
 import { Manager } from '@/utils/manager'
 import { IMAGES_TYPE_MAP, HOST_CPU_ARCHS } from '@/constants/compute'
 import { isRequired, passwordValidator } from '@/utils/validate'
@@ -329,7 +329,7 @@ export default {
     loginTypes () {
       const loginTypes = { ...LOGIN_TYPES_MAP }
       const hypervisor = this.hypervisor
-      if (HYPERVISORS_MAP.ucloud.key === hypervisor) {
+      if (isUcloudLikeHypervisor(hypervisor)) {
         delete loginTypes[LOGIN_TYPES_MAP.image.key]
         delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
       }

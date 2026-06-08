@@ -1492,6 +1492,18 @@
       "G3": "GPU型 - V100",
       "D1": "大数据型"
     },
+    "rockbase": {
+      "N1": "标准型N1",
+      "N2": "标准型N2",
+      "N3": "标准型N3",
+      "C1": "高主频型C1",
+      "I1": "高IO型I1",
+      "I2": "高IO型I2",
+      "G1": "GPU型 - K80",
+      "G2": "GPU型 - P40",
+      "G3": "GPU型 - V100",
+      "D1": "大数据型"
+    },
     "public_cloud": {
       "basic-share": "基础共享型",
       "general-purpose": "通用型",
@@ -2513,6 +2525,7 @@
     "aws": "AWS",
     "huawei": "华为云",
     "ucloud": "UCloud",
+    "rockbase": "RockBase",
     "hcso": "HCSO",
     "hcs": "HCS",
     "nutanix": "Nutanix",
@@ -5712,6 +5725,7 @@
   "license.provider.huawei": "华为云",
   "license.provider.qcloud": "腾讯云",
   "license.provider.ucloud": "UCloud",
+  "license.provider.rockbase": "RockBase",
   "license.provider.ecloud": "移动云",
   "license.provider.jdcloud": "京东云",
   "license.provider.vmware": "VMware",

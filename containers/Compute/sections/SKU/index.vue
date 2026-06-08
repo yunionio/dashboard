@@ -62,7 +62,7 @@
 import * as R from 'ramda'
 import { ALL_SKU_CATEGORY_OPT, SKU_CATEGORY_MAP } from '@Compute/constants'
 import { Manager } from '@/utils/manager'
-import { PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
+import { PROVIDER_MAP, HYPERVISORS_MAP, isUcloudLikeHypervisor } from '@/constants'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
 import storage from '@/utils/storage'
@@ -544,7 +544,7 @@ export default {
     genRateKey (data) {
       const provider = this.getSkuItemProvider(data)
       let ret = `${provider}::${data.region_ext_id}::${data.name}`
-      if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
+      if (isUcloudLikeHypervisor(provider) || provider === HYPERVISORS_MAP.azure.key) {
         ret = `${provider}::${data.region_ext_id}::::instance::${data.name}`
       }
       return ret
@@ -612,7 +612,7 @@ export default {
       let paramKeys = this.skuList.map(item => {
         const provider = this.getSkuItemProvider(item)
         let ret = `${provider}::${item.region_ext_id || 'NA'}::${item.name || 'NA'}`
-        if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
+        if (isUcloudLikeHypervisor(provider) || provider === HYPERVISORS_MAP.azure.key) {
           ret = `${provider}::${item.region_ext_id}::::instance::${item.name}`
         }
         return ret

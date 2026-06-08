@@ -905,7 +905,7 @@ const getSingleActions = function (ctx) {
                   ret.validate = true
                   return ret
                 },
-                hidden: () => !(hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'ecloud', 'jdcloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_Renew'),
+                hidden: () => !(hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'rockbase', 'ecloud', 'jdcloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_Renew'),
               },
               // 自动续费设置
               {
@@ -937,7 +937,7 @@ const getSingleActions = function (ctx) {
                   ret.validate = true
                   return ret
                 },
-                hidden: () => !(hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'ecloud', 'jdcloud', 'ctyun'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_auto_renewal'),
+                hidden: () => !(hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'rockbase', 'ecloud', 'jdcloud', 'ctyun'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_auto_renewal'),
               },
               // 更改计费模式
               {
@@ -1437,6 +1437,7 @@ const getSingleActions = function (ctx) {
                     typeClouds.hypervisorMap.zstack?.brand,
                     // typeClouds.hypervisorMap.dstack?.brand,
                     typeClouds.hypervisorMap.ucloud?.brand,
+                    typeClouds.hypervisorMap.rockbase?.brand,
                     typeClouds.hypervisorMap.ctyun?.brand,
                     typeClouds.hypervisorMap.nutanix?.brand,
                     typeClouds.hypervisorMap.proxmox?.brand,

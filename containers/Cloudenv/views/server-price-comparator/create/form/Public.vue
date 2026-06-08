@@ -91,7 +91,7 @@ import Bill from '../components/Bill'
 import mixin from './mixin'
 import { LOGIN_TYPES_MAP, BILL_TYPES_MAP } from '@Compute/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
-import { PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
+import { PROVIDER_MAP, HYPERVISORS_MAP, isUcloudLikeHypervisor } from '@/constants'
 import AreaSelects from '@/sections/AreaSelects'
 
 export default {
@@ -245,7 +245,7 @@ export default {
     loginTypes () {
       const loginTypes = { ...LOGIN_TYPES_MAP }
       const hypervisor = this.hypervisor
-      if (HYPERVISORS_MAP.ucloud.key === hypervisor) {
+      if (isUcloudLikeHypervisor(hypervisor)) {
         delete loginTypes[LOGIN_TYPES_MAP.image.key]
         delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
       }
@@ -273,6 +273,7 @@ export default {
           HYPERVISORS_MAP.aliyun.key,
           HYPERVISORS_MAP.qcloud.key,
           HYPERVISORS_MAP.ucloud.key,
+          HYPERVISORS_MAP.rockbase.key,
           HYPERVISORS_MAP.esxi.key,
           HYPERVISORS_MAP.ksyun.key,
         ]

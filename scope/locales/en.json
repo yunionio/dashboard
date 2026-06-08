@@ -17,7 +17,8 @@
     "baidu": "Baidu Cloud",
     "qingcloud": "Qing Cloud",
     "chinaunion": "China Union",
-    "volcengine": "Volc Engine"
+    "volcengine": "Volc Engine",
+    "rockbase": "RockBase"
   },
   "scopeProviders": {
     "esxi": "VMware",
@@ -34,6 +35,7 @@
     "huawei": "Huawei Cloud",
     "jdcloud": "JD Cloud",
     "ucloud": "UCloud",
+    "rockbase": "RockBase",
     "ecloud": "mCloud",
     "HCSO": "HCSO",
     "HCS": "HCS",

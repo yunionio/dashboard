@@ -1485,6 +1485,18 @@
       "G3": "タイプ GPU - V100",
       "D1": "ビッグデータ"
     },
+    "rockbase": {
+      "N1": "スタンダードN1",
+      "N2": "スタンダードN2",
+      "N3": "スタンダードN3",
+      "C1": "高周波タイプC1",
+      "I1": "高 IO タイプ I1",
+      "I2": "高IOタイプI2",
+      "G1": "GPUタイプ - K80",
+      "G2": "GPUタイプ - P40",
+      "G3": "タイプ GPU - V100",
+      "D1": "ビッグデータ"
+    },
     "public_cloud": {
       "basic-share": "基本共有型",
       "general-purpose": "ユニバーサルタイプ",
@@ -2508,6 +2520,7 @@
     "aws": "ティッカー",
     "huawei": "ファーウェイクラウド",
     "ucloud": "ウラウド",
+    "rockbase": "RockBase",
     "hcso": "ティッカー",
     "hcs": "ティッカー",
     "nutanix": "ヌタニックス",
@@ -5706,6 +5719,7 @@
   "license.provider.huawei": "華を雲と為す",
   "license.provider.qcloud": "テンセント雲",
   "license.provider.ucloud": "uCloud",
+  "license.provider.rockbase": "RockBase",
   "license.provider.ecloud": "eCloud",
   "license.provider.jdcloud": "京東雲",
   "license.provider.vmware": "VMware",

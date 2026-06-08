@@ -45,6 +45,7 @@ const MAX_BIND_NUM = {
   [HYPERVISORS_MAP.qcloud.provider]: 5,
   [HYPERVISORS_MAP.azure.provider]: 1,
   [HYPERVISORS_MAP.ucloud.provider]: 1,
+  [HYPERVISORS_MAP.rockbase.provider]: 1,
   [HYPERVISORS_MAP.zstack.provider]: 1,
 }
 

@@ -8,6 +8,7 @@ const azureLogo = require('@/assets/images/providers/azure.svg')
 const huaweiLogo = require('@/assets/images/providers/huawei.svg')
 const qcloudLogo = require('@/assets/images/providers/qcloud.svg')
 const ucloudLogo = require('@/assets/images/providers/ucloud.svg')
+const rockbaseLogo = require('@/assets/images/providers/rockbase.svg')
 const vmwareLogo = require('@/assets/images/providers/vmware.svg')
 const openstackLogo = require('@/assets/images/providers/openstack.svg')
 // const dstackLogo = require('@/assets/images/providers/dstack.svg')
@@ -83,6 +84,12 @@ export const CLOUDACCOUNT_TYPES = {
       logo: ucloudLogo,
       component: 'UcloudCreate',
       provider: providerMap.ucloud.key,
+    },
+    rockbase: {
+      name: providerMap.rockbase.label,
+      logo: rockbaseLogo,
+      component: 'RockBaseCreate',
+      provider: providerMap.rockbase.key,
     },
     google: {
       name: providerMap.google.label,
@@ -361,6 +368,7 @@ export const ACCESS_URL = {
     FinanceCloud: i18n.t('cloudenv.finance_cloud'),
   },
   ucloud: {},
+  rockbase: {},
   ecloud: {},
   jdcloud: {},
 }
@@ -461,6 +469,19 @@ export const keySecretFields = {
     k: 'access_key_id',
     s: 'access_key_secret',
     text: 'UCloud',
+    placeholder: {
+      k: i18n.t('cloudenv.text_157'),
+      s: i18n.t('cloudenv.text_158'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_159'),
+      s: i18n.t('cloudenv.text_160'),
+    },
+  },
+  rockbase: {
+    k: 'access_key_id',
+    s: 'access_key_secret',
+    text: 'RockBase',
     placeholder: {
       k: i18n.t('cloudenv.text_157'),
       s: i18n.t('cloudenv.text_158'),

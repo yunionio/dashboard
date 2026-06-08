@@ -1470,6 +1470,18 @@
       "G3": "GPU Type-V100",
       "D1": "Big Data Type"
     },
+    "rockbase": {
+      "N1": "Standard N1",
+      "N2": "Standard N2",
+      "N3": "Standard N3",
+      "C1": "High frequency type C1",
+      "I1": "High IO type I1",
+      "I2": "High IO type I2",
+      "G1": "GPU Type-K80",
+      "G2": "GPU Type-P40",
+      "G3": "GPU Type-V100",
+      "D1": "Big Data Type"
+    },
     "public_cloud": {
       "basic-share": "Basic Sharing",
       "general-purpose": "General-purpose",
@@ -2492,6 +2504,7 @@
     "aws": "AWS",
     "huawei": "Huawei Cloud",
     "ucloud": "UCloud",
+    "rockbase": "RockBase",
     "hcso": "HCSO",
     "hcs": "HCS",
     "nutanix": "Nutanix",
@@ -5687,6 +5700,7 @@
   "license.provider.huawei": "Huawei Cloud",
   "license.provider.qcloud": "Tencent Cloud",
   "license.provider.ucloud": "UCloud",
+  "license.provider.rockbase": "RockBase",
   "license.provider.ecloud": "eCloud",
   "license.provider.vmware": "VMware",
   "license.provider.openstack": "OpenStack",

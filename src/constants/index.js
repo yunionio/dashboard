@@ -38,6 +38,7 @@ export const HYPERVISORS = [
   { key: 'qcloud', label: getProviderName('qcloud'), provider: 'Qcloud', brand: 'Qcloud', host_type: 'qcloud', hypervisor: 'qcloud', env: 'public', cloud_env: 'public' },
   { key: 'huawei', label: getProviderName('huawei'), provider: 'Huawei', brand: 'Huawei', host_type: 'huawei', hypervisor: 'huawei', env: 'public', cloud_env: 'public' },
   { key: 'ucloud', label: 'UCloud', provider: 'Ucloud', brand: 'Ucloud', host_type: 'ucloud', hypervisor: 'ucloud', env: 'public', cloud_env: 'public' },
+  { key: 'rockbase', label: 'RockBase', provider: 'RockBase', brand: 'RockBase', host_type: 'rockbase', hypervisor: 'rockbase', env: 'public', cloud_env: 'public' },
   { key: 'google', label: 'Google', provider: 'Google', brand: 'Google', host_type: 'google', hypervisor: 'google', env: 'public', cloud_env: 'public' },
   { key: 'ctyun', label: getProviderName('ctyun'), provider: 'Ctyun', brand: 'Ctyun', host_type: 'ctyun', hypervisor: 'ctyun', env: 'public', cloud_env: 'public' },
   { key: 'ecloud', label: getProviderName('ecloud'), provider: 'Ecloud', brand: 'Ecloud', host_type: 'ecloud', hypervisor: 'ecloud', env: 'public', cloud_env: 'public' },
@@ -54,6 +55,17 @@ export const HYPERVISORS = [
 ]
 
 export const HYPERVISORS_MAP = arrayToObj(HYPERVISORS, 'key')
+
+export const UCLOUD_LIKE_HYPERVISOR_KEYS = [HYPERVISORS_MAP.ucloud.key, HYPERVISORS_MAP.rockbase.key]
+
+export const isUcloudLikeHypervisor = (key) => UCLOUD_LIKE_HYPERVISOR_KEYS.includes(String(key || '').toLowerCase())
+
+export const isUcloudLikeProvider = (provider) => {
+  const v = String(provider || '').toLowerCase()
+  return [HYPERVISORS_MAP.ucloud, HYPERVISORS_MAP.rockbase].some(item => {
+    return item.provider.toLowerCase() === v || item.brand.toLowerCase() === v || item.key === v
+  })
+}
 
 export const CLOUD_ENVS = {
   onpremise: 'onpremise',
@@ -110,6 +122,7 @@ export const HYPERVISORS_GROUP = {
     qcloud: HYPERVISORS_MAP.qcloud,
     huawei: HYPERVISORS_MAP.huawei,
     ucloud: HYPERVISORS_MAP.ucloud,
+    rockbase: HYPERVISORS_MAP.rockbase,
     google: HYPERVISORS_MAP.google,
     jdcloud: HYPERVISORS_MAP.jdcloud,
     ksyun: HYPERVISORS_MAP.ksyun,

@@ -16,7 +16,8 @@
     "baidu": "百度クラウド",
     "qingcloud": "チンユン",
     "chinaunion": "ユニコムクラウド",
-    "colcengine": "火山エンジン"
+    "colcengine": "火山エンジン",
+    "rockbase": "RockBase"
   },
   "scopeProviders": {
     "esxi": "ヴイエムウェア",
@@ -33,6 +34,7 @@
     "huawei": "ファーウェイクラウド",
     "jdcloud": "JDクラウド",
     "ucloud": "ウラウド",
+    "rockbase": "RockBase",
     "ecloud": "クラウドの移動",
     "HCSO": "ティッカー",
     "HCS": "ティッカー",
@@ -43,7 +45,8 @@
     "baidu": "百度クラウド",
     "qingcloud": "チンユン",
     "chinaunion": "ユニコムクラウド",
-    "volcengine": "火山エンジン"
+    "volcengine": "火山エンジン",
+    "rockbase": "RockBase"
   },
   "scope.kpi.data_range": "データ範囲"
 }
