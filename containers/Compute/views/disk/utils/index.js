@@ -261,6 +261,9 @@ export const diskResizeConfig = {
       tooltip: '',
     }
   },
+  rockbase (obj) {
+    return diskResizeConfig.ucloud(obj)
+  },
   google (obj) {
     const { validate, tooltip } = diskResizeConfig.base(obj)
     if (!validate) {
@@ -532,6 +535,9 @@ export const diskCreateSnapshotConfig = {
       validate: true,
       tooltip: '',
     }
+  },
+  rockbase (obj) {
+    return diskCreateSnapshotConfig.ucloud(obj)
   },
   google (obj) {
     const provider = obj.provider

@@ -6,4 +6,8 @@ export const CHANEL_FEATURE = {
   GZYUN: {
     version: 'v1.0',
   },
+  ROCKBASE: {
+    version: 'v1.0',
+    domain: 'rockbasecloud.com',
+  },
 }

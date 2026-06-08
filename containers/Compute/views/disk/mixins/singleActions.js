@@ -369,7 +369,7 @@ export default {
                       }
                     }
                   }
-                  if (brand === 'ucloud') {
+                  if (brand === 'ucloud' || brand === 'rockbase') {
                     if (obj.storage_type !== 'CLOUD_NORMAL') {
                       return {
                         validate: false,

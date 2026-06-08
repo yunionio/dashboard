@@ -120,6 +120,10 @@ const LicenseItems = [
     meta: meta('resource_managent', 'public', true),
   },
   {
+    key: 'rockbase',
+    meta: meta('resource_managent', 'public', true),
+  },
+  {
     key: 'ecloud',
     meta: meta('resource_managent', 'public', true),
   },
@@ -487,6 +491,9 @@ const FEATURE_MENUS = {
     ceMenus: ['cloudaccount', 'cloudgroup', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'snapshotpolicy', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc-network', 'vpc', 'routetable', 'network', 'secgroup', 'eip', 'nat', 'dns-zone', 'waf', 'lb', 'cdn', 'ssl-certificate', 'bucket', 'rds', 'redis', 'mongodb', 'kafka', 'elasticsearch'],
   },
   ucloud: {
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'network', 'secgroup', 'eip'],
+  },
+  rockbase: {
     ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'keypair', 'sku', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'network', 'secgroup', 'eip'],
   },
   ecloud: {

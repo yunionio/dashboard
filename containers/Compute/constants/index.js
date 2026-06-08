@@ -287,6 +287,17 @@ export const EIP_RANGES_MAP = {
       stopsArr: [400],
     },
   },
+  [HYPERVISORS_MAP.rockbase.key]: {
+    [EIP_CHARGE_TYPES_MAP.traffic.key]: {
+      min: 1,
+      max: 300,
+    },
+    [EIP_CHARGE_TYPES_MAP.bandwidth.key]: {
+      min: 1,
+      max: 800,
+      stopsArr: [400],
+    },
+  },
   [HYPERVISORS_MAP.ksyun.key]: {
     [EIP_CHARGE_TYPES_MAP.traffic.key]: {
       min: 1,
@@ -1132,6 +1143,33 @@ export const STORAGE_TYPES = {
     },
   },
   ucloud: {
+    CLOUD_NORMAL: {
+      label: i18n.t('compute.text_52'),
+      value: 'CLOUD_NORMAL',
+      min: 20,
+      max: 8000,
+      sysUnusable: true, // 系统盘不可用
+      skuFamily: ['N2', 'N3'],
+    },
+    CLOUD_SSD: {
+      label: i18n.t('compute.text_76'),
+      value: 'CLOUD_SSD',
+      min: 20,
+      max: 4000,
+      sysMin: 20,
+      sysMax: 500,
+      skuFamily: ['N3', 'C1', 'N2', 'I2', 'G2', 'G3'],
+    },
+    EXCLUSIVE_LOCAL_DISK: {
+      label: i18n.t('compute.text_77'),
+      value: 'EXCLUSIVE_LOCAL_DISK',
+      min: 4096,
+      max: 4096,
+      sysUnusable: true, // 系统盘不可用
+      skuFamily: ['D1'],
+    },
+  },
+  rockbase: {
     CLOUD_NORMAL: {
       label: i18n.t('compute.text_52'),
       value: 'CLOUD_NORMAL',

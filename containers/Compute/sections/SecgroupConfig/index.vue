@@ -26,7 +26,7 @@
 <script>
 import * as R from 'ramda'
 import { SECGROUP_OPTIONS_MAP } from '@Compute/constants'
-import { HYPERVISORS_MAP } from '@/constants'
+import { HYPERVISORS_MAP, isUcloudLikeHypervisor } from '@/constants'
 
 export default {
   name: 'SecgroupConfig',
@@ -103,7 +103,7 @@ export default {
       return this.hypervisor.toLowerCase() === HYPERVISORS_MAP.azure.hypervisor.toLowerCase()
     },
     isUCloud () {
-      return this.hypervisor.toLowerCase() === HYPERVISORS_MAP.ucloud.hypervisor.toLowerCase()
+      return isUcloudLikeHypervisor(this.hypervisor)
     },
     isZstack () {
       return this.hypervisor.toLowerCase() === HYPERVISORS_MAP.zstack.hypervisor.toLowerCase()

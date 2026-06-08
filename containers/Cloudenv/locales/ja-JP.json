@@ -171,6 +171,7 @@
   "cloudenv.text_128": "{0}#新しいTencent Cloudアカウントを作成する",
   "cloudenv.text_129": "{0}#新しいHuawei Cloudアカウントを作成する",
   "cloudenv.text_130": "{0}#新しいUCloudアカウントを作成する",
+  "cloudenv.create_rockbase": "{0}#新しいRockBaseアカウントを作成する",
   "cloudenv.text_131": "{0}#新しいZStack DStackアカウントを作成する",
   "cloudenv.text_132": "{0}#新しいOpenStackアカウントを作成する",
   "cloudenv.text_133": "{0}#新しいVMwareアカウントを作成する",

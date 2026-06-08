@@ -188,6 +188,7 @@ const masks = {
   aliyun: { min: 17, max: 29 },
   aws: { min: 16, max: 28 },
   ucloud: { min: 16, max: 29 },
+  rockbase: { min: 16, max: 29 },
   huawei: { min: 16, max: 29 },
   onecloud: undefined,
   vmware: undefined,
