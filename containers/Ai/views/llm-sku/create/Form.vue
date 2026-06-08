@@ -281,7 +281,7 @@
                 </a-form-item>
               </a-col>
             </a-row>
-            <a-row :gutter="8" v-if="form.fc.getFieldValue(`host_path_auto_create_${hp.key}`)">
+            <a-row :gutter="8" v-if="form.fd[`host_path_auto_create_${hp.key}`]">
               <a-col :span="8">
                 <a-form-item>
                   <fixed-label-filter :label="$t('aice.host_paths.auto_create_config.uid')">
