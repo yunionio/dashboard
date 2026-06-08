@@ -33,7 +33,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'image' }),
+      getStatusTableColumn({ statusModule: 'image', showStatusProgress: true }),
       getEnabledTableColumn(),
       getEnabledTableColumn({
         field: 'auto_cache',
