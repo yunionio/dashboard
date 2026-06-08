@@ -5,6 +5,7 @@ import { PERMISSION, ALL_RESOURCES } from '@/constants/permission'
 import {
   getTokenFromCookie,
   decodeToken,
+  applyAuthCookiesFromLoginResponse,
   getRegionFromCookie,
   setRegionInCookie,
   setHistoryUsersInStorage,
@@ -297,6 +298,7 @@ export default {
           await commit('RESET_COOKIE')
         }
         const response = await http.post('/v1/auth/login', _data)
+        applyAuthCookiesFromLoginResponse(response)
         await commit('UPDATE_AUTH')
         const newCurrentHistoryUserStorageValue = {
           scope: getScopeFromCookie(),
@@ -312,7 +314,7 @@ export default {
         }
         await commit('scopedPolicy/DEL_DATA', {
           name: 'sub_hidden_menus',
-        })
+        }, { root: true })
         // 本地存储记录登录方式信息，下次登录默认使用该方式登录 {mode: 'account|mobile', content: 'username|phone number'}
         const { mobile, username } = data
         setLoginModeInStorage({ mode: mobile ? 'mobile' : 'account', content: mobile || username })

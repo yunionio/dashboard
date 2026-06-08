@@ -25,6 +25,7 @@ import i18n from '@/locales'
 
 const http = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
+  withCredentials: true,
 })
 
 // 超过1.5s的请求显示正在加载message

@@ -28,6 +28,31 @@ export function setTokenInCookie (token) {
   return Cookies.set(ONECLOUD_AUTH_KEY, token)
 }
 
+/** 开发代理场景下，从登录响应 Set-Cookie 同步到当前域（避免 Domain 不匹配导致读不到 token） */
+export function applyAuthCookiesFromLoginResponse (response) {
+  if (!response || !response.headers) return
+  const raw = response.headers['set-cookie'] || response.headers['Set-Cookie']
+  if (!raw) return
+  const lines = Array.isArray(raw) ? raw : [raw]
+  lines.forEach(line => {
+    const pair = String(line).split(';')[0]
+    const eq = pair.indexOf('=')
+    if (eq <= 0) return
+    const name = pair.slice(0, eq).trim()
+    const value = pair.slice(eq + 1).trim()
+    if (!value) return
+    if (name === ONECLOUD_AUTH_KEY) {
+      setTokenInCookie(value)
+    } else if (name === 'scope') {
+      setScopeInCookie(value)
+    } else if (name === 'tenant') {
+      setTenantInCookie(value)
+    } else if (name === 'region') {
+      setRegionInCookie(value)
+    }
+  })
+}
+
 export function getScopeFromCookie () {
   return Cookies.get('scope')
 }
