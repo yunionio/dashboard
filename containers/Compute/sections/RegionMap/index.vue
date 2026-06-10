@@ -11,8 +11,10 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import EChartWorldMap from '@/components/EChartWorldMap/index.vue'
 import { getItemCoords } from '@/components/EChartWorldMap/geo'
+import { cloudregionFilterByCapability } from '@/utils/common/capability'
 
 export default {
   name: 'RegionMap',
@@ -27,11 +29,20 @@ export default {
     splitKey: {
       type: String,
     },
+    filterBrandResource: {
+      type: String,
+    },
+    regionMapper: {
+      type: Function,
+    },
   },
   data () {
     return {
       regions: [],
     }
+  },
+  computed: {
+    ...mapGetters(['capability']),
   },
   watch: {
     regionFilterParams: {
@@ -40,6 +51,14 @@ export default {
         this.fetchRegions(true)
       },
       deep: true,
+    },
+    capability: {
+      deep: true,
+      handler (val, oldVal) {
+        if (R.equals(val, oldVal)) return
+        if (!this.filterBrandResource) return
+        this.fetchRegions(true)
+      },
     },
   },
   created () {
@@ -58,7 +77,18 @@ export default {
       }
       return this.cloudregionsM.list({ params })
         .then(res => {
-          this.regions = (res.data.data || []).filter(item => getItemCoords(item))
+          let list = (res.data.data || []).filter(item => getItemCoords(item))
+          if (this.filterBrandResource) {
+            list = cloudregionFilterByCapability({
+              dataList: list,
+              capability: this.capability,
+              resource: this.filterBrandResource,
+            })
+          }
+          if (this.regionMapper) {
+            list = this.regionMapper(list)
+          }
+          this.regions = list
           if (isRefresh) {
             this.$emit('params-change')
           }
