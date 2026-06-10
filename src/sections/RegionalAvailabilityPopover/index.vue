@@ -1,5 +1,7 @@
 <template>
-  <span class="regional-availability-root" @click.stop="handleWrapClick">
+  <span class="regional-availability-cell">
+    <span v-if="!hasTriggerContent" class="regional-availability-empty">-</span>
+    <span v-else class="regional-availability-root" @click.stop="handleWrapClick">
     <a-popover
       v-model="visible"
       trigger="click"
@@ -15,7 +17,9 @@
           <div class="regional-availability-popover-content">
             <!-- 当前区域和可用区 -->
             <div class="regional-availability-current">
-              <span class="regional-availability-indicator status-dot status-success" />
+              <span
+                class="regional-availability-indicator status-dot"
+                :class="isCurrentRegionAvailable ? 'status-success' : 'status-danger'" />
               <a-tooltip
                 :title="currentRegionTooltip || null"
                 placement="top"
@@ -28,7 +32,9 @@
                 placement="top"
                 :get-popup-container="getTooltipContainer">
                 <span class="regional-availability-zone-item is-current">
-                  <span class="regional-availability-indicator status-dot status-success" />
+                  <span
+                    class="regional-availability-indicator status-dot"
+                    :class="isCurrentZoneAvailable ? 'status-success' : 'status-danger'" />
                   {{ formatZoneName(zone) }}
                 </span>
               </a-tooltip>
@@ -44,7 +50,7 @@
               <div
                 v-show="expanded"
                 class="regional-availability-other-body"
-                :class="{ 'is-region-only': hiddenZone }">
+                :class="{ 'is-region-only': hiddenZone || isRegionOnlyData }">
                 <div
                   v-for="item in otherRegions"
                   :key="item.id"
@@ -58,7 +64,7 @@
                     :get-popup-container="getTooltipContainer">
                     <span class="regional-availability-region-name">{{ item.cloudregion }}</span>
                   </a-tooltip>
-                  <div v-if="!hiddenZone" class="regional-availability-zone-list">
+                  <div v-if="!hiddenZone && item.zones.length" class="regional-availability-zone-list">
                     <a-tooltip
                       v-for="zoneItem in item.zones"
                       :key="zoneItem.zone_id || zoneItem.zone"
@@ -87,9 +93,9 @@
         <list-body-cell-wrap v-if="zone && !hiddenZone" hide-field copy field="zone" :row="{ zone }">
           <a class="link-color-light" @click.prevent>{{ zone }}</a>
         </list-body-cell-wrap>
-        <span v-if="!region && !zone">-</span>
       </span>
     </a-popover>
+    </span>
   </span>
 </template>
 
@@ -97,6 +103,10 @@
 export default {
   name: 'RegionalAvailabilityPopover',
   props: {
+    skuData: {
+      type: Object,
+      default: () => ({}),
+    },
     chargeTypes: {
       type: Array,
       default: () => [],
@@ -129,50 +139,59 @@ export default {
     }
   },
   computed: {
-    currentRegionItem () {
-      if (!Array.isArray(this.regionalAvailability)) return null
-      return this.regionalAvailability.find(item => item.cloudregion === this.region) || null
+    hasTriggerContent () {
+      return (this.region && !this.hiddenRegion) || (this.zone && !this.hiddenZone)
     },
-    currentZoneItem () {
-      if (!this.zone) return null
-      if (this.currentRegionItem) {
-        const matched = this.findZoneItem(this.currentRegionItem.zones, this.zone)
-        if (matched) return matched
-      }
-      if (Array.isArray(this.regionalAvailability)) {
-        for (const item of this.regionalAvailability) {
-          const matched = this.findZoneItem(item.zones, this.zone)
-          if (matched) return matched
-        }
-      }
-      return null
+    currentSkuRegionItem () {
+      if (!this.skuData || !Object.keys(this.skuData).length) return null
+      return { cloudregion: this.region, zones: [this.skuData] }
+    },
+    isCurrentRegionAvailable () {
+      return this.isRegionAvailable(this.currentSkuRegionItem)
+    },
+    isCurrentZoneAvailable () {
+      return this.isZoneAvailable(this.skuData)
     },
     currentRegionTooltip () {
-      const item = this.currentRegionItem || this.buildRegionFallbackItem()
-      return this.getAvailabilityTooltip('region', item)
+      return this.getAvailabilityTooltip('region', this.currentSkuRegionItem)
     },
     currentZoneTooltip () {
-      const item = this.currentZoneItem || this.buildZoneFallbackItem()
-      return this.getAvailabilityTooltip('zone', item)
+      return this.getAvailabilityTooltip('zone', this.skuData)
+    },
+    isRegionOnlyData () {
+      if (!Array.isArray(this.regionalAvailability) || !this.regionalAvailability.length) return false
+      return this.regionalAvailability.every(item => this.isRegionOnlyItem(item))
     },
     otherRegions () {
       if (!Array.isArray(this.regionalAvailability)) return []
-      if (this.hiddenZone) {
-        return this.regionalAvailability
-          .filter(item => item.cloudregion !== this.region)
-          .map(item => ({
+
+      return this.regionalAvailability
+        .filter(item => item.cloudregion !== this.region)
+        .map(item => {
+          if (this.isRegionOnlyItem(item)) {
+            return {
+              id: item.cloudregion_id,
+              cloudregion: item.cloudregion,
+              prepaid_status: item.prepaid_status,
+              postpaid_status: item.postpaid_status,
+              zones: [],
+              isRegionOnly: true,
+            }
+          }
+          if (this.hiddenZone) {
+            return {
+              id: item.cloudregion_id,
+              cloudregion: item.cloudregion,
+              zones: item.zones || [],
+            }
+          }
+          return {
             id: item.cloudregion_id,
             cloudregion: item.cloudregion,
-            zones: item.zones || [],
-          }))
-      }
-      return this.regionalAvailability
-        .map(item => ({
-          id: item.cloudregion_id,
-          cloudregion: item.cloudregion,
-          zones: (item.zones || []).filter(z => z.zone !== this.zone),
-        }))
-        .filter(item => item.zones.length > 0)
+            zones: (item.zones || []).filter(z => z.zone !== this.zone),
+          }
+        })
+        .filter(item => item.isRegionOnly || item.zones.length > 0)
     },
   },
   watch: {
@@ -203,31 +222,16 @@ export default {
       const index = name.indexOf('可用区')
       return index >= 0 ? name.slice(index) : name
     },
-    findZoneItem (zones, zoneName) {
-      if (!Array.isArray(zones) || !zoneName) return null
-      const formattedName = this.formatZoneName(zoneName)
-      return zones.find(z => z.zone === zoneName) || zones.find(z => this.formatZoneName(z.zone) === formattedName) || zones.find(z => z.zone && (z.zone.endsWith(zoneName) || zoneName.endsWith(z.zone))) || null
-    },
-    buildRegionFallbackItem () {
-      if (!this.chargeTypes.length) return null
-      const zoneStatus = {}
-      this.chargeTypes.forEach(type => {
-        zoneStatus[`${type}_status`] = 'available'
-      })
-      return { cloudregion: this.region, zones: [zoneStatus] }
-    },
-    buildZoneFallbackItem () {
-      if (!this.chargeTypes.length) return null
-      const item = { zone: this.zone }
-      this.chargeTypes.forEach(type => {
-        item[`${type}_status`] = 'available'
-      })
-      return item
+    isRegionOnlyItem (item) {
+      return !Array.isArray(item?.zones) || !item.zones.length
     },
     isRegionAvailable (regionItem) {
       if (!regionItem) return !this.chargeTypes.length
       if (!this.chargeTypes.length) return true
       const zones = regionItem.zones || []
+      if (!zones.length) {
+        return this.chargeTypes.some(type => regionItem[`${type}_status`] === 'available')
+      }
       return this.chargeTypes.some(type => {
         const field = `${type}_status`
         return zones.some(zone => zone[field] === 'available')
@@ -250,6 +254,9 @@ export default {
         return item[`${chargeType}_status`] === 'available'
       }
       const zones = item.zones || []
+      if (!zones.length) {
+        return item[`${chargeType}_status`] === 'available'
+      }
       return zones.some(zone => zone[`${chargeType}_status`] === 'available')
     },
     getAvailabilityTooltip (scope, item) {
@@ -297,6 +304,10 @@ export default {
   .ant-popover-inner-content {
     padding: 0 !important;
   }
+}
+.regional-availability-empty {
+  color: @text-color-secondary;
+  cursor: default;
 }
 .regional-availability-root {
   display: inline-block;
