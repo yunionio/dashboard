@@ -106,7 +106,7 @@ export const getMultipleRegionTableColumn = ({ field = 'regional_availability', 
         if (Array.isArray(regionalAvailability) && regionalAvailability.length) {
           return [
             h(RegionalAvailabilityPopover, {
-              props: { region, zone, regionalAvailability, chargeTypes },
+              props: { region, zone, regionalAvailability, chargeTypes, skuData: row },
             }),
           ]
         }
