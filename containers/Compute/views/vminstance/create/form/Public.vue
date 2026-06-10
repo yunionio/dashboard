@@ -51,6 +51,8 @@
       <a-form-item v-if="form.fd.enableWorldMap" :label="$t('compute.text_177')">
         <region-map
           :region-filter-params="regionMapParams"
+          filter-brand-resource="compute_engine"
+          :region-mapper="filterMapCloudregionList"
           split-key="provider"
           @select="onRegionSelect"
           @params-change="onRegionMapParamsChange" />
@@ -255,6 +257,7 @@ import { resolveValueChangeField } from '@/utils/common/ant'
 import { PROVIDER_MAP, HYPERVISORS_MAP, isUcloudLikeHypervisor } from '@/constants'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
 import AreaSelects from '@/sections/AreaSelects'
+import { cloudregionFilterByCapability } from '@/utils/common/capability'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 
 export default {
@@ -408,6 +411,12 @@ export default {
         cloud_env: 'public',
         usable: true,
         show_emulated: true,
+        read_only: false,
+        capability: 'compute',
+        public_cloud: true,
+        // 触发 RegionMap 在计费方式变化时重新过滤点位
+        billType: this.form.fd.billType,
+        duration: this.form.fd.duration,
         ...this.scopeParams,
       }
     },
@@ -809,6 +818,28 @@ export default {
         })
       }
       return this.filterCloudregionListByProvider(result)
+    },
+    filterMapCloudregionList (list = []) {
+      let result = cloudregionFilterByCapability({
+        dataList: list,
+        capability: this.$store.getters.capability,
+        resource: 'compute_engine',
+      })
+      result = result.filter(item => {
+        const provider = String(item.provider || item.brand || '').toLowerCase()
+        return ![HYPERVISORS_MAP.jdcloud.key, HYPERVISORS_MAP.ecloud.key].includes(provider)
+      })
+      if (this.form.fd.billType === BILL_TYPES_MAP.package.key) {
+        if (this.form.fd.duration === '1W') {
+          result = result.filter(item => HYPERVISORS_MAP.aliyun.key === String(item.provider || '').toLowerCase())
+        } else {
+          result = result.filter(item => {
+            const provider = String(item.provider || '').toLowerCase()
+            return ![HYPERVISORS_MAP.azure.key, HYPERVISORS_MAP.aws.key, HYPERVISORS_MAP.google.key].includes(provider)
+          })
+        }
+      }
+      return result
     },
     mapZoneMapper (list) {
       if (!this.hasMapRegionFilter) return list

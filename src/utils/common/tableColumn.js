@@ -13,6 +13,7 @@ import expectStatus from '@/constants/expectStatus'
 import { status as statusMap } from '@/locales/zh-CN'
 import setting from '@/config/setting'
 import SystemIcon from '@/sections/SystemIcon'
+import RegionalAvailabilityPopover from '@/sections/RegionalAvailabilityPopover'
 const brandMap = typeClouds.getBrand()
 
 export const getProjectTableColumn = ({ vm = {}, field = 'tenant', title = i18n.t('res.project'), projectsItem = 'tenant', sortable = true, hidden = false, minWidth = 100 } = {}) => {
@@ -87,6 +88,45 @@ export const getRegionTableColumn = ({ field = 'region', title = i18n.t('res.reg
     },
     hidden: () => {
       return R.is(Function, hidden) ? hidden() : hidden
+    },
+  }
+}
+
+export const getMultipleRegionTableColumn = ({ field = 'regional_availability', title = i18n.t('res.region'), regionField = 'region', zoneField = 'zone', chargeTypes = [] } = {}) => {
+  return {
+    field: regionField,
+    title,
+    showOverflow: 'ellipsis',
+    minWidth: 120,
+    slots: {
+      default: ({ row }, h) => {
+        const region = _.get(row, regionField)
+        const zone = _.get(row, zoneField)
+        const regionalAvailability = _.get(row, field)
+        if (Array.isArray(regionalAvailability) && regionalAvailability.length) {
+          return [
+            h(RegionalAvailabilityPopover, {
+              props: { region, zone, regionalAvailability, chargeTypes },
+            }),
+          ]
+        }
+        const ret = []
+        if (region) {
+          ret.push(
+            <list-body-cell-wrap hide-field copy field={regionField} row={row}>
+              <a onClick={e => e.preventDefault()}>{region}</a>
+            </list-body-cell-wrap>,
+          )
+        }
+        if (zone) {
+          ret.push(
+            <list-body-cell-wrap hide-field copy field={zoneField} row={row}>
+              <a class='link-color-light' onClick={e => e.preventDefault()}>{zone}</a>
+            </list-body-cell-wrap>,
+          )
+        }
+        return ret.length ? ret : ['-']
+      },
     },
   }
 }

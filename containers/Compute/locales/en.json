@@ -2023,5 +2023,12 @@
   "compute.upload_app_package_file_help": "Do not refresh or close the page during upload. App package only supports tar.gz format.",
   "compute.cpu_model": "CPU model",
   "compute.nic_bandwidth": "Network bandwidth",
-  "compute.disk_performance": "Disk throughput"
+  "compute.disk_performance": "Disk throughput",
+  "compute.regional_availability": "Region/Zone",
+  "compute.regional_availability_regions": "{0} regions",
+  "compute.regional_availability_other_regions": "Other regions",
+  "compute.regional_availability.unavailable": "Unavailable",
+  "compute.regional_availability.tooltip.single": "{0} plans in this {1} are {2}",
+  "compute.regional_availability.tooltip.both_same": "{0} and {1} plans in this {2} are all {3}",
+  "compute.regional_availability.tooltip.mixed": "{0} plans in this {1} are {2}; {3} plans in this {1} are {4}"
 }

@@ -4,8 +4,8 @@ import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
   getBrandTableColumn,
-  getRegionTableColumn,
   getTimeTableColumn,
+  getMultipleRegionTableColumn,
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
@@ -61,7 +61,7 @@ export default {
       ]
       if (this.cloudEnv === 'public') {
         columns.push(
-          getRegionTableColumn(),
+          getMultipleRegionTableColumn({ chargeTypes: ['prepaid', 'postpaid'] }),
           // chargeTypeColumn(),
         )
       }
