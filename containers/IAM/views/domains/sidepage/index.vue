@@ -38,12 +38,11 @@ import UserList from '@IAM/views/user/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
 import Detail from './Detail'
 import RoleList from './Role'
 import CloudaccountList from './Cloudaccount'
-
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 export default {
   name: 'DomainSidePage',
   components: {

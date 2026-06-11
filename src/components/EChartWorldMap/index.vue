@@ -67,6 +67,7 @@ import echarts from 'echarts/lib/echarts'
 import 'echarts/lib/component/geo'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/chart/scatter'
+import i18n from '@/locales'
 import {
   circlePolygonFeature,
   findItemsWithinRadius,
@@ -74,8 +75,6 @@ import {
 } from './geo'
 import { projectLngLat, unprojectPoint } from './projection'
 import { ensureWorldMercatorMap } from './registerWorldMercator'
-import i18n from '@/locales'
-
 const DEFAULT_CENTER = [0, 0]
 
 /** 对齐 dashboard-overview RegionMap 大屏风格 */

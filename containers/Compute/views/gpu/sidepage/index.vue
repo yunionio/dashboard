@@ -28,10 +28,9 @@ import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 import AssociatedInstances from './AssociatedInstances'
+import GpuDetail from './Detail'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import GpuDetail from './Detail'
-
 export default {
   name: 'GpuSidePage',
   components: {

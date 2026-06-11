@@ -10,12 +10,11 @@
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows'
 import WafMixin from '../../mixins/waf'
 import MatchFieldKey from '../statementComponents/MatchFieldKey'
 import MatchFieldValues from '../statementComponents/MatchFieldValues'
 import Negation from '../statementComponents/Negation'
-import WindowsMixin from '@/mixins/windows'
-
 export default {
   name: 'LabelMatch',
   components: {

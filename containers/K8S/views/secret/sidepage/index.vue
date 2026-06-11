@@ -17,16 +17,15 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import Detail from './Detail'
 import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
 import PodList from '@K8S/views/pod/components/List'
 import EventsSidepage from '@K8S/sections/EventsSidepage'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-
+import Detail from './Detail'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 export default {
   name: 'K8SSecretSidePage',
   components: {

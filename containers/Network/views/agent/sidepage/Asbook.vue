@@ -13,10 +13,9 @@
 </template>
 
 <script>
-import Ansible from '../controls/ansible'
 import RefreshButton from '@/components/PageList/RefreshButton'
 import WindowsMixin from '@/mixins/windows'
-
+import Ansible from '../controls/ansible'
 export default {
   name: 'Ansibleplaybook',
   components: {

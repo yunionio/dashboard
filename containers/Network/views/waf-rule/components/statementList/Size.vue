@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows'
 import WafMixin from '../../mixins/waf'
 import MatchField from '../statementComponents/MatchField'
 import MatchFieldValues from '../statementComponents/MatchFieldValues'
@@ -25,8 +26,6 @@ import Operator from '../statementComponents/Operator'
 import Transformations from '../statementComponents/Transformations'
 import Negation from '../statementComponents/Negation'
 import MatchFieldKey from '../statementComponents/MatchFieldKey'
-import WindowsMixin from '@/mixins/windows'
-
 export default {
   name: 'Size',
   components: {

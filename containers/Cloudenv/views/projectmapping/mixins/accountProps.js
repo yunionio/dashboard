@@ -1,4 +1,3 @@
-import { getAccessUrlTableColumn } from '../utils/columns'
 import {
   getNameDescriptionTableColumn,
   getProjectDomainTableColumn,
@@ -8,6 +7,7 @@ import {
   getNameFilter,
   getBrandFilter,
 } from '@/utils/common/tableFilter'
+import { getAccessUrlTableColumn } from '../utils/columns'
 
 export default {
   data () {

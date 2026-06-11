@@ -1,7 +1,6 @@
+import { k8sStatusColumn } from '@K8S/utils/tableColumns'
 import { getTimeTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
-import { k8sStatusColumn } from '@K8S/utils/tableColumns'
-
 export default {
   created () {
     this.columns = [

@@ -59,10 +59,9 @@
 
 <script>
 import VueCropper from 'vue-cropperjs'
+import 'cropperjs/dist/cropper.css'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import 'cropperjs/dist/cropper.css'
-
 export default {
   name: 'ImageCropperDialog',
   components: {

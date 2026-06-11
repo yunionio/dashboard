@@ -23,11 +23,10 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import FlexNetworkDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
-
+import FlexNetworkDetail from './Detail'
+import ColumnsMixin from '../mixins/columns'
 export default {
   name: 'FlexNetworkSidePage',
   components: {

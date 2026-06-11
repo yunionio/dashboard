@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import { validateModelForm } from '@/utils/validate'
 import { toSafeName } from '@Ai/utils/communityRegistry'
+import { validateModelForm } from '@/utils/validate'
 
 export default {
   name: 'CommunityImportForm',

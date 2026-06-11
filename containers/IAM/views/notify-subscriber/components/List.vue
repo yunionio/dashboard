@@ -8,14 +8,13 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import { NOTIFY_SUBSCRIBER_TYPES_MAP } from '../../../constants'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getEnabledFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
-
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import { NOTIFY_SUBSCRIBER_TYPES_MAP } from '../../../constants'
 export default {
   name: 'NotifySubscriberList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],

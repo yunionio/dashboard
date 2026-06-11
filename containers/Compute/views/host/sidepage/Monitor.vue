@@ -5,10 +5,9 @@
 </template>
 
 <script>
-import WindowsMixin from '@/mixins/windows'
 import DashboardCards from '@Monitor/components/MonitorCard/DashboardCards'
+import WindowsMixin from '@/mixins/windows'
 import { KVM_MONITOR_OPTS, VMWARE_MONITOR_OPTS, NIC_RSRC_MON_OPTS, RADEONTOP_OPTS, VASMI_OPTS } from '../constants'
-
 export default {
   name: 'HostMonitorSidepage',
   components: {

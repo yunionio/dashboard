@@ -11,10 +11,9 @@
 </template>
 
 <script>
+import { sizestr } from '@/utils/utils'
 import commonChartProps from './common'
 import numerify from './formatters'
-import { sizestr } from '@/utils/utils'
-
 export default {
   name: 'OverviewHistogram',
   props: commonChartProps(),

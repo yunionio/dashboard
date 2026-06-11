@@ -60,9 +60,8 @@
 
 <script>
 import * as R from 'ramda'
-import { uuid } from '@/utils/utils'
 import { filterKeyMap } from '@Monitor/constants'
-
+import { uuid } from '@/utils/utils'
 export default {
   name: 'ExplorerFormFilters',
   props: {

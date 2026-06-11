@@ -20,10 +20,9 @@
 </template>
 
 <script>
-import mixin from '../mixins/formStepItem'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-
+import mixin from '../mixins/formStepItem'
 export default {
   name: 'LBListenerCreateBackendgroup',
   mixins: [mixin, WindowsMixin, ListMixin],

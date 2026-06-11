@@ -30,9 +30,8 @@
 <script>
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
-import ColumnsMixin from '../mixins/columns'
 import Ipv6GatewayDetail from './Detail'
-
+import ColumnsMixin from '../mixins/columns'
 export default {
   name: 'Ipv6GatewaySidePage',
   components: {

@@ -3,10 +3,9 @@
 </template>
 
 <script>
-import WindowsMixin from '@/mixins/windows'
 import DashboardCards from '@Monitor/components/MonitorCard/DashboardCards'
+import WindowsMixin from '@/mixins/windows'
 import { WIRE_MONITOR_OPTS } from '../constants'
-
 export default {
   name: 'WireMonitorSidepage',
   components: {

@@ -6,6 +6,12 @@
 </template>
 
 <script>
+import {
+  getLlmIpColumn,
+  getCpuTableColumn,
+  getMemoryTableColumn,
+  getDiskTableColumn,
+} from '@Ai/views/llm/utils/columns'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import {
@@ -13,12 +19,6 @@ import {
   getStatusTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
-import {
-  getLlmIpColumn,
-  getCpuTableColumn,
-  getMemoryTableColumn,
-  getDiskTableColumn,
-} from '@Ai/views/llm/utils/columns'
 
 export default {
   name: 'LlmDeploymentInstancesList',

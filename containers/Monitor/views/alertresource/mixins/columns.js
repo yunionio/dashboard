@@ -1,8 +1,7 @@
 import _ from 'lodash'
-import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import { strategyColumn, levelColumn } from '@Monitor/views/commonalert/utils'
+import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
-
 export default {
   data () {
     return {

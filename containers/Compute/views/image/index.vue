@@ -30,10 +30,9 @@
 </template>
 
 <script>
-import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 import CacheImageList from '@Compute/views/cached-image/components/List'
+import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 import ImageList from './components/List'
-
 export default {
   name: 'ImageIndex',
   components: {

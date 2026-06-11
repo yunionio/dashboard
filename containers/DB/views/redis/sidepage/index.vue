@@ -26,18 +26,17 @@
 </template>
 
 <script>
+import SecgroupList from '@Compute/views/secgroup/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import SecgroupList from '@Compute/views/secgroup/components/List'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
 import RedisDetail from './Detail'
 import RedisWhiteList from './WhiteList'
 import RedisAccountList from './AccountList'
 import RedisBackupList from './BackupList'
 import Monitor from './Monitor'
-
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 export default {
   name: 'RedisSidePage',
   components: {

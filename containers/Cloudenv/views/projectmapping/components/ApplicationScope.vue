@@ -25,9 +25,9 @@
 </template>
 
 <script>
+import ListSelect from '@/sections/ListSelect'
 import AccountPropsMixin from '../mixins/accountProps'
 import CloudprovidersPropsMixin from '../mixins/cloudprovidersProps'
-import ListSelect from '@/sections/ListSelect'
 
 export default {
   name: 'ApplicationScope',

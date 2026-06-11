@@ -8,12 +8,12 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { ENABLED_OPTS } from '@/constants'
 import ListMixin from '@/mixins/list'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'DynamicschedtagList',

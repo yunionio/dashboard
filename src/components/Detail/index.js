@@ -1,4 +1,3 @@
-import './style.scss'
 import * as R from 'ramda'
 import _ from 'lodash'
 import moment from 'moment'
@@ -9,7 +8,7 @@ import { hasPermission } from '@/utils/auth'
 import { changeToArr } from '@/utils/utils'
 import store from '@/store'
 import expectStatus from '@/constants/expectStatus'
-
+import './style.scss'
 // 需要添加区域（cloudregion/cloudregion_id), 可用区（zone/zone_id)，云账号(account/account_id)，云订阅（manager/manager_id)的资源
 const appendOutherResources = ['servers', 'hosts', 'disks', 'storages', 'vpcs', 'wires', 'networks', 'natgateways', 'snapshots', 'eips', 'dbinstances', 'elasticcaches', 'servertemplates', 'buckets', 'networkinterfaces', 'lbs', 'nats', 'nas', 'kafkas', 'elasticsearchs', 'webapps', 'cdn_domains', 'inter_vpc_networks', 'route_tables', 'vpc_peering_connections', 'ipv6_gateways', 'tablestores', 'modelarts_pools', 'meter_instance_caches']
 

@@ -1,6 +1,6 @@
 import { mapGetters } from 'vuex'
-import storage from '@/utils/storage'
 import { PRICE_COMPARA_KEY_SUFFIX } from '@Cloudenv/constants'
+import storage from '@/utils/storage'
 
 export default {
   computed: {

@@ -33,11 +33,10 @@
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import HostImageDetail from './Detail'
 import ChildrenImageList from '../../host-image/sidepage/ChildrenImage'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import HostImageDetail from './Detail'
-
 export default {
   name: 'HostImageSidePage',
   components: {

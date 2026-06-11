@@ -1,12 +1,12 @@
 import {
+  getNameDescriptionTableColumn,
+  getStatusTableColumn,
+} from '@/utils/common/tableColumn'
+import {
   getCategoryTableColumn,
   getConditionTableColumn,
   getParameterTableColumn,
 } from '../utils/columns'
-import {
-  getNameDescriptionTableColumn,
-  getStatusTableColumn,
-} from '@/utils/common/tableColumn'
 
 export default {
   created () {

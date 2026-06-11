@@ -18,9 +18,9 @@
 </template>
 
 <script>
+import ReadOnly from '@Cloudenv/views/cloudaccount/components/ReadOnly'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import ReadOnly from '@Cloudenv/views/cloudaccount/components/ReadOnly'
 
 export default {
   name: 'CloudaccountSetReadOnlyDialog',

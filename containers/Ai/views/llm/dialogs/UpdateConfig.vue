@@ -124,11 +124,11 @@
 </template>
 
 <script>
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { uuid } from '@/utils/utils'
 import { getParamsForType } from '../../llm-sku/constants/llmTypeConfig'
-import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 
 export default {
   name: 'LlmUpdateConfigDialog',

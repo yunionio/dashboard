@@ -19,11 +19,11 @@
 </template>
 
 <script>
-import ResSync from './ResSync'
 import BillTask from '@Cloudenv/views/billtasks/components/List'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { hasMeterService } from '@/utils/auth'
+import ResSync from './ResSync'
 
 export default {
   name: 'ScheduledtasksListForCloudaccountSidepage',

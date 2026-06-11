@@ -21,12 +21,12 @@
 <script>
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
-import ColumnsMixin from '../mixins/columns'
 import CloudregionDetail from './Detail'
 import Dashboard from './Dashboard'
 import VPCList from './VPCList'
 import NetworkList from './NetworkList'
 import ZoneList from './ZoneList'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'CloudregionSidePage',

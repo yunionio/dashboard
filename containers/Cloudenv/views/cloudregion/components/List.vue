@@ -6,10 +6,10 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
 import { getNameFilter, getEnabledFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'CloudregionList',

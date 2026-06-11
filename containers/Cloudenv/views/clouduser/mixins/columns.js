@@ -1,3 +1,4 @@
+import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import {
   getNameDescriptionTableColumn,
   getBrandTableColumn,
@@ -6,7 +7,6 @@ import {
   getEnabledTableColumn,
   getAccountTableColumn,
 } from '@/utils/common/tableColumn'
-import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 
 export default {
   created () {

@@ -22,11 +22,10 @@
 </template>
 
 <script>
-import { ACCOUNT_PRIVILEGES } from '../constants'
 import { CreateServerForm } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-
+import { ACCOUNT_PRIVILEGES } from '../constants'
 export default {
   name: 'RedisAccountListSetPrivilegeDialog',
   mixins: [DialogMixin, WindowsMixin],

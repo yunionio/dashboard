@@ -70,10 +70,9 @@ import * as R from 'ramda'
 import _ from 'lodash'
 import XLSX from 'xlsx'
 import { metric_zh, tableColumnMaps } from '@Monitor/constants'
+import { getChartTooltipLabel } from '@Monitor/utils'
 import { ColorHash } from '@/utils/colorHash'
 import { transformUnit } from '@/utils/utils'
-import { getChartTooltipLabel } from '@Monitor/utils'
-
 const MAX_COLUMNS = 10
 
 export default {

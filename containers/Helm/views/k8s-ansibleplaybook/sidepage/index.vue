@@ -14,11 +14,10 @@
 </template>
 
 <script>
-import Logs from './Logs'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-
+import Logs from './Logs'
 export default {
   name: 'K8sAnsibleplaybookSidePage',
   components: {

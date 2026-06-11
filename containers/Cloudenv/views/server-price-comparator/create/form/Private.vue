@@ -78,9 +78,9 @@
 <script>
 import _ from 'lodash'
 import * as R from 'ramda'
-import mixin from './mixin'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { HYPERVISORS_MAP } from '@/constants'
+import mixin from './mixin'
 
 export default {
   name: 'VMPrivateCreate',

@@ -1,7 +1,6 @@
 import { Radio } from 'ant-design-vue'
-import RadioRule from '../core/rules/radio'
 import JRadio from './Radio'
-
+import RadioRule from '../core/rules/radio'
 /* istanbul ignore next */
 JRadio.install = function (Vue) {
   Vue.prototype.$generator.addRule('a-radio', RadioRule)

@@ -20,13 +20,12 @@
 import { mapGetters } from 'vuex'
 import Subscriber from '@IAM/views/notify-subscriber/components/List'
 import { NOTIFY_TOPIC_NAMES_MAP } from '@IAM/constants'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import TopicDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-
+import TopicDetail from './Detail'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 export default {
   name: 'NotifyTopicSidePage',
   components: {

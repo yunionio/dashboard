@@ -562,15 +562,15 @@
 
 <script>
 import * as R from 'ramda'
+import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
+import ServerNetwork from '@Compute/sections/ServerNetwork'
+import LlmSkuSelect from '@Ai/sections/LlmSkuSelect'
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import WindowsMixin from '@/mixins/windows'
 import validateForm from '@/utils/validate'
 import { uuid } from '@/utils/utils'
 import NameRepeated from '@/sections/NameRepeated'
-import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
-import ServerNetwork from '@Compute/sections/ServerNetwork'
-import LlmSkuSelect from '@Ai/sections/LlmSkuSelect'
 import { LLM_TYPE_OPTIONS, getParamsForType } from '../llm-sku/constants/llmTypeConfig'
-import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import { OPENCLAW_CHANNEL_SECTIONS, OPENCLAW_CHANNEL_OPTIONS } from '../llm-sku/constants/openclawChannelConfig'
 import { OPENCLAW_PROVIDER_SECTIONS, OPENCLAW_PROVIDER_OPTIONS } from '../llm-sku/constants/openclawProviderConfig'
 export default {

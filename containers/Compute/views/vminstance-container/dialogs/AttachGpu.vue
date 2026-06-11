@@ -83,13 +83,12 @@
 
 <script>
 import * as R from 'ramda'
+import { GPU_DEV_TYPE_OPTION_MAP } from '@Compute/constants'
 import {
   getIpsTableColumn,
 } from '@/utils/common/tableColumn'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { GPU_DEV_TYPE_OPTION_MAP } from '@Compute/constants'
-
 export default {
   name: 'VmContainerAttachGpuDialog',
   mixins: [DialogMixin, WindowsMixin],

@@ -1,7 +1,6 @@
 import * as R from 'ramda'
-import { STORAGE_TYPES } from '../constants'
 import i18n from '@/locales'
-
+import { STORAGE_TYPES } from '../constants'
 export const getStorageTypeTableColumn = ({ vm = {}, hidden } = {}) => {
   return {
     field: 'storage_type',

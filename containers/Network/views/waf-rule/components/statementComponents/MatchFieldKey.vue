@@ -9,10 +9,9 @@
 </template>
 
 <script>
-import WafMixin from '../../mixins/waf'
-import BoxShow from './BoxShow.vue'
 import WindowsMixin from '@/mixins/windows'
-
+import BoxShow from './BoxShow.vue'
+import WafMixin from '../../mixins/waf'
 export default {
   name: 'MatchFieldKeyStatement',
   components: { BoxShow },

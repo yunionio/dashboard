@@ -1,17 +1,17 @@
 import {
-  getOperationColumns,
-  getResourceTypeColumns,
-  getResourceNumberColumns,
-  // getLabelTypeColumns,
-  getTimerDescColumns,
-} from '../utils/columns'
-import {
   getNameDescriptionTableColumn,
   getEnabledTableColumn,
   getStatusTableColumn,
   getTimeTableColumn,
   getProjectTableColumn,
 } from '@/utils/common/tableColumn'
+import {
+  getOperationColumns,
+  getResourceTypeColumns,
+  getResourceNumberColumns,
+  // getLabelTypeColumns,
+  getTimerDescColumns,
+} from '../utils/columns'
 
 export default {
   created () {

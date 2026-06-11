@@ -46,15 +46,14 @@
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import ServerConfig from '@K8S/sections/serverConfig'
+import { hyperOpts } from '@K8S/views/cluster/constants'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
-import { hyperOpts } from '@K8S/views/cluster/constants'
 import { isWithinRange, isRequired } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
-
 function checkIpInSegment (i, networkData) {
   return (rule, value, _callback) => {
     const isIn = isWithinRange(value, networkData.guest_ip_start, networkData.guest_ip_end)

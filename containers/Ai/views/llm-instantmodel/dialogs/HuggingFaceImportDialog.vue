@@ -15,9 +15,9 @@
 </template>
 
 <script>
+import HfInstantImportForm from '@Ai/views/llm-instantmodel/shared/HfInstantImportForm.vue'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import HfInstantImportForm from '@Ai/views/llm-instantmodel/shared/HfInstantImportForm.vue'
 
 export default {
   name: 'HuggingFaceImportDialog',

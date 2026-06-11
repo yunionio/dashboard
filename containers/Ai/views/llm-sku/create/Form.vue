@@ -359,13 +359,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import WindowsMixin from '@/mixins/windows'
-import DomainProject from '@/sections/DomainProject'
-import NameRepeated from '@/sections/NameRepeated'
-import { isRequired } from '@/utils/validate'
-import { uuid } from '@/utils/utils'
-import { dict } from '../constants/constant'
-import { LLM_TYPE_OPTIONS, LLM_TYPE_FORM_CONFIG, getParamsForType, getDefaultPortMappingsForType } from '../constants/llmTypeConfig'
 import LlmImageSelect from '@Ai/sections/LlmImageSelect'
 import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import {
@@ -379,6 +372,13 @@ import {
   getCatalogSpecId,
   getPreferredModelFromSpec,
 } from '@Ai/utils/catalogSpec'
+import WindowsMixin from '@/mixins/windows'
+import DomainProject from '@/sections/DomainProject'
+import NameRepeated from '@/sections/NameRepeated'
+import { isRequired } from '@/utils/validate'
+import { uuid } from '@/utils/utils'
+import { dict } from '../constants/constant'
+import { LLM_TYPE_OPTIONS, LLM_TYPE_FORM_CONFIG, getParamsForType, getDefaultPortMappingsForType } from '../constants/llmTypeConfig'
 
 const getInitVal = (list, key, property) => {
   const target = list.filter(item => item.key === key)

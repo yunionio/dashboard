@@ -24,11 +24,10 @@
 </template>
 
 <script>
-import { BUY_DURATIONS_OPTIONS } from '../constants/index.js'
 import { CreateServerForm } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-
+import { BUY_DURATIONS_OPTIONS } from '../constants/index.js'
 export default {
   name: 'RedisRenewDialog',
   mixins: [DialogMixin, WindowsMixin],

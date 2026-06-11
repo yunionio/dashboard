@@ -37,21 +37,20 @@
 
 <script>
 import * as R from 'ramda'
+import GpuList from '@Compute/views/gpu/components/List'
+import ContainerList from '@Compute/views/pod-container/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import GpuList from '@Compute/views/gpu/components/List'
-import ContainerList from '@Compute/views/pod-container/components/List'
 import Detail from './Detail'
 import SecgroupList from './Secgroup'
-// import Terminal from './Terminal'
 import NetworkList from './Network'
 import DiskList from './DiskList'
 import Monitor from './Monitor'
-// import Alert from './Alert'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-
+// import Terminal from './Terminal'
+// import Alert from './Alert'
 export default {
   name: 'VmContainerInstanceSidePage',
   components: {

@@ -6,10 +6,9 @@
 
 <script>
 import _ from 'lodash'
+import DashboardCards from '@Monitor/components/MonitorCard/DashboardCards'
 import { MonitorHelper } from '@/utils/monitor'
 import WindowsMixin from '@/mixins/windows'
-import DashboardCards from '@Monitor/components/MonitorCard/DashboardCards'
-
 export default {
   name: 'BaseMonitor',
   components: {

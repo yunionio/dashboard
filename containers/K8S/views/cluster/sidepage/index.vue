@@ -36,10 +36,9 @@ import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 import K8sClusterMonitor from './Monitor'
+import KubeClusterDetail from './Detail'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import KubeClusterDetail from './Detail'
-
 export default {
   name: 'K8SClusterSidePage',
   components: {

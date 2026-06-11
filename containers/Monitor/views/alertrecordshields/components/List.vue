@@ -7,12 +7,11 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getNameFilter } from '@/utils/common/tableFilter'
-
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 export default {
   name: 'AlertRecordShieldsList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],

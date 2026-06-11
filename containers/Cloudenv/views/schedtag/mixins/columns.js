@@ -1,15 +1,15 @@
 import {
+  getNameDescriptionTableColumn,
+  getTagTableColumn,
+  getTimeTableColumn,
+} from '@/utils/common/tableColumn'
+import {
   getDefaultStrategyTableColumn,
   getResourceTypeTableColumn,
   getResourceCountTableColumn,
   getDynamicSchedtagCountTableColumn,
   getSchedpolicyCountTableColumn,
 } from '../utils/columns'
-import {
-  getNameDescriptionTableColumn,
-  getTagTableColumn,
-  getTimeTableColumn,
-} from '@/utils/common/tableColumn'
 
 export default {
   created () {

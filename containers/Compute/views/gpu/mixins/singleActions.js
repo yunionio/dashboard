@@ -1,5 +1,5 @@
-import i18n from '@/locales'
 import { GPU_DEV_TYPE_OPTION_MAP } from '@Compute/constants'
+import i18n from '@/locales'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 export default {
   created () {

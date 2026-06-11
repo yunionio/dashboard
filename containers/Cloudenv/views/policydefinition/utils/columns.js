@@ -1,5 +1,5 @@
-import { CategoryMap, ConditionMap } from '../constants'
 import i18n from '@/locales'
+import { CategoryMap, ConditionMap } from '../constants'
 
 export const getCategoryTableColumn = () => {
   return {

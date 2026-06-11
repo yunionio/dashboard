@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import WindowsMixin from '@/mixins/windows'
 import {
   getDeviceModelTableColumn,
@@ -21,7 +22,6 @@ import {
   getLlmTypeTableColumn,
   getLlmModelNameTableColumn,
 } from '../utils/columns'
-import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import { getLlmSpecSections, fetchLlmSpecCredentialNames, fetchLlmSpecDifyImages } from '../utils/llmSpecDetail'
 
 export default {

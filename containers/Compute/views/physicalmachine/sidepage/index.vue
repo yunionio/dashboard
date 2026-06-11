@@ -29,15 +29,14 @@
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import StorageList from '../../host/sidepage/Storage'
-import GpuList from '../../host/sidepage/Gpu'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
 import BaremetalList from './Baremetal'
 import PhysicalmachineDetail from './Detail'
 import NetworkList from './Network'
 import BmcLog from './BMCLog'
-
+import StorageList from '../../host/sidepage/Storage'
+import GpuList from '../../host/sidepage/Gpu'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 export default {
   name: 'PhysicalmachineSidePage',
   components: {

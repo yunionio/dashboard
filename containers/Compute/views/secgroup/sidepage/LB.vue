@@ -14,6 +14,7 @@
 <script>
 import * as R from 'ramda'
 import { surpportLb } from '@Network/views/lb/constants'
+import ColumnsMixin from '@Network/views/lb/mixins/columns'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import {
@@ -28,8 +29,6 @@ import {
   getCreatedAtFilter,
 } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
-import ColumnsMixin from '@Network/views/lb/mixins/columns'
-
 export default {
   name: 'LbList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin],

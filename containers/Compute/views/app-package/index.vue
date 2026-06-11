@@ -21,9 +21,8 @@
 </template>
 
 <script>
-import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 import ImageList from '@Compute/views/image/components/List'
-
+import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 export default {
   name: 'AppPackageIndex',
   components: {

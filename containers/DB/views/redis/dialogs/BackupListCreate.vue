@@ -20,12 +20,11 @@
 </template>
 
 <script>
-import { ACCOUNT_PRIVILEGES } from '../constants'
 import { CreateServerForm } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import validateForm from '@/utils/validate'
-
+import { ACCOUNT_PRIVILEGES } from '../constants'
 export default {
   name: 'BackupListCreate',
   mixins: [DialogMixin, WindowsMixin],

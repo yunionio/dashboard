@@ -1,5 +1,6 @@
 import * as R from 'ramda'
 import _ from 'lodash'
+import { clear as clearDashboardCache } from '@Dashboard/utils/cache'
 import http from '@/utils/http'
 import { PERMISSION, ALL_RESOURCES } from '@/constants/permission'
 import {
@@ -25,10 +26,8 @@ import {
 import { SCOPES_MAP } from '@/constants'
 import router from '@/router'
 import { removeKeyIgnoreCase, getKeyIgnoreCase } from '@/utils/utils'
-import { clear as clearDashboardCache } from '@Dashboard/utils/cache'
 import storage from '@/utils/storage'
 import { aesEncryptWithCustomKey } from '@/utils/crypto'
-
 const initialState = {
   scope: getScopeFromCookie() || 'project',
   tenant: getTenantFromCookie(),

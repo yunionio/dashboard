@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows'
 import WafMixin from '../../mixins/waf'
 import MatchField from '../statementComponents/MatchField'
 import MatchFieldKey from '../statementComponents/MatchFieldKey'
@@ -23,8 +24,6 @@ import MatchFieldValues from '../statementComponents/MatchFieldValues'
 import Operator from '../statementComponents/Operator'
 import Transformations from '../statementComponents/Transformations'
 import Negation from '../statementComponents/Negation'
-import WindowsMixin from '@/mixins/windows'
-
 export default {
   name: 'ByteMatch',
   components: {

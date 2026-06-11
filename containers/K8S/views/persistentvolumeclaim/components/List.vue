@@ -14,15 +14,14 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ClusterNamespace from '@K8S/sections/ClusterNamespace'
 import clusterNamespaceMixin from '@K8S/mixins/clusterNamespace'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getNameFilter } from '@/utils/common/tableFilter'
-
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 export default {
   name: 'K8SPersistentvolumeclaimList',
   components: {
