@@ -23,12 +23,11 @@
 <script>
 import _ from 'lodash'
 import { metric_zh } from '@Monitor/constants'
+import { metricItems } from '@Compute/views/node-alert/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { BRAND_MAP } from '@/constants'
-import { metricItems } from '@Compute/views/node-alert/constants'
 import { ResourceKeyLabelsMap } from '../constants'
-
 export default {
   name: 'ViewAlertrecordDetailDialog',
   mixins: [DialogMixin, WindowsMixin],

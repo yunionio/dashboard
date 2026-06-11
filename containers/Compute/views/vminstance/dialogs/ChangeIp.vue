@@ -79,13 +79,12 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import ipaddr from 'ipaddr.js'
 import IpSelect from '@Compute/sections/ServerNetwork/IpSelect'
+import { getIpv6Start, ipv6ToHex } from '@Compute/utils/createServer'
 import { validate, isWithinRange } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
 import expectStatus from '@/constants/expectStatus'
-import { getIpv6Start, ipv6ToHex } from '@Compute/utils/createServer'
-
 export default {
   name: 'VmChangeIpDialog',
   components: {

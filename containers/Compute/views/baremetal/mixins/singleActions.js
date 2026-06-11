@@ -1,14 +1,13 @@
 import { mapGetters } from 'vuex'
-// import { Base64 } from 'js-base64'
 import qs from 'qs'
+import { SMART_SSH_FORM_DECORATORS } from '@Compute/constants'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import i18n from '@/locales'
-import { SMART_SSH_FORM_DECORATORS } from '@Compute/constants'
 import { commonUnabled, cloudEnabled, cloudUnabledTip } from '../../vminstance/utils'
 import { solWebConsole, jnlpConsole } from '../../../utils/webconsole'
 import { hostServerActions } from '../../../utils/hostActions'
-
+// import { Base64 } from 'js-base64'
 export default {
   computed: {
     ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo', 'auth', 'common']),

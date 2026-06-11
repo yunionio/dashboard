@@ -9,13 +9,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import { RES_TYPES } from '../utils'
 import { STRATEGY_OPT } from '@Cloudenv/constants/sched'
 import { getNameFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import { RES_TYPES } from '../utils'
 
 const getParams = { details: true }
 

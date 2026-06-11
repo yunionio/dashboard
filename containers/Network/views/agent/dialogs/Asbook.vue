@@ -31,10 +31,9 @@
 </template>
 
 <script>
-import Ansible from '../controls/ansible'
 import WindowsMixin from '@/mixins/windows'
 import DialogMixin from '@/mixins/dialog'
-
+import Ansible from '../controls/ansible'
 export default {
   name: 'AnsibleplaybookDialog',
   components: {

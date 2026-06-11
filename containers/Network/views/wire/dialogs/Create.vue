@@ -73,13 +73,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { BAND_WIDTH_OPTION } from '../../../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import DomainSelect from '@/sections/DomainSelect'
 import Tag from '@/sections/Tag'
 import validateForm from '@/utils/validate'
-
+import { BAND_WIDTH_OPTION } from '../../../constants'
 export default {
   name: 'WireCreateDialog',
   components: {

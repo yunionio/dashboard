@@ -52,13 +52,12 @@
 </template>
 
 <script>
+import DashboardCards from '@Monitor/components/MonitorCard/DashboardCards'
 import i18n from '@/locales'
 import storage from '@/utils/storage'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import DashboardCards from '@Monitor/components/MonitorCard/DashboardCards'
 import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
-
 const alertDashboardScopeColumn = {
   field: 'scope',
   title: i18n.t('IAM.text_1'),

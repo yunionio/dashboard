@@ -86,10 +86,9 @@ import { hasPermission } from '@/utils/auth'
 import storage from '@/utils/storage'
 import TreeProject from '@/sections/TreeProject'
 import WindowsMixin from '@/mixins/windows'
-import Actions from '../Actions'
 import MultipleSort from './MultipleSort'
 import Deny from './Deny.vue'
-
+import Actions from '../Actions'
 export default {
   name: 'PageListTable',
   components: {

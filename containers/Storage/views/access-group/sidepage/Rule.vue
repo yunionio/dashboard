@@ -6,9 +6,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import AccessGroupRuleList from '../components/AccessGroupRule'
 import WindowsMixin from '@/mixins/windows'
-
+import AccessGroupRuleList from '../components/AccessGroupRule'
 export default {
   name: 'AccessGroupRule',
   components: {

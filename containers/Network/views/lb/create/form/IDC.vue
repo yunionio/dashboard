@@ -81,11 +81,10 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
-import CloudregionZone from '@/sections/CloudregionZone'
 import EipConfig from '@Compute/sections/EipConfig'
+import CloudregionZone from '@/sections/CloudregionZone'
 import { HYPERVISORS_MAP } from '@/constants'
 import lbCreate from './mixin'
-
 export default {
   name: 'LbOnecloudCreate',
   components: {

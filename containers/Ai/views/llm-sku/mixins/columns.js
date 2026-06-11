@@ -1,3 +1,4 @@
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import {
   getNameDescriptionTableColumn,
   getProjectTableColumn,
@@ -15,7 +16,6 @@ import {
   getDiskTableColumn,
   getLlmTypeTableColumn,
 } from '../utils/columns'
-import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 
 export default {
   created () {

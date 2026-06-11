@@ -46,8 +46,8 @@
 <script>
 import CommunityModelGrid from '@Ai/sections/community-registry/components/CommunityModelGrid.vue'
 import CatalogDrawerMetaPanel from '@Ai/sections/catalog-model-sets/components/CatalogDrawerMetaPanel.vue'
-import CommunityImportForm from './components/CommunityImportForm.vue'
 import { getCommunityTagId } from '@Ai/utils/communityRegistry'
+import CommunityImportForm from './components/CommunityImportForm.vue'
 
 export default {
   name: 'LlmInstantmodelImportFromCommunity',

@@ -1,6 +1,5 @@
 import * as R from 'ramda'
 import _ from 'lodash'
-import { getDecorators } from '../utils'
 import ListenerTypes from '@Network/views/loadbalancerlistener/components/ListenerTypes'
 import SchedulerTypes from '@Network/views/loadbalancerlistener/components/SchedulerTypes'
 import { schedulerProviderMaps, healthCheckTypeProviderMaps, healthCheckHttpCodeOpts } from '@Network/views/loadbalancerlistener/constants'
@@ -10,7 +9,7 @@ import { getInitialValue } from '@/utils/common/ant'
 import NameRepeated from '@/sections/NameRepeated'
 import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
-
+import { getDecorators } from '../utils'
 export default {
   components: {
     NameRepeated,

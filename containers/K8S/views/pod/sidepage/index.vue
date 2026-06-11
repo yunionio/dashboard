@@ -18,12 +18,6 @@
 
 <script>
 /* eslint-disable import/no-duplicates */
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import Detail from './Detail'
-import Terminal from './Terminal'
-import Log from './Log'
-import Monitor from './Monitor'
 import EventsSidepage from '@K8S/sections/EventsSidepage'
 import ContainerSidepage from '@K8S/sections/ContainerSidepage'
 import InitContainerSidepage from '@K8S/sections/ContainerSidepage'
@@ -32,7 +26,12 @@ import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-
+import Detail from './Detail'
+import Terminal from './Terminal'
+import Log from './Log'
+import Monitor from './Monitor'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 export default {
   name: 'K8SPodSidePage',
   components: {

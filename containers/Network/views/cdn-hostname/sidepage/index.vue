@@ -32,9 +32,8 @@
 <script>
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
-import ColumnsMixin from '../mixins/columns'
 import CdnHostnameDetail from './Detail'
-
+import ColumnsMixin from '../mixins/columns'
 export default {
   name: 'CdnHostnameSidePage',
   components: {

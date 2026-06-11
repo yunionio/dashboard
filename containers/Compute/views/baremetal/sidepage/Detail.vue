@@ -10,6 +10,7 @@
 
 <script>
 // import { ALL_STORAGE } from '@Compute/constants/index'
+import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import {
   getUserTagColumn,
   getExtTagColumn,
@@ -23,10 +24,8 @@ import {
   getSwitchTableColumn,
   getServerMonitorAgentInstallStatus,
 } from '@/utils/common/tableColumn'
-import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
-
 export default {
   name: 'BaremetalDetail',
   mixins: [WindowsMixin],

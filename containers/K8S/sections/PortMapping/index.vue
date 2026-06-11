@@ -29,11 +29,10 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import { uuid } from '@/utils/utils'
 import Port from './Port'
 import LbCluster from './LbCluster'
 import LbNetwork from './LbNetwork'
-import { uuid } from '@/utils/utils'
-
 export default {
   name: 'K8SPortMapping',
   components: {

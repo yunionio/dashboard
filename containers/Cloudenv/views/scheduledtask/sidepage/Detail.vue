@@ -8,15 +8,15 @@
 
 <script>
 import {
+  getEnabledTableColumn,
+} from '@/utils/common/tableColumn'
+import {
   getOperationColumns,
   getResourceTypeColumns,
   getResourceNumberColumns,
   getLabelTypeColumns,
   getTimerDescColumns,
 } from '../utils/columns'
-import {
-  getEnabledTableColumn,
-} from '@/utils/common/tableColumn'
 
 export default {
   name: 'ScheduledtaskDetail',

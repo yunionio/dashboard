@@ -10,10 +10,9 @@
 </template>
 
 <script>
-import WafMixin from '../../mixins/waf'
-import BoxShow from './BoxShow'
 import WindowsMixin from '@/mixins/windows'
-
+import BoxShow from './BoxShow'
+import WafMixin from '../../mixins/waf'
 export default {
   name: 'NegationStatement',
   components: {

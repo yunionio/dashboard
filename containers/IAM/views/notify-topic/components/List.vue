@@ -10,12 +10,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import { NOTIFY_TOPIC_TYPES_MAP } from '@IAM/constants'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getEnabledFilter } from '@/utils/common/tableFilter'
-
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 export default {
   name: 'NotifyTopicList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],

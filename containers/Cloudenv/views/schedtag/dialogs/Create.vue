@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import NameRepeated from '@/sections/NameRepeated'
 import StrategyRadio from '@Cloudenv/sections/StrategyRadio'
+import NameRepeated from '@/sections/NameRepeated'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 

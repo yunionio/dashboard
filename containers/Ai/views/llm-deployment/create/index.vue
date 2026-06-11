@@ -280,14 +280,14 @@
 
 <script>
 import * as R from 'ramda'
-import { Manager } from '@/utils/manager'
-import { uuid } from '@/utils/utils'
-import validateForm from '@/utils/validate'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 import LlmImageSelect from '@Ai/sections/LlmImageSelect'
 import LlmSkuSelect from '@Ai/sections/LlmSkuSelect'
 import { getDefaultPortMappingsForType } from '@Ai/views/llm-sku/constants/llmTypeConfig'
+import { Manager } from '@/utils/manager'
+import { uuid } from '@/utils/utils'
+import validateForm from '@/utils/validate'
 
 const getInitVal = (list, key, property) => {
   const target = list.find(item => item.key === key)

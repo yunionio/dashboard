@@ -19,10 +19,9 @@
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import RdsBackupDetail from './Detail'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import RdsBackupDetail from './Detail'
-
 export default {
   name: 'RDSBackupSidePage',
   components: {

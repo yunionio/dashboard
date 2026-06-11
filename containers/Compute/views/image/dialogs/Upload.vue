@@ -68,7 +68,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import * as R from 'ramda'
-// import _ from 'lodash'
+import EncryptKeys from '@Compute/sections/encryptkeys'
 import { isRequired } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -76,8 +76,7 @@ import DomainProject from '@/sections/DomainProject'
 import i18n from '@/locales'
 import OsArch from '@/sections/OsArch'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
-import EncryptKeys from '@Compute/sections/encryptkeys'
-
+// import _ from 'lodash'
 export default {
   name: 'ImageUploadDialog',
   components: {

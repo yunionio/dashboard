@@ -11,10 +11,9 @@
 </template>
 
 <script>
-import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import { roleRefColumn, subjectsColumn } from '@K8S/utils/sidePageColumn'
 import { k8sStatusColumn } from '@K8S/utils/tableColumns'
-
+import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 export default {
   name: 'K8sRbacclusterrolebindingDetail',
   props: {

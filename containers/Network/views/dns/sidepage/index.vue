@@ -31,10 +31,9 @@
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import DnsDetail from './Detail'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import DnsDetail from './Detail'
-
 export default {
   name: 'DNSSidePage',
   components: {

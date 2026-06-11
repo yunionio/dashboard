@@ -54,14 +54,13 @@
 </template>
 
 <script>
-import DialogMixin from '@/mixins/dialog'
-import WindowsMixin from '@/mixins/windows'
-import { hasPermission } from '@/utils/auth'
 import Bios from '@Compute/sections/BIOS'
 import Vdi from '@Compute/sections/VDI'
 import Vga from '@Compute/sections/VGA'
 import Machine from '@Compute/sections/Machine'
-
+import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
+import { hasPermission } from '@/utils/auth'
 export default {
   name: 'VmUpdateDialog',
   components: {

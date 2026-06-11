@@ -8,12 +8,11 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import { ENABLED_OPTS } from '@/constants'
 import ListMixin from '@/mixins/list'
-
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 export default {
   name: 'AnsibleTemplateList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],

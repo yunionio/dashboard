@@ -11,11 +11,6 @@
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getEnabledSwitchActions, getSetPublicAction } from '@/utils/common/tableActions'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import {
-  ROBOT_TYPES,
-} from '../constants'
 import {
   getStatusFilter,
   getEnabledFilter,
@@ -23,7 +18,11 @@ import {
   getDomainFilter,
   getCreatedAtFilter,
 } from '@/utils/common/tableFilter'
-
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import {
+  ROBOT_TYPES,
+} from '../constants'
 export default {
   name: 'RobotList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],

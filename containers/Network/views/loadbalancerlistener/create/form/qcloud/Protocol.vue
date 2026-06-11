@@ -41,9 +41,8 @@
 </template>
 
 <script>
-import mixin from '../mixins/formStepItem'
 import { schedulerProviderMaps } from '@Network/views/loadbalancerlistener/constants'
-
+import mixin from '../mixins/formStepItem'
 export default {
   name: 'LBListenerCreateProtocol',
   mixins: [mixin],

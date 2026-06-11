@@ -36,13 +36,12 @@ import SecgroupList from '@Compute/views/secgroup/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
 import RouteTableList from './RouteTable'
 import NetworkList from './Network'
 import VpcDetail from './Detail'
 import Topology from './Topology'
-
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 export default {
   name: 'VpcSidePage',
   components: {

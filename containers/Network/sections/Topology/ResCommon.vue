@@ -59,8 +59,8 @@
 
 <script>
 import ResMixin from '@Network/sections/Topology/ResMixin'
-import { sizestr } from '@/utils/utils'
 import { STORAGE_TYPES } from '@Storage/constants/index.js'
+import { sizestr } from '@/utils/utils'
 import { STATUS_MAP, COLORS } from './constants'
 export default {
   name: 'ResCommon',

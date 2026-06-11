@@ -7,13 +7,13 @@
 </template>
 
 <script>
-import { ACCOUNT_PRIVILEGES } from '../constants'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { getStatusTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
 import { HYPERVISORS_MAP } from '@/constants'
 import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import { ACCOUNT_PRIVILEGES } from '../constants'
 export default {
   name: 'RedisAccountList',
   mixins: [WindowsMixin],

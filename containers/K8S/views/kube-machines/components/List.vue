@@ -12,12 +12,11 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
 import ListMixin from '@/mixins/list'
-
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 export default {
   name: 'KubeMachinesList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],

@@ -24,13 +24,13 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import PolicydefinitionDetail from './Detail'
-import PolicyassignmentsList from './Policyassignments'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import PolicydefinitionDetail from './Detail'
+import PolicyassignmentsList from './Policyassignments'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'PolicydefinitionSidePage',

@@ -17,11 +17,10 @@
 </template>
 
 <script>
-import mixin from '../mixins/form'
 import Protocol from './Protocol'
 import Backendgroup from './Backendgroup'
 import Healthcheck from './Healthcheck'
-
+import mixin from '../mixins/form'
 export default {
   components: {
     Protocol,

@@ -28,14 +28,13 @@
 import { getSignature } from '@/utils/crypto'
 import { sizestr, mathRoundFix, uuid } from '@/utils/utils'
 import setting from '@/config/setting'
+import MetricOptions from './metrics'
 import numerify from '../sections/chart/formatters'
 import BasicSelect from '../sections/select/basic'
 import MetricSelect from '../sections/select/metric'
 import TimeSelect from '../sections/select/timeselect'
 import TopNSelect from '../sections/select/topN'
 import refresh from '../sections/select/refresh'
-import MetricOptions from './metrics'
-
 function newChart (metircOption) {
   const chart = {
     metric: metircOption,

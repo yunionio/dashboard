@@ -10,14 +10,14 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
 import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 const BACKUP_TYPE = {
   automated: i18n.t('db.text_33'),
   manual: i18n.t('db.text_34'),

@@ -19,10 +19,9 @@
 <script>
 import * as R from 'ramda'
 import { uuid } from '@/utils/utils'
+import Group from './Group'
 import { SERVICES_MAP, RESOURCES_MAP, DEFAULT_ACTIONS_KEY } from '../../constants'
 import { genPolicyGroups } from '../../utils'
-import Group from './Group'
-
 export default {
   name: 'PolicyViewer',
   components: {

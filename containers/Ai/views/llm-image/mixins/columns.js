@@ -1,3 +1,4 @@
+import { parseLlmImageRoute } from '@Ai/utils/llmRouteContext'
 import {
   getNameDescriptionTableColumn,
   getProjectTableColumn,
@@ -9,7 +10,6 @@ import {
   getImageLabelTableColumn,
   getAppNameTableColumn,
 } from '../utils/columns'
-import { parseLlmImageRoute } from '@Ai/utils/llmRouteContext'
 
 export default {
   created () {

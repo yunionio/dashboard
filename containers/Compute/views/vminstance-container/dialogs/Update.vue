@@ -84,13 +84,12 @@
 
 <script>
 import jsYaml from 'js-yaml'
-import DialogMixin from '@/mixins/dialog'
-import WindowsMixin from '@/mixins/windows'
 import MirrorRegistry from '@Compute/sections/MirrorRegistry'
 import Labels from '@Compute/sections/Labels'
 import { CAPABILITY_OPTIONS } from '@Compute/views/vminstance-container/constants'
+import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
 import { validateYaml } from '@/utils/validate'
-
 export default {
   name: 'ContainerUpdateDialog',
   components: {

@@ -13,6 +13,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import * as R from 'ramda'
+import ColumnsMixin from '@Compute/views/image/mixins/columns'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -26,10 +27,8 @@ import {
 } from '@/utils/common/tableFilter'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import { isCE } from '@/utils/utils'
-import ColumnsMixin from '@Compute/views/image/mixins/columns'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
 import { getOsArch } from '@/utils/common/tableColumn'
-
 const archItems = Object.values(HOST_CPU_ARCHS)
 
 export default {

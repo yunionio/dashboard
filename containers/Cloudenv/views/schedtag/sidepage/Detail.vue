@@ -7,16 +7,16 @@
 
 <script>
 import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
+import {
   getDefaultStrategyTableColumn,
   getResourceTypeTableColumn,
   getResourceCountTableColumn,
   getDynamicSchedtagCountTableColumn,
   getSchedpolicyCountTableColumn,
 } from '../utils/columns'
-import {
-  getUserTagColumn,
-  getExtTagColumn,
-} from '@/utils/common/detailColumn'
 
 export default {
   name: 'SchedtagDetail',

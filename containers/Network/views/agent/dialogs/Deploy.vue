@@ -101,11 +101,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Ansible from '../controls/ansible'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
-
+import Ansible from '../controls/ansible'
 export default {
   name: 'AgentDeployDialog',
   mixins: [DialogMixin, WindowsMixin],

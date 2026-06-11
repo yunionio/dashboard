@@ -5,11 +5,9 @@
 </template>
 
 <script>
-import WindowsMixin from '@/mixins/windows'
 import DashboardCards from '@Monitor/components/MonitorCard/DashboardCards'
-
+import WindowsMixin from '@/mixins/windows'
 import { lbQuery } from './utils'
-
 function pickSelectAliases (queryData) {
   const select = queryData?.metric_query?.[0]?.model?.select
   if (!Array.isArray(select)) return []

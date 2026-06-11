@@ -1,4 +1,3 @@
-import { getAccountTableColumn } from '../utils/columns'
 import {
   getNameDescriptionTableColumn,
   getCopyWithContentTableColumn,
@@ -9,6 +8,7 @@ import {
   getBrandFilter,
   getAccountFilter,
 } from '@/utils/common/tableFilter'
+import { getAccountTableColumn } from '../utils/columns'
 
 export default {
   data () {

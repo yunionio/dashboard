@@ -16,13 +16,13 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import detail from './Detail'
 import CloudaccountList from '@Cloudenv/views/cloudaccount/components/List'
 import Actions from '@/components/PageList/Actions'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
+import detail from './Detail'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'ProxysettingSidePage',

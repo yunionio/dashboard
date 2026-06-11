@@ -44,10 +44,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import IpSubnet from '@Network/sections/IpSubnet'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import IpSubnet from '@Network/sections/IpSubnet'
-
 export default {
   name: 'MountTargetCreateDialog',
   components: {

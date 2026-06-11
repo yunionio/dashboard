@@ -32,12 +32,11 @@
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
 import NatDetail from './Detail'
 import Snat from './Snat'
 import Dnat from './Dnat'
-
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 export default {
   name: 'NatSidePage',
   components: {

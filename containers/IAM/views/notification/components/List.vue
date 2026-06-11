@@ -3,12 +3,11 @@
 </template>
 
 <script>
-import WindowsMixin from '@/mixins/windows'
 import NotificationBaseList from '@IAM/sections/NotificationBaseList'
+import { NOTIFY_TOPIC_TYPES_MAP } from '@IAM/constants'
+import WindowsMixin from '@/mixins/windows'
 import { getTimeRangeFilter } from '@/utils/common/tableFilter'
 import { getTimeTableColumn } from '@/utils/common/tableColumn'
-import { NOTIFY_TOPIC_TYPES_MAP } from '@IAM/constants'
-
 export default {
   name: 'NotificationList',
   components: {

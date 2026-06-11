@@ -11,10 +11,9 @@
 </template>
 
 <script>
+import { strategyColumn } from '@Monitor/views/commonalert/utils'
 import WindowsMixin from '@/mixins/windows'
 import { getCopyWithContentTableColumn, getBrandTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
-import { strategyColumn } from '@Monitor/views/commonalert/utils'
-
 export default {
   name: 'AlertResourceDetail',
   mixins: [WindowsMixin],

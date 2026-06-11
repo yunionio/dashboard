@@ -1,7 +1,6 @@
-import { getTimeTableColumn } from '@/utils/common/tableColumn'
 import { k8sStatusColumn } from '@K8S/utils/tableColumns'
+import { getTimeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
-
 export default {
   created () {
     this.columns = [

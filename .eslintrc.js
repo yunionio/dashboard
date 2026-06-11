@@ -16,7 +16,13 @@ module.exports = {
     'comma-dangle': ['error', 'always-multiline'],
     camelcase: process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'import/order': ['warn', {
-      groups: ['builtin', 'external', ['internal', 'sibling', 'parent'], 'index'],
+      groups: ['builtin', 'external', 'internal', ['sibling', 'parent'], 'index'],
+      pathGroups: [
+        {
+          pattern: '@/**',
+          group: 'internal',
+        },
+      ],
     }],
     'vue/html-closing-bracket-newline': ['error', {
       multiline: 'never',

@@ -87,12 +87,12 @@
 </template>
 <script>
 import * as R from 'ramda'
-import Bill from '../components/Bill'
-import mixin from './mixin'
 import { LOGIN_TYPES_MAP, BILL_TYPES_MAP } from '@Compute/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { PROVIDER_MAP, HYPERVISORS_MAP, isUcloudLikeHypervisor } from '@/constants'
 import AreaSelects from '@/sections/AreaSelects'
+import mixin from './mixin'
+import Bill from '../components/Bill'
 
 export default {
   name: 'VMPublicCreate',

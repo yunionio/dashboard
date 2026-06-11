@@ -7,14 +7,13 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import { HYPERVISORS_MAP } from '@/constants'
-
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 export default {
   name: 'RDSDatabaseList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],

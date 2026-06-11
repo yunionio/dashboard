@@ -36,10 +36,9 @@
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import KafkaDetail from './Detail'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import KafkaDetail from './Detail'
-
 export default {
   name: 'KafkaSidePage',
   components: {

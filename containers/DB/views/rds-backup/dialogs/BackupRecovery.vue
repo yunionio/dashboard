@@ -47,11 +47,10 @@
 
 <script>
 import * as R from 'ramda'
-import RdsList from '../components/BackupRecoveryRdsList'
 import { HYPERVISORS_MAP } from '@/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-
+import RdsList from '../components/BackupRecoveryRdsList'
 export default {
   name: 'RDSBackupRecovery',
   components: { RdsList },

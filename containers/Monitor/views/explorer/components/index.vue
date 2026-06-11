@@ -56,17 +56,16 @@
 <script>
 import get from 'lodash/get'
 import echarts from 'echarts'
-import DialogMixin from '@/mixins/dialog'
-import WindowsMixin from '@/mixins/windows'
 import MonitorForms from '@Monitor/sections/ExplorerForm'
 import MonitorLine from '@Monitor/sections/MonitorLine'
+import { addMissingSeries } from '@Monitor/utils'
+import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
 import MonitorHeader from '@/sections/Monitor/Header'
 import { getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
 import { timeOpts } from '@/constants/monitor'
 import MonitorTimeMixin from '@/mixins/monitorTime'
-import { addMissingSeries } from '@Monitor/utils'
-
 export default {
   name: 'ExplorerIndex',
   components: {

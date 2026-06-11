@@ -10,11 +10,10 @@
 </template>
 
 <script>
-import WafMixin from '../../mixins/waf'
-import BoxShow from './BoxShow.vue'
-// import { uuid } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
-
+import BoxShow from './BoxShow.vue'
+import WafMixin from '../../mixins/waf'
+// import { uuid } from '@/utils/utils'
 export default {
   name: 'RuleGroupStatement',
   components: { BoxShow },

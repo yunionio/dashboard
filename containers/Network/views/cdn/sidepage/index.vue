@@ -30,14 +30,13 @@
 </template>
 
 <script>
+import CdnHostname from '@Network/views/cdn-hostname/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import CdnHostname from '@Network/views/cdn-hostname/components/List'
+import CdnDetail from './Detail'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import CdnDetail from './Detail'
-
 export default {
   name: 'CDNSidePage',
   components: {

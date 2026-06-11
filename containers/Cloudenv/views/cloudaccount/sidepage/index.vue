@@ -42,9 +42,9 @@ import Actions from '@/components/PageList/Actions'
 import { findPlatform } from '@/utils/common/hypervisor'
 import HostList from './Host'
 import CloudaccountDetail from './Detail'
+import ScheduledtasksList from './Schedule'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import ScheduledtasksList from './Schedule'
 
 export default {
   name: 'CloudaccountSidePage',

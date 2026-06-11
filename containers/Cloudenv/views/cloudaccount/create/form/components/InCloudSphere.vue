@@ -39,8 +39,8 @@ import ReadOnly from '@Cloudenv/views/cloudaccount/components/ReadOnly'
 import { keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
 import { DOCS_MAP, showDocsLink } from '@/constants/docs'
-import DomainProject from '../../../components/DomainProject'
 import createMixin from './createMixin'
+import DomainProject from '../../../components/DomainProject'
 
 export default {
   name: 'InCloudSphere',

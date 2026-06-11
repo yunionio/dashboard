@@ -71,10 +71,9 @@
 
 <script>
 import _ from 'lodash'
-import { uuid } from '@/utils/utils'
 import { metric_zh } from '@Monitor/constants'
+import { uuid } from '@/utils/utils'
 import thresholdInput from './thresholdInput'
-
 export default {
   name: 'AlertCondition',
   components: {

@@ -16,17 +16,16 @@
 </template>
 
 <script>
-import {
-  getReserveResourceColumn,
-} from '../utils/columns'
+import ReserveResource from '@Compute/sections/ReserveResource'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import {
   getNameDescriptionTableColumn,
   getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
-import ReserveResource from '@Compute/sections/ReserveResource'
-
+import {
+  getReserveResourceColumn,
+} from '../utils/columns'
 export default {
   name: 'SetReserveResourceDialog',
   components: {

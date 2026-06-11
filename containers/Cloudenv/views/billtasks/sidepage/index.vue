@@ -27,9 +27,9 @@
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import BilltaskDetail from './Detail'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import BilltaskDetail from './Detail'
 
 export default {
   name: 'BilltaskSidePage',

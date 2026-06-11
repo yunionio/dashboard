@@ -46,9 +46,9 @@
 <script>
 import { mapGetters } from 'vuex'
 import * as R from 'ramda'
-import { RES_TYPES } from '../utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { RES_TYPES } from '../utils'
 
 export default {
   name: 'AssociatedResourcesDialog',

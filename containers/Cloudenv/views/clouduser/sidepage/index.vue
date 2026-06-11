@@ -24,15 +24,15 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import ClouduserDetail from './Detail'
-import CloudgroupList from './CloudgroupList'
-import AkSkList from './AkSkList'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 import { HYPERVISORS_MAP } from '@/constants'
+import ClouduserDetail from './Detail'
+import CloudgroupList from './CloudgroupList'
+import AkSkList from './AkSkList'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'ClouduserSidePage',

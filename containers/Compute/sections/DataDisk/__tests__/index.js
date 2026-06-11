@@ -1,11 +1,10 @@
 import { mount } from '@vue/test-utils'
 import * as R from 'ramda'
-import DataDisk from '../index'
 import { diskValidator } from '@Compute/utils/createServer'
 import Disk from '@Compute/sections/Disk'
 import { isRequired } from '@/utils/validate'
 import i18n from '@/locales'
-
+import DataDisk from '../index'
 let decorator = null
 let store = null
 let setFieldsValue = null

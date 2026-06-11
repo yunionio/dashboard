@@ -30,11 +30,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { chartColors } from '@/constants'
 import { load } from '@Dashboard/utils/cache'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
+import { chartColors } from '@/constants'
 import { getRequestT } from '@/utils/utils'
-
 export default {
   name: 'ResourceCount',
   components: {

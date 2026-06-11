@@ -10,13 +10,12 @@
 </template>
 
 <script>
+import { LocationList } from '@/constants/waf'
+import WindowsMixin from '@/mixins/windows'
 import WafMixin from '../../mixins/waf'
 import MatchFieldValues from '../statementComponents/MatchFieldValues'
 import MatchFieldKey from '../statementComponents/MatchFieldKey'
 import Negation from '../statementComponents/Negation'
-import { LocationList } from '@/constants/waf'
-import WindowsMixin from '@/mixins/windows'
-
 export default {
   name: 'GeoMatch',
   components: {

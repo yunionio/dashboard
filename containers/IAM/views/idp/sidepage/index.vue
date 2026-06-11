@@ -21,10 +21,9 @@ import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import JumpTo from '@/mixins/jumper'
 import Actions from '@/components/PageList/Actions'
+import IDPDetail from './Detail'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import IDPDetail from './Detail'
-
 export default {
   name: 'IDPSidePage',
   components: {

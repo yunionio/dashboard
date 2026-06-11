@@ -19,10 +19,9 @@
 </template>
 
 <script>
+import ScopeSelect from '@Monitor/components/MonitorCard/sections/select/scope'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import ScopeSelect from '@Monitor/components/MonitorCard/sections/select/scope'
-
 export default {
   name: 'CreateMonitorDashboard',
   components: {

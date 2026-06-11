@@ -28,12 +28,12 @@
 </template>
 
 <script>
-import ResourcePropsMixin from '../mixins/resourceProps'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import Tag from '@/sections/Tag'
 import ListSelect from '@/sections/ListSelect'
 import validateForm from '@/utils/validate'
+import ResourcePropsMixin from '../mixins/resourceProps'
 
 export default {
   name: 'ScheduledtaskEditDialog',

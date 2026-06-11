@@ -17,11 +17,10 @@
 <script>
 import * as R from 'ramda'
 import _ from 'lodash'
+import { MONITOR_MAX_POINTERS } from '@Monitor/constants'
 import { getSignature } from '@/utils/crypto'
 import { timeOpts } from '@/constants/monitor'
-import { MONITOR_MAX_POINTERS } from '@Monitor/constants'
 import AlertForm from './form'
-
 export default {
   name: 'Commonalert',
   components: {

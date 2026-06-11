@@ -1,8 +1,7 @@
-import { disableDeleteAction } from '@/utils/common/tableActions'
 import { checkSecgroup } from '@DB/views/utils'
+import { disableDeleteAction } from '@/utils/common/tableActions'
 import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
-
 export default {
   created () {
     this.singleActions = [
