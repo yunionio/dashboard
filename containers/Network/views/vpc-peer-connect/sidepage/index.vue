@@ -33,12 +33,11 @@
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import Detail from './Detail'
+import RouteSet from './RouteSet'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import Detail from './Detail'
 // import Vpc from './Vpc'
-import RouteSet from './RouteSet'
-
 export default {
   name: 'VpcPeerConnectSidePage',
   components: {

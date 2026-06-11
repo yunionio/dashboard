@@ -26,10 +26,9 @@
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import DiskBackupDetail from './Detail'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import DiskBackupDetail from './Detail'
-
 export default {
   name: 'DiskBackupSidePage',
   components: {

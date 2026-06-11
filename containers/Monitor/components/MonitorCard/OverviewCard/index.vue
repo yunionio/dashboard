@@ -27,13 +27,12 @@
 </template>
 
 <script>
+import filterForm from './filterForm'
 import OverviewCardLayout from '../layout'
 import OverviewLine from '../sections/chart/line'
 import OverviewHistogram from '../sections/chart/histogram'
 import OverviewRing from '../sections/chart/ring'
 import OverviewTable from '../sections/table'
-import filterForm from './filterForm'
-
 export default {
   name: 'index',
   components: {

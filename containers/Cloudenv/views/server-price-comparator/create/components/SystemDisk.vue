@@ -26,12 +26,12 @@
 import _ from 'lodash'
 import * as R from 'ramda'
 import Disk from '@Compute/sections/Disk'
-// import { STORAGE_AUTO } from '@Compute/constants'
+import { MEDIUM_MAP } from '@Compute/constants'
 import { IMAGES_TYPE_MAP, STORAGE_TYPES } from '@/constants/compute'
 import { HYPERVISORS_MAP, isUcloudLikeHypervisor } from '@/constants'
 import { findAndUnshift, findAndPush } from '@/utils/utils'
 import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
-import { MEDIUM_MAP } from '@Compute/constants'
+// import { STORAGE_AUTO } from '@Compute/constants'
 // 磁盘最小值
 export const DISK_MIN_SIZE = 10
 // let isFirstSetDefaultSize = true

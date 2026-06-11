@@ -25,10 +25,9 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex'
-import store from '@/store'
 import options from '@scope/extends/config'
 import ceOptions from '@Dashboard/extends/config'
-
+import store from '@/store'
 export default {
   name: 'ExtendGallery',
   data () {

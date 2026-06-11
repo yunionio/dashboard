@@ -118,6 +118,11 @@
 import _ from 'lodash'
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import { checkIpV6, getIpv6Start } from '@Compute/utils/createServer'
+import DataDisk from '@Compute/sections/DataDisk'
+import SystemDisk from '@Compute/views/vminstance/create/components/SystemDisk'
+import { NETWORK_OPTIONS_MAP, MEDIUM_MAP } from '@Compute/constants'
+import ServerNetwork from '@Compute/sections/ServerNetwork'
 import { typeClouds, diskSupportTypeMedium, findPlatform, getOriginDiskKey } from '@/utils/common/hypervisor'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -126,14 +131,8 @@ import DomainProject from '@/sections/DomainProject'
 import CloudregionZone from '@/sections/CloudregionZone'
 import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
 import { STORAGE_TYPES } from '@/constants/compute'
-// import { HYPERVISORS_MAP } from '@/constants'
-import { checkIpV6, getIpv6Start } from '@Compute/utils/createServer'
-import DataDisk from '@Compute/sections/DataDisk'
-import SystemDisk from '@Compute/views/vminstance/create/components/SystemDisk'
-import { NETWORK_OPTIONS_MAP, MEDIUM_MAP } from '@Compute/constants'
-import ServerNetwork from '@Compute/sections/ServerNetwork'
 import ResourceProps from '../mixins/resourceProps'
-
+// import { HYPERVISORS_MAP } from '@/constants'
 export default {
   name: 'VmV2vTransferDialog',
   provide () {

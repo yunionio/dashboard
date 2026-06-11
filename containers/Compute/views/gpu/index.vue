@@ -8,9 +8,8 @@
 </template>
 
 <script>
-import PciList from '../pci/components/PciList'
 import GpuList from './components/List'
-
+import PciList from '../pci/components/PciList'
 export default {
   name: 'GPUIndex',
   components: {

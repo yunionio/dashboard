@@ -30,8 +30,8 @@
 </template>
 <script>
 // import * as R from 'ramda'
-import Upload from './components/Upload'
 import { CreateServerForm } from '@Compute/constants'
+import Upload from './components/Upload'
 export default {
   name: 'AnsibleTemplateCreate',
   components: {

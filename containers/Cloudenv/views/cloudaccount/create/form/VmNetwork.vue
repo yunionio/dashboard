@@ -31,10 +31,10 @@
 </template>
 
 <script>
-import createMixin from './components/createMixin'
-import IpSubnets from './components/IpSubnets'
 import CloudregionVpcWire from '@/sections/CloudregionVpcWire'
 import { isRequired } from '@/utils/validate'
+import createMixin from './components/createMixin'
+import IpSubnets from './components/IpSubnets'
 
 function validateGateway (rule, value, callback) {
   // 只需要查看是否是以 0 结尾

@@ -25,9 +25,9 @@ import RuleList from '@Cloudenv/views/projectmapping/components/RuleList/index.v
 import Actions from '@/components/PageList/Actions'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
+import detail from './Detail'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import detail from './Detail'
 
 export default {
   name: 'ProjectMappingSidePage',

@@ -1,10 +1,10 @@
-import { serverTypeMap } from '../constants'
+import { BUY_DURATIONS_OPTIONS } from '@Compute/constants'
 import {
   getRegionTableColumn,
   getBrandTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
-import { BUY_DURATIONS_OPTIONS } from '@Compute/constants'
+import { serverTypeMap } from '../constants'
 
 const parseDuration = (s) => {
   const w = /(\d)+(W)/

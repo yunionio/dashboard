@@ -67,17 +67,16 @@
 <script>
 import _ from 'lodash'
 import * as R from 'ramda'
+import { metric_zh, tableColumnMaps } from '@Monitor/constants'
+import MonitorLine from '@Monitor/sections/MonitorLine'
+import { addMissingSeries } from '@Monitor/utils'
 import WindowsMixin from '@/mixins/windows'
 import DialogMixin from '@/mixins/dialog'
-import { metric_zh, tableColumnMaps } from '@Monitor/constants'
 import { getSignature } from '@/utils/crypto'
 import { getRequestT, transformUnit } from '@/utils/utils'
 import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
-// import { currencyUnitMap } from '@/constants/currency'
-import MonitorLine from '@Monitor/sections/MonitorLine'
-import { addMissingSeries } from '@Monitor/utils'
 import OverviewCardLayout from '../layout'
-
+// import { currencyUnitMap } from '@/constants/currency'
 export default {
   name: 'DashboardCard',
   components: {

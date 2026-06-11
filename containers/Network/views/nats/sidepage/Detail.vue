@@ -10,7 +10,6 @@
 
 <script>
 
-import { getNatSpecColumn } from '../mixins/columns'
 import {
   getUserTagColumn,
 } from '@/utils/common/detailColumn'
@@ -22,7 +21,7 @@ import {
   getSwitchTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
-
+import { getNatSpecColumn } from '../mixins/columns'
 export default {
   name: 'NatDetail',
   mixins: [WindowsMixin],

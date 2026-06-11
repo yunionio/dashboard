@@ -1,7 +1,7 @@
 import * as R from 'ramda'
-import { PROVIDER_MAP, EXTRA_HYPERVISORS } from '@/constants'
 import { keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import BlockedResources from '@Cloudenv/views/cloudaccount/components/BlockedResources'
+import { PROVIDER_MAP, EXTRA_HYPERVISORS } from '@/constants'
 
 export default {
   components: {

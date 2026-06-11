@@ -61,9 +61,8 @@ import WindowsMixin from '@/mixins/windows'
 import DomainProject from '@/sections/DomainProject'
 import NameRepeated from '@/sections/NameRepeated/index'
 import { isRequired } from '@/utils/validate'
-import { ROBOT_TYPES } from '../constants'
 import { DOCS_MAP, showDocsLink } from '@/constants/docs'
-
+import { ROBOT_TYPES } from '../constants'
 export default {
   name: 'CreateRobotDialog',
   components: {

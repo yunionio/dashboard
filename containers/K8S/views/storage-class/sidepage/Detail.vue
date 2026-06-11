@@ -11,9 +11,8 @@
 </template>
 
 <script>
-import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import { k8sStatusColumn } from '@K8S/utils/tableColumns'
-
+import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 export default {
   name: 'K8sStorageclassDetail',
   props: {

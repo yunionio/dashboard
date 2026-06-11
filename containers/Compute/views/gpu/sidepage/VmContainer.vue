@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { cloudEnabled, cloudUnabledTip } from '@Compute/views/vminstance-container/utils'
 import { sizestr } from '@/utils/utils'
 import {
   getProjectTableColumn,
@@ -21,8 +22,6 @@ import {
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
-import { cloudEnabled, cloudUnabledTip } from '@Compute/views/vminstance-container/utils'
-
 const commonUnabled = (value, statusArr = ['sched_fail', 'net_fail', 'disk_fail']) => {
   return statusArr.includes(value.status)
 }

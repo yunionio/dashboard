@@ -8,6 +8,7 @@
 
 <script>
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
+import { cloudEnabled, cloudUnabledTip } from '@Compute/views/vminstance/utils'
 import { sizestr } from '@/utils/utils'
 import {
   getProjectTableColumn,
@@ -22,9 +23,7 @@ import {
 import SystemIcon from '@/sections/SystemIcon'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { cloudEnabled, cloudUnabledTip } from '@Compute/views/vminstance/utils'
 import expectStatus from '@/constants/expectStatus'
-
 const commonUnabled = (value, statusArr = ['sched_fail', 'net_fail', 'disk_fail']) => {
   return statusArr.includes(value.status)
 }

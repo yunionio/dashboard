@@ -18,11 +18,6 @@
 </template>
 
 <script>
-import WindowsMixin from '@/mixins/windows'
-import {
-  getUserTagColumn,
-  getExtTagColumn,
-} from '@/utils/common/detailColumn'
 import VmInstanceList from '@Compute/views/vminstance/components/List'
 import ServertemplateList from '@Compute/views/servertemplate/components/List'
 import DiskList from '@Compute/views/disk/components/List'
@@ -41,10 +36,14 @@ import ExternalprojectList from '@Cloudenv/views/externalproject/components/List
 import BucketStorageList from '@Storage/views/bucket/components/List'
 import RDSList from '@DB/views/rds/components/List'
 import RedisList from '@DB/views/redis/components/List'
+import WindowsMixin from '@/mixins/windows'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import { transformLabel } from '../../policy/utils'
 import { RESOURCES_MAP } from '../../policy/constants'
 import ProjectAdmin from '../components/ProjectAdmin'
-
 const RESOURCES_BASE = {
   servers: {},
   servertemplates: {},

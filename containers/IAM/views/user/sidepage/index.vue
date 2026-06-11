@@ -20,12 +20,11 @@
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import UserDetail from './Detail'
 import Projects from './Projects'
 import Group from './Groups'
-
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 export default {
   name: 'UserSidePage',
   components: {

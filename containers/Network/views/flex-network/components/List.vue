@@ -12,15 +12,14 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getStatusFilter, getBrandFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import expectStatus from '@/constants/expectStatus'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
-
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 export default {
   name: 'FlexNetworkList',
   mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],

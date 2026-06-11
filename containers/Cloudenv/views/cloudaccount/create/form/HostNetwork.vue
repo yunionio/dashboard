@@ -6,9 +6,9 @@
 </template>
 
 <script>
+import createMixin from './components/createMixin'
 import PrepareNets from '../components/PrepareNets'
 import PrepareNetsForm from '../components/PrepareNetsForm'
-import createMixin from './components/createMixin'
 
 export default {
   name: 'HostNetworkCreate',

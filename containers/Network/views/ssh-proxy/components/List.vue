@@ -12,12 +12,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
-
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 export default {
   name: 'SshProxyList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],

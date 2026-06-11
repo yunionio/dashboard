@@ -14,11 +14,10 @@ import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
 import ListMixin from '@/mixins/list'
+import { findPlatform } from '@/utils/common/hypervisor'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import { findPlatform } from '@/utils/common/hypervisor'
 import { SERVER_TYPE } from '../../../constants'
-
 export default {
   name: 'SkuList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],

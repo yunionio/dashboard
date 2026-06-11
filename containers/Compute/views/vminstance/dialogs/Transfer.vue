@@ -53,13 +53,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import MigrationBandwidth from '@Compute/sections/MigrationBandwidth'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
 import ListSelect from '@/sections/ListSelect'
-import MigrationBandwidth from '@Compute/sections/MigrationBandwidth'
 import ResourceProps from '../mixins/resourceProps'
-
 export default {
   name: 'VmTransferDialog',
   components: {

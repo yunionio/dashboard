@@ -1,4 +1,5 @@
 import { mapGetters } from 'vuex'
+import { CLOUDACCOUNT_TYPES } from '@Cloudenv/views/cloudaccount/constants'
 import { changeToArr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
@@ -6,7 +7,6 @@ import i18n from '@/locales'
 import { findPlatform, getDisabledProvidersActionMeta, typeClouds } from '@/utils/common/hypervisor'
 import { hasMeterService, hasSetupKey, billSupportBrands } from '@/utils/auth'
 import { BRAND_MAP, CLOUD_ENVS } from '@/constants'
-import { CLOUDACCOUNT_TYPES } from '@Cloudenv/views/cloudaccount/constants'
 import setting from '@/config/setting'
 
 const steadyStatus = {

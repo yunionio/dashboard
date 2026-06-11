@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants'
 import {
   getNameDescriptionTableColumn,
   getEnabledTableColumn,
@@ -13,8 +14,6 @@ import {
   getNameFilter,
 } from '@/utils/common/tableFilter'
 import { sizestr } from '@/utils/utils'
-import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants'
-
 export default {
   computed: {
     resourceProps () {

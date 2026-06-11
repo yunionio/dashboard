@@ -9,11 +9,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { PRICE_COMPARA_KEY_SUFFIX } from '@Cloudenv/constants'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import storage from '@/utils/storage'
-import { PRICE_COMPARA_KEY_SUFFIX } from '@Cloudenv/constants'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 

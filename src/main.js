@@ -1,37 +1,31 @@
-import './config/vue.config'
 import Vue from 'vue'
 import Antd from 'ant-design-vue'
 import 'xe-utils'
-// import '../mock'
 import VXETable from 'vxe-table'
 import VXETablePluginAntd from 'vxe-table-plugin-antd'
 import JsonExcel from 'vue-json-excel'
-
-import './styles/less/index.less'
-import './styles/scss/index.scss'
-
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/material.css'
 import 'codemirror/mode/yaml/yaml.js'
-
 import { uuid } from '@/utils/utils'
 import { openWebConsole } from '@/utils/webconsole'
 import '@/utils/polyfill'
 import '@/config/appBuryPoint'
 import setting from '@/config/setting'
-
+import './config/vue.config'
+import './styles/less/index.less'
+import './styles/scss/index.scss'
 import store from './store'
 import router from './router'
 import i18n from './locales'
 import App from './App.vue'
 import antdGlobalConfig from './plugins/antdGlobalConfig'
-
 import './components'
 import './directives'
 import './plugins'
 import './permission'
 import './filters'
-
+// import '../mock'
 Vue._watchers = Vue.prototype._watchers = []
 
 Vue.use(Antd)

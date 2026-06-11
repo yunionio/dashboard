@@ -41,11 +41,10 @@
 </template>
 
 <script>
+import Tag from '@/sections/Tag'
 import ModeSelect from '../components/ModeSelect'
 import FileSelect from '../components/FileSelect'
 import NetSelect from '../components/NetSelect'
-import Tag from '@/sections/Tag'
-
 export default {
   name: 'PhysicalmachineISOAdd',
   components: {

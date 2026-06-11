@@ -27,12 +27,11 @@
 </template>
 
 <script>
+import { STORAGE_TYPES } from '@Storage/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import ListSelect from '@/sections/ListSelect'
-import { STORAGE_TYPES } from '@Storage/constants'
 import StorageResourcePropsMixin from '../mixins/storageResourceProps'
-
 export default {
   name: 'VmChangeBlockStorageDialog',
   components: {

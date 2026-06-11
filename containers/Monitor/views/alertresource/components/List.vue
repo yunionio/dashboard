@@ -36,19 +36,18 @@
 <script>
 import * as R from 'ramda'
 import { levelMaps } from '@Monitor/constants'
+import { strategyColumn, levelColumn, getStrategyInfo } from '@Monitor/views/commonalert/utils'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import BrandIcon from '@/sections/BrandIcon'
 import { getNameFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { getTimeTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
-import { strategyColumn, levelColumn, getStrategyInfo } from '@Monitor/views/commonalert/utils'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ResTemplateListMixin from '@/mixins/resTemplateList'
 import MonitorHeader from '@/sections/Monitor/Header'
 import { isCE } from '@/utils/utils'
 import ColumnsMixin from '../mixins/columns'
 import SingleAction from '../mixins/singleActions'
-
 export default {
   name: 'AlertResourceList',
   components: {

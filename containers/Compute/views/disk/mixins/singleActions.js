@@ -1,10 +1,10 @@
 import { mapGetters } from 'vuex'
 import { diskResizeConfig, diskCreateSnapshotConfig } from '@Compute/views/disk/utils'
+import { STORAGE_TYPES } from '@Compute/constants'
 import i18n from '@/locales'
 import { BRAND_MAP, PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
 import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import { hasSetupKey } from '@/utils/auth'
-import { STORAGE_TYPES } from '@Compute/constants'
 const supportShpolcyBrand = ['OneCloud', 'Qcloud', 'Aliyun']
 
 export default {

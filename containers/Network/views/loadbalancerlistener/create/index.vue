@@ -23,15 +23,14 @@
 
 <script>
 import { mapState } from 'vuex'
+import StepMixin from '@/mixins/step'
+import { filterObj } from '@/utils/utils'
 import Onecloud from './form/onecloud'
 import Aliyun from './form/aliyun'
 import Qcloud from './form/qcloud'
 import Huawei from './form/huawei'
 import AwsApplication from './form/aws-application'
 import AwsNetwork from './form/aws-network'
-import StepMixin from '@/mixins/step'
-import { filterObj } from '@/utils/utils'
-
 const getOnOff = bool => bool ? 'on' : 'off'
 
 export default {

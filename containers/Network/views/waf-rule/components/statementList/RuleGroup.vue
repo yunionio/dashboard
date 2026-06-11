@@ -8,11 +8,10 @@
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows'
 import WafMixin from '../../mixins/waf'
 import RuleGroupStatement from '../statementComponents/RuleGroupStatement'
 import Negation from '../statementComponents/Negation'
-import WindowsMixin from '@/mixins/windows'
-
 export default {
   name: 'RuleGroup',
   components: {

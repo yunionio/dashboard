@@ -45,13 +45,12 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import MonitorLine from '@Monitor/sections/MonitorLine'
+import { MONITOR_MAX_POINTERS } from '@Monitor/constants'
 import CustomDate from '@/sections/CustomDate'
 import MonitorHeader from '@/sections/Monitor/Header'
 import { getSignature } from '@/utils/crypto'
 import { timeOpts } from '@/constants/monitor'
-import { MONITOR_MAX_POINTERS } from '@Monitor/constants'
 import AlertForm from './form'
-
 export default {
   name: 'Commonalert',
   components: {

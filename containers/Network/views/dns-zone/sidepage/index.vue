@@ -30,15 +30,14 @@
 
 <script>
 import * as R from 'ramda'
+import DnsRecordsetListForDnsZoneSidepage from '@Network/views/dns-recordset/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import DnsRecordsetListForDnsZoneSidepage from '@Network/views/dns-recordset/components/List'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
 import DnsZoneDetail from './Detail'
 import DnsAssociateVpcList from './DnsAssociateVpcList'
-
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 export default {
   name: 'DnsZoneSidePage',
   components: {

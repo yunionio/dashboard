@@ -11,14 +11,13 @@
 
 <script>
 import {
-  getConfigTypeTableColumn,
-  getAttirubuteTableColumn,
-} from '../utils/columns'
-import {
   getEnabledTableColumn,
   // getSwitchTableColumn
 } from '@/utils/common/tableColumn'
-
+import {
+  getConfigTypeTableColumn,
+  getAttirubuteTableColumn,
+} from '../utils/columns'
 export default {
   name: 'NotifyConfigDetail',
   props: {

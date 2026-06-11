@@ -56,14 +56,13 @@
 </template>
 
 <script>
-import DomainProject from '@/sections/DomainProject'
 import { formItemLayout } from '@Storage/constants'
+import DomainProject from '@/sections/DomainProject'
 import AreaSelects from '@/sections/AreaSelects'
 import Tag from '@/sections/Tag'
 import validateForm, { isRequired } from '@/utils/validate'
-import BottomBar from '../components/BottomBar'
 import fsCreateMixin from './mixin'
-
+import BottomBar from '../components/BottomBar'
 export default {
   name: 'FileSystemIDCCreate',
   components: {

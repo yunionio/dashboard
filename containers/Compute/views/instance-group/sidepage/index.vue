@@ -30,13 +30,12 @@
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
 import InstanceGroupDetail from './Detail'
-// import VMInstanceListForInstanceGroup from './VMInstanceListForInstanceGroup'
 import AssociatedInstances from './AssociatedInstances'
 import VipNetworkListForInstanceGroup from './VIPList'
-
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+// import VMInstanceListForInstanceGroup from './VMInstanceListForInstanceGroup'
 export default {
   name: 'InstanceGroupSidePage',
   components: {

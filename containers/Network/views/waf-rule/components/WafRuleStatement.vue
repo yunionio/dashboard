@@ -16,7 +16,6 @@
 
 <script>
 import WindowsMixin from '@/mixins/windows'
-import WafMixin from '../mixins/waf'
 import BoxShow from './statementComponents/BoxShow'
 import ByteMatch from './statementList/ByteMatch'
 import IPSet from './statementList/IPSet'
@@ -29,7 +28,7 @@ import RuleGroup from './statementList/RuleGroup'
 import SqliMatch from './statementList/SqliMatch'
 import XssMatch from './statementList/XssMatch'
 import LabelMatch from './statementList/LabelMatch'
-
+import WafMixin from '../mixins/waf'
 export default {
   name: 'WafList',
   components: {

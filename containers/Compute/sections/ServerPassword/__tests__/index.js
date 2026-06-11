@@ -2,9 +2,8 @@ import { shallowMount, createLocalVue } from '@vue/test-utils'
 import VueRouter from 'vue-router'
 import BaseSelect from '@tests/stubs/BaseSelect'
 import Icon from '@tests/stubs/Icon'
-import ServerPassword from '../index'
 import { LOGIN_TYPES_MAP } from '@Compute/constants'
-
+import ServerPassword from '../index'
 const localVue = createLocalVue()
 localVue.use(VueRouter)
 localVue.directive('decorator', {})

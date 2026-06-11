@@ -121,12 +121,12 @@
 
 <script>
 import * as R from 'ramda'
+import { getModelIcon, getModelIconLabel } from '@Ai/utils/index'
 import { sizestr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
-import { getModelIcon, getModelIconLabel } from '@Ai/utils/index'
-import { LLM_TYPE_OPTIONS } from '../constants/llmTypeConfig'
 import Actions from '@/components/PageList/Actions'
 import Status from '@/components/Status'
+import { LLM_TYPE_OPTIONS } from '../constants/llmTypeConfig'
 
 const INFERENCE_LLM_TYPES = ['vllm', 'ollama', 'sglang']
 

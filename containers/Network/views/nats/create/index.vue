@@ -70,18 +70,17 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import DomainSelect from '@/sections/DomainSelect'
 import { DECORATORS } from '@Network/views/nats/constants'
 import Duration from '@Compute/sections/Duration'
+import EipConfig from '@Compute/sections/EipConfig'
+import DomainSelect from '@/sections/DomainSelect'
 import NetworkSelects from '@/sections/NetworkSelects'
 import { PROVIDER_MAP } from '@/constants'
 import AreaSelects from '@/sections/AreaSelects'
-import EipConfig from '@Compute/sections/EipConfig'
 import Tag from '@/sections/Tag'
 import changeMinxin from './changeMinxin'
 import BottomBar from './components/BottomBar'
 import SKU from './components/SKU'
-
 export default {
   name: 'NatCreate',
   components: {

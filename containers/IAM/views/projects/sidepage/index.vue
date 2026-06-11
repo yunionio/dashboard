@@ -33,12 +33,11 @@ import { mapGetters } from 'vuex'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
 import ProjectDetail from './Detail'
 import ProjectDirectlyUnderUserList from './DirectlyUnderUserList'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 // import ProjectResourcesStatistics from './ResourcesStatistics'
-
 export default {
   name: 'ProjectSidePage',
   components: {

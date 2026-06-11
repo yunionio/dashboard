@@ -51,15 +51,14 @@
 </template>
 
 <script>
-import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import ResCommon from '@Network/sections/Topology/ResCommon'
 import { RES_ICON_MAP } from '@Network/sections/Topology/constants'
 import ResMixin from '@Network/sections/Topology/ResMixin'
+import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import ResVpc from '../ResVpc'
 import ResWire from '../ResWire'
 import ResIpsubnet from '../ResIpsubnet'
 import ResShareStorage from '../ResShareStorage'
-
 const COLORS = ['#E45826', '#874356', '#0E3EDA', '#139487', '#464E2E', '#A1B57D', '#6E3CBC', '#6FB2D2', '#C5D8A4', '#F473B9', '#D18CE0', '#203239']
 
 export default {

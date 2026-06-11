@@ -21,15 +21,14 @@
 </template>
 
 <script>
+import RuleManage from '@Network/views/waf-rule/components/List'
 import Actions from '@/components/PageList/Actions'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
-import RuleManage from '@Network/views/waf-rule/components/List'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import detail from './Detail'
 import ResourceManage from './ResourceManage'
-
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 export default {
   name: 'WafSidePage',
   components: {

@@ -52,10 +52,9 @@ import { SCOPES_MAP } from '@/constants'
 import i18n from '@/locales'
 import { getPolicyResCheckedList } from '@/utils/policy/policy-res-list'
 import { POLICY_WHITE_LIST } from '@/constants/policy'
+import ScopeSelect from './ScopeSelect'
 import { genPolicyGroups } from '../../utils'
 import { DEFAULT_ACTIONS_KEY } from '../../constants'
-import ScopeSelect from './ScopeSelect'
-
 // 权限级别
 const policyLevel = {
   deny: 0,

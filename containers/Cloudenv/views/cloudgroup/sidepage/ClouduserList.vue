@@ -9,9 +9,9 @@
 
 <script>
 import * as R from 'ramda'
+import ColumnsMixin from '@Cloudenv/views/clouduser/mixins/columns'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import ColumnsMixin from '@Cloudenv/views/clouduser/mixins/columns'
 
 export default {
   name: 'ClouduserListForCloudgroupSidepage',

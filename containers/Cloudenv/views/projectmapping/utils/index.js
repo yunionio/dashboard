@@ -1,9 +1,9 @@
-import { getAccessUrlTableColumn, getAccountTableColumn } from '../utils/columns'
 import {
   getCopyWithContentTableColumn,
   getBrandTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import { getAccessUrlTableColumn, getAccountTableColumn } from '../utils/columns'
 
 export const getResource = (row) => {
   if (row.accounts?.length > 0) {

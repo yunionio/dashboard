@@ -35,10 +35,9 @@
 </template>
 
 <script>
+import { STORAGE_TYPES } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { STORAGE_TYPES } from '@Compute/constants'
-
 export default {
   name: 'DiskChangeStorageTypeDialog',
   mixins: [DialogMixin, WindowsMixin],

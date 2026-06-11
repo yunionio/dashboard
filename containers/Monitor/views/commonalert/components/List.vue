@@ -10,15 +10,14 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
+import { levelMaps } from '@Monitor/constants'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getTenantFilter, getStatusFilter, getEnabledFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
-import { levelMaps } from '@Monitor/constants'
-
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 export default {
   name: 'CommonalertList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],

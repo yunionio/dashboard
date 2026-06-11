@@ -8,12 +8,11 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 export default {
   name: 'K8SFederatedroleList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],

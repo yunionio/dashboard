@@ -1,13 +1,12 @@
 import { mapGetters } from 'vuex'
-// import { Base64 } from 'js-base64'
 import qs from 'qs'
+import { SMART_SSH_FORM_DECORATORS } from '@Compute/constants'
 import expectStatus from '@/constants/expectStatus'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
-import { SMART_SSH_FORM_DECORATORS } from '@Compute/constants'
 import { canIpmiProbe } from '../utils/status'
 import { solWebConsole, jnlpConsole } from '../../../utils/webconsole'
-
+// import { Base64 } from 'js-base64'
 export default {
   destroyed () {
     this.manager = null

@@ -11,9 +11,8 @@
 </template>
 
 <script>
-import SkuList from './components/List'
 import { SKU_PARAMS } from '@Network/views/nats/constants'
-
+import SkuList from './components/List'
 export default {
   name: 'NatCreateSku',
   components: {

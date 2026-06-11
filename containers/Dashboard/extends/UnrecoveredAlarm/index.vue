@@ -47,10 +47,9 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import { chartColors } from '@/constants'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
+import { chartColors } from '@/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
-
 export default {
   name: 'UnrecoveredAlarm',
   components: {

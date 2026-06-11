@@ -19,6 +19,7 @@ import {
   GPU_DEV_TYPE_OPTION_MAP,
 } from '@Compute/constants/index'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
+import { formatCpuNumaPin } from '@Compute/views/vminstance/utils'
 import {
   getUserTagColumn,
 } from '@/utils/common/detailColumn'
@@ -36,8 +37,6 @@ import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { HYPERVISORS_MAP } from '@/constants'
 import { sizestr } from '@/utils/utils'
-import { formatCpuNumaPin } from '@Compute/views/vminstance/utils'
-
 export default {
   name: 'VmContainerInstanceDetail',
   mixins: [WindowsMixin],

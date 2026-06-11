@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -23,7 +24,6 @@ import {
   getDistinctFieldFilter,
 } from '@/utils/common/tableFilter'
 import { LLM_TYPE_OPTIONS } from '../../llm-sku/constants/llmTypeConfig'
-import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 

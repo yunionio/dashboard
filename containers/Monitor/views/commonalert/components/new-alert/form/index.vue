@@ -168,14 +168,13 @@ import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import Filters from '@Monitor/sections/Filters'
-import ScopeRadio from '@/sections/ScopeRadio'
 import { levelMaps, preiodMaps } from '@Monitor/constants'
+import ScopeRadio from '@/sections/ScopeRadio'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import NotifyTypes from '@/sections/NotifyTypes'
 import workflowMixin from '@/mixins/workflow'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 import Condition from './Condition'
-
 export default {
   name: 'CommonalertForm',
   components: {

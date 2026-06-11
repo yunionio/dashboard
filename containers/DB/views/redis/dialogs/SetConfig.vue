@@ -16,11 +16,10 @@
 </template>
 
 <script>
-import SKU from '../create/components/SKU'
-import changeMinxin from '../create/changeMinxin'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-
+import SKU from '../create/components/SKU'
+import changeMinxin from '../create/changeMinxin'
 export default {
   name: 'RedisSetConfigDialog',
   components: {

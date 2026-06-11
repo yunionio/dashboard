@@ -31,10 +31,9 @@ import LbaclListenersList from '@Network/views/loadbalancerlistener/components/L
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import LbaclDetail from './Detail'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import LbaclDetail from './Detail'
-
 export default {
   name: 'LbaclSidePage',
   components: {

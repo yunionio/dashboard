@@ -13,13 +13,12 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import regexp from '@/utils/regexp'
 import { getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
-
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 export default {
   name: 'AgentList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],

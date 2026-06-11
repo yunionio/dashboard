@@ -23,11 +23,10 @@
 </template>
 
 <script>
-import SetupSshForm from '../create/form/SetupSSHForm'
-import { DetectSshTable } from './DetectSSH'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-
+import { DetectSshTable } from './DetectSSH'
+import SetupSshForm from '../create/form/SetupSSHForm'
 export default {
   name: 'InstallAgentDialog',
   components: {

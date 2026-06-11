@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import DynamicschedtagForm from '../components/Form'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import DynamicschedtagForm from '../components/Form'
 
 export default {
   name: 'UpdateDynamicschedtagDialog',

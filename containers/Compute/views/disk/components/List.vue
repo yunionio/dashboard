@@ -19,6 +19,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import { diskResizeConfig } from '@Compute/views/disk/utils'
 import {
   getTenantFilter,
   getStatusFilter,
@@ -32,7 +33,6 @@ import {
   getDistinctFieldsFilter,
 } from '@/utils/common/tableFilter'
 import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
-import { diskResizeConfig } from '@Compute/views/disk/utils'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -42,7 +42,6 @@ import { PROVIDER_MAP } from '@/constants'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import { MEDIUM_MAP } from '../../../constants'
-
 export default {
   name: 'DiskList',
   mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],

@@ -33,9 +33,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import UserSelect from '../components/UserSelect'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import UserSelect from '../components/UserSelect'
 
 export default {
   name: 'ClouduserChangeOwnerDialog',

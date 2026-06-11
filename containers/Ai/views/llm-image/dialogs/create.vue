@@ -39,11 +39,11 @@
 </template>
 
 <script>
+import { getAllowedImageLlmTypes, parseLlmImageRoute } from '@Ai/utils/llmRouteContext'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { validateModelForm } from '@/utils/validate'
 import { LLM_TYPE_OPTIONS } from '../../llm-sku/constants/llmTypeConfig'
-import { getAllowedImageLlmTypes, parseLlmImageRoute } from '@Ai/utils/llmRouteContext'
 
 export default {
   name: 'DesktopImageCreateDialog',

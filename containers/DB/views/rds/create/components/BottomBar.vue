@@ -29,12 +29,11 @@
   </page-footer>
 </template>
 <script>
+import { SERVER_TYPE } from '@Compute/constants'
 import { sizestr } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
 import PriceFetcher from '@/components/PriceFetcher'
-import { SERVER_TYPE } from '@Compute/constants'
 import { findPlatform } from '@/utils/common/hypervisor'
-
 export default {
   name: 'BottomBar',
   components: {

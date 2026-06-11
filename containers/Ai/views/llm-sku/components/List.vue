@@ -29,13 +29,13 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters, mapState } from 'vuex'
+import { parseLlmRoute, getLlmSkuTypeFilter } from '@Ai/utils/llmRouteContext'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import LlmSkuGrid from './LlmSkuGrid'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import { filterOptions } from '../utils/filters'
-import LlmSkuGrid from './LlmSkuGrid'
-import { parseLlmRoute, getLlmSkuTypeFilter } from '@Ai/utils/llmRouteContext'
 
 const MIN_LIST_HEIGHT = 400
 const BOTTOM_MARGIN = 15

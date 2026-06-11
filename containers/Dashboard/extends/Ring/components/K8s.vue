@@ -78,13 +78,12 @@ import { mapGetters } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { K8S_USAGE_CONFIG, getTargetRangeUsageKey } from '@Dashboard/constants'
 import { load } from '@Dashboard/utils/cache'
-import { getRequestT } from '@/utils/utils'
 import K8sConfig from '@Dashboard/sections/K8sConfig'
+import { getRequestT } from '@/utils/utils'
 import { numerify } from '@/filters'
 import { chartColors } from '@/constants'
 import { hasPermission } from '@/utils/auth'
 import mixin from './mixin'
-
 export default {
   name: 'RingK8s',
   components: {

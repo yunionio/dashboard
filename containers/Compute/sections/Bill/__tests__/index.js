@@ -1,7 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
-import VmPublicCreateBill from '../index.vue'
 import i18n from '@/locales'
-
+import VmPublicCreateBill from '../index.vue'
 describe('VmPublicCreateBill', () => {
   it('check buyDurationOptions in aliyun, first item is 1W', () => {
     const decorators = {

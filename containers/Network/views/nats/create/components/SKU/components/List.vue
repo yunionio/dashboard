@@ -26,10 +26,9 @@
 
 <script>
 import * as R from 'ramda'
-import PageListEmpty from '@/components/PageList/Loader'
 import { BILL_TYPES_MAP } from '@Network/views/nats/constants'
+import PageListEmpty from '@/components/PageList/Loader'
 import { hasMeterService } from '@/utils/auth'
-
 export default {
   name: 'SKUList',
   inject: ['form', 'formItemLayout', 'tailFormItemLayout'],

@@ -8,9 +8,8 @@
 </template>
 
 <script>
-import ServertemplateList from './components/List'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
-
+import ServertemplateList from './components/List'
 export default {
   name: 'ServertemplateIndex',
   components: {

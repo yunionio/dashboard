@@ -9,13 +9,13 @@
 </template>
 
 <script>
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import {
   getUserTagColumn,
 } from '@/utils/common/detailColumn'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 import { getStatusTableColumn } from '@/utils/common/tableColumn'
-import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import {
   getLlmIpColumn,
   // getStreamEndpointColumn,

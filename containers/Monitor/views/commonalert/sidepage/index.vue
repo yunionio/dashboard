@@ -33,10 +33,9 @@ import AlertrecortList from '@Monitor/views/alertrecord/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import CommonalertDetail from './Detail'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import CommonalertDetail from './Detail'
-
 export default {
   name: 'CommonalertsSidePage',
   components: {

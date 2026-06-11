@@ -1,6 +1,5 @@
-import { commonUnabled } from '../views/vminstance/utils'
 import i18n from '@/locales'
-
+import { commonUnabled } from '../views/vminstance/utils'
 export function hostCommonActions (hostList) {
   return [
     {

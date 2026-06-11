@@ -29,16 +29,14 @@
 
 <script>
 import * as R from 'ramda'
-import { hasPermission } from '@/utils/auth'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
 import NetworkList from '@Compute/views/physicalmachine/sidepage/Network'
 import ServerRecovery from '@Compute/views/server-recovery/components/List'
 import GpuList from '@Compute/views/gpu/components/List'
 import BmcLog from '@Compute/views/physicalmachine/sidepage/BMCLog'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
+import { hasPermission } from '@/utils/auth'
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 import HostDetail from './Detail'
 import Dashboard from './Dashboard'
 import StorageList from './Storage'
@@ -46,7 +44,8 @@ import Monitor from './Monitor'
 import VminstanceList from './VminstanceList'
 import Dmesg from './Dmesg'
 import HostAlertHistory from './AlertList'
-
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 export default {
   name: 'HostSidePage',
   components: {
