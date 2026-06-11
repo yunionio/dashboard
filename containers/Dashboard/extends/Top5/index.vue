@@ -100,16 +100,15 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { load } from '@Dashboard/utils/cache'
+import { getMetricDocs } from '@Dashboard/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 import { getRequestT } from '@/utils/utils'
 import { hasPermission } from '@/utils/auth'
 import { getSignature } from '@/utils/crypto'
-import { getMetricDocs } from '@Dashboard/constants'
 import setting from '@/config/setting'
 import { showDocsLink } from '@/constants/docs'
 import { usageConfig, serverUsageOptions, hostUsageOptions } from './constants'
-
 export default {
   name: 'Top5',
   components: {

@@ -1,9 +1,8 @@
-import './style.scss'
 import { addResizeListener, removeResizeListener } from '@/utils/resizeEvent'
 import { toObject } from '@/utils/utils'
+import './style.scss'
 import scrollbarWidth from './scrollbarWidth'
 import Bar from './bar'
-
 export default {
   name: 'Scrollbar',
 

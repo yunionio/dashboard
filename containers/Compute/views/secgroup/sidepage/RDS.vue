@@ -13,6 +13,7 @@
 </template>
 <script>
 
+import ColumnsMixin from '@DB/views/rds/mixins/columns'
 import ListMixin from '@/mixins/list'
 import {
   getNameFilter,
@@ -29,8 +30,6 @@ import {
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import regexp from '@/utils/regexp'
-import ColumnsMixin from '@DB/views/rds/mixins/columns'
-
 export default {
   name: 'RDSList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin],

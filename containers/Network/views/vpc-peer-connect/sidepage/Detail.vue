@@ -18,13 +18,12 @@ import {
   getUserTagColumn,
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
+import WindowsMixin from '@/mixins/windows'
 import {
   getVpcTableColumn,
   getPeerVpcTableColumn,
   getExtPeerAccountTableColumn,
 } from '../utils/column'
-import WindowsMixin from '@/mixins/windows'
-
 export default {
   name: 'vpcPeerConnectDetail',
   mixins: [WindowsMixin],

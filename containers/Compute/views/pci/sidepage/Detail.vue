@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows'
 import {
   getDevTypeColumn,
   getModelColumn,
@@ -16,8 +17,6 @@ import {
   getDeviceIdColumn,
   getHotPluggableColumn,
 } from '../utils/columns'
-import WindowsMixin from '@/mixins/windows'
-
 export default {
   name: 'PciDetail',
   mixins: [WindowsMixin],

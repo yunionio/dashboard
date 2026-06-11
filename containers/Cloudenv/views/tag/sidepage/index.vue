@@ -20,11 +20,11 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import TagDetail from './Detail'
-import BindResource from './BindResource'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
+import TagDetail from './Detail'
+import BindResource from './BindResource'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'TagSidePage',

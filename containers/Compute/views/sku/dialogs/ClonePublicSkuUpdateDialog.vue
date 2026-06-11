@@ -53,12 +53,11 @@
 </template>
 
 <script>
+import { STORAGE_TYPES } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import CloudregionZone from '@/sections/CloudregionZone'
 import { isRequired } from '@/utils/validate'
-import { STORAGE_TYPES } from '@Compute/constants'
-
 export default {
   name: 'ClonePublicSkuUpdateDialog',
   components: {

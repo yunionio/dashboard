@@ -1,9 +1,8 @@
 import { shallowMount } from '@vue/test-utils'
-import Disk from '../index'
 import { diskValidator } from '@Compute/utils/createServer'
 import { isRequired } from '@/utils/validate'
 import i18n from '@/locales'
-
+import Disk from '../index'
 let decorator = null
 let typesMap = null
 let elements = null

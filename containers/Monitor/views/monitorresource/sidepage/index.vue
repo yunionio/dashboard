@@ -34,16 +34,15 @@
 
 <script>
 import CommonalertList from '@Monitor/views/commonalert/components/List'
+import AlertrecortList from '@Monitor/views/alertrecord/components/List'
+import VmInstanceMonitorSidepage from '@Compute/views/vminstance/sidepage/Monitor'
+import HostMonitorSidepage from '@Compute/views/host/sidepage/Monitor'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import AlertrecortList from '@Monitor/views/alertrecord/components/List'
-// import VmInstanceMonitorSidepage from './Monitor'
-import VmInstanceMonitorSidepage from '@Compute/views/vminstance/sidepage/Monitor'
-import HostMonitorSidepage from '@Compute/views/host/sidepage/Monitor'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-
+// import VmInstanceMonitorSidepage from './Monitor'
 export default {
   name: 'MonitorResourceSidePage',
   components: {

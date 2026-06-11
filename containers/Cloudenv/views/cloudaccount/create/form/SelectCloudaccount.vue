@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import { isCE } from '@/utils/utils'
 import { CLOUDACCOUNT_TYPES, ENV_TITLE } from '@Cloudenv/views/cloudaccount/constants'
+import { isCE } from '@/utils/utils'
 import { hasSetupKey, billSupportBrands } from '@/utils/auth'
 import setting from '@/config/setting'
 

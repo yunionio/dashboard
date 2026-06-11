@@ -37,18 +37,17 @@
 import HostList from '@Compute/views/host/components/List'
 import DiskRecoveryList from '@Compute/views/disk-recovery/components/List'
 import CachedImages from '@Storage/views/blockstorage/sidepage/CachedImages'
+import { STORAGE_TYPES } from '@Storage/constants/index.js'
 import { getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import { STORAGE_TYPES } from '@Storage/constants/index.js'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
 import Detail from './Detail'
 import DiskList from './Disk'
 import Monitor from './Monitor'
 import SnapshotList from './Snapshot'
-
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 export default {
   name: 'BlockStorageSidePage',
   components: {

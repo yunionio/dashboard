@@ -6,6 +6,7 @@ import OsSelect from '@Compute/sections/OsSelect'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import SchedPolicy from '@Compute/sections/SchedPolicy'
+import { checkIpV6, getIpv6Start } from '@Compute/utils/createServer'
 import DomainProject from '@/sections/DomainProject'
 import CloudregionZone from '@/sections/CloudregionZone'
 import Tag from '@/sections/Tag'
@@ -14,9 +15,7 @@ import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { sizestr } from '@/utils/utils'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 import i18n from '@/locales'
-import { checkIpV6, getIpv6Start } from '@Compute/utils/createServer'
 import BottomBar from './BottomBar'
-
 function checkIpInSegment (i, networkData) {
   return (rule, value, cb) => {
     const isIn = isWithinRange(value, networkData.guest_ip_start, networkData.guest_ip_end)

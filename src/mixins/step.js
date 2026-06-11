@@ -1,7 +1,6 @@
 import * as R from 'ramda'
-import i18n from '@/locales'
 import { notSupportSelectRegion } from '@Cloudenv/views/cloudaccount/constants'
-
+import i18n from '@/locales'
 /**
  * step mixin 仅用来与step组件组合使用
  * 如果在下一步的跳转过程中需要表单校验的话，需要提供表单校验的方法 validateForm

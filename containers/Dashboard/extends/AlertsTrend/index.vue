@@ -40,14 +40,13 @@
 // import i18n from 'vue-i18n'
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import { chartColors } from '@/constants'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
+import { chartColors } from '@/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { getCurrency } from '@/utils/common/cookie'
 import { currencyUnitMap } from '@/constants/currency'
 import { getSignature } from '@/utils/crypto'
 // import OverviewLine from '@Monitor/components/MonitorCard/sections/chart/line'
-
 export default {
   name: 'AlertsTrend',
   components: {

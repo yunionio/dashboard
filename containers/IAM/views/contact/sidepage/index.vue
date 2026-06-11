@@ -27,10 +27,9 @@ import * as R from 'ramda'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import ContactDetail from './Detail'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import ContactDetail from './Detail'
-
 export default {
   name: 'ContactSidePage',
   components: {

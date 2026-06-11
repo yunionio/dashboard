@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 import List from '@Ai/views/llm/components/List'
+import ResStatisticsV2Mixin from '@/mixins/resStatisticsV2Mixin'
 
 export default {
   name: 'AppDesktopIndex',

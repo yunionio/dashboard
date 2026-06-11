@@ -31,11 +31,10 @@
 <script>
 import { mapState } from 'vuex'
 import moment from 'moment'
-import DialogMixin from '@/mixins/dialog'
-import WindowsMixin from '@/mixins/windows'
 import { levelMaps } from '@Monitor/constants'
 import { getMetircAlertUtil } from '@Monitor/views/commonalert/utils'
-
+import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
 export default {
   name: 'MonitorAlertNotifyDialog',
   mixins: [DialogMixin, WindowsMixin],

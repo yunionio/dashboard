@@ -19,9 +19,9 @@
 
 <script>
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
-import DomainProject from '../../../components/DomainProject'
-import createMixin from './createMixin'
 import { isRequired } from '@/utils/validate'
+import createMixin from './createMixin'
+import DomainProject from '../../../components/DomainProject'
 
 export default {
   name: 'RemoteFileCreate',

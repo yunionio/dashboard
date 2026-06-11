@@ -97,11 +97,10 @@
 
 <script>
 import * as R from 'ramda'
-import ChargeTypeRadio from '@/sections/ChargeTypeRadio'
 import { LB_SPEC } from '@Network/views/lb/constants'
+import ChargeTypeRadio from '@/sections/ChargeTypeRadio'
 import AreaSelects from '@/sections/AreaSelects'
 import lbCreate from './mixin.js'
-
 export default {
   name: 'LbAliyunCreate',
   components: {

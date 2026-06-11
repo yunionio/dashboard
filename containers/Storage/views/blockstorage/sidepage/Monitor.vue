@@ -3,10 +3,9 @@
 </template>
 
 <script>
-import WindowsMixin from '@/mixins/windows'
 import DashboardCards from '@Monitor/components/MonitorCard/DashboardCards'
+import WindowsMixin from '@/mixins/windows'
 import { STORAGE_MONITOR_OPTS } from '../constants'
-
 export default {
   name: 'StorageMonitorSidepage',
   components: {

@@ -112,14 +112,13 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import { NODE_ROLE_MAP } from '../../views/cluster/constants'
-import { IMAGES_TYPE_MAP } from '@/constants/compute'
-import { HYPERVISORS_MAP } from '@/constants'
-import { uuid } from '@/utils/utils'
 import SystemDisk from '@Compute/views/vminstance/create/components/SystemDisk'
 import Sku from '@Compute/sections/SKU'
 import OsSelect from '@Compute/sections/OsSelect'
-
+import { IMAGES_TYPE_MAP } from '@/constants/compute'
+import { HYPERVISORS_MAP } from '@/constants'
+import { uuid } from '@/utils/utils'
+import { NODE_ROLE_MAP } from '../../views/cluster/constants'
 export default {
   name: 'K8SClusterServerConfig',
   components: {

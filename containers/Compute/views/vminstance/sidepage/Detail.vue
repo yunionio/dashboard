@@ -17,6 +17,7 @@ import 'codemirror/theme/material.css'
 import * as R from 'ramda'
 import { ALL_STORAGE, SERVER_TYPE, GPU_DEV_TYPE_OPTION_MAP } from '@Compute/constants/index'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
+import { formatCpuNumaPin } from '@Compute/views/vminstance/utils'
 import {
   getUserTagColumn,
   // getExtTagColumn,
@@ -37,8 +38,6 @@ import { findPlatform } from '@/utils/common/hypervisor'
 import { BRAND_MAP, HYPERVISORS_MAP } from '@/constants'
 import { sizestr, sizestrWithUnit } from '@/utils/utils'
 import { hasPermission } from '@/utils/auth'
-import { formatCpuNumaPin } from '@Compute/views/vminstance/utils'
-
 export default {
   name: 'VmInstanceDetail',
   mixins: [WindowsMixin],

@@ -83,18 +83,17 @@
 
 <script>
 import * as R from 'ramda'
-import DomainProject from '@/sections/DomainProject'
 import Duration from '@Compute/sections/Duration'
+import DomainProject from '@/sections/DomainProject'
 import NetworkSelects from '@/sections/NetworkSelects'
 import validateForm, { isRequired } from '@/utils/validate'
 import Tag from '@/sections/Tag'
 import AreaSelects from '@/sections/AreaSelects'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
+import fsCreateMixin from './mixin'
 import BottomBar from '../components/BottomBar'
 import FileSystemSku from '../components/SKU'
-import fsCreateMixin from './mixin'
-
 function validateTag (rule, value, callback) {
   if (R.is(Object, value) && Object.keys(value).length > 20) {
     return callback(new Error(i18n.t('compute.text_209')))

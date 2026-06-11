@@ -28,15 +28,14 @@
 </template>
 
 <script>
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import LoadbalancerlistenerDetail from './Detail'
-import LoadbalancerlistenerDashboard from './dashboard'
 import LoadbalancerlistenerruleList from '@Network/views/loadbalancerlistenerrule/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-
+import LoadbalancerlistenerDetail from './Detail'
+import LoadbalancerlistenerDashboard from './dashboard'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 export default {
   name: 'LoadbalancerlistenerSidePage',
   components: {

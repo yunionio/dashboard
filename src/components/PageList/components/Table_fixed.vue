@@ -72,9 +72,8 @@ import { getTagTitle } from '@/utils/common/tag'
 import storage from '@/utils/storage'
 import TreeProject from '@/sections/TreeProject'
 import WindowsMixin from '@/mixins/windows'
-import Actions from '../Actions'
 import MultipleSort from './MultipleSort'
-
+import Actions from '../Actions'
 export default {
   name: 'PageListFixedTable',
   components: {

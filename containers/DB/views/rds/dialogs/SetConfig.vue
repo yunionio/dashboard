@@ -22,10 +22,9 @@
 </template>
 
 <script>
-import SKU from '../create/components/SKU'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-
+import SKU from '../create/components/SKU'
 export default {
   name: 'RSDSetConfig',
   components: {

@@ -28,11 +28,11 @@
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ScheduledtaskDetail from './Detail'
 import RelatedResource from './RelatedResource'
 import TaskHistory from './TaskHistory'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'ScheduledtaskSidePage',

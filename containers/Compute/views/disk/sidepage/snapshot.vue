@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import SingleActionsMixin from '@Compute/views/snapshot/mixins/singleActions'
 import {
   getCopyWithContentTableColumn,
   getStatusTableColumn,
@@ -18,9 +19,7 @@ import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
 import i18n from '@/locales'
-import SingleActionsMixin from '@Compute/views/snapshot/mixins/singleActions'
 import ListMixin from '@/mixins/list'
-
 const DISK_TYPES = {
   sys: i18n.t('compute.text_49'),
   data: i18n.t('compute.text_50'),

@@ -1,3 +1,4 @@
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
@@ -18,7 +19,6 @@ import {
   getNetworkTypeTableColumn,
   getNetworkTableColumn,
 } from '../utils/columns'
-import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 
 export default {
   computed: {

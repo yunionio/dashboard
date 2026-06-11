@@ -20,10 +20,9 @@
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import PolicyDetail from './Detail'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import PolicyDetail from './Detail'
-
 export default {
   name: 'PolicySidePage',
   components: {

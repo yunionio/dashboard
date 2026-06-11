@@ -10,15 +10,14 @@
 // 使用前需先引入对应模块
 import 'v-charts/lib/style.css' // 使用loading属性前先引入css
 import * as R from 'ramda'
-import i18n from '@/locales'
 import 'echarts/lib/component/toolbox'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/title'
 import 'echarts/lib/component/grid'
 import 'echarts/lib/component/legend'
+import i18n from '@/locales'
 import { chartColors } from '@/constants'
 import { getPdf } from '@/utils/echart'
-
 export default {
   name: 'BaseChart',
   props: {

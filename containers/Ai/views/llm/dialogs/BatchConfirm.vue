@@ -21,9 +21,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 
 export default {
   name: 'LlmBatchConfirmDialog',

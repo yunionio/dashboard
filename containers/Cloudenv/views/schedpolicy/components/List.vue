@@ -8,12 +8,12 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import { STRATEGY_OPT } from '@Cloudenv/constants/sched'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter, getEnabledFilter, getFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 const getParams = { details: true }
 

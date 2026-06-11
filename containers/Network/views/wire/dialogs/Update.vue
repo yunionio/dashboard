@@ -29,10 +29,9 @@
 </template>
 
 <script>
-import { BAND_WIDTH_OPTION } from '../../../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-
+import { BAND_WIDTH_OPTION } from '../../../constants'
 export default {
   name: 'WireUpdateDialog',
   mixins: [DialogMixin, WindowsMixin],

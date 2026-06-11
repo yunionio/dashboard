@@ -16,13 +16,12 @@
 </template>
 
 <script>
+import { Decorator } from '@Compute/utils/createServer'
+import { SERVER_TYPE } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { getInitialValue } from '@/utils/common/ant'
-import { Decorator } from '@Compute/utils/createServer'
-import { SERVER_TYPE } from '@Compute/constants'
 import BastionHost from '../create/components/BastionHost'
-
 export default {
   name: 'VmAddToBastionDialog',
   components: {

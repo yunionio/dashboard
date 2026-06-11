@@ -33,11 +33,10 @@ import K8s_ansibleplaybook from '@Helm/views/k8s-ansibleplaybook/components/List
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import Virtualmachine from './Virtualmachine'
 import Detail from './Detail'
-
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 export default {
   name: 'VmReleaseSidePage',
   components: {

@@ -29,15 +29,14 @@
 import BackupList from '@DB/views/rds-backup/components/List'
 import AccountList from '@DB/views/rds-account/components/List'
 import DatabaseList from '@DB/views/rds-database/components/List'
+import SecgroupList from '@Compute/views/secgroup/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import SecgroupList from '@Compute/views/secgroup/components/List'
 import Monitor from './Monitor'
 import Detail from './Detail'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-
 export default {
   name: 'RDSSidePage',
   components: {

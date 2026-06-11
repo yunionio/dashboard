@@ -1,8 +1,7 @@
 import { shallowMount } from '@vue/test-utils'
-import OsSelect from '../index'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import i18n from '@/locales'
-
+import OsSelect from '../index'
 let setFieldsValue = null
 let decorator = null
 

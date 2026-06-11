@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import LlmSkuCreateForm from './Form.vue'
 import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
+import LlmSkuCreateForm from './Form.vue'
 
 export default {
   name: 'LlmSkuCreate',

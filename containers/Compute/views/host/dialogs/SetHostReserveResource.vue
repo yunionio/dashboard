@@ -19,15 +19,14 @@
 </template>
 
 <script>
-import { getIsolatedDeviceCountColumns } from '../utils/columns'
+import ReserveResource from '@Compute/sections/ReserveResource'
 import { sizestr } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import {
   getNameDescriptionTableColumn,
 } from '@/utils/common/tableColumn'
-import ReserveResource from '@Compute/sections/ReserveResource'
-
+import { getIsolatedDeviceCountColumns } from '../utils/columns'
 export default {
   name: 'SetHostReserveResourceDialog',
   components: {

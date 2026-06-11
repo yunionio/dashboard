@@ -33,14 +33,13 @@
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
 import BaremetalDetail from './Detail'
 import NetworkListForBaremetalSidepage from './Network'
 import DiskListForBaremetalSidepage from './Disk'
 import BaremetalMonitorSidepage from './Monitor'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 // import BaremetalAlertSidepage from './Alert'
-
 export default {
   name: 'BaremetalSidePage',
   components: {

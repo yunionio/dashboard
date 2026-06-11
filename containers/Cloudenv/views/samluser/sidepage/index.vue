@@ -23,14 +23,13 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import SamluserDetail from './Detail'
-// import CloudgroupList from './CloudgroupList'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-
+import SamluserDetail from './Detail'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+// import CloudgroupList from './CloudgroupList'
 export default {
   name: 'SamluserSidePage',
   components: {

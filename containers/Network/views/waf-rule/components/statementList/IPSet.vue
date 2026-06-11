@@ -13,14 +13,13 @@
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows'
 import WafMixin from '../../mixins/waf'
 import MatchField from '../statementComponents/MatchField'
 import MatchFieldValues from '../statementComponents/MatchFieldValues'
 import MatchFieldKey from '../statementComponents/MatchFieldKey'
 import Negation from '../statementComponents/Negation'
 import ForwardIpHeader from '../statementComponents/ForwardIpHeader'
-import WindowsMixin from '@/mixins/windows'
-
 export default {
   name: 'IPSet',
   components: {

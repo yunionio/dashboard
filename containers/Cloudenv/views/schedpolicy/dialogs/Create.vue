@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import SchedpolicyForm from '../components/Form'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import SchedpolicyForm from '../components/Form'
 
 export default {
   name: 'CreateSchedpolicyDialog',

@@ -1,10 +1,8 @@
+import { getTimeTableColumn } from '@/utils/common/tableColumn'
 import {
   getConfigTypeTableColumn,
   getAttirubuteTableColumn,
 } from '../utils/columns'
-
-import { getTimeTableColumn } from '@/utils/common/tableColumn'
-
 export default {
   created () {
     this.columns = [

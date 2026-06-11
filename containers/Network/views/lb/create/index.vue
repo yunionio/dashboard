@@ -14,11 +14,10 @@
 </template>
 
 <script>
+import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import IDC from './form/IDC'
 import Public from './form/Public'
 import Private from './form/Private'
-import { getCloudEnvOptions } from '@/utils/common/hypervisor'
-
 export default {
   name: 'LbCreate',
   components: {

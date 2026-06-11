@@ -33,16 +33,15 @@
 <script>
 import get from 'lodash/get'
 import echarts from 'echarts'
+import MonitorLine from '@Monitor/sections/MonitorLine'
+import { MONITOR_MAX_POINTERS, metric_zh } from '@Monitor/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
 import { timeOpts } from '@/constants/monitor'
-import MonitorLine from '@Monitor/sections/MonitorLine'
-import { MONITOR_MAX_POINTERS, metric_zh } from '@Monitor/constants'
 import CustomDate from '@/sections/CustomDate'
 import MonitorHeader from '@/sections/Monitor/Header'
-
 export default {
   name: 'ViewMonitorDialog',
   components: {

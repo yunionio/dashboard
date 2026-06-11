@@ -30,14 +30,13 @@
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
 import Detail from './Detail'
 import EnvironmentsList from './EnvironmentsList'
 import DomainList from './DomainList'
 import CertificateList from './CertificateList'
 import BackupList from './BackupList'
-
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 export default {
   name: 'WebAppSidePage',
   components: {

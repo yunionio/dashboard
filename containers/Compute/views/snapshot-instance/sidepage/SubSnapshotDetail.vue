@@ -3,12 +3,11 @@
 </template>
 
 <script>
-import { DISK_TYPES, STORAGE_TYPES } from '../constants'
 import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
+import { DISK_TYPES, STORAGE_TYPES } from '../constants'
 import { steadyStatus } from '../../snapshot/constants'
-
 export default {
   name: 'SubSnapshotDetail',
   mixins: [WindowsMixin],

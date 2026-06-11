@@ -8,14 +8,13 @@ import {
   getStatusTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
+import expectStatus from '@/constants/expectStatus'
 import {
   getDiskSizeTableColumn,
   getDiskTypeTableColumn,
   getSizeMbTableColumn,
 } from '../../disk-backup/utils/columns'
-import WindowsMixin from '@/mixins/windows'
-import expectStatus from '@/constants/expectStatus'
-
 export default {
   name: 'SubBackupDetail',
   mixins: [WindowsMixin],

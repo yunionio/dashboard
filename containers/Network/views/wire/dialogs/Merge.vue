@@ -25,10 +25,9 @@
 </template>
 
 <script>
-import { getHostsTableColumn } from '../utils/columns'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-
+import { getHostsTableColumn } from '../utils/columns'
 export default {
   name: 'WireMergeDialog',
   mixins: [DialogMixin, WindowsMixin],

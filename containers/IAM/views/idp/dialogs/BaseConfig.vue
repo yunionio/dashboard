@@ -19,11 +19,10 @@
 </template>
 
 <script>
-import DialogMixin from '@/mixins/dialog'
-import WindowsMixin from '@/mixins/windows'
 import 'codemirror/theme/monokai.css'
 import 'codemirror/mode/htmlmixed/htmlmixed.js'
-
+import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
 export default {
   name: 'IdpBaseConfigDialog',
   mixins: [DialogMixin, WindowsMixin],

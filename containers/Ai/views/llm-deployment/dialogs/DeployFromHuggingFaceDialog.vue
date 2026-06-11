@@ -21,9 +21,9 @@
 </template>
 
 <script>
+import HfDeployWorkspace from '@Ai/views/llm-deployment/deploy-from-huggingface/components/HfDeployWorkspace.vue'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import HfDeployWorkspace from '@Ai/views/llm-deployment/deploy-from-huggingface/components/HfDeployWorkspace.vue'
 
 export default {
   name: 'DeployFromHuggingFaceDialog',

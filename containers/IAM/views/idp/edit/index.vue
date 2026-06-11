@@ -104,14 +104,13 @@
 import * as R from 'ramda'
 import jumper from '@/mixins/jumper'
 import { resolveValueChangeField } from '@/utils/common/ant'
-import { docs, idpDrivers } from '../constants'
-import IDPDetailTable from '../components/DetailTable'
 import MSADMulti from './MSADMulti'
 import MSADOne from './MSADOne'
 import OpenLdapOne from './OpenLdapOne'
 import Advanced from './Advanced'
 import LdapAdvanced from './LdapAdvanced'
-
+import { docs, idpDrivers } from '../constants'
+import IDPDetailTable from '../components/DetailTable'
 export default {
   name: 'IDPEdit',
   components: {

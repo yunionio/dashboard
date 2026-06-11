@@ -23,11 +23,11 @@
 
 <script>
 import * as R from 'ramda'
-import { formItemLayout } from '../constants'
-import CommonFormItems from '../components/CommonFormItems'
 import TestButton from '@/sections/TestButton'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { formItemLayout } from '../constants'
+import CommonFormItems from '../components/CommonFormItems'
 
 export default {
   name: 'ProxysettingUpdateDialog',

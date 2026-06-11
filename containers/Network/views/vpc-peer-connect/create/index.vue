@@ -96,9 +96,8 @@
 <script>
 import { uuid } from '@/utils/utils'
 import DomainSelect from '@/sections/DomainSelect'
-import { VPC_PEER_BRANDS } from '../constants'
 import { Manager } from '@/utils/manager'
-
+import { VPC_PEER_BRANDS } from '../constants'
 export default {
   name: 'NetworkVpcPeerConnectCreate',
   components: {

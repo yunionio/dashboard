@@ -26,14 +26,13 @@
 
 <script>
 import * as R from 'ramda'
-import PageListEmpty from '@/components/PageList/Loader'
 import {
   getFileSystemTypeColumn,
   getFileSystemStorageTypeColumn,
   getFileSystemProtocolColumn,
 } from '@Storage/views/file-system/mixins/columns'
+import PageListEmpty from '@/components/PageList/Loader'
 import { hasMeterService } from '@/utils/auth'
-
 export default {
   name: 'SKUList',
   inject: ['form', 'formItemLayout', 'tailFormItemLayout'],

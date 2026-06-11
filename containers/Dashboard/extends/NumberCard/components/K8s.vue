@@ -40,10 +40,9 @@ import _ from 'lodash'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { K8S_USAGE_CONFIG } from '@Dashboard/constants'
 import { load } from '@Dashboard/utils/cache'
-import { getRequestT } from '@/utils/utils'
 import K8sConfig from '@Dashboard/sections/K8sConfig'
+import { getRequestT } from '@/utils/utils'
 import mixin from './mixin'
-
 export default {
   name: 'NumberCardK8s',
   components: {

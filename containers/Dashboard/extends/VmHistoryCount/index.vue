@@ -51,13 +51,12 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { load } from '@Dashboard/utils/cache'
-import { chartColors } from '@/constants'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
+import { chartColors } from '@/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { getSignature } from '@/utils/crypto'
 import { getRequestT } from '@/utils/utils'
 import { hasPermission } from '@/utils/auth'
-
 export default {
   name: 'VmHistoryCount',
   components: {

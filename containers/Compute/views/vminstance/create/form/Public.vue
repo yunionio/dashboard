@@ -247,7 +247,6 @@
 <script>
 /* eslint-disable */
 import * as R from 'ramda'
-import mixin from './mixin'
 import Bill from '@Compute/sections/Bill'
 import { LOGIN_TYPES_MAP, BILL_TYPES_MAP } from '@Compute/constants'
 import EipConfig from '@Compute/sections/EipConfig'
@@ -259,7 +258,7 @@ import { HOST_CPU_ARCHS } from '@/constants/compute'
 import AreaSelects from '@/sections/AreaSelects'
 import { cloudregionFilterByCapability } from '@/utils/common/capability'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
-
+import mixin from './mixin'
 export default {
   name: 'VMPublicCreate',
   components: {

@@ -283,11 +283,6 @@
 <script>
 import _ from 'lodash'
 import * as R from 'ramda'
-import OsArch from '@/sections/OsArch'
-import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
-import { resolveValueChangeField } from '@/utils/common/ant'
-import { HYPERVISORS_MAP } from '@/constants'
-import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import EipConfig from '@Compute/sections/EipConfig'
 import EncryptKeys from '@Compute/sections/encryptkeys'
@@ -296,8 +291,12 @@ import Vga from '@Compute/sections/VGA'
 import Machine from '@Compute/sections/Machine'
 import { NETWORK_OPTIONS_MAP, GPU_DEV_TYPE_OPTIONS } from '@Compute/constants'
 import Kickstart from '@Compute/sections/Kickstart'
+import OsArch from '@/sections/OsArch'
+import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
+import { resolveValueChangeField } from '@/utils/common/ant'
+import { HYPERVISORS_MAP } from '@/constants'
+import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
 import mixin from './mixin'
-
 export default {
   name: 'VM_IDCCreate',
   components: {

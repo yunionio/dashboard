@@ -12,11 +12,10 @@
 </template>
 
 <script>
-import WindowsMixin from '@/mixins/windows'
-import ColumnsMixin from '../mixins/columns'
 import { NOTIFY_TOPIC_NAMES_MAP, NOTIFY_TOPIC_TYPES_MAP } from '@IAM/constants'
+import WindowsMixin from '@/mixins/windows'
 import { getEnabledTableColumn } from '@/utils/common/tableColumn'
-
+import ColumnsMixin from '../mixins/columns'
 export default {
   name: 'TopicDetail',
   mixins: [WindowsMixin, ColumnsMixin],

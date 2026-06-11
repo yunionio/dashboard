@@ -13,11 +13,10 @@
 </template>
 
 <script>
-import { ACCOUNT_PRIVILEGES } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { ACCOUNT_PRIVILEGES } from '../constants'
 // import validateForm from '@/utils/validate'
-
 export default {
   name: 'RedisBackupResumeDialog',
   mixins: [DialogMixin, WindowsMixin],

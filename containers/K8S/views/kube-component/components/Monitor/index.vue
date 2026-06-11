@@ -24,10 +24,9 @@
 
 <script>
 import * as R from 'ramda'
-import mixin from '../../mixins'
-import Storage from './Storage'
 import { validate } from '@/utils/validate'
-
+import Storage from './Storage'
+import mixin from '../../mixins'
 export default {
   name: 'KubeComponentMonitor',
   components: {

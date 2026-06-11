@@ -106,16 +106,15 @@
 <script>
 /* import * as R from 'ramda' */
 import { mapGetters } from 'vuex'
+import ServerConfig from '@K8S/sections/serverConfig'
 import { HYPERVISORS_MAP } from '@/constants'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { DOCS_MAP, showDocsLink } from '@/constants/docs'
-import ServerConfig from '@K8S/sections/serverConfig'
 import CloudregionVpc from '@/sections/CloudregionVpc'
 import { isWithinRange, isRequired } from '@/utils/validate'
 import { findPlatform } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
 import { KUBE_PROVIDER, K8S_HYPERVISORS_MAP } from '../constants'
-
 function checkIpInSegment (i, networkData) {
   return (rule, value, _callback) => {
     const isIn = isWithinRange(value, networkData.guest_ip_start, networkData.guest_ip_end)

@@ -19,15 +19,15 @@
 <script>
 import Usage from '@Cloudenv/sections/UsageSidepage'
 import CloudproviderregionList from '@Cloudenv/views/cloudproviderregion/components/List'
+import SamlProvider from '@Cloudenv/views/samlprovider/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 import { findPlatform } from '@/utils/common/hypervisor'
-import SamlProvider from '@Cloudenv/views/samlprovider/components/List'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import CloudaccountDetail from './Detail'
 import CloudaccountQuotaList from './QuotaList'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'CloudproviderSidePage',
