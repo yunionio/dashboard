@@ -581,7 +581,8 @@ export default {
       }
       return '0'
     },
-    renderRegionalAvailability ({ region, zone, regional_availability: regionalAvailability }, type) {
+    renderRegionalAvailability (row, type) {
+      const { region, zone, regional_availability: regionalAvailability } = row
       if (!Array.isArray(regionalAvailability) || !regionalAvailability.length) {
         const ret = []
         if (type === 'region' && region) {
@@ -601,7 +602,7 @@ export default {
       }
       return [
         this.$createElement(RegionalAvailabilityPopover, {
-          props: { region, zone, regionalAvailability, chargeTypes, hiddenRegion: type === 'zone', hiddenZone: type === 'region' },
+          props: { region, zone, regionalAvailability, chargeTypes, skuData: row, hiddenRegion: type === 'zone', hiddenZone: type === 'region' },
         }),
       ]
     },
