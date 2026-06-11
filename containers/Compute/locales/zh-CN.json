@@ -2027,5 +2027,12 @@
   "compute.upload_app_package_file_help": "上传过程中请勿刷新或者关闭页面，否则上传任务会中断。应用包仅支持 tar.gz 格式。",
   "compute.cpu_model": "CPU型号",
   "compute.nic_bandwidth": "内网带宽",
-  "compute.disk_performance": "磁盘吞吐量"
+  "compute.disk_performance": "磁盘吞吐量",
+  "compute.regional_availability": "区域/可用区",
+  "compute.regional_availability_regions": "{0}个区域",
+  "compute.regional_availability_other_regions": "其他区域",
+  "compute.regional_availability.unavailable": "不可用",
+  "compute.regional_availability.tooltip.single": "{0}套餐在此{1}，{2}",
+  "compute.regional_availability.tooltip.both_same": "{0}、{1}套餐在此{2}，均{3}",
+  "compute.regional_availability.tooltip.mixed": "{0}套餐在此{1}，{2}；{3}套餐在此{1}，{4}"
 }

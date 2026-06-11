@@ -197,6 +197,7 @@ export default {
       cloudregionList: [], // 未经过mapper的数据
       zoneLoading: false,
       zoneList: [],
+      changeSeq: 0,
     }
   },
   computed: {
@@ -477,13 +478,80 @@ export default {
     firstName (name) {
       return name.replace(/^\S/, s => s.toUpperCase())
     },
-    resetValues (names) {
-      const { setFieldsValue } = this.FC
-      const nameObj = {}
-      names.forEach(key => {
-        nameObj[key] = this.emptyFieldValue(key)
+    clearFields (names = []) {
+      if (!names.length) return
+      const values = {}
+      names.forEach(name => {
+        values[name] = this.emptyFieldValue(name)
       })
-      setFieldsValue(nameObj)
+      this.FC.setFieldsValue(values)
+    },
+    normalizeFieldValue (name, values) {
+      const list = this.toArray(values).filter(Boolean)
+      if (this.isMultiple(name)) return list
+      return list[0] || undefined
+    },
+    isFieldValueChanged (name, nextValue) {
+      const prev = this.FC.getFieldValue(name)
+      const a = this.toArray(prev).sort().join(',')
+      const b = this.toArray(nextValue).sort().join(',')
+      return a !== b
+    },
+    emitFieldChange (name, id) {
+      this.$emit('change', {
+        [name]: this.isEmptyFieldValue(name, id)
+          ? undefined
+          : { id, value: this.getSelectedValue(name, id) },
+      })
+    },
+    findListItem (name, id) {
+      const list = this[`${name}List`] || []
+      return list.find(item => item.id === id || item.name === id)
+    },
+    pruneCloudregionByProvider () {
+      if (!this.names.includes('cloudregion')) return false
+
+      const providers = this.toArray(this.FC.getFieldValue('provider'))
+        .map(p => String(p).toLowerCase())
+
+      if (this.isMultiple('provider') && !providers.length) return false
+
+      const current = this.toArray(this.FC.getFieldValue('cloudregion'))
+      const pruned = current.filter(id => {
+        const item = this.findListItem('cloudregion', id)
+        if (!item) return false
+        const p = String(this.getCloudregionProvider(item)).toLowerCase()
+        if (!providers.length) return true
+        return providers.includes(p)
+      })
+
+      const next = this.normalizeFieldValue('cloudregion', pruned)
+      if (!this.isFieldValueChanged('cloudregion', next)) return false
+      this.FC.setFieldsValue({ cloudregion: next })
+      return true
+    },
+    pruneZoneByCloudregion () {
+      if (!this.names.includes('zone')) return false
+
+      const cloudregions = this.toArray(this.FC.getFieldValue('cloudregion'))
+
+      if (this.isMultiple('cloudregion') && !cloudregions.length) return false
+
+      const current = this.toArray(this.FC.getFieldValue('zone'))
+      const regionSet = new Set(cloudregions)
+
+      const pruned = current.filter(id => {
+        if (!cloudregions.length) return false
+        const item = this.findListItem('zone', id)
+        if (!item) return false
+        const rid = item.cloudregion_id || item.region_id || item.cloudregion
+        return regionSet.has(rid)
+      })
+
+      const next = this.normalizeFieldValue('zone', pruned)
+      if (!this.isFieldValueChanged('zone', next)) return false
+      this.FC.setFieldsValue({ zone: next })
+      return true
     },
     getSelectedValues (key, ids) {
       const list = (this[`${key}List`] && this[`${key}List`].length > 0) ? this[`${key}List`] : []
@@ -502,37 +570,64 @@ export default {
     },
     handleChange (selectItem = {}, callback) {
       const key = Object.keys(selectItem)[0]
-      const { id, fetchNames } = { ...selectItem[key] }
-      // 清空操作
+      const { id, fetchNames = [] } = { ...selectItem[key] }
+      const isMultipleMode = this.isMultiple(key)
+
       if (this.isEmptyFieldValue(key, id)) {
-        this.$emit('change', {
-          [key]: undefined,
-        })
-        this.FC.resetFields(fetchNames || [key])
-        this.FC.setFieldsValue({
-          [key]: this.emptyFieldValue(key),
-        })
+        this.FC.setFieldsValue({ [key]: this.emptyFieldValue(key) })
+
+        if (!isMultipleMode) {
+          if (fetchNames.length) this.clearFields(fetchNames)
+          this.emitFieldChange(key, id)
+          return false
+        }
+
+        if (fetchNames.length) {
+          this.$nextTick(() => {
+            this.refetchDownstreamOnly(fetchNames).then(() => {
+              this.emitFieldChange(key, id)
+            })
+          })
+        } else {
+          this.emitFieldChange(key, id)
+        }
         return false
       }
-      this.FC.setFieldsValue({
-        [key]: id,
-      })
-      if (fetchNames && fetchNames.length > 0) {
-        this.resetValues(fetchNames)
-        this.$nextTick(() => {
-          this.fetchs(fetchNames)
-        })
+
+      this.FC.setFieldsValue({ [key]: id })
+
+      if (!fetchNames.length) {
+        const selectedValue = this.getSelectedValue(key, id)
+        this.emitFieldChange(key, id)
+        callback && callback(selectedValue)
+        return
       }
-      const selectedValue = this.getSelectedValue(key, id)
-      this.$emit('change', {
-        [key]: {
-          id,
-          value: selectedValue,
-        },
+
+      if (!isMultipleMode) {
+        this.clearFields(fetchNames)
+        this.$nextTick(() => {
+          this.fetchs(fetchNames).then(() => {
+            this.emitFieldChange(key, id)
+          })
+        })
+        const selectedValue = this.getSelectedValue(key, id)
+        callback && callback(selectedValue)
+        return
+      }
+
+      this.$nextTick(async () => {
+        await this.cascadeMultipleChange(key, fetchNames)
+        this.emitFieldChange(key, id)
+        fetchNames.forEach(name => {
+          const val = this.FC.getFieldValue(name)
+          this.emitFieldChange(name, val)
+        })
+        const selectedValue = this.getSelectedValue(key, id)
+        callback && callback(selectedValue)
       })
-      callback && callback(selectedValue)
     },
-    async fetchChange (name, list = []) {
+    async fetchChange (name, list = [], options = {}) {
+      const { skipDefaultSelect = false } = options
       const events = this._events || {}
       const changes = events[`${name}FetchSuccess`]
       let _list = findAndPush(list, ({ name }) => name === 'Other')
@@ -545,7 +640,7 @@ export default {
       }
       /** 默认是否选择list的第一条 */
       const _item = !R.isEmpty(_list) ? _list[0] : null
-      if (this.defaultActiveFirstOption && _item) {
+      if (!skipDefaultSelect && this.defaultActiveFirstOption && _item) {
         const df = this.defaultActiveFirstOption
         const defaultValue = this.isMultiple(name)
           ? [_item.id || _item.name]
@@ -569,6 +664,70 @@ export default {
       }
       this[`${name}List`] = _list
       return _list
+    },
+    async fetchOne (name, { skipDefaultSelect = true } = {}) {
+      const sn = this.firstName(name)
+      const fetchFn = this[`fetch${sn}`]
+      if (!this.names.includes(name) || !fetchFn) return []
+
+      const getParams = R.is(Function, this[`${name}Params`])
+        ? await this[`${name}Params`]()
+        : this[`${name}Params`]
+
+      const resList = await fetchFn(getParams)
+      const list = await this.fetchChange(name, resList, { skipDefaultSelect })
+
+      if (!list.length) {
+        this[`${name}List`] = []
+      }
+      return list
+    },
+    async fetchListsOnly (fetchNames = [], options = {}) {
+      const { skipDefaultSelect = true } = options
+      for (const name of fetchNames) {
+        await this.fetchOne(name, { skipDefaultSelect })
+      }
+    },
+    async cascadeMultipleChange (changedKey, fetchNames = []) {
+      const seq = ++this.changeSeq
+
+      const isStale = () => seq !== this.changeSeq
+
+      if (changedKey === 'provider') {
+        if (fetchNames.includes('cloudregion')) {
+          await this.fetchOne('cloudregion')
+          if (isStale()) return
+          this.pruneCloudregionByProvider()
+        }
+
+        const cloudregions = this.toArray(this.FC.getFieldValue('cloudregion'))
+
+        if (fetchNames.includes('zone')) {
+          if (!cloudregions.length) {
+            this.FC.setFieldsValue({ zone: this.emptyFieldValue('zone') })
+          } else {
+            await this.fetchOne('zone')
+            if (isStale()) return
+            this.pruneZoneByCloudregion()
+          }
+        }
+        return
+      }
+
+      if (changedKey === 'cloudregion' && fetchNames.includes('zone')) {
+        const cloudregions = this.toArray(this.FC.getFieldValue('cloudregion'))
+        if (!cloudregions.length) {
+          this.FC.setFieldsValue({ zone: this.emptyFieldValue('zone') })
+        } else {
+          await this.fetchOne('zone')
+          if (isStale()) return
+          this.pruneZoneByCloudregion()
+        }
+      }
+    },
+    async refetchDownstreamOnly (fetchNames = []) {
+      ++this.changeSeq
+      await this.fetchListsOnly(fetchNames, { skipDefaultSelect: true })
     },
     async fetchs (fetchNames = this.names) {
       await this.resetSelect(fetchNames)
