@@ -32,6 +32,7 @@ import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 import Detail from './Detail'
 import InstancesList from './InstancesList'
+import AiproxyAccessPanel from './AiproxyAccessPanel'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
@@ -40,6 +41,7 @@ export default {
   components: {
     Detail,
     InstancesList,
+    AiproxyAccessPanel,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -47,6 +49,7 @@ export default {
     return {
       detailTabs: [
         { label: this.$t('common_386'), key: 'detail' },
+        { label: this.$t('aice.llm_deployment.aiproxy_access'), key: 'aiproxy-access-panel' },
         { label: this.$t('aice.llm_deployment.instances'), key: 'instances-list' },
         { label: this.$t('aice.event'), key: 'event-drawer' },
       ],

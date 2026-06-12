@@ -1371,7 +1371,12 @@
       "deleting": "削除中",
       "deleted": "削除済み",
       "delete_fail": "削除に失敗しました",
-      "delete_failed": "削除に失敗しました"
+      "delete_failed": "削除に失敗しました",
+      "syncing": "レプリカ同期中",
+      "aiproxy_pending": "ゲートウェイ同期待ち",
+      "aiproxy_syncing": "ゲートウェイ同期中",
+      "aiproxy_partial": "ゲートウェイ一部同期",
+      "aiproxy_sync_failed": "ゲートウェイ同期失敗"
     },
     "llmSku": {
       "unknown": "不明",

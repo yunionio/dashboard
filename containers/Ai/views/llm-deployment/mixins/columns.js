@@ -25,7 +25,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'llmDeployment' }),
-      getLLMSkuTableColumn(),
+      getLLMSkuTableColumn({ vm: this }),
       getBackendTableColumn(),
       getReplicasTableColumn(),
       getPlacementStrategyTableColumn(),
