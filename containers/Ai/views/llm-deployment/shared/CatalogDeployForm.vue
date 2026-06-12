@@ -11,7 +11,10 @@
     <a-form-model-item :label="$t('common.name')" prop="name">
       <a-input
         v-model="deployForm.name"
-        :placeholder="$t('common.tips.input', [$t('common.name')])" />
+        :placeholder="$t('validator.resourceName')" />
+      <template v-slot:extra>
+        <name-repeated res="llm_deployments" :name="deployForm.name" />
+      </template>
     </a-form-model-item>
     <a-form-model-item :label="$t('aice.llm_image')" prop="llm_image_id">
       <llm-image-select
@@ -50,12 +53,14 @@
 
 <script>
 import LlmImageSelect from '@Ai/sections/LlmImageSelect'
+import NameRepeated from '@/sections/NameRepeated'
 import { getParamsForType } from '@Ai/views/llm-sku/constants/llmTypeConfig'
 
 export default {
   name: 'CatalogDeployForm',
   components: {
     LlmImageSelect,
+    NameRepeated,
   },
   props: {
     deployForm: {
@@ -70,7 +75,10 @@ export default {
   computed: {
     deployRules () {
       return {
-        name: [{ required: true, message: this.$t('common.tips.input', [this.$t('common.name')]) }],
+        name: [
+          { required: true, message: this.$t('common.tips.input', [this.$t('common.name')]) },
+          { validator: this.$validate('resourceName') },
+        ],
         llm_image_id: [{ required: true, message: this.$t('common.tips.select', [this.$t('aice.llm_image')]) }],
         network: [{ required: true, message: this.$t('common.tips.select', [this.$t('compute.text_104')]) }],
         devices: [{

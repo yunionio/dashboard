@@ -17,13 +17,32 @@ export const getBackendTableColumn = () => ({
   width: 100,
 })
 
-export const getLLMSkuTableColumn = () => ({
-  field: 'llm_sku',
-  title: i18n.t('aice.llm_sku'),
-  showOverflow: 'title',
-  minWidth: 120,
-  formatter: ({ row }) => row.llm_sku || row.llm_sku_id || '-',
-})
+export const getLLMSkuTableColumn = ({ vm } = {}) => {
+  const column = {
+    field: 'llm_sku',
+    title: i18n.t('aice.llm_sku'),
+    showOverflow: 'title',
+    minWidth: 120,
+    formatter: ({ row }) => {
+      if (!row.llm_sku_id) return '-'
+      return row.llm_sku || row.llm_sku_id
+    },
+  }
+  if (vm) {
+    column.slots = {
+      default: ({ row }, h) => {
+        if (!row.llm_sku_id) return '-'
+        const text = row.llm_sku || row.llm_sku_id
+        return [
+          <list-body-cell-wrap copy hideField={true} field="llm_sku" row={row} message={text}>
+            <side-page-trigger permission="llm_skus_get" name="LlmSkuSidePage" id={row.llm_sku_id} vm={vm}>{text}</side-page-trigger>
+          </list-body-cell-wrap>,
+        ]
+      },
+    }
+  }
+  return column
+}
 
 export const getPlacementStrategyTableColumn = () => ({
   field: 'placement_strategy',
