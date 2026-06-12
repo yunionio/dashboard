@@ -21,6 +21,18 @@ const LlmDeploymentDeployFromHuggingFace = () => import(/* webpackChunkName: "k8
 const AppLlm = () => import(/* webpackChunkName: "k8s" */ '@Application/views/app-llm')
 const AppLlmSku = () => import(/* webpackChunkName: "k8s" */ '@Application/views/app-llm-sku')
 const AgentLlmImage = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/agent-llm-image')
+const AiVirtualKey = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/ai-virtual-key')
+const AiVirtualKeyCreate = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/ai-virtual-key/create')
+const AiRouting = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/ai-routing')
+const AiRoutingCreate = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/ai-routing/create')
+const AiProvider = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/ai-provider')
+const AiProviderCreate = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/ai-provider/create')
+const AiModel = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/ai-model')
+const AiModelCreate = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/ai-model/create')
+const AiKey = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/ai-key')
+const AiKeyCreate = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/ai-key/create')
+const AiProxyNode = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/ai-proxy-node')
+const AiProxyNodeCreate = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/ai-proxy-node/create')
 export default {
   index: 61,
   meta: {
@@ -266,6 +278,116 @@ export default {
               path: 'import-community',
               component: LlmImageImportCommunity,
             },
+          ],
+        },
+      ],
+    },
+    // 人工智能-AI 网关
+    {
+      meta: {
+        label: i18n.t('aice.aiproxy'),
+      },
+      submenus: [
+        {
+          path: '/ai-virtual-key',
+          meta: {
+            label: i18n.t('aice.aiproxy.virtual_key'),
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.ai_virtual_key')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            { name: 'AiVirtualKeyList', path: '', component: AiVirtualKey },
+            { name: 'AiVirtualKeyCreate', path: 'create', component: AiVirtualKeyCreate },
+          ],
+        },
+        {
+          path: '/ai-routing',
+          meta: {
+            label: i18n.t('aice.aiproxy.routing'),
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.ai_routing')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            { name: 'AiRoutingList', path: '', component: AiRouting },
+            { name: 'AiRoutingCreate', path: 'create', component: AiRoutingCreate },
+          ],
+        },
+        {
+          path: '/ai-provider',
+          meta: {
+            label: i18n.t('aice.aiproxy.provider'),
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.ai_provider')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            { name: 'AiProviderList', path: '', component: AiProvider },
+            { name: 'AiProviderCreate', path: 'create', component: AiProviderCreate },
+          ],
+        },
+        {
+          path: '/ai-model',
+          meta: {
+            label: i18n.t('aice.aiproxy.model'),
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.ai_model')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            { name: 'AiModelList', path: '', component: AiModel },
+            { name: 'AiModelCreate', path: 'create', component: AiModelCreate },
+          ],
+        },
+        {
+          path: '/ai-key',
+          meta: {
+            label: i18n.t('aice.aiproxy.api_key'),
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.ai_key')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            { name: 'AiKeyList', path: '', component: AiKey },
+            { name: 'AiKeyCreate', path: 'create', component: AiKeyCreate },
+          ],
+        },
+        {
+          path: '/ai-proxy-node',
+          meta: {
+            label: i18n.t('aice.aiproxy.proxy_node'),
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.ai_proxy_node')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            { name: 'AiProxyNodeList', path: '', component: AiProxyNode },
+            { name: 'AiProxyNodeCreate', path: 'create', component: AiProxyNodeCreate },
           ],
         },
       ],
