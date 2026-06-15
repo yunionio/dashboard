@@ -26,18 +26,23 @@
                 :get-popup-container="getTooltipContainer">
                 <span class="regional-availability-region-name">{{ region || '-' }}</span>
               </a-tooltip>
-              <a-tooltip
-                v-if="zone && !hiddenZone"
-                :title="currentZoneTooltip || null"
-                placement="top"
-                :get-popup-container="getTooltipContainer">
-                <span class="regional-availability-zone-item is-current">
+              <div v-if="!hiddenZone && currentRegionZones.length" class="regional-availability-zone-list">
+                <a-tooltip
+                  v-for="zoneItem in currentRegionZones"
+                  :key="zoneItem.zone_id || zoneItem.zone"
+                  :title="getAvailabilityTooltip('zone', zoneItem) || null"
+                  placement="top"
+                  :get-popup-container="getTooltipContainer">
                   <span
-                    class="regional-availability-indicator status-dot"
-                    :class="isCurrentZoneAvailable ? 'status-success' : 'status-danger'" />
-                  {{ formatZoneName(zone) }}
-                </span>
-              </a-tooltip>
+                    class="regional-availability-zone-item"
+                    :class="{ 'is-current': zoneItem.zone === zone }">
+                    <span
+                      class="regional-availability-indicator status-dot"
+                      :class="isZoneAvailable(zoneItem) ? 'status-success' : 'status-danger'" />
+                    {{ formatZoneName(zoneItem.zone) }}
+                  </span>
+                </a-tooltip>
+              </div>
             </div>
             <!-- 其他区域和可用区 -->
             <template v-if="otherRegions.length">
@@ -142,21 +147,47 @@ export default {
     hasTriggerContent () {
       return (this.region && !this.hiddenRegion) || (this.zone && !this.hiddenZone)
     },
+    currentRegionItem () {
+      if (!Array.isArray(this.regionalAvailability) || !this.region) return null
+      return this.regionalAvailability.find(item => item.cloudregion === this.region) || null
+    },
+    currentRegionZones () {
+      const item = this.currentRegionItem
+      if (item && Array.isArray(item.zones) && item.zones.length) {
+        return item.zones
+      }
+      if (this.zone && this.skuData && Object.keys(this.skuData).length) {
+        return [this.skuData]
+      }
+      if (this.zone) {
+        return [{ zone: this.zone }]
+      }
+      return []
+    },
     currentSkuRegionItem () {
+      const item = this.currentRegionItem
+      if (item) {
+        if (this.isRegionOnlyItem(item)) {
+          return {
+            cloudregion: item.cloudregion,
+            prepaid_status: item.prepaid_status,
+            postpaid_status: item.postpaid_status,
+            zones: [],
+          }
+        }
+        return {
+          cloudregion: item.cloudregion,
+          zones: item.zones || [],
+        }
+      }
       if (!this.skuData || !Object.keys(this.skuData).length) return null
       return { cloudregion: this.region, zones: [this.skuData] }
     },
     isCurrentRegionAvailable () {
       return this.isRegionAvailable(this.currentSkuRegionItem)
     },
-    isCurrentZoneAvailable () {
-      return this.isZoneAvailable(this.skuData)
-    },
     currentRegionTooltip () {
       return this.getAvailabilityTooltip('region', this.currentSkuRegionItem)
-    },
-    currentZoneTooltip () {
-      return this.getAvailabilityTooltip('zone', this.skuData)
     },
     isRegionOnlyData () {
       if (!Array.isArray(this.regionalAvailability) || !this.regionalAvailability.length) return false
@@ -381,6 +412,9 @@ export default {
     }
     &.is-current {
       margin-left: 8px;
+      padding: 0 6px;
+      background-color: #e6f4ff;
+      border-radius: 2px;
     }
   }
   .regional-availability-current {
