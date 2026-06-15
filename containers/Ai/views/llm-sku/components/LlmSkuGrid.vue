@@ -84,6 +84,12 @@
               :title="mountedModelText(item)">
               {{ $t('aice.model') }}：{{ mountedModelText(item) }}
             </div>
+            <div
+              v-if="!isApplyType && !isDesktopType && inferenceModelText(item)"
+              class="meta-row meta-ellipsis"
+              :title="inferenceModelText(item)">
+              {{ $t('aice.model') }}：{{ inferenceModelText(item) }}
+            </div>
             <div v-if="item.description" class="catalog-desc">{{ shortDesc(item.description) }}</div>
             <div v-if="item.tenant || domainName(item)" class="meta-row meta-scope" @click.stop>
               <list-body-cell-wrap
@@ -126,6 +132,7 @@ import { sizestr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
 import Actions from '@/components/PageList/Actions'
 import Status from '@/components/Status'
+import { getSkuModelDisplayText } from '../utils/modelDisplay'
 import { LLM_TYPE_OPTIONS } from '../constants/llmTypeConfig'
 
 const INFERENCE_LLM_TYPES = ['vllm', 'ollama', 'sglang']
@@ -249,6 +256,9 @@ export default {
       const list = item.mounted_model_details || []
       if (!list.length) return ''
       return list.map(v => v.fullname).join(', ')
+    },
+    inferenceModelText (item) {
+      return getSkuModelDisplayText(item)
     },
     shortDesc (s) {
       if (!s) return ''

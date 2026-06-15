@@ -84,6 +84,7 @@ import {
   getCatalogSpecId,
   isCatalogInferenceBackend,
 } from '@Ai/utils/catalogSpec'
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 
 export default {
   name: 'LlmSkuImportFromModelSets',
@@ -100,6 +101,9 @@ export default {
     }
   },
   computed: {
+    llmRouteCtx () {
+      return parseLlmRoute(this.$route.path)
+    },
     headerTitle () {
       return this.$t('aice.import_model') + ' - ' + this.$t('aice.llm_sku')
     },
@@ -143,7 +147,7 @@ export default {
     },
     onImportSuccess () {
       this.clearSet()
-      this.$router.push('/llm-sku')
+      this.$router.push(this.llmRouteCtx.skuListPath)
     },
   },
 }

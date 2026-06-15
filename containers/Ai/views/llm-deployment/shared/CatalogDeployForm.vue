@@ -36,9 +36,6 @@
         {{ $t('aice.llm_deployment.create.devices.help') }}
       </div>
     </a-form-model-item>
-    <a-form-model-item :label="$t('aice.llm_deployment.replicas')">
-      <a-input-number v-model="deployForm.replicas" :min="1" :max="100" />
-    </a-form-model-item>
     <a-form-model-item label="CPU">
       <a-input-number v-model="deployForm.cpu" :min="1" :max="128" />
     </a-form-model-item>
