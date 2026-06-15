@@ -112,8 +112,6 @@ export default {
     },
     isPublic () {
       const noSupportBrand = [
-        typeClouds.hypervisorMap.ucloud.brand,
-        typeClouds.hypervisorMap.rockbase.brand,
         typeClouds.hypervisorMap.ctyun.brand,
       ]
       return (findPlatform(this.params.data[0].hypervisor) === SERVER_TYPE.public && !noSupportBrand.includes(this.params.data[0].brand))
