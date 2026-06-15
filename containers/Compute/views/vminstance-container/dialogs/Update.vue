@@ -24,7 +24,8 @@
               :placeholder="$t('common.tips.input', [$t('compute.repo.container_image')])" />
           </a-form-item>
           <a-form-item v-else :label="$t('compute.repo.container_image')">
-            <mirror-registry v-decorator="decorators.registryImage" />
+            <mirror-registry v-decorator="decorators.registryImage" @credential-change="handleCredentialChange" />
+            <a-input v-show="false" v-decorator="decorators.imageCredentialId" />
           </a-form-item>
           <a-form-item :label="$t('compute.repo.command')">
             <a-input v-decorator="decorators.command" :placeholder="$t('compute.repo.command.placeholder')" />
@@ -130,6 +131,12 @@ export default {
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('compute.eci.repo.image.registry')]) },
             ],
+          },
+        ],
+        imageCredentialId: [
+          'imageCredentialId',
+          {
+            initialValue: specData.image_credential_id,
           },
         ],
         image: [
@@ -252,6 +259,11 @@ export default {
     handleSourceChange (e) {
       this.source = e.target.value
     },
+    handleCredentialChange (credentialId) {
+      this.form.fc.setFieldsValue({
+        imageCredentialId: credentialId,
+      })
+    },
     async doSubmit (values) {
       const { id, spec } = this.params.data[0]
       const getEnvs = (names, values) => {
@@ -267,9 +279,17 @@ export default {
         ...spec,
       }
       if (this.editMode === 'custom') {
-        const { image, registryImage, command, arg, envNames, envValues, privileged, capAdd, capDrop } = values
-        if (image || registryImage) {
-          specData.image = image || registryImage
+        const { image, registryImage, imageCredentialId, command, arg, envNames, envValues, privileged, capAdd, capDrop } = values
+        if (this.source === 'registry' && registryImage) {
+          specData.image = registryImage
+          if (imageCredentialId) {
+            specData.image_credential_id = imageCredentialId
+          } else {
+            delete specData.image_credential_id
+          }
+        } else if (image) {
+          specData.image = image
+          delete specData.image_credential_id
         }
         if (command) {
           specData.command = command.split(' ')
