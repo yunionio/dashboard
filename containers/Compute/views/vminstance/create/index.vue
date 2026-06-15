@@ -88,8 +88,10 @@ export default {
       this.$router.push({
         path: this.$router.history.current.path,
         query: {
+          ...this.$route.query,
           type: this.routerQuery,
         },
+        params: this.$route.params,
       })
     }
   },

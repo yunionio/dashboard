@@ -88,6 +88,67 @@ export function diskValidator (rule, value, callback) {
   callback()
 }
 
+/** 将字符串/数组/对象形式的 zone 规范为 id 数组 */
+export function normalizePreferZonesFromRaw (value) {
+  const zones = []
+  if (R.is(String, value) && value) {
+    zones.push(value)
+  } else if (Array.isArray(value)) {
+    value.forEach((v) => {
+      if (R.is(String, v) && v) {
+        zones.push(v)
+      } else if (R.is(Object, v) && v.key) {
+        zones.push(v.key)
+      }
+    })
+  } else if (R.is(Object, value) && value.key) {
+    zones.push(value.key)
+  }
+  return zones
+}
+
+/** initData 优先 prefer_zones，其次 prefer_zone，再次 prefer_zone_id */
+export function getInitPreferZonesRaw (initData = {}) {
+  if (initData.prefer_zones !== undefined && initData.prefer_zones !== null) {
+    const zones = normalizePreferZonesFromRaw(initData.prefer_zones)
+    if (zones.length) {
+      return initData.prefer_zones
+    }
+  }
+  if (initData.prefer_zone !== undefined && initData.prefer_zone !== null) {
+    return initData.prefer_zone
+  }
+  if (initData.prefer_zone_id !== undefined && initData.prefer_zone_id !== null && initData.prefer_zone_id !== '') {
+    return initData.prefer_zone_id
+  }
+  return undefined
+}
+
+/** 初始化回填：非公有云为字符串，公有云为数组 */
+export function resolveInitPreferZone (initData = {}, isPublic) {
+  const zones = normalizePreferZonesFromRaw(getInitPreferZonesRaw(initData))
+  if (isPublic) {
+    return zones
+  }
+  return zones[0] || ''
+}
+
+/** 仅从表单解析 prefer_zones，不从 sku 解析 */
+export function parsePreferZonesFromForm (zone) {
+  return normalizePreferZonesFromRaw(zone)
+}
+
+/** 从提交/工单参数解析 prefer zones（兼容 prefer_zones / prefer_zone / prefer_zone_id） */
+export function getPreferZonesFromParam (params = {}) {
+  return normalizePreferZonesFromRaw(getInitPreferZonesRaw(params))
+}
+
+/** 从提交/工单参数解析 prefer zone（兼容 prefer_zones / prefer_zone / prefer_zone_id，取首项） */
+export function getPreferZoneFromParam (params = {}) {
+  const zones = getPreferZonesFromParam(params)
+  return zones[0] || ''
+}
+
 export const createVmDecorators = (type, initData = {}) => {
   let imageTypeInitValue = IMAGES_TYPE_MAP.standard.key
   if (type === SERVER_TYPE.public) {
@@ -237,7 +298,7 @@ export const createVmDecorators = (type, initData = {}) => {
       zone: [
         'zone',
         {
-          initialValue: { key: initData.prefer_zone || '', label: '' },
+          initialValue: { key: resolveInitPreferZone(initData, false), label: '' },
           rules: [
             { validator: isRequired(), message: i18n.t('compute.text_213') },
           ],
@@ -1579,24 +1640,24 @@ export class GenCreateData {
   }
 
   /**
-   * 获取Zone
+   * 获取 prefer_zones（仅从表单解析）
+   *
+   * @returns { Array<String> }
+   * @memberof GenCreateData
+   */
+  getPreferZones () {
+    return parsePreferZonesFromForm(this.fd.zone)
+  }
+
+  /**
+   * 获取Zone（兼容单 zone 场景，取 prefer_zones 首项）
    *
    * @returns { String }
    * @memberof GenCreateData
    */
   getPreferZone () {
-    let ret = ''
-    if (R.is(Object, this.fd.zone)) {
-      ret = this.fd.zone.key
-    } else if (R.is(String, this.fd.zone)) { // 字符串形式是公有云 AreaSelect 的 zone
-      ret = this.fd.zone
-    } else if (Array.isArray(this.fd.zone) && this.fd.zone.length) {
-      ret = this.fd.zone[0]
-    }
-    if (!ret && this.isPublic && !this.isPrepaid && R.is(Object, this.fd.sku)) {
-      ret = this.fd.sku.zone_id || ''
-    }
-    return ret
+    const zones = this.getPreferZones()
+    return zones[0] || ''
   }
 
   /**
@@ -1738,9 +1799,9 @@ export class GenCreateData {
       data.prefer_backup_host = this.fd.backup
     }
     // zone
-    const zoneId = this.getPreferZone()
-    if (zoneId) {
-      data.prefer_zone = zoneId
+    const preferZones = this.getPreferZones()
+    if (preferZones.length) {
+      data.prefer_zones = preferZones
     }
     const prefer_manager_id = this.getPreferManagerId()
     if (prefer_manager_id) {

@@ -249,6 +249,7 @@
 import * as R from 'ramda'
 import Bill from '@Compute/sections/Bill'
 import { LOGIN_TYPES_MAP, BILL_TYPES_MAP } from '@Compute/constants'
+import { resolveInitPreferZone } from '@Compute/utils/createServer'
 import EipConfig from '@Compute/sections/EipConfig'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import RegionMap from '@Compute/sections/RegionMap'
@@ -432,7 +433,7 @@ export default {
       return params
     },
     zoneParams () {
-      const params = {
+      return {
         cloud_env: 'public',
         usable: true,
         show_emulated: true,
@@ -440,11 +441,6 @@ export default {
         order: 'asc',
         ...this.scopeParams,
       }
-      const regionIds = this.cloudregions
-      if (regionIds.length) {
-        params.filter = `cloudregion_id.in(${regionIds.join(',')})`
-      }
-      return params
     },
     imageParams () {
       const params = {}
@@ -499,12 +495,12 @@ export default {
         ...this.scopeParams,
       }
       const regionIds = this.cloudregions
-      this.applySkuRegionFilter(params, regionIds)
+      if (regionIds.length) {
+        params.cloudregion_id = regionIds
+      }
       const zoneValues = this.normalizeAreaValues(this.form.fd.zone)
-      if (zoneValues.length === 1) {
-        params.zone_id = zoneValues[0]
-      } else if (zoneValues.length > 1) {
-        this.appendSkuFilter(params, `zone_id.in(${zoneValues.join(',')})`)
+      if (zoneValues.length) {
+        params.zone_ids = zoneValues
       }
       const providerValues = this.providers
       if (providerValues.length === 1) {
@@ -718,14 +714,6 @@ export default {
       if (normalizedSelected.length) return normalizedSelected
       return normalizedScope
     },
-    applySkuRegionFilter (params, regionIds = []) {
-      if (!regionIds.length) return
-      if (regionIds.length === 1) {
-        params.cloudregion = regionIds[0]
-        return
-      }
-      this.appendSkuFilter(params, `cloudregion_id.in(${regionIds.join(',')})`)
-    },
     applyInstanceSpecProviderFilter (params, providerValues = []) {
       if (!providerValues.length) return
       if (providerValues.length === 1) {
@@ -850,17 +838,45 @@ export default {
         return regionFilter.has(regionId)
       })
     },
+    toAreaValue (value) {
+      if (value === undefined || value === null) return []
+      return Array.isArray(value) ? value : [value]
+    },
+    matchProviderFromList (list, hypervisor) {
+      const hvKey = String(hypervisor || '').toLowerCase()
+      const hvObj = HYPERVISORS_MAP[hvKey]
+      if (!hvObj || !list?.length) return null
+      const hvProvider = String(hvObj.provider || '').toLowerCase()
+      return list.find(item => {
+        const name = String(item.name || '').toLowerCase()
+        const provider = String(item.provider || '').toLowerCase()
+        return name === hvKey || name === hvProvider || provider === hvKey || provider === hvProvider
+      }) || null
+    },
+    async applyInitPublicAreaFields (providerName, { skipRefetch = false } = {}) {
+      if (!this.isInitForm || !providerName) return
+      const region = this.toAreaValue(this.initFormData.prefer_region)
+      const zone = this.toAreaValue(resolveInitPreferZone(this.initFormData, true))
+      this.form.fc.setFieldsValue({
+        provider: this.toAreaValue(providerName),
+        cloudregion: region,
+        zone,
+        cloudprovider: this.initFormData.prefer_manager_id,
+      })
+      if (skipRefetch) return
+      const areaRef = this.$refs.areaSelectRef
+      if (!areaRef) return
+      await this.$nextTick()
+      await areaRef.refetchDownstreamOnly(['cloudregion', 'zone'])
+      this.form.fc.setFieldsValue({ cloudregion: region, zone })
+    },
     providerFetchSuccess (list) {
-      const toAreaValue = (value) => {
-        if (value === undefined || value === null) return []
-        return Array.isArray(value) ? value : [value]
-      }
       // 计费方式为包年包月平台不含 azure、aws、google
       if (this.form.fd.billType === BILL_TYPES_MAP.package.key) {
         if (this.form.fd.duration === '1W') {
           list = list.filter(item => HYPERVISORS_MAP.aliyun.key === item.name)
           this.form.fc.setFieldsValue({
-            provider: toAreaValue(HYPERVISORS_MAP.aliyun.kkkey),
+            provider: this.toAreaValue(HYPERVISORS_MAP.aliyun.key),
           })
         } else {
           list = list.filter(item => {
@@ -876,19 +892,9 @@ export default {
         list = this.filterProviderListByMap(list)
       }
       // 回填
-      const hvKey = String(this.initFormData.hypervisor || '').toLowerCase()
-      const hvObj = HYPERVISORS_MAP[hvKey]
-      const matched = hvObj ? list.find(item => item.name === hvObj.key) : null
-      if (this.isInitForm && matched) {
-        this.form.fc.setFieldsValue({
-          provider: toAreaValue(matched.name),
-          cloudregion: toAreaValue(this.initFormData.prefer_region),
-          zone: toAreaValue(this.initFormData.prefer_zone),
-          cloudprovider: this.initFormData.prefer_manager_id,
-        })
-        this.$nextTick(() => {
-          this.$refs.areaSelectRef?.fetchs(['cloudregion', 'zone'])
-        })
+      const matched = this.matchProviderFromList(list, this.initFormData.hypervisor)
+      if (matched) {
+        this.applyInitPublicAreaFields(matched.name)
       }
       this.$set(this.form.fi, 'providerList', list)
       return list
