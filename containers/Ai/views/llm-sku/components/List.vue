@@ -85,13 +85,13 @@ export default {
             {
               label: this.$t('aice.llm_deployment.deploy.from_catalog'),
               action: () => {
-                this.$router.push({ path: '/llm-sku/import-from-model-sets' })
+                this.$router.push({ path: this.llmRouteCtx.skuImportFromModelSetsPath })
               },
             },
             {
               label: this.$t('aice.llm_deployment.deploy.from_huggingface'),
               action: () => {
-                this.$router.push({ path: '/llm-sku/import-from-huggingface' })
+                this.$router.push({ path: this.llmRouteCtx.skuImportFromHuggingfacePath })
               },
             },
           ],
@@ -99,9 +99,18 @@ export default {
             buttonType: 'primary',
             validate: true,
           }),
-          hidden: () => {
-            return this.isApplyType || this.isDesktopType
+          hidden: () => !this.llmRouteCtx.isInferenceType,
+        },
+        {
+          label: this.$t('aice.import'),
+          action: () => {
+            this.$router.push({ path: this.llmRouteCtx.skuImportFromCommunityPath })
           },
+          meta: () => ({
+            buttonType: 'primary',
+            validate: true,
+          }),
+          hidden: () => !(this.isApplyType || this.isDesktopType),
         },
         {
           label: this.$t('table.action.delete'),

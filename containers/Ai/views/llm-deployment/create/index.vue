@@ -143,24 +143,11 @@
 
         <a-divider orientation="left">{{ $t('aice.llm_deployment.create.deployment') }}</a-divider>
 
-        <a-form-item :label="$t('aice.llm_deployment.replicas')">
-          <a-input-number v-decorator="decorators.replicas" :min="1" :max="100" />
-        </a-form-item>
         <a-form-item :label="$t('aice.llm_deployment.placement_strategy')">
           <a-radio-group v-decorator="decorators.placement_strategy">
             <a-radio value="spread">{{ $t('aice.llm_deployment.placement_strategy.spread') }}</a-radio>
             <a-radio value="binpack">{{ $t('aice.llm_deployment.placement_strategy.binpack') }}</a-radio>
           </a-radio-group>
-        </a-form-item>
-        <a-form-item :label="$t('aice.llm_deployment.access_policy')">
-          <a-select v-decorator="decorators.access_policy">
-            <a-select-option value="authed">{{ $t('aice.llm_deployment.access_policy.authed') }}</a-select-option>
-            <a-select-option value="public">{{ $t('aice.llm_deployment.access_policy.public') }}</a-select-option>
-            <a-select-option value="allowed_users">{{ $t('aice.llm_deployment.access_policy.allowed_users') }}</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item :label="$t('aice.llm_deployment.auto_start')">
-          <a-switch v-decorator="decorators.auto_start" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_104')" class="mb-0">
           <server-network
@@ -174,99 +161,6 @@
             :hiddenAdd="true"
             :isDialog="true" />
         </a-form-item>
-        <a-form-item :label="$t('aice.host_paths')" :extra="$t('aice.host_paths.extra')">
-            <div v-for="hp in hostPathRows" :key="hp.key" style="display: flex; align-items: stretch; gap: 10px; margin-bottom: 12px;">
-              <div style="flex: 1; border: 1px solid #e8e8e8; border-radius: 4px; padding: 12px;">
-                <a-row :gutter="8">
-                  <a-col :span="8">
-                    <a-form-item>
-                      <fixed-label-filter :label="$t('aice.host_paths.type')">
-                        <a-select v-decorator="decoratorsHostPaths.type(hp.key)" :placeholder="$t('common.tips.select', [$t('aice.host_paths.type')])">
-                          <a-select-option value="directory">directory</a-select-option>
-                          <a-select-option value="file">file</a-select-option>
-                        </a-select>
-                      </fixed-label-filter>
-                    </a-form-item>
-                  </a-col>
-                  <a-col :span="16">
-                    <a-form-item>
-                      <fixed-label-filter :label="$t('aice.host_paths.path')">
-                        <a-input v-decorator="decoratorsHostPaths.path(hp.key)" :placeholder="$t('aice.host_paths.path.placeholder')" />
-                      </fixed-label-filter>
-                    </a-form-item>
-                  </a-col>
-                </a-row>
-                <a-row :gutter="8">
-                  <a-col :span="24">
-                    <a-form-item>
-                      <a-checkbox v-decorator="decoratorsHostPaths.auto_create(hp.key)">{{ $t('aice.host_paths.auto_create') }}</a-checkbox>
-                    </a-form-item>
-                  </a-col>
-                </a-row>
-                <a-row :gutter="8" v-if="form.fd[`host_path_auto_create_${hp.key}`]">
-                  <a-col :span="8">
-                    <a-form-item>
-                      <fixed-label-filter :label="$t('aice.host_paths.auto_create_config.uid')">
-                        <a-input v-decorator="decoratorsHostPaths.auto_uid(hp.key)" :placeholder="$t('aice.host_paths.auto_create_config.uid.placeholder')" />
-                      </fixed-label-filter>
-                    </a-form-item>
-                  </a-col>
-                  <a-col :span="8">
-                    <a-form-item>
-                      <fixed-label-filter :label="$t('aice.host_paths.auto_create_config.gid')">
-                        <a-input v-decorator="decoratorsHostPaths.auto_gid(hp.key)" :placeholder="$t('aice.host_paths.auto_create_config.gid.placeholder')" />
-                      </fixed-label-filter>
-                    </a-form-item>
-                  </a-col>
-                  <a-col :span="8">
-                    <a-form-item>
-                      <fixed-label-filter :label="$t('aice.host_paths.permissions')">
-                        <a-input v-decorator="decoratorsHostPaths.auto_perm(hp.key)" :placeholder="$t('aice.host_paths.permissions.placeholder')" />
-                      </fixed-label-filter>
-                    </a-form-item>
-                  </a-col>
-                </a-row>
-                <div style="margin: 8px 0; font-weight: 500;">{{ $t('aice.host_paths.containers') }}</div>
-                <div v-for="c in hp.containerRows" :key="c.key">
-                  <input type="hidden" v-decorator="decoratorsHostPaths.container_index(hp.key, c.key)" />
-                  <a-row :gutter="8">
-                    <a-col :span="12">
-                      <a-form-item>
-                        <fixed-label-filter :label="$t('aice.host_paths.mount_path')">
-                          <a-input v-decorator="decoratorsHostPaths.mount_path(hp.key, c.key)" :placeholder="$t('aice.host_paths.mount_path.placeholder')" />
-                        </fixed-label-filter>
-                      </a-form-item>
-                    </a-col>
-                    <a-col :span="12">
-                      <a-form-item>
-                        <fixed-label-filter :label="$t('aice.host_paths.propagation')">
-                          <a-select v-decorator="decoratorsHostPaths.propagation(hp.key, c.key)" :placeholder="$t('common.tips.select', [$t('aice.host_paths.propagation')])" optionLabelProp="label" :dropdownMatchSelectWidth="false">
-                            <a-select-option value="private" label="private">private - {{ $t('aice.host_paths.propagation.private') }}</a-select-option>
-                            <a-select-option value="rslave" label="rslave">rslave - {{ $t('aice.host_paths.propagation.rslave') }}</a-select-option>
-                            <a-select-option value="rshared" label="rshared">rshared - {{ $t('aice.host_paths.propagation.rshared') }}</a-select-option>
-                          </a-select>
-                        </fixed-label-filter>
-                      </a-form-item>
-                    </a-col>
-                  </a-row>
-                  <a-row :gutter="8">
-                    <a-col :span="4">
-                      <a-form-item>
-                        <a-checkbox v-decorator="decoratorsHostPaths.read_only(hp.key, c.key)">{{ $t('aice.host_paths.read_only') }}</a-checkbox>
-                      </a-form-item>
-                    </a-col>
-                  </a-row>
-                </div>
-              </div>
-              <div style="width: 34px; display: flex; align-items: center; justify-content: center;">
-                <a-button shape="circle" icon="minus" size="small" @click="delHostPath(hp)" />
-              </div>
-            </div>
-            <div class="d-flex align-items-center">
-              <a-button type="primary" shape="circle" icon="plus" size="small" @click="addHostPath" />
-              <a-button type="link" @click="addHostPath">{{ $t('aice.host_paths.add') }}</a-button>
-            </div>
-          </a-form-item>
       </a-form>
     </page-body>
     <page-footer>
@@ -303,7 +197,6 @@ export default {
     return {
       loading: false,
       portMappings,
-      hostPathRows: [],
       catalogContext: null,
       form: {
         fc: this.$form.createForm(this, {
@@ -318,7 +211,6 @@ export default {
           llm_type: defaultLlmType,
           import_model: false,
           model_source: '',
-          auto_start: true,
         },
         fi: {
           networkList: [],
@@ -364,13 +256,7 @@ export default {
         }],
         model_source: ['model_source', { initialValue: '' }],
         model_repo_id: ['model_repo_id', {}],
-        replicas: ['replicas', {
-          initialValue: 1,
-          rules: [{ required: true, message: this.$t('common.tips.input', [this.$t('aice.llm_deployment.replicas')]) }],
-        }],
         placement_strategy: ['placement_strategy', { initialValue: 'spread' }],
-        access_policy: ['access_policy', { initialValue: 'authed' }],
-        auto_start: ['auto_start', { valuePropName: 'checked', initialValue: true }],
         network: {
           networkType: ['networkType', { initialValue: NETWORK_OPTIONS_MAP.default.key }],
           networkConfig: {
@@ -413,22 +299,6 @@ export default {
           initialValue: getInitVal(portMappings, rowKey, 'container_port'),
           rules: [{ type: 'number', min: 1, max: 65535, message: this.$t('aice.container_port.message'), transform: v => v != null ? Number(v) : v }],
         }],
-      },
-      decoratorsHostPaths: {
-        type: rowKey => [`host_path_type_${rowKey}`, { initialValue: 'directory' }],
-        path: rowKey => [`host_path_path_${rowKey}`, {
-          rules: [{ required: true, message: this.$t('aice.host_paths.path.required') }],
-        }],
-        auto_create: rowKey => [`host_path_auto_create_${rowKey}`, { valuePropName: 'checked', initialValue: false }],
-        auto_uid: rowKey => [`host_path_auto_uid_${rowKey}`, {}],
-        auto_gid: rowKey => [`host_path_auto_gid_${rowKey}`, {}],
-        auto_perm: rowKey => [`host_path_auto_perm_${rowKey}`, {}],
-        container_index: (hpKey, cKey) => [`host_path_container_index_${hpKey}__${cKey}`, { initialValue: 0 }],
-        mount_path: (hpKey, cKey) => [`host_path_mount_path_${hpKey}__${cKey}`, {
-          rules: [{ required: true, message: this.$t('aice.host_paths.mount_path.required') }],
-        }],
-        read_only: (hpKey, cKey) => [`host_path_read_only_${hpKey}__${cKey}`, { valuePropName: 'checked', initialValue: false }],
-        propagation: (hpKey, cKey) => [`host_path_propagation_${hpKey}__${cKey}`, { initialValue: 'rslave' }],
       },
       manager: new Manager('llm_deployments'),
     }
@@ -597,48 +467,6 @@ export default {
     removePortMapping (idx) {
       this.portMappings.splice(idx, 1)
     },
-    addHostPath () {
-      this.hostPathRows.push({ key: uuid(), containerRows: [{ key: uuid() }] })
-    },
-    delHostPath (hp) {
-      const idx = this.hostPathRows.findIndex(v => v.key === hp.key)
-      if (idx >= 0) this.hostPathRows.splice(idx, 1)
-    },
-    buildHostPaths (values) {
-      return this.hostPathRows.map(hp => {
-        const hpKey = hp.key
-        const type = values[`host_path_type_${hpKey}`]
-        const path = values[`host_path_path_${hpKey}`]
-        const autoCreate = !!values[`host_path_auto_create_${hpKey}`]
-        const out = { type, path }
-        if (autoCreate) {
-          out.auto_create = true
-          const uid = values[`host_path_auto_uid_${hpKey}`]
-          const gid = values[`host_path_auto_gid_${hpKey}`]
-          const perm = values[`host_path_auto_perm_${hpKey}`]
-          const cfg = {}
-          if (uid !== undefined && uid !== null && uid !== '') cfg.uid = uid
-          if (gid !== undefined && gid !== null && gid !== '') cfg.gid = gid
-          if (perm != null && String(perm).trim() !== '') cfg.permissions = String(perm).trim()
-          if (Object.keys(cfg).length > 0) out.auto_create_config = cfg
-        }
-        const containers = {}
-        ;(hp.containerRows || []).forEach(c => {
-          const composite = `${hpKey}__${c.key}`
-          const idx = values[`host_path_container_index_${composite}`] ?? 0
-          const mountPath = values[`host_path_mount_path_${composite}`]
-          if (mountPath == null || String(mountPath).trim() === '') return
-          const k = String(idx).trim()
-          if (!k) return
-          const m = { mount_path: String(mountPath).trim(), read_only: !!values[`host_path_read_only_${composite}`] }
-          const prop = values[`host_path_propagation_${composite}`]
-          if (prop != null && String(prop).trim() !== '') m.propagation = String(prop).trim()
-          containers[k] = m
-        })
-        if (Object.keys(containers).length > 0) out.containers = containers
-        return out
-      }).filter(v => v && v.type && v.path)
-    },
     genNetworks (values) {
       const networkType = this.form.fd.networkType
       if (networkType === NETWORK_OPTIONS_MAP.manual.key) {
@@ -667,14 +495,12 @@ export default {
     buildPayload (values) {
       const payload = {
         name: values.name,
-        replicas: values.replicas,
+        replicas: 1,
         placement_strategy: values.placement_strategy,
-        access_policy: values.access_policy,
-        auto_start: !!values.auto_start,
+        access_policy: 'authed',
+        auto_start: true,
         nets: this.genNetworks(values),
       }
-      const host_paths = this.buildHostPaths(values)
-      if (host_paths.length > 0) payload.host_paths = host_paths
       if (values.mode === 'reuse') {
         payload.llm_sku_id = values.llm_sku_id
         return payload

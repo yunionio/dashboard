@@ -8,11 +8,11 @@ const LlmSku = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: tr
 const LlmSkuCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku/create/index')
 const LlmSkuImportFromModelSets = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku/import-from-model-sets')
 const LlmSkuImportFromHuggingFace = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku/import-from-huggingface')
+const LlmSkuImportFromCommunity = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku/import-from-community')
 const LlmInstantmodel = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-instantmodel')
 const LlmImage = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-image')
 const LlmInstantmodelImportFromCommunity = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-instantmodel/import-from-community')
 const LlmInstantmodelImportFromHuggingFace = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-instantmodel/import-from-huggingface')
-const LlmImageImportCommunity = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-image/import-community')
 const LlmCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm/create')
 const LlmDeployment = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-deployment')
 const LlmDeploymentCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-deployment/create')
@@ -82,6 +82,11 @@ export default {
               path: 'create',
               component: LlmSkuCreate,
             },
+            {
+              name: 'AppLlmSkuImportFromCommunity',
+              path: 'import-from-community',
+              component: LlmSkuImportFromCommunity,
+            },
           ],
         },
         {
@@ -102,11 +107,6 @@ export default {
               name: 'AgentLlmImageList',
               path: '',
               component: AgentLlmImage,
-            },
-            {
-              name: 'AgentLlmImageImportCommunity',
-              path: 'import-community',
-              component: LlmImageImportCommunity,
             },
           ],
         },
@@ -260,11 +260,6 @@ export default {
               name: 'LlmImageList',
               path: '',
               component: LlmImage,
-            },
-            {
-              name: 'LlmImageImportCommunity',
-              path: 'import-community',
-              component: LlmImageImportCommunity,
             },
           ],
         },
