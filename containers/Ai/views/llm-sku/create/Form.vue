@@ -426,6 +426,7 @@ export default {
     const isApplyType = llmRouteCtx.isApplyType
     const isDesktopType = llmRouteCtx.isDesktopType
     const catalogLlmTypeInit = this.catalogSpec ? backendToLlmType(this.catalogSpec.backend) : null
+    const catalogResourceDefaults = this.catalogSpec ? { cpu: 4, memory: 8192 } : null
     let llmTypeOptions
     if (isDesktopType) {
       llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => opt.id === 'desktop')
@@ -441,8 +442,8 @@ export default {
       tenant,
       name,
       llm_type: rowLlmType,
-      cpu = 2,
-      memory = 2048,
+      cpu = catalogResourceDefaults?.cpu ?? 2,
+      memory = catalogResourceDefaults?.memory ?? 2048,
       volume = { size: 10240, storage_type: 'local', template_id: undefined },
       image_id,
       envs = [],
@@ -985,6 +986,8 @@ export default {
       this.form.fc.setFieldsValue({
         llm_type: llmType,
         name: defaultNameFromSpec(this.catalogSpec, this.catalogSet),
+        cpu: 4,
+        memory: 8,
       })
       if (!this.isEditMode) {
         const next = getDefaultPortMappingsForType(llmType).map(item => ({ ...item, key: uuid() }))

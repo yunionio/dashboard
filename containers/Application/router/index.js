@@ -7,9 +7,9 @@ const AppDesktop = () => import(/* webpackChunkName: "application" */ '@Applicat
 const AppDesktopSku = () => import(/* webpackChunkName: "application" */ '@Application/views/app-desktop-sku')
 const AppDesktopImage = () => import(/* webpackChunkName: "application" */ '@Application/views/app-desktop-image')
 const AppLlmImageRedirect = () => import(/* webpackChunkName: "application" */ '@Application/views/app-llm-image-redirect')
-const LlmImageImportCommunity = () => import(/* webpackChunkName: "application" */ '@Ai/views/llm-image/import-community')
 const LlmCreate = () => import(/* webpackChunkName: "application" */ '@Ai/views/llm/create')
 const LlmSkuCreate = () => import(/* webpackChunkName: "application" */ '@Ai/views/llm-sku/create/index')
+const LlmSkuImportFromCommunity = () => import(/* webpackChunkName: "application" */ '@Ai/views/llm-sku/import-from-community')
 
 export default {
   index: 60.5,
@@ -71,6 +71,11 @@ export default {
               path: 'create',
               component: LlmSkuCreate,
             },
+            {
+              name: 'AppDesktopSkuImportFromCommunity',
+              path: 'import-from-community',
+              component: LlmSkuImportFromCommunity,
+            },
           ],
         },
         {
@@ -91,11 +96,6 @@ export default {
               name: 'AppDesktopImageList',
               path: '',
               component: AppDesktopImage,
-            },
-            {
-              name: 'AppDesktopImageImportCommunity',
-              path: 'import-community',
-              component: LlmImageImportCommunity,
             },
           ],
         },

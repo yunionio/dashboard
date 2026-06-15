@@ -1,5 +1,6 @@
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
+import { getSkuModelDisplayText } from './modelDisplay'
 
 export const getDeviceModelTableColumn = () => {
   return {
@@ -154,10 +155,8 @@ export const getLlmModelNameTableColumn = ({ vm = {} } = {}) => {
     field: 'mounted_models',
     title: i18n.t('aice.model'),
     formatter: ({ row }) => {
-      if (row.mounted_model_details && row.mounted_model_details.length) {
-        return row.mounted_model_details.map(v => v.fullname).join(',')
-      }
-      return '-'
+      const text = getSkuModelDisplayText(row)
+      return text || '-'
     },
     slots: {
       default: ({ row }, h) => {
@@ -171,6 +170,10 @@ export const getLlmModelNameTableColumn = ({ vm = {} } = {}) => {
             )
           })
           return ret
+        }
+        const text = getSkuModelDisplayText(row)
+        if (text) {
+          return [h('span', text)]
         }
         return '-'
       },

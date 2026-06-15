@@ -50,7 +50,7 @@ export function getDefaultPortMappingsForType (llmType) {
 /**
  * 社区镜像导入时自动创建 SKU 用的默认资源规格。
  * 字段单位与后端 LLMSkuCreateInput 一致：memory MB，volume size_mb，bandwidth Mbps。
- * dify 不在表里：单镜像导入无法构造完整 dify spec（需要 7 个 image id），跳过自动建 SKU。
+ * dify 单镜像导入无法构造完整 dify spec；bundle 导入由 yaml sku 块提供规格。
  * 取自 onecloud-operator pkg/apis/onecloud/v1alpha1/defaults.go 的 DefaultLLMSku。
  */
 export const LLM_TYPE_DEFAULT_SKU_SPEC = {

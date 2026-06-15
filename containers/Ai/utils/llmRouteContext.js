@@ -15,7 +15,6 @@ export function parseLlmImageRoute (path = '') {
     isAgentImageRoute,
     isInferenceImageRoute,
     imageListPath: isDesktopImageRoute ? '/app-desktop-image' : (isAgentImageRoute ? '/agent-llm-image' : '/llm-image'),
-    imageImportCommunityPath: isDesktopImageRoute ? '/app-desktop-image/import-community' : (isAgentImageRoute ? '/agent-llm-image/import-community' : '/llm-image/import-community'),
   }
 }
 
@@ -31,6 +30,12 @@ export function getLlmImageTypeFilter (path = '') {
 }
 
 export function getAllowedImageLlmTypes (path = '') {
+  if (path.includes('/app-llm-sku/import-from-community')) {
+    return [...APP_LLM_TYPES]
+  }
+  if (path.includes('/app-desktop-sku/import-from-community')) {
+    return [...DESKTOP_LLM_TYPES]
+  }
   const { isDesktopImageRoute, isAgentImageRoute } = parseLlmImageRoute(path)
   if (isDesktopImageRoute) {
     return [...DESKTOP_LLM_TYPES]
@@ -66,16 +71,24 @@ export function parseLlmRoute (path = '') {
   let instanceCreatePath = '/llm/create'
   let skuListPath = '/llm-sku'
   let skuCreatePath = '/llm-sku/create'
+  let skuImportFromCommunityPath = ''
+  let skuImportFromModelSetsPath = ''
+  let skuImportFromHuggingfacePath = ''
   if (isApplyType) {
     instanceListPath = '/app-llm'
     instanceCreatePath = '/app-llm/create'
     skuListPath = '/app-llm-sku'
     skuCreatePath = '/app-llm-sku/create'
+    skuImportFromCommunityPath = '/app-llm-sku/import-from-community'
   } else if (isDesktopType) {
     instanceListPath = '/app-desktop'
     instanceCreatePath = '/app-desktop/create'
     skuListPath = '/app-desktop-sku'
     skuCreatePath = '/app-desktop-sku/create'
+    skuImportFromCommunityPath = '/app-desktop-sku/import-from-community'
+  } else if (isInferenceType) {
+    skuImportFromModelSetsPath = '/llm-sku/import-from-model-sets'
+    skuImportFromHuggingfacePath = '/llm-sku/import-from-huggingface'
   }
 
   return {
@@ -87,6 +100,9 @@ export function parseLlmRoute (path = '') {
     instanceCreatePath,
     skuListPath,
     skuCreatePath,
+    skuImportFromCommunityPath,
+    skuImportFromModelSetsPath,
+    skuImportFromHuggingfacePath,
   }
 }
 
