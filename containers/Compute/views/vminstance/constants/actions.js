@@ -1436,8 +1436,6 @@ const getSingleActions = function (ctx) {
                     typeClouds.hypervisorMap.openstack?.brand,
                     typeClouds.hypervisorMap.zstack?.brand,
                     // typeClouds.hypervisorMap.dstack?.brand,
-                    typeClouds.hypervisorMap.ucloud?.brand,
-                    typeClouds.hypervisorMap.rockbase?.brand,
                     typeClouds.hypervisorMap.ctyun?.brand,
                     typeClouds.hypervisorMap.nutanix?.brand,
                     typeClouds.hypervisorMap.proxmox?.brand,
