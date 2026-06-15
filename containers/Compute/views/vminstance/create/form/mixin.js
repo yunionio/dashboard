@@ -8,7 +8,7 @@ import MemRadio from '@Compute/sections/MemRadio'
 import sku from '@Compute/sections/SKU'
 import gpu from '@Compute/sections/GPU/index'
 import pci from '@Compute/sections/PCI'
-import { Decorator, GenCreateData } from '@Compute/utils/createServer'
+import { Decorator, GenCreateData, resolveInitPreferZone } from '@Compute/utils/createServer'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import ServerAccount from '@Compute/sections/ServerAccount'
 import SchedPolicy from '@Compute/sections/SchedPolicy'
@@ -497,8 +497,10 @@ export default {
           this.form.fd.hypervisor = initData.hypervisor
         }
         try {
-          if (initData.prefer_zone) {
-            const { data: capabilityData } = await this.capability(initData.prefer_zone, initData)
+          const initPreferZone = resolveInitPreferZone(initData, this.type === 'public')
+          const preferZoneId = Array.isArray(initPreferZone) ? (initPreferZone[0] || '') : initPreferZone
+          if (preferZoneId) {
+            const { data: capabilityData } = await this.capability(preferZoneId, initData)
             this.form.fi.capability = capabilityData
           } else if (initData.prefer_region) {
             const { data: capabilityData } = await this.capability2(initData.prefer_region, initData)
@@ -655,7 +657,23 @@ export default {
     },
     refreshAreaSelects () {
       if (this.type !== 'public' || !this.$refs.areaSelectRef) return
-      this.$refs.areaSelectRef.fetchs(['provider', 'cloudregion', 'zone'])
+      const areaRef = this.$refs.areaSelectRef
+      if (this.isInitForm) {
+        areaRef.refetchDownstreamOnly(['provider', 'cloudregion', 'zone']).then(() => {
+          if (typeof this.applyInitPublicAreaFields !== 'function') return
+          let providerName = this.form.fc.getFieldValue('provider')
+          providerName = Array.isArray(providerName) ? providerName[0] : providerName
+          if (!providerName && this.initFormData?.hypervisor) {
+            const matched = this.matchProviderFromList?.(areaRef.providerList, this.initFormData.hypervisor)
+            providerName = matched?.name || this.initFormData.hypervisor
+          }
+          if (providerName) {
+            this.applyInitPublicAreaFields(providerName, { skipRefetch: true })
+          }
+        })
+        return
+      }
+      areaRef.fetchs(['provider', 'cloudregion', 'zone'])
     },
     clearPublicLocationFields (isMapMode = !!this.form.fd.enableWorldMap) {
       this.form.fc.setFieldsValue({
@@ -756,15 +774,22 @@ export default {
     async doCreateWorkflow (data) {
       const { workflow = '', order_set_id = '', order_set_idx = '' } = this.$route.query
       if (order_set_id && workflow) {
+        const idx = Number(order_set_idx)
         const res = await new this.$Manager('resource_order_sets').get({ id: order_set_id })
-        if (res.data && res.data.parameters && res.data.parameters[order_set_idx]) {
-          const parameters = [...res.data.parameters]
-          parameters[order_set_idx] = { ...res.data.parameters[order_set_idx], count: data.__count__, parameter: { ...data, price: this.price } }
-          await new this.$Manager('resource_order_sets').update({ id: order_set_id, data: { parameters } })
-          this.$message.success(this.$t('common.success'))
-          this.$router.push('/workflow')
-          return
+        const existing = res.data?.parameters?.[idx]
+        if (!existing) {
+          this.$message.error(this.$t('common.failed'))
+          throw new Error('resource order set item not found')
         }
+        const parameters = [...res.data.parameters]
+        parameters[idx] = {
+          ...existing,
+          count: data.__count__,
+          parameter: { ...data, price: this.price },
+        }
+        await new this.$Manager('resource_order_sets').update({ id: order_set_id, data: { parameters } })
+        this.$message.success(this.$t('common.success'))
+        this.$router.push('/workflow')
         return
       }
       const variables = {
@@ -776,26 +801,16 @@ export default {
       }
       this._getProjectDomainInfo(variables)
       if (workflow) {
-        new this.$Manager('historic-process-instances', 'v1')
+        await new this.$Manager('historic-process-instances', 'v1')
           .update({ id: `${workflow}/variables`, data: { variables } })
-          .then(() => {
-            this.$message.success(i18n.t('compute.text_1045', [data.generate_name]))
-            this.$router.push('/workflow')
-          })
-          .catch((error) => {
-            throw error
-          })
-      } else {
-        new this.$Manager('process-instances', 'v1')
-          .create({ data: { variables } })
-          .then(() => {
-            this.$message.success(i18n.t('compute.text_1045', [data.generate_name]))
-            this.$router.push('/workflow')
-          })
-          .catch((error) => {
-            throw error
-          })
+        this.$message.success(i18n.t('compute.text_1045', [data.generate_name]))
+        this.$router.push('/workflow')
+        return
       }
+      await new this.$Manager('process-instances', 'v1')
+        .create({ data: { variables } })
+      this.$message.success(i18n.t('compute.text_1045', [data.generate_name]))
+      this.$router.push('/workflow')
     },
     async checkCreateData (data) {
       return new this.$Manager('servers').create({ data: { ...data, dry_run: true } })
@@ -934,15 +949,26 @@ export default {
       }
     },
     fetchDomainCallback () {
-      const domain = this.$route.query.domain_id
+      let domain = this.$route.query.domain_id
+      if ((R.isNil(domain) || R.isEmpty(domain)) && this.isInitForm) {
+        domain = this.initFormData?.extraData?.domain_id
+      }
       if (!R.isNil(domain) && !R.isEmpty(domain)) {
         this.form.fc.setFieldsValue({
           domain: { key: domain },
         })
+        if (this.type === 'public') {
+          this.$nextTick(() => {
+            this.refreshAreaSelects()
+          })
+        }
       }
     },
     fetchProjectCallback () {
-      const project = this.$route.query.tenant_id
+      let project = this.$route.query.tenant_id
+      if ((R.isNil(project) || R.isEmpty(project)) && this.isInitForm) {
+        project = this.initFormData?.project_id
+      }
       if (!R.isNil(project) && !R.isEmpty(project)) {
         this.form.fc.setFieldsValue({
           project: { key: project },
