@@ -15,11 +15,12 @@ import {
   getMemoryTableColumn,
   getDiskTableColumn,
   getLlmTypeTableColumn,
+  getLlmModelNameTableColumn,
 } from '../utils/columns'
 
 export default {
   created () {
-    const { isApplyType, isDesktopType } = parseLlmRoute(this.$route.path)
+    const { isApplyType, isDesktopType, isInferenceType } = parseLlmRoute(this.$route.path)
     this.columns = [
       getNameDescriptionTableColumn({
         onManager: this.onManager,
@@ -36,6 +37,7 @@ export default {
       getDiskTableColumn(),
       getImageTableColumn({ vm: this }),
       ...(isDesktopType ? [getAppNameTableColumn()] : []),
+      ...(isInferenceType ? [getLlmModelNameTableColumn({ vm: this })] : []),
       getBandwidthTableColumn(),
       getLlmTypeTableColumn({ isApplyType, isDesktopType }),
       getProjectTableColumn(),

@@ -72,7 +72,7 @@ export function buildCatalogDeploymentPayload (deployForm, spec, llmType) {
 
   const payload = {
     name: deployForm.name,
-    replicas: deployForm.replicas,
+    replicas: 1,
     placement_strategy: 'spread',
     access_policy: 'authed',
     auto_start: true,

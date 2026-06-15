@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { parseLlmImageRoute, getLlmImageTypeFilter } from '@Ai/utils/llmRouteContext'
+import { getLlmImageTypeFilter } from '@Ai/utils/llmRouteContext'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -47,13 +47,6 @@ export default {
               buttonType: 'primary',
               validate: true,
             }
-          },
-        },
-        {
-          label: this.$t('aice.llm_image.import_community_image'),
-          action: () => {
-            const imageCtx = parseLlmImageRoute(this.$route.path)
-            this.$router.push({ path: imageCtx.imageImportCommunityPath })
           },
         },
         {

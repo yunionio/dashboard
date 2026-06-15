@@ -71,6 +71,7 @@ import CatalogDrawerMetaPanel from '@Ai/sections/catalog-model-sets/components/C
 import { repoIdOf } from '@Ai/utils/hfRepo'
 import CatalogImportSkuForm from '@Ai/views/llm-sku/shared/CatalogImportSkuForm.vue'
 import { resolveCatalogLlmType } from '@Ai/utils/catalogSpec'
+import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import { buildHfCatalogSet, buildHfCatalogSpec } from '@Ai/utils/hfImportSpec'
 
 export default {
@@ -88,6 +89,9 @@ export default {
     }
   },
   computed: {
+    llmRouteCtx () {
+      return parseLlmRoute(this.$route.path)
+    },
     headerTitle () {
       return this.$t('aice.import_model') + ' - ' + this.$t('aice.llm_sku')
     },
@@ -146,7 +150,7 @@ export default {
     },
     onImportSuccess () {
       this.closeDrawer()
-      this.$router.push('/llm-sku')
+      this.$router.push(this.llmRouteCtx.skuListPath)
     },
   },
 }
