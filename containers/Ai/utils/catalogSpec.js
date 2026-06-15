@@ -25,7 +25,7 @@ export function applyCatalogSpecToDeployForm (deployForm, spec, catalogSet, llmT
   if (!deployForm || !spec || !llmType) return
   const defaults = getDefaultSkuSpecForType(llmType) || {}
   const rec = spec.recommended || {}
-  deployForm.name = defaultNameFromSpec(spec, catalogSet)
+  deployForm.name = defaultNameFromSpec(spec, catalogSet, llmType)
   deployForm.cpu = rec.cpu || spec.cpu || defaults.cpu || 4
   deployForm.memory = rec.memory || spec.memory || defaults.memory || 8192
   deployForm.disk_size = rec.disk_size || rec.volume_size_mb || spec.disk_size || defaults.volume_size_mb || 20480
@@ -278,13 +278,35 @@ export function buildCatalogBackendCustomizedArgs (spec) {
   return out
 }
 
-export function defaultNameFromSpec (spec, set) {
-  const base = (spec?.name || spec?.label || set?.name || 'model')
+function sanitizeCatalogNamePart (value) {
+  return String(value || '')
     .toLowerCase()
     .replace(/[^a-z0-9-]+/g, '-')
     .replace(/^-+|-+$/g, '')
+}
+
+/** 目录 / HF spec 对应的模型名（不含 llm_type） */
+export function resolveCatalogModelName (spec, set) {
+  if (set?.name) return set.name
+  if (spec?.source === 'ollama') {
+    const model = spec.ollama_model || ''
+    const tag = spec.ollama_tag
+    if (model && tag) return `${model}:${tag}`
+    if (model) return model
+  }
+  const preferred = getPreferredModelFromSpec(spec)
+  if (preferred) return preferred
+  return spec?.name || spec?.label || 'model'
+}
+
+export function defaultNameFromSpec (spec, set, llmType = '') {
+  const modelPart = sanitizeCatalogNamePart(resolveCatalogModelName(spec, set))
+  const typePart = sanitizeCatalogNamePart(llmType)
   const rand = Math.random().toString(36).slice(2, 6)
-  return `${base}-${rand}`
+  if (typePart) {
+    return `${modelPart}-${typePart}-${rand}`
+  }
+  return `${modelPart}-${rand}`
 }
 
 /**

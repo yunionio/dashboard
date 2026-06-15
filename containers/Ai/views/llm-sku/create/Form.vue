@@ -459,7 +459,9 @@ export default {
     } = data
     const defaultLlmTypeForInit = catalogLlmTypeInit || (llmTypeOptions[0] && llmTypeOptions[0].id) || (isDesktopType ? 'desktop' : (isApplyType ? 'openclaw' : 'ollama'))
     const initialLlmTypeForSpec = catalogLlmTypeInit || rowLlmType || defaultLlmTypeForInit
-    const catalogNameInit = this.catalogSpec ? defaultNameFromSpec(this.catalogSpec, this.catalogSet) : null
+    const catalogNameInit = this.catalogSpec
+      ? defaultNameFromSpec(this.catalogSpec, this.catalogSet, catalogLlmTypeInit)
+      : null
     const typeLlmSpec = (llmSpec && (initialLlmTypeForSpec === 'vllm' || initialLlmTypeForSpec === 'sglang') && llmSpec[initialLlmTypeForSpec])
       ? llmSpec[initialLlmTypeForSpec]
       : {}
@@ -985,7 +987,7 @@ export default {
       const llmType = this.catalogLlmType
       this.form.fc.setFieldsValue({
         llm_type: llmType,
-        name: defaultNameFromSpec(this.catalogSpec, this.catalogSet),
+        name: defaultNameFromSpec(this.catalogSpec, this.catalogSet, llmType),
         cpu: 4,
         memory: 8,
       })
@@ -1140,7 +1142,7 @@ export default {
       const createData = buildInstantModelCreateData(
         this.catalogSpec,
         llmType,
-        defaultNameFromSpec(this.catalogSpec, this.catalogSet),
+        defaultNameFromSpec(this.catalogSpec, this.catalogSet, llmType),
       )
       if (!createData) return []
 
