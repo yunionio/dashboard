@@ -116,6 +116,7 @@
         :resource="resource"
         :next-marker="nextMarker"
         :pager-type="pagerType"
+        :load-more-size="loadMoreSize"
         :selection-type="selectionType"
         :inBaseSidePage="inBaseSidePage"
         :isSidepageOpen="isSidepageOpen"
@@ -462,6 +463,9 @@ export default {
     },
     pagerType () {
       return this.list.pagerType
+    },
+    loadMoreSize () {
+      return this.list.loadMoreSize
     },
     showTagConfigCheck () {
       return this.showTagConfig && this.projectTags.enableOrganization
