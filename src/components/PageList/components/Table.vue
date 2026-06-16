@@ -59,7 +59,7 @@
         <template v-if="loadMoreShow">
           <div class="text-center load-more-wrapper">
             <div v-if="enableVirtualScroll" class="vxe-pager d-flex align-items-center justify-content-end" style="float:right">
-              <a-select v-model="loadMoreSize" style="min-width:100px;font-size:12px" size="small" @change="handleLoadMoreSizeChange">
+              <a-select :value="loadMoreSize" style="min-width:100px;font-size:12px" size="small" @change="handleLoadMoreSizeChange">
                 <a-select-option v-for="size in loadMorePagings" :value="size" :key="size" style="text-align:center;font-size:12px">{{$t('common.some_items_peer_time', [size])}}</a-select-option>
               </a-select>
               <span class="ml-3">{{$t('common.current_total_items', [tableData.length])}}</span>
@@ -144,6 +144,10 @@ export default {
     config: Object,
     nextMarker: String,
     pagerType: String,
+    loadMoreSize: {
+      type: Number,
+      default: 20,
+    },
     selectionType: {
       type: String,
       required: true,
@@ -196,7 +200,6 @@ export default {
       finalLimit: this.getLimit(),
       storageKey,
       storageConfig: this.id && storage.get(storageKey),
-      loadMoreSize: 20,
       loadMorePagings: [20, 100, 200, 500, 1000],
       vxeGridHeight: 0,
     }

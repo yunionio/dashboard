@@ -12,6 +12,7 @@ import { isUserTag } from '@/utils/common/tag'
 import i18n from '@/locales'
 
 const STORAGE_LIST_LIMIT_KEY = '__oc_list_limit__'
+const STORAGE_LIST_LOAD_MORE_LIMIT_KEY = '__oc_list_load_more_limit__'
 
 const TAG_FILGER_KEYS = [
   'user_meta',
@@ -269,7 +270,6 @@ class CreateList {
     this.offset = 0
     this.limit = limit
     this.total = 0
-    this.loadMoreSize = 20
     this.nextMarker = ''
     this.pagerType = ''
     // 选择数据
@@ -314,6 +314,7 @@ class CreateList {
     this.itemGetParams = itemGetParams
     this.itemGet = itemGet
     this.disableStorageLimit = disableStorageLimit
+    this.loadMoreSize = this.getLoadMoreLimit()
     // extraDataFecther
     this.extraDataFecther = extraDataFecther
     this.extraData = {}
@@ -613,6 +614,9 @@ class CreateList {
       this.pageRender(allData)
       this.nextMarker = response.data.next_marker
       this.pagerType = response.data.marker_field ? 'loadMore' : 'pager'
+      if (this.pagerType === 'loadMore') {
+        this.loadMoreSize = this.getLoadMoreLimit()
+      }
       this.syncSelected()
       if (!this.isTemplate) {
         this.checkSteadyStatus()
@@ -729,7 +733,7 @@ class CreateList {
       const savedNextMarker = this.nextMarker
       this.nextMarker = null // 临时清除 nextMarker，使 genParams 不添加 paging_marker
       try {
-        return await this.fetchData(0, currentDataLength || this.getLimit())
+        return await this.fetchData(0, currentDataLength || this.getLoadMoreLimit())
       } finally {
         // 恢复 nextMarker
         this.nextMarker = savedNextMarker
@@ -741,7 +745,7 @@ class CreateList {
   resetRefresh () {
     this.filter = {}
     this.reset(this.pagerType === 'loadMore')
-    return this.fetchData(0, this.getLimit())
+    return this.fetchData(0, 0)
   }
 
   /**
@@ -810,7 +814,7 @@ class CreateList {
     if (limit) {
       params.limit = limit
     } else {
-      params.limit = this.getLimit()
+      params.limit = this.getRequestLimit()
     }
     if (offset) params.offset = offset
     params = {
@@ -893,6 +897,31 @@ class CreateList {
       return limit || this.limit
     }
     return this.limit
+  }
+
+  /**
+   * @description 获取加载更多每页请求条数（与 pager 的 localStorage 隔离）
+   * @returns { Number }
+   * @memberof CreateList
+   */
+  getLoadMoreLimit () {
+    if (!this.disableStorageLimit) {
+      const limit = storage.get(STORAGE_LIST_LOAD_MORE_LIMIT_KEY)
+      if (limit) return limit
+    }
+    return 20
+  }
+
+  /**
+   * @description 按分页模式获取请求条数
+   * @returns { Number }
+   * @memberof CreateList
+   */
+  getRequestLimit () {
+    if (this.pagerType === 'loadMore') {
+      return this.getLoadMoreLimit()
+    }
+    return this.getLimit()
   }
 
   /**
@@ -1035,6 +1064,9 @@ class CreateList {
    * @param {Number} size
    */
   changeLoadMoreSize (size) {
+    if (!this.disableStorageLimit) {
+      storage.set(STORAGE_LIST_LOAD_MORE_LIMIT_KEY, size)
+    }
     this.loadMoreSize = size
   }
 
