@@ -100,6 +100,26 @@ R.forEachObjIndexed((obj, key) => {
   }
 }, HYPERVISORS_MAP)
 
+/**
+ * 将 region.provider / brand、hypervisor key 等统一解析为
+ * AreaSelects provider 表单值（hypervisor key，同 HYPERVISORS_MAP.key / providerList[].name）
+ */
+export function resolveHypervisorKey (raw) {
+  if (!raw) return ''
+  const str = String(raw)
+  const lower = str.toLowerCase()
+  if (HYPERVISORS_MAP[lower]) return HYPERVISORS_MAP[lower].key
+  const fromProvider = PROVIDER_MAP[str]
+  if (fromProvider?.hypervisor) return fromProvider.hypervisor
+  const fromBrand = BRAND_MAP[str]
+  if (fromBrand?.hypervisor) return fromBrand.hypervisor
+  const providerKey = Object.keys(PROVIDER_MAP).find(k => k.toLowerCase() === lower)
+  if (providerKey && PROVIDER_MAP[providerKey].hypervisor) return PROVIDER_MAP[providerKey].hypervisor
+  const brandKey = Object.keys(BRAND_MAP).find(k => k.toLowerCase() === lower)
+  if (brandKey && BRAND_MAP[brandKey].hypervisor) return BRAND_MAP[brandKey].hypervisor
+  return lower
+}
+
 export const HYPERVISORS_GROUP = {
   idc: {
     kvm: HYPERVISORS_MAP.kvm,

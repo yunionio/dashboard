@@ -18,7 +18,7 @@
           <span>−</span>
         </a>
       </div>
-      <div v-if="showGeolocate || selectOnClick" class="echart-world-map__toolbar-group leaflet-bar">
+      <div v-if="showGeolocate || (showDiameterControl && selectOnClick)" class="echart-world-map__toolbar-group leaflet-bar">
         <a
           v-if="showGeolocate"
           class="echart-world-map__bar-link"
@@ -28,7 +28,7 @@
           @click.prevent="tryLocateUser"
           v-html="geolocateIconSvg" />
         <a
-          v-if="selectOnClick"
+          v-if="showDiameterControl && selectOnClick"
           ref="diameterLink"
           class="echart-world-map__bar-link"
           href="#"
@@ -39,7 +39,12 @@
       </div>
     </div>
     <div
-      v-if="selectOnClick && diameterPanelVisible"
+      v-if="selectOnClick && !overviewStyle"
+      class="echart-world-map__diameter-hint">
+      {{ $t('regionMap.selection_diameter', [diameterKm]) }}
+    </div>
+    <div
+      v-if="showDiameterControl && selectOnClick && diameterPanelVisible"
       ref="diameterPanel"
       class="echart-world-map__diameter-panel"
       :style="diameterPanelStyle"
@@ -236,6 +241,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    showDiameterControl: {
+      type: Boolean,
+      default: false,
+    },
     locateOnLoad: {
       type: Boolean,
       default: true,
@@ -295,7 +304,7 @@ export default {
       initialZoom: null,
       selectionCenter: null,
       userLocation: null,
-      diameterKm: 500,
+      diameterKm: 400,
       diameterPanelVisible: false,
       diameterPanelStyle: null,
       diameterIconSvg: DIAMETER_ICON_SVG,
@@ -906,7 +915,7 @@ export default {
     onDiameterChange (val) {
       const n = Number(val)
       if (!Number.isFinite(n) || n <= 0) {
-        this.diameterKm = 500
+        this.diameterKm = 400
       } else {
         this.diameterKm = Math.min(10000, Math.max(10, Math.round(n)))
       }
@@ -1103,6 +1112,20 @@ export default {
     border: 1px solid rgba(91, 193, 201, 0.45);
     border-radius: 4px;
     box-shadow: rgba(62, 164, 255, 0.43) 0 0 20px inset;
+  }
+
+  &__diameter-hint {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    z-index: 5;
+    padding: 1px 8px;
+    font-size: 12px;
+    line-height: 18px;
+    color: #94a2e1;
+    background: rgba(4, 40, 78, 0.5);
+    border-radius: 4px;
+    pointer-events: none;
   }
 
   &__popover-title {

@@ -2032,5 +2032,6 @@
   "compute.regional_availability.unavailable": "利用不可",
   "compute.regional_availability.tooltip.single": "{0}プランはこの{1}で{2}",
   "compute.regional_availability.tooltip.both_same": "{0}、{1}プランはこの{2}でいずれも{3}",
-  "compute.regional_availability.tooltip.mixed": "{0}プランはこの{1}で{2}；{3}プランはこの{1}で{4}"
+  "compute.regional_availability.tooltip.mixed": "{0}プランはこの{1}で{2}；{3}プランはこの{1}で{4}",
+  "compute.region_map": "リージョンマップ"
 }

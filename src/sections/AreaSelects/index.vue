@@ -83,6 +83,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import { PROVIDER_MAP, HYPERVISORS_MAP, resolveHypervisorKey } from '@/constants'
 import { cloudregionFilterByCapability } from '@/utils/common/capability'
 import i18n from '@/locales'
 import { findAndPush } from '@/utils/utils'
@@ -198,6 +199,11 @@ export default {
       zoneLoading: false,
       zoneList: [],
       changeSeq: 0,
+      // 多选 prune 用：缓存已加载的 region/zone，避免列表刷新后误删合法选中项
+      itemCache: {
+        cloudregion: {},
+        zone: {},
+      },
     }
   },
   computed: {
@@ -286,17 +292,71 @@ export default {
       next[`filter.${idx}`] = filter
       return next
     },
+    hasProviderInParams (params = {}) {
+      if (params.provider) return true
+      const filters = []
+      if (params.filter) filters.push(params.filter)
+      Object.keys(params).filter(key => key.startsWith('filter.')).forEach(key => {
+        filters.push(params[key])
+      })
+      return filters.some(filter => String(filter).includes('provider.in'))
+    },
+    mapProviderFilterValues (providerValues = []) {
+      return providerValues.map(p => (
+        PROVIDER_MAP[p]
+          ? PROVIDER_MAP[p].provider
+          : (HYPERVISORS_MAP[String(p).toLowerCase()]?.provider || p)
+      ))
+    },
+    stripProviderFromParams (params = {}) {
+      const next = { ...params }
+      delete next.provider
+      if (next.filter) {
+        if (Array.isArray(next.filter)) {
+          const filters = next.filter.filter(f => !String(f).includes('provider.in'))
+          if (filters.length) {
+            next.filter = filters.length === 1 ? filters[0] : filters
+          } else {
+            delete next.filter
+          }
+        } else if (String(next.filter).includes('provider.in')) {
+          delete next.filter
+        }
+      }
+      Object.keys(next).filter(key => key.startsWith('filter.')).forEach(key => {
+        if (String(next[key]).includes('provider.in')) {
+          delete next[key]
+        }
+      })
+      return next
+    },
     applyProviderParam (params, provider) {
       const list = this.toArray(provider).filter(Boolean)
       const next = { ...params }
       delete next.provider
       if (list.length > 1) {
-        return this.appendParamsFilter(next, `provider.in(${list.join(',')})`)
+        const providers = this.mapProviderFilterValues(list)
+        return this.appendParamsFilter(next, `provider.in(${providers.join(',')})`)
       }
       if (list.length === 1) {
-        next.provider = list[0]
+        next.provider = PROVIDER_MAP[list[0]]
+          ? PROVIDER_MAP[list[0]].hypervisor
+          : (HYPERVISORS_MAP[String(list[0]).toLowerCase()]?.hypervisor || list[0])
       }
       return next
+    },
+    // zones 接口 provider 过滤使用 API provider 名（如 Aliyun），与 cloudregion 的 hypervisor key 不同
+    applyZoneProviderParam (params, provider) {
+      const list = this.toArray(provider).filter(Boolean)
+      if (!list.length) return params
+      const next = { ...params }
+      delete next.provider
+      const providers = this.mapProviderFilterValues(list)
+      if (list.length === 1) {
+        next.provider = providers[0]
+        return next
+      }
+      return this.appendParamsFilter(next, `provider.in(${providers.join(',')})`)
     },
     applyCloudregionParam (params, cloudregion) {
       const list = this.toArray(cloudregion).filter(Boolean)
@@ -504,25 +564,55 @@ export default {
           : { id, value: this.getSelectedValue(name, id) },
       })
     },
+    // ── 多选专用：provider 键名规范化（单选 fetch 不受影响）──
+    normalizeProviderKey (val) {
+      return resolveHypervisorKey(val)
+    },
+    isProviderInSelection (itemProvider, selectedProviders = []) {
+      const itemKey = this.normalizeProviderKey(itemProvider)
+      if (!itemKey) return false
+      return this.toArray(selectedProviders).some(p => {
+        return this.normalizeProviderKey(p) === itemKey
+      })
+    },
+    getZoneProvider (item = {}) {
+      return item.provider || item.brand || ''
+    },
+    filterZoneListBySelectedProvider (list = []) {
+      if (!this.isMultiple('provider') || !this.isMultiple('zone')) return list
+      const providers = this.toArray(this.FC.getFieldValue('provider')).filter(Boolean)
+      if (!providers.length) return list
+      return list.filter(item => this.isProviderInSelection(this.getZoneProvider(item), providers))
+    },
+    mergeItemCache (name, list = []) {
+      if (name !== 'cloudregion' && name !== 'zone') return
+      list.forEach(item => {
+        const id = item.id || item.name
+        if (id) {
+          this.itemCache[name][id] = item
+        }
+      })
+    },
     findListItem (name, id) {
       const list = this[`${name}List`] || []
-      return list.find(item => item.id === id || item.name === id)
+      const fromList = list.find(item => item.id === id || item.name === id)
+      if (fromList) return fromList
+      const cache = this.itemCache[name]
+      if (cache && cache[id]) return cache[id]
+      return undefined
     },
+    // 仅多选模式生效；单选由 clearFields 处理
     pruneCloudregionByProvider () {
-      if (!this.names.includes('cloudregion')) return false
+      if (!this.isMultiple('provider') || !this.names.includes('cloudregion')) return false
 
-      const providers = this.toArray(this.FC.getFieldValue('provider'))
-        .map(p => String(p).toLowerCase())
-
-      if (this.isMultiple('provider') && !providers.length) return false
+      const providers = this.toArray(this.FC.getFieldValue('provider')).filter(Boolean)
+      if (!providers.length) return false
 
       const current = this.toArray(this.FC.getFieldValue('cloudregion'))
       const pruned = current.filter(id => {
         const item = this.findListItem('cloudregion', id)
-        if (!item) return false
-        const p = String(this.getCloudregionProvider(item)).toLowerCase()
-        if (!providers.length) return true
-        return providers.includes(p)
+        if (!item) return true
+        return this.isProviderInSelection(this.getCloudregionProvider(item), providers)
       })
 
       const next = this.normalizeFieldValue('cloudregion', pruned)
@@ -530,20 +620,21 @@ export default {
       this.FC.setFieldsValue({ cloudregion: next })
       return true
     },
+    // 仅多选模式生效；region 有选中时按 region 裁剪 zone
     pruneZoneByCloudregion () {
-      if (!this.names.includes('zone')) return false
+      if (!this.isMultiple('cloudregion') || !this.isMultiple('zone') || !this.names.includes('zone')) {
+        return false
+      }
 
       const cloudregions = this.toArray(this.FC.getFieldValue('cloudregion'))
-
-      if (this.isMultiple('cloudregion') && !cloudregions.length) return false
+      if (!cloudregions.length) return false
 
       const current = this.toArray(this.FC.getFieldValue('zone'))
       const regionSet = new Set(cloudregions)
 
       const pruned = current.filter(id => {
-        if (!cloudregions.length) return false
         const item = this.findListItem('zone', id)
-        if (!item) return false
+        if (!item) return true
         const rid = item.cloudregion_id || item.region_id || item.cloudregion
         return regionSet.has(rid)
       })
@@ -553,11 +644,37 @@ export default {
       this.FC.setFieldsValue({ zone: next })
       return true
     },
+    // 仅多选模式生效；region 为空时按 provider 裁剪 zone
+    pruneZoneByProvider () {
+      if (!this.isMultiple('provider') || !this.isMultiple('zone') || !this.names.includes('zone')) {
+        return false
+      }
+
+      const providers = this.toArray(this.FC.getFieldValue('provider')).filter(Boolean)
+      if (!providers.length) return false
+
+      const current = this.toArray(this.FC.getFieldValue('zone'))
+      const pruned = current.filter(id => {
+        const item = this.findListItem('zone', id)
+        if (!item) return true
+        return this.isProviderInSelection(this.getZoneProvider(item), providers)
+      })
+
+      const next = this.normalizeFieldValue('zone', pruned)
+      if (!this.isFieldValueChanged('zone', next)) return false
+      this.FC.setFieldsValue({ zone: next })
+      return true
+    },
+    // 多选 zone 裁剪优先级：cloudregion 有值 → 按 region；否则 → 按 provider
+    pruneZoneForMultipleMode () {
+      const cloudregions = this.toArray(this.FC.getFieldValue('cloudregion'))
+      if (cloudregions.length) {
+        return this.pruneZoneByCloudregion()
+      }
+      return this.pruneZoneByProvider()
+    },
     getSelectedValues (key, ids) {
-      const list = (this[`${key}List`] && this[`${key}List`].length > 0) ? this[`${key}List`] : []
-      return this.toArray(ids).map(id => {
-        return list.find(item => item.id === id || item.name === id)
-      }).filter(Boolean)
+      return this.toArray(ids).map(id => this.findListItem(key, id)).filter(Boolean)
     },
     getSelectedValue (key, id) {
       if (this.isMultiple(key)) {
@@ -576,17 +693,21 @@ export default {
       if (this.isEmptyFieldValue(key, id)) {
         this.FC.setFieldsValue({ [key]: this.emptyFieldValue(key) })
 
+        // 单选模式：清空下级并重拉（原有逻辑，不做修改）
         if (!isMultipleMode) {
           if (fetchNames.length) this.clearFields(fetchNames)
           this.emitFieldChange(key, id)
           return false
         }
 
+        // 多选模式：全部清空时仅刷新下游列表，保留已选 region/zone
         if (fetchNames.length) {
-          this.$nextTick(() => {
-            this.refetchDownstreamOnly(fetchNames).then(() => {
-              this.emitFieldChange(key, id)
-            })
+          this.$nextTick(async () => {
+            await this.refetchDownstreamOnly(fetchNames, { changedKey: key })
+            this.emitFieldChange(key, id)
+            if (key === 'cloudregion' && fetchNames.includes('zone')) {
+              this.emitFieldChange('zone', this.FC.getFieldValue('zone'))
+            }
           })
         } else {
           this.emitFieldChange(key, id)
@@ -604,6 +725,7 @@ export default {
       }
 
       if (!isMultipleMode) {
+        // 单选模式：清空下级并重拉（原有逻辑，不做修改）
         this.clearFields(fetchNames)
         this.$nextTick(() => {
           this.fetchs(fetchNames).then(() => {
@@ -615,6 +737,7 @@ export default {
         return
       }
 
+      // 多选模式：刷新列表并按需裁剪下游选中值
       this.$nextTick(async () => {
         await this.cascadeMultipleChange(key, fetchNames)
         this.emitFieldChange(key, id)
@@ -662,6 +785,7 @@ export default {
           },
         })
       }
+      this.mergeItemCache(name, _list)
       this[`${name}List`] = _list
       return _list
     },
@@ -688,6 +812,7 @@ export default {
         await this.fetchOne(name, { skipDefaultSelect })
       }
     },
+    // 多选专用：provider/cloudregion 变更后的级联（含裁剪）
     async cascadeMultipleChange (changedKey, fetchNames = []) {
       const seq = ++this.changeSeq
 
@@ -700,34 +825,66 @@ export default {
           this.pruneCloudregionByProvider()
         }
 
-        const cloudregions = this.toArray(this.FC.getFieldValue('cloudregion'))
-
         if (fetchNames.includes('zone')) {
-          if (!cloudregions.length) {
-            this.FC.setFieldsValue({ zone: this.emptyFieldValue('zone') })
-          } else {
-            await this.fetchOne('zone')
-            if (isStale()) return
-            this.pruneZoneByCloudregion()
-          }
+          await this.fetchOne('zone')
+          if (isStale()) return
+          this.pruneZoneForMultipleMode()
         }
         return
       }
 
       if (changedKey === 'cloudregion' && fetchNames.includes('zone')) {
-        const cloudregions = this.toArray(this.FC.getFieldValue('cloudregion'))
-        if (!cloudregions.length) {
-          this.FC.setFieldsValue({ zone: this.emptyFieldValue('zone') })
-        } else {
-          await this.fetchOne('zone')
-          if (isStale()) return
-          this.pruneZoneByCloudregion()
-        }
+        await this.fetchOne('zone')
+        if (isStale()) return
+        this.pruneZoneForMultipleMode()
       }
     },
-    async refetchDownstreamOnly (fetchNames = []) {
+    // 多选专用：上游全部清空时仅刷新列表，不裁剪、不清空选中值
+    async refetchDownstreamOnly (fetchNames = [], { changedKey } = {}) {
       ++this.changeSeq
       await this.fetchListsOnly(fetchNames, { skipDefaultSelect: true })
+      if (changedKey === 'cloudregion' && fetchNames.includes('zone')) {
+        this.pruneZoneByProvider()
+      }
+    },
+    // 多选专用：外部（如 RegionMap）批量设置选中并触发级联
+    async applyMultipleSelection (fields = {}) {
+      if (!this.providerMultiple && !this.cloudregionMultiple && !this.zoneMultiple) return
+
+      const values = {}
+      if (fields.provider !== undefined) {
+        values.provider = this.normalizeFieldValue('provider', fields.provider)
+      }
+      if (fields.cloudregion !== undefined) {
+        values.cloudregion = this.normalizeFieldValue('cloudregion', fields.cloudregion)
+      }
+      if (fields.zone !== undefined) {
+        values.zone = this.normalizeFieldValue('zone', fields.zone)
+      }
+      if (!Object.keys(values).length) return
+
+      this.FC.setFieldsValue(values)
+
+      if (!this.isEmptyFieldValue('provider', this.FC.getFieldValue('provider'))) {
+        await this.cascadeMultipleChange('provider', ['cloudregion', 'zone'])
+      } else if (!this.isEmptyFieldValue('cloudregion', this.FC.getFieldValue('cloudregion'))) {
+        await this.cascadeMultipleChange('cloudregion', ['zone'])
+      } else if (fields.zone !== undefined) {
+        await this.refetchDownstreamOnly(['zone'])
+      }
+
+      const emitNames = new Set(Object.keys(values))
+      if (fields.provider !== undefined || fields.cloudregion !== undefined) {
+        emitNames.add('cloudregion')
+        emitNames.add('zone')
+      } else if (fields.cloudregion !== undefined) {
+        emitNames.add('zone')
+      }
+      emitNames.forEach(name => {
+        if (this.names.includes(name)) {
+          this.emitFieldChange(name, this.FC.getFieldValue(name))
+        }
+      })
     },
     async fetchs (fetchNames = this.names) {
       await this.resetSelect(fetchNames)
@@ -862,7 +1019,11 @@ export default {
         ...DEFAULT_PARAMS,
         ...queryParams,
       }
-      params = this.applyProviderParam(params, provider)
+      params = this.stripProviderFromParams(params)
+      const providerList = this.toArray(provider).filter(Boolean)
+      if (providerList.length) {
+        params = this.applyZoneProviderParam(params, provider)
+      }
       params = this.applyCloudregionParam(params, cloudregion)
       if (this.filterBrandResource && !params.hasOwnProperty('read_only')) {
         params.read_only = false
@@ -874,6 +1035,7 @@ export default {
           params,
         })
         let retList = !R.isEmpty(data.data) ? data.data : []
+        retList = this.filterZoneListBySelectedProvider(retList)
         if (this.zoneMapper) {
           retList = this.zoneMapper(retList)
         }
