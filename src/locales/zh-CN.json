@@ -4858,6 +4858,8 @@
   "common_226": "请选择VPC",
   "common_227": "请选择IP子网",
   "common_228": "IP子网",
+  "common.area_selects_not_found_prefix": "区域未找到？对应区域无可用的",
+  "common.area_selects_not_found_suffix": "，不具备接入网络条件",
   "common_229": "请输入关键词",
   "common_230": "最近访问",
   "common_231": "未找到与",
