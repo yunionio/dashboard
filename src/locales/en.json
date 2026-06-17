@@ -4833,6 +4833,8 @@
   "common_226": "Please select VPC",
   "common_227": "Please select an IP subnet",
   "common_228": "IP Subnets",
+  "common.area_selects_not_found_prefix": "Region not found? No available ",
+  "common.area_selects_not_found_suffix": " in the selected region; network access is not available",
   "common_229": "Please enter keywords",
   "common_230": "Recently visited",
   "common_231": "Not found and",

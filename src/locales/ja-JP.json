@@ -4852,6 +4852,8 @@
   "common_226": "VPC の選択",
   "common_227": "IP サブネットを選択する",
   "common_228": "IP サブネット",
+  "common.area_selects_not_found_prefix": "リージョンが見つかりませんか？選択したリージョンに利用可能な",
+  "common.area_selects_not_found_suffix": "がなく、ネットワーク接続条件を満たしていません",
   "common_229": "キーワードを入力してください",
   "common_230": "最近訪問した",
   "common_231": "で見つかりません",
