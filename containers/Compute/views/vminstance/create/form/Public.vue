@@ -48,7 +48,7 @@
       <a-form-item :label="$t('regionMap.enable_world_map')">
         <a-switch v-decorator="decorators.enableWorldMap" @change="onWorldMapModeChange" />
       </a-form-item>
-      <a-form-item v-if="form.fd.enableWorldMap" :label="$t('compute.text_177')">
+      <a-form-item v-if="form.fd.enableWorldMap" :label="$t('compute.region_map')">
         <region-map
           :region-filter-params="regionMapParams"
           filter-brand-resource="compute_engine"
@@ -66,13 +66,11 @@
         :providerParams="providerParams"
         :cloudregionParams="areaCloudregionParams"
         :zoneParams="zoneParams"
-        :provider-mapper="mapProviderMapper"
         :provider-multiple="true"
         :cloudregion-multiple="true"
         :zone-multiple="true"
-        :cloudregion-mapper="mapCloudregionMapper"
-        :cloudregion-params-mapper="mapCloudregionParamsMapper"
-        :zone-mapper="mapZoneMapper"
+        :cloudregion-mapper="filterCloudregionListByProvider"
+        :zone-mapper="filterZoneListByProvider"
         :defaultActiveFirstOption="areaDefaultActiveFirstOption"
         filterBrandResource="compute_engine"
         @providerFetchSuccess="providerFetchSuccess" />
@@ -254,7 +252,7 @@ import EipConfig from '@Compute/sections/EipConfig'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import RegionMap from '@Compute/sections/RegionMap'
 import { resolveValueChangeField } from '@/utils/common/ant'
-import { PROVIDER_MAP, HYPERVISORS_MAP, isUcloudLikeHypervisor } from '@/constants'
+import { PROVIDER_MAP, HYPERVISORS_MAP, isUcloudLikeHypervisor, resolveHypervisorKey } from '@/constants'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
 import AreaSelects from '@/sections/AreaSelects'
 import { cloudregionFilterByCapability } from '@/utils/common/capability'
@@ -303,27 +301,9 @@ export default {
       }
       return true
     },
-    hasMapRegionFilter () {
-      return this.form.fd.enableWorldMap && this.nearbyRegions.length > 0
-    },
-    isWorldMapMode () {
-      return !!this.form.fd.enableWorldMap
-    },
     areaDefaultActiveFirstOption () {
       if (this.isInitForm) return false
       return []
-    },
-    mapFilterRegionIds () {
-      return this.nearbyRegions.map(item => item.id).filter(Boolean)
-    },
-    mapFilterProviderKeys () {
-      const keys = new Set()
-      this.nearbyRegions.forEach((item) => {
-        const raw = item.provider
-        if (!raw) return
-        keys.add(raw)
-      })
-      return [...keys]
     },
     selectedCloudregionIds () {
       const { cloudregion } = this.form.fd
@@ -364,40 +344,32 @@ export default {
       const params = {}
       if (cloudregion) params.cloudregion = cloudregion
       if (zone) params.zone = zone
+      this.applyAreaProviderFilter(params, this.providers)
       return params
     },
     networkParam () {
       if (!this.cloudregionZoneParams.cloudregion) return {}
+      const { filter: areaFilter, ...areaParams } = this.cloudregionZoneParams
       const params = {
         filter: 'server_type.notin(ipmi, pxe)',
         usable: true,
-        ...this.cloudregionZoneParams,
+        ...areaParams,
         ...this.scopeParams,
+      }
+      if (areaFilter) {
+        const filters = Array.isArray(areaFilter) ? areaFilter : [areaFilter]
+        filters.forEach(filter => this.appendSkuFilter(params, filter))
       }
       if (this.isGoogle) {
         params.show_emulated = true
       }
       return params
     },
-    // 地图范围 + 平台选择范围 交集，统一返回数组
     providers () {
-      const selected = this.normalizeAreaValues(this.form.fd.provider)
-      const mapScope = this.hasMapRegionFilter
-        ? this.mapFilterProviderKeys.map(key => String(key).toLowerCase())
-        : []
-      const intersected = this.intersectAreaValues(selected, mapScope, { caseInsensitive: true })
-      if (intersected.length) return intersected
-      if (!this.hasMapRegionFilter && !selected.length) {
-        const providerList = this.form.fi.providerList || []
-        return providerList.map(item => item.name).filter(Boolean)
-      }
-      return []
+      return this.normalizeAreaValues(this.form.fc.getFieldValue('provider'))
     },
-    // 地图范围 + 区域选择范围 交集，统一返回数组
     cloudregions () {
-      const selected = this.selectedCloudregionIds
-      const mapScope = this.hasMapRegionFilter ? this.mapFilterRegionIds : []
-      return this.intersectAreaValues(selected, mapScope)
+      return this.selectedCloudregionIds
     },
     providerParams () {
       return {
@@ -421,19 +393,15 @@ export default {
       }
     },
     areaCloudregionParams () {
-      const params = {
+      return {
         cloud_env: 'public',
         usable: true,
         show_emulated: true,
         ...this.scopeParams,
       }
-      if (this.hasMapRegionFilter && this.mapFilterRegionIds.length) {
-        params.filter = `id.in(${this.mapFilterRegionIds.join(',')})`
-      }
-      return params
     },
     zoneParams () {
-      return {
+      const params = {
         cloud_env: 'public',
         usable: true,
         show_emulated: true,
@@ -441,6 +409,8 @@ export default {
         order: 'asc',
         ...this.scopeParams,
       }
+      this.applyAreaProviderFilter(params, this.providers)
+      return params
     },
     imageParams () {
       const params = {}
@@ -502,14 +472,9 @@ export default {
       if (zoneValues.length) {
         params.zone_ids = zoneValues
       }
-      const providerValues = this.providers
-      if (providerValues.length === 1) {
-        params.provider = PROVIDER_MAP[providerValues[0]] ? PROVIDER_MAP[providerValues[0]].hypervisor : providerValues[0]
-      } else if (providerValues.length > 1) {
-        const providers = providerValues.map(p => (PROVIDER_MAP[p] ? PROVIDER_MAP[p].provider :  (HYPERVISORS_MAP[String(p).toLowerCase()]?.provider || p)))
-        this.appendSkuFilter(params, `provider.in(${providers.join(',')})`)
-      } else {
-        return {} // 公有云条件下没有 provider 不用请求接口
+      const { values: skuProviderValues, explicit: hasExplicitProvider } = this.getSkuProviderValues()
+      if (!this.applySkuProviderParam(params, skuProviderValues, hasExplicitProvider)) {
+        return {}
       }
       if (this.form.fd.billType === 'quantity') {
         params.postpaid_status = 'available'
@@ -639,21 +604,6 @@ export default {
     },
   },
   watch: {
-    hasMapRegionFilter () {
-      this.$nextTick(() => {
-        if (this.$refs.areaSelectRef) {
-          this.$refs.areaSelectRef.fetchs(['provider'])
-        }
-        this.refreshSkuByMapRegion()
-      })
-    },
-    mapFilterRegionIds (val, oldVal) {
-      if (R.equals(val, oldVal)) return
-      this.$nextTick(() => {
-        this.refreshSkuByMapRegion()
-        this.fetchInstanceSpecs()
-      })
-    },
     'form.fd.billType' (val) {
       // 计费方式为包年包月平台不含 azure、aws，这里统一做清空处理
       if (val === BILL_TYPES_MAP.package.key) {
@@ -697,30 +647,54 @@ export default {
       if (Array.isArray(value)) return value.filter(Boolean)
       return value ? [value] : []
     },
-    intersectAreaValues (selected = [], scope = [], { caseInsensitive = false } = {}) {
-      const normalizedSelected = selected.filter(Boolean)
-      const normalizedScope = scope.filter(Boolean)
-      if (normalizedSelected.length && normalizedScope.length) {
-        const scopeSet = new Set(
-          caseInsensitive
-            ? normalizedScope.map(v => String(v).toLowerCase())
-            : normalizedScope.map(v => String(v)),
-        )
-        return normalizedSelected.filter(v => {
-          const key = caseInsensitive ? String(v).toLowerCase() : String(v)
-          return scopeSet.has(key)
-        })
-      }
-      if (normalizedSelected.length) return normalizedSelected
-      return normalizedScope
+    mapAreaProviderFilterValues (providerValues = []) {
+      return providerValues.map(p => (
+        PROVIDER_MAP[p]
+          ? PROVIDER_MAP[p].provider
+          : (HYPERVISORS_MAP[String(p).toLowerCase()]?.provider || p)
+      ))
     },
-    applyInstanceSpecProviderFilter (params, providerValues = []) {
+    getAllProviderListValues () {
+      return (this.form.fi.providerList || []).map(item => item.name).filter(Boolean)
+    },
+    getSkuProviderValues () {
+      if (this.providers.length) {
+        return { values: this.providers, explicit: true }
+      }
+      return { values: this.getAllProviderListValues(), explicit: false }
+    },
+    applySkuProviderParam (params, providerValues = [], explicit = false) {
+      if (!providerValues.length) return false
+      if (explicit && providerValues.length === 1) {
+        params.provider = PROVIDER_MAP[providerValues[0]]
+          ? PROVIDER_MAP[providerValues[0]].hypervisor
+          : providerValues[0]
+        return true
+      }
+      const providers = this.mapAreaProviderFilterValues(providerValues)
+      this.appendSkuFilter(params, `provider.in(${providers.join(',')})`)
+      return true
+    },
+    applyAreaProviderFilter (params, providerValues = []) {
       if (!providerValues.length) return
       if (providerValues.length === 1) {
-        params.provider = PROVIDER_MAP[providerValues[0]] ? PROVIDER_MAP[providerValues[0]].hypervisor : providerValues[0]
+        params.provider = PROVIDER_MAP[providerValues[0]]
+          ? PROVIDER_MAP[providerValues[0]].hypervisor
+          : providerValues[0]
         return
       }
-      const providers = providerValues.map(p => (PROVIDER_MAP[p] ? PROVIDER_MAP[p].provider : p))
+      const providers = this.mapAreaProviderFilterValues(providerValues)
+      params.filter = `provider.in(${providers.join(',')})`
+    },
+    applyInstanceSpecProviderFilter (params, providerValues = []) {
+      const explicit = providerValues.length > 0
+      const values = explicit ? providerValues : this.getAllProviderListValues()
+      if (!values.length) return
+      if (explicit && values.length === 1) {
+        params.provider = PROVIDER_MAP[values[0]] ? PROVIDER_MAP[values[0]].hypervisor : values[0]
+        return
+      }
+      const providers = this.mapAreaProviderFilterValues(values)
       this.appendSkuFilter(params, `provider.in(${providers.join(',')})`)
     },
     applyInstanceSpecRegionFilter (params, regionIds = []) {
@@ -739,8 +713,9 @@ export default {
       }
       this.appendSkuFilter(params, `zone.in(${zoneValues.join(',')})`)
     },
-    refreshSkuByMapRegion () {
+    refreshSkuByAreaSelection () {
       this.form.fc.setFieldsValue({ sku: undefined })
+      this._setNewFieldToFd({ sku: undefined }, this.form.fc.getFieldsValue())
       this.$nextTick(() => {
         if (this.$refs.skuRef && typeof this.$refs.skuRef.fetchData === 'function') {
           this.$refs.skuRef.fetchData()
@@ -758,53 +733,31 @@ export default {
       }
       params.filter.push(filter)
     },
-    filterProviderListByMap (list = []) {
-      if (!this.hasMapRegionFilter || !this.mapFilterProviderKeys.length) return list
-      const allowed = new Set(
-        this.mapFilterProviderKeys.map(raw => {
-          return PROVIDER_MAP[raw] ? PROVIDER_MAP[raw].key : raw
-        }),
-      )
-      return list.filter(item => allowed.has(String(item.name)))
-    },
-    mapProviderMapper (list) {
-      return this.filterProviderListByMap(list)
-    },
     getSelectedProviderNames () {
       const { provider } = this.form.fc.getFieldsValue(['provider'])
       if (!provider) return []
       const list = Array.isArray(provider) ? provider : [provider]
       return list.filter(Boolean).map(p => String(p))
     },
+    normalizeAreaProviderKey (val) {
+      return resolveHypervisorKey(val)
+    },
+    isAreaProviderMatch (selected, itemProvider) {
+      return this.normalizeAreaProviderKey(selected) === this.normalizeAreaProviderKey(itemProvider)
+    },
     filterCloudregionListByProvider (list = []) {
+      return this.filterAreaListByProvider(list)
+    },
+    filterZoneListByProvider (list = []) {
+      return this.filterAreaListByProvider(list)
+    },
+    filterAreaListByProvider (list = []) {
       const providers = this.getSelectedProviderNames()
       if (!providers.length) return list
-      const providerSet = new Set(providers.map(p => String(p)))
       return list.filter(item => {
         const raw = item.provider || item.brand || ''
-        return providerSet.has(String(raw))
+        return providers.some(p => this.isAreaProviderMatch(p, raw))
       })
-    },
-    mapCloudregionParamsMapper (params) {
-      if (!this.hasMapRegionFilter) return params
-      if (this.getSelectedProviderNames().length) return params
-      const next = { ...params }
-      delete next.provider
-      return next
-    },
-    mapCloudregionMapper (list) {
-      let result = list
-      if (this.hasMapRegionFilter) {
-        const idSet = new Set(this.mapFilterRegionIds)
-        result = result.filter(item => idSet.has(item.id))
-        const existingIds = new Set(result.map(item => item.id))
-        this.nearbyRegions.forEach((item) => {
-          if (item.id && idSet.has(item.id) && !existingIds.has(item.id)) {
-            result.push(item)
-          }
-        })
-      }
-      return this.filterCloudregionListByProvider(result)
     },
     filterMapCloudregionList (list = []) {
       let result = cloudregionFilterByCapability({
@@ -828,16 +781,6 @@ export default {
       }
       return result
     },
-    mapZoneMapper (list) {
-      if (!this.hasMapRegionFilter) return list
-      const regionIds = this.cloudregions
-      if (!regionIds.length) return []
-      const regionFilter = new Set(regionIds)
-      return list.filter(item => {
-        const regionId = item.cloudregion_id || item.region_id || item.cloudregion
-        return regionFilter.has(regionId)
-      })
-    },
     toAreaValue (value) {
       if (value === undefined || value === null) return []
       return Array.isArray(value) ? value : [value]
@@ -852,6 +795,37 @@ export default {
         const provider = String(item.provider || '').toLowerCase()
         return name === hvKey || name === hvProvider || provider === hvKey || provider === hvProvider
       }) || null
+    },
+    async applyMapSelectionToAreaSelects (regions = []) {
+      const providerList = this.$refs.areaSelectRef?.providerList || this.form.fi.providerList || []
+      const providerKeys = [...new Set(regions.map(item => {
+        const raw = item.provider || item.brand
+        if (!raw) return null
+        const hvKey = resolveHypervisorKey(raw)
+        const matched = this.matchProviderFromList(providerList, hvKey)
+        return matched ? matched.name : hvKey
+      }).filter(Boolean))]
+      const cloudregionIds = regions.map(item => item.id).filter(Boolean)
+      const areaFields = {
+        cloudprovider: undefined,
+        sku: undefined,
+      }
+      this.form.fc.setFieldsValue(areaFields)
+      this._setNewFieldToFd(areaFields, this.form.fc.getFieldsValue())
+      if (Object.prototype.hasOwnProperty.call(this.$data, 'cloudaccountId')) {
+        this.cloudaccountId = ''
+      }
+      await this.$nextTick()
+      const areaRef = this.$refs.areaSelectRef
+      if (areaRef) {
+        await areaRef.applyMultipleSelection({
+          provider: this.toAreaValue(providerKeys),
+          cloudregion: this.toAreaValue(cloudregionIds),
+          zone: [],
+        })
+        this._setNewFieldToFd(this.form.fc.getFieldsValue(), this.form.fc.getFieldsValue())
+      }
+      this.refreshSkuByAreaSelection()
     },
     async applyInitPublicAreaFields (providerName, { skipRefetch = false } = {}) {
       if (!this.isInitForm || !providerName) return
@@ -888,15 +862,17 @@ export default {
       list = list.filter(item => {
         return ![HYPERVISORS_MAP.jdcloud.key, HYPERVISORS_MAP.ecloud.key].includes(item.name)
       })
-      if (this.hasMapRegionFilter) {
-        list = this.filterProviderListByMap(list)
-      }
       // 回填
       const matched = this.matchProviderFromList(list, this.initFormData.hypervisor)
       if (matched) {
         this.applyInitPublicAreaFields(matched.name)
       }
       this.$set(this.form.fi, 'providerList', list)
+      if (!this.providers.length) {
+        this.$nextTick(() => {
+          this.fetchInstanceSpecs()
+        })
+      }
       return list
     },
     onValuesChange (vm, changedFields) {
