@@ -366,7 +366,7 @@ export default {
       return params
     },
     providers () {
-      return this.normalizeAreaValues(this.form.fc.getFieldValue('provider'))
+      return this.normalizeAreaValues(this.form.fd.provider)
     },
     cloudregions () {
       return this.selectedCloudregionIds
@@ -734,10 +734,7 @@ export default {
       params.filter.push(filter)
     },
     getSelectedProviderNames () {
-      const { provider } = this.form.fc.getFieldsValue(['provider'])
-      if (!provider) return []
-      const list = Array.isArray(provider) ? provider : [provider]
-      return list.filter(Boolean).map(p => String(p))
+      return this.providers.map(p => String(p))
     },
     normalizeAreaProviderKey (val) {
       return resolveHypervisorKey(val)
