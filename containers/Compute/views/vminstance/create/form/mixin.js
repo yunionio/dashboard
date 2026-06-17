@@ -140,7 +140,6 @@ export default {
       custom_data: [],
       dataDiskInterval: null,
       tagDefaultChecked: {},
-      nearbyRegions: [],
     }
   },
   provide () {
@@ -647,9 +646,7 @@ export default {
     },
     onWorldMapModeChange (checked) {
       if (this.type !== 'public') return
-      this.clearPublicLocationFields(checked)
       this.$nextTick(() => {
-        this.refreshAreaSelects()
         if (!checked && this.fetchInstanceSpecs) {
           this.fetchInstanceSpecs()
         }
@@ -675,15 +672,16 @@ export default {
       }
       areaRef.fetchs(['provider', 'cloudregion', 'zone'])
     },
-    clearPublicLocationFields (isMapMode = !!this.form.fd.enableWorldMap) {
-      this.form.fc.setFieldsValue({
+    clearPublicLocationFields () {
+      const areaFields = {
         provider: [],
         cloudregion: [],
         zone: [],
         cloudprovider: undefined,
         sku: undefined,
-      })
-      this.nearbyRegions = []
+      }
+      this.form.fc.setFieldsValue(areaFields)
+      this._setNewFieldToFd(areaFields, this.form.fc.getFieldsValue())
       if (Object.prototype.hasOwnProperty.call(this.$data, 'cloudaccountId')) {
         this.cloudaccountId = ''
       }
@@ -691,22 +689,16 @@ export default {
     onRegionSelect (payload) {
       if (this.type !== 'public') return
       const regions = payload?.nearbyRegions || []
-      this.form.fc.setFieldsValue({
-        provider: [],
-        cloudregion: [],
-        zone: [],
-        cloudprovider: undefined,
-        sku: undefined,
-      })
-      if (Object.prototype.hasOwnProperty.call(this.$data, 'cloudaccountId')) {
-        this.cloudaccountId = ''
-      }
-      this.$nextTick(() => {
-        this.nearbyRegions = regions
+      if (!regions.length) {
+        this.clearPublicLocationFields()
         this.$nextTick(() => {
           this.refreshAreaSelects()
         })
-      })
+        return
+      }
+      if (typeof this.applyMapSelectionToAreaSelects === 'function') {
+        this.applyMapSelectionToAreaSelects(regions)
+      }
     },
     onRegionMapParamsChange () {
       if (this.type !== 'public' || !this.form.fd.enableWorldMap) return
