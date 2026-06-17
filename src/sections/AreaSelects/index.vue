@@ -2,11 +2,12 @@
   <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" :label="label" :required="isRequired">
     <a-row :gutter="8">
       <a-col v-for="name in names" :key="name" :span="colSpan">
-        <a-form-item :wrapperCol="{ span: 24 }">
+        <a-form-item :wrapperCol="{ span: 24 }" class="mb-0">
           <a-select
             v-if="name === 'provider'"
             v-decorator="getDecorator(name)"
             :mode="providerMultiple ? 'multiple' : 'default'"
+            optionLabelProp="label"
             :allowClear="allowClear"
             dropdownClassName="oc-select-dropdown"
             showSearch
@@ -14,15 +15,24 @@
             :loading="providerLoading"
             :placeholder="placeholders.provider"
             @change="handleProviderChange">
-            <a-select-option v-for="provider in providerList" :key="provider.name" :value="provider.name">
-              <span class="text-color-secondary option-prefix">{{ $t('compute.text_176') }}: </span>{{ getProviderShowName(provider.name) }}
+            <a-select-option
+              v-for="provider in providerList"
+              :key="provider.name"
+              :value="provider.name"
+              :label="formatProviderOptionLabel(provider)">
+              <div class="area-select-option">
+                <span class="area-select-option__name">{{ formatProviderOptionLabel(provider) }}</span>
+                <span class="area-select-option__icon">
+                  <brand-icon :name="provider.name" />
+                </span>
+              </div>
             </a-select-option>
           </a-select>
           <a-select
             v-else-if="name === 'cloudregion'"
             v-decorator="getDecorator(name)"
             :mode="cloudregionMultiple ? 'multiple' : 'default'"
-            :optionLabelProp="cloudregionMultiple ? 'label' : undefined"
+            optionLabelProp="label"
             :allowClear="allowClear"
             dropdownClassName="oc-select-dropdown"
             showSearch
@@ -35,25 +45,19 @@
               :key="cloudregion.id"
               :value="cloudregion.id"
               :label="formatCloudregionOptionLabel(cloudregion)">
-              <div v-if="cloudregionMultiple" class="area-select-cloudregion-option">
-                <span class="area-select-cloudregion-option__name">{{ formatCloudregionOptionLabel(cloudregion) }}</span>
-                <span class="area-select-cloudregion-option__icon">
+              <div class="area-select-option">
+                <span class="area-select-option__name">{{ formatCloudregionOptionLabel(cloudregion) }}</span>
+                <span class="area-select-option__icon">
                   <brand-icon :name="getCloudregionProvider(cloudregion)" />
                 </span>
               </div>
-              <template v-else-if="names.length === 1">
-                {{ _$t(cloudregion) }}
-              </template>
-              <template v-else>
-                <span class="text-color-secondary option-prefix">{{ $t('dictionary.region') }}: </span>{{ _$t(cloudregion) }}
-              </template>
             </a-select-option>
           </a-select>
           <a-select
             v-else-if="name === 'zone'"
             v-decorator="getDecorator(name)"
             :mode="zoneMultiple ? 'multiple' : 'default'"
-            :optionLabelProp="zoneMultiple ? 'label' : undefined"
+            optionLabelProp="label"
             :allowClear="allowClear"
             dropdownClassName="oc-select-dropdown"
             showSearch
@@ -66,17 +70,22 @@
               :key="zone.id"
               :value="zone.id"
               :label="_$t(zone)">
-              <template v-if="names.length === 1">
-                {{ _$t(zone) }}
-              </template>
-              <template v-else>
-                <span class="text-color-secondary option-prefix">{{ $t('dictionary.zone') }}: </span>{{ _$t(zone) }}
-              </template>
+              <div class="area-select-option">
+                <span class="area-select-option__name">{{ _$t(zone) }}</span>
+                <span class="area-select-option__icon">
+                  <brand-icon :name="getZoneProvider(zone)" />
+                </span>
+              </div>
             </a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
     </a-row>
+    <div slot="extra" class="mb-3">
+      {{ $t('common.area_selects_not_found_prefix') }}
+      <help-link href="/network">{{ $t('dictionary.network') }}</help-link>
+      {{ $t('common.area_selects_not_found_suffix') }}
+    </div>
   </a-form-item>
 </template>
 
@@ -394,10 +403,10 @@ export default {
     },
     formatCloudregionOptionLabel (item = {}) {
       const name = this._$t(item)
-      const provider = this.getCloudregionProvider(item)
-      if (!provider) return name
-      const showProvider = this.getProviderShowName(provider)
-      return `${name}（${showProvider}）`
+      return name
+    },
+    formatProviderOptionLabel (provider = {}) {
+      return this.getProviderShowName(provider.name)
     },
     syncMultipleMode (name) {
       const value = this.FC.getFieldValue(name)
@@ -526,14 +535,31 @@ export default {
       return promise
     },
     filterOption (input, option) {
-      const label = option.data && option.data.attrs && option.data.attrs.label
-      if (label) {
-        return String(label).toLowerCase().indexOf(input.toLowerCase()) >= 0
+      const keyword = String(input || '').toLowerCase()
+      const propsData = option.componentOptions && option.componentOptions.propsData
+      const attrs = option.data && option.data.attrs
+      const label = propsData && propsData.label != null && propsData.label !== ''
+        ? propsData.label
+        : (attrs && attrs.label)
+      if (label != null && label !== '') {
+        return String(label).toLowerCase().indexOf(keyword) >= 0
       }
-      const lastIdx = option.componentOptions.children.length - 1
-      return (
-        option.componentOptions.children[lastIdx].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
-      )
+      const children = option.componentOptions && option.componentOptions.children
+      if (!children || !children.length) return false
+      const lastChild = children[children.length - 1]
+      if (lastChild && lastChild.text) {
+        return String(lastChild.text).toLowerCase().indexOf(keyword) >= 0
+      }
+      const firstChild = children[0]
+      if (firstChild && firstChild.text) {
+        return String(firstChild.text).toLowerCase().indexOf(keyword) >= 0
+      }
+      const nameNode = firstChild && firstChild.children && firstChild.children[0]
+      const nestedText = nameNode && nameNode.text
+      if (nestedText) {
+        return String(nestedText).toLowerCase().indexOf(keyword) >= 0
+      }
+      return false
     },
     firstName (name) {
       return name.replace(/^\S/, s => s.toUpperCase())
@@ -1054,3 +1080,23 @@ export default {
   },
 }
 </script>
+
+<style lang="less" scoped>
+.area-select-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+}
+</style>
