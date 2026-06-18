@@ -14,6 +14,7 @@ import * as R from 'ramda'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getStatusFilter } from '@/utils/common/tableFilter'
+import { parseMonthToBackend } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -41,6 +42,17 @@ export default {
         steadyStatus: Object.values(expectStatus.billtasks).flat(),
         filterOptions: {
           // account: getAccountFilter({ distinctType: 'field' }),
+          month: {
+            label: this.$t('cloudenv.month'),
+            filter: true,
+            formatter: (val) => {
+              const backend = parseMonthToBackend(val)
+              if (!backend) {
+                return `month.equals(${(val + '').replace(/[-/]/g, '')})`
+              }
+              return `month.equals(${backend})`
+            },
+          },
           task_type: {
             label: this.$t('cloudenv.task_type'),
             dropdown: true,
@@ -120,6 +132,16 @@ export default {
     },
   },
   created () {
+    const originChangeFilter = this.list.changeFilter.bind(this.list)
+    this.list.changeFilter = (filter) => {
+      if (filter.month?.length) {
+        const display = parseMonthToBackend(filter.month[0], 'YYYY-MM')
+        if (display) {
+          filter = { ...filter, month: [display] }
+        }
+      }
+      originChangeFilter(filter)
+    }
     this.fetchData()
     this.$bus.$on('refreshBillTaskList', () => {
       this.list.refresh()

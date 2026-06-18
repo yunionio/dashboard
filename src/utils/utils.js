@@ -663,6 +663,45 @@ export const completionDate = (data, currentMonth, keys = [], monthInYear) => {
   return result
 }
 
+/**
+ * 将用户输入的月份字符串解析为标准月份格式
+ * @param {String|Array} val 月份值，支持字符串或单元素数组（如过滤器的输入值）
+ * @param {String} [format='YYYYMM'] 输出格式，支持 'YYYYMM' | 'YYYY-MM'
+ * @returns {String|null} 解析成功返回指定格式的月份字符串，无效输入返回 null
+ * @example
+ * parseMonthToBackend('2026-06')           // '202606'
+ * parseMonthToBackend('2026-6')            // '202606'
+ * parseMonthToBackend('202606')            // '202606'
+ * parseMonthToBackend('20266')             // '202606'
+ * parseMonthToBackend('2026/06')           // '202606'
+ * parseMonthToBackend('2026-06', 'YYYY-MM') // '2026-06'
+ */
+export function parseMonthToBackend (val, format = 'YYYYMM') {
+  const str = `${Array.isArray(val) ? val[0] : val}`.trim()
+  if (!str) return null
+  let year
+  let month
+  const dashMatch = str.match(/^(\d{4})[-/](\d{1,2})$/)
+  if (dashMatch) {
+    year = dashMatch[1]
+    month = dashMatch[2].padStart(2, '0')
+  } else if (/^\d{6}$/.test(str)) {
+    year = str.slice(0, 4)
+    month = str.slice(4, 6)
+  } else if (/^\d{5}$/.test(str)) {
+    year = str.slice(0, 4)
+    month = str.slice(4).padStart(2, '0')
+  } else {
+    return null
+  }
+  const monthNum = parseInt(month, 10)
+  if (monthNum < 1 || monthNum > 12) return null
+  if (format === 'YYYY-MM') {
+    return `${year}-${month}`
+  }
+  return `${year}${month}`
+}
+
 /*
  * 去除对象中所有符合条件的对象，默认是去除对象属性为空值
  * @param {Object} obj 来源对象
