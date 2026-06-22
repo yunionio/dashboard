@@ -1378,7 +1378,12 @@
       "deleting": "删除中",
       "deleted": "已删除",
       "delete_fail": "删除失败",
-      "delete_failed": "删除失败"
+      "delete_failed": "删除失败",
+      "syncing": "同步副本中",
+      "aiproxy_pending": "网关待同步",
+      "aiproxy_syncing": "网关同步中",
+      "aiproxy_partial": "网关部分同步",
+      "aiproxy_sync_failed": "网关同步失败"
     },
     "llmSku": {
       "unknown": "未知",

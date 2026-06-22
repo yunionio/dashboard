@@ -1,13 +1,17 @@
 <template>
-  <detail
-    :on-manager="onManager"
-    :data="data"
-    :base-info="baseInfo"
-    status-module="llmDeployment"
-    resource="llm_deployments" />
+  <div>
+    <detail
+      :on-manager="onManager"
+      :data="data"
+      :base-info="baseInfo"
+      status-module="llmDeployment"
+      resource="llm_deployments" />
+  </div>
 </template>
 
 <script>
+import AiproxyRoutingLinkDetailMixin from '@Ai/mixins/aiproxyRoutingLinkDetailMixin'
+import { getAiRoutingDetailField } from '@Ai/utils/aiproxyRoutingLinkColumns'
 import {
   getReplicasTableColumn,
   getBackendTableColumn,
@@ -18,6 +22,7 @@ import {
 
 export default {
   name: 'LlmDeploymentDetail',
+  mixins: [AiproxyRoutingLinkDetailMixin],
   props: {
     data: {
       type: Object,
@@ -28,9 +33,9 @@ export default {
       required: true,
     },
   },
-  data () {
-    return {
-      baseInfo: [
+  computed: {
+    baseInfo () {
+      return [
         getLLMSkuTableColumn(),
         getBackendTableColumn(),
         {
@@ -75,8 +80,17 @@ export default {
           title: this.$t('aice.llm_deployment.huggingface_repo_id'),
           formatter: ({ row }) => row.huggingface_repo_id || '-',
         },
-      ],
-    }
+        {
+          field: 'auto_register_aiproxy',
+          title: this.$t('aice.llm_deployment.auto_register_aiproxy'),
+          formatter: ({ row }) => {
+            if (row.auto_register_aiproxy === null || row.auto_register_aiproxy === undefined) return '-'
+            return row.auto_register_aiproxy ? this.$t('common.true') : this.$t('common.false')
+          },
+        },
+        getAiRoutingDetailField(this, { routingName: this.aiRoutingName }),
+      ]
+    },
   },
 }
 </script>

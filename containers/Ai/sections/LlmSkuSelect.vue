@@ -23,7 +23,7 @@
         </div>
         <div
           class="oc-dropdown-display-none llm-sku-option__selected text-truncate"
-          :title="`${item.name} (${formatLlmSkuConfig(item)})`">
+          :title="formatLlmSkuSelectedLabel(item)">
           <span>{{ item.name }}</span>
           <span class="text-color-secondary"> ({{ formatLlmSkuConfig(item) }})</span>
         </div>
@@ -34,6 +34,7 @@
 
 <script>
 import { sizestr } from '@/utils/utils'
+import { getSkuModelDisplayText } from '@Ai/views/llm-sku/utils/modelDisplay'
 
 export default {
   name: 'LlmSkuSelect',
@@ -83,6 +84,12 @@ export default {
       this.$emit('input', val)
       this.$emit('change', val, isNative)
     },
+    formatLlmSkuModel (item) {
+      return getSkuModelDisplayText(item)
+    },
+    formatLlmSkuSelectedLabel (item) {
+      return `${item.name} (${this.formatLlmSkuConfig(item)})`
+    },
     formatLlmSkuMemory (memory) {
       if (memory == null) return '-'
       return sizestr(memory, 'M', 1024)
@@ -101,6 +108,13 @@ export default {
     },
     formatLlmSkuConfig (item) {
       const parts = []
+      const model = this.formatLlmSkuModel(item)
+      if (model) {
+        parts.push(`${this.$t('aice.model')}：${model}`)
+      }
+      if (item.llm_type) {
+        parts.push(`${this.$t('aice.llm_type')}：${item.llm_type}`)
+      }
       if (item.app_name) {
         parts.push(`${this.$t('aice.llm_image.app_name')}：${item.app_name}`)
       }
@@ -114,9 +128,6 @@ export default {
       }
       if (item.image) {
         parts.push(`${this.$t('aice.image')}：${item.image}`)
-      }
-      if (item.llm_type) {
-        parts.push(`${this.$t('aice.llm_type')}：${item.llm_type}`)
       }
       return parts.join(' · ')
     },

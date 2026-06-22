@@ -654,9 +654,9 @@ export default {
     info: ['unknown'],
   },
   llmDeployment: {
-    info: ['unknown', 'partial', 'start_delete', 'deleted'],
+    info: ['unknown', 'partial', 'start_delete', 'deleted', 'deploying', 'syncing', 'aiproxy_pending', 'aiproxy_syncing', 'aiproxy_partial'],
     success: ['ready', 'running'],
-    danger: ['create_fail', 'create_failed', 'import_model_failed', 'create_sku_failed', 'delete_fail', 'delete_failed'],
+    danger: ['create_fail', 'create_failed', 'import_model_failed', 'create_sku_failed', 'delete_fail', 'delete_failed', 'aiproxy_sync_failed'],
   },
   ...extraStatus,
 }

@@ -4,7 +4,7 @@
     <page-body needMarginBottom>
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
         <a-form-item :label="$t('common.name')">
-          <a-input v-decorator="decorators.name" :placeholder="$t('common.tips.input', [$t('common.name')])" />
+          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
           <template v-slot:extra>
             <name-repeated res="llms" :name="form.fd.name" />
           </template>
@@ -632,6 +632,8 @@ export default {
         name: [
           'name',
           {
+            validateTrigger: 'blur',
+            validateFirst: true,
             rules: [
               { required: true, validator: this.$validate('resourceName') },
             ],

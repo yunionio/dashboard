@@ -1,0 +1,185 @@
+import { Manager } from '@/utils/manager'
+import { getAiproxyResourceScope } from '@Ai/constants/aiproxyResources'
+
+export function normalizeBaseUrl (url) {
+  const raw = String(url || '').trim()
+  if (!raw) return ''
+  return raw.replace(/\/+$/, '')
+}
+
+export function buildChatCompletionsUrl (baseUrl) {
+  const base = normalizeBaseUrl(baseUrl)
+  if (!base) return ''
+  if (/\/ai\/openai\/v1$/i.test(base)) {
+    return `${base}/chat/completions`
+  }
+  if (/\/openai\/v1$/i.test(base)) {
+    return `${base.replace(/\/openai\/v1$/i, '/ai/openai/v1')}/chat/completions`
+  }
+  return `${base}/ai/openai/v1/chat/completions`
+}
+
+export function buildAiproxyCurlExample ({ endpoint, model, virtualKey = '<API Key>' } = {}) {
+  const url = endpoint || '<endpoint>/ai/openai/v1/chat/completions'
+  const m = model || 'your-model'
+  const key = virtualKey || '<API Key>'
+  return [
+    `curl -X POST '${url}' \\`,
+    `  -H 'Authorization: Bearer ${key}' \\`,
+    '  -H \'Content-Type: application/json\' \\',
+    `  -d '{"model":"${m}","messages":[{"role":"user","content":"hello"}]}'`,
+  ].join('\n')
+}
+
+async function fetchServiceApiServer (vm) {
+  const fromStore = normalizeBaseUrl(vm?.$store?.getters?.globalConfig?.api_server)
+  if (fromStore) return fromStore
+  try {
+    const manager = new Manager('service_settings', 'v1')
+    const { data } = await manager.list()
+    return normalizeBaseUrl(data?.common?.api_server)
+  } catch (e) {
+    return ''
+  }
+}
+
+async function fetchProxyNodeAccessAddressOnly (vm, nodeId) {
+  if (!nodeId) return ''
+  try {
+    const manager = new Manager('ai_proxy_nodes')
+    const { data } = await manager.get({
+      id: nodeId,
+      params: { scope: getAiproxyResourceScope('ai_proxy_nodes', vm) },
+    })
+    return normalizeBaseUrl(data?.access_address)
+  } catch (e) {
+    return ''
+  }
+}
+
+async function fetchNodeAddress (vm, nodeId) {
+  if (!nodeId) return ''
+  try {
+    const manager = new Manager('ai_proxy_nodes')
+    const { data } = await manager.get({
+      id: nodeId,
+      params: { scope: getAiproxyResourceScope('ai_proxy_nodes', vm) },
+    })
+    return normalizeBaseUrl(data?.address)
+  } catch (e) {
+    return ''
+  }
+}
+
+async function fetchRoutingProxyNodeId (vm, routingId) {
+  if (!routingId) return ''
+  try {
+    const manager = new Manager('ai_routings')
+    const { data } = await manager.get({
+      id: routingId,
+      params: {
+        scope: getAiproxyResourceScope('ai_routings', vm),
+        details: true,
+      },
+    })
+    return String(data?.ai_proxy_node_id || '').trim()
+  } catch (e) {
+    return ''
+  }
+}
+
+async function fetchPublicAiproxyEndpoint (vm) {
+  try {
+    const manager = new Manager('endpoints', 'v1')
+    const { data: { data = [] } } = await manager.list({
+      params: {
+        service: 'aiproxy',
+        interface: 'public',
+        limit: 20,
+      },
+    })
+    const urls = (data || [])
+      .map(item => normalizeBaseUrl(item.url))
+      .filter(Boolean)
+    const https = urls.find(u => u.startsWith('https://'))
+    return https || urls[0] || ''
+  } catch (e) {
+    return ''
+  }
+}
+
+async function fetchPrimaryProxyNodeAccessAddressOnly (vm) {
+  try {
+    const manager = new Manager('ai_proxy_nodes')
+    const { data: { data = [] } } = await manager.list({
+      params: {
+        scope: getAiproxyResourceScope('ai_proxy_nodes', vm),
+        limit: 20,
+      },
+    })
+    const rows = data || []
+    const primary = rows.find(item => item.id === 'primary' || item.name === 'primary')
+    const picked = primary || rows.find(item => item.enabled && item.is_active) || rows[0]
+    return normalizeBaseUrl(picked?.access_address)
+  } catch (e) {
+    return ''
+  }
+}
+
+async function fetchPrimaryProxyNodeAddress (vm) {
+  try {
+    const manager = new Manager('ai_proxy_nodes')
+    const { data: { data = [] } } = await manager.list({
+      params: {
+        scope: getAiproxyResourceScope('ai_proxy_nodes', vm),
+        limit: 20,
+      },
+    })
+    const rows = data || []
+    const primary = rows.find(item => item.id === 'primary' || item.name === 'primary')
+    const picked = primary || rows.find(item => item.enabled && item.is_active) || rows[0]
+    return normalizeBaseUrl(picked?.address)
+  } catch (e) {
+    return ''
+  }
+}
+
+async function resolveAiproxyBaseUrlLegacy (vm, { routingId, nodeId } = {}) {
+  const fromServiceSettings = await fetchServiceApiServer(vm)
+  if (fromServiceSettings) return fromServiceSettings
+
+  const rid = String(routingId || '').trim()
+  let boundNodeId = String(nodeId || '').trim()
+  if (rid && !boundNodeId) {
+    boundNodeId = await fetchRoutingProxyNodeId(vm, rid)
+  }
+  const fromNode = await fetchNodeAddress(vm, boundNodeId)
+  if (fromNode) return fromNode
+
+  const fromEndpoint = await fetchPublicAiproxyEndpoint(vm)
+  if (fromEndpoint) return fromEndpoint
+
+  return fetchPrimaryProxyNodeAddress(vm)
+}
+
+/** Prefer routing-bound proxy node access_address; fall back to legacy resolution. */
+export async function resolveAiproxyBaseUrl (vm, { routingId } = {}) {
+  const rid = String(routingId || '').trim()
+  let nodeId = ''
+  if (rid) {
+    nodeId = await fetchRoutingProxyNodeId(vm, rid)
+    if (nodeId) {
+      const fromAccess = await fetchProxyNodeAccessAddressOnly(vm, nodeId)
+      if (fromAccess) return fromAccess
+    }
+  } else {
+    const fromPrimaryAccess = await fetchPrimaryProxyNodeAccessAddressOnly(vm)
+    if (fromPrimaryAccess) return fromPrimaryAccess
+  }
+  return resolveAiproxyBaseUrlLegacy(vm, { routingId: rid, nodeId })
+}
+
+export async function resolveAiproxyChatCompletionsUrl (vm, { routingId } = {}) {
+  const base = await resolveAiproxyBaseUrl(vm, { routingId })
+  return buildChatCompletionsUrl(base)
+}

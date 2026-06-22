@@ -204,5 +204,23 @@ export default {
   McpSidePage: {
     resource: 'mcp_agents',
   },
+  AiProviderSidePage: {
+    resource: 'ai_providers',
+  },
+  AiModelSidePage: {
+    resource: 'ai_models',
+  },
+  AiKeySidePage: {
+    resource: 'ai_keys',
+  },
+  AiVirtualKeySidePage: {
+    resource: 'ai_virtual_keys',
+  },
+  AiRoutingSidePage: {
+    resource: 'ai_routings',
+  },
+  AiProxyNodeSidePage: {
+    resource: 'ai_proxy_nodes',
+  },
   ...extraConfig,
 }

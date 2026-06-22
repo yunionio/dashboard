@@ -1356,7 +1356,12 @@
       "deleting": "Deleting",
       "deleted": "Deleted",
       "delete_fail": "Delete Failed",
-      "delete_failed": "Delete Failed"
+      "delete_failed": "Delete Failed",
+      "syncing": "Syncing Replicas",
+      "aiproxy_pending": "Gateway Sync Pending",
+      "aiproxy_syncing": "Gateway Syncing",
+      "aiproxy_partial": "Gateway Partially Synced",
+      "aiproxy_sync_failed": "Gateway Sync Failed"
     },
     "llmSku": {
       "unknown": "Unknown",
