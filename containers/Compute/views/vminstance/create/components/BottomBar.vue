@@ -114,6 +114,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isModifyWorkflow: {
+      type: Boolean,
+      default: false,
+    },
     isServertemplate: {
       type: Boolean,
       default: false,
@@ -242,7 +246,9 @@ export default {
     },
     confirmText () {
       if (this.isServertemplate) return this.$t('compute.text_1139')
-      return this.isOpenWorkflow ? (this.$route.query.workflow ? this.$t('common.modify_workflow') : this.$t('compute.text_288')) : this.$t('compute.text_289')
+      if (this.isModifyWorkflow) return this.$t('common.modify_workflow')
+      if (this.isOpenWorkflow) return this.$t('compute.text_288')
+      return this.$t('compute.text_289')
     },
     dataDiskObj () {
       if (R.is(Object, this.fd.dataDiskTypes)) {

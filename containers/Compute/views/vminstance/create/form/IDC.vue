@@ -272,6 +272,7 @@
         :type="type"
         :dataDiskSizes="dataDiskSizes"
         :isOpenWorkflow="isOpenWorkflow"
+        :isModifyWorkflow="isModifyWorkflow"
         :errors.sync="errors"
         :isServertemplate="isServertemplate"
         :hasMeterService="hasMeterService"

@@ -273,6 +273,16 @@ export default {
       if (this.isServertemplate) return false
       return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_MACHINE)
     },
+    isModifyShopCartOrder () {
+      const { workflow, order_set_id } = this.$route.query
+      return !!(workflow && order_set_id)
+    },
+    isWorkflowSubmit () {
+      return this.isOpenWorkflow || this.isModifyShopCartOrder
+    },
+    isModifyWorkflow () {
+      return !!this.$route.query.workflow
+    },
     isHostImageType () { // 镜像类型为主机镜像
       return this.form.fd.imageType === IMAGES_TYPE_MAP.host.key
     },
@@ -727,7 +737,7 @@ export default {
           data.extraData.__resource_type__ = 'server'
           if (this.isServertemplate) { // 创建主机模板
             this.doCreateServertemplate(data)
-          } else if (this.isOpenWorkflow) { // 提交工单
+          } else if (this.isWorkflowSubmit) { // 提交工单（含修改购物车订单项）
             await this.checkCreateData(data)
             await this.doForecast(genCreteData, data)
             await this.doCreateWorkflow(data)
