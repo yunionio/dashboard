@@ -234,6 +234,7 @@
         :resourceType="form.fd.resourceType"
         :dataDiskSizes="dataDiskSizes"
         :isOpenWorkflow="isOpenWorkflow"
+        :isModifyWorkflow="isModifyWorkflow"
         :isServertemplate="isServertemplate"
         :hasMeterService="hasMeterService"
         :cloudaccountId="cloudaccountId"
