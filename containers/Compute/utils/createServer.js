@@ -1730,7 +1730,7 @@ export class GenCreateData {
       os_arch: _.get(HOST_CPU_ARCHS, `[${this.fd.os_arch}].key`),
       hostname: this.fd.hostName,
       extraData: {
-        domain_id: (this.fd.domain && this.fd.domain.key) || store.getters.userInfo.domainId,
+        domain_id: (this.fd.domain && this.fd.domain.key) || store.getters.userInfo.projectDomainId,
         image_type: this.fd.imageType,
         os: this.fd.os,
         nets: extraNetworks,
