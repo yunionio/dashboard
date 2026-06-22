@@ -458,10 +458,10 @@ const FEATURE_MENUS = {
     ceMenus: ['vminstance', 'instancegroup', 'servertemplate', 'scalinggroup', 'image', 'host_image', 'disk', 'disk-snapshot', 'instance-snapshot', 'snapshotpolicy', 'disk-backup', 'instance-backup', 'keypair', 'sku', 'host', 'gpu', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'imagerecovery', 'zone', 'vpc', 'wire', 'network', 'secgroup', 'eip', 'dns-zone', 'tap-service', 'blockstorage', 'backup-storage'],
   },
   pod: {
-    ceMenus: ['vminstance-container', 'app-package', 'image-repos', 'disk', 'disk-backup', 'instance-backup', 'host', 'gpu', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'zone', 'vpc', 'wire', 'network', 'secgroup', 'eip', 'dns-zone', 'blockstorage', 'backup-storage', 'credentials-container-image', 'credentials-container-secret'],
+    ceMenus: ['vminstance-container', 'app-package', 'image-repos', 'disk', 'disk-backup', 'instance-backup', 'host', 'gpu', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'zone', 'vpc', 'wire', 'network', 'secgroup', 'eip', 'dns-zone', 'blockstorage', 'backup-storage', 'credentials-container-image', 'credentials-container-secret', 'app-desktop', 'app-desktop-sku', 'app-desktop-image'],
   },
   ai: {
-    ceMenus: ['cloudregion', 'app-llm', 'app-llm-sku', 'app-desktop', 'app-desktop-sku', 'app-desktop-image', 'app-llm-image', 'agent-llm-image', 'llm', 'llm-sku', 'llm-instantmodel', 'llm-image', 'llm-deployment'],
+    ceMenus: ['cloudregion', 'app-llm', 'app-llm-sku', 'app-llm-image', 'agent-llm-image', 'llm', 'llm-sku', 'llm-instantmodel', 'llm-image', 'llm-deployment'],
   },
   baremetal: {
     ceMenus: ['baremetal', 'image', 'disk', 'keypair', 'physicalmachine', 'gpu', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'imagerecovery', 'cloudregion', 'zone', 'wire', 'network'],
