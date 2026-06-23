@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     :title="$t('aice.aiproxy.proxy_node')"
-    icon="res-server"
+    icon="res-ai-proxy-node"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"

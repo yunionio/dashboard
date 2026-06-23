@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     :title="$t('aice.aiproxy.virtual_key')"
-    icon="res-server"
+    icon="res-ai-virtual-key"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
