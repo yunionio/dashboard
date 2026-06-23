@@ -19,6 +19,14 @@ export function buildChatCompletionsUrl (baseUrl) {
   return `${base}/ai/openai/v1/chat/completions`
 }
 
+export function isPlaceholderApiKey (authHeader) {
+  const value = String(authHeader || '').trim()
+  if (!value) return true
+  const token = value.replace(/^Bearer\s+/i, '').trim()
+  if (!token) return true
+  return /<\s*api\s*key\s*>/i.test(token) || /<\s*api\s*key\s*>/i.test(value)
+}
+
 export function buildAiproxyCurlExample ({ endpoint, model, virtualKey = '<API Key>' } = {}) {
   const url = endpoint || '<endpoint>/ai/openai/v1/chat/completions'
   const m = model || 'your-model'
@@ -29,6 +37,26 @@ export function buildAiproxyCurlExample ({ endpoint, model, virtualKey = '<API K
     '  -H \'Content-Type: application/json\' \\',
     `  -d '{"model":"${m}","messages":[{"role":"user","content":"hello"}]}'`,
   ].join('\n')
+}
+
+export function buildChatTestRequestConfig ({ endpoint, model, virtualKey } = {}) {
+  const url = String(endpoint || '').trim()
+  const m = String(model || '').trim()
+  const key = String(virtualKey || '').trim()
+  if (!url || !m || !key) return null
+  return {
+    url,
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${key}`,
+      'Content-Type': 'application/json',
+    },
+    body: {
+      model: m,
+      messages: [{ role: 'user', content: 'hello' }],
+    },
+    model: m,
+  }
 }
 
 async function fetchServiceApiServer (vm) {
