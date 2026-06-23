@@ -303,14 +303,24 @@ export default {
      * domain {Object|String}
      */
     domainChange (domain) {
+      const domainId = R.is(Object, domain) ? domain.key : (domain || '')
+      const domainChanged = domainId !== this.domainId
       this.$store.commit('storage/SET_DOMAIN', domain)
-      const domainId = R.is(Object, domain) ? domain.key : domain
       if (this.labelInValue) {
         this.$emit('update:domain', domain)
       } else {
         this.$emit('update:domain', domainId)
       }
       this.domainId = domainId
+      if (domainChanged) {
+        this._resetProject()
+      }
+    },
+    _resetProject () {
+      this.$store.commit('storage/SET_PROJECT', {})
+      this.projectData = {}
+      this.fc.setFieldsValue({ project: undefined })
+      this.$emit('update:project', undefined)
     },
     /**
      * project {Object|String}
