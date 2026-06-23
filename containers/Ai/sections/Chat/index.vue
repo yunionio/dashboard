@@ -240,16 +240,16 @@ export default {
         this.scrollToBottom()
       })
     },
-    initChatTestGreetingMessage () {
-      if (!this.isChatTest || this.chatTestGreetingShown || !this.chatTestConfig) return
-      const greetingText = this.$t('ai.mcp.greeting')
-      const hasGreeting = this.messages.some(
-        item => item.role === 'assistant' && item.content === greetingText,
-      )
-      this.chatTestGreetingShown = true
-      if (hasGreeting) return
-      this.initGreetingMessage()
-    },
+    // initChatTestGreetingMessage () {
+    //   if (!this.isChatTest || this.chatTestGreetingShown || !this.chatTestConfig) return
+    //   const greetingText = this.$t('ai.mcp.greeting')
+    //   const hasGreeting = this.messages.some(
+    //     item => item.role === 'assistant' && item.content === greetingText,
+    //   )
+    //   this.chatTestGreetingShown = true
+    //   if (hasGreeting) return
+    //   this.initGreetingMessage()
+    // },
     async fetchMcpTools () {
       if (!this.isMcpResource || !this.resId) return
 
@@ -610,7 +610,7 @@ export default {
         model,
         virtualKey: this.selectedVirtualKey,
       })
-      this.initChatTestGreetingMessage()
+      // this.initChatTestGreetingMessage()
     },
     async applyInitialVirtualKey (virtualKeyId, virtualKey = '') {
       this.selectedVirtualKeyId = virtualKeyId
@@ -632,9 +632,9 @@ export default {
       this.inputMessage = ''
       this.expandedReasoningMap = {}
       this.chatTestGreetingShown = false
-      if (this.isChatTest && this.chatTestConfig) {
-        this.initChatTestGreetingMessage()
-      }
+      // if (this.isChatTest && this.chatTestConfig) {
+      //   this.initChatTestGreetingMessage()
+      // }
       this.abortRequest()
     },
     scrollToBottom () {
