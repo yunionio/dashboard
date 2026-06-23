@@ -72,15 +72,25 @@
       </div>
       <div class="mb-3">
         <div class="mb-1">{{ $t('aice.llm_deployment.aiproxy_access_select_vk') }}</div>
-        <base-select
-          v-model="selectedVirtualKeyId"
-          resource="ai_virtual_keys"
-          :params="virtualKeySelectParams"
-          filterable
-          version="v2"
-          allow-clear
-          class="virtual-key-select"
-          @change="onVirtualKeyChange" />
+        <div class="d-flex align-items-center">
+          <base-select
+            v-model="selectedVirtualKeyId"
+            resource="ai_virtual_keys"
+            :params="virtualKeySelectParams"
+            filterable
+            version="v2"
+            allow-clear
+            class="virtual-key-select flex-fill"
+            @change="onVirtualKeyChange" />
+          <a-button
+            v-if="hasConfiguredApiKey"
+            type="link"
+            size="small"
+            class="ml-2 flex-shrink-0"
+            @click="handleQuickChatTest">
+            {{ $t('aice.llm_deployment.chat_test_quick') }}
+          </a-button>
+        </div>
       </div>
       <a-alert type="info" show-icon>
         <template slot="message">{{ $t('aice.aiproxy.endpoint_example') }}</template>
@@ -102,6 +112,7 @@ import AiproxyLlmLinkListMixin from '@Ai/mixins/aiproxyLlmLinkListMixin'
 import { getAiproxySelectParams } from '@Ai/constants/aiproxyResources'
 import {
   buildAiproxyCurlExample,
+  isPlaceholderApiKey,
   resolveAiproxyChatCompletionsUrl,
 } from '@Ai/utils/aiproxyEndpoint'
 import { getLlmInstanceDisplayName } from '@Ai/utils/llmInstanceNames'
@@ -226,6 +237,9 @@ export default {
         model,
         virtualKey: this.selectedVirtualKey,
       })
+    },
+    hasConfiguredApiKey () {
+      return !!this.selectedVirtualKey && !isPlaceholderApiKey(`Bearer ${this.selectedVirtualKey}`)
     },
   },
   watch: {
@@ -431,6 +445,13 @@ export default {
         clearInterval(this.pollTimer)
         this.pollTimer = null
       }
+    },
+    handleQuickChatTest () {
+      this.$bus.$emit('llmDeploymentOpenChatTest', {
+        deploymentId: this.data.id,
+        virtualKeyId: this.selectedVirtualKeyId,
+        virtualKey: this.selectedVirtualKey,
+      })
     },
   },
 }
