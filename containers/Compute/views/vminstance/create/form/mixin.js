@@ -1072,37 +1072,48 @@ export default {
       this.validateForm()
         .then(async formData => {
           this.submiting = true
-          const genCreateData = new GenCreateData(formData, this.form.fi)
-          const data = genCreateData.all()
-          if (this.form.fd.bastion_host_enable) {
-            const bastionServer = this.getBationServerData()
-            data.bastion_server = bastionServer
-          }
-          if (data.custom_data_type) {
-            delete data.custom_data_type
-            const { customData } = this.$refs.customData
-            if (customData.length) {
-              data.user_data = customData
+          try {
+            const genCreateData = new GenCreateData(formData, this.form.fi)
+            const data = genCreateData.all()
+            if (this.form.fd.bastion_host_enable) {
+              const bastionServer = this.getBationServerData()
+              data.bastion_server = bastionServer
             }
+            if (data.custom_data_type) {
+              delete data.custom_data_type
+              const { customData } = this.$refs.customData
+              if (customData.length) {
+                data.user_data = customData
+              }
+            }
+            data.extraData.reason = this.form.fd?.reason
+            data.extraData.formType = this.type
+            data.extraData.__resource_type__ = 'server'
+            await this.checkCreateData(data)
+            await this.doForecast(genCreateData, data)
+            const { __count__, ...parameter } = deleteInvalid(data)
+            const shopCart = {
+              action: 'create',
+              auto_execute: true,
+              count: __count__,
+              resource: 'servers',
+              user_id: this.$store.getters.userInfo.id,
+              parameter: {
+                ...parameter,
+                price: this.price,
+              },
+            }
+            this._getProjectDomainInfo(shopCart)
+            this.$message.success(this.$t('common.success'))
+            this.$store.commit('shopcart/ADD_SHOP_CART', shopCart)
+          } catch (error) {
+            throw error
+          } finally {
+            this.submiting = false
           }
-          data.extraData.reason = this.form.fd?.reason
-          data.extraData.formType = this.type
-          data.extraData.__resource_type__ = 'server'
-          const { __count__, ...parameter } = deleteInvalid(data)
-          const shopCart = {
-            action: 'create',
-            auto_execute: true,
-            count: __count__,
-            resource: 'servers',
-            user_id: this.$store.getters.userInfo.id,
-            parameter: {
-              ...parameter,
-              price: this.price,
-            },
-          }
-          this._getProjectDomainInfo(shopCart)
-          this.$message.success(this.$t('common.success'))
-          this.$store.commit('shopcart/ADD_SHOP_CART', shopCart)
+        })
+        .catch(error => {
+          throw error
         })
     },
     handleCancel () {
