@@ -18,7 +18,16 @@
           <template v-slot:name="text, row">
             <a @click="handleOpenAiRoutingSidepage(row.id)">{{ text || row.id }}</a>
           </template>
+          <template v-slot:model_key="text">
+            <span>{{ text || '-' }}</span>
+          </template>
+          <template v-slot:priority="text">
+            <span>{{ formatRoutingPriority(text) }}</span>
+          </template>
         </a-table>
+        <a-empty
+          v-else-if="!loading"
+          :description="$t('aice.llm_deployment.aiproxy_routing_empty')" />
 
         <template v-if="!embedded">
           <a-divider orientation="left">{{ $t('aice.aiproxy.routing_models') }}</a-divider>
@@ -83,12 +92,8 @@ export default {
       return (this.data?.aiproxy_routing_id || '').trim()
     },
     routingTableData () {
-      if (this.routing) return [this.routing]
-      if (!this.routingId) return []
-      return [{
-        id: this.routingId,
-        name: this.aiRoutingName || this.routingId,
-      }]
+      if (!this.routing) return []
+      return [this.routing]
     },
     emptyDescription () {
       if (this.data?.auto_register_aiproxy === false) {
@@ -110,12 +115,12 @@ export default {
         {
           title: this.$t('aice.aiproxy.model_key'),
           dataIndex: 'model_key',
-          customRender: text => text || '-',
+          scopedSlots: { customRender: 'model_key' },
         },
         {
           title: this.$t('aice.aiproxy.priority'),
           dataIndex: 'priority',
-          customRender: text => (text === null || text === undefined || text === '') ? '-' : text,
+          scopedSlots: { customRender: 'priority' },
           width: 100,
         },
       ]
@@ -158,8 +163,37 @@ export default {
     modelName (row) {
       return getAiModelDisplayName(row, this.aiModelNameMap)
     },
+    formatRoutingPriority (value) {
+      return (value === null || value === undefined || value === '') ? '-' : value
+    },
     formatDeploymentStatus (status) {
       return formatDeploymentAiproxyStatus(status, this)
+    },
+    async fetchRoutingDetail (routingId, scope) {
+      const routingMgr = new Manager('ai_routings')
+      try {
+        const res = await routingMgr.get({
+          id: routingId,
+          params: { scope, details: true },
+        })
+        const row = res?.data?.data || res?.data
+        if (row?.id) return row
+      } catch (e) {
+        // fall through to list lookup
+      }
+      try {
+        const { data: { data = [] } } = await routingMgr.list({
+          params: {
+            scope,
+            filter: `id.equals('${routingId}')`,
+            limit: 1,
+            details: true,
+          },
+        })
+        return data[0] || null
+      } catch (e) {
+        return null
+      }
     },
     async loadRouting () {
       if (!this.routingId) {
@@ -169,15 +203,8 @@ export default {
       }
       this.loading = true
       try {
-        const routingMgr = new Manager('ai_routings')
         const routingScope = getAiproxyResourceScope('ai_routings', this)
-
-        const routingRes = await routingMgr.get({
-          id: this.routingId,
-          params: { scope: routingScope, details: true },
-        }).catch(() => ({ data: null }))
-
-        this.routing = routingRes.data || null
+        this.routing = await this.fetchRoutingDetail(this.routingId, routingScope)
 
         if (this.embedded) {
           this.routingModelsList = []
