@@ -1392,7 +1392,8 @@
       "available": "可用",
       "create_failed": "创建失败",
       "delete_failed": "删除失败",
-      "importing_model": "导入模型中"
+      "importing_model": "导入模型中",
+      "import_model_failed": "导入模型失败"
     }
   },
   "skuCategoryOptions": {

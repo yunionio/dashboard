@@ -650,8 +650,8 @@ export default {
   },
   llmSku: {
     success: ['ready', 'available'],
-    danger: ['create_failed', 'delete_failed'],
-    info: ['unknown'],
+    danger: ['create_failed', 'delete_failed', 'import_model_failed'],
+    info: ['unknown', 'importing_model'],
   },
   llmDeployment: {
     info: ['unknown', 'partial', 'start_delete', 'deleted', 'deploying', 'syncing', 'aiproxy_pending', 'aiproxy_syncing', 'aiproxy_partial'],
