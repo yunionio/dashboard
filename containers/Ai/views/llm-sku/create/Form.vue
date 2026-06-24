@@ -462,6 +462,15 @@ export default {
     const catalogNameInit = this.catalogSpec
       ? defaultNameFromSpec(this.catalogSpec, this.catalogSet, catalogLlmTypeInit)
       : null
+    const isCatalogImport = !!getCatalogSpecId(this.catalogSpec) && this.catalogSubmitType === 'import'
+    const catalogImportDeviceRules = isCatalogImport
+      ? [{
+        type: 'array',
+        required: true,
+        min: 1,
+        message: this.$t('common.tips.select', [this.$t('aice.devices')]),
+      }]
+      : []
     const typeLlmSpec = (llmSpec && (initialLlmTypeForSpec === 'vllm' || initialLlmTypeForSpec === 'sglang') && llmSpec[initialLlmTypeForSpec])
       ? llmSpec[initialLlmTypeForSpec]
       : {}
@@ -770,6 +779,7 @@ export default {
           'device',
           {
             initialValue: devices && devices.length > 0 ? devices.map(v => v.model) : [],
+            rules: catalogImportDeviceRules,
           },
         ],
         mounted_apps: [
@@ -899,6 +909,21 @@ export default {
       let base = LLM_TYPE_FORM_CONFIG[type] || []
       if (this.isCatalogMode) {
         base = base.filter(f => f.fieldKey !== 'mounted_models' && f.fieldKey !== 'preferred_model')
+      }
+      if (this.isCatalogMode && this.catalogSubmitType === 'import' && !base.some(f => f.fieldKey === 'device')) {
+        base = [
+          ...base,
+          {
+            fieldKey: 'device',
+            label: 'aice.devices',
+            component: 'base-select',
+            props: {
+              optionsKey: 'specList',
+              placeholderKey: 'aice.devices',
+              selectProps: { mode: 'multiple' },
+            },
+          },
+        ]
       }
       if (type !== 'vllm' && type !== 'sglang') return base
       const out = []

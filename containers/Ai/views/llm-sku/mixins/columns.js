@@ -1,11 +1,12 @@
 import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
+import i18n from '@/locales'
 import {
   getNameDescriptionTableColumn,
   getProjectTableColumn,
   getTimeTableColumn,
   getPublicScopeTableColumn,
-  getStatusTableColumn,
 } from '@/utils/common/tableColumn'
+import LlmSkuImportStatus from '../components/LlmSkuImportStatus.vue'
 import {
   // getDeviceModelTableColumn,
   getAppNameTableColumn,
@@ -31,7 +32,17 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'llmSku' }),
+      {
+        field: 'status',
+        title: i18n.t('common.status'),
+        sortable: true,
+        minWidth: 160,
+        slots: {
+          default: ({ row }) => {
+            return [this.$createElement(LlmSkuImportStatus, { props: { row } })]
+          },
+        },
+      },
       getCpuTableColumn(),
       getMemoryTableColumn(),
       getDiskTableColumn(),

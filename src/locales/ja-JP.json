@@ -1385,7 +1385,8 @@
       "available": "利用可能",
       "create_failed": "作成に失敗しました",
       "delete_failed": "削除に失敗しました",
-      "importing_model": "モデルインポート中"
+      "importing_model": "モデルインポート中",
+      "import_model_failed": "モデルインポート失敗"
     }
   },
   "skuCategoryOptions": {

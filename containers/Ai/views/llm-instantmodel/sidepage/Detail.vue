@@ -15,9 +15,7 @@ import {
   getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
 import {
-  // getPackageNameTableColumn,
-  // getPackageVersionTableColumn,
-  // getAppImageTableColumn,
+  getAppImageTableColumn,
   getAppSizeTableColumn,
   getAppCacheStatusColumn,
   getModelIdTableColumn,
@@ -63,6 +61,7 @@ export default {
         getModelNameTableColumn(),
         getLlmTypeTableColumn(),
         getPublicScopeTableColumn(),
+        getAppImageTableColumn({ vm: this }),
         getAppSizeTableColumn(),
       ],
       extraInfo: [

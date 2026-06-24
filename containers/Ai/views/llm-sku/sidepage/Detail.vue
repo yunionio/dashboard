@@ -4,6 +4,7 @@
     :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo"
+    :hidden-keys="detailHiddenKeys"
     status-module="llmSku"
     resource="llm_skus" />
 </template>
@@ -11,6 +12,7 @@
 <script>
 import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import WindowsMixin from '@/mixins/windows'
+import LlmSkuImportStatus from '../components/LlmSkuImportStatus.vue'
 import {
   getDeviceModelTableColumn,
   getAppNameTableColumn,
@@ -43,6 +45,15 @@ export default {
       credentialNamesMap: {},
       difyImageNamesMap: {},
       baseInfo: [
+        {
+          field: 'status',
+          title: this.$t('common.status'),
+          slots: {
+            default: ({ row }) => {
+              return [this.$createElement(LlmSkuImportStatus, { props: { row } })]
+            },
+          },
+        },
         getDeviceModelTableColumn(),
         getImageTableColumn({ vm: this }),
         ...(isDesktopType ? [getAppNameTableColumn()] : []),
@@ -135,6 +146,9 @@ export default {
     }
   },
   computed: {
+    detailHiddenKeys () {
+      return ['status']
+    },
     extraInfo () {
       return getLlmSpecSections(this)
     },

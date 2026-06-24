@@ -55,13 +55,17 @@ export const getPackageVersionTableColumn = () => {
 export const getAppImageTableColumn = ({ vm = {} } = {}) => {
   return {
     field: 'image_id',
-    title: i18n.t('aice.template'),
+    title: i18n.t('aice.image'),
     width: 120,
     slots: {
       default: ({ row }, h) => {
+        if (!row.image_id) {
+          return '-'
+        }
+        const label = row.image || row.image_id
         return [
-          <list-body-cell-wrap copy hideField={true} field='image_id' row={row} message={row.image}>
-            <side-page-trigger permission='images_get' name='SystemImageSidePage' list={vm.list} id={row.image_id} vm={vm} tab="system-image-detail">{row.image}</side-page-trigger>
+          <list-body-cell-wrap copy hideField={true} field='image_id' row={row} message={label}>
+            <side-page-trigger permission='images_get' name='SystemImageSidePage' id={row.image_id} vm={vm} tab="system-image-detail">{label}</side-page-trigger>
           </list-body-cell-wrap>,
         ]
       },
