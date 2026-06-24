@@ -1,11 +1,12 @@
+import i18n from '@/locales'
 import {
   getNameDescriptionTableColumn,
-  getStatusTableColumn,
   getEnabledTableColumn,
   getProjectTableColumn,
   getTimeTableColumn,
   getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
+import InstantModelImportStatus from '../components/InstantModelImportStatus.vue'
 import {
   // getPackageNameTableColumn,
   // getAppIdTableColumn,
@@ -21,6 +22,9 @@ import {
 } from '../utils/columns'
 
 export default {
+  components: {
+    InstantModelImportStatus,
+  },
   created () {
     this.columns = [
       // getIconTableColumn(),
@@ -33,7 +37,22 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'image', showStatusProgress: true }),
+      {
+        field: 'status',
+        title: i18n.t('common.status'),
+        sortable: true,
+        minWidth: 160,
+        slots: {
+          default: ({ row }) => {
+            return [
+              <instant-model-import-status status={row.status} progress={row.progress} />,
+            ]
+          },
+        },
+        formatter: ({ row }) => {
+          return i18n.te(`status.image.${row.status}`) ? i18n.t(`status.image.${row.status}`) : row.status
+        },
+      },
       getEnabledTableColumn(),
       getEnabledTableColumn({
         field: 'auto_cache',

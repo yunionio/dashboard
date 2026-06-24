@@ -245,6 +245,7 @@
     },
     "image": {
       "init": "Initialize",
+      "packaging": "Packaging",
       "saving": "Saving",
       "saved": "Saved",
       "caching": "Cached",
