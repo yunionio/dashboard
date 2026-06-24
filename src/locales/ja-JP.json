@@ -245,6 +245,7 @@
     },
     "image": {
       "init": "初期化する",
+      "packaging": "パッケージング中",
       "saving": "節約",
       "saved": "保存",
       "caching": "キャッシュ内",

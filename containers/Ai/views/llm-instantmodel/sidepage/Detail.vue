@@ -67,6 +67,23 @@ export default {
       ],
       extraInfo: [
         {
+          field: 'import_progress',
+          title: this.$t('aice.llm_image.progress'),
+          hidden: () => !this.showImportProgress,
+          slots: {
+            default: ({ row }) => {
+              const progress = Math.ceil(+row.progress * 100) / 100
+              return [
+                <a-progress
+                  percent={progress}
+                  show-info={true}
+                  size="small"
+                  status="active" />,
+              ]
+            },
+          },
+        },
+        {
           field: 'mounts',
           title: this.$t('aice.mounted_apps.mounts'),
           slots: {
@@ -80,6 +97,11 @@ export default {
     }
   },
   computed: {
+    showImportProgress () {
+      const progress = +this.data.progress
+      if (!(progress > 0 && progress < 100)) return false
+      return ['init', 'packaging', 'saving', 'queued', 'converting'].includes(this.data.status)
+    },
     mountPaths () {
       if (!this.data.mounts || !Array.isArray(this.data.mounts)) {
         return ''
