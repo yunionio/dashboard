@@ -198,19 +198,20 @@ export default {
   },
   methods: {
     async switchLoginUrl (data) {
-      try {
-        const response = await new this.$Manager('customers').list({
-          params: {
-            scope: this.$store.getters.scope,
-            filter: `mobile.contains(${data.mobile})`,
-          },
-        })
-        if (response.data.data.length > 0) {
-          window.location.href = '/account'
-        }
-      } catch (error) {
-        console.error(error)
-      }
+      // 登录注释
+      // try {
+      //   const response = await new this.$Manager('customers').list({
+      //     params: {
+      //       scope: this.$store.getters.scope,
+      //       filter: `mobile.contains(${data.mobile})`,
+      //     },
+      //   })
+      //   if (response.data.data.length > 0) {
+      //     window.location.href = '/account'
+      //   }
+      // } catch (error) {
+      //   console.error(error)
+      // }
       this.$store.dispatch('auth/onAfterLogin')
     },
     gethost (str) {
