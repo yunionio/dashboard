@@ -252,6 +252,7 @@
     },
     "image": {
       "init": "初始化",
+      "packaging": "打包中",
       "saving": "正在保存",
       "saved": "已保存",
       "caching": "缓存中",

@@ -35,7 +35,7 @@ export default {
         filterOptions,
         hiddenColumns: [],
         steadyStatus: {
-          status: expectStatus.mcp ? Object.values(expectStatus.image).flat() : [],
+          status: Object.values(expectStatus.image).flat(),
         },
       }),
       groupActions: [
