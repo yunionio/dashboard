@@ -6,7 +6,7 @@ import {
   getTimeTableColumn,
   getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
-import InstantModelImportStatus from '../components/InstantModelImportStatus.vue'
+import InstantModelImportStatus from '@Ai/sections/InstantModelImportStatus.vue'
 import {
   // getPackageNameTableColumn,
   // getAppIdTableColumn,

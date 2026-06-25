@@ -1370,7 +1370,8 @@
       "available": "Available",
       "create_failed": "Create Failed",
       "delete_failed": "Delete Failed",
-      "importing_model": "Importing Model"
+      "importing_model": "Importing Model",
+      "import_model_failed": "Import Model Failed"
     }
   },
   "skuCategoryOptions": {
