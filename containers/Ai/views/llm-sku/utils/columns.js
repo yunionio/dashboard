@@ -1,6 +1,7 @@
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
 import { getSkuModelDisplayText } from './modelDisplay'
+import LlmSkuMountedModels from '../components/LlmSkuMountedModels.vue'
 
 export const getDeviceModelTableColumn = () => {
   return {
@@ -153,29 +154,21 @@ export const getLlmTypeTableColumn = (opts = {}) => {
 export const getLlmModelNameTableColumn = ({ vm = {} } = {}) => {
   return {
     field: 'mounted_models',
-    title: i18n.t('aice.model'),
+    title: i18n.t('aice.llm_instantmodel.menu'),
     formatter: ({ row }) => {
       const text = getSkuModelDisplayText(row)
       return text || '-'
     },
     slots: {
-      default: ({ row }, h) => {
-        if (row.mounted_model_details && row.mounted_model_details.length) {
-          const ret = []
-          row.mounted_model_details.forEach(v => {
-            ret.push(
-              <list-body-cell-wrap copy hideField={true} field='id' row={v} message={v.fullname}>
-                <side-page-trigger permission='llm_instant_models_get' name='LlmInstantModelSidePage' id={v.id} vm={vm}>{v.fullname}</side-page-trigger>
-              </list-body-cell-wrap>,
-            )
-          })
-          return ret
+      default: ({ row }) => {
+        if (!row.mounted_model_details?.length && !getSkuModelDisplayText(row)) {
+          return '-'
         }
-        const text = getSkuModelDisplayText(row)
-        if (text) {
-          return [h('span', text)]
-        }
-        return '-'
+        return [
+          vm.$createElement(LlmSkuMountedModels, {
+            props: { row, vm, showLabel: false },
+          }),
+        ]
       },
     },
   }

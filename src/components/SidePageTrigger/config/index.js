@@ -187,6 +187,7 @@ export default {
   },
   LlmInstantModelSidePage: {
     resource: 'llm_instant_models',
+    getParams: () => ({ details: true }),
   },
   LlmSkuSidePage: {
     resource: 'llm_skus',

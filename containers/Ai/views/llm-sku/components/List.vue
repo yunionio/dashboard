@@ -32,6 +32,7 @@ import { mapGetters, mapState } from 'vuex'
 import { parseLlmRoute, getLlmSkuTypeFilter } from '@Ai/utils/llmRouteContext'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import { getLlmSkuListSteadyStatuses } from '@Ai/utils/llmSkuStatus'
 import LlmSkuGrid from './LlmSkuGrid'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -62,6 +63,9 @@ export default {
         getParams: this.getParam,
         filterOptions,
         hiddenColumns: [],
+        steadyStatus: {
+          status: getLlmSkuListSteadyStatuses(),
+        },
       }),
       groupActions: [
         {
