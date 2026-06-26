@@ -36,23 +36,10 @@ export default {
   computed: {
     baseInfo () {
       return [
-        getLLMSkuTableColumn(),
+        getLLMSkuTableColumn({ vm: this }),
         getBackendTableColumn(),
-        {
-          field: 'backend_version',
-          title: this.$t('aice.llm_deployment.backend_version'),
-          formatter: ({ row }) => row.backend_version || '-',
-        },
         getReplicasTableColumn(),
         getPlacementStrategyTableColumn(),
-        {
-          field: 'cpu_offloading',
-          title: this.$t('aice.llm_deployment.cpu_offloading'),
-          formatter: ({ row }) => {
-            if (row.cpu_offloading === null || row.cpu_offloading === undefined) return '-'
-            return row.cpu_offloading ? this.$t('common.true') : this.$t('common.false')
-          },
-        },
         {
           field: 'distributed_inference',
           title: this.$t('aice.llm_deployment.distributed_inference'),
