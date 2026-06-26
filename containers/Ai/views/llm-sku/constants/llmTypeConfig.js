@@ -51,7 +51,8 @@ export function getDefaultPortMappingsForType (llmType) {
  * 社区镜像导入时自动创建 SKU 用的默认资源规格。
  * 字段单位与后端 LLMSkuCreateInput 一致：memory MB，volume size_mb，bandwidth Mbps。
  * dify 单镜像导入无法构造完整 dify spec；bundle 导入由 yaml sku 块提供规格。
- * 取自 onecloud-operator pkg/apis/onecloud/v1alpha1/defaults.go 的 DefaultLLMSku。
+ * ollama/vllm 等类型的默认规格以 website/static/llmimages.yaml 的 sku 块为准；
+ * 下方 LLM_TYPE_DEFAULT_SKU_SPEC 仅作 yaml 未配置 sku 时的 fallback。
  */
 export const LLM_TYPE_DEFAULT_SKU_SPEC = {
   ollama: { cpu: 4, memory: 4096, volume_size_mb: 40960, bandwidth: 1000 },
