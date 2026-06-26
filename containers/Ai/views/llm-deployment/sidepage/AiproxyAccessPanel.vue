@@ -92,7 +92,11 @@
           </a-button>
         </div>
       </div>
-      <a-alert type="info" show-icon>
+      <agent-aiproxy-access-section
+        :openai-base-url="openaiBaseUrl"
+        :virtual-key="selectedVirtualKey"
+        :model="agentAccessModel" />
+      <a-alert type="info" show-icon class="mt-3">
         <template slot="message">{{ $t('aice.aiproxy.endpoint_example') }}</template>
         <template slot="description">
           <pre class="mb-0">{{ curlExample }}</pre>
@@ -114,6 +118,7 @@ import {
   buildAiproxyCurlExample,
   isPlaceholderApiKey,
   resolveAiproxyChatCompletionsUrl,
+  resolveAiproxyOpenAIBaseUrl,
 } from '@Ai/utils/aiproxyEndpoint'
 import { getLlmInstanceDisplayName } from '@Ai/utils/llmInstanceNames'
 import {
@@ -124,6 +129,7 @@ import {
   pollDeploymentDetailRefresh,
 } from '@Ai/utils/aiproxyDeploymentActions'
 import AiproxyRoutingPanel from './AiproxyRoutingPanel'
+import AgentAiproxyAccessSection from './AgentAiproxyAccessSection'
 
 const POLL_INTERVAL_MS = 5000
 const MAX_POLL_COUNT = 24
@@ -132,7 +138,7 @@ const AIPROXY_TERMINAL_STATUSES = new Set(['ready', 'partial', 'aiproxy_partial'
 
 export default {
   name: 'LlmDeploymentAiproxyAccessPanel',
-  components: { AiproxyRoutingPanel },
+  components: { AiproxyRoutingPanel, AgentAiproxyAccessSection },
   mixins: [WindowsMixin, AiproxyLlmLinkListMixin],
   props: {
     data: {
@@ -147,6 +153,7 @@ export default {
   data () {
     return {
       endpointUrl: '',
+      openaiBaseUrl: '',
       endpointLoading: false,
       pollTimer: null,
       pollCount: 0,
@@ -191,7 +198,7 @@ export default {
       if (status === 'deploying' && this.autoRegister) return true
       if (AIPROXY_TERMINAL_STATUSES.has(status)) {
         if (status === 'aiproxy_sync_failed') return false
-        return !this.readyInstances.length || !this.endpointUrl
+        return !this.readyInstances.length || !this.endpointUrl || !this.openaiBaseUrl
       }
       return false
     },
@@ -229,6 +236,9 @@ export default {
           scopedSlots: { customRender: 'endpoint' },
         },
       ]
+    },
+    agentAccessModel () {
+      return this.readyInstances[0]?.client_model_alias || ''
     },
     curlExample () {
       const model = this.readyInstances[0]?.client_model_alias || 'your-model'
@@ -314,6 +324,7 @@ export default {
     },
     resetAccessState () {
       this.endpointUrl = ''
+      this.openaiBaseUrl = ''
       this.endpointLoading = false
       this.pollCount = 0
       this.stopPolling()
@@ -390,19 +401,26 @@ export default {
     async loadEndpoint () {
       if (!this.autoRegister || this.syncFailed) {
         this.endpointUrl = ''
+        this.openaiBaseUrl = ''
         return
       }
       if (!this.readyInstances.length) {
         this.endpointUrl = ''
+        this.openaiBaseUrl = ''
         return
       }
       this.endpointLoading = true
       try {
-        this.endpointUrl = await resolveAiproxyChatCompletionsUrl(this, {
-          routingId: this.data?.aiproxy_routing_id,
-        })
+        const routingId = this.data?.aiproxy_routing_id
+        const [chatUrl, openaiBase] = await Promise.all([
+          resolveAiproxyChatCompletionsUrl(this, { routingId }),
+          resolveAiproxyOpenAIBaseUrl(this, { routingId }),
+        ])
+        this.endpointUrl = chatUrl
+        this.openaiBaseUrl = openaiBase
       } catch (e) {
         this.endpointUrl = ''
+        this.openaiBaseUrl = ''
       } finally {
         this.endpointLoading = false
         this.syncPollingState()
@@ -415,7 +433,7 @@ export default {
       if (AIPROXY_IN_PROGRESS_STATUSES.has(status)) return true
       if (status === 'deploying' && this.autoRegister) return true
       if (['ready', 'partial', 'aiproxy_partial'].includes(status)) {
-        return !this.readyInstances.length || !this.endpointUrl
+        return !this.readyInstances.length || !this.endpointUrl || !this.openaiBaseUrl
       }
       return false
     },
