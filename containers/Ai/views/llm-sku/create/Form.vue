@@ -86,7 +86,16 @@
         </a-form-item>
       </template>
       <a-form-item v-else :label="$t('aice.llm_image')">
+        <catalog-llm-image-select
+          v-if="isCatalogImportMode"
+          ref="catalogImageSelect"
+          v-decorator="decorators.llm_image_id"
+          :llm-type="catalogLlmType"
+          :auto-select-default="false"
+          :select-props="{ placeholder: $t('common.tips.select', [$t('aice.llm_image')]) }"
+          @catalog-loaded="onCatalogImagesLoaded" />
         <llm-image-select
+          v-else
           v-decorator="decorators.llm_image_id"
           :params="appImageParams"
           :select-props="{ placeholder: $t('common.tips.select', [$t('aice.llm_image')]) }" />
@@ -360,6 +369,15 @@
 <script>
 import { mapGetters } from 'vuex'
 import LlmImageSelect from '@Ai/sections/LlmImageSelect'
+import CatalogLlmImageSelect from '@Ai/sections/CatalogLlmImageSelect'
+import {
+  buildCatalogImageGroups,
+  fetchCommunityImageItems,
+  getCatalogImportFormDefaults,
+  isBundleItem,
+  listLocalLlmImages,
+  resolveCatalogImageValue,
+} from '@Ai/utils/communityImages'
 import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import {
   backendToLlmType,
@@ -390,6 +408,7 @@ export default {
   components: {
     DomainProject,
     LlmImageSelect,
+    CatalogLlmImageSelect,
     NameRepeated,
   },
   mixins: [WindowsMixin],
@@ -588,7 +607,7 @@ export default {
         llm_image_id: [
           'llm_image_id',
           {
-            initialValue: llm_image_id,
+            initialValue: isCatalogImport ? undefined : llm_image_id,
             trigger: 'input',
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('aice.llm_image')]) },
@@ -886,10 +905,15 @@ export default {
       modelName: name || '',
       audioImageParams: { limit: 20, scope: this.$store.getters.scope, $t: 2 },
       streamImageParams: { limit: 20, scope: this.$store.getters.scope, $t: 3 },
+      catalogImageItemsById: {},
+      catalogImportDefaultsApplied: false,
     }
   },
   computed: {
     ...mapGetters(['userInfo']),
+    isCatalogImportMode () {
+      return this.isCatalogMode && this.catalogSubmitType === 'import' && !this.isApplyType && !this.isDesktopType
+    },
     isEditMode () {
       return this.mode === 'edit'
     },
@@ -1013,6 +1037,12 @@ export default {
       this.form.fc.setFieldsValue({
         llm_type: llmType,
         name: defaultNameFromSpec(this.catalogSpec, this.catalogSet, llmType),
+      })
+      if (this.isCatalogImportMode) {
+        this.loadCatalogImportDefaults(llmType)
+        return
+      }
+      this.form.fc.setFieldsValue({
         cpu: 4,
         memory: 8,
       })
@@ -1028,6 +1058,69 @@ export default {
           this.form.fc.setFieldsValue(pmFields)
         })
       }
+    },
+    async loadCatalogImportDefaults (llmType) {
+      if (this.catalogImportDefaultsApplied) return
+      try {
+        const catalogManager = new this.$Manager('llm_images_catalogs', 'v1')
+        const imagesManager = new this.$Manager('llm_images')
+        const catalogItems = await fetchCommunityImageItems([llmType], catalogManager)
+        const localImages = await listLocalLlmImages(
+          imagesManager,
+          llmType,
+          this.$store.getters.scope,
+        )
+        const groups = buildCatalogImageGroups(catalogItems, localImages)
+        const catalogItem = groups.communityItems[0] || catalogItems.find(item => item.image && !isBundleItem(item)) || null
+        const defaults = getCatalogImportFormDefaults(catalogItem)
+        if (catalogItem?.id) {
+          this.catalogImageItemsById = { ...this.catalogImageItemsById, [catalogItem.id]: catalogItem }
+        }
+        catalogItems.forEach(item => {
+          if (item?.id) this.catalogImageItemsById[item.id] = item
+        })
+        this.form.fc.setFieldsValue({
+          cpu: defaults.cpu,
+          memory: defaults.memory,
+          volume_size: defaults.volume_size,
+          bandwidth: defaults.bandwidth,
+        })
+        if (!this.isEditMode && defaults.portMappings?.length) {
+          const next = defaults.portMappings.map(item => ({ ...item, key: uuid() }))
+          this.portMappings.splice(0, this.portMappings.length, ...next)
+          this.$nextTick(() => {
+            const pmFields = {}
+            next.forEach(item => {
+              pmFields[`protocol[${item.key}]`] = item.protocol
+              pmFields[`container_port[${item.key}]`] = item.container_port
+            })
+            this.form.fc.setFieldsValue(pmFields)
+          })
+        }
+        this.catalogImportDefaultsApplied = true
+      } catch (e) {
+        // 预填失败不阻断表单
+      }
+    },
+    onCatalogImagesLoaded ({ catalogItemsById }) {
+      if (catalogItemsById) {
+        this.catalogImageItemsById = { ...this.catalogImageItemsById, ...catalogItemsById }
+      }
+    },
+    async resolveImportFormImageId (llmImageId) {
+      const catalogMap = {
+        ...this.catalogImageItemsById,
+        ...(this.$refs.catalogImageSelect?.catalogItemsById || {}),
+      }
+      const localImageMap = this.$refs.catalogImageSelect?.localImageMap || {}
+      const imagesManager = new this.$Manager('llm_images')
+      return resolveCatalogImageValue(
+        llmImageId,
+        catalogMap,
+        imagesManager,
+        localImageMap,
+        this.$store.getters.scope,
+      )
     },
     _assembleSkuData (values) {
       const {
@@ -1201,6 +1294,9 @@ export default {
     },
     async buildCatalogSkuPayload () {
       const values = await this.form.fc.validateFields()
+      if (this.isCatalogImportMode && values.llm_image_id) {
+        values.llm_image_id = await this.resolveImportFormImageId(values.llm_image_id)
+      }
       const data = this._assembleSkuData(values)
       const llmType = this.catalogLlmType
 

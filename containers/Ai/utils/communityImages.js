@@ -130,36 +130,40 @@ function parseBundleImage (img) {
  * @returns {object|null}
  */
 export function parseCommunityCatalogItem (item, index) {
-  if (!item?.llm_type) return null
+  const llm_type = normalizeCatalogLlmType(item)
+  if (!llm_type) return null
 
+  const image = resolveCatalogItemImage(item)
   const base = {
     id: item.id || item.name || String(index + 1),
-    llm_type: item.llm_type,
+    llm_type,
     description: item.description || '-',
-    icon: getTypeIcon(item.llm_type),
-    import_kind: item.import_kind || 'single',
+    icon: getTypeIcon(llm_type),
+    import_kind: item.import_kind || item.importKind || 'single',
     sku: item.sku || null,
   }
 
-  if (item.import_kind === BUNDLE_IMPORT_KIND) {
-    if (!item.name || !Array.isArray(item.images) || item.images.length === 0) return null
-    const images = item.images.map(parseBundleImage).filter(Boolean)
-    if (!images.length) return null
+  const importKind = base.import_kind
+  if (importKind === BUNDLE_IMPORT_KIND) {
+    const images = item.images || item.Images
+    if (!item.name || !Array.isArray(images) || images.length === 0) return null
+    const parsedImages = images.map(parseBundleImage).filter(Boolean)
+    if (!parsedImages.length) return null
     return {
       ...base,
       name: item.name,
-      images,
+      images: parsedImages,
     }
   }
 
-  if (!item.image) return null
-  const { image_name, image_label } = parseImageField(item.image)
+  if (!image) return null
+  const { image_name, image_label } = parseImageField(image)
   return {
     ...base,
-    image: item.image,
+    image,
     image_name,
     image_label,
-    app_name: item.app_name || '',
+    app_name: item.app_name || item.appName || '',
     desktop: item.desktop || null,
   }
 }
@@ -229,13 +233,45 @@ export function getCommunitySkuName (record) {
   return resolveSkuGenerateName(record)
 }
 
-function buildImageLookupKey (llmType, imageName, imageLabel) {
+export const CATALOG_IMAGE_VALUE_PREFIX = 'catalog:'
+
+export function isCatalogImageValue (value) {
+  return typeof value === 'string' && value.startsWith(CATALOG_IMAGE_VALUE_PREFIX)
+}
+
+export function toCatalogImageValue (catalogItemId) {
+  return `${CATALOG_IMAGE_VALUE_PREFIX}${catalogItemId || ''}`
+}
+
+export function parseCatalogImageValue (value) {
+  if (!isCatalogImageValue(value)) return ''
+  return value.slice(CATALOG_IMAGE_VALUE_PREFIX.length)
+}
+
+export function buildImageLookupKey (llmType, imageName, imageLabel) {
   return `${llmType}:${imageName}:${imageLabel}`
 }
 
-/** llm_images_catalog API 返回 llm_images_catalogs，非标准 data 字段 */
+function normalizeCatalogLlmType (item) {
+  const raw = item?.llm_type ?? item?.llmType ?? ''
+  return String(raw).trim()
+}
+
+function resolveCatalogItemImage (item) {
+  if (item?.image) return item.image
+  const llmType = normalizeCatalogLlmType(item)
+  const id = item?.id
+  if (!llmType || !id) return ''
+  const prefix = `${llmType}:`
+  if (!id.startsWith(prefix)) return ''
+  return id.slice(prefix.length)
+}
+
+/** llm_images_catalog API 返回 llm_images_catalogs 或标准 data 字段 */
 function parseCatalogListResponse (res) {
-  const body = res?.data || {}
+  const raw = res?.data
+  if (Array.isArray(raw)) return raw
+  const body = raw && typeof raw === 'object' ? raw : {}
   let items = body.llm_images_catalogs ?? body.data ?? []
   if (typeof items === 'string') {
     try {
@@ -244,20 +280,35 @@ function parseCatalogListResponse (res) {
       items = []
     }
   }
+  if (!Array.isArray(items) && items && typeof items === 'object' && Array.isArray(items.data)) {
+    items = items.data
+  }
   return Array.isArray(items) ? items : []
 }
 
-const catalogListInflight = new WeakMap()
+const catalogListInflight = new Map()
 
-async function listCommunityCatalog (catalogManager) {
-  const inflight = catalogListInflight.get(catalogManager)
+function catalogListCacheKey (catalogManager, params) {
+  const resource = catalogManager?.resource || 'llm_images_catalogs'
+  return `${resource}:${JSON.stringify(params || {})}`
+}
+
+async function listCommunityCatalog (catalogManager, params = { limit: 0 }) {
+  const cacheKey = catalogListCacheKey(catalogManager, params)
+  const inflight = catalogListInflight.get(cacheKey)
   if (inflight) return inflight
-  const promise = catalogManager.list({ params: { limit: 0 } })
+  const promise = catalogManager.list({ params })
     .finally(() => {
-      catalogListInflight.delete(catalogManager)
+      catalogListInflight.delete(cacheKey)
     })
-  catalogListInflight.set(catalogManager, promise)
+  catalogListInflight.set(cacheKey, promise)
   return promise
+}
+
+function matchesAllowedLlmTypes (llmType, allowedTypes) {
+  if (!Array.isArray(allowedTypes) || allowedTypes.length === 0) return true
+  const normalized = String(llmType || '').toLowerCase()
+  return allowedTypes.some(type => String(type || '').toLowerCase() === normalized)
 }
 
 /**
@@ -267,14 +318,21 @@ async function listCommunityCatalog (catalogManager) {
  */
 export async function fetchCommunityImageItems (allowedTypes = [], catalogManager) {
   if (!catalogManager) return []
-  const res = await listCommunityCatalog(catalogManager)
-  const items = parseCatalogListResponse(res)
+  const params = { limit: 0 }
+  if (allowedTypes.length === 1 && allowedTypes[0]) {
+    params.llm_type = allowedTypes[0]
+  }
+  const res = await listCommunityCatalog(catalogManager, params)
+  let items = parseCatalogListResponse(res)
+  if (!items.length && params.llm_type) {
+    const fallbackRes = await listCommunityCatalog(catalogManager, { limit: 0 })
+    items = parseCatalogListResponse(fallbackRes)
+  }
   if (!items.length) return []
-  const allowed = new Set(allowedTypes)
   const result = []
   items.forEach((item, index) => {
     const parsed = parseCommunityCatalogItem(item, index)
-    if (parsed && allowed.has(parsed.llm_type)) {
+    if (parsed && matchesAllowedLlmTypes(parsed.llm_type, allowedTypes)) {
       result.push(parsed)
     }
   })
@@ -336,24 +394,13 @@ export async function fetchExistingCommunityImageKeys (llmTypes, skusManager, co
   return existing
 }
 
-async function listResourcesByLlmType (manager, llmType) {
-  if (!manager) return []
-  try {
-    const res = await manager.list({
-      params: {
-        limit: 2048,
-        filter: [`llm_type.equals('${llmType}')`],
-      },
-    })
-    return res.data?.data || []
-  } catch (e) {
-    return []
-  }
+async function listResourcesByLlmType (manager, llmType, scope) {
+  return listAllLlmImagesByType(manager, llmType, scope)
 }
 
 async function buildExistingImageIdMap (llmType, imagesManager) {
-  const map = {}
   const images = await listResourcesByLlmType(imagesManager, llmType)
+  const map = { __images: images }
   images.forEach(img => {
     map[buildImageLookupKey(img.llm_type, img.image_name, img.image_label)] = img.id
   })
@@ -378,7 +425,11 @@ async function findOrCreateBundleImage (imgSpec, llmType, imagesManager, existin
   return imageId
 }
 
-async function findOrCreateCommunityImage (record, imagesManager, existingIdMap) {
+async function findOrCreateCommunityImage (record, imagesManager, existingIdMap, localImages = []) {
+  const localImageMap = buildLocalImageMapByRegistryRef(localImages)
+  const existingByRegistry = resolveLocalImageIdForCatalogItem(record, localImageMap)
+  if (existingByRegistry) return existingByRegistry
+
   const key = buildImageLookupKey(record.llm_type, record.image_name, record.image_label)
   if (existingIdMap[key]) return existingIdMap[key]
 
@@ -451,7 +502,7 @@ export async function createCommunityImageAndSku (record, { imagesManager, skusM
   }
 
   const existingIdMap = await buildExistingImageIdMap(record.llm_type, imagesManager)
-  const imageId = await findOrCreateCommunityImage(record, imagesManager, existingIdMap)
+  const imageId = await findOrCreateCommunityImage(record, imagesManager, existingIdMap, existingIdMap.__images)
   let skuCreated = false
   let skuError = null
   const spec = resolveSkuSpec(record)
@@ -468,4 +519,236 @@ export async function createCommunityImageAndSku (record, { imagesManager, skusM
   }
 
   return { imageId, skuCreated, skuError }
+}
+
+/** 分页拉取 scope 内全部 llm_images（不按 llm_type 过滤，用于镜像地址匹配） */
+async function listAllLlmImagesInScope (imagesManager, scope, { pageSize = 100 } = {}) {
+  if (!imagesManager) return []
+  const all = []
+  let offset = 0
+  let total = null
+  try {
+    for (;;) {
+      const params = {
+        limit: pageSize,
+        offset,
+        details: true,
+        $t: 1,
+      }
+      if (scope) params.scope = scope
+      const res = await imagesManager.list({ params })
+      const batch = res.data?.data || []
+      if (total == null) {
+        total = typeof res.data?.total === 'number' ? res.data.total : batch.length
+      }
+      all.push(...batch)
+      if (!batch.length || all.length >= total) break
+      offset += batch.length
+    }
+    return all
+  } catch (e) {
+    return all
+  }
+}
+
+/** 分页拉取全部 llm_images（与 LlmImageSelect / getParamsForType 参数一致） */
+async function listAllLlmImagesByType (imagesManager, llmType, scope, { pageSize = 100 } = {}) {
+  if (!imagesManager || !llmType) return []
+  const all = []
+  let offset = 0
+  let total = null
+  try {
+    for (;;) {
+      const params = {
+        limit: pageSize,
+        offset,
+        llm_type: llmType,
+        details: true,
+        $t: 1,
+      }
+      if (scope) params.scope = scope
+      const res = await imagesManager.list({ params })
+      const batch = res.data?.data || []
+      if (total == null) {
+        total = typeof res.data?.total === 'number' ? res.data.total : batch.length
+      }
+      all.push(...batch)
+      if (!batch.length || all.length >= total) break
+      offset += batch.length
+    }
+    return all
+  } catch (e) {
+    return all
+  }
+}
+
+/** 列出本地已有 llm_images（按 llm_type，分页拉全量） */
+export async function listLocalLlmImages (imagesManager, llmType, scope, options) {
+  return listAllLlmImagesByType(imagesManager, llmType, scope, options)
+}
+
+/** 列出 scope 内全部本地镜像（仅用于按 registry 地址判断是否已导入） */
+export async function listLocalLlmImagesForRegistryMatch (imagesManager, scope, options) {
+  return listAllLlmImagesInScope(imagesManager, scope, options)
+}
+
+/** 规范化镜像地址，用于本地与 catalog 条目比对 */
+export function normalizeRegistryImageRef (ref) {
+  if (!ref || typeof ref !== 'string') return ''
+  return ref.trim().toLowerCase()
+}
+
+function buildRegistryImageRef (imageName, imageLabel) {
+  if (!imageName) return ''
+  return `${imageName}:${imageLabel || 'latest'}`
+}
+
+/** 收集单条记录可能的 registry 地址变体（catalog / 本地镜像通用） */
+export function collectImageRegistryRefVariants (record) {
+  const variants = new Set()
+  const add = (raw) => {
+    const ref = normalizeRegistryImageRef(raw)
+    if (ref) variants.add(ref)
+  }
+  if (!record) return variants
+  if (record.image) add(record.image)
+  const imageName = record.image_name
+  const imageLabel = record.image_label
+  if (imageName) {
+    if (imageLabel) {
+      add(buildRegistryImageRef(imageName, imageLabel))
+    } else if (String(imageName).includes(':')) {
+      add(imageName)
+    } else {
+      add(buildRegistryImageRef(imageName, 'latest'))
+    }
+  }
+  const llmType = record.llm_type || record.llmType
+  if (llmType && record.id) {
+    const prefix = `${llmType}:`
+    const id = String(record.id)
+    if (id.startsWith(prefix)) {
+      add(id.slice(prefix.length))
+    }
+  }
+  return variants
+}
+
+/** 本地 llm_image 的 registry 地址（主地址） */
+export function getLocalImageRegistryRef (localImage) {
+  const variants = collectImageRegistryRefVariants(localImage)
+  return variants.size ? [...variants][0] : ''
+}
+
+/** catalog 条目的 registry 地址（主地址） */
+export function getCatalogItemRegistryRef (catalogItem) {
+  const variants = collectImageRegistryRefVariants(catalogItem)
+  return variants.size ? [...variants][0] : ''
+}
+
+/**
+ * 本地镜像 lookup：registry 地址 -> llm_image 记录。
+ */
+export function buildLocalImageMapByRegistryRef (localImages) {
+  const map = {}
+  ;(localImages || []).forEach(img => {
+    collectImageRegistryRefVariants(img).forEach(ref => {
+      if (ref && !map[ref]) map[ref] = img
+    })
+  })
+  return map
+}
+
+/**
+ * @deprecated 使用 buildLocalImageMapByRegistryRef
+ */
+export function buildLocalImageMapByCommunityKey (localImages) {
+  return buildLocalImageMapByRegistryRef(localImages)
+}
+
+/** 社区 catalog 条目是否已在本地存在（按镜像地址匹配） */
+export function isCatalogItemImportedLocally (catalogItem, localImageMapByRegistry) {
+  if (!catalogItem || !localImageMapByRegistry) return false
+  for (const ref of collectImageRegistryRefVariants(catalogItem)) {
+    if (localImageMapByRegistry[ref]) return true
+  }
+  return false
+}
+
+/** 社区 catalog 条目对应的本地 llm_image id，未导入则返回空字符串 */
+export function resolveLocalImageIdForCatalogItem (catalogItem, localImageMapByRegistry) {
+  if (!catalogItem || !localImageMapByRegistry) return ''
+  for (const ref of collectImageRegistryRefVariants(catalogItem)) {
+    const local = localImageMapByRegistry[ref]
+    if (local?.id) return local.id
+  }
+  return ''
+}
+
+/**
+ * 构建镜像下拉分组：本地全部 + 社区全部（含已导入条目，不再从社区组剔除）。
+ * @param {object[]} [options.registryImages] scope 内全部本地镜像，用于按地址判断已导入
+ */
+export function buildCatalogImageGroups (catalogItems, localImages, options = {}) {
+  const registryImages = options.registryImages?.length ? options.registryImages : localImages
+  const localImageMap = buildLocalImageMapByRegistryRef(registryImages)
+  const communityItems = (catalogItems || []).filter(item => !isBundleItem(item) && item.image)
+  return {
+    localImages: localImages || [],
+    communityItems,
+    localImageMap,
+  }
+}
+
+/**
+ * @deprecated 使用 buildCatalogImageGroups；保留兼容旧逻辑（社区组过滤已导入）。
+ */
+export function splitCatalogAndLocalImages (catalogItems, localImages) {
+  const localKeys = new Set(
+    (localImages || []).map(img => buildImageLookupKey(img.llm_type, img.image_name, img.image_label)),
+  )
+  const onlineItems = (catalogItems || []).filter(item => {
+    if (isBundleItem(item) || !item.image) return false
+    return !localKeys.has(getCommunityImageKey(item))
+  })
+  return { localImages: localImages || [], onlineItems }
+}
+
+/** 导入模型表单：从 yaml catalog 条目推导默认字段（不创建资源；镜像由用户自行选择） */
+export function getCatalogImportFormDefaults (catalogItem) {
+  const spec = catalogItem ? resolveSkuSpec(catalogItem) : null
+  const ports = catalogItem ? resolvePortMappings(catalogItem) : []
+  return {
+    cpu: spec?.cpu ?? 4,
+    memory: spec?.memory ? Math.max(1, Math.round(spec.memory / 1024)) : 8,
+    volume_size: spec?.volume_size_mb ? Math.max(1, Math.round(spec.volume_size_mb / 1024)) : 10,
+    bandwidth: spec?.bandwidth ?? 1000,
+    portMappings: ports,
+  }
+}
+
+/** 提交导入时：确保 catalog 镜像已在 Region 创建，返回 llm_image id */
+export async function ensureCommunityImage (record, imagesManager, scope) {
+  if (!record || !imagesManager) return ''
+  const registryImages = scope
+    ? await listLocalLlmImagesForRegistryMatch(imagesManager, scope)
+    : await listResourcesByLlmType(imagesManager, record.llm_type)
+  const localImageMap = buildLocalImageMapByRegistryRef(registryImages)
+  const existingId = resolveLocalImageIdForCatalogItem(record, localImageMap)
+  if (existingId) return existingId
+  const existingIdMap = await buildExistingImageIdMap(record.llm_type, imagesManager)
+  return findOrCreateCommunityImage(record, imagesManager, existingIdMap, existingIdMap.__images)
+}
+
+/** 解析 catalog 条目 value 并 ensure 镜像（供导入表单提交） */
+export async function resolveCatalogImageValue (value, catalogItemsById, imagesManager, localImageMap, scope) {
+  if (!isCatalogImageValue(value)) return value
+  const catalogId = parseCatalogImageValue(value)
+  const record = catalogItemsById?.[catalogId]
+  if (!record) {
+    throw new Error(`catalog image not found: ${catalogId}`)
+  }
+  const localId = resolveLocalImageIdForCatalogItem(record, localImageMap)
+  if (localId) return localId
+  return ensureCommunityImage(record, imagesManager, scope)
 }
