@@ -7,16 +7,22 @@ export function normalizeBaseUrl (url) {
   return raw.replace(/\/+$/, '')
 }
 
-export function buildChatCompletionsUrl (baseUrl) {
+export function buildOpenAIBaseUrl (baseUrl) {
   const base = normalizeBaseUrl(baseUrl)
   if (!base) return ''
   if (/\/ai\/openai\/v1$/i.test(base)) {
-    return `${base}/chat/completions`
+    return base
   }
   if (/\/openai\/v1$/i.test(base)) {
-    return `${base.replace(/\/openai\/v1$/i, '/ai/openai/v1')}/chat/completions`
+    return base.replace(/\/openai\/v1$/i, '/ai/openai/v1')
   }
-  return `${base}/ai/openai/v1/chat/completions`
+  return `${base}/ai/openai/v1`
+}
+
+export function buildChatCompletionsUrl (baseUrl) {
+  const openaiBase = buildOpenAIBaseUrl(baseUrl)
+  if (!openaiBase) return ''
+  return `${openaiBase}/chat/completions`
 }
 
 export function isPlaceholderApiKey (authHeader) {
@@ -210,4 +216,9 @@ export async function resolveAiproxyBaseUrl (vm, { routingId } = {}) {
 export async function resolveAiproxyChatCompletionsUrl (vm, { routingId } = {}) {
   const base = await resolveAiproxyBaseUrl(vm, { routingId })
   return buildChatCompletionsUrl(base)
+}
+
+export async function resolveAiproxyOpenAIBaseUrl (vm, { routingId } = {}) {
+  const base = await resolveAiproxyBaseUrl(vm, { routingId })
+  return buildOpenAIBaseUrl(base)
 }
