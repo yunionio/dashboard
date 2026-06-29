@@ -3,7 +3,6 @@ import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 import { featureMenuHiddenCheck } from '@/utils/auth'
 
-const Llm = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm')
 const LlmSku = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku')
 const LlmSkuCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku/create/index')
 const LlmSkuImportFromModelSets = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku/import-from-model-sets')
@@ -165,24 +164,17 @@ export default {
           path: '/llm',
           meta: {
             label: i18n.t('aice.llm'),
-            hidden: (userInfo, menu) => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.llm')) {
-                return true
-              }
-              return featureMenuHiddenCheck(menu)
-            },
+            hidden: () => true,
           },
           component: Layout,
           children: [
             {
-              name: 'LlmList',
               path: '',
-              component: Llm,
+              redirect: '/llm-deployment',
             },
             {
-              name: 'LlmCreate',
               path: 'create',
-              component: LlmCreate,
+              redirect: '/llm-deployment/create',
             },
           ],
         },

@@ -854,6 +854,12 @@ export default {
       if (this.isApplyType) return this.$t('aice.app_llm_create')
       return this.$t('aice.llm_create')
     },
+    instanceRedirectListPath () {
+      if (this.llmRouteCtx.isInferenceType) {
+        return this.llmRouteCtx.deploymentListPath
+      }
+      return this.llmRouteCtx.instanceListPath
+    },
     llmTypeLabel () {
       if (this.isDesktopType) return this.$t('aice.llm_type')
       if (this.isApplyType) return this.$t('aice.llm_type.app')
@@ -1660,7 +1666,7 @@ export default {
           data,
         })
         this.$message.success(this.$t('common.success'))
-        this.$router.push(this.llmRouteCtx.instanceListPath)
+        this.$router.push(this.instanceRedirectListPath)
       } catch (error) {
         throw error
       } finally {
@@ -1668,7 +1674,7 @@ export default {
       }
     },
     handleCancel () {
-      this.$router.push(this.llmRouteCtx.instanceListPath)
+      this.$router.push(this.instanceRedirectListPath)
     },
   },
 }
