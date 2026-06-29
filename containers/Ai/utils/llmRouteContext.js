@@ -69,6 +69,8 @@ export function parseLlmRoute (path = '') {
 
   let instanceListPath = '/llm'
   let instanceCreatePath = '/llm/create'
+  const deploymentListPath = '/llm-deployment'
+  const deploymentCreatePath = '/llm-deployment/create'
   let skuListPath = '/llm-sku'
   let skuCreatePath = '/llm-sku/create'
   let skuImportFromCommunityPath = ''
@@ -98,6 +100,8 @@ export function parseLlmRoute (path = '') {
     llmTypes,
     instanceListPath,
     instanceCreatePath,
+    deploymentListPath,
+    deploymentCreatePath,
     skuListPath,
     skuCreatePath,
     skuImportFromCommunityPath,

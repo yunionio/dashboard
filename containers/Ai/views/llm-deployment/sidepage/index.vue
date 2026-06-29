@@ -44,6 +44,7 @@ export default {
   components: {
     Detail,
     InstancesList,
+    'instances-list': InstancesList,
     AiproxyAccessPanel,
     ChatTest,
     Actions,
