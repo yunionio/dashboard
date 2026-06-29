@@ -2,27 +2,30 @@
   <page-list
     :list="list"
     :columns="columns"
-    :show-search="false" />
+    :group-actions="groupActions"
+    :single-actions="singleActions"
+    :show-searchbox="false"
+    :show-tag-filter="false" />
 </template>
 
 <script>
-import {
-  getLlmIpColumn,
-  getCpuTableColumn,
-  getMemoryTableColumn,
-  getDiskTableColumn,
-} from '@Ai/views/llm/utils/columns'
-import ListMixin from '@/mixins/list'
+import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
-import {
-  getNameDescriptionTableColumn,
-  getStatusTableColumn,
-  getTimeTableColumn,
-} from '@/utils/common/tableColumn'
+import ListMixin from '@/mixins/list'
+import ColumnsMixin from '@Ai/views/llm/mixins/columns'
+import SingleActionsMixin from '@Ai/views/llm/mixins/singleActions'
+import InstanceGroupActionsMixin from '@Ai/views/llm/mixins/instanceGroupActions'
 
 export default {
   name: 'LlmDeploymentInstancesList',
-  mixins: [ListMixin, WindowsMixin],
+  mixins: [
+    WindowsMixin,
+    ListMixin,
+    ColumnsMixin,
+    SingleActionsMixin,
+    InstanceGroupActionsMixin,
+  ],
+  inheritAttrs: false,
   props: {
     id: String,
     resId: String,
@@ -34,47 +37,65 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id || 'LlmDeploymentInstancesList',
         resource: 'llms',
-        getParams: {
-          llm_deployment: this.data.id,
-          details: true,
+        getParams: this.getParam,
+        steadyStatus: {
+          status: Object.values(expectStatus.server).flat(),
+          llm_status: Object.values(expectStatus.container).flat(),
         },
-        idKey: 'id',
+        fetchDataCb: (response) => {
+          this.enrichLlmRowsWithCmpInfo(response)
+        },
       }),
-      columns: [
-        getNameDescriptionTableColumn({
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{row.name}</side-page-trigger>
-            )
-          },
-        }),
-        getStatusTableColumn({ statusModule: 'server' }),
-        getStatusTableColumn({ field: 'llm_status', statusModule: 'container', title: this.$t('aice.container_status') }),
-        getLlmIpColumn(),
-        getCpuTableColumn(),
-        getMemoryTableColumn(),
-        getDiskTableColumn(),
-        {
-          field: 'host',
-          title: this.$t('compute.text_111'),
-          showOverflow: 'title',
-          minWidth: 120,
-          formatter: ({ row }) => row.host || '-',
-        },
-        getTimeTableColumn(),
-      ],
     }
   },
+  computed: {
+    groupActions () {
+      return this.instanceGroupActions
+    },
+  },
   created () {
+    this.serverManager = new this.$Manager('servers')
     this.list.fetchData()
   },
   methods: {
+    getParam () {
+      return {
+        llm_deployment: this.data.id,
+        details: true,
+      }
+    },
+    async enrichLlmRowsWithCmpInfo (response) {
+      const rows = response?.data?.data
+      if (!Array.isArray(rows) || !rows.length) return
+      const params = {
+        scope: this.$store.getters.scope,
+      }
+      const patch = {}
+      await Promise.all(
+        rows.map(async (row) => {
+          if (!row.cmp_id) return
+          try {
+            const { data } = await this.serverManager.get({ id: row.cmp_id, params })
+            if (data) {
+              patch[row.id] = { cmp_info: data }
+            }
+          } catch (e) {
+            // 单行失败不影响列表
+          }
+        }),
+      )
+      if (this._isDestroyed) return
+      if (Object.keys(patch).length) {
+        this.list.updatesProperty(patch)
+      }
+    },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'LlmSidePage', {
         id: row.id,
         resource: 'llms',
+        getParams: this.getParam,
       }, {
         list: this.list,
       })
