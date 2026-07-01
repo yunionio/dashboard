@@ -99,6 +99,12 @@ export default {
               },
             },
             {
+              label: this.$t('aice.llm_deployment.deploy.from_modelscope'),
+              action: () => {
+                this.$router.push({ path: this.llmRouteCtx.skuImportFromModelscopePath })
+              },
+            },
+            {
               label: this.$t('aice.llm_deployment.deploy.from_local'),
               action: () => {
                 this.$router.push({ path: this.llmRouteCtx.skuImportFromLocalPathPath })

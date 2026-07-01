@@ -150,7 +150,9 @@ export function buildModelSpec (spec, llmType) {
     ms.model_tag = spec.huggingface_filename || 'main'
   } else if (src === 'model_scope') {
     ms.source = 'model_scope'
-    ms.model_tag = spec.model_scope_file_path || 'main'
+    ms.model_tag = 'master'
+    ms.revision = 'master'
+    ms.file_path = spec.model_scope_file_path || ''
   } else {
     return null
   }
@@ -211,10 +213,9 @@ function buildImportLlmSpec (llmType, preferredModel) {
 }
 
 /**
- * HF / model-sets 导入 llm_skus：附带 source、categories、model_spec、llm_spec 等字段。
- * ollama 类型 source=ollama；其余推理类型 source=huggingface。
+ * HF / ModelScope / model-sets 导入 llm_skus：附带 source、categories、model_spec、llm_spec 等字段。
  */
-export function buildHuggingfaceSkuImportParams (spec, llmType, options = {}) {
+export function buildSkuImportParams (spec, llmType, options = {}) {
   const { catalogSet = null } = options
   if (!spec || !llmType) return {}
 
@@ -237,10 +238,34 @@ export function buildHuggingfaceSkuImportParams (spec, llmType, options = {}) {
     }
   }
 
+  const src = spec.source || 'huggingface'
+  if (src === 'model_scope') {
+    const modelId = spec.model_scope_model_id || spec.repo_id || resolveHuggingfaceRepoId(spec)
+    if (!modelId) return {}
+    const filePath = spec.model_scope_file_path || ''
+    const revision = 'master'
+    return {
+      source: 'model_scope',
+      model_scope_model_id: modelId,
+      model_scope_file_path: filePath,
+      categories,
+      model_spec: {
+        model_name: modelId,
+        model_tag: revision,
+        llm_type: llmType,
+        source: 'model_scope',
+        repo_id: modelId,
+        revision,
+        file_path: filePath,
+      },
+      llm_spec: buildImportLlmSpec(llmType, modelId),
+    }
+  }
+
   const repoId = resolveHuggingfaceRepoId(spec)
   if (!repoId) return {}
 
-  const revision = spec.huggingface_filename || spec.model_scope_file_path || 'main'
+  const revision = spec.huggingface_filename || 'main'
   return {
     source: 'huggingface',
     huggingface_repo_id: repoId,
@@ -255,6 +280,11 @@ export function buildHuggingfaceSkuImportParams (spec, llmType, options = {}) {
     },
     llm_spec: buildImportLlmSpec(llmType, repoId),
   }
+}
+
+/** @deprecated use buildSkuImportParams */
+export function buildHuggingfaceSkuImportParams (spec, llmType, options = {}) {
+  return buildSkuImportParams(spec, llmType, options)
 }
 
 function sanitizeCatalogNamePart (value) {
