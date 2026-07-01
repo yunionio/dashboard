@@ -35,6 +35,7 @@
 <script>
 import { sizestr } from '@/utils/utils'
 import { getSkuModelDisplayText } from '@Ai/views/llm-sku/utils/modelDisplay'
+import { getLlmSkuSourceLabel } from '@Ai/views/llm-sku/utils/skuSourceDisplay'
 
 export default {
   name: 'LlmSkuSelect',
@@ -114,6 +115,9 @@ export default {
       }
       if (item.llm_type) {
         parts.push(`${this.$t('aice.llm_type')}：${item.llm_type}`)
+      }
+      if (item.source) {
+        parts.push(`${this.$t('aice.llm_deployment.source')}：${getLlmSkuSourceLabel(item.source)}`)
       }
       if (item.app_name) {
         parts.push(`${this.$t('aice.llm_image.app_name')}：${item.app_name}`)

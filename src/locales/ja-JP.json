@@ -1360,12 +1360,14 @@
       "unknown": "不明",
       "ready": "準備完了",
       "running": "稼働中",
+      "creating": "作成中",
       "importing_model": "モデルインポート中",
       "import_model_failed": "モデルインポート失敗",
       "creating_sku": "テンプレート作成中",
       "create_sku_failed": "テンプレート作成失敗",
       "deploying": "デプロイ中",
       "partial": "一部準備完了",
+      "start_fail": "起動に失敗しました",
       "create_fail": "作成に失敗しました",
       "create_failed": "作成に失敗しました",
       "start_delete": "削除を開始",
@@ -1378,6 +1380,15 @@
       "aiproxy_syncing": "ゲートウェイ同期中",
       "aiproxy_partial": "ゲートウェイ一部同期",
       "aiproxy_sync_failed": "ゲートウェイ同期失敗"
+    },
+    "llmDeploymentAiproxy": {
+      "unknown": "不明",
+      "disabled": "無効",
+      "pending": "同期待ち",
+      "syncing": "同期中",
+      "synced": "同期済み",
+      "partial": "一部同期",
+      "failed": "同期失敗"
     },
     "llmSku": {
       "unknown": "不明",

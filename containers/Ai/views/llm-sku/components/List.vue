@@ -98,6 +98,12 @@ export default {
                 this.$router.push({ path: this.llmRouteCtx.skuImportFromHuggingfacePath })
               },
             },
+            {
+              label: this.$t('aice.llm_deployment.deploy.from_local'),
+              action: () => {
+                this.$router.push({ path: this.llmRouteCtx.skuImportFromLocalPathPath })
+              },
+            },
           ],
           meta: () => ({
             buttonType: 'primary',

@@ -32,12 +32,13 @@ export default {
         resource: 'llm_deployments',
         getParams: this.getParam,
         steadyStatus: {
-          // Rows whose status is success/danger are terminal; everything else
-          // (importing_model, creating_sku, deploying, partial, deleting, ...)
-          // is polled until it reaches a steady value.
           status: [
             ...(expectStatus.llmDeployment.success || []),
             ...(expectStatus.llmDeployment.danger || []),
+          ],
+          aiproxy_sync_status: [
+            ...(expectStatus.llmDeploymentAiproxy.success || []),
+            ...(expectStatus.llmDeploymentAiproxy.danger || []),
           ],
         },
         filterOptions,

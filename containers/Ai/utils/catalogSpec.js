@@ -3,6 +3,7 @@
  */
 
 import { getDefaultPortMappingsForType, getDefaultSkuSpecForType } from '@Ai/views/llm-sku/constants/llmTypeConfig'
+import { normalizeCatalogBackendParameters } from '@Ai/utils/backendParameters'
 
 export const CATALOG_IMPORT_STORAGE_KEY = 'llm_catalog_import_context'
 
@@ -54,9 +55,9 @@ export function buildCatalogDeploymentPayload (deployForm, spec, llmType) {
     const preferred = getPreferredModelFromSpec(spec)
     if (preferred) typeSpec.preferred_model = preferred
   }
-  const backendArgs = buildCatalogBackendCustomizedArgs(spec)
-  if (backendArgs.length > 0) {
-    typeSpec.customized_args = backendArgs
+  const catalogBackendParams = normalizeCatalogBackendParameters(spec)
+  if (catalogBackendParams.length > 0) {
+    skuSpec.backend_parameters = catalogBackendParams
   }
   if (Object.keys(typeSpec).length > 0) {
     skuSpec.llm_spec = { [llmType]: typeSpec }
@@ -200,7 +201,7 @@ function resolveOllamaModelName (spec) {
   return spec.ollama_model || spec.name || spec.label || spec.spec_id || ''
 }
 
-/** llm_spec 内层 key 与 llm_type 一致；preferred_model 来自目录，customized_args 由表单合并 */
+/** llm_spec 内层 key 与 llm_type 一致；preferred_model 来自目录 */
 function buildImportLlmSpec (llmType, preferredModel) {
   return {
     [llmType]: {
@@ -254,28 +255,6 @@ export function buildHuggingfaceSkuImportParams (spec, llmType, options = {}) {
     },
     llm_spec: buildImportLlmSpec(llmType, repoId),
   }
-}
-
-/** 目录 spec 的 backend_parameters（CLI 参数）转为 llm_spec.customized_args */
-export function buildCatalogBackendCustomizedArgs (spec) {
-  const params = spec?.backend_parameters
-  if (!Array.isArray(params) || params.length === 0) return []
-  const out = []
-  params.forEach((raw) => {
-    const s = String(raw || '').trim()
-    if (!s) return
-    const m = s.match(/^--([^=]+)=(.*)$/)
-    if (m) {
-      out.push({ key: m[1], value: m[2] })
-      return
-    }
-    if (s.startsWith('--')) {
-      out.push({ key: s.replace(/^--/, ''), value: 'true' })
-      return
-    }
-    out.push({ key: s, value: '' })
-  })
-  return out
 }
 
 function sanitizeCatalogNamePart (value) {
