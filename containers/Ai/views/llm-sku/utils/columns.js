@@ -3,6 +3,8 @@ import i18n from '@/locales'
 import { getSkuModelDisplayText } from './modelDisplay'
 import LlmSkuMountedModels from '../components/LlmSkuMountedModels.vue'
 
+export { getSourceTableColumn } from './skuSourceDisplay'
+
 export const getDeviceModelTableColumn = () => {
   return {
     field: 'device',

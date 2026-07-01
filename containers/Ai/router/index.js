@@ -7,6 +7,7 @@ const LlmSku = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: tr
 const LlmSkuCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku/create/index')
 const LlmSkuImportFromModelSets = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku/import-from-model-sets')
 const LlmSkuImportFromHuggingFace = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku/import-from-huggingface')
+const LlmSkuImportFromLocalPath = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku/import-from-local-path')
 const LlmSkuImportFromCommunity = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-sku/import-from-community')
 const LlmInstantmodel = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-instantmodel')
 const LlmImage = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@Ai/views/llm-image')
@@ -205,6 +206,11 @@ export default {
               name: 'LlmSkuImportFromHuggingFace',
               path: 'import-from-huggingface',
               component: LlmSkuImportFromHuggingFace,
+            },
+            {
+              name: 'LlmSkuImportFromLocalPath',
+              path: 'import-from-local-path',
+              component: LlmSkuImportFromLocalPath,
             },
             {
               name: 'LlmSkuCreate',

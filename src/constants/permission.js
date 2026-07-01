@@ -1562,6 +1562,8 @@ export const PERMISSION = {
   llm_deployments_perform_change_owner: ['llm', 'llm_deployments', 'perform', 'change-owner'],
   llm_deployments_perform_register_aiproxy: ['llm', 'llm_deployments', 'perform', 'register-aiproxy'],
   llm_deployments_perform_unregister_aiproxy: ['llm', 'llm_deployments', 'perform', 'unregister-aiproxy'],
+  llm_deployments_perform_restart: ['llm', 'llm_deployments', 'perform', 'restart'],
+  llm_deployments_perform_syncstatus: ['llm', 'llm_deployments', 'perform', 'syncstatus'],
 
   billing_resource_checks_list: ['compute', 'billing_resource_checks', 'list'],
 

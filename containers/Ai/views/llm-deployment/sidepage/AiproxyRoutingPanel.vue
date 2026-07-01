@@ -65,7 +65,7 @@ import AiproxyRoutingLinkDetailMixin from '@Ai/mixins/aiproxyRoutingLinkDetailMi
 import { getAiproxyResourceScope } from '@Ai/constants/aiproxyResources'
 import { getAiProviderDisplayName } from '@Ai/utils/aiProviderNames'
 import { getAiModelDisplayName } from '@Ai/utils/aiModelNames'
-import { formatDeploymentAiproxyStatus } from '@Ai/utils/aiproxyDeploymentActions'
+import { formatDeploymentStatus as formatDeploymentStatusLabel } from '@Ai/utils/aiproxyDeploymentActions'
 
 export default {
   name: 'LlmDeploymentAiproxyRoutingPanel',
@@ -167,7 +167,7 @@ export default {
       return (value === null || value === undefined || value === '') ? '-' : value
     },
     formatDeploymentStatus (status) {
-      return formatDeploymentAiproxyStatus(status, this)
+      return formatDeploymentStatusLabel(status, this)
     },
     async fetchRoutingDetail (routingId, scope) {
       const routingMgr = new Manager('ai_routings')

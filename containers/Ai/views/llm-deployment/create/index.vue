@@ -20,6 +20,21 @@
             :params="skuParams"
             :select-props="{
               placeholder: $t('common.tips.select', [$t('aice.llm_sku')]),
+            }"
+            @change="handleSkuChange" />
+        </a-form-item>
+
+        <a-form-item
+          v-if="showPreferHosts"
+          :label="$t('aice.local_path_import.prefer_hosts')"
+          :extra="$t('aice.local_path_import.prefer_hosts_deploy_hint')">
+          <base-select
+            v-decorator="decorators.prefer_hosts"
+            resource="hosts"
+            :params="localPathHostParams"
+            :select-props="{
+              mode: 'multiple',
+              placeholder: $t('common.tips.select', [$t('dictionary.host')]),
             }" />
         </a-form-item>
 
@@ -59,6 +74,7 @@ import * as R from 'ramda'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 import LlmSkuSelect from '@Ai/sections/LlmSkuSelect'
+import { normalizePreferHosts } from '@Ai/utils/localPathImport'
 import NameRepeated from '@/sections/NameRepeated'
 import { Manager } from '@/utils/manager'
 import { uuid } from '@/utils/utils'
@@ -70,6 +86,7 @@ export default {
   data () {
     return {
       loading: false,
+      selectedSkuDetail: null,
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
@@ -96,6 +113,28 @@ export default {
         llm_sku_id: ['llm_sku_id', {
           rules: [{ required: true, message: this.$t('common.tips.select', [this.$t('aice.llm_sku')]) }],
         }],
+        prefer_hosts: [
+          'prefer_hosts',
+          {
+            initialValue: [],
+            rules: [
+              {
+                validator: (rule, value, callback) => {
+                  if (!this.showPreferHosts) {
+                    callback()
+                    return
+                  }
+                  const hosts = normalizePreferHosts(value)
+                  if (hosts.length === 0) {
+                    callback(this.$t('aice.local_path_import.prefer_hosts_required'))
+                    return
+                  }
+                  callback()
+                },
+              },
+            ],
+          },
+        ],
         placement_strategy: ['placement_strategy', { initialValue: 'spread' }],
         network: {
           networkType: ['networkType', { initialValue: NETWORK_OPTIONS_MAP.default.key }],
@@ -132,9 +171,21 @@ export default {
         },
       },
       manager: new Manager('llm_deployments'),
+      skuManager: new Manager('llm_skus'),
     }
   },
   computed: {
+    showPreferHosts () {
+      return this.selectedSkuDetail?.source === 'local_path'
+    },
+    localPathHostParams () {
+      return {
+        limit: 20,
+        scope: this.$store.getters.scope,
+        host_status: 'online',
+        host_type: 'container',
+      }
+    },
     skuParams () {
       return { scope: this.$store.getters.scope, details: true, limit: 20, filter: ['llm_type.in(vllm,ollama,sglang)'] }
     },
@@ -163,9 +214,35 @@ export default {
     }
   },
   methods: {
+    async loadSkuDetail (skuId) {
+      if (!skuId) {
+        this.selectedSkuDetail = null
+        this.form.fc.setFieldsValue({ prefer_hosts: [] })
+        return
+      }
+      try {
+        const { data } = await this.skuManager.get({ id: skuId })
+        this.selectedSkuDetail = data
+        if (data?.source === 'local_path') {
+          const hosts = normalizePreferHosts(data.prefer_hosts)
+          this.$nextTick(() => {
+            this.form.fc.setFieldsValue({ prefer_hosts: hosts })
+          })
+        } else {
+          this.form.fc.setFieldsValue({ prefer_hosts: [] })
+        }
+      } catch (error) {
+        this.selectedSkuDetail = null
+        throw error
+      }
+    },
+    handleSkuChange (skuId) {
+      this.loadSkuDetail(skuId)
+    },
     applyFromSku (skuId) {
       this.$nextTick(() => {
         this.form.fc.setFieldsValue({ llm_sku_id: skuId })
+        this.loadSkuDetail(skuId)
       })
     },
     networkResourceMapper (list) {
@@ -199,7 +276,7 @@ export default {
       return [{ exit: false }]
     },
     buildPayload (values) {
-      return {
+      const payload = {
         name: values.name,
         llm_sku_id: values.llm_sku_id,
         replicas: 1,
@@ -208,6 +285,10 @@ export default {
         auto_start: true,
         nets: this.genNetworks(values),
       }
+      if (this.showPreferHosts) {
+        payload.prefer_hosts = normalizePreferHosts(values.prefer_hosts)
+      }
+      return payload
     },
     handleCancel () {
       this.$router.back()

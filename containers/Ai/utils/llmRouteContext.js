@@ -76,6 +76,7 @@ export function parseLlmRoute (path = '') {
   let skuImportFromCommunityPath = ''
   let skuImportFromModelSetsPath = ''
   let skuImportFromHuggingfacePath = ''
+  let skuImportFromLocalPathPath = ''
   if (isApplyType) {
     instanceListPath = '/app-llm'
     instanceCreatePath = '/app-llm/create'
@@ -91,6 +92,7 @@ export function parseLlmRoute (path = '') {
   } else if (isInferenceType) {
     skuImportFromModelSetsPath = '/llm-sku/import-from-model-sets'
     skuImportFromHuggingfacePath = '/llm-sku/import-from-huggingface'
+    skuImportFromLocalPathPath = '/llm-sku/import-from-local-path'
   }
 
   return {
@@ -107,6 +109,7 @@ export function parseLlmRoute (path = '') {
     skuImportFromCommunityPath,
     skuImportFromModelSetsPath,
     skuImportFromHuggingfacePath,
+    skuImportFromLocalPathPath,
   }
 }
 
