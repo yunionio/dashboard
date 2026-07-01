@@ -529,9 +529,6 @@ export default {
       if (HYPERVISORS_MAP.ctyun.key === hypervisor) {
         delete loginTypes[LOGIN_TYPES_MAP.image.key]
       }
-      if (HYPERVISORS_MAP.google.key === hypervisor) {
-        delete loginTypes[LOGIN_TYPES_MAP.image.key]
-      }
       if (HYPERVISORS_MAP.qcloud.key === hypervisor) {
         delete loginTypes[LOGIN_TYPES_MAP.image.key]
       }
