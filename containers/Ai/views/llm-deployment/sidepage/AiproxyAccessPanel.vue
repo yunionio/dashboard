@@ -25,7 +25,7 @@
       <a-empty :description="$t('aice.llm_deployment.aiproxy_routing_disabled')" />
     </template>
     <template v-else-if="syncFailed">
-      <a-alert type="error" show-icon :message="formatDeploymentStatus(data.status)">
+      <a-alert type="error" show-icon :message="formatSyncStatus(resolveAiproxySyncStatus(data))">
         <template v-slot:description>
           {{ $t('aice.llm_deployment.aiproxy_access_failed_hint') }}
         </template>
@@ -127,14 +127,15 @@ import {
   performLlmDeploymentRegisterAiproxy,
   performLlmDeploymentUnregisterAiproxy,
   pollDeploymentDetailRefresh,
+  resolveAiproxySyncStatus,
 } from '@Ai/utils/aiproxyDeploymentActions'
 import AiproxyRoutingPanel from './AiproxyRoutingPanel'
 import AgentAiproxyAccessSection from './AgentAiproxyAccessSection'
 
 const POLL_INTERVAL_MS = 5000
 const MAX_POLL_COUNT = 24
-const AIPROXY_IN_PROGRESS_STATUSES = new Set(['aiproxy_pending', 'aiproxy_syncing'])
-const AIPROXY_TERMINAL_STATUSES = new Set(['ready', 'partial', 'aiproxy_partial', 'aiproxy_sync_failed'])
+const AIPROXY_IN_PROGRESS = new Set(['pending', 'syncing'])
+const AIPROXY_TERMINAL = new Set(['synced', 'partial', 'failed', 'disabled'])
 
 export default {
   name: 'LlmDeploymentAiproxyAccessPanel',
@@ -188,16 +189,16 @@ export default {
       })
     },
     syncFailed () {
-      return this.data?.status === 'aiproxy_sync_failed'
+      return resolveAiproxySyncStatus(this.data) === 'failed'
     },
     waitingSync () {
       if (this.endpointLoading) return true
-      const status = this.data?.status
-      if (status === 'aiproxy_sync_failed') return false
-      if (AIPROXY_IN_PROGRESS_STATUSES.has(status)) return true
-      if (status === 'deploying' && this.autoRegister) return true
-      if (AIPROXY_TERMINAL_STATUSES.has(status)) {
-        if (status === 'aiproxy_sync_failed') return false
+      const aiproxyStatus = resolveAiproxySyncStatus(this.data)
+      if (aiproxyStatus === 'failed') return false
+      if (AIPROXY_IN_PROGRESS.has(aiproxyStatus)) return true
+      if (this.data?.status === 'deploying' && this.autoRegister) return true
+      if (AIPROXY_TERMINAL.has(aiproxyStatus)) {
+        if (aiproxyStatus === 'failed') return false
         return !this.readyInstances.length || !this.endpointUrl || !this.openaiBaseUrl
       }
       return false
@@ -256,6 +257,9 @@ export default {
     'data.status' () {
       this.syncPollingState()
     },
+    'data.aiproxy_sync_status' () {
+      this.syncPollingState()
+    },
     'data.aiproxy_bindings': {
       deep: true,
       handler () {
@@ -290,6 +294,7 @@ export default {
     this.stopPolling()
   },
   methods: {
+    resolveAiproxySyncStatus,
     async handleRegister () {
       if (!this.onManager || !this.registerMeta.validate) return
       this.registerLoading = true
@@ -429,10 +434,10 @@ export default {
     shouldPoll () {
       if (!this.autoRegister || this.syncFailed) return false
       if (this.pollCount >= MAX_POLL_COUNT) return false
-      const status = this.data?.status
-      if (AIPROXY_IN_PROGRESS_STATUSES.has(status)) return true
-      if (status === 'deploying' && this.autoRegister) return true
-      if (['ready', 'partial', 'aiproxy_partial'].includes(status)) {
+      const aiproxyStatus = resolveAiproxySyncStatus(this.data)
+      if (AIPROXY_IN_PROGRESS.has(aiproxyStatus)) return true
+      if (this.data?.status === 'deploying' && this.autoRegister) return true
+      if (['synced', 'partial'].includes(aiproxyStatus)) {
         return !this.readyInstances.length || !this.endpointUrl || !this.openaiBaseUrl
       }
       return false

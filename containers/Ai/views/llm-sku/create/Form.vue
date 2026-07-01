@@ -22,7 +22,8 @@
           v-if="!isEditMode && !isCatalogMode"
           class="llm-type-picker"
           button-style="solid"
-          v-decorator="decorators.llm_type">
+          v-decorator="decorators.llm_type"
+          @change="onLlmTypeChange">
           <a-radio-button v-for="opt in llmTypeOptions" :key="opt.id" :value="opt.id">
             {{ opt.name }}
           </a-radio-button>
@@ -156,7 +157,7 @@
         <a-form-item
           v-else-if="field.component === 'customized-args'"
           :key="field.fieldKey"
-          :label="$t('aice.customized_args')">
+          :label="$t('aice.backend_parameters')">
           <a-row v-for="item in customizedArgsRows" :key="item.key" :gutter="4">
             <a-col :span="11">
               <a-form-item>
@@ -184,6 +185,7 @@
               </div>
             </a-col>
           </a-row>
+          <div class="text-color-help">{{ $t('aice.backend_parameters.help') }}</div>
         </a-form-item>
       </template>
       <!-- 暂时隐藏 Agent 个性化配置，恢复时将 showAgentPersonalization 改为 true -->
@@ -250,7 +252,43 @@
         </a-row>
       </a-form-item>
 
-      <a-form-item :label="$t('aice.host_paths')" :extra="$t('aice.host_paths.extra')">
+      <a-form-item
+        v-if="isLocalPathImportMode"
+        :label="$t('aice.local_path_import.prefer_hosts')"
+        :extra="$t('aice.local_path_import.prefer_hosts_extra')">
+        <base-select
+          v-decorator="decorators.prefer_hosts"
+          resource="hosts"
+          :params="localPathHostParams"
+          :select-props="{
+            mode: 'multiple',
+            placeholder: $t('common.tips.select', [$t('dictionary.host')]),
+          }" />
+      </a-form-item>
+      <a-form-item
+        v-if="isLocalPathImportMode"
+        :label="$t('aice.local_path_import.host_model_path')"
+        :extra="$t('aice.local_path_import.host_model_path_extra')">
+        <a-input
+          v-decorator="decorators.local_path"
+          :placeholder="$t('aice.local_path_import.host_model_path_placeholder')"
+          @change="onLocalPathInputChange" />
+        <a-alert
+          v-if="localPathMountPreview"
+          type="info"
+          show-icon
+          class="mt-2"
+          :message="$t('aice.local_path_import.mount_preview', [localPathMountPreview.hostPath, localPathMountPreview.mountPath])" />
+        <a-button
+          v-if="!localPathAdvancedHostPaths"
+          type="link"
+          class="mt-1 pl-0"
+          @click="enableLocalPathAdvancedHostPaths">
+          {{ $t('aice.local_path_import.advanced_host_paths') }}
+        </a-button>
+      </a-form-item>
+
+      <a-form-item v-if="!isLocalPathImportMode || localPathAdvancedHostPaths" :label="$t('aice.host_paths')" :extra="$t('aice.host_paths.extra')">
         <div v-for="hp in hostPathRows" :key="hp.key" style="display: flex; align-items: stretch; gap: 10px; margin-bottom: 12px;">
           <div style="flex: 1; border: 1px solid #e8e8e8; border-radius: 4px; padding: 12px;">
             <a-row :gutter="8">
@@ -390,13 +428,25 @@ import {
   getCatalogSpecId,
   getPreferredModelFromSpec,
 } from '@Ai/utils/catalogSpec'
+import {
+  buildLocalPathHostPaths,
+  describeLocalPathMount,
+  getLocalPathPreferredModel,
+  normalizePreferHosts,
+} from '@Ai/utils/localPathImport'
+import {
+  formValuesToBackendParameters,
+  mergeBackendParameters,
+  normalizeCatalogBackendParameters,
+  resolveSkuBackendParameters,
+} from '@Ai/utils/backendParameters'
 import WindowsMixin from '@/mixins/windows'
 import DomainProject from '@/sections/DomainProject'
 import NameRepeated from '@/sections/NameRepeated'
 import { isRequired } from '@/utils/validate'
 import { uuid } from '@/utils/utils'
 import { dict } from '../constants/constant'
-import { LLM_TYPE_OPTIONS, LLM_TYPE_FORM_CONFIG, getParamsForType, getDefaultPortMappingsForType } from '../constants/llmTypeConfig'
+import { LLM_TYPE_OPTIONS, LLM_TYPE_FORM_CONFIG, getParamsForType, getDefaultPortMappingsForType, getDefaultSkuSpecForType } from '../constants/llmTypeConfig'
 
 const getInitVal = (list, key, property) => {
   const target = list.filter(item => item.key === key)
@@ -438,6 +488,10 @@ export default {
       type: String,
       default: 'import',
     },
+    importMode: {
+      type: String,
+      default: null,
+    },
   },
   data () {
     const data = this.mode === 'edit' && this.editData ? this.editData : {}
@@ -446,11 +500,17 @@ export default {
     const isDesktopType = llmRouteCtx.isDesktopType
     const catalogLlmTypeInit = this.catalogSpec ? backendToLlmType(this.catalogSpec.backend) : null
     const catalogResourceDefaults = this.catalogSpec ? { cpu: 4, memory: 8192 } : null
+    const isLocalPathImportInit = this.importMode === 'local_path'
+    const localPathResourceDefaults = isLocalPathImportInit
+      ? { ...getDefaultSkuSpecForType('vllm'), memory: 8192 }
+      : null
     let llmTypeOptions
     if (isDesktopType) {
       llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => opt.id === 'desktop')
     } else if (isApplyType) {
       llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => !['vllm', 'ollama', 'sglang', 'desktop'].includes(opt.id))
+    } else if (isLocalPathImportInit) {
+      llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => ['vllm', 'sglang'].includes(opt.id))
     } else {
       llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => ['vllm', 'ollama', 'sglang'].includes(opt.id))
     }
@@ -461,8 +521,8 @@ export default {
       tenant,
       name,
       llm_type: rowLlmType,
-      cpu = catalogResourceDefaults?.cpu ?? 2,
-      memory = catalogResourceDefaults?.memory ?? 2048,
+      cpu = localPathResourceDefaults?.cpu ?? catalogResourceDefaults?.cpu ?? 2,
+      memory = localPathResourceDefaults?.memory ?? catalogResourceDefaults?.memory ?? 2048,
       volume = { size: 10240, storage_type: 'local', template_id: undefined },
       image_id,
       envs = [],
@@ -482,7 +542,8 @@ export default {
       ? defaultNameFromSpec(this.catalogSpec, this.catalogSet, catalogLlmTypeInit)
       : null
     const isCatalogImport = !!getCatalogSpecId(this.catalogSpec) && this.catalogSubmitType === 'import'
-    const catalogImportDeviceRules = isCatalogImport
+    const isLocalPathImport = this.importMode === 'local_path'
+    const catalogImportDeviceRules = (isCatalogImport || isLocalPathImport)
       ? [{
         type: 'array',
         required: true,
@@ -544,8 +605,7 @@ export default {
       const hp = getHostPathRow(hpKey)
       return hp && Array.isArray(hp.containerRows) ? hp.containerRows.find(c => c.key === cKey) : undefined
     }
-    let customizedArgsSource = data.customized_args ?? typeLlmSpec.customized_args ?? []
-    if (!Array.isArray(customizedArgsSource)) customizedArgsSource = []
+    const customizedArgsSource = resolveSkuBackendParameters(data, initialLlmTypeForSpec)
     const customizedArgsRows = customizedArgsSource.map((row) => ({
       key: uuid(),
       argKey: row != null && row.key != null ? String(row.key) : '',
@@ -562,6 +622,7 @@ export default {
       dict,
       portMappings,
       hostPathRows: hostPathRows.length ? hostPathRows : [],
+      localPathAdvancedHostPaths: false,
       customizedArgsRows,
       form: {
         fc: this.$form.createForm(this, {
@@ -601,6 +662,30 @@ export default {
             initialValue: catalogNameInit || name,
             rules: [
               { required: true, message: this.$t('common.tips.input', [this.$t('common.name')]) },
+            ],
+          },
+        ],
+        local_path: [
+          'local_path',
+          {
+            initialValue: '',
+            rules: [
+              { required: true, message: this.$t('aice.local_path_import.path_required') },
+              { pattern: /^\//, message: this.$t('aice.local_path_import.path_absolute') },
+            ],
+          },
+        ],
+        prefer_hosts: [
+          'prefer_hosts',
+          {
+            initialValue: [],
+            rules: [
+              {
+                type: 'array',
+                required: true,
+                min: 1,
+                message: this.$t('aice.local_path_import.prefer_hosts_required'),
+              },
             ],
           },
         ],
@@ -912,7 +997,30 @@ export default {
   computed: {
     ...mapGetters(['userInfo']),
     isCatalogImportMode () {
-      return this.isCatalogMode && this.catalogSubmitType === 'import' && !this.isApplyType && !this.isDesktopType
+      return this.isCatalogMode && this.catalogSubmitType === 'import' && !this.isApplyType && !this.isDesktopType && !this.isLocalPathImportMode
+    },
+    isLocalPathImportMode () {
+      return this.importMode === 'local_path'
+    },
+    isLocalPathSku () {
+      if (this.isLocalPathImportMode) return true
+      if (!this.isEditMode) return false
+      const source = this.editData?.source ?? this.form?.fd?.source
+      return String(source || '').trim() === 'local_path'
+    },
+    localPathMountPreview () {
+      if (!this.isLocalPathImportMode) return null
+      const path = String(this.form.fd.local_path || '').trim()
+      if (!path) return null
+      return describeLocalPathMount(path, this.form.fd.llm_type || 'vllm')
+    },
+    localPathHostParams () {
+      return {
+        limit: 20,
+        scope: this.$store.getters.scope,
+        host_status: 'online',
+        host_type: 'container',
+      }
     },
     isEditMode () {
       return this.mode === 'edit'
@@ -921,33 +1029,39 @@ export default {
       return !!getCatalogSpecId(this.catalogSpec)
     },
     catalogLlmType () {
+      if (this.isLocalPathImportMode) return this.form?.fd?.llm_type || 'vllm'
       return this.catalogSpec ? backendToLlmType(this.catalogSpec.backend) : ''
     },
     llmTypeName () {
-      const cur = this.isCatalogMode ? this.catalogLlmType : this.form?.fd?.llm_type
+      const cur = (this.isCatalogMode || this.isLocalPathImportMode) ? this.catalogLlmType : this.form?.fd?.llm_type
       const opt = this.llmTypeOptions.find(o => o.id === cur)
       return (opt && this.$t(opt.name)) || cur || '-'
     },
     currentTypeFields () {
-      const type = this.isCatalogMode ? this.catalogLlmType : (this.form.fd.llm_type || 'ollama')
+      const type = (this.isCatalogMode || this.isLocalPathImportMode) ? this.catalogLlmType : (this.form.fd.llm_type || 'ollama')
       let base = LLM_TYPE_FORM_CONFIG[type] || []
       if (this.isCatalogMode) {
         base = base.filter(f => f.fieldKey !== 'mounted_models' && f.fieldKey !== 'preferred_model')
       }
-      if (this.isCatalogMode && this.catalogSubmitType === 'import' && !base.some(f => f.fieldKey === 'device')) {
-        base = [
-          ...base,
-          {
-            fieldKey: 'device',
-            label: 'aice.devices',
-            component: 'base-select',
-            props: {
-              optionsKey: 'specList',
-              placeholderKey: 'aice.devices',
-              selectProps: { mode: 'multiple' },
+      if (this.isLocalPathSku) {
+        base = base.filter(f => f.fieldKey !== 'mounted_models' && f.fieldKey !== 'preferred_model')
+      }
+      if ((this.isCatalogMode && this.catalogSubmitType === 'import' && !this.isApplyType && !this.isDesktopType) || this.isLocalPathSku) {
+        if (!base.some(f => f.fieldKey === 'device')) {
+          base = [
+            ...base,
+            {
+              fieldKey: 'device',
+              label: 'aice.devices',
+              component: 'base-select',
+              props: {
+                optionsKey: 'specList',
+                placeholderKey: 'aice.devices',
+                selectProps: { mode: 'multiple' },
+              },
             },
-          },
-        ]
+          ]
+        }
       }
       if (type !== 'vllm' && type !== 'sglang') return base
       const out = []
@@ -965,7 +1079,7 @@ export default {
       return out
     },
     appImageParams () {
-      const llmType = this.isCatalogMode ? this.catalogLlmType : this.form.fd.llm_type
+      const llmType = (this.isCatalogMode || this.isLocalPathImportMode) ? this.catalogLlmType : this.form.fd.llm_type
       return {
         limit: 20,
         scope: this.$store.getters.scope,
@@ -1023,14 +1137,47 @@ export default {
           this.form.fc.setFieldsValue(fields)
         })
       }
+      if (this.isLocalPathImportMode && this.localPathAdvancedHostPaths) {
+        const path = String(this.form.fd.local_path || '').trim()
+        if (path) {
+          this.$nextTick(() => this.syncLocalPathHostPathRows(path))
+        }
+      }
     },
   },
   mounted () {
     if (this.isCatalogMode) {
       this.$nextTick(() => this.applyCatalogSpec())
+    } else if (this.isLocalPathImportMode) {
+      this.$nextTick(() => this.applyLocalPathImportDefaults())
     }
   },
   methods: {
+    resolveCreateLlmType (values = {}) {
+      if (this.isCatalogMode) {
+        return this.catalogLlmType
+      }
+      const raw = values.llm_type ??
+        this.form.fc?.getFieldValue?.('llm_type') ??
+        this.form.fd?.llm_type
+      const llmType = String(raw || '').trim()
+      if (this.isLocalPathImportMode) {
+        if (llmType === 'vllm' || llmType === 'sglang') return llmType
+        return 'vllm'
+      }
+      return llmType || 'ollama'
+    },
+    applyLocalPathImportDefaults () {
+      if (!this.form?.fc) return
+      const llmType = this.resolveCreateLlmType()
+      const defaults = { ...getDefaultSkuSpecForType('vllm'), memory: 8192 }
+      this.form.fc.setFieldsValue({
+        llm_type: llmType,
+        cpu: defaults.cpu,
+        memory: defaults.memory / 1024,
+      })
+      this.$set(this.form.fd, 'llm_type', llmType)
+    },
     applyCatalogSpec () {
       if (!this.catalogSpec || !this.form?.fc) return
       const llmType = this.catalogLlmType
@@ -1138,9 +1285,9 @@ export default {
         customized_arg_key,
         customized_arg_value,
       } = values
-      const effectiveLlmType = this.isCatalogMode
-        ? this.catalogLlmType
-        : (this.isEditMode ? this.form.fd.llm_type : llm_type)
+      const effectiveLlmType = this.isEditMode
+        ? (this.form.fd.llm_type || llm_type)
+        : this.resolveCreateLlmType({ llm_type })
       const typeFields = this.currentTypeFields
       const typeFieldKeys = typeFields.filter(f => f.fieldKey !== '__customized_args__').map(f => f.fieldKey)
       const pickTypeValues = {}
@@ -1211,7 +1358,7 @@ export default {
       }
       if (port_mappings.length > 0) data.port_mappings = port_mappings
       if (host_paths.length > 0) data.host_paths = host_paths
-      if (!this.isEditMode) {
+      if (!this.isEditMode && effectiveLlmType) {
         data.llm_type = effectiveLlmType
         data.llm_sku = { [effectiveLlmType]: {} }
       }
@@ -1233,15 +1380,23 @@ export default {
           const preferredStr = pm != null ? String(pm).trim() : ''
           if (preferredStr !== '') typeSpec.preferred_model = preferredStr
         }
-        const customized_args = this.customizedArgsRows
-          .map((item) => ({
-            key: customized_arg_key?.[item.key] != null ? String(customized_arg_key[item.key]).trim() : '',
-            value: customized_arg_value?.[item.key] != null ? String(customized_arg_value[item.key]).trim() : '',
-          }))
-          .filter((row) => row.key !== '' || row.value !== '')
-        if (customized_args.length > 0) typeSpec.customized_args = customized_args
+        if (effectiveLlmType === 'vllm' || effectiveLlmType === 'sglang') {
+          const backend_parameters = formValuesToBackendParameters(
+            this.customizedArgsRows,
+            customized_arg_key,
+            customized_arg_value,
+          )
+          if (this.isEditMode || backend_parameters.length > 0) {
+            data.backend_parameters = backend_parameters
+          }
+          if (this.isEditMode) {
+            typeSpec.customized_args = []
+          }
+        }
         if (Object.keys(typeSpec).length > 0) {
           data.llm_spec = { [effectiveLlmType]: typeSpec }
+        } else if (this.isEditMode && (effectiveLlmType === 'vllm' || effectiveLlmType === 'sglang')) {
+          data.llm_spec = { [effectiveLlmType]: { customized_args: [] } }
         }
       }
       if (!this.isEditMode) {
@@ -1292,6 +1447,17 @@ export default {
       const id = res.data?.id
       return id ? [id] : []
     },
+    mergeCatalogBackendParameters (data) {
+      const llmType = this.catalogLlmType
+      if (llmType !== 'vllm' && llmType !== 'sglang') return data
+      const catalogParams = normalizeCatalogBackendParameters(this.catalogSpec)
+      const formParams = data.backend_parameters || []
+      const merged = mergeBackendParameters(catalogParams, formParams)
+      if (merged.length > 0 || catalogParams.length > 0 || formParams.length > 0) {
+        data.backend_parameters = merged
+      }
+      return data
+    },
     async buildCatalogSkuPayload () {
       const values = await this.form.fc.validateFields()
       if (this.isCatalogImportMode && values.llm_image_id) {
@@ -1303,7 +1469,7 @@ export default {
       data.llm_model_spec_id = getCatalogSpecId(this.catalogSpec)
       data.llm_type = llmType
 
-      // HF / model-sets 导入：目录模型字段 + 表单 customized_args 合并进 llm_spec
+      // HF / model-sets 导入：目录模型字段 + 表单 backend_parameters 合并
       if (this.catalogSubmitType === 'import') {
         const hfImport = buildHuggingfaceSkuImportParams(this.catalogSpec, llmType, {
           catalogSet: this.catalogSet,
@@ -1319,7 +1485,7 @@ export default {
             },
           }
         }
-        return payload
+        return this.mergeCatalogBackendParameters(payload)
       }
 
       const mountedModelIds = await this.resolveCatalogMountedModelIds()
@@ -1335,7 +1501,7 @@ export default {
         data.llm_spec = { [llmType]: { ...catTypeSpec, ...formTypeSpec } }
       }
 
-      return data
+      return this.mergeCatalogBackendParameters(data)
     },
     async handleCatalogImport () {
       this.loading = true
@@ -1349,6 +1515,95 @@ export default {
         throw error
       } finally {
         this.loading = false
+      }
+    },
+    async buildLocalPathSkuPayload () {
+      const values = await this.form.fc.validateFields()
+      const mergedValues = { ...this.form.fc.getFieldsValue(), ...values }
+      const llmType = this.resolveCreateLlmType(mergedValues)
+      const data = this._assembleSkuData({ ...mergedValues, llm_type: llmType })
+      delete data.llm_sku
+      const localPath = String(mergedValues.local_path || '').trim()
+      const preferredModel = getLocalPathPreferredModel(localPath)
+      const hostPaths = this.localPathAdvancedHostPaths && data.host_paths?.length
+        ? data.host_paths
+        : buildLocalPathHostPaths(localPath, llmType)
+      const formTypeSpec = data.llm_spec?.[llmType] || {}
+      const preferHosts = normalizePreferHosts(mergedValues.prefer_hosts)
+      return {
+        ...data,
+        llm_type: llmType,
+        source: 'local_path',
+        local_path: localPath,
+        prefer_hosts: preferHosts,
+        host_paths: hostPaths,
+        categories: ['llm'],
+        generate_name: data.name,
+        llm_spec: {
+          [llmType]: {
+            ...formTypeSpec,
+            preferred_model: preferredModel,
+          },
+        },
+      }
+    },
+    async handleLocalPathImport () {
+      this.loading = true
+      try {
+        const manager = new this.$Manager('llm_skus')
+        const data = await this.buildLocalPathSkuPayload()
+        await manager.create({ data })
+        this.$message.success(this.$t('common.success'))
+        this.$emit('success')
+      } catch (error) {
+        throw error
+      } finally {
+        this.loading = false
+      }
+    },
+    onLlmTypeChange (e) {
+      const val = e?.target?.value ?? e
+      if (val) {
+        this.$set(this.form.fd, 'llm_type', val)
+      }
+    },
+    onLocalPathInputChange (e) {
+      const path = String(e?.target?.value ?? e ?? '').trim()
+      this.$set(this.form.fd, 'local_path', path)
+      if (!this.localPathAdvancedHostPaths) return
+      this.syncLocalPathHostPathRows(path)
+    },
+    enableLocalPathAdvancedHostPaths () {
+      this.localPathAdvancedHostPaths = true
+      if (!this.hostPathRows.length) {
+        this.addHostPath()
+      }
+      const path = String(this.form.fd.local_path || '').trim()
+      if (path) {
+        this.$nextTick(() => this.syncLocalPathHostPathRows(path))
+      }
+    },
+    syncLocalPathHostPathRows (hostPath) {
+      const paths = buildLocalPathHostPaths(hostPath, this.form.fd.llm_type || 'vllm')
+      const hp = paths[0]
+      if (!hp || !this.hostPathRows.length) return
+      const row = this.hostPathRows[0]
+      const hpKey = row.key
+      this.form.fc.setFieldsValue({
+        [`host_path_type_${hpKey}`]: hp.type,
+        [`host_path_path_${hpKey}`]: hp.path,
+        [`host_path_auto_create_${hpKey}`]: hp.auto_create,
+      })
+      const container = hp.containers?.[0]
+      const cRow = row.containerRows?.[0]
+      if (container && cRow) {
+        const composite = `${hpKey}__${cRow.key}`
+        this.form.fc.setFieldsValue({
+          [`host_path_container_index_${composite}`]: '0',
+          [`host_path_mount_path_${composite}`]: container.mount_path,
+          [`host_path_read_only_${composite}`]: container.read_only,
+          [`host_path_propagation_${composite}`]: container.propagation,
+        })
       }
     },
     add () {

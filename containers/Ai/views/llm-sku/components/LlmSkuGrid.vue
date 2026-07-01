@@ -55,6 +55,12 @@
               </span>
             </div>
             <div
+              v-if="item.source"
+              class="meta-row meta-ellipsis"
+              :title="formatSkuSource(item.source)">
+              {{ $t('aice.llm_deployment.source') }}：{{ formatSkuSource(item.source) }}
+            </div>
+            <div
               v-if="isDesktopType && item.app_name"
               class="meta-row meta-ellipsis"
               :title="item.app_name">
@@ -129,6 +135,7 @@ import { getLlmSkuListSteadyStatuses } from '@Ai/utils/llmSkuStatus'
 import Actions from '@/components/PageList/Actions'
 import LlmSkuImportStatus from './LlmSkuImportStatus.vue'
 import LlmSkuMountedModels from './LlmSkuMountedModels.vue'
+import { getLlmSkuSourceLabel } from '../utils/skuSourceDisplay'
 import { LLM_TYPE_OPTIONS } from '../constants/llmTypeConfig'
 
 const INFERENCE_LLM_TYPES = ['vllm', 'ollama', 'sglang']
@@ -247,6 +254,9 @@ export default {
     formatBandwidth (bandwidth) {
       if (bandwidth === 0) return `0(${this.$t('common.not_limited')})`
       return `${bandwidth}M`
+    },
+    formatSkuSource (source) {
+      return getLlmSkuSourceLabel(source) || source || '-'
     },
     mountedModelText (item) {
       const list = item.mounted_model_details || []
