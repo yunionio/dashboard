@@ -1345,12 +1345,14 @@
       "unknown": "Unknown",
       "ready": "Ready",
       "running": "Running",
+      "creating": "Creating",
       "importing_model": "Importing Model",
       "import_model_failed": "Import Model Failed",
       "creating_sku": "Creating SKU",
       "create_sku_failed": "Create SKU Failed",
       "deploying": "Deploying",
       "partial": "Partially Ready",
+      "start_fail": "Start Failed",
       "create_fail": "Create Failed",
       "create_failed": "Create Failed",
       "start_delete": "Start Delete",
@@ -1363,6 +1365,15 @@
       "aiproxy_syncing": "Gateway Syncing",
       "aiproxy_partial": "Gateway Partially Synced",
       "aiproxy_sync_failed": "Gateway Sync Failed"
+    },
+    "llmDeploymentAiproxy": {
+      "unknown": "Unknown",
+      "disabled": "Disabled",
+      "pending": "Pending",
+      "syncing": "Syncing",
+      "synced": "Synced",
+      "partial": "Partially Synced",
+      "failed": "Sync Failed"
     },
     "llmSku": {
       "unknown": "Unknown",

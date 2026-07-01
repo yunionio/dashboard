@@ -75,6 +75,16 @@ export default {
             return row.auto_register_aiproxy ? this.$t('common.true') : this.$t('common.false')
           },
         },
+        {
+          field: 'aiproxy_sync_status',
+          title: this.$t('aice.llm_deployment.aiproxy_sync_status'),
+          formatter: ({ row }) => {
+            const status = row.aiproxy_sync_status
+            if (!status) return '-'
+            const key = `status.llmDeploymentAiproxy.${status}`
+            return this.$te(key) ? this.$t(key) : status
+          },
+        },
         getAiRoutingDetailField(this, { routingName: this.aiRoutingName }),
       ]
     },

@@ -1367,12 +1367,14 @@
       "unknown": "未知",
       "ready": "就绪",
       "running": "运行中",
+      "creating": "创建中",
       "importing_model": "导入模型中",
       "import_model_failed": "导入模型失败",
       "creating_sku": "创建模板中",
       "create_sku_failed": "创建模板失败",
       "deploying": "部署中",
       "partial": "部分就绪",
+      "start_fail": "启动失败",
       "create_fail": "创建失败",
       "create_failed": "创建失败",
       "start_delete": "开始删除",
@@ -1385,6 +1387,15 @@
       "aiproxy_syncing": "网关同步中",
       "aiproxy_partial": "网关部分同步",
       "aiproxy_sync_failed": "网关同步失败"
+    },
+    "llmDeploymentAiproxy": {
+      "unknown": "未知",
+      "disabled": "未启用",
+      "pending": "待同步",
+      "syncing": "同步中",
+      "synced": "已同步",
+      "partial": "部分同步",
+      "failed": "同步失败"
     },
     "llmSku": {
       "unknown": "未知",

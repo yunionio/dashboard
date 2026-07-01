@@ -25,6 +25,11 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'llmDeployment' }),
+      getStatusTableColumn({
+        field: 'aiproxy_sync_status',
+        statusModule: 'llmDeploymentAiproxy',
+        title: this.$t('aice.llm_deployment.aiproxy_sync_status'),
+      }),
       getLLMSkuTableColumn({ vm: this }),
       getBackendTableColumn(),
       getReplicasTableColumn(),
