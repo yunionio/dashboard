@@ -6,6 +6,7 @@ export default {
   data () {
     return {
       aiProviderNameMap: {},
+      aiProviderKeyMap: {},
     }
   },
   methods: {

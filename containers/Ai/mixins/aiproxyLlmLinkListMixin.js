@@ -1,5 +1,5 @@
 import { getAiproxyResourceScope } from '@Ai/constants/aiproxyResources'
-import { fetchAiProviderNameMap } from '@Ai/utils/aiProviderNames'
+import { fetchAiProviderMetaMap, getAiProviderKeyFromRow } from '@Ai/utils/aiProviderNames'
 import { fetchAiModelNameMap } from '@Ai/utils/aiModelNames'
 import { fetchLlmDeploymentNameMap } from '@Ai/utils/llmDeploymentNames'
 import { fetchLlmInstanceNameMap } from '@Ai/utils/llmInstanceNames'
@@ -10,6 +10,7 @@ export default {
       llmDeploymentNameMap: {},
       llmInstanceNameMap: {},
       aiProviderNameMap: {},
+      aiProviderKeyMap: {},
       aiModelNameMap: {},
     }
   },
@@ -31,15 +32,26 @@ export default {
     async enrichRowsWithAiProviderLinks (response) {
       const rows = response?.data?.data
       if (!Array.isArray(rows) || !rows.length) return
-      const nameMap = await fetchAiProviderNameMap(
+      const metaMap = await fetchAiProviderMetaMap(
         rows.map(row => row.ai_provider_id),
         { vm: this },
       )
       if (this._isDestroyed) return
+      const nameMap = {}
+      const keyMap = {}
+      Object.entries(metaMap).forEach(([id, meta]) => {
+        if (meta?.name) nameMap[id] = meta.name
+        if (meta?.provider_key) keyMap[id] = meta.provider_key
+      })
       this.aiProviderNameMap = { ...this.aiProviderNameMap, ...nameMap }
+      this.aiProviderKeyMap = { ...this.aiProviderKeyMap, ...keyMap }
       rows.forEach(row => {
-        const name = nameMap[row.ai_provider_id]
-        if (name) row.ai_provider_name = name
+        const meta = metaMap[row.ai_provider_id]
+        if (meta?.name) row.ai_provider_name = meta.name
+        if (meta?.provider_key) row.ai_provider_key = meta.provider_key
+        if (!row.ai_provider_key) {
+          row.ai_provider_key = getAiProviderKeyFromRow(row, keyMap)
+        }
       })
     },
     async enrichRowsWithAiproxyLlmLinks (response, { withDeployment = false, withInstance = false } = {}) {
@@ -234,11 +246,24 @@ export default {
       let needFetch = false
       rows.forEach(row => {
         const name = row.ai_provider_name || this.aiProviderNameMap[row.ai_provider_id]
+        const providerKey = row.ai_provider_key || this.aiProviderKeyMap[row.ai_provider_id]
         if (name && name !== row.ai_provider_id) {
           if (!row.ai_provider_name) row.ai_provider_name = name
           patch[row.id] = { ...(patch[row.id] || {}), ai_provider_name: name }
         } else if (!row.ai_provider_name && !this.aiProviderNameMap[row.ai_provider_id]) {
           needFetch = true
+        }
+        if (providerKey && !row.ai_provider_key) {
+          row.ai_provider_key = providerKey
+          patch[row.id] = { ...(patch[row.id] || {}), ai_provider_key: providerKey }
+        } else if (!row.ai_provider_key) {
+          const inferred = getAiProviderKeyFromRow(row, this.aiProviderKeyMap)
+          if (inferred) {
+            row.ai_provider_key = inferred
+            patch[row.id] = { ...(patch[row.id] || {}), ai_provider_key: inferred }
+          } else if (!this.aiProviderKeyMap[row.ai_provider_id]) {
+            needFetch = true
+          }
         }
       })
       if (Object.keys(patch).length) {
@@ -248,9 +273,10 @@ export default {
         this.enrichRowsWithAiProviderLinks({ data: { data: rows } }).then(() => {
           const nextPatch = {}
           rows.forEach(row => {
-            if (row.ai_provider_name) {
-              nextPatch[row.id] = { ai_provider_name: row.ai_provider_name }
-            }
+            const itemPatch = {}
+            if (row.ai_provider_name) itemPatch.ai_provider_name = row.ai_provider_name
+            if (row.ai_provider_key) itemPatch.ai_provider_key = row.ai_provider_key
+            if (Object.keys(itemPatch).length) nextPatch[row.id] = itemPatch
           })
           if (Object.keys(nextPatch).length) {
             this.list.updatesProperty(nextPatch)

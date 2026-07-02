@@ -17,7 +17,11 @@
         </a-form-model-item>
         <a-divider orientation="left">{{ $t('aice.aiproxy.routing_models') }}</a-divider>
         <div v-for="(item, index) in models" :key="item._key">
-          <model-binding-row :item="item" :index="index" @remove="removeModel" />
+          <model-binding-row
+            :item="item"
+            :index="index"
+            @remove="removeModel"
+            @model-key-suggest="onModelKeySuggest" />
         </div>
         <a-button type="dashed" icon="plus" block class="mb-4" @click="addModel">{{ $t('aice.aiproxy.add_model_binding') }}</a-button>
       </a-form-model>
@@ -79,6 +83,11 @@ export default {
     },
     removeModel (index) {
       if (this.models.length > 1) this.models.splice(index, 1)
+    },
+    onModelKeySuggest (modelKey) {
+      if (!String(this.form.model_key || '').trim() && modelKey) {
+        this.form.model_key = modelKey
+      }
     },
     handleCancel () {
       this.$router.push('/ai-routing')
