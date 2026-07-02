@@ -6,6 +6,12 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
+        <a-form-item :label="$t('compute.force_detach')" v-if="isGuestHasUnknown || isGuestHasReady" v-bind="formItemLayout">
+          <a-tooltip v-if="isGuestHasUnknown" :title="$t('compute.force_detach_tooltip')">
+            <a-switch :checkedChildren="$t('compute.text_115')" disabled :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.is_force" />
+          </a-tooltip>
+          <a-switch v-else :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.is_force" />
+        </a-form-item>
         <a-form-item :label="$t('compute.text_494')" v-if="isShowAutoStart" v-bind="formItemLayout" :extra="$t('compute.text_495')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" />
         </a-form-item>
@@ -39,6 +45,13 @@ export default {
             initialValue: true,
           },
         ],
+        is_force: [
+          'is_force',
+          {
+            valuePropName: 'checked',
+            initialValue: this.params.data.some(o => o.guest_status === 'unknown'),
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -60,6 +73,12 @@ export default {
     isShowAutoStart () {
       return !this.isGuestAllRunning
     },
+    isGuestHasUnknown () {
+      return this.selectedItems.some(o => o.guest_status === 'unknown')
+    },
+    isGuestHasReady () {
+      return this.selectedItems.some(o => o.guest_status === 'ready')
+    },
   },
   methods: {
     validateForm () {
@@ -74,13 +93,17 @@ export default {
       })
     },
     doUpdate (values, device) {
+      const data = {
+        auto_start: this.isShowAutoStart ? values.autoStart : false,
+        device: device ? device.id : this.params.device.id,
+      }
+      if (values.is_force) {
+        data.is_force = true
+      }
       return new this.$Manager('servers').performAction({
         id: device ? device.guest_id : this.params.data[0].id,
         action: 'detach-isolated-device',
-        data: {
-          auto_start: this.isShowAutoStart ? values.autoStart : false,
-          device: device ? device.id : this.params.device.id,
-        },
+        data,
       })
     },
     async handleConfirm () {
