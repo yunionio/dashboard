@@ -67,8 +67,20 @@
           <copy v-if="text" class="ml-1" :message="text" />
         </template>
       </a-table>
-      <div class="text-color-help mb-2">
-        {{ $t('aice.llm_deployment.aiproxy_access_need_vk') }}
+      <div class="mb-3">
+        <div class="mb-1">{{ $t('aice.aiproxy.access_protocol') }}</div>
+        <p class="text-color-help mb-2">{{ $t('aice.aiproxy.access_protocol_hint') }}</p>
+        <a-radio-group
+          v-model="activeProtocol"
+          button-style="solid"
+          size="small">
+          <a-radio-button value="openai">
+            {{ $t('aice.aiproxy.protocol.openai') }}
+          </a-radio-button>
+          <a-radio-button value="anthropic">
+            {{ $t('aice.aiproxy.protocol.anthropic') }}
+          </a-radio-button>
+        </a-radio-group>
       </div>
       <div class="mb-3">
         <div class="mb-1">{{ $t('aice.llm_deployment.aiproxy_access_select_vk') }}</div>
@@ -77,6 +89,7 @@
             v-model="selectedVirtualKeyId"
             resource="ai_virtual_keys"
             :params="virtualKeySelectParams"
+            :extra-opts="virtualKeyExtraOpts"
             filterable
             version="v2"
             allow-clear
@@ -92,17 +105,14 @@
           </a-button>
         </div>
       </div>
-      <agent-aiproxy-access-section
+      <aiproxy-client-access-detail
+        :protocol="activeProtocol"
         :openai-base-url="openaiBaseUrl"
+        :anthropic-base-url="anthropicBaseUrl"
+        :openai-endpoint-url="endpointUrl"
+        :anthropic-messages-url="anthropicMessagesUrl"
         :virtual-key="selectedVirtualKey"
         :model="agentAccessModel" />
-      <a-alert type="info" show-icon class="mt-3">
-        <template slot="message">{{ $t('aice.aiproxy.endpoint_example') }}</template>
-        <template slot="description">
-          <pre class="mb-0">{{ curlExample }}</pre>
-          <copy :message="curlExample" />
-        </template>
-      </a-alert>
     </template>
 
     <aiproxy-routing-panel :data="data" embedded />
@@ -111,12 +121,12 @@
 
 <script>
 import WindowsMixin from '@/mixins/windows'
-import { Manager } from '@/utils/manager'
 import AiproxyLlmLinkListMixin from '@Ai/mixins/aiproxyLlmLinkListMixin'
-import { getAiproxySelectParams } from '@Ai/constants/aiproxyResources'
+import AiproxyVirtualKeySelectMixin from '@Ai/mixins/aiproxyVirtualKeySelectMixin'
+import AiproxyClientAccessDetail from '@Ai/sections/AiproxyClientAccessDetail'
 import {
-  buildAiproxyCurlExample,
-  isPlaceholderApiKey,
+  resolveAiproxyAnthropicBaseUrl,
+  resolveAiproxyAnthropicMessagesUrl,
   resolveAiproxyChatCompletionsUrl,
   resolveAiproxyOpenAIBaseUrl,
 } from '@Ai/utils/aiproxyEndpoint'
@@ -130,7 +140,6 @@ import {
   resolveAiproxySyncStatus,
 } from '@Ai/utils/aiproxyDeploymentActions'
 import AiproxyRoutingPanel from './AiproxyRoutingPanel'
-import AgentAiproxyAccessSection from './AgentAiproxyAccessSection'
 
 const POLL_INTERVAL_MS = 5000
 const MAX_POLL_COUNT = 24
@@ -139,8 +148,8 @@ const AIPROXY_TERMINAL = new Set(['synced', 'partial', 'failed', 'disabled'])
 
 export default {
   name: 'LlmDeploymentAiproxyAccessPanel',
-  components: { AiproxyRoutingPanel, AgentAiproxyAccessSection },
-  mixins: [WindowsMixin, AiproxyLlmLinkListMixin],
+  components: { AiproxyRoutingPanel, AiproxyClientAccessDetail },
+  mixins: [WindowsMixin, AiproxyLlmLinkListMixin, AiproxyVirtualKeySelectMixin],
   props: {
     data: {
       type: Object,
@@ -153,23 +162,19 @@ export default {
   },
   data () {
     return {
+      activeProtocol: 'openai',
       endpointUrl: '',
       openaiBaseUrl: '',
+      anthropicBaseUrl: '',
+      anthropicMessagesUrl: '',
       endpointLoading: false,
       pollTimer: null,
       pollCount: 0,
       registerLoading: false,
       unregisterLoading: false,
-      selectedVirtualKeyId: '',
-      selectedVirtualKey: '',
-      virtualKeyLoading: false,
-      virtualKeyDefaultLoaded: false,
     }
   },
   computed: {
-    virtualKeySelectParams () {
-      return getAiproxySelectParams(this, 'ai_virtual_keys', { enabled: true })
-    },
     registerMeta () {
       return getRegisterAiproxyMeta(this.data, this)
     },
@@ -199,7 +204,7 @@ export default {
       if (this.data?.status === 'deploying' && this.autoRegister) return true
       if (AIPROXY_TERMINAL.has(aiproxyStatus)) {
         if (aiproxyStatus === 'failed') return false
-        return !this.readyInstances.length || !this.endpointUrl || !this.openaiBaseUrl
+        return !this.readyInstances.length || !this.endpointUrl || !this.openaiBaseUrl || !this.anthropicBaseUrl
       }
       return false
     },
@@ -241,17 +246,6 @@ export default {
     agentAccessModel () {
       return this.readyInstances[0]?.client_model_alias || ''
     },
-    curlExample () {
-      const model = this.readyInstances[0]?.client_model_alias || 'your-model'
-      return buildAiproxyCurlExample({
-        endpoint: this.endpointUrl,
-        model,
-        virtualKey: this.selectedVirtualKey,
-      })
-    },
-    hasConfiguredApiKey () {
-      return !!this.selectedVirtualKey && !isPlaceholderApiKey(`Bearer ${this.selectedVirtualKey}`)
-    },
   },
   watch: {
     'data.status' () {
@@ -276,19 +270,11 @@ export default {
         this.resetAccessState()
       }
     },
-    waitingSync (val) {
-      if (!val && this.autoRegister && !this.syncFailed) {
-        this.loadDefaultVirtualKey()
-      }
-    },
   },
   mounted () {
     this.loadEndpoint()
     this.syncPollingState()
     this.enrichBindingDisplayNames()
-    if (!this.waitingSync && this.autoRegister && !this.syncFailed) {
-      this.loadDefaultVirtualKey()
-    }
   },
   beforeDestroy () {
     this.stopPolling()
@@ -330,6 +316,8 @@ export default {
     resetAccessState () {
       this.endpointUrl = ''
       this.openaiBaseUrl = ''
+      this.anthropicBaseUrl = ''
+      this.anthropicMessagesUrl = ''
       this.endpointLoading = false
       this.pollCount = 0
       this.stopPolling()
@@ -354,78 +342,39 @@ export default {
       this.enrichRowsWithAiProviderLinks({ data: { data: this.aiproxyInstances } })
       this.enrichRowsWithAiproxyLlmLinks({ data: { data: this.aiproxyInstances } }, { withInstance: true })
     },
-    async onVirtualKeyChange (id) {
-      if (!id) {
-        this.selectedVirtualKey = ''
-        return
-      }
-      await this.fetchVirtualKeySecret(id)
-    },
-    async fetchVirtualKeySecret (id) {
-      if (!id) {
-        this.selectedVirtualKey = ''
-        return
-      }
-      this.virtualKeyLoading = true
-      try {
-        const manager = new Manager('ai_virtual_keys')
-        const { data } = await manager.get({
-          id,
-          params: getAiproxySelectParams(this, 'ai_virtual_keys'),
-        })
-        this.selectedVirtualKey = data?.virtual_key || ''
-      } catch (e) {
-        this.selectedVirtualKey = ''
-      } finally {
-        this.virtualKeyLoading = false
-      }
-    },
-    async loadDefaultVirtualKey () {
-      if (this.virtualKeyDefaultLoaded || this.selectedVirtualKeyId) return
-      this.virtualKeyDefaultLoaded = true
-      try {
-        const manager = new Manager('ai_virtual_keys')
-        const { data: { data = [] } } = await manager.list({
-          params: {
-            ...getAiproxySelectParams(this, 'ai_virtual_keys', { enabled: true }),
-            limit: 1,
-          },
-        })
-        const first = data[0]
-        if (!first?.id) return
-        this.selectedVirtualKeyId = first.id
-        if (first.virtual_key) {
-          this.selectedVirtualKey = first.virtual_key
-          return
-        }
-        await this.fetchVirtualKeySecret(first.id)
-      } catch (e) {
-        // ignore
-      }
-    },
     async loadEndpoint () {
       if (!this.autoRegister || this.syncFailed) {
         this.endpointUrl = ''
         this.openaiBaseUrl = ''
+        this.anthropicBaseUrl = ''
+        this.anthropicMessagesUrl = ''
         return
       }
       if (!this.readyInstances.length) {
         this.endpointUrl = ''
         this.openaiBaseUrl = ''
+        this.anthropicBaseUrl = ''
+        this.anthropicMessagesUrl = ''
         return
       }
       this.endpointLoading = true
       try {
         const routingId = this.data?.aiproxy_routing_id
-        const [chatUrl, openaiBase] = await Promise.all([
+        const [chatUrl, openaiBase, anthropicBase, anthropicMessages] = await Promise.all([
           resolveAiproxyChatCompletionsUrl(this, { routingId }),
           resolveAiproxyOpenAIBaseUrl(this, { routingId }),
+          resolveAiproxyAnthropicBaseUrl(this, { routingId }),
+          resolveAiproxyAnthropicMessagesUrl(this, { routingId }),
         ])
         this.endpointUrl = chatUrl
         this.openaiBaseUrl = openaiBase
+        this.anthropicBaseUrl = anthropicBase
+        this.anthropicMessagesUrl = anthropicMessages
       } catch (e) {
         this.endpointUrl = ''
         this.openaiBaseUrl = ''
+        this.anthropicBaseUrl = ''
+        this.anthropicMessagesUrl = ''
       } finally {
         this.endpointLoading = false
         this.syncPollingState()
@@ -438,7 +387,7 @@ export default {
       if (AIPROXY_IN_PROGRESS.has(aiproxyStatus)) return true
       if (this.data?.status === 'deploying' && this.autoRegister) return true
       if (['synced', 'partial'].includes(aiproxyStatus)) {
-        return !this.readyInstances.length || !this.endpointUrl || !this.openaiBaseUrl
+        return !this.readyInstances.length || !this.endpointUrl || !this.openaiBaseUrl || !this.anthropicBaseUrl
       }
       return false
     },

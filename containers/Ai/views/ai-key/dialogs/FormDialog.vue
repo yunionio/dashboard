@@ -20,12 +20,26 @@
         <a-form-model-item :label="$t('aice.aiproxy.weight')" prop="weight">
           <a-input-number v-model="form.weight" :min="0" />
         </a-form-model-item>
-        <a-form-model-item :label="$t('aice.aiproxy.allowed_model_keys')">
-          <a-select v-model="form.allowed_model_keys" mode="tags" :token-separators="[',']" />
-        </a-form-model-item>
-        <a-form-model-item :label="$t('aice.aiproxy.blocked_model_keys')">
-          <a-select v-model="form.blocked_model_keys" mode="tags" :token-separators="[',']" />
-        </a-form-model-item>
+        <template v-if="params.type === 'edit'">
+          <a-form-model-item :label="$t('aice.aiproxy.allowed_model_keys')">
+            <a-select
+              v-model="form.allowed_model_keys"
+              mode="tags"
+              allow-clear
+              :options="modelKeyOptions"
+              :placeholder="$t('common.tips.select', [$t('aice.aiproxy.model_key')])"
+              :token-separators="[',']" />
+          </a-form-model-item>
+          <a-form-model-item :label="$t('aice.aiproxy.blocked_model_keys')">
+            <a-select
+              v-model="form.blocked_model_keys"
+              mode="tags"
+              allow-clear
+              :options="modelKeyOptions"
+              :placeholder="$t('common.tips.select', [$t('aice.aiproxy.model_key')])"
+              :token-separators="[',']" />
+          </a-form-model-item>
+        </template>
       </a-form-model>
     </div>
     <div slot="footer">
@@ -40,6 +54,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { validateModelForm } from '@/utils/validate'
 import { getAiproxySelectParams } from '@Ai/constants/aiproxyResources'
+import { fetchProviderModelKeyOptions } from '@Ai/utils/aiModelNames'
 
 export default {
   name: 'AiKeyFormDialog',
@@ -50,6 +65,7 @@ export default {
     return {
       loading: false,
       fixedProviderId,
+      modelKeyOptions: [],
       form: {
         generate_name: '',
         ai_provider_id: data.ai_provider_id || fixedProviderId,
@@ -65,14 +81,39 @@ export default {
       },
     }
   },
+  watch: {
+    'form.ai_provider_id' () {
+      if (this.params.type === 'edit') {
+        this.loadModelKeyOptions()
+      }
+    },
+  },
+  created () {
+    if (this.params.type === 'edit') {
+      this.loadModelKeyOptions()
+    }
+  },
   methods: {
     aiproxySelectParams (resource, extra) {
       return getAiproxySelectParams(this, resource, extra)
     },
+    effectiveProviderId () {
+      return this.fixedProviderId || this.form.ai_provider_id || ''
+    },
+    async loadModelKeyOptions () {
+      const providerId = this.effectiveProviderId()
+      if (!providerId) {
+        this.modelKeyOptions = []
+        return
+      }
+      this.modelKeyOptions = await fetchProviderModelKeyOptions(providerId, { vm: this })
+    },
     buildPayload () {
       const routing = {}
-      if (this.form.allowed_model_keys?.length) routing.allowed_model_keys = this.form.allowed_model_keys
-      if (this.form.blocked_model_keys?.length) routing.blocked_model_keys = this.form.blocked_model_keys
+      if (this.params.type === 'edit') {
+        if (this.form.allowed_model_keys?.length) routing.allowed_model_keys = this.form.allowed_model_keys
+        if (this.form.blocked_model_keys?.length) routing.blocked_model_keys = this.form.blocked_model_keys
+      }
       const data = {
         ai_provider_id: this.form.ai_provider_id,
         weight: this.form.weight,

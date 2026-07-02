@@ -13,6 +13,7 @@ export default {
               this.createDialog('AiKeyFormDialog', {
                 type: 'edit',
                 data: [obj],
+                ai_provider_id: this.ai_provider_id || this.data?.id,
                 onManager: this.onManager,
                 refresh: this.refresh,
               })

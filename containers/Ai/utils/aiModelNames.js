@@ -49,3 +49,34 @@ export async function fetchAiModelNameMap (ids, { scope, vm, useCache = true } =
 
   return result
 }
+
+/** List model_key options for one ai_provider (for ai_key routing selects). */
+export async function fetchProviderModelKeyOptions (providerId, { vm, scope } = {}) {
+  const pid = String(providerId || '').trim()
+  if (!pid) return []
+
+  const listScope = scope || (vm ? getAiproxyResourceScope('ai_models', vm) : 'system')
+
+  try {
+    const manager = new Manager('ai_models')
+    const { data: { data = [] } } = await manager.list({
+      params: {
+        scope: listScope,
+        ai_provider_id: pid,
+        limit: 500,
+      },
+    })
+    const seen = new Set()
+    const options = []
+    ;(data || []).forEach(item => {
+      const key = String(item?.model_key || '').trim()
+      if (!key || seen.has(key)) return
+      seen.add(key)
+      options.push({ value: key, label: key })
+    })
+    options.sort((a, b) => a.label.localeCompare(b.label))
+    return options
+  } catch (e) {
+    return []
+  }
+}

@@ -1586,6 +1586,7 @@ export const PERMISSION = {
   ai_providers_delete: ['aiproxy', 'ai_providers', 'delete'],
   ai_providers_perform_enable: ['aiproxy', 'ai_providers', 'perform', 'enable'],
   ai_providers_perform_disable: ['aiproxy', 'ai_providers', 'perform', 'disable'],
+  ai_providers_perform_test_connectivity: ['aiproxy', 'ai_providers', 'perform', 'test-connectivity'],
 
   ai_models_list: ['aiproxy', 'ai_models', 'list'],
   ai_models_get: ['aiproxy', 'ai_models', 'get'],
