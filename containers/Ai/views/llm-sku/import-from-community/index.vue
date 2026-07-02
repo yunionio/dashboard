@@ -58,7 +58,7 @@
               :label-col="{ span: 6 }"
               :wrapper-col="{ span: 18 }">
               <a-form-model-item :label="$t('aice.devices')" prop="devices">
-                <llm-gpu-device-select v-model="importForm.devices" />
+                <llm-gpu-devices-editor v-model="importForm.devices" />
               </a-form-model-item>
             </a-form-model>
           </template>
@@ -81,8 +81,9 @@
 
 <script>
 import marked from 'marked'
+import { createEmptyDeviceRow, isValidDeviceRows } from '@Ai/utils/deviceFormUtils'
 import CommunityImageGrid from '@Ai/sections/community-images/components/CommunityImageGrid.vue'
-import LlmGpuDeviceSelect from '@Ai/sections/LlmGpuDeviceSelect.vue'
+import LlmGpuDevicesEditor from '@Ai/sections/LlmGpuDevicesEditor.vue'
 import { parseLlmRoute, getLlmSkuTypeFilter } from '@Ai/utils/llmRouteContext'
 import {
   communityImportNeedsGpuSelection,
@@ -102,7 +103,7 @@ export default {
   name: 'LlmSkuImportFromCommunity',
   components: {
     CommunityImageGrid,
-    LlmGpuDeviceSelect,
+    LlmGpuDevicesEditor,
   },
   data () {
     return {
@@ -112,7 +113,7 @@ export default {
       existingImages: {},
       submitLoading: false,
       importForm: {
-        devices: [],
+        devices: [createEmptyDeviceRow()],
       },
       imagesManager: new this.$Manager('llm_images'),
       skusManager: new this.$Manager('llm_skus'),
@@ -152,7 +153,7 @@ export default {
           required: true,
           type: 'array',
           validator: (rule, value, callback) => {
-            if (!Array.isArray(value) || value.length < 1) {
+            if (!isValidDeviceRows(value)) {
               callback(new Error(this.$t('common.tips.select', [this.$t('aice.devices')])))
               return
             }
@@ -237,7 +238,7 @@ export default {
       this.resetImportForm()
     },
     resetImportForm () {
-      this.importForm.devices = []
+      this.importForm.devices = [createEmptyDeviceRow()]
       this.$nextTick(() => {
         if (this.$refs.importFormRef) {
           this.$refs.importFormRef.clearValidate()
