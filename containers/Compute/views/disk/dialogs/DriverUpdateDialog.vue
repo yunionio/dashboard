@@ -2,7 +2,6 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('compute.disk.change_driver')}}</div>
     <div slot="body">
-      <a-alert :message="$t('compute.driver_exchange_tip')" type="warning" style="margin-bottom: 30px" />
       <a-form
         :form="form.fc" v-bind="formItemLayout" hideRequiredMark>
         <dialog-table :data="dataList" :columns="columns" />
@@ -183,19 +182,13 @@ export default {
       })
     },
     async doUpdate (data) {
-      await new this.$Manager('guestdisks', 'v2').jointUpdate({
-        joints: [{ resource: 'servers', id: data.server }, { resource: 'disks', id: data.disk }],
+      await new this.$Manager('servers', 'v2').performAction({
+        id: data.server,
+        action: 'change-disk-driver',
         data: {
+          disk_id: data.disk,
           driver: data.driver,
           cache_mode: data.cache_mode,
-        },
-      })
-      await this.params.onManager('update', {
-        id: data.disk,
-        managerArgs: {
-          data: {
-            is_ssd: data.is_ssd,
-          },
         },
       })
     },
@@ -207,9 +200,9 @@ export default {
         const params = {
           driver: values.driver,
           server: this.form.fd.guest_id,
-          disk: this.form.fd.disk_id,
           cache_mode: values.cache_mode,
           is_ssd: this.is_ssd,
+          disk: this.params.data[0].id,
         }
         if (!params.server || !params.disk) {
           this.loading = false
@@ -218,6 +211,7 @@ export default {
         this.doUpdate(params)
         this.loading = false
         this.$message.success(this.$t('common.success'))
+        this.params.ok(this.params.data[0].id)
         this.cancelDialog()
       } catch (error) {
         this.loading = false
