@@ -238,7 +238,7 @@ export default {
               return ret
             }
 
-            if (obj.status !== 'ready' && obj.status !== 'running') {
+            if (obj.status !== 'ready' && obj.status !== 'running' && obj.status !== 'unknown') {
               ret.validate = false
               ret.tooltip = this.$t('compute.text_489', [this.$t('compute.text_113')])
               return ret

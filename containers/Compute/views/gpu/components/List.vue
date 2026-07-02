@@ -173,7 +173,8 @@ export default {
                 tooltip: this.$t('compute.text_486'),
               }
             }
-            const validateGuestStatus = item.every(item => item.guest_id && (item.guest_status === 'ready' || item.guest_status === 'running'))
+            const noValidateGuestStatus = item.some(item => item.host_type !== 'container' && (item.guest_status !== 'ready' && item.guest_status !== 'running' && item.guest_status !== 'unknown'))
+            const noValidateContainerStatus = item.some(item => item.host_type === 'container' && (item.guest_status !== 'ready' && item.guest_status !== 'unknown'))
             const validateGuestId = item.every(item => item.guest_id)
             const someNicDevice = item.some(v => v.dev_type === 'NIC')
             if (someNicDevice) {
@@ -188,15 +189,19 @@ export default {
                 tooltip: this.$t('compute.text_487', [this.$t('dictionary.server')]),
               }
             }
-            if (!validateGuestStatus) {
+            if (noValidateGuestStatus) {
               return {
                 validate: false,
                 tooltip: this.$t('compute.text_489', [this.$t('dictionary.server')]),
               }
             }
-            return {
-              validate: true,
+            if (noValidateContainerStatus) {
+              return {
+                validate: false,
+                tooltip: this.$t('compute.text_489_1', [this.$t('compute.text_113')]),
+              }
             }
+            return { validate: true }
           },
         },
         {

@@ -495,8 +495,8 @@
   "compute.text_485": "取消关联{0}",
   "compute.text_486": "请先选择要解绑的透传设备",
   "compute.text_487": "请选择已关联{0}的透传设备",
-  "compute.text_489": "取消关联{0}在【关机，运行中】的状态下支持该操作",
-  "compute.text_489_1": "取消关联{0}在【关机】的状态下支持该操作",
+  "compute.text_489": "取消关联{0}在【关机，运行中, 未知】的状态下支持该操作",
+  "compute.text_489_1": "取消关联{0}在【关机, 未知】的状态下支持该操作",
   "compute.text_489_2": "GPU卡取消关联{0}仅在【关机】的状态下支持该操作",
   "compute.text_490": "设置预留资源",
   "compute.text_491": "请选择要设置预留资源的GPU卡",
@@ -2035,5 +2035,7 @@
   "compute.regional_availability.tooltip.single": "{0}套餐在此{1}，{2}",
   "compute.regional_availability.tooltip.both_same": "{0}、{1}套餐在此{2}，均{3}",
   "compute.regional_availability.tooltip.mixed": "{0}套餐在此{1}，{2}；{3}套餐在此{1}，{4}",
-  "compute.region_map": "区域地图"
+  "compute.region_map": "区域地图",
+  "compute.force_detach": "强制解绑",
+  "compute.force_detach_tooltip": "【未知】状态的虚拟机需强制解绑"
 }
