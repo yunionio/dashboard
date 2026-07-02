@@ -10,10 +10,10 @@
           <a-tooltip v-if="isGuestHasUnknown" :title="$t('compute.force_detach_tooltip')">
             <a-switch :checkedChildren="$t('compute.text_115')" disabled :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.is_force" />
           </a-tooltip>
-          <a-switch v-else :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.is_force" />
+          <a-switch v-else :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.is_force" @change="onForceChange" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_494')" v-if="isShowAutoStart" v-bind="formItemLayout" :extra="$t('compute.text_495')">
-          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" />
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" :disabled="isForceChecked" v-decorator="decorators.autoStart" />
         </a-form-item>
       </a-form>
     </div>
@@ -34,6 +34,8 @@ export default {
   data () {
     return {
       loading: false,
+      isForceChecked: this.params.data.some(o => o.guest_status === 'unknown'),
+      autoStartSnapshot: null,
       form: {
         fc: this.$form.createForm(this),
       },
@@ -80,7 +82,22 @@ export default {
       return this.selectedItems.some(o => o.guest_status === 'ready')
     },
   },
+  mounted () {
+    if (this.isForceChecked) {
+      this.form.fc.setFieldsValue({ autoStart: false })
+    }
+  },
   methods: {
+    onForceChange (checked) {
+      if (checked) {
+        this.autoStartSnapshot = this.form.fc.getFieldValue('autoStart')
+        this.form.fc.setFieldsValue({ autoStart: false })
+      } else {
+        this.form.fc.setFieldsValue({ autoStart: this.autoStartSnapshot ?? true })
+        this.autoStartSnapshot = null
+      }
+      this.isForceChecked = checked
+    },
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {
