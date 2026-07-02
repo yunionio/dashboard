@@ -40,12 +40,6 @@
 
         <a-divider orientation="left">{{ $t('aice.llm_deployment.create.deployment') }}</a-divider>
 
-        <a-form-item :label="$t('aice.llm_deployment.placement_strategy')">
-          <a-radio-group v-decorator="decorators.placement_strategy">
-            <a-radio value="spread">{{ $t('aice.llm_deployment.placement_strategy.spread') }}</a-radio>
-            <a-radio value="binpack">{{ $t('aice.llm_deployment.placement_strategy.binpack') }}</a-radio>
-          </a-radio-group>
-        </a-form-item>
         <a-form-item :label="$t('compute.text_104')" class="mb-0">
           <server-network
             :form="form"
@@ -135,7 +129,6 @@ export default {
             ],
           },
         ],
-        placement_strategy: ['placement_strategy', { initialValue: 'spread' }],
         network: {
           networkType: ['networkType', { initialValue: NETWORK_OPTIONS_MAP.default.key }],
           networkConfig: {
@@ -187,7 +180,15 @@ export default {
       }
     },
     skuParams () {
-      return { scope: this.$store.getters.scope, details: true, limit: 20, filter: ['llm_type.in(vllm,ollama,sglang)'] }
+      return {
+        scope: this.$store.getters.scope,
+        details: true,
+        limit: 20,
+        filter: [
+          'status.equals(ready)',
+          'llm_type.in(vllm,ollama,sglang)',
+        ],
+      }
     },
     networkParams () {
       return {
@@ -280,7 +281,7 @@ export default {
         name: values.name,
         llm_sku_id: values.llm_sku_id,
         replicas: 1,
-        placement_strategy: values.placement_strategy,
+        placement_strategy: 'spread',
         access_policy: 'authed',
         auto_start: true,
         nets: this.genNetworks(values),

@@ -1,5 +1,6 @@
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
+import { formatDevicesDisplay, aggregateDevicesToRows } from '@Ai/utils/deviceFormUtils'
 import { getSkuModelDisplayText } from './modelDisplay'
 import LlmSkuMountedModels from '../components/LlmSkuMountedModels.vue'
 
@@ -14,19 +15,16 @@ export const getDeviceModelTableColumn = () => {
       default: ({ row }, h) => {
         const devices = row.devices
         if (devices?.length) {
-          return devices.map(v => {
-            return <div class={'mb-1'}><a-tag>{v.model}</a-tag></div>
+          const rows = aggregateDevicesToRows(devices)
+          return rows.map(v => {
+            return <div class={'mb-1'}><a-tag>{v.model} ×{v.count}</a-tag></div>
           })
         }
         return '-'
       },
     },
     formatter: ({ row }) => {
-      const devices = row.devices
-      if (devices?.length) {
-        return devices.map(v => v.model).join(',')
-      }
-      return '-'
+      return formatDevicesDisplay(row.devices)
     },
   }
 }
