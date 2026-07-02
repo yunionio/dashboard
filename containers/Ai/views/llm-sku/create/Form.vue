@@ -139,6 +139,12 @@
             v-decorator="decorators[field.fieldKey]"
             v-bind="getBaseSelectProps(field)" />
         </a-form-item>
+        <a-form-item
+          v-else-if="field.component === 'llm-gpu-devices-editor'"
+          :key="field.fieldKey"
+          :label="$t(field.label)">
+          <llm-gpu-devices-editor v-decorator="decorators[field.fieldKey]" />
+        </a-form-item>
         <a-form-item v-else-if="field.component === 'input-number'" :key="field.fieldKey" :label="$t(field.label)">
           <a-input-number
             v-decorator="decorators[field.fieldKey]"
@@ -408,6 +414,7 @@
 import { mapGetters } from 'vuex'
 import LlmImageSelect from '@Ai/sections/LlmImageSelect'
 import CatalogLlmImageSelect from '@Ai/sections/CatalogLlmImageSelect'
+import LlmGpuDevicesEditor from '@Ai/sections/LlmGpuDevicesEditor'
 import {
   buildCatalogImageGroups,
   fetchCommunityImageItems,
@@ -435,6 +442,12 @@ import {
   normalizePreferHosts,
 } from '@Ai/utils/localPathImport'
 import {
+  aggregateDevicesToRows,
+  createEmptyDeviceRow,
+  expandRowsToDevices,
+  isValidDeviceRows,
+} from '@Ai/utils/deviceFormUtils'
+import {
   formValuesToBackendParameters,
   mergeBackendParameters,
   normalizeCatalogBackendParameters,
@@ -459,6 +472,7 @@ export default {
     DomainProject,
     LlmImageSelect,
     CatalogLlmImageSelect,
+    LlmGpuDevicesEditor,
     NameRepeated,
   },
   mixins: [WindowsMixin],
@@ -543,14 +557,8 @@ export default {
       : null
     const isCatalogImport = !!getCatalogSpecId(this.catalogSpec) && this.catalogSubmitType === 'import'
     const isLocalPathImport = this.importMode === 'local_path'
-    const catalogImportDeviceRules = (isCatalogImport || isLocalPathImport)
-      ? [{
-        type: 'array',
-        required: true,
-        min: 1,
-        message: this.$t('common.tips.select', [this.$t('aice.devices')]),
-      }]
-      : []
+    const deviceRowsInit = aggregateDevicesToRows(devices)
+    const deviceInitialValue = deviceRowsInit.length ? deviceRowsInit : [createEmptyDeviceRow()]
     const typeLlmSpec = (llmSpec && (initialLlmTypeForSpec === 'vllm' || initialLlmTypeForSpec === 'sglang') && llmSpec[initialLlmTypeForSpec])
       ? llmSpec[initialLlmTypeForSpec]
       : {}
@@ -882,8 +890,27 @@ export default {
         device: [
           'device',
           {
-            initialValue: devices && devices.length > 0 ? devices.map(v => v.model) : [],
-            rules: catalogImportDeviceRules,
+            initialValue: deviceInitialValue,
+            valuePropName: 'value',
+            trigger: 'change',
+            rules: [
+              {
+                validator: (rule, value, callback) => {
+                  const type = (this.isCatalogMode || this.isLocalPathImportMode)
+                    ? this.catalogLlmType
+                    : (this.form?.fd?.llm_type)
+                  const field = (LLM_TYPE_FORM_CONFIG[type] || []).find(f => f.fieldKey === 'device')
+                  const hasInjectedDevice = (this.isCatalogMode && this.catalogSubmitType === 'import' && !this.isApplyType && !this.isDesktopType) || this.isLocalPathSku
+                  const required = !!(field?.rules?.some(r => r.required) || hasInjectedDevice || isCatalogImport || isLocalPathImport)
+                  if (!isValidDeviceRows(value, { allowEmpty: !required })) {
+                    callback(new Error(this.$t('common.tips.select', [this.$t('aice.devices')])))
+                    return
+                  }
+                  callback()
+                },
+                trigger: 'change',
+              },
+            ],
           },
         ],
         mounted_apps: [
@@ -1053,12 +1080,7 @@ export default {
             {
               fieldKey: 'device',
               label: 'aice.devices',
-              component: 'base-select',
-              props: {
-                optionsKey: 'specList',
-                placeholderKey: 'aice.devices',
-                selectProps: { mode: 'multiple' },
-              },
+              component: 'llm-gpu-devices-editor',
             },
           ]
         }
@@ -1367,7 +1389,8 @@ export default {
         if (v === undefined) return
         if ((effectiveLlmType === 'vllm' || effectiveLlmType === 'sglang') && key === 'preferred_model') return
         if (key === 'device') {
-          data.devices = v.map(k => ({ model: k }))
+          const expanded = expandRowsToDevices(v)
+          if (expanded.length) data.devices = expanded
         } else {
           data[key] = v
         }
