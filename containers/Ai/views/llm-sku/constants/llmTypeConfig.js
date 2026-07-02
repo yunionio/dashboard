@@ -77,7 +77,7 @@ export function getDefaultSkuSpecForType (llmType) {
  * @typedef {Object} FormFieldConfig
  * @property {string} fieldKey - 表单字段名，对应提交给后端的 key
  * @property {string} label - 表单项 label 的 i18n key
- * @property {'base-select'|'input-number'|'input'} component - 控件类型
+ * @property {'base-select'|'input-number'|'input'|'llm-gpu-devices-editor'} component - 控件类型
  * @property {Object} [props] - 传给控件的属性（min/max/step/resource/paramsKey/optionsKey/selectProps 等）
  * @property {Array} [rules] - 校验规则
  */
@@ -104,8 +104,7 @@ export const LLM_TYPE_FORM_CONFIG = {
     {
       fieldKey: 'device',
       label: 'aice.devices',
-      component: 'base-select',
-      props: { optionsKey: 'specList', placeholderKey: 'aice.devices', selectProps: { mode: 'multiple' } },
+      component: 'llm-gpu-devices-editor',
       rules: [{ required: true, messageKey: 'common.tips.select', messageArgKey: 'aice.devices' }],
     },
   ],
@@ -113,8 +112,7 @@ export const LLM_TYPE_FORM_CONFIG = {
     {
       fieldKey: 'device',
       label: 'aice.devices',
-      component: 'base-select',
-      props: { optionsKey: 'specList', placeholderKey: 'aice.devices', selectProps: { mode: 'multiple' } },
+      component: 'llm-gpu-devices-editor',
       rules: [{ required: true, messageKey: 'common.tips.select', messageArgKey: 'aice.devices' }],
     },
   ],
@@ -142,8 +140,7 @@ export const LLM_TYPE_FORM_CONFIG = {
     {
       fieldKey: 'device',
       label: 'aice.devices',
-      component: 'base-select',
-      props: { optionsKey: 'specList', placeholderKey: 'aice.devices', selectProps: { mode: 'multiple' } },
+      component: 'llm-gpu-devices-editor',
       rules: [{ required: true, messageKey: 'common.tips.select', messageArgKey: 'aice.devices' }],
     },
   ],
@@ -170,8 +167,7 @@ export const LLM_TYPE_FORM_CONFIG = {
     {
       fieldKey: 'device',
       label: 'aice.devices',
-      component: 'base-select',
-      props: { optionsKey: 'specList', placeholderKey: 'aice.devices', selectProps: { mode: 'multiple' } },
+      component: 'llm-gpu-devices-editor',
       rules: [{ required: true, messageKey: 'common.tips.select', messageArgKey: 'aice.devices' }],
     },
   ],
@@ -182,8 +178,7 @@ export const LLM_TYPE_FORM_CONFIG = {
     {
       fieldKey: 'device',
       label: 'aice.devices',
-      component: 'base-select',
-      props: { optionsKey: 'specList', placeholderKey: 'aice.devices', selectProps: { mode: 'multiple' } },
+      component: 'llm-gpu-devices-editor',
     },
   ],
   'hermes-agent': [],

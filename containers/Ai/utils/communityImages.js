@@ -1,4 +1,5 @@
 import { getDefaultPortMappingsForType, getDefaultSkuSpecForType } from '@Ai/views/llm-sku/constants/llmTypeConfig'
+import { expandRowsToDevices } from '@Ai/utils/deviceFormUtils'
 
 export const BUNDLE_IMPORT_KIND = 'bundle'
 
@@ -201,6 +202,11 @@ function resolveSkuGenerateName (record) {
 
 function applySkuDevices (data, devices) {
   if (!Array.isArray(devices) || !devices.length) return
+  if (devices[0] && typeof devices[0] === 'object' && devices[0] != null && 'model' in devices[0]) {
+    const expanded = expandRowsToDevices(devices)
+    if (expanded.length) data.devices = expanded
+    return
+  }
   data.devices = devices.map(model => ({ model }))
 }
 
