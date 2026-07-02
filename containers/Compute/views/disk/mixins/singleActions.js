@@ -444,7 +444,7 @@ export default {
             },
             {
               label: i18n.t('compute.driver.update'),
-              permission: 'disks_update',
+              permission: 'server_perform_change_disk_driver',
               action: () => {
                 this.createDialog('DiskDriverUpdateDialog', {
                   data: [obj],
@@ -452,6 +452,9 @@ export default {
                   onManager: this.onManager,
                   resource: 'disks',
                   name: i18n.t('compute.text_100'),
+                  ok: (disk_id) => {
+                    this.list.singleRefresh(disk_id)
+                  },
                 })
               },
               meta: () => {
@@ -461,10 +464,16 @@ export default {
                 if (!(obj.brand === HYPERVISORS_MAP.kvm.brand)) {
                   ret.validate = false
                   ret.tooltip = i18n.t('compute.text_1388')
+                  return ret
                 }
                 if (!obj.guest) {
                   ret.validate = false
                   ret.tooltip = i18n.t('compute.disk_update_driver_prompt')
+                  return ret
+                }
+                if (obj.guest_status !== 'ready') {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.text_1308')
                 }
                 return ret
               },
