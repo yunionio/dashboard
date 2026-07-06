@@ -44,6 +44,7 @@ export default {
               data: this.list.selectedItems,
               onManager: this.onManager,
               refresh: this.refresh,
+              lbDetail: this.lbData,
               lbListenerData: this.data,
             })
           },

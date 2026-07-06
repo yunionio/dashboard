@@ -61,6 +61,18 @@ export default {
               field: 'domain',
               title: this.$t('network.text_156'),
             },
+            getCopyWithContentTableColumn({
+              field: 'certificate',
+              title: this.$t('network.text_143'),
+              hideField: true,
+              slotCallback: row => {
+                if (this.isRedirect) return '-'
+                if (!row.certificate) return '-'
+                return [
+                  <side-page-trigger name='LbcertSidePage' id={row.certificate_id} vm={this}>{ row.certificate }</side-page-trigger>,
+                ]
+              },
+            }),
             {
               field: 'path',
               title: this.$t('network.text_524'),

@@ -94,6 +94,16 @@
               <!-- - 泛解析域名：*.test.com，*一定在第一个字符，并且是*.或者*aaa.的格式，*不能在最后。<br /> -->{{$t('network.text_523')}}</div>
             <a-input v-decorator="decorators.domain" :placeholder="$t('network.text_522')" />
           </a-form-item>
+          <a-form-item :label="$t('network.text_143')" v-if="params.lbListenerData.listener_type === 'https'">
+            <base-select
+              v-decorator="decorators.certificate_id"
+              resource="loadbalancercertificates"
+              :params="certificateParams"
+              :label-format="certificateFormatter"
+              show-sync
+              :select-props="{ placeholder: $t('network.text_421') }" />
+            <div slot="extra">{{$t('network.text_422')}}<help-link href="/lbcert">{{$t('network.text_321')}}</help-link></div>
+          </a-form-item>
           <a-form-item :label="$t('network.text_524')">
             <div slot="extra">
               {{$t('network.text_525')}}
@@ -132,6 +142,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import RedirectFormItems from '@Network/views/loadbalancerlistener/components/RedirectFormItems'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -215,6 +226,9 @@ export default {
           {
             rules: [{ required: true, message: this.$t('common.tips.select', [this.$t('network.text_156')]) }],
           },
+        ],
+        certificate_id: [
+          'certificate_id',
         ],
         path: [
           'path',
@@ -319,6 +333,22 @@ export default {
     }
   },
   computed: {
+    certificateParams () {
+      const params = {
+        usable: true,
+        limit: 0,
+        project: this.params.lbDetail.project,
+        cloudregion: this.params.lbDetail.cloudregion_id,
+        manager: this.params.lbDetail.manager_id,
+      }
+      if (this.$store.getters.isAdminMode) {
+        const domain = _.get(this.params.lbListenerData, 'domain_id') || _.get(this.params.lbDetail, 'domain_id')
+        params.project_domain = domain
+      } else {
+        params.scope = this.$store.getters.scope
+      }
+      return params
+    },
     bgParams () {
       const params = {
         scope: this.$store.getters.scope,
@@ -476,6 +506,32 @@ export default {
       } catch (error) {
         this.loading = false
       }
+    },
+    certificateFormatter (item) {
+      var label = `${item.name}`
+      if (item.common_name) {
+        label += ` - ${item.common_name}`
+      }
+      var valid = true
+      const now = new Date()
+      if (item.not_before) {
+        var notBefore = new Date(item.not_before)
+        if (notBefore.getTime() > now.getTime()) {
+          valid = false
+        }
+      }
+      if (item.not_after) {
+        var notAfter = new Date(item.not_after)
+        if (notAfter.getTime() < now.getTime()) {
+          valid = false
+        }
+      }
+      if (valid) {
+        label += ` - ${this.$t('status.sslCertificate.available')}`
+      } else {
+        label += ` - ${this.$t('status.sslCertificate.expired')}`
+      }
+      return label
     },
   },
 }
