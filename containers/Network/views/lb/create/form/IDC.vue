@@ -121,6 +121,9 @@ export default {
         params.limit = 0
         params.vpc = this.form.fd.vpc
         if (this.zoneObj && this.zoneObj.id) params.zone = this.zoneObj.id
+        if (this.form.fd.vpc === 'default') {
+          params.lb_cluster_id = this.form.fd.cluster_id
+        }
       }
       return params
     },

@@ -243,5 +243,31 @@ export default {
         this.fetchBackendList(this.listenerData.backend_group_id)
       }
     },
+    certificateFormatter (item) {
+      var label = `${item.name}`
+      if (item.common_name) {
+        label += ` - ${item.common_name}`
+      }
+      var valid = true
+      const now = new Date()
+      if (item.not_before) {
+        var notBefore = new Date(item.not_before)
+        if (notBefore.getTime() > now.getTime()) {
+          valid = false
+        }
+      }
+      if (item.not_after) {
+        var notAfter = new Date(item.not_after)
+        if (notAfter.getTime() < now.getTime()) {
+          valid = false
+        }
+      }
+      if (valid) {
+        label += ` - ${this.$t('status.sslCertificate.available')}`
+      } else {
+        label += ` - ${this.$t('status.sslCertificate.expired')}`
+      }
+      return label
+    },
   },
 }
