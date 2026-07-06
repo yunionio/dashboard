@@ -45,8 +45,12 @@ export default {
           title: this.$t('network.text_318'),
         },
         {
+          field: 'not_before',
+          title: this.$t('network.lbcerts.not_before'),
+        },
+        {
           field: 'not_after',
-          title: this.$t('network.text_319'),
+          title: this.$t('network.lbcerts.not_after'),
         },
       ],
       extraInfo: [],

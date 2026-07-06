@@ -16,6 +16,7 @@
         v-decorator="decorators.certificate"
         resource="loadbalancercertificates"
         :params="certificateParams"
+        :label-format="certificateFormatter"
         show-sync
         :select-props="{ placeholder: $t('network.text_421') }" />
       <div slot="extra">{{$t('network.text_422')}}<help-link href="/lbcert">{{$t('network.text_321')}}</help-link></div>
