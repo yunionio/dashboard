@@ -663,5 +663,9 @@ export default {
     success: ['synced', 'disabled'],
     danger: ['failed'],
   },
+  analysisAlarm: {
+    success: ['available'],
+    info: ['unknown'],
+  },
   ...extraStatus,
 }
