@@ -1383,6 +1383,11 @@
       "delete_failed": "Delete Failed",
       "importing_model": "Importing Model",
       "import_model_failed": "Import Model Failed"
+    },
+    "analysisAlarm": {
+      "unknown": "Unknown",
+      "available": "Available",
+      "running": "Running"
     }
   },
   "skuCategoryOptions": {

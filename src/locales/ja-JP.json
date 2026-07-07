@@ -1398,6 +1398,11 @@
       "delete_failed": "削除に失敗しました",
       "importing_model": "モデルインポート中",
       "import_model_failed": "モデルインポート失敗"
+    },
+    "analysisAlarm": {
+      "unknown": "不明",
+      "available": "利用可能",
+      "running": "稼働中"
     }
   },
   "skuCategoryOptions": {
