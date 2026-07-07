@@ -3,6 +3,8 @@ import {
   getEnabledTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
+import AiproxyProviderLabel from '@Ai/components/AiproxyProviderLabel'
+import { effectiveProviderBaseURL } from '@Ai/utils/aiproxyProviderDefaults'
 
 export default {
   created () {
@@ -15,12 +17,35 @@ export default {
         ),
       }),
       getEnabledTableColumn(),
-      { field: 'provider_key', title: this.$t('aice.aiproxy.provider_key'), minWidth: 120 },
+      {
+        field: 'provider_key',
+        title: this.$t('aice.aiproxy.provider_key'),
+        minWidth: 160,
+        slots: {
+          default: ({ row }) => [
+            this.$createElement(AiproxyProviderLabel, {
+              props: {
+                providerKey: row.provider_key,
+                label: row.provider_key,
+                iconSize: 18,
+              },
+            }),
+          ],
+        },
+        formatter: ({ row }) => row.provider_key || '-',
+      },
       {
         field: 'config.base_url',
-        title: this.$t('aice.aiproxy.base_url'),
+        title: this.$t('aice.aiproxy.api_url'),
         minWidth: 180,
-        formatter: ({ row }) => row.config?.base_url || '-',
+        formatter: ({ row }) => {
+          const url = effectiveProviderBaseURL(
+            row.provider_key,
+            row.config?.api_mode,
+            row.config?.base_url,
+          )
+          return url || '-'
+        },
       },
       getTimeTableColumn(),
     ]

@@ -15,6 +15,7 @@ import { getAiproxyResourceScope } from '@Ai/constants/aiproxyResources'
 import { getAiProviderLinkColumn, getAiModelLinkColumn, getLlmDeploymentLinkColumn } from '@Ai/utils/aiproxyLlmLinkColumns'
 import {
   fetchAiProviderMetaMap,
+  fetchRoutingModelsForRouting,
   formatProviderKindLabel,
   inferProviderKind,
 } from '@Ai/utils/aiProviderKind'
@@ -39,11 +40,15 @@ export default {
           details: true,
         }),
         fetchDataCb: async response => {
+          await this.ensureRoutingModelsResponse(response)
+          const rows = response?.data?.data
+          if (!Array.isArray(rows) || !rows.length) return
           await Promise.all([
             this.enrichRowsWithAiProviderLinks(response),
             this.enrichRowsWithAiModelLinks(response),
             this.enrichRowsWithProviderKind(response),
           ])
+          this.markRoutingModelRowsVisible(rows)
         },
       }),
       columns: [
@@ -111,15 +116,55 @@ export default {
       ],
     }
   },
+  watch: {
+    'data.id' (id, prev) {
+      if (id && id !== prev) {
+        this.list.fetchData()
+      }
+    },
+  },
   created () {
-    this.list.fetchData()
+    if (this.data?.id) {
+      this.list.fetchData()
+    }
   },
   activated () {
     this.syncAiProviderNamesForList()
     this.syncAiModelNamesForList()
     this.syncAiproxyLlmLinkNamesForList({ withDeployment: true })
+    this.ensureRoutingModelListRowsVisible()
   },
   methods: {
+    markRoutingModelRowsVisible (rows) {
+      ;(rows || []).forEach(row => {
+        if (row) row.isDataShow = true
+      })
+    },
+    ensureRoutingModelListRowsVisible () {
+      Object.keys(this.list?.data || {}).forEach(key => {
+        const row = this.list.data[key]?.data
+        if (row && !row.isDataShow) {
+          this.$set(row, 'isDataShow', true)
+        }
+      })
+    },
+    async ensureRoutingModelsResponse (response) {
+      if (!response?.data) return
+      let rows = response.data.data
+      const routingId = this.data?.id
+      if (routingId && (!Array.isArray(rows) || !rows.length)) {
+        const embedded = Array.isArray(this.data?.routing_models) ? this.data.routing_models : []
+        if (embedded.length) {
+          rows = embedded
+        } else {
+          rows = await fetchRoutingModelsForRouting(routingId, this)
+        }
+        if (rows?.length) {
+          response.data.data = rows
+          response.data.total = rows.length
+        }
+      }
+    },
     async enrichRowsWithProviderKind (response) {
       const rows = response?.data?.data
       if (!Array.isArray(rows) || !rows.length) return
@@ -132,6 +177,8 @@ export default {
         const meta = metaMap[row.ai_provider_id]
         if (!meta) return
         row.provider_kind = inferProviderKind(meta)
+        if (meta.name) row.ai_provider_name = meta.name
+        if (meta.provider_key) row.ai_provider_key = meta.provider_key
         if (meta.llm_deployment_id) {
           row.llm_deployment_id = meta.llm_deployment_id
         }

@@ -15,12 +15,6 @@
         <a-form-model-item :label="$t('aice.aiproxy.weight')">
           <a-input-number v-model="form.weight" :min="0" />
         </a-form-model-item>
-        <a-form-model-item :label="$t('aice.aiproxy.allowed_model_keys')">
-          <a-select v-model="form.allowed_model_keys" mode="tags" :token-separators="[',']" />
-        </a-form-model-item>
-        <a-form-model-item :label="$t('aice.aiproxy.blocked_model_keys')">
-          <a-select v-model="form.blocked_model_keys" mode="tags" :token-separators="[',']" />
-        </a-form-model-item>
       </a-form-model>
     </page-body>
     <page-footer>
@@ -46,8 +40,6 @@ export default {
         ai_provider_id: '',
         secret: '',
         weight: 0,
-        allowed_model_keys: [],
-        blocked_model_keys: [],
       },
       rules: {
         generate_name: [{ required: true, validator: this.$validate('resourceName') }],
@@ -65,16 +57,12 @@ export default {
       await validateModelForm(this.$refs.form)
       this.loading = true
       try {
-        const routing = {}
-        if (this.form.allowed_model_keys?.length) routing.allowed_model_keys = this.form.allowed_model_keys
-        if (this.form.blocked_model_keys?.length) routing.blocked_model_keys = this.form.blocked_model_keys
         await new this.$Manager('ai_keys').create({
           data: {
             generate_name: this.form.generate_name,
             ai_provider_id: this.form.ai_provider_id,
             secret: this.form.secret,
             weight: this.form.weight,
-            routing: Object.keys(routing).length ? routing : undefined,
           },
         })
         this.handleCancel()
