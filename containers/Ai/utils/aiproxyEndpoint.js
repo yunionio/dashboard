@@ -25,6 +25,98 @@ export function buildChatCompletionsUrl (baseUrl) {
   return `${openaiBase}/chat/completions`
 }
 
+export function buildAnthropicBaseUrl (baseUrl) {
+  const base = normalizeBaseUrl(baseUrl)
+  if (!base) return ''
+  if (/\/ai\/anthropic$/i.test(base)) {
+    return base
+  }
+  if (/\/anthropic$/i.test(base)) {
+    return base.replace(/\/anthropic$/i, '/ai/anthropic')
+  }
+  return `${base}/ai/anthropic`
+}
+
+export function buildAnthropicMessagesUrl (baseUrl) {
+  const anthropicBase = buildAnthropicBaseUrl(baseUrl)
+  if (!anthropicBase) return ''
+  return `${anthropicBase}/v1/messages`
+}
+
+export function buildClaudeCodeEnvExample ({
+  anthropicBaseUrl,
+  virtualKey = '<API Key>',
+  model = 'your-model',
+} = {}) {
+  const base = anthropicBaseUrl
+    ? `${normalizeBaseUrl(anthropicBaseUrl)}/`
+    : '<endpoint>/ai/anthropic/'
+  const key = virtualKey || '<API Key>'
+  const m = model || 'your-model'
+  return [
+    `export ANTHROPIC_BASE_URL=${base}`,
+    `export ANTHROPIC_AUTH_TOKEN=${key}`,
+    `export ANTHROPIC_MODEL=${m}`,
+    `export ANTHROPIC_DEFAULT_OPUS_MODEL=${m}`,
+    `export ANTHROPIC_DEFAULT_SONNET_MODEL=${m}`,
+    `export ANTHROPIC_DEFAULT_HAIKU_MODEL=${m}`,
+    `export CLAUDE_CODE_SUBAGENT_MODEL=${m}`,
+    'export ENABLE_TOOL_SEARCH=false',
+  ].join('\n')
+}
+
+export const DEFAULT_ANTHROPIC_MAX_TOKENS = 4096
+
+export function buildAnthropicCurlExample ({
+  endpoint,
+  model,
+  virtualKey = '<API Key>',
+  maxTokens = DEFAULT_ANTHROPIC_MAX_TOKENS,
+} = {}) {
+  const url = endpoint || '<endpoint>/ai/anthropic/v1/messages'
+  const m = model || 'your-model'
+  const key = virtualKey || '<API Key>'
+  const body = JSON.stringify({
+    model: m,
+    max_tokens: maxTokens,
+    stream: true,
+    messages: [{ role: 'user', content: 'hello' }],
+  })
+  return [
+    `curl -X POST '${url}' \\`,
+    `  -H 'Authorization: Bearer ${key}' \\`,
+    '  -H \'Content-Type: application/json\' \\',
+    `  -d '${body}'`,
+  ].join('\n')
+}
+
+export function buildAnthropicChatTestRequestConfig ({
+  endpoint,
+  model,
+  virtualKey,
+  maxTokens = DEFAULT_ANTHROPIC_MAX_TOKENS,
+} = {}) {
+  const url = String(endpoint || '').trim()
+  const m = String(model || '').trim()
+  const key = String(virtualKey || '').trim()
+  if (!url || !m || !key) return null
+  return {
+    url,
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${key}`,
+      'Content-Type': 'application/json',
+    },
+    body: {
+      model: m,
+      max_tokens: maxTokens,
+      messages: [{ role: 'user', content: 'hello' }],
+    },
+    model: m,
+    protocol: 'anthropic',
+  }
+}
+
 export function isPlaceholderApiKey (authHeader) {
   const value = String(authHeader || '').trim()
   if (!value) return true
@@ -62,6 +154,7 @@ export function buildChatTestRequestConfig ({ endpoint, model, virtualKey } = {}
       messages: [{ role: 'user', content: 'hello' }],
     },
     model: m,
+    protocol: 'openai',
   }
 }
 
@@ -221,4 +314,14 @@ export async function resolveAiproxyChatCompletionsUrl (vm, { routingId } = {}) 
 export async function resolveAiproxyOpenAIBaseUrl (vm, { routingId } = {}) {
   const base = await resolveAiproxyBaseUrl(vm, { routingId })
   return buildOpenAIBaseUrl(base)
+}
+
+export async function resolveAiproxyAnthropicBaseUrl (vm, { routingId } = {}) {
+  const base = await resolveAiproxyBaseUrl(vm, { routingId })
+  return buildAnthropicBaseUrl(base)
+}
+
+export async function resolveAiproxyAnthropicMessagesUrl (vm, { routingId } = {}) {
+  const base = await resolveAiproxyBaseUrl(vm, { routingId })
+  return buildAnthropicMessagesUrl(base)
 }

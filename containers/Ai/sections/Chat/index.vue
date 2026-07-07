@@ -28,15 +28,28 @@
         </a-button>
       </a-popover>
       <div v-if="isChatTest" class="chat-test-header-config">
+        <a-select
+          v-model="chatProtocol"
+          class="chat-test-protocol-select"
+          @change="onChatProtocolChange">
+          <a-select-option
+            v-for="item in chatProtocolOptions"
+            :key="item.value"
+            :value="item.value">
+            {{ item.label }}
+          </a-select-option>
+        </a-select>
         <base-select
           v-model="selectedVirtualKeyId"
           resource="ai_virtual_keys"
           :params="virtualKeySelectParams"
+          :extra-opts="virtualKeyExtraOpts"
           filterable
           version="v2"
           class="chat-test-vk-select"
           :select-props="virtualKeySelectProps"
-          @change="onVirtualKeyChange" />
+          @change="onVirtualKeySelectChange"
+          @update:item="onVirtualKeyItemSelected" />
       </div>
     </div>
 
@@ -89,11 +102,11 @@
     <div class="chat-input-area">
       <a-textarea
         v-model="inputMessage"
-        :placeholder="$t('ai.mcp.input_placeholder')"
+        :placeholder="chatTestInputPlaceholder"
         :auto-size="{ minRows: 2, maxRows: 6 }"
         @keydown.ctrl.enter="handleSend"
         @keydown.meta.enter="handleSend"
-          :disabled="loading || !canSend" />
+        :disabled="loading" />
       <div class="input-actions">
         <a-button
           type="primary"
@@ -118,10 +131,16 @@ import WindowsMixin from '@/mixins/windows'
 import { Manager } from '@/utils/manager'
 import { getAiproxySelectParams } from '@Ai/constants/aiproxyResources'
 import {
+  buildAnthropicChatTestRequestConfig,
   buildChatTestRequestConfig,
   isPlaceholderApiKey,
+  resolveAiproxyAnthropicMessagesUrl,
   resolveAiproxyChatCompletionsUrl,
 } from '@Ai/utils/aiproxyEndpoint'
+import {
+  appendAnthropicStreamLine,
+  extractAnthropicResponseText,
+} from '@Ai/utils/anthropicStream'
 import { splitThinkingContent } from '@Ai/utils/chatContent'
 
 export default {
@@ -160,12 +179,15 @@ export default {
       loading: false,
       mcpTools: [],
       toolsPopoverVisible: false,
-      selectedVirtualKeyId: undefined,
+      selectedVirtualKeyId: '',
       selectedVirtualKey: '',
+      virtualKeyExtraOpts: [],
       endpointUrl: '',
       endpointLoading: false,
       virtualKeyLoading: false,
       chatTestConfig: null,
+      chatProtocol: 'openai',
+      anthropicStreamState: {},
       abortController: null,
       expandedReasoningMap: {},
       chatTestGreetingShown: false,
@@ -182,14 +204,45 @@ export default {
       if (this.isChatTest) return !!this.chatTestConfig
       return true
     },
+    chatTestInputPlaceholder () {
+      if (!this.isChatTest || this.canSend) {
+        return this.$t('ai.mcp.input_placeholder')
+      }
+      return this.chatTestConfigMissingReason || this.$t('ai.mcp.chat_test.api_key_required')
+    },
+    chatTestConfigMissingReason () {
+      if (!this.isChatTest || this.canSend) return ''
+      if (!this.selectedVirtualKeyId) {
+        return this.$t('aice.llm_deployment.chat_test_select_vk')
+      }
+      if (this.virtualKeyLoading || this.endpointLoading) {
+        return this.$t('common.loading')
+      }
+      if (!this.selectedVirtualKey) {
+        return this.$t('ai.mcp.chat_test.api_key_required')
+      }
+      if (!this.getChatTestModel()) {
+        return this.$t('aice.aiproxy.routing_model_key_required')
+      }
+      if (!this.endpointUrl) {
+        return this.$t('ai.mcp.chat_test.config_required')
+      }
+      return this.$t('ai.mcp.chat_test.api_key_required')
+    },
     virtualKeySelectParams () {
-      return getAiproxySelectParams(this, 'ai_virtual_keys', { enabled: true })
+      return getAiproxySelectParams(this, 'ai_virtual_keys', { enabled: true, limit: 100 })
     },
     virtualKeySelectProps () {
       return {
         placeholder: this.$t('aice.llm_deployment.chat_test_select_vk'),
         allowClear: true,
       }
+    },
+    chatProtocolOptions () {
+      return [
+        { value: 'openai', label: this.$t('aice.aiproxy.protocol.openai') },
+        { value: 'anthropic', label: this.$t('aice.aiproxy.protocol.anthropic') },
+      ]
     },
   },
   watch: {
@@ -208,7 +261,22 @@ export default {
         this.loadChatTestEndpoint()
       }
     },
+    'data.id' () {
+      if (this.isChatTest && !this.data?.aiproxy_routing_id) {
+        this.loadChatTestEndpoint()
+      }
+    },
+    'data.model_key' () {
+      if (this.isChatTest) {
+        this.applyChatTestConfig()
+      }
+    },
     'data.aiproxy_bindings' () {
+      if (this.isChatTest) {
+        this.applyChatTestConfig()
+      }
+    },
+    endpointUrl () {
       if (this.isChatTest) {
         this.applyChatTestConfig()
       }
@@ -268,8 +336,8 @@ export default {
     },
     async handleSend () {
       if (!this.inputMessage.trim() || this.loading) return
-      if (this.isChatTest && !this.chatTestConfig) {
-        this.$message.warning(this.$t('ai.mcp.chat_test.api_key_required'))
+      if (this.isChatTest && !this.canSend) {
+        this.$message.warning(this.chatTestConfigMissingReason || this.$t('ai.mcp.chat_test.api_key_required'))
         return
       }
 
@@ -420,7 +488,7 @@ export default {
       }
     },
     async streamChatTestResponse (message, assistantMessageIndex, history = []) {
-      const { url, headers, body: bodyTemplate } = this.chatTestConfig
+      const { url, headers, body: bodyTemplate, protocol = 'openai' } = this.chatTestConfig
       const messages = [
         ...history.map(item => ({ role: item.role, content: item.content })),
         { role: message.role, content: message.content },
@@ -430,6 +498,8 @@ export default {
         messages,
         stream: true,
       }
+
+      this.anthropicStreamState = {}
 
       const response = await fetch(url, {
         method: 'POST',
@@ -445,7 +515,8 @@ export default {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 
-      await this.consumeStreamResponse(response, assistantMessageIndex, 'openai')
+      const streamFormat = protocol === 'anthropic' ? 'anthropic' : 'openai'
+      await this.consumeStreamResponse(response, assistantMessageIndex, streamFormat)
     },
     async consumeStreamResponse (response, assistantMessageIndex, format = 'mcp') {
       const contentType = response.headers.get('content-type') || ''
@@ -477,14 +548,19 @@ export default {
         const text = await response.text()
         try {
           const data = JSON.parse(text)
-          const raw = this.extractOpenAiContent(data) || data.content || data.text || data.message || text
-          if (format === 'openai') {
+          let raw = ''
+          if (format === 'anthropic') {
+            raw = extractAnthropicResponseText(data)
+          } else {
+            raw = this.extractOpenAiContent(data) || data.content || data.text || data.message || text
+          }
+          if (format === 'openai' || format === 'anthropic') {
             this.applyChatTestContent(assistantMessageIndex, raw)
           } else {
             this.$set(this.messages[assistantMessageIndex], 'content', raw)
           }
         } catch (e) {
-          if (format === 'openai') {
+          if (format === 'openai' || format === 'anthropic') {
             this.applyChatTestContent(assistantMessageIndex, text)
           } else {
             this.$set(this.messages[assistantMessageIndex], 'content', text)
@@ -495,6 +571,10 @@ export default {
     appendStreamLine (line, assistantMessageIndex, format) {
       if (format === 'openai') {
         this.appendOpenAiStreamLine(line, assistantMessageIndex)
+        return
+      }
+      if (format === 'anthropic') {
+        this.appendAnthropicStreamLine(line, assistantMessageIndex)
         return
       }
 
@@ -529,6 +609,13 @@ export default {
         // ignore malformed chunk
       }
     },
+    appendAnthropicStreamLine (line, assistantMessageIndex) {
+      const { delta, state } = appendAnthropicStreamLine(line, this.anthropicStreamState)
+      this.anthropicStreamState = state
+      if (delta) {
+        this.appendChatTestDelta(assistantMessageIndex, delta)
+      }
+    },
     extractOpenAiContent (data) {
       return data?.choices?.[0]?.delta?.content ||
         data?.choices?.[0]?.message?.content ||
@@ -546,6 +633,8 @@ export default {
       this.$set(this.messages[assistantMessageIndex], 'content', content)
     },
     getChatTestModel () {
+      const modelKey = String(this.data?.model_key || '').trim()
+      if (modelKey) return modelKey
       const bindings = Array.isArray(this.data?.aiproxy_bindings) ? this.data.aiproxy_bindings : []
       const ready = bindings.filter(item => {
         if (!item?.client_model_alias) return false
@@ -553,12 +642,18 @@ export default {
       })
       return ready[0]?.client_model_alias || ''
     },
+    getChatTestRoutingId () {
+      return this.data?.aiproxy_routing_id || this.data?.id || ''
+    },
     async loadChatTestEndpoint () {
       this.endpointLoading = true
       try {
-        this.endpointUrl = await resolveAiproxyChatCompletionsUrl(this, {
-          routingId: this.data?.aiproxy_routing_id,
-        })
+        const routingId = this.getChatTestRoutingId()
+        if (this.chatProtocol === 'anthropic') {
+          this.endpointUrl = await resolveAiproxyAnthropicMessagesUrl(this, { routingId })
+        } else {
+          this.endpointUrl = await resolveAiproxyChatCompletionsUrl(this, { routingId })
+        }
       } catch (e) {
         this.endpointUrl = ''
       } finally {
@@ -566,30 +661,75 @@ export default {
         this.applyChatTestConfig()
       }
     },
+    onChatProtocolChange () {
+      this.loadChatTestEndpoint()
+    },
+    onVirtualKeySelectChange (id) {
+      this.onVirtualKeyChange(id)
+    },
+    onVirtualKeyItemSelected (item) {
+      if (!this.isChatTest || !item?.id) return
+      if (item.name) {
+        this.virtualKeyExtraOpts = [{ id: item.id, name: item.name }]
+      }
+      if (item.virtual_key) {
+        this.selectedVirtualKey = item.virtual_key
+        this.applyChatTestConfig()
+      }
+    },
+    resolveVirtualKeyId (id) {
+      if (!id) return ''
+      if (typeof id === 'object') {
+        return String(id.key || id.id || '').trim()
+      }
+      return String(id).trim()
+    },
     async onVirtualKeyChange (id) {
-      if (!id) {
+      const virtualKeyId = this.resolveVirtualKeyId(id)
+      if (!virtualKeyId) {
         this.selectedVirtualKey = ''
+        this.virtualKeyExtraOpts = []
         this.applyChatTestConfig()
         return
       }
-      await this.fetchVirtualKeySecret(id)
+      if (
+        this.selectedVirtualKey &&
+        !isPlaceholderApiKey(`Bearer ${this.selectedVirtualKey}`) &&
+        this.resolveVirtualKeyId(this.selectedVirtualKeyId) === virtualKeyId
+      ) {
+        this.applyChatTestConfig()
+        return
+      }
+      await this.fetchVirtualKeySecret(virtualKeyId)
     },
     async fetchVirtualKeySecret (id) {
-      if (!id) {
+      const virtualKeyId = this.resolveVirtualKeyId(id)
+      if (!virtualKeyId) {
         this.selectedVirtualKey = ''
+        this.virtualKeyExtraOpts = []
         this.applyChatTestConfig()
         return
       }
+      const cachedVirtualKey = this.selectedVirtualKey
       this.virtualKeyLoading = true
       try {
         const manager = new Manager('ai_virtual_keys')
         const { data } = await manager.get({
-          id,
+          id: virtualKeyId,
           params: getAiproxySelectParams(this, 'ai_virtual_keys'),
         })
-        this.selectedVirtualKey = data?.virtual_key || ''
+        this.selectedVirtualKey = data?.virtual_key || cachedVirtualKey || ''
+        if (data?.id && data?.name) {
+          this.virtualKeyExtraOpts = [{
+            id: data.id,
+            name: data.name,
+          }]
+        }
       } catch (e) {
-        this.selectedVirtualKey = ''
+        if (!cachedVirtualKey) {
+          this.selectedVirtualKey = ''
+          this.virtualKeyExtraOpts = []
+        }
       } finally {
         this.virtualKeyLoading = false
         this.applyChatTestConfig()
@@ -605,21 +745,28 @@ export default {
         this.chatTestConfig = null
         return
       }
-      this.chatTestConfig = buildChatTestRequestConfig({
+      const builder = this.chatProtocol === 'anthropic'
+        ? buildAnthropicChatTestRequestConfig
+        : buildChatTestRequestConfig
+      const config = builder({
         endpoint: this.endpointUrl,
         model,
         virtualKey: this.selectedVirtualKey,
       })
-      // this.initChatTestGreetingMessage()
+      this.chatTestConfig = config || null
     },
     async applyInitialVirtualKey (virtualKeyId, virtualKey = '') {
-      this.selectedVirtualKeyId = virtualKeyId
+      const id = this.resolveVirtualKeyId(virtualKeyId)
+      if (!id) return
+      this.selectedVirtualKeyId = id
       if (virtualKey) {
         this.selectedVirtualKey = virtualKey
-        this.applyChatTestConfig()
+      }
+      if (!virtualKey) {
+        await this.fetchVirtualKeySecret(id)
         return
       }
-      await this.fetchVirtualKeySecret(virtualKeyId)
+      this.applyChatTestConfig()
     },
     abortRequest () {
       if (this.abortController) {
@@ -631,6 +778,7 @@ export default {
       this.messages = []
       this.inputMessage = ''
       this.expandedReasoningMap = {}
+      this.anthropicStreamState = {}
       this.chatTestGreetingShown = false
       // if (this.isChatTest && this.chatTestConfig) {
       //   this.initChatTestGreetingMessage()
@@ -689,11 +837,20 @@ export default {
 
   .chat-test-header-config {
     flex: 1;
-    max-width: 360px;
+    max-width: 520px;
     margin-left: 16px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    .chat-test-protocol-select {
+      width: 180px;
+      flex-shrink: 0;
+    }
 
     .chat-test-vk-select {
-      width: 100%;
+      flex: 1;
+      min-width: 0;
     }
   }
 }

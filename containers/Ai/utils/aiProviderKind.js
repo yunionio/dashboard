@@ -5,7 +5,7 @@ import { fetchLlmDeploymentNameMap } from '@Ai/utils/llmDeploymentNames'
 
 export const PROVIDER_KIND_PUBLIC = 'public'
 export const PROVIDER_KIND_DEPLOYMENT = 'deployment'
-export const PROVIDER_KIND_DEFAULT = PROVIDER_KIND_DEPLOYMENT
+export const PROVIDER_KIND_DEFAULT = PROVIDER_KIND_PUBLIC
 
 const metaCache = new Map()
 
@@ -80,6 +80,7 @@ function buildProviderExtraOpt (providerId, meta) {
   return {
     id: providerId,
     name: meta.name || providerId,
+    provider_key: meta.provider_key || '',
     llm_deployment_id: meta.llm_deployment_id || '',
     llm_deployment_name: meta.llm_deployment_name || '',
   }
@@ -120,6 +121,7 @@ export async function fetchAiProviderMetaMap (ids, { vm, useCache = true } = {})
       const meta = {
         id: item.id,
         name: item.name || item.id,
+        provider_key: item.provider_key || '',
         llm_deployment_id: item.llm_deployment_id || '',
         llm_id: item.llm_id || '',
       }

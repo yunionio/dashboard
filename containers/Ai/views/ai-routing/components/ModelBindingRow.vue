@@ -24,11 +24,20 @@
           :params="providerParams(item)"
           :extra-opts="providerExtraOpts(item)"
           :select-props="{ placeholder: providerPlaceholder(item) }"
-          :label-format="isDeploymentKind(item) ? deploymentProviderLabelFormat : undefined"
+          :label-format="providerLabelFormat"
           filterable
           version="v2"
           need-params
-          @change="() => onProviderChange(item)" />
+          @change="() => onProviderChange(item)">
+          <template #optionLabelTemplate="{ item: providerItem }">
+            <aiproxy-provider-label
+              v-if="providerOptionKey(providerItem)"
+              :provider-key="providerOptionKey(providerItem)"
+              :label="providerOptionLabel(providerItem)"
+              :icon-size="16" />
+            <span v-else>{{ providerOptionLabel(providerItem) }}</span>
+          </template>
+        </base-select>
       </a-col>
       <a-col :span="7">
         <base-select
@@ -37,10 +46,14 @@
           resource="ai_models"
           :params="modelParams(item)"
           :extra-opts="modelExtraOpts(item)"
-          :select-props="{ placeholder: modelPlaceholder(item) }"
+          :select-props="modelSelectProps(item)"
+          :label-format="modelLabelFormat"
           filterable
           version="v2"
-          need-params />
+          need-params
+          :disabled="!item.ai_provider_id"
+          @update:item="modelItem => onModelItemSelected(item, modelItem)"
+          @change="() => onModelChange(item)" />
       </a-col>
       <a-col :span="3">
         <a-input-number
@@ -57,6 +70,7 @@
 </template>
 
 <script>
+import AiproxyProviderLabel from '@Ai/components/AiproxyProviderLabel'
 import { getAiproxySelectParams } from '@Ai/constants/aiproxyResources'
 import {
   PROVIDER_KIND_DEFAULT,
@@ -68,6 +82,7 @@ import {
 
 export default {
   name: 'AiRoutingModelBindingRow',
+  components: { AiproxyProviderLabel },
   props: {
     item: { type: Object, required: true },
     index: { type: Number, required: true },
@@ -84,6 +99,18 @@ export default {
   },
   methods: {
     deploymentProviderLabelFormat,
+    providerLabelFormat (providerItem) {
+      if (this.isDeploymentKind(this.item)) {
+        return deploymentProviderLabelFormat(providerItem)
+      }
+      return providerItem?.name || providerItem?.id || ''
+    },
+    providerOptionKey (providerItem) {
+      return String(providerItem?.provider_key || '').trim()
+    },
+    providerOptionLabel (providerItem) {
+      return this.providerLabelFormat(providerItem)
+    },
     isDeploymentKind (item) {
       return item.provider_kind === PROVIDER_KIND_DEPLOYMENT
     },
@@ -111,16 +138,46 @@ export default {
       return [item._model_extra]
     },
     modelParams (item) {
-      const params = getAiproxySelectParams(this, 'ai_models')
-      if (item.ai_provider_id) params.ai_provider_id = item.ai_provider_id
-      return params
+      if (!item.ai_provider_id) return {}
+      return getAiproxySelectParams(this, 'ai_models', {
+        ai_provider_id: item.ai_provider_id,
+      })
+    },
+    modelSelectProps (item) {
+      return {
+        placeholder: this.modelPlaceholder(item),
+        disabled: !item.ai_provider_id,
+      }
+    },
+    modelLabelFormat (item) {
+      if (!item) return ''
+      return item.model_key || item.name || item.id || ''
+    },
+    onModelItemSelected (item, modelItem) {
+      if (!modelItem?.id) return
+      item._model_extra = {
+        id: modelItem.id,
+        name: this.modelLabelFormat(modelItem),
+        model_key: modelItem.model_key || '',
+      }
+      if (modelItem.model_key) {
+        this.$emit('model-key-suggest', modelItem.model_key)
+      }
+    },
+    onModelChange (item) {
+      if (!item.ai_model_id) {
+        item._model_extra = null
+      }
     },
     onProviderKindChange (item) {
       item.ai_provider_id = ''
       item.ai_model_id = ''
+      item._provider_extra = null
+      item._model_extra = null
     },
     onProviderChange (item) {
       item.ai_model_id = ''
+      item._model_extra = null
     },
   },
 }
