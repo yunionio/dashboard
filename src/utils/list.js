@@ -536,7 +536,7 @@ class CreateList {
     // 复位分页信息
     this.total = 0
     this.offset = 0
-    this.nextMarker = ''
+    this.nextMarker = undefined
     this.clearSelected()
     // 重置数据
     if (clearData) {
