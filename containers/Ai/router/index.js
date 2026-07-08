@@ -30,6 +30,7 @@ const AiProvider = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/ai-prov
 const AiProviderCreate = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/ai-provider/create')
 const AiProxyNode = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/ai-proxy-node')
 const AiProxyNodeCreate = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/ai-proxy-node/create')
+const AiProxyUsage = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/aiproxy-usage')
 export default {
   index: 61,
   meta: {
@@ -283,6 +284,22 @@ export default {
         label: i18n.t('aice.aiproxy'),
       },
       submenus: [
+        {
+          path: '/ai-proxy-usage',
+          meta: {
+            label: i18n.t('aice.aiproxy.usage.aiproxy_usage'),
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.ai_proxy_usage')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            { name: 'AiProxyUsage', path: '', component: AiProxyUsage },
+          ],
+        },
         {
           path: '/ai-virtual-key',
           meta: {
