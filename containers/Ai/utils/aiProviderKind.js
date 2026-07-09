@@ -1,4 +1,5 @@
 import { Manager } from '@/utils/manager'
+import { uuid } from '@/utils/utils'
 import { getAiproxyResourceScope, getAiproxySelectParams } from '@Ai/constants/aiproxyResources'
 import { fetchAiModelNameMap } from '@Ai/utils/aiModelNames'
 import { fetchLlmDeploymentNameMap } from '@Ai/utils/llmDeploymentNames'
@@ -114,6 +115,8 @@ export async function fetchAiProviderMetaMap (ids, { vm, useCache = true } = {})
         details: true,
         filter: `id.in(${missing.map(id => `'${id}'`).join(',')})`,
         limit: missing.length,
+        // 与 BaseSelect 列表请求区分，避免同 url 并发被 http 层 cancel
+        $t: `ai-provider-meta-${uuid()}`,
       },
     })
     ;(data || []).forEach(item => {
@@ -168,20 +171,37 @@ export async function buildRoutingModelBindings (rows, { vm, useCache = false, k
     { vm },
   )
   return (rows || []).map(m => {
-    const meta = metaMap[m.ai_provider_id] || {}
+    const fetched = metaMap[m.ai_provider_id] || {}
+    const meta = {
+      name: fetched.name || m.ai_provider_name || '',
+      provider_key: fetched.provider_key || m.ai_provider_key || '',
+      llm_deployment_id: fetched.llm_deployment_id || m.llm_deployment_id || '',
+      llm_deployment_name: fetched.llm_deployment_name || m.llm_deployment_name || '',
+    }
     const binding = {
-      provider_kind: inferProviderKind(meta),
+      provider_kind: m.provider_kind || inferProviderKind({
+        llm_deployment_id: meta.llm_deployment_id,
+      }),
       ai_provider_id: m.ai_provider_id || '',
       ai_model_id: m.ai_model_id || '',
       priority: m.priority || 0,
     }
-    const providerExtra = buildProviderExtraOpt(m.ai_provider_id, meta)
+    const providerExtra = buildProviderExtraOpt(m.ai_provider_id, {
+      name: meta.name || m.ai_provider_id,
+      provider_key: meta.provider_key,
+      llm_deployment_id: meta.llm_deployment_id,
+      llm_deployment_name: meta.llm_deployment_name,
+    })
     if (providerExtra) {
       binding._provider_extra = providerExtra
     }
-    const modelName = modelNameMap[m.ai_model_id]
+    const modelName = modelNameMap[m.ai_model_id] || m.ai_model_name || m.model_key || ''
     if (m.ai_model_id && modelName) {
-      binding._model_extra = { id: m.ai_model_id, name: modelName }
+      binding._model_extra = {
+        id: m.ai_model_id,
+        name: modelName,
+        model_key: m.model_key || '',
+      }
     }
     if (keySeqRef) {
       binding._key = ++keySeqRef.value

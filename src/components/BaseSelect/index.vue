@@ -38,8 +38,9 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import debounce from 'lodash/debounce'
+import axios from 'axios'
 import { Manager } from '@/utils/manager'
-import { arrayToObj } from '@/utils/utils'
+import { arrayToObj, uuid } from '@/utils/utils'
 import i18n from '@/locales'
 import OptionLabel from './OptionLabel'
 import OptionLabelPrefix from './OptionLabelPrefix'
@@ -194,6 +195,9 @@ export default {
   },
   data () {
     this.loadOptsDebounce = debounce(this.loadOpts, 500)
+    // 同一 resource 的多个 BaseSelect 并发 list 时，http 层会按 url+method 取消旧请求；
+    // 用实例级 $t 区分请求，避免互相 cancel 导致已选项只显示 id。
+    this._selectRequestKey = uuid()
     return {
       resOpts: {},
       resList: [],
@@ -462,6 +466,10 @@ export default {
         }
       }
       if (R.is(Number, offset)) params.offset = offset
+      // 保留调用方传入的 $t；否则用实例 key，避免同 resource 多实例互相 cancel
+      if (R.isNil(params.$t)) {
+        params.$t = this._selectRequestKey
+      }
       return { manager, params }
     },
     genDefaultParams (fetchKeys) {
@@ -472,7 +480,8 @@ export default {
       } else {
         params.filter = `${this.idKey}.in(${fetchKeys.map(item => `'${item}'`).join(',')})`
       }
-      params.$t = 1
+      // 与列表请求区分，避免 loadDefaultSelectedOpts 取消刚完成的 list
+      params.$t = `${this._selectRequestKey}-default`
       return { manager, params }
     },
     async loadMore () {
@@ -547,10 +556,32 @@ export default {
           this.defaultSelect([...this.extraOpts, ...this.resList])
           return list
         } catch (error) {
+          // 被同 resource 其它请求取消时，至少保留 extraOpts，避免已选项只显示 id
+          if (axios.isCancel && axios.isCancel(error)) {
+            this.applyExtraOptsFallback(query)
+            return
+          }
           this.$emit('update:initError')
           throw error
         }
       }
+    },
+    applyExtraOptsFallback (query) {
+      const expectedSelectedList = this.getSelectedList(query)
+      const targetExtraOpts = (this.extraOpts || []).filter(item => {
+        if (!query) return true
+        if (item[this.searchKey] && item[this.searchKey].includes(query)) {
+          return true
+        }
+        return false
+      })
+      if (!targetExtraOpts.length && !expectedSelectedList.length) return
+      this.resList = this.mergeListByIdKey([...targetExtraOpts], expectedSelectedList)
+      this.$emit('update:resList', this.resList)
+      const resOpts = arrayToObj(this.resList)
+      this.resOpts = { ...this.resOpts, ...resOpts }
+      this.disabledOpts()
+      if (this.value) this.syncItem(this.value)
     },
     async fetchData (manager, params) {
       try {

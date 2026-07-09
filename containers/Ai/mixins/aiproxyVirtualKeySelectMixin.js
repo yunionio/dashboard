@@ -19,6 +19,12 @@ export default {
     hasConfiguredApiKey () {
       return !!this.selectedVirtualKey && !isPlaceholderApiKey(`Bearer ${this.selectedVirtualKey}`)
     },
+    selectedVirtualKeyRef () {
+      const name = this.virtualKeyExtraOpts?.[0]?.name
+      if (name) return name
+      if (this.selectedVirtualKeyId) return this.selectedVirtualKeyId
+      return '<virtual-key>'
+    },
   },
   methods: {
     async onVirtualKeyChange (id) {
