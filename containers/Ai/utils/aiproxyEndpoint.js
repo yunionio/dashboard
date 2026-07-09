@@ -47,22 +47,74 @@ export function buildClaudeCodeEnvExample ({
   anthropicBaseUrl,
   virtualKey = '<API Key>',
   model = 'your-model',
+  opusModel,
+  sonnetModel,
+  haikuModel,
+  subagentModel,
 } = {}) {
   const base = anthropicBaseUrl
     ? `${normalizeBaseUrl(anthropicBaseUrl)}/`
     : '<endpoint>/ai/anthropic/'
   const key = virtualKey || '<API Key>'
   const m = model || 'your-model'
+  const opus = opusModel || m
+  const sonnet = sonnetModel || m
+  const haiku = haikuModel || m
+  const subagent = subagentModel || haiku || m
   return [
     `export ANTHROPIC_BASE_URL=${base}`,
     `export ANTHROPIC_AUTH_TOKEN=${key}`,
     `export ANTHROPIC_MODEL=${m}`,
-    `export ANTHROPIC_DEFAULT_OPUS_MODEL=${m}`,
-    `export ANTHROPIC_DEFAULT_SONNET_MODEL=${m}`,
-    `export ANTHROPIC_DEFAULT_HAIKU_MODEL=${m}`,
-    `export CLAUDE_CODE_SUBAGENT_MODEL=${m}`,
+    `export ANTHROPIC_DEFAULT_OPUS_MODEL=${opus}`,
+    `export ANTHROPIC_DEFAULT_SONNET_MODEL=${sonnet}`,
+    `export ANTHROPIC_DEFAULT_HAIKU_MODEL=${haiku}`,
+    `export CLAUDE_CODE_SUBAGENT_MODEL=${subagent}`,
     'export ENABLE_TOOL_SEARCH=false',
   ].join('\n')
+}
+
+function pushShellComment (lines, comment) {
+  const text = String(comment || '').trim()
+  if (text) {
+    lines.push(`# ${text}`)
+  }
+}
+
+export function buildCodexClimcExample ({
+  virtualKeyRef = '<virtual-key>',
+  model = 'your-model',
+  routingRef = '',
+  comments = {},
+} = {}) {
+  const vk = String(virtualKeyRef || '').trim() || '<virtual-key>'
+  const m = String(model || '').trim() || 'your-model'
+  const routing = String(routingRef || '').trim()
+  const lines = []
+  pushShellComment(lines, comments.homeDir)
+  lines.push('CODEX_HOME_DIR="${' + 'CODEX_HOME_DIR:-$HOME/.codex-aiproxy}"')
+  lines.push('')
+  pushShellComment(lines, comments.mkdir)
+  lines.push('mkdir -p "$CODEX_HOME_DIR"')
+  lines.push('')
+  pushShellComment(lines, comments.climc)
+  lines.push('climc ai-codex-config \\')
+  lines.push(`  --virtual-key ${vk} \\`)
+  lines.push(`  --model ${m} \\`)
+  if (routing) {
+    lines.push(`  --routing ${routing} \\`)
+  }
+  lines.push('  --codex-home "$CODEX_HOME_DIR"')
+  lines.push('')
+  pushShellComment(lines, comments.launch)
+  lines.push('source "$CODEX_HOME_DIR/aiproxy.env" && CODEX_HOME="$CODEX_HOME_DIR" codex --cd "$PWD"')
+  return lines.join('\n')
+}
+
+export function parseShellScriptLines (script) {
+  return String(script || '').split('\n').map(text => ({
+    type: /^\s*#/.test(text) ? 'comment' : 'code',
+    text,
+  }))
 }
 
 export const DEFAULT_ANTHROPIC_MAX_TOKENS = 4096

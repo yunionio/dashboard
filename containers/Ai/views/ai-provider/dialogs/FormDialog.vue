@@ -28,6 +28,12 @@
             <a-form-model-item v-if="showApiMode" :label="$t('aice.aiproxy.api_mode')">
               <a-select v-model="form.api_mode" :options="apiModeOptions" />
             </a-form-model-item>
+            <a-form-model-item v-if="showMoonshotRegion" :label="$t('aice.aiproxy.moonshot_region')">
+              <a-radio-group v-model="form.moonshot_region" :options="moonshotRegionOptions" />
+            </a-form-model-item>
+            <a-form-model-item v-if="showMoonshotRegion" :label="$t('aice.aiproxy.api_url')">
+              <a-input :value="form.base_url" readonly />
+            </a-form-model-item>
             <a-form-model-item v-if="showBaseUrl" :label="$t('aice.aiproxy.api_url')" prop="base_url">
               <a-input v-model="form.base_url" />
             </a-form-model-item>
@@ -104,7 +110,14 @@ import TestButton from '@/sections/TestButton'
 import AiproxyProviderKeyAutoComplete from '@Ai/components/AiproxyProviderKeyAutoComplete'
 import AiproxyProviderLabel from '@Ai/components/AiproxyProviderLabel'
 import { getApiModeOptions, supportsDualAPIMode } from '@Ai/utils/aiproxyProviderApiMode'
-import { hasDefaultPublicBaseURL } from '@Ai/utils/aiproxyProviderDefaults'
+import { getDefaultPublicBaseURL, shouldShowBuiltinBaseURL } from '@Ai/utils/aiproxyProviderDefaults'
+import {
+  MOONSHOT_REGION_CN,
+  getMoonshotBaseURL,
+  getMoonshotRegionOptions,
+  inferMoonshotRegion,
+  isMoonshotProviderKey,
+} from '@Ai/utils/aiproxyMoonshotRegion'
 import {
   CUSTOM_PROVIDER_KEY,
   PROVIDER_TYPE_BUILTIN,
@@ -120,6 +133,10 @@ export default {
   data () {
     const data = this.params.type === 'edit' ? (this.params.data[0] || {}) : {}
     const providerKey = data.provider_key || ''
+    const baseURL = data.config?.base_url || ''
+    const moonshotRegion = isMoonshotProviderKey(providerKey)
+      ? inferMoonshotRegion(baseURL)
+      : MOONSHOT_REGION_CN
     return {
       loading: false,
       connectivityTested: false,
@@ -134,7 +151,10 @@ export default {
         generate_name: '',
         provider_key: providerKey,
         api_mode: data.config?.api_mode || 'openai',
-        base_url: data.config?.base_url || '',
+        base_url: isMoonshotProviderKey(providerKey)
+          ? (baseURL || getMoonshotBaseURL(moonshotRegion))
+          : baseURL,
+        moonshot_region: moonshotRegion,
         api_key: '',
       },
       rules: {
@@ -183,7 +203,13 @@ export default {
       return this.showBuiltinProviderConfig && supportsDualAPIMode(this.form.provider_key)
     },
     showBaseUrl () {
-      return this.showBuiltinProviderConfig && !hasDefaultPublicBaseURL(this.form.provider_key)
+      return this.showBuiltinProviderConfig && shouldShowBuiltinBaseURL(this.form.provider_key)
+    },
+    showMoonshotRegion () {
+      return this.showBuiltinProviderConfig && isMoonshotProviderKey(this.form.provider_key)
+    },
+    moonshotRegionOptions () {
+      return getMoonshotRegionOptions(this)
     },
     apiModeOptions () {
       return getApiModeOptions(this)
@@ -212,9 +238,25 @@ export default {
     },
   },
   watch: {
-    'form.provider_key' () {
+    'form.provider_key' (key) {
       if (this.params.type === 'edit') return
       this.resetConnectivityState()
+      if (this.isBuiltin) {
+        if (isMoonshotProviderKey(key)) {
+          this.form.moonshot_region = MOONSHOT_REGION_CN
+          this.form.base_url = getMoonshotBaseURL(MOONSHOT_REGION_CN)
+        } else {
+          this.form.moonshot_region = MOONSHOT_REGION_CN
+          this.form.base_url = getDefaultPublicBaseURL(key)
+        }
+      }
+    },
+    'form.moonshot_region' (region) {
+      if (!this.showMoonshotRegion) return
+      this.form.base_url = getMoonshotBaseURL(region)
+      if (this.params.type !== 'edit') {
+        this.resetConnectivityState()
+      }
     },
     'form.api_key' () {
       if (this.params.type === 'edit') return
@@ -261,14 +303,24 @@ export default {
       }
       this.connectivityTested = true
     },
+    buildBuiltinProviderConfig () {
+      const config = {}
+      if (this.showMoonshotRegion) {
+        config.base_url = getMoonshotBaseURL(this.form.moonshot_region)
+      } else if (this.showBaseUrl) {
+        const url = String(this.form.base_url || '').trim() || getDefaultPublicBaseURL(this.form.provider_key)
+        if (url) config.base_url = url
+      }
+      if (this.showApiMode && this.form.api_mode) config.api_mode = this.form.api_mode
+      return config
+    },
     buildConnectivityPayload () {
       const config = {}
       if (this.isCustom) {
         config.base_url = this.form.base_url
         config.api_mode = this.form.api_mode
       } else {
-        if (this.showBaseUrl && this.form.base_url) config.base_url = this.form.base_url
-        if (this.showApiMode && this.form.api_mode) config.api_mode = this.form.api_mode
+        Object.assign(config, this.buildBuiltinProviderConfig())
       }
       return {
         provider_key: this.effectiveProviderKey,
@@ -329,8 +381,7 @@ export default {
         config.base_url = this.form.base_url
         config.api_mode = this.form.api_mode
       } else {
-        if (this.showBaseUrl && this.form.base_url) config.base_url = this.form.base_url
-        if (this.showApiMode && this.form.api_mode) config.api_mode = this.form.api_mode
+        Object.assign(config, this.buildBuiltinProviderConfig())
       }
       const payload = {
         provider_key: this.effectiveProviderKey,

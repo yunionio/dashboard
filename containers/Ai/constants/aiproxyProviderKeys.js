@@ -1,4 +1,4 @@
-// Built-in provider_key values from aiproxy catalog seed (onecloud/pkg/aiproxy/models/catalog_seed.go)
+// Known built-in provider_key values (mirrors onecloud/pkg/apis/aiproxy/provider_keys.go)
 export const AIPROXY_PROVIDER_KEYS = [
   'anthropic',
   // 'azure', // uncommon
@@ -27,6 +27,7 @@ export const AIPROXY_PROVIDER_KEYS = [
   // 'aliyun', // uncommon
   // 'baidu', // uncommon
   'xiaomi',
+  'moonshot',
 ]
 
 export function getAiproxyProviderKeyOptions (vm) {
@@ -36,5 +37,10 @@ export function getAiproxyProviderKeyOptions (vm) {
 export function filterAiproxyProviderKeys (query) {
   const q = String(query || '').trim().toLowerCase()
   if (!q) return [...AIPROXY_PROVIDER_KEYS]
-  return AIPROXY_PROVIDER_KEYS.filter(key => key.toLowerCase().includes(q))
+  return AIPROXY_PROVIDER_KEYS.filter(key => {
+    const id = key.toLowerCase()
+    if (id.includes(q)) return true
+    if ((q.includes('moonshot') || q.includes('kimi')) && id === 'moonshot') return true
+    return false
+  })
 }

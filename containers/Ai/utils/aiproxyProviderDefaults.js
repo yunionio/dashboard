@@ -11,6 +11,7 @@ const DEFAULT_PUBLIC_BASE_URLS = {
   // aliyun: 'https://dashscope.aliyuncs.com/compatible-mode', // uncommon
   // baidu: 'https://qianfan.baidubce.com/v2', // uncommon
   xiaomi: 'https://api.xiaomimimo.com',
+  moonshot: 'https://api.moonshot.cn',
 }
 
 /** @param {string} providerKey */
@@ -23,6 +24,13 @@ export function hasDefaultPublicBaseURL (providerKey) {
 export function getDefaultPublicBaseURL (providerKey) {
   const key = String(providerKey || '').trim().toLowerCase()
   return DEFAULT_PUBLIC_BASE_URLS[key] || ''
+}
+
+/** Show API URL on builtin provider create when user must set a custom endpoint. */
+export function shouldShowBuiltinBaseURL (providerKey) {
+  const key = String(providerKey || '').trim().toLowerCase()
+  if (!key) return false
+  return !hasDefaultPublicBaseURL(key)
 }
 
 /**

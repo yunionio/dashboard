@@ -27,9 +27,14 @@ export default {
   },
   computed: {
     displayLabel () {
+      const key = String(this.providerKey || '').trim()
+      if (key) {
+        const i18nKey = `aice.aiproxy.provider_key.${key}`
+        if (this.$te(i18nKey)) return this.$t(i18nKey)
+      }
       const text = String(this.label || '').trim()
       if (text) return text
-      return String(this.providerKey || '').trim() || '-'
+      return key || '-'
     },
   },
 }

@@ -28,28 +28,50 @@
         </a-button>
       </a-popover>
       <div v-if="isChatTest" class="chat-test-header-config">
-        <a-select
-          v-model="chatProtocol"
-          class="chat-test-protocol-select"
-          @change="onChatProtocolChange">
-          <a-select-option
-            v-for="item in chatProtocolOptions"
-            :key="item.value"
-            :value="item.value">
-            {{ item.label }}
-          </a-select-option>
-        </a-select>
-        <base-select
-          v-model="selectedVirtualKeyId"
-          resource="ai_virtual_keys"
-          :params="virtualKeySelectParams"
-          :extra-opts="virtualKeyExtraOpts"
-          filterable
-          version="v2"
-          class="chat-test-vk-select"
-          :select-props="virtualKeySelectProps"
-          @change="onVirtualKeySelectChange"
-          @update:item="onVirtualKeyItemSelected" />
+        <div class="chat-test-field">
+          <div class="chat-test-field-label">{{ $t('ai.mcp.chat_test.protocol') }}</div>
+          <a-select
+            v-model="chatProtocol"
+            class="chat-test-protocol-select"
+            @change="onChatProtocolChange">
+            <a-select-option
+              v-for="item in chatProtocolOptions"
+              :key="item.value"
+              :value="item.value">
+              {{ item.label }}
+            </a-select-option>
+          </a-select>
+        </div>
+        <div class="chat-test-field chat-test-field-grow">
+          <div class="chat-test-field-label">{{ $t('aice.aiproxy.virtual_key') }}</div>
+          <base-select
+            v-model="selectedVirtualKeyId"
+            resource="ai_virtual_keys"
+            :params="virtualKeySelectParams"
+            :extra-opts="virtualKeyExtraOpts"
+            filterable
+            version="v2"
+            class="chat-test-vk-select"
+            :select-props="virtualKeySelectProps"
+            @change="onVirtualKeySelectChange"
+            @update:item="onVirtualKeyItemSelected" />
+        </div>
+        <div v-if="showChatModelSelect" class="chat-test-field">
+          <div class="chat-test-field-label">{{ $t('aice.aiproxy.client_model_select') }}</div>
+          <a-select
+            v-model="selectedChatModelId"
+            class="chat-test-model-select"
+            :loading="chatModelsLoading"
+            :placeholder="$t('aice.aiproxy.client_model_select')"
+            @change="onChatModelChange">
+            <a-select-option
+              v-for="opt in chatModelOptions"
+              :key="opt.id"
+              :value="opt.id">
+              {{ opt.id }}
+            </a-select-option>
+          </a-select>
+        </div>
       </div>
     </div>
 
@@ -142,6 +164,12 @@ import {
   extractAnthropicResponseText,
 } from '@Ai/utils/anthropicStream'
 import { splitThinkingContent } from '@Ai/utils/chatContent'
+import {
+  buildDeploymentClientModelOptions,
+  defaultClientModelOption,
+  fetchRoutingClientModelOptions,
+  mergeClientModelOptions,
+} from '@Ai/utils/aiproxyClientModelId'
 
 export default {
   name: 'AiChat',
@@ -171,6 +199,10 @@ export default {
       type: String,
       default: '',
     },
+    initialChatModel: {
+      type: String,
+      default: '',
+    },
   },
   data () {
     return {
@@ -191,6 +223,9 @@ export default {
       abortController: null,
       expandedReasoningMap: {},
       chatTestGreetingShown: false,
+      selectedChatModelId: '',
+      chatModelOptions: [],
+      chatModelsLoading: false,
     }
   },
   computed: {
@@ -244,6 +279,9 @@ export default {
         { value: 'anthropic', label: this.$t('aice.aiproxy.protocol.anthropic') },
       ]
     },
+    showChatModelSelect () {
+      return this.chatModelOptions.length > 0
+    },
   },
   watch: {
     initialVirtualKeyId (val) {
@@ -256,24 +294,37 @@ export default {
         this.applyInitialVirtualKey(this.initialVirtualKeyId, val)
       }
     },
+    initialChatModel (val) {
+      if (this.isChatTest && val) {
+        this.applyChatTestModelSelection()
+        this.applyChatTestConfig()
+      }
+    },
+    selectedChatModelId () {
+      if (this.isChatTest) {
+        this.applyChatTestConfig()
+      }
+    },
     'data.aiproxy_routing_id' () {
       if (this.isChatTest) {
         this.loadChatTestEndpoint()
+        this.loadChatTestModels()
       }
     },
     'data.id' () {
       if (this.isChatTest && !this.data?.aiproxy_routing_id) {
         this.loadChatTestEndpoint()
+        this.loadChatTestModels()
       }
     },
     'data.model_key' () {
       if (this.isChatTest) {
-        this.applyChatTestConfig()
+        this.loadChatTestModels()
       }
     },
     'data.aiproxy_bindings' () {
       if (this.isChatTest) {
-        this.applyChatTestConfig()
+        this.loadChatTestModels()
       }
     },
     endpointUrl () {
@@ -288,6 +339,7 @@ export default {
       this.fetchMcpTools()
     } else {
       this.loadChatTestEndpoint()
+      this.loadChatTestModels()
       if (this.initialVirtualKeyId) {
         this.applyInitialVirtualKey(this.initialVirtualKeyId, this.initialVirtualKey)
       }
@@ -632,15 +684,77 @@ export default {
       this.$set(this.messages[assistantMessageIndex], 'reasoning', reasoning)
       this.$set(this.messages[assistantMessageIndex], 'content', content)
     },
-    getChatTestModel () {
-      const modelKey = String(this.data?.model_key || '').trim()
-      if (modelKey) return modelKey
+    getChatTestReadyBindings () {
       const bindings = Array.isArray(this.data?.aiproxy_bindings) ? this.data.aiproxy_bindings : []
-      const ready = bindings.filter(item => {
+      return bindings.filter(item => {
         if (!item?.client_model_alias) return false
         return item.sync_status === 'synced' || !item.sync_status
       })
-      return ready[0]?.client_model_alias || ''
+    },
+    getLegacyChatTestModel () {
+      const modelKey = String(this.data?.model_key || '').trim()
+      if (modelKey) return modelKey
+      return this.getChatTestReadyBindings()[0]?.client_model_alias || ''
+    },
+    getChatTestModel () {
+      const selected = String(this.selectedChatModelId || '').trim()
+      if (selected) return selected
+      return this.getLegacyChatTestModel()
+    },
+    applyChatTestModelSelection (reset = false) {
+      const initial = String(this.initialChatModel || '').trim()
+      if (initial && this.chatModelOptions.some(opt => opt.id === initial)) {
+        this.selectedChatModelId = initial
+        return
+      }
+      if (!reset && this.selectedChatModelId && this.chatModelOptions.some(opt => opt.id === this.selectedChatModelId)) {
+        return
+      }
+      const modelKey = String(this.data?.model_key || '').trim()
+      if (modelKey && this.chatModelOptions.some(opt => opt.id === modelKey)) {
+        this.selectedChatModelId = modelKey
+        return
+      }
+      const fromOptions = defaultClientModelOption(this.chatModelOptions)
+      if (fromOptions) {
+        this.selectedChatModelId = fromOptions
+        return
+      }
+      this.selectedChatModelId = this.getLegacyChatTestModel()
+    },
+    async loadChatTestModels () {
+      if (!this.isChatTest) return
+      this.chatModelsLoading = true
+      try {
+        const bindings = Array.isArray(this.data?.aiproxy_bindings) ? this.data.aiproxy_bindings : []
+        let options = []
+        if (bindings.length) {
+          const deploymentOptions = buildDeploymentClientModelOptions(this.getChatTestReadyBindings())
+          const routingId = String(this.data?.aiproxy_routing_id || '').trim()
+          let routingOptions = []
+          if (routingId) {
+            const result = await fetchRoutingClientModelOptions(routingId, {}, this)
+            routingOptions = result.options || []
+          }
+          options = mergeClientModelOptions(deploymentOptions, routingOptions)
+        } else {
+          const routingId = this.getChatTestRoutingId()
+          const result = await fetchRoutingClientModelOptions(routingId, this.data, this)
+          options = result.options || []
+        }
+        this.chatModelOptions = options
+        this.applyChatTestModelSelection()
+      } catch (e) {
+        const fallback = buildDeploymentClientModelOptions(this.getChatTestReadyBindings())
+        this.chatModelOptions = fallback
+        this.applyChatTestModelSelection(true)
+      } finally {
+        this.chatModelsLoading = false
+        this.applyChatTestConfig()
+      }
+    },
+    onChatModelChange () {
+      this.applyChatTestConfig()
     },
     getChatTestRoutingId () {
       return this.data?.aiproxy_routing_id || this.data?.id || ''
@@ -837,20 +951,48 @@ export default {
 
   .chat-test-header-config {
     flex: 1;
-    max-width: 520px;
+    max-width: 760px;
     margin-left: 16px;
     display: flex;
     gap: 8px;
-    align-items: center;
+    align-items: flex-end;
+    flex-wrap: wrap;
+
+    .chat-test-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .chat-test-field-grow {
+      flex: 1;
+      min-width: 180px;
+
+      .chat-test-vk-select {
+        width: 100%;
+        min-width: 0;
+      }
+    }
+
+    .chat-test-field-label {
+      font-size: 12px;
+      color: var(--color-text-2, rgba(0, 0, 0, 0.65));
+      white-space: nowrap;
+      line-height: 1.2;
+    }
 
     .chat-test-protocol-select {
-      width: 180px;
+      width: 160px;
       flex-shrink: 0;
     }
 
     .chat-test-vk-select {
-      flex: 1;
-      min-width: 0;
+      width: 180px;
+    }
+
+    .chat-test-model-select {
+      width: 220px;
+      flex-shrink: 0;
     }
   }
 }

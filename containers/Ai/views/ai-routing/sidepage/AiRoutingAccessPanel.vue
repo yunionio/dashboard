@@ -39,6 +39,24 @@
         </a-button>
       </div>
     </div>
+    <div v-if="showModelSelect" class="mb-3">
+      <div class="mb-1">{{ $t('aice.aiproxy.client_model_select') }}</div>
+      <a-select
+        v-model="selectedClientModelId"
+        class="client-model-select"
+        style="width: 100%; max-width: 480px;">
+        <a-select-option
+          v-for="opt in clientModelOptions"
+          :key="opt.id"
+          :value="opt.id">
+          {{ opt.id }}
+          <span v-if="opt.kind === 'flat'" class="text-color-help ml-1">
+            ({{ $t('aice.aiproxy.client_model_flat') }})
+          </span>
+        </a-select-option>
+      </a-select>
+      <p class="text-color-help mt-1 mb-0">{{ $t('aice.aiproxy.hierarchical_model_hint') }}</p>
+    </div>
     <aiproxy-client-access-detail
       :protocol="activeProtocol"
       :openai-base-url="openaiBaseUrl"
@@ -46,8 +64,12 @@
       :openai-endpoint-url="endpointUrl"
       :anthropic-messages-url="anthropicMessagesUrl"
       :virtual-key="selectedVirtualKey"
-      :model="exampleModel"
-      :provider-key="providerKey" />
+      :virtual-key-ref="selectedVirtualKeyRef"
+      :model="displayModel"
+      :provider-key="providerKey"
+      :client-model-options="clientModelOptions"
+      :routing="data"
+      :routing-ref="data.name || data.id" />
   </div>
 </template>
 
@@ -56,6 +78,10 @@ import { Manager } from '@/utils/manager'
 import { getAiproxyResourceScope } from '@Ai/constants/aiproxyResources'
 import AiproxyVirtualKeySelectMixin from '@Ai/mixins/aiproxyVirtualKeySelectMixin'
 import AiproxyClientAccessDetail from '@Ai/sections/AiproxyClientAccessDetail'
+import {
+  defaultClientModelOption,
+  fetchRoutingClientModelOptions,
+} from '@Ai/utils/aiproxyClientModelId'
 import {
   resolveAiproxyAnthropicBaseUrl,
   resolveAiproxyAnthropicMessagesUrl,
@@ -82,19 +108,38 @@ export default {
       anthropicMessagesUrl: '',
       endpointLoading: false,
       providerKey: '',
+      clientModelOptions: [],
+      selectedClientModelId: '',
     }
   },
   computed: {
     routingId () {
       return this.data?.id || ''
     },
-    exampleModel () {
-      return this.data?.model_key || 'your-model'
+    showModelSelect () {
+      return this.clientModelOptions.length > 1
+    },
+    displayModel () {
+      if (this.selectedClientModelId) {
+        return this.selectedClientModelId
+      }
+      return defaultClientModelOption(this.clientModelOptions) ||
+        this.data?.model_key ||
+        'your-model'
+    },
+  },
+  watch: {
+    routingId () {
+      this.loadRoutingModels()
+      this.loadEndpoint()
+    },
+    'data.model_key' () {
+      this.loadRoutingModels()
     },
   },
   mounted () {
     this.loadEndpoint()
-    this.loadRoutingProviderKey()
+    this.loadRoutingModels()
   },
   methods: {
     async loadEndpoint () {
@@ -127,9 +172,18 @@ export default {
         this.endpointLoading = false
       }
     },
-    async loadRoutingProviderKey () {
-      if (!this.routingId) return
+    async loadRoutingModels () {
+      if (!this.routingId) {
+        this.clientModelOptions = []
+        this.selectedClientModelId = ''
+        this.providerKey = ''
+        return
+      }
       try {
+        const { options } = await fetchRoutingClientModelOptions(this.routingId, this.data, this)
+        this.clientModelOptions = options
+        this.selectedClientModelId = defaultClientModelOption(this.clientModelOptions)
+
         const manager = new Manager('ai_routing_models')
         const { data: { data = [] } } = await manager.list({
           params: {
@@ -141,14 +195,19 @@ export default {
         })
         const rows = [...(data || [])].sort((a, b) => (a.priority || 0) - (b.priority || 0))
         const providerId = rows[0]?.ai_provider_id
-        if (!providerId) return
-        const providerManager = new Manager('ai_providers')
-        const { data: provider } = await providerManager.get({
-          id: providerId,
-          params: { scope: getAiproxyResourceScope('ai_providers', this) },
-        })
-        this.providerKey = String(provider?.provider_key || '').trim().toLowerCase()
+        if (providerId) {
+          const providerManager = new Manager('ai_providers')
+          const { data: provider } = await providerManager.get({
+            id: providerId,
+            params: { scope: getAiproxyResourceScope('ai_providers', this) },
+          })
+          this.providerKey = String(provider?.provider_key || '').trim().toLowerCase()
+        } else {
+          this.providerKey = ''
+        }
       } catch (e) {
+        this.clientModelOptions = []
+        this.selectedClientModelId = this.data?.model_key || ''
         this.providerKey = ''
       }
     },
@@ -157,6 +216,7 @@ export default {
         routingId: this.routingId,
         virtualKeyId: this.selectedVirtualKeyId,
         virtualKey: this.selectedVirtualKey,
+        clientModel: this.displayModel,
       })
     },
   },
@@ -165,7 +225,8 @@ export default {
 
 <style lang="less" scoped>
 .ai-routing-access-panel {
-  .virtual-key-select {
+  .virtual-key-select,
+  .client-model-select {
     max-width: 480px;
   }
 }

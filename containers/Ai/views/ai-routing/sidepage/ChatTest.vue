@@ -4,7 +4,8 @@
     :data="data"
     :res-id="resId"
     :initial-virtual-key-id="initialVirtualKeyId"
-    :initial-virtual-key="initialVirtualKey" />
+    :initial-virtual-key="initialVirtualKey"
+    :initial-chat-model="initialChatModel" />
 </template>
 
 <script>
@@ -29,6 +30,10 @@ export default {
       default: '',
     },
     initialVirtualKey: {
+      type: String,
+      default: '',
+    },
+    initialChatModel: {
       type: String,
       default: '',
     },
