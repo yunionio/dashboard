@@ -1015,7 +1015,7 @@
   "compute.text_992": "セキュリティ グループを選択してください",
   "compute.text_993": "着信方向",
   "compute.text_994": "アウト方向",
-  "compute.text_995": "ソースは、次の形式をサポートしています。 単一の IP: 192.168.0.1(IPv4)またはfd:3200::1(IPv6) CIDR: 192.168.1.0/24(IPv4)またはfd:3200::/64(IPv6)",
+  "compute.secgroup.secrule.source.prompt": "ソースは、次の形式をサポートしています。 単一または複数の IP: 192.168.0.1(IPv4)またはfd:3200::1(IPv6) CIDR: 192.168.1.0/24(IPv4)またはfd:3200::/64(IPv6)",
   "compute.text_996": "ソースを入力してください",
   "compute.text_997": "任意の IP アドレス",
   "compute.text_998": "港",
