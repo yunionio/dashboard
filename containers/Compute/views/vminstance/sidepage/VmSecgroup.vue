@@ -16,6 +16,8 @@
 import SecgroupList from '@Compute/views/secgroup/components/List'
 import WindowsMixin from '@/mixins/windows'
 import { SECGROUP_LIST_FOR_VMINSTANCE_SIDEPAGE_REFRESH } from '@/constants/event-bus'
+import { hasSetupKey } from '@/utils/auth'
+import { cloudEnabled, cloudUnabledTip, validateRescueMode } from '../utils'
 
 export default {
   name: 'VmSecgroupListForVminstanceSidepage',
@@ -39,6 +41,33 @@ export default {
     return {
       frontGroupActions: function () {
         return [
+          {
+            label: this.$t('compute.text_1116'),
+            permissionLabels: [this.$t('compute.text_1116'), this.$t('compute.revoke_secgroup'), this.$t('compute.set_secgroup')],
+            permission: 'server_perform_add_secgroup,server_perform_revoke_secgroup,server_perform_set_secgroup',
+            action: () => {
+              this.createDialog('VmSetSecgroupDialog', {
+                vm: this,
+                data: [that.data],
+                columns: that.serverColumns,
+                onManager: this.onManager,
+                type: 'vminstance',
+                refresh: () => {
+                  this.$bus.$emit(SECGROUP_LIST_FOR_VMINSTANCE_SIDEPAGE_REFRESH)
+                },
+              })
+            },
+            meta: () => {
+              const rescueModeValid = validateRescueMode(that.data)
+              if (!rescueModeValid.validate) return rescueModeValid
+              const ret = {
+                validate: cloudEnabled('assignSecgroup', that.data),
+                tooltip: cloudUnabledTip('assignSecgroup', that.data),
+              }
+              return ret
+            },
+            hidden: () => !(hasSetupKey(['onestack', 'onecloud', 'openstack', 'dstack', 'zstack', 'apsara', 'cloudpods', 'hcso', 'hcs'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_secgroup'),
+          },
           {
             label: this.$t('common.remove'),
             action: () => {

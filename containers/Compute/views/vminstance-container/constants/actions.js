@@ -347,6 +347,7 @@ const getSingleActions = function () {
                     columns: this.columns,
                     onManager: this.onManager,
                     refresh: this.refresh,
+                    type: 'vminstance-container',
                   })
                 },
                 meta: () => {

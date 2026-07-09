@@ -578,7 +578,7 @@ export default {
           })
         }
       }
-      let osOpts = [{ label: '全部', key: 'all' }]
+      let osOpts = [{ label: this.$t('common_95'), key: 'all' }]
       const imageOptsMap = {
         all: [],
       }

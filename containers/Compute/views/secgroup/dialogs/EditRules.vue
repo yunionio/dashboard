@@ -16,7 +16,7 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item :label="decLabel" :extra="$t('compute.text_995')">
+        <a-form-item :label="decLabel" :extra="$t('compute.secgroup.secrule.source.prompt')">
           <a-select
             mode="combobox"
             @change="fetchSecgroups"
@@ -294,14 +294,24 @@ export default {
     },
     validateCIDR (rule, value, callback) {
       if (!this.cidrCheckedShow && !value) {
-        callback(new Error(this.$t('common.tips.input', [this.decLabel])))
+        return callback(new Error(this.$t('common.tips.input', [this.decLabel])))
       }
       if (this.cidrChecked || !value) {
-        callback()
-      } else if (!REGEXP.IPv6.regexp.test(value) && !REGEXP.IPv4.regexp.test(value) && !REGEXP.cidr.regexp.test(value) && !REGEXP.cidr6.regexp.test(value)) {
-        callback(new Error(this.$t('common.tips.input', ['IPv6'])))
+        return callback()
       }
-      callback()
+      if (value.indexOf(',') >= 0) {
+        const items = value.split(',').map(item => item.trim()).filter(item => item.length > 0)
+        for (const item of items) {
+          if (!REGEXP.IPv6.regexp.test(item) && !REGEXP.IPv4.regexp.test(item) && !REGEXP.cidr.regexp.test(item) && !REGEXP.cidr6.regexp.test(item)) {
+            return callback(new Error(this.$t('common.tips.input', ['IPv4/IPv6'])))
+          }
+        }
+        return callback()
+      }
+      if (!REGEXP.IPv6.regexp.test(value) && !REGEXP.IPv4.regexp.test(value) && !REGEXP.cidr.regexp.test(value) && !REGEXP.cidr6.regexp.test(value)) {
+        return callback(new Error(this.$t('common.tips.input', ['IPv4/IPv6'])))
+      }
+      return callback()
     },
     changeCidrChecked (bool) {
       this.cidrChecked = this.cidrCheckedShow ? bool : this.cidrCheckedShow
