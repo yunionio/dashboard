@@ -24,7 +24,8 @@
       :on-manager="onManager"
       :columns="columns"
       :initial-virtual-key-id="chatTestVirtualKeyId"
-      :initial-virtual-key="chatTestVirtualKey" />
+      :initial-virtual-key="chatTestVirtualKey"
+      :initial-chat-model="chatTestClientModel" />
   </base-side-page>
 </template>
 
@@ -54,6 +55,7 @@ export default {
     return {
       chatTestVirtualKeyId: '',
       chatTestVirtualKey: '',
+      chatTestClientModel: '',
       detailTabs: [
         { label: this.$t('common_386'), key: 'detail' },
         { label: this.$t('aice.llm_deployment.aiproxy_access'), key: 'aiproxy-access-panel' },
@@ -85,10 +87,11 @@ export default {
     this.$bus.$off('llmDeploymentOpenChatTest', this.handleOpenChatTest)
   },
   methods: {
-    handleOpenChatTest ({ deploymentId, virtualKeyId, virtualKey }) {
+    handleOpenChatTest ({ deploymentId, virtualKeyId, virtualKey, clientModel }) {
       if (deploymentId !== this.data.id) return
       this.chatTestVirtualKeyId = virtualKeyId || ''
       this.chatTestVirtualKey = virtualKey || ''
+      this.chatTestClientModel = clientModel || ''
       this.handleTabChange('chat-test')
     },
   },

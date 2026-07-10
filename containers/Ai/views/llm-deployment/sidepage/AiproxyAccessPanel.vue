@@ -46,7 +46,7 @@
         :columns="accessColumns"
         :data-source="accessRows"
         :pagination="false"
-        class="mb-3">
+        class="mb-1">
         <template v-slot:llm_id="text, row">
           <a v-if="text" @click="handleOpenLlmInstanceSidepage(text)">{{ llmInstanceName(row) }}</a>
           <span v-else>-</span>
@@ -67,6 +67,7 @@
           <copy v-if="text" class="ml-1" :message="text" />
         </template>
       </a-table>
+      <p class="text-color-help mb-3">{{ $t('aice.llm_deployment.aiproxy_client_model_alias_hint') }}</p>
       <div class="mb-3">
         <div class="mb-1">{{ $t('aice.aiproxy.access_protocol') }}</div>
         <p class="text-color-help mb-2">{{ $t('aice.aiproxy.access_protocol_hint') }}</p>
@@ -105,6 +106,24 @@
           </a-button>
         </div>
       </div>
+      <div v-if="showModelSelect" class="mb-3">
+        <div class="mb-1">{{ $t('aice.aiproxy.client_model_select') }}</div>
+        <a-select
+          v-model="selectedClientModelId"
+          class="client-model-select"
+          style="width: 100%; max-width: 480px;">
+          <a-select-option
+            v-for="opt in clientModelOptions"
+            :key="opt.id"
+            :value="opt.id">
+            {{ opt.id }}
+            <span v-if="opt.kind === 'flat'" class="text-color-help ml-1">
+              ({{ $t('aice.aiproxy.client_model_flat') }})
+            </span>
+          </a-select-option>
+        </a-select>
+        <p class="text-color-help mt-1 mb-0">{{ $t('aice.aiproxy.hierarchical_model_hint') }}</p>
+      </div>
       <aiproxy-client-access-detail
         :protocol="activeProtocol"
         :openai-base-url="openaiBaseUrl"
@@ -112,7 +131,11 @@
         :openai-endpoint-url="endpointUrl"
         :anthropic-messages-url="anthropicMessagesUrl"
         :virtual-key="selectedVirtualKey"
-        :model="agentAccessModel" />
+        :virtual-key-ref="selectedVirtualKeyRef"
+        :model="agentAccessModel"
+        :client-model-options="clientModelOptions"
+        :routing="routingDetail"
+        :routing-ref="routingDetail.name || routingDetail.id || data.aiproxy_routing_id" />
     </template>
 
     <aiproxy-routing-panel :data="data" embedded />
@@ -124,6 +147,12 @@ import WindowsMixin from '@/mixins/windows'
 import AiproxyLlmLinkListMixin from '@Ai/mixins/aiproxyLlmLinkListMixin'
 import AiproxyVirtualKeySelectMixin from '@Ai/mixins/aiproxyVirtualKeySelectMixin'
 import AiproxyClientAccessDetail from '@Ai/sections/AiproxyClientAccessDetail'
+import {
+  buildDeploymentClientModelOptions,
+  defaultClientModelOption,
+  fetchRoutingClientModelOptions,
+  mergeClientModelOptions,
+} from '@Ai/utils/aiproxyClientModelId'
 import {
   resolveAiproxyAnthropicBaseUrl,
   resolveAiproxyAnthropicMessagesUrl,
@@ -172,6 +201,9 @@ export default {
       pollCount: 0,
       registerLoading: false,
       unregisterLoading: false,
+      clientModelOptions: [],
+      selectedClientModelId: '',
+      routingDetail: {},
     }
   },
   computed: {
@@ -243,7 +275,15 @@ export default {
         },
       ]
     },
+    showModelSelect () {
+      return this.clientModelOptions.length > 1
+    },
     agentAccessModel () {
+      if (this.selectedClientModelId) {
+        return this.selectedClientModelId
+      }
+      const fromOptions = defaultClientModelOption(this.clientModelOptions)
+      if (fromOptions) return fromOptions
       return this.readyInstances[0]?.client_model_alias || ''
     },
   },
@@ -259,11 +299,13 @@ export default {
       handler () {
         this.syncPollingState()
         this.loadEndpoint()
+        this.loadClientModelOptions()
         this.enrichBindingDisplayNames()
       },
     },
     'data.aiproxy_routing_id' () {
       this.loadEndpoint()
+      this.loadClientModelOptions()
     },
     'data.auto_register_aiproxy' () {
       if (this.data?.auto_register_aiproxy === false) {
@@ -273,6 +315,7 @@ export default {
   },
   mounted () {
     this.loadEndpoint()
+    this.loadClientModelOptions()
     this.syncPollingState()
     this.enrichBindingDisplayNames()
   },
@@ -320,6 +363,9 @@ export default {
       this.anthropicMessagesUrl = ''
       this.endpointLoading = false
       this.pollCount = 0
+      this.clientModelOptions = []
+      this.selectedClientModelId = ''
+      this.routingDetail = {}
       this.stopPolling()
     },
     formatSyncStatus (status) {
@@ -341,6 +387,32 @@ export default {
       if (!this.aiproxyInstances.length) return
       this.enrichRowsWithAiProviderLinks({ data: { data: this.aiproxyInstances } })
       this.enrichRowsWithAiproxyLlmLinks({ data: { data: this.aiproxyInstances } }, { withInstance: true })
+    },
+    async loadClientModelOptions () {
+      if (!this.autoRegister || this.syncFailed || !this.readyInstances.length) {
+        this.clientModelOptions = []
+        this.selectedClientModelId = ''
+        this.routingDetail = {}
+        return
+      }
+      try {
+        const deploymentOptions = buildDeploymentClientModelOptions(this.readyInstances)
+        const routingId = String(this.data?.aiproxy_routing_id || '').trim()
+        let routingOptions = []
+        let routingDetail = {}
+        if (routingId) {
+          const result = await fetchRoutingClientModelOptions(routingId, {}, this)
+          routingOptions = result.options || []
+          routingDetail = result.routing || {}
+        }
+        this.clientModelOptions = mergeClientModelOptions(deploymentOptions, routingOptions)
+        this.routingDetail = routingDetail
+        this.selectedClientModelId = defaultClientModelOption(this.clientModelOptions)
+      } catch (e) {
+        this.clientModelOptions = buildDeploymentClientModelOptions(this.readyInstances)
+        this.routingDetail = {}
+        this.selectedClientModelId = defaultClientModelOption(this.clientModelOptions)
+      }
     },
     async loadEndpoint () {
       if (!this.autoRegister || this.syncFailed) {
@@ -423,6 +495,7 @@ export default {
         deploymentId: this.data.id,
         virtualKeyId: this.selectedVirtualKeyId,
         virtualKey: this.selectedVirtualKey,
+        clientModel: this.agentAccessModel,
       })
     },
   },
@@ -436,7 +509,8 @@ export default {
     word-break: break-all;
   }
 
-  .virtual-key-select {
+  .virtual-key-select,
+  .client-model-select {
     max-width: 480px;
   }
 }

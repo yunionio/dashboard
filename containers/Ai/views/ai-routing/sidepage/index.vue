@@ -17,9 +17,11 @@
       :id="listId"
       :data="detailData"
       :on-manager="onManager"
+      :detail-on-manager="onManager"
       :columns="columns"
       :initial-virtual-key-id="chatTestVirtualKeyId"
-      :initial-virtual-key="chatTestVirtualKey" />
+      :initial-virtual-key="chatTestVirtualKey"
+      :initial-chat-model="chatTestClientModel" />
   </base-side-page>
 </template>
 
@@ -48,6 +50,7 @@ export default {
     return {
       chatTestVirtualKeyId: '',
       chatTestVirtualKey: '',
+      chatTestClientModel: '',
       detailTabs: [
         { label: this.$t('common_386'), key: 'detail' },
         { label: this.$t('aice.aiproxy.routing_access'), key: 'routing-access-panel' },
@@ -76,10 +79,11 @@ export default {
     this.$bus.$off('aiRoutingOpenChatTest', this.handleOpenChatTest)
   },
   methods: {
-    handleOpenChatTest ({ routingId, virtualKeyId, virtualKey }) {
+    handleOpenChatTest ({ routingId, virtualKeyId, virtualKey, clientModel }) {
       if (routingId !== this.data.id) return
       this.chatTestVirtualKeyId = virtualKeyId || ''
       this.chatTestVirtualKey = virtualKey || ''
+      this.chatTestClientModel = clientModel || ''
       this.handleTabChange('chat-test')
     },
   },
