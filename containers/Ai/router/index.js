@@ -31,6 +31,8 @@ const AiProviderCreate = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/a
 const AiProxyNode = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/ai-proxy-node')
 const AiProxyNodeCreate = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/ai-proxy-node/create')
 const AiProxyUsage = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/aiproxy-usage')
+const LlmBenchmark = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/llm-benchmark')
+const LlmBenchmarkCreate = () => import(/* webpackChunkName: "k8s" */ '@Ai/views/llm-benchmark/create')
 export default {
   index: 61,
   meta: {
@@ -273,6 +275,31 @@ export default {
               name: 'LlmImageList',
               path: '',
               component: LlmImage,
+            },
+          ],
+        },
+        {
+          path: '/llm-benchmark',
+          meta: {
+            label: i18n.t('aice.llm_benchmark'),
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.llm_benchmark')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'LlmBenchmarkList',
+              path: '',
+              component: LlmBenchmark,
+            },
+            {
+              name: 'LlmBenchmarkCreate',
+              path: 'create',
+              component: LlmBenchmarkCreate,
             },
           ],
         },

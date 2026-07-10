@@ -1566,6 +1566,13 @@ export const PERMISSION = {
   llm_deployments_perform_restart: ['llm', 'llm_deployments', 'perform', 'restart'],
   llm_deployments_perform_syncstatus: ['llm', 'llm_deployments', 'perform', 'syncstatus'],
 
+  llm_benchmarks_list: ['llm', 'llm_benchmarks', 'list'],
+  llm_benchmarks_get: ['llm', 'llm_benchmarks', 'get'],
+  llm_benchmarks_create: ['llm', 'llm_benchmarks', 'create'],
+  llm_benchmarks_update: ['llm', 'llm_benchmarks', 'update'],
+  llm_benchmarks_delete: ['llm', 'llm_benchmarks', 'delete'],
+  llm_benchmarks_perform_stop: ['llm', 'llm_benchmarks', 'perform', 'stop'],
+
   billing_resource_checks_list: ['compute', 'billing_resource_checks', 'list'],
 
   mcp_agents_list: ['llm', 'mcp_agents', 'list'],
