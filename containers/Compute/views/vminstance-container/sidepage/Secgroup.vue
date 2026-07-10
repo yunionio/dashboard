@@ -46,7 +46,11 @@ export default {
                 vm: this,
                 data: [that.data],
                 columns: that.serverColumns,
-                manager: new that.$Manager('servers'),
+                onManager: this.onManager,
+                type: 'vminstance-container',
+                refresh: () => {
+                  this.$bus.$emit(SECGROUP_LIST_FOR_VMINSTANCE_SIDEPAGE_REFRESH)
+                },
               })
             },
           },

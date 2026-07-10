@@ -361,6 +361,35 @@ export default {
                 },
                 hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_sync_config'),
               },
+              // 关联安全组
+              {
+                label: this.$t('compute.text_1116'),
+                permission: 'server_perform_add_secgroup',
+                action: () => {
+                  this.createDialog('VmSetSecgroupDialog', {
+                    vm: this,
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    type: 'vminstance-container',
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: true,
+                    tooltip: null,
+                  }
+                  const isAllRunningReady = this.list.selectedItems.every(item => (item.status === 'running' || item.status === 'ready'))
+                  if (!isAllRunningReady) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('compute.text_1126')
+                    return ret
+                  }
+                  ret.validate = true
+                  return ret
+                },
+                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_secgroup'),
+              },
               // 设置删除保护
               disableDeleteAction(Object.assign(this, {}), {
                 name: this.$t('compute.vminstance-container'),
