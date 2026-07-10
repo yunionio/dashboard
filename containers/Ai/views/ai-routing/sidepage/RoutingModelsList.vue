@@ -8,10 +8,11 @@
 </template>
 
 <script>
+import { Manager } from '@/utils/manager'
+import { getAiproxyResourceScope } from '@Ai/constants/aiproxyResources'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import AiproxyLlmLinkListMixin from '@Ai/mixins/aiproxyLlmLinkListMixin'
-import { getAiproxyResourceScope } from '@Ai/constants/aiproxyResources'
 import { getAiProviderLinkColumn, getAiModelLinkColumn, getLlmDeploymentLinkColumn } from '@Ai/utils/aiproxyLlmLinkColumns'
 import {
   fetchAiProviderMetaMap,
@@ -19,6 +20,7 @@ import {
   formatProviderKindLabel,
   inferProviderKind,
 } from '@Ai/utils/aiProviderKind'
+import { listClientModelIdForEntry } from '@Ai/utils/aiproxyClientModelId'
 import { getEnabledTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -27,7 +29,7 @@ export default {
   props: {
     data: { type: Object, required: true },
     id: String,
-    onManager: { type: Function, required: true },
+    detailOnManager: { type: Function, required: true },
   },
   data () {
     return {
@@ -48,6 +50,7 @@ export default {
             this.enrichRowsWithAiModelLinks(response),
             this.enrichRowsWithProviderKind(response),
           ])
+          await this.applyClientModelIds(rows)
           this.markRoutingModelRowsVisible(rows)
         },
       }),
@@ -61,6 +64,21 @@ export default {
         getAiProviderLinkColumn(this),
         getLlmDeploymentLinkColumn(this),
         getAiModelLinkColumn(this),
+        {
+          field: 'client_model_id',
+          title: this.$t('aice.aiproxy.routing_models.client_model_id'),
+          minWidth: 200,
+          slots: {
+            default: ({ row }) => {
+              const id = row.client_model_id
+              if (!id) return [<span>-</span>]
+              return [
+                <span>{id}</span>,
+                <copy class="ml-1" message={id} />,
+              ]
+            },
+          },
+        },
         { field: 'priority', title: this.$t('aice.aiproxy.priority'), width: 90 },
         getEnabledTableColumn(),
       ],
@@ -75,7 +93,7 @@ export default {
             this.createDialog('AiRoutingSetModelsDialog', {
               data: [this.data],
               routingModels,
-              onManager: this.onManager,
+              onManager: this.detailOnManager,
               refresh: () => this.list.fetchData(),
             })
           },
@@ -135,6 +153,36 @@ export default {
     this.ensureRoutingModelListRowsVisible()
   },
   methods: {
+    async applyClientModelIds (rows) {
+      if (!Array.isArray(rows) || !rows.length) return
+      const routing = this.data || {}
+      const modelIds = [...new Set(rows.map(r => r.ai_model_id).filter(Boolean))]
+      const catalogById = await this.fetchCatalogModelsById(modelIds)
+      rows.forEach(row => {
+        const catalog = catalogById[row.ai_model_id] || {}
+        row.client_model_id = listClientModelIdForEntry(routing, row, catalog)
+      })
+    },
+    async fetchCatalogModelsById (modelIds) {
+      const out = {}
+      if (!modelIds.length) return out
+      try {
+        const manager = new Manager('ai_models')
+        const { data: { data = [] } } = await manager.list({
+          params: {
+            scope: getAiproxyResourceScope('ai_models', this),
+            filter: `id.in(${modelIds.map(id => `'${id}'`).join(',')})`,
+            limit: modelIds.length,
+          },
+        })
+        ;(data || []).forEach(item => {
+          if (item?.id) out[item.id] = item
+        })
+      } catch (e) {
+        // ignore
+      }
+      return out
+    },
     markRoutingModelRowsVisible (rows) {
       ;(rows || []).forEach(row => {
         if (row) row.isDataShow = true

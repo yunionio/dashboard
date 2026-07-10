@@ -1,4 +1,5 @@
 import { Manager } from '@/utils/manager'
+import { uuid } from '@/utils/utils'
 import { getAiproxyResourceScope } from '@Ai/constants/aiproxyResources'
 
 const nameCache = new Map()
@@ -35,6 +36,7 @@ export async function fetchAiModelNameMap (ids, { scope, vm, useCache = true } =
         scope: listScope,
         filter: `id.in(${missing.map(id => `'${id}'`).join(',')})`,
         limit: missing.length,
+        $t: `ai-model-name-${uuid()}`,
       },
     })
     ;(data || []).forEach(item => {

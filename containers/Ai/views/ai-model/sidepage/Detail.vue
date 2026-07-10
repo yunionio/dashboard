@@ -18,7 +18,10 @@ export default {
     baseInfo () {
       return [
         getEnabledTableColumn(),
-        getAiProviderDetailField(this),
+        getAiProviderDetailField(this, {
+          providerName: this.aiProviderDetailName,
+          providerKey: this.aiProviderDetailKey,
+        }),
         { field: 'model_key', title: this.$t('aice.aiproxy.model_key') },
         getTimeTableColumn(),
       ]
