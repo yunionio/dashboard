@@ -202,6 +202,12 @@ export default {
       ...(expectStatus.llmDeployment?.danger || []),
     ],
   },
+  LlmBenchmarkSidePage: {
+    resource: 'llm_benchmarks',
+    steadyStatus: {
+      state: ['completed', 'stopped', 'error'],
+    },
+  },
   McpSidePage: {
     resource: 'mcp_agents',
   },
