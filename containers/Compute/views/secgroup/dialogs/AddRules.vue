@@ -24,7 +24,7 @@
         <a-form-item v-bind="formItemLayout">
           <span slot="label">
             {{decLabel}}&nbsp;
-            <a-tooltip :title="$t('compute.text_995')">
+            <a-tooltip :title="$t('compute.secgroup.secrule.source.prompt')">
               <a-icon type="question-circle-o" />
             </a-tooltip>
           </span>
