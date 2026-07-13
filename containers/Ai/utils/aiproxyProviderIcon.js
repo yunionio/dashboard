@@ -41,6 +41,7 @@ const AIPROXY_PROVIDER_ICON_MAP = {
   // xai: resolveAssetUrl(require('@/assets/images/aiproxy-providers/xai.svg')), // uncommon
   xiaomi: resolveAssetUrl(require('@/assets/images/aiproxy-providers/xiaomi.svg')),
   moonshot: resolveAssetUrl(require('@/assets/images/aiproxy-providers/moonshot.svg')),
+  zhipu: resolveAssetUrl(require('@/assets/images/aiproxy-providers/zhipu.svg')),
   custom: resolveAssetUrl(require('@/assets/images/aiproxy-providers/default.svg')),
 }
 

@@ -73,6 +73,14 @@ export default {
     tooltip () {
       return this.meta.tooltip || this.extraMeta.tooltip
     },
+    tooltipTitle () {
+      const t = this.tooltip
+      if (!t) return null
+      if (typeof t === 'string' && t.includes('\n')) {
+        return <div style="white-space: pre-line; max-width: 480px; text-align: left;">{ t }</div>
+      }
+      return t
+    },
   },
   methods: {
     handleClick (e) {
@@ -97,7 +105,7 @@ export default {
       action = <a-button style={ this.buttonStyle } block={ this.buttonBlock } size={ this.buttonSize } type={ this.meta.buttonType || this.buttonType } disabled={ this.disabled } onClick={ this.handleClick }>{ this.label }</a-button>
     }
     if (this.tooltip) {
-      action = <a-tooltip title={ this.tooltip } placement='left' destroyTooltipOnHide>{ action }</a-tooltip>
+      action = <a-tooltip title={ this.tooltipTitle } placement='left' destroyTooltipOnHide>{ action }</a-tooltip>
     }
     if (this.item.render) {
       action = this.item.render(this.row, { style: this.buttonStyle, block: this.buttonClock, size: this.buttonSize, type: this.meta.buttonType || this.buttonType, disabled: this.disabled, onClick: this.handleClick }, h)

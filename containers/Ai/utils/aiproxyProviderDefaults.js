@@ -12,7 +12,10 @@ const DEFAULT_PUBLIC_BASE_URLS = {
   // baidu: 'https://qianfan.baidubce.com/v2', // uncommon
   xiaomi: 'https://api.xiaomimimo.com',
   moonshot: 'https://api.moonshot.cn',
+  zhipu: 'https://open.bigmodel.cn/api/paas/v4',
 }
+
+const ZHIPU_ANTHROPIC_BASE_URL = 'https://open.bigmodel.cn/api/anthropic'
 
 /** @param {string} providerKey */
 export function hasDefaultPublicBaseURL (providerKey) {
@@ -47,12 +50,26 @@ export function effectiveProviderBaseURL (providerKey, apiMode = 'openai', baseU
   if (!base) return ''
   const mode = String(apiMode || 'openai').trim().toLowerCase()
   const key = String(providerKey || '').trim().toLowerCase()
-  if (mode !== 'anthropic' || key !== 'deepseek') {
+  if (mode !== 'anthropic') {
     return base
   }
-  base = base.replace(/\/+$/, '')
-  if (base.toLowerCase().endsWith('/anthropic')) {
+  if (key === 'deepseek') {
+    base = base.replace(/\/+$/, '')
+    if (base.toLowerCase().endsWith('/anthropic')) {
+      return base
+    }
+    return `${base}/anthropic`
+  }
+  if (key === 'zhipu') {
+    base = base.replace(/\/+$/, '')
+    if (base.toLowerCase().endsWith('/api/anthropic')) {
+      return base
+    }
+    const openaiDefault = getDefaultPublicBaseURL('zhipu').replace(/\/+$/, '')
+    if (!base || base.toLowerCase() === openaiDefault.toLowerCase()) {
+      return ZHIPU_ANTHROPIC_BASE_URL
+    }
     return base
   }
-  return `${base}/anthropic`
+  return base
 }
