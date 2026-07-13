@@ -24,12 +24,13 @@ function renderSidePageTrigger (vm, { onTrigger, children }) {
   }, children)
 }
 
-function renderAiProviderLabel (vm, { providerKey, label }) {
+function renderAiProviderLabel (vm, { providerKey, label, preferLabel = false } = {}) {
   return vm.$createElement(AiproxyProviderLabel, {
     props: {
       providerKey: providerKey || '',
       label: label || '',
       iconSize: 18,
+      preferLabel,
     },
   })
 }
@@ -52,6 +53,7 @@ function renderAiProviderLinkCell (vm, row, { providerName = '', providerKey = '
             renderAiProviderLabel(vm, {
               providerKey: getAiProviderKeyFromRow(labelRow, vm.aiProviderKeyMap) || key,
               label: text,
+              preferLabel: true,
             }),
           ],
         }),

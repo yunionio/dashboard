@@ -670,6 +670,7 @@
   "aice.aiproxy.provider_key": "供应商标识",
   "aice.aiproxy.provider_key.custom": "自定义供应商",
   "aice.aiproxy.provider_key.moonshot": "Moonshot",
+  "aice.aiproxy.provider_key.zhipu": "Z.AI",
   "aice.aiproxy.moonshot_region": "区域",
   "aice.aiproxy.moonshot_region.cn": "国内",
   "aice.aiproxy.moonshot_region.global": "国外",
