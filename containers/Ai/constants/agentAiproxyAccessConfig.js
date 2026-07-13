@@ -87,6 +87,7 @@ export function supportsAnthropicMessagesRoute (providerKey, providerConfig) {
   if (key === 'anthropic') return true
   const mode = String(providerConfig?.api_mode || 'openai').trim().toLowerCase()
   if (key === 'deepseek' && mode === 'anthropic') return true
+  if (key === 'zhipu' && mode === 'anthropic') return true
   return !AIPROXY_ANTHROPIC_BLOCKED_PROVIDER_KEYS.has(key)
 }
 

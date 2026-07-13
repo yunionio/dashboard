@@ -209,38 +209,43 @@ export const getHttpReqMessage = error => {
 }
 
 // 获取列表删除操作权限
+const getDeleteItemLabel = (item) => {
+  if (!item) return ''
+  const name = String(item.name || '').trim()
+  if (name) return name
+  return String(item.id || '').trim()
+}
+
+const formatDeleteFailReason = (failReason) => {
+  if (!failReason) return ''
+  const errorMessage = getHttpErrorMessage(failReason, true)
+  return errorMessage?.detail || ''
+}
+
 export const getDeleteResult = (row, deleteField = 'can_delete', failKey = 'delete_fail_reason') => {
   let validate = true
   let tooltip = null
-  let data = R.is(Array, row) ? row : [row]
-  if (data.length === 0) {
+  const items = R.is(Array, row) ? row : [row]
+  if (items.length === 0) {
     return {
       validate: false,
     }
   }
-  data = data.filter(item => !item?.[deleteField])
-  const len = data.length
-  if (len > 0) {
+  const blocked = items.filter(item => !item?.[deleteField])
+  if (blocked.length > 0) {
     validate = false
-    let deleteFailReason = []
-    // 只有一项不可删除条目时
-    if (len === 1) {
-      deleteFailReason = [data[0]?.[failKey]]
-    }
-    // 有多条不可删除条目时
-    if (len > 1) {
-      deleteFailReason = data.map(item => item?.[failKey]).filter(val => !!val)
-    }
-    // 处理获取到的 deleteFailReason
-    if (deleteFailReason.length > 1 || deleteFailReason.length <= 0) {
-      tooltip = i18n.t('common_604')
+    const lines = blocked.map(item => {
+      const label = getDeleteItemLabel(item)
+      const reason = formatDeleteFailReason(item?.[failKey])
+      if (label && reason) return `${label}: ${reason}`
+      if (label) return label
+      if (reason) return reason
+      return ''
+    }).filter(line => !!line)
+    if (lines.length > 0) {
+      tooltip = lines.join('\n')
     } else {
-      deleteFailReason = deleteFailReason[0]
-      if (deleteFailReason) {
-        const error = deleteFailReason
-        const errorMessage = getHttpErrorMessage(error, true)
-        tooltip = errorMessage.detail
-      }
+      tooltip = i18n.t('common_604')
     }
   }
   return {

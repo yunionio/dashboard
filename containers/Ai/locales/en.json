@@ -667,6 +667,7 @@
   "aice.aiproxy.provider_key": "Provider Key",
   "aice.aiproxy.provider_key.custom": "Custom Provider",
   "aice.aiproxy.provider_key.moonshot": "Moonshot",
+  "aice.aiproxy.provider_key.zhipu": "Z.AI",
   "aice.aiproxy.moonshot_region": "Region",
   "aice.aiproxy.moonshot_region.cn": "China",
   "aice.aiproxy.moonshot_region.global": "Global",
