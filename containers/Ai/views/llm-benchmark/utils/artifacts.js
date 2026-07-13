@@ -22,7 +22,7 @@ const ARTIFACT_CONFIG = {
 }
 
 export async function fetchBenchmarkLog (vm, id) {
-  const res = await vm.$http.get(`/v2/llm_benchmarks/${id}/artifacts/log`, {
+  const res = await vm.$http.get(`/v1/llm_benchmarks/${id}/artifacts/log`, {
     responseType: 'text',
   })
   return res.body || res.data || ''
@@ -31,7 +31,7 @@ export async function fetchBenchmarkLog (vm, id) {
 export async function downloadBenchmarkArtifact (vm, id, type) {
   const cfg = ARTIFACT_CONFIG[type]
   if (!cfg) return
-  const res = await vm.$http.get(`/v2/llm_benchmarks/${id}/${cfg.path}`, {
+  const res = await vm.$http.get(`/v1/llm_benchmarks/${id}/${cfg.path}`, {
     responseType: cfg.responseType,
   })
   const data = res.body != null ? res.body : res.data
