@@ -585,7 +585,7 @@ export default {
             }
           }
           // 高级配置
-          if (initData.hostname || initData.eip_charge_type || initData.public_ip_charge_type || initData.prefer_host || initData.schedtags || initData.secgroups || initData.bios || initData.vdi || initData.vga || initData.is_daemon || initData.groups || initData.encrypt_key_new || initData.keypair || initData.user_data || initData.bastion_server) {
+          if (initData.hostname || initData.eip_charge_type || initData.public_ip_charge_type || initData.prefer_host || initData.schedtags || initData.secgroups || initData.network_tags || initData.bios || initData.vdi || initData.vga || initData.is_daemon || initData.groups || initData.encrypt_key_new || initData.keypair || initData.user_data || initData.bastion_server) {
             this.collapseActive = ['1']
             this.$nextTick(() => {
               this.form.fc.setFieldsValue({
@@ -596,7 +596,14 @@ export default {
                 this.$refs.eipConfigRef.initData(initData)
               }
               // 安全组
-              if (initData.secgroups && initData.secgroups.length) {
+              if (initData.network_tags && initData.network_tags.length) {
+                setTimeout(() => {
+                  this.form.fc.setFieldsValue({
+                    secgroup_type: 'networkTag',
+                    network_tags: initData.network_tags,
+                  })
+                }, 2000)
+              } else if (initData.secgroups && initData.secgroups.length) {
                 setTimeout(() => {
                   this.form.fc.setFieldsValue({
                     secgroup_type: 'bind',

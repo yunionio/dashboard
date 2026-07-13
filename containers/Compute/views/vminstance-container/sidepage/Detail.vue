@@ -20,6 +20,7 @@ import {
 } from '@Compute/constants/index'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { formatCpuNumaPin } from '@Compute/views/vminstance/utils'
+import { formatServerSecgroupText, getNetworkTags, renderNetworkTagNodes } from '@Compute/utils/secgroupDisplay'
 import {
   getUserTagColumn,
 } from '@/utils/common/detailColumn'
@@ -188,7 +189,11 @@ export default {
               title: this.$t('compute.text_105'),
               slots: {
                 default: ({ row }) => {
-                  if (!row.secgroups) return '-'
+                  const networkTags = getNetworkTags(row)
+                  if (networkTags.length) {
+                    return renderNetworkTagNodes(networkTags)
+                  }
+                  if (!row.secgroups?.length) return '-'
                   return row.secgroups.map((item) => {
                     return <list-body-cell-wrap copy hideField={true} field='name' row={item} message={item.name}>
                       <side-page-trigger permission='secgroups_get' name='SecGroupSidePage' id={item.id} vm={this}>{item.name}</side-page-trigger>
@@ -196,6 +201,7 @@ export default {
                   })
                 },
               },
+              formatter: ({ row }) => formatServerSecgroupText(row) || '-',
               hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.secgroups'),
             },
             getCopyWithContentTableColumn({

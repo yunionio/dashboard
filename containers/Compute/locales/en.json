@@ -2031,5 +2031,11 @@
   "compute.regional_availability.tooltip.single": "{0} plans in this {1} are {2}",
   "compute.regional_availability.tooltip.both_same": "{0} and {1} plans in this {2} are all {3}",
   "compute.regional_availability.tooltip.mixed": "{0} plans in this {1} are {2}; {3} plans in this {1} are {4}",
-  "compute.region_map": "Region map"
+  "compute.region_map": "Region map",
+  "compute.force_detach": "Force detach",
+  "compute.force_detach_tooltip": "【Unknown】 status virtual machine needs to be forced to detach",
+  "compute.network_tag": "Network tag",
+  "compute.network_tag_placeholder": "Press Enter to add",
+  "compute.network_tag_required": "Please enter at least one network tag",
+  "compute.network_tag_not_support_set_secgroup": "This server uses network tags and does not support assigning security groups"
 }

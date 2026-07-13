@@ -11,6 +11,7 @@
 <script>
 import * as R from 'ramda'
 import { LOGIN_TYPES_MAP } from '@Compute/constants'
+import { getNetworkTags, renderNetworkTagNodes } from '@Compute/utils/secgroupDisplay'
 import { STORAGE_TYPES } from '@/constants/compute'
 // import { HYPERVISORS_MAP } from '@/constants'
 import { sizestrWithUnit } from '@/utils/utils'
@@ -113,8 +114,12 @@ export default {
               field: 'config_info.secgroup',
               title: this.$t('compute.text_105'),
               formatter: ({ row }) => {
+                const networkTags = getNetworkTags(row)
+                if (networkTags.length) {
+                  return renderNetworkTagNodes(networkTags)
+                }
                 if (row.secgroups && row.secgroups.length > 0) {
-                  return row.secgroups.map(item => <a-tag>{item}</a-tag>)
+                  return row.secgroups.map(item => <a-tag key={item}>{item}</a-tag>)
                 }
                 return '-'
               },
