@@ -89,6 +89,10 @@ export const REGEXP = {
     },
     message: i18n.t('validator.resourceName'),
   },
+  secgroupNetworkTag: {
+    regexp: /^[a-z]([-a-z0-9]{0,61}[a-z0-9])?$/,
+    messageKey: 'validator.secgroupNetworkTag',
+  },
   serverName: {
     regexp: /^[a-zA-Z][a-zA-Z0-9-]{0,127}([a-zA-Z0-9-]|#{1,3})$/,
     message: i18n.t('validator.serverName'),
@@ -463,7 +467,9 @@ const validateForm = (rules, isRequired = true, checkMethod = 'every') => {
 export const validate = (value, regexpItem) => {
   const validateItem = REGEXP[regexpItem]
   if (validateItem) {
-    let msg = validateItem.message || i18n.t('validator.validateForm')
+    let msg = validateItem.messageKey
+      ? i18n.t(validateItem.messageKey)
+      : (validateItem.message || i18n.t('validator.validateForm'))
     let result = true
     if (validateItem.regexp) {
       result = validateItem.regexp.test(value)
