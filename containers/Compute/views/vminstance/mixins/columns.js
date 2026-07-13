@@ -1,5 +1,6 @@
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { SERVER_TYPE } from '@Compute/constants'
+import { formatServerSecgroupText, getNetworkTags, renderNetworkTagNodes } from '@Compute/utils/secgroupDisplay'
 import {
   getProjectTableColumn,
   getRegionTableColumn,
@@ -429,12 +430,15 @@ export default {
         showOverflow: 'ellipsis',
         slots: {
           default: ({ row }) => {
-            if (this.isPreLoad && !row.secgroups) return [<data-loading />]
-            return row.secgroups?.map(item => item.name).join(',')
+            if (this.isPreLoad && !row.secgroups && !row.network_tags?.length) return [<data-loading />]
+            const networkTags = getNetworkTags(row)
+            if (networkTags.length) return renderNetworkTagNodes(networkTags)
+            const text = formatServerSecgroupText(row)
+            return text || '-'
           },
         },
         formatter: ({ row }) => {
-          return row.secgroups?.map(item => item.name).join(',')
+          return formatServerSecgroupText(row) || '-'
         },
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('server_hidden_columns.secgroups')

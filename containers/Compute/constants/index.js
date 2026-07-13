@@ -397,6 +397,10 @@ export const SECGROUP_OPTIONS_MAP = {
     key: 'bind',
     label: i18n.t('compute.text_36'),
   },
+  networkTag: {
+    key: 'networkTag',
+    label: i18n.t('compute.network_tag'),
+  },
 }
 
 // 创建预测错误过滤类型映射表
