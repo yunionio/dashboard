@@ -73,7 +73,9 @@ make_manifest_image() {
             CMD="${CMD} ${img_name}-${ac}"
         fi
     done
-    echo "$CMD"
+    if [ "$DEBUG" == "true" ]; then
+        echo "$CMD"
+    fi
     $CMD
 }
 
@@ -88,8 +90,6 @@ if [[ "$DRY_RUN" == "true" ]]; then
 fi
 
 img_name="$REGISTRY/web:$TAG"
-
-set -x
 
 multiarch=""
 for ac in "${ALLARCH[@]}"; do
