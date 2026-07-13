@@ -199,7 +199,9 @@ export const createVmDecorators = (type, initData = {}) => {
     initEipType = EIP_TYPES_MAP.public.key
   }
   let initSecgroupType = 'default'
-  if (initData.secgroups && initData.secgroups.length) {
+  if (initData.network_tags && initData.network_tags.length) {
+    initSecgroupType = SECGROUP_OPTIONS_MAP.networkTag.key
+  } else if (initData.secgroups && initData.secgroups.length) {
     initSecgroupType = 'bind'
   }
   let initSchedPolicyType = 'default'
@@ -997,6 +999,12 @@ export const createVmDecorators = (type, initData = {}) => {
           ],
         },
       ],
+      network_tags: [
+        'network_tags',
+        {
+          initialValue: initData.network_tags || [],
+        },
+      ],
     },
     tag: [
       'tag',
@@ -1787,6 +1795,9 @@ export class GenCreateData {
     // 安全组
     if (this.fd.secgroup_type && this.fd.secgroup_type === SECGROUP_OPTIONS_MAP.bind.key) {
       data.secgroups = this.fd.secgroup
+    }
+    if (this.fd.secgroup_type === SECGROUP_OPTIONS_MAP.networkTag.key) {
+      data.network_tags = this.fd.network_tags
     }
     // 如果设置了调度策略则拼装调度所需数据 或者 通过云账号过滤镜像
     if ((this.fd.schedPolicyType !== SCHED_POLICY_OPTIONS_MAP.default.key) || this.showPreferManager()) {

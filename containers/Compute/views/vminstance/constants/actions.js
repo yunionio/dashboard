@@ -1,5 +1,6 @@
 import qs from 'qs'
 import { SERVER_TYPE, SMART_SSH_FORM_DECORATORS } from '@Compute/constants'
+import { isServerNetworkTagMode } from '@Compute/utils/secgroupDisplay'
 import VncInfoFetcher from '@Compute/sections/VncInfoFetcher'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
@@ -1632,6 +1633,12 @@ const getSingleActions = function (ctx) {
                 meta: () => {
                   const rescueModeValid = validateRescueMode(obj)
                   if (!rescueModeValid.validate) return rescueModeValid
+                  if (isServerNetworkTagMode(obj)) {
+                    return {
+                      validate: false,
+                      tooltip: i18n.t('compute.network_tag_not_support_set_secgroup'),
+                    }
+                  }
                   const ret = {
                     validate: cloudEnabled('assignSecgroup', obj),
                     tooltip: cloudUnabledTip('assignSecgroup', obj),

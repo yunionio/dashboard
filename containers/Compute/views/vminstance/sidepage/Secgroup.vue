@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div v-if="networkTags.length" class="mb-2">
+      <span>{{ $t('compute.network_tag') }}：</span>
+      <a-tag v-for="tag in networkTags" :key="tag" class="mb-2 mr-1">{{ tag }}</a-tag>
+    </div>
     <h5 v-if="isKvm">{{ $t('dictionary.guestsecgroup') }}</h5>
     <vm-secgroup-list :getParams="params" :id="id" :resId="resId" :serverColumns="serverColumns" :data="data" />
     <h5 class="mt-2" v-if="isKvm">{{ $t('compute.nic_secgroups') }}</h5>
@@ -9,6 +13,7 @@
 
 <script>
 import { HYPERVISORS_MAP } from '@/constants'
+import { getNetworkTags } from '@Compute/utils/secgroupDisplay'
 import VmSecgroupList from './VmSecgroup'
 import NetworkSecgroupList from './NetSecgroup'
 
@@ -38,6 +43,9 @@ export default {
     }
   },
   computed: {
+    networkTags () {
+      return getNetworkTags(this.data)
+    },
     isKvm () {
       return this.data.hypervisor === HYPERVISORS_MAP.kvm.key
     },

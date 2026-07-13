@@ -2037,5 +2037,9 @@
   "compute.regional_availability.tooltip.mixed": "{0}套餐在此{1}，{2}；{3}套餐在此{1}，{4}",
   "compute.region_map": "区域地图",
   "compute.force_detach": "强制解绑",
-  "compute.force_detach_tooltip": "【未知】状态的虚拟机需强制解绑"
+  "compute.force_detach_tooltip": "【未知】状态的虚拟机需强制解绑",
+  "compute.network_tag": "网络标记",
+  "compute.network_tag_placeholder": "请输入后回车",
+  "compute.network_tag_required": "请至少输入一个网络标记",
+  "compute.network_tag_not_support_set_secgroup": "该虚拟机使用网络标记，不支持关联安全组"
 }
