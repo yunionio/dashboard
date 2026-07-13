@@ -25,6 +25,7 @@
           :extra-opts="providerExtraOpts(item)"
           :select-props="{ placeholder: providerPlaceholder(item) }"
           :label-format="providerLabelFormat"
+          option-label-prop="label"
           filterable
           version="v2"
           need-params
@@ -34,6 +35,7 @@
               v-if="providerOptionKey(providerItem)"
               :provider-key="providerOptionKey(providerItem)"
               :label="providerOptionLabel(providerItem)"
+              prefer-label
               :icon-size="16" />
             <span v-else>{{ providerOptionLabel(providerItem) }}</span>
           </template>

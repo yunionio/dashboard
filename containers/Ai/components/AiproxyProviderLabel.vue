@@ -24,15 +24,28 @@ export default {
       type: Number,
       default: 18,
     },
+    /** When true, show resource name (label) instead of provider_key i18n branding. */
+    preferLabel: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     displayLabel () {
       const key = String(this.providerKey || '').trim()
+      const text = String(this.label || '').trim()
+      if (this.preferLabel) {
+        if (text) return text
+        if (key) {
+          const i18nKey = `aice.aiproxy.provider_key.${key}`
+          if (this.$te(i18nKey)) return this.$t(i18nKey)
+        }
+        return key || '-'
+      }
       if (key) {
         const i18nKey = `aice.aiproxy.provider_key.${key}`
         if (this.$te(i18nKey)) return this.$t(i18nKey)
       }
-      const text = String(this.label || '').trim()
       if (text) return text
       return key || '-'
     },
