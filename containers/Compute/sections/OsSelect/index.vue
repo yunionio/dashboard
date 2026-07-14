@@ -140,6 +140,8 @@ export default {
         ret.push(IMAGES_TYPE_MAP.private, IMAGES_TYPE_MAP.iso)
       } else if (this.hypervisor === HYPERVISORS_MAP.uis.key) {
         ret = [IMAGES_TYPE_MAP.private_iso]
+      } else if (this.hypervisor === HYPERVISORS_MAP.cas.key) {
+        ret = [IMAGES_TYPE_MAP.private_iso]
       } else if (this.hypervisor === HYPERVISORS_MAP.sangfor.key) {
         ret = [IMAGES_TYPE_MAP.private_iso]
       } else if (this.isPublic) {
@@ -172,7 +174,10 @@ export default {
   },
   watch: {
     hypervisor () {
-      const imageType = this.decorator.imageType[1].initialValue || this.mirrorTypeOptions[0].key
+      const prefer = this.form.fd?.imageType || this.decorator.imageType[1].initialValue
+      const availableKeys = this.mirrorTypeOptions.map(item => item.key)
+      // CAS/UIS/SangFor 等仅支持 private_iso，不能继续沿用私有云默认的 private
+      const imageType = availableKeys.includes(prefer) ? prefer : (availableKeys[0] || prefer)
       this.imageType = imageType
       this.form.fc.setFieldsValue({
         [this.decorator.imageType[0]]: imageType,

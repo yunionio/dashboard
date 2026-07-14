@@ -2245,6 +2245,7 @@
     "Ksyun": "金山云",
     "ZettaKit": "泽塔云",
     "UIS": "UIS",
+    "CAS": "CAS",
     "CNware": "云宏 WinStack"
   },
   "shareScope": {
@@ -2560,7 +2561,8 @@
     "h3c": "H3C",
     "ksyun": "金山云",
     "zettakit": "泽塔云",
-    "uis": "UIS"
+    "uis": "UIS",
+    "cas": "CAS"
   },
   "bandwidths": {
     "100": "百 兆(100M)",
@@ -5785,6 +5787,7 @@
   "license.provider.pod": "Pod",
   "license.provider.zettakit": "泽塔云",
   "license.provider.uis": "UIS",
+  "license.provider.cas": "CAS",
   "license.provider.cloudflare": "Cloudflare",
   "license.provider.cnware": "云宏 WinStack",
   "license.feature.baremetal": "@:scope.text_104",

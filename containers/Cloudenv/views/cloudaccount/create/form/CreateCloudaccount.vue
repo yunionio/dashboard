@@ -32,6 +32,7 @@ import OracleCloud from './components/OracleCloud'
 import Sangfor from './components/Sangfor'
 import ZettaKit from './components/ZettaKit'
 import UIS from './components/UIS'
+import CAS from './components/CAS'
 import Cloudflare from './components/Cloudflare'
 import CNware from './components/CNware'
 import Oceanbase from './components/OceanBase'
@@ -77,6 +78,7 @@ export default {
     SangforCreate: Sangfor,
     ZettaKitCreate: ZettaKit,
     UISCreate: UIS,
+    CASCreate: CAS,
     CloudflareCreate: Cloudflare,
     CNwareCreate: CNware,
     OceanbaseCreate: Oceanbase,
