@@ -17,11 +17,17 @@ import {
   getEnabledTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
+import {
+  getAiModelVisualProviderLinkColumn,
+  getAiModelVisualTableColumn,
+  shouldShowAiModelVisualColumn,
+} from '@Ai/utils/aiModelVisual'
+import AiproxyLlmLinkListMixin from '@Ai/mixins/aiproxyLlmLinkListMixin'
 import SingleActionsMixin from '../../ai-model/mixins/singleActions'
 
 export default {
   name: 'AiProviderModelsList',
-  mixins: [WindowsMixin, ListMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, AiproxyLlmLinkListMixin, SingleActionsMixin],
   props: {
     data: { type: Object, required: true },
     id: String,
@@ -37,18 +43,6 @@ export default {
           details: true,
         }),
       }),
-      columns: [
-        getNameDescriptionTableColumn({
-          onManager: this.onManager,
-          hideField: true,
-          slotCallback: row => (
-            <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{row.name}</side-page-trigger>
-          ),
-        }),
-        getEnabledTableColumn(),
-        { field: 'model_key', title: this.$t('aice.aiproxy.model_key'), minWidth: 140 },
-        getTimeTableColumn(),
-      ],
       groupActions: [
         {
           label: this.$t('common.create'),
@@ -87,8 +81,33 @@ export default {
       ],
     }
   },
+  computed: {
+    columns () {
+      const cols = [
+        getNameDescriptionTableColumn({
+          onManager: this.onManager,
+          hideField: true,
+          slotCallback: row => (
+            <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{row.name}</side-page-trigger>
+          ),
+        }),
+        getEnabledTableColumn(),
+        { field: 'model_key', title: this.$t('aice.aiproxy.model_key'), minWidth: 140 },
+      ]
+      if (shouldShowAiModelVisualColumn(this.data)) {
+        cols.push(getAiModelVisualTableColumn(this))
+        cols.push(getAiModelVisualProviderLinkColumn(this))
+      }
+      cols.push(getTimeTableColumn())
+      return cols
+    },
+  },
   created () {
     this.list.fetchData()
+    this.list.$watch('data', () => this.syncAiProviderNamesForList(), { deep: true })
+  },
+  activated () {
+    this.syncAiProviderNamesForList()
   },
   methods: {
     handleOpenSidepage (row) {

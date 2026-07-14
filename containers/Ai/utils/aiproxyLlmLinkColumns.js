@@ -1,5 +1,5 @@
 import AiproxyProviderLabel from '@Ai/components/AiproxyProviderLabel'
-import { getAiProviderDisplayName, getAiProviderKeyFromRow } from '@Ai/utils/aiProviderNames'
+import { getAiProviderDisplayName, getAiProviderKeyFromRow, getVisualProviderKeyFromRow } from '@Ai/utils/aiProviderNames'
 import { getAiModelDisplayName } from '@Ai/utils/aiModelNames'
 import { getLlmDeploymentDisplayName } from '@Ai/utils/llmDeploymentNames'
 import { getLlmInstanceDisplayName } from '@Ai/utils/llmInstanceNames'
@@ -121,6 +121,71 @@ export function getAiProviderDetailField (vm, { providerName = '', providerKey =
       default: ({ row }) => renderAiProviderLinkCell(vm, row, { providerName, providerKey }),
     },
     formatter: ({ row }) => getAiProviderDisplayName({ ...row, ai_provider_name: providerName }, vm.aiProviderNameMap),
+  }
+}
+
+export function renderVisualProviderLinkCell (vm, row, { providerName = '', providerKey = '' } = {}) {
+  const id = row.visual_provider_id
+  if (!id) return '-'
+  const text = providerName || row.visual_provider_name || id
+  const key = providerKey || getVisualProviderKeyFromRow(row, vm.aiProviderKeyMap)
+  return [
+    renderListBodyCellWrap(vm, {
+      field: 'visual_provider_id',
+      row,
+      message: text,
+      children: [
+        renderSidePageTrigger(vm, {
+          onTrigger: () => vm.handleOpenAiProviderSidepage(id),
+          children: [
+            renderAiProviderLabel(vm, {
+              providerKey: key,
+              label: text,
+              preferLabel: true,
+            }),
+          ],
+        }),
+      ],
+    }),
+  ]
+}
+
+/** Detail sidepage: clickable link with correct visual_provider_id field. */
+export function renderVisualProviderDetailLink (vm, row, { providerName = '', providerKey = '' } = {}) {
+  const id = row.visual_provider_id
+  if (!id) return '-'
+  const text = providerName || row.visual_provider_name || id
+  const key = providerKey || getVisualProviderKeyFromRow(row, vm.aiProviderKeyMap)
+  return [
+    renderListBodyCellWrap(vm, {
+      field: 'visual_provider_id',
+      row,
+      message: text,
+      children: [
+        renderSidePageTrigger(vm, {
+          onTrigger: () => vm.handleOpenAiProviderSidepage(id),
+          children: [
+            renderAiProviderLabel(vm, {
+              providerKey: key,
+              label: text,
+              preferLabel: true,
+            }),
+          ],
+        }),
+      ],
+    }),
+  ]
+}
+
+export function getVisualProviderDetailField (vm, { providerName = '', providerKey = '' } = {}) {
+  return {
+    field: 'visual_provider_id',
+    title: vm.$t('aice.aiproxy.visual_provider_id'),
+    hidden: data => !String(data?.visual_provider_id || '').trim(),
+    slots: {
+      default: ({ row }) => renderVisualProviderDetailLink(vm, row, { providerName, providerKey }),
+    },
+    formatter: ({ row }) => row.visual_provider_name || row.visual_provider_id || '-',
   }
 }
 
