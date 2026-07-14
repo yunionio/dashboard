@@ -2224,6 +2224,7 @@
     "H3C": "H3C",
     "ZettaKit": "ZettaKit",
     "UIS": "UIS",
+    "CAS": "CAS",
     "CNware": "CNware WinStack"
   },
   "shareScope": {
@@ -2539,7 +2540,8 @@
     "h3c": "H3C",
     "ksyun": "Ksyun",
     "zettakit": "ZettaKit",
-    "uis": "uis"
+    "uis": "uis",
+    "cas": "cas"
   },
   "bandwidths": {
     "100": "one hundred megabytes (100M)",
@@ -5766,6 +5768,8 @@
   "license.feature.ai": "AI",
   "license.feature.zettakit": "ZettaKit",
   "license.feature.uis": "UIS",
+  "license.feature.cas": "CAS",
+  "license.provider.cas": "CAS",
   "license.feature.cloudflare": "Cloudflare",
   "license.feature.cnware": "CNware WinStack",
   "license.feature.k8s": "@:scope.text_78",

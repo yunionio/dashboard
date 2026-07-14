@@ -41,7 +41,7 @@ export default {
         extraMeta: obj => {
           return getDisabledProvidersActionMeta({
             row: obj,
-            disabledProviders: ['BingoCloud', 'ZettaKit', 'UIS'],
+            disabledProviders: ['BingoCloud', 'ZettaKit', 'UIS', 'CAS'],
           })
         },
       },
@@ -130,7 +130,7 @@ export default {
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
                   row: obj,
-                  disabledProviders: ['BingoCloud', 'ZettaKit', 'UIS'],
+                  disabledProviders: ['BingoCloud', 'ZettaKit', 'UIS', 'CAS'],
                 })
               },
             },
@@ -143,7 +143,7 @@ export default {
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
                   row: obj,
-                  disabledProviders: ['BingoCloud', 'ZettaKit', 'UIS'],
+                  disabledProviders: ['BingoCloud', 'ZettaKit', 'UIS', 'CAS'],
                 })
               },
             }),
@@ -202,7 +202,7 @@ export default {
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
                   row: obj,
-                  disabledProviders: ['BingoCloud', 'ZettaKit', 'UIS'],
+                  disabledProviders: ['BingoCloud', 'ZettaKit', 'UIS', 'CAS'],
                 })
               },
             },
@@ -231,7 +231,7 @@ export default {
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
                   row: obj,
-                  disabledProviders: ['BingoCloud', 'ZettaKit', 'UIS'],
+                  disabledProviders: ['BingoCloud', 'ZettaKit', 'UIS', 'CAS'],
                 })
               },
             },
@@ -268,7 +268,7 @@ export default {
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
                   row: obj,
-                  disabledProviders: ['BingoCloud', 'ZettaKit', 'UIS'],
+                  disabledProviders: ['BingoCloud', 'ZettaKit', 'UIS', 'CAS'],
                 })
               },
             },
@@ -293,7 +293,7 @@ export default {
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
                   row: obj,
-                  disabledProviders: ['SangFor', 'ZettaKit', 'UIS'],
+                  disabledProviders: ['SangFor', 'ZettaKit', 'UIS', 'CAS'],
                 })
               },
             },

@@ -39,6 +39,7 @@ const oraclecloudLogo = require('@/assets/images/providers/oraclecloud.svg')
 const sangforLogo = require('@/assets/images/providers/sangfor.svg')
 const zettakitLogo = require('@/assets/images/providers/zettakit.svg')
 const uisLogo = require('@/assets/images/providers/uis.svg')
+const casLogo = require('@/assets/images/providers/cas.svg')
 const cloudflareLogo = require('@/assets/images/providers/cloudflare.svg')
 const cnwareLogo = require('@/assets/images/providers/cnware.svg')
 const oceanbaseLogo = require('@/assets/images/providers/oceanbase.svg')
@@ -301,6 +302,12 @@ export const CLOUDACCOUNT_TYPES = {
         width: '100px',
         height: '14px',
       },
+    },
+    cas: {
+      name: providerMap.cas.label,
+      logo: casLogo,
+      component: 'CASCreate',
+      provider: providerMap.cas.key,
     },
     cnware: {
       name: providerMap.cnware.label,
@@ -751,6 +758,19 @@ export const keySecretFields = {
       s: i18n.t('cloudenv.text_147'),
     },
   },
+  cas: {
+    k: 'username',
+    s: 'password',
+    text: i18n.t('cloudenv.cas'),
+    placeholder: {
+      k: i18n.t('cloudenv.text_151'),
+      s: i18n.t('cloudenv.text_150'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_94'),
+      s: i18n.t('cloudenv.text_147'),
+    },
+  },
   ksyun: {
     k: 'access_key_id',
     s: 'access_key_secret',
@@ -916,6 +936,7 @@ export const notSupportSelectRegion = [
   providerMap.h3c.key,
   providerMap.zettakit.key,
   providerMap.uis.key,
+  providerMap.cas.key,
   providerMap.proxmox.key,
   providerMap.oraclecloud.key,
   providerMap.cloudflare.key,
