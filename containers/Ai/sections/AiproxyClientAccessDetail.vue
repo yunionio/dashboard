@@ -278,7 +278,6 @@ export default {
         model: this.displayModel,
         routingRef: this.routingRef,
         comments: {
-          homeDir: this.$t('aice.aiproxy.codex_cmd_comment.home_dir'),
           mkdir: this.$t('aice.aiproxy.codex_cmd_comment.mkdir'),
           climc: this.$t('aice.aiproxy.codex_cmd_comment.climc'),
           launch: this.$t('aice.aiproxy.codex_cmd_comment.launch'),

@@ -90,11 +90,8 @@ export function buildCodexClimcExample ({
   const m = String(model || '').trim() || 'your-model'
   const routing = String(routingRef || '').trim()
   const lines = []
-  pushShellComment(lines, comments.homeDir)
-  lines.push('CODEX_HOME_DIR="${' + 'CODEX_HOME_DIR:-$HOME/.codex-aiproxy}"')
-  lines.push('')
   pushShellComment(lines, comments.mkdir)
-  lines.push('mkdir -p "$CODEX_HOME_DIR"')
+  lines.push('mkdir -p ~/.codex-aiproxy')
   lines.push('')
   pushShellComment(lines, comments.climc)
   lines.push('climc ai-codex-config \\')
@@ -103,10 +100,10 @@ export function buildCodexClimcExample ({
   if (routing) {
     lines.push(`  --routing ${routing} \\`)
   }
-  lines.push('  --codex-home "$CODEX_HOME_DIR"')
+  lines.push('  --codex-home ~/.codex-aiproxy')
   lines.push('')
   pushShellComment(lines, comments.launch)
-  lines.push('source "$CODEX_HOME_DIR/aiproxy.env" && CODEX_HOME="$CODEX_HOME_DIR" codex --cd "$PWD"')
+  lines.push('source ~/.codex-aiproxy/aiproxy.env && CODEX_HOME=~/.codex-aiproxy codex --cd "$PWD"')
   return lines.join('\n')
 }
 
