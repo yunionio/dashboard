@@ -12,6 +12,10 @@
     <template slot="content">
       <ip-supplement-edit-form
         label="IP"
+        :host="row.host_id"
+        :domain="row.domain_id"
+        :project="row.tenant_id"
+        :nics="nics"
         :loading="loading"
         @submit="onSubmit"
         @cancel="this.hideForm" />
@@ -53,6 +57,37 @@ export default {
       loading: false,
     }
   },
+  computed: {
+    nics () {
+      const macRegex = /^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$/
+      const ipRegex = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+      const networkstrs = this.row.metadata['sys:networks'] || ''
+      const ret = []
+      if (networkstrs) {
+        const segs = networkstrs.split('/')
+        for (let i = 0; i < segs.length;) {
+          if (macRegex.test(segs[i]) && i + 1 < segs.length) {
+            let ip = ''
+            if (i + 2 < segs.length && ipRegex.test(segs[i + 2])) {
+              ip = segs[i + 2]
+            }
+            ret.push({
+              mac: segs[i],
+              dswitch: segs[i + 1],
+              ip,
+            })
+            i += 2
+            if (ip) {
+              i += 1
+            }
+          } else {
+            i += 1
+          }
+        }
+      }
+      return ret
+    },
+  },
   methods: {
     hideForm () {
       this.visible = false
@@ -67,7 +102,7 @@ export default {
           managerArgs: {
             action: 'sync-fix-nics',
             data: {
-              ip: [values.input],
+              ip: [].concat(values.input).flat().filter(v => v != null && v !== ''),
             },
           },
         })
