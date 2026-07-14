@@ -8,7 +8,7 @@
     :networkParams="getNetworkParams"
     v-bind="formItemLayout">
     <template v-slot:helplink>
-      {{$t('compute.text_196')}}<help-link href="/network2">{{$t('compute.perform_create')}}</help-link>
+      {{$t('compute.text_196')}}<help-link href="/network">{{$t('compute.perform_create')}}</help-link>
     </template>
   </network-selects>
 </template>

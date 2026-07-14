@@ -700,7 +700,7 @@ export default {
       return this.form.fd.network_mode === 'new'
     },
     href () {
-      const url = this.$router.resolve('/network2')
+      const url = this.$router.resolve('/network')
       return url.href
     },
     networkModeTooltips () {
