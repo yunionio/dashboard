@@ -6603,6 +6603,8 @@
   "common.net_iops": "ネットワーク流量速率",
   "common.net_in_rate_value": "受信流量：{0}",
   "common.net_out_rate_value": "送信流量：{0}",
+  "common.ip_supplement.nic_label": "ネットワークカード：",
+  "common.ip_supplement.network_label": "分散スイッチ：",
   "regionMap.selection_region_count": "現在の選択範囲には {0} 件のデータがあります",
   "regionMap.no_data_tip": "データがありません。地図上で範囲を選択してください",
   "regionMap.enable_world_map": "地図範囲選択モード",
