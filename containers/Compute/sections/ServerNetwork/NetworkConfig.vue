@@ -44,7 +44,7 @@
             @change="v => networkChange(v, item, i)"
             :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }"
             :min-width="isDialog ? '200px' : '500px'" />
-            <div slot="extra" v-if="i === 0">{{$t('compute.text_196')}}<help-link href="/network2">{{$t('compute.perform_create')}}</help-link>
+            <div slot="extra" v-if="i === 0">{{$t('compute.text_196')}}<help-link href="/network">{{$t('compute.perform_create')}}</help-link>
             </div>
         </a-form-item>
       </div>

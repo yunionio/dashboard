@@ -71,12 +71,11 @@ export default {
             name: ip,
           }
         })
-        if (!addresses.includes(this.value)) {
+        if (this.value && !addresses.includes(this.value)) {
           this.options.unshift({
-            ip: this.value,
+            id: this.value,
             name: this.value,
           })
-          // this.$emit('change', null)
         }
         this.showType = 'select'
         this.loading = false

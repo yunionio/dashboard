@@ -238,7 +238,7 @@ export default {
   },
   data () {
     const cloudEnvOptions = getCloudEnvOptions('network_manage_brands', true)
-    const queryType = this.$route.query.type
+    const { vpc: initVpc, wire: initWire, domain: initDomain, project: initProject, type: queryType } = this.$route.query
     let cloudEnv = queryType === 'idc' ? 'onpremise' : this.$route.query.type
     let routerQuery = this.$route.query.type
     if (!cloudEnvOptions.find(val => val.key === cloudEnv)) {
@@ -278,6 +278,7 @@ export default {
         domain: [
           'domain',
           {
+            initialValue: initDomain,
             rules: [
               { validator: isRequired(), message: i18n.t('rules.domain'), trigger: 'change' },
             ],
@@ -286,6 +287,7 @@ export default {
         project: [
           'project',
           {
+            initialValue: initProject,
             rules: [
               { validator: isRequired(), message: i18n.t('rules.project'), trigger: 'change' },
             ],
@@ -306,6 +308,7 @@ export default {
         vpc: [
           'vpc',
           {
+            initialValue: initVpc,
             rules: [
               { required: true, message: this.$t('network.text_274') },
             ],
@@ -314,6 +317,7 @@ export default {
         wire: [
           'wire',
           {
+            initialValue: initWire,
             rules: [
               { required: true, message: this.$t('network.text_572') },
             ],
@@ -698,7 +702,7 @@ export default {
         this.isGroupGuestIpPrefix = false
       } else {
         this.show = true
-        this.isGroupGuestIpPrefix = true
+        this.isGroupGuestIpPrefix = !this.isDefaultVpc()
       }
     },
     'form.fd.guest_ip_prefix': {
@@ -791,6 +795,11 @@ export default {
       }
       callback()
     },
+    // curVpc 在 created 时尚为空，需回退到表单值 / 路由 query，避免把 default 误判成 VPC 网段模式
+    isDefaultVpc () {
+      const vpcId = this.curVpc?.id || this.form.fd?.vpc || this.$route.query.vpc
+      return !vpcId || vpcId === 'default'
+    },
     initState () {
       if (this.cloudEnv === 'private') {
         this.show = false
@@ -800,7 +809,7 @@ export default {
         this.isGroupGuestIpPrefix = false
       } else {
         this.show = true
-        this.isGroupGuestIpPrefix = true
+        this.isGroupGuestIpPrefix = !this.isDefaultVpc()
       }
     },
     handleValuesChange (props, values) {
@@ -870,8 +879,7 @@ export default {
             server_type: 'guest',
           })
         }
-      }
-      if (this.cloudEnv === 'private' && this.curVpc?.brand === 'Cloudpods' && this.curVpc?.external_id === 'default') {
+      } else if (this.cloudEnv === 'private' && this.curVpc?.brand === 'Cloudpods' && this.curVpc?.external_id === 'default') {
         this.isShowWire = true
         this.isGroupGuestIpPrefix = true
       } else {
