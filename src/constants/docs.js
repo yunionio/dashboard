@@ -60,6 +60,7 @@ export const DOCS_MAP = {
       h3c: getI18n('cloudenv.create_h3c', [docsUrl]),
       zettakit: getI18n('cloudenv.create_zettakit', [docsUrl]),
       uis: getI18n('cloudenv.create_uis', [docsUrl]),
+      cas: getI18n('cloudenv.create_cas', [docsUrl]),
       ksyun: getI18n('cloudenv.create_ksyun', [docsUrl]),
       baidu: getI18n('cloudenv.create_baidu', [docsUrl]),
       qingcloud: getI18n('cloudenv.create_qingcloud', [docsUrl]),

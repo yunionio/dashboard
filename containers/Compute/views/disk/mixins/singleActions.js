@@ -316,7 +316,7 @@ export default {
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
                   row: obj,
-                  disabledProviders: ['BingoCloud', 'VolcEngine', 'SangFor', 'ZettaKit', 'UIS'],
+                  disabledProviders: ['BingoCloud', 'VolcEngine', 'SangFor', 'ZettaKit', 'UIS', 'CAS'],
                 })
               },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_create_backup'),
@@ -409,7 +409,7 @@ export default {
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
                   row: obj,
-                  disabledProviders: ['BingoCloud', 'SangFor', 'ZettaKit', 'UIS'],
+                  disabledProviders: ['BingoCloud', 'SangFor', 'ZettaKit', 'UIS', 'CAS'],
                 })
               },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_setup_snapshot_policy'),
@@ -480,7 +480,7 @@ export default {
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
                   row: obj,
-                  disabledProviders: ['BingoCloud', 'SangFor', 'ZettaKit', 'UIS'],
+                  disabledProviders: ['BingoCloud', 'SangFor', 'ZettaKit', 'UIS', 'CAS'],
                 })
               },
               hidden: () => !this.isAdminMode,
@@ -514,7 +514,7 @@ export default {
               extraMeta: obj => {
                 return getDisabledProvidersActionMeta({
                   row: obj,
-                  disabledProviders: ['BingoCloud', 'SangFor', 'ZettaKit', 'UIS'],
+                  disabledProviders: ['BingoCloud', 'SangFor', 'ZettaKit', 'UIS', 'CAS'],
                 })
               },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_change_project'),
