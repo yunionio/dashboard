@@ -23,6 +23,19 @@ export function getAiProviderKeyFromRow (row, keyMap = {}) {
   return ''
 }
 
+export function getVisualProviderKeyFromRow (row, keyMap = {}) {
+  if (!row) return ''
+  const direct = String(row.visual_provider_key || '').trim().toLowerCase()
+  if (direct) return direct
+  const id = row.visual_provider_id
+  if (id && keyMap[id]) return String(keyMap[id]).trim().toLowerCase()
+  for (const candidate of [row.visual_provider_name, row.visual_provider_id]) {
+    const key = String(candidate || '').trim().toLowerCase()
+    if (isKnownAiproxyProviderKey(key)) return key
+  }
+  return ''
+}
+
 /** Batch resolve ai_provider id -> { name, provider_key }. */
 export async function fetchAiProviderMetaMap (ids, { scope, vm, useCache = true } = {}) {
   const uniqueIds = [...new Set((ids || []).filter(Boolean))]
