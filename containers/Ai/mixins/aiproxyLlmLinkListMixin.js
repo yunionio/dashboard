@@ -32,10 +32,8 @@ export default {
     async enrichRowsWithAiProviderLinks (response) {
       const rows = response?.data?.data
       if (!Array.isArray(rows) || !rows.length) return
-      const metaMap = await fetchAiProviderMetaMap(
-        rows.map(row => row.ai_provider_id),
-        { vm: this },
-      )
+      const ids = [...new Set(rows.flatMap(row => [row.ai_provider_id, row.visual_provider_id].filter(Boolean)))]
+      const metaMap = await fetchAiProviderMetaMap(ids, { vm: this })
       if (this._isDestroyed) return
       const nameMap = {}
       const keyMap = {}
@@ -51,6 +49,11 @@ export default {
         if (meta?.provider_key) row.ai_provider_key = meta.provider_key
         if (!row.ai_provider_key) {
           row.ai_provider_key = getAiProviderKeyFromRow(row, keyMap)
+        }
+        if (row.visual_provider_id) {
+          const vmeta = metaMap[row.visual_provider_id]
+          if (vmeta?.name) row.visual_provider_name = vmeta.name
+          if (vmeta?.provider_key) row.visual_provider_key = vmeta.provider_key
         }
       })
     },
@@ -239,29 +242,53 @@ export default {
     syncAiProviderNamesForList () {
       const rows = Object.keys(this.list?.data || {})
         .map(key => this.list.data[key]?.data)
-        .filter(row => row?.ai_provider_id)
+        .filter(row => row?.ai_provider_id || row?.visual_provider_id)
       if (!rows.length) return
 
       const patch = {}
       let needFetch = false
       rows.forEach(row => {
-        const name = row.ai_provider_name || this.aiProviderNameMap[row.ai_provider_id]
-        const providerKey = row.ai_provider_key || this.aiProviderKeyMap[row.ai_provider_id]
-        if (name && name !== row.ai_provider_id) {
-          if (!row.ai_provider_name) row.ai_provider_name = name
-          patch[row.id] = { ...(patch[row.id] || {}), ai_provider_name: name }
-        } else if (!row.ai_provider_name && !this.aiProviderNameMap[row.ai_provider_id]) {
-          needFetch = true
+        if (row.ai_provider_id) {
+          const name = row.ai_provider_name || this.aiProviderNameMap[row.ai_provider_id]
+          const providerKey = row.ai_provider_key || this.aiProviderKeyMap[row.ai_provider_id]
+          if (name && name !== row.ai_provider_id) {
+            if (!row.ai_provider_name) row.ai_provider_name = name
+            patch[row.id] = { ...(patch[row.id] || {}), ai_provider_name: name }
+          } else if (!row.ai_provider_name && !this.aiProviderNameMap[row.ai_provider_id]) {
+            needFetch = true
+          }
+          if (providerKey && !row.ai_provider_key) {
+            row.ai_provider_key = providerKey
+            patch[row.id] = { ...(patch[row.id] || {}), ai_provider_key: providerKey }
+          } else if (!row.ai_provider_key) {
+            const inferred = getAiProviderKeyFromRow(row, this.aiProviderKeyMap)
+            if (inferred) {
+              row.ai_provider_key = inferred
+              patch[row.id] = { ...(patch[row.id] || {}), ai_provider_key: inferred }
+            } else if (!this.aiProviderKeyMap[row.ai_provider_id]) {
+              needFetch = true
+            }
+          }
         }
-        if (providerKey && !row.ai_provider_key) {
-          row.ai_provider_key = providerKey
-          patch[row.id] = { ...(patch[row.id] || {}), ai_provider_key: providerKey }
-        } else if (!row.ai_provider_key) {
-          const inferred = getAiProviderKeyFromRow(row, this.aiProviderKeyMap)
-          if (inferred) {
-            row.ai_provider_key = inferred
-            patch[row.id] = { ...(patch[row.id] || {}), ai_provider_key: inferred }
-          } else if (!this.aiProviderKeyMap[row.ai_provider_id]) {
+        if (row.visual_provider_id) {
+          if (row.visual_provider_key) {
+            this.aiProviderKeyMap = {
+              ...this.aiProviderKeyMap,
+              [row.visual_provider_id]: row.visual_provider_key,
+            }
+          }
+          const vname = row.visual_provider_name || this.aiProviderNameMap[row.visual_provider_id]
+          const vkey = row.visual_provider_key || this.aiProviderKeyMap[row.visual_provider_id]
+          if (vname && vname !== row.visual_provider_id) {
+            if (!row.visual_provider_name) row.visual_provider_name = vname
+            patch[row.id] = { ...(patch[row.id] || {}), visual_provider_name: vname }
+          } else if (!row.visual_provider_name && !this.aiProviderNameMap[row.visual_provider_id]) {
+            needFetch = true
+          }
+          if (vkey && !row.visual_provider_key) {
+            row.visual_provider_key = vkey
+            patch[row.id] = { ...(patch[row.id] || {}), visual_provider_key: vkey }
+          } else if (!row.visual_provider_key && !this.aiProviderKeyMap[row.visual_provider_id]) {
             needFetch = true
           }
         }
@@ -276,6 +303,8 @@ export default {
             const itemPatch = {}
             if (row.ai_provider_name) itemPatch.ai_provider_name = row.ai_provider_name
             if (row.ai_provider_key) itemPatch.ai_provider_key = row.ai_provider_key
+            if (row.visual_provider_name) itemPatch.visual_provider_name = row.visual_provider_name
+            if (row.visual_provider_key) itemPatch.visual_provider_key = row.visual_provider_key
             if (Object.keys(itemPatch).length) nextPatch[row.id] = itemPatch
           })
           if (Object.keys(nextPatch).length) {
