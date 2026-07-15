@@ -110,7 +110,10 @@ export default {
   },
   watch: {
     regions: {
-      handler: function (val) {
+      handler: function (val, oldVal) {
+        const hadRegions = oldVal && !R.isEmpty(oldVal)
+        // 设置登录域等触发的 regions 刷新：保持当前页，不重算/乱跳
+        if (hadRegions) return
         if (this.isMobleCodeAuthEnabled && this.isDefaultLoginModeMobile) {
           this.loginMode = 'mobile'
         } else {
