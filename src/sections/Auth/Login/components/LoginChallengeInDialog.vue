@@ -392,13 +392,16 @@ export default {
       this.changeDomain(value.input)
     },
     changeDomain (domain) {
-      var params = { rf: this.$route.query.rf }
+      const params = { ...this.$route.query }
       if (domain) {
         params.domain = domain
+      } else {
+        delete params.domain
       }
       this.loginDomain = domain
       this.$store.dispatch('auth/getRegions', params)
-      this.$router.replace({ path: '/auth/login', query: params })
+      // 保留当前登录页路径（账号输入/选择账号/手机号），避免乱跳
+      this.$router.replace({ path: this.$route.path, query: params })
     },
     inputFocus (item) {
       this.passwordReadonly = false
