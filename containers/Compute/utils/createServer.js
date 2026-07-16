@@ -14,7 +14,7 @@ import {
   SECGROUP_OPTIONS_MAP,
   FORECAST_FILTERS_MAP,
   RESOURCE_TYPES_MAP,
-  GPU_DEV_TYPE_OPTION_MAP,
+  GPU_TYPE_OPTION_MAP,
 } from '@Compute/constants'
 import { IMAGES_TYPE_MAP, HOST_CPU_ARCHS } from '@/constants/compute'
 
@@ -424,10 +424,10 @@ export const createVmDecorators = (type, initData = {}) => {
           initialValue: 1,
         },
       ],
-      devType: [
-        'devType',
+      gpuType: [
+        'gpuType',
         {
-          initialValue: GPU_DEV_TYPE_OPTION_MAP['GPU-VGA'].value,
+          initialValue: GPU_TYPE_OPTION_MAP.HPC.value,
         },
       ],
     },
@@ -442,6 +442,12 @@ export const createVmDecorators = (type, initData = {}) => {
       pciDevType: i => [
         `pciDevType[${i}]`,
       ],
+      pciGpuType: i => [
+        `pciGpuType[${i}]`,
+        {
+          initialValue: GPU_TYPE_OPTION_MAP.HPC.value,
+        },
+      ],
       pciModel: i => [
         `pciModel[${i}]`,
         {
@@ -454,6 +460,27 @@ export const createVmDecorators = (type, initData = {}) => {
         `pciCount[${i}]`,
         {
           initialValue: 1,
+        },
+      ],
+      memoryRequest: i => [
+        `memory_request[${i}]`,
+        {
+          rules: [
+            { required: true, message: i18n.t('compute.pci.memory_request.required') },
+            {
+              validator: (rule, value, callback) => {
+                if (value === undefined || value === null || value === '') {
+                  callback()
+                  return
+                }
+                if (!Number.isInteger(Number(value)) || Number(value) <= 0) {
+                  callback(new Error(i18n.t('compute.pci.memory_request.invalid')))
+                  return
+                }
+                callback()
+              },
+            },
+          ],
         },
       ],
     },
@@ -1524,18 +1551,36 @@ export class GenCreateData {
    */
   genPciDevices () {
     const ret = []
-    const { pciCount, pciModel } = this.fd
+    const { pciCount, pciModel, memory_request, pciDevType, pciGpuType } = this.fd
     const pciKeys = Object.keys(this.fd.pciCount)
     pciKeys.forEach(key => {
+      const pciKey = pciDevType?.[key] || this.fd[`pciDevType[${key}]`] || ''
+      const idx = pciKey.indexOf('/')
+      const devType = idx === -1 ? pciKey : pciKey.slice(0, idx)
+      const sharingMode = idx === -1 ? '' : pciKey.slice(idx + 1)
+      const gpuType = pciGpuType?.[key] || this.fd[`pciGpuType[${key}]`]
       for (let i = 0, len = pciCount[key]; i < len; i++) {
         const regexp = /vendor=(.+):(.+)/
         const matched = pciModel[key].match(regexp)
         const model = matched[2]
         const vendor = matched[1]
-        ret.push({
+        const device = {
           model,
           vendor,
-        })
+        }
+        if (devType) {
+          device.dev_type = devType
+        }
+        if (sharingMode) {
+          device.sharing_mode = sharingMode
+        }
+        if (devType === 'GPU' && gpuType) {
+          device.gpu_type = gpuType
+        }
+        if (memory_request?.[key]) {
+          device.memory_request = memory_request[key]
+        }
+        ret.push(device)
       }
     })
     return ret

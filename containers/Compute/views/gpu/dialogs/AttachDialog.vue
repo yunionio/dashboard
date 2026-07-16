@@ -13,6 +13,29 @@
             </a-select-option>
           </a-select>
         </a-form-item>
+        <a-form-item v-if="showGpuType" :label="$t('gpu.device_type')" v-bind="formItemLayout">
+          <base-select v-decorator="decorators.gpuType" :options="gpuTypeOptions" />
+        </a-form-item>
+        <a-form-item
+          v-if="showMemoryRequest"
+          :label="$t('compute.pci.memory_request')"
+          v-bind="formItemLayout">
+          <a-tooltip
+            :title="memoryRangeTooltip"
+            placement="top"
+            :get-popup-container="getTooltipContainer">
+            <disk-size-input
+              v-decorator="decorators.memoryRequest"
+              :min="1"
+              :max="memorySizeMb || Infinity"
+              :step="1"
+              :units="['MB', 'GB']"
+              value-unit="MB"
+              default-unit="GB"
+              @change="onMemoryRequestChange"
+              @unitChange="onMemoryUnitChange" />
+          </a-tooltip>
+        </a-form-item>
         <a-form-item v-if="isShowAutoStart" :label="$t('compute.text_494')" v-bind="formItemLayout" :extra="$t('compute.text_495')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" />
         </a-form-item>
@@ -26,11 +49,20 @@
 </template>
 
 <script>
+import {
+  GPU_TYPE_OPTION_MAP,
+  getGpuTypeSelectOptions,
+  resolveGpuTypeBySharingMode,
+} from '@Compute/constants'
+import DiskSizeInput from '@/sections/DiskSizeInput'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'GpuAttachServerDialog',
+  components: {
+    DiskSizeInput,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -40,7 +72,6 @@ export default {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
             Object.keys(values).forEach((key) => {
-              // this.form.fd[key] = values[key]
               this.$set(this.form.fd, key, values[key])
             })
           },
@@ -61,6 +92,24 @@ export default {
             ],
           },
         ],
+        gpuType: [
+          'gpu_type',
+          {
+            initialValue: resolveGpuTypeBySharingMode(
+              GPU_TYPE_OPTION_MAP.HPC.value,
+              this.params.data[0]?.sharing_mode,
+            ),
+          },
+        ],
+        memoryRequest: [
+          'memory_request',
+          {
+            rules: [
+              { required: true, message: this.$t('compute.pci.memory_request.required') },
+              { validator: this.validateMemoryRequest },
+            ],
+          },
+        ],
         autoStart: [
           'autoStart',
           {
@@ -70,6 +119,7 @@ export default {
         ],
       },
       guestesOpts: [],
+      memoryUnit: 'GB',
       formItemLayout: {
         wrapperCol: {
           span: 18,
@@ -81,9 +131,8 @@ export default {
     }
   },
   computed: {
-    dev_type () { // 目前支持USB和GPU卡
-      const { dev_type } = this.params.data[0]
-      return dev_type === 'USB' ? 'USB' : 'GPU'
+    currentDevice () {
+      return this.params.data[0] || {}
     },
     columns () {
       const ret = []
@@ -103,6 +152,21 @@ export default {
     isShowAutoStart () {
       return this.curGuest !== undefined && !this.isGuestRunning
     },
+    gpuTypeOptions () {
+      return getGpuTypeSelectOptions(this.currentDevice.sharing_mode)
+    },
+    showGpuType () {
+      return this.currentDevice.dev_type === 'GPU'
+    },
+    showMemoryRequest () {
+      return this.currentDevice.sharing_mode === 'HAMI'
+    },
+    memorySizeMb () {
+      return this.currentDevice.memory_size_mb || this.currentDevice.memory_size || undefined
+    },
+    memoryRangeTooltip () {
+      return this.getMemoryRangeText(this.memorySizeMb, this.memoryUnit || 'GB')
+    },
   },
   created () {
     const params = {
@@ -117,6 +181,49 @@ export default {
       })
   },
   methods: {
+    getTooltipContainer () {
+      return document.body
+    },
+    getMemoryRangeText (maxMb, unit = 'GB') {
+      if (!maxMb) return ''
+      const factor = unit === 'GB' ? 1024 : 1
+      const min = 1 / factor
+      const max = maxMb / factor
+      const fmt = (n) => (Number.isInteger(n) ? n : Number(n.toFixed(3)))
+      return this.$t('compute.pci.memory_request.range', [fmt(min), fmt(max), unit])
+    },
+    validateMemoryRequest (rule, value, callback) {
+      if (value === undefined || value === null || value === '') {
+        callback()
+        return
+      }
+      const num = Number(value)
+      if (!Number.isInteger(num) || num <= 0) {
+        callback(new Error(this.$t('compute.pci.memory_request.invalid')))
+        return
+      }
+      if (this.memorySizeMb && num > this.memorySizeMb) {
+        callback(new Error(this.getMemoryRangeText(this.memorySizeMb, this.memoryUnit || 'GB')))
+        return
+      }
+      callback()
+    },
+    clampMemoryRequest (val) {
+      if (val === undefined || val === null || val === '') return val
+      const num = Number(val)
+      if (!Number.isFinite(num)) return val
+      if (this.memorySizeMb && num > this.memorySizeMb) return this.memorySizeMb
+      if (num < 1) return 1
+      return Math.round(num)
+    },
+    onMemoryRequestChange (val) {
+      const next = this.clampMemoryRequest(val)
+      this.form.fc.setFieldsValue({ memory_request: next })
+      this.$set(this.form.fd, 'memory_request', next)
+    },
+    onMemoryUnitChange (unit) {
+      this.memoryUnit = unit
+    },
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {
@@ -129,13 +236,23 @@ export default {
       })
     },
     doAttach (data) {
+      const attachData = {
+        auto_start: this.isShowAutoStart ? data.autoStart : false,
+        device: this.params.data[0].id,
+      }
+      if (this.currentDevice.sharing_mode) {
+        attachData.sharing_mode = this.currentDevice.sharing_mode
+      }
+      if (this.showGpuType && data.gpu_type) {
+        attachData.gpu_type = data.gpu_type
+      }
+      if (this.showMemoryRequest && data.memory_request) {
+        attachData.memory_request = data.memory_request
+      }
       return new this.$Manager('servers').performAction({
         id: data.guest,
         action: 'attach-isolated-device',
-        data: {
-          auto_start: this.isShowAutoStart ? data.autoStart : false,
-          device: this.params.data[0].id,
-        },
+        data: attachData,
       })
     },
     async handleConfirm () {

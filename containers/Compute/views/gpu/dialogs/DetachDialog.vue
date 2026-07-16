@@ -109,13 +109,38 @@ export default {
         })
       })
     },
-    doUpdate (values, device) {
+    async fetchGuestIsolatedDeviceIndex (device) {
+      const guestId = device ? device.guest_id : this.params.data[0].id
+      const deviceId = device ? device.id : this.params.device.id
+      if (!guestId || !deviceId) return undefined
+      try {
+        const res = await new this.$Manager('guestisolateddevices').list({
+          params: {
+            limit: 0,
+            guest_id: guestId,
+            scope: this.$store.getters.scope,
+          },
+        })
+        const record = (res.data.data || []).find(item => item.id === deviceId || item.isolated_device_id === deviceId)
+        if (record && record.index !== undefined && record.index !== null) {
+          return record.index
+        }
+      } catch (e) {
+        // ignore
+      }
+      return undefined
+    },
+    async doUpdate (values, device) {
       const data = {
         auto_start: this.isShowAutoStart ? values.autoStart : false,
         device: device ? device.id : this.params.device.id,
       }
       if (values.is_force) {
         data.is_force = true
+      }
+      const index = await this.fetchGuestIsolatedDeviceIndex(device)
+      if (index !== undefined) {
+        data.index = index
       }
       return new this.$Manager('servers').performAction({
         id: device ? device.guest_id : this.params.data[0].id,
