@@ -1248,6 +1248,8 @@ export const PERMISSION = {
   cloudgroup_get: ['cloudid', 'cloudgroups', 'get'],
   cloudgroup_perform_add_user: ['cloudid', 'cloudgroups', 'perform', 'add-user'],
   cloudgroup_perform_set_policy: ['cloudid', 'cloudgroups', 'perform', 'set-policies'],
+  cloudgroup_perform_attach_policy: ['cloudid', 'cloudgroups', 'perform', 'attach-policy'],
+  cloudgroup_perform_detach_policy: ['cloudid', 'cloudgroups', 'perform', 'detach-policy'],
   cloudgroup_delete: ['cloudid', 'cloudgroups', 'delete'],
   cloudgroup_perform_remove_user: ['cloudid', 'cloudgroups', 'perform', 'remove-user'],
   cloudgroup_perform_syncstatus: ['cloudid', 'cloudgroups', 'perform', 'syncstatus'],
@@ -1255,7 +1257,6 @@ export const PERMISSION = {
   clouduser_perform_leave_group: ['cloudid', 'cloudusers', 'perform', 'leave-group'],
   // 云权限
   cloudpolicy_list: ['cloudid', 'cloudpolicies', 'list'],
-  cloudpolicy_perform_revoke_group: ['cloudid', 'cloudpolicies', 'perform', 'revoke-group'],
   // 云用户
   clouduser_list: ['cloudid', 'cloudusers', 'list'],
   clouduser_get: ['cloudid', 'cloudusers', 'get'],
