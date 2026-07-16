@@ -1,4 +1,4 @@
-import { GPU_DEV_TYPE_OPTION_MAP } from '@Compute/constants'
+import { isUpdatableGpuType } from '@Compute/constants'
 import i18n from '@/locales'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 export default {
@@ -20,8 +20,7 @@ export default {
             ret.tooltip = this.$t('gpu.device_type.update.validate')
             return ret
           }
-          const gpu_types = [GPU_DEV_TYPE_OPTION_MAP['GPU-HPC'].value, GPU_DEV_TYPE_OPTION_MAP['GPU-VGA'].value]
-          if (!gpu_types.includes(obj.dev_type)) {
+          if (!isUpdatableGpuType(obj)) {
             ret.validate = false
             ret.tooltip = this.$t('gpu.device_type.tooltip.check_hpc_vga_gpu')
             return ret

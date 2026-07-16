@@ -2,7 +2,7 @@ import * as R from 'ramda'
 import { skuCategoryOptions } from '@/locales/zh-CN'
 import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
-import { arrayToObj } from '@/utils/utils'
+import { arrayToObj, sizestr } from '@/utils/utils'
 
 export const CreateServerForm = {
   labelCol: 3,
@@ -1745,12 +1745,135 @@ export const BUY_DURATIONS_OPTIONS = [
 // 记录创建成功后选择的镜像，存储cookie的key suffix
 export const SELECT_IMAGE_KEY_SUFFIX = '__select_image'
 
-export const GPU_DEV_TYPE_OPTIONS = [
-  { label: i18n.t('compute.vga_gpu'), value: 'GPU-VGA' },
-  { label: i18n.t('compute.hpc_gpu'), value: 'GPU-HPC' },
-  { label: 'VGPU', value: 'VGPU' },
+// 透传设备类型
+export const ISOLATED_DEVICE_DEV_TYPE_LIST = [
+  { value: 'PCI', label: 'PCI' },
+  { value: 'GPU', label: 'GPU' },
+  { value: 'USB', label: 'USB' },
+  { value: 'NIC', label: 'NIC' },
+  { value: 'NVME-PT', label: 'NVME-PT' },
+  { value: 'NETINT', label: 'NETINT' },
+  { value: 'NPU', label: 'NPU' },
+  { value: 'BINDER', label: 'BINDER' },
 ]
-export const GPU_DEV_TYPE_OPTION_MAP = arrayToObj(GPU_DEV_TYPE_OPTIONS, 'value')
+
+export const ISOLATED_DEVICE_DEV_TYPE_OPTION_MAP = arrayToObj(ISOLATED_DEVICE_DEV_TYPE_LIST, 'value')
+
+// GPU 应用类型/使用模式
+export const GPU_TYPE_LIST = [
+  { label: i18n.t('compute.hpc_gpu'), value: 'HPC' },
+  { label: i18n.t('compute.vga_gpu'), value: 'VGA' },
+]
+export const GPU_TYPE_OPTION_MAP = arrayToObj(GPU_TYPE_LIST, 'value')
+
+export function getGpuTypeSelectOptions (sharingMode) {
+  return GPU_TYPE_LIST
+    .filter(item => !(sharingMode === 'HAMI' && item.value === GPU_TYPE_OPTION_MAP.VGA.value))
+    .map(item => ({
+      key: item.value,
+      label: item.label,
+    }))
+}
+
+export function resolveGpuTypeBySharingMode (gpuType, sharingMode) {
+  if (sharingMode === 'HAMI' && gpuType === GPU_TYPE_OPTION_MAP.VGA.value) {
+    return GPU_TYPE_OPTION_MAP.HPC.value
+  }
+  return gpuType || GPU_TYPE_OPTION_MAP.HPC.value
+}
+
+export function getDeviceGpuType (item) {
+  return item?.gpu_type || ''
+}
+
+export function getGuestIsolatedDeviceMemoryRequest (item) {
+  if (!item) return undefined
+  const raw = (item.device_memory_size !== undefined && item.device_memory_size !== null && item.device_memory_size !== '')
+    ? item.device_memory_size
+    : item.memory_request
+  if (raw === undefined || raw === null || raw === '') return undefined
+  const num = Number(raw)
+  return Number.isFinite(num) ? num : undefined
+}
+
+export function isUpdatableGpuType (item) {
+  return item?.dev_type === 'GPU' && !!getDeviceGpuType(item)
+}
+
+export function getGpuDeviceDisplayLabel (item) {
+  const devType = typeof item === 'object' ? item?.dev_type : item
+  if (devType === 'GPU') {
+    const gpuType = typeof item === 'object' ? getDeviceGpuType(item) : ''
+    if (gpuType) {
+      return GPU_TYPE_OPTION_MAP[gpuType]?.label || gpuType
+    }
+    return ISOLATED_DEVICE_DEV_TYPE_OPTION_MAP.GPU?.label || 'GPU'
+  }
+  return ISOLATED_DEVICE_DEV_TYPE_OPTION_MAP[devType]?.label || devType
+}
+
+export function formatGuestIsolatedDeviceLabel (item) {
+  return formatIsolatedDeviceSelectLabel(item)
+}
+
+export function formatIsolatedDeviceSelectLabel (item) {
+  if (!item) return '-'
+  const name = item.name || item.model || '-'
+  const parts = []
+  const devTypeLabel = ISOLATED_DEVICE_DEV_TYPE_OPTION_MAP[item.dev_type]?.label || item.dev_type
+  if (devTypeLabel) {
+    parts.push(`${i18n.t('compute.text_481')}: ${devTypeLabel}`)
+  }
+  if (item.dev_type === 'GPU') {
+    const gpuType = getDeviceGpuType(item)
+    const gpuTypeLabel = GPU_TYPE_OPTION_MAP[gpuType]?.label || gpuType
+    if (gpuTypeLabel) {
+      parts.push(`${i18n.t('compute.pci.gpu_mode')}: ${gpuTypeLabel}`)
+    }
+  }
+  const sharingModeLabel = ISOLATED_DEVICE_SHARING_MODE_OPTION_MAP[item.sharing_mode]?.label || item.sharing_mode
+  if (sharingModeLabel) {
+    parts.push(`${i18n.t('compute.sharing_mode')}: ${sharingModeLabel}`)
+  }
+  const ip = item.ip || item.addr
+  if (ip) {
+    parts.push(`IP: ${ip}`)
+  }
+  const memorySize = item.memory_size || item.memory_size_mb
+  if (memorySize) {
+    parts.push(`${i18n.t('compute.memory_size')}: ${sizestr(memorySize, 'M', 1024)}`)
+  }
+  if (item.model) {
+    parts.push(`${i18n.t('compute.text_482')}: ${item.model}`)
+  }
+  const meta = parts.join(', ')
+  return meta ? `${name} (${meta})` : name
+}
+
+export function matchPciDevice (item, devType) {
+  return item.dev_type === devType
+}
+
+export function hasVgaGpuInPciForm (formFd) {
+  const devTypeKeys = Object.keys(formFd).filter(key => key.startsWith('pciDevType['))
+  return devTypeKeys.some(key => {
+    const index = key.match(/\[(\d+)\]/)?.[1]
+    const pureDevType = (formFd[key] || '').split('/')[0]
+    const gpuType = formFd[`pciGpuType[${index}]`]
+    return pureDevType === 'GPU' && gpuType === 'VGA'
+  })
+}
+
+// 透传设备共享模式
+export const ISOLATED_DEVICE_SHARING_MODE_OPTIONS = [
+  { label: i18n.t('compute.sharing_mode.exclusive'), value: 'EXCLUSIVE' },
+  { label: i18n.t('compute.sharing_mode.sriov'), value: 'SRIOV' },
+  { label: i18n.t('compute.sharing_mode.mps'), value: 'MPS' },
+  { label: i18n.t('compute.sharing_mode.hami'), value: 'HAMI' },
+  { label: i18n.t('compute.sharing_mode.unlimited'), value: 'UNLIMITED' },
+  { label: i18n.t('compute.sharing_mode.mdev'), value: 'MDEV' },
+]
+export const ISOLATED_DEVICE_SHARING_MODE_OPTION_MAP = arrayToObj(ISOLATED_DEVICE_SHARING_MODE_OPTIONS, 'value')
 
 // 磁盘制备类型
 export const PREALLOCATION_OPTIONS = [

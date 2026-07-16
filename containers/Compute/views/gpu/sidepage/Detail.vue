@@ -10,6 +10,11 @@
 import WindowsMixin from '@/mixins/windows'
 import {
   getReserveResourceColumn,
+  getSharingModeColumn,
+  getMemorySizeColumn,
+  getVirtualNumColumn,
+  getAllocatedCountColumn,
+  getMemoryAllocatedColumn,
 } from '../utils/columns'
 
 export default {
@@ -51,10 +56,15 @@ export default {
           field: 'guest',
           title: this.$t('compute.associated_instances'),
           formatter: function ({ row }) {
-            return row.guest || row.guest_id
+            return (row.guest || []).join(',')
           },
         },
         getReserveResourceColumn(),
+        getSharingModeColumn(),
+        getMemorySizeColumn(),
+        getMemoryAllocatedColumn(),
+        getVirtualNumColumn(),
+        getAllocatedCountColumn(),
       ],
       extraInfo: [
         {
@@ -63,20 +73,6 @@ export default {
             {
               field: 'addr',
               title: 'PCI_BUS_ID',
-            },
-            {
-              field: 'framebuffer',
-              title: this.$t('gpu.device_type.framebuffer'),
-              hidden: (row) => {
-                return row.dev_type !== 'LEGACY-VGPU'
-              },
-            },
-            {
-              field: 'max_resolution',
-              title: this.$t('gpu.device_type.max_resolution'),
-              hidden: (row) => {
-                return row.dev_type !== 'LEGACY-VGPU'
-              },
             },
           ],
         },
