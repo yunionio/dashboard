@@ -396,6 +396,12 @@ export default {
       }
       return false
     },
+    isCAS () {
+      if (this.currentCloudregion) {
+        return this.currentCloudregion.provider === HYPERVISORS_MAP.cas.provider
+      }
+      return false
+    },
     isAws () {
       return this.currentCloudregion?.provider === HYPERVISORS_MAP.aws.provider
     },
@@ -516,7 +522,7 @@ export default {
       return this.cloudEnv === 'onpremise'
     },
     isShowStorageSelect () {
-      return this.isIDC || this.isZettaKit || this.isUIS
+      return this.isIDC || this.isZettaKit || this.isUIS || this.isCAS
     },
     isShowIops () {
       return this.isAws && (this.storageItem?.value?.startsWith('gp3') || this.storageItem?.value?.startsWith('io1') || this.storageItem?.value?.startsWith('io2'))

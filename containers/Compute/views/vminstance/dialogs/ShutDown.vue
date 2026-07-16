@@ -128,6 +128,7 @@ export default {
           HYPERVISORS_MAP.qcloud.hypervisor,
           HYPERVISORS_MAP.sangfor?.hypervisor,
           HYPERVISORS_MAP.uis?.hypervisor,
+          HYPERVISORS_MAP.cas?.hypervisor,
           HYPERVISORS_MAP.ksyun?.hypervisor,
         ].includes(item.hypervisor)
       })

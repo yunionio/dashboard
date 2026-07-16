@@ -1216,7 +1216,7 @@ export class GenCreateData {
       backend: item.type === STORAGE_AUTO.key ? '' : item.type,
       size: item.size * 1024,
     }
-    if (type === 'sys' && this.fd.imageType !== IMAGES_TYPE_MAP.iso.key && this.fd.hypervisor !== HYPERVISORS_MAP.sangfor.key && this.fd.hypervisor !== HYPERVISORS_MAP.uis.key) {
+    if (type === 'sys' && this.fd.imageType !== IMAGES_TYPE_MAP.iso.key && this.fd.hypervisor !== HYPERVISORS_MAP.sangfor.key && this.fd.hypervisor !== HYPERVISORS_MAP.uis.key && this.fd.hypervisor !== HYPERVISORS_MAP.cas.key) {
       if (this.fd.image && this.fd.image.key) {
         ret.image_id = this.fd.image.key
       }
@@ -1744,6 +1744,12 @@ export class GenCreateData {
         nets: extraNetworks,
       },
     }
+    // 私有云按 hypervisor 显式指定 provider，避免落到 OneCloud
+    const hypervisor = this.getHypervisor()
+    const hypervisorProvider = _.get(HYPERVISORS_MAP, `[${hypervisor}].provider`)
+    if (hypervisorProvider && !this.isPublic && !this.isIDC) {
+      data.provider = hypervisorProvider
+    }
     // 非预付费资源池不会添加sku
     if (!this.isPrepaid) {
       data.sku = this.fd.sku.name
@@ -1834,9 +1840,21 @@ export class GenCreateData {
       }
       data.billing_type = 'postpaid'
     }
-    // 镜像类型为 iso 需要加参数 cdrom
-    if (this.fd.imageType === IMAGES_TYPE_MAP.iso.key || this.fd.imageType === IMAGES_TYPE_MAP.private_iso.key) {
-      data.cdrom = this.fd.image.key
+    // 镜像类型为 iso / private_iso 需要加参数 cdrom
+    // CAS/UIS/SangFor 仅支持 ISO，即使 imageType 未及时切换也要带上 cdrom
+    const isPrivateIsoHypervisor = [
+      HYPERVISORS_MAP.sangfor.key,
+      HYPERVISORS_MAP.uis.key,
+      HYPERVISORS_MAP.cas.key,
+    ].includes(this.fd.hypervisor)
+    if (
+      this.fd.imageType === IMAGES_TYPE_MAP.iso.key ||
+      this.fd.imageType === IMAGES_TYPE_MAP.private_iso.key ||
+      isPrivateIsoHypervisor
+    ) {
+      if (this.fd.image && this.fd.image.key) {
+        data.cdrom = this.fd.image.key
+      }
     }
     // 主机镜像需要guest image id参数，并且把磁盘中的镜像ID回填回去
     if (this.fd.imageType === IMAGES_TYPE_MAP.host.key) {

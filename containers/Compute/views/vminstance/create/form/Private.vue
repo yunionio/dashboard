@@ -258,10 +258,12 @@ export default {
       if (this.form.fd.hypervisor !== HYPERVISORS_MAP.cloudpods.hypervisor) {
         params.project_domain = this.project_domain
       }
-      if (R.is(Object, this.form.fd.sku)) {
-        if (this.cloudregionZoneParams.cloudregion) {
-          params.cloudregion_id = this.cloudregionZoneParams.cloudregion
-        }
+      if (this.cloudregionZoneParams.cloudregion) {
+        params.cloudregion_id = this.cloudregionZoneParams.cloudregion
+      }
+      // CAS/UIS 等私有云镜像需按 provider 过滤
+      if (this.cloudprovider) {
+        params.provider = this.cloudprovider
       }
       if (this.form.fd.imageType === 'private_iso') {
         params.filter = 'name.endswith(".iso")'
@@ -282,7 +284,7 @@ export default {
         enabled: true,
         ...this.scopeParams,
       }
-      if (this.form.fd.hypervisor === 'nutanix' || this.form.fd.hypervisor === 'incloudsphere' || this.form.fd.hypervisor === 'proxmox' || this.form.fd.hypervisor === 'sangfor' || this.form.fd.hypervisor === 'uis' || this.form.fd.hypervisor === 'cnware') {
+      if (this.form.fd.hypervisor === 'nutanix' || this.form.fd.hypervisor === 'incloudsphere' || this.form.fd.hypervisor === 'proxmox' || this.form.fd.hypervisor === 'sangfor' || this.form.fd.hypervisor === 'uis' || this.form.fd.hypervisor === 'cas' || this.form.fd.hypervisor === 'cnware') {
         params.is_on_premise = true
         params.usable = false
       } else {
@@ -358,6 +360,9 @@ export default {
       const params = {
         manager_id: this.form.fd.cloudprovider,
         ...this.scopeParams,
+      }
+      if (this.cloudprovider) {
+        params.provider = this.cloudprovider
       }
       if (this.cloudregionZoneParams.cloudregion) {
         params.cloudregion_id = this.cloudregionZoneParams.cloudregion
