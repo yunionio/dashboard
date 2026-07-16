@@ -7,7 +7,7 @@
     </a-tabs>
     <div class="mt-2">
       <keep-alive>
-        <component :is="currentComponent" :getParams="getParams" :id="id" :data="data" :resId="resId" />
+        <component :is="currentComponent" :getParams="getParams" :id="id" :data="data" :resId="resId" :gpu-columns="gpuColumns" />
       </keep-alive>
     </div>
   </div>
@@ -33,6 +33,10 @@ export default {
     },
     resId: {
       type: String,
+      required: true,
+    },
+    gpuColumns: {
+      type: Array,
       required: true,
     },
   },

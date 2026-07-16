@@ -34,6 +34,10 @@ export default {
       type: Object,
       required: true,
     },
+    gpuColumns: {
+      type: Array,
+      required: true,
+    },
   },
   data () {
     return {
@@ -131,7 +135,7 @@ export default {
             this.createDialog('GpuAttachServerDialog', {
               data: [this.data],
               title: this.$t('compute.text_483', [this.$t('dictionary.server_container')]),
-              columns: this.columns,
+              columns: this.gpuColumns,
               refresh: this.refresh,
               resourceType: 'server_container',
             })
@@ -211,7 +215,7 @@ export default {
               return ret
             }
 
-            if (obj.status !== 'ready' || obj.status !== 'unknown') {
+            if (obj.status !== 'ready' && obj.status !== 'unknown') {
               ret.validate = false
               ret.tooltip = this.$t('compute.text_489_1', [this.$t('compute.text_113')])
               return ret
@@ -224,25 +228,26 @@ export default {
       ],
     }
   },
-  watch: {
-    'data.guest_id': {
-      handler (val) {
-        this.list.fetchData()
-      },
-    },
-  },
+  // watch: {
+  //   'data.guest_id': {
+  //     handler (val) {
+  //       this.list.fetchData()
+  //     },
+  //   },
+  // },
   created () {
     this.initSidePageTab('detail')
     this.list.fetchData()
   },
   methods: {
     refresh () {
+      this.list.fetchData()
       this.$bus.$emit('gpu-sidepage-refresh')
     },
     getParam () {
       return {
-        'filter.0': `id.equals(${this.data.guest_id})`,
-        'filter.1': 'hypervisor.in(pod)',
+        isolated_device_id: this.data.id,
+        'filter.0': 'hypervisor.in(pod)',
       }
     },
   },

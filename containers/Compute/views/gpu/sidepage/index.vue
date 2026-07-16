@@ -19,6 +19,7 @@
       :id="listId"
       :data="detailData"
       :on-manager="onManager"
+      :gpu-columns="columns"
       :getParams="getParams" />
   </base-side-page>
 </template>
@@ -41,6 +42,7 @@ export default {
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
+      columns: [],
       detailTabs: [
         { label: this.$t('compute.text_238'), key: 'gpu-detail' },
         { label: this.$t('compute.associated_instances'), key: 'associated-instances' },

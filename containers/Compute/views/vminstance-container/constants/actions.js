@@ -309,26 +309,26 @@ const getSingleActions = function () {
                     onManager: this.onManager,
                   })
                 },
-                // meta: () => {
-                //   const provider = obj.provider
-                //   const ret = {
-                //     validate: false,
-                //     tooltip: null,
-                //   }
-                //   const rescueModeValid = validateRescueMode(obj)
-                //   if (!rescueModeValid.validate) return rescueModeValid
-                //   if (!this.isAdminMode && !this.isDomainMode) {
-                //     ret.tooltip = i18n.t('compute.text_1279', [i18n.t('dictionary.domain')])
-                //     return ret
-                //   }
-                //   if (obj.brand !== BRAND_MAP.OneCloud.key) {
-                //     ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
-                //     return ret
-                //   }
-                //   ret.validate = cloudEnabled('acttachGpu', obj)
-                //   ret.tooltip = cloudUnabledTip('acttachGpu', obj)
-                //   return ret
-                // },
+                meta: () => {
+                  const provider = obj.provider
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  const rescueModeValid = validateRescueMode(obj)
+                  if (!rescueModeValid.validate) return rescueModeValid
+                  if (!this.isAdminMode && !this.isDomainMode) {
+                    ret.tooltip = i18n.t('compute.text_1279', [i18n.t('dictionary.domain')])
+                    return ret
+                  }
+                  if (obj.brand !== BRAND_MAP.OneCloud.key) {
+                    ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
+                    return ret
+                  }
+                  ret.validate = cloudEnabled('acttachGpu', obj)
+                  ret.tooltip = cloudUnabledTip('acttachGpu', obj)
+                  return ret
+                },
               },
             ],
           },
