@@ -51,7 +51,7 @@ export default {
       groupActions: [
         {
           label: this.$t('common.remove'),
-          permission: 'cloudpolicy_perform_revoke_group',
+          permission: 'cloudgroup_perform_detach_policy',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
@@ -62,11 +62,11 @@ export default {
               onManager: this.onManager,
               ok: async ids => {
                 try {
-                  const response = await this.manager.batchPerformAction({
-                    ids,
-                    action: 'revoke-group',
+                  const response = await this.manager.performAction({
+                    id: this.resId,
+                    action: 'detach-policy',
                     data: {
-                      cloudgroup_id: this.resId,
+                      cloudpolicy_ids: ids,
                     },
                   })
                   this.list.refresh()
@@ -82,14 +82,16 @@ export default {
                 tooltip: this.$t('common_614'),
               }
             }
-            return this.$getDeleteResult(this.list.selectedItems)
+            return {
+              validate: this.list.selectedItems.length > 0,
+            }
           },
         },
       ],
       singleActions: [
         {
           label: this.$t('common.remove'),
-          permission: 'cloudpolicy_perform_revoke_group',
+          permission: 'cloudgroup_perform_detach_policy',
           action: (obj) => {
             this.createDialog('DeleteResDialog', {
               vm: this,
@@ -100,11 +102,11 @@ export default {
               onManager: this.onManager,
               ok: async ids => {
                 try {
-                  const response = await this.manager.batchPerformAction({
-                    ids,
-                    action: 'revoke-group',
+                  const response = await this.manager.performAction({
+                    id: this.resId,
+                    action: 'detach-policy',
                     data: {
-                      cloudgroup_id: this.resId,
+                      cloudpolicy_ids: ids,
                     },
                   })
                   this.list.refresh()
@@ -151,7 +153,7 @@ export default {
     this.$bus.$on('CloudpolicyListForCloudgroupSidepageRefresh', () => {
       this.list.refresh()
     }, this)
-    this.manager = new this.$Manager('cloudpolicies', 'v1')
+    this.manager = new this.$Manager('cloudgroups', 'v1')
   },
   methods: {
     getParam () {
