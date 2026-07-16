@@ -225,6 +225,10 @@ const LicenseItems = [
     },
   },
   {
+    key: 'cas',
+    meta: meta('resource_managent', 'private', true),
+  },
+  {
     key: 's3',
     meta: meta('resource_managent', 'storage', true),
   },
@@ -572,6 +576,9 @@ const FEATURE_MENUS = {
     ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'disk-snapshot', 'keypair', 'sku', 'host', 'gpu', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'vpc', 'network', 'secgroup', 'eip', 'blockstorage'],
   },
   uis: {
+    ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'host', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'network', 'blockstorage'],
+  },
+  cas: {
     ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'vminstance', 'servertemplate', 'image', 'disk', 'keypair', 'sku', 'host', 'schedtag', 'schedpolicy', 'dynamicschedtag', 'serverrecovery', 'diskrecovery', 'network', 'blockstorage'],
   },
   sangfor: {

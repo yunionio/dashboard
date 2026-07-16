@@ -1501,6 +1501,28 @@ export const STORAGE_TYPES = {
       sort: 2,
     },
   },
+  [HYPERVISORS_MAP.cas.key]: {
+    dir: {
+      label: i18n.t('compute.cas.dir'),
+      value: 'dir',
+      min: 40,
+      max: 1024,
+      default: true,
+      sysMin: 40,
+      sysMax: 1024,
+      sort: 1,
+    },
+    fs: {
+      label: i18n.t('compute.cas.fs'),
+      value: 'fs',
+      min: 40,
+      max: 1024,
+      default: true,
+      sysMin: 40,
+      sysMax: 1024,
+      sort: 2,
+    },
+  },
   [HYPERVISORS_MAP.ksyun.key]: {
     ESSD_AutoPL: {
       label: i18n.t('compute.ksyun.essd_auto_pl'),
