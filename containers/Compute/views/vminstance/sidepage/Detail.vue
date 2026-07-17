@@ -15,10 +15,11 @@
 <script>
 import 'codemirror/theme/material.css'
 import * as R from 'ramda'
-import { ALL_STORAGE, SERVER_TYPE, GPU_DEV_TYPE_OPTION_MAP } from '@Compute/constants/index'
+import { ALL_STORAGE, SERVER_TYPE } from '@Compute/constants/index'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { formatCpuNumaPin } from '@Compute/views/vminstance/utils'
 import { formatServerSecgroupText, getNetworkTags, renderNetworkTagNodes } from '@Compute/utils/secgroupDisplay'
+import { getIsolatedDeviceDetailColumns } from '@Compute/views/gpu/utils/columns'
 import {
   getUserTagColumn,
   // getExtTagColumn,
@@ -155,6 +156,8 @@ export default {
         },
       ],
       imageExist: false,
+      guestIsolatedDevices: [],
+      isolatedDeviceColumns: [],
       cmOptions: {
         tabSize: 2,
         styleActiveLine: true,
@@ -501,59 +504,25 @@ export default {
               field: 'isolated_devices',
               title: this.$t('compute.text_113'),
               formatter: ({ row }) => {
-                if (!row.isolated_devices && !row.gpu_count) return '-'
-                const gpuArr = row.isolated_devices || []
-                const obj = {}
-                const devTypeMap = {}
-                const ids = {}
-                gpuArr.forEach(val => {
-                  if (val.dev_type !== 'USB') {
-                    if (!obj[val.model]) {
-                      obj[val.model] = 1
-                    } else {
-                      obj[val.model] += 1
-                    }
-                    ids[val.model] = val.id
-                    devTypeMap[val.model] = val.dev_type
-                  }
-                })
-                if (Object.keys(obj).length === 0) {
+                if (!row.isolated_devices?.length && !row.gpu_count) return '-'
+                const devices = this.getIsolatedDevicesForDisplay(row).filter(val => val.dev_type !== 'USB')
+                if (!devices.length) {
                   if (row.gpu_count && row.gpu_model) {
                     return this.$t('compute.text_370', [row.gpu_count, row.gpu_model])
-                  } else {
-                    return '-'
                   }
+                  return '-'
                 }
-                return Object.keys(obj).map(k => {
-                  const gpuLabel = `${GPU_DEV_TYPE_OPTION_MAP[devTypeMap[k]]?.label || devTypeMap[k]}-${k}`
-                  return <side-page-trigger permission='isolated_devices_get' name='GpuSidePage' id={ids[k]} vm={this}>{this.$t('compute.text_370', [obj[k], gpuLabel])}</side-page-trigger>
-                })
+                return this.renderIsolatedDeviceRows(devices)
               },
             },
             {
               field: 'isolated_devices',
               title: 'USB',
               formatter: ({ row }) => {
-                if (!row.isolated_devices) return '-'
-                const gpuArr = row.isolated_devices
-                const obj = {}
-                const ids = {}
-                gpuArr.forEach(val => {
-                  if (val.dev_type === 'USB') {
-                    if (!obj[val.model]) {
-                      obj[val.model] = 1
-                    } else {
-                      obj[val.model] += 1
-                    }
-                    ids[val.model] = val.id
-                  }
-                })
-                if (Object.keys(obj).length === 0) {
-                  return '-'
-                }
-                return Object.keys(obj).map(k => {
-                  return <side-page-trigger permission='isolated_devices_get' name='GpuSidePage' id={ids[k]} vm={this}>{this.$t('compute.text_370', [obj[k], k])}</side-page-trigger>
-                })
+                if (!row.isolated_devices?.length) return '-'
+                const devices = this.getIsolatedDevicesForDisplay(row).filter(val => val.dev_type === 'USB')
+                if (!devices.length) return '-'
+                return this.renderIsolatedDeviceRows(devices)
               },
             },
             {
@@ -696,14 +665,57 @@ export default {
     'data.id': {
       handler () {
         this.fetchAlertData()
+        this.fetchGuestIsolatedDevices()
       },
       immediate: true,
     },
+    'data.isolated_devices': {
+      handler () {
+        this.fetchGuestIsolatedDevices()
+      },
+    },
   },
   created () {
+    this.isolatedDeviceColumns = getIsolatedDeviceDetailColumns(this)
     this.initQemuInfo()
   },
   methods: {
+    getIsolatedDevicesForDisplay (row) {
+      if (this.guestIsolatedDevices.length) return this.guestIsolatedDevices
+      return row.isolated_devices || []
+    },
+    renderIsolatedDeviceRows (devices) {
+      return [
+        this.$createElement('div', [
+          this.$createElement('vxe-grid', {
+            class: 'mb-2',
+            props: {
+              data: Array.isArray(devices) ? devices.slice() : [],
+              columns: this.isolatedDeviceColumns,
+              resizable: true,
+            },
+          }),
+        ]),
+      ]
+    },
+    async fetchGuestIsolatedDevices () {
+      if (!this.data?.id || !this.data.isolated_devices?.length) {
+        this.guestIsolatedDevices = []
+        return
+      }
+      try {
+        const res = await new this.$Manager('guestisolateddevices').list({
+          params: {
+            limit: 0,
+            guest_id: this.data.id,
+            scope: this.$store.getters.scope,
+          },
+        })
+        this.guestIsolatedDevices = res.data.data || []
+      } catch (e) {
+        this.guestIsolatedDevices = []
+      }
+    },
     async fetchAlertData () {
       this.alertData = null
       const id = this.data?.id

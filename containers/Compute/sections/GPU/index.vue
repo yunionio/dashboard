@@ -10,7 +10,7 @@
       <a-row>
         <a-col :span="3" class="mr-2">
           <a-form-item>
-            <base-select v-decorator="decorators.devType" :options="gpuDevTypeOptions" @change="onChangeDevType" />
+            <base-select v-decorator="decorators.gpuType" :options="gpuTypeOptions" @change="onChangeGpuType" />
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -33,14 +33,20 @@
 </template>
 
 <script>
-import { GPU_COUNT_OPTIONS, GPU_DEV_TYPE_OPTIONS, GPU_DEV_TYPE_OPTION_MAP } from '@Compute/constants'
+import {
+  GPU_COUNT_OPTIONS,
+  GPU_TYPE_OPTION_MAP,
+  matchPciDevice,
+  getGpuTypeSelectOptions,
+  resolveGpuTypeBySharingMode,
+} from '@Compute/constants'
 
 export default {
   name: 'GPU',
   props: {
     decorators: {
       type: Object,
-      validator: val => val.gpuEnable && val.gpu && val.gpuCount && val.devType,
+      validator: val => val.gpuEnable && val.gpu && val.gpuCount && val.gpuType,
     },
     gpuOptions: {
       type: Array,
@@ -52,8 +58,7 @@ export default {
       gpuEnable: false,
       gpuCountOptions: GPU_COUNT_OPTIONS,
       curGpuItem: {},
-      gpuDevTypeOptions: GPU_DEV_TYPE_OPTIONS,
-      curGpuDevType: GPU_DEV_TYPE_OPTION_MAP['GPU-VGA'].value,
+      curGpuType: GPU_TYPE_OPTION_MAP.HPC.value,
     }
   },
   computed: {
@@ -61,7 +66,19 @@ export default {
       return this.gpuOptions && this.gpuOptions.length === 0
     },
     realGpuOptions () {
-      return this.gpuOptions.filter(item => item.dev_type === this.curGpuDevType)
+      return this.gpuOptions.filter(item => matchPciDevice(item, 'GPU'))
+    },
+    gpuTypeOptions () {
+      return getGpuTypeSelectOptions(this.curGpuItem?.sharing_mode)
+    },
+  },
+  watch: {
+    curGpuItem (val) {
+      const nextGpuType = resolveGpuTypeBySharingMode(this.curGpuType, val?.sharing_mode)
+      if (nextGpuType !== this.curGpuType) {
+        this.curGpuType = nextGpuType
+        this.$emit('change-gpu-type', nextGpuType)
+      }
     },
   },
   methods: {
@@ -69,8 +86,8 @@ export default {
       this.gpuEnable = val
       this.$emit('change', val)
     },
-    onChangeDevType (val) {
-      this.curGpuDevType = val
+    onChangeGpuType (val) {
+      this.curGpuType = val
     },
   },
 }

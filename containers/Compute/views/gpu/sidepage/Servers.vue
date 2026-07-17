@@ -36,6 +36,10 @@ export default {
       type: Object,
       required: true,
     },
+    gpuColumns: {
+      type: Array,
+      required: true,
+    },
   },
   data () {
     return {
@@ -162,7 +166,7 @@ export default {
             this.createDialog('GpuAttachServerDialog', {
               data: [this.data],
               title: this.$t('compute.text_483', [this.$t('dictionary.server')]),
-              columns: this.columns,
+              columns: this.gpuColumns,
               refresh: this.refresh,
             })
           },
@@ -171,10 +175,6 @@ export default {
             if (this.data.dev_type === 'NIC') {
               ret.validate = false
               ret.tooltip = this.$t('compute.sriov_device_nic_notsupport')
-              return ret
-            }
-            if (this.data.guest_id) {
-              ret.validate = false
               return ret
             }
             return ret
@@ -264,6 +264,7 @@ export default {
   },
   methods: {
     refresh () {
+      this.list.fetchData()
       this.$bus.$emit('gpu-sidepage-refresh')
     },
     getParam () {
