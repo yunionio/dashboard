@@ -18,8 +18,7 @@
         v-bind="formItemLayout">
         <a-form-item :label="$t('gpu.device_type')">
           <a-radio-group v-decorator="decorators.type">
-            <a-radio-button value="GPU-HPC">GPU-HPC</a-radio-button>
-            <a-radio-button value="GPU-VGA">GPU-VGA</a-radio-button>
+            <a-radio-button v-for="item in gpuTypeList" :key="item.value" :value="item.value">{{ item.label }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
       </a-form>
@@ -32,6 +31,7 @@
 </template>
 
 <script>
+import { getDeviceGpuType, getGpuTypeSelectOptions, resolveGpuTypeBySharingMode } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -40,6 +40,8 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const curItem = this.params.data[0]
+    const sharingMode = this.params.data.some(item => item.sharing_mode === 'HAMI') ? 'HAMI' : curItem?.sharing_mode
+    const initialType = resolveGpuTypeBySharingMode(getDeviceGpuType(curItem) || 'HPC', sharingMode)
 
     return {
       loading: false,
@@ -50,7 +52,7 @@ export default {
         type: [
           'type',
           {
-            initialValue: curItem.dev_type || 'GPU-HPC',
+            initialValue: initialType,
           },
         ],
       },
@@ -63,6 +65,15 @@ export default {
         },
       },
     }
+  },
+  computed: {
+    gpuTypeList () {
+      const sharingMode = this.params.data.some(item => item.sharing_mode === 'HAMI') ? 'HAMI' : this.params.data[0]?.sharing_mode
+      return getGpuTypeSelectOptions(sharingMode).map(item => ({
+        value: item.key,
+        label: item.label,
+      }))
+    },
   },
   methods: {
     validateForm () {
@@ -81,7 +92,7 @@ export default {
       return new this.$Manager('isolated_devices').batchUpdate({
         ids,
         data: {
-          dev_type: data.type,
+          gpu_type: data.type,
         },
       })
     },
