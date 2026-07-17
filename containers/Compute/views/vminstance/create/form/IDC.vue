@@ -290,7 +290,7 @@ import EncryptKeys from '@Compute/sections/encryptkeys'
 import Vdi from '@Compute/sections/VDI'
 import Vga from '@Compute/sections/VGA'
 import Machine from '@Compute/sections/Machine'
-import { NETWORK_OPTIONS_MAP, GPU_DEV_TYPE_OPTIONS } from '@Compute/constants'
+import { NETWORK_OPTIONS_MAP, hasVgaGpuInPciForm } from '@Compute/constants'
 import Kickstart from '@Compute/sections/Kickstart'
 import OsArch from '@/sections/OsArch'
 import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
@@ -504,15 +504,7 @@ export default {
         }
       })
       if (this.isKvm && pciEnable && pciModels.length) {
-        const pciDevTypes = []
-        Object.keys(this.form.fd).filter(key => key.includes('pciDevType')).forEach(key => {
-          if (R.is(Array, this.form.fd[key])) {
-            pciDevTypes.push(...this.form.fd[key])
-          } else {
-            pciDevTypes.push(this.form.fd[key])
-          }
-        })
-        if (this.isWindows && pciDevTypes.includes(GPU_DEV_TYPE_OPTIONS[0].value)) {
+        if (this.isWindows && hasVgaGpuInPciForm(this.form.fd)) {
           return true
         }
       }
@@ -529,15 +521,7 @@ export default {
         }
       })
       if (this.isKvm && pciEnable && pciModels.length) {
-        const pciDevTypes = []
-        Object.keys(this.form.fd).filter(key => key.includes('pciDevType')).forEach(key => {
-          if (R.is(Array, this.form.fd[key])) {
-            pciDevTypes.push(...this.form.fd[key])
-          } else {
-            pciDevTypes.push(this.form.fd[key])
-          }
-        })
-        if (pciDevTypes.includes(GPU_DEV_TYPE_OPTIONS[0].value)) {
+        if (hasVgaGpuInPciForm(this.form.fd)) {
           return true
         }
       }

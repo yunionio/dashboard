@@ -92,9 +92,10 @@ const capabilityData = {
       },
     },
     isolated_devices: {
-      'model:Quadro FX 580/type:GPU-HPC/vendor:NVIDIA': {
+      'model:Quadro FX 580/type:GPU/vendor:NVIDIA': {
         count: 1,
-        dev_type: 'GPU-HPC',
+        dev_type: 'GPU',
+        gpu_type: 'HPC',
         model: 'Quadro FX 580',
         pci_id: '10de:0659',
         vendor: 'NVIDIA',

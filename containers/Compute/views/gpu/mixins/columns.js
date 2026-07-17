@@ -7,7 +7,28 @@ import {
 } from '@/utils/common/tableColumn'
 import {
   getReserveResourceColumn,
+  getSharingModeColumn,
+  getMemorySizeColumn,
+  getVirtualNumColumn,
 } from '../utils/columns'
+
+function getGuestList (row) {
+  const { guest, guest_status } = row
+  if (!guest || (Array.isArray(guest) && !guest.length)) return []
+  const names = Array.isArray(guest) ? guest : [guest]
+  const statuses = Array.isArray(guest_status) ? guest_status : names.map(() => guest_status)
+  const seen = new Set()
+  const list = []
+  names.forEach((name, index) => {
+    if (!name || seen.has(name)) return
+    seen.add(name)
+    list.push({
+      name,
+      status: statuses[index],
+    })
+  })
+  return list
+}
 
 export default {
   created () {
@@ -92,10 +113,7 @@ export default {
         width: 100,
         showOverflow: 'ellipsis',
         formatter: function ({ row }) {
-          if (row.addr >= 0) {
-            return row.addr
-          }
-          return '-'
+          return row.addr || '-'
         },
       },
       {
@@ -136,23 +154,34 @@ export default {
       {
         field: 'guest',
         title: this.$t('compute.associated_instances'),
-        minWidth: 100,
+        minWidth: 180,
         showOverflow: 'ellipsis',
         slots: {
           default: ({ row }, h) => {
-            if (this.isPreLoad && !row.guest) return [<data-loading />]
+            const guests = getGuestList(row)
+            if (this.isPreLoad && !guests.length) return [<data-loading />]
+            if (!guests.length) return '-'
             return [
-              <div class='text-truncate'>
-                <list-body-cell-wrap copy={true} row={row} field="guest" onManager={this.onManager} hideField={ true }>
-                  <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row, 'associated-instances') }>{ row.guest }</side-page-trigger>
-                </list-body-cell-wrap>
-                {row.guest_status ? <status status={ row.guest_status } statusModule='server'/> : ''}
+              <div>
+                {guests.map((guest, index) => (
+                  <div class="d-flex align-items-center" key={index}>
+                    <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row, 'associated-instances') }>
+                      { guest.name }
+                    </side-page-trigger>
+                    {guest.status ? (
+                      <div class="ml-2">
+                        <status status={ guest.status } statusModule='server' />
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
               </div>,
             ]
           },
         },
         formatter: ({ row }) => {
-          return row.guest || '-'
+          const guests = getGuestList(row)
+          return guests.length ? guests.map(guest => guest.name).join(', ') : '-'
         },
       },
       getCopyWithContentTableColumn({
@@ -165,6 +194,9 @@ export default {
         },
       }),
       getReserveResourceColumn(),
+      getSharingModeColumn(),
+      getMemorySizeColumn(),
+      getVirtualNumColumn(),
       getPublicScopeTableColumn({ resource: 'isolated_devices', vm: this, title: this.$t('compute.text_113') }),
       getRegionTableColumn({ vm: this }),
     ]
