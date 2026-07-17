@@ -111,9 +111,10 @@ export default {
   watch: {
     regions: {
       handler: function (val, oldVal) {
-        const hadRegions = oldVal && !R.isEmpty(oldVal)
-        // 设置登录域等触发的 regions 刷新：保持当前页，不重算/乱跳
-        if (hadRegions) return
+        // 仅当已成功拉过 regions（有 api_server）后再刷新时跳过，避免设置登录域乱跳
+        // 注意：store 初始 regions 是非空对象，不能用 R.isEmpty 判断
+        const hadLoadedRegions = !!(oldVal && oldVal.api_server)
+        if (hadLoadedRegions) return
         if (this.isMobleCodeAuthEnabled && this.isDefaultLoginModeMobile) {
           this.loginMode = 'mobile'
         } else {
