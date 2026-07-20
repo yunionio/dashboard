@@ -33,7 +33,7 @@
       <a-form-item :label="$t('common.description')" v-if="!isServertemplate">
         <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
       </a-form-item>
-      <a-form-item :label="$t('compute.text_1041')" v-if="isOpenWorkflow">
+      <a-form-item :label="$t('compute.text_1041')" v-if="showReason">
         <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1042')" />
       </a-form-item>
       <a-form-item class="mb-0" :label="$t('compute.text_498')">
@@ -234,6 +234,7 @@
         :resourceType="form.fd.resourceType"
         :dataDiskSizes="dataDiskSizes"
         :isOpenWorkflow="isOpenWorkflow"
+        :isOpenOrderSetWorkflow="isOpenOrderSetWorkflow"
         :isModifyWorkflow="isModifyWorkflow"
         :isServertemplate="isServertemplate"
         :hasMeterService="hasMeterService"
