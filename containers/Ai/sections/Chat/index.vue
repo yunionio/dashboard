@@ -78,7 +78,7 @@
     <div class="chat-messages" ref="messagesContainer">
       <div
         v-for="(message, index) in messages"
-        :key="`${index}-${message.content.length}-${message.reasoning ? message.reasoning.length : 0}`"
+        :key="index"
         :class="['message-item', message.role]">
         <div class="message-avatar">
           <a-icon v-if="message.role === 'user'" type="user" />
@@ -102,13 +102,17 @@
               <vue-markdown :source="getMessageContent(message.content)" />
             </div>
           </template>
-          <div v-else class="message-text">
-            <vue-markdown :source="getMessageContent(message.content)" />
+          <div v-else-if="message.content" class="message-text message-text-stream">
+            <!-- 流式阶段用纯文本；白空格保留真实换行，但不强制断词 -->
+            <div
+              v-if="loading && index === streamingMessageIndex"
+              class="stream-plain">{{ message.content }}</div>
+            <vue-markdown v-else :source="getMessageContent(message.content)" />
           </div>
           <div class="message-time">{{ $moment(message.time).format('YYYY-MM-DD HH:mm:ss') }}</div>
         </div>
       </div>
-      <div v-if="loading" class="message-item assistant">
+      <div v-if="showThinking" class="message-item assistant">
         <div class="message-avatar">
           <icon type="ai" class="message-avatar-ai" />
         </div>
@@ -163,7 +167,7 @@ import {
   appendAnthropicStreamLine,
   extractAnthropicResponseText,
 } from '@Ai/utils/anthropicStream'
-import { splitThinkingContent } from '@Ai/utils/chatContent'
+import { splitThinkingContent, normalizeMarkdownTables } from '@Ai/utils/chatContent'
 import {
   buildDeploymentClientModelOptions,
   defaultClientModelOption,
@@ -209,6 +213,7 @@ export default {
       messages: [],
       inputMessage: '',
       loading: false,
+      streamingMessageIndex: -1,
       mcpTools: [],
       toolsPopoverVisible: false,
       selectedVirtualKeyId: '',
@@ -234,6 +239,13 @@ export default {
     },
     isChatTest () {
       return this.mode === 'chatTest'
+    },
+    // 已有增量内容时不再盖「思考中」，否则用户会感觉整段一次性返回
+    showThinking () {
+      if (!this.loading) return false
+      if (this.streamingMessageIndex < 0) return true
+      const msg = this.messages[this.streamingMessageIndex]
+      return !(msg && msg.content)
     },
     canSend () {
       if (this.isChatTest) return !!this.chatTestConfig
@@ -410,6 +422,7 @@ export default {
       }
       this.messages.push(assistantMessage)
       const assistantMessageIndex = this.messages.length - 1
+      this.streamingMessageIndex = assistantMessageIndex
       const userMessageIndex = assistantMessageIndex - 1
       let history = []
       if (this.isMcpResource) {
@@ -445,6 +458,7 @@ export default {
         }
       } finally {
         this.loading = false
+        this.streamingMessageIndex = -1
         this.$nextTick(() => {
           this.scrollToBottom()
         })
@@ -497,47 +511,8 @@ export default {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 
-      const contentType = response.headers.get('content-type') || ''
-      if (contentType.includes('text/event-stream') || contentType.includes('application/stream+json') || contentType.includes('application/json')) {
-        const reader = response.body.getReader()
-        const decoder = new TextDecoder()
-        let buffer = ''
-
-        while (true) {
-          const { done, value } = await reader.read()
-          if (done) break
-          buffer += decoder.decode(value, { stream: true })
-          const ls = buffer.split('data: \n')
-          const lines = []
-          ls.forEach(l => {
-            lines.push(...l.split('\n'))
-            lines.push('data: \n')
-          })
-          lines.filter(line => line)
-          buffer = lines.pop() || ''
-
-          for (const line of lines) {
-            this.appendStreamLine(line, assistantMessageIndex, 'mcp')
-          }
-
-          this.$nextTick(() => {
-            this.scrollToBottom()
-          })
-        }
-
-        if (buffer.trim()) {
-          this.appendStreamLine(buffer, assistantMessageIndex, 'mcp')
-        }
-      } else {
-        const text = await response.text()
-        try {
-          const data = JSON.parse(text)
-          const content = data.content || data.text || data.message || text
-          this.$set(this.messages[assistantMessageIndex], 'content', content)
-        } catch (e) {
-          this.$set(this.messages[assistantMessageIndex], 'content', text)
-        }
-      }
+      // 与 chatTest 共用按行解析，支持后端 token 级增量 SSE（data: xxx\n\n）
+      await this.consumeStreamResponse(response, assistantMessageIndex, 'mcp')
     },
     async streamChatTestResponse (message, assistantMessageIndex, history = []) {
       const { url, headers, body: bodyTemplate, protocol = 'openai' } = this.chatTestConfig
@@ -581,11 +556,20 @@ export default {
           const { done, value } = await reader.read()
           if (done) break
           buffer += decoder.decode(value, { stream: true })
-          const chunks = buffer.split('\n')
-          buffer = chunks.pop() || ''
 
-          for (const line of chunks) {
-            this.appendStreamLine(line, assistantMessageIndex, format)
+          if (format === 'mcp') {
+            // 按 SSE 事件（\n\n）解析；同一事件内多个 data: 行用 \n 拼接
+            const events = buffer.split('\n\n')
+            buffer = events.pop() || ''
+            for (const event of events) {
+              this.appendMcpSseEvent(event, assistantMessageIndex)
+            }
+          } else {
+            const chunks = buffer.split('\n')
+            buffer = chunks.pop() || ''
+            for (const line of chunks) {
+              this.appendStreamLine(line, assistantMessageIndex, format)
+            }
           }
 
           this.$nextTick(() => {
@@ -594,7 +578,11 @@ export default {
         }
 
         if (buffer.trim()) {
-          this.appendStreamLine(buffer, assistantMessageIndex, format)
+          if (format === 'mcp') {
+            this.appendMcpSseEvent(buffer, assistantMessageIndex)
+          } else {
+            this.appendStreamLine(buffer, assistantMessageIndex, format)
+          }
         }
       } else {
         const text = await response.text()
@@ -620,6 +608,21 @@ export default {
         }
       }
     },
+    appendMcpSseEvent (event, assistantMessageIndex) {
+      if (!event || !event.trim()) return
+      const dataLines = event.split('\n').filter(line => line.startsWith('data:'))
+      if (!dataLines.length) return // 忽略 : comment 等
+      const payload = dataLines.map(line => {
+        let p = line.slice(5)
+        if (p.startsWith(' ')) p = p.slice(1)
+        return p
+      }).join('\n')
+      const newContent = (this.messages[assistantMessageIndex].content || '') + payload
+      this.$set(this.messages[assistantMessageIndex], 'content', newContent)
+      this.$nextTick(() => {
+        this.scrollToBottom()
+      })
+    },
     appendStreamLine (line, assistantMessageIndex, format) {
       if (format === 'openai') {
         this.appendOpenAiStreamLine(line, assistantMessageIndex)
@@ -629,17 +632,9 @@ export default {
         this.appendAnthropicStreamLine(line, assistantMessageIndex)
         return
       }
-
-      if (line === 'data: \\n' || line === 'data: \n') {
-        const newContent = (this.messages[assistantMessageIndex].content || '') + '\n'
-        this.$set(this.messages[assistantMessageIndex], 'content', newContent)
-        return
-      }
-
-      const trimmed = line.trim()
-      if (!trimmed || !trimmed.startsWith('data:')) return
-
-      let payload = trimmed.slice(5)
+      // 非 mcp 兜底：按单行 data: 追加
+      if (!line.startsWith('data:')) return
+      let payload = line.slice(5)
       if (payload.startsWith(' ')) payload = payload.slice(1)
       const newContent = (this.messages[assistantMessageIndex].content || '') + payload
       this.$set(this.messages[assistantMessageIndex], 'content', newContent)
@@ -907,10 +902,10 @@ export default {
     },
     getMessageContent (content) {
       if (!content) return ''
-      const normalized = content
+      const normalized = String(content)
         .replace(/\\r\\n/g, '\n')
         .replace(/\\n/g, '\n')
-      return normalized.replace(/\n+$/, '').replace(/[ \t]+$/, '')
+      return normalizeMarkdownTables(normalized.replace(/\n+$/, '').replace(/[ \t]+$/, ''))
     },
     isReasoningExpanded (index) {
       return !!this.expandedReasoningMap[index]
@@ -1121,6 +1116,17 @@ export default {
 
       .message-text {
         line-height: 1.6;
+        overflow-wrap: anywhere;
+        word-break: normal;
+
+        .stream-plain {
+          margin: 0;
+          white-space: pre-wrap;
+          overflow-wrap: anywhere;
+          word-break: normal;
+          font-family: inherit;
+          font-size: inherit;
+        }
 
         /deep/ h1, /deep/ h2, /deep/ h3, /deep/ h4, /deep/ h5, /deep/ h6 {
           margin: 12px 0 8px 0;
@@ -1187,34 +1193,31 @@ export default {
           border-collapse: collapse;
           margin: 12px 0;
           width: 100%;
-          display: block;
           overflow-x: auto;
+          display: block;
+          border: 1px solid #e8e8e8;
+          border-radius: 4px;
+          background: #fff;
+          font-size: 13px;
+          line-height: 1.5;
 
           th,
           td {
-            border: 1px solid #ddd;
+            border: 1px solid #e8e8e8;
             padding: 8px 12px;
             text-align: left;
             white-space: nowrap;
+            vertical-align: top;
           }
 
           th {
-            background: #f5f5f5;
+            background: #fafafa;
             font-weight: 600;
+            color: rgba(0, 0, 0, 0.85);
           }
 
-          th:first-child,
-          td:first-child {
-            position: sticky;
-            left: 0;
-            z-index: 1;
-            background: #fff;
-            box-shadow: inset -1px 0 0 #ddd;
-          }
-
-          thead th:first-child {
-            z-index: 2;
-            background: #f5f5f5;
+          tr:nth-child(even) td {
+            background: #fcfcfc;
           }
         }
 
