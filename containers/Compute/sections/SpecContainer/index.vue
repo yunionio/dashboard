@@ -1,13 +1,20 @@
 <template>
   <div>
     <a-tabs hideAdd v-model="active" type="editable-card" @edit="onEdit" @change="handleTabChange" class="spec-container-tabs">
-      <a-tab-pane v-for="(pane, i) in panes" :key="pane.key" :closable="panes.length > 1">
+      <a-tab-pane v-for="(pane, i) in panes" :key="pane.key" :closable="panes.length > 1" :forceRender="true">
         <template v-slot:tab>
           <a-badge :dot="showBadge(pane)" :offset="[(panes.length > 1 ? 24 : 10), -5]">
             <span>{{$t('compute.container', [i+1])}}</span>
           </a-badge>
         </template>
-        <spec-container-form :decorators="getDecorators(pane.key)" :cluster="cluster" :namespace="namespace" :form="form" :paneKey="pane.key" />
+        <spec-container-form
+          :ref="`form_${pane.key}`"
+          :decorators="getDecorators(pane.key)"
+          :cluster="cluster"
+          :namespace="namespace"
+          :form="form"
+          :paneKey="pane.key"
+          :initItem="initContainers[i] || null" />
       </a-tab-pane>
       <a-tab-pane key="add-tab" class="add-container-tab" :closable="false">
         <template v-slot:tab>
@@ -43,15 +50,28 @@ export default {
       type: Array,
       default: () => [],
     },
+    /** 修改工单反填：pod.containers */
+    initContainers: {
+      type: Array,
+      default: () => [],
+    },
   },
   data () {
-    const key = uuid()
+    const initCount = Math.max((this.initContainers && this.initContainers.length) || 0, 1)
+    const panes = Array.from({ length: initCount }, () => ({ key: uuid() }))
     return {
-      active: key,
-      panes: [
-        { key },
-      ],
+      active: panes[0].key,
+      panes,
     }
+  },
+  watch: {
+    initContainers: {
+      deep: true,
+      handler (val) {
+        if (!val || !val.length) return
+        this.ensurePaneCount(val.length)
+      },
+    },
   },
   created () {
     this.syncPanes()
@@ -63,6 +83,17 @@ export default {
     showBadge (pane) {
       return this.errPanes.includes(pane.key)
     },
+    ensurePaneCount (count) {
+      const n = Math.max(count || 0, 1)
+      while (this.panes.length < n) {
+        this.panes.push({ key: uuid() })
+      }
+      if (this.panes.length > n) {
+        this.panes = this.panes.slice(0, n)
+      }
+      this.active = this.panes[0].key
+      this.syncPanes()
+    },
     add () {
       const key = uuid()
       this.panes.push({
@@ -70,6 +101,25 @@ export default {
       })
       this.active = key
       this.syncPanes()
+    },
+    fillContainers (containers = []) {
+      this.ensurePaneCount(containers.length)
+      this.$nextTick(() => {
+        this.panes.forEach((pane, i) => {
+          const item = containers[i]
+          if (!item) return
+          const formRef = this.$refs[`form_${pane.key}`]
+          const formComp = Array.isArray(formRef) ? formRef[0] : formRef
+          if (formComp && formComp.applyInitData) {
+            formComp.initApplied = false
+            formComp.applyInitData(item)
+          }
+        })
+      })
+      return this.panes.map(p => p.key)
+    },
+    initFromContainers (containers = []) {
+      return this.fillContainers(containers)
     },
     onEdit (targetKey, action) {
       if (action === 'remove') {

@@ -104,13 +104,35 @@ const validateMountNames = (rule, value, callback) => {
   callback()
 }
 
-export const createVmDecorators = () => {
+export const createVmDecorators = (initData = {}) => {
   const imageTypeInitValue = IMAGES_TYPE_MAP.standard.key
+  const initPreferZone = (Array.isArray(initData.prefer_zones) && initData.prefer_zones[0]) ||
+    initData.prefer_zone ||
+    initData.prefer_zone_id ||
+    ''
+  let initNetworkType = NETWORK_OPTIONS_MAP.default.key
+  if (initData.nets) {
+    if (initData.nets[0] && initData.nets[0].hasOwnProperty('exit') && !initData.nets[0].exit) {
+      initNetworkType = NETWORK_OPTIONS_MAP.default.key
+    } else if (initData.nets[0] && initData.nets[0].hasOwnProperty('network') && initData.extraData?.nets?.[0]) {
+      initNetworkType = NETWORK_OPTIONS_MAP.manual.key
+    } else if (initData.nets[0]?.schedtags) {
+      initNetworkType = NETWORK_OPTIONS_MAP.schedtag.key
+    }
+  }
+  let initSchedPolicyType = 'default'
+  if (initData.prefer_host) {
+    initSchedPolicyType = 'host'
+  }
+  if (initData.schedtags && initData.schedtags.length) {
+    initSchedPolicyType = 'schedtag'
+  }
 
   return {
     domain: [
       'domain',
       {
+        initialValue: initData.extraData?.domain_id,
         rules: [
           { validator: isRequired(), message: i18n.t('rules.domain'), trigger: 'change' },
         ],
@@ -119,6 +141,7 @@ export const createVmDecorators = () => {
     project: [
       'project',
       {
+        initialValue: initData.project_id,
         rules: [
           { validator: isRequired(), message: i18n.t('rules.project'), trigger: 'change' },
         ],
@@ -127,7 +150,7 @@ export const createVmDecorators = () => {
     name: [
       'name',
       {
-        initialValue: '',
+        initialValue: initData.generate_name || '',
         validateTrigger: 'blur',
         validateFirst: true,
         rules: [
@@ -138,13 +161,19 @@ export const createVmDecorators = () => {
     description: [
       'description',
       {
-        initialValue: '',
+        initialValue: initData.description || '',
+      },
+    ],
+    reason: [
+      'reason',
+      {
+        initialValue: initData.extraData?.reason || '',
       },
     ],
     count: [
       'count',
       {
-        initialValue: 1,
+        initialValue: initData.__count__ || initData.count || 1,
         rules: [
           { required: true, message: i18n.t('compute.text_211') },
         ],
@@ -154,7 +183,7 @@ export const createVmDecorators = () => {
       cloudregion: [
         'cloudregion',
         {
-          initialValue: { key: '', label: '' },
+          initialValue: { key: initData.prefer_region || '', label: '' },
           rules: [
             { validator: isRequired(), message: i18n.t('compute.text_212') },
           ],
@@ -163,7 +192,7 @@ export const createVmDecorators = () => {
       zone: [
         'zone',
         {
-          initialValue: { key: '', label: '' },
+          initialValue: { key: initPreferZone, label: '' },
           rules: [
             { validator: isRequired(), message: i18n.t('compute.text_213') },
           ],
@@ -268,18 +297,19 @@ export const createVmDecorators = () => {
     vcpu: [
       'vcpu',
       {
-        initialValue: 2,
+        initialValue: Number(initData.vcpu_count) || 2,
       },
     ],
     vmem: [
       'vmem',
       {
-        initialValue: 2048,
+        initialValue: Number(initData.vmem_size) || 2048,
       },
     ],
     sku: [
       'sku',
       {
+        initialValue: initData.sku || undefined,
         rules: [
           { validator: isRequired(true, 'id'), message: i18n.t('compute.text_216') },
         ],
@@ -390,7 +420,7 @@ export const createVmDecorators = () => {
       networkType: [
         'networkType',
         {
-          initialValue: NETWORK_OPTIONS_MAP.default.key,
+          initialValue: initNetworkType,
         },
       ],
       networkConfig: {
@@ -526,12 +556,13 @@ export const createVmDecorators = () => {
       schedPolicyType: [
         'schedPolicyType',
         {
-          initialValue: 'default',
+          initialValue: initSchedPolicyType,
         },
       ],
       schedPolicyHost: [
         'schedPolicyHost',
         {
+          initialValue: initData.prefer_host || undefined,
           rules: [
             { required: true, message: i18n.t('compute.text_219') },
           ],
@@ -564,13 +595,13 @@ export const createVmDecorators = () => {
       durationStandard: [
         'durationStandard',
         {
-          initialValue: 'none',
+          initialValue: initData.duration ? 'custom' : 'none',
         },
       ],
       duration: [
         'duration',
         {
-          initialValue: '1h',
+          initialValue: initData.duration === '1w' ? '7d' : (initData.duration || '1h'),
         },
       ],
     },
@@ -579,11 +610,14 @@ export const createVmDecorators = () => {
         'groupsEnable',
         {
           valuePropName: 'checked',
-          initialValue: false,
+          initialValue: !!(initData.groups && initData.groups.length),
         },
       ],
       groups: [
         'groups',
+        {
+          initialValue: initData.groups || [],
+        },
       ],
     },
     bill: {
@@ -648,12 +682,13 @@ export const createVmDecorators = () => {
       type: [
         'secgroup_type',
         {
-          initialValue: 'default',
+          initialValue: (initData.secgroups && initData.secgroups.length) ? 'bind' : 'default',
         },
       ],
       secgroup: [
         'secgroup',
         {
+          initialValue: initData.secgroups || [],
           validateFirst: true,
           rules: [
             { required: true, message: i18n.t('compute.text_190') },
@@ -664,6 +699,7 @@ export const createVmDecorators = () => {
     tag: [
       'tag',
       {
+        initialValue: initData.__meta__ || {},
         rules: [
           { validator: validateForm('tagName') },
         ],
@@ -672,6 +708,7 @@ export const createVmDecorators = () => {
     os_arch: [
       'os_arch',
       {
+        initialValue: initData.os_arch || undefined,
         rules: [
           { required: true, message: i18n.t('compute.text_1363') },
         ],
@@ -679,6 +716,9 @@ export const createVmDecorators = () => {
     ],
     hostName: [
       'hostName',
+      {
+        initialValue: initData.hostname || '',
+      },
     ],
     portMapping: {
       key: i => [
@@ -894,8 +934,8 @@ export class Decorator {
     this.type = type
   }
 
-  createDecorators () {
-    return createVmDecorators(this.type)
+  createDecorators (initData) {
+    return createVmDecorators(initData)
   }
 }
 
@@ -1455,6 +1495,7 @@ export class GenCreateData {
       generate_name: this.fd.name && this.fd.name.trim(),
       description: this.fd.description,
       hypervisor: this.getHypervisor(),
+      provider: this.createType === SERVER_TYPE.private ? 'Cloudpods' : 'OneCloud',
       __count__: this.fd.count,
       disks: this.genDisks(),
       nets: this.genNetworks(),
@@ -1565,6 +1606,19 @@ export class GenCreateData {
     }
     // 容器
     data.pod = this.generatePod(data)
+    data.extraData = {
+      domain_id: this.fd.domain?.key || store.getters.userInfo.projectDomainId,
+      nets: [],
+    }
+    // 指定 IP 子网时保留 UI 网络信息便于工单反填
+    if (this.fd.networkType === NETWORK_OPTIONS_MAP.manual.key && this.fd.networks) {
+      R.forEachObjIndexed((value, key) => {
+        data.extraData.nets.push({
+          network: value,
+          network_id: value,
+        })
+      }, this.fd.networks)
+    }
     return data
   }
 

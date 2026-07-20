@@ -12,7 +12,7 @@ import CloudregionZone from '@/sections/CloudregionZone'
 import Tag from '@/sections/Tag'
 import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
-import { sizestr } from '@/utils/utils'
+import { sizestr, uuid } from '@/utils/utils'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 import i18n from '@/locales'
 import BottomBar from './BottomBar'
@@ -53,7 +53,11 @@ export default {
     Tag,
   },
   data () {
-    const initData = this.isInitForm && this.initFormData
+    const initData = (this.isInitForm && this.initFormData) || {}
+    const initPreferZone = (Array.isArray(initData.prefer_zones) && initData.prefer_zones[0]) ||
+      initData.prefer_zone ||
+      initData.prefer_zone_id ||
+      ''
     const imageTypeInitValue = initData.extraData?.image_type || IMAGES_TYPE_MAP.standard.key
     let initImage = ''
     if (initData.disks) {
@@ -203,7 +207,7 @@ export default {
           zone: [
             'zone',
             {
-              initialValue: { key: initData.prefer_zone || '', label: '' },
+              initialValue: { key: initPreferZone || '', label: '' },
               rules: [
                 { required: true, message: i18n.t('compute.text_213') },
               ],
@@ -213,7 +217,7 @@ export default {
         count: [
           'count',
           {
-            initialValue: initData.count || 1,
+            initialValue: initData.__count__ || initData.count || 1,
           },
         ],
         imageOS: {
@@ -414,6 +418,9 @@ export default {
         },
         description: [
           'description',
+          {
+            initialValue: initData.description || '',
+          },
         ],
         __meta__: [
           '__meta__',
@@ -599,6 +606,16 @@ export default {
     isOpenWorkflow () {
       return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_MACHINE)
     },
+    isOpenOrderSetWorkflow () {
+      return this.checkWorkflowEnabled(WORKFLOW_TYPES.EXECUTE_RESOURCE_ORDER_SET)
+    },
+    isModifyWorkflow () {
+      return !!this.$route.query.workflow
+    },
+    isModifyShopCartOrder () {
+      const { workflow, order_set_id } = this.$route.query
+      return !!(workflow && order_set_id)
+    },
     isCheckedIso () {
       return this.osSelectImageType === 'iso'
     },
@@ -693,7 +710,10 @@ export default {
       let cData = {}
       if (this.isInitForm && initData.extraData && this.form?.fc) {
         try {
-          const { data: capabilityData } = await this.getCapability(initData.prefer_zone, initData)
+          const preferZone = (Array.isArray(initData.prefer_zones) && initData.prefer_zones[0]) ||
+            initData.prefer_zone ||
+            initData.prefer_zone_id
+          const { data: capabilityData } = await this.getCapability(preferZone, initData)
           this.form.fi.capability = capabilityData
           cData = capabilityData
         } catch (error) {
@@ -1211,8 +1231,8 @@ export default {
       }
       return size
     },
-    async handleConfirm (e) {
-      e.preventDefault()
+    async handleConfirm (e, action = 'submit') {
+      if (e && e.preventDefault) e.preventDefault()
       const diskConfigs = []
       const values = await this.validateForm()
       const disks = []
@@ -1356,6 +1376,7 @@ export default {
         vcpu_count: Number(this.selectedSpecItem.cpu),
         generate_name: values.name,
         hypervisor: 'baremetal',
+        provider: this.cloudEnv === 'private' ? 'Cloudpods' : 'OneCloud',
         auto_start: true,
         vdi: 'vnc',
         disks,
@@ -1393,47 +1414,148 @@ export default {
       if (this.isInstallOperationSystem) {
         // Reflect.deleteProperty(params, 'project_id')
         this.createBaremetal(params)
-      } else {
-        if (this.isOpenWorkflow) { // 提交工单
-          const workflowParams = {
-            ...params,
-            extraData,
-          }
-          const variables = {
-            process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
-            initiator: this.$store.getters.userInfo.id,
-            'server-create-paramter': JSON.stringify(workflowParams),
-            project: this.projectId?.key,
-            project_domain: this.domainId?.key || this.$store.getters.userInfo.projectDomainId,
-          }
-          this.doCreateWorkflow(variables, workflowParams)
-        } else { // 创建裸金属
-          this.doForecast(params)
+      } else if (action === 'addCart') {
+        const workflowParams = {
+          ...params,
+          extraData,
         }
+        await this.checkCreateData(workflowParams)
+        await this.checkForecast(workflowParams)
+        const shopCart = this.buildShopCartParameter(workflowParams)
+        this.$message.success(this.$t('common.success'))
+        this.$store.commit('shopcart/ADD_SHOP_CART', shopCart)
+      } else if (this.isModifyShopCartOrder || this.isOpenWorkflow || this.isModifyWorkflow) { // 修改购物车订单项 / 主机申请工单（含修改历史工单）
+        const workflowParams = {
+          ...params,
+          extraData,
+        }
+        await this.checkCreateData(workflowParams)
+        await this.checkForecast(workflowParams)
+        const variables = {
+          process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
+          initiator: this.$store.getters.userInfo.id,
+          'server-create-paramter': JSON.stringify(workflowParams),
+          project: this.projectId?.key,
+          project_domain: this.domainId?.key || this.$store.getters.userInfo.projectDomainId,
+        }
+        await this.doCreateWorkflow(variables, workflowParams)
+      } else if (this.isOpenOrderSetWorkflow) { // 购物车工单
+        const workflowParams = {
+          ...params,
+          extraData,
+        }
+        await this.doCreateOrderSetWorkflow(workflowParams)
+      } else { // 创建裸金属
+        this.doForecast(params)
       }
     },
-    // 创建工单
-    doCreateWorkflow (variables, params) {
+    buildShopCartParameter (workflowParams) {
+      const { count, ...parameter } = workflowParams
+      const shopCart = {
+        action: 'create',
+        auto_execute: true,
+        count: count || 1,
+        resource: 'servers',
+        user_id: this.$store.getters.userInfo.id,
+        parameter,
+        project: this.projectId?.key || this.$store.getters.userInfo.projectId,
+        project_domain: this.domainId?.label || this.domainId?.key || this.$store.getters.userInfo.projectDomain,
+      }
+      return shopCart
+    },
+    async checkCreateData (data) {
+      return new this.$Manager('servers').create({ data: { ...data, dry_run: true } })
+    },
+    async checkForecast (params) {
+      const res = await this.schedulerM.rpc({ methodname: 'DoForecast', params })
+      if (res.data.can_create) {
+        return params
+      }
+      this.errors = this.getForecastErrors(res.data)
+      throw this.errors
+    },
+    async addShopCart () {
+      if (this.isInstallOperationSystem) return
+      try {
+        this.submiting = true
+        await this.handleConfirm(null, 'addCart')
+      } catch (error) {
+        throw error
+      } finally {
+        this.submiting = false
+      }
+    },
+    async doCreateOrderSetWorkflow (workflowParams) {
       this.submiting = true
-      if (this.$route.query.workflow) {
-        new this.$Manager('historic-process-instances', 'v1')
-          .update({ id: `${this.$route.query.workflow}/variables`, data: { variables } })
-          .then(() => {
-            this.submiting = false
-            this.$message.success(i18n.t('compute.text_320', [params.name]))
-            this.$router.push('/workflow')
-          })
-      } else {
-        new this.$Manager('process-instances', 'v1')
+      try {
+        await this.checkCreateData(workflowParams)
+        await this.checkForecast(workflowParams)
+        const { displayname, name } = this.$store.getters.userInfo
+        const shopCart = this.buildShopCartParameter(workflowParams)
+        const orderSetRes = await new this.$Manager('resource_order_sets').create({
+          data: {
+            auto_execute: false,
+            name: this.$t('common.shopcart_workflow_name', [displayname || name, this.$moment().format('YYYY-MM-DD'), uuid()]),
+            parameters: [shopCart],
+          },
+        })
+        const variables = {
+          process_definition_key: WORKFLOW_TYPES.EXECUTE_RESOURCE_ORDER_SET,
+          initiator: this.$store.getters.userInfo.id,
+          ids: orderSetRes.data.id,
+          parameter: '{}',
+          project: shopCart.project,
+          project_domain: shopCart.project_domain,
+        }
+        await new this.$Manager('process-instances', 'v1').create({ data: { variables } })
+        this.$message.success(i18n.t('compute.text_320', [workflowParams.generate_name]))
+        this.$router.push('/workflow')
+      } catch (error) {
+        throw error
+      } finally {
+        this.submiting = false
+      }
+    },
+    // 创建/修改工单
+    async doCreateWorkflow (variables, params) {
+      const { workflow = '', order_set_id = '', order_set_idx = '' } = this.$route.query
+      this.submiting = true
+      try {
+        if (order_set_id && workflow) {
+          const idx = Number(order_set_idx)
+          const res = await new this.$Manager('resource_order_sets').get({ id: order_set_id })
+          const existing = res.data?.parameters?.[idx]
+          if (!existing) {
+            this.$message.error(this.$t('common.failed'))
+            throw new Error('resource order set item not found')
+          }
+          const { count, ...parameter } = params
+          const parameters = [...res.data.parameters]
+          parameters[idx] = {
+            ...existing,
+            count: count || existing.count || 1,
+            parameter,
+          }
+          await new this.$Manager('resource_order_sets').update({ id: order_set_id, data: { parameters } })
+          this.$message.success(this.$t('common.success'))
+          this.$router.push('/workflow')
+          return
+        }
+        if (workflow) {
+          await new this.$Manager('historic-process-instances', 'v1')
+            .update({ id: `${workflow}/variables`, data: { variables } })
+          this.$message.success(i18n.t('compute.text_320', [params.name || params.generate_name]))
+          this.$router.push('/workflow')
+          return
+        }
+        await new this.$Manager('process-instances', 'v1')
           .create({ data: { variables } })
-          .then(() => {
-            this.submiting = false
-            this.$message.success(i18n.t('compute.text_320', [params.name]))
-            this.$router.push('/workflow')
-          })
-          .catch(() => {
-            this.submiting = false
-          })
+        this.$message.success(i18n.t('compute.text_320', [params.name || params.generate_name]))
+        this.$router.push('/workflow')
+      } catch (error) {
+        throw error
+      } finally {
+        this.submiting = false
       }
     },
     doForecast (params) {
