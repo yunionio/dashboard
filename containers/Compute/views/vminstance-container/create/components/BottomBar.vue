@@ -22,7 +22,7 @@
       </template>
       <template v-slot:right>
         <div class="d-flex align-items-center">
-          <div v-if="hasMeterService" class="mr-4 d-flex align-items-center">
+          <!-- <div v-if="hasMeterService" class="mr-4 d-flex align-items-center">
             <div class="text-truncate">{{$t('compute.text_286')}}</div>
             <div class="ml-2 prices">
               <div class="hour d-flex">
@@ -36,9 +36,9 @@
                 <span v-html="priceTips" />
               </div>
             </div>
-          </div>
-          <!-- <a-dropdown-button
-            v-if="$appConfig.isPrivate && !$store.getters.isSysCE && hasCartPermission"
+          </div> -->
+          <a-dropdown-button
+            v-if="$appConfig.isPrivate && !$store.getters.isSysCE && hasCartPermission && !isModifyWorkflow"
             :title="confirmText"
             class="text-truncate"
             type="primary"
@@ -54,8 +54,9 @@
               </a-menu-item>
             </a-menu>
             <a-icon slot="icon" type="down" />
-          </a-dropdown-button> -->
+          </a-dropdown-button>
           <a-button
+            v-else
             :title="confirmText"
             class="text-truncate"
             type="primary"
@@ -79,14 +80,14 @@ import { sizestrWithUnit } from '@/utils/utils'
 import { hasPermission, hasServices } from '@/utils/auth'
 import { PriceFetcher } from '@/utils/common/price'
 import SideErrors from '@/sections/SideErrors'
-import DiscountPrice from '@/sections/DiscountPrice'
+// import DiscountPrice from '@/sections/DiscountPrice'
 import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
 
 export default {
   name: 'BottomBar',
   components: {
     SideErrors,
-    DiscountPrice,
+    // DiscountPrice,
   },
   props: {
     loading: {
@@ -111,6 +112,18 @@ export default {
     hasMeterService: {
       type: Boolean,
       default: true,
+    },
+    isOpenWorkflow: {
+      type: Boolean,
+      default: false,
+    },
+    isOpenOrderSetWorkflow: {
+      type: Boolean,
+      default: false,
+    },
+    isModifyWorkflow: {
+      type: Boolean,
+      default: false,
     },
     dataDiskSizes: {
       type: Array,
@@ -230,6 +243,8 @@ export default {
       return 0
     },
     confirmText () {
+      if (this.isModifyWorkflow) return this.$t('common.modify_workflow')
+      if (this.isOpenWorkflow || this.isOpenOrderSetWorkflow) return this.$t('compute.text_288')
       return this.$t('compute.text_289')
     },
     dataDiskObj () {
@@ -275,47 +290,47 @@ export default {
       },
       immediate: true,
     },
-    dataDiskType (val, oldV) {
-      if (val !== oldV) {
-        this.getPriceList()
-      }
-    },
-    'fd.eip_type' (val, oldV) {
-      this.getPriceList()
-    },
-    'fd.eip_bw' (val, oldV) {
-      this.getPriceList()
-    },
-    'fd.backupEnable' (val, oldV) {
-      this.getPriceList()
-    },
-    'fd.eip_bgp_type' (val, oldV) {
-      this.getPriceList()
-    },
-    'fd.gpuEnable' (val, oldV) {
-      this.getPriceList()
-    },
-    'fd.backupEnbale' (val, oldV) {
-      this.calcPrice()
-    },
+    // dataDiskType (val, oldV) {
+    //   if (val !== oldV) {
+    //     this.getPriceList()
+    //   }
+    // },
+    // 'fd.eip_type' (val, oldV) {
+    //   this.getPriceList()
+    // },
+    // 'fd.eip_bw' (val, oldV) {
+    //   this.getPriceList()
+    // },
+    // 'fd.backupEnable' (val, oldV) {
+    //   this.getPriceList()
+    // },
+    // 'fd.eip_bgp_type' (val, oldV) {
+    //   this.getPriceList()
+    // },
+    // 'fd.gpuEnable' (val, oldV) {
+    //   this.getPriceList()
+    // },
+    // 'fd.backupEnbale' (val, oldV) {
+    //   this.calcPrice()
+    // },
   },
   created () {
-    this.baywatch([
-      'fd.sku.id',
-      'fd.gcounts',
-      'fd.duration',
-      'fd.billType',
-      'fd.systemDiskSize',
-      'fd.systemDiskType.key',
-      'fd.count',
-      'dataDiskSizes',
-      'fd.gpu',
-      'fd.gpuCount',
-    ], (val, oldval) => {
-      if (val) {
-        this.getPriceList()
-      }
-    })
+    // this.baywatch([
+    //   'fd.sku.id',
+    //   'fd.gcounts',
+    //   'fd.duration',
+    //   'fd.billType',
+    //   'fd.systemDiskSize',
+    //   'fd.systemDiskType.key',
+    //   'fd.count',
+    //   'dataDiskSizes',
+    //   'fd.gpu',
+    //   'fd.gpuCount',
+    // ], (val, oldval) => {
+    //   if (val) {
+    //     this.getPriceList()
+    //   }
+    // })
     this.$bus.$on('VMCreateDisabled', (val) => {
       this.disabled = val
     })

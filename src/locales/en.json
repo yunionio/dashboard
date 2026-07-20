@@ -6441,7 +6441,7 @@
   "common.workflow.shut_down": "Host shuts down",
   "common.workflow.start": "Host start",
   "common.workflow.restart": "Host restart",
-  "common.workflow.order_set": "Resource Order Application",
+  "common.workflow.order_set": "Shopping cart order",
   "common.workflow.alert_event": "Alert Event",
   "common.workflow.alert_ticket": "Alert Ticket",
   "common.ssh_login_err": "SSH remote login failed",

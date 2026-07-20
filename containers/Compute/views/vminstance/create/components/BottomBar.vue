@@ -38,7 +38,7 @@
             </div>
           </div>
           <a-dropdown-button
-            v-if="!isServertemplate && $appConfig.isPrivate && !$store.getters.isSysCE && hasCartPermission"
+            v-if="!isServertemplate && $appConfig.isPrivate && !$store.getters.isSysCE && hasCartPermission && !isModifyWorkflow"
             :title="confirmText"
             class="text-truncate"
             type="primary"
@@ -111,6 +111,10 @@ export default {
       type: String,
     },
     isOpenWorkflow: {
+      type: Boolean,
+      default: false,
+    },
+    isOpenOrderSetWorkflow: {
       type: Boolean,
       default: false,
     },
@@ -247,7 +251,7 @@ export default {
     confirmText () {
       if (this.isServertemplate) return this.$t('compute.text_1139')
       if (this.isModifyWorkflow) return this.$t('common.modify_workflow')
-      if (this.isOpenWorkflow) return this.$t('compute.text_288')
+      if (this.isOpenWorkflow || this.isOpenOrderSetWorkflow) return this.$t('compute.text_288')
       return this.$t('compute.text_289')
     },
     dataDiskObj () {
