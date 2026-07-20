@@ -46,6 +46,7 @@
     </a-form-item>
     <a-form-item :label="$t('compute.repo.data_volume')">
       <labels
+        ref="volumeMountRef"
         :decorators="decorators.volumeMount"
         :title="$t('compute.repo.storage_statement')"
         :keyLabel="$t('compute.repo.storage_statement')"
@@ -57,7 +58,7 @@
         @label-change="labelChangeHandle" />
     </a-form-item>
     <a-form-item :label="$t('compute.repo.env_variables')">
-      <labels :decorators="decorators.env" :title="$t('compute.repo.variables')" :keyLabel="$t('compute.repo.variables')" />
+      <labels ref="envRef" :decorators="decorators.env" :title="$t('compute.repo.variables')" :keyLabel="$t('compute.repo.variables')" />
     </a-form-item>
     <a-form-item label="">
       <a-checkbox v-decorator="decorators.enableLxcfs">{{$t('compute.repo.enable_lxcfs')}}</a-checkbox>
@@ -144,6 +145,10 @@ export default {
       validator: val => val.fc,
     },
     paneKey: String,
+    initItem: {
+      type: Object,
+      default: null,
+    },
   },
   data () {
     return {
@@ -151,6 +156,7 @@ export default {
       labelList: [],
       overlayEnabled: false,
       capabilityOptions: CAPABILITY_OPTIONS,
+      initApplied: false,
     }
   },
   computed: {
@@ -183,6 +189,21 @@ export default {
       }
       return checkedValues
     },
+  },
+  watch: {
+    initItem: {
+      deep: true,
+      handler (val) {
+        if (val && !this.initApplied) {
+          this.$nextTick(() => this.applyInitData(val))
+        }
+      },
+    },
+  },
+  mounted () {
+    if (this.initItem) {
+      this.$nextTick(() => this.applyInitData(this.initItem))
+    }
   },
   methods: {
     formatInput (e, field) {
@@ -218,6 +239,70 @@ export default {
     },
     labelChangeHandle (val) {
       this.labelList = val
+    },
+    applyInitData (item = {}) {
+      if (!item || this.initApplied) return
+      if (item.image_credential_id) {
+        this.source = 'registry'
+      }
+      if (item.rootfs) {
+        this.overlayEnabled = true
+      }
+      const fc = this.form && this.form.fc
+      if (!fc || !this.decorators) return
+      const field = (decorator) => (decorator && decorator[0]) || ''
+      const values = {}
+      const nameField = field(this.decorators.name)
+      const imageField = field(this.decorators.image)
+      const registryField = field(this.decorators.registryImage)
+      const credentialField = field(this.decorators.imageCredentialId)
+      const commandField = field(this.decorators.command)
+      const argField = field(this.decorators.arg)
+      const privilegedField = field(this.decorators.privileged)
+      const lxcfsField = field(this.decorators.enableLxcfs)
+      const capAddField = field(this.decorators.capAdd)
+      const capDropField = field(this.decorators.capDrop)
+      const overlayField = field(this.decorators.enableSysDiskOverlay)
+      const rootfsPersistentField = field(this.decorators.rootfsPersistent)
+      if (nameField) values[nameField] = item.name || ''
+      if (item.image_credential_id) {
+        if (registryField) values[registryField] = item.image || ''
+        if (credentialField) values[credentialField] = item.image_credential_id
+      } else if (imageField) {
+        values[imageField] = item.image || ''
+      }
+      if (commandField) values[commandField] = (item.command || []).filter(Boolean).join(' ')
+      if (argField) values[argField] = (item.args || []).filter(Boolean).join(' ')
+      if (privilegedField) values[privilegedField] = !!item.privileged
+      if (lxcfsField) values[lxcfsField] = item.enable_lxcfs !== false
+      if (capAddField) values[capAddField] = item.capabilities?.add || []
+      if (capDropField) values[capDropField] = item.capabilities?.drop || []
+      if (overlayField) values[overlayField] = !!item.rootfs
+      if (rootfsPersistentField) values[rootfsPersistentField] = !!item.rootfs?.persistent
+      // 延迟一拍，确保 v-decorator 已注册；再重试一次防止被 tabs 延迟渲染吞掉
+      const doSet = () => {
+        fc.setFieldsValue(values)
+      }
+      this.$nextTick(() => {
+        doSet()
+        this.initApplied = true
+        setTimeout(() => {
+          doSet()
+          if (item.envs?.length && this.$refs.envRef) {
+            this.$refs.envRef.initData(item.envs.map(env => ({ key: env.key, value: env.value })))
+          }
+          if (item.volume_mounts?.length && this.$refs.volumeMountRef) {
+            this.$refs.volumeMountRef.initData(item.volume_mounts.map(vm => ({
+              key: `${vm.disk?.index ?? ''}`,
+              value: vm.mount_path,
+            })))
+          }
+        }, 300)
+      })
+    },
+    initContainerData (item = {}) {
+      this.initApplied = false
+      this.applyInitData(item)
     },
   },
 }

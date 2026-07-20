@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import _ from 'lodash'
-import { SCHED_POLICY_OPTIONS_MAP, SERVER_TYPE, SELECT_IMAGE_KEY_SUFFIX } from '@Compute/constants'
+import { SCHED_POLICY_OPTIONS_MAP, SERVER_TYPE, SELECT_IMAGE_KEY_SUFFIX, NETWORK_OPTIONS_MAP } from '@Compute/constants'
 import OsSelect from '@Compute/sections/OsSelect'
 import CpuRadio from '@Compute/sections/CpuRadio'
 import MemRadio from '@Compute/sections/MemRadio'
@@ -23,8 +23,9 @@ import DomainProject from '@/sections/DomainProject'
 import { getInitialValue } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
+import { WORKFLOW_TYPES } from '@/constants/workflow'
 import i18n from '@/locales'
-import { deleteInvalid } from '@/utils/utils'
+import { deleteInvalid, uuid } from '@/utils/utils'
 import Tag from '../components/Tag'
 import { Decorator, GenCreateData } from '../../utils/createServer'
 import BottomBar from '../components/BottomBar'
@@ -70,9 +71,21 @@ export default {
       required: true,
       validator: val => ['idc', 'private', 'public'].includes(val),
     },
+    initFormData: {
+      type: Object,
+      default: () => ({}),
+    },
+    isInitForm: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
-    const decorators = new Decorator(SERVER_TYPE[this.type]).createDecorators()
+    const routeInitData = this.$route.params?.data || {}
+    const initDataForDecorators = (this.isInitForm || this.$route.query.workflow)
+      ? (this.initFormData && !R.isEmpty(this.initFormData) ? this.initFormData : routeInitData)
+      : {}
+    const decorators = new Decorator(SERVER_TYPE[this.type]).createDecorators(initDataForDecorators)
     const initFd = getInitialValue(decorators)
     return {
       submiting: false,
@@ -105,6 +118,7 @@ export default {
       capabilityParams: {}, // 防止 capability 反复调用，这里对当前的接口参数做记录
       price: null,
       collapseActive: [],
+      tagDefaultChecked: {},
       hostNameValidate: {
         validateStatus: '',
         errorMsg: '',
@@ -117,6 +131,10 @@ export default {
     }
   },
   computed: {
+    initSkuData () {
+      const data = (!R.isEmpty(this.initFormData) && this.initFormData) || this.$route.params?.data || {}
+      return { name: data.sku }
+    },
     project_domain () {
       return this.form.fd.domain ? this.form.fd.domain.key : this.$store.getters.userInfo.projectDomainId
     },
@@ -191,6 +209,22 @@ export default {
     dataDiskSizes () {
       const disk = this.form.fd.dataDiskSizes
       return R.is(Object, disk) ? Object.values(disk) : []
+    },
+    isOpenWorkflow () {
+      return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_MACHINE)
+    },
+    isOpenOrderSetWorkflow () {
+      return this.checkWorkflowEnabled(WORKFLOW_TYPES.EXECUTE_RESOURCE_ORDER_SET)
+    },
+    isModifyShopCartOrder () {
+      const { workflow, order_set_id } = this.$route.query
+      return !!(workflow && order_set_id)
+    },
+    isModifyWorkflow () {
+      return !!this.$route.query.workflow
+    },
+    showReason () {
+      return this.isOpenWorkflow || this.isOpenOrderSetWorkflow || this.isModifyWorkflow
     },
     secgroupParams () {
       const params = {
@@ -333,13 +367,18 @@ export default {
     })
     this.$store.dispatch('app/fetchWorkflowEnabledKeys')
   },
+  mounted () {
+    this.initForm()
+  },
   watch: {
     'form.fi.imageMsg': {
       deep: true,
       handler (val, oldVal) {
         if (R.equals(val, oldVal)) return
         this.$nextTick(() => {
-          this._resetDataDisk() // 重置数据盘数据
+          if (!this.isInitForm) {
+            this._resetDataDisk() // 重置数据盘数据
+          }
         })
       },
     },
@@ -370,6 +409,142 @@ export default {
         }, fiItems)
       }
     },
+    async initForm () {
+      const initData = (!R.isEmpty(this.initFormData) && this.initFormData) || this.$route.params?.data || {}
+      const canInit = !!(this.$route.query.workflow && initData.extraData)
+      if (!canInit || !this.form?.fc) return
+      const preferZone = (Array.isArray(initData.prefer_zones) && initData.prefer_zones[0]) ||
+        initData.prefer_zone ||
+        initData.prefer_zone_id
+      try {
+        if (preferZone) {
+          const params = {
+            show_emulated: true,
+            resource_type: 'shared',
+            ...this.scopeParams,
+          }
+          if (this.$store.getters.isAdminMode) {
+            params.project_domain = initData.extraData?.domain_id
+          }
+          const { data } = await new this.$Manager('zones').getSpecific({ id: preferZone, spec: 'capability', params })
+          let hypervisors = R.is(Object, data) ? (data.hypervisors || []) : []
+          hypervisors = Array.from(new Set(hypervisors))
+          this.form.fi.capability = { ...data, hypervisors }
+          this.form.fc.setFieldsValue({ hypervisor: 'pod' })
+        }
+      } catch (e) { /* ignore */ }
+      this.$nextTick(() => {
+        // 数据盘
+        if (this.$refs.dataDiskRef && initData.disks?.length) {
+          const dataDisks = initData.disks.filter(item => item.disk_type === 'data' || item.disk_type === 'swap')
+          const rootfsIndexes = (initData.pod?.containers || [])
+            .map(c => c.rootfs?.disk?.index)
+            .filter(idx => idx !== undefined && idx !== null)
+          const normalDisks = dataDisks.filter((_, i) => {
+            // disks 里 index 可能与数组下标不同，按磁盘 index 排除 overlay
+            const disk = dataDisks[i]
+            return !rootfsIndexes.includes(disk.index) && !rootfsIndexes.includes(i)
+          })
+          this.dataDiskInterval = setInterval(() => {
+            if (!this.$refs.dataDiskRef) return
+            normalDisks.forEach((v) => {
+              const { schedtags = [] } = v
+              this.$refs.dataDiskRef.add({
+                diskType: v.backend,
+                disabled: false,
+                sizeDisabled: false,
+                medium: v.medium,
+                filetype: v.fs,
+                mountPath: v.mountpoint,
+                schedtag: schedtags[0]?.id,
+                policy: schedtags[0]?.strategy,
+                snapshot: v.snapshot_id,
+                preallocation: v.preallocation,
+                autoReset: v.auto_reset,
+                ...v,
+                size: v.size / 1024,
+              })
+            })
+            clearInterval(this.dataDiskInterval)
+            this.dataDiskInterval = null
+          }, 500)
+        }
+        // 网络
+        if (this.$refs.networkRef && initData.nets) {
+          let initNetworkType = NETWORK_OPTIONS_MAP.default.key
+          if (initData.nets[0] && initData.nets[0].hasOwnProperty('exit') && !initData.nets[0].exit) {
+            initNetworkType = NETWORK_OPTIONS_MAP.default.key
+          } else if (initData.nets[0] && initData.nets[0].hasOwnProperty('network') && initData.extraData?.nets?.[0]) {
+            initNetworkType = NETWORK_OPTIONS_MAP.manual.key
+          } else if (initData.nets[0]?.schedtags) {
+            initNetworkType = NETWORK_OPTIONS_MAP.schedtag.key
+          }
+          this.form.fc.setFieldsValue({ networkType: initNetworkType })
+          this.$refs.networkRef.change({ target: { value: initNetworkType }, name: 'default' })
+          if (initNetworkType === NETWORK_OPTIONS_MAP.manual.key) {
+            this.$nextTick(() => {
+              const networkConfigRef = this.$refs.networkRef?.$refs?.networkConfigRef
+              if (networkConfigRef && networkConfigRef.initData) {
+                networkConfigRef.initData(initData.extraData.nets)
+              }
+            })
+          }
+          if (initNetworkType === NETWORK_OPTIONS_MAP.schedtag.key) {
+            this.$nextTick(() => {
+              const networkSchedtagRef = this.$refs.networkRef?.$refs?.networkSchedtagRef
+              if (networkSchedtagRef && networkSchedtagRef.initData) {
+                networkSchedtagRef.initData(initData.nets)
+              }
+            })
+          }
+        }
+        // 高级配置
+        if (initData.hostname || initData.prefer_host || initData.schedtags || initData.secgroups || initData.groups) {
+          this.collapseActive = ['1']
+          this.$nextTick(() => {
+            if (initData.hostname) {
+              this.form.fc.setFieldsValue({ hostName: initData.hostname })
+            }
+            if (initData.secgroups?.length) {
+              setTimeout(() => {
+                this.form.fc.setFieldsValue({
+                  secgroup_type: 'bind',
+                  secgroup: initData.secgroups,
+                })
+              }, 1500)
+            }
+            if (this.$refs.schedPolicyRef) {
+              if (initData.prefer_host) {
+                this.$refs.schedPolicyRef.change({ target: { value: 'host' }, name: 'default' })
+              }
+              if (initData.schedtags?.length) {
+                this.$refs.schedPolicyRef.change({ target: { value: 'schedtag' }, name: 'default' })
+                setTimeout(() => {
+                  const policySchedtagRef = this.$refs.schedPolicyRef?.$refs?.policySchedtagRef
+                  if (policySchedtagRef && policySchedtagRef.initData) {
+                    policySchedtagRef.initData(initData.schedtags)
+                  }
+                }, 1000)
+              }
+            }
+          })
+        }
+        // 标签
+        if (initData.__meta__) {
+          const ret = {}
+          R.forEachObjIndexed((value, key) => {
+            ret[key] = R.is(Array, value) ? value : [value]
+          }, initData.__meta__)
+          this.tagDefaultChecked = ret
+        }
+        // 容器配置
+        const containers = initData.pod?.containers || []
+        if (this.$refs.specContainerRef && containers.length) {
+          // 复用已挂载 pane，在表单字段注册后回填
+          this.$refs.specContainerRef.fillContainers(containers)
+        }
+      })
+    },
     submit (e) {
       e.preventDefault()
       this.validateForm()
@@ -377,10 +552,23 @@ export default {
           this.submiting = true
           const genCreteData = new GenCreateData(formData, this.form.fi)
           const data = genCreteData.all()
-
-          await this.checkCreateData(data)
-          await this.doForecast(genCreteData, data)
-          await this.createServer(data)
+          if (!data.extraData) data.extraData = {}
+          data.extraData.reason = this.form.fd?.reason
+          data.extraData.formType = this.type
+          data.extraData.__resource_type__ = 'server_container'
+          if (this.isModifyShopCartOrder || this.isOpenWorkflow || this.isModifyWorkflow) {
+            await this.checkCreateData(data)
+            await this.doForecast(genCreteData, data)
+            await this.doCreateWorkflow(data)
+          } else if (this.isOpenOrderSetWorkflow) {
+            await this.checkCreateData(data)
+            await this.doForecast(genCreteData, data)
+            await this.doCreateOrderSetWorkflow(data)
+          } else {
+            await this.checkCreateData(data)
+            await this.doForecast(genCreteData, data)
+            await this.createServer(data)
+          }
         })
         .catch(error => {
           throw error
@@ -388,6 +576,85 @@ export default {
         .finally(() => {
           this.submiting = false
         })
+    },
+    async doCreateWorkflow (data) {
+      const { workflow = '', order_set_id = '', order_set_idx = '' } = this.$route.query
+      if (order_set_id && workflow) {
+        const idx = Number(order_set_idx)
+        const res = await new this.$Manager('resource_order_sets').get({ id: order_set_id })
+        const existing = res.data?.parameters?.[idx]
+        if (!existing) {
+          this.$message.error(this.$t('common.failed'))
+          throw new Error('resource order set item not found')
+        }
+        const parameters = [...res.data.parameters]
+        parameters[idx] = {
+          ...existing,
+          count: data.__count__,
+          parameter: { ...data, price: this.price },
+        }
+        await new this.$Manager('resource_order_sets').update({ id: order_set_id, data: { parameters } })
+        this.$message.success(this.$t('common.success'))
+        this.$router.push('/workflow')
+        return
+      }
+      const variables = {
+        process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
+        initiator: this.$store.getters.userInfo.id,
+        description: this.form.fd.reason,
+        'server-create-paramter': JSON.stringify(data),
+        price: this.price,
+      }
+      this._getProjectDomainInfo(variables)
+      if (workflow) {
+        await new this.$Manager('historic-process-instances', 'v1')
+          .update({ id: `${workflow}/variables`, data: { variables } })
+        this.$message.success(i18n.t('compute.text_1045', [data.generate_name]))
+        this.$router.push('/workflow')
+        return
+      }
+      await new this.$Manager('process-instances', 'v1')
+        .create({ data: { variables } })
+      this.$message.success(i18n.t('compute.text_1045', [data.generate_name]))
+      this.$router.push('/workflow')
+    },
+    buildShopCartParameter (data) {
+      const { __count__, ...parameter } = deleteInvalid(data)
+      const shopCart = {
+        action: 'create',
+        auto_execute: true,
+        count: __count__,
+        resource: 'servers',
+        user_id: this.$store.getters.userInfo.id,
+        parameter: {
+          ...parameter,
+          price: this.price,
+        },
+      }
+      this._getProjectDomainInfo(shopCart)
+      return shopCart
+    },
+    async doCreateOrderSetWorkflow (data) {
+      const { displayname, name } = this.$store.getters.userInfo
+      const shopCart = this.buildShopCartParameter(data)
+      const orderSetRes = await new this.$Manager('resource_order_sets').create({
+        data: {
+          auto_execute: false,
+          name: this.$t('common.shopcart_workflow_name', [displayname || name, this.$moment().format('YYYY-MM-DD'), uuid()]),
+          parameters: [shopCart],
+        },
+      })
+      const variables = {
+        process_definition_key: WORKFLOW_TYPES.EXECUTE_RESOURCE_ORDER_SET,
+        initiator: this.$store.getters.userInfo.id,
+        ids: orderSetRes.data.id,
+        parameter: '{}',
+        project: shopCart.project,
+        project_domain: shopCart.project_domain,
+      }
+      await new this.$Manager('process-instances', 'v1').create({ data: { variables } })
+      this.$message.success(i18n.t('compute.text_1045', [data.generate_name]))
+      this.$router.push('/workflow')
     },
     async checkCreateData (data) {
       return new this.$Manager('servers').create({ data: { ...data, dry_run: true } })
@@ -441,33 +708,34 @@ export default {
       })
     },
     cpuChange (cpu) {
-      const memOpts = this.form.fi.cpuMem.cpu_mems_mb[cpu]
-      if (!memOpts || !memOpts.length) { // 没有内存Opts，则内存为0
-        let vcpu = cpu
-        if (!this.form.fi.cpuMem.cpus.includes(cpu)) { // CPU的Opts不包括cpu的话
-          if (this.form.fi.cpuMem.cpus && this.form.fi.cpuMem.cpus.length) { // 如果CPU的Opts有值
-            vcpu = this.form.fi.cpuMem.cpus[0]
-          } else { // 否则为0
-            vcpu = 0
-          }
+      const cpuMem = this.form.fi.cpuMem || {}
+      const cpuNum = Number(cpu)
+      const memOpts = (cpuMem.cpu_mems_mb && (cpuMem.cpu_mems_mb[cpuNum] || cpuMem.cpu_mems_mb[cpu])) || []
+      const cpus = cpuMem.cpus || []
+      if (!memOpts.length) { // 没有内存Opts，则内存为0
+        let vcpu = cpuNum || cpu
+        if (!cpus.includes(cpuNum) && !cpus.includes(cpu)) {
+          vcpu = cpus.length ? cpus[0] : 0
         }
         this.form.fc.setFieldsValue({
           vcpu,
           vmem: 0,
         })
         return
-      } else if (this.form.fc.getFieldValue('vcpu') !== cpu) { // 因之前未获取cpu设置为0，这一步设置回来
+      } else if (Number(this.form.fc.getFieldValue('vcpu')) !== cpuNum) {
         this.form.fc.setFieldsValue({
-          vcpu: cpu,
+          vcpu: cpuNum,
         })
       }
       this.form.fi.cpuMem.mems_mb = memOpts
-      let defaultMem = 2048
-      const currentMem = this.form.fc.getFieldValue('vmem')
-      if (currentMem && this.form.fi.cpuMem.mems_mb.includes(currentMem)) {
+      const currentMem = Number(this.form.fc.getFieldValue('vmem'))
+      if (currentMem && memOpts.some(m => Number(m) === currentMem)) {
+        // 保持工单回填的内存，避免被默认 2G 覆盖导致套餐错选
+        this.form.fc.setFieldsValue({ vmem: currentMem })
         return
       }
-      if (!this.form.fi.cpuMem.mems_mb.includes(2048)) { // 如果返回值不包括默认内存2G，选择第一项
+      let defaultMem = 2048
+      if (!memOpts.some(m => Number(m) === 2048)) {
         defaultMem = memOpts[0]
       }
       this.form.fc.setFieldsValue({
@@ -627,27 +895,26 @@ export default {
       this.validateForm()
         .then(async formData => {
           this.submiting = true
-          const genCreateData = new GenCreateData(formData, this.form.fi)
-          const data = genCreateData.all()
-          // if (this.form.fd.bastion_host_enable) {
-          //   const bastionServer = this.getBationServerData()
-          //   data.bastion_server = bastionServer
-          // }
-          const { __count__, ...parameter } = deleteInvalid(data)
-          const shopCart = {
-            action: 'create',
-            auto_execute: true,
-            count: __count__,
-            resource: 'servers',
-            user_id: this.$store.getters.userInfo.id,
-            parameter: {
-              ...parameter,
-              price: this.price,
-            },
+          try {
+            const genCreateData = new GenCreateData(formData, this.form.fi)
+            const data = genCreateData.all()
+            if (!data.extraData) data.extraData = {}
+            data.extraData.reason = this.form.fd?.reason
+            data.extraData.formType = this.type
+            data.extraData.__resource_type__ = 'server_container'
+            await this.checkCreateData(data)
+            await this.doForecast(genCreateData, data)
+            const shopCart = this.buildShopCartParameter(data)
+            this.$message.success(this.$t('common.success'))
+            this.$store.commit('shopcart/ADD_SHOP_CART', shopCart)
+          } catch (error) {
+            throw error
+          } finally {
+            this.submiting = false
           }
-          this._getProjectDomainInfo(shopCart)
-          this.$message.success(this.$t('common.success'))
-          this.$store.commit('shopcart/ADD_SHOP_CART', shopCart)
+        })
+        .catch(error => {
+          throw error
         })
     },
     handleCancel () {
