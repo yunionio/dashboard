@@ -31,7 +31,7 @@
       <a-form-item :label="$t('common.description')">
         <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
       </a-form-item>
-      <a-form-item :label="$t('compute.text_1041')" v-if="isOpenWorkflow">
+      <a-form-item :label="$t('compute.text_1041')" v-if="showReason">
         <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1042')" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1132')">
@@ -67,7 +67,8 @@
           v-decorator="decorators.sku"
           :type="type"
           :sku-params="skuParam"
-          :hypervisor="form.fd.hypervisor" />
+          :hypervisor="form.fd.hypervisor"
+          :init-sku-data="initSkuData" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_50')">
         <data-disk
@@ -89,6 +90,7 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_104')" class="mb-0">
         <server-network
+          ref="networkRef"
           hiddenAdd
           :form="form"
           :decorator="decorators.network"
@@ -105,7 +107,8 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
-          v-decorator="decorators.tag" />
+          v-decorator="decorators.tag"
+          :default-checked="tagDefaultChecked" />
       </a-form-item>
       <a-collapse :bordered="false" v-model="collapseActive">
         <a-collapse-panel :header="$t('compute.text_309')" key="1">
@@ -141,6 +144,7 @@
           </a-form-item>
           <a-form-item :label="$t('compute.text_311')" class="mb-0">
             <sched-policy
+              ref="schedPolicyRef"
               :form="form"
               :server-type="form.fi.createType"
               :disabled-host="policyHostDisabled"
@@ -168,16 +172,20 @@
       </a-collapse>
       <container-title :title="$t('compute.eci.container_config')" />
       <spec-container
+        ref="specContainerRef"
         :form="form"
         :panes.sync="form.fi.containerPanes"
         :errPanes="form.fi.errPanes"
-        :decorators="decorators.containers" />
+        :decorators="decorators.containers"
+        :initContainers="containerInitList" />
       <bottom-bar
         :loading="submiting"
         :form="form"
         :type="type"
         :dataDiskSizes="dataDiskSizes"
         :isOpenWorkflow="isOpenWorkflow"
+        :isOpenOrderSetWorkflow="isOpenOrderSetWorkflow"
+        :isModifyWorkflow="isModifyWorkflow"
         :errors.sync="errors"
         :hasMeterService="hasMeterService"
         @add-cart="addShopCart"
@@ -506,6 +514,13 @@ export default {
         disabled: false, // this.isMultiServer,
       }
     },
+    containerInitList () {
+      // 修改工单：优先 props，其次路由 params（防止 type 跳转丢 props）
+      if (!this.$route.query.workflow) return []
+      const fromProp = this.initFormData?.pod?.containers
+      const fromRoute = this.$route.params?.data?.pod?.containers
+      return fromProp || fromRoute || []
+    },
   },
   watch: {
     'form.fi.imageMsg': {
@@ -676,8 +691,9 @@ export default {
             ...data,
             hypervisors,
           }
+          // 容器主机固定 pod，避免被 kvm 等平台覆盖导致套餐列表异常
           this.form.fc.setFieldsValue({
-            hypervisor: hypervisors[0], // 赋值默认第一个平台
+            hypervisor: HYPERVISORS_MAP.pod.key,
           })
           this.init()
         })
@@ -687,10 +703,23 @@ export default {
       this.serverskusM.get({ id: 'instance-specs', params: this.instanceSpecParmas })
         .then(({ data }) => {
           this.form.fi.cpuMem = data
+          const initData = (!R.isEmpty(this.initFormData) && this.initFormData) || this.$route.params?.data || {}
           const vcpuDecorator = this.decorators.vcpu
           const vcpuInit = vcpuDecorator[1].initialValue
-          const cpu = this.form.fd.vcpu || vcpuInit
+          const cpu = Number(initData.vcpu_count || this.form.fd.vcpu || vcpuInit)
+          const mem = Number(initData.vmem_size || this.form.fd.vmem)
+          if (cpu) {
+            this.form.fc.setFieldsValue({ vcpu: cpu, ...(mem ? { vmem: mem } : {}) })
+          }
           this.cpuChange(cpu)
+          if (mem) {
+            this.$nextTick(() => {
+              const memOpts = this.form.fi.cpuMem.mems_mb || []
+              if (memOpts.some(m => Number(m) === mem)) {
+                this.form.fc.setFieldsValue({ vmem: mem })
+              }
+            })
+          }
         })
     },
     gpuChange (val) {

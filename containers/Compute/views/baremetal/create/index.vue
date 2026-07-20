@@ -38,8 +38,13 @@ export default {
     isInitForm () {
       return !!this.initFormData?.extraData?.formType && this.$route.query.workflow
     },
+    isInstallOperationSystem () {
+      return !!this.$route.query.host_id
+    },
     title () {
-      return this.isInstallOperationSystem ? this.$t('compute.text_298') : (this.isInitForm ? this.$t('compute.text_299') + `(${this.$t('common.modify_workflow')})` : this.$t('compute.text_299'))
+      if (this.isInstallOperationSystem) return this.$t('compute.text_298')
+      const base = this.$t('compute.text_299')
+      return this.$route.query.workflow ? `${base}(${this.$t('common.modify_workflow')})` : base
     },
   },
   watch: {

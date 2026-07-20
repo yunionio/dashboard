@@ -78,6 +78,11 @@ export default {
       labelList: [],
     }
   },
+  inject: {
+    form: {
+      default: null,
+    },
+  },
   watch: {
     labelList: {
       handler (val) {
@@ -96,6 +101,23 @@ export default {
     },
     reset () {
       this.labelList = []
+    },
+    /** pairs: [{ key, value }] 按对数创建行并回填 */
+    initData (pairs = []) {
+      this.labelList = (pairs || []).map(() => ({ key: uuid() }))
+      this.$nextTick(() => {
+        if (!this.form?.fc || !this.labelList.length) return
+        const values = {}
+        pairs.forEach((pair, i) => {
+          const rowKey = this.labelList[i]?.key
+          if (!rowKey) return
+          const keyField = this.decorators.key(rowKey)?.[0]
+          const valueField = this.decorators.value(rowKey)?.[0]
+          if (keyField) values[keyField] = pair.key
+          if (valueField) values[valueField] = pair.value
+        })
+        this.form.fc.setFieldsValue(values)
+      })
     },
     getBindProps (key) {
       const { options } = this.keyBaseSelectProps

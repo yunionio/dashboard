@@ -758,7 +758,7 @@ export default {
               }
             }
             const first = this.skuResults[0]
-            if (first?.id && this.selectedSkuData?.id === first.id) {
+            if (first?.id && this.selectedSkuData?.id === first.id && !this.initSkuData?.name) {
               this.$nextTick(() => {
                 const tableRef = this.$refs.tableRef
                 if (tableRef) {
@@ -767,8 +767,10 @@ export default {
                 this.restoreTableSort()
               })
             } else {
-              this.setSku(first, false)
+              await this.resolveInitSku(first)
             }
+          } else if (this.initSkuData?.name) {
+            await this.resolveInitSku({})
           }
         }
         this.skuLoading = false
@@ -780,6 +782,38 @@ export default {
         this.skuLoading = false
         throw error
       }
+    },
+    async resolveInitSku (fallback) {
+      const name = this.initSkuData?.name
+      if (!name) {
+        this.setSku(fallback, false)
+        return
+      }
+      if (this.skuList.some(item => item.name === name)) {
+        this.setSku(fallback, false)
+        return
+      }
+      try {
+        const base = sanitizeSkuParams(this.skuParams)
+        delete base.cpu_core_count
+        delete base.memory_size_mb
+        const { data } = await this.skusM.list({
+          params: {
+            ...base,
+            name,
+            limit: 1,
+            enabled: true,
+          },
+        })
+        const list = data?.data || data
+        const sku = Array.isArray(list) ? list[0] : null
+        if (sku?.id) {
+          this.skuList = [sku, ...this.skuList.filter(item => item.id !== sku.id)]
+          this.setSku(sku, true)
+          return
+        }
+      } catch (e) { /* ignore */ }
+      this.setSku(fallback, false)
     },
     restoreTableSort () {
       const { order_by, order } = this.skuSort
