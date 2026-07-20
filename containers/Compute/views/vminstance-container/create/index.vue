@@ -1,7 +1,11 @@
 <template>
   <div class="server-create-index">
     <page-header :title="headerTitle" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
-    <component :is="component" type="idc" />
+    <component
+      :is="component"
+      type="idc"
+      :initFormData="initFormData"
+      :isInitForm="isInitForm" />
   </div>
 </template>
 
@@ -17,6 +21,7 @@ export default {
   data () {
     const cloudEnvOptions = getCloudEnvOptions('compute_engine_brands', true)
     const queryType = this.$route.query.type
+    const paramsData = this.$route.params?.data || {}
     let cloudEnv = queryType === 'idc' ? 'onpremise' : this.$route.query.type
     let routerQuery = this.$route.query.type
     if (!cloudEnvOptions.find(val => val.key === cloudEnv)) {
@@ -27,10 +32,13 @@ export default {
       cloudEnvOptions: { key: 'onpremise', label: this.$t('dictionary.onpremise_env') } || cloudEnvOptions,
       cloudEnv,
       routerQuery,
-
+      initFormData: paramsData,
     }
   },
   computed: {
+    isInitForm () {
+      return !!this.initFormData?.extraData?.formType && this.$route.query.workflow
+    },
     type () {
       const { type = 'idc' } = this.$route.query
       switch (type) {
@@ -54,7 +62,8 @@ export default {
       }
     },
     headerTitle () {
-      return this.$t('compute.text_1161', [this.$t('compute.vminstance-container')])
+      const base = this.$t('compute.text_1161', [this.$t('compute.vminstance-container')])
+      return this.$route.query.workflow ? `${base}(${this.$t('common.modify_workflow')})` : base
     },
   },
   watch: {
@@ -73,8 +82,10 @@ export default {
       this.$router.push({
         path: this.$router.history.current.path,
         query: {
+          ...this.$route.query,
           type: this.routerQuery,
         },
+        params: this.$route.params,
       })
     }
   },

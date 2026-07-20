@@ -31,7 +31,7 @@ import { getInitialValue } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
-import { deleteInvalid } from '@/utils/utils'
+import { deleteInvalid, uuid } from '@/utils/utils'
 import { hasSetupKey, isLicense2 } from '@/utils/auth'
 import Tag from '../components/Tag'
 import SystemDisk from '../components/SystemDisk'
@@ -273,15 +273,22 @@ export default {
       if (this.isServertemplate) return false
       return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_MACHINE)
     },
+    isOpenOrderSetWorkflow () {
+      if (this.isServertemplate) return false
+      return this.checkWorkflowEnabled(WORKFLOW_TYPES.EXECUTE_RESOURCE_ORDER_SET)
+    },
     isModifyShopCartOrder () {
       const { workflow, order_set_id } = this.$route.query
       return !!(workflow && order_set_id)
     },
     isWorkflowSubmit () {
-      return this.isOpenWorkflow || this.isModifyShopCartOrder
+      return this.isOpenWorkflow || this.isOpenOrderSetWorkflow || this.isModifyWorkflow
     },
     isModifyWorkflow () {
       return !!this.$route.query.workflow
+    },
+    showReason () {
+      return this.isOpenWorkflow || this.isOpenOrderSetWorkflow || this.isModifyWorkflow
     },
     isHostImageType () { // 镜像类型为主机镜像
       return this.form.fd.imageType === IMAGES_TYPE_MAP.host.key
@@ -744,10 +751,15 @@ export default {
           data.extraData.__resource_type__ = 'server'
           if (this.isServertemplate) { // 创建主机模板
             this.doCreateServertemplate(data)
-          } else if (this.isWorkflowSubmit) { // 提交工单（含修改购物车订单项）
+          } else if (this.isModifyShopCartOrder || this.isOpenWorkflow || this.isModifyWorkflow) {
+            // 修改购物车订单项 / 主机申请工单（含修改历史工单）
             await this.checkCreateData(data)
             await this.doForecast(genCreteData, data)
             await this.doCreateWorkflow(data)
+          } else if (this.isOpenOrderSetWorkflow) { // 购物车工单
+            await this.checkCreateData(data)
+            await this.doForecast(genCreteData, data)
+            await this.doCreateOrderSetWorkflow(data)
           } else { // 创建主机
             await this.checkCreateData(data)
             await this.doForecast(genCreteData, data)
@@ -818,6 +830,44 @@ export default {
       }
       await new this.$Manager('process-instances', 'v1')
         .create({ data: { variables } })
+      this.$message.success(i18n.t('compute.text_1045', [data.generate_name]))
+      this.$router.push('/workflow')
+    },
+    buildShopCartParameter (data) {
+      const { __count__, ...parameter } = deleteInvalid(data)
+      const shopCart = {
+        action: 'create',
+        auto_execute: true,
+        count: __count__,
+        resource: 'servers',
+        user_id: this.$store.getters.userInfo.id,
+        parameter: {
+          ...parameter,
+          price: this.price,
+        },
+      }
+      this._getProjectDomainInfo(shopCart)
+      return shopCart
+    },
+    async doCreateOrderSetWorkflow (data) {
+      const { displayname, name } = this.$store.getters.userInfo
+      const shopCart = this.buildShopCartParameter(data)
+      const orderSetRes = await new this.$Manager('resource_order_sets').create({
+        data: {
+          auto_execute: false,
+          name: this.$t('common.shopcart_workflow_name', [displayname || name, this.$moment().format('YYYY-MM-DD'), uuid()]),
+          parameters: [shopCart],
+        },
+      })
+      const variables = {
+        process_definition_key: WORKFLOW_TYPES.EXECUTE_RESOURCE_ORDER_SET,
+        initiator: this.$store.getters.userInfo.id,
+        ids: orderSetRes.data.id,
+        parameter: '{}',
+        project: shopCart.project,
+        project_domain: shopCart.project_domain,
+      }
+      await new this.$Manager('process-instances', 'v1').create({ data: { variables } })
       this.$message.success(i18n.t('compute.text_1045', [data.generate_name]))
       this.$router.push('/workflow')
     },
@@ -1098,19 +1148,7 @@ export default {
             data.extraData.__resource_type__ = 'server'
             await this.checkCreateData(data)
             await this.doForecast(genCreateData, data)
-            const { __count__, ...parameter } = deleteInvalid(data)
-            const shopCart = {
-              action: 'create',
-              auto_execute: true,
-              count: __count__,
-              resource: 'servers',
-              user_id: this.$store.getters.userInfo.id,
-              parameter: {
-                ...parameter,
-                price: this.price,
-              },
-            }
-            this._getProjectDomainInfo(shopCart)
+            const shopCart = this.buildShopCartParameter(data)
             this.$message.success(this.$t('common.success'))
             this.$store.commit('shopcart/ADD_SHOP_CART', shopCart)
           } catch (error) {

@@ -6454,7 +6454,7 @@
   "common.workflow.shut_down": "ホストの電源投入",
   "common.workflow.start": "メインマシンの電源がオフになっています",
   "common.workflow.restart": "ホストの再起動",
-  "common.workflow.order_set": "リソース注文アプリケーション",
+  "common.workflow.order_set": "ショッピングカート製造オーダ",
   "common.workflow.alert_event": "アラームイベント",
   "common.workflow.alert_ticket": "アラームチケット",
   "common.ssh_login_err": "SSH リモート ログインに失敗しました",

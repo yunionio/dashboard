@@ -127,10 +127,13 @@
         :selectedSpecItem="selectedSpecItem"
         type="baremetal"
         :isOpenWorkflow="isOpenWorkflow"
+        :isOpenOrderSetWorkflow="isOpenOrderSetWorkflow"
         :errors.sync="errors"
         :isServertemplate="false"
         :hasMeterService="hasMeterService"
         :isInitForm="isInitForm"
+        :isModifyWorkflow="isModifyWorkflow"
+        @add-cart="addShopCart"
         @cancel="handleCancel" />
     </a-form>
   </div>
