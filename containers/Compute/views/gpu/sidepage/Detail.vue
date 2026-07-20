@@ -62,9 +62,18 @@ export default {
         getReserveResourceColumn(),
         getSharingModeColumn(),
         getMemorySizeColumn(),
-        getMemoryAllocatedColumn(),
-        getVirtualNumColumn(),
-        getAllocatedCountColumn(),
+        {
+          ...getMemoryAllocatedColumn(),
+          hidden: (row) => row.sharing_mode !== 'HAMI',
+        },
+        {
+          ...getVirtualNumColumn(),
+          hidden: (row) => row.sharing_mode === 'HAMI',
+        },
+        {
+          ...getAllocatedCountColumn(),
+          hidden: (row) => row.sharing_mode === 'HAMI',
+        },
       ],
       extraInfo: [
         {
