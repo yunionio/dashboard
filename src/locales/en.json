@@ -185,7 +185,8 @@
       "delete_container_failed": "Delete container failed",
       "snapshot_delete": "Delete snapshot",
       "change_billing_type": "Change billing mode",
-      "kickstart_installing": "Kickstart installing"
+      "kickstart_installing": "Kickstart installing",
+      "crash_loop_back_off": "Crash loop back off"
     },
     "network": {
       "init": "Initialize",

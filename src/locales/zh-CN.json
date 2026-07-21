@@ -192,7 +192,8 @@
       "delete_container_failed": "删除失败",
       "snapshot_delete": "删除快照",
       "change_billing_type": "修改计费模式",
-      "kickstart_installing": "无人值守安装中"
+      "kickstart_installing": "无人值守安装中",
+      "crash_loop_back_off": "异常退出"
     },
     "network": {
       "init": "初始化",
