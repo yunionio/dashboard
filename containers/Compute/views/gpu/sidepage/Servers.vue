@@ -269,8 +269,8 @@ export default {
     },
     getParam () {
       return {
-        'filter.0': `id.equals(${this.data.guest_id})`,
-        'filter.1': 'hypervisor.notin(baremetal,container,pod)',
+        isolated_device_id: this.data.id,
+        'filter.0': 'hypervisor.notin(baremetal,container,pod)',
       }
     },
   },
