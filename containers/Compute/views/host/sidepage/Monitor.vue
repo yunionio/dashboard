@@ -23,6 +23,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    forceKvm: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -38,6 +42,9 @@ export default {
       return Object.keys(this.host.isolated_device_type_count || {})
     },
     monitorConstants () {
+      if (this.forceKvm) {
+        return [...KVM_MONITOR_OPTS]
+      }
       let list = VMWARE_MONITOR_OPTS
       if ((this.hostType === 'hypervisor' || this.hostType === 'container') && !this.host.manager_id) {
         list = [...KVM_MONITOR_OPTS]
