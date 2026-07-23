@@ -207,7 +207,8 @@ function applySkuDevices (data, devices) {
     if (expanded.length) data.devices = expanded
     return
   }
-  data.devices = devices.map(model => ({ model }))
+  const expanded = expandRowsToDevices(devices.map(model => ({ model, count: 1 })))
+  if (expanded.length) data.devices = expanded
 }
 
 function buildCommunitySkuCreateData (record, imageId, { devices } = {}) {
@@ -231,6 +232,7 @@ function buildCommunitySkuCreateData (record, imageId, { devices } = {}) {
     data.port_mappings = portMappings
   }
   applySkuDevices(data, devices)
+  // vram_claim_mb is computed server-side from mounted InstantModel weights
   return data
 }
 
