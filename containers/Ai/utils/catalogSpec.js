@@ -4,6 +4,7 @@
 
 import { getDefaultPortMappingsForType, getDefaultSkuSpecForType } from '@Ai/views/llm-sku/constants/llmTypeConfig'
 import { normalizeCatalogBackendParameters } from '@Ai/utils/backendParameters'
+import { createEmptyDeviceRow, expandRowsToDevices } from '@Ai/utils/deviceFormUtils'
 
 export const CATALOG_IMPORT_STORAGE_KEY = 'llm_catalog_import_context'
 
@@ -13,7 +14,7 @@ export function createDefaultDeployForm () {
     name: '',
     llm_image_id: '',
     network: '',
-    devices: [],
+    deviceRows: [createEmptyDeviceRow()],
     replicas: 1,
     cpu: 4,
     memory: 8192,
@@ -46,8 +47,9 @@ export function buildCatalogDeploymentPayload (deployForm, spec, llmType) {
     memory: deployForm.memory,
     volumes: [{ size_mb: deployForm.disk_size, storage_type: 'local' }],
   }
-  if (deployForm.devices && deployForm.devices.length) {
-    skuSpec.devices = deployForm.devices.map(model => ({ model }))
+  const expanded = expandRowsToDevices(deployForm.deviceRows)
+  if (expanded.length) {
+    skuSpec.devices = expanded
   }
 
   const typeSpec = {}

@@ -29,12 +29,9 @@
         :params="networkParams"
         :select-props="{ placeholder: $t('common.tips.select', [$t('compute.text_104')]) }" />
     </a-form-model-item>
-    <a-form-model-item :label="$t('aice.llm_deployment.create.devices')" prop="devices">
-      <a-select
-        v-model="deployForm.devices"
-        mode="multiple"
-        :options="gpuOptions"
-        :placeholder="$t('common.tips.select', [$t('aice.llm_deployment.create.devices')])" />
+    <a-form-model-item :label="$t('aice.llm_deployment.create.devices')" prop="deviceRows">
+      <llm-gpu-devices-editor
+        v-model="deployForm.deviceRows" />
       <div class="text-color-help">
         {{ $t('aice.llm_deployment.create.devices.help') }}
       </div>
@@ -53,13 +50,16 @@
 
 <script>
 import LlmImageSelect from '@Ai/sections/LlmImageSelect'
+import LlmGpuDevicesEditor from '@Ai/sections/LlmGpuDevicesEditor'
 import NameRepeated from '@/sections/NameRepeated'
 import { getParamsForType } from '@Ai/views/llm-sku/constants/llmTypeConfig'
+import { isValidDeviceRows } from '@Ai/utils/deviceFormUtils'
 
 export default {
   name: 'CatalogDeployForm',
   components: {
     LlmImageSelect,
+    LlmGpuDevicesEditor,
     NameRepeated,
   },
   props: {
@@ -81,11 +81,11 @@ export default {
         ],
         llm_image_id: [{ required: true, message: this.$t('common.tips.select', [this.$t('aice.llm_image')]) }],
         network: [{ required: true, message: this.$t('common.tips.select', [this.$t('compute.text_104')]) }],
-        devices: [{
+        deviceRows: [{
           required: true,
           type: 'array',
           validator: (rule, value, callback) => {
-            if (!Array.isArray(value) || value.length < 1) {
+            if (!isValidDeviceRows(value, { allowEmpty: false })) {
               callback(new Error(this.$t('common.tips.select', [this.$t('aice.llm_deployment.create.devices')])))
               return
             }
@@ -110,11 +110,6 @@ export default {
         usable: true,
         host_type: 'container',
       }
-    },
-    gpuOptions () {
-      const types = this.$store.getters.capability?.pci_model_types || {}
-      const list = Object.values(types).filter(item => item.hypervisor === 'pod')
-      return list.map(item => ({ value: item.model, label: item.model }))
     },
   },
   methods: {

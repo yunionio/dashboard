@@ -8,7 +8,8 @@ import {
 } from '@/utils/common/tableColumn'
 import LlmSkuImportStatus from '../components/LlmSkuImportStatus.vue'
 import {
-  // getDeviceModelTableColumn,
+  getDeviceModelTableColumn,
+  getVramClaimTableColumn,
   getAppNameTableColumn,
   getImageTableColumn,
   getBandwidthTableColumn,
@@ -48,6 +49,7 @@ export default {
       getDiskTableColumn(),
       getImageTableColumn({ vm: this }),
       ...(isDesktopType ? [getAppNameTableColumn()] : []),
+      ...(isInferenceType ? [getDeviceModelTableColumn(), getVramClaimTableColumn()] : []),
       ...(isInferenceType ? [getLlmModelNameTableColumn({ vm: this })] : []),
       getBandwidthTableColumn(),
       getLlmTypeTableColumn({ isApplyType, isDesktopType }),
