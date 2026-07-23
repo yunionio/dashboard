@@ -16,6 +16,7 @@ import WindowsMixin from '@/mixins/windows'
 import LlmSkuImportStatus from '../components/LlmSkuImportStatus.vue'
 import {
   getDeviceModelTableColumn,
+  getVramClaimTableColumn,
   getAppNameTableColumn,
   getImageTableColumn,
   getBandwidthTableColumn,
@@ -58,6 +59,7 @@ export default {
           },
         },
         getDeviceModelTableColumn(),
+        getVramClaimTableColumn(),
         getImageTableColumn({ vm: this }),
         ...(isDesktopType ? [getAppNameTableColumn()] : []),
         getBandwidthTableColumn(),

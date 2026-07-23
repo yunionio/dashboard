@@ -1424,7 +1424,7 @@ export default {
         }
         if (this.supportDevicesAndHostPaths) {
           if (Array.isArray(values.device) && values.device.length > 0) {
-            data.devices = values.device.map(k => ({ model: k }))
+            data.devices = values.device.map(k => ({ model: k, sharing_mode: 'HAMI', dev_type: 'GPU' }))
           }
         }
         if (this.supportMountedModels) {

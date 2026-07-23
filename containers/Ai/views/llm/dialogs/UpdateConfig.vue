@@ -277,7 +277,7 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         const data = {}
-        data.devices = Array.isArray(values.device) ? values.device.map(k => ({ model: k })) : []
+        data.devices = Array.isArray(values.device) ? values.device.map(k => ({ model: k, sharing_mode: 'HAMI', dev_type: 'GPU' })) : []
         if (this.supportMountedModels) {
           data.mounted_models = Array.isArray(values.mounted_models) ? values.mounted_models : []
         }
