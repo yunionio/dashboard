@@ -143,7 +143,8 @@
           v-else-if="field.component === 'llm-gpu-devices-editor'"
           :key="field.fieldKey"
           :label="$t(field.label)">
-          <llm-gpu-devices-editor v-decorator="decorators[field.fieldKey]" />
+          <llm-gpu-devices-editor
+            v-decorator="decorators[field.fieldKey]" />
         </a-form-item>
         <a-form-item v-else-if="field.component === 'input-number'" :key="field.fieldKey" :label="$t(field.label)">
           <a-input-number
