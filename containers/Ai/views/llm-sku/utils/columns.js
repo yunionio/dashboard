@@ -16,15 +16,30 @@ export const getDeviceModelTableColumn = () => {
         const devices = row.devices
         if (devices?.length) {
           const rows = aggregateDevicesToRows(devices)
+          const fallback = row.vram_claim_mb > 0 ? row.vram_claim_mb : undefined
           return rows.map(v => {
-            return <div class={'mb-1'}><a-tag>{v.model} ×{v.count}</a-tag></div>
+            const memMb = v.memory_mb > 0 ? v.memory_mb : fallback
+            const mem = memMb > 0 ? ` ${memMb}MB` : ''
+            return <div class={'mb-1'}><a-tag>{v.model} ×{v.count} ({v.sharing_mode}{mem})</a-tag></div>
           })
         }
         return '-'
       },
     },
     formatter: ({ row }) => {
-      return formatDevicesDisplay(row.devices)
+      return formatDevicesDisplay(row.devices, { fallbackMemoryMb: row.vram_claim_mb })
+    },
+  }
+}
+
+export const getVramClaimTableColumn = () => {
+  return {
+    field: 'vram_claim_mb',
+    title: i18n.t('aice.vram_claim_mb'),
+    width: 120,
+    formatter: ({ row }) => {
+      if (!row.vram_claim_mb) return '-'
+      return `${row.vram_claim_mb} MB`
     },
   }
 }
