@@ -646,9 +646,9 @@ export default {
       this.FC.setFieldsValue({ cloudregion: next })
       return true
     },
-    // 仅多选模式生效；region 有选中时按 region 裁剪 zone
+    // region 多选时裁剪 zone（zone 可为单选或多选）
     pruneZoneByCloudregion () {
-      if (!this.isMultiple('cloudregion') || !this.isMultiple('zone') || !this.names.includes('zone')) {
+      if (!this.isMultiple('cloudregion') || !this.names.includes('zone')) {
         return false
       }
 
@@ -670,9 +670,9 @@ export default {
       this.FC.setFieldsValue({ zone: next })
       return true
     },
-    // 仅多选模式生效；region 为空时按 provider 裁剪 zone
+    // provider 多选且 region 为空时裁剪 zone（zone 可为单选或多选）
     pruneZoneByProvider () {
-      if (!this.isMultiple('provider') || !this.isMultiple('zone') || !this.names.includes('zone')) {
+      if (!this.isMultiple('provider') || !this.names.includes('zone')) {
         return false
       }
 
@@ -691,7 +691,7 @@ export default {
       this.FC.setFieldsValue({ zone: next })
       return true
     },
-    // 多选 zone 裁剪优先级：cloudregion 有值 → 按 region；否则 → 按 provider
+    // 上游多选时裁剪 zone：cloudregion 有值 → 按 region；否则 → 按 provider
     pruneZoneForMultipleMode () {
       const cloudregions = this.toArray(this.FC.getFieldValue('cloudregion'))
       if (cloudregions.length) {

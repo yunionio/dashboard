@@ -48,11 +48,13 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
+        const cloudregionId = values.sku?.cloudregion_id || values.cloudregion_id ||
+          (Array.isArray(values.cloudregion) ? values.cloudregion[0] : values.cloudregion)
         const params = {
           project_domain: values.project_domain,
           name: values.name,
           description: values.description,
-          cloudregion_id: values.cloudregion_id,
+          cloudregion_id: cloudregionId,
           network_id: values.network,
           vpc_id: values.vpc,
           nat_spec: values.sku.name,
