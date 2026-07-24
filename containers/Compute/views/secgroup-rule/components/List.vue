@@ -95,6 +95,35 @@ export default {
         {
           field: 'cidr',
           title: this.type === 'out' ? this.$t('compute.text_978') : this.$t('compute.text_979'),
+          formatter: ({ cellValue, row }) => {
+            if (row.target_type === 'cidr') {
+              if (row.CIDR) {
+                return row.CIDIR
+              } else {
+                return 'ALL'
+              }
+            } else if (row.target_type === 'ip_set') {
+              if (row.target_ip_set) {
+                return row.target_ip_set
+              } else {
+                return '-'
+              }
+            } else if (row.target_type === 'ip_set_group') {
+              if (row.target_ip_set_group) {
+                return row.target_ip_set_group
+              } else {
+                return '-'
+              }
+            } else if (row.target_type === 'security_group') {
+              if (row.target_security_group) {
+                return row.target_security_group
+              } else {
+                return '-'
+              }
+            } else {
+              return '-'
+            }
+          },
           slots: {
             default: ({ row }, h) => {
               const ret = []
