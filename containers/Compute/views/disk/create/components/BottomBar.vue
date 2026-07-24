@@ -65,6 +65,10 @@ export default {
     provider: {
       type: [Array, String],
     },
+    cloudproviderItem: {
+      type: Object,
+      default: null,
+    },
   },
   data () {
     this._getPrice = _.debounce(this._getPrice, 500)
@@ -175,19 +179,33 @@ export default {
       this.loading = true
       try {
         let values = await this.form.fc.validateFields()
-        const { project, domain, cloudregion, zone, manager_id, backend, encryptEnable, encrypt_key_id, encrypt_key_alg, storage, iops, throughput, ...rest } = values
-        const oProvider = PROVIDER_MAP[this.currentCloudregion.provider]
+        const { project, domain, cloudregion, zone, manager_id, backend, encryptEnable, encrypt_key_id, encrypt_key_alg, storage, iops, throughput, enableWorldMap, provider: _provider, hypervisor, ...rest } = values
+        if (!backend || typeof backend !== 'string') {
+          this.$message.error(this.$t('compute.text_411'))
+          this.loading = false
+          return
+        }
+        // 区域优先：可用区所属 → 云订阅 → 表单选中
+        const preferRegionId = this.currentCloudzone?.cloudregion_id ||
+          this.currentCloudzone?.cloudregion ||
+          this.cloudproviderItem?.cloudregion_id ||
+          (Array.isArray(cloudregion) ? cloudregion[0] : cloudregion) ||
+          this.currentCloudregion?.id
+        const preferZone = this.currentCloudzone?.id ||
+          (Array.isArray(zone) ? zone[0] : zone)
+        const oProvider = PROVIDER_MAP[this.currentCloudregion?.provider] ||
+          (this.cloudproviderItem?.provider && PROVIDER_MAP[this.cloudproviderItem.provider])
         const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
         values = {
           ...rest,
           backend: backend.split('__')[0],
           medium: backend.split('__')[1],
-          hypervisor: oProvider ? oProvider.hypervisor : provider,
+          hypervisor: oProvider ? oProvider.hypervisor : (hypervisor || provider),
           size: values.size * 1024,
           project_domain: (domain && domain.key) || this.userInfo.projectDomainId,
           project_id: (project && project.key) || this.userInfo.projectId,
-          prefer_region_id: cloudregion,
-          prefer_zone: zone,
+          prefer_region_id: preferRegionId,
+          prefer_zone: preferZone,
           prefer_manager_id: manager_id,
         }
         if (encryptEnable === 'existing' && encrypt_key_id) {
