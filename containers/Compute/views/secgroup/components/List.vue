@@ -95,6 +95,9 @@ export default {
         steadyStatus: this.secgroupType === 'network' ? null : Object.values(expectStatus.secgroup).flat(),
         filterOptions: {
           name: getNameFilter(),
+          external_id: {
+            label: this.$t('table.title.external_id'),
+          },
           id: {
             label: 'ID',
           },
