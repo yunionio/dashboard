@@ -38,6 +38,7 @@ const DiskBackup = () => import(/* webpackChunkName: "compute" */ /* webpackPref
 const GPU = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/gpu')
 const Secgroup = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/secgroup')
 const SecgroupCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/secgroup/Create')
+const IpSet = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/ipset')
 const Servertemplate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/servertemplate')
 const ServertemplateCreateServer = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/servertemplate/CreateServer')
 const DiskSnapshot = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/snapshot')
@@ -516,9 +517,32 @@ export default {
     },
     {
       meta: {
-        label: i18n.t('compute.text_104'),
+        label: i18n.t('compute.title.host.security'),
       },
       submenus: [
+        {
+          path: '/keypair',
+          meta: {
+            label: i18n.t('compute.text_108'),
+            permission: 'keypairs_list',
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.keypair')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['onestack', 'public', 'private', 'baremetal', 'vmware'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Keypair',
+              path: '',
+              meta: {},
+              component: Keypair,
+            },
+          ],
+        },
         {
           path: '/secgroup',
           meta: {
@@ -543,6 +567,27 @@ export default {
               name: 'SecgroupCreate',
               path: 'create',
               component: SecgroupCreate,
+            },
+          ],
+        },
+        {
+          path: '/ipset',
+          meta: {
+            label: i18n.t('compute.title.ipset'),
+            permission: 'ipsets_list',
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.ipset')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'IpSet',
+              path: '',
+              component: IpSet,
             },
           ],
         },
@@ -605,7 +650,6 @@ export default {
             },
           ],
         },
-
         {
           path: '/tap-service',
           meta: {
@@ -630,36 +674,6 @@ export default {
               name: 'TapServiceCreate',
               path: 'create',
               component: TapServiceCreate,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      meta: {
-        label: i18n.t('compute.text_108'),
-      },
-      submenus: [
-        {
-          path: '/keypair',
-          meta: {
-            label: i18n.t('compute.text_108'),
-            permission: 'keypairs_list',
-            hidden: (userInfo, menu) => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.keypair')) {
-                return true
-              }
-              return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['onestack', 'public', 'private', 'baremetal', 'vmware'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Keypair',
-              path: '',
-              meta: {},
-              component: Keypair,
             },
           ],
         },

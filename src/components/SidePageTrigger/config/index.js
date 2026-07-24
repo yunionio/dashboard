@@ -122,6 +122,10 @@ export default {
   SecGroupSidePage: {
     resource: 'secgroups',
   },
+  // IP地址集
+  IpSetSidePage: {
+    resource: 'ipsets',
+  },
   // 代理
   ProxysettingSidePage: {
     resource: 'proxysettings',
