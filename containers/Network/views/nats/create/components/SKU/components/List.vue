@@ -28,6 +28,7 @@
 import * as R from 'ramda'
 import { BILL_TYPES_MAP } from '@Network/views/nats/constants'
 import PageListEmpty from '@/components/PageList/Loader'
+import { PROVIDER_MAP } from '@/constants'
 import { hasMeterService } from '@/utils/auth'
 export default {
   name: 'SKUList',
@@ -69,6 +70,30 @@ export default {
       const columns = [
         { type: 'radio', width: 40 },
         {
+          field: 'provider',
+          title: this.$t('compute.text_176'),
+          minWidth: 100,
+          showOverflow: 'ellipsis',
+          slots: {
+            default: ({ row }) => {
+              return row.provider
+                ? (PROVIDER_MAP[row.provider]?.label || row.provider)
+                : '-'
+            },
+          },
+        },
+        {
+          field: 'cloudregion',
+          title: this.$t('dictionary.region'),
+          minWidth: 140,
+          showOverflow: 'ellipsis',
+          slots: {
+            default: ({ row }) => {
+              return row.cloudregion || row.region || '-'
+            },
+          },
+        },
+        {
           field: 'name',
           title: this.$t('network.nat.sku.spec'),
           slots: {
@@ -82,7 +107,6 @@ export default {
             },
           },
         },
-        { field: 'provider', title: this.$t('network.text_198') },
         {
           field: 'cps',
           title: this.$t('network.nat.sku.cps'),
@@ -227,15 +251,26 @@ export default {
         this.rateLoading = false
       }
     },
+    hasCloudregionParam (params = {}) {
+      if (params.cloudregion_id && params.cloudregion_id.length !== 0) return true
+      if (params.cloudregion && params.cloudregion.length !== 0) return true
+      const filters = Array.isArray(params.filter) ? params.filter : (params.filter ? [params.filter] : [])
+      return filters.some(item => String(item).includes('cloudregion_id.in'))
+    },
     async fetchSkus (params) {
       const manager = new this.$Manager('nat_skus', 'v2')
-      if (!params.cloudregion || params.cloudregion.length === 0) {
+      if (!this.hasCloudregionParam(params)) {
         this.skuList = []
         return
       }
+      // 避免同时传 cloudregion / cloudregion_id
+      const requestParams = { ...params }
+      if (requestParams.cloudregion_id || (requestParams.filter && String(requestParams.filter).includes('cloudregion_id'))) {
+        delete requestParams.cloudregion
+      }
       try {
         this.loading = true
-        const { data = [] } = await manager.list({ params })
+        const { data = [] } = await manager.list({ params: requestParams })
         const list = data.data
         this.skuList = this.skuSort(list)
         if (this.filterSkuCallback && R.type(this.filterSkuCallback) === 'Function') {

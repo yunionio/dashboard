@@ -180,6 +180,21 @@ export default {
         values.domain = values.domain?.key
         values.tenant = values.project.key
         Reflect.deleteProperty(values, 'project')
+        Reflect.deleteProperty(values, 'enableWorldMap')
+        // 多选时收敛为单值提交
+        if (Array.isArray(values.cloudregion)) {
+          values.cloudregion = values.cloudregion[0]
+        }
+        if (Array.isArray(values.provider)) {
+          values.provider = values.provider[0]
+        }
+        // 优先用云订阅上的区域/平台
+        if (this.currentCloudregion && this.currentCloudregion.id) {
+          values.cloudregion = this.currentCloudregion.id
+          if (this.currentCloudregion.provider) {
+            values.provider = this.currentCloudregion.provider
+          }
+        }
         if (this.cloudEnv === 'private' && !this.isHCSO && !this.isHCS) {
           delete values.charge_type
           values.bandwidth = 0

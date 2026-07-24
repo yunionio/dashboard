@@ -50,7 +50,10 @@ export default {
     },
     async fetchSkus (extraParams) {
       const { fetchSkus } = this.$refs.SKU_LIST
-      const values = this.getParams(extraParams || ['cloudregion_id'])
+      // 支持直接传入请求参数对象（多选区域），或字段名数组
+      const values = (extraParams && !Array.isArray(extraParams) && typeof extraParams === 'object')
+        ? { scope: 'domain', ...extraParams }
+        : this.getParams(extraParams || ['cloudregion_id'])
       try {
         await fetchSkus(values)
       } catch (err) {
