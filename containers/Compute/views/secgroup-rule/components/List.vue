@@ -10,7 +10,7 @@
 <script>
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+// import { getStatusTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 import regexp from '@/utils/regexp'
 import expectStatus from '@/constants/expectStatus'
@@ -26,6 +26,13 @@ const PROTOCOL = {
 const ACTIONS = {
   allow: i18n.t('compute.text_976'),
   deny: i18n.t('compute.text_977'),
+}
+
+const TARGET_TYPE = {
+  ip_set: i18n.t('compute.title.ipset'),
+  ip_set_group: i18n.t('compute.title.ipsetGroup'),
+  cidr: 'CIDR',
+  security_group: i18n.t('dictionary.secgroup'),
 }
 
 export default {
@@ -85,20 +92,43 @@ export default {
         },
       }),
       columns: [
-        getNameDescriptionTableColumn({
+        {
           field: 'cidr',
-          title: 'CIDR',
-          edit: false,
-          showDesc: false,
-          hideField: true,
-          slotCallback: row => {
-            if (row.cidr) {
-              return row.cidr
-            } else {
-              return this.$t('compute.any_cidr.text')
-            }
+          title: this.type === 'out' ? this.$t('compute.text_978') : this.$t('compute.text_979'),
+          slots: {
+            default: ({ row }, h) => {
+              const ret = []
+              if (row.target_type === 'cidr') {
+                if (!row.cidr) {
+                  ret.push(
+                    <span>{this.$t('compute.any_cidr.text')}</span>,
+                  )
+                } else {
+                  const cidrList = row.cidr.split(',')
+                  cidrList.forEach(item => {
+                    ret.push(
+                      <list-body-cell-wrap copy hideField={true} field='cidr' row={row} message={item}>
+                        {item}
+                      </list-body-cell-wrap>,
+                    )
+                  })
+                }
+              } else if (row.target_type === 'ip_set') {
+                ret.push(
+                  <side-page-trigger permission='ipsets_get' name='IpSetSidePage' id={row.cidr} vm={this}>{row.target_ip_set}</side-page-trigger>,
+                )
+              }
+              return ret
+            },
           },
-        }),
+        },
+        {
+          field: 'target_type',
+          title: (this.type === 'out' ? this.$t('compute.text_978') : this.$t('compute.text_979')) + this.$t('compute.text_175'),
+          formatter: ({ cellValue, row }) => {
+            return TARGET_TYPE[cellValue] || row.target_type
+          },
+        },
         {
           field: 'protocol',
           title: this.$t('compute.text_980'),
@@ -113,7 +143,7 @@ export default {
             return cellValue === 'any' ? this.$t('compute.any_port.text') : !row.ports ? this.$t('compute.any_port.text') : row.ports
           },
         },
-        getStatusTableColumn({ statusModule: 'common' }),
+        // getStatusTableColumn({ statusModule: 'common' }),
         {
           field: 'action',
           title: this.$t('compute.text_694'),
