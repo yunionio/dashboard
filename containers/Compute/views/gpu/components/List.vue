@@ -31,6 +31,7 @@ export default {
     getParams: {
       type: [Function, Object],
     },
+    gpuResource: String,
     resId: String,
     probeHostDevices: Boolean,
     hiddenActionKeys: Array,
@@ -49,7 +50,7 @@ export default {
       list: this.$list.createList(this, {
         ctx: this,
         id: this.id,
-        resource: 'isolated_devices',
+        resource: this.gpuResource || 'isolated_devices',
         getParams: this.getParam,
         filter,
         isTemplate: this.isTemplate,

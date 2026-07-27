@@ -102,16 +102,46 @@ export const getMemoryAllocatedColumn = () => {
     minWidth: 100,
     showOverflow: 'title',
     formatter: ({ row }) => {
-      if (row.memory_allocated === undefined || row.memory_allocated === null || row.memory_allocated === '') {
+      if (!row.memory_allocated && !row.device_memory_size) {
         return '-'
       }
-      return sizestr(row.memory_allocated, 'M', 1024)
+      return sizestr(row.memory_allocated || row.device_memory_size, 'M', 1024)
     },
   }
 }
 
-export const getIsolatedDeviceDetailColumns = (vm) => {
-  return [
+/**
+ * vxe-grid 不识别自定义 hidden，需在传入前解析：
+ * - 列：任一 row 不隐藏则保留该列
+ * - 单元格：当前 row 满足 hidden 时展示 '-'
+ */
+export const resolveIsolatedDeviceDetailColumns = (columns = [], devices = []) => {
+  const list = Array.isArray(devices) ? devices : []
+  return columns.filter(col => {
+    if (typeof col.hidden === 'function') {
+      if (!list.length) return true
+      return list.some(row => !col.hidden({ row }))
+    }
+    return !col.hidden
+  }).map(col => {
+    if (typeof col.hidden !== 'function') {
+      const { hidden, ...rest } = col
+      return rest
+    }
+    const { hidden, formatter, ...rest } = col
+    return {
+      ...rest,
+      formatter: (params) => {
+        if (hidden(params)) return '-'
+        if (typeof formatter === 'function') return formatter(params)
+        return params.cellValue ?? '-'
+      },
+    }
+  })
+}
+
+export const getIsolatedDeviceDetailColumns = (vm, devices) => {
+  const columns = [
     {
       field: 'name',
       title: i18n.t('compute.text_228'),
@@ -171,15 +201,46 @@ export const getIsolatedDeviceDetailColumns = (vm) => {
       formatter: ({ row }) => row.ip || row.addr || '-',
     },
     {
-      field: 'device_memory_size',
+      field: 'memory_size',
       title: i18n.t('compute.memory_size'),
       minWidth: 100,
       showOverflow: 'title',
       formatter: ({ row }) => {
-        const size = row.device_memory_size || row.memory_request
+        const size = row.memory_size
         if (!size) return '-'
         return sizestr(size, 'M', 1024)
       },
+    },
+    {
+      field: 'device_memory_size',
+      title: i18n.t('compute.memory_allocated'),
+      minWidth: 100,
+      showOverflow: 'title',
+      formatter: ({ row }) => {
+        const size = row.device_memory_size
+        if (!size) return '-'
+        return sizestr(size, 'M', 1024)
+      },
+      hidden: ({ row }) => row.sharing_mode !== 'HAMI',
+    },
+    {
+      field: 'virtual_num',
+      title: i18n.t('compute.virtual_num'),
+      minWidth: 100,
+      showOverflow: 'title',
+      formatter: ({ row }) => {
+        return row.virtual_num || '-'
+      },
+    },
+    {
+      field: 'allocated_count',
+      title: i18n.t('compute.allocated_count'),
+      minWidth: 100,
+      showOverflow: 'title',
+      formatter: ({ row }) => {
+        return row.allocated_count || '-'
+      },
+      hidden: ({ row }) => row.sharing_mode === 'HAMI',
     },
     {
       field: 'model',
@@ -189,4 +250,6 @@ export const getIsolatedDeviceDetailColumns = (vm) => {
       formatter: ({ row }) => row.model || '-',
     },
   ]
+  if (!Array.isArray(devices)) return columns
+  return resolveIsolatedDeviceDetailColumns(columns, devices)
 }
