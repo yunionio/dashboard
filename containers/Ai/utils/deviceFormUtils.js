@@ -113,11 +113,18 @@ export function formatDevicesDisplay (devices, { fallbackMemoryMb } = {}) {
   }).join(', ')
 }
 
-export function isValidDeviceRows (rows, { allowEmpty = false } = {}) {
+export function isValidDeviceRows (rows, { allowEmpty = false, requireHamiMemoryMb = false } = {}) {
   if (!Array.isArray(rows) || rows.length === 0) return allowEmpty
   const withModel = rows.filter(row => String(row?.model || '').trim())
   if (withModel.length === 0) return allowEmpty
-  return withModel.every(row => Number(row.count) >= 1)
+  if (!withModel.every(row => Number(row.count) >= 1)) return false
+  if (requireHamiMemoryMb) {
+    return withModel.every((row) => {
+      if (resolveSharingMode(row.sharing_mode) !== 'HAMI') return true
+      return normalizeMemoryMb(row.memory_mb) > 0
+    })
+  }
+  return true
 }
 
 export function deviceRowsHaveContent (rows) {
