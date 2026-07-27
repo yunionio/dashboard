@@ -144,7 +144,8 @@
           :key="field.fieldKey"
           :label="$t(field.label)">
           <llm-gpu-devices-editor
-            v-decorator="decorators[field.fieldKey]" />
+            v-decorator="decorators[field.fieldKey]"
+            :require-hami-memory-mb="isLocalPathSku" />
         </a-form-item>
         <a-form-item v-else-if="field.component === 'input-number'" :key="field.fieldKey" :label="$t(field.label)">
           <a-input-number
@@ -447,6 +448,7 @@ import {
   createEmptyDeviceRow,
   expandRowsToDevices,
   isValidDeviceRows,
+  resolveSharingMode,
 } from '@Ai/utils/deviceFormUtils'
 import {
   formValuesToBackendParameters,
@@ -903,7 +905,12 @@ export default {
                   const field = (LLM_TYPE_FORM_CONFIG[type] || []).find(f => f.fieldKey === 'device')
                   const hasInjectedDevice = (this.isCatalogMode && this.catalogSubmitType === 'import' && !this.isApplyType && !this.isDesktopType) || this.isLocalPathSku
                   const required = !!(field?.rules?.some(r => r.required) || hasInjectedDevice || isCatalogImport || isLocalPathImport)
-                  if (!isValidDeviceRows(value, { allowEmpty: !required })) {
+                  const requireHamiMemoryMb = !!(this.isLocalPathSku || isLocalPathImport)
+                  if (!isValidDeviceRows(value, { allowEmpty: !required, requireHamiMemoryMb })) {
+                    if (requireHamiMemoryMb && Array.isArray(value) && value.some(row => String(row?.model || '').trim() && resolveSharingMode(row.sharing_mode) === 'HAMI' && !(parseInt(row.memory_mb, 10) > 0))) {
+                      callback(new Error(this.$t('aice.devices.memory_mb.required')))
+                      return
+                    }
                     callback(new Error(this.$t('common.tips.select', [this.$t('aice.devices')])))
                     return
                   }
