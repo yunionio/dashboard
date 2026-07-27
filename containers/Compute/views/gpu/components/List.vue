@@ -32,6 +32,7 @@ export default {
       type: [Function, Object],
     },
     gpuResource: String,
+    data: Object, // guest data
     resId: String,
     probeHostDevices: Boolean,
     hiddenActionKeys: Array,
@@ -174,9 +175,6 @@ export default {
                 tooltip: this.$t('compute.text_486'),
               }
             }
-            const noValidateGuestStatus = item.some(item => item.host_type !== 'container' && (item.guest_status !== 'ready' && item.guest_status !== 'running' && item.guest_status !== 'unknown'))
-            const noValidateContainerStatus = item.some(item => item.host_type === 'container' && (item.guest_status !== 'ready' && item.guest_status !== 'unknown'))
-            const validateGuestId = item.every(item => item.guest_id)
             const someNicDevice = item.some(v => v.dev_type === 'NIC')
             if (someNicDevice) {
               return {
@@ -184,7 +182,36 @@ export default {
                 tooltip: this.$t('compute.sriov_device_nic_notsupport'),
               }
             }
-            if (!validateGuestId) {
+            if (this.gpuResource) {
+              const status = this.data?.status
+              const noValidateGuestStatus = item.some(v => v.host_type !== 'container') && status !== 'ready' && status !== 'running' && status !== 'unknown'
+              const noValidateContainerStatus = item.some(v => v.host_type === 'container') && status !== 'ready' && status !== 'unknown'
+              if (noValidateGuestStatus) {
+                return {
+                  validate: false,
+                  tooltip: this.$t('compute.text_489', [this.$t('dictionary.server')]),
+                }
+              }
+              if (noValidateContainerStatus) {
+                return {
+                  validate: false,
+                  tooltip: this.$t('compute.text_489_1', [this.$t('compute.text_113')]),
+                }
+              }
+              return { validate: true }
+            }
+            const isGuestStatusInvalid = (statuses) => {
+              const list = Array.isArray(statuses) ? statuses : [statuses]
+              return list.some(s => s !== 'ready' && s !== 'running' && s !== 'unknown')
+            }
+            const isContainerStatusInvalid = (statuses) => {
+              const list = Array.isArray(statuses) ? statuses : [statuses]
+              return list.some(s => s !== 'ready' && s !== 'unknown')
+            }
+            const noValidateGuestStatus = item.some(v => v.host_type !== 'container' && isGuestStatusInvalid(v.guest_status))
+            const noValidateContainerStatus = item.some(v => v.host_type === 'container' && isContainerStatusInvalid(v.guest_status))
+            const validateGuest = item.every(v => Array.isArray(v.guest) ? v.guest.length > 0 : !!v.guest)
+            if (!validateGuest) {
               return {
                 validate: false,
                 tooltip: this.$t('compute.text_487', [this.$t('dictionary.server')]),
