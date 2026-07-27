@@ -120,7 +120,6 @@ export default {
       ],
       containerTotal: 0,
       guestIsolatedDevices: [],
-      isolatedDeviceColumns: [],
     }
   },
   computed: {
@@ -336,7 +335,6 @@ export default {
     },
   },
   created () {
-    this.isolatedDeviceColumns = getIsolatedDeviceDetailColumns(this)
     this.fetchContainers()
   },
   methods: {
@@ -345,13 +343,14 @@ export default {
       return row.isolated_devices || []
     },
     renderIsolatedDeviceRows (devices) {
+      const deviceList = Array.isArray(devices) ? devices.slice() : []
       return [
         this.$createElement('div', [
           this.$createElement('vxe-grid', {
             class: 'mb-2',
             props: {
-              data: Array.isArray(devices) ? devices.slice() : [],
-              columns: this.isolatedDeviceColumns,
+              data: deviceList,
+              columns: getIsolatedDeviceDetailColumns(this, deviceList),
               resizable: true,
             },
           }),

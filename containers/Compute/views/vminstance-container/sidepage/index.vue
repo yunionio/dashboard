@@ -29,6 +29,7 @@
       :show-create-action="false"
       :isPageDestroyed="isPageDestroyed"
       taskResource="compute-tasks"
+      gpuResource="guestisolateddevices"
       @refresh="refresh"
       @single-refresh="singleRefresh"
       @tab-change="handleTabChange" />
