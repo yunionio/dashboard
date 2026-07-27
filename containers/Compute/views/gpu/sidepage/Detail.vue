@@ -68,7 +68,6 @@ export default {
         },
         {
           ...getVirtualNumColumn(),
-          hidden: (row) => row.sharing_mode === 'HAMI',
         },
         {
           ...getAllocatedCountColumn(),
