@@ -10,6 +10,8 @@ import {
   getSharingModeColumn,
   getMemorySizeColumn,
   getVirtualNumColumn,
+  getMemoryAllocatedColumn,
+  getAllocatedCountColumn,
 } from '../utils/columns'
 
 function getGuestList (row) {
@@ -196,7 +198,15 @@ export default {
       getReserveResourceColumn(),
       getSharingModeColumn(),
       getMemorySizeColumn(),
+      {
+        ...getMemoryAllocatedColumn(),
+        hidden: () => !this.gpuResource,
+      },
       getVirtualNumColumn(),
+      {
+        ...getAllocatedCountColumn(),
+        hidden: () => !this.gpuResource,
+      },
       getPublicScopeTableColumn({ resource: 'isolated_devices', vm: this, title: this.$t('compute.text_113') }),
       getRegionTableColumn({ vm: this }),
     ]
