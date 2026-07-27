@@ -30,6 +30,7 @@
       :hiddenColumns="hiddenColumns"
       :hiddenSingleActions="hiddenSingleActions"
       :hiddenActionKeys="['SetReserveResource']"
+      gpuResource="guestisolateddevices"
       taskResource="compute-tasks"
       @refresh="refresh"
       @single-refresh="singleRefresh"
