@@ -1,6 +1,7 @@
 <!--
   GPU 型号 + 共享模式 + 数量编辑，用于推理模板创建/编辑。
   HAMI 时可选手动显存（memory_mb）；留空则建 Pod 时回退模型估算 claim。
+  local_path 场景下可通过 requireHamiMemoryMb 强制必填。
 -->
 <template>
   <div class="llm-gpu-devices-editor">
@@ -35,7 +36,7 @@
           :step="1024"
           :precision="0"
           class="llm-gpu-devices-editor__memory"
-          :placeholder="$t('aice.devices.memory_mb.placeholder')"
+          :placeholder="memoryMbPlaceholder"
           @change="val => onMemoryMbChange(index, val)" />
         <span class="llm-gpu-devices-editor__unit">MB</span>
       </template>
@@ -50,7 +51,7 @@
     <div
       v-if="innerRows.some(r => r.sharing_mode === 'HAMI')"
       class="text-color-help llm-gpu-devices-editor__help">
-      {{ $t('aice.devices.memory_mb.help') }}
+      {{ memoryMbHelp }}
     </div>
     <a-button type="link" icon="plus" class="pl-0" @click="addRow">
       {{ $t('aice.devices.add') }}
@@ -85,6 +86,10 @@ export default {
       type: Number,
       default: 16,
     },
+    requireHamiMemoryMb: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -113,6 +118,16 @@ export default {
         placeholder: this.$t('common.tips.select', [this.$t('aice.devices')]),
         allowClear: true,
       }
+    },
+    memoryMbPlaceholder () {
+      return this.requireHamiMemoryMb
+        ? this.$t('aice.devices.memory_mb.placeholder_required')
+        : this.$t('aice.devices.memory_mb.placeholder')
+    },
+    memoryMbHelp () {
+      return this.requireHamiMemoryMb
+        ? this.$t('aice.devices.memory_mb.help_required')
+        : this.$t('aice.devices.memory_mb.help')
     },
     innerRows () {
       return normalizeDeviceRows(this.value)
