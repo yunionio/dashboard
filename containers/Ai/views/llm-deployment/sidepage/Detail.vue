@@ -16,8 +16,9 @@ import {
   getReplicasTableColumn,
   getBackendTableColumn,
   getLLMSkuTableColumn,
-  getPlacementStrategyTableColumn,
-  getAccessPolicyTableColumn,
+  // 调度/访问策略未实现，暂不展示
+  // getPlacementStrategyTableColumn,
+  // getAccessPolicyTableColumn,
 } from '../utils/columns'
 
 export default {
@@ -39,15 +40,17 @@ export default {
         getLLMSkuTableColumn({ vm: this }),
         getBackendTableColumn(),
         getReplicasTableColumn(),
-        getPlacementStrategyTableColumn(),
-        {
-          field: 'distributed_inference',
-          title: this.$t('aice.llm_deployment.distributed_inference'),
-          formatter: ({ row }) => {
-            if (row.distributed_inference === null || row.distributed_inference === undefined) return '-'
-            return row.distributed_inference ? this.$t('common.true') : this.$t('common.false')
-          },
-        },
+        // 调度/访问策略未实现，暂不展示
+        // getPlacementStrategyTableColumn(),
+        // 分布式推理未实现，暂不展示
+        // {
+        //   field: 'distributed_inference',
+        //   title: this.$t('aice.llm_deployment.distributed_inference'),
+        //   formatter: ({ row }) => {
+        //     if (row.distributed_inference === null || row.distributed_inference === undefined) return '-'
+        //     return row.distributed_inference ? this.$t('common.true') : this.$t('common.false')
+        //   },
+        // },
         {
           field: 'restart_on_error',
           title: this.$t('aice.llm_deployment.restart_on_error'),
@@ -56,7 +59,7 @@ export default {
             return row.restart_on_error ? this.$t('common.true') : this.$t('common.false')
           },
         },
-        getAccessPolicyTableColumn(),
+        // getAccessPolicyTableColumn(),
         {
           field: 'source',
           title: this.$t('aice.llm_deployment.source'),

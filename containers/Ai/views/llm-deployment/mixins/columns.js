@@ -8,8 +8,9 @@ import {
   getReplicasTableColumn,
   getBackendTableColumn,
   getLLMSkuTableColumn,
-  getPlacementStrategyTableColumn,
-  getAccessPolicyTableColumn,
+  // 调度/访问策略未实现，暂不展示
+  // getPlacementStrategyTableColumn,
+  // getAccessPolicyTableColumn,
 } from '../utils/columns'
 
 export default {
@@ -33,8 +34,9 @@ export default {
       getLLMSkuTableColumn({ vm: this }),
       getBackendTableColumn(),
       getReplicasTableColumn(),
-      getPlacementStrategyTableColumn(),
-      getAccessPolicyTableColumn(),
+      // 调度/访问策略未实现，暂不展示
+      // getPlacementStrategyTableColumn(),
+      // getAccessPolicyTableColumn(),
       getProjectTableColumn(),
       getTimeTableColumn(),
     ]
