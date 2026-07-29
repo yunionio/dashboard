@@ -175,6 +175,20 @@ export const getIsolatedDeviceDetailColumns = (vm, devices) => {
       },
     },
     {
+      field: 'vendor',
+      title: i18n.t('compute.isolated_devices.vendor.title'),
+      minWidth: 100,
+      showOverflow: 'title',
+      formatter: ({ row }) => row.vendor || '-',
+    },
+    {
+      field: 'vendor_device_id',
+      title: i18n.t('compute.isolated_devices.vendor_device_id.title'),
+      minWidth: 120,
+      showOverflow: 'title',
+      formatter: ({ row }) => row.vendor_device_id || '-',
+    },
+    {
       field: 'gpu_type',
       title: i18n.t('compute.pci.gpu_mode'),
       minWidth: 100,
