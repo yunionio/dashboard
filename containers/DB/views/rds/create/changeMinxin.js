@@ -75,6 +75,9 @@ export default {
           return handleChange()
         }
       })
+      if (typeof this.scheduleSaveCreateFormDraft === 'function') {
+        this.scheduleSaveCreateFormDraft()
+      }
     },
   },
 }

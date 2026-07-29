@@ -6,7 +6,15 @@
         :form="form.fc"
         hideRequiredMark>
         <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" v-bind="formItemLayout">
-          <domain-project :fc="form.fc" :form-layout="formItemLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="domainChange" />
+          <domain-project
+            :fc="form.fc"
+            :fd="form.fd"
+            :form-layout="formItemLayout"
+            :decorators="{ project: decorators.project, domain: decorators.domain }"
+            :ignoreStorage="ignoreLocalFormStorage"
+            @update:domain="domainChange"
+            @fetchDomainCallback="fetchDomainCallback"
+            @fetchProjectCallback="fetchProjectCallback" />
         </a-form-item>
         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
@@ -41,6 +49,7 @@
           :defaultActiveFirstOption="areaDefaultActiveFirstOption"
           :region.sync="regionList"
           filterBrandResource="network_manage"
+          @fetchsDone="onAreaSelectsFetchsDone"
           @change="cloudregionChange" />
         <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="showBgpTypes">
           <a-select v-decorator="decorators.bgp_type" @change="handleBgpTypeChange">
@@ -92,14 +101,18 @@
             :params="providerParams"
             :mapper="providerMapper"
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
+            :resList.sync="cloudproviderData"
             @update:item="providerChange"
-            :isDefaultSelect="true"
+            :isDefaultSelect="!isFormBackfill"
             :select-props="{ placeholder: $t('compute.text_1387') }"
             style="width: 320px" />
         </a-form-item>
         <a-form-item :label="$t('common.text00012')" class="mb-0" v-bind="formItemLayout">
           <tag
-            v-decorator="decorators.__meta__" :allowNoValue="false" />
+            :key="`eip-tag-${cloudEnv}`"
+            v-decorator="decorators.__meta__"
+            :allowNoValue="false"
+            :default-checked="tagDefaultChecked" />
         </a-form-item>
       </a-form>
     </page-body>
@@ -108,7 +121,8 @@
       :current-cloudregion="selectedRegionItem"
       :size="bandwidth"
       :bgp-type="bgp_type"
-      :cloudAccountId="cloudAccountId" />
+      :cloudAccountId="cloudAccountId"
+      @create-success="onEipCreateSuccess" />
   </div>
 </template>
 
@@ -116,9 +130,16 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import IpSubnet from '@Network/sections/IpSubnet'
+import {
+  mergeEipCreateDraft,
+  isMeaningfulEipCreateDraft,
+  buildEipCreateDraftPayload,
+} from '@Network/views/eip/utils/eipCreateDraft'
 import RegionMap from '@Compute/sections/RegionMap'
 import AreaSelects from '@/sections/AreaSelects'
 import DomainProject from '@/sections/DomainProject'
+import createFormDraftMixin from '@/mixins/createFormDraft'
+import { setDraft, omitIdentityFields } from '@/utils/createFormDraft'
 import validateForm, { isRequired } from '@/utils/validate'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import { cloudregionFilterByCapability } from '@/utils/common/capability'
@@ -137,6 +158,7 @@ export default {
     BottomBar,
     Tag,
   },
+  mixins: [createFormDraftMixin],
   data () {
     const cloudEnvOptions = getCloudEnvOptions('network_manage_brands', true)
     const queryType = this.$route.query.type
@@ -166,6 +188,7 @@ export default {
             if (values.bandwidth) {
               this.bandwidth = values.bandwidth
             }
+            this.scheduleSaveCreateFormDraft()
           },
         }),
         fd: {
@@ -277,6 +300,7 @@ export default {
       manager: '',
       cloudAccountId: '',
       cloudproviderItem: null,
+      cloudproviderData: [],
       selectedRegionItem: {},
       showBandwidth: true,
       charge_type: cloudEnv === 'onpremise' ? 'bandwidth' : 'traffic',
@@ -286,10 +310,34 @@ export default {
       bandwidth: cloudEnv !== 'private' ? 30 : 0,
       bgpTypeOptions: [],
       bgp_type: undefined,
+      tagDefaultChecked: {},
     }
   },
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'userInfo', 'capability']),
+    createFormDraftOptions () {
+      return {
+        formScope: `network.eip.${this.cloudEnv}`,
+        omitKeys: ['ip_addr', 'ip'],
+        serialize: () => this.serializeCreateFormDraft(),
+        applyDraft: async (draftData) => {
+          await this.applyEipCreateDraft(draftData)
+        },
+        isMeaningfulDraft: (data) => isMeaningfulEipCreateDraft(data),
+      }
+    },
+    ignoreLocalFormStorage () {
+      return !!this._draftInitFormData
+    },
+    isFormBackfill () {
+      if (this._draftInitFormData && !this.createFormDraftUserInteracted) return true
+      return this.isCreateFormDraftHydrating
+    },
+    effectiveInitFormData () {
+      if (this._draftInitFormData && !this.createFormDraftUserInteracted) return this._draftInitFormData
+      if (this.isCreateFormDraftHydrating && this._draftInitFormData) return this._draftInitFormData
+      return {}
+    },
     isPublic () {
       return this.cloudEnv === 'public'
     },
@@ -297,6 +345,7 @@ export default {
       return this.isPublic || this.isHCSO || this.isHCS
     },
     areaDefaultActiveFirstOption () {
+      if (this.isFormBackfill) return false
       return this.isPublic ? [] : true
     },
     sliderMarks () {
@@ -499,26 +548,58 @@ export default {
     },
   },
   watch: {
-    cloudEnv (newValue) {
-      this.$refs.areaSelects.fetchs(this.areaselectsName)
+    async cloudEnv (newValue, oldValue) {
+      if (oldValue && oldValue !== newValue) {
+        this.flushEipDraftForEnv(oldValue)
+        this.resetEipDraftStateForEnvSwitch()
+      }
+      this.$refs.areaSelects && this.$refs.areaSelects.fetchs(this.areaselectsName)
       this.form.fc.resetFields(['manager'])
       this.manager = ''
       this.providerC = ''
       this.cloudproviderItem = null
+      this.cloudproviderData = []
+      this.tagDefaultChecked = {}
+      this.form.fc.setFieldsValue({ __meta__: undefined })
       this.charge_type = newValue === 'onpremise' ? 'bandwidth' : 'traffic'
       this.$nextTick(() => {
         this.form.fc.getFieldDecorator('charge_type', { initialValue: newValue === 'onpremise' ? 'bandwidth' : 'traffic' })
       })
       this.bandwidth = newValue === 'private' && !this.isHCSO && !this.isHCS ? 0 : 30
+      if (oldValue && oldValue !== newValue) {
+        await this.$nextTick()
+        try {
+          await this.tryRestoreCreateFormDraft()
+        } catch (e) { /* ignore */ }
+        this.isDraftRestore = false
+        this._bindCreateFormDraftUserInteraction()
+      }
     },
     isAliyun (newValue) {
       if (newValue) {
         this.bgpTypeOptions = BGP_TYPES.map(item => item.value)
         this.$nextTick(() => {
+          if (this.isCreateFormDraftHydrating && this._draftInitFormData?.bgp_type != null) {
+            this.form.fc.setFieldsValue({ bgp_type: this._draftInitFormData.bgp_type })
+            this.bgp_type = this._draftInitFormData.bgp_type
+            return
+          }
           this.form.fc.setFieldsValue({ bgp_type: 'BGP' })
         })
       } else {
         this.fetchBgpType()
+      }
+    },
+    cloudproviderData (list) {
+      if (!this.showCloudprovider || !list || !list.length) return
+      if (this.isCreateFormDraftHydrating) {
+        const mid = this._draftInitFormData?.manager
+        if (mid && list.some(i => i.id === mid)) {
+          this.form.fc.setFieldsValue({ manager: mid })
+          this.$set(this.form.fd, 'manager', mid)
+          const item = list.find(i => i.id === mid)
+          if (item) this.providerChange(item)
+        }
       }
     },
   },
@@ -698,12 +779,17 @@ export default {
         if (e.cloudregion_id && this.regionList[e.cloudregion_id]) {
           this.selectedRegionItem = this.regionList[e.cloudregion_id]
         }
-        if (e.provider.toLowerCase() === 'azure') {
-          this.form.fc.setFieldsValue({ bandwidth: 0 })
+        if (!this.isCreateFormDraftHydrating) {
+          if (e.provider.toLowerCase() === 'azure') {
+            this.form.fc.setFieldsValue({ bandwidth: 0 })
+          } else {
+            this.form.fc.setFieldsValue({ bandwidth: 30 })
+          }
+          this.hiddenBrandwidthHandle(e.provider)
         } else {
-          this.form.fc.setFieldsValue({ bandwidth: 30 })
+          const providers = ['Azure', 'Aws', 'Google']
+          this.showBandwidth = !providers.some(v => v === e.provider)
         }
-        this.hiddenBrandwidthHandle(e.provider)
         this.providerC = e.provider.toLowerCase()
         this.cloudAccountId = e.cloudaccount_id || ''
       } else {
@@ -723,6 +809,237 @@ export default {
         this.form.fc.setFieldsValue({ bandwidth: 30 })
         this.showBandwidth = true
       }
+    },
+    serializeCreateFormDraft (env) {
+      try {
+        const formType = env || this.cloudEnv
+        const values = this.form.fc.getFieldsValue() || {}
+        if (!values.cloudregion && !values.provider && !values.manager && !values.vpc) {
+          return null
+        }
+        const domainId = values.domain?.key || this.form.fd.domain?.key || this.form.fd.domain || this.domain_id
+        const projectId = values.project?.key || this.form.fd.project?.key || this.form.fd.project
+        return buildEipCreateDraftPayload({
+          ...values,
+          domain: domainId ? { key: domainId } : undefined,
+          project: projectId ? { key: projectId } : undefined,
+          project_id: projectId,
+          charge_type: values.charge_type || this.charge_type,
+          bandwidth: values.bandwidth != null ? values.bandwidth : this.bandwidth,
+          bgp_type: values.bgp_type != null ? values.bgp_type : this.bgp_type,
+          manager: values.manager || this.manager,
+        }, {
+          formType,
+          __resource_type__: 'eip',
+          domain_id: domainId,
+          showBandwidth: this.showBandwidth,
+        })
+      } catch (e) {
+        return null
+      }
+    },
+    flushEipDraftForEnv (env) {
+      if (!env) return
+      if (this._createFormDraftSaveTimer) {
+        clearTimeout(this._createFormDraftSaveTimer)
+        this._createFormDraftSaveTimer = null
+      }
+      if (!this.createFormDraftUserInteracted && !this.draftRestored) return
+      const payload = this.serializeCreateFormDraft(env)
+      if (!payload || !isMeaningfulEipCreateDraft(payload)) return
+      const omitted = omitIdentityFields(payload, this.getCreateFormDraftOmitKeys())
+      setDraft(`network.eip.${env}`, omitted)
+    },
+    resetEipDraftStateForEnvSwitch () {
+      this.createFormDraftUserInteracted = false
+      this.draftRestored = false
+      this._draftInitFormData = null
+      this._eipAreaApplied = false
+      this._eipAreaApplying = false
+      this.isDraftRestore = false
+      this._bindCreateFormDraftUserInteraction()
+    },
+    async applyEipCreateDraft (draft) {
+      const data = mergeEipCreateDraft(draft)
+      if (!data) return
+      this._draftInitFormData = data
+      this.isDraftRestore = true
+      this.draftRestored = true
+      const extra = data.extraData || {}
+      if (extra.showBandwidth === false) this.showBandwidth = false
+      const domainId = data.domain?.key || extra.domain_id
+      const projectId = data.project?.key || data.project_id
+      if (domainId) {
+        this.domain_id = domainId
+        this.form.fc.setFieldsValue({ domain: { key: domainId } })
+      }
+      if (projectId) {
+        this.form.fc.setFieldsValue({ project: { key: projectId } })
+      }
+      if (data.enableWorldMap != null) {
+        this.form.fc.setFieldsValue({ enableWorldMap: data.enableWorldMap })
+        this.$set(this.form.fd, 'enableWorldMap', data.enableWorldMap)
+      }
+      if (data.__meta__ && !R.isEmpty(data.__meta__)) {
+        const ret = {}
+        R.forEachObjIndexed((value, key) => {
+          ret[key] = R.is(Array, value) ? value : [value]
+        }, data.__meta__)
+        this.tagDefaultChecked = ret
+        this.form.fc.setFieldsValue({ __meta__: data.__meta__ })
+      } else {
+        this.tagDefaultChecked = {}
+        this.form.fc.setFieldsValue({ __meta__: undefined })
+      }
+      await this.$nextTick()
+      await this.onAreaSelectsFetchsDone()
+      await this.applyEipSecondaryFields(data)
+    },
+    async onAreaSelectsFetchsDone () {
+      if (!this.isFormBackfill || !this._draftInitFormData) return
+      if (this._eipAreaApplied || this._eipAreaApplying) return
+      await this.applyEipAreaFields()
+    },
+    async applyEipAreaFields () {
+      const data = this._draftInitFormData
+      if (!this.isFormBackfill || !data) return
+      if (this._eipAreaApplied || this._eipAreaApplying) return
+      this._eipAreaApplying = true
+      try {
+        const areaRef = this.$refs.areaSelects
+        if (!areaRef) return
+        if (this.isPublic) {
+          if (!(areaRef.providerList || []).length && !(areaRef.cloudregionList || []).length) return
+          const provider = this.toAreaValue(data.provider).filter(Boolean)
+          if (provider.length) {
+            this.form.fc.setFieldsValue({ provider })
+            this.$set(this.form.fd, 'provider', provider)
+            await this.$nextTick()
+            if (typeof areaRef.fetchListsOnly === 'function') {
+              await areaRef.fetchListsOnly(['cloudregion'], { skipDefaultSelect: true })
+            }
+          }
+          const region = this.toAreaValue(data.cloudregion).filter(Boolean)
+          if (region.length) {
+            this.form.fc.setFieldsValue({ cloudregion: region })
+            this.$set(this.form.fd, 'cloudregion', region)
+            this.cloudregionChange()
+          }
+        } else {
+          if (!(areaRef.cloudregionList || []).length) return
+          const region = this.pickSingleAreaValue(data.cloudregion)
+          if (region) {
+            this.form.fc.setFieldsValue({ cloudregion: region })
+            this.$set(this.form.fd, 'cloudregion', region)
+            this.cloudregionChange()
+          }
+        }
+        if (data.manager && this.showCloudprovider) {
+          await this.$nextTick()
+          await this.waitAndSetManager(data.manager)
+        }
+        this._eipAreaApplied = true
+      } finally {
+        this._eipAreaApplying = false
+      }
+    },
+    async waitAndSetManager (managerId, timeout = 15000) {
+      if (!managerId || !this.showCloudprovider) return
+      const start = Date.now()
+      while (Date.now() - start < timeout) {
+        const regionIds = this.normalizeAreaValues(this.form.fd.cloudregion)
+        if (!regionIds.length) {
+          await new Promise(resolve => setTimeout(resolve, 200))
+          continue
+        }
+        const hit = this.cloudproviderData?.find(i => i.id === managerId)
+        if (hit) {
+          this.form.fc.setFieldsValue({ manager: managerId })
+          this.$set(this.form.fd, 'manager', managerId)
+          this.providerChange(hit)
+          await new Promise(resolve => setTimeout(resolve, 300))
+          if ((this.form.fc.getFieldValue('manager') || this.form.fd.manager) === managerId) {
+            return
+          }
+          continue
+        }
+        await new Promise(resolve => setTimeout(resolve, 200))
+      }
+      this.form.fc.setFieldsValue({ manager: managerId })
+      this.$set(this.form.fd, 'manager', managerId)
+      this.manager = managerId
+    },
+    async applyEipSecondaryFields (data) {
+      if (!data || !this.isCreateFormDraftHydrating) return
+      const start = Date.now()
+      // 等区域选中后再写带宽等
+      while (Date.now() - start < 8000) {
+        if (this.selectedRegionItem?.id || data.manager) break
+        await new Promise(resolve => setTimeout(resolve, 200))
+      }
+      const values = {}
+      if (data.charge_type) {
+        values.charge_type = data.charge_type
+        this.charge_type = data.charge_type
+      }
+      if (data.bandwidth != null) {
+        values.bandwidth = data.bandwidth
+        this.bandwidth = data.bandwidth
+      }
+      if (data.bgp_type != null) {
+        values.bgp_type = data.bgp_type
+        this.bgp_type = data.bgp_type
+      }
+      if (Object.keys(values).length) {
+        this.form.fc.setFieldsValue(values)
+      }
+      // vpc / network：等 IP 子网区块挂载
+      if (data.vpc || data.network) {
+        await this.waitAndSetVpcNetwork(data)
+      }
+    },
+    async waitAndSetVpcNetwork (data, timeout = 10000) {
+      const start = Date.now()
+      while (Date.now() - start < timeout) {
+        if (this.showIpSubnet) {
+          const vals = {}
+          if (data.vpc) vals.vpc = data.vpc
+          if (data.network) vals.network = data.network
+          if (Object.keys(vals).length) {
+            this.form.fc.setFieldsValue(vals)
+          }
+          return
+        }
+        await new Promise(resolve => setTimeout(resolve, 200))
+      }
+    },
+    fetchDomainCallback () {
+      let domain = this.$route.query.domain_id
+      if (!domain && this.isFormBackfill) {
+        domain = this.effectiveInitFormData?.extraData?.domain_id ||
+          this.effectiveInitFormData?.domain?.key
+      }
+      if (domain) {
+        this.domain_id = domain
+        this.form.fc.setFieldsValue({
+          domain: { key: domain },
+        })
+      }
+    },
+    fetchProjectCallback () {
+      let project = this.$route.query.tenant_id
+      if (!project && this.isFormBackfill) {
+        project = this.effectiveInitFormData?.project_id ||
+          this.effectiveInitFormData?.project?.key
+      }
+      if (project) {
+        this.form.fc.setFieldsValue({
+          project: { key: project },
+        })
+      }
+    },
+    onEipCreateSuccess () {
+      this.saveCreateFormDraft(this.serializeCreateFormDraft(), { fromSubmit: true })
     },
   },
 }

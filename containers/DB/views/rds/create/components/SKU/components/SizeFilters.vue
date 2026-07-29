@@ -23,7 +23,12 @@ import { sizestr } from '@/utils/utils'
 
 export default {
   name: 'rdsSizeFilter',
-  inject: ['form', 'formItemLayout', 'scopeParams'],
+  inject: {
+    form: { default: null },
+    formItemLayout: { default: null },
+    scopeParams: { default: null },
+    getCreateFormDraftPreferred: { default: undefined },
+  },
   props: {
     rdsItem: {
       type: Object,
@@ -53,7 +58,7 @@ export default {
     },
     initZone () {
       const zones = this.form.getFieldValue('zones')
-      if (!zones || this.cpus.indexOf(zones) === -1) {
+      if (!zones || this.zones[zones] === undefined) {
         this.form.setFieldsValue({
           zones: Object.keys(this.zones)[0],
         })
@@ -92,6 +97,17 @@ export default {
         const { data = {} } = await manager.list({ params: PARAMS })
         this.cpus = data.cpus
         this.cpu_mems_mb = data.cpu_mems_mb
+        // 草稿回填：在 init 前写入偏好，initCpu/initZone 会保留合法值
+        const preferred = typeof this.getCreateFormDraftPreferred === 'function'
+          ? this.getCreateFormDraftPreferred()
+          : null
+        if (preferred) {
+          const vals = {}
+          if (preferred.vcpu_count != null) vals.vcpu_count = preferred.vcpu_count
+          if (preferred.vmem_size_mb != null) vals.vmem_size_mb = preferred.vmem_size_mb
+          if (preferred.zones != null) vals.zones = preferred.zones
+          if (Object.keys(vals).length) this.form.setFieldsValue(vals)
+        }
         const { zones } = data
         if (zones) {
           this.zones = zones.zones || {}

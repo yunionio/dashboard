@@ -913,33 +913,38 @@ export default {
       })
     },
     async fetchs (fetchNames = this.names) {
-      await this.resetSelect(fetchNames)
-      if (fetchNames && fetchNames.length > 0) {
-        for (let i = 0; i < fetchNames.length; i++) {
-          const name = fetchNames[i]
-          const sn = this.firstName(name)
-          const fetchFn = this[`fetch${sn}`]
-          const getParams = R.is(Function, this[`${name}Params`]) ? await this[`${name}Params`]() : this[`${name}Params`]
-          if (this.names.indexOf(name) > -1 && fetchFn) {
-            const resList = await fetchFn(getParams)
-            const list = await this.fetchChange(name, resList) // 把mapper函数对list有过滤的情况考虑进去，list应该是mapper后的return值
-            if (list.length === 0) {
-              const nextNames = fetchNames.slice(i, fetchNames.length)
-              nextNames.forEach(name => {
-                this[`${name}List`] = []
-              })
-              this.FC.resetFields(nextNames)
-              return
-            }
-            if (R.type(list) === 'Array' && list.length === 0) {
-              const nextNames = fetchNames.slice(i, fetchNames.length)
-              if (nextNames.length > 0) {
-                this.resetSelect(nextNames)
+      try {
+        await this.resetSelect(fetchNames)
+        if (fetchNames && fetchNames.length > 0) {
+          for (let i = 0; i < fetchNames.length; i++) {
+            const name = fetchNames[i]
+            const sn = this.firstName(name)
+            const fetchFn = this[`fetch${sn}`]
+            const getParams = R.is(Function, this[`${name}Params`]) ? await this[`${name}Params`]() : this[`${name}Params`]
+            if (this.names.indexOf(name) > -1 && fetchFn) {
+              const resList = await fetchFn(getParams)
+              const list = await this.fetchChange(name, resList) // 把mapper函数对list有过滤的情况考虑进去，list应该是mapper后的return值
+              if (list.length === 0) {
+                const nextNames = fetchNames.slice(i, fetchNames.length)
+                nextNames.forEach(name => {
+                  this[`${name}List`] = []
+                })
+                this.FC.resetFields(nextNames)
+                return
               }
-              return false
+              if (R.type(list) === 'Array' && list.length === 0) {
+                const nextNames = fetchNames.slice(i, fetchNames.length)
+                if (nextNames.length > 0) {
+                  this.resetSelect(nextNames)
+                }
+                return false
+              }
             }
           }
         }
+      } finally {
+        // 供外层（如公有云草稿/工单）在整链结束后再回填，避免与 resetSelect 竞态
+        this.$emit('fetchsDone', fetchNames)
       }
     },
     /*

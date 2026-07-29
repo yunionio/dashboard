@@ -38,7 +38,12 @@ const ELASTIC_CACHE_STORAGE_TYPE = {
 }
 export default {
   name: 'SKUList',
-  inject: ['form', 'formItemLayout', 'tailFormItemLayout'],
+  inject: {
+    form: { default: null },
+    formItemLayout: { default: null },
+    tailFormItemLayout: { default: null },
+    getCreateFormDraftPreferred: { default: undefined },
+  },
   components: {
     PageListEmpty,
   },
@@ -172,7 +177,20 @@ export default {
   },
   watch: {
     skuList (skuList) {
-      const row = (skuList && skuList.length > 0) ? skuList[0] : undefined
+      const preferred = typeof this.getCreateFormDraftPreferred === 'function'
+        ? this.getCreateFormDraftPreferred()
+        : null
+      let row
+      if (preferred && skuList && skuList.length > 0) {
+        const skuId = preferred.sku?.id || preferred.sku_id
+        const skuName = preferred.sku?.name || preferred.sku_name
+        row = skuList.find(item => (
+          (skuId && item.id === skuId) || (skuName && item.name === skuName)
+        ))
+      }
+      if (!row) {
+        row = (skuList && skuList.length > 0) ? skuList[0] : undefined
+      }
       this.handleSkuChange({ row })
     },
   },

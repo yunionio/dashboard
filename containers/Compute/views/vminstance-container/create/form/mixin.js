@@ -7,6 +7,17 @@ import MemRadio from '@Compute/sections/MemRadio'
 import sku from '@Compute/sections/SKU'
 import gpu from '@Compute/sections/GPU/index'
 import pci from '@Compute/sections/PCI'
+import {
+  buildContainerCreateDraftPayload,
+  mergeContainerCreateDraftToInitFormData,
+  isMeaningfulContainerCreateDraft,
+  needOpenAdvanceConfig,
+  isAdvanceConfigOpenFromDraft,
+  resolveAdvanceConfigCollapseActive,
+  stripAdvanceConfigFields,
+  resolveDraftNetworkType,
+  resolveDraftPortMappings,
+} from '@Compute/utils/vminstanceContainerCreateDraft'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import SchedPolicy from '@Compute/sections/SchedPolicy'
 import Duration from '@Compute/sections/Duration'
@@ -26,9 +37,30 @@ import { HYPERVISORS_MAP } from '@/constants'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 import i18n from '@/locales'
 import { deleteInvalid, uuid } from '@/utils/utils'
+import createFormDraftMixin from '@/mixins/createFormDraft'
+import { getDraft, shouldUseCreateDraft } from '@/utils/createFormDraft'
 import Tag from '../components/Tag'
 import { Decorator, GenCreateData } from '../../utils/createServer'
 import BottomBar from '../components/BottomBar'
+
+/**
+ * data() 阶段尽早解析草稿，供 Decorator 当 initialValue 种子（与工单 initFormData 同形）。
+ * @param {Vue} vm
+ * @returns {{ active: boolean, data: object|null }}
+ */
+function resolveContainerCreateDraftSeed (vm) {
+  if (vm.isInitForm) return { active: false, data: null }
+  const formScope = `compute.server_container.${vm.type}`
+  if (!shouldUseCreateDraft(vm.$route)) {
+    return { active: false, data: null }
+  }
+  const data = getDraft(formScope)
+  const initData = mergeContainerCreateDraftToInitFormData(data)
+  if (!initData?.extraData || !isMeaningfulContainerCreateDraft(initData)) {
+    return { active: false, data: null }
+  }
+  return { active: true, data: initData }
+}
 
 const CreateServerForm = {
   wrapperCol: {
@@ -64,7 +96,7 @@ export default {
     HostName,
     pci,
   },
-  mixins: [workflowMixin],
+  mixins: [workflowMixin, createFormDraftMixin],
   props: {
     type: {
       type: String,
@@ -81,13 +113,23 @@ export default {
     },
   },
   data () {
+    const draftSeed = resolveContainerCreateDraftSeed(this)
     const routeInitData = this.$route.params?.data || {}
-    const initDataForDecorators = (this.isInitForm || this.$route.query.workflow)
+    const workflowInitData = (this.isInitForm || this.$route.query.workflow)
       ? (this.initFormData && !R.isEmpty(this.initFormData) ? this.initFormData : routeInitData)
       : {}
-    const decorators = new Decorator(SERVER_TYPE[this.type]).createDecorators(initDataForDecorators)
+    const seedFormData = draftSeed.active
+      ? draftSeed.data
+      : workflowInitData
+    const decorators = new Decorator(SERVER_TYPE[this.type]).createDecorators(seedFormData)
     const initFd = getInitialValue(decorators)
     return {
+      isDraftRestore: draftSeed.active,
+      draftRestored: draftSeed.active,
+      _containerCreateDraftSeeded: draftSeed.active,
+      _draftInitFormData: draftSeed.active ? draftSeed.data : null,
+      _initFormPromise: null,
+      _initFormDone: false,
       submiting: false,
       errors: {},
       formItemLayout: {
@@ -117,12 +159,14 @@ export default {
       decorators,
       capabilityParams: {}, // 防止 capability 反复调用，这里对当前的接口参数做记录
       price: null,
-      collapseActive: [],
+      // 高级配置展开状态：优先用草稿记录的开关，避免用户关掉后又被强制打开
+      collapseActive: resolveAdvanceConfigCollapseActive(seedFormData),
       tagDefaultChecked: {},
       hostNameValidate: {
         validateStatus: '',
         errorMsg: '',
       },
+      dataDiskInterval: null,
     }
   },
   provide () {
@@ -131,8 +175,55 @@ export default {
     }
   },
   computed: {
+    /**
+     * createFormDraftMixin 配置：按云环境隔离 scope；
+     * data() 已种 Decorator 时 applyDraft 只同步数据，initForm 只由 mounted 调一次（对齐工单）
+     */
+    createFormDraftOptions () {
+      return {
+        formScope: `compute.server_container.${this.type}`,
+        disableWhen: () => this.isInitForm,
+        serialize: () => this.serializeCreateFormDraft(),
+        applyDraft: async (draftData) => {
+          const initData = mergeContainerCreateDraftToInitFormData(draftData)
+          this._draftInitFormData = initData
+          this.isDraftRestore = true
+          this.draftRestored = true
+          if (typeof this.initForm === 'function') {
+            await this.initForm()
+          }
+        },
+        isMeaningfulDraft: (data) => isMeaningfulContainerCreateDraft(data),
+      }
+    },
+    /**
+     * 有草稿或工单回填时，关闭 DomainProject 局部 storage，避免双源抢填
+     */
+    ignoreLocalFormStorage () {
+      if (this.isInitForm) return true
+      return !!(this._containerCreateDraftSeeded || this._draftInitFormData)
+    },
+    /**
+     * 是否处于「表单回填」态（工单 / 草稿恢复中 / 已恢复但用户尚未操作）
+     */
+    isFormBackfill () {
+      if (this.isInitForm) return true
+      if (this._draftInitFormData && !this.createFormDraftUserInteracted) return true
+      return this.isCreateFormDraftHydrating
+    },
+    /**
+     * initForm / 域项目回调统一取数入口：工单优先 params，否则用草稿
+     */
+    effectiveInitFormData () {
+      if (this.isInitForm) return this.initFormData
+      if (this._draftInitFormData && !this.createFormDraftUserInteracted) return this._draftInitFormData
+      if (this.isCreateFormDraftHydrating && this._draftInitFormData) return this._draftInitFormData
+      return this.initFormData || {}
+    },
     initSkuData () {
-      const data = (!R.isEmpty(this.initFormData) && this.initFormData) || this.$route.params?.data || {}
+      const data = this.effectiveInitFormData && !R.isEmpty(this.effectiveInitFormData)
+        ? this.effectiveInitFormData
+        : ((!R.isEmpty(this.initFormData) && this.initFormData) || this.$route.params?.data || {})
       return { name: data.sku }
     },
     project_domain () {
@@ -246,7 +337,38 @@ export default {
       return params
     },
     showSecgroupBind () {
+      // 回填指定安全组时，即使网络类型尚未切到 manual，也要保留 bind 选项
+      if (this.isFormBackfill && this.isDraftAdvanceConfigOpen) {
+        const init = this.effectiveInitFormData
+        if (init?.secgroups?.length) return true
+      }
       return this.form.fd.networkType === 'manual'
+    },
+    /** 草稿是否展开高级配置（关闭则不回填其中字段） */
+    isDraftAdvanceConfigOpen () {
+      if (!this.isFormBackfill) {
+        return Array.isArray(this.collapseActive) && this.collapseActive.includes('1')
+      }
+      return isAdvanceConfigOpenFromDraft(this.effectiveInitFormData)
+    },
+    draftInitSecgroups () {
+      if (!this.isFormBackfill || !this.isDraftAdvanceConfigOpen) return []
+      return this.normalizeDraftSecgroups(this.effectiveInitFormData?.secgroups)
+    },
+    draftInitPreferHost () {
+      if (!this.isFormBackfill || !this.isDraftAdvanceConfigOpen) return ''
+      return this.effectiveInitFormData?.prefer_host || this.effectiveInitFormData?.extraData?.prefer_host || ''
+    },
+    draftInitSchedtags () {
+      if (!this.isFormBackfill || !this.isDraftAdvanceConfigOpen) return []
+      const init = this.effectiveInitFormData || {}
+      if (init.schedtags?.length) return init.schedtags
+      if (init.extraData?.schedtags?.length) return init.extraData.schedtags
+      return []
+    },
+    draftInitPortMappings () {
+      if (!this.isFormBackfill || !this.isDraftAdvanceConfigOpen) return []
+      return resolveDraftPortMappings(this.effectiveInitFormData)
     },
     isHostImageType () { // 镜像类型为主机镜像
       return this.form.fd.imageType === IMAGES_TYPE_MAP.host.key
@@ -371,12 +493,17 @@ export default {
     this.initForm()
   },
   watch: {
+    collapseActive (val) {
+      // 用户展开/收起高级配置时落盘开关
+      if (this.isFormBackfill && !this.createFormDraftUserInteracted) return
+      this.scheduleSaveCreateFormDraft()
+    },
     'form.fi.imageMsg': {
       deep: true,
       handler (val, oldVal) {
         if (R.equals(val, oldVal)) return
         this.$nextTick(() => {
-          if (!this.isInitForm) {
+          if (!this.isFormBackfill) {
             this._resetDataDisk() // 重置数据盘数据
           }
         })
@@ -410,9 +537,25 @@ export default {
       }
     },
     async initForm () {
-      const initData = (!R.isEmpty(this.initFormData) && this.initFormData) || this.$route.params?.data || {}
-      const canInit = !!(this.$route.query.workflow && initData.extraData)
+      if (this._initFormPromise) return this._initFormPromise
+      this._initFormPromise = this._runInitForm()
+      try {
+        await this._initFormPromise
+      } finally {
+        this._initFormPromise = null
+      }
+    },
+    async _runInitForm () {
+      const initData = this.isInitForm
+        ? ((!R.isEmpty(this.initFormData) && this.initFormData) || this.$route.params?.data || {})
+        : (this._draftInitFormData || this.effectiveInitFormData)
+      const canInit = !!(
+        ((this.isInitForm || this.$route.query.workflow) && initData.extraData) ||
+        (this._draftInitFormData && initData?.extraData)
+      )
       if (!canInit || !this.form?.fc) return
+      if (this._initFormDone) return
+      this._initFormDone = true
       const preferZone = (Array.isArray(initData.prefer_zones) && initData.prefer_zones[0]) ||
         initData.prefer_zone ||
         initData.prefer_zone_id
@@ -469,24 +612,34 @@ export default {
             this.dataDiskInterval = null
           }, 500)
         }
-        // 网络
+        // 网络（等 NetworkConfig 挂载后再 initData，避免竞态）
         if (this.$refs.networkRef && initData.nets) {
-          let initNetworkType = NETWORK_OPTIONS_MAP.default.key
-          if (initData.nets[0] && initData.nets[0].hasOwnProperty('exit') && !initData.nets[0].exit) {
-            initNetworkType = NETWORK_OPTIONS_MAP.default.key
-          } else if (initData.nets[0] && initData.nets[0].hasOwnProperty('network') && initData.extraData?.nets?.[0]) {
-            initNetworkType = NETWORK_OPTIONS_MAP.manual.key
-          } else if (initData.nets[0]?.schedtags) {
-            initNetworkType = NETWORK_OPTIONS_MAP.schedtag.key
-          }
+          const initNetworkType = resolveDraftNetworkType(initData)
           this.form.fc.setFieldsValue({ networkType: initNetworkType })
+          if (this.form.fd) this.$set(this.form.fd, 'networkType', initNetworkType)
           this.$refs.networkRef.change({ target: { value: initNetworkType }, name: 'default' })
           if (initNetworkType === NETWORK_OPTIONS_MAP.manual.key) {
+            const nets = initData.extraData?.nets || []
+            const applyManualNets = () => {
+              const ref = this.$refs.networkRef?.$refs?.networkConfigRef
+              if (ref?.initData && nets.length) ref.initData(nets)
+            }
             this.$nextTick(() => {
-              const networkConfigRef = this.$refs.networkRef?.$refs?.networkConfigRef
-              if (networkConfigRef && networkConfigRef.initData) {
-                networkConfigRef.initData(initData.extraData.nets)
-              }
+              applyManualNets()
+              // NetworkConfig 可能尚未挂出，短轮询再补一次
+              let tries = 0
+              const timer = setInterval(() => {
+                tries += 1
+                const ref = this.$refs.networkRef?.$refs?.networkConfigRef
+                if (ref?.initData && nets.length) {
+                  ref.initData(nets)
+                  clearInterval(timer)
+                  return
+                }
+                if (tries >= 20) clearInterval(timer)
+              }, 100)
+              // 区域/子网列表异步就绪后再补一次
+              setTimeout(applyManualNets, 2500)
             })
           }
           if (initNetworkType === NETWORK_OPTIONS_MAP.schedtag.key) {
@@ -498,34 +651,49 @@ export default {
             })
           }
         }
-        // 高级配置
-        if (initData.hostname || initData.prefer_host || initData.schedtags || initData.secgroups || initData.groups) {
-          this.collapseActive = ['1']
+        // 高级配置：仅在展开时回填字段；关闭只恢复折叠状态
+        this.collapseActive = resolveAdvanceConfigCollapseActive(initData)
+        if (isAdvanceConfigOpenFromDraft(initData) && needOpenAdvanceConfig(initData)) {
           this.$nextTick(() => {
             if (initData.hostname) {
               this.form.fc.setFieldsValue({ hostName: initData.hostname })
             }
-            if (initData.secgroups?.length) {
-              setTimeout(() => {
-                this.form.fc.setFieldsValue({
-                  secgroup_type: 'bind',
-                  secgroup: initData.secgroups,
-                })
-              }, 1500)
+            // 安全组 / 指定宿主机：由组件 initSecgroups / initPreferHost + initLoaded 补写
+            const secgroupIds = this.normalizeDraftSecgroups(initData.secgroups)
+            if (secgroupIds.length && this.$refs.secgroupConfigRef?.initData) {
+              this.$refs.secgroupConfigRef.initData(secgroupIds)
             }
-            if (this.$refs.schedPolicyRef) {
-              if (initData.prefer_host) {
-                this.$refs.schedPolicyRef.change({ target: { value: 'host' }, name: 'default' })
+            if (initData.prefer_host && this.$refs.schedPolicyRef?.initPreferHostData) {
+              this.$refs.schedPolicyRef.initPreferHostData(initData.prefer_host)
+            }
+            const schedtags = (initData.schedtags?.length && initData.schedtags) ||
+              (initData.extraData?.schedtags?.length && initData.extraData.schedtags) ||
+              null
+            if (schedtags && this.$refs.schedPolicyRef) {
+              this.$refs.schedPolicyRef.change({ target: { value: 'schedtag' }, name: 'default' })
+              setTimeout(() => {
+                const policySchedtagRef = this.$refs.schedPolicyRef?.$refs?.policySchedtagRef
+                if (policySchedtagRef && policySchedtagRef.initData) {
+                  policySchedtagRef.initData(schedtags)
+                }
+              }, 1000)
+            }
+            if (initData.groups?.length) {
+              this.form.fc.setFieldsValue({
+                groupsEnable: true,
+                groups: initData.groups,
+              })
+            }
+            // 端口映射（Labels）：优先靠 init-pairs；再兜底调 initData
+            const portMappings = resolveDraftPortMappings(initData)
+            if (portMappings.length) {
+              const applyPortMappings = () => {
+                const ref = this.$refs.labelRef
+                if (ref?.initData) ref.initData(portMappings)
               }
-              if (initData.schedtags?.length) {
-                this.$refs.schedPolicyRef.change({ target: { value: 'schedtag' }, name: 'default' })
-                setTimeout(() => {
-                  const policySchedtagRef = this.$refs.schedPolicyRef?.$refs?.policySchedtagRef
-                  if (policySchedtagRef && policySchedtagRef.initData) {
-                    policySchedtagRef.initData(initData.schedtags)
-                  }
-                }, 1000)
-              }
+              applyPortMappings()
+              setTimeout(applyPortMappings, 500)
+              setTimeout(applyPortMappings, 1500)
             }
           })
         }
@@ -556,18 +724,25 @@ export default {
           data.extraData.reason = this.form.fd?.reason
           data.extraData.formType = this.type
           data.extraData.__resource_type__ = 'server_container'
+          data.extraData.advance_config_open = Array.isArray(this.collapseActive) && this.collapseActive.includes('1')
+          const draftPayload = data.extraData.advance_config_open
+            ? buildContainerCreateDraftPayload(data)
+            : buildContainerCreateDraftPayload(stripAdvanceConfigFields(data))
           if (this.isModifyShopCartOrder || this.isOpenWorkflow || this.isModifyWorkflow) {
             await this.checkCreateData(data)
             await this.doForecast(genCreteData, data)
             await this.doCreateWorkflow(data)
+            this.saveCreateFormDraft(draftPayload, { fromSubmit: true })
           } else if (this.isOpenOrderSetWorkflow) {
             await this.checkCreateData(data)
             await this.doForecast(genCreteData, data)
             await this.doCreateOrderSetWorkflow(data)
+            this.saveCreateFormDraft(draftPayload, { fromSubmit: true })
           } else {
             await this.checkCreateData(data)
             await this.doForecast(genCreteData, data)
             await this.createServer(data)
+            this.saveCreateFormDraft(draftPayload, { fromSubmit: true })
           }
         })
         .catch(error => {
@@ -767,6 +942,98 @@ export default {
       if (changeKeys.some(val => val.includes('dataDiskSizes'))) { // 动态赋值默认值的表单需要单独处理
         this.$set(this.form.fd, 'dataDiskSizes', formValue.dataDiskSizes)
       }
+      // 端口映射：字段名是 containerPorts[uuid]，需从 getFieldsValue 取嵌套对象写入 fd
+      if (changeKeys.some(val => val.includes('containerPorts') || val.includes('hostPorts'))) {
+        if (formValue.containerPorts) {
+          this.$set(this.form.fd, 'containerPorts', formValue.containerPorts)
+        }
+        if (formValue.hostPorts) {
+          this.$set(this.form.fd, 'hostPorts', formValue.hostPorts)
+        }
+      }
+      // 表单变更防抖写入进行中草稿（受 saveOnChange 开关控制）
+      this.scheduleSaveCreateFormDraft()
+    },
+    /**
+     * 草稿/工单 secgroups → base-select 需要的 id 数组
+     * @param {Array} secgroups
+     * @returns {string[]}
+     */
+    normalizeDraftSecgroups (secgroups) {
+      if (!Array.isArray(secgroups) || !secgroups.length) return []
+      return secgroups.map((item) => {
+        if (item == null) return null
+        if (typeof item === 'string' || typeof item === 'number') return String(item)
+        return item.id || item.key || item.value || null
+      }).filter(Boolean)
+    },
+    /**
+     * 序列化草稿：与工单 server-create-paramter 同形（GenCreateData.all()）
+     * @returns {object|null}
+     */
+    serializeCreateFormDraft () {
+      try {
+        const fcValues = this.form.fc.getFieldsValue() || {}
+        const formData = {
+          ...this.form.fd,
+          ...fcValues,
+          // 确保端口映射用嵌套对象（getFieldsValue 为准）
+          containerPorts: fcValues.containerPorts || this.form.fd.containerPorts || {},
+          hostPorts: fcValues.hostPorts || this.form.fd.hostPorts || {},
+        }
+        const genCreateData = new GenCreateData(formData, this.form.fi)
+        const api = genCreateData.all()
+        if (!api.extraData) api.extraData = {}
+        api.extraData.formType = this.type
+        api.extraData.__resource_type__ = 'server_container'
+        // 记录高级配置折叠开关（用户关掉后回填不再强制展开）
+        const advanceOpen = Array.isArray(this.collapseActive) && this.collapseActive.includes('1')
+        api.extraData.advance_config_open = advanceOpen
+        if (!advanceOpen) {
+          // 关闭时不落盘高级配置字段
+          return buildContainerCreateDraftPayload(stripAdvanceConfigFields(api))
+        }
+        // 双写：防顶层字段在某条链路丢失，回填仍能取到
+        if (api.secgroups?.length) api.extraData.secgroups = api.secgroups
+        if (api.prefer_host) api.extraData.prefer_host = api.prefer_host
+        if (api.schedtags?.length) api.extraData.schedtags = api.schedtags
+        // 端口映射：直接从 form 收集，避免 GenCreateData 读不到 fd
+        const portMappings = this.collectPortMappingsFromForm(formData)
+        if (portMappings.length) {
+          api.extraData.port_mappings = portMappings
+          if (!Array.isArray(api.nets) || !api.nets.length) {
+            api.nets = [{ exit: false }]
+          }
+          api.nets = api.nets.map((net, idx) => {
+            if (idx === 0 || !net.port_mappings?.length) {
+              return { ...net, port_mappings: portMappings }
+            }
+            return net
+          })
+        }
+        return buildContainerCreateDraftPayload(api)
+      } catch (e) {
+        return null
+      }
+    },
+    /**
+     * 从表单值收集端口映射
+     * @param {object} formData
+     * @returns {Array<{port: *, host_port: *}>}
+     */
+    collectPortMappingsFromForm (formData = {}) {
+      const containerPorts = formData.containerPorts || {}
+      const hostPorts = formData.hostPorts || {}
+      if (!containerPorts || typeof containerPorts !== 'object') return []
+      return Object.keys(containerPorts).map((k) => {
+        const port = containerPorts[k]
+        if (port == null || port === '') return null
+        const item = { port }
+        if (hostPorts[k] != null && hostPorts[k] !== '') {
+          item.host_port = hostPorts[k]
+        }
+        return item
+      }).filter(Boolean)
     },
     networkResourceMapper (list) {
       return list
@@ -791,7 +1058,11 @@ export default {
       }
     },
     fetchDomainCallback () {
-      const domain = this.$route.query.domain_id
+      let domain = this.$route.query.domain_id
+      // 工单或草稿恢复：从 effectiveInitFormData 取域（有草稿时 DomainProject ignoreStorage）
+      if ((R.isNil(domain) || R.isEmpty(domain)) && this.isFormBackfill) {
+        domain = this.effectiveInitFormData?.extraData?.domain_id
+      }
       if (!R.isNil(domain) && !R.isEmpty(domain)) {
         this.form.fc.setFieldsValue({
           domain: { key: domain },
@@ -799,7 +1070,11 @@ export default {
       }
     },
     fetchProjectCallback () {
-      const project = this.$route.query.tenant_id
+      let project = this.$route.query.tenant_id
+      // 工单或草稿恢复：从 effectiveInitFormData 取项目
+      if ((R.isNil(project) || R.isEmpty(project)) && this.isFormBackfill) {
+        project = this.effectiveInitFormData?.project_id
+      }
       if (!R.isNil(project) && !R.isEmpty(project)) {
         this.form.fc.setFieldsValue({
           project: { key: project },
@@ -902,11 +1177,16 @@ export default {
             data.extraData.reason = this.form.fd?.reason
             data.extraData.formType = this.type
             data.extraData.__resource_type__ = 'server_container'
+            data.extraData.advance_config_open = Array.isArray(this.collapseActive) && this.collapseActive.includes('1')
             await this.checkCreateData(data)
             await this.doForecast(genCreateData, data)
             const shopCart = this.buildShopCartParameter(data)
             this.$message.success(this.$t('common.success'))
             this.$store.commit('shopcart/ADD_SHOP_CART', shopCart)
+            const draftPayload = data.extraData.advance_config_open
+              ? buildContainerCreateDraftPayload(data)
+              : buildContainerCreateDraftPayload(stripAdvanceConfigFields(data))
+            this.saveCreateFormDraft(draftPayload, { fromSubmit: true })
           } catch (error) {
             throw error
           } finally {

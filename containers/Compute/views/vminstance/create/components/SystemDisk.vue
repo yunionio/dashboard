@@ -395,6 +395,11 @@ export default {
   methods: {
     setDefaultType () {
       if (R.isNil(this.typesMap) || R.isEmpty(this.typesMap)) {
+        const { systemDiskSize, systemDiskType } = this.form.fd || {}
+        // 草稿/工单回填：typesMap 尚未就绪时保留已写入的类型和大小，勿清空成 0
+        if (systemDiskSize || (systemDiskType && systemDiskType.key)) {
+          return
+        }
         this.form.fc.setFieldsValue({
           [this.decorator.type[0]]: { key: '', label: '' },
           [this.decorator.size[0]]: 0,
@@ -405,8 +410,15 @@ export default {
       const keys = Object.keys(this.typesMap)
       let firstKey = keys[0]
       const { systemDiskSize, systemDiskType } = this.form.fd
-      if (systemDiskSize && systemDiskType && this.typesMap[systemDiskType.key]) { // 此前选定的系统盘类型，仍然有，则保留之前的配置
-        firstKey = systemDiskType.key
+      // 工单/草稿已写入的类型：精确匹配，或按 backend 前缀兜底（local/ssd ↔ typesMap）
+      if (systemDiskSize && systemDiskType && systemDiskType.key) {
+        if (this.typesMap[systemDiskType.key]) {
+          firstKey = systemDiskType.key
+        } else {
+          const backend = String(systemDiskType.key).split('/')[0]
+          const matched = keys.find(k => k === backend || k.startsWith(`${backend}/`))
+          if (matched) firstKey = matched
+        }
       }
       const diskMsg = this.typesMap[firstKey]
       this.form.fc.setFieldsValue(this.defaultType || {
@@ -417,8 +429,13 @@ export default {
         const initSize = this.defaultSize && this.defaultSize > this.imageMinDisk ? this.defaultSize : this.imageMinDisk
 
         let newDiskSize = initSize || +diskMsg.sysMin
-        if (systemDiskSize && systemDiskType && this.decorator.size[0] === 'systemDiskSize') { // 保留之前选择的系统盘大小
-          newDiskSize = (systemDiskSize >= diskMsg.sysMin && systemDiskSize < diskMsg.sysMax) ? systemDiskSize : newDiskSize
+        // 已有回填大小则优先保留（勿被镜像 min_disk 盖成 30G）
+        if (systemDiskSize && this.decorator.size[0] === 'systemDiskSize') {
+          const min = diskMsg.sysMin || 0
+          const max = diskMsg.sysMax || Infinity
+          if (systemDiskSize >= min && systemDiskSize <= max) {
+            newDiskSize = systemDiskSize
+          }
         }
         this.form.fc.setFieldsValue({
           [this.decorator.size[0]]: newDiskSize,
