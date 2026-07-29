@@ -86,13 +86,41 @@ export default {
           user_id: {
             label: this.$t('dictionary.user'),
           },
-          admin_id: getDistinctFieldFilter({ label: this.$t('iam.project_admin'), field: 'admin', type: 'extra_field' }),
+          admin_id: {
+            ...getDistinctFieldFilter({
+              label: this.$t('iam.project_admin'),
+              field: 'admin',
+              type: 'extra_field',
+              mapper: (list) => {
+                return [
+                  { key: '__not_set__', label: this.$t('common.not_set') },
+                  ...list.filter(item => item.key && item.label),
+                ]
+              },
+              formatter: (val) => {
+                return val.filter(item => item !== '__not_set__')
+              },
+            }),
+            mutexKey: '__not_set__',
+          },
           group_id: {
             label: this.$t('dictionary.group'),
           },
           idp_id: {
             label: this.$t('dictionary.identity_provider'),
           },
+        },
+        genParamsCb: (params) => {
+          const adminIds = this.list.filter.admin_id
+          if (Array.isArray(adminIds) && adminIds.length === 1 && adminIds[0] === '__not_set__') {
+            const next = { ...params }
+            delete next.admin_id
+            const filters = [].concat(next.filter || []).filter(Boolean)
+            filters.push('admin_id.isnullorempty()')
+            next.filter = filters
+            return next
+          }
+          return params
         },
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
