@@ -25,6 +25,7 @@
       :sys-disk-size="sysDiskSize"
       :form="form"
       :edit="edit"
+      :ignore-storage="ignoreStorage"
       :hypervisor="hypervisor" />
   </div>
 </template>
@@ -108,6 +109,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    ignoreStorage: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -185,7 +190,7 @@ export default {
     },
     'form.fd.image.key': {
       handler () {
-        const lastSelectedImageInfo = storage.get('oc_selected_image') || {}
+        const lastSelectedImageInfo = this.ignoreStorage ? {} : (storage.get('oc_selected_image') || {})
         const { imageType = lastSelectedImageInfo.imageType } = this.$route.query
         if (this.isFirstLoad && imageType) {
           setTimeout(() => {
@@ -207,10 +212,9 @@ export default {
       this.$emit('update:imageType', e.target.value)
     },
     updateImageMsg (...ret) {
-      const lastSelectedImageInfo = storage.get('oc_selected_image') || {}
       const image = ret[0].imageMsg
-
-      if (image?.properties) {
+      if (!this.ignoreStorage && image?.properties) {
+        const lastSelectedImageInfo = storage.get('oc_selected_image') || {}
         let os_distribution = image.properties.os_distribution
         const os_type = image.properties.os_type
         if (os_distribution) {

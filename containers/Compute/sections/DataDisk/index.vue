@@ -393,12 +393,36 @@ export default {
   watch: {
     typesMap (v, oldV) {
       if (!R.equals(v, oldV)) {
+        // 工单/草稿回填期间：typesMap 就绪后校正已占位的磁盘类型，禁止清空数据盘
+        if (this.isInitForm) {
+          if (v && !R.isEmpty(v) && this.dataDisks && this.dataDisks.length) {
+            this.dataDisks.forEach((disk) => {
+              const curKey = disk.diskType && disk.diskType.key
+              if (!curKey) return
+              let typeObj = v[curKey]
+              if (!typeObj) {
+                const backend = String(curKey).split('/')[0]
+                const matched = Object.keys(v).find(k => k === backend || k.startsWith(`${backend}/`))
+                if (matched) typeObj = v[matched]
+              }
+              if (!typeObj) return
+              disk.diskType = {
+                key: typeObj.key,
+                label: typeObj.label,
+                index: disk.diskType.index,
+              }
+              this.form.fc.setFieldsValue({
+                [this._fp('Types', disk.key)]: disk.diskType,
+              })
+            })
+          }
+          return
+        }
         if (this.dataDisks && this.dataDisks.length) {
           this.dataDisks.forEach((disk, index) => {
             this.form.fc.setFieldsValue({
               [this._fp('Sizes', disk.key)]: Math.max((disk.value || 0), this.min(index)),
             })
-            if (this.isInitForm) return
             if (!disk.disabled) this.decrease(disk.key)
           })
         }
@@ -496,6 +520,13 @@ export default {
         dataDiskTypes = {
           key: typeObj.key || diskType,
           label: typeObj.label || diskType,
+          index: idx,
+        }
+      } else if (diskType) {
+        // typesMap 尚未就绪（公有云等 sku/capability）：先按草稿 backend 占位，就绪后再校正
+        dataDiskTypes = {
+          key: newDiskType || diskType,
+          label: newDiskType || diskType,
           index: idx,
         }
       } else if (!diskType && !_.get(this.dataDisks, '[0].diskType')) { // 表单中数据盘无第一项，需要 set 磁盘类型默认值

@@ -72,15 +72,34 @@ export default {
       type: Object,
       default: () => { },
     },
+    /** 优先于 inject，避免 collapse 内 inject 不稳定 */
+    createForm: {
+      type: Object,
+      default: null,
+    },
+    /**
+     * 工单/草稿端口映射：[{ port, host_port }] 或 [{ key, value }]
+     * 挂载后自动回填
+     */
+    initPairs: {
+      type: Array,
+      default: () => [],
+    },
   },
   data () {
     return {
       labelList: [],
+      pendingPairs: [],
     }
   },
   inject: {
     form: {
       default: null,
+    },
+  },
+  computed: {
+    effectiveForm () {
+      return this.createForm || this.form
     },
   },
   watch: {
@@ -89,6 +108,14 @@ export default {
         this.$emit('label-change', val)
       },
       deep: true,
+    },
+    initPairs: {
+      handler (val) {
+        if (Array.isArray(val) && val.length) {
+          this.initData(val)
+        }
+      },
+      immediate: true,
     },
   },
   methods: {
@@ -101,23 +128,61 @@ export default {
     },
     reset () {
       this.labelList = []
+      this.pendingPairs = []
     },
-    /** pairs: [{ key, value }] 按对数创建行并回填 */
+    normalizePairs (pairs = []) {
+      return (pairs || []).map((pair) => {
+        if (!pair || typeof pair !== 'object') return null
+        // 兼容 port_mappings: { port, host_port } 与 Labels: { key, value }
+        const key = pair.key != null ? pair.key : pair.port
+        const value = pair.value != null ? pair.value : pair.host_port
+        if (key == null || key === '') return null
+        return { key, value }
+      }).filter(Boolean)
+    },
+    /** pairs: [{ key, value }] 或 [{ port, host_port }] */
     initData (pairs = []) {
-      this.labelList = (pairs || []).map(() => ({ key: uuid() }))
+      const normalized = this.normalizePairs(pairs)
+      if (!normalized.length) return
+      this.pendingPairs = normalized
+      this.labelList = normalized.map(() => ({ key: uuid() }))
       this.$nextTick(() => {
-        if (!this.form?.fc || !this.labelList.length) return
-        const values = {}
-        pairs.forEach((pair, i) => {
-          const rowKey = this.labelList[i]?.key
-          if (!rowKey) return
-          const keyField = this.decorators.key(rowKey)?.[0]
-          const valueField = this.decorators.value(rowKey)?.[0]
-          if (keyField) values[keyField] = pair.key
-          if (valueField) values[valueField] = pair.value
-        })
-        this.form.fc.setFieldsValue(values)
+        this.writePendingPairs()
+        // 字段注册后再补一次
+        setTimeout(() => this.writePendingPairs(), 100)
+        setTimeout(() => this.writePendingPairs(), 500)
       })
+    },
+    writePendingPairs () {
+      const form = this.effectiveForm
+      if (!form?.fc || !this.labelList.length || !this.pendingPairs.length) return
+      const values = {}
+      this.pendingPairs.forEach((pair, i) => {
+        const rowKey = this.labelList[i]?.key
+        if (!rowKey) return
+        const keyField = this.decorators.key(rowKey)?.[0]
+        const valueField = this.decorators.value(rowKey)?.[0]
+        if (keyField) values[keyField] = pair.key
+        if (valueField && pair.value != null && pair.value !== '') {
+          values[valueField] = pair.value
+        }
+      })
+      form.fc.setFieldsValue(values)
+      // 同步嵌套对象到 fd，便于 GenCreateData / 草稿序列化
+      if (form.fd) {
+        const containerPorts = { ...(form.fd.containerPorts || {}) }
+        const hostPorts = { ...(form.fd.hostPorts || {}) }
+        this.labelList.forEach((row, i) => {
+          const pair = this.pendingPairs[i]
+          if (!pair || !row?.key) return
+          containerPorts[row.key] = pair.key
+          if (pair.value != null && pair.value !== '') {
+            hostPorts[row.key] = pair.value
+          }
+        })
+        this.$set(form.fd, 'containerPorts', containerPorts)
+        this.$set(form.fd, 'hostPorts', hostPorts)
+      }
     },
     getBindProps (key) {
       const { options } = this.keyBaseSelectProps

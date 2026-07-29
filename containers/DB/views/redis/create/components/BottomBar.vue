@@ -162,6 +162,7 @@ export default {
       this.loading = true
       try {
         await manager.create({ data: this.formatParams() })
+        this.$emit('create-success')
         this.$router.push('/redis')
       } catch (err) {
         throw err

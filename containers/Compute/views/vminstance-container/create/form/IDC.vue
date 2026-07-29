@@ -12,6 +12,7 @@
           :fc="form.fc"
           :fd="form.fd"
           :decorators="{ project: decorators.project, domain: decorators.domain }"
+          :ignoreStorage="ignoreLocalFormStorage"
           @fetchDomainCallback="fetchDomainCallback"
           @fetchProjectCallback="fetchProjectCallback" />
       </a-form-item>
@@ -103,7 +104,8 @@
           :vpcResourceMapper="vpcResourceMapper"
           :networkResourceMapper="networkResourceMapper"
           :showMacConfig="true"
-          :showDeviceConfig="true" />
+          :showDeviceConfig="true"
+          :ignore-auto-network-type="isFormBackfill" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
@@ -111,7 +113,7 @@
           :default-checked="tagDefaultChecked" />
       </a-form-item>
       <a-collapse :bordered="false" v-model="collapseActive">
-        <a-collapse-panel :header="$t('compute.text_309')" key="1">
+        <a-collapse-panel :header="$t('compute.text_309')" key="1" :forceRender="true">
           <eip-config
             v-if="showEip"
             :decorators="decorators.eip"
@@ -135,12 +137,15 @@
           </a-form-item>
           <a-form-item :label="$t('compute.text_105')">
             <secgroup-config
+              ref="secgroupConfigRef"
               :form="form"
               :isSnapshotImageType="isSnapshotImageType"
               :decorators="decorators.secgroup"
               :secgroup-params="secgroupParams"
               :hypervisor="form.fd.hypervisor"
-              :showSecgroupBind="showSecgroupBind" />
+              :showSecgroupBind="showSecgroupBind"
+              :ignore-auto-type-reset="isFormBackfill"
+              :init-secgroups="draftInitSecgroups" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_311')" class="mb-0">
             <sched-policy
@@ -152,7 +157,10 @@
               :decorators="decorators.schedPolicy"
               :policy-schedtag-params="policySchedtagParams"
               :showSchedCloudprovider="showSchedCloudprovider"
-              :cloudproviderParamsExtra="cloudproviderParamsExtra" />
+              :cloudproviderParamsExtra="cloudproviderParamsExtra"
+              :init-schedtags="draftInitSchedtags"
+              :init-prefer-host="draftInitPreferHost"
+              :preserve-init-prefer-host="isFormBackfill" />
           </a-form-item>
           <a-form-item :label="$t('dictionary.instancegroup')" :extra="$t('compute.text_1158')">
             <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
@@ -160,8 +168,10 @@
           <a-form-item :label="$t('compute.repo.port_mapping')">
             <labels
               ref="labelRef"
+              :create-form="form"
               :decorators="decorators.portMapping"
               :disableConf="portMappingDisableConf"
+              :init-pairs="draftInitPortMappings"
               :title="$t('compute.repo.port_mapping')"
               :keyLabel="$t('compute.repo.container_port')"
               :valueLabel="$t('compute.repo.host_port')"
@@ -515,11 +525,16 @@ export default {
       }
     },
     containerInitList () {
-      // 修改工单：优先 props，其次路由 params（防止 type 跳转丢 props）
-      if (!this.$route.query.workflow) return []
-      const fromProp = this.initFormData?.pod?.containers
-      const fromRoute = this.$route.params?.data?.pod?.containers
-      return fromProp || fromRoute || []
+      // 修改工单 / 草稿回填：优先 props，其次草稿，再次路由 params
+      if (this.$route.query.workflow) {
+        const fromProp = this.initFormData?.pod?.containers
+        const fromRoute = this.$route.params?.data?.pod?.containers
+        return fromProp || fromRoute || []
+      }
+      if (this.isFormBackfill && this.effectiveInitFormData?.pod?.containers?.length) {
+        return this.effectiveInitFormData.pod.containers
+      }
+      return []
     },
   },
   watch: {
@@ -528,6 +543,8 @@ export default {
       handler (val, oldVal) {
         if (R.equals(val, oldVal)) return
         this.$nextTick(() => {
+          // 回填期间镜像变化不要清空数据盘，否则工单/草稿里的盘会被冲掉
+          if (this.isFormBackfill) return
           this.form.fi.dataDiskDisabled = false
           this.form.fi.sysDiskDisabled = false
           if (this.form.fd.imageType === IMAGES_TYPE_MAP.host.key) {
@@ -625,7 +642,10 @@ export default {
           this.$nextTick(this.fetchInstanceSpecs)
         }
         if (changedFields.schedPolicyType === 'host') {
-          this.$set(this.form.fd, 'schedPolicyHost', undefined)
+          // 回填期间保留 prefer_host，避免刚切到「指定宿主机」就把值清掉
+          if (!this.isFormBackfill) {
+            this.$set(this.form.fd, 'schedPolicyHost', undefined)
+          }
         }
         this.setIsLocalDisk()
       })
@@ -703,7 +723,9 @@ export default {
       this.serverskusM.get({ id: 'instance-specs', params: this.instanceSpecParmas })
         .then(({ data }) => {
           this.form.fi.cpuMem = data
-          const initData = (!R.isEmpty(this.initFormData) && this.initFormData) || this.$route.params?.data || {}
+          const initData = (this.isFormBackfill && this.effectiveInitFormData && !R.isEmpty(this.effectiveInitFormData))
+            ? this.effectiveInitFormData
+            : ((!R.isEmpty(this.initFormData) && this.initFormData) || this.$route.params?.data || {})
           const vcpuDecorator = this.decorators.vcpu
           const vcpuInit = vcpuDecorator[1].initialValue
           const cpu = Number(initData.vcpu_count || this.form.fd.vcpu || vcpuInit)
