@@ -82,6 +82,9 @@ export default {
         return {}
       },
     },
+    defaultChecked: {
+      type: Object,
+    },
     canCreate: {
       type: Boolean,
       default: true,
@@ -107,7 +110,7 @@ export default {
   },
   data () {
     return {
-      checked: this.value,
+      checked: this.defaultChecked || this.value || {},
       showForm: false,
       tagForm: {
         fc: this.$form.createForm(this),
@@ -155,6 +158,17 @@ export default {
     },
   },
   watch: {
+    // 草稿/工单回填；空对象表示清空（切 IDC/私有/公有时必须清，否则三端标签会串）
+    defaultChecked (val) {
+      if (!val || R.isEmpty(val)) {
+        if (!R.isEmpty(this.checked || {})) {
+          this.checked = {}
+        }
+        return
+      }
+      if (R.equals(val, this.checked)) return
+      this.checked = { ...val }
+    },
     tags (val) {
       let ret
       if (val && val.length > 0) {

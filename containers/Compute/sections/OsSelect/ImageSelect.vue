@@ -107,6 +107,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    ignoreStorage: {
+      type: Boolean,
+      default: false,
+    },
     hypervisor: {
       type: String,
     },
@@ -170,6 +174,8 @@ export default {
       return this.images.cacheimagesList.map(item => item.id)
     },
     storageSelectImage () { // public__select_image: {os: OS_TYPE_OPTION_MAP.Windows.value, image: {id: xxx, name: xxx}}
+      // 接入 createFormDraft 的页面传 ignoreStorage，避免与统一草稿双源抢填
+      if (this.ignoreStorage) return null
       return storage.get(`${this.cloudType}${SELECT_IMAGE_KEY_SUFFIX}`)
     },
     showCloudaccount () {
@@ -742,8 +748,9 @@ export default {
       return images || []
     },
     fillImageOpts () {
-      let lastSelectedImageInfo = storage.get('oc_selected_image') || {}
-      // 默认值
+      // ignoreStorage 时不读旧镜像记忆；仍可用 decorator / route.query（工单、从镜像创建）
+      let lastSelectedImageInfo = this.ignoreStorage ? {} : (storage.get('oc_selected_image') || {})
+      // 默认值（decorator / 工单回填优先于 storage）
       if (this.decorator.os[1].initialValue && this.decorator.image[1].initialValue) {
         lastSelectedImageInfo = { ...lastSelectedImageInfo, imageOs: this.decorator.os[1].initialValue, imageId: this.decorator.image[1].initialValue.key }
       }

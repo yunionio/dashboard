@@ -298,7 +298,7 @@ export default {
       return num
     },
     initData (data, hyper) {
-      setTimeout(() => {
+      const apply = () => {
         this.form.fc.setFieldsValue({
           [this.decorator.type[0]]: { key: diskSupportTypeMedium(hyper) ? `${data.backend}/${data.medium}` : data.backend, label: '' },
           [this.decorator.size[0]]: data.size / 1024,
@@ -354,7 +354,10 @@ export default {
             })
           }
         }
-      }, 1000)
+      }
+      // 立即写一次，再延迟一次盖住 SystemDisk.setDefaultType(debounce 1s) 的默认值
+      apply()
+      setTimeout(apply, 1200)
     },
     setValues (values) {
       for (const key in values) {
