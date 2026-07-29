@@ -153,6 +153,7 @@ export default {
       const manager = new Manager('dbinstances', 'v2')
       try {
         await manager.create({ data: this.formatParams() })
+        this.$emit('create-success')
         this.$router.push('/rds')
       } catch (err) {
         throw err

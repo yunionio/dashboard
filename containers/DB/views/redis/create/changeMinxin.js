@@ -29,6 +29,10 @@ export default {
       formItemLayout: this.formItemLayout,
       tailFormItemLayout: this.tailFormItemLayout,
       redisItem: this.redisItem,
+      getCreateFormDraftPreferred: () => {
+        if (!this.isCreateFormDraftHydrating || !this._draftInitFormData) return null
+        return this._draftInitFormData
+      },
     }
   },
   async created () {
@@ -135,6 +139,9 @@ export default {
           }
         }
       })
+      if (typeof this.scheduleSaveCreateFormDraft === 'function') {
+        this.scheduleSaveCreateFormDraft()
+      }
     },
   },
 }

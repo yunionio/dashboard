@@ -13,11 +13,13 @@
           :disabled-items="disabledHost"
           v-decorator="decorators.schedPolicyHost"
           :params="policyHostParams"
+          :extra-opts="preferHostExtraOpts"
           :label-format="labelFormat"
           :need-params="true"
           :filterable="true"
           :showSync="true"
           @change="hostChange"
+          @update:initLoaded="onHostInitLoaded"
           :select-props="{ placeholder: lodash.get(schedPolicyOptionsMap, 'host.label') || ''  }" />
       </template>
       <template v-else>
@@ -41,10 +43,12 @@
           :disabled-items="disabledHost"
           v-decorator="decorators.schedPolicyHost"
           :params="policyHostParams"
+          :extra-opts="preferHostExtraOpts"
           :label-format="labelFormat"
           :need-params="true"
           :filterable="true"
           :showSync="true"
+          @update:initLoaded="onHostInitLoaded"
           :select-props="{ placeholder: lodash.get(schedPolicyOptionsMap, 'host.label') || '' }" />
       </template>
     </a-form-item>
@@ -53,7 +57,8 @@
         ref="policySchedtagRef"
         :form="form"
         :decorators="decorators.policySchedtag"
-        :schedtag-params="policySchedtagParams" />
+        :schedtag-params="policySchedtagParams"
+        :init-schedtags="initSchedtags" />
     </a-form-item>
     <a-form-item v-if="schedPolicyComponent === 'cloudprovider'">
       <base-select
@@ -131,6 +136,21 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    /** 工单/草稿：指定调度标签初始数据，在 PolicySchedtag created 时即回填 */
+    initSchedtags: {
+      type: Array,
+      default: () => [],
+    },
+    /** 工单/草稿：指定宿主机 id，列表 initLoaded 后再写入（防 params clearSelect） */
+    initPreferHost: {
+      type: String,
+      default: '',
+    },
+    /** 是否处于工单/草稿回填（为 true 时才反复补写 prefer_host） */
+    preserveInitPreferHost: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -138,6 +158,7 @@ export default {
       lodash,
       usableCloudproviderMaps: {},
       allCloudproviders: [],
+      pendingPreferHost: '',
     }
   },
   computed: {
@@ -193,6 +214,11 @@ export default {
     disabledCloudproviders () {
       return this.allCloudproviders.filter(val => !this.usableCloudproviderMaps[val.id]).map(val => val.id)
     },
+    preferHostExtraOpts () {
+      const id = this.pendingPreferHost || this.initPreferHost
+      if (!id) return []
+      return [{ id, name: id }]
+    },
   },
   watch: {
     schedPolicyOptionsMap (val) {
@@ -200,9 +226,16 @@ export default {
         const keys = Object.keys(val)
         if (keys.length) {
           if (this.form && this.form.fc) {
+            const field = this.decorators.schedPolicyType[0]
+            const current = this.form.fc.getFieldValue(field)
+            // 已有有效选项时不要重置为第一项（避免冲掉工单/草稿回填的「指定调度标签」）
+            if (current && this.schedPolicyOptionsMap[current]) {
+              this.change(current)
+              return
+            }
             const schedPolicyType = this.schedPolicyOptionsMap[keys[0]].key
             this.form.fc.setFieldsValue({
-              [this.decorators.schedPolicyType[0]]: schedPolicyType,
+              [field]: schedPolicyType,
             })
             this.change(schedPolicyType)
           }
@@ -214,10 +247,37 @@ export default {
         this.fetchUsagebleCloudprovider()
       }
     },
+    initPreferHost: {
+      handler (val) {
+        if (val) this.initPreferHostData(val)
+      },
+      immediate: true,
+    },
+    policyHostParams: {
+      handler () {
+        if (this.pendingPreferHost) {
+          this.$nextTick(() => this.writePendingPreferHost())
+        }
+      },
+      deep: true,
+    },
+    preserveInitPreferHost (val) {
+      if (!val) this.pendingPreferHost = ''
+    },
   },
   created () {
     this.cloudproviderM = new this.$Manager('cloudproviders')
     this.fetchUsagebleCloudprovider()
+  },
+  mounted () {
+    // Decorator 已种下 schedPolicyType（工单/草稿）时，同步挂载对应子组件
+    this.$nextTick(() => {
+      const current = this.form?.fc?.getFieldValue(this.decorators.schedPolicyType[0])
+      if (current) this.change(current)
+      if (this.pendingPreferHost || this.initPreferHost) {
+        this.writePendingPreferHost()
+      }
+    })
   },
   methods: {
     cloudproviderLabel (item) {
@@ -249,6 +309,38 @@ export default {
       } catch (error) {
         throw error
       }
+    },
+    /**
+     * 工单/草稿回填指定宿主机
+     * @param {string} hostId
+     */
+    initPreferHostData (hostId) {
+      if (!hostId) return
+      this.pendingPreferHost = hostId
+      this.change('host')
+      this.writePendingPreferHost()
+    },
+    writePendingPreferHost () {
+      if (!this.pendingPreferHost || !this.form?.fc) return
+      if (!this.preserveInitPreferHost) {
+        this.pendingPreferHost = ''
+        return
+      }
+      if (this.schedPolicyComponent !== 'host') {
+        this.change('host')
+      }
+      const typeField = this.decorators.schedPolicyType[0]
+      const hostField = this.decorators.schedPolicyHost[0]
+      this.form.fc.setFieldsValue({
+        [typeField]: 'host',
+        [hostField]: this.pendingPreferHost,
+      })
+      if (this.form.fd) {
+        this.$set(this.form.fd, hostField, this.pendingPreferHost)
+      }
+    },
+    onHostInitLoaded () {
+      this.writePendingPreferHost()
     },
     change (e) {
       const schedPolicyType = lodash.isString(e) ? e : e.target.value

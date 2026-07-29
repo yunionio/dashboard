@@ -8,7 +8,13 @@
       hideRequiredMark>
       <servertemplate v-if="isServertemplate" :decorators="decorators.servertemplate">
         <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])">
-          <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+          <domain-project
+            :fc="form.fc"
+            :fd="form.fd"
+            :decorators="{ project: decorators.project, domain: decorators.domain }"
+            :ignoreStorage="ignoreLocalFormStorage"
+            @fetchDomainCallback="fetchDomainCallback"
+            @fetchProjectCallback="fetchProjectCallback" />
         </a-form-item>
       </servertemplate>
       <!-- <a-divider orientation="left">{{$t('compute.text_300')}}</a-divider> -->
@@ -17,7 +23,7 @@
           :fc="form.fc"
           :fd="form.fd"
           :decorators="{ project: decorators.project, domain: decorators.domain }"
-          :ignoreStorage="isInitForm"
+          :ignoreStorage="ignoreLocalFormStorage"
           @fetchDomainCallback="fetchDomainCallback"
           @fetchProjectCallback="fetchProjectCallback" />
       </a-form-item>
@@ -73,7 +79,8 @@
         :zone-mapper="filterZoneListByProvider"
         :defaultActiveFirstOption="areaDefaultActiveFirstOption"
         filterBrandResource="compute_engine"
-        @providerFetchSuccess="providerFetchSuccess" />
+        @providerFetchSuccess="providerFetchSuccess"
+        @fetchsDone="onAreaSelectsFetchsDone" />
       <!-- <a-form-item class="mb-0" :label="$t('compute.text_1159')">
         <resource :decorator="decorators.resourceType" />
       </a-form-item> -->
@@ -115,6 +122,7 @@
           :imageParams="imageParams"
           :cacheImageParams="cacheImageParams"
           :cloudproviderParamsExtra="cloudproviderParamsExtra"
+          :ignore-storage="ignoreLocalFormStorage"
           @updateImageMsg="updateFi" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_49')" class="mb-0">
@@ -135,7 +143,7 @@
       <a-form-item :label="$t('compute.text_50')">
         <data-disk
           v-if="form.fd.sku"
-          :isInitForm="isInitForm"
+          :isInitForm="isFormBackfill"
           :decorator="decorators.dataDisk"
           :type="type"
           :form="form"
@@ -171,7 +179,8 @@
           :vpcResource="vpcResource"
           :serverCount="form.fd.count"
           :networkResourceMapper="networkResourceMapper"
-          :cloudprovider="form.fd.cloudprovider" />
+          :cloudprovider="form.fd.cloudprovider"
+          :ignore-auto-network-type="isFormBackfill" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
@@ -208,7 +217,8 @@
               :decorators="decorators.secgroup"
               :secgroup-params="secgroupParams"
               :hypervisor="hypervisor"
-              :showSecgroupBind="showSecgroupBind" />
+              :showSecgroupBind="showSecgroupBind"
+              :ignore-auto-type-reset="isFormBackfill" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_311')" v-show="!isServertemplate" class="mb-0">
             <sched-policy
@@ -222,7 +232,7 @@
               :hideCloudaccountSched="hideCloudaccountSched"
               :policy-schedtag-params="policySchedtagParams" />
           </a-form-item>
-          <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" />
+          <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" @content-change="scheduleSaveCreateFormDraft" />
           <bastion-host v-if="!isOpenSourceVersion && hasBastionService" :decorator="decorators.bastion_host" :form="form" />
         </a-collapse-panel>
       </a-collapse>
@@ -304,7 +314,7 @@ export default {
       return true
     },
     areaDefaultActiveFirstOption () {
-      if (this.isInitForm) return false
+      if (this.isFormBackfill) return false
       return []
     },
     selectedCloudregionIds () {
@@ -782,14 +792,16 @@ export default {
       return Array.isArray(value) ? value : [value]
     },
     matchProviderFromList (list, hypervisor) {
-      const hvKey = String(hypervisor || '').toLowerCase()
+      const hvKey = resolveHypervisorKey(hypervisor) || String(hypervisor || '').toLowerCase()
+      if (!hvKey || !list?.length) return null
       const hvObj = HYPERVISORS_MAP[hvKey]
-      if (!hvObj || !list?.length) return null
-      const hvProvider = String(hvObj.provider || '').toLowerCase()
+      const hvProvider = String(hvObj?.provider || '').toLowerCase()
       return list.find(item => {
-        const name = String(item.name || '').toLowerCase()
-        const provider = String(item.provider || '').toLowerCase()
-        return name === hvKey || name === hvProvider || provider === hvKey || provider === hvProvider
+        const name = resolveHypervisorKey(item.name) || String(item.name || '').toLowerCase()
+        const provider = resolveHypervisorKey(item.provider) || String(item.provider || '').toLowerCase()
+        return name === hvKey ||
+          provider === hvKey ||
+          (hvProvider && (name === hvProvider || provider === hvProvider))
       }) || null
     },
     async applyMapSelectionToAreaSelects (regions = []) {
@@ -823,22 +835,95 @@ export default {
       }
       this.refreshSkuByAreaSelection()
     },
-    async applyInitPublicAreaFields (providerName, { skipRefetch = false } = {}) {
-      if (!this.isInitForm || !providerName) return
-      const region = this.toAreaValue(this.initFormData.prefer_region)
-      const zone = this.toAreaValue(resolveInitPreferZone(this.initFormData, true))
-      this.form.fc.setFieldsValue({
-        provider: this.toAreaValue(providerName),
-        cloudregion: region,
-        zone,
-        cloudprovider: this.initFormData.prefer_manager_id,
+    resolveDraftProviderNames (list = []) {
+      const initData = this.effectiveInitFormData || {}
+      let candidates = initData.extraData?.providers
+      if (!Array.isArray(candidates) || !candidates.length) {
+        const single = initData.extraData?.provider || initData.hypervisor
+        candidates = single ? [single] : []
+      }
+      const names = []
+      candidates.forEach((c) => {
+        const matched = this.matchProviderFromList(list, c)
+        if (matched && !names.includes(matched.name)) {
+          names.push(matched.name)
+        }
       })
-      if (skipRefetch) return
-      const areaRef = this.$refs.areaSelectRef
-      if (!areaRef) return
-      await this.$nextTick()
-      await areaRef.refetchDownstreamOnly(['cloudregion', 'zone'])
-      this.form.fc.setFieldsValue({ cloudregion: region, zone })
+      return names
+    },
+    resolveDraftPreferRegions () {
+      const initData = this.effectiveInitFormData || {}
+      const fromExtra = initData.extraData?.prefer_regions
+      if (Array.isArray(fromExtra) && fromExtra.length) {
+        return fromExtra.filter(Boolean)
+      }
+      return this.toAreaValue(initData.prefer_region).filter(Boolean)
+    },
+    /**
+     * AreaSelects.fetchs 整链结束后再回填，避免与 resetSelect / 空列表 resetFields 竞态
+     */
+    onAreaSelectsFetchsDone () {
+      if (!this.isFormBackfill) return
+      if (this._publicAreaApplying) {
+        // 当前回填未完成又触发了新的 fetchs（如域切换），结束后再跑一次
+        this._publicAreaRestoreAgain = true
+        return
+      }
+      const list = this.$refs.areaSelectRef?.providerList || this.form.fi.providerList || []
+      const providerNames = this.resolveDraftProviderNames(list)
+      if (providerNames.length) {
+        this.applyInitPublicAreaFields(providerNames)
+      }
+    },
+    async applyInitPublicAreaFields (providerNames) {
+      // 工单或草稿恢复时回填公有云 provider / region / zone（支持多选）
+      const provider = this.toAreaValue(providerNames).filter(Boolean)
+      if (!this.isFormBackfill || !provider.length) return
+      if (this._publicAreaApplying) {
+        this._publicAreaRestoreAgain = true
+        return
+      }
+      this._publicAreaApplying = true
+      try {
+        const initData = this.effectiveInitFormData || {}
+        const region = this.resolveDraftPreferRegions()
+        const zone = this.toAreaValue(resolveInitPreferZone(initData, true)).filter(Boolean)
+        const areaRef = this.$refs.areaSelectRef
+        if (!areaRef) return
+
+        // 先写 provider 并同步 fd，保证后续 cloudregion mapper / zoneParams 能读到平台
+        this.form.fc.setFieldsValue({ provider })
+        this._setNewFieldToFd({ provider }, this.form.fc.getFieldsValue())
+        await this.$nextTick()
+
+        if (typeof areaRef.fetchListsOnly === 'function') {
+          await areaRef.fetchListsOnly(['cloudregion'], { skipDefaultSelect: true })
+        }
+        if (region.length) {
+          this.form.fc.setFieldsValue({ cloudregion: region })
+          this._setNewFieldToFd({ cloudregion: region }, this.form.fc.getFieldsValue())
+          await this.$nextTick()
+        }
+
+        if (typeof areaRef.fetchListsOnly === 'function') {
+          await areaRef.fetchListsOnly(['zone'], { skipDefaultSelect: true })
+        }
+        if (zone.length) {
+          this.form.fc.setFieldsValue({ zone })
+          this._setNewFieldToFd({ zone }, this.form.fc.getFieldsValue())
+        }
+
+        if (initData.prefer_manager_id) {
+          this.form.fc.setFieldsValue({ cloudprovider: initData.prefer_manager_id })
+          this._setNewFieldToFd({ cloudprovider: initData.prefer_manager_id }, this.form.fc.getFieldsValue())
+        }
+      } finally {
+        this._publicAreaApplying = false
+        if (this._publicAreaRestoreAgain && this.isFormBackfill) {
+          this._publicAreaRestoreAgain = false
+          this.$nextTick(() => this.onAreaSelectsFetchsDone())
+        }
+      }
     },
     providerFetchSuccess (list) {
       // 计费方式为包年包月平台不含 azure、aws、google
@@ -858,11 +943,7 @@ export default {
       list = list.filter(item => {
         return ![HYPERVISORS_MAP.jdcloud.key, HYPERVISORS_MAP.ecloud.key].includes(item.name)
       })
-      // 回填
-      const matched = this.matchProviderFromList(list, this.initFormData.hypervisor)
-      if (matched) {
-        this.applyInitPublicAreaFields(matched.name)
-      }
+      // 仅缓存列表；平台/区域/可用区在 @fetchsDone 里回填，避免与 fetchs 竞态
       this.$set(this.form.fi, 'providerList', list)
       if (!this.providers.length) {
         this.$nextTick(() => {

@@ -36,7 +36,13 @@ import { currencyUnitMap } from '@/constants/currency'
 
 export default {
   name: 'rdsSkuList',
-  inject: ['form', 'formItemLayout', 'tailFormItemLayout', 'scopeParams'],
+  inject: {
+    form: { default: null },
+    formItemLayout: { default: null },
+    tailFormItemLayout: { default: null },
+    scopeParams: { default: null },
+    getCreateFormDraftPreferred: { default: undefined },
+  },
   components: {
     PageListEmpty,
   },
@@ -150,7 +156,20 @@ export default {
   watch: {
     skuList (skuList) {
       if (skuList && skuList.length > 0) {
-        const row = skuList.find(item => this.isAvailable(item))
+        const preferred = typeof this.getCreateFormDraftPreferred === 'function'
+          ? this.getCreateFormDraftPreferred()
+          : null
+        let row
+        if (preferred) {
+          const skuId = preferred.sku?.id || preferred.sku_id
+          const skuName = preferred.sku?.name || preferred.sku_name
+          row = skuList.find(item => this.isAvailable(item) && (
+            (skuId && item.id === skuId) || (skuName && item.name === skuName)
+          ))
+        }
+        if (!row) {
+          row = skuList.find(item => this.isAvailable(item))
+        }
         this.handleSkuChange({ row })
       }
     },

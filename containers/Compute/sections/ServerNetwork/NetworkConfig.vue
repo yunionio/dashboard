@@ -314,11 +314,18 @@ export default {
     initData (data) {
       this.canDefaultSelect = false
       this.networkList = data.map(item => {
+        // 工单/草稿都可能是 string id，或 { id } / 仅有 network_id
+        const networkId = typeof item.network === 'object'
+          ? (item.network && (item.network.id || item.network.key))
+          : (item.network || item.network_id)
+        const vpcId = typeof item.vpc === 'object'
+          ? (item.vpc && (item.vpc.id || item.vpc.key))
+          : item.vpc
         const obj = {
           ...item,
           key: uuid(),
-          network: { id: item.network },
-          vpc: { id: item.vpc },
+          network: { id: networkId },
+          vpc: { id: vpcId },
           ipShow: !!item.address,
           ipv6Show: false,
           requireIpv6: false,
@@ -358,13 +365,28 @@ export default {
         }
         return obj
       })
-      this.$nextTick(() => {
-        this.form.fc.setFieldsValue({
-          [this.decorator.vpcs(this.networkList[0].key)[0]]: this.networkList[0].vpc.id,
+      // 多网卡共用第一块 VPC：补齐后续项 vpc，保证 networkParamsC 能拉子网列表
+      const firstVpc = this.networkList[0] && this.networkList[0].vpc
+      if (firstVpc && firstVpc.id) {
+        this.networkList.forEach((item, idx) => {
+          if (idx > 0 && (!item.vpc || !item.vpc.id)) {
+            item.vpc = { ...firstVpc }
+          }
         })
-        for (const item of this.networkList) {
+      }
+      const applyAllNetworkFields = () => {
+        if (!this.form || !this.form.fc || !this.networkList.length) return
+        const first = this.networkList[0]
+        if (first.vpc && first.vpc.id) {
+          this.form.fc.setFieldsValue({
+            [this.decorator.vpcs(first.key)[0]]: first.vpc.id,
+          })
+        }
+        this.networkList.forEach((item) => {
           const value = {}
-          value[this.decorator.networks(item.key)[0]] = item.network.id
+          if (item.network && item.network.id) {
+            value[this.decorator.networks(item.key)[0]] = item.network.id
+          }
           if (item.address) {
             value[this.decorator.ips(item.key, item.network.id)[0]] = item.address
           }
@@ -382,13 +404,15 @@ export default {
           if (item.secgroups && item.secgroups.length > 0) {
             value[this.decorator.secgroups(item.key)[0]] = item.secgroups
           }
-          setTimeout(() => {
-            this.form.fc.setFieldsValue(value)
-          }, 2000)
-          setTimeout(() => {
-            this.form.fc.setFieldsValue(value)
-          }, 4000)
-        }
+          this.form.fc.setFieldsValue(value)
+        })
+      }
+      this.$nextTick(() => {
+        applyAllNetworkFields()
+        // 子网列表异步拉取后再次写入，避免最后一块网卡装饰器尚未挂上 / options 未就绪
+        setTimeout(applyAllNetworkFields, 1500)
+        setTimeout(applyAllNetworkFields, 3000)
+        setTimeout(applyAllNetworkFields, 5000)
       })
     },
     getVpcTag (data) {

@@ -8,7 +8,13 @@
       hideRequiredMark>
       <servertemplate v-if="isServertemplate" :decorators="decorators.servertemplate">
         <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])">
-          <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+          <domain-project
+            :fc="form.fc"
+            :fd="form.fd"
+            :decorators="{ project: decorators.project, domain: decorators.domain }"
+            :ignoreStorage="ignoreLocalFormStorage"
+            @fetchDomainCallback="fetchDomainCallback"
+            @fetchProjectCallback="fetchProjectCallback" />
         </a-form-item>
       </servertemplate>
       <!-- <a-divider orientation="left">{{$t('compute.text_300')}}</a-divider> -->
@@ -17,7 +23,7 @@
           :fc="form.fc"
           :fd="form.fd"
           :decorators="{ project: decorators.project, domain: decorators.domain }"
-          :ignoreStorage="isInitForm"
+          :ignoreStorage="ignoreLocalFormStorage"
           @fetchDomainCallback="fetchDomainCallback"
           @fetchProjectCallback="fetchProjectCallback" />
       </a-form-item>
@@ -91,6 +97,7 @@
           :cacheImageParams="cacheImageParams"
           :cloudproviderParamsExtra="cloudproviderParamsExtra"
           :ignoreOptions="ignoreImageOptions"
+          :ignore-storage="ignoreLocalFormStorage"
           @updateImageMsg="updateFi" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_49')" class="mb-0">
@@ -107,7 +114,7 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_50')" v-if="form.fd.hypervisor && form.fd.hypervisor !== 'zettakit' && !isCNware">
         <data-disk
-          :isInitForm="isInitForm"
+          :isInitForm="isFormBackfill"
           :decorator="decorators.dataDisk"
           :type="type"
           :form="form"
@@ -136,7 +143,8 @@
           :serverCount="form.fd.count"
           :key="serverNetwork"
           :networkResourceMapper="networkResourceMapper"
-          :showMacConfig="form.fd.hypervisor === 'kvm'" />
+          :showMacConfig="form.fd.hypervisor === 'kvm'"
+          :ignore-auto-network-type="isFormBackfill" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
@@ -159,7 +167,8 @@
               :decorators="decorators.secgroup"
               :secgroup-params="secgroupParams"
               :hypervisor="form.fd.hypervisor"
-              :showSecgroupBind="showSecgroupBind" />
+              :showSecgroupBind="showSecgroupBind"
+              :ignore-auto-type-reset="isFormBackfill" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_311')" v-show="!isServertemplate" class="mb-0">
             <sched-policy
@@ -171,7 +180,7 @@
               :decorators="decorators.schedPolicy"
               :policy-schedtag-params="policySchedtagParams" />
           </a-form-item>
-          <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" />
+          <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" @content-change="scheduleSaveCreateFormDraft" />
           <bastion-host v-if="!isOpenSourceVersion && hasBastionService" :decorator="decorators.bastion_host" :form="form" />
         </a-collapse-panel>
       </a-collapse>
@@ -448,15 +457,21 @@ export default {
           if (resource === 'cloudregions' && cloudregion.key && id !== cloudregion.key) {
             return
           }
+          const hypervisors = data.hypervisors.filter(val => val !== 'baremetal' && val !== 'pod')
           this.form.fi.capability = {
             ...data,
-            hypervisors: data.hypervisors.filter(val => val !== 'baremetal' && val !== 'pod'),
+            hypervisors,
           }
           this.form.fc.getFieldDecorator('hypervisor', { preserve: true })
-          this.form.fc.setFieldsValue({
-            hypervisor: this.form.fi.capability.hypervisors[0], // 赋值默认第一个平台
-          })
-          this.$set(this.form.fd, 'hypervisor', this.form.fi.capability.hypervisors[0])
+          // 草稿/工单回填：优先用 init hypervisor；否则保留当前选中；最后才默认第一项
+          const preferHyper = this.isFormBackfill
+            ? (this.effectiveInitFormData?.hypervisor || this.decorators.hypervisor?.[1]?.initialValue)
+            : (this.form.fd.hypervisor || this.decorators.hypervisor?.[1]?.initialValue)
+          const hypervisor = (preferHyper && hypervisors.includes(preferHyper))
+            ? preferHyper
+            : hypervisors[0]
+          this.form.fc.setFieldsValue({ hypervisor })
+          this.$set(this.form.fd, 'hypervisor', hypervisor)
           this.$nextTick(this.fetchInstanceSpecs)
         })
     },

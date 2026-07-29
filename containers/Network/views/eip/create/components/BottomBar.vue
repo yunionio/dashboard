@@ -204,6 +204,7 @@ export default {
           }
         }
         await this.doCreate(values)
+        this.$emit('create-success')
         this.loading = false
         this.$message.success(this.$t('k8s.text_184'))
         this.$router.push('/eip')

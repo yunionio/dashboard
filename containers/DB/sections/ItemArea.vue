@@ -11,7 +11,8 @@
     :cloudregionParams="cloudregionParams"
     :filterBrandResource="filterBrandResource"
     @providerFetchSuccess="providerFetchSuccess"
-    @cloudregionFetchSuccess="cloudregionFetchSuccess" />
+    @cloudregionFetchSuccess="cloudregionFetchSuccess"
+    @fetchsDone="$emit('fetchsDone', $event)" />
 </template>
 <script>
 import AreaSelects from '@/sections/AreaSelects'
