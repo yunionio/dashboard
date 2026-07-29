@@ -42,6 +42,14 @@ export default {
           title: this.$t('compute.text_481'),
         },
         {
+          field: 'vendor',
+          title: this.$t('compute.isolated_devices.vendor.title'),
+        },
+        {
+          field: 'vendor_device_id',
+          title: this.$t('compute.isolated_devices.vendor_device_id.title'),
+        },
+        {
           field: 'host',
           title: this.$t('compute.text_484'),
           slots: {

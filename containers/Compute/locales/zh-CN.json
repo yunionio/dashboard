@@ -1897,6 +1897,8 @@
   "compute.metric.vasmi_utilization_encoder": "瀚博 编码利用率",
   "compute.metric.vasmi_utilization_decoder": "瀚博 解码利用率",
   "compute.isolated_devices.device_path.title": "设备路径",
+  "compute.isolated_devices.vendor.title": "厂商",
+  "compute.isolated_devices.vendor_device_id.title": "设备ID",
   "compute.metadatas": "@:compute.text_271",
   "compute.zettakit.sys_disk_resize_tip": "泽塔云系统盘仅在【{0}】状态下支持此操作",
   "compute.zettakit.data_disk_resize_tip": "泽塔云数据盘仅在【{0}】状态下支持此操作",

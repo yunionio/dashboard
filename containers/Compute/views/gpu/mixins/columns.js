@@ -32,12 +32,22 @@ function getGuestList (row) {
   return list
 }
 
+function getVendorIconType (row) {
+  if (row.vendor) {
+    return row.vendor.toLowerCase()
+  }
+  const vendorId = row.vendor_device_id?.split(':')[0]
+  const DEVICE_MAP = {
+    '10de': 'nvidia',
+    1002: 'amd',
+    '1d94': 'hygon',
+    '1ec6': 'vastaitech',
+  }
+  return DEVICE_MAP[vendorId]
+}
+
 export default {
   created () {
-    const DEVICE_MAP = {
-      '10de': 'nvidia',
-      1002: 'amd',
-    }
     this.columns = [
       getNameDescriptionTableColumn({
         onManager: this.onManager,
@@ -55,35 +65,33 @@ export default {
         showOverflow: 'ellipsis',
       },
       {
+        field: 'vendor',
+        title: i18n.t('compute.isolated_devices.vendor.title'),
+        width: 100,
+        showOverflow: 'ellipsis',
+        formatter: ({ row }) => row.vendor || '-',
+      },
+      {
         field: 'model',
         title: i18n.t('compute.text_482'),
         minWidth: 120,
         showOverflow: 'ellipsis',
         slots: {
           default: ({ row }, h) => {
-            const device = row.vendor_device_id.split(':')[0]
-            if (!device) {
-              return row.model
-            }
+            const iconType = getVendorIconType(row)
             return [
               <div class='d-flex'>
                 <span class='text-truncate'>{ row.model }</span>
-                <icon class="ml-1" style="line-height: 24px" type={ DEVICE_MAP[device] } />
+                { iconType ? <icon class="ml-1" style="line-height: 24px" type={ iconType } /> : null }
               </div>,
             ]
           },
         },
-        formatter: ({ row }) => {
-          const device = row.vendor_device_id.split(':')[0]
-          if (!device) {
-            return row.model
-          }
-          return row.model
-        },
+        formatter: ({ row }) => row.model,
       },
       {
         field: 'vendor_device_id',
-        title: 'PCI ID',
+        title: i18n.t('compute.isolated_devices.vendor_device_id.title'),
         width: 120,
         showOverflow: 'ellipsis',
         slots: {
