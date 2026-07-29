@@ -111,13 +111,14 @@ export const createVmDecorators = (initData = {}) => {
     initData.prefer_zone_id ||
     ''
   let initNetworkType = NETWORK_OPTIONS_MAP.default.key
-  if (initData.nets) {
-    if (initData.nets[0] && initData.nets[0].hasOwnProperty('exit') && !initData.nets[0].exit) {
-      initNetworkType = NETWORK_OPTIONS_MAP.default.key
-    } else if (initData.nets[0] && initData.nets[0].hasOwnProperty('network') && initData.extraData?.nets?.[0]) {
-      initNetworkType = NETWORK_OPTIONS_MAP.manual.key
-    } else if (initData.nets[0]?.schedtags) {
+  if (initData.nets?.[0]) {
+    if (initData.nets[0].schedtags) {
       initNetworkType = NETWORK_OPTIONS_MAP.schedtag.key
+    } else if (initData.nets[0].hasOwnProperty('network') || initData.extraData?.nets?.[0]?.network || initData.extraData?.nets?.[0]?.network_id) {
+      // 指定 IP 子网：top-level nets 或 extraData.nets 有 network 即可（草稿可能缺其一）
+      initNetworkType = NETWORK_OPTIONS_MAP.manual.key
+    } else if (initData.nets[0].hasOwnProperty('exit') && !initData.nets[0].exit) {
+      initNetworkType = NETWORK_OPTIONS_MAP.default.key
     }
   }
   let initSchedPolicyType = 'default'
@@ -1103,16 +1104,13 @@ export class GenCreateData {
     const port_mappings = []
     if (this.fd.containerPorts) {
       for (const k in this.fd.containerPorts) {
-        const pm = {}
-        if (this.fd.containerPorts[k]) {
-          pm.port = this.fd.containerPorts[k]
-        }
-        if (this.fd.hostPorts[k]) {
+        const port = this.fd.containerPorts[k]
+        if (port == null || port === '') continue
+        const pm = { port }
+        if (this.fd.hostPorts && this.fd.hostPorts[k] != null && this.fd.hostPorts[k] !== '') {
           pm.host_port = this.fd.hostPorts[k]
         }
-        if (pm) {
-          port_mappings.push(pm)
-        }
+        port_mappings.push(pm)
       }
     }
     return port_mappings
@@ -1120,6 +1118,7 @@ export class GenCreateData {
 
   genNetworks () {
     let ret = [{ exit: false }]
+    const portMappings = this.getPortMappings()
     // 指定 IP 子网
     if (this.fd.networkType === NETWORK_OPTIONS_MAP.manual.key) {
       ret = []
@@ -1171,15 +1170,13 @@ export class GenCreateData {
             obj.sriov_device = { model: device }
           }
         }
-        const portMappings = this.getPortMappings()
         if (portMappings.length > 0) {
           obj.port_mappings = portMappings
         }
         ret.push(obj)
       }, this.fd.networks)
-    }
-    // 指定 调度标签
-    if (this.fd.networkType === NETWORK_OPTIONS_MAP.schedtag.key) {
+    } else if (this.fd.networkType === NETWORK_OPTIONS_MAP.schedtag.key) {
+      // 指定 调度标签
       ret = []
       R.forEachObjIndexed((value, key) => {
         const obj = {
@@ -1195,10 +1192,18 @@ export class GenCreateData {
             obj.sriov_device = { model: device }
           }
         }
-        ret.push({
+        const netObj = {
           schedtags: [obj],
-        })
+        }
+        // 端口映射挂在第一块网卡上（与手动网络一致，便于草稿/工单反填）
+        if (!ret.length && portMappings.length > 0) {
+          netObj.port_mappings = portMappings
+        }
+        ret.push(netObj)
       }, this.fd.networkSchedtags)
+    } else if (portMappings.length > 0) {
+      // 自动调度：默认 nets 也要带上端口映射，否则草稿丢失
+      ret[0].port_mappings = portMappings
     }
     return ret
   }
@@ -1610,13 +1615,27 @@ export class GenCreateData {
       domain_id: this.fd.domain?.key || store.getters.userInfo.projectDomainId,
       nets: [],
     }
-    // 指定 IP 子网时保留 UI 网络信息便于工单反填
+    const portMappings = this.getPortMappings()
+    if (portMappings.length) {
+      data.extraData.port_mappings = portMappings
+    }
+    // 指定 IP 子网时保留 UI 网络信息便于工单/草稿反填（需带 vpc，否则 NetworkConfig 无法拉子网）
     if (this.fd.networkType === NETWORK_OPTIONS_MAP.manual.key && this.fd.networks) {
       R.forEachObjIndexed((value, key) => {
-        data.extraData.nets.push({
+        const item = {
           network: value,
           network_id: value,
-        })
+        }
+        if (this.fd.vpcs && this.fd.vpcs[key]) {
+          item.vpc = this.fd.vpcs[key]
+        }
+        if (this.fd.networkIps && this.fd.networkIps[key]) {
+          item.address = this.fd.networkIps[key]
+        }
+        if (this.fd.networkMacs && this.fd.networkMacs[key]) {
+          item.mac = this.fd.networkMacs[key]
+        }
+        data.extraData.nets.push(item)
       }, this.fd.networks)
     }
     return data

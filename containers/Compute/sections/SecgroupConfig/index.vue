@@ -17,8 +17,10 @@
         v-decorator="secgroupDecorator"
         resource="secgroups"
         :params="params"
+        :extra-opts="secgroupExtraOpts"
         :showSync="true"
-        :select-props="{ allowClear: true, placeholder: $t('compute.text_190'), mode: 'multiple' }" />
+        :select-props="{ allowClear: true, placeholder: $t('compute.text_190'), mode: 'multiple' }"
+        @update:initLoaded="onSecgroupInitLoaded" />
     </a-form-item>
     <a-form-item
       class="mb-0"
@@ -77,6 +79,20 @@ export default {
       type: Boolean,
       default: true,
     },
+    /**
+     * 工单/草稿回填期间：不要因 showSecgroupBind 短暂变化把已选「指定安全组」冲回默认
+     */
+    ignoreAutoTypeReset: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * 工单/草稿：指定安全组 id 列表。BaseSelect 会在 params 变化时清空，需在 initLoaded 后反复写入
+     */
+    initSecgroups: {
+      type: Array,
+      default: () => [],
+    },
   },
   data () {
     // const concatRules = (k, l, r) => k === 'rules' ? R.concat(l, r) : r
@@ -93,6 +109,7 @@ export default {
       networkTagError: '',
       loading: false,
       disabled: false,
+      pendingInitSecgroups: [],
       // secgroupDecorator: [
       //   this.decorators.secgroup[0],
       //   this.secgroupDecMsg,
@@ -118,6 +135,9 @@ export default {
       }
       if (this.secgroupParams.project_domain) delete params.scope
       return params
+    },
+    secgroupExtraOpts () {
+      return (this.pendingInitSecgroups || []).map(id => ({ id, name: id }))
     },
     href () {
       const url = this.$router.resolve('/secgroup')
@@ -197,6 +217,7 @@ export default {
       }
     },
     types (val) {
+      if (this.ignoreAutoTypeReset) return
       if (!val.bind && this.form.fd && this.form.fd[this.decorators.type[0]] === 'bind' && this.form && this.form.fc) {
         this.form.fc.setFieldsValue({
           [this.decorators.type[0]]: 'default',
@@ -209,6 +230,29 @@ export default {
         })
         this.isNetworkTag = false
       }
+    },
+    // 程序化 setFieldsValue 不会走 @change，需同步本地 isBind
+    'form.fd.secgroup_type' (val) {
+      this.isBind = val === SECGROUP_OPTIONS_MAP.bind.key
+      this.isNetworkTag = val === SECGROUP_OPTIONS_MAP.networkTag.key
+    },
+    initSecgroups: {
+      handler (val) {
+        const ids = this.normalizeSecgroupIds(val)
+        if (ids.length) this.initData(ids)
+      },
+      immediate: true,
+    },
+    params: {
+      handler () {
+        if (this.pendingInitSecgroups.length) {
+          this.$nextTick(() => this.writePendingSecgroups())
+        }
+      },
+      deep: true,
+    },
+    ignoreAutoTypeReset (val) {
+      if (!val) this.pendingInitSecgroups = []
     },
     isNetworkTag (val) {
       if (!val) {
@@ -228,6 +272,42 @@ export default {
     this.unbindNetworkTagInputKeydown()
   },
   methods: {
+    normalizeSecgroupIds (secgroups) {
+      if (!Array.isArray(secgroups) || !secgroups.length) return []
+      return secgroups.map((item) => {
+        if (item == null) return null
+        if (typeof item === 'string' || typeof item === 'number') return String(item)
+        return item.id || item.key || item.value || null
+      }).filter(Boolean)
+    },
+    /**
+     * 工单/草稿回填入口
+     * @param {Array} secgroups
+     */
+    initData (secgroups) {
+      const ids = this.normalizeSecgroupIds(secgroups)
+      if (!ids.length) return
+      this.pendingInitSecgroups = ids
+      this.isBind = true
+      this.writePendingSecgroups()
+    },
+    writePendingSecgroups () {
+      if (!this.pendingInitSecgroups.length || !this.form?.fc) return
+      // 回填结束后不再强写，避免覆盖用户手动清空
+      if (!this.ignoreAutoTypeReset) {
+        this.pendingInitSecgroups = []
+        return
+      }
+      this.isBind = true
+      this.form.fc.setFieldsValue({
+        [this.decorators.type[0]]: SECGROUP_OPTIONS_MAP.bind.key,
+        [this.decorators.secgroup[0]]: [...this.pendingInitSecgroups],
+      })
+    },
+    onSecgroupInitLoaded () {
+      // BaseSelect params 变化会 clearSelect，列表就绪后再写回
+      this.writePendingSecgroups()
+    },
     validateSecgroups (rule, value, callback) {
       const max = this._max
       const maxError = this.$t('compute.text_191', [max])

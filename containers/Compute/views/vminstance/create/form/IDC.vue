@@ -8,7 +8,13 @@
       hideRequiredMark>
       <servertemplate v-if="isServertemplate" :decorators="decorators.servertemplate">
         <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])">
-          <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+          <domain-project
+            :fc="form.fc"
+            :fd="form.fd"
+            :decorators="{ project: decorators.project, domain: decorators.domain }"
+            :ignoreStorage="ignoreLocalFormStorage"
+            @fetchDomainCallback="fetchDomainCallback"
+            @fetchProjectCallback="fetchProjectCallback" />
         </a-form-item>
       </servertemplate>
       <!-- <a-divider orientation="left">{{$t('compute.text_300')}}</a-divider> -->
@@ -17,7 +23,7 @@
           :fc="form.fc"
           :fd="form.fd"
           :decorators="{ project: decorators.project, domain: decorators.domain }"
-          :ignoreStorage="isInitForm"
+          :ignoreStorage="ignoreLocalFormStorage"
           @fetchDomainCallback="fetchDomainCallback"
           @fetchProjectCallback="fetchProjectCallback" />
       </a-form-item>
@@ -66,7 +72,7 @@
         <pci :decorators="decorators.pci" :pciDevTypeOptions="pciDevTypeOptions" :form="form" :pci-options="pciOptions" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1058')" class="mb-0">
-        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :showUnlimited="true" :form="form" :hypervisor="form.fd.hypervisor" :showCpuSocketsInit="form.fd.hypervisor === 'esxi' && initFormData.hypervisor === 'esxi' && initFormData.cpu_sockets" :cpuSocketsInit="initFormData.cpu_sockets" @change="cpuChange" />
+        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :showUnlimited="true" :form="form" :hypervisor="form.fd.hypervisor" :showCpuSocketsInit="form.fd.hypervisor === 'esxi' && effectiveInitFormData.hypervisor === 'esxi' && effectiveInitFormData.cpu_sockets" :cpuSocketsInit="effectiveInitFormData.cpu_sockets" @change="cpuChange" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_369')" class="mb-0">
         <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :showUnlimited="true" />
@@ -89,6 +95,7 @@
           :image-params="imageParams"
           :cacheImageParams="cacheImageParams"
           :cloudproviderParamsExtra="cloudproviderParamsExtra"
+          :ignore-storage="ignoreLocalFormStorage"
           @updateImageMsg="updateFi" />
       </a-form-item>
       <a-form-item v-if="isKvm && form.fd.imageType === 'iso'" class="mb-0">
@@ -146,7 +153,7 @@
           :storageParams="dataDiskStorageParams"
           :storageHostParams="storageHostParams"
           :isAutoResetShow="isKvm"
-          :isInitForm="isInitForm"
+          :isInitForm="isFormBackfill"
           @storageHostChange="storageHostChange" />
         <div slot="extra" class="warning-color" v-if="isStorageShow && form.fi.imageType !== 'backup' && form.fi.imageType !== 'snapshot'">{{ $t('compute.select_storage_no_schetag') }}</div>
       </a-form-item>
@@ -173,7 +180,8 @@
           :showMacConfig="form.fd.hypervisor === 'kvm'"
           :showDeviceConfig="form.fd.hypervisor === 'kvm'"
           :showSecgroupConfig="form.fd.hypervisor === 'kvm'"
-          :secgroupParams="networkSecgroupParams" />
+          :secgroupParams="networkSecgroupParams"
+          :ignore-auto-network-type="isFormBackfill" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
@@ -207,12 +215,15 @@
           </a-form-item>
           <a-form-item :label="$t('compute.text_105')" v-if="isKvm">
             <secgroup-config
+              ref="secgroupConfigRef"
               :form="form"
               :isSnapshotImageType="isSnapshotImageType"
               :decorators="decorators.secgroup"
               :secgroup-params="secgroupParams"
               :hypervisor="form.fd.hypervisor"
-              :showSecgroupBind="showSecgroupBind" />
+              :showSecgroupBind="showSecgroupBind"
+              :ignore-auto-type-reset="isFormBackfill"
+              :init-secgroups="draftInitSecgroups" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_311')" class="mb-0">
             <sched-policy
@@ -224,7 +235,9 @@
               :decorators="decorators.schedPolicy"
               :policy-schedtag-params="policySchedtagParams"
               :showSchedCloudprovider="showSchedCloudprovider"
-              :cloudproviderParamsExtra="cloudproviderParamsExtra" />
+              :cloudproviderParamsExtra="cloudproviderParamsExtra"
+              :init-prefer-host="draftInitPreferHost"
+              :preserve-init-prefer-host="isFormBackfill" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_1155')" class="mb-0" v-if="isKvm">
             <bios :decorator="decorators.bios" :uefi="uefi" :isArm="isArm" :showDefault="true" />
@@ -259,7 +272,7 @@
           <a-form-item v-show="!isServertemplate" v-if="isKvm && enableEncryption" :label="$t('compute.server.encryption')" :extra="$t('compute.server.encryption.extra')">
             <encrypt-keys :decorators="decorators.encrypt_keys" />
           </a-form-item>
-          <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" />
+          <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" @content-change="scheduleSaveCreateFormDraft" />
           <!-- <a-form-item v-if="!isOpenSourceVersion" :label="$t('compute.bastionHost.bastion_host')">
             <bastion-host :decorator="decorators.bastion_host" :form="form" />
           </a-form-item> -->
@@ -709,6 +722,8 @@ export default {
       handler (val, oldVal) {
         if (R.equals(val, oldVal)) return
         this.$nextTick(() => {
+          // 回填期间镜像异步到位：不要清 imageType / 不要按镜像重置盘
+          if (this.isFormBackfill) return
           // this.form.fi.dataDiskDisabled = false
           // this.form.fi.sysDiskDisabled = false
           this.form.fi.imageType = ''
@@ -849,7 +864,9 @@ export default {
           this.$nextTick(this.fetchInstanceSpecs)
         }
         if (changedFields.schedPolicyType === 'host') {
-          this.$set(this.form.fd, 'schedPolicyHost', undefined)
+          if (!this.isFormBackfill) {
+            this.$set(this.form.fd, 'schedPolicyHost', undefined)
+          }
         }
         if (changedFields.backupEnable) {
           this.$set(this.form.fd, 'backup', undefined)
