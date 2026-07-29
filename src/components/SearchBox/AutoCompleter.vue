@@ -283,13 +283,21 @@ export default {
       const index = this.selectValue.indexOf(value)
       const hasValue = index !== -1
       const multiple = this.config.multiple
+      const mutexKey = this.config.mutexKey
       if (hasValue) {
         if (multiple) {
           this.selectValue.splice(index, 1)
         }
       } else {
         if (multiple) {
-          this.selectValue.push(value)
+          if (mutexKey && value === mutexKey) {
+            this.selectValue = [value]
+          } else {
+            if (mutexKey) {
+              this.selectValue = this.selectValue.filter(item => item !== mutexKey)
+            }
+            this.selectValue.push(value)
+          }
         } else {
           this.selectValue = [value]
         }
