@@ -80,8 +80,19 @@ export default {
               key: 'model',
             },
           },
+          vendor: {
+            label: this.$t('compute.isolated_devices.vendor.title'),
+            dropdown: true,
+            multiple: true,
+            items: [
+              { label: 'NVIDIA', key: 'NVIDIA' },
+              { label: 'AMD', key: 'AMD' },
+              { label: 'HYGON', key: 'HYGON' },
+              { label: 'VASTAITECH', key: 'VASTAITECH' },
+            ],
+          },
           vendor_device_id: {
-            label: 'PCI ID',
+            label: this.$t('compute.isolated_devices.vendor_device_id.title'),
             dropdown: true,
             multiple: true,
             distinctField: {

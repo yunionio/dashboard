@@ -150,32 +150,6 @@ export default {
               return ret
             },
           },
-          slots: {
-            default: ({ row }, h) => {
-              const ret = []
-              if (row.target_type === 'cidr') {
-                if (!row.cidr) {
-                  ret.push(
-                    <span>{this.$t('compute.any_cidr.text')}</span>,
-                  )
-                } else {
-                  const cidrList = row.cidr.split(',')
-                  cidrList.forEach(item => {
-                    ret.push(
-                      <list-body-cell-wrap copy hideField={true} field='cidr' row={row} message={item}>
-                        {item}
-                      </list-body-cell-wrap>,
-                    )
-                  })
-                }
-              } else if (row.target_type === 'ip_set') {
-                ret.push(
-                  <side-page-trigger permission='ipsets_get' name='IpSetSidePage' id={row.cidr} vm={this}>{row.target_ip_set}</side-page-trigger>,
-                )
-              }
-              return ret
-            },
-          },
         },
         {
           field: 'target_type',
