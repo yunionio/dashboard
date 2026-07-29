@@ -1897,6 +1897,8 @@
   "compute.metric.vasmi_utilization_encoder": "瀚博 コーディング使用率",
   "compute.metric.vasmi_utilization_decoder": "瀚博 復号利用率",
   "compute.isolated_devices.device_path.title": "デバイスパス",
+  "compute.isolated_devices.vendor.title": "ベンダー",
+  "compute.isolated_devices.vendor_device_id.title": "デバイスID",
   "compute.metadatas": "@:compute.text_271",
   "compute.zettakit.sys_disk_resize_tip": "ゼータ・クラウド・コンソールは、この操作をサポートしているのは【】の状態のみです",
   "compute.zettakit.data_disk_resize_tip": "Zetta Cloudデータディスクは、以下の【{0}】状態でのみこの操作をサポートしています。",
