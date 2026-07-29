@@ -6,7 +6,12 @@
       @submit="handleConfirm">
       <a-divider orientation="left">{{$t('compute.text_300')}}</a-divider>
       <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" v-bind="formItemLayout">
-        <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" :project.sync="projectId" :domain.sync="domainId" />
+        <domain-project
+          :fc="form.fc"
+          :decorators="{ project: decorators.project, domain: decorators.domain }"
+          :project.sync="projectId"
+          :domain.sync="domainId"
+          :ignoreStorage="ignoreLocalFormStorage" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_177')" class="mb-0" v-bind="formItemLayout" v-if="!isInstallOperationSystem">
         <cloudregion-zone
@@ -35,6 +40,7 @@
           hypervisor="baremetal"
           :image-params="imageParams"
           :decorator="decorators.imageOS"
+          :ignore-storage="ignoreLocalFormStorage"
           @updateImageMsg="setSelectedImage"
           :imageType.sync="osSelectImageType" />
       </a-form-item>
@@ -101,7 +107,8 @@
           :schedtag-params="params.policySchedtag"
           :networkVpcParams="params.vpcParams"
           :vpcResource="vpcResource"
-          :vpcResourceMapper="vpcResourceMapper" />
+          :vpcResourceMapper="vpcResourceMapper"
+          :ignore-auto-network-type="isFormBackfill" />
       </a-form-item>
       <a-form-item v-bind="offsetFormItemLayout">
         <a-checkbox v-model="isBonding">{{$t('compute.text_310')}}</a-checkbox>
@@ -115,6 +122,7 @@
           :policy-host-params="params.policyHostParams"
           :decorators="decorators.schedPolicy"
           :policy-schedtag-params="policySchedtagParams"
+          :init-schedtags="schedPolicyInitSchedtags"
           @change="hostChange"
           :hostData="filterHostData" />
       </a-form-item>

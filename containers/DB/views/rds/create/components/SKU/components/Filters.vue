@@ -32,7 +32,13 @@ const VERSION_SORT = {
 }
 export default {
   name: 'rdsSkuFilter',
-  inject: ['form', 'formItemLayout', 'disableds', 'scopeParams'],
+  inject: {
+    form: { default: null },
+    formItemLayout: { default: null },
+    disableds: { default: null },
+    scopeParams: { default: null },
+    getCreateFormDraftPreferred: { default: undefined },
+  },
   props: {
     rdsItem: {
       type: Object,
@@ -183,12 +189,24 @@ export default {
         this.dbInstance = data && data.db_instance ? data.db_instance : {}
         // 腾讯云暂时只支持MySQL
         if (this.form.getFieldValue('provider') === 'Qcloud' || (this.rdsItem && this.rdsItem.provider === 'Qcloud')) this.dbInstance = { MySQL: this.dbInstance.MySQL }
-        this.form.setFieldsValue({
-          engine: undefined,
-          engine_version: undefined,
-          category: undefined,
-          storage_type: undefined,
-        }, this.getEngine)
+        // 草稿回填：预置级联偏好，避免被清空后总是落到第一项
+        const preferred = typeof this.getCreateFormDraftPreferred === 'function'
+          ? this.getCreateFormDraftPreferred()
+          : null
+        const seed = preferred?.engine
+          ? {
+            engine: preferred.engine,
+            engine_version: preferred.engine_version,
+            category: preferred.category,
+            storage_type: preferred.storage_type,
+          }
+          : {
+            engine: undefined,
+            engine_version: undefined,
+            category: undefined,
+            storage_type: undefined,
+          }
+        this.form.setFieldsValue(seed, this.getEngine)
         return await data
       } catch (err) {
         this.dbInstance = {}

@@ -110,6 +110,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    /**
+     * 工单/草稿回填期间：不要用 auto_alloc_network_count 强行改 networkType，
+     * 否则会覆盖 initForm 已设好的指定子网/调度标签
+     */
+    ignoreAutoNetworkType: {
+      type: Boolean,
+      default: false,
+    },
     defaultNetwork: {
       type: Boolean,
       default: true,
@@ -207,6 +215,7 @@ export default {
   watch: {
     effectiveAutoAllocNetworkCountTt: {
       handler () {
+        if (this.ignoreAutoNetworkType) return
         this.applyNetworkTypeByAutoAllocCountTt()
       },
       immediate: true,
@@ -246,7 +255,19 @@ export default {
       immediate: true,
     },
   },
+  mounted () {
+    // Decorator 可能已种好 networkType（工单/草稿），但 networkComponent 默认是空的，
+    // 必须同步挂出 VPC/子网区域，否则只见 radio 选中、下面空白
+    this.syncNetworkComponentFromForm()
+  },
   methods: {
+    /** 按当前表单 networkType 挂载对应子组件（与 @change 同源） */
+    syncNetworkComponentFromForm () {
+      const type = (this.form.fc && this.form.fc.getFieldValue('networkType')) ||
+        (this.form.fd && this.form.fd.networkType)
+      if (!type) return
+      this.change({ target: { value: type }, name: 'default' })
+    },
     /** 无自动分配（0 / 未下发 / 空）时网络类型应为「指定 IP 子网」(compute.text_2，界面常称「其他」) */
     applyNetworkTypeByAutoAllocCountTt () {
       const val = this.effectiveAutoAllocNetworkCountTt
@@ -303,6 +324,8 @@ export default {
       }
     },
     async refreshNetworkConfig () {
+      // 工单/草稿回填期间禁止拆掉 NetworkConfig，否则 initData 的 VPC/子网会被冲掉
+      if (this.ignoreAutoNetworkType) return true
       if (this.networkComponent === 'config') {
         this.networkComponent = ''
         await this.$nextTick() // 刷新 network-config 组件

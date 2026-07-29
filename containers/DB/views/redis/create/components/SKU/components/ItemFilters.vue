@@ -44,7 +44,11 @@ import { ENGINE_ARCH, NODE_TYPE, PERFORMANCE_TYPE } from '@DB/views/redis/consta
 import { sizestr } from '@/utils/utils'
 export default {
   name: 'SkuFilters',
-  inject: ['form', 'redisItem'],
+  inject: {
+    form: { default: null },
+    redisItem: { default: null },
+    getCreateFormDraftPreferred: { default: undefined },
+  },
   props: {
     decorators: {
       type: Object,
@@ -230,6 +234,17 @@ export default {
       params.engine = 'redis'
       try {
         const { data: { redis } } = await capabilityManager.batchGet({ params })
+        // 草稿回填：先写入偏好，后续 setInitValue 会保留合法项
+        const preferred = typeof this.getCreateFormDraftPreferred === 'function'
+          ? this.getCreateFormDraftPreferred()
+          : null
+        if (preferred) {
+          const vals = {}
+          ;['engine', 'engine_version', 'local_category', 'node_type', 'performance_type', 'memory_size_mb'].forEach(k => {
+            if (preferred[k] != null) vals[k] = preferred[k]
+          })
+          if (Object.keys(vals).length) this.form.setFieldsValue(vals)
+        }
         this.filterItems = { redis }
       } catch (err) {
         throw err
