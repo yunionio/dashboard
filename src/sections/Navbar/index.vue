@@ -270,7 +270,12 @@ export default {
       return enable_cloud_shell
     },
     enableAi () {
+      // 显式依赖 permission / scopeResource，保证刷新后异步就绪能触发重新计算
+      if (!this.permission || !this.scopeResource) return false
       return hasPermission({ key: 'mcp_agents_list' }) && !isCE() && !this.$store.getters.isSysCE
+    },
+    shouldFetchMcpAgents () {
+      return !!(process.env.VUE_APP_IS_PRIVATE && !this.$store.getters.isSysCE && this.enableAi && this.showMenuMap.ai)
     },
     products () {
       if (this.userInfo.menus && this.userInfo.menus.length > 0) {
@@ -488,6 +493,15 @@ export default {
       },
       immediate: true,
     },
+    // 刷新时 permission / setupKeys 异步就绪，created 时条件可能未满足，需 watch 后再请求
+    shouldFetchMcpAgents: {
+      handler (val) {
+        if (val) {
+          this.fetchMcpAgents()
+        }
+      },
+      immediate: true,
+    },
   },
   created () {
     this.checkWorkflow(this.userInfo.id)
@@ -502,9 +516,6 @@ export default {
       if (this.isAdminMode || this.isDomainMode) {
         this.$store.dispatch('bill/fetchProjectSharingAccounts')
       }
-      if (this.enableAi && this.showMenuMap.ai) {
-        this.fetchMcpAgents()
-      }
     }
     this.$bus.$on('default-mcp-agent-updated', () => {
       this.fetchMcpAgents()
@@ -512,11 +523,13 @@ export default {
   },
   methods: {
     async fetchMcpAgents () {
+      console.log('fetchMcpAgents')
       try {
         const response = await new this.$Manager('mcp_agents', 'v2').list({
           params: {
             scope: this.$store.getters.scope,
             default_agent: true,
+            $t: 1,
           },
         })
         if (response.data && response.data.data && response.data.data.length > 0) {
