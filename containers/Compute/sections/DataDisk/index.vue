@@ -53,15 +53,21 @@ import { HYPERVISORS_MAP } from '@/constants'
 import { uuid, findAndUnshift, findAndPush } from '@/utils/utils'
 import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
 
+import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
+
 // 磁盘最小值
 const DISK_MIN_SIZE = 10
-
 export default {
   name: 'dataDisk',
   components: {
     Disk,
   },
+  mixins: [createFormFieldDraftMixin],
   props: {
+    formDraftKey: {
+      type: String,
+      default: '',
+    },
     form: {
       type: Object,
       required: true,
@@ -181,6 +187,7 @@ export default {
   data () {
     return {
       dataDisks: [],
+      diskDraftRestoring: false,
     }
   },
   computed: {
@@ -393,8 +400,8 @@ export default {
   watch: {
     typesMap (v, oldV) {
       if (!R.equals(v, oldV)) {
-        // 工单/草稿回填期间：typesMap 就绪后校正已占位的磁盘类型，禁止清空数据盘
-        if (this.isInitForm) {
+        // 工单/控件草稿回填期间：typesMap 就绪后校正已占位的磁盘类型，禁止清空数据盘
+        if (this.isInitForm || this.diskDraftRestoring) {
           if (v && !R.isEmpty(v) && this.dataDisks && this.dataDisks.length) {
             this.dataDisks.forEach((disk) => {
               const curKey = disk.diskType && disk.diskType.key
@@ -415,6 +422,11 @@ export default {
                 [this._fp('Types', disk.key)]: disk.diskType,
               })
             })
+            // typesMap 就绪后再写一遍草稿字段（盖住异步默认值）
+            if (this.diskDraftRestoring) {
+              const draft = this.readFormFieldDraft()
+              if (draft) this.$nextTick(() => this.applyDataDiskDraftFields(draft))
+            }
           }
           return
         }
@@ -430,12 +442,149 @@ export default {
     },
     defaultType (v, oldV) {
       // vmware系统盘改变清空数据盘，忽略调整配置初始化的情况
+      if (this.isInitForm || this.diskDraftRestoring) return
       if (this.getHypervisor() === HYPERVISORS_MAP.esxi.key && oldV && oldV.label) {
         this.dataDisks = []
       }
     },
   },
   methods: {
+    // 磁盘回填由页面 restoreVmDiskFormFieldDrafts 在 capability/sku 就绪后编排
+    restoreFormFieldDraftFields () {
+      return false
+    },
+    getCreateFormFieldDraftSnapshot () {
+      const f = this.form?.fc
+      if (!f) return undefined
+      const pick = {}
+      const keys = (this.dataDisks || []).map(d => d.key)
+      if (!keys.length) return undefined
+      pick.__dataDiskKeys = keys
+      keys.forEach((key) => {
+        const fieldKeys = [
+          this._fp('Types', key),
+          this._fp('Sizes', key),
+          this._fp('Schedtags', key),
+          this._fp('Policys', key),
+          this._fp('Snapshots', key),
+          this._fp('Storages', key),
+          this._fp('Iops', key),
+          this._fp('Throughputs', key),
+          this._fp('Filetypes', key),
+          this._fp('MountPaths', key),
+          this._fp('AutoReset', key),
+          this._fp('Preallocation', key),
+        ]
+        fieldKeys.forEach((fk) => {
+          const v = f.getFieldValue(fk)
+          if (v !== undefined) pick[fk] = v
+        })
+        // diskType 兜底（form 尚未挂装饰器时）
+        const disk = this.dataDisks.find(d => d.key === key)
+        if (pick[this._fp('Types', key)] === undefined && disk?.diskType) {
+          pick[this._fp('Types', key)] = disk.diskType
+        }
+      })
+      return pick
+    },
+    applyCreateFormFieldDraft (draft) {
+      if (!draft || !this.form?.fc) return
+      this.diskDraftRestoring = true
+      if (this.form.fi) this.$set(this.form.fi, 'diskDraftRestoring', true)
+      const run = () => this.applyDataDiskDraft(draft)
+      this.$nextTick(run)
+      setTimeout(run, 1200)
+      setTimeout(run, 2500)
+      setTimeout(() => {
+        run()
+        this.diskDraftRestoring = false
+        if (this.form?.fi) this.$set(this.form.fi, 'diskDraftRestoring', false)
+      }, 4500)
+    },
+    applyDataDiskDraft (draft) {
+      if (!draft || !this.form?.fc) return
+      const { __dataDiskKeys, ...rest } = draft
+      const keys = Array.isArray(__dataDiskKeys) && __dataDiskKeys.length
+        ? __dataDiskKeys
+        : Object.keys(rest.dataDiskSizes || {}).concat(
+          Object.keys(rest).filter(k => k.startsWith('dataDiskSizes[')).map(k => {
+            const m = k.match(/dataDiskSizes\[(.+)\]/)
+            return m && m[1]
+          }).filter(Boolean),
+        )
+      const uniqKeys = [...new Set(keys)].filter(Boolean)
+      if (uniqKeys.length) {
+        this.dataDisks = uniqKeys.map((key, idx) => {
+          const typeVal = rest[this._fp('Types', key)] ||
+            rest.dataDiskTypes?.[key] ||
+            { key: '', label: '', index: idx }
+          return {
+            key,
+            diskType: typeVal,
+            iops: rest[this._fp('Iops', key)] ?? rest.dataDiskIops?.[key],
+            throughput: rest[this._fp('Throughputs', key)] ?? rest.dataDiskThroughputs?.[key],
+          }
+        })
+      }
+      this.$nextTick(() => this.applyDataDiskDraftFields(draft))
+    },
+    applyDataDiskDraftFields (draft) {
+      if (!draft || !this.form?.fc) return
+      const { __dataDiskKeys, ...rest } = draft
+      const flat = { ...rest }
+      // 嵌套结构展平，供 setFieldsValue
+      ;['dataDiskSizes', 'dataDiskTypes', 'dataDiskSchedtags', 'dataDiskPolicys', 'dataDiskSnapshots', 'dataDiskStorages', 'dataDiskIops', 'dataDiskThroughputs', 'dataDiskFiletypes', 'dataDiskMountPaths', 'dataDiskAutoReset', 'dataDiskPreallocation'].forEach((prefix) => {
+        const obj = rest[prefix]
+        if (obj && typeof obj === 'object' && !Array.isArray(obj)) {
+          Object.keys(obj).forEach((key) => {
+            flat[`${prefix}[${key}]`] = obj[key]
+          })
+        }
+      })
+      delete flat.dataDiskSizes
+      delete flat.dataDiskTypes
+      delete flat.dataDiskSchedtags
+      delete flat.dataDiskPolicys
+      delete flat.dataDiskSnapshots
+      delete flat.dataDiskStorages
+      delete flat.dataDiskIops
+      delete flat.dataDiskThroughputs
+      delete flat.dataDiskFiletypes
+      delete flat.dataDiskMountPaths
+      delete flat.dataDiskAutoReset
+      delete flat.dataDiskPreallocation
+      if (Object.keys(flat).length) this.form.fc.setFieldsValue(flat)
+      this.$nextTick(() => {
+        const refs = this.$refs.disks
+        const diskRefs = Array.isArray(refs) ? refs : (refs ? [refs] : [])
+        diskRefs.forEach((disk, i) => {
+          const key = this.dataDisks[i]?.key
+          if (!disk || !key) return
+          const hasAdv = !!(
+            flat[this._fp('Schedtags', key)] ||
+            flat[this._fp('Policys', key)] ||
+            flat[this._fp('Snapshots', key)] ||
+            flat[this._fp('Storages', key)] ||
+            flat[this._fp('Iops', key)] ||
+            flat[this._fp('Throughputs', key)] ||
+            flat[this._fp('Filetypes', key)] ||
+            flat[this._fp('MountPaths', key)] ||
+            flat[this._fp('AutoReset', key)] ||
+            flat[this._fp('Preallocation', key)]
+          )
+          if (!hasAdv) return
+          disk.showAdvanced = true
+          if (flat[this._fp('Schedtags', key)] || flat[this._fp('Policys', key)]) disk.showSchedtag = true
+          if (flat[this._fp('Snapshots', key)]) disk.showSnapshot = true
+          if (flat[this._fp('Storages', key)]) disk.showStorage = true
+          if (flat[this._fp('Iops', key)]) disk.showIops = true
+          if (flat[this._fp('Throughputs', key)]) disk.showThroughput = true
+          if (flat[this._fp('Filetypes', key)] || flat[this._fp('MountPaths', key)]) disk.showMountpoint = true
+          if (flat[this._fp('Preallocation', key)]) disk.showPreallocation = true
+        })
+      })
+    },
+
     _fp (suffix, key) {
       return key !== undefined ? `${this.fieldPrefix}${suffix}[${key}]` : `${this.fieldPrefix}${suffix}`
     },
@@ -499,6 +648,9 @@ export default {
         const formValue = this.form.fc.getFieldsValue()
         if (this.form.fd) { // 如果上层表单有fd时，需要在此同步数据(外层监听不到减少表单的情况)
           this.form.fd[this._fp('Sizes')] = formValue[this._fp('Sizes')] || {}
+        }
+        if (!this.diskDraftRestoring && !this.isInitForm) {
+          this.persistFormFieldDraftSnapshot()
         }
       })
     },
@@ -610,6 +762,9 @@ export default {
         } else {
           this.form.fc.setFieldsValue(value)
           this.setDiskMedium(dataDiskTypes)
+        }
+        if (!this.diskDraftRestoring && !this.isInitForm) {
+          this.$nextTick(() => this.persistFormFieldDraftSnapshot())
         }
       })
     },

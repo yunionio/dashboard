@@ -58,6 +58,8 @@ import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
 import { BGP_TYPES, BGP_TYPES_MAP } from '@/constants/network'
 
+import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
+
 const chargeTypes = {
   traffic: {
     key: 'traffic',
@@ -68,10 +70,14 @@ const chargeTypes = {
     label: i18n.t('compute.text_21'),
   },
 }
-
 export default {
   name: 'EipConfig',
+  mixins: [createFormFieldDraftMixin],
   props: {
+    formDraftKey: {
+      type: String,
+      default: '',
+    },
     decorators: {
       type: Object,
       required: true,
@@ -244,7 +250,10 @@ export default {
       const values = Object.values(val)
       if (values.length) {
         if (this.form && this.form.fc) {
-          const type = values[0].key
+          const draft = this.canReadWriteFormFieldDraft() ? this.readFormFieldDraft() : null
+          const type = (draft?.eip_type && val[draft.eip_type])
+            ? draft.eip_type
+            : values[0].key
           this.type = type
           this.form.fc.setFieldsValue({
             [this.decorators.type[0]]: type,
@@ -268,6 +277,47 @@ export default {
     this.fetchBgpType()
   },
   methods: {
+    getCreateFormFieldDraftSnapshot () {
+      const f = this.form?.fc
+      if (!f) return undefined
+      const type = f.getFieldValue(this.decorators.type[0])
+      const ret = { eip_type: type }
+      if (type === 'new' || type === 'public') {
+        ret.charge_type = f.getFieldValue(this.decorators.charge_type?.[0])
+        ret.bandwidth = f.getFieldValue(this.decorators.bandwidth?.[0])
+        ret.bgp_type = f.getFieldValue(this.decorators.bgp_type?.[0])
+      }
+      if (type === 'bind') {
+        ret.eip = f.getFieldValue(this.decorators.eip?.[0])
+      }
+      return ret
+    },
+    applyCreateFormFieldDraft (draft) {
+      if (!draft || !this.form?.fc) return
+      if (draft.eip_type) {
+        this.type = draft.eip_type
+        const values = { [this.decorators.type[0]]: draft.eip_type }
+        if (draft.eip_type === 'bind' && draft.eip) {
+          values[this.decorators.eip[0]] = draft.eip
+        }
+        this.form.fc.setFieldsValue(values)
+        if (draft.eip_type === 'bind') return
+      }
+      if (typeof this.initData !== 'function') return
+      // 复用 initData 形状：eip_charge_type / public_ip_charge_type
+      const data = {}
+      if (draft.eip_type === 'new' || draft.charge_type) {
+        data.eip_charge_type = draft.charge_type
+        data.eip_bw = draft.bandwidth
+        data.eip_bgp_type = draft.bgp_type
+      } else if (draft.eip_type === 'public') {
+        data.public_ip_charge_type = draft.charge_type
+        data.public_ip_bw = draft.bandwidth
+        data.public_ip_bgp_type = draft.bgp_type
+      }
+      if (Object.keys(data).length) this.initData(data)
+    },
+
     initData (data) {
       this.$nextTick(() => {
         setTimeout(() => {
@@ -322,9 +372,11 @@ export default {
           this.form.fc.setFieldsValue({ eip_charge_type: 'bandwidth' })
         })
       }
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     handleChargeTypeChange (e) {
       this.chargeType = e.target.value
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     format (val) {
       return +val || 1

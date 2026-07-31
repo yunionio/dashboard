@@ -12,6 +12,7 @@
             :fc="form.fc"
             :fd="form.fd"
             :decorators="{ project: decorators.project, domain: decorators.domain }"
+            :form-draft-key="vmDraftFields.domainProject"
             :ignoreStorage="ignoreLocalFormStorage"
             @fetchDomainCallback="fetchDomainCallback"
             @fetchProjectCallback="fetchProjectCallback" />
@@ -23,6 +24,7 @@
           :fc="form.fc"
           :fd="form.fd"
           :decorators="{ project: decorators.project, domain: decorators.domain }"
+          :form-draft-key="vmDraftFields.domainProject"
           :ignoreStorage="ignoreLocalFormStorage"
           @fetchDomainCallback="fetchDomainCallback"
           @fetchProjectCallback="fetchProjectCallback" />
@@ -43,10 +45,10 @@
         <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1042')" />
       </a-form-item>
       <a-form-item class="mb-0" :label="$t('compute.text_498')">
-        <bill :decorators="decorators.bill" :form="form" :provider-list="form.fi.providerList" />
+        <bill :decorators="decorators.bill" :form="form" :provider-list="form.fi.providerList" :form-draft-key="vmDraftFields.bill" />
       </a-form-item>
       <a-form-item v-if="form.fd.billType === 'quantity' && !isServertemplate" :label="$t('compute.text_1132')">
-        <duration useServerDuration :decorators="decorators.duration" :form="form" />
+        <duration useServerDuration :decorators="decorators.duration" :form="form" :form-draft-key="vmDraftFields.duration" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_294')" v-show="!isServertemplate">
         <a-input-number v-decorator="decorators.count" @blur="countBlur" :min="1" :max="100" />
@@ -80,15 +82,16 @@
         :defaultActiveFirstOption="areaDefaultActiveFirstOption"
         filterBrandResource="compute_engine"
         @providerFetchSuccess="providerFetchSuccess"
-        @fetchsDone="onAreaSelectsFetchsDone" />
+        @fetchsDone="onAreaSelectsFetchsDone"
+        :form-draft-key="vmDraftFields.areaSelects" />
       <!-- <a-form-item class="mb-0" :label="$t('compute.text_1159')">
         <resource :decorator="decorators.resourceType" />
       </a-form-item> -->
       <a-form-item :label="$t('compute.text_1058')" class="mb-0">
-        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :showUnlimited="true" @change="cpuChange" />
+        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :showUnlimited="true" :form="form" :form-draft-key="vmDraftFields.vcpu" @change="cpuChange" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_369')" class="mb-0">
-        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :showUnlimited="true" />
+        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :showUnlimited="true" :form-draft-key="vmDraftFields.vmem" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_109')">
         <sku
@@ -99,7 +102,8 @@
           :sku-params="skuParam"
           :hypervisor="hypervisor"
           :hasMeterService="hasMeterService"
-          :init-sku-data="initSkuData" />
+          :init-sku-data="initSkuData"
+          :form-draft-key="vmDraftFields.sku" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_15')">
         <base-select
@@ -123,6 +127,7 @@
           :cacheImageParams="cacheImageParams"
           :cloudproviderParamsExtra="cloudproviderParamsExtra"
           :ignore-storage="ignoreLocalFormStorage"
+          :form-draft-key="vmDraftFields.osSelect"
           @updateImageMsg="updateFi" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_49')" class="mb-0">
@@ -138,7 +143,8 @@
           :image="form.fi.imageMsg"
           :isServertemplate="isServertemplate"
           is-iops-show
-          is-throughput-show />
+          is-throughput-show
+          :form-draft-key="vmDraftFields.systemDisk" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_50')">
         <data-disk
@@ -154,13 +160,14 @@
           :isServertemplate="isServertemplate"
           ref="dataDiskRef"
           is-iops-show
-          is-throughput-show />
+          is-throughput-show
+          :form-draft-key="vmDraftFields.dataDisk" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1372')" v-if="showServerAccount">
         <server-account :form="form" :hypervisor="hypervisor" :instance_capabilities="form.fi.capability.instance_capabilities" :osType="osType" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_308')">
-        <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" :form="form" />
+        <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" :form="form" :form-draft-key="vmDraftFields.loginConfig" />
       </a-form-item>
       <a-alert
         v-if="needsSkuForAreaDownstream"
@@ -180,15 +187,16 @@
           :serverCount="form.fd.count"
           :networkResourceMapper="networkResourceMapper"
           :cloudprovider="form.fd.cloudprovider"
-          :ignore-auto-network-type="isFormBackfill" />
+          :ignore-auto-network-type="ignoreAutoNetworkTypeForDraft"
+          :form-draft-key="vmDraftFields.serverNetwork" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
-          v-decorator="decorators.tag" :default-checked="tagDefaultChecked" />
+          v-decorator="decorators.tag" :default-checked="tagDefaultChecked" :form-draft-key="vmDraftFields.tag" />
       </a-form-item>
       <!-- <a-divider orientation="left">{{$t('compute.text_309')}}</a-divider> -->
       <a-collapse :bordered="false" v-model="collapseActive">
-        <a-collapse-panel :header="$t('compute.text_309')" key="1">
+        <a-collapse-panel :header="$t('compute.text_309')" key="1" :forceRender="true">
           <eip-config
             v-if="enableEip"
             ref="eipConfigRef"
@@ -200,7 +208,7 @@
             :cloud-env="type"
             :form="form"
             :hasPublicIp="hypervisor === 'qcloud' || hypervisor === 'aliyun'"
-            :formItemLayout="formItemLayout" />
+            :formItemLayout="formItemLayout" :form-draft-key="vmDraftFields.eip" />
           <a-form-item v-if="!isServertemplate">
             <span slot="label">
               {{ $t('common_388') }}&nbsp;
@@ -212,13 +220,16 @@
           </a-form-item>
           <a-form-item :label="$t('compute.text_105')">
             <secgroup-config
+              ref="secgroupConfigRef"
               :provider="hypervisor"
               :form="form"
               :decorators="decorators.secgroup"
               :secgroup-params="secgroupParams"
               :hypervisor="hypervisor"
               :showSecgroupBind="showSecgroupBind"
-              :ignore-auto-type-reset="isFormBackfill" />
+              :ignore-auto-type-reset="preserveAdvanceInitProps"
+              :init-secgroups="draftInitSecgroups"
+              :form-draft-key="vmDraftFields.secgroup" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_311')" v-show="!isServertemplate" class="mb-0">
             <sched-policy
@@ -230,10 +241,14 @@
               :policy-host-params="policyHostParams"
               :decorators="decorators.schedPolicy"
               :hideCloudaccountSched="hideCloudaccountSched"
-              :policy-schedtag-params="policySchedtagParams" />
+              :policy-schedtag-params="policySchedtagParams"
+              :init-prefer-host="draftInitPreferHost"
+              :preserve-init-prefer-host="preserveAdvanceInitProps"
+              :init-schedtags="draftInitSchedtags"
+              :form-draft-key="vmDraftFields.schedPolicy" />
           </a-form-item>
-          <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" @content-change="scheduleSaveCreateFormDraft" />
-          <bastion-host v-if="!isOpenSourceVersion && hasBastionService" :decorator="decorators.bastion_host" :form="form" />
+          <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" :form-draft-key="vmDraftFields.customData" />
+          <bastion-host ref="bastionHostRef" v-if="!isOpenSourceVersion && hasBastionService" :decorator="decorators.bastion_host" :form="form" :form-draft-key="vmDraftFields.bastionHost" />
         </a-collapse-panel>
       </a-collapse>
       <bottom-bar
@@ -269,6 +284,7 @@ import { HOST_CPU_ARCHS } from '@/constants/compute'
 import AreaSelects from '@/sections/AreaSelects'
 import { cloudregionFilterByCapability } from '@/utils/common/capability'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
+import { VM_CREATE_FORM_DRAFT_FIELD } from '@Compute/utils/vminstanceCreateFormDraft'
 import mixin from './mixin'
 export default {
   name: 'VMPublicCreate',
@@ -614,25 +630,41 @@ export default {
   },
   watch: {
     'form.fd.billType' (val) {
-      // 计费方式为包年包月平台不含 azure、aws，这里统一做清空处理
-      if (val === BILL_TYPES_MAP.package.key) {
+      const areaRef = this.$refs.areaSelectRef
+      // 有区域控件草稿或正在回填：交给 AreaSelects 软刷新+再回填，页面侧不要清空
+      if (areaRef?.requeueAreaDraftAfterBillChange?.()) return
+      const areaDraftBusy = !!(areaRef?.areaDraftRestoring || areaRef?._pendingAreaDraft || areaRef?._areaDraftApplyRunning)
+      if (val === BILL_TYPES_MAP.package.key && !areaDraftBusy) {
         this.form.fc.setFieldsValue({
           provider: [],
           cloudregion: [],
           zone: [],
         })
       }
-      this.$refs.areaSelectRef.fetchs(['provider'])
+      if (areaDraftBusy) {
+        areaRef?.fetchListsOnly?.(areaRef.names || ['provider'], { skipDefaultSelect: true })
+          ?.then?.(() => areaRef.tryApplyPendingAreaDraft?.())
+        return
+      }
+      this.$refs.areaSelectRef?.fetchs?.(['provider'])
     },
     'form.fd.duration' (val, oldVal) {
       if (this.form.fd.billType === BILL_TYPES_MAP.package.key) {
         if (val === '1W' || oldVal === '1W') {
-          this.form.fc.setFieldsValue({
-            provider: [],
-            cloudregion: [],
-            zone: [],
-          })
-          this.$refs.areaSelectRef.fetchs(['provider', 'cloudregion', 'zone'])
+          const areaRef = this.$refs.areaSelectRef
+          if (areaRef?.requeueAreaDraftAfterBillChange?.()) return
+          const areaDraftBusy = !!(areaRef?.areaDraftRestoring || areaRef?._pendingAreaDraft || areaRef?._areaDraftApplyRunning)
+          if (!areaDraftBusy) {
+            this.form.fc.setFieldsValue({
+              provider: [],
+              cloudregion: [],
+              zone: [],
+            })
+            this.$refs.areaSelectRef?.fetchs?.(['provider', 'cloudregion', 'zone'])
+          } else {
+            areaRef?.fetchListsOnly?.(['provider', 'cloudregion', 'zone'], { skipDefaultSelect: true })
+              ?.then?.(() => areaRef.tryApplyPendingAreaDraft?.())
+          }
         }
       }
     },
@@ -832,6 +864,7 @@ export default {
           zone: [],
         })
         this._setNewFieldToFd(this.form.fc.getFieldsValue(), this.form.fc.getFieldsValue())
+        areaRef.persistFormFieldDraftSnapshot?.()
       }
       this.refreshSkuByAreaSelection()
     },
@@ -861,22 +894,84 @@ export default {
     },
     /**
      * AreaSelects.fetchs 整链结束后再回填，避免与 resetSelect / 空列表 resetFields 竞态
+     * 工单走 initFormData；普通新建走控件草稿 areaSelects
      */
     onAreaSelectsFetchsDone () {
-      if (!this.isFormBackfill) return
       if (this._publicAreaApplying) {
-        // 当前回填未完成又触发了新的 fetchs（如域切换），结束后再跑一次
         this._publicAreaRestoreAgain = true
         return
       }
-      const list = this.$refs.areaSelectRef?.providerList || this.form.fi.providerList || []
-      const providerNames = this.resolveDraftProviderNames(list)
-      if (providerNames.length) {
-        this.applyInitPublicAreaFields(providerNames)
+      if (this.isFormBackfill) {
+        const list = this.$refs.areaSelectRef?.providerList || this.form.fi.providerList || []
+        const providerNames = this.resolveDraftProviderNames(list)
+        if (providerNames.length) {
+          this.applyInitPublicAreaFields(providerNames)
+        }
+        return
+      }
+      // 控件草稿回填（与工单同构：fetchsDone 后再写）
+      this.restorePublicAreaFormFieldDraft()
+    },
+    /**
+     * 从控件草稿回填公有云平台/区域/可用区
+     */
+    async restorePublicAreaFormFieldDraft () {
+      if (!this.canUseCreateFormDraft) return
+      if (this.createFormDraftUserInteracted) return
+      if (this._publicAreaApplying) {
+        this._publicAreaRestoreAgain = true
+        return
+      }
+      const draft = this.readCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.AREA_SELECTS)
+      if (!draft || typeof draft !== 'object') return
+      const provider = this.toAreaValue(draft.provider).filter(Boolean)
+      const region = this.toAreaValue(draft.cloudregion).filter(Boolean)
+      const zone = this.toAreaValue(draft.zone).filter(Boolean)
+      if (!provider.length && !region.length && !zone.length) return
+
+      const areaRef = this.$refs.areaSelectRef
+      if (!areaRef) return
+
+      this._publicAreaApplying = true
+      if (areaRef.areaDraftRestoring !== undefined) areaRef.areaDraftRestoring = true
+      try {
+        // 让 AreaSelects 自己走顺序回填（含列表拉取）
+        if (typeof areaRef.applyCreateFormFieldDraft === 'function') {
+          areaRef.applyCreateFormFieldDraft({
+            provider: draft.provider,
+            cloudregion: draft.cloudregion,
+            zone: draft.zone,
+          })
+          // apply 内部异步，等待 pending 消化
+          await this.$nextTick()
+          if (typeof areaRef.tryApplyPendingAreaDraft === 'function') {
+            await areaRef.tryApplyPendingAreaDraft()
+          }
+        } else if (typeof areaRef.applyMultipleSelection === 'function') {
+          await areaRef.applyMultipleSelection({
+            provider: draft.provider,
+            cloudregion: draft.cloudregion,
+            zone: draft.zone,
+          })
+        }
+        // 同步 fd
+        const values = {
+          provider: this.form.fc.getFieldValue('provider'),
+          cloudregion: this.form.fc.getFieldValue('cloudregion'),
+          zone: this.form.fc.getFieldValue('zone'),
+        }
+        this._setNewFieldToFd(values, this.form.fc.getFieldsValue())
+      } finally {
+        this._publicAreaApplying = false
+        if (areaRef) areaRef.areaDraftRestoring = false
+        if (this._publicAreaRestoreAgain) {
+          this._publicAreaRestoreAgain = false
+          this.$nextTick(() => this.onAreaSelectsFetchsDone())
+        }
       }
     },
     async applyInitPublicAreaFields (providerNames) {
-      // 工单或草稿恢复时回填公有云 provider / region / zone（支持多选）
+      // 工单回填公有云 provider / region / zone（支持多选）
       const provider = this.toAreaValue(providerNames).filter(Boolean)
       if (!this.isFormBackfill || !provider.length) return
       if (this._publicAreaApplying) {
@@ -957,6 +1052,21 @@ export default {
         const formValue = this.form.fc.getFieldsValue()
         const newField = resolveValueChangeField(changedFields)
         this._setNewFieldToFd(newField, formValue)
+        if (changedFields.schedPolicyType === 'host') {
+          const keepHost = this.isFormBackfill ||
+            this.form?.fi?.advanceDraftRestoring ||
+            Object.prototype.hasOwnProperty.call(changedFields, 'schedPolicyHost') ||
+            this.$refs.schedPolicyRef?.pendingPreferHost ||
+            this.$refs.schedPolicyRef?._schedPolicyDraftApplying
+          if (!keepHost) {
+            this.$set(this.form.fd, 'schedPolicyHost', undefined)
+          }
+        }
+        // 平台/区域/可用区变更时落盘（AreaSelects handleChange 也会 persist，这里兜底）
+        const areaKeys = ['provider', 'cloudregion', 'zone']
+        if (areaKeys.some(k => Object.prototype.hasOwnProperty.call(newField, k))) {
+          this.$refs.areaSelectRef?.persistFormFieldDraftSnapshot?.()
+        }
       })
     },
     async fetchCapability () {

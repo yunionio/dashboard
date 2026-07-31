@@ -12,7 +12,7 @@
             :decorators="decorators.projectDomain"
             :fc="form.fc"
             :labelInValue="false"
-            :ignoreStorage="ignoreLocalFormStorage"
+            :form-draft-key="redisDraftFields.domainProject"
             @fetchDomainCallback="fetchDomainCallback"
             @fetchProjectCallback="fetchProjectCallback" />
         </a-form-item>
@@ -28,7 +28,7 @@
         <!-- 计费方式 -->
         <clearing-radios v-bind="formItemLayout" :auto_renew="false" />
         <a-form-item :label="$t('db.text_71')" v-if="form.fd.billing_type !== 'prepaid'">
-          <duration :decorators="decorators.duration" :form="form" />
+          <duration :decorators="decorators.duration" :form="form" :form-draft-key="redisDraftFields.duration" />
         </a-form-item>
         <a-form-item :label="$t('db.text_265')">
           <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
@@ -38,8 +38,9 @@
           ref="ITEM_AREA"
           v-if="form.fd.project"
           class="mb-0"
-          :defaultActiveFirstOption="areaDefaultActiveFirstOption"
+          :defaultActiveFirstOption="['provider', 'cloudregion']"
           :values="form.fc.getFieldsValue()"
+          :form-draft-key="redisDraftFields.areaSelects"
           filterBrandResource="redis_engine"
           @fetchsDone="onAreaSelectsFetchsDone" />
         <!-- 套餐 -->
@@ -51,30 +52,30 @@
         <item-network ref="REF_NETWORK" @vpcListChange="handleVpcListChange" />
         <!-- 安全组 -->
         <a-form-item v-if="form.getFieldValue('provider') === 'Qcloud'" :label="$t('db.text_144')">
-          <secgroup-config :max="5" :decorators="decorators.secgroup" :secgroup-params="secgroupParams" />
+          <secgroup-config :max="5" :decorators="decorators.secgroup" :form="form" :secgroup-params="secgroupParams" :form-draft-key="redisDraftFields.secgroup" />
         </a-form-item>
         <!-- 标签 -->
         <a-form-item :label="$t('table.title.tag')">
           <tag v-decorator="decorators.__meta__" :allowNoValue="false" :default-checked="tagDefaultChecked" />
         </a-form-item>
-        <bottom-bar :provider="provider" :values="form.fc.getFieldsValue()" :cloudAccountId="cloudAccountId" @cancel="handleCancel" @create-success="onRedisCreateSuccess" />
+        <bottom-bar :provider="provider" :values="form.fc.getFieldsValue()" :cloudAccountId="cloudAccountId" @cancel="handleCancel" />
       </a-form>
     </page-body>
   </div>
 </template>
 <script>
-import * as R from 'ramda'
 import { DECORATORS } from '@DB/views/redis/constants'
+import {
+  REDIS_CREATE_FORM_DRAFT_FIELD,
+  REDIS_CREATE_FORM_DRAFT_FIELDS,
+  REDIS_CREATE_FORM_DRAFT_FC_BINDINGS,
+  REDIS_CREATE_FORM_DRAFT_SCOPE,
+} from '@DB/views/redis/utils/redisCreateFormDraft'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import Duration from '@Compute/sections/Duration'
 import ItemArea from '@DB/sections/ItemArea'
 import ItemNetwork from '@DB/sections/ItemNetwork'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
-import {
-  mergeRedisCreateDraft,
-  isMeaningfulRedisCreateDraft,
-  buildRedisCreateDraftPayload,
-} from '@DB/views/redis/utils/redisCreateDraft'
 import DomainProject from '@/sections/DomainProject'
 import NameRepeated from '@/sections/NameRepeated'
 import Tag from '@/sections/Tag'
@@ -87,22 +88,14 @@ export default {
   name: 'IDCCreate',
   components: {
     Duration,
-    // 区域
     ItemArea,
-    // SKU
     SKU,
-    // 指定项目
     DomainProject,
-    // 管理员密码
     ServerPassword,
-    // 网络
     ItemNetwork,
-    // 安全组
     SecgroupConfig,
-    // 表单提交
     BottomBar,
     NameRepeated,
-    // 标签
     Tag,
   },
   mixins: [changeMinxin, createFormDraftMixin],
@@ -138,30 +131,12 @@ export default {
   computed: {
     createFormDraftOptions () {
       return {
-        formScope: 'db.redis',
-        omitKeys: ['loginPassword', 'password'],
-        serialize: () => this.serializeCreateFormDraft(),
-        applyDraft: async (draftData) => {
-          await this.applyRedisCreateDraft(draftData)
-        },
-        isMeaningfulDraft: (data) => isMeaningfulRedisCreateDraft(data),
+        formScope: REDIS_CREATE_FORM_DRAFT_SCOPE,
+        disableWhen: () => !!(this.$route.query.workflow || this.$route.query.order_set_id),
       }
     },
-    ignoreLocalFormStorage () {
-      return !!this._draftInitFormData
-    },
-    isFormBackfill () {
-      if (this._draftInitFormData && !this.createFormDraftUserInteracted) return true
-      return this.isCreateFormDraftHydrating
-    },
-    effectiveInitFormData () {
-      if (this._draftInitFormData && !this.createFormDraftUserInteracted) return this._draftInitFormData
-      if (this.isCreateFormDraftHydrating && this._draftInitFormData) return this._draftInitFormData
-      return {}
-    },
-    areaDefaultActiveFirstOption () {
-      if (this.isFormBackfill) return false
-      return ['provider', 'cloudregion']
+    redisDraftFields () {
+      return REDIS_CREATE_FORM_DRAFT_FIELDS
     },
     secgroupParams () {
       const ret = {
@@ -190,6 +165,50 @@ export default {
       return ''
     },
   },
+  provide () {
+    return {
+      form: this.form,
+      scopeParams: this.scopeParams,
+      formItemLayout: this.formItemLayout,
+      tailFormItemLayout: this.tailFormItemLayout,
+      redisItem: this.redisItem,
+      getCreateFormDraftScope: () => this.getCreateFormDraftScope(),
+      canUseCreateFormFieldDraft: () => this.canUseCreateFormDraft,
+      registerCreateFormFieldDraftFlush: (fn) => this.registerCreateFormFieldDraftFlush(fn),
+      readCreateFormFieldDraft: (key) => this.readCreateFormFieldDraft(key),
+      writeCreateFormFieldDraft: (key, data, options) => this.writeCreateFormFieldDraft(key, data, options),
+      bindCreateFormFieldDraft: (spec) => this.bindCreateFormFieldDraft(spec),
+      flushCreateFormFieldDrafts: () => this.flushCreateFormFieldDrafts(),
+      persistRedisSkuDraftField: (formField, val) => {
+        if (val === undefined || val === null || val === '') return
+        this.markCreateFormDraftUserInteracted()
+        const draftKey = this._redisCreateFormFcDraftMap?.[formField]
+        if (!draftKey) return
+        this.writeCreateFormFieldDraft(draftKey, val)
+      },
+      getCreateFormDraftPreferred: (key) => {
+        if (key) return this.readCreateFormFieldDraft(key)
+        // 聚合草稿供级联回填（勿用当前空表单值）
+        const sku = this.readCreateFormFieldDraft(REDIS_CREATE_FORM_DRAFT_FIELD.SKU)
+        return {
+          engine: this.readCreateFormFieldDraft(REDIS_CREATE_FORM_DRAFT_FIELD.ENGINE),
+          engine_version: this.readCreateFormFieldDraft(REDIS_CREATE_FORM_DRAFT_FIELD.ENGINE_VERSION),
+          local_category: this.readCreateFormFieldDraft(REDIS_CREATE_FORM_DRAFT_FIELD.LOCAL_CATEGORY),
+          node_type: this.readCreateFormFieldDraft(REDIS_CREATE_FORM_DRAFT_FIELD.NODE_TYPE),
+          performance_type: this.readCreateFormFieldDraft(REDIS_CREATE_FORM_DRAFT_FIELD.PERFORMANCE_TYPE),
+          memory_size_mb: this.readCreateFormFieldDraft(REDIS_CREATE_FORM_DRAFT_FIELD.MEMORY_SIZE_MB),
+          sku,
+          sku_id: sku?.id,
+          sku_name: sku?.name,
+        }
+      },
+    }
+  },
+  created () {
+    this.bindRedisCreateFormFcDrafts()
+    this.bindRedisCreateFormCompositeDrafts()
+    this.bindFormFcFieldDraft(REDIS_CREATE_FORM_DRAFT_FIELD.DURATION, { formField: 'duration' })
+  },
   methods: {
     handleVpcListChange (list) {
       this.vpcList = list
@@ -197,184 +216,9 @@ export default {
     handleCancel () {
       this.$router.push({ name: 'Redis' })
     },
-    /**
-     * 回填计费：prepaid 时 duration/auto_renew 依赖 ClearingRadios 条件渲染后再写
-     */
-    async applyRedisBillingDraft (data) {
-      if (!data) return
-      const billingType = data.billing_type || 'postpaid'
-      this.form.fc.setFieldsValue({ billing_type: billingType })
-      this.$set(this.form.fd, 'billing_type', billingType)
-      await this.$nextTick()
-      if (billingType === 'prepaid') {
-        const vals = {}
-        if (data.duration) vals.duration = data.duration
-        if (data.auto_renew != null) vals.auto_renew = !!data.auto_renew
-        if (Object.keys(vals).length) {
-          this.form.fc.setFieldsValue(vals)
-          Object.keys(vals).forEach(k => this.$set(this.form.fd, k, vals[k]))
-        }
-      } else {
-        const vals = {}
-        if (data.durationStandard) vals.durationStandard = data.durationStandard
-        if (data.duration) vals.duration = data.duration
-        if (Object.keys(vals).length) {
-          this.form.fc.setFieldsValue(vals)
-          Object.keys(vals).forEach(k => this.$set(this.form.fd, k, vals[k]))
-        }
-      }
-    },
-    serializeCreateFormDraft () {
-      try {
-        const values = this.form.fc.getFieldsValue() || {}
-        if (!values.provider && !values.cloudregion && !values.engine) {
-          return null
-        }
-        return buildRedisCreateDraftPayload({
-          ...values,
-          domain: values.domain || this.form.fd.domain,
-          project: values.project || this.form.fd.project,
-          project_id: values.project || this.form.fd.project,
-        }, {
-          __resource_type__: 'redis',
-          domain_id: values.domain || this.form.fd.domain,
-        })
-      } catch (e) {
-        return null
-      }
-    },
-    async applyRedisCreateDraft (draft) {
-      const data = mergeRedisCreateDraft(draft)
-      if (!data) return
-      this._draftInitFormData = data
-      this.isDraftRestore = true
-      this.draftRestored = true
-      this._redisAreaApplied = false
-      this._redisAreaApplying = false
-      const extra = data.extraData || {}
-      const domainId = data.domain || extra.domain_id
-      const projectId = data.project || data.project_id
-      if (domainId) {
-        this.form.fc.setFieldsValue({ domain: domainId })
-        this.$set(this.form.fd, 'domain', domainId)
-        this.domain_change()
-      }
-      if (projectId) {
-        this.form.fc.setFieldsValue({ project: projectId })
-        this.$set(this.form.fd, 'project', projectId)
-        this.project_id = projectId
-        this.project_change()
-      }
-      const early = {}
-      if (data.loginType) early.loginType = data.loginType
-      if (Object.keys(early).length) {
-        this.form.fc.setFieldsValue(early)
-        Object.keys(early).forEach(k => this.$set(this.form.fd, k, early[k]))
-      }
-      // 包年包月的 duration / auto_renew 挂在 ClearingRadios 内，需等 billing_type 切到 prepaid 后再回填
-      await this.applyRedisBillingDraft(data)
-      if (data.__meta__ && !R.isEmpty(data.__meta__)) {
-        const ret = {}
-        R.forEachObjIndexed((value, key) => {
-          ret[key] = R.is(Array, value) ? value : [value]
-        }, data.__meta__)
-        this.tagDefaultChecked = ret
-        this.form.fc.setFieldsValue({ __meta__: data.__meta__ })
-      } else {
-        this.tagDefaultChecked = {}
-        this.form.fc.setFieldsValue({ __meta__: undefined })
-      }
-      await this.$nextTick()
-      await this.onAreaSelectsFetchsDone()
-      await this.applyRedisSecondaryFields(data)
-    },
-    async onAreaSelectsFetchsDone () {
-      if (!this.isFormBackfill || !this._draftInitFormData) return
-      if (this._redisAreaApplied || this._redisAreaApplying) return
-      await this.applyRedisAreaFields()
-    },
-    async applyRedisAreaFields () {
-      const data = this._draftInitFormData
-      if (!this.isFormBackfill || !data) return
-      if (this._redisAreaApplied || this._redisAreaApplying) return
-      this._redisAreaApplying = true
-      try {
-        const areaRef = this.$refs.ITEM_AREA && this.$refs.ITEM_AREA.$refs.areaSelects
-        if (!areaRef) return
-        if (!(areaRef.providerList || []).length && !(areaRef.cloudregionList || []).length) return
-        if (data.provider) {
-          this.form.fc.setFieldsValue({ provider: data.provider })
-          this.$set(this.form.fd, 'provider', data.provider)
-          this.provider = data.provider
-          await this.$nextTick()
-          if (typeof areaRef.fetchListsOnly === 'function') {
-            await areaRef.fetchListsOnly(['cloudregion'], { skipDefaultSelect: true })
-          }
-        }
-        if (data.cloudregion) {
-          this.form.fc.setFieldsValue({ cloudregion: data.cloudregion })
-          this.$set(this.form.fd, 'cloudregion', data.cloudregion)
-          // redis 区域变化走 area_change → capability
-          this.area_change()
-        }
-        this._redisAreaApplied = true
-      } finally {
-        this._redisAreaApplying = false
-      }
-    },
-    async applyRedisSecondaryFields (data) {
-      if (!data || !this.isCreateFormDraftHydrating) return
-      const start = Date.now()
-      while (Date.now() - start < 12000) {
-        const sku = this.form.fc.getFieldValue('sku')
-        if (sku && (sku.id || sku.name)) break
-        await new Promise(resolve => setTimeout(resolve, 300))
-      }
-      if (data.loginType) {
-        this.form.fc.setFieldsValue({ loginType: data.loginType })
-      }
-      await this.waitAndSetVpcNetwork(data)
-      await this.waitAndSetSecgroup(data)
-    },
-    async waitAndSetVpcNetwork (data, timeout = 10000) {
-      if (!data.vpc && !data.network) return
-      const start = Date.now()
-      while (Date.now() - start < timeout) {
-        if (this.networkRef || this.$refs.REF_NETWORK) {
-          const vals = {}
-          if (data.vpc) vals.vpc = data.vpc
-          if (data.network) vals.network = data.network
-          if (Object.keys(vals).length) {
-            this.form.fc.setFieldsValue(vals)
-            if (data.vpc) this.vpc = data.vpc
-          }
-          return
-        }
-        await new Promise(resolve => setTimeout(resolve, 200))
-      }
-    },
-    async waitAndSetSecgroup (data, timeout = 8000) {
-      if (!data.secgroup && !data.secgroup_type) return
-      const start = Date.now()
-      while (Date.now() - start < timeout) {
-        if (this.form.getFieldValue('provider') === 'Qcloud') {
-          const vals = {}
-          if (data.secgroup_type) vals.secgroup_type = data.secgroup_type
-          if (data.secgroup) vals.secgroup = data.secgroup
-          if (Object.keys(vals).length) {
-            this.form.fc.setFieldsValue(vals)
-          }
-          return
-        }
-        await new Promise(resolve => setTimeout(resolve, 200))
-      }
-    },
+    onAreaSelectsFetchsDone () {},
     fetchDomainCallback () {
-      let domain = this.$route.query.domain_id
-      if (!domain && this.isFormBackfill) {
-        domain = this.effectiveInitFormData?.extraData?.domain_id ||
-          this.effectiveInitFormData?.domain
-      }
+      const domain = this.$route.query.domain_id
       if (domain) {
         this.form.fc.setFieldsValue({ domain })
         this.$set(this.form.fd, 'domain', domain)
@@ -382,19 +226,81 @@ export default {
       }
     },
     fetchProjectCallback () {
-      let project = this.$route.query.tenant_id
-      if (!project && this.isFormBackfill) {
-        project = this.effectiveInitFormData?.project_id ||
-          this.effectiveInitFormData?.project
-      }
+      const project = this.$route.query.tenant_id
       if (project) {
         this.form.fc.setFieldsValue({ project })
         this.$set(this.form.fd, 'project', project)
         this.project_id = project
       }
     },
-    onRedisCreateSuccess () {
-      this.saveCreateFormDraft(this.serializeCreateFormDraft(), { fromSubmit: true })
+    bindRedisCreateFormFcDrafts () {
+      this._redisCreateFormFcDraftMap = Object.create(null)
+      ;(REDIS_CREATE_FORM_DRAFT_FC_BINDINGS || []).forEach((item) => {
+        if (!item?.key || !item.formField) return
+        this._redisCreateFormFcDraftMap[item.formField] = item.key
+        this.bindFormFcFieldDraft(item.key, {
+          formField: item.formField,
+          restore: item.restore !== false,
+        })
+      })
+    },
+    bindRedisCreateFormCompositeDrafts () {
+      this.bindCreateFormFieldDraft({
+        key: REDIS_CREATE_FORM_DRAFT_FIELD.NETWORK,
+        get: () => {
+          const fc = this.form?.fc
+          if (!fc) return undefined
+          const vpc = fc.getFieldValue('vpc')
+          const network = fc.getFieldValue('network')
+          if (vpc == null && network == null) return undefined
+          return { vpc, network }
+        },
+        set: (val) => {
+          if (!val || !this.form?.fc) return
+          const fields = {}
+          if (val.vpc != null) fields.vpc = val.vpc
+          if (val.network != null) fields.network = val.network
+          if (Object.keys(fields).length) this.form.fc.setFieldsValue(fields)
+        },
+      })
+    },
+    syncCreateFormFcDrafts (newField) {
+      if (!this.canUseCreateFormDraft || !newField || typeof newField !== 'object') return
+      if (!this.createFormDraftUserInteracted) return
+      // 套餐字段仅用户点击 persistRedisSkuDraftField 落盘
+      const skuFcSkip = {
+        engine: true,
+        engine_version: true,
+        local_category: true,
+        node_type: true,
+        performance_type: true,
+        memory_size_mb: true,
+        sku: true,
+      }
+      const map = this._redisCreateFormFcDraftMap || {}
+      Object.keys(newField).forEach((formField) => {
+        if (skuFcSkip[formField]) return
+        const draftKey = map[formField]
+        if (!draftKey) return
+        const val = newField[formField]
+        if (val === undefined || val === null || val === '') return
+        this.writeCreateFormFieldDraft(draftKey, val)
+      })
+      if (Object.prototype.hasOwnProperty.call(newField, 'vpc') || Object.prototype.hasOwnProperty.call(newField, 'network')) {
+        const fc = this.form?.fc
+        if (!fc) return
+        const vpc = fc.getFieldValue('vpc')
+        const network = fc.getFieldValue('network')
+        if (vpc != null || network != null) {
+          this.writeCreateFormFieldDraft(REDIS_CREATE_FORM_DRAFT_FIELD.NETWORK, { vpc, network })
+        }
+      }
+      if (Object.prototype.hasOwnProperty.call(newField, 'duration')) {
+        this.writeCreateFormFieldDraft(REDIS_CREATE_FORM_DRAFT_FIELD.DURATION, newField.duration)
+      }
+      if (Object.prototype.hasOwnProperty.call(newField, 'billing_type')) {
+        this.writeCreateFormFieldDraft(REDIS_CREATE_FORM_DRAFT_FIELD.BILLING_TYPE, newField.billing_type)
+      }
     },
   },
 }

@@ -11,13 +11,15 @@
           :decorators="{ project: decorators.project, domain: decorators.domain }"
           :project.sync="projectId"
           :domain.sync="domainId"
-          :ignoreStorage="ignoreLocalFormStorage" />
+          :ignoreStorage="ignoreLocalFormStorage"
+          :form-draft-key="baremetalDraftFields.domainProject" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_177')" class="mb-0" v-bind="formItemLayout" v-if="!isInstallOperationSystem">
         <cloudregion-zone
           :zone-params="params.zone"
           :cloudregion-params="params.region"
           :decorator="decorators.regionZone"
+          :form-draft-key="baremetalDraftFields.cloudregionZone"
           filterBrandResource="compute_engine" />
       </a-form-item>
       <a-form-item
@@ -41,6 +43,7 @@
           :image-params="imageParams"
           :decorator="decorators.imageOS"
           :ignore-storage="ignoreLocalFormStorage"
+          :form-draft-key="baremetalDraftFields.osSelect"
           @updateImageMsg="setSelectedImage"
           :imageType.sync="osSelectImageType" />
       </a-form-item>
@@ -89,7 +92,7 @@
         <a-button type="primary" @click="addDisk" :disabled="specOptions.length === 0">{{$t('compute.text_307')}}</a-button>
       </a-form-item>
       <a-form-item :label="$t('compute.text_308')" v-bind="formItemLayout" v-if="!isCheckedIso">
-        <server-password :form="form" :login-types="loginTypes" :isSnapshotImageType="false" :decorator="decorators.loginConfig" />
+        <server-password :form="form" :login-types="loginTypes" :isSnapshotImageType="false" :decorator="decorators.loginConfig" :form-draft-key="baremetalDraftFields.loginConfig" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0" v-bind="formItemLayout">
         <tag
@@ -108,7 +111,8 @@
           :networkVpcParams="params.vpcParams"
           :vpcResource="vpcResource"
           :vpcResourceMapper="vpcResourceMapper"
-          :ignore-auto-network-type="isFormBackfill" />
+          :ignore-auto-network-type="isFormBackfill"
+          :form-draft-key="baremetalDraftFields.serverNetwork" />
       </a-form-item>
       <a-form-item v-bind="offsetFormItemLayout">
         <a-checkbox v-model="isBonding">{{$t('compute.text_310')}}</a-checkbox>
@@ -123,6 +127,9 @@
           :decorators="decorators.schedPolicy"
           :policy-schedtag-params="policySchedtagParams"
           :init-schedtags="schedPolicyInitSchedtags"
+          :init-prefer-host="draftInitPreferHost"
+          :preserve-init-prefer-host="preserveAdvanceInitProps"
+          :form-draft-key="baremetalDraftFields.schedPolicy"
           @change="hostChange"
           :hostData="filterHostData" />
       </a-form-item>

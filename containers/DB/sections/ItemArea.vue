@@ -2,6 +2,7 @@
   <area-selects
     ref="areaSelects"
     :decorators="decorators"
+    :form-draft-key="formDraftKey"
     v-bind="formItemLayout"
     :names="names"
     :isRequired="isRequired"
@@ -40,6 +41,10 @@ export default {
       type: String,
     },
     filterBrandResource: String,
+    formDraftKey: {
+      type: String,
+      default: '',
+    },
   },
   data () {
     return {

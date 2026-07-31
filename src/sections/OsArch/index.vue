@@ -13,10 +13,16 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
+import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 
 export default {
   name: 'OsArch',
+  mixins: [createFormFieldDraftMixin],
   props: {
+    formDraftKey: {
+      type: String,
+      default: '',
+    },
     options: {
       type: Array,
       default: () => Object.values(HOST_CPU_ARCHS),
@@ -53,7 +59,7 @@ export default {
     optionsC (val, oldV) {
       if (val.length) {
         if (!_.isEqual(val, oldV)) {
-          this.emit(val[0].key)
+          this.applyOsArchDefault(val)
         }
       } else {
         this.emit(undefined)
@@ -61,8 +67,8 @@ export default {
     },
   },
   mounted () {
-    if (!this.form.fc.getFieldValue('os_arch') && this.optionsC.length) {
-      this.emit(this.optionsC[0].key)
+    if (!this.form.fc.getFieldValue(this.decoratorField) && this.optionsC.length) {
+      this.applyOsArchDefault(this.optionsC)
     }
   },
   methods: {
@@ -70,7 +76,17 @@ export default {
       this.$emit('change', v)
     },
     onChange (e) {
-      this.emit(e.target.value)
+      const v = e.target.value
+      this.writeFormFieldDraft(v)
+      this.emit(v)
+    },
+    applyOsArchDefault (opts) {
+      const hit = this.matchFormFieldDraftInOptions(opts)
+      const next = hit?.key || opts[0]?.key
+      this.emit(next)
+    },
+    serializeFormFieldDraft () {
+      return this.form?.fc?.getFieldValue?.(this.decoratorField) || undefined
     },
   },
 }

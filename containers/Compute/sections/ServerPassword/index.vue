@@ -35,6 +35,8 @@ import { LOGIN_TYPES_MAP } from '@Compute/constants'
 import { passwordValidator } from '@/utils/validate'
 import i18n from '@/locales'
 
+import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
+
 const DEFAULT_DECORATOR = {
   password: [
     'password',
@@ -47,10 +49,14 @@ const DEFAULT_DECORATOR = {
     },
   ],
 }
-
 export default {
   name: 'ServerPassword',
+  mixins: [createFormFieldDraftMixin],
   props: {
+    formDraftKey: {
+      type: String,
+      default: '',
+    },
     loginTypes: {
       type: Array,
     },
@@ -124,19 +130,48 @@ export default {
     this.setLoginType()
   },
   methods: {
+    getCreateFormFieldDraftSnapshot () {
+      const fc = this.form?.fc
+      if (!fc) return undefined
+      const loginType = fc.getFieldValue('loginType')
+      const keypair = fc.getFieldValue('keypair')
+      // 不落盘明文密码
+      return { loginType, keypair: loginType === 'keypair' ? keypair : undefined }
+    },
+    applyCreateFormFieldDraft (draft) {
+      if (!draft || !this.form?.fc) return
+      const values = {}
+      if (draft.loginType && (!this.loginTypes || this.loginTypes.includes(draft.loginType))) {
+        values.loginType = draft.loginType
+        this.vmLoginType = draft.loginType
+      }
+      if (draft.loginType === 'keypair' && draft.keypair) {
+        values.keypair = draft.keypair
+      }
+      if (Object.keys(values).length) this.form.fc.setFieldsValue(values)
+    },
+
     loginTypeChange (e) {
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
+
       this.vmLoginType = e.target.value
     },
     setLoginType () {
       if (this.loginTypeMap && !R.isEmpty(this.loginTypeMap)) {
-        const loginTypeInitailValue = this.decorator.loginType[1].initialValue
         const keys = Object.keys(this.loginTypeMap)
-        let vmLoginType = loginTypeInitailValue
-        if (!keys.includes(loginTypeInitailValue) || this.isSnapshotImageType) { // 如果表单中的初始值不在 loginTypeMap 中, 主机快照只支持保留镜像设置
-          if (keys.includes(LOGIN_TYPES_MAP.image.key)) { // 如果maps中有"保留镜像设置"，则设置
-            vmLoginType = LOGIN_TYPES_MAP.image.key
-          } else { // 否则设置第一项
-            vmLoginType = keys[0]
+        let vmLoginType
+        const draft = this.canReadWriteFormFieldDraft() ? this.readFormFieldDraft() : null
+        if (draft?.loginType && keys.includes(draft.loginType) && !this.isSnapshotImageType) {
+          vmLoginType = draft.loginType
+        } else {
+          const loginTypeInitailValue = this.decorator.loginType[1].initialValue
+          vmLoginType = loginTypeInitailValue
+          if (!keys.includes(loginTypeInitailValue) || this.isSnapshotImageType) { // 如果表单中的初始值不在 loginTypeMap 中, 主机快照只支持保留镜像设置
+            if (keys.includes(LOGIN_TYPES_MAP.image.key)) { // 如果maps中有"保留镜像设置"，则设置
+              vmLoginType = LOGIN_TYPES_MAP.image.key
+            } else { // 否则设置第一项
+              vmLoginType = keys[0]
+            }
           }
         }
         if (this.form && this.form.fc) {
