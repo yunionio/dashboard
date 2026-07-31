@@ -39,17 +39,23 @@ import { IMAGES_TYPE_MAP, STORAGE_TYPES, DISK_LABEL_MAP } from '@/constants/comp
 import { HYPERVISORS_MAP, isUcloudLikeHypervisor } from '@/constants'
 import { findAndUnshift, findAndPush } from '@/utils/utils'
 import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
+// let isFirstSetDefaultSize = true
+
+import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 
 // 磁盘最小值
 export const DISK_MIN_SIZE = 10
-// let isFirstSetDefaultSize = true
-
 export default {
   name: 'SystemDisk',
   components: {
     Disk,
   },
+  mixins: [createFormFieldDraftMixin],
   props: {
+    formDraftKey: {
+      type: String,
+      default: '',
+    },
     form: {
       type: Object,
       required: true,
@@ -391,27 +397,123 @@ export default {
   },
   created () {
     this.setDefaultType = _.debounce(this.setDefaultType, 1000)
+    this.sysDiskDraftRestoring = false
   },
   methods: {
+    // 磁盘回填由页面 restoreVmDiskFormFieldDrafts 在 capability/sku 就绪后编排
+    restoreFormFieldDraftFields () {
+      return false
+    },
+    getCreateFormFieldDraftSnapshot () {
+      const f = this.form?.fc
+      if (!f) return undefined
+      const pick = {}
+      const keys = [
+        this.decorator.type?.[0],
+        this.decorator.size?.[0],
+        this.decorator.storage?.[0],
+        this.decorator.schedtag?.[0],
+        this.decorator.policy?.[0],
+        this.decorator.iops?.[0],
+        this.decorator.throughput?.[0],
+        this.decorator.preallocation?.[0],
+        this.decorator.auto_reset?.[0],
+      ].filter(Boolean)
+      keys.forEach((k) => {
+        const v = f.getFieldValue(k)
+        if (v !== undefined) pick[k] = v
+      })
+      return Object.keys(pick).length ? pick : undefined
+    },
+    applyCreateFormFieldDraft (draft) {
+      if (!draft || !this.form?.fc) return
+      this.sysDiskDraftRestoring = true
+      if (this.form.fi) this.$set(this.form.fi, 'diskDraftRestoring', true)
+      const apply = () => {
+        if (!this.form?.fc || !draft) return
+        const typeKey = this.decorator.type[0]
+        const sizeKey = this.decorator.size[0]
+        const typeVal = draft[typeKey] || draft.systemDiskType
+        const sizeVal = draft[sizeKey] != null ? draft[sizeKey] : draft.systemDiskSize
+        const values = { ...draft }
+        if (typeVal) values[typeKey] = typeVal
+        if (sizeVal != null) values[sizeKey] = sizeVal
+        this.form.fc.setFieldsValue(values)
+        // setDefaultType 读 form.fd，需双写
+        if (this.form.fd) {
+          if (typeVal) this.$set(this.form.fd, typeKey, typeVal)
+          if (sizeVal != null) this.$set(this.form.fd, sizeKey, sizeVal)
+        }
+        const disk = this.$refs.disk
+        if (!disk) return
+        const hasAdv = !!(
+          draft.systemDiskStorage ||
+          draft.systemDiskSchedtag ||
+          draft.systemDiskPolicy ||
+          draft.systemDiskIops ||
+          draft.systemDiskThroughput ||
+          draft.systemDiskAutoReset ||
+          draft.systemDiskPreallocation ||
+          draft.systemDiskSnapshot
+        )
+        if (!hasAdv) return
+        disk.showAdvanced = true
+        if (draft.systemDiskStorage) disk.showStorage = true
+        if (draft.systemDiskSchedtag || draft.systemDiskPolicy) disk.showSchedtag = true
+        if (draft.systemDiskIops) disk.showIops = true
+        if (draft.systemDiskThroughput) disk.showThroughput = true
+        if (draft.systemDiskPreallocation) disk.showPreallocation = true
+        if (draft.systemDiskSnapshot) disk.showSnapshot = true
+      }
+      this.$nextTick(apply)
+      // 盖住 setDefaultType(debounce 1s) 与 typesMap 异步就绪
+      setTimeout(apply, 1200)
+      setTimeout(apply, 2500)
+      setTimeout(() => {
+        apply()
+        this.sysDiskDraftRestoring = false
+        if (this.form?.fi) this.$set(this.form.fi, 'diskDraftRestoring', false)
+      }, 4500)
+    },
+
     setDefaultType () {
+      // 控件草稿回填窗口：勿用默认第一项盖草稿
+      if (this.sysDiskDraftRestoring) {
+        const draft = this.readFormFieldDraft()
+        if (draft) this.applySysDiskDraftToForm(draft)
+        return
+      }
+      const typeKey = this.decorator.type[0]
+      const sizeKey = this.decorator.size[0]
+      const resolveTypeSize = () => {
+        let systemDiskType = this.form.fd?.[typeKey] || this.form.fd?.systemDiskType
+        let systemDiskSize = this.form.fd?.[sizeKey] ?? this.form.fd?.systemDiskSize
+        if (!systemDiskType?.key && this.form?.fc) {
+          systemDiskType = this.form.fc.getFieldValue(typeKey) || systemDiskType
+        }
+        if ((systemDiskSize == null || systemDiskSize === '') && this.form?.fc) {
+          systemDiskSize = this.form.fc.getFieldValue(sizeKey)
+        }
+        return { systemDiskType, systemDiskSize }
+      }
       if (R.isNil(this.typesMap) || R.isEmpty(this.typesMap)) {
-        const { systemDiskSize, systemDiskType } = this.form.fd || {}
+        const { systemDiskSize, systemDiskType } = resolveTypeSize()
         // 草稿/工单回填：typesMap 尚未就绪时保留已写入的类型和大小，勿清空成 0
         if (systemDiskSize || (systemDiskType && systemDiskType.key)) {
           return
         }
         this.form.fc.setFieldsValue({
-          [this.decorator.type[0]]: { key: '', label: '' },
-          [this.decorator.size[0]]: 0,
+          [typeKey]: { key: '', label: '' },
+          [sizeKey]: 0,
         })
         return
       }
       if ([IMAGES_TYPE_MAP.host.key, IMAGES_TYPE_MAP.snapshot.key].includes(this.form.fd.imageType)) return // 主机镜像和主机快照设置默认值交给外层处理
       const keys = Object.keys(this.typesMap)
       let firstKey = keys[0]
-      const { systemDiskSize, systemDiskType } = this.form.fd
+      const { systemDiskSize, systemDiskType } = resolveTypeSize()
       // 工单/草稿已写入的类型：精确匹配，或按 backend 前缀兜底（local/ssd ↔ typesMap）
-      if (systemDiskSize && systemDiskType && systemDiskType.key) {
+      if (systemDiskType && systemDiskType.key) {
         if (this.typesMap[systemDiskType.key]) {
           firstKey = systemDiskType.key
         } else {
@@ -422,7 +524,7 @@ export default {
       }
       const diskMsg = this.typesMap[firstKey]
       this.form.fc.setFieldsValue(this.defaultType || {
-        [this.decorator.type[0]]: { key: diskMsg.key, label: diskMsg.label },
+        [typeKey]: { key: diskMsg.key, label: diskMsg.label },
       })
       this.setDiskMedium(diskMsg)
       this.$nextTick(() => { // 解决磁盘大小 inputNumber 第一次点击变为0 的bug
@@ -430,7 +532,7 @@ export default {
 
         let newDiskSize = initSize || +diskMsg.sysMin
         // 已有回填大小则优先保留（勿被镜像 min_disk 盖成 30G）
-        if (systemDiskSize && this.decorator.size[0] === 'systemDiskSize') {
+        if (systemDiskSize != null && sizeKey === 'systemDiskSize') {
           const min = diskMsg.sysMin || 0
           const max = diskMsg.sysMax || Infinity
           if (systemDiskSize >= min && systemDiskSize <= max) {
@@ -438,10 +540,42 @@ export default {
           }
         }
         this.form.fc.setFieldsValue({
-          [this.decorator.size[0]]: newDiskSize,
+          [sizeKey]: newDiskSize,
         })
+        if (this.form.fd && systemDiskType?.key) {
+          this.$set(this.form.fd, typeKey, { key: diskMsg.key, label: diskMsg.label })
+          this.$set(this.form.fd, sizeKey, newDiskSize)
+        }
       })
     },
+    applySysDiskDraftToForm (draft) {
+      if (!draft || !this.form?.fc) return
+      const typeKey = this.decorator.type[0]
+      const sizeKey = this.decorator.size[0]
+      const typeVal = draft[typeKey] || draft.systemDiskType
+      const sizeVal = draft[sizeKey] != null ? draft[sizeKey] : draft.systemDiskSize
+      const values = { ...draft }
+      if (typeVal) values[typeKey] = typeVal
+      if (sizeVal != null) values[sizeKey] = sizeVal
+      // typesMap 就绪后校正 key
+      if (typeVal?.key && this.typesMap && !R.isEmpty(this.typesMap)) {
+        if (!this.typesMap[typeVal.key]) {
+          const backend = String(typeVal.key).split('/')[0]
+          const matched = Object.keys(this.typesMap).find(k => k === backend || k.startsWith(`${backend}/`))
+          if (matched) {
+            values[typeKey] = { key: matched, label: this.typesMap[matched].label }
+          }
+        } else {
+          values[typeKey] = { key: typeVal.key, label: this.typesMap[typeVal.key].label || typeVal.label }
+        }
+      }
+      this.form.fc.setFieldsValue(values)
+      if (this.form.fd) {
+        if (values[typeKey]) this.$set(this.form.fd, typeKey, values[typeKey])
+        if (values[sizeKey] != null) this.$set(this.form.fd, sizeKey, values[sizeKey])
+      }
+    },
+
     getExtraDiskOpt (type) {
       const hyper = this.getHypervisor()
       // 腾讯云过滤掉local_basic和local_ssd类型的盘
@@ -504,6 +638,9 @@ export default {
     setDiskMedium (v) {
       if (this.form.fi) {
         this.$set(this.form.fi, 'systemDiskMedium', _.get(this.typesMap, `[${v.key}].medium`))
+      }
+      if (!this.sysDiskDraftRestoring && !this.form?.fi?.diskDraftRestoring) {
+        this.$nextTick(() => this.persistFormFieldDraftSnapshot())
       }
     },
   },

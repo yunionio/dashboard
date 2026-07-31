@@ -5,14 +5,14 @@
         <a-input-group compact v-if="keyBaseSelectProps">
           <div class="d-flex">
             <a-input class="oc-addonBefore ant-input-group-addon" style="width: 80px;" :defaultValue="keyLabel" readonly />
-            <base-select v-decorator="decorators.key(item.key)" v-bind="getBindProps(item.key)" />
+            <base-select v-decorator="decorators.key(item.key)" v-bind="getBindProps(item.key)" @change="onPairChange" />
           </div>
         </a-input-group>
-        <a-input v-else :addonBefore="keyLabel" v-decorator="decorators.key(item.key)" :placeholder="keyPlaceholder" />
+        <a-input v-else :addonBefore="keyLabel" v-decorator="decorators.key(item.key)" :placeholder="keyPlaceholder" @change="onPairChange" />
       </a-form-item>
       <div class="mx-3"> = </div>
-      <a-form-item :wrapperCol="{ span: 24 }" :extra="valueExtra">
-        <a-input :addonBefore="valueLabel" v-decorator="decorators.value(item.key)" :placeholder="valuePlaceholder" />
+      <a-form-item :wrapperCol="{ span: 24 }">
+        <a-input :addonBefore="valueLabel" v-decorator="decorators.value(item.key)" :placeholder="valuePlaceholder" @change="onPairChange" />
       </a-form-item>
       <a-button v-if="firstCanDelete || labelList.length > 1" shape="circle" icon="minus" size="small" @click="del(item)" class="mt-2 ml-2" />
     </div>
@@ -29,10 +29,16 @@
 import * as R from 'ramda'
 import { uuid } from '@/utils/utils'
 import i18n from '@/locales'
+import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 
 export default {
   name: 'ContainerLables',
+  mixins: [createFormFieldDraftMixin],
   props: {
+    formDraftKey: {
+      type: String,
+      default: '',
+    },
     title: {
       type: String,
       default: i18n.t('compute.repo.label'),
@@ -118,17 +124,25 @@ export default {
       immediate: true,
     },
   },
+  created () {
+    this._labelsDraftRestoring = false
+  },
   methods: {
     add () {
       this.labelList.push({ key: uuid() })
+      this.$nextTick(() => this.persistLabelsDraft())
     },
     del (item) {
       const index = this.labelList.findIndex(val => val.key === item.key)
       this.labelList.splice(index, 1)
+      this.$nextTick(() => this.persistLabelsDraft())
     },
     reset () {
       this.labelList = []
       this.pendingPairs = []
+    },
+    onPairChange () {
+      this.$nextTick(() => this.persistLabelsDraft())
     },
     normalizePairs (pairs = []) {
       return (pairs || []).map((pair) => {
@@ -144,13 +158,17 @@ export default {
     initData (pairs = []) {
       const normalized = this.normalizePairs(pairs)
       if (!normalized.length) return
+      this._labelsDraftRestoring = true
       this.pendingPairs = normalized
       this.labelList = normalized.map(() => ({ key: uuid() }))
       this.$nextTick(() => {
         this.writePendingPairs()
         // 字段注册后再补一次
         setTimeout(() => this.writePendingPairs(), 100)
-        setTimeout(() => this.writePendingPairs(), 500)
+        setTimeout(() => {
+          this.writePendingPairs()
+          this._labelsDraftRestoring = false
+        }, 500)
       })
     },
     writePendingPairs () {
@@ -196,6 +214,28 @@ export default {
         }),
       }
       return bindProps
+    },
+    getCreateFormFieldDraftSnapshot () {
+      const form = this.effectiveForm
+      if (!form?.fc || !this.labelList.length) return undefined
+      const pairs = this.labelList.map((row) => {
+        const keyField = this.decorators.key(row.key)?.[0]
+        const valueField = this.decorators.value(row.key)?.[0]
+        if (!keyField) return null
+        const key = form.fc.getFieldValue(keyField)
+        if (key == null || key === '') return null
+        const value = valueField ? form.fc.getFieldValue(valueField) : undefined
+        return { key, value }
+      }).filter(Boolean)
+      return pairs.length ? pairs : undefined
+    },
+    applyCreateFormFieldDraft (draft) {
+      if (!Array.isArray(draft) || !draft.length) return
+      this.initData(draft)
+    },
+    persistLabelsDraft () {
+      if (this._labelsDraftRestoring) return
+      this.persistFormFieldDraftSnapshot()
     },
   },
 }

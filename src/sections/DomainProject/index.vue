@@ -61,9 +61,11 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters, mapState } from 'vuex'
+import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 
 export default {
   name: 'DomainProject',
+  mixins: [createFormFieldDraftMixin],
   props: {
     labelInValue: {
       type: Boolean,
@@ -96,6 +98,10 @@ export default {
     },
     /** 若传入，则域列表仅拉取该域（如主机模板所属域） */
     restrictDomainId: {
+      type: String,
+      default: '',
+    },
+    formDraftKey: {
       type: String,
       default: '',
     },
@@ -160,9 +166,17 @@ export default {
           defaultDomain = { key: initialValue }
         }
         if (!this.ignoreStorage) {
-          const domainData = await this.$store.dispatch('storage/getDomainById', this.domain)
-          if (domainData) {
-            defaultDomain = { key: domainData.id, label: domainData.name }
+          const draftPreferred = await this.resolveDomainProjectDraftPreferred(defaultDomain.key)
+          if (draftPreferred.domain) {
+            defaultDomain = draftPreferred.domain
+          } else {
+            const domainData = await this.$store.dispatch('storage/getDomainById', this.domain)
+            if (domainData) {
+              defaultDomain = { key: domainData.id, label: domainData.name }
+            }
+          }
+          if (draftPreferred.project) {
+            defaultProject = draftPreferred.project
           }
         }
         const projectInitialValue = _.get(this.decorators, 'project[1].initialValue')
@@ -172,9 +186,12 @@ export default {
         }
         const projectChange = async () => {
           if (!this.ignoreStorage) {
-            const projectData = await this.$store.dispatch('storage/getProjectById', { ...this.project, project_domain: defaultDomain.key })
-            if (projectData) {
-              defaultProject = { key: projectData.id, label: projectData.name }
+            const draft = this.readFormFieldDraft()
+            if (!(draft?.project?.key)) {
+              const projectData = await this.$store.dispatch('storage/getProjectById', { ...this.project, project_domain: defaultDomain.key })
+              if (projectData) {
+                defaultProject = { key: projectData.id, label: projectData.name }
+              }
             }
           }
           this.projectChange(defaultProject || {})
@@ -190,7 +207,6 @@ export default {
           projectChange()
         } else {
           if (this.isDefaultSelect) {
-            defaultProject = { key: this.userInfo.projectId, label: this.userInfo.projectName }
             domainChange()
             projectChange()
           }
@@ -224,9 +240,14 @@ export default {
           }
           const projectChange = async () => {
             if (!this.ignoreStorage) {
-              const projectData = await this.$store.dispatch('storage/getProjectById', { ...this.project, project_domain: this.domain?.key })
-              if (projectData) {
-                defaultProject = { key: projectData.id, label: projectData.name }
+              const draftPreferred = await this.resolveDomainProjectDraftPreferred(this.domain?.key || data[0]?.key)
+              if (draftPreferred.project) {
+                defaultProject = draftPreferred.project
+              } else {
+                const projectData = await this.$store.dispatch('storage/getProjectById', { ...this.project, project_domain: this.domain?.key })
+                if (projectData) {
+                  defaultProject = { key: projectData.id, label: projectData.name }
+                }
               }
             }
             this.projectChange(defaultProject || {})
@@ -295,9 +316,86 @@ export default {
     },
     updateDomainList (resList) {
       this.domains = resList
+      this.tryMatchDomainDraftInOptions(resList)
     },
     updateProjectList (resList) {
       this.projects = resList
+      this.tryMatchProjectDraftInOptions(resList)
+    },
+    /**
+     * 草稿中的域/项目仍可用则返回偏好值（用接口校验存在性）
+     * @param {string} [preferDomainId]
+     * @returns {Promise<{ domain?: object, project?: object }>}
+     */
+    async resolveDomainProjectDraftPreferred (preferDomainId) {
+      const ret = {}
+      if (!this.canReadWriteFormFieldDraft()) return ret
+      const draft = this.readFormFieldDraft()
+      if (!draft || typeof draft !== 'object') return ret
+      if (draft.domain?.key) {
+        try {
+          const domainData = await this.$store.dispatch('storage/getDomainById', draft.domain)
+          if (domainData) {
+            ret.domain = { key: domainData.id, label: domainData.name }
+          }
+        } catch (e) { /* ignore */ }
+      }
+      const domainKey = ret.domain?.key || preferDomainId
+      if (draft.project?.key && domainKey) {
+        try {
+          const projectData = await this.$store.dispatch('storage/getProjectById', {
+            ...draft.project,
+            project_domain: domainKey,
+          })
+          if (projectData) {
+            ret.project = { key: projectData.id, label: projectData.name }
+          }
+        } catch (e) { /* ignore */ }
+      }
+      return ret
+    },
+    tryMatchDomainDraftInOptions (resList) {
+      if (!this.canReadWriteFormFieldDraft() || !Array.isArray(resList) || !resList.length) return
+      const draft = this.readFormFieldDraft()
+      const hit = this.matchFormFieldDraftInOptions(resList, draft?.domain, {
+        getId: item => item.id || item.key,
+      })
+      if (!hit) return
+      const currentOk = this.domainId && resList.some(d => (d.id || d.key) === this.domainId)
+      if (currentOk) return
+      const val = { key: hit.id || hit.key, label: hit.name || hit.label }
+      this._domainProjectDraftRestoring = true
+      this.domainChange(val)
+      this._setInitDomain(val)
+      this.$nextTick(() => { this._domainProjectDraftRestoring = false })
+    },
+    tryMatchProjectDraftInOptions (resList) {
+      if (!this.canReadWriteFormFieldDraft() || !Array.isArray(resList) || !resList.length) return
+      const draft = this.readFormFieldDraft()
+      const hit = this.matchFormFieldDraftInOptions(resList, draft?.project, {
+        getId: item => item.id || item.key,
+      })
+      if (!hit) return
+      const currentId = R.is(Object, this.projectData) ? this.projectData.key : this.projectData
+      const currentOk = currentId && resList.some(p => (p.id || p.key) === currentId)
+      if (currentOk) return
+      const val = { key: hit.id || hit.key, label: hit.name || hit.label }
+      this._domainProjectDraftRestoring = true
+      this.projectChange(val)
+      this._setInitProject(val)
+      this.$nextTick(() => { this._domainProjectDraftRestoring = false })
+    },
+    serializeFormFieldDraft () {
+      const domain = this.fc?.getFieldValue?.('domain')
+      const project = this.fc?.getFieldValue?.('project')
+      const domainVal = domain && (domain.key || domain)
+        ? (R.is(Object, domain) ? { key: domain.key, label: domain.label } : { key: domain })
+        : (this.domainId ? { key: this.domainId } : null)
+      const projectVal = project && (project.key || project)
+        ? (R.is(Object, project) ? { key: project.key, label: project.label } : { key: project })
+        : (this.projectData?.key ? { key: this.projectData.key, label: this.projectData.label } : null)
+      if (!domainVal && !projectVal) return undefined
+      return { domain: domainVal, project: projectVal }
     },
     /**
      * domain {Object|String}
@@ -315,6 +413,12 @@ export default {
       if (domainChanged) {
         this._resetProject()
       }
+      this.$nextTick(() => {
+        // options 就绪后的程序化回填不落盘
+        if (this._domainProjectDraftRestoring) return
+        const data = this.serializeFormFieldDraft()
+        if (data !== undefined) this.writeFormFieldDraft(data)
+      })
     },
     _resetProject () {
       this.$store.commit('storage/SET_PROJECT', {})
@@ -334,6 +438,11 @@ export default {
       } else {
         this.$emit('update:project', projectId)
       }
+      this.$nextTick(() => {
+        if (this._domainProjectDraftRestoring) return
+        const data = this.serializeFormFieldDraft()
+        if (data !== undefined) this.writeFormFieldDraft(data)
+      })
     },
     async beforeProjectDefaultSelectCallBack () {
       try {
