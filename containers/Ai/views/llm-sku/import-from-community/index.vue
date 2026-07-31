@@ -19,7 +19,7 @@
     <a-drawer
       wrap-class-name="catalog-drawer-wrap"
       :visible="drawerVisible"
-      :width="720"
+      :width="'50%'"
       destroy-on-close
       placement="right"
       @close="clearItem">
@@ -81,7 +81,7 @@
 
 <script>
 import marked from 'marked'
-import { createEmptyDeviceRow, isValidDeviceRows } from '@Ai/utils/deviceFormUtils'
+import { createEmptyDeviceRow, deviceRowNeedsVendor, getPodPciModelTypes, isValidDeviceRows } from '@Ai/utils/deviceFormUtils'
 import CommunityImageGrid from '@Ai/sections/community-images/components/CommunityImageGrid.vue'
 import LlmGpuDevicesEditor from '@Ai/sections/LlmGpuDevicesEditor.vue'
 import { parseLlmRoute, getLlmSkuTypeFilter } from '@Ai/utils/llmRouteContext'
@@ -147,13 +147,21 @@ export default {
     needsGpuSelection () {
       return communityImportNeedsGpuSelection(this.selectedItem)
     },
+    podPciModels () {
+      return getPodPciModelTypes(this.$store.getters.capability)
+    },
     importRules () {
       return {
         devices: [{
           required: true,
           type: 'array',
           validator: (rule, value, callback) => {
-            if (!isValidDeviceRows(value)) {
+            const pciModelTypes = this.podPciModels
+            if (!isValidDeviceRows(value, { pciModelTypes })) {
+              if (Array.isArray(value) && value.some(row => deviceRowNeedsVendor(row, pciModelTypes))) {
+                callback(new Error(this.$t('aice.devices.vendor.required')))
+                return
+              }
               callback(new Error(this.$t('common.tips.select', [this.$t('aice.devices')])))
               return
             }
@@ -230,6 +238,7 @@ export default {
       }
     },
     onItemSelect (item) {
+      this.$store.dispatch('auth/getCapabilities').catch(() => {})
       this.selectedItem = item
       this.resetImportForm()
     },
@@ -262,6 +271,7 @@ export default {
           imagesManager: this.imagesManager,
           skusManager: this.skusManager,
           devices,
+          pciModelTypes: this.podPciModels,
         })
         this.$set(this.existingImages, getCommunityImageKey(this.selectedItem), true)
         if (skuError) {

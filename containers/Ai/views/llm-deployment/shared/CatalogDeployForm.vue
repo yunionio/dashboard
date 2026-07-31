@@ -53,7 +53,7 @@ import LlmImageSelect from '@Ai/sections/LlmImageSelect'
 import LlmGpuDevicesEditor from '@Ai/sections/LlmGpuDevicesEditor'
 import NameRepeated from '@/sections/NameRepeated'
 import { getParamsForType } from '@Ai/views/llm-sku/constants/llmTypeConfig'
-import { isValidDeviceRows } from '@Ai/utils/deviceFormUtils'
+import { isValidDeviceRows, deviceRowNeedsVendor } from '@Ai/utils/deviceFormUtils'
 
 export default {
   name: 'CatalogDeployForm',
@@ -85,7 +85,12 @@ export default {
           required: true,
           type: 'array',
           validator: (rule, value, callback) => {
-            if (!isValidDeviceRows(value, { allowEmpty: false })) {
+            const pciModelTypes = this.podPciModels
+            if (!isValidDeviceRows(value, { allowEmpty: false, pciModelTypes })) {
+              if (Array.isArray(value) && value.some(row => deviceRowNeedsVendor(row, pciModelTypes))) {
+                callback(new Error(this.$t('aice.devices.vendor.required')))
+                return
+              }
               callback(new Error(this.$t('common.tips.select', [this.$t('aice.llm_deployment.create.devices')])))
               return
             }
@@ -93,6 +98,9 @@ export default {
           },
         }],
       }
+    },
+    podPciModels () {
+      return Object.values(this.$store.getters.capability?.pci_model_types || {}).filter(item => item.hypervisor === 'pod')
     },
     imageParams () {
       return {
