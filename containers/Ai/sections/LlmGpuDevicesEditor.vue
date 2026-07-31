@@ -16,7 +16,14 @@
         class="llm-gpu-devices-editor__sharing"
         @change="val => onSharingModeChange(index, val)" />
       <base-select
-        :value="row.model"
+        v-if="showVendorField"
+        :value="row.vendor"
+        :options="vendorOptionsForRow(row)"
+        :select-props="vendorSelectProps"
+        class="llm-gpu-devices-editor__vendor"
+        @change="val => onVendorChange(index, val)" />
+      <base-select
+        :value="modelSelectValue(row)"
         :options="modelOptionsForRow(row)"
         :select-props="modelSelectProps"
         class="llm-gpu-devices-editor__model"
@@ -66,6 +73,11 @@ import {
   normalizeDeviceRows,
   LLM_SHARING_MODE_VALUES,
   resolveSharingMode,
+  listPodVendors,
+  buildModelSelectEntries,
+  resolveVendorForModel,
+  getPodPciModelTypes,
+  shouldShowVendorSelect,
 } from '@Ai/utils/deviceFormUtils'
 
 const SHARING_MODE_I18N = {
@@ -98,8 +110,7 @@ export default {
   },
   computed: {
     podPciModels () {
-      return Object.values(this.$store.getters.capability?.pci_model_types || {})
-        .filter(item => item.hypervisor === 'pod')
+      return getPodPciModelTypes(this.$store.getters.capability)
     },
     sharingModeOptions () {
       return LLM_SHARING_MODE_VALUES.map(value => ({
@@ -119,6 +130,12 @@ export default {
         allowClear: true,
       }
     },
+    vendorSelectProps () {
+      return {
+        placeholder: this.$t('common.tips.select', [this.$t('aice.devices.vendor')]),
+        allowClear: true,
+      }
+    },
     memoryMbPlaceholder () {
       return this.requireHamiMemoryMb
         ? this.$t('aice.devices.memory_mb.placeholder_required')
@@ -132,6 +149,9 @@ export default {
     innerRows () {
       return normalizeDeviceRows(this.value)
     },
+    showVendorField () {
+      return shouldShowVendorSelect(this.podPciModels)
+    },
   },
   watch: {
     value: {
@@ -144,22 +164,62 @@ export default {
         while (this.rowKeys.length > rows.length) {
           this.rowKeys.pop()
         }
+        this.maybeAutoFillVendors(rows)
       },
+    },
+    podPciModels () {
+      this.maybeAutoFillVendors(this.innerRows)
     },
   },
   methods: {
+    maybeAutoFillVendors (rows) {
+      if (!Array.isArray(rows) || rows.length === 0) return
+      const podVendors = listPodVendors(this.podPciModels)
+      let changed = false
+      const next = rows.map((row) => {
+        if (String(row?.vendor || '').trim()) return row
+        if (podVendors.length === 1) {
+          changed = true
+          return { ...row, vendor: podVendors[0] }
+        }
+        return row
+      })
+      if (changed) {
+        this.emitRows(next)
+      }
+    },
+    vendorOptionsForRow (row) {
+      const vendors = listPodVendors(this.podPciModels)
+      if (row?.vendor && !vendors.includes(row.vendor)) {
+        vendors.push(String(row.vendor).trim())
+        vendors.sort()
+      }
+      return vendors.map(v => ({ key: v, label: v }))
+    },
+    modelSelectValue (row) {
+      if (!row?.model) return undefined
+      const vendor = String(row?.vendor || '').trim()
+      return vendor ? `${row.model}\0${vendor}` : row.model
+    },
     modelOptionsForRow (row) {
       const sharingMode = resolveSharingMode(row?.sharing_mode)
-      const models = new Set()
-      this.podPciModels.forEach((item) => {
-        if (!item?.model) return
-        if (item.sharing_mode && item.sharing_mode !== sharingMode) return
-        models.add(item.model)
+      const vendor = String(row?.vendor || '').trim()
+      const entries = buildModelSelectEntries(this.podPciModels, {
+        sharingMode,
+        vendor: vendor || undefined,
       })
       if (row?.model) {
-        models.add(row.model)
+        const key = vendor ? `${row.model}\0${vendor}` : row.model
+        if (!entries.some(e => e.key === key)) {
+          entries.push({
+            key,
+            label: row.model,
+            model: row.model,
+            vendor: vendor || undefined,
+          })
+        }
       }
-      return Array.from(models).map(model => ({ key: model, label: model }))
+      return entries
     },
     emitRows (rows) {
       const normalized = normalizeDeviceRows(rows)
@@ -168,22 +228,63 @@ export default {
     },
     onSharingModeChange (index, sharingMode) {
       const mode = resolveSharingMode(sharingMode)
+      const podVendors = listPodVendors(this.podPciModels)
       const rows = this.innerRows.map((row, i) => {
         if (i !== index) return { ...row }
         const next = { ...row, sharing_mode: mode }
         delete next.memory_mb
+        const currentVendor = String(next.vendor || '').trim()
+        if (currentVendor && !podVendors.includes(currentVendor)) {
+          delete next.vendor
+        }
+        if (!next.vendor && podVendors.length === 1) {
+          next.vendor = podVendors[0]
+        }
         const options = this.modelOptionsForRow(next)
-        if (next.model && !options.some(opt => opt.key === next.model)) {
+        if (next.model && !options.some(opt => opt.key === this.modelSelectValue(next))) {
           next.model = undefined
         }
         return next
       })
       this.emitRows(rows)
     },
-    onModelChange (index, model) {
-      const rows = this.innerRows.map((row, i) => (
-        i === index ? { ...row, model } : { ...row }
-      ))
+    onVendorChange (index, vendor) {
+      const rows = this.innerRows.map((row, i) => {
+        if (i !== index) return { ...row }
+        const next = { ...row }
+        const v = String(vendor || '').trim()
+        if (v) {
+          next.vendor = v
+        } else {
+          delete next.vendor
+        }
+        const options = this.modelOptionsForRow(next)
+        if (next.model && !options.some(opt => opt.model === next.model)) {
+          next.model = undefined
+        }
+        return next
+      })
+      this.emitRows(rows)
+    },
+    onModelChange (index, selectKey) {
+      const options = this.modelOptionsForRow(this.innerRows[index])
+      const opt = options.find(o => o.key === selectKey)
+      const rows = this.innerRows.map((row, i) => {
+        if (i !== index) return { ...row }
+        const next = { ...row, model: opt?.model || selectKey }
+        const sharingMode = resolveSharingMode(next.sharing_mode)
+        if (opt?.vendor) {
+          next.vendor = opt.vendor
+        } else {
+          const resolved = resolveVendorForModel(next.model, this.podPciModels, { sharingMode })
+          if (resolved) {
+            next.vendor = resolved
+          } else {
+            delete next.vendor
+          }
+        }
+        return next
+      })
       this.emitRows(rows)
     },
     onCountChange (index, count) {
@@ -208,7 +309,12 @@ export default {
     },
     addRow () {
       this.rowKeys.push(uuid())
-      this.emitRows([...this.innerRows, createEmptyDeviceRow()])
+      const newRow = createEmptyDeviceRow()
+      const podVendors = listPodVendors(this.podPciModels)
+      if (podVendors.length === 1) {
+        newRow.vendor = podVendors[0]
+      }
+      this.emitRows([...this.innerRows, newRow])
     },
     removeRow (index) {
       if (this.innerRows.length <= 1) return
@@ -230,6 +336,10 @@ export default {
 }
 .llm-gpu-devices-editor__sharing {
   width: 140px;
+  flex-shrink: 0;
+}
+.llm-gpu-devices-editor__vendor {
+  width: 120px;
   flex-shrink: 0;
 }
 .llm-gpu-devices-editor__model {

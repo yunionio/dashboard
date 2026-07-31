@@ -125,6 +125,7 @@
 
 <script>
 import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
+import { devicesFromModelKeys } from '@Ai/utils/deviceFormUtils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { uuid } from '@/utils/utils'
@@ -253,6 +254,9 @@ export default {
       const list = Object.values(this.$store.getters.capability?.pci_model_types || {}).filter(item => item.hypervisor === 'pod')
       return list.map(item => ({ key: item.model, label: item.model }))
     },
+    podPciModels () {
+      return Object.values(this.$store.getters.capability?.pci_model_types || {}).filter(item => item.hypervisor === 'pod')
+    },
     supportMountedModels () {
       return ['ollama', 'vllm'].includes((this.row.llm_type || '').toLowerCase())
     },
@@ -277,7 +281,7 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         const data = {}
-        data.devices = Array.isArray(values.device) ? values.device.map(k => ({ model: k, sharing_mode: 'HAMI', dev_type: 'GPU' })) : []
+        data.devices = Array.isArray(values.device) ? devicesFromModelKeys(values.device, this.podPciModels) : []
         if (this.supportMountedModels) {
           data.mounted_models = Array.isArray(values.mounted_models) ? values.mounted_models : []
         }
