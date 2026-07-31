@@ -173,7 +173,7 @@ export default {
       return ret.join('、')
     },
     image () {
-      return this.fd.image.label
+      return this.fd.image?.label || this.fd.image?.name || ''
     },
     tips () {
       const ret = [

@@ -3,7 +3,8 @@
     <a-form-item :label="$t('common.name')">
       <a-input
         v-decorator="decorators.name"
-        :placeholder="$t('common.tips.input', [$t('common.name')])" />
+        :placeholder="$t('common.tips.input', [$t('common.name')])"
+        @change="emitDraftChange" />
     </a-form-item>
     <a-form-item :label="$t('compute.repo.image.source')">
       <a-radio-group default-value="custom" @change="handleSourceChange">
@@ -14,10 +15,11 @@
     <a-form-item v-if="source === 'custom'" :label="$t('compute.repo.container_image')">
       <a-input
         v-decorator="decorators.image"
-        :placeholder="$t('common.tips.input', [$t('compute.repo.container_image')])" />
+        :placeholder="$t('common.tips.input', [$t('compute.repo.container_image')])"
+        @change="emitDraftChange" />
     </a-form-item>
     <a-form-item v-else :label="$t('compute.repo.container_image')">
-      <mirror-registry v-decorator="decorators.registryImage" @credential-change="handleCredentialChange" />
+      <mirror-registry v-decorator="decorators.registryImage" @credential-change="handleCredentialChange" @change="emitDraftChange" />
       <a-input v-show="false" v-decorator="decorators.imageCredentialId" />
     </a-form-item>
     <a-form-item label="CPU" v-show="false">
@@ -39,10 +41,10 @@
         @blur="e => formatInput(e, 'memory')" />
     </a-form-item>
     <a-form-item :label="$t('compute.repo.command')">
-      <a-input v-decorator="decorators.command" :placeholder="$t('compute.repo.command.placeholder')" />
+      <a-input v-decorator="decorators.command" :placeholder="$t('compute.repo.command.placeholder')" @change="emitDraftChange" />
     </a-form-item>
     <a-form-item :label="$t('compute.repo.command.params')">
-      <a-input v-decorator="decorators.arg" :placeholder="$t('compute.repo.command.params.placeholder')" />
+      <a-input v-decorator="decorators.arg" :placeholder="$t('compute.repo.command.params.placeholder')" @change="emitDraftChange" />
     </a-form-item>
     <a-form-item :label="$t('compute.repo.data_volume')">
       <labels
@@ -58,10 +60,10 @@
         @label-change="labelChangeHandle" />
     </a-form-item>
     <a-form-item :label="$t('compute.repo.env_variables')">
-      <labels ref="envRef" :decorators="decorators.env" :title="$t('compute.repo.variables')" :keyLabel="$t('compute.repo.variables')" />
+      <labels ref="envRef" :decorators="decorators.env" :title="$t('compute.repo.variables')" :keyLabel="$t('compute.repo.variables')" @label-change="labelChangeHandle" />
     </a-form-item>
     <a-form-item label="">
-      <a-checkbox v-decorator="decorators.enableLxcfs">{{$t('compute.repo.enable_lxcfs')}}</a-checkbox>
+      <a-checkbox v-decorator="decorators.enableLxcfs" @change="emitDraftChange">{{$t('compute.repo.enable_lxcfs')}}</a-checkbox>
     </a-form-item>
     <a-form-item label="">
       <a-checkbox v-decorator="decorators.enableSysDiskOverlay" @change="handleOverlayChange">{{$t('compute.repo.enable_sys_disk_overlay')}}</a-checkbox>
@@ -80,7 +82,7 @@
         fieldPrefix="overlayDisk" />
     </a-form-item>
     <a-form-item v-if="overlayEnabled" label="">
-      <a-checkbox v-decorator="decorators.rootfsPersistent">
+      <a-checkbox v-decorator="decorators.rootfsPersistent" @change="emitDraftChange">
         {{$t('compute.repo.rootfs_persistent')}}
         <a-tooltip :title="$t('compute.repo.rootfs_persistent.tips')">
           <a-icon type="question-circle-o" />
@@ -93,7 +95,8 @@
         mode="multiple"
         :placeholder="$t('compute.repo.capabilities.add.placeholder')"
         optionLabelProp="label"
-        allowClear>
+        allowClear
+        @change="emitDraftChange">
         <a-select-option v-for="cap in capabilityOptions" :key="cap.value" :value="cap.value" :label="cap.label">
           <span>{{ cap.label }}</span>
           <span style="color: rgba(0,0,0,.45); margin-left: 8px; font-size: 12px;">{{ cap.description }}</span>
@@ -106,7 +109,8 @@
         mode="multiple"
         :placeholder="$t('compute.repo.capabilities.drop.placeholder')"
         optionLabelProp="label"
-        allowClear>
+        allowClear
+        @change="emitDraftChange">
         <a-select-option v-for="cap in capabilityOptions" :key="cap.value" :value="cap.value" :label="cap.label">
           <span>{{ cap.label }}</span>
           <span style="color: rgba(0,0,0,.45); margin-left: 8px; font-size: 12px;">{{ cap.description }}</span>
@@ -114,7 +118,7 @@
       </a-select>
     </a-form-item>
     <a-form-item label="">
-      <a-checkbox v-decorator="decorators.privileged">{{$t('compute.repo.privileged_mode')}}</a-checkbox>
+      <a-checkbox v-decorator="decorators.privileged" @change="emitDraftChange">{{$t('compute.repo.privileged_mode')}}</a-checkbox>
     </a-form-item>
   </div>
 </template>
@@ -216,9 +220,11 @@ export default {
           })
         }
       }
+      this.emitDraftChange()
     },
     handleSourceChange (e) {
       this.source = e.target.value
+      this.emitDraftChange()
     },
     handleOverlayChange (e) {
       this.overlayEnabled = e.target.checked
@@ -227,7 +233,10 @@ export default {
           if (this.$refs.overlayDiskRef) {
             this.$refs.overlayDiskRef.add()
           }
+          this.emitDraftChange()
         })
+      } else {
+        this.emitDraftChange()
       }
     },
     handleCredentialChange (credentialId) {
@@ -236,9 +245,14 @@ export default {
           [this.decorators.imageCredentialId[0]]: credentialId,
         })
       }
+      this.emitDraftChange()
     },
     labelChangeHandle (val) {
       this.labelList = val
+      this.emitDraftChange()
+    },
+    emitDraftChange () {
+      this.$emit('draft-change')
     },
     applyInitData (item = {}) {
       if (!item || this.initApplied) return
@@ -296,6 +310,20 @@ export default {
               key: `${vm.disk?.index ?? ''}`,
               value: vm.mount_path,
             })))
+          }
+          // overlay 系统盘：勾选后补一行并回填容量/类型
+          if (item.rootfs && this.$refs.overlayDiskRef) {
+            const diskMeta = item.rootfs.disk || {}
+            const sizeGb = diskMeta.size != null ? Number(diskMeta.size) : undefined
+            const backend = diskMeta.backend
+            const medium = diskMeta.medium
+            if (!this.$refs.overlayDiskRef.dataDisks?.length) {
+              this.$refs.overlayDiskRef.add({
+                size: sizeGb,
+                diskType: backend,
+                medium,
+              })
+            }
           }
         }, 300)
       })

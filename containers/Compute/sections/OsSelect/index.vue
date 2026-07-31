@@ -26,6 +26,7 @@
       :form="form"
       :edit="edit"
       :ignore-storage="ignoreStorage"
+      :prefer-draft="osSelectDraftPrefer"
       :hypervisor="hypervisor" />
   </div>
 </template>
@@ -35,6 +36,7 @@ import * as R from 'ramda'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import storage from '@/utils/storage'
+import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 import ImageSelect from './ImageSelect'
 
 export default {
@@ -42,7 +44,12 @@ export default {
   components: {
     ImageSelect,
   },
+  mixins: [createFormFieldDraftMixin],
   props: {
+    formDraftKey: {
+      type: String,
+      default: '',
+    },
     types: {
       type: Array,
     },
@@ -133,6 +140,13 @@ export default {
     isBaremetal () {
       return this.type === 'baremetal'
     },
+    /** 传给 ImageSelect：列表就绪后再按草稿选 os/image */
+    osSelectDraftPrefer () {
+      if (!this.canReadWriteFormFieldDraft()) return null
+      const draft = this.readFormFieldDraft()
+      if (!draft || typeof draft !== 'object') return null
+      return draft
+    },
     mirrorTypeOptions () {
       let ret = [IMAGES_TYPE_MAP.standard, IMAGES_TYPE_MAP.customize]
       if (this.isIDC && this.hypervisor === HYPERVISORS_MAP.kvm.key) {
@@ -179,7 +193,8 @@ export default {
   },
   watch: {
     hypervisor () {
-      const prefer = this.form.fd?.imageType || this.decorator.imageType[1].initialValue
+      const draft = this.canReadWriteFormFieldDraft() ? this.readFormFieldDraft() : null
+      const prefer = draft?.imageType || this.form.fd?.imageType || this.decorator.imageType[1].initialValue
       const availableKeys = this.mirrorTypeOptions.map(item => item.key)
       // CAS/UIS/SangFor 等仅支持 private_iso，不能继续沿用私有云默认的 private
       const imageType = availableKeys.includes(prefer) ? prefer : (availableKeys[0] || prefer)
@@ -203,6 +218,32 @@ export default {
     },
   },
   methods: {
+    getCreateFormFieldDraftSnapshot () {
+      const f = this.form?.fc
+      if (!f) return undefined
+      const imageType = f.getFieldValue(this.decorator.imageType[0])
+      const os = f.getFieldValue(this.decorator.os[0])
+      const image = f.getFieldValue(this.decorator.image[0])
+      return {
+        imageType,
+        os,
+        image: image && typeof image === 'object' ? { key: image.key, label: image.label } : image,
+      }
+    },
+    applyCreateFormFieldDraft (draft) {
+      if (!draft || !this.form?.fc) return
+      // 仅先恢复镜像类型；os/image 等 ImageSelect 列表就绪后按 preferDraft 回填
+      if (draft.imageType) {
+        const available = this.mirrorTypeOptions.map(item => item.key)
+        if (!available.length || available.includes(draft.imageType)) {
+          this.imageType = draft.imageType
+          this.form.fc.setFieldsValue({
+            [this.decorator.imageType[0]]: draft.imageType,
+          })
+        }
+      }
+    },
+
     imageInput (image) {
       this.$emit('change', image)
     },
@@ -210,6 +251,7 @@ export default {
       this.isFirstLoad = false
       this.imageType = e.target.value
       this.$emit('update:imageType', e.target.value)
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     updateImageMsg (...ret) {
       const image = ret[0].imageMsg
@@ -225,6 +267,7 @@ export default {
         }
       }
       this.$emit('updateImageMsg', ...ret)
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
   },
 }

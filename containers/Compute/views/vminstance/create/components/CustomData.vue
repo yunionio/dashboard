@@ -36,8 +36,14 @@ import { HYPERVISORS_MAP } from '@/constants'
 // import yaml from 'js-yaml'
 // import * as R from 'ramda'
 
+import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 export default {
+  mixins: [createFormFieldDraftMixin],
   props: {
+    formDraftKey: {
+      type: String,
+      default: '',
+    },
     decorators: Object,
     form: Object,
   },
@@ -72,6 +78,21 @@ export default {
     },
   },
   methods: {
+    getCreateFormFieldDraftSnapshot () {
+      const type = this.form?.fd?.custom_data_type || this.form?.fc?.getFieldValue?.('custom_data_type')
+      if (!type || type === 'file') return { custom_data_type: type || '' }
+      return {
+        custom_data_type: type,
+        user_data: this.normalizeUserData(this.codeMirrorData || this.customData),
+      }
+    },
+    applyCreateFormFieldDraft (draft) {
+      if (!draft || typeof draft !== 'object') return
+      if (typeof this.restoreFromDraft === 'function') {
+        this.restoreFromDraft(draft.custom_data_type, draft.user_data)
+      }
+    },
+
     normalizeUserData (content) {
       if (content == null || content === '') return ''
       if (typeof content === 'string') return content
@@ -109,11 +130,11 @@ export default {
       this.fileList = []
       this.codeMirrorData = ''
       this.customData = []
-      this.$emit('content-change')
+      this.persistFormFieldDraftSnapshot(); this.$emit('content-change')
     },
     handleCodeInput (_value) {
       this.customData = _value
-      this.$emit('content-change')
+      this.persistFormFieldDraftSnapshot(); this.$emit('content-change')
     },
     handleMirrorDataChange (_value) {
       const text = this.normalizeUserData(_value)

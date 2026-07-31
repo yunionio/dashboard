@@ -8,11 +8,14 @@ import ServerNetwork from '@Compute/sections/ServerNetwork'
 import SchedPolicy from '@Compute/sections/SchedPolicy'
 import { checkIpV6, getIpv6Start } from '@Compute/utils/createServer'
 import {
-  buildBaremetalCreateDraftPayload,
-  mergeBaremetalCreateDraftToInitFormData,
-  isMeaningfulBaremetalCreateDraft,
   resolveDraftLoginType,
 } from '@Compute/utils/baremetalCreateDraft'
+import {
+  BAREMETAL_CREATE_FORM_DRAFT_FIELD,
+  BAREMETAL_CREATE_FORM_DRAFT_FIELDS,
+  BAREMETAL_CREATE_FORM_DRAFT_FC_BINDINGS,
+  getBaremetalCreateFormDraftScope,
+} from '@Compute/utils/baremetalCreateFormDraft'
 import DomainProject from '@/sections/DomainProject'
 import CloudregionZone from '@/sections/CloudregionZone'
 import Tag from '@/sections/Tag'
@@ -22,7 +25,6 @@ import { sizestr, uuid } from '@/utils/utils'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 import i18n from '@/locales'
 import createFormDraftMixin from '@/mixins/createFormDraft'
-import { getDraft, shouldUseCreateDraft } from '@/utils/createFormDraft'
 import BottomBar from './BottomBar'
 function checkIpInSegment (i, networkData) {
   return (rule, value, cb) => {
@@ -33,27 +35,6 @@ function checkIpInSegment (i, networkData) {
       cb(new Error(i18n.t('compute.text_205')))
     }
   }
-}
-
-/**
- * data() 阶段尽早解析草稿，供 Decorator 当 initialValue 种子。
- * 安装操作系统 / 工单回填场景禁用。
- * @param {Vue} vm
- * @returns {{ active: boolean, data: object|null }}
- */
-function resolveBaremetalCreateDraftSeed (vm) {
-  if (vm.isInitForm) return { active: false, data: null }
-  if (vm.$route?.query?.host_id) return { active: false, data: null }
-  const formScope = `compute.baremetal.${vm.cloudEnv}`
-  if (!shouldUseCreateDraft(vm.$route)) {
-    return { active: false, data: null }
-  }
-  const data = getDraft(formScope)
-  const initData = mergeBaremetalCreateDraftToInitFormData(data)
-  if (!initData?.extraData || !isMeaningfulBaremetalCreateDraft(initData)) {
-    return { active: false, data: null }
-  }
-  return { active: true, data: initData }
 }
 
 export default {
@@ -83,10 +64,7 @@ export default {
     Tag,
   },
   data () {
-    const draftSeed = resolveBaremetalCreateDraftSeed(this)
-    const initData = draftSeed.active
-      ? draftSeed.data
-      : ((this.isInitForm && this.initFormData) || {})
+    const initData = (this.isInitForm && this.initFormData) || {}
     const initPreferZone = (Array.isArray(initData.prefer_zones) && initData.prefer_zones[0]) ||
       initData.prefer_zone ||
       initData.prefer_zone_id ||
@@ -103,10 +81,7 @@ export default {
     if (initData.extraData?.image) {
       initImage = initData.extraData.image
     }
-    let initLoginType = resolveDraftLoginType(initData)
-    if (!draftSeed.active && !this.isInitForm) {
-      initLoginType = 'random'
-    }
+    const initLoginType = this.isInitForm ? resolveDraftLoginType(initData) : 'random'
     let initNetworkType = NETWORK_OPTIONS_MAP.default.key
     let initBonding = !!(initData.extraData && initData.extraData.isBonding)
     if (initData.nets) {
@@ -136,10 +111,6 @@ export default {
       initSchedPolicyType = 'schedtag'
     }
     return {
-      isDraftRestore: draftSeed.active,
-      draftRestored: draftSeed.active,
-      _baremetalCreateDraftSeeded: draftSeed.active,
-      _draftInitFormData: draftSeed.active ? draftSeed.data : null,
       _initFormPromise: null,
       _initFormDone: false,
       submiting: false,
@@ -188,7 +159,7 @@ export default {
                 project_domain: values.domain.key,
               }
             }
-            this.scheduleSaveCreateFormDraft()
+            this.syncBaremetalCreateFormFcDrafts(values)
           },
         }),
         fi: {
@@ -546,55 +517,56 @@ export default {
     }
   },
   computed: {
+    createFormDraftOptions () {
+      return {
+        formScope: getBaremetalCreateFormDraftScope({ type: this.cloudEnv }),
+        disableWhen: () => this.shouldDisableCreateFormDraft,
+      }
+    },
+    baremetalDraftFields () {
+      return BAREMETAL_CREATE_FORM_DRAFT_FIELDS
+    },
+    shouldDisableCreateFormDraft () {
+      if (this.isInitForm) return true
+      if (this.isModifyWorkflow) return true
+      if (this.isModifyShopCartOrder) return true
+      if (this.$route.query.host_id) return true
+      return false
+    },
+    ignoreLocalFormStorage () {
+      return this.shouldDisableCreateFormDraft
+    },
     ...mapGetters([
       'isAdminMode',
       'scope',
       'isDomainMode',
     ]),
-    createFormDraftOptions () {
-      return {
-        formScope: `compute.baremetal.${this.cloudEnv}`,
-        disableWhen: () => this.isInitForm || this.isInstallOperationSystem,
-        serialize: () => this.serializeCreateFormDraft(),
-        applyDraft: async (draftData) => {
-          const initData = mergeBaremetalCreateDraftToInitFormData(draftData)
-          this._draftInitFormData = initData
-          this.isDraftRestore = true
-          this.draftRestored = true
-          if (typeof this.initForm === 'function') {
-            await this.initForm()
-          }
-        },
-        isMeaningfulDraft: (data) => isMeaningfulBaremetalCreateDraft(data),
-      }
-    },
-    ignoreLocalFormStorage () {
-      if (this.isInitForm) return true
-      return !!(this._baremetalCreateDraftSeeded || this._draftInitFormData)
-    },
     isFormBackfill () {
-      if (this.isInitForm) return true
-      if (this._draftInitFormData && !this.createFormDraftUserInteracted) return true
-      return this.isCreateFormDraftHydrating
+      return this.isInitForm
     },
     effectiveInitFormData () {
-      if (this.isInitForm) return this.initFormData
-      if (this._draftInitFormData && !this.createFormDraftUserInteracted) return this._draftInitFormData
-      if (this.isCreateFormDraftHydrating && this._draftInitFormData) return this._draftInitFormData
-      return this.initFormData || {}
+      return this.isInitForm ? this.initFormData : {}
     },
-    /**
-     * 给 SchedPolicy / PolicySchedtag 挂载即用的调度标签回填数据
-     * （不等 initForm 异步 capability，避免空行抢先挂载）
-     */
     schedPolicyInitSchedtags () {
-      if (!this.isFormBackfill && !this.isInitForm && !this._draftInitFormData) return []
-      const data = this.isInitForm
-        ? this.initFormData
-        : (this._draftInitFormData || this.effectiveInitFormData)
-      if (!data) return []
-      // 兼容写在根上或 extraData 里的 schedtags
-      return data.schedtags || data.extraData?.schedtags || []
+      if (this.isInitForm) {
+        const data = this.initFormData
+        if (!data) return []
+        return data.schedtags || data.extraData?.schedtags || []
+      }
+      if (!this.canUseCreateFormDraft) return []
+      const draft = this.readCreateFormFieldDraft(BAREMETAL_CREATE_FORM_DRAFT_FIELD.SCHED_POLICY)
+      return Array.isArray(draft?.schedtags) ? draft.schedtags : []
+    },
+    draftInitPreferHost () {
+      if (this.isInitForm) {
+        return this.initFormData?.prefer_host || this.initFormData?.extraData?.prefer_host || ''
+      }
+      if (!this.canUseCreateFormDraft) return ''
+      const draft = this.readCreateFormFieldDraft(BAREMETAL_CREATE_FORM_DRAFT_FIELD.SCHED_POLICY)
+      return draft?.prefer_host || ''
+    },
+    preserveAdvanceInitProps () {
+      return this.isFormBackfill || this.canUseCreateFormDraft
     },
     routerQuery () {
       return this.$route.query
@@ -720,9 +692,20 @@ export default {
     return {
       form: this.form,
       fi: this.form.fi,
+      getCreateFormDraftScope: () => this.getCreateFormDraftScope(),
+      canUseCreateFormFieldDraft: () => this.canUseCreateFormDraft,
+      registerCreateFormFieldDraftFlush: (fn) => this.registerCreateFormFieldDraftFlush(fn),
+      readCreateFormFieldDraft: (key) => this.readCreateFormFieldDraft(key),
+      writeCreateFormFieldDraft: (key, data, options) => this.writeCreateFormFieldDraft(key, data, options),
+      bindCreateFormFieldDraft: (spec) => this.bindCreateFormFieldDraft(spec),
     }
   },
   watch: {
+    isBonding (val) {
+      if (!this.canUseCreateFormDraft || this.isFormBackfill) return
+      if (!this.createFormDraftUserInteracted) return
+      this.writeCreateFormFieldDraft(BAREMETAL_CREATE_FORM_DRAFT_FIELD.IS_BONDING, !!val)
+    },
     diskOptionsDate: {
       handler (val) {
         let isDistribution = false
@@ -744,12 +727,8 @@ export default {
             this.isShowFalseIcon = false
           }
         }
-        this.scheduleSaveCreateFormDraft()
       },
       deep: true,
-    },
-    isBonding () {
-      this.scheduleSaveCreateFormDraft()
     },
     project_domain (newVal, oldVal) {
       if (this.isInstallOperationSystem) this.fetchSpec()
@@ -772,6 +751,14 @@ export default {
     if (this.scope !== 'project') {
       this.loadHostOpt()
     }
+    this.bindCreateFormFieldDraft({
+      key: BAREMETAL_CREATE_FORM_DRAFT_FIELD.IS_BONDING,
+      get: () => this.isBonding,
+      set: (val) => {
+        this.isBonding = !!val
+      },
+    })
+    this.bindBaremetalCreateFormFcDrafts()
   },
   mounted () {
     this.initForm()
@@ -800,14 +787,9 @@ export default {
       }
     },
     async _runInitForm () {
-      const initData = this.isInitForm
-        ? this.initFormData
-        : (this._draftInitFormData || this.effectiveInitFormData)
+      const initData = this.isInitForm ? this.initFormData : null
       let cData = {}
-      const canInit = !!(
-        (this.isInitForm && initData?.extraData) ||
-        (this._draftInitFormData && initData?.extraData)
-      )
+      const canInit = !!(this.isInitForm && initData?.extraData)
       if (!canInit || !this.form?.fc) return
       if (this._initFormDone) return
       this._initFormDone = true
@@ -1354,138 +1336,7 @@ export default {
       })
     },
     /**
-     * 序列化草稿：与工单 server-create-paramter 同形
-     * @returns {object|null}
-     */
-    serializeCreateFormDraft () {
-      try {
-        const values = this.form.fc.getFieldsValue() || {}
-        if (!values.cloudregion?.key && !values.zone?.key && !values.specifications) {
-          return null
-        }
-        const diskConfigs = []
-        const disks = []
-        const nets = []
-        const extraData = {
-          formType: this.cloudEnv,
-          __resource_type__: 'baremetal',
-          image_type: values.imageType,
-          os: values.os,
-          image: values.image?.key || values.image,
-          domain_id: values.domain?.key || this.$store.getters.userInfo.projectDomainId,
-          specifications: values.specifications,
-          extraNets: [],
-        }
-        // 克隆磁盘配置，避免 pop/unshift 污染 UI
-        const diskOptionsDate = JSON.parse(JSON.stringify(this.diskOptionsDate || []))
-        if (diskOptionsDate.length > 0) {
-          const systemDisk = diskOptionsDate[0].chartData.rows.pop()
-          diskOptionsDate[0].chartData.rows.unshift(systemDisk)
-          for (var i = 0; i < diskOptionsDate.length; i++) {
-            const rows = diskOptionsDate[i].chartData.rows
-            const adapter = Number(diskOptionsDate[i].diskInfo[1].charAt(diskOptionsDate[i].diskInfo[1].length - 1))
-            diskConfigs.push({
-              conf: diskOptionsDate[i].diskInfo[2],
-              driver: diskOptionsDate[i].diskInfo[0],
-              count: diskOptionsDate[i].count,
-              range: diskOptionsDate[i].range,
-              adapter,
-              type: diskOptionsDate[i].type === 'HDD' ? 'rotate' : 'ssd',
-            })
-            for (var j = 0; j < rows.length; j++) {
-              let option = {
-                size: rows[j].size * 1024,
-                fs: rows[j].format,
-                mountpoint: rows[j].name,
-              }
-              if (i === 0 && j === 0) {
-                if (values.imageType === 'iso') {
-                  option = { size: rows[j].size * 1024 }
-                } else {
-                  option = {
-                    size: rows[j].size * 1024,
-                    image_id: values.image?.key || values.image,
-                  }
-                }
-              }
-              if (j === rows.length - 1) {
-                option.size = -1
-                if (!rows[j].format) Reflect.deleteProperty(option, 'fs')
-                if (rows[j].name === i18n.t('compute.text_315')) Reflect.deleteProperty(option, 'mountpoint')
-              }
-              disks.push(option)
-            }
-          }
-          diskConfigs.sort((a, b) => a.adapter - b.adapter)
-        }
-        if (values.networks) {
-          const networks = values.networks
-          for (const key in networks) {
-            const option = { network: networks[key] }
-            if (!R.isNil(values.networkIps) && !R.isEmpty(values.networkIps) && values.networkIps[key]) {
-              option.address = values.networkIps[key]
-            }
-            if (this.isBonding) option.require_teaming = true
-            nets.push(option)
-            if (values.vpcs && values.vpcs[key]) {
-              extraData.extraNets.push({ ...option, vpc: values.vpcs[key] })
-            } else {
-              extraData.extraNets.push(option)
-            }
-          }
-        } else if (values.networkSchedtags) {
-          R.forEachObjIndexed((value, key) => {
-            const obj = { id: value }
-            if (this.isBonding) obj.require_teaming = true
-            const strategy = values.networkPolicys?.[key]
-            if (strategy) obj.strategy = strategy
-            nets.push({ schedtags: [obj] })
-          }, values.networkSchedtags)
-        } else {
-          nets.push(this.isBonding ? { exit: false, require_teaming: true } : { exit: false })
-        }
-        const memStr = this.selectedSpecItem?.mem
-        const params = {
-          project_id: this.projectId?.key || values.project?.key || this.$store.getters.userInfo.projectId,
-          count: values.count,
-          vmem_size: memStr ? Number(memStr.substr(0, memStr.length - 1)) : undefined,
-          vcpu_count: this.selectedSpecItem?.cpu ? Number(this.selectedSpecItem.cpu) : undefined,
-          generate_name: values.name,
-          hypervisor: 'baremetal',
-          provider: this.cloudEnv === 'private' ? 'Cloudpods' : 'OneCloud',
-          auto_start: true,
-          vdi: 'vnc',
-          disks,
-          baremetal_disk_configs: diskConfigs,
-          nets,
-          prefer_host: values.schedPolicyHost,
-          description: values.description,
-          prefer_region: values.cloudregion ? values.cloudregion.key : undefined,
-          prefer_zone: values.zone ? values.zone.key : undefined,
-          __meta__: values.__meta__,
-          extraData,
-        }
-        if (values.loginKeypair) params.keypair = values.loginKeypair.key || values.loginKeypair
-        if (values.loginType === 'image') params.reset_password = false
-        if (values.imageType === 'iso' && values.image) {
-          params.cdrom = values.image.key || values.image
-        }
-        // 调度标签：表单字段 + 组件内存双通道收集，避免 getFieldsValue 漏字段
-        const schedtags = this.collectSchedtagsForDraft(values)
-        if (schedtags.length) {
-          params.schedtags = schedtags
-          extraData.schedtags = schedtags
-        }
-        return buildBaremetalCreateDraftPayload(params, {
-          loginType: values.loginType,
-          isBonding: this.isBonding,
-        })
-      } catch (e) {
-        return null
-      }
-    },
-    /**
-     * 从表单 / PolicySchedtag 组件收集调度标签，供草稿落盘
+     * 从表单 / PolicySchedtag 组件收集调度标签
      */
     collectSchedtagsForDraft (values = {}) {
       const schedtags = []
@@ -1748,8 +1599,8 @@ export default {
         const shopCart = this.buildShopCartParameter(workflowParams)
         this.$message.success(this.$t('common.success'))
         this.$store.commit('shopcart/ADD_SHOP_CART', shopCart)
-        this.saveCreateFormDraft(buildBaremetalCreateDraftPayload(workflowParams, { loginType: values.loginType, isBonding: this.isBonding }), { fromSubmit: true })
-      } else if (this.isModifyShopCartOrder || this.isOpenWorkflow || this.isModifyWorkflow) { // 修改购物车订单项 / 主机申请工单（含修改历史工单）
+        this.flushCreateFormFieldDrafts()
+      } else if (this.isModifyShopCartOrder || this.isOpenWorkflow || this.isModifyWorkflow) {
         const workflowParams = {
           ...params,
           extraData,
@@ -1764,16 +1615,13 @@ export default {
           project_domain: this.domainId?.key || this.$store.getters.userInfo.projectDomainId,
         }
         await this.doCreateWorkflow(variables, workflowParams)
-        this.saveCreateFormDraft(buildBaremetalCreateDraftPayload(workflowParams, { loginType: values.loginType, isBonding: this.isBonding }), { fromSubmit: true })
-      } else if (this.isOpenOrderSetWorkflow) { // 购物车工单
+      } else if (this.isOpenOrderSetWorkflow) {
         const workflowParams = {
           ...params,
           extraData,
         }
         await this.doCreateOrderSetWorkflow(workflowParams)
-        this.saveCreateFormDraft(buildBaremetalCreateDraftPayload(workflowParams, { loginType: values.loginType, isBonding: this.isBonding }), { fromSubmit: true })
       } else { // 创建裸金属
-        this._pendingDraftPayload = buildBaremetalCreateDraftPayload({ ...params, extraData }, { loginType: values.loginType, isBonding: this.isBonding })
         this.doForecast(params)
       }
     },
@@ -1907,11 +1755,8 @@ export default {
       const { count } = data
       const onSuccess = () => {
         this.submiting = false
+        this.flushCreateFormFieldDrafts()
         this.$message.success(i18n.t('compute.text_322'))
-        if (this._pendingDraftPayload) {
-          this.saveCreateFormDraft(this._pendingDraftPayload, { fromSubmit: true })
-          this._pendingDraftPayload = null
-        }
         if (this.isInstallOperationSystem) {
           this.$router.push('/physicalmachine')
         } else {
@@ -1982,6 +1827,25 @@ export default {
     },
     handleCancel () {
       this.$router.push({ name: 'Baremetal' })
+    },
+    bindBaremetalCreateFormFcDrafts () {
+      this._baremetalCreateFormFcDraftMap = Object.create(null)
+      ;(BAREMETAL_CREATE_FORM_DRAFT_FC_BINDINGS || []).forEach((item) => {
+        if (!item?.key || !item.formField) return
+        this._baremetalCreateFormFcDraftMap[item.formField] = item.key
+        this.bindFormFcFieldDraft(item.key, { formField: item.formField })
+      })
+    },
+    syncBaremetalCreateFormFcDrafts (newField) {
+      if (!this.canUseCreateFormDraft || !newField || typeof newField !== 'object') return
+      // 仅用户交互后落盘，避免程序化 setFieldsValue 污染草稿
+      if (!this.createFormDraftUserInteracted) return
+      const map = this._baremetalCreateFormFcDraftMap || {}
+      Object.keys(newField).forEach((formField) => {
+        const draftKey = map[formField]
+        if (!draftKey) return
+        this.writeCreateFormFieldDraft(draftKey, newField[formField])
+      })
     },
   },
 }

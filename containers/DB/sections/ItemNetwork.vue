@@ -33,19 +33,30 @@ export default {
         </div>
       )
     },
+    /** zone / zones 可能是 string、数组或 {key,id,value}，统一成可 split 的 id */
+    normalizeZoneValue (zone) {
+      if (zone == null || zone === '') return ''
+      let val = zone
+      if (Array.isArray(val)) {
+        val = val[0]
+      }
+      if (val && typeof val === 'object') {
+        val = val.key || val.id || val.value || ''
+      }
+      if (val == null || val === '') return ''
+      return typeof val === 'string' ? val : String(val)
+    },
     getVpcParams () {
       const { fd } = this.form
       const params = {
         cloudregion_id: fd.cloudregion_id || fd.cloudregion,
         ...this.scopeParams,
       }
-      const zone = fd.zones || fd.zone
+      const zone = this.normalizeZoneValue(fd.zones || fd.zone || fd.zone_id)
       if (fd.provider === 'Aws') {
         params.provider = 'Aws'
-      } else {
-        if (zone) {
-          params.zone_id = zone.split('+')[0]
-        }
+      } else if (zone) {
+        params.zone_id = zone.split('+')[0]
       }
       return params
     },
@@ -56,25 +67,23 @@ export default {
         ...this.scopeParams,
       }
       // zones是rds新建
-      const zonesStr = this.form.getFieldValue('zones')
+      const zonesStr = this.normalizeZoneValue(this.form.getFieldValue('zones'))
       if (fd.provider === 'Aws') {
         params.provider = 'Aws'
-      } else {
-        if (zonesStr) {
-          const zoneArr = zonesStr.split('+')
-          if (zoneArr && zoneArr.length > 0) {
-            params['zones.0'] = zoneArr[0]
-          }
+      } else if (zonesStr) {
+        const zoneArr = zonesStr.split('+')
+        if (zoneArr && zoneArr.length > 0) {
+          params['zones.0'] = zoneArr[0]
         }
       }
       // zone是redis新建
-      const zone = this.form.getFieldValue('zone')
+      const zone = this.normalizeZoneValue(this.form.getFieldValue('zone'))
       if (zone) {
         params.zone = zone
       } else {
-        const zone_id = this.form.getFieldValue('zone_id')
-        if (zone_id) {
-          params.zone = zone_id
+        const zoneId = this.normalizeZoneValue(this.form.getFieldValue('zone_id'))
+        if (zoneId) {
+          params.zone = zoneId
         }
       }
       return params
