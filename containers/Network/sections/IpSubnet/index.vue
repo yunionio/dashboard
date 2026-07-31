@@ -39,7 +39,7 @@
         </a-form-item>
       </a-col>
       <a-col :span="8" v-if="showIpConfig">
-        <a-button v-if="!this.ipShow" type="link" class="mr-1 mt-1" @click="triggerShowIp">{{$t('compute.text_198')}}</a-button>
+        <a-button v-if="!ipShow" type="link" class="mr-1 mt-1" @click="triggerShowIp">{{$t('compute.text_198')}}</a-button>
         <a-row v-else>
           <a-col :span="21">
             <a-form-item class="mb-0" :wrapperCol="{ span: 24 }">
@@ -59,11 +59,20 @@
 
 <script>
 import i18n from '@/locales'
+import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 
 export default {
   name: 'IpSubnet',
-  inject: ['form'],
+  mixins: [createFormFieldDraftMixin],
+  // 对象写法，避免覆盖 mixin 草稿 inject
+  inject: {
+    form: { default: undefined },
+  },
   props: {
+    formDraftKey: {
+      type: String,
+      default: '',
+    },
     labelCol: {
       type: Object,
       default: () => {
@@ -125,6 +134,15 @@ export default {
     }
   },
   computed: {
+    vpcField () {
+      return (Array.isArray(this.decorator.vpc) && this.decorator.vpc[0]) || 'vpc'
+    },
+    networkField () {
+      return (Array.isArray(this.decorator.network) && this.decorator.network[0]) || 'network'
+    },
+    ipAddrField () {
+      return (Array.isArray(this.decorator.ip_addr) && this.decorator.ip_addr[0]) || 'ip_addr'
+    },
     vpcParmasConcat () {
       return {
         limit: 0,
@@ -140,9 +158,143 @@ export default {
       }
     },
   },
+  watch: {
+    selectedVpc (val) {
+      if (this._ipSubnetDraftRestoring || this._pendingIpSubnetDraft) {
+        this.$nextTick(() => this.tryApplyPendingIpSubnetDraft())
+        return
+      }
+      this.persistFormFieldDraftSnapshot()
+    },
+    'form.fd.network' () {
+      if (this._ipSubnetDraftRestoring || this._pendingIpSubnetDraft) {
+        this.$nextTick(() => this.tryApplyPendingIpSubnetDraft())
+        return
+      }
+      this.persistFormFieldDraftSnapshot()
+    },
+    'form.fd.ip_addr' () {
+      if (this._ipSubnetDraftRestoring || this._pendingIpSubnetDraft) return
+      this.persistFormFieldDraftSnapshot()
+    },
+    vpcParmasConcat: {
+      deep: true,
+      handler () {
+        if (this._pendingIpSubnetDraft) {
+          this.$nextTick(() => this.tryApplyPendingIpSubnetDraft())
+        }
+      },
+    },
+  },
+  created () {
+    this._pendingIpSubnetDraft = null
+    this._ipSubnetDraftRestoring = false
+    this._ipSubnetDraftRetryTimer = null
+    this._ipSubnetDraftRetryCount = 0
+  },
+  beforeDestroy () {
+    if (this._ipSubnetDraftRetryTimer) {
+      clearTimeout(this._ipSubnetDraftRetryTimer)
+      this._ipSubnetDraftRetryTimer = null
+    }
+  },
   methods: {
+    getCreateFormFieldDraftSnapshot () {
+      const fc = this.form?.fc
+      if (!fc) return undefined
+      const vpc = fc.getFieldValue(this.vpcField)
+      const network = fc.getFieldValue(this.networkField)
+      const ipAddr = fc.getFieldValue(this.ipAddrField)
+      if (!vpc && !network && !ipAddr && !this.ipShow) return undefined
+      return {
+        vpc,
+        network,
+        ip_addr: ipAddr,
+        ipShow: this.ipShow,
+      }
+    },
+    applyCreateFormFieldDraft (draft) {
+      if (!draft || typeof draft !== 'object') return
+      const hasAny = draft.vpc || draft.network || draft.ip_addr || draft.ipShow
+      if (!hasAny) return
+      this._pendingIpSubnetDraft = {
+        vpc: draft.vpc,
+        network: draft.network,
+        ip_addr: draft.ip_addr,
+        ipShow: !!(draft.ipShow || draft.ip_addr),
+      }
+      this._ipSubnetDraftRetryCount = 0
+      if (this._pendingIpSubnetDraft.ipShow) {
+        this.ipShow = true
+      }
+      this.$nextTick(() => this.tryApplyPendingIpSubnetDraft())
+    },
+    persistFormFieldDraftSnapshot (options = {}) {
+      // 回填期间勿落盘，避免默认首项冲掉指定 IP / 网段草稿
+      if (this._ipSubnetDraftRestoring || this._pendingIpSubnetDraft) return
+      const data = this.serializeFormFieldDraft()
+      if (data === undefined) return
+      this.writeFormFieldDraft(data, options)
+    },
+    scheduleIpSubnetDraftRetry () {
+      if (!this._pendingIpSubnetDraft) return
+      if (this._ipSubnetDraftRetryCount >= 8) {
+        this._pendingIpSubnetDraft = null
+        return
+      }
+      if (this._ipSubnetDraftRetryTimer) clearTimeout(this._ipSubnetDraftRetryTimer)
+      this._ipSubnetDraftRetryTimer = setTimeout(() => {
+        this._ipSubnetDraftRetryCount += 1
+        this.tryApplyPendingIpSubnetDraft()
+      }, 300)
+    },
+    async tryApplyPendingIpSubnetDraft () {
+      const draft = this._pendingIpSubnetDraft
+      if (!draft || !this.form?.fc || this._ipSubnetDraftRestoring) return
+
+      this._ipSubnetDraftRestoring = true
+      try {
+        if (draft.ipShow) this.ipShow = true
+
+        if (draft.vpc) {
+          this.form.fc.setFieldsValue({ [this.vpcField]: draft.vpc })
+          if (!this.selectedVpc?.id || this.selectedVpc.id !== draft.vpc) {
+            // BaseSelect item.sync 可能尚未跟上，先写上 id 以便拉 network
+            this.selectedVpc = { ...(this.selectedVpc || {}), id: draft.vpc }
+          }
+          await this.$nextTick()
+        }
+
+        // network 依赖 vpc params 就绪；多等一拍让 BaseSelect 拉列表
+        if (draft.network) {
+          await this.$nextTick()
+          this.form.fc.setFieldsValue({ [this.networkField]: draft.network })
+        }
+
+        if (draft.ip_addr && this.ipShow) {
+          await this.$nextTick()
+          this.form.fc.setFieldsValue({ [this.ipAddrField]: draft.ip_addr })
+        }
+
+        const vpcOk = !draft.vpc || this.form.fc.getFieldValue(this.vpcField) === draft.vpc
+        const networkOk = !draft.network || this.form.fc.getFieldValue(this.networkField) === draft.network
+        const ipOk = !draft.ip_addr || !this.ipShow || this.form.fc.getFieldValue(this.ipAddrField) === draft.ip_addr
+        if (vpcOk && networkOk && ipOk) {
+          this._pendingIpSubnetDraft = null
+          this._ipSubnetDraftRetryCount = 0
+        } else {
+          this.scheduleIpSubnetDraftRetry()
+        }
+      } finally {
+        this._ipSubnetDraftRestoring = false
+        if (!this._pendingIpSubnetDraft) {
+          this.$nextTick(() => this.persistFormFieldDraftSnapshot())
+        }
+      }
+    },
     triggerShowIp () {
       this.ipShow = !this.ipShow
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     vpcLabelFormat (item) {
       if (!item.cidr_block) return item.name

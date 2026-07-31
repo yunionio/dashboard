@@ -20,7 +20,8 @@
         :extra-opts="secgroupExtraOpts"
         :showSync="true"
         :select-props="{ allowClear: true, placeholder: $t('compute.text_190'), mode: 'multiple' }"
-        @update:initLoaded="onSecgroupInitLoaded" />
+        @update:initLoaded="onSecgroupInitLoaded"
+        @change="onSecgroupChange" />
     </a-form-item>
     <a-form-item
       class="mb-0"
@@ -49,9 +50,15 @@ import { SECGROUP_OPTIONS_MAP } from '@Compute/constants'
 import { HYPERVISORS_MAP, isUcloudLikeHypervisor } from '@/constants'
 import { validate } from '@/utils/validate'
 
+import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 export default {
   name: 'SecgroupConfig',
+  mixins: [createFormFieldDraftMixin],
   props: {
+    formDraftKey: {
+      type: String,
+      default: '',
+    },
     decorators: {
       type: Object,
       required: true,
@@ -110,10 +117,8 @@ export default {
       loading: false,
       disabled: false,
       pendingInitSecgroups: [],
-      // secgroupDecorator: [
-      //   this.decorators.secgroup[0],
-      //   this.secgroupDecMsg,
-      // ],
+      /** id -> name，避免 extraOpts 只用 id 导致标签展示 UUID */
+      pendingSecgroupNameMap: {},
     }
   },
   computed: {
@@ -137,7 +142,10 @@ export default {
       return params
     },
     secgroupExtraOpts () {
-      return (this.pendingInitSecgroups || []).map(id => ({ id, name: id }))
+      return (this.pendingInitSecgroups || []).map(id => ({
+        id,
+        name: this.pendingSecgroupNameMap[id] || id,
+      }))
     },
     href () {
       const url = this.$router.resolve('/secgroup')
@@ -218,6 +226,7 @@ export default {
     },
     types (val) {
       if (this.ignoreAutoTypeReset) return
+      if (this.canReadWriteFormFieldDraft() && this.readFormFieldDraft()?.secgroup_type) return
       if (!val.bind && this.form.fd && this.form.fd[this.decorators.type[0]] === 'bind' && this.form && this.form.fc) {
         this.form.fc.setFieldsValue({
           [this.decorators.type[0]]: 'default',
@@ -252,7 +261,10 @@ export default {
       deep: true,
     },
     ignoreAutoTypeReset (val) {
-      if (!val) this.pendingInitSecgroups = []
+      if (!val) {
+        this.pendingInitSecgroups = []
+        this.pendingSecgroupNameMap = {}
+      }
     },
     isNetworkTag (val) {
       if (!val) {
@@ -272,6 +284,59 @@ export default {
     this.unbindNetworkTagInputKeydown()
   },
   methods: {
+    getCreateFormFieldDraftSnapshot () {
+      const f = this.form?.fc
+      if (!f) return undefined
+      const typeField = this.decorators.type[0]
+      const secgroupField = this.decorators.secgroup[0]
+      const networkTagField = this.decorators.network_tags?.[0]
+      return {
+        secgroup_type: f.getFieldValue(typeField),
+        secgroup: f.getFieldValue(secgroupField),
+        network_tag: networkTagField ? f.getFieldValue(networkTagField) : undefined,
+        network_tags: networkTagField ? f.getFieldValue(networkTagField) : undefined,
+      }
+    },
+    applyCreateFormFieldDraft (draft) {
+      if (!draft || !this.form?.fc) return
+      const typeField = this.decorators.type[0]
+      const secgroupField = this.decorators.secgroup[0]
+      const networkTagField = this.decorators.network_tags?.[0]
+      if (draft.secgroup_type) {
+        this.isBind = draft.secgroup_type === SECGROUP_OPTIONS_MAP.bind.key
+        this.isNetworkTag = draft.secgroup_type === SECGROUP_OPTIONS_MAP.networkTag.key
+        this.form.fc.setFieldsValue({ [typeField]: draft.secgroup_type })
+      }
+      const tagVal = draft.network_tags != null ? draft.network_tags : draft.network_tag
+      if (networkTagField && tagVal != null) {
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({ [networkTagField]: tagVal })
+        })
+      }
+      if (draft.secgroup) {
+        const ids = this.normalizeSecgroupIds(Array.isArray(draft.secgroup) ? draft.secgroup : [draft.secgroup])
+        if (ids.length) {
+          this.setPendingInitSecgroups(ids)
+          this.isBind = true
+          this.form.fc.setFieldsValue({ [typeField]: SECGROUP_OPTIONS_MAP.bind.key })
+          // BaseSelect 在 isBind 后才挂载，需延迟/initLoaded 再写具体安全组
+          const write = () => {
+            if (!this.pendingInitSecgroups.length || !this.form?.fc) return
+            this.isBind = true
+            this.form.fc.setFieldsValue({
+              [typeField]: SECGROUP_OPTIONS_MAP.bind.key,
+              [secgroupField]: [...this.pendingInitSecgroups],
+            })
+          }
+          this.$nextTick(() => {
+            write()
+            setTimeout(write, 800)
+            setTimeout(write, 2000)
+          })
+        }
+      }
+    },
+
     normalizeSecgroupIds (secgroups) {
       if (!Array.isArray(secgroups) || !secgroups.length) return []
       return secgroups.map((item) => {
@@ -281,21 +346,81 @@ export default {
       }).filter(Boolean)
     },
     /**
+     * 设置 pending 并拉取名称（BaseSelect extraOpts 优先于列表项，name 必须是真名）
+     * @param {string[]} ids
+     */
+    setPendingInitSecgroups (ids) {
+      const next = this.normalizeSecgroupIds(ids)
+      this.pendingInitSecgroups = next
+      if (!next.length) {
+        this.pendingSecgroupNameMap = {}
+        return
+      }
+      this.ensurePendingSecgroupNames(next)
+    },
+    /**
+     * 批量拉取安全组名称，避免回填标签展示 UUID
+     * @param {string[]} ids
+     */
+    async ensurePendingSecgroupNames (ids) {
+      const list = (ids || []).filter(Boolean)
+      if (!list.length) return
+      const missing = list.filter((id) => {
+        const name = this.pendingSecgroupNameMap[id]
+        return !name || name === id
+      })
+      if (!missing.length) return
+      const reqToken = missing.slice().sort().join(',')
+      this._secgroupNameFetchToken = reqToken
+      try {
+        const params = {
+          limit: missing.length,
+          details: true,
+          filter: `id.in(${missing.map(id => `'${id}'`).join(',')})`,
+        }
+        if (this.secgroupParams?.project_domain) {
+          params.project_domain = this.secgroupParams.project_domain
+        } else {
+          params.scope = this.$store.getters.scope
+        }
+        const { data: { data = [] } } = await new this.$Manager('secgroups', 'v2').list({ params })
+        if (this._secgroupNameFetchToken !== reqToken) return
+        const next = { ...this.pendingSecgroupNameMap }
+        data.forEach((item) => {
+          if (item?.id) next[item.id] = item.name || item.id
+        })
+        missing.forEach((id) => {
+          if (!next[id]) next[id] = id
+        })
+        this.pendingSecgroupNameMap = next
+      } catch (e) {
+        if (this._secgroupNameFetchToken !== reqToken) return
+        const next = { ...this.pendingSecgroupNameMap }
+        missing.forEach((id) => {
+          if (!next[id]) next[id] = id
+        })
+        this.pendingSecgroupNameMap = next
+      }
+    },
+    /**
      * 工单/草稿回填入口
      * @param {Array} secgroups
      */
     initData (secgroups) {
       const ids = this.normalizeSecgroupIds(secgroups)
       if (!ids.length) return
-      this.pendingInitSecgroups = ids
+      this.setPendingInitSecgroups(ids)
       this.isBind = true
       this.writePendingSecgroups()
     },
     writePendingSecgroups () {
       if (!this.pendingInitSecgroups.length || !this.form?.fc) return
-      // 回填结束后不再强写，避免覆盖用户手动清空
-      if (!this.ignoreAutoTypeReset) {
-        this.pendingInitSecgroups = []
+      // 工单：ignoreAutoTypeReset；控件草稿：保留 pending 以便 BaseSelect 清空后再写
+      const draft = this.canReadWriteFormFieldDraft() ? this.readFormFieldDraft() : null
+      const allowRewrite = this.ignoreAutoTypeReset ||
+        !!(draft && (draft.secgroup || draft.secgroup_type === SECGROUP_OPTIONS_MAP.bind.key))
+      if (!allowRewrite) {
+        this.setPendingInitSecgroups([])
         return
       }
       this.isBind = true
@@ -370,6 +495,10 @@ export default {
       } else {
         this.unbindNetworkTagInputKeydown()
       }
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
+    },
+    onSecgroupChange () {
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     bindNetworkTagInputKeydown () {
       if (!this.isNetworkTag) return

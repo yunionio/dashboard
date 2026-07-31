@@ -13,6 +13,7 @@
           :fd="form.fd"
           :decorators="{ project: decorators.project, domain: decorators.domain }"
           :ignoreStorage="ignoreLocalFormStorage"
+          :form-draft-key="containerDraftFields.domainProject"
           @fetchDomainCallback="fetchDomainCallback"
           @fetchProjectCallback="fetchProjectCallback" />
       </a-form-item>
@@ -21,6 +22,7 @@
           :zone-params="zoneParams"
           :cloudregion-params="cloudregionParams"
           :decorator="decorators.cloudregionZone"
+          :form-draft-key="containerDraftFields.cloudregionZone"
           filterBrandResource="compute_engine" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_228')">
@@ -36,7 +38,7 @@
         <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1042')" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1132')">
-        <duration :decorators="decorators.duration" :form="form" />
+        <duration :decorators="decorators.duration" :form="form" :form-draft-key="containerDraftFields.duration" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_294')">
         <a-input-number v-decorator="decorators.count" @blur="countBlur" :min="1" :max="100" />
@@ -46,7 +48,8 @@
         <os-arch
           v-decorator="decorators.os_arch"
           :form="form"
-          :options="archOptions" />
+          :options="archOptions"
+          :form-draft-key="containerDraftFields.osArch" />
       </a-form-item>
       <a-form-item>
         <span slot="label">
@@ -55,13 +58,13 @@
             <a-icon type="question-circle-o" />
           </a-tooltip>
         </span>
-        <pci :decorators="decorators.pci" :pciDevTypeOptions="pciDevTypeOptions" :form="form" :pci-options="pciOptions" />
+        <pci :decorators="decorators.pci" :pciDevTypeOptions="pciDevTypeOptions" :form="form" :pci-options="pciOptions" :form-draft-key="containerDraftFields.pci" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1058')" class="mb-0">
-        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :showUnlimited="true" :form="form" :hypervisor="form.fd.hypervisor" @change="cpuChange" />
+        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :showUnlimited="true" :form="form" :hypervisor="form.fd.hypervisor" :form-draft-key="containerDraftFields.vcpu" @change="cpuChange" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_369')" class="mb-0">
-        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :showUnlimited="true" />
+        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :showUnlimited="true" :form-draft-key="containerDraftFields.vmem" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_109')" v-if="showSku">
         <sku
@@ -69,7 +72,8 @@
           :type="type"
           :sku-params="skuParam"
           :hypervisor="form.fd.hypervisor"
-          :init-sku-data="initSkuData" />
+          :init-sku-data="initSkuData"
+          :form-draft-key="containerDraftFields.sku" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_50')">
         <data-disk
@@ -87,6 +91,7 @@
           :isVminstanceContainer="true"
           :storageParams="dataDiskStorageParams"
           :storageHostParams="storageHostParams"
+          :form-draft-key="containerDraftFields.dataDisk"
           @storageHostChange="storageHostChange" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_104')" class="mb-0">
@@ -105,17 +110,20 @@
           :networkResourceMapper="networkResourceMapper"
           :showMacConfig="true"
           :showDeviceConfig="true"
-          :ignore-auto-network-type="isFormBackfill" />
+          :ignore-auto-network-type="isFormBackfill"
+          :form-draft-key="containerDraftFields.serverNetwork" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
           v-decorator="decorators.tag"
-          :default-checked="tagDefaultChecked" />
+          :default-checked="tagDefaultChecked"
+          :form-draft-key="containerDraftFields.tag" />
       </a-form-item>
       <a-collapse :bordered="false" v-model="collapseActive">
         <a-collapse-panel :header="$t('compute.text_309')" key="1" :forceRender="true">
           <eip-config
             v-if="showEip"
+            ref="eipConfigRef"
             :decorators="decorators.eip"
             :eip-params="eipParams"
             :hypervisor="form.fd.hypervisor"
@@ -123,7 +131,8 @@
             :showNew="false"
             :cloud-env="type"
             :form="form"
-            :formItemLayout="formItemLayout" />
+            :formItemLayout="formItemLayout"
+            :form-draft-key="containerDraftFields.eip" />
           <a-form-item
             :validate-status="hostNameValidate.validateStatus"
             :help="hostNameValidate.errorMsg">
@@ -144,8 +153,9 @@
               :secgroup-params="secgroupParams"
               :hypervisor="form.fd.hypervisor"
               :showSecgroupBind="showSecgroupBind"
-              :ignore-auto-type-reset="isFormBackfill"
-              :init-secgroups="draftInitSecgroups" />
+              :ignore-auto-type-reset="preserveAdvanceInitProps"
+              :init-secgroups="draftInitSecgroups"
+              :form-draft-key="containerDraftFields.secgroup" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_311')" class="mb-0">
             <sched-policy
@@ -160,10 +170,15 @@
               :cloudproviderParamsExtra="cloudproviderParamsExtra"
               :init-schedtags="draftInitSchedtags"
               :init-prefer-host="draftInitPreferHost"
-              :preserve-init-prefer-host="isFormBackfill" />
+              :preserve-init-prefer-host="preserveAdvanceInitProps"
+              :form-draft-key="containerDraftFields.schedPolicy" />
           </a-form-item>
           <a-form-item :label="$t('dictionary.instancegroup')" :extra="$t('compute.text_1158')">
-            <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
+            <instance-groups
+              ref="instanceGroupsRef"
+              :decorators="instanceGroupDecorators"
+              :params="instanceGroupsParams"
+              :form-draft-key="containerDraftFields.instanceGroups" />
           </a-form-item>
           <a-form-item :label="$t('compute.repo.port_mapping')">
             <labels
@@ -172,6 +187,7 @@
               :decorators="decorators.portMapping"
               :disableConf="portMappingDisableConf"
               :init-pairs="draftInitPortMappings"
+              :form-draft-key="containerDraftFields.portMapping"
               :title="$t('compute.repo.port_mapping')"
               :keyLabel="$t('compute.repo.container_port')"
               :valueLabel="$t('compute.repo.host_port')"
@@ -187,7 +203,8 @@
         :panes.sync="form.fi.containerPanes"
         :errPanes="form.fi.errPanes"
         :decorators="decorators.containers"
-        :initContainers="containerInitList" />
+        :initContainers="containerInitList"
+        :form-draft-key="containerDraftFields.containers" />
       <bottom-bar
         :loading="submiting"
         :form="form"
@@ -251,6 +268,13 @@ export default {
     },
     isLoongarch64 () {
       return this.form.fd.os_arch === HOST_CPU_ARCHS.loongarch64.key
+    },
+    instanceGroupDecorators () {
+      if (this.decorators && this.decorators.groups) return this.decorators.groups
+      return {
+        groupsEnable: ['groupsEnable', { valuePropName: 'checked', initialValue: false }],
+        groups: ['groups', { initialValue: [] }],
+      }
     },
     vdi () {
       return this.form.fd.vdi
@@ -642,8 +666,13 @@ export default {
           this.$nextTick(this.fetchInstanceSpecs)
         }
         if (changedFields.schedPolicyType === 'host') {
-          // 回填期间保留 prefer_host，避免刚切到「指定宿主机」就把值清掉
-          if (!this.isFormBackfill) {
+          // 控件草稿/工单回填指定宿主机时不要清空
+          const keepHost = this.isFormBackfill ||
+            this.form?.fi?.advanceDraftRestoring ||
+            Object.prototype.hasOwnProperty.call(changedFields, 'schedPolicyHost') ||
+            this.$refs.schedPolicyRef?.pendingPreferHost ||
+            this.$refs.schedPolicyRef?._schedPolicyDraftApplying
+          if (!keepHost) {
             this.$set(this.form.fd, 'schedPolicyHost', undefined)
           }
         }

@@ -1,18 +1,18 @@
 <template>
   <div>
     <a-form-item :label="$t('db.text_131')" v-bind="formItemLayout">
-      <a-radio-group v-decorator="['vcpu_count']" @change="getMemsMb">
+      <a-radio-group v-decorator="['vcpu_count']" @change="onCpuChange">
         <a-radio-button :key="cpu" :value="cpu" v-for="cpu in cpus">{{$t('db.text_125', [cpu])}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
     <a-form-item :label="$t('db.text_132')" v-bind="formItemLayout">
-      <a-radio-group v-decorator="['vmem_size_mb']" @change="$emit('change')">
+      <a-radio-group v-decorator="['vmem_size_mb']" @change="onMemChange">
         <a-radio-button :key="size" :value="size" v-for="size in mems_mbs">{{sizestr(size, 'M', 1024)}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
     <a-form-item :label="$t('db.text_133')" v-bind="formItemLayout" v-if="form.fd.provider !== 'Aws'">
       <slot name="zone" v-if="$slots.zone" />
-      <a-radio-group v-else v-decorator="['zones']" @change="$emit('change')">
+      <a-radio-group v-else v-decorator="['zones']" @change="onZoneChange">
         <a-radio-button :key="id" :value="id" v-for="(zone, id) of zones">{{zone}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
@@ -21,6 +21,9 @@
 <script>
 import { sizestr } from '@/utils/utils'
 
+/**
+ * 约定：仅用户点击写草稿；specs 拉取后 options 变化时按草稿回填
+ */
 export default {
   name: 'rdsSizeFilter',
   inject: {
@@ -28,6 +31,8 @@ export default {
     formItemLayout: { default: null },
     scopeParams: { default: null },
     getCreateFormDraftPreferred: { default: undefined },
+    persistRdsSkuDraftField: { default: undefined },
+    setRdsSkuDraftRestoring: { default: undefined },
   },
   props: {
     rdsItem: {
@@ -42,44 +47,154 @@ export default {
       cpu_mems_mb: {},
     }
   },
+  created () {
+    this._fetchSpecsSeq = 0
+    this._ignoreChange = false
+  },
   methods: {
     sizestr,
-    initCpu () {
-      const count = this.form.getFieldValue('vcpu_count')
-      if (!count || this.cpus.indexOf(count) === -1) {
-        this.form.setFieldsValue({
-          vcpu_count: this.cpus[0],
-        }, this.getMemsMb)
-      } else {
-        this.$nextTick(() => {
-          this.getMemsMb()
-        })
+    normalizeDraftScalar (val) {
+      if (val == null || val === '') return val
+      if (typeof val === 'object') {
+        if (val.key != null) return val.key
+        if (val.value != null) return val.value
+        if (val.id != null) return val.id
+      }
+      return typeof val === 'string' ? val.trim() : val
+    },
+    readDraft (formField) {
+      const preferred = typeof this.getCreateFormDraftPreferred === 'function'
+        ? this.getCreateFormDraftPreferred()
+        : null
+      if (!preferred) return null
+      return this.normalizeDraftScalar(preferred[formField])
+    },
+    pickFromOptions (options, draftVal) {
+      const list = Array.isArray(options)
+        ? options
+        : (options && typeof options === 'object' ? Object.keys(options) : [])
+      if (!list.length) return undefined
+      const draft = this.normalizeDraftScalar(draftVal)
+      if (draft != null && draft !== '') {
+        const hit = list.find(item => item === draft || String(item) === String(draft))
+        if (hit != null) return hit
+      }
+      return list[0]
+    },
+    persistSkuField (formField, val) {
+      if (typeof this.persistRdsSkuDraftField === 'function') {
+        this.persistRdsSkuDraftField(formField, this.normalizeDraftScalar(val))
       }
     },
-    initZone () {
-      const zones = this.form.getFieldValue('zones')
-      if (!zones || this.zones[zones] === undefined) {
-        this.form.setFieldsValue({
-          zones: Object.keys(this.zones)[0],
-        })
+    setFieldQuiet (fields, callback) {
+      this._ignoreChange = true
+      if (typeof this.setRdsSkuDraftRestoring === 'function') {
+        this.setRdsSkuDraftRestoring(true)
       }
+      const setter = (this.form && this.form.fc && this.form.fc.setFieldsValue) ||
+        (this.form && this.form.setFieldsValue)
+      if (!setter) {
+        this._ignoreChange = false
+        if (typeof this.setRdsSkuDraftRestoring === 'function') {
+          this.setRdsSkuDraftRestoring(false)
+        }
+        callback && callback()
+        return
+      }
+      setter.call(this.form.fc || this.form, fields, () => {
+        Object.keys(fields || {}).forEach((k) => {
+          if (this.form.fd) this.$set(this.form.fd, k, fields[k])
+        })
+        this.$nextTick(() => {
+          this._ignoreChange = false
+          if (typeof this.setRdsSkuDraftRestoring === 'function') {
+            this.setRdsSkuDraftRestoring(false)
+          }
+          callback && callback()
+        })
+      })
+    },
+    onCpuChange (e) {
+      if (this._ignoreChange) return
+      const val = e && e.target ? e.target.value : this.form.getFieldValue('vcpu_count')
+      this.persistSkuField('vcpu_count', val)
+      this.getMemsMb(e)
+    },
+    onMemChange (e) {
+      if (this._ignoreChange) return
+      const val = e && e.target ? e.target.value : this.form.getFieldValue('vmem_size_mb')
+      this.persistSkuField('vmem_size_mb', val)
+      this.$emit('change')
+    },
+    onZoneChange (e) {
+      if (this._ignoreChange) return
+      const val = e && e.target ? e.target.value : this.form.getFieldValue('zones')
+      this.persistSkuField('zones', val)
+      this.$emit('change')
+    },
+    /** cpus options 变化后回填 */
+    applyCpuFromOptions () {
+      const cpu = this.pickFromOptions(this.cpus, this.readDraft('vcpu_count'))
+      if (cpu == null) {
+        this.mems_mbs = []
+        this.$emit('change')
+        return
+      }
+      this.setFieldQuiet({ vcpu_count: cpu }, () => this.applyMemFromOptions(cpu))
+    },
+    /** mem options 变化后回填 */
+    applyMemFromOptions (cpuVal) {
+      const cpu = cpuVal != null ? cpuVal : this.form.getFieldValue('vcpu_count')
+      const memList = this.cpu_mems_mb[cpu] || this.cpu_mems_mb[String(cpu)] || []
+      this.mems_mbs = Array.isArray(memList) ? memList : []
+      const mem = this.pickFromOptions(this.mems_mbs, this.readDraft('vmem_size_mb'))
+      if (mem == null) {
+        this.$emit('change')
+        return
+      }
+      this.setFieldQuiet({ vmem_size_mb: mem }, () => this.$emit('change'))
+    },
+    applyZoneFromOptions (callback) {
+      const zoneKeys = Object.keys(this.zones || {})
+      if (!zoneKeys.length) {
+        callback && callback()
+        return
+      }
+      const zone = this.pickFromOptions(zoneKeys, this.readDraft('zones'))
+      if (zone == null) {
+        callback && callback()
+        return
+      }
+      const cur = this.form.getFieldValue('zones')
+      if (cur === zone || String(cur) === String(zone)) {
+        callback && callback()
+        return
+      }
+      this.setFieldQuiet({ zones: zone }, callback)
     },
     getMemsMb (e) {
       const target = e && e.target ? e.target : {}
       const cpu = target.value || this.form.getFieldValue('vcpu_count')
-      this.mems_mbs = this.cpu_mems_mb[cpu] || {}
-      const mbCount = this.form.getFieldValue('vmem_size_mb')
-      if (!mbCount || this.mems_mbs.indexOf(mbCount) === -1) {
-        this.form.setFieldsValue({
-          vmem_size_mb: this.mems_mbs[0],
-        })
+      const memList = this.cpu_mems_mb[cpu] || this.cpu_mems_mb[String(cpu)] || []
+      this.mems_mbs = Array.isArray(memList) ? memList : []
+      // 用户改 CPU 后：内存 options 变了，按草稿回填，否则第一项（不写草稿）
+      const mem = this.pickFromOptions(this.mems_mbs, this.readDraft('vmem_size_mb'))
+      if (mem == null) {
+        this.$emit('change')
+        return
       }
-      this.$emit('change')
+      this.setFieldQuiet({ vmem_size_mb: mem }, () => this.$emit('change'))
     },
-    getSpecsParams () {
-      const { getFieldsValue } = this.form
+    getSpecsParams (override) {
       const paramsKeys = ['provider', 'cloudregion', 'engine', 'engine_version', 'category', 'storage_type']
-      const PARASM = getFieldsValue(paramsKeys)
+      const fromFc = (this.form && this.form.getFieldsValue && this.form.getFieldsValue(paramsKeys)) || {}
+      const fromFd = (this.form && this.form.fd) || {}
+      const PARASM = { ...(override || {}) }
+      paramsKeys.forEach((k) => {
+        if (PARASM[k] != null && PARASM[k] !== '') return
+        const v = fromFc[k] != null && fromFc[k] !== '' ? fromFc[k] : fromFd[k]
+        if (v != null && v !== '') PARASM[k] = v
+      })
       PARASM.cloudregion_id = PARASM.cloudregion
       for (let i = 0; i < paramsKeys.length; i++) {
         const k = paramsKeys[i]
@@ -89,33 +204,27 @@ export default {
       }
       return { ...PARASM, ...this.scopeParams }
     },
-    async fetchSpecs () {
-      const PARAMS = this.getSpecsParams()
+    async fetchSpecs (override) {
+      const PARAMS = this.getSpecsParams(override)
       if (!PARAMS) return false
+      const seq = ++this._fetchSpecsSeq
       try {
         const manager = new this.$Manager('dbinstance_skus/instance-specs', 'v2')
         const { data = {} } = await manager.list({ params: PARAMS })
-        this.cpus = data.cpus
-        this.cpu_mems_mb = data.cpu_mems_mb
-        // 草稿回填：在 init 前写入偏好，initCpu/initZone 会保留合法值
-        const preferred = typeof this.getCreateFormDraftPreferred === 'function'
-          ? this.getCreateFormDraftPreferred()
-          : null
-        if (preferred) {
-          const vals = {}
-          if (preferred.vcpu_count != null) vals.vcpu_count = preferred.vcpu_count
-          if (preferred.vmem_size_mb != null) vals.vmem_size_mb = preferred.vmem_size_mb
-          if (preferred.zones != null) vals.zones = preferred.zones
-          if (Object.keys(vals).length) this.form.setFieldsValue(vals)
-        }
+        if (seq !== this._fetchSpecsSeq) return false
+        this.cpus = data.cpus || []
+        this.cpu_mems_mb = data.cpu_mems_mb || {}
         const { zones } = data
-        if (zones) {
-          this.zones = zones.zones || {}
-          this.initZone()
-        }
-        this.initCpu()
-        return data
-      } catch (err) {}
+        this.zones = zones ? (zones.zones || {}) : {}
+        // specs 拉取完成 → options 变化 → 按草稿回填
+        this.$nextTick(() => {
+          this.applyZoneFromOptions(() => this.applyCpuFromOptions())
+        })
+        return true
+      } catch (err) {
+        if (seq !== this._fetchSpecsSeq) return false
+        return false
+      }
     },
   },
 }

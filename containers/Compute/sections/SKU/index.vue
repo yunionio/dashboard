@@ -70,6 +70,7 @@ import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
 import storage from '@/utils/storage'
 import RegionalAvailabilityPopover from '@/sections/RegionalAvailabilityPopover'
+import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 
 const SKU_HIDDEN_COLUMNS_KEY = '__oc_sku_hidden_columns'
 const DEFAULT_HIDDEN_COLUMNS = ['cpu_model', 'nic_bandwidth', 'disk_performance']
@@ -135,7 +136,12 @@ const units = [i18n.t('compute.text_172'), i18n.t('compute.text_173'), i18n.t('c
 
 export default {
   name: 'SKU',
+  mixins: [createFormFieldDraftMixin],
   props: {
+    formDraftKey: {
+      type: String,
+      default: '',
+    },
     billType: {
       type: String,
     },
@@ -652,6 +658,17 @@ export default {
           chooseSku = sku
         }
       }
+      // 组件草稿：options 变化后若上次 SKU name 仍在列表中则回填
+      if (!isSkuChange && !this.initSkuData?.name && !this.instanceType) {
+        const draft = this.readFormFieldDraft()
+        const preferredName = (draft && typeof draft === 'object') ? draft.name : draft
+        const draftSku = this.matchFormFieldDraftInOptions(this.skuList, preferredName, {
+          getId: item => item.name,
+        })
+        if (draftSku) {
+          chooseSku = draftSku
+        }
+      }
       // 自动选中时：若开启 disableSkuType 且存在 supportSkuTypes，则选中一个“可用”的 sku（name 在支持列表内）
       if (
         !isSkuChange &&
@@ -682,8 +699,15 @@ export default {
           }
         }
         this.$emit('change', hasSelected ? chooseSku : {})
+        if (isSkuChange && hasSelected) {
+          this.writeFormFieldDraft({ name: chooseSku.name })
+        }
         this.restoreTableSort()
       })
+    },
+    serializeFormFieldDraft () {
+      const name = this.selectedSkuData?.name
+      return name ? { name } : undefined
     },
     getSortColumnField (orderBy = '') {
       const fieldMap = {
@@ -809,7 +833,8 @@ export default {
         const sku = Array.isArray(list) ? list[0] : null
         if (sku?.id) {
           this.skuList = [sku, ...this.skuList.filter(item => item.id !== sku.id)]
-          this.setSku(sku, true)
+          // 程序化回填不写草稿
+          this.setSku(sku, false)
           return
         }
       } catch (e) { /* ignore */ }

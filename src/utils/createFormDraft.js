@@ -1,34 +1,28 @@
 /**
- * 平台级创建表单配置记忆（create form draft）
+ * 平台级创建表单配置记忆（create form draft）— 仅控件级
  *
- * ## 接入约定
- * 1. formScope：全局唯一，建议 `{product}.{resource}[.{env}][.{variant}]`
- *    例：compute.server.idc / compute.scaling_group
- * 2. 恢复模式：
- *    - A（级联）：提供 serialize + applyDraft，payload 尽量对齐该页 initFormData
- *    - B（平铺）：提供 draftFields，选项就绪后 setFieldsValue
- * 3. 工单 / 路由预填场景 must 禁用读写：shouldUseCreateDraft === false
- * 4. 有可用草稿回填时再关闭 DomainProject / OsSelect 等旧局部记忆（ignoreStorage）；
- *    无草稿或功能关闭时保留原先局部回填，避免双源抢填
- * 5. 开关仅全局一份 CREATE_FORM_DRAFT_SWITCHES（业务页勿再配），同时管写入与恢复：
- *    - saveOnChange：用户修改过程中是否防抖保存
- *    - saveOnSubmitSuccess：表单提交成功后是否保存
- *    - 二者皆 false 时：不写入、不恢复
- * 6. 读/写任一草稿时会扫描整包，清理全部过期条目（TTL）
- *
- * ## 存包结构（单一 localStorage key，便于统一清理）
+ * ## 存包结构（单一 localStorage key）
  * key: __oc_create_form_draft__
  * value: {
  *   version: 1,
  *   forms: {
- *     'compute.server.idc': { savedAt, data },
- *     'compute.scaling_group': { savedAt, data },
- *     ...
+ *     'compute.server.idc': {
+ *       savedAt,
+ *       components: {
+ *         domainProject: { domain, project },
+ *         sku: { name },
+ *         advanceConfigOpen: true,
+ *         ...
+ *       },
+ *     },
  *   }
  * }
- * 清理全部：clearAllDrafts() 或 storage.remove('__oc_create_form_draft__')
  *
- * 详见 mixin：@/mixins/createFormDraft
+ * ## 约定
+ * 1. 唯一 id = formScope + fieldKey
+ * 2. 复合控件一个 fieldKey，值可嵌套
+ * 3. 有 options：校验草稿仍可用再回填
+ * 4. 工单 / 预填：shouldUseCreateDraft === false 时不读写
  */
 import storage from '@/utils/storage'
 
@@ -45,18 +39,18 @@ export const DRAFT_VERSION = 1
 export const DRAFT_TTL_MS = 7 * 24 * 60 * 60 * 1000
 
 /**
- * 全局开关（唯一配置源，默认均开启；同时管写入与恢复）
- * - saveOnChange：用户修改过程中防抖写入
- * - saveOnSubmitSuccess：表单提交成功后写入
+ * 全局开关（唯一配置源；同时管写入与恢复）
+ * - saveOnChange：用户修改过程中是否写入（组件级）
+ * - saveOnSubmitSuccess：表单提交成功后是否写入（flush）
  * - 二者皆 false：功能关闭（不写不恢复）
  */
 export const CREATE_FORM_DRAFT_SWITCHES = {
-  saveOnChange: false,
+  saveOnChange: true,
   saveOnSubmitSuccess: true,
 }
 
 /**
- * 草稿功能是否启用（至少开一项写入开关才允许恢复）
+ * 草稿功能是否启用
  * @returns {boolean}
  */
 export function isCreateFormDraftEnabled () {
@@ -64,27 +58,7 @@ export function isCreateFormDraftEnabled () {
 }
 
 /**
- * 默认不持久化的「身份 / 敏感」字段（每次创建通常要改，或不应落盘）
- * 业务可通过 omitKeys 追加
- */
-export const DEFAULT_OMIT_KEYS = [
-  'name',
-  'generate_name',
-  'hostname',
-  'hostName',
-  'description',
-  'reason',
-  '__count__',
-  'count',
-  'password',
-  'loginPassword',
-  'keypair',
-  'reset_password',
-]
-
-/**
- * 路由上出现这些 query 时视为「预填入口」（如从镜像创建），禁用 draft 读写，
- * 避免覆盖明确的入口意图
+ * 路由上出现这些 query 时视为「预填入口」，禁用 draft 读写
  */
 export const DEFAULT_PREFILL_QUERY_KEYS = [
   'sence',
@@ -94,7 +68,6 @@ export const DEFAULT_PREFILL_QUERY_KEYS = [
 ]
 
 /**
- * 返回统一存储 key（不再按 formScope 拆 key）
  * @returns {string}
  */
 export function getDraftKey () {
@@ -108,13 +81,14 @@ export function getDraftKey () {
  */
 function isDraftEntryExpired (entry) {
   if (!entry || typeof entry !== 'object') return true
-  if (entry.data == null || typeof entry.data !== 'object') return true
+  const hasComponents = entry.components && typeof entry.components === 'object' &&
+    Object.keys(entry.components).length > 0
+  if (!hasComponents) return true
   if (entry.savedAt && (Date.now() - entry.savedAt > DRAFT_TTL_MS)) return true
   return false
 }
 
 /**
- * 扫描整包，删除全部过期/无效条目；若有变更则写回（forms 空则删 key）
  * @param {{ version: number, forms: Object }} store
  * @returns {{ version: number, forms: Object }}
  */
@@ -138,7 +112,6 @@ function purgeExpiredDrafts (store) {
 }
 
 /**
- * 读出整包；版本不符则清空并返回空壳；顺带清理过期条目
  * @returns {{ version: number, forms: Object }}
  */
 function readStore () {
@@ -147,7 +120,6 @@ function readStore () {
     return { version: DRAFT_VERSION, forms: {} }
   }
   if (raw.version !== DRAFT_VERSION || !raw.forms || typeof raw.forms !== 'object') {
-    // 整包结构升级不兼容：直接丢掉，避免脏数据
     clearAllDrafts()
     return { version: DRAFT_VERSION, forms: {} }
   }
@@ -155,7 +127,6 @@ function readStore () {
 }
 
 /**
- * 写回整包
  * @param {{ version: number, forms: Object }} store
  */
 function writeStore (store) {
@@ -167,38 +138,89 @@ function writeStore (store) {
 }
 
 /**
- * 读取某一表单的草稿 data；过期或不存在返回 null
- * 读时会扫描整包清理全部过期条目
+ * 读取某一 formScope 下的 entry
  * @param {string} formScope
  * @returns {object|null}
  */
-export function getDraft (formScope) {
+export function getDraftEntry (formScope) {
   if (!formScope) return null
   const store = readStore()
   const entry = store.forms[formScope]
   if (!entry || typeof entry !== 'object') return null
-  if (entry.data == null || typeof entry.data !== 'object') return null
-  return entry.data
+  return entry
 }
 
 /**
- * 写入某一表单的草稿（合并进统一 key 下的 forms[formScope]）
- * 写前会扫描整包清理全部过期条目
- * @param {string} formScope
- * @param {object} data 业务 payload（调用方宜先 omitIdentityFields）
+ * 读取某一控件草稿
+ * @param {string} formScope 如 compute.server.idc
+ * @param {string} fieldKey 如 domainProject / advanceConfigOpen
+ * @returns {*|null}
  */
-export function setDraft (formScope, data) {
-  if (!formScope || data == null || typeof data !== 'object') return
+export function getComponentDraft (formScope, fieldKey) {
+  if (!formScope || !fieldKey) return null
+  const entry = getDraftEntry(formScope)
+  if (!entry?.components || typeof entry.components !== 'object') return null
+  if (!Object.prototype.hasOwnProperty.call(entry.components, fieldKey)) return null
+  const val = entry.components[fieldKey]
+  return val === undefined ? null : val
+}
+
+/** @see getComponentDraft */
+export const getFieldDraft = getComponentDraft
+
+/**
+ * 写入某一控件草稿（合并进 forms[formScope].components）
+ * @param {string} formScope
+ * @param {string} fieldKey
+ * @param {*} data
+ */
+export function setComponentDraft (formScope, fieldKey, data) {
+  if (!formScope || !fieldKey) return
+  if (data === undefined) return
   const store = readStore()
+  const prev = store.forms[formScope] || {}
+  const components = {
+    ...(prev.components && typeof prev.components === 'object' ? prev.components : {}),
+    [fieldKey]: data,
+  }
   store.forms[formScope] = {
     savedAt: Date.now(),
-    data,
+    components,
   }
   writeStore(store)
 }
 
+/** @see setComponentDraft */
+export const setFieldDraft = setComponentDraft
+
 /**
- * 清除某一个 formScope 的草稿；forms 空了会删掉整个 key
+ * 清除某一个控件草稿
+ * @param {string} formScope
+ * @param {string} fieldKey
+ */
+export function clearComponentDraft (formScope, fieldKey) {
+  if (!formScope || !fieldKey) return
+  const store = readStore()
+  const entry = store.forms[formScope]
+  if (!entry?.components || !Object.prototype.hasOwnProperty.call(entry.components, fieldKey)) return
+  const components = { ...entry.components }
+  delete components[fieldKey]
+  if (!Object.keys(components).length) {
+    clearDraft(formScope)
+    return
+  }
+  store.forms[formScope] = {
+    savedAt: Date.now(),
+    components,
+  }
+  writeStore(store)
+}
+
+/** @see clearComponentDraft */
+export const clearFieldDraft = clearComponentDraft
+
+/**
+ * 清除某一个 formScope 的草稿
  * @param {string} formScope
  */
 export function clearDraft (formScope) {
@@ -214,14 +236,13 @@ export function clearDraft (formScope) {
 }
 
 /**
- * 一键清空所有创建表单草稿（只删这一个 localStorage 字段）
+ * 一键清空所有创建表单草稿
  */
 export function clearAllDrafts () {
   storage.remove(DRAFT_STORAGE_KEY)
 }
 
 /**
- * 列出当前已存的 formScope（调试 / 设置页展示用；会先清理过期）
  * @returns {string[]}
  */
 export function listDraftScopes () {
@@ -231,15 +252,8 @@ export function listDraftScopes () {
 
 /**
  * 判断当前路由是否允许使用创建草稿
- * - 全局开关全关：禁用
- * - 有 query.workflow：工单修改，禁用
- * - 有预填类 query（镜像创建等）：禁用
- * - options.disableWhen 返回 true：业务自定义禁用（如 isInitForm、servertemplate）
- *
- * @param {object} route this.$route
+ * @param {object} route
  * @param {object} [options]
- * @param {string[]} [options.prefillQueryKeys] 追加/覆盖预填 query 列表
- * @param {function} [options.disableWhen] (route) => boolean
  * @returns {boolean}
  */
 export function shouldUseCreateDraft (route, options = {}) {
@@ -254,50 +268,8 @@ export function shouldUseCreateDraft (route, options = {}) {
   return true
 }
 
-/** 就地删除对象上的指定 key（仅自身属性） */
-function deleteKeys (obj, keys) {
-  if (!obj || typeof obj !== 'object') return
-  keys.forEach(k => {
-    if (Object.prototype.hasOwnProperty.call(obj, k)) {
-      delete obj[k]
-    }
-  })
-}
-
 /**
- * 深拷贝后去掉身份/敏感字段，避免下次回填名称、数量、密码等
- * 顶层与 extraData 内同名 key 都会删
- *
- * @param {object} payload
- * @param {string[]} [omitKeys=DEFAULT_OMIT_KEYS]
- * @returns {object}
- */
-export function omitIdentityFields (payload, omitKeys = DEFAULT_OMIT_KEYS) {
-  if (!payload || typeof payload !== 'object') return payload
-  let cloned
-  try {
-    cloned = JSON.parse(JSON.stringify(payload))
-  } catch (e) {
-    return payload
-  }
-  const keys = omitKeys && omitKeys.length ? omitKeys : DEFAULT_OMIT_KEYS
-  deleteKeys(cloned, keys)
-  if (cloned.extraData && typeof cloned.extraData === 'object') {
-    deleteKeys(cloned.extraData, keys)
-  }
-  // 兼容误存的旧 hybrid { api, form }
-  if (cloned.api && typeof cloned.api === 'object') {
-    deleteKeys(cloned.api, keys)
-    if (cloned.api.extraData && typeof cloned.api.extraData === 'object') {
-      deleteKeys(cloned.api.extraData, keys)
-    }
-  }
-  return cloned
-}
-
-/**
- * 模式 B（平铺表单）用：从源对象按白名单挑字段
- * @param {object} source 如 fc.getFieldsValue()
+ * @param {object} source
  * @param {string[]} fields
  * @returns {object}
  */
@@ -310,4 +282,82 @@ export function pickFields (source, fields = []) {
     }
   })
   return ret
+}
+
+/**
+ * options 中查找草稿偏好值；找不到返回 null（调用方走默认）
+ * @param {Array} options
+ * @param {*} preferred
+ * @param {object} [opts]
+ * @param {(item:*) => *} [opts.getId]
+ * @returns {*|null}
+ */
+export function pickPreferredInOptions (options, preferred, opts = {}) {
+  if (preferred == null || preferred === '') return null
+  if (!Array.isArray(options) || !options.length) return null
+  const getId = typeof opts.getId === 'function'
+    ? opts.getId
+    : (item) => (item && typeof item === 'object' ? (item.id ?? item.key ?? item) : item)
+  const preferredId = (preferred && typeof preferred === 'object')
+    ? (preferred.id ?? preferred.key)
+    : preferred
+  if (preferredId == null || preferredId === '') return null
+  const hit = options.find(item => getId(item) === preferredId)
+  return hit != null ? hit : null
+}
+
+/**
+ * @param {*} obj
+ * @param {string|string[]} path a.b / ['a','b']
+ * @returns {*}
+ */
+export function getDraftValueByPath (obj, path) {
+  if (obj == null) return undefined
+  const keys = Array.isArray(path) ? path : String(path).split('.').filter(Boolean)
+  if (!keys.length) return obj
+  let cur = obj
+  for (let i = 0; i < keys.length; i++) {
+    if (cur == null || typeof cur !== 'object') return undefined
+    cur = cur[keys[i]]
+  }
+  return cur
+}
+
+/**
+ * 不可变设置 path；返回新对象
+ * @param {*} obj
+ * @param {string|string[]} path
+ * @param {*} value
+ * @returns {*}
+ */
+export function setDraftValueByPath (obj, path, value) {
+  const keys = Array.isArray(path) ? path : String(path).split('.').filter(Boolean)
+  if (!keys.length) return value
+  const root = (obj && typeof obj === 'object' && !Array.isArray(obj)) ? { ...obj } : {}
+  let cur = root
+  for (let i = 0; i < keys.length - 1; i++) {
+    const k = keys[i]
+    const next = cur[k]
+    cur[k] = (next && typeof next === 'object' && !Array.isArray(next)) ? { ...next } : {}
+    cur = cur[k]
+  }
+  cur[keys[keys.length - 1]] = value
+  return root
+}
+
+/**
+ * 浅合并草稿对象（非对象则直接用 next）
+ * @param {*} prev
+ * @param {*} next
+ * @returns {*}
+ */
+export function mergeDraftValue (prev, next) {
+  if (next === undefined) return prev
+  if (
+    prev && typeof prev === 'object' && !Array.isArray(prev) &&
+    next && typeof next === 'object' && !Array.isArray(next)
+  ) {
+    return { ...prev, ...next }
+  }
+  return next
 }

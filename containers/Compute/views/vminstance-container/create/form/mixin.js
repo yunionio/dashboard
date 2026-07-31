@@ -8,16 +8,18 @@ import sku from '@Compute/sections/SKU'
 import gpu from '@Compute/sections/GPU/index'
 import pci from '@Compute/sections/PCI'
 import {
-  buildContainerCreateDraftPayload,
-  mergeContainerCreateDraftToInitFormData,
-  isMeaningfulContainerCreateDraft,
   needOpenAdvanceConfig,
   isAdvanceConfigOpenFromDraft,
   resolveAdvanceConfigCollapseActive,
-  stripAdvanceConfigFields,
   resolveDraftNetworkType,
   resolveDraftPortMappings,
 } from '@Compute/utils/vminstanceContainerCreateDraft'
+import {
+  CONTAINER_CREATE_FORM_DRAFT_FIELD,
+  CONTAINER_CREATE_FORM_DRAFT_FIELDS,
+  CONTAINER_CREATE_FORM_DRAFT_FC_BINDINGS,
+  getContainerCreateFormDraftScope,
+} from '@Compute/utils/vminstanceContainerCreateFormDraft'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import SchedPolicy from '@Compute/sections/SchedPolicy'
 import Duration from '@Compute/sections/Duration'
@@ -38,29 +40,9 @@ import { WORKFLOW_TYPES } from '@/constants/workflow'
 import i18n from '@/locales'
 import { deleteInvalid, uuid } from '@/utils/utils'
 import createFormDraftMixin from '@/mixins/createFormDraft'
-import { getDraft, shouldUseCreateDraft } from '@/utils/createFormDraft'
 import Tag from '../components/Tag'
 import { Decorator, GenCreateData } from '../../utils/createServer'
 import BottomBar from '../components/BottomBar'
-
-/**
- * data() 阶段尽早解析草稿，供 Decorator 当 initialValue 种子（与工单 initFormData 同形）。
- * @param {Vue} vm
- * @returns {{ active: boolean, data: object|null }}
- */
-function resolveContainerCreateDraftSeed (vm) {
-  if (vm.isInitForm) return { active: false, data: null }
-  const formScope = `compute.server_container.${vm.type}`
-  if (!shouldUseCreateDraft(vm.$route)) {
-    return { active: false, data: null }
-  }
-  const data = getDraft(formScope)
-  const initData = mergeContainerCreateDraftToInitFormData(data)
-  if (!initData?.extraData || !isMeaningfulContainerCreateDraft(initData)) {
-    return { active: false, data: null }
-  }
-  return { active: true, data: initData }
-}
 
 const CreateServerForm = {
   wrapperCol: {
@@ -113,21 +95,20 @@ export default {
     },
   },
   data () {
-    const draftSeed = resolveContainerCreateDraftSeed(this)
     const routeInitData = this.$route.params?.data || {}
     const workflowInitData = (this.isInitForm || this.$route.query.workflow)
       ? (this.initFormData && !R.isEmpty(this.initFormData) ? this.initFormData : routeInitData)
       : {}
-    const seedFormData = draftSeed.active
-      ? draftSeed.data
-      : workflowInitData
+    const seedFormData = workflowInitData
     const decorators = new Decorator(SERVER_TYPE[this.type]).createDecorators(seedFormData)
+    if (!decorators.groups) {
+      decorators.groups = {
+        groupsEnable: ['groupsEnable', { valuePropName: 'checked', initialValue: false }],
+        groups: ['groups', { initialValue: [] }],
+      }
+    }
     const initFd = getInitialValue(decorators)
     return {
-      isDraftRestore: draftSeed.active,
-      draftRestored: draftSeed.active,
-      _containerCreateDraftSeeded: draftSeed.active,
-      _draftInitFormData: draftSeed.active ? draftSeed.data : null,
       _initFormPromise: null,
       _initFormDone: false,
       submiting: false,
@@ -172,53 +153,38 @@ export default {
   provide () {
     return {
       form: this.form,
+      getCreateFormDraftScope: () => this.getCreateFormDraftScope(),
+      canUseCreateFormFieldDraft: () => this.canUseCreateFormDraft,
+      registerCreateFormFieldDraftFlush: (fn) => this.registerCreateFormFieldDraftFlush(fn),
+      readCreateFormFieldDraft: (key) => this.readCreateFormFieldDraft(key),
+      writeCreateFormFieldDraft: (key, data, options) => this.writeCreateFormFieldDraft(key, data, options),
+      bindCreateFormFieldDraft: (spec) => this.bindCreateFormFieldDraft(spec),
     }
   },
   computed: {
-    /**
-     * createFormDraftMixin 配置：按云环境隔离 scope；
-     * data() 已种 Decorator 时 applyDraft 只同步数据，initForm 只由 mounted 调一次（对齐工单）
-     */
     createFormDraftOptions () {
       return {
-        formScope: `compute.server_container.${this.type}`,
-        disableWhen: () => this.isInitForm,
-        serialize: () => this.serializeCreateFormDraft(),
-        applyDraft: async (draftData) => {
-          const initData = mergeContainerCreateDraftToInitFormData(draftData)
-          this._draftInitFormData = initData
-          this.isDraftRestore = true
-          this.draftRestored = true
-          if (typeof this.initForm === 'function') {
-            await this.initForm()
-          }
-        },
-        isMeaningfulDraft: (data) => isMeaningfulContainerCreateDraft(data),
+        formScope: getContainerCreateFormDraftScope({ type: this.type }),
+        disableWhen: () => this.shouldDisableCreateFormDraft,
       }
     },
-    /**
-     * 有草稿或工单回填时，关闭 DomainProject 局部 storage，避免双源抢填
-     */
+    containerDraftFields () {
+      return CONTAINER_CREATE_FORM_DRAFT_FIELDS
+    },
+    shouldDisableCreateFormDraft () {
+      if (this.isInitForm) return true
+      if (this.isModifyWorkflow) return true
+      if (this.isModifyShopCartOrder) return true
+      return false
+    },
     ignoreLocalFormStorage () {
-      if (this.isInitForm) return true
-      return !!(this._containerCreateDraftSeeded || this._draftInitFormData)
+      return this.shouldDisableCreateFormDraft
     },
-    /**
-     * 是否处于「表单回填」态（工单 / 草稿恢复中 / 已恢复但用户尚未操作）
-     */
     isFormBackfill () {
-      if (this.isInitForm) return true
-      if (this._draftInitFormData && !this.createFormDraftUserInteracted) return true
-      return this.isCreateFormDraftHydrating
+      return this.isInitForm
     },
-    /**
-     * initForm / 域项目回调统一取数入口：工单优先 params，否则用草稿
-     */
     effectiveInitFormData () {
-      if (this.isInitForm) return this.initFormData
-      if (this._draftInitFormData && !this.createFormDraftUserInteracted) return this._draftInitFormData
-      if (this.isCreateFormDraftHydrating && this._draftInitFormData) return this._draftInitFormData
-      return this.initFormData || {}
+      return this.isInitForm ? this.initFormData : {}
     },
     initSkuData () {
       const data = this.effectiveInitFormData && !R.isEmpty(this.effectiveInitFormData)
@@ -338,9 +304,16 @@ export default {
     },
     showSecgroupBind () {
       // 回填指定安全组时，即使网络类型尚未切到 manual，也要保留 bind 选项
-      if (this.isFormBackfill && this.isDraftAdvanceConfigOpen) {
-        const init = this.effectiveInitFormData
-        if (init?.secgroups?.length) return true
+      if (this.isDraftAdvanceConfigOpen) {
+        if (this.isFormBackfill) {
+          const init = this.effectiveInitFormData
+          if (init?.secgroups?.length) return true
+        }
+        const draft = this.canUseCreateFormDraft
+          ? this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.SECGROUP)
+          : null
+        if (draft?.secgroup_type === 'bind') return true
+        if (Array.isArray(draft?.secgroup) && draft.secgroup.length) return true
       }
       return this.form.fd.networkType === 'manual'
     },
@@ -351,24 +324,48 @@ export default {
       }
       return isAdvanceConfigOpenFromDraft(this.effectiveInitFormData)
     },
+    /** 高级区内安全组/调度等 init 保护：工单回填或控件草稿展开时开启 */
+    preserveAdvanceInitProps () {
+      return this.isFormBackfill || (this.canUseCreateFormDraft && this.isDraftAdvanceConfigOpen)
+    },
     draftInitSecgroups () {
-      if (!this.isFormBackfill || !this.isDraftAdvanceConfigOpen) return []
-      return this.normalizeDraftSecgroups(this.effectiveInitFormData?.secgroups)
+      if (!this.isDraftAdvanceConfigOpen) return []
+      if (this.isFormBackfill) {
+        return this.normalizeDraftSecgroups(this.effectiveInitFormData?.secgroups)
+      }
+      if (!this.canUseCreateFormDraft) return []
+      const draft = this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.SECGROUP)
+      return this.normalizeDraftSecgroups(draft?.secgroup)
     },
     draftInitPreferHost () {
-      if (!this.isFormBackfill || !this.isDraftAdvanceConfigOpen) return ''
-      return this.effectiveInitFormData?.prefer_host || this.effectiveInitFormData?.extraData?.prefer_host || ''
+      if (!this.isDraftAdvanceConfigOpen) return ''
+      if (this.isFormBackfill) {
+        return this.effectiveInitFormData?.prefer_host || this.effectiveInitFormData?.extraData?.prefer_host || ''
+      }
+      if (!this.canUseCreateFormDraft) return ''
+      const draft = this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.SCHED_POLICY)
+      return draft?.prefer_host || ''
     },
     draftInitSchedtags () {
-      if (!this.isFormBackfill || !this.isDraftAdvanceConfigOpen) return []
-      const init = this.effectiveInitFormData || {}
-      if (init.schedtags?.length) return init.schedtags
-      if (init.extraData?.schedtags?.length) return init.extraData.schedtags
-      return []
+      if (!this.isDraftAdvanceConfigOpen) return []
+      if (this.isFormBackfill) {
+        const init = this.effectiveInitFormData || {}
+        if (init.schedtags?.length) return init.schedtags
+        if (init.extraData?.schedtags?.length) return init.extraData.schedtags
+        return []
+      }
+      if (!this.canUseCreateFormDraft) return []
+      const draft = this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.SCHED_POLICY)
+      return Array.isArray(draft?.schedtags) ? draft.schedtags : []
     },
     draftInitPortMappings () {
-      if (!this.isFormBackfill || !this.isDraftAdvanceConfigOpen) return []
-      return resolveDraftPortMappings(this.effectiveInitFormData)
+      if (!this.isDraftAdvanceConfigOpen) return []
+      if (this.isFormBackfill) {
+        return resolveDraftPortMappings(this.effectiveInitFormData)
+      }
+      if (!this.canUseCreateFormDraft) return []
+      const draft = this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.PORT_MAPPING)
+      return Array.isArray(draft) ? draft : []
     },
     isHostImageType () { // 镜像类型为主机镜像
       return this.form.fd.imageType === IMAGES_TYPE_MAP.host.key
@@ -488,26 +485,75 @@ export default {
       this.price = price
     })
     this.$store.dispatch('app/fetchWorkflowEnabledKeys')
+    this.bindCreateFormFieldDraft({
+      key: CONTAINER_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN,
+      get: () => Array.isArray(this.collapseActive) && this.collapseActive.includes('1'),
+      set: (open) => {
+        this.collapseActive = open ? ['1'] : []
+      },
+    })
+    this.bindContainerCreateFormFcDrafts()
+    // 子组件挂载前展开高级折叠，否则折叠内 EIP/安全组等无法挂载并回填
+    this.ensureAdvanceConfigOpenForDraft()
   },
   mounted () {
-    this.initForm()
+    // 工单走 initForm；普通新建控件草稿走各组件 + restoreAdvance*
+    this.$nextTick(() => {
+      this.initForm()
+      this.restoreAdvanceFormFieldDrafts()
+      this.restoreContainerDiskFormFieldDrafts()
+    })
   },
   watch: {
     collapseActive (val) {
-      // 用户展开/收起高级配置时落盘开关
-      if (this.isFormBackfill && !this.createFormDraftUserInteracted) return
-      this.scheduleSaveCreateFormDraft()
+      if (!this.canUseCreateFormDraft) return
+      if (this.isFormBackfill) return
+      if (this._advanceDraftRestoring) return
+      const open = Array.isArray(val) && val.includes('1')
+      this.writeCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN, open)
+      if (open && !this._advanceDraftRestoreScheduled) {
+        this._advanceDraftRestoreScheduled = true
+        this.$nextTick(() => {
+          this._advanceDraftRestoreScheduled = false
+          this.restoreAdvanceFormFieldDrafts()
+        })
+      }
     },
     'form.fi.imageMsg': {
       deep: true,
       handler (val, oldVal) {
         if (R.equals(val, oldVal)) return
         this.$nextTick(() => {
-          if (!this.isFormBackfill) {
-            this._resetDataDisk() // 重置数据盘数据
+          if (this.isFormBackfill || this.form?.fi?.diskDraftRestoring) return
+          // 首屏：有数据盘草稿时，镜像异步到位不要立刻清空（仅跳过一次）
+          if (this.canUseCreateFormDraft && !this._diskDraftSkipImageResetOnce) {
+            const diskDraft = this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.DATA_DISK)
+            if (diskDraft?.__dataDiskKeys?.length) {
+              this._diskDraftSkipImageResetOnce = true
+              return
+            }
           }
+          this._resetDataDisk()
         })
       },
+    },
+    'form.fi.capability': {
+      deep: true,
+      handler (val) {
+        if (!val || R.isEmpty(val)) return
+        if (!this.canUseCreateFormDraft) return
+        if (this.createFormDraftUserInteracted) return
+        this.$nextTick(() => this.restoreContainerDiskFormFieldDrafts())
+      },
+    },
+    'form.fd.hypervisor' (val, oldVal) {
+      if (!this.canUseCreateFormDraft) return
+      if (this.createFormDraftUserInteracted) return
+      if (val === oldVal) return
+      this.$nextTick(() => {
+        this.restoreContainerDiskFormFieldDrafts()
+        this.restoreAdvanceFormFieldDrafts()
+      })
     },
     isWindows (val) {
       const hostName = this.form.fd.hostName
@@ -523,6 +569,148 @@ export default {
     },
   },
   methods: {
+    /**
+     * 按草稿决定是否展开高级配置。
+     */
+    ensureAdvanceConfigOpenForDraft () {
+      if (!this.canUseCreateFormDraft) return
+      const alreadyOpen = Array.isArray(this.collapseActive) && this.collapseActive.includes('1')
+      const openDraft = this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN)
+      if (openDraft === false) return
+      const shouldOpen = openDraft === true || (openDraft == null && this.hasAdvanceFieldDrafts())
+      if (!shouldOpen || alreadyOpen) return
+      this._advanceDraftRestoring = true
+      this.collapseActive = ['1']
+      this.$nextTick(() => {
+        this._advanceDraftRestoring = false
+      })
+      if (openDraft == null) {
+        this.writeCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN, true)
+      }
+    },
+    hasAdvanceFieldDrafts () {
+      if (!this.canUseCreateFormDraft) return false
+      const keys = [
+        CONTAINER_CREATE_FORM_DRAFT_FIELD.EIP,
+        CONTAINER_CREATE_FORM_DRAFT_FIELD.SECGROUP,
+        CONTAINER_CREATE_FORM_DRAFT_FIELD.SCHED_POLICY,
+        CONTAINER_CREATE_FORM_DRAFT_FIELD.INSTANCE_GROUPS,
+        CONTAINER_CREATE_FORM_DRAFT_FIELD.PORT_MAPPING,
+      ]
+      return keys.some((key) => {
+        const draft = this.readCreateFormFieldDraft(key)
+        if (draft === null || draft === undefined) return false
+        if (typeof draft === 'object' && !Array.isArray(draft) && !Object.keys(draft).length) return false
+        return true
+      })
+    },
+    restoreAdvanceFormFieldDrafts () {
+      if (!this.canUseCreateFormDraft) return
+      if (this.isInitForm) return
+      if (this.createFormDraftUserInteracted) return
+      if (this._advanceDraftRestoreRunning) return
+      this._advanceDraftRestoreRunning = true
+      if (this.form?.fi) this.$set(this.form.fi, 'advanceDraftRestoring', true)
+      try {
+        this.ensureAdvanceConfigOpenForDraft()
+        if (!this.isDraftAdvanceConfigOpen) {
+          this.clearAdvanceDraftRestoring()
+          return
+        }
+        this.$nextTick(() => {
+          this.invokeAdvanceDraftComponentRestores()
+          setTimeout(() => this.clearAdvanceDraftRestoring(), 400)
+        })
+        if (!this._advanceDraftRetryTimers) {
+          this._advanceDraftRetryTimers = true
+          ;[800, 2000].forEach((ms) => {
+            setTimeout(() => {
+              if (!this.canRunAdvanceDraftRetry()) return
+              this.invokeAdvanceDraftComponentRestores()
+            }, ms)
+          })
+        }
+      } finally {
+        this.$nextTick(() => {
+          this._advanceDraftRestoreRunning = false
+        })
+      }
+    },
+    canRunAdvanceDraftRetry () {
+      return this.canUseCreateFormDraft &&
+        !this.isInitForm &&
+        !this.createFormDraftUserInteracted &&
+        this.isDraftAdvanceConfigOpen
+    },
+    invokeAdvanceDraftComponentRestores () {
+      ;[
+        this.$refs.eipConfigRef,
+        this.$refs.secgroupConfigRef,
+        this.$refs.schedPolicyRef,
+        this.$refs.instanceGroupsRef,
+        this.$refs.labelRef,
+      ].forEach((ref) => {
+        if (ref && typeof ref.restoreFormFieldDraftFields === 'function') {
+          try { ref.restoreFormFieldDraftFields() } catch (e) { /* ignore */ }
+        }
+      })
+    },
+    clearAdvanceDraftRestoring () {
+      if (this.form?.fi && this.form.fi.advanceDraftRestoring) {
+        this.$set(this.form.fi, 'advanceDraftRestoring', false)
+      }
+    },
+    /**
+     * 数据盘草稿：hypervisor/capability 就绪后回填（DataDisk 自身 restore 为空实现）
+     */
+    async restoreContainerDiskFormFieldDrafts () {
+      if (!this.canUseCreateFormDraft) return
+      if (this.isInitForm) return
+      if (this._diskDraftRestoreDone || this._diskDraftRestoreRunning) return
+      const dataDraft = this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.DATA_DISK)
+      if (!dataDraft) return
+      if (!this.form?.fd?.hypervisor) return
+
+      this._diskDraftRestoreRunning = true
+      if (this.form.fi) this.$set(this.form.fi, 'diskDraftRestoring', true)
+
+      const waitRef = (getter, timeout = 12000) => new Promise(resolve => {
+        const startAt = Date.now()
+        const tick = () => {
+          const val = typeof getter === 'function' ? getter() : null
+          if (val) {
+            resolve(val)
+            return
+          }
+          if (Date.now() - startAt >= timeout) {
+            resolve(null)
+            return
+          }
+          setTimeout(tick, 100)
+        }
+        this.$nextTick(tick)
+      })
+
+      try {
+        const dataRef = await waitRef(() => this.$refs.dataDiskRef)
+        if (dataRef && typeof dataRef.applyCreateFormFieldDraft === 'function') {
+          dataRef.applyCreateFormFieldDraft(dataDraft)
+          this._diskDraftRestoreDone = true
+        }
+      } finally {
+        this._diskDraftRestoreRunning = false
+        setTimeout(() => {
+          if (this.form?.fi) this.$set(this.form.fi, 'diskDraftRestoring', false)
+        }, 5000)
+      }
+    },
+    markCreateFormDraftUserInteracted () {
+      if (!this.createFormDraftUserInteracted) {
+        this.createFormDraftUserInteracted = true
+        this._unbindCreateFormDraftUserInteraction()
+      }
+      this.clearAdvanceDraftRestoring()
+    },
     baywatch (props, watcher) {
       const iterator = function (prop) {
         this.$watch(prop, watcher)
@@ -548,11 +736,8 @@ export default {
     async _runInitForm () {
       const initData = this.isInitForm
         ? ((!R.isEmpty(this.initFormData) && this.initFormData) || this.$route.params?.data || {})
-        : (this._draftInitFormData || this.effectiveInitFormData)
-      const canInit = !!(
-        ((this.isInitForm || this.$route.query.workflow) && initData.extraData) ||
-        (this._draftInitFormData && initData?.extraData)
-      )
+        : null
+      const canInit = !!((this.isInitForm || this.$route.query.workflow) && initData?.extraData)
       if (!canInit || !this.form?.fc) return
       if (this._initFormDone) return
       this._initFormDone = true
@@ -725,24 +910,21 @@ export default {
           data.extraData.formType = this.type
           data.extraData.__resource_type__ = 'server_container'
           data.extraData.advance_config_open = Array.isArray(this.collapseActive) && this.collapseActive.includes('1')
-          const draftPayload = data.extraData.advance_config_open
-            ? buildContainerCreateDraftPayload(data)
-            : buildContainerCreateDraftPayload(stripAdvanceConfigFields(data))
           if (this.isModifyShopCartOrder || this.isOpenWorkflow || this.isModifyWorkflow) {
             await this.checkCreateData(data)
             await this.doForecast(genCreteData, data)
             await this.doCreateWorkflow(data)
-            this.saveCreateFormDraft(draftPayload, { fromSubmit: true })
+            this.flushCreateFormFieldDrafts()
           } else if (this.isOpenOrderSetWorkflow) {
             await this.checkCreateData(data)
             await this.doForecast(genCreteData, data)
             await this.doCreateOrderSetWorkflow(data)
-            this.saveCreateFormDraft(draftPayload, { fromSubmit: true })
+            this.flushCreateFormFieldDrafts()
           } else {
             await this.checkCreateData(data)
             await this.doForecast(genCreteData, data)
             await this.createServer(data)
-            this.saveCreateFormDraft(draftPayload, { fromSubmit: true })
+            this.flushCreateFormFieldDrafts()
           }
         })
         .catch(error => {
@@ -885,6 +1067,11 @@ export default {
     cpuChange (cpu) {
       const cpuMem = this.form.fi.cpuMem || {}
       const cpuNum = Number(cpu)
+      // 不限：只设 CPU，不改内存（用户未动内存应保留原值）
+      if (cpuNum === 0) {
+        this.form.fc.setFieldsValue({ vcpu: 0 })
+        return
+      }
       const memOpts = (cpuMem.cpu_mems_mb && (cpuMem.cpu_mems_mb[cpuNum] || cpuMem.cpu_mems_mb[cpu])) || []
       const cpus = cpuMem.cpus || []
       if (!memOpts.length) { // 没有内存Opts，则内存为0
@@ -909,8 +1096,18 @@ export default {
         this.form.fc.setFieldsValue({ vmem: currentMem })
         return
       }
+      // 内存 options 变化：优先草稿，否则 2G / 第一项（不写草稿）；草稿 0=不限
+      const draftMem = this.canUseCreateFormDraft
+        ? this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.VMEM)
+        : null
+      if (draftMem === 0 || draftMem === '0') {
+        this.form.fc.setFieldsValue({ vmem: 0 })
+        return
+      }
       let defaultMem = 2048
-      if (!memOpts.some(m => Number(m) === 2048)) {
+      if (draftMem != null && draftMem !== '' && memOpts.some(m => Number(m) === Number(draftMem))) {
+        defaultMem = Number(draftMem)
+      } else if (!memOpts.some(m => Number(m) === 2048)) {
         defaultMem = memOpts[0]
       }
       this.form.fc.setFieldsValue({
@@ -951,88 +1148,51 @@ export default {
           this.$set(this.form.fd, 'hostPorts', formValue.hostPorts)
         }
       }
-      // 表单变更防抖写入进行中草稿（受 saveOnChange 开关控制）
-      this.scheduleSaveCreateFormDraft()
+      this.syncContainerCreateFormFcDrafts(newField)
     },
-    /**
-     * 草稿/工单 secgroups → base-select 需要的 id 数组
-     * @param {Array} secgroups
-     * @returns {string[]}
-     */
+    bindContainerCreateFormFcDrafts () {
+      this._containerCreateFormFcDraftMap = Object.create(null)
+      ;(CONTAINER_CREATE_FORM_DRAFT_FC_BINDINGS || []).forEach((item) => {
+        if (!item?.key || !item.formField) return
+        this._containerCreateFormFcDraftMap[item.formField] = item.key
+        this.bindFormFcFieldDraft(item.key, {
+          formField: item.formField,
+          restore: item.restore !== false,
+        })
+      })
+    },
+    syncContainerCreateFormFcDrafts (newField) {
+      if (!this.canUseCreateFormDraft || !newField || typeof newField !== 'object') return
+      // 仅用户交互后落盘；vcpu/vmem 由 CpuRadio/MemRadio 点选落盘
+      if (!this.createFormDraftUserInteracted) return
+      const skip = { vcpu: true, vmem: true }
+      const map = this._containerCreateFormFcDraftMap || {}
+      Object.keys(newField).forEach((formField) => {
+        if (skip[formField]) return
+        const draftKey = map[formField]
+        if (!draftKey) return
+        this.writeCreateFormFieldDraft(draftKey, newField[formField])
+      })
+      // 容器配置字段变更时同步 SpecContainer 草稿
+      this.syncContainerSpecDraft(newField)
+    },
+    syncContainerSpecDraft (newField) {
+      if (!this.canUseCreateFormDraft || !newField || typeof newField !== 'object') return
+      if (!this.createFormDraftUserInteracted) return
+      const keys = Object.keys(newField)
+      const touched = keys.some((k) => /container|registryImage|imageCredential|overlayDisk/i.test(k))
+      if (!touched) return
+      const ref = this.$refs.specContainerRef
+      if (ref && typeof ref.persistFormFieldDraftSnapshot === 'function' && !ref._containersDraftRestoring) {
+        this.$nextTick(() => ref.persistFormFieldDraftSnapshot())
+      }
+    },
     normalizeDraftSecgroups (secgroups) {
       if (!Array.isArray(secgroups) || !secgroups.length) return []
       return secgroups.map((item) => {
         if (item == null) return null
         if (typeof item === 'string' || typeof item === 'number') return String(item)
         return item.id || item.key || item.value || null
-      }).filter(Boolean)
-    },
-    /**
-     * 序列化草稿：与工单 server-create-paramter 同形（GenCreateData.all()）
-     * @returns {object|null}
-     */
-    serializeCreateFormDraft () {
-      try {
-        const fcValues = this.form.fc.getFieldsValue() || {}
-        const formData = {
-          ...this.form.fd,
-          ...fcValues,
-          // 确保端口映射用嵌套对象（getFieldsValue 为准）
-          containerPorts: fcValues.containerPorts || this.form.fd.containerPorts || {},
-          hostPorts: fcValues.hostPorts || this.form.fd.hostPorts || {},
-        }
-        const genCreateData = new GenCreateData(formData, this.form.fi)
-        const api = genCreateData.all()
-        if (!api.extraData) api.extraData = {}
-        api.extraData.formType = this.type
-        api.extraData.__resource_type__ = 'server_container'
-        // 记录高级配置折叠开关（用户关掉后回填不再强制展开）
-        const advanceOpen = Array.isArray(this.collapseActive) && this.collapseActive.includes('1')
-        api.extraData.advance_config_open = advanceOpen
-        if (!advanceOpen) {
-          // 关闭时不落盘高级配置字段
-          return buildContainerCreateDraftPayload(stripAdvanceConfigFields(api))
-        }
-        // 双写：防顶层字段在某条链路丢失，回填仍能取到
-        if (api.secgroups?.length) api.extraData.secgroups = api.secgroups
-        if (api.prefer_host) api.extraData.prefer_host = api.prefer_host
-        if (api.schedtags?.length) api.extraData.schedtags = api.schedtags
-        // 端口映射：直接从 form 收集，避免 GenCreateData 读不到 fd
-        const portMappings = this.collectPortMappingsFromForm(formData)
-        if (portMappings.length) {
-          api.extraData.port_mappings = portMappings
-          if (!Array.isArray(api.nets) || !api.nets.length) {
-            api.nets = [{ exit: false }]
-          }
-          api.nets = api.nets.map((net, idx) => {
-            if (idx === 0 || !net.port_mappings?.length) {
-              return { ...net, port_mappings: portMappings }
-            }
-            return net
-          })
-        }
-        return buildContainerCreateDraftPayload(api)
-      } catch (e) {
-        return null
-      }
-    },
-    /**
-     * 从表单值收集端口映射
-     * @param {object} formData
-     * @returns {Array<{port: *, host_port: *}>}
-     */
-    collectPortMappingsFromForm (formData = {}) {
-      const containerPorts = formData.containerPorts || {}
-      const hostPorts = formData.hostPorts || {}
-      if (!containerPorts || typeof containerPorts !== 'object') return []
-      return Object.keys(containerPorts).map((k) => {
-        const port = containerPorts[k]
-        if (port == null || port === '') return null
-        const item = { port }
-        if (hostPorts[k] != null && hostPorts[k] !== '') {
-          item.host_port = hostPorts[k]
-        }
-        return item
       }).filter(Boolean)
     },
     networkResourceMapper (list) {
@@ -1059,7 +1219,7 @@ export default {
     },
     fetchDomainCallback () {
       let domain = this.$route.query.domain_id
-      // 工单或草稿恢复：从 effectiveInitFormData 取域（有草稿时 DomainProject ignoreStorage）
+      // 工单回填：从 effectiveInitFormData 取域
       if ((R.isNil(domain) || R.isEmpty(domain)) && this.isFormBackfill) {
         domain = this.effectiveInitFormData?.extraData?.domain_id
       }
@@ -1071,7 +1231,7 @@ export default {
     },
     fetchProjectCallback () {
       let project = this.$route.query.tenant_id
-      // 工单或草稿恢复：从 effectiveInitFormData 取项目
+      // 工单回填：从 effectiveInitFormData 取项目
       if ((R.isNil(project) || R.isEmpty(project)) && this.isFormBackfill) {
         project = this.effectiveInitFormData?.project_id
       }
@@ -1183,10 +1343,7 @@ export default {
             const shopCart = this.buildShopCartParameter(data)
             this.$message.success(this.$t('common.success'))
             this.$store.commit('shopcart/ADD_SHOP_CART', shopCart)
-            const draftPayload = data.extraData.advance_config_open
-              ? buildContainerCreateDraftPayload(data)
-              : buildContainerCreateDraftPayload(stripAdvanceConfigFields(data))
-            this.saveCreateFormDraft(draftPayload, { fromSubmit: true })
+            this.flushCreateFormFieldDrafts()
           } catch (error) {
             throw error
           } finally {

@@ -48,6 +48,7 @@
 <script>
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 import { HYPERVISORS_MAP } from '@/constants'
+import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 import NetworkConfig from './NetworkConfig'
 import NetworkSchedtag from './NetworkSchedtag'
 
@@ -57,7 +58,12 @@ export default {
     NetworkSchedtag,
     NetworkConfig,
   },
+  mixins: [createFormFieldDraftMixin],
   props: {
+    formDraftKey: {
+      type: String,
+      default: '',
+    },
     decorator: {
       type: Object,
       required: true,
@@ -181,6 +187,7 @@ export default {
     return {
       networkComponent: '', // 指定IP子网 / 指定调度标签 的控件
       networkMaps: _networkMaps,
+      networkDraftRestoring: false,
     }
   },
   computed: {
@@ -216,6 +223,8 @@ export default {
     effectiveAutoAllocNetworkCountTt: {
       handler () {
         if (this.ignoreAutoNetworkType) return
+        if (this.networkDraftRestoring) return
+        if (this.canReadWriteFormFieldDraft() && this.readFormFieldDraft()?.networkType) return
         this.applyNetworkTypeByAutoAllocCountTt()
       },
       immediate: true,
@@ -254,6 +263,14 @@ export default {
       },
       immediate: true,
     },
+    'form.fi.networkList': {
+      handler () {
+        if (this.networkDraftRestoring) return
+        if (!this.canReadWriteFormFieldDraft()) return
+        this.persistFormFieldDraftSnapshot()
+      },
+      deep: true,
+    },
   },
   mounted () {
     // Decorator 可能已种好 networkType（工单/草稿），但 networkComponent 默认是空的，
@@ -261,6 +278,93 @@ export default {
     this.syncNetworkComponentFromForm()
   },
   methods: {
+    getCreateFormFieldDraftSnapshot () {
+      const f = this.form?.fc
+      if (!f) return undefined
+      const networkType = f.getFieldValue('networkType') || this.form.fd?.networkType
+      const ret = { networkType }
+      // 多网卡：存与工单同形的 nets，回填走 NetworkConfig.initData（uuid key 会变）
+      if (networkType === NETWORK_OPTIONS_MAP.manual.key) {
+        const list = this.$refs.networkConfigRef?.networkList
+        if (Array.isArray(list) && list.length) {
+          ret.nets = list.map((item) => {
+            const vpcId = item.vpc?.id || f.getFieldValue(this.decorator.networkConfig.vpcs(item.key)[0])
+            const networkId = item.network?.id || f.getFieldValue(this.decorator.networkConfig.networks(item.key)[0])
+            const net = {
+              vpc: vpcId,
+              network: networkId,
+              network_id: networkId,
+            }
+            if (item.ipShow && item.ip) net.address = item.ip
+            if (item.macShow && item.mac) net.mac = item.mac
+            if (item.requireIpv6) {
+              net.require_ipv6 = true
+              if (item.ipv6Mode === 'only') net.strict_ipv6 = true
+            }
+            if (item.ipv6Show && item.ipv6) net.address6 = item.ipv6
+            if (item.deviceShow && item.device) {
+              net.sriov_device = { model: item.device }
+            }
+            if (item.secgroupShow && item.secgroups?.length) {
+              net.secgroups = item.secgroups
+            }
+            return net
+          }).filter(n => n.network)
+        }
+      } else if (networkType === NETWORK_OPTIONS_MAP.schedtag.key) {
+        const list = this.$refs.networkSchedtagRef?.schedtagList
+        if (Array.isArray(list) && list.length) {
+          ret.nets = list.map((item) => {
+            const schedtag = item.schedtag || f.getFieldValue(this.decorator.networkSchedtag.schedtags(item.key)[0])
+            const strategy = item.policy || f.getFieldValue(this.decorator.networkSchedtag.policys(item.key)[0])
+            let device = item.device
+            if (!device && item.deviceShow && typeof this.decorator.networkSchedtag.devices === 'function') {
+              device = f.getFieldValue(this.decorator.networkSchedtag.devices(item.key)[0])
+            }
+            const tag = { id: schedtag, strategy }
+            if (device) tag.sriov_device = { model: device }
+            return { schedtags: [tag] }
+          }).filter(n => n.schedtags?.[0]?.id)
+        }
+      }
+      return ret
+    },
+    applyCreateFormFieldDraft (draft) {
+      if (!draft || !this.form?.fc) return
+      this.networkDraftRestoring = true
+      const finish = () => {
+        this.networkDraftRestoring = false
+      }
+      if (draft.networkType) {
+        this.form.fc.setFieldsValue({ networkType: draft.networkType })
+        if (this.form.fd) this.form.fd.networkType = draft.networkType
+        this.syncNetworkComponentFromForm()
+      }
+      this.$nextTick(() => {
+        this.applyNetworkDraftNets(draft)
+        // NetworkConfig 异步挂载 / 子网列表未就绪时再补几次
+        setTimeout(() => this.applyNetworkDraftNets(draft), 800)
+        setTimeout(() => this.applyNetworkDraftNets(draft), 2000)
+        setTimeout(() => { this.applyNetworkDraftNets(draft); finish() }, 4000)
+      })
+    },
+    applyNetworkDraftNets (draft) {
+      if (!draft) return
+      if (draft.networkType === NETWORK_OPTIONS_MAP.manual.key && Array.isArray(draft.nets) && draft.nets.length) {
+        const ref = this.$refs.networkConfigRef
+        if (ref && typeof ref.initData === 'function') {
+          ref.initData(draft.nets)
+        }
+        return
+      }
+      if (draft.networkType === NETWORK_OPTIONS_MAP.schedtag.key && Array.isArray(draft.nets) && draft.nets.length) {
+        const ref = this.$refs.networkSchedtagRef
+        if (ref && typeof ref.initData === 'function') {
+          ref.initData(draft.nets)
+        }
+      }
+    },
+
     /** 按当前表单 networkType 挂载对应子组件（与 @change 同源） */
     syncNetworkComponentFromForm () {
       const type = (this.form.fc && this.form.fc.getFieldValue('networkType')) ||
@@ -309,6 +413,12 @@ export default {
     change (e) {
       if (this.form.fd) {
         this.form.fd.networkType = e.target.value
+        this.$nextTick(() => {
+          // 回填期间 syncNetworkComponentFromForm→change 不要落盘，避免 nets 未就绪冲掉草稿
+          if (!this.networkDraftRestoring) {
+            this.persistFormFieldDraftSnapshot()
+          }
+        })
       }
 
       switch (e.target.value) {
@@ -325,7 +435,7 @@ export default {
     },
     async refreshNetworkConfig () {
       // 工单/草稿回填期间禁止拆掉 NetworkConfig，否则 initData 的 VPC/子网会被冲掉
-      if (this.ignoreAutoNetworkType) return true
+      if (this.ignoreAutoNetworkType || this.networkDraftRestoring) return true
       if (this.networkComponent === 'config') {
         this.networkComponent = ''
         await this.$nextTick() // 刷新 network-config 组件
